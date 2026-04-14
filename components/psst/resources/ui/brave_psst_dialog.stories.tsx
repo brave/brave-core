@@ -28,18 +28,25 @@ function PsstDialogStory({
   readonly siteName?: string
   readonly items?: Mojom.SettingCardDataItem[]
 }) {
+  // Stabilize array references to prevent infinite re-renders
+  const stableErrorUrls = React.useMemo(
+    () => errorUrls,
+    [JSON.stringify(errorUrls)],
+  )
+  const stableItems = React.useMemo(() => items, [JSON.stringify(items)])
+
   const mockAPI = React.useMemo(() => {
     return createMockPsstDialogAPI({
       autoLoadSettings,
       requestDelay,
-      errorUrls,
+      errorUrls: stableErrorUrls,
       settingsCardData: {
         siteName: siteName,
-        items,
+        items: stableItems,
       },
       onCloseDialog: () => console.log('[Storybook] Dialog closed'),
     })
-  }, [autoLoadSettings, requestDelay, errorUrls, siteName, items])
+  }, [autoLoadSettings, requestDelay, stableErrorUrls, siteName, stableItems])
 
   return (
     <Flex

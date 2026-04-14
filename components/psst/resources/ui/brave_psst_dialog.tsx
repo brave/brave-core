@@ -23,7 +23,7 @@ function createBrowserPsstApi() {
     callbackRouter.$.bindNewPipeAndPassRemote(),
   )
 
-  return createPsstDialogApi(consentHelper, callbackRouter)
+  return createPsstDialogApi(consentHelper)
 }
 
 function initialize() {

@@ -76,58 +76,6 @@ function createMockConsentHelper(): Mojom.PsstConsentHelperRemote {
   return mock
 }
 
-function createMockCallbackRouter(): Mojom.PsstConsentDialogCallbackRouter {
-  // Mock listeners that can be called to simulate state updates
-  const listeners = {
-    setSettingsCardData: [] as Array<(data: Mojom.SettingCardData) => void>,
-    onSetRequestDone: [] as Array<(url: string, error?: string) => void>,
-    onSetCompleted: [] as Array<
-      (appliedChecks?: string[], errors?: string[]) => void
-    >,
-  }
-
-  const mock = {
-    // Callback router interface
-    setSettingsCardData: {
-      addListener: (callback: (data: Mojom.SettingCardData) => void) => {
-        listeners.setSettingsCardData.push(callback)
-      },
-    },
-    onSetRequestDone: {
-      addListener: (callback: (url: string, error?: string) => void) => {
-        listeners.onSetRequestDone.push(callback)
-      },
-    },
-    onSetCompleted: {
-      addListener: (
-        callback: (appliedChecks?: string[], errors?: string[]) => void,
-      ) => {
-        listeners.onSetCompleted.push(callback)
-      },
-    },
-
-    // Methods to trigger listeners (for testing scenarios)
-    _triggerSettingsCardDataUpdate: (data: Mojom.SettingCardData) => {
-      listeners.setSettingsCardData.forEach((callback) => callback(data))
-    },
-    _triggerRequestDone: (url: string, error?: string) => {
-      listeners.onSetRequestDone.forEach((callback) => callback(url, error))
-    },
-    _triggerCompleted: (appliedChecks?: string[], errors?: string[]) => {
-      listeners.onSetCompleted.forEach((callback) =>
-        callback(appliedChecks, errors),
-      )
-    },
-
-    // Mock Mojom remote properties
-    $: {
-      bindNewPipeAndPassRemote: () => ({}),
-    } as any,
-  }
-
-  return mock as any
-}
-
 export interface MockPsstDialogAPIOptions {
   /**
    * Initial settings card data to display
@@ -164,7 +112,7 @@ export interface MockPsstDialogAPIOptions {
 export function createMockPsstDialogAPI(
   options: MockPsstDialogAPIOptions = {},
 ): PsstDialogAPI & {
-  _simulateActions: any
+  api: PsstDialogAPI['api'] & { _simulateActions: any }
 } {
   const {
     settingsCardData = {},
@@ -182,11 +130,12 @@ export function createMockPsstDialogAPI(
   }
 
   const mockConsentHelper = createMockConsentHelper()
-  const mockCallbackRouter = createMockCallbackRouter()
+
+  const { api, dialogHandler } = createPsstDialogApi(mockConsentHelper)
 
   console.log('[Mock] Creating API with:', {
     mockConsentHelper,
-    mockCallbackRouter,
+    dialogHandler,
   })
 
   // Override the close dialog action
@@ -213,7 +162,10 @@ export function createMockPsstDialogAPI(
       // Simulate request status update
       setTimeout(() => {
         const hasError = errorUrls.includes(item.url)
-        ;(mockCallbackRouter as any)._triggerRequestDone(
+        console.log(
+          `[Mock] Request done for ${item.url} with error: ${hasError}`,
+        )
+        dialogHandler.onSetRequestDone(
           item.url,
           hasError ? 'Failed to update setting' : undefined,
         )
@@ -224,14 +176,12 @@ export function createMockPsstDialogAPI(
     setTimeout(() => {
       const appliedChecks = allUrls.filter((url) => !errorUrls.includes(url))
       const errors = errorUrls.filter((url) => allUrls.includes(url))
-      ;(mockCallbackRouter as any)._triggerCompleted(
+      dialogHandler.onSetCompleted(
         appliedChecks,
         errors.length > 0 ? errors : undefined,
       )
     }, requestDelay + 500)
   }
-
-  const api = createPsstDialogApi(mockConsentHelper, mockCallbackRouter)
   console.log('[Mock] Created API:', api)
 
   if (!api) {
@@ -242,9 +192,8 @@ export function createMockPsstDialogAPI(
   // Auto-load settings if enabled
   if (autoLoadSettings) {
     setTimeout(() => {
-      ;(mockCallbackRouter as any)._triggerSettingsCardDataUpdate(
-        finalSettingsData,
-      )
+      console.log('[Mock] Auto-loading settings data:', finalSettingsData)
+      dialogHandler.setSettingsCardData(finalSettingsData)
     }, 100)
   }
 
@@ -256,28 +205,33 @@ export function createMockPsstDialogAPI(
      */
     updateSettingsData: (data: Partial<Mojom.SettingCardData>) => {
       const updatedData = { ...finalSettingsData, ...data }
-      ;(mockCallbackRouter as any)._triggerSettingsCardDataUpdate(updatedData)
+      dialogHandler.setSettingsCardData(updatedData)
     },
 
     /**
      * Simulate a request completion for a specific URL
      */
     triggerRequestDone: (url: string, error?: string) => {
-      ;(mockCallbackRouter as any)._triggerRequestDone(url, error)
+      dialogHandler.onSetRequestDone(url, error)
     },
 
     /**
      * Simulate overall completion with results
      */
     triggerCompleted: (appliedChecks?: string[], errors?: string[]) => {
-      ;(mockCallbackRouter as any)._triggerCompleted(appliedChecks, errors)
+      dialogHandler.onSetCompleted(appliedChecks, errors)
     },
 
     /**
-     * Get current mock router for advanced testing scenarios
+     * Get the dialog handler for advanced testing scenarios
      */
-    getCallbackRouter: () => mockCallbackRouter,
+    getDialogHandler: () => dialogHandler,
   }
 
-  return apiWithSimulations
+  return {
+    api: apiWithSimulations,
+    dialogHandler,
+  } as PsstDialogAPI & {
+    api: PsstDialogAPI['api'] & { _simulateActions: any }
+  }
 }

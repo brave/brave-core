@@ -8,15 +8,16 @@ import * as Mojom from 'gen/brave/components/psst/common/psst_ui_common.mojom.m.
 import {
   createInterfaceApi,
   endpointsFor,
+  eventsFor,
   actionsFor,
-  state,
 } from '$web-common/api'
 export * from 'gen/brave/components/psst/common/psst_ui_common.mojom.m.js'
 
 export function createPsstDialogApi(
-  consentHelper: Mojom.PsstConsentHelperRemote,
-  callbackRouter: Mojom.PsstConsentDialogCallbackRouter,
+  consentHelper: Mojom.PsstConsentHelperInterface,
 ) {
+  let dialogHandler: Mojom.PsstConsentDialog
+
   const api = createInterfaceApi({
     endpoints: {
       ...endpointsFor(consentHelper, {
@@ -24,37 +25,30 @@ export function createPsstDialogApi(
           mutationResponse: () => {},
         },
       }),
-
-      settingsCardData: state<Mojom.SettingCardData | null>(null),
-      requestStatus: state<{ url: string; error?: string } | null>(null),
-      completionStatus: state<{
-        appliedChecks?: string[]
-        errors?: string[]
-      } | null>(null),
     },
 
     actions: {
       ...actionsFor(consentHelper, ['closeDialog']),
     },
+    events: {
+      ...eventsFor(
+        Mojom.PsstConsentDialogInterface,
+        {
+          setSettingsCardData(settingCardData: Mojom.SettingCardData) {},
+          onSetRequestDone(url: string, error: string) {},
+          onSetCompleted(appliedChecks: string[], errors: string[]) {},
+        },
+        (observer) => {
+          dialogHandler = observer
+        },
+      ),
+    },
   })
 
-  callbackRouter.setSettingsCardData.addListener(
-    (settingCardData: Mojom.SettingCardData) => {
-      api.settingsCardData.update(settingCardData)
-    },
-  )
-
-  callbackRouter.onSetRequestDone.addListener((url: string, error?: string) => {
-    api.requestStatus.update({ url, error })
-  })
-
-  callbackRouter.onSetCompleted.addListener(
-    (appliedChecks?: string[], errors?: string[]) => {
-      api.completionStatus.update({ appliedChecks, errors })
-    },
-  )
-
-  return api
+  return {
+    api,
+    dialogHandler: dialogHandler!,
+  }
 }
 
 export type PsstDialogAPI = ReturnType<typeof createPsstDialogApi>

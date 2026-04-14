@@ -49,7 +49,8 @@ export interface PsstProgressModalState {
 }
 
 export const PsstProgressModal = () => {
-  const { api } = usePsstDialogAPI()
+  const psstDialogContext = usePsstDialogAPI()
+  const { api } = psstDialogContext
 
   const [commonState, setCommonState] = React.useState<SettingState>(
     SettingState.None,
@@ -61,10 +62,18 @@ export const PsstProgressModal = () => {
   > | null>(new Map())
 
   // Subscribe to API state endpoints (data is pushed via callback router)
-  const { data: settingsData } = api.useSettingsCardData()
-  const { data: requestStatus } = api.useRequestStatus()
-  const { data: completionStatus } = api.useCompletionStatus()
-  const { applyChanges } = api.useApplyChanges()
+  // Add defensive checks for api
+  const settingsData = api?.useCurrentSetSettingsCardData?.()
+  const requestStatus = api?.useCurrentOnSetRequestDone?.()
+  const completionStatus = api?.useCurrentOnSetCompleted?.()
+  const { applyChanges } = api?.useApplyChanges?.() || {
+    applyChanges: () => {},
+  }
+
+  // Extract specific values to avoid object reference issues in useEffect dependencies
+  const settingCardData = settingsData?.data?.[0]
+  const [requestUrl, requestError] = requestStatus?.data || []
+  const [appliedChecks, completionErrors] = completionStatus?.data || []
 
   const closeDialog = React.useCallback(() => {
     api.closeDialog()
@@ -121,9 +130,9 @@ export const PsstProgressModal = () => {
 
   // Handle settings data updates
   React.useEffect(() => {
-    if (settingsData) {
+    if (settingCardData) {
       const checkedUrlsMap = new Map<string, OptionStatus>()
-      settingsData.items.forEach((item: SettingCardDataItem) => {
+      settingCardData.items.forEach((item: SettingCardDataItem) => {
         checkedUrlsMap.set(item.url, {
           url: item.url,
           description: item.description,
@@ -133,32 +142,29 @@ export const PsstProgressModal = () => {
           settingState: SettingState.Selection,
         })
       })
-      setSiteName(settingsData.siteName)
+      setSiteName(settingCardData.siteName || '')
       setOptionsStatuses(checkedUrlsMap)
     }
-  }, [settingsData])
+  }, [settingCardData])
 
   // Handle request status updates
   React.useEffect(() => {
-    if (requestStatus) {
-      setPropForUrl(requestStatus.url, {
-        settingState: requestStatus.error
+    if (requestUrl) {
+      setPropForUrl(requestUrl, {
+        settingState: requestError
           ? SettingState.Failed
           : SettingState.Completed,
-        error: requestStatus.error || null,
+        error: requestError || null,
       })
     }
-  }, [requestStatus, setPropForUrl])
+  }, [requestUrl, requestError, setPropForUrl])
 
   // Handle completion status updates
   React.useEffect(() => {
-    if (
-      completionStatus
-      && (completionStatus.appliedChecks || completionStatus.errors)
-    ) {
+    if (appliedChecks || completionErrors) {
       setCommonState(SettingState.Completed)
     }
-  }, [completionStatus])
+  }, [appliedChecks, completionErrors])
 
   const handleSettingItemCheck = React.useCallback(
     (url: string, checked: boolean) => {
