@@ -7,7 +7,7 @@
 
 #include <memory>
 
-#include "brave/components/brave_ads/core/internal/common/resources/country_components_test_constants.h"
+#include "brave/components/brave_ads/core/internal/common/resources/test/country_components_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_processor.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_resource.h"

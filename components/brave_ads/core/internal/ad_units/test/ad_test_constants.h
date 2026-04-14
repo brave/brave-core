@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_AD_UNITS_AD_TEST_CONSTANTS_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_AD_UNITS_AD_TEST_CONSTANTS_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_AD_UNITS_TEST_AD_TEST_CONSTANTS_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_AD_UNITS_TEST_AD_TEST_CONSTANTS_H_
 
 namespace brave_ads::test {
 
@@ -55,4 +55,4 @@ inline constexpr double kValue = 1.0;
 
 }  // namespace brave_ads::test
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_AD_UNITS_AD_TEST_CONSTANTS_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_AD_UNITS_TEST_AD_TEST_CONSTANTS_H_

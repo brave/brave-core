@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/test/unblinded_token_test_util.h"
 
 #include "base/no_destructor.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_test_constants.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/test/challenge_bypass_ristretto_test_constants.h"
 
 namespace brave_ads::cbr::test {
 

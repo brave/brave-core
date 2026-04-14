@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/test/ad_event_builder_test_util.h"
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"

@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/account/test/account_observer_mock.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/test/token_generator_test_util.h"
-#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"

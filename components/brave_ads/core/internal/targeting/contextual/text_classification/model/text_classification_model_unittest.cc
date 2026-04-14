@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_ads/core/internal/common/resources/language_components_test_constants.h"
+#include "brave/components/brave_ads/core/internal/common/resources/test/language_components_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_processor.h"

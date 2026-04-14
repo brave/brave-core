@@ -7,9 +7,9 @@
 
 #include "base/test/mock_callback.h"
 #include "base/test/test_future.h"
-#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ad_units/new_tab_page_ad/test/new_tab_page_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/ad_units/notification_ad/test/notification_ad_test_util.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table_util.h"

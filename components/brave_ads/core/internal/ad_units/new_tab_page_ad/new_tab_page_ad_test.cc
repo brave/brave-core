@@ -12,7 +12,7 @@
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/types/optional_ref.h"
-#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_feature.h"
