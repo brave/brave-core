@@ -48,6 +48,8 @@ class BraveTabContainer : public TabContainerImpl,
   // TabContainerImpl:
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override;
+  std::vector<Tab*> AddTabs(
+      std::vector<TabInsertionParams> tabs_params) override;
   void UpdateClosingModeOnRemovedTab(int model_index, bool was_active) override;
   gfx::Rect GetTargetBoundsForClosingTab(Tab* tab,
                                          int former_model_index) const override;
