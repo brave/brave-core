@@ -161,6 +161,9 @@
 # https://github.com/brave/brave-browser/issues/54542
 -SearchEngineChoiceDialogBrowserTest.DialogDoesNotShowWithExtensionEnabledThatOverridesDSE
 
+# This test is flakey upstream due to https://issues.chromium.org/issues/511552103
+-All/TextfieldDumpAccessibilityEventsTest.TextSelectionChanged/linux_ViewsAXEnabled
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccessCodeCastHandlerBrowserTest.*
 -AdsPageLoadMetricsObserverBrowserTest.*
