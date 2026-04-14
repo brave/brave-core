@@ -13,7 +13,7 @@
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "brave/app/brave_command_ids.h"
-#include "brave/app/vector_icons/vector_icons.h"
+#include "brave/components/vector_icons/vector_icons.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
@@ -303,7 +303,7 @@ void BraveToolbarView::Init() {
             base::BindRepeating(&BraveToolbarView::OnVerticalTabTogglePressed,
                                 base::Unretained(this))),
         back_button_index.value_or(0));
-    vertical_tab_toggle_->SetVectorIcon(kVerticalTabStripToggleButtonIcon);
+    vertical_tab_toggle_->SetVectorIcon(kLeoWindowTabsVerticalExpandedIcon);
     UpdateVerticalTabToggleVisibility();
     UpdateVerticalTabToggleState();
   }
