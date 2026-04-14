@@ -6,16 +6,16 @@
     <message name="IDS_PSST_CONSENT_DIALOG_BODY" formatter_data="webui=Psst" desc="A body for a dialog to adjust PSST">
         This website offers privacy settings. Brave can automatically tune these settings for you. Would you like Brave to do so?
     </message>
-    <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_OK" formatter_data="webui=Psst" desc="Ok button's Text for PSST complete dialog">
+    <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_OK" formatter_data="webui=Psst" desc="Ok button's Text for PSST consent dialog, allows user to apply recommended privacy settings">
         Apply changes
     </message>
-    <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_REPORT_FAILED" formatter_data="webui=Psst" desc="Report failed button's Text for PSST complete dialog">
+    <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_REPORT_FAILED" formatter_data="webui=Psst" desc="Report failed button's Text for PSST consent dialog, allows user to report failed content">
         Report failed content
     </message>
-    <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_CLOSE" formatter_data="webui=Psst" desc="Close button's Text for PSST complete dialog">
+    <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_CLOSE" formatter_data="webui=Psst" desc="Close button's Text for PSST consent dialog, allows to close the dialog when privacy setting are applied">
         Close
     </message>
-    <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_CANCEL" formatter_data="webui=Psst" desc="Cancel button's Text for PSST complete dialog">
+    <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_CANCEL" formatter_data="webui=Psst" desc="Cancel button's Text for PSST consent dialog, allows user to decline the applying recommended privacy settings">
         Cancel
     </message>
 </grit-part>

@@ -179,10 +179,7 @@ export function createMockPsstDialogAPI(
       console.log(
         `[Mock] Simulate completion with applied checks: ${appliedChecks} and errors: ${errors}`,
       )
-      dialogHandler.onSetCompleted(
-        appliedChecks,
-        errors.length > 0 ? errors : null,
-      )
+      dialogHandler.onSetCompleted(appliedChecks, errors)
     }, requestDelay + 500)
   }
   console.log('[Mock] Created API:', api)

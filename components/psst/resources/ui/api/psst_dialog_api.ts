@@ -51,4 +51,7 @@ export function createPsstDialogApi(
   }
 }
 
+/**
+ * PSST Dialog API interface.
+ */
 export type PsstDialogAPI = ReturnType<typeof createPsstDialogApi>
