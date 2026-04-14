@@ -15,12 +15,16 @@ import Flex from '$web-common/Flex'
 // Set icon path for Storybook
 setIconBasePath('/icons')
 
+// Stable default values to prevent unnecessary re-renders
+const DEFAULT_ERROR_URLS: string[] = []
+const DEFAULT_ITEMS: Mojom.SettingCardDataItem[] = []
+
 function PsstDialogStory({
   autoLoadSettings = true,
   requestDelay = 1000,
-  errorUrls = [] as string[],
+  errorUrls = DEFAULT_ERROR_URLS,
   siteName = 'example.com',
-  items = [] as Mojom.SettingCardDataItem[],
+  items = DEFAULT_ITEMS,
 }: {
   readonly autoLoadSettings?: boolean
   readonly requestDelay?: number
@@ -28,25 +32,18 @@ function PsstDialogStory({
   readonly siteName?: string
   readonly items?: Mojom.SettingCardDataItem[]
 }) {
-  // Stabilize array references to prevent infinite re-renders
-  const stableErrorUrls = React.useMemo(
-    () => errorUrls,
-    [JSON.stringify(errorUrls)],
-  )
-  const stableItems = React.useMemo(() => items, [JSON.stringify(items)])
-
   const mockAPI = React.useMemo(() => {
     return createMockPsstDialogAPI({
       autoLoadSettings,
       requestDelay,
-      errorUrls: stableErrorUrls,
+      errorUrls,
       settingsCardData: {
         siteName: siteName,
-        items: stableItems,
+        items,
       },
       onCloseDialog: () => console.log('[Storybook] Dialog closed'),
     })
-  }, [autoLoadSettings, requestDelay, stableErrorUrls, siteName, stableItems])
+  }, [autoLoadSettings, requestDelay, errorUrls, siteName, items])
 
   return (
     <Flex
