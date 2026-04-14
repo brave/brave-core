@@ -5,11 +5,12 @@
 
 #include "brave/components/brave_user_agent/browser/brave_user_agent_component_installer.h"
 
+#include <stdint.h>
+
 #include <array>
 #include <memory>
 #include <string>
 #include <vector>
-#include <stdint.h>
 
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
