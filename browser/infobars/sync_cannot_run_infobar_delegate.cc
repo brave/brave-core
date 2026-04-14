@@ -18,6 +18,7 @@
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/infobar.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -37,9 +38,8 @@ bool SeedDecryptionFailed(raw_ptr<brave_sync::Prefs> brave_sync_prefs) {
 // static
 void SyncCannotRunInfoBarDelegate::Create(
     infobars::ContentInfoBarManager* infobar_manager,
-    Profile* profile,
-    Browser* browser) {
-  brave_sync::Prefs brave_sync_prefs(profile->GetPrefs());
+    BrowserWindowInterface* browser) {
+  brave_sync::Prefs brave_sync_prefs(browser->GetProfile()->GetPrefs());
   if (brave_sync_prefs.IsFailedDecryptSeedNoticeDismissed()) {
     return;
   }
@@ -50,13 +50,13 @@ void SyncCannotRunInfoBarDelegate::Create(
 
   infobar_manager->AddInfoBar(
       CreateConfirmInfoBar(std::unique_ptr<ConfirmInfoBarDelegate>(
-          new SyncCannotRunInfoBarDelegate(browser, profile))));
+          new SyncCannotRunInfoBarDelegate(browser))));
 }
 
 // Start class impl
-SyncCannotRunInfoBarDelegate::SyncCannotRunInfoBarDelegate(Browser* browser,
-                                                           Profile* profile)
-    : profile_(profile), browser_(browser) {}
+SyncCannotRunInfoBarDelegate::SyncCannotRunInfoBarDelegate(
+    BrowserWindowInterface* browser)
+    : browser_(browser) {}
 
 SyncCannotRunInfoBarDelegate::~SyncCannotRunInfoBarDelegate() = default;
 
@@ -107,7 +107,7 @@ bool SyncCannotRunInfoBarDelegate::Accept() {
 
 bool SyncCannotRunInfoBarDelegate::Cancel() {
   // "Don't show again" button
-  brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
+  brave_sync::Prefs brave_sync_prefs(browser_->GetProfile()->GetPrefs());
   brave_sync_prefs.DismissFailedDecryptSeedNotice();
   return true;
 }

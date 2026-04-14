@@ -24,6 +24,7 @@
 #endif
 
 class Browser;
+class BrowserWindowInterface;
 class Profile;
 
 namespace brave {
@@ -51,7 +52,7 @@ void ToggleBraveVPNButton(Browser* browser);
 void ToggleBraveVPNTrayIcon();
 void OpenBraveVPNUrls(Browser* browser, int command_id);
 // Copies an url sanitized by URLSanitizerService.
-void CopySanitizedURL(Browser* browser, const GURL& url);
+void CopySanitizedURL(BrowserWindowInterface* browser, const GURL& url);
 // Copies an url cleared through:
 // - Debouncer (potentially debouncing many levels)
 // - Query filter

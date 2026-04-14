@@ -46,20 +46,20 @@ constexpr int kDialogWidth = 600;
 }  // namespace
 
 // static
-void BraveVpnFallbackDialogView::Show(Browser* browser) {
-  auto* prefs = browser->profile()->GetPrefs();
+void BraveVpnFallbackDialogView::Show(BrowserWindowInterface* browser) {
+  auto* prefs = browser->GetProfile()->GetPrefs();
   if (!prefs->GetBoolean(prefs::kBraveVPNWireguardFallbackDialog)) {
     return;
   }
 
   constrained_window::CreateBrowserModalDialogViews(
-      new BraveVpnFallbackDialogView(browser),
-      browser->window()->GetNativeWindow())
+      new BraveVpnFallbackDialogView(prefs),
+      browser->GetWindow()->GetNativeWindow())
       ->Show();
 }
 
-BraveVpnFallbackDialogView::BraveVpnFallbackDialogView(Browser* browser)
-    : browser_(browser), prefs_(browser->profile()->GetPrefs()) {
+BraveVpnFallbackDialogView::BraveVpnFallbackDialogView(PrefService* prefs)
+    : prefs_(prefs) {
   SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical,
       gfx::Insets::TLBR(kTopPadding, kPadding, kBottomPadding, kPadding),
