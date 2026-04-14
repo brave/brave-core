@@ -7,6 +7,8 @@ import BraveCore
 import Foundation
 
 extension BraveUserAgentType {
+  /// Returns the user agent that should be used for the `BraveUserAgentType`
+  /// in either mobile or desktop mode.
   public func userAgentForMode(isMobile: Bool) -> String {
     switch self {
     case .masked:
