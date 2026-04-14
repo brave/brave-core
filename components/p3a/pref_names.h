@@ -40,6 +40,7 @@ inline constexpr char kLastExpressConstellationRotationTimeStampPref[] =
     "p3a.last_express_constellation_rotation_timestamp";
 
 // P3A service preference names
+inline constexpr char kCustomAttributesDictPref[] = "p3a.custom_attributes";
 inline constexpr char kDynamicMetricsDictPref[] = "p3a.dynamic_metrics";
 
 // Star randomness meta preference names
