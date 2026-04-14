@@ -28,11 +28,15 @@
 namespace brave_ads {
 
 class BraveAdsNewTabPageAdIntegrationTest : public test::TestBase {
+ public:
+  BraveAdsNewTabPageAdIntegrationTest()
+      : test::TestBase(/*is_integration_test=*/true) {}
+
  protected:
   void SetUp() override {
     AdvanceClockTo(test::TimeFromUTCString("Fri, 31 Jan 2025 16:28"));
 
-    test::TestBase::SetUp(/*is_integration_test=*/true);
+    test::TestBase::SetUp();
   }
 
   void MockCreativeNewTabPageAds() {

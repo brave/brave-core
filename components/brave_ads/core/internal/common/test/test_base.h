@@ -51,6 +51,11 @@ class TestBase : public ::testing::Test {
  protected:
   TestBase();
 
+  // Pass `is_integration_test` as `true` to test functionality and performance
+  // under product-like circumstances with data to replicate live settings to
+  // simulate what a real user scenario looks like from start to finish.
+  explicit TestBase(bool is_integration_test);
+
   // Override `SetUp` and call `test::TestBase::SetUp` with
   // `is_integration_test` set to `true` to test functionality and performance
   // under product-like circumstances with data to replicate live settings to
@@ -175,7 +180,7 @@ class TestBase : public ::testing::Test {
 
   ScopedBrowserVersionNumberForTesting scoped_browser_version_number_;
 
-  bool is_integration_test_ = false;
+  bool is_integration_test_ = false;  // Defaults to unit test.
 
   // Integration tests only.
   std::unique_ptr<Ads> ads_;

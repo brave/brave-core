@@ -25,9 +25,11 @@
 namespace brave_ads {
 
 class BraveAdsNotificationAdForMobileIntegrationTest : public test::TestBase {
- protected:
-  void SetUp() override { test::TestBase::SetUp(/*is_integration_test=*/true); }
+ public:
+  BraveAdsNotificationAdForMobileIntegrationTest()
+      : test::TestBase(/*is_integration_test=*/true) {}
 
+ protected:
   void SetUpMocks() override {
     fake_platform_helper_.SetPlatformType(PlatformType::kAndroid);
     PlatformHelper::SetForTesting(&fake_platform_helper_);
