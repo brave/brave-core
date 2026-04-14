@@ -25,6 +25,7 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
+#include "chrome/browser/ui/browser_navigator_params_utils.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -219,7 +220,7 @@ void SidebarController::IterateOrLoadAtActiveTab(const GURL& url) {
 
 void SidebarController::LoadAtTab(const GURL& url) {
   auto params = GetSingletonTabNavigateParams(browser_, url);
-  int tab_index = GetIndexOfExistingTab(browser_, params);
+  int tab_index = GetIndexOfExistingTabMatchingURL(browser_, params);
   // If browser has a tab that already loaded |item.url|, just activate it.
   if (tab_index >= 0) {
     tab_strip_model_->ActivateTabAt(tab_index);
