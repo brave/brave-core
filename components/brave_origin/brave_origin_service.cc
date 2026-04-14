@@ -18,6 +18,7 @@
 #include "brave/components/brave_origin/brave_origin_utils.h"
 #include "brave/components/brave_origin/features.h"
 #include "brave/components/brave_origin/pref_names.h"
+#include "brave/components/skus/browser/pref_names.h"
 #include "components/policy/core/common/policy_map.h"
 #include "components/policy/core/common/policy_namespace.h"
 #include "components/policy/core/common/policy_service.h"
@@ -53,23 +54,31 @@ BraveOriginService::BraveOriginService(
     std::string_view profile_id,
     policy::PolicyService* profile_policy_service,
     policy::PolicyService* browser_policy_service,
-    SkusServiceGetter skus_service_getter)
+    std::unique_ptr<Delegate> delegate)
     : local_state_(local_state),
       profile_prefs_(profile_prefs),
       profile_id_(profile_id),
       profile_policy_service_(profile_policy_service),
       browser_policy_service_(browser_policy_service),
-      skus_service_getter_(std::move(skus_service_getter)),
       // STAGING for unofficial builds; official builds always resolve to prod.
       origin_sku_domain_(brave_domains::GetServicesDomain(
           kOriginSkuHostnamePart,
-          brave_domains::ServicesEnvironment::STAGING)) {
+          brave_domains::ServicesEnvironment::STAGING)),
+      delegate_(std::move(delegate)) {
   CHECK(local_state_);
   CHECK(profile_prefs_);
   CHECK(!profile_id_.empty());
 
   // Eagerly check purchase state on startup so the cached value is available.
   CheckPurchaseState(base::DoNothing());
+
+  // Re-check purchase state whenever SKU credentials change (e.g. after
+  // the user completes a purchase on account.brave.com).
+  skus_pref_registrar_.Init(local_state_);
+  skus_pref_registrar_.Add(
+      skus::prefs::kSkusState,
+      base::BindRepeating(&BraveOriginService::OnSkusStateChanged,
+                          base::Unretained(this)));
 
   // Record whether Origin was enforcing policies in the previous session.
   startup_was_enforcing_ =
@@ -88,6 +97,8 @@ BraveOriginService::~BraveOriginService() = default;
 
 void BraveOriginService::Shutdown() {
   weak_ptr_factory_.InvalidateWeakPtrs();
+  skus_pref_registrar_.RemoveAll();
+  delegate_.reset();
   skus_service_.reset();
   local_state_ = nullptr;
   profile_prefs_ = nullptr;
@@ -197,6 +208,12 @@ bool BraveOriginService::NeedsRestart() const {
              startup_profile_policies_;
 }
 
+void BraveOriginService::OnSkusStateChanged() {
+  // SKU credentials were updated (e.g. via the JS API on
+  // account.brave.com). Re-check whether a purchase is now valid.
+  CheckPurchaseState(base::DoNothing());
+}
+
 void BraveOriginService::OnCredentialSummary(
     base::OnceCallback<void(bool)> callback,
     skus::mojom::SkusResultPtr summary) {
@@ -219,6 +236,11 @@ void BraveOriginService::OnCredentialSummary(
     }
   }
 
+  // Check if this is a first-time purchase (pref was false, now true).
+  // Must read the pref before SetPurchased() updates it.
+  const bool was_previously_purchased =
+      local_state_ && local_state_->GetBoolean(kOriginPurchaseValidated);
+
   BraveOriginPolicyManager::GetInstance()->SetPurchased(purchased);
 
   // Persist enforcement state so NeedsRestart() can detect first-purchase
@@ -227,15 +249,24 @@ void BraveOriginService::OnCredentialSummary(
   if (local_state_ && purchased) {
     local_state_->SetBoolean(kOriginPoliciesWereEnforced, true);
   }
+
+  // On first purchase detection, open the settings page so the user
+  // can configure Origin policies.
+  if (purchased && !was_previously_purchased && delegate_ &&
+      !did_open_origin_settings_) {
+    delegate_->OpenOriginSettings();
+    did_open_origin_settings_ = true;
+  }
+
   std::move(callback).Run(purchased);
 }
 
 bool BraveOriginService::EnsureSkusConnected() {
   if (!skus_service_) {
-    if (!skus_service_getter_) {
+    if (!delegate_) {
       return false;
     }
-    auto pending = skus_service_getter_.Run();
+    auto pending = delegate_->GetSkusService();
     if (pending.is_valid()) {
       skus_service_.Bind(std::move(pending));
       skus_service_.reset_on_disconnect();

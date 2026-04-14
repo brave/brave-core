@@ -240,6 +240,8 @@ source_set("ui") {
     deps += [ "//brave/browser/ui/views/brave_origin" ]
   }
 
+  deps += [ "//brave/browser/ui/brave_origin" ]
+
   if (!is_android) {
     sources += [
       "bookmark/bookmark_helper.cc",

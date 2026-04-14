@@ -16,9 +16,12 @@ import("//build/config/features.gni")
 
 source_set("brave_origin") {
   sources = [
+    "brave_origin_navigation.h",
     "brave_origin_service_factory.cc",
     "brave_origin_service_factory.h",
   ]
+
+  public_deps = [ "//brave/components/brave_origin" ]
 
   deps = [
     "//base",
@@ -26,7 +29,6 @@ source_set("brave_origin") {
     "//brave/browser/skus",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_news/common/buildflags",
-    "//brave/components/brave_origin",
     "//brave/components/brave_policy",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_talk/buildflags",
@@ -96,6 +98,7 @@ source_set("unit_tests") {
     ":brave_origin",
     "//base/test:test_support",
     "//brave/browser/policy:brave_simple_policy_map",
+    "//brave/browser/ui/brave_origin",
     "//brave/components/brave_origin",
     "//brave/components/brave_rewards/core",
     "//brave/components/constants",
