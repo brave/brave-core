@@ -78,6 +78,10 @@ class BraveOriginHandlerTest : public testing::Test {
                                                  false);
     local_state_.registry()->RegisterBooleanPref(kOriginPoliciesWereEnforced,
                                                  false);
+#if BUILDFLAG(IS_LINUX)
+    local_state_.registry()->RegisterBooleanPref(kOriginFreeTierAccepted,
+                                                 false);
+#endif
 
     // Register test browser preferences in local_state
     local_state_.registry()->RegisterBooleanPref(kTestBrowserPrefName, false);
@@ -404,6 +408,10 @@ class BraveOriginHandlerWithSkusTest : public testing::Test {
                                                  false);
     local_state_.registry()->RegisterBooleanPref(kOriginPoliciesWereEnforced,
                                                  false);
+#if BUILDFLAG(IS_LINUX)
+    local_state_.registry()->RegisterBooleanPref(kOriginFreeTierAccepted,
+                                                 false);
+#endif
 
     local_state_.registry()->RegisterBooleanPref(kTestBrowserPrefName, false);
     profile_prefs_.registry()->RegisterBooleanPref(kTestProfilePrefName, true);
@@ -520,6 +528,10 @@ class BraveOriginHandlerDisabledTest : public testing::Test {
                                                  false);
     local_state_.registry()->RegisterBooleanPref(kOriginPoliciesWereEnforced,
                                                  false);
+#if BUILDFLAG(IS_LINUX)
+    local_state_.registry()->RegisterBooleanPref(kOriginFreeTierAccepted,
+                                                 false);
+#endif
 
     // Register test preferences (needed for pref service not to crash)
     local_state_.registry()->RegisterBooleanPref(kTestBrowserPrefName, false);
