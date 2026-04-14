@@ -229,10 +229,10 @@ void BraveAppMenu::ExecuteCommand(int command_id, int mouse_event_flags) {
 }
 
 void BraveAppMenu::OnMenuClosed(views::MenuItemView* menu) {
-  AppMenu::OnMenuClosed(menu);
   if (menu == nullptr) {
     menu_metrics_->RecordMenuDismiss();
   }
+  AppMenu::OnMenuClosed(menu);
 }
 
 void BraveAppMenu::RecordMenuUsage(int command_id) {
