@@ -148,25 +148,32 @@ class BuiltinBridgesRequest {
   using ResultCallback = base::OnceCallback<void(const base::DictValue&)>;
 
   static std::unique_ptr<BuiltinBridgesRequest> MaybeUpdateBuiltinBridges(
-      content::BrowserContext* browser_context,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       PrefService* local_state,
       ResultCallback callback) {
+    const auto config = tor::BridgesConfig::FromDict(
+                            local_state->GetDict(tor::prefs::kBridgesConfig))
+                            .value_or(tor::BridgesConfig());
+    if (config.use_bridges != tor::BridgesConfig::Usage::kBuiltIn) {
+      return nullptr;
+    }
+
     const base::Time last_request_time =
         local_state->GetTime(prefs::kBuiltinBridgesRequestTime);
     if (base::Time::Now() > last_request_time + base::Days(1)) {
       local_state->SetTime(prefs::kBuiltinBridgesRequestTime,
                            base::Time::Now());
-      return base::WrapUnique(
-          new BuiltinBridgesRequest(browser_context, std::move(callback)));
+      return base::WrapUnique(new BuiltinBridgesRequest(
+          std::move(url_loader_factory), std::move(callback)));
     }
     return nullptr;
   }
 
  private:
-  BuiltinBridgesRequest(content::BrowserContext* browser_context,
-                        ResultCallback callback)
-      : url_loader_factory_(browser_context->GetDefaultStoragePartition()
-                                ->GetURLLoaderFactoryForBrowserProcess()),
+  BuiltinBridgesRequest(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      ResultCallback callback)
+      : url_loader_factory_(std::move(url_loader_factory)),
         result_callback_(std::move(callback)) {
     auto request = std::make_unique<network::ResourceRequest>();
     request->url = GURL(kTorBuiltinBridgesFetchUrl);
@@ -206,12 +213,13 @@ class BuiltinBridgesRequest {
 };
 
 TorProfileServiceImpl::TorProfileServiceImpl(
-    content::BrowserContext* original_context,
+    scoped_refptr<network::SharedURLLoaderFactory> direct_url_loader_factory,
     content::BrowserContext* context,
     PrefService* local_state,
     BraveTorClientUpdater* tor_client_updater,
     BraveTorPluggableTransportUpdater* tor_pluggable_transport_updater)
-    : context_(context),
+    : direct_url_loader_factory_(std::move(direct_url_loader_factory)),
+      context_(context),
       local_state_(local_state),
       tor_client_updater_(tor_client_updater),
       tor_pluggable_transport_updater_(tor_pluggable_transport_updater),
@@ -232,7 +240,7 @@ TorProfileServiceImpl::TorProfileServiceImpl(
   pref_change_registrar_.Init(local_state_.get());
 
   builtin_bridges_request_ = BuiltinBridgesRequest::MaybeUpdateBuiltinBridges(
-      original_context, local_state,
+      direct_url_loader_factory_, local_state,
       base::BindOnce(&TorProfileServiceImpl::OnBuiltinBridgesResponse,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -302,6 +310,13 @@ void TorProfileServiceImpl::OnBridgesConfigChanged() {
   if (!tor_pluggable_transport_updater_->IsReady()) {
     if (config.use_bridges != tor::BridgesConfig::Usage::kNotUsed) {
       tor_pluggable_transport_updater_->Register();
+      if (!builtin_bridges_request_) {
+        builtin_bridges_request_ =
+            BuiltinBridgesRequest::MaybeUpdateBuiltinBridges(
+                direct_url_loader_factory_, local_state_,
+                base::BindOnce(&TorProfileServiceImpl::OnBuiltinBridgesResponse,
+                               weak_ptr_factory_.GetWeakPtr()));
+      }
       return;
     } else {
       tor_pluggable_transport_updater_->Unregister();
