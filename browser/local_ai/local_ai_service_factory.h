@@ -8,7 +8,9 @@
 
 #include <memory>
 
+#include "base/containers/flat_map.h"
 #include "brave/components/local_ai/core/local_ai.mojom.h"
+#include "brave/components/local_ai/core/local_ai_service.h"
 #include "chrome/browser/profiles/profile_keyed_service_factory.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -21,9 +23,11 @@ template <typename T>
 class NoDestructor;
 }  // namespace base
 
-namespace local_ai {
+namespace content {
+class WebContents;
+}
 
-class LocalAIService;  // core/local_ai_service.h
+namespace local_ai {
 
 class LocalAIServiceFactory : public ProfileKeyedServiceFactory {
  public:
@@ -32,6 +36,19 @@ class LocalAIServiceFactory : public ProfileKeyedServiceFactory {
       Profile* profile);
   static void BindForProfile(
       Profile* profile,
+      mojo::PendingReceiver<mojom::LocalAIService> receiver);
+
+  // Registry for routing mojo binding requests from background
+  // WebContents (on guest OTR profile) back to the owning
+  // LocalAIService. Used by UntrustedLocalAIUI::BindInterface.
+  using BindCallback = base::RepeatingCallback<void(
+      mojo::PendingReceiver<mojom::LocalAIService>)>;
+  static void SetBindCallbackForWebContents(content::WebContents* web_contents,
+                                            BindCallback callback);
+  static void RemoveBindCallbackForWebContents(
+      content::WebContents* web_contents);
+  static void BindForWebContents(
+      content::WebContents* web_contents,
       mojo::PendingReceiver<mojom::LocalAIService> receiver);
 
  private:
@@ -47,6 +64,13 @@ class LocalAIServiceFactory : public ProfileKeyedServiceFactory {
   // ProfileKeyedServiceFactory:
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
+
+  // Entries are removed via RemoveBindCallbackForWebContents. If a
+  // WebContents is destroyed without explicit removal, the entry
+  // becomes stale but harmless (pointer won't match new allocations
+  // at the same address due to MiraclePtr).
+  base::flat_map<content::WebContents*, BindCallback>
+      web_contents_bind_callbacks_;
 };
 
 }  // namespace local_ai

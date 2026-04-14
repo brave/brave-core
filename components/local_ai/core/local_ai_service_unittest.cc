@@ -135,15 +135,16 @@ class LocalAIServiceTest : public testing::Test {
     LocalModelsUpdaterState::GetInstance()->SetInstallDir(base::FilePath());
   }
 
-  std::unique_ptr<BackgroundWebContents> CreateFakeWebContents(
-      BackgroundWebContents::Delegate* delegate) {
+  void CreateFakeWebContents(
+      BackgroundWebContents::Delegate* delegate,
+      LocalAIService::BackgroundWebContentsCreatedCallback callback) {
     auto web_contents = std::make_unique<FakeBackgroundWebContents>(
         delegate, &fake_worker_,
         base::BindOnce(
             [](raw_ptr<FakeBackgroundWebContents>* ref) { *ref = nullptr; },
             &last_created_web_contents_));
     last_created_web_contents_ = web_contents.get();
-    return web_contents;
+    std::move(callback).Run(std::move(web_contents));
   }
 
   // Helper: register the factory with the service.

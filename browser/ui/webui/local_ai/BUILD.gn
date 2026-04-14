@@ -16,7 +16,6 @@ source_set("local_ai") {
     "//brave/components/local_ai/resources:local_ai_generated",
     "//brave/components/local_ai/resources/candle_embedding_gemma:candle_embedding_module_generated",
     "//brave/components/resources:static_resources",
-    "//chrome/browser/profiles",
     "//content/public/browser",
     "//content/public/common",
     "//mojo/public/cpp/bindings",

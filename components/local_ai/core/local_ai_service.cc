@@ -189,7 +189,17 @@ void LocalAIService::MaybeCreateBackgroundContents() {
   }
 
   DVLOG(3) << "LocalAIService: Creating background contents";
-  background_web_contents_ = background_web_contents_factory_.Run(this);
+  background_web_contents_factory_.Run(
+      this, base::BindOnce(&LocalAIService::OnBackgroundContentsCreated,
+                           weak_ptr_factory_.GetWeakPtr()));
+}
+
+void LocalAIService::OnBackgroundContentsCreated(
+    std::unique_ptr<BackgroundWebContents> contents) {
+  if (background_web_contents_ || !contents) {
+    return;
+  }
+  background_web_contents_ = std::move(contents);
 }
 
 void LocalAIService::LoadLocalModelFiles() {

@@ -8,11 +8,8 @@
 
 #include <memory>
 
-#include "base/containers/flat_map.h"
-#include "base/memory/raw_ptr.h"
 #include "base/no_destructor.h"
 #include "brave/browser/history_embeddings/brave_embedder.h"
-#include "chrome/browser/profiles/profile_observer.h"
 #include "components/passage_embeddings/core/passage_embeddings_service_controller.h"
 
 class Profile;
@@ -21,10 +18,11 @@ namespace passage_embeddings {
 
 // Brave's implementation of PassageEmbeddingsServiceController.
 // Instead of launching a separate service process, we use an in-process
-// implementation that forwards to BraveEmbedder (which uses LocalAIService).
+// implementation that forwards to a single shared BraveEmbedder (which
+// uses LocalAIService). The LocalAIService runs its WASM renderer on
+// the guest OTR profile, so there is no per-profile state here.
 class BravePassageEmbeddingsServiceController
     : public PassageEmbeddingsServiceController,
-      public ProfileObserver,
       public BraveEmbedder::Observer {
  public:
   static BravePassageEmbeddingsServiceController* Get();
@@ -34,8 +32,10 @@ class BravePassageEmbeddingsServiceController
   BravePassageEmbeddingsServiceController& operator=(
       const BravePassageEmbeddingsServiceController&) = delete;
 
-  // Return our BraveEmbedder for the given profile. Creates embedders lazily
-  // per-profile. The controller is a singleton but embedders are per-profile.
+  // Return the shared BraveEmbedder. Creates it lazily on first call
+  // using |profile| to obtain the LocalAIService. The profile param
+  // is needed by the chromium_src override that replaces
+  // GetEmbedder() with GetBraveEmbedder(profile).
   Embedder* GetBraveEmbedder(Profile* profile);
 
  private:
@@ -43,9 +43,6 @@ class BravePassageEmbeddingsServiceController
 
   BravePassageEmbeddingsServiceController();
   ~BravePassageEmbeddingsServiceController() override;
-
-  // ProfileObserver:
-  void OnProfileWillBeDestroyed(Profile* profile) override;
 
   // BraveEmbedder::Observer:
   void OnEmbedderIdle() override;
@@ -59,11 +56,9 @@ class BravePassageEmbeddingsServiceController
                      PassagePriority priority,
                      GetEmbeddingsResultCallback callback) override;
 
-  // Per-profile embedders. The controller is a singleton but embedders are
-  // created lazily per-profile. Observed via ProfileObserver to clean up
-  // when a profile is destroyed.
-  base::flat_map<raw_ptr<Profile>, std::unique_ptr<BraveEmbedder>>
-      profile_embedders_;
+  // Single shared embedder, created lazily on first GetBraveEmbedder()
+  // call.
+  std::unique_ptr<BraveEmbedder> embedder_;
 };
 
 }  // namespace passage_embeddings

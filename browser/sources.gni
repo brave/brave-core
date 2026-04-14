@@ -147,6 +147,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/component_updater",
   "//brave/browser/history_embeddings",
   "//brave/browser/local_ai",
+  "//brave/browser/local_ai:impl",
   "//brave/browser/metrics/buildflags",
   "//brave/browser/misc_metrics",
   "//brave/browser/misc_metrics:misc_metrics_impl",
@@ -755,6 +756,7 @@ brave_chrome_browser_ui_allow_circular_includes_from +=
 
 brave_chrome_browser_allow_circular_includes_from += [
   "//brave/browser/brave_shields:brave_shields_impl",
+  "//brave/browser/local_ai:impl",
   "//brave/browser/ui",
   "//brave/browser/brave_stats",
   "//brave/browser/ntp_background",

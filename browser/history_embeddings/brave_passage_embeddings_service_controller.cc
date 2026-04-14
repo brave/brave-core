@@ -22,9 +22,7 @@ BravePassageEmbeddingsServiceController::Get() {
 }
 
 BravePassageEmbeddingsServiceController::
-    BravePassageEmbeddingsServiceController() {
-  // Embedders are created lazily per-profile in GetBraveEmbedder()
-}
+    BravePassageEmbeddingsServiceController() = default;
 
 BravePassageEmbeddingsServiceController::
     ~BravePassageEmbeddingsServiceController() = default;
@@ -36,29 +34,19 @@ Embedder* BravePassageEmbeddingsServiceController::GetBraveEmbedder(
     return nullptr;
   }
 
-  // Create embedder lazily for this profile if it doesn't exist
-  auto it = profile_embedders_.find(profile);
-  if (it == profile_embedders_.end()) {
-    DVLOG(3) << "Creating BraveEmbedder for profile " << profile;
-    profile->AddObserver(this);
-    auto embedder = std::make_unique<BraveEmbedder>(
+  if (!embedder_) {
+    DVLOG(3) << "Creating shared BraveEmbedder";
+    embedder_ = std::make_unique<BraveEmbedder>(
         local_ai::LocalAIServiceFactory::GetForProfile(profile));
-    embedder->AddObserver(this);
-    it = profile_embedders_.emplace(profile, std::move(embedder)).first;
+    embedder_->AddObserver(this);
   }
 
-  return it->second.get();
-}
-
-void BravePassageEmbeddingsServiceController::OnProfileWillBeDestroyed(
-    Profile* profile) {
-  profile->RemoveObserver(this);
-  profile_embedders_.erase(profile);
+  return embedder_.get();
 }
 
 void BravePassageEmbeddingsServiceController::OnEmbedderIdle() {
-  for (auto& [profile, embedder] : profile_embedders_) {
-    embedder->NotifyServiceIdle();
+  if (embedder_) {
+    embedder_->NotifyServiceIdle();
   }
 }
 

@@ -37,12 +37,16 @@ class LocalAIService : public KeyedService,
                        public BackgroundWebContents::Delegate,
                        public LocalModelsUpdaterState::Observer {
  public:
-  // Factory that creates a platform-specific BackgroundWebContents. Platform
-  // params (BrowserContext*, URL, tagging callback) are bound into the
-  // closure at the browser layer.
+  using BackgroundWebContentsCreatedCallback =
+      base::OnceCallback<void(std::unique_ptr<BackgroundWebContents>)>;
+
+  // Factory that asynchronously creates a platform-specific
+  // BackgroundWebContents. The browser context may need to be created
+  // async (e.g. guest OTR profile), so the result is delivered via
+  // callback.
   using BackgroundWebContentsFactory =
-      base::RepeatingCallback<std::unique_ptr<BackgroundWebContents>(
-          BackgroundWebContents::Delegate* delegate)>;
+      base::RepeatingCallback<void(BackgroundWebContents::Delegate* delegate,
+                                   BackgroundWebContentsCreatedCallback)>;
 
   LocalAIService(BackgroundWebContentsFactory factory,
                  LocalModelsUpdaterState* updater_state);
@@ -53,6 +57,10 @@ class LocalAIService : public KeyedService,
 
   mojo::PendingRemote<mojom::LocalAIService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::LocalAIService> receiver);
+
+  base::WeakPtr<LocalAIService> GetWeakPtr() {
+    return weak_ptr_factory_.GetWeakPtr();
+  }
 
   // mojom::LocalAIService:
   void RegisterPassageEmbedderFactory(
@@ -72,6 +80,8 @@ class LocalAIService : public KeyedService,
       BackgroundWebContents::DestroyReason reason) override;
 
   void MaybeCreateBackgroundContents();
+  void OnBackgroundContentsCreated(
+      std::unique_ptr<BackgroundWebContents> contents);
   void CloseBackgroundContents();
   void MaybeWaitForLocalModelFilesReady();
   void LoadLocalModelFiles();
