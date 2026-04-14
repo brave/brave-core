@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = 'Moving `CookieMonster` into `chromium_impl` as in the header.'
+pattern = 'namespace net'
+replace = 'namespace net::chromium_impl'
+count = 2
+
+[[substitution]]
+description = '''Tweaking `MaybeRunDeleteCallback` to use the original class.
+
+Sadly this function alone sits outside in an unnamed namespace in the global
+scope, which make its use of `net::CookieMonster` to select the Brave
+implementation, however this is a simple case.
+'''
+pattern = 'base::WeakPtr<net::CookieMonster> cookie_monster'
+replace = 'base::WeakPtr<net::chromium_impl::CookieMonster> cookie_monster'

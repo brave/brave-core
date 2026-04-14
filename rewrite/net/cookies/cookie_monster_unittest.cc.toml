@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = '''Moving all of tests into `chromium_impl` namespace.
+
+This is necessary because these tests require access to private members of
+`CookieMonster` brokered through `FRIEND_TEST_ALL_PREFIXES`, and this macro
+does has to match the namespace used.
+'''
+pattern = 'namespace net'
+replace = 'namespace net::chromium_impl'
+count = 2
