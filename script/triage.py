@@ -15,7 +15,7 @@ import argparse
 import os
 import sys
 
-from lib.helpers import channels, BRAVE_REPO, BRAVE_CORE_REPO
+from lib.helpers import BRAVE_REPO, BRAVE_CORE_REPO
 from lib.github import (GitHub, parse_user_logins)
 
 
@@ -65,7 +65,10 @@ class TriageConfig():
                 self.max_reactions = int(args.max_reactions)
 
             if self.is_verbose:
-                print('[INFO] config: ' + str(vars(self)))
+                display = vars(self).copy()
+                if display.get('github_token'):
+                    display['github_token'] = '***'
+                print('[INFO] config: ' + str(display))
             return 0
         except Exception as e:
             print(
@@ -224,8 +227,11 @@ def get_stale_issues(page=1):
     if cutoff_month <= 0:
         cutoff_month += 12
         cutoff_year -= 1
-    cutoff_day = min(now.day, calendar.monthrange(cutoff_year, cutoff_month)[1])
-    cutoff_date = now.replace(year=cutoff_year, month=cutoff_month, day=cutoff_day)
+    cutoff_day = min(now.day,
+                     calendar.monthrange(cutoff_year, cutoff_month)[1])
+    cutoff_date = now.replace(year=cutoff_year,
+                              month=cutoff_month,
+                              day=cutoff_day)
 
     for issue in response:
         # Search only issues opened by ghost (deleted account).
