@@ -77,6 +77,10 @@ class TimePeriodStorage {
     base::Time day;
     uint64_t value = 0ull;
   };
+  // Returns the midnight that starts the calendar day after `time`. Safe
+  // across DST transitions and does not require `time` to be at midnight.
+  base::Time NextMidnight(base::Time time) const;
+  base::TimeDelta GetDstOffset() const;
   void FilterToPeriod();
   void Load();
   void Save();
