@@ -1242,7 +1242,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CnameCloakedRequestsCanBeExcepted) {
 // `$removeparam` should happen for the original URL, not the CNAME-uncloaked
 // one
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NoRemoveparamOnCnameUncloakedUrl) {
-  UpdateAdBlockInstanceWithRules(
+  UpdateCustomAdBlockInstanceWithRules(
       "||frame.com^$subdocument,removeparam=evil\n"
       "||assets.cdn.net^$subdocument,removeparam=test");
   GURL tab_url =
@@ -1774,7 +1774,7 @@ std::unique_ptr<net::test_server::HttpResponse> NoParamHandler(
 
 // `$removeparam` should be respected for subresource requests
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RemoveparamSubresource) {
-  UpdateAdBlockInstanceWithRules("*$subdocument,removeparam=evil");
+  UpdateCustomAdBlockInstanceWithRules("*$subdocument,removeparam=evil");
 
   GURL tab_url =
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
@@ -1807,16 +1807,16 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RemoveparamSubresource) {
 #if BUILDFLAG(IS_ANDROID)
 #define MAYBE_RemoveparamTopLevelNavigation \
   DISABLED_RemoveparamTopLevelNavigation
-#define MAYBE_DefaultRemoveparamFromCustom DISABLED_DefaultRemoveparamFromCustom
+#define MAYBE_RemoveparamFromDefaultLists DISABLED_RemoveparamFromDefaultLists
 #else  // BUILDFLAG(IS_ANDROID)
 #define MAYBE_RemoveparamTopLevelNavigation RemoveparamTopLevelNavigation
-#define MAYBE_DefaultRemoveparamFromCustom DefaultRemoveparamFromCustom
+#define MAYBE_RemoveparamFromDefaultLists RemoveparamFromDefaultLists
 #endif  // BUILDFLAG(IS_ANDROID)
 
 // `$removeparam` should be respected for top-level navigations
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                        MAYBE_RemoveparamTopLevelNavigation) {
-  UpdateAdBlockInstanceWithRules("*$document,removeparam=evil");
+  UpdateCustomAdBlockInstanceWithRules("*$document,removeparam=evil");
 
   dynamic_server_.RegisterRequestHandler(base::BindRepeating(&NoParamHandler));
   ASSERT_TRUE(dynamic_server_.Start());
@@ -1857,12 +1857,11 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, DefaultNoRemoveparam) {
                 base::BindRepeating(content::FrameHasSourceUrl, frame_url)));
 }
 
-// `$removeparam` should still be activated in default blocking mode if it comes
-// from custom filters
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, MAYBE_DefaultRemoveparamFromCustom) {
+// `$removeparam` should not be activated if it comes from default filters
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, MAYBE_RemoveparamFromDefaultLists) {
   DisableAggressiveMode();
 
-  UpdateCustomAdBlockInstanceWithRules("*$subdocument,removeparam=evil");
+  UpdateAdBlockInstanceWithRules("*$subdocument,removeparam=evil");
 
   GURL tab_url =
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
@@ -1876,19 +1875,12 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, MAYBE_DefaultRemoveparamFromCustom) {
       "frame.com", "/cosmetic_frame.html?evil=true&test=true");
   content::NavigateIframeToURL(contents, "iframe", frame_url);
 
-  ASSERT_EQ(nullptr,
-            content::FrameMatchingPredicateOrNullptr(
-                contents->GetPrimaryPage(),
-                base::BindRepeating(content::FrameHasSourceUrl, frame_url)));
-
-  GURL redirected_frame_url = embedded_test_server()->GetURL(
-      "frame.com", "/cosmetic_frame.html?test=true");
-
   content::RenderFrameHost* inner_frame = content::FrameMatchingPredicate(
       contents->GetPrimaryPage(),
-      base::BindRepeating(content::FrameHasSourceUrl, redirected_frame_url));
+      base::BindRepeating(content::FrameHasSourceUrl, frame_url));
 
-  ASSERT_EQ("?test=true", EvalJs(inner_frame, "window.location.search"));
+  ASSERT_EQ("?evil=true&test=true",
+            EvalJs(inner_frame, "window.location.search"));
 }
 
 // Verify that scripts violating a Content Security Policy from a `$csp` rule
