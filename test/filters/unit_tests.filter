@@ -29,6 +29,8 @@
 -GlicButtonControllerTest.*
 -GlicEnablingStandardFreTest.NotConsented_Returns*
 -GlicEnablingTrustFirstOnboardingTest.*
+-GlicFreControllerTest.*
+-GlicMediaIntegrationTest.*
 -GlicMetricsFeaturesEnabledTest.*
 -GlicMetricsTest.*
 -GlicMetricsTrustFirstOnboardingTest.*
@@ -116,6 +118,7 @@
 # These tests crash or fail because we have kOptimizationHints feature disabled,
 # which causes OptimizationGuideKeyedServiceFactory::GetForProfile return a
 # nullptr.
+-AIClassifierTest.*
 -AILanguageModel*Test.*
 -AILanguageModelTestWithLanguageParams.PromptWithEnabledLanguages/*
 -AIManagerTest.*
@@ -382,6 +385,7 @@
 # optimization_guide::features::kOptimizationGuideFetchingForSRP
 -ChangePasswordFormFillingSubmissionHelperTest.*
 -ChromeHintsManagerFetchingTest.HintsFetched_*
+-FindsTabHelperTest.TestSRPBackNavigationThresholdMet
 -PasswordChangeDelegateImplTest.MetricsReportedFlowCanceledDuringSignInCheck
 -PasswordChangeDelegateImplTest.OtpDetectionProcessed
 -PasswordChangeDelegateImplTest.PasswordChangeFormNotFound
@@ -540,6 +544,9 @@
 -OneTimePermissionProviderTest.*
 -PageInfoToggleStatesUnitTest.TogglePermissionWithAllowOnceDefaultAskTest
 -PageInfoToggleStatesUnitTest.TogglePermissionWithAllowOnceDefaultBlockTest
+
+# These tests fail because we disable popular site suggestions functionality
+-MostVisitedHandlerTest/MostVisitedAutoRemovalTest.OnMostVisitedTileHoverMetrics/*
 
 # These fail because we override GetChromeChannel to always use
 # with_extended_stable = false and override channel info
