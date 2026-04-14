@@ -1,0 +1,19 @@
+diff --git a/net/cookies/cookie_monster_unittest.cc b/net/cookies/cookie_monster_unittest.cc
+index c49e241e2f8a5e6a8c882f31868b3aefe5d75471..1982a820617702eecfdaf90fa20d3805d294cf3d 100644
+--- a/net/cookies/cookie_monster_unittest.cc
++++ b/net/cookies/cookie_monster_unittest.cc
+@@ -71,7 +71,7 @@
+ #include "url/third_party/mozilla/url_parse.h"
+ #include "url/url_constants.h"
+ 
+-namespace net {
++namespace net::chromium_impl {
+ 
+ using base::Time;
+ using CookieDeletionInfo = net::CookieDeletionInfo;
+@@ -8675,4 +8675,4 @@ TEST_F(CookieMonsterTest, RejectsHiddenHostHttpPrefix) {
+       {CookieInclusionStatus::ExclusionReason::EXCLUDE_INVALID_PREFIX}));
+ }
+ 
+-}  // namespace net
++}  // namespace net::chromium_impl
