@@ -2051,7 +2051,9 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2PanelPositionTest) {
 
   // Panel sits immediately left of the sidebar control:
   //   [contents] [panel] [sidebar_control]
-  EXPECT_EQ(panel->bounds().right(), sidebar->bounds().x());
+  EXPECT_EQ(panel->bounds().right(), sidebar->bounds().x())
+      << "panel=" << panel->bounds().ToString()
+      << " sidebar=" << sidebar->bounds().ToString();
 
   // --- Sidebar on left (kSidePanelHorizontalAlignment = false)
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
@@ -2061,7 +2063,9 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2PanelPositionTest) {
 
   // Panel sits immediately right of the sidebar control:
   //   [sidebar_control] [panel] [contents]
-  EXPECT_EQ(sidebar->bounds().right(), panel->bounds().x());
+  EXPECT_EQ(sidebar->bounds().right(), panel->bounds().x())
+      << "sidebar=" << sidebar->bounds().ToString()
+      << " panel=" << panel->bounds().ToString();
 }
 #endif  // BUILDFLAG(ENABLE_SIDEBAR_V2)
 

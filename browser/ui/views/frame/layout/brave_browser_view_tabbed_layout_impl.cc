@@ -26,6 +26,7 @@
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h"
 #include "chrome/browser/ui/views/infobars/infobar_container_view.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
+#include "ui/gfx/geometry/rect.h"
 #include "ui/views/border.h"
 #include "ui/views/view_class_properties.h"
 
@@ -38,6 +39,41 @@ BraveBrowserViewTabbedLayoutImpl::BraveBrowserViewTabbedLayoutImpl(
                                   std::move(views)) {}
 
 BraveBrowserViewTabbedLayoutImpl::~BraveBrowserViewTabbedLayoutImpl() = default;
+
+// static
+gfx::Rect BraveBrowserViewTabbedLayoutImpl::ComputeSidebarBounds(
+    bool sidebar_on_left,
+    int sidebar_width,
+    int outer_left,
+    int outer_right,
+    int y,
+    int height) {
+  const int x = sidebar_on_left ? outer_left : outer_right - sidebar_width;
+  return gfx::Rect(x, y, sidebar_width, height);
+}
+
+// static
+gfx::Rect BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedPanelBounds(
+    bool sidebar_on_left,
+    const gfx::Rect& sidebar_bounds,
+    const gfx::Rect& panel_bounds) {
+  // The upstream layout animates the panel by varying panel.x:
+  //   right panel: x = right_edge - visible_width  (slides in from the right)
+  //   left  panel: x = left_edge  - (target - visible_width) (from the left)
+  //
+  // Shifting by ±sidebar_width offsets the whole slide range without changing
+  // the animation value, so the panel animates correctly against the sidebar
+  // edge instead of the browser edge.
+  gfx::Rect result = panel_bounds;
+  if (sidebar_on_left) {
+    // Sidebar on left: shift panel right by sidebar width.
+    result.set_x(panel_bounds.x() + sidebar_bounds.width());
+  } else {
+    // Sidebar on right: shift panel left by sidebar width.
+    result.set_x(panel_bounds.x() - sidebar_bounds.width());
+  }
+  return result;
+}
 
 int BraveBrowserViewTabbedLayoutImpl::GetIdealSideBarWidth() const {
   if (!views().sidebar_container) {
@@ -325,41 +361,6 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateBraveVerticalTabStripLayout(
   layout.AddChild(views().vertical_tab_strip_host, vertical_tab_strip_bounds);
 }
 
-// static
-gfx::Rect BraveBrowserViewTabbedLayoutImpl::ComputeSidebarBounds(
-    bool sidebar_on_left,
-    int sidebar_width,
-    int outer_left,
-    int outer_right,
-    int y,
-    int height) {
-  const int x = sidebar_on_left ? outer_left : outer_right - sidebar_width;
-  return gfx::Rect(x, y, sidebar_width, height);
-}
-
-// static
-gfx::Rect BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedPanelBounds(
-    bool sidebar_on_left,
-    const gfx::Rect& sidebar_bounds,
-    const gfx::Rect& panel_bounds) {
-  // The upstream layout animates the panel by varying panel.x:
-  //   right panel: x = right_edge - visible_width  (slides in from the right)
-  //   left  panel: x = left_edge  - (target - visible_width) (from the left)
-  //
-  // Shifting by ±sidebar_width offsets the whole slide range without changing
-  // the animation value, so the panel animates correctly against the sidebar
-  // edge instead of the browser edge.
-  gfx::Rect result = panel_bounds;
-  if (sidebar_on_left) {
-    // Sidebar on left: shift panel right by sidebar width.
-    result.set_x(panel_bounds.x() + sidebar_bounds.width());
-  } else {
-    // Sidebar on right: shift panel left by sidebar width.
-    result.set_x(panel_bounds.x() - sidebar_bounds.width());
-  }
-  return result;
-}
-
 void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
     ProposedLayout& layout,
     const BrowserLayoutParams& params) const {
@@ -389,8 +390,8 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
   // browser_view positioned separately.  In V1, sidebar_container wraps both
   // the control and the side panel, and those upstream panel pointers point
   // back into the container (so they are NOT in the proposed layout as top-
-  // level entries — layout.GetLayoutFor returns null).  This means
-  // adjust_panel below is a no-op in V1 and meaningful only in V2.
+  // level entries — layout.GetLayoutFor returns null). The adjust_panel lambda
+  // in this function is a no-op in V1 and meaningful only in V2.
 
   // Vertical tab is outermost when on the same side as the sidebar.
   const bool vtab_on_same_side = views().vertical_tab_strip_host &&

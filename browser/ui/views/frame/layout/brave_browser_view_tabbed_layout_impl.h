@@ -9,7 +9,10 @@
 #include <memory>
 
 #include "chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.h"
-#include "ui/gfx/geometry/rect.h"
+
+namespace gfx {
+class Rect;
+}  // namespace gfx
 
 // Provides a specialized layout implementation for Brave tabbed browsers
 // using the new layout architecture (BrowserViewTabbedLayoutImpl).
@@ -22,6 +25,26 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
       Browser* browser,
       BrowserViewLayoutViews views);
   ~BraveBrowserViewTabbedLayoutImpl() override;
+
+  // Pure geometry helpers used by CalculateSideBarLayout. Exposed as public
+  // static so tests can call them directly without special access.
+  //
+  // Returns the bounds for the sidebar control view given its side, width,
+  // the outer (browser-edge) limits already inset for any vertical tab on the
+  // same side, and the vertical extents of the contents area.
+  static gfx::Rect ComputeSidebarBounds(bool sidebar_on_left,
+                                        int sidebar_width,
+                                        int outer_left,
+                                        int outer_right,
+                                        int y,
+                                        int height);
+  // Returns the adjusted bounds for an upstream side panel so that it sits
+  // between the contents area and the sidebar control view.  The panel is
+  // shifted inward (toward the centre of the browser) until it is flush with
+  // the inner edge of |sidebar_bounds|.
+  static gfx::Rect ComputeAdjustedPanelBounds(bool sidebar_on_left,
+                                              const gfx::Rect& sidebar_bounds,
+                                              const gfx::Rect& panel_bounds);
 
   views::View* contents_container() { return views().contents_container; }
 
@@ -55,26 +78,6 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   gfx::Insets GetContentsMargins() const;
   bool ShouldPushBookmarkBarForVerticalTabs() const;
   gfx::Insets GetInsetsConsideringVerticalTabHost() const;
-
-  // Pure geometry helpers used by CalculateSideBarLayout.
-  // Returns the bounds for the sidebar control view given its side, width,
-  // the outer (browser-edge) limits already inset for any vertical tab on the
-  // same side, and the vertical extents of the contents area.
-  static gfx::Rect ComputeSidebarBounds(bool sidebar_on_left,
-                                        int sidebar_width,
-                                        int outer_left,
-                                        int outer_right,
-                                        int y,
-                                        int height);
-  // Returns the adjusted bounds for an upstream side panel so that it sits
-  // between the contents area and the sidebar control view.  The panel is
-  // shifted inward (toward the centre of the browser) until it is flush with
-  // the inner edge of |sidebar_bounds|.
-  static gfx::Rect ComputeAdjustedPanelBounds(bool sidebar_on_left,
-                                              const gfx::Rect& sidebar_bounds,
-                                              const gfx::Rect& panel_bounds);
-
-  friend class BraveBrowserViewTabbedLayoutImplSidebarTest;
 
 #if BUILDFLAG(IS_MAC)
   gfx::Insets AddFrameBorderInsets(const gfx::Insets& insets) const;
