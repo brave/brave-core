@@ -58,6 +58,17 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
 
   void ForceNotifyObserver(AdBlockFiltersProvider::Observer& observer,
                            bool is_default_engine);
+
+  // When set, AreAllProvidersInitialized returns false until
+  // OnComponentProvidersRegistered is called. Used when a cached DAT
+  // exists so we don't trigger a premature filter set rebuild before
+  // all component providers have registered from the catalog.
+  void SetWaitForComponentProviders(bool wait);
+
+  // Called by AdBlockComponentServiceManager after all component providers
+  // have been registered from the catalog.
+  void OnComponentProvidersRegistered();
+
   std::string GetNameForDebugging() override;
 
   const base::flat_set<AdBlockFiltersProvider*>& GetProviders(
@@ -77,6 +88,9 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
 
   base::flat_set<AdBlockFiltersProvider*> default_engine_filters_providers_;
   base::flat_set<AdBlockFiltersProvider*> additional_engine_filters_providers_;
+
+  bool wait_for_component_providers_ = false;
+  bool component_providers_registered_ = false;
 
   base::CancelableTaskTracker task_tracker_;
 

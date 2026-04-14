@@ -61,7 +61,7 @@ class DATLoadObserver : public AdBlockService::Observer {
   DATLoadObserver() = default;
   ~DATLoadObserver() override = default;
 
-  void OnDATFileLoaded(bool is_default_engine, bool success) override {
+  void OnDATLoaded(bool is_default_engine, bool success) override {
     if (is_default_engine) {
       default_loaded_ = true;
       default_success_ = success;
@@ -146,6 +146,10 @@ class AdBlockServiceTestBase : public testing::Test {
         profile_dir_.GetPath());
     service->custom_resource_provider()->OverrideResourcesForTesting(
         adblock::new_empty_resource_storage());
+    // Unit tests don't use AdBlockComponentServiceManager, so signal that
+    // component provider registration is complete (there are none).
+    service->GetFiltersProviderManagerForTesting()
+        ->OnComponentProvidersRegistered();
     return service;
   }
 

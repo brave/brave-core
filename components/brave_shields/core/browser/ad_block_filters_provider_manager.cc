@@ -73,12 +73,38 @@ void AdBlockFiltersProviderManager::OnChanged(bool is_for_default_engine) {
   }
 }
 
+void AdBlockFiltersProviderManager::SetWaitForComponentProviders(bool wait) {
+  wait_for_component_providers_ = wait;
+}
+
+void AdBlockFiltersProviderManager::OnComponentProvidersRegistered() {
+  component_providers_registered_ = true;
+  if (!wait_for_component_providers_) {
+    return;
+  }
+  // Now that all component providers are registered, check if we can
+  // trigger notifications for each engine.
+  if (AreAllProvidersInitialized(true)) {
+    NotifyObservers(true);
+  }
+  if (AreAllProvidersInitialized(false)) {
+    NotifyObservers(false);
+  }
+}
+
 bool AdBlockFiltersProviderManager::AreAllProvidersInitialized(
     bool is_for_default_engine) const {
   auto& filters_providers = is_for_default_engine
                                 ? default_engine_filters_providers_
                                 : additional_engine_filters_providers_;
   if (filters_providers.empty()) {
+    return false;
+  }
+  // When a cached DAT exists, wait until all component providers have been
+  // registered from the catalog before allowing filter set loading. Without
+  // this, providers that are registered synchronously (e.g. custom filters)
+  // would trigger a premature rebuild that invalidates the cache.
+  if (wait_for_component_providers_ && !component_providers_registered_) {
     return false;
   }
   for (auto* const& provider : filters_providers) {

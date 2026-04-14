@@ -72,7 +72,14 @@ AdBlockDATCacheManager::AdBlockDATCacheManager(
       provider_manager_(provider_manager),
       cache_dir_(profile_dir.AppendASCII(kAdblockCacheDir)),
       task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
-          {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})) {}
+          {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})) {
+  if (base::FeatureList::IsEnabled(features::kAdblockDATCache) &&
+      local_state_ &&
+      (!local_state_->GetString(CacheHashPrefName(true)).empty() ||
+       !local_state_->GetString(CacheHashPrefName(false)).empty())) {
+    provider_manager_->SetWaitForComponentProviders(true);
+  }
+}
 
 AdBlockDATCacheManager::~AdBlockDATCacheManager() = default;
 

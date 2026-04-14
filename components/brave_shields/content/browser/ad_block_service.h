@@ -68,7 +68,7 @@ class AdBlockService {
     Observer() = default;
     ~Observer() override = default;
     virtual void OnFilterListLoaded(bool is_default_engine, bool success) {}
-    virtual void OnDATFileLoaded(bool is_default_engine, bool success) {}
+    virtual void OnDATLoaded(bool is_default_engine, bool success) {}
     virtual void OnResourcesLoaded(bool is_default_engine) {}
   };
 
@@ -102,7 +102,7 @@ class AdBlockService {
     // AdBlockFiltersProvider::Observer
     void OnChanged(bool is_default_engine) override;
 
-    void OnDATFileLoaded(DATFileDataBuffer dat);
+    void OnDATFileRead(DATFileDataBuffer dat);
 
    private:
     void LoadResources(
@@ -201,6 +201,7 @@ class AdBlockService {
   AdBlockDefaultResourceProvider* GetDefaultResourceProviderForTesting();
   base::SequencedTaskRunner* GetTaskRunnerForTesting();
   AdBlockDATCacheManager* GetDATCacheManagerForTesting();
+  bool IsDATLoadedForTesting(bool is_default_engine) const;
 
  private:
   static std::string g_ad_block_dat_file_version_;
@@ -285,6 +286,10 @@ class AdBlockService {
       GUARDED_BY_CONTEXT(sequence_checker_);
 
   base::ObserverList<Observer> observers_;
+
+  bool default_dat_loaded_ = false;
+  bool additional_dat_loaded_ = false;
+
   SEQUENCE_CHECKER(sequence_checker_);
 
   base::WeakPtrFactory<AdBlockService> weak_factory_{this};
