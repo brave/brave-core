@@ -10,7 +10,7 @@
 
 #include "base/containers/fixed_flat_set.h"
 #include "brave/browser/ai_chat/ai_chat_enterprise_policy_checker.h"
-#include "brave/browser/ai_chat/page_content_blocks.h"
+#include "brave/components/ai_chat/content/browser/page_content_blocks.h"
 #include "brave/browser/ai_chat/tools/click_tool.h"
 #include "brave/browser/ai_chat/tools/drag_and_release_tool.h"
 #include "brave/browser/ai_chat/tools/history_tool.h"

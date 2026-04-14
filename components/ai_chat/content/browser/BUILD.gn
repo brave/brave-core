@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
 import("//pdf/features.gni")
 
@@ -32,6 +33,13 @@ static_library("browser") {
     sources += [
       "pdf_text_helper.cc",
       "pdf_text_helper.h",
+    ]
+  }
+
+  if (enable_brave_ai_chat_agent_profile) {
+    sources += [
+      "page_content_blocks.cc",
+      "page_content_blocks.h",
     ]
   }
 
@@ -75,6 +83,13 @@ static_library("browser") {
       "//pdf/mojom",
     ]
   }
+
+  if (enable_brave_ai_chat_agent_profile) {
+    deps += [
+      "//components/optimization_guide/proto:optimization_guide_proto",
+      "//third_party/abseil-cpp:absl",
+    ]
+  }
 }
 
 source_set("unit_tests") {
@@ -115,6 +130,30 @@ source_set("unit_tests") {
     deps += [
       "//components/pdf/browser",
       "//pdf/mojom",
+    ]
+  }
+
+  if (enable_brave_ai_chat_agent_profile) {
+    sources += [ "page_content_blocks_unittest.cc" ]
+    deps += [
+      ":test_support",
+      "//components/optimization_guide/proto:optimization_guide_proto",
+    ]
+  }
+}
+
+if (enable_brave_ai_chat_agent_profile) {
+  source_set("test_support") {
+    testonly = true
+    sources = [
+      "annotated_page_content_test_util.cc",
+      "annotated_page_content_test_util.h",
+    ]
+    deps = [
+      "//base",
+      "//base/test:test_support",
+      "//components/optimization_guide/proto:optimization_guide_proto",
+      "//testing/gtest",
     ]
   }
 }

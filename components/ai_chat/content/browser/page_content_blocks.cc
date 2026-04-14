@@ -3,11 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ai_chat/page_content_blocks.h"
+#include "brave/components/ai_chat/content/browser/page_content_blocks.h"
 
 #include <string>
 
 #include "base/logging.h"
+#include "components/optimization_guide/proto/features/common_quality_data.pb.h"
 #include "base/strings/escape.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"

@@ -10,7 +10,7 @@
 
 #include "base/functional/bind.h"
 #include "base/logging.h"
-#include "brave/browser/ai_chat/page_content_blocks.h"
+#include "brave/components/ai_chat/content/browser/page_content_blocks.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "components/optimization_guide/content/browser/page_content_proto_provider.h"
 #include "content/public/browser/web_contents.h"

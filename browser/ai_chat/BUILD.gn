@@ -112,8 +112,6 @@ static_library("ai_chat") {
       "content_agent_tool_provider.h",
       "content_agent_tool_provider_factory.cc",
       "content_agent_tool_provider_factory.h",
-      "page_content_blocks.cc",
-      "page_content_blocks.h",
       "tools/click_tool.cc",
       "tools/click_tool.h",
       "tools/drag_and_release_tool.cc",
@@ -136,7 +134,7 @@ static_library("ai_chat") {
       "tools/wait_tool.h",
     ]
 
-    public_deps += [ "//components/optimization_guide/content/browser" ]
+    public_deps = [ "//components/optimization_guide/content/browser" ]
     deps += [ "//components/optimization_guide/proto:optimization_guide_proto" ]
   }
 }
@@ -212,6 +210,7 @@ if (enable_brave_ai_chat_agent_profile) {
 
     deps = [
       "//brave/browser/ai_chat",
+      "//brave/components/ai_chat/content/browser",
       "//brave/components/ai_chat/core/browser",
       "//brave/components/ai_chat/core/common",
       "//brave/components/ai_chat/core/common/buildflags",
@@ -244,13 +243,13 @@ if (enable_brave_ai_chat_agent_profile) {
   source_set("content_agent_test_support") {
     testonly = true
     sources = [
-      "annotated_page_content_test_util.cc",
-      "annotated_page_content_test_util.h",
       "tools/mock_content_agent_task_provider.cc",
       "tools/mock_content_agent_task_provider.h",
       "tools/target_test_util.cc",
       "tools/target_test_util.h",
     ]
+    public_deps =
+        [ "//brave/components/ai_chat/content/browser:test_support" ]
     deps = [
       "//base",
       "//base/test:test_support",
@@ -259,7 +258,6 @@ if (enable_brave_ai_chat_agent_profile) {
       "//brave/components/ai_chat/core/common/mojom",
       "//chrome/browser/actor:types",
       "//chrome/common",
-      "//components/optimization_guide/proto:optimization_guide_proto",
       "//components/tabs:public",
       "//testing/gtest",
     ]
@@ -322,7 +320,6 @@ source_set("unit_tests") {
     sources += [
       "ai_page_content_fetcher_unittest.cc",
       "content_agent_tool_provider_unittest.cc",
-      "page_content_blocks_unittest.cc",
       "tools/click_tool_unittest.cc",
       "tools/content_agent_tool_base_test.cc",
       "tools/content_agent_tool_base_test.h",

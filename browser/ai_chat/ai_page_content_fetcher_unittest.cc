@@ -10,7 +10,7 @@
 
 #include "base/functional/callback_helpers.h"
 #include "base/test/test_future.h"
-#include "brave/browser/ai_chat/annotated_page_content_test_util.h"
+#include "brave/components/ai_chat/content/browser/annotated_page_content_test_util.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "components/optimization_guide/content/browser/page_content_proto_provider.h"
 #include "testing/gtest/include/gtest/gtest.h"
