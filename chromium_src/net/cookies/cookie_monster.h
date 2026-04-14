@@ -17,7 +17,8 @@ class NET_EXPORT CookieMonster : public chromium_impl::CookieMonster {
   CookieMonster(scoped_refptr<PersistentCookieStore> store,
                 NetLog* net_log,
                 std::unique_ptr<PrefDelegate> pref_delegate = nullptr);
-  CookieMonster(scoped_refptr<PersistentCookieStore> store,
+  CookieMonster(base::PassKey<chromium_impl::CookieMonster>,
+                scoped_refptr<PersistentCookieStore> store,
                 base::TimeDelta last_access_threshold,
                 NetLog* net_log,
                 std::unique_ptr<PrefDelegate> pref_delegate);
