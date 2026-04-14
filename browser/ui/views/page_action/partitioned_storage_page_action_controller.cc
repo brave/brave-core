@@ -74,6 +74,7 @@ PartitionedStoragePageActionController::
   // |MenuRunner| must outlive the open menu (|RunMenuAt| returns while the
   // menu is still running). Hold it in |menu_runner_| until close. Reset here
   // so teardown runs while this object is still valid.
+  weak_ptr_factory_.InvalidateWeakPtrs();
   menu_runner_.reset();
   if (action_item_for_menu_) {
     action_item_for_menu_->SetIsShowingBubble(false);
