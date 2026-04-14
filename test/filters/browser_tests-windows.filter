@@ -26,19 +26,13 @@
 -StartupBrowserCreatorTriggeredResetTest.TestMultiProfile
 
 # These tests fail on CI but pass locally
+-AiDataKeyedServiceBrowserTest.TabInnerText
 -All/CookieSettingsTest.AllowCookiesUsingExceptions/0
 -All/CookieSettingsTest.AllowCookiesUsingExceptions/2
 -All/CookieSettingsTest.AllowCookiesUsingExceptions/5
--AiDataKeyedServiceBrowserTest.TabInnerText
--AutofillContextMenuManagerFeedbackUIBrowserTest.DisplaysFeedbackDialogUI
 -AutomationApiTest.*
--AutomationApiTestWithLanguageDetection.DetectedLanguage
 -ManifestUpdateManagerBrowserTest.UninstallDialogCancelStillShowsAppUpdateDialog
--ExtensionUninstallDialogViewBrowserTest.WebAppWindowAshCrash
 -SaveDesktopSnapshotTest.SaveDesktopSnapshot
--TabHoverCardBubbleViewDialogBrowserTest.InvokeUi_tab_hover_card
--WebAppFrameToolbarBrowserTest_OriginText.OutOfScopeBarShown/*
--WebAppFrameToolbarBrowserTest_OriginText.ThemeColorChange/0
 
 # Flaky Chromium test - resize event fires during print preview due to Brave UI
 # layout (sidebar, vertical tabs, side panel). Chromium also disables this on
@@ -68,24 +62,12 @@
 # These tests are flaky both on CI and locally
 -CmdLineURLIncognitoBasicTestFeatureDisabled/LaunchNavigationBrowserBasicTest.CmdLineLaunch/0
 -CmdLineURLIncognitoBasicTestFeatureEnabled/LaunchNavigationBrowserBasicTest.CmdLineLaunch/0
--PersistentBackground/ExtensionWebRequestApiTestWithContextType.WebRequestRedirectsWorkers/BackgroundResourceFetchDisabled
--PersistentBackground/ExtensionWebRequestApiTestWithContextType.WebRequestRedirectsWorkers/BackgroundResourceFetchEnabled
--ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestRedirectsWorkers/BackgroundResourceFetchDisabled
--ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestRedirectsWorkers/BackgroundResourceFetchEnabled
-
-# This test fails because we modify the Profile Picker UI to skip the initial
-# screen and the tests ends up creating 2 profiles instead of the intended one.
--ProfilePickerLocalProfileCreationDialogBrowserTest.CancelLocalProfileCreation
-
-# This test fails because we force StartupTabProviderImpl::CanShowWelcome to
-# always return true.
--StartupBrowserCreatorWelcomeBackTest.WelcomeBackStandardNoPolicy/UsingForYouFre
+-UpdateMetricsProviderBrowserTest.RunInBackground
 
 # These tests fail on CI but passes locally
 -All/PrintCompositorDocumentDataTypeBrowserTest.WindowDotPrint/Xps
 -AppMenuBrowserTest.*
 -LiveCaptionUnavailabilityNotifierTest.CaptionBubbleDestroyed
--SoftNavigationTabRestoreTest.SoftNavigationToRestoredTab
 
 # These tests fail in Release due to resource being optimized out.
 # Check failed: !data->empty(). Unable to find resource: 10679. If this happens
@@ -98,7 +80,6 @@
 # These tests fail because we override colors.
 -NativeChromeColorMixerWinBrowserTest.AccentColorAvailableWithFrameColorDisabled
 -NativeChromeColorMixerWinBrowserTest.HeaderColorsFollowAccentColor
--NativeChromeColorMixerWinBrowserTest.NativeThemeForWebWithAccentColor
 
 # These tests fail because in Release we set GOOGLE_CHROME_BRANDING in
 # extensions/browser/install_verifier.cc (on Win and Mac), which causes
@@ -110,11 +91,6 @@
 # These tests fail upstream when DCHECKs are enabled.
 -PenIdBrowserTest.*
 
-# These require further investigation, they began failing with CR141
--CDM_10/ECKEncryptedMediaTest.VerifyCdmHostTest/0
--CDM_11/ECKEncryptedMediaTest.VerifyCdmHostTest/0
--CDM_12/ECKEncryptedMediaTest.VerifyCdmHostTest/0
-
 # This test relies on command line switches for watermark opacity that only work
 # on non-STABLE, non-BETA channels. On Windows, OFFICIAL builds use
 # ScopedInstallDetails with default index 0 (STABLE), causing GetChannel() to
@@ -122,10 +98,7 @@
 -WatermarkSettingsCommandLineBrowserTest.GetColors
 
 # Tests below this point have not been diagnosed or had issues created yet.
--All/ExternallyManagedBrowserTestWithPrefMigrationRead.ReinstallPolicyAppWithLocallyInstalledApp/1
 -All/PDFPluginDisabledTest.*
--All/WebAppOfflinePageTest.WebAppOfflinePageIsDisplayed/*
--All/WebAppOfflinePageTest.WebAppOfflineWithEmptyServiceWorker/*
 -AllowCurrentProfile_DifferentUserSignedInDefaultProfile/ExistingWinBrowserProfilesSigninUtilTest.*
 -AllowCurrentProfile_NoUserSignedIn/ExistingWinBrowserProfilesSigninUtilTest.*
 -AllowCurrentProfile_SameUserSignedIn/ExistingWinBrowserProfilesSigninUtilTest.*
@@ -133,13 +106,13 @@
 -AllowProfileWithPrimaryAccount_SameUser/ExistingWinBrowserSigninUtilTest.*
 -AllowSubsequentRun/ExistingWinBrowserSigninUtilTest.*
 -BrowserRootViewBrowserTest.*
+-CRLSetBrowserTest.*
+-CRLSetInterceptionBrowserTest.*
 -ChromeMojoProxyResolverWinBrowserTest.*
 -ChromeSecurityExploitBrowserTest.*
 -ChromeTracingDelegateBrowserTest.NewIncognitoSessionBlockingTraceFinalization
 -ContentAnalysisDialogPlainTests.*
 -CredentialProviderSigninDialogWinIntegrationDialogDisplayTest.*
--CRLSetBrowserTest.*
--CRLSetInterceptionBrowserTest.*
 -DisallowCurrentProfile_CredProviderUsedDefaultProfile/ExistingWinBrowserProfilesSigninUtilTest.*
 -DisallowCurrentProfile_DifferentUserSignedIn/ExistingWinBrowserProfilesSigninUtilTest.*
 -DisallowCurrentProfile_SameUserSignedInDefaultProfile/ExistingWinBrowserProfilesSigninUtilTest.*
@@ -147,68 +120,47 @@
 -EdgeImporterBrowserTest.EdgeImporter
 -Enabled/NetworkServiceSandboxEnabledTest.IsRespected/0
 -Enabled/RendererAppContainerEnabledTest.IsRespected/0
--ExtensionInstalledBubbleViewsBrowserTest.*
--FencedFrameFileSystemAccessBrowserTest/FencedFrameFileSystemAccessBrowserTest.*
 -IEImporterBrowserTest.*
 -ImageWriterUtilityClientTest.*
 -InfoBarUiTest.*
 -InstanceIDApiTest.*
--IsolatedAppBrowserServiceWorkerPushTest.ServiceWorkerPartitionedWhenWakingUpDuetoPushNotification
 -KnownInterceptionDisclosureUITest.*
 -LocalePolicyTest.*
--MediaSessionPictureInPictureWindowControllerBrowserTest.*
 -NetErrorTabHelperWithFencedFrameTest.*
--NotificationHelperLaunchesChrome.ChromeLaunchTest
 -NotSet/RendererAppContainerEnabledTest.IsRespected/0
 -OnlyAllowProfileWithNoPrimaryAccount/ExistingWinBrowserSigninUtilTest.*
--OutOfMemoryReporterPrerenderBrowserTest.*
+-PWAMixedContentBrowserTestWithAutoupgradesDisabled.MixedContentReparentWebContentsIntoAppBrowser
 -PaymentRequestContactInfoEditorTest.*
 -PaymentRequestPaymentResponseAllContactDetailsTest.*
 -PaymentRequestShippingOptionViewControllerTest.*
 -PaymentRequestShowPromiseTest.*
--PdfToEmfConverterBrowserTest.*
 -PictureInPictureLazyBackgroundPageApiTest.*
 -PictureInPicturePixelComparisonBrowserTest.*
--PictureInPictureWindowControllerBrowserTest.*
 -PictureInPictureWindowControllerFencedFrameBrowserTest.*
 -PictureInPictureWindowControllerPrerenderBrowserTest.*
 -ProfileMainNetworkContext/NetworkContextConfigurationBrowserTest.*
 -ProfileShortcutManagerBrowserTest.*
 -PushMessagingBrowserTestWithAbusiveOriginPermissionRevocation.OriginIsNotOnSafeBrowsingBlockingList
 -PushMessagingBrowserTestWithAbusiveOriginPermissionRevocation.PushEventPermissionRevoked
--PushMessagingBrowserTestWithNotificationTriggersEnabled.PushEventIgnoresScheduledNotificationsForEnforcement
 -PushMessagingDisallowSenderIdsBrowserTest.SubscriptionWithSenderIdFails
--PushSubscriptionChangeEventTest.FiredAfterPermissionRevoked
--PushSubscriptionChangeEventTest.OnInvalidation
--PushSubscriptionChangeEventTest.PushSubscriptionChangeEventSuccess
 -PushSubscriptionWithExpirationTimeTest.GetSubscriptionWithExpirationTime
 -PushSubscriptionWithExpirationTimeTest.SubscribeGetSubscriptionWithExpirationTime
 -PushSubscriptionWithoutExpirationTimeTest.SubscribeDocumentExpirationTimeNull
--PWAMixedContentBrowserTestWithAutoupgradesDisabled.MixedContentReparentWebContentsIntoAppBrowser
+-SSLUIMITMSoftwareEnabledTest.*
 -SaveCardBubbleViewsFullFormBrowserTest.*
--SaveCardBubbleViewsFullFormBrowserTestForManageCard.Local_ClickingIconShowsManageCards
--SaveCardBubbleViewsFullFormBrowserTestForManageCard.Local_ClickingSaveClosesBubble
--SaveCardBubbleViewsFullFormBrowserTestForManageCard.Local_ManageCardsDoneButtonClosesBubble
 -ScriptingAPITest.*
--ServiceWorker/ExtensionI18nTest.*
 -ServiceWorker/ExtensionManagementApiTest.*
 -ServiceWorkerPushMessagingTest.OnPush
--SigninUtilWinBrowserTest5/SigninUtilWinBrowserTest.*
 -SigninUtilWinBrowserTest5/SigninUtilWinBrowserTestWithParams.FixReauth/0
 -SigninUtilWinBrowserTest5/SigninUtilWinBrowserTestWithParams.Run/0
--SigninUtilWinBrowserTest6/SigninUtilWinBrowserTest.*
 -SigninUtilWinBrowserTest6/SigninUtilWinBrowserTestWithParams.FixReauth/0
 -SigninUtilWinBrowserTest6/SigninUtilWinBrowserTestWithParams.Run/0
 -SigninUtilWinNoStartingWindowBrowserTest.FRESigninFlow
 -SpellcheckServiceBrowserTest.*
--SSLUIMITMSoftwareEnabledTest.*
 -StartupBrowserCreatorCorruptProfileTest.*
 -StartupMetricsTest.*
 -StatusBubbleViewsTest.*
 -TabSearchBubbleHostBrowserTest.*
--WebAppBrowserTest_FileHandler.RegKeysFileExtension
--WebAppGlassBrowserFrameViewTest.*
--WebAppIntegrationBrowserTestWin.*
 -WebAppTagWebAppTest.TabNavigatedAwayNotWebAppTask
 -WebAppTagWebAppTest.WebAppTaskCreatedForStandalone
 -WebAppTagWebAppTest.WebAppTaskCreatedForTab
@@ -254,4 +206,3 @@
 # The related ReloadCacheRevalidate variant is already DISABLED upstream.
 # https://github.com/brave/brave-browser/issues/53995
 -CrashRecoveryBrowserTest.Reload
-
