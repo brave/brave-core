@@ -303,7 +303,10 @@ void BraveToolbarView::Init() {
             base::BindRepeating(&BraveToolbarView::OnVerticalTabTogglePressed,
                                 base::Unretained(this))),
         back_button_index.value_or(0));
-    vertical_tab_toggle_->SetVectorIcon(kVerticalTabStripToggleButtonIcon);
+    vertical_tab_toggle_->SetVectorIcon(
+        vertical_tabs_collapsed_.GetValue()
+            ? kVerticalTabStripToggleCollapsedIcon
+            : kLeoWindowTabsVerticalExpandedIcon);
     UpdateVerticalTabToggleVisibility();
     UpdateVerticalTabToggleState();
   }
@@ -658,7 +661,9 @@ void BraveToolbarView::UpdateVerticalTabToggleState() {
   }
 
   const bool is_expanded = !vertical_tabs_collapsed_.GetValue();
-  vertical_tab_toggle_->SetHighlighted(is_expanded);
+  vertical_tab_toggle_->SetVectorIcon(
+      is_expanded ? kLeoWindowTabsVerticalExpandedIcon
+                  : kVerticalTabStripToggleCollapsedIcon);
   vertical_tab_toggle_->SetTooltipText(l10n_util::GetStringUTF16(
       is_expanded ? IDS_VERTICAL_TABS_MINIMIZE : IDS_VERTICAL_TABS_EXPAND));
   vertical_tab_toggle_->SetAccessibleName(l10n_util::GetStringUTF16(
