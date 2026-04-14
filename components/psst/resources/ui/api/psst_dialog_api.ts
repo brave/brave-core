@@ -16,7 +16,7 @@ export * from 'gen/brave/components/psst/common/psst_ui_common.mojom.m.js'
 export function createPsstDialogApi(
   consentHelper: Mojom.PsstConsentHelperInterface,
 ) {
-  let dialogHandler: Mojom.PsstConsentDialog
+  let dialogHandler: Mojom.PsstConsentDialogInterface
 
   const api = createInterfaceApi({
     endpoints: {

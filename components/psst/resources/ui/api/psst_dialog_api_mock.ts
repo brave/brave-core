@@ -165,9 +165,7 @@ export function createMockPsstDialogAPI(
         console.log(
           `[Mock] Simulate request done for URL: ${item.url} with error: ${hasError ? 'Failed to update setting' : 'Success'}`,
         )
-        const dialogHandlerInterface =
-          dialogHandler as Mojom.PsstConsentDialogInterface
-        dialogHandlerInterface.onSetRequestDone(
+        dialogHandler.onSetRequestDone(
           item.url,
           hasError ? 'Failed to update setting' : null,
         )
@@ -181,9 +179,7 @@ export function createMockPsstDialogAPI(
       console.log(
         `[Mock] Simulate completion with applied checks: ${appliedChecks} and errors: ${errors}`,
       )
-      const dialogHandlerInterface =
-        dialogHandler as Mojom.PsstConsentDialogInterface
-      dialogHandlerInterface.onSetCompleted(
+      dialogHandler.onSetCompleted(
         appliedChecks,
         errors.length > 0 ? errors : null,
       )
@@ -200,49 +196,12 @@ export function createMockPsstDialogAPI(
   if (autoLoadSettings) {
     setTimeout(() => {
       console.log('[Mock] Auto-loading settings data:', finalSettingsData)
-      const dialogHandlerInterface =
-        dialogHandler as Mojom.PsstConsentDialogInterface
-      dialogHandlerInterface.setSettingsCardData(finalSettingsData)
+      dialogHandler.setSettingsCardData(finalSettingsData)
     }, 100)
   }
 
-  // Add simulation methods to the returned API for testing
-  const apiWithSimulations = api as any
-  apiWithSimulations._simulateActions = {
-    /**
-     * Simulate receiving new settings data
-     */
-    updateSettingsData: (data: Partial<Mojom.SettingCardData>) => {
-      const updatedData = { ...finalSettingsData, ...data }
-      console.log('[Mock] Simulate updating settings data:', updatedData)
-    },
-
-    /**
-     * Simulate a request completion for a specific URL
-     */
-    triggerRequestDone: (url: string, error?: string) => {
-      console.log(
-        `[Mock] Simulate request done for URL: ${url} with error: ${error}`,
-      )
-    },
-
-    /**
-     * Simulate overall completion with results
-     */
-    triggerCompleted: (appliedChecks?: string[], errors?: string[]) => {
-      console.log(
-        `[Mock] Simulate completion with applied checks: ${appliedChecks} and errors: ${errors}`,
-      )
-    },
-
-    /**
-     * Get the dialog handler for advanced testing scenarios
-     */
-    getDialogHandler: () => dialogHandler,
-  }
-
   return {
-    api: apiWithSimulations,
+    api,
     dialogHandler,
   } as PsstDialogAPI & {
     api: PsstDialogAPI['api'] & { _simulateActions: any }

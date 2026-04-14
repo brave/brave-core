@@ -16,14 +16,18 @@ setIconBasePath('chrome://resources/brave-icons')
 
 function createBrowserPsstApi() {
   const consentHelper = new Mojom.PsstConsentHelperRemote()
-  const callbackRouter = new Mojom.PsstConsentDialogCallbackRouter()
+  const { api, dialogHandler } = createPsstDialogApi(consentHelper)
+
+  const dialogHandlerReceiver = new Mojom.PsstConsentDialogReceiver(
+    dialogHandler,
+  )
 
   Mojom.PsstConsentFactory.getRemote().createPsstConsentHandler(
     consentHelper.$.bindNewPipeAndPassReceiver(),
-    callbackRouter.$.bindNewPipeAndPassRemote(),
+    dialogHandlerReceiver.$.bindNewPipeAndPassRemote(),
   )
 
-  return createPsstDialogApi(consentHelper)
+  return { api, dialogHandler }
 }
 
 function initialize() {

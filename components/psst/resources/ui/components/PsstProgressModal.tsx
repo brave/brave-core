@@ -231,8 +231,7 @@ export const PsstProgressModal = () => {
       </Flex>
       <ModalTitleBody>{getLocale(S.PSST_CONSENT_DIALOG_BODY)}</ModalTitleBody>
       <SettingsCard
-        title={getLocale(S.PSST_CONSENT_DIALOG_OPTIONS_TITLE)}
-        subTitle={siteName}
+        title={siteName}
         progressModelState={{
           commonState,
           site_name: siteName,
