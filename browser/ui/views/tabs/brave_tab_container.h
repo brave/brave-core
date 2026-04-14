@@ -126,6 +126,8 @@ class BraveTabContainer : public TabContainerImpl,
                            ScrollOffsetClampedWhenTabRemoved);
   FRIEND_TEST_ALL_PREFIXES(HorizontalScrollableTabStripBrowserTest,
                            MaxScrollOffsetZeroWithPinnedAndUnpinnedTab);
+  FRIEND_TEST_ALL_PREFIXES(HorizontalScrollableTabStripBrowserTest,
+                           AddingNewTabShouldScrollToBeVisible);
 
   class DropArrow {
    public:
