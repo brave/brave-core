@@ -75,7 +75,7 @@ void TestFiltersProvider::Initialize() {
   CHECK(!is_initialized_);
   is_initialized_ = true;
   if (content_hash_.empty()) {
-    content_hash_ = base::NumberToString(base::FastHash(rules_));
+    content_hash_ = base::NumberToString(base::PersistentHash(rules_));
   }
   NotifyObservers(engine_is_default_);
 }
@@ -89,7 +89,7 @@ std::optional<std::string> TestFiltersProvider::GetCacheKey() const {
     return std::nullopt;
   }
   if (content_hash_.empty()) {
-    return base::NumberToString(base::FastHash(rules_));
+    return base::NumberToString(base::PersistentHash(rules_));
   }
   return content_hash_;
 }

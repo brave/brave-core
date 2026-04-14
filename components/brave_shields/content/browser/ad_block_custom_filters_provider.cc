@@ -41,7 +41,7 @@ void AddDATBufferToFilterSet(uint8_t permission_mask,
 constexpr uint8_t kCustomFiltersPermissionLevel = UINT8_MAX;
 
 std::string ComputeCacheHash(std::string_view content) {
-  return base::NumberToString(base::FastHash(content));
+  return base::NumberToString(base::PersistentHash(content));
 }
 
 }  // namespace

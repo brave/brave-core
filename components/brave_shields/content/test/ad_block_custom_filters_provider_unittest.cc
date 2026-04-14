@@ -37,9 +37,9 @@ TEST_F(AdBlockCustomFiltersProviderTest, InitialHashMatchesContent) {
   ASSERT_TRUE(key.has_value());
   EXPECT_FALSE(key->empty());
 
-  // The hash should match what FastHash produces for the same content.
-  std::string expected =
-      base::NumberToString(base::FastHash(std::string_view("||example.com^")));
+  // The hash should match what PersistentHash produces for the same content.
+  std::string expected = base::NumberToString(
+      base::PersistentHash(std::string_view("||example.com^")));
   EXPECT_EQ(key.value(), expected);
 }
 

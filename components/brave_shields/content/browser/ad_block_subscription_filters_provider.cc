@@ -70,8 +70,8 @@ void AdBlockSubscriptionFiltersProvider::LoadFilterSet(
       base::BindOnce(
           [](const base::FilePath& path) {
             auto buffer = brave_component_updater::ReadDATFileData(path);
-            std::string hash = base::NumberToString(
-                base::FastHash(std::string(buffer.begin(), buffer.end())));
+            std::string hash = base::NumberToString(base::PersistentHash(
+                std::string(buffer.begin(), buffer.end())));
             return std::make_pair(std::move(buffer), std::move(hash));
           },
           list_file_),
