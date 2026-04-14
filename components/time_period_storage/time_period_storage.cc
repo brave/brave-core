@@ -19,9 +19,18 @@
 #include "components/prefs/pref_service.h"
 
 namespace {
+
 // Used to compensate for DST-related differences. i.e. time
 // method arguments not matching up with stored time values.
 constexpr base::TimeDelta kPotentialDSTOffset = base::Hours(1);
+
+// Used by `NextMidnight` when `should_use_fixed_day` is `false`. 24 hours
+// covers a standard day; the extra 2 hours covers the maximum DST shift
+// (Antarctica/Troll), guaranteeing the result lands inside the next calendar
+// day without overshooting into the day after.
+constexpr base::TimeDelta kNextMidnightOffset =
+    base::Hours(24) + base::Hours(2);
+
 }  // namespace
 
 TimePeriodStorage::TimePeriodStorage(std::unique_ptr<TimePeriodStore> store,
@@ -180,38 +189,65 @@ void TimePeriodStorage::Clear() {
   store_->Clear();
 }
 
-void TimePeriodStorage::FilterToPeriod() {
-  base::Time now_midnight = clock_->Now().LocalMidnight();
-  base::Time last_saved_midnight;
+base::Time TimePeriodStorage::NextMidnight(base::Time time) const {
+  // No precondition is enforced on `time` being at midnight. Two legitimate
+  // cases produce non-midnight inputs: legacy prefs written by the old
+  // DST-offset code contain timestamps 1 hour past midnight, and travel across
+  // timezones means a timestamp that was midnight in the original timezone is
+  // no longer midnight in the current one. Adding `kNextMidnightOffset` always
+  // lands within the next calendar day regardless of the input, so `Midnight`
+  // returns its correct start.
+  //
+  // Known limitation: if `time` appears later than 22:00 in the current local
+  // timezone (possible when crossing more than 22 timezone hours, e.g. UTC+12
+  // to UTC-11), `time + kNextMidnightOffset` overshoots into the day after next
+  // and one empty bucket is silently skipped. A correct fix requires ICU
+  // calendar arithmetic to advance by exactly one calendar day. DST transitions
+  // shift clocks by at most 2 hours, so the 22:00 bound is never reached for
+  // DST and all DST cases are handled correctly. Migrating all
+  // `TimePeriodStorage` callers to UTC buckets would eliminate both the DST and
+  // timezone-travel edge cases entirely.
+  return (time + kNextMidnightOffset).LocalMidnight();
+}
 
-  if (!daily_values_.empty()) {
-    last_saved_midnight = daily_values_.front().day;
+base::TimeDelta TimePeriodStorage::GetDstOffset() const {
+  if (!should_offset_dst_) {
+    return base::TimeDelta();
   }
 
-  // Push daily values for new days. In loop condition, add one hour
-  // to now_midnight to account for DST changes.
-  base::TimeDelta dst_offset =
-      should_offset_dst_ ? kPotentialDSTOffset : base::TimeDelta();
-  for (base::Time day_midnight = last_saved_midnight + base::Days(1);
-       day_midnight <= (now_midnight + dst_offset);
-       day_midnight += base::Days(1)) {
-    // Day changed. Since we consider only small incoming intervals, lets just
-    // save it with a new timestamp.
-    if (last_saved_midnight.is_null()) {
-      // If this is a brand new list, insert one daily value
-      // with now_midnight...
-      day_midnight = now_midnight;
-    }
-    daily_values_.push_front({day_midnight, 0});
+  return kPotentialDSTOffset;
+}
+
+void TimePeriodStorage::FilterToPeriod() {
+  const base::Time now_midnight = clock_->Now().LocalMidnight();
+
+  if (daily_values_.empty()) {
+    // No prior data; seed the list with an empty bucket for today.
+    daily_values_.push_front({now_midnight, 0});
+    return;
+  }
+
+  // When DST offsetting is disabled and local time is used (SERP), use
+  // `NextMidnight` to correctly handle short calendar days at DST start.
+  // For P3A, `GetDstOffset` extends the loop condition by one hour to cover
+  // a potential DST shift.
+  const bool should_use_fixed_day = should_offset_dst_;
+  const base::Time last_recorded_midnight = daily_values_.front().day;
+  base::Time bucket_midnight = should_use_fixed_day
+                                   ? last_recorded_midnight + base::Days(1)
+                                   : NextMidnight(last_recorded_midnight);
+  while (bucket_midnight <= now_midnight + GetDstOffset()) {
+    // Add an empty bucket for the missed day.
+    daily_values_.push_front({bucket_midnight, 0});
+
     if (daily_values_.size() > period_days_) {
+      // Drop the oldest bucket outside the window.
       daily_values_.pop_back();
     }
-    if (last_saved_midnight.is_null()) {
-      // ...and break, so we only insert one element. We only want
-      // to insert multiple elements to make up for inactive days on
-      // existing lists, so that IsOnePeriodPassed works correctly.
-      break;
-    }
+
+    // Advance to the next bucket.
+    bucket_midnight = should_use_fixed_day ? bucket_midnight + base::Days(1)
+                                           : NextMidnight(bucket_midnight);
   }
 }
 
