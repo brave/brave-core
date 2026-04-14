@@ -48,6 +48,8 @@ class BraveTabContainer : public TabContainerImpl,
   // TabContainerImpl:
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override;
+  std::vector<Tab*> AddTabs(
+      std::vector<TabInsertionParams> tabs_params) override;
   void UpdateClosingModeOnRemovedTab(int model_index, bool was_active) override;
   gfx::Rect GetTargetBoundsForClosingTab(Tab* tab,
                                          int former_model_index) const override;
@@ -124,6 +126,8 @@ class BraveTabContainer : public TabContainerImpl,
                            ScrollOffsetClampedWhenTabRemoved);
   FRIEND_TEST_ALL_PREFIXES(HorizontalScrollableTabStripBrowserTest,
                            MaxScrollOffsetZeroWithPinnedAndUnpinnedTab);
+  FRIEND_TEST_ALL_PREFIXES(HorizontalScrollableTabStripBrowserTest,
+                           AddingNewTabShouldScrollToBeVisible);
 
   class DropArrow {
    public:

@@ -304,6 +304,18 @@ bool BraveTabContainer::ShouldTabBeVisible(const Tab* tab) const {
   return TabContainerImpl::ShouldTabBeVisible(tab);
 }
 
+std::vector<Tab*> BraveTabContainer::AddTabs(
+    std::vector<TabInsertionParams> tabs_params) {
+  std::vector<Tab*> added_tabs =
+      TabContainerImpl::AddTabs(std::move(tabs_params));
+  if (GetScrollDirection()) {
+    for (Tab* const tab : added_tabs) {
+      ScrollTabToBeVisible(tab);
+    }
+  }
+  return added_tabs;
+}
+
 void BraveTabContainer::StartInsertTabAnimation(int model_index) {
   // Note that we check this before checking currently we're in vertical tab
   // strip mode. We might be in the middle of changing orientation.

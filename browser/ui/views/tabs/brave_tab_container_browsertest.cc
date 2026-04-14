@@ -134,6 +134,29 @@ IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
+                       AddingNewTabShouldScrollToBeVisible) {
+  auto* tab_strip = views::AsViewClass<BraveTabStrip>(
+      browser_view()->horizontal_tab_strip_for_testing());
+  BraveTabContainer* container = views::AsViewClass<BraveTabContainer>(
+      tab_strip->GetTabContainerForTesting());
+  ASSERT_TRUE(container);
+
+  while (container->GetMaxScrollOffset() == 0) {
+    AppendTab();
+    StopAnimatingAndLayout();
+  }
+  // Adding foreground tab should scroll to be visible.
+  EXPECT_EQ(container->scroll_offset_, container->GetMaxScrollOffset());
+
+  container->SetScrollOffset(0);
+
+  // Also adding background tab should scroll to be visible.
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground=*/false);
+  StopAnimatingAndLayout();
+  EXPECT_EQ(container->scroll_offset_, container->GetMaxScrollOffset());
+}
+
+IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
                        ActiveTabScrollsIntoViewWhenSelectingLast) {
   auto* tab_strip = views::AsViewClass<BraveTabStrip>(
       browser_view()->horizontal_tab_strip_for_testing());
