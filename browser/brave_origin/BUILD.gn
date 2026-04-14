@@ -98,6 +98,7 @@ source_set("unit_tests") {
     ":brave_origin",
     "//base/test:test_support",
     "//brave/browser/policy:brave_simple_policy_map",
+    "//brave/browser/ui/brave_origin",
     "//brave/components/brave_origin",
     "//brave/components/brave_rewards/core",
     "//brave/components/constants",
