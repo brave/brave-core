@@ -51,7 +51,7 @@ const mockSettingCardData: Mojom.SettingCardData = {
 /**
  * Mock Mojom interfaces for testing
  */
-function createMockConsentHelper(): Mojom.PsstConsentHelperRemote {
+function createMockConsentHelper(): Mojom.PsstConsentHelperInterface {
   const mock = {
     // Mojom interface methods that endpointsFor/actionsFor expect
     async applyChanges(siteName: string, disabledSettingsList: string[]) {
@@ -71,7 +71,7 @@ function createMockConsentHelper(): Mojom.PsstConsentHelperRemote {
     $: {
       bindNewPipeAndPassReceiver: () => ({}),
     } as any,
-  } as unknown as Mojom.PsstConsentHelperRemote
+  } as Mojom.PsstConsentHelperInterface
 
   return mock
 }
@@ -163,11 +163,13 @@ export function createMockPsstDialogAPI(
       setTimeout(() => {
         const hasError = errorUrls.includes(item.url)
         console.log(
-          `[Mock] Request done for ${item.url} with error: ${hasError}`,
+          `[Mock] Simulate request done for URL: ${item.url} with error: ${hasError ? 'Failed to update setting' : 'Success'}`,
         )
-        dialogHandler.onSetRequestDone(
+        const dialogHandlerInterface =
+          dialogHandler as Mojom.PsstConsentDialogInterface
+        dialogHandlerInterface.onSetRequestDone(
           item.url,
-          hasError ? 'Failed to update setting' : undefined,
+          hasError ? 'Failed to update setting' : null,
         )
       }, Math.random() * requestDelay)
     }
@@ -176,9 +178,14 @@ export function createMockPsstDialogAPI(
     setTimeout(() => {
       const appliedChecks = allUrls.filter((url) => !errorUrls.includes(url))
       const errors = errorUrls.filter((url) => allUrls.includes(url))
-      dialogHandler.onSetCompleted(
+      console.log(
+        `[Mock] Simulate completion with applied checks: ${appliedChecks} and errors: ${errors}`,
+      )
+      const dialogHandlerInterface =
+        dialogHandler as Mojom.PsstConsentDialogInterface
+      dialogHandlerInterface.onSetCompleted(
         appliedChecks,
-        errors.length > 0 ? errors : undefined,
+        errors.length > 0 ? errors : null,
       )
     }, requestDelay + 500)
   }
@@ -193,7 +200,9 @@ export function createMockPsstDialogAPI(
   if (autoLoadSettings) {
     setTimeout(() => {
       console.log('[Mock] Auto-loading settings data:', finalSettingsData)
-      dialogHandler.setSettingsCardData(finalSettingsData)
+      const dialogHandlerInterface =
+        dialogHandler as Mojom.PsstConsentDialogInterface
+      dialogHandlerInterface.setSettingsCardData(finalSettingsData)
     }, 100)
   }
 
@@ -205,21 +214,25 @@ export function createMockPsstDialogAPI(
      */
     updateSettingsData: (data: Partial<Mojom.SettingCardData>) => {
       const updatedData = { ...finalSettingsData, ...data }
-      dialogHandler.setSettingsCardData(updatedData)
+      console.log('[Mock] Simulate updating settings data:', updatedData)
     },
 
     /**
      * Simulate a request completion for a specific URL
      */
     triggerRequestDone: (url: string, error?: string) => {
-      dialogHandler.onSetRequestDone(url, error)
+      console.log(
+        `[Mock] Simulate request done for URL: ${url} with error: ${error}`,
+      )
     },
 
     /**
      * Simulate overall completion with results
      */
     triggerCompleted: (appliedChecks?: string[], errors?: string[]) => {
-      dialogHandler.onSetCompleted(appliedChecks, errors)
+      console.log(
+        `[Mock] Simulate completion with applied checks: ${appliedChecks} and errors: ${errors}`,
+      )
     },
 
     /**
