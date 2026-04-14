@@ -111,11 +111,12 @@ class QuickViewController: UIViewController {
       $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
     }
 
-    toolbarViewModel.onClose = { [weak self] in
-      self?.dismiss(animated: true)
+    toolbarViewModel.onActionButton = { [weak self] button in
+      if button == .close {
+        self?.dismiss(animated: true)
+      }
     }
     // TODO: https://github.com/brave/brave-browser/issues/53567
-    toolbarViewModel.secondaryTopButton = .playlist(action: {
-    })
+    toolbarViewModel.secondaryTopButton = .playlist
   }
 }

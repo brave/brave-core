@@ -5,35 +5,37 @@
 
 import BraveUI
 import DesignSystem
+import Strings
 import SwiftUI
 import UIKit
 
-enum QuickViewSecondaryTopButton {
-  case playlist(action: () -> Void)
-  case readerMode(action: () -> Void)
-  case translate(action: () -> Void)
+enum QuickViewActionButton {
+  case shield
+  case playlist
+  case readerMode
+  case translate
+  case refresh
+  case close
+  case back
+  case share
+  case openTab
 }
 
 @Observable
 class QuickViewToolbarModel {
   var url: URL
-  var secondaryTopButton: QuickViewSecondaryTopButton?
+  var secondaryTopButton: QuickViewActionButton?
   var isBackDisabled: Bool = true
-  var onShield: (() -> Void)?
-  var onRefresh: (() -> Void)?
-  var onClose: (() -> Void)?
-  var onBack: (() -> Void)?
-  var onShare: (() -> Void)?
-  var onOpenTab: (() -> Void)?
+  var onActionButton: ((QuickViewActionButton) -> Void)?
 
   init(
     url: URL,
-    secondaryTopButton: QuickViewSecondaryTopButton? = nil,
-    onClose: (() -> Void)? = nil
+    secondaryTopButton: QuickViewActionButton? = nil,
+    onActionButton: ((QuickViewActionButton) -> Void)? = nil
   ) {
     self.url = url
     self.secondaryTopButton = secondaryTopButton
-    self.onClose = onClose
+    self.onActionButton = onActionButton
   }
 }
 
@@ -41,11 +43,6 @@ struct QuickViewToolbarView: View {
   var viewModel: QuickViewToolbarModel
 
   var body: some View {
-    toolbarContent
-      .padding(8)
-  }
-
-  private var toolbarContent: some View {
     VStack(spacing: 0) {
       topRow
         .padding(.horizontal, 16)
@@ -55,63 +52,88 @@ struct QuickViewToolbarView: View {
         .padding(.top, 16)
     }
     .padding(8)
-    .background(
-      Group {
-        if #available(iOS 26.0, *), LiquidGlassMode.isEnabled {
-          Color.clear
-            .glassEffect(in: RoundedRectangle(cornerRadius: 30, style: .continuous))
-        } else {
-          RoundedRectangle(cornerRadius: 30, style: .continuous)
-            .fill(.ultraThinMaterial)
-        }
+    .osAvailabilityModifiers { content in
+      if #available(iOS 26.0, *), LiquidGlassMode.isEnabled {
+        content
+          .background(
+            Color.clear
+              .glassEffect(in: RoundedRectangle(cornerRadius: 30, style: .continuous))
+          )
+      } else {
+        content
+          .background(
+            .ultraThinMaterial,
+            in: .rect(cornerRadius: 30, style: .continuous)
+          )
       }
-    )
+    }
+    .padding(8)
   }
 
   private var shieldButton: some View {
     Button {
-      viewModel.onShield?()
+      viewModel.onActionButton?(.shield)
     } label: {
-      Image(braveSystemName: "leo.shield.done")
-        .font(.headline)
-        .foregroundColor(Color(braveSystemName: .iconDefault))
+      Label(
+        Strings.quickViewShieldAccessibilityLabel,
+        braveSystemImage: "leo.shield.done"
+      )
+      .labelStyle(QuickViewToolbarLabelIconStyle())
     }
+    .accessibilityLabel(Strings.quickViewShieldAccessibilityLabel)
   }
 
   @ViewBuilder
   private var secondaryTopButtonView: some View {
     if let button = viewModel.secondaryTopButton {
-      switch button {
-      case .playlist(let action):
-        Button(action: action) {
-          Image(braveSystemName: "leo.product.playlist-add")
-            .font(.headline)
-            .foregroundColor(Color(braveSystemName: .iconDefault))
+      if button == .playlist {
+        Button {
+          viewModel.onActionButton?(.playlist)
+        } label: {
+          Label(
+            Strings.quickViewPlaylistAccessibilityLabel,
+            braveSystemImage: "leo.product.playlist-add"
+          )
+          .labelStyle(QuickViewToolbarLabelIconStyle())
         }
-      case .readerMode(let action):
-        Button(action: action) {
-          Image(braveSystemName: "leo.product.speedreader")
-            .font(.headline)
-            .foregroundColor(Color(braveSystemName: .iconDefault))
+        .accessibilityLabel(Strings.quickViewPlaylistAccessibilityLabel)
+      } else if button == .readerMode {
+        Button {
+          viewModel.onActionButton?(.readerMode)
+        } label: {
+          Label(
+            Strings.quickViewReaderModeAccessibilityLabel,
+            braveSystemImage: "leo.product.speedreader"
+          )
+          .labelStyle(QuickViewToolbarLabelIconStyle())
         }
-      case .translate(let action):
-        Button(action: action) {
-          Image(braveSystemName: "leo.product.translate")
-            .font(.headline)
-            .foregroundColor(Color(braveSystemName: .iconDefault))
+        .accessibilityLabel(Strings.quickViewReaderModeAccessibilityLabel)
+      } else {
+        Button {
+          viewModel.onActionButton?(.translate)
+        } label: {
+          Label(
+            Strings.quickViewTranslateAccessibilityLabel,
+            braveSystemImage: "leo.product.translate"
+          )
+          .labelStyle(QuickViewToolbarLabelIconStyle())
         }
+        .accessibilityLabel(Strings.quickViewTranslateAccessibilityLabel)
       }
     }
   }
 
   private var refreshButton: some View {
     Button {
-      viewModel.onRefresh?()
+      viewModel.onActionButton?(.refresh)
     } label: {
-      Image(braveSystemName: "leo.browser.refresh")
-        .font(.headline)
-        .foregroundColor(Color(braveSystemName: .iconDefault))
+      Label(
+        Strings.quickViewRefreshAccessibilityLabel,
+        braveSystemImage: "leo.browser.refresh"
+      )
+      .labelStyle(QuickViewToolbarLabelIconStyle())
     }
+    .accessibilityLabel(Strings.quickViewRefreshAccessibilityLabel)
   }
 
   private var addressView: some View {
@@ -122,6 +144,7 @@ struct QuickViewToolbarView: View {
         .foregroundColor(Color(braveSystemName: .textTertiary))
         .lineLimit(1)
         .frame(maxWidth: .infinity)
+        .accessibilityLabel(viewModel.url.host ?? viewModel.url.absoluteString)
       Spacer()
     }
   }
@@ -145,41 +168,47 @@ struct QuickViewToolbarView: View {
 
   private var backButton: some View {
     Button {
-      viewModel.onBack?()
+      viewModel.onActionButton?(.back)
     } label: {
-      Image(braveSystemName: "leo.browser.back")
-        .font(.title2)
-        .foregroundColor(
-          viewModel.isBackDisabled
-            ? Color(braveSystemName: .iconDisabled) : Color(braveSystemName: .iconDefault)
-        )
+      Label(
+        Strings.quickViewBackAccessibilityLabel,
+        braveSystemImage: "leo.browser.back"
+      )
+      .labelStyle(QuickViewToolbarLabelIconStyle(font: .title2))
     }
     .disabled(viewModel.isBackDisabled)
+    .accessibilityLabel(Strings.quickViewBackAccessibilityLabel)
   }
 
   private var shareButton: some View {
     Button {
-      viewModel.onShare?()
+      viewModel.onActionButton?(.share)
     } label: {
-      Image(braveSystemName: "leo.share.macos")
-        .font(.title2)
-        .foregroundColor(Color(braveSystemName: .iconDefault))
+      Label(
+        Strings.quickViewShareAccessibilityLabel,
+        braveSystemImage: "leo.share.macos"
+      )
+      .labelStyle(QuickViewToolbarLabelIconStyle(font: .title2))
     }
+    .accessibilityLabel(Strings.quickViewShareAccessibilityLabel)
   }
 
   private var openInTabButton: some View {
     Button {
-      viewModel.onOpenTab?()
+      viewModel.onActionButton?(.openTab)
     } label: {
-      Image(braveSystemName: "leo.add.tab")
-        .font(.title2)
-        .foregroundColor(Color(braveSystemName: .iconDefault))
+      Label(
+        Strings.quickViewOpenTabAccessibilityLabel,
+        braveSystemImage: "leo.add.tab"
+      )
+      .labelStyle(QuickViewToolbarLabelIconStyle(font: .title2))
     }
+    .accessibilityLabel(Strings.quickViewOpenTabAccessibilityLabel)
   }
 
   private var closeButton: some View {
     Button {
-      viewModel.onClose?()
+      viewModel.onActionButton?(.close)
     } label: {
       if #available(iOS 26.0, *), LiquidGlassMode.isEnabled {
         Image(braveSystemName: "leo.close")
@@ -203,6 +232,7 @@ struct QuickViewToolbarView: View {
           )
       }
     }
+    .accessibilityLabel(Strings.close)
   }
 
   private var bottomRow: some View {
@@ -221,5 +251,16 @@ struct QuickViewToolbarView: View {
 
       closeButton
     }
+  }
+}
+
+private struct QuickViewToolbarLabelIconStyle: LabelStyle {
+  var font: Font = .headline
+  var disabled: Bool = false
+
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.icon
+      .font(font)
+      .tint(disabled ? Color(braveSystemName: .iconDisabled) : Color(braveSystemName: .iconDefault))
   }
 }
