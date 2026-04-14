@@ -109,15 +109,18 @@ HMAC signature, and validity window. No user identity is included.
 ### 5. Redemption (server-side)
 
 The premium service forwards the presentation to the CBR, which verifies the
-signature against its issuer key and checks the token has not been spent
-before. On success the service grants access; a duplicate redemption returns
-409 Conflict.
+signature against its issuer key and checks the token has not been spent with
+that issuer before. A duplicate redemption attempt with the same token preimage
+against the same issuer but with a different binding payload is rejected with
+409 Conflict. An exact retry of a previously accepted redemption (same token,
+issuer, and payload) is treated as an idempotent replay and acknowledged
+without error.
 
 ## Credential Types
 
 | Type | Description |
 |------|-------------|
-| **TimeLimitedV2** | Primary production type. Tokens are bucketed into time windows (e.g. daily) with per-window sub-issuer keys. Single-use within each window. |
+| **TimeLimitedV2** | Primary production type. Tokens are bucketed into time windows (e.g. daily) with per-window sub-issuer keys. Single-use per time window, enforced server-side by the CBR's redemption store. The client also tracks a local `spent` flag to avoid re-presenting a token, but the authoritative duplicate check is in the CBR. |
 | **SingleUse** | One-time tokens using the same blind signature scheme. |
 | **TimeLimited (v1)** | Legacy. Server-generated HMAC-derived tokens -- weaker privacy since the server produces the token values directly. |
 
@@ -131,7 +134,7 @@ select the right credential for the current time period and track usage.
 |---|---|
 | **Unlinkability** | Blind signing means the CBR signs tokens it cannot see; it cannot later match a presented token to a signing request. |
 | **No identity in presentation** | The credential cookie contains only the token, its HMAC, and the validity window -- no account ID, email, or payment info. |
-| **Double-spend prevention** | The CBR tracks redeemed token preimages and rejects duplicates (409 Conflict). |
+| **Double-spend prevention** | The CBR records redeemed token preimages keyed per-issuer and rejects true duplicates (same token, different binding) with 409 Conflict; exact replays of a prior redemption are accepted as idempotent. Spent-token records are retained until the issuer's expiration time, after which they may be purged. |
 | **Issuer binding** | The HMAC signature binds each token to a specific merchant and SKU (e.g. `brave.com?sku=leo-monthly`), preventing cross-service usage. |
 | **Time-limited validity** | V3 issuers create sub-issuer keys per time window; expired credentials are cryptographically unverifiable. |
 
