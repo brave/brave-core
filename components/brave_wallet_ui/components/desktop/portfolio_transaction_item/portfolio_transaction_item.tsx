@@ -342,9 +342,8 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
       : ''
     const isSolanaSwap = isSwap && isSolanaTx
     const showAmounts = !txToken?.isNft && !isSolanaSwap
-    const showTransactionStatus = !noneTxStatusDisplayTypes.includes(
-      effectiveStatus,
-    )
+    const showTransactionStatus =
+      !noneTxStatusDisplayTypes.includes(effectiveStatus)
     const nativeAssetWasSent = sendToken && isNativeAsset(sendToken)
     const showNetworkIcon = txNetwork && (!nativeAssetWasSent || isSwapOrBridge)
 
