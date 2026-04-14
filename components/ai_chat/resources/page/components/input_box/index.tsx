@@ -491,6 +491,7 @@ function InputBox(props: InputBoxProps) {
               })}
               onClick={handleStopGenerating}
               title={getLocale(S.CHAT_UI_STOP_GENERATION_BUTTON_LABEL)}
+              data-testid='stop-generation-button'
             >
               <Icon
                 name='stop-circle'
