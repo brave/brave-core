@@ -46,6 +46,8 @@ class BraveTabContainer : public TabContainerImpl,
   views::ScrollView::ScrollBarMode GetScrollBarMode() const;
 
   // TabContainerImpl:
+  std::vector<Tab*> AddTabs(
+      std::vector<TabInsertionParams> tabs_params) override;
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override;
   void UpdateClosingModeOnRemovedTab(int model_index, bool was_active) override;
