@@ -20,6 +20,7 @@ const string kUserChoiceToolName = "user_choice_tool";
 const string kAssistantDetailStorageToolName = "assistant_detail_storage";
 const string kMemoryStorageToolName = "memory_storage_tool";
 const string kCodeExecutionToolName = "code_execution_tool";
+const string kRequestURLToolName = "request_url";
 
 [EnableIf=enable_ai_chat_tab_management_tool]
 const string kTabManagementToolName = "tab_management";

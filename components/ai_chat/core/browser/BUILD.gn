@@ -81,6 +81,8 @@ static_library("browser") {
     "tools/code_plugin.h",
     "tools/memory_storage_tool.cc",
     "tools/memory_storage_tool.h",
+    "tools/request_url_tool.cc",
+    "tools/request_url_tool.h",
     "tools/tool.cc",
     "tools/tool.h",
     "tools/tool_input_properties.cc",

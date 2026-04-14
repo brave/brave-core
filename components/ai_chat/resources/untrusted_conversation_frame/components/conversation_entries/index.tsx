@@ -202,6 +202,37 @@ function ConversationEntries() {
 
     const groupIsTask = isAssistantGroupTask(group)
 
+    // Collect URLs fetched via the request_url tool for display after the
+    // assistant response, mirroring the attachment chips shown on human turns.
+    const requestedUrls =
+      isAIAssistant && !groupIsTask
+        ? group.flatMap((e) => {
+            const edit = e.edits?.at(-1) ?? e
+            return (
+              edit.events?.flatMap((ev: Mojom.ConversationEntryEvent) => {
+                if (ev.toolUseEvent?.toolName !== 'request_url') return []
+                try {
+                  const args = JSON.parse(ev.toolUseEvent.argumentsJson)
+                  if (typeof args.url === 'string' && args.url) {
+                    return [
+                      {
+                        url: args.url,
+                        title:
+                          typeof args.title === 'string' && args.title
+                            ? args.title
+                            : args.url,
+                      },
+                    ]
+                  }
+                } catch {
+                  /* ignore parse errors */
+                }
+                return []
+              }) ?? []
+            )
+          })
+        : []
+
     // Omit artifacts until generation is complete so we show
     // the artifacts and the final response text at the same time.
     const shouldOmitToolArtifacts =
@@ -396,6 +427,18 @@ function ConversationEntries() {
                 )
               })}
           </div>
+
+          {!groupIsTask && isAIAssistant && requestedUrls.length > 0 && (
+            <div className={styles.attachmentsContainer}>
+              {requestedUrls.map((item) => (
+                <AttachmentPageItem
+                  key={item.url}
+                  url={item.url}
+                  title={item.title}
+                />
+              ))}
+            </div>
+          )}
 
           {!groupIsTask && (
             <>
