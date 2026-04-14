@@ -125,7 +125,6 @@ aggregate_vector_icons("brave_components_vector_icons") {
     "leo_window_tab_new.icon",
     "leo_window_tab_private.icon",
     "leo_window_tab_tor.icon",
-    "leo_window_tabs_vertical_expanded.icon",
   ]
 
   if (enable_playlist_webui) {
