@@ -24,9 +24,13 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserActionsBrowserTest,
 
   auto& action_manager = actions::ActionManager::GetForTesting();
   auto* tab_search_action = action_manager.FindAction(kActionTabSearch);
-  ASSERT_NE(tab_search_action, nullptr);
+  ASSERT_NE(tab_search_action, nullptr)
+      << "kActionTabSearch not found in ActionManager";
 
-  const auto pinnable_state = static_cast<actions::ActionPinnableState>(
-      tab_search_action->GetProperty(actions::kActionItemPinnableKey));
-  EXPECT_EQ(pinnable_state, actions::ActionPinnableState::kPinnable);
+  const actions::ActionPinnableState pinnable_state =
+      static_cast<actions::ActionPinnableState>(
+          tab_search_action->GetProperty(actions::kActionItemPinnableKey));
+  EXPECT_EQ(pinnable_state, actions::ActionPinnableState::kPinnable)
+      << "kActionTabSearch must be kPinnable so ToolbarController includes it "
+         "in responsive_elements_";
 }
