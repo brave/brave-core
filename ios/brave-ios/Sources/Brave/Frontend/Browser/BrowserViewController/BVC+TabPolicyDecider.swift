@@ -469,7 +469,8 @@ extension BrowserViewController {
     // Only redirect for main frames
     guard let requestURL = request.url, isMainFrame else { return nil }
 
-    if let headerUserAgent = request.allHTTPHeaderFields?["User-Agent"],
+    if FeatureList.kShouldCancelRequestsForUserAgentChange.enabled,
+      let headerUserAgent = request.allHTTPHeaderFields?["User-Agent"],
       case let userAgentForType = self.tab(tab, userAgentForType: .automatic, request: request),
       headerUserAgent != userAgentForType
     {

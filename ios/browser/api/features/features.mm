@@ -338,6 +338,12 @@
       initWithFeature:&brave_user_agent::features::kUseBraveUserAgent];
 }
 
++ (Feature*)kShouldCancelRequestsForUserAgentChange {
+  return [[Feature alloc]
+      initWithFeature:&brave_user_agent::features::
+                          kShouldCancelRequestsForUserAgentChange];
+}
+
 + (Feature*)kUseProfileWebViewConfiguration {
   return [[Feature alloc]
       initWithFeature:&brave::features::kUseProfileWebViewConfiguration];

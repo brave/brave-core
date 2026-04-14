@@ -21,5 +21,8 @@ BASE_FEATURE_PARAM(int,
                    2);  // BraveIOSUserAgentTypeSuffix
 #endif
 
+BASE_FEATURE(kShouldCancelRequestsForUserAgentChange,
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace features
 }  // namespace brave_user_agent
