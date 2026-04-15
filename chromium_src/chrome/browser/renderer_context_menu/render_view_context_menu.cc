@@ -637,12 +637,26 @@ void RenderViewContextMenu::BuildContainersMenu() {
     return;
   }
 
+  std::optional<size_t> first_separator_index;
+  for (size_t i = 0; i < menu_model_.GetItemCount(); ++i) {
+    if (menu_model_.GetTypeAt(i) == ui::MenuModel::TYPE_SEPARATOR) {
+      first_separator_index = i;
+      break;
+    }
+  }
+
   containers_submenu_model_ =
       std::make_unique<containers::ContainersMenuModel>(*this, *service);
 
-  menu_model_.AddSubMenuWithStringId(IDC_OPEN_IN_CONTAINER,
-                                     IDS_CXMENU_OPEN_IN_CONTAINER,
-                                     containers_submenu_model_.get());
+  if (first_separator_index.has_value()) {
+    menu_model_.InsertSubMenuWithStringIdAt(
+        *first_separator_index, IDC_OPEN_IN_CONTAINER,
+        IDS_CXMENU_OPEN_IN_CONTAINER, containers_submenu_model_.get());
+  } else {
+    menu_model_.AddSubMenuWithStringId(IDC_OPEN_IN_CONTAINER,
+                                       IDS_CXMENU_OPEN_IN_CONTAINER,
+                                       containers_submenu_model_.get());
+  }
 }
 
 Browser* RenderViewContextMenu::GetBrowserToOpenSettings() {
