@@ -125,6 +125,14 @@
   </settings-dropdown-menu>
 </div>
 
+<template is="dom-if" if="[[isScrollableHorizontalTabStripFlagEnabled()]]">
+  <settings-toggle-button
+    pref="{{prefs.brave.tabs.scrollable_horizontal_tab_strip}}"
+    class="cr-row"
+    label="$i18n{appearanceSettingsScrollableHorizontalTabStrip}">
+  </settings-toggle-button>
+</template>
+
 <!-- Tab hover mode -->
 <div class="cr-row settings-box">
   <div class="flex">

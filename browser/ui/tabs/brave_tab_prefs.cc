@@ -44,6 +44,7 @@ void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kMiddleClickCloseTabEnabled, true);
   registry->RegisterIntegerPref(kTabMinWidthMode,
                                 static_cast<int>(TabMinWidthMode::kMinimum));
+  registry->RegisterBooleanPref(kScrollableHorizontalTabStrip, false);
 }
 
 void MigrateBraveProfilePrefs(PrefService* prefs) {
