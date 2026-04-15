@@ -65,11 +65,6 @@ public class BraveSigninManager implements SigninManager {
     public void addSignInStateObserver(SignInStateObserver observer) {}
 
     @Override
-    public boolean isForceSigninEnabled() {
-        return false;
-    }
-
-    @Override
     public IdentityManager getIdentityManager() {
         return mIdentityManager;
     }
