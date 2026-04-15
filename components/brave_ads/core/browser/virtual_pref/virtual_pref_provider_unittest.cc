@@ -45,7 +45,7 @@ class BraveAdsVirtualPrefProviderTest : public ::testing::Test {
 
     auto delegate = std::make_unique<VirtualPrefProviderDelegateMock>();
     delegate_ = delegate.get();
-    provider_ = std::make_unique<VirtualPrefProvider>(&prefs_, &local_state_,
+    provider_ = std::make_unique<VirtualPrefProvider>(prefs_, local_state_,
                                                       std::move(delegate));
   }
 
