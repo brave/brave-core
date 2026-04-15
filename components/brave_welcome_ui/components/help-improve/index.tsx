@@ -7,7 +7,6 @@ import * as React from 'react'
 
 import * as S from './style'
 import Button from '@brave/leo/react/button'
-import OriginLeoButtonTheme from '../origin_leo_button_theme'
 import { P3APhase, WelcomeBrowserProxyImpl } from '../../api/welcome_browser_proxy'
 import { getLocale, formatLocale } from '$web-common/locale'
 import { loadTimeData } from '$web-common/loadTimeData'
@@ -151,15 +150,13 @@ function HelpImprove() {
       </S.Grid>
       <S.ActionBox>
         <div className="box-center">
-          <OriginLeoButtonTheme>
-            <Button
-              kind="filled"
-              onClick={handleFinish}
-              size="large"
-            >
-              {getLocale('braveWelcomeFinishButtonLabel')}
-            </Button>
-          </OriginLeoButtonTheme>
+          <Button
+            kind="filled"
+            onClick={handleFinish}
+            size="large"
+          >
+            {getLocale('braveWelcomeFinishButtonLabel')}
+          </Button>
           <S.FootNote>
             {changeSettingsNote}
             <span>

@@ -15,9 +15,16 @@ import MainContainer from './main_container'
 import DataContextProvider from './state/data-context-provider'
 
 function App () {
+  let forceDarkMode: boolean
+  // <if expr="is_brave_origin_branded">
+  forceDarkMode = true
+  // <else>
+  forceDarkMode = false
+  // </if>
+
   return (
     <DataContextProvider>
-      <BraveCoreThemeProvider>
+      <BraveCoreThemeProvider forceDarkMode={forceDarkMode}>
         <MainContainer />
       </BraveCoreThemeProvider>
     </DataContextProvider>

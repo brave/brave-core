@@ -11,7 +11,6 @@ import * as S from './style'
 
 import Button from '@brave/leo/react/button'
 
-import OriginLeoButtonTheme from '../origin_leo_button_theme'
 import { WelcomeBrowserProxyImpl } from '../../api/welcome_browser_proxy'
 
 import cubeImg from '../../assets/brave-search-cube.svg'
@@ -54,22 +53,20 @@ function HelpWDP () {
         </a>
       </S.BodyBox>
       <S.ActionBox>
-        <OriginLeoButtonTheme>
-          <Button
-            kind="filled"
-            size="large"
-            onClick={handleAccept}
-          >
-            {getLocale('braveWelcomeHelpWDPAccept')}
-          </Button>
-          <Button
-            kind="plain-faint"
-            size="large"
-            onClick={handleReject}
-          >
-            {getLocale('braveWelcomeHelpWDPReject')}
-          </Button>
-        </OriginLeoButtonTheme>
+        <Button
+          kind="filled"
+          size="large"
+          onClick={handleAccept}
+        >
+          {getLocale('braveWelcomeHelpWDPAccept')}
+        </Button>
+        <Button
+          kind="plain-faint"
+          size="large"
+          onClick={handleReject}
+        >
+          {getLocale('braveWelcomeHelpWDPReject')}
+        </Button>
       </S.ActionBox>
     </S.MainBox>
   )

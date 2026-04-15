@@ -10,7 +10,6 @@ import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
 import Button from '@brave/leo/react/button'
 
-import OriginLeoButtonTheme from '../origin_leo_button_theme'
 import DataContext from '../../state/context'
 import { useViewTypeTransition } from '../../state/hooks'
 
@@ -112,22 +111,20 @@ function SelectTheme () {
       </S.ThemeListBox>
       <div className="view-note">{getLocale('braveWelcomeSelectThemeNote')}</div>
       <S.ActionBox>
-        <OriginLeoButtonTheme>
-          <Button
-            kind="plain-faint"
-            onClick={handleSkip}
-            size="large"
-          >
-            {getLocale('braveWelcomeSkipButtonLabel')}
-          </Button>
-          <Button
-            kind="filled"
-            onClick={handleNext}
-            size="large"
-          >
-            {getLocale('braveWelcomeNextButtonLabel')}
-          </Button>
-        </OriginLeoButtonTheme>
+        <Button
+          kind="plain-faint"
+          onClick={handleSkip}
+          size="large"
+        >
+          {getLocale('braveWelcomeSkipButtonLabel')}
+        </Button>
+        <Button
+          kind="filled"
+          onClick={handleNext}
+          size="large"
+        >
+          {getLocale('braveWelcomeNextButtonLabel')}
+        </Button>
       </S.ActionBox>
     </S.Box>
   )

@@ -10,7 +10,6 @@ import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import Button from '@brave/leo/react/button'
 
-import OriginLeoButtonTheme from '../origin_leo_button_theme'
 import { WelcomeBrowserProxyImpl, DefaultBrowserBrowserProxyImpl, P3APhase } from '../../api/welcome_browser_proxy'
 import WebAnimationPlayer from '../../api/web_animation_player'
 
@@ -91,22 +90,20 @@ function Welcome () {
           </div>
         </div>
         <S.ActionBox>
-          <OriginLeoButtonTheme>
-            <Button
-              kind="filled"
-              onClick={handleSetAsDefaultBrowser}
-              size="large"
-            >
-              {getLocale('braveWelcomeSetDefaultButtonLabel')}
-            </Button>
-            <Button
-              kind="plain-faint"
-              onClick={handleSkip}
-              size="large"
-            >
-              {getLocale('braveWelcomeSkipButtonLabel')}
-            </Button>
-          </OriginLeoButtonTheme>
+          <Button
+            kind="filled"
+            onClick={handleSetAsDefaultBrowser}
+            size="large"
+          >
+            {getLocale('braveWelcomeSetDefaultButtonLabel')}
+          </Button>
+          <Button
+            kind="plain-faint"
+            onClick={handleSkip}
+            size="large"
+          >
+            {getLocale('braveWelcomeSkipButtonLabel')}
+          </Button>
         </S.ActionBox>
       </div>
       <div className={classnames({ 'view-backdrop': true, 'initial': shouldPlayAnimations })} />
