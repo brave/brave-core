@@ -25,6 +25,7 @@ enum QuickViewActionButton {
 class QuickViewToolbarModel {
   var url: URL
   var secondaryTopButton: QuickViewActionButton?
+  var isShieldDisabled: Bool = false
   var isBackDisabled: Bool = true
   var onActionButton: ((QuickViewActionButton) -> Void)?
 
@@ -44,40 +45,45 @@ struct QuickViewToolbarView: View {
 
   var body: some View {
     VStack(spacing: 0) {
-      topRow
-        .padding(.horizontal, 16)
-        .padding(.top, 8)
-      bottomRow
-        .padding(.leading, 16)
-        .padding(.top, 16)
+      if #available(iOS 26.0, *), LiquidGlassMode.isEnabled {
+        topRow
+          .padding(.horizontal, 16)
+          .padding(.top, 8)
+        bottomRow
+          .padding(.top, 16)
+          .padding(.leading, 16)
+      } else {
+        topRow
+        bottomRow
+          .padding(.top, 16)
+      }
     }
-    .padding(8)
     .osAvailabilityModifiers { content in
       if #available(iOS 26.0, *), LiquidGlassMode.isEnabled {
         content
+          .padding(8)
           .background(
             Color.clear
               .glassEffect(in: RoundedRectangle(cornerRadius: 30, style: .continuous))
           )
+          .padding(8)
       } else {
         content
-          .background(
-            .ultraThinMaterial,
-            in: .rect(cornerRadius: 30, style: .continuous)
-          )
+          .padding(16)
       }
     }
-    .padding(8)
   }
 
   private var shieldButton: some View {
     Button {
       viewModel.onActionButton?(.shield)
     } label: {
-      Label(
-        Strings.quickViewShieldAccessibilityLabel,
-        braveSystemImage: "leo.shield.done"
-      )
+      Label {
+        Text(Strings.quickViewShieldAccessibilityLabel)
+      } icon: {
+        viewModel.isShieldDisabled
+          ? Image(sharedName: "brave.logo.greyscale") : Image(sharedName: "brave.logo")
+      }
       .labelStyle(QuickViewToolbarLabelIconStyle())
     }
     .accessibilityLabel(Strings.quickViewShieldAccessibilityLabel)
@@ -141,7 +147,7 @@ struct QuickViewToolbarView: View {
       Spacer()
       Text(viewModel.url.host ?? viewModel.url.absoluteString)
         .font(.subheadline)
-        .foregroundColor(Color(braveSystemName: .textTertiary))
+        .foregroundStyle(Color(braveSystemName: .textTertiary))
         .lineLimit(1)
         .frame(maxWidth: .infinity)
         .accessibilityLabel(viewModel.url.host ?? viewModel.url.absoluteString)
@@ -149,20 +155,20 @@ struct QuickViewToolbarView: View {
     }
   }
 
-  private var topLeftButtonsView: some View {
-    HStack(spacing: 8) {
-      shieldButton
+  private var topRightButtonsView: some View {
+    HStack(spacing: 12) {
       secondaryTopButtonView
+      refreshButton
     }
   }
 
   private var topRow: some View {
     HStack(spacing: 8) {
-      topLeftButtonsView
+      shieldButton
 
       addressView
 
-      refreshButton
+      topRightButtonsView
     }
   }
 
@@ -214,7 +220,7 @@ struct QuickViewToolbarView: View {
         Image(braveSystemName: "leo.close")
           .font(.title2)
           .padding(14)
-          .foregroundColor(Color(braveSystemName: .schemesOnPrimary))
+          .foregroundStyle(Color(braveSystemName: .schemesOnPrimary))
           .glassEffect(
             .regular
               .tint(Color(braveSystemName: .buttonBackground))
@@ -224,12 +230,7 @@ struct QuickViewToolbarView: View {
       } else {
         Image(braveSystemName: "leo.close")
           .font(.title2)
-          .padding(14)
-          .foregroundColor(Color(braveSystemName: .schemesOnPrimary))
-          .background(
-            Color(braveSystemName: .buttonBackground),
-            in: .circle
-          )
+          .foregroundStyle(Color(braveSystemName: .iconDefault))
       }
     }
     .accessibilityLabel(Strings.close)

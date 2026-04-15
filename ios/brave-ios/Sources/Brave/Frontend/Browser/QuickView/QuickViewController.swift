@@ -5,6 +5,7 @@
 
 import BraveCore
 import BraveShields
+import BraveUI
 import Data
 import Shared
 import SnapKit
@@ -104,7 +105,11 @@ class QuickViewController: UIViewController {
     currentTab.view.snp.makeConstraints {
       $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
       $0.leading.trailing.equalTo(view)
-      $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+      if #available(iOS 26.0, *), LiquidGlassMode.isEnabled {
+        $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+      } else {
+        $0.bottom.equalTo(toolbarHostingController.view.snp.top)
+      }
     }
     toolbarHostingController.view.snp.makeConstraints {
       $0.leading.trailing.equalTo(view)
