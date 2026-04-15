@@ -158,6 +158,22 @@ const update = () => {
         'product_logo_white.png',
       ),
     ])
+    fileMap.add([
+      path.join(
+        braveAppDir,
+        'theme',
+        scale,
+        productLogoSource,
+        'product_logo_16.png',
+      ),
+      path.join(
+        chromeComponentsDir,
+        'resources',
+        scale,
+        'chromium',
+        'favicon_product.png',
+      ),
+    ])
   }
   for (const branding of ['brave', 'brave_origin']) {
     fileMap.add([
