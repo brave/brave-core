@@ -11,8 +11,6 @@ import IBraveTheme from 'brave-ui/theme/theme-interface'
 export type Props = {
   dark?: IBraveTheme
   light?: IBraveTheme
-  /** When true, always use the dark theme and set `data-theme="dark"` on the root element (ignores system preference). */
-  forceDarkMode?: boolean
 }
 
 const darkModeMediaMatcher = window.matchMedia('(prefers-color-scheme: dark)')
@@ -21,10 +19,6 @@ export default function LightDarkThemeProvider (props: React.PropsWithChildren<P
   const [isDarkMode, setIsDarkMode] = React.useState(darkModeMediaMatcher.matches)
 
   React.useEffect(() => {
-    if (props.forceDarkMode) {
-      return
-    }
-
     const handleDarkModeChange = (e: MediaQueryListEvent) => {
       setIsDarkMode(e.matches)
     }
@@ -42,29 +36,11 @@ export default function LightDarkThemeProvider (props: React.PropsWithChildren<P
       darkModeMediaMatcher.removeEventListener('change', handleDarkModeChange)
       document.removeEventListener('visibilitychange', onVisibilityChange)
     }
-  }, [props.forceDarkMode])
+  }, [])
 
-  React.useLayoutEffect(() => {
-    if (!props.forceDarkMode) {
-      return
-    }
-    const html = document.documentElement
-    const previous = html.dataset.theme
-    html.dataset.theme = 'dark'
-    return () => {
-      if (previous === undefined) {
-        delete html.dataset.theme
-      } else {
-        html.dataset.theme = previous
-      }
-    }
-  }, [props.forceDarkMode])
-
-  const selectedTheme =
-    props.forceDarkMode || isDarkMode
-      ? props.dark || DefaultDarkTheme
-      : props.light || DefaultTheme
-
+  const selectedTheme = isDarkMode
+    ? props.dark || DefaultDarkTheme
+    : props.light || DefaultTheme
   return (
     <ThemeProvider theme={selectedTheme}>
       {React.Children.only(props.children)}
