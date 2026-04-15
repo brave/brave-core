@@ -11,7 +11,7 @@ import IBraveTheme from 'brave-ui/theme/theme-interface'
 export type Props = {
   dark?: IBraveTheme
   light?: IBraveTheme
-  /** When true, always use the dark theme and Leo `data-theme="dark"` (ignores system preference). */
+  /** When true, always use the dark theme and set `data-theme="dark"` on the root element (ignores system preference). */
   forceDarkMode?: boolean
 }
 
@@ -44,22 +44,30 @@ export default function LightDarkThemeProvider (props: React.PropsWithChildren<P
     }
   }, [props.forceDarkMode])
 
+  React.useLayoutEffect(() => {
+    if (!props.forceDarkMode) {
+      return
+    }
+    const html = document.documentElement
+    const previous = html.dataset.theme
+    html.dataset.theme = 'dark'
+    return () => {
+      if (previous === undefined) {
+        delete html.dataset.theme
+      } else {
+        html.dataset.theme = previous
+      }
+    }
+  }, [props.forceDarkMode])
+
   const selectedTheme =
     props.forceDarkMode || isDarkMode
       ? props.dark || DefaultDarkTheme
       : props.light || DefaultTheme
 
-  const child = React.Children.only(props.children)
-
   return (
     <ThemeProvider theme={selectedTheme}>
-      {props.forceDarkMode ? (
-        <span data-theme='dark' style={{ display: 'contents' }}>
-          {child}
-        </span>
-      ) : (
-        child
-      )}
+      {React.Children.only(props.children)}
     </ThemeProvider>
   )
 }
