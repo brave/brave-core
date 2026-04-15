@@ -40,6 +40,7 @@ class BraveOriginSettingsHandlerImpl
                       bool value,
                       SetPolicyValueCallback callback) override;
   void GetNeedsRestart(GetNeedsRestartCallback callback) override;
+  void ProceedFree(ProceedFreeCallback callback) override;
 
  private:
   raw_ptr<BraveOriginService> brave_origin_service_;

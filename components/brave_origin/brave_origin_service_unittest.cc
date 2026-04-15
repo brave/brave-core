@@ -18,6 +18,7 @@
 #include "brave/components/brave_origin/pref_names.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/test/fake_skus_service.h"
+#include "build/build_config.h"
 #include "components/policy/core/common/mock_policy_service.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
@@ -89,6 +90,10 @@ class BraveOriginServiceTest : public testing::Test {
     local_state_.registry()->RegisterBooleanPref(kOriginPoliciesWereEnforced,
                                                  false);
     local_state_.registry()->RegisterDictionaryPref(skus::prefs::kSkusState);
+#if BUILDFLAG(IS_LINUX)
+    local_state_.registry()->RegisterBooleanPref(kOriginFreeTierAccepted,
+                                                 false);
+#endif
 
     // Register test browser preferences in local_state
     // These are needed because BraveOriginService::SetBrowserPolicyValue()
@@ -605,6 +610,10 @@ class BraveOriginServiceWithSkusTest : public testing::Test {
     local_state_.registry()->RegisterBooleanPref(kOriginPoliciesWereEnforced,
                                                  false);
     local_state_.registry()->RegisterDictionaryPref(skus::prefs::kSkusState);
+#if BUILDFLAG(IS_LINUX)
+    local_state_.registry()->RegisterBooleanPref(kOriginFreeTierAccepted,
+                                                 false);
+#endif
 
     local_state_.registry()->RegisterBooleanPref(kTestBrowserPref, false);
     profile_prefs_.registry()->RegisterBooleanPref(kTestProfilePref, true);
@@ -909,6 +918,10 @@ class BraveOriginServiceDisabledTest : public testing::Test {
     local_state_.registry()->RegisterBooleanPref(kOriginPoliciesWereEnforced,
                                                  false);
     local_state_.registry()->RegisterDictionaryPref(skus::prefs::kSkusState);
+#if BUILDFLAG(IS_LINUX)
+    local_state_.registry()->RegisterBooleanPref(kOriginFreeTierAccepted,
+                                                 false);
+#endif
 
     // Register test preferences (needed for pref service not to crash)
     local_state_.registry()->RegisterBooleanPref(kTestBrowserPref, false);

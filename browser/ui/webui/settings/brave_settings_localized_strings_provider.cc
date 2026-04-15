@@ -35,6 +35,7 @@
 #include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_generated_resources_webui_strings.h"
+#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/media/router/media_router_feature.h"
 #include "chrome/browser/profiles/profile.h"
@@ -223,6 +224,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_BUY_NOW},
       {"braveOriginOnboardingLearnMore",
        IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_LEARN_MORE},
+#if BUILDFLAG(IS_LINUX)
+      {"braveOriginOnboardingProceedFree",
+       IDS_BRAVE_ORIGIN_STARTUP_LINUX_FREE_BUTTON},
+#endif
       {"siteSettingsShields", IDS_SETTINGS_SITE_SETTINGS_SHIELDS},
       {"siteSettingsShieldsStatus", IDS_SETTINGS_SITE_SETTINGS_SHIELDS_STATUS},
       {"siteSettingsShieldsUp", IDS_SETTINGS_SITE_SETTINGS_SHIELDS_UP},

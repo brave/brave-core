@@ -17,6 +17,7 @@
 #include "base/values.h"
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
+#include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -78,6 +79,15 @@ class BraveOriginService : public KeyedService {
   // was created (i.e., since browser startup). This indicates that a restart
   // is needed for the changes to fully take effect.
   bool NeedsRestart() const;
+
+#if BUILDFLAG(IS_LINUX)
+  // Accept the Linux free tier: sets the kOriginFreeTierAccepted pref and
+  // marks the policy manager as purchased so policies take effect.
+  void AcceptFreeTier();
+
+  // Returns true if the user has accepted the Linux free tier.
+  bool IsFreeTierAccepted() const;
+#endif
 
  protected:
   // Local state and profile preferences this state is associated with

@@ -94,6 +94,10 @@ export class SettingsBraveOriginPageElement
     // Check purchase state
     this.checkPurchaseState_()
 
+    // Handle proceed-free from onboarding component
+    this.addEventListener('proceed-free-clicked',
+        () => this.onProceedFreeClicked_())
+
     // Re-check when the tab becomes visible (user may return from
     // account page after purchasing)
     this.boundOnVisibilityChange_ = this.onVisibilityChange_.bind(this)
@@ -125,6 +129,11 @@ export class SettingsBraveOriginPageElement
     const {isPurchased} =
         await this.braveOriginHandler_.refreshPurchaseState()
     this.isPurchased_ = isPurchased
+  }
+
+  private async onProceedFreeClicked_() {
+    await this.braveOriginHandler_.proceedFree()
+    this.isPurchased_ = true
   }
 
   private async resetToDefaults_() {
