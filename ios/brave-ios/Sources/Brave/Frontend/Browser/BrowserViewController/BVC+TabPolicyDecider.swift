@@ -471,7 +471,11 @@ extension BrowserViewController {
 
     if FeatureList.kShouldCancelRequestsForUserAgentChange.enabled,
       let headerUserAgent = request.allHTTPHeaderFields?["User-Agent"],
-      case let userAgentForType = self.tab(tab, userAgentForType: .automatic, request: request),
+      case let userAgentForType = userAgent(
+        for: request,
+        userAgentForType: .automatic,
+        braveUserAgentExceptions: tab.braveUserAgentExceptions
+      ),
       headerUserAgent != userAgentForType
     {
       // When changing user agent, we must cancel & restart the request

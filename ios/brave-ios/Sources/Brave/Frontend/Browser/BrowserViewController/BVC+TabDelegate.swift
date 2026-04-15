@@ -676,37 +676,11 @@ extension BrowserViewController {
     userAgentForType type: UserAgentType,
     request: URLRequest
   ) -> String? {
-    if !Preferences.Debug.userAgentOverride.value.isEmpty {
-      return Preferences.Debug.userAgentOverride.value
-    }
-    let isBraveAllowedInUA =
-      request.mainDocumentURL.flatMap {
-        tab.braveUserAgentExceptions?.canShowBrave($0)
-      } ?? true
-
-    let mobile: String
-    let desktop: String
-    if isBraveAllowedInUA {
-      let userAgentType = GetDefaultBraveIOSUserAgentType()
-      mobile = userAgentType.userAgentForMode(isMobile: true)
-      desktop = userAgentType.userAgentForMode(isMobile: false)
-    } else {
-      mobile = UserAgent.mobileMasked
-      desktop = UserAgent.desktopMasked
-    }
-
-    switch type {
-    case .none, .automatic:
-      let screenWidth = UIScreen.main.bounds.width
-      if traitCollection.horizontalSizeClass == .compact && view.bounds.width < screenWidth / 2 {
-        return mobile
-      }
-      return traitCollection.userInterfaceIdiom == .pad
-        && profileController.defaultHostContentSettings.defaultPageMode == .desktop
-        ? desktop : mobile
-    case .desktop: return desktop
-    case .mobile: return mobile
-    }
+    userAgent(
+      for: request,
+      userAgentForType: type,
+      braveUserAgentExceptions: tab.braveUserAgentExceptions
+    )
   }
 
   public func tab(_ tab: some TabState, defaultUserAgentTypeForURL url: URL) -> UserAgentType {
