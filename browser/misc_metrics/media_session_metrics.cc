@@ -5,6 +5,7 @@
 
 #include "brave/browser/misc_metrics/media_session_metrics.h"
 
+#include <array>
 #include <utility>
 
 #include "base/check.h"
@@ -13,6 +14,7 @@
 #include "brave/components/misc_metrics/pref_names.h"
 #include "brave/components/misc_metrics/uptime_monitor.h"
 #include "brave/components/p3a_utils/bucket.h"
+#include "brave/components/p3a_utils/custom_attributes.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/media_session.h"
@@ -26,6 +28,9 @@ constexpr base::TimeDelta kTickInterval = base::Seconds(30);
 constexpr base::TimeDelta kFrameDuration = base::Days(7);
 
 constexpr int kMediaSessionUsageBuckets[] = {0, 20, 40, 60, 80, 100};
+constexpr int kMediaSessionUsageAttributeThresholds[] = {0, 33, 67};
+constexpr std::array<std::string_view, 4> kMediaSessionUsageAttributeValues = {
+    "0", "1-33", "34-67", "68-100"};
 
 }  // namespace
 
@@ -149,6 +154,8 @@ void MediaSessionMetrics::ReportMetric() {
   base::TimeDelta active_time =
       local_state_->GetTimeDelta(kMiscMetricsMediaSessionActiveProcessTime);
   if (active_time.is_zero()) {
+    p3a_utils::SetCustomAttribute(kMediaSessionUsageAttributeName,
+                                  std::nullopt);
     return;
   }
 
@@ -158,6 +165,11 @@ void MediaSessionMetrics::ReportMetric() {
   if (percentage == 0 && !media_time.is_zero()) {
     percentage = 1;
   }
+
+  p3a_utils::SetCustomAttribute(
+      kMediaSessionUsageAttributeName,
+      kMediaSessionUsageAttributeValues.at(p3a_utils::BucketIndex(
+          kMediaSessionUsageAttributeThresholds, percentage)));
 
   p3a_utils::RecordToHistogramBucket(kMediaSessionUsageHistogramName,
                                      kMediaSessionUsageBuckets, percentage);

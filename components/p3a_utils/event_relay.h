@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_P3A_UTILS_EVENT_RELAY_H_
 
 #include <optional>
+#include <string>
 #include <string_view>
 
 #include "base/no_destructor.h"

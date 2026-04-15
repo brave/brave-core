@@ -15,3 +15,18 @@ static_library("p3a_utils") {
     "//components/prefs",
   ]
 }
+
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "test_event_relay_observer.cc",
+    "test_event_relay_observer.h",
+  ]
+
+  public_deps = [
+    ":p3a_utils",
+    "//base",
+    "//third_party/abseil-cpp:absl",
+  ]
+}
