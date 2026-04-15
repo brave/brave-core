@@ -651,10 +651,10 @@ void RenderViewContextMenu::BuildContainersMenu() {
   if (first_separator_index.has_value()) {
     menu_model_.InsertSubMenuWithStringIdAt(
         *first_separator_index, IDC_OPEN_IN_CONTAINER,
-        IDS_CXMENU_OPEN_IN_CONTAINER, containers_submenu_model_.get());
+        IDS_CXMENU_OPEN_LINK_IN_CONTAINER, containers_submenu_model_.get());
   } else {
     menu_model_.AddSubMenuWithStringId(IDC_OPEN_IN_CONTAINER,
-                                       IDS_CXMENU_OPEN_IN_CONTAINER,
+                                       IDS_CXMENU_OPEN_LINK_IN_CONTAINER,
                                        containers_submenu_model_.get());
   }
 }
