@@ -382,8 +382,8 @@ void AdsServiceImpl::InitializeRewardsWallet() {
 void AdsServiceImpl::InitializeRewardsWalletCallback(
     brave_rewards::mojom::RewardsWalletPtr mojom_rewards_wallet) {
   // Guaranteed by `bat_ads_service_weak_ptr_factory_`. `ShutdownAdsService`
-  // resets `bat_ads_associated_remote_` before invalidating the factory, so the
-  // remote is bound for the lifetime of any pending init callback.
+  // resets `bat_ads_associated_remote_` before invalidating the factory,
+  // so the remote is bound for the lifetime of any pending init callback.
   CHECK(bat_ads_associated_remote_.is_bound());
 
   if (!mojom_rewards_wallet && UserHasJoinedBraveRewards()) {

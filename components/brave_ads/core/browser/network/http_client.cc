@@ -238,17 +238,18 @@ void HttpClient::ObliviousHttpRequest(
                        std::move(callback));
   }
 
-  mojo::PendingRemote<network::mojom::ObliviousHttpClient> mojom_pending_remote;
+  mojo::PendingRemote<network::mojom::ObliviousHttpClient>
+      oblivious_http_client_pending_remote;
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<ObliviousHttpClientImpl>(
           mojom_url_request->url,
           base::BindOnce(&HttpClient::ObliviousHttpRequestCallback,
                          weak_ptr_factory_.GetWeakPtr(), std::move(callback))),
-      mojom_pending_remote.InitWithNewPipeAndPassReceiver());
+      oblivious_http_client_pending_remote.InitWithNewPipeAndPassReceiver());
 
   mojom_network_context->GetViaObliviousHttp(
       BuildObliviousHttpRequest(relay_url, *key_config, mojom_url_request),
-      std::move(mojom_pending_remote));
+      std::move(oblivious_http_client_pending_remote));
 }
 
 void HttpClient::ObliviousHttpRequestCallback(
