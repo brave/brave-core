@@ -83,6 +83,7 @@ import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
+import org.chromium.chrome.browser.glic.GlicToolbarButtonController;
 import org.chromium.chrome.browser.homepage.settings.BraveRadioButtonGroupHomepagePreference;
 import org.chromium.chrome.browser.hub.HubShowPaneHelper;
 import org.chromium.chrome.browser.hub.PaneListBuilder;
@@ -2322,7 +2323,7 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/tabbed_mode/TabbedAdaptiveToolbarBehavior",
                         "org/chromium/chrome/browser/tabbed_mode/BraveTabbedAdaptiveToolbarBehavior", // presubmit: ignore-long-line
-                        Context.class,
+                        Activity.class,
                         ActivityLifecycleDispatcher.class,
                         Supplier.class,
                         Supplier.class,
@@ -2333,7 +2334,7 @@ public class BytecodeTest {
                         Supplier.class,
                         Supplier.class,
                         MonotonicObservableSupplier.class,
-                        Runnable.class));
+                        GlicToolbarButtonController.GlicButtonDelegate.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/SwipeRefreshHandler",
