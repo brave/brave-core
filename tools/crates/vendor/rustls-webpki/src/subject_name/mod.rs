@@ -93,8 +93,8 @@ fn check_presented_id_conforms_to_constraints(
     budget: &mut Budget,
 ) -> Option<Result<(), Error>> {
     let subtrees = [
-        (Subtrees::PermittedSubtrees, permitted_subtrees),
-        (Subtrees::ExcludedSubtrees, excluded_subtrees),
+        (Subtrees::Permitted, permitted_subtrees),
+        (Subtrees::Excluded, excluded_subtrees),
     ];
 
     fn general_subtree<'b>(input: &mut untrusted::Reader<'b>) -> Result<GeneralName<'b>, Error> {
@@ -126,10 +126,16 @@ fn check_presented_id_conforms_to_constraints(
                 Err(err) => return Some(Err(err)),
             };
 
+            // Avoid having a catch-all branch here which might fail open on new variants
             let matches = match (name, base) {
                 (GeneralName::DnsName(name), GeneralName::DnsName(base)) => {
-                    dns_name::presented_id_matches_reference_id(name, IdRole::NameConstraint, base)
+                    dns_name::presented_id_matches_reference_id(
+                        name,
+                        IdRole::NameConstraint(subtrees),
+                        base,
+                    )
                 }
+                (GeneralName::DnsName(_), _) => continue,
 
                 (GeneralName::DirectoryName, GeneralName::DirectoryName) => Ok(
                     // Reject any uses of directory name constraints; we don't implement this.
@@ -146,14 +152,23 @@ fn check_presented_id_conforms_to_constraints(
                     // Rejection is achieved by not matching any PermittedSubtrees, and matching all
                     // ExcludedSubtrees.
                     match subtrees {
-                        Subtrees::PermittedSubtrees => false,
-                        Subtrees::ExcludedSubtrees => true,
+                        Subtrees::Permitted => false,
+                        Subtrees::Excluded => true,
                     },
                 ),
+                (GeneralName::DirectoryName, _) => continue,
 
                 (GeneralName::IpAddress(name), GeneralName::IpAddress(base)) => {
                     ip_address::presented_id_matches_constraint(name, base)
                 }
+                (GeneralName::IpAddress(_), _) => continue,
+
+                // We currently don't support URI constraints -- fail closed for now.
+                (
+                    GeneralName::UniformResourceIdentifier(_),
+                    GeneralName::UniformResourceIdentifier(_),
+                ) => Ok(false),
+                (GeneralName::UniformResourceIdentifier(_), _) => continue,
 
                 // RFC 4280 says "If a name constraints extension that is marked as
                 // critical imposes constraints on a particular name form, and an
@@ -168,28 +183,23 @@ fn check_presented_id_conforms_to_constraints(
                 {
                     Err(Error::NameConstraintViolation)
                 }
-
-                _ => {
-                    // mismatch between constraint and name types; continue with current
-                    // name and next constraint
-                    continue;
-                }
+                (GeneralName::Unsupported(_), _) => continue,
             };
 
             match (subtrees, matches) {
-                (Subtrees::PermittedSubtrees, Ok(true)) => {
+                (Subtrees::Permitted, Ok(true)) => {
                     has_permitted_subtrees_match = true;
                 }
 
-                (Subtrees::PermittedSubtrees, Ok(false)) => {
+                (Subtrees::Permitted, Ok(false)) => {
                     has_permitted_subtrees_mismatch = true;
                 }
 
-                (Subtrees::ExcludedSubtrees, Ok(true)) => {
+                (Subtrees::Excluded, Ok(true)) => {
                     return Some(Err(Error::NameConstraintViolation));
                 }
 
-                (Subtrees::ExcludedSubtrees, Ok(false)) => (),
+                (Subtrees::Excluded, Ok(false)) => (),
                 (_, Err(err)) => return Some(Err(err)),
             }
         }
@@ -205,10 +215,10 @@ fn check_presented_id_conforms_to_constraints(
     None
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, PartialEq)]
 enum Subtrees {
-    PermittedSubtrees,
-    ExcludedSubtrees,
+    Permitted,
+    Excluded,
 }
 
 pub(crate) struct NameIterator<'a> {
