@@ -960,4 +960,121 @@ describe('createInterfaceApi', () => {
     expect(secondHookResult.result.current.data).toEqual(['5', 5])
     expect(secondHookResult.result.current.hasEmitted).toBe(true)
   })
+
+  it('delivers pre-existing event data to late subscribers', () => {
+    const api = createInterfaceApi({
+      actions: {},
+      endpoints: {},
+      events: {
+        myEvent: event<[], [string, number]>(() => {}),
+      },
+    })
+
+    // Emit event BEFORE any subscriber exists — this is the scenario where
+    // the QueryObserver constructor reads cached data into #currentResult
+    // and .subscribe() skips notification due to shallowEqualObjects.
+    api.emitEvent('myEvent', ['hello', 42])
+
+    // Now subscribe after the event was already emitted
+    const observer = jest.fn()
+    const unsubscribe = api.subscribeToMyEvent(observer)
+
+    // The subscriber should receive the pre-existing data immediately
+    expect(observer).toHaveBeenCalledTimes(1)
+    expect(observer).toHaveBeenCalledWith('hello', 42)
+
+    // Subsequent events should still work normally
+    api.emitEvent('myEvent', ['world', 99])
+    expect(observer).toHaveBeenCalledTimes(2)
+    expect(observer).toHaveBeenLastCalledWith('world', 99)
+
+    unsubscribe()
+  })
+
+  it('delivers pre-existing void event data to late subscribers', () => {
+    const api = createInterfaceApi({
+      actions: {},
+      endpoints: {},
+      events: {
+        myVoidEvent: event<[], []>(() => {}),
+      },
+    })
+
+    // Emit void event before subscriber exists
+    api.emitEvent('myVoidEvent', [])
+
+    const observer = jest.fn()
+    const unsubscribe = api.subscribeToMyVoidEvent(observer)
+
+    // Late subscriber should still be notified of the pre-existing event
+    expect(observer).toHaveBeenCalledTimes(1)
+
+    // Subsequent void events should still work
+    api.emitEvent('myVoidEvent', [])
+    expect(observer).toHaveBeenCalledTimes(2)
+
+    unsubscribe()
+  })
+
+  it('useMyEvent hook receives event emitted before mount', async () => {
+    let emitter: (...args: [string, number]) => void = () => {}
+    const api = createInterfaceApi({
+      actions: {},
+      endpoints: {},
+      events: {
+        myEvent: event<[], [string, number]>((emit) => {
+          emitter = emit
+        }),
+      },
+    })
+
+    // Emit event BEFORE any React component mounts — simulates the scenario
+    // where a Mojo event arrives before useEffect runs (e.g., sidebar open).
+    emitter('pre-mount', 1)
+
+    // Now mount a component that uses useMyEvent
+    const handler = jest.fn()
+    function useMyEventHook() {
+      api.useMyEvent(handler, [])
+    }
+
+    await act(async () => renderHook(useMyEventHook))
+
+    // The handler should have been called with the pre-existing data
+    expect(handler).toHaveBeenCalledTimes(1)
+    expect(handler).toHaveBeenCalledWith('pre-mount', 1)
+
+    // New events after mount should also fire
+    await act(async () => emitter('post-mount', 2))
+    expect(handler).toHaveBeenCalledTimes(2)
+    expect(handler).toHaveBeenLastCalledWith('post-mount', 2)
+  })
+
+  it('does not double-deliver when subscriber is called synchronously', () => {
+    const api = createInterfaceApi({
+      actions: {},
+      endpoints: {},
+      events: {
+        myEvent: event<[], [string, number]>(() => {}),
+      },
+    })
+
+    // Subscribe first, then emit — the normal flow where .subscribe()
+    // callback fires synchronously. Should NOT double-deliver.
+    const observer = jest.fn()
+    const unsubscribe = api.subscribeToMyEvent(observer)
+
+    // No pre-existing event, so nothing should have been called
+    expect(observer).toHaveBeenCalledTimes(0)
+
+    api.emitEvent('myEvent', ['test', 1])
+    expect(observer).toHaveBeenCalledTimes(1)
+    expect(observer).toHaveBeenCalledWith('test', 1)
+
+    api.emitEvent('myEvent', ['test', 2])
+    expect(observer).toHaveBeenCalledTimes(2)
+    expect(observer).toHaveBeenLastCalledWith('test', 2)
+
+    unsubscribe()
+  })
 })
