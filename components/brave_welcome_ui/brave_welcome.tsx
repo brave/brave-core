@@ -17,7 +17,11 @@ import DataContextProvider from './state/data-context-provider'
 function App () {
   return (
     <DataContextProvider>
-      <BraveCoreThemeProvider>
+      <BraveCoreThemeProvider
+        // <if expr="is_brave_origin_branded">
+        forceDarkMode
+        // </if>
+      >
         <MainContainer />
       </BraveCoreThemeProvider>
     </DataContextProvider>
