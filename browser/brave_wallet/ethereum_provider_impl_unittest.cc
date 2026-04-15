@@ -24,7 +24,6 @@
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
-#include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl.h"
@@ -209,14 +208,13 @@ class EthereumProviderImplUnitTest : public testing::Test {
     BraveWalletServiceDelegateImpl::SetActiveWebContentsForTesting(
         web_contents_.get());
     permissions::PermissionRequestManager::CreateForWebContents(web_contents());
-    asset_ratio_service_ =
-        AssetRatioServiceFactory::GetServiceForContext(browser_context());
-    asset_ratio_service_->SetAPIRequestHelperForTesting(
-        url_loader_factory_.GetSafeWeakWrapper());
     brave_wallet_service_ = std::make_unique<BraveWalletService>(
         url_loader_factory_.GetSafeWeakWrapper(),
         BraveWalletServiceDelegate::Create(browser_context()), prefs(),
         &local_state_);
+    brave_wallet_service_->asset_ratio_service()->SetAPIRequestHelperForTesting(
+        url_loader_factory_.GetSafeWeakWrapper());
+
     ASSERT_TRUE(brave_wallet_service_.get());
     json_rpc_service()->SetAPIRequestHelperForTesting(
         url_loader_factory_.GetSafeWeakWrapper());
@@ -919,7 +917,6 @@ class EthereumProviderImplUnitTest : public testing::Test {
   std::unique_ptr<content::TestWebContents> web_contents_;
   base::ScopedTempDir temp_dir_;
   TestingProfile profile_;
-  raw_ptr<AssetRatioService> asset_ratio_service_;
 
  protected:
   std::unique_ptr<BraveWalletService> brave_wallet_service_;

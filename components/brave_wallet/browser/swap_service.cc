@@ -272,12 +272,6 @@ SwapService::SwapService(
 
 SwapService::~SwapService() = default;
 
-mojo::PendingRemote<mojom::SwapService> SwapService::MakeRemote() {
-  mojo::PendingRemote<mojom::SwapService> remote;
-  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
-  return remote;
-}
-
 void SwapService::Bind(mojo::PendingReceiver<mojom::SwapService> receiver) {
   receivers_.Add(this, std::move(receiver));
 }
