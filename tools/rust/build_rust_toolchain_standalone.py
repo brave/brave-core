@@ -438,7 +438,11 @@ class ToolchainBuilder:
         self._bootstrap_depot_tools()
 
         self.chromium_src.parent.mkdir(parents=True, exist_ok=True)
-        _check_call('fetch', 'chromium', cwd=self.chromium_src.parent)
+        _check_call('fetch',
+                    '--nohistory',
+                    '--nohooks',
+                    'chromium',
+                    cwd=self.chromium_src.parent)
 
     def run(self, use_ref: str = None):
         """Execute the full build-and-package pipeline.
