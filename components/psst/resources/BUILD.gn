@@ -45,8 +45,10 @@ repack("resources") {
     ":static_resources",
   ]
 
-  sources =
-      [ "$root_gen_dir/brave/components/psst/resources/brave_psst_static.pak" ]
+  sources = [
+    "$root_gen_dir/brave/components/psst/resources/brave_psst_dialog_generated.pak",
+    "$root_gen_dir/brave/components/psst/resources/brave_psst_static.pak",
+  ]
 
   output =
       "$root_gen_dir/brave/components/psst/resources/brave_psst_resources.pak"
