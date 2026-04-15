@@ -218,6 +218,11 @@ interface AIChatUIHandler {
   ProcessPdfFile(array<uint8> file_data, string filename)
       => (UploadedFile? processed_file);
 
+  // Process text files: extract text via background renderer for encoding
+  // detection
+  ProcessTextFile(array<uint8> file_data, string filename)
+      => (UploadedFile? processed_file);
+
   // Get a plural string for the given key and count.
   GetPluralString(string key, int32 count) => (string plural_string);
 

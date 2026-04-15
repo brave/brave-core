@@ -2,6 +2,7 @@ include_rules = [
   "+brave/components/restricted_web_contents_delegate",
   "+brave/services/printing/public/mojom",
   "+brave/components/text_recognition/common",
+  "+third_party/blink/public/strings",
 ]
 
 specific_include_rules = {

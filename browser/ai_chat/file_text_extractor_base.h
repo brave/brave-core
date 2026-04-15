@@ -18,6 +18,7 @@
 #include "brave/components/restricted_web_contents_delegate/restricted_web_contents_delegate.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "services/network/public/cpp/web_sandbox_flags.h"
+#include "url/gurl.h"
 
 namespace content {
 class BrowserContext;
@@ -44,6 +45,21 @@ class FileTextExtractorBase : public RestrictedWebContentsDelegate,
   FileTextExtractorBase(const FileTextExtractorBase&) = delete;
   FileTextExtractorBase& operator=(const FileTextExtractorBase&) = delete;
 
+  // Two entry points for text extraction:
+
+  // Use an existing file path directly (e.g. from file picker).
+  void ExtractText(content::BrowserContext* browser_context,
+                   const base::FilePath& file_path,
+                   ExtractTextCallback callback);
+
+  // Write bytes to a temp file first (e.g. from drag-and-drop).
+  // |extension| is the file extension for MIME type detection (without
+  // leading dot).
+  void ExtractText(content::BrowserContext* browser_context,
+                   std::vector<uint8_t> file_bytes,
+                   const base::FilePath::StringType& extension,
+                   ExtractTextCallback callback);
+
  protected:
   // Called when the document has loaded and is ready for text extraction.
   // Subclasses must implement this and call Finish() with the result.
@@ -52,6 +68,10 @@ class FileTextExtractorBase : public RestrictedWebContentsDelegate,
   // Returns additional sandbox flags to remove beyond the base set
   // (Scripts, Origin, Navigation). Override to add more, e.g. kPlugins.
   virtual network::mojom::WebSandboxFlags AdditionalUnsandboxFlags() const;
+
+  // Returns the URL to load for the given file path. Default returns a
+  // file:// URL. Override to customize, e.g. view-source:file://.
+  virtual GURL GetLoadURL(const base::FilePath& file_path) const;
 
   // Starts loading a file in a hidden WebContents.
   void LoadInWebContents(content::BrowserContext* browser_context,
