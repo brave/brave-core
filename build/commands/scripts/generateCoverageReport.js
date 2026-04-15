@@ -5,7 +5,7 @@
 import { glob, rm } from 'node:fs/promises'
 import fs from 'fs-extra'
 import utils from '../lib/util.js'
-import config from '../lib/config.js'
+import config from '../lib/config.ts'
 
 const dedupe = (xs) => [...new Set(xs)]
 const getTestBinariesFromRecordingsPath = (outputDir) => {

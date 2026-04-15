@@ -40,7 +40,7 @@ action("generate_tsconfig") {
   ]
   inputs = [
     "$root_gen_dir/brave/components/common/package.json",
-    "//brave/build/commands/lib/config.js",
+    "//brave/build/commands/lib/config.ts",
     "//brave/build/commands/lib/genTsConfig.js",
     "//brave/build/commands/scripts/genTsConfig.js",
     "path-map.js",

@@ -8,7 +8,7 @@
 // Designed to be used on CI, but should work locally too.
 // The script includes syncing; there is no need to run npm run sync before.
 
-import config from './config.js'
+import config from './config.ts'
 import util from './util.js'
 import path from 'node:path'
 import fs from 'fs-extra'

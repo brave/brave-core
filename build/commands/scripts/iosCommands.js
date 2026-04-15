@@ -5,7 +5,7 @@
 
 import program from 'commander'
 import path from 'node:path'
-import config from '../lib/config.js'
+import config from '../lib/config.ts'
 import util from '../lib/util.js'
 
 const bootstrap = (options = {}) => {
