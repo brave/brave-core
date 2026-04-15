@@ -36,6 +36,7 @@ import {
   getPriceRequestsForTokens,
 } from '../../../../../../utils/pricing-utils'
 import { getLPIcon } from '../../../swap.utils'
+import { sanitizeImageURL } from '../../../../../../utils/string-utils'
 import Amount from '../../../../../../utils/amount'
 
 // Components
@@ -87,7 +88,7 @@ const SmallAssetIconWithPlaceholder = withPlaceholderIcon(SmallAssetIcon, {
 
 const getGate3LPIcon = (step: BraveWallet.Gate3SwapRouteStep) => {
   if (step.tool.logo) {
-    return `chrome://image?url=${encodeURIComponent(step.tool.logo)}&staticEncode=true`
+    return sanitizeImageURL(step.tool.logo)
   }
 
   const iconFromMetadata = LPMetadata[step.tool.name]

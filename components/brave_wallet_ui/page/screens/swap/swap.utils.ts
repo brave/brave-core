@@ -12,6 +12,7 @@ import { LPMetadata } from './constants/metadata'
 import Amount from '../../../utils/amount'
 import { getTokenPriceAmountFromRegistry } from '../../../utils/pricing-utils'
 import { makeNetworkAsset } from '../../../options/asset-options'
+import { sanitizeImageURL } from '../../../utils/string-utils'
 
 function ensureUnique<T>(array: T[], key: keyof T): T[] {
   return [...new Set(array.map((a) => a[key]))].map(
@@ -336,7 +337,7 @@ export const getLPIcon = (source: Pick<LiquiditySource, 'name' | 'logo'>) => {
     return iconFromMetadata
   }
   if (source.logo) {
-    return `chrome://image?url=${encodeURIComponent(source.logo)}&staticEncode=true`
+    return sanitizeImageURL(source.logo)
   }
   return ''
 }
