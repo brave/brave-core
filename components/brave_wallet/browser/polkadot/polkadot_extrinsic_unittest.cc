@@ -535,7 +535,7 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_TransferKeepAlive) {
 
   keypair.UseMockRngForTesting();
 
-  const auto transfer_all = false;
+  const bool transfer_all = false;
 
   std::array<uint8_t, 16> send_amount_bytes = {};
   base::span(send_amount_bytes)
@@ -658,7 +658,7 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_TransferAll) {
 
   keypair.UseMockRngForTesting();
 
-  const auto transfer_all = true;
+  const bool transfer_all = true;
 
   std::array<uint8_t, 16> send_amount_bytes = {};
   base::span(send_amount_bytes)
