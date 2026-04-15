@@ -15,7 +15,7 @@ struct WalletInfo;
 namespace test {
 
 WalletInfo Wallet();
-mojom::WalletInfoPtr WalletAsPtr();
+mojom::WalletInfoPtr MojomWallet();
 
 }  // namespace test
 

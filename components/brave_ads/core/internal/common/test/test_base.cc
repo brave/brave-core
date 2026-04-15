@@ -305,7 +305,7 @@ void TestBase::SetUpIntegrationTest() {
   // Must be called after `Ads` is instantiated but prior to `Initialize`.
   Mock();
 
-  ads_->Initialize(WalletAsPtr(),
+  ads_->Initialize(MojomWallet(),
                    base::BindOnce(&TestBase::SetUpIntegrationTestCallback,
                                   weak_factory_.GetWeakPtr()));
 
