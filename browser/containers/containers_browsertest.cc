@@ -1289,7 +1289,7 @@ IN_PROC_BROWSER_TEST_F(
   RunScheduledLayouts();
 
   ASSERT_TRUE(partitioned_storage_view->GetVisible());
-  EXPECT_FALSE(partitioned_storage_action->GetIsShowingBubble());
+  ASSERT_FALSE(partitioned_storage_action->GetIsShowingBubble());
 
   const gfx::Point click_location =
       partitioned_storage_view->GetLocalBounds().CenterPoint();
