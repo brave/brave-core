@@ -129,8 +129,11 @@ void MaybeLoadRewardsURL(const GURL& redirect_url, WebContents* web_contents) {
     const GURL gate3_url = brave_domains::GetGate3URL();
     std::map<std::string, std::vector<GURL>> allowed_urls{
         {"bitflyer",
-         {GURL(BUILDFLAG(BITFLYER_PRODUCTION_URL)),
-          GURL(BUILDFLAG(BITFLYER_SANDBOX_URL))}},
+         {
+             GURL(BUILDFLAG(BITFLYER_PRODUCTION_URL)),
+             GURL(BUILDFLAG(BITFLYER_SANDBOX_URL)),
+             gate3_url,
+         }},
         {"uphold",
          {
              GURL(BUILDFLAG(UPHOLD_PRODUCTION_OAUTH_URL)),
