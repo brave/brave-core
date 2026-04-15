@@ -8,13 +8,14 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/containers/span.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads::database {
 
 mojom::DBRowInfoPtr CreateRow(
     sql::Statement* const statement,
-    const std::vector<mojom::DBBindColumnType>& mojom_db_bind_column_types) {
+    base::span<const mojom::DBBindColumnType> mojom_db_bind_column_types) {
   CHECK(statement);
 
   mojom::DBRowInfoPtr mojom_db_row = mojom::DBRowInfo::New();
