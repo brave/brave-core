@@ -16,6 +16,7 @@
 
 #include "base/base64.h"
 #include "base/check.h"
+#include "base/containers/span.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/key_pair_info.h"
 #include "crypto/random.h"
 #include "third_party/boringssl/src/include/openssl/curve25519.h"
@@ -34,8 +35,7 @@ constexpr uint8_t kHKDFSalt[] = {
     246, 105, 20,  215, 5,   248, 154, 179, 191, 46,  17,  6,   72,
     210, 91,  10,  169, 145, 248, 22,  147, 117, 24,  105, 12};
 
-std::optional<std::vector<uint8_t>> GetHKDF(
-    const std::vector<uint8_t>& secret) {
+std::optional<std::vector<uint8_t>> GetHKDF(base::span<const uint8_t> secret) {
   CHECK(!secret.empty());
 
   std::vector<uint8_t> derived_key(kHKDFSeedLength);
@@ -76,7 +76,7 @@ std::vector<uint8_t> Sha256(const std::string& value) {
 }
 
 std::optional<KeyPairInfo> GenerateSignKeyPairFromSeed(
-    const std::vector<uint8_t>& seed) {
+    base::span<const uint8_t> seed) {
   if (seed.empty()) {
     return std::nullopt;
   }
@@ -146,11 +146,11 @@ bool Verify(const std::string& message,
                         signature->data(), public_key->data()) != 0;
 }
 
-std::vector<uint8_t> Encrypt(const std::vector<uint8_t>& plaintext,
-                             const std::vector<uint8_t>& nonce,
-                             const std::vector<uint8_t>& public_key,
-                             const std::vector<uint8_t>& secret_key) {
-  std::vector<uint8_t> padded_plaintext = plaintext;
+std::vector<uint8_t> Encrypt(base::span<const uint8_t> plaintext,
+                             base::span<const uint8_t> nonce,
+                             base::span<const uint8_t> public_key,
+                             base::span<const uint8_t> secret_key) {
+  std::vector<uint8_t> padded_plaintext(plaintext.begin(), plaintext.end());
   padded_plaintext.insert(padded_plaintext.cbegin(), crypto_box_ZEROBYTES, 0);
 
   std::vector<uint8_t> ciphertext(padded_plaintext.size());
@@ -162,10 +162,10 @@ std::vector<uint8_t> Encrypt(const std::vector<uint8_t>& plaintext,
 }
 
 std::optional<std::vector<uint8_t>> MaybeDecrypt(
-    const std::vector<uint8_t>& ciphertext,
-    const std::vector<uint8_t>& nonce,
-    const std::vector<uint8_t>& public_key,
-    const std::vector<uint8_t>& secret_key) {
+    base::span<const uint8_t> ciphertext,
+    base::span<const uint8_t> nonce,
+    base::span<const uint8_t> public_key,
+    base::span<const uint8_t> secret_key) {
   std::vector<uint8_t> padded_plaintext(ciphertext.size());
   if (crypto_box_open(padded_plaintext.data(), ciphertext.data(),
                       ciphertext.size(), nonce.data(), public_key.data(),
