@@ -35,6 +35,8 @@ class QuickViewController: UIViewController {
     self.privateBrowsingManager = privateBrowsingManager
     super.init(nibName: nil, bundle: nil)
     modalPresentationStyle = .fullScreen
+
+    updateViewModel()
   }
 
   @available(*, unavailable)
@@ -89,6 +91,20 @@ class QuickViewController: UIViewController {
     currentTab.loadRequest(URLRequest(url: url))
   }
 
+  private func updateViewModel() {
+    toolbarViewModel.onActionButton = { [weak self] button in
+      switch button {
+      case .close:
+        self?.dismiss(animated: true)
+      case .shield, .refresh, .playlist, .readerMode,
+        .translate, .back, .share, .openTab:
+        break
+      }
+    }
+    // TODO: https://github.com/brave/brave-browser/issues/53567
+    toolbarViewModel.secondaryTopButton = .playlist
+  }
+
   private func setupUI() {
     guard let currentTab = currentTab else {
       return
@@ -115,13 +131,5 @@ class QuickViewController: UIViewController {
       $0.leading.trailing.equalTo(view)
       $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
     }
-
-    toolbarViewModel.onActionButton = { [weak self] button in
-      if button == .close {
-        self?.dismiss(animated: true)
-      }
-    }
-    // TODO: https://github.com/brave/brave-browser/issues/53567
-    toolbarViewModel.secondaryTopButton = .playlist
   }
 }

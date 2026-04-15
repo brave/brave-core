@@ -41,7 +41,7 @@ class QuickViewToolbarModel {
 }
 
 struct QuickViewToolbarView: View {
-  var viewModel: QuickViewToolbarModel
+  let viewModel: QuickViewToolbarModel
 
   var body: some View {
     VStack(spacing: 0) {
@@ -92,7 +92,8 @@ struct QuickViewToolbarView: View {
   @ViewBuilder
   private var secondaryTopButtonView: some View {
     if let button = viewModel.secondaryTopButton {
-      if button == .playlist {
+      switch button {
+      case .playlist:
         Button {
           viewModel.onActionButton?(.playlist)
         } label: {
@@ -103,7 +104,7 @@ struct QuickViewToolbarView: View {
           .labelStyle(QuickViewToolbarLabelIconStyle())
         }
         .accessibilityLabel(Strings.quickViewPlaylistAccessibilityLabel)
-      } else if button == .readerMode {
+      case .readerMode:
         Button {
           viewModel.onActionButton?(.readerMode)
         } label: {
@@ -114,7 +115,7 @@ struct QuickViewToolbarView: View {
           .labelStyle(QuickViewToolbarLabelIconStyle())
         }
         .accessibilityLabel(Strings.quickViewReaderModeAccessibilityLabel)
-      } else {
+      case .translate:
         Button {
           viewModel.onActionButton?(.translate)
         } label: {
@@ -125,6 +126,8 @@ struct QuickViewToolbarView: View {
           .labelStyle(QuickViewToolbarLabelIconStyle())
         }
         .accessibilityLabel(Strings.quickViewTranslateAccessibilityLabel)
+      default:
+        EmptyView()
       }
     }
   }
@@ -143,16 +146,12 @@ struct QuickViewToolbarView: View {
   }
 
   private var addressView: some View {
-    HStack(spacing: 0) {
-      Spacer()
-      Text(viewModel.url.host ?? viewModel.url.absoluteString)
-        .font(.subheadline)
-        .foregroundStyle(Color(braveSystemName: .textTertiary))
-        .lineLimit(1)
-        .frame(maxWidth: .infinity)
-        .accessibilityLabel(viewModel.url.host ?? viewModel.url.absoluteString)
-      Spacer()
-    }
+    Text(viewModel.url.host ?? viewModel.url.absoluteString)
+      .font(.subheadline)
+      .foregroundStyle(Color(braveSystemName: .textTertiary))
+      .lineLimit(1)
+      .frame(maxWidth: .infinity)
+      .accessibilityLabel(viewModel.url.host ?? viewModel.url.absoluteString)
   }
 
   private var topRightButtonsView: some View {
@@ -257,11 +256,10 @@ struct QuickViewToolbarView: View {
 
 private struct QuickViewToolbarLabelIconStyle: LabelStyle {
   var font: Font = .headline
-  var disabled: Bool = false
 
   func makeBody(configuration: Configuration) -> some View {
     configuration.icon
       .font(font)
-      .tint(disabled ? Color(braveSystemName: .iconDisabled) : Color(braveSystemName: .iconDefault))
+      .tint(Color(braveSystemName: .iconDefault))
   }
 }
