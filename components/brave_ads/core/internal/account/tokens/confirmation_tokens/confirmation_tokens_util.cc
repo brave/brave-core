@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_util.h"
 
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens.h"
-#include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/token_state_manager.h"
 
 namespace brave_ads {
 
@@ -19,7 +19,7 @@ bool HasConfirmationTokens() {
 }  // namespace
 
 ConfirmationTokens& GetConfirmationTokens() {
-  return ConfirmationStateManager::GetInstance().GetConfirmationTokens();
+  return TokenStateManager::GetInstance().GetConfirmationTokens();
 }
 
 std::optional<ConfirmationTokenInfo> MaybeGetConfirmationToken() {
@@ -33,7 +33,7 @@ std::optional<ConfirmationTokenInfo> MaybeGetConfirmationToken() {
 void AddConfirmationTokens(const ConfirmationTokenList& confirmation_tokens) {
   GetConfirmationTokens().Add(confirmation_tokens);
 
-  ConfirmationStateManager::GetInstance().SaveState();
+  TokenStateManager::GetInstance().SaveState();
 }
 
 bool RemoveConfirmationToken(const ConfirmationTokenInfo& confirmation_token) {
@@ -41,7 +41,7 @@ bool RemoveConfirmationToken(const ConfirmationTokenInfo& confirmation_token) {
     return false;
   }
 
-  ConfirmationStateManager::GetInstance().SaveState();
+  TokenStateManager::GetInstance().SaveState();
 
   return true;
 }
@@ -50,13 +50,13 @@ void RemoveConfirmationTokens(
     const ConfirmationTokenList& confirmation_tokens) {
   GetConfirmationTokens().Remove(confirmation_tokens);
 
-  ConfirmationStateManager::GetInstance().SaveState();
+  TokenStateManager::GetInstance().SaveState();
 }
 
 void RemoveAllConfirmationTokens() {
   GetConfirmationTokens().RemoveAll();
 
-  ConfirmationStateManager::GetInstance().SaveState();
+  TokenStateManager::GetInstance().SaveState();
 }
 
 bool ConfirmationTokenExists(const ConfirmationTokenInfo& confirmation_token) {

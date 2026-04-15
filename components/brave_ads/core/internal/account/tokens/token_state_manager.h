@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_CONFIRMATIONS_CONFIRMATION_STATE_MANAGER_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_CONFIRMATIONS_CONFIRMATION_STATE_MANAGER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TOKENS_TOKEN_STATE_MANAGER_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TOKENS_TOKEN_STATE_MANAGER_H_
 
 #include <optional>
 #include <string>
@@ -22,16 +22,16 @@ class DictValue;
 
 namespace brave_ads {
 
-class ConfirmationStateManager final {
+class TokenStateManager final {
  public:
-  ConfirmationStateManager();
+  TokenStateManager();
 
-  ConfirmationStateManager(const ConfirmationStateManager&) = delete;
-  ConfirmationStateManager& operator=(const ConfirmationStateManager&) = delete;
+  TokenStateManager(const TokenStateManager&) = delete;
+  TokenStateManager& operator=(const TokenStateManager&) = delete;
 
-  ~ConfirmationStateManager();
+  ~TokenStateManager();
 
-  static ConfirmationStateManager& GetInstance();
+  static TokenStateManager& GetInstance();
 
   void LoadState(std::optional<WalletInfo> wallet, InitializeCallback callback);
 
@@ -77,9 +77,9 @@ class ConfirmationStateManager final {
   ConfirmationTokens confirmation_tokens_;
   PaymentTokens payment_tokens_;
 
-  base::WeakPtrFactory<ConfirmationStateManager> weak_factory_{this};
+  base::WeakPtrFactory<TokenStateManager> weak_factory_{this};
 };
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_CONFIRMATIONS_CONFIRMATION_STATE_MANAGER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TOKENS_TOKEN_STATE_MANAGER_H_

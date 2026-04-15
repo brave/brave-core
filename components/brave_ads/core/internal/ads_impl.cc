@@ -10,6 +10,7 @@
 
 #include "base/functional/bind.h"
 #include "base/trace_event/trace_event.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/token_state_manager.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
@@ -20,7 +21,6 @@
 #include "brave/components/brave_ads/core/internal/database/database_maintenance.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_manager.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration.h"
@@ -450,7 +450,7 @@ void AdsImpl::MigrateConfirmationStateCallback(
     }
   }
 
-  ConfirmationStateManager::GetInstance().LoadState(
+  TokenStateManager::GetInstance().LoadState(
       wallet, base::BindOnce(&AdsImpl::LoadConfirmationStateCallback,
                              weak_factory_.GetWeakPtr(),
                              std::move(mojom_wallet), std::move(callback)));

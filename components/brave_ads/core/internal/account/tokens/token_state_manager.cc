@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/token_state_manager.h"
 
 #include <algorithm>
 #include <utility>
@@ -27,30 +27,29 @@
 
 namespace brave_ads {
 
-ConfirmationStateManager::ConfirmationStateManager() = default;
+TokenStateManager::TokenStateManager() = default;
 
-ConfirmationStateManager::~ConfirmationStateManager() = default;
+TokenStateManager::~TokenStateManager() = default;
 
 // static
-ConfirmationStateManager& ConfirmationStateManager::GetInstance() {
-  return GlobalState::GetInstance()->GetConfirmationStateManager();
+TokenStateManager& TokenStateManager::GetInstance() {
+  return GlobalState::GetInstance()->GetTokenStateManager();
 }
 
-void ConfirmationStateManager::LoadState(std::optional<WalletInfo> wallet,
-                                         InitializeCallback callback) {
+void TokenStateManager::LoadState(std::optional<WalletInfo> wallet,
+                                  InitializeCallback callback) {
   BLOG(3, "Loading confirmation state");
 
   wallet_ = std::move(wallet);
 
   GetAdsClient().Load(
       kConfirmationsJsonFilename,
-      base::BindOnce(&ConfirmationStateManager::LoadCallback,
+      base::BindOnce(&TokenStateManager::LoadCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void ConfirmationStateManager::LoadCallback(
-    InitializeCallback callback,
-    const std::optional<std::string>& json) {
+void TokenStateManager::LoadCallback(InitializeCallback callback,
+                                     const std::optional<std::string>& json) {
   if (!json) {
     BLOG(3, "Confirmation state does not exist, creating default state");
 
@@ -72,7 +71,7 @@ void ConfirmationStateManager::LoadCallback(
   std::move(callback).Run(/*success=*/true);
 }
 
-void ConfirmationStateManager::SaveState() {
+void TokenStateManager::SaveState() {
   if (!is_initialized_) {
     return;
   }
@@ -89,8 +88,8 @@ void ConfirmationStateManager::SaveState() {
                       }));
 }
 
-std::string ConfirmationStateManager::ToJson() {
-  TRACE_EVENT(kTraceEventCategory, "ConfirmationStateManager::ToJson");
+std::string TokenStateManager::ToJson() {
+  TRACE_EVENT(kTraceEventCategory, "TokenStateManager::ToJson");
 
   std::string json;
   CHECK(base::JSONWriter::Write(
@@ -103,8 +102,8 @@ std::string ConfirmationStateManager::ToJson() {
   return json;
 }
 
-bool ConfirmationStateManager::FromJson(const std::string& json) {
-  TRACE_EVENT(kTraceEventCategory, "ConfirmationStateManager::FromJson", "json",
+bool TokenStateManager::FromJson(const std::string& json) {
+  TRACE_EVENT(kTraceEventCategory, "TokenStateManager::FromJson", "json",
               json.size());
 
   std::optional<base::DictValue> dict =
@@ -126,7 +125,7 @@ bool ConfirmationStateManager::FromJson(const std::string& json) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void ConfirmationStateManager::ParseConfirmationTokensFromDictionary(
+void TokenStateManager::ParseConfirmationTokensFromDictionary(
     const base::DictValue& dict) {
   const auto* const list = dict.FindList("unblinded_tokens");
   if (!list) {
@@ -155,7 +154,7 @@ void ConfirmationStateManager::ParseConfirmationTokensFromDictionary(
   confirmation_tokens_.Set(filtered_confirmation_tokens);
 }
 
-void ConfirmationStateManager::ParsePaymentTokensFromDictionary(
+void TokenStateManager::ParsePaymentTokensFromDictionary(
     const base::DictValue& dict) {
   if (const auto* const list = dict.FindList("unblinded_payment_tokens")) {
     payment_tokens_.SetTokens(PaymentTokensFromValue(*list));
