@@ -651,6 +651,16 @@ export const SendScreen = React.memo(() => {
     }
   }, [needsAccountSelected, openSelectTokenModal])
 
+  React.useEffect(() => {
+    // If transactionProcessFailedMessage is set and tokenFromParams becomes undefined,
+    // user has likely cleared the state by re-navigating to the send screen,
+    // so reset the transactionProcessFailedMessage and sendAmount.
+    if (transactionProcessFailedMessage && !tokenFromParams) {
+      setTransactionProcessFailedMessage(undefined)
+      setSendAmount('')
+    }
+  }, [tokenFromParams, transactionProcessFailedMessage])
+
   // Computed
   const isReviewButtonDisabled =
     memoText.length > MAX_ZCASH_MEMO_LENGTH
