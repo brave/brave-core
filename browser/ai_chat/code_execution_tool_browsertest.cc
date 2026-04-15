@@ -50,11 +50,13 @@ class MockCodePlugin : public CodePlugin {
 
   std::string_view InclusionKeyword() const override { return "mockPlugin"; }
 
-  std::string_view SetupScript() const override {
+  std::string_view SetupScript() override {
     return "const mockPlugin = { getValue: () => 'mock_value' };";
   }
 
-  std::string_view ArtifactType() const override { return "mock"; }
+  std::optional<std::string_view> ArtifactType() const override {
+    return "mock";
+  }
 
   std::optional<std::string> ValidateArtifact(
       const base::Value& artifact_value) const override {

@@ -46,7 +46,7 @@ std::string_view ChartCodePlugin::InclusionKeyword() const {
   return "chartUtil";
 }
 
-std::string_view ChartCodePlugin::SetupScript() const {
+std::string_view ChartCodePlugin::SetupScript() {
   return R"(
 const chartUtil = {
   createLineChart: function(data, labels, existingChartId) {
@@ -64,7 +64,7 @@ const chartUtil = {
 )";
 }
 
-std::string_view ChartCodePlugin::ArtifactType() const {
+std::optional<std::string_view> ChartCodePlugin::ArtifactType() const {
   return mojom::kLineChartArtifactType;
 }
 
