@@ -72,7 +72,6 @@ export const PsstProgressModal = () => {
 
   // Extract specific values to avoid object reference issues in useEffect dependencies
   const settingCardData = settingsData?.data?.[0]
-  const [requestUrl, requestError] = requestStatus?.data || []
   const [appliedChecks, completionErrors] = completionStatus?.data || []
 
   const closeDialog = React.useCallback(() => {
@@ -149,19 +148,27 @@ export const PsstProgressModal = () => {
 
   // Handle request status updates
   React.useEffect(() => {
-    if (requestUrl) {
-      setPropForUrl(requestUrl, {
-        settingState: requestError
-          ? SettingState.Failed
-          : SettingState.Completed,
-        error: requestError || null,
-      })
+    if (requestStatus?.data) {
+      const [requestUrl, requestError] = requestStatus.data
+      if (requestUrl) {
+        setPropForUrl(requestUrl, {
+          settingState: requestError
+            ? SettingState.Failed
+            : SettingState.Completed,
+          error: requestError || null,
+        })
+      }
     }
-  }, [requestUrl, requestError, setPropForUrl])
+  }, [requestStatus, setPropForUrl])
 
   // Handle completion status updates
   React.useEffect(() => {
-    if (appliedChecks || completionErrors) {
+    if (completionErrors) {
+      setCommonState(SettingState.Failed)
+      return
+    }
+
+    if (appliedChecks) {
       setCommonState(SettingState.Completed)
     }
   }, [appliedChecks, completionErrors])
