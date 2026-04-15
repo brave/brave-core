@@ -202,9 +202,21 @@ RegisterPolymerComponentReplacement(
     }
 
     override getAssociatedControlFor(childViewId: string): HTMLElement {
-      // Note: We use the ContentSettingsTypes.XXX as the childViewId and the id to the link for opening it.
-      const maybeChild = this.shadowRoot?.querySelector(`#${childViewId}`) as HTMLElement | null
-      return maybeChild ?? super.getAssociatedControlFor(childViewId)
+      // Link rows for each setting are rendered inside
+      // settings-site-settings-list shadow DOMs, not directly in this page's
+      // shadow root, so we need to search through them.
+      const lists = this.shadowRoot?.querySelectorAll(
+          'settings-site-settings-list')
+      if (lists) {
+        for (const list of lists) {
+          const child = list.shadowRoot?.querySelector(
+              `#${childViewId}`) as HTMLElement | null
+          if (child) {
+            return child
+          }
+        }
+      }
+      return super.getAssociatedControlFor(childViewId)
     }
   }
 )
