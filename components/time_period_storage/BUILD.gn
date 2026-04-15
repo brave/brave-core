@@ -31,6 +31,14 @@ static_library("time_period_storage") {
   ]
 }
 
+source_set("test_support") {
+  testonly = true
+
+  public = [ "scoped_timezone_for_testing.h" ]
+
+  deps = [ "//base/test:test_support" ]
+}
+
 source_set("unit_tests") {
   testonly = true
 
@@ -41,7 +49,19 @@ source_set("unit_tests") {
     "weekly_event_storage_unittest.cc",
   ]
 
+  # `ScopedLibcTimezoneOverride` is a no-op on Windows for IANA timezone
+  # identifiers, so timezone-dependent tests are excluded on Windows to avoid
+  # spurious failures caused by a non-overridable libc timezone.
+  if (!is_win) {
+    sources += [
+      "time_period_storage_dst_end_unittest.cc",
+      "time_period_storage_dst_start_unittest.cc",
+      "time_period_storage_issue_54427_unittest.cc",
+    ]
+  }
+
   deps = [
+    ":test_support",
     ":time_period_storage",
     "//base",
     "//base/test:test_support",
