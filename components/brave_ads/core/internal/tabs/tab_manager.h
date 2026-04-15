@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/span.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
@@ -52,7 +53,7 @@ class TabManager final : public AdsClientNotifierObserver {
   void NotifyTabDidLoad(const TabInfo& tab, int http_status_code);
   void NotifyDidOpenNewTab(const TabInfo& tab);
   void NotifyTextContentDidChange(int32_t tab_id,
-                                  const std::vector<GURL>& redirect_chain,
+                                  base::span<const GURL> redirect_chain,
                                   const std::string& text);
   void NotifyDidCloseTab(int32_t tab_id);
   void NotifyTabDidStartPlayingMedia(int32_t tab_id);

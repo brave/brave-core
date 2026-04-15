@@ -8,8 +8,8 @@
 
 #include <cstdint>
 #include <string>
-#include <vector>
 
+#include "base/containers/span.h"
 #include "base/observer_list_types.h"
 #include "url/gurl.h"
 
@@ -33,7 +33,7 @@ class TabManagerObserver : public base::CheckedObserver {
 
   // Invoked when the text content for the tab specified by `tab_id` did change.
   virtual void OnTextContentDidChange(int32_t tab_id,
-                                      const std::vector<GURL>& redirect_chain,
+                                      base::span<const GURL> redirect_chain,
                                       const std::string& text) {}
 
   // Invoked when a tab is closed with the given `tab_id`.
