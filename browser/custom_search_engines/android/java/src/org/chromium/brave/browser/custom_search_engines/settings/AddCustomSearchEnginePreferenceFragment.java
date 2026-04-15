@@ -180,6 +180,13 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
         initTextWatchers();
 
         initButtons(rootView);
+
+        // Pre-fill the URL field so the user starts typing after the scheme.
+        mUrlEdittext.setText(getString(R.string.add_custom_search_engine_url_hint));
+        Editable urlText = mUrlEdittext.getText();
+        if (urlText != null) {
+            mUrlEdittext.setSelection(urlText.length());
+        }
     }
 
     private void initButtons(View rootView) {
@@ -319,7 +326,7 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
             return;
         }
 
-        TextWatcher textWatcher =
+        mTitleEdittext.addTextChangedListener(
                 new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -337,10 +344,33 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
                     public void afterTextChanged(Editable s) {
                         // no-op, but required by TextWatcher interface
                     }
-                };
+                });
 
-        mTitleEdittext.addTextChangedListener(textWatcher);
-        mUrlEdittext.addTextChangedListener(textWatcher);
+        mUrlEdittext.addTextChangedListener(
+                new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        // no-op, but required by TextWatcher interface
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        if (s != null) {
+                            checkFields();
+                        }
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        // When the user pastes a URL that already starts with "https://", remove
+                        // the pre-filled prefix so the field doesn't end up with
+                        // "https://https://...".
+                        String doublePrefix = BOLD_START_TEXT2 + BOLD_START_TEXT2;
+                        if (s.toString().startsWith(doublePrefix)) {
+                            s.delete(0, BOLD_START_TEXT2.length());
+                        }
+                    }
+                });
     }
 
     private void handleBackPressed() {

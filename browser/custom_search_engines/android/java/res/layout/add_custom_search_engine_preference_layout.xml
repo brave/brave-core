@@ -69,6 +69,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="true"
+                    android:inputType="textUri"
                     android:padding="16dp"
                     android:gravity="top"
                     android:hint="@string/add_custom_search_engine_url_hint" />
