@@ -566,7 +566,7 @@ enum SwapProvider {
   kLiFi,
   kZeroEx,
   kCowSwap,
-  kJupiterLegacy,  // Direct Jupiter API (legacy, for iOS/Android)
+  kJupiterLegacy,  // Direct Jupiter API (legacy, for iOS)
 };
 
 struct SwapQuoteParams {
