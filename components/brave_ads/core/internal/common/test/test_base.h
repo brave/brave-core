@@ -106,20 +106,22 @@ class TestBase : public AdsClientNotifierForTesting, public ::testing::Test {
   // information about pending tasks. See `TaskEnvironment` for more detail.
   void FastForwardClockToNextPendingTask();
 
-  // Returns the delay until the next pending task on the main thread's
-  // TaskRunner if there is one, otherwise it returns `TimeDelta::Max`. See
+  // Flushes any immediately-due tasks then returns the delay until the next
+  // pending task on the main thread's TaskRunner, or `TimeDelta::Max` if there
+  // are none. See `TaskEnvironment` for more detail.
+  base::TimeDelta NextPendingTaskDelay();
+
+  // Flushes any immediately-due tasks then returns the number of pending tasks
+  // on the main thread's TaskRunner. When debugging, you can use
+  // `task_environment_.DescribeCurrentTasks` to see what those are. See
   // `TaskEnvironment` for more detail.
-  base::TimeDelta NextPendingTaskDelay() const;
+  size_t GetPendingTaskCount();
 
-  // Returns the number of pending tasks on the main thread's TaskRunner. When
-  // debugging, you can use `task_environment_.DescribeCurrentTasks` to see
-  // what those are. See `TaskEnvironment` for more detail.
-  size_t GetPendingTaskCount() const;
-
-  // Returns `true` if there are pending tasks on the main thread's TaskRunner.
-  // When debugging, use `task_environment_.DescribeCurrentTasks` to see what
-  // those are. See `TaskEnvironment` for more detail.
-  bool HasPendingTasks() const;
+  // Flushes any immediately-due tasks then returns `true` if there are pending
+  // tasks on the main thread's TaskRunner. When debugging, use
+  // `task_environment_.DescribeCurrentTasks` to see what those are. See
+  // `TaskEnvironment` for more detail.
+  bool HasPendingTasks();
 
   // Unlike `FastForwardClockToNextPendingTask`, `FastForwardClockTo`,
   // `FastForwardClockBy` and `SuspendedFastForwardClockBy`, `AdvanceClock*`
@@ -149,6 +151,8 @@ class TestBase : public AdsClientNotifierForTesting, public ::testing::Test {
   void SetUpIntegrationTestCallback(bool success);
 
   void SetUpUnitTest();
+
+  void FlushImmediateTasks();
 
   // Captures the original command line and restores it on destruction to
   // prevent `AppendCommandLineSwitches` in `SetUpMocks` from leaking between

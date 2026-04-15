@@ -165,15 +165,19 @@ void TestBase::FastForwardClockToNextPendingTask() {
   task_environment_.FastForwardBy(NextPendingTaskDelay());
 }
 
-base::TimeDelta TestBase::NextPendingTaskDelay() const {
+base::TimeDelta TestBase::NextPendingTaskDelay() {
+  FlushImmediateTasks();
+
   return task_environment_.NextMainThreadPendingTaskDelay();
 }
 
-size_t TestBase::GetPendingTaskCount() const {
+size_t TestBase::GetPendingTaskCount() {
+  FlushImmediateTasks();
+
   return task_environment_.GetPendingMainThreadTaskCount();
 }
 
-bool TestBase::HasPendingTasks() const {
+bool TestBase::HasPendingTasks() {
   return GetPendingTaskCount() > 0;
 }
 
@@ -341,6 +345,16 @@ void TestBase::SetUpUnitTest() {
   MockDefaultAdsServiceState();
 
   NotifyPendingObservers();
+}
+
+void TestBase::FlushImmediateTasks() {
+  // `base::SequenceBound` always posts a completion reply to the calling
+  // sequence, even for fire-and-forget calls with `base::DoNothing`. Those
+  // replies arrive with a 0ms delay and must be flushed so that callers see
+  // only genuinely scheduled tasks.
+  if (task_environment_.NextMainThreadPendingTaskDelay().is_zero()) {
+    task_environment_.FastForwardBy(base::TimeDelta());
+  }
 }
 
 }  // namespace brave_ads::test
