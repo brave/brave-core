@@ -21,11 +21,11 @@ void BraveRemoveJumplist(Profile* profile) {
   JumpListUpdater::DeleteJumpList(app_id);
 }
 
-#define browsing_data_important_sites_util                             \
+#define GetBrowsingDataRemover()                                       \
+  GetBrowsingDataRemover();                                            \
   if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_HISTORY) { \
     BraveRemoveJumplist(profile_);                                     \
-  }                                                                    \
-  browsing_data_important_sites_util
+  }
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -43,5 +43,5 @@ void BraveRemoveJumplist(Profile* profile) {
 #endif
 
 #if BUILDFLAG(IS_WIN)
-#undef browsing_data_important_sites_util
+#undef GetBrowsingDataRemover
 #endif
