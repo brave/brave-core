@@ -391,10 +391,15 @@ void AdsImpl::SuccessfullyInitialized(mojom::WalletInfoPtr mojom_wallet,
 
   is_initialized_ = true;
 
+  std::optional<WalletInfo> wallet;
   if (mojom_wallet) {
-    GetAccount().SetWallet(mojom_wallet->payment_id,
-                           mojom_wallet->recovery_seed_base64);
+    wallet = CreateWalletFromRecoverySeed(&*mojom_wallet);
+    if (!wallet) {
+      BLOG(0, "Invalid wallet");
+      return FailedToInitialize(std::move(callback));
+    }
   }
+  GetAccount().SetWallet(std::move(wallet));
 
   GetAdsClient().NotifyPendingObservers();
 
