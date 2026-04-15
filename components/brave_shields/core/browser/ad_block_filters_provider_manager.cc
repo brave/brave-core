@@ -48,6 +48,12 @@ void AdBlockFiltersProviderManager::RemoveProvider(
   auto it = filters_providers.find(provider);
   DCHECK(it != filters_providers.end());
   filters_providers.erase(it);
+
+  auto& initial_filters_providers =
+      is_for_default_engine ? initial_default_engine_filters_providers_
+                            : initial_additional_engine_filters_providers_;
+  initial_filters_providers.erase(provider);
+
   NotifyObservers(is_for_default_engine);
 }
 
