@@ -8,8 +8,8 @@
 
 #include <cstdint>
 #include <string>
-#include <vector>
 
+#include "base/containers/span.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
@@ -34,7 +34,7 @@ class TabManagerObserverMock : public TabManagerObserver {
 
   MOCK_METHOD(void,
               OnTextContentDidChange,
-              (int32_t, const std::vector<GURL>&, const std::string&));
+              (int32_t, base::span<const GURL>, const std::string&));
 
   MOCK_METHOD(void, OnDidCloseTab, (int32_t));
 

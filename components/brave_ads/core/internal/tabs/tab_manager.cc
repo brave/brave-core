@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 
 #include "base/check.h"
+#include "base/containers/span.h"
 #include "base/hash/hash.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -118,7 +119,7 @@ void TabManager::NotifyTabDidChange(const TabInfo& tab) {
 
 void TabManager::NotifyTextContentDidChange(
     int32_t tab_id,
-    const std::vector<GURL>& redirect_chain,
+    base::span<const GURL> redirect_chain,
     const std::string& text) {
   observers_.Notify(&TabManagerObserver::OnTextContentDidChange, tab_id,
                     redirect_chain, text);
