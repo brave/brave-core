@@ -21,4 +21,11 @@ PaymentTokenInfo& PaymentTokenInfo::operator=(
 
 PaymentTokenInfo::~PaymentTokenInfo() = default;
 
+bool PaymentTokenInfo::IsValid() const {
+  return !transaction_id.empty() && unblinded_token.has_value() &&
+         public_key.has_value() &&
+         confirmation_type != mojom::ConfirmationType::kUndefined &&
+         ad_type != mojom::AdType::kUndefined;
+}
+
 }  // namespace brave_ads

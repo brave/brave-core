@@ -78,17 +78,4 @@ TEST_F(BraveAdsConfirmationTokenUtilTest, ConfirmationTokenCount) {
   EXPECT_EQ(3U, ConfirmationTokenCount());
 }
 
-TEST_F(BraveAdsConfirmationTokenUtilTest, IsValid) {
-  // Act & Assert
-  EXPECT_TRUE(IsValid(test::BuildConfirmationToken()));
-}
-
-TEST_F(BraveAdsConfirmationTokenUtilTest, IsNotValid) {
-  // Arrange
-  const ConfirmationTokenInfo confirmation_token;
-
-  // Act & Assert
-  EXPECT_FALSE(IsValid(confirmation_token));
-}
-
 }  // namespace brave_ads

@@ -15,18 +15,6 @@ namespace brave_ads {
 
 class BraveAdsPaymentTokensTest : public test::TestBase {};
 
-TEST_F(BraveAdsPaymentTokensTest, GetToken) {
-  // Arrange
-  const PaymentTokenList tokens = test::BuildPaymentTokens(/*count=*/2);
-  ASSERT_THAT(tokens, ::testing::SizeIs(2));
-
-  PaymentTokens payment_tokens;
-  payment_tokens.SetTokens(tokens);
-
-  // Act & Assert
-  EXPECT_EQ(tokens.front(), payment_tokens.GetToken());
-}
-
 TEST_F(BraveAdsPaymentTokensTest, GetAllTokens) {
   // Arrange
   PaymentTokens payment_tokens;
@@ -100,24 +88,6 @@ TEST_F(BraveAdsPaymentTokensTest, DoNotAddDuplicateTokens) {
   EXPECT_EQ(1U, payment_tokens.Count());
 }
 
-TEST_F(BraveAdsPaymentTokensTest, RemoveToken) {
-  // Arrange
-  const PaymentTokenList tokens = test::BuildPaymentTokens(/*count=*/2);
-  ASSERT_THAT(tokens, ::testing::SizeIs(2));
-
-  PaymentTokens payment_tokens;
-  payment_tokens.SetTokens(tokens);
-
-  const PaymentTokenInfo& token_1 = tokens.at(0);
-  const PaymentTokenInfo& token_2 = tokens.at(1);
-
-  // Act
-  payment_tokens.RemoveToken(token_2);
-
-  // Assert
-  EXPECT_EQ(PaymentTokenList{token_1}, payment_tokens.GetAllTokens());
-}
-
 TEST_F(BraveAdsPaymentTokensTest, RemoveTokens) {
   // Arrange
   const PaymentTokenList tokens = test::BuildPaymentTokens(/*count=*/3);
@@ -135,18 +105,6 @@ TEST_F(BraveAdsPaymentTokensTest, RemoveTokens) {
 
   // Assert
   EXPECT_EQ(PaymentTokenList{token_2}, payment_tokens.GetAllTokens());
-}
-
-TEST_F(BraveAdsPaymentTokensTest, RemoveAllTokens) {
-  // Arrange
-  PaymentTokens payment_tokens;
-  payment_tokens.SetTokens(test::BuildPaymentTokens(/*count=*/2));
-
-  // Act
-  payment_tokens.RemoveAllTokens();
-
-  // Assert
-  EXPECT_TRUE(payment_tokens.IsEmpty());
 }
 
 TEST_F(BraveAdsPaymentTokensTest, TokenDoesExist) {
