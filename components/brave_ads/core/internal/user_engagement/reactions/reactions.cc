@@ -23,6 +23,18 @@ Reactions::Reactions() {
 
 Reactions::~Reactions() = default;
 
+void Reactions::AddObserver(ReactionsObserver* const observer) {
+  CHECK(observer);
+
+  observers_.AddObserver(observer);
+}
+
+void Reactions::RemoveObserver(ReactionsObserver* const observer) {
+  CHECK(observer);
+
+  observers_.RemoveObserver(observer);
+}
+
 void Reactions::ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
                              ToggleReactionCallback callback) {
   if (!mojom_reaction) {
