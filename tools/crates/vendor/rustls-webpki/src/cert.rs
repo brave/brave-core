@@ -21,7 +21,10 @@ use crate::error::{DerTypeId, Error};
 use crate::public_values_eq;
 use crate::signed_data::SignedData;
 use crate::subject_name::{GeneralName, NameIterator, WildcardDnsNameRef};
-use crate::x509::{DistributionPointName, Extension, remember_extension, set_extension_once};
+use crate::x509::{
+    DistributionPointName, Extension, UnknownExtensionPolicy, remember_extension,
+    set_extension_once,
+};
 
 /// A parsed X509 certificate.
 pub struct Cert<'a> {
@@ -47,7 +50,18 @@ pub struct Cert<'a> {
 }
 
 impl<'a> Cert<'a> {
+    pub(crate) fn for_trust_anchor(cert_der: untrusted::Input<'a>) -> Result<Self, Error> {
+        Self::from_input(cert_der, UnknownExtensionPolicy::IgnoreCritical)
+    }
+
     pub(crate) fn from_der(cert_der: untrusted::Input<'a>) -> Result<Self, Error> {
+        Self::from_input(cert_der, UnknownExtensionPolicy::default())
+    }
+
+    fn from_input(
+        cert_der: untrusted::Input<'a>,
+        ext_policy: UnknownExtensionPolicy,
+    ) -> Result<Self, Error> {
         let (tbs, signed_data) =
             cert_der.read_all(Error::TrailingData(DerTypeId::Certificate), |cert_der| {
                 der::nested(
@@ -130,6 +144,7 @@ impl<'a> Cert<'a> {
                                     remember_cert_extension(
                                         &mut cert,
                                         &Extension::from_der(extension)?,
+                                        ext_policy,
                                     )
                                 },
                             )
@@ -275,12 +290,13 @@ pub(crate) fn lenient_certificate_serial_number<'a>(
 fn remember_cert_extension<'a>(
     cert: &mut Cert<'a>,
     extension: &Extension<'a>,
+    ext_policy: UnknownExtensionPolicy,
 ) -> Result<(), Error> {
     // We don't do anything with certificate policies so we can safely ignore
     // all policy-related stuff. We assume that the policy-related extensions
     // are not marked critical.
 
-    remember_extension(extension, |id| {
+    remember_extension(extension, ext_policy, |id| {
         let out = match id {
             // id-ce-keyUsage 2.5.29.15.
             15 => &mut cert.key_usage,
@@ -301,7 +317,7 @@ fn remember_cert_extension<'a>(
             37 => &mut cert.eku,
 
             // Unsupported extension
-            _ => return extension.unsupported(),
+            _ => return extension.unsupported(ext_policy),
         };
 
         set_extension_once(out, || {
