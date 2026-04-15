@@ -294,6 +294,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
            "/?intent=checkout&product=origin&mtm_campaign=browser-settings"}));
   html_source->AddBoolean("isTreeTabsFlagEnabled",
                           base::FeatureList::IsEnabled(tabs::kBraveTreeTab));
+  html_source->AddBoolean(
+      "isScrollableHorizontalTabStripEnabled",
+      base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip));
   html_source->AddString("braveSearchEngineName",
                          TemplateURLPrepopulateData::brave_search.name);
   html_source->AddBoolean("isLocaleJapan", IsLocaleJapan(profile));

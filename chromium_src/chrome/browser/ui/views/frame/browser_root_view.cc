@@ -5,8 +5,24 @@
 
 #include "chrome/browser/ui/views/frame/browser_root_view.h"
 
+#include "base/feature_list.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/defaults.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/tabs/features.h"
+#include "components/prefs/pref_service.h"
+
+namespace {
+
+bool IsScrollableHorizontalTabStripEnabled(Profile* profile) {
+  return base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip) &&
+         profile->GetPrefs()->GetBoolean(
+             brave_tabs::kScrollableHorizontalTabStrip);
+}
+
+}  // namespace
 
 // Workaround for vertical tabs to work with drag&drop of text/links.
 #define ConvertPointToTarget(THIS, TARGET_GETTER, POINT)                    \
@@ -20,11 +36,11 @@
     ConvertPointToTarget(THIS, target_v, POINT);                            \
   }
 
-// Disable scroll-event-changes-tab if scrollable tab strip is enabled and Ctrl
-// key is not pressed.
-#define kScrollEventChangesTab                                          \
-  kScrollEventChangesTab &&                                             \
-      (!base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip) || \
+// Disable scroll-event-changes-tab when the scrollable horizontal tab strip is
+// active (feature and user pref).
+#define kScrollEventChangesTab                                                \
+  kScrollEventChangesTab &&                                                   \
+      (!IsScrollableHorizontalTabStripEnabled(browser_view_->GetProfile()) || \
        event.IsControlDown())
 
 #include <chrome/browser/ui/views/frame/browser_root_view.cc>
