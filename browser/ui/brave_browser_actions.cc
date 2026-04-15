@@ -17,6 +17,7 @@
 #include "chrome/browser/ui/side_panel/side_panel_action_callback.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_key.h"
+#include "chrome/browser/ui/tab_search_feature.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/actions/actions.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -58,6 +59,25 @@ BraveBrowserActions::~BraveBrowserActions() = default;
 
 void BraveBrowserActions::InitializeBrowserActions() {
   BrowserActions::InitializeBrowserActions();
+
+  // browser_actions.cc initializes kActionTabSearch as kNotPinnable.
+  // In Brave, HasTabSearchToolbarButton() is always true and the button is
+  // shown via the pinned-actions model, so
+  // ToolbarController::GetDefaultResponsiveElements() must see it as kPinnable
+  // when the toolbar is initialized — otherwise kActionTabSearch is missing
+  // from responsive_elements_ and the overflow menu crashes when clicked if
+  // search buton is the only item in overflow menu.
+  if (features::HasTabSearchToolbarButton()) {
+    auto* tab_search_action = actions::ActionManager::Get().FindAction(
+        kActionTabSearch, root_action_item_.get());
+    if (tab_search_action) {
+      tab_search_action->SetProperty(
+          actions::kActionItemPinnableKey,
+          static_cast<std::underlying_type_t<actions::ActionPinnableState>>(
+              actions::ActionPinnableState::kPinnable));
+    }
+  }
+
   BrowserWindowInterface* const bwi = base::to_address(bwi_);
 
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
