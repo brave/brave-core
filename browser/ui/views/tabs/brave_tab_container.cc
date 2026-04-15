@@ -741,7 +741,7 @@ void BraveTabContainer::ScrollTabToBeVisible(Tab* tab) {
 }
 
 void BraveTabContainer::OnScrollableHorizontalTabStripPrefChanged() {
-  CHECK(base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip));
+  // only called when tabs::kBraveScrollableTabStrip feature flag is enabled.
 
   if (!IsHorizontalScrollableTabStripEnabled()) {
     SetScrollOffset(0);
