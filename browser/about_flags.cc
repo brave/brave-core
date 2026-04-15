@@ -185,18 +185,6 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
           FEATURE_VALUE_TYPE(::features::kBraveWorkaroundNewWindowFlash),  \
       }))
 
-#define BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                               \
-  IF_BUILDFLAG(                                                            \
-      ENABLE_GEMINI_WALLET,                                                \
-      EXPAND_FEATURE_ENTRIES({                                             \
-          "brave-rewards-gemini",                                          \
-          "Enable Gemini for Brave Rewards",                               \
-          "Enables support for Gemini as an external wallet provider for " \
-          "Brave",                                                         \
-          kOsDesktop,                                                      \
-          FEATURE_VALUE_TYPE(brave_rewards::features::kGeminiFeature),     \
-      }))
-
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                   \
   EXPAND_FEATURE_ENTRIES(                                                     \
@@ -1319,7 +1307,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
       })                                                                       \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_NEWS_FEATURE_ENTRIES                                                   \
-  BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                                         \
   SPEEDREADER_FEATURE_ENTRIES                                                  \
   REQUEST_OTR_FEATURE_ENTRIES                                                  \
   BRAVE_MODULE_FILENAME_PATCH                                                  \

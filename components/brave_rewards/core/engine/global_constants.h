@@ -12,7 +12,6 @@ namespace constant {
 inline constexpr char kWalletUphold[] = "uphold";
 inline constexpr char kWalletUnBlinded[] = "blinded";
 inline constexpr char kWalletBitflyer[] = "bitflyer";
-inline constexpr char kWalletGemini[] = "gemini";
 inline constexpr char kWalletZebPay[] = "zebpay";
 inline constexpr char kWalletSolana[] = "solana";
 

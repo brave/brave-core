@@ -285,16 +285,6 @@
       initWithFeature:&brave_shields::features::kCosmeticFilteringSyncLoad];
 }
 
-#if BUILDFLAG(ENABLE_GEMINI_WALLET)
-+ (Feature*)kGeminiFeature {
-  return [[Feature alloc] initWithFeature:&kGeminiFeature];
-}
-#else
-+ (Feature*)kGeminiFeature {
-  return nil;
-}
-#endif
-
 + (Feature*)kNTP {
   return [[Feature alloc]
       initWithFeature:&brave_search_conversion::features::kNTP];

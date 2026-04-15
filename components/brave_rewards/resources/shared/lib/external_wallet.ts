@@ -6,7 +6,6 @@
 export type ExternalWalletProvider =
   'uphold' |
   'bitflyer' |
-  'gemini' |
   'zebpay' |
   'solana'
 
@@ -23,7 +22,6 @@ export function getExternalWalletProviderName(
 ) {
   switch (provider) {
     case 'bitflyer': return 'bitFlyer'
-    case 'gemini': return 'Gemini'
     case 'uphold': return 'Uphold'
     case 'zebpay': return 'ZebPay'
     case 'solana': return 'Solana'
@@ -39,7 +37,6 @@ export function externalWalletProviderFromString(
 ): ExternalWalletProvider | null {
   switch (key) {
     case 'bitflyer':
-    case 'gemini':
     case 'uphold':
     case 'zebpay':
     case 'solana':
@@ -126,14 +123,13 @@ export function isExternalWalletProviderDisabled(
 // Returns a value indicating whether user's connected to the specified wallet
 // provider should be prompted to reset their account.
 export function shouldResetExternalWallet(provider: ExternalWalletProvider) {
-  return provider === 'gemini'
+  return false
 }
 
 // Returns true if the specified wallet provider is a self-custody provider.
 export function isSelfCustodyProvider(provider: ExternalWalletProvider) {
   switch (provider) {
     case 'bitflyer': return false
-    case 'gemini': return false
     case 'uphold': return false
     case 'zebpay': return false
     case 'solana': return true

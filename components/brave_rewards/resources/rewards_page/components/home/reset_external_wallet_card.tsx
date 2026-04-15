@@ -13,8 +13,6 @@ import { getExternalWalletProviderName } from '../../../shared/lib/external_wall
 import { NewTabLink } from '../../../shared/components/new_tab_link'
 import { useSwitchAccountRouter } from '../../lib/connect_account_router'
 
-import * as urls from '../../../shared/lib/rewards_urls'
-
 import { style } from './reset_external_wallet_card.style'
 
 export function ResetExternalWalletCard() {
@@ -29,12 +27,7 @@ export function ResetExternalWalletCard() {
   const providerName = getExternalWalletProviderName(externalWallet.provider)
 
   function learnMoreURL() {
-    switch (externalWallet?.provider) {
-      case 'gemini':
-        return urls.geminiDeprecationLearnMoreURL
-      default:
-        return ''
-    }
+    return ''
   }
 
   function renderLearnMore(content: any) {

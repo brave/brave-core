@@ -44,7 +44,7 @@ export type ContributionType =
   | 'transfer'
   | 'payment'
 
-export type ContributionProcessor = 'uphold' | 'gemini' | 'bitflyer' | 'brave'
+export type ContributionProcessor = 'uphold' | 'bitflyer' | 'brave'
 
 export interface ContributionInfo {
   id: string

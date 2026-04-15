@@ -10,7 +10,6 @@
 #include "brave/components/brave_rewards/core/engine/bitflyer/bitflyer.h"
 #include "brave/components/brave_rewards/core/engine/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/engine/database/database.h"
-#include "brave/components/brave_rewards/core/engine/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/engine/global_constants.h"
 #include "brave/components/brave_rewards/core/engine/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
@@ -51,10 +50,6 @@ void ContributionExternalWallet::ContributionInfo(
     case mojom::ContributionProcessor::BITFLYER:
       wallet =
           engine_->bitflyer()->GetWalletIf({mojom::WalletStatus::kConnected});
-      break;
-    case mojom::ContributionProcessor::GEMINI:
-      wallet =
-          engine_->gemini()->GetWalletIf({mojom::WalletStatus::kConnected});
       break;
     case mojom::ContributionProcessor::UPHOLD:
       wallet =
@@ -119,9 +114,6 @@ void ContributionExternalWallet::OnServerPublisherInfo(
     case mojom::PublisherStatus::BITFLYER_VERIFIED:
       publisher_verified = processor == mojom::ContributionProcessor::BITFLYER;
       break;
-    case mojom::PublisherStatus::GEMINI_VERIFIED:
-      publisher_verified = processor == mojom::ContributionProcessor::GEMINI;
-      break;
     default:
       break;
   }
@@ -149,10 +141,6 @@ void ContributionExternalWallet::OnServerPublisherInfo(
     case mojom::ContributionProcessor::BITFLYER:
       engine_->bitflyer()->StartContribution(contribution_id, std::move(info),
                                              amount, std::move(start_callback));
-      break;
-    case mojom::ContributionProcessor::GEMINI:
-      engine_->gemini()->StartContribution(contribution_id, std::move(info),
-                                           amount, std::move(start_callback));
       break;
     default:
       engine_->LogError(FROM_HERE) << "Contribution processor not supported";

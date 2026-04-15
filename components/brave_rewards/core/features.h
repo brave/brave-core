@@ -16,10 +16,6 @@ namespace brave_rewards::features {
 BASE_DECLARE_FEATURE(kBraveRewards);
 #endif  // BUILDFLAG(IS_ANDROID)
 
-#if BUILDFLAG(ENABLE_GEMINI_WALLET)
-BASE_DECLARE_FEATURE(kGeminiFeature);
-#endif
-
 BASE_DECLARE_FEATURE(kVerboseLoggingFeature);
 
 BASE_DECLARE_FEATURE(kAllowUnsupportedWalletProvidersFeature);

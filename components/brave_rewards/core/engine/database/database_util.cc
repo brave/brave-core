@@ -184,11 +184,11 @@ mojom::PublisherStatus PublisherStatusFromInt(int value) {
     case mojom::PublisherStatus::NOT_VERIFIED:
     case mojom::PublisherStatus::UPHOLD_VERIFIED:
     case mojom::PublisherStatus::BITFLYER_VERIFIED:
-    case mojom::PublisherStatus::GEMINI_VERIFIED:
     case mojom::PublisherStatus::WEB3_ENABLED:
       return unsafe_value;
+    default:
+      return mojom::PublisherStatus::NOT_VERIFIED;
   }
-  return mojom::PublisherStatus::NOT_VERIFIED;
 }
 
 mojom::PublisherExclude PublisherExcludeFromInt(int value) {
@@ -244,10 +244,10 @@ mojom::ContributionProcessor ContributionProcessorFromInt(int value) {
     case mojom::ContributionProcessor::BRAVE_TOKENS:
     case mojom::ContributionProcessor::UPHOLD:
     case mojom::ContributionProcessor::BITFLYER:
-    case mojom::ContributionProcessor::GEMINI:
       return unsafe_value;
+    default:
+      return mojom::ContributionProcessor::NONE;
   }
-  return mojom::ContributionProcessor::NONE;
 }
 
 mojom::CredsBatchType CredsBatchTypeFromInt(int value) {
@@ -314,10 +314,10 @@ mojom::SKUTransactionType SKUTransactionTypeFromInt(int value) {
     case mojom::SKUTransactionType::NONE:
     case mojom::SKUTransactionType::UPHOLD:
     case mojom::SKUTransactionType::TOKENS:
-    case mojom::SKUTransactionType::GEMINI:
       return unsafe_value;
+    default:
+      return mojom::SKUTransactionType::NONE;
   }
-  return mojom::SKUTransactionType::NONE;
 }
 
 }  // namespace brave_rewards::internal::database

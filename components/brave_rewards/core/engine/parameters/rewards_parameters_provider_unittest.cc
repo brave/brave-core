@@ -24,7 +24,6 @@ constexpr char kCachedParametersJSON[] = R"(
     {
       "payout_status": {
         "bitflyer": "processing",
-        "gemini": "processing",
         "solana": "processing",
         "unverified": "processing",
         "uphold": "processing",
@@ -41,10 +40,6 @@ constexpr char kCachedParametersJSON[] = R"(
       "wallet_provider_regions": {
         "bitflyer": {
           "allow": ["JP"],
-          "block": []
-        },
-        "gemini": {
-          "allow": ["US", "SG", "GB", "CA"],
           "block": []
         },
         "solana": {
@@ -67,10 +62,6 @@ constexpr char kParametersEndpointResponse[] = R"(
       "batRate": 0.3,
       "custodianRegions": {
         "bitflyer": {
-          "allow": [],
-          "block": []
-        },
-        "gemini": {
           "allow": [],
           "block": []
         },

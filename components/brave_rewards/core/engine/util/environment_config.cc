@@ -95,22 +95,6 @@ std::string EnvironmentConfig::uphold_fee_address() const {
              : BUILDFLAG(UPHOLD_SANDBOX_FEE_ADDRESS);
 }
 
-GURL EnvironmentConfig::gemini_oauth_url() const {
-  return BuildGate3OAuthURL("gemini");
-}
-
-GURL EnvironmentConfig::gemini_api_url() const {
-  return URLValue(current_environment() == mojom::Environment::kProduction
-                      ? BUILDFLAG(GEMINI_PRODUCTION_API_URL)
-                      : BUILDFLAG(GEMINI_SANDBOX_API_URL));
-}
-
-std::string EnvironmentConfig::gemini_fee_address() const {
-  return current_environment() == mojom::Environment::kProduction
-             ? BUILDFLAG(GEMINI_PRODUCTION_FEE_ADDRESS)
-             : BUILDFLAG(GEMINI_SANDBOX_FEE_ADDRESS);
-}
-
 GURL EnvironmentConfig::zebpay_api_url() const {
   return URLValue(current_environment() == mojom::Environment::kProduction
                       ? BUILDFLAG(ZEBPAY_PRODUCTION_API_URL)

@@ -131,12 +131,6 @@ void MaybeLoadRewardsURL(const GURL& redirect_url, WebContents* web_contents) {
         {"bitflyer",
          {GURL(BUILDFLAG(BITFLYER_PRODUCTION_URL)),
           GURL(BUILDFLAG(BITFLYER_SANDBOX_URL))}},
-        {"gemini",
-         {
-             GURL(BUILDFLAG(GEMINI_PRODUCTION_OAUTH_URL)),
-             GURL(BUILDFLAG(GEMINI_SANDBOX_OAUTH_URL)),
-             gate3_url,
-         }},
         {"uphold",
          {
              GURL(BUILDFLAG(UPHOLD_PRODUCTION_OAUTH_URL)),
