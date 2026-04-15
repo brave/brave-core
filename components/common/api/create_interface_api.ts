@@ -799,7 +799,15 @@ export function createInterfaceApi<
           ),
       })
 
+      // Track whether the subscribe callback fires synchronously during
+      // .subscribe(). The QueryObserver constructor already reads cached
+      // data into #currentResult, so onSubscribe → updateResult() may find
+      // no change via shallowEqualObjects and skip notifying the listener.
+      // In that case we need to manually deliver the pre-existing data.
+      let handlerCalledOnSubscribe = false
+
       const unsubscribe = observer.subscribe((result) => {
+        handlerCalledOnSubscribe = true
         if (result.data !== undefined) {
           handler(...result.data.payload)
         } else {
@@ -809,6 +817,13 @@ export function createInterfaceApi<
           handler()
         }
       })
+
+      if (!handlerCalledOnSubscribe) {
+        const existingResult = observer.getCurrentResult()
+        if (existingResult.data !== undefined) {
+          handler(...existingResult.data.payload)
+        }
+      }
 
       return unsubscribe
     }
