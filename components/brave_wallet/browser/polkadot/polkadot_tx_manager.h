@@ -12,9 +12,11 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_block_tracker.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_extrinsic.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_transaction_status_task.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_meta.h"
 #include "brave/components/brave_wallet/browser/tx_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace brave_wallet {
 
@@ -23,6 +25,7 @@ class TxService;
 class TxStorageDelegate;
 class AccountResolverDelegate;
 class PolkadotWalletService;
+class PolkadotTxStateManager;
 
 // Polkadot transaction manager
 class PolkadotTxManager : public TxManager,
@@ -68,7 +71,8 @@ class PolkadotTxManager : public TxManager,
  private:
   friend class PolkadotTxManagerUnitTest;
   FRIEND_TEST_ALL_PREFIXES(PolkadotTxManagerUnitTest, OnLatestBlock);
-  FRIEND_TEST_ALL_PREFIXES(PolkadotTxManagerUnitTest, OnNewBlock);
+
+  PolkadotTxStateManager& GetPolkadotTxStateManager();
 
   void OnGetChainMetadataForUnapproved(
       mojom::NewPolkadotTransactionParamsPtr params,
@@ -87,14 +91,22 @@ class PolkadotTxManager : public TxManager,
       base::expected<std::pair<std::string, PolkadotExtrinsicMetadata>,
                      std::string> tx_hash_metadata_pair);
 
-  // PolkadotBlockTracker::Observer
-  void OnLatestBlock(const std::string& chain_id, uint64_t block_num) override;
-  void OnNewBlock(const std::string& chain_id, uint64_t block_num) override;
+  void OnUpdatePendingTransactions(
+      PolkadotTransactionStatusTask* task,
+      std::unique_ptr<PolkadotTxMeta> polkadot_tx,
+      base::expected<
+          std::pair<PolkadotTransactionStatus, std::optional<uint128_t>>,
+          std::string>);
 
-  // Helper methods
+  // PolkadotBlockTracker::Observer
+  void OnLatestBlock(const std::string& chain_id, uint32_t block_num) override;
+
+  // Helper methods.
   PolkadotBlockTracker& GetPolkadotBlockTracker();
 
   raw_ref<PolkadotWalletService> polkadot_wallet_service_;
+  absl::flat_hash_set<std::unique_ptr<PolkadotTransactionStatusTask>>
+      polkadot_transaction_status_tasks_;
 
   base::WeakPtrFactory<PolkadotTxManager> weak_ptr_factory_{this};
 };
