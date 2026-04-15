@@ -8,6 +8,7 @@
 #include <optional>
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/feature_list.h"
@@ -652,7 +653,10 @@ float RenderViewContextMenu::GetScaleFactor() {
   auto* render_frame_host = GetRenderFrameHost();
   CHECK(render_frame_host);
   auto* render_view = render_frame_host->GetView();
-  CHECK(render_view);
+  if (!render_view) {
+    CHECK_IS_TEST();
+    return 1.0f;
+  }
   return render_view->GetDeviceScaleFactor();
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
