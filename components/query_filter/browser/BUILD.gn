@@ -14,7 +14,6 @@ static_library("browser") {
     "//brave/components/brave_component_updater/browser:public",
     "//brave/components/query_filter/common",
     "//components/component_updater",
-    "//crypto",
   ]
 }
 
