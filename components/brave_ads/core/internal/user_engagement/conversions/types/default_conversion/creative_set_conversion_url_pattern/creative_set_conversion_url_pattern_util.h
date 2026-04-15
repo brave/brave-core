@@ -6,9 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_TYPES_DEFAULT_CONVERSION_CREATIVE_SET_CONVERSION_URL_PATTERN_CREATIVE_SET_CONVERSION_URL_PATTERN_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_TYPES_DEFAULT_CONVERSION_CREATIVE_SET_CONVERSION_URL_PATTERN_CREATIVE_SET_CONVERSION_URL_PATTERN_UTIL_H_
 
-#include <vector>
-
-class GURL;
+#include "base/containers/span.h"
+#include "url/gurl.h"
 
 namespace brave_ads {
 
@@ -16,7 +15,7 @@ struct CreativeSetConversionInfo;
 
 bool DoesCreativeSetConversionUrlPatternMatchRedirectChain(
     const CreativeSetConversionInfo& creative_set_conversion,
-    const std::vector<GURL>& redirect_chain);
+    base::span<const GURL> redirect_chain);
 
 }  // namespace brave_ads
 
