@@ -28,6 +28,9 @@ struct PaymentTokenInfo final {
 
   bool operator==(const PaymentTokenInfo&) const = default;
 
+  // Returns true if all fields have valid values.
+  [[nodiscard]] bool IsValid() const;
+
   std::string transaction_id;
   cbr::UnblindedToken unblinded_token;
   cbr::PublicKey public_key;

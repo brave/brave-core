@@ -6,22 +6,18 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TOKENS_TOKEN_STATE_MANAGER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TOKENS_TOKEN_STATE_MANAGER_H_
 
-#include <optional>
-#include <string>
-
 #include "base/check.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens.h"
-#include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
-
-namespace base {
-class DictValue;
-}  // namespace base
 
 namespace brave_ads {
 
+// Loads confirmation tokens and payment tokens from the database into memory at
+// startup and provides in-memory access to both token caches.
 class TokenStateManager final {
  public:
   TokenStateManager();
@@ -33,14 +29,9 @@ class TokenStateManager final {
 
   static TokenStateManager& GetInstance();
 
-  void LoadState(std::optional<WalletInfo> wallet, InitializeCallback callback);
+  void LoadState(InitializeCallback callback);
 
   bool IsInitialized() const { return is_initialized_; }
-
-  void SaveState();
-
-  std::string ToJson();
-  [[nodiscard]] bool FromJson(const std::string& json);
 
   const ConfirmationTokens& GetConfirmationTokens() const {
     CHECK(is_initialized_);
@@ -63,16 +54,16 @@ class TokenStateManager final {
   }
 
  private:
-  void LoadCallback(InitializeCallback callback,
-                    const std::optional<std::string>& json);
+  void GetAllConfirmationTokensCallback(
+      InitializeCallback callback,
+      bool success,
+      ConfirmationTokenList confirmation_tokens);
 
-  void ParseConfirmationTokensFromDictionary(const base::DictValue& dict);
-
-  void ParsePaymentTokensFromDictionary(const base::DictValue& dict);
+  void GetAllPaymentTokensCallback(InitializeCallback callback,
+                                   bool success,
+                                   PaymentTokenList payment_tokens);
 
   bool is_initialized_ = false;
-
-  std::optional<WalletInfo> wallet_;
 
   ConfirmationTokens confirmation_tokens_;
   PaymentTokens payment_tokens_;

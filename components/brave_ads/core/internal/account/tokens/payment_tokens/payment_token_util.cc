@@ -5,26 +5,14 @@
 
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_util.h"
 
+#include "base/functional/bind.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_state_manager.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 
 namespace brave_ads {
-
-namespace {
-
-bool HasPaymentTokens() {
-  return PaymentTokenCount() > 0;
-}
-
-}  // namespace
-
-std::optional<PaymentTokenInfo> MaybeGetPaymentToken() {
-  if (!HasPaymentTokens()) {
-    return std::nullopt;
-  }
-
-  return TokenStateManager::GetInstance().GetPaymentTokens().GetToken();
-}
 
 const PaymentTokenList& GetAllPaymentTokens() {
   return TokenStateManager::GetInstance().GetPaymentTokens().GetAllTokens();
@@ -33,31 +21,26 @@ const PaymentTokenList& GetAllPaymentTokens() {
 void AddPaymentTokens(const PaymentTokenList& payment_tokens) {
   TokenStateManager::GetInstance().GetPaymentTokens().AddTokens(payment_tokens);
 
-  TokenStateManager::GetInstance().SaveState();
-}
-
-bool RemovePaymentToken(const PaymentTokenInfo& payment_token) {
-  if (!TokenStateManager::GetInstance().GetPaymentTokens().RemoveToken(
-          payment_token)) {
-    return false;
-  }
-
-  TokenStateManager::GetInstance().SaveState();
-
-  return true;
+  database::table::PaymentTokens payment_tokens_database_table;
+  payment_tokens_database_table.Save(
+      payment_tokens, base::BindOnce([](bool success) {
+        if (!success) {
+          BLOG(0, "Failed to save payment tokens");
+        }
+      }));
 }
 
 void RemovePaymentTokens(const PaymentTokenList& payment_tokens) {
   TokenStateManager::GetInstance().GetPaymentTokens().RemoveTokens(
       payment_tokens);
 
-  TokenStateManager::GetInstance().SaveState();
-}
-
-void RemoveAllPaymentTokens() {
-  TokenStateManager::GetInstance().GetPaymentTokens().RemoveAllTokens();
-
-  TokenStateManager::GetInstance().SaveState();
+  database::table::PaymentTokens payment_tokens_database_table;
+  payment_tokens_database_table.Delete(
+      payment_tokens, base::BindOnce([](bool success) {
+        if (!success) {
+          BLOG(0, "Failed to delete payment tokens");
+        }
+      }));
 }
 
 bool PaymentTokenExists(const PaymentTokenInfo& payment_token) {

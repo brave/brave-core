@@ -6,11 +6,21 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LEGACY_MIGRATION_CONFIRMATIONS_LEGACY_CONFIRMATION_MIGRATION_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LEGACY_MIGRATION_CONFIRMATIONS_LEGACY_CONFIRMATION_MIGRATION_H_
 
+#include <optional>
+
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 
 namespace brave_ads {
 
-void MigrateConfirmationState(InitializeCallback callback);
+struct WalletInfo;
+
+// Parses `kConfirmationsJsonFilename`, writes valid confirmation queue items,
+// confirmation tokens, and payment tokens into their respective database
+// tables, then deletes the file. If `wallet` is absent only the confirmation
+// queue is migrated. If the file does not exist the migration is considered
+// complete.
+void MigrateConfirmationState(std::optional<WalletInfo> wallet,
+                              InitializeCallback callback);
 
 }  // namespace brave_ads
 

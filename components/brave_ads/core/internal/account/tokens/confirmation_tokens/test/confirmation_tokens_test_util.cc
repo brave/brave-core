@@ -90,8 +90,6 @@ ConfirmationTokenInfo BuildConfirmationToken(
   CHECK(signature_base64);
   confirmation_token.signature_base64 = *signature_base64;
 
-  CHECK(IsValid(confirmation_token));
-
   return confirmation_token;
 }
 

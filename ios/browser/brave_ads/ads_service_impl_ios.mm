@@ -465,8 +465,6 @@ void AdsServiceImplIOS::ClearAdsData(ClearDataCallback callback, bool success) {
             sql::Database::Delete(storage_path.Append(kAdsDatabaseFilename));
 
             base::DeleteFile(storage_path.Append(kClientJsonFilename));
-
-            base::DeleteFile(storage_path.Append(kConfirmationsJsonFilename));
           },
           storage_path_),
       base::BindOnce(&AdsServiceImplIOS::ClearAdsDataCallback,

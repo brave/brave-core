@@ -18,6 +18,11 @@ namespace {
 constexpr std::string_view kObsoleteShouldShowSearchResultAdClickedInfoBar =
     "brave.brave_ads.should_show_search_result_ad_clicked_infobar";
 
+constexpr std::string_view kObsoleteHasMigratedConfirmationStateV8 =
+    "brave.brave_ads.state.has_migrated.confirmations.v8";
+constexpr std::string_view kObsoleteHasMigratedStateV2 =
+    "brave.brave_ads.state.has_migrated.v2";
+
 constexpr std::string_view kObsoleteNotificationAdLastNormalizedCoordinateX =
     "brave.brave_ads.ad_notification.last_normalized_coordinate_x";
 constexpr std::string_view kObsoleteNotificationAdLastNormalizedCoordinateY =
@@ -97,6 +102,10 @@ void RegisterProfilePrefsForMigration(PrefRegistrySimple* const registry) {
                                0.0);
   registry->RegisterBooleanPref(kObsoleteNotificationAdDidFallbackToCustom,
                                 false);
+
+  // Added 04/2026.
+  registry->RegisterBooleanPref(kObsoleteHasMigratedConfirmationStateV8, false);
+  registry->RegisterBooleanPref(kObsoleteHasMigratedStateV2, false);
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* const prefs) {
@@ -112,6 +121,10 @@ void MigrateObsoleteProfilePrefs(PrefService* const prefs) {
   prefs->ClearPref(kObsoleteNotificationAdLastNormalizedCoordinateX);
   prefs->ClearPref(kObsoleteNotificationAdLastNormalizedCoordinateY);
   prefs->ClearPref(kObsoleteNotificationAdDidFallbackToCustom);
+
+  // Added 04/2026.
+  prefs->ClearPref(kObsoleteHasMigratedConfirmationStateV8);
+  prefs->ClearPref(kObsoleteHasMigratedStateV2);
 }
 
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
