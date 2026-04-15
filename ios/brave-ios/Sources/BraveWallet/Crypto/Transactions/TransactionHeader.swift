@@ -28,9 +28,7 @@ struct TransactionHeader: View {
   var body: some View {
     VStack(spacing: 8) {
       VStack(spacing: 8) {
-        if fromAccountInfo.address == toAccountAddress || toAccountAddress.isEmpty
-          || txCoinType == .btc || txCoinType == .ada || txCoinType == .zec
-        {
+        if fromAccountInfo.address == toAccountAddress || toAccountAddress.isEmpty {
           Blockie(address: fromAccountInfo.blockieSeed)
             .frame(
               width: min(blockieSize, maxBlockieSize),
@@ -40,11 +38,19 @@ struct TransactionHeader: View {
             Text(fromAccountName)
           }
         } else {
-          BlockieGroup(
-            fromAddress: fromAccountInfo.blockieSeed,
-            toAddress: toAccountAddress,
-            size: min(blockieSize, maxBlockieSize)
-          )
+          if txCoinType == .btc || txCoinType == .ada || txCoinType == .zec {
+            Blockie(address: fromAccountInfo.blockieSeed)
+              .frame(
+                width: min(blockieSize, maxBlockieSize),
+                height: min(blockieSize, maxBlockieSize)
+              )
+          } else {
+            BlockieGroup(
+              fromAddress: fromAccountInfo.blockieSeed,
+              toAddress: toAccountAddress,
+              size: min(blockieSize, maxBlockieSize)
+            )
+          }
           Group {
             if sizeCategory.isAccessibilityCategory {
               VStack {
