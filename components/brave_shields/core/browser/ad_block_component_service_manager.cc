@@ -188,9 +188,6 @@ void AdBlockComponentServiceManager::StartRegionalServices() {
     }
   }
 
-  // Notify the manager that all component providers are now registered.
-  // This unblocks AreAllProvidersInitialized so OnChanged can fire once
-  // the providers are also initialized via OnComponentReady.
   filters_provider_manager_->OnComponentProvidersRegistered();
 }
 

@@ -5,15 +5,11 @@
 
 #include "brave/components/brave_shields/content/browser/ad_block_localhost_filters_provider.h"
 
-#include <optional>
-#include <string>
 #include <utility>
 #include <vector>
 
-#include "base/hash/hash.h"
-#include "base/no_destructor.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/task/single_thread_task_runner.h"
+#include "brave/components/brave_component_updater/browser/dat_file_util.h"
 
 namespace brave_shields {
 
@@ -47,14 +43,6 @@ AdBlockLocalhostFiltersProvider::~AdBlockLocalhostFiltersProvider() = default;
 
 std::string AdBlockLocalhostFiltersProvider::GetNameForDebugging() {
   return "AdBlockLocalhostFiltersProvider";
-}
-
-std::optional<std::string> AdBlockLocalhostFiltersProvider::GetCacheKey()
-    const {
-  static const base::NoDestructor<std::string> hash(
-      base::NumberToString(base::PersistentHash(std::string(
-          std::begin(kLocalhostBadfilters), std::end(kLocalhostBadfilters)))));
-  return *hash;
 }
 
 void AdBlockLocalhostFiltersProvider::LoadFilterSet(

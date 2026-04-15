@@ -6,12 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_AD_BLOCK_SUBSCRIPTION_FILTERS_PROVIDER_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_AD_BLOCK_SUBSCRIPTION_FILTERS_PROVIDER_H_
 
-#include <optional>
 #include <string>
-#include <utility>
 
 #include "base/functional/callback.h"
-#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
@@ -22,8 +19,6 @@
 
 using brave_component_updater::DATFileDataBuffer;
 
-class PrefService;
-
 namespace adblock {
 struct FilterListMetadata;
 }  // namespace adblock
@@ -33,7 +28,6 @@ namespace brave_shields {
 class AdBlockSubscriptionFiltersProvider : public AdBlockFiltersProvider {
  public:
   AdBlockSubscriptionFiltersProvider(
-      PrefService* local_state,
       AdBlockFiltersProviderManager* manager,
       base::FilePath list_file,
       base::RepeatingCallback<void(const adblock::FilterListMetadata&)>
@@ -48,23 +42,18 @@ class AdBlockSubscriptionFiltersProvider : public AdBlockFiltersProvider {
       base::OnceCallback<void(
           base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) override;
 
-  void OnListAvailable(bool is_new_list);
-
-  std::optional<std::string> GetCacheKey() const override;
+  void OnListAvailable();
 
  private:
   void OnDATFileDataReady(
       base::OnceCallback<
           void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb,
       const perfetto::Flow& flow,
-      std::pair<DATFileDataBuffer, std::string> result);
+      const DATFileDataBuffer& dat_buf);
 
   std::string GetNameForDebugging() override;
 
-  std::string GetPrefKey() const;
-
   base::FilePath list_file_;
-  const raw_ptr<PrefService> local_state_;
 
   base::RepeatingCallback<void(const adblock::FilterListMetadata&)>
       on_metadata_retrieved_;

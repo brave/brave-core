@@ -5,14 +5,9 @@
 
 #include "brave/components/brave_shields/core/browser/ad_block_component_filters_provider.h"
 
-#include <string>
-
-#include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
-#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
-#include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace {
@@ -48,44 +43,3 @@ class AdBlockComponentFiltersProviderTest : public testing::Test {
   base::ScopedTempDir temp_dir_;
   base::ScopedTempDir temp_dir2_;
 };
-
-TEST_F(AdBlockComponentFiltersProviderTest,
-       DifferentComponentsHaveSeparateHashes) {
-  brave_shields::AdBlockFiltersProviderManager manager;
-
-  brave_shields::AdBlockComponentFiltersProvider provider_a(
-      nullptr, &manager, "component_a", "", "Component A", 0,
-      /*is_default_engine=*/true);
-  brave_shields::AdBlockComponentFiltersProvider provider_b(
-      nullptr, &manager, "component_b", "", "Component B", 0,
-      /*is_default_engine=*/false);
-
-  // Before OnComponentReady, hash should be nullopt.
-  EXPECT_FALSE(provider_a.GetCacheKey().has_value());
-  EXPECT_FALSE(provider_b.GetCacheKey().has_value());
-
-  // Each component gets a different path, so hashes differ.
-  SimulateComponentReady(provider_a, temp_dir_.GetPath());
-  SimulateComponentReady(provider_b, temp_dir2_.GetPath());
-
-  ASSERT_TRUE(provider_a.GetCacheKey().has_value());
-  ASSERT_TRUE(provider_b.GetCacheKey().has_value());
-  EXPECT_NE(provider_a.GetCacheKey().value(), provider_b.GetCacheKey().value());
-}
-
-TEST_F(AdBlockComponentFiltersProviderTest, ComponentUpdateChangesHash) {
-  brave_shields::AdBlockFiltersProviderManager manager;
-
-  brave_shields::AdBlockComponentFiltersProvider provider(
-      nullptr, &manager, "component_a", "", "Component A", 0,
-      /*is_default_engine=*/true);
-
-  SimulateComponentReady(provider, temp_dir_.GetPath());
-  std::string original_hash = provider.GetCacheKey().value();
-  ASSERT_FALSE(original_hash.empty());
-
-  // A component update with a new path (new version) changes the hash.
-  SimulateComponentReady(provider, temp_dir2_.GetPath());
-  ASSERT_TRUE(provider.GetCacheKey().has_value());
-  EXPECT_NE(provider.GetCacheKey().value(), original_hash);
-}

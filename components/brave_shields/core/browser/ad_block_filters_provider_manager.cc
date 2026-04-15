@@ -9,21 +9,23 @@
 #include <memory>
 #include <string>
 #include <utility>
-#include <vector>
 
 #include "base/barrier_callback.h"
 #include "base/check.h"
 #include "base/location.h"
 #include "base/notreached.h"
 #include "base/rand_util.h"
-#include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 
 namespace brave_shields {
 
-AdBlockFiltersProviderManager::AdBlockFiltersProviderManager() = default;
+AdBlockFiltersProviderManager::AdBlockFiltersProviderManager(
+    bool suppress_initial_notification) {
+  suppress_default_initial_ = suppress_initial_notification;
+  suppress_additional_initial_ = suppress_initial_notification;
+}
 
 AdBlockFiltersProviderManager::~AdBlockFiltersProviderManager() = default;
 
@@ -67,44 +69,54 @@ AdBlockFiltersProviderManager::GetProviders(bool is_for_default_engine) const {
                                : additional_engine_filters_providers_;
 }
 
-void AdBlockFiltersProviderManager::OnChanged(bool is_for_default_engine) {
-  if (AreAllProvidersInitialized(is_for_default_engine)) {
-    NotifyObservers(is_for_default_engine);
-  }
-}
-
-void AdBlockFiltersProviderManager::SetWaitForComponentProviders(bool wait) {
-  wait_for_component_providers_ = wait;
-}
-
 void AdBlockFiltersProviderManager::OnComponentProvidersRegistered() {
   component_providers_registered_ = true;
-  if (!wait_for_component_providers_) {
+  // cache the list of components when registration finishes so we can wait for
+  // them to initialize
+  initial_default_engine_filters_providers_ = default_engine_filters_providers_;
+  initial_additional_engine_filters_providers_ =
+      additional_engine_filters_providers_;
+}
+
+void AdBlockFiltersProviderManager::OnChanged(bool is_for_default_engine) {
+  // When a cached DAT is providing initial rules, suppress all notifications
+  // until component providers have registered and the first "all providers
+  // ready" event has been consumed.
+  if (component_providers_registered_) {
+    if (std::ranges::any_of(initial_default_engine_filters_providers_,
+                            &AdBlockFiltersProvider::IsInitialized)) {
+      suppress_default_initial_ = false;
+      initial_default_engine_filters_providers_.clear();
+    }
+    if (std::ranges::any_of(initial_additional_engine_filters_providers_,
+                            &AdBlockFiltersProvider::IsInitialized)) {
+      suppress_additional_initial_ = false;
+      initial_additional_engine_filters_providers_.clear();
+    }
+  }
+
+  if (!AreAllProvidersInitialized(is_for_default_engine)) {
     return;
   }
-  // Now that all component providers are registered, check if we can
-  // trigger notifications for each engine.
-  if (AreAllProvidersInitialized(true)) {
-    NotifyObservers(true);
-  }
-  if (AreAllProvidersInitialized(false)) {
-    NotifyObservers(false);
-  }
+
+  NotifyObservers(is_for_default_engine);
 }
 
 bool AdBlockFiltersProviderManager::AreAllProvidersInitialized(
     bool is_for_default_engine) const {
+  bool suppress = is_for_default_engine ? suppress_default_initial_
+                                        : suppress_additional_initial_;
+
+  if (suppress) {
+    // Still waiting for component providers — don't consume the flag yet.
+    return false;
+  }
+
   auto& filters_providers = is_for_default_engine
                                 ? default_engine_filters_providers_
                                 : additional_engine_filters_providers_;
+
   if (filters_providers.empty()) {
-    return false;
-  }
-  // When a cached DAT exists, wait until all component providers have been
-  // registered from the catalog before allowing filter set loading. Without
-  // this, providers that are registered synchronously (e.g. custom filters)
-  // would trigger a premature rebuild that invalidates the cache.
-  if (wait_for_component_providers_ && !component_providers_registered_) {
     return false;
   }
   for (auto* const& provider : filters_providers) {
@@ -155,10 +167,6 @@ void RunAllResults(
   for (auto& cb : results) {
     std::move(cb).Run(filter_set);
   }
-}
-
-std::optional<std::string> AdBlockFiltersProviderManager::GetCacheKey() const {
-  NOTREACHED();
 }
 
 void AdBlockFiltersProviderManager::FinishCombinating(

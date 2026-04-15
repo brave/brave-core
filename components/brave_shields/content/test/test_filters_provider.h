@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_TEST_TEST_FILTERS_PROVIDER_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_TEST_TEST_FILTERS_PROVIDER_H_
 
-#include <optional>
 #include <string>
 
 #include "base/functional/callback.h"
@@ -39,19 +38,14 @@ class TestFiltersProvider : public AdBlockFiltersProvider {
 
   std::string GetNameForDebugging() override;
 
-  std::optional<std::string> GetCacheKey() const override;
-  void set_cache_key(const std::string& hash) {
-    content_hash_ = hash;
-    force_nullopt_cache_key_ = false;
-  }
-  void set_cache_key_nullopt() { force_nullopt_cache_key_ = true; }
+  // Simulates a provider content change for testing.
+  void SimulateUpdate() { NotifyObservers(engine_is_default_); }
+  void SimulateOnComponentProvidersRegistered();
 
  private:
   std::string rules_;
   uint8_t permission_mask_;
   bool is_initialized_;
-  std::string content_hash_;
-  bool force_nullopt_cache_key_ = false;
 };
 
 }  // namespace brave_shields

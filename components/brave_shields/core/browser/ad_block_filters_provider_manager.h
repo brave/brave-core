@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_FILTERS_PROVIDER_MANAGER_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_FILTERS_PROVIDER_MANAGER_H_
 
-#include <optional>
 #include <string>
 #include <vector>
 
@@ -33,7 +32,8 @@ namespace brave_shields {
 class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
                                       public AdBlockFiltersProvider::Observer {
  public:
-  AdBlockFiltersProviderManager();
+  explicit AdBlockFiltersProviderManager(
+      bool suppress_initial_notification = false);
   ~AdBlockFiltersProviderManager() override;
   AdBlockFiltersProviderManager(const AdBlockFiltersProviderManager&) = delete;
   AdBlockFiltersProviderManager& operator=(
@@ -59,11 +59,7 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
   void ForceNotifyObserver(AdBlockFiltersProvider::Observer& observer,
                            bool is_default_engine);
 
-  // When set, AreAllProvidersInitialized returns false until
-  // OnComponentProvidersRegistered is called. Used when a cached DAT
-  // exists so we don't trigger a premature filter set rebuild before
-  // all component providers have registered from the catalog.
-  void SetWaitForComponentProviders(bool wait);
+  void SetSuppressInitialNotification(bool suppress);
 
   // Called by AdBlockComponentServiceManager after all component providers
   // have been registered from the catalog.
@@ -77,8 +73,6 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
  private:
   bool AreAllProvidersInitialized(bool is_for_default_engine) const;
 
-  std::optional<std::string> GetCacheKey() const override;
-
   void FinishCombinating(
       base::OnceCallback<
           void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb,
@@ -89,7 +83,17 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
   base::flat_set<AdBlockFiltersProvider*> default_engine_filters_providers_;
   base::flat_set<AdBlockFiltersProvider*> additional_engine_filters_providers_;
 
-  bool wait_for_component_providers_ = false;
+  base::flat_set<AdBlockFiltersProvider*>
+      initial_default_engine_filters_providers_;
+  base::flat_set<AdBlockFiltersProvider*>
+      initial_additional_engine_filters_providers_;
+
+  // When set, OnChanged is suppressed until OnComponentProvidersRegistered
+  // is called and all providers have initialized. The first notification
+  // after that point is also suppressed (it's the initial "all ready"
+  // event, not a real change). Used when a cached DAT provides initial rules.
+  bool suppress_default_initial_ = false;
+  bool suppress_additional_initial_ = false;
   bool component_providers_registered_ = false;
 
   base::CancelableTaskTracker task_tracker_;

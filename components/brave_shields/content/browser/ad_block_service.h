@@ -11,15 +11,13 @@
 #include <memory>
 #include <optional>
 #include <string>
-#include <string_view>
 #include <utility>
 
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
-#include "base/functional/callback_forward.h"
 #include "base/location.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
@@ -63,12 +61,20 @@ class AdBlockSubscriptionServiceManager;
 // The brave shields service in charge of ad-block checking and init.
 class AdBlockService {
  public:
+  enum class FilterListLoadResult {
+    kLoaded,
+    kFailed,
+    kResourcesOnly,
+  };
+
   class Observer : public base::CheckedObserver {
    public:
     Observer() = default;
     ~Observer() override = default;
-    virtual void OnFilterListLoaded(bool is_default_engine, bool success) {}
+    virtual void OnFilterListLoaded(bool is_default_engine,
+                                    FilterListLoadResult result) {}
     virtual void OnDATLoaded(bool is_default_engine, bool success) {}
+    virtual void OnDATWritten(bool is_default_engine) {}
     virtual void OnResourcesLoaded(bool is_default_engine) {}
   };
 
@@ -79,19 +85,14 @@ class AdBlockService {
     // If filter_set is non-null, calls Load; otherwise calls UseResources.
     using OnResourcesLoadedCallback = base::RepeatingCallback<void(
         bool,
-        std::string,
         std::optional<DATFileDataBuffer>,
         std::unique_ptr<rust::Box<adblock::FilterSet>>,
         AdblockResourceStorageBox)>;
-    using ShouldLoadFilterSetCallback = base::RepeatingCallback<bool()>;
-    using ComputeCacheKeyCallback = base::RepeatingCallback<std::string()>;
 
     SourceProviderObserver(
         OnResourcesLoadedCallback on_resources_loaded,
         AdBlockResourceProvider* resource_provider,
         AdBlockFiltersProviderManager* filters_provider_manager,
-        ShouldLoadFilterSetCallback should_load_filter_set,
-        ComputeCacheKeyCallback compute_cache_key,
         bool engine_is_default,
         scoped_refptr<base::SequencedTaskRunner> task_runner);
 
@@ -106,27 +107,21 @@ class AdBlockService {
 
    private:
     void LoadResources(
-        std::string cache_key,
         std::optional<DATFileDataBuffer> dat,
         std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set);
     void OnFilterSetLoaded(
-        std::string cache_key,
         base::OnceCallback<void(rust::Box<adblock::FilterSet>*)> cb);
     void OnFilterSetCreated(
-        std::string cache_key,
         std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set);
 
     // AdBlockResourceProvider::Observer
     void OnResourcesLoaded(AdblockResourceStorageBox storage) override;
 
-    void OnAllLoaded(std::string cache_key,
-                     std::optional<DATFileDataBuffer> dat,
+    void OnAllLoaded(std::optional<DATFileDataBuffer> dat,
                      std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set,
                      AdblockResourceStorageBox storage);
 
     OnResourcesLoadedCallback on_resources_loaded_;
-    ShouldLoadFilterSetCallback should_load_filter_set_;
-    ComputeCacheKeyCallback compute_cache_key_;
     const bool engine_is_default_;
 
     scoped_refptr<base::SequencedTaskRunner> task_runner_;
@@ -208,18 +203,15 @@ class AdBlockService {
 
   void OnResourcesLoaded(
       bool is_default_engine,
-      std::string cache_key,
       std::optional<DATFileDataBuffer> dat,
       std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set,
       AdblockResourceStorageBox storage);
 
   void NotifyOnDATLoaded(bool is_default_engine, bool success);
-  void OnEngineLoaded(bool is_default_engine,
-                      std::string cache_key,
-                      std::pair<bool, std::optional<DATFileDataBuffer>> result);
-  void OnDATFileWritten(bool is_default_engine,
-                        std::string cache_key,
-                        bool success);
+  void OnEngineLoaded(
+      bool is_default_engine,
+      std::pair<FilterListLoadResult, std::optional<DATFileDataBuffer>> result);
+  void OnDATFileWritten(bool is_default_engine, bool success);
   void OnReadCachedDATFiles(std::optional<DATFileDataBuffer> default_dat,
                             std::optional<DATFileDataBuffer> additional_dat);
 

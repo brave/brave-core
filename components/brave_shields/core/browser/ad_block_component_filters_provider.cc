@@ -124,16 +124,6 @@ bool AdBlockComponentFiltersProvider::IsInitialized() const {
   return !component_path_.empty();
 }
 
-std::optional<std::string> AdBlockComponentFiltersProvider::GetCacheKey()
-    const {
-  if (component_path_.empty()) {
-    return std::nullopt;
-  }
-  // Use the component path as the hash — it changes with each component
-  // version, naturally invalidating the cache.
-  return component_path_.MaybeAsASCII();
-}
-
 base::FilePath AdBlockComponentFiltersProvider::GetFilterSetPath() {
   if (component_path_.empty()) {
     // Since we know it's empty return it as is.

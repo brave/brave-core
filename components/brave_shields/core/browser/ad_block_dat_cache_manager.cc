@@ -5,12 +5,9 @@
 
 #include "brave/components/brave_shields/core/browser/ad_block_dat_cache_manager.h"
 
-#include <algorithm>
 #include <optional>
 #include <string>
-#include <string_view>
 #include <utility>
-#include <vector>
 
 #include "base/check.h"
 #include "base/check_is_test.h"
@@ -21,13 +18,12 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/location.h"
-#include "base/strings/string_util.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_view_util.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
-#include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
+#include "base/time/time.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -60,63 +56,39 @@ ReadCachedDATFilesFromDisk(base::FilePath cache_dir) {
 
 // static
 void AdBlockDATCacheManager::RegisterPrefs(PrefRegistrySimple* registry) {
-  registry->RegisterStringPref(prefs::kAdBlockDefaultCacheHash, "");
-  registry->RegisterStringPref(prefs::kAdBlockAdditionalCacheHash, "");
+  registry->RegisterStringPref(prefs::kAdBlockDATCacheTimestamp, "");
 }
 
 AdBlockDATCacheManager::AdBlockDATCacheManager(
     PrefService* local_state,
-    AdBlockFiltersProviderManager* provider_manager,
     const base::FilePath& profile_dir)
     : local_state_(local_state),
-      provider_manager_(provider_manager),
       cache_dir_(profile_dir.AppendASCII(kAdblockCacheDir)),
       task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
-          {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})) {
-  if (base::FeatureList::IsEnabled(features::kAdblockDATCache) &&
-      local_state_ &&
-      (!local_state_->GetString(CacheHashPrefName(true)).empty() ||
-       !local_state_->GetString(CacheHashPrefName(false)).empty())) {
-    provider_manager_->SetWaitForComponentProviders(true);
-  }
-}
+          {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})) {}
 
 AdBlockDATCacheManager::~AdBlockDATCacheManager() = default;
 
-std::string AdBlockDATCacheManager::ComputeCombinedCacheKey(
-    bool is_default_engine) const {
-  CHECK(base::FeatureList::IsEnabled(features::kAdblockDATCache));
-  std::vector<std::string> keys;
-  for (auto* provider : provider_manager_->GetProviders(is_default_engine)) {
-    auto key = provider->GetCacheKey();
-    if (key.has_value()) {
-      keys.push_back(std::move(*key));
-    }
+bool AdBlockDATCacheManager::HasCachedDAT() const {
+  if (!base::FeatureList::IsEnabled(features::kAdblockDATCache)) {
+    return false;
   }
-  std::sort(keys.begin(), keys.end());
-  return base::JoinString(keys, "|");
+  if (!local_state_) {
+    CHECK_IS_TEST();
+    return false;
+  }
+  return !local_state_->GetString(prefs::kAdBlockDATCacheTimestamp).empty();
 }
 
-bool AdBlockDATCacheManager::ShouldLoadFilterSet(bool is_default_engine) const {
+void AdBlockDATCacheManager::MarkDATCacheWritten() {
   CHECK(base::FeatureList::IsEnabled(features::kAdblockDATCache));
   if (!local_state_) {
     CHECK_IS_TEST();
-    return true;
+    return;
   }
-  std::string combined_key = ComputeCombinedCacheKey(is_default_engine);
-  std::string cached_key =
-      local_state_->GetString(CacheHashPrefName(is_default_engine));
-  return cached_key.empty() || cached_key != combined_key;
-}
-
-void AdBlockDATCacheManager::StoreCacheKey(bool is_default_engine,
-                                           const std::string& cache_key) {
-  CHECK(base::FeatureList::IsEnabled(features::kAdblockDATCache));
-  if (!local_state_) {
-    CHECK_IS_TEST();
-  } else {
-    local_state_->SetString(CacheHashPrefName(is_default_engine), cache_key);
-  }
+  local_state_->SetString(
+      prefs::kAdBlockDATCacheTimestamp,
+      base::NumberToString(base::Time::Now().InMillisecondsFSinceUnixEpoch()));
 }
 
 void AdBlockDATCacheManager::WriteDATFile(
@@ -137,7 +109,17 @@ void AdBlockDATCacheManager::WriteDATFile(
           std::move(dat),
           cache_dir_.AppendASCII(is_default_engine ? kAdBlockEngine0DATCache
                                                    : kAdBlockEngine1DATCache)),
-      std::move(on_complete));
+      base::BindOnce(&AdBlockDATCacheManager::OnDATFileWritten,
+                     weak_factory_.GetWeakPtr(), std::move(on_complete)));
+}
+
+void AdBlockDATCacheManager::OnDATFileWritten(
+    base::OnceCallback<void(bool)> on_complete,
+    bool success) {
+  if (success) {
+    MarkDATCacheWritten();
+  }
+  std::move(on_complete).Run(success);
 }
 
 void AdBlockDATCacheManager::ReadCachedDATFiles(
@@ -156,23 +138,6 @@ void AdBlockDATCacheManager::ReadCachedDATFiles(
                                     std::move(result.second));
           },
           std::move(on_complete)));
-}
-
-// static
-std::string_view AdBlockDATCacheManager::CacheHashPrefName(
-    bool is_default_engine) {
-  return is_default_engine ? prefs::kAdBlockDefaultCacheHash
-                           : prefs::kAdBlockAdditionalCacheHash;
-}
-
-bool AdBlockDATCacheManager::allow_dat_loading() const {
-  CHECK(base::FeatureList::IsEnabled(features::kAdblockDATCache));
-  return allow_dat_loading_;
-}
-
-void AdBlockDATCacheManager::set_allow_dat_loading(bool allow) {
-  CHECK(base::FeatureList::IsEnabled(features::kAdblockDATCache));
-  allow_dat_loading_ = allow;
 }
 
 }  // namespace brave_shields

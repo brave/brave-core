@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_AD_BLOCK_LOCALHOST_FILTERS_PROVIDER_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_AD_BLOCK_LOCALHOST_FILTERS_PROVIDER_H_
 
-#include <optional>
 #include <string>
 
 #include "base/functional/callback.h"
@@ -37,8 +36,6 @@ class AdBlockLocalhostFiltersProvider : public AdBlockFiltersProvider {
           base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) override;
 
   std::string GetNameForDebugging() override;
-
-  std::optional<std::string> GetCacheKey() const override;
 
  private:
   SEQUENCE_CHECKER(sequence_checker_);

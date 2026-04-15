@@ -120,17 +120,4 @@ TEST(AdBlockFiltersProviderManagerTest,
   EXPECT_EQ(observer.changed_count, 2);
 }
 
-TEST(AdBlockFiltersProviderManagerTest, OnChangedCombinesProviderHashes) {
-  brave_shields::AdBlockFiltersProviderManager m;
-
-  FiltersProviderManagerTestObserver observer;
-  m.AddObserver(&observer);
-
-  // Create and initialize a provider
-  brave_shields::TestFiltersProvider provider("test_rules", true, 0);
-  provider.RegisterAsSourceProvider(&m);
-
-  EXPECT_EQ(observer.changed_count, 1);
-  // Provider should be in the default engine set.
-  EXPECT_EQ(m.GetProviders(true).size(), 1u);
-}
+// add test for suppress initial notifiction

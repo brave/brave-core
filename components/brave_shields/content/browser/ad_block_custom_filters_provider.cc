@@ -11,10 +11,8 @@
 #include <vector>
 
 #include "base/check_is_test.h"
-#include "base/hash/hash.h"
 #include "base/rand_util.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filter_reset_util.h"
@@ -40,17 +38,12 @@ void AddDATBufferToFilterSet(uint8_t permission_mask,
 // i.e. the maximum possible uint8_t.
 constexpr uint8_t kCustomFiltersPermissionLevel = UINT8_MAX;
 
-std::string ComputeCacheHash(std::string_view content) {
-  return base::NumberToString(base::PersistentHash(content));
-}
-
 }  // namespace
 
 AdBlockCustomFiltersProvider::AdBlockCustomFiltersProvider(
     PrefService* local_state,
     AdBlockFiltersProviderManager* manager)
     : AdBlockFiltersProvider(false, manager), local_state_(local_state) {
-  cached_hash_ = ComputeCacheHash(GetCustomFilters());
   NotifyObservers(engine_is_default_);
 }
 
@@ -89,10 +82,6 @@ std::string AdBlockCustomFiltersProvider::GetNameForDebugging() {
   return "AdBlockCustomFiltersProvider";
 }
 
-std::optional<std::string> AdBlockCustomFiltersProvider::GetCacheKey() const {
-  return cached_hash_;
-}
-
 void AdBlockCustomFiltersProvider::CreateSiteExemption(std::string_view host) {
   std::string custom_filters = GetCustomFilters();
   UpdateCustomFilters(
@@ -116,7 +105,6 @@ bool AdBlockCustomFiltersProvider::UpdateCustomFilters(
     return false;
   }
   local_state_->SetString(prefs::kAdBlockCustomFilters, custom_filters);
-  cached_hash_ = ComputeCacheHash(custom_filters);
 
   NotifyObservers(engine_is_default_);
 
