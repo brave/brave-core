@@ -15,13 +15,15 @@ interface OriginLeoButtonThemeProps {
  * wrapper forces dark button styling for Origin builds only.
  */
 export default function OriginLeoButtonTheme (props: OriginLeoButtonThemeProps) {
+  let themed: React.ReactNode
   // <if expr="is_brave_origin_branded">
-  return (
+  themed = (
     <span data-theme='dark' style={{ display: 'contents' }}>
       {props.children}
     </span>
   )
   // <else>
-  return <>{props.children}</>
+  themed = <>{props.children}</>
   // </if>
+  return themed
 }
