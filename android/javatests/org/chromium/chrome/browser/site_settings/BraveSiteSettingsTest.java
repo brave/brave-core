@@ -14,6 +14,9 @@ import org.junit.runner.RunWith;
 
 import org.chromium.base.test.util.Batch;
 import org.chromium.base.test.util.Feature;
+import org.chromium.base.test.util.Features.DisableFeatures;
+import org.chromium.base.test.util.Features.EnableFeatures;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.settings.SettingsActivity;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.components.browser_ui.site_settings.SiteSettings;
@@ -21,6 +24,7 @@ import org.chromium.components.browser_ui.site_settings.SiteSettings;
 @Batch(Batch.PER_CLASS)
 @RunWith(ChromeJUnit4ClassRunner.class)
 public class BraveSiteSettingsTest {
+    private static final String DIVIDER_KEY = "divider";
     private static final String PERMISSION_AUTOREVOCATION_KEY = "permission_autorevocation";
     private static final String SOLANA_CONNECTED_SITES_KEY = "solana_connected_sites";
 
@@ -31,7 +35,31 @@ public class BraveSiteSettingsTest {
     @Test
     @SmallTest
     @Feature({"Preferences"})
+    @DisableFeatures(ChromeFeatureList.ANDROID_SETTINGS_CONTAINMENT)
     public void testSiteSettingsMenuPermissionAutorevocationOrder() {
+        final SettingsActivity settingsActivity = SiteSettingsTestUtils.startSiteSettingsMenu("");
+        SiteSettings siteSettings = (SiteSettings) settingsActivity.getMainFragment();
+        Assert.assertNotNull(siteSettings);
+        Preference prefDivider = siteSettings.findPreference(DIVIDER_KEY);
+        Assert.assertNotNull(prefDivider);
+        Preference prefPermissionAutorevocation =
+                siteSettings.findPreference(PERMISSION_AUTOREVOCATION_KEY);
+        Assert.assertNotNull(prefPermissionAutorevocation);
+        Preference prefSolanaConnectedSites =
+                siteSettings.findPreference(SOLANA_CONNECTED_SITES_KEY);
+        Assert.assertNotNull(prefSolanaConnectedSites);
+        Assert.assertEquals(prefSolanaConnectedSites.getOrder(), prefDivider.getOrder() - 1);
+        Assert.assertEquals(
+                prefSolanaConnectedSites.getOrder(), prefPermissionAutorevocation.getOrder() - 2);
+        settingsActivity.finish();
+    }
+
+    /** The same but with `Android Settings Containment` flag enabled */
+    @Test
+    @SmallTest
+    @Feature({"Preferences"})
+    @EnableFeatures(ChromeFeatureList.ANDROID_SETTINGS_CONTAINMENT)
+    public void testSiteSettingsMenuPermissionAutorevocationOrderWithContainment() {
         final SettingsActivity settingsActivity = SiteSettingsTestUtils.startSiteSettingsMenu("");
         SiteSettings siteSettings = (SiteSettings) settingsActivity.getMainFragment();
         Assert.assertNotNull(siteSettings);
