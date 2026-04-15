@@ -15,6 +15,8 @@
 #include "base/location.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/internal/common/algorithm/split_vector_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
@@ -23,8 +25,6 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_feature.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
