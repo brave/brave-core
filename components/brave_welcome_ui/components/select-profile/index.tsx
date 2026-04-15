@@ -7,6 +7,7 @@ import * as React from 'react'
 
 import * as S from './style'
 import Button from '@brave/leo/react/button'
+import OriginLeoButtonTheme from '../origin_leo_button_theme'
 import LeftArrowSVG from '../svg/left-arrow'
 import AvatarIconSVG from '../svg/avatar-icon'
 import DataContext from '../../state/context'
@@ -165,14 +166,16 @@ function SelectProfile () {
         </div>
       </S.ProfileListBox>
       <S.ActionBox>
-        <Button
-          kind="filled"
-          onClick={handleImportProfiles}
-          isDisabled={selectedProfiles.size === 0 || isImportInProgress()}
-          size="large"
-        >
-          {getLocale('braveWelcomeImportProfilesButtonLabel')}
-        </Button>
+        <OriginLeoButtonTheme>
+          <Button
+            kind="filled"
+            onClick={handleImportProfiles}
+            isDisabled={selectedProfiles.size === 0 || isImportInProgress()}
+            size="large"
+          >
+            {getLocale('braveWelcomeImportProfilesButtonLabel')}
+          </Button>
+        </OriginLeoButtonTheme>
       </S.ActionBox>
     </S.MainBox>
   )

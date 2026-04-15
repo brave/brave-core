@@ -7,6 +7,7 @@ import * as React from 'react'
 
 import * as S from './style'
 import Button from '@brave/leo/react/button'
+import OriginLeoButtonTheme from '../origin_leo_button_theme'
 import classnames from '$web-common/classnames'
 import DataContext from '../../state/context'
 import { ViewType } from '../../state/component_types'
@@ -161,13 +162,14 @@ function SelectBrowser () {
         </div>
       </S.BrowserListBox>
       <S.ActionBox>
-        <Button
-          kind="plain-faint"
-          onClick={handleSkip}
-          size="large"
-        >
-          {getLocale('braveWelcomeSkipButtonLabel')}
-        </Button>
+        <OriginLeoButtonTheme>
+          <Button
+            kind="plain-faint"
+            onClick={handleSkip}
+            size="large"
+          >
+            {getLocale('braveWelcomeSkipButtonLabel')}
+          </Button>
           <Button
             kind="filled"
             isDisabled={!hasSelectedBrowser}
@@ -176,6 +178,7 @@ function SelectBrowser () {
           >
             {getLocale('braveWelcomeImportButtonLabel')}
           </Button>
+        </OriginLeoButtonTheme>
       </S.ActionBox>
     </S.MainBox>
   )
