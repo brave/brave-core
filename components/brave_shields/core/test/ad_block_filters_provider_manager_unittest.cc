@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 
+#include "base/test/task_environment.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -120,4 +121,56 @@ TEST(AdBlockFiltersProviderManagerTest,
   EXPECT_EQ(observer.changed_count, 2);
 }
 
-// add test for suppress initial notifiction
+TEST(AdBlockFiltersProviderManagerTest,
+     SuppressionHoldsUntilAllInitialProvidersInitialized) {
+  brave_shields::AdBlockFiltersProviderManager m(
+      /*suppress_initial_notification=*/true);
+
+  FiltersProviderManagerTestObserver observer;
+  m.AddObserver(&observer);
+
+  // Two providers registered at catalog load time.
+  brave_shields::TestFiltersProvider provider_a("rules_a", true, 0);
+  brave_shields::TestFiltersProvider provider_b("rules_b", true, 0);
+  m.AddProvider(&provider_a, true);
+  m.AddProvider(&provider_b, true);
+  m.OnComponentProvidersRegistered();
+
+  // provider_a initializes — but provider_b hasn't yet.
+  // Suppression should still hold.
+  provider_a.Initialize();
+  EXPECT_EQ(observer.changed_count, 0);
+
+  // provider_b initializes — now all initial providers are ready.
+  // Suppression should be consumed and observer notified.
+  provider_b.Initialize();
+  EXPECT_EQ(observer.changed_count, 1);
+}
+
+class AdBlockFiltersProviderManagerTimerTest : public testing::Test {
+ protected:
+  base::test::TaskEnvironment task_environment_{
+      base::test::TaskEnvironment::TimeSource::MOCK_TIME};
+};
+
+TEST_F(AdBlockFiltersProviderManagerTimerTest,
+       FallbackTimerClearsSuppressionAfter5Seconds) {
+  brave_shields::AdBlockFiltersProviderManager m(
+      /*suppress_initial_notification=*/true);
+
+  FiltersProviderManagerTestObserver observer;
+  m.AddObserver(&observer);
+
+  brave_shields::TestFiltersProvider provider("rules_a", true, 0);
+  provider.RegisterAsSourceProvider(&m);
+
+  // Suppression is active — OnChanged should be suppressed and observer
+  // should not have been notified yet.
+  EXPECT_EQ(observer.changed_count, 0);
+
+  // Advance time past the 5-second fallback threshold.
+  task_environment_.FastForwardBy(base::Seconds(6));
+
+  // Fallback timer should have cleared suppression and triggered notification.
+  EXPECT_EQ(observer.changed_count, 1);
+}

@@ -12,10 +12,12 @@
 
 #include "base/barrier_callback.h"
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/notreached.h"
 #include "base/rand_util.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/time/time.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 
@@ -76,25 +78,68 @@ AdBlockFiltersProviderManager::GetProviders(bool is_for_default_engine) const {
 }
 
 void AdBlockFiltersProviderManager::OnComponentProvidersRegistered() {
+  if (component_providers_registered_) {
+    return;
+  }
+
+  if (!suppress_default_initial_ && !suppress_additional_initial_) {
+    return;
+  }
+
   component_providers_registered_ = true;
   // cache the list of components when registration finishes so we can wait for
   // them to initialize
-  initial_default_engine_filters_providers_ = default_engine_filters_providers_;
-  initial_additional_engine_filters_providers_ =
-      additional_engine_filters_providers_;
+  if (suppress_default_initial_) {
+    initial_default_engine_filters_providers_ =
+        default_engine_filters_providers_;
+  }
+
+  if (suppress_additional_initial_) {
+    initial_additional_engine_filters_providers_ =
+        additional_engine_filters_providers_;
+  }
+}
+
+void AdBlockFiltersProviderManager::ClearSuppressionFallback() {
+  // Only notify engines whose suppression wasn't already cleared by the
+  // normal OnComponentProvidersRegistered path.
+  bool notify_default = suppress_default_initial_;
+  bool notify_additional = suppress_additional_initial_;
+
+  suppress_default_initial_ = false;
+  suppress_additional_initial_ = false;
+
+  if (notify_default && AreAllProvidersInitialized(true)) {
+    NotifyObservers(true);
+  }
+  if (notify_additional && AreAllProvidersInitialized(false)) {
+    NotifyObservers(false);
+  }
 }
 
 void AdBlockFiltersProviderManager::OnChanged(bool is_for_default_engine) {
   // When a cached DAT is providing initial rules, suppress all notifications
   // until component providers have registered and the first "all providers
   // ready" event has been consumed.
+  // Start a 5-second fallback timer on the first suppressed OnChanged so
+  // suppression is always cleared even if OnComponentProvidersRegistered
+  // is never called (e.g., no catalog component installed yet).
+  if ((suppress_default_initial_ || suppress_additional_initial_) &&
+      !suppress_fallback_timer_.IsRunning()) {
+    suppress_fallback_timer_.Start(
+        FROM_HERE, base::Seconds(5),
+        base::BindOnce(
+            &AdBlockFiltersProviderManager::ClearSuppressionFallback,
+            weak_factory_.GetWeakPtr()));
+  }
+
   if (component_providers_registered_) {
-    if (std::ranges::any_of(initial_default_engine_filters_providers_,
+    if (!std::ranges::all_of(initial_default_engine_filters_providers_,
                             &AdBlockFiltersProvider::IsInitialized)) {
       suppress_default_initial_ = false;
       initial_default_engine_filters_providers_.clear();
     }
-    if (std::ranges::any_of(initial_additional_engine_filters_providers_,
+    if (!std::ranges::all_of(initial_additional_engine_filters_providers_,
                             &AdBlockFiltersProvider::IsInitialized)) {
       suppress_additional_initial_ = false;
       initial_additional_engine_filters_providers_.clear();

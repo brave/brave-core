@@ -12,6 +12,7 @@
 #include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
 #include "base/task/cancelable_task_tracker.h"
+#include "base/timer/timer.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
@@ -95,6 +96,12 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
   bool suppress_default_initial_ = false;
   bool suppress_additional_initial_ = false;
   bool component_providers_registered_ = false;
+
+  void ClearSuppressionFallback();
+
+  // Fallback: clears suppression after 5 seconds in case
+  // OnComponentProvidersRegistered is never called.
+  base::OneShotTimer suppress_fallback_timer_;
 
   base::CancelableTaskTracker task_tracker_;
 
