@@ -12,26 +12,14 @@
 #include "base/command_line.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
-#include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
-#include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/browser/brave_wallet/meld_integration_service_factory.h"
-#include "brave/browser/brave_wallet/simulation_service_factory.h"
-#include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_ipfs_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
-#include "brave/components/brave_wallet/browser/json_rpc_service.h"
-#include "brave/components/brave_wallet/browser/keyring_service.h"
-#include "brave/components/brave_wallet/browser/simulation_service.h"
-#include "brave/components/brave_wallet/browser/swap_service.h"
-#include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet_panel/resources/grit/brave_wallet_panel_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -214,18 +202,12 @@ void WalletPanelUI::CreatePanelHandler(
     wallet_service->Bind(std::move(filecoin_tx_manager_proxy_receiver));
     wallet_service->Bind(std::move(bitcoin_tx_manager_proxy_receiver));
     wallet_service->Bind(std::move(brave_wallet_p3a_receiver));
+    wallet_service->Bind(std::move(asset_ratio_service_receiver));
+    wallet_service->Bind(std::move(swap_service_receiver));
+    wallet_service->Bind(std::move(simulation_service_receiver));
+    wallet_service->Bind(std::move(meld_integration_service));
+    wallet_service->Bind(std::move(brave_wallet_ipfs_service_receiver));
   }
-
-  brave_wallet::SwapServiceFactory::BindForContext(
-      profile, std::move(swap_service_receiver));
-  brave_wallet::SimulationServiceFactory::BindForContext(
-      profile, std::move(simulation_service_receiver));
-  brave_wallet::AssetRatioServiceFactory::BindForContext(
-      profile, std::move(asset_ratio_service_receiver));
-  brave_wallet::MeldIntegrationServiceFactory::BindForContext(
-      profile, std::move(meld_integration_service));
-  brave_wallet::BraveWalletIpfsServiceFactory::BindForContext(
-      profile, std::move(brave_wallet_ipfs_service_receiver));
 
   auto* blockchain_registry = brave_wallet::BlockchainRegistry::GetInstance();
   if (blockchain_registry) {

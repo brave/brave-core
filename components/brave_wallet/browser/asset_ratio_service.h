@@ -10,13 +10,10 @@
 #include <string>
 #include <vector>
 
-#include "base/functional/callback.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "components/keyed_service/core/keyed_service.h"
-#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "url/gurl.h"
 
@@ -27,7 +24,7 @@ class SimpleURLLoader;
 
 namespace brave_wallet {
 
-class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
+class AssetRatioService : public mojom::AssetRatioService {
  public:
   explicit AssetRatioService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
@@ -37,7 +34,6 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
 
   using APIRequestResult = api_request_helper::APIRequestResult;
 
-  mojo::PendingRemote<mojom::AssetRatioService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::AssetRatioService> receiver);
 
   // Get buy URL for on-ramps

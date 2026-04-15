@@ -6,16 +6,9 @@
 #include "brave/ios/browser/brave_wallet/brave_wallet_factory_wrappers.h"
 
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
-#include "brave/components/brave_wallet/browser/json_rpc_service.h"
-#include "brave/components/brave_wallet/browser/keyring_service.h"
-#include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet.mojom.objc+private.h"
-#include "brave/ios/browser/brave_wallet/asset_ratio_service_factory.h"
-#include "brave/ios/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/ios/browser/brave_wallet/meld_integration_service_factory.h"
-#include "brave/ios/browser/brave_wallet/swap_service_factory.h"
 #include "brave/ios/browser/keyed_service/keyed_service_factory_wrapper+private.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 
@@ -25,12 +18,15 @@
 
 @implementation BraveWalletAssetRatioServiceFactory
 + (nullable id)serviceForProfile:(ProfileIOS*)profile {
-  auto service = brave_wallet::AssetRatioServiceFactory::GetForProfile(profile);
-  if (!service) {
+  auto* brave_wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForState(profile);
+  if (!brave_wallet_service) {
     return nil;
   }
+  mojo::PendingRemote<brave_wallet::mojom::AssetRatioService> pending_remote;
+  brave_wallet_service->Bind(pending_remote.InitWithNewPipeAndPassReceiver());
   return [[BraveWalletAssetRatioServiceMojoImpl alloc]
-      initWithAssetRatioService:std::move(service)];
+      initWithAssetRatioService:std::move(pending_remote)];
 }
 @end
 
@@ -46,7 +42,6 @@
   return [[BraveWalletBitcoinWalletServiceMojoImpl alloc]
       initWithBitcoinWalletService:std::move(pending_remote)];
 }
-
 @end
 
 @implementation BraveWalletJsonRpcServiceFactory
@@ -121,13 +116,16 @@
 
 @implementation BraveWalletMeldIntegrationServiceFactory
 + (nullable id)serviceForProfile:(ProfileIOS*)profile {
-  auto service =
-      brave_wallet::MeldIntegrationServiceFactory::GetForProfile(profile);
-  if (!service) {
+  auto* brave_wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForState(profile);
+  if (!brave_wallet_service) {
     return nil;
   }
+  mojo::PendingRemote<brave_wallet::mojom::MeldIntegrationService>
+      pending_remote;
+  brave_wallet_service->Bind(pending_remote.InitWithNewPipeAndPassReceiver());
   return [[BraveWalletMeldIntegrationServiceMojoImpl alloc]
-      initWithMeldIntegrationService:std::move(service)];
+      initWithMeldIntegrationService:std::move(pending_remote)];
 }
 @end
 
@@ -147,24 +145,29 @@
 
 @implementation BraveWalletSwapServiceFactory
 + (nullable id)serviceForProfile:(ProfileIOS*)profile {
-  auto service = brave_wallet::SwapServiceFactory::GetForProfile(profile);
-  if (!service) {
+  auto* brave_wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForState(profile);
+  if (!brave_wallet_service) {
     return nil;
   }
+  mojo::PendingRemote<brave_wallet::mojom::SwapService> pending_remote;
+  brave_wallet_service->Bind(pending_remote.InitWithNewPipeAndPassReceiver());
   return [[BraveWalletSwapServiceMojoImpl alloc]
-      initWithSwapService:std::move(service)];
+      initWithSwapService:std::move(pending_remote)];
 }
 @end
 
 @implementation BraveWalletIpfsServiceFactory
 + (nullable id)serviceForProfile:(ProfileIOS*)profile {
-  auto service =
-      brave_wallet::BraveWalletIpfsServiceFactory::GetForProfile(profile);
-  if (!service) {
+  auto* brave_wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForState(profile);
+  if (!brave_wallet_service) {
     return nil;
   }
+  mojo::PendingRemote<brave_wallet::mojom::IpfsService> pending_remote;
+  brave_wallet_service->Bind(pending_remote.InitWithNewPipeAndPassReceiver());
   return [[BraveWalletIpfsServiceMojoImpl alloc]
-      initWithIpfsService:std::move(service)];
+      initWithIpfsService:std::move(pending_remote)];
 }
 @end
 
@@ -194,5 +197,4 @@
   return [[BraveWalletCardanoWalletServiceMojoImpl alloc]
       initWithCardanoWalletService:std::move(pending_remote)];
 }
-
 @end

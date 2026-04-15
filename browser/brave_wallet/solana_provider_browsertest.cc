@@ -11,7 +11,6 @@
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "brave/browser/brave_content_browser_client.h"
-#include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
@@ -394,7 +393,8 @@ class SolanaProviderTest : public InProcessBrowserTest {
         BraveWalletTestDataFolder());
     ASSERT_TRUE(https_server_for_files()->Start());
 
-    AssetRatioServiceFactory::GetServiceForContext(browser()->profile())
+    brave_wallet_service()
+        ->asset_ratio_service()
         ->EnableDummyPricesForTesting();
     WaitForTxStorageDelegateInitialized(tx_service()->GetDelegateForTesting());
 

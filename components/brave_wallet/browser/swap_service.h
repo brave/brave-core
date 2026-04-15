@@ -11,8 +11,6 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "components/keyed_service/core/keyed_service.h"
-#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "url/gurl.h"
 
@@ -23,7 +21,7 @@ class SimpleURLLoader;
 
 namespace brave_wallet {
 
-class SwapService : public KeyedService, public mojom::SwapService {
+class SwapService : public mojom::SwapService {
  public:
   using APIRequestResult = api_request_helper::APIRequestResult;
 
@@ -33,7 +31,6 @@ class SwapService : public KeyedService, public mojom::SwapService {
   SwapService(const SwapService&) = delete;
   SwapService& operator=(const SwapService&) = delete;
 
-  mojo::PendingRemote<mojom::SwapService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::SwapService> receiver);
 
   // Obtains a quote for a swap.

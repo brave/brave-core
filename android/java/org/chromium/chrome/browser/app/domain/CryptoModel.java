@@ -12,7 +12,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
@@ -23,7 +22,6 @@ import org.chromium.brave_wallet.mojom.GetEncryptionPublicKeyRequest;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
-import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
@@ -36,10 +34,8 @@ import java.util.List;
 
 // Unused members, never read:
 // - mSolanaTxManagerProxy
-// - mSwapService
 // - mBlockchainRegistry
 // - mEthTxManagerProxy
-// - mAssetRatioService
 @SuppressWarnings("UnusedVariable")
 public class CryptoModel {
     /**
@@ -60,8 +56,6 @@ public class CryptoModel {
     private EthTxManagerProxy mEthTxManagerProxy;
     private SolanaTxManagerProxy mSolanaTxManagerProxy;
     private BraveWalletService mBraveWalletService;
-    private AssetRatioService mAssetRatioService;
-    private final SwapService mSwapService;
     private final CryptoSharedActions mCryptoSharedActions;
     private final CryptoSharedData mSharedData;
     private final MutableLiveData<Integer> mCoinTypeMutableLiveData =
@@ -75,11 +69,16 @@ public class CryptoModel {
 
     public LiveData<List<AccountInfo>> mAccountInfosFromKeyRingModel;
 
-    public CryptoModel(Context context, TxService txService, KeyringService keyringService,
-            BlockchainRegistry blockchainRegistry, JsonRpcService jsonRpcService,
-            EthTxManagerProxy ethTxManagerProxy, SolanaTxManagerProxy solanaTxManagerProxy,
-            BraveWalletService braveWalletService, AssetRatioService assetRatioService,
-            CryptoSharedActions cryptoSharedActions, SwapService swapService) {
+    public CryptoModel(
+            Context context,
+            TxService txService,
+            KeyringService keyringService,
+            BlockchainRegistry blockchainRegistry,
+            JsonRpcService jsonRpcService,
+            EthTxManagerProxy ethTxManagerProxy,
+            SolanaTxManagerProxy solanaTxManagerProxy,
+            BraveWalletService braveWalletService,
+            CryptoSharedActions cryptoSharedActions) {
         mContext = context;
         mTxService = txService;
         mKeyringService = keyringService;
@@ -88,8 +87,6 @@ public class CryptoModel {
         mEthTxManagerProxy = ethTxManagerProxy;
         mSolanaTxManagerProxy = solanaTxManagerProxy;
         mBraveWalletService = braveWalletService;
-        mAssetRatioService = assetRatioService;
-        mSwapService = swapService;
         mCryptoSharedActions = cryptoSharedActions;
         mSharedData = new CryptoSharedDataImpl();
         mPendingTxHelper = new PendingTxHelper(mTxService, new AccountInfo[0], true, true);
@@ -106,8 +103,7 @@ public class CryptoModel {
             JsonRpcService mJsonRpcService,
             EthTxManagerProxy mEthTxManagerProxy,
             SolanaTxManagerProxy mSolanaTxManagerProxy,
-            BraveWalletService mBraveWalletService,
-            AssetRatioService mAssetRatioService) {
+            BraveWalletService mBraveWalletService) {
         synchronized (mLock) {
             mContext = context;
             this.mTxService = mTxService;
@@ -117,7 +113,6 @@ public class CryptoModel {
             this.mEthTxManagerProxy = mEthTxManagerProxy;
             this.mSolanaTxManagerProxy = mSolanaTxManagerProxy;
             this.mBraveWalletService = mBraveWalletService;
-            this.mAssetRatioService = mAssetRatioService;
             mPendingTxHelper.setTxService(mTxService);
             mNetworkModel.resetServices(mBraveWalletService, mJsonRpcService);
         }

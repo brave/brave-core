@@ -14,7 +14,6 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/meld_integration.mojom.h"
-#include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 
 namespace network {
@@ -23,8 +22,7 @@ class SharedURLLoaderFactory;
 
 namespace brave_wallet {
 
-class MeldIntegrationService : public KeyedService,
-                               public mojom::MeldIntegrationService {
+class MeldIntegrationService : public mojom::MeldIntegrationService {
  public:
   explicit MeldIntegrationService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
@@ -34,7 +32,6 @@ class MeldIntegrationService : public KeyedService,
 
   using APIRequestResult = api_request_helper::APIRequestResult;
 
-  mojo::PendingRemote<mojom::MeldIntegrationService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::MeldIntegrationService> receiver);
 
   static GURL GetServiceProviderURL(const mojom::MeldFilterPtr& filter);
