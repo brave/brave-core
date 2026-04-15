@@ -144,6 +144,7 @@ RegisterPolymerTemplateModifications({
     // </if>
 
     // Insert the leo page into the view manager
+    // <if expr="enable_ai_chat">
     switcher.appendChild(
       html`
         <template is="dom-if" if="[[showPage_(pageVisibility_.leoAssistant)]]">
@@ -158,6 +159,7 @@ RegisterPolymerTemplateModifications({
           </div>
         </template>
       `)
+    // </if>
 
     // Insert the sync page into the view manager
     switcher.appendChild(
