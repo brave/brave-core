@@ -199,7 +199,7 @@
     Full width
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_SCROLLABLE_HORIZONTAL_TAB_STRIP" desc="Title for toggle that enables scrolling the horizontal tab strip when many tabs are open">
-    Scrollable tab strip
+    Use scrollable tab strip
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_SHARED_PINNED_TAB" desc="The label name of a toggle button for Shared Pinned Tab feature">
     Show pinned tabs in all windows
