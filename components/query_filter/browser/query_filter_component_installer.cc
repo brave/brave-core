@@ -25,7 +25,6 @@ namespace query_filter {
 
 namespace {
 
-<<<<<<< HEAD
 inline constexpr char kQueryFilterComponentName[] = "Query Filter";
 
 // Component id and public key must match the signing key used in
@@ -39,8 +38,6 @@ inline constexpr std::array<uint8_t, 32> kQueryFilterComponentPublicKeySHA256 =
      0x7e, 0x95, 0x08, 0xd8, 0x7e, 0xf0, 0x7d, 0xdb, 0x29, 0x5f, 0xe0,
      0x2d, 0xeb, 0x55, 0x74, 0x59, 0x40, 0x0f, 0x17, 0x00, 0x51};
 
-=======
->>>>>>> 1513f044b23 (fix deps.)
 class QueryFilterComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
  public:
@@ -69,25 +66,10 @@ class QueryFilterComponentInstallerPolicy
   std::string GetName() const override;
   update_client::InstallerAttributes GetInstallerAttributes() const override;
   bool IsBraveComponent() const override;
-<<<<<<< HEAD
 };
 
 QueryFilterComponentInstallerPolicy::QueryFilterComponentInstallerPolicy() =
     default;
-=======
-
- private:
-  const std::string component_id_;
-  const std::string component_name_;
-  std::array<uint8_t, crypto::kSHA256Length> component_hash_;
-};
-
-QueryFilterComponentInstallerPolicy::QueryFilterComponentInstallerPolicy()
-    : component_id_(kQueryFilterComponentId),
-      component_name_(kQueryFilterComponentName) {
-  component_hash_ = crypto::SHA256Hash(kQueryFilterComponentPublicKey);
-}
->>>>>>> 1513f044b23 (fix deps.)
 
 QueryFilterComponentInstallerPolicy::~QueryFilterComponentInstallerPolicy() =
     default;
