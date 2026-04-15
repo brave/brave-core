@@ -45,6 +45,10 @@ class BraveTabContainer : public TabContainerImpl,
   // Returns the ScrollBarMode for the scroll view used in vertical tab strip.
   views::ScrollView::ScrollBarMode GetScrollBarMode() const;
 
+  // Returns the scroll direction if scrolling is enabled. Returns nullopt if
+  // browser is null or scrolling is not enabled.
+  std::optional<views::LayoutOrientation> GetScrollDirection() const;
+
   // TabContainerImpl:
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override;
@@ -259,10 +263,6 @@ class BraveTabContainer : public TabContainerImpl,
   // was handled. The scroll direction is determined automatically based on
   // the current tab strip orientation.
   bool HandleScroll(int offset);
-
-  // Returns the scroll direction if scrolling is enabled. Returns nullopt if
-  // browser is null or scrolling is not enabled.
-  std::optional<views::LayoutOrientation> GetScrollDirection() const;
 
   // Updates the separator visibility and position between pinned and unpinned
   // tabs.
