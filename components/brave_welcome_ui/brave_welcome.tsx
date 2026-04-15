@@ -24,7 +24,11 @@ function App () {
 
   return (
     <DataContextProvider>
-      <BraveCoreThemeProvider forceDarkMode={forceDarkMode}>
+      <BraveCoreThemeProvider
+        // <if expr="is_brave_origin_branded">
+        forceDarkMode
+        // </if>
+       >
         <MainContainer />
       </BraveCoreThemeProvider>
     </DataContextProvider>
