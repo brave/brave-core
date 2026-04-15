@@ -2067,6 +2067,65 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2PanelPositionTest) {
       << "sidebar=" << sidebar->bounds().ToString()
       << " panel=" << panel->bounds().ToString();
 }
+
+// Verify that the sidebar item active state in SidebarModel is updated:
+// - When clicking a panel item via the sidebar UI.
+// - When the side panel is opened or closed via the side panel UI directly
+//   (e.g. toolbar toggle button), which bypasses SidebarController.
+//   In V1, SidebarContainerView monitors panel show/hide events and asks
+//   SidebarController to update the active state. In V2,
+//   SidebarContainerView does not do that, so BraveSidePanelCoordinator
+//   handles it in Show() and Close().
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2ActiveItemStateSync) {
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  panel_ui->DisableAnimationsForTesting();
+
+  auto bookmark_item_index =
+      model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks);
+  ASSERT_TRUE(bookmark_item_index.has_value());
+
+  // Initially no item is active.
+  EXPECT_FALSE(model()->active_index());
+
+  // Clicking a panel item via the sidebar UI activates it in the model.
+  SimulateSidebarItemClickAt(*bookmark_item_index);
+  EXPECT_EQ(model()->active_index(), bookmark_item_index);
+
+  // Deactivate by closing the panel.
+  panel_ui->Close(SidePanelEntry::PanelType::kContent);
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !model()->active_index().has_value(); }));
+
+  // Opening the side panel via the panel UI (e.g. toolbar toggle button path)
+  // also activates the corresponding sidebar item in the model.
+  panel_ui->Show(SidePanelEntryId::kBookmarks);
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return controller()->IsActiveIndex(bookmark_item_index); }));
+
+  // Closing the side panel via the panel UI deactivates the item in the model.
+  panel_ui->Close(SidePanelEntry::PanelType::kContent);
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !model()->active_index().has_value(); }));
+
+  // Toggling the panel open (as the toolbar button does) activates the
+  // last-used sidebar item in the model.
+  panel_ui->Toggle();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return controller()->IsActiveIndex(bookmark_item_index); }));
+
+  // Wait for the panel to be fully shown before toggling closed, so that
+  // BraveSidePanelCoordinator::Toggle() sees IsSidePanelShowing() == true
+  // and takes the close branch instead of the show branch.
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return panel_ui->IsSidePanelShowing(SidePanelEntry::PanelType::kContent);
+  }));
+
+  // Toggling the panel closed deactivates the item in the model.
+  panel_ui->Toggle();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !model()->active_index().has_value(); }));
+}
+
 #endif  // BUILDFLAG(ENABLE_SIDEBAR_V2)
 
 }  // namespace sidebar
