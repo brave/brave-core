@@ -168,14 +168,14 @@ function SelectBrowser () {
         >
           {getLocale('braveWelcomeSkipButtonLabel')}
         </Button>
-        <Button
-          kind="filled"
-          isDisabled={!hasSelectedBrowser}
-          onClick={handleImport}
-          size="large"
-        >
-          {getLocale('braveWelcomeImportButtonLabel')}
-        </Button>
+          <Button
+            kind="filled"
+            isDisabled={!hasSelectedBrowser}
+            onClick={handleImport}
+            size="large"
+          >
+            {getLocale('braveWelcomeImportButtonLabel')}
+          </Button>
       </S.ActionBox>
     </S.MainBox>
   )
