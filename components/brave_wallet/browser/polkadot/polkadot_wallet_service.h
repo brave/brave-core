@@ -74,11 +74,11 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
   void GetChainMetadata(std::string_view chain_id,
                         GetChainMetadataCallback callback);
 
-  // Generates an encoded byte array representing a transfer_allow_death call,
-  // suitable for sending over the network as hex, signed using the account's
-  // private key. The signed extrinsic can be submitted directly using
-  // author_submitExtrinsic or payment information can be queried using
-  // payment_queryInfo.
+  // Generates an encoded byte array representing either a transfer_keep_alive
+  // or transfer_all call, suitable for sending over the network as hex, signed
+  // using the account's private key. The signed extrinsic can be submitted
+  // directly using author_submitExtrinsic or payment information can be queried
+  // using payment_queryInfo.
   void GenerateSignedTransferExtrinsic(
       std::string chain_id,
       mojom::AccountIdPtr account_id,
