@@ -45,6 +45,11 @@ inline constexpr char kMiddleClickCloseTabEnabled[] =
 
 inline constexpr char kTabMinWidthMode[] = "brave.tabs.min_width_mode";
 
+// When true (and kBraveScrollableTabStrip is enabled), the horizontal tab strip
+// scrolls when there are more tabs than fit. When false, tabs shrink instead.
+inline constexpr char kScrollableHorizontalTabStrip[] =
+    "brave.tabs.scrollable_horizontal_tab_strip";
+
 // Integer values stored in prefs; stable for migration. kDefault is reserved so
 // the product default can change without migrating explicit user choices.
 enum class TabMinWidthMode {

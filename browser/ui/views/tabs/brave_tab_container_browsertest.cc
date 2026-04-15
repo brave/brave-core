@@ -6,8 +6,11 @@
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
+#include "chrome/browser/defaults.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -16,6 +19,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/views/view_utils.h"
@@ -37,13 +41,21 @@ class HorizontalScrollableTabStripBrowserTest : public InProcessBrowserTest {
     RunScheduledLayouts();
   }
 
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    // Horizontal scrolling requires kBraveScrollableTabStrip and this pref.
+    browser()->profile()->GetPrefs()->SetBoolean(
+        brave_tabs::kScrollableHorizontalTabStrip, true);
+  }
+
  protected:
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
                        GetScrollDirectionIsHorizontal) {
-  // When the feature is enabled, the scroll direction should be horizontal.
+  // When the feature and scrollable-horizontal-tab-strip pref are enabled, the
+  // scroll direction should be horizontal.
   auto* tab_strip = views::AsViewClass<BraveTabStrip>(
       browser_view()->horizontal_tab_strip_for_testing());
   BraveTabContainer* container = views::AsViewClass<BraveTabContainer>(
@@ -53,6 +65,26 @@ IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
   auto direction = container->GetScrollDirection();
   ASSERT_TRUE(direction.has_value());
   EXPECT_EQ(direction.value(), views::LayoutOrientation::kHorizontal);
+}
+
+IN_PROC_BROWSER_TEST_F(
+    HorizontalScrollableTabStripBrowserTest,
+    GetScrollDirectionNotHorizontalWhenScrollableHorizontalPrefDisabled) {
+  // kBraveScrollableTabStrip is enabled in the fixture, but horizontal strip
+  // scrolling is still gated by kScrollableHorizontalTabStrip.
+  browser()->profile()->GetPrefs()->SetBoolean(
+      brave_tabs::kScrollableHorizontalTabStrip, false);
+  RunScheduledLayouts();
+
+  auto* tab_strip = views::AsViewClass<BraveTabStrip>(
+      browser_view()->horizontal_tab_strip_for_testing());
+  BraveTabContainer* container = views::AsViewClass<BraveTabContainer>(
+      tab_strip->GetTabContainerForTesting());
+  ASSERT_TRUE(container);
+
+  EXPECT_NE(std::optional<views::LayoutOrientation>(
+                views::LayoutOrientation::kHorizontal),
+            container->GetScrollDirection());
 }
 
 IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
