@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<!-- Configuration metadata for BraveAutofillService, referenced from AndroidManifest.xml via
+     android:resource="@xml/autofill_service_configuration".
+
+     - settingsActivity: The activity Android launches when the user taps "Open" next to Brave
+       in Settings > Passwords & Autofill > Autofill service.
+     - compatibility-package: Tells the Android framework which browser apps Brave can fill into.
+       Without these entries, the system may not show Brave's autofill suggestions inside those
+       browsers' WebViews. maxLongVersionCode="10000000000" means "all versions". -->
+<autofill-service
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:settingsActivity="org.chromium.chrome.browser.settings.BraveSettingsActivity"
+    tools:ignore="UnusedResources"> <!-- Referenced from AndroidManifest.xml -->
+    <compatibility-package android:name="com.android.chrome" android:maxLongVersionCode="10000000000"/>
+    <compatibility-package android:name="com.chrome.beta" android:maxLongVersionCode="10000000000"/>
+    <compatibility-package android:name="com.chrome.dev" android:maxLongVersionCode="10000000000"/>
+    <compatibility-package android:name="com.chrome.canary" android:maxLongVersionCode="10000000000"/>
+    <compatibility-package android:name="com.opera.browser" android:maxLongVersionCode="10000000000"/>
+    <compatibility-package android:name="com.microsoft.emmx" android:maxLongVersionCode="10000000000"/>
+    <compatibility-package android:name="org.mozilla.firefox" android:maxLongVersionCode="10000000000"/>
+    <compatibility-package android:name="com.duckduckgo.mobile.android" android:maxLongVersionCode="10000000000"/>
+</autofill-service>
