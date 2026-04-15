@@ -18,7 +18,7 @@ class BraveAdsNotificationAdServingUtilTest : public test::TestBase {};
 TEST_F(BraveAdsNotificationAdServingUtilTest,
        ShouldServeAdsAtRegularIntervalsOnIOS) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
+  test::SetUpFakePlatformHelper(fake_platform_helper_, PlatformType::kIOS);
 
   // Act & Assert
   EXPECT_TRUE(ShouldServeAdsAtRegularIntervals());
@@ -27,7 +27,7 @@ TEST_F(BraveAdsNotificationAdServingUtilTest,
 TEST_F(BraveAdsNotificationAdServingUtilTest,
        ShouldServeAdsAtRegularIntervalsOnAndroid) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
+  test::SetUpFakePlatformHelper(fake_platform_helper_, PlatformType::kAndroid);
 
   // Act & Assert
   EXPECT_TRUE(ShouldServeAdsAtRegularIntervals());
@@ -36,7 +36,7 @@ TEST_F(BraveAdsNotificationAdServingUtilTest,
 TEST_F(BraveAdsNotificationAdServingUtilTest,
        ShouldNotServeAdsAtRegularIntervalsOnMacOS) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kMacOS);
+  test::SetUpFakePlatformHelper(fake_platform_helper_, PlatformType::kMacOS);
 
   // Act & Assert
   EXPECT_FALSE(ShouldServeAdsAtRegularIntervals());
@@ -45,7 +45,7 @@ TEST_F(BraveAdsNotificationAdServingUtilTest,
 TEST_F(BraveAdsNotificationAdServingUtilTest,
        ShouldNotServeAdsAtRegularIntervalsOnWindows) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
+  test::SetUpFakePlatformHelper(fake_platform_helper_, PlatformType::kWindows);
 
   // Act & Assert
   EXPECT_FALSE(ShouldServeAdsAtRegularIntervals());
@@ -54,7 +54,7 @@ TEST_F(BraveAdsNotificationAdServingUtilTest,
 TEST_F(BraveAdsNotificationAdServingUtilTest,
        ShouldNotServeAdsAtRegularIntervalsOnLinux) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kLinux);
+  test::SetUpFakePlatformHelper(fake_platform_helper_, PlatformType::kLinux);
 
   // Act & Assert
   EXPECT_FALSE(ShouldServeAdsAtRegularIntervals());

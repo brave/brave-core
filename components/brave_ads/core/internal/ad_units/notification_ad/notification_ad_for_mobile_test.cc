@@ -27,7 +27,8 @@ class BraveAdsNotificationAdForMobileIntegrationTest : public test::TestBase {
   void SetUp() override { test::TestBase::SetUp(/*is_integration_test=*/true); }
 
   void SetUpMocks() override {
-    test::MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
+    test::SetUpFakePlatformHelper(fake_platform_helper_,
+                                  PlatformType::kAndroid);
 
     const test::URLResponseMap url_responses = {
         {BuildCatalogUrlPath(),
