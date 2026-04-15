@@ -204,36 +204,6 @@ void PolkadotMockRpc::AddGetFinalizedBlockHash() {
       R"({"jsonrpc":"2.0","id":11,"result":"0x46e5afe42b1ff0c40ecc18d7ff97974f3bdf5dfda1e21d779644a7ea30a97d21"})");
 }
 
-void PolkadotMockRpc::AddGetFinalizedBlockHeader() {
-  // Chained call, grab the block header using the hash of the finalized head.
-
-  if (finalized_block_header_json_.empty()) {
-    finalized_block_header_json_ = R"(
-            {
-              "jsonrpc":"2.0",
-              "id":13,
-              "result":{
-                "parentHash":"0xcf424e463b14b26905d4e2aaff455a3c149c3ccff5a1fc62203c0c07b711e3f4",
-                "number":"0x1c06355",
-                "stateRoot":"0x3a501ddbfc394d859401cd6d55f5743461ddb3a5aecfebb31f587c16ad23f505",
-                "extrinsicsRoot":"0x8fc47b641e793ed938eae4d793636b2feb657bca97726a43ee3375a8e5b321a6",
-                "digest":{
-                  "logs":[
-                    "0x0642414245b501030200000027929111000000008038b165beaf68d4ae8b7a3eae2055ecdfde0a0462993a43e522c709773da51a550d604eb90a671b88437f7f0d5e7f2e4efe323e2cee3992ffa2bcd3e5e10d07ff37c43e11e82263d2bc774942196e96c05a38bbbd820eff1cbf2441b2c59307",
-                    "0x04424545468403cfdc267eac55b3225fe8d581f3d2f7d9ece28a564bb70b50dd04b829e893b78a",
-                    "0x05424142450101fc0b1a7fcff42ffb1fcb8166843fb9b9eded36f64891deea28eea90da9215e70c605638b274f0c8517fc70d0c2b1442fd50ad933ee6cf7ceba600f762e2bd682"
-                  ]
-                }
-              }
-            })";
-  }
-
-  req_res_pairs_.emplace(
-      base::test::ParseJsonDict(
-          R"({"id":1,"jsonrpc":"2.0","method":"chain_getHeader","params":["46e5afe42b1ff0c40ecc18d7ff97974f3bdf5dfda1e21d779644a7ea30a97d21"]})"),
-      finalized_block_header_json_);
-}
-
 void PolkadotMockRpc::AddGetSigningBlockHash() {
   // Grab the block hash of whichever block header we're using for signing the
   // extrinsic. The polkadot-js algorithm selects between either the finalized
@@ -289,7 +259,6 @@ void PolkadotMockRpc::AddReqResPairs() {
   AddGetInitialChainHeader();
   AddGetParentBlockHeader();
   AddGetFinalizedBlockHash();
-  AddGetFinalizedBlockHeader();
   AddGetSigningBlockHash();
   AddGetRuntimeInfo();
   AddGetGenesisBlockHash();
@@ -330,6 +299,10 @@ void PolkadotMockRpc::RequestInterceptor(const network::ResourceRequest& req) {
   }
 
   if (HandleGetAccountInfoRequest(req, req_body)) {
+    return;
+  }
+
+  if (HandleGetFinalizedBlockHeader(req, req_body)) {
     return;
   }
 
@@ -506,6 +479,68 @@ bool PolkadotMockRpc::HandleGetAccountInfoRequest(
     })");
 
   return true;
+}
+
+bool IsCommand(const base::DictValue& req_body, std::string_view method) {
+  if (const auto* json_method = req_body.FindString("method");
+      json_method && *json_method == method) {
+    return true;
+  }
+  return false;
+}
+
+const base::ListValue* FindParamsOrNull(const base::DictValue& req_body) {
+  return req_body.FindList("params");
+}
+
+bool PolkadotMockRpc::HandleGetFinalizedBlockHeader(
+    const network::ResourceRequest& req,
+    const base::DictValue& req_body) {
+  if (finalized_block_hash_.empty()) {
+    finalized_block_hash_ =
+        "46e5afe42b1ff0c40ecc18d7ff97974f3bdf5dfda1e21d779644a7ea30a97d21";
+  }
+
+  if (finalized_block_header_json_.empty()) {
+    finalized_block_header_json_ = R"(
+        {
+          "jsonrpc":"2.0",
+          "id":13,
+          "result":{
+            "parentHash":"0xcf424e463b14b26905d4e2aaff455a3c149c3ccff5a1fc62203c0c07b711e3f4",
+            "number":"0x1c06355",
+            "stateRoot":"0x3a501ddbfc394d859401cd6d55f5743461ddb3a5aecfebb31f587c16ad23f505",
+            "extrinsicsRoot":"0x8fc47b641e793ed938eae4d793636b2feb657bca97726a43ee3375a8e5b321a6",
+            "digest":{
+              "logs":[
+                "0x0642414245b501030200000027929111000000008038b165beaf68d4ae8b7a3eae2055ecdfde0a0462993a43e522c709773da51a550d604eb90a671b88437f7f0d5e7f2e4efe323e2cee3992ffa2bcd3e5e10d07ff37c43e11e82263d2bc774942196e96c05a38bbbd820eff1cbf2441b2c59307",
+                "0x04424545468403cfdc267eac55b3225fe8d581f3d2f7d9ece28a564bb70b50dd04b829e893b78a",
+                "0x05424142450101fc0b1a7fcff42ffb1fcb8166843fb9b9eded36f64891deea28eea90da9215e70c605638b274f0c8517fc70d0c2b1442fd50ad933ee6cf7ceba600f762e2bd682"
+              ]
+            }
+          }
+        })";
+  }
+
+  if (IsCommand(req_body, "chain_getHeader")) {
+    if (const auto* params = FindParamsOrNull(req_body)) {
+      if (params->empty()) {
+        url_loader_factory_->AddResponse(req.url.spec(),
+                                         finalized_block_header_json_);
+
+        return true;
+      }
+
+      if (const auto* hash = (*params)[0].GetIfString();
+          hash && *hash == finalized_block_hash_) {
+        url_loader_factory_->AddResponse(req.url.spec(),
+                                         finalized_block_header_json_);
+
+        return true;
+      }
+    }
+  }
+  return false;
 }
 
 bool PolkadotMockRpc::HandleAuthorSubmitExtrinsic(

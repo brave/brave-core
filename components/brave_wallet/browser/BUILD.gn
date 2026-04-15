@@ -768,6 +768,7 @@ source_set("unit_tests") {
     "nft_metadata_fetcher_unittest.cc",
     "password_encryptor_unittest.cc",
     "polkadot/polkadot_block_header_unittest.cc",
+    "polkadot/polkadot_block_tracker_unittest.cc",
     "polkadot/polkadot_chain_metadata_prefs_unittest.cc",
     "polkadot/polkadot_chain_metadata_unittest.cc",
     "polkadot/polkadot_extrinsic_unittest.cc",

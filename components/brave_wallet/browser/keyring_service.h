@@ -381,6 +381,7 @@ class KeyringService : public mojom::KeyringService {
   friend class AssetDiscoveryManagerUnitTest;
   friend class SolanaTransactionUnitTest;
   friend class PolkadotWalletServiceUnitTest;
+  friend class PolkadotTxManagerUnitTest;
 
   void ResetAllAccountInfosCache();
   mojom::AccountInfoPtr AddHDAccountForKeyring(mojom::KeyringId keyring_id,
