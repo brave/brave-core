@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_SIGNED_TRANSFER_TASK_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_SIGNED_TRANSFER_TASK_H_
 
+#include <variant>
+
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_extrinsic.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -71,14 +73,15 @@ struct PolkadotSignedTransferTask {
   using GenerateSignedTransferExtrinsicCallback = base::OnceCallback<void(
       base::expected<PolkadotExtrinsicMetadata, std::string>)>;
 
+  struct TransferAll {};
+
   PolkadotSignedTransferTask(
       PolkadotWalletService& polkadot_wallet_service,
       KeyringService& keyring_service,
       mojom::AccountIdPtr sender_account_id,
       std::string chain_id,
       bool use_dummy_signature,
-      bool transfer_all,
-      uint128_t send_amount,
+      std::variant<uint128_t, TransferAll> transfer_amount,
       base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> sender,
       base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient);
 
@@ -169,8 +172,7 @@ struct PolkadotSignedTransferTask {
   mojom::AccountIdPtr sender_account_id_;
   std::string chain_id_;
   bool use_dummy_signature_;
-  bool transfer_all_;
-  uint128_t send_amount_ = 0;
+  std::variant<uint128_t, TransferAll> transfer_amount_;
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> sender_ = {};
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> recipient_ = {};
   GenerateSignedTransferExtrinsicCallback callback_;

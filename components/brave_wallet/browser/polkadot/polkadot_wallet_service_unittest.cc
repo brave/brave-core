@@ -38,6 +38,8 @@ inline constexpr const char kBob[] =
 
 class PolkadotWalletServiceUnitTest : public testing::Test {
  public:
+  using TransferAll = PolkadotWalletService::TransferAll;
+
   PolkadotWalletServiceUnitTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
@@ -703,7 +705,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic) {
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      /*transfer_all=*/false, uint128_t{1234}, recipient_pubkey,
+      std::variant<uint128_t, TransferAll>(uint128_t{1234}), recipient_pubkey,
       test_future.GetCallback());
 
   auto signed_extrinsic = test_future.Take();
@@ -764,7 +766,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoChainMetadata) {
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      /*transfer_all=*/false, uint128_t{1234}, recipient_pubkey,
+      std::variant<uint128_t, TransferAll>(uint128_t{1234}), recipient_pubkey,
       test_future.GetCallback());
 
   auto signed_extrinsic = test_future.Take();
@@ -860,7 +862,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoAccountInfo) {
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      /*transfer_all=*/false, uint128_t{1234}, recipient_pubkey,
+      std::variant<uint128_t, TransferAll>(uint128_t{1234}), recipient_pubkey,
       test_future.GetCallback());
 
   auto signed_extrinsic = test_future.Take();
@@ -984,7 +986,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoChainHeader) {
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      /*transfer_all=*/false, uint128_t{1234}, recipient_pubkey,
+      std::variant<uint128_t, TransferAll>(uint128_t{1234}), recipient_pubkey,
       test_future.GetCallback());
 
   auto signed_extrinsic = test_future.Take();
@@ -1141,7 +1143,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoParentHeader) {
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      /*transfer_all=*/false, uint128_t{1234}, recipient_pubkey,
+      std::variant<uint128_t, TransferAll>(uint128_t{1234}), recipient_pubkey,
       test_future.GetCallback());
 
   auto signed_extrinsic = test_future.Take();
@@ -1281,7 +1283,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoFinalizedHead) {
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      /*transfer_all=*/false, uint128_t{1234}, recipient_pubkey,
+      std::variant<uint128_t, TransferAll>(uint128_t{1234}), recipient_pubkey,
       test_future.GetCallback());
 
   auto signed_extrinsic = test_future.Take();
@@ -1462,7 +1464,7 @@ TEST_F(PolkadotWalletServiceUnitTest,
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      /*transfer_all=*/false, uint128_t{1234}, recipient_pubkey,
+      std::variant<uint128_t, TransferAll>(uint128_t{1234}), recipient_pubkey,
       test_future.GetCallback());
 
   auto signed_extrinsic = test_future.Take();
@@ -1691,7 +1693,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoGenesisHash) {
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      /*transfer_all=*/false, uint128_t{1234}, recipient_pubkey,
+      std::variant<uint128_t, TransferAll>(uint128_t{1234}), recipient_pubkey,
       test_future.GetCallback());
 
   auto signed_extrinsic = test_future.Take();
@@ -1904,7 +1906,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoRuntimeVersion) {
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      /*transfer_all=*/false, uint128_t{1234}, recipient_pubkey,
+      std::variant<uint128_t, TransferAll>(uint128_t{1234}), recipient_pubkey,
       test_future.GetCallback());
 
   auto signed_extrinsic = test_future.Take();
@@ -1947,7 +1949,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction) {
 
   polkadot_wallet_service->SignAndSendTransaction(
       chain_id, polkadot_mainnet_account_->account_id.Clone(),
-      /*transfer_all=*/false, 4321, recipient_pubkey, future.GetCallback());
+      std::variant<uint128_t, TransferAll>(uint128_t{4321}), recipient_pubkey,
+      future.GetCallback());
 
   auto tx_hash = future.Take();
   ASSERT_TRUE(tx_hash.has_value());
@@ -1994,7 +1997,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction_TransferAll) {
 
   polkadot_wallet_service->SignAndSendTransaction(
       chain_id, polkadot_mainnet_account_->account_id.Clone(),
-      /*transfer_all=*/true, 4321, recipient_pubkey, future.GetCallback());
+      std::variant<uint128_t, TransferAll>(TransferAll{}), recipient_pubkey,
+      future.GetCallback());
 
   auto tx_hash = future.Take();
   ASSERT_TRUE(tx_hash.has_value());
@@ -2038,7 +2042,8 @@ TEST_F(PolkadotWalletServiceUnitTest,
 
   polkadot_wallet_service->SignAndSendTransaction(
       chain_id, polkadot_mainnet_account_->account_id.Clone(),
-      /*transfer_all=*/false, 4321, recipient_pubkey, future.GetCallback());
+      std::variant<uint128_t, TransferAll>(uint128_t{4321}), recipient_pubkey,
+      future.GetCallback());
 
   auto tx_hash = future.Take();
   ASSERT_FALSE(tx_hash.has_value());
@@ -2070,7 +2075,7 @@ TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate) {
 
   polkadot_wallet_service->GetFeeEstimate(
       chain_id, polkadot_testnet_account_->account_id->Clone(),
-      /*transfer_all=*/false, uint128_t{1234}, recipient_pubkey,
+      std::variant<uint128_t, TransferAll>(uint128_t{1234}), recipient_pubkey,
       base::BindLambdaForTesting(
           [=](base::expected<uint128_t, std::string> partial_fee) {
             ASSERT_TRUE(partial_fee.has_value());
@@ -2107,7 +2112,7 @@ TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate_NetworkFailure) {
 
   polkadot_wallet_service->GetFeeEstimate(
       chain_id, polkadot_testnet_account_->account_id->Clone(),
-      /*transfer_all=*/false, uint128_t{1234}, recipient_pubkey,
+      std::variant<uint128_t, TransferAll>(uint128_t{1234}), recipient_pubkey,
       base::BindLambdaForTesting(
           [=](base::expected<uint128_t, std::string> partial_fee) {
             ASSERT_FALSE(partial_fee.has_value());

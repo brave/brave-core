@@ -25,6 +25,8 @@
 
 namespace brave_wallet {
 
+using TransferAll = PolkadotWalletService::TransferAll;
+
 PolkadotTxManager::PolkadotTxManager(
     TxService& tx_service,
     PolkadotWalletService& polkadot_wallet_service,
@@ -88,8 +90,13 @@ void PolkadotTxManager::ApproveTransaction(
   auto send_amount = tx_meta->tx()->amount();
   auto recipient = tx_meta->tx()->recipient().pubkey;
 
+  std::variant<uint128_t, TransferAll> transfer_amount = send_amount;
+  if (transfer_all) {
+    transfer_amount = TransferAll{};
+  }
+
   polkadot_wallet_service_->SignAndSendTransaction(
-      chain_id, account_id->Clone(), transfer_all, send_amount, recipient,
+      chain_id, account_id->Clone(), std::move(transfer_amount), recipient,
       base::BindOnce(&PolkadotTxManager::OnApprovePolkadotTransaction,
                      weak_ptr_factory_.GetWeakPtr(), std::move(tx_meta),
                      std::move(callback)));
@@ -176,8 +183,13 @@ void PolkadotTxManager::OnGetChainMetadataForUnapproved(
   auto transfer_all = params->sending_max_amount;
   auto send_amount = MojomToUint128(params->amount);
 
+  std::variant<uint128_t, TransferAll> transfer_amount = send_amount;
+  if (transfer_all) {
+    transfer_amount = TransferAll{};
+  }
+
   polkadot_wallet_service_->GetFeeEstimate(
-      std::move(chain_id), std::move(account_id), transfer_all, send_amount,
+      std::move(chain_id), std::move(account_id), std::move(transfer_amount),
       recipient->pubkey,
       base::BindOnce(&PolkadotTxManager::OnGetFeeForUnapproved,
                      weak_ptr_factory_.GetWeakPtr(),
