@@ -6,6 +6,7 @@
 #include "ios/chrome/browser/profile/model/keyed_service_factories.h"
 
 #include "brave/ios/browser/profile/model/brave_keyed_service_factories.h"
+#include "ios/chrome/browser/account_settings/model/ios_account_setting_service_factory.h"
 #include "ios/chrome/browser/affiliations/model/ios_chrome_affiliation_service_factory.h"
 #include "ios/chrome/browser/aim/model/ios_chrome_aim_eligibility_service_factory.h"
 #include "ios/chrome/browser/autocomplete/model/autocomplete_classifier_factory.h"
@@ -129,6 +130,7 @@ void EnsureProfileKeyedServiceFactoriesBuilt() {
   GoogleGroupsManagerFactory::GetInstance();
   HttpsUpgradeServiceFactory::GetInstance();
   IdentityManagerFactory::GetInstance();
+  IOSAccountSettingServiceFactory::GetInstance();
   IOSChromeAccountPasswordStoreFactory::GetInstance();
   IOSChromeAimEligibilityServiceFactory::GetInstance();
   IOSChromeAffiliationServiceFactory::GetInstance();
