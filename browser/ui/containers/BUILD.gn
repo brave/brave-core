@@ -22,6 +22,7 @@ source_set("containers") {
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/app:command_ids",
+    "//brave/components/containers/content/browser",
     "//brave/components/containers/core/browser",
     "//brave/components/containers/core/common",
     "//brave/components/containers/core/mojom",
@@ -30,6 +31,17 @@ source_set("containers") {
     "//ui/base",
     "//ui/menus",
   ]
+
+  if (!is_android) {
+    sources += [
+      "containers_bookmark_menu_model_delegate.cc",
+      "containers_bookmark_menu_model_delegate.h",
+    ]
+    deps += [
+      "//chrome/browser/ui/views",
+      "//components/tabs:public",
+    ]
+  }
 }
 
 source_set("unit_tests") {
