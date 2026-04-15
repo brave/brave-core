@@ -62,6 +62,10 @@ void PolkadotMockRpc::SetSenderPubKey(
   base::span(sender_pubkey_).copy_from_nonoverlapping(pubkey);
 }
 
+void PolkadotMockRpc::SetExpectedExtrinsic(std::string extrinsic) {
+  expected_extrinsic_ = std::move(extrinsic);
+}
+
 void PolkadotMockRpc::AddGetInitialChainHeader() {
   // Our initial call to get the most recent block header in the chain.
   req_res_pairs_.emplace(
@@ -383,6 +387,12 @@ bool PolkadotMockRpc::HandleAuthorSubmitExtrinsic(
     const base::DictValue& req_body) {
   if (const auto* method = req_body.FindString("method")) {
     if (*method == "author_submitExtrinsic") {
+      const auto* params = req_body.FindList("params");
+      CHECK_EQ(params->size(), 1u);
+
+      const auto* extrinsic = (*params)[0].GetIfString();
+      CHECK(extrinsic && !extrinsic->empty());
+
       if (reject_extrinsic_submission_) {
         url_loader_factory_->AddResponse(req.url.spec(), R"(
           {
@@ -392,6 +402,19 @@ bool PolkadotMockRpc::HandleAuthorSubmitExtrinsic(
           })");
 
       } else {
+        if (expected_extrinsic_.has_value()) {
+          if (*expected_extrinsic_ != *extrinsic) {
+            url_loader_factory_->AddResponse(req.url.spec(), R"(
+              {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "error": { "code": 4321, "message": "Invalid extrinsic" }
+              })");
+
+            return true;
+          }
+        }
+
         url_loader_factory_->AddResponse(req.url.spec(), R"(
           {
             "jsonrpc": "2.0",

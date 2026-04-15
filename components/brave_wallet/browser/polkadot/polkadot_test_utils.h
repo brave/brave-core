@@ -31,6 +31,7 @@ struct PolkadotMockRpc {
   void RejectAccountInfoRequest();
   void SetSenderPubKey(
       base::span<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey);
+  void SetExpectedExtrinsic(std::string extrinsic);
 
   // Add individual request-response pairs for each phase in the RPC for
   // assembling the signing payload.
@@ -72,6 +73,7 @@ struct PolkadotMockRpc {
   base::flat_map<base::DictValue, std::string_view> req_res_pairs_;
   std::string testnet_url_;
   std::string mainnet_url_;
+  std::optional<std::string> expected_extrinsic_;
   bool use_invalid_metadata_ = false;
   bool reject_extrinsic_submission_ = false;
   bool reject_account_info_request_ = false;

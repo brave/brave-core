@@ -1928,7 +1928,11 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction) {
       keyring_service_->GetPolkadotPubKey(polkadot_mainnet_account_->account_id)
           .value();
 
+  static constexpr char kExpectedExtrinsic[] =
+      R"(35028400b67e7a888fc2a4289ed64c8eca2e4c28846fe556b2b3898b7f8d19a9a4743846010e310b735046f143a0eda48eaed0375b4759b6fe6c4cb55c955ff701f6a7471a20fa95186ee4d66ae7ded08fff594272677fcccc86d68e3548237870c649508155014400000503008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a488543)";
+
   polkadot_mock_rpc->SetSenderPubKey(sender_pubkey);
+  polkadot_mock_rpc->SetExpectedExtrinsic(kExpectedExtrinsic);
   polkadot_mock_rpc->AddReqResPairs();
   polkadot_mock_rpc->FinalizeSetup();
 
@@ -1950,9 +1954,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction) {
   EXPECT_EQ(
       tx_hash->first,
       "0x028a2de5ca3f7fd3f00a75500cc626c12ffe4347e97a00e252ac0e46a423968d");
-  EXPECT_EQ(
-      base::HexEncodeLower(tx_hash->second.extrinsic()),
-      R"(35028400b67e7a888fc2a4289ed64c8eca2e4c28846fe556b2b3898b7f8d19a9a4743846010e310b735046f143a0eda48eaed0375b4759b6fe6c4cb55c955ff701f6a7471a20fa95186ee4d66ae7ded08fff594272677fcccc86d68e3548237870c649508155014400000503008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a488543)");
+  EXPECT_EQ(base::HexEncodeLower(tx_hash->second.extrinsic()),
+            kExpectedExtrinsic);
 }
 
 TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction_TransferAll) {
@@ -1972,7 +1975,11 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction_TransferAll) {
       keyring_service_->GetPolkadotPubKey(polkadot_mainnet_account_->account_id)
           .value();
 
+  static constexpr char kExpectedExtrinsic[] =
+      R"(31028400b67e7a888fc2a4289ed64c8eca2e4c28846fe556b2b3898b7f8d19a9a474384601a6f63abf49b47ddb1f13b271fe93ebcedb3fb60c9e5a9ee147643cd93cd8134e8c2c205ecccf2b8e161e9506e976061c6dbb83a7da39a70ce996d597071d3e8b55014400000504008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4800)";
+
   polkadot_mock_rpc->SetSenderPubKey(sender_pubkey);
+  polkadot_mock_rpc->SetExpectedExtrinsic(kExpectedExtrinsic);
   polkadot_mock_rpc->AddReqResPairs();
   polkadot_mock_rpc->FinalizeSetup();
 
@@ -1994,9 +2001,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction_TransferAll) {
   EXPECT_EQ(
       tx_hash->first,
       "0x028a2de5ca3f7fd3f00a75500cc626c12ffe4347e97a00e252ac0e46a423968d");
-  EXPECT_EQ(
-      base::HexEncodeLower(tx_hash->second.extrinsic()),
-      R"(31028400b67e7a888fc2a4289ed64c8eca2e4c28846fe556b2b3898b7f8d19a9a474384601a6f63abf49b47ddb1f13b271fe93ebcedb3fb60c9e5a9ee147643cd93cd8134e8c2c205ecccf2b8e161e9506e976061c6dbb83a7da39a70ce996d597071d3e8b55014400000504008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4800)");
+  EXPECT_EQ(base::HexEncodeLower(tx_hash->second.extrinsic()),
+            kExpectedExtrinsic);
 }
 
 TEST_F(PolkadotWalletServiceUnitTest,
