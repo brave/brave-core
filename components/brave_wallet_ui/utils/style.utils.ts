@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { css } from 'styled-components'
-import { isRemoteImageURL } from './string-utils'
+import { sanitizeImageURL } from './string-utils'
 
 export const sizeCssValue = (size: string | number) => {
   return typeof size === 'number'
@@ -45,9 +45,7 @@ const isNearBlackOrWhitePixel = (r: number, g: number, b: number) => {
 }
 
 const resolveWalletImageSrcForDominantColor = (src: string) =>
-  isRemoteImageURL(src)
-    ? `chrome://image?url=${encodeURIComponent(src)}&staticEncode=true`
-    : src
+  sanitizeImageURL(src)
 
 /**
  * Samples a dominant RGBA color from an image that has finished loading

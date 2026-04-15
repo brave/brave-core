@@ -1591,6 +1591,47 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiTransactionParams) {
   EXPECT_EQ(ParseJson(*params), ParseJson(expected_params));
 }
 
+TEST(SwapRequestHelperUnitTest, EncodeGate3QuoteParamsJupiter) {
+  // Test Gate3 Jupiter encoding for Solana same-chain swap
+  auto params = mojom::SwapQuoteParams::New();
+  params->from_account_id =
+      MakeAccountId(mojom::CoinType::SOL, mojom::KeyringId::kSolana,
+                    mojom::AccountKind::kDerived,
+                    "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4");
+  params->from_chain_id = mojom::kSolanaMainnet;
+  params->from_token = "";  // native SOL
+  params->from_amount = "1000000000";
+  params->to_account_id =
+      MakeAccountId(mojom::CoinType::SOL, mojom::KeyringId::kSolana,
+                    mojom::AccountKind::kDerived,
+                    "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4");
+  params->to_chain_id = mojom::kSolanaMainnet;
+  params->to_token = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";  // USDC
+  params->slippage_percentage = "0.5";
+  params->route_priority = mojom::RoutePriority::kCheapest;
+  params->provider = mojom::SwapProvider::kJupiter;
+
+  auto encoded_params = gate3::EncodeQuoteParams(std::move(params));
+  ASSERT_NE(encoded_params, std::nullopt);
+  std::string expected_params(R"(
+    {
+      "sourceCoin": "SOL",
+      "sourceChainId": "0x65",
+      "sourceTokenAddress": "",
+      "refundTo": "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4",
+      "destinationCoin": "SOL",
+      "destinationChainId": "0x65",
+      "destinationTokenAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "recipient": "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4",
+      "swapType": "EXACT_INPUT",
+      "amount": "1000000000",
+      "slippagePercentage": "0.5",
+      "provider": "JUPITER",
+      "routePriority": "CHEAPEST"
+    }
+  )");
+  EXPECT_EQ(ParseJson(*encoded_params), ParseJson(expected_params));
+}
 
 TEST(SwapRequestHelperUnitTest, EncodeGate3QuoteParamsErc20ToSpl) {
   // Test ERC20 (USDC on Ethereum) to SPL (USDC on Solana) cross-chain swap

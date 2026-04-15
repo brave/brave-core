@@ -372,9 +372,19 @@ void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
       IsNetworkSupportedByNearIntents(params->to_chain_id) &&
       (params->from_amount.empty() != params->to_amount.empty());
 
-  // If the provider is set to Auto, Solana swaps are served via Jupiter.
+  // If the provider is set to Auto, Solana swaps are served via Gate3 Jupiter.
   if ((params->provider == mojom::SwapProvider::kJupiter ||
        params->provider == mojom::SwapProvider::kAuto) &&
+      has_jupiter_support) {
+    params->provider = mojom::SwapProvider::kJupiter;
+    HandleGate3Quote(std::move(params), std::move(callback),
+                     std::move(conversion_callback), api_request_helper_,
+                     weak_ptr_factory_.GetWeakPtr());
+    return;
+  }
+
+  // Legacy Jupiter API (direct, for iOS/Android).
+  if (params->provider == mojom::SwapProvider::kJupiterLegacy &&
       has_jupiter_support) {
     auto swap_fee = GetZeroSwapFee();
     auto fee_param = swap_fee->fee_param;

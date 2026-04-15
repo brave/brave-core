@@ -1960,7 +1960,8 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponse) {
               "tool": {
                 "name": "NEAR Intents",
                 "logo": "https://static1.tokenterminal.com/near/products/nearintents/logo.png"
-              }
+              },
+              "percent": "100"
             }
           ],
           "sourceAmount": "1000000",
@@ -2010,21 +2011,19 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponse) {
   EXPECT_EQ(step->destination_amount, "714449");
 
   // Verify source token
-  EXPECT_EQ(step->source_token->coin, "ETH");
+  EXPECT_EQ(step->source_token->coin, mojom::CoinType::ETH);
   EXPECT_EQ(step->source_token->chain_id, "0x1");
   EXPECT_EQ(step->source_token->contract_address,
             "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");
   EXPECT_EQ(step->source_token->symbol, "USDC");
-  EXPECT_EQ(step->source_token->decimals, "6");
   EXPECT_EQ(step->source_token->logo, "");
 
   // Verify destination token
-  EXPECT_EQ(step->destination_token->coin, "SOL");
+  EXPECT_EQ(step->destination_token->coin, mojom::CoinType::SOL);
   EXPECT_EQ(step->destination_token->chain_id, "0x65");
   EXPECT_EQ(step->destination_token->contract_address,
             "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
   EXPECT_EQ(step->destination_token->symbol, "USDC");
-  EXPECT_EQ(step->destination_token->decimals, "6");
   EXPECT_EQ(step->destination_token->logo, "");
 
   // Verify tool
@@ -2065,7 +2064,8 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithEvmTransaction) {
               "tool": {
                 "name": "NEAR Intents",
                 "logo": "https://static1.tokenterminal.com/near/products/nearintents/logo.png"
-              }
+              },
+              "percent": "100"
             }
           ],
           "sourceAmount": "1000000",
@@ -2178,7 +2178,8 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithSolanaTransaction) {
               "tool": {
                 "name": "NEAR Intents",
                 "logo": "https://example.com/logo.png"
-              }
+              },
+              "percent": "100"
             }
           ],
           "sourceAmount": "1000000",
@@ -2289,7 +2290,8 @@ TEST(SwapResponseParserUnitTest,
               "tool": {
                 "name": "NEAR Intents",
                 "logo": "https://example.com/logo.png"
-              }
+              },
+              "percent": "100"
             }
           ],
           "sourceAmount": "100000",
@@ -2377,7 +2379,8 @@ TEST(SwapResponseParserUnitTest,
               "tool": {
                 "name": "NEAR Intents",
                 "logo": "https://example.com/logo.png"
-              }
+              },
+              "percent": "100"
             }
           ],
           "sourceAmount": "1000000",
@@ -2464,7 +2467,8 @@ TEST(SwapResponseParserUnitTest, ParseGate3QuoteResponseWithZCashTransaction) {
               "tool": {
                 "name": "NEAR Intents",
                 "logo": "https://example.com/logo.png"
-              }
+              },
+              "percent": "100"
             }
           ],
           "sourceAmount": "10000000",

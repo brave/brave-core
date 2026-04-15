@@ -12,6 +12,7 @@ import { LPMetadata } from './constants/metadata'
 import Amount from '../../../utils/amount'
 import { getTokenPriceAmountFromRegistry } from '../../../utils/pricing-utils'
 import { makeNetworkAsset } from '../../../options/asset-options'
+import { sanitizeImageURL } from '../../../utils/string-utils'
 
 function ensureUnique<T>(array: T[], key: keyof T): T[] {
   return [...new Set(array.map((a) => a[key]))].map(
@@ -105,6 +106,7 @@ export function getZeroExQuoteOptions({
         .divideByDecimals(toToken.decimals)
         .div(new Amount(quote.sellAmount).divideByDecimals(fromToken.decimals)),
       impact,
+      steps: [],
       sources: ensureUnique(quote.route.fills, 'source')
         .map((fill) => ({
           name: fill.source,
@@ -125,98 +127,6 @@ export function getZeroExQuoteOptions({
             .formatAsFiat(defaultFiatCurrency),
       provider: BraveWallet.SwapProvider.kZeroEx,
       // There is only 1 quote returned for Ox
-      // making it the Fastest and Cheapest.
-      tags: ['FASTEST', 'CHEAPEST'],
-    },
-  ]
-}
-
-function getJupiterNetworkFee({
-  quote,
-  fromNetwork,
-}: {
-  quote: BraveWallet.JupiterQuote
-  fromNetwork: BraveWallet.NetworkInfo
-}): Amount {
-  if (!fromNetwork) {
-    return Amount.empty()
-  }
-
-  return new Amount('0.000005')
-}
-
-export function getJupiterFromAmount({
-  quote,
-  fromToken,
-}: {
-  quote: BraveWallet.JupiterQuote
-  fromToken: BraveWallet.BlockchainToken
-}): Amount {
-  return new Amount(quote.inAmount).divideByDecimals(fromToken.decimals)
-}
-
-export function getJupiterToAmount({
-  quote,
-  toToken,
-}: {
-  quote: BraveWallet.JupiterQuote
-  toToken: BraveWallet.BlockchainToken
-}): Amount {
-  return new Amount(quote.outAmount).divideByDecimals(toToken.decimals)
-}
-
-export function getJupiterQuoteOptions({
-  quote,
-  fromNetwork,
-  fromToken,
-  toToken,
-  spotPrices,
-  defaultFiatCurrency,
-}: {
-  quote: BraveWallet.JupiterQuote
-  fromNetwork: BraveWallet.NetworkInfo
-  fromToken: BraveWallet.BlockchainToken
-  toToken: BraveWallet.BlockchainToken
-  spotPrices: BraveWallet.AssetPrice[]
-  defaultFiatCurrency: string
-}): QuoteOption[] {
-  const networkFee = getJupiterNetworkFee({ quote, fromNetwork })
-
-  return [
-    {
-      fromAmount: new Amount(quote.inAmount).divideByDecimals(
-        fromToken.decimals,
-      ),
-      toAmount: getJupiterToAmount({ quote, toToken }),
-      // TODO: minimumToAmount is applicable only for ExactIn swapMode.
-      // Create a maximumFromAmount field for ExactOut swapMode if needed.
-      minimumToAmount: new Amount(quote.otherAmountThreshold).divideByDecimals(
-        toToken.decimals,
-      ),
-      fromToken,
-      toToken,
-      rate: new Amount(quote.outAmount)
-        .divideByDecimals(toToken.decimals)
-        .div(new Amount(quote.inAmount).divideByDecimals(fromToken.decimals)),
-      impact: new Amount(quote.priceImpactPct),
-      sources: quote.routePlan.map((step) => ({
-        name: step.swapInfo.label,
-        proportion: new Amount(step.percent).times(0.01),
-      })),
-      routing: 'flow',
-      networkFee,
-      networkFeeFiat: networkFee.isUndefined()
-        ? ''
-        : networkFee
-            .times(
-              getTokenPriceAmountFromRegistry(
-                spotPrices,
-                makeNetworkAsset(fromNetwork),
-              ),
-            )
-            .formatAsFiat(defaultFiatCurrency),
-      provider: BraveWallet.SwapProvider.kJupiter,
-      // There is only 1 quote returned for Jupiter
       // making it the Fastest and Cheapest.
       tags: ['FASTEST', 'CHEAPEST'],
     },
@@ -295,6 +205,7 @@ export function getLiFiQuoteOptions({
             .formatAsFiat(defaultFiatCurrency),
       rate: toAmount.div(fromAmount),
       routing: 'flow',
+      steps: [],
       sources: route.steps.map((step) => ({
         name: step.toolDetails.name,
         proportion: new Amount(1),
@@ -398,11 +309,8 @@ export function getGate3QuoteOptions({
       toToken,
       rate: toAmount.div(fromAmount),
       impact,
-      sources: route.steps.map((step) => ({
-        name: step.tool.name,
-        proportion: new Amount(1),
-        logo: step.tool.logo,
-      })),
+      sources: [],
+      steps: [...route.steps].reverse(),
       routing: 'flow',
       networkFee,
       networkFeeFiat: networkFee.isUndefined()
@@ -429,7 +337,7 @@ export const getLPIcon = (source: Pick<LiquiditySource, 'name' | 'logo'>) => {
     return iconFromMetadata
   }
   if (source.logo) {
-    return `chrome://image?url=${encodeURIComponent(source.logo)}&staticEncode=true`
+    return sanitizeImageURL(source.logo)
   }
   return ''
 }
