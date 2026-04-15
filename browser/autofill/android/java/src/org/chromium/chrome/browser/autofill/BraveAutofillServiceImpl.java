@@ -16,6 +16,7 @@ import android.service.autofill.FillResponse;
 import android.service.autofill.SaveCallback;
 import android.service.autofill.SaveInfo;
 import android.service.autofill.SaveRequest;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.autofill.AutofillId;
 import android.view.autofill.AutofillValue;
@@ -216,12 +217,12 @@ public class BraveAutofillServiceImpl extends SplitCompatAutofillService.Impl {
             String lastName = profile.getInfo(FieldType.NAME_LAST);
             // If individual name parts are empty, try to derive them from the full name
             // so forms with separate given-name/family-name fields still work.
-            if (!isNullOrEmpty(fullName)) {
+            if (!TextUtils.isEmpty(fullName)) {
                 String[] parts = fullName.trim().split("\\s+", 2);
-                if (isNullOrEmpty(firstName)) {
+                if (TextUtils.isEmpty(firstName)) {
                     firstName = parts[0];
                 }
-                if (isNullOrEmpty(lastName) && parts.length > 1) {
+                if (TextUtils.isEmpty(lastName) && parts.length > 1) {
                     lastName = parts[1];
                 }
             }
@@ -463,10 +464,6 @@ public class BraveAutofillServiceImpl extends SplitCompatAutofillService.Impl {
             AutofillId id = fields.get(key);
             autofillDataMap.put(id, data);
         }
-    }
-
-    private static boolean isNullOrEmpty(@Nullable String s) {
-        return s == null || s.isEmpty();
     }
 
     /**
