@@ -5,7 +5,11 @@
 
 #include "brave/ios/browser/api/web_view/autofill/brave_web_view_autofill_client.h"
 
+#import "brave/ios/browser/api/web_view/autofill/brave_web_view_autofill_lookup.h"
+#import "brave/ios/web_view/public/cwv_autofill_controller_extras.h"
+#import "ios/web_view/public/cwv_autofill_controller.h"
 #include "components/application_locale_storage/application_locale_storage.h"
+#include "components/autofill/core/browser/suggestions/suggestion.h"
 #include "ios/chrome/browser/autofill/model/autocomplete_history_manager_factory.h"
 #include "ios/chrome/browser/autofill/model/autofill_log_router_factory.h"
 #include "ios/chrome/browser/autofill/model/personal_data_manager_factory.h"
@@ -42,6 +46,34 @@ std::unique_ptr<WebViewAutofillClientIOS> BraveWebViewAutofillClientIOS::Create(
 
 const std::string& BraveWebViewAutofillClientIOS::GetAppLocale() const {
   return GetApplicationContext()->GetApplicationLocaleStorage()->Get();
+}
+
+AutofillClient::SuggestionUiSessionId
+BraveWebViewAutofillClientIOS::ShowAutofillSuggestions(
+    const AutofillClient::PopupOpenArgs& open_args,
+    base::WeakPtr<AutofillSuggestionDelegate> delegate) {
+  CWVAutofillController* controller =
+      BraveWebViewAutofillControllerForWebState(web_state());
+  if (controller) {
+    NSMutableArray<NSNumber*>* typeInts = [NSMutableArray array];
+    NSMutableArray* fieldTypes = [NSMutableArray array];
+    for (const autofill::Suggestion& suggestion : open_args.suggestions) {
+      [typeInts addObject:@(static_cast<int>(suggestion.type))];
+      if (suggestion.field_by_field_filling_type_used) {
+        [fieldTypes addObject:@(static_cast<int>(
+            *suggestion.field_by_field_filling_type_used))];
+      } else {
+        [fieldTypes addObject:[NSNull null]];
+      }
+    }
+    const NSUInteger suggestion_count = static_cast<NSUInteger>(
+        open_args.suggestions.size());
+    [controller brave_dispatchWillPresentSuggestionsWithCount:suggestion_count
+                                           suggestionTypeRaws:typeInts
+                                               fieldTypeRaws:fieldTypes];
+  }
+  return WebViewAutofillClientIOS::ShowAutofillSuggestions(open_args,
+                                                           delegate);
 }
 
 }  // namespace autofill

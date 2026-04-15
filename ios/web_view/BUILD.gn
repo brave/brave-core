@@ -25,6 +25,7 @@ config("config") {
 
 source_set("web_view") {
   sources = [
+    "internal/cwv_autofill_controller_extras.mm",
     "internal/cwv_autofill_data_manager_extras.mm",
     "internal/cwv_autofill_profile_extras.mm",
     "internal/cwv_credit_card_extras.mm",
@@ -36,6 +37,7 @@ source_set("web_view") {
     "internal/cwv_ssl_status_extras.mm",
     "internal/cwv_web_view_extras.mm",
     "internal/cwv_x509_certificate_extras.mm",
+    "public/cwv_autofill_controller_extras.h",
     "public/cwv_autofill_data_manager_extras.h",
     "public/cwv_autofill_profile_extras.h",
     "public/cwv_credit_card_extras.h",

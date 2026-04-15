@@ -29,6 +29,10 @@ class BraveWebViewAutofillClientIOS : public WebViewAutofillClientIOS {
   using WebViewAutofillClientIOS::WebViewAutofillClientIOS;
 
   const std::string& GetAppLocale() const override;
+
+  AutofillClient::SuggestionUiSessionId ShowAutofillSuggestions(
+      const AutofillClient::PopupOpenArgs& open_args,
+      base::WeakPtr<AutofillSuggestionDelegate> delegate) override;
 };
 }  // namespace autofill
 

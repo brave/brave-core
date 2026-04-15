@@ -15,6 +15,7 @@ config("config") {
 
 source_set("web_view") {
   sources = [
+    "autofill/brave_web_view_autofill_lookup.mm",
     "brave_web_view.h",
     "brave_web_view.mm",
     "brave_web_view_configuration.h",
