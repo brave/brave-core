@@ -7,13 +7,12 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_COMMON_URL_URL_UTIL_H_
 
 #include <string>
-#include <vector>
 
+#include "base/containers/span.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
+#include "url/gurl.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
-
-class GURL;
 
 namespace brave_ads {
 
@@ -29,12 +28,11 @@ bool ShouldSupportUrl(const GURL& url);
 // contain asterix wildcards. The backslash character (\) is an escape character
 // for *. * matches 0 or more characters.
 bool MatchUrlPattern(const GURL& url, const std::string& pattern);
-bool MatchUrlPattern(const std::vector<GURL>& redirect_chain,
+bool MatchUrlPattern(base::span<const GURL> redirect_chain,
                      const std::string& pattern);
 
 bool SameDomainOrHost(const GURL&, const GURL&);
-bool DomainOrHostExists(const std::vector<GURL>& redirect_chain,
-                        const GURL& url);
+bool DomainOrHostExists(base::span<const GURL> redirect_chain, const GURL& url);
 
 }  // namespace brave_ads
 
