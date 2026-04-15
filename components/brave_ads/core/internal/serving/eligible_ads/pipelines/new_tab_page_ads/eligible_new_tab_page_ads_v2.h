@@ -35,6 +35,7 @@ class EligibleNewTabPageAdsV2 final : public EligibleNewTabPageAdsBase {
 
   ~EligibleNewTabPageAdsV2() override;
 
+  // EligibleNewTabPageAdsBase:
   void GetForUserModel(
       UserModelInfo user_model,
       EligibleAdsCallback<CreativeNewTabPageAdList> callback) override;

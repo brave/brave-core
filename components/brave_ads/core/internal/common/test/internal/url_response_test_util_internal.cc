@@ -65,7 +65,7 @@ std::optional<URLResponsePair> GetNextUrlResponseForUrl(
 
   const auto iter = UrlResponseIndexes().find(uuid);
   if (iter == UrlResponseIndexes().cend()) {
-    // uuid does not exist so insert a new index set to 0 for the url responses.
+    // UUID does not exist so insert a new index set to 0 for the url responses.
     UrlResponseIndexes()[uuid] = index;
   } else {
     ++iter->second;

@@ -15,6 +15,7 @@ struct SearchResultAdInfo;
 class SearchResultAdEventViewed final
     : public AdEventInterface<SearchResultAdInfo> {
  public:
+  // AdEventInterface:
   void FireEvent(const SearchResultAdInfo& ad,
                  ResultCallback callback) override;
 };

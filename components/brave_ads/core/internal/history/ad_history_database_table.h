@@ -40,6 +40,7 @@ class AdHistory final : public TableInterface {
     batch_size_ = batch_size;
   }
 
+  // TableInterface:
   void Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) override;
   void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                int to_version) override;

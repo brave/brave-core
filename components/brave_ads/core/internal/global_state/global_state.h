@@ -16,8 +16,8 @@
 
 namespace brave_ads {
 
-// TODO(https://github.com/brave/brave-browser/issues/37622): Deprecate global
-// state.
+// TODO(https://github.com/brave/brave-browser/issues/37622): Deprecate
+// `GlobalState`.
 
 class AdHistoryManager;
 class AdsClient;

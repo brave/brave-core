@@ -19,6 +19,7 @@ class FetchPaymentTokenUrlRequestBuilder final
  public:
   explicit FetchPaymentTokenUrlRequestBuilder(ConfirmationInfo confirmation);
 
+  // UrlRequestBuilderInterface:
   mojom::UrlRequestInfoPtr Build() override;
 
  private:

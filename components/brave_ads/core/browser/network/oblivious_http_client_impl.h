@@ -22,6 +22,7 @@ class ObliviousHttpClientImpl : public network::mojom::ObliviousHttpClient {
 
   ~ObliviousHttpClientImpl() override;
 
+  // network::mojom::ObliviousHttpClient:
   void OnCompleted(
       network::mojom::ObliviousHttpCompletionResultPtr response) override;
 

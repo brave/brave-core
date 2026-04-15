@@ -34,6 +34,7 @@ class EligibleNotificationAdsV2 final : public EligibleNotificationAdsBase {
 
   ~EligibleNotificationAdsV2() override;
 
+  // EligibleNotificationAdsBase:
   void GetForUserModel(
       UserModelInfo user_model,
       EligibleAdsCallback<CreativeNotificationAdList> callback) override;
