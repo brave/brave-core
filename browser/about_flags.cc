@@ -15,6 +15,7 @@
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_education/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/brave_origin/features.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -1337,6 +1338,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_UPDATER_FEATURE_ENTRIES                                                \
   PSST_FEATURE_ENTRIES                                                         \
   BRAVE_FORCE_POPUP_TO_BE_OPENED_IN_NEW_TAB_FEATURE_ENTRY                      \
+  EXPAND_FEATURE_ENTRIES({                                                     \
+      "brave-origin",                                                          \
+      "Enable Brave Origin",                                                   \
+      "Enables Brave Origin features and settings.",                           \
+      kOsDesktop | kOsAndroid,                                                 \
+      FEATURE_VALUE_TYPE(brave_origin::features::kBraveOrigin),                \
+  })                                                                           \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 namespace flags_ui {
 namespace {
