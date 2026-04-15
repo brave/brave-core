@@ -116,6 +116,9 @@ class BraveTabContainer : public TabContainerImpl,
                            RichAnimationIsDisabled);
   FRIEND_TEST_ALL_PREFIXES(HorizontalScrollableTabStripBrowserTest,
                            GetScrollDirectionIsHorizontal);
+  FRIEND_TEST_ALL_PREFIXES(
+      HorizontalScrollableTabStripBrowserTest,
+      GetScrollDirectionNotHorizontalWhenScrollableHorizontalPrefDisabled);
   FRIEND_TEST_ALL_PREFIXES(HorizontalScrollableTabStripBrowserTest,
                            MaxScrollOffsetZeroWithFewTabs);
   FRIEND_TEST_ALL_PREFIXES(HorizontalScrollableTabStripBrowserTest,

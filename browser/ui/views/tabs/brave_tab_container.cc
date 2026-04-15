@@ -1771,7 +1771,7 @@ bool BraveTabContainer::IsHorizontalScrollableTabStripEnabled() const {
   }
 
   if (scrollable_horizontal_tab_strip_.GetPrefName().empty()) {
-    CHECK_IS_TEST();
+    // Can be null in unit test, as browser object is not available.
     return false;
   }
 
