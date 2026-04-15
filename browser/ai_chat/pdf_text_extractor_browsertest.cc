@@ -60,7 +60,7 @@ IN_PROC_BROWSER_TEST_F(PdfTextExtractorBrowserTest,
   base::test::TestFuture<std::optional<std::string>> future;
 
   extractor->ExtractText(browser_context(), std::move(*pdf_bytes),
-                         future.GetCallback());
+                         FILE_PATH_LITERAL("pdf"), future.GetCallback());
 
   auto result = future.Take();
   ASSERT_TRUE(result.has_value());
