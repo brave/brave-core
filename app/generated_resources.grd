@@ -315,8 +315,8 @@ are declared in tools/grit/grit_args.gni.
       </if>
 
       <!-- Settings specific strings -->
+      <part file="settings_strings.grdp" />
       <if expr="not is_android">
-        <part file="settings_strings.grdp" />
         <part file="shared_settings_strings.grdp" />
       </if>
 
@@ -692,31 +692,7 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_OPENLINKWEBAPP_NEWTAB" desc="The name of the command to open a link in a new tab of the same app the user is currently in">
             Open link in new <ph name="APP">$1<ex>Gmail App</ex></ph> tab
           </message>
-          <message name="IDS_CONTENT_CONTEXT_OPENLINKPREVIEW" desc="The name of the Preview link command in the content area context menu">
-            Preview link
-          </message>
-          <if expr="is_macosx">
-            <message name="IDS_CONTENT_CONTEXT_OPENLINKPREVIEW_TRIGGER_ALTCLICK" desc="The minor text of the Preview link command in the content area context menu, alt+click trigger">
-              ⌥+Click
-            </message>
-            <message name="IDS_CONTENT_CONTEXT_OPENLINKPREVIEW_TRIGGER_ALTHOVER" desc="The minor text of the Preview link command in the content area context menu, alt+hover trigger">
-              ⌥+Hover
-            </message>
-            <message name="IDS_CONTENT_CONTEXT_OPENLINKPREVIEW_TRIGGER_LONGPRESS" desc="The minor text of the Preview link command in the content area context menu, long press trigger">
-              Long press
-            </message>
-          </if>
-          <if expr="not is_macosx">
-            <message name="IDS_CONTENT_CONTEXT_OPENLINKPREVIEW_TRIGGER_ALTCLICK" desc="The minor text of the Preview link command in the content area context menu, alt+click trigger">
-              Alt+Click
-            </message>
-            <message name="IDS_CONTENT_CONTEXT_OPENLINKPREVIEW_TRIGGER_ALTHOVER" desc="The minor text of the Preview link command in the content area context menu, alt+hover trigger">
-              Alt+Hover
-            </message>
-            <message name="IDS_CONTENT_CONTEXT_OPENLINKPREVIEW_TRIGGER_LONGPRESS" desc="The minor text of the Preview link command in the content area context menu, long press trigger">
-              Long press
-            </message>
-          </if>
+
 
           <message name="IDS_CONTENT_CONTEXT_SAVELINKAS" desc="The name of the Save Link As command in the content area context menu">
             Save lin&amp;k as...
@@ -781,6 +757,9 @@ are declared in tools/grit/grit_args.gni.
             Rotate c&amp;ounterclockwise
           </message>
 
+          <message name="IDS_CONTENT_CONTEXT_VIDEO_FRAME" desc="The name of the Video Frame submenu in the content area context menu">
+            &amp;Video frame
+          </message>
           <message name="IDS_CONTENT_CONTEXT_SAVEVIDEOFRAMEAS" desc="The name of the Save Video Frame As command in the content area context menu">
             Save video &amp;frame as...
           </message>
@@ -1017,31 +996,7 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_OPENLINKWEBAPP_NEWTAB" desc="In Title Case: The name of the command to open a link in a new tab of the same app the user is currently in">
             Open Link in new <ph name="APP">$1<ex>Gmail App</ex></ph> Tab
           </message>
-          <message name="IDS_CONTENT_CONTEXT_OPENLINKPREVIEW" desc="In Title Case: The name of the Preview link command in the content area context menu">
-            Preview Link
-          </message>
-          <if expr="is_macosx">
-            <message name="IDS_CONTENT_CONTEXT_OPENLINKPREVIEW_TRIGGER_ALTCLICK" desc="In Title Case: The minor text of the Preview link command in the content area context menu, alt+click trigger">
-              ⌥+Click
-            </message>
-            <message name="IDS_CONTENT_CONTEXT_OPENLINKPREVIEW_TRIGGER_ALTHOVER" desc="In Title Case: The minor text of the Preview link command in the content area context menu, alt+hover trigger">
-              ⌥+Hover
-            </message>
-            <message name="IDS_CONTENT_CONTEXT_OPENLINKPREVIEW_TRIGGER_LONGPRESS" desc="In Title Case: The minor text of the Preview link command in the content area context menu, long press trigger">
-              Long Press
-            </message>
-          </if>
-          <if expr="not is_macosx">
-            <message name="IDS_CONTENT_CONTEXT_OPENLINKPREVIEW_TRIGGER_ALTCLICK" desc="In Title Case: The minor text of the Preview link command in the content area context menu, alt+click trigger">
-              Alt+Click
-            </message>
-            <message name="IDS_CONTENT_CONTEXT_OPENLINKPREVIEW_TRIGGER_ALTHOVER" desc="In Title Case: The minor text of the Preview link command in the content area context menu, alt+hover trigger">
-              Alt+Hover
-            </message>
-            <message name="IDS_CONTENT_CONTEXT_OPENLINKPREVIEW_TRIGGER_LONGPRESS" desc="In Title Case: The minor text of the Preview link command in the content area context menu, long press trigger">
-              Long Press
-            </message>
-          </if>
+
 
           <message name="IDS_CONTENT_CONTEXT_SAVELINKAS" desc="In Title Case: The name of the Save Link As command in the content area context menu">
             Save Lin&amp;k As...
@@ -1106,6 +1061,9 @@ are declared in tools/grit/grit_args.gni.
             Rotate C&amp;ounterclockwise
           </message>
 
+          <message name="IDS_CONTENT_CONTEXT_VIDEO_FRAME" desc="In Title Case: The name of the Video Frame submenu in the content area context menu">
+            &amp;Video Frame
+          </message>
           <message name="IDS_CONTENT_CONTEXT_SAVEVIDEOFRAMEAS" desc="In Title Case: The name of the Save Video Frame As command in the content area context menu">
            Save Video &amp;Frame As...
           </message>
@@ -3808,6 +3766,9 @@ are declared in tools/grit/grit_args.gni.
       </message>
       <message name="IDS_TRACKING_PROTECTION_BUBBLE_SITE_NOT_WORKING_DESCRIPTION" desc="Descriptive text in the trackings protection bubble mentioning the option to enable third-party cookies and mentions the trade off of doing so.">
         Try temporarily allowing third-party cookies, which means less browsing protection but site features are more likely to work as expected.
+      </message>
+      <message name="IDS_COOKIE_CONTROLS_BUBBLE_SITE_NOT_WORKING_DESCRIPTION" desc="Descriptive text in the third-party cookies bubble describing the option to allow third-party cookies and the trade offs of doing so." translateable="false">
+        Try allowing third-party cookies, which means less browsing protection but site features are more likely to work as expected.
       </message>
       <message name="IDS_TRACKING_PROTECTION_BUBBLE_BLOCKING_RESTART_TITLE" desc="Subtitle shown on the tracking protection bubble indicating how long until cookies are blocked again.">
         {COUNT, plural,
@@ -8340,6 +8301,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_COMPOSE_ADD_FILE" desc="Text for a button label that opens a menu so users can add a file to their search.">
         Add file
       </message>
+      <message name="IDS_NTP_COMPOSE_ADD_DRIVE" desc="Placeholder text for a button label that opens a menu so users can add a Google Drive file to their search." translateable="false">
+         Add from Drive
+      </message>
       <message name="IDS_NTP_COMPOSE_ADD_CONTEXT" desc="The text to display to ask user to add context to their search e.g. pdf or image.">
         Add a tab and more
       </message>
@@ -8370,7 +8334,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_COMPOSE_MODELS_LABEL" desc="The label for the models label in the context menu in the composebox.">
         Models
       </message>
-      <message name="IDS_NTP_COMPOSE_AUTO_MODEL" desc="The label for the Auto model button in the context menu in the composebox as well as the chip that indicates that the user is using the Auto model." formatter_data="android_java">
+      <message name="IDS_NTP_COMPOSE_AUTO_MODEL" desc="The label for the Auto model button in the context menu in the composebox as well as the chip that indicates that the user is using the Auto model.">
         Auto
       </message>
       <message name="IDS_NTP_COMPOSE_THINKING_3_PRO" desc="The label for the Thinking 3 Pro model button in the context menu in the composebox as well as the chip that indicates that the user is using the Thinking 3 Pro model.">
@@ -9042,6 +9006,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
       </if>
       <if expr="use_titlecase">
+        <message name="IDS_SIDE_PANEL_SHOW_TABS_FROM_OTHER_DEVICES" desc="Title of the menu item for showing the 'Tabs from other devices' side panel entry.">
+          Show Tabs From Other Devices in Side Panel
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_SIDE_PANEL_SHOW_TABS_FROM_OTHER_DEVICES" desc="Title of the menu item for showing the 'Tabs from other devices' side panel entry.">
+          Show tabs from other devices in side panel
+        </message>
+      </if>
+      <if expr="use_titlecase">
         <message name="IDS_SIDE_PANEL_TABS_FROM_OTHER_DEVICES_TITLE" desc="Title of the 'Tabs from other devices' side panel entry.">
           Tabs From Other Devices
         </message>
@@ -9318,6 +9292,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_IMMERSIVE_READING_MODE_OPENED_ANNOUNCEMENT" desc="Accessibility announcement read by screen readers when reading mode is opened." is_accessibility_with_no_ui="true">
         Reading mode opened, full page view
       </message>
+      <if expr="is_macosx">
+        <message name="IDS_READING_MODE_TOOLTIP" desc="Tooltip for the reading mode feature, which gives users an accessible reading experience.">
+          Reading mode (<ph name="READING_MODE_SHORTCUT">$1<ex>⌥⌘R</ex></ph>)
+        </message>
+      </if>
+      <if expr="not is_macosx">
+        <message name="IDS_READING_MODE_TOOLTIP" desc="Tooltip for the reading mode feature, which gives users an accessible reading experience.">
+          Reading mode (<ph name="READING_MODE_SHORTCUT">$1<ex>Alt+Shift+R</ex></ph>)
+        </message>
+      </if>
       <message name="IDS_READING_MODE_NOT_SELECTABLE_HEADER" desc="Header for reading mode when the current webpage cannot be opened in reading mode, even when selecting text.">
         Reading mode isn’t available on this page
       </message>
@@ -9549,9 +9533,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_READING_MODE_LANGUAGE_MENU_CLOSE" desc="Label for a button to close a dialog with options for managing language preferences for Read Aloud.">
         Close
       </message>
-      <message name="IDS_READING_MODE_CLOSE" desc="Tooltip and screen reader label for a button to close reading mode.">
-        Close reading mode
-      </message>
+      <if expr="is_macosx">
+        <message name="IDS_READING_MODE_CLOSE" desc="Tooltip and screen reader label for a button to close reading mode.">
+          Close reading mode (<ph name="SHORTCUT">$1<ex>⌥⌘R</ex></ph>)
+        </message>
+      </if>
+      <if expr="not is_macosx">
+        <message name="IDS_READING_MODE_CLOSE" desc="Tooltip and screen reader label for a button to close reading mode.">
+          Close reading mode (<ph name="SHORTCUT">$1<ex>Alt+Shift+R</ex></ph>)
+        </message>
+      </if>
       <message name="IDS_READING_MODE_LANGUAGE_MENU_NO_RESULTS" desc="Text shown in the Read Aloud language menu after a search yields no matching languages.">
         No results found
       </message>
@@ -9987,6 +9978,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_VERTICAL_TABS_IPH_BODY" desc="The body for the vertical tabs IPH tutorial.">
         See entire tab titles, easily manage tab groups, and free up vertical space by moving your tabs to the side.
+      </message>
+      <message name="IDS_VERTICAL_TABS_EXPAND_ON_HOVER_DEFAULT_ENABLED_IPH_BODY" desc="The body for the vertical tabs expand on hover IPH, when expand on hover is default enabled.">
+        You can now expand your tabs by hovering over them. To turn this off, right-click here.
+      </message>
+      <message name="IDS_VERTICAL_TABS_EXPAND_ON_HOVER_DEFAULT_DISABLED_IPH_BODY" desc="The body for the vertical tabs expand on hover IPH, when expand on hover is default disabled.">
+        You can now expand your tabs by hovering over them. To turn this on, right-click here.
       </message>
       <message name="IDS_VERTICAL_RESIZE_AREA" is_accessibility_with_no_ui="true" desc="The accessibility label for the resize area in the vertical tab strip.">
             Vertical Tab Strip Resize Handle (Draggable)
@@ -13483,6 +13480,12 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </if>
       <message name="IDS_SEND_TAB_TO_SELF" desc="The title of an action or bubble letting the user share the current tab to other devices">
         Send to your devices
+      </message>
+      <message name="IDS_SEND_TAB_TO_SELF_DEVICE_LABEL" desc="The label for a target device in the Send Tab to Self context menu, which includes the device name and its last active time.">
+        <ph name="DEVICE_NAME">$1<ex>Pixel 9 Pro</ex></ph> (<ph name="LAST_ACTIVE_TIME">$2<ex>Active 5 mins ago</ex></ph>)
+      </message>
+      <message name="IDS_SEND_TAB_TO_SELF_MANAGE_DEVICES" desc="Label for a menu item to manage the devices that can receive tabs.">
+        Manage your devices
       </message>
       <if expr="is_android">
       <message name="IDS_SEND_TAB_TO_SELF_MESSAGE" desc="Text for a message indicating that the tab was shared from a syncing device.">

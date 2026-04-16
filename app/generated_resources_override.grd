@@ -102,8 +102,8 @@ are declared in tools/grit/grit_args.gni.
         <part file="os_settings_search_tag_strings_override.grdp" />
         </if>
 
+      <part file="settings_strings_override.grdp" />
       <if expr="not is_android">
-        <part file="settings_strings_override.grdp" />
         <part file="shared_settings_strings_override.grdp" />
       </if>
 
@@ -167,21 +167,11 @@ are declared in tools/grit/grit_args.gni.
             </if>
           <if expr="not is_macosx">
             </if>
-
-          <if expr="is_macosx">
-            </if>
-          <if expr="not is_macosx">
-            </if>
           </if>
         <if expr="use_titlecase">
           <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD" desc="In Title Case: The name of the open a link in Private window command">
             Open Link in &amp;Private Window
           </message>
-          <if expr="is_macosx">
-            </if>
-          <if expr="not is_macosx">
-            </if>
-
           <if expr="is_macosx">
             </if>
           <if expr="not is_macosx">
@@ -659,6 +649,18 @@ are declared in tools/grit/grit_args.gni.
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="is_macosx">
+        </if>
+      <if expr="not is_macosx">
+        </if>
+      <if expr="is_macosx">
+        </if>
+      <if expr="not is_macosx">
         </if>
       <if expr="enable_extensions_core">
       </if>

@@ -894,6 +894,11 @@ Brave is unable to recover your settings.
         <message name="IDS_EXTENSION_INSTALLED_HEADING" desc="Title of the extension-installed bubble. Instructs that the extension was installed.">
           <ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph> has been added to Brave
         </message>
+        <if expr="is_android">
+          <message name="IDS_EXTENSION_INSTALLED_MANAGE_INFO_IN_MAIN_MENU" desc="Text displayed in the post install dialog when the extensions menu is unpinned on Android informing them they can manage their extensions in the main menu.">
+            Manage your extensions by clicking Extensions in the Brave main menu.
+          </message>
+        </if>
 
         <!-- Extension uninstall prompt -->
         <message name="IDS_EXTENSION_UNINSTALL_PROMPT_REMOVE_DATA_CHECKBOX" desc="Checkbox text to ask the user whether they want to remove associated data at uninstall time. Only used when uninstalling an app associated with a particular website.">
@@ -3034,13 +3039,16 @@ Brave is unable to recover your settings.
         Your settings were changed by an unknown app
       </message>
       <message name="IDS_DEFAULT_SEARCH_ENGINE_RESET_NOTIFICATION_BODY" desc="Body text of the notification shown when Brave resets the default search engine, explaining that a change from outside Brave was detected.">
-        Your default search engine was changed from outside of Brave. To protect you, Brave reset it.
+        Your search engine was changed from outside of Brave. To protect you, Brave reset it to its original default. <ph name="LEARN_MORE_LINK">$1<ex>Learn more</ex></ph>
       </message>
       <message name="IDS_DEFAULT_SEARCH_ENGINE_RESET_NOTIFICATION_GOT_IT_BUTTON" desc="Label for the 'Got it' button in the default search engine reset notification, which dismisses the UI.">
         Got it
       </message>
-      <message name="IDS_DEFAULT_SEARCH_ENGINE_RESET_NOTIFICATION_LEARN_MORE_BUTTON" desc="Label for the 'Learn more' button in the default search engine reset notification, which opens a help center article.">
+      <message name="IDS_DEFAULT_SEARCH_ENGINE_RESET_NOTIFICATION_LEARN_MORE_BUTTON" desc="Label for the 'Learn more' link in the default search engine reset notification, which opens a help center article.">
         Learn more
+      </message>
+      <message name="IDS_DEFAULT_SEARCH_ENGINE_RESET_NOTIFICATION_SEARCH_SETTINGS_BUTTON" desc="Label for the 'Search settings' button in the default search engine reset notification, which opens the search engine settings page.">
+        Search settings
       </message>
 
       <!--Report-unsafe-site Dialog (accessed from Help menu)-->

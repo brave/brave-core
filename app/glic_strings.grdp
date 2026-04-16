@@ -120,7 +120,7 @@
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_SECTION" desc="Heading on settings page for permissions-related preferences." formatter_data="android_java">
     Permissions
   </message>
-  <message name="IDS_SETTINGS_GLIC_BUTTON_TOGGLE" desc="Name of the toggle that controls whether the Gemini icon is shown in the tabstrip." formatter_data="android_java">
+  <message name="IDS_SETTINGS_GLIC_BUTTON_TOGGLE" desc="Name of the toggle that controls whether the Gemini icon is shown in the tabstrip.">
     Show Gemini at the top of the browser
   </message>
   <message name="IDS_SETTINGS_GLIC_BUTTON_TOGGLE_SUBLABEL" desc="Sublabel of the toggle that controls whether the Gemini icon is shown in the tabstrip." formatter_data="android_java">
@@ -434,10 +434,18 @@
   </message>
 
   <!-- Gemini tab strip button label -->
+  <message name="IDS_GLIC_SETTING_LABEL" desc="Label in setting list used to open Gemini in Brave settings." formatter_data="android_java">
+    Gemini in Brave
+  </message>
   <message name="IDS_GLIC_BUTTON_ENTRYPOINT_LABEL" desc="Label on the button used to open Gemini in Brave." formatter_data="android_java">
     Gemini
   </message>
-
+  <message name="IDS_GLIC_BUTTON_ENTRYPOINT_PINNED_LABEL" desc="Label on the button used to open Gemini in Brave when pinned." formatter_data="android_java">
+    Current toolbar shortcut
+  </message>
+  <message name="IDS_GLIC_BUTTON_ENTRYPOINT_UNPINNED_LABEL" desc="Label on the button used to open Gemini in Brave when pinned." formatter_data="android_java">
+    Pin Gemini to toolbar shortcut
+  </message>
   <message name="IDS_GLIC_BUTTON_ENTRYPOINT_ASK_GEMINI_LABEL" desc="Label on the button used to open Gemini in Brave." formatter_data="android_java">
     Ask Gemini
   </message>
@@ -491,5 +499,19 @@
   </message>
   <message name="IDS_GLIC_SELECTION_TELL_ME_ABOUT" desc="Prompt suggestion for telling me about the selected text.">
     Tell me about <ph name="TEXT">$1<ex>something</ex></ph>
+  </message>
+
+  <!-- Educational Tip -->
+  <message name="IDS_EDUCATIONAL_TIP_GLIC_TITLE" desc="Title for the Glic educational tip card." formatter_data="android_java">
+    Meet Gemini on Brave
+  </message>
+  <message name="IDS_EDUCATIONAL_TIP_GLIC_DESCRIPTION" desc="Description for the Glic educational tip card." formatter_data="android_java">
+    Get the best of Brave AI. Pin Gemini to your toolbar for easy access, or open it anytime from the Brave menu.
+  </message>
+  <message name="IDS_EDUCATIONAL_TIP_GLIC_BUTTON" desc="Button text for the Glic educational tip card." formatter_data="android_java">
+    Pin on toolbar
+  </message>
+  <message name="IDS_EDUCATIONAL_TIP_GLIC_DISMISS_BUTTON" desc="Dismiss button text for the Glic educational tip card." formatter_data="android_java">
+    No, thanks
   </message>
 </grit-part>
