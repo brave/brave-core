@@ -195,20 +195,11 @@
     <color name="new_tab_menu_bg_dark_color">@color/baseline_neutral_20</color>
 
     <color name="qr_button_color">@android:color/white</color>
-    <color name="shield_title_color">@android:color/black</color>
     <color name="shield_text_color">#212529</color>
     <color name="shields_tooltip_text_bg_color">#1A000000</color>
     <color name="shield_bg_color">#FFFFFF</color>
-    <color name="shield_back_button_tint">@color/brave_theme_color</color>
 
     <color name="shield_toggle_button_tint">#5E6175</color>
-    <color name="shield_toggle_bg_color">#F8F9FA</color>
-
-    <color name="shield_secondary_color">#868E96</color>
-    <color name="shield_divider_color">#c8c7cc</color>
-    <color name="shield_option_text_color">#777777</color>
-    <color name="shield_rounded_button_color">#C2C4CF</color>
-    <color name="shield_thank_you_icon_color">#212529</color>
 
     <color name="filter_title_color">#1C1E26</color>
     <color name="filter_summary_color">#666D89</color>
@@ -255,7 +246,6 @@
 
     <color name="white_alpha_50">#80FFFFFF</color>
 
-    <color name="brave_rewards_modal_text_color">#495057</color>
     <color name="brave_blue_tint_color">#4C54D2</color>
 
     <color name="shields_tooltip_arrow_color_1">#DD295B</color>
@@ -347,6 +337,7 @@
 
     <color name="schemes_on_surface">#1c1c1d</color>
     <color name="schemes_on_surface_variant">#464649</color>
+    <color name="schemes_outline">#78787c</color>
     <color name="schemes_outline_variant">#c9c9ca</color>
     <color name="schemes_primary">#434fcf</color>
     <color name="schemes_on_primary">#ffffff</color>
@@ -390,4 +381,9 @@
     <color name="material_tertiary_80">@color/primitive_tertiary_80</color>
     <color name="material_tertiary_40">@color/primitive_tertiary_40</color>
 
+    <!-- Shields Panel Colors -->
+    <color name="divider_line_bg_color">#e8e8eb</color>
+    <color name="shields_surface">#FAFAFB</color>
+    <color name="shields_container_background">#FFFFFF</color>
+    <color name="shields_text_warning">#745C00</color>
 </resources>

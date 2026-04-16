@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Track fill with border -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="35dp" />
+            <solid android:color="@color/schemes_surface_container_highest" />
+            <stroke
+                android:width="2dp"
+                android:color="@color/schemes_outline" />
+            <size
+                android:width="65dp"
+                android:height="40dp" />
+        </shape>
+    </item>
+
+    <!-- Thumb on left side (20dp, centered vertically) -->
+    <item
+        android:left="10dp"
+        android:top="10dp"
+        android:right="35dp"
+        android:bottom="10dp">
+        <shape android:shape="oval">
+            <solid android:color="@color/schemes_outline" />
+            <size
+                android:width="20dp"
+                android:height="20dp" />
+        </shape>
+    </item>
+</layer-list>
