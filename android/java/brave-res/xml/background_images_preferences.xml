@@ -23,7 +23,7 @@
             android:summaryOn="@string/text_on"
             android:summaryOff="@string/text_off" />
 
-        <org.chromium.components.browser_ui.settings.ClickableSpansTextMessagePreference
+        <org.chromium.components.browser_ui.settings.ChromeBasePreference
             android:key="sponsored_images_learn_more" />
 
     </PreferenceCategory>
