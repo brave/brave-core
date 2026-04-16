@@ -59,31 +59,33 @@ void QueryFilterService::OnComponentReady(const base::FilePath& install_dir) {
 }
 
 void QueryFilterService::OnRulesJsonLoaded(const std::string& contents) {
-  ParseRulesJson(contents);
+  auto rules = ParseRulesJson(contents);
+  if (!rules.empty()) {
+    rules_ = std::move(rules);
+  }
 }
 
-// See query-filter.json file format in the adblock-lists repository.
-void QueryFilterService::ParseRulesJson(const std::string_view contents) {
+std::vector<QueryFilterRule> ParseRulesJson(const std::string_view contents) {
   if (contents.empty()) {
-    return;
+    return {};
   }
 
   auto parsed = base::JSONReader::ReadAndReturnValueWithError(
       contents, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!parsed.has_value()) {
-    LOG(ERROR) << "query-filter.json parse error: " << parsed.error().message;
-    return;
+    DLOG(ERROR) << "query-filter.json parse error: " << parsed.error().message;
+    return {};
   }
 
   const base::ListValue* list = parsed->GetIfList();
   if (!list) {
-    LOG(ERROR) << "query-filter.json: root must be an array";
-    return;
+    DLOG(ERROR) << "query-filter.json: root must be an array";
+    return {};
   }
 
   // Create a new vector of rules to avoid modifying the current rules while
   // parsing the new ones.
-  std::vector<QueryFilterRule> new_rules;
+  std::vector<QueryFilterRule> rules;
 
   // Helper to insert valid strings from a list into a vector.
   auto valid_string_inserter = [](const base::ListValue* lv,
@@ -99,11 +101,11 @@ void QueryFilterService::ParseRulesJson(const std::string_view contents) {
     output.resize(precomputed_output_size);
     auto output_iter = output.begin();
     for (const base::Value& item : *lv) {
-      DCHECK(item.is_string());
-      // DCHECKs are removed in release builds.
       if (item.is_string()) {
         *output_iter = item.GetString();
         ++output_iter;
+      } else {
+        DLOG(ERROR) << "query-filter.json: non-string item found in list";
       }
     }
   };
@@ -112,8 +114,7 @@ void QueryFilterService::ParseRulesJson(const std::string_view contents) {
   for (const base::Value& entry : *list) {
     const base::DictValue* rule_dict = entry.GetIfDict();
     if (!rule_dict) {
-      LOG(ERROR)
-          << "query-filter.json: each rule entry entry must be an object";
+      DLOG(ERROR) << "query-filter.json: non dict rule entry found";
       continue;
     }
 
@@ -124,13 +125,11 @@ void QueryFilterService::ParseRulesJson(const std::string_view contents) {
                           rule.exclude);
     valid_string_inserter(rule_dict->FindList(kQueryFilterRulesParamsKey),
                           rule.params);
-    new_rules.push_back(std::move(rule));
+    rules.push_back(std::move(rule));
   }
 
   // Update rules if valid new rules are found.
-  if (!new_rules.empty()) {
-    rules_ = std::move(new_rules);
-  }
+  return rules;
 }
 
 }  // namespace query_filter

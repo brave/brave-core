@@ -27,10 +27,8 @@ struct QueryFilterRule {
   std::vector<std::string> params;
 };
 
-// Singleton which loads and holds rules from the query filter component
-// (query-filter.json).
-// See
-// https://github.com/brave/adblock-lists/blob/master/brave-lists/query-filter.json
+// Singleton responsible for getting rules from the query filter component.
+// (query-filter.json). See brave/adblock-lists/brave-lists/query-filter.json
 class QueryFilterService {
  public:
   QueryFilterService(const QueryFilterService&) = delete;
@@ -45,21 +43,21 @@ class QueryFilterService {
   const std::vector<QueryFilterRule>& rules() const { return rules_; }
 
  private:
-  friend class QueryFilterServiceTest;
   friend struct base::DefaultSingletonTraits<QueryFilterService>;
 
   QueryFilterService();
 
   // Called when the rules JSON is loaded from the DAT file.
   void OnRulesJsonLoaded(const std::string& contents);
-  // Resets first the current rules and then parses the new ones from the given
-  // JSON string.
-  void ParseRulesJson(const std::string_view contents);
 
   base::FilePath install_dir_;
   std::vector<QueryFilterRule> rules_;
   base::WeakPtrFactory<QueryFilterService> weak_factory_{this};
 };
+
+// Free method to parse the rules JSON string into a vector of QueryFilterRule
+// objects. Returns an empty vector if the JSON is invalid.
+std::vector<QueryFilterRule> ParseRulesJson(const std::string_view contents);
 
 }  // namespace query_filter
 
