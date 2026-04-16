@@ -156,6 +156,7 @@ void ForcePasteInWebContents(content::WebContents* contents);
 
 void ShowSaveWorkspaceDialog(Browser* browser);
 void ShowOpenWorkspaceDialog(Browser* browser);
+void SaveWorkspace(Browser* browser, const std::string& name);
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 // Creates a new tab with the given tab's URL in the specified container.

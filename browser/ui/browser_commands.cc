@@ -25,6 +25,7 @@
 #include "base/notreached.h"
 #include "base/path_service.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/task/thread_pool.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
@@ -37,6 +38,9 @@
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
+#include "brave/browser/workspace/brave_workspace.h"
+#include "brave/browser/workspace/brave_workspace_service.h"
+#include "brave/browser/workspace/brave_workspace_service_factory.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/containers/buildflags/buildflags.h"
@@ -54,6 +58,7 @@
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -73,6 +78,8 @@
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/sessions/content/content_serialized_navigation_builder.h"
+#include "components/sessions/core/session_service_commands.h"
 #include "components/split_tabs/split_tab_visual_data.h"
 #include "components/tab_groups/tab_group_visual_data.h"
 #include "components/tabs/public/tab_group.h"
@@ -89,6 +96,7 @@
 
 #if defined(TOOLKIT_VIEWS)
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/workspace/save_workspace_dialog.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_enums.h"
@@ -152,6 +160,90 @@ std::vector<int> GetSelectedIndices(Browser* browser) {
   CHECK(!indices.empty())
       << "Returning empty indices could case infinite recursion";
   return indices;
+}
+
+// Used for saving a workspace.
+// Appends session commands for a single browser window to |commands| and
+// updates |active_window_id| if |browser| is the calling browser.
+// Returns true if at least one tab was serialized.
+bool AppendBrowserSessionCommands(
+    Browser* browser,
+    Browser* calling_browser,
+    std::vector<std::unique_ptr<sessions::SessionCommand>>& commands,
+    SessionID& active_window_id) {
+  auto* tsm = browser->tab_strip_model();
+  if (tsm->count() == 0) {
+    return false;
+  }
+
+  SessionID window_id = SessionID::NewUnique();
+  commands.push_back(sessions::CreateSetWindowTypeCommand(
+      window_id, sessions::SessionWindow::TYPE_NORMAL));
+
+  // Mark the calling browser's window as the active one.
+  if (browser == calling_browser ||
+      active_window_id == SessionID::InvalidValue()) {
+    active_window_id = window_id;
+  }
+
+  // Emit group metadata for every tab group in this window.
+  if (tsm->group_model()) {
+    for (const tab_groups::TabGroupId& group_id :
+         tsm->group_model()->ListTabGroups()) {
+      auto* group = tsm->group_model()->GetTabGroup(group_id);
+      if (!group || !group->visual_data()) {
+        continue;
+      }
+      commands.push_back(sessions::CreateTabGroupMetadataUpdateCommand(
+          group_id, group->visual_data()));
+    }
+  }
+
+  bool has_tabs = false;
+  for (int i = 0; i < tsm->count(); ++i) {
+    content::WebContents* contents = tsm->GetWebContentsAt(i);
+    if (!contents) {
+      continue;
+    }
+
+    SessionID tab_id = SessionID::NewUnique();
+
+    commands.push_back(sessions::CreateSetTabWindowCommand(window_id, tab_id));
+    commands.push_back(sessions::CreateSetTabIndexInWindowCommand(tab_id, i));
+
+    if (tsm->IsTabPinned(i)) {
+      commands.push_back(sessions::CreatePinnedStateCommand(tab_id, true));
+    }
+
+    std::optional<tab_groups::TabGroupId> group_id = tsm->GetTabGroupForTab(i);
+    if (group_id.has_value()) {
+      commands.push_back(sessions::CreateTabGroupCommand(tab_id, group_id));
+    }
+
+    // Serialize the full navigation history for this tab.
+    auto& controller = contents->GetController();
+    int nav_count = controller.GetEntryCount();
+    int current_entry = controller.GetCurrentEntryIndex();
+    for (int j = 0; j < nav_count; ++j) {
+      content::NavigationEntry* entry = controller.GetEntryAtIndex(j);
+      if (!entry) {
+        continue;
+      }
+      auto serialized =
+          sessions::ContentSerializedNavigationBuilder::FromNavigationEntry(
+              j, entry);
+      commands.push_back(
+          sessions::CreateUpdateTabNavigationCommand(tab_id, serialized));
+    }
+
+    commands.push_back(sessions::CreateSetSelectedNavigationIndexCommand(
+        tab_id, current_entry));
+    has_tabs = true;
+  }
+
+  commands.push_back(sessions::CreateSetSelectedTabInWindowCommand(
+      window_id, tsm->active_index()));
+  return has_tabs;
 }
 
 }  // namespace
@@ -1163,8 +1255,71 @@ void ForcePasteInWebContents(content::WebContents* web_contents) {
           web_contents->GetWeakPtr()));
 }
 
+void SaveWorkspace(Browser* calling_browser, const std::string& name) {
+  if (name.empty()) {
+    return;
+  }
+
+  auto* service =
+      BraveWorkspaceServiceFactory::GetForProfile(calling_browser->profile());
+  if (!service) {
+    return;
+  }
+
+  // Collect session commands on the UI thread, then write to disk on a
+  // background task (WriteWorkspaceToDisk does blocking file I/O).
+  std::vector<std::unique_ptr<sessions::SessionCommand>> commands;
+
+  auto browsers =
+      chrome::FindAllTabbedBrowsersWithProfile(calling_browser->profile());
+
+  SessionID active_window_id = SessionID::InvalidValue();
+  bool has_tabs = false;
+
+  for (Browser* browser : browsers) {
+    if (browser->profile() != calling_browser->profile() ||
+        !browser->is_type_normal()) {
+      continue;
+    }
+    if (AppendBrowserSessionCommands(browser, calling_browser, commands,
+                                     active_window_id)) {
+      has_tabs = true;
+    }
+  }
+
+  if (!has_tabs) {
+    return;
+  }
+
+  if (active_window_id != SessionID::InvalidValue()) {
+    commands.push_back(
+        sessions::CreateSetActiveWindowCommand(active_window_id));
+  }
+
+  base::FilePath workspace_dir = service->GetWorkspaceDirForName(name);
+
+  // CommandStorageBackend must be constructed on the UI thread because its
+  // constructor calls SingleThreadTaskRunner::GetCurrentDefault().  We create
+  // a MayBlock SequencedTaskRunner here and pass it as the backend's owning
+  // runner, then post the actual file I/O to that same runner.
+  auto task_runner = base::ThreadPool::CreateSequencedTaskRunner(
+      {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+       base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
+  auto backend = base::MakeRefCounted<sessions::CommandStorageBackend>(
+      task_runner, workspace_dir, BraveWorkspaceService::kWorkspaceSessionType);
+
+  task_runner->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          base::IgnoreResult(&BraveWorkspaceService::WriteWorkspaceToDisk),
+          name, std::move(commands), std::move(workspace_dir),
+          std::move(backend)));
+}
+
 void ShowSaveWorkspaceDialog(Browser* browser) {
-  // TODO: ...
+#if defined(TOOLKIT_VIEWS)
+  SaveWorkspaceDialog::Show(browser);
+#endif
 }
 
 void ShowOpenWorkspaceDialog(Browser* browser) {
