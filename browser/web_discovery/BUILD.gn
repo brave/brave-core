@@ -57,10 +57,6 @@ source_set("browser_tests") {
 
     sources = []
 
-    if (!is_android) {
-      sources += [ "web_discovery_browsertest.cc" ]
-    }
-
     deps = [
       "//base/test:test_support",
       "//brave/components/constants",
@@ -78,6 +74,15 @@ source_set("browser_tests") {
       "//testing/gmock",
       "//testing/gtest",
     ]
+
+    if (!is_android) {
+      sources += [ "web_discovery_browsertest.cc" ]
+      deps += [
+        "//extensions:test_support",
+        "//extensions/browser",
+        "//extensions/common:common_constants",
+      ]
+    }
 
     if (enable_web_discovery_native) {
       sources += [ "content_scraper_browsertest.cc" ]
