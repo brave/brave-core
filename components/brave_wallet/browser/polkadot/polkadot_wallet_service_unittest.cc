@@ -171,7 +171,7 @@ TEST_F(PolkadotWalletServiceUnitTest, Constructor) {
     // Both requests in the constructor complete successfully.
 
     auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-        *keyring_service_, *network_manager_, &prefs_,
+        *keyring_service_, *network_manager_, prefs_,
         url_loader_factory_.GetSafeWeakWrapper());
 
     UnlockWallet();
@@ -222,7 +222,7 @@ TEST_F(PolkadotWalletServiceUnitTest, Constructor) {
     // Both responses are invalid.
 
     auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-        *keyring_service_, *network_manager_, &prefs_,
+        *keyring_service_, *network_manager_, prefs_,
         url_loader_factory_.GetSafeWeakWrapper());
 
     UnlockWallet();
@@ -293,7 +293,7 @@ TEST_F(PolkadotWalletServiceUnitTest, ConcurrentChainNameFetches) {
   EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_, &prefs_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();
@@ -358,7 +358,7 @@ TEST_F(PolkadotWalletServiceUnitTest, ConcurrentChainNameFetches) {
 
 TEST_F(PolkadotWalletServiceUnitTest, GetCompatibleNetworks) {
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_, &prefs_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
   // Start from a known visibility state for deterministic assertions.
   network_manager_->RemoveHiddenNetwork(mojom::CoinType::DOT,
@@ -412,7 +412,7 @@ TEST_F(PolkadotWalletServiceUnitTest, GetCompatibleNetworks) {
 
 TEST_F(PolkadotWalletServiceUnitTest, GetAddress) {
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_, &prefs_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   // Mainnet address.
@@ -495,7 +495,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic) {
   EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_, &prefs_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();
@@ -748,7 +748,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoChainMetadata) {
   EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_, &prefs_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();
@@ -814,7 +814,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoAccountInfo) {
   EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_, &prefs_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();
@@ -911,7 +911,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoChainHeader) {
   EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_, &prefs_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();
@@ -1036,7 +1036,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoParentHeader) {
   EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_, &prefs_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();
@@ -1194,7 +1194,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoFinalizedHead) {
   EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_, &prefs_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();
@@ -1336,7 +1336,7 @@ TEST_F(PolkadotWalletServiceUnitTest,
   EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_, &prefs_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();
@@ -1517,7 +1517,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoGenesisHash) {
   EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_, &prefs_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();
@@ -1747,7 +1747,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoRuntimeVersion) {
   EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_, &prefs_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();
@@ -1950,7 +1950,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction) {
       &url_loader_factory_, network_manager_.get());
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_, &prefs_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();
@@ -2046,7 +2046,7 @@ TEST_F(PolkadotWalletServiceUnitTest,
       &url_loader_factory_, network_manager_.get());
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_, &prefs_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();
@@ -2084,7 +2084,7 @@ TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate) {
       &url_loader_factory_, network_manager_.get());
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_, &prefs_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();
@@ -2120,7 +2120,7 @@ TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate_NetworkFailure) {
       &url_loader_factory_, network_manager_.get());
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_, &prefs_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();

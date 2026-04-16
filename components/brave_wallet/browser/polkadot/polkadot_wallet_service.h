@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_WALLET_SERVICE_H_
 
 #include "base/types/expected.h"
+#include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_chain_metadata.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_chain_metadata_prefs.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_extrinsic.h"
@@ -14,6 +15,7 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_signed_transfer_task.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
@@ -26,7 +28,8 @@ class KeyringService;
 class NetworkManager;
 
 // The main Polkadot-based interface that the front-end interacts with.
-class PolkadotWalletService : public mojom::PolkadotWalletService {
+class PolkadotWalletService : public mojom::PolkadotWalletService,
+                              KeyringServiceObserverBase {
  public:
   using TransferAll = PolkadotSignedTransferTask::TransferAll;
 
@@ -43,7 +46,7 @@ class PolkadotWalletService : public mojom::PolkadotWalletService {
   PolkadotWalletService(
       KeyringService& keyring_service,
       NetworkManager& network_manager,
-      ::PrefService* profile_prefs,
+      ::PrefService& profile_prefs,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
   ~PolkadotWalletService() override;
@@ -108,6 +111,9 @@ class PolkadotWalletService : public mojom::PolkadotWalletService {
       GetFeeEstimateCallback callback);
 
  private:
+  // KeyringServiceObserverBase:
+  void Unlocked() override;
+
   void GenerateSignedTransferExtrinsicImpl(
       std::string chain_id,
       mojom::AccountIdPtr account_id,
@@ -146,6 +152,8 @@ class PolkadotWalletService : public mojom::PolkadotWalletService {
   PolkadotSubstrateRpc polkadot_substrate_rpc_;
   PolkadotChainMetadataPrefs chain_metadata_prefs_;
   PolkadotMetadataProvider metadata_provider_;
+  mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
+      keyring_observer_receiver_{this};
   absl::flat_hash_set<std::unique_ptr<PolkadotSignedTransferTask>>
       polkadot_sign_transactions_;
 

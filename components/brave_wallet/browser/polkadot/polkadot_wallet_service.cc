@@ -20,15 +20,15 @@ namespace brave_wallet {
 PolkadotWalletService::PolkadotWalletService(
     KeyringService& keyring_service,
     NetworkManager& network_manager,
-    ::PrefService* profile_prefs,
+    ::PrefService& profile_prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : keyring_service_(keyring_service),
       network_manager_(network_manager),
       polkadot_substrate_rpc_(network_manager, std::move(url_loader_factory)),
-      chain_metadata_prefs_(*profile_prefs),
+      chain_metadata_prefs_(profile_prefs),
       metadata_provider_(chain_metadata_prefs_, polkadot_substrate_rpc_) {
-  CHECK(profile_prefs);
-  metadata_provider_.Init();
+  keyring_service_->AddObserver(
+      keyring_observer_receiver_.BindNewPipeAndPassRemote());
 }
 
 PolkadotWalletService::~PolkadotWalletService() = default;
@@ -47,6 +47,10 @@ void PolkadotWalletService::Bind(
 
 void PolkadotWalletService::Reset() {
   weak_ptr_factory_.InvalidateWeakPtrs();
+}
+
+void PolkadotWalletService::Unlocked() {
+  metadata_provider_.Init();
 }
 
 PolkadotSubstrateRpc* PolkadotWalletService::GetPolkadotRpc() {

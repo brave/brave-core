@@ -40,36 +40,16 @@ constexpr char kSpecVersion[] = "spec_version";
 //   ...
 // }
 
-std::optional<uint8_t> ReadUint8(const base::DictValue& dict, const char* key) {
+template <class T>
+bool ReadUint(const base::DictValue& dict,
+              const char* key,
+              T* converted_value) {
   auto value = dict.FindInt(key);
-  uint8_t converted_value = 0;
   if (!value ||
-      !base::CheckedNumeric<uint8_t>(*value).AssignIfValid(&converted_value)) {
-    return std::nullopt;
+      !base::CheckedNumeric<T>(*value).AssignIfValid(converted_value)) {
+    return false;
   }
-  return converted_value;
-}
-
-std::optional<uint16_t> ReadUint16(const base::DictValue& dict,
-                                   const char* key) {
-  auto value = dict.FindInt(key);
-  uint16_t converted_value = 0;
-  if (!value ||
-      !base::CheckedNumeric<uint16_t>(*value).AssignIfValid(&converted_value)) {
-    return std::nullopt;
-  }
-  return converted_value;
-}
-
-std::optional<uint32_t> ReadUint32(const base::DictValue& dict,
-                                   const char* key) {
-  auto value = dict.FindInt(key);
-  uint32_t converted_value = 0;
-  if (!value ||
-      !base::CheckedNumeric<uint32_t>(*value).AssignIfValid(&converted_value)) {
-    return std::nullopt;
-  }
-  return converted_value;
+  return true;
 }
 
 }  // namespace
@@ -89,26 +69,49 @@ PolkadotChainMetadataPrefs::GetChainMetadata(std::string_view chain_id) const {
     return std::nullopt;
   }
 
-  auto balances_pallet_index = ReadUint8(*chain_metadata, kBalancesPalletIndex);
-  auto system_pallet_index = ReadUint8(*chain_metadata, kSystemPalletIndex);
-  auto transaction_payment_pallet_index =
-      ReadUint8(*chain_metadata, kTransactionPaymentPalletIndex);
-  auto transfer_allow_death_call_index =
-      ReadUint8(*chain_metadata, kTransferAllowDeathCallIndex);
-  auto transfer_keep_alive_call_index =
-      ReadUint8(*chain_metadata, kTransferKeepAliveCallIndex);
-  auto ss58_prefix = ReadUint16(*chain_metadata, kSs58Prefix);
-  auto spec_version = ReadUint32(*chain_metadata, kSpecVersion);
-  if (!system_pallet_index || !balances_pallet_index ||
-      !transaction_payment_pallet_index || !transfer_allow_death_call_index ||
-      !transfer_keep_alive_call_index || !ss58_prefix || !spec_version) {
+  uint8_t balances_pallet_index = 0;
+  if (!ReadUint(*chain_metadata, kBalancesPalletIndex,
+                &balances_pallet_index)) {
+    return std::nullopt;
+  }
+
+  uint8_t system_pallet_index = 0;
+  if (!ReadUint(*chain_metadata, kSystemPalletIndex, &system_pallet_index)) {
+    return std::nullopt;
+  }
+
+  uint8_t transaction_payment_pallet_index = 0;
+  if (!ReadUint(*chain_metadata, kTransactionPaymentPalletIndex,
+                &transaction_payment_pallet_index)) {
+    return std::nullopt;
+  }
+
+  uint8_t transfer_allow_death_call_index = 0;
+  if (!ReadUint(*chain_metadata, kTransferAllowDeathCallIndex,
+                &transfer_allow_death_call_index)) {
+    return std::nullopt;
+  }
+
+  uint8_t transfer_keep_alive_call_index = 0;
+  if (!ReadUint(*chain_metadata, kTransferKeepAliveCallIndex,
+                &transfer_keep_alive_call_index)) {
+    return std::nullopt;
+  }
+
+  uint16_t ss58_prefix = 0;
+  if (!ReadUint(*chain_metadata, kSs58Prefix, &ss58_prefix)) {
+    return std::nullopt;
+  }
+
+  uint32_t spec_version = 0;
+  if (!ReadUint(*chain_metadata, kSpecVersion, &spec_version)) {
     return std::nullopt;
   }
 
   return PolkadotChainMetadata::FromFields(
-      *system_pallet_index, *balances_pallet_index,
-      *transaction_payment_pallet_index, *transfer_allow_death_call_index,
-      *transfer_keep_alive_call_index, *ss58_prefix, *spec_version);
+      system_pallet_index, balances_pallet_index,
+      transaction_payment_pallet_index, transfer_allow_death_call_index,
+      transfer_keep_alive_call_index, ss58_prefix, spec_version);
 }
 
 bool PolkadotChainMetadataPrefs::SetChainMetadata(

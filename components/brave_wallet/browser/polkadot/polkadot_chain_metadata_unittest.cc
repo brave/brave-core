@@ -30,14 +30,14 @@ TEST(PolkadotChainMetadataUnitTest, FromFields) {
       /*transfer_all_call_index=*/5,
       /*ss58_prefix=*/42, /*spec_version=*/1'234'567);
 
-  auto expected = PolkadotChainMetadata::FromFields(
-      /*system_pallet_index=*/0, /*balances_pallet_index=*/7,
-      /*transaction_payment_pallet_index=*/0x20,
-      /*transfer_allow_death_call_index=*/2,
-      /*transfer_keep_alive_call_index=*/4,
-      /*transfer_all_call_index=*/5,
-      /*ss58_prefix=*/42, /*spec_version=*/1'234'567);
-  EXPECT_EQ(metadata, expected);
+  EXPECT_EQ(metadata.GetSystemPalletIndex(), 0u);
+  EXPECT_EQ(metadata.GetBalancesPalletIndex(), 7u);
+  EXPECT_EQ(metadata.GetTransactionPaymentPalletIndex(), 0x20u);
+  EXPECT_EQ(metadata.GetTransferAllowDeathCallIndex(), 2u);
+  EXPECT_EQ(metadata.GetTransferKeepAliveCallIndex(), 4u);
+  EXPECT_EQ(metadata.GetTransferAllCallIndex(), 5u);
+  EXPECT_EQ(metadata.GetSs58Prefix(), 42u);
+  EXPECT_EQ(metadata.GetSpecVersion(), 1'234'567u);
 }
 
 TEST(PolkadotChainMetadataUnitTest, EqualityOperator) {
@@ -210,13 +210,7 @@ TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponseWestend) {
 
   auto metadata2 = PolkadotChainMetadata::FromChainName("Westend");
   ASSERT_TRUE(metadata2);
-  auto expected_from_name = PolkadotChainMetadata::FromFields(
-      /*system_pallet_index=*/0, /*balances_pallet_index=*/4,
-      /*transaction_payment_pallet_index=*/0x1a,
-      /*transfer_allow_death_call_index=*/0,
-      /*transfer_keep_alive_call_index=*/3,
-      /*ss58_prefix=*/42, /*spec_version=*/0);
-  EXPECT_EQ(*metadata2, expected_from_name);
+  EXPECT_EQ(*metadata2, expected);
 }
 
 }  // namespace brave_wallet

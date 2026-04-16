@@ -7,6 +7,7 @@
 
 #include <vector>
 
+#include "base/containers/map_util.h"
 #include "base/functional/bind.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -57,9 +58,11 @@ void PolkadotMetadataProvider::GetChainMetadata(
     GetChainMetadataCallback callback) {
   CHECK(IsPolkadotNetwork(chain_id));
 
-  auto cache_it = metadata_cache_.find(chain_id);
-  if (cache_it != metadata_cache_.end()) {
-    std::move(callback).Run(base::ok(cache_it->second));
+  if (const auto* cached_metadata =
+          base::FindOrNull(metadata_cache_, chain_id)) {
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE,
+        base::BindOnce(std::move(callback), base::ok(*cached_metadata)));
     return;
   }
 
