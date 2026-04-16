@@ -77,6 +77,24 @@ class GitStatusTest(unittest.TestCase):
         self.assertTrue(status.has_staged_files())
         self.assertEqual(status.staged, [staged_file])
 
+    def test_staged(self):
+        """Test staged files summary."""
+        status = GitStatus()
+        self.assertFalse(status.has_staged_files())
+        self.assertEqual(status.staged, [])
+
+        # Stage one file and leave another one untracked.
+        staged_file = 'staged_file.txt'
+        untracked_file = 'untracked_file.txt'
+        self.fake_chromium_src.write_and_stage_file(
+            staged_file, 'staged content', self.fake_chromium_src.brave)
+        Path(self.fake_chromium_src.brave /
+             untracked_file).write_text('untracked content')
+
+        status = GitStatus()
+        self.assertTrue(status.has_staged_files())
+        self.assertEqual(status.staged, [staged_file])
+
     def test_has_untracked_patch_files(self):
         """Test has_untracked_patch_files method."""
         status = GitStatus()
@@ -90,6 +108,12 @@ class GitStatusTest(unittest.TestCase):
         status = GitStatus()
         self.assertFalse(status.has_untracked_patch_files())
         self.assertEqual(status.untracked, [])
+
+        # Stage a patch file; this should not count as untracked.
+        self.fake_chromium_src.write_and_stage_file(
+            'staged.patch', 'staged patch content',
+            self.fake_chromium_src.brave)
+        self.assertFalse(GitStatus().has_untracked_patch_files())
 
         # Stage a patch file; this should not count as untracked.
         self.fake_chromium_src.write_and_stage_file(
