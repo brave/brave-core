@@ -24,12 +24,14 @@ constexpr char kQueryFilterJsonFile[] = "query-filter.json";
 
 }  // namespace
 
+// QueryFilterRule data structure.
 QueryFilterRule::QueryFilterRule() = default;
 QueryFilterRule::~QueryFilterRule() = default;
 QueryFilterRule::QueryFilterRule(const QueryFilterRule& other) = default;
 QueryFilterRule& QueryFilterRule::operator=(const QueryFilterRule& other) =
     default;
 
+// QueryFilterService implementation.
 // static
 QueryFilterService* QueryFilterService::GetInstance() {
   if (!base::FeatureList::IsEnabled(features::kQueryFilterComponent)) {
@@ -57,9 +59,9 @@ void QueryFilterService::OnRulesJsonLoaded(const std::string& contents) {
   ParseRulesJson(contents);
 }
 
+// See query-filter.json file format in the adblock-lists repository.
 void QueryFilterService::ParseRulesJson(const std::string& contents) {
   rules_.clear();
-  is_ready_ = false;
 
   if (contents.empty()) {
     return;
@@ -71,6 +73,16 @@ void QueryFilterService::ParseRulesJson(const std::string& contents) {
     LOG(ERROR) << "query-filter.json parse error: " << parsed.error().message;
     return;
   }
+
+  // Helper function to insert strings from a list into a vector.
+  auto rule_inserter = [](const base::ListValue* lv,
+                          std::vector<std::string>& output) {
+    for (const base::Value& item : *lv) {
+      if (item.is_string()) {
+        output.push_back(item.GetString());
+      }
+    }
+  };
 
   const base::ListValue* list = parsed->GetIfList();
   if (!list) {
@@ -86,35 +98,11 @@ void QueryFilterService::ParseRulesJson(const std::string& contents) {
     }
 
     QueryFilterRule rule;
-    if (const base::ListValue* lv = dict->FindList("include")) {
-      for (const base::Value& item : *lv) {
-        if (item.is_string()) {
-          rule.include.push_back(item.GetString());
-        }
-      }
-    }
-    if (const base::ListValue* lv = dict->FindList("exclude")) {
-      for (const base::Value& item : *lv) {
-        if (item.is_string()) {
-          rule.exclude.push_back(item.GetString());
-        }
-      }
-    }
-    if (const base::ListValue* lv = dict->FindList("params")) {
-      for (const base::Value& item : *lv) {
-        if (item.is_string()) {
-          rule.params.push_back(item.GetString());
-        }
-      }
-    }
+    rule_inserter(dict->FindList("include"), rule.include);
+    rule_inserter(dict->FindList("exclude"), rule.exclude);
+    rule_inserter(dict->FindList("params"), rule.params);
     rules_.push_back(std::move(rule));
   }
-
-  is_ready_ = true;
-}
-
-void QueryFilterService::SetRulesJsonForTesting(const std::string& json) {
-  ParseRulesJson(json);
 }
 
 }  // namespace query_filter

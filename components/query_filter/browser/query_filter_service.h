@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/gtest_prod_util.h"
 #include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
 
@@ -28,8 +29,9 @@ struct QueryFilterRule {
 };
 
 // Singleton which loads and holds rules from the query filter component
-// (query-filter.json). 
-// See https://github.com/brave/adblock-lists/blob/master/brave-lists/query-filter.json
+// (query-filter.json).
+// See
+// https://github.com/brave/adblock-lists/blob/master/brave-lists/query-filter.json
 class QueryFilterService {
  public:
   QueryFilterService(const QueryFilterService&) = delete;
@@ -40,12 +42,17 @@ class QueryFilterService {
 
   void OnComponentReady(const base::FilePath& install_dir);
 
-  bool is_ready() const { return is_ready_; }
   const std::vector<QueryFilterRule>& rules() const { return rules_; }
 
-  void SetRulesJsonForTesting(const std::string& json);
-
  private:
+  FRIEND_TEST_ALL_PREFIXES(QueryFilterServiceTest, EmptyJsonClearsRules);
+  FRIEND_TEST_ALL_PREFIXES(QueryFilterServiceTest, InvalidJsonProducesNoRules);
+  FRIEND_TEST_ALL_PREFIXES(QueryFilterServiceTest, RootMustBeList);
+  FRIEND_TEST_ALL_PREFIXES(QueryFilterServiceTest, ParsesIncludeExcludeParams);
+  FRIEND_TEST_ALL_PREFIXES(QueryFilterServiceTest, SkipsNonObjectEntries);
+  FRIEND_TEST_ALL_PREFIXES(QueryFilterServiceTest, IgnoresNonStringListItems);
+
+  friend class QueryFilterServiceTest;
   friend struct base::DefaultSingletonTraits<QueryFilterService>;
 
   QueryFilterService();
@@ -55,7 +62,6 @@ class QueryFilterService {
 
   base::FilePath install_dir_;
   std::vector<QueryFilterRule> rules_;
-  bool is_ready_ = false;
   base::WeakPtrFactory<QueryFilterService> weak_factory_{this};
 };
 
