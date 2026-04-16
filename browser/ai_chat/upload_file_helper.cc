@@ -53,6 +53,9 @@ std::optional<mojom::UploadedFileType> DetermineFileType(
     return mojom::UploadedFileType::kImage;
   }
 
+  // Text file detection requires extension-based MIME checks and renderer-based
+  // extraction via view-source, which Android doesn't support.
+#if !BUILDFLAG(IS_ANDROID)
   // If the extension has a known MIME type, reject clearly binary types
   // (e.g. zip, exe, tar) while accepting text-renderable types.
   auto extension = file_path.Extension();
@@ -76,6 +79,9 @@ std::optional<mojom::UploadedFileType> DetermineFileType(
   // No MIME mapping for this extension (or no extension). Let the renderer
   // try via MIME sniffing, matching how Chromium handles file:// URLs.
   return mojom::UploadedFileType::kText;
+#else
+  return std::nullopt;
+#endif
 }
 
 // base::ReadFileToBytes doesn't handle content uri so we need to read from
