@@ -26,7 +26,9 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "pdf/buildflags.h"
+#include "third_party/blink/public/mojom/content_extraction/ai_page_content.mojom.h"
 #include "url/gurl.h"
 
 namespace content {
@@ -151,6 +153,13 @@ class AssociatedWebContentsContent : public content::WebContentsObserver,
 
   void SetPendingGetContentCallback(FetchPageContentCallback callback);
 
+  // TODO: Remove this when https://github.com/brave/brave-core/pull/35352 is
+  // enabled by default.
+  void FetchPageContentFromAIPageContentAgent(
+      FetchPageContentCallback callback);
+  void OnAIPageContentResult(FetchPageContentCallback callback,
+                             blink::mojom::AIPageContentPtr result);
+
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
 
   bool is_same_document_navigation_ = false;
@@ -171,6 +180,8 @@ class AssociatedWebContentsContent : public content::WebContentsObserver,
   std::unique_ptr<PageContentFetcherDelegate> page_content_fetcher_delegate_;
 
   std::unique_ptr<FullScreenshotter> full_screenshotter_;
+
+  mojo::Remote<blink::mojom::AIPageContentAgent> ai_page_content_agent_;
 
   base::WeakPtrFactory<AssociatedWebContentsContent> weak_ptr_factory_{this};
 };

@@ -39,7 +39,9 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
+#include "mojo/public/cpp/bindings/callback_helpers.h"
 #include "pdf/buildflags.h"
+#include "services/service_manager/public/cpp/interface_provider.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/common/permissions/permission_utils.h"
 
@@ -49,6 +51,25 @@
 #endif  // BUILDFLAG(ENABLE_PDF)
 
 namespace ai_chat {
+
+namespace {
+
+void ExtractTextFromAIPageContentNode(
+    const blink::mojom::AIPageContentNode& node,
+    std::string& out) {
+  const auto& attrs = node.content_attributes;
+  if (attrs && attrs->text_info && !attrs->text_info->text_content.empty()) {
+    if (!out.empty()) {
+      out.append("\n");
+    }
+    out.append(attrs->text_info->text_content);
+  }
+  for (const auto& child : node.children_nodes) {
+    ExtractTextFromAIPageContentNode(*child, out);
+  }
+}
+
+}  // namespace
 
 AssociatedWebContentsContent::AssociatedWebContentsContent(
     content::WebContents* web_contents,
@@ -188,6 +209,14 @@ void AssociatedWebContentsContent::OnFetchPageContentComplete(
     SetPendingGetContentCallback(std::move(callback));
     return;
   }
+  // If content is still empty after page load, try AIPageContentAgent as a
+  // fallback. It uses layout tree walking which may succeed where AX
+  // tree-based extraction fails.
+  if (content.empty() && !is_video && is_page_loaded_) {
+    DVLOG(1) << "page content empty, trying AIPageContentAgent fallback";
+    FetchPageContentFromAIPageContentAgent(std::move(callback));
+    return;
+  }
   std::move(callback).Run(std::move(content), is_video,
                           std::move(invalidation_token));
 }
@@ -236,6 +265,47 @@ void AssociatedWebContentsContent::OnPDFDocumentLoadComplete(
           std::move(callback)));
 }
 #endif  // BUILDFLAG(ENABLE_PDF)
+
+void AssociatedWebContentsContent::FetchPageContentFromAIPageContentAgent(
+    FetchPageContentCallback callback) {
+  content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
+  if (!rfh || !rfh->IsRenderFrameLive()) {
+    std::move(callback).Run("", false, "");
+    return;
+  }
+
+  ai_page_content_agent_.reset();
+  rfh->GetRemoteInterfaces()->GetInterface(
+      ai_page_content_agent_.BindNewPipeAndPassReceiver());
+
+  auto options = blink::mojom::AIPageContentOptions::New();
+  options->mode = blink::mojom::AIPageContentMode::kDefault;
+  options->on_critical_path = true;
+
+  ai_page_content_agent_->GetAIPageContent(
+      std::move(options),
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+          base::BindOnce(&AssociatedWebContentsContent::OnAIPageContentResult,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(callback)),
+          nullptr));
+}
+
+void AssociatedWebContentsContent::OnAIPageContentResult(
+    FetchPageContentCallback callback,
+    blink::mojom::AIPageContentPtr result) {
+  ai_page_content_agent_.reset();
+
+  std::string content;
+  if (result) {
+    ExtractTextFromAIPageContentNode(*result->root_node, content);
+    base::TrimWhitespaceASCII(content, base::TRIM_ALL, &content);
+  }
+
+  DVLOG(1) << "AIPageContentAgent fallback "
+           << (content.empty() ? "returned empty" : "succeeded");
+  DVLOG(2) << "AIPageContentAgent extracted content: " << content;
+  std::move(callback).Run(std::move(content), false, "");
+}
 
 void AssociatedWebContentsContent::GetSearchSummarizerKey(
     GetSearchSummarizerKeyCallback callback) {
