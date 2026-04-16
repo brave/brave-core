@@ -27,7 +27,15 @@ index dc93e6525d54e270d5e9e1141e31d8359f24378f..297605755ead5259867c97f255a4a87b
        if (is_ash_webui) {
          enable_web_component_missing_deps = false
        }
-@@ -826,7 +828,7 @@ template("build_webui") {
+@@ -631,6 +633,7 @@ template("build_webui") {
+         "//ui/webui/resources/cr_components/searchbox",
+         "//ui/webui/resources/cr_elements",
+         "//ui/webui/resources/js",
++        "//brave/ui/webui/resources",
+       ]
+ 
+       if (is_android) {
+@@ -855,7 +858,7 @@ template("build_webui") {
    }
  
    if (!generate_grdp) {
