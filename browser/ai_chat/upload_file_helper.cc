@@ -77,7 +77,17 @@ std::optional<std::vector<uint8_t>> ReadFileToBytes(
 
 std::tuple<std::optional<std::vector<uint8_t>>, base::FilePath>
 ReadSelectedFile(const ui::SelectedFileInfo& info) {
-  return std::make_tuple(ai_chat::ReadFileToBytes(info.path()), info.path());
+  return std::make_tuple(ai_chat::ReadFileToBytes(info.path()),
+#if BUILDFLAG(IS_ANDROID)
+                         // On Android info.path() is a content:// URI with no
+                         // extension, so DetermineFileType() cannot classify
+                         // it. Use display_name, which holds the real filename
+                         // (e.g. "photo.png").
+                         base::FilePath(info.display_name)
+#else
+                         info.path()
+#endif
+  );
 }
 
 void OnImageDecoded(
