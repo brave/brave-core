@@ -71,7 +71,7 @@ class TorBrowserCollectionObserver : public BrowserCollectionObserver {
   }
 
  private:
-  base::ScopedObservation<GlobalBrowserCollection, BrowserCollectionObserver>
+  base::ScopedObservation<BrowserCollection, BrowserCollectionObserver>
       observation_{this};
 };
 

@@ -10,13 +10,15 @@
 
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
+#include "base/scoped_observation.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
-#include "chrome/browser/ui/browser_list_observer.h"
+#include "chrome/browser/ui/browser_window/public/browser_collection_observer.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/sessions/core/session_id.h"
 
-class Browser;
+class BrowserWindowInterface;
+class BrowserCollection;
 class PrefRegistrySimple;
 class PrefService;
 class TabStripModel;
@@ -67,7 +69,7 @@ class VerticalTabBrowserMetrics : public TabStripModelObserver {
   base::RepeatingClosure change_callback_;
 };
 
-class VerticalTabMetrics : public BrowserListObserver {
+class VerticalTabMetrics : public BrowserCollectionObserver {
  public:
   explicit VerticalTabMetrics(PrefService* local_state);
   ~VerticalTabMetrics() override;
@@ -79,15 +81,17 @@ class VerticalTabMetrics : public BrowserListObserver {
 
   void UpdateMetrics();
 
-  // BrowserListObserver:
-  void OnBrowserAdded(Browser* browser) override;
-  void OnBrowserRemoved(Browser* browser) override;
+  // BrowserCollectionObserver:
+  void OnBrowserCreated(BrowserWindowInterface* browser) override;
+  void OnBrowserClosed(BrowserWindowInterface* browser) override;
 
  private:
   base::flat_map<TabCountType, std::unique_ptr<WeeklyStorage>>
       global_count_storages_;
   base::flat_map<SessionID, std::unique_ptr<VerticalTabBrowserMetrics>>
       browser_metrics_;
+  base::ScopedObservation<BrowserCollection, BrowserCollectionObserver>
+      browser_collection_observation_{this};
 };
 
 }  // namespace misc_metrics

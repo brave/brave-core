@@ -37,8 +37,8 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/location_bar/location_bar.h"
 #include "chrome/browser/ui/omnibox/omnibox_view.h"
 
@@ -126,17 +126,27 @@ void CommanderService::Shutdown() {
   items_.clear();
 }
 
-void CommanderService::OnBrowserAdded(Browser* browser) {
-  browser_close_subscriptions_[browser] = browser->RegisterBrowserDidClose(
-      base::BindRepeating(&CommanderService::OnBrowserDidClose,
-                          weak_ptr_factory_.GetWeakPtr()));
+void CommanderService::EnsureBrowserDidCloseSubscription(
+    BrowserWindowInterface* browser_window_interface) {
+  if (browser_close_subscriptions_.contains(browser_window_interface)) {
+    return;
+  }
+
+  browser_close_subscriptions_[browser_window_interface] =
+      browser_window_interface->RegisterBrowserDidClose(
+          base::BindRepeating(&CommanderService::OnBrowserDidClose,
+                              weak_ptr_factory_.GetWeakPtr()));
+}
+
+void CommanderService::OnBrowserCreated(BrowserWindowInterface* browser) {
+  EnsureBrowserDidCloseSubscription(browser);
 }
 
 void CommanderService::OnBrowserDidClose(BrowserWindowInterface* browser) {
   browser_close_subscriptions_.erase(browser);
   if (last_browser_ == browser) {
     last_browser_ = nullptr;
-    browser_list_observation_.Reset();
+    browser_collection_observation_.Reset();
   }
 }
 
@@ -220,8 +230,10 @@ void CommanderService::UpdateText(const std::u16string& text, bool force) {
   }
   last_searched_ = trimmed_text;
   last_browser_ = browser;
-  if (!browser_list_observation_.IsObserving()) {
-    browser_list_observation_.Observe(BrowserList::GetInstance());
+  EnsureBrowserDidCloseSubscription(browser);
+  if (!browser_collection_observation_.IsObserving()) {
+    browser_collection_observation_.Observe(
+        GlobalBrowserCollection::GetInstance());
   }
 
   UpdateCommands();

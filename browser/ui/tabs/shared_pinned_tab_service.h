@@ -19,6 +19,7 @@
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_member.h"
 
+class Browser;
 class Profile;
 class BrowserWindowInterface;
 class BrowserCollection;
