@@ -16,11 +16,11 @@
     return;                        \
   PermissionsClient::Get()->GetUkmSourceId
 
-#define kTpcdGrant                  \
+#define kOsJavascriptOptimizer      \
   kRemoteList:                      \
   source_suffix = "FromRemoteList"; \
   break;                            \
-  case SettingSource::kTpcdGrant
+  case SettingSource::kOsJavascriptOptimizer
 
 // Don't let GetPermissionStringForUma hit NOTREACHED for missing Brave types.
 #define BRAVE_GET_PERMISSION_STRING_FOR_UMA return "";
@@ -28,4 +28,4 @@
 #include <components/permissions/permission_uma_util.cc>
 #undef BRAVE_GET_PERMISSION_STRING_FOR_UMA
 #undef GetUkmSourceId
-#undef kTpcdGrant
+#undef kOsJavascriptOptimizer
