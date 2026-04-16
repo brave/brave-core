@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/test/run_until.h"
 #include "brave/components/brave_ads/core/internal/common/resources/test/language_components_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"

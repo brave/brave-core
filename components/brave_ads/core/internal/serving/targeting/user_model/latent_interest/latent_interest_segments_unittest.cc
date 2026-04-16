@@ -21,8 +21,7 @@ class BraveAdsLatentInterestSegmentsTest : public test::TestBase {
   void SetUp() override {
     test::TestBase::SetUp();
 
-    targeting_helper_ =
-        std::make_unique<test::TargetingHelper>(task_environment_);
+    targeting_helper_ = std::make_unique<test::TargetingHelper>();
   }
 
   std::unique_ptr<test::TargetingHelper> targeting_helper_;

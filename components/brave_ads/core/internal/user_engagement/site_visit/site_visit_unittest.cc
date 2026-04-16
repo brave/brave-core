@@ -9,6 +9,7 @@
 #include <memory>
 #include <vector>
 
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_util.h"
@@ -497,13 +498,17 @@ TEST_F(
               OnMaybeLandOnPage(ad, /*after=*/kPageLandAfter.Get()))
       .Times(0);
 
-  // Act & Assert
+  // Act
+  bool did_land_on_page = false;
   EXPECT_CALL(site_visit_observer_mock_,
-              OnDidLandOnPage(
-                  /*tab_id=*/1, net::HTTP_BAD_REQUEST, ad));
+              OnDidLandOnPage(/*tab_id=*/1, net::HTTP_BAD_REQUEST, ad))
+      .WillOnce([&] { did_land_on_page = true; });
   SimulateClickingAd(ad, /*tab_id=*/1,
                      /*redirect_chain=*/{GURL("https://brave.com")},
                      net::HTTP_BAD_REQUEST);
+
+  // Assert
+  ASSERT_TRUE(base::test::RunUntil([&] { return did_land_on_page; }));
 }
 
 TEST_F(
@@ -518,13 +523,18 @@ TEST_F(
               OnMaybeLandOnPage(ad, /*after=*/kPageLandAfter.Get()))
       .Times(0);
 
-  // Act & Assert
+  // Act
+  bool did_land_on_page = false;
   EXPECT_CALL(site_visit_observer_mock_,
               OnDidLandOnPage(
-                  /*tab_id=*/1, net::HTTP_INTERNAL_SERVER_ERROR, ad));
+                  /*tab_id=*/1, net::HTTP_INTERNAL_SERVER_ERROR, ad))
+      .WillOnce([&] { did_land_on_page = true; });
   SimulateClickingAd(ad, /*tab_id=*/1,
                      /*redirect_chain=*/{GURL("https://brave.com")},
                      net::HTTP_INTERNAL_SERVER_ERROR);
+
+  // Assert
+  ASSERT_TRUE(base::test::RunUntil([&] { return did_land_on_page; }));
 }
 
 TEST_F(BraveAdsSiteVisitTest, DoNotLandOnPageIfTheTabIsOccluded) {

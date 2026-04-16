@@ -28,6 +28,8 @@ class ClientStateManager final {
 
   static ClientStateManager& GetInstance();
 
+  bool IsInitialized() const { return is_initialized_; }
+
   void LoadState(InitializeCallback callback);
 
   void AppendToPurchaseIntentSignalHistoryForSegment(

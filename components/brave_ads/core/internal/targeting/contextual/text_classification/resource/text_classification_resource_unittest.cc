@@ -10,6 +10,7 @@
 
 #include "base/files/file.h"
 #include "base/files/file_path.h"
+#include "base/test/run_until.h"
 #include "brave/components/brave_ads/core/internal/common/resources/test/language_components_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/resources/test/resource_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/file_path_test_util.h"
@@ -58,9 +59,10 @@ TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadMalformedResource) {
 
   NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
                                    test::kLanguageComponentId);
+  ASSERT_TRUE(resource_->IsLoaded());
 
   // Act & Assert
-  EXPECT_FALSE(resource_->IsLoaded());
+  ASSERT_TRUE(base::test::RunUntil([this] { return !resource_->IsLoaded(); }));
 }
 
 TEST_F(BraveAdsTextClassificationResourceTest, DoNotLoadMissingResource) {

@@ -28,14 +28,10 @@ void AdsClientNotifierForTesting::RemoveObserver(
 
 void AdsClientNotifierForTesting::NotifyPendingObservers() {
   ads_client_notifier_.NotifyPendingObservers();
-
-  RunTaskEnvironmentUntilIdle();
 }
 
 void AdsClientNotifierForTesting::NotifyDidInitializeAds() {
   ads_client_notifier_.NotifyDidInitializeAds();
-
-  RunTaskEnvironmentUntilIdle();
 }
 
 void AdsClientNotifierForTesting::NotifyRewardsWalletDidUpdate(
@@ -43,29 +39,21 @@ void AdsClientNotifierForTesting::NotifyRewardsWalletDidUpdate(
     const std::string& recovery_seed_base64) {
   ads_client_notifier_.NotifyRewardsWalletDidUpdate(payment_id,
                                                     recovery_seed_base64);
-
-  RunTaskEnvironmentUntilIdle();
 }
 
 void AdsClientNotifierForTesting::NotifyPrefDidChange(const std::string& path) {
   ads_client_notifier_.NotifyPrefDidChange(path);
-
-  RunTaskEnvironmentUntilIdle();
 }
 
 void AdsClientNotifierForTesting::NotifyResourceComponentDidChange(
     const std::string& manifest_version,
     const std::string& id) {
   ads_client_notifier_.NotifyResourceComponentDidChange(manifest_version, id);
-
-  RunTaskEnvironmentUntilIdle();
 }
 
 void AdsClientNotifierForTesting::NotifyDidUnregisterResourceComponent(
     const std::string& id) {
   ads_client_notifier_.NotifyDidUnregisterResourceComponent(id);
-
-  RunTaskEnvironmentUntilIdle();
 }
 
 void AdsClientNotifierForTesting::NotifyTabTextContentDidChange(
@@ -74,21 +62,15 @@ void AdsClientNotifierForTesting::NotifyTabTextContentDidChange(
     const std::string& text) {
   ads_client_notifier_.NotifyTabTextContentDidChange(tab_id, redirect_chain,
                                                      text);
-
-  RunTaskEnvironmentUntilIdle();
 }
 
 void AdsClientNotifierForTesting::NotifyTabDidStartPlayingMedia(
     int32_t tab_id) {
   ads_client_notifier_.NotifyTabDidStartPlayingMedia(tab_id);
-
-  RunTaskEnvironmentUntilIdle();
 }
 
 void AdsClientNotifierForTesting::NotifyTabDidStopPlayingMedia(int32_t tab_id) {
   ads_client_notifier_.NotifyTabDidStopPlayingMedia(tab_id);
-
-  RunTaskEnvironmentUntilIdle();
 }
 
 void AdsClientNotifierForTesting::NotifyTabDidChange(
@@ -99,72 +81,50 @@ void AdsClientNotifierForTesting::NotifyTabDidChange(
     bool is_visible) {
   ads_client_notifier_.NotifyTabDidChange(
       tab_id, redirect_chain, is_new_navigation, is_restoring, is_visible);
-
-  RunTaskEnvironmentUntilIdle();
 }
 
 void AdsClientNotifierForTesting::NotifyTabDidLoad(int32_t tab_id,
                                                    int http_status_code) {
   ads_client_notifier_.NotifyTabDidLoad(tab_id, http_status_code);
-
-  RunTaskEnvironmentUntilIdle();
 }
 
 void AdsClientNotifierForTesting::NotifyDidCloseTab(int32_t tab_id) {
   ads_client_notifier_.NotifyDidCloseTab(tab_id);
-
-  RunTaskEnvironmentUntilIdle();
 }
 
 void AdsClientNotifierForTesting::NotifyUserGestureEventTriggered(
     ui::PageTransition page_transition) {
   ads_client_notifier_.NotifyUserGestureEventTriggered(page_transition);
-
-  RunTaskEnvironmentUntilIdle();
 }
 
 void AdsClientNotifierForTesting::NotifyUserDidBecomeIdle() {
   ads_client_notifier_.NotifyUserDidBecomeIdle();
-
-  RunTaskEnvironmentUntilIdle();
 }
 
 void AdsClientNotifierForTesting::NotifyUserDidBecomeActive(
     base::TimeDelta idle_time,
     bool screen_was_locked) {
   ads_client_notifier_.NotifyUserDidBecomeActive(idle_time, screen_was_locked);
-
-  RunTaskEnvironmentUntilIdle();
 }
 
 void AdsClientNotifierForTesting::NotifyBrowserDidEnterForeground() {
   ads_client_notifier_.NotifyBrowserDidEnterForeground();
-
-  RunTaskEnvironmentUntilIdle();
 }
 
 void AdsClientNotifierForTesting::NotifyBrowserDidEnterBackground() {
   ads_client_notifier_.NotifyBrowserDidEnterBackground();
-
-  RunTaskEnvironmentUntilIdle();
 }
 
 void AdsClientNotifierForTesting::NotifyBrowserDidBecomeActive() {
   ads_client_notifier_.NotifyBrowserDidBecomeActive();
-
-  RunTaskEnvironmentUntilIdle();
 }
 
 void AdsClientNotifierForTesting::NotifyBrowserDidResignActive() {
   ads_client_notifier_.NotifyBrowserDidResignActive();
-
-  RunTaskEnvironmentUntilIdle();
 }
 
 void AdsClientNotifierForTesting::NotifyDidSolveAdaptiveCaptcha() {
   ads_client_notifier_.NotifyDidSolveAdaptiveCaptcha();
-
-  RunTaskEnvironmentUntilIdle();
 }
 
 void AdsClientNotifierForTesting::SimulateNavigateToURL(
@@ -238,13 +198,6 @@ void AdsClientNotifierForTesting::SimulateSelectLastTab() {
   const auto redirect_chain = redirect_chains_.crbegin();
   const auto [tab_id, _] = *redirect_chain;
   SimulateSelectTab(tab_id);
-}
-
-void AdsClientNotifierForTesting::RunTaskEnvironmentUntilIdle() {
-  CHECK(task_environment_)
-      << "set_ads_client_notifier_task_environment must be set before calling "
-         "AdsClientNotifierForTesting::Notify* functions";
-  task_environment_->RunUntilIdle();
 }
 
 }  // namespace brave_ads
