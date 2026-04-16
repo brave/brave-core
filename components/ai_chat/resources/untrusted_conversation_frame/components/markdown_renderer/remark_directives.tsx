@@ -34,6 +34,16 @@ export function remarkDirectives() {
 
       return CONTINUE
     })
+
+    // Unfortunately as of version 4 remark-directive automatically parses all directives (even ones you haven't listed).
+    // https://github.com/remarkjs/remark-directive/issues/19
+    // This means text like 12:45 parses the :45 as a textDirective and hides it.
+    // As a workaround, we just display all textDirectives as text.
+    visit(tree, ['textDirective'], (node) => {
+      node.type = 'text'
+      ;(node as any).value = `:${node.name}`
+      return CONTINUE
+    })
   }
 }
 
