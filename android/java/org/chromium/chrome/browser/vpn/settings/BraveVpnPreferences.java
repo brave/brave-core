@@ -224,6 +224,9 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                 (PreferenceCategory) findPreference(PREF_BRAVE_VPN_SUBSCRIPTION_SECTION);
         preferenceCategory.addPreference(mLinkSubscriptionPreference);
         preferenceCategory.setVisible(!BraveVpnNativeWorker.getInstance().isPurchasedUser());
+
+        findPreference(PREF_SERVER_CHANGE_LOCATION)
+                .setVisible(BraveVpnPrefUtils.isSubscriptionPurchase());
     }
 
     @Override
@@ -331,6 +334,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                                                     .setEnabled(
                                                             BraveVpnPrefUtils
                                                                     .isSubscriptionPurchase());
+                                            notifyPreferencesUpdated();
                                         }
                                     });
                 }
