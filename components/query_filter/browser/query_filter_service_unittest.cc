@@ -6,7 +6,11 @@
 #include "brave/components/query_filter/browser/query_filter_service.h"
 
 #include "base/dcheck_is_on.h"
+#include "base/files/file_util.h"
+#include "base/files/scoped_temp_dir.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/task_environment.h"
+#include "base/threading/thread_restrictions.h"
 #include "brave/components/query_filter/common/features.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -15,8 +19,8 @@ namespace query_filter {
 
 namespace {
 
-// Shape matches
-// https://github.com/brave/adblock-lists/blob/master/brave-lists/query-filter.json
+// Sample query filter JSON which would be written to a file during setup
+// and then read by the query filter service to prepopulate the default rules.
 constexpr char kSampleQueryFilterJson[] = R"json(
 [
   {
@@ -46,7 +50,31 @@ class QueryFilterServiceTest : public testing::Test {
 
   void SetUp() override {
     ASSERT_NE(service(), nullptr);
-    service()->ParseRulesJson("");
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    ASSERT_TRUE(component_install_dir_.CreateUniqueTempDir());
+    ASSERT_TRUE(base::WriteFile(
+        component_install_dir_.GetPath().AppendASCII("query-filter.json"),
+        kSampleQueryFilterJson));
+    service()->OnComponentReady(ComponentInstallDir());
+    task_environment_.RunUntilIdle();
+  }
+
+  void TryNewRulesUpdate(const std::string& json) {
+    service()->ParseRulesJson(json);
+  }
+
+  void AssertCurrentRulesMatchDefaultRules() {
+    ASSERT_EQ(service()->rules().size(), 2u);
+    const std::vector<QueryFilterRule>& rules = service()->rules();
+    EXPECT_THAT(service()->rules()[0].include, testing::ElementsAre("*://*/*"));
+    EXPECT_TRUE(service()->rules()[0].exclude.empty());
+    EXPECT_THAT(service()->rules()[0].params,
+                testing::ElementsAre("__hsfp", "gclid", "fbclid"));
+    EXPECT_THAT(service()->rules()[1].include,
+                testing::ElementsAre("*://*.youtube.com/*", "*://youtube.com/*",
+                                     "*://youtu.be/*"));
+    EXPECT_TRUE(rules[1].exclude.empty());
+    EXPECT_THAT(rules[1].params, testing::ElementsAre("si"));
   }
 
  protected:
@@ -54,76 +82,45 @@ class QueryFilterServiceTest : public testing::Test {
     return QueryFilterService::GetInstance();
   }
 
+  base::FilePath ComponentInstallDir() const {
+    return component_install_dir_.GetPath();
+  }
+
  private:
+  base::test::TaskEnvironment task_environment_{
+      base::test::TaskEnvironment::MainThreadType::DEFAULT,
+      base::test::TaskEnvironment::ThreadPoolExecutionMode::DEFAULT};
   base::test::ScopedFeatureList feature_list_;
+  base::ScopedTempDir component_install_dir_;
 };
 
-TEST_F(QueryFilterServiceTest, EmptyJsonClearsRules) {
-  service()->ParseRulesJson(kSampleQueryFilterJson);
-  ASSERT_EQ(service()->rules().size(), 2u);
-
-  service()->ParseRulesJson("");
-  EXPECT_TRUE(service()->rules().empty());
+TEST_F(QueryFilterServiceTest, LoadsAndParsesQueryFilterFileCorrectly) {
+  AssertCurrentRulesMatchDefaultRules();
 }
 
-TEST_F(QueryFilterServiceTest, InvalidJsonProducesNoRules) {
-  service()->ParseRulesJson("not json");
-  EXPECT_TRUE(service()->rules().empty());
+// Parse rules json specific tests below.
+TEST_F(QueryFilterServiceTest,
+       ParseRulesJsonChecks_EmptyJson_ProducesNoNewRules) {
+  TryNewRulesUpdate("");
+  AssertCurrentRulesMatchDefaultRules();
 }
 
-TEST_F(QueryFilterServiceTest, RootMustBeList) {
-  service()->ParseRulesJson("{}");
-  EXPECT_TRUE(service()->rules().empty());
+TEST_F(QueryFilterServiceTest,
+       ParseRulesJsonChecks_InvalidJson_ProducesNoNewRules) {
+  TryNewRulesUpdate("not json");
+  AssertCurrentRulesMatchDefaultRules();
 }
 
-TEST_F(QueryFilterServiceTest, ParsesIncludeExcludeParams) {
-  service()->ParseRulesJson(kSampleQueryFilterJson);
-
-  const std::vector<QueryFilterRule>& rules = service()->rules();
-  ASSERT_EQ(rules.size(), 2u);
-
-  EXPECT_THAT(rules[0].include, testing::ElementsAre("*://*/*"));
-  EXPECT_TRUE(rules[0].exclude.empty());
-  EXPECT_THAT(rules[0].params,
-              testing::ElementsAre("__hsfp", "gclid", "fbclid"));
-
-  EXPECT_THAT(rules[1].include,
-              testing::ElementsAre("*://*.youtube.com/*", "*://youtube.com/*",
-                                   "*://youtu.be/*"));
-  EXPECT_TRUE(rules[1].exclude.empty());
-  EXPECT_THAT(rules[1].params, testing::ElementsAre("si"));
-}
-
-TEST_F(QueryFilterServiceTest, SkipsNonObjectEntries) {
-  constexpr char kJson[] = R"json(
-[
-  {
-    "include": ["*://a/*"],
-    "exclude": [],
-    "params": ["x"]
-  },
-  42,
-  {
-    "include": ["*://b/*"],
-    "exclude": [],
-    "params": ["y"]
-  }
-]
-)json";
-
-  service()->ParseRulesJson(kJson);
-
-  const std::vector<QueryFilterRule>& rules = service()->rules();
-  ASSERT_EQ(rules.size(), 2u);
-  EXPECT_THAT(rules[0].include, testing::ElementsAre("*://a/*"));
-  EXPECT_THAT(rules[0].params, testing::ElementsAre("x"));
-  EXPECT_THAT(rules[1].include, testing::ElementsAre("*://b/*"));
-  EXPECT_THAT(rules[1].params, testing::ElementsAre("y"));
+TEST_F(QueryFilterServiceTest,
+       ParseRulesJsonChecks_InvalidRootNodeInJson_ProducesNoNewRules) {
+  TryNewRulesUpdate("{}");
+  AssertCurrentRulesMatchDefaultRules();
 }
 
 // Non-string entries in include/exclude/params violate the schema; DCHECK
 // catches mistakes in debug. Release builds skip non-strings (see .cc).
-TEST_F(QueryFilterServiceTest, NonStringListItems) {
+TEST_F(QueryFilterServiceTest,
+       ParseRulesJsonChecks_InvalidJson_NonStringListItemsCrashesInDebug) {
   constexpr char kJson[] = R"json(
 [
   {
@@ -135,15 +132,45 @@ TEST_F(QueryFilterServiceTest, NonStringListItems) {
 )json";
 
   if constexpr (DCHECK_IS_ON()) {
-    EXPECT_DEATH_IF_SUPPORTED({ service()->ParseRulesJson(kJson); }, "");
+    EXPECT_DEATH_IF_SUPPORTED({ TryNewRulesUpdate(kJson); }, "");
   } else {
-    service()->ParseRulesJson(kJson);
+    TryNewRulesUpdate(kJson);
     const std::vector<QueryFilterRule>& rules = service()->rules();
     ASSERT_EQ(rules.size(), 1u);
     EXPECT_THAT(rules[0].include, testing::ElementsAre("*://*/*"));
     EXPECT_THAT(rules[0].exclude, testing::ElementsAre("ignored"));
     EXPECT_THAT(rules[0].params, testing::ElementsAre("gclid", "fbclid"));
   }
+}
+
+TEST_F(QueryFilterServiceTest,
+       ParseRulesJsonChecks_ValidJson_SkipsNonObjectEntries) {
+  constexpr char kJson[] = R"json(
+[
+{
+"include": ["*://a/*"],
+"exclude": [],
+"params": ["x"]
+},
+42,
+{
+"include": ["*://b/*"],
+"exclude": [],
+"params": ["y"]
+}
+]
+)json";
+
+  TryNewRulesUpdate(kJson);
+
+  const std::vector<QueryFilterRule>& rules = service()->rules();
+  ASSERT_EQ(rules.size(), 2u);
+  EXPECT_THAT(rules[0].include, testing::ElementsAre("*://a/*"));
+  EXPECT_TRUE(rules[0].exclude.empty());
+  EXPECT_THAT(rules[0].params, testing::ElementsAre("x"));
+  EXPECT_THAT(rules[1].include, testing::ElementsAre("*://b/*"));
+  EXPECT_TRUE(rules[1].exclude.empty());
+  EXPECT_THAT(rules[1].params, testing::ElementsAre("y"));
 }
 
 }  // namespace query_filter

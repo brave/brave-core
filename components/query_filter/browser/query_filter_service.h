@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/files/file_path.h"
-#include "base/gtest_prod_util.h"
 #include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
 
@@ -40,21 +39,12 @@ class QueryFilterService {
 
   static QueryFilterService* GetInstance();
 
-  // Called when the component file has been downloaded and the install
-  // directory is set. The rules JSON is loaded from the DAT file.
+  // Loads the file, parses the rules and stores them in |rules_|.
   void OnComponentReady(const base::FilePath& install_dir);
 
   const std::vector<QueryFilterRule>& rules() const { return rules_; }
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(QueryFilterServiceTest, EmptyJsonClearsRules);
-  FRIEND_TEST_ALL_PREFIXES(QueryFilterServiceTest, InvalidJsonProducesNoRules);
-  FRIEND_TEST_ALL_PREFIXES(QueryFilterServiceTest, RootMustBeList);
-  FRIEND_TEST_ALL_PREFIXES(QueryFilterServiceTest, ParsesIncludeExcludeParams);
-  FRIEND_TEST_ALL_PREFIXES(QueryFilterServiceTest, SkipsNonObjectEntries);
-  FRIEND_TEST_ALL_PREFIXES(QueryFilterServiceTest, NonStringListItems);
-
-  friend class QueryFilterBrowserTest;
   friend class QueryFilterServiceTest;
   friend struct base::DefaultSingletonTraits<QueryFilterService>;
 
