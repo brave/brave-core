@@ -167,6 +167,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kFewerUpdateConfirmations,
       &features::kShortcutsNotApps,
 #endif
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
+      &features::kPdfInfoBar,
+#endif
       &features::kHttpsFirstBalancedMode,
       &features::kIdleDetection,
       &features::kIndigo,

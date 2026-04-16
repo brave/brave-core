@@ -5,6 +5,9 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
+# Tests assume kPdfInfoBar is enabled; we disable it.
+-PdfInfoBarControllerTest.*
+
 # These tests won't work without TPM hardware
 -TPMMetricsProviderTest.GetMetricsFullName
 -TpmIdentifierTest.TpmTest
