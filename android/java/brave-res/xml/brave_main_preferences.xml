@@ -148,22 +148,12 @@
         android:icon="@drawable/ic_autofill"
         android:title="@string/prefs_autofill_private_window_title"
         android:summary="@string/prefs_autofill_private_window_summary"/>
-    <PreferenceCategory
-        android:key="support_section"
-        android:order="24"
-        android:title="@string/prefs_support_section"/>
-
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.settings.BraveSyncScreensPreference"
         android:key="brave_sync_layout"
         android:order="22"
         android:icon="@drawable/ic_product_sync"
         android:title="@string/sync_category_title"/>
-    <Preference
-        android:key="rate_brave"
-        android:order="28"
-        android:icon="@drawable/ic_star_circle"
-        android:title="@string/prefs_rate_brave"/>
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="use_custom_tabs"
         android:order="20"
@@ -183,6 +173,15 @@
         android:order="23"
         icon="@drawable/ic_product_translate"
         android:title="@string/language_settings"/>
+    <PreferenceCategory
+        android:key="support_section"
+        android:order="24"
+        android:title="@string/prefs_support_section"/>
+    <Preference
+        android:key="rate_brave"
+        android:order="28"
+        android:icon="@drawable/ic_star_circle"
+        android:title="@string/prefs_rate_brave"/>
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.download.settings.BraveDownloadSettings"
         android:key="brave_downloads"
