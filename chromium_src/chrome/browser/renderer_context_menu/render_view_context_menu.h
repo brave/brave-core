@@ -8,6 +8,7 @@
 
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -94,7 +95,9 @@ class RenderViewContextMenu : public RenderViewContextMenu_Chromium
   void InitMenu() override;
   void NotifyMenuShown() override;
 
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   void BuildEmailAliasesMenu();
+#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   bool IsAIChatEnabled() const;

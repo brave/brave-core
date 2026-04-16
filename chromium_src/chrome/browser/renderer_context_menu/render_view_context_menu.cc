@@ -27,10 +27,9 @@
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/browser_dialogs.h"
-#include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_shields/core/common/features.h"
-#include "brave/components/email_aliases/features.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
@@ -78,6 +77,11 @@
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/browser/ui/email_aliases/email_aliases_controller.h"
+#include "brave/components/email_aliases/features.h"
+#endif
 
 namespace {
 
@@ -304,6 +308,7 @@ void OnRewriteSuggestionCompleted(
 }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 email_aliases::EmailAliasesController* GetEmailAliasesController(
     BrowserWindowInterface* browser) {
   if (!browser) {
@@ -311,6 +316,7 @@ email_aliases::EmailAliasesController* GetEmailAliasesController(
   }
   return browser->GetFeatures().email_aliases_controller();
 }
+#endif  // BUILDFLAG(ENABLE_EMAIL_ALIASES)
 
 }  // namespace
 
@@ -384,8 +390,10 @@ bool RenderViewContextMenu::IsCommandIdEnabled(int id) const {
       return true;
     case IDC_OPEN_IN_CONTAINER:
       return true;
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
     case IDC_NEW_EMAIL_ALIAS:
       return !!GetEmailAliasesController(GetBrowser());
+#endif
     default:
       return RenderViewContextMenu_Chromium::IsCommandIdEnabled(id);
   }
@@ -442,12 +450,14 @@ void RenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
       cosmetic_filters::CosmeticFiltersTabHelper::LaunchContentPicker(
           source_web_contents_);
       break;
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
     case IDC_NEW_EMAIL_ALIAS:
       if (auto* email_aliases = GetEmailAliasesController(GetBrowser())) {
         email_aliases->ShowBubble(source_web_contents_, GetRenderFrameHost(),
                                   params_.field_renderer_id);
       }
       break;
+#endif
     default:
       RenderViewContextMenu_Chromium::ExecuteCommand(id, event_flags);
   }
@@ -859,7 +869,9 @@ void RenderViewContextMenu::InitMenu() {
   BuildContainersMenu();
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   BuildEmailAliasesMenu();
+#endif
 }
 
 void RenderViewContextMenu::NotifyMenuShown() {
@@ -869,6 +881,7 @@ void RenderViewContextMenu::NotifyMenuShown() {
   }
 }
 
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 void RenderViewContextMenu::BuildEmailAliasesMenu() {
   if (!email_aliases::features::IsEmailAliasesEnabled()) {
     return;
@@ -905,3 +918,4 @@ void RenderViewContextMenu::BuildEmailAliasesMenu() {
                                     IDS_IDC_NEW_EMAIL_ALIAS);
   }
 }
+#endif  // BUILDFLAG(ENABLE_EMAIL_ALIASES)

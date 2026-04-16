@@ -19,7 +19,7 @@
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
-#include "brave/components/email_aliases/features.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -39,6 +39,10 @@
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #include "brave/components/brave_vpn/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/components/email_aliases/features.h"
 #endif
 
 class BraveAppMenuModelBrowserTest : public InProcessBrowserTest {
@@ -430,6 +434,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuItemsHaveIcons) {
   CheckMenuIcons(&model, 1);
 }
 
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 class BraveAppMenuModelBrowserTestForEmailAliases
     : public InProcessBrowserTest,
       public testing::WithParamInterface<bool> {
@@ -469,3 +474,4 @@ IN_PROC_BROWSER_TEST_P(BraveAppMenuModelBrowserTestForEmailAliases,
 INSTANTIATE_TEST_SUITE_P(All,
                          BraveAppMenuModelBrowserTestForEmailAliases,
                          testing::Bool());
+#endif  // BUILDFLAG(ENABLE_EMAIL_ALIASES)

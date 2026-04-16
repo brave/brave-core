@@ -27,7 +27,7 @@
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/containers/buildflags/buildflags.h"
-#include "brave/components/email_aliases/features.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -69,6 +69,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/components/email_aliases/features.h"
 #endif
 
 namespace settings {
@@ -1245,10 +1249,12 @@ void BraveAddSyncStrings(content::WebUIDataSource* html_source) {
 }
 
 void BraveAddEmailAliasesStrings(content::WebUIDataSource* html_source) {
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   if (!email_aliases::features::IsEmailAliasesEnabled()) {
     return;
   }
   html_source->AddLocalizedStrings(webui::kEmailAliasesStrings);
+#endif
 }
 
 void BraveAddBraveAccountStrings(content::WebUIDataSource* html_source) {

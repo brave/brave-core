@@ -56,7 +56,8 @@ function getBuildConfig() {
   // Default to all features enabled if no config found
   return {
     enable_ai_chat: true,
-    enable_brave_wallet: true
+    enable_brave_wallet: true,
+    enable_email_aliases: true
   }
 }
 
@@ -109,7 +110,10 @@ module.exports = {
     ...(buildConfig.enable_ai_chat ? [] : ['<rootDir>/components/ai_chat']),
     ...(buildConfig.enable_brave_wallet
       ? []
-      : ['<rootDir>/components/brave_wallet_ui'])
+      : ['<rootDir>/components/brave_wallet_ui']),
+    ...(buildConfig.enable_email_aliases
+      ? []
+      : ['<rootDir>/components/email_aliases'])
   ],
   testTimeout: 30000,
   transformIgnorePatterns: [

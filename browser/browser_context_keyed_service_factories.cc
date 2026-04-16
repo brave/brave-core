@@ -14,7 +14,6 @@
 #include "brave/browser/brave_shields/brave_farbling_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
-#include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/local_ai/local_ai_service_factory.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
@@ -39,7 +38,7 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
-#include "brave/components/email_aliases/features.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/local_ai/core/features.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/psst/buildflags/buildflags.h"
@@ -123,6 +122,11 @@
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/containers/containers_service_factory.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/browser/email_aliases/email_aliases_service_factory.h"
+#include "brave/components/email_aliases/features.h"
 #endif
 
 namespace brave {
@@ -237,9 +241,11 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
     brave_account::BraveAccountServiceFactory::GetInstance();
   }
 
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   if (email_aliases::features::IsEmailAliasesEnabled()) {
     email_aliases::EmailAliasesServiceFactory::GetInstance();
   }
+#endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   extensions_mv2::ExtensionsManifestV2MigratorFactory::GetInstance();

@@ -25,7 +25,7 @@
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
-#include "brave/components/email_aliases/features.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/google_sign_in_permission/features.h"
 #include "brave/components/local_ai/core/features.h"
 #include "brave/components/playlist/core/common/features.h"
@@ -109,9 +109,12 @@
 #include "brave/components/psst/common/features.h"
 #endif
 
-
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/components/email_aliases/features.h"
 #endif
 
 #if defined(TOOLKIT_VIEWS)
@@ -762,6 +765,20 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
       FEATURE_VALUE_TYPE(features::kForcePopupToBeOpenedAsTab),      \
   })
 
+#define EMAIL_ALIASES_FEATURE_ENTRIES                                         \
+  IF_BUILDFLAG(                                                               \
+      ENABLE_EMAIL_ALIASES,                                                   \
+      EXPAND_FEATURE_ENTRIES({                                                \
+          "brave-email-aliases",                                              \
+          "Enable Email Aliases",                                             \
+          "Enable Email Aliases to create unique, private "                   \
+          "addresses that forward to your primary inbox. This allows you to " \
+          "sign up for services anonymously and keep your main account free " \
+          "from spam.",                                                       \
+          kOsAll,                                                             \
+          FEATURE_VALUE_TYPE(email_aliases::features::kEmailAliases),         \
+      }))
+
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
 
@@ -1295,16 +1312,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "for BraveRequestInfo",                                              \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(features::kBraveRequestInfoUniquePtr),            \
-      },                                                                       \
-      {                                                                        \
-          "brave-email-aliases",                                               \
-          "Enable Email Aliases",                                              \
-          "Enable Email Aliases to create unique, private "                    \
-          "addresses that forward to your primary inbox. This allows you to "  \
-          "sign up for services anonymously and keep your main account free "  \
-          "from spam.",                                                        \
-          kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(email_aliases::features::kEmailAliases),          \
       })                                                                       \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_NEWS_FEATURE_ENTRIES                                                   \
@@ -1338,6 +1345,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_UPDATER_FEATURE_ENTRIES                                                \
   PSST_FEATURE_ENTRIES                                                         \
   BRAVE_FORCE_POPUP_TO_BE_OPENED_IN_NEW_TAB_FEATURE_ENTRY                      \
+  EMAIL_ALIASES_FEATURE_ENTRIES                                                \
   EXPAND_FEATURE_ENTRIES({                                                     \
       "brave-origin",                                                          \
       "Enable Brave Origin",                                                   \

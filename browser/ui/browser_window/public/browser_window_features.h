@@ -8,6 +8,8 @@
 
 #include <memory>
 
+#include "brave/components/email_aliases/buildflags/buildflags.h"
+
 class BraveShieldsUIContentsCache;
 class BraveVPNController;
 class PlaylistSidePanelCoordinator;
@@ -20,9 +22,11 @@ namespace sidebar {
 class SidebarController;
 }  // namespace sidebar
 
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 namespace email_aliases {
 class EmailAliasesController;
 }  // namespace email_aliases
+#endif
 
 // This file doesn't include header file for BrowserWindowFeatures_ChromiumImpl
 // because this file only could be included at the bottom of
@@ -50,9 +54,11 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
     return playlist_side_panel_coordinator_.get();
   }
 
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   email_aliases::EmailAliasesController* email_aliases_controller() {
     return email_aliases_controller_.get();
   }
+#endif
 
   BraveShieldsUIContentsCache* brave_shields_ui_contents_cache() {
     return brave_shields_ui_contents_cache_.get();
@@ -65,8 +71,10 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
       rewards_panel_coordinator_;
   std::unique_ptr<PlaylistSidePanelCoordinator>
       playlist_side_panel_coordinator_;
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   std::unique_ptr<email_aliases::EmailAliasesController>
       email_aliases_controller_;
+#endif
   std::unique_ptr<BraveShieldsUIContentsCache> brave_shields_ui_contents_cache_;
 };
 

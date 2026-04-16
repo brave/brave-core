@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/config.gni")
+import("//brave/components/email_aliases/buildflags/buildflags.gni")
 
 source_set("brave_account") {
   sources = [
@@ -55,8 +56,12 @@ source_set("features") {
 
   deps = [
     "//base",
-    "//brave/components/email_aliases:features",
+    "//brave/components/email_aliases/buildflags",
   ]
+
+  if (enable_email_aliases) {
+    deps += [ "//brave/components/email_aliases:features" ]
+  }
 }
 
 source_set("test_support") {
@@ -82,7 +87,6 @@ source_set("unit_tests") {
   sources = [
     "brave_account_service_test.h",
     "brave_account_service_unittest.cc",
-    "features_unittest.cc",
   ]
 
   deps = [
@@ -94,7 +98,6 @@ source_set("unit_tests") {
     "//brave/components/brave_account/endpoint_client:test_support",
     "//brave/components/brave_account/endpoints",
     "//brave/components/brave_account/mojom",
-    "//brave/components/email_aliases:features",
     "//components/prefs:test_support",
     "//net",
     "//services/network:test_support",
@@ -102,4 +105,12 @@ source_set("unit_tests") {
     "//testing/gmock",
     "//testing/gtest",
   ]
+
+  if (enable_email_aliases) {
+    sources += [ "features_unittest.cc" ]
+    deps += [
+      "//brave/components/email_aliases:features",
+      "//brave/components/email_aliases/buildflags",
+    ]
+  }
 }

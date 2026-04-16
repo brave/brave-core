@@ -3,6 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/email_aliases/buildflags/buildflags.gni")
+
+assert(enable_email_aliases)
+
 source_set("email_aliases") {
   sources = [
     "email_aliases_panel_ui.cc",
@@ -11,8 +15,10 @@ source_set("email_aliases") {
 
   deps = [
     "//base",
+    "//brave/browser/brave_account",
     "//brave/browser/email_aliases",
     "//brave/browser/resources/settings:resources",
+    "//brave/components/brave_account/mojom",
     "//brave/components/constants",
     "//brave/components/resources:static_resources_grit",
     "//chrome/browser/profiles:profile",

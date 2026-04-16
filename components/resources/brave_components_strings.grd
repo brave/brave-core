@@ -925,7 +925,9 @@
       <if expr="enable_brave_ai_chat_agent_profile">
         <part file="ai_chat_agent_ntp_strings.grdp" />
       </if>
-      <part file="email_aliases_strings.grdp" />
+      <if expr="enable_email_aliases">
+        <part file="email_aliases_strings.grdp" />
+      </if>
       <if expr="not is_android">
         <part file="brave_new_tab_page_strings.grdp" />
         <part file="brave_shields_strings.grdp" />
