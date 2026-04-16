@@ -257,7 +257,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean("isSurveyPanelistAllowed",
                           base::FeatureList::IsEnabled(
                               ntp_background_images::features::
-                                  kBraveNTPBrandedWallpaperSurveyPanelist));
+                                  kBraveNTPBrandedWallpaperSurveyPanelist) &&
+                              !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED));
   html_source->AddBoolean(
       "isPlaylistAllowed",
       base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
