@@ -197,6 +197,7 @@ class AdBlockService {
   base::SequencedTaskRunner* GetTaskRunnerForTesting();
   AdBlockDATCacheManager* GetDATCacheManagerForTesting();
   bool IsDATLoadedForTesting(bool is_default_engine) const;
+  bool IsFilterListLoadedForTesting(bool is_default_engine) const;
 
  private:
   static std::string g_ad_block_dat_file_version_;

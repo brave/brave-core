@@ -89,7 +89,6 @@ void AdBlockFiltersProviderManager::OnChanged(bool is_for_default_engine) {
 
 bool AdBlockFiltersProviderManager::AreAllProvidersInitialized(
     bool is_for_default_engine) const {
-
   auto& filters_providers = is_for_default_engine
                                 ? default_engine_filters_providers_
                                 : additional_engine_filters_providers_;

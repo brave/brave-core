@@ -92,13 +92,12 @@ IN_PROC_BROWSER_TEST_P(AdBlockDATCacheBrowserTest,
   // Custom rule should work within this session.
   GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
   NavigateToURL(tab_url);
-  EXPECT_EQ(true,
-            EvalJs(web_contents(),
-                   content::JsReplace(
-                       "setExpectations(0, 1, 0, 0); addImage($1)",
-                       embedded_test_server()
-                           ->GetURL("custom-rule.com", "/logo.png")
-                           .spec())));
+  EXPECT_EQ(true, EvalJs(web_contents(),
+                         content::JsReplace(
+                             "setExpectations(0, 1, 0, 0); addImage($1)",
+                             embedded_test_server()
+                                 ->GetURL("custom-rule.com", "/logo.png")
+                                 .spec())));
 }
 
 // After restart: with cache enabled, the cached DAT loads and custom rules
@@ -147,13 +146,44 @@ IN_PROC_BROWSER_TEST_P(AdBlockDATCacheBrowserTest, DATCacheLoadedOnRestart) {
   // when disabled).
   GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
   NavigateToURL(tab_url);
-  EXPECT_EQ(true,
-            EvalJs(web_contents(),
-                   content::JsReplace(
-                       "setExpectations(0, 1, 0, 0); addImage($1)",
-                       embedded_test_server()
-                           ->GetURL("custom-rule.com", "/logo.png")
-                           .spec())));
+  EXPECT_EQ(true, EvalJs(web_contents(),
+                         content::JsReplace(
+                             "setExpectations(0, 1, 0, 0); addImage($1)",
+                             embedded_test_server()
+                                 ->GetURL("custom-rule.com", "/logo.png")
+                                 .spec())));
+
+  // Install the default component with rules. This adds a new provider
+  // which should trigger a filter set rebuild — proving suppression only
+  // blocks the initial load, not subsequent ones.
+  InstallDefaultAdBlockComponent();
+  UpdateAdBlockInstanceWithRules("||component-rule.com^");
+
+  // Filter list should now be loaded for the default engine.
+  ASSERT_TRUE(base::test::RunUntil([service]() {
+    return service->IsFilterListLoadedForTesting(true);
+  })) << "Timeout waiting for filter set to load";
+
+  WaitForAdBlockServiceThreads();
+
+  // Re-navigate to reset page-level counters.
+  NavigateToURL(tab_url);
+
+  // Custom rule should still be active.
+  EXPECT_EQ(true, EvalJs(web_contents(),
+                         content::JsReplace(
+                             "setExpectations(0, 1, 0, 0); addImage($1)",
+                             embedded_test_server()
+                                 ->GetURL("custom-rule.com", "/logo.png")
+                                 .spec())));
+
+  // Component rule should also be active now.
+  EXPECT_EQ(true, EvalJs(web_contents(),
+                         content::JsReplace(
+                             "setExpectations(0, 2, 0, 0); addImage($1)",
+                             embedded_test_server()
+                                 ->GetURL("component-rule.com", "/logo.png")
+                                 .spec())));
 }
 
 INSTANTIATE_TEST_SUITE_P(All,

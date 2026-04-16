@@ -325,6 +325,11 @@ void AdBlockService::OnEngineLoaded(
   auto [load_result, serialized_dat] = std::move(result);
 
   if (load_result != FilterListLoadResult::kResourcesOnly) {
+    if (is_default_engine) {
+      default_filter_list_loaded_ = true;
+    } else {
+      additional_filter_list_loaded_ = true;
+    }
     observers_.Notify(&Observer::OnFilterListLoaded, is_default_engine,
                       load_result);
   }
@@ -492,6 +497,13 @@ AdBlockDATCacheManager* AdBlockService::GetDATCacheManagerForTesting() {
 bool AdBlockService::IsDATLoadedForTesting(bool is_default_engine) const {
   CHECK_IS_TEST();
   return is_default_engine ? default_dat_loaded_ : additional_dat_loaded_;
+}
+
+bool AdBlockService::IsFilterListLoadedForTesting(
+    bool is_default_engine) const {
+  CHECK_IS_TEST();
+  return is_default_engine ? default_filter_list_loaded_
+                           : additional_filter_list_loaded_;
 }
 
 }  // namespace brave_shields
