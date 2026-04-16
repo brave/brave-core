@@ -121,8 +121,21 @@ def _check_call(*command, cwd=None):
     Raises:
         subprocess.CalledProcessError: If the process exits with a non-zero
             return code.
+        RuntimeError: On Windows, if the command cannot be resolved to an
+        executable path.
     """
     logging.info(' >>>> %s', ' '.join(str(a) for a in command))
+
+    if platform.system() == 'Windows':
+        # On Windows, resolve the command to an absolute path to avoid issues
+        # with bat files not matching the command name (e.g. `gclient` vs
+        # `gclient.bat`). This avoids the use of `shell=True`.
+        resolved = shutil.which(command[0])
+        if resolved is None:
+            raise RuntimeError(f'Command not found: {command[0]}')
+        if resolved != command[0]:
+            command = [resolved] + list(command[1:])
+
     try:
         subprocess.run(command, cwd=cwd, check=True, stderr=subprocess.PIPE)
     except subprocess.CalledProcessError as e:
@@ -410,22 +423,13 @@ class ToolchainBuilder:
     def _checkout_chromium_ref(self, ref: str):
         """Check out a specific Chromium ref and resync dependencies."""
         logging.info('Checking out Chromium ref %s', ref)
-        try:
-            _check_call('git',
-                        'checkout',
-                        '--force',
-                        ref,
-                        cwd=self.chromium_src)
-        except subprocess.CalledProcessError:
-            logging.info('Ref %s not found locally, fetching from origin', ref)
-            _check_call('git', 'fetch', 'origin', ref, cwd=self.chromium_src)
-            _check_call('git',
-                        'checkout',
-                        '--force',
-                        'FETCH_HEAD',
-                        cwd=self.chromium_src)
-
-        _check_call('gclient', 'sync', '--force', '-D', cwd=self.chromium_src)
+        _check_call('gclient',
+                    'sync',
+                    '--force',
+                    '-D',
+                    '-r',
+                    f'src@{ref}',
+                    cwd=self.chromium_src)
         _check_call('git',
                     'log',
                     '-1',
@@ -438,7 +442,10 @@ class ToolchainBuilder:
         self._bootstrap_depot_tools()
 
         self.chromium_src.parent.mkdir(parents=True, exist_ok=True)
-        _check_call('fetch', 'chromium', cwd=self.chromium_src.parent)
+        _check_call('fetch',
+                    '--nohooks',
+                    'chromium',
+                    cwd=self.chromium_src.parent)
 
     def run(self, use_ref: str = None):
         """Execute the full build-and-package pipeline.
