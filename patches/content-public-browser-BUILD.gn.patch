@@ -1,8 +1,8 @@
 diff --git a/content/public/browser/BUILD.gn b/content/public/browser/BUILD.gn
-index 30870710ca42d8f709510ddea300536a9261fb49..0f71a2203d813e28775ebe7c7434e2e291330e47 100644
+index 8e3c31602522b40bc643546b22fa0e5c116157c7..22d91f5c20c70b71b7cdfa65df66e83833c0a267 100644
 --- a/content/public/browser/BUILD.gn
 +++ b/content/public/browser/BUILD.gn
-@@ -758,6 +758,7 @@ source_set("browser_sources") {
+@@ -766,6 +766,7 @@ source_set("browser_sources") {
    if (use_clang_profiling_inside_sandbox) {
      sources += [ "profiling_utils.h" ]
    }

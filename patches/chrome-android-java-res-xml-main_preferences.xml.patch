@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/res/xml/main_preferences.xml b/chrome/android/java/res/xml/main_preferences.xml
-index aea71639b520c150f97684d2698495431b4afbf0..589ba692e1de1d22ebc648fda54ca8136df6c330 100644
+index a3d378a69604a0169f23f6f83d159e4a20ddda99..5393fb6b546bc943acb1629f548d016d52540860 100644
 --- a/chrome/android/java/res/xml/main_preferences.xml
 +++ b/chrome/android/java/res/xml/main_preferences.xml
 @@ -69,7 +69,7 @@ found in the LICENSE file.

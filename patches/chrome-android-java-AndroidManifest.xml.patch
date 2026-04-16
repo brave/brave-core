@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 774ed0dde04ec15862edb822a00db8f9f27e239f..a2a0b372ec4d56f8517b76dd0549d3d27a270c3e 100644
+index 774ed0dde04ec15862edb822a00db8f9f27e239f..95cac1a455ec3d6b801a7cbe39b841fcd9e61604 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -62,7 +62,9 @@ by a child template that "extends" this file.
@@ -52,7 +52,7 @@ index 774ed0dde04ec15862edb822a00db8f9f27e239f..a2a0b372ec4d56f8517b76dd0549d3d2
  
      <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
      <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-@@ -103,12 +114,14 @@ by a child template that "extends" this file.
+@@ -103,12 +115,14 @@ by a child template that "extends" this file.
        resizeTo, moveBy}|).
      -->
      <uses-permission android:name="android.permission.REPOSITION_SELF_WINDOWS"/>
@@ -68,7 +68,7 @@ index 774ed0dde04ec15862edb822a00db8f9f27e239f..a2a0b372ec4d56f8517b76dd0549d3d2
  
      <!-- Permission for using Android 14's credential management framework. -->
      <uses-permission android:name="android.permission.CREDENTIAL_MANAGER_QUERY_CANDIDATE_CREDENTIALS"/>
-@@ -161,7 +174,9 @@ by a child template that "extends" this file.
+@@ -161,7 +175,9 @@ by a child template that "extends" this file.
      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
  
@@ -78,7 +78,7 @@ index 774ed0dde04ec15862edb822a00db8f9f27e239f..a2a0b372ec4d56f8517b76dd0549d3d2
  
      <!-- Permission for using pinned windowing layer for document picture-in-picture. -->
      <uses-permission android:name="android.permission.USE_PINNED_WINDOWING_LAYER" />
-@@ -377,6 +392,7 @@ by a child template that "extends" this file.
+@@ -377,6 +393,7 @@ by a child template that "extends" this file.
              <intent-filter>
                  <action android:name="com.sec.android.airview.HOVER" />
              </intent-filter>
@@ -86,7 +86,7 @@ index 774ed0dde04ec15862edb822a00db8f9f27e239f..a2a0b372ec4d56f8517b76dd0549d3d2
              <meta-data android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
          </activity-alias>
-@@ -916,6 +932,7 @@ by a child template that "extends" this file.
+@@ -916,6 +933,7 @@ by a child template that "extends" this file.
          </service>
  
          <!-- Quick Action Search widget -->
@@ -94,7 +94,7 @@ index 774ed0dde04ec15862edb822a00db8f9f27e239f..a2a0b372ec4d56f8517b76dd0549d3d2
          <receiver
              android:name="org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderSearch"
              android:label="@string/quick_action_search_widget_title"
-@@ -945,6 +962,7 @@ by a child template that "extends" this file.
+@@ -945,6 +963,7 @@ by a child template that "extends" this file.
                  android:name="android.appwidget.provider"
                  android:resource="@xml/quick_action_search_widget_dino_info" />
          </receiver>
@@ -102,7 +102,7 @@ index 774ed0dde04ec15862edb822a00db8f9f27e239f..a2a0b372ec4d56f8517b76dd0549d3d2
  
          <!-- Bookmarks widget -->
          <receiver android:name="com.google.android.apps.chrome.appwidget.bookmarks.BookmarkThumbnailWidgetProvider"
-@@ -1158,7 +1176,7 @@ by a child template that "extends" this file.
+@@ -1158,7 +1177,7 @@ by a child template that "extends" this file.
  
          <service android:name="org.chromium.chrome.browser.media.MediaCaptureNotificationService"
              {% if enable_screen_capture == "true" %}
@@ -111,7 +111,7 @@ index 774ed0dde04ec15862edb822a00db8f9f27e239f..a2a0b372ec4d56f8517b76dd0549d3d2
              {% else %}
              android:foregroundServiceType="camera|microphone"
              {% endif %}
-@@ -1255,6 +1273,7 @@ by a child template that "extends" this file.
+@@ -1255,6 +1274,7 @@ by a child template that "extends" this file.
            </activity>
          {% endif %}
  

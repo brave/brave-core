@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/setup/BUILD.gn b/chrome/installer/setup/BUILD.gn
-index 438a99474b959cbf2f23abe7a5932af28217217b..b8adbaa30e396baaaf5d8f2883dd5b45f0e2e82d 100644
+index 2b1d7cb7ae257669d56bcfefb2b4a31e4aa035f7..d40f51b6d6e4394b4dfea467dc3970910cbe6e83 100644
 --- a/chrome/installer/setup/BUILD.gn
 +++ b/chrome/installer/setup/BUILD.gn
-@@ -135,6 +135,7 @@ if (is_win) {
+@@ -136,6 +136,7 @@ if (is_win) {
          "channel_override_work_item.h",
        ]
      }

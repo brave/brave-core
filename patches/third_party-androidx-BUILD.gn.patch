@@ -1,8 +1,8 @@
 diff --git a/third_party/androidx/BUILD.gn b/third_party/androidx/BUILD.gn
-index afe4c234708ca91e3d91b43c8d78916c22d355c8..d90e7e6ff91427e524eaea4c539468c3569a9722 100644
+index 60306dd2bb6509a271f083e8fcfcb7ba3f167ca8..b60e26c87407162731615a7f69b5222b11f0f25e 100644
 --- a/third_party/androidx/BUILD.gn
 +++ b/third_party/androidx/BUILD.gn
-@@ -750,6 +750,7 @@ if (!limit_android_deps) {
+@@ -751,6 +751,7 @@ if (!limit_android_deps) {
      info_path = "../androidx/committed/libs/androidx_fragment_fragment/androidx_fragment_fragment.info"
      enable_bytecode_checks = false
      deps = [

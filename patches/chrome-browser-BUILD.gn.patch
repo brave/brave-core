@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index c36fc5c088b3921ce18b0997e582ba821a2edcab..b83325d658f063c3af04ea8340f6aee9cb79df83 100644
+index 08482133f0eb7c8410d94efd56498de0334ef1c3..a5e82aff770a03289dde6f80826b67083c8b9dfa 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -2453,6 +2453,7 @@ static_library("browser") {
+@@ -2359,6 +2359,7 @@ static_library("browser") {
    } else {
      sources += [ "net/net_error_diagnostics_dialog_stub.cc" ]
    }
@@ -10,7 +10,7 @@ index c36fc5c088b3921ce18b0997e582ba821a2edcab..b83325d658f063c3af04ea8340f6aee9
  
    if (is_android) {
      deps += [
-@@ -8364,6 +8365,7 @@ group("browser_public_dependencies") {
+@@ -7752,6 +7753,7 @@ group("browser_public_dependencies") {
        "//components/offline_pages/core/background:background_offliner",
      ]
    }

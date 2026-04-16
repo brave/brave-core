@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/content_settings/BUILD.gn b/chrome/browser/content_settings/BUILD.gn
-index 9c461e5ceac0c7a47bc83bef152d2b8e75ab74c6..c2998bd3b85f0b65fc754bcc90e451666499c049 100644
+index 4f8d86fd41a8066bf440c2a6512636fff19fc84f..77f16bd32ee108a0235787fe1ecc4f36df60c441 100644
 --- a/chrome/browser/content_settings/BUILD.gn
 +++ b/chrome/browser/content_settings/BUILD.gn
 @@ -131,6 +131,7 @@ source_set("impl") {
