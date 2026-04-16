@@ -130,11 +130,8 @@ TEST_F(UploadFileHelperTest, AcceptedFileExtensions) {
   ASSERT_TRUE(dialog_params_.file_types);
   EXPECT_TRUE(dialog_params_.file_types->extensions.empty());
 #if BUILDFLAG(IS_ANDROID)
-  // Android doesn't support view-source for text file extraction, so only
-  // image and PDF MIME types are accepted.
   EXPECT_THAT(dialog_params_.accept_types,
-              testing::UnorderedElementsAre(u"image/png", u"image/jpeg",
-                                            u"image/webp", u"application/pdf"));
+              testing::UnorderedElementsAre(u"*/*"));
 #endif
 }
 
