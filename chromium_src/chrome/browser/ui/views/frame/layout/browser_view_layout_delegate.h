@@ -17,7 +17,8 @@
   virtual bool IsContentTypeSidePanelVisible() const = 0;                  \
   virtual bool IsFullscreenForBrowser() const = 0;                         \
   virtual bool IsFullscreenForTab() const = 0;                             \
-  virtual bool IsFullscreen()
+  virtual bool IsFullscreen() const = 0;                                   \
+  virtual double GetTopEdgeRevealFraction()
 
 #include <chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h>  // IWYU pragma: export
 

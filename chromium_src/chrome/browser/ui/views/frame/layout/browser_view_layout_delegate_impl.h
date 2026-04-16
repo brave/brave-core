@@ -18,7 +18,8 @@
   bool IsContentTypeSidePanelVisible() const override;                  \
   bool IsFullscreenForBrowser() const override;                         \
   bool IsFullscreenForTab() const override;                             \
-  bool IsFullscreen()
+  bool IsFullscreen() const override;                                   \
+  double GetTopEdgeRevealFraction()
 
 #include <chrome/browser/ui/views/frame/layout/browser_view_layout_delegate_impl.h>  // IWYU pragma: export
 

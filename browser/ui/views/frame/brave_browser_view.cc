@@ -268,6 +268,11 @@ BraveBrowserView* BraveBrowserView::From(BrowserView* view) {
   return static_cast<BraveBrowserView*>(view);
 }
 
+// static
+const BraveBrowserView* BraveBrowserView::From(const BrowserView* view) {
+  return static_cast<const BraveBrowserView*>(view);
+}
+
 bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
     const Browser* browser) {
   if (!browser->is_type_normal()) {
@@ -755,6 +760,13 @@ void BraveBrowserView::AddedToWidget() {
 
   if (auto* controller = browser()->GetFeatures().focus_mode_controller()) {
     focus_mode_observation_.Observe(controller);
+
+    top_reveal_controller_ = std::make_unique<EdgeRevealController>(
+        EdgeRevealController::Edge::kTop, GetWidget());
+    top_reveal_controller_->AddRevealableView(top_container());
+    top_reveal_controller_->AddRevealableView(
+        horizontal_tab_strip_region_view_);
+    top_reveal_controller_->AddObserver(this);
   }
 
   if (vertical_tab_strip_host_view_) {
@@ -809,7 +821,15 @@ bool BraveBrowserView::ShowBraveHelpBubbleView(const std::string& text) {
 }
 
 void BraveBrowserView::OnFocusModeToggled(bool enabled) {
+  if (top_reveal_controller_) {
+    top_reveal_controller_->SetEnabled(enabled);
+  }
   UpdateRoundedCornersUI();
+}
+
+void BraveBrowserView::OnEdgeRevealFractionChanged(double fraction) {
+  LOG(ERROR) << "[OnEdgeRevealFractionChanged] fraction=" << fraction;
+  DeprecatedLayoutImmediately();
 }
 
 void BraveBrowserView::LoadAccelerators() {

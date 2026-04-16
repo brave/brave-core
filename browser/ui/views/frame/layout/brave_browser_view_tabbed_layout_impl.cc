@@ -11,6 +11,7 @@
 
 #include "base/check.h"
 #include "base/check_is_test.h"
+#include "base/logging.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
@@ -183,6 +184,43 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
       gfx::Insets insets = GetInsetsConsideringVerticalTabHost();
       insets.set_bottom(0);
       infobar_layout->bounds.Inset(insets);
+    }
+  }
+
+  const double reveal_fraction = delegate().GetTopEdgeRevealFraction();
+  if (reveal_fraction < 1.0) {
+    auto* top_layout = layout.GetLayoutFor(views().top_container);
+    auto* tab_layout =
+        layout.GetLayoutFor(views().horizontal_tab_strip_region_view);
+
+    int top_height = 0;
+    if (top_layout) {
+      top_height += top_layout->bounds.height();
+    }
+    if (tab_layout) {
+      top_height += tab_layout->bounds.height();
+    }
+
+    int offset = -static_cast<int>((1 - reveal_fraction) * top_height);
+    if (top_layout) {
+      top_layout->bounds.Offset(0, offset);
+    }
+    if (tab_layout) {
+      tab_layout->bounds.Offset(0, offset);
+    }
+    int content_top = BraveContentsViewUtil::kMarginThickness;
+    if (delegate().IsInfobarVisible()) {
+      auto* infobar_layout = layout.GetLayoutFor(views().infobar_container);
+      CHECK(infobar_layout);
+      infobar_layout->bounds.set_y(content_top);
+      content_top += infobar_layout->bounds.height();
+    }
+    const auto content_outsets =
+        gfx::Outsets::TLBR(contents_layout->bounds.y() - content_top, 0, 0, 0);
+    contents_layout->bounds.Outset(content_outsets);
+    if (auto* background_layout =
+            layout.GetLayoutFor(views().contents_background)) {
+      background_layout->bounds.Outset(content_outsets);
     }
   }
 

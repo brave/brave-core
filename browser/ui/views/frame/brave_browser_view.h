@@ -19,6 +19,7 @@
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/browser/ui/views/frame/edge_reveal_controller.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
@@ -79,6 +80,7 @@ class WalletButton;
 
 class BraveBrowserView : public BrowserView,
                          public FocusModeController::Observer,
+                         public EdgeRevealController::Observer,
                          public commands::AcceleratorService::Observer {
   METADATA_HEADER(BraveBrowserView, BrowserView)
  public:
@@ -88,6 +90,7 @@ class BraveBrowserView : public BrowserView,
   ~BraveBrowserView() override;
 
   static BraveBrowserView* From(BrowserView* view);
+  static const BraveBrowserView* From(const BrowserView* view);
 
   // We use rounded corners even rounded corners setting is disabled.
   // Call this when we want to know
@@ -156,8 +159,18 @@ class BraveBrowserView : public BrowserView,
   }
   bool ShowBraveHelpBubbleView(const std::string& text) override;
 
+  EdgeRevealController* GetTopEdgeRevealController() {
+    return top_reveal_controller_.get();
+  }
+  const EdgeRevealController* GetTopEdgeRevealController() const {
+    return top_reveal_controller_.get();
+  }
+
   // FocusModeController::Observer:
   void OnFocusModeToggled(bool enabled) override;
+
+  // EdgeRevealController::Observer:
+  void OnEdgeRevealFractionChanged(double fraction) override;
 
   // commands::AcceleratorService:
   void OnAcceleratorsChanged(
@@ -300,6 +313,7 @@ class BraveBrowserView : public BrowserView,
   base::ScopedObservation<commands::AcceleratorService,
                           commands::AcceleratorService::Observer>
       accelerators_observation_{this};
+  std::unique_ptr<EdgeRevealController> top_reveal_controller_;
   base::ScopedObservation<FocusModeController, FocusModeController::Observer>
       focus_mode_observation_{this};
 
