@@ -144,8 +144,8 @@ class TestBase : public AdsClientNotifierForTesting, public ::testing::Test {
 
   void MockAdsClientNotifier();
   void MockAdsClient();
-  void Mock();
-  void MockDefaultAdsServiceState() const;
+  void SetUpEnvironment();
+  void SetUpDefaultAdsServiceState() const;
 
   void SetUpIntegrationTest();
   void SetUpIntegrationTestCallback(bool success);

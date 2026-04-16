@@ -13,10 +13,6 @@ namespace brave_ads::test {
 
 class TestBase;
 
-void MockCommandLineSwitches();
-
-void MockContentSettings();
-
 void MockAdsClientNotifierAddObserver(AdsClientMock& ads_client_mock,
                                       TestBase& test_base);
 void MockNotifyPendingObservers(AdsClientMock& ads_client_mock,
