@@ -511,7 +511,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   // Check avatar is positioned at the right before app menu button.
   views::View* avatar = toolbar_button_provider_->GetAvatarToolbarButton();
   ASSERT_TRUE(!!avatar);
-  views::View* app_menu = toolbar_button_provider_->GetAppMenuButton();
+  views::View* app_menu = toolbar_view_->app_menu_button();
   ASSERT_TRUE(!!app_menu);
   EXPECT_EQ(toolbar_view_->GetIndexOf(avatar).value(),
             toolbar_view_->GetIndexOf(app_menu).value() - 1ul);
@@ -631,7 +631,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   ASSERT_TRUE(ix_on_right.has_value())
       << "toggle missing from toolbar (kVerticalTabsOnRight=true)";
 
-  views::View* menu = toolbar_button_provider_->GetAppMenuButton();
+  views::View* menu = toolbar_view_->app_menu_button();
   ASSERT_TRUE(menu);
   const auto menu_ix = toolbar_view_->GetIndexOf(menu);
   ASSERT_TRUE(menu_ix.has_value() && *menu_ix > 0)
@@ -677,7 +677,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewRTLTest,
   auto* toggle = toolbar_view_->vertical_tab_toggle_button();
   ASSERT_TRUE(toggle) << "vertical tabs enabled in RTL with on-left pref";
 
-  views::View* menu = toolbar_button_provider_->GetAppMenuButton();
+  views::View* menu = toolbar_view_->app_menu_button();
   ASSERT_TRUE(menu);
   const auto menu_ix_left = toolbar_view_->GetIndexOf(menu);
   ASSERT_TRUE(menu_ix_left.has_value() && *menu_ix_left > 0)
