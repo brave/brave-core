@@ -25,8 +25,7 @@
 #include "ui/base/page_transition_types.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #endif
 
 namespace brave_ads {
@@ -87,7 +86,8 @@ AdsTabHelper::AdsTabHelper(content::WebContents* const web_contents)
 
 #if !BUILDFLAG(IS_ANDROID)
   // See `application_state_monitor_android.h` for Android.
-  BrowserList::AddObserver(this);
+  browser_collection_observation_.Observe(
+      GlobalBrowserCollection::GetInstance());
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   MaybeSetBrowserIsActive();
@@ -95,11 +95,7 @@ AdsTabHelper::AdsTabHelper(content::WebContents* const web_contents)
   OnVisibilityChanged(web_contents->GetVisibility());
 }
 
-AdsTabHelper::~AdsTabHelper() {
-#if !BUILDFLAG(IS_ANDROID)
-  BrowserList::RemoveObserver(this);
-#endif
-}
+AdsTabHelper::~AdsTabHelper() = default;
 
 void AdsTabHelper::SetAdsServiceForTesting(AdsService* const ads_service) {
   CHECK_IS_TEST();
@@ -132,7 +128,7 @@ void AdsTabHelper::MaybeSetBrowserIsActive() {
   MaybeNotifyBrowserDidBecomeActive();
 
   // Maybe notify of tab change after the browser's active state changes because
-  // `OnVisibilityChanged` can be called before `OnBrowserSetLastActive`.
+  // `OnVisibilityChanged` can be called before `OnBrowserActivated`.
   MaybeNotifyTabDidChange();
 }
 
@@ -147,7 +143,7 @@ void AdsTabHelper::MaybeSetBrowserIsNoLongerActive() {
   MaybeNotifyBrowserDidResignActive();
 
   // Maybe notify of tab change after the browser's active state changes because
-  // `OnVisibilityChanged` can be called before `OnBrowserNoLongerActive`.
+  // `OnVisibilityChanged` can be called before `OnBrowserDeactivated`.
   MaybeNotifyTabDidChange();
 }
 
@@ -440,13 +436,13 @@ void AdsTabHelper::WebContentsDestroyed() {
 
 #if !BUILDFLAG(IS_ANDROID)
 // TODO(https://github.com/brave/brave-browser/issues/24970): Decouple
-// BrowserListObserver.
+// BrowserCollectionObserver.
 
-void AdsTabHelper::OnBrowserSetLastActive(Browser* /*browser*/) {
+void AdsTabHelper::OnBrowserActivated(BrowserWindowInterface* /*browser*/) {
   MaybeSetBrowserIsActive();
 }
 
-void AdsTabHelper::OnBrowserNoLongerActive(Browser* /*browser*/) {
+void AdsTabHelper::OnBrowserDeactivated(BrowserWindowInterface* /*browser*/) {
   MaybeSetBrowserIsNoLongerActive();
 }
 #endif

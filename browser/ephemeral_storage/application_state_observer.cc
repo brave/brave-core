@@ -7,29 +7,28 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/task/sequenced_task_runner.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #endif
 
 namespace ephemeral_storage {
 
 #if BUILDFLAG(IS_ANDROID)
 ApplicationStateObserver::ApplicationStateObserver() = default;
-ApplicationStateObserver::~ApplicationStateObserver() = default;
 #else
 ApplicationStateObserver::ApplicationStateObserver(
     content::BrowserContext* context)
     : context_(context) {
-  BrowserList::AddObserver(this);
-}
-
-ApplicationStateObserver::~ApplicationStateObserver() {
-  BrowserList::RemoveObserver(this);
+  browser_collection_observation_.Observe(
+      GlobalBrowserCollection::GetInstance());
 }
 #endif
+
+ApplicationStateObserver::~ApplicationStateObserver() = default;
 
 void ApplicationStateObserver::AddObserver(Observer* observer) {
   observers_.push_back(observer);
@@ -52,8 +51,9 @@ void ApplicationStateObserver::TriggerCurrentAppStateNotification() {
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
-void ApplicationStateObserver::OnBrowserAdded(Browser* browser) {
-  if (browser->profile() != Profile::FromBrowserContext(context_)) {
+void ApplicationStateObserver::OnBrowserCreated(
+    BrowserWindowInterface* browser) {
+  if (browser->GetProfile() != Profile::FromBrowserContext(context_)) {
     return;
   }
 
@@ -61,7 +61,7 @@ void ApplicationStateObserver::OnBrowserAdded(Browser* browser) {
     has_notified_active_ = true;
 
     // No need to observe anymore.
-    BrowserList::RemoveObserver(this);
+    browser_collection_observation_.Reset();
 
     // Trigger the callback notifications after a cycle of the main loop to
     // handle all windows

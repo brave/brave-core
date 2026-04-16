@@ -21,7 +21,6 @@
 #include "base/no_destructor.h"
 #include "base/task/sequenced_task_runner.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "ui/aura/window.h"
@@ -38,13 +37,12 @@ ApplicationStateMonitor* ApplicationStateMonitor::GetInstance() {
 }
 
 ApplicationStateMonitorLinux::ApplicationStateMonitorLinux() {
-  BrowserList::AddObserver(this);
-  OnBrowserSetLastActive(nullptr);
+  browser_collection_observation_.Observe(
+      GlobalBrowserCollection::GetInstance());
+  OnBrowserActivated(nullptr);
 }
 
-ApplicationStateMonitorLinux::~ApplicationStateMonitorLinux() {
-  BrowserList::RemoveObserver(this);
-}
+ApplicationStateMonitorLinux::~ApplicationStateMonitorLinux() = default;
 
 bool ApplicationStateMonitorLinux::IsBrowserActive() const {
   x11::Window x11_window = x11::Window::None;
@@ -74,8 +72,8 @@ bool ApplicationStateMonitorLinux::IsBrowserActive() const {
   return found_foreground;
 }
 
-void ApplicationStateMonitorLinux::OnBrowserSetLastActive(
-    Browser* /*browser*/) {
+void ApplicationStateMonitorLinux::OnBrowserActivated(
+    BrowserWindowInterface* /*browser*/) {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
       base::BindOnce(
@@ -83,8 +81,8 @@ void ApplicationStateMonitorLinux::OnBrowserSetLastActive(
           weak_ptr_factory_.GetWeakPtr()));
 }
 
-void ApplicationStateMonitorLinux::OnBrowserNoLongerActive(
-    Browser* /*browser*/) {
+void ApplicationStateMonitorLinux::OnBrowserDeactivated(
+    BrowserWindowInterface* /*browser*/) {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
       base::BindOnce(
