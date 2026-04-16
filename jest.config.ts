@@ -6,21 +6,33 @@
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
 
-const { createJsWithTsEsmPreset } = require('ts-jest')
-const fs = require('fs')
+import fs from 'fs'
+import type { Config } from 'jest'
+import { createJsWithTsEsmPreset } from 'ts-jest'
 
 const crossPlatforms = ['mac', 'win']
 const buildConfigs = ['Component', 'Static', 'Debug', 'Release']
 const extraArchitectures = ['arm64', 'x86']
 
-function getBuildOutputPathList(buildOutputRelativePath) {
-  return buildConfigs.reduce((outDirs, outDir) =>
-    [...outDirs, outDir, ...crossPlatforms.map(platform => `${platform}_${outDir}`)],
-  []).reduce((outDirs, outDir) =>
-    [...outDirs, outDir, ...extraArchitectures.map(arch => `${outDir}_${arch}`)],
-  []).map(outDir =>
-    `<rootDir>/../out/${outDir}/${buildOutputRelativePath}`
-  )
+function getBuildOutputPathList(buildOutputRelativePath: string): string[] {
+  return buildConfigs
+    .reduce(
+      (outDirs, outDir) => [
+        ...outDirs,
+        outDir,
+        ...crossPlatforms.map((platform) => `${platform}_${outDir}`),
+      ],
+      [],
+    )
+    .reduce(
+      (outDirs, outDir) => [
+        ...outDirs,
+        outDir,
+        ...extraArchitectures.map((arch) => `${outDir}_${arch}`),
+      ],
+      [],
+    )
+    .map((outDir) => `<rootDir>/../out/${outDir}/${buildOutputRelativePath}`)
 }
 
 function getReporters() {
@@ -28,8 +40,8 @@ function getReporters() {
     return [
       [
         '<rootDir>/tools/jest_teamcity_reporter/jest_teamcity_reporter.js',
-        { 'suiteName': 'test-unit' }
-      ]
+        { 'suiteName': 'test-unit' },
+      ],
     ]
   } else {
     return ['default']
@@ -38,13 +50,11 @@ function getReporters() {
 
 function getBuildConfig() {
   // Try to find the build config in any of the possible build directories
-  const possiblePaths = getBuildOutputPathList(
-    'gen/brave/build_flags.json'
-  )
+  const possiblePaths = getBuildOutputPathList('gen/brave/build_flags.json')
 
   for (const configPath of possiblePaths) {
     // Remove <rootDir> placeholder and resolve the actual path
-    const actualPath = configPath.replace('<rootDir>', __dirname)
+    const actualPath = configPath.replace('<rootDir>', import.meta.dirname)
     if (fs.existsSync(actualPath)) {
       try {
         return JSON.parse(fs.readFileSync(actualPath, 'utf8'))
@@ -64,14 +74,12 @@ function getBuildConfig() {
 
 const buildConfig = getBuildConfig()
 
-
-module.exports = {
+const jestConfig: Config = {
   ...createJsWithTsEsmPreset({
     tsconfig: 'tsconfig-jest.json',
-    isolatedModules: true,
     useESM: true,
   }),
-  testEnvironment: '<rootDir>/components/test/testEnvironment.js',
+  testEnvironment: '<rootDir>/components/test/testEnvironment.ts',
   moduleFileExtensions: ['js', 'tsx', 'ts', 'json'],
   reporters: getReporters(),
   clearMocks: true,
@@ -88,12 +96,11 @@ module.exports = {
     '!<rootDir>/components/**/store.ts',
     '!<rootDir>/components/test/*',
     '!<rootDir>/build/commands/lib/start.js',
-    '!<rootDir>/build/commands/lib/jsconfig.json'
+    '!<rootDir>/build/commands/lib/jsconfig.json',
   ],
-  testURL: 'http://localhost/',
   testMatch: [
     '<rootDir>/**/*.test.{js,ts,tsx}',
-    '<rootDir>/components/test/**/*_test.{ts,tsx}'
+    '<rootDir>/components/test/**/*_test.{ts,tsx}',
   ],
   testPathIgnorePatterns: [
     '<rootDir>/build/commands/lib/test.js',
@@ -117,7 +124,7 @@ module.exports = {
     '<rootDir>/node_modules/jest-runtime',
     '<rootDir>/node_modules/lodash',
     'signal-exit',
-    'is-typedarray'
+    'is-typedarray',
   ],
   setupFilesAfterEnv: ['<rootDir>/components/test/testSetup.ts'],
   moduleNameMapper: {
@@ -131,27 +138,29 @@ module.exports = {
 
     // mocks for brave-wallet and brave-rewards proxies
     '\\/brave_rewards_api_proxy$':
-      '<rootDir>/components/brave_wallet_ui/' +
-      'common/async/__mocks__/brave_rewards_api_proxy.ts',
+      '<rootDir>/components/brave_wallet_ui/'
+      + 'common/async/__mocks__/brave_rewards_api_proxy.ts',
     '\\/bridge$':
       '<rootDir>/components/brave_wallet_ui/common/async/__mocks__/bridge.ts',
 
-    // TODO(petemill): The ordering here can get problematic for devs
-    // who have more than 1 build type at a time, since if the file exists
-    // at the first path, it will be used for Type analysis instead of the second
-    // path, even if it's more recent.
+    // TODO(https://github.com/brave/brave-browser/issues/54640): The ordering
+    // here can get problematic for devs who have more than 1 build type at a
+    // time, since if the file exists at the first path, it will be used for
+    // Type analysis instead of the second path, even if it's more recent.
     // It can also break if CI or devs perform a build in a directory not known
     // by this list.
     // Instead, we should get the directory from config.js:outputDir.
     '^gen\\/(.*)': getBuildOutputPathList('gen/$1'),
     'chrome://resources\\/(.*)': getBuildOutputPathList(
-      'gen/ui/webui/resources/tsc/$1'
+      'gen/ui/webui/resources/tsc/$1',
     ),
     'chrome://interstitials\\/(.*)': getBuildOutputPathList(
-      'gen/components/security_interstitials/core/$1'
+      'gen/components/security_interstitials/core/$1',
     ),
     // workaround for https://github.com/LedgerHQ/ledger-live/issues/763
     '@ledgerhq/devices/hid-framing':
-      '<rootDir>/node_modules/@ledgerhq/devices/lib/hid-framing'
-  }
+      '<rootDir>/node_modules/@ledgerhq/devices/lib/hid-framing',
+  },
 }
+
+export default jestConfig
