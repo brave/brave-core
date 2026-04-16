@@ -4,7 +4,7 @@
     Brave Account
   </message>
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_TITLE" translateable="false" desc="Title inviting users to sign in or create a Brave Account, shown in the Get started settings page" formatter_data="webui=BraveAccountSettings">
-    Sign in or create a Brave account
+    Log in or create a Brave account
   </message>
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL" translateable="false" desc="Label for the button that opens the Brave Account dialog when clicked" formatter_data="webui=BraveAccountSettings android_java">
     Get Started
@@ -13,13 +13,13 @@
     Almost there!
   </message>
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_1" translateable="false" desc="Instructions informing the user that a confirmation email has been sent and they need to click the link to activate their account" formatter_data="webui=BraveAccountSettings android_java">
-    In order to create your account, we need to verify your email address.
+    In order to create your account, please verify your email address.
   </message>
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_ENTER_REGISTRATION_CODE_BUTTON_LABEL" translateable="false" desc="Label for the button that opens a dialog to enter the registration code when clicked" formatter_data="webui=BraveAccountSettings android_java">
     Enter registration code
   </message>
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2" translateable="false" desc="Instructions informing the user that a confirmation email has been sent and they need to click the link to activate their account" formatter_data="webui=BraveAccountSettings android_java">
-    We've sent you an email with a code that you'll need to input.
+    You should have received an email with a code that you'll need to input.
   </message>
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_BUTTON_LABEL" translateable="false" desc="Label for the button that resends the confirmation email when clicked" formatter_data="webui=BraveAccountSettings android_java">
     Resend confirmation email
@@ -38,7 +38,7 @@
     Cancel registration
   </message>
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL" translateable="false" desc="Label for the button that signs the user out of their account when clicked" formatter_data="webui=BraveAccountSettings android_java">
-    Sign out
+    Log out
   </message>
 
   <!-- 'Entry' dialog: -->
@@ -49,7 +49,7 @@
     Create a Brave account
   </message>
   <message name="IDS_BRAVE_ACCOUNT_ALREADY_HAVE_ACCOUNT_SIGN_IN_BUTTON_LABEL" translateable="false" desc="Label for the button that takes the user to the 'Sign In' dialog" formatter_data="webui=BraveAccount">
-    Already have an account? Sign in
+    Already have an account? Log in
   </message>
 
   <!-- 'Create' dialog: -->
@@ -89,7 +89,7 @@
 
   <!-- 'Sign In' dialog: -->
   <message name="IDS_BRAVE_ACCOUNT_SIGN_IN_DIALOG_TITLE" translateable="false" desc="Title for the dialog where the user can sign in to their Brave Account" formatter_data="webui=BraveAccount">
-    Sign in to your account
+    Log in to your account
   </message>
   <message name="IDS_BRAVE_ACCOUNT_PASSWORD_INPUT_LABEL" translateable="false" desc="Label for the 'Password' input field" formatter_data="webui=BraveAccount">
     Password
@@ -98,7 +98,7 @@
     Forgot your password?
   </message>
   <message name="IDS_BRAVE_ACCOUNT_SIGN_IN_BUTTON_LABEL" translateable="false" desc="Label for the button that submits the 'Sign In' dialog" formatter_data="webui=BraveAccount">
-    Sign in
+    Log in
   </message>
 
   <!-- 'Forgot Password' dialog: -->
@@ -106,10 +106,10 @@
     Forgot your password?
   </message>
   <message name="IDS_BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_DESCRIPTION" translateable="false" desc="Description for the dialog where the user can reset their Brave Account password" formatter_data="webui=BraveAccount">
-    Confirm your Brave account email and we'll email you a link to reset your password. The link will only be valid for 30 minutes.
+    Confirm your Brave account email and you'll then receive a link to reset your password. The link will only be valid for 30 minutes.
   </message>
   <message name="IDS_BRAVE_ACCOUNT_ALERT_MESSAGE" translateable="false" desc="Alert message explaining that if the user resets their password without having an active login, all their data will be deleted" formatter_data="webui=BraveAccount">
-    [Explain that if they reset their password without having an active login, all the user data will be deleted]
+    Warning: since you are not logged in to this device, resetting your password will <b>delete all of your data</b> on the server. If you have another device where you are logged in, change your password from that device instead of resetting your password.
   </message>
   <message name="IDS_BRAVE_ACCOUNT_RESET_PASSWORD_BUTTON_LABEL" translateable="false" desc="Label for the button that submits the 'Forgot Password' dialog" formatter_data="webui=BraveAccount">
     Reset your password
@@ -120,7 +120,7 @@
     Verify your email
   </message>
   <message name="IDS_BRAVE_ACCOUNT_OTP_DIALOG_DESCRIPTION" translateable="false" desc="Description for the OTP dialog explaining that an email with a code has been sent" formatter_data="webui=BraveAccount">
-    We've sent you an email with a short code. Please enter it here to continue.
+    You should have received an email with a short code. Please enter it here to continue.
   </message>
   <message name="IDS_BRAVE_ACCOUNT_OTP_INPUT_LABEL" translateable="false" desc="Label for the OTP input field" formatter_data="webui=BraveAccount">
     Enter the code here
