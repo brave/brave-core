@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("workspace") {
+  sources = [
+    "brave_workspace.cc",
+    "brave_workspace.h",
+    "brave_workspace_service.cc",
+    "brave_workspace_service.h",
+    "brave_workspace_service_factory.cc",
+    "brave_workspace_service_factory.h",
+  ]
+
+  deps = [
+    "//base",
+    "//chrome/browser/profiles:profile",
+    "//components/keyed_service/core",
+    "//components/sessions",
+  ]
+}
