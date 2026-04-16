@@ -14,6 +14,7 @@ import OSLog
 import Preferences
 import Shared
 import UIKit
+import UserAgent
 import Web
 
 extension BrowserViewController: TabPolicyDecider {
@@ -567,12 +568,39 @@ extension BrowserViewController {
     in tab: some TabState,
     isAdBlockEnabled: Bool
   ) -> URLRequest? {
-    guard let requestURL = request.url else { return nil }
+    // Only redirect for main frames
+    guard let requestURL = request.url, isMainFrame else { return nil }
 
-    // For main frame only and if shields are enabled
+    if FeatureList.kShouldCancelRequestsForUserAgentChange.enabled,
+      let headerUserAgent = request.allHTTPHeaderFields?["User-Agent"],
+      case let userAgentForType = userAgent(
+        for: request,
+        userAgentForType: .automatic,
+        braveUserAgentExceptions: tab.braveUserAgentExceptions
+      ),
+      headerUserAgent != userAgentForType
+    {
+      // When changing user agent, we must cancel & restart the request
+      // as the headers will contain the old user agent which may result
+      // in webcompat issues if we need to hide we are Brave from the
+      // domain
+      var modifiedRequest = URLRequest(url: requestURL)
+      modifiedRequest.setValue(
+        userAgentForType,
+        forHTTPHeaderField: "User-Agent"
+      )
+
+      if let url = modifiedRequest.url {
+        Logger.module.debug(
+          "Cancelled and recreating request to `\(url.absoluteString, privacy: .private)`"
+        )
+      }
+      return modifiedRequest
+    }
+
+    // Only if shields are enabled
     guard requestURL.isWebPage(includeDataURIs: false),
-      isAdBlockEnabled,
-      isMainFrame
+      isAdBlockEnabled
     else { return nil }
 
     // Handle Debounce
