@@ -7,10 +7,6 @@ import { getMockChrome, getMockLoadTimeData } from './testData'
 
 window.alert = jest.fn()
 
-window.location = {
-  search: '?testTorrentId'
-} as any
-
 global.decodeURIComponent = () => 'test'
 
 window.requestAnimationFrame = function (cb: FrameRequestCallback) {

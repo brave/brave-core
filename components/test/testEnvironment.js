@@ -3,9 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import JSDOMEnvironment from 'jest-environment-jsdom'
 const assert = require('assert')
-const JSDOMEnvironment = require('jest-environment-jsdom').TestEnvironment
-const webcrypto = require('crypto').webcrypto
 
 module.exports = class CustomEnvironment extends JSDOMEnvironment {
   async setup() {
@@ -45,9 +44,6 @@ module.exports = class CustomEnvironment extends JSDOMEnvironment {
     assert(this.global.TextDecoder === undefined)
     this.global.TextDecoder = TextDecoder
 
-    assert(this.global.crypto === undefined)
-    this.global.crypto = webcrypto
-
     this.global.matchMedia = (query) => ({
       matches: false,
       media: query,
@@ -59,7 +55,8 @@ module.exports = class CustomEnvironment extends JSDOMEnvironment {
       dispatchEvent: () => {}
     })
 
-    // Fixed in jest >= 28 https://github.com/jestjs/jest/pull/12631
+    // structuredClone is only available in jest-environment-node and not jsdom
+    // https://github.com/jestjs/jest/pull/12631
     assert(this.global.structuredClone === undefined)
     this.global.structuredClone = structuredClone
   }

@@ -6,6 +6,7 @@
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
 
+const { createJsWithTsEsmPreset } = require('ts-jest')
 const fs = require('fs')
 
 const crossPlatforms = ['mac', 'win']
@@ -63,23 +64,15 @@ function getBuildConfig() {
 
 const buildConfig = getBuildConfig()
 
-/**
- * @type {import('@jest/types').Config.InitialOptions}
- */
+
 module.exports = {
-  preset: 'ts-jest/presets/default',
+  ...createJsWithTsEsmPreset({
+    tsconfig: 'tsconfig-jest.json',
+    isolatedModules: true,
+    useESM: true,
+  }),
   testEnvironment: '<rootDir>/components/test/testEnvironment.js',
   moduleFileExtensions: ['js', 'tsx', 'ts', 'json'],
-  globals: {
-    'ts-jest': {
-      'tsconfig': 'tsconfig-jest.json',
-      'isolatedModules': true,
-      useESM: true
-    }
-  },
-  transform: {
-    '\\.(jsx|js|ts|tsx)$': 'ts-jest'
-  },
   reporters: getReporters(),
   clearMocks: true,
   resetMocks: true,
@@ -117,7 +110,6 @@ module.exports = {
   ],
   testTimeout: 30000,
   transformIgnorePatterns: [
-    '<rootDir>/node_modules/(?!.*/)',
     // prevent jest from transforming itself
     // https://github.com/jestjs/jest/issues/9503#issuecomment-709041807
     '<rootDir>/node_modules/@babel',
