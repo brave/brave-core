@@ -19,6 +19,23 @@ PdfTextExtractor::PdfTextExtractor() = default;
 
 PdfTextExtractor::~PdfTextExtractor() = default;
 
+void PdfTextExtractor::ExtractText(content::BrowserContext* browser_context,
+                                   const base::FilePath& pdf_path,
+                                   ExtractTextCallback callback) {
+  CHECK(!callback_) << "ExtractText called while extraction in progress";
+  callback_ = std::move(callback);
+  LoadInWebContents(browser_context, pdf_path);
+}
+
+void PdfTextExtractor::ExtractText(content::BrowserContext* browser_context,
+                                   std::vector<uint8_t> pdf_bytes,
+                                   ExtractTextCallback callback) {
+  CHECK(!callback_) << "ExtractText called while extraction in progress";
+  callback_ = std::move(callback);
+  WriteTempFileAndLoad(browser_context, std::move(pdf_bytes),
+                       FILE_PATH_LITERAL("pdf"));
+}
+
 network::mojom::WebSandboxFlags PdfTextExtractor::AdditionalUnsandboxFlags()
     const {
   // Plugins are required for the PDF viewer MimeHandlerView.

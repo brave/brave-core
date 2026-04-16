@@ -7,6 +7,7 @@ import {
   convertFileToUploadedFile,
   FileReadError,
   ImageProcessingError,
+  UnsupportedFileTypeError,
 } from './file_utils'
 import * as Mojom from '../../common/mojom'
 import type { AIChatContext } from '../state/ai_chat_context'
@@ -240,18 +241,12 @@ describe('convertFileToUploadedFile', () => {
       )
     })
 
-    it('treats text files as kText via processTextFile', async () => {
+    it('throws UnsupportedFileTypeError for unknown file types', async () => {
       const file = createMockFile('test.txt', 'text/plain')
       const mockArrayBuffer = new ArrayBuffer(8)
-      const expectedData = Array.from(new Uint8Array(mockArrayBuffer))
-      const mockProcessTextFile = jest.fn().mockResolvedValue({
-        filename: 'test.txt',
-        filesize: file.size,
-        data: expectedData,
-        type: Mojom.UploadedFileType.kText,
-        extractedText: 'extracted content',
-      })
 
+      // Override readAsArrayBuffer to trigger success
+      // (FileReader will work, but file type check will fail)
       mockFileReader.readAsArrayBuffer.mockImplementation(() => {
         process.nextTick(() => {
           if (mockFileReader.onload) {
@@ -260,45 +255,16 @@ describe('convertFileToUploadedFile', () => {
         })
       })
 
-      const result = await convertFileToUploadedFile(
-        file,
-        mockProcessImageFile,
-        undefined,
-        mockProcessTextFile,
+      await expect(
+        convertFileToUploadedFile(file, mockProcessImageFile),
+      ).rejects.toThrow(UnsupportedFileTypeError)
+      await expect(
+        convertFileToUploadedFile(file, mockProcessImageFile),
+      ).rejects.toThrow(
+        'Unsupported file type: text/plain. Only images and PDF files are '
+          + 'supported.',
       )
-
       expect(mockProcessImageFile).not.toHaveBeenCalled()
-      expect(mockProcessTextFile).toHaveBeenCalled()
-      expect(result).toEqual(
-        expect.objectContaining({
-          filename: 'test.txt',
-          type: Mojom.UploadedFileType.kText,
-          extractedText: 'extracted content',
-        }),
-      )
-    })
-
-    it('returns null for text files when extraction fails', async () => {
-      const file = createMockFile('binary.dat', 'application/octet-stream')
-      const mockArrayBuffer = new ArrayBuffer(8)
-      const mockProcessTextFile = jest.fn().mockResolvedValue(null)
-
-      mockFileReader.readAsArrayBuffer.mockImplementation(() => {
-        process.nextTick(() => {
-          if (mockFileReader.onload) {
-            mockFileReader.onload({ target: { result: mockArrayBuffer } })
-          }
-        })
-      })
-
-      const result = await convertFileToUploadedFile(
-        file,
-        mockProcessImageFile,
-        undefined,
-        mockProcessTextFile,
-      )
-
-      expect(result).toBeNull()
     })
   })
 

@@ -14,14 +14,8 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/task/cancelable_task_tracker.h"
-#include "brave/browser/ai_chat/file_text_extractor_base.h"
 #include "brave/browser/ai_chat/upload_file_helper.h"
-#include "build/build_config.h"
 #include "pdf/buildflags.h"
-
-#if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/ai_chat/text_file_extractor.h"
-#endif
 
 #if BUILDFLAG(ENABLE_PDF)
 #include "brave/browser/ai_chat/pdf_text_extractor.h"
@@ -83,9 +77,6 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void ProcessPdfFile(const std::vector<uint8_t>& file_data,
                       const std::string& filename,
                       ProcessPdfFileCallback callback) override;
-  void ProcessTextFile(const std::vector<uint8_t>& file_data,
-                       const std::string& filename,
-                       ProcessTextFileCallback callback) override;
   void GetPluralString(const std::string& key,
                        int32_t count,
                        GetPluralStringCallback callback) override;
@@ -114,16 +105,12 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
  private:
   FRIEND_TEST_ALL_PREFIXES(AIChatUIPageHandlerBrowserTest,
                            OnFilesUploaded_WithPdf);
-#if !BUILDFLAG(IS_ANDROID)
-  FRIEND_TEST_ALL_PREFIXES(AIChatUIPageHandlerBrowserTest,
-                           OnFilesUploaded_WithText);
-#endif
   FRIEND_TEST_ALL_PREFIXES(AIChatUIPageHandlerTest,
                            FinishUpload_StripsPathToBasename);
   FRIEND_TEST_ALL_PREFIXES(AIChatUIPageHandlerTest,
                            OnFilesUploaded_NonPdfGoesToFinish);
   FRIEND_TEST_ALL_PREFIXES(AIChatUIPageHandlerTest,
-                           OnAllFilesExtracted_AppliesResults);
+                           OnAllPdfTextsExtracted_AppliesResults);
 
   class ChatContextObserver : public content::WebContentsObserver {
    public:
@@ -148,37 +135,26 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void OnFilesUploaded(
       UploadFileCallback callback,
       std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files);
-  // Collects barrier results and applies extracted text to uploaded files.
-  void OnAllFilesExtracted(
+  void OnAllPdfTextsExtracted(
       UploadFileCallback callback,
       std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files,
       std::vector<std::pair<size_t, std::optional<std::string>>> results);
-  // Per-file barrier callback — removes the finished extractor and forwards.
-  void OnSingleFileExtracted(
-      FileTextExtractorBase* extractor_ptr,
+  void FinishUpload(
+      UploadFileCallback callback,
+      std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files);
+#if BUILDFLAG(ENABLE_PDF)
+  void OnSinglePdfTextExtracted(
+      PdfTextExtractor* extractor_ptr,
       size_t file_index,
       base::OnceCallback<void(std::pair<size_t, std::optional<std::string>>)>
           barrier_cb,
       std::optional<std::string> extracted_text);
-  void FinishUpload(
-      UploadFileCallback callback,
-      std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files);
-
-  // Shared helper for ProcessTextFile / ProcessPdfFile.
-  void ExtractAndProcessFile(
-      std::unique_ptr<FileTextExtractorBase> extractor,
-      const std::vector<uint8_t>& file_data,
-      const base::FilePath::StringType& extension,
-      const std::string& filename,
-      mojom::UploadedFileType file_type,
-      base::OnceCallback<void(mojom::UploadedFilePtr)> callback);
-  void OnFileExtracted(
-      FileTextExtractorBase* extractor_ptr,
-      std::string filename,
-      std::vector<uint8_t> file_data,
-      mojom::UploadedFileType file_type,
-      base::OnceCallback<void(mojom::UploadedFilePtr)> callback,
-      std::optional<std::string> extracted_text);
+  void OnPdfTextExtracted(PdfTextExtractor* extractor_ptr,
+                          std::string filename,
+                          std::vector<uint8_t> file_data,
+                          ProcessPdfFileCallback callback,
+                          std::optional<std::string> extracted_text);
+#endif  // BUILDFLAG(ENABLE_PDF)
 
   raw_ptr<AIChatTabHelper> active_chat_tab_helper_ = nullptr;
   // TODO(https://github.com/brave/brave-browser/issues/48524): We probably
@@ -201,8 +177,10 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   // DataDecoder instance for processing image data
   data_decoder::DataDecoder data_decoder_;
 
-  // Active file extractors (owned until extraction completes)
-  std::vector<std::unique_ptr<FileTextExtractorBase>> extractors_;
+#if BUILDFLAG(ENABLE_PDF)
+  // Active PDF text extractors (owned until extraction completes)
+  std::vector<std::unique_ptr<PdfTextExtractor>> pdf_extractors_;
+#endif
 
   mojo::Receiver<ai_chat::mojom::AIChatUIHandler> receiver_;
   mojo::Remote<ai_chat::mojom::ChatUI> chat_ui_;
