@@ -5,6 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/test/targeting_test_helper.h"
 
+#include "base/check.h"
+#include "base/test/run_until.h"
+#include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/intent/intent_user_model_info.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/interest/interest_user_model_info.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/latent_interest/latent_interest_user_model_info.h"
@@ -12,8 +15,7 @@
 
 namespace brave_ads::test {
 
-TargetingHelper::TargetingHelper(base::test::TaskEnvironment& task_environment)
-    : task_environment_(task_environment) {}
+TargetingHelper::TargetingHelper() = default;
 
 TargetingHelper::~TargetingHelper() = default;
 
@@ -32,9 +34,6 @@ UserModelInfo TargetingHelper::Expectation() {
 
 void TargetingHelper::MockIntent() {
   purchase_intent_.Mock();
-
-  // Run the task environment until idle to ensure all tasks are processed.
-  task_environment_->RunUntilIdle();
 }
 
 // static
@@ -54,8 +53,11 @@ LatentInterestUserModelInfo TargetingHelper::LatentInterestExpectation() {
 void TargetingHelper::MockInterest() {
   text_classification_.Mock();
 
-  // Run the task environment until idle to ensure all tasks are processed.
-  task_environment_->RunUntilIdle();
+  CHECK(base::test::RunUntil([] {
+    return ClientStateManager::GetInstance()
+               .GetTextClassificationProbabilitiesHistory()
+               .size() == 3U;
+  }));
 }
 
 // static

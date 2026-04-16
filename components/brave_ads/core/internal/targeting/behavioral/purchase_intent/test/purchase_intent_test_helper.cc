@@ -7,6 +7,7 @@
 
 #include <vector>
 
+#include "base/test/run_until.h"
 #include "url/gurl.h"
 
 namespace brave_ads::test {
@@ -16,6 +17,8 @@ PurchaseIntentHelper::PurchaseIntentHelper() : processor_(resource_) {}
 PurchaseIntentHelper::~PurchaseIntentHelper() = default;
 
 void PurchaseIntentHelper::Mock() {
+  CHECK(base::test::RunUntil([this] { return resource_.IsLoaded(); }));
+
   const std::vector<GURL> urls = {
       GURL("https://www.brave.com/test?foo=bar"),
       GURL("https://basicattentiontoken.org/test?bar=foo"),

@@ -25,8 +25,7 @@ class BraveAdsInterestSegmentsTest : public test::TestBase {
   void SetUp() override {
     test::TestBase::SetUp();
 
-    targeting_helper_ =
-        std::make_unique<test::TargetingHelper>(task_environment_);
+    targeting_helper_ = std::make_unique<test::TargetingHelper>();
 
     NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
                                      test::kLanguageComponentId);

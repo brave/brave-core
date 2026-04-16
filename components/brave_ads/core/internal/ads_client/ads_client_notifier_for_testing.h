@@ -12,9 +12,6 @@
 #include <string>
 #include <vector>
 
-#include "base/check.h"
-#include "base/memory/raw_ptr.h"
-#include "base/test/task_environment.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_interface.h"
 #include "ui/base/page_transition_types.h"
@@ -23,8 +20,8 @@ class GURL;
 
 namespace brave_ads {
 
-// A testing implementation of `AdsClientNotifier` designed to ensure that
-// background tasks execute until there are no remaining tasks.
+// A testing implementation of `AdsClientNotifier` that dispatches notifications
+// synchronously to all registered observers.
 
 class AdsClientNotifierObserver;
 
@@ -37,14 +34,6 @@ class AdsClientNotifierForTesting : public AdsClientNotifierInterface {
       delete;
 
   ~AdsClientNotifierForTesting() override;
-
-  // Must be set before calling `Notify*` functions.
-  void set_ads_client_notifier_task_environment(
-      base::test::TaskEnvironment* task_environment) {
-    CHECK(task_environment);
-
-    task_environment_ = task_environment;
-  }
 
   // AdsClientNotifierInterface:
   void AddObserver(AdsClientNotifierObserver* observer) override;
@@ -93,11 +82,6 @@ class AdsClientNotifierForTesting : public AdsClientNotifierInterface {
 
  private:
   void SimulateSelectLastTab();
-
-  void RunTaskEnvironmentUntilIdle();
-
-  raw_ptr<base::test::TaskEnvironment> task_environment_ =
-      nullptr;  // Not owned.
 
   AdsClientNotifier ads_client_notifier_;
 

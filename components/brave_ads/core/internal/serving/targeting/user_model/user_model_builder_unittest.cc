@@ -31,8 +31,7 @@ class BraveAdsUserModelBuilderTest : public test::TestBase {
                               kTextClassificationFeature},
         /*disabled_features=*/{});
 
-    targeting_helper_ =
-        std::make_unique<test::TargetingHelper>(task_environment_);
+    targeting_helper_ = std::make_unique<test::TargetingHelper>();
 
     NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
                                      test::kCountryComponentId);

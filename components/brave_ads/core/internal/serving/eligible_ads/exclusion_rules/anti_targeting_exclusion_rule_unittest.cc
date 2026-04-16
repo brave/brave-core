@@ -8,6 +8,7 @@
 #include <memory>
 #include <string_view>
 
+#include "base/test/run_until.h"
 #include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/resources/test/country_components_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -52,7 +53,7 @@ TEST_F(BraveAdsAntiTargetingExclusionRuleTest,
   // Arrange
   NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
                                    test::kCountryComponentId);
-  ASSERT_TRUE(resource_->IsLoaded());
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
 
   const AntiTargetingExclusionRule exclusion_rule(
       *resource_, /*site_history=*/{GURL(kAntiTargetedSite)});
@@ -69,7 +70,7 @@ TEST_F(BraveAdsAntiTargetingExclusionRuleTest,
   // Arrange
   NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
                                    test::kCountryComponentId);
-  ASSERT_TRUE(resource_->IsLoaded());
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
 
   const AntiTargetingExclusionRule exclusion_rule(
       *resource_, /*site_history=*/{GURL("https://www.foo.com")});
@@ -86,7 +87,7 @@ TEST_F(BraveAdsAntiTargetingExclusionRuleTest,
   // Arrange
   NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
                                    test::kCountryComponentId);
-  ASSERT_TRUE(resource_->IsLoaded());
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
 
   const AntiTargetingExclusionRule exclusion_rule(
       *resource_, /*site_history=*/{GURL(kAntiTargetedSite)});

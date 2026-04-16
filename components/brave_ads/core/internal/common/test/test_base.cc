@@ -8,11 +8,13 @@
 #include <memory>
 #include <string_view>
 
+#include "base/barrier_closure.h"
 #include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
+#include "base/run_loop.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/test/fake_token_generator.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_state_manager.h"
@@ -53,8 +55,6 @@ TestBase::TestBase()
     : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
       scoped_current_language_code_(kDefaultLanguageCode),
       scoped_current_country_code_(kDefaultCountryCode) {
-  set_ads_client_notifier_task_environment(&task_environment_);
-
   SimulateProfile();
 }
 
@@ -273,29 +273,42 @@ void TestBase::SetUpEnvironment() {
   SetUpCommandLineSwitches();
 }
 
-void TestBase::SetUpDefaultAdsServiceState() const {
+void TestBase::SetUpDefaultAdsServiceState(
+    base::OnceClosure initialized_callback) const {
   CHECK(!is_integration_test_)
       << "SetUpDefaultAdsServiceState should only be called if SetUp is "
          "initialized for unit testing";
   CHECK(GlobalState::HasInstance())
       << "Must be called after GlobalState is instantiated";
 
-  GlobalState::GetInstance()->GetDatabaseManager().CreateOrOpen(
-      base::BindOnce([](bool success) {
+  // Both the database+token path and the client state path are async; the
+  // barrier closure fires `initialized_callback` once both have completed.
+  auto barrier_closure =
+      base::BarrierClosure(/*num_closures=*/2, std::move(initialized_callback));
+
+  GlobalState::GetInstance()->GetDatabaseManager().CreateOrOpen(base::BindOnce(
+      [](const base::RepeatingClosure& barrier_closure, bool success) {
         ASSERT_TRUE(success) << "Failed to create or open database";
 
         GlobalState::GetInstance()->GetTokenStateManager().LoadState(
-            base::BindOnce([](bool success) {
-              ASSERT_TRUE(success) << "Failed to load token state";
-            }));
-      }));
+            base::BindOnce(
+                [](const base::RepeatingClosure& barrier_closure,
+                   bool success) {
+                  ASSERT_TRUE(success) << "Failed to load token state";
+                  barrier_closure.Run();
+                },
+                barrier_closure));
+      },
+      barrier_closure));
 
   // TODO(https://github.com/brave/brave-browser/issues/39795): Transition away
   // from using JSON state to a more efficient data approach.
-  GlobalState::GetInstance()->GetClientStateManager().LoadState(
-      base::BindOnce([](bool success) {
+  GlobalState::GetInstance()->GetClientStateManager().LoadState(base::BindOnce(
+      [](const base::RepeatingClosure& barrier_closure, bool success) {
         ASSERT_TRUE(success) << "Failed to load client state";
-      }));
+        barrier_closure.Run();
+      },
+      barrier_closure));
 }
 
 void TestBase::SetUpIntegrationTest() {
@@ -315,6 +328,9 @@ void TestBase::SetUpIntegrationTest() {
 
   AdsClientNotifierWaiter(/*ads_client_notifier=*/this)
       .WaitForOnNotifyDidInitializeAds();
+
+  // Flush 0-delay task replies posted during initialization.
+  FlushImmediateTasks();
 }
 
 void TestBase::SetUpIntegrationTestCallback(bool success) {
@@ -338,13 +354,20 @@ void TestBase::SetUpUnitTest() {
   global_state_ = std::make_unique<GlobalState>(
       ads_client_mock_, DatabasePath(), std::make_unique<FakeTokenGenerator>());
 
-  // Must be called after `GlobalState` is instantiated but prior to
-  // `SetUpDefaultAdsServiceState`.
+  // Must be called after `GlobalState` is instantiated because it dispatches
+  // notifications through it, and before `SetUpDefaultAdsServiceState` because
+  // database creation and state loading depend on mocks, prefs, and feature
+  // flags configured here.
   SetUpEnvironment();
 
-  SetUpDefaultAdsServiceState();
+  base::RunLoop run_loop;
+  SetUpDefaultAdsServiceState(run_loop.QuitClosure());
 
   NotifyPendingObservers();
+
+  // Process background thread replies without advancing the mock clock, so
+  // that tests requiring a specific `NextPendingTaskDelay` are unaffected.
+  run_loop.Run();
 }
 
 void TestBase::FlushImmediateTasks() {
