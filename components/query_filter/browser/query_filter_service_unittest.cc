@@ -8,6 +8,7 @@
 #include "base/dcheck_is_on.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/threading/thread_restrictions.h"
@@ -56,7 +57,8 @@ class QueryFilterServiceTest : public testing::Test {
         component_install_dir_.GetPath().AppendASCII("query-filter.json"),
         kSampleQueryFilterJson));
     service()->OnComponentReady(ComponentInstallDir());
-    task_environment_.RunUntilIdle();
+    EXPECT_TRUE(base::test::RunUntil(
+        [&]() { return service()->rules().size() == 2u; }));
   }
 
   void TryNewRulesUpdate(const std::string& json) {
