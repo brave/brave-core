@@ -152,6 +152,7 @@ export default function useProvideAIChatContext(props: AIChatContextProps) {
     // and we can do that via monitoring the mutation in the provided hook.
     processImageFile: api.processImageFile,
     processPdfFile: api.processPdfFile,
+    processTextFile: api.processTextFile,
 
     /**
      * @deprecated use api.uiHandler.openAIChatAgentProfile directly instead

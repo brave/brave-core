@@ -436,16 +436,23 @@ describe('input box', () => {
       jest.clearAllMocks()
 
       mockConvertFileToUploadedFile.mockImplementation((file: File) => {
+        const mimeType = file.type.toLowerCase()
+        let type = UploadedFileType.kText
+        if (mimeType.startsWith('image/')) {
+          type = UploadedFileType.kImage
+        } else if (mimeType === 'application/pdf') {
+          type = UploadedFileType.kPdf
+        }
         return Promise.resolve({
           filename: file.name,
           filesize: file.size,
-          data: Array.from(new Uint8Array(8)), // Mock data array
-          type: UploadedFileType.kImage,
+          data: Array.from(new Uint8Array(8)),
+          type,
         })
       })
     })
 
-    it('filters image files and calls attachImages on paste', async () => {
+    it('accepts all file types on paste', async () => {
       const mockAttachImages = jest.fn()
       const { container } = await renderInputBox(
         <MockContext>
@@ -487,6 +494,12 @@ describe('input box', () => {
             filesize: 1024,
             data: expect.any(Array),
             type: UploadedFileType.kImage,
+          }),
+          expect.objectContaining({
+            filename: 'test.txt',
+            filesize: 1024,
+            data: expect.any(Array),
+            type: UploadedFileType.kText,
           }),
         ])
       })

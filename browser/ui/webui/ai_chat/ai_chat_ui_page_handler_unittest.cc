@@ -166,7 +166,7 @@ TEST_F(AIChatUIPageHandlerTest, OnFilesUploaded_NonPdfGoesToFinish) {
   EXPECT_EQ((*result)[0]->filename, "photo.png");
 }
 
-TEST_F(AIChatUIPageHandlerTest, OnAllPdfTextsExtracted_AppliesResults) {
+TEST_F(AIChatUIPageHandlerTest, OnAllFilesExtracted_AppliesResults) {
   std::vector<mojom::UploadedFilePtr> files;
   files.push_back(
       mojom::UploadedFile::New("/path/doc1.pdf", 100, std::vector<uint8_t>(100),
@@ -177,30 +177,45 @@ TEST_F(AIChatUIPageHandlerTest, OnAllPdfTextsExtracted_AppliesResults) {
   files.push_back(
       mojom::UploadedFile::New("/path/doc2.pdf", 200, std::vector<uint8_t>(200),
                                mojom::UploadedFileType::kPdf, std::nullopt));
+  files.push_back(mojom::UploadedFile::New(
+      "/path/config.conf", 80, std::vector<uint8_t>(80),
+      mojom::UploadedFileType::kText, std::nullopt));
+  files.push_back(mojom::UploadedFile::New(
+      "/path/script.py", 120, std::vector<uint8_t>(120),
+      mojom::UploadedFileType::kText, std::nullopt));
 
   std::vector<std::pair<size_t, std::optional<std::string>>> results;
   results.emplace_back(0, "Text from doc1");
   results.emplace_back(2, std::nullopt);  // extraction failed for doc2
+  results.emplace_back(3, "key=value");
+  results.emplace_back(4, std::nullopt);  // extraction failed for script.py
 
   base::test::TestFuture<std::optional<std::vector<mojom::UploadedFilePtr>>>
       future;
-  page_handler()->OnAllPdfTextsExtracted(future.GetCallback(),
-                                         std::make_optional(std::move(files)),
-                                         std::move(results));
+  page_handler()->OnAllFilesExtracted(future.GetCallback(),
+                                      std::make_optional(std::move(files)),
+                                      std::move(results));
 
   auto result = future.Take();
   ASSERT_TRUE(result.has_value());
-  ASSERT_EQ(result->size(), 3u);
+  ASSERT_EQ(result->size(), 5u);
   // PDF extracted text applied and path stripped
   EXPECT_EQ((*result)[0]->filename, "doc1.pdf");
   ASSERT_TRUE((*result)[0]->extracted_text.has_value());
   EXPECT_EQ(*(*result)[0]->extracted_text, "Text from doc1");
-  // Non-PDF unaffected, path stripped
+  // Image unaffected, path stripped
   EXPECT_EQ((*result)[1]->filename, "photo.png");
   EXPECT_FALSE((*result)[1]->extracted_text.has_value());
-  // Failed extraction, path stripped
+  // Failed PDF extraction, path stripped
   EXPECT_EQ((*result)[2]->filename, "doc2.pdf");
   EXPECT_FALSE((*result)[2]->extracted_text.has_value());
+  // Text extracted and path stripped
+  EXPECT_EQ((*result)[3]->filename, "config.conf");
+  ASSERT_TRUE((*result)[3]->extracted_text.has_value());
+  EXPECT_EQ(*(*result)[3]->extracted_text, "key=value");
+  // Failed text extraction, path stripped
+  EXPECT_EQ((*result)[4]->filename, "script.py");
+  EXPECT_FALSE((*result)[4]->extracted_text.has_value());
 }
 
 }  // namespace ai_chat
