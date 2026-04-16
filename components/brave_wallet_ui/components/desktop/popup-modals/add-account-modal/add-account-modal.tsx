@@ -16,7 +16,7 @@ import {
 import { AddHardwareAccountModal } from './add-hardware-account-modal'
 import { ImportAccountModal } from './add-imported-account-modal'
 import { CreateAccountModal } from './create-account-modal'
-import { RestoreAccountsModal } from './restore-accounts-modal'
+import { RestoreAccountsModal } from './restore_accounts_modal'
 
 export const AddAccountModal = () => {
   // routing

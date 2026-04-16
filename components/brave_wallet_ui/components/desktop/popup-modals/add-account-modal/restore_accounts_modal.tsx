@@ -5,8 +5,6 @@
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
-import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css/variables'
 import Button from '@brave/leo/react/button'
 
 import { getLocale } from '../../../../../common/locale'
@@ -19,16 +17,15 @@ import {
 } from '../../../../common/slices/api.slice'
 import PopupModal from '..'
 import { Checkbox } from '../../../shared/checkbox/checkbox'
-import { Column, Row, Text } from '../../../shared/style'
+import { Column, Row } from '../../../shared/style'
 import { CreateAccountIcon } from '../../../shared/create-account-icon/create-account-icon'
-
-const RestoreAccountsList = styled(Column)`
-  max-height: 320px;
-  overflow: auto;
-  border: 1px solid ${leo.color.divider.subtle};
-  border-radius: 8px;
-  padding: 8px;
-`
+import {
+  AccountMetaText,
+  AccountNameText,
+  ContentColumn,
+  FooterRow,
+  RestoreAccountsList,
+} from './restore_accounts_modal.style'
 
 export const RestoreAccountsModal = () => {
   const history = useHistory()
@@ -74,10 +71,9 @@ export const RestoreAccountsModal = () => {
       onClose={onClose}
       width='480px'
     >
-      <Column
+      <ContentColumn
         fullWidth
         alignItems='flex-start'
-        padding='0px 24px 24px'
       >
         <RestoreAccountsList
           fullWidth
@@ -105,37 +101,19 @@ export const RestoreAccountsModal = () => {
                   width='unset'
                   alignItems='flex-start'
                 >
-                  <Text
-                    textColor='primary'
-                    textSize='14px'
-                    isBold={true}
-                  >
-                    {account.name}
-                  </Text>
-                  <Text
-                    textColor='secondary'
-                    textSize='12px'
-                    isBold={false}
-                  >
+                  <AccountNameText>{account.name}</AccountNameText>
+                  <AccountMetaText>
                     {getAccountTypeDescription(account.accountId)}
-                  </Text>
-                  <Text
-                    textColor='secondary'
-                    textSize='12px'
-                    isBold={false}
-                  >
+                  </AccountMetaText>
+                  <AccountMetaText>
                     {account.address ? reduceAddress(account.address) : ' '}
-                  </Text>
+                  </AccountMetaText>
                 </Column>
               </Row>
             </Checkbox>
           ))}
         </RestoreAccountsList>
-        <Row
-          justifyContent='flex-end'
-          gap='12px'
-          margin='16px 0px 0px 0px'
-        >
+        <FooterRow>
           <Button
             kind='plain-faint'
             onClick={onClose}
@@ -149,8 +127,8 @@ export const RestoreAccountsModal = () => {
           >
             {getLocale('braveWalletAccountsRestore')}
           </Button>
-        </Row>
-      </Column>
+        </FooterRow>
+      </ContentColumn>
     </PopupModal>
   )
 }
