@@ -10,7 +10,6 @@ import Amount from '../../../../utils/amount'
 export type LiquiditySource = {
   name: string
   proportion: Amount
-  includedSteps?: BraveWallet.LiFiStep[]
   tool?: string
   logo?: string
 }

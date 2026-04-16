@@ -12,7 +12,6 @@ import { SwapAndSendOptions } from '../../../../options/swap-and-send-options'
 
 // Hooks
 import { useZeroEx } from './useZeroEx'
-import { useLifi } from './useLifi'
 import { useGate3 } from './useGate3'
 import { useDebouncedCallback } from './useDebouncedCallback'
 import {
@@ -47,9 +46,6 @@ import {
   getZeroExQuoteOptions,
   getZeroExFromAmount,
   getZeroExToAmount,
-  getLiFiQuoteOptions,
-  getLiFiFromAmount,
-  getLiFiToAmount,
   getGate3FromAmount,
   getGate3ToAmount,
   getGate3QuoteOptions,
@@ -411,17 +407,6 @@ export const useSwap = () => {
       return []
     }
 
-    if (quoteUnion.lifiQuote) {
-      return getLiFiQuoteOptions({
-        quote: quoteUnion.lifiQuote,
-        fromNetwork,
-        spotPrices,
-        defaultFiatCurrency,
-        toToken,
-        fromToken,
-      })
-    }
-
     if (quoteUnion.zeroExQuote) {
       return getZeroExQuoteOptions({
         quote: quoteUnion.zeroExQuote,
@@ -489,7 +474,6 @@ export const useSwap = () => {
     && fromChainIdFromParams !== undefined
 
   const zeroEx = useZeroEx(swapProviderHookParams)
-  const lifi = useLifi(swapProviderHookParams)
   const gate3 = useGate3(swapProviderHookParams)
   const { approveSpendAllowance, checkAllowance, hasAllowance } =
     useTokenAllowance()
@@ -654,51 +638,17 @@ export const useSwap = () => {
       }
 
       if (quoteResponse?.error) {
+        console.error('Swap quote error:', quoteResponse.error)
         setQuoteErrorUnion(quoteResponse.error)
       }
 
       if (quoteResponse?.errorString) {
+        console.error('Swap backend error:', quoteResponse.errorString)
         setBackendError(quoteResponse.errorString)
       }
 
       if (quoteResponse?.response) {
         setQuoteUnion(quoteResponse.response)
-
-        if (quoteResponse.response.lifiQuote) {
-          const { routes } = quoteResponse.response.lifiQuote
-
-          // If overrides.selectedQuoteOptionId is undefined, we will use the
-          // first route as the default option.
-          //
-          // If overrides.selectedQuoteOptionId is set, we will try to find the
-          // route that matches the selectedQuoteOptionId.
-          const route = overrides.selectedQuoteOptionId
-            ? routes.find(
-                (route) => route.uniqueId === overrides.selectedQuoteOptionId,
-              ) || routes[0]
-            : routes[0]
-
-          if (!route) {
-            return
-          }
-
-          if (params.editingFromOrToAmount === 'from') {
-            setToAmount(getLiFiToAmount(route).format(6))
-          } else {
-            setFromAmount(getLiFiFromAmount(route).format(6))
-          }
-
-          const step = route.steps[0]
-
-          if (step) {
-            await checkAllowance({
-              account: fromAccount,
-              spendAmount: fromAssetBalance.format(),
-              spenderAddress: step.estimate.approvalAddress,
-              token: params.fromToken,
-            })
-          }
-        }
 
         if (quoteResponse.response.zeroExQuote) {
           if (params.editingFromOrToAmount === 'from') {
@@ -1116,18 +1066,6 @@ export const useSwap = () => {
         return 'unknownError'
       }
 
-      // LiFi specific validations
-      if (
-        quoteErrorUnion?.lifiError?.code
-        && quoteErrorUnion?.lifiError?.code
-          !== BraveWallet.LiFiErrorCode.kSuccess
-      ) {
-        return quoteErrorUnion?.lifiError.code
-          === BraveWallet.LiFiErrorCode.kNotFoundError
-          ? 'insufficientLiquidity'
-          : 'unknownError'
-      }
-
       // Gate3 specific validations
       if (quoteErrorUnion?.gate3Error) {
         if (
@@ -1192,7 +1130,7 @@ export const useSwap = () => {
 
       // EVM specific validations
       if (
-        (quoteUnion?.zeroExQuote || quoteUnion?.lifiQuote)
+        quoteUnion?.zeroExQuote
         && fromToken.coin === BraveWallet.CoinType.ETH
         && fromToken.contractAddress
         && !hasAllowance
@@ -1228,7 +1166,6 @@ export const useSwap = () => {
       nativeAssetBalance,
       feesWrapped,
       quoteUnion?.zeroExQuote,
-      quoteUnion?.lifiQuote,
       quoteUnion?.gate3Quote,
       hasAllowance,
       quoteErrorUnion,
@@ -1269,41 +1206,6 @@ export const useSwap = () => {
           spenderAddress: quoteUnion.zeroExQuote.allowanceTarget,
           token: fromToken,
           spendAmount: fromAssetBalance.format(),
-        })
-      }
-    }
-
-    if (quoteUnion.lifiQuote) {
-      const route = selectedQuoteOptionId
-        ? quoteUnion.lifiQuote.routes.find(
-            (route) => route.uniqueId === selectedQuoteOptionId,
-          ) || quoteUnion.lifiQuote.routes[0]
-        : quoteUnion.lifiQuote.routes[0]
-
-      const step = route?.steps[0]
-      if (!step) {
-        return
-      }
-
-      if (hasAllowance) {
-        // in the future, we will loop thru the steps and call exchange (await
-        // confirmations)
-        const error = await lifi.exchange(step)
-        if (error) {
-          console.log('lifi.exchange error', error.lifiError)
-          setQuoteErrorUnion(error)
-        } else {
-          setFromAmount('')
-          setToAmount('')
-          reset()
-        }
-      } else {
-        await approveSpendAllowance({
-          spenderAddress: step.estimate.approvalAddress,
-          spendAmount: fromAssetBalance.format(),
-          account: fromAccount,
-          network: fromNetwork,
-          token: fromToken,
         })
       }
     }
@@ -1360,7 +1262,6 @@ export const useSwap = () => {
     zeroEx,
     reset,
     approveSpendAllowance,
-    lifi,
     gate3,
   ])
 

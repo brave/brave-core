@@ -46,7 +46,6 @@ import {
 import {
   CreateNetworkIcon, //
 } from '../../../../../../components/shared/create-network-icon'
-import { RouteStep } from './route_step'
 import { ProviderRoute } from '../provider_route'
 
 // Styles
@@ -464,15 +463,6 @@ export const RouteOption = (props: Props) => {
                         </PercentBubble>
                       </Row>
                     </Row>
-                    {source.includedSteps
-                      && Array.from(source.includedSteps)
-                        .reverse()
-                        .map((step) => (
-                          <RouteStep
-                            step={step}
-                            key={step.id}
-                          />
-                        ))}
                   </Column>
                 )
               })}

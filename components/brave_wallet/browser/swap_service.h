@@ -46,9 +46,6 @@ class SwapService : public mojom::SwapService {
   void GetStatus(mojom::Gate3SwapStatusParamsPtr params,
                  GetStatusCallback callback) override;
 
-  void GetLiFiStatus(const std::string& tx_hash,
-                     GetLiFiStatusCallback callback) override;
-
   static GURL GetZeroExQuoteURL(const mojom::SwapQuoteParams& params,
                                 const std::optional<std::string>& fee_param);
   static GURL GetZeroExTransactionURL(
@@ -57,9 +54,6 @@ class SwapService : public mojom::SwapService {
   static GURL GetJupiterQuoteURL(const mojom::SwapQuoteParams& params,
                                  const std::optional<std::string>& fee_param);
   static GURL GetJupiterTransactionURL(const std::string& chain_id);
-  static GURL GetLiFiQuoteURL();
-  static GURL GetLiFiTransactionURL();
-  static GURL GetLiFiStatusURL(const std::string& tx_hash);
   static GURL GetGate3QuoteURL(bool is_firm);
   static GURL GetGate3StatusURL();
 
@@ -74,22 +68,14 @@ class SwapService : public mojom::SwapService {
   void OnGetJupiterQuote(mojom::SwapFeesPtr swap_fee,
                          GetQuoteCallback callback,
                          APIRequestResult api_request_result);
-  void OnGetLiFiQuote(mojom::SwapFeesPtr swap_fee,
-                      GetQuoteCallback callback,
-                      APIRequestResult api_request_result);
   void OnGetZeroExTransaction(GetTransactionCallback callback,
                               APIRequestResult api_request_result);
   void OnGetJupiterTransaction(GetTransactionCallback callback,
                                APIRequestResult api_request_result);
-  void OnGetLiFiTransaction(GetTransactionCallback callback,
-                            APIRequestResult api_request_result);
   void OnGetGate3Transaction(GetTransactionCallback callback,
                              APIRequestResult api_request_result);
   void OnGetStatus(GetStatusCallback callback,
                    APIRequestResult api_request_result);
-  void OnGetLiFiStatus(GetLiFiStatusCallback callback,
-                       APIRequestResult api_request_result);
-
   api_request_helper::APIRequestHelper api_request_helper_;
 
   mojo::ReceiverSet<mojom::SwapService> receivers_;

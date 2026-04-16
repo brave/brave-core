@@ -1785,16 +1785,7 @@ inline constexpr char kBlowfishBaseAPIURL[] =
 inline constexpr char kBlowfishAPIVersionHeader[] = "X-Api-Version";
 inline constexpr char kBlowfishAPIVersion[] = "2023-06-05";
 
-// LiFi constants
-inline constexpr char kLiFiBaseAPIURL[] = "https://lifi.wallet.brave.com";
-inline constexpr char kLiFiIntegratorID[] = "brave";
-inline constexpr char kLiFiNativeEVMAssetContractAddress[] =
-    "0x0000000000000000000000000000000000000000";
-inline constexpr char kLiFiNativeSVMAssetContractAddress[] =
-    "11111111111111111111111111111111";
-inline constexpr char kLiFiSolanaMainnetChainID[] = "1151111081099710";
-
-// LiFi // 0x // Squid common constants
+// 0x // Squid common constants
 inline constexpr char kNativeEVMAssetContractAddress[] =
     "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
 
