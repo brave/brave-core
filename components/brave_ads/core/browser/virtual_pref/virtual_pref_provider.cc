@@ -13,6 +13,7 @@
 #include "base/values.h"
 #include "base/version_info/version_info.h"
 #include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
+#include "brave/components/brave_origin/brave_origin_utils.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -121,6 +122,9 @@ base::DictValue GetSkus(const PrefService& local_state) {
 }
 
 bool IsSurveyPanelist(const PrefService& prefs) {
+  if (brave_origin::IsBraveOriginPurchased()) {
+    return false;
+  }
   return prefs.GetBoolean(
       ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist);
 }
