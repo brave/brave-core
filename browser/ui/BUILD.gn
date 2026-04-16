@@ -668,6 +668,8 @@ source_set("ui") {
       "views/view_shadow.h",
       "views/window_closing_confirm_dialog_view.cc",
       "views/window_closing_confirm_dialog_view.h",
+      "views/workspace/open_workspace_dialog.cc",
+      "views/workspace/open_workspace_dialog.h",
       "views/workspace/save_workspace_dialog.cc",
       "views/workspace/save_workspace_dialog.h",
     ]

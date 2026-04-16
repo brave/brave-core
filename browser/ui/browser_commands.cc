@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <memory>
 #include <numeric>
+#include <set>
 #include <stack>
 #include <string>
 #include <utility>
@@ -56,6 +57,7 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_metrics.h"
 #include "chrome/browser/profiles/profile_window.h"
+#include "chrome/browser/sessions/session_restore.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -96,6 +98,7 @@
 
 #if defined(TOOLKIT_VIEWS)
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/workspace/open_workspace_dialog.h"
 #include "brave/browser/ui/views/workspace/save_workspace_dialog.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
@@ -244,6 +247,42 @@ bool AppendBrowserSessionCommands(
   commands.push_back(sessions::CreateSetSelectedTabInWindowCommand(
       window_id, tsm->active_index()));
   return has_tabs;
+}
+
+void DoRestoreWorkspace(
+    Profile* profile,
+    std::vector<std::unique_ptr<sessions::SessionCommand>> commands) {
+  if (commands.empty()) {
+    LOG(ERROR) << "Could not load workspace";
+    return;
+  }
+
+  // RestoreSessionFromCommands constructs SessionTab/SessionWindow objects
+  // whose constructors call SessionID::NewUnique(), which is sequence-checked
+  // to the UI thread.  It must therefore be called here (UI thread), not in
+  // the background I/O task.
+  std::vector<std::unique_ptr<sessions::SessionWindow>> windows;
+  SessionID active_window_id = SessionID::InvalidValue();
+  std::string platform_session_id;
+  std::set<SessionID> discarded_window_ids;
+  sessions::RestoreSessionFromCommands(commands, &windows, &active_window_id,
+                                       &platform_session_id,
+                                       &discarded_window_ids);
+  if (windows.empty()) {
+    return;
+  }
+
+  std::vector<const sessions::SessionWindow*> window_ptrs;
+  window_ptrs.reserve(windows.size());
+  for (const auto& w : windows) {
+    window_ptrs.push_back(w.get());
+  }
+
+  // RestoreForeignSessionWindows is synchronous: it creates all browser
+  // windows/tabs/groups before returning, so |windows| remains valid.
+  SessionRestore::RestoreForeignSessionWindows(profile, window_ptrs.begin(),
+                                               window_ptrs.end(),
+                                               base::DoNothing());
 }
 
 }  // namespace
@@ -1323,7 +1362,34 @@ void ShowSaveWorkspaceDialog(Browser* browser) {
 }
 
 void ShowOpenWorkspaceDialog(Browser* browser) {
-  // TODO: ...
+#if defined(TOOLKIT_VIEWS)
+  OpenWorkspaceDialog::Show(browser);
+#endif
+}
+
+void RestoreWorkspace(Browser* calling_browser, const std::string& name) {
+  auto* service =
+      BraveWorkspaceServiceFactory::GetForProfile(calling_browser->profile());
+  if (!service) {
+    return;
+  }
+
+  Profile* profile = calling_browser->profile();
+  base::FilePath path = service->GetWorkspaceDirForName(name);
+
+  // Construct the backend on the UI thread (requires SingleThreadTaskRunner
+  // context), then hand it to the background sequenced runner for file I/O.
+  auto task_runner = base::ThreadPool::CreateSequencedTaskRunner(
+      {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
+  auto backend = base::MakeRefCounted<sessions::CommandStorageBackend>(
+      task_runner, path, BraveWorkspaceService::kWorkspaceSessionType);
+
+  task_runner->PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(&BraveWorkspaceService::ReadWorkspaceFromDisk,
+                     std::move(path), std::move(backend)),
+      base::BindOnce(&DoRestoreWorkspace, base::Unretained(profile)));
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)

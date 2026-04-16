@@ -81,10 +81,11 @@ class BraveWorkspaceService : public KeyedService {
       const base::FilePath& workspace_dir,
       scoped_refptr<sessions::CommandStorageBackend> backend);
 
-  // Reads the session-command binary via |backend| and converts it to
-  // a list of SessionWindow objects ready for SessionRestore.  Returns an
-  // empty vector if the file does not exist or cannot be parsed.
-  static std::vector<std::unique_ptr<sessions::SessionWindow>>
+  // Reads the session-command binary via |backend| and returns the raw
+  // commands.  Only does file I/O — callers must deserialize the commands into
+  // SessionWindow objects on the UI thread (SessionID::NewUnique() is
+  // sequence-checked to the UI thread).  Returns an empty vector on error.
+  static std::vector<std::unique_ptr<sessions::SessionCommand>>
   ReadWorkspaceFromDisk(const base::FilePath& workspace_dir,
                         scoped_refptr<sessions::CommandStorageBackend> backend);
 

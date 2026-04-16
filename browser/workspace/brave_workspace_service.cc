@@ -6,7 +6,6 @@
 #include "brave/browser/workspace/brave_workspace_service.h"
 
 #include <algorithm>
-#include <set>
 #include <string>
 #include <utility>
 #include <vector>
@@ -98,25 +97,20 @@ bool BraveWorkspaceService::WriteWorkspaceToDisk(
 }
 
 // static
-std::vector<std::unique_ptr<sessions::SessionWindow>>
+std::vector<std::unique_ptr<sessions::SessionCommand>>
 BraveWorkspaceService::ReadWorkspaceFromDisk(
     const base::FilePath& workspace_dir,
     scoped_refptr<sessions::CommandStorageBackend> backend) {
+  // Only do file I/O here.  Callers must call RestoreSessionFromCommands() on
+  // the UI thread because SessionTab/SessionWindow constructors call
+  // SessionID::NewUnique() which is sequence-checked to the UI thread.
   sessions::CommandStorageBackend::ReadCommandsResult result =
       backend->ReadLastSessionCommands();
   if (result.error_reading || result.commands.empty()) {
     LOG(ERROR) << "Could not read workspace session from: " << workspace_dir;
     return {};
   }
-
-  std::vector<std::unique_ptr<sessions::SessionWindow>> windows;
-  SessionID active_window_id = SessionID::InvalidValue();
-  std::string platform_session_id;
-  std::set<SessionID> discarded_window_ids;
-  sessions::RestoreSessionFromCommands(result.commands, &windows,
-                                       &active_window_id, &platform_session_id,
-                                       &discarded_window_ids);
-  return windows;
+  return std::move(result.commands);
 }
 
 // static

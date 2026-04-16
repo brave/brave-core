@@ -23,6 +23,7 @@
   void ResetViewShownTimeStampForTesting
 
 class CrashReportPermissionAskDialogView;
+class OpenWorkspaceDialog;
 class SaveWorkspaceDialog;
 class WindowClosingConfirmDialogView;
 class PlaylistActionDialog;
@@ -37,6 +38,7 @@ class BraveVpnDnsSettingsNotificiationDialogView;
 #define CreatePassKey                                                 \
   CreatePassKey_Unused();                                             \
   friend class ::CrashReportPermissionAskDialogView;                  \
+  friend class ::OpenWorkspaceDialog;                                 \
   friend class ::SaveWorkspaceDialog;                                 \
   friend class ::WindowClosingConfirmDialogView;                      \
   friend class ::PlaylistActionDialog;                                \
