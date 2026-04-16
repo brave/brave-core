@@ -19,6 +19,7 @@
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/workspace/brave_workspace_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
@@ -357,6 +358,15 @@ void BraveBrowserCommandController::InitBraveCommandState() {
           email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
               browser_->profile()));
 #endif
+
+  UpdateCommandEnabled(
+      IDC_SAVE_WORKSPACE,
+      browser_->is_type_normal() && BraveWorkspaceServiceFactory::GetForProfile(
+                                        browser_->profile()) != nullptr);
+  UpdateCommandEnabled(
+      IDC_OPEN_WORKSPACE,
+      browser_->is_type_normal() && BraveWorkspaceServiceFactory::GetForProfile(
+                                        browser_->profile()) != nullptr);
 
   if (browser_->is_type_normal()) {
     // Delete these when upstream enables by default.
@@ -802,6 +812,12 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       brave::ForcePasteInBrowser(base::to_address(browser_));
       break;
     }
+    case IDC_SAVE_WORKSPACE:
+      brave::ShowSaveWorkspaceDialog(base::to_address(browser_));
+      break;
+    case IDC_OPEN_WORKSPACE:
+      brave::ShowOpenWorkspaceDialog(base::to_address(browser_));
+      break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;
       break;

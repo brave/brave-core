@@ -1163,6 +1163,14 @@ void ForcePasteInWebContents(content::WebContents* web_contents) {
           web_contents->GetWeakPtr()));
 }
 
+void ShowSaveWorkspaceDialog(Browser* browser) {
+  // TODO: ...
+}
+
+void ShowOpenWorkspaceDialog(Browser* browser) {
+  // TODO: ...
+}
+
 #if BUILDFLAG(ENABLE_CONTAINERS)
 void OpenTabUrlInContainer(BrowserWindowInterface* browser_window,
                            const tabs::TabHandle& tab,

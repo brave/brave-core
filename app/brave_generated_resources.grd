@@ -253,6 +253,44 @@
         Email Aliases
       </message>
 
+      <!-- Workspaces -->
+      <message name="IDS_SAVE_WORKSPACE" desc="App menu item to save all open tabs and tab groups as a named workspace">
+        Save tabs as workspace…
+      </message>
+      <message name="IDS_OPEN_WORKSPACE" desc="App menu item to open a previously saved workspace">
+        Open workspace…
+      </message>
+      <message name="IDS_WORKSPACE_SAVE_DIALOG_TITLE" desc="Title of the dialog asking the user to name a workspace">
+        Save Workspace
+      </message>
+      <message name="IDS_WORKSPACE_SAVE_DIALOG_NAME_LABEL" desc="Label for the workspace name text input in the save dialog">
+        Workspace name:
+      </message>
+      <message name="IDS_WORKSPACE_SAVE_DIALOG_NAME_PLACEHOLDER" desc="Placeholder text for the workspace name input field">
+        Enter a workspace name
+      </message>
+      <message name="IDS_WORKSPACE_SAVE_DIALOG_DEFAULT_NAME" desc="Default workspace name pre-filled in the save dialog">
+        My Workspace
+      </message>
+      <message name="IDS_WORKSPACE_SAVE_DIALOG_SAVE_BUTTON" desc="Accept button label in the save workspace dialog">
+        Save
+      </message>
+      <message name="IDS_WORKSPACE_OPEN_DIALOG_TITLE" desc="Title of the dialog for opening a saved workspace">
+        Open Workspace
+      </message>
+      <message name="IDS_WORKSPACE_OPEN_DIALOG_OPEN_BUTTON" desc="Accept button label in the open workspace dialog">
+        Open
+      </message>
+      <message name="IDS_WORKSPACE_OPEN_DIALOG_DELETE_BUTTON" desc="Button label to delete the selected workspace in the open dialog">
+        Delete
+      </message>
+      <message name="IDS_WORKSPACE_OPEN_DIALOG_EMPTY_MESSAGE" desc="Message shown when no workspaces have been saved yet">
+        No saved workspaces. Use "Save tabs as workspace…" to create one.
+      </message>
+      <message name="IDS_WORKSPACE_DIALOG_CANCEL_BUTTON" desc="Cancel button label shared by workspace dialogs">
+        Cancel
+      </message>
+
       <!-- Widevine -->
       <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
           Install and run Google Widevine
