@@ -165,7 +165,8 @@ public class BraveOriginPreferences extends BravePreferenceFragment
                                 getActivity().finish();
                             }
                         }
-                    });
+                    },
+                    profile);
         }
     }
 
@@ -555,7 +556,7 @@ public class BraveOriginPreferences extends BravePreferenceFragment
     @Override
     public void onDestroy() {
         dismissRestartSnackbar();
-        BraveOriginSubscriptionPrefs.setCredentialsFetchedCallback(null);
+        BraveOriginSubscriptionPrefs.setCredentialsFetchedCallback(null, null);
         super.onDestroy();
         if (mBraveOriginSettingsHandler != null) {
             mBraveOriginSettingsHandler.close();

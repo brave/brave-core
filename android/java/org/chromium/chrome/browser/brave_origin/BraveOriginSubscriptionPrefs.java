@@ -76,9 +76,19 @@ public class BraveOriginSubscriptionPrefs {
      * fetchOrderCredentials finishes. Any previously registered callback is replaced.
      *
      * @param callback Called with true on success, false on failure.
+     * @param profile Used to re-check fetch state and guard against a race where the fetch
+     *     completed between the caller's isFetchingCredentials() check and this call.
      */
-    public static void setCredentialsFetchedCallback(@Nullable Callback<Boolean> callback) {
+    public static void setCredentialsFetchedCallback(
+            @Nullable Callback<Boolean> callback, @Nullable Profile profile) {
         sCredentialsFetchedCallback = callback;
+        // If the fetch completed between the caller's isFetchingCredentials() check and this
+        // call, notifyCredentialsFetched() ran with no listener and the result was lost.
+        // The only way isFetchingCredentials() flips to false is a successful fetch (failure
+        // paths leave the order ID empty), so synthesize success.
+        if (callback != null && !isFetchingCredentials(profile)) {
+            notifyCredentialsFetched(true);
+        }
     }
 
     /**
