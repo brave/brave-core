@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/browsing_data/BUILD.gn b/chrome/browser/browsing_data/BUILD.gn
-index e9b5e52694f3bab715b5cd2c89c0d0b6cbba0aa1..6354b47d7b8241f9eb2ec4c10e2372852a6cb1d1 100644
+index e2bd68a88e0b2e84f9aaa22703ede2877fe724d5..8170d8a321c13b2429ef197f51249576431f8d18 100644
 --- a/chrome/browser/browsing_data/BUILD.gn
 +++ b/chrome/browser/browsing_data/BUILD.gn
-@@ -9,6 +9,7 @@ source_set("constants") {
+@@ -12,6 +12,7 @@ source_set("constants") {
      "//content/public/browser",
      "//extensions/buildflags",
    ]

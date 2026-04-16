@@ -1,5 +1,5 @@
 diff --git a/third_party/androidx/BUILD.gn b/third_party/androidx/BUILD.gn
-index 60306dd2bb6509a271f083e8fcfcb7ba3f167ca8..b60e26c87407162731615a7f69b5222b11f0f25e 100644
+index 1239b758cd4c9759d10ce7c6d71286729cf5f8a3..27d567bcfeefbbcef20e4ab39579f1a72b15d08c 100644
 --- a/third_party/androidx/BUILD.gn
 +++ b/third_party/androidx/BUILD.gn
 @@ -751,6 +751,7 @@ if (!limit_android_deps) {

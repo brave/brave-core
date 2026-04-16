@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl.java b/chrome/android/java/src/org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl.java
-index 83cd2f27dbda903605b7015937b26717cc63dea4..7014e9465534d446bd345a7f00abc01219402037 100644
+index 5a2f72ab183be404998d64de939cdb97b3b5cea7..dab6fd1fd706583a76c4204e629764bbbf3ebaba 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl.java
 @@ -43,6 +43,7 @@ import org.chromium.build.annotations.NullMarked;

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/page_action/action_ids.h b/chrome/browser/ui/views/page_action/action_ids.h
-index a5f6c92a1d8cf5d41fbe9af024143cc48401af02..4ec8463ba8ffaca66abbfe8022f366835c7f5505 100644
+index 2036110aa531a3d7cc5b0a75b81008fd8ac78575..b6f3855cee7262796e2e63c46770c3490a07cde4 100644
 --- a/chrome/browser/ui/views/page_action/action_ids.h
 +++ b/chrome/browser/ui/views/page_action/action_ids.h
 @@ -16,6 +16,7 @@ namespace page_actions {

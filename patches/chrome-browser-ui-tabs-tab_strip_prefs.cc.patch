@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_prefs.cc b/chrome/browser/ui/tabs/tab_strip_prefs.cc
-index f1080e16dce31b470c419f217667ef44cdfc94ed..14b99f58d0b1bbcf630e9ba8dac5546999687fcf 100644
+index 67ac393bd49235493ebbbf345e1cf6e5270e1ae2..f5e71e9040196cd605a8f3751402ca17a5ceae82 100644
 --- a/chrome/browser/ui/tabs/tab_strip_prefs.cc
 +++ b/chrome/browser/ui/tabs/tab_strip_prefs.cc
 @@ -27,6 +27,7 @@ std::optional<bool> g_tab_search_trailing_tabstrip_at_startup = std::nullopt;

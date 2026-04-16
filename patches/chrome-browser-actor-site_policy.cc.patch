@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/actor/site_policy.cc b/chrome/browser/actor/site_policy.cc
-index 81ff794108a5cb71461270702d0dddb81de219eb..b4030f2e94e119d33832a3f11298c5ee73a4df2c 100644
+index 94210c7663328d3586dd340ad26a09fb78d9ae34..8eb3273d605987a0beba0383a76187253b889af6 100644
 --- a/chrome/browser/actor/site_policy.cc
 +++ b/chrome/browser/actor/site_policy.cc
 @@ -159,6 +159,7 @@ void MayActOnUrlInternal(const GURL& url,

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/content_settings/BUILD.gn b/chrome/browser/content_settings/BUILD.gn
-index 4f8d86fd41a8066bf440c2a6512636fff19fc84f..77f16bd32ee108a0235787fe1ecc4f36df60c441 100644
+index 9effab985656f27e9a7e6ff0d661bec471053a58..bc8f33994aa2668bb5a2753834821ca52f4a7afe 100644
 --- a/chrome/browser/content_settings/BUILD.gn
 +++ b/chrome/browser/content_settings/BUILD.gn
-@@ -131,6 +131,7 @@ source_set("impl") {
+@@ -132,6 +132,7 @@ source_set("impl") {
    if (enable_pdf) {
      deps += [ "//chrome/browser/pdf" ]
    }

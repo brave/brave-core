@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 774ed0dde04ec15862edb822a00db8f9f27e239f..95cac1a455ec3d6b801a7cbe39b841fcd9e61604 100644
+index 685630671e499e15df062c85a280369be1840d9c..7e574926fb8db7e48f0ebeb7932f152615bd9e84 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -62,7 +62,9 @@ by a child template that "extends" this file.
@@ -111,7 +111,7 @@ index 774ed0dde04ec15862edb822a00db8f9f27e239f..95cac1a455ec3d6b801a7cbe39b841fc
              {% else %}
              android:foregroundServiceType="camera|microphone"
              {% endif %}
-@@ -1255,6 +1274,7 @@ by a child template that "extends" this file.
+@@ -1246,6 +1265,7 @@ by a child template that "extends" this file.
            </activity>
          {% endif %}
  

@@ -1,5 +1,5 @@
 diff --git a/content/common/frame.mojom b/content/common/frame.mojom
-index 444fa7009d0db33470cac9ab9cfdc23ceacec942..23231c9e313050ada7f83f07fc8759edf1e4c1ce 100644
+index a2566982ff81db5166e41243232e23af94dc3c05..2347e5c08b681759083e3601c28ef5ccef8577b3 100644
 --- a/content/common/frame.mojom
 +++ b/content/common/frame.mojom
 @@ -552,6 +552,7 @@ struct CreateNewWindowParams {

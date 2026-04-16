@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-index e86bd35d0057f6818b0771c840c2db74e911ce8d..9ad8c5080a1dbb97d68725d552501100c51eec6d 100644
+index 38445f23d42dd8f4c8eefe4a8b63252c0087cbf4..281a2949a09ff21c5bb4c09554f06fb91c063c76 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-@@ -663,7 +663,7 @@ public abstract class ChromeActivity extends AsyncInitializationActivity
+@@ -667,7 +667,7 @@ public abstract class ChromeActivity extends AsyncInitializationActivity
                              getEdgeToEdgeSupplier(),
                              assertNonNull(mRootUiCoordinator.getBottomSheetController()));
              SnackbarManager snackbarManager =
@@ -11,7 +11,7 @@ index e86bd35d0057f6818b0771c840c2db74e911ce8d..9ad8c5080a1dbb97d68725d552501100
                              this,
                              mBottomContainer,
                              getWindowAndroid(),
-@@ -3078,6 +3078,7 @@ public abstract class ChromeActivity extends AsyncInitializationActivity
+@@ -3089,6 +3089,7 @@ public abstract class ChromeActivity extends AsyncInitializationActivity
       */
      public void onExitVr() {}
  

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/external_protocol/external_protocol_handler.cc b/chrome/browser/external_protocol/external_protocol_handler.cc
-index 10ffa32ae7ac22ee9f6dc8688529dde9dad80d02..95f2cff2b9e7e98080ea4c0127450a56fccc2379 100644
+index 616edcd73eb547763621206dc97d762dd516f43f..c9253c5613bef48ad0bf68e19aecff6a129d4678 100644
 --- a/chrome/browser/external_protocol/external_protocol_handler.cc
 +++ b/chrome/browser/external_protocol/external_protocol_handler.cc
-@@ -434,7 +434,7 @@ ExternalProtocolHandler::BlockState ExternalProtocolHandler::GetBlockState(
+@@ -435,7 +435,7 @@ ExternalProtocolHandler::BlockState ExternalProtocolHandler::GetBlockState(
    if (scheme == "mailto") {
      base::UmaHistogramEnumeration(kBlockStateMetric,
                                    BlockStateMetric::kAllowedDefaultMail);
