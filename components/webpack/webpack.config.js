@@ -190,6 +190,16 @@ module.exports = async function (env, argv) {
             { loader: "sass-loader" },
           ],
         },
+        // ifdef-loader preprocesses files BEFORE ts-loader. This is needed
+        // because ts-loader receives content from webpack's loader chain.
+        // The custom compiler wrapper handles type-checking (language service),
+        // while this loader handles the actual compilation content.
+        {
+          test: /\.(js|ts)x?$/,
+          enforce: 'pre',
+          loader: './components/webpack/plugins/ifdef-loader.ts',
+          options: buildFlags
+        },
         {
           test: /\.tsx?$/,
           loader: 'ts-loader',
@@ -197,13 +207,12 @@ module.exports = async function (env, argv) {
             getCustomTransformers: path.join(__dirname, './webpack-ts-transformers.js'),
             // Use generated tsconfig so that we can point at gen/ output in the
             // correct build configuration output directory.
-            configFile: tsConfigPath
+            configFile: tsConfigPath,
+            // Use custom TypeScript wrapper that preprocesses files with ifdef
+            // directives before TypeScript parses them. This ensures type-checking
+            // happens on the preprocessed code.
+            compiler: path.join(__dirname, './plugins/typescript-ifdef.js')
           }
-        },
-        {
-          test: /\.(js|ts)x?$/,
-          loader: './components/webpack/plugins/ifdef-loader.ts',
-          options: buildFlags
         },
         {
           test: /\.(ttf|eot|ico|svg|png|jpg|jpeg|gif|webp)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
