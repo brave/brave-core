@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.autofill.AutofillId;
 import android.view.inputmethod.EditorInfo;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.collection.ArrayMap;
 
 import org.chromium.build.annotations.NullMarked;
@@ -76,64 +77,63 @@ public class BraveAutofillViewStructureParser {
 
     // W3C autocomplete tokens (HTML Living Standard §4.10.18.7).
     // Used by Layer 1 to map HTML autocomplete attribute values to canonical hints.
-    private static final String W3C_GIVEN_NAME = "given-name";
-    private static final String W3C_FAMILY_NAME = "family-name";
-    private static final String W3C_ADDITIONAL_NAME = "additional-name";
-    private static final String W3C_HONORIFIC_PREFIX = "honorific-prefix";
-    private static final String W3C_HONORIFIC_SUFFIX = "honorific-suffix";
-    private static final String W3C_CC_NAME = "cc-name";
-    private static final String W3C_EMAIL = "email";
-    private static final String W3C_TEL = "tel";
-    private static final String W3C_TEL_NATIONAL = "tel-national";
-    private static final String W3C_TEL_LOCAL = "tel-local";
-    private static final String W3C_TEL_COUNTRY_CODE = "tel-country-code";
-    private static final String W3C_TEL_AREA_CODE = "tel-area-code";
-    private static final String W3C_TEL_EXTENSION = "tel-extension";
-    private static final String W3C_STREET_ADDRESS = "street-address";
-    private static final String W3C_ADDRESS_LINE1 = "address-line1";
-    private static final String W3C_ADDRESS_LINE2 = "address-line2";
-    private static final String W3C_ADDRESS_LINE3 = "address-line3";
-    private static final String W3C_POSTAL_CODE = "postal-code";
-    private static final String W3C_ORGANIZATION = "organization";
-    private static final String W3C_ADDRESS_LEVEL1 = "address-level1";
-    private static final String W3C_ADDRESS_LEVEL2 = "address-level2";
-    private static final String W3C_ADDRESS_LEVEL3 = "address-level3";
-    private static final String W3C_COUNTRY = "country";
-    private static final String W3C_COUNTRY_NAME = "country-name";
+    static final String W3C_GIVEN_NAME = "given-name";
+    static final String W3C_FAMILY_NAME = "family-name";
+    static final String W3C_ADDITIONAL_NAME = "additional-name";
+    static final String W3C_HONORIFIC_PREFIX = "honorific-prefix";
+    static final String W3C_HONORIFIC_SUFFIX = "honorific-suffix";
+    static final String W3C_CC_NAME = "cc-name";
+    static final String W3C_EMAIL = "email";
+    static final String W3C_TEL = "tel";
+    static final String W3C_TEL_NATIONAL = "tel-national";
+    static final String W3C_TEL_LOCAL = "tel-local";
+    static final String W3C_TEL_COUNTRY_CODE = "tel-country-code";
+    static final String W3C_TEL_AREA_CODE = "tel-area-code";
+    static final String W3C_TEL_EXTENSION = "tel-extension";
+    static final String W3C_STREET_ADDRESS = "street-address";
+    static final String W3C_ADDRESS_LINE1 = "address-line1";
+    static final String W3C_ADDRESS_LINE2 = "address-line2";
+    static final String W3C_ADDRESS_LINE3 = "address-line3";
+    static final String W3C_POSTAL_CODE = "postal-code";
+    static final String W3C_ORGANIZATION = "organization";
+    static final String W3C_ADDRESS_LEVEL1 = "address-level1";
+    static final String W3C_ADDRESS_LEVEL2 = "address-level2";
+    static final String W3C_ADDRESS_LEVEL3 = "address-level3";
+    static final String W3C_COUNTRY = "country";
+    static final String W3C_COUNTRY_NAME = "country-name";
 
     // Chromium computed-autofill-hints string values. These are the string representations of
     // FieldType enum values, produced by FieldTypeToStringView() in
     // components/autofill/core/browser/field_types.cc using the kTypeNameToFieldType mapping.
     // Used by Layer 3 to map Chromium's internal field classification to canonical hints.
-    private static final String COMPUTED_NAME_FULL = "NAME_FULL";
-    private static final String COMPUTED_NAME_FIRST = "NAME_FIRST";
-    private static final String COMPUTED_NAME_MIDDLE = "NAME_MIDDLE";
-    private static final String COMPUTED_NAME_MIDDLE_INITIAL = "NAME_MIDDLE_INITIAL";
-    private static final String COMPUTED_NAME_LAST = "NAME_LAST";
-    private static final String COMPUTED_NAME_LAST_FIRST = "NAME_LAST_FIRST";
-    private static final String COMPUTED_NAME_LAST_SECOND = "NAME_LAST_SECOND";
-    private static final String COMPUTED_EMAIL_ADDRESS = "EMAIL_ADDRESS";
-    private static final String COMPUTED_PHONE_HOME_WHOLE_NUMBER = "PHONE_HOME_WHOLE_NUMBER";
-    private static final String COMPUTED_PHONE_HOME_NUMBER = "PHONE_HOME_NUMBER";
-    private static final String COMPUTED_PHONE_HOME_CITY_AND_NUMBER = "PHONE_HOME_CITY_AND_NUMBER";
-    private static final String COMPUTED_ADDRESS_HOME_LINE1 = "ADDRESS_HOME_LINE1";
-    private static final String COMPUTED_ADDRESS_HOME_STREET_ADDRESS =
-            "ADDRESS_HOME_STREET_ADDRESS";
-    private static final String COMPUTED_ADDRESS_HOME_STREET_NAME = "ADDRESS_HOME_STREET_NAME";
-    private static final String COMPUTED_ADDRESS_HOME_ADDRESS = "ADDRESS_HOME_ADDRESS";
-    private static final String COMPUTED_ADDRESS_HOME_LINE2 = "ADDRESS_HOME_LINE2";
-    private static final String COMPUTED_ADDRESS_HOME_LINE3 = "ADDRESS_HOME_LINE3";
-    private static final String COMPUTED_ADDRESS_HOME_SUBPREMISE = "ADDRESS_HOME_SUBPREMISE";
-    private static final String COMPUTED_ADDRESS_HOME_APT = "ADDRESS_HOME_APT";
-    private static final String COMPUTED_ADDRESS_HOME_APT_NUM = "ADDRESS_HOME_APT_NUM";
-    private static final String COMPUTED_ADDRESS_HOME_CITY = "ADDRESS_HOME_CITY";
-    private static final String COMPUTED_ADDRESS_HOME_DEPENDENT_LOCALITY =
+    static final String COMPUTED_NAME_FULL = "NAME_FULL";
+    static final String COMPUTED_NAME_FIRST = "NAME_FIRST";
+    static final String COMPUTED_NAME_MIDDLE = "NAME_MIDDLE";
+    static final String COMPUTED_NAME_MIDDLE_INITIAL = "NAME_MIDDLE_INITIAL";
+    static final String COMPUTED_NAME_LAST = "NAME_LAST";
+    static final String COMPUTED_NAME_LAST_FIRST = "NAME_LAST_FIRST";
+    static final String COMPUTED_NAME_LAST_SECOND = "NAME_LAST_SECOND";
+    static final String COMPUTED_EMAIL_ADDRESS = "EMAIL_ADDRESS";
+    static final String COMPUTED_PHONE_HOME_WHOLE_NUMBER = "PHONE_HOME_WHOLE_NUMBER";
+    static final String COMPUTED_PHONE_HOME_NUMBER = "PHONE_HOME_NUMBER";
+    static final String COMPUTED_PHONE_HOME_CITY_AND_NUMBER = "PHONE_HOME_CITY_AND_NUMBER";
+    static final String COMPUTED_ADDRESS_HOME_LINE1 = "ADDRESS_HOME_LINE1";
+    static final String COMPUTED_ADDRESS_HOME_STREET_ADDRESS = "ADDRESS_HOME_STREET_ADDRESS";
+    static final String COMPUTED_ADDRESS_HOME_STREET_NAME = "ADDRESS_HOME_STREET_NAME";
+    static final String COMPUTED_ADDRESS_HOME_ADDRESS = "ADDRESS_HOME_ADDRESS";
+    static final String COMPUTED_ADDRESS_HOME_LINE2 = "ADDRESS_HOME_LINE2";
+    static final String COMPUTED_ADDRESS_HOME_LINE3 = "ADDRESS_HOME_LINE3";
+    static final String COMPUTED_ADDRESS_HOME_SUBPREMISE = "ADDRESS_HOME_SUBPREMISE";
+    static final String COMPUTED_ADDRESS_HOME_APT = "ADDRESS_HOME_APT";
+    static final String COMPUTED_ADDRESS_HOME_APT_NUM = "ADDRESS_HOME_APT_NUM";
+    static final String COMPUTED_ADDRESS_HOME_CITY = "ADDRESS_HOME_CITY";
+    static final String COMPUTED_ADDRESS_HOME_DEPENDENT_LOCALITY =
             "ADDRESS_HOME_DEPENDENT_LOCALITY";
-    private static final String COMPUTED_ADDRESS_HOME_STATE = "ADDRESS_HOME_STATE";
-    private static final String COMPUTED_ADDRESS_HOME_ZIP = "ADDRESS_HOME_ZIP";
-    private static final String COMPUTED_ADDRESS_HOME_SORTING_CODE = "ADDRESS_HOME_SORTING_CODE";
-    private static final String COMPUTED_ADDRESS_HOME_COUNTRY = "ADDRESS_HOME_COUNTRY";
-    private static final String COMPUTED_COMPANY_NAME = "COMPANY_NAME";
+    static final String COMPUTED_ADDRESS_HOME_STATE = "ADDRESS_HOME_STATE";
+    static final String COMPUTED_ADDRESS_HOME_ZIP = "ADDRESS_HOME_ZIP";
+    static final String COMPUTED_ADDRESS_HOME_SORTING_CODE = "ADDRESS_HOME_SORTING_CODE";
+    static final String COMPUTED_ADDRESS_HOME_COUNTRY = "ADDRESS_HOME_COUNTRY";
+    static final String COMPUTED_COMPANY_NAME = "COMPANY_NAME";
 
     // Heuristic keywords for Layer 2 inferHint() matching.
     private static final String KEYWORD_LABEL = "label";
@@ -352,7 +352,8 @@ public class BraveAutofillViewStructureParser {
      * components/autofill/core/browser/field_types.cc. They are the most reliable signal for web
      * forms since Chromium uses ML and heuristics to classify fields.
      */
-    private static @Nullable String mapComputedAutofillHint(@Nullable String hint) {
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    static @Nullable String mapComputedAutofillHint(@Nullable String hint) {
         if (hint == null) return null;
         switch (hint) {
             case COMPUTED_NAME_FULL:
@@ -501,7 +502,8 @@ public class BraveAutofillViewStructureParser {
      *       HTML Living Standard §4.10.18.7</a>.
      * </ul>
      */
-    private static @Nullable String mapAutofillHint(String hint) {
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    static @Nullable String mapAutofillHint(String hint) {
         switch (hint) {
             // Standard Android View.AUTOFILL_HINT_* constants — pass through.
             case View.AUTOFILL_HINT_NAME:

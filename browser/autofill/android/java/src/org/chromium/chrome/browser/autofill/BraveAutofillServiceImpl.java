@@ -22,6 +22,8 @@ import android.view.autofill.AutofillId;
 import android.view.autofill.AutofillValue;
 import android.widget.RemoteViews;
 
+import androidx.annotation.VisibleForTesting;
+
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.build.annotations.NullMarked;
@@ -213,19 +215,13 @@ public class BraveAutofillServiceImpl extends SplitCompatAutofillService.Impl {
             // both the form and the profile (non-empty) get included.
             Map<AutofillId, String> autofillDataMap = new HashMap<>();
             String fullName = profile.getInfo(FieldType.NAME_FULL);
-            String firstName = profile.getInfo(FieldType.NAME_FIRST);
-            String lastName = profile.getInfo(FieldType.NAME_LAST);
-            // If individual name parts are empty, try to derive them from the full name
-            // so forms with separate given-name/family-name fields still work.
-            if (!TextUtils.isEmpty(fullName)) {
-                String[] parts = fullName.trim().split("\\s+", 2);
-                if (TextUtils.isEmpty(firstName)) {
-                    firstName = parts[0];
-                }
-                if (TextUtils.isEmpty(lastName) && parts.length > 1) {
-                    lastName = parts[1];
-                }
-            }
+            String[] nameParts =
+                    splitName(
+                            fullName,
+                            profile.getInfo(FieldType.NAME_FIRST),
+                            profile.getInfo(FieldType.NAME_LAST));
+            String firstName = nameParts[0];
+            String lastName = nameParts[1];
             mapField(fields, View.AUTOFILL_HINT_NAME, fullName, autofillDataMap);
             mapField(
                     fields,
@@ -284,16 +280,8 @@ public class BraveAutofillServiceImpl extends SplitCompatAutofillService.Impl {
                     BraveAutofillViewStructureParser.HINT_COMPANY,
                     profile.getInfo(FieldType.COMPANY_NAME),
                     autofillDataMap);
-            // ADDRESS_HOME_COUNTRY returns a country code (e.g. "US"). Convert it to
-            // a display name (e.g. "United States") so it matches dropdown options.
-            String countryCode = profile.getInfo(FieldType.ADDRESS_HOME_COUNTRY);
-            String countryValue = countryCode;
-            if (countryCode != null && countryCode.length() == 2) {
-                String displayName = new java.util.Locale("", countryCode).getDisplayCountry();
-                if (!displayName.equals(countryCode)) {
-                    countryValue = displayName;
-                }
-            }
+            String countryValue =
+                    countryCodeToDisplayName(profile.getInfo(FieldType.ADDRESS_HOME_COUNTRY));
             mapField(
                     fields,
                     BraveAutofillViewStructureParser.HINT_COUNTRY,
@@ -488,8 +476,57 @@ public class BraveAutofillServiceImpl extends SplitCompatAutofillService.Impl {
         return null;
     }
 
+    private static @Nullable AutofillValue createListValue(ViewNode node, String value) {
+        CharSequence @Nullable [] options = node.getAutofillOptions();
+        int index = matchListOption(options, value);
+        return index >= 0 ? AutofillValue.forList(index) : null;
+    }
+
     /**
-     * Finds the best matching option index for a list/dropdown field ({@code <select>} in HTML).
+     * Derives first and last name from the full name when individual parts are missing.
+     *
+     * <p>Profiles may store only {@code NAME_FULL} (e.g. "Jane Doe") without populating {@code
+     * NAME_FIRST} / {@code NAME_LAST}. Forms with separate given-name/family-name fields need the
+     * individual parts, so this method splits the full name on whitespace: the first token becomes
+     * the first name and everything after becomes the last name. Existing non-empty parts are
+     * preserved.
+     *
+     * @return A two-element array: {@code [firstName, lastName]}, never null, elements never null.
+     */
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    static String[] splitName(
+            @Nullable String fullName, @Nullable String firstName, @Nullable String lastName) {
+        if (!TextUtils.isEmpty(fullName)) {
+            String[] parts = fullName.trim().split("\\s+", 2);
+            if (TextUtils.isEmpty(firstName)) {
+                firstName = parts[0];
+            }
+            if (TextUtils.isEmpty(lastName) && parts.length > 1) {
+                lastName = parts[1];
+            }
+        }
+        return new String[] {firstName != null ? firstName : "", lastName != null ? lastName : ""};
+    }
+
+    /**
+     * Converts a two-letter ISO country code (e.g. "US") to its display name (e.g. "United
+     * States"). Returns the input unchanged if it is not a two-letter code or if {@link
+     * java.util.Locale} cannot resolve it. Returns empty string for null input.
+     */
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    static String countryCodeToDisplayName(@Nullable String countryCode) {
+        if (countryCode == null) return "";
+        if (countryCode.length() == 2) {
+            String displayName = new java.util.Locale("", countryCode).getDisplayCountry();
+            if (!displayName.equals(countryCode)) {
+                return displayName;
+            }
+        }
+        return countryCode;
+    }
+
+    /**
+     * Finds the best matching option index for a value in a list of dropdown options.
      *
      * <p>Uses a three-pass strategy to handle the variety of option formats across forms:
      *
@@ -501,10 +538,12 @@ public class BraveAutofillServiceImpl extends SplitCompatAutofillService.Impl {
      *
      * <p>The minimum length of 2 for prefix matching avoids false positives where short strings
      * like state codes accidentally match unrelated options.
+     *
+     * @return The index of the best matching option, or -1 if no match is found.
      */
-    private static @Nullable AutofillValue createListValue(ViewNode node, String value) {
-        CharSequence[] options = node.getAutofillOptions();
-        if (options == null) return null;
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    static int matchListOption(CharSequence @Nullable [] options, String value) {
+        if (options == null) return -1;
 
         java.util.Locale locale = java.util.Locale.getDefault();
         String lowerValue = value.toLowerCase(locale);
@@ -513,7 +552,7 @@ public class BraveAutofillServiceImpl extends SplitCompatAutofillService.Impl {
         for (int i = 0; i < options.length; i++) {
             if (options[i] != null
                     && options[i].toString().toLowerCase(locale).equals(lowerValue)) {
-                return AutofillValue.forList(i);
+                return i;
             }
         }
 
@@ -522,7 +561,7 @@ public class BraveAutofillServiceImpl extends SplitCompatAutofillService.Impl {
             for (int i = 0; i < options.length; i++) {
                 if (options[i] != null
                         && options[i].toString().toLowerCase(locale).startsWith(lowerValue)) {
-                    return AutofillValue.forList(i);
+                    return i;
                 }
             }
         }
@@ -532,12 +571,12 @@ public class BraveAutofillServiceImpl extends SplitCompatAutofillService.Impl {
             if (options[i] != null) {
                 String lowerOption = options[i].toString().toLowerCase(locale);
                 if (lowerOption.length() >= 2 && lowerValue.startsWith(lowerOption)) {
-                    return AutofillValue.forList(i);
+                    return i;
                 }
             }
         }
 
-        return null;
+        return -1;
     }
 
     /**
