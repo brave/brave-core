@@ -27,16 +27,16 @@ class TargetingHelper final {
 
   ~TargetingHelper();
 
-  void Mock();
+  void Simulate();
   static UserModelInfo Expectation();
 
-  void MockIntent();
+  void SimulateIntent();
   static IntentUserModelInfo IntentExpectation();
 
-  void MockLatentInterest();
+  void SimulateLatentInterest();
   static LatentInterestUserModelInfo LatentInterestExpectation();
 
-  void MockInterest();
+  void SimulateInterest();
   static InterestUserModelInfo InterestExpectation();
 
  private:

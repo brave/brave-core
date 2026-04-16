@@ -39,7 +39,7 @@ TEST_F(BraveAdsInterestSegmentsTest, BuildInterestSegments) {
   const base::test::ScopedFeatureList scoped_feature_list(
       kTextClassificationFeature);
 
-  targeting_helper_->MockInterest();
+  targeting_helper_->SimulateInterest();
 
   // Act & Assert
   base::MockCallback<BuildSegmentsCallback> callback;
@@ -65,7 +65,7 @@ TEST_F(BraveAdsInterestSegmentsTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kTextClassificationFeature);
 
-  targeting_helper_->MockInterest();
+  targeting_helper_->SimulateInterest();
 
   // Act & Assert
   base::MockCallback<BuildSegmentsCallback> callback;

@@ -19,10 +19,10 @@ TargetingHelper::TargetingHelper() = default;
 
 TargetingHelper::~TargetingHelper() = default;
 
-void TargetingHelper::Mock() {
-  MockIntent();
-  MockLatentInterest();
-  MockInterest();
+void TargetingHelper::Simulate() {
+  SimulateIntent();
+  SimulateLatentInterest();
+  SimulateInterest();
 }
 
 // static
@@ -32,8 +32,8 @@ UserModelInfo TargetingHelper::Expectation() {
                        TargetingHelper::InterestExpectation()};
 }
 
-void TargetingHelper::MockIntent() {
-  purchase_intent_.Mock();
+void TargetingHelper::SimulateIntent() {
+  purchase_intent_.Simulate();
 }
 
 // static
@@ -41,7 +41,7 @@ IntentUserModelInfo TargetingHelper::IntentExpectation() {
   return IntentUserModelInfo{PurchaseIntentHelper::Expectation()};
 }
 
-void TargetingHelper::MockLatentInterest() {
+void TargetingHelper::SimulateLatentInterest() {
   // Intentionally do nothing.
 }
 
@@ -50,8 +50,8 @@ LatentInterestUserModelInfo TargetingHelper::LatentInterestExpectation() {
   return LatentInterestUserModelInfo{};
 }
 
-void TargetingHelper::MockInterest() {
-  text_classification_.Mock();
+void TargetingHelper::SimulateInterest() {
+  text_classification_.Simulate();
 
   CHECK(base::test::RunUntil([] {
     return ClientStateManager::GetInstance()

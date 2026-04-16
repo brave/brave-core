@@ -47,7 +47,7 @@ class BraveAdsUserModelBuilderTest : public test::TestBase {
 
 TEST_F(BraveAdsUserModelBuilderTest, BuildUserModel) {
   // Arrange
-  targeting_helper_->Mock();
+  targeting_helper_->Simulate();
 
   // Act & Assert
   base::MockCallback<BuildUserModelCallback> callback;

@@ -21,7 +21,7 @@ class TextClassificationHelper final {
 
   ~TextClassificationHelper();
 
-  void Mock();
+  void Simulate();
 
   static SegmentList Expectation();
 

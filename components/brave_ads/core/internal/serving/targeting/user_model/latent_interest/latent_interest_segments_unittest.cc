@@ -29,7 +29,7 @@ class BraveAdsLatentInterestSegmentsTest : public test::TestBase {
 
 TEST_F(BraveAdsLatentInterestSegmentsTest, BuildLatentInterestSegments) {
   // Arrange
-  targeting_helper_->MockLatentInterest();
+  targeting_helper_->SimulateLatentInterest();
 
   // Act & Assert
   base::MockCallback<BuildSegmentsCallback> callback;
@@ -49,7 +49,7 @@ TEST_F(BraveAdsLatentInterestSegmentsTest,
 TEST_F(BraveAdsLatentInterestSegmentsTest,
        DoNotBuildLatentInterestSegmentsIfFeatureIsDisabled) {
   // Arrange
-  targeting_helper_->MockLatentInterest();
+  targeting_helper_->SimulateLatentInterest();
 
   // Act & Assert
   base::MockCallback<BuildSegmentsCallback> callback;

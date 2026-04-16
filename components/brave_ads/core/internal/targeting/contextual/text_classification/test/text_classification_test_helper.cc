@@ -14,7 +14,7 @@ TextClassificationHelper::TextClassificationHelper() : processor_(resource_) {}
 
 TextClassificationHelper::~TextClassificationHelper() = default;
 
-void TextClassificationHelper::Mock() {
+void TextClassificationHelper::Simulate() {
   const std::vector<std::string> texts = {
       "Savoring food and drinks, life's simple pleasure.",
       "Decentralization frees finance, making banking borderless.",
