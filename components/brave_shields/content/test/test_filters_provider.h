@@ -40,7 +40,6 @@ class TestFiltersProvider : public AdBlockFiltersProvider {
 
   // Simulates a provider content change for testing.
   void SimulateUpdate() { NotifyObservers(engine_is_default_); }
-  void SimulateOnComponentProvidersRegistered();
 
  private:
   std::string rules_;

@@ -6,12 +6,19 @@
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
 
 #include <memory>
+#include <string>
 #include <string_view>
 #include <utility>
 #include <vector>
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback.h"
+#include "base/location.h"
+#include "base/sequence_checker.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/files/file_path.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr_exclusion.h"
@@ -21,9 +28,12 @@
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_filters_provider.h"
+#include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
+#include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_list_p3a.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_locale_utils.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
+#include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
@@ -73,6 +83,57 @@ bool IsAdBlockOnlyModeSupportedAndFeatureEnabled(const std::string& locale) {
 
 }  // namespace
 
+// A sentinel provider that registers with the filters provider manager and
+// reports IsInitialized() = false until the component catalog has loaded and
+// all component providers have been registered. This gates filter set loading
+// until the full provider set is known, preventing premature initial loads.
+class ComponentProvidersGate : public AdBlockFiltersProvider {
+ public:
+  ComponentProvidersGate(bool engine_is_default,
+                         AdBlockFiltersProviderManager* manager) : AdBlockFiltersProvider(engine_is_default, manager) {}
+  ~ComponentProvidersGate() override = default;
+  void SetInitialized() {
+    if (initialized_) {
+      return;
+    }
+    initialized_ = true;
+    NotifyObservers(engine_is_default_);
+  }
+  void LoadFilterSet(
+    base::OnceCallback<void(
+        base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb) override {
+    // No-op: this is only a sentinel provider to gate initialization.
+    std::move(cb).Run(base::BindOnce([](rust::Box<adblock::FilterSet>*) {}));
+  }
+  std::string GetNameForDebugging() override {
+    return "ComponentProvidersGate";
+  }
+  bool IsInitialized() const override {
+    return initialized_;
+  }
+ private:
+  bool initialized_ = false;
+};
+
+void AdBlockComponentServiceManager::InitializeGatesForTesting() {
+  CHECK_IS_TEST();
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          &AdBlockComponentServiceManager::DoInitializeGatesForTesting,
+          weak_factory_.GetWeakPtr()));
+}
+
+void AdBlockComponentServiceManager::DoInitializeGatesForTesting() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (default_gate_) {
+    default_gate_->SetInitialized();
+  }
+  if (additional_gate_) {
+    additional_gate_->SetInitialized();
+  }
+}
+
 AdBlockComponentServiceManager::AdBlockComponentServiceManager(
     PrefService* local_state,
     AdBlockFiltersProviderManager* filters_provider_manager,
@@ -86,6 +147,13 @@ AdBlockComponentServiceManager::AdBlockComponentServiceManager(
       catalog_provider_(catalog_provider),
       filters_provider_manager_(filters_provider_manager),
       list_p3a_(list_p3a) {
+  // Register gate providers so filter set loading is blocked until the catalog
+  // loads and all component providers are registered.
+  default_gate_ = std::make_unique<ComponentProvidersGate>(
+      true, filters_provider_manager_);
+  additional_gate_ = std::make_unique<ComponentProvidersGate>(
+      false, filters_provider_manager_);
+
   catalog_provider_->LoadFilterListCatalog(
       base::BindOnce(&AdBlockComponentServiceManager::OnFilterListCatalogLoaded,
                      weak_factory_.GetWeakPtr()));
@@ -188,7 +256,10 @@ void AdBlockComponentServiceManager::StartRegionalServices() {
     }
   }
 
-  filters_provider_manager_->OnComponentProvidersRegistered();
+  // Mark the gate providers as initialized now that all component providers
+  // have been registered. This unblocks filter set loading.
+  default_gate_->SetInitialized();
+  additional_gate_->SetInitialized();
 }
 
 void AdBlockComponentServiceManager::LoadComponentFiltersProviders() {

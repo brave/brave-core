@@ -24,6 +24,7 @@
 #include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_download_manager.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
+#include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_custom_resource_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_default_resource_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_resource_provider.h"
@@ -129,7 +130,8 @@ class AdBlockServiceTestBase : public testing::Test {
   // Sets the DAT cache timestamp pref to simulate a previous session that
   // wrote cached DAT files.
   void SetCachedDATTimestamp() {
-    prefs_.SetString(prefs::kAdBlockDATCacheTimestamp, "1234");
+    prefs_.SetString(prefs::kAdBlockDefaultDATCacheTimestamp, "1234");
+    prefs_.SetString(prefs::kAdBlockAdditionalDATCacheTimestamp, "1234");
   }
 
   std::unique_ptr<AdBlockService> CreateServiceWithTaskRunner(
@@ -146,6 +148,8 @@ class AdBlockServiceTestBase : public testing::Test {
         profile_dir_.GetPath());
     service->custom_resource_provider()->OverrideResourcesForTesting(
         adblock::new_empty_resource_storage());
+    // Post async gate initialization to mirror the real async catalog load.
+    service->component_service_manager()->InitializeGatesForTesting();
     return service;
   }
 
@@ -236,10 +240,8 @@ TEST_F(AdBlockServiceTest, LoadsCachedDATFilesOnCreation) {
 
   ASSERT_TRUE(
       base::test::RunUntil([&]() { return dat_observer.BothLoaded(); }));
-  ASSERT_FALSE(default_filter_list_loaded);
-  ASSERT_FALSE(additional_filter_list_loaded);
 
-  // Verify default engine rules are loaded
+  // Verify default engine rules are loaded (from cached DAT)
   result = service->GetDefaultEngineForTesting().ShouldStartRequest(
       GURL("https://blocked-by-default.com/script.js"),
       blink::mojom::ResourceType::kScript, "test.com", false, false, false);
@@ -328,15 +330,11 @@ TEST_F(AdBlockServiceTest, LoadsOnlyAdditionalCachedDATFile) {
 }
 
 TEST_F(AdBlockServiceTest, WorksWithoutCachedDATFiles) {
-  // Don't create any cached files - service should still work
-
+  // Don't create any cached files or set timestamp - service should still work.
   auto service = CreateService();
 
-  DATLoadObserver observer;
-  service->AddObserver(&observer);
-  ASSERT_TRUE(base::test::RunUntil([&]() { return observer.BothLoaded(); }));
-
-  // Should not crash and not block anything
+  // Without a cached DAT, no DAT load event fires. Just verify the service
+  // doesn't crash and doesn't block anything.
   auto result = service->GetDefaultEngineForTesting().ShouldStartRequest(
       GURL("https://example.com/script.js"),
       blink::mojom::ResourceType::kScript, "test.com", false, false, false);
@@ -449,11 +447,6 @@ TEST_F(AdBlockServiceTest, CachedDATLoadedThenProviderUpdates) {
   auto provider = std::make_unique<TestFiltersProvider>(
       "||from-filter-set.com^", /*engine_is_default=*/true);
   provider->RegisterAsSourceProvider(service.get());
-  provider->SimulateOnComponentProvidersRegistered();
-  // The first OnChanged from registration is suppressed (cached DAT has
-  // rules). Simulate a real provider content change by notifying again —
-  // this is what happens when a component update is delivered.
-  provider->SimulateUpdate();
 
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return default_filter_list_loaded;

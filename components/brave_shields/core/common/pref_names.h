@@ -26,8 +26,10 @@ inline constexpr char kAdBlockRegionalFilters[] =
 inline constexpr char kAdBlockListSubscriptions[] =
     "brave.ad_block.list_subscriptions";
 inline constexpr char kAdBlockDeveloperMode[] = "brave.ad_block.developer_mode";
-inline constexpr char kAdBlockDATCacheTimestamp[] =
-    "brave.ad_block.cache.dat_timestamp";
+inline constexpr char kAdBlockDefaultDATCacheTimestamp[] =
+    "brave.ad_block.cache.default_dat_timestamp";
+inline constexpr char kAdBlockAdditionalDATCacheTimestamp[] =
+    "brave.ad_block.cache.additional_dat_timestamp";
 
 inline constexpr char kFBEmbedControlType[] = "brave.fb_embed_default";
 inline constexpr char kTwitterEmbedControlType[] =

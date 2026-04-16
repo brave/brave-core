@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 
-#include <algorithm>
 #include <memory>
 #include <string>
 #include <utility>
@@ -17,17 +16,16 @@
 #include "base/notreached.h"
 #include "base/rand_util.h"
 #include "base/task/sequenced_task_runner.h"
-#include "base/time/time.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 
 namespace brave_shields {
 
 AdBlockFiltersProviderManager::AdBlockFiltersProviderManager(
-    bool suppress_initial_notification) {
-  suppress_default_initial_ = suppress_initial_notification;
-  suppress_additional_initial_ = suppress_initial_notification;
-}
+    bool suppress_default_initial,
+    bool suppress_additional_initial)
+    : suppress_default_initial_(suppress_default_initial),
+      suppress_additional_initial_(suppress_additional_initial) {}
 
 AdBlockFiltersProviderManager::~AdBlockFiltersProviderManager() = default;
 
@@ -51,11 +49,6 @@ void AdBlockFiltersProviderManager::RemoveProvider(
   DCHECK(it != filters_providers.end());
   filters_providers.erase(it);
 
-  auto& initial_filters_providers =
-      is_for_default_engine ? initial_default_engine_filters_providers_
-                            : initial_additional_engine_filters_providers_;
-  initial_filters_providers.erase(provider);
-
   NotifyObservers(is_for_default_engine);
 }
 
@@ -77,76 +70,17 @@ AdBlockFiltersProviderManager::GetProviders(bool is_for_default_engine) const {
                                : additional_engine_filters_providers_;
 }
 
-void AdBlockFiltersProviderManager::OnComponentProvidersRegistered() {
-  if (component_providers_registered_) {
-    return;
-  }
-
-  if (!suppress_default_initial_ && !suppress_additional_initial_) {
-    return;
-  }
-
-  component_providers_registered_ = true;
-  // cache the list of components when registration finishes so we can wait for
-  // them to initialize
-  if (suppress_default_initial_) {
-    initial_default_engine_filters_providers_ =
-        default_engine_filters_providers_;
-  }
-
-  if (suppress_additional_initial_) {
-    initial_additional_engine_filters_providers_ =
-        additional_engine_filters_providers_;
-  }
-}
-
-void AdBlockFiltersProviderManager::ClearSuppressionFallback() {
-  // Only notify engines whose suppression wasn't already cleared by the
-  // normal OnComponentProvidersRegistered path.
-  bool notify_default = suppress_default_initial_;
-  bool notify_additional = suppress_additional_initial_;
-
-  suppress_default_initial_ = false;
-  suppress_additional_initial_ = false;
-
-  if (notify_default && AreAllProvidersInitialized(true)) {
-    NotifyObservers(true);
-  }
-  if (notify_additional && AreAllProvidersInitialized(false)) {
-    NotifyObservers(false);
-  }
-}
-
 void AdBlockFiltersProviderManager::OnChanged(bool is_for_default_engine) {
-  // When a cached DAT is providing initial rules, suppress all notifications
-  // until component providers have registered and the first "all providers
-  // ready" event has been consumed.
-  // Start a 5-second fallback timer on the first suppressed OnChanged so
-  // suppression is always cleared even if OnComponentProvidersRegistered
-  // is never called (e.g., no catalog component installed yet).
-  if ((suppress_default_initial_ || suppress_additional_initial_) &&
-      !suppress_fallback_timer_.IsRunning()) {
-    suppress_fallback_timer_.Start(
-        FROM_HERE, base::Seconds(5),
-        base::BindOnce(
-            &AdBlockFiltersProviderManager::ClearSuppressionFallback,
-            weak_factory_.GetWeakPtr()));
-  }
-
-  if (component_providers_registered_) {
-    if (!std::ranges::all_of(initial_default_engine_filters_providers_,
-                            &AdBlockFiltersProvider::IsInitialized)) {
-      suppress_default_initial_ = false;
-      initial_default_engine_filters_providers_.clear();
-    }
-    if (!std::ranges::all_of(initial_additional_engine_filters_providers_,
-                            &AdBlockFiltersProvider::IsInitialized)) {
-      suppress_additional_initial_ = false;
-      initial_additional_engine_filters_providers_.clear();
-    }
-  }
-
   if (!AreAllProvidersInitialized(is_for_default_engine)) {
+    return;
+  }
+
+  // When a cached DAT provides initial rules, consume the first "all
+  // providers ready" notification — the DAT already has rules.
+  bool& suppress = is_for_default_engine ? suppress_default_initial_
+                                         : suppress_additional_initial_;
+  if (suppress) {
+    suppress = false;
     return;
   }
 
@@ -155,13 +89,6 @@ void AdBlockFiltersProviderManager::OnChanged(bool is_for_default_engine) {
 
 bool AdBlockFiltersProviderManager::AreAllProvidersInitialized(
     bool is_for_default_engine) const {
-  bool suppress = is_for_default_engine ? suppress_default_initial_
-                                        : suppress_additional_initial_;
-
-  if (suppress) {
-    // Still waiting for component providers — don't consume the flag yet.
-    return false;
-  }
 
   auto& filters_providers = is_for_default_engine
                                 ? default_engine_filters_providers_

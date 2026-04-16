@@ -78,9 +78,4 @@ bool TestFiltersProvider::IsInitialized() const {
   return is_initialized_;
 }
 
-void TestFiltersProvider::SimulateOnComponentProvidersRegistered() {
-  AdBlockFiltersProvider::filters_provider_manager_
-      ->OnComponentProvidersRegistered();
-}
-
 }  // namespace brave_shields

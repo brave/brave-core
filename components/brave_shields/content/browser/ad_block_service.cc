@@ -199,15 +199,16 @@ AdBlockService::AdBlockService(
 
   dat_cache_manager_ =
       std::make_unique<AdBlockDATCacheManager>(local_state_, profile_dir_);
-  filters_provider_manager_ = std::make_unique<AdBlockFiltersProviderManager>(
-      dat_cache_manager_->HasCachedDAT());
-
   // Start reading cached DAT files from disk as early as possible so the
   // engine can be populated before components arrive from the network.
   if (base::FeatureList::IsEnabled(features::kAdblockDATCache)) {
     dat_cache_manager_->ReadCachedDATFiles(base::BindOnce(
         &AdBlockService::OnReadCachedDATFiles, weak_factory_.GetWeakPtr()));
   }
+
+  filters_provider_manager_ = std::make_unique<AdBlockFiltersProviderManager>(
+      dat_cache_manager_->HasCachedDAT(true),
+      dat_cache_manager_->HasCachedDAT(false));
 
   component_service_manager_ = std::make_unique<AdBlockComponentServiceManager>(
       local_state_, filters_provider_manager_.get(), locale_,

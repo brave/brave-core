@@ -157,6 +157,7 @@ void AdBlockServiceTest::SetUpOnMainThread() {
 
 void AdBlockServiceTest::PreRunTestOnMainThread() {
   PlatformBrowserTest::PreRunTestOnMainThread();
+  component_service_manager()->InitializeGatesForTesting();
   WaitForAdBlockServiceThreads();
 
   // Wait for initial engine creation to complete, especially on slower

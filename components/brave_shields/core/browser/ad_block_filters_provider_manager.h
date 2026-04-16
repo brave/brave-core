@@ -34,7 +34,8 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
                                       public AdBlockFiltersProvider::Observer {
  public:
   explicit AdBlockFiltersProviderManager(
-      bool suppress_initial_notification = false);
+      bool suppress_default_initial = false,
+      bool suppress_additional_initial = false);
   ~AdBlockFiltersProviderManager() override;
   AdBlockFiltersProviderManager(const AdBlockFiltersProviderManager&) = delete;
   AdBlockFiltersProviderManager& operator=(
@@ -60,12 +61,6 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
   void ForceNotifyObserver(AdBlockFiltersProvider::Observer& observer,
                            bool is_default_engine);
 
-  void SetSuppressInitialNotification(bool suppress);
-
-  // Called by AdBlockComponentServiceManager after all component providers
-  // have been registered from the catalog.
-  void OnComponentProvidersRegistered();
-
   std::string GetNameForDebugging() override;
 
   const base::flat_set<AdBlockFiltersProvider*>& GetProviders(
@@ -84,24 +79,8 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
   base::flat_set<AdBlockFiltersProvider*> default_engine_filters_providers_;
   base::flat_set<AdBlockFiltersProvider*> additional_engine_filters_providers_;
 
-  base::flat_set<AdBlockFiltersProvider*>
-      initial_default_engine_filters_providers_;
-  base::flat_set<AdBlockFiltersProvider*>
-      initial_additional_engine_filters_providers_;
-
-  // When set, OnChanged is suppressed until OnComponentProvidersRegistered
-  // is called and all providers have initialized. The first notification
-  // after that point is also suppressed (it's the initial "all ready"
-  // event, not a real change). Used when a cached DAT provides initial rules.
   bool suppress_default_initial_ = false;
   bool suppress_additional_initial_ = false;
-  bool component_providers_registered_ = false;
-
-  void ClearSuppressionFallback();
-
-  // Fallback: clears suppression after 5 seconds in case
-  // OnComponentProvidersRegistered is never called.
-  base::OneShotTimer suppress_fallback_timer_;
 
   base::CancelableTaskTracker task_tracker_;
 

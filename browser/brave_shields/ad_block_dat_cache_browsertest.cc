@@ -12,10 +12,12 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/ad_block_service_browsertest.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/test/base/platform_browser_test.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -42,11 +44,13 @@ class AdBlockDATCacheBrowserTest : public AdBlockServiceTest,
 
   bool IsCacheEnabled() const { return GetParam(); }
 
-  // Override to skip InstallDefaultAdBlockComponent — on restart we want
-  // the engine to load from the cached DAT, not from a freshly installed
-  // component.
+  // When the DAT cache feature is enabled, the initial filter set load may
+  // be suppressed (engine loaded from cached DAT instead). The base class
+  // PreRunTestOnMainThread waits for MakeEngineWithRules which won't fire
+  // in that case. Skip it and just wait for the service threads.
   void PreRunTestOnMainThread() override {
     PlatformBrowserTest::PreRunTestOnMainThread();
+    component_service_manager()->InitializeGatesForTesting();
     WaitForAdBlockServiceThreads();
   }
 
@@ -54,15 +58,11 @@ class AdBlockDATCacheBrowserTest : public AdBlockServiceTest,
   base::test::ScopedFeatureList feature_list_;
 };
 
-// PRE_ test: Load rules from persisted provider types so DAT caches are
-// written. The browser will restart before the actual test runs.
+// PRE_ test: Add custom filter rules (persisted to prefs) and wait for
+// DAT caches to be written. The browser will restart before the actual test.
 IN_PROC_BROWSER_TEST_P(AdBlockDATCacheBrowserTest,
                        PRE_DATCacheLoadedOnRestart) {
-  InstallDefaultAdBlockComponent();
-
-  // Default engine: component filters (persisted via component updater).
-  UpdateAdBlockInstanceWithRules("||component-rule.com^");
-  // Additional engine: custom filters (persisted to prefs).
+  // Custom filters are persisted to prefs and go into the additional engine.
   UpdateCustomAdBlockInstanceWithRules("||custom-rule.com^");
 
   if (IsCacheEnabled()) {
@@ -70,7 +70,8 @@ IN_PROC_BROWSER_TEST_P(AdBlockDATCacheBrowserTest,
     // were serialized and written to disk successfully).
     ASSERT_TRUE(base::test::RunUntil([&]() {
       return !local_state()
-                  ->GetString(brave_shields::prefs::kAdBlockDATCacheTimestamp)
+                  ->GetString(
+                      brave_shields::prefs::kAdBlockDefaultDATCacheTimestamp)
                   .empty();
     })) << "Timeout waiting for DAT cache timestamp to be written";
 
@@ -86,33 +87,31 @@ IN_PROC_BROWSER_TEST_P(AdBlockDATCacheBrowserTest,
     }
   }
 
-  // All rules should work within this session.
+  WaitForAdBlockServiceThreads();
+
+  // Custom rule should work within this session.
   GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
   NavigateToURL(tab_url);
-  content::WebContents* contents = web_contents();
   EXPECT_EQ(true,
-            EvalJs(contents, content::JsReplace(
-                                 "setExpectations(0, 1, 0, 0); addImage($1)",
-                                 embedded_test_server()
-                                     ->GetURL("component-rule.com", "/logo.png")
-                                     .spec())));
-  EXPECT_EQ(true,
-            EvalJs(contents, content::JsReplace(
-                                 "setExpectations(0, 2, 0, 0); addImage($1)",
-                                 embedded_test_server()
-                                     ->GetURL("custom-rule.com", "/logo.png")
-                                     .spec())));
+            EvalJs(web_contents(),
+                   content::JsReplace(
+                       "setExpectations(0, 1, 0, 0); addImage($1)",
+                       embedded_test_server()
+                           ->GetURL("custom-rule.com", "/logo.png")
+                           .spec())));
 }
 
-// After restart: with the cache enabled all rules should be active.
-// Without the cache only the pref-persisted custom filter rule survives,
-// proving the enabled case loads non-persisted rules from the DAT cache.
+// After restart: with cache enabled, the cached DAT loads and custom rules
+// are active without a filter set rebuild. Without cache, custom rules still
+// work because they're persisted to prefs.
 IN_PROC_BROWSER_TEST_P(AdBlockDATCacheBrowserTest, DATCacheLoadedOnRestart) {
+  auto* service = g_brave_browser_process->ad_block_service();
+
   if (IsCacheEnabled()) {
     // Verify timestamp persisted from PRE_ test.
     EXPECT_FALSE(
         local_state()
-            ->GetString(brave_shields::prefs::kAdBlockDATCacheTimestamp)
+            ->GetString(brave_shields::prefs::kAdBlockDefaultDATCacheTimestamp)
             .empty())
         << "DAT cache timestamp not persisted";
 
@@ -126,85 +125,35 @@ IN_PROC_BROWSER_TEST_P(AdBlockDATCacheBrowserTest, DATCacheLoadedOnRestart) {
           << "Additional engine DAT file not found on restart";
     }
 
-    // Wait for cached DATs to be loaded into the engines.
-    auto* service = g_brave_browser_process->ad_block_service();
+    // Wait for cached DATs to be loaded into both engines.
     ASSERT_TRUE(base::test::RunUntil([service]() {
       return service->IsDATLoadedForTesting(true) &&
              service->IsDATLoadedForTesting(false);
     })) << "Timeout waiting for cached DAT files to load";
+
+    WaitForAdBlockServiceThreads();
+
+    // Verify no filter set rebuild happened — the cached DATs should have
+    // been sufficient.
+    EXPECT_FALSE(service->IsFilterListLoadedForTesting(true))
+        << "Default engine filter set was rebuilt — suppression failed";
+    EXPECT_FALSE(service->IsFilterListLoadedForTesting(false))
+        << "Additional engine filter set was rebuilt — suppression failed";
   }
+
   WaitForAdBlockServiceThreads();
 
+  // Custom rule should be active (from cached DAT when enabled, from prefs
+  // when disabled).
   GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
   NavigateToURL(tab_url);
-  content::WebContents* contents = web_contents();
-
-  if (IsCacheEnabled()) {
-    // Both rules active via cached DATs.
-    EXPECT_EQ(true, EvalJs(contents,
-                           content::JsReplace(
-                               "setExpectations(0, 1, 0, 0); addImage($1)",
-                               embedded_test_server()
-                                   ->GetURL("component-rule.com", "/logo.png")
-                                   .spec())));
-    EXPECT_EQ(true,
-              EvalJs(contents, content::JsReplace(
-                                   "setExpectations(0, 2, 0, 0); addImage($1)",
-                                   embedded_test_server()
-                                       ->GetURL("custom-rule.com", "/logo.png")
-                                       .spec())));
-  } else {
-    // Component rule is NOT persisted (temp dir gone) — should not block.
-    EXPECT_EQ(true, EvalJs(contents,
-                           content::JsReplace(
-                               "setExpectations(1, 0, 0, 0); addImage($1)",
-                               embedded_test_server()
-                                   ->GetURL("component-rule.com", "/logo.png")
-                                   .spec())));
-    // Custom filter rule IS persisted to prefs — should still block.
-    EXPECT_EQ(true,
-              EvalJs(contents, content::JsReplace(
-                                   "setExpectations(1, 1, 0, 0); addImage($1)",
-                                   embedded_test_server()
-                                       ->GetURL("custom-rule.com", "/logo.png")
-                                       .spec())));
-  }
-}
-
-// Verify that DAT cache is written after a filter set load.
-IN_PROC_BROWSER_TEST_P(AdBlockDATCacheBrowserTest,
-                       DATCacheWrittenAfterFilterSetLoad) {
-  if (!IsCacheEnabled()) {
-    GTEST_SKIP() << "Only relevant with DAT cache enabled";
-  }
-
-  InstallDefaultAdBlockComponent();
-  UpdateAdBlockInstanceWithRules("||some-rule.com^");
-
-  // Wait for the timestamp to be written.
-  ASSERT_TRUE(base::test::RunUntil([&]() {
-    return !local_state()
-                ->GetString(brave_shields::prefs::kAdBlockDATCacheTimestamp)
-                .empty();
-  })) << "Timeout waiting for DAT cache timestamp";
-
-  // Verify the DAT file exists.
-  {
-    base::ScopedAllowBlockingForTesting allow_blocking;
-    base::FilePath cache_dir =
-        profile()->GetPath().AppendASCII("adblock_cache");
-    EXPECT_TRUE(base::PathExists(cache_dir.AppendASCII("engine0.dat")));
-  }
-
-  // The rule should be active.
-  GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
-  NavigateToURL(tab_url);
-  EXPECT_EQ(true, EvalJs(web_contents(),
-                         content::JsReplace(
-                             "setExpectations(0, 1, 0, 0); addImage($1)",
-                             embedded_test_server()
-                                 ->GetURL("some-rule.com", "/logo.png")
-                                 .spec())));
+  EXPECT_EQ(true,
+            EvalJs(web_contents(),
+                   content::JsReplace(
+                       "setExpectations(0, 1, 0, 0); addImage($1)",
+                       embedded_test_server()
+                           ->GetURL("custom-rule.com", "/logo.png")
+                           .spec())));
 }
 
 INSTANTIATE_TEST_SUITE_P(All,

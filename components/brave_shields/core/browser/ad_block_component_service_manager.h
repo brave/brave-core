@@ -11,6 +11,8 @@
 #include <string>
 #include <vector>
 
+#include <memory>
+
 #include "base/memory/raw_ptr.h"
 #include "base/sequence_checker.h"
 #include "base/thread_annotations.h"
@@ -18,7 +20,10 @@
 #include "base/values.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filter_list_catalog_provider.h"
+#include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
+#include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
+#include "third_party/rust/cxx/v1/cxx.h"
 #include "brave/components/brave_shields/core/browser/ad_block_list_p3a.h"
 #include "components/prefs/pref_service.h"
 
@@ -27,6 +32,7 @@ class PrefChangeRegistrar;
 
 namespace brave_shields {
 
+class ComponentProvidersGate;
 class FilterListCatalogEntry;
 
 // The adblock component service manager, in charge of initializing and
@@ -68,6 +74,9 @@ class AdBlockComponentServiceManager
   // AdBlockFilterListCatalogProvider::Observer
   void OnFilterListCatalogLoaded(const std::string& catalog_json) override;
 
+  // Async gate initialization for unit tests that have no catalog component.
+  void InitializeGatesForTesting();
+
  private:
   friend class ::AdBlockServiceTest;
   void OnAdBlockOnlyModePrefChanged();
@@ -75,15 +84,22 @@ class AdBlockComponentServiceManager
   void StartRegionalServices();
   void LoadComponentFiltersProviders();
   void UpdateFilterListPrefs(const std::string& uuid, bool enabled);
+  void DoInitializeGatesForTesting();
 
   void RecordP3ACookieListEnabled();
 
-  // for tests
   const std::map<std::string, std::unique_ptr<AdBlockComponentFiltersProvider>>&
   component_filters_providers() {
     DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
     return component_filters_providers_;
   }
+
+  // Sentinel providers that block filter set loading until the catalog has
+  // loaded and all component providers have been registered.
+  std::unique_ptr<ComponentProvidersGate> default_gate_
+      GUARDED_BY_CONTEXT(sequence_checker_);
+  std::unique_ptr<ComponentProvidersGate> additional_gate_
+      GUARDED_BY_CONTEXT(sequence_checker_);
 
   raw_ptr<PrefService> local_state_ GUARDED_BY_CONTEXT(sequence_checker_);
   std::string locale_ GUARDED_BY_CONTEXT(sequence_checker_);
