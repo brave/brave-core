@@ -237,8 +237,7 @@ export const processUploadedFilesWithLimits = (
     const isImage =
       file.type === Mojom.UploadedFileType.kImage
       || file.type === Mojom.UploadedFileType.kScreenshot
-    const isPdf = file.type === Mojom.UploadedFileType.kPdf
-    const isText = file.type === Mojom.UploadedFileType.kText
+    const isDocument = file.type === Mojom.UploadedFileType.kPdf
     if (isImage) {
       const maxNewImages =
         Mojom.MAX_IMAGES - totalUploadedImages - currentPendingImages
@@ -246,7 +245,7 @@ export const processUploadedFilesWithLimits = (
         newFiles.push(file)
         currentImages++
       }
-    } else if (isPdf) {
+    } else if (isDocument) {
       const hasExtractedText = !!file.extractedText
       if (hasExtractedText) {
         // PDFs with extracted text bypass raw file limits
@@ -266,9 +265,6 @@ export const processUploadedFilesWithLimits = (
           currentRawDocuments++
         }
       }
-    } else if (isText) {
-      // Text files are not subject to document count/size limits
-      newFiles.push(file)
     }
   }
 

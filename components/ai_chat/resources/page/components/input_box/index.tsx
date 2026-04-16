@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { showAlert } from '@brave/leo/react/alertCenter'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import Tooltip from '@brave/leo/react/tooltip'
@@ -24,6 +23,7 @@ import {
 } from '../attachment_item'
 import { ModelSelector } from '../model_selector'
 import usePromise from '$web-common/usePromise'
+import { isImageFile } from '../../constants/file_types'
 import { convertFileToUploadedFile } from '../../utils/file_utils'
 import { isFullPageScreenshot } from '../../../common/conversation_history_utils'
 import Editable from './editable'
@@ -76,7 +76,6 @@ type Props = Pick<
     | 'getPluralString'
     | 'processImageFile'
     | 'processPdfFile'
-    | 'processTextFile'
     | 'openAIChatAgentProfile'
     | 'skills'
   >
@@ -220,39 +219,26 @@ function InputBox(props: InputBoxProps) {
       return
     }
 
-    const files = Array.from(clipboardData.files)
+    const files = Array.from(clipboardData.files).filter(isImageFile)
 
     if (files.length === 0) {
       return
     }
 
-    // Prevent the default paste behavior for files
+    // Prevent the default paste behavior for images
     e.preventDefault()
 
     try {
-      const results = await Promise.all(
+      const uploadedFiles = await Promise.all(
         files.map((file) =>
           convertFileToUploadedFile(
             file,
             props.context.processImageFile,
             props.context.processPdfFile,
-            props.context.processTextFile,
           ),
         ),
       )
-      const uploadedFiles = results.filter(
-        (f): f is Mojom.UploadedFile => f !== null,
-      )
-      if (uploadedFiles.length > 0) {
-        props.context.attachImages(uploadedFiles)
-      }
-      if (uploadedFiles.length < files.length) {
-        showAlert({
-          type: 'error',
-          content: getLocale(S.CHAT_UI_FILE_UPLOAD_ERROR),
-          actions: [],
-        })
-      }
+      props.context.attachImages(uploadedFiles)
     } catch (error) {
       // Silently fail - error will be handled by the upload system
     }
