@@ -23,7 +23,6 @@ enum ContentSettingSource {
   kRemoteList,
   kSupervised,
   kInstalledWebApp,
-  kTpcdGrant,
   kOsJavascriptOptimizer,
   kTest,
 };
