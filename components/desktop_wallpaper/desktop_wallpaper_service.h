@@ -8,11 +8,28 @@
 #include "url/gurl.h"
 
 namespace desktop_wallpaper {
+enum class Scaling { kFitToScreen, kFillScreen, kStretchToFill, kCenter };
+
+inline std::optional<Scaling> ScalingFromString(const std::string& scaling) {
+  if (scaling == "fitToScreen") {
+    return Scaling::kFitToScreen;
+  }else if (scaling == "fillScreen") {
+    return Scaling::kFillScreen;
+  } else if (scaling == "stretchToFill") {
+    return Scaling::kStretchToFill;
+  } else if (scaling == "center") {
+    return Scaling::kCenter;
+  }
+
+  return std::nullopt;
+}
+
 class DesktopWallpaper {
  public:
   static void SetImageAsDesktopWallpaper(
       scoped_refptr<network::SharedURLLoaderFactory> loader_factory,
-      const GURL& url);
+      const GURL& url,
+      Scaling scaling);
 
  private:
   static void SetWallpaper(base::FilePath path);

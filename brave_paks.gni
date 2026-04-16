@@ -74,6 +74,7 @@ template("brave_extra_paks") {
         "$root_gen_dir/brave/browser/resources/brave_new_tab_page_refresh/brave_new_tab_page_refresh_generated.pak",
         "$root_gen_dir/brave/browser/resources/brave_welcome_page/brave_welcome_page_generated.pak",
         "$root_gen_dir/brave/browser/resources/settings/brave_settings_resources.pak",
+        "$root_gen_dir/brave/browser/resources/desktop_wallpaper/desktop_wallpaper_all.pak",
       ]
     }
 
@@ -88,6 +89,7 @@ template("brave_extra_paks") {
         "//brave/browser/resources/brave_welcome_page:generated_resources",
         "//brave/browser/resources/settings:resources",
         "//brave/components/resources:strings",
+         "//brave/browser/resources/desktop_wallpaper",
       ]
     }
 

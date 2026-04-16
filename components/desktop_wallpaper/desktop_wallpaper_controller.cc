@@ -16,13 +16,14 @@ std::unique_ptr<network::SimpleURLLoader>& GetLoader() {
 
 void DesktopWallpaper::SetImageAsDesktopWallpaper(
     scoped_refptr<network::SharedURLLoaderFactory> loader_factory,
-    const GURL& url) {
+    const GURL& url,
+    Scaling scaling) {
   base::FilePath home_path;
 
   CHECK(base::PathService::Get(base::DIR_HOME, &home_path));
 
   base::FilePath img_name = base::FilePath(url.path()).BaseName();
-  base::FilePath path = home_path.Append(FILE_PATH_LITERAL(img_name));
+  base::FilePath path = home_path.Append(img_name);
 
   DownloadAndSaveWallpaper(loader_factory, url, path);
 }

@@ -14,6 +14,7 @@
 #include "base/no_destructor.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
+#include "brave/browser/ui/webui/desktop_wallpaper/desktop_wallpaper_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
@@ -144,6 +145,11 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
 #endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
   } else if (host == kWelcomeHost && !profile->IsGuestSession()) {
     return new BraveWelcomeUI(web_ui, url.host());
+#if BUILDFLAG(IS_MAC)
+  } else if (host == kDesktopWallpaperHost) {
+    return new DesktopWallpaperUI(web_ui);
+
+#endif
   } else if (host == chrome::kChromeUINewTabHost) {
     // For private profiles the webui handling kChromeUINewTabHost is configured
     // with RegisterChromeWebUIConfigs, so we should not get called here with a

@@ -27,9 +27,9 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/browser_dialogs.h"
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
+#include "brave/browser/ui/webui/desktop_wallpaper/desktop_wallpaper_ui.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_shields/core/common/features.h"
-#include "brave/components/desktop_wallpaper/desktop_wallpaper_service.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_theme_resources.h"
@@ -454,10 +454,15 @@ void RenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
       }
       break;
 #if BUILDFLAG(IS_MAC)
-    case IDC_CONTENT_CONTEXT_SET_IMAGE_AS_BACKGROUND:
-      desktop_wallpaper::DesktopWallpaper::SetImageAsDesktopWallpaper(
-          GetProfile()->GetURLLoaderFactory(), params_.src_url);
+    case IDC_CONTENT_CONTEXT_SET_IMAGE_AS_BACKGROUND: {
+      auto delegate = std::make_unique<DesktopWallpaperDialogDelegate>(
+          params_.src_url.spec(), GetProfile()->GetURLLoaderFactory());
+
+      ShowConstrainedWebDialog(GetProfile(), std::move(delegate),
+                               source_web_contents_);
+
       break;
+    }
 #endif
     default:
       RenderViewContextMenu_Chromium::ExecuteCommand(id, event_flags);
