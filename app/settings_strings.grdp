@@ -273,6 +273,9 @@
   <message name="IDS_SETTINGS_TAB_STRIP_POSITION" desc="Title for the side panel section. Allows the user to toggle which side the tab strip is displayed on.">
     Tab position
   </message>
+  <message name="IDS_SETTINGS_VERTICAL_TABS_EXPAND_ON_HOVER" desc="Title for the side panel section. Allows the user to toggle whether or not the vertical tab strip expands on hover.">
+    Auto expand tabs on hover
+  </message>
   <message name="IDS_SETTINGS_ALLOW_SPLIT_VIEW_DRAG_AND_DROP" desc="Label for the checkbox which enables or disables drag and drop for split view.">
     Allow split view drag-and-drop on left or right edge of window
   </message>
@@ -372,7 +375,10 @@
    An extension is controlling this setting
  </message>
   <message name="IDS_SETTINGS_CONTROLLED_BY_EXTENSION_WITH_DISABLE_AND_MANAGE_OPTION" desc="Text of the disclaimer that a setting's value is being controlled by an extension. `Disable` link immediately disables the extension. `Manage` link goes to the Details &gt; Extension Options link; either `chrome://extensions/?options=ID ` or `chrome-extension://ID/options.html`">
-    The "<ph name="NAME">$1<ex>Adblocker plusplus</ex></ph>" extension is controlling this setting. To change your default search engine, <ph name="BEGIN_LINK_DISABLE">&lt;a href="#" id="disableLink"&gt;</ph>disable the extension<ph name="END_LINK_DISABLE">&lt;/a&gt;</ph> or <ph name="BEGIN_LINK_MANAGE">&lt;a target="_blank" href="$2" id="manageLink"&gt;</ph>manage its settings<ph name="END_LINK_MANAGE">&lt;/a&gt;</ph>.
+    The "<ph name="NAME">$1<ex>Adblocker plusplus</ex></ph>" extension is controlling this setting. To change your default search engine, <ph name="BEGIN_LINK_DISABLE">&lt;a href="#" id="disableLink"&gt;</ph>disable the extension<ph name="END_LINK_DISABLE">&lt;/a&gt;</ph> or <ph name="BEGIN_LINK_MANAGE">&lt;a href="#" id="manageLink"&gt;</ph>manage its settings<ph name="END_LINK_MANAGE">&lt;/a&gt;</ph>.
+  </message>
+  <message name="IDS_SETTINGS_CONTROLLED_BY_EXTENSION_WITH_MANAGE_OPTION" desc="Text of the disclaimer that a setting's value is being controlled by an extension. `See details` link goes to the Details &gt; Extension Options link; either `chrome://extensions/?options=ID ` or `chrome-extension://ID/options.html`">
+    The "<ph name="NAME">$1<ex>Adblocker plusplus</ex></ph>" extension was added by your organization's policy and is controlling this setting. <ph name="BEGIN_LINK">&lt;a href="#" id="manageLink"&gt;</ph>See details<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_CLEAR" desc="Label used on a menu item or button to delete an item.">
     Delete
@@ -705,9 +711,6 @@
   </message>
   <message name="IDS_SETTINGS_AUTOFILL_AI_WHEN_ON_SAVED_INFO" desc="Bullet 1 of 2 that appears beneath the 'When on' title. 'Autofill': the user is on the 'enhanced autofill' feature page, but we want to frame this new type of autofill as just 'Autofill'. 'Can offer to save info when you submit forms': we want to convey that the user has the choice, each time a form is submitted, whether they want their info saved to Brave for the purposes of Autofill. 'Like your driver's license or passport number': Today, supported data types for 'enhanced autofill' include 1) driver's licenses, 2) passports, and 3) vehicles. Eventually we'll support more, but this example needs to mention these types of data and not others.">
     Autofill can offer to save info when you submit forms, like your driver's license or passport number
-  </message>
-  <message name="IDS_SETTINGS_AUTOFILL_AI_ENTERPRISE_LOGGING_MANAGED_DISABLED" desc="Text only seen by enterprise users (Brave services provided for a company). Users should understand that their content saved with autofill won't be used to improve AI, neither AI features specifically or AI models generally.">
-    Your content will not be used to improve AI. Your organization may change these settings at any time.
   </message>
   <message name="IDS_SETTINGS_AUTOFILL_AI_ENTITY_INSTANCES_HEADER" desc="Header of the entity instance list on the enhanced autofill settings page.">
     Saved information
@@ -2381,6 +2384,12 @@
   <message name="IDS_SETTINGS_SEARCH_MANAGE_EXTENSION" desc="Text displayed for a button that allows the user to manage a Brave extension">
     Manage extension
   </message>
+  <message name="IDS_SETTINGS_SEARCH_NO_SITE_SHORTCUTS" desc="Text displayed when there are no site shortcuts present in the subsection.">
+    No site shortcuts found
+  </message>
+  <message name="IDS_SETTINGS_SEARCH_NO_FEATURE_SHORTCUTS" desc="Text displayed when there are no feature or extension shortcuts available in the subsection.">
+    No feature or extension shortcuts found
+  </message>
 
   <!-- Search Engines Page -->
   <message name="IDS_SETTINGS_SEARCH_ENGINES" desc="Name of the settings page which manages search engines.">
@@ -3548,6 +3557,12 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_RESET_CONFIRMATION" desc="Body text of a dialog that asks users to confirm that they want to reset all permissions for a site.">
     The next time you visit, <ph name="SITE">$1<ex>www.example.com</ex></ph> will use default permissions
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_PARENT_APP_PERMISSION_EXPLANATION" desc="Explanation text that appears underneath the Permission header on an app's site settings page. Any changes the user makes to this app's permissions also apply to any installed sub apps.">
+    Permissions you allow for <ph name="APP_NAME">$1<ex>Parent app</ex></ph> will also be allowed for its installed apps.
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SUB_APP_PERMISSION_EXPLANATION" desc="Explanation text that appears underneath the Permission header on an app's site settings page. Any changes the user makes to this app's permissions also apply to the parent app and its other sub apps.">
+    Permissions you allow for <ph name="APP_NAME">$1<ex>Sub app</ex></ph> will also be allowed for <ph name="PARENT_APP_NAME">$2<ex>Parent app</ex></ph> and its installed apps.
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_DELETE_STORAGE_DIALOG_TITLE" desc="Title of the dialog that warns about deleting storage used by a site.">
     Delete site data?
   </message>
@@ -4134,6 +4149,14 @@
     <message name="IDS_SETTINGS_SYSTEM_HARDWARE_ACCELERATION_LABEL" desc="Label for the checkbox that forces Brave to render via graphics acceleration (GPU) when available.">
       Use graphics acceleration when available
     </message>
+    <if expr="is_win">
+      <message name="IDS_SETTINGS_SYSTEM_ISOLATION_STATE_LABEL" desc="Label for the Enable process isolation toggle.">
+        Enable Process Isolation
+      </message>
+      <message name="IDS_SETTINGS_SYSTEM_ISOLATION_STATE_SUBLABEL" desc="Sublabel for the Enable process isolation toggle.">
+        Process Isolation prevents other applications from tampering with <ph name="IDS_SHORT_PRODUCT_NAME">$1<ex>Brave</ex></ph>.
+      </message>
+    </if>
     <message name="IDS_SETTINGS_SYSTEM_FEATURE_NOTIFICATIONS_LABEL" desc="Label for the toggle that enables Brave system notifications about features.">
       Show system notifications about Brave features and tips
     </message>
@@ -4161,7 +4184,7 @@
       On-device AI
     </message>
     <message name="IDS_SETTINGS_SYSTEM_FEATURE_ON_DEVICE_AI_ENABLED_SUB_LABEL" desc="This string describes what turning off the toggle implies.">
-      To power features like scam detection, Brave can use AI models that run directly on your device without sending your data to Brave servers. When this is off, these features might not work. <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" aria-description="$2"&gt;</ph>Learn more about on-device AI<ph name="END_LINK">&lt;/a&gt;</ph>
+      To power features like scam detection, Brave can use AI models that run directly on your device. When this is off, these features might not work. <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank" aria-description="$2"&gt;</ph>Learn more about on-device AI<ph name="END_LINK">&lt;/a&gt;</ph>
     </message>
   </if>
 
@@ -4561,22 +4584,22 @@
   </message>
 
   <!-- Experimental settings strings -->
-  <message name="IDS_SETTINGS_AI_INNOVATIONS_PAGE_TITLE" desc="This label is on the left Navigation sidebar in Brave’s settings. It tells the user that they can see settings related to AI (artificial intelligence) in this section. It is a noun phrase that refers to our collection of AI settings. These settings include Help me write, Tab organizer, and more. If possible, translate this so that it closely matches the Navigation tab title at the top of this marketing page: https://www.google.com/chrome/ai-innovations.">
+  <message name="IDS_SETTINGS_AI_INNOVATIONS_PAGE_TITLE" desc="This label is on the left Navigation sidebar in Brave’s settings. It tells the user that they can see settings related to AI (artificial intelligence) in this section. It is a noun phrase that refers to our collection of AI settings. These settings include Help me write and more. If possible, translate this so that it closely matches the Navigation tab title at the top of this marketing page: https://www.google.com/chrome/ai-innovations.">
     AI innovations
   </message>
-  <message name="IDS_SETTINGS_AI_PAGE_MAIN_TITLE" desc="This string is the title of a card that sets the context for the ‘AI innovations’ section of Brave’s settings. Here, the user can see settings related to AI (artificial intelligence) in this section; these settings include Help me write, Tab organizer, and more. This title is before the ‘Things to consider’ subheading and bullet points. We want users to read this card and understand the considerations that apply to all Brave’s AI features. The tone should be motivating.">
+  <message name="IDS_SETTINGS_AI_PAGE_MAIN_TITLE" desc="This string is the title of a card that sets the context for the ‘AI innovations’ section of Brave’s settings. Here, the user can see settings related to AI (artificial intelligence) in this section; these settings include Help me write and more. This title is before the ‘Things to consider’ subheading and bullet points. We want users to read this card and understand the considerations that apply to all Brave’s AI features. The tone should be motivating.">
     Reimagine Brave, supercharged with AI
   </message>
-  <message name="IDS_SETTINGS_AI_PAGE_MAIN_SUBLABEL_1" desc="This is a bullet point on a card that sets the context for the ‘AI innovations’ section of Brave’s settings. Here, the user can see settings related to AI (artificial intelligence) in this section; these settings include Help me write, Tab organizer, and more. This bullet point is after the ‘Reimagine Brave, supercharged with AI’ title and ‘Things to consider’ subheading. We want users to read this card and understand the considerations that apply to all Brave’s AI features. This bullet point specifically notes that AI features are actively developing and results may include errors. The tone should be informative.">
+  <message name="IDS_SETTINGS_AI_PAGE_MAIN_SUBLABEL_1" desc="This is a bullet point on a card that sets the context for the ‘AI innovations’ section of Brave’s settings. Here, the user can see settings related to AI (artificial intelligence) in this section; these settings include Help me write and more. This bullet point is after the ‘Reimagine Brave, supercharged with AI’ title and ‘Things to consider’ subheading. We want users to read this card and understand the considerations that apply to all Brave’s AI features. This bullet point specifically notes that AI features are actively developing and results may include errors. The tone should be informative.">
     These features use AI, are in early development, and won’t always get it right
   </message>
-  <message name="IDS_SETTINGS_AI_PAGE_MAIN_SUBLABEL_2" desc="This is a bullet point on a card that sets the context for the ‘AI innovations’ section of Brave’s settings. Here, the user can see settings related to AI (artificial intelligence) in this section; these settings include Help me write, Tab organizer, and more. This bullet point is after the ‘Reimagine Brave, supercharged with AI’ title and ‘Things to consider’ subheading. We want users to read this card and understand the considerations that apply to all Brave’s AI features. This bullet point specifically notes that AI features will send data to Brave servers in order to provide the feature’s respective benefit. The tone should be informative.">
+  <message name="IDS_SETTINGS_AI_PAGE_MAIN_SUBLABEL_2" desc="This is a bullet point on a card that sets the context for the ‘AI innovations’ section of Brave’s settings. Here, the user can see settings related to AI (artificial intelligence) in this section; these settings include Help me write and more. This bullet point is after the ‘Reimagine Brave, supercharged with AI’ title and ‘Things to consider’ subheading. We want users to read this card and understand the considerations that apply to all Brave’s AI features. This bullet point specifically notes that AI features will send data to Brave servers in order to provide the feature’s respective benefit. The tone should be informative.">
     When you use these features, relevant data is sent to Brave in order to create AI experiences
   </message>
-  <message name="IDS_SETTINGS_AI_PAGE_MAIN_SUBLABEL_3" desc="This is a bullet point on a card that sets the context for the ‘AI innovations’ section of Brave’s settings. Here, the user can see settings related to AI (artificial intelligence) in this section; these settings include Help me write, Tab organizer, and more. This bullet point is after the ‘Reimagine Brave, supercharged with AI’ title and ‘Things to consider’ subheading. We want users to read this card and understand the considerations that apply to all Brave’s AI features. This bullet point specifically notes that AI features are actively developing, and that humans may review feature usage and corresponding data in order to further improve the feature. The tone should be informative.">
+  <message name="IDS_SETTINGS_AI_PAGE_MAIN_SUBLABEL_3" desc="This is a bullet point on a card that sets the context for the ‘AI innovations’ section of Brave’s settings. Here, the user can see settings related to AI (artificial intelligence) in this section; these settings include Help me write and more. This bullet point is after the ‘Reimagine Brave, supercharged with AI’ title and ‘Things to consider’ subheading. We want users to read this card and understand the considerations that apply to all Brave’s AI features. This bullet point specifically notes that AI features are actively developing, and that humans may review feature usage and corresponding data in order to further improve the feature. The tone should be informative.">
     Data sent to Brave may be seen by human reviewers to improve Brave AI’s technology
   </message>
-  <message name="IDS_SETTINGS_AI_PAGE_MAIN_MANAGED_SUBLABEL_3" desc="This is a bullet point on a card that sets the context for the ‘AI innovations’ section of Brave’s settings. Here, the user can see settings related to AI (artificial intelligence) in this section; these settings include Help me write, Tab organizer, and more. This bullet point is after the ‘Reimagine Brave, supercharged with AI’ title and ‘Things to consider’ subheading. We want users to read this card and understand the considerations that apply to all Brave’s AI features. This bullet point specifically notes that AI features are actively developing, and that humans may review feature usage and corresponding data in order to further improve the feature. The tone should be informative.">
+  <message name="IDS_SETTINGS_AI_PAGE_MAIN_MANAGED_SUBLABEL_3" desc="This is a bullet point on a card that sets the context for the ‘AI innovations’ section of Brave’s settings. Here, the user can see settings related to AI (artificial intelligence) in this section; these settings include Help me write and more. This bullet point is after the ‘Reimagine Brave, supercharged with AI’ title and ‘Things to consider’ subheading. We want users to read this card and understand the considerations that apply to all Brave’s AI features. This bullet point specifically notes that AI features are actively developing, and that humans may review feature usage and corresponding data in order to further improve the feature. The tone should be informative.">
     Your organization manages how data collected by these features may be used.
   </message>
   <message name="IDS_SETTINGS_AI_PAGE_MAIN_MANAGED_LEARN_MORE_ACCESSIBILITY_LABEL" desc="This string is found in a link that takes the user to the AI features and policies help center article when the user taps it. The tone should be informative">
@@ -4593,26 +4616,6 @@
   </message>
   <message name="IDS_SETTINGS_AI_SUBPAGE_FEATURE_MANAGED_DISABLED_LABEL" desc="This is an indicator on the top of the AI feature settings subpage, which informs the user that this feature is not available because it was turned off by their organization. The tone should be informative.">
     This feature is disabled by your organization
-  </message>
-
-  <!-- Experimental settings - Tab Organization -->
-  <message name="IDS_SETTINGS_EXPERIMENTAL_ADVANCED_FEATURE2_LABEL" desc="Toggle primary description">
-    Tab organizer
-  </message>
-  <message name="IDS_SETTINGS_TAB_ORGANIZER_SUB_LABEL" desc="This string is the subheading of a setting for ‘Tab organizer’. This subheading summarizes the user benefit of the Tab Organizer feature. This is an AI (artificial intelligence) feature that helps users get organized by suggesting and automatically creating tab groups out of the user’s open tabs. The tone should be motivating.">
-    Automatically creates tab groups based on your open tabs
-  </message>
-  <message name="IDS_SETTINGS_AUTOTABS_SETTING_LINK_A11Y" desc="This string is found in a link that takes the user to the Tab Organizer help center article when the user taps it. It is at the end of the Tab Organizer setting description that users see when they visit the ‘AI innovations’ section of settings (AI = artificial intelligence). The tone should be informative.">
-    Learn more about tab organizer
-  </message>
-  <message name="IDS_SETTINGS_TAB_ORGANIZER_WHEN_ON_AUTO_GROUPS" desc="This string is a bullet point in the ‘When used’ column, which describes the behavior of this feature. This string explains that this feature suggests and automatically creates tab groups out of the user’s open tabs. The tone should be motivating.">
-    Automatically suggests and creates groups from your open tabs
-  </message>
-  <message name="IDS_SETTINGS_TAB_ORGANIZER_WHEN_ON_IMPROVE_FOCUS" desc="This string is a bullet point in the ‘When used’ column, which describes the behavior of this feature. This string explains that this feature helps users stay focused on their work because their tabs will be organized. The tone should be motivating.">
-    Helps you focus on whatever you’re working on
-  </message>
-  <message name="IDS_SETTINGS_TAB_ORGANIZER_CONSIDER_DATA" desc="This is a bullet point in the ‘Things to consider’ column, which describes things users should consider about a feature. This string explains that AI features will send data to Brave servers in order to provide the feature’s respective benefit. The tone should be informative.">
-    When you use organize tabs, the titles and URLs of your open tabs are sent to Brave to generate suggested tab groups
   </message>
 
   <!-- Experimental settings - Compare -->

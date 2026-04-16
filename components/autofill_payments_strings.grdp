@@ -160,9 +160,12 @@
   <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_TITLE_TO_CLOUD_V4" desc="Title text for the Autofill save card prompt when the card is to be saved by uploading it to Google Payments, according to November 2018 UI guidelines. The prompt can be either a bubble or an infobar.">
     Save card to Brave sync chain?
   </message>
-    <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_TITLE_TO_CLOUD_SECURITY" desc="Title text for the credit card upload save prompt on Desktop, using security-focused messaging. Became the new default for Desktop in Dec. 2024 and new default for Android and IOS (bottomsheet only) in H1 2025.">
-      Save card securely?
-    </message>
+  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_TITLE_TO_CLOUD_SECURITY" desc="Title text for the credit card upload save prompt on Desktop, using security-focused messaging. Became the new default for Desktop in Dec. 2024 and new default for Android and IOS (bottomsheet only) in H1 2025.">
+    Save card securely?
+  </message>
+  <message name="IDS_AUTOFILL_SAVE_CARD_IN_GOOGLE_WALLET_PROMPT_TITLE" desc="Title text for the save credit card in Brave Wallet save prompt. This title specifically references Brave Wallet instead of Brave sync chain.">
+    Save card in Brave Wallet
+  </message>
   <message name="IDS_AUTOFILL_SAVE_CVC_PROMPT_TITLE_TO_CLOUD" desc="Title text for the Autofill CVC upload prompt that offers to upload CVC to the Sync server for existing server cards. This prompt is shown if a CVC is detected for an existing server card on form submission.">
     Save security code?
   </message>
@@ -214,6 +217,9 @@
   </message>
   <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_TO_WALLET_EXPLANATION_SECURITY" desc="Explanation of the benefit of credit card upload save on Desktop, using security-focused messaging. Became the new default for Desktop in Dec. 2024 and new default for Android and IOS (bottomsheet only) in H1 2025. The final line specifically references Brave Wallet instead of Brave sync chain.">
     Pay faster when your card is saved. Card details are encrypted in Brave Wallet.
+  </message>
+  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_TO_WALLET_V2_EXPLANATION" desc="Explanation of the benefit of credit card upload save to Brave Wallet. The final line specifically references Brave Wallet instead of Brave sync chain.">
+    Pay faster with Google Pay when your card is saved. Card details are encrypted in Brave Wallet.
   </message>
   <if expr="is_android or is_ios">
     <message name="IDS_AUTOFILL_SAVE_CVC_MESSAGE_SAVE_ACCEPT" desc="Positive button label for the Autofill save CVC prompt that offers to save CVC for existing server cards. This prompt is shown if a CVC is detected for an existing server card on form submission. The prompt is shown on Android and IOS devices.">
@@ -744,6 +750,9 @@
   <message name="IDS_AUTOFILL_SAVE_IBAN_PROMPT_TITLE_SERVER" desc="Title text for the Autofill save IBAN (International Bank Account Number) to the GPay server prompt when a user submits a form with a valid IBAN.">
     Save IBAN?
   </message>
+  <message name="IDS_AUTOFILL_SAVE_IBAN_TO_WALLET_PROMPT_TITLE" desc="Title text for the Autofill save IBAN (International Bank Account Number) to the Brave Wallet server prompt when a user submits a form with a valid IBAN.">
+    Save IBAN in Brave Wallet
+  </message>
   <message name="IDS_AUTOFILL_UPLOAD_IBAN_PROMPT_EXPLANATION" desc="Explanation text for the Autofill save IBAN (International Bank Account Number) to the GPay server prompt when a user submits a form with a valid IBAN.">
     To autofill this IBAN next time, save it in your Brave sync chain
   </message>
@@ -881,8 +890,14 @@
   <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_DIALOG_TITLE_LABEL" desc="Title encouraging users to enroll their card to VCN." formatter_data="android_java">
       Make it more secure with a virtual card next time?
   </message>
+  <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_DIALOG_TITLE_LABEL_V2" desc="Title encouraging users to enroll their card to VCN." formatter_data="android_java">
+    Turn on a virtual card for autofill
+  </message>
   <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_DIALOG_CONTENT_LABEL" desc="Text explaining the benefit of enrolling a credit card as a virtual card. Also contains a link to learn more about virtual cards from IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL.">
     A virtual card hides your actual card to help protect you from potential fraud. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL">$1<ex>Learn about virtual cards</ex></ph>
+  </message>
+  <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_DIALOG_CONTENT_LABEL_V2" desc="Text explaining the benefit of enrolling a credit card as a virtual card and manage on Brave Wallet. Also contains a link to learn more about virtual cards from IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL.">
+    A virtual card number will be filled when you check out with this card to protect your actual details. Manage in Brave Wallet. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL">$1<ex>Learn about virtual cards</ex></ph>
   </message>
   <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_DECLINE_BUTTON_LABEL_SKIP" desc="Text displayed in the decline button in the virtual card enroll bubble. It is displayed only if the bubble/infobar will still be shown again at a later date after this one is declined.">
     Skip
@@ -1016,17 +1031,35 @@
   <message name="IDS_AUTOFILL_CARD_BNPL_PAY_LATER_CLEAR_FORM_TO_ENABLE" desc="Text for the disabled payment option button in the BNPL Pay Later tab, explaining that the user must clear the form to enable and use the pay later option.">
       Clear form to use pay later option
   </message>
+  <message name="IDS_AUTOFILL_CARD_BNPL_PAY_LATER_PAYMENT_OPTION_NOT_AVAILABLE_RIGHT_NOW" desc="Text for the disabled payment option button in the BNPL Pay Later tab, explaining that the option is not available right now.">
+      Not available right now
+  </message>
+  <message name="IDS_AUTOFILL_CARD_BNPL_PAY_LATER_PAYMENT_OPTION_CURRENCY_NOT_SUPPORTED" desc="Text for the disabled payment option button in the BNPL Pay Later tab, explaining that the currency is not supported.">
+      Currency not supported
+  </message>
+  <message name="IDS_AUTOFILL_CARD_BNPL_PAY_LATER_PAYMENT_OPTION_NOT_AVAILABLE_FOR_MERCHANT" desc="Text for the disabled payment option button in the BNPL Pay Later tab, explaining that the option is not available for this merchant.">
+      Not available for this merchant
+  </message>
   <message name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_PAYMENT_OPTION_NOT_SUPPORTED_BY_MERCHANT" desc="Text for the disabled payment option button in the BNPL select provider screen, explaining that the provider is not supported by the merchant based on the page's URL.">
       Not supported by merchant
   </message>
   <message name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_PAYMENT_OPTION_CHECKOUT_AMOUNT_TOO_LOW" desc="Text for the disabled payment option button in the BNPL select provider screen, explaining that the checkout amount is too low for the BNPL issuer to support.">
       Purchase must be over <ph name="CHECKOUT_AMOUNT_MINIMUM">$1<ex>$50.00</ex></ph>
   </message>
-  <message name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_PAYMENT_OPTION_CHECKOUT_AMOUNT_TOO_HIGH" desc="Text for the payment option button in the BNPL select provider screen, explaining that the checkout amount is too high for the BNPL issuer to support.">
+  <message name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_PAYMENT_OPTION_CHECKOUT_AMOUNT_TOO_HIGH" desc="Text for the disabled payment option button in the BNPL select provider screen, explaining that the checkout amount is too high for the BNPL issuer to support.">
       Purchase must be under <ph name="CHECKOUT_AMOUNT_MAXIMUM">$1<ex>$10,000.00</ex></ph>
+  </message>
+  <message name="IDS_AUTOFILL_CARD_BNPL_PAY_LATER_PAYMENT_OPTION_CHECKOUT_AMOUNT_TOO_LOW" desc="Text for the disabled payment option button in the BNPL Pay Later tab, explaining that the checkout amount is too low for the BNPL issuer to support.">
+      Minimum purchase <ph name="CHECKOUT_AMOUNT_MINIMUM">$1<ex>$50.00</ex></ph>
+  </message>
+  <message name="IDS_AUTOFILL_CARD_BNPL_PAY_LATER_PAYMENT_OPTION_CHECKOUT_AMOUNT_TOO_HIGH" desc="Text for the disabled payment option button in the BNPL Pay Later tab, explaining that the checkout amount is too high for the BNPL issuer to support.">
+      Maximum purchase <ph name="CHECKOUT_AMOUNT_MAXIMUM">$1<ex>$10,000.00</ex></ph>
   </message>
   <message name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_AI_FOOTNOTE" desc="A note explaining that Brave will collect data from the checkout page to determine the checkout amount.">
       Content from the checkout page is shared with Brave to offer these options. To hide pay later options in autofill, go to <ph name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_FOOTNOTE_HIDE_OPTION_PAYMENT_SETTINGS_LINK_TEXT">$1<ex>payment settings</ex></ph>.
+  </message>
+  <message name="IDS_AUTOFILL_CARD_BNPL_PAY_LATER_OPTIONS_AI_FOOTNOTE" desc="A note explaining that Brave will collect data from the checkout page to determine the checkout amount and that payment plans are subject to eligibility.">
+      Content from the checkout page is shared with Brave to offer these options. Payment plans are subject to eligibility. To hide pay later options in autofill, go to <ph name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_FOOTNOTE_HIDE_OPTION_PAYMENT_SETTINGS_LINK_TEXT">$1<ex>payment settings</ex></ph>.
   </message>
   <message name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_FOOTNOTE_FOR_AI_AMOUNT_EXTRACTION_NOTE" desc="A note explaining that Brave will collect data from the checkout page to determine the checkout amount. This string is only part of what's shown on UI and is used for embolding text for first time users.">
       Content from the checkout page is shared with Brave to offer these options.
@@ -1045,6 +1078,12 @@
   </message>
   <message name="IDS_AUTOFILL_CARD_BNPL_LINKED_ISSUER_PILL_LABEL" desc="Label for the linked issuer pill view, which may be displayed on the BNPL select provider screen that prompts the user to choose a pay later provider. If this label is present, it indicates that the user has previously associated this BNPL provider with their Brave account." formatter_data="android_java">
     Linked
+  </message>
+  <message name="IDS_AUTOFILL_PAY_NOW" desc="Label for the tab in the autofill dropdown allowing the user to pay using a standard payment method, such as a credit card.">
+      Pay now
+  </message>
+  <message name="IDS_AUTOFILL_PAY_LATER" desc="Label for the tab in the autofill dropdown allowing the user to pay later using a Buy Now, Pay Later (BNPL) provider.">
+      Pay later
   </message>
   <message name="IDS_AUTOFILL_CARD_INFO_RETRIEVAL_SUGGESTION_IPH_BUBBLE_FALLBACK_LABEL" desc="Text shown in the `In-Product Help(IPH)` bubble for card info retrieval suggestions on Brave Android when the issuer_id is not present in the card. It is specifically for card info retrieval enrolled card. Card info will be copied after the user clicks the suggestion.">
       You can autofill this card because your account is linked to Google Pay
@@ -1563,7 +1602,7 @@
 To hide pay later options, go to <ph name="BEGIN_LINK">&lt;link&gt;</ph>payment settings<ph name="END_LINK">&lt;/link&gt;</ph>
     </message>
     <message name="IDS_AUTOFILL_BNPL_ISSUER_BOTTOM_SHEET_AI_TERMS_LABEL" desc="Combined label for the BNPL issuer terms, the AI data sharing notice, and instructions on how to hide the pay later options. Appears in the BNPL select provider bottom sheet." formatter_data="android_java">
-      Payment plans are subject to eligibility. <ph name="BEGIN_BOLD">&lt;bold&gt;</ph>Content from the checkout page is shared with Brave to offer these options.<ph name="END_BOLD">&lt;/bold&gt;</ph> To hide pay later options, go to <ph name="BEGIN_LINK">&lt;link&gt;</ph>payment settings<ph name="END_LINK">&lt;/link&gt;</ph>
+      <ph name="BEGIN_BOLD">&lt;bold&gt;</ph>Content from the checkout page is shared with Brave to offer these options.<ph name="END_BOLD">&lt;/bold&gt;</ph> Payment plans are subject to eligibility. To hide pay later options, go to <ph name="BEGIN_LINK">&lt;link&gt;</ph>payment settings<ph name="END_LINK">&lt;/link&gt;</ph>
     </message>
   </if>
 
@@ -1681,6 +1720,9 @@ To hide pay later options, go to <ph name="BEGIN_LINK">&lt;link&gt;</ph>payment 
   </message>
   <message name="IDS_AUTOFILL_SAVE_CARD_TO_WALLET_CONFIRMATION_SUCCESS_DESCRIPTION_TEXT" desc="Description text for confirmation shown after Brave Wallet save card is successfully uploaded and saved to the server.">
     Your card is saved in Brave Wallet so you can autofill it for future purchases
+  </message>
+  <message name="IDS_AUTOFILL_SAVE_CARD_TO_WALLET_CONFIRMATION_SUCCESS_DESCRIPTION_TEXT_V2" desc="Description text for confirmation shown after Brave Wallet save card is successfully uploaded and saved to the server.">
+    This card is saved in Brave Wallet so you can use it across Brave services
   </message>
   <message name="IDS_AUTOFILL_SAVE_CARD_CONFIRMATION_FAILURE_DESCRIPTION_TEXT" desc="Description text for confirmation shown after save card upload to the server was unsuccessful.">
     This card couldn't be saved in your Brave sync chain. It's saved to Brave on this device instead.

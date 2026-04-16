@@ -236,6 +236,12 @@ CHAR_LIMIT guidelines:
       <message name="IDS_SEARCH_IN_SETTINGS_HELP_CENTER" desc="Message suggesting user search help center when there is no match in search. [CHAR_LIMIT=32]">
         Try searching the help center
       </message>
+      <message name="IDS_SEARCH_IN_SETTINGS_RECENT_TITLE" desc="Title of the search in settings fragment displaying the recent searches. [CHAR_LIMIT=32]">
+        Recently Used
+      </message>
+      <message name="IDS_SEARCH_IN_SETTINGS_RECENT_DELETE" desc="Label of the button deleting all the recent search entries. [CHAR_LIMIT=32]">
+        Delete
+      </message>
 
       <!-- Notification channels -->
       <message name="IDS_NOTIFICATION_CATEGORY_GROUP_GENERAL" desc="Subheading for &quot;General&quot; section of a list of notification categories. [CHAR_LIMIT=32]">
@@ -307,6 +313,9 @@ CHAR_LIMIT guidelines:
       </message>
       <message name="IDS_NOTIFICATION_CATEGORY_TIPS" desc="Label for tips-related notifications, within a list of notification categories. [CHAR_LIMIT=32]">
         Brave Tips
+      </message>
+      <message name="IDS_NOTIFICATION_CATEGORY_FINDS" desc="Label for personalized recommendation notifications, within a list of notification categories. [CHAR_LIMIT=32]">
+        Brave finds
       </message>
 
       <!-- Sign-in, sync and personalization preferences -->
@@ -536,12 +545,23 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_SITE_SEARCH_INACTIVE_SHORTCUTS_HEADER" desc="Header for 'Inactive Shortcuts' section">
         Inactive shortcuts
       </message>
+      <message name="IDS_SITE_SEARCH_ADDITIONAL_INACTIVE_SHORTCUTS_BUTTON_LABEL" desc="Label for the 'Additional inactive shortcuts' button.">
+        Additional inactive sites
+      </message>
       <message name="IDS_SITE_SEARCH_EXTENSIONS_HEADER" desc="Header for 'Extensions' section">
         Extensions
       </message>
       <message name="IDS_SITE_SEARCH_EXTENSIONS_DESCRIPTION" desc="Explanation for 'Extensions' section">
         Some extensions can add search engines to Brave
       </message>
+      <if expr="enable_extensions_core">
+        <message name="IDS_SITE_SEARCH_EXTENSIONS_MENU_MANAGE" desc="Menu item to manage extensions">
+          Manage
+        </message>
+        <message name="IDS_SITE_SEARCH_EXTENSIONS_MENU_DISABLE" desc="Menu item to disable the extension">
+          Disable
+        </message>
+      </if>
       <message name="IDS_SITE_SEARCH_DIALOG_TITLE_ADD" desc="Title for the Add Site Search dialog.">
         Add site search
       </message>
@@ -568,6 +588,18 @@ For more settings that use data to improve your Brave experience, go to <ph name
       </message>
       <message name="IDS_SITE_SEARCH_DIALOG_INPUT_NOT_VALID_ERROR" desc="Error message shown when a required field is not valid in the Edit Site Search dialog.">
         Not valid
+      </message>
+      <message name="IDS_DELETE_SEARCH_ENGINE_DIALOG_TITLE" desc="Title for the delete search engine dialog.">
+        Delete search engine
+      </message>
+      <message name="IDS_DELETE_SEARCH_ENGINE_DIALOG_MESSAGE" desc="Message for the delete search engine dialog.">
+        Are you sure you want to delete this search engine?
+      </message>
+      <message name="IDS_DELETE_SEARCH_ENGINE_DIALOG_DELETE" desc="Label used on a button to delete the search engine.">
+        Delete
+      </message>
+      <message name="IDS_DELETE_SEARCH_ENGINE_DIALOG_CANCEL" desc="Label used on a button to cancel action">
+        Cancel
       </message>
 
 
@@ -699,6 +731,9 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_DIALOG_EDUCATION_TEXT" desc="Text explaining the benefit of enrolling a credit card as a virtual card. Also contains a link to learn more about virtual cards from IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL.">
         A virtual card hides your actual card to help protect you from potential fraud. <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Learn more about virtual cards<ph name="END_LINK1">&lt;/link1&gt;</ph>
       </message>
+      <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_DIALOG_EDUCATION_TEXT_V2" desc="Text explaining the benefit of enrolling a credit card as a virtual card. Also contains a link to learn more about virtual cards from IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL.">
+        A virtual card number will be filled when you check out with this card to protect your actual details. Manage in Brave Wallet. <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Learn more about virtual cards<ph name="END_LINK1">&lt;/link1&gt;</ph>
+      </message>
       <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_DIALOG_CARD_CONTAINER_TITLE" desc="Text describing how the virtual card will be shown to the user in autofill suggestions.">
         Virtual card
       </message>
@@ -711,6 +746,9 @@ For more settings that use data to improve your Brave experience, go to <ph name
 
       <message name="IDS_PREFS_SECTION_AUTOFILL" desc="Title for the Passwords and Autofill preferences. [CHAR_LIMIT=32]">
         Passwords and Autofill
+      </message>
+      <message name="IDS_AUTOFILL_AND_PASSWORDS_SETTINGS_TITLE" desc="Title for the settings menu item leading to the Autofill and passwords UI surface. [CHAR_LIMIT=32]">
+        Autofill and passwords
       </message>
       <message name="IDS_AUTOFILL_OPTIONS_TITLE" desc="Description below switch toggling the use of third-party autofill in Brave." formatter_data="android_java">
         Autofill services
@@ -923,6 +961,11 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_BOOKMARK_BAR_SETTING_SUBTITLE" desc="Subtitle hint for the bookmark bar setting.">
         Hidden on narrow screens
       </message>
+      <if expr="enable_extensions_core">
+        <message name="IDS_EXTENSIONS_PIN_TO_TOOLBAR_SETTING" desc="Title Text of the button that pins the extensions menu icon (the puzzle piece icon) to the toolbar.">
+          Pin to toolbar
+        </message>
+      </if>
 
       <!-- Themes settings -->
       <message name="IDS_THEME_SETTINGS" desc="Title for the Theme settings. [CHAR_LIMIT=32]">
@@ -2918,6 +2961,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_MENU_SHARE_PAGE" desc="Menu item for sharing the current page. [CHAR_LIMIT=27]">
         Share…
       </message>
+      <message name="IDS_MENU_BACK_BUTTON_IPH_TEXT" desc="Message on the generic text buble to educate users on the menu back button">
+        Open the menu to go back
+      </message>
       <message name="IDS_ACCESSIBILITY_MENU_SHARE_VIA" desc="Content description share current page via the most recently used application menu item">
         Share via <ph name="APPLICATION">%s<ex>Gmail</ex></ph>
       </message>
@@ -2926,6 +2972,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_TOAST_DISALLOW_PRINT" desc="Toast message shown when a user tries to print a native page that doesn't support printing.">
         This page can't be printed
+      </message>
+      <message name="IDS_ACCESSIBILITY_MENU_BACK" desc="Content description for the backward navigation button.">
+        Go back
       </message>
       <message name="IDS_ACCESSIBILITY_MENU_BOOKMARK" desc="Content description for the bookmark button when the page is not currently bookmarked.">
         Bookmark this page
@@ -3651,6 +3700,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_SIGNIN_FRE_SUBTITLE_WITHOUT_SYNC" desc="This string is the body of a promotion about signing in to Brave with the user's Brave sync chain. It explains the overarching user benefit of signing in (access to bookmarks, passwords, history, settings, etc.). However, we introduce a caveat, because the user has a managed account (such as Enterprise); this means that, depending on their organization's settings, the user might not be able to save all types of data in their Brave sync chain. We want users to understand why signing in is beneficial, and click 'Continue as name' to sign in to their Brave sync chain.">
         Sign in to get the most out of Brave
       </message>
+      <message name="IDS_SIGNIN_FRE_TITLE_SIGNIN_FORCED_BY_POLICY" meaning="Title" desc="Title of a dialog to sign in to Brave when sign-in is required because of an enterprise policy.">
+        Sign in to Brave
+      </message>
+      <message name="IDS_SIGNIN_FRE_SUBTITLE_SIGNIN_FORCED_BY_POLICY" desc="Subtitle of a dialog to sign in to Brave when sign-in is required because of an enterprise policy.">
+        Your organization requires you to sign in to use Brave.
+      </message>
       <message name="IDS_FRE_SIGNING_IN" desc="Text to show below a progress spinner in the signin FRE to notify the user that signing in is in progress.">
         Signing in\u2026
       </message>
@@ -3980,9 +4035,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_NTP_LEARN_MORE_ABOUT_SUGGESTED_CONTENT" desc="Text in the footer of the New Tab Page. Part of the text is a link to a help center page where the user can learn more about suggested content.">
         <ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn more<ph name="END_LINK">&lt;/link&gt;</ph> about suggested content
       </message>
-      <message name="IDS_NTP_MANAGE_FEED" desc="Menu item to manage feed settings from the feed header overflow menu.">
-        Manage
-      </message>
       <message name="IDS_SYNCED_SET_UP_SNACKBAR_ASK_TO_APPLY" desc="The message text for the snackbar that prompts the user to apply their settings from another device. (Applies settings from another device when the 'apply' button is clicked.)">
       Apply your appearance preferences?
       </message>
@@ -4049,56 +4101,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_NEW_TAB_PAGE_THEME_CUSTOMIZATION_IPH" desc="In-product help that points at the app menu 3-dot icon in new tab page to make users aware of the ntp theme customization.">
         Personalize the background of this page
       </message>
-      <message name="IDS_FOLLOW_MANAGE_FOLLOWING" desc="Header for Following Management activity.">
-        Following
-      </message>
-      <message name="IDS_FOLLOW_MANAGE_FOLLOWING_EMPTY_STATE" desc="Message for Following Management activity when there are no followed sites to show.">
-        You'll find sites you follow here
-      </message>
-      <message name="IDS_FOLLOW_MANAGE_UPDATES_UNAVAILABLE" desc="Label this web feed source as unavailable so the user will not expect updates from it.">
-        Updates Unavailable
-      </message>
-      <message name="IDS_FOLLOW_MANAGE_WAITING_FOR_CONTENT" desc="Label this web feed source as waiting for content so the user will know to check  back later.">
-        Waiting for content
-      </message>
-      <message name="IDS_FEED_FOLLOW_UNKNOWN_ERROR" desc="Toast displayed when a failure occurs attempting to follow or unfollow a web feed.">
-        Something went wrong. Try again later.
-      </message>
-      <message name="IDS_FEED_FOLLOW_NO_CONNECTION_ERROR" desc="Toast displayed when there is no network connection when the user tries to follow or unfollow a web feed.">
-        No connection. Try again later.
-      </message>
-      <message name="IDS_NTP_DISCOVER_ON" desc="Title in the feed header when the feed is turned on. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278).">
-        Discover
-      </message>
-      <message name="IDS_NTP_DISCOVER_ON_BRANDED" desc="Title in the feed header when the feed is turned on and the default search engine is not Brave. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278).">
-        Discover by Brave
-      </message>
       <message name="IDS_NTP_DISCOVER_OFF" desc="Title in the feed header when the feed is turned off. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278).">
         Discover - off
       </message>
       <message name="IDS_NTP_DISCOVER_OFF_BRANDED" desc="Title in the feed header when the feed is turned off and the default search engine is not Brave. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278).">
         Discover by Brave - off
       </message>
-
-      <message name="IDS_NTP_FOLLOWING" meaning="Title for content - e.g. Followed sites" desc="Title in the feed header for user-customized following feed. This feed is composed of articles and content from sites that the user has followed">Following</message>
-      <message name="IDS_NTP_FEED_MENU_IPH" desc="In-product help that points at the menu icon for the news feed on Brave's new tab page. This string instructs the user to open the menu for settings that let them control the content that appears on the feed.">
-        Control your stories and activity here
-      </message>
-      <message name="IDS_NTP_NEW" desc="Text in a badge indicating a section is new, thereby drawing attention to a new feature. [CHAR_LIMIT=6]">New</message>
-      <message name="IDS_ACCESSIBILITY_NTP_FEED_MENU_BUTTON" desc="Content description for the feed header menu button. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278).">
-        Options for Discover
-      </message>
-      <message name="IDS_ACCESSIBILITY_NTP_FEED_MENU_IPH" desc="In-product help that points at the menu icon for the news feed on Brave's new tab page. This string instructs the user to open the menu for settings that let them control the content that appears on the feed. Please use the branded term for Discover (TC ID 1799975766543019278).">
-        Control your stories from the Options for Discover button
-      </message>
-      <message name="IDS_ACCESSIBILITY_NTP_FOLLOWING_UNREAD_CONTENT" desc="Content description for the feed header blue dot for user-customized following feed, which indicates that unread content is available.">
-      Unread stories ready
-      </message>
-      <message name="IDS_FEED_OPTIONS_DROPDOWN_DESCRIPTION" desc="Content description for an arrow indicating that the item can be clicked again to open an options drawer">Open sort options</message>
-      <message name="IDS_FEED_OPTIONS_DROPDOWN_DESCRIPTION_CLOSE" desc="Content description for an arrow indicating that the item can be clicked again to close an options drawer">Close sort options</message>
-      <message name="IDS_FEED_OPTIONS_SORT_BY_GROUPED" desc="Content description for a button to allow sorting of feed articles by sites or origin">Sort by Site</message>
-      <message name="IDS_FEED_OPTIONS_SORT_BY_LATEST" desc="Content description for a button to allow sorting of feed articles by latest">Sort by Latest</message>
-      <message name="IDS_FEED_SORT_PUBLISHER" desc="Chip text on feed header that, when clicked, sorts and groups feed content by source - websites. Use the same word for sites as used in TC ID 5814749351757353073">Site</message>
       <message name="IDS_DISCOVER_NO_CARDS" desc="Message title for the article feed on the New Tab Page. Shown when the user is connected to the internet but no new feed content could be fetched. Please translate 'stories' to match its use in TC ID 792300740424433300. Also see TC ID 7331961212006720987 for the corresponding message in Discover.">No stories available</message>
       <message name="IDS_DISCOVER_NO_CARDS_INSTRUCTIONS" desc="Message body for the article feed on the New Tab Page. Instructs the user to come back later when new feed content is available. Please translate 'stories' to match its use in TC ID 792300740424433300. Also see TC ID 7331961212006720987 for the corresponding message in Discover.">Check back later for new stories</message>
       <message name="IDS_DISCOVER_CANT_REFRESH" desc="Message title for the article feed on the New Tab Page. Shown when feed content is not available because there is no internet connection. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278). Also see TC ID 6114827482740570724 for the corresponding message in Discover.">Can't refresh Discover</message>
@@ -4153,9 +4161,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_TAB_GROUP_UPDATE_IPH_TEXT" desc="Text to describe that a blue dot on the tab switcher means there's tab group share activity.">
          “<ph name="TAB_GROUP_TITLE">%s<ex>Vacation</ex></ph>” tab group has new activity
-      </message>
-      <message name="IDS_WEB_FEED_AWARENESS" desc="Educating the user about the web feed.">
-        Explore content to follow
       </message>
 
       <!-- Toolbar button strings -->
@@ -4326,6 +4331,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_MENU_MANAGE_ALL_WINDOWS" desc="Menu item for bringing up instance switcher UI. [CHAR_LIMIT=27]">
         Manage windows
       </message>
+      <message name="IDS_MENU_BACK" desc="Tooltip for the button to advance to the previous web page. Verb. [CHAR_LIMIT=27]">
+        Back
+      </message>
       <message name="IDS_MENU_FORWARD" desc="Tooltip for the button to advance to the next web page. Verb. [CHAR_LIMIT=27]">
         Forward
       </message>
@@ -4371,14 +4379,14 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_MENU_EXTENSIONS" desc="Menu item for opening the 'Extensions' page that allows the user to manage installed extensions. [CHAR_LIMIT=27]">
         Extensions
       </message>
+      <message name="IDS_MENU_EXTENSIONS_MENU" desc="Menu item for opening the Extensions Menu (i.e. the puzzle icon menu). [CHAR_LIMIT=27]">
+        Open extensions menu
+      </message>
       <message name="IDS_MENU_MANAGE_EXTENSIONS" desc="Menu item for opening the 'Extensions' page that allows the user to manage installed extensions. [CHAR_LIMIT=27]">
         Manage Extensions
       </message>
       <message name="IDS_MENU_CHROME_WEBSTORE" desc="Menu item for opening the chrome webstore that allows the user to install extensions. [CHAR_LIMIT=27]">
         Visit Web Store
-      </message>
-      <message name="IDS_MENU_TINKER_TANK" desc="Menu item for opening the tinker tank bottom sheet. [CHAR_LIMIT=27]" translateable="false">
-        Tinker tank
       </message>
       <message name="IDS_CHROME_HISTORY" desc="Menu item for opening the CCT history page. [CHAR_LIMIT=27]">
         Brave history
@@ -4388,6 +4396,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_MENU_QUICK_DELETE" desc="Menu item for quick delete functionality that allows users to delete their browsing data. [CHAR_LIMIT=27]">
         Delete browsing data
+      </message>
+      <message name="IDS_MENU_SITE_CONTROLS" desc="Menu item on Android to view and manage controls for the current website. [CHAR_LIMIT=27]">
+        Site controls
       </message>
       <message name="IDS_MENU_DOWNLOADS" desc="Menu item for opening the downloads page. [CHAR_LIMIT=27]">
         Downloads
@@ -4504,15 +4515,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_MENU_BOOKMARK_ALL_TABS" desc="Menu item for bookmarking all tabs.">
         Bookmark all tabs
-      </message>
-      <message name="IDS_MENU_UNPIN_GLIC_BUTTON" desc="Menu item for unpinning the tab strip Glic button.">
-        Unpin
-      </message>
-      <message name="IDS_MENU_PIN_GLIC" desc="Menu item for pinning the Gemini button on the tab strip.">
-        Pin Gemini
-      </message>
-      <message name="IDS_MENU_UNPIN_GLIC" desc="Menu item for unpinning the Gemini button on the tab strip.">
-        Unpin Gemini
       </message>
 
       <!-- Bookmarks strings -->
@@ -5044,9 +5046,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
           other {See <ph name="TABS_COUNT_MANY">%1$d<ex>2</ex></ph> tabs with new activity in shared tab groups}
         }
       </message>
-      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_IDENTITY_DISC" desc="The content description for a toolbar button displaying user profile picture. Tapping on this button navigates to 'Sync and Brave services' page in settings">
-              Manage account
-      </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_IDENTITY_DISC_ERROR_WITH_NAME_AND_EMAIL" desc="The content description for a toolbar button displaying user profile picture with an error badge. Tapping on this button navigates to Settings page">
         Signed in as <ph name="USER_NAME">%1$s<ex>Peter Parker</ex></ph>. <ph name="USER_EMAIL">%2$s<ex>peter.parker@gmail.com</ex></ph>. Brave sync chain error. Opens settings.
       </message>
@@ -5572,12 +5571,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_MAX_NUMBER_OF_WINDOWS_INSTANCE_SWITCHER_INACTIVE_TAB" desc="Message to notify the user thata window cannot be restored because the total number of persisted instances exceeds the window limit.">
         To restore a new window, reduce the total number of active windows to <ph name="MAX_WINDOW_COUNT_MINUS_ONE">%1$d</ph> or fewer. Inactive windows are deleted after 6 months.
       </message>
-      <message name="IDS_MAX_NUMBER_OF_WINDOWS_INSTANCE_SWITCHER_V2_ACTIVE_TAB" desc="Message to notify the user that a new window cannot be created because the total number of persisted instances exceeds the window limit.">
-        To open a new window, reduce the total number of windows across active and inactive to <ph name="MAX_WINDOW_COUNT_MINUS_ONE">%1$d</ph> or fewer.
-      </message>
-      <message name="IDS_MAX_NUMBER_OF_WINDOWS_INSTANCE_SWITCHER_V2_INACTIVE_TAB" desc="Message to notify the user thata window cannot be restored because the total number of persisted instances exceeds the window limit.">
-        To restore a new window, reduce the total number of windows across active and inactive to <ph name="MAX_WINDOW_COUNT_MINUS_ONE">%1$d</ph> or fewer. Inactive windows are deleted after 6 months.
-      </message>
       <message name="IDS_TAB_DROPPED_DIFFERENT_MODEL" desc="Toast that appears when a tab is dropped into tab strip with a different profile (regular v.s. private).">
         You can find all open tabs in the tab switcher
       </message>
@@ -5871,6 +5864,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_KEYBOARD_SHORTCUT_OPEN_NEW_TAB" desc="A text label that appears next to the keyboard shortcut to open a new tab in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Open a new tab
       </message>
+      <message name="IDS_KEYBOARD_SHORTCUT_TAB_SEARCH" desc="A text label that appears next to the keyboard shortcut to search tabs in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
+        Search tabs
+      </message>
       <message name="IDS_KEYBOARD_SHORTCUT_REOPEN_NEW_TAB" desc="A text label that appears next to the keyboard shortcut for reopening the last tab in the chrome app. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Reopen closed tab
       </message>
@@ -6111,12 +6107,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
 
       <!-- Multi-instance message strings -->
-      <message name="IDS_MULTI_INSTANCE_RESTORATION_MESSAGE_TITLE" desc="Title of the message shown when the number of persisted instances exceeds the max instance count after an instance limit downgrade.">
-        Only <ph name="MAX_INSTANCE_COUNT">%1$s<ex>5</ex></ph> windows can be shown
-      </message>
-      <message name="IDS_MULTI_INSTANCE_RESTORATION_MESSAGE_DESCRIPTION" desc="Description of the message shown when the number of persisted instances exceeds the max instance count after an instance limit downgrade.">
-        Select manage to see all windows
-      </message>
       <message name="IDS_MULTI_INSTANCE_MESSAGE_BUTTON" desc="Text on the button that will open the instance switcher dialog.">
         Manage
       </message>
@@ -6203,6 +6193,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_IPH_TAB_TEARING_XR" desc="The in-product-help message to notify the user about the new tab switcher on an XR device.">
         Pinch, hold, and drag to open tabs in a new window
       </message>
+      <message name="IDS_IPH_GESTURE_USER_EDUCATION_TEXT_BUBBLE" desc="The in-product-help message to notify the user about edge swipe for navigation.">
+        Swipe from the edge to go back
+      </message>
+      <message name="IDS_IPH_GESTURE_USER_EDUCATION_TAP_TO_DISMISS" desc="The in-product-help message to notify users how to dismiss.">
+        Tap to dismiss
+      </message>
 
       <!-- Search Widget strings -->
       <message name="IDS_SEARCH_WIDGET_DEFAULT" desc="Default text for the search widget">
@@ -6280,15 +6276,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_SEND_TAB_TO_SELF_SHEET_TOOLBAR" desc="Header for device picker sheet where users can pick a device to send a tab to.">
         Send to
-      </message>
-      <message name="IDS_SEND_TAB_TO_SELF_DEVICE_LAST_ACTIVE_MORE_THAN_ONE_DAY" desc="String displayed in the device picker indicating the last time the device was synced to the user's account.">
-        Active <ph name="last_updated">%1$d<ex>5</ex></ph> days ago
-      </message>
-      <message name="IDS_SEND_TAB_TO_SELF_DEVICE_LAST_ACTIVE_ONE_DAY_AGO" desc="String displayed in the device picker indicating the last time the device was synced to the user's account one day ago.">
-        Active 1 day ago
-      </message>
-      <message name="IDS_SEND_TAB_TO_SELF_DEVICE_LAST_ACTIVE_TODAY" desc="String displayed in the device picker indicating the last time the device was synced to the user's account today.">
-        Active today
       </message>
       <message name="IDS_SEND_TAB_TO_SELF_MANAGE_DEVICES_LINK" desc="Text with a link to a page where the user can manage the devices they can share a tab to.">
         <ph name="BEGIN_LINK">&lt;link&gt;</ph>Your devices<ph name="END_LINK">&lt;/link&gt;</ph> · <ph name="EMAIL">%1$s<ex>foo@gmail.com</ex></ph>
@@ -7459,6 +7446,18 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
 
       <!-- Default browser promo -->
+      <message name="IDS_SET_CHROME_AS_YOUR_DEFAULT" desc="Generic text indicating that the user can change their default browser to Brave.">
+        Set Brave as your default
+      </message>
+      <message name="IDS_PROMO_TEXT_SECURITY" desc="Promotional text advertising the speed and security of Brave.">
+        Fast and secure web browsing
+      </message>
+      <message name="IDS_PROMO_TEXT_CONVENIENCE" desc="Promotional text advertising the convenience of Brave.">
+        Easily open links from message, documents and other apps
+      </message>
+      <message name="IDS_PROMO_TEXT_SYNCHRONICITY" desc="Promotional text advertising the synchronicity of Brave.">
+        Seamlessly continue on any device
+      </message>
       <message name="IDS_MAKE_CHROME_DEFAULT" desc="Menu item in the app menu to set Brave as the default browser.">
         Make Brave default
       </message>
@@ -7746,16 +7745,27 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         No, thanks
       </message>
       <message name="IDS_CHROME_FINDS_OPT_IN_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="Content description of the Brave Finds opt-in bottom sheet informing the user on what Brave Finds is and asking whether to opt-in.">
-        Brave Finds opt-in bottom sheet
+        Brave finds opt-in bottom sheet
       </message>
       <message name="IDS_CHROME_FINDS_OPT_IN_BOTTOM_SHEET_CLOSED_CONTENT_DESCRIPTION" desc="Content description of the Brave Finds opt-in bottom sheet when closed.">
-        Brave Finds opt-in closed
+        Brave finds opt-in closed
       </message>
       <message name="IDS_CHROME_FINDS_OPT_IN_BOTTOM_SHEET_HALF_HEIGHT_CONTENT_DESCRIPTION" desc="Content description of the Brave Finds opt-in bottom sheet when opened at half height.">
-        Brave Finds opt-in opened at half height
+        Brave finds opt-in opened at half height
       </message>
       <message name="IDS_CHROME_FINDS_OPT_IN_BOTTOM_SHEET_FULL_HEIGHT_CONTENT_DESCRIPTION" desc="Content description of the Brave Finds opt-in bottom sheet when opened at full height.">
-        Brave Finds opt-in opened at full height
+        Brave finds opt-in opened at full height
+      </message>
+      <message name="IDS_CHROME_FINDS_OPT_IN_SNACKBAR_MESSAGE" desc="Snackbar message shown when the user opts in to receive personalized notifications.">
+        Brave finds notifications turned on
+      </message>
+      <message name="IDS_CHROME_FINDS_OPT_IN_SNACKBAR_ACTION_TEXT" desc="Action button of the Brave Finds snackbar on user opt-in. [CHAR_LIMIT=10]">
+        Manage
+      </message>
+
+    <!-- Glic strings -->
+      <message name="IDS_GLIC_ACTOR_TASK_IN_PROGRESS" desc="Snackbar message shown when a Glic actor task is still in progress.">
+        Your task is still in progress
       </message>
     </messages>
   </release>

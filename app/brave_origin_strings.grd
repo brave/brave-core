@@ -776,7 +776,7 @@ Brave is unable to recover your settings.
           Keep your passwords, bookmarks, and history perfectly synced across devices. Easily access the features you know and love by updating your default browser to Brave. Brave will be pinned to your taskbar for quick access.
         </message>
         <message name="IDS_DEFAULT_BROWSER_MODAL_TITLE_WITHOUT_SETTINGS_ILLUSTRATION" desc="Title of the default browser modal without settings illustration.">
-          Use Brave recommended browser settings
+          Set Brave as your default browser
         </message>
         <message name="IDS_DEFAULT_BROWSER_MODAL_BODY_WITHOUT_SETTINGS_ILLUSTRATION" desc="Body text of the default browser modal without settings illustration.">
           Get easy access to the features you know, love, and trust by setting Brave as your default browser.
@@ -928,6 +928,12 @@ Brave is unable to recover your settings.
         </message>
         <message name="IDS_EXTENSIONS_MV2_DEPRECATION_PANEL_REMOVE_BUTTON_ACC_LABEL" desc="The (accessible) label for the button to remove an extension.">
           Remove <ph name="EXTENSION_NAME">$1<ex>Brave Translate</ex></ph> from Brave
+        </message>
+        <message name="IDS_EXTENSIONS_MENU_ZERO_STATE_DESC" desc="Description in the Extensions Menu when there are no extensions installed." formatter_data="android_java">
+          Extensions are add-ons that let you customize Brave. From staying organized, to simplifying everyday tasks, extensions help you make Brave your own.
+        </message>
+        <message name="IDS_OPEN_WEB_STORE_BUTTON_TEXT" desc="Text for the open Web Store button." formatter_data="android_java">
+          Open Web Store
         </message>
       </if>
 
@@ -1134,9 +1140,8 @@ Brave is unable to recover your settings.
       </message>
 
       <!-- Signin Search AI Mode promo -->
-      <!-- TODO(crbug.com/486858498): Finalize and make transalteable. -->
-      <message name="IDS_AI_SIGNIN_PROMO_SUBTITLE" translateable="false">
-        Sign in to Brave to ask AI mode about your tabs. You'll also get your passwords and more on all your devices.
+      <message name="IDS_AI_SIGNIN_PROMO_SUBTITLE" desc="The message shown in a sign-in promo bubble that is shown to users not signed-in to the browser when they click in an AI Mode Search result link.">
+        To ask AI Mode about your tab without leaving the page, sign in to Brave. You'll also get your passwords and more on all your devices.
       </message>
       <message name="IDS_AI_SIGNIN_PROMO_AVATAR_PILL_TEXT" translateable="false" meaning="Text shown on the expanded avatar pill when the Signin Search AI Bubble promo is shown to the user">
         Sign in to Brave?
@@ -1232,9 +1237,6 @@ Brave is unable to recover your settings.
         </message>
         <message name="IDS_NTP_MOBILE_PROMO_PASSWORDS_TITLE" desc="Title of the NTP promo that promotes the browser on mobile for passwords.">
           Get the Brave app to save passwords on the go
-        </message>
-        <message name="IDS_NTP_SIGN_IN_PROMO_WITH_BOOKMARKS" desc="The text shown in the body of the New Tab Page sign in promotion">
-          Sign in to Brave to get your passwords, bookmarks, and more on all your devices
         </message>
       </if>
 
@@ -2405,6 +2407,9 @@ Brave is unable to recover your settings.
         <message name="IDS_FRE_SIGN_IN_TITLE_0" meaning="Title" desc="This string appears as a heading on a full-page screen that asks the user to sign in to Brave with their Brave sync chain. It appears when the user launches Brave for the first time. When they sign in, they can personalize and customize Brave and remember their settings in their Brave sync chain. The tone should be inviting and alluring.">
           Sign in to Brave
         </message>
+        <message name="IDS_FRE_GET_YOUR_BROWSER_READY_TITLE" meaning="Title" desc="It appears when the user launches Brave for the first time on the page that is displayed before the sign in page. When they sign in, they can personalize and customize Brave and remember their settings in their Brave sync chain. The tone should be inviting and alluring.">
+          Let's get your Brave ready
+        </message>
 
         <!-- Default Browser Promo -->
         <message name="IDS_FRE_DEFAULT_BROWSER_TITLE" desc="Title for the page that prompts user to set Brave as their default browser in the first run experience.">
@@ -2818,7 +2823,7 @@ Brave is unable to recover your settings.
       <message name="IDS_GLIC_PROMO_TITLE" desc="Glic promo title." translateable="false">
         Try Gemini in Brave
       </message>
-      <message name="IDS_GLIC_TAB_STRIP_BUTTON_TOOLTIP" translateable="false" desc="This is the tooltip shown when hovering over the glic entry button in the tab strip while the Glic window is closed.">
+      <message name="IDS_GLIC_TAB_STRIP_BUTTON_TOOLTIP" translateable="false" desc="This is the tooltip shown when hovering over the glic entry button in the tab strip while the Glic window is closed." formatter_data="android_java">
         Open Gemini in Brave
       </message>
       <message name="IDS_GLIC_TAB_STRIP_BUTTON_TOOLTIP_CLOSE" translateable="false" desc="This is the tooltip shown when hovering over the glic entry button in the tab strip while the Glic window is open.">
@@ -3055,6 +3060,9 @@ Brave is unable to recover your settings.
       </message>
       <message name="IDS_INDIGO_ENTRYPOINT_CHIP_TOOLTIP_TEXT" desc="The tooltip text of the Indigo entry point chip in the omnibox when in hover state." translateable="false">
         Indigo tooltip text
+      </message>
+      <message name="IDS_INDIGO_ENTRYPOINT_ANCHORED_MESSAGE_TEXT" desc="The text shown in the anchored message bubble for the Indigo page action." translateable="false">
+        Indigo is available for this page
       </message>
     <message name="IDS_CHROME_SHORTCUT_NAME_BETA" desc="The Chrome shortcut name for beta channel">
           Google Chrome Beta
