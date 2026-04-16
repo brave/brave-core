@@ -50,7 +50,7 @@ export class SettingsBraveAccountRowElement extends I18nMixinLit(CrLitElement) {
   protected accessor state: AccountState | undefined = undefined
 
   private browserProxy: BraveAccountBrowserProxy =
-    BraveAccountBrowserProxyImpl.getInstance()
+    new BraveAccountBrowserProxyImpl()
   private isResendingConfirmationEmail = false
   private measure?: (text: string) => number
   private resizeObserver?: ResizeObserver
