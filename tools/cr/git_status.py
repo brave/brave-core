@@ -15,7 +15,9 @@ class GitStatus:
     """
 
     def __init__(self):
-        self.git_status = repository.brave.run_git('status', '--short')
+        self.git_status = repository.brave.run_git('status',
+                                                   '--porcelain',
+                                                   no_trim=True)
 
         # a list of all deleted files, regardless of their staged status.
         self.deleted = []
@@ -32,14 +34,14 @@ class GitStatus:
         for line in self.git_status.splitlines():
             xy = line[:2]
             path = line[3:]
-            if xy[0] not in (' ', '?'):
+            x, y = xy[0], xy[1]
+            if x not in (' ', '?'):
                 self.staged.append(path)
-            status = line.lstrip().split(' ', 1)[0]
-            if status == 'D':
+            if x == 'D' or y == 'D':
                 self.deleted.append(path)
-            elif status == 'M':
+            elif x == 'M' or y == 'M':
                 self.modified.append(path)
-            elif status == '??':
+            elif xy == '??':
                 self.untracked.append(path)
 
     def has_staged_files(self):
