@@ -17,6 +17,7 @@
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/view_ids.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/immersive_mode_controller.h"
 #include "ui/base/hit_test.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
@@ -129,9 +130,16 @@ int BraveBrowserFrameViewMac::NonClientHitTest(const gfx::Point& point) {
     return HTNOWHERE;
   }
 
-  if (auto res = brave::NonClientHitTest(GetBrowserView(), point);
-      res != HTNOWHERE) {
-    return res;
+  // In immersive fullscreen the toolbar is reparented to a separate overlay
+  // widget, violating brave::NonClientHitTest's precondition that the toolbar
+  // and browser view share the same widget. Skip it while immersive mode is
+  // active.
+  if (!ImmersiveModeController::From(GetBrowserView()->browser())
+           ->IsEnabled()) {
+    if (auto res = brave::NonClientHitTest(GetBrowserView(), point);
+        res != HTNOWHERE) {
+      return res;
+    }
   }
 
   return BrowserFrameViewMac::NonClientHitTest(point);
