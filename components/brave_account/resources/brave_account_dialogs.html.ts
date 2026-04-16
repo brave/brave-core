@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { html } from '//resources/lit/v3_0/lit.rollup.js'
+import { html, nothing } from '//resources/lit/v3_0/lit.rollup.js'
 
 import './brave_account_create_dialog.js'
 import './brave_account_entry_dialog.js'
@@ -14,12 +14,13 @@ import { BraveAccountDialogsElement } from './brave_account_dialogs.js'
 
 export function getHtml(this: BraveAccountDialogsElement) {
   switch (this.dialog) {
+    case undefined:
+      return nothing
+
     case 'ENTRY':
       return html`
         <brave-account-entry-dialog
-          @close-dialog=${this.onCloseDialog}
           @create-button-clicked=${() => (this.dialog = 'CREATE')}
-          @logo-double-clicked=${() => (this.dialog = 'OTP')}
           @sign-in-button-clicked=${() => (this.dialog = 'SIGN_IN')}
         >
         </brave-account-entry-dialog>
@@ -27,11 +28,7 @@ export function getHtml(this: BraveAccountDialogsElement) {
 
     case 'CREATE':
       return html`
-        <brave-account-create-dialog
-          .isCapsLockOn=${this.isCapsLockOn}
-          @back-button-clicked=${this.onBackButtonClicked}
-          @close-dialog=${this.onCloseDialog}
-        >
+        <brave-account-create-dialog .isCapsLockOn=${this.isCapsLockOn}>
         </brave-account-create-dialog>
       `
 
@@ -39,8 +36,6 @@ export function getHtml(this: BraveAccountDialogsElement) {
       return html`
         <brave-account-sign-in-dialog
           .isCapsLockOn=${this.isCapsLockOn}
-          @back-button-clicked=${this.onBackButtonClicked}
-          @close-dialog=${this.onCloseDialog}
           @forgot-password-button-clicked=${() =>
             (this.dialog = 'FORGOT_PASSWORD')}
         >
@@ -49,20 +44,11 @@ export function getHtml(this: BraveAccountDialogsElement) {
 
     case 'FORGOT_PASSWORD':
       return html`
-        <brave-account-forgot-password-dialog
-          @back-button-clicked=${this.onBackButtonClicked}
-          @close-dialog=${this.onCloseDialog}
-        >
+        <brave-account-forgot-password-dialog>
         </brave-account-forgot-password-dialog>
       `
 
     case 'OTP':
-      return html`
-        <brave-account-otp-dialog
-          @back-button-clicked=${this.onBackButtonClicked}
-          @close-dialog=${this.onCloseDialog}
-        >
-        </brave-account-otp-dialog>
-      `
+      return html` <brave-account-otp-dialog> </brave-account-otp-dialog> `
   }
 }

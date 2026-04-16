@@ -65,23 +65,22 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
         encryptedVerificationToken,
         serializedRecord,
       )
-      this.fire('close-dialog')
-    } catch (error) {
-      let details: RegisterError
+    } catch (e) {
+      let error: RegisterError
 
-      if (error && typeof error === 'object') {
-        details = error as RegisterError
-      } else if (typeof error === 'string') {
-        details = {
+      if (e && typeof e === 'object') {
+        error = e as RegisterError
+      } else if (typeof e === 'string') {
+        error = {
           netErrorOrHttpStatus: null,
           errorCode: RegisterErrorCode.kOpaqueError,
         }
       } else {
-        console.error('Unexpected error:', error)
-        details = { netErrorOrHttpStatus: null, errorCode: null }
+        console.error('Unexpected error:', e)
+        error = { netErrorOrHttpStatus: null, errorCode: null }
       }
 
-      showError({ kind: 'register', details })
+      showError({ kind: 'register', details: error })
     }
   }
 

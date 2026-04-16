@@ -64,7 +64,7 @@
     padding: 0 var(--leo-spacing-2xl) var(--leo-spacing-l);
 
     .cancel-registration-button {
-      color: var(--leo-color-systemfeedback-error-text);
+      --leo-button-color: var(--leo-color-systemfeedback-error-text);
     }
   }
 }
