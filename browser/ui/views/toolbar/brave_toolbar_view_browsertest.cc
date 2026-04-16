@@ -509,7 +509,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   ASSERT_TRUE(!!avatar);
   views::View* container = avatar->parent();
   ASSERT_TRUE(!!container);
-  views::View* app_menu = toolbar_button_provider_->GetAppMenuButton();
+  views::View* app_menu = toolbar_view_->app_menu_button();
   ASSERT_TRUE(!!app_menu);
   EXPECT_EQ(container->GetIndexOf(avatar).value(),
             container->GetIndexOf(app_menu).value() - 1ul);
