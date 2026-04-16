@@ -16,7 +16,7 @@ PurchaseIntentHelper::PurchaseIntentHelper() : processor_(resource_) {}
 
 PurchaseIntentHelper::~PurchaseIntentHelper() = default;
 
-void PurchaseIntentHelper::Mock() {
+void PurchaseIntentHelper::Simulate() {
   CHECK(base::test::RunUntil([this] { return resource_.IsLoaded(); }));
 
   const std::vector<GURL> urls = {

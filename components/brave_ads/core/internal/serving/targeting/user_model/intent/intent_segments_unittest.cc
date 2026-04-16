@@ -39,7 +39,7 @@ TEST_F(BraveAdsIntentSegmentsTest, BuildIntentSegments) {
   const base::test::ScopedFeatureList scoped_feature_list(
       kPurchaseIntentFeature);
 
-  targeting_helper_->MockIntent();
+  targeting_helper_->SimulateIntent();
 
   // Act & Assert
   base::MockCallback<BuildSegmentsCallback> callback;
@@ -65,7 +65,7 @@ TEST_F(BraveAdsIntentSegmentsTest,
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndDisableFeature(kPurchaseIntentFeature);
 
-  targeting_helper_->MockIntent();
+  targeting_helper_->SimulateIntent();
 
   // Act & Assert
   base::MockCallback<BuildSegmentsCallback> callback;
