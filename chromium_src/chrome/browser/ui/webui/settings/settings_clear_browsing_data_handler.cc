@@ -27,12 +27,6 @@ void BraveRemoveJumplist(uint64_t remove_mask, Profile* profile) {
 }
 }  // namespace browsing_data
 
-#define GetBrowsingDataRemover()                                       \
-  GetBrowsingDataRemover();                                            \
-  if (remove_mask & chrome_browsing_data_remover::DATA_TYPE_HISTORY) { \
-    BraveRemoveJumplist(profile_);                                     \
-  }
-
 #define RecordDeleteBrowsingDataAction        \
   BraveRemoveJumplist(remove_mask, profile_); \
   RecordDeleteBrowsingDataAction
@@ -53,6 +47,5 @@ void BraveRemoveJumplist(uint64_t remove_mask, Profile* profile) {
 #endif
 
 #if BUILDFLAG(IS_WIN)
-#undef GetBrowsingDataRemover
 #undef RecordDeleteBrowsingDataAction
 #endif
