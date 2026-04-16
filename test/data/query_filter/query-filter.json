@@ -1,0 +1,16 @@
+[
+  {
+    "include": ["*://*/*"],
+    "exclude": [],
+    "params": ["__hsfp", "gclid", "fbclid"]
+  },
+  {
+    "include": [
+      "*://*.youtube.com/*",
+      "*://youtube.com/*",
+      "*://youtu.be/*"
+    ],
+    "exclude": [],
+    "params": ["si"]
+  }
+]

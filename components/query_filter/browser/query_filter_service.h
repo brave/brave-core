@@ -40,6 +40,8 @@ class QueryFilterService {
 
   static QueryFilterService* GetInstance();
 
+  // Called when the component file has been downloaded and the install
+  // directory is set. The rules JSON is loaded from the DAT file.
   void OnComponentReady(const base::FilePath& install_dir);
 
   const std::vector<QueryFilterRule>& rules() const { return rules_; }
@@ -50,15 +52,19 @@ class QueryFilterService {
   FRIEND_TEST_ALL_PREFIXES(QueryFilterServiceTest, RootMustBeList);
   FRIEND_TEST_ALL_PREFIXES(QueryFilterServiceTest, ParsesIncludeExcludeParams);
   FRIEND_TEST_ALL_PREFIXES(QueryFilterServiceTest, SkipsNonObjectEntries);
-  FRIEND_TEST_ALL_PREFIXES(QueryFilterServiceTest, IgnoresNonStringListItems);
+  FRIEND_TEST_ALL_PREFIXES(QueryFilterServiceTest, NonStringListItems);
 
+  friend class QueryFilterBrowserTest;
   friend class QueryFilterServiceTest;
   friend struct base::DefaultSingletonTraits<QueryFilterService>;
 
   QueryFilterService();
 
+  // Called when the rules JSON is loaded from the DAT file.
   void OnRulesJsonLoaded(const std::string& contents);
-  void ParseRulesJson(const std::string& contents);
+  // Resets first the current rules and then parses the new ones from the given
+  // JSON string.
+  void ParseRulesJson(const std::string_view contents);
 
   base::FilePath install_dir_;
   std::vector<QueryFilterRule> rules_;

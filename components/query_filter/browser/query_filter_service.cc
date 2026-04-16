@@ -21,6 +21,9 @@ namespace query_filter {
 namespace {
 
 constexpr char kQueryFilterJsonFile[] = "query-filter.json";
+constexpr char kQueryFilterRulesIncludeKey[] = "include";
+constexpr char kQueryFilterRulesExcludeKey[] = "exclude";
+constexpr char kQueryFilterRulesParamsKey[] = "params";
 
 }  // namespace
 
@@ -60,7 +63,7 @@ void QueryFilterService::OnRulesJsonLoaded(const std::string& contents) {
 }
 
 // See query-filter.json file format in the adblock-lists repository.
-void QueryFilterService::ParseRulesJson(const std::string& contents) {
+void QueryFilterService::ParseRulesJson(const std::string_view contents) {
   rules_.clear();
 
   if (contents.empty()) {
@@ -74,16 +77,6 @@ void QueryFilterService::ParseRulesJson(const std::string& contents) {
     return;
   }
 
-  // Helper function to insert strings from a list into a vector.
-  auto rule_inserter = [](const base::ListValue* lv,
-                          std::vector<std::string>& output) {
-    for (const base::Value& item : *lv) {
-      if (item.is_string()) {
-        output.push_back(item.GetString());
-      }
-    }
-  };
-
   const base::ListValue* list = parsed->GetIfList();
   if (!list) {
     LOG(ERROR) << "query-filter.json: root must be an array";
@@ -91,16 +84,42 @@ void QueryFilterService::ParseRulesJson(const std::string& contents) {
   }
 
   for (const base::Value& entry : *list) {
-    const base::DictValue* dict = entry.GetIfDict();
-    if (!dict) {
-      LOG(ERROR) << "query-filter.json: each entry must be an object";
+    const base::DictValue* rule_dict = entry.GetIfDict();
+    if (!rule_dict) {
+      LOG(ERROR)
+          << "query-filter.json: each rule entry entry must be an object";
       continue;
     }
 
+    // Helper function to insert strings from a list into a vector.
+    auto rule_inserter = [](const base::ListValue* lv,
+                            std::vector<std::string>& output) {
+      if (!lv || lv->empty()) {
+        return;
+      }
+      // Resize the output vector in advance for faster insertion and doing only
+      // one time vector memory allocation.
+      auto precomputed_output_size = std::count_if(
+          lv->begin(), lv->end(),
+          [](const base::Value& item) { return item.is_string(); });
+      output.resize(precomputed_output_size);
+      auto output_iter = output.begin();
+      for (const base::Value& item : *lv) {
+        DCHECK(item.is_string());
+        // DCHECKs are removed in release builds.
+        if (item.is_string()) {
+          *output_iter = item.GetString();
+          ++output_iter;
+        }
+      }
+    };
+
     QueryFilterRule rule;
-    rule_inserter(dict->FindList("include"), rule.include);
-    rule_inserter(dict->FindList("exclude"), rule.exclude);
-    rule_inserter(dict->FindList("params"), rule.params);
+    rule_inserter(rule_dict->FindList(kQueryFilterRulesIncludeKey),
+                  rule.include);
+    rule_inserter(rule_dict->FindList(kQueryFilterRulesExcludeKey),
+                  rule.exclude);
+    rule_inserter(rule_dict->FindList(kQueryFilterRulesParamsKey), rule.params);
     rules_.push_back(std::move(rule));
   }
 }

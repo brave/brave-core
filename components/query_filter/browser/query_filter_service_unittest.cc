@@ -5,6 +5,7 @@
 
 #include "brave/components/query_filter/browser/query_filter_service.h"
 
+#include "base/dcheck_is_on.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/query_filter/common/features.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -120,7 +121,9 @@ TEST_F(QueryFilterServiceTest, SkipsNonObjectEntries) {
   EXPECT_THAT(rules[1].params, testing::ElementsAre("y"));
 }
 
-TEST_F(QueryFilterServiceTest, IgnoresNonStringListItems) {
+// Non-string entries in include/exclude/params violate the schema; DCHECK
+// catches mistakes in debug. Release builds skip non-strings (see .cc).
+TEST_F(QueryFilterServiceTest, NonStringListItems) {
   constexpr char kJson[] = R"json(
 [
   {
@@ -131,13 +134,16 @@ TEST_F(QueryFilterServiceTest, IgnoresNonStringListItems) {
 ]
 )json";
 
-  service()->ParseRulesJson(kJson);
-
-  const std::vector<QueryFilterRule>& rules = service()->rules();
-  ASSERT_EQ(rules.size(), 1u);
-  EXPECT_THAT(rules[0].include, testing::ElementsAre("*://*/*"));
-  EXPECT_THAT(rules[0].exclude, testing::ElementsAre("ignored"));
-  EXPECT_THAT(rules[0].params, testing::ElementsAre("gclid", "fbclid"));
+  if constexpr (DCHECK_IS_ON()) {
+    EXPECT_DEATH_IF_SUPPORTED({ service()->ParseRulesJson(kJson); }, "");
+  } else {
+    service()->ParseRulesJson(kJson);
+    const std::vector<QueryFilterRule>& rules = service()->rules();
+    ASSERT_EQ(rules.size(), 1u);
+    EXPECT_THAT(rules[0].include, testing::ElementsAre("*://*/*"));
+    EXPECT_THAT(rules[0].exclude, testing::ElementsAre("ignored"));
+    EXPECT_THAT(rules[0].params, testing::ElementsAre("gclid", "fbclid"));
+  }
 }
 
 }  // namespace query_filter
