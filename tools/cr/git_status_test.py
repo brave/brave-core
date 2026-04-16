@@ -21,7 +21,9 @@ class GitStatusTest(unittest.TestCase):
 
     def test_has_deleted_patch_files(self):
         """Test has_deleted_patch_files method."""
-        self.assertFalse(GitStatus().has_deleted_patch_files())
+        status = GitStatus()
+        self.assertFalse(status.has_deleted_patch_files())
+        self.assertEqual(status.deleted, [])
 
         # Create a patch file and commit it
         patch_file = 'patches/test.patch'
@@ -35,18 +37,51 @@ class GitStatusTest(unittest.TestCase):
                                            self.fake_chromium_src.brave)
 
         # Run GitStatus and verify the deleted patch file is detected
-        self.assertTrue(GitStatus().has_deleted_patch_files())
+        status = GitStatus()
+        self.assertTrue(status.has_deleted_patch_files())
+        self.assertEqual(status.deleted, [patch_file])
+
+    def test_test_has_staged_files(self):
+        """Test staged files summary."""
+        status = GitStatus()
+        self.assertFalse(status.has_staged_files())
+        self.assertEqual(status.staged, [])
+
+        # Stage one file and leave another one untracked.
+        staged_file = 'staged_file.txt'
+        untracked_file = 'untracked_file.txt'
+        self.fake_chromium_src.write_and_stage_file(
+            staged_file, 'staged content', self.fake_chromium_src.brave)
+        Path(self.fake_chromium_src.brave /
+             untracked_file).write_text('untracked content')
+
+        status = GitStatus()
+        self.assertTrue(status.has_staged_files())
+        self.assertEqual(status.staged, [staged_file])
 
     def test_has_untracked_patch_files(self):
         """Test has_untracked_patch_files method."""
-        self.assertFalse(GitStatus().has_untracked_patch_files())
+        status = GitStatus()
+        self.assertFalse(status.has_untracked_patch_files())
+        self.assertEqual(status.untracked, [])
+
+        # Stage a patch file; this should not count as untracked.
+        self.fake_chromium_src.write_and_stage_file(
+            'staged.patch', 'staged patch content',
+            self.fake_chromium_src.brave)
+        status = GitStatus()
+        self.assertFalse(status.has_untracked_patch_files())
+        self.assertEqual(status.untracked, [])
 
         # Create a patch file but do not stage it
+        untracked_patch_file = 'test_untracked.patch'
         Path(self.fake_chromium_src.brave /
-             'test_untracked.patch').write_text('Untracked patch content')
+             untracked_patch_file).write_text('Untracked patch content')
 
         # Run GitStatus and verify the untracked patch file is detected
-        self.assertTrue(GitStatus().has_untracked_patch_files())
+        status = GitStatus()
+        self.assertTrue(status.has_untracked_patch_files())
+        self.assertEqual(status.untracked, [untracked_patch_file])
 
 
 if __name__ == "__main__":
