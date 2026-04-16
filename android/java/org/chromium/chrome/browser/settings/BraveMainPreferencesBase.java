@@ -546,6 +546,15 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
             return;
         }
 
+        // A Play Store purchase exists but the SKUs order ID fetch is still in
+        // flight (e.g. after a device change). Skip the paywall and open the
+        // pref screen, which renders the fetching spinner.
+        if (BraveOriginSubscriptionPrefs.isFetchingCredentials(getProfile())) {
+            SettingsNavigationFactory.createSettingsNavigation()
+                    .startSettings(getActivity(), BraveOriginPreferences.class);
+            return;
+        }
+
         // Always check SKUs SDK credential summary to handle both Play Store
         // purchases and linked desktop purchases.
         BraveOriginSubscriptionPrefs.requestCredentialSummary(
