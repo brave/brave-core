@@ -17,7 +17,6 @@ class RequestBlockingContentScriptHandler: TabContentScript {
     struct RequestBlockingDTOData: Decodable, Hashable {
       let resourceType: AdblockEngine.ResourceType
       let resourceURL: String
-      let windowOrigin: String
     }
 
     let securityToken: String
@@ -67,8 +66,9 @@ class RequestBlockingContentScriptHandler: TabContentScript {
 
       // Because javascript urls allow some characters that `URL` does not,
       // we use `NSURL(idnString: String)` to parse them
-      guard let requestURL = NSURL(idnString: dto.data.resourceURL) as URL? else { return }
-      guard let windowOriginURL = NSURL(idnString: dto.data.windowOrigin) as URL? else { return }
+      guard let requestURL = NSURL(idnString: dto.data.resourceURL) as URL?,
+        let windowOriginURL = URLOrigin(wkSecurityOrigin: message.frameInfo.securityOrigin).url
+      else { return }
       let isPrivateBrowsing = tab.isPrivate
 
       Task { @MainActor in
