@@ -379,6 +379,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/creatives/test/creative_ad_test_util.cc",
     "//brave/components/brave_ads/core/internal/creatives/test/creative_ad_test_util.h",
     "//brave/components/brave_ads/core/internal/database/database_maintenance_unittest.cc",
+    "//brave/components/brave_ads/core/internal/database/database_manager_unittest.cc",
     "//brave/components/brave_ads/core/internal/database/test/database_manager_observer_mock.cc",
     "//brave/components/brave_ads/core/internal/database/test/database_manager_observer_mock.h",
     "//brave/components/brave_ads/core/internal/diagnostics/diagnostic_manager_unittest.cc",
