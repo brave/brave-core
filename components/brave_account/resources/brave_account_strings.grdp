@@ -109,7 +109,7 @@
     Confirm your Brave account email and you'll then receive a link to reset your password. The link will only be valid for 30 minutes.
   </message>
   <message name="IDS_BRAVE_ACCOUNT_ALERT_MESSAGE" desc="Alert message explaining that if the user resets their password without having an active login, all their data will be deleted" formatter_data="webui=BraveAccount">
-    Warning: since you are not logged in to this device, resetting your password will <b>delete all of your data</b> on the server. If you have another device where you are logged in, change your password from that device instead of resetting your password.
+    Warning: since you are not logged in to this device, resetting your password will <ph name="BEGIN_BOLD">&lt;b&gt;</ph>delete all of your data<ph name="END_BOLD">&lt;/b&gt;</ph> on the server. If you have another device where you are logged in, change your password from that device instead of resetting your password.
   </message>
   <message name="IDS_BRAVE_ACCOUNT_RESET_PASSWORD_BUTTON_LABEL" desc="Label for the button that submits the 'Forgot Password' dialog" formatter_data="webui=BraveAccount">
     Reset your password

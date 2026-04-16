@@ -13,11 +13,11 @@ import type { EmailInputEventDetail } from './brave_account_email_input.js'
 export function getHtml(this: BraveAccountForgotPasswordDialogElement) {
   return html`<!--_html_template_start_-->
     <brave-account-dialog
-      alert-message="$i18n{BRAVE_ACCOUNT_ALERT_MESSAGE}"
       dialog-description="$i18n{BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_DESCRIPTION}"
       dialog-title="$i18n{BRAVE_ACCOUNT_FORGOT_PASSWORD_DIALOG_TITLE}"
       show-back-button
     >
+      <leo-alert slot="alert">$i18nRaw{BRAVE_ACCOUNT_ALERT_MESSAGE}</leo-alert>
       <div slot="inputs">
         <brave-account-email-input
           @email-input=${(e: CustomEvent<EmailInputEventDetail>) => {
