@@ -118,6 +118,10 @@
 #include "brave/browser/ui/views/update_recommended_message_box_mac.h"
 #endif
 
+#if BUILDFLAG(IS_MAC)
+#include "brave/browser/ui/views/frame/brave_browser_view_mac.h"
+#endif
+
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/ui/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/views/speedreader/reader_mode_bubble.h"
@@ -155,6 +159,20 @@ class ContentsBackground : public views::View {
   }
 };
 BEGIN_METADATA(ContentsBackground)
+END_METADATA
+
+// Backs the horizontal tab strip and top container while they slide in/out
+// during focus mode reveal, so the contents layer is not visible behind them.
+class TopContainerBackground : public views::View {
+  METADATA_HEADER(TopContainerBackground, views::View)
+ public:
+  TopContainerBackground() {
+    SetPaintToLayer();
+    layer()->SetFillsBoundsOpaquely(true);
+    SetCanProcessEventsWithinSubtree(false);
+  }
+};
+BEGIN_METADATA(TopContainerBackground)
 END_METADATA
 
 }  // namespace
@@ -759,13 +777,33 @@ void BraveBrowserView::AddedToWidget() {
   UpdateWebViewRoundedCorners();
 
   if (auto* controller = browser()->GetFeatures().focus_mode_controller()) {
+    if (auto top_index = GetIndexOf(top_container())) {
+      if (auto contents_index = GetIndexOf(contents_container_)) {
+        if (top_index.value() < contents_index.value()) {
+          ReorderChildView(top_container(), contents_index.value());
+        }
+      }
+    }
+
+    // Sit between contents_container and top_container in z-order so it backs
+    // the revealing top views without occluding contents.
+    top_container_background_view_ =
+        AddChildView(std::make_unique<TopContainerBackground>());
+    if (auto top_index = GetIndexOf(top_container())) {
+      ReorderChildView(top_container_background_view_, top_index.value());
+    }
+    GetBrowserViewLayout()->set_top_container_background(
+        top_container_background_view_);
+    UpdateTopContainerBackgroundColor();
+
     focus_mode_observation_.Observe(controller);
 
     top_reveal_controller_ = std::make_unique<EdgeRevealController>(
         EdgeRevealController::Edge::kTop, GetWidget());
-    top_reveal_controller_->AddRevealableView(top_container());
-    top_reveal_controller_->AddRevealableView(
-        horizontal_tab_strip_region_view_);
+    top_reveal_controller_->AddRevealableView(top_container(),
+                                              {.paint_to_layer = true});
+    top_reveal_controller_->AddRevealableView(horizontal_tab_strip_region_view_,
+                                              {.paint_to_layer = true});
     top_reveal_controller_->AddObserver(this);
   }
 
@@ -825,11 +863,26 @@ void BraveBrowserView::OnFocusModeToggled(bool enabled) {
     top_reveal_controller_->SetEnabled(enabled);
   }
   UpdateRoundedCornersUI();
+#if BUILDFLAG(IS_MAC)
+  // When focus mode turns off, restore traffic lights to fully visible.
+  if (!enabled) {
+    brave::SetTrafficLightsAlpha(GetWidget()->GetNativeWindow(), 1.0);
+  }
+#endif
 }
 
 void BraveBrowserView::OnEdgeRevealFractionChanged(double fraction) {
   LOG(ERROR) << "[OnEdgeRevealFractionChanged] fraction=" << fraction;
   DeprecatedLayoutImmediately();
+#if BUILDFLAG(IS_MAC)
+  // Delay the traffic-light fade-in until the slide is nearly complete so the
+  // buttons don't appear to float ahead of the top container.
+  constexpr double kTrafficLightFadeThreshold = 0.7;
+  const double alpha = std::clamp((fraction - kTrafficLightFadeThreshold) /
+                                      (1 - kTrafficLightFadeThreshold),
+                                  0.0, 1.0);
+  brave::SetTrafficLightsAlpha(GetWidget()->GetNativeWindow(), alpha);
+#endif
 }
 
 void BraveBrowserView::LoadAccelerators() {
@@ -971,6 +1024,8 @@ void BraveBrowserView::OnWidgetActivationChanged(views::Widget* widget,
   if (sidebar_container_view_) {
     sidebar_container_view_->UpdateSidebarItemsState();
   }
+
+  UpdateTopContainerBackgroundColor();
 }
 
 void BraveBrowserView::OnWidgetWindowModalVisibilityChanged(
@@ -1082,6 +1137,21 @@ bool BraveBrowserView::ShouldShowWindowTitle() const {
   return false;
 }
 
+void BraveBrowserView::OnThemeChanged() {
+  BrowserView::OnThemeChanged();
+  UpdateTopContainerBackgroundColor();
+}
+
+void BraveBrowserView::UpdateTopContainerBackgroundColor() {
+  if (!top_container_background_view_) {
+    return;
+  }
+  if (auto* frame_view = GetFrameView()) {
+    top_container_background_view_->SetBackground(views::CreateSolidBackground(
+        frame_view->GetFrameColor(BrowserFrameActiveState::kUseCurrent)));
+  }
+}
+
 void BraveBrowserView::UpdateRoundedCornersUI() {
   // Update various UI that can be affected by rounded corners.
   UpdateContentsShadowVisibility();
@@ -1116,6 +1186,10 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
                                           int index,
                                           int reason) {
   BrowserView::OnActiveTabChanged(old_contents, new_contents, index, reason);
+
+  if (top_reveal_controller_) {
+    top_reveal_controller_->RevealTemporarily(base::Seconds(2));
+  }
 
   // Update UI after active tab changing is handled because
   // ShouldUseBraveWebViewRoundedCornersForContents() check split view UI for

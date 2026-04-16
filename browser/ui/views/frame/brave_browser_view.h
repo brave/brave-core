@@ -130,6 +130,7 @@ class BraveBrowserView : public BrowserView,
 #endif
   bool GetTabStripVisible() const override;
   bool ShouldShowWindowTitle() const override;
+  void OnThemeChanged() override;
   void OnActiveTabChanged(content::WebContents* old_contents,
                           content::WebContents* new_contents,
                           int index,
@@ -256,6 +257,7 @@ class BraveBrowserView : public BrowserView,
   void OnWindowClosingConfirmResponse(bool allowed_to_close);
   BraveBrowser* GetBraveBrowser() const;
   void UpdateWebViewRoundedCorners();
+  void UpdateTopContainerBackgroundColor();
 
   // FindBarHost is anchored to |find_bar_host_view_|; it must remain the last
   // child of BrowserView for correct z-order. Call when a child is added after
@@ -288,6 +290,7 @@ class BraveBrowserView : public BrowserView,
   raw_ptr<BraveHelpBubbleHostView> brave_help_bubble_host_view_ = nullptr;
   raw_ptr<SidebarContainerView> sidebar_container_view_ = nullptr;
   raw_ptr<views::View> contents_background_view_ = nullptr;
+  raw_ptr<views::View> top_container_background_view_ = nullptr;
   raw_ptr<views::View> vertical_tab_strip_host_view_ = nullptr;
   raw_ptr<VerticalTabStripWidgetDelegateView, DanglingUntriaged>
       vertical_tab_strip_widget_delegate_view_ = nullptr;

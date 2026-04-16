@@ -6,7 +6,9 @@
 #include "brave/browser/ui/views/frame/edge_reveal_controller.h"
 
 #include <algorithm>
+#include <utility>
 
+#include "ui/compositor/layer.h"
 #include "ui/display/screen.h"
 #include "ui/events/event.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
@@ -16,8 +18,10 @@
 
 namespace {
 
-constexpr int kHotZoneThickness = 7;
+constexpr int kHotZoneThickness = 16;
 constexpr base::TimeDelta kRevealAnimationDuration = base::Milliseconds(200);
+constexpr base::TimeDelta kMouseEnterDelay = base::Milliseconds(60);
+constexpr base::TimeDelta kMouseExitDelay = base::Milliseconds(300);
 
 gfx::Rect GetHotZoneForEdge(EdgeRevealController::Edge edge,
                             const gfx::Rect& window_bounds) {
@@ -42,6 +46,32 @@ gfx::Rect GetHotZoneForEdge(EdgeRevealController::Edge edge,
 
 }  // namespace
 
+class EdgeRevealController::RevealableState {
+ public:
+  RevealableState(views::View& view, RevealableOptions options)
+      : view_(view), options_(std::move(options)), has_layer_(!!view.layer()) {}
+
+  ~RevealableState() { OnRevealDisabled(); }
+
+  void OnRevealEnabled() {
+    if (!view_->layer() && options_.paint_to_layer) {
+      view_->SetPaintToLayer();
+      view_->layer()->SetFillsBoundsOpaquely(false);
+    }
+  }
+
+  void OnRevealDisabled() {
+    if (!has_layer_ && view_->layer()) {
+      view_->DestroyLayer();
+    }
+  }
+
+ private:
+  raw_ref<views::View> view_;
+  RevealableOptions options_;
+  bool has_layer_ = false;
+};
+
 EdgeRevealController::EdgeRevealController(Edge edge, views::Widget* widget)
     : edge_(edge), widget_(widget) {
   animation_.SetSlideDuration(kRevealAnimationDuration);
@@ -57,8 +87,16 @@ EdgeRevealController::~EdgeRevealController() {
   }
 }
 
-void EdgeRevealController::AddRevealableView(views::View* view) {
-  revealable_views_.emplace(view);
+void EdgeRevealController::AddRevealableView(views::View* view,
+                                             RevealableOptions options) {
+  auto& state = revealable_views_[view];
+  if (state) {
+    state.reset();
+  }
+  state = std::make_unique<RevealableState>(*view, std::move(options));
+  if (enabled_) {
+    state->OnRevealEnabled();
+  }
 }
 
 void EdgeRevealController::RemoveRevealableView(views::View* view) {
@@ -88,7 +126,10 @@ void EdgeRevealController::SetEnabled(bool enabled) {
       focus_manager->AddFocusChangeListener(this);
     }
     animation_.Reset(1.0);
-    observers_.Notify(&Observer::OnEdgeRevealFractionChanged, 0.0);
+    observers_.Notify(&Observer::OnEdgeRevealFractionChanged, 1.0);
+    for (auto& [view, state] : revealable_views_) {
+      state->OnRevealEnabled();
+    }
     UpdateRevealState();
   } else {
     event_monitor_.reset();
@@ -99,9 +140,15 @@ void EdgeRevealController::SetEnabled(bool enabled) {
       bubble_widget->RemoveObserver(this);
     }
     observed_bubble_widgets_.clear();
+    mouse_hover_timer_.Stop();
+    temporary_reveal_timer_.Stop();
     hovering_ = false;
+    temporary_reveal_ = false;
     animation_.Reset(1.0);
     observers_.Notify(&Observer::OnEdgeRevealFractionChanged, 1.0);
+    for (auto& [view, state] : revealable_views_) {
+      state->OnRevealDisabled();
+    }
   }
 }
 
@@ -114,8 +161,23 @@ bool EdgeRevealController::IsRevealed() const {
 }
 
 bool EdgeRevealController::ShouldReveal() const {
-  return hovering_ || HasFocusInRevealableViews() ||
+  return hovering_ || temporary_reveal_ || HasFocusInRevealableViews() ||
          !observed_bubble_widgets_.empty();
+}
+
+void EdgeRevealController::RevealTemporarily(base::TimeDelta duration) {
+  if (!enabled_) {
+    return;
+  }
+  temporary_reveal_ = true;
+  UpdateRevealState();
+  temporary_reveal_timer_.Start(FROM_HERE, duration,
+                                base::BindOnce(
+                                    [](EdgeRevealController* self) {
+                                      self->temporary_reveal_ = false;
+                                      self->UpdateRevealState();
+                                    },
+                                    base::Unretained(this)));
 }
 
 bool EdgeRevealController::HasFocusInRevealableViews() const {
@@ -130,7 +192,7 @@ bool EdgeRevealController::HasFocusInRevealableViews() const {
 bool EdgeRevealController::ContainsView(const views::View* view) const {
   return std::any_of(
       revealable_views_.begin(), revealable_views_.end(),
-      [view](const auto& revealable) { return revealable->Contains(view); });
+      [view](const auto& entry) { return entry.first->Contains(view); });
 }
 
 void EdgeRevealController::ScanForAnchoredBubbles() {
@@ -170,10 +232,7 @@ void EdgeRevealController::OnEvent(const ui::Event& event) {
   }
 
   if (event.type() == ui::EventType::kMouseExited) {
-    if (hovering_) {
-      hovering_ = false;
-      UpdateRevealState();
-    }
+    SetHoveringWithDelay(false);
     return;
   }
 
@@ -189,7 +248,7 @@ void EdgeRevealController::OnEvent(const ui::Event& event) {
 
   // Also treat the area occupied by revealed views as part of the zone.
   if (!hovering && IsRevealed()) {
-    for (auto& view : revealable_views_) {
+    for (auto& [view, state] : revealable_views_) {
       gfx::Rect bounds = view->GetBoundsInScreen();
       if (bounds.Contains(cursor)) {
         hovering = true;
@@ -198,10 +257,26 @@ void EdgeRevealController::OnEvent(const ui::Event& event) {
     }
   }
 
-  if (hovering != hovering_) {
-    hovering_ = hovering;
-    UpdateRevealState();
+  SetHoveringWithDelay(hovering);
+}
+
+void EdgeRevealController::SetHoveringWithDelay(bool hovering) {
+  if (hovering == hovering_) {
+    mouse_hover_timer_.Stop();
+    return;
   }
+  if (mouse_hover_timer_.IsRunning()) {
+    return;
+  }
+  mouse_hover_timer_.Start(FROM_HERE,
+                           hovering ? kMouseEnterDelay : kMouseExitDelay,
+                           base::BindOnce(&EdgeRevealController::CommitHovering,
+                                          base::Unretained(this), hovering));
+}
+
+void EdgeRevealController::CommitHovering(bool hovering) {
+  hovering_ = hovering;
+  UpdateRevealState();
 }
 
 // views::FocusChangeListener

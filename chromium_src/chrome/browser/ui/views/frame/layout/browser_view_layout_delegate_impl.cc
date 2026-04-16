@@ -95,11 +95,14 @@ bool BrowserViewLayoutDelegateImpl::IsFullscreen() const {
   return browser_view().IsFullscreen();
 }
 
-double BrowserViewLayoutDelegateImpl::GetTopEdgeRevealFraction() const {
+std::optional<double>
+BrowserViewLayoutDelegateImpl::GetTopOverlayRevealFraction() const {
   if (auto* view = BraveBrowserView::From(&browser_view())) {
     if (auto* controller = view->GetTopEdgeRevealController()) {
-      return controller->GetRevealFraction();
+      if (controller->IsEnabled()) {
+        return controller->GetRevealFraction();
+      }
     }
   }
-  return 1.0;
+  return std::nullopt;
 }

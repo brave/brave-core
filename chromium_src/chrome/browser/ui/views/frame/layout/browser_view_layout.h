@@ -18,23 +18,27 @@ class SidebarContainerView;
   bool ShouldDisplayVerticalTabs
 
 // Add new members to BrowserViewLayoutViews for Brave specific layout changes.
-#define top_container_separator                           \
-  top_container_separator;                                \
-  raw_ptr<views::View> contents_background = nullptr;     \
-  raw_ptr<views::View> vertical_tab_strip_host = nullptr; \
+#define top_container_separator                            \
+  top_container_separator;                                 \
+  raw_ptr<views::View> contents_background = nullptr;      \
+  raw_ptr<views::View> top_container_background = nullptr; \
+  raw_ptr<views::View> vertical_tab_strip_host = nullptr;  \
   raw_ptr<SidebarContainerView> sidebar_container
 
 // Add setters for the new members to BrowserViewLayout.
-#define set_side_panel_animation_content                                   \
-  set_contents_background(views::View* contents_background) {              \
-    views_.contents_background = contents_background;                      \
-  }                                                                        \
-  void set_vertical_tab_strip_host(views::View* vertical_tab_strip_host) { \
-    views_.vertical_tab_strip_host = vertical_tab_strip_host;              \
-  }                                                                        \
-  void set_sidebar_container(SidebarContainerView* sidebar_container) {    \
-    views_.sidebar_container = sidebar_container;                          \
-  }                                                                        \
+#define set_side_panel_animation_content                                     \
+  set_contents_background(views::View* contents_background) {                \
+    views_.contents_background = contents_background;                        \
+  }                                                                          \
+  void set_top_container_background(views::View* top_container_background) { \
+    views_.top_container_background = top_container_background;              \
+  }                                                                          \
+  void set_vertical_tab_strip_host(views::View* vertical_tab_strip_host) {   \
+    views_.vertical_tab_strip_host = vertical_tab_strip_host;                \
+  }                                                                          \
+  void set_sidebar_container(SidebarContainerView* sidebar_container) {      \
+    views_.sidebar_container = sidebar_container;                            \
+  }                                                                          \
   void set_side_panel_animation_content
 
 #include <chrome/browser/ui/views/frame/layout/browser_view_layout.h>  // IWYU pragma: export

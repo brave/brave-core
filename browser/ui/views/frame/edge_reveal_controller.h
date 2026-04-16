@@ -8,9 +8,11 @@
 
 #include <memory>
 
+#include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
+#include "base/timer/timer.h"
 #include "ui/events/event_observer.h"
 #include "ui/gfx/animation/animation_delegate.h"
 #include "ui/gfx/animation/slide_animation.h"
@@ -39,6 +41,10 @@ class EdgeRevealController : public ui::EventObserver,
  public:
   enum class Edge { kTop, kLeft, kBottom, kRight };
 
+  struct RevealableOptions {
+    bool paint_to_layer = false;
+  };
+
   class Observer : public base::CheckedObserver {
    public:
     // |fraction| ranges from 0 (fully hidden) to 1 (fully shown).
@@ -50,7 +56,8 @@ class EdgeRevealController : public ui::EventObserver,
   EdgeRevealController& operator=(const EdgeRevealController&) = delete;
   ~EdgeRevealController() override;
 
-  void AddRevealableView(views::View* view);
+  void AddRevealableView(views::View* view,
+                         RevealableOptions options = {.paint_to_layer = false});
   void RemoveRevealableView(views::View* view);
 
   void AddObserver(Observer* observer);
@@ -64,13 +71,25 @@ class EdgeRevealController : public ui::EventObserver,
 
   bool IsRevealed() const;
 
+  // Forces a reveal for |duration|, then resumes normal state-driven reveal.
+  // No-op when disabled. Calling again restarts the timer with the new
+  // duration.
+  void RevealTemporarily(base::TimeDelta duration);
+
  private:
+  class RevealableState;
+  using RevealableViewMap =
+      base::flat_map<raw_ptr<views::View>, std::unique_ptr<RevealableState>>;
+
   bool ShouldReveal() const;
   bool HasFocusInRevealableViews() const;
   bool ContainsView(const views::View* view) const;
 
   void UpdateRevealState();
   void ScanForAnchoredBubbles();
+
+  void SetHoveringWithDelay(bool hovering);
+  void CommitHovering(bool hovering);
 
   // ui::EventObserver:
   void OnEvent(const ui::Event& event) override;
@@ -89,13 +108,17 @@ class EdgeRevealController : public ui::EventObserver,
   const Edge edge_;
   bool enabled_ = false;
   bool hovering_ = false;
+  bool temporary_reveal_ = false;
 
   raw_ptr<views::Widget> widget_;
   base::ObserverList<Observer> observers_;
   gfx::SlideAnimation animation_{this};
   std::unique_ptr<views::EventMonitor> event_monitor_;
-  base::flat_set<raw_ptr<views::View>> revealable_views_;
+  RevealableViewMap revealable_views_;
   base::flat_set<raw_ptr<views::Widget>> observed_bubble_widgets_;
+
+  base::OneShotTimer mouse_hover_timer_;
+  base::OneShotTimer temporary_reveal_timer_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_EDGE_REVEAL_CONTROLLER_H_

@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <limits>
+#include <optional>
 #include <utility>
 
 #include "base/check.h"
@@ -187,8 +188,7 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
     }
   }
 
-  const double reveal_fraction = delegate().GetTopEdgeRevealFraction();
-  if (reveal_fraction < 1.0) {
+  if (auto reveal_fraction = delegate().GetTopOverlayRevealFraction()) {
     auto* top_layout = layout.GetLayoutFor(views().top_container);
     auto* tab_layout =
         layout.GetLayoutFor(views().horizontal_tab_strip_region_view);
@@ -201,7 +201,7 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
       top_height += tab_layout->bounds.height();
     }
 
-    int offset = -static_cast<int>((1 - reveal_fraction) * top_height);
+    int offset = -static_cast<int>((1 - *reveal_fraction) * top_height);
     if (top_layout) {
       top_layout->bounds.Offset(0, offset);
     }
@@ -215,13 +215,26 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
       infobar_layout->bounds.set_y(content_top);
       content_top += infobar_layout->bounds.height();
     }
-    const auto content_outsets =
-        gfx::Outsets::TLBR(contents_layout->bounds.y() - content_top, 0, 0, 0);
-    contents_layout->bounds.Outset(content_outsets);
+    contents_layout->bounds.Outset(
+        gfx::Outsets::TLBR(contents_layout->bounds.y() - content_top, 0, 0, 0));
     if (auto* background_layout =
             layout.GetLayoutFor(views().contents_background)) {
-      background_layout->bounds.Outset(content_outsets);
+      background_layout->bounds.Outset(
+          gfx::Outsets::TLBR(background_layout->bounds.y(), 0, 0, 0));
     }
+
+    if (views().top_container_background) {
+      gfx::Rect union_bounds;
+      if (top_layout) {
+        union_bounds.Union(top_layout->bounds);
+      }
+      if (tab_layout) {
+        union_bounds.Union(tab_layout->bounds);
+      }
+      layout.AddChild(views().top_container_background, union_bounds);
+    }
+  } else if (views().top_container_background) {
+    layout.AddChild(views().top_container_background, gfx::Rect());
   }
 
   // Mirroring all views that affected by vertical tab alignment in RTL mode
