@@ -56,6 +56,7 @@ void BraveSidePanelCoordinator::Show(
   // asks SidebarController to update the active item state. In sidebar v2,
   // SidebarContainerView does not monitor panel state, so the coordinator
   // must update it directly here.
+  CHECK(browser_view_->browser()->GetFeatures().sidebar_controller());
   browser_view_->browser()
       ->GetFeatures()
       .sidebar_controller()
@@ -70,6 +71,7 @@ void BraveSidePanelCoordinator::Close(SidePanelEntry::PanelType panel_type,
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
   // Same as Show(): sidebar v2 does not rely on SidebarContainerView to
   // propagate panel close events, so clear the active item state here.
+  CHECK(browser_view_->browser()->GetFeatures().sidebar_controller());
   if (panel_type == SidePanelEntry::PanelType::kContent) {
     browser_view_->browser()
         ->GetFeatures()

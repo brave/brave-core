@@ -2080,7 +2080,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2ActiveItemStateSync) {
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   panel_ui->DisableAnimationsForTesting();
 
-  auto bookmark_item_index =
+  const auto bookmark_item_index =
       model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks);
   ASSERT_TRUE(bookmark_item_index.has_value());
 
