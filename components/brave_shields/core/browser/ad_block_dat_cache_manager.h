@@ -49,7 +49,7 @@ class AdBlockDATCacheManager {
                     base::OnceCallback<void(bool)> on_complete);
 
   // Reads cached DAT files from disk. Calls |on_complete| with the results.
-  void ReadCachedDATFiles(
+  void MaybeReadCachedDATFiles(
       base::OnceCallback<void(std::optional<DATFileDataBuffer>,
                               std::optional<DATFileDataBuffer>)> on_complete);
 

@@ -14,16 +14,16 @@
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/feature_list.h"
+#include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
-#include "base/location.h"
-#include "base/sequence_checker.h"
-#include "base/task/sequenced_task_runner.h"
-#include "base/files/file_path.h"
 #include "base/functional/callback_helpers.h"
+#include "base/location.h"
 #include "base/memory/raw_ptr_exclusion.h"
 #include "base/memory/raw_ref.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/sequence_checker.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
@@ -90,7 +90,8 @@ bool IsAdBlockOnlyModeSupportedAndFeatureEnabled(const std::string& locale) {
 class ComponentProvidersGate : public AdBlockFiltersProvider {
  public:
   ComponentProvidersGate(bool engine_is_default,
-                         AdBlockFiltersProviderManager* manager) : AdBlockFiltersProvider(engine_is_default, manager) {}
+                         AdBlockFiltersProviderManager* manager)
+      : AdBlockFiltersProvider(engine_is_default, manager) {}
   ~ComponentProvidersGate() override = default;
   void SetInitialized() {
     if (initialized_) {
@@ -100,17 +101,17 @@ class ComponentProvidersGate : public AdBlockFiltersProvider {
     NotifyObservers(engine_is_default_);
   }
   void LoadFilterSet(
-    base::OnceCallback<void(
-        base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb) override {
+      base::OnceCallback<
+          void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb)
+      override {
     // No-op: this is only a sentinel provider to gate initialization.
     std::move(cb).Run(base::BindOnce([](rust::Box<adblock::FilterSet>*) {}));
   }
   std::string GetNameForDebugging() override {
     return "ComponentProvidersGate";
   }
-  bool IsInitialized() const override {
-    return initialized_;
-  }
+  bool IsInitialized() const override { return initialized_; }
+
  private:
   bool initialized_ = false;
 };
@@ -149,8 +150,8 @@ AdBlockComponentServiceManager::AdBlockComponentServiceManager(
       list_p3a_(list_p3a) {
   // Register gate providers so filter set loading is blocked until the catalog
   // loads and all component providers are registered.
-  default_gate_ = std::make_unique<ComponentProvidersGate>(
-      true, filters_provider_manager_);
+  default_gate_ =
+      std::make_unique<ComponentProvidersGate>(true, filters_provider_manager_);
   additional_gate_ = std::make_unique<ComponentProvidersGate>(
       false, filters_provider_manager_);
 

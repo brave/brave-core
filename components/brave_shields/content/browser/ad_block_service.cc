@@ -202,7 +202,7 @@ AdBlockService::AdBlockService(
   // Start reading cached DAT files from disk as early as possible so the
   // engine can be populated before components arrive from the network.
   if (base::FeatureList::IsEnabled(features::kAdblockDATCache)) {
-    dat_cache_manager_->ReadCachedDATFiles(base::BindOnce(
+    dat_cache_manager_->MaybeReadCachedDATFiles(base::BindOnce(
         &AdBlockService::OnReadCachedDATFiles, weak_factory_.GetWeakPtr()));
   }
 

@@ -186,6 +186,92 @@ IN_PROC_BROWSER_TEST_P(AdBlockDATCacheBrowserTest, DATCacheLoadedOnRestart) {
                                  .spec())));
 }
 
+// Test fixture for DAT cache fallback scenarios where the cache feature is
+// enabled and the pref indicates a cached DAT exists, but the actual file is
+// missing or corrupted. The filter list should load as a fallback.
+class AdBlockDATCacheFallbackBrowserTest
+    : public AdBlockServiceTest,
+      public testing::WithParamInterface<std::string> {
+ public:
+  AdBlockDATCacheFallbackBrowserTest() {
+    feature_list_.InitAndEnableFeature(
+        brave_shields::features::kAdblockDATCache);
+  }
+
+  bool IsMissingFile() const { return GetParam() == "Missing"; }
+
+  void PreRunTestOnMainThread() override {
+    PlatformBrowserTest::PreRunTestOnMainThread();
+
+    // Set the timestamp pref so HasCachedDAT() returns true and suppression
+    // is active.
+    local_state()->SetString(
+        brave_shields::prefs::kAdBlockDefaultDATCacheTimestamp, "12345");
+    local_state()->SetString(
+        brave_shields::prefs::kAdBlockAdditionalDATCacheTimestamp, "12345");
+
+    {
+      base::ScopedAllowBlockingForTesting allow_blocking;
+      base::FilePath cache_dir =
+          profile()->GetPath().AppendASCII("adblock_cache");
+      base::CreateDirectory(cache_dir);
+
+      if (!IsMissingFile()) {
+        // Write garbage data to simulate corruption.
+        base::WriteFile(cache_dir.AppendASCII("engine0.dat"),
+                        "this is not a valid DAT file");
+        base::WriteFile(cache_dir.AppendASCII("engine1.dat"),
+                        "this is not a valid DAT file");
+      }
+      // For the missing case, don't create the files at all.
+    }
+
+    component_service_manager()->InitializeGatesForTesting();
+    WaitForAdBlockServiceThreads();
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+// When the pref says a cached DAT exists but the file is missing or corrupt,
+// the fallback should load filter lists and rules should still work.
+IN_PROC_BROWSER_TEST_P(AdBlockDATCacheFallbackBrowserTest,
+                       FallsBackToFilterList) {
+  auto* service = g_brave_browser_process->ad_block_service();
+
+  // The DAT load should have been attempted and reported (success or failure).
+  ASSERT_TRUE(base::test::RunUntil([service]() {
+    return service->IsDATLoadedForTesting(true) &&
+           service->IsDATLoadedForTesting(false);
+  })) << "Timeout waiting for DAT load attempt";
+
+  // Install component and add rules — the fallback should allow this to work.
+  InstallDefaultAdBlockComponent();
+  UpdateAdBlockInstanceWithRules("||fallback-rule.com^");
+
+  WaitForAdBlockServiceThreads();
+
+  // Filter list should have loaded (either via fallback from failed DAT or
+  // from the component install).
+  EXPECT_TRUE(service->IsFilterListLoadedForTesting(true))
+      << "Filter list should have loaded as fallback";
+
+  GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
+  NavigateToURL(tab_url);
+  EXPECT_EQ(true, EvalJs(web_contents(),
+                         content::JsReplace(
+                             "setExpectations(0, 1, 0, 0); addImage($1)",
+                             embedded_test_server()
+                                 ->GetURL("fallback-rule.com", "/logo.png")
+                                 .spec())));
+}
+
+INSTANTIATE_TEST_SUITE_P(All,
+                         AdBlockDATCacheFallbackBrowserTest,
+                         testing::Values("Missing", "Corrupt"),
+                         [](const auto& info) { return info.param; });
+
 INSTANTIATE_TEST_SUITE_P(All,
                          AdBlockDATCacheBrowserTest,
                          testing::Bool(),

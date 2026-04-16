@@ -282,6 +282,8 @@ class AdBlockService {
 
   bool default_dat_loaded_ = false;
   bool additional_dat_loaded_ = false;
+  bool default_filter_list_loaded_ = false;
+  bool additional_filter_list_loaded_ = false;
 
   SEQUENCE_CHECKER(sequence_checker_);
 

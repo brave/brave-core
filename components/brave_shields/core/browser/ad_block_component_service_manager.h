@@ -11,8 +11,6 @@
 #include <string>
 #include <vector>
 
-#include <memory>
-
 #include "base/memory/raw_ptr.h"
 #include "base/sequence_checker.h"
 #include "base/thread_annotations.h"
@@ -22,9 +20,8 @@
 #include "brave/components/brave_shields/core/browser/ad_block_filter_list_catalog_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
-#include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
-#include "third_party/rust/cxx/v1/cxx.h"
 #include "brave/components/brave_shields/core/browser/ad_block_list_p3a.h"
+#include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 #include "components/prefs/pref_service.h"
 
 class AdBlockServiceTest;
