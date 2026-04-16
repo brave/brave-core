@@ -57,12 +57,12 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_metrics.h"
 #include "chrome/browser/profiles/profile_window.h"
-#include "chrome/browser/sessions/session_restore.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
+#include "chrome/browser/ui/browser_tabrestore.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
@@ -272,17 +272,57 @@ void DoRestoreWorkspace(
     return;
   }
 
-  std::vector<const sessions::SessionWindow*> window_ptrs;
-  window_ptrs.reserve(windows.size());
-  for (const auto& w : windows) {
-    window_ptrs.push_back(w.get());
-  }
+  // We restore tabs ourselves rather than using RestoreForeignSessionWindows
+  // because that API creates an empty new_group_ids map and never calls
+  // RestoreTabGroupMetadata, so tab group names/colors are silently dropped.
+  // By passing the original TabGroupId directly to AddRestoredTab, we avoid
+  // any ID remapping and can apply visual data with the same IDs afterwards.
+  for (const auto& window : windows) {
+    if (window->tabs.empty()) {
+      continue;
+    }
 
-  // RestoreForeignSessionWindows is synchronous: it creates all browser
-  // windows/tabs/groups before returning, so |windows| remains valid.
-  SessionRestore::RestoreForeignSessionWindows(profile, window_ptrs.begin(),
-                                               window_ptrs.end(),
-                                               base::DoNothing());
+    Browser* browser = chrome::OpenEmptyWindow(
+        profile, /*should_trigger_session_restore=*/false);
+    if (!browser) {
+      continue;
+    }
+
+    auto* tsm = browser->tab_strip_model();
+    for (int i = 0; i < static_cast<int>(window->tabs.size()); ++i) {
+      const auto& tab = window->tabs[i];
+      if (tab->navigations.empty()) {
+        continue;
+      }
+      chrome::AddRestoredTab(
+          browser, tab->navigations,
+          /*tab_index=*/i, tab->normalized_navigation_index(),
+          tab->extension_app_id,
+          /*group=*/tab->group,
+          /*select=*/false, tab->pinned,
+          /*last_active_time_ticks=*/base::TimeTicks(), tab->last_active_time,
+          /*storage_namespace=*/nullptr, tab->user_agent_override,
+          tab->extra_data,
+          /*from_session_restore=*/true,
+          /*is_active_browser=*/std::nullopt);
+    }
+
+    // Apply group names, colors, and collapsed state.  Since we passed the
+    // original TabGroupIds to AddRestoredTab, no ID remapping is needed.
+    for (const auto& session_group : window->tab_groups) {
+      if (!tsm->group_model() ||
+          !tsm->group_model()->ContainsTabGroup(session_group->id)) {
+        continue;
+      }
+      tsm->ChangeTabGroupVisuals(session_group->id, session_group->visual_data);
+    }
+
+    int active = std::clamp(window->selected_tab_index, 0,
+                            std::max(0, tsm->count() - 1));
+    if (active < tsm->count()) {
+      tsm->ActivateTabAt(active);
+    }
+  }
 }
 
 }  // namespace
