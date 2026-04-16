@@ -6,6 +6,7 @@ import CoreData
 import Data
 import DesignSystem
 import Favicon
+import Growth
 import Preferences
 import Shared
 import Storage
@@ -857,6 +858,7 @@ public class SearchViewController: UIViewController, LoaderListener {
       RecentSearch.addItem(type: .website, text: localSearchQuery, websiteUrl: url.absoluteString)
     }
     searchDelegate?.searchViewController(self, didSelectURL: url)
+    recordQuickSearchActionP3A(engine: engine)
   }
 
   @objc func didClickSettingsButton() {
@@ -865,6 +867,7 @@ public class SearchViewController: UIViewController, LoaderListener {
 
   @objc func didClickLeoButton() {
     submitSearchQueryToAIChat()
+    recordQuickSearchActionP3A(engine: nil)
   }
 
   @objc func onShowMorePressed() {
@@ -1245,6 +1248,68 @@ extension SearchViewController: NSFetchedResultsControllerDelegate {
     _ controller: NSFetchedResultsController<NSFetchRequestResult>
   ) {
     updateAvailableOnYourDeviceItems()
+  }
+}
+
+// MARK: - P3A
+
+extension SearchViewController {
+  func recordQuickSearchActionP3A(engine: OpenSearchEngine?) {
+    enum Answer: Int, CaseIterable {
+      case leo = 1
+      case defaultEngine = 2
+      case google = 3
+      case youtube = 4
+      case bing = 5
+      case ecosia = 6
+      case duckduckgo = 7
+      case qwant = 8
+      case startpage = 9
+      case brave = 10
+      case other = 11
+    }
+
+    var answer: Answer = .leo
+    if let engine {
+      if let engineID = engine.engineID, !engine.isCustomEngine {
+        let isDefaultEngine =
+          dataSource.searchEngines?.isEngineDefault(
+            engine,
+            type: dataSource.isPrivate ? .privateMode : .standard
+          ) ?? false
+        if isDefaultEngine {
+          answer = .defaultEngine
+        } else {
+          switch engineID {
+          case InitialSearchEngines.SearchEngineID.google.quickSearchP3AId:
+            answer = .google
+          case InitialSearchEngines.SearchEngineID.bing.quickSearchP3AId:
+            answer = .bing
+          case InitialSearchEngines.SearchEngineID.ecosia.quickSearchP3AId:
+            answer = .ecosia
+          case InitialSearchEngines.SearchEngineID.duckduckgo.quickSearchP3AId:
+            answer = .duckduckgo
+          case InitialSearchEngines.SearchEngineID.qwant.quickSearchP3AId:
+            answer = .qwant
+          case InitialSearchEngines.SearchEngineID.startpage.quickSearchP3AId:
+            answer = .startpage
+          case InitialSearchEngines.SearchEngineID.braveSearch.quickSearchP3AId:
+            answer = .brave
+          default:
+            answer = .other
+          }
+        }
+      } else if engine.isCustomEngine {
+        if engine.shortName.caseInsensitiveCompare("Youtube") == .orderedSame {
+          answer = .youtube
+        } else {
+          answer = .other
+        }
+      } else {
+        answer = .other
+      }
+    }
+    UmaHistogramEnumeration("Brave.Search.QuickMostUsedAction", sample: answer)
   }
 }
 
