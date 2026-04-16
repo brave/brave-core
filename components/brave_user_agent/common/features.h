@@ -20,6 +20,8 @@ BASE_DECLARE_FEATURE(kUseBraveUserAgent);
 BASE_DECLARE_FEATURE_PARAM(int, kBraveIOSUserAgentDefault);
 #endif
 
+BASE_DECLARE_FEATURE(kShouldCancelRequestsForUserAgentChange);
+
 }  // namespace features
 }  // namespace brave_user_agent
 

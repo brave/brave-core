@@ -309,6 +309,15 @@ const flags_ui::FeatureEntry::FeatureVariation
               kBraveIOSUserAgentFeatureVariations, "BraveIOSUserAgent"),       \
       },                                                                       \
       {                                                                        \
+          "should-cancel-requests-for-user-agent-change",                      \
+          "Cancel requests for user agent change",                             \
+          "Enables cancelling requests when we need to change the user agent " \
+          "for the new destination",                                           \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave_user_agent::features::                      \
+                                 kShouldCancelRequestsForUserAgentChange),     \
+      },                                                                       \
+      {                                                                        \
           "brave-use-profile-web-views-configuration",                         \
           "Use a single web view configuraton per profile",                    \
           "Replaces per-tab web view configurations with per-profile "         \
