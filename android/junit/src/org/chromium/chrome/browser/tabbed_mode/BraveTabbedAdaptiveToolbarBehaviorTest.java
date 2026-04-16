@@ -71,7 +71,8 @@ public class BraveTabbedAdaptiveToolbarBehaviorTest {
                         tabModelSelectorSupplier,
                         modalDialogManagerSupplier,
                         tabStripVisibilitySupplier,
-                        preventClose -> {});
+                        preventClose -> {},
+                        () -> null);
     }
 
     @After

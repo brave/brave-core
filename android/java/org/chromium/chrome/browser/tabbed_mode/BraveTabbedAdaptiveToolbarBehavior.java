@@ -22,6 +22,7 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabstrip.StripVisibilityState;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarBehavior;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarButtonVariant;
+import org.chromium.chrome.browser.ui.browser_window.ChromeAndroidTask;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.List;
@@ -56,7 +57,8 @@ public class BraveTabbedAdaptiveToolbarBehavior extends TabbedAdaptiveToolbarBeh
             Supplier<TabModelSelector> tabModelSelectorSupplier,
             Supplier<ModalDialogManager> modalDialogManagerSupplier,
             MonotonicObservableSupplier<@StripVisibilityState Integer> tabStripVisibilitySupplier,
-            GlicToolbarButtonController.GlicButtonDelegate toggleGlicCallback) {
+            GlicToolbarButtonController.GlicButtonDelegate toggleGlicCallback,
+            Supplier<ChromeAndroidTask> chromeAndroidTaskSupplier) {
         super(
                 context,
                 activityLifecycleDispatcher,
@@ -69,7 +71,8 @@ public class BraveTabbedAdaptiveToolbarBehavior extends TabbedAdaptiveToolbarBeh
                 tabModelSelectorSupplier,
                 modalDialogManagerSupplier,
                 tabStripVisibilitySupplier,
-                toggleGlicCallback);
+                toggleGlicCallback,
+                chromeAndroidTaskSupplier);
         mContext = context;
     }
 
