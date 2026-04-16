@@ -1538,6 +1538,7 @@ if (is_android) {
       "//chrome/browser/feed/android:java",
       "//chrome/browser/flags:java",
       "//chrome/browser/fullscreen/android:java",
+      "//chrome/browser/glic/android:java",
       "//chrome/browser/hub:java",
       "//chrome/browser/keyboard_accessory/android/java",
       "//chrome/browser/language/android:java",
