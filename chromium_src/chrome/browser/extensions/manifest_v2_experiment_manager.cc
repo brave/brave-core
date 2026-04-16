@@ -6,8 +6,8 @@
 #include "chrome/browser/extensions/manifest_v2_experiment_manager.h"
 
 #include "brave/browser/extensions/manifest_v2/features.h"
-#include "chrome/browser/extensions/mv2_experiment_stage.h"
 #include "extensions/browser/extension_registry.h"
+#include "extensions/browser/mv2_experiment_stage.h"
 
 namespace {
 
