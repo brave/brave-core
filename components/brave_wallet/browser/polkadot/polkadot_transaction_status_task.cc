@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_transaction_status_task.h"
 
-#include "base/strings/strcat.h"  // IWYU pragma: export
+#include "base/strings/strcat.h"  // IWYU pragma: keep
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 
 namespace brave_wallet {
