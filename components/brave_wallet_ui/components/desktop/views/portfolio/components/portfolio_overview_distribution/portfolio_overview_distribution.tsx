@@ -34,6 +34,7 @@ import {
   SegmentFiat,
 } from './portfolio_overview_distribution.style'
 import { Column, Row } from '../../../../../shared/style'
+import styles from './style.module.scss'
 
 // iOS WebKit blocks sampling remote images to canvas; use fixed segment hues instead.
 const IOS_DISTRIBUTION_SEGMENT_COLORS: string[] = [
@@ -143,6 +144,7 @@ export function PortfolioOverviewDistribution({ data }: Props) {
           return (
             <Segment
               key={key}
+              className={styles.portfolioOverviewDistributionSegment}
               $grow={item.value}
               alignItems='center'
               gap='4px'
@@ -186,6 +188,7 @@ export function PortfolioOverviewDistribution({ data }: Props) {
               >
                 {item.fiatValue ? (
                   <SegmentFiat
+                    className={styles.portfolioOverviewDistributionFiat}
                     textSize='12px'
                     textColor='primary'
                     textAlign='left'
