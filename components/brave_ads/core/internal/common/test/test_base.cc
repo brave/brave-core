@@ -59,6 +59,10 @@ TestBase::TestBase()
   SimulateProfile();
 }
 
+TestBase::TestBase(bool is_integration_test) : TestBase() {
+  is_integration_test_ = is_integration_test;
+}
+
 TestBase::~TestBase() {
   CHECK(setup_called_)
       << "You have overridden SetUp but never called TestBase::SetUp";
@@ -68,7 +72,7 @@ TestBase::~TestBase() {
 }
 
 void TestBase::SetUp() {
-  SetUp(/*is_integration_test=*/false);  // Default to unit test.
+  SetUp(is_integration_test_);
 }
 
 void TestBase::TearDown() {
