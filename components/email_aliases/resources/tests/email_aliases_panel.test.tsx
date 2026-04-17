@@ -12,9 +12,14 @@ import {
   EmailAliasesPanelHandlerInterface,
   EmailAliasesServiceObserverInterface,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+import type { AccountState } from 'gen/brave/components/brave_account/mojom/brave_account.mojom.m'
+
+const panelAccountLoggedIn = {
+  loggedIn: { email: 'test@brave.com' },
+} as AccountState
 
 const mockEmailAliasesPanelHandler: EmailAliasesPanelHandlerInterface = {
-  onAliaseCreated: jest.fn(),
+  onAliasCreated: jest.fn(),
   onManageAliases: jest.fn(),
   onCancelAliasCreation: jest.fn(),
 }
@@ -50,6 +55,7 @@ describe('PanelConnected', () => {
         emailAliasesService={mockEmailAliasesService}
         emailAliasesPanelHandler={mockEmailAliasesPanelHandler}
         bindObserver={createBindObserver(mockEmailAliasesService)}
+        accountStateOverride={panelAccountLoggedIn}
       />,
     )
 
@@ -69,6 +75,7 @@ describe('PanelConnected', () => {
         emailAliasesService={mockEmailAliasesService}
         emailAliasesPanelHandler={mockEmailAliasesPanelHandler}
         bindObserver={createBindObserver(mockEmailAliasesService)}
+        accountStateOverride={panelAccountLoggedIn}
       />,
     )
 
@@ -90,6 +97,7 @@ describe('PanelConnected', () => {
         emailAliasesService={mockEmailAliasesService}
         emailAliasesPanelHandler={mockEmailAliasesPanelHandler}
         bindObserver={createBindObserver(mockEmailAliasesService)}
+        accountStateOverride={panelAccountLoggedIn}
       />,
     )
 

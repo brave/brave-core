@@ -6,10 +6,9 @@
 import { getLocale } from '$web-common/locale'
 import {
   Alias,
-  AuthState,
   EmailAliasesServiceInterface,
-  EmailAliasesServiceObserverInterface,
   EmailAliasesServiceObserverRemote,
+  EmailAliasesServiceObserverInterface,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
 export const demoData = {
@@ -35,14 +34,11 @@ export const demoData = {
 
 export class StubEmailAliasesService implements EmailAliasesServiceInterface {
   aliases: Map<string, Alias>
-  authState: AuthState
-  accountRequestId: number
   observers: Set<
     EmailAliasesServiceObserverRemote | EmailAliasesServiceObserverInterface
   >
 
-  constructor(authState: AuthState) {
-    this.authState = authState
+  constructor() {
     this.observers = new Set<
       EmailAliasesServiceObserverRemote | EmailAliasesServiceObserverInterface
     >()
@@ -58,7 +54,6 @@ export class StubEmailAliasesService implements EmailAliasesServiceInterface {
       | EmailAliasesServiceObserverInterface,
   ) {
     this.observers.add(observer)
-    observer.onAuthStateChanged(this.authState)
     observer.onAliasesUpdated([...this.aliases.values()])
   }
 

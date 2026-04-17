@@ -11,10 +11,14 @@ import Col from './styles/Col'
 import styled from 'styled-components'
 import {
   Alias,
-  AuthState,
-  AuthenticationStatus,
   EmailAliasesServiceInterface,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+
+import type { AccountState } from 'gen/brave/components/brave_account/mojom/brave_account.mojom.m'
+import {
+  getLoggedInEmail,
+  isAccountLoggedIn,
+} from '../email_aliases_account_state'
 
 const PageCol = styled(Col)`
   font: ${font.default.regular};
@@ -35,20 +39,20 @@ const BraveAccountSignIn = () => {
 
 export const ManagePage = ({
   aliasesState,
-  authState,
+  accountState,
   emailAliasesService,
 }: {
   aliasesState: Alias[]
-  authState: AuthState
+  accountState: AccountState | undefined
   emailAliasesService: EmailAliasesServiceInterface
 }) => (
   <PageCol>
     <Introduction />
     <BraveAccountSignIn />
-    {authState.status === AuthenticationStatus.kAuthenticated && (
+    {isAccountLoggedIn(accountState) && (
       <AliasList
         aliases={aliasesState}
-        authEmail={authState.email}
+        authEmail={getLoggedInEmail(accountState)}
         emailAliasesService={emailAliasesService}
       />
     )}

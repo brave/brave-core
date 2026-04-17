@@ -9,18 +9,6 @@ import "mojo/public/mojom/base/empty.mojom";
 
 const uint8 kMaxAliases = 5;
 
-enum AuthenticationStatus {
-  kStartup,
-  kUnauthenticated,
-  kAuthenticated,
-};
-
-struct AuthState {
-  AuthenticationStatus status;
-  // The authentication email address for this current account
-  string email;
-};
-
 struct Alias {
   // The alias email address for this alias
   string email;
@@ -41,10 +29,6 @@ struct AliasUpdateData {
 
 // Observer for change in email aliases state
 interface EmailAliasesServiceObserver {
-
-  // Called when the user's authentication state changes.
-  OnAuthStateChanged(AuthState state);
-
   // Called when aliases have been updated for the currently authenticated
   // account.
   OnAliasesUpdated(array<Alias> aliases);

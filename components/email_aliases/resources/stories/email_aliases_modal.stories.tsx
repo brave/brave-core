@@ -11,16 +11,11 @@ import {
 import { StubEmailAliasesService, demoData } from './utils/stubs'
 import {
   Alias,
-  AuthenticationStatus,
   MAX_ALIASES,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
-const stubEmailAliasesServiceAccountReadyInstance = new StubEmailAliasesService(
-  {
-    status: AuthenticationStatus.kAuthenticated,
-    email: demoData.email,
-  },
-)
+const stubEmailAliasesServiceAccountReadyInstance =
+  new StubEmailAliasesService()
 
 export const NewAliasDialog = () => {
   return (

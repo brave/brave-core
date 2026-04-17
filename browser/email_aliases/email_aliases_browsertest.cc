@@ -389,9 +389,6 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuNotAuthorized) {
 
 IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorized) {
   auto* service = email_aliases_service();
-  {
-    auto initilized = test::AuthStateObserver::Setup(service, true);
-  }
   service->GetAuth()->SetAuthEmailForTesting(kSuccessEmail);
   Navigate(GURL("https://a.test/email_aliases/inputs.html"));
   InjectHelpers(ActiveWebContents());
