@@ -42,6 +42,12 @@ This is only an estimate. The **github** view may differ.
 *   [Claude Code Skills](claude_code_skills.md) - Slash commands for automating
     common development tasks (commit, review, preflight, CI, and more).
 
+### Security and Privacy
+*   [Premium Account Privacy](premium_account_privacy.md) -
+    How blind tokens decouple payment identity from service usage.
+*   [Cryptographic Features](cryptography.md) - Cryptographic features in Brave
+    beyond standard Chromium encryption.
+
 ### General Development
 *   [`gni` notes](gni_sources.md) - Brief notes on the use of `source.gni`
     files in our code base.
