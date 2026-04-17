@@ -6,6 +6,7 @@
 #include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
 
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "base/no_destructor.h"
 #include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -36,7 +37,7 @@ AdsServiceFactoryIOS::~AdsServiceFactoryIOS() = default;
 std::unique_ptr<KeyedService> AdsServiceFactoryIOS::BuildServiceInstanceFor(
     ProfileIOS* profile) const {
   CHECK(profile);
-  return std::make_unique<AdsServiceImplIOS>(profile->GetPrefs());
+  return std::make_unique<AdsServiceImplIOS>(CHECK_DEREF(profile->GetPrefs()));
 }
 
 }  // namespace brave_ads

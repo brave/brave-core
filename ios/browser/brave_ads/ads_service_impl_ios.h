@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
@@ -32,7 +33,7 @@ class Ads;
 class AdsClient;
 class AdsServiceImplIOS : public AdsService {
  public:
-  explicit AdsServiceImplIOS(PrefService* prefs);
+  explicit AdsServiceImplIOS(PrefService& prefs);
 
   AdsClientNotifier* GetAdsClientNotifier();
 
@@ -155,7 +156,7 @@ class AdsServiceImplIOS : public AdsService {
   void ClearAdsData(ClearDataCallback callback, bool success);
   void ClearAdsDataCallback(ClearDataCallback callback);
 
-  const raw_ptr<PrefService> prefs_;  // Not owned.
+  const raw_ref<PrefService> prefs_;
 
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
 
