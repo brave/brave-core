@@ -1,0 +1,19 @@
+{
+  "unblinded_tokens": [
+    {
+      "unblinded_token": "IXDCnZnVEJ0orkbZfr2ut2NQPQ0ofdervKBmQ2hyjcClGCjA3/ExbBumO0ua5cxwo//nN0uKQ60kknru8hRXx0DWhwHwuFlxmot8WgVbnQ0XtPx7q9BG0jbI00AJStwN",
+      "public_key": "QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=",
+      "signature": "QDgYBeSL9ZWx8+/EHa3x3/LjVaQfiVu1ix7pnlTEgAzJw4Sc1e48Jyrj0/p/+NPqk8udleb4jZWlWDjy+m7fCA=="
+    },
+    {
+      "public_key": "QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=",
+      "signature": "V7Gilxl5TNv7pTqq8Sftmu+O+HgJ44Byn8PhDkDIwnsgncGiCduuoRMNagUnN7AXalaQdy1GedKj5thKFeyUcQ=="
+    },
+    {
+      "unblinded_token": "INVALID_TOKEN",
+      "public_key": "QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=",
+      "signature": "V7Gilxl5TNv7pTqq8Sftmu+O+HgJ44Byn8PhDkDIwnsgncGiCduuoRMNagUnN7AXalaQdy1GedKj5thKFeyUcQ=="
+    }
+  ],
+  "unblinded_payment_tokens": []
+}

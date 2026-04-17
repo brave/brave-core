@@ -17,7 +17,6 @@ import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
-import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.brave_wallet.mojom.TxService;
 
 // Under development, some parts not tested so use with caution
@@ -31,7 +30,6 @@ public class WalletModel {
     private SolanaTxManagerProxy mSolanaTxManagerProxy;
     private BraveWalletService mBraveWalletService;
     private AssetRatioService mAssetRatioService;
-    private SwapService mSwapService;
     private final CryptoModel mCryptoModel;
     @NonNull private final DappsModel mDappsModel;
     private final KeyringModel mKeyringModel;
@@ -47,8 +45,7 @@ public class WalletModel {
             EthTxManagerProxy ethTxManagerProxy,
             SolanaTxManagerProxy solanaTxManagerProxy,
             AssetRatioService assetRatioService,
-            BraveWalletService braveWalletService,
-            SwapService swapService) {
+            BraveWalletService braveWalletService) {
         mContext = context;
         mKeyringService = keyringService;
         mBlockchainRegistry = blockchainRegistry;
@@ -58,7 +55,6 @@ public class WalletModel {
         mSolanaTxManagerProxy = solanaTxManagerProxy;
         mAssetRatioService = assetRatioService;
         mBraveWalletService = braveWalletService;
-        mSwapService = swapService;
         // Do not change the object initialisation order without discussion
         mCryptoActions = new CryptoActions();
         mCryptoModel =
@@ -71,9 +67,7 @@ public class WalletModel {
                         mEthTxManagerProxy,
                         mSolanaTxManagerProxy,
                         mBraveWalletService,
-                        mAssetRatioService,
-                        mCryptoActions,
-                        mSwapService);
+                        mCryptoActions);
         mDappsModel =
                 new DappsModel(
                         mJsonRpcService,
@@ -86,11 +80,16 @@ public class WalletModel {
         init();
     }
 
-    public void resetServices(Context context, KeyringService keyringService,
-            BlockchainRegistry blockchainRegistry, JsonRpcService jsonRpcService,
-            TxService txService, EthTxManagerProxy ethTxManagerProxy,
-            SolanaTxManagerProxy solanaTxManagerProxy, AssetRatioService assetRatioService,
-            BraveWalletService braveWalletService, SwapService swapService) {
+    public void resetServices(
+            Context context,
+            KeyringService keyringService,
+            BlockchainRegistry blockchainRegistry,
+            JsonRpcService jsonRpcService,
+            TxService txService,
+            EthTxManagerProxy ethTxManagerProxy,
+            SolanaTxManagerProxy solanaTxManagerProxy,
+            AssetRatioService assetRatioService,
+            BraveWalletService braveWalletService) {
         mContext = context;
         setKeyringService(keyringService);
         setBlockchainRegistry(blockchainRegistry);
@@ -100,10 +99,15 @@ public class WalletModel {
         setSolanaTxManagerProxy(solanaTxManagerProxy);
         setAssetRatioService(assetRatioService);
         setBraveWalletService(braveWalletService);
-        mSwapService = swapService;
-        mCryptoModel.resetServices(mContext, mTxService, mKeyringService, mBlockchainRegistry,
-                mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy, mBraveWalletService,
-                mAssetRatioService);
+        mCryptoModel.resetServices(
+                mContext,
+                mTxService,
+                mKeyringService,
+                mBlockchainRegistry,
+                mJsonRpcService,
+                mEthTxManagerProxy,
+                mSolanaTxManagerProxy,
+                mBraveWalletService);
         mDappsModel.resetServices(
                 mJsonRpcService, mBraveWalletService, mCryptoModel.getPendingTxHelper());
         mKeyringModel.resetService(mKeyringService, braveWalletService);

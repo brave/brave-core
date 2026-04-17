@@ -92,9 +92,15 @@ void GetAllCallback(
   CHECK(mojom_db_transaction_result->rows_union);
 
   PaymentTokenList payment_tokens;
-  for (auto& mojom_db_row :
+  for (const auto& mojom_db_row :
        mojom_db_transaction_result->rows_union->get_rows()) {
-    payment_tokens.push_back(FromMojomRow(mojom_db_row));
+    const PaymentTokenInfo payment_token = FromMojomRow(mojom_db_row);
+    if (!payment_token.IsValid()) {
+      BLOG(0, "Invalid payment token");
+      continue;
+    }
+
+    payment_tokens.push_back(payment_token);
   }
 
   std::move(callback).Run(/*success=*/true, std::move(payment_tokens));
@@ -156,7 +162,8 @@ void PaymentTokens::Delete(const PaymentTokenList& payment_tokens,
   std::vector<std::string> transaction_ids;
   transaction_ids.reserve(payment_tokens.size());
   for (const auto& payment_token : payment_tokens) {
-    transaction_ids.push_back("'" + payment_token.transaction_id + "'");
+    transaction_ids.push_back(base::ReplaceStringPlaceholders(
+        "'$1'", {payment_token.transaction_id}, nullptr));
   }
 
   mojom::DBTransactionInfoPtr mojom_db_transaction =

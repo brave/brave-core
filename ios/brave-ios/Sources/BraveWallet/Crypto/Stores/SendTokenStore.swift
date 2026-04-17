@@ -461,7 +461,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
           fromAccount: selectedAccount,
           recipient: sendAddress
         )
-      case .ada:
+      case .ada, .dot:
         break
       @unknown default:
         break

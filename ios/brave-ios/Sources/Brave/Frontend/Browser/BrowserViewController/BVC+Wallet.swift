@@ -754,4 +754,8 @@ extension BrowserViewController {
       webUIAction: .onboarding(isNewAccount: isNewWallet)
     )
   }
+
+  func openWalletHome() {
+    openDestinationURL(.webUI.wallet.home)
+  }
 }

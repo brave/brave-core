@@ -102,7 +102,7 @@ function SidePanel (props: {
           <S.FavIconBox>
             <img src={siteBlockInfo?.faviconUrl.url} />
           </S.FavIconBox>
-          <S.SiteTitle>{siteBlockInfo?.host}</S.SiteTitle>
+          <S.SiteTitle>&lrm;{siteBlockInfo?.host}</S.SiteTitle>
         </S.SiteTitleBox>
       </S.HeaderBox>
       <S.Scroller>

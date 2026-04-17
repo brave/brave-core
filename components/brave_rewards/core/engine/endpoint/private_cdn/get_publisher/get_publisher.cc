@@ -87,15 +87,6 @@ void GetPublisherStatusFromMessage(
         return;
       }
     }
-    if (wallet.has_gemini_wallet()) {
-      auto& gemini = wallet.gemini_wallet();
-      if (gemini.wallet_state() == publishers_pb::GEMINI_ACCOUNT_KYC &&
-          !gemini.address().empty()) {
-        info->status = mojom::PublisherStatus::GEMINI_VERIFIED;
-        info->address = gemini.address();
-        return;
-      }
-    }
   }
   if (!response.site_banner_details().web3_url().empty()) {
     info->status = mojom::PublisherStatus::WEB3_ENABLED;

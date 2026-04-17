@@ -11,10 +11,10 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens.h"
-#include "brave/components/brave_ads/core/internal/account/transactions/transaction_test_constants.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/token_state_manager.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/test/transaction_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
-#include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 
 namespace brave_ads::test {
 
@@ -42,7 +42,7 @@ PaymentTokenInfo BuildPaymentToken(const std::string& payment_token_base64) {
 }  // namespace
 
 PaymentTokens& GetPaymentTokens() {
-  return ConfirmationStateManager::GetInstance().GetPaymentTokens();
+  return TokenStateManager::GetInstance().GetPaymentTokens();
 }
 
 PaymentTokenList SetPaymentTokens(size_t count) {

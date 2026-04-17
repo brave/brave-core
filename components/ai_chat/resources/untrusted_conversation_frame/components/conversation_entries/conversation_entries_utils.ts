@@ -194,11 +194,14 @@ export const normalizeCitationSpacing = (text: string): string => {
 
 /**
  * Collects all tool artifacts from the events of a group of conversation turns.
+ * Deduplicates artifacts by id, keeping only the latest artifact for each id.
+ * Artifacts without an id are always included.
  */
 export function getToolArtifacts(
   group: Mojom.ConversationTurn[],
 ): Mojom.ToolArtifact[] {
-  const artifacts: Mojom.ToolArtifact[] = []
+  const artifactsWithoutId: Mojom.ToolArtifact[] = []
+  const artifactsById = new Map<string, Mojom.ToolArtifact>()
 
   for (const entry of group) {
     if (!entry.events) {
@@ -206,11 +209,18 @@ export function getToolArtifacts(
     }
 
     for (const event of entry.events) {
-      if (event.toolUseEvent?.artifacts) {
-        artifacts.push(...event.toolUseEvent.artifacts)
+      if (!event.toolUseEvent?.artifacts) {
+        continue
+      }
+      for (const artifact of event.toolUseEvent.artifacts) {
+        if (artifact.id) {
+          artifactsById.set(artifact.id, artifact)
+        } else {
+          artifactsWithoutId.push(artifact)
+        }
       }
     }
   }
 
-  return artifacts
+  return [...artifactsWithoutId, ...artifactsById.values()]
 }

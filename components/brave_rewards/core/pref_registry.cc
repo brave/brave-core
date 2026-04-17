@@ -57,7 +57,6 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kWalletBrave, "");
   registry->RegisterStringPref(prefs::kWalletUphold, "");
   registry->RegisterStringPref(prefs::kWalletBitflyer, "");
-  registry->RegisterStringPref(prefs::kWalletGemini, "");
   registry->RegisterStringPref(prefs::kWalletZebPay, "");
   registry->RegisterStringPref(prefs::kWalletSolana, "");
   registry->RegisterBooleanPref(prefs::kDisabledByPolicy, false);
@@ -79,6 +78,9 @@ void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kPromotionCorruptedMigrated, false);
   registry->RegisterBooleanPref(prefs::kFetchOldBalance, true);
   registry->RegisterBooleanPref(prefs::kEmptyBalanceChecked, false);
+
+  // Added 04/2026
+  registry->RegisterStringPref(prefs::kWalletGemini, "");
 }
 
 }  // namespace brave_rewards

@@ -52,20 +52,6 @@ bool ConfirmationTokens::Remove(
   return true;
 }
 
-void ConfirmationTokens::Remove(
-    const ConfirmationTokenList& confirmation_tokens) {
-  std::erase_if(
-      confirmation_tokens_,
-      [&confirmation_tokens](const ConfirmationTokenInfo& confirmation_token) {
-        return std::ranges::contains(confirmation_tokens, confirmation_token);
-      });
-}
-
-void ConfirmationTokens::RemoveAll() {
-  confirmation_tokens_.clear();
-  confirmation_tokens_.shrink_to_fit();
-}
-
 bool ConfirmationTokens::Exists(
     const ConfirmationTokenInfo& confirmation_token) const {
   return std::ranges::contains(confirmation_tokens_, confirmation_token);

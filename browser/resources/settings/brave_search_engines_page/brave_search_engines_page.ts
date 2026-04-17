@@ -106,7 +106,8 @@ class BraveSearchEnginesPage extends BraveSearchEnginesPageBase {
   }
 
   private isPrefManaged_(pref: chrome.settingsPrivate.PrefObject) {
-    return pref.enforcement === chrome.settingsPrivate.Enforcement.ENFORCED
+    return !!pref &&
+        pref.enforcement === chrome.settingsPrivate.Enforcement.ENFORCED
   }
 
   private isWebDiscoveryNativeEnabled_() {

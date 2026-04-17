@@ -292,14 +292,11 @@ struct AddCustomAssetView: View {
       }
       .scrollContentBackground(.hidden)
       .background(Color(UIColor.braveGroupedBackground))
-      .onChange(
-        of: selectedTokenType,
-        perform: { _ in
-          guard tokenNeedsTokenId == nil else { return }
-          resignFirstResponder()
-          clearInput()
-        }
-      )
+      .onChange(of: selectedTokenType) { _, _ in
+        guard tokenNeedsTokenId == nil else { return }
+        resignFirstResponder()
+        clearInput()
+      }
       .navigationTitle(Strings.Wallet.customTokenTitle)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {

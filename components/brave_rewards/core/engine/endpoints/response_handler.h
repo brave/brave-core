@@ -35,8 +35,7 @@ class ResponseHandler {
   // Note that friend class RequestFor<Endpoint>; is not sufficient due to
   // class hierarchies implementing an endpoint (e.g. PostConnect is the one
   // that derives from ResponseHandler<PostConnect>, but we're passing
-  // PostConnectBitflyer, PostConnectGemini and PostConnectUphold to
-  // RequestFor<>).
+  // PostConnectBitflyer and PostConnectUphold to RequestFor<>).
   template <typename>
   friend class RequestFor;
 };

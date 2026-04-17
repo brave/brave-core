@@ -3062,6 +3062,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ArtifactStoredInHistory) {
   // Verify that artifacts returned by a tool are stored in the tool event
   // in the conversation history.
   static constexpr char kOutputText[] = "Tool output text";
+  static constexpr char kArtifactId[] = "test-artifact-id";
   static constexpr char kArtifactType[] = "code";
   static constexpr char kArtifactContentJson[] = "{\"lang\":\"js\"}";
 
@@ -3110,8 +3111,8 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ArtifactStoredInHistory) {
         content.push_back(mojom::ContentBlock::NewTextContentBlock(
             mojom::TextContentBlock::New(kOutputText)));
         std::vector<mojom::ToolArtifactPtr> artifacts;
-        artifacts.push_back(
-            mojom::ToolArtifact::New(kArtifactType, kArtifactContentJson));
+        artifacts.push_back(mojom::ToolArtifact::New(kArtifactId, kArtifactType,
+                                                     kArtifactContentJson));
         std::move(callback).Run(std::move(content), std::move(artifacts));
       }));
 
@@ -3159,6 +3160,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ArtifactStoredInHistory) {
   // Artifacts should be stored in the tool event
   ASSERT_TRUE(tool_event->artifacts.has_value());
   ASSERT_EQ(tool_event->artifacts->size(), 1u);
+  EXPECT_EQ(tool_event->artifacts->at(0)->id, kArtifactId);
   EXPECT_EQ(tool_event->artifacts->at(0)->type, kArtifactType);
   EXPECT_EQ(tool_event->artifacts->at(0)->content_json, kArtifactContentJson);
 }

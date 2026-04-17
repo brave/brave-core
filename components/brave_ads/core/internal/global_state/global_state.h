@@ -25,13 +25,13 @@ class AdsCore;
 class AdsNotifierManager;
 class BrowserManager;
 class ClientStateManager;
-class ConfirmationStateManager;
 class DatabaseManager;
 class DiagnosticManager;
 class GlobalStateHolder;
 class NotificationAdManager;
 class TabManager;
 class TokenGeneratorInterface;
+class TokenStateManager;
 class UserActivityManager;
 
 class GlobalState final {
@@ -54,7 +54,7 @@ class GlobalState final {
   AdsNotifierManager& GetAdsNotifierManager();
   BrowserManager& GetBrowserManager();
   ClientStateManager& GetClientStateManager();
-  ConfirmationStateManager& GetConfirmationStateManager();
+  TokenStateManager& GetTokenStateManager();
   DatabaseManager& GetDatabaseManager();
   DiagnosticManager& GetDiagnosticManager();
   AdHistoryManager& GetHistoryManager();
@@ -82,7 +82,7 @@ class GlobalState final {
   std::unique_ptr<AdsNotifierManager> ads_notifier_manager_;
   std::unique_ptr<BrowserManager> browser_manager_;
   std::unique_ptr<ClientStateManager> client_state_manager_;
-  std::unique_ptr<ConfirmationStateManager> confirmation_state_manager_;
+  std::unique_ptr<TokenStateManager> token_state_manager_;
   std::unique_ptr<DatabaseManager> database_manager_;
   std::unique_ptr<DiagnosticManager> diagnostic_manager_;
   std::unique_ptr<AdHistoryManager> ad_history_manager_;

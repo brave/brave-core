@@ -35,7 +35,7 @@ class AdsCore final {
 
   // Provides methods for generating tokens for refilling and redeeming
   // confirmation tokens.
-  const TokenGeneratorInterface* GetTokenGenerator() const;
+  TokenGeneratorInterface* GetTokenGenerator();
 
   // Provides methods for managing user rewards, wallets, account statements,
   // and deposits.

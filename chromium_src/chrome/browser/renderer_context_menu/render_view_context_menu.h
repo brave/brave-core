@@ -94,6 +94,8 @@ class RenderViewContextMenu : public RenderViewContextMenu_Chromium
   void InitMenu() override;
   void NotifyMenuShown() override;
 
+  void BuildEmailAliasesMenu();
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
   bool IsAIChatEnabled() const;
   void ExecuteAIChatCommand(int command);

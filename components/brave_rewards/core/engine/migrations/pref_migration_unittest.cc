@@ -109,9 +109,6 @@ TEST_F(RewardsPrefMigrationTest, Migration13) {
 }
 
 TEST_F(RewardsPrefMigrationTest, Migration14) {
-  prefs().SetString(prefs::kWalletGemini,
-                    FakeEncryption::Base64EncryptString(R"({ "status": 0 })"));
-
   prefs().SetString(prefs::kWalletUphold,
                     FakeEncryption::Base64EncryptString(R"({ "status": 2 })"));
 
@@ -124,6 +121,12 @@ TEST_F(RewardsPrefMigrationTest, Migration15) {
   prefs().SetUint64(prefs::kServerPublisherListStamp, 1234);
   ExecuteMigration(15);
   EXPECT_EQ(prefs().GetUint64(prefs::kServerPublisherListStamp), 0ull);
+}
+
+TEST_F(RewardsPrefMigrationTest, Migration16) {
+  prefs().SetString(prefs::kExternalWalletType, "gemini");
+  ExecuteMigration(16);
+  EXPECT_EQ(prefs().GetString(prefs::kExternalWalletType), "");
 }
 
 }  // namespace brave_rewards::internal

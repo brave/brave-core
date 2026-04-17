@@ -8,6 +8,7 @@
 #include <algorithm>
 
 #include "base/check.h"
+#include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/trace_event/trace_event.h"
 #include "base/trace_event/trace_id_helper.h"
@@ -89,7 +90,7 @@ void TextClassificationProcessor::ClassifyPageCallback(
 
 void TextClassificationProcessor::OnTextContentDidChange(
     int32_t /*tab_id*/,
-    const std::vector<GURL>& redirect_chain,
+    base::span<const GURL> redirect_chain,
     const std::string& text) {
   CHECK(!redirect_chain.empty());
 

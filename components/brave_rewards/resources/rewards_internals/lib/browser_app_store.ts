@@ -58,8 +58,6 @@ function parseContributionProcessor(
       return 'brave'
     case mojom.ContributionProcessor.UPHOLD:
       return 'uphold'
-    case mojom.ContributionProcessor.GEMINI:
-      return 'gemini'
     default:
       return null
   }

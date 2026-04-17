@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_TEST_TARGETING_TEST_HELPER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TARGETING_TEST_TARGETING_TEST_HELPER_H_
 
-#include "base/memory/raw_ref.h"
-#include "base/test/task_environment.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/test/purchase_intent_test_helper.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/test/text_classification_test_helper.h"
 
@@ -22,30 +20,28 @@ namespace test {
 
 class TargetingHelper final {
  public:
-  explicit TargetingHelper(base::test::TaskEnvironment& task_environment);
+  TargetingHelper();
 
   TargetingHelper(const TargetingHelper&) = delete;
   TargetingHelper& operator=(const TargetingHelper&) = delete;
 
   ~TargetingHelper();
 
-  void Mock();
+  void Simulate();
   static UserModelInfo Expectation();
 
-  void MockIntent();
+  void SimulateIntent();
   static IntentUserModelInfo IntentExpectation();
 
-  void MockLatentInterest();
+  void SimulateLatentInterest();
   static LatentInterestUserModelInfo LatentInterestExpectation();
 
-  void MockInterest();
+  void SimulateInterest();
   static InterestUserModelInfo InterestExpectation();
 
  private:
   PurchaseIntentHelper purchase_intent_;
   TextClassificationHelper text_classification_;
-
-  const raw_ref<base::test::TaskEnvironment> task_environment_;
 };
 
 }  // namespace test

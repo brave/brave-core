@@ -15,6 +15,17 @@ const MULTIADDRESS_TYPE: u8 = 0x00;
 const SR25519_SIGNATURE: u8 = 0x01;
 const PERIOD: u32 = 64;
 
+const PHASE_APPLY_EXTRINSIC: u8 = 0;
+
+const WITHDRAW_VARIANT_INDEX: u8 = 0x08;
+
+// transactionpayment(TransactionFeePaid)
+const TRANSACTION_FEE_PAID_VARIANT_INDEX: u8 = 0x00;
+
+// system(ExtrinsicSuccess | ExtrinsicFailed)
+const EXTRINSIC_SUCCESS_VARIANT_INDEX: u8 = 0x00;
+const EXTRINSIC_FAILED_VARIANT_INDEX: u8 = 0x01;
+
 const UNSIGNED_TRANSFER_ALLOW_DEATH_MIN_LEN: usize = 1  /* extrinsic version */
                                                    + 1  /* pallet index */
                                                    + 1  /* call index */
@@ -89,6 +100,14 @@ mod ffi {
         ) -> Vec<u8>;
 
         fn parse_fee_info(input: &[u8], fee_bytes: &mut [u8; 16]) -> bool;
+
+        fn was_extrinsic_successful(
+            events: &[u8],
+            extrinsic_idx: u32,
+            sender: &[u8; 32],
+            chain_metadata: &CxxPolkadotChainMetadata,
+            actual_fee: &mut [u8; 16],
+        ) -> bool;
     }
 }
 
@@ -445,4 +464,161 @@ fn parse_fee_info(input: &[u8], fee_bytes: &mut [u8; 16]) -> bool {
 
 fn compact_scale_encode_u32(x: u32) -> Vec<u8> {
     Compact(x).encode()
+}
+
+fn was_extrinsic_successful(
+    events: &[u8],
+    extrinsic_idx: u32,
+    sender: &[u8; 32],
+    chain_metadata: &CxxPolkadotChainMetadata,
+    actual_fee: &mut [u8; 16],
+) -> bool {
+    /*
+        For a send transaction, a simplified event flow looks roughly like this:
+
+            ┌─────────────────────────────────┐
+            │        balances(Withdraw)       │
+            └─────────────────────────────────┘
+                      │              │
+                [success]          [error]
+                      │              │
+                      ▼              │
+            ┌──────────────────────┐ │
+            │  balances(Transfer)  │ │
+            └──────────────────────┘ │
+                      │              │
+                      └──────┬───────┘
+                             │
+                             ▼
+            ┌───────────────────────────────────┐
+            │        balances(Deposit), ...     │
+            └───────────────────────────────────┘
+                             │
+                             ▼
+            ┌──────────────────────────────────────────┐
+            │ transactionpayment(TransactionFeePaid)   │
+            └──────────────────────────────────────────┘
+                             │
+                    ┌────────┴──────────────────────┐
+                    │                               │
+                    ▼                               ▼
+            ┌──────────────────────────┐ ┌─────────────────────────┐
+            │ system(ExtrinsicSuccess) │ │ system(ExtrinsicFailed) │
+            └──────────────────────────┘ └─────────────────────────┘
+    */
+
+    // But in general, it seems like the events flow can become quite complex:
+    // https://polkadot.subscan.io/extrinsic/30123219-2
+    // The thing to note is that the extrinsic always ends with the same two
+    // events, the fee was paid and the system gave the extrinsic a final status.
+    //
+    // In Polkadot, an event is defined as: {phase, event, topics}
+    // https://github.com/polkadot-js/api/blob/eb34741c871ca8d029a9706ae989ba8ce865db0f/packages/types-support/src/metadata/v15/polkadot-types.json#L519-L542
+    //
+    // Because the events are a massive binary blob that rely on quite a bit of
+    // Polkadot runtime metadata to fully parse, we just probe for the two events
+    // for our extrinsic that we care about: the transaction fee paid and the final
+    // status. We can theoretically probe for everything such as who the fee was
+    // paid out to but it isn't strictly required for our current needs.
+
+    // We first probe for the balances(Withdraw) event, so that we can use the
+    // withdrawn fee as a sanity check when we probe for our TransactionFeePaid
+    // event later on.
+    let mut withdraw_needle = [0_u8; 39];
+    withdraw_needle[0] = PHASE_APPLY_EXTRINSIC;
+    withdraw_needle[1..5].copy_from_slice(&extrinsic_idx.to_le_bytes());
+    withdraw_needle[5] = chain_metadata.balances_pallet_index;
+    withdraw_needle[6] = WITHDRAW_VARIANT_INDEX;
+    withdraw_needle[7..39].copy_from_slice(sender);
+
+    // Use `rfind` here because extrinsic blobs can be huge, and our events are
+    // typically found at the end of the events blob.
+    let mut events = events;
+    let Some(needle_idx) = memchr::memmem::rfind(events, &withdraw_needle) else {
+        return false;
+    };
+
+    events = &events[needle_idx + withdraw_needle.len()..];
+
+    let Ok(withdrawn_fee) = next_n_bytes(&mut events, 16) else {
+        return false;
+    };
+
+    let Ok(topics) = next_n_bytes(&mut events, 1) else {
+        return false;
+    };
+
+    if topics[0] != 0 {
+        return false;
+    };
+
+    // Look for the remainining two events we need,
+    // transactionpayment(TransactionFeePaid) and system(ExtrinsicSuccess |
+    // ExtrinsicFailed)
+    let mut transaction_fee_paid_needle = [0_u8; 39];
+    transaction_fee_paid_needle[0] = PHASE_APPLY_EXTRINSIC;
+    transaction_fee_paid_needle[1..5].copy_from_slice(&extrinsic_idx.to_le_bytes());
+    transaction_fee_paid_needle[5] = chain_metadata.transaction_payment_pallet_index;
+    transaction_fee_paid_needle[6] = TRANSACTION_FEE_PAID_VARIANT_INDEX;
+    transaction_fee_paid_needle[7..39].copy_from_slice(sender);
+
+    // Use `find` here because we've located the start of our event sequence above.
+    let Some(needle_idx) = memchr::memmem::find(events, &transaction_fee_paid_needle) else {
+        return false;
+    };
+
+    events = &events[needle_idx + transaction_fee_paid_needle.len()..];
+    let Ok(fee) = next_n_bytes(&mut events, 16) else {
+        return false;
+    };
+
+    // If our fees don't match here, we can consider the events blob invalid.
+    if withdrawn_fee != fee {
+        return false;
+    }
+
+    let Ok(_tip) = next_n_bytes(&mut events, 16) else {
+        return false;
+    };
+
+    let Ok(topics) = next_n_bytes(&mut events, 1) else {
+        return false;
+    };
+
+    if topics[0] != 0 {
+        return false;
+    };
+
+    let Ok(phase) = next_n_bytes(&mut events, 1) else {
+        return false;
+    };
+
+    if phase[0] != PHASE_APPLY_EXTRINSIC {
+        return false;
+    }
+
+    let Ok(idx) = next_n_bytes(&mut events, 4) else {
+        return false;
+    };
+
+    if idx != &extrinsic_idx.to_le_bytes() {
+        return false;
+    }
+
+    let Ok(call_index) = next_n_bytes(&mut events, 2) else {
+        return false;
+    };
+
+    if call_index[0] != chain_metadata.system_pallet_index {
+        return false;
+    };
+
+    if call_index[1] != EXTRINSIC_SUCCESS_VARIANT_INDEX
+        && call_index[1] != EXTRINSIC_FAILED_VARIANT_INDEX
+    {
+        return false;
+    };
+
+    actual_fee.copy_from_slice(fee);
+    call_index[1] == EXTRINSIC_SUCCESS_VARIANT_INDEX
 }

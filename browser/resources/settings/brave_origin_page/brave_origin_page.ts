@@ -18,6 +18,9 @@ import {RelaunchMixin, RelaunchMixinInterface, RestartType} from '../relaunch_mi
 import '../relaunch_confirmation_dialog.js'
 
 import {getTemplate} from './brave_origin_page.html.js'
+import {getSearchManager} from '../search_settings.js'
+import type {SearchResult} from '../search_settings.js'
+import type {SettingsPlugin} from '../settings_main/settings_plugin.js'
 import * as BraveOriginMojom from '../brave_origin_settings.mojom-webui.js'
 import './brave_origin_onboarding.js'
 import './origin_toggle_button.js'
@@ -38,7 +41,7 @@ const SettingsBraveOriginPageElementBase =
  * Brave Origin features.
  */
 export class SettingsBraveOriginPageElement
-    extends SettingsBraveOriginPageElementBase {
+    extends SettingsBraveOriginPageElementBase implements SettingsPlugin {
 
   static get is() {
     return 'settings-brave-origin-page'
@@ -91,6 +94,10 @@ export class SettingsBraveOriginPageElement
     // Check purchase state
     this.checkPurchaseState_()
 
+    // Handle proceed-free from onboarding component
+    this.addEventListener('proceed-free-clicked',
+        () => this.onProceedFreeClicked_())
+
     // Re-check when the tab becomes visible (user may return from
     // account page after purchasing)
     this.boundOnVisibilityChange_ = this.onVisibilityChange_.bind(this)
@@ -122,6 +129,11 @@ export class SettingsBraveOriginPageElement
     const {isPurchased} =
         await this.braveOriginHandler_.refreshPurchaseState()
     this.isPurchased_ = isPurchased
+  }
+
+  private async onProceedFreeClicked_() {
+    await this.braveOriginHandler_.proceedFree()
+    this.isPurchased_ = true
   }
 
   private async resetToDefaults_() {
@@ -157,6 +169,11 @@ export class SettingsBraveOriginPageElement
   private restartBrowser_(e: Event) {
     e.stopPropagation()
     this.performRestart(RestartType.RESTART)
+  }
+
+  async searchContents(query: string): Promise<SearchResult> {
+    const searchRequest = await getSearchManager().search(query, this)
+    return searchRequest.getSearchResult()
   }
 }
 

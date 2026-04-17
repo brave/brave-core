@@ -129,10 +129,9 @@ export function useGate3(params: SwapParams) {
                   toToken: toToken.contractAddress,
                   slippagePercentage: slippageTolerance,
                   routePriority: BraveWallet.RoutePriority.kCheapest,
-                  provider: BraveWallet.SwapProvider.kNearIntents,
+                  provider: indicativeRoute.provider,
                 },
                 jupiterTransactionParams: undefined,
-                lifiTransactionParams: undefined,
                 zeroExTransactionParams: undefined,
               },
               'gate3TransactionParams',
@@ -172,7 +171,6 @@ export function useGate3(params: SwapParams) {
         return {
           jupiterError: undefined,
           zeroExError: undefined,
-          lifiError: undefined,
           gate3Error: {
             message,
             kind: BraveWallet.Gate3SwapErrorKind.kUnknown,

@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/test/creative_ad_test_util.h"
-#include "brave/components/brave_ads/core/internal/segments/segment_test_constants.h"
+#include "brave/components/brave_ads/core/internal/segments/test/segment_test_constants.h"
 
 namespace brave_ads::test {
 

@@ -7,7 +7,8 @@
 
 #include <memory>
 
-#include "brave/components/brave_ads/core/internal/common/resources/country_components_test_constants.h"
+#include "base/test/run_until.h"
+#include "brave/components/brave_ads/core/internal/common/resources/test/country_components_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_processor.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_resource.h"
@@ -43,9 +44,9 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
 
 TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
   // Arrange
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
-  ASSERT_TRUE(resource_->IsLoaded());
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
 
   PurchaseIntentProcessor processor(*resource_);
   processor.Process(GURL("https://www.brave.com/test?foo=bar"));
@@ -63,9 +64,9 @@ TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
 
 TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsIfNeverProcessed) {
   // Arrange
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
-  ASSERT_TRUE(resource_->IsLoaded());
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
 
   // Act
   const SegmentList purchase_intent_segments = GetPurchaseIntentSegments();
@@ -77,9 +78,9 @@ TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsIfNeverProcessed) {
 TEST_F(BraveAdsPurchaseIntentModelTest,
        DoNotGetSegmentsIfNeverMatchedFunnelSites) {
   // Arrange
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
-  ASSERT_TRUE(resource_->IsLoaded());
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
 
   PurchaseIntentProcessor processor(*resource_);
   processor.Process(GURL("https://duckduckgo.com/?q=segment+keyword+1"));
@@ -93,9 +94,9 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
 
 TEST_F(BraveAdsPurchaseIntentModelTest, GetSegmentsForPreviouslyMatchedSite) {
   // Arrange
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
-  ASSERT_TRUE(resource_->IsLoaded());
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
 
   PurchaseIntentProcessor processor(*resource_);
   processor.Process(GURL("https://www.brave.com/test?foo=bar"));
@@ -114,9 +115,9 @@ TEST_F(BraveAdsPurchaseIntentModelTest, GetSegmentsForPreviouslyMatchedSite) {
 TEST_F(BraveAdsPurchaseIntentModelTest,
        GetSegmentsForPreviouslyMatchedSegmentKeyphrases) {
   // Arrange
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
-  ASSERT_TRUE(resource_->IsLoaded());
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
 
   const GURL url = GURL("https://duckduckgo.com/?q=segment+keyword+1&foo=bar");
 
@@ -136,9 +137,9 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
 TEST_F(BraveAdsPurchaseIntentModelTest,
        GetSegmentsForPreviouslyMatchedFunnelKeywords) {
   // Arrange
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
-  ASSERT_TRUE(resource_->IsLoaded());
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
 
   PurchaseIntentProcessor processor(*resource_);
   processor.Process(

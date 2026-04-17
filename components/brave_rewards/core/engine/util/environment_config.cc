@@ -5,11 +5,11 @@
 
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
 
+#include <optional>
 #include <string_view>
 
 #include "base/check.h"
 #include "base/strings/strcat.h"
-#include "brave/brave_domains/constants.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/constants/network_constants.h"
@@ -95,22 +95,6 @@ std::string EnvironmentConfig::uphold_fee_address() const {
              : BUILDFLAG(UPHOLD_SANDBOX_FEE_ADDRESS);
 }
 
-GURL EnvironmentConfig::gemini_oauth_url() const {
-  return BuildGate3OAuthURL("gemini");
-}
-
-GURL EnvironmentConfig::gemini_api_url() const {
-  return URLValue(current_environment() == mojom::Environment::kProduction
-                      ? BUILDFLAG(GEMINI_PRODUCTION_API_URL)
-                      : BUILDFLAG(GEMINI_SANDBOX_API_URL));
-}
-
-std::string EnvironmentConfig::gemini_fee_address() const {
-  return current_environment() == mojom::Environment::kProduction
-             ? BUILDFLAG(GEMINI_PRODUCTION_FEE_ADDRESS)
-             : BUILDFLAG(GEMINI_SANDBOX_FEE_ADDRESS);
-}
-
 GURL EnvironmentConfig::zebpay_api_url() const {
   return URLValue(current_environment() == mojom::Environment::kProduction
                       ? BUILDFLAG(ZEBPAY_PRODUCTION_API_URL)
@@ -127,22 +111,14 @@ GURL EnvironmentConfig::bitflyer_url() const {
                       : BUILDFLAG(BITFLYER_SANDBOX_URL));
 }
 
-std::string EnvironmentConfig::bitflyer_client_id() const {
-  return current_environment() == mojom::Environment::kProduction
-             ? BUILDFLAG(BITFLYER_PRODUCTION_CLIENT_ID)
-             : BUILDFLAG(BITFLYER_SANDBOX_CLIENT_ID);
-}
-
-std::string EnvironmentConfig::bitflyer_client_secret() const {
-  return current_environment() == mojom::Environment::kProduction
-             ? BUILDFLAG(BITFLYER_PRODUCTION_CLIENT_SECRET)
-             : BUILDFLAG(BITFLYER_SANDBOX_CLIENT_SECRET);
-}
-
 std::string EnvironmentConfig::bitflyer_fee_address() const {
   return current_environment() == mojom::Environment::kProduction
              ? BUILDFLAG(BITFLYER_PRODUCTION_FEE_ADDRESS)
              : BUILDFLAG(BITFLYER_SANDBOX_FEE_ADDRESS);
+}
+
+GURL EnvironmentConfig::bitflyer_oauth_url() const {
+  return BuildGate3OAuthURL("bitflyer");
 }
 
 std::string EnvironmentConfig::BraveServicesKeyHeader() const {
@@ -151,11 +127,16 @@ std::string EnvironmentConfig::BraveServicesKeyHeader() const {
 }
 
 GURL EnvironmentConfig::BuildGate3OAuthURL(std::string_view provider) const {
-  std::string environment =
+  std::string_view environment =
       current_environment() == mojom::Environment::kProduction ? "production"
                                                                : "sandbox";
-  return URLValue(base::StrCat({brave_domains::kGate3URL, "/api/oauth/",
-                                provider, "/", environment, "/"}));
+  const std::optional<GURL>& gate3_url = engine().options().gate3_url;
+  CHECK(gate3_url || allow_default_values_for_testing_);
+  if (!gate3_url) {
+    return URLValue(std::string());
+  }
+  return gate3_url->Resolve(
+      base::StrCat({"/api/oauth/", provider, "/", environment, "/"}));
 }
 
 GURL EnvironmentConfig::URLValue(std::string value) const {

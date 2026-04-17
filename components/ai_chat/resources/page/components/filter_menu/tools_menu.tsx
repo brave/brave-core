@@ -95,7 +95,7 @@ export default function ToolsMenu(props: ToolsMenuProps) {
           <leo-menu-item
             key={isActionEntry ? item.details!.type : item.shortcut}
             onClick={() => handleClick(item)}
-            data-test-id={`tools-menu-item-${
+            data-testid={`tools-menu-item-${
               isActionEntry ? item.details!.label : item.shortcut
             }`}
           >

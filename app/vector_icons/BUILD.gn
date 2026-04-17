@@ -34,8 +34,11 @@ aggregate_vector_icons("brave_vector_icons") {
       "sidebar_items_down_arrow.icon",
       "sidebar_items_up_arrow.icon",
       "sidebar_trash.icon",
-      "vertical_tab_strip_toggle_button.icon",
+      "vertical_tab_strip_toggle_collapsed.icon",
     ]
+    sources += rebase_path([ "leo_window_tabs_vertical_expanded.icon" ],
+                           ".",
+                           "//brave/node_modules/@brave/leo/icons-skia")
   }
 
   if (enable_brave_vpn_panel) {

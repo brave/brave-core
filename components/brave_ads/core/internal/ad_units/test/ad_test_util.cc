@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_util.h"
 
 #include "base/uuid.h"
-#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 #include "url/gurl.h"

@@ -282,6 +282,35 @@ TEST_F(BraveAdsAdsServiceImplTest,
   EXPECT_EQ(2U, bat_ads_service_factory_->launch_count());
 }
 
+TEST_F(BraveAdsAdsServiceImplTest,
+       DoesNotLaunchServiceWhenVariationsCountryChangesWhileAdsIsDisabled) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, false);
+  Startup();
+  ASSERT_EQ(0U, bat_ads_service_factory_->launch_count());
+
+  // Act
+  local_state_.SetString(variations::prefs::kVariationsCountry, "GB");
+
+  // Assert
+  EXPECT_EQ(0U, bat_ads_service_factory_->launch_count());
+}
+
+TEST_F(BraveAdsAdsServiceImplTest,
+       DoesNotRestartServiceWhenVariationsCountryChangesWhileRunning) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, true);
+  Startup();
+  ASSERT_EQ(1U, bat_ads_service_factory_->launch_count());
+
+  // Act
+  local_state_.SetString(variations::prefs::kVariationsCountry, "GB");
+
+  // Assert
+  EXPECT_EQ(1U, bat_ads_service_factory_->launch_count());
+  EXPECT_EQ(0U, bat_ads_service_factory_->shutdown_count());
+}
+
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 // Search result ads are opted out so the service does not start during
 // `Startup`, keeping each test's trigger isolated.

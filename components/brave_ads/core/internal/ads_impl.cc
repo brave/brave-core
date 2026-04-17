@@ -10,6 +10,7 @@
 
 #include "base/functional/bind.h"
 #include "base/trace_event/trace_event.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/token_state_manager.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
@@ -20,12 +21,10 @@
 #include "brave/components/brave_ads/core/internal/database/database_maintenance.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_manager.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
-#include "brave/components/brave_ads/core/internal/legacy_migration/legacy_migration.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-data-view.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
@@ -356,18 +355,6 @@ void AdsImpl::CreateOrOpenDatabaseCallback(mojom::WalletInfoPtr mojom_wallet,
     return FailedToInitialize(std::move(callback));
   }
 
-  MigrateState(base::BindOnce(&AdsImpl::MigrateStateCallback,
-                              weak_factory_.GetWeakPtr(),
-                              std::move(mojom_wallet), std::move(callback)));
-}
-
-void AdsImpl::MigrateStateCallback(mojom::WalletInfoPtr mojom_wallet,
-                                   InitializeCallback callback,
-                                   bool success) {
-  if (!success) {
-    return FailedToInitialize(std::move(callback));
-  }
-
   MigrateClientState(base::BindOnce(
       &AdsImpl::MigrateClientStateCallback, weak_factory_.GetWeakPtr(),
       std::move(mojom_wallet), std::move(callback)));
@@ -391,10 +378,15 @@ void AdsImpl::SuccessfullyInitialized(mojom::WalletInfoPtr mojom_wallet,
 
   is_initialized_ = true;
 
+  std::optional<WalletInfo> wallet;
   if (mojom_wallet) {
-    GetAccount().SetWallet(mojom_wallet->payment_id,
-                           mojom_wallet->recovery_seed_base64);
+    wallet = CreateWalletFromRecoverySeed(&*mojom_wallet);
+    if (!wallet) {
+      BLOG(0, "Invalid wallet");
+      return FailedToInitialize(std::move(callback));
+    }
   }
+  GetAccount().SetWallet(std::move(wallet));
 
   GetAdsClient().NotifyPendingObservers();
 
@@ -423,9 +415,20 @@ void AdsImpl::LoadClientStateCallback(mojom::WalletInfoPtr mojom_wallet,
     return FailedToInitialize(std::move(callback));
   }
 
-  MigrateConfirmationState(base::BindOnce(
-      &AdsImpl::MigrateConfirmationStateCallback, weak_factory_.GetWeakPtr(),
-      std::move(mojom_wallet), std::move(callback)));
+  std::optional<WalletInfo> wallet;
+  if (mojom_wallet) {
+    wallet = CreateWalletFromRecoverySeed(&*mojom_wallet);
+    if (!wallet) {
+      BLOG(0, "Invalid wallet");
+      return FailedToInitialize(std::move(callback));
+    }
+  }
+
+  MigrateConfirmationState(
+      std::move(wallet),
+      base::BindOnce(&AdsImpl::MigrateConfirmationStateCallback,
+                     weak_factory_.GetWeakPtr(), std::move(mojom_wallet),
+                     std::move(callback)));
 }
 
 void AdsImpl::MigrateConfirmationStateCallback(
@@ -436,19 +439,9 @@ void AdsImpl::MigrateConfirmationStateCallback(
     return FailedToInitialize(std::move(callback));
   }
 
-  std::optional<WalletInfo> wallet;
-  if (mojom_wallet) {
-    wallet = CreateWalletFromRecoverySeed(&*mojom_wallet);
-    if (!wallet) {
-      BLOG(0, "Invalid wallet");
-      return FailedToInitialize(std::move(callback));
-    }
-  }
-
-  ConfirmationStateManager::GetInstance().LoadState(
-      wallet, base::BindOnce(&AdsImpl::LoadConfirmationStateCallback,
-                             weak_factory_.GetWeakPtr(),
-                             std::move(mojom_wallet), std::move(callback)));
+  TokenStateManager::GetInstance().LoadState(base::BindOnce(
+      &AdsImpl::LoadConfirmationStateCallback, weak_factory_.GetWeakPtr(),
+      std::move(mojom_wallet), std::move(callback)));
 }
 
 void AdsImpl::LoadConfirmationStateCallback(mojom::WalletInfoPtr mojom_wallet,

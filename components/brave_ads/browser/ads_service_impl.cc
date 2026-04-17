@@ -718,6 +718,9 @@ void AdsServiceImpl::OnOptedInToAdsPrefChanged(const std::string& path) {
 }
 
 void AdsServiceImpl::OnVariationsCountryPrefChanged() {
+  if (!IsBatAdsServiceBound()) {
+    return;
+  }
   RegisterResourceComponentsForCurrentCountryCode();
 }
 

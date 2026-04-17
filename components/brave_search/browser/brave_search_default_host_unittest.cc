@@ -18,6 +18,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_search/browser/prefs.h"
 #include "brave/components/brave_search/common/features.h"
 #include "brave/components/brave_search_conversion/features.h"
@@ -161,6 +162,8 @@ TEST_F(BraveSearchDefaultHostTest, DisallowsAfterMaxTimesAsked) {
   host->GetCanSetDefaultSearchProvider(fourth.Get());
 }
 
+// Brave Search conversion promotions are suppressed in branded builds.
+#if !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 TEST_F(BraveSearchDefaultHostTest, CanSetDefaultAlwaysTestWithSearchPromotion) {
   base::test::ScopedFeatureList feature_list;
 
@@ -214,6 +217,7 @@ TEST_F(BraveSearchDefaultHostTest, CanSetDefaultAlwaysTestWithSearchPromotion) {
   EXPECT_CALL(seventh, Run(true));
   host->GetCanSetDefaultSearchProvider(seventh.Get());
 }
+#endif  // !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 
 }  // namespace
 }  // namespace brave_search

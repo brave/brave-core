@@ -329,6 +329,6 @@ test('AssistantResponse should aggregate search queries from multiple events', (
     </MockContext>,
   )
 
-  const summary = container.querySelector('[data-test-id="search-summary"]')
+  const summary = container.querySelector('[data-testid="search-summary"]')
   expect(summary).toBeInTheDocument()
 })

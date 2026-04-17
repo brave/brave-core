@@ -60,7 +60,7 @@ RewardsBrowserTestContextHelper::OpenRewardsPopup() {
   } while (!popup_contents_);
 
   test_util::WaitForElementToAppear(popup_contents_.get(),
-                                    "[data-test-id=rewards-panel]");
+                                    "[data-testid=rewards-panel]");
 
   return popup_contents_;
 }
@@ -74,7 +74,7 @@ RewardsBrowserTestContextHelper::OpenSiteBanner() {
 
   // Click button to initiate sending a tip.
   test_util::WaitForElementThenClick(popup_contents.get(),
-                                     "[data-test-id=tip-button]:enabled");
+                                     "[data-testid=tip-button]:enabled");
 
   LOG(INFO) << "Waiting for tip panel to open";
 

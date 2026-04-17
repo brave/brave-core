@@ -62,6 +62,8 @@ class TabTrackerService;
 class AIChatMetrics;
 class MemoryStorageTool;
 
+bool CanAssociateContent(AssociatedContentDelegate* delegate);
+
 // Main entry point for creating and consuming AI Chat conversations
 class AIChatService : public KeyedService,
                       public mojom::Service,

@@ -55,6 +55,7 @@ brave_chrome_java_deps = [
   "//brave/components/brave_vpn/common/mojom:mojom_java",
   "//brave/components/browser_ui/media/android:java",
   "//brave/components/browser_ui/notifications/android:java",
+  "//brave/components/browser_ui/settings/android:java",
   "//brave/components/browser_ui/site_settings/android:java",
   "//brave/components/misc_metrics/common:mojom_java",
   "//brave/components/playlist/core/common/mojom:mojom_java",
@@ -158,11 +159,9 @@ brave_jni_headers_sources = [
 
 if (enable_brave_wallet) {
   brave_jni_headers_sources += [
-    "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/AssetRatioServiceFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/BlockchainRegistryFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/BraveWalletProviderDelegateImplHelper.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/BraveWalletServiceFactory.java",
-    "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/SwapServiceFactory.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/dapps/ConnectAccountFragment.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/permission/BraveDappPermissionPromptDialog.java",
     "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/WalletNativeUtils.java",

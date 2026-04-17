@@ -300,6 +300,14 @@ mojom::AccountInfoPtr AccountUtils::EnsureAdaTestAccount(uint32_t index) {
   return EnsureAccount(mojom::KeyringId::kCardanoTestnet, index);
 }
 
+mojom::AccountInfoPtr AccountUtils::EnsureDotAccount(uint32_t index) {
+  return EnsureAccount(mojom::KeyringId::kPolkadotMainnet, index);
+}
+
+mojom::AccountInfoPtr AccountUtils::EnsureDotTestAccount(uint32_t index) {
+  return EnsureAccount(mojom::KeyringId::kPolkadotTestnet, index);
+}
+
 mojom::AccountInfoPtr AccountUtils::CreateEthAccount(const std::string& name) {
   return CreateDerivedAccount(mojom::KeyringId::kDefault, name);
 }

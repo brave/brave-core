@@ -23,9 +23,13 @@
 
 namespace brave_stats {
 
-std::string GetDateAsYMD(const base::Time& time) {
+std::string GetDateAsYMD(const base::Time& time, bool use_utc) {
   base::Time::Exploded exploded;
-  time.LocalExplode(&exploded);
+  if (use_utc) {
+    time.UTCExplode(&exploded);
+  } else {
+    time.LocalExplode(&exploded);
+  }
   return absl::StrFormat("%d-%02d-%02d", exploded.year, exploded.month,
                          exploded.day_of_month);
 }
@@ -103,7 +107,7 @@ base::Time GetLastMondayTime(const base::Time& time) {
   return last_monday;
 }
 
-base::Time GetYMDAsDate(std::string_view ymd) {
+base::Time GetYMDAsDate(std::string_view ymd, bool use_utc) {
   const auto pieces = base::SplitStringPiece(ymd, "-", base::TRIM_WHITESPACE,
                                              base::SPLIT_WANT_NONEMPTY);
   DCHECK_EQ(pieces.size(), 3ull);
@@ -119,7 +123,11 @@ base::Time GetYMDAsDate(std::string_view ymd) {
   DCHECK(time.HasValidValues());
 
   base::Time result;
-  ok = base::Time::FromLocalExploded(time, &result);
+  if (use_utc) {
+    ok = base::Time::FromUTCExploded(time, &result);
+  } else {
+    ok = base::Time::FromLocalExploded(time, &result);
+  }
   DCHECK(ok);
 
   return result;

@@ -7,8 +7,10 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
+#include "base/scoped_observation.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/test_future.h"
+#include "brave/components/brave_ads/core/internal/account/account_observer.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/test/issuers_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
@@ -18,8 +20,9 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/test/transactions_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table_util.h"
-#include "brave/components/brave_ads/core/internal/account/wallet/wallet_test_constants.h"
-#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/account/wallet/test/wallet_test_constants.h"
+#include "brave/components/brave_ads/core/internal/account/wallet/test/wallet_test_util.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
@@ -44,26 +47,21 @@ class BraveAdsAccountTest : public test::TestBase {
 
     ads_observer_mock_ = test::MockAdsObserver();
 
-    GetAccount().AddObserver(&account_observer_mock_);
-  }
-
-  void TearDown() override {
-    GetAccount().RemoveObserver(&account_observer_mock_);
-
-    test::TestBase::TearDown();
+    account_observation_.Observe(&GetAccount());
   }
 
   raw_ptr<AdsObserverMock> ads_observer_mock_ = nullptr;  // Not owned.
 
   AccountObserverMock account_observer_mock_;
+  base::ScopedObservation<Account, AccountObserver> account_observation_{
+      &account_observer_mock_};
 };
 
 TEST_F(BraveAdsAccountTest, SupportUserRewardsForRewardsUser) {
   // Arrange
-  GetAccount().SetWallet(test::kWalletPaymentId,
-                         test::kWalletRecoverySeedBase64);
+  GetAccount().SetWallet(test::Wallet());
 
-  NotifyDidInitializeAds();
+  ads_client_notifier_.NotifyDidInitializeAds();
 
   // Act & Assert
   EXPECT_TRUE(GetAccount().IsUserRewardsSupported());
@@ -73,7 +71,7 @@ TEST_F(BraveAdsAccountTest, DoNotSupportUserRewardsForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();
 
-  NotifyDidInitializeAds();
+  ads_client_notifier_.NotifyDidInitializeAds();
 
   // Act & Assert
   EXPECT_FALSE(GetAccount().IsUserRewardsSupported());
@@ -83,30 +81,32 @@ TEST_F(BraveAdsAccountTest, SetWallet) {
   // Act & Assert
   EXPECT_CALL(account_observer_mock_, OnDidInitializeWallet);
   EXPECT_CALL(account_observer_mock_, OnFailedToInitializeWallet).Times(0);
-  GetAccount().SetWallet(test::kWalletPaymentId,
-                         test::kWalletRecoverySeedBase64);
+  GetAccount().SetWallet(test::Wallet());
 }
 
 TEST_F(BraveAdsAccountTest, DoNotSetWalletWithEmptyPaymentId) {
   // Act & Assert
   EXPECT_CALL(account_observer_mock_, OnDidInitializeWallet).Times(0);
   EXPECT_CALL(account_observer_mock_, OnFailedToInitializeWallet);
-  GetAccount().SetWallet(/*payment_id=*/"", test::kWalletRecoverySeedBase64);
+  ads_client_notifier_.NotifyRewardsWalletDidUpdate(
+      /*payment_id=*/"", test::kWalletRecoverySeedBase64);
 }
 
 TEST_F(BraveAdsAccountTest, DoNotSetWalletWithInvalidRecoverySeed) {
   // Act & Assert
   EXPECT_CALL(account_observer_mock_, OnDidInitializeWallet).Times(0);
   EXPECT_CALL(account_observer_mock_, OnFailedToInitializeWallet);
-  GetAccount().SetWallet(test::kWalletPaymentId,
-                         test::kInvalidWalletRecoverySeed);
+  ads_client_notifier_.NotifyRewardsWalletDidUpdate(
+      test::kWalletPaymentId, test::kInvalidWalletRecoverySeed);
 }
 
 TEST_F(BraveAdsAccountTest, DoNotSetWalletWithEmptyRecoverySeed) {
   // Act & Assert
   EXPECT_CALL(account_observer_mock_, OnDidInitializeWallet).Times(0);
   EXPECT_CALL(account_observer_mock_, OnFailedToInitializeWallet);
-  GetAccount().SetWallet(test::kWalletPaymentId, /*recovery_seed_base64=*/"");
+  ads_client_notifier_.NotifyRewardsWalletDidUpdate(
+      test::kWalletPaymentId,
+      /*recovery_seed_base64=*/"");
 }
 
 TEST_F(BraveAdsAccountTest, GetStatementForRewardsUser) {

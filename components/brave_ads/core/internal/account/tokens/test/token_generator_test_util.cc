@@ -7,18 +7,16 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/test/token_generator_mock.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/test/fake_token_generator.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/test/token_test_util.h"
-#include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_ads::test {
 
 void MockTokenGenerator(size_t count) {
-  const auto* const token_generator_mock =
-      static_cast<const TokenGeneratorMock*>(GetTokenGenerator());
-  ON_CALL(*token_generator_mock, Generate(count))
-      .WillByDefault(::testing::Return(BuildTokens(count)));
+  auto* const fake_token_generator =
+      static_cast<FakeTokenGenerator*>(GetTokenGenerator());
+  fake_token_generator->SetTokens(BuildTokens(count));
 }
 
 cbr::TokenList BuildTokens(size_t count) {

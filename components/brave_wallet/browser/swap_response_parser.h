@@ -32,16 +32,6 @@ mojom::JupiterErrorPtr ParseErrorResponse(const base::Value& json_value);
 
 }  // namespace jupiter
 
-namespace lifi {
-
-mojom::LiFiTransactionUnionPtr ParseTransactionResponse(
-    const base::Value& json_value);
-mojom::LiFiQuotePtr ParseQuoteResponse(const base::Value& json_value);
-mojom::LiFiErrorPtr ParseErrorResponse(const base::Value& json_value);
-mojom::LiFiStatusPtr ParseStatusResponse(const base::Value& json_value);
-
-}  // namespace lifi
-
 namespace gate3 {
 
 // Parse a Gate3 quote response JSON into a structured Gate3SwapQuote object.

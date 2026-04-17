@@ -47,9 +47,9 @@ using endpoints::LoginInit;
 using endpoints::PasswordFinalize;
 using endpoints::PasswordInit;
 using endpoints::ServiceToken;
+using endpoints::VerifyComplete;
 using endpoints::VerifyDelete;
 using endpoints::VerifyResend;
-using endpoints::VerifyResult;
 
 namespace {
 
@@ -141,7 +141,6 @@ BraveAccountService::BraveAccountService(
       prefs::kBraveAccountVerificationToken, pref_service,
       base::BindRepeating(&BraveAccountService::OnVerificationTokenChanged,
                           base::Unretained(this)));
-  OnVerificationTokenChanged();
 
   pref_authentication_token_.Init(
       prefs::kBraveAccountAuthenticationToken, pref_service,
@@ -209,6 +208,37 @@ void BraveAccountService::RegisterFinalize(
       base::BindOnce(&BraveAccountService::OnRegisterFinalize,
                      weak_factory_.GetWeakPtr(), std::move(callback),
                      encrypted_verification_token));
+}
+
+void BraveAccountService::RegisterVerify(const std::string& code,
+                                         RegisterVerifyCallback callback) {
+  if (code.empty()) {
+    return std::move(callback).Run(
+        base::unexpected(mojom::RegisterError::New()));
+  }
+
+  const auto encrypted_verification_token =
+      pref_service_->GetString(prefs::kBraveAccountVerificationToken);
+  if (encrypted_verification_token.empty()) {
+    return std::move(callback).Run(base::unexpected(mojom::RegisterError::New(
+        std::nullopt,
+        mojom::RegisterErrorCode::kUserNotInTheVerificationState)));
+  }
+
+  const auto verification_token = Decrypt(encrypted_verification_token);
+  if (verification_token.empty()) {
+    return std::move(callback).Run(base::unexpected(mojom::RegisterError::New(
+        std::nullopt,
+        mojom::RegisterErrorCode::kVerificationTokenDecryptionFailed)));
+  }
+
+  auto request = MakeRequest<WithHeaders<VerifyComplete::Request>>();
+  SetBearerToken(request, verification_token);
+  request.body.code = code;
+  Client<VerifyComplete>::Send(
+      url_loader_factory_, std::move(request),
+      base::BindOnce(&BraveAccountService::OnRegisterVerify,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void BraveAccountService::ResendConfirmationEmail(
@@ -438,6 +468,53 @@ void BraveAccountService::OnRegisterFinalize(
   std::move(callback).Run(std::move(result));
 }
 
+void BraveAccountService::OnRegisterVerify(RegisterVerifyCallback callback,
+                                           VerifyComplete::Response response) {
+  if (!response.body) {
+    return std::move(callback).Run(base::unexpected(mojom::RegisterError::New(
+        response.status_code.value_or(response.net_error), std::nullopt)));
+  }
+
+  const auto status_code = CHECK_DEREF(response.status_code);
+
+  auto result =
+      std::move(*response.body)
+          // expected<SuccessBody, [ErrorBody       ]> ==>
+          // expected<SuccessBody, [RegisterErrorPtr]>
+          .transform_error([&](auto error_body) {
+            return MakeMojomError<mojom::RegisterError>(status_code,
+                                                        std::move(error_body));
+          })
+          // expected<[SuccessBody            ], RegisterErrorPtr> ==>
+          // expected<[RegisterVerifyResultPtr], RegisterErrorPtr>
+          .and_then([&](auto success_body)
+                        -> base::expected<mojom::RegisterVerifyResultPtr,
+                                          mojom::RegisterErrorPtr> {
+            if (success_body.auth_token.empty() || success_body.email.empty()) {
+              return base::unexpected(
+                  mojom::RegisterError::New(status_code, std::nullopt));
+            }
+
+            const std::string encrypted_authentication_token =
+                Encrypt(success_body.auth_token);
+            if (encrypted_authentication_token.empty()) {
+              return base::unexpected(mojom::RegisterError::New(
+                  std::nullopt, mojom::RegisterErrorCode::
+                                    kAuthenticationTokenEncryptionFailed));
+            }
+
+            pref_service_->SetString(prefs::kBraveAccountEmailAddress,
+                                     success_body.email);
+            pref_service_->SetString(prefs::kBraveAccountAuthenticationToken,
+                                     encrypted_authentication_token);
+            pref_service_->ClearPref(prefs::kBraveAccountVerificationToken);
+
+            return mojom::RegisterVerifyResult::New();
+          });
+
+  std::move(callback).Run(std::move(result));
+}
+
 void BraveAccountService::OnResendConfirmationEmail(
     ResendConfirmationEmailCallback callback,
     VerifyResend::Response response) {
@@ -459,91 +536,6 @@ void BraveAccountService::OnResendConfirmationEmail(
 
 void BraveAccountService::OnVerificationTokenChanged() {
   NotifyObservers();
-
-  if (pref_verification_token_.GetValue().empty()) {
-    return verify_result_timer_.Stop();
-  }
-
-  ScheduleVerifyResult();
-}
-
-void BraveAccountService::ScheduleVerifyResult(
-    base::TimeDelta delay,
-    RequestHandle current_verify_result_request) {
-  verify_result_timer_.Start(
-      FROM_HERE, delay,
-      base::BindOnce(&BraveAccountService::VerifyResult, base::Unretained(this),
-                     std::move(current_verify_result_request)));
-}
-
-void BraveAccountService::VerifyResult(
-    RequestHandle current_verify_result_request) {
-  current_verify_result_request.reset();
-
-  const auto encrypted_verification_token =
-      pref_service_->GetString(prefs::kBraveAccountVerificationToken);
-  if (encrypted_verification_token.empty()) {
-    return;
-  }
-
-  const auto verification_token = Decrypt(encrypted_verification_token);
-  if (verification_token.empty()) {
-    return;
-  }
-
-  auto request = MakeRequest<WithHeaders<VerifyResult::Request>>();
-  SetBearerToken(request, verification_token);
-  request.body.wait = false;
-  current_verify_result_request =
-      Client<endpoints::VerifyResult>::Send<RequestCancelability::kCancelable>(
-          url_loader_factory_, std::move(request),
-          base::BindOnce(&BraveAccountService::OnVerifyResult,
-                         weak_factory_.GetWeakPtr()));
-
-  // Replace normal cadence with the watchdog timer.
-  ScheduleVerifyResult(kWatchdogInterval,
-                       std::move(current_verify_result_request));
-}
-
-void BraveAccountService::OnVerifyResult(VerifyResult::Response response) {
-  const auto [authentication_token, email] =
-      response.body
-          ? std::move(*response.body)
-                .transform([](auto success_body) {
-                  return std::pair(
-                      success_body.auth_token.GetIfString()
-                          ? std::move(success_body.auth_token).TakeString()
-                          : "",
-                      std::move(success_body.email).value_or(""));
-                })
-                .value_or({})
-          : std::pair<std::string, std::string>{};
-
-  if (!authentication_token.empty() && !email.empty()) {
-    // We stop polling regardless of encryption success,
-    // since the auth token is transient on the server
-    // and cannot be retrieved again.
-    // TODO(https://github.com/brave/brave-browser/issues/50307)
-    pref_service_->ClearPref(prefs::kBraveAccountVerificationToken);
-
-    if (const auto encrypted_authentication_token =
-            Encrypt(authentication_token);
-        !encrypted_authentication_token.empty()) {
-      pref_service_->SetString(prefs::kBraveAccountEmailAddress, email);
-      pref_service_->SetString(prefs::kBraveAccountAuthenticationToken,
-                               encrypted_authentication_token);
-    }
-
-    return;
-  }
-
-  if (response.status_code >= 300 && response.status_code < 500) {
-    // Polling cannot recover from these errors, so we stop further attempts.
-    return pref_service_->ClearPref(prefs::kBraveAccountVerificationToken);
-  }
-
-  // Replace watchdog timer with the normal cadence.
-  ScheduleVerifyResult(kVerifyResultPollInterval);
 }
 
 void BraveAccountService::OnLoginInitialize(LoginInitializeCallback callback,

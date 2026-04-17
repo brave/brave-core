@@ -27,16 +27,22 @@ class CodePlugin {
   virtual std::string_view InclusionKeyword() const = 0;
 
   // JavaScript setup script to inject into the execution environment
-  virtual std::string_view SetupScript() const = 0;
+  virtual std::string_view SetupScript() = 0;
 
-  // The artifact type this plugin handles
-  virtual std::string_view ArtifactType() const = 0;
+  // The artifact type this plugin handles, or std::nullopt if the plugin does
+  // not produce artifacts.
+  virtual std::optional<std::string_view> ArtifactType() const;
 
   // Validates an artifact from script execution. Returns an error message
   // if validation fails, or std::nullopt if validation succeeds.
   // |artifact_value| is the parsed JSON.
   virtual std::optional<std::string> ValidateArtifact(
       const base::Value& artifact_value) const;
+
+  // Returns an optional log message for artifact creation, given the artifact
+  // ID. If nullopt, no output is emitted for artifacts of this type.
+  virtual std::optional<std::string> GetArtifactCreationMessage(
+      std::string_view artifact_id) const;
 };
 
 }  // namespace ai_chat

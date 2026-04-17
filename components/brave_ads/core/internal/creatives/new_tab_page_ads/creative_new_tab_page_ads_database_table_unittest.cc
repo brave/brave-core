@@ -6,9 +6,9 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 
 #include "base/test/test_future.h"
-#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_environment_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type.h"
@@ -168,7 +168,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
        DoNotGetForSegmentsIfTypeIsRichMediaAndJavascriptIsDisabled) {
   // Arrange
-  test::MockAllowJavaScript(false);
+  test::SetUpAllowJavaScript(false);
 
   CreativeNewTabPageAdInfo creative_ad_1 = test::BuildCreativeNewTabPageAd(
       CreativeNewTabPageAdWallpaperType::kRichMedia,
@@ -306,7 +306,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
        GetForCreativeInstanceIdIfTypeIsImageAndJavascriptIsDisabled) {
   // Arrange
-  test::MockAllowJavaScript(false);
+  test::SetUpAllowJavaScript(false);
 
   const CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
@@ -361,7 +361,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
        DoNotGetForCreativeInstanceIdIfTypeIsRichMediaAndJavascriptIsDisabled) {
   // Arrange
-  test::MockAllowJavaScript(false);
+  test::SetUpAllowJavaScript(false);
 
   const CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(
@@ -473,7 +473,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
 TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableTest,
        DoNotGetNonExpiredIfTypeIsRichMediaAndJavascriptIsDisabled) {
   // Arrange
-  test::MockAllowJavaScript(false);
+  test::SetUpAllowJavaScript(false);
 
   CreativeNewTabPageAdInfo creative_ad_1 = test::BuildCreativeNewTabPageAd(
       CreativeNewTabPageAdWallpaperType::kRichMedia,

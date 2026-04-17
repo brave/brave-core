@@ -11,9 +11,7 @@ import { useHistory, useLocation } from 'react-router'
 import { SwapAndSendOptions } from '../../../../options/swap-and-send-options'
 
 // Hooks
-import { useJupiter } from './useJupiter'
 import { useZeroEx } from './useZeroEx'
-import { useLifi } from './useLifi'
 import { useGate3 } from './useGate3'
 import { useDebouncedCallback } from './useDebouncedCallback'
 import {
@@ -46,14 +44,8 @@ import { getBalance } from '../../../../utils/balance-utils'
 import { networkSupportsAccount } from '../../../../utils/network-utils'
 import {
   getZeroExQuoteOptions,
-  getJupiterQuoteOptions,
   getZeroExFromAmount,
   getZeroExToAmount,
-  getJupiterFromAmount,
-  getJupiterToAmount,
-  getLiFiQuoteOptions,
-  getLiFiFromAmount,
-  getLiFiToAmount,
   getGate3FromAmount,
   getGate3ToAmount,
   getGate3QuoteOptions,
@@ -415,28 +407,6 @@ export const useSwap = () => {
       return []
     }
 
-    if (quoteUnion.lifiQuote) {
-      return getLiFiQuoteOptions({
-        quote: quoteUnion.lifiQuote,
-        fromNetwork,
-        spotPrices,
-        defaultFiatCurrency,
-        toToken,
-        fromToken,
-      })
-    }
-
-    if (quoteUnion.jupiterQuote) {
-      return getJupiterQuoteOptions({
-        quote: quoteUnion.jupiterQuote,
-        fromNetwork,
-        fromToken,
-        toToken,
-        spotPrices,
-        defaultFiatCurrency,
-      })
-    }
-
     if (quoteUnion.zeroExQuote) {
       return getZeroExQuoteOptions({
         quote: quoteUnion.zeroExQuote,
@@ -503,9 +473,7 @@ export const useSwap = () => {
     && fromContractOrSymbolFromParams !== undefined
     && fromChainIdFromParams !== undefined
 
-  const jupiter = useJupiter(swapProviderHookParams)
   const zeroEx = useZeroEx(swapProviderHookParams)
-  const lifi = useLifi(swapProviderHookParams)
   const gate3 = useGate3(swapProviderHookParams)
   const { approveSpendAllowance, checkAllowance, hasAllowance } =
     useTokenAllowance()
@@ -670,69 +638,17 @@ export const useSwap = () => {
       }
 
       if (quoteResponse?.error) {
+        console.error('Swap quote error:', quoteResponse.error)
         setQuoteErrorUnion(quoteResponse.error)
       }
 
       if (quoteResponse?.errorString) {
+        console.error('Swap backend error:', quoteResponse.errorString)
         setBackendError(quoteResponse.errorString)
       }
 
       if (quoteResponse?.response) {
         setQuoteUnion(quoteResponse.response)
-
-        if (quoteResponse.response.lifiQuote) {
-          const { routes } = quoteResponse.response.lifiQuote
-
-          // If overrides.selectedQuoteOptionId is undefined, we will use the
-          // first route as the default option.
-          //
-          // If overrides.selectedQuoteOptionId is set, we will try to find the
-          // route that matches the selectedQuoteOptionId.
-          const route = overrides.selectedQuoteOptionId
-            ? routes.find(
-                (route) => route.uniqueId === overrides.selectedQuoteOptionId,
-              ) || routes[0]
-            : routes[0]
-
-          if (!route) {
-            return
-          }
-
-          if (params.editingFromOrToAmount === 'from') {
-            setToAmount(getLiFiToAmount(route).format(6))
-          } else {
-            setFromAmount(getLiFiFromAmount(route).format(6))
-          }
-
-          const step = route.steps[0]
-
-          if (step) {
-            await checkAllowance({
-              account: fromAccount,
-              spendAmount: fromAssetBalance.format(),
-              spenderAddress: step.estimate.approvalAddress,
-              token: params.fromToken,
-            })
-          }
-        }
-
-        if (quoteResponse.response.jupiterQuote) {
-          if (params.editingFromOrToAmount === 'from') {
-            setToAmount(
-              getJupiterToAmount({
-                quote: quoteResponse.response.jupiterQuote,
-                toToken: params.toToken,
-              }).format(6),
-            )
-          } else {
-            setFromAmount(
-              getJupiterFromAmount({
-                quote: quoteResponse.response.jupiterQuote,
-                fromToken: params.fromToken,
-              }).format(6),
-            )
-          }
-        }
 
         if (quoteResponse.response.zeroExQuote) {
           if (params.editingFromOrToAmount === 'from') {
@@ -1150,31 +1066,6 @@ export const useSwap = () => {
         return 'unknownError'
       }
 
-      // Jupiter specific validations
-      if (quoteErrorUnion?.jupiterError) {
-        if (quoteErrorUnion.jupiterError.isInsufficientLiquidity) {
-          return 'insufficientLiquidity'
-        }
-
-        return 'unknownError'
-      }
-
-      if (quoteUnion?.jupiterQuote?.routePlan.length === 0) {
-        return 'insufficientLiquidity'
-      }
-
-      // LiFi specific validations
-      if (
-        quoteErrorUnion?.lifiError?.code
-        && quoteErrorUnion?.lifiError?.code
-          !== BraveWallet.LiFiErrorCode.kSuccess
-      ) {
-        return quoteErrorUnion?.lifiError.code
-          === BraveWallet.LiFiErrorCode.kNotFoundError
-          ? 'insufficientLiquidity'
-          : 'unknownError'
-      }
-
       // Gate3 specific validations
       if (quoteErrorUnion?.gate3Error) {
         if (
@@ -1239,7 +1130,7 @@ export const useSwap = () => {
 
       // EVM specific validations
       if (
-        (quoteUnion?.zeroExQuote || quoteUnion?.lifiQuote)
+        quoteUnion?.zeroExQuote
         && fromToken.coin === BraveWallet.CoinType.ETH
         && fromToken.contractAddress
         && !hasAllowance
@@ -1275,8 +1166,6 @@ export const useSwap = () => {
       nativeAssetBalance,
       feesWrapped,
       quoteUnion?.zeroExQuote,
-      quoteUnion?.lifiQuote,
-      quoteUnion?.jupiterQuote?.routePlan.length,
       quoteUnion?.gate3Quote,
       hasAllowance,
       quoteErrorUnion,
@@ -1318,53 +1207,6 @@ export const useSwap = () => {
           token: fromToken,
           spendAmount: fromAssetBalance.format(),
         })
-      }
-    }
-
-    if (quoteUnion.lifiQuote) {
-      const route = selectedQuoteOptionId
-        ? quoteUnion.lifiQuote.routes.find(
-            (route) => route.uniqueId === selectedQuoteOptionId,
-          ) || quoteUnion.lifiQuote.routes[0]
-        : quoteUnion.lifiQuote.routes[0]
-
-      const step = route?.steps[0]
-      if (!step) {
-        return
-      }
-
-      if (hasAllowance) {
-        // in the future, we will loop thru the steps and call exchange (await
-        // confirmations)
-        const error = await lifi.exchange(step)
-        if (error) {
-          console.log('lifi.exchange error', error.lifiError)
-          setQuoteErrorUnion(error)
-        } else {
-          setFromAmount('')
-          setToAmount('')
-          reset()
-        }
-      } else {
-        await approveSpendAllowance({
-          spenderAddress: step.estimate.approvalAddress,
-          spendAmount: fromAssetBalance.format(),
-          account: fromAccount,
-          network: fromNetwork,
-          token: fromToken,
-        })
-      }
-    }
-
-    if (quoteUnion.jupiterQuote) {
-      const error = await jupiter.exchange(quoteUnion.jupiterQuote)
-      if (error) {
-        console.log('jupiter.exchange error', error.jupiterError)
-        setQuoteErrorUnion(error)
-      } else {
-        setFromAmount('')
-        setToAmount('')
-        reset()
       }
     }
 
@@ -1420,8 +1262,6 @@ export const useSwap = () => {
     zeroEx,
     reset,
     approveSpendAllowance,
-    lifi,
-    jupiter,
     gate3,
   ])
 

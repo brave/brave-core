@@ -138,6 +138,12 @@ import {
 import {
   selectAllVisibleFungibleUserAssetsFromQueryResult, //
 } from '../../../../common/slices/entities/blockchain-token.entity'
+import {
+  PortfolioOverviewDistribution,
+  PortfolioOverviewDistributionData,
+} from './components/portfolio_overview_distribution/portfolio_overview_distribution'
+
+const DISTRIBUTION_LIMIT = 3
 
 export const PortfolioOverview = () => {
   // routing
@@ -180,6 +186,11 @@ export const PortfolioOverview = () => {
   )
   const [hidePortfolioGraph] = useSyncedLocalStorage(
     LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN,
+    true,
+  )
+
+  const [hidePortfolioDistribution] = useSyncedLocalStorage(
+    LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_DISTRIBUTION_HIDDEN,
     true,
   )
 
@@ -470,6 +481,72 @@ export const PortfolioOverview = () => {
 
   const isPortfolioDown = new Amount(percentageChange).lt(0)
 
+  const distributionData: PortfolioOverviewDistributionData[] =
+    React.useMemo(() => {
+      if (
+        visibleAssetOptions.length === 0
+        || fullPortfolioFiatBalance.isZero()
+        || fullPortfolioFiatBalance.isUndefined()
+        || !defaultFiat
+      ) {
+        return []
+      }
+
+      // Calculate fiat value for each asset
+      const assetsWithFiat = visibleAssetOptions
+        .map((item) => {
+          const fiatAmount = computeFiatAmount({
+            spotPrices,
+            value: item.assetBalance,
+            token: item.asset,
+          })
+          return {
+            token: item.asset,
+            fiatAmount,
+          }
+        })
+        .filter((item) => !item.fiatAmount.isZero())
+
+      // Sort by fiat value descending
+      const sorted = [...assetsWithFiat].sort((a, b) =>
+        b.fiatAmount.minus(a.fiatAmount).toNumber(),
+      )
+
+      // Take top 3
+      const topDistributionAssets = sorted.slice(0, DISTRIBUTION_LIMIT)
+
+      // Sum the rest for "Other"
+      const otherAssets = sorted.slice(DISTRIBUTION_LIMIT)
+      const otherTotal = otherAssets.reduce(
+        (sum, item) => sum.plus(item.fiatAmount),
+        Amount.zero(),
+      )
+
+      // Build distribution data
+      const result: PortfolioOverviewDistributionData[] =
+        topDistributionAssets.map((item) => ({
+          kind: 'asset',
+          token: item.token,
+          value: parseFloat(
+            item.fiatAmount.div(fullPortfolioFiatBalance).times(100).format(2),
+          ),
+          fiatValue: item.fiatAmount.formatAsFiat(defaultFiat),
+        }))
+
+      // Add "Other" if there are more than DISTRIBUTION_LIMIT
+      if (otherAssets.length > 0) {
+        result.push({
+          kind: 'other',
+          value: parseFloat(
+            otherTotal.div(fullPortfolioFiatBalance).times(100).format(2),
+          ),
+          fiatValue: otherTotal.formatAsFiat(defaultFiat),
+        })
+      }
+
+      return result
+    }, [visibleAssetOptions, spotPrices, fullPortfolioFiatBalance, defaultFiat])
+
   // methods
   const onSelectAsset = React.useCallback(
     (asset: BraveWallet.BlockchainToken) => {
@@ -631,9 +708,8 @@ export const PortfolioOverview = () => {
                 </BalanceAndChangeWrapper>
                 {!hasZeroBalance && <BuySendSwapDepositNav />}
               </BalanceAndButtonsWrapper>
-              {hasZeroBalance ? (
-                <GettingStarted />
-              ) : (
+              {hasZeroBalance && <GettingStarted />}
+              {!hasZeroBalance && (
                 <ColumnReveal hideContent={hidePortfolioGraph}>
                   <PortfolioOverviewChart
                     timeframe={selectedTimeframe}
@@ -644,6 +720,11 @@ export const PortfolioOverview = () => {
                       isFetchingPortfolioPriceHistory || !portfolioPriceHistory
                     }
                   />
+                </ColumnReveal>
+              )}
+              {!hasZeroBalance && (
+                <ColumnReveal hideContent={hidePortfolioDistribution}>
+                  <PortfolioOverviewDistribution data={distributionData} />
                 </ColumnReveal>
               )}
             </BalanceAndLineChartWrapper>

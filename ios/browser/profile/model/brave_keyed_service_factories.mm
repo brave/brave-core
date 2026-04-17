@@ -14,11 +14,7 @@
 #include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
 #include "brave/ios/browser/brave_origin/brave_origin_service_factory.h"
 #include "brave/ios/browser/brave_shields/brave_shields_settings_service_factory.h"
-#include "brave/ios/browser/brave_wallet/asset_ratio_service_factory.h"
-#include "brave/ios/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/ios/browser/brave_wallet/meld_integration_service_factory.h"
-#include "brave/ios/browser/brave_wallet/swap_service_factory.h"
 #include "brave/ios/browser/debounce/debounce_service_factory+private.h"
 #include "brave/ios/browser/favicon/brave_ios_favicon_loader_factory.h"
 #include "brave/ios/browser/misc_metrics/profile_misc_metrics_service_factory.h"
@@ -41,11 +37,7 @@ void EnsureProfileKeyedServiceFactoriesBuilt() {
   brave_favicon::BraveIOSFaviconLoaderFactory::GetInstance();
   brave_origin::BraveOriginServiceFactory::GetInstance();
   brave_shields::BraveShieldsSettingsServiceFactory::GetInstance();
-  brave_wallet::AssetRatioServiceFactory::GetInstance();
-  brave_wallet::BraveWalletIpfsServiceFactory::GetInstance();
   brave_wallet::BraveWalletServiceFactory::GetInstance();
-  brave_wallet::MeldIntegrationServiceFactory::GetInstance();
-  brave_wallet::SwapServiceFactory::GetInstance();
   skus::SkusServiceFactory::GetInstance();
   brave::URLSanitizerServiceFactory::GetInstance();
   debounce::DebounceServiceFactory::GetInstance();

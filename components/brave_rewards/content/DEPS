@@ -23,18 +23,6 @@ include_rules = [
 ]
 
 specific_include_rules = {
-  "rewards_service_impl_unittest\.cc": [
-    # component unit tests should not have chrome deps
-    "!chrome/browser/profiles/profile.h",
-    "!chrome/test/base/testing_browser_process.h",
-    "+brave/components/l10n/common/test/scoped_default_locale.h",
-  ],
-  "rewards_service_impl_jp_unittest\.cc": [
-    # component unit tests should not have chrome deps
-    "!chrome/browser/profiles/profile.h",
-    "!chrome/test/base/testing_browser_process.h",
-    "+brave/components/l10n/common/test/scoped_default_locale.h",
-  ],
   "test_util\.cc": [
     "+components/sync_preferences/pref_service_mock_factory.h",
     # component unit tests should not have chrome or brave / browser deps

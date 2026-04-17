@@ -12,9 +12,8 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/test/confirmation_user_data_builder_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/test/confirmation_tokens_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/test/token_generator_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
-#include "brave/components/brave_ads/core/internal/common/test/test_types.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_environment_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "url/gurl.h"
 
@@ -36,7 +35,7 @@ class BraveAdsCreateRewardConfirmationUrlRequestBuilderTest
 
 TEST_F(BraveAdsCreateRewardConfirmationUrlRequestBuilderTest, BuildUrl) {
   // Arrange
-  test::MockBuildChannel(test::BuildChannelType::kNightly);
+  test::SetUpBuildChannel(test::BuildChannelType::kNightly);
 
   test::MockTokenGenerator(/*count=*/1);
   test::RefillConfirmationTokens(/*count=*/1);

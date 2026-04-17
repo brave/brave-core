@@ -546,6 +546,15 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
             return;
         }
 
+        // A Play Store purchase exists but the SKUs order ID fetch is still in
+        // flight (e.g. after a device change). Skip the paywall and open the
+        // pref screen, which renders the fetching spinner.
+        if (BraveOriginSubscriptionPrefs.isFetchingCredentials(getProfile())) {
+            SettingsNavigationFactory.createSettingsNavigation()
+                    .startSettings(getActivity(), BraveOriginPreferences.class);
+            return;
+        }
+
         // Always check SKUs SDK credential summary to handle both Play Store
         // purchases and linked desktop purchases.
         BraveOriginSubscriptionPrefs.requestCredentialSummary(
@@ -667,9 +676,12 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                         Context context, SettingsIndexData indexData, Profile profile) {
                     MainSettings.SEARCH_INDEX_DATA_PROVIDER.updateDynamicPreferences(
                             context, indexData, profile);
-                    // Remove upstream preferences hidden from the main settings UI
-                    // ("languages" is intentionally excluded — removing it crashes
-                    // LanguageSettings).
+                    // Remove upstream preferences hidden from the main settings UI.
+                    // "languages" is safe to remove now that
+                    // LanguageSettings.SEARCH_INDEX_DATA_PROVIDER
+                    // is replaced by BraveLanguageSettings.SEARCH_INDEX_DATA_PROVIDER in the
+                    // registry.
+                    indexData.removeEntry(getUniqueId("languages"));
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_SIGN_IN));
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_SEARCH_ENGINE));
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_DOWNLOADS));

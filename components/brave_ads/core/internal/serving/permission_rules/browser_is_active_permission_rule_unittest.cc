@@ -20,8 +20,8 @@ TEST_F(BraveAdsBrowserIsActivePermissionRuleTest, ShouldAllow) {
   const base::test::ScopedFeatureList scoped_feature_list(
       kPermissionRulesFeature);
 
-  NotifyBrowserDidBecomeActive();
-  NotifyBrowserDidEnterForeground();
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
+  ads_client_notifier_.NotifyBrowserDidEnterForeground();
 
   // Act & Assert
   EXPECT_TRUE(HasBrowserIsActivePermission());
@@ -32,8 +32,8 @@ TEST_F(BraveAdsBrowserIsActivePermissionRuleTest, ShouldNotAllow) {
   const base::test::ScopedFeatureList scoped_feature_list(
       kPermissionRulesFeature);
 
-  NotifyBrowserDidResignActive();
-  NotifyBrowserDidEnterBackground();
+  ads_client_notifier_.NotifyBrowserDidResignActive();
+  ads_client_notifier_.NotifyBrowserDidEnterBackground();
 
   // Act & Assert
   EXPECT_FALSE(HasBrowserIsActivePermission());
@@ -47,8 +47,8 @@ TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
       kPermissionRulesFeature,
       {{"should_only_serve_ads_if_browser_is_active", "false"}});
 
-  NotifyBrowserDidResignActive();
-  NotifyBrowserDidEnterBackground();
+  ads_client_notifier_.NotifyBrowserDidResignActive();
+  ads_client_notifier_.NotifyBrowserDidEnterBackground();
 
   // Act & Assert
   EXPECT_TRUE(HasBrowserIsActivePermission());
@@ -60,8 +60,8 @@ TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
   const base::test::ScopedFeatureList scoped_feature_list(
       kPermissionRulesFeature);
 
-  NotifyBrowserDidBecomeActive();
-  NotifyBrowserDidEnterBackground();
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
+  ads_client_notifier_.NotifyBrowserDidEnterBackground();
 
   // Act & Assert
   EXPECT_FALSE(HasBrowserIsActivePermission());
@@ -73,8 +73,8 @@ TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
   const base::test::ScopedFeatureList scoped_feature_list(
       kPermissionRulesFeature);
 
-  NotifyBrowserDidResignActive();
-  NotifyBrowserDidEnterForeground();
+  ads_client_notifier_.NotifyBrowserDidResignActive();
+  ads_client_notifier_.NotifyBrowserDidEnterForeground();
 
   // Act & Assert
   EXPECT_FALSE(HasBrowserIsActivePermission());
@@ -86,8 +86,8 @@ TEST_F(BraveAdsBrowserIsActivePermissionRuleTest,
   const base::test::ScopedFeatureList scoped_feature_list(
       kPermissionRulesFeature);
 
-  NotifyBrowserDidResignActive();
-  NotifyBrowserDidEnterBackground();
+  ads_client_notifier_.NotifyBrowserDidResignActive();
+  ads_client_notifier_.NotifyBrowserDidEnterBackground();
 
   // Act & Assert
   EXPECT_FALSE(HasBrowserIsActivePermission());

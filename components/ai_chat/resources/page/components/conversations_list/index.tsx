@@ -110,7 +110,7 @@ function ConversationItem(props: ConversationItemProps) {
             <div
               className={styles.text}
               title={title}
-              data-test-id='conversation-title'
+              data-testid='conversation-title'
             >
               {title}
             </div>

@@ -23,6 +23,18 @@ Reactions::Reactions() {
 
 Reactions::~Reactions() = default;
 
+void Reactions::AddObserver(ReactionsObserver* const observer) {
+  CHECK(observer);
+
+  observers_.AddObserver(observer);
+}
+
+void Reactions::RemoveObserver(ReactionsObserver* const observer) {
+  CHECK(observer);
+
+  observers_.RemoveObserver(observer);
+}
+
 void Reactions::ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
                              ToggleReactionCallback callback) {
   if (!mojom_reaction) {
@@ -208,7 +220,7 @@ void Reactions::ToggleMarkAdAsInappropriate(
                      ReactionSetToList(marked_as_inappropriate_));
 
   if (inserted) {
-    NotifyDidToggleSaveAd(mojom_reaction->creative_set_id);
+    NotifyDidToggleMarkAdAsInappropriate(mojom_reaction->creative_set_id);
 
     Deposit(mojom_reaction->mojom_ad_type,
             mojom::ConfirmationType::kMarkAdAsInappropriate,

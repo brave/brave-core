@@ -138,15 +138,14 @@ bool BraveTabStrip::IsVerticalTabsAnimatingButNotFinalState() const {
 }
 
 bool BraveTabStrip::CanPaintThrobberToLayer() const {
-  if (!ShouldShowVerticalTabs() &&
-      !base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)) {
-    return TabStrip::CanPaintThrobberToLayer();
+  if (static_cast<BraveTabContainer*>(tab_container_)->GetScrollDirection()) {
+    // Don't allow throbber to be painted to layer. When tabs are scrollable,
+    // a tab could be out of the viewport. Otherwise, throbber would be
+    // painted even when the tab is not in the viewport.
+    return false;
   }
 
-  // Don't allow throbber to be painted to layer. When tabs are scrollable,
-  // a tab could be out of the viewport. Otherwise, throbber would be
-  // painted even when the tab is not in the viewport.
-  return false;
+  return TabStrip::CanPaintThrobberToLayer();
 }
 
 bool BraveTabStrip::CanCloseTabViaMiddleButtonClick() const {
@@ -244,6 +243,13 @@ void BraveTabStrip::MaybeStartDrag(TabSlotView* source,
 void BraveTabStrip::AddedToWidget() {
   TabStrip::AddedToWidget();
 
+  // When Chromium's upstream vertical tabs feature is active,
+  // TabStrip::Initialize() is never called so tab_container_ remains null.
+  // Skip UpdateOrientation() to avoid crashing when accessing it.
+  if (!tabs::utils::SupportsBraveVerticalTabs(GetBrowserWindowInterface())) {
+    return;
+  }
+
   if (BrowserView::GetBrowserViewForBrowser(GetBrowserWindowInterface())) {
     UpdateOrientation();
   } else {
@@ -305,6 +311,10 @@ bool BraveTabStrip::ShouldShowPinnedTabsInGrid() const {
 }
 
 void BraveTabStrip::UpdateOrientation() {
+  // Callers must guard against unsupported configurations (e.g. upstream
+  // vertical tabs where tab_container_ is null).
+  CHECK(tabs::utils::SupportsBraveVerticalTabs(GetBrowserWindowInterface()));
+
   const bool using_vertical_tabs = ShouldShowVerticalTabs();
   auto* browser = GetBrowserWindowInterface();
   DCHECK(browser);

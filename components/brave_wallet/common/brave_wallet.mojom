@@ -471,6 +471,12 @@ interface PageHandler {
   // - Also available for Android and can be implemented once Android
   // start allowing Wallet WebUI with no wallet created.
   ShowOnboarding(bool is_new_wallet);
+
+  // Mobile only
+  // - Used by iOS Wallet WebUI when there is an interaction to open
+  // Wallet WebUI in another tab. For example, the user taps the button
+  // to open Wallet WebUI in another tab while syncing ZCash Shielded Account.
+  OpenWalletHome();
 };
 
 enum AssetPriceTimeframe {
@@ -554,12 +560,13 @@ enum SwapProvider {
   kAuto,
   kNearIntents,
   kSquid,
+  kJupiter,
+  kLiFi,
 
   // Providers not supported by Gate3
-  kLiFi,
   kZeroEx,
-  kJupiter,
   kCowSwap,
+  kJupiterLegacy,  // Direct Jupiter API (legacy, for iOS)
 };
 
 struct SwapQuoteParams {
@@ -568,7 +575,7 @@ struct SwapQuoteParams {
   string from_token;
   string from_amount;
 
-  // Setting the to_account_id is only supported for LiFi swaps.
+  // Setting the to_account_id is only supported for Gate3 swaps.
   AccountId to_account_id;
   string to_chain_id;
   string to_token;
@@ -578,8 +585,8 @@ struct SwapQuoteParams {
 
   string slippage_percentage;
 
-  // This is primarily used for LiFi swaps. For every other case, this should
-  // be set to kCheapest.
+  // Used for Gate3 swaps to select route priority. For every other case, this
+  // should be set to kCheapest.
   RoutePriority route_priority;
 
   SwapProvider provider;
@@ -588,21 +595,18 @@ struct SwapQuoteParams {
 union SwapTransactionParamsUnion {
   JupiterTransactionParams jupiter_transaction_params;
   SwapQuoteParams zero_ex_transaction_params;
-  LiFiStep lifi_transaction_params;
   SwapQuoteParams gate3_transaction_params;
 };
 
 union SwapQuoteUnion {
   JupiterQuote jupiter_quote;
   ZeroExQuote zero_ex_quote;
-  LiFiQuote lifi_quote;
   Gate3SwapQuote gate3_quote;
 };
 
 union SwapTransactionUnion {
   string jupiter_transaction;
   ZeroExTransaction zero_ex_transaction;
-  LiFiTransactionUnion lifi_transaction;
   Gate3SwapRoute gate3_route;
 };
 
@@ -626,11 +630,10 @@ struct Gate3SwapTool {
 };
 
 struct Gate3SwapStepToken {
-  string coin;
+  CoinType coin;
   string chain_id;
   string contract_address;
   string symbol;
-  string decimals;
   string logo;
 };
 
@@ -640,6 +643,7 @@ struct Gate3SwapRouteStep {
   Gate3SwapStepToken destination_token;
   string destination_amount;
   Gate3SwapTool tool;
+  string percent;
 };
 
 struct Gate3SwapEvmTransactionParams {
@@ -833,7 +837,6 @@ struct ZeroExError {
 union SwapErrorUnion {
   JupiterError jupiter_error;
   ZeroExError zero_ex_error;
-  LiFiError lifi_error;
   Gate3SwapError gate3_error;
 };
 
@@ -887,213 +890,6 @@ struct JupiterError {
   string error;
   string message;
   bool is_insufficient_liquidity;
-};
-
-struct LiFiStepStatus {
-  string chain_id;
-
-  // The following fields are temporarily undefined in case of a pending
-  // receiving step.
-  string? tx_hash;
-  string? tx_link;
-  string? amount;
-  string? contract_address;
-};
-
-enum LiFiStatusCode {
-  kNotFound,
-  kInvalid,
-  kPending,
-  kDone,
-  kFailed,
-};
-
-enum LiFiSubstatusCode {
-  // Substatuses for kPending
-  kWaitSourceConfirmations,
-  kWaitDestinationTransaction,
-  kBridgeNotAvailable,
-  kChainNotAvailable,
-  kRefundInProgress,
-  kUnknownError,
-
-  // Substatuses for kDone
-  kCompleted,
-  kPartial,
-  kRefunded,
-
-  // Substatuses for kFailed
-  kNotProcessableRefundNeeded,
-  kOutOfGas,
-  kSlippageExceeded,
-  kInsufficientAllowance,
-  kInsufficientBalance,
-  kExpired,
-};
-
-struct LiFiStatus {
-  string transaction_id;
-  LiFiStepStatus sending;
-  LiFiStepStatus receiving;
-  string lifi_explorer_link;
-  string from_address;
-  string to_address;
-  string tool;
-  LiFiStatusCode status;
-  LiFiSubstatusCode substatus;
-  string substatus_message;
-};
-
-enum LiFiStepType {
-  kSwap,
-  kCross,
-  kLiFi,
-};
-
-struct LiFiToolDetails {
-  string key;
-  string name;
-  string logo;
-};
-
-struct LiFiAction {
-  BlockchainToken from_token;
-  string from_amount;
-  BlockchainToken to_token;
-  string slippage;
-
-  string? from_address;
-  string? to_address;
-  string? destination_call_data;
-};
-
-struct LiFiFeeCost {
-  string name;
-  string description;
-  string percentage;
-  BlockchainToken token;
-  string amount;
-  bool included;
-};
-
-struct LiFiGasCost {
-  string type;
-  string estimate;
-  string limit;
-  string amount;
-  BlockchainToken token;
-};
-
-struct LiFiStepEstimate {
-  string tool;
-  string from_amount;
-  string to_amount;
-  string to_amount_min;
-  string approval_address;
-  string execution_duration;
-  array<LiFiFeeCost>? fee_costs;
-  array<LiFiGasCost> gas_costs;
-};
-
-struct LiFiStep {
-  string id;
-  LiFiStepType type;
-  string tool;
-  LiFiToolDetails tool_details;
-  LiFiAction action;
-  LiFiStepEstimate estimate;
-
-  // Not defined in included steps
-  string? integrator;
-  array<LiFiStep>? included_steps;
-};
-
-struct LiFiRoute {
-  string id;
-  string unique_id;
-  BlockchainToken from_token;
-  string from_amount;
-  string from_address;
-  BlockchainToken to_token;
-  string to_amount;
-  string to_amount_min;
-  string to_address;
-  array<LiFiStep> steps;
-  array<string> tags;
-};
-
-struct LiFiQuote {
-  array<LiFiRoute> routes;
-};
-
-union LiFiTransactionUnion {
-  string solana_transaction;
-  LiFiEvmTransaction evm_transaction;
-};
-
-struct LiFiEvmTransaction {
-  string data;
-  string from;
-  string to;
-  string value;
-  string gas_limit;
-  string gas_price;
-  string chain_id;
-};
-
-enum LifiToolErrorCode {
-  // No route was found for this action.
-  kNoPossibleRoute = 0,
-  // The tool's liquidity is insufficient.
-  kInsufficientLiquidity = 1,
-  // The third-party tool timed out.
-  kToolTimeout = 2,
-  // An unknown error occurred.
-  kUnknownError = 3,
-  // There was a problem getting on-chain data. Please try again later.
-  kRpcError = 3,
-  // he initial amount is too low to transfer using this tool.
-  kAmountTooLow = 4,
-  // The initial amount is too high to transfer using this tool.
-  kAmountTooHigh = 5,
-  // The fees are higher than the initial amount.
-  // This would result in negative resulting token.
-  kFeesHigherThanAmount = 6,
-  // This tool does not support different recipient addresses.
-  kDifferentRecipientNotSupported = 7,
-  // The third-party tool returned an error.
-  kToolSpecificError = 8,
-  // The tool cannot guarantee that the minimum amount will be met.
-  kCannotGuaranteeMinAmount = 9,
-};
-
-// https://github.com/lifinance/types/blob/main/src/errors.ts
-enum LiFiErrorCode {
-  kSuccess = 0,
-  kDefaultError = 1000,
-  kFailedToBuildTransactionError = 1001,
-  kNoQuoteError = 1002,
-  kNotFoundError = 1003,
-  kNotProcessableError = 1004,
-  kRateLimitError = 1005,
-  kServerError = 1006,
-  kSlippageError = 1007,
-  kThirdPartyError = 1008,
-  kTimeoutError = 1009,
-  kUnauthorizedError = 1010,
-  kValidationError = 1011,
-};
-
-struct LifiToolError {
-  string error_type;
-  string code;
-  string tool;
-  string message;
-};
-
-struct LiFiError {
-  string message;
-  LiFiErrorCode code;
 };
 
 enum SwapDiscountCode {
@@ -1613,11 +1409,6 @@ interface SwapService {
   GetStatus(Gate3SwapStatusParams params) => (Gate3SwapStatus? response,
                                               Gate3SwapError? error,
                                               string error_string);
-
-  // Get LiFi status for a given transaction meta id
-  GetLiFiStatus(string tx_hash) => (LiFiStatus? response,
-                                    LiFiError? error_response,
-                                    string error_string);
 };
 
 interface IpfsService {

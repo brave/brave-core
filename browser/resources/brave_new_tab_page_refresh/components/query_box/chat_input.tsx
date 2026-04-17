@@ -49,7 +49,7 @@ export function ChatInput(props: Props) {
   return (
     <div
       data-css-scope={style.scope}
-      data-test-id='ntp-chat-input'
+      data-testid='ntp-chat-input'
     >
       <InputBox
         conversationStarted={false}

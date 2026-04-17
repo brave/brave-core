@@ -34,7 +34,16 @@ bool IsBrowserFrameCondensed(const BrowserWindowInterface* browser) {
   }
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
   DCHECK(browser_view);
-  return browser_view->browser_widget()->GetFrameView()->IsFrameCondensed();
+
+  auto* browser_widget = browser_view->browser_widget();
+  if (!browser_widget) {
+    // Seems it could be null in browser window destruction. We don't have
+    // 100% reproducible repro steps for this bug, but it's been reported by
+    // users. https://github.com/brave/brave-browser/issues/51155
+    return false;
+  }
+
+  return browser_widget->GetFrameView()->IsFrameCondensed();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

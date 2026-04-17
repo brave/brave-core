@@ -55,6 +55,7 @@ source_set("ai_chat") {
   if (!is_android) {
     deps += [
       "//chrome/browser/ui/tabs:tab_model",
+      "//chrome/browser/ui/tabs:tab_strip",
       "//chrome/browser/ui/thumbnails",
       "//chrome/browser/ui/webui/top_chrome",
       "//chrome/browser/ui/webui/util",
@@ -113,6 +114,13 @@ source_set("browser_tests") {
     "//chrome/test",
     "//chrome/test:test_support",
   ]
+
+  if (!is_android) {
+    deps += [
+      "//chrome/browser/ui/tabs:tab_strip",
+      "//chrome/test:test_support_ui",
+    ]
+  }
 
   sources = [ "ai_chat_ui_page_handler_browsertest.cc" ]
 }

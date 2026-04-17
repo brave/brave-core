@@ -44,9 +44,6 @@ constexpr char kMetricNameAndValueAttributeName[] = "metric_name_and_value";
 constexpr char kPlatformAttributeName[] = "platform";
 constexpr char kGeneralPlatformAttributeName[] = "general_platform";
 constexpr char kChannelAttributeName[] = "channel";
-constexpr char kYosAttributeName[] = "yos";
-constexpr char kWosAttributeName[] = "wos";
-constexpr char kMosAttributeName[] = "mos";
 constexpr char kWoiAttributeName[] = "woi";
 constexpr char kYoiAttributeName[] = "yoi";
 constexpr char kDateOfInstallAttributeName[] = "dtoi";
@@ -56,14 +53,10 @@ constexpr char kCountryCodeAttributeName[] = "country_code";
 constexpr char kVersionAttributeName[] = "version";
 constexpr char kRegionAttributeName[] = "region";
 constexpr char kSubregionAttributeName[] = "subregion";
-constexpr char kCadenceAttributeName[] = "cadence";
 constexpr char kRefAttributeName[] = "ref";
 constexpr char kIsBrowserDefaultAttributeName[] = "is_default";
 
-constexpr char kSlowCadence[] = "slow";
-constexpr char kTypicalCadence[] = "typical";
-constexpr char kExpressCadence[] = "express";
-
+constexpr char kCustomAttributeKeyPrefix[] = "custom_";
 constexpr char kOrganicRefPrefix[] = "BRV";
 constexpr char kNone[] = "none";
 constexpr char kRefOther[] = "other";
@@ -113,6 +106,26 @@ std::string InferActivationDate(const MessageMetainfo& meta,
   return FormatUTCDateFromTime(*activation_date);
 }
 
+std::optional<std::array<std::string, 2>> FetchCustomAttribute(
+    const MessageMetainfo& meta,
+    const MetricConfig* metric_config,
+    size_t custom_attr_index) {
+  if (!metric_config ||
+      custom_attr_index >= metric_config->custom_attributes.size()) {
+    return std::nullopt;
+  }
+  const auto& key_opt = metric_config->custom_attributes[custom_attr_index];
+  if (!key_opt) {
+    return std::nullopt;
+  }
+  auto value = meta.GetCustomAttribute(*key_opt);
+  if (!value) {
+    return std::nullopt;
+  }
+  return std::array<std::string, 2>{
+      base::StrCat({kCustomAttributeKeyPrefix, *key_opt}), std::move(*value)};
+}
+
 std::vector<std::array<std::string, 2>> PopulateConstellationAttributes(
     const std::string_view metric_name,
     const uint64_t metric_value,
@@ -134,6 +147,7 @@ std::vector<std::array<std::string, 2>> PopulateConstellationAttributes(
     attributes = {{kMetricNameAttributeName, std::string(metric_name)}};
   }
   std::string attribute_value;
+  size_t custom_attr_index = 0;
 
   for (const auto& attribute : attributes_to_load) {
     switch (attribute) {
@@ -222,6 +236,12 @@ std::vector<std::array<std::string, 2>> PopulateConstellationAttributes(
             {kIsBrowserDefaultAttributeName,
              base::ToString(meta.is_browser_default().value_or(false))});
         break;
+      case MetricAttribute::kCustomAttribute:
+        if (auto attr = FetchCustomAttribute(meta, metric_config,
+                                             custom_attr_index++)) {
+          attributes.push_back(std::move(*attr));
+        }
+        break;
     }
   }
   return attributes;
@@ -231,78 +251,6 @@ std::vector<std::array<std::string, 2>> PopulateConstellationAttributes(
 
 MessageMetainfo::MessageMetainfo() = default;
 MessageMetainfo::~MessageMetainfo() = default;
-
-base::DictValue GenerateP3AMessageDict(std::string_view metric_name,
-                                       uint64_t metric_value,
-                                       MetricLogType log_type,
-                                       const MessageMetainfo& meta,
-                                       const std::string& upload_type) {
-  base::DictValue result;
-
-  // Fill basic meta.
-  result.Set(kPlatformAttributeName, meta.platform());
-  result.Set(kChannelAttributeName, meta.channel());
-  // Set the metric
-  result.Set(kMetricNameAttributeName, metric_name);
-  result.Set(kMetricValueAttributeName, static_cast<int>(metric_value));
-
-  if (upload_type == kP3ACreativeUploadType) {
-    return result;
-  }
-
-  base::Time date_of_install_monday =
-      brave_stats::GetLastMondayTime(meta.date_of_install());
-  base::Time date_of_survey = meta.date_of_survey();
-
-  if (log_type != MetricLogType::kSlow) {
-    // Get last monday for the date so that the years of survey/install
-    // correctly match the ISO weeks of survey/install. i.e. date of survey =
-    // Sunday, January 1, 2023 should result in yos = 2022 and wos = 52 since
-    // that date falls on the last ISO week of the previous year.
-    date_of_survey = brave_stats::GetLastMondayTime(date_of_survey);
-  }
-
-  // Find out years of install and survey.
-  base::Time::Exploded survey_exploded;
-  base::Time::Exploded install_exploded;
-  date_of_survey.LocalExplode(&survey_exploded);
-  date_of_install_monday.LocalExplode(&install_exploded);
-
-  DCHECK_GE(survey_exploded.year, 999);
-  result.Set(kYosAttributeName, survey_exploded.year);
-
-  DCHECK_GE(install_exploded.year, 999);
-  result.Set(kYoiAttributeName, install_exploded.year);
-
-  // Fill meta.
-  result.Set(kCountryCodeAttributeName,
-             meta.GetCountryCodeForNormalMetrics(false, false));
-  result.Set(kVersionAttributeName, meta.version());
-  result.Set(kWoiAttributeName, meta.woi());
-
-  if (log_type == MetricLogType::kSlow) {
-    result.Set(kMosAttributeName, survey_exploded.month);
-  } else {
-    result.Set(kWosAttributeName,
-               brave_stats::GetIsoWeekNumber(date_of_survey));
-  }
-
-  std::string cadence;
-  switch (log_type) {
-    case MetricLogType::kSlow:
-      cadence = kSlowCadence;
-      break;
-    case MetricLogType::kTypical:
-      cadence = kTypicalCadence;
-      break;
-    case MetricLogType::kExpress:
-      cadence = kExpressCadence;
-      break;
-  }
-  result.Set(kCadenceAttributeName, cadence);
-
-  return result;
-}
 
 std::string GenerateP3AConstellationMessage(std::string_view metric_name,
                                             uint64_t metric_value,
@@ -468,6 +416,16 @@ std::optional<base::Time> MessageMetainfo::GetActivationDate(
   }
 
   return base::ValueToTime(*time_val);
+}
+
+std::optional<std::string> MessageMetainfo::GetCustomAttribute(
+    std::string_view attribute_name) const {
+  const auto* value = local_state_->GetDict(kCustomAttributesDictPref)
+                          .FindString(attribute_name);
+  if (!value || value->empty()) {
+    return std::nullopt;
+  }
+  return *value;
 }
 
 }  // namespace p3a

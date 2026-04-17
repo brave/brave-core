@@ -18,7 +18,6 @@ import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TxService;
-import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserverImpl;
@@ -154,7 +153,7 @@ public abstract class BraveWalletBaseActivity extends AsyncInitializationActivit
             return;
         }
 
-        mAssetRatioService = AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
+        mAssetRatioService = BraveWalletServiceFactory.getInstance().getAssetRatioService(this);
     }
 
     protected void initBraveWalletP3A() {

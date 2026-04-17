@@ -48,3 +48,8 @@ void AndroidWalletPageHandler::ShowOnboarding(bool is_new_wallet) {
   // Therefore, users won't be able to start onboarding from WebUI.
   NOTREACHED();
 }
+
+void AndroidWalletPageHandler::OpenWalletHome() {
+  // This is only used by iOS behind the `isIOS` check.
+  NOTREACHED();
+}

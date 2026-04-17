@@ -24,6 +24,14 @@ int NonClientHitTest(BrowserView* browser_view,
     return HTNOWHERE;
   }
 
+  // The toolbar must live in the same widget as the browser view to make
+  // this method work properly. If it has been reparented to a different widget
+  // (e.g. overlay_widget_ during macOS immersive fullscreen),
+  // GetHitTestComponent() will convert |point_in_widget| using the wrong
+  // widget's coordinate space, producing spurious HTCAPTION results. Callers
+  // must guard against this before calling NonClientHitTest().
+  CHECK_EQ(browser_view->toolbar()->GetWidget(), browser_view->GetWidget());
+
   int hit_test_result =
       views::GetHitTestComponent(browser_view->toolbar(), point_in_widget);
   if (hit_test_result == HTNOWHERE || hit_test_result == HTCLIENT) {

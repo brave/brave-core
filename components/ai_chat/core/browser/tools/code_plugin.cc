@@ -9,8 +9,17 @@ namespace ai_chat {
 
 CodePlugin::~CodePlugin() = default;
 
+std::optional<std::string_view> CodePlugin::ArtifactType() const {
+  return std::nullopt;
+}
+
 std::optional<std::string> CodePlugin::ValidateArtifact(
     const base::Value& artifact_value) const {
+  return std::nullopt;
+}
+
+std::optional<std::string> CodePlugin::GetArtifactCreationMessage(
+    std::string_view artifact_id) const {
   return std::nullopt;
 }
 

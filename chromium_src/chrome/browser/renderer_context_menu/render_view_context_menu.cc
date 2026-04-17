@@ -8,6 +8,7 @@
 #include <optional>
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/feature_list.h"
@@ -657,12 +658,26 @@ void RenderViewContextMenu::BuildContainersMenu() {
     return;
   }
 
+  std::optional<size_t> first_separator_index;
+  for (size_t i = 0; i < menu_model_.GetItemCount(); ++i) {
+    if (menu_model_.GetTypeAt(i) == ui::MenuModel::TYPE_SEPARATOR) {
+      first_separator_index = i;
+      break;
+    }
+  }
+
   containers_submenu_model_ =
       std::make_unique<containers::ContainersMenuModel>(*this, *service);
 
-  menu_model_.AddSubMenuWithStringId(IDC_OPEN_IN_CONTAINER,
-                                     IDS_CXMENU_OPEN_IN_CONTAINER,
-                                     containers_submenu_model_.get());
+  if (first_separator_index.has_value()) {
+    menu_model_.InsertSubMenuWithStringIdAt(
+        *first_separator_index, IDC_OPEN_IN_CONTAINER,
+        IDS_CXMENU_OPEN_LINK_IN_CONTAINER, containers_submenu_model_.get());
+  } else {
+    menu_model_.AddSubMenuWithStringId(IDC_OPEN_IN_CONTAINER,
+                                       IDS_CXMENU_OPEN_LINK_IN_CONTAINER,
+                                       containers_submenu_model_.get());
+  }
 }
 
 Browser* RenderViewContextMenu::GetBrowserToOpenSettings() {
@@ -673,7 +688,10 @@ float RenderViewContextMenu::GetScaleFactor() {
   auto* render_frame_host = GetRenderFrameHost();
   CHECK(render_frame_host);
   auto* render_view = render_frame_host->GetView();
-  CHECK(render_view);
+  if (!render_view) {
+    CHECK_IS_TEST();
+    return 1.0f;
+  }
   return render_view->GetDeviceScaleFactor();
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
@@ -730,14 +748,6 @@ void RenderViewContextMenu::AppendDeveloperItems() {
     } else {
       menu_model_.AddItemWithStringId(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS,
                                       IDS_ADBLOCK_CONTEXT_BLOCK_ELEMENTS);
-    }
-  }
-  if (email_aliases::features::IsEmailAliasesEnabled()) {
-    if (auto* email_aliases = GetEmailAliasesController(GetBrowser());
-        email_aliases && email_aliases->IsAvailableFor(params_)) {
-      menu_model_.AddSeparator(ui::NORMAL_SEPARATOR);
-      menu_model_.AddItemWithStringId(IDC_NEW_EMAIL_ALIAS,
-                                      IDS_IDC_NEW_EMAIL_ALIAS);
     }
   }
 }
@@ -884,11 +894,50 @@ void RenderViewContextMenu::InitMenu() {
 #if BUILDFLAG(ENABLE_CONTAINERS)
   BuildContainersMenu();
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+  BuildEmailAliasesMenu();
 }
 
 void RenderViewContextMenu::NotifyMenuShown() {
   auto* cb = BraveGetMenuShownCallback();
   if (!cb->is_null()) {
     std::move(*cb).Run(this);
+  }
+}
+
+void RenderViewContextMenu::BuildEmailAliasesMenu() {
+  if (!email_aliases::features::IsEmailAliasesEnabled()) {
+    return;
+  }
+  auto* email_aliases = GetEmailAliasesController(GetBrowser());
+  if (!email_aliases || !email_aliases->IsAvailableFor(params_)) {
+    return;
+  }
+
+  const auto autofill_anchor = [&]() -> std::optional<int> {
+    constexpr int kAutofillAnchors[] = {
+        IDC_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORDS_SELECT_PASSWORD,
+        IDC_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORDS_SUGGEST_PASSWORD,
+        IDC_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORDS_IMPORT_PASSWORDS,
+        IDC_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORDS_USE_PASSKEY_FROM_ANOTHER_DEVICE};
+
+    for (const auto anchor : kAutofillAnchors) {
+      if (const auto index = menu_model_.GetIndexOfCommandId(anchor);
+          index.has_value()) {
+        return index;
+      }
+    }
+
+    return std::nullopt;
+  }();
+
+  if (autofill_anchor.has_value()) {
+    menu_model_.InsertItemWithStringIdAt(autofill_anchor.value() + 1,
+                                         IDC_NEW_EMAIL_ALIAS,
+                                         IDS_IDC_NEW_EMAIL_ALIAS);
+  } else {
+    menu_model_.AddSeparator(ui::NORMAL_SEPARATOR);
+    menu_model_.AddItemWithStringId(IDC_NEW_EMAIL_ALIAS,
+                                    IDS_IDC_NEW_EMAIL_ALIAS);
   }
 }

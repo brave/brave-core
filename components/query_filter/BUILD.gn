@@ -26,6 +26,7 @@ source_set("unit_tests") {
     ":query_filter",
     "//base",
     "//base/test:test_support",
+    "//brave/components/query_filter/browser:unit_tests",
     "//testing/gtest",
     "//third_party/abseil-cpp:absl",
     "//url",

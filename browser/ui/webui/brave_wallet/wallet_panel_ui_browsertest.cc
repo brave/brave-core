@@ -13,7 +13,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
-#include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
@@ -81,7 +80,7 @@ std::string NeonEVMNetworkChainName() {
 }
 
 std::string NetworksButton() {
-  return R"([data-test-id='select-network-button'])";
+  return R"([data-testid='select-network-button'])";
 }
 
 std::string QuerySelectorJS(const std::string& selector) {
@@ -138,7 +137,8 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
     brave_wallet_service()->json_rpc_service()->SetAPIRequestHelperForTesting(
         url_loader_factory_.GetSafeWeakWrapper());
 
-    AssetRatioServiceFactory::GetServiceForContext(browser()->profile())
+    brave_wallet_service()
+        ->asset_ratio_service()
         ->EnableDummyPricesForTesting();
 
     // We need to prevent the wallet creation from being stuck waiting to

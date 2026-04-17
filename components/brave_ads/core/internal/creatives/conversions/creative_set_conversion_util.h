@@ -9,8 +9,8 @@
 #include <cstddef>
 #include <map>
 #include <string>
-#include <vector>
 
+#include "base/containers/span.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 
@@ -26,7 +26,7 @@ using CreativeSetConversionCountMap = std::map</*creative_set_id*/ std::string,
 
 CreativeSetConversionList GetMatchingCreativeSetConversions(
     const CreativeSetConversionList& creative_set_conversions,
-    const std::vector<GURL>& redirect_chain);
+    base::span<const GURL> redirect_chain);
 
 CreativeSetConversionCountMap GetCreativeSetConversionCounts(
     const AdEventList& ad_events);

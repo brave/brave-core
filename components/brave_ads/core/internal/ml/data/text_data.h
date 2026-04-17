@@ -20,7 +20,7 @@ class TextData final : public Data {
   const std::string& GetText() const;
 
  private:
-  std::string text_;
+  const std::string text_;
 };
 
 }  // namespace brave_ads::ml

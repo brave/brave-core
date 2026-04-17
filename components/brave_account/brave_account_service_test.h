@@ -44,8 +44,8 @@ struct LoginInitializeTestCase;
 struct LogOutTestCase;
 struct RegisterFinalizeTestCase;
 struct RegisterInitializeTestCase;
+struct RegisterVerifyTestCase;
 struct ResendConfirmationEmailTestCase;
-struct VerifyResultTestCase;
 
 template <typename TestCase>
 class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
@@ -63,7 +63,6 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
                             base::Unretained(this)),
         base::BindRepeating(&BraveAccountServiceTest::Decrypt,
                             base::Unretained(this))));
-    verify_result_timer_ = &brave_account_service_->verify_result_timer_;
     auth_validate_timer_ = &brave_account_service_->auth_validate_timer_;
   }
 
@@ -79,6 +78,7 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
 
     if constexpr (std::is_same_v<TestCase, RegisterInitializeTestCase> ||
                   std::is_same_v<TestCase, RegisterFinalizeTestCase> ||
+                  std::is_same_v<TestCase, RegisterVerifyTestCase> ||
                   std::is_same_v<TestCase, ResendConfirmationEmailTestCase> ||
                   std::is_same_v<TestCase, LoginInitializeTestCase> ||
                   std::is_same_v<TestCase, LoginFinalizeTestCase> ||
@@ -88,9 +88,6 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
                     CHECK_DEREF(brave_account_service_.get()),
                     future.GetCallback());
       EXPECT_EQ(future.Take(), test_case.mojo_expected);
-    } else if constexpr (std::is_same_v<TestCase, VerifyResultTestCase>) {
-      TestCase::Run(test_case, pref_service_, task_environment_,
-                    *verify_result_timer_);
     } else if constexpr (std::is_same_v<TestCase, AuthValidateTestCase>) {
       TestCase::Run(test_case, pref_service_, task_environment_,
                     *auth_validate_timer_);
@@ -128,7 +125,6 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
   TestingPrefServiceSimple pref_service_;
   network::TestURLLoaderFactory test_url_loader_factory_;
   std::unique_ptr<BraveAccountService> brave_account_service_;
-  raw_ptr<base::OneShotTimer> verify_result_timer_;
   raw_ptr<base::OneShotTimer> auth_validate_timer_;
 };
 

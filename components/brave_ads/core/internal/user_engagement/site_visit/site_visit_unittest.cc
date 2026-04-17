@@ -9,6 +9,7 @@
 #include <memory>
 #include <vector>
 
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_util.h"
@@ -32,8 +33,8 @@ class BraveAdsSiteVisitTest : public test::TestBase {
     site_visit_ = std::make_unique<SiteVisit>();
     site_visit_->AddObserver(&site_visit_observer_mock_);
 
-    NotifyBrowserDidEnterForeground();
-    NotifyBrowserDidBecomeActive();
+    ads_client_notifier_.NotifyBrowserDidEnterForeground();
+    ads_client_notifier_.NotifyBrowserDidBecomeActive();
   }
 
   void TearDown() override {
@@ -48,7 +49,7 @@ class BraveAdsSiteVisitTest : public test::TestBase {
                           int http_status_code) {
     site_visit_->set_last_clicked_ad(ad);
 
-    SimulateOpeningNewTab(tab_id, redirect_chain, http_status_code);
+    tab_helper_.OpenTab(tab_id, redirect_chain, http_status_code);
   }
 
   std::unique_ptr<SiteVisit> site_visit_;
@@ -188,9 +189,9 @@ TEST_F(BraveAdsSiteVisitTest, DoNotLandOnPageIfTheSameTabIsAlreadyLanding) {
                      /*redirect_chain=*/{GURL("https://brave.com")},
                      net::HTTP_OK);
 
-  SimulateNavigateToURL(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com/about")},
-                        net::HTTP_OK);
+  tab_helper_.NavigateToUrl(
+      /*tab_id=*/1,
+      /*redirect_chain=*/{GURL("https://brave.com/about")}, net::HTTP_OK);
   ASSERT_EQ(1U, GetPendingTaskCount());
 
   // Act & Assert
@@ -245,7 +246,7 @@ TEST_F(
               OnDidResumePageLand(
                   /*tab_id=*/1,
                   /*remaining_time=*/base::Seconds(3)));
-  SimulateSelectTab(/*tab_id=*/1);
+  tab_helper_.SelectTab(/*tab_id=*/1);
   ASSERT_EQ(1U, GetPendingTaskCount());
 
   EXPECT_CALL(site_visit_observer_mock_, OnDidLandOnPage(
@@ -260,7 +261,7 @@ TEST_F(
               OnDidResumePageLand(
                   /*tab_id=*/2,
                   /*remaining_time=*/base::Seconds(7)));
-  SimulateSelectTab(/*tab_id=*/2);
+  tab_helper_.SelectTab(/*tab_id=*/2);
   ASSERT_EQ(1U, GetPendingTaskCount());
 
   // Act & Assert
@@ -293,7 +294,7 @@ TEST_F(
               OnDidSuspendPageLand(
                   /*tab_id=*/1,
                   /*remaining_time=*/base::Seconds(3)));
-  NotifyBrowserDidEnterBackground();
+  ads_client_notifier_.NotifyBrowserDidEnterBackground();
   ASSERT_FALSE(HasPendingTasks());
 
   // Tab 1 (Entered foreground/Resume page landing)
@@ -301,7 +302,7 @@ TEST_F(
               OnDidResumePageLand(
                   /*tab_id=*/1,
                   /*remaining_time=*/base::Seconds(3)));
-  NotifyBrowserDidEnterForeground();
+  ads_client_notifier_.NotifyBrowserDidEnterForeground();
   ASSERT_EQ(1U, GetPendingTaskCount());
 
   // Act & Assert
@@ -334,7 +335,7 @@ TEST_F(
               OnDidSuspendPageLand(
                   /*tab_id=*/1,
                   /*remaining_time=*/base::Seconds(3)));
-  NotifyBrowserDidResignActive();
+  ads_client_notifier_.NotifyBrowserDidResignActive();
   ASSERT_FALSE(HasPendingTasks());
 
   // Tab 1 (Become active/Resume page landing)
@@ -342,7 +343,7 @@ TEST_F(
               OnDidResumePageLand(
                   /*tab_id=*/1,
                   /*remaining_time=*/base::Seconds(3)));
-  NotifyBrowserDidBecomeActive();
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
   ASSERT_EQ(1U, GetPendingTaskCount());
 
   // Act & Assert
@@ -371,12 +372,12 @@ TEST_F(BraveAdsSiteVisitTest, DoNotSuspendOrResumePageLand) {
   AdvanceClockBy(kPageLandAfter.Get() - base::Seconds(3));
 
   EXPECT_CALL(site_visit_observer_mock_, OnDidSuspendPageLand).Times(0);
-  NotifyBrowserDidResignActive();
+  ads_client_notifier_.NotifyBrowserDidResignActive();
   ASSERT_TRUE(HasPendingTasks());
 
   // Tab (Become active/Resume page landing)
   EXPECT_CALL(site_visit_observer_mock_, OnDidResumePageLand).Times(0);
-  NotifyBrowserDidBecomeActive();
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
   ASSERT_EQ(1U, GetPendingTaskCount());
 
   // Act & Assert
@@ -442,7 +443,7 @@ TEST_F(BraveAdsSiteVisitTest,
   // Tab 1 (Visible/Resume page landing)
   EXPECT_CALL(site_visit_observer_mock_,
               OnDidResumePageLand(/*tab_id=*/1, kPageLandAfter.Get()));
-  SimulateSelectTab(/*tab_id=*/1);
+  tab_helper_.SelectTab(/*tab_id=*/1);
   ASSERT_EQ(1U, GetPendingTaskCount());
 
   EXPECT_CALL(site_visit_observer_mock_, OnDidLandOnPage(
@@ -453,7 +454,7 @@ TEST_F(BraveAdsSiteVisitTest,
   EXPECT_CALL(site_visit_observer_mock_,
               OnDidResumePageLand(
                   /*tab_id=*/2, kPageLandAfter.Get()));
-  SimulateSelectTab(/*tab_id=*/2);
+  tab_helper_.SelectTab(/*tab_id=*/2);
   ASSERT_EQ(1U, GetPendingTaskCount());
 
   // Act & Assert
@@ -497,13 +498,17 @@ TEST_F(
               OnMaybeLandOnPage(ad, /*after=*/kPageLandAfter.Get()))
       .Times(0);
 
-  // Act & Assert
+  // Act
+  bool did_land_on_page = false;
   EXPECT_CALL(site_visit_observer_mock_,
-              OnDidLandOnPage(
-                  /*tab_id=*/1, net::HTTP_BAD_REQUEST, ad));
+              OnDidLandOnPage(/*tab_id=*/1, net::HTTP_BAD_REQUEST, ad))
+      .WillOnce([&] { did_land_on_page = true; });
   SimulateClickingAd(ad, /*tab_id=*/1,
                      /*redirect_chain=*/{GURL("https://brave.com")},
                      net::HTTP_BAD_REQUEST);
+
+  // Assert
+  ASSERT_TRUE(base::test::RunUntil([&] { return did_land_on_page; }));
 }
 
 TEST_F(
@@ -518,13 +523,18 @@ TEST_F(
               OnMaybeLandOnPage(ad, /*after=*/kPageLandAfter.Get()))
       .Times(0);
 
-  // Act & Assert
+  // Act
+  bool did_land_on_page = false;
   EXPECT_CALL(site_visit_observer_mock_,
               OnDidLandOnPage(
-                  /*tab_id=*/1, net::HTTP_INTERNAL_SERVER_ERROR, ad));
+                  /*tab_id=*/1, net::HTTP_INTERNAL_SERVER_ERROR, ad))
+      .WillOnce([&] { did_land_on_page = true; });
   SimulateClickingAd(ad, /*tab_id=*/1,
                      /*redirect_chain=*/{GURL("https://brave.com")},
                      net::HTTP_INTERNAL_SERVER_ERROR);
+
+  // Assert
+  ASSERT_TRUE(base::test::RunUntil([&] { return did_land_on_page; }));
 }
 
 TEST_F(BraveAdsSiteVisitTest, DoNotLandOnPageIfTheTabIsOccluded) {
@@ -539,7 +549,7 @@ TEST_F(BraveAdsSiteVisitTest, DoNotLandOnPageIfTheTabIsOccluded) {
 
   // Act & Assert
   EXPECT_CALL(site_visit_observer_mock_, OnDidLandOnPage).Times(0);
-  NotifyTabDidChange(
+  ads_client_notifier_.NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
       /*is_new_navigation=*/false, /*is_restoring=*/false,
       /*is_visible=*/false);
@@ -577,7 +587,7 @@ TEST_F(BraveAdsSiteVisitTest,
 
   // Act & Assert
   EXPECT_CALL(site_visit_observer_mock_, OnCanceledPageLand(/*tab_id=*/1, ad));
-  SimulateNavigateToURL(
+  tab_helper_.NavigateToUrl(
       /*tab_id=*/1,
       /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
       net::HTTP_OK);
@@ -596,7 +606,7 @@ TEST_F(BraveAdsSiteVisitTest, CancelPageLandIfTheTabIsClosed) {
 
   // Act & Assert
   EXPECT_CALL(site_visit_observer_mock_, OnCanceledPageLand(/*tab_id=*/1, ad));
-  SimulateClosingTab(/*tab_id=*/1);
+  tab_helper_.CloseTab(/*tab_id=*/1);
 }
 
 TEST_F(BraveAdsSiteVisitTest,
@@ -612,9 +622,9 @@ TEST_F(BraveAdsSiteVisitTest,
   // never started and no land is recorded. This documents the ordering contract
   // that event handlers must satisfy by calling `OnWillFireAdClickedEvent`
   // synchronously before any asynchronous database write.
-  SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com")},
-                        net::HTTP_OK);
+  tab_helper_.OpenTab(
+      /*tab_id=*/1,
+      /*redirect_chain=*/{GURL("https://brave.com")}, net::HTTP_OK);
   site_visit_->set_last_clicked_ad(ad);
 
   // Act & Assert

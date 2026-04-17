@@ -19,6 +19,7 @@ namespace brave_stats {
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kStatsReportingEnabled, true);
+  registry->RegisterStringPref(kLastCheckYMD, std::string());
 }
 
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {

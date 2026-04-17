@@ -11,22 +11,12 @@ assert(enable_brave_wallet)
 
 source_set("brave_wallet") {
   sources = [
-    "asset_ratio_service_factory.cc",
-    "asset_ratio_service_factory.h",
     "blockchain_images_source.cc",
     "blockchain_images_source.h",
     "brave_wallet_context_utils.cc",
     "brave_wallet_context_utils.h",
-    "brave_wallet_ipfs_service_factory.cc",
-    "brave_wallet_ipfs_service_factory.h",
     "brave_wallet_service_factory.cc",
     "brave_wallet_service_factory.h",
-    "meld_integration_service_factory.cc",
-    "meld_integration_service_factory.h",
-    "simulation_service_factory.cc",
-    "simulation_service_factory.h",
-    "swap_service_factory.cc",
-    "swap_service_factory.h",
   ]
   if (!is_android) {
     sources += [ "wallet_notification_helper.h" ]

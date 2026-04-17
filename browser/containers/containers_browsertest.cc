@@ -3,7 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/files/file_util.h"
 #include "base/test/run_until.h"
+#include "base/threading/thread_restrictions.h"
 #include "brave/browser/containers/containers_service_factory.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
@@ -13,6 +15,7 @@
 #include "brave/components/containers/core/common/features.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/sessions/tab_restore_service_factory.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -26,6 +29,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/sessions/core/tab_restore_service.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
@@ -225,6 +229,19 @@ class ContainersBrowserTest : public InProcessBrowserTest {
 
   ContainersService* GetContainersService() {
     return ContainersServiceFactory::GetForProfile(browser()->profile());
+  }
+
+  bool IsContainersStorageDirectoryEmpty() {
+    base::ScopedAllowBlockingForTesting allow_blocking_for_testing;
+    base::FilePath storage_path =
+        browser()
+            ->profile()
+            ->GetPath()
+            .AppendASCII("Storage")
+            .AppendASCII("ext")
+            .AppendASCII(containers::kContainersStoragePartitionDomain);
+    return !base::PathExists(storage_path) ||
+           base::IsDirectoryEmpty(storage_path);
   }
 
  protected:
@@ -1589,6 +1606,80 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, MixedTabsPersistence) {
                 content::EvalJs(tab, GetLocalStorageJS("default2")));
     }
   }
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       PRE_RemovedContainerCleanupAfterRestore) {
+  const GURL url("https://a.test/simple.html");
+  std::vector<containers::mojom::ContainerPtr> synced;
+  auto container = containers::mojom::Container::New(
+      kTestContainerId, "Shopping", containers::mojom::Icon::kShopping,
+      SK_ColorBLUE);
+  synced.push_back(container.Clone());
+  SetContainersToPrefs(synced, *browser()->profile()->GetPrefs());
+
+  brave::OpenUrlInContainer(browser(), url, container);
+  content::WebContents* container_tab =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(container_tab);
+  ASSERT_TRUE(content::WaitForLoadStop(container_tab));
+  EXPECT_TRUE(
+      content::ExecJs(container_tab, SetIndexedDBJS("cleanup", "value")));
+
+  SetContainersToPrefs({}, *browser()->profile()->GetPrefs());
+
+  auto* service = ContainersServiceFactory::GetForProfile(browser()->profile());
+  ASSERT_TRUE(service);
+  auto cached_container = service->GetRuntimeContainerById(kTestContainerId);
+  ASSERT_TRUE(cached_container);
+  EXPECT_EQ(cached_container->name, "Shopping");
+  EXPECT_EQ(cached_container->icon, mojom::Icon::kShopping);
+  EXPECT_EQ(cached_container->background_color, SK_ColorBLUE);
+
+  chrome::CloseTab(browser());
+  ASSERT_EQ(1, browser()->tab_strip_model()->count());
+
+  EXPECT_TRUE(service->GetRuntimeContainerById(kTestContainerId));
+
+  auto* tab_restore_service =
+      TabRestoreServiceFactory::GetForProfile(browser()->profile());
+  ASSERT_TRUE(tab_restore_service);
+  tab_restore_service->ClearEntries();
+
+  EXPECT_FALSE(IsContainersStorageDirectoryEmpty());
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       RemovedContainerCleanupAfterRestore) {
+  const GURL url("https://a.test/simple.html");
+  auto container = containers::mojom::Container::New(
+      kTestContainerId, "Shopping", containers::mojom::Icon::kShopping,
+      SK_ColorBLUE);
+  auto* service = ContainersServiceFactory::GetForProfile(browser()->profile());
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return !service->GetRuntimeContainerById(kTestContainerId); }));
+
+  // The storage directory should be empty because the container was deleted.
+  EXPECT_TRUE(IsContainersStorageDirectoryEmpty());
+
+  brave::OpenUrlInContainer(browser(), url, container);
+  content::WebContents* reopened_tab =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(reopened_tab);
+  ASSERT_TRUE(content::WaitForLoadStop(reopened_tab));
+
+  content::EvalJsResult cookie_result =
+      content::EvalJs(reopened_tab, GetCookiesJS());
+  EXPECT_TRUE(cookie_result.ExtractString().find("cleanup") ==
+              std::string::npos);
+  EXPECT_EQ(base::Value(),
+            content::EvalJs(reopened_tab, GetLocalStorageJS("cleanup")));
+  EXPECT_EQ(base::Value(),
+            content::EvalJs(reopened_tab, GetIndexedDBJS("cleanup")));
+
+  // The storage directory should not be empty because the container was
+  // recreated.
+  EXPECT_FALSE(IsContainersStorageDirectoryEmpty());
 }
 
 // Test suite to verify behavior when containers feature is disabled after

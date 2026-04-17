@@ -44,6 +44,8 @@ static_library("ai_chat") {
     ]
   }
 
+  public_deps = [ "//brave/components/restricted_web_contents_delegate" ]
+
   deps = [
     "//brave/brave_domains",
     "//brave/browser:browser_process",

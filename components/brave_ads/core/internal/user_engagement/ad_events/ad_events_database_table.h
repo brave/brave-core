@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/containers/flat_set.h"
+#include "base/containers/span.h"
 #include "base/functional/callback.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
@@ -62,7 +63,7 @@ class AdEvents final : public TableInterface {
 
   void PurgeOrphaned(mojom::AdType mojom_ad_type,
                      ResultCallback callback) const;
-  void PurgeOrphaned(const std::vector<std::string>& placement_ids,
+  void PurgeOrphaned(base::span<const std::string> placement_ids,
                      ResultCallback callback) const;
   void PurgeAllOrphaned(ResultCallback callback) const;
 

@@ -743,7 +743,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "You've reached the maximum number of devices (10) allowed in a sync chain. Remove a device to continue.",
+          "You've reached the maximum number of devices (50) allowed in a sync chain. Remove a device to continue.",
         comment: "The message displayed in alert when the maxmium of devices is reached"
       )
     public static let joinChainWarningTitle =

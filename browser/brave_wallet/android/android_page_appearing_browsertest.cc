@@ -16,7 +16,6 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_run_loop_timeout.h"
-#include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/ui/webui/brave_wallet/android/android_wallet_page_ui.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
@@ -232,18 +231,13 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
     wallet_service_ =
         brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
             GetProfile());
-    json_rpc_service_ = wallet_service_->json_rpc_service();
-    json_rpc_service_->SetAPIRequestHelperForTesting(
+    wallet_service_->json_rpc_service()->SetAPIRequestHelperForTesting(
         url_loader_factory_.GetSafeWeakWrapper());
-    keyring_service_ = wallet_service_->keyring_service();
-    asset_ratio_service_ =
-        brave_wallet::AssetRatioServiceFactory::GetServiceForContext(
-            GetProfile());
-    asset_ratio_service_->SetAPIRequestHelperForTesting(
+    wallet_service_->asset_ratio_service()->SetAPIRequestHelperForTesting(
         url_loader_factory_.GetSafeWeakWrapper());
 
-    ASSERT_TRUE(keyring_service_->RestoreWalletSync(kMnemonicDivideCruise,
-                                                    kPasswordBrave, false));
+    ASSERT_TRUE(wallet_service_->keyring_service()->RestoreWalletSync(
+        kMnemonicDivideCruise, kPasswordBrave, false));
 
     TokenListMap token_list_map;
     ASSERT_TRUE(ParseTokenList(kTokenList, &token_list_map));
@@ -355,9 +349,6 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
   std::optional<std::string> file_digest_;
 
   std::unique_ptr<TestWebUIControllerFactory> factory_;
-  raw_ptr<brave_wallet::AssetRatioService> asset_ratio_service_;
-  raw_ptr<brave_wallet::KeyringService> keyring_service_;
-  raw_ptr<brave_wallet::JsonRpcService> json_rpc_service_;
   raw_ptr<brave_wallet::BraveWalletService> wallet_service_;
   network::TestURLLoaderFactory url_loader_factory_;
 };

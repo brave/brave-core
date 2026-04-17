@@ -14,6 +14,8 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
+#include "brave/components/brave_origin/brave_origin_utils.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_search_conversion/constants.h"
 #include "brave/components/brave_search_conversion/features.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
@@ -101,11 +103,23 @@ void UpdateDDGConversionType(PrefService* prefs) {
   }
 }
 
+bool ShouldSuppressForBraveOrigin() {
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  return true;
+#else
+  return brave_origin::IsBraveOriginPurchased();
+#endif
+}
+
 }  // namespace
 
 bool IsNTPPromotionEnabled(PrefService* prefs, TemplateURLService* service) {
   DCHECK(prefs);
   DCHECK(service);
+
+  if (ShouldSuppressForBraveOrigin()) {
+    return false;
+  }
 
   if (prefs->GetBoolean(prefs::kDismissed)) {
     return false;
@@ -131,6 +145,10 @@ ConversionType GetConversionType(PrefService* prefs,
                                  TemplateURLService* service) {
   DCHECK(prefs);
   DCHECK(service);
+
+  if (ShouldSuppressForBraveOrigin()) {
+    return ConversionType::kNone;
+  }
 
   if (prefs->GetBoolean(prefs::kDismissed)) {
     return ConversionType::kNone;

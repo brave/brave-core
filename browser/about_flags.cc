@@ -15,6 +15,7 @@
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_education/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/brave_origin/features.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -183,18 +184,6 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
           "white background",                                              \
           kOsWin,                                                          \
           FEATURE_VALUE_TYPE(::features::kBraveWorkaroundNewWindowFlash),  \
-      }))
-
-#define BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                               \
-  IF_BUILDFLAG(                                                            \
-      ENABLE_GEMINI_WALLET,                                                \
-      EXPAND_FEATURE_ENTRIES({                                             \
-          "brave-rewards-gemini",                                          \
-          "Enable Gemini for Brave Rewards",                               \
-          "Enables support for Gemini as an external wallet provider for " \
-          "Brave",                                                         \
-          kOsDesktop,                                                      \
-          FEATURE_VALUE_TYPE(brave_rewards::features::kGeminiFeature),     \
       }))
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -1319,7 +1308,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
       })                                                                       \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_NEWS_FEATURE_ENTRIES                                                   \
-  BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                                         \
   SPEEDREADER_FEATURE_ENTRIES                                                  \
   REQUEST_OTR_FEATURE_ENTRIES                                                  \
   BRAVE_MODULE_FILENAME_PATCH                                                  \
@@ -1350,6 +1338,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_UPDATER_FEATURE_ENTRIES                                                \
   PSST_FEATURE_ENTRIES                                                         \
   BRAVE_FORCE_POPUP_TO_BE_OPENED_IN_NEW_TAB_FEATURE_ENTRY                      \
+  EXPAND_FEATURE_ENTRIES({                                                     \
+      "brave-origin",                                                          \
+      "Enable Brave Origin",                                                   \
+      "Enables Brave Origin features and settings.",                           \
+      kOsDesktop | kOsAndroid,                                                 \
+      FEATURE_VALUE_TYPE(brave_origin::features::kBraveOrigin),                \
+  })                                                                           \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 namespace flags_ui {
 namespace {

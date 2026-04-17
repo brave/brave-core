@@ -11,6 +11,8 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/span.h"
+
 namespace brave_ads::crypto {
 
 struct KeyPairInfo;
@@ -18,7 +20,7 @@ struct KeyPairInfo;
 std::vector<uint8_t> Sha256(const std::string& value);
 
 std::optional<KeyPairInfo> GenerateSignKeyPairFromSeed(
-    const std::vector<uint8_t>& seed);
+    base::span<const uint8_t> seed);
 KeyPairInfo GenerateBoxKeyPair();
 
 std::vector<uint8_t> GenerateRandomNonce();
@@ -31,15 +33,15 @@ std::optional<std::string> Sign(const std::string& message,
 
 // `crypto_box` always succeeds, so there is no failure mode on the encrypt
 // path; unlike `MaybeDecrypt`, this never returns an error.
-std::vector<uint8_t> Encrypt(const std::vector<uint8_t>& plaintext,
-                             const std::vector<uint8_t>& nonce,
-                             const std::vector<uint8_t>& public_key,
-                             const std::vector<uint8_t>& secret_key);
+std::vector<uint8_t> Encrypt(base::span<const uint8_t> plaintext,
+                             base::span<const uint8_t> nonce,
+                             base::span<const uint8_t> public_key,
+                             base::span<const uint8_t> secret_key);
 [[nodiscard]] std::optional<std::vector<uint8_t>> MaybeDecrypt(
-    const std::vector<uint8_t>& ciphertext,
-    const std::vector<uint8_t>& nonce,
-    const std::vector<uint8_t>& public_key,
-    const std::vector<uint8_t>& secret_key);
+    base::span<const uint8_t> ciphertext,
+    base::span<const uint8_t> nonce,
+    base::span<const uint8_t> public_key,
+    base::span<const uint8_t> secret_key);
 
 }  // namespace brave_ads::crypto
 

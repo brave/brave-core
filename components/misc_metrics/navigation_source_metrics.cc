@@ -94,6 +94,8 @@ void NavigationSourceMetrics::ReportAllMetrics() {
       local_state_->GetDict(kMiscMetricsNavSourceCounts);
   int total = counts.FindInt(kTotalCountKey).value_or(0);
 
+  UMA_HISTOGRAM_BOOLEAN(kNavSourceNavigatedHistogramName, total > 0);
+
   if (total > 0) {
     RecordPercentageHistogram(
         counts, total, kTopSitesFavoritesCountKey,
@@ -111,7 +113,6 @@ void NavigationSourceMetrics::ReportAllMetrics() {
                               kNavSourceExternalSourcePercentHistogramName);
     RecordPercentageHistogram(counts, total, kPwaCountKey,
                               kNavSourcePWASourcePercentHistogramName);
-    UMA_HISTOGRAM_BOOLEAN(kNavSourceNavigatedHistogramName, true);
   }
 
   ResetCounts();

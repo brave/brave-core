@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/account/transactions/test/transactions_test_util.h"
 
+#include "brave/components/brave_ads/core/internal/account/transactions/test/transaction_test_constants.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
-#include "brave/components/brave_ads/core/internal/account/transactions/transaction_test_constants.h"
-#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"

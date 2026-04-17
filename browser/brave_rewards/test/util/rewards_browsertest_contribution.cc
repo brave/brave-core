@@ -91,11 +91,11 @@ void RewardsBrowserTestContribution::TipPublisher(
         context_helper_->OpenRewardsPopup();
 
     test_util::WaitForElementToAppear(popup_contents.get(),
-                                      "[data-test-id=tip-button]");
+                                      "[data-testid=tip-button]");
 
     content::EvalJsResult js_result =
         EvalJs(popup_contents.get(),
-               "document.querySelector('[data-test-id=tip-button]').disabled",
+               "document.querySelector('[data-testid=tip-button]').disabled",
                content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                content::ISOLATED_WORLD_ID_CONTENT_END);
 
@@ -112,15 +112,15 @@ void RewardsBrowserTestContribution::TipPublisher(
   if (custom_amount > 0) {
     amount = custom_amount;
     test_util::WaitForElementThenClick(site_banner_contents.get(),
-                                       "[data-test-id=custom-tip-button]");
+                                       "[data-testid=custom-tip-button]");
 
     test_util::WaitForElementToAppear(site_banner_contents.get(),
-                                      "[data-test-id=custom-amount-input]");
+                                      "[data-testid=custom-amount-input]");
 
     constexpr char set_input_script[] = R"(
         new Promise(resolve => {
           const input =
-            document.querySelector('[data-test-id=custom-amount-input]');
+            document.querySelector('[data-testid=custom-amount-input]');
           input[Symbol.for('updateCustomAmountForTesting')](`$1`);
           setTimeout(resolve, 30);
         })
@@ -134,8 +134,7 @@ void RewardsBrowserTestContribution::TipPublisher(
 
     // Select the tip amount (default is 1.000 BAT)
     std::string amount_selector = absl::StrFormat(
-        "[data-test-id=tip-amount-options] [data-option-index='%u']",
-        selection);
+        "[data-testid=tip-amount-options] [data-option-index='%u']", selection);
 
     test_util::WaitForElementThenClick(site_banner_contents.get(),
                                        amount_selector);
@@ -143,12 +142,12 @@ void RewardsBrowserTestContribution::TipPublisher(
 
   if (set_monthly) {
     test_util::WaitForElementThenClick(site_banner_contents.get(),
-                                       "[data-test-id=monthly-toggle] button");
+                                       "[data-testid=monthly-toggle] button");
   }
 
   // Send the tip
   test_util::WaitForElementThenClick(site_banner_contents.get(),
-                                     "[data-test-id=send-button]");
+                                     "[data-testid=send-button]");
 
   // Wait for thank you banner to load
   ASSERT_TRUE(WaitForLoadStop(site_banner_contents.get()));
@@ -193,8 +192,8 @@ void RewardsBrowserTestContribution::VerifyTip(const double amount,
 
   // Check that tip table shows the appropriate tip amount
   const std::string selector = monthly
-                                   ? "[data-test-id=rewards-summary-monthly]"
-                                   : "[data-test-id=rewards-summary-one-time]";
+                                   ? "[data-testid=rewards-summary-monthly]"
+                                   : "[data-testid=rewards-summary-one-time]";
 
   test_util::WaitForElementToContain(contents(), selector,
                                      absl::StrFormat("%.2f BAT", amount));
@@ -202,7 +201,7 @@ void RewardsBrowserTestContribution::VerifyTip(const double amount,
 
 void RewardsBrowserTestContribution::IsBalanceCorrect() {
   test_util::WaitForElementToEqual(
-      contents(), "[data-test-id=rewards-balance-text]", GetStringBalance());
+      contents(), "[data-testid=rewards-balance-text]", GetStringBalance());
 }
 
 void RewardsBrowserTestContribution::AddBalance(const double balance) {

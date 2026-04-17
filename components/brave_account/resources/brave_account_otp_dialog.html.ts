@@ -15,7 +15,6 @@ export function getHtml(this: BraveAccountOtpDialogElement) {
     <brave-account-dialog
       dialog-description="$i18n{BRAVE_ACCOUNT_OTP_DIALOG_DESCRIPTION}"
       dialog-title="$i18n{BRAVE_ACCOUNT_OTP_DIALOG_TITLE}"
-      show-back-button
     >
       <div slot="inputs">
         <brave-account-otp-input
@@ -36,6 +35,7 @@ export function getHtml(this: BraveAccountOtpDialogElement) {
       </leo-button>
       <leo-button
         slot="buttons"
+        ?isDisabled=${this.isResendingConfirmationEmail}
         kind="plain"
         @click=${this.onResendEmailCodeButtonClicked}
       >

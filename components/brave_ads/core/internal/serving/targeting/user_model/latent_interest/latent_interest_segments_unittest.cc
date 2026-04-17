@@ -21,8 +21,7 @@ class BraveAdsLatentInterestSegmentsTest : public test::TestBase {
   void SetUp() override {
     test::TestBase::SetUp();
 
-    targeting_helper_ =
-        std::make_unique<test::TargetingHelper>(task_environment_);
+    targeting_helper_ = std::make_unique<test::TargetingHelper>();
   }
 
   std::unique_ptr<test::TargetingHelper> targeting_helper_;
@@ -30,7 +29,7 @@ class BraveAdsLatentInterestSegmentsTest : public test::TestBase {
 
 TEST_F(BraveAdsLatentInterestSegmentsTest, BuildLatentInterestSegments) {
   // Arrange
-  targeting_helper_->MockLatentInterest();
+  targeting_helper_->SimulateLatentInterest();
 
   // Act & Assert
   base::MockCallback<BuildSegmentsCallback> callback;
@@ -50,7 +49,7 @@ TEST_F(BraveAdsLatentInterestSegmentsTest,
 TEST_F(BraveAdsLatentInterestSegmentsTest,
        DoNotBuildLatentInterestSegmentsIfFeatureIsDisabled) {
   // Arrange
-  targeting_helper_->MockLatentInterest();
+  targeting_helper_->SimulateLatentInterest();
 
   // Act & Assert
   base::MockCallback<BuildSegmentsCallback> callback;

@@ -1,0 +1,36 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("browser") {
+  sources = [
+    "query_filter_component_installer.cc",
+    "query_filter_component_installer.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_component_updater/browser:public",
+    "//brave/components/query_filter/common",
+    "//components/component_updater",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "query_filter_component_installer_unittest.cc" ]
+
+  deps = [
+    ":browser",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_component_updater/browser:test_support",
+    "//brave/components/query_filter/common",
+    "//components/component_updater:test_support",
+    "//components/update_client",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}

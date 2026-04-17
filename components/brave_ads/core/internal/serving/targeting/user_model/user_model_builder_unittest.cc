@@ -9,8 +9,8 @@
 
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_ads/core/internal/common/resources/country_components_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/resources/language_components_test_constants.h"
+#include "brave/components/brave_ads/core/internal/common/resources/test/country_components_test_constants.h"
+#include "brave/components/brave_ads/core/internal/common/resources/test/language_components_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
@@ -31,14 +31,13 @@ class BraveAdsUserModelBuilderTest : public test::TestBase {
                               kTextClassificationFeature},
         /*disabled_features=*/{});
 
-    targeting_helper_ =
-        std::make_unique<test::TargetingHelper>(task_environment_);
+    targeting_helper_ = std::make_unique<test::TargetingHelper>();
 
-    NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                     test::kCountryComponentId);
+    ads_client_notifier_.NotifyResourceComponentDidChange(
+        test::kCountryComponentManifestVersion, test::kCountryComponentId);
 
-    NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
-                                     test::kLanguageComponentId);
+    ads_client_notifier_.NotifyResourceComponentDidChange(
+        test::kLanguageComponentManifestVersion, test::kLanguageComponentId);
   }
 
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -48,7 +47,7 @@ class BraveAdsUserModelBuilderTest : public test::TestBase {
 
 TEST_F(BraveAdsUserModelBuilderTest, BuildUserModel) {
   // Arrange
-  targeting_helper_->Mock();
+  targeting_helper_->Simulate();
 
   // Act & Assert
   base::MockCallback<BuildUserModelCallback> callback;

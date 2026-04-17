@@ -138,6 +138,8 @@ TEST_F(UploadFileHelperTest, AcceptedFileExtensions) {
   EXPECT_TRUE(std::ranges::contains(dialog_params_.file_types->extensions[0],
                                     FILE_PATH_LITERAL("pdf")));
 #if BUILDFLAG(IS_ANDROID)
+  // Android doesn't support view-source for text file extraction, so only
+  // image and PDF MIME types are accepted.
   EXPECT_THAT(dialog_params_.accept_types,
               testing::UnorderedElementsAre(u"image/png", u"image/jpeg",
                                             u"image/webp", u"application/pdf"));

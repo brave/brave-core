@@ -141,6 +141,16 @@ if (is_android) {
   }
 
   robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.autofill") {
+    sources = [
+      "src/org/chromium/chrome/browser/autofill/BraveAutofillServiceImplUnitTest.java",
+      "src/org/chromium/chrome/browser/autofill/BraveAutofillViewStructureParserUnitTest.java",
+    ]
+
+    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+  }
+
+  robolectric_library(
       "brave_junit_tests_org.chromium.chrome.browser.custom_search_engines") {
     sources = [ "src/org/chromium/brave/browser/custom_search_engines/CustomSearchEnginesManagerTest.java" ]
 

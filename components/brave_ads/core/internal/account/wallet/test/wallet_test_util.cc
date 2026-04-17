@@ -6,8 +6,8 @@
 #include "brave/components/brave_ads/core/internal/account/wallet/test/wallet_test_util.h"
 
 #include "base/check.h"
+#include "brave/components/brave_ads/core/internal/account/wallet/test/wallet_test_constants.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
-#include "brave/components/brave_ads/core/internal/account/wallet/wallet_test_constants.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
@@ -21,7 +21,7 @@ WalletInfo Wallet() {
   return *wallet;
 }
 
-mojom::WalletInfoPtr WalletAsPtr() {
+mojom::WalletInfoPtr MojomWallet() {
   mojom::WalletInfoPtr mojom_wallet = mojom::WalletInfo::New();
   mojom_wallet->payment_id = kWalletPaymentId;
   mojom_wallet->recovery_seed_base64 = kWalletRecoverySeedBase64;

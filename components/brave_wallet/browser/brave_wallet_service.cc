@@ -17,15 +17,20 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/account_discovery_manager.h"
+#include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_ipfs_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_allowance_manager.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/meld_integration_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/simulation_service.h"
+#include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -186,7 +191,8 @@ BraveWalletService::BraveWalletService(
     std::unique_ptr<BraveWalletServiceDelegate> delegate,
     PrefService* profile_prefs,
     PrefService* local_state)
-    : delegate_(std::move(delegate)),
+    : profile_prefs_(profile_prefs),
+      delegate_(std::move(delegate)),
       network_manager_(std::make_unique<NetworkManager>(profile_prefs)),
       json_rpc_service_(std::make_unique<JsonRpcService>(url_loader_factory,
                                                          network_manager_.get(),
@@ -195,11 +201,18 @@ BraveWalletService::BraveWalletService(
       keyring_service_(std::make_unique<KeyringService>(json_rpc_service_.get(),
                                                         profile_prefs,
                                                         local_state)),
-      profile_prefs_(profile_prefs),
       eth_allowance_manager_(
           std::make_unique<EthAllowanceManager>(json_rpc_service_.get(),
                                                 keyring_service_.get(),
                                                 profile_prefs)),
+      asset_ratio_service_(
+          std::make_unique<AssetRatioService>(url_loader_factory)),
+      swap_service_(std::make_unique<SwapService>(url_loader_factory)),
+      meld_integration_service_(
+          std::make_unique<MeldIntegrationService>(url_loader_factory)),
+      simulation_service_(
+          std::make_unique<SimulationService>(url_loader_factory, this)),
+      ipfs_service_(std::make_unique<BraveWalletIpfsService>(profile_prefs)),
       weak_ptr_factory_(this) {
   CHECK(delegate_);
 
@@ -397,6 +410,36 @@ template <>
 void BraveWalletService::Bind(
     mojo::PendingReceiver<mojom::BraveWalletP3A> receiver) {
   GetBraveWalletP3A()->Bind(std::move(receiver));
+}
+
+template <>
+void BraveWalletService::Bind(
+    mojo::PendingReceiver<mojom::AssetRatioService> receiver) {
+  asset_ratio_service()->Bind(std::move(receiver));
+}
+
+template <>
+void BraveWalletService::Bind(
+    mojo::PendingReceiver<mojom::SwapService> receiver) {
+  swap_service()->Bind(std::move(receiver));
+}
+
+template <>
+void BraveWalletService::Bind(
+    mojo::PendingReceiver<mojom::MeldIntegrationService> receiver) {
+  meld_integration_service()->Bind(std::move(receiver));
+}
+
+template <>
+void BraveWalletService::Bind(
+    mojo::PendingReceiver<mojom::SimulationService> receiver) {
+  simulation_service()->Bind(std::move(receiver));
+}
+
+template <>
+void BraveWalletService::Bind(
+    mojo::PendingReceiver<mojom::IpfsService> receiver) {
+  ipfs_service()->Bind(std::move(receiver));
 }
 
 void BraveWalletService::GetUserAssets(const std::string& chain_id,
@@ -1867,6 +1910,18 @@ void BraveWalletService::GenerateReceiveAddress(
       }
     }
     std::move(callback).Run("", WalletInternalErrorMessage());
+    return;
+  }
+
+  if (account_id->coin == mojom::CoinType::DOT) {
+    if (!polkadot_wallet_service_) {
+      std::move(callback).Run("", WalletInternalErrorMessage());
+      return;
+    }
+
+    const auto chain_id = GetNetworkForPolkadotKeyring(account_id->keyring_id);
+    polkadot_wallet_service_->GetAddress(std::move(account_id), chain_id,
+                                         std::move(callback));
     return;
   }
 

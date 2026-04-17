@@ -50,7 +50,7 @@ export class SettingsBraveAccountRowElement extends I18nMixinLit(CrLitElement) {
   protected accessor state: AccountState | undefined = undefined
 
   private browserProxy: BraveAccountBrowserProxy =
-    BraveAccountBrowserProxyImpl.getInstance()
+    new BraveAccountBrowserProxyImpl()
   private isResendingConfirmationEmail = false
   private measure?: (text: string) => number
   private resizeObserver?: ResizeObserver
@@ -130,7 +130,7 @@ export class SettingsBraveAccountRowElement extends I18nMixinLit(CrLitElement) {
     this.browserProxy.authentication.cancelRegistration()
   }
 
-  protected onGetStartedButtonClicked() {
+  protected openBraveAccountDialog() {
     this.browserProxy.rowHandler.openDialog(this.initiatingServiceName)
   }
 
@@ -181,20 +181,28 @@ export class SettingsBraveAccountRowElement extends I18nMixinLit(CrLitElement) {
               BraveAccountSettingsStrings
                   .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_TITLE),
           [
-            this.i18n(
-                BraveAccountSettingsStrings
-                    .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_1),
             html`<localized-link
-                .localizedString=${this.i18nAdvanced(
-                    BraveAccountSettingsStrings
-                        .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2,
-                    {tags: ['a'], attrs: ['href']})}
+                .localizedString=${`${
+                  this.i18n(BraveAccountSettingsStrings
+                    .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_1)} ${
+                  this.i18n(BraveAccountSettingsStrings
+                    .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2)} ${
+                  this.i18nAdvanced(BraveAccountSettingsStrings
+                    .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_3,
+                    {tags: ['a'], attrs: ['href']})}`}
                 @link-clicked=${this.onResendConfirmationEmailLinkClicked}>
             </localized-link>`
           ]
         )}
         <div class="second-row">
-          <leo-button kind="plain-faint"
+          <leo-button kind="plain"
+                      size="small"
+                      @click=${this.openBraveAccountDialog}>
+            ${this.i18n(
+                  BraveAccountSettingsStrings
+                       .SETTINGS_BRAVE_ACCOUNT_ENTER_REGISTRATION_CODE_BUTTON_LABEL)}
+          </leo-button>
+          <leo-button kind="plain"
                       size="small"
                       class="cancel-registration-button"
                       @click=${this.onCancelRegistrationButtonClicked}>
@@ -214,7 +222,7 @@ export class SettingsBraveAccountRowElement extends I18nMixinLit(CrLitElement) {
         html`
           <leo-button kind="filled"
                       size="small"
-                      @click=${this.onGetStartedButtonClicked}>
+                      @click=${this.openBraveAccountDialog}>
             ${this.i18n(
                   BraveAccountSettingsStrings
                        .SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL)}

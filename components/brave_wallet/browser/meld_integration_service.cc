@@ -328,13 +328,6 @@ MeldIntegrationService::MeldIntegrationService(
 
 MeldIntegrationService::~MeldIntegrationService() = default;
 
-mojo::PendingRemote<mojom::MeldIntegrationService>
-MeldIntegrationService::MakeRemote() {
-  mojo::PendingRemote<mojom::MeldIntegrationService> remote;
-  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
-  return remote;
-}
-
 void MeldIntegrationService::Bind(
     mojo::PendingReceiver<mojom::MeldIntegrationService> receiver) {
   receivers_.Add(this, std::move(receiver));

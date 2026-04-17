@@ -30,18 +30,13 @@ export function getHtml(this: BraveAccountDialogElement) {
           </leo-button>
         </if>
       </div>
-      <div
-        class="logo"
-        @dblclick=${() => this.fire('logo-double-clicked')}
-      ></div>
+      <div class="logo"></div>
     </div>
     <div class="body">
       <div class="title-and-description">
         <div class="title">${this.dialogTitle}</div>
         <div class="description">${this.dialogDescription}</div>
-        ${this.alertMessage.length !== 0
-          ? html`<leo-alert>${this.alertMessage}</leo-alert>`
-          : nothing}
+        <slot name="alert"></slot>
       </div>
       <slot name="inputs"></slot>
       <div class="action-buttons">

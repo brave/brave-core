@@ -12,7 +12,7 @@ import { spawnSync, type SpawnSyncReturns } from 'node:child_process'
 // eslint-disable-next-line import/default
 import prettier from 'prettier'
 
-import config from '../lib/config.js'
+import config from '../lib/config.ts'
 import util from '../lib/util.js'
 import * as Log from '../lib/log.ts'
 

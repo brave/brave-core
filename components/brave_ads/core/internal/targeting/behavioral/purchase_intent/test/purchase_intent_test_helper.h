@@ -21,7 +21,7 @@ class PurchaseIntentHelper final {
 
   ~PurchaseIntentHelper();
 
-  void Mock();
+  void Simulate();
 
   static SegmentList Expectation();
 

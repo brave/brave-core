@@ -11,7 +11,6 @@ public class BraveWalletProvider {
     // Wallet types
     public static final String UPHOLD = "uphold";
     public static final String BITFLYER = "bitflyer";
-    public static final String GEMINI = "gemini";
     public static final String ZEBPAY = "zebpay";
     public static final String SOLANA = "solana";
 }

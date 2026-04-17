@@ -219,8 +219,12 @@ struct CreateWalletView: View {
         EmptyView()
       }
     )
-    .onChange(of: password, perform: handleInputChange)
-    .onChange(of: repeatedPassword, perform: handleInputChange)
+    .onChange(of: password) { _, newValue in
+      handleInputChange(newValue)
+    }
+    .onChange(of: repeatedPassword) { _, newValue in
+      handleInputChange(newValue)
+    }
     .navigationBarBackButtonHidden(isShowingCreatingWallet)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .overlay {

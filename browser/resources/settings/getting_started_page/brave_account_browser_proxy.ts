@@ -24,7 +24,7 @@ export class BraveAccountBrowserProxyImpl implements BraveAccountBrowserProxy {
   authenticationObserverCallbackRouter: AuthenticationObserverCallbackRouter
   rowHandler: RowHandlerRemote;
 
-  private constructor() {
+  constructor() {
     this.authentication = Authentication.getRemote()
     this.authenticationObserverCallbackRouter =
       new AuthenticationObserverCallbackRouter()
@@ -33,10 +33,4 @@ export class BraveAccountBrowserProxyImpl implements BraveAccountBrowserProxy {
     this.authentication.addObserver(
       this.authenticationObserverCallbackRouter.$.bindNewPipeAndPassRemote());
   }
-
-  static getInstance(): BraveAccountBrowserProxy {
-    return instance || (instance = new BraveAccountBrowserProxyImpl())
-  }
 }
-
-let instance: BraveAccountBrowserProxy | null = null
