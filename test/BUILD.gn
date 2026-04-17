@@ -1381,6 +1381,7 @@ test("brave_browser_tests") {
       "//brave/components/vector_icons",
       "//chrome:packed_resources",
       "//chrome/browser/apps/app_service",
+      "//chrome/browser/password_manager",
       "//chrome/browser/themes",
       "//chrome/browser/ui/webui/side_panel/bookmarks:mojo_bindings",
       "//components/autofill/content/browser",
