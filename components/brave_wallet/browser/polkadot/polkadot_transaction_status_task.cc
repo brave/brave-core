@@ -25,7 +25,28 @@ std::optional<size_t> Position(R&& r, const T& val) {
   return std::nullopt;
 }
 
+std::unique_ptr<PolkadotTransactionStatusTask>
+PolkadotTransactionStatusTask::Create(
+    PolkadotWalletService& polkadot_wallet_service,
+    KeyringService& keyring_service,
+    mojom::AccountIdPtr sender_account_id,
+    std::string chain_id,
+    std::vector<uint8_t> extrinsic,
+    uint32_t block_num,
+    uint32_t mortality_period) {
+  static constexpr uint32_t kMaxMortalityPeriod = 1024;
+  if (mortality_period > kMaxMortalityPeriod) {
+    return nullptr;
+  }
+
+  return std::make_unique<PolkadotTransactionStatusTask>(
+      PassKey{}, polkadot_wallet_service, keyring_service,
+      std::move(sender_account_id), std::move(chain_id), std::move(extrinsic),
+      block_num, mortality_period);
+}
+
 PolkadotTransactionStatusTask::PolkadotTransactionStatusTask(
+    PassKey,
     PolkadotWalletService& polkadot_wallet_service,
     KeyringService& keyring_service,
     mojom::AccountIdPtr sender_account_id,
@@ -60,6 +81,12 @@ void PolkadotTransactionStatusTask::HandleError(std::string err_str) {
 
 void PolkadotTransactionStatusTask::Start(
     GetTransactionStatusCallback callback) {
+  if (initiated_) {
+    return std::move(callback).Run(
+        base::unexpected(WalletInternalErrorMessage()));
+  }
+
+  initiated_ = true;
   callback_ = std::move(callback);
 
   polkadot_wallet_service_->GetChainMetadata(

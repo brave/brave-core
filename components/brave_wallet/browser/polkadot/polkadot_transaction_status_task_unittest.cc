@@ -117,10 +117,11 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, FindExtrinsicSucceeds) {
   const uint32_t block_num = 30277982;
   const uint32_t mortality_period = 64;
 
-  PolkadotTransactionStatusTask task(
+  auto task = PolkadotTransactionStatusTask::Create(
       *polkadot_wallet_service, *keyring_service_,
       polkadot_testnet_account_->account_id->Clone(), mojom::kPolkadotTestnet,
       std::move(extrinsic), block_num, mortality_period);
+  ASSERT_TRUE(task);
 
   base::test::TestFuture<base::expected<
       std::pair<PolkadotTransactionStatus, uint128_t>, std::string>>
@@ -233,7 +234,7 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, FindExtrinsicSucceeds) {
   polkadot_mock_rpc->AddGetFinalizedBlockHeader();
   polkadot_mock_rpc->FinalizeSetup();
 
-  task.Start(future.GetCallback());
+  task->Start(future.GetCallback());
 
   auto result = future.Take();
   ASSERT_TRUE(result.has_value());
@@ -268,10 +269,11 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, FindExtrinsicFailed) {
   const uint32_t block_num = 30277982;
   const uint32_t mortality_period = 64;
 
-  PolkadotTransactionStatusTask task(
+  auto task = PolkadotTransactionStatusTask::Create(
       *polkadot_wallet_service, *keyring_service_,
       polkadot_testnet_account_->account_id->Clone(), mojom::kPolkadotTestnet,
       std::move(extrinsic), block_num, mortality_period);
+  ASSERT_TRUE(task);
 
   base::test::TestFuture<base::expected<
       std::pair<PolkadotTransactionStatus, uint128_t>, std::string>>
@@ -384,7 +386,7 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, FindExtrinsicFailed) {
   polkadot_mock_rpc->AddGetFinalizedBlockHeader();
   polkadot_mock_rpc->FinalizeSetup();
 
-  task.Start(future.GetCallback());
+  task->Start(future.GetCallback());
 
   auto result = future.Take();
   ASSERT_TRUE(result.has_value());
@@ -419,10 +421,11 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, InconsistentFees) {
   const uint32_t block_num = 30277982;
   const uint32_t mortality_period = 64;
 
-  PolkadotTransactionStatusTask task(
+  auto task = PolkadotTransactionStatusTask::Create(
       *polkadot_wallet_service, *keyring_service_,
       polkadot_testnet_account_->account_id->Clone(), mojom::kPolkadotTestnet,
       std::move(extrinsic), block_num, mortality_period);
+  ASSERT_TRUE(task);
 
   base::test::TestFuture<base::expected<
       std::pair<PolkadotTransactionStatus, uint128_t>, std::string>>
@@ -535,7 +538,7 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, InconsistentFees) {
   polkadot_mock_rpc->AddGetFinalizedBlockHeader();
   polkadot_mock_rpc->FinalizeSetup();
 
-  task.Start(future.GetCallback());
+  task->Start(future.GetCallback());
 
   auto result = future.Take();
   ASSERT_TRUE(result.has_value());
@@ -571,10 +574,11 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, ExtrinsicNotInMortalityWindow) {
   const uint32_t block_num = 30277982;
   const uint32_t mortality_period = 64;
 
-  PolkadotTransactionStatusTask task(
+  auto task = PolkadotTransactionStatusTask::Create(
       *polkadot_wallet_service, *keyring_service_,
       polkadot_testnet_account_->account_id->Clone(), mojom::kPolkadotTestnet,
       std::move(extrinsic), block_num, mortality_period);
+  ASSERT_TRUE(task);
 
   base::test::TestFuture<base::expected<
       std::pair<PolkadotTransactionStatus, uint128_t>, std::string>>
@@ -627,7 +631,7 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, ExtrinsicNotInMortalityWindow) {
   polkadot_mock_rpc->AddGetFinalizedBlockHeader();
   polkadot_mock_rpc->FinalizeSetup();
 
-  task.Start(future.GetCallback());
+  task->Start(future.GetCallback());
 
   auto result = future.Take();
   ASSERT_TRUE(result.has_value());
@@ -665,10 +669,11 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest,
   const uint32_t block_num = std::numeric_limits<uint32_t>::max() - num_blocks;
   const uint32_t mortality_period = 64;
 
-  PolkadotTransactionStatusTask task(
+  auto task = PolkadotTransactionStatusTask::Create(
       *polkadot_wallet_service, *keyring_service_,
       polkadot_testnet_account_->account_id->Clone(), mojom::kPolkadotTestnet,
       std::move(extrinsic), block_num, mortality_period);
+  ASSERT_TRUE(task);
 
   base::test::TestFuture<base::expected<
       std::pair<PolkadotTransactionStatus, uint128_t>, std::string>>
@@ -721,7 +726,7 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest,
   polkadot_mock_rpc->AddGetFinalizedBlockHeader();
   polkadot_mock_rpc->FinalizeSetup();
 
-  task.Start(future.GetCallback());
+  task->Start(future.GetCallback());
 
   auto result = future.Take();
   ASSERT_TRUE(result.has_value());
@@ -756,10 +761,11 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, OutpacedFinalizedHead) {
   const uint32_t block_num = 30277982;
   const uint32_t mortality_period = 64;
 
-  PolkadotTransactionStatusTask task(
+  auto task = PolkadotTransactionStatusTask::Create(
       *polkadot_wallet_service, *keyring_service_,
       polkadot_testnet_account_->account_id->Clone(), mojom::kPolkadotTestnet,
       std::move(extrinsic), block_num, mortality_period);
+  ASSERT_TRUE(task);
 
   base::test::TestFuture<base::expected<
       std::pair<PolkadotTransactionStatus, uint128_t>, std::string>>
@@ -816,7 +822,7 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, OutpacedFinalizedHead) {
   polkadot_mock_rpc->AddGetFinalizedBlockHeader();
   polkadot_mock_rpc->FinalizeSetup();
 
-  task.Start(future.GetCallback());
+  task->Start(future.GetCallback());
 
   auto result = future.Take();
   ASSERT_TRUE(result.has_value());
@@ -852,16 +858,17 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, NetworkFailure_NoChainMetadata) {
   const uint32_t block_num = 30277982;
   const uint32_t mortality_period = 64;
 
-  PolkadotTransactionStatusTask task(
+  auto task = PolkadotTransactionStatusTask::Create(
       *polkadot_wallet_service, *keyring_service_,
       polkadot_testnet_account_->account_id->Clone(), mojom::kPolkadotTestnet,
       std::move(extrinsic), block_num, mortality_period);
+  ASSERT_TRUE(task);
 
   base::test::TestFuture<base::expected<
       std::pair<PolkadotTransactionStatus, uint128_t>, std::string>>
       future;
 
-  task.Start(future.GetCallback());
+  task->Start(future.GetCallback());
 
   auto result = future.Take();
   ASSERT_FALSE(result.has_value());
@@ -897,16 +904,17 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest,
   const uint32_t block_num = 30277982;
   const uint32_t mortality_period = 64;
 
-  PolkadotTransactionStatusTask task(
+  auto task = PolkadotTransactionStatusTask::Create(
       *polkadot_wallet_service, *keyring_service_,
       polkadot_testnet_account_->account_id->Clone(), mojom::kPolkadotTestnet,
       std::move(extrinsic), block_num, mortality_period);
+  ASSERT_TRUE(task);
 
   base::test::TestFuture<base::expected<
       std::pair<PolkadotTransactionStatus, uint128_t>, std::string>>
       future;
 
-  task.Start(future.GetCallback());
+  task->Start(future.GetCallback());
 
   auto result = future.Take();
   ASSERT_FALSE(result.has_value());
@@ -950,16 +958,17 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest,
   const uint32_t block_num = 30277982;
   const uint32_t mortality_period = 64;
 
-  PolkadotTransactionStatusTask task(
+  auto task = PolkadotTransactionStatusTask::Create(
       *polkadot_wallet_service, *keyring_service_,
       polkadot_testnet_account_->account_id->Clone(), mojom::kPolkadotTestnet,
       std::move(extrinsic), block_num, mortality_period);
+  ASSERT_TRUE(task);
 
   base::test::TestFuture<base::expected<
       std::pair<PolkadotTransactionStatus, uint128_t>, std::string>>
       future;
 
-  task.Start(future.GetCallback());
+  task->Start(future.GetCallback());
 
   auto result = future.Take();
   ASSERT_FALSE(result.has_value());
@@ -1038,16 +1047,17 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, NetworkFailure_NoBlockHash) {
   const uint32_t block_num = 30277982;
   const uint32_t mortality_period = 64;
 
-  PolkadotTransactionStatusTask task(
+  auto task = PolkadotTransactionStatusTask::Create(
       *polkadot_wallet_service, *keyring_service_,
       polkadot_testnet_account_->account_id->Clone(), mojom::kPolkadotTestnet,
       std::move(extrinsic), block_num, mortality_period);
+  ASSERT_TRUE(task);
 
   base::test::TestFuture<base::expected<
       std::pair<PolkadotTransactionStatus, uint128_t>, std::string>>
       future;
 
-  task.Start(future.GetCallback());
+  task->Start(future.GetCallback());
 
   auto result = future.Take();
   ASSERT_FALSE(result.has_value());
@@ -1133,16 +1143,17 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, NetworkFailure_NoBlock) {
   const uint32_t block_num = 30277982;
   const uint32_t mortality_period = 64;
 
-  PolkadotTransactionStatusTask task(
+  auto task = PolkadotTransactionStatusTask::Create(
       *polkadot_wallet_service, *keyring_service_,
       polkadot_testnet_account_->account_id->Clone(), mojom::kPolkadotTestnet,
       std::move(extrinsic), block_num, mortality_period);
+  ASSERT_TRUE(task);
 
   base::test::TestFuture<base::expected<
       std::pair<PolkadotTransactionStatus, uint128_t>, std::string>>
       future;
 
-  task.Start(future.GetCallback());
+  task->Start(future.GetCallback());
 
   auto result = future.Take();
   ASSERT_FALSE(result.has_value());
@@ -1174,10 +1185,11 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, NetworkFailure_NoEvents) {
   const uint32_t block_num = 30277982;
   const uint32_t mortality_period = 64;
 
-  PolkadotTransactionStatusTask task(
+  auto task = PolkadotTransactionStatusTask::Create(
       *polkadot_wallet_service, *keyring_service_,
       polkadot_testnet_account_->account_id->Clone(), mojom::kPolkadotTestnet,
       std::move(extrinsic), block_num, mortality_period);
+  ASSERT_TRUE(task);
 
   base::test::TestFuture<base::expected<
       std::pair<PolkadotTransactionStatus, uint128_t>, std::string>>
@@ -1290,11 +1302,90 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, NetworkFailure_NoEvents) {
   polkadot_mock_rpc->AddGetFinalizedBlockHeader();
   polkadot_mock_rpc->FinalizeSetup();
 
-  task.Start(future.GetCallback());
+  task->Start(future.GetCallback());
 
   auto result = future.Take();
   ASSERT_FALSE(result.has_value());
   EXPECT_EQ(result.error(), WalletParsingErrorMessage());
+}
+
+TEST_F(PolkadotTransactionStatusTaskUnitTest, ConcurrentStartRejected) {
+  // Test that users get an error if they attempt to call Start() twice on the
+  // same task.
+
+  auto polkadot_mock_rpc = std::make_unique<PolkadotMockRpc>(
+      &url_loader_factory_, network_manager_.get());
+
+  auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
+      *keyring_service_, *network_manager_,
+      url_loader_factory_.GetSafeWeakWrapper());
+
+  UnlockWallet();
+
+  // This extrinsic lives here at block:
+  // https://westend.subscan.io/block/30277984
+  const char extrinsic_hex[] =
+      R"(3d02840052707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477c015c06ae85d9b151a09c12627b580a3fb991c92662c5cc7feeca73833868f83756c7489aaacd6e11e2f3d7f15b34e44c3bca39282a70b848d9a674e600cd11c78bc5018c00000400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48a29a5100)";
+
+  std::vector<uint8_t> extrinsic;
+  ASSERT_TRUE(base::HexStringToBytes(extrinsic_hex, &extrinsic));
+
+  // To test our block walking routines, we deliberately choose a block before
+  // the one where our extrinsic actually lives.
+  const uint32_t num_blocks = 13;
+  const uint32_t block_num = std::numeric_limits<uint32_t>::max() - num_blocks;
+  const uint32_t mortality_period = 64;
+
+  auto task = PolkadotTransactionStatusTask::Create(
+      *polkadot_wallet_service, *keyring_service_,
+      polkadot_testnet_account_->account_id->Clone(), mojom::kPolkadotTestnet,
+      std::move(extrinsic), block_num, mortality_period);
+  ASSERT_TRUE(task);
+
+  base::test::TestFuture<base::expected<
+      std::pair<PolkadotTransactionStatus, uint128_t>, std::string>>
+      future1, future2;
+
+  task->Start(future1.GetCallback());
+  task->Start(future2.GetCallback());
+
+  auto result = future2.Take();
+  ASSERT_FALSE(result.has_value());
+  EXPECT_EQ(result.error(), WalletInternalErrorMessage());
+}
+
+TEST_F(PolkadotTransactionStatusTaskUnitTest, RejectLargeMortality) {
+  // Test that we don't create a task if the provided mortality period exceeds
+  // something reasonable.
+
+  auto polkadot_mock_rpc = std::make_unique<PolkadotMockRpc>(
+      &url_loader_factory_, network_manager_.get());
+
+  auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
+      *keyring_service_, *network_manager_,
+      url_loader_factory_.GetSafeWeakWrapper());
+
+  UnlockWallet();
+
+  // This extrinsic lives here at block:
+  // https://westend.subscan.io/block/30277984
+  const char extrinsic_hex[] =
+      R"(3d02840052707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477c015c06ae85d9b151a09c12627b580a3fb991c92662c5cc7feeca73833868f83756c7489aaacd6e11e2f3d7f15b34e44c3bca39282a70b848d9a674e600cd11c78bc5018c00000400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48a29a5100)";
+
+  std::vector<uint8_t> extrinsic;
+  ASSERT_TRUE(base::HexStringToBytes(extrinsic_hex, &extrinsic));
+
+  // To test our block walking routines, we deliberately choose a block before
+  // the one where our extrinsic actually lives.
+  const uint32_t num_blocks = 13;
+  const uint32_t block_num = std::numeric_limits<uint32_t>::max() - num_blocks;
+  const uint32_t mortality_period = 2 * 1024;
+
+  auto task = PolkadotTransactionStatusTask::Create(
+      *polkadot_wallet_service, *keyring_service_,
+      polkadot_testnet_account_->account_id->Clone(), mojom::kPolkadotTestnet,
+      std::move(extrinsic), block_num, mortality_period);
+  ASSERT_FALSE(task);
 }
 
 }  // namespace brave_wallet

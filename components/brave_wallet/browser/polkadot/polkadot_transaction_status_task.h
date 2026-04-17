@@ -8,6 +8,7 @@
 
 #include "base/functional/callback.h"
 #include "base/types/expected.h"
+#include "base/types/pass_key.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_block_header.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_chain_metadata.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
@@ -41,17 +42,32 @@ enum class PolkadotTransactionStatus {
 // Only finalized blocks are considered.
 class PolkadotTransactionStatusTask {
  public:
+  using PassKey = base::PassKey<PolkadotTransactionStatusTask>;
+
   using GetTransactionStatusCallback = base::OnceCallback<void(
       base::expected<std::pair<PolkadotTransactionStatus, uint128_t>,
                      std::string>)>;
 
-  PolkadotTransactionStatusTask(PolkadotWalletService& polkadot_wallet_service,
+  // Fails to create the task if the mortality period is unreasonably large,
+  // currently 1024 blocks.
+  static std::unique_ptr<PolkadotTransactionStatusTask> Create(
+      PolkadotWalletService& polkadot_wallet_service,
+      KeyringService& keyring_service,
+      mojom::AccountIdPtr sender_account_id,
+      std::string chain_id,
+      std::vector<uint8_t> extrinsic,
+      uint32_t block_num,
+      uint32_t mortality_period);
+
+  PolkadotTransactionStatusTask(PassKey,
+                                PolkadotWalletService& polkadot_wallet_service,
                                 KeyringService& keyring_service,
                                 mojom::AccountIdPtr sender_account_id,
                                 std::string chain_id,
                                 std::vector<uint8_t> extrinsic,
                                 uint32_t block_num,
                                 uint32_t mortality_period);
+
   ~PolkadotTransactionStatusTask();
 
   void Start(GetTransactionStatusCallback callback);
@@ -98,6 +114,8 @@ class PolkadotTransactionStatusTask {
 
   std::optional<size_t> extrinsic_idx_;
   GetTransactionStatusCallback callback_;
+
+  bool initiated_ = false;
 
   base::WeakPtrFactory<PolkadotTransactionStatusTask> weak_ptr_factory_{this};
 };
