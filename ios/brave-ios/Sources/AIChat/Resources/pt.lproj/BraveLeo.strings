@@ -152,7 +152,7 @@
 "aichat.customModelFormRequiredFieldIndicator" = "Obrigatório";
 
 /* The button title for saving a custom model */
-"aichat.customModelFormSaveButtonTitle" = "Guardar";
+"aichat.customModelFormSaveButtonTitle" = "Salvar";
 
 /* The footer text explaining what the server endpoint is and providing an example URL for Ollama */
 "aichat.customModelFormServerEndpointFieldFooter" = "O URL onde o seu framework de serviço está a aguardar solicitações. Se não tiver a certeza, consulte a documentação do framework de serviço. Por exemplo, para Ollama, é sempre `http://localhost:11434/v1/chat/completions`. O Brave não encaminha estes pedidos, consulte os termos de privacidade do fornecedor escolhido.";
