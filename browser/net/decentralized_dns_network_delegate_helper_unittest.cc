@@ -8,11 +8,8 @@
 #include <memory>
 
 #include "base/functional/callback_helpers.h"
-#include "base/memory/scoped_refptr.h"
-#include "base/run_loop.h"
-#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
-#include "base/values.h"
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/net/features.h"
 #include "brave/browser/net/url_context.h"
@@ -31,6 +28,7 @@
 #include "brave/components/decentralized_dns/core/utils.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/testing_pref_service.h"
@@ -78,32 +76,25 @@ class DecentralizedDnsNetworkDelegateHelperTest : public testing::Test {
     return test_url_loader_factory_;
   }
 
+  void SetupProfileWithWalletDisabledByPolicy(bool disabled) {
+    TestingProfile::Builder builder;
+    auto prefs =
+        std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
+    RegisterUserProfilePrefs(prefs->registry());
+    prefs->SetManagedPref(brave_wallet::kBraveWalletDisabledByPolicy,
+                          base::Value(disabled));
+    builder.SetPrefService(std::move(prefs));
+    profile_ = builder.Build();
+  }
+
   void SetUp() override {
     profile_ = std::make_unique<TestingProfile>();
 
-    // BraveWalletService is nullptr in tests by default, so we have to create
-    // it manually.
-    DCHECK(g_browser_process->local_state());
-    brave_wallet::BraveWalletServiceFactory::GetInstance()->SetTestingFactory(
-        browser_context(),
-        base::BindLambdaForTesting([&](content::BrowserContext* context)
-                                       -> std::unique_ptr<KeyedService> {
-          return std::make_unique<brave_wallet::BraveWalletService>(
-              test_url_loader_factory_.GetSafeWeakWrapper(),
-              brave_wallet::BraveWalletServiceDelegate::Create(context),
-              user_prefs::UserPrefs::Get(context),
-              g_browser_process->local_state());
-        }));
-
-    shared_url_loader_factory_ =
-        base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-            &test_url_loader_factory_);
-    json_rpc_service_ =
-        brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
-            browser_context())
-            ->json_rpc_service();
-    json_rpc_service_->SetAPIRequestHelperForTesting(
-        shared_url_loader_factory_);
+    brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+        browser_context())
+        ->json_rpc_service()
+        ->SetAPIRequestHelperForTesting(
+            test_url_loader_factory().GetSafeWeakWrapper());
 
     // Enable feature flag if using WeakPtrStrategy, disable if
     // SharedPtrStrategy
@@ -112,11 +103,6 @@ class DecentralizedDnsNetworkDelegateHelperTest : public testing::Test {
         base::WeakPtr<brave::BraveRequestInfo>>;
     scoped_feature_list_.InitWithFeatureState(
         features::kBraveRequestInfoUniquePtr, enable_flag);
-  }
-
-  void TearDown() override {
-    json_rpc_service_ = nullptr;
-    profile_.reset();
   }
 
   typename PtrStrategy::template Ptr<brave::BraveRequestInfo> MakeRequest(
@@ -134,9 +120,10 @@ class DecentralizedDnsNetworkDelegateHelperTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
 
  private:
+  brave_wallet::BraveWalletServiceFactory::NotNullForTesting
+      brave_wallet_service_factory_not_null_for_testing_;
   std::unique_ptr<TestingProfile> profile_;
   network::TestURLLoaderFactory test_url_loader_factory_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   raw_ptr<brave_wallet::JsonRpcService> json_rpc_service_ = nullptr;
   // For WeakPtr tests, store ownership of the request object
   std::unique_ptr<brave::BraveRequestInfo> owned_request_;
@@ -562,9 +549,10 @@ TYPED_TEST(DecentralizedDnsNetworkDelegateHelperTest,
       kSnsResolveMethod, static_cast<int>(ResolveMethodTypes::ENABLED));
 
   // Disable Brave Wallet by policy
-  auto* prefs = this->profile()->GetTestingPrefService();
-  prefs->SetManagedPref(brave_wallet::kBraveWalletDisabledByPolicy,
-                        base::Value(true));
+  this->SetupProfileWithWalletDisabledByPolicy(true);
+
+  EXPECT_FALSE(brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+      this->profile()));
 
   // Create test request for an unstoppable domain
   GURL url("http://test.crypto");
@@ -598,9 +586,10 @@ TYPED_TEST(DecentralizedDnsNetworkDelegateHelperTest,
       static_cast<int>(ResolveMethodTypes::ENABLED));
 
   // Enable Brave Wallet by policy (this is the default)
-  auto* prefs = this->profile()->GetTestingPrefService();
-  prefs->SetManagedPref(brave_wallet::kBraveWalletDisabledByPolicy,
-                        base::Value(false));
+  this->SetupProfileWithWalletDisabledByPolicy(false);
+
+  EXPECT_TRUE(brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+      this->profile()));
 
   // Create test request for an unstoppable domain
   GURL url("http://test.crypto");

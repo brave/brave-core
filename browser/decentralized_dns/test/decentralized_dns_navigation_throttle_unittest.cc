@@ -6,12 +6,14 @@
 #include "brave/components/decentralized_dns/content/decentralized_dns_navigation_throttle.h"
 
 #include "base/memory/raw_ptr.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
-#include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/test/browser_task_environment.h"
@@ -62,11 +64,21 @@ class DecentralizedDnsNavigationThrottleTest : public testing::Test {
         /*create_if_needed=*/true);
   }
 
+  brave_wallet::BraveWalletService* brave_wallet_service() {
+    auto* wallet_service =
+        brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+            profile());
+    EXPECT_TRUE(wallet_service);
+    return wallet_service;
+  }
+
   TestingProfile* profile() { return profile_; }
 
   std::string locale() { return kLocale; }
 
  private:
+  brave_wallet::BraveWalletServiceFactory::NotNullForTesting
+      brave_wallet_service_factory_not_null_for_testing_;
   content::BrowserTaskEnvironment task_environment_;
   content::RenderViewHostTestEnabler test_render_host_factories_;
   TestingProfileManager profile_manager_;
@@ -80,9 +92,16 @@ TEST_F(DecentralizedDnsNavigationThrottleTest, Instantiation) {
   content::MockNavigationThrottleRegistry registry(
       &test_handle,
       content::MockNavigationThrottleRegistry::RegistrationMode::kHold);
+
   DecentralizedDnsNavigationThrottle::MaybeCreateAndAdd(
-      registry, user_prefs(), local_state(), locale());
+      registry, brave_wallet_service(), user_prefs(), local_state(), locale());
   EXPECT_FALSE(registry.throttles().empty());
+
+  // Disabled when no wallet service.
+  registry.throttles().clear();
+  DecentralizedDnsNavigationThrottle::MaybeCreateAndAdd(
+      registry, nullptr, user_prefs(), local_state(), locale());
+  EXPECT_TRUE(registry.throttles().empty());
 
   // Disable in OTR profile.
   auto otr_web_contents = content::WebContentsTester::CreateTestWebContents(
@@ -92,7 +111,8 @@ TEST_F(DecentralizedDnsNavigationThrottleTest, Instantiation) {
       &otr_test_handle,
       content::MockNavigationThrottleRegistry::RegistrationMode::kHold);
   DecentralizedDnsNavigationThrottle::MaybeCreateAndAdd(
-      otr_registry, user_prefs(), local_state(), locale());
+      otr_registry, brave_wallet_service(), user_prefs(), local_state(),
+      locale());
   EXPECT_TRUE(otr_registry.throttles().empty());
 
   // Disable in guest profiles.
@@ -104,7 +124,8 @@ TEST_F(DecentralizedDnsNavigationThrottleTest, Instantiation) {
       &guest_test_handle,
       content::MockNavigationThrottleRegistry::RegistrationMode::kHold);
   DecentralizedDnsNavigationThrottle::MaybeCreateAndAdd(
-      guest_registry, user_prefs(), local_state(), locale());
+      guest_registry, brave_wallet_service(), user_prefs(), local_state(),
+      locale());
   EXPECT_TRUE(guest_registry.throttles().empty());
 }
 
@@ -122,21 +143,17 @@ TEST_F(DecentralizedDnsNavigationThrottleTest, NotInstantiatedInTor) {
       &tor_test_handle,
       content::MockNavigationThrottleRegistry::RegistrationMode::kHold);
   DecentralizedDnsNavigationThrottle::MaybeCreateAndAdd(
-      tor_registry, user_prefs(), local_state(), locale());
+      tor_registry, brave_wallet_service(), user_prefs(), local_state(),
+      locale());
   EXPECT_TRUE(tor_registry.throttles().empty());
 }
 #endif
 
 class DecentralizedDnsNavigationThrottleSubframeTest
-    : public content::RenderViewHostTestHarness {
+    : public ChromeRenderViewHostTestHarness {
  public:
-  DecentralizedDnsNavigationThrottleSubframeTest()
-      : content::RenderViewHostTestHarness(
-            base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
-  ~DecentralizedDnsNavigationThrottleSubframeTest() override = default;
-
   void SetUp() override {
-    content::RenderViewHostTestHarness::SetUp();
+    ChromeRenderViewHostTestHarness::SetUp();
 
     content::RenderFrameHostTester::For(main_rfh())
         ->InitializeRenderFrameIfNeeded();
@@ -146,23 +163,30 @@ class DecentralizedDnsNavigationThrottleSubframeTest
 
   void TearDown() override {
     subframe_ = nullptr;
-    content::RenderViewHostTestHarness::TearDown();
+    ChromeRenderViewHostTestHarness::TearDown();
   }
 
-  PrefService* user_prefs() { return &prefs_; }
+  PrefService* user_prefs() { return profile()->GetPrefs(); }
   PrefService* local_state() {
     return TestingBrowserProcess::GetGlobal()->GetTestingLocalState();
   }
   content::RenderFrameHost* subframe() { return subframe_; }
   std::string locale() { return kLocale; }
 
- private:
-  raw_ptr<content::RenderFrameHost> subframe_;
+  brave_wallet::BraveWalletService* brave_wallet_service() {
+    return brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+        profile());
+  }
 
-  sync_preferences::TestingPrefServiceSyncable prefs_;
+ private:
+  brave_wallet::BraveWalletServiceFactory::NotNullForTesting
+      brave_wallet_service_factory_not_null_for_testing_;
+  raw_ptr<content::RenderFrameHost> subframe_;
 };
 
 TEST_F(DecentralizedDnsNavigationThrottleSubframeTest, Subframe) {
+  ASSERT_TRUE(brave_wallet_service());
+
   // Throttle is created for main frame.
   {
     content::MockNavigationHandle handle(GURL(kExampleURL), main_rfh());
@@ -170,7 +194,8 @@ TEST_F(DecentralizedDnsNavigationThrottleSubframeTest, Subframe) {
         &handle,
         content::MockNavigationThrottleRegistry::RegistrationMode::kHold);
     DecentralizedDnsNavigationThrottle::MaybeCreateAndAdd(
-        registry, user_prefs(), local_state(), locale());
+        registry, brave_wallet_service(), user_prefs(), local_state(),
+        locale());
     EXPECT_FALSE(registry.throttles().empty());
   }
   // Throttle is not created for subframe.
@@ -180,7 +205,8 @@ TEST_F(DecentralizedDnsNavigationThrottleSubframeTest, Subframe) {
         &handle,
         content::MockNavigationThrottleRegistry::RegistrationMode::kHold);
     DecentralizedDnsNavigationThrottle::MaybeCreateAndAdd(
-        registry, user_prefs(), local_state(), locale());
+        registry, brave_wallet_service(), user_prefs(), local_state(),
+        locale());
     EXPECT_TRUE(registry.throttles().empty());
   }
 }

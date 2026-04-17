@@ -1355,8 +1355,9 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   decentralized_dns::DecentralizedDnsNavigationThrottle::MaybeCreateAndAdd(
-      registry, user_prefs::UserPrefs::Get(context),
-      g_browser_process->local_state(),
+      registry,
+      brave_wallet::BraveWalletServiceFactory::GetServiceForContext(context),
+      user_prefs::UserPrefs::Get(context), g_browser_process->local_state(),
       g_browser_process->GetApplicationLocale());
 #endif
 

@@ -30,6 +30,18 @@ class BraveWalletServiceFactory : public BrowserContextKeyedServiceFactory {
       content::BrowserContext* context);
   static BraveWalletServiceFactory* GetInstance();
 
+  // Scoped override for `BraveWalletServiceFactory::ServiceIsNULLWhileTesting`
+  // behavior. `ServiceIsNULLWhileTesting` can't always return false because of
+  // upstream tests failures. So use this scoped override in tests when
+  // TestingProfile should follow production behavior.
+  class NotNullForTesting {
+   public:
+    NotNullForTesting();
+    NotNullForTesting(const NotNullForTesting&) = delete;
+    NotNullForTesting& operator=(const NotNullForTesting&) = delete;
+    ~NotNullForTesting();
+  };
+
  private:
   friend base::NoDestructor<BraveWalletServiceFactory>;
 

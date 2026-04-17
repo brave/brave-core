@@ -17,11 +17,9 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
-#include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/utils.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "chrome/browser/browser_process.h"
-#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/net_errors.h"
@@ -38,15 +36,11 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
   DCHECK(ctx);
   DCHECK(!next_callback.is_null());
 
-  if (!ctx->browser_context() || ctx->browser_context()->IsOffTheRecord() ||
-      !g_browser_process) {
+  if (!ctx->browser_context() || !g_browser_process) {
     return net::OK;
   }
 
-  // Check if Brave Wallet is disabled by policy - if so, disable decentralized
-  // DNS
-  auto* prefs = user_prefs::UserPrefs::Get(ctx->browser_context());
-  if (!brave_wallet::IsAllowed(prefs)) {
+  if (ctx->browser_context()->IsOffTheRecord()) {
     return net::OK;
   }
 
