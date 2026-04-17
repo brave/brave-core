@@ -27,6 +27,24 @@ source_set("browser_tests") {
   ]
 }
 
+source_set("interactive_ui_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "commander_service_interactive_ui_tests.cc" ]
+
+  deps = [
+    "//base",
+    "//brave/components/commander/browser",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui/location_bar",
+    "//chrome/test:test_support_ui",
+    "//content/test:test_support",
+    "//ui/base/interaction:test_support",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
 
