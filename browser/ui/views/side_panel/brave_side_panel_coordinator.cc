@@ -13,6 +13,8 @@
 #include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/logging.h"
+#include "brave/browser/ui/sidebar/buildflags/buildflags.h"
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
@@ -22,6 +24,7 @@
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
 
 namespace {
@@ -47,6 +50,37 @@ void BraveSidePanelCoordinator::Show(
                                 entry.key.id());
 
   SidePanelCoordinator::Show(entry, open_trigger, suppress_animations);
+
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+  // In sidebar v1, SidebarContainerView monitors panel show/hide events and
+  // asks SidebarController to update the active item state. In sidebar v2,
+  // SidebarContainerView does not monitor panel state, so the coordinator
+  // must update it directly here.
+  CHECK(browser_view_->browser()->GetFeatures().sidebar_controller());
+  browser_view_->browser()
+      ->GetFeatures()
+      .sidebar_controller()
+      ->UpdateActiveItemState(
+          sidebar::BuiltInItemTypeFromSidePanelId(entry.key.id()));
+#endif
+}
+
+void BraveSidePanelCoordinator::Close(SidePanelEntry::PanelType panel_type,
+                                      SidePanelEntryHideReason hide_reason,
+                                      bool suppress_animations) {
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+  // Same as Show(): sidebar v2 does not rely on SidebarContainerView to
+  // propagate panel close events, so clear the active item state here.
+  CHECK(browser_view_->browser()->GetFeatures().sidebar_controller());
+  if (panel_type == SidePanelEntry::PanelType::kContent) {
+    browser_view_->browser()
+        ->GetFeatures()
+        .sidebar_controller()
+        ->UpdateActiveItemState();
+  }
+#endif
+
+  SidePanelCoordinator::Close(panel_type, hide_reason, suppress_animations);
 }
 
 void BraveSidePanelCoordinator::OnActiveTabChanged(
@@ -67,7 +101,7 @@ void BraveSidePanelCoordinator::OnActiveTabChanged(
 void BraveSidePanelCoordinator::Toggle() {
   if (IsSidePanelShowing(SidePanelEntry::PanelType::kContent) &&
       !browser_view_->contents_height_side_panel()->IsClosing()) {
-    Close(SidePanelEntry::PanelType::kContent);
+    SidePanelCoordinator::Close(SidePanelEntry::PanelType::kContent);
   } else if (const auto key = GetLastActiveEntryKey()) {
     SidePanelUIBase::Show(*key, SidePanelOpenTrigger::kToolbarButton);
   }
