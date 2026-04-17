@@ -72,6 +72,10 @@ import {
 } from '../../../../utils/account-utils'
 import { makeNetworkAsset } from '../../../../options/asset-options'
 import { openTab } from '../../../../utils/routes-utils'
+import {
+  errorTxTypes,
+  getGate3EffectiveStatus,
+} from '../../../../utils/gate3-status-utils'
 
 // Components
 import { PopupModal } from '../../popup-modals/index'
@@ -162,48 +166,6 @@ const successTxTypes = [
   BraveWallet.TransactionStatus.Confirmed,
   BraveWallet.TransactionStatus.Signed,
 ]
-
-const errorTxTypes = [
-  BraveWallet.TransactionStatus.Error,
-  BraveWallet.TransactionStatus.Dropped,
-  BraveWallet.TransactionStatus.Rejected,
-]
-
-function getGate3EffectiveStatus(
-  swapStatusCode: BraveWallet.Gate3SwapStatusCode,
-): { status: BraveWallet.TransactionStatus; label: string } | undefined {
-  switch (swapStatusCode) {
-    case BraveWallet.Gate3SwapStatusCode.kPending:
-      return {
-        status: BraveWallet.TransactionStatus.Submitted,
-        label: getLocale('braveWalletSwapPending'),
-      }
-    case BraveWallet.Gate3SwapStatusCode.kProcessing:
-      return {
-        status: BraveWallet.TransactionStatus.Submitted,
-        label: getLocale('braveWalletSwapProcessing'),
-      }
-    case BraveWallet.Gate3SwapStatusCode.kSuccess:
-      return {
-        status: BraveWallet.TransactionStatus.Confirmed,
-        label: getTransactionStatusString(
-          BraveWallet.TransactionStatus.Confirmed,
-        ),
-      }
-    case BraveWallet.Gate3SwapStatusCode.kFailed:
-      return {
-        status: BraveWallet.TransactionStatus.Error,
-        label: getTransactionStatusString(BraveWallet.TransactionStatus.Error),
-      }
-    case BraveWallet.Gate3SwapStatusCode.kRefunded:
-      return {
-        status: BraveWallet.TransactionStatus.Error,
-        label: getLocale('braveWalletSwapRefunded'),
-      }
-    default:
-      return undefined
-  }
-}
 
 interface Props {
   onClose: () => void
@@ -583,12 +545,14 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                               >
                                 {formattedDestinationAmount}
                               </SwapAmountText>
-                              <SwapFiatValueText
-                                textSize='14px'
-                                textAlign='left'
-                              >
-                                {`(${formattedBuyFiatValue})`}
-                              </SwapFiatValueText>
+                              {formattedBuyFiatValue && (
+                                <SwapFiatValueText
+                                  textSize='14px'
+                                  textAlign='left'
+                                >
+                                  {`(${formattedBuyFiatValue})`}
+                                </SwapFiatValueText>
+                              )}
                             </RowWrapped>
                           </Row>
                         )}
