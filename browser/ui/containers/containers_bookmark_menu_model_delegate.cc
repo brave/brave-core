@@ -6,7 +6,6 @@
 #include "brave/browser/ui/containers/containers_bookmark_menu_model_delegate.h"
 
 #include "base/check.h"
-#include "base/check_deref.h"
 #include "base/check_is_test.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"

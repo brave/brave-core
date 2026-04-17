@@ -27,11 +27,9 @@ namespace bookmarks {
 class BookmarkModel;
 }
 
-#if BUILDFLAG(ENABLE_CONTAINERS)
 namespace containers {
 class ContainersMenuModel;
 }
-#endif
 
 class BraveBookmarkContextMenuController
     : public BookmarkContextMenuController {
