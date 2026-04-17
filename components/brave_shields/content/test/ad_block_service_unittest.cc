@@ -443,6 +443,66 @@ TEST_F(AdBlockServiceTest, CachedDATLoadedThenProviderUpdates) {
   EXPECT_TRUE(result.matched);
 }
 
+// Simulates the race condition where DAT loading fails before all providers
+// are initialized. The ForceNotifyObserver fallback fires but can't trigger
+// a filter set load because not all providers are ready. When the remaining
+// provider initializes later, the filter list should still load.
+TEST_F(AdBlockServiceTest, DATFailureFallbackWithUninitializedProvider) {
+  // Write corrupt DAT files so loading will fail.
+  {
+    base::FilePath cache_dir =
+        profile_dir_.GetPath().AppendASCII("adblock_cache");
+    ASSERT_TRUE(base::CreateDirectory(cache_dir));
+    ASSERT_TRUE(
+        base::WriteFile(cache_dir.AppendASCII("engine0.dat"), "corrupt"));
+    ASSERT_TRUE(
+        base::WriteFile(cache_dir.AppendASCII("engine1.dat"), "corrupt"));
+  }
+
+  auto service = CreateService();
+
+  // Add an uninitialized provider BEFORE DAT load failure is processed.
+  // This simulates a component provider that hasn't received data yet.
+  auto provider = std::make_unique<TestFiltersProvider>(
+      "||late-provider.com^", /*engine_is_default=*/true);
+  service->GetFiltersProviderManagerForTesting()->AddProvider(provider.get(),
+                                                              true);
+
+  DATLoadObserver dat_observer;
+  service->AddObserver(&dat_observer);
+  bool default_filter_list_loaded = false;
+  FilterListObserver filter_observer(
+      base::BindLambdaForTesting([&](bool is_default, bool success) {
+        if (is_default) {
+          default_filter_list_loaded = true;
+        }
+      }));
+  service->AddObserver(&filter_observer);
+
+  // Wait for DAT load to complete (and fail).
+  ASSERT_TRUE(base::test::RunUntil([&]() { return dat_observer.BothLoaded(); }))
+      << "Timeout waiting for DAT load";
+
+  // DAT load failed, ForceNotifyObserver ran but couldn't trigger filter set
+  // load because our provider isn't initialized yet.
+  EXPECT_FALSE(default_filter_list_loaded)
+      << "Filter set should not have loaded while provider is uninitialized";
+
+  // Now initialize the provider — this should trigger OnChanged and the
+  // filter list should load.
+  provider->Initialize();
+
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return default_filter_list_loaded;
+  })) << "Timeout: filter list should load after late provider initializes";
+
+  // The late provider's rules should be active.
+  auto result = service->GetDefaultEngineForTesting().ShouldStartRequest(
+      GURL("https://late-provider.com/script.js"),
+      blink::mojom::ResourceType::kScript, "test.com", false, false, false);
+  EXPECT_TRUE(result.matched);
+}
+
 TEST_F(AdBlockServiceDATCacheDisabledTest, CachedDATIgnoredWhenFlagDisabled) {
   // Create cached DAT files and set valid timestamp.
   CreateCachedDATFiles("||from-cache.com^\n", "");
