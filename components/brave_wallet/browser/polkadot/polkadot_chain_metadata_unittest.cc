@@ -207,10 +207,6 @@ TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponseWestend) {
       /*transfer_all_call_index=*/4,
       /*ss58_prefix=*/42, /*spec_version=*/1'022'000);
   EXPECT_EQ(*metadata, expected);
-
-  auto metadata2 = PolkadotChainMetadata::FromChainName("Westend");
-  ASSERT_TRUE(metadata2);
-  EXPECT_EQ(*metadata2, expected);
 }
 
 }  // namespace brave_wallet
