@@ -682,15 +682,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Klasör adını girin";
 
-/* Shown in error pages to suggest a fix to the user. */
-"errorPageCantBeReachedTry" = "URL'yi tekrar yazmayı veya bir arama motoru açarak yeni URL'yi aratmayı deneyin.";
-
-/* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "Safari'de aç";
-
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "Yeniden Yükle";
-
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "%1$@, normalde verilerinizi korumak için şifreleme kullanır. Brave bu sefer %2$@ adresine bağlanmaya çalıştığında web sitesi beklenmedik ve yanlış kimlik bilgileri gönderdi. Bu durum, bir saldırgan %3$@ kimliğine bürünmeye çalıştığında veya Wi-Fi oturum açma ekranı bağlantıyı kesintiye uğrattığında yaşanabilir. Brave herhangi bir veri alışveriş yapılmadan önce bağlantıyı durdurduğu için bilgileriniz hala güvende.<br />Web sitesi sertifika sabitleme kullandığı için şu anda %4$@ adresini ziyaret edemezsiniz. Ağ hataları ve saldırılar genellikle geçicidir, o yüzden bu sayfa muhtemelen daha sonra çalışacaktır.";
 
@@ -2251,8 +2242,7 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "Değişiklikleri kaydet";
 
-/* Settings item for clearing passwords and login data
-Settings item for clearing site-specific settings and shields settings. */
+/* Settings item for clearing passwords and login data */
 "SavedLogins" = "Kaydedilen Oturumlar";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2704,6 +2694,9 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "Sekme Çubuğu";
+
+/* Settings item for clearing site-specific settings and shields settings. */
+"SiteAndShieldsSettings" = "Site ve Kalkan Ayarları";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "Brave'in geliştiricilerine bu sitede bir sorun olduğunu bildirin. Düzeltmek için elimizden geleni yapacağız!";
@@ -3250,9 +3243,6 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
 "ThemesDisplayBrightness" = "görünüş";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "Bu ayarlar özel tarama modunda uygulanmaz.";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Açık";

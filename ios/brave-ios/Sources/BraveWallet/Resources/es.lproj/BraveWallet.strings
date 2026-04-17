@@ -1573,6 +1573,9 @@
 /* The title displayed on the 'setup crypto' onboarding screen */
 "wallet.setupCryptoTitle" = "Navegador nativo.\nAutocustodia.\nMulticadena.";
 
+/* A button title to confirm a shield ZEC transaction. It is shown below details about a given transaction. */
+"wallet.shieldZEC" = "Proteger ZEC";
+
 /* The description label of the filter option that hides the network logo on NFTs displayed in the grid. Used in NFT filters and display settings. */
 "wallet.showNFTNetworkLogoDescription" = "Mostrar logotipo de la red en NFT";
 
@@ -2176,6 +2179,9 @@
 /* The title displayed on the unlock wallet screen */
 "wallet.unlockWalletDescription" = "Introduce la contraseña para desbloquear la cartera";
 
+/* A button title to confirm an unshield ZEC transaction. It is shown below details about a given transaction. */
+"wallet.unshieldZEC" = "Desproteger ZEC";
+
 /* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
 "wallet.userAssetSymbolNetwork" = "%1$@ en %2$@";
 
@@ -2260,11 +2266,17 @@
 /* The title for the options to resolve Solana Name service domain names. */
 "wallet.web3DomainOptionsTitle" = "Resolver los nombres de dominio del servicio de nombres de Solana (SNS)";
 
+/* The title for the entry displaying the preferred option to allow web3 sites to access the Cardano provider API. */
+"wallet.web3PreferencesAllowCardanoProviderAccess" = "Los sitios pueden solicitar acceso a tu billetera de Cardano";
+
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
 "wallet.web3PreferencesAllowEthProviderAccess" = "Los sitios pueden solicitar acceso a tu cartera de ethereum";
 
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Solana provider API. */
 "wallet.web3PreferencesAllowSolProviderAccess" = "Los sitios pueden solicitar acceso a tu cartera de solana";
+
+/* The title for the entry displaying the current preferred default Cardano wallet is. */
+"wallet.web3PreferencesDefaultCardanoWallet" = "Billetera de Cardano predeterminada";
 
 /* The title for the entry displaying the current preferred default Ethereum wallet is. */
 "wallet.web3PreferencesDefaultEthWallet" = "Cartera predeterminada de Ethereum";

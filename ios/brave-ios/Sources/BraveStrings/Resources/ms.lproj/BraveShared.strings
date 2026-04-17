@@ -682,15 +682,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Masukkan nama folder";
 
-/* Shown in error pages to suggest a fix to the user. */
-"errorPageCantBeReachedTry" = "Cuba taip semula URL, atau buka enjin carian dan cari URL baharu.";
-
-/* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "Buka dalam Safari";
-
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "Muat semula";
-
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "%1$@ biasanya menggunakan penyulitan untuk melindungi maklumat anda. Apabila Brave cuba berhubung dengan %2$@ kali ini, laman web tersebut menghantar kembali bukti kelayakan yang luar biasa dan salah. Perkara ini mungkin berlaku apabila penyerang cuba menyamar sebagai %3$@, atau skrin log masuk Wi-Fi telah mengganggu sambungan tersebut. Maklumat anda masih selamat kerana Brave menghentikan sambungan sebelum mana-mana data telah ditukar.<br />Anda tidak boleh melawat %4$@ sekarang kerana laman web tersebut menggunakan pencematan sijil. Ralat dan serangan rangkaian selalunya berlaku buat sementara waktu jadi halaman ini mungkin akan berfungsi sebentar lagi.";
 
@@ -2251,8 +2242,7 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "Simpan perubahan";
 
-/* Settings item for clearing passwords and login data
-Settings item for clearing site-specific settings and shields settings. */
+/* Settings item for clearing passwords and login data */
 "SavedLogins" = "Log Masuk Disimpan";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2704,6 +2694,9 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "Bar Tab";
+
+/* Settings item for clearing site-specific settings and shields settings. */
+"SiteAndShieldsSettings" = "Tetapan Tapak dan Perisai";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "Terima kasih kerana memberitahu pembangun Brave bahawa ada sesuatu yang tidak kena dengan tapak ini. Kami akan melakukan yang terbaik untuk memperbaikinya!";
@@ -3250,9 +3243,6 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
 "ThemesDisplayBrightness" = "Rupa";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "Tetapan ini tidak terpakai dalam mod pelayaran peribadi.";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Cerah";
