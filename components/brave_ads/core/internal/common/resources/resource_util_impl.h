@@ -50,7 +50,7 @@ std::optional<T> LoadAndParseResourceComponentOnBackgroundThread(
     }
   }
 
-  return T::CreateFromValue(std::move(*dict));
+  return T::MaybeFromDict(std::move(*dict));
 }
 
 template <typename T>

@@ -15,11 +15,11 @@ namespace brave_ads {
 
 struct WalletInfo;
 
-std::optional<WalletInfo> CreateWalletFromRecoverySeed(
+std::optional<WalletInfo> MaybeBuildWalletFromRecoverySeed(
     const std::string& payment_id,
     const std::string& recovery_seed_base64);
 
-std::optional<WalletInfo> CreateWalletFromRecoverySeed(
+std::optional<WalletInfo> MaybeBuildWalletFromRecoverySeed(
     const mojom::WalletInfo* mojom_wallet);
 
 }  // namespace brave_ads

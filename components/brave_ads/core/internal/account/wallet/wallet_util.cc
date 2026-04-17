@@ -16,7 +16,7 @@
 
 namespace brave_ads {
 
-std::optional<WalletInfo> CreateWalletFromRecoverySeed(
+std::optional<WalletInfo> MaybeBuildWalletFromRecoverySeed(
     const std::string& payment_id,
     const std::string& recovery_seed_base64) {
   std::optional<std::vector<uint8_t>> recovery_seed =
@@ -43,12 +43,12 @@ std::optional<WalletInfo> CreateWalletFromRecoverySeed(
   return wallet;
 }
 
-std::optional<WalletInfo> CreateWalletFromRecoverySeed(
+std::optional<WalletInfo> MaybeBuildWalletFromRecoverySeed(
     const mojom::WalletInfo* const mojom_wallet) {
   CHECK(mojom_wallet);
 
-  return CreateWalletFromRecoverySeed(mojom_wallet->payment_id,
-                                      mojom_wallet->recovery_seed_base64);
+  return MaybeBuildWalletFromRecoverySeed(mojom_wallet->payment_id,
+                                          mojom_wallet->recovery_seed_base64);
 }
 
 }  // namespace brave_ads

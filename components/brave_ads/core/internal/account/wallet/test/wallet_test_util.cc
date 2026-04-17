@@ -14,8 +14,8 @@
 namespace brave_ads::test {
 
 WalletInfo Wallet() {
-  std::optional<WalletInfo> wallet =
-      CreateWalletFromRecoverySeed(kWalletPaymentId, kWalletRecoverySeedBase64);
+  std::optional<WalletInfo> wallet = MaybeBuildWalletFromRecoverySeed(
+      kWalletPaymentId, kWalletRecoverySeedBase64);
   CHECK(wallet);
 
   return *wallet;

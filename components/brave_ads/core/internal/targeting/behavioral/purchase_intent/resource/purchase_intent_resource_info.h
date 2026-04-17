@@ -27,7 +27,7 @@ struct PurchaseIntentResourceInfo final {
 
   ~PurchaseIntentResourceInfo();
 
-  static std::optional<PurchaseIntentResourceInfo> CreateFromValue(
+  static std::optional<PurchaseIntentResourceInfo> MaybeFromDict(
       base::DictValue dict);
 
   std::optional<int> version;
