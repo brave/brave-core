@@ -15,5 +15,7 @@ mojom("mojom") {
   }
 
   generate_java = true
+  generate_legacy_js_bindings = true
+
   webui_module_path = "/"
 }
