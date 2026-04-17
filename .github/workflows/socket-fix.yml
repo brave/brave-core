@@ -8,7 +8,7 @@ on:
         required: true
         type: string
       issue_link:
-        description: 'Link to the related security issue (e.g. https://github.com/brave/brave-browser/issues/54048)'
+        description: 'Comma-separated links to related security issues (e.g. https://github.com/brave/brave-browser/issues/54048,https://github.com/brave/brave-browser/issues/54049)'
         required: true
         type: string
       wdp_ref:
@@ -77,57 +77,89 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GHSA_IDS: ${{ inputs.ghsa_ids }}
           ISSUE_LINK: ${{ inputs.issue_link }}
+          WDP_REF: ${{ inputs.wdp_ref }}
+          LEO_REF: ${{ inputs.leo_ref }}
         run: |
-          if ! git diff --quiet; then
-            BRANCH="socket-fix/$(echo "$GHSA_IDS" | tr ', ' '-' | tr -s '-' | cut -c1-60)"
-            HEAD_SHA=$(git rev-parse HEAD)
+          shopt -s inherit_errexit
+          set -eEo pipefail
 
-            # Create the branch via API
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "::error::No changes produced by socket fix."
+            exit 1
+          fi
+
+          BRANCH="socket-fix/$(echo "$GHSA_IDS" | tr ', ' '-' | tr -s '-' | cut -c1-60)"
+          HEAD_SHA=$(git rev-parse HEAD)
+
+          if gh api "repos/${GITHUB_REPOSITORY}/git/refs/heads/$BRANCH" -q .ref > /dev/null 2>&1; then
+            gh api --method PATCH "/repos/${GITHUB_REPOSITORY}/git/refs/heads/$BRANCH" \
+              --field sha="$HEAD_SHA" --field force=true
+          else
             gh api --method POST /repos/${GITHUB_REPOSITORY}/git/refs \
-              --field ref="refs/heads/$BRANCH" \
-              --field sha="$HEAD_SHA"
+              --field ref="refs/heads/$BRANCH" --field sha="$HEAD_SHA"
+          fi
 
-            # Build tree entries for all modified files
-            TREE_JSON="[]"
-            while IFS= read -r file; do
+          TREE_JSON="[]"
+          while IFS= read -r line; do
+            XY="${line:0:2}"
+            FILE="${line:3}"
+            if [[ "${XY:1:1}" == "D" ]]; then
+              TREE_JSON=$(jq --arg path "$FILE" \
+                '. += [{"path": $path, "mode": "100644", "type": "blob", "sha": null}]' \
+                <<< "$TREE_JSON")
+            else
+              MODE=$(git ls-files -s -- "$FILE" | awk 'NR==1 { print $1 }')
+              [[ -z "$MODE" ]] && MODE="100644"
+              if [[ "$MODE" == "120000" ]]; then
+                CONTENT=$(printf '%s' "$(readlink -- "$FILE")" | base64 -w 0)
+              else
+                CONTENT=$(base64 -w 0 -- "$FILE")
+              fi
               BLOB_SHA=$(gh api --method POST /repos/${GITHUB_REPOSITORY}/git/blobs \
-                --field content=@<(base64 "$file") \
+                --field content="$CONTENT" \
                 --field encoding=base64 \
                 -q .sha)
-              TREE_JSON=$(jq --arg path "$file" --arg sha "$BLOB_SHA" \
-                '. += [{"path": $path, "mode": "100644", "type": "blob", "sha": $sha}]' \
+              TREE_JSON=$(jq --arg path "$FILE" --arg mode "$MODE" --arg sha "$BLOB_SHA" \
+                '. += [{"path": $path, "mode": $mode, "type": "blob", "sha": $sha}]' \
                 <<< "$TREE_JSON")
-            done < <(git diff --name-only)
+            fi
+          done < <(git status --porcelain)
 
-            # Get the base tree SHA from HEAD
-            BASE_TREE=$(gh api /repos/${GITHUB_REPOSITORY}/git/commits/"$HEAD_SHA" -q .tree.sha)
+          BASE_TREE=$(gh api /repos/${GITHUB_REPOSITORY}/git/commits/"$HEAD_SHA" -q .tree.sha)
 
-            # Create a new tree with the modifications
-            NEW_TREE_SHA=$(jq -n \
-              --arg base_tree "$BASE_TREE" \
-              --argjson tree "$TREE_JSON" \
-              '{"base_tree": $base_tree, "tree": $tree}' | \
-              gh api --method POST /repos/${GITHUB_REPOSITORY}/git/trees --input - -q .sha)
+          NEW_TREE_SHA=$(jq -n \
+            --arg base_tree "$BASE_TREE" \
+            --argjson tree "$TREE_JSON" \
+            '{"base_tree": $base_tree, "tree": $tree}' | \
+            gh api --method POST /repos/${GITHUB_REPOSITORY}/git/trees --input - -q .sha)
 
-            # Create a verified commit via the GitHub API
-            NEW_COMMIT_SHA=$(jq -n \
-              --arg tree "$NEW_TREE_SHA" \
-              --arg parent "$HEAD_SHA" \
-              '{"message": "fix: address security advisories", "tree": $tree, "parents": [$parent]}' | \
-              gh api --method POST /repos/${GITHUB_REPOSITORY}/git/commits --input - -q .sha)
+          NEW_COMMIT_SHA=$(jq -n \
+            --arg tree "$NEW_TREE_SHA" \
+            --arg parent "$HEAD_SHA" \
+            '{"message": "fix: address security advisories", "tree": $tree, "parents": [$parent]}' | \
+            gh api --method POST /repos/${GITHUB_REPOSITORY}/git/commits --input - -q .sha)
 
-            # Update the branch ref to point to the new commit
-            gh api --method PATCH /repos/${GITHUB_REPOSITORY}/git/refs/heads/"$BRANCH" \
-              --field sha="$NEW_COMMIT_SHA"
+          gh api --method PATCH /repos/${GITHUB_REPOSITORY}/git/refs/heads/"$BRANCH" \
+            --field sha="$NEW_COMMIT_SHA"
 
-            BODY="Addresses: $GHSA_IDS"$'\n\n'"closes $ISSUE_LINK"
+          BODY="Addresses: $GHSA_IDS"
+          IFS=',' read -ra LINKS <<< "$ISSUE_LINK"
+          for link in "${LINKS[@]}"; do
+            BODY="$BODY"$'\n\n'"closes ${link// /}"
+          done
+          if [[ -n "$WDP_REF" ]]; then
+            WDP_PR=$(gh api "repos/brave/web-discovery-project/commits/$WDP_REF/pulls" -q '.[0].html_url' 2>/dev/null || true)
+            [[ -n "$WDP_PR" ]] && BODY="$BODY"$'\n\n'"WDP: $WDP_PR"
+          fi
+          if [[ -n "$LEO_REF" ]]; then
+            LEO_PR=$(gh api "repos/brave/leo/commits/$LEO_REF/pulls" -q '.[0].html_url' 2>/dev/null || true)
+            [[ -n "$LEO_PR" ]] && BODY="$BODY"$'\n\n'"Leo: $LEO_PR"
+          fi
+          if ! gh pr list --head "$BRANCH" --json number -q '.[].number' | grep -q .; then
             gh pr create \
               --title "fix: address security advisories" \
               --body "$BODY" \
               --base master \
               --label "CI/skip" \
               --label "security"
-          else
-            echo "::error::No changes produced by socket fix."
-            exit 1
           fi
