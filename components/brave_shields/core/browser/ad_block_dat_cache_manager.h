@@ -30,17 +30,10 @@ namespace brave_shields {
 // This class lives in core/ so it can be shared between desktop and iOS.
 class AdBlockDATCacheManager {
  public:
-  static void RegisterPrefs(PrefRegistrySimple* registry);
-
-  AdBlockDATCacheManager(PrefService* local_state,
-                         const base::FilePath& profile_dir);
+  explicit AdBlockDATCacheManager(const base::FilePath& profile_dir);
   ~AdBlockDATCacheManager();
   AdBlockDATCacheManager(const AdBlockDATCacheManager&) = delete;
   AdBlockDATCacheManager& operator=(const AdBlockDATCacheManager&) = delete;
-
-  // Returns true if a cached DAT was written in a previous session
-  // for the given engine.
-  bool HasCachedDAT(bool is_default_engine) const;
 
   // Writes a serialized DAT buffer to disk atomically.
   // Calls |on_complete| with success/failure.
@@ -54,13 +47,6 @@ class AdBlockDATCacheManager {
                               std::optional<DATFileDataBuffer>)> on_complete);
 
  private:
-  static std::string_view TimestampPrefName(bool is_default_engine);
-  void OnDATFileWritten(bool is_default_engine,
-                        base::OnceCallback<void(bool)> on_complete,
-                        bool success);
-  void MarkDATCacheWritten(bool is_default_engine);
-
-  raw_ptr<PrefService> local_state_;
   base::FilePath cache_dir_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
 

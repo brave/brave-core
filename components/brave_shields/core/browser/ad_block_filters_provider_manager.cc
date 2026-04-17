@@ -11,6 +11,8 @@
 
 #include "base/barrier_callback.h"
 #include "base/check.h"
+#include "base/containers/flat_set.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/notreached.h"
@@ -18,14 +20,16 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
+#include "brave/components/brave_shields/core/common/features.h"
 
 namespace brave_shields {
 
-AdBlockFiltersProviderManager::AdBlockFiltersProviderManager(
-    bool suppress_default_initial,
-    bool suppress_additional_initial)
-    : suppress_default_initial_(suppress_default_initial),
-      suppress_additional_initial_(suppress_additional_initial) {}
+AdBlockFiltersProviderManager::AdBlockFiltersProviderManager() {
+  suppress_default_engine_startup_change_notification_ =
+      base::FeatureList::IsEnabled(features::kAdblockDATCache);
+  suppress_additional_engine_startup_change_notification_ =
+      base::FeatureList::IsEnabled(features::kAdblockDATCache);
+}
 
 AdBlockFiltersProviderManager::~AdBlockFiltersProviderManager() = default;
 
@@ -52,9 +56,26 @@ void AdBlockFiltersProviderManager::RemoveProvider(
   NotifyObservers(is_for_default_engine);
 }
 
+void AdBlockFiltersProviderManager::MaybeNotifyObserver(
+    AdBlockFiltersProvider::Observer& observer,
+    bool is_for_default_engine) {
+  if (AreAllProvidersInitialized(is_for_default_engine)) {
+    observer.OnChanged(is_for_default_engine);
+  }
+}
+
 void AdBlockFiltersProviderManager::ForceNotifyObserver(
     AdBlockFiltersProvider::Observer& observer,
     bool is_for_default_engine) {
+  bool& suppress_engine_startup_change_notifications =
+      is_for_default_engine
+          ? suppress_default_engine_startup_change_notification_
+          : suppress_additional_engine_startup_change_notification_;
+  if (suppress_engine_startup_change_notifications) {
+    suppress_engine_startup_change_notifications = false;
+    return;
+  }
+
   if (AreAllProvidersInitialized(is_for_default_engine)) {
     observer.OnChanged(is_for_default_engine);
   }
@@ -75,12 +96,14 @@ void AdBlockFiltersProviderManager::OnChanged(bool is_for_default_engine) {
     return;
   }
 
-  // When a cached DAT provides initial rules, consume the first "all
-  // providers ready" notification — the DAT already has rules.
-  bool& suppress = is_for_default_engine ? suppress_default_initial_
-                                         : suppress_additional_initial_;
-  if (suppress) {
-    suppress = false;
+  // In most cases we should be loading from DAT cache so we want to consume
+  // the startup OnChanged notification to avoid parsing the filter list
+  bool& is_startup =
+      is_for_default_engine
+          ? suppress_default_engine_startup_change_notification_
+          : suppress_additional_engine_startup_change_notification_;
+  if (is_startup) {
+    is_startup = false;
     return;
   }
 

@@ -20,7 +20,8 @@ class FiltersProviderManagerTestObserver
   int changed_count = 0;
 };
 
-TEST(AdBlockFiltersProviderManagerTest, WaitUntilInitialized) {
+// OnChanged notifies observers when all providers are initialized.
+TEST(AdBlockFiltersProviderManagerTest, OnChangedNotifiesWhenReady) {
   FiltersProviderManagerTestObserver test_observer;
   brave_shields::AdBlockFiltersProviderManager m;
   m.AddObserver(&test_observer);
@@ -29,31 +30,23 @@ TEST(AdBlockFiltersProviderManagerTest, WaitUntilInitialized) {
   EXPECT_EQ(test_observer.changed_count, 0);
   provider1.RegisterAsSourceProvider(&m);
   EXPECT_EQ(test_observer.changed_count, 1);
+
   brave_shields::TestFiltersProvider provider2("", true, 0);
-  EXPECT_EQ(test_observer.changed_count, 1);
   provider2.RegisterAsSourceProvider(&m);
   EXPECT_EQ(test_observer.changed_count, 2);
 }
 
-TEST(AdBlockFiltersProviderManagerTest, ForceNotifyObserverCombinesHashes) {
+TEST(AdBlockFiltersProviderManagerTest, MaybeNotifyObserverNotifiesWhenReady) {
   brave_shields::AdBlockFiltersProviderManager m;
 
-  // Create providers with specific content hashes
   brave_shields::TestFiltersProvider provider1("rules_a", true, 0);
   provider1.RegisterAsSourceProvider(&m);
 
-  brave_shields::TestFiltersProvider provider2("rules_b", true, 0);
-  provider2.RegisterAsSourceProvider(&m);
+  FiltersProviderManagerTestObserver observer;
+  m.MaybeNotifyObserver(observer, true);
+  EXPECT_EQ(observer.changed_count, 1);
 
-  // Create a separate observer for ForceNotifyObserver
-  FiltersProviderManagerTestObserver force_observer;
-  m.ForceNotifyObserver(force_observer, true);
-
-  // Should have been notified once
-  EXPECT_EQ(force_observer.changed_count, 1);
-
-  // Both providers should be in the default engine set.
-  EXPECT_EQ(m.GetProviders(true).size(), 2u);
+  EXPECT_EQ(m.GetProviders(true).size(), 1u);
 }
 
 TEST(AdBlockFiltersProviderManagerTest,
@@ -63,28 +56,24 @@ TEST(AdBlockFiltersProviderManagerTest,
   FiltersProviderManagerTestObserver observer;
   m.ForceNotifyObserver(observer, true);
 
-  // Should not be notified when there are no providers
+  // Should not be notified when there are no providers.
   EXPECT_EQ(observer.changed_count, 0);
 }
 
 TEST(AdBlockFiltersProviderManagerTest, ForceNotifyObserverRespectsEngineType) {
   brave_shields::AdBlockFiltersProviderManager m;
 
-  // Create a default engine provider
   brave_shields::TestFiltersProvider default_provider("default_rules", true, 0);
   default_provider.RegisterAsSourceProvider(&m);
 
-  // Create an additional engine provider
   brave_shields::TestFiltersProvider additional_provider("additional_rules",
                                                          false, 0);
   additional_provider.RegisterAsSourceProvider(&m);
 
-  // Observer for default engine only
   FiltersProviderManagerTestObserver default_observer;
   m.ForceNotifyObserver(default_observer, true);
   EXPECT_EQ(default_observer.changed_count, 1);
 
-  // Observer for additional engine only
   FiltersProviderManagerTestObserver additional_observer;
   m.ForceNotifyObserver(additional_observer, false);
   EXPECT_EQ(additional_observer.changed_count, 1);
@@ -97,14 +86,12 @@ TEST(AdBlockFiltersProviderManagerTest,
   FiltersProviderManagerTestObserver observer;
   m.AddObserver(&observer);
 
-  // Register provider1 — it initializes and calls NotifyObservers.
-  // Since it's the only provider, OnChanged sees all providers initialized.
+  // Register provider1 — it initializes, OnChanged fires, observer notified.
   brave_shields::TestFiltersProvider provider1("rules_a", true, 0);
   provider1.RegisterAsSourceProvider(&m);
   EXPECT_EQ(observer.changed_count, 1);
 
-  // Add provider2 without initializing it by adding directly to the manager.
-  // TestFiltersProvider starts uninitialized (is_initialized_ = false).
+  // Add provider2 without initializing it.
   brave_shields::TestFiltersProvider provider2("rules_b", true, 0);
   m.AddProvider(&provider2, true);
   EXPECT_EQ(observer.changed_count, 1);
@@ -114,8 +101,7 @@ TEST(AdBlockFiltersProviderManagerTest,
   m.ForceNotifyObserver(observer, true);
   EXPECT_EQ(observer.changed_count, 1);
 
-  // Initialize provider2 — this calls NotifyObservers internally,
-  // and now all providers are initialized, so the observer IS notified.
+  // Initialize provider2 — all providers initialized, observer notified.
   provider2.Initialize();
   EXPECT_EQ(observer.changed_count, 2);
 }

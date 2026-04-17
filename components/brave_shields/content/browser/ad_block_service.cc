@@ -54,7 +54,7 @@ AdBlockService::SourceProviderObserver::SourceProviderObserver(
       resource_provider_(resource_provider),
       filters_provider_manager_(filters_provider_manager) {
   filters_provider_manager_->AddObserver(this);
-  filters_provider_manager_->ForceNotifyObserver(*this, engine_is_default_);
+  filters_provider_manager_->MaybeNotifyObserver(*this, engine_is_default_);
 }
 
 AdBlockService::SourceProviderObserver::~SourceProviderObserver() {
@@ -197,8 +197,7 @@ AdBlockService::AdBlockService(
       std::make_unique<AdBlockFilterListCatalogProvider>(
           component_update_service_);
 
-  dat_cache_manager_ =
-      std::make_unique<AdBlockDATCacheManager>(local_state_, profile_dir_);
+  dat_cache_manager_ = std::make_unique<AdBlockDATCacheManager>(profile_dir_);
   // Start reading cached DAT files from disk as early as possible so the
   // engine can be populated before components arrive from the network.
   if (base::FeatureList::IsEnabled(features::kAdblockDATCache)) {
@@ -206,9 +205,7 @@ AdBlockService::AdBlockService(
         &AdBlockService::OnReadCachedDATFiles, weak_factory_.GetWeakPtr()));
   }
 
-  filters_provider_manager_ = std::make_unique<AdBlockFiltersProviderManager>(
-      dat_cache_manager_->HasCachedDAT(true),
-      dat_cache_manager_->HasCachedDAT(false));
+  filters_provider_manager_ = std::make_unique<AdBlockFiltersProviderManager>();
 
   component_service_manager_ = std::make_unique<AdBlockComponentServiceManager>(
       local_state_, filters_provider_manager_.get(), locale_,
@@ -359,6 +356,9 @@ void AdBlockService::OnReadCachedDATFiles(
     default_service_observer_->OnDATFileRead(std::move(*default_dat));
   } else {
     NotifyOnDATLoaded(true, false);
+    // Trigger filter list loading
+    filters_provider_manager_->ForceNotifyObserver(*default_service_observer_,
+                                                   true);
   }
 
   if (additional_dat) {
@@ -366,6 +366,9 @@ void AdBlockService::OnReadCachedDATFiles(
         std::move(*additional_dat));
   } else {
     NotifyOnDATLoaded(false, false);
+    // Trigger filter list loading
+    filters_provider_manager_->ForceNotifyObserver(
+        *additional_filters_service_observer_, false);
   }
 }
 
@@ -439,7 +442,6 @@ void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kAdBlockOnlyModeEnabled, false);
   registry->RegisterBooleanPref(
       prefs::kAdBlockOnlyModeWasEnabledForSupportedLocale, false);
-  AdBlockDATCacheManager::RegisterPrefs(registry);
 }
 
 void RegisterPrefsForAdBlockServiceForMigration(PrefRegistrySimple* registry) {

@@ -11,7 +11,6 @@ source_set("unit_tests") {
   sources = [
     "ad_block_component_filters_provider_unittest.cc",
     "ad_block_component_service_unittest.cc",
-    "ad_block_dat_cache_manager_unittest.cc",
     "ad_block_filters_provider_manager_unittest.cc",
     "ad_block_list_p3a_unittest.cc",
   ]

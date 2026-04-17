@@ -14,11 +14,8 @@
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_shields/core/common/features.h"
-#include "brave/components/brave_shields/core/common/pref_names.h"
-#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/platform_browser_test.h"
-#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -66,25 +63,14 @@ IN_PROC_BROWSER_TEST_P(AdBlockDATCacheBrowserTest,
   UpdateCustomAdBlockInstanceWithRules("||custom-rule.com^");
 
   if (IsCacheEnabled()) {
-    // Wait for the DAT cache timestamp to be written (indicates DAT files
-    // were serialized and written to disk successfully).
+    // Wait for DAT files to be written to disk.
     ASSERT_TRUE(base::test::RunUntil([&]() {
-      return !local_state()
-                  ->GetString(
-                      brave_shields::prefs::kAdBlockDefaultDATCacheTimestamp)
-                  .empty();
-    })) << "Timeout waiting for DAT cache timestamp to be written";
-
-    // Verify DAT files are on disk.
-    {
       base::ScopedAllowBlockingForTesting allow_blocking;
       base::FilePath cache_dir =
           profile()->GetPath().AppendASCII("adblock_cache");
-      ASSERT_TRUE(base::PathExists(cache_dir.AppendASCII("engine0.dat")))
-          << "Default engine DAT file not found";
-      ASSERT_TRUE(base::PathExists(cache_dir.AppendASCII("engine1.dat")))
-          << "Additional engine DAT file not found";
-    }
+      return base::PathExists(cache_dir.AppendASCII("engine0.dat")) &&
+             base::PathExists(cache_dir.AppendASCII("engine1.dat"));
+    })) << "Timeout waiting for DAT files to be written";
   }
 
   WaitForAdBlockServiceThreads();
@@ -107,13 +93,6 @@ IN_PROC_BROWSER_TEST_P(AdBlockDATCacheBrowserTest, DATCacheLoadedOnRestart) {
   auto* service = g_brave_browser_process->ad_block_service();
 
   if (IsCacheEnabled()) {
-    // Verify timestamp persisted from PRE_ test.
-    EXPECT_FALSE(
-        local_state()
-            ->GetString(brave_shields::prefs::kAdBlockDefaultDATCacheTimestamp)
-            .empty())
-        << "DAT cache timestamp not persisted";
-
     {
       base::ScopedAllowBlockingForTesting allow_blocking;
       base::FilePath cache_dir =
@@ -186,29 +165,18 @@ IN_PROC_BROWSER_TEST_P(AdBlockDATCacheBrowserTest, DATCacheLoadedOnRestart) {
                                  .spec())));
 }
 
-// Test fixture for DAT cache fallback scenarios where the cache feature is
-// enabled and the pref indicates a cached DAT exists, but the actual file is
-// missing or corrupted. The filter list should load as a fallback.
-class AdBlockDATCacheFallbackBrowserTest
-    : public AdBlockServiceTest,
-      public testing::WithParamInterface<std::string> {
+// Test fixture for DAT cache fallback when DAT files are corrupted. The
+// filter list should load as a fallback. Missing files are covered by the
+// default DATCacheLoadedOnRestart test (no PRE_ DAT files on first run).
+class AdBlockDATCacheCorruptBrowserTest : public AdBlockServiceTest {
  public:
-  AdBlockDATCacheFallbackBrowserTest() {
+  AdBlockDATCacheCorruptBrowserTest() {
     feature_list_.InitAndEnableFeature(
         brave_shields::features::kAdblockDATCache);
   }
 
-  bool IsMissingFile() const { return GetParam() == "Missing"; }
-
   void PreRunTestOnMainThread() override {
     PlatformBrowserTest::PreRunTestOnMainThread();
-
-    // Set the timestamp pref so HasCachedDAT() returns true and suppression
-    // is active.
-    local_state()->SetString(
-        brave_shields::prefs::kAdBlockDefaultDATCacheTimestamp, "12345");
-    local_state()->SetString(
-        brave_shields::prefs::kAdBlockAdditionalDATCacheTimestamp, "12345");
 
     {
       base::ScopedAllowBlockingForTesting allow_blocking;
@@ -216,14 +184,11 @@ class AdBlockDATCacheFallbackBrowserTest
           profile()->GetPath().AppendASCII("adblock_cache");
       base::CreateDirectory(cache_dir);
 
-      if (!IsMissingFile()) {
-        // Write garbage data to simulate corruption.
-        base::WriteFile(cache_dir.AppendASCII("engine0.dat"),
-                        "this is not a valid DAT file");
-        base::WriteFile(cache_dir.AppendASCII("engine1.dat"),
-                        "this is not a valid DAT file");
-      }
-      // For the missing case, don't create the files at all.
+      // Write garbage data to simulate corruption.
+      base::WriteFile(cache_dir.AppendASCII("engine0.dat"),
+                      "this is not a valid DAT file");
+      base::WriteFile(cache_dir.AppendASCII("engine1.dat"),
+                      "this is not a valid DAT file");
     }
 
     component_service_manager()->InitializeGatesForTesting();
@@ -234,9 +199,9 @@ class AdBlockDATCacheFallbackBrowserTest
   base::test::ScopedFeatureList feature_list_;
 };
 
-// When the pref says a cached DAT exists but the file is missing or corrupt,
-// the fallback should load filter lists and rules should still work.
-IN_PROC_BROWSER_TEST_P(AdBlockDATCacheFallbackBrowserTest,
+// When DAT files are corrupt, the fallback should load filter lists and
+// rules should still work.
+IN_PROC_BROWSER_TEST_F(AdBlockDATCacheCorruptBrowserTest,
                        FallsBackToFilterList) {
   auto* service = g_brave_browser_process->ad_block_service();
 
@@ -266,11 +231,6 @@ IN_PROC_BROWSER_TEST_P(AdBlockDATCacheFallbackBrowserTest,
                                  ->GetURL("fallback-rule.com", "/logo.png")
                                  .spec())));
 }
-
-INSTANTIATE_TEST_SUITE_P(All,
-                         AdBlockDATCacheFallbackBrowserTest,
-                         testing::Values("Missing", "Corrupt"),
-                         [](const auto& info) { return info.param; });
 
 INSTANTIATE_TEST_SUITE_P(All,
                          AdBlockDATCacheBrowserTest,

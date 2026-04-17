@@ -33,9 +33,7 @@ namespace brave_shields {
 class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
                                       public AdBlockFiltersProvider::Observer {
  public:
-  explicit AdBlockFiltersProviderManager(
-      bool suppress_default_initial = false,
-      bool suppress_additional_initial = false);
+  explicit AdBlockFiltersProviderManager();
   ~AdBlockFiltersProviderManager() override;
   AdBlockFiltersProviderManager(const AdBlockFiltersProviderManager&) = delete;
   AdBlockFiltersProviderManager& operator=(
@@ -58,6 +56,9 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
   void RemoveProvider(AdBlockFiltersProvider* provider,
                       bool is_for_default_engine);
 
+  void MaybeNotifyObserver(AdBlockFiltersProvider::Observer& observer,
+                           bool is_default_engine);
+
   void ForceNotifyObserver(AdBlockFiltersProvider::Observer& observer,
                            bool is_default_engine);
 
@@ -79,8 +80,8 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
   base::flat_set<AdBlockFiltersProvider*> default_engine_filters_providers_;
   base::flat_set<AdBlockFiltersProvider*> additional_engine_filters_providers_;
 
-  bool suppress_default_initial_ = false;
-  bool suppress_additional_initial_ = false;
+  bool suppress_default_engine_startup_change_notification_ = false;
+  bool suppress_additional_engine_startup_change_notification_ = false;
 
   base::CancelableTaskTracker task_tracker_;
 

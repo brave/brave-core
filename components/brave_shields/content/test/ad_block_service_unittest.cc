@@ -127,13 +127,6 @@ class AdBlockServiceTestBase : public testing::Test {
                                 CreateAdblockDAT(additional_rules)));
   }
 
-  // Sets the DAT cache timestamp pref to simulate a previous session that
-  // wrote cached DAT files.
-  void SetCachedDATTimestamp() {
-    prefs_.SetString(prefs::kAdBlockDefaultDATCacheTimestamp, "1234");
-    prefs_.SetString(prefs::kAdBlockAdditionalDATCacheTimestamp, "1234");
-  }
-
   std::unique_ptr<AdBlockService> CreateServiceWithTaskRunner(
       scoped_refptr<base::SequencedTaskRunner> task_runner) {
     download_manager_ = std::make_unique<AdBlockSubscriptionDownloadManager>(
@@ -208,10 +201,6 @@ TEST_F(AdBlockServiceTest, LoadsCachedDATFilesOnCreation) {
   CreateCachedDATFiles("||blocked-by-default.com^\n",
                        "||blocked-by-additional.com^\n");
 
-  // Set the timestamp pref to simulate a previous session that cached DAT
-  // files.
-  SetCachedDATTimestamp();
-
   // Create the service - it should load the cached DAT files
   auto service = CreateService();
   DATLoadObserver dat_observer;
@@ -264,8 +253,6 @@ TEST_F(AdBlockServiceTest, LoadsOnlyDefaultCachedDATFile) {
   // Create a cached DAT file only for the default engine
   CreateCachedDefaultDATFile("||blocked-by-default.com^\n");
 
-  SetCachedDATTimestamp();
-
   auto service = CreateService();
 
   // Verify nothing is blocked before DAT files are loaded
@@ -297,8 +284,6 @@ TEST_F(AdBlockServiceTest, LoadsOnlyDefaultCachedDATFile) {
 TEST_F(AdBlockServiceTest, LoadsOnlyAdditionalCachedDATFile) {
   // Create a cached DAT file only for the additional engine
   CreateCachedAdditionalDATFile("||blocked-by-additional.com^\n");
-
-  SetCachedDATTimestamp();
 
   auto service = CreateService();
 
@@ -416,7 +401,6 @@ TEST_F(AdBlockServiceTest, CachedDATLoadedThenProviderUpdates) {
   // When a cached DAT exists and a provider later changes, the provider's
   // filter rules should override the cached DAT rules.
   CreateCachedDefaultDATFile("||from-cache.com^\n");
-  SetCachedDATTimestamp();
 
   auto service = CreateService();
 
@@ -462,7 +446,6 @@ TEST_F(AdBlockServiceTest, CachedDATLoadedThenProviderUpdates) {
 TEST_F(AdBlockServiceDATCacheDisabledTest, CachedDATIgnoredWhenFlagDisabled) {
   // Create cached DAT files and set valid timestamp.
   CreateCachedDATFiles("||from-cache.com^\n", "");
-  SetCachedDATTimestamp();
 
   auto service = CreateService();
 
@@ -500,9 +483,6 @@ TEST_F(AdBlockServiceDATCacheDisabledTest, CachedDATIgnoredWhenFlagDisabled) {
 
 TEST_F(AdBlockServiceDATCacheDisabledTest,
        FilterSetAlwaysLoadsWhenFlagDisabled) {
-  // With the flag disabled, filter sets should always load normally.
-  SetCachedDATTimestamp();
-
   auto service = CreateService();
 
   bool default_filter_list_loaded = false;
