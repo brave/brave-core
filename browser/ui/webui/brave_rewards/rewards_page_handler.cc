@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_handler.h"
 
+#include <string>
 #include <string_view>
 #include <utility>
 #include <vector>
@@ -31,6 +32,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "brave/components/services/bat_ads/public/cpp/bat_ads_observer_base.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
@@ -59,9 +61,8 @@ static constexpr auto kPluralStrings =
 
 // Listens for updates to browser data displayed on the Rewards page and
 // executes a callback when updates occur.
-class RewardsPageHandler::UpdateObserver
-    : public RewardsServiceObserver,
-      public bat_ads::mojom::BatAdsObserver {
+class RewardsPageHandler::UpdateObserver : public RewardsServiceObserver,
+                                           public bat_ads::BatAdsObserverBase {
  public:
   UpdateObserver(RewardsService* rewards_service,
                  brave_ads::AdsService* ads_service,
@@ -157,11 +158,8 @@ class RewardsPageHandler::UpdateObserver
     OnUpdate(UpdateSource::kRewards);
   }
 
-  // bat_ads::mojom::BatAdsObserver:
+  // bat_ads::BatAdsObserverBase:
   void OnAdRewardsDidChange() override { OnUpdate(UpdateSource::kAds); }
-  void OnBrowserUpgradeRequiredToServeAds() override {}
-  void OnIneligibleWalletToServeAds() override {}
-  void OnRemindUser(brave_ads::mojom::ReminderType type) override {}
 
  private:
   void OnUpdate(UpdateSource update_source) {

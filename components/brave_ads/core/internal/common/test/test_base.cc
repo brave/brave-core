@@ -222,8 +222,8 @@ void TestBase::MockAdsClientNotifier() {
 }
 
 void TestBase::MockAdsClient() {
-  // `MockUrlResponses`, `ShowScheduledCaptcha`, and `Log` are not mocked here;
-  // they should be mocked as needed via `mock_test_util.h`.
+  // `MockUrlResponses` and `Log` are not mocked here; they should be mocked
+  // as needed via `mock_test_util.h`.
 
   MockNotifyPendingObservers(ads_client_mock_, ads_client_notifier_);
 

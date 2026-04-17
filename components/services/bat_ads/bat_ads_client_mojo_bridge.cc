@@ -203,14 +203,6 @@ void BatAdsClientMojoBridge::Load(const std::string& name,
   bat_ads_client_associated_remote_->Load(name, std::move(callback));
 }
 
-void BatAdsClientMojoBridge::ShowScheduledCaptcha(
-    const std::string& payment_id,
-    const std::string& captcha_id) {
-  if (bat_ads_client_associated_remote_.is_bound()) {
-    bat_ads_client_associated_remote_->ShowScheduledCaptcha(payment_id,
-                                                            captcha_id);
-  }
-}
 
 void BatAdsClientMojoBridge::Log(const char* file,
                                  int line,

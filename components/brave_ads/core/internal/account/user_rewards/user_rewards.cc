@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens.h"
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/refill_confirmation_tokens.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
@@ -99,7 +100,8 @@ void UserRewards::OnDidRetryRefillingConfirmationTokens() {
 
 void UserRewards::OnCaptchaRequiredToRefillConfirmationTokens(
     const std::string& captcha_id) {
-  GetAdsClient().ShowScheduledCaptcha(wallet_.payment_id, captcha_id);
+  AdsNotifierManager::GetInstance().NotifySolveCaptchaToServeAds(
+      wallet_.payment_id, captcha_id);
 }
 
 }  // namespace brave_ads

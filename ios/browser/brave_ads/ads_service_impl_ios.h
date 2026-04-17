@@ -7,7 +7,6 @@
 #define BRAVE_IOS_BROWSER_BRAVE_ADS_ADS_SERVICE_IMPL_IOS_H_
 
 #include <memory>
-#include <optional>
 #include <string>
 #include <vector>
 
@@ -154,6 +153,9 @@ class AdsServiceImplIOS : public AdsService {
 
   void ClearAdsData(ClearDataCallback callback, bool success);
   void ClearAdsDataCallback(ClearDataCallback callback);
+
+  void OnSolveCaptchaToServeAds(const std::string& payment_id,
+                                const std::string& captcha_id);
 
   const raw_ptr<PrefService> prefs_;  // Not owned.
 

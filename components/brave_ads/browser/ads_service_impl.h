@@ -331,9 +331,6 @@ class AdsServiceImpl final : public AdsService,
                              int version,
                              LoadResourceComponentCallback callback) override;
 
-  void ShowScheduledCaptcha(const std::string& payment_id,
-                            const std::string& captcha_id) override;
-
   void FindProfilePref(const std::string& path,
                        FindProfilePrefCallback callback) override;
   void GetProfilePref(const std::string& path,
@@ -363,6 +360,8 @@ class AdsServiceImpl final : public AdsService,
   void OnAdRewardsDidChange() override {}
   void OnBrowserUpgradeRequiredToServeAds() override;
   void OnIneligibleWalletToServeAds() override {}
+  void OnSolveCaptchaToServeAds(const std::string& payment_id,
+                                const std::string& captcha_id) override;
   void OnRemindUser(mojom::ReminderType mojom_reminder_type) override;
 
   // ApplicationStateObserver:
