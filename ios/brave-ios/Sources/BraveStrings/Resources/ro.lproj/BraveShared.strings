@@ -682,15 +682,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Introdu numele dosarului";
 
-/* Shown in error pages to suggest a fix to the user. */
-"errorPageCantBeReachedTry" = "Încearcă să tastezi din nou URL-ul sau deschide un motor de căutare și caută URL-ul.";
-
-/* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "Deschide în Safari";
-
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "Reîncarcă";
-
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "%1$@ utilizează în mod normal criptarea pentru a-ți proteja informațiile. Când Brave a încercat să se conecteze la %2$@ de data aceasta, site-ul a trimis înapoi acreditări neobișnuite și incorecte. Acest lucru se poate întâmpla atunci când un atacator încearcă să pretindă că este %3$@ sau un ecran de conectare Wi-Fi a întrerupt conexiunea. Informațiile tale sunt în continuare securizate, deoarece Brave a întrerupt conexiunea înainte ca orice date să fie schimbate.<br />Nu poți vizita %4$@ în acest moment, deoarece site-ul web utilizează certificate pinning. Erorile de rețea și atacurile sunt de obicei temporare, astfel încât această pagină va funcționa probabil mai târziu.";
 
@@ -2251,8 +2242,7 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "Salvează modificările";
 
-/* Settings item for clearing passwords and login data
-Settings item for clearing site-specific settings and shields settings. */
+/* Settings item for clearing passwords and login data */
 "SavedLogins" = "Credențiale salvate";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2704,6 +2694,9 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "Bara de file";
+
+/* Settings item for clearing site-specific settings and shields settings. */
+"SiteAndShieldsSettings" = "Setări Site și Shields";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "Îți mulțumim că i-ai anunțat pe dezvoltatorii Brave de problema cu acest site. Vom face tot ce ne stă în putință ca să rezolvăm!";
@@ -3250,9 +3243,6 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
 "ThemesDisplayBrightness" = "Aspect";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "Aceste setări nu se aplică în modul de navigare privată.";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Deschis";

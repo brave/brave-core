@@ -682,15 +682,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "폴더 이름 입력";
 
-/* Shown in error pages to suggest a fix to the user. */
-"errorPageCantBeReachedTry" = "URL을 다시 입력해보거나 검색 엔진을 열고 새 URL을 검색하세요.";
-
-/* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "Safari에서 열기";
-
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "다시 로드";
-
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "%1$@에서는 보통 암호화를 사용하여 사용자의 정보를 보호합니다. 이번에 Brave가 %2$@에 연결을 시도할 때 웹사이트가 비정상적이고 정확하지 않은 자격증명을 보냈습니다. 이는 공격자가 %3$@임을 가장하려고 시도하거나 Wi-Fi 로그인 화면이 연결을 방해할 때 주로 발생합니다. 정보 교환이 시작되기 전에 Brave가 연결을 중단했으므로 귀하의 정보는 안전합니다.<br />%4$@ 웹사이트가 인증서 피닝을 사용하기 때문에 지금은 이 사이트를 방문하실 수 없습니다. 이는 네트워크 오류나 공격에 의한 일시적 상태일 수 있으며, 일반적으로 잠시 후에는 이 페이지가 다시 작동할 수 있습니다.";
 
@@ -2251,8 +2242,7 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "변경사항 저장";
 
-/* Settings item for clearing passwords and login data
-Settings item for clearing site-specific settings and shields settings. */
+/* Settings item for clearing passwords and login data */
 "SavedLogins" = "저장된 로그인 정보";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2385,7 +2375,7 @@ Settings item for clearing site-specific settings and shields settings. */
 "settings.blockYouTubeDistractingElementsDesc" = "유튜브의 방해 요소를 차단합니다";
 
 /* Title beside the toggle for blocking YouTube distracting elements */
-"settings.blockYouTubeDistractingElementsTitle" = "유튜브의 방해 요소를 차단합니다";
+"settings.blockYouTubeDistractingElementsTitle" = "유튜브 방해 요소 차단";
 
 /* Description beside the toggle for blocking YouTube recommendations */
 "settings.blockYoutubeRecommendationsDesc" = "Youtube.com에서 다음 동영상과 엔드카드 요소를 차단합니다";
@@ -2704,6 +2694,9 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "탭 바";
+
+/* Settings item for clearing site-specific settings and shields settings. */
+"SiteAndShieldsSettings" = "사이트 및 방패 설정";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "이 사이트에 문제가 있다는 것을 Brave (브레이브) 개발자에게 알려 주셔서 감사합니다. 최선을 다해 문제를 해결하겠습니다!";
@@ -3250,9 +3243,6 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
 "ThemesDisplayBrightness" = "모양";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "이 설정은 비공개 브라우징 모드에는 적용되지 않습니다.";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "라이트";

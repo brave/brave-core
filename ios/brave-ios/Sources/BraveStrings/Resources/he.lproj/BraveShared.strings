@@ -682,15 +682,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "הזנת שם תיקייה";
 
-/* Shown in error pages to suggest a fix to the user. */
-"errorPageCantBeReachedTry" = "כדאי לנסות להקליד מחדש את כתובת ה-URL או לפתוח מנוע חיפוש ולחפש את כתובת ה-URL החדשה.";
-
-/* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "פתיחה באמצעות Safari";
-
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "ניסיון טעינה נוסף";
-
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "%1$@ בדרך כלל עושה שימוש בהצפנה כדי להגן על המידע שלך. כש-Brave ניסה להתחבר אל %2$@ הפעם, האתר שלח חזרה אישורים לא רגילים ולא נכונים. זה עלול לקרות כשתוקף מנסה להתחזות ל%3$@, או כשמסך התחברות של Wi-Fi הפריע לחיבור. המידע שלך עדיין בטוח כי Brave עצר את החיבור לפני שהתבצע כל חילוף של נתונים.<br />אין לך אפשרות לבקר ב%4$@ כרגע, משום שהאתר משתמש בהצמדת תעודה. שגיאות רשת ומתקפות הן בדרך כלל זמניות, כך שהדף הזה כנראה יחזור לעבוד מאוחר יותר.";
 
@@ -2251,8 +2242,7 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "שמירת שינויים";
 
-/* Settings item for clearing passwords and login data
-Settings item for clearing site-specific settings and shields settings. */
+/* Settings item for clearing passwords and login data */
 "SavedLogins" = "אירועי התחברות שנשמרו";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2385,7 +2375,7 @@ Settings item for clearing site-specific settings and shields settings. */
 "settings.blockYouTubeDistractingElementsDesc" = "חסימת אלמנטים מסיחים ב-YouTube";
 
 /* Title beside the toggle for blocking YouTube distracting elements */
-"settings.blockYouTubeDistractingElementsTitle" = "חסימת אלמנטים מסיחים ב-YouTube";
+"settings.blockYouTubeDistractingElementsTitle" = "חסימת רכיבים מסיחים ב-YouTube";
 
 /* Description beside the toggle for blocking YouTube recommendations */
 "settings.blockYoutubeRecommendationsDesc" = "חוסם את הרכיב ׳הבא׳ ואת כרטיסיות הסיום ב-youtube.com";
@@ -2704,6 +2694,9 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "סרגל כרטיסיות";
+
+/* Settings item for clearing site-specific settings and shields settings. */
+"SiteAndShieldsSettings" = "הגדרות אתר ו-Shields";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "תודה שהודעת למפתחים של Brave שמשהו לא תקין באתר זה. נעשה כמיטב יכולתנו לתקן זאת!";
@@ -3250,9 +3243,6 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
 "ThemesDisplayBrightness" = "מראה";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "ההגדרות האלה לא תקפות למצב גלישה פרטי.";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "בהיר";

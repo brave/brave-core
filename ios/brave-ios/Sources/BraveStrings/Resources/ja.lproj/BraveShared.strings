@@ -682,15 +682,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "フォルダ名を入力";
 
-/* Shown in error pages to suggest a fix to the user. */
-"errorPageCantBeReachedTry" = "URLの再入力をお試しいただくか、検索エンジンを開いて新しいURLを検索してみてください。";
-
-/* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "Safari で開く";
-
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "再読み込み";
-
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "%1$@は通常、情報を保護するために暗号化を使用します。今回、Braveが%2$@に接続を試みた際、ウェブサイトから通常とは異なる不正な認証情報が返されました。これは、攻撃者が%3$@になりすまそうとしているときや、Wi-Fiサインイン画面により接続が中断したときに起こる可能性があります。Braveはデータが交換される前に接続を停止したため、お客様の情報はまだ安全です。<br />ウェブサイトは証明書のピン留めを使用しているため、現時点では%4$@にアクセスすることはできません。ネットワークエラーや攻撃は通常一時的なものなので、しばらくするとページの機能は回復します。";
 
@@ -2251,8 +2242,7 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "変更を保存";
 
-/* Settings item for clearing passwords and login data
-Settings item for clearing site-specific settings and shields settings. */
+/* Settings item for clearing passwords and login data */
 "SavedLogins" = "保存したログイン情報";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2704,6 +2694,9 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "タブバー";
+
+/* Settings item for clearing site-specific settings and shields settings. */
+"SiteAndShieldsSettings" = "サイトとシールドの設定";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "Braveの開発者にサイトの問題について知らせてくれてありがとうございます。修正するために最善を尽くします！";
@@ -3250,9 +3243,6 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
 "ThemesDisplayBrightness" = "外観";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "これらの設定はプライベートモードには適用されません。";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "ライト";

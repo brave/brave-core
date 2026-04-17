@@ -682,15 +682,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Εισαγάγετε όνομα φακέλου";
 
-/* Shown in error pages to suggest a fix to the user. */
-"errorPageCantBeReachedTry" = "Δοκιμάστε να πληκτρολογήστε εκ νέου τη διεύθυνση URL ή να ανοίξετε μια μηχανή αναζήτησης και να αναζητήσετε τη νέα διεύθυνση URL.";
-
-/* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "Άνοιγμα στο Safari";
-
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "Επαναφόρτωση";
-
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "Το %1$@ συνήθως χρησιμοποιεί κρυπτογράφηση για την προστασία των πληροφοριών σας. Όταν το Brave προσπάθησε να συνδεθεί με το %2$@ αυτήν τη φορά, ο ιστότοπος επέστρεψε ασυνήθιστα και εσφαλμένα διαπιστευτήρια. Αυτό μπορεί να συμβεί όταν ένας εισβολέας προσπαθεί να προσποιηθεί ότι είναι το %3$@ ή μια οθόνη σύνδεσης Wi-Fi διέκοψε τη σύνδεση. Οι πληροφορίες σας εξακολουθούν να είναι ασφαλείς, επειδή το Brave διέκοψε τη σύνδεση πριν από την ανταλλαγή δεδομένων.<br />Δεν μπορείτε να επισκεφθείτε το %4$@ αυτήν τη στιγμή, επειδή ο ιστότοπος χρησιμοποιεί καρφίτσωμα πιστοποιητικού. Τα σφάλματα και οι επιθέσεις δικτύου είναι συνήθως προσωρινά, επομένως, αυτή η σελίδα πιθανότατα θα λειτουργεί αργότερα.";
 
@@ -2251,8 +2242,7 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "Αποθήκευση αλλαγών";
 
-/* Settings item for clearing passwords and login data
-Settings item for clearing site-specific settings and shields settings. */
+/* Settings item for clearing passwords and login data */
 "SavedLogins" = "Αποθηκευμένες συνδέσεις";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2704,6 +2694,9 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "Γραμμή καρτελών";
+
+/* Settings item for clearing site-specific settings and shields settings. */
+"SiteAndShieldsSettings" = "Ρυθμίσεις Ιστοτόπου και Ασπίδων";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "Ευχαριστούμε που ενημερώσατε τους προγραμματιστές του Brave ότι υπάρχει κάποιο πρόβλημα μ' αυτόν τον ιστότοπο. Θα κάνουμε το καλύτερο δυνατό για να το διορθώσουμε!";
@@ -3250,9 +3243,6 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
 "ThemesDisplayBrightness" = "Εμφάνιση";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "Αυτές οι ρυθμίσεις δεν εφαρμόζονται στη λειτουργία ιδιωτικής περιήγησης.";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Ανοιχτό";
