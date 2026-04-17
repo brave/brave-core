@@ -17,6 +17,11 @@ struct NewTabPageAdInfo;
 
 class NewTabPageAdEventFactory final {
  public:
+  // This class contains only static methods.
+  NewTabPageAdEventFactory() = delete;
+  NewTabPageAdEventFactory(const NewTabPageAdEventFactory&) = delete;
+  NewTabPageAdEventFactory& operator=(const NewTabPageAdEventFactory&) = delete;
+
   static std::unique_ptr<AdEventInterface<NewTabPageAdInfo>> Build(
       mojom::NewTabPageAdEventType mojom_ad_event_type);
 };
