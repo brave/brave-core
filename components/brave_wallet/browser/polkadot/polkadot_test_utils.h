@@ -52,9 +52,7 @@ struct PolkadotMockRpc {
 
   // Used to simulate a network failure request for chain_getBlock. Should match
   // a key present in block_map_.
-  void SetBadBlockMapKey(std::string bad_block_map_key) {
-    bad_block_map_key_ = bad_block_map_key;
-  }
+  void SetBadBlockMapKey(std::string bad_block_map_key);
 
   // Used to map block hashes to a series of events, as a hex string.
   void SetEventsMap(base::flat_map<std::string, std::string> events_map);

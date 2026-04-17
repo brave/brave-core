@@ -123,6 +123,10 @@ void PolkadotMockRpc::SetBlockMap(
   block_map_ = std::move(block_map);
 }
 
+void PolkadotMockRpc::SetBadBlockMapKey(std::string bad_block_map_key) {
+  bad_block_map_key_ = std::move(bad_block_map_key);
+}
+
 void PolkadotMockRpc::SetEventsMap(
     base::flat_map<std::string, std::string> events_map) {
   events_map_ = std::move(events_map);
