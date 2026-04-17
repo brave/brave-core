@@ -73,10 +73,12 @@ class BraveWorkspaceService : public KeyedService {
   //
   // |backend| must be constructed on the UI thread before posting these tasks.
 
-  // Writes |name| to info.json and |commands| to a Chromium session-command
+  // Writes metadata to info.json and |commands| to a Chromium session-command
   // binary file via |backend|.  Returns true on success.
   static bool WriteWorkspaceToDisk(
       const std::string& name,
+      int window_count,
+      int tab_count,
       std::vector<std::unique_ptr<sessions::SessionCommand>> commands,
       const base::FilePath& workspace_dir,
       scoped_refptr<sessions::CommandStorageBackend> backend);

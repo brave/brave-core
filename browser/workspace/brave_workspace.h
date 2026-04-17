@@ -18,6 +18,8 @@ struct WorkspaceInfo {
 
   std::string name;
   base::Time created_at;
+  int number_of_windows;
+  int number_of_tabs;
 };
 
 #endif  // BRAVE_BROWSER_WORKSPACE_BRAVE_WORKSPACE_H_

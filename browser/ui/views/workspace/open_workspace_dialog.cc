@@ -38,12 +38,14 @@ constexpr int kPadding = 16;
 constexpr int kRowSpacing = 2;
 constexpr int kRowHeight = 36;
 
-std::u16string FormatDate(base::Time time) {
-  base::Time::Exploded exploded;
-  time.LocalExplode(&exploded);
-  return base::UTF8ToUTF16(absl::StrFormat(
-      "%04d-%02d-%02d", exploded.year, exploded.month, exploded.day_of_month));
-}
+// TODO: show date in a ... menu
+// std::u16string FormatDate(base::Time time) {
+//   base::Time::Exploded exploded;
+//   time.LocalExplode(&exploded);
+//   return base::UTF8ToUTF16(absl::StrFormat(
+//       "%04d-%02d-%02d", exploded.year, exploded.month,
+//       exploded.day_of_month));
+// }
 
 }  // namespace
 
@@ -126,13 +128,24 @@ void OpenWorkspaceDialog::BuildWorkspaceList() {
 
   for (size_t i = 0; i < workspaces_.size(); ++i) {
     const auto& info = workspaces_[i];
+    std::u16string ws_stats_text = u"";
+    if (info.number_of_windows > 1) {
+      ws_stats_text = base::UTF8ToUTF16(absl::StrFormat(
+          "%d windows - %d ", info.number_of_windows, info.number_of_tabs));
+    } else {
+      ws_stats_text =
+          base::UTF8ToUTF16(absl::StrFormat("%d ", info.number_of_tabs));
+    }
+    ws_stats_text +=
+        base::UTF8ToUTF16((info.number_of_tabs == 1 ? "tab" : "tabs"));
 
     // Each workspace is rendered as a full-width label button showing the
     // workspace name and creation date.
     auto row_button = std::make_unique<views::LabelButton>(
         base::BindRepeating(&OpenWorkspaceDialog::OnWorkspaceSelected,
                             base::Unretained(this), static_cast<int>(i)),
-        base::UTF8ToUTF16(info.name) + u"  " + FormatDate(info.created_at));
+        base::UTF8ToUTF16(info.name) + u"  " + ws_stats_text);
+
     row_button->SetHorizontalAlignment(gfx::ALIGN_LEFT);
     row_button->SetPreferredSize(
         gfx::Size(kDialogWidth - kPadding * 2 - kRowSpacing * 2, kRowHeight));

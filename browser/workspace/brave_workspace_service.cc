@@ -22,9 +22,12 @@
 
 namespace {
 
-// Name of the tiny metadata file stored inside each workspace directory.
+// Name of the metadata file stored inside each workspace directory.
 constexpr char kInfoFileName[] = "info.json";
-constexpr char kInfoKeyName[] = "name";
+// Properties in the metadata file.
+constexpr char kWorkspaceName[] = "name";
+constexpr char kWorkspaceWindowCount[] = "number-of-windows";
+constexpr char kWorkspaceTabCount[] = "number-of-tabs";
 
 }  // namespace
 
@@ -57,6 +60,8 @@ base::FilePath BraveWorkspaceService::GetWorkspaceDirForName(
 // static
 bool BraveWorkspaceService::WriteWorkspaceToDisk(
     const std::string& name,
+    int window_count,
+    int tab_count,
     std::vector<std::unique_ptr<sessions::SessionCommand>> commands,
     const base::FilePath& workspace_dir,
     scoped_refptr<sessions::CommandStorageBackend> backend) {
@@ -69,10 +74,12 @@ bool BraveWorkspaceService::WriteWorkspaceToDisk(
     return false;
   }
 
-  // Write the human-readable name to info.json so ListWorkspacesInDir can
-  // recover the display name without parsing the binary session file.
+  // Write the name and other info to info.json so ListWorkspacesInDir can
+  // show this without parsing the binary session file.
   base::DictValue info;
-  info.Set(kInfoKeyName, name);
+  info.Set(kWorkspaceName, name);
+  info.Set(kWorkspaceWindowCount, window_count);
+  info.Set(kWorkspaceTabCount, tab_count);
   std::string info_json;
   if (!base::JSONWriter::Write(base::Value(std::move(info)), &info_json) ||
       !base::WriteFile(workspace_dir.AppendASCII(kInfoFileName), info_json)) {
@@ -138,10 +145,14 @@ std::vector<WorkspaceInfo> BraveWorkspaceService::ListWorkspacesInDir(
     if (!parsed) {
       continue;
     }
-    const std::string* name = parsed->FindString(kInfoKeyName);
+
+    // Workspace name / item counts
+    const std::string* name = parsed->FindString(kWorkspaceName);
     if (!name || name->empty()) {
       continue;
     }
+    int window_count = parsed->FindInt(kWorkspaceWindowCount).value_or(0);
+    int tab_count = parsed->FindInt(kWorkspaceTabCount).value_or(0);
 
     // Derive created_at from the timestamp embedded in the Session_* filename.
     base::Time created_at;
@@ -161,6 +172,8 @@ std::vector<WorkspaceInfo> BraveWorkspaceService::ListWorkspacesInDir(
     WorkspaceInfo info;
     info.name = *name;
     info.created_at = created_at;
+    info.number_of_windows = window_count;
+    info.number_of_tabs = tab_count;
     result.push_back(std::move(info));
   }
 

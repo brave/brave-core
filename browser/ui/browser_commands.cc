@@ -168,15 +168,15 @@ std::vector<int> GetSelectedIndices(Browser* browser) {
 // Used for saving a workspace.
 // Appends session commands for a single browser window to |commands| and
 // updates |active_window_id| if |browser| is the calling browser.
-// Returns true if at least one tab was serialized.
-bool AppendBrowserSessionCommands(
+// Returns the number of tabs which were serialized.
+int AppendBrowserSessionCommands(
     Browser* browser,
     Browser* calling_browser,
     std::vector<std::unique_ptr<sessions::SessionCommand>>& commands,
     SessionID& active_window_id) {
   auto* tsm = browser->tab_strip_model();
   if (tsm->count() == 0) {
-    return false;
+    return 0;
   }
 
   SessionID window_id = SessionID::NewUnique();
@@ -202,7 +202,7 @@ bool AppendBrowserSessionCommands(
     }
   }
 
-  bool has_tabs = false;
+  int tab_count = 0;
   for (int i = 0; i < tsm->count(); ++i) {
     content::WebContents* contents = tsm->GetWebContentsAt(i);
     if (!contents) {
@@ -241,12 +241,12 @@ bool AppendBrowserSessionCommands(
 
     commands.push_back(sessions::CreateSetSelectedNavigationIndexCommand(
         tab_id, current_entry));
-    has_tabs = true;
+    tab_count++;
   }
 
   commands.push_back(sessions::CreateSetSelectedTabInWindowCommand(
       window_id, tsm->active_index()));
-  return has_tabs;
+  return tab_count;
 }
 
 void DoRestoreWorkspace(
@@ -1353,20 +1353,20 @@ void SaveWorkspace(Browser* calling_browser, const std::string& name) {
       chrome::FindAllTabbedBrowsersWithProfile(calling_browser->profile());
 
   SessionID active_window_id = SessionID::InvalidValue();
-  bool has_tabs = false;
+  int window_count = 0;
+  int tab_count = 0;
 
   for (Browser* browser : browsers) {
     if (browser->profile() != calling_browser->profile() ||
         !browser->is_type_normal()) {
       continue;
     }
-    if (AppendBrowserSessionCommands(browser, calling_browser, commands,
-                                     active_window_id)) {
-      has_tabs = true;
-    }
+    window_count++;
+    tab_count = AppendBrowserSessionCommands(browser, calling_browser, commands,
+                                             active_window_id);
   }
 
-  if (!has_tabs) {
+  if (tab_count == 0) {
     return;
   }
 
@@ -1391,8 +1391,8 @@ void SaveWorkspace(Browser* calling_browser, const std::string& name) {
       FROM_HERE,
       base::BindOnce(
           base::IgnoreResult(&BraveWorkspaceService::WriteWorkspaceToDisk),
-          name, std::move(commands), std::move(workspace_dir),
-          std::move(backend)));
+          name, window_count, tab_count, std::move(commands),
+          std::move(workspace_dir), std::move(backend)));
 }
 
 void ShowSaveWorkspaceDialog(Browser* browser) {
