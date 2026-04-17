@@ -798,9 +798,11 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   if (email_aliases::features::IsEmailAliasesEnabled()) {
-    registry.ForWebUI<EmailAliasesPanelUI>()
-        .Add<email_aliases::mojom::EmailAliasesService>()
-        .Add<email_aliases::mojom::EmailAliasesPanelHandler>();
+    auto email_aliases_panel =
+        registry.ForWebUI<EmailAliasesPanelUI>()
+            .Add<email_aliases::mojom::EmailAliasesService>()
+            .Add<email_aliases::mojom::EmailAliasesPanelHandler>()
+            .Add<brave_account::mojom::Authentication>();
     registry.ForWebUI<EmailAliasesPromoUI>()
         .Add<email_aliases::mojom::EmailAliasesPromoHandler>();
   }

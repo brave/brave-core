@@ -53,16 +53,6 @@ void EmailAliasesAuth::GetServiceToken(
   }
 }
 
-void EmailAliasesAuth::SetAuthEmailForTesting(const std::string& email) {
-  if (email.empty()) {
-    current_auth_state_.reset();
-  } else {
-    current_auth_state_ = brave_account::mojom::AccountState::NewLoggedIn(
-        brave_account::mojom::LoggedInState::New(email));
-  }
-  on_changed_.Run();
-}
-
 void EmailAliasesAuth::OnDisconnect() {
   brave_account_auth_.reset();
   current_auth_state_.reset();
