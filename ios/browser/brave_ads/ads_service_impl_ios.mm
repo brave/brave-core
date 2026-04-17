@@ -41,15 +41,13 @@ constexpr char kAdsDatabaseFilename[] = "Ads.db";
 
 }  // namespace
 
-AdsServiceImplIOS::AdsServiceImplIOS(PrefService* prefs)
+AdsServiceImplIOS::AdsServiceImplIOS(PrefService& prefs)
     : AdsService(/*delegate=*/nullptr),
       prefs_(prefs),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
-      ads_client_notifier_(std::make_unique<AdsClientNotifier>()) {
-  CHECK(prefs_);
-}
+      ads_client_notifier_(std::make_unique<AdsClientNotifier>()) {}
 
 AdsServiceImplIOS::~AdsServiceImplIOS() = default;
 

@@ -484,7 +484,7 @@ brave_stats::BraveStatsUpdater* BraveBrowserProcessImpl::brave_stats_updater() {
 brave_ads::BraveStatsHelper* BraveBrowserProcessImpl::ads_brave_stats_helper() {
   if (!brave_stats_helper_) {
     brave_stats_helper_ = std::make_unique<brave_ads::BraveStatsHelper>(
-        local_state(), profile_manager());
+        *local_state(), profile_manager());
   }
   return brave_stats_helper_.get();
 }

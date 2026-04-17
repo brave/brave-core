@@ -116,7 +116,7 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
   CHECK(brave_adaptive_captcha_service);
 
   auto delegate = std::make_unique<AdsServiceDelegate>(
-      *profile, local_state, *brave_adaptive_captcha_service);
+      *profile, *local_state, *brave_adaptive_captcha_service);
 
   auto* history_service = HistoryServiceFactory::GetForProfile(
       profile, ServiceAccessType::EXPLICIT_ACCESS);
@@ -139,7 +139,7 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
   CHECK(profile_manager);
 
   return std::make_unique<AdsServiceImpl>(
-      std::move(delegate), prefs, local_state, std::move(http_client),
+      std::move(delegate), *prefs, *local_state, std::move(http_client),
       std::make_unique<VirtualPrefProviderDelegate>(
           *profile, profile_manager->GetProfileAttributesStorage()),
       brave::GetChannelName(), profile->GetPath(), CreateAdsTooltipsDelegate(),

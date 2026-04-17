@@ -39,7 +39,7 @@ constexpr char kNotificationAdUrlPrefix[] = "https://www.brave.com/ads/?";
 
 AdsServiceDelegate::AdsServiceDelegate(
     Profile& profile,
-    PrefService* local_state,
+    PrefService& local_state,
     brave_adaptive_captcha::BraveAdaptiveCaptchaService&
         adaptive_captcha_service)
     : profile_(profile),

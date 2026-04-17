@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_ANALYTICS_P3A_BRAVE_STATS_HELPER_H_
 #define BRAVE_BROWSER_BRAVE_ADS_ANALYTICS_P3A_BRAVE_STATS_HELPER_H_
 
+#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/scoped_observation.h"
 #include "base/time/time.h"
 #include "chrome/browser/profiles/profile_manager_observer.h"
@@ -23,7 +25,7 @@ inline constexpr char kAdsEnabledInstallationTimeHistogramName[] =
 
 class BraveStatsHelper : public ProfileManagerObserver, public ProfileObserver {
  public:
-  BraveStatsHelper(PrefService* local_state, ProfileManager* profile_manager);
+  BraveStatsHelper(PrefService& local_state, ProfileManager* profile_manager);
   ~BraveStatsHelper() override;
 
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
@@ -54,7 +56,7 @@ class BraveStatsHelper : public ProfileManagerObserver, public ProfileObserver {
   base::ScopedObservation<ProfileManager, ProfileManagerObserver>
       profile_manager_observer_{this};
 
-  const raw_ptr<PrefService> local_state_;         // Not owned.
+  const raw_ref<PrefService> local_state_;
   const raw_ptr<ProfileManager> profile_manager_;  // Not owned.
 
   base::Time testing_first_run_time_;
