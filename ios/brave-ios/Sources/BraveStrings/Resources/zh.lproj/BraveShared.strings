@@ -682,15 +682,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "输入文件夹名称";
 
-/* Shown in error pages to suggest a fix to the user. */
-"errorPageCantBeReachedTry" = "尝试重新输入 URL，或打开搜索引擎，搜索新的 URL。";
-
-/* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "在 Safari 中打开";
-
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "重新加载";
-
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "%1$@ 通常使用加密来保护您的信息。当 Brave 这次试图连接到 %2$@ 时，网站发回了不寻常和错误的凭据。当攻击者试图假装是 %3$@ 时，或者 Wi-Fi 登录屏幕中断了连接时，可能会发生这种情况。您的信息仍然是安全的，因为 Brave 在交换任何数据之前停止了连接。<br />您目前无法访问 %4$@，因为该网站使用证书码。网络错误和攻击通常是暂时的，所以这个页面将来可能还能正常工作。";
 
@@ -2251,8 +2242,7 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "储存变更";
 
-/* Settings item for clearing passwords and login data
-Settings item for clearing site-specific settings and shields settings. */
+/* Settings item for clearing passwords and login data */
 "SavedLogins" = "已保存的登录";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2704,6 +2694,9 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "分頁列";
+
+/* Settings item for clearing site-specific settings and shields settings. */
+"SiteAndShieldsSettings" = "站点和屏蔽设置";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "感謝您讓 Brave 的開發人員知悉此網站發生錯誤。我們將盡力予以修正！";
@@ -3250,9 +3243,6 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
 "ThemesDisplayBrightness" = "出现";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "這些設定不適用於私密瀏覽模式。";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "亮";

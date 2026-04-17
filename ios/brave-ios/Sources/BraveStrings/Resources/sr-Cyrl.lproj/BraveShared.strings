@@ -682,15 +682,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Унеси назив фолдера";
 
-/* Shown in error pages to suggest a fix to the user. */
-"errorPageCantBeReachedTry" = "Пробајте да поново унесете URL или отворите претраживач и потражите нови URL.";
-
-/* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "Отвори у прегледачу Safari";
-
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "Поново учитај";
-
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "%1$@ обично користи шифровање да би се заштитили ваши подаци. Када је Brave покушао да се повеже са %2$@ овог пута, веб-сајт је послао необичне и нетачне акредитиве. То се може десити када нападач покушава да се претвара да је %3$@ или је екран за пријаву на Wi-Fi прекинуо везу. Ваше информације су и даље безбедне јер је Brave прекинуо везу пре него што су размењени било какви подаци.<br />Тренутно не можете посетити %4$@ јер веб-сајт користи качење сертификата. Мрежне грешке и напади су обично привремени, тако да ће ова страница вероватно радити касније.";
 
@@ -2251,8 +2242,7 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "Сачувај промене";
 
-/* Settings item for clearing passwords and login data
-Settings item for clearing site-specific settings and shields settings. */
+/* Settings item for clearing passwords and login data */
 "SavedLogins" = "Сачуване пријаве";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2705,6 +2695,9 @@ Settings item for clearing site-specific settings and shields settings. */
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "Трака са картицама";
 
+/* Settings item for clearing site-specific settings and shields settings. */
+"SiteAndShieldsSettings" = "Подешавања сајтова и штитова";
+
 /* No comment provided by engineer. */
 "SiteReportedBody" = "Хвала што сте обавестили развојне програмере Brave-а да нешто није у реду са овим сајтом. Даћемо све од себе да то исправимо!";
 
@@ -2841,7 +2834,7 @@ Settings item for clearing site-specific settings and shields settings. */
 "sync.deleteAccountAlertDescriptionPart2" = "Међутим, неће избрисати податке који се налазе на локалном меморијском простору на тим уређајима.";
 
 /* Title for Alert used action Delete Sync Account. */
-"sync.deleteAccountAlertTitle" = "Брисање налога за синхронизацију";
+"sync.deleteAccountAlertTitle" = "Избриши налог за синхронизацију";
 
 /* Sync Error Description */
 "sync.deprecatedVersionError" = "Изгледа да је овај код креиран на уређају који користи старију верзију Brave-а. Ажурирајте Brave на најновију верзију на другом уређају, а затим креирајте нови код за синхронизацију.";
@@ -3250,9 +3243,6 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
 "ThemesDisplayBrightness" = "Изглед";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "Ова подешавања се не примењују у режиму приватног прегледања.";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Светло";

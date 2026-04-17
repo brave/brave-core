@@ -113,7 +113,7 @@
 "aichat.customModelFormDetailsFieldPlaceholder" = "輸入詳細資訊";
 
 /* The button title for dismissing the keyboard */
-"aichat.customModelFormDoneButtonTitle" = "完成";
+"aichat.customModelFormDoneButtonTitle" = "已完成";
 
 /* The navigation bar title when editing an existing custom model */
 "aichat.customModelFormEditModelNavigationTitle" = "編輯模型";
