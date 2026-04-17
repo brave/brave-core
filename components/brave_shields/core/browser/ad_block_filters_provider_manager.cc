@@ -67,12 +67,9 @@ void AdBlockFiltersProviderManager::MaybeNotifyObserver(
 void AdBlockFiltersProviderManager::ForceNotifyObserver(
     AdBlockFiltersProvider::Observer& observer,
     bool is_for_default_engine) {
-  bool& suppress_engine_startup_change_notifications =
-      is_for_default_engine
-          ? suppress_default_engine_startup_change_notification_
-          : suppress_additional_engine_startup_change_notification_;
-  if (suppress_engine_startup_change_notifications) {
-    suppress_engine_startup_change_notifications = false;
+  // Consume the startup change notification first so it will trigger OnChanged
+  // either right now or when all providers are initialized
+  if (MaybeConsumeEngineStartupChangeNotification(is_for_default_engine)) {
     return;
   }
 
@@ -96,18 +93,28 @@ void AdBlockFiltersProviderManager::OnChanged(bool is_for_default_engine) {
     return;
   }
 
-  // In most cases we should be loading from DAT cache so we want to consume
-  // the startup OnChanged notification to avoid parsing the filter list
-  bool& is_startup =
-      is_for_default_engine
-          ? suppress_default_engine_startup_change_notification_
-          : suppress_additional_engine_startup_change_notification_;
-  if (is_startup) {
-    is_startup = false;
+  // All startup providers are initialized so we can safely consume the startup
+  // notification. The next call to OnChanged will trigger NotifyObservers
+  if (MaybeConsumeEngineStartupChangeNotification(is_for_default_engine)) {
     return;
   }
 
   NotifyObservers(is_for_default_engine);
+}
+
+bool AdBlockFiltersProviderManager::MaybeConsumeEngineStartupChangeNotification(
+    bool is_for_default_engine) {
+  // In most cases we should be loading from DAT cache so we want to consume
+  // the startup OnChanged notification to avoid parsing the filter list
+  bool& suppress_engine_startup_change_notifications =
+      is_for_default_engine
+          ? suppress_default_engine_startup_change_notification_
+          : suppress_additional_engine_startup_change_notification_;
+  if (suppress_engine_startup_change_notifications) {
+    suppress_engine_startup_change_notifications = false;
+    return true;
+  }
+  return false;
 }
 
 bool AdBlockFiltersProviderManager::AreAllProvidersInitialized(

@@ -298,9 +298,9 @@ void AdBlockService::OnResourcesLoaded(
 void AdBlockService::NotifyOnDATLoaded(bool is_default_engine, bool success) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (is_default_engine) {
-    default_dat_loaded_ = true;
+    default_dat_loaded_for_testing_ = true;
   } else {
-    additional_dat_loaded_ = true;
+    additional_dat_loaded_for_testing_ = true;
   }
   // If the cached DAT failed to load, fall back to loading from filter lists.
   if (!success) {
@@ -323,9 +323,9 @@ void AdBlockService::OnEngineLoaded(
 
   if (load_result != FilterListLoadResult::kResourcesOnly) {
     if (is_default_engine) {
-      default_filter_list_loaded_ = true;
+      default_filter_list_loaded_for_testing_ = true;
     } else {
-      additional_filter_list_loaded_ = true;
+      additional_filter_list_loaded_for_testing_ = true;
     }
     observers_.Notify(&Observer::OnFilterListLoaded, is_default_engine,
                       load_result);
@@ -490,14 +490,15 @@ AdBlockDATCacheManager* AdBlockService::GetDATCacheManagerForTesting() {
 
 bool AdBlockService::IsDATLoadedForTesting(bool is_default_engine) const {
   CHECK_IS_TEST();
-  return is_default_engine ? default_dat_loaded_ : additional_dat_loaded_;
+  return is_default_engine ? default_dat_loaded_for_testing_
+                           : additional_dat_loaded_for_testing_;
 }
 
 bool AdBlockService::IsFilterListLoadedForTesting(
     bool is_default_engine) const {
   CHECK_IS_TEST();
-  return is_default_engine ? default_filter_list_loaded_
-                           : additional_filter_list_loaded_;
+  return is_default_engine ? default_filter_list_loaded_for_testing_
+                           : additional_filter_list_loaded_for_testing_;
 }
 
 }  // namespace brave_shields

@@ -149,8 +149,6 @@ void AdBlockServiceTest::SetUpOnMainThread() {
   mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
   host_resolver()->AddRule("*", "127.0.0.1");
   InitEmbeddedTestServer();
-  brave_shields::SetupAdBlockServiceForTesting(
-      g_brave_browser_process->ad_block_service());
   // Most tests are written for aggressive mode. Individual tests should reset
   // this using `DisableAggressiveMode` if they are testing standard mode
   // behavior.
@@ -160,6 +158,8 @@ void AdBlockServiceTest::SetUpOnMainThread() {
 
 void AdBlockServiceTest::PreRunTestOnMainThread() {
   PlatformBrowserTest::PreRunTestOnMainThread();
+  brave_shields::SetupAdBlockServiceForTesting(
+      g_brave_browser_process->ad_block_service());
   WaitForAdBlockServiceThreads();
 
   // Wait for initial engine creation to complete, especially on slower

@@ -68,6 +68,7 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
       bool is_for_default_engine) const;
 
  private:
+  bool MaybeConsumeEngineStartupChangeNotification(bool is_for_default_engine);
   bool AreAllProvidersInitialized(bool is_for_default_engine) const;
 
   void FinishCombinating(

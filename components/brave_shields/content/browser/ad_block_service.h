@@ -277,10 +277,10 @@ class AdBlockService {
 
   base::ObserverList<Observer> observers_;
 
-  bool default_dat_loaded_ = false;
-  bool additional_dat_loaded_ = false;
-  bool default_filter_list_loaded_ = false;
-  bool additional_filter_list_loaded_ = false;
+  bool default_dat_loaded_for_testing_ = false;
+  bool additional_dat_loaded_for_testing_ = false;
+  bool default_filter_list_loaded_for_testing_ = false;
+  bool additional_filter_list_loaded_for_testing_ = false;
 
   SEQUENCE_CHECKER(sequence_checker_);
 
