@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.toolbar.adaptive;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
@@ -20,6 +19,7 @@ import org.chromium.chrome.browser.crypto_wallet.BraveWalletPolicy;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.toolbar.optional_button.BaseButtonDataProvider;
+import org.chromium.chrome.browser.toolbar.optional_button.ButtonData.ButtonSpec;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 /** Handles displaying Brave Wallet button on toolbar. */
@@ -36,13 +36,13 @@ public class BraveWalletButtonController extends BaseButtonDataProvider {
         super(
                 tabProvider,
                 modalDialogManager,
-                buttonDrawable,
-                context.getString(R.string.menu_brave_wallet),
-                /* actionChipLabelResId= */ Resources.ID_NULL,
-                /* supportsTinting= */ true,
-                /* iphCommandBuilder= */ null,
-                AdaptiveToolbarButtonVariant.WALLET,
-                /* tooltipTextResId= */ R.string.menu_brave_wallet);
+                new ButtonSpec.Builder(
+                                buttonDrawable,
+                                context.getString(R.string.menu_brave_wallet),
+                                /* supportsTinting= */ true)
+                        .setButtonVariant(AdaptiveToolbarButtonVariant.WALLET)
+                        .setHoverTooltipTextId(R.string.menu_brave_wallet)
+                        .build());
 
         mContext = context;
     }
