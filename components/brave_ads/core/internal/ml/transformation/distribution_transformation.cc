@@ -12,8 +12,7 @@
 
 namespace brave_ads::ml {
 
-DistributionTransformation::DistributionTransformation()
-    : Transformation(TransformationType::kDistribution) {}
+DistributionTransformation::DistributionTransformation() = default;
 
 std::unique_ptr<Data> DistributionTransformation::Apply(
     const std::unique_ptr<Data>& input_data) const {

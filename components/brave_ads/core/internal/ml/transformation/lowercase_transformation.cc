@@ -15,8 +15,7 @@
 
 namespace brave_ads::ml {
 
-LowercaseTransformation::LowercaseTransformation()
-    : Transformation(TransformationType::kLowercase) {}
+LowercaseTransformation::LowercaseTransformation() = default;
 
 std::unique_ptr<Data> LowercaseTransformation::Apply(
     const std::unique_ptr<Data>& input_data) const {

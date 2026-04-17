@@ -6,11 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_TARGETING_GEOGRAPHICAL_SUBDIVISION_SUPPORTED_SUBDIVISIONS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_TARGETING_GEOGRAPHICAL_SUBDIVISION_SUPPORTED_SUBDIVISIONS_H_
 
-#include <string>
 #include <string_view>
 
 #include "base/containers/flat_map.h"
-#include "base/values.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
@@ -24,9 +22,6 @@ using SupportedSubdivisionMap =
     base::flat_map</*country_code*/ std::string_view, SubdivisionMap>;
 
 const SupportedSubdivisionMap& GetSupportedSubdivisions();
-
-base::ListValue GetSupportedSubdivisionsAsValueList(
-    const std::string& country_code);
 
 }  // namespace brave_ads
 
