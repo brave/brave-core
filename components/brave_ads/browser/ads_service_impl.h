@@ -15,6 +15,7 @@
 
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
@@ -80,8 +81,8 @@ class AdsServiceImpl final : public AdsService,
   // `http_client` can be `nullptr` in tests.
   explicit AdsServiceImpl(
       std::unique_ptr<Delegate> delegate,
-      PrefService* prefs,
-      PrefService* local_state,
+      PrefService& prefs,
+      PrefService& local_state,
       std::unique_ptr<HttpClient> http_client,
       std::unique_ptr<VirtualPrefProvider::Delegate>
           virtual_pref_provider_delegate,
@@ -410,9 +411,9 @@ class AdsServiceImpl final : public AdsService,
 
   base::CancelableTaskTracker history_service_task_tracker_;
 
-  const raw_ptr<PrefService> prefs_;  // Not owned.
+  const raw_ref<PrefService> prefs_;
 
-  const raw_ptr<PrefService> local_state_;  // Not owned.
+  const raw_ref<PrefService> local_state_;
 
   const std::unique_ptr<VirtualPrefProvider> virtual_pref_provider_;
 

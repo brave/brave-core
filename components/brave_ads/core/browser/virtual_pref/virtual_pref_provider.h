@@ -10,7 +10,7 @@
 #include <string>
 #include <string_view>
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
@@ -42,8 +42,8 @@ class VirtualPrefProvider final {
     virtual base::DictValue GetSerpMetrics() const = 0;
   };
 
-  VirtualPrefProvider(PrefService* prefs,
-                      PrefService* local_state,
+  VirtualPrefProvider(PrefService& prefs,
+                      PrefService& local_state,
                       std::unique_ptr<Delegate> delegate);
 
   VirtualPrefProvider(const VirtualPrefProvider&) = delete;
@@ -54,8 +54,8 @@ class VirtualPrefProvider final {
   base::DictValue GetPrefs() const;
 
  private:
-  const raw_ptr<PrefService> prefs_;        // Not owned.
-  const raw_ptr<PrefService> local_state_;  // Not owned.
+  const raw_ref<PrefService> prefs_;
+  const raw_ref<PrefService> local_state_;
 
   const std::unique_ptr<Delegate> delegate_;
 };

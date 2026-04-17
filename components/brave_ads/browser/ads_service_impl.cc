@@ -117,8 +117,8 @@ bool DeletePathOnFileTaskRunner(const base::FilePath& path) {
 
 AdsServiceImpl::AdsServiceImpl(
     std::unique_ptr<Delegate> delegate,
-    PrefService* prefs,
-    PrefService* local_state,
+    PrefService& prefs,
+    PrefService& local_state,
     std::unique_ptr<HttpClient> http_client,
     std::unique_ptr<VirtualPrefProvider::Delegate>
         virtual_pref_provider_delegate,
@@ -137,8 +137,8 @@ AdsServiceImpl::AdsServiceImpl(
       prefs_(prefs),
       local_state_(local_state),
       virtual_pref_provider_(std::make_unique<VirtualPrefProvider>(
-          prefs_,
-          local_state_,
+          prefs,
+          local_state,
           std::move(virtual_pref_provider_delegate))),
       http_client_(std::move(http_client)),
       channel_name_(channel_name),
@@ -155,7 +155,7 @@ AdsServiceImpl::AdsServiceImpl(
   CHECK(device_id_);
   CHECK(bat_ads_service_factory_);
 
-  if (!local_state_ || !history_service_) {
+  if (!history_service_) {
     CHECK_IS_TEST();
   }
 
@@ -618,10 +618,7 @@ void AdsServiceImpl::CloseAdaptiveCaptcha() {
 }
 
 void AdsServiceImpl::InitializeLocalStatePrefChangeRegistrar() {
-  if (!local_state_) {
-    return;
-  }
-  local_state_pref_change_registrar_.Init(local_state_);
+  local_state_pref_change_registrar_.Init(&*local_state_);
 
   local_state_pref_change_registrar_.Add(
       variations::prefs::kVariationsCountry,
@@ -630,7 +627,7 @@ void AdsServiceImpl::InitializeLocalStatePrefChangeRegistrar() {
 }
 
 void AdsServiceImpl::InitializePrefChangeRegistrar() {
-  pref_change_registrar_.Init(prefs_);
+  pref_change_registrar_.Init(&*prefs_);
 
   InitializeBraveRewardsPrefChangeRegistrar();
   InitializeSubdivisionTargetingPrefChangeRegistrar();

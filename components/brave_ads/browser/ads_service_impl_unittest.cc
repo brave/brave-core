@@ -62,8 +62,7 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
     bat_ads_service_factory_ = bat_ads_service_factory.get();
 
     ads_service_ = std::make_unique<AdsServiceImpl>(
-        std::make_unique<test::FakeAdsServiceDelegate>(), &prefs_,
-        &local_state_,
+        std::make_unique<test::FakeAdsServiceDelegate>(), prefs_, local_state_,
         /*http_client=*/nullptr,
         std::make_unique<test::FakeVirtualPrefProviderDelegate>(),
         /*channel_name=*/"foo", profile_dir_.GetPath(),
