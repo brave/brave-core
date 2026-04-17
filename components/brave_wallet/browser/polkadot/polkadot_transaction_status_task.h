@@ -13,18 +13,6 @@
 
 namespace brave_wallet {
 
-template <class R, class T>
-std::optional<size_t> Position(R&& r, const T& val) {
-  size_t i = 0;
-  for (const auto& v : r) {
-    if (v == val) {
-      return i;
-    }
-    ++i;
-  }
-  return std::nullopt;
-}
-
 enum class PolkadotTransactionStatus {
   kSuccess,
   kFailed,

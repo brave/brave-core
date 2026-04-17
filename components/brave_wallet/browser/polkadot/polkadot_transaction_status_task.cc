@@ -10,6 +10,18 @@
 
 namespace brave_wallet {
 
+template <class R, class T>
+std::optional<size_t> Position(R&& r, const T& val) {
+  size_t i = 0;
+  for (const auto& v : r) {
+    if (v == val) {
+      return i;
+    }
+    ++i;
+  }
+  return std::nullopt;
+}
+
 PolkadotTransactionStatusTask::PolkadotTransactionStatusTask(
     PolkadotWalletService& polkadot_wallet_service,
     KeyringService& keyring_service,
