@@ -17,7 +17,7 @@ namespace brave_ads::cbr {
 
 // A `PublicKey` is a commitment by the server to a particular `SigningKey`.
 
-class PublicKey {
+class PublicKey final {
  public:
   PublicKey();
   explicit PublicKey(const std::string& public_key_base64);

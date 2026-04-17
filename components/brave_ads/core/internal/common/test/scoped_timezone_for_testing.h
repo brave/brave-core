@@ -18,7 +18,7 @@ namespace brave_ads::test {
 //
 // Not thread safe.
 
-class ScopedTimezoneForTesting {
+class ScopedTimezoneForTesting final {
  public:
   explicit ScopedTimezoneForTesting(std::string_view timezone)
       : timezone_(timezone), libc_(timezone_), icu_(timezone_.c_str()) {}

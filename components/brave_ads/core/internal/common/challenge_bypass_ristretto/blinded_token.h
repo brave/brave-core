@@ -20,7 +20,7 @@ namespace brave_ads::cbr {
 // scalar multiplication of the point derived from the `TokenPreimage` with the
 // blinding factor. (P = T^r = H_1(t)^r).
 
-class BlindedToken {
+class BlindedToken final {
  public:
   BlindedToken();
   explicit BlindedToken(const std::string& blinded_token_base64);
