@@ -83,7 +83,7 @@ class ContainersSettingsHandlerTest : public testing::Test {
  public:
   void SetUp() override {
     feature_list_.InitAndEnableFeature(features::kContainers);
-    RegisterProfilePrefs(prefs_.registry());
+    RegisterProfilePrefs({}, prefs_.registry());
 
     handler_ = std::make_unique<ContainersSettingsHandler>(&prefs_);
     handler_->BindUI(mock_observer_.BindAndGetRemote());

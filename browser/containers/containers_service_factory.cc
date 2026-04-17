@@ -9,6 +9,7 @@
 
 #include "base/no_destructor.h"
 #include "brave/browser/containers/containers_service_delegate.h"
+#include "brave/browser/containers/default_containers_list.h"
 #include "brave/components/containers/core/browser/containers_service.h"
 #include "brave/components/containers/core/browser/prefs_registration.h"
 #include "brave/components/containers/core/common/features.h"
@@ -50,7 +51,8 @@ ContainersServiceFactory::~ContainersServiceFactory() = default;
 
 void ContainersServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-  containers::RegisterProfilePrefs(registry);
+  containers::RegisterProfilePrefs(containers::CreateDefaultContainersList(),
+                                   registry);
 }
 
 bool ContainersServiceFactory::ServiceIsCreatedWithBrowserContext() const {

@@ -9,6 +9,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "base/values.h"
+#include "brave/components/containers/core/browser/containers_test_utils.h"
 #include "brave/components/containers/core/browser/pref_names.h"
 #include "brave/components/containers/core/browser/prefs_registration.h"
 #include "brave/components/containers/core/common/features.h"
@@ -23,7 +24,7 @@ class ContainersPrefsTest : public testing::Test {
  protected:
   void SetUp() override {
     feature_list_.InitAndEnableFeature(features::kContainers);
-    RegisterProfilePrefs(prefs_.registry());
+    RegisterProfilePrefs({}, prefs_.registry());
   }
 
   base::test::ScopedFeatureList feature_list_;
@@ -158,6 +159,43 @@ TEST_F(ContainersPrefsTest, UpdateAndRemoveLocallyUsedContainer) {
   RemoveLocallyUsedContainerFromPrefs("used-id", prefs_);
   EXPECT_FALSE(GetLocallyUsedContainerFromPrefs(prefs_, "used-id"));
   EXPECT_TRUE(GetLocallyUsedContainersFromPrefs(prefs_).empty());
+}
+
+// Tests `RegisterProfilePrefs` with a non-empty default container list.
+class ContainersPrefsDefaultContainersTest : public testing::Test {
+ protected:
+  void SetUp() override {
+    feature_list_.InitAndEnableFeature(features::kContainers);
+
+    std::vector<mojom::ContainerPtr> default_containers;
+    default_containers.push_back(MakeContainer("container-1", "Container 1"));
+    default_containers.push_back(MakeContainer("container-2", "Container 2"));
+
+    RegisterProfilePrefs(default_containers, prefs_.registry());
+  }
+
+  base::test::ScopedFeatureList feature_list_;
+  sync_preferences::TestingPrefServiceSyncable prefs_;
+};
+
+TEST_F(ContainersPrefsDefaultContainersTest, RegisterStoresDefaultContainers) {
+  auto containers = GetContainersFromPrefs(prefs_);
+  ASSERT_EQ(containers.size(), 2u);
+
+  ExpectContainer(containers[0], "container-1", "Container 1");
+  ExpectContainer(containers[1], "container-2", "Container 2");
+}
+
+TEST_F(ContainersPrefsDefaultContainersTest, ModifyDefaultContainers) {
+  auto containers = GetContainersFromPrefs(prefs_);
+  ASSERT_EQ(containers.size(), 2u);
+
+  containers.erase(containers.begin());
+  SetContainersToPrefs(containers, prefs_);
+
+  containers = GetContainersFromPrefs(prefs_);
+  ASSERT_EQ(containers.size(), 1u);
+  ExpectContainer(containers[0], "container-2", "Container 2");
 }
 
 }  // namespace containers

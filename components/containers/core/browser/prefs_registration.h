@@ -6,6 +6,10 @@
 #ifndef BRAVE_COMPONENTS_CONTAINERS_CORE_BROWSER_PREFS_REGISTRATION_H_
 #define BRAVE_COMPONENTS_CONTAINERS_CORE_BROWSER_PREFS_REGISTRATION_H_
 
+#include <vector>
+
+#include "brave/components/containers/core/mojom/containers.mojom.h"
+
 namespace user_prefs {
 class PrefRegistrySyncable;
 }
@@ -13,7 +17,9 @@ class PrefRegistrySyncable;
 namespace containers {
 
 // Registers container-related preferences with the profile's preference system.
-void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
+void RegisterProfilePrefs(
+    const std::vector<mojom::ContainerPtr>& default_containers,
+    user_prefs::PrefRegistrySyncable* registry);
 
 }  // namespace containers
 

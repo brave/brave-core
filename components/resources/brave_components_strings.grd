@@ -941,6 +941,9 @@
       </if>
       <part file="omnibox_strings.grdp" />
       <part file="playlist_strings.grdp" />
+      <if expr="enable_containers">
+        <part file="containers_strings.grdp" />
+      </if>
       <part file="brave_origin_startup_strings.grdp" />
       <part file="../brave_account/resources/brave_account_strings.grdp" />
     </messages>
