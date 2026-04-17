@@ -15,7 +15,7 @@ struct PurchaseIntentSignalHistoryInfo;
 base::DictValue PurchaseIntentSignalHistoryToValue(
     const PurchaseIntentSignalHistoryInfo& purchase_intent_signal_history);
 
-PurchaseIntentSignalHistoryInfo PurchaseIntentSignalHistoryFromValue(
+PurchaseIntentSignalHistoryInfo PurchaseIntentSignalHistoryFromDict(
     const base::DictValue& dict);
 
 }  // namespace brave_ads

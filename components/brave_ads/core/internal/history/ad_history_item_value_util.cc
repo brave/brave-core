@@ -48,7 +48,7 @@ constexpr std::string_view kLikeSegmentReactionTypeKey = "optAction";
 
 }  // namespace
 
-AdHistoryItemInfo AdHistoryItemFromValue(const base::DictValue& dict) {
+AdHistoryItemInfo AdHistoryItemFromDict(const base::DictValue& dict) {
   AdHistoryItemInfo ad_history_item;
 
   ParseCreatedAt(dict, ad_history_item);

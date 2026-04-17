@@ -89,12 +89,12 @@ class BraveAdsAdHistoryItemValueUtilTest : public test::TestBase {
   }
 };
 
-TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemFromValue) {
+TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemFromDict) {
   // Arrange
   const base::DictValue dict = base::test::ParseJsonDict(kAdHistoryItemAsJson);
 
   // Act
-  const AdHistoryItemInfo ad_history_item = AdHistoryItemFromValue(dict);
+  const AdHistoryItemInfo ad_history_item = AdHistoryItemFromDict(dict);
 
   // Assert
   EXPECT_EQ(ad_history_item,
@@ -103,13 +103,13 @@ TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemFromValue) {
                                      /*use_random_uuids=*/false));
 }
 
-TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemFromLegacyValue) {
+TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemFromLegacyDict) {
   // Arrange
   const base::DictValue dict =
       base::test::ParseJsonDict(kLegacyAdHistoryItemAsJson);
 
   // Act
-  const AdHistoryItemInfo ad_history_item = AdHistoryItemFromValue(dict);
+  const AdHistoryItemInfo ad_history_item = AdHistoryItemFromDict(dict);
 
   // Assert
   EXPECT_EQ(ad_history_item,

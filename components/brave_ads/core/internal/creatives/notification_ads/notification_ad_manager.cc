@@ -120,7 +120,7 @@ void NotificationAdManager::Initialize() {
   if (!list) {
     return;
   }
-  ads_ = NotificationAdsFromValue(*list);
+  ads_ = NotificationAdsFromList(*list);
 
   MaybeRemoveAll();
 }

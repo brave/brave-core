@@ -71,21 +71,22 @@ TEST_F(BraveAdsTokenIssuerValueUtilTest, EmptyTokenIssuersToValue) {
   EXPECT_THAT(list, ::testing::IsEmpty());
 }
 
-TEST_F(BraveAdsTokenIssuerValueUtilTest, TokenIssuersFromValue) {
+TEST_F(BraveAdsTokenIssuerValueUtilTest, MaybeBuildTokenIssuersFromList) {
   // Arrange
   const base::ListValue list = base::test::ParseJsonList(kTokenIssuersAsJson);
 
   // Act
-  std::optional<TokenIssuerList> token_issuers = TokenIssuersFromValue(list);
+  std::optional<TokenIssuerList> token_issuers =
+      MaybeBuildTokenIssuersFromList(list);
 
   // Assert
   EXPECT_EQ(test::BuildTokenIssuers(), token_issuers);
 }
 
-TEST_F(BraveAdsTokenIssuerValueUtilTest, EmptyTokenIssuersFromValue) {
+TEST_F(BraveAdsTokenIssuerValueUtilTest, NoTokenIssuersFromEmptyList) {
   // Act
   const std::optional<TokenIssuerList> token_issuers =
-      TokenIssuersFromValue({});
+      MaybeBuildTokenIssuersFromList({});
 
   // Assert
   EXPECT_THAT(*token_issuers, ::testing::IsEmpty());

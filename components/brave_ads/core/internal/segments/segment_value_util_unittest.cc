@@ -45,12 +45,12 @@ TEST(BraveAdsSegmentValueUtilTest, EmptySegmentsToValue) {
   EXPECT_THAT(list, ::testing::IsEmpty());
 }
 
-TEST(BraveAdsSegmentValueUtilTest, SegmentsFromValue) {
+TEST(BraveAdsSegmentValueUtilTest, SegmentsFromList) {
   // Arrange
   const base::ListValue list = base::test::ParseJsonList(kSegmentsAsJson);
 
   // Act
-  const SegmentList segments = SegmentsFromValue(list);
+  const SegmentList segments = SegmentsFromList(list);
 
   // Assert
   const SegmentList expected_segments = {"technology & computing",
@@ -59,9 +59,9 @@ TEST(BraveAdsSegmentValueUtilTest, SegmentsFromValue) {
   EXPECT_EQ(expected_segments, segments);
 }
 
-TEST(BraveAdsSegmentValueUtilTest, EmptySegmentsFromValue) {
+TEST(BraveAdsSegmentValueUtilTest, NoSegmentsFromEmptyList) {
   // Act & Assert
-  EXPECT_THAT(SegmentsFromValue({}), ::testing::IsEmpty());
+  EXPECT_THAT(SegmentsFromList({}), ::testing::IsEmpty());
 }
 
 }  // namespace brave_ads

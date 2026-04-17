@@ -15,7 +15,7 @@ namespace brave_ads {
 
 struct AdHistoryItemInfo;
 
-AdHistoryItemInfo AdHistoryItemFromValue(const base::DictValue& dict);
+AdHistoryItemInfo AdHistoryItemFromDict(const base::DictValue& dict);
 
 base::DictValue AdHistoryItemToValue(const AdHistoryItemInfo& ad_history_item);
 

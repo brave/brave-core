@@ -73,7 +73,7 @@ base::DictValue ClientInfo::ToValue() const {
            std::move(probabilities_history_list));
 }
 
-bool ClientInfo::FromValue(const base::DictValue& dict) {
+bool ClientInfo::FromDict(const base::DictValue& dict) {
   if (const auto* const value = dict.FindDict("purchaseIntentSignalHistory")) {
     for (const auto [segment, history] : *value) {
       const auto* const items = history.GetIfList();
@@ -89,7 +89,7 @@ bool ClientInfo::FromValue(const base::DictValue& dict) {
         }
 
         histories.push_back(
-            PurchaseIntentSignalHistoryFromValue(item.GetDict()));
+            PurchaseIntentSignalHistoryFromDict(item.GetDict()));
       }
 
       purchase_intent_signal_history.emplace(segment, histories);
@@ -159,7 +159,7 @@ bool ClientInfo::FromJson(const std::string& json) {
     return false;
   }
 
-  return FromValue(*dict);
+  return FromDict(*dict);
 }
 
 }  // namespace brave_ads

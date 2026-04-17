@@ -29,7 +29,8 @@ std::optional<IssuersInfo> GetIssuers() {
     return std::nullopt;
   }
 
-  std::optional<TokenIssuerList> token_issuers = TokenIssuersFromValue(*list);
+  std::optional<TokenIssuerList> token_issuers =
+      MaybeBuildTokenIssuersFromList(*list);
   if (!token_issuers) {
     return std::nullopt;
   }
