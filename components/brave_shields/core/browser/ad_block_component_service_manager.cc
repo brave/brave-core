@@ -62,7 +62,7 @@ constexpr ListDefaultOverrideConstants kOverrideConstants[] = {
     kExperimentalListConstants};
 
 bool IsAdBlockOnlyModeFilterList(const std::string& uuid) {
-  return kAdblockOnlyModeFilerListUUIDs.contains(uuid);
+  return kAdblockOnlyModeFilterListUUIDs.contains(uuid);
 }
 
 bool IsAdBlockOnlyModeSupportedAndFeatureEnabled(const std::string& locale) {
