@@ -755,8 +755,15 @@ if (!is_android) {
       deps += [ "//brave/browser/ui/commander:interactive_ui_tests" ]
     }
 
-    if (is_win) {
+    if (use_aura) {
       deps += [ "//ui/aura:test_support" ]
+    }
+
+    if (use_ozone) {
+      deps += [
+        "//ui/ozone",
+        "//ui/platform_window/common",
+      ]
     }
   }
 }
