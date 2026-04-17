@@ -22,6 +22,11 @@ class ScopedRandTimeDeltaWithJitterSetterForTesting final {
   explicit ScopedRandTimeDeltaWithJitterSetterForTesting(
       base::TimeDelta time_delta);
 
+  ScopedRandTimeDeltaWithJitterSetterForTesting(
+      const ScopedRandTimeDeltaWithJitterSetterForTesting&) = delete;
+  ScopedRandTimeDeltaWithJitterSetterForTesting& operator=(
+      const ScopedRandTimeDeltaWithJitterSetterForTesting&) = delete;
+
   ~ScopedRandTimeDeltaWithJitterSetterForTesting();
 };
 

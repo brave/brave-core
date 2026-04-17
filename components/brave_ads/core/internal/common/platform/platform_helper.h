@@ -19,6 +19,9 @@ class PlatformHelper {
 
   static void SetForTesting(const PlatformHelper* platform_helper);
 
+  PlatformHelper(const PlatformHelper&) = delete;
+  PlatformHelper& operator=(const PlatformHelper&) = delete;
+
   virtual bool IsMobile() const;
   virtual std::string GetName() const;
   virtual PlatformType GetType() const;

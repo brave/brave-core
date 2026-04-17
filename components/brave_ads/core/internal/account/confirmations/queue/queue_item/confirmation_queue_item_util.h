@@ -23,6 +23,13 @@ class ScopedDelayBeforeProcessingConfirmationQueueItemForTesting final {
   explicit ScopedDelayBeforeProcessingConfirmationQueueItemForTesting(
       base::TimeDelta delay);
 
+  ScopedDelayBeforeProcessingConfirmationQueueItemForTesting(
+      const ScopedDelayBeforeProcessingConfirmationQueueItemForTesting&) =
+      delete;
+  ScopedDelayBeforeProcessingConfirmationQueueItemForTesting& operator=(
+      const ScopedDelayBeforeProcessingConfirmationQueueItemForTesting&) =
+      delete;
+
   ~ScopedDelayBeforeProcessingConfirmationQueueItemForTesting();
 };
 

@@ -6,8 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_TRANSFORMATION_HASHED_NGRAMS_TRANSFORMATION_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_TRANSFORMATION_HASHED_NGRAMS_TRANSFORMATION_H_
 
-#include <stdint.h>
-
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <vector>
@@ -23,10 +22,9 @@ class HashedNGramsTransformation final : public Transformation {
   HashedNGramsTransformation();
   HashedNGramsTransformation(int bucket_count, std::vector<uint32_t> subgrams);
 
-  HashedNGramsTransformation(
-      HashedNGramsTransformation&& hashed_ngrams) noexcept;
-  HashedNGramsTransformation& operator=(
-      HashedNGramsTransformation&& hashed_ngrams) = delete;
+  HashedNGramsTransformation(const HashedNGramsTransformation&) = delete;
+  HashedNGramsTransformation& operator=(const HashedNGramsTransformation&) =
+      delete;
 
   ~HashedNGramsTransformation() override;
 

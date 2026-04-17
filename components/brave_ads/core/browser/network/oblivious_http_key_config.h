@@ -42,6 +42,9 @@ class ObliviousHttpKeyConfig {
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       GURL key_config_url);
 
+  ObliviousHttpKeyConfig(const ObliviousHttpKeyConfig&) = delete;
+  ObliviousHttpKeyConfig& operator=(const ObliviousHttpKeyConfig&) = delete;
+
   ~ObliviousHttpKeyConfig();
 
   // Fetches and caches the key config if it is missing or expired.

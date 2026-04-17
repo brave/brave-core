@@ -28,9 +28,6 @@ HashedNGramsTransformation::HashedNGramsTransformation(
       std::make_unique<HashVectorizer>(bucket_count, std::move(subgrams));
 }
 
-HashedNGramsTransformation::HashedNGramsTransformation(
-    HashedNGramsTransformation&& hashed_ngrams) noexcept = default;
-
 HashedNGramsTransformation::~HashedNGramsTransformation() = default;
 
 std::unique_ptr<Data> HashedNGramsTransformation::Apply(
