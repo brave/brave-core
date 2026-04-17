@@ -3,9 +3,11 @@
 
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/webui/desktop_wallpaper/desktop_wallpaper.mojom.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
+#include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/webui_config.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -48,20 +50,26 @@ class DesktopWallpaperUIConfig
   DesktopWallpaperUIConfig();
 };
 
-class DesktopWallpaperDialogDelegate : public ui::WebDialogDelegate {
+class DesktopWallpaperDialogDelegate : public ui::WebDialogDelegate,
+                                     public content::WebContentsObserver {
  public:
   DesktopWallpaperDialogDelegate(
       const std::string& image_url,
-      scoped_refptr<network::SharedURLLoaderFactory> loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> loader_factory,
+      content::WebContents* initiator_web_contents);
   ~DesktopWallpaperDialogDelegate() override;
+
+  void SetConstrainedDelegate(ConstrainedWebDialogDelegate* delegate);
 
  private:
   GURL GetDialogContentURL() const override;
   void GetDialogSize(gfx::Size* size) const override;
   void GetMinimumDialogSize(gfx::Size* size) const override;
+  void OnDialogClosed(const std::string& json_retval) override;
 
-  // const int window_height_ = 1080;
-  // const int window_width_ = 1920;
+  void WebContentsDestroyed() override;
+
+  raw_ptr<ConstrainedWebDialogDelegate> constrained_delegate_ = nullptr;
   std::string image_url_;
   scoped_refptr<network::SharedURLLoaderFactory> loader_factory_;
 };

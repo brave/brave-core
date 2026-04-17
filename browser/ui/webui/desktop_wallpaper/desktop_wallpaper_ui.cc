@@ -1,7 +1,10 @@
 #include "brave/browser/ui/webui/desktop_wallpaper/desktop_wallpaper_ui.h"
 
+#include <optional>
 #include <utility>
 
+#include "base/json/json_writer.h"
+#include "base/values.h"
 #include "brave/browser/resources/desktop_wallpaper/grit/desktop_wallpaper_generated_map.h"
 #include "brave/browser/resources/desktop_wallpaper/grit/desktop_wallpaper_static_resources.h"
 #include "brave/browser/resources/desktop_wallpaper/grit/desktop_wallpaper_static_resources_map.h"
@@ -16,6 +19,8 @@
 #include "content/public/common/url_constants.h"
 #include "services/network/public/mojom/content_security_policy.mojom.h"
 #include "ui/webui/webui_util.h"
+#include "base/json/json_writer.h"
+#include "base/values.h"
 
 DesktopWallpaperUI::DesktopWallpaperUI(content::WebUI* web_ui)
     : ConstrainedWebDialogUI(web_ui),
@@ -30,12 +35,6 @@ DesktopWallpaperUI::DesktopWallpaperUI(content::WebUI* web_ui)
       IDR_DESKTOP_WALLPAPER_STATIC_DESKTOP_WALLPAPER_ROOT_HTML);
 
   source->AddResourcePaths(kDesktopWallpaperStaticResources);
-
-  source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::ImgSrc,
-      "img-src chrome://resources chrome://theme chrome://image "
-      "chrome://favicon2 chrome://app-icon chrome://extension-icon "
-      "chrome://fileicon blob: data: https: 'self';");
 }
 
 DesktopWallpaperUI::~DesktopWallpaperUI() = default;
@@ -64,17 +63,50 @@ DesktopWallpaperUIConfig::DesktopWallpaperUIConfig()
 
 DesktopWallpaperDialogDelegate::DesktopWallpaperDialogDelegate(
     const std::string& image_url,
-    scoped_refptr<network::SharedURLLoaderFactory> loader_factory)
-    : image_url_(image_url), loader_factory_(loader_factory) {
+    scoped_refptr<network::SharedURLLoaderFactory> loader_factory,
+    content::WebContents* initiator_web_contents)
+    : content::WebContentsObserver(initiator_web_contents),
+      image_url_(image_url),
+      loader_factory_(loader_factory) {
+  std::optional<std::string> react_props =
+      base::WriteJson(base::DictValue().Set("image_url", image_url));
+
+  if (!react_props || react_props->empty()) {
+    LOG(ERROR) << "DesktopWallpaperDialogDelegate: cannot get props for the "
+                  "react component";
+    return;
+  }
 
   set_dialog_content_url(GURL(kDesktopWallpaperURL));
   set_show_dialog_title(false);
   set_can_resize(false);
+  set_delete_on_close(false);
   set_dialog_modal_type(ui::mojom::ModalType::kWindow);
-  set_dialog_args("\"" + image_url + "\"");
+  set_dialog_args(*react_props);
 }
 
 DesktopWallpaperDialogDelegate::~DesktopWallpaperDialogDelegate() = default;
+
+void DesktopWallpaperDialogDelegate::SetConstrainedDelegate(
+    ConstrainedWebDialogDelegate* delegate) {
+  constrained_delegate_ = delegate;
+}
+
+void DesktopWallpaperDialogDelegate::OnDialogClosed(
+    const std::string& json_retval) {
+  if (constrained_delegate_) {
+    auto released_contents = constrained_delegate_->ReleaseWebContents();
+    constrained_delegate_ = nullptr;
+  }
+  WebDialogDelegate::OnDialogClosed(json_retval);
+}
+
+void DesktopWallpaperDialogDelegate::WebContentsDestroyed() {
+  if (constrained_delegate_) {
+    auto released_contents = constrained_delegate_->ReleaseWebContents();
+    constrained_delegate_ = nullptr;
+  }
+}
 
 GURL DesktopWallpaperDialogDelegate::GetDialogContentURL() const {
   return GURL(kDesktopWallpaperURL);

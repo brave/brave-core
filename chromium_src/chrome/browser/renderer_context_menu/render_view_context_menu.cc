@@ -456,10 +456,14 @@ void RenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
 #if BUILDFLAG(IS_MAC)
     case IDC_CONTENT_CONTEXT_SET_IMAGE_AS_BACKGROUND: {
       auto delegate = std::make_unique<DesktopWallpaperDialogDelegate>(
-          params_.src_url.spec(), GetProfile()->GetURLLoaderFactory());
+          params_.src_url.spec(), GetProfile()->GetURLLoaderFactory(),
+          source_web_contents_);
+      auto* constrained_delegate = ShowConstrainedWebDialog(
+          GetProfile(), std::move(delegate), source_web_contents_);
+      auto* web_dialog_delegate = constrained_delegate->GetWebDialogDelegate();
 
-      ShowConstrainedWebDialog(GetProfile(), std::move(delegate),
-                               source_web_contents_);
+      static_cast<DesktopWallpaperDialogDelegate*>(web_dialog_delegate)
+          ->SetConstrainedDelegate(constrained_delegate);
 
       break;
     }

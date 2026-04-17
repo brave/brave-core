@@ -11,8 +11,8 @@ import {
 
 setIconBasePath('chrome://resources/brave-icons')
 
-const handler = new PageHandlerRemote()
-const callbackRouter = new PageCallbackRouter()
+export const handler = new PageHandlerRemote()
+export const callbackRouter = new PageCallbackRouter()
 
 PageHandlerFactory.getRemote().createPageHandler(
   callbackRouter.$.bindNewPipeAndPassRemote(),

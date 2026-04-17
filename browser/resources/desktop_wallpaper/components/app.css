@@ -1,3 +1,7 @@
+html, body {
+  overflow: hidden;
+}
+
 .dw-card {
   max-width: 100%;
   width: 100%;
@@ -65,14 +69,17 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  margin-top: 16px;
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  right: 1rem;
 }
 
 .dw-padded-button {
   margin: 5px;
 }
 
-.dw-generic-section {
+.dw-generic-section, .dw-loading-section {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -91,6 +98,10 @@
   footer {
     width: 100%;
   }
+}
+
+.dw-loading-section {
+  justify-content: center;
 }
 
 .dw-full-width-button {
@@ -131,9 +142,4 @@ leo-option {
   background-color: var(--leo-color-black);
   background-position: center;
   background-repeat: no-repeat;
-}
-
-.preview-box.fit-tile {
-  background-size: auto;
-  background-repeat: repeat;
 }

@@ -38,8 +38,6 @@ generate_grd("static_resources_grd") {
   input_files = [
     "desktop_wallpaper_root.html",
     "components/app.css",
-    "assets/Lion.svg",
-    "assets/startup-bg.jpg",
   ]
   input_files_base_dir = rebase_path(".", "//")
 }

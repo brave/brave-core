@@ -1,105 +1,56 @@
 import * as React from 'react'
+
 import Button from '@brave/leo/react/button'
 import DropDown from '@brave/leo/react/dropdown'
 import ProgressRing from '@brave/leo/react/progressRing'
 import Icon from '@brave/leo/react/icon'
 import Checkbox from '@brave/leo/react/checkbox'
 
+import { useImagePreview } from '../hooks/useImagePreview'
+import { useDesktopWallpaper } from '../hooks/useDesktopWallpaper'
+
 import '@brave/leo/tokens/css/variables.css'
 import './app.css'
-import { useCallback } from 'react'
 
 const FIT_OPTIONS = new Map([
   ['fill', 'Fill'],
   ['fit', 'Fit'],
   ['stretch', 'Stretch'],
   ['center', 'Center'],
-  ['tile', 'Tile'],
 ])
-
-const MONITOR_OPTIONS = new Map([
-  ["ID_LG_UltraWide_34WK95U", { label: "LG UltraWide 34WK95U", width: 3440, height: 1440 }],
-  ["ID_Samsung_Odyssey_G9", { label: "Samsung Odyssey G9", width: 3840, height: 1080 }],
-  ["ID_Lenovo_ThinkVision_P27q-20", { label: "Lenovo ThinkVision P27q-20", width: 1440, height: 2560 }],
-])
-
-const DEFAULT_MONITOR_KEY = MONITOR_OPTIONS.keys().next().value!
 
 export function App() {
-  const [fit, setFit] = React.useState('fill')
-  const [monitor, setMonitor] = React.useState(DEFAULT_MONITOR_KEY)
+  const {
+    status,
+    fit,
+    monitor,
+    useAllMonitors,
+    imageSource,
+    displays,
+    handleApply,
+    handleCancel,
+    handleFitOnChange,
+    handleUseBackgroundOnChange,
+    handleMonitorOnChange,
+  } = useDesktopWallpaper('1')
 
-  const [status, _] = React.useState<{ type: 'loading' | 'error' | 'success' | 'idle'; message?: string }>({ type: 'idle' })
-  const [imgSize, setImgSize] = React.useState({ width: 0, height: 0 })
-  const [scale, setScale] = React.useState(1)
-
-  const imageUrl = 'https://placehold.co/600x400'
-  const containerRef = React.useRef<HTMLDivElement>(null)
-  const [useBackground, setUseBackground] = React.useState(true)
-
-  const selectedMonitor = MONITOR_OPTIONS.get(monitor)
-  const monitorWidth = selectedMonitor?.width ?? 1920
-  const monitorHeight = selectedMonitor?.height ?? 1080
-
-  const updateScale = useCallback(() => {
-    if (containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect()
-      setScale(rect.width / monitorWidth)
-    }
-  }, [monitorWidth])
-
-  React.useEffect(() => {
-    const img = new Image()
-    img.onload = () => setImgSize({ width: img.naturalWidth, height: img.naturalHeight })
-    img.src = imageUrl
-  }, [imageUrl])
-
-  React.useEffect(() => {
-    updateScale()
-    window.addEventListener('resize', updateScale)
-    return () => window.removeEventListener('resize', updateScale)
-  }, [updateScale])
-
-  const handleApply = () => {
-    // Call C++ handler to set wallpaper
-    //;(window as any).chrome?.send?.('set-desktop-wallpaper', [imageUrl, fit])
-  }
-
-  const handleCancel = () => {
-    // Close the constrained dialog from JS
-    //;(window as any).chrome?.send?.('dialogClose')
-  }
-
-  const handleFitOnChange = ({ value }: { value: string }) => {
-    setFit(value)
-  }
-
-  const handleUseBackgroundOnChange = ({ checked }: { checked: boolean }) => {
-    setUseBackground(checked)
-  }
-
-  const getBackgroundSize = () => {
-    switch (fit) {
-      case 'fill': return 'cover'
-      case 'fit': return 'contain'
-      case 'stretch': return '100% 100%'
-      case 'center':
-        return `${imgSize.width * scale}px ${imgSize.height * scale}px`
-      case 'tile':
-        return `${imgSize.width * scale}px ${imgSize.height * scale}px`
-      default: return 'cover'
-    }
-  }
+  const {
+    monitorWidth,
+    monitorHeight,
+    containerRef,
+    getBackgroundSize
+  } = useImagePreview(imageSource, monitor, displays, fit)
 
   return (
     <div className='dw-card'>
       <div className='dw-modal-layout'>
+        {/* Loading */}
         {status.type === 'loading' && (
-          <div className='dw-generic-section'>
+          <div className='dw-loading-section'>
             <ProgressRing mode='indeterminate' />
-            <p>Applying wallpaper...</p>
           </div>
         )}
+        {/* Error */}
         {status.type === 'error' && (
           <div className='dw-generic-section'>
             <section>
@@ -107,12 +58,13 @@ export function App() {
               <p>{status.message}</p>
             </section>
             <footer>
-              <Button kind='filled' size='small' className='dw-full-width-button'>
+              <Button kind='filled' size='small' onClick={handleCancel} className='dw-full-width-button'>
                 Close
               </Button>
             </footer>
           </div>
         )}
+        {/* Success */}
         {status.type === 'success' && (
           <div className='dw-generic-section'>
             <section>
@@ -120,12 +72,13 @@ export function App() {
               <p>Wallpaper applied successfully</p>
             </section>
             <footer>
-              <Button kind='filled' size='small' className='dw-full-width-button'>
+              <Button kind='filled' size='small' onClick={handleCancel} className='dw-full-width-button'>
                 Done!
               </Button>
             </footer>
           </div>
         )}
+        {/* Idle */}
         {status.type === 'idle' && (
           <div className='dw-form-section'>
             <div className='dw-text-section'>
@@ -135,33 +88,35 @@ export function App() {
               <div
                 className={`preview-box fit-${fit}`}
                 style={{
-                  backgroundImage: `url('${imageUrl}')`,
+                  backgroundImage: `url('${imageSource}')`,
                   aspectRatio: `${monitorWidth} / ${monitorHeight}`,
-                  backgroundSize: getBackgroundSize()
+                  backgroundSize: getBackgroundSize(),
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'center'
                 }}
                 title={fit}
                 ref={containerRef}
               />
             </div>
-            {MONITOR_OPTIONS.size > 1 && (
+            {displays.length > 1 && (
               <>
-                {!useBackground && (
+                {!useAllMonitors && (
                   <DropDown
                     positionStrategy='fixed'
                     className='dw-dropdown'
                     placeholder='Pick one...'
-                    onChange={({ value }: { value: string }) => setMonitor(value)}
-                    value={MONITOR_OPTIONS.get(monitor)?.label}
+                    onChange={handleMonitorOnChange}
+                    value={monitor}
                   >
                     <div slot='label' className='dw-input-label'>Screen</div>
-                    {[...MONITOR_OPTIONS.entries()].map(([key, value]) => (
-                      <leo-option key={key} value={key}>
-                        {value.label}
+                    {displays.map(display => (
+                      <leo-option key={display.id} value={display.id}>
+                        {display.label}
                       </leo-option>
                     ))}
                   </DropDown>
                 )}
-                <Checkbox checked={useBackground} onChange={handleUseBackgroundOnChange}>
+                <Checkbox checked={useAllMonitors} onChange={handleUseBackgroundOnChange}>
                   <span className='dw-input-label'>Apply to all screens</span>
                 </Checkbox>
               </>

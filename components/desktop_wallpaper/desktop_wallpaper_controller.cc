@@ -1,73 +1,103 @@
-#include <memory>
+#include <filesystem>
+#include <format>
+#include <vector>
 
+#include "base/check.h"
 #include "base/files/file_path.h"
-#include "base/functional/bind.h"
-#include "base/no_destructor.h"
+#include "base/logging.h"
 #include "base/path_service.h"
+#include "base/strings/string_split.h"
+#include "brave/browser/ui/webui/desktop_wallpaper/desktop_wallpaper.mojom-shared.h"
+#include "brave/browser/ui/webui/desktop_wallpaper/desktop_wallpaper.mojom.h"
+#include "chrome/common/chrome_paths.h"
 #include "desktop_wallpaper_service.h"
-#include "services/network/public/cpp/resource_request.h"
-#include "services/network/public/cpp/simple_url_loader.h"
 
 namespace desktop_wallpaper {
-std::unique_ptr<network::SimpleURLLoader>& GetLoader() {
-  static base::NoDestructor<std::unique_ptr<network::SimpleURLLoader>> loader;
-  return *loader;
-}
-
-void DesktopWallpaper::SetImageAsDesktopWallpaper(
-    scoped_refptr<network::SharedURLLoaderFactory> loader_factory,
-    const GURL& url,
+desktop_wallpaper::mojom::WallpaperStatus
+DesktopWallpaper::SetImageAsDesktopWallpaper(
+    const std::string path,
+    std::vector<desktop_wallpaper::mojom::DisplayInfosPtr> displays,
     Scaling scaling) {
-  base::FilePath home_path;
+  if (path.empty() || !std::filesystem::exists(path)) {
+    LOG(ERROR) << "Cannot set image as desktop wallpaper: path is empty or "
+                  "does not exist";
 
-  CHECK(base::PathService::Get(base::DIR_HOME, &home_path));
-
-  base::FilePath img_name = base::FilePath(url.path()).BaseName();
-  base::FilePath path = home_path.Append(img_name);
-
-  DownloadAndSaveWallpaper(loader_factory, url, path);
-}
-
-void DesktopWallpaper::DownloadAndSaveWallpaper(
-    scoped_refptr<network::SharedURLLoaderFactory> loader_factory,
-    const GURL& url,
-    const base::FilePath& path) {
-  auto req = std::make_unique<network::ResourceRequest>();
-  req->url = url;
-
-  GetLoader() = network::SimpleURLLoader::Create(
-      std::move(req), GetNetworkTrafficAnnotationTag());
-  GetLoader()->SetAllowHttpErrorResults(false);
-  GetLoader()->DownloadToFile(
-      loader_factory.get(),
-      base::BindOnce(&DesktopWallpaper::OnWallpaperDownloaded), path);
-}
-
-void DesktopWallpaper::OnWallpaperDownloaded(base::FilePath path) {
-  if (!path.empty()) {
-    DesktopWallpaper::SetWallpaper(path);
+    return desktop_wallpaper::mojom::WallpaperStatus::failure;
   }
 
-  GetLoader().reset();
-}
+  std::filesystem::path p = path;
+  auto ext = p.extension().string().substr(
+      1);  // don't really need to have the dot of the file extension as well
+  auto filename =
+      displays.size() > 1 ? ext : std::format("{}_{}", ext, displays[0]->id);
 
-net::NetworkTrafficAnnotationTag
-DesktopWallpaper::GetNetworkTrafficAnnotationTag() {
-  return net::DefineNetworkTrafficAnnotation("desktop_wallpaper", R"(
-    semantic {
-      sender: "Desktop Wallpaper Service"
-      description: "Set a wallpaper from a given image"
-      trigger: "User tries to set a desktop wallpaper from the context menu"
-      data: "Image URL"
-      destination: WEBSITE
+  base::FilePath user_path;
+  CHECK(base::PathService::Get(chrome::DIR_USER_DATA, &user_path));
+
+  auto wallpaper_dir = user_path.Append("wallpapers");
+  auto wallpaper = wallpaper_dir.Append(filename).value();
+
+  std::error_code ec;
+
+  if (!std::filesystem::exists(wallpaper_dir.value(), ec)) {
+    std::filesystem::create_directories(wallpaper_dir.value(), ec);
+
+    if (ec) {
+      LOG(ERROR) << "Failed to create wallpaper directory: " << ec.message();
+
+      return desktop_wallpaper::mojom::WallpaperStatus::failure;
     }
+  }
 
-    policy {
-      cookies_allowed: NO
-      settings: "This feature cannot be disabled by settings"
-      policy_exception_justification: "Not implemented"
+  auto is_current_screen =
+      [&displays](const std::filesystem::directory_entry& e) {
+        // we are setting a wallpaper
+        // for every screen, so we allow the for loop to delete every file
+        // inside the folder
+        if (displays.size() > 1) {
+          return true;
+        }
+
+        // otherwise we only get the file with the ID of the screen the user
+        // wants a new wallpaper on
+        auto parts =
+            base::SplitString(e.path().filename().string(), "_",
+                              base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
+        if (parts.size() < 2) {
+          return false;
+        }
+        return e.is_regular_file() && parts[1] == displays[0]->id;
+      };
+
+  for (const std::filesystem::directory_entry& entry :
+       std::filesystem::directory_iterator(wallpaper_dir.value())) {
+    if (!is_current_screen(entry)) {
+      continue;
     }
+    std::filesystem::remove(entry, ec);
 
-  )");
+    if (ec) {
+      LOG(ERROR) << "Failed to remove existing wallpaper: " << ec.message();
+
+      return desktop_wallpaper::mojom::WallpaperStatus::failure;
+    }
+  }
+
+  std::filesystem::copy(path, wallpaper, ec);
+
+  if (ec) {
+    LOG(ERROR) << "Failed to copy wallpaper: " << ec.message();
+
+    return desktop_wallpaper::mojom::WallpaperStatus::failure;
+  }
+
+  std::filesystem::remove(path, ec);
+
+  if (ec) {
+    LOG(ERROR) << "Failed to remove temp file: " << ec.message();
+  }
+
+  return DesktopWallpaper::SetWallpaper(static_cast<base::FilePath>(wallpaper),
+                                        std::move(displays), scaling);
 }
 }  // namespace desktop_wallpaper
