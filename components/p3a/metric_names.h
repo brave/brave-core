@@ -108,7 +108,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Playlist.FirstTimeOffset", MetricConfig{.ephemeral = true}},
     {"Brave.Playlist.NewUserReturning", {}},
     {"Brave.Playlist.UsageDaysInWeek", MetricConfig{.ephemeral = true}},
-    {"Brave.Rewards.AdTypesEnabled.2", {}},
+    {"Brave.Rewards.AdTypesEnabled", {}},
     {"Brave.Rewards.DesktopPanelCount.2", MetricConfig{.ephemeral = true}},
     {"Brave.Rewards.EnabledSource", MetricConfig{.ephemeral = true}},
     {"Brave.Rewards.MobileConversion", MetricConfig{.ephemeral = true}},
