@@ -103,8 +103,6 @@ We aim to make the only patches required to be trivial changes, and not nested l
 
 See [best-practices/patches.md](best-practices/patches.md) for important criteria.
 
-```
-
 Make sure you do NOT have the following in your `~/.gitconfig`:
 
     [apply]
