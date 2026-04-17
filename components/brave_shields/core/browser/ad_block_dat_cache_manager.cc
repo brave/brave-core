@@ -59,25 +59,22 @@ AdBlockDATCacheManager::AdBlockDATCacheManager(
 
 AdBlockDATCacheManager::~AdBlockDATCacheManager() = default;
 
-void AdBlockDATCacheManager::WriteDATFile(
-    bool is_default_engine,
-    DATFileDataBuffer dat,
-    base::OnceCallback<void(bool)> on_complete) {
+void AdBlockDATCacheManager::WriteDATFile(bool is_default_engine,
+                                          DATFileDataBuffer dat) {
   CHECK(base::FeatureList::IsEnabled(features::kAdblockDATCache));
-  task_runner_->PostTaskAndReplyWithResult(
+  task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(
           [](DATFileDataBuffer dat, base::FilePath cache_path) {
             if (!base::CreateDirectory(cache_path.DirName())) {
-              return false;
+              return;
             }
-            return base::ImportantFileWriter::WriteFileAtomically(
+            base::ImportantFileWriter::WriteFileAtomically(
                 cache_path, base::as_string_view(dat));
           },
           std::move(dat),
           cache_dir_.AppendASCII(is_default_engine ? kAdBlockEngine0DATCache
-                                                   : kAdBlockEngine1DATCache)),
-      std::move(on_complete));
+                                                   : kAdBlockEngine1DATCache)));
 }
 
 void AdBlockDATCacheManager::MaybeReadCachedDATFiles(

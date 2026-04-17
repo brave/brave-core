@@ -74,8 +74,6 @@ class AdBlockService {
     virtual void OnFilterListLoaded(bool is_default_engine,
                                     FilterListLoadResult result) {}
     virtual void OnDATLoaded(bool is_default_engine, bool success) {}
-    virtual void OnDATWritten(bool is_default_engine) {}
-    virtual void OnResourcesLoaded(bool is_default_engine) {}
   };
 
   class SourceProviderObserver : public AdBlockResourceProvider::Observer,
@@ -212,7 +210,6 @@ class AdBlockService {
   void OnEngineLoaded(
       bool is_default_engine,
       std::pair<FilterListLoadResult, std::optional<DATFileDataBuffer>> result);
-  void OnDATFileWritten(bool is_default_engine, bool success);
   void OnReadCachedDATFiles(std::optional<DATFileDataBuffer> default_dat,
                             std::optional<DATFileDataBuffer> additional_dat);
 

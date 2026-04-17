@@ -330,19 +330,11 @@ void AdBlockService::OnEngineLoaded(
     observers_.Notify(&Observer::OnFilterListLoaded, is_default_engine,
                       load_result);
   }
-  observers_.Notify(&Observer::OnResourcesLoaded, is_default_engine);
 
   if (serialized_dat.has_value() && !serialized_dat->empty()) {
-    dat_cache_manager_->WriteDATFile(
-        is_default_engine, std::move(*serialized_dat),
-        base::BindOnce(&AdBlockService::OnDATFileWritten,
-                       weak_factory_.GetWeakPtr(), is_default_engine));
+    dat_cache_manager_->WriteDATFile(is_default_engine,
+                                     std::move(*serialized_dat));
   }
-}
-
-void AdBlockService::OnDATFileWritten(bool is_default_engine, bool success) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  observers_.Notify(&Observer::OnDATWritten, is_default_engine);
 }
 
 void AdBlockService::OnReadCachedDATFiles(
