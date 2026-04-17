@@ -29,16 +29,11 @@ base::TimeDelta RandTimeDeltaWithJitter(base::TimeDelta time_delta) {
   return base::Seconds(time_delta.InSecondsF() * random_factor);
 }
 
-ScopedRandTimeDeltaWithJitterSetterForTesting::
-    ScopedRandTimeDeltaWithJitterSetterForTesting(base::TimeDelta time_delta) {
+void SetRandTimeDeltaWithJitterForTesting(  // IN-TEST
+    std::optional<base::TimeDelta> value) {
   CHECK_IS_TEST();
 
-  g_rand_time_delta_with_jitter_for_testing = time_delta;
-}
-
-ScopedRandTimeDeltaWithJitterSetterForTesting::
-    ~ScopedRandTimeDeltaWithJitterSetterForTesting() {
-  g_rand_time_delta_with_jitter_for_testing = std::nullopt;
+  g_rand_time_delta_with_jitter_for_testing = value;
 }
 
 }  // namespace brave_ads

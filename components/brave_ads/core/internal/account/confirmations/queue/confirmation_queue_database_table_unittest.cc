@@ -16,7 +16,7 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/test/confirmation_user_data_builder_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/test/confirmation_tokens_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/test/token_generator_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/random/random_util.h"
+#include "brave/components/brave_ads/core/internal/common/random/test/scoped_rand_time_delta_with_jitter_for_testing.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 
@@ -319,8 +319,8 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest, RetryConfirmationQueueItem) {
 
   test::SaveConfirmationQueueItems(confirmation_queue_items);
 
-  const ScopedRandTimeDeltaWithJitterSetterForTesting scoped_rand_time_delta(
-      base::Minutes(7));
+  const test::ScopedRandTimeDeltaWithJitterForTesting
+      scoped_rand_time_delta_with_jitter(base::Minutes(7));
 
   // Act
   base::test::TestFuture<bool> test_future_retry;
@@ -357,8 +357,8 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
 
   test::SaveConfirmationQueueItems(confirmation_queue_items);
 
-  const ScopedRandTimeDeltaWithJitterSetterForTesting scoped_rand_time_delta(
-      base::Minutes(7));
+  const test::ScopedRandTimeDeltaWithJitterForTesting
+      scoped_rand_time_delta_with_jitter(base::Minutes(7));
 
   {
     base::test::TestFuture<bool> test_future_retry;
