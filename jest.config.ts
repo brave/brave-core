@@ -6,33 +6,14 @@
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
 
-import fs from 'fs'
+import fs from 'node:fs'
+import path from 'node:path'
 import type { Config } from 'jest'
 import { createJsWithTsEsmPreset } from 'ts-jest'
+import { genPath, outputPath } from './build/commands/lib/guessConfig.js'
 
-const crossPlatforms = ['mac', 'win']
-const buildConfigs = ['Component', 'Static', 'Debug', 'Release']
-const extraArchitectures = ['arm64', 'x86']
-
-function getBuildOutputPathList(buildOutputRelativePath: string): string[] {
-  return buildConfigs
-    .reduce(
-      (outDirs, outDir) => [
-        ...outDirs,
-        outDir,
-        ...crossPlatforms.map((platform) => `${platform}_${outDir}`),
-      ],
-      [],
-    )
-    .reduce(
-      (outDirs, outDir) => [
-        ...outDirs,
-        outDir,
-        ...extraArchitectures.map((arch) => `${outDir}_${arch}`),
-      ],
-      [],
-    )
-    .map((outDir) => `<rootDir>/../out/${outDir}/${buildOutputRelativePath}`)
+function getBuildOutputPath(buildOutputRelativePath: string): string {
+  return `${outputPath}/${buildOutputRelativePath}`
 }
 
 function getReporters() {
@@ -48,31 +29,9 @@ function getReporters() {
   }
 }
 
-function getBuildConfig() {
-  // Try to find the build config in any of the possible build directories
-  const possiblePaths = getBuildOutputPathList('gen/brave/build_flags.json')
-
-  for (const configPath of possiblePaths) {
-    // Remove <rootDir> placeholder and resolve the actual path
-    const actualPath = configPath.replace('<rootDir>', import.meta.dirname)
-    if (fs.existsSync(actualPath)) {
-      try {
-        return JSON.parse(fs.readFileSync(actualPath, 'utf8'))
-      } catch (e) {
-        // Continue to next path
-      }
-    }
-  }
-
-  // Default to all features enabled if no config found
-  return {
-    enable_ai_chat: true,
-    enable_brave_wallet: true,
-    enable_email_aliases: true,
-  }
-}
-
-const buildConfig = getBuildConfig()
+const buildConfig = JSON.parse(
+  fs.readFileSync(path.join(genPath, 'brave/build_flags.json'), 'utf8'),
+)
 
 const jestConfig: Config = {
   ...createJsWithTsEsmPreset({
@@ -150,11 +109,11 @@ const jestConfig: Config = {
     // It can also break if CI or devs perform a build in a directory not known
     // by this list.
     // Instead, we should get the directory from config.js:outputDir.
-    '^gen\\/(.*)': getBuildOutputPathList('gen/$1'),
-    'chrome://resources\\/(.*)': getBuildOutputPathList(
+    '^gen\\/(.*)': getBuildOutputPath('gen/$1'),
+    'chrome://resources\\/(.*)': getBuildOutputPath(
       'gen/ui/webui/resources/tsc/$1',
     ),
-    'chrome://interstitials\\/(.*)': getBuildOutputPathList(
+    'chrome://interstitials\\/(.*)': getBuildOutputPath(
       'gen/components/security_interstitials/core/$1',
     ),
     // workaround for https://github.com/LedgerHQ/ledger-live/issues/763
