@@ -7,4 +7,10 @@ body {
   background: var(--leo-color-container-background);
   color: var(--leo-color-text-primary);
   margin: 0;
+
+  leo-alertcenter {
+    --leo-alert-center-width: calc(100% - 2 * var(--leo-spacing-m));
+    position: fixed;
+    z-index: 1000;
+  }
 }

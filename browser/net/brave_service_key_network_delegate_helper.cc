@@ -18,7 +18,7 @@
 #include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-#include "brave/brave_domains/constants.h"
+#include "brave/brave_domains/urls.h"
 #endif
 
 namespace brave {
@@ -36,7 +36,7 @@ int OnBeforeStartTransaction_BraveServiceKey(
 // go through this network delegate path. Wallet gate3 requests use
 // APIRequestHelper which adds the services key explicitly.
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-      std::string(GURL(brave_domains::kGate3URL).host()),
+      std::string(brave_domains::GetGate3URL().host()),
 #endif
   }};
 

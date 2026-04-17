@@ -84,9 +84,15 @@ void GetAllCallback(
   CHECK(mojom_db_transaction_result->rows_union);
 
   ConfirmationTokenList confirmation_tokens;
-  for (auto& mojom_db_row :
+  for (const auto& mojom_db_row :
        mojom_db_transaction_result->rows_union->get_rows()) {
-    confirmation_tokens.push_back(FromMojomRow(mojom_db_row));
+    const ConfirmationTokenInfo confirmation_token = FromMojomRow(mojom_db_row);
+    if (!confirmation_token.IsValid()) {
+      BLOG(0, "Invalid confirmation token");
+      continue;
+    }
+
+    confirmation_tokens.push_back(confirmation_token);
   }
 
   std::move(callback).Run(/*success=*/true, std::move(confirmation_tokens));

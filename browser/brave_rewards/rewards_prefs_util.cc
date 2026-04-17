@@ -33,6 +33,9 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   prefs->ClearPref(prefs::kEmptyBalanceChecked);
   prefs->ClearPref(prefs::kPromotionCorruptedMigrated);
   prefs->ClearPref(prefs::kPromotionLastFetchStamp);
+
+  // Added 04/2026
+  prefs->ClearPref(prefs::kWalletGemini);
 }
 
 }  // namespace brave_rewards

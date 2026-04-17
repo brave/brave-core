@@ -20,7 +20,7 @@ namespace brave_rewards::internal {
 namespace {
 
 constexpr int kOldestSupportedVersion = 10;
-constexpr int kCurrentVersion = 15;
+constexpr int kCurrentVersion = 16;
 
 static_assert(kOldestSupportedVersion <= kCurrentVersion,
               "Oldest pref version cannot be less than the current version");
@@ -83,8 +83,8 @@ void PrefMigrationManager::MigrateToVersion<12>() {
   // Description: Fixes stored `mojom::WalletStatus` values that have been
   // removed.
   // Version: 1.47 (Nov 2022)
-  std::array providers{constant::kWalletBitflyer, constant::kWalletGemini,
-                       constant::kWalletUphold, constant::kWalletZebPay};
+  std::array providers{constant::kWalletBitflyer, constant::kWalletUphold,
+                       constant::kWalletZebPay};
 
   for (auto provider : providers) {
     if (auto wallet = wallet::GetWallet(engine(), provider)) {
@@ -120,8 +120,8 @@ void PrefMigrationManager::MigrateToVersion<13>() {
   // updates in order to allow the Ads service to reset state for connected
   // users.
   // Version: 1.48 (Dec 2022)
-  std::array providers{constant::kWalletBitflyer, constant::kWalletGemini,
-                       constant::kWalletUphold, constant::kWalletZebPay};
+  std::array providers{constant::kWalletBitflyer, constant::kWalletUphold,
+                       constant::kWalletZebPay};
 
   for (auto provider : providers) {
     auto wallet = wallet::GetWallet(engine(), provider);
@@ -139,8 +139,8 @@ void PrefMigrationManager::MigrateToVersion<14>() {
   // user that has a connected external wallet.
   // Version: 1.62 (Nov 2023)
   if (prefs().GetString(prefs::kExternalWalletType).empty()) {
-    std::array providers{constant::kWalletBitflyer, constant::kWalletGemini,
-                         constant::kWalletUphold, constant::kWalletZebPay};
+    std::array providers{constant::kWalletBitflyer, constant::kWalletUphold,
+                         constant::kWalletZebPay};
 
     for (auto provider : providers) {
       auto wallet = wallet::GetWallet(engine(), provider);
@@ -161,6 +161,15 @@ void PrefMigrationManager::MigrateToVersion<15>() {
   prefs().SetUint64(prefs::kServerPublisherListStamp, 0);
 }
 
+template <>
+void PrefMigrationManager::MigrateToVersion<16>() {
+  // Description: Clears kExternalWalletType if its value is "gemini".
+  // Version: 1.91 (Apr 2026)
+  if (prefs().GetString(prefs::kExternalWalletType) == "gemini") {
+    prefs().ClearPref(prefs::kExternalWalletType);
+  }
+}
+
 void PrefMigrationManager::MigratePrefs(base::OnceClosure callback) {
   int user_version = prefs().GetInteger(prefs::kVersion);
 
@@ -177,7 +186,6 @@ void PrefMigrationManager::MigratePrefs(base::OnceClosure callback) {
     prefs().ClearPref(prefs::kExternalWalletType);
     prefs().ClearPref(prefs::kWalletBitflyer);
     prefs().ClearPref(prefs::kWalletUphold);
-    prefs().ClearPref(prefs::kWalletGemini);
     prefs().ClearPref(prefs::kWalletZebPay);
     prefs().ClearPref(prefs::kWalletSolana);
     prefs().SetInteger(prefs::kVersion, kCurrentVersion);

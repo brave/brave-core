@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/catalog_type_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/notification_ad/catalog_creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
-#include "brave/components/brave_ads/core/internal/catalog/catalog_test_constants.h"
+#include "brave/components/brave_ads/core/internal/catalog/test/catalog_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/file_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_constants.h"

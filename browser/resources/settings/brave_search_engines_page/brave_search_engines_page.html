@@ -71,9 +71,9 @@
       sub-label="$i18n{searchSuggestDesc}">
   </settings-toggle-button>
 </template>
-<template is="dom-if" if="[[!isPrefManaged_(
-    prefs.brave.web_discovery_enabled)]]" restamp>
-  <if expr="enable_web_discovery">
+<if expr="enable_web_discovery">
+  <template is="dom-if" if="[[!isPrefManaged_(
+      prefs.brave.web_discovery_enabled)]]" restamp>
     <settings-toggle-button id="webDiscoveryEnabledExtension"
         class="cr-row"
         pref="{{prefs.brave.web_discovery_enabled}}"
@@ -81,5 +81,5 @@
         sub-label="$i18n{braveWebDiscoverySubLabel}"
         learn-more-url="$i18n{webDiscoveryLearnMoreURL}">
     </settings-toggle-button>
-  </if>
-</template>
+  </template>
+</if>

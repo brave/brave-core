@@ -12,7 +12,7 @@
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/types/optional_ref.h"
-#include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_feature.h"
@@ -28,11 +28,15 @@
 namespace brave_ads {
 
 class BraveAdsNewTabPageAdIntegrationTest : public test::TestBase {
+ public:
+  BraveAdsNewTabPageAdIntegrationTest()
+      : test::TestBase(/*is_integration_test=*/true) {}
+
  protected:
   void SetUp() override {
     AdvanceClockTo(test::TimeFromUTCString("Fri, 31 Jan 2025 16:28"));
 
-    test::TestBase::SetUp(/*is_integration_test=*/true);
+    test::TestBase::SetUp();
   }
 
   void MockCreativeNewTabPageAds() {

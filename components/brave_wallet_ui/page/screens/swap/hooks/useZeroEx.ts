@@ -94,7 +94,6 @@ export function useZeroEx(params: SwapParams) {
                 provider: BraveWallet.SwapProvider.kZeroEx,
               },
               jupiterTransactionParams: undefined,
-              lifiTransactionParams: undefined,
               gate3TransactionParams: undefined,
             },
             'zeroExTransactionParams',

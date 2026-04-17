@@ -17,9 +17,13 @@ namespace brave_ads {
 
 class BraveAdsSearchResultAdForNonRewardsIntegrationTest
     : public test::TestBase {
+ public:
+  BraveAdsSearchResultAdForNonRewardsIntegrationTest()
+      : test::TestBase(/*is_integration_test=*/true) {}
+
  protected:
   void SetUp() override {
-    test::TestBase::SetUp(/*is_integration_test=*/true);
+    test::TestBase::SetUp();
 
     test::ForcePermissionRules();
 

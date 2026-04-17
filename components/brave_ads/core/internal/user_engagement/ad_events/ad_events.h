@@ -7,8 +7,8 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_AD_EVENTS_AD_EVENTS_H_
 
 #include <string>
-#include <vector>
 
+#include "base/containers/span.h"
 #include "base/functional/callback.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
@@ -26,7 +26,7 @@ void RecordAdEvent(const AdEventInfo& ad_event, AdEventCallback callback);
 
 void PurgeOrphanedAdEvents(mojom::AdType mojom_ad_type,
                            AdEventCallback callback);
-void PurgeOrphanedAdEvents(const std::vector<std::string>& placement_ids,
+void PurgeOrphanedAdEvents(base::span<const std::string> placement_ids,
                            AdEventCallback callback);
 
 }  // namespace brave_ads

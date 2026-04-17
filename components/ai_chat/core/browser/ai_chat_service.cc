@@ -97,12 +97,12 @@ std::vector<mojom::AssociatedContentPtr> CloneAssociatedContent(
   return cloned_content;
 }
 
+}  // namespace
+
 // Determines whether its safe to associate content with a conversation.
 bool CanAssociateContent(AssociatedContentDelegate* delegate) {
   return delegate && kAllowedContentSchemes.contains(delegate->url().scheme());
 }
-
-}  // namespace
 
 AIChatService::AIChatService(
     ModelService* model_service,

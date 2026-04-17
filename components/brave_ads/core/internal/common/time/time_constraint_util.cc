@@ -6,12 +6,13 @@
 #include "brave/components/brave_ads/core/internal/common/time/time_constraint_util.h"
 
 #include "base/containers/adapters.h"
+#include "base/containers/span.h"
 #include "base/time/time.h"
 
 namespace brave_ads {
 
 bool DoesHistoryRespectRollingTimeConstraint(
-    const std::vector<base::Time>& history,
+    base::span<const base::Time> history,
     base::TimeDelta time_constraint,
     size_t cap) {
   if (cap == 0) {

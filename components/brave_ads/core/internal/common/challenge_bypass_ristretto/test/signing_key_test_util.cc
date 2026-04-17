@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/test/signing_key_test_util.h"
 
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signing_key.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/test/challenge_bypass_ristretto_test_constants.h"
 
 namespace brave_ads::cbr::test {
 

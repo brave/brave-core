@@ -9,6 +9,7 @@
 #include "base/process/launch.h"
 #include "base/test/bind.h"
 #include "base/threading/thread_restrictions.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
@@ -17,6 +18,7 @@
 #include "brave/components/tor/mock_tor_launcher_factory.h"
 #include "brave/components/tor/tor_launcher_observer.h"
 #include "brave/components/tor/tor_profile_service.h"
+#include "brave/components/tor/tor_profile_service_impl.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -36,6 +38,8 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "extensions/buildflags/buildflags.h"
+#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
+#include "services/network/test/test_url_loader_factory.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 #include "brave/browser/brave_ads/ads_service_factory.h"
@@ -54,8 +58,6 @@
 #include "extensions/browser/extension_util.h"
 #include "extensions/common/extension_id.h"
 #endif
-
-#include <algorithm>
 
 namespace {
 
@@ -100,6 +102,24 @@ class TorProfileManagerTest : public InProcessBrowserTest {
   void Relaunch(const base::CommandLine& new_command_line) {
     base::LaunchProcess(new_command_line, base::LaunchOptionsForTest());
   }
+
+  void SetUpBrowserContextKeyedServices(
+      content::BrowserContext* context) override {
+    TorProfileServiceFactory::GetInstance()->SetTestingFactory(
+        context,
+        base::BindLambdaForTesting([&](content::BrowserContext* context)
+                                       -> std::unique_ptr<KeyedService> {
+          CHECK(context->IsTor());
+          return std::make_unique<tor::TorProfileServiceImpl>(
+              test_url_loader_factory_.GetSafeWeakWrapper(), context,
+              g_browser_process->local_state(),
+              g_brave_browser_process->tor_client_updater(),
+              g_brave_browser_process->tor_pluggable_transport_updater());
+        }));
+  }
+
+ protected:
+  network::TestURLLoaderFactory test_url_loader_factory_;
 };
 
 class MockWebContentsDelegate : public content::WebContentsDelegate {
@@ -514,6 +534,60 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CanWebRTC) {
   TorProfileManager::CloseTorProfileWindows(tor_profile);
   observer.Wait();
   EXPECT_EQ(0UL, chrome::GetBrowserCount(tor_profile));
+}
+
+IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, BuiltInBridgesRequest) {
+  // No bridges.
+  SwitchToTorProfile(browser()->profile(), GetTorLauncherFactory());
+  EXPECT_EQ(0u, test_url_loader_factory_.total_requests())
+      << "No requests expected";
+
+  tor::BridgesConfig bridges_config;
+  bridges_config.use_bridges = tor::BridgesConfig::Usage::kBuiltIn;
+  TorProfileServiceFactory::SetTorBridgesConfig(bridges_config);
+
+  test_url_loader_factory_.WaitForRequest(
+      GURL("https://bridges.torproject.org/moat/circumvention/builtin"));
+  EXPECT_EQ(1u, test_url_loader_factory_.total_requests());
+}
+
+IN_PROC_BROWSER_TEST_F(TorProfileManagerTest,
+                       BuiltInBridgesRequestOnOpenWindow) {
+  tor::BridgesConfig bridges_config;
+  bridges_config.use_bridges = tor::BridgesConfig::Usage::kBuiltIn;
+  TorProfileServiceFactory::SetTorBridgesConfig(bridges_config);
+
+  SwitchToTorProfile(browser()->profile(), GetTorLauncherFactory());
+
+  test_url_loader_factory_.WaitForRequest(
+      GURL("https://bridges.torproject.org/moat/circumvention/builtin"));
+  EXPECT_EQ(1u, test_url_loader_factory_.total_requests());
+}
+
+IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, NoBuiltInBridgesRequest) {
+  {
+    // No bridges.
+    SwitchToTorProfile(browser()->profile(), GetTorLauncherFactory());
+    EXPECT_EQ(0u, test_url_loader_factory_.total_requests());
+  }
+  {
+    tor::BridgesConfig bridges_config;
+    bridges_config.use_bridges = tor::BridgesConfig::Usage::kNotUsed;
+    TorProfileServiceFactory::SetTorBridgesConfig(bridges_config);
+    EXPECT_EQ(0u, test_url_loader_factory_.total_requests());
+  }
+  {
+    tor::BridgesConfig bridges_config;
+    bridges_config.use_bridges = tor::BridgesConfig::Usage::kRequest;
+    TorProfileServiceFactory::SetTorBridgesConfig(bridges_config);
+    EXPECT_EQ(0u, test_url_loader_factory_.total_requests());
+  }
+  {
+    tor::BridgesConfig bridges_config;
+    bridges_config.use_bridges = tor::BridgesConfig::Usage::kProvide;
+    TorProfileServiceFactory::SetTorBridgesConfig(bridges_config);
+    EXPECT_EQ(0u, test_url_loader_factory_.total_requests());
+  }
 }
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)

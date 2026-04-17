@@ -123,6 +123,10 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
   private isHideVerticalTabCompletelyFlagEnabled() {
     return loadTimeData.getBoolean('isHideVerticalTabCompletelyFlagEnabled');
   }
+
+  private isScrollableHorizontalTabStripFlagEnabled() {
+    return loadTimeData.getBoolean('isScrollableHorizontalTabStripEnabled');
+  }
 }
 
 customElements.define(SettingsBraveAppearanceTabsElement.is, SettingsBraveAppearanceTabsElement)

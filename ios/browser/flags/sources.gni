@@ -8,6 +8,7 @@ brave_flags_deps = [
   "//brave/components/ai_chat/core/common",
   "//brave/components/brave_ads/core",
   "//brave/components/brave_component_updater/browser:public",
+  "//brave/components/brave_origin:features",
   "//brave/components/brave_rewards/core",
   "//brave/components/brave_rewards/core/buildflags",
   "//brave/components/brave_shields/core/common",

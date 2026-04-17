@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/do_not_disturb_permission_rule.h"
 
-#include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -17,10 +17,11 @@ class BraveAdsDoNotDisturbPermissionRuleTest : public test::TestBase {};
 TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
        ShouldAllowWhileBrowserIsInactiveBetween6amAnd9pmOnAndroid) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
+  fake_platform_helper_.SetPlatformType(PlatformType::kAndroid);
+  PlatformHelper::SetForTesting(&fake_platform_helper_);
 
-  NotifyBrowserDidResignActive();
-  NotifyBrowserDidEnterBackground();
+  ads_client_notifier_.NotifyBrowserDidResignActive();
+  ads_client_notifier_.NotifyBrowserDidEnterBackground();
 
   AdvanceClockToLocalMidnight();
 
@@ -53,10 +54,11 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
 TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
        ShouldAllowWhileBrowserIsActiveOnAndroid) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
+  fake_platform_helper_.SetPlatformType(PlatformType::kAndroid);
+  PlatformHelper::SetForTesting(&fake_platform_helper_);
 
-  NotifyBrowserDidBecomeActive();
-  NotifyBrowserDidEnterForeground();
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
+  ads_client_notifier_.NotifyBrowserDidEnterForeground();
 
   AdvanceClockToLocalMidnight();
 
@@ -88,10 +90,11 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
 
 TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnIOS) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kIOS);
+  fake_platform_helper_.SetPlatformType(PlatformType::kIOS);
+  PlatformHelper::SetForTesting(&fake_platform_helper_);
 
-  NotifyBrowserDidBecomeActive();
-  NotifyBrowserDidEnterForeground();
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
+  ads_client_notifier_.NotifyBrowserDidEnterForeground();
 
   AdvanceClockToLocalMidnight();
 
@@ -110,10 +113,11 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnIOS) {
 
 TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnMacOS) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kMacOS);
+  fake_platform_helper_.SetPlatformType(PlatformType::kMacOS);
+  PlatformHelper::SetForTesting(&fake_platform_helper_);
 
-  NotifyBrowserDidBecomeActive();
-  NotifyBrowserDidEnterForeground();
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
+  ads_client_notifier_.NotifyBrowserDidEnterForeground();
 
   AdvanceClockToLocalMidnight();
 
@@ -132,10 +136,11 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnMacOS) {
 
 TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnWindows) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
+  fake_platform_helper_.SetPlatformType(PlatformType::kWindows);
+  PlatformHelper::SetForTesting(&fake_platform_helper_);
 
-  NotifyBrowserDidBecomeActive();
-  NotifyBrowserDidEnterForeground();
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
+  ads_client_notifier_.NotifyBrowserDidEnterForeground();
 
   AdvanceClockToLocalMidnight();
 
@@ -154,10 +159,11 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnWindows) {
 
 TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnLinux) {
   // Arrange
-  test::MockPlatformHelper(platform_helper_mock_, PlatformType::kLinux);
+  fake_platform_helper_.SetPlatformType(PlatformType::kLinux);
+  PlatformHelper::SetForTesting(&fake_platform_helper_);
 
-  NotifyBrowserDidBecomeActive();
-  NotifyBrowserDidEnterForeground();
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
+  ads_client_notifier_.NotifyBrowserDidEnterForeground();
 
   AdvanceClockToLocalMidnight();
 

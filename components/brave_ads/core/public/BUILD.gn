@@ -27,7 +27,6 @@ source_set("headers") {
     "ads_client/ads_client.h",
     "ads_client/ads_client_callback.h",
     "ads_client/ads_client_notifier.h",
-    "ads_client/ads_client_notifier_interface.h",
     "ads_client/ads_client_notifier_observer.h",
     "ads_constants.h",
     "ads_observer.h",

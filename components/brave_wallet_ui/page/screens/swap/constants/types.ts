@@ -10,7 +10,6 @@ import Amount from '../../../../utils/amount'
 export type LiquiditySource = {
   name: string
   proportion: Amount
-  includedSteps?: BraveWallet.LiFiStep[]
   tool?: string
   logo?: string
 }
@@ -26,6 +25,9 @@ export type QuoteOption = {
   rate: Amount
   impact: Amount
   sources: LiquiditySource[]
+
+  // Gate3 route steps (use empty array for non-Gate3 routes)
+  steps: BraveWallet.Gate3SwapRouteStep[]
 
   /**
    * Indicates the kind of routing followed by the order:

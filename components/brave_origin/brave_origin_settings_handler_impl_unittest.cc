@@ -21,6 +21,7 @@
 #include "brave/components/brave_origin/features.h"
 #include "brave/components/brave_origin/pref_names.h"
 #include "brave/components/skus/browser/test/fake_skus_service.h"
+#include "build/build_config.h"
 #include "components/policy/core/common/mock_policy_service.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
@@ -30,6 +31,29 @@
 namespace brave_origin {
 
 using skus::FakeSkusService;
+
+// Minimal delegate for tests that don't need SKU connectivity.
+class NullDelegate : public BraveOriginService::Delegate {
+ public:
+  void OpenOriginSettings() override {}
+  mojo::PendingRemote<skus::mojom::SkusService> GetSkusService() override {
+    return {};
+  }
+};
+
+// Delegate backed by a FakeSkusService.
+class SkusTestDelegate : public BraveOriginService::Delegate {
+ public:
+  explicit SkusTestDelegate(skus::FakeSkusService* fake_skus)
+      : fake_skus_(fake_skus) {}
+  void OpenOriginSettings() override {}
+  mojo::PendingRemote<skus::mojom::SkusService> GetSkusService() override {
+    return fake_skus_->MakeRemote();
+  }
+
+ private:
+  raw_ptr<skus::FakeSkusService> fake_skus_;
+};
 
 // Test constants
 constexpr char kTestProfileId[] = "test-profile-id";
@@ -55,6 +79,10 @@ class BraveOriginHandlerTest : public testing::Test {
                                                  false);
     local_state_.registry()->RegisterBooleanPref(kOriginPoliciesWereEnforced,
                                                  false);
+#if BUILDFLAG(IS_LINUX)
+    local_state_.registry()->RegisterBooleanPref(kOriginFreeTierAccepted,
+                                                 false);
+#endif
 
     // Register test browser preferences in local_state
     local_state_.registry()->RegisterBooleanPref(kTestBrowserPrefName, false);
@@ -78,7 +106,7 @@ class BraveOriginHandlerTest : public testing::Test {
     // Create the service with both policy services
     service_ = std::make_unique<BraveOriginService>(
         &local_state_, &profile_prefs_, kTestProfileId, &mock_policy_service_,
-        &mock_policy_service_, BraveOriginService::SkusServiceGetter());
+        &mock_policy_service_, std::make_unique<NullDelegate>());
 
     // Create the handler
     handler_ = std::make_unique<BraveOriginSettingsHandlerImpl>(service_.get());
@@ -381,6 +409,10 @@ class BraveOriginHandlerWithSkusTest : public testing::Test {
                                                  false);
     local_state_.registry()->RegisterBooleanPref(kOriginPoliciesWereEnforced,
                                                  false);
+#if BUILDFLAG(IS_LINUX)
+    local_state_.registry()->RegisterBooleanPref(kOriginFreeTierAccepted,
+                                                 false);
+#endif
 
     local_state_.registry()->RegisterBooleanPref(kTestBrowserPrefName, false);
     profile_prefs_.registry()->RegisterBooleanPref(kTestProfilePrefName, true);
@@ -396,12 +428,10 @@ class BraveOriginHandlerWithSkusTest : public testing::Test {
     // CheckPurchaseState completes with a deterministic result.
     fake_skus_service_->SetCredentialSummaryResponse(
         R"({"remaining_credential_count": 1})");
-    auto getter = base::BindRepeating(
-        &BraveOriginHandlerWithSkusTest::GetSkusServiceRemote,
-        base::Unretained(this));
     service_ = std::make_unique<BraveOriginService>(
         &local_state_, &profile_prefs_, kTestProfileId, &mock_policy_service_,
-        &mock_policy_service_, std::move(getter));
+        &mock_policy_service_,
+        std::make_unique<SkusTestDelegate>(fake_skus_service_.get()));
     // Wait for the constructor's eager CheckPurchaseState to complete.
     ASSERT_TRUE(base::test::RunUntil([&] { return service_->IsPurchased(); }));
 
@@ -417,10 +447,6 @@ class BraveOriginHandlerWithSkusTest : public testing::Test {
   }
 
  protected:
-  mojo::PendingRemote<skus::mojom::SkusService> GetSkusServiceRemote() {
-    return fake_skus_service_->MakeRemote();
-  }
-
   void CreateTestPolicy(BraveOriginPolicyMap& policies,
                         const std::string& pref_name,
                         bool default_value,
@@ -503,6 +529,10 @@ class BraveOriginHandlerDisabledTest : public testing::Test {
                                                  false);
     local_state_.registry()->RegisterBooleanPref(kOriginPoliciesWereEnforced,
                                                  false);
+#if BUILDFLAG(IS_LINUX)
+    local_state_.registry()->RegisterBooleanPref(kOriginFreeTierAccepted,
+                                                 false);
+#endif
 
     // Register test preferences (needed for pref service not to crash)
     local_state_.registry()->RegisterBooleanPref(kTestBrowserPrefName, false);
@@ -519,7 +549,7 @@ class BraveOriginHandlerDisabledTest : public testing::Test {
     // Create the service with both policy services
     service_ = std::make_unique<BraveOriginService>(
         &local_state_, &profile_prefs_, kTestProfileId, &mock_policy_service_,
-        &mock_policy_service_, BraveOriginService::SkusServiceGetter());
+        &mock_policy_service_, std::make_unique<NullDelegate>());
 
     // Create the handler
     handler_ = std::make_unique<BraveOriginSettingsHandlerImpl>(service_.get());

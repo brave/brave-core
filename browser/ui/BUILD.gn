@@ -242,6 +242,8 @@ source_set("ui") {
     deps += [ "//brave/browser/ui/views/brave_origin" ]
   }
 
+  deps += [ "//brave/browser/ui/brave_origin" ]
+
   if (!is_android) {
     sources += [
       "bookmark/bookmark_helper.cc",
@@ -1547,6 +1549,7 @@ source_set("browser_tests") {
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
     sources = [
+      "brave_browser_actions_browsertest.cc",
       "brave_browser_browsertest.cc",
       "views/frame/brave_system_menu_model_builder_browsertest.cc",
       "window_closing_confirm_browsertest.cc",
@@ -1559,6 +1562,7 @@ source_set("browser_tests") {
       "//chrome/browser/devtools:test_support",
       "//chrome/browser/profiles:profile",
       "//chrome/browser/ui",
+      "//chrome/browser/ui:tab_search_feature",
       "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/startup",
       "//chrome/test:test_support",
@@ -1568,6 +1572,7 @@ source_set("browser_tests") {
       "//components/optimization_guide/optimization_guide_internals/webui:url_constants",
       "//components/prefs",
       "//content/test:test_support",
+      "//ui/actions",
     ]
 
     if (enable_playlist_webui) {

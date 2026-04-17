@@ -438,7 +438,7 @@ source_set("constants") {
   ]
 
   public_deps = [
-    "//brave/brave_domains:constants",
+    "//brave/brave_domains:urls",
     "//brave/components/brave_wallet/common",
   ]
 }

@@ -17,8 +17,9 @@ namespace brave_ads {
 
 class BraveAdsCreativeNotificationAdsDatabaseTableIntegrationTest
     : public test::TestBase {
- protected:
-  void SetUp() override { test::TestBase::SetUp(/*is_integration_test=*/true); }
+ public:
+  BraveAdsCreativeNotificationAdsDatabaseTableIntegrationTest()
+      : test::TestBase(/*is_integration_test=*/true) {}
 
   void SetUpMocks() override {
     const test::URLResponseMap url_responses = {

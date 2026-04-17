@@ -82,19 +82,24 @@ public class BraveSiteSettingsPreferencesBase extends BaseSiteSettingsFragment {
         // We want to place these Settings at the bottom.
         // See https://github.com/brave/brave-browser/issues/46547
         // for the context
-        Preference prefDivider = getPreferenceScreen().findPreference(DIVIDER_KEY);
         Preference prefPermissionAutorevocation =
                 getPreferenceScreen().findPreference(PERMISSION_AUTOREVOCATION_KEY);
-        assert prefDivider != null && prefPermissionAutorevocation != null
+        assert prefPermissionAutorevocation != null
                 : "Remove the order adjustment if the prefs are removed from upstream";
-        if (prefDivider != null && prefPermissionAutorevocation != null) {
+        if (prefPermissionAutorevocation != null) {
             Preference prefSolanaConnectedSites =
                     getPreferenceScreen().findPreference(SOLANA_CONNECTED_SITES_KEY);
             // Solana preference may be removed if wallet is disabled by policy.
             if (prefSolanaConnectedSites != null) {
                 int solanaConnectedSitesOrder = prefSolanaConnectedSites.getOrder();
-                prefDivider.setOrder(solanaConnectedSitesOrder + 1);
-                prefPermissionAutorevocation.setOrder(solanaConnectedSitesOrder + 2);
+                Preference prefDivider = getPreferenceScreen().findPreference(DIVIDER_KEY);
+                if (prefDivider == null) {
+                    // There is divider when `Android Settings Containment` flag is turned on
+                    prefPermissionAutorevocation.setOrder(solanaConnectedSitesOrder + 1);
+                } else {
+                    prefDivider.setOrder(solanaConnectedSitesOrder + 1);
+                    prefPermissionAutorevocation.setOrder(solanaConnectedSitesOrder + 2);
+                }
             }
         }
     }

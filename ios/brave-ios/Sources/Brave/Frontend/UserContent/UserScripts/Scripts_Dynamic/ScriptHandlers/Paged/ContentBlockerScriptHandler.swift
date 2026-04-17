@@ -16,7 +16,6 @@ extension ContentBlockerHelper: TabContentScript {
     struct ContentblockerDTOData: Decodable {
       let resourceType: AdblockEngine.ResourceType
       let resourceURL: String
-      let sourceURL: String
     }
 
     let securityToken: String
@@ -98,8 +97,11 @@ extension ContentBlockerHelper: TabContentScript {
 
           // Because javascript urls allow some characters that `URL` does not,
           // we use `NSURL(idnString: String)` to parse them
-          guard let requestURL = NSURL(idnString: dto.resourceURL) as URL? else { return }
-          guard let sourceURL = NSURL(idnString: dto.sourceURL) as URL? else { return }
+          guard let requestURL = NSURL(idnString: dto.resourceURL) as URL?,
+            let sourceURL = URLOrigin(wkSecurityOrigin: message.frameInfo.securityOrigin).url
+          else {
+            return
+          }
 
           let shieldLevel = braveShieldsHelper.shieldLevel(
             for: currentTabURL,

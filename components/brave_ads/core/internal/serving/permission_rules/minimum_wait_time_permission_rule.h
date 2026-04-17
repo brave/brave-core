@@ -6,17 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_PERMISSION_RULES_MINIMUM_WAIT_TIME_PERMISSION_RULE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_PERMISSION_RULES_MINIMUM_WAIT_TIME_PERMISSION_RULE_H_
 
-#include <cstddef>
-#include <vector>
-
-namespace base {
-class Time;
-class TimeDelta;
-}  // namespace base
+#include "base/containers/span.h"
+#include "base/time/time.h"
 
 namespace brave_ads {
 
-bool HasMinimumWaitTimePermission(const std::vector<base::Time>& history,
+bool HasMinimumWaitTimePermission(base::span<const base::Time> history,
                                   base::TimeDelta time_constraint);
 
 }  // namespace brave_ads

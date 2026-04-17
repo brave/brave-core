@@ -11,7 +11,7 @@
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/local_ai/core/background_web_contents.h"
-#include "content/public/browser/web_contents_delegate.h"
+#include "brave/components/restricted_web_contents_delegate/restricted_web_contents_delegate.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "url/gurl.h"
 
@@ -29,7 +29,7 @@ namespace local_ai {
 // WebContents, monitors load/crash events, and notifies the delegate.
 // It does NOT proxy any Mojo interfaces.
 class BackgroundWebContentsImpl : public BackgroundWebContents,
-                                  public content::WebContentsDelegate,
+                                  public RestrictedWebContentsDelegate,
                                   public content::WebContentsObserver {
  public:
   using WebContentsCreatedCallback =
@@ -53,26 +53,8 @@ class BackgroundWebContentsImpl : public BackgroundWebContents,
   content::WebContents* web_contents() const { return web_contents_.get(); }
 
  private:
-  // content::WebContentsDelegate:
+  // RestrictedWebContentsDelegate:
   void CloseContents(content::WebContents* source) override;
-  bool ShouldSuppressDialogs(content::WebContents* source) override;
-  void CanDownload(const GURL& url,
-                   const std::string& request_method,
-                   base::OnceCallback<void(bool)> callback) override;
-  bool IsWebContentsCreationOverridden(
-      content::RenderFrameHost* opener,
-      content::SiteInstance* source_site_instance,
-      content::mojom::WindowContainerType window_container_type,
-      const GURL& opener_url,
-      const std::string& frame_name,
-      const GURL& target_url) override;
-  bool CanEnterFullscreenModeForTab(
-      content::RenderFrameHost* requesting_frame) override;
-  bool CanDragEnter(content::WebContents* source,
-                    const content::DropData& data,
-                    blink::DragOperationsMask operations_allowed) override;
-  void RequestKeyboardLock(content::WebContents* web_contents,
-                           bool esc_key_locked) override;
 
   // content::WebContentsObserver:
   void DidFinishLoad(content::RenderFrameHost* render_frame_host,

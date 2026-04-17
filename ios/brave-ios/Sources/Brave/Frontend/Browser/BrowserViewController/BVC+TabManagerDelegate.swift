@@ -73,6 +73,9 @@ extension BrowserViewController: TabManagerDelegate {
       },
       showOnboardingHandler: { [weak self] isNewWallet in
         self?.showOnboarding(isNewWallet)
+      },
+      openWalletHomeHandler: { [weak self] in
+        self?.openWalletHome()
       }
     )
     let braveShieldsHelper: BraveShieldsTabHelper = .init(

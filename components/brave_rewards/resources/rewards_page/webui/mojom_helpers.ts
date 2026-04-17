@@ -80,8 +80,6 @@ export function walletProvidersFromPublisherStatus(
   switch (value) {
     case mojom.PublisherStatus.BITFLYER_VERIFIED:
       return ['bitflyer']
-    case mojom.PublisherStatus.GEMINI_VERIFIED:
-      return ['gemini']
     case mojom.PublisherStatus.UPHOLD_VERIFIED:
       return ['uphold']
   }

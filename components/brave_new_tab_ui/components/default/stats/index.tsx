@@ -23,7 +23,7 @@ export interface StatsProps {
  * @prop {React.ReactNode} children - the child elements
  */
 export function StatsContainer ({ testId, children }: StatsProps) {
-    return <StyledStatsItemContainer data-test-id={testId}>{children}</StyledStatsItemContainer>
+    return <StyledStatsItemContainer data-testid={testId}>{children}</StyledStatsItemContainer>
 }
 
 export interface StatsItemProps {
@@ -41,7 +41,7 @@ export interface StatsItemProps {
  * @prop {string} description - describes what the counter is showing
  */
 export function StatsItem ({ testId, counter, text, description }: StatsItemProps) {
-    return <StyledStatsItem data-test-id={testId}>
+    return <StyledStatsItem data-testid={testId}>
         <StyledStatsItemCounter>{counter}</StyledStatsItemCounter>
           {text && <StyledStatsItemText>{text}</StyledStatsItemText>}
         <StyledStatsItemDescription>{description}</StyledStatsItemDescription>

@@ -12,13 +12,15 @@
 
 #include "base/files/file_path.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "base/test/scoped_command_line.h"
 #include "base/test/task_environment.h"
-#include "brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_for_testing.h"
 #include "brave/components/brave_ads/core/internal/ads_client/test/ads_client_mock.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_util.h"
-#include "brave/components/brave_ads/core/internal/common/platform/test/platform_helper_mock.h"
+#include "brave/components/brave_ads/core/internal/common/platform/test/fake_platform_helper.h"
+#include "brave/components/brave_ads/core/internal/common/test/tab_test_helper.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier.h"
 #include "brave/components/brave_ads/core/public/common/locale/scoped_locale_for_testing.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -35,7 +37,7 @@ class GlobalState;
 
 namespace test {
 
-class TestBase : public AdsClientNotifierForTesting, public ::testing::Test {
+class TestBase : public ::testing::Test {
  public:
   TestBase(const TestBase&) = delete;
   TestBase& operator=(const TestBase&) = delete;
@@ -48,6 +50,11 @@ class TestBase : public AdsClientNotifierForTesting, public ::testing::Test {
 
  protected:
   TestBase();
+
+  // Pass `is_integration_test` as `true` to test functionality and performance
+  // under product-like circumstances with data to replicate live settings to
+  // simulate what a real user scenario looks like from start to finish.
+  explicit TestBase(bool is_integration_test);
 
   // Override `SetUp` and call `test::TestBase::SetUp` with
   // `is_integration_test` set to `true` to test functionality and performance
@@ -106,20 +113,22 @@ class TestBase : public AdsClientNotifierForTesting, public ::testing::Test {
   // information about pending tasks. See `TaskEnvironment` for more detail.
   void FastForwardClockToNextPendingTask();
 
-  // Returns the delay until the next pending task on the main thread's
-  // TaskRunner if there is one, otherwise it returns `TimeDelta::Max`. See
+  // Flushes any immediately-due tasks then returns the delay until the next
+  // pending task on the main thread's TaskRunner, or `TimeDelta::Max` if there
+  // are none. See `TaskEnvironment` for more detail.
+  base::TimeDelta NextPendingTaskDelay();
+
+  // Flushes any immediately-due tasks then returns the number of pending tasks
+  // on the main thread's TaskRunner. When debugging, you can use
+  // `task_environment_.DescribeCurrentTasks` to see what those are. See
   // `TaskEnvironment` for more detail.
-  base::TimeDelta NextPendingTaskDelay() const;
+  size_t GetPendingTaskCount();
 
-  // Returns the number of pending tasks on the main thread's TaskRunner. When
-  // debugging, you can use `task_environment_.DescribeCurrentTasks` to see
-  // what those are. See `TaskEnvironment` for more detail.
-  size_t GetPendingTaskCount() const;
-
-  // Returns `true` if there are pending tasks on the main thread's TaskRunner.
-  // When debugging, use `task_environment_.DescribeCurrentTasks` to see what
-  // those are. See `TaskEnvironment` for more detail.
-  bool HasPendingTasks() const;
+  // Flushes any immediately-due tasks then returns `true` if there are pending
+  // tasks on the main thread's TaskRunner. When debugging, use
+  // `task_environment_.DescribeCurrentTasks` to see what those are. See
+  // `TaskEnvironment` for more detail.
+  bool HasPendingTasks();
 
   // Unlike `FastForwardClockToNextPendingTask`, `FastForwardClockTo`,
   // `FastForwardClockBy` and `SuspendedFastForwardClockBy`, `AdvanceClock*`
@@ -131,9 +140,12 @@ class TestBase : public AdsClientNotifierForTesting, public ::testing::Test {
 
   base::test::TaskEnvironment task_environment_;
 
-  ::testing::NiceMock<PlatformHelperMock> platform_helper_mock_;
+  FakePlatformHelper fake_platform_helper_;
 
   ::testing::NiceMock<AdsClientMock> ads_client_mock_;
+  AdsClientNotifier ads_client_notifier_;
+
+  TabHelper tab_helper_;
 
  private:
   void SimulateProfile();
@@ -142,13 +154,16 @@ class TestBase : public AdsClientNotifierForTesting, public ::testing::Test {
 
   void MockAdsClientNotifier();
   void MockAdsClient();
-  void Mock();
-  void MockDefaultAdsServiceState() const;
+  void SetUpEnvironment();
+  void SetUpDefaultAdsServiceState(
+      base::OnceClosure initialized_callback) const;
 
   void SetUpIntegrationTest();
   void SetUpIntegrationTestCallback(bool success);
 
   void SetUpUnitTest();
+
+  void FlushImmediateTasks();
 
   // Captures the original command line and restores it on destruction to
   // prevent `AppendCommandLineSwitches` in `SetUpMocks` from leaking between
@@ -160,12 +175,12 @@ class TestBase : public AdsClientNotifierForTesting, public ::testing::Test {
   bool setup_called_ = false;
   bool teardown_called_ = false;
 
-  ScopedCurrentLanguageCode scoped_current_language_code_;
-  ScopedCurrentCountryCode scoped_current_country_code_;
+  const ScopedCurrentLanguageCode scoped_current_language_code_;
+  const ScopedCurrentCountryCode scoped_current_country_code_;
 
   ScopedBrowserVersionNumberForTesting scoped_browser_version_number_;
 
-  bool is_integration_test_ = false;
+  bool is_integration_test_ = false;  // Defaults to unit test.
 
   // Integration tests only.
   std::unique_ptr<Ads> ads_;

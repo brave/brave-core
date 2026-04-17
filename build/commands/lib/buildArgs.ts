@@ -3,19 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import type { Config } from './config.js'
+import type { Config } from './config.ts'
 import { isCI } from './ciDetect.ts'
 import assert from 'node:assert'
 import fs from 'node:fs'
 import path from 'node:path'
 
 const FORWARD_ENV_CONFIG_VARS_TO_GN_ARGS = [
-  'bitflyer_production_client_id',
-  'bitflyer_production_client_secret',
   'bitflyer_production_fee_address',
   'bitflyer_production_url',
-  'bitflyer_sandbox_client_id',
-  'bitflyer_sandbox_client_secret',
   'bitflyer_sandbox_fee_address',
   'bitflyer_sandbox_url',
   'brave_android_developer_options_code',
@@ -33,12 +29,6 @@ const FORWARD_ENV_CONFIG_VARS_TO_GN_ARGS = [
   'concurrent_links',
   'dcheck_always_on',
   'enable_updater',
-  'gemini_production_api_url',
-  'gemini_production_fee_address',
-  'gemini_production_oauth_url',
-  'gemini_sandbox_api_url',
-  'gemini_sandbox_fee_address',
-  'gemini_sandbox_oauth_url',
   'google_default_client_id',
   'google_default_client_secret',
   'msan_track_origins',
@@ -372,20 +362,10 @@ export function getBuildArgs(config: Config) {
     delete args.brave_google_api_endpoint
     delete args.brave_google_api_key
     delete args.brave_stats_updater_url
-    delete args.bitflyer_production_client_id
-    delete args.bitflyer_production_client_secret
     delete args.bitflyer_production_fee_address
     delete args.bitflyer_production_url
-    delete args.bitflyer_sandbox_client_id
-    delete args.bitflyer_sandbox_client_secret
     delete args.bitflyer_sandbox_fee_address
     delete args.bitflyer_sandbox_url
-    delete args.gemini_production_api_url
-    delete args.gemini_production_fee_address
-    delete args.gemini_production_oauth_url
-    delete args.gemini_sandbox_api_url
-    delete args.gemini_sandbox_fee_address
-    delete args.gemini_sandbox_oauth_url
     delete args.uphold_production_api_url
     delete args.uphold_production_fee_address
     delete args.uphold_production_oauth_url

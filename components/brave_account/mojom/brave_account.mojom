@@ -30,26 +30,39 @@ struct RegisterFinalizeResult {
   // Currently empty, serves as a placeholder for success.
 };
 
+struct RegisterVerifyResult {
+  // Currently empty, serves as a placeholder for success.
+};
+
 enum RegisterErrorCode {
   // Client-side errors:
-  kOpaqueError                       = -3,
-  kVerificationTokenEncryptionFailed = -2,
-  kVerificationTokenDecryptionFailed = -1,
+  kOpaqueError                             = -5,
+  kVerificationTokenEncryptionFailed       = -4,
+  kVerificationTokenDecryptionFailed       = -3,
+  kUserNotInTheVerificationState           = -2,
+  kAuthenticationTokenEncryptionFailed     = -1,
   // Server-side errors:
-  kMiscServerError                   = 0,
+  kMiscServerError                         = 0,
   // /v2/accounts/password/init:
   // - internal:
-  kNewAccountEmailRequired           = 11005,
-  kIntentNotAllowed                  = 13003,
+  kNewAccountEmailRequired                 = 11005,
+  kIntentNotAllowed                        = 13003,
   // - user-facing:
-  kTooManyVerifications              = 13001,
-  kAccountExists                     = 13004,
-  kEmailDomainNotSupported           = 13006,
+  kTooManyVerifications                    = 13001,
+  kAccountExists                           = 13004,
+  kEmailDomainNotSupported                 = 13006,
   // /v2/accounts/password/finalize:
   // - internal:
-  kInterimPasswordStateNotFound      = 14001,
-  kInterimPasswordStateExpired       = 14002,
+  kInterimPasswordStateNotFound            = 14001,
+  kInterimPasswordStateExpired             = 14002,
   // - user-facing: -
+  // /v2/verify/complete:
+  // - internal:
+  kEmailAlreadyVerified                    = 13009,
+  // - user-facing:
+  kVerificationNotFoundOrInvalidIdOrCode   = 13002,
+  kMaximumCodeVerificationAttemptsExceeded = 13010,
+  kInvalidVerificationCode                 = 13011,
 };
 
 struct RegisterError {
@@ -203,6 +216,14 @@ interface Authentication {
   //         `RegisterError` on failure.
   RegisterFinalize(string encryptedVerificationToken, string serializedRecord)
     => result<RegisterFinalizeResult, RegisterError>;
+
+  // Third step of the registration process.
+  // `code`: verification code sent to the user's email address,
+  //         required to verify the email and complete the registration.
+  // Returns `RegisterVerifyResult` on success, or
+  //         `RegisterError` on failure.
+  RegisterVerify(string code)
+    => result<RegisterVerifyResult, RegisterError>;
 
   // Resends the confirmation email to the user during the registration process.
   // Returns `ResendConfirmationEmailResult` on success, or

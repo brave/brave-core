@@ -11,13 +11,13 @@
 #include "base/location.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_interface.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/token_state_manager.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core.h"
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_manager.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state_holder.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
@@ -36,7 +36,7 @@ GlobalState::GlobalState(
   ads_notifier_manager_ = std::make_unique<AdsNotifierManager>();
   browser_manager_ = std::make_unique<BrowserManager>();
   client_state_manager_ = std::make_unique<ClientStateManager>();
-  confirmation_state_manager_ = std::make_unique<ConfirmationStateManager>();
+  token_state_manager_ = std::make_unique<TokenStateManager>();
   database_manager_ = std::make_unique<DatabaseManager>(database_path);
   diagnostic_manager_ = std::make_unique<DiagnosticManager>();
   ad_history_manager_ = std::make_unique<AdHistoryManager>();
@@ -85,10 +85,10 @@ ClientStateManager& GlobalState::GetClientStateManager() {
   return *client_state_manager_;
 }
 
-ConfirmationStateManager& GlobalState::GetConfirmationStateManager() {
+TokenStateManager& GlobalState::GetTokenStateManager() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  CHECK(confirmation_state_manager_);
-  return *confirmation_state_manager_;
+  CHECK(token_state_manager_);
+  return *token_state_manager_;
 }
 
 DatabaseManager& GlobalState::GetDatabaseManager() {

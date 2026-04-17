@@ -102,7 +102,7 @@ class CodeExecutionTool : public Tool {
     base::WeakPtrFactory<CodeExecutionRequest> weak_ptr_factory_{this};
   };
 
-  std::string WrapScript(const std::string& script) const;
+  std::string WrapScript(const std::string& script);
 
   void ResolveRequest(std::list<CodeExecutionRequest>::iterator request_it,
                       UseToolCallback callback,

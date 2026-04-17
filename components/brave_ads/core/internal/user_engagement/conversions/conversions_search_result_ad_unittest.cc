@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/test/ad_event_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_test_base.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_test_constants.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/test/conversions_test_constants.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/test/conversions_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"

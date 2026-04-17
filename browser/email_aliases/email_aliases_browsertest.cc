@@ -271,7 +271,17 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
   }
 
   void Click(const std::string& id, content::WebContents* contents = nullptr) {
-    constexpr char kClick[] = R"js( deepQuery($1).onClick() )js";
+    constexpr const char kClick[] = R"js(
+      (async () => {
+        let waiter = () => {
+          return !deepQuery($1)
+        };
+        while (waiter()) {
+          await new Promise(r => setTimeout(r, 10));
+        }
+        return deepQuery($1).onClick();
+      })();
+    )js";
     auto ignore = content::ExecJs((contents ? contents : ActiveWebContents()),
                                   content::JsReplace(kClick, id));
   }

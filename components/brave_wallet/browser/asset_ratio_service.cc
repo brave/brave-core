@@ -5,20 +5,15 @@
 
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 
-#include <algorithm>
 #include <memory>
 #include <optional>
 #include <utility>
 
-#include "base/base64.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/flat_map.h"
-#include "base/environment.h"
 #include "base/json/json_writer.h"
-#include "base/no_destructor.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_response_parser.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -27,7 +22,6 @@
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/constants/brave_services_key.h"
-#include "net/base/load_flags.h"
 #include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -182,12 +176,6 @@ void AssetRatioService::EnableDummyPricesForTesting() {
   dummy_prices_for_testing_ = true;
 }
 
-mojo::PendingRemote<mojom::AssetRatioService> AssetRatioService::MakeRemote() {
-  mojo::PendingRemote<mojom::AssetRatioService> remote;
-  receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
-  return remote;
-}
-
 void AssetRatioService::Bind(
     mojo::PendingReceiver<mojom::AssetRatioService> receiver) {
   receivers_.Add(this, std::move(receiver));
@@ -199,9 +187,9 @@ void AssetRatioService::SetBaseURLForTest(const GURL& base_url_for_test) {
 
 // static
 GURL AssetRatioService::GetPriceURL(const std::string& vs_currency) {
-  std::string base_url =
-      base_url_for_test_.is_empty() ? kGate3URL : base_url_for_test_.spec();
-  GURL url = GURL(absl::StrFormat("%s/api/pricing/v1/getPrices", base_url));
+  GURL base_url =
+      base_url_for_test_.is_empty() ? GetGate3URL() : base_url_for_test_;
+  GURL url = base_url.Resolve("/api/pricing/v1/getPrices");
   url = net::AppendQueryParameter(url, "vs_currency",
                                   base::ToUpperASCII(vs_currency));
   return url;

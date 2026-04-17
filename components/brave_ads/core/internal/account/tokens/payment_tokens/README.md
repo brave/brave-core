@@ -1,5 +1,7 @@
 # Payment Tokens
 
-Payment tokens contain explicit information about the user's identity or eligibility. Still, this information is protected through encryption or other cryptographic techniques to help protect user privacy while enabling secure and efficient interactions with services or systems.
+Payment tokens are privacy-preserving cryptographic tokens that represent
+confirmed ad events. They are issued by the payment server and stored locally
+until redeemed for rewards, without linking payment to user identity.
 
 Please add to it!

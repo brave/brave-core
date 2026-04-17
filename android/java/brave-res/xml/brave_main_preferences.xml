@@ -20,29 +20,33 @@
         android:key="sign_out"
         android:order="2"
         android:title="@string/settings_brave_account_log_out_button_label"
-        app:title_text_color="@color/brave_link"/>
+        app:title_text_color="@color/schemes_primary"/>
     <org.chromium.chrome.browser.settings.BraveAccountPreference
         android:key="almost_there"
         android:order="3"
         android:title="@string/settings_brave_account_verification_row_title"
         android:summary="@string/settings_brave_account_verification_row_description_1"
-        app:summary_text_color="@color/brave_theme_subtitle_text"
         android:selectable="false"/>
     <org.chromium.chrome.browser.settings.BraveAccountPreference
-        android:key="resend_confirmation_email"
+        android:key="enter_registration_code"
         android:order="4"
+        android:title="@string/settings_brave_account_enter_registration_code_button_label"
+        app:title_text_color="@color/schemes_primary"
+        android:summary="@string/settings_brave_account_verification_row_description_2"/>
+    <org.chromium.chrome.browser.settings.BraveAccountPreference
+        android:key="resend_confirmation_email"
+        android:order="5"
         android:title="@string/settings_brave_account_resend_confirmation_email_button_label"
-        app:title_text_color="@color/brave_link"
-        android:summary="@string/settings_brave_account_verification_row_description_2"
-        app:summary_text_color="@color/brave_theme_subtitle_text"/>
+        app:title_text_color="@color/schemes_primary"
+        android:summary="@string/settings_brave_account_verification_row_description_3"/>
     <org.chromium.chrome.browser.settings.BraveAccountPreference
         android:key="cancel_registration"
-        android:order="5"
+        android:order="6"
         android:title="@string/settings_brave_account_cancel_registration_button_label"
         app:title_text_color="@color/systemfeedback_error_text"/>
     <org.chromium.chrome.browser.settings.BraveAccountPreference
         android:key="get_started"
-        android:order="6"
+        android:order="7"
         android:icon="@drawable/ic_brave"
         android:title="@string/settings_brave_account_get_started_button_label"/>
     <PreferenceCategory
@@ -148,22 +152,12 @@
         android:icon="@drawable/ic_autofill"
         android:title="@string/prefs_autofill_private_window_title"
         android:summary="@string/prefs_autofill_private_window_summary"/>
-    <PreferenceCategory
-        android:key="support_section"
-        android:order="24"
-        android:title="@string/prefs_support_section"/>
-
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.settings.BraveSyncScreensPreference"
         android:key="brave_sync_layout"
         android:order="22"
         android:icon="@drawable/ic_product_sync"
         android:title="@string/sync_category_title"/>
-    <Preference
-        android:key="rate_brave"
-        android:order="28"
-        android:icon="@drawable/ic_star_circle"
-        android:title="@string/prefs_rate_brave"/>
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="use_custom_tabs"
         android:order="20"
@@ -183,6 +177,15 @@
         android:order="23"
         icon="@drawable/ic_product_translate"
         android:title="@string/language_settings"/>
+    <PreferenceCategory
+        android:key="support_section"
+        android:order="24"
+        android:title="@string/prefs_support_section"/>
+    <Preference
+        android:key="rate_brave"
+        android:order="28"
+        android:icon="@drawable/ic_star_circle"
+        android:title="@string/prefs_rate_brave"/>
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.download.settings.BraveDownloadSettings"
         android:key="brave_downloads"

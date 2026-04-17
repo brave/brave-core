@@ -7,7 +7,8 @@
 
 #include <memory>
 
-#include "brave/components/brave_ads/core/internal/common/resources/language_components_test_constants.h"
+#include "base/test/run_until.h"
+#include "brave/components/brave_ads/core/internal/common/resources/test/language_components_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/model/text_classification_alias.h"
@@ -46,8 +47,8 @@ TEST_F(BraveAdsTextClassificationProcessorTest,
 
 TEST_F(BraveAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
   // Arrange
-  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
-                                   test::kLanguageComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kLanguageComponentManifestVersion, test::kLanguageComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
   TextClassificationProcessor processor(*resource_);
@@ -65,8 +66,8 @@ TEST_F(BraveAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
 
 TEST_F(BraveAdsTextClassificationProcessorTest, NeverProcessed) {
   // Arrange
-  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
-                                   test::kLanguageComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kLanguageComponentManifestVersion, test::kLanguageComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
   // Act & Assert
@@ -78,8 +79,8 @@ TEST_F(BraveAdsTextClassificationProcessorTest, NeverProcessed) {
 
 TEST_F(BraveAdsTextClassificationProcessorTest, ProcessText) {
   // Arrange
-  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
-                                   test::kLanguageComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kLanguageComponentManifestVersion, test::kLanguageComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
   TextClassificationProcessor processor(*resource_);
@@ -97,8 +98,8 @@ TEST_F(BraveAdsTextClassificationProcessorTest, ProcessText) {
 
 TEST_F(BraveAdsTextClassificationProcessorTest, ProcessMultipleText) {
   // Arrange
-  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
-                                   test::kLanguageComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kLanguageComponentManifestVersion, test::kLanguageComponentId);
   ASSERT_TRUE(resource_->IsLoaded());
 
   TextClassificationProcessor processor(*resource_);

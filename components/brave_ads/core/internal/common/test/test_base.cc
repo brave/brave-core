@@ -8,27 +8,31 @@
 #include <memory>
 #include <string_view>
 
+#include "base/barrier_closure.h"
 #include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
+#include "base/run_loop.h"
 #include "base/test/task_environment.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/test/token_generator_mock.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/test/fake_token_generator.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/token_state_manager.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/test/wallet_test_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_waiter.h"
+#include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 #include "brave/components/brave_ads/core/internal/common/test/file_path_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/command_line_switch_test_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/mock_test_util_internal.h"
+#include "brave/components/brave_ads/core/internal/common/test/internal/test_environment_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/local_state_pref_value_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/pref_registry_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/profile_pref_value_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/test/test_types.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_environment_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
@@ -49,11 +53,14 @@ constexpr std::string_view kYouCantTravelBackInTime =
 
 TestBase::TestBase()
     : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
+      tab_helper_(ads_client_notifier_),
       scoped_current_language_code_(kDefaultLanguageCode),
       scoped_current_country_code_(kDefaultCountryCode) {
-  set_ads_client_notifier_task_environment(&task_environment_);
-
   SimulateProfile();
+}
+
+TestBase::TestBase(bool is_integration_test) : TestBase() {
+  is_integration_test_ = is_integration_test;
 }
 
 TestBase::~TestBase() {
@@ -65,7 +72,7 @@ TestBase::~TestBase() {
 }
 
 void TestBase::SetUp() {
-  SetUp(/*is_integration_test=*/false);  // Default to unit test.
+  SetUp(is_integration_test_);
 }
 
 void TestBase::TearDown() {
@@ -165,15 +172,19 @@ void TestBase::FastForwardClockToNextPendingTask() {
   task_environment_.FastForwardBy(NextPendingTaskDelay());
 }
 
-base::TimeDelta TestBase::NextPendingTaskDelay() const {
+base::TimeDelta TestBase::NextPendingTaskDelay() {
+  FlushImmediateTasks();
+
   return task_environment_.NextMainThreadPendingTaskDelay();
 }
 
-size_t TestBase::GetPendingTaskCount() const {
+size_t TestBase::GetPendingTaskCount() {
+  FlushImmediateTasks();
+
   return task_environment_.GetPendingMainThreadTaskCount();
 }
 
-bool TestBase::HasPendingTasks() const {
+bool TestBase::HasPendingTasks() {
   return GetPendingTaskCount() > 0;
 }
 
@@ -196,8 +207,6 @@ void TestBase::AdvanceClockToUTCMidnight() {
   return AdvanceClockTo(Now().UTCMidnight() + base::Days(1));
 }
 
-///////////////////////////////////////////////////////////////////////////////
-
 void TestBase::SimulateProfile() {
   CHECK(profile_dir_.CreateUniqueTempDir());
 
@@ -209,15 +218,14 @@ base::FilePath TestBase::DatabasePath() const {
 }
 
 void TestBase::MockAdsClientNotifier() {
-  MockAdsClientNotifierAddObserver(ads_client_mock_, *this);
+  MockAdsClientNotifierAddObserver(ads_client_mock_, ads_client_notifier_);
 }
 
 void TestBase::MockAdsClient() {
-  // Also, see `common/test/mock_test_util.h`. `MockUrlResponses`,
-  // `ShowScheduledCaptcha`, and `Log` are not mocked here; they should be
-  // mocked as needed.
+  // `MockUrlResponses`, `ShowScheduledCaptcha`, and `Log` are not mocked here;
+  // they should be mocked as needed via `mock_test_util.h`.
 
-  MockNotifyPendingObservers(ads_client_mock_, *this);
+  MockNotifyPendingObservers(ads_client_mock_, ads_client_notifier_);
 
   MockIsNetworkConnectionAvailable(ads_client_mock_, true);
 
@@ -239,59 +247,71 @@ void TestBase::MockAdsClient() {
 
   MockFindProfilePref(ads_client_mock_);
   MockGetProfilePref(ads_client_mock_);
-  MockSetProfilePref(ads_client_mock_, *this);
+  MockSetProfilePref(ads_client_mock_, ads_client_notifier_);
   MockClearProfilePref(ads_client_mock_);
   MockHasProfilePrefPath(ads_client_mock_);
 
   MockFindLocalStatePref(ads_client_mock_);
   MockGetLocalStatePref(ads_client_mock_);
-  MockSetLocalStatePref(ads_client_mock_, *this);
+  MockSetLocalStatePref(ads_client_mock_, ads_client_notifier_);
   MockClearLocalStatePref(ads_client_mock_);
   MockHasLocalStatePrefPath(ads_client_mock_);
 }
 
-void TestBase::Mock() {
+void TestBase::SetUpEnvironment() {
   CHECK(GlobalState::HasInstance())
       << "Must be called after GlobalState is instantiated";
 
-  MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
+  fake_platform_helper_.SetPlatformType(PlatformType::kWindows);
+  PlatformHelper::SetForTesting(&fake_platform_helper_);
 
-  MockBuildChannel(BuildChannelType::kRelease);
+  SetUpBuildChannel(BuildChannelType::kRelease);
 
-  MockContentSettings();
+  SetUpContentSettings();
 
   SetUpMocks();
 
   // Must be called after `SetUpMocks` because `SetupMocks` may call
   // `AppendCommandLineSwitches`.
-  MockCommandLineSwitches();
+  SetUpCommandLineSwitches();
 }
 
-void TestBase::MockDefaultAdsServiceState() const {
+void TestBase::SetUpDefaultAdsServiceState(
+    base::OnceClosure initialized_callback) const {
   CHECK(!is_integration_test_)
-      << "MockDefaultAdsServiceState should only be called if SetUp is "
+      << "SetUpDefaultAdsServiceState should only be called if SetUp is "
          "initialized for unit testing";
   CHECK(GlobalState::HasInstance())
       << "Must be called after GlobalState is instantiated";
 
-  GlobalState::GetInstance()->GetDatabaseManager().CreateOrOpen(
-      base::BindOnce([](bool success) {
+  // Both the database+token path and the client state path are async; the
+  // barrier closure fires `initialized_callback` once both have completed.
+  auto barrier_closure =
+      base::BarrierClosure(/*num_closures=*/2, std::move(initialized_callback));
+
+  GlobalState::GetInstance()->GetDatabaseManager().CreateOrOpen(base::BindOnce(
+      [](const base::RepeatingClosure& barrier_closure, bool success) {
         ASSERT_TRUE(success) << "Failed to create or open database";
-      }));
+
+        GlobalState::GetInstance()->GetTokenStateManager().LoadState(
+            base::BindOnce(
+                [](const base::RepeatingClosure& barrier_closure,
+                   bool success) {
+                  ASSERT_TRUE(success) << "Failed to load token state";
+                  barrier_closure.Run();
+                },
+                barrier_closure));
+      },
+      barrier_closure));
 
   // TODO(https://github.com/brave/brave-browser/issues/39795): Transition away
   // from using JSON state to a more efficient data approach.
-  GlobalState::GetInstance()->GetClientStateManager().LoadState(
-      base::BindOnce([](bool success) {
+  GlobalState::GetInstance()->GetClientStateManager().LoadState(base::BindOnce(
+      [](const base::RepeatingClosure& barrier_closure, bool success) {
         ASSERT_TRUE(success) << "Failed to load client state";
-      }));
-
-  // TODO(https://github.com/brave/brave-browser/issues/39795): Transition away
-  // from using JSON state to a more efficient data approach.
-  GlobalState::GetInstance()->GetConfirmationStateManager().LoadState(
-      Wallet(), base::BindOnce([](bool success) {
-        ASSERT_TRUE(success) << "Failed to load confirmation state";
-      }));
+        barrier_closure.Run();
+      },
+      barrier_closure));
 }
 
 void TestBase::SetUpIntegrationTest() {
@@ -303,14 +323,17 @@ void TestBase::SetUpIntegrationTest() {
   CHECK(ads_) << "Failed to create ads instance";
 
   // Must be called after `Ads` is instantiated but prior to `Initialize`.
-  Mock();
+  SetUpEnvironment();
 
-  ads_->Initialize(WalletAsPtr(),
+  ads_->Initialize(MojomWallet(),
                    base::BindOnce(&TestBase::SetUpIntegrationTestCallback,
                                   weak_factory_.GetWeakPtr()));
 
-  AdsClientNotifierWaiter(/*ads_client_notifier=*/this)
+  AdsClientNotifierWaiter(/*ads_client_notifier=*/&ads_client_notifier_)
       .WaitForOnNotifyDidInitializeAds();
+
+  // Flush 0-delay task replies posted during initialization.
+  FlushImmediateTasks();
 }
 
 void TestBase::SetUpIntegrationTestCallback(bool success) {
@@ -319,12 +342,11 @@ void TestBase::SetUpIntegrationTestCallback(bool success) {
   // By default, integration tests are run while the browser is in the
   // foreground and active. If tests require the browser to be in the background
   // and inactive, you can call `NotifyBrowserDidEnterBackground` and
-  // `NotifyBrowserDidResignActive`. Refer to `AdsClientNotifierForTesting` for
-  // more information.
-  NotifyBrowserDidEnterForeground();
-  NotifyBrowserDidBecomeActive();
+  // `NotifyBrowserDidResignActive`.
+  ads_client_notifier_.NotifyBrowserDidEnterForeground();
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
 
-  NotifyDidInitializeAds();
+  ads_client_notifier_.NotifyDidInitializeAds();
 }
 
 void TestBase::SetUpUnitTest() {
@@ -332,15 +354,32 @@ void TestBase::SetUpUnitTest() {
                                   "SetUp is initialized for unit testing";
 
   global_state_ = std::make_unique<GlobalState>(
-      ads_client_mock_, DatabasePath(), std::make_unique<TokenGeneratorMock>());
+      ads_client_mock_, DatabasePath(), std::make_unique<FakeTokenGenerator>());
 
-  // Must be called after `GlobalState` is instantiated but prior to
-  // `MockDefaultAdsServiceState`.
-  Mock();
+  // Must be called after `GlobalState` is instantiated because it dispatches
+  // notifications through it, and before `SetUpDefaultAdsServiceState` because
+  // database creation and state loading depend on mocks, prefs, and feature
+  // flags configured here.
+  SetUpEnvironment();
 
-  MockDefaultAdsServiceState();
+  base::RunLoop run_loop;
+  SetUpDefaultAdsServiceState(run_loop.QuitClosure());
 
-  NotifyPendingObservers();
+  ads_client_notifier_.NotifyPendingObservers();
+
+  // Process background thread replies without advancing the mock clock, so
+  // that tests requiring a specific `NextPendingTaskDelay` are unaffected.
+  run_loop.Run();
+}
+
+void TestBase::FlushImmediateTasks() {
+  // `base::SequenceBound` always posts a completion reply to the calling
+  // sequence, even for fire-and-forget calls with `base::DoNothing`. Those
+  // replies arrive with a 0ms delay and must be flushed so that callers see
+  // only genuinely scheduled tasks.
+  if (task_environment_.NextMainThreadPendingTaskDelay().is_zero()) {
+    task_environment_.FastForwardBy(base::TimeDelta());
+  }
 }
 
 }  // namespace brave_ads::test

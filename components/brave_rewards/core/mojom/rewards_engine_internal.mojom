@@ -105,7 +105,7 @@ enum SKUTransactionType {
   NONE = 0,
   UPHOLD = 1,
   TOKENS = 3,
-  GEMINI = 4
+  GEMINI_DEPRECATED = 4
 };
 
 enum SKUTransactionStatus {
@@ -134,12 +134,6 @@ struct ExternalTransaction {
 enum GetBalanceZebPayError {
   kFailedToCreateRequest,
   kAccessTokenExpired,                  // HTTP 401
-  kUnexpectedStatusCode,                // HTTP xxx
-  kFailedToParseBody
-};
-
-enum GetRecipientIDGeminiError {
-  kFailedToCreateRequest,
   kUnexpectedStatusCode,                // HTTP xxx
   kFailedToParseBody
 };
@@ -202,15 +196,6 @@ enum PostCommitTransactionBitFlyerError {
   kFailedToCreateRequest,
   kAccessTokenExpired,                  // HTTP 401, HTTP 409
   kUnexpectedError,                     // HTTP 409
-  kUnexpectedStatusCode,                // HTTP xxx
-  kFailedToParseBody
-};
-
-enum PostCommitTransactionGeminiError {
-  kFailedToCreateRequest,
-  kTransactionPending,                  // HTTP 200
-  kUnexpectedError,                     // HTTP 200
-  kAccessTokenExpired,                  // HTTP 401
   kUnexpectedStatusCode,                // HTTP xxx
   kFailedToParseBody
 };

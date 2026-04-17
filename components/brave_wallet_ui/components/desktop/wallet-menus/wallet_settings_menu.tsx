@@ -80,7 +80,11 @@ export const WalletSettingsMenu = (props: Props) => {
     LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN,
     true,
   )
-
+  const [hidePortfolioDistribution, setHidePortfolioDistribution] =
+    useSyncedLocalStorage(
+      LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_DISTRIBUTION_HIDDEN,
+      true,
+    )
   // queries
   const { data: selectedNetwork } = useGetSelectedChainQuery()
 
@@ -153,6 +157,10 @@ export const WalletSettingsMenu = (props: Props) => {
   const onToggleHideGraph = React.useCallback(() => {
     setHidePortfolioGraph((prev) => !prev)
   }, [setHidePortfolioGraph])
+
+  const onToggleHideDistribution = React.useCallback(() => {
+    setHidePortfolioDistribution((prev) => !prev)
+  }, [setHidePortfolioDistribution])
 
   const onToggleHideBalances = React.useCallback(() => {
     setHidePortfolioBalances((prev) => !prev)
@@ -296,6 +304,20 @@ export const WalletSettingsMenu = (props: Props) => {
               <Toggle
                 checked={!hidePortfolioGraph}
                 onChange={onToggleHideGraph}
+                size='small'
+              />
+            </ToggleRow>
+
+            <ToggleRow onClick={onToggleHideDistribution}>
+              <Row>
+                <ButtonIcon name='pie-chart-2' />
+                <PopupButtonText>
+                  {getLocale('braveWalletDistribution')}
+                </PopupButtonText>
+              </Row>
+              <Toggle
+                checked={!hidePortfolioDistribution}
+                onChange={onToggleHideDistribution}
                 size='small'
               />
             </ToggleRow>

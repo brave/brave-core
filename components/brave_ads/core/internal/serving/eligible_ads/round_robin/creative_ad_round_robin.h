@@ -46,7 +46,7 @@ class CreativeAdRoundRobin {
     }
 
     // Check if all creative ads have been served.
-    if (std::ranges::all_of(creative_ads, [&](const T& creative_ad) {
+    if (std::ranges::all_of(creative_ads, [this](const T& creative_ad) {
           return served_creative_instance_ids_.contains(
               creative_ad.creative_instance_id);
         })) {
@@ -63,7 +63,7 @@ class CreativeAdRoundRobin {
     }
 
     // Remove served ads from the eligible ads for this serving round.
-    std::erase_if(creative_ads, [&](const T& creative_ad) {
+    std::erase_if(creative_ads, [this](const T& creative_ad) {
       return served_creative_instance_ids_.contains(
           creative_ad.creative_instance_id);
     });

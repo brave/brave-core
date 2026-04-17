@@ -81,13 +81,14 @@ bool ExclusionRulesBase::ShouldExcludeCreativeAd(
     return true;
   }
 
-  return std::ranges::any_of(exclusion_rules_, [&](const auto& exclusion_rule) {
-    if (!exclusion_rule->ShouldInclude(creative_ad)) {
-      Cache(exclusion_rule->GetCacheKey(creative_ad));
-      return true;
-    }
-    return false;
-  });
+  return std::ranges::any_of(
+      exclusion_rules_, [this, &creative_ad](const auto& exclusion_rule) {
+        if (!exclusion_rule->ShouldInclude(creative_ad)) {
+          Cache(exclusion_rule->GetCacheKey(creative_ad));
+          return true;
+        }
+        return false;
+      });
 }
 
 ///////////////////////////////////////////////////////////////////////////////

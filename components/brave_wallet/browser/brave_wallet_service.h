@@ -51,6 +51,11 @@ class KeyringService;
 class NetworkManager;
 class TxService;
 class AccountDiscoveryManager;
+class AssetRatioService;
+class SwapService;
+class MeldIntegrationService;
+class SimulationService;
+class BraveWalletIpfsService;
 struct PendingSignMessageRequest;
 struct PendingDecryptRequest;
 struct PendingGetEncryptPublicKeyRequest;
@@ -355,6 +360,16 @@ class BraveWalletService : public KeyedService,
   KeyringService* keyring_service() { return keyring_service_.get(); }
 
   TxService* tx_service() { return tx_service_.get(); }
+  AssetRatioService* asset_ratio_service() {
+    return asset_ratio_service_.get();
+  }
+  SwapService* swap_service() { return swap_service_.get(); }
+  MeldIntegrationService* meld_integration_service() {
+    return meld_integration_service_.get();
+  }
+  SimulationService* simulation_service() { return simulation_service_.get(); }
+  BraveWalletIpfsService* ipfs_service() { return ipfs_service_.get(); }
+
   // Might return nullptr.
   BitcoinWalletService* GetBitcoinWalletService();
   // Might return nullptr.
@@ -464,6 +479,7 @@ class BraveWalletService : public KeyedService,
   base::flat_map<std::string, PendingDecryptRequest> pending_decrypt_requests_;
   mojo::RemoteSet<mojom::BraveWalletServiceObserver> observers_;
   mojo::RemoteSet<mojom::BraveWalletServiceTokenObserver> token_observers_;
+  raw_ptr<PrefService> profile_prefs_ = nullptr;
   std::unique_ptr<BraveWalletServiceDelegate> delegate_;
   std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
@@ -473,12 +489,16 @@ class BraveWalletService : public KeyedService,
   std::unique_ptr<ZCashWalletService> zcash_wallet_service_;
   std::unique_ptr<CardanoWalletService> cardano_wallet_service_;
   std::unique_ptr<TxService> tx_service_;
-  raw_ptr<PrefService> profile_prefs_ = nullptr;
   std::unique_ptr<BraveWalletP3A> brave_wallet_p3a_;
   std::unique_ptr<SimpleHashClient> simple_hash_client_;
   std::unique_ptr<AssetDiscoveryManager> asset_discovery_manager_;
   std::unique_ptr<EthAllowanceManager> eth_allowance_manager_;
   std::unique_ptr<AccountDiscoveryManager> account_discovery_manager_;
+  std::unique_ptr<AssetRatioService> asset_ratio_service_;
+  std::unique_ptr<SwapService> swap_service_;
+  std::unique_ptr<MeldIntegrationService> meld_integration_service_;
+  std::unique_ptr<SimulationService> simulation_service_;
+  std::unique_ptr<BraveWalletIpfsService> ipfs_service_;
   mojo::ReceiverSet<mojom::BraveWalletService> receivers_;
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_observer_receiver_{this};

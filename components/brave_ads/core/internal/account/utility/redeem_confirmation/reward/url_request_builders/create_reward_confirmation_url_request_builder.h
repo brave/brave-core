@@ -29,7 +29,7 @@ class CreateRewardConfirmationUrlRequestBuilder final
 
   std::string BuildBody() const;
 
-  ConfirmationInfo confirmation_;
+  const ConfirmationInfo confirmation_;
 };
 
 }  // namespace brave_ads

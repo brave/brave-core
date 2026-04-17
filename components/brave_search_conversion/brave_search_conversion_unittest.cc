@@ -9,6 +9,7 @@
 #include "base/metrics/field_trial.h"
 #include "base/metrics/field_trial_param_associator.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_search_conversion/features.h"
 #include "brave/components/brave_search_conversion/types.h"
 #include "brave/components/brave_search_conversion/utils.h"
@@ -84,6 +85,8 @@ TEST_F(BraveSearchConversionTest, DefaultValueTest) {
             GetPromoURL(u"brave"));
 }
 
+// In branded builds, GetConversionType unconditionally returns kNone.
+#if !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 TEST_F(BraveSearchConversionTest, ConversionTypeTest) {
   base::test::ScopedFeatureList feature_list;
 
@@ -210,5 +213,6 @@ TEST_F(BraveSearchConversionTest, ConversionTypeTest) {
                 &pref_service_,
                 search_engines_test_environment_.template_url_service()));
 }
+#endif  // !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 
 }  // namespace brave_search_conversion

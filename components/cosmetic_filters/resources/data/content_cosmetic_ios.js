@@ -20,7 +20,6 @@ const sendSelectors = $((ids, classes) => {
   return $.postNativeMessage(messageHandler, {
     'securityToken': SECURITY_TOKEN,
     'data': {
-      windowOrigin: $.windowOrigin,
       ids: ids,
       classes: classes,
     },
@@ -37,7 +36,6 @@ const getPartiness = $((urls) => {
   return $.postNativeMessage(partinessMessageHandler, {
     'securityToken': SECURITY_TOKEN,
     'data': {
-      windowOrigin: $.windowOrigin,
       urls: urls,
     },
   })

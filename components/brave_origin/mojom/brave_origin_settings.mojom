@@ -28,6 +28,10 @@ interface BraveOriginSettingsHandler {
   // Check if any Brave Origin policy values have been changed since
   // browser startup, indicating a restart is needed.
   GetNeedsRestart() => (bool needs_restart);
+
+  // Accept the Linux free tier without purchasing. Only functional on
+  // Linux builds; returns false on all other platforms.
+  ProceedFree() => (bool success);
 };
 
 // Interface for interaction between SubscriptionRenderFrameObserver

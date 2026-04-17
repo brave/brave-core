@@ -51,6 +51,7 @@ public class BraveAccountSectionController
     private static final String PREF_USER_INFO = "user_info";
     private static final String PREF_SIGN_OUT = "sign_out";
     private static final String PREF_ALMOST_THERE = "almost_there";
+    private static final String PREF_ENTER_REGISTRATION_CODE = "enter_registration_code";
     private static final String PREF_RESEND_CONFIRMATION_EMAIL = "resend_confirmation_email";
     private static final String PREF_CANCEL_REGISTRATION = "cancel_registration";
     private static final String PREF_GET_STARTED = "get_started";
@@ -60,6 +61,7 @@ public class BraveAccountSectionController
                 PREF_USER_INFO,
                 PREF_SIGN_OUT,
                 PREF_ALMOST_THERE,
+                PREF_ENTER_REGISTRATION_CODE,
                 PREF_RESEND_CONFIRMATION_EMAIL,
                 PREF_CANCEL_REGISTRATION,
                 PREF_GET_STARTED
@@ -102,6 +104,20 @@ public class BraveAccountSectionController
         initBraveAccountService();
     }
 
+    private boolean openBraveAccountDialog() {
+        if (!mFragment.isAdded() || mFragment.isDetached()) {
+            return false;
+        }
+
+        Activity activity = mFragment.getActivity();
+        if (activity == null || activity.isFinishing()) {
+            return false;
+        }
+
+        BraveAccountCustomTabActivity.show(activity);
+        return true;
+    }
+
     private void setupPreferenceListeners() {
         Preference signOutPreference = mFragment.findPreference(PREF_SIGN_OUT);
         if (signOutPreference != null) {
@@ -111,6 +127,13 @@ public class BraveAccountSectionController
                         mBraveAccountService.logOut();
                         return true;
                     });
+        }
+
+        Preference enterRegistrationCodePreference =
+                mFragment.findPreference(PREF_ENTER_REGISTRATION_CODE);
+        if (enterRegistrationCodePreference != null) {
+            enterRegistrationCodePreference.setOnPreferenceClickListener(
+                    preference -> openBraveAccountDialog());
         }
 
         Preference resendConfirmationEmailPreference =
@@ -140,19 +163,7 @@ public class BraveAccountSectionController
         Preference getStartedPreference = mFragment.findPreference(PREF_GET_STARTED);
         if (getStartedPreference != null) {
             getStartedPreference.setOnPreferenceClickListener(
-                    preference -> {
-                        if (!mFragment.isAdded() || mFragment.isDetached()) {
-                            return false;
-                        }
-
-                        Activity activity = mFragment.getActivity();
-                        if (activity == null || activity.isFinishing()) {
-                            return false;
-                        }
-
-                        BraveAccountCustomTabActivity.show(activity);
-                        return true;
-                    });
+                    preference -> openBraveAccountDialog());
         }
     }
 
@@ -164,6 +175,8 @@ public class BraveAccountSectionController
         Preference userInfoPref = mFragment.findPreference(PREF_USER_INFO);
         Preference signOutPref = mFragment.findPreference(PREF_SIGN_OUT);
         Preference almostTherePref = mFragment.findPreference(PREF_ALMOST_THERE);
+        Preference enterRegistrationCodePref =
+                mFragment.findPreference(PREF_ENTER_REGISTRATION_CODE);
         Preference resendConfirmationEmailPref =
                 mFragment.findPreference(PREF_RESEND_CONFIRMATION_EMAIL);
         Preference cancelRegistrationPref = mFragment.findPreference(PREF_CANCEL_REGISTRATION);
@@ -174,6 +187,7 @@ public class BraveAccountSectionController
             setVisibility(userInfoPref, true);
             setVisibility(signOutPref, true);
             setVisibility(almostTherePref, false);
+            setVisibility(enterRegistrationCodePref, false);
             setVisibility(resendConfirmationEmailPref, false);
             setVisibility(cancelRegistrationPref, false);
             setVisibility(getStartedPref, false);
@@ -181,6 +195,7 @@ public class BraveAccountSectionController
             setVisibility(userInfoPref, false);
             setVisibility(signOutPref, false);
             setVisibility(almostTherePref, true);
+            setVisibility(enterRegistrationCodePref, true);
             setVisibility(resendConfirmationEmailPref, true);
             setVisibility(cancelRegistrationPref, true);
             setVisibility(getStartedPref, false);
@@ -188,6 +203,7 @@ public class BraveAccountSectionController
             setVisibility(userInfoPref, false);
             setVisibility(signOutPref, false);
             setVisibility(almostTherePref, false);
+            setVisibility(enterRegistrationCodePref, false);
             setVisibility(resendConfirmationEmailPref, false);
             setVisibility(cancelRegistrationPref, false);
             setVisibility(getStartedPref, true);

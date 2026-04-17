@@ -34,7 +34,7 @@ static_library("content") {
 
   deps = [
     "//base",
-    "//brave/brave_domains:constants",
+    "//brave/brave_domains:urls",
     "//brave/components/api_request_helper",
     "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_rewards/core",
@@ -111,11 +111,7 @@ source_set("testutil") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [
-    "rewards_protocol_navigation_throttle_unittest.cc",
-    "rewards_service_impl_jp_unittest.cc",
-    "rewards_service_impl_unittest.cc",
-  ]
+  sources = [ "rewards_protocol_navigation_throttle_unittest.cc" ]
 
   deps = [
     ":content",

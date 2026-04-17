@@ -23,10 +23,13 @@
 #include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
 #include "content/test/test_web_contents.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "pdf/buildflags.h"
+#include "services/service_manager/public/cpp/interface_provider.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "third_party/blink/public/mojom/content_extraction/ai_page_content.mojom.h"
 
 #if BUILDFLAG(ENABLE_PDF)
 #include "components/pdf/browser/pdf_document_helper.h"
@@ -66,6 +69,60 @@ class MockPageContentFetcher
               (mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback),
               (override));
 };
+
+class FakeAIPageContentAgent : public blink::mojom::AIPageContentAgent {
+ public:
+  FakeAIPageContentAgent() = default;
+  ~FakeAIPageContentAgent() override = default;
+
+  void GetAIPageContent(blink::mojom::AIPageContentOptionsPtr options,
+                        GetAIPageContentCallback callback) override {
+    std::move(callback).Run(std::move(response_));
+  }
+
+  void SetResponse(blink::mojom::AIPageContentPtr response) {
+    response_ = std::move(response);
+  }
+
+  void Bind(mojo::ScopedMessagePipeHandle handle) {
+    if (receiver_.is_bound()) {
+      receiver_.reset();
+    }
+    receiver_.Bind(mojo::PendingReceiver<blink::mojom::AIPageContentAgent>(
+        std::move(handle)));
+  }
+
+ private:
+  blink::mojom::AIPageContentPtr response_;
+  mojo::Receiver<blink::mojom::AIPageContentAgent> receiver_{this};
+};
+
+blink::mojom::AIPageContentPtr CreateAIPageContentWithText(
+    const std::string& text) {
+  auto content = blink::mojom::AIPageContent::New();
+  auto root = blink::mojom::AIPageContentNode::New();
+  auto root_attrs = blink::mojom::AIPageContentAttributes::New();
+  root_attrs->attribute_type = blink::mojom::AIPageContentAttributeType::kRoot;
+  root->content_attributes = std::move(root_attrs);
+
+  auto text_node = blink::mojom::AIPageContentNode::New();
+  auto text_attrs = blink::mojom::AIPageContentAttributes::New();
+  text_attrs->attribute_type = blink::mojom::AIPageContentAttributeType::kText;
+  auto text_style = blink::mojom::AIPageContentTextStyle::New();
+  auto text_info = blink::mojom::AIPageContentTextInfo::New();
+  text_info->text_content = text;
+  text_info->text_style = std::move(text_style);
+  text_attrs->text_info = std::move(text_info);
+  text_node->content_attributes = std::move(text_attrs);
+
+  root->children_nodes.push_back(std::move(text_node));
+  content->root_node = std::move(root);
+  auto frame_data = blink::mojom::AIPageContentFrameData::New();
+  frame_data->frame_interaction_info =
+      blink::mojom::AIPageContentFrameInteractionInfo::New();
+  content->frame_data = std::move(frame_data);
+  return content;
+}
 
 class MockAssociatedContentObserver
     : public AssociatedContentDelegate::Observer {
@@ -170,6 +227,29 @@ class AssociatedWebContentsContentUnitTest
     return static_cast<content::TestWebContents*>(web_contents());
   }
 
+  void ExpectPageContent(
+      base::test::TestFuture<std::string, bool, std::string>& future,
+      const std::string& expected_content,
+      bool expected_is_video = false) {
+    auto [content, is_video, invalidation_token] = future.Get();
+    EXPECT_EQ(content, expected_content);
+    EXPECT_EQ(is_video, expected_is_video);
+    EXPECT_TRUE(invalidation_token.empty());
+  }
+
+  FakeAIPageContentAgent* SetUpFakeAIPageContentAgent() {
+    content::RenderFrameHostTester::For(main_rfh())
+        ->InitializeRenderFrameIfNeeded();
+    test_api_ = std::make_unique<service_manager::InterfaceProvider::TestApi>(
+        main_rfh()->GetRemoteInterfaces());
+    fake_agent_ = std::make_unique<FakeAIPageContentAgent>();
+    test_api_->SetBinderForName(
+        blink::mojom::AIPageContentAgent::Name_,
+        base::BindRepeating(&FakeAIPageContentAgent::Bind,
+                            base::Unretained(fake_agent_.get())));
+    return fake_agent_.get();
+  }
+
  protected:
   NiceMock<favicon::MockFaviconService> favicon_service_;
   std::unique_ptr<NiceMock<MockAssociatedContentObserver>> observer_;
@@ -178,6 +258,8 @@ class AssociatedWebContentsContentUnitTest
       print_preview_extractor_;
   raw_ptr<MockPageContentFetcher, DanglingUntriaged> page_content_fetcher_;
   bool is_print_preview_supported_ = true;
+  std::unique_ptr<service_manager::InterfaceProvider::TestApi> test_api_;
+  std::unique_ptr<FakeAIPageContentAgent> fake_agent_;
 };
 
 INSTANTIATE_TEST_SUITE_P(
@@ -262,8 +344,6 @@ TEST_P(AssociatedWebContentsContentUnitTest, GetPageContent_VideoContent) {
 
 TEST_P(AssociatedWebContentsContentUnitTest,
        GetPageContent_PrintPreviewTriggeringURL) {
-  base::MockCallback<AssociatedWebContentsContent::FetchPageContentCallback>
-      callback;
   // A url that triggers print preview extraction - should return empty content
   // to allow autoscreenshots mechanism to handle server-side OCR
   for (const auto& host : kPrintPreviewRetrievalHosts) {
@@ -271,14 +351,16 @@ TEST_P(AssociatedWebContentsContentUnitTest,
     if (is_print_preview_supported_) {
       // PrintPreview returns empty content to trigger autoscreenshots
       EXPECT_CALL(*page_content_fetcher_, FetchPageContent).Times(0);
-      // No Extract call - we now return empty to trigger autoscreenshots
     } else {
       EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
           .WillOnce(base::test::RunOnceCallback<1>("", false, ""));
     }
-    // Expect empty content which will trigger autoscreenshots in real usage
-    EXPECT_CALL(callback, Run("", false, ""));
-    GetPageContent(callback.Get(), "");
+    // Expect empty content which will trigger autoscreenshots in real
+    // usage. Use TestFuture to wait for the async AIPageContentAgent
+    // fallback that triggers when fetcher returns empty on loaded pages.
+    base::test::TestFuture<std::string, bool, std::string> future;
+    GetPageContent(future.GetCallback(), "");
+    ExpectPageContent(future, "");
   }
 }
 
@@ -294,10 +376,9 @@ TEST_P(AssociatedWebContentsContentUnitTest,
     EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
         .WillOnce(base::test::RunOnceCallback<1>("", false, ""));
   }
-  base::MockCallback<AssociatedWebContentsContent::FetchPageContentCallback>
-      callback;
-  EXPECT_CALL(callback, Run("", false, ""));
-  GetPageContent(callback.Get(), "");
+  base::test::TestFuture<std::string, bool, std::string> future;
+  GetPageContent(future.GetCallback(), "");
+  ExpectPageContent(future, "");
 }
 
 TEST_P(AssociatedWebContentsContentUnitTest,
@@ -328,21 +409,21 @@ TEST_P(AssociatedWebContentsContentUnitTest,
     testing::Mock::VerifyAndClearExpectations(&print_preview_extractor_);
     testing::Mock::VerifyAndClearExpectations(&callback);
   } else {
-    // FetchPageContent will not wait for page load. Let's test that the
-    // re-try will wait for page load.
+    // FetchPageContent will not wait for page load. Let's test that
+    // the re-try will wait for page load. Use TestFuture since the
+    // AIPageContentAgent fallback is async after page load.
     EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
         .WillRepeatedly(
             base::test::RunOnceCallbackRepeatedly<1>("", false, ""));
-    GetPageContent(callback.Get(), "");
-    testing::Mock::VerifyAndClearExpectations(&callback);
+    base::test::TestFuture<std::string, bool, std::string> future;
+    GetPageContent(future.GetCallback(), "");
 
     // Simulate page load should trigger check again and, even with
-    // empty content, callback should run.
-    EXPECT_CALL(callback, Run("", false, ""));
+    // empty content, callback should run after fallback completes.
     SimulateLoadFinished();
+    ExpectPageContent(future, "");
 
     testing::Mock::VerifyAndClearExpectations(&page_content_fetcher_);
-    testing::Mock::VerifyAndClearExpectations(&callback);
   }
 }
 
@@ -396,10 +477,7 @@ TEST_P(AssociatedWebContentsContentUnitTest,
   base::test::TestFuture<std::string, bool, std::string> future;
   GetPageContent(future.GetCallback(), "");
 
-  auto [content, is_video, invalidation_token] = future.Get();
-  EXPECT_EQ(content, "HTML content");
-  EXPECT_FALSE(is_video);
-  EXPECT_TRUE(invalidation_token.empty());
+  ExpectPageContent(future, "HTML content");
 
   testing::Mock::VerifyAndClearExpectations(&page_content_fetcher_);
 }
@@ -509,6 +587,69 @@ TEST_P(AssociatedWebContentsContentUnitTest, GetScreenshots_PrintPreviewError) {
   auto result = future.Take();
   // Should return empty result on error or when not supported
   EXPECT_FALSE(result.has_value());
+}
+
+TEST_P(AssociatedWebContentsContentUnitTest,
+       GetPageContent_FallbackExtractsContent) {
+  // When the primary fetcher returns empty on a loaded page, the
+  // AIPageContentAgent fallback should extract text from the page.
+  auto* agent = SetUpFakeAIPageContentAgent();
+  agent->SetResponse(CreateAIPageContentWithText("Fallback content"));
+
+  NavigateTo(GURL("https://www.example.com"));
+  EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
+      .WillOnce(base::test::RunOnceCallback<1>("", false, ""));
+
+  base::test::TestFuture<std::string, bool, std::string> future;
+  GetPageContent(future.GetCallback(), "");
+  ExpectPageContent(future, "Fallback content");
+}
+
+TEST_P(AssociatedWebContentsContentUnitTest,
+       GetPageContent_FallbackReturnsEmptyWhenAgentFails) {
+  // When both the primary fetcher and AIPageContentAgent return empty,
+  // the callback should receive empty content.
+  auto* agent = SetUpFakeAIPageContentAgent();
+  agent->SetResponse(nullptr);
+
+  NavigateTo(GURL("https://www.example.com"));
+  EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
+      .WillOnce(base::test::RunOnceCallback<1>("", false, ""));
+
+  base::test::TestFuture<std::string, bool, std::string> future;
+  GetPageContent(future.GetCallback(), "");
+  ExpectPageContent(future, "");
+}
+
+TEST_P(AssociatedWebContentsContentUnitTest,
+       GetPageContent_NoFallbackForVideo) {
+  // Video content should not trigger the AIPageContentAgent fallback
+  // even when the content string is empty.
+  NavigateTo(GURL("https://www.example.com"));
+  EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
+      .WillOnce(base::test::RunOnceCallback<1>("", true, ""));
+
+  base::MockCallback<AssociatedWebContentsContent::FetchPageContentCallback>
+      callback;
+  EXPECT_CALL(callback, Run("", true, ""));
+  GetPageContent(callback.Get(), "");
+}
+
+TEST_P(AssociatedWebContentsContentUnitTest,
+       GetPageContent_FallbackHandlesNonLiveFrame) {
+  // When the main frame is not live, the fallback should return empty
+  // without crashing.
+  NavigateTo(GURL("https://www.example.com"));
+  EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
+      .WillOnce(base::test::RunOnceCallback<1>("", false, ""));
+
+  // Mark the renderer as crashed so IsRenderFrameLive() returns false.
+  content::WebContentsTester::For(web_contents())
+      ->SetIsCrashed(base::TERMINATION_STATUS_PROCESS_CRASHED, 0);
+
+  base::test::TestFuture<std::string, bool, std::string> future;
+  GetPageContent(future.GetCallback(), "");
+  ExpectPageContent(future, "");
 }
 
 #if BUILDFLAG(ENABLE_PDF)

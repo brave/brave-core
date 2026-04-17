@@ -109,13 +109,8 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
-#include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/browser/brave_wallet/meld_integration_service_factory.h"
 #include "brave/browser/brave_wallet/notifications/wallet_notification_service_factory.h"
-#include "brave/browser/brave_wallet/simulation_service_factory.h"
-#include "brave/browser/brave_wallet/swap_service_factory.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
@@ -172,15 +167,10 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  brave_wallet::AssetRatioServiceFactory::GetInstance();
-  brave_wallet::MeldIntegrationServiceFactory::GetInstance();
-  brave_wallet::SwapServiceFactory::GetInstance();
-  brave_wallet::SimulationServiceFactory::GetInstance();
 #if !BUILDFLAG(IS_ANDROID)
   brave_wallet::WalletNotificationServiceFactory::GetInstance();
 #endif
   brave_wallet::BraveWalletServiceFactory::GetInstance();
-  brave_wallet::BraveWalletIpfsServiceFactory::GetInstance();
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)

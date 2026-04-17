@@ -11,7 +11,7 @@
 #include <string_view>
 
 #include "base/containers/fixed_flat_map.h"
-#include "brave/brave_domains/constants.h"
+#include "brave/brave_domains/urls.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/webui/web_ui_util.h"
@@ -19,7 +19,7 @@
 namespace brave_wallet {
 
 // Re-export from brave_domains
-using brave_domains::kGate3URL;
+using brave_domains::GetGate3URL;
 
 inline constexpr char kBraveServicesKeyHeader[] = "x-brave-key";
 
@@ -421,6 +421,7 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletExchangeNamePlusSteps",
      IDS_BRAVE_WALLET_EXCHANGE_NAME_PLUS_STEPS},
     {"braveWalletExchangeViaProvider", IDS_BRAVE_WALLET_EXCHANGE_VIA_PROVIDER},
+    {"braveWalletSwapRouteToFromVia", IDS_BRAVE_WALLET_SWAP_ROUTE_TO_FROM_VIA},
     {"braveWalletSortBy", IDS_BRAVE_WALLET_SORT_BY},
     {"braveWalletConfirmSwap", IDS_BRAVE_WALLET_CONFIRM_SWAP},
     {"braveWalletConfirmBridge", IDS_BRAVE_WALLET_CONFIRM_BRIDGE},
@@ -523,6 +524,7 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_WALLET_POPUP_HIDE_BALANCES},
     {"braveWalletWalletPopupShowGraph",
      IDS_BRAVE_WALLET_WALLET_POPUP_SHOW_GRAPH},
+    {"braveWalletDistribution", IDS_BRAVE_WALLET_DISTRIBUTION},
     {"braveWalletWalletNFTsTab", IDS_BRAVE_WALLET_WALLET_NFTS_TAB},
     {"braveWalletBackupWarningText", IDS_BRAVE_WALLET_BACKUP_WARNING_TEXT},
     {"braveWalletBackupButton", IDS_BRAVE_WALLET_BACKUP_BUTTON},
@@ -1179,6 +1181,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_PORTFOLIO_FILTERS_TITLE},
     {"braveWalletPortfolioNftsFiltersTitle",
      IDS_BRAVE_WALLET_PORTFOLIO_NFTS_FILTERS_TITLE},
+    {"braveWalletPortfolioAssetsDistributionTitle",
+     IDS_BRAVE_WALLET_PORTFOLIO_ASSETS_DISTRIBUTION_TITLE},
     {"braveWalletSortAssets", IDS_BRAVE_WALLET_SORT_ASSETS},
     {"braveWalletSortAssetsDescription",
      IDS_BRAVE_WALLET_SORT_ASSETS_DESCRIPTION},
@@ -1781,16 +1785,7 @@ inline constexpr char kBlowfishBaseAPIURL[] =
 inline constexpr char kBlowfishAPIVersionHeader[] = "X-Api-Version";
 inline constexpr char kBlowfishAPIVersion[] = "2023-06-05";
 
-// LiFi constants
-inline constexpr char kLiFiBaseAPIURL[] = "https://lifi.wallet.brave.com";
-inline constexpr char kLiFiIntegratorID[] = "brave";
-inline constexpr char kLiFiNativeEVMAssetContractAddress[] =
-    "0x0000000000000000000000000000000000000000";
-inline constexpr char kLiFiNativeSVMAssetContractAddress[] =
-    "11111111111111111111111111111111";
-inline constexpr char kLiFiSolanaMainnetChainID[] = "1151111081099710";
-
-// LiFi // 0x // Squid common constants
+// 0x // Squid common constants
 inline constexpr char kNativeEVMAssetContractAddress[] =
     "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
 

@@ -32,6 +32,7 @@
 #include "base/task/single_thread_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
+#include "brave/brave_domains/urls.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/content/diagnostic_log.h"
@@ -945,12 +946,6 @@ std::vector<std::string> RewardsServiceImpl::GetExternalWalletProviders()
     providers.push_back(internal::constant::kWalletZebPay);
   } else {
     providers.push_back(internal::constant::kWalletUphold);
-
-#if BUILDFLAG(ENABLE_GEMINI_WALLET)
-    if (base::FeatureList::IsEnabled(features::kGeminiFeature)) {
-      providers.push_back(internal::constant::kWalletGemini);
-    }
-#endif
   }
 
   if (base::FeatureList::IsEnabled(
@@ -1493,6 +1488,8 @@ mojom::RewardsEngineOptionsPtr RewardsServiceImpl::HandleFlags(
   } else {
     options->environment = GetDefaultServerEnvironment();
   }
+
+  options->gate3_url = brave_domains::GetGate3URL();
 
   if (flags.reconcile_interval) {
     options->reconcile_interval = *flags.reconcile_interval;

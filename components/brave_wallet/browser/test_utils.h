@@ -114,6 +114,8 @@ class AccountUtils {
   mojom::AccountInfoPtr EnsureZecTestAccount(uint32_t index);
   mojom::AccountInfoPtr EnsureAdaAccount(uint32_t index);
   mojom::AccountInfoPtr EnsureAdaTestAccount(uint32_t index);
+  mojom::AccountInfoPtr EnsureDotAccount(uint32_t index);
+  mojom::AccountInfoPtr EnsureDotTestAccount(uint32_t index);
 
   mojom::AccountInfoPtr CreateEthAccount(const std::string& name);
   mojom::AccountInfoPtr CreateSolAccount(const std::string& name);

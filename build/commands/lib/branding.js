@@ -5,7 +5,7 @@
 
 import fs from 'fs-extra'
 import path from 'node:path'
-import config from './config.js'
+import config from './config.ts'
 import l10nUtil from './l10nUtil.js'
 import * as Log from './log.ts'
 import util from './util.js'
@@ -156,6 +156,22 @@ const update = () => {
         scale,
         'chromium',
         'product_logo_white.png',
+      ),
+    ])
+    fileMap.add([
+      path.join(
+        braveAppDir,
+        'theme',
+        scale,
+        productLogoSource,
+        'product_logo_16.png',
+      ),
+      path.join(
+        chromeComponentsDir,
+        'resources',
+        scale,
+        'chromium',
+        'favicon_product.png',
       ),
     ])
   }

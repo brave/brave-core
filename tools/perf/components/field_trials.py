@@ -9,6 +9,7 @@ from enum import Enum
 import gzip
 import json
 import os
+import shutil
 import sys
 import tempfile
 from typing import Optional
@@ -31,6 +32,15 @@ class FieldTrialConfig:
   revision: str
   fake_channel: Optional[str] = None
 
+
+def _GetPNPMCommand() -> str:
+  if sys.platform != 'win32':
+    return 'pnpm'
+
+  pnpm_path = shutil.which('pnpm')
+  if pnpm_path is None:
+    raise RuntimeError('pnpm not found in PATH')
+  return pnpm_path
 
 def ParseFieldTrialsMode(string_type: str) -> FieldTrialsMode:
   if string_type in ('no-trials', ''):  # Default
@@ -62,7 +72,7 @@ def MakeFieldTrials(mode: FieldTrialsMode, variations_channel: Optional[str],
 
   seed_path = os.path.join(artifacts_dir, 'seed.bin')
 
-  pnpm = 'pnpm.cmd' if sys.platform == 'win32' else 'pnpm'
+  pnpm = _GetPNPMCommand()
   GetProcessOutput([pnpm, 'install', '--frozen-lockfile'],
                    cwd=variations_repo_dir,
                    check=True)

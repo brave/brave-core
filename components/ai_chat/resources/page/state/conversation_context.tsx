@@ -301,6 +301,41 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     )
   }
 
+  // In global panel always mode (not standalone, not tab-associated), the
+  // page handler no longer manages content associations directly. When the
+  // active tab or page changes, clear staged content and attach the new tab.
+  const prevDefaultTabContentIdRef = React.useRef<number | undefined>(undefined)
+  React.useEffect(() => {
+    if (aiChat.isStandalone !== false || props.isTabAssociated) return
+
+    const prevContentId = prevDefaultTabContentIdRef.current
+    const newContentId = aiChat.defaultTabContentId
+    prevDefaultTabContentIdRef.current = newContentId
+
+    if (!conversationState.conversationUuid) return
+    if (prevContentId === newContentId) return
+
+    // Clear all staged content (not yet committed to a conversation turn).
+    for (const content of conversationState.associatedContent.filter(
+      (c) => !c.conversationTurnUuid,
+    )) {
+      aiChat.api.uiHandler.disassociateContent(
+        content,
+        conversationState.conversationUuid,
+      )
+    }
+
+    // Attach the new tab. If tabsData isn't current yet (e.g. mid-navigation),
+    // the associateDefaultContent effect below will fire once tabsData updates.
+    const newTab = tabsData?.find((t) => t.contentId === newContentId)
+    if (newTab) {
+      aiChat.api.uiHandler.associateTab(
+        newTab,
+        conversationState.conversationUuid,
+      )
+    }
+  }, [aiChat.defaultTabContentId, conversationState.conversationUuid])
+
   const associateDefaultContent = React.useMemo(() => {
     const existingAttachedContent = conversationState.associatedContent.find(
       (c) => c.contentId === aiChat.defaultTabContentId,
@@ -324,6 +359,13 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     conversationState.associatedContent,
     conversationState.conversationUuid,
   ])
+
+  // Fallback: if tabsData wasn't ready when the tab changed (e.g. mid-navigation),
+  // attach as soon as it becomes available.
+  React.useEffect(() => {
+    if (aiChat.isStandalone !== false || props.isTabAssociated) return
+    associateDefaultContent?.()
+  }, [aiChat.isStandalone, props.isTabAssociated, associateDefaultContent])
 
   const handleResetError = async () => {
     const turn = await api.clearErrorAndGetFailedMessage()

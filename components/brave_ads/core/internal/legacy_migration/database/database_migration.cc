@@ -83,6 +83,9 @@ void MigrateToV53(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   DropTable(mojom_db_transaction, "creative_promoted_content_ads");
 }
 
+// Handles database-wide migrations and migrations for tables that no longer
+// exist. Per-table schema migrations are handled in each table's own `Migrate`
+// method.
 void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
              int to_version) {
   CHECK(mojom_db_transaction);

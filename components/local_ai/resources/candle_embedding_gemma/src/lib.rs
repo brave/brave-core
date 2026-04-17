@@ -1004,7 +1004,6 @@ impl Gemma3Embedder {
             cumulative.push(cumulative.last().unwrap() + len as u32);
         }
 
-        let token_len = all_ids.len();
         Ok(Batch {
             input_ids: all_ids,
             position_ids: all_positions,

@@ -77,7 +77,11 @@ source_set("unit_tests") {
   # identifiers, so timezone-parameterized tests are excluded on Windows to
   # avoid spurious failures caused by a non-overridable libc timezone.
   if (!is_win) {
-    sources += [ "serp_metrics_unittest.cc" ]
+    sources += [
+      "serp_metrics_dst_end_unittest.cc",
+      "serp_metrics_dst_start_unittest.cc",
+      "serp_metrics_unittest.cc",
+    ]
   }
 
   deps = [
@@ -88,6 +92,7 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/components/constants",
     "//brave/components/search_engines",
+    "//brave/components/time_period_storage:test_support",
     "//components/prefs",
     "//components/prefs:test_support",
     "//components/regional_capabilities",

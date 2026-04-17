@@ -14,7 +14,7 @@ import path from 'node:path'
 import fs from 'node:fs'
 import chalk from 'chalk'
 import { JSDOM } from 'jsdom'
-import config from './config.js'
+import config from './config.ts'
 
 // Change to `true` for verbose console log output of GRD traversal
 const verboseLogFindGrd = false

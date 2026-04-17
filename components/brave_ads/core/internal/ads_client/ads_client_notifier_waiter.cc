@@ -6,12 +6,12 @@
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_waiter.h"
 
 #include "base/check.h"
-#include "brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_for_testing.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier.h"
 
 namespace brave_ads::test {
 
 AdsClientNotifierWaiter::AdsClientNotifierWaiter(
-    AdsClientNotifierInterface* const ads_client_notifier) {
+    AdsClientNotifier* const ads_client_notifier) {
   CHECK(ads_client_notifier);
 
   observation_.Observe(ads_client_notifier);

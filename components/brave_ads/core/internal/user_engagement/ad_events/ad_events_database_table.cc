@@ -11,6 +11,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/strings/string_util.h"
@@ -653,7 +654,7 @@ void AdEvents::PurgeOrphaned(mojom::AdType mojom_ad_type,
                  std::move(callback));
 }
 
-void AdEvents::PurgeOrphaned(const std::vector<std::string>& placement_ids,
+void AdEvents::PurgeOrphaned(base::span<const std::string> placement_ids,
                              ResultCallback callback) const {
   if (placement_ids.empty()) {
     return std::move(callback).Run(/*success=*/true);

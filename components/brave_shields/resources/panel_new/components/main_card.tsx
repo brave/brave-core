@@ -66,7 +66,7 @@ export function MainCard() {
             className='overflow-ellipsis-start'
             title={siteHost}
           >
-            {siteHost}
+            &lrm;{siteHost}
           </h3>
           <div className='shields-status'>
             {formatString(

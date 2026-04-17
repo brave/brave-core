@@ -17,6 +17,9 @@ namespace brave_ads {
 struct ConfirmationTokenInfo final {
   bool operator==(const ConfirmationTokenInfo&) const = default;
 
+  // Returns true if all cryptographic fields have valid values.
+  [[nodiscard]] bool IsValid() const;
+
   cbr::UnblindedToken unblinded_token;
   cbr::PublicKey public_key;
   std::string signature_base64;

@@ -14,7 +14,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
-#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_interface.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 #include "ui/base/page_transition_types.h"
 
@@ -24,52 +23,48 @@ class GURL;
 
 namespace brave_ads {
 
-class AdsClientNotifierObserver;
 class OnceClosureTaskQueue;
 
-class AdsClientNotifier final : public AdsClientNotifierInterface {
+class AdsClientNotifier final {
  public:
   AdsClientNotifier();
 
   AdsClientNotifier(const AdsClientNotifier&) = delete;
   AdsClientNotifier& operator=(const AdsClientNotifier&) = delete;
 
-  ~AdsClientNotifier() override;
+  ~AdsClientNotifier();
 
-  // AdsClientNotifierInterface:
-  void AddObserver(AdsClientNotifierObserver* observer) override;
-  void RemoveObserver(AdsClientNotifierObserver* observer) override;
-  void NotifyPendingObservers() override;
-  void NotifyDidInitializeAds() override;
-  void NotifyPrefDidChange(const std::string& path) override;
+  void AddObserver(AdsClientNotifierObserver* observer);
+  void RemoveObserver(AdsClientNotifierObserver* observer);
+  void NotifyPendingObservers();
+  void NotifyDidInitializeAds();
+  void NotifyPrefDidChange(const std::string& path);
   void NotifyResourceComponentDidChange(const std::string& manifest_version,
-                                        const std::string& id) override;
-  void NotifyDidUnregisterResourceComponent(const std::string& id) override;
-  void NotifyRewardsWalletDidUpdate(
-      const std::string& payment_id,
-      const std::string& recovery_seed_base64) override;
+                                        const std::string& id);
+  void NotifyDidUnregisterResourceComponent(const std::string& id);
+  void NotifyRewardsWalletDidUpdate(const std::string& payment_id,
+                                    const std::string& recovery_seed_base64);
   void NotifyTabTextContentDidChange(int32_t tab_id,
                                      const std::vector<GURL>& redirect_chain,
-                                     const std::string& text) override;
-  void NotifyTabDidStartPlayingMedia(int32_t tab_id) override;
-  void NotifyTabDidStopPlayingMedia(int32_t tab_id) override;
+                                     const std::string& text);
+  void NotifyTabDidStartPlayingMedia(int32_t tab_id);
+  void NotifyTabDidStopPlayingMedia(int32_t tab_id);
   void NotifyTabDidChange(int32_t tab_id,
                           const std::vector<GURL>& redirect_chain,
                           bool is_new_navigation,
                           bool is_restoring,
-                          bool is_visible) override;
-  void NotifyTabDidLoad(int32_t tab_id, int http_status_code) override;
-  void NotifyDidCloseTab(int32_t tab_id) override;
-  void NotifyUserGestureEventTriggered(
-      ui::PageTransition page_transition) override;
-  void NotifyUserDidBecomeIdle() override;
+                          bool is_visible);
+  void NotifyTabDidLoad(int32_t tab_id, int http_status_code);
+  void NotifyDidCloseTab(int32_t tab_id);
+  void NotifyUserGestureEventTriggered(ui::PageTransition page_transition);
+  void NotifyUserDidBecomeIdle();
   void NotifyUserDidBecomeActive(base::TimeDelta idle_time,
-                                 bool screen_was_locked) override;
-  void NotifyBrowserDidEnterForeground() override;
-  void NotifyBrowserDidEnterBackground() override;
-  void NotifyBrowserDidBecomeActive() override;
-  void NotifyBrowserDidResignActive() override;
-  void NotifyDidSolveAdaptiveCaptcha() override;
+                                 bool screen_was_locked);
+  void NotifyBrowserDidEnterForeground();
+  void NotifyBrowserDidEnterBackground();
+  void NotifyBrowserDidBecomeActive();
+  void NotifyBrowserDidResignActive();
+  void NotifyDidSolveAdaptiveCaptcha();
 
  private:
   base::ObserverList<AdsClientNotifierObserver> observers_;

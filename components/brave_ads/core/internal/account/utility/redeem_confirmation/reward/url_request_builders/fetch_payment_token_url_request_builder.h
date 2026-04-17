@@ -24,7 +24,7 @@ class FetchPaymentTokenUrlRequestBuilder final
  private:
   GURL BuildUrl() const;
 
-  ConfirmationInfo confirmation_;
+  const ConfirmationInfo confirmation_;
 };
 
 }  // namespace brave_ads

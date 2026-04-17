@@ -46,7 +46,8 @@ import java.util.Locale;
 @NullMarked
 public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsFragment {
     private static final String BOLD_END_TEXT1_TEXT2 = "%s";
-    private static final String BOLD_START_TEXT2 = "https://";
+    private static final String HTTPS_SCHEME = "https://";
+    private static final String HTTP_SCHEME = "http://";
 
     private TextInputEditText mTitleEdittext;
 
@@ -166,7 +167,8 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
         int text2Offset = ssb.length();
         ssb.append(text2);
         // Bold the URL (from "https://" through "%s") in text2
-        int urlStart = text2.indexOf(BOLD_START_TEXT2);
+        String boldStartText2 = HTTPS_SCHEME;
+        int urlStart = text2.indexOf(boldStartText2);
         int urlEnd = text2.indexOf(BOLD_END_TEXT1_TEXT2, urlStart >= 0 ? urlStart : 0);
         if (urlStart >= 0 && urlEnd >= 0) {
             ssb.setSpan(
@@ -180,6 +182,13 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
         initTextWatchers();
 
         initButtons(rootView);
+
+        // Pre-fill the URL field so the user starts typing after the scheme.
+        mUrlEdittext.setText(HTTPS_SCHEME);
+        Editable urlText = mUrlEdittext.getText();
+        if (urlText != null) {
+            mUrlEdittext.setSelection(urlText.length());
+        }
     }
 
     private void initButtons(View rootView) {
@@ -319,7 +328,7 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
             return;
         }
 
-        TextWatcher textWatcher =
+        mTitleEdittext.addTextChangedListener(
                 new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -337,10 +346,34 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
                     public void afterTextChanged(Editable s) {
                         // no-op, but required by TextWatcher interface
                     }
-                };
+                });
 
-        mTitleEdittext.addTextChangedListener(textWatcher);
-        mUrlEdittext.addTextChangedListener(textWatcher);
+        mUrlEdittext.addTextChangedListener(
+                new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        // no-op, but required by TextWatcher interface
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        if (s != null) {
+                            checkFields();
+                        }
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        // When the user pastes a URL that already starts with "https://" or
+                        // "http://", remove the pre-filled "https://" prefix so the field
+                        // doesn't end up with "https://https://..." or "https://http://...".
+                        String pastedUrl = s.toString();
+                        if (pastedUrl.startsWith(HTTPS_SCHEME + HTTPS_SCHEME)
+                                || pastedUrl.startsWith(HTTPS_SCHEME + HTTP_SCHEME)) {
+                            s.delete(0, HTTPS_SCHEME.length());
+                        }
+                    }
+                });
     }
 
     private void handleBackPressed() {

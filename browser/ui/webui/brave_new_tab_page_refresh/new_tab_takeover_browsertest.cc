@@ -149,7 +149,7 @@ class NewTabTakeoverBrowserTest : public InProcessBrowserTest {
 
   void VerifyNewTabPageLoadedExpectation() {
     EXPECT_TRUE(content::EvalJs(GetActiveWebContents(),
-                                "!!document.querySelector(`html[data-test-id="
+                                "!!document.querySelector(`html[data-testid="
                                 "'brave-new-tab-page']`)")
                     .ExtractBool());
   }

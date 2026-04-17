@@ -16,11 +16,12 @@ extension DAU {
 
 class DAUTests: XCTestCase {
 
+  var lastKnownPingDate: Date? = nil
+
   override func setUp() {
     super.setUp()
 
     Preferences.DAU.weekOfInstallation.reset()
-    Preferences.DAU.lastLaunchInfo.reset()
     Preferences.DAU.firstPingParam.reset()
     Preferences.DAU.installationDate.reset()
   }
@@ -169,13 +170,14 @@ class DAUTests: XCTestCase {
   }
 
   func testStatParamsInvalidInputs() {
-    XCTAssertNil(dau.dauStatParams(for: date, dauStat: nil, firstPing: false, channel: .beta))
-    XCTAssertNil(dau.dauStatParams(for: date, dauStat: nil, firstPing: false, channel: .release))
-    XCTAssertNil(dau.dauStatParams(for: date, dauStat: [], firstPing: false, channel: .beta))
+    XCTAssertNil(dau.dauStatParams(for: date, lastPingDate: nil, firstPing: false, channel: .beta))
+    XCTAssertNil(
+      dau.dauStatParams(for: date, lastPingDate: nil, firstPing: false, channel: .release)
+    )
   }
 
   func testFirstLaunch() {
-    XCTAssertNil(Preferences.DAU.lastLaunchInfo.value)
+    XCTAssertNil(lastKnownPingDate)
     XCTAssertNil(Preferences.DAU.weekOfInstallation.value)
     XCTAssert(Preferences.DAU.firstPingParam.value)
 
@@ -195,7 +197,7 @@ class DAUTests: XCTestCase {
     )
 
     XCTAssertNotNil(firstLaunch)
-    XCTAssertNotNil(Preferences.DAU.lastLaunchInfo.value)
+    XCTAssertNotNil(lastKnownPingDate)
     XCTAssertNotNil(Preferences.DAU.weekOfInstallation.value)
     XCTAssertFalse(Preferences.DAU.firstPingParam.value)
 
@@ -238,25 +240,22 @@ class DAUTests: XCTestCase {
   func testTwoPingsSameDay() {
     let date = dateFrom(string: "2017-11-20")
 
-    XCTAssertNil(Preferences.DAU.lastLaunchInfo.value)
+    XCTAssertNil(lastKnownPingDate)
     XCTAssertNil(Preferences.DAU.weekOfInstallation.value)
 
-    // Acting like a first launch so preferences are going to be set up
-    let dauFirstLaunch = DAU()
-    let params = dauFirstLaunch.paramsAndPrefsSetup(for: date)
+    // Acting like a first launch so preferences are going to be set up.
+    let params = DAU().paramsAndPrefsSetup(for: date, lastPingDate: nil)
 
-    // These preferences should be set only after a successful ping.
-    XCTAssertNil(Preferences.DAU.lastLaunchInfo.value)
+    // These value should be set only after a successful ping.
+    XCTAssertNil(lastKnownPingDate)
 
     simulatePing(params: params)
 
-    let dauSecondLaunch = DAU()
-
-    XCTAssertNotNil(Preferences.DAU.lastLaunchInfo.value)
+    XCTAssertNotNil(lastKnownPingDate)
     XCTAssertNotNil(Preferences.DAU.weekOfInstallation.value)
 
     // Second launch on the same day
-    let params2 = dauSecondLaunch.paramsAndPrefsSetup(for: date)
+    let params2 = DAU().paramsAndPrefsSetup(for: date, lastPingDate: lastKnownPingDate)
 
     XCTAssertNil(params2)
   }
@@ -307,7 +306,7 @@ class DAUTests: XCTestCase {
 
   func testNonDefaultWoiDefaultConstructor() {
     let dauFirstLaunch = DAU()
-    let params = dauFirstLaunch.paramsAndPrefsSetup(for: date)
+    let params = dauFirstLaunch.paramsAndPrefsSetup(for: date, lastPingDate: nil)
     XCTAssertFalse(
       params!.queryParams.contains(URLQueryItem(name: "woi", value: DAU.defaultWoiDate))
     )
@@ -316,12 +315,11 @@ class DAUTests: XCTestCase {
   func testNotFirstLaunchSetDau() {
     let date = dateFrom(string: "2017-11-20")
 
-    XCTAssertNil(Preferences.DAU.lastLaunchInfo.value)
+    XCTAssertNil(lastKnownPingDate)
     XCTAssertNil(Preferences.DAU.weekOfInstallation.value)
 
-    // Acting like a first launch so preferences are going to be set up
-    let dauFirstLaunch = DAU()
-    let params = dauFirstLaunch.paramsAndPrefsSetup(for: date)
+    // Acting like a first launch so preferences are going to be set up.
+    let params = DAU().paramsAndPrefsSetup(for: date, lastPingDate: nil)
 
     simulatePing(params: params)
 
@@ -464,7 +462,7 @@ class DAUTests: XCTestCase {
     for (storedValue, fixedValue) in testValues {
       Preferences.DAU.weekOfInstallation.value = storedValue
       // Fetching params will trigger migration
-      let params = dau.paramsAndPrefsSetup(for: Date())
+      let params = dau.paramsAndPrefsSetup(for: Date(), lastPingDate: nil)
       XCTAssertEqual(try XCTUnwrap(Preferences.DAU.weekOfInstallation.value), fixedValue)
       Preferences.DAU.weekOfInstallation.reset()
     }
@@ -474,7 +472,7 @@ class DAUTests: XCTestCase {
   // TODO: Refactor DAU to not reach out to Info.plist
   //  func testAPIKeyHeader() throws {
   //    let dau = DAU()
-  //    let headers = try XCTUnwrap(dau.paramsAndPrefsSetup(for: date)).headers
+  //    let headers = try XCTUnwrap(dau.paramsAndPrefsSetup(for: date, lastPingDate: nil)).headers
   //    XCTAssertEqual(headers["x-brave-api-key"], "key")
   //  }
 
@@ -511,8 +509,7 @@ class DAUTests: XCTestCase {
   ) -> DAU.ParamsAndPrefs? {
 
     let date = dateFrom(string: dateString, format: dateFormat)
-    let dau = DAU()
-    let params = dau.paramsAndPrefsSetup(for: date)
+    let params = DAU().paramsAndPrefsSetup(for: date, lastPingDate: lastKnownPingDate)
 
     // All dau stats equal false means no ping is send to server
     if daily == false && weekly == false && monthly == false {
@@ -541,10 +538,13 @@ class DAUTests: XCTestCase {
   }
 
   /// This actually simulates business logic that's done after a successful ping.
+  /// The date is round-tripped through DAU.dateFormatter to match production behavior where
+  /// `lastPingDate` is reconstructed from a YYYY-MM-DD string.
   private func simulatePing(firstPing: Bool = false, params: DAU.ParamsAndPrefs?) {
     Preferences.DAU.firstPingParam.value = firstPing
-
-    Preferences.DAU.lastLaunchInfo.value = params!.lastLaunchInfoPreference
+    lastKnownPingDate = params.flatMap {
+      DAU.dateFormatter.date(from: DAU.dateFormatter.string(from: $0.date))
+    }
   }
 
   private var appVersion: String {

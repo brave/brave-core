@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.settings;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.preference.Preference;
@@ -21,6 +22,7 @@ import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsPolicy;
 import org.chromium.chrome.browser.appearance.settings.AppearanceSettingsFragment;
+import org.chromium.chrome.browser.bookmarks.bar.BookmarkBarUtils;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.multiwindow.BraveMultiWindowDialogFragment;
@@ -29,6 +31,8 @@ import org.chromium.chrome.browser.multiwindow.MultiInstanceManager.PersistedIns
 import org.chromium.chrome.browser.multiwindow.MultiWindowUtils;
 import org.chromium.chrome.browser.ntp.NtpUtil;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
 import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.browser.toolbar.ToolbarPositionController;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarButtonVariant;
@@ -39,7 +43,12 @@ import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.settings.AddressBarSettingsFragment;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.browser_ui.settings.search.PreferenceParser;
+import org.chromium.components.browser_ui.settings.search.SearchIndexProvider;
+import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.ui.base.DeviceFormFactor;
+
+import java.util.Map;
 
 public class AppearancePreferences extends AppearanceSettingsFragment
         implements Preference.OnPreferenceChangeListener, BraveRewardsObserver {
@@ -393,4 +402,55 @@ public class AppearancePreferences extends AppearanceSettingsFragment
             AdaptiveToolbarPrefs.saveToolbarButtonManualOverride(defaultVariant);
         }
     }
+
+    public static final ChromeBaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new ChromeBaseSearchIndexProvider(
+                    AppearancePreferences.class.getName(), R.xml.appearance_preferences) {
+
+                @Override
+                public void initPreferenceXml(
+                        Context context,
+                        Profile profile,
+                        SettingsIndexData indexData,
+                        Map<String, SearchIndexProvider> providerMap) {
+                    super.initPreferenceXml(context, profile, indexData, providerMap);
+                    PreferenceParser.parseAndPopulate(
+                            context,
+                            R.xml.brave_appearance_preferences,
+                            indexData,
+                            AppearancePreferences.class.getName(),
+                            new Bundle(),
+                            providerMap);
+                }
+
+                @Override
+                public void updateDynamicPreferences(
+                        Context context, SettingsIndexData indexData, Profile profile) {
+                    String frag = AppearancePreferences.class.getName();
+                    AppearanceSettingsFragment.shouldShowToolbarShortcutPrefAsync(
+                            context,
+                            profile,
+                            (shouldShow) -> {
+                                if (!shouldShow) {
+                                    indexData.removeEntryForKey(
+                                            frag, AppearanceSettingsFragment.PREF_TOOLBAR_SHORTCUT);
+                                    indexData.resolveIndex();
+                                }
+                            });
+                    if (!BookmarkBarUtils.isDeviceBookmarkBarCompatible(context)) {
+                        indexData.removeEntryForKey(
+                                frag, AppearanceSettingsFragment.PREF_BOOKMARK_BAR);
+                    }
+
+                    if (BraveRewardsPolicy.isDisabledByPolicy(profile)) {
+                        indexData.removeEntryForKey(frag, PREF_SHOW_BRAVE_REWARDS_ICON);
+                        indexData.removeEntryForKey(frag, PREF_ADS_SWITCH);
+                    }
+
+                    if (!ToolbarPositionController.isToolbarPositionCustomizationEnabled(
+                            context, false)) {
+                        indexData.removeEntryForKey(frag, PREF_ADDRESS_BAR);
+                    }
+                }
+            };
 }

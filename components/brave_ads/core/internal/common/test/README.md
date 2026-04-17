@@ -17,7 +17,7 @@ Mocks should be set up in `SetUpMocks`, `TEST_F`, or `TEST_P`. Avoid setting up 
 
 `test::TestBase`, inherited from `::testing::Test`, is not copyable.
 
-Refer to `*_test_util.h`, `*_test_helper.h`, `*_test_constants.h`, and `*_test_types.h` for support in efficiently creating and structuring unit tests.
+Refer to `*_test_util.h`, `*_test_helper.h`, and `*_test_constants.h` for support in efficiently creating and structuring unit tests.
 
 ## Timezone-Sensitive Tests
 
@@ -151,23 +151,23 @@ You can add one or more responses per request. These will be returned in the giv
 
     test::MockUrlResponses(ads_client_mock_, url_responses);
 
-## Mocking Client
+## Test Environment Defaults
 
-| mock  | type  | default  | example  |
+| setting  | type  | default  | example  |
 |---|---|---|---|
-| Device identifier  | string  | `21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e`  | `test::MockDeviceId();`  |
-| Platform  | `kWindows`, `kMacOS`, `kLinux`, `kAndroid` or `kIOS`  | `kWindows`  | `test::MockPlatformHelper(platform_helper_mock_, PlatformType::kMacOS);`  |
-| Build channel  | `kRelease`, `kBeta` or `kNightly`  | `kRelease`  | `test::MockBuildChannel(test::BuildChannelType::kNightly);`  |
-| JavaScript content setting  | boolean  | `true`  | `test::MockAllowJavaScript(false);`  |
+| Device identifier  | string  | `21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e`  | `test::SetUpDeviceId();`  |
+| Platform  | `kWindows`, `kMacOS`, `kLinux`, `kAndroid` or `kIOS`  | `kWindows`  | `fake_platform_helper_.SetPlatformType(PlatformType::kMacOS);`  |
+| Build channel  | `kRelease`, `kBeta` or `kNightly`  | `kRelease`  | `test::SetUpBuildChannel(test::BuildChannelType::kNightly);`  |
+| JavaScript content setting  | boolean  | `true`  | `test::SetUpAllowJavaScript(false);`  |
 | Is network connection available  | boolean  | `true`  | `test::MockIsNetworkConnectionAvailable(ads_client_mock_, false);`  |
 | Is browser active  | boolean  | `true`  | `test::MockIsBrowserActive(ads_client_mock_, false);`  |
 | Is browser in full-screen mode  | boolean  | `false`  | `test::MockIsBrowserInFullScreenMode(ads_client_mock_, true);`  |
-| Can show notification ads  | boolean  | `true`  | `MockCanShowNotificationAds(ads_client_mock_, false);`  |
+| Can show notification ads  | boolean  | `true`  | `test::MockCanShowNotificationAds(ads_client_mock_, false);`  |
 | Can show notification ads while browser is backgrounded  | boolean  | `true`  | `test::MockCanShowNotificationAdsWhileBrowserIsBackgrounded(ads_client_mock_, false);`  |
 | Site history  | vector\<GURL>  |  | `test::MockGetSiteHistory(ads_client_mock_, {GURL("https://foo.com"), GURL("https://bar.com")});`  |
 | URL response  | URLResponseMap  |  | See [mocking server responses](#mocking-url-responses).  |
 
-See [mock_test_util.h](./mock_test_util.h), [test_constants.h](./test_constants.h), and [test_types.h](./test_types.h).
+See [test_environment_util.h](./test_environment_util.h), [mock_test_util.h](./mock_test_util.h), and [test_constants.h](./test_constants.h).
 
 # Integration Testing
 

@@ -135,164 +135,6 @@ mojom::SwapTransactionParamsUnionPtr GetCannedJupiterTransactionParams(
       std::move(params));
 }
 
-mojom::LiFiQuotePtr GetCannedLiFiQuote() {
-  auto quote = mojom::LiFiQuote::New();
-  quote->routes.push_back(mojom::LiFiRoute::New());
-  quote->routes[0]->id =
-      "0x9a448018e09b62da15c1bd64571c21b33cb177cee5d2f07c325d6485364362a5";
-
-  auto from_token = mojom::BlockchainToken::New();
-  from_token->contract_address = "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174";
-  from_token->name = "USDC.e";
-  from_token->logo = "usdce.png";
-  from_token->symbol = "USDCe";
-  from_token->decimals = 6;
-  from_token->chain_id = mojom::kPolygonMainnetChainId;
-  from_token->coin = mojom::CoinType::ETH;
-  quote->routes[0]->from_token = from_token.Clone();
-
-  quote->routes[0]->from_amount = "2000000";
-  quote->routes[0]->from_address = "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0";
-
-  auto to_token = mojom::BlockchainToken::New();
-  to_token->contract_address = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
-  to_token->name = "USD Coin";
-  to_token->logo = "usdc.png";
-  to_token->symbol = "USDC";
-  to_token->decimals = 6;
-  to_token->chain_id = mojom::kSolanaMainnet;
-  to_token->coin = mojom::CoinType::SOL;
-  quote->routes[0]->to_token = to_token.Clone();
-
-  quote->routes[0]->to_amount = "1138627";
-  quote->routes[0]->to_amount_min = "1136350";
-  quote->routes[0]->to_address = "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4";
-
-  quote->routes[0]->steps.push_back(mojom::LiFiStep::New());
-  quote->routes[0]->steps[0]->id = "57d247fc-d80a-4f4a-9596-72db3061aa72";
-  quote->routes[0]->steps[0]->type = mojom::LiFiStepType::kLiFi;
-  quote->routes[0]->steps[0]->tool = "allbridge";
-  auto tool_details = mojom::LiFiToolDetails::New();
-  tool_details->key = "allbridge";
-  tool_details->name = "Allbridge";
-  tool_details->logo = "allbridge.png";
-  quote->routes[0]->steps[0]->tool_details = tool_details.Clone();
-
-  quote->routes[0]->steps[0]->action = mojom::LiFiAction::New();
-  quote->routes[0]->steps[0]->action->from_token = from_token.Clone();
-  quote->routes[0]->steps[0]->action->from_amount = "2000000";
-  quote->routes[0]->steps[0]->action->to_token = to_token.Clone();
-  quote->routes[0]->steps[0]->action->slippage = "0.03";
-  quote->routes[0]->steps[0]->action->from_address =
-      "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0";
-  quote->routes[0]->steps[0]->action->to_address =
-      "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4";
-
-  quote->routes[0]->steps[0]->estimate = mojom::LiFiStepEstimate::New();
-  quote->routes[0]->steps[0]->estimate->tool = "allbridge";
-  quote->routes[0]->steps[0]->estimate->from_amount = "2000000";
-  quote->routes[0]->steps[0]->estimate->to_amount = "1138627";
-  quote->routes[0]->steps[0]->estimate->to_amount_min = "1136350";
-  quote->routes[0]->steps[0]->estimate->approval_address =
-      "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE";
-  quote->routes[0]->steps[0]->estimate->execution_duration = "500.298";
-
-  auto fee_cost = mojom::LiFiFeeCost::New();
-  fee_cost->name = "Allbridge's fee";
-  fee_cost->description =
-      "AllBridge fee and messenger fee charged by Allbridge";
-  fee_cost->percentage = "0.4267";
-  fee_cost->amount = "853380";
-  fee_cost->included = true;
-  fee_cost->token = from_token.Clone();
-
-  quote->routes[0]->steps[0]->estimate->fee_costs.emplace(
-      std::vector<mojom::LiFiFeeCostPtr>());
-  quote->routes[0]->steps[0]->estimate->fee_costs->push_back(fee_cost.Clone());
-
-  auto gas_cost = mojom::LiFiGasCost::New();
-  gas_cost->type = "SEND";
-  gas_cost->estimate = "185000";
-  gas_cost->limit = "277500";
-  gas_cost->amount = "20720000000000000";
-
-  auto matic = mojom::BlockchainToken::New();
-  matic->contract_address = "";
-  matic->name = "MATIC";
-  matic->logo = "matic.png";
-  matic->symbol = "MATIC";
-  matic->decimals = 18;
-  matic->chain_id = mojom::kPolygonMainnetChainId;
-  matic->coin = mojom::CoinType::ETH;
-  gas_cost->token = matic.Clone();
-  quote->routes[0]->steps[0]->estimate->gas_costs.push_back(gas_cost.Clone());
-
-  quote->routes[0]->steps[0]->included_steps =
-      std::vector<mojom::LiFiStepPtr>();
-  quote->routes[0]->steps[0]->included_steps->push_back(mojom::LiFiStep::New());
-  quote->routes[0]->steps[0]->included_steps->at(0)->id =
-      "1b914bef-e1be-4895-a9b1-c57da16d9de5";
-  quote->routes[0]->steps[0]->included_steps->at(0)->type =
-      mojom::LiFiStepType::kCross;
-  quote->routes[0]->steps[0]->included_steps->at(0)->tool = "allbridge";
-  quote->routes[0]->steps[0]->included_steps->at(0)->tool_details =
-      tool_details.Clone();
-
-  quote->routes[0]->steps[0]->included_steps->at(0)->action =
-      mojom::LiFiAction::New();
-  quote->routes[0]->steps[0]->included_steps->at(0)->action->from_token =
-      from_token.Clone();
-  quote->routes[0]->steps[0]->included_steps->at(0)->action->from_amount =
-      "2000000";
-  quote->routes[0]->steps[0]->included_steps->at(0)->action->to_token =
-      to_token.Clone();
-
-  quote->routes[0]->steps[0]->included_steps->at(0)->action->slippage = "0.03";
-  quote->routes[0]->steps[0]->included_steps->at(0)->action->from_address =
-      "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0";
-  quote->routes[0]->steps[0]->included_steps->at(0)->action->to_address =
-      "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4";
-
-  quote->routes[0]->steps[0]->included_steps->at(0)->estimate =
-      mojom::LiFiStepEstimate::New();
-  quote->routes[0]->steps[0]->included_steps->at(0)->estimate->tool =
-      "allbridge";
-  quote->routes[0]->steps[0]->included_steps->at(0)->estimate->from_amount =
-      "2000000";
-  quote->routes[0]->steps[0]->included_steps->at(0)->estimate->to_amount =
-      "1138627";
-  quote->routes[0]->steps[0]->included_steps->at(0)->estimate->to_amount_min =
-      "1136350";
-  quote->routes[0]
-      ->steps[0]
-      ->included_steps->at(0)
-      ->estimate->approval_address =
-      "0x7775d63836987f444E2F14AA0fA2602204D7D3E0";
-  quote->routes[0]
-      ->steps[0]
-      ->included_steps->at(0)
-      ->estimate->execution_duration = "500.298";
-
-  quote->routes[0]
-      ->steps[0]
-      ->included_steps->at(0)
-      ->estimate->fee_costs.emplace(std::vector<mojom::LiFiFeeCostPtr>());
-  quote->routes[0]
-      ->steps[0]
-      ->included_steps->at(0)
-      ->estimate->fee_costs->push_back(fee_cost.Clone());
-
-  quote->routes[0]
-      ->steps[0]
-      ->included_steps->at(0)
-      ->estimate->gas_costs.push_back(gas_cost.Clone());
-
-  quote->routes[0]->tags = {"CHEAPEST", "FASTEST"};
-  quote->routes[0]->unique_id = "allbridge";
-
-  return quote;
-}
-
 }  // namespace
 
 class SwapServiceUnitTest : public testing::Test {
@@ -995,12 +837,120 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
       GetCannedSwapQuoteParams(mojom::CoinType::SOL, mojom::kSolanaMainnet, "",
                                mojom::CoinType::SOL, mojom::kSolanaMainnet,
                                "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-                               mojom::SwapProvider::kAuto),
+                               mojom::SwapProvider::kJupiterLegacy),
       callback.Get());
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // KO: empty JSON for conversion
+  TestGetQuoteCase(R"({})", mojom::CoinType::SOL, mojom::kSolanaMainnet,
+                   mojom::CoinType::SOL, mojom::kSolanaMainnet, false,
+                   mojom::SwapProvider::kJupiterLegacy);
+
+  // KO: invalid JSON
+  TestGetQuoteCase(R"(foo)", mojom::CoinType::SOL, mojom::kSolanaMainnet,
+                   mojom::CoinType::SOL, mojom::kSolanaMainnet, false,
+                   mojom::SwapProvider::kJupiterLegacy);
+}
+
+TEST_F(SwapServiceUnitTest, GetJupiterGate3Quote) {
+  SetInterceptor(R"(
+    {
+      "routes": [
+        {
+          "id": "jup_test123",
+          "provider": "JUPITER",
+          "steps": [
+            {
+              "sourceToken": {
+                "coin": "SOL",
+                "chainId": "0x65",
+                "contractAddress": "",
+                "symbol": "SOL",
+                "decimals": "9",
+                "logo": null
+              },
+              "sourceAmount": "1000000000",
+              "destinationToken": {
+                "coin": "SOL",
+                "chainId": "0x65",
+                "contractAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+                "symbol": "USDC",
+                "decimals": "6",
+                "logo": null
+              },
+              "destinationAmount": "10886298",
+              "tool": {
+                "name": "Jupiter",
+                "logo": "https://example.com/jupiter.png"
+              },
+              "percent": "100"
+            }
+          ],
+          "sourceAmount": "1000000000",
+          "destinationAmount": "10886298",
+          "destinationAmountMin": "10885210",
+          "estimatedTime": 10,
+          "priceImpact": -0.01,
+          "networkFee": null,
+          "gasless": false,
+          "depositAddress": null,
+          "depositMemo": null,
+          "expiresAt": null,
+          "slippagePercentage": "0.5",
+          "transactionParams": null,
+          "requiresTokenAllowance": false,
+          "requiresFirmRoute": true
+        }
+      ]
+    }
+  )");
+
+  base::test::TestFuture<mojom::SwapQuoteUnionPtr, mojom::SwapFeesPtr,
+                         mojom::SwapErrorUnionPtr, const std::string&>
+      future;
+  swap_service_->GetQuote(
+      GetCannedSwapQuoteParams(mojom::CoinType::SOL, mojom::kSolanaMainnet, "",
+                               mojom::CoinType::SOL, mojom::kSolanaMainnet,
+                               "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+                               mojom::SwapProvider::kAuto),
+      future.GetCallback());
+  auto [quote, fees, error, error_string] = future.Take();
+  ASSERT_TRUE(quote);
+  ASSERT_TRUE(quote->is_gate3_quote());
+  EXPECT_FALSE(fees);
+  EXPECT_FALSE(error);
+  EXPECT_TRUE(error_string.empty());
+
+  const auto& gate3_quote = quote->get_gate3_quote();
+  ASSERT_EQ(gate3_quote->routes.size(), 1u);
+
+  const auto& route = gate3_quote->routes[0];
+  EXPECT_EQ(route->id, "jup_test123");
+  EXPECT_EQ(route->provider, mojom::SwapProvider::kJupiter);
+  EXPECT_EQ(route->source_amount, "1000000000");
+  EXPECT_EQ(route->destination_amount, "10886298");
+  EXPECT_EQ(route->destination_amount_min, "10885210");
+  EXPECT_FALSE(route->gasless);
+  EXPECT_TRUE(route->requires_firm_route);
+
+  ASSERT_EQ(route->steps.size(), 1u);
+  const auto& step = route->steps[0];
+  EXPECT_EQ(step->source_token->coin, mojom::CoinType::SOL);
+  EXPECT_EQ(step->source_token->chain_id, "0x65");
+  EXPECT_EQ(step->source_token->symbol, "SOL");
+  EXPECT_EQ(step->destination_token->coin, mojom::CoinType::SOL);
+  EXPECT_EQ(step->destination_token->chain_id, "0x65");
+  EXPECT_EQ(step->destination_token->symbol, "USDC");
+  EXPECT_EQ(step->destination_token->contract_address,
+            "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
+  EXPECT_EQ(step->source_amount, "1000000000");
+  EXPECT_EQ(step->destination_amount, "10886298");
+  EXPECT_EQ(step->tool->name, "Jupiter");
+  EXPECT_EQ(step->tool->logo, "https://example.com/jupiter.png");
+  EXPECT_EQ(step->percent, "100");
+
+  // KO: empty JSON
   TestGetQuoteCase(R"({})", mojom::CoinType::SOL, mojom::kSolanaMainnet,
                    mojom::CoinType::SOL, mojom::kSolanaMainnet, false,
                    mojom::SwapProvider::kAuto);
@@ -1009,6 +959,35 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
   TestGetQuoteCase(R"(foo)", mojom::CoinType::SOL, mojom::kSolanaMainnet,
                    mojom::CoinType::SOL, mojom::kSolanaMainnet, false,
                    mojom::SwapProvider::kAuto);
+}
+
+TEST_F(SwapServiceUnitTest, GetJupiterGate3QuoteError) {
+  std::string error_response = R"(
+    {
+      "message": "No routes found for this swap",
+      "kind": "UNKNOWN"
+    }
+  )";
+  SetErrorInterceptor(error_response);
+
+  base::test::TestFuture<mojom::SwapQuoteUnionPtr, mojom::SwapFeesPtr,
+                         mojom::SwapErrorUnionPtr, const std::string&>
+      future;
+  swap_service_->GetQuote(
+      GetCannedSwapQuoteParams(mojom::CoinType::SOL, mojom::kSolanaMainnet, "",
+                               mojom::CoinType::SOL, mojom::kSolanaMainnet,
+                               "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+                               mojom::SwapProvider::kAuto),
+      future.GetCallback());
+  auto [quote, fees, error, error_string] = future.Take();
+  EXPECT_FALSE(quote);
+  EXPECT_FALSE(fees);
+  ASSERT_TRUE(error);
+  ASSERT_TRUE(error->is_gate3_error());
+  EXPECT_EQ(error->get_gate3_error()->message, "No routes found for this swap");
+  EXPECT_EQ(error->get_gate3_error()->kind,
+            mojom::Gate3SwapErrorKind::kUnknown);
+  EXPECT_TRUE(error_string.empty());
 }
 
 TEST_F(SwapServiceUnitTest, GetJupiterTransaction) {
@@ -1028,463 +1007,113 @@ TEST_F(SwapServiceUnitTest, GetJupiterTransaction) {
   TestGetJupiterTransaction(false, "", true);
 }
 
-TEST_F(SwapServiceUnitTest, GetLiFiQuoteURL) {
-  auto url = swap_service_->GetLiFiQuoteURL();
-  EXPECT_EQ(url, "https://lifi.wallet.brave.com/v1/advanced/routes");
-}
-
-TEST_F(SwapServiceUnitTest, GetLiFiTransactionURL) {
-  auto url = swap_service_->GetLiFiTransactionURL();
-  EXPECT_EQ(url, "https://lifi.wallet.brave.com/v1/advanced/stepTransaction");
-}
-
-TEST_F(SwapServiceUnitTest, GetLiFiQuote) {
+TEST_F(SwapServiceUnitTest, GetLiFiGate3Quote) {
   SetInterceptor(R"(
     {
       "routes": [
         {
-          "id": "0x9a448018e09b62da15c1bd64571c21b33cb177cee5d2f07c325d6485364362a5",
-          "fromChainId": "137",
-          "fromAmountUSD": "2.00",
-          "fromAmount": "2000000",
-          "fromToken": {
-            "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
-            "chainId": "137",
-            "symbol": "USDCe",
-            "decimals": "6",
-            "name": "USDC.e",
-            "coinKey": "USDCe",
-            "logoURI": "usdce.png",
-            "priceUSD": "1"
-          },
-          "fromAddress": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0",
-          "toChainId": "1151111081099710",
-          "toAmountUSD": "1.14",
-          "toAmount": "1138627",
-          "toAmountMin": "1136350",
-          "toToken": {
-            "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-            "chainId": "1151111081099710",
-            "symbol": "USDC",
-            "decimals": "6",
-            "name": "USD Coin",
-            "coinKey": "USDC",
-            "logoURI": "usdc.png",
-            "priceUSD": "0.999501"
-          },
-          "toAddress": "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4",
-          "gasCostUSD": "0.02",
-          "containsSwitchChain": false,
+          "id": "lifi_test123",
+          "provider": "LIFI",
           "steps": [
             {
-              "type": "lifi",
-              "id": "57d247fc-d80a-4f4a-9596-72db3061aa72",
-              "tool": "allbridge",
-              "toolDetails": {
-                "key": "allbridge",
-                "name": "Allbridge",
-                "logoURI": "allbridge.png"
+              "sourceToken": {
+                "coin": "ETH",
+                "chainId": "0x1",
+                "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+                "symbol": "USDT",
+                "decimals": "6",
+                "logo": null
               },
-              "action": {
-                "fromChainId": "137",
-                "fromAmount": "2000000",
-                "fromAddress": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0",
-                "slippage": "0.03",
-                "toChainId": "1151111081099710",
-                "toAddress": "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4",
-                "fromToken": {
-                  "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
-                  "chainId": "137",
-                  "symbol": "USDCe",
-                  "decimals": "6",
-                  "name": "USDC.e",
-                  "coinKey": "USDCe",
-                  "logoURI": "usdce.png",
-                  "priceUSD": "1"
-                },
-                "toToken": {
-                  "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-                  "chainId": "1151111081099710",
-                  "symbol": "USDC",
-                  "decimals": "6",
-                  "name": "USD Coin",
-                  "coinKey": "USDC",
-                  "logoURI": "usdc.png",
-                  "priceUSD": "0.999501"
-                }
+              "sourceAmount": "1000000",
+              "destinationToken": {
+                "coin": "ETH",
+                "chainId": "0x1",
+                "contractAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+                "symbol": "USDC",
+                "decimals": "6",
+                "logo": null
               },
-              "estimate": {
-                "tool": "allbridge",
-                "fromAmount": "2000000",
-                "fromAmountUSD": "2.00",
-                "toAmount": "1138627",
-                "toAmountMin": "1136350",
-                "approvalAddress": "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE",
-                "executionDuration": "500.298",
-                "feeCosts": [
-                  {
-                    "name": "Allbridge's fee",
-                    "description": "AllBridge fee and messenger fee charged by Allbridge",
-                    "token": {
-                      "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
-                      "chainId": "137",
-                      "symbol": "USDCe",
-                      "decimals": "6",
-                      "name": "USDC.e",
-                      "coinKey": "USDCe",
-                      "logoURI": "usdce.png",
-                      "priceUSD": "1"
-                    },
-                    "amount": "853380",
-                    "amountUSD": "0.85",
-                    "percentage": "0.4267",
-                    "included": true
-                  }
-                ],
-                "gasCosts": [
-                  {
-                    "type": "SEND",
-                    "price": "112000000000",
-                    "estimate": "185000",
-                    "limit": "277500",
-                    "amount": "20720000000000000",
-                    "amountUSD": "0.02",
-                    "token": {
-                      "address": "0x0000000000000000000000000000000000000000",
-                      "chainId": "137",
-                      "symbol": "MATIC",
-                      "decimals": "18",
-                      "name": "MATIC",
-                      "coinKey": "MATIC",
-                      "logoURI": "matic.png",
-                      "priceUSD": "0.809079000000000000"
-                    }
-                  }
-                ],
-                "toAmountUSD": "1.14"
+              "destinationAmount": "999000",
+              "tool": {
+                "name": "LiFi",
+                "logo": "https://example.com/lifi.png"
               },
-              "includedSteps": [
-                {
-                  "id": "1b914bef-e1be-4895-a9b1-c57da16d9de5",
-                  "type": "cross",
-                  "action": {
-                    "fromChainId": "137",
-                    "fromAmount": "2000000",
-                    "fromAddress": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0",
-                    "slippage": "0.03",
-                    "toChainId": "1151111081099710",
-                    "toAddress": "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4",
-                    "fromToken": {
-                      "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
-                      "chainId": "137",
-                      "symbol": "USDCe",
-                      "decimals": "6",
-                      "name": "USDC.e",
-                      "coinKey": "USDCe",
-                      "logoURI": "usdce.png",
-                      "priceUSD": "1"
-                    },
-                    "toToken": {
-                      "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-                      "chainId": "1151111081099710",
-                      "symbol": "USDC",
-                      "decimals": "6",
-                      "name": "USD Coin",
-                      "coinKey": "USDC",
-                      "logoURI": "usdc.png",
-                      "priceUSD": "0.999501"
-                    }
-                  },
-                  "estimate": {
-                    "tool": "allbridge",
-                    "fromAmount": "2000000",
-                    "fromAmountUSD": "2.00",
-                    "toAmount": "1138627",
-                    "toAmountMin": "1136350",
-                    "approvalAddress": "0x7775d63836987f444E2F14AA0fA2602204D7D3E0",
-                    "executionDuration": "500.298",
-                    "feeCosts": [
-                      {
-                        "name": "Allbridge's fee",
-                        "description": "AllBridge fee and messenger fee charged by Allbridge",
-                        "token": {
-                          "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
-                          "chainId": "137",
-                          "symbol": "USDCe",
-                          "decimals": "6",
-                          "name": "USDC.e",
-                          "coinKey": "USDCe",
-                          "logoURI": "usdce.png",
-                          "priceUSD": "1"
-                        },
-                        "amount": "853380",
-                        "amountUSD": "0.85",
-                        "percentage": "0.4267",
-                        "included": true
-                      }
-                    ],
-                    "gasCosts": [
-                      {
-                        "type": "SEND",
-                        "price": "112000000000",
-                        "estimate": "185000",
-                        "limit": "277500",
-                        "amount": "20720000000000000",
-                        "amountUSD": "0.02",
-                        "token": {
-                          "address": "0x0000000000000000000000000000000000000000",
-                          "chainId": "137",
-                          "symbol": "MATIC",
-                          "decimals": "18",
-                          "name": "MATIC",
-                          "coinKey": "MATIC",
-                          "logoURI": "matic.png",
-                          "priceUSD": "0.809079000000000000"
-                        }
-                      }
-                    ]
-                  },
-                  "tool": "allbridge",
-                  "toolDetails": {
-                    "key": "allbridge",
-                    "name": "Allbridge",
-                    "logoURI": "allbridge.png"
-                  }
-                }
-              ]
+              "percent": "100"
             }
           ],
-          "tags": [
-            "CHEAPEST",
-            "FASTEST"
-          ]
+          "sourceAmount": "1000000",
+          "destinationAmount": "999000",
+          "destinationAmountMin": "998000",
+          "estimatedTime": 30,
+          "priceImpact": -0.001,
+          "networkFee": null,
+          "gasless": false,
+          "depositAddress": null,
+          "depositMemo": null,
+          "expiresAt": null,
+          "slippagePercentage": "0.5",
+          "transactionParams": null,
+          "requiresTokenAllowance": false,
+          "requiresFirmRoute": true
         }
-      ],
-      "unavailableRoutes": {
-        "filteredOut": [],
-        "failed": []
-      }
+      ]
     }
   )");
 
-  auto expected_swap_fees = mojom::SwapFees::New();
-  expected_swap_fees->fee_pct = "0";
-  expected_swap_fees->discount_pct = "0";
-  expected_swap_fees->effective_fee_pct = "0";
-  expected_swap_fees->discount_code = mojom::SwapDiscountCode::kNone;
-  expected_swap_fees->fee_param = "";
+  base::test::TestFuture<mojom::SwapQuoteUnionPtr, mojom::SwapFeesPtr,
+                         mojom::SwapErrorUnionPtr, const std::string&>
+      future;
+  swap_service_->GetQuote(
+      GetCannedSwapQuoteParams(mojom::CoinType::ETH, mojom::kMainnetChainId,
+                               "0xdac17f958d2ee523a2206206994597c13d831ec7",
+                               mojom::CoinType::ETH, mojom::kMainnetChainId,
+                               "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+                               mojom::SwapProvider::kLiFi),
+      future.GetCallback());
+  auto [quote, fees, error, error_string] = future.Take();
+  ASSERT_TRUE(quote);
+  ASSERT_TRUE(quote->is_gate3_quote());
+  EXPECT_FALSE(fees);
+  EXPECT_FALSE(error);
+  EXPECT_TRUE(error_string.empty());
 
-  base::MockCallback<mojom::SwapService::GetQuoteCallback> callback;
-  EXPECT_CALL(
-      callback,
-      Run(EqualsMojo(mojom::SwapQuoteUnion::NewLifiQuote(GetCannedLiFiQuote())),
-          EqualsMojo(expected_swap_fees.Clone()),
-          EqualsMojo(mojom::SwapErrorUnionPtr()), ""));
-  auto quote_params = GetCannedSwapQuoteParams(
-      mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "DAI",
-      mojom::CoinType::SOL, mojom::kSolanaMainnet,
-      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-      mojom::SwapProvider::kAuto);
-  swap_service_->GetQuote(std::move(quote_params), callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  const auto& gate3_quote = quote->get_gate3_quote();
+  ASSERT_EQ(gate3_quote->routes.size(), 1u);
 
-  // KO: empty JSON for conversion
-  TestGetQuoteCase(R"({})", mojom::CoinType::ETH, mojom::kPolygonMainnetChainId,
-                   mojom::CoinType::SOL, mojom::kSolanaMainnet, false,
-                   mojom::SwapProvider::kAuto);
+  const auto& route = gate3_quote->routes[0];
+  EXPECT_EQ(route->id, "lifi_test123");
+  EXPECT_EQ(route->provider, mojom::SwapProvider::kLiFi);
+  EXPECT_EQ(route->source_amount, "1000000");
+  EXPECT_EQ(route->destination_amount, "999000");
+  EXPECT_EQ(route->destination_amount_min, "998000");
+  EXPECT_FALSE(route->gasless);
+  EXPECT_TRUE(route->requires_firm_route);
+
+  ASSERT_EQ(route->steps.size(), 1u);
+  const auto& step = route->steps[0];
+  EXPECT_EQ(step->source_token->coin, mojom::CoinType::ETH);
+  EXPECT_EQ(step->source_token->chain_id, "0x1");
+  EXPECT_EQ(step->source_token->symbol, "USDT");
+  EXPECT_EQ(step->destination_token->coin, mojom::CoinType::ETH);
+  EXPECT_EQ(step->destination_token->chain_id, "0x1");
+  EXPECT_EQ(step->destination_token->symbol, "USDC");
+  EXPECT_EQ(step->destination_token->contract_address,
+            "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");
+  EXPECT_EQ(step->source_amount, "1000000");
+  EXPECT_EQ(step->destination_amount, "999000");
+  EXPECT_EQ(step->tool->name, "LiFi");
+  EXPECT_EQ(step->tool->logo, "https://example.com/lifi.png");
+  EXPECT_EQ(step->percent, "100");
+
+  // KO: empty JSON
+  TestGetQuoteCase(R"({})", mojom::CoinType::ETH, mojom::kMainnetChainId,
+                   mojom::CoinType::ETH, mojom::kMainnetChainId, false,
+                   mojom::SwapProvider::kLiFi);
 
   // KO: invalid JSON
-  TestGetQuoteCase(R"(foo)", mojom::CoinType::ETH,
-                   mojom::kPolygonMainnetChainId, mojom::CoinType::SOL,
-                   mojom::kSolanaMainnet, false, mojom::SwapProvider::kAuto);
-}
-
-TEST_F(SwapServiceUnitTest, GetLiFiTransaction) {
-  SetInterceptor(R"(
-    {
-      "transactionRequest": {
-        "from": "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0",
-        "to": "0x1111111254fb6c44bac0bed2854e76f90643097d",
-        "chainId": "100",
-        "data": "0x...",
-        "value": "0x0de0b6b3a7640000",
-        "gasPrice": "0xb2d05e00",
-        "gasLimit": "0x0e9cb2"
-      }
-    }
-  )");
-
-  auto quote = GetCannedLiFiQuote();
-  auto expected_transaction = mojom::LiFiEvmTransaction::New();
-  expected_transaction->from = "0x552008c0f6870c2f77e5cC1d2eb9bdff03e30Ea0";
-  expected_transaction->to = "0x1111111254fb6c44bac0bed2854e76f90643097d";
-  expected_transaction->chain_id = "0x64";
-  expected_transaction->data = "0x...";
-  expected_transaction->value = "0x0de0b6b3a7640000";
-  expected_transaction->gas_price = "0xb2d05e00";
-  expected_transaction->gas_limit = "0x0e9cb2";
-
-  base::MockCallback<mojom::SwapService::GetTransactionCallback> callback;
-  EXPECT_CALL(callback,
-              Run(EqualsMojo(mojom::SwapTransactionUnion::NewLifiTransaction(
-                      mojom::LiFiTransactionUnion::NewEvmTransaction(
-                          std::move(expected_transaction)))),
-                  EqualsMojo(mojom::SwapErrorUnionPtr()), ""));
-
-  swap_service_->GetTransaction(
-      mojom::SwapTransactionParamsUnion::NewLifiTransactionParams(
-          std::move(quote->routes[0]->steps[0])),
-      callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
-}
-
-TEST_F(SwapServiceUnitTest, GetLiFiQuoteError) {
-  std::string error = R"(
-    {
-      "message": "Invalid request",
-      "code": "1000"
-    })";
-  SetErrorInterceptor(error);
-
-  base::MockCallback<mojom::SwapService::GetQuoteCallback> callback;
-
-  EXPECT_CALL(
-      callback,
-      Run(EqualsMojo(mojom::SwapQuoteUnionPtr()),
-          EqualsMojo(mojom::SwapFeesPtr()),
-          EqualsMojo(mojom::SwapErrorUnion::NewLifiError(mojom::LiFiError::New(
-              "Invalid request", mojom::LiFiErrorCode::kDefaultError))),
-          ""));
-
-  swap_service_->GetQuote(
-      GetCannedSwapQuoteParams(mojom::CoinType::ETH,
-                               mojom::kPolygonMainnetChainId, "DAI",
-                               mojom::CoinType::SOL, mojom::kSolanaMainnet,
-                               "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
-                               mojom::SwapProvider::kAuto),
-      callback.Get());
-  task_environment_.RunUntilIdle();
-}
-
-TEST_F(SwapServiceUnitTest, GetLiFiTransactionError) {
-  std::string error = R"(
-    {
-      "message": "Invalid request",
-      "code": "1000"
-    })";
-  SetErrorInterceptor(error);
-
-  base::MockCallback<mojom::SwapService::GetTransactionCallback> callback;
-
-  EXPECT_CALL(
-      callback,
-      Run(EqualsMojo(mojom::SwapTransactionUnionPtr()),
-          EqualsMojo(mojom::SwapErrorUnion::NewLifiError(mojom::LiFiError::New(
-              "Invalid request", mojom::LiFiErrorCode::kDefaultError))),
-          ""));
-
-  auto quote = GetCannedLiFiQuote();
-  swap_service_->GetTransaction(
-      mojom::SwapTransactionParamsUnion::NewLifiTransactionParams(
-          std::move(quote->routes[0]->steps[0])),
-      callback.Get());
-  task_environment_.RunUntilIdle();
-}
-
-TEST_F(SwapServiceUnitTest, GetLiFiStatus) {
-  SetInterceptor(R"(
-    {
-      "transactionId": "0x0a0e6ac13786c9a3a68f55bbb5eeb3b31a7a25e7e2aa3641c545fd3869da8016",
-      "sending": {
-        "txHash": "0x1263d8b3cb3cf4e3ec0f9df5947e3846e2c6b1fb2bcc3740e36514c2ddd87cbb",
-        "txLink": "https://optimistic.etherscan.io/tx/0x1263d8b3cb3cf4e3ec0f9df5947e3846e2c6b1fb2bcc3740e36514c2ddd87cbb",
-        "amount": "2516860",
-        "token": {
-          "address": "0x7F5c764cBc14f9669B88837ca1490cCa17c31607",
-          "chainId": "10",
-          "symbol": "USDC.e",
-          "decimals": "6",
-          "name": "Bridged USD Coin",
-          "coinKey": "USDCe",
-          "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
-          "priceUSD": "1"
-        },
-        "chainId": "10",
-        "gasPrice": "61761647",
-        "gasUsed": "239193",
-        "gasToken": {
-          "address": "0x0000000000000000000000000000000000000000",
-          "chainId": "10",
-          "symbol": "ETH",
-          "decimals": "18",
-          "name": "ETH",
-          "coinKey": "ETH",
-          "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png",
-          "priceUSD": "3399.92"
-        },
-        "gasAmount": "14772953630871",
-        "gasAmountUSD": "0.05",
-        "amountUSD": "2.52",
-        "value": "0",
-        "timestamp": "1721381005"
-      },
-      "receiving": {
-        "chainId": "10"
-      },
-      "lifiExplorerLink": "https://explorer.li.fi/tx/0x1263d8b3cb3cf4e3ec0f9df5947e3846e2c6b1fb2bcc3740e36514c2ddd87cbb",
-      "fromAddress": "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
-      "toAddress": "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
-      "tool": "paraswap",
-      "status": "PENDING",
-      "substatus": "WAIT_DESTINATION_TRANSACTION",
-      "substatusMessage": "The transfer is waiting for destination transaction.",
-      "metadata": {
-        "integrator": "brave"
-      }
-    }
-  )");
-
-  auto expected_response = mojom::LiFiStatus::New();
-  expected_response->transaction_id =
-      "0x0a0e6ac13786c9a3a68f55bbb5eeb3b31a7a25e7e2aa3641c545fd3869da8016";
-  expected_response->sending = mojom::LiFiStepStatus::New();
-  expected_response->sending->tx_hash =
-      "0x1263d8b3cb3cf4e3ec0f9df5947e3846e2c6b1fb2bcc3740e36514c2ddd87cbb";
-  expected_response->sending->tx_link =
-      "https://optimistic.etherscan.io/tx/"
-      "0x1263d8b3cb3cf4e3ec0f9df5947e3846e2c6b1fb2bcc3740e36514c2ddd87cbb";
-  expected_response->sending->amount = "2516860";
-  expected_response->sending->contract_address =
-      "0x7F5c764cBc14f9669B88837ca1490cCa17c31607";
-  expected_response->sending->chain_id = "0xa";
-
-  expected_response->receiving = mojom::LiFiStepStatus::New();
-  expected_response->receiving->chain_id = "0xa";
-
-  expected_response->lifi_explorer_link =
-      "https://explorer.li.fi/tx/"
-      "0x1263d8b3cb3cf4e3ec0f9df5947e3846e2c6b1fb2bcc3740e36514c2ddd87cbb";
-  expected_response->from_address =
-      "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4";
-  expected_response->to_address = "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4";
-  expected_response->tool = "paraswap";
-  expected_response->status = mojom::LiFiStatusCode::kPending;
-  expected_response->substatus =
-      mojom::LiFiSubstatusCode::kWaitDestinationTransaction;
-  expected_response->substatus_message =
-      "The transfer is waiting for destination transaction.";
-
-  base::MockCallback<mojom::SwapService::GetLiFiStatusCallback> callback;
-  EXPECT_CALL(callback, Run(EqualsMojo(expected_response),
-                            EqualsMojo(mojom::LiFiErrorPtr()), ""));
-
-  swap_service_->GetLiFiStatus(
-      "0x0a0e6ac13786c9a3a68f55bbb5eeb3b31a7a25e7e2aa3641c545fd3869da8016",
-      callback.Get());
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(&callback);
+  TestGetQuoteCase(R"(foo)", mojom::CoinType::ETH, mojom::kMainnetChainId,
+                   mojom::CoinType::ETH, mojom::kMainnetChainId, false,
+                   mojom::SwapProvider::kLiFi);
 }
 
 TEST_F(SwapServiceUnitTest, GetGate3Quote) {
@@ -1518,7 +1147,8 @@ TEST_F(SwapServiceUnitTest, GetGate3Quote) {
               "tool": {
                 "name": "NEAR Intents",
                 "logo": "https://example.com/logo.png"
-              }
+              },
+              "percent": "100"
             }
           ],
           "sourceAmount": "1000000",
@@ -1540,50 +1170,50 @@ TEST_F(SwapServiceUnitTest, GetGate3Quote) {
     }
   )");
 
-  base::RunLoop run_loop;
-  base::MockCallback<mojom::SwapService::GetQuoteCallback> callback;
-  EXPECT_CALL(callback, Run(IsTruthy(true), IsTruthy(false),
-                            EqualsMojo(mojom::SwapErrorUnionPtr()), ""))
-      .WillOnce(testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
-
+  base::test::TestFuture<mojom::SwapQuoteUnionPtr, mojom::SwapFeesPtr,
+                         mojom::SwapErrorUnionPtr, const std::string&>
+      future;
   swap_service_->GetQuote(
       GetCannedSwapQuoteParams(mojom::CoinType::ETH, mojom::kMainnetChainId,
                                "USDC", mojom::CoinType::SOL,
                                mojom::kSolanaMainnet, "USDC",
                                mojom::SwapProvider::kNearIntents),
-      callback.Get());
-  run_loop.Run();
+      future.GetCallback());
+  auto [quote, fees, error, error_string] = future.Take();
+  ASSERT_TRUE(quote);
+  EXPECT_FALSE(fees);
+  EXPECT_FALSE(error);
+  EXPECT_TRUE(error_string.empty());
 }
 
 TEST_F(SwapServiceUnitTest, GetGate3QuoteError) {
-  std::string error = R"(
+  std::string error_response = R"(
     {
       "message": "Provider NEAR_INTENTS does not support this swap",
       "kind": "UNKNOWN"
     }
   )";
-  SetErrorInterceptor(error);
+  SetErrorInterceptor(error_response);
 
-  base::RunLoop run_loop;
-  base::MockCallback<mojom::SwapService::GetQuoteCallback> callback;
-
-  EXPECT_CALL(callback,
-              Run(EqualsMojo(mojom::SwapQuoteUnionPtr()),
-                  EqualsMojo(mojom::SwapFeesPtr()),
-                  EqualsMojo(mojom::SwapErrorUnion::NewGate3Error(
-                      mojom::Gate3SwapError::New(
-                          "Provider NEAR_INTENTS does not support this swap",
-                          mojom::Gate3SwapErrorKind::kUnknown))),
-                  ""))
-      .WillOnce(testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
-
+  base::test::TestFuture<mojom::SwapQuoteUnionPtr, mojom::SwapFeesPtr,
+                         mojom::SwapErrorUnionPtr, const std::string&>
+      future;
   swap_service_->GetQuote(
       GetCannedSwapQuoteParams(mojom::CoinType::ETH, mojom::kMainnetChainId,
                                "USDC", mojom::CoinType::SOL,
                                mojom::kSolanaMainnet, "USDC",
                                mojom::SwapProvider::kNearIntents),
-      callback.Get());
-  run_loop.Run();
+      future.GetCallback());
+  auto [quote, fees, error, error_string] = future.Take();
+  EXPECT_FALSE(quote);
+  EXPECT_FALSE(fees);
+  ASSERT_TRUE(error);
+  ASSERT_TRUE(error->is_gate3_error());
+  EXPECT_EQ(error->get_gate3_error()->message,
+            "Provider NEAR_INTENTS does not support this swap");
+  EXPECT_EQ(error->get_gate3_error()->kind,
+            mojom::Gate3SwapErrorKind::kUnknown);
+  EXPECT_TRUE(error_string.empty());
 }
 
 TEST_F(SwapServiceUnitTest, GetGate3Transaction) {
@@ -1617,7 +1247,8 @@ TEST_F(SwapServiceUnitTest, GetGate3Transaction) {
               "tool": {
                 "name": "NEAR Intents",
                 "logo": "https://example.com/logo.png"
-              }
+              },
+              "percent": "100"
             }
           ],
           "sourceAmount": "1000000",
@@ -1668,21 +1299,19 @@ TEST_F(SwapServiceUnitTest, GetGate3Transaction) {
   // Create expected route step
   auto expected_step = mojom::Gate3SwapRouteStep::New();
   auto source_token = mojom::Gate3SwapStepToken::New();
-  source_token->coin = "ETH";
+  source_token->coin = mojom::CoinType::ETH;
   source_token->chain_id = "0x1";
   source_token->contract_address = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48";
   source_token->symbol = "USDC";
-  source_token->decimals = "6";
   source_token->logo = "";
   expected_step->source_token = std::move(source_token);
   expected_step->source_amount = "1000000";
   auto destination_token = mojom::Gate3SwapStepToken::New();
-  destination_token->coin = "SOL";
+  destination_token->coin = mojom::CoinType::SOL;
   destination_token->chain_id = "0x65";
   destination_token->contract_address =
       "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
   destination_token->symbol = "USDC";
-  destination_token->decimals = "6";
   destination_token->logo = "";
   expected_step->destination_token = std::move(destination_token);
   expected_step->destination_amount = "714488";
@@ -1690,6 +1319,7 @@ TEST_F(SwapServiceUnitTest, GetGate3Transaction) {
   tool->name = "NEAR Intents";
   tool->logo = "https://example.com/logo.png";
   expected_step->tool = std::move(tool);
+  expected_step->percent = "100";
 
   // Create expected route
   auto expected_route = mojom::Gate3SwapRoute::New();

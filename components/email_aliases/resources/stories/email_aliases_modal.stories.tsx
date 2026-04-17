@@ -9,7 +9,11 @@ import {
   EmailAliasModal,
 } from '../content/email_aliases_modal'
 import { StubEmailAliasesService, demoData } from './utils/stubs'
-import { AuthenticationStatus } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+import {
+  Alias,
+  AuthenticationStatus,
+  MAX_ALIASES,
+} from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
 const stubEmailAliasesServiceAccountReadyInstance = new StubEmailAliasesService(
   {
@@ -21,7 +25,8 @@ const stubEmailAliasesServiceAccountReadyInstance = new StubEmailAliasesService(
 export const NewAliasDialog = () => {
   return (
     <EmailAliasModal
-      aliasCount={demoData.aliases.length}
+      aliases={demoData.aliases}
+      aliasLimit={MAX_ALIASES}
       onReturnToMain={() => {}}
       editing={false}
       mainEmail={demoData.email}
@@ -35,7 +40,8 @@ export const EditAliasDialog = () => {
   return (
     <EmailAliasModal
       editAlias={demoData.aliases[0]}
-      aliasCount={demoData.aliases.length}
+      aliases={demoData.aliases}
+      aliasLimit={MAX_ALIASES}
       onReturnToMain={() => {}}
       editing
       mainEmail={demoData.email}
@@ -59,7 +65,32 @@ export const DeleteAliasDialog = () => {
 export const Panel = () => {
   return (
     <EmailAliasModal
-      aliasCount={demoData.aliases.length}
+      aliases={demoData.aliases}
+      aliasLimit={MAX_ALIASES}
+      onReturnToMain={() => {}}
+      editing={false}
+      mainEmail={demoData.email}
+      bubble={true}
+      // @ts-expect-error https://github.com/brave/brave-browser/issues/48960
+      emailAliasesService={stubEmailAliasesServiceAccountReadyInstance}
+    />
+  )
+}
+
+const atLimitAliases: Alias[] = Array.from(
+  { length: MAX_ALIASES + Math.round(Math.random() * MAX_ALIASES) },
+  (_, i) => ({
+    email: `isolating-cubicle${i}@bravealias.com`,
+    note: undefined,
+    domains: undefined,
+  }),
+)
+
+export const LimitReachedBubble = () => {
+  return (
+    <EmailAliasModal
+      aliases={atLimitAliases}
+      aliasLimit={MAX_ALIASES}
       onReturnToMain={() => {}}
       editing={false}
       mainEmail={demoData.email}
@@ -75,7 +106,7 @@ export default {
   decorators: [
     (Story: any) => {
       return (
-        <div style={{ width: '420px', margin: '0 auto' }}>
+        <div style={{ width: '464px', margin: '0 auto' }}>
           <Story />
         </div>
       )

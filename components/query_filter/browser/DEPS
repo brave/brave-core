@@ -1,0 +1,10 @@
+include_rules = [
+  "+components/component_updater",
+]
+
+specific_include_rules = {
+  ".*test\.cc": [
+    "+content/public/test",
+    "+components/update_client",
+  ],
+}

@@ -8,11 +8,11 @@
 #include <sstream>
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"  // IWYU pragma: keep
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signed_token.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signing_key.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/test/blinded_token_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/test/challenge_bypass_ristretto_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/test/public_key_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/test/signed_token_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/test/signing_key_test_util.h"

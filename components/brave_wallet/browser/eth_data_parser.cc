@@ -43,6 +43,14 @@ constexpr char kFillOtcOrderForEthSelector[] = "0xa578efaf";
 constexpr char kFillOtcOrderWithEthSelector[] = "0x706394d5";
 constexpr char kFillOtcOrderSelector[] = "0xdac748d4";
 
+// LiFi uses the zero address to represent the native EVM asset.
+constexpr char kLiFiNativeEVMAssetContractAddress[] =
+    "0x0000000000000000000000000000000000000000";
+
+// Solana mainnet chain id used by LiFi encoded as hex string.
+// Decimal value: 1151111081099710
+constexpr char kLiFiSolanaMainnetChainID[] = "0x416edef1601be";
+
 // LiFi function selectors
 // Ref: https://louper.dev/diamond/0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE
 
@@ -509,9 +517,7 @@ std::optional<LiFiBridgeData> LiFiBridgeDataDecode(
   }
 
   auto destination_chain_id = data[7].GetString();
-  // Solana mainnet chain id used by LiFi encoded as hex string.
-  // Ref: kLiFiSolanaMainnetChainID in browser/brave_wallet_constants.h
-  if (destination_chain_id == "0x416edef1601be") {
+  if (destination_chain_id == kLiFiSolanaMainnetChainID) {
     destination_chain_id = mojom::kSolanaMainnet;
   }
 

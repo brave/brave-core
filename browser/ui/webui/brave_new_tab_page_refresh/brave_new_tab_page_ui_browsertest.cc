@@ -66,7 +66,7 @@ void VerifyDocumentBodyInnerTextExpectation(
 
 void VerifyNewTabPageLoadedExpectation(content::WebContents* web_contents) {
   EXPECT_TRUE(content::EvalJs(web_contents,
-                              "!!document.querySelector(`html[data-test-id="
+                              "!!document.querySelector(`html[data-testid="
                               "'brave-new-tab-page']`)")
                   .ExtractBool());
 }

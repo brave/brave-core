@@ -10,11 +10,11 @@ import {
   BraveAccountBrowserProxyImpl,
 } from './brave_account_browser_proxy.js'
 import { getHtml } from './brave_account_create_dialog.html.js'
-import { Error } from './brave_account_common.js'
 import {
   RegisterError,
   RegisterErrorCode,
 } from './brave_account.mojom-webui.js'
+import { showError } from './brave_account_common.js'
 
 // @ts-expect-error
 import { Registration } from 'chrome://resources/brave/opaque_ke.bundle.js'
@@ -65,26 +65,22 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
         encryptedVerificationToken,
         serializedRecord,
       )
-      this.fire('close-dialog')
-    } catch (error) {
-      let details: RegisterError
+    } catch (e) {
+      let error: RegisterError
 
-      if (error && typeof error === 'object') {
-        details = error as RegisterError
-      } else if (typeof error === 'string') {
-        details = {
+      if (e && typeof e === 'object') {
+        error = e as RegisterError
+      } else if (typeof e === 'string') {
+        error = {
           netErrorOrHttpStatus: null,
           errorCode: RegisterErrorCode.kOpaqueError,
         }
       } else {
-        console.error('Unexpected error:', error)
-        details = { netErrorOrHttpStatus: null, errorCode: null }
+        console.error('Unexpected error:', e)
+        error = { netErrorOrHttpStatus: null, errorCode: null }
       }
 
-      this.fire('error-occurred', {
-        flow: 'register',
-        details,
-      } satisfies Extract<Error, { flow: 'register' }>)
+      showError({ kind: 'register', details: error })
     }
   }
 

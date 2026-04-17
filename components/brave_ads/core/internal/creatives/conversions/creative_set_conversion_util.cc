@@ -7,6 +7,7 @@
 
 #include <algorithm>
 
+#include "base/containers/span.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/default_conversion/creative_set_conversion_url_pattern/creative_set_conversion_url_pattern_util.h"
@@ -16,7 +17,7 @@ namespace brave_ads {
 
 CreativeSetConversionList GetMatchingCreativeSetConversions(
     const CreativeSetConversionList& creative_set_conversions,
-    const std::vector<GURL>& redirect_chain) {
+    base::span<const GURL> redirect_chain) {
   if (creative_set_conversions.empty()) {
     return {};
   }

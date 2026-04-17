@@ -22,8 +22,8 @@
 #include "brave/components/brave_account/endpoints/password_finalize.h"
 #include "brave/components/brave_account/endpoints/password_init.h"
 #include "brave/components/brave_account/endpoints/service_token.h"
+#include "brave/components/brave_account/endpoints/verify_complete.h"
 #include "brave/components/brave_account/endpoints/verify_resend.h"
-#include "brave/components/brave_account/endpoints/verify_result.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_member.h"
@@ -80,6 +80,9 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
                         const std::string& serialized_record,
                         RegisterFinalizeCallback callback) override;
 
+  void RegisterVerify(const std::string& code,
+                      RegisterVerifyCallback callback) override;
+
   void ResendConfirmationEmail(
       ResendConfirmationEmailCallback callback) override;
 
@@ -106,19 +109,13 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
                           const std::string& encrypted_verification_token,
                           endpoints::PasswordFinalize::Response response);
 
+  void OnRegisterVerify(RegisterVerifyCallback callback,
+                        endpoints::VerifyComplete::Response response);
+
   void OnResendConfirmationEmail(ResendConfirmationEmailCallback callback,
                                  endpoints::VerifyResend::Response response);
 
   void OnVerificationTokenChanged();
-
-  void ScheduleVerifyResult(
-      base::TimeDelta delay = base::Seconds(0),
-      endpoint_client::RequestHandle current_verify_result_request = {});
-
-  void VerifyResult(
-      endpoint_client::RequestHandle current_verify_result_request);
-
-  void OnVerifyResult(endpoints::VerifyResult::Response response);
 
   void OnLoginInitialize(LoginInitializeCallback callback,
                          endpoints::LoginInit::Response response);
@@ -164,7 +161,6 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
   StringPrefMember pref_verification_token_;
   StringPrefMember pref_authentication_token_;
   StringPrefMember pref_email_address_;
-  base::OneShotTimer verify_result_timer_;
   base::OneShotTimer auth_validate_timer_;
   base::WeakPtrFactory<BraveAccountService> weak_factory_{this};
 };

@@ -23,10 +23,10 @@ pub(crate) struct Extension<'a> {
 }
 
 impl Extension<'_> {
-    pub(crate) fn unsupported(&self) -> Result<(), Error> {
-        match self.critical {
-            true => Err(Error::UnsupportedCriticalExtension),
-            false => Ok(()),
+    pub(crate) fn unsupported(&self, policy: UnknownExtensionPolicy) -> Result<(), Error> {
+        match (policy, self.critical) {
+            (UnknownExtensionPolicy::Strict, true) => Err(Error::UnsupportedCriticalExtension),
+            _ => Ok(()),
         }
     }
 }
@@ -63,6 +63,7 @@ pub(crate) fn set_extension_once<T>(
 
 pub(crate) fn remember_extension(
     extension: &Extension<'_>,
+    ext_policy: UnknownExtensionPolicy,
     mut handler: impl FnMut(u8) -> Result<(), Error>,
 ) -> Result<(), Error> {
     // ISO arc for standard certificate and CRL extensions.
@@ -72,12 +73,19 @@ pub(crate) fn remember_extension(
     if extension.id.len() != ID_CE.len() + 1
         || !extension.id.as_slice_less_safe().starts_with(&ID_CE)
     {
-        return extension.unsupported();
+        return extension.unsupported(ext_policy);
     }
 
     // safety: we verify len is non-zero and has the correct prefix above.
     let last_octet = *extension.id.as_slice_less_safe().last().unwrap();
     handler(last_octet)
+}
+
+#[derive(Clone, Copy, Debug, Default)]
+pub(crate) enum UnknownExtensionPolicy {
+    #[default]
+    Strict,
+    IgnoreCritical,
 }
 
 /// A certificate revocation list (CRL) distribution point name, describing a source of

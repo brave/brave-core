@@ -39,8 +39,14 @@
   <message name="IDS_SETTINGS_EMAIL_ALIASES_BUBBLE_DESCRIPTION" desc="The description for the email alias bubble" formatter_data="webui=EmailAliases">
     Create a random email address that forwards to your inbox while keeping your personal email private.
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_BUBBLE_LIMIT_REACHED" desc="The description for the email alias bubble when the limit is reached" formatter_data="webui=EmailAliases">
-    You have reached the limit of 5 free email aliases. Click "Manage" to re-use or delete an alias.
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_LIMIT_REACHED_ALERT_TITLE" desc="Title for the email alias limit reached banner in the new-alias dialog" formatter_data="webui=EmailAliases">
+    Alias limit reached
+  </message>
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_LIMIT_REACHED_ALERT_BODY" desc="Body for the email alias limit reached banner; placeholder is the max aliases allowed for the user's plan" formatter_data="webui=EmailAliases">
+    You've used all <ph name="MAX_ALIASES">$1<ex>5</ex></ph> of your email aliases. Delete an existing alias to create a new one.
+  </message>
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_YOUR_ALIASES_COUNT_LABEL" desc="Label above the alias list when showing usage versus plan limit" formatter_data="webui=EmailAliases">
+    Your aliases (<ph name="CURRENT">$1<ex>5</ex></ph> / <ph name="MAX">$2<ex>5</ex></ph>)
   </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_LABEL" desc="The label for the create alias" formatter_data="webui=EmailAliases">
     New alias

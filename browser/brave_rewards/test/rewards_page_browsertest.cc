@@ -124,7 +124,6 @@ class RewardsPageBrowserTest : public InProcessBrowserTest {
           },
           "payout_status": {
             "bitflyer": "",
-            "gemini": "",
             "solana": "",
             "uphold": "",
             "zebpay": ""
@@ -140,10 +139,6 @@ class RewardsPageBrowserTest : public InProcessBrowserTest {
           "wallet_provider_regions": {
             "bitflyer": {
               "allow": ["JP"],
-              "block": []
-            },
-            "gemini": {
-              "allow": ["US", "SG", "GB", "CA"],
               "block": []
             },
             "solana": {

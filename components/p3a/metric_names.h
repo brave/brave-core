@@ -276,23 +276,28 @@ inline constexpr auto kCollectedExpressHistograms =
     }},
     {"Brave.Search.DailyQueries.BraveDefault", MetricConfig{
       .ephemeral = true,
-      .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi},
+      .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCustomAttribute, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi},
+      .custom_attributes = {"media_session_usage"},
     }},
     {"Brave.Search.DailyQueries.DDGDefault", MetricConfig{
       .ephemeral = true,
-      .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi},
+      .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCustomAttribute, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi},
+      .custom_attributes = {"media_session_usage"},
     }},
     {"Brave.Search.DailyQueries.GoogleDefault", MetricConfig{
       .ephemeral = true,
-      .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi},
+      .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCustomAttribute, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi},
+      .custom_attributes = {"media_session_usage"},
     }},
     {"Brave.Search.DailyQueries.OtherDefault", MetricConfig{
       .ephemeral = true,
-      .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi},
+      .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCustomAttribute, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi},
+      .custom_attributes = {"media_session_usage"},
     }},
     {"Brave.Search.DailyQueries.YahooDefault", MetricConfig{
       .ephemeral = true,
-      .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi},
+      .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCustomAttribute, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi},
+      .custom_attributes = {"media_session_usage"},
     }},
     {"Brave.Search.DefaultEngine.4", MetricConfig{
       .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kDateOfInstall, MetricAttribute::kVersion, MetricAttribute::kLocaleCountryCode},

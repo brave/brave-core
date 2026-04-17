@@ -135,6 +135,47 @@ test('directiveComponents has components for all allowed directives', () => {
   })
 })
 
+test('remarkDirectives converts textDirectives to plain text', () => {
+  // remark-directive v4 parses time-like strings (e.g. "12:45") as textDirectives,
+  // causing the ":45" part to be silently dropped. The fix converts all
+  // textDirective nodes back to plain text nodes.
+  const tree: Node = {
+    type: 'root',
+    children: [
+      {
+        type: 'textDirective',
+        name: '45',
+        children: [],
+      },
+    ],
+  }
+
+  const plugin = remarkDirectives()
+  plugin(tree)
+
+  const node = (tree as any).children[0]
+  expect(node.type).toBe('text')
+  expect(node.value).toBe(':45')
+})
+
+test('remarkDirectives converts multiple textDirectives to plain text', () => {
+  const tree: Node = {
+    type: 'root',
+    children: [
+      { type: 'textDirective', name: '45', children: [] },
+      { type: 'textDirective', name: 'foo', children: [] },
+    ],
+  }
+
+  const plugin = remarkDirectives()
+  plugin(tree)
+
+  expect((tree as any).children[0].type).toBe('text')
+  expect((tree as any).children[0].value).toBe(':45')
+  expect((tree as any).children[1].type).toBe('text')
+  expect((tree as any).children[1].value).toBe(':foo')
+})
+
 test('search directive renders something', () => {
   const { container } = render(
     <AssistantResponseContextProvider events={[]}>

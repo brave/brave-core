@@ -40,5 +40,7 @@
     "noUnusedParameters": true,
     // Issue an error if a property with an explicit type is not initialized.
     "strictPropertyInitialization": true,
+    // Apply stricter rules for optional properties.
+    "exactOptionalPropertyTypes": true,
   },
 }

@@ -7,7 +7,7 @@
 import '../lib/checkEnvironment.js'
 
 import program from 'commander'
-import config from '../lib/config.js'
+import config from '../lib/config.ts'
 import util from '../lib/util.js'
 
 program

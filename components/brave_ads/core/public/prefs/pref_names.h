@@ -58,13 +58,8 @@ inline constexpr char kSaveAds[] = "brave.brave_ads.reactions.saved_ads";
 inline constexpr char kMarkedAsInappropriate[] =
     "brave.brave_ads.reactions.marked_as_inappropriate";
 
-inline constexpr char kHasMigratedState[] =
-    "brave.brave_ads.state.has_migrated.v2";
 inline constexpr char kHasMigratedClientState[] =
     "brave.brave_ads.state.has_migrated.client.v7";
-inline constexpr char kHasMigratedConfirmationState[] =
-    "brave.brave_ads.state.has_migrated.confirmations.v8";
-
 inline constexpr char kBrowserVersionNumber[] =
     "brave.brave_ads.browser_version_number";
 

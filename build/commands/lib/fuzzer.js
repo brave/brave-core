@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import build from './build.js'
-import config from './config.js'
+import config from './config.ts'
 import fs from 'fs-extra'
 import path from 'node:path'
 import { spawn } from 'node:child_process'

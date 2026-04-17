@@ -64,11 +64,8 @@ adblock::BlockerResult AdBlockEngineWrapper::ShouldStartRequest(
       url, resource_type, tab_host, previously_matched_rule,
       previously_matched_exception, previously_matched_important);
 
-  // removeparam results from the default engine are ignored in default
-  // blocking mode
-  if (!aggressive_blocking) {
-    fp_result.rewritten_url.has_value = false;
-  }
+  // removeparam results from the default engine are always ignored
+  fp_result.rewritten_url.has_value = false;
 
   if (aggressive_blocking ||
       base::FeatureList::IsEnabled(

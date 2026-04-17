@@ -16,7 +16,7 @@ export function createRewardsStore() {
     rewardsBalance: null,
     rewardsExchangeRate: 1,
     rewardsExternalWallet: {
-      provider: 'gemini',
+      provider: 'uphold',
       authenticated: true,
       name: 'Joe',
       url: 'https://brave.com',

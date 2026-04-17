@@ -412,6 +412,20 @@ class SettingsViewController: TableViewController {
     }
   }
 
+  private func openBraveAccountDialog() {
+    let controller = ChromeWebUIController(braveCore: braveCore, isPrivateBrowsing: false)
+    let container = UINavigationController(rootViewController: controller)
+    controller.title = L10nUtils.string(messageId: .BRAVE_ACCOUNT_TITLE)
+    controller.webView.load(URLRequest(url: URL(string: "brave://account")!))
+    controller.navigationItem.rightBarButtonItem = .init(
+      systemItem: .done,
+      primaryAction: .init { [unowned container] _ in
+        container.dismiss(animated: true)
+      }
+    )
+    present(container, animated: true)
+  }
+
   private var braveAccountSection: Static.Section {
     let authenticationToken = braveCore.profile.prefs.string(
       forPath: BraveAccountAuthenticationTokenPref
@@ -459,10 +473,25 @@ class SettingsViewController: TableViewController {
           ),
           Row(
             text: L10nUtils.string(
-              messageId: .SETTINGS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_BUTTON_LABEL
+              messageId: .SETTINGS_BRAVE_ACCOUNT_ENTER_REGISTRATION_CODE_BUTTON_LABEL
             ),
             detailText: L10nUtils.string(
               messageId: .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2
+            ),
+            selection: { [unowned self] in
+              openBraveAccountDialog()
+            },
+            cellClass: BraveAccountIconCell.self,
+            context: [
+              BraveAccountIconCell.textColor: view.tintColor
+            ]
+          ),
+          Row(
+            text: L10nUtils.string(
+              messageId: .SETTINGS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_BUTTON_LABEL
+            ),
+            detailText: L10nUtils.string(
+              messageId: .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_3
             ),
             selection: { [unowned self] in
               setCellEnabled(
@@ -517,17 +546,7 @@ class SettingsViewController: TableViewController {
             messageId: .SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL
           ),
           selection: { [unowned self] in
-            let controller = ChromeWebUIController(braveCore: braveCore, isPrivateBrowsing: false)
-            let container = UINavigationController(rootViewController: controller)
-            controller.title = L10nUtils.string(messageId: .BRAVE_ACCOUNT_TITLE)
-            controller.webView.load(URLRequest(url: URL(string: "brave://account")!))
-            controller.navigationItem.rightBarButtonItem = .init(
-              systemItem: .done,
-              primaryAction: .init { [unowned container] _ in
-                container.dismiss(animated: true)
-              }
-            )
-            present(container, animated: true)
+            openBraveAccountDialog()
           },
           image: UIImage(sharedNamed: "brave.logo"),
           accessory: .disclosureIndicator,

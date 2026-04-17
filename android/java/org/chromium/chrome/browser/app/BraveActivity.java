@@ -95,7 +95,6 @@ import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SignDataUnion;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
-import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdFreeCalloutDialogFragment;
@@ -129,11 +128,9 @@ import org.chromium.chrome.browser.browsing_data.BrowsingDataBridge;
 import org.chromium.chrome.browser.browsing_data.BrowsingDataType;
 import org.chromium.chrome.browser.browsing_data.TimePeriod;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerChrome;
-import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletPolicy;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
-import org.chromium.chrome.browser.crypto_wallet.SwapServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
@@ -328,7 +325,6 @@ public abstract class BraveActivity extends ChromeActivity
     private KeyringService mKeyringService;
     private JsonRpcService mJsonRpcService;
     private MiscAndroidMetrics mMiscAndroidMetrics;
-    private SwapService mSwapService;
     @Nullable private WalletModel mWalletModel;
     private BlockchainRegistry mBlockchainRegistry;
     private TxService mTxService;
@@ -2078,7 +2074,7 @@ public abstract class BraveActivity extends ChromeActivity
         }
 
         mWalletModel.resetServices(
-                getApplicationContext(), null, null, null, null, null, null, null, null, null);
+                getApplicationContext(), null, null, null, null, null, null, null, null);
     }
 
     public void setupWalletModel() {
@@ -2100,8 +2096,7 @@ public abstract class BraveActivity extends ChromeActivity
                                         mEthTxManagerProxy,
                                         mSolanaTxManagerProxy,
                                         mAssetRatioService,
-                                        mBraveWalletService,
-                                        mSwapService);
+                                        mBraveWalletService);
                     } else {
                         mWalletModel.resetServices(
                                 getApplicationContext(),
@@ -2112,8 +2107,7 @@ public abstract class BraveActivity extends ChromeActivity
                                 mEthTxManagerProxy,
                                 mSolanaTxManagerProxy,
                                 mAssetRatioService,
-                                mBraveWalletService,
-                                mSwapService);
+                                mBraveWalletService);
                     }
                     setupObservers();
                 });
@@ -2523,7 +2517,7 @@ public abstract class BraveActivity extends ChromeActivity
             return;
         }
 
-        mAssetRatioService = AssetRatioServiceFactory.getInstance().getAssetRatioService(this);
+        mAssetRatioService = BraveWalletServiceFactory.getInstance().getAssetRatioService(this);
     }
 
     @Override
@@ -2568,13 +2562,6 @@ public abstract class BraveActivity extends ChromeActivity
                         });
     }
 
-    private void initSwapService() {
-        if (mSwapService != null) {
-            return;
-        }
-        mSwapService = SwapServiceFactory.getInstance().getSwapService(this);
-    }
-
     private void initWalletNativeServices() {
         // Don't initialize wallet services if disabled by policy
         if (BraveWalletPolicy.isDisabledByPolicy(mTabModelProfileSupplier.get())) {
@@ -2588,7 +2575,6 @@ public abstract class BraveActivity extends ChromeActivity
         initBraveWalletService();
         initKeyringService();
         initJsonRpcService();
-        initSwapService();
         setupWalletModel();
     }
 
