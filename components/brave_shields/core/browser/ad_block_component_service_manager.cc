@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/check_is_test.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
@@ -116,25 +115,6 @@ class ComponentProvidersGate : public AdBlockFiltersProvider {
   bool initialized_ = false;
 };
 
-void AdBlockComponentServiceManager::InitializeGatesForTesting() {
-  CHECK_IS_TEST();
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE,
-      base::BindOnce(
-          &AdBlockComponentServiceManager::DoInitializeGatesForTesting,
-          weak_factory_.GetWeakPtr()));
-}
-
-void AdBlockComponentServiceManager::DoInitializeGatesForTesting() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (default_gate_) {
-    default_gate_->SetInitialized();
-  }
-  if (additional_gate_) {
-    additional_gate_->SetInitialized();
-  }
-}
-
 AdBlockComponentServiceManager::AdBlockComponentServiceManager(
     PrefService* local_state,
     AdBlockFiltersProviderManager* filters_provider_manager,
@@ -210,6 +190,15 @@ void AdBlockComponentServiceManager::OnAdBlockOnlyModePrefChanged() {
 
 void AdBlockComponentServiceManager::StartRegionalServices() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  // Mark the gate providers as initialized now that all component providers
+  // have been registered. This unblocks filter set loading.
+  // This happens first so it applies even for early returns below and it's
+  // ok because nothing else can check the intialized state until after this
+  // method completes
+  default_gate_->SetInitialized();
+  additional_gate_->SetInitialized();
+
   if (!local_state_) {
     return;
   }
@@ -256,11 +245,6 @@ void AdBlockComponentServiceManager::StartRegionalServices() {
       }
     }
   }
-
-  // Mark the gate providers as initialized now that all component providers
-  // have been registered. This unblocks filter set loading.
-  default_gate_->SetInitialized();
-  additional_gate_->SetInitialized();
 }
 
 void AdBlockComponentServiceManager::LoadComponentFiltersProviders() {

@@ -12,6 +12,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/content/test/ad_block_test_helper.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/constants/brave_paths.h"
@@ -79,6 +80,8 @@ class LocalhostAccessBrowserTest
     InProcessBrowserTest::SetUpOnMainThread();
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
+    brave_shields::SetupAdBlockServiceForTesting(
+        g_brave_browser_process->ad_block_service());
     current_browser_ = InProcessBrowserTest::browser();
 
     https_server_->ServeFilesFromDirectory(

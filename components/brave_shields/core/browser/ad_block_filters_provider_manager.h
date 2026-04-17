@@ -33,7 +33,7 @@ namespace brave_shields {
 class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
                                       public AdBlockFiltersProvider::Observer {
  public:
-  explicit AdBlockFiltersProviderManager();
+  AdBlockFiltersProviderManager();
   ~AdBlockFiltersProviderManager() override;
   AdBlockFiltersProviderManager(const AdBlockFiltersProviderManager&) = delete;
   AdBlockFiltersProviderManager& operator=(

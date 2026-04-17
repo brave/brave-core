@@ -23,8 +23,8 @@
 #include "brave/components/brave_shields/content/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_download_manager.h"
+#include "brave/components/brave_shields/content/test/ad_block_test_helper.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
-#include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_custom_resource_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_default_resource_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_resource_provider.h"
@@ -141,8 +141,7 @@ class AdBlockServiceTestBase : public testing::Test {
         profile_dir_.GetPath());
     service->custom_resource_provider()->OverrideResourcesForTesting(
         adblock::new_empty_resource_storage());
-    // Post async gate initialization to mirror the real async catalog load.
-    service->component_service_manager()->InitializeGatesForTesting();
+    SetupAdBlockServiceForTesting(service.get());
     return service;
   }
 

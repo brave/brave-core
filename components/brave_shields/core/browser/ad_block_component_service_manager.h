@@ -21,6 +21,7 @@
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_list_p3a.h"
+#include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 #include "components/prefs/pref_service.h"
 
@@ -30,7 +31,6 @@ class PrefChangeRegistrar;
 namespace brave_shields {
 
 class ComponentProvidersGate;
-class FilterListCatalogEntry;
 
 // The adblock component service manager, in charge of initializing and
 // managing adblock lists served via CRX components.
@@ -71,9 +71,6 @@ class AdBlockComponentServiceManager
   // AdBlockFilterListCatalogProvider::Observer
   void OnFilterListCatalogLoaded(const std::string& catalog_json) override;
 
-  // Async gate initialization for unit tests that have no catalog component.
-  void InitializeGatesForTesting();
-
  private:
   friend class ::AdBlockServiceTest;
   void OnAdBlockOnlyModePrefChanged();
@@ -81,7 +78,6 @@ class AdBlockComponentServiceManager
   void StartRegionalServices();
   void LoadComponentFiltersProviders();
   void UpdateFilterListPrefs(const std::string& uuid, bool enabled);
-  void DoInitializeGatesForTesting();
 
   void RecordP3ACookieListEnabled();
 

@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_DAT_CACHE_MANAGER_H_
 
 #include <optional>
-#include <string_view>
 
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
@@ -18,9 +17,6 @@
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 
 using brave_component_updater::DATFileDataBuffer;
-
-class PrefRegistrySimple;
-class PrefService;
 
 namespace brave_shields {
 

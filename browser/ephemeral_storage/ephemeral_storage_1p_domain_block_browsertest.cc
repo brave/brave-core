@@ -13,6 +13,7 @@
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/content/test/ad_block_test_helper.h"
 #include "brave/components/brave_shields/content/test/engine_test_observer.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
@@ -41,6 +42,8 @@ class EphemeralStorage1pDomainBlockBrowserTest
     EphemeralStorageBrowserTest::SetUpOnMainThread();
     a_site_simple_url_ = https_server_.GetURL("a.com", "/simple.html");
     b_site_simple_url_ = https_server_.GetURL("b.com", "/simple.html");
+    brave_shields::SetupAdBlockServiceForTesting(
+        g_brave_browser_process->ad_block_service());
   }
 
   void UpdateAdBlockInstanceWithRules(const std::string& rules) {

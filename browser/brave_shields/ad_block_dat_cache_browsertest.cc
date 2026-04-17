@@ -12,7 +12,6 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/ad_block_service_browsertest.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
-#include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/platform_browser_test.h"
@@ -47,7 +46,6 @@ class AdBlockDATCacheBrowserTest : public AdBlockServiceTest,
   // in that case. Skip it and just wait for the service threads.
   void PreRunTestOnMainThread() override {
     PlatformBrowserTest::PreRunTestOnMainThread();
-    component_service_manager()->InitializeGatesForTesting();
     WaitForAdBlockServiceThreads();
   }
 
@@ -191,7 +189,6 @@ class AdBlockDATCacheCorruptBrowserTest : public AdBlockServiceTest {
                       "this is not a valid DAT file");
     }
 
-    component_service_manager()->InitializeGatesForTesting();
     WaitForAdBlockServiceThreads();
   }
 

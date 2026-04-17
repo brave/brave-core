@@ -11,6 +11,7 @@
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/content/test/ad_block_test_helper.h"
 #include "brave/components/brave_shields/content/test/engine_test_observer.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
@@ -110,6 +111,12 @@ class DebounceBrowserTest : public BaseLocalDataFilesBrowserTest {
     scoped_feature_list_.InitAndEnableFeature(
         debounce::features::kBraveDebounce);
     BaseLocalDataFilesBrowserTest::SetUp();
+  }
+
+  void SetUpOnMainThread() override {
+    BaseLocalDataFilesBrowserTest::SetUpOnMainThread();
+    brave_shields::SetupAdBlockServiceForTesting(
+        g_brave_browser_process->ad_block_service());
   }
 
   // BaseLocalDataFilesBrowserTest overrides

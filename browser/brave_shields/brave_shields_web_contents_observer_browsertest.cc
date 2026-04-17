@@ -12,6 +12,7 @@
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/content/test/ad_block_test_helper.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -67,6 +68,8 @@ class BraveShieldsWebContentsObserverBrowserTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     host_resolver()->AddRule("*", "127.0.0.1");
+    brave_shields::SetupAdBlockServiceForTesting(
+        g_brave_browser_process->ad_block_service());
 
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);

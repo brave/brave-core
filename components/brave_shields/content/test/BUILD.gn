@@ -9,6 +9,8 @@ source_set("test_support") {
   testonly = true
 
   sources = [
+    "ad_block_test_helper.cc",
+    "ad_block_test_helper.h",
     "engine_test_observer.cc",
     "engine_test_observer.h",
     "test_filters_provider.cc",
