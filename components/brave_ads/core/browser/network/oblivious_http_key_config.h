@@ -54,8 +54,9 @@ class ObliviousHttpKeyConfig final {
   // fetched.
   std::optional<std::string> Get() const;
 
-  // Clears the cached key config and immediately starts a new fetch. Called
-  // during key rotation to obtain the updated config.
+  // Clears the cached key config so requests fail fast rather than reaching
+  // the relay with an invalid config, then starts a new fetch. Any in-flight
+  // fetch is cancelled to prevent a stale response from overwriting the config.
   void Refetch();
 
  private:

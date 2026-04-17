@@ -26,14 +26,20 @@ void ObliviousHttpClientImpl::OnCompleted(
 
   mojom_url_response->url = url_;
 
-  if (response->is_net_error()) {
-    mojom_url_response->code = response->get_net_error();
-  } else if (response->is_outer_response_error_code()) {
-    mojom_url_response->code = response->get_outer_response_error_code();
-  } else if (response->is_inner_response()) {
-    const auto& inner_response = response->get_inner_response();
-    mojom_url_response->code = inner_response->response_code;
-    mojom_url_response->body = inner_response->response_body;
+  switch (response->which()) {
+    case network::mojom::ObliviousHttpCompletionResult::Tag::kNetError:
+      mojom_url_response->code = response->get_net_error();
+      break;
+    case network::mojom::ObliviousHttpCompletionResult::Tag::
+        kOuterResponseErrorCode:
+      mojom_url_response->code = response->get_outer_response_error_code();
+      break;
+    case network::mojom::ObliviousHttpCompletionResult::Tag::kInnerResponse: {
+      const auto& inner_response = response->get_inner_response();
+      mojom_url_response->code = inner_response->response_code;
+      mojom_url_response->body = inner_response->response_body;
+      break;
+    }
   }
 
   std::move(callback_).Run(std::move(mojom_url_response));
