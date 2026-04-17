@@ -186,7 +186,7 @@ void ContentAgentToolProvider::GetOrCreateTabHandleForTask(
     return;
   }
   task->AddTab(
-      task_tab_handle_,
+      task_tab_handle_, /*stop_task_on_detach=*/true,
       base::BindOnce(&ContentAgentToolProvider::TabAddedToTask,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
   task->Resume();
