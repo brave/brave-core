@@ -176,11 +176,6 @@
     "CheckStableMojomChanges": [
       "components/brave_rewards/core/mojom/.*\\.mojom",
     ],
-    // BraveSigninManager implements the SigninManager interface which defines
-    // turnOnSyncForTesting as a deprecated method, forcing this override.
-    "CheckNoProductionCodeUsingTestOnlyFunctionsJava": [
-      "browser/signin/services/android/java/src/org/chromium/chrome/browser/signin/services/BraveSigninManager\\.java",
-    ],
     // TODO(alexeybarabash): https://github.com/brave/brave-browser/issues/45245
     "_CheckAndroidNullAwayAnnotatedClasses": [
       "android/java/org/chromium/chrome/browser/app/BraveActivity.java",
