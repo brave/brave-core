@@ -9,6 +9,7 @@
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_info.h"
@@ -18,6 +19,7 @@
 
 namespace brave_ads {
 
+class AdsClient;
 struct ConfirmationInfo;
 
 class ConfirmationQueue final : public AdsClientNotifierObserver,
@@ -94,6 +96,9 @@ class ConfirmationQueue final : public AdsClientNotifierObserver,
   Timer timer_;
 
   bool is_processing_ = false;
+
+  base::ScopedObservation<AdsClient, AdsClientNotifierObserver>
+      ads_client_observation_{this};
 
   base::WeakPtrFactory<ConfirmationQueue> weak_factory_{this};
 };

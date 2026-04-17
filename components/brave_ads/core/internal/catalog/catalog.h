@@ -11,6 +11,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_observer.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_delegate.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager_observer.h"
@@ -18,7 +19,9 @@
 
 namespace brave_ads {
 
+class AdsClient;
 class CatalogUrlRequest;
+class DatabaseManager;
 struct CatalogInfo;
 
 class Catalog final : public AdsClientNotifierObserver,
@@ -62,6 +65,12 @@ class Catalog final : public AdsClientNotifierObserver,
   base::ObserverList<CatalogObserver> observers_;
 
   std::unique_ptr<CatalogUrlRequest> catalog_url_request_;
+
+  base::ScopedObservation<AdsClient, AdsClientNotifierObserver>
+      ads_client_observation_{this};
+
+  base::ScopedObservation<DatabaseManager, DatabaseManagerObserver>
+      database_manager_observation_{this};
 
   base::WeakPtrFactory<Catalog> weak_factory_{this};
 };

@@ -10,6 +10,7 @@
 
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_delegate.h"
@@ -25,7 +26,9 @@ class TimeDelta;
 
 namespace brave_ads {
 
+class AdsClient;
 class AntiTargetingResource;
+class BrowserManager;
 class SiteVisit;
 class SubdivisionTargeting;
 struct NotificationAdInfo;
@@ -91,6 +94,12 @@ class NotificationAdHandler final : public AdsClientNotifierObserver,
   NotificationAdEventHandler event_handler_;
 
   NotificationAdServing serving_;
+
+  base::ScopedObservation<AdsClient, AdsClientNotifierObserver>
+      ads_client_observation_{this};
+
+  base::ScopedObservation<BrowserManager, BrowserManagerObserver>
+      browser_manager_observation_{this};
 
   base::WeakPtrFactory<NotificationAdHandler> weak_factory_{this};
 };

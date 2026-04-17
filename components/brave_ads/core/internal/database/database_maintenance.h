@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager_observer.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
@@ -16,6 +17,11 @@
 namespace base {
 class TimeDelta;
 }  // namespace base
+
+namespace brave_ads {
+class AdsClient;
+class DatabaseManager;
+}  // namespace brave_ads
 
 namespace brave_ads::database {
 
@@ -40,6 +46,12 @@ class Maintenance final : public AdsClientNotifierObserver,
   void OnDatabaseIsReady() override;
 
   Timer timer_;
+
+  base::ScopedObservation<AdsClient, AdsClientNotifierObserver>
+      ads_client_observation_{this};
+
+  base::ScopedObservation<DatabaseManager, DatabaseManagerObserver>
+      database_manager_observation_{this};
 
   base::WeakPtrFactory<Maintenance> weak_factory_{this};
 };

@@ -13,6 +13,7 @@
 #include "base/check.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
@@ -29,6 +30,8 @@ namespace brave_ads {
 // advertisements and their associated landing pages. Occluded tabs suspend the
 // landing, while visible tabs start or resume the landing.
 
+class BrowserManager;
+class TabManager;
 struct PageLandInfo;
 struct TabInfo;
 
@@ -103,6 +106,12 @@ class SiteVisit final : public BrowserManagerObserver,
   std::optional<AdInfo> last_clicked_ad_;
 
   std::map</*tab_id*/ int32_t, PageLandInfo> page_lands_;
+
+  base::ScopedObservation<BrowserManager, BrowserManagerObserver>
+      browser_manager_observation_{this};
+
+  base::ScopedObservation<TabManager, TabManagerObserver>
+      tab_manager_observation_{this};
 
   base::WeakPtrFactory<SiteVisit> weak_factory_{this};
 };

@@ -10,10 +10,13 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_resource_info.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 
 namespace brave_ads {
+
+class AdsClient;
 
 class PurchaseIntentResource final : public AdsClientNotifierObserver {
  public:
@@ -53,6 +56,9 @@ class PurchaseIntentResource final : public AdsClientNotifierObserver {
   std::optional<std::string> manifest_version_;
 
   std::optional<PurchaseIntentResourceInfo> resource_;
+
+  base::ScopedObservation<AdsClient, AdsClientNotifierObserver>
+      ads_client_observation_{this};
 
   base::WeakPtrFactory<PurchaseIntentResource> weak_factory_{this};
 };

@@ -50,16 +50,13 @@ NotificationAdHandler::NotificationAdHandler(
     const AntiTargetingResource& anti_targeting_resource)
     : site_visit_(site_visit),
       serving_(subdivision_targeting, anti_targeting_resource) {
-  GetAdsClient().AddObserver(this);
-  BrowserManager::GetInstance().AddObserver(this);
+  ads_client_observation_.Observe(&GetAdsClient());
+  browser_manager_observation_.Observe(&BrowserManager::GetInstance());
   event_handler_.SetDelegate(this);
   serving_.SetDelegate(this);
 }
 
-NotificationAdHandler::~NotificationAdHandler() {
-  GetAdsClient().RemoveObserver(this);
-  BrowserManager::GetInstance().RemoveObserver(this);
-}
+NotificationAdHandler::~NotificationAdHandler() = default;
 
 void NotificationAdHandler::MaybeServeAtRegularIntervals() {
   if (!CanServeAtRegularIntervals()) {

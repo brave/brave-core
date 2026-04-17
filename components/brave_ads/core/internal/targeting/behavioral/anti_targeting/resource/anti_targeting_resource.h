@@ -10,10 +10,13 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource_info.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 
 namespace brave_ads {
+
+class AdsClient;
 
 class AntiTargetingResource final : public AdsClientNotifierObserver {
  public:
@@ -51,6 +54,9 @@ class AntiTargetingResource final : public AdsClientNotifierObserver {
   std::optional<std::string> manifest_version_;
 
   std::optional<AntiTargetingResourceInfo> resource_;
+
+  base::ScopedObservation<AdsClient, AdsClientNotifierObserver>
+      ads_client_observation_{this};
 
   base::WeakPtrFactory<AntiTargetingResource> weak_factory_{this};
 };
