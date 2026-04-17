@@ -80,12 +80,46 @@ jobs:
         run: |
           if ! git diff --quiet; then
             BRANCH="socket-fix/$(echo "$GHSA_IDS" | tr ', ' '-' | tr -s '-' | cut -c1-60)"
-            git config user.name "brave-builds"
-            git config user.email "devops@brave.com"
-            git checkout -b "$BRANCH"
-            git add -A
-            git commit -m "fix: address security advisories"
-            git push origin "$BRANCH"
+            HEAD_SHA=$(git rev-parse HEAD)
+
+            # Create the branch via API
+            gh api --method POST /repos/${GITHUB_REPOSITORY}/git/refs \
+              --field ref="refs/heads/$BRANCH" \
+              --field sha="$HEAD_SHA"
+
+            # Build tree entries for all modified files
+            TREE_JSON="[]"
+            while IFS= read -r file; do
+              BLOB_SHA=$(gh api --method POST /repos/${GITHUB_REPOSITORY}/git/blobs \
+                --field content=@<(base64 "$file") \
+                --field encoding=base64 \
+                -q .sha)
+              TREE_JSON=$(jq --arg path "$file" --arg sha "$BLOB_SHA" \
+                '. += [{"path": $path, "mode": "100644", "type": "blob", "sha": $sha}]' \
+                <<< "$TREE_JSON")
+            done < <(git diff --name-only)
+
+            # Get the base tree SHA from HEAD
+            BASE_TREE=$(gh api /repos/${GITHUB_REPOSITORY}/git/commits/"$HEAD_SHA" -q .tree.sha)
+
+            # Create a new tree with the modifications
+            NEW_TREE_SHA=$(jq -n \
+              --arg base_tree "$BASE_TREE" \
+              --argjson tree "$TREE_JSON" \
+              '{"base_tree": $base_tree, "tree": $tree}' | \
+              gh api --method POST /repos/${GITHUB_REPOSITORY}/git/trees --input - -q .sha)
+
+            # Create a verified commit via the GitHub API
+            NEW_COMMIT_SHA=$(jq -n \
+              --arg tree "$NEW_TREE_SHA" \
+              --arg parent "$HEAD_SHA" \
+              '{"message": "fix: address security advisories", "tree": $tree, "parents": [$parent]}' | \
+              gh api --method POST /repos/${GITHUB_REPOSITORY}/git/commits --input - -q .sha)
+
+            # Update the branch ref to point to the new commit
+            gh api --method PATCH /repos/${GITHUB_REPOSITORY}/git/refs/heads/"$BRANCH" \
+              --field sha="$NEW_COMMIT_SHA"
+
             BODY="Addresses: $GHSA_IDS"$'\n\n'"closes $ISSUE_LINK"
             gh pr create \
               --title "fix: address security advisories" \
