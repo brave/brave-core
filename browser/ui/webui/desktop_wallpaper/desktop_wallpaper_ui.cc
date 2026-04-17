@@ -63,10 +63,8 @@ DesktopWallpaperUIConfig::DesktopWallpaperUIConfig()
 DesktopWallpaperDialogDelegate::DesktopWallpaperDialogDelegate(
     const std::string& image_url,
     scoped_refptr<network::SharedURLLoaderFactory> loader_factory,
-    content::WebContents* initiator_web_contents)
-    : content::WebContentsObserver(initiator_web_contents),
-      image_url_(image_url),
-      loader_factory_(loader_factory) {
+    content::WebContents* /*web_contents*/)
+    : image_url_(image_url), loader_factory_(loader_factory) {
   std::optional<std::string> react_props =
       base::WriteJson(base::DictValue().Set("image_url", image_url));
 
@@ -94,17 +92,10 @@ void DesktopWallpaperDialogDelegate::SetConstrainedDelegate(
 void DesktopWallpaperDialogDelegate::OnDialogClosed(
     const std::string& json_retval) {
   if (constrained_delegate_) {
-    auto released_contents = constrained_delegate_->ReleaseWebContents();
+    constrained_delegate_->ReleaseWebContents();
     constrained_delegate_ = nullptr;
   }
   WebDialogDelegate::OnDialogClosed(json_retval);
-}
-
-void DesktopWallpaperDialogDelegate::WebContentsDestroyed() {
-  if (constrained_delegate_) {
-    auto released_contents = constrained_delegate_->ReleaseWebContents();
-    constrained_delegate_ = nullptr;
-  }
 }
 
 GURL DesktopWallpaperDialogDelegate::GetDialogContentURL() const {

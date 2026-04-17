@@ -21,6 +21,7 @@ source_set("desktop_wallpaper") {
     "//base",
     "//net",
     "//services/network/public/cpp",
+    "//third_party/abseil-cpp:absl",
     "//url",
   ]
 

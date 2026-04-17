@@ -11,10 +11,10 @@
 #include "base/logging.h"
 #include "base/path_service.h"
 #include "base/strings/string_split.h"
-#include "base/strings/stringprintf.h"
 #include "brave/components/desktop_wallpaper/desktop_wallpaper.mojom.h"
 #include "chrome/common/chrome_paths.h"
 #include "desktop_wallpaper_service.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace desktop_wallpaper {
 desktop_wallpaper::mojom::WallpaperStatus
@@ -32,10 +32,9 @@ DesktopWallpaper::SetImageAsDesktopWallpaper(
   std::filesystem::path p = path;
   auto ext = p.extension().string().substr(
       1);  // don't really need to have the dot of the file extension as well
-  auto filename =
-      displays.size() > 1
-          ? ext
-          : base::StringPrintf("%s_%s", ext.c_str(), displays[0]->id.c_str());
+  auto filename = displays.size() > 1
+                      ? ext
+                      : absl::StrFormat("%s_%s", ext, displays[0]->id);
 
   base::FilePath user_path;
   CHECK(base::PathService::CheckedGet(chrome::DIR_USER_DATA, &user_path));
