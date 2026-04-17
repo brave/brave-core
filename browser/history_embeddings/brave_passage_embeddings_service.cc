@@ -9,13 +9,16 @@
 
 #include "base/barrier_closure.h"
 #include "base/check.h"
+#include "base/containers/flat_map.h"
 #include "base/feature_list.h"
 #include "base/files/file.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
+#include "base/no_destructor.h"
 #include "base/numerics/safe_math.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/local_ai/core/features.h"
+#include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/base/big_buffer.h"
 
 namespace passage_embeddings {
@@ -42,6 +45,15 @@ std::optional<mojo_base::BigBuffer> ReadFileToBigBuffer(
     return std::nullopt;
   }
   return buffer;
+}
+
+using BindRegistry =
+    base::flat_map<content::WebContents*,
+                   BravePassageEmbeddingsService::BindCallback>;
+
+BindRegistry& GetBindRegistry() {
+  static base::NoDestructor<BindRegistry> registry;
+  return *registry;
 }
 
 local_ai::mojom::ModelFilesPtr LoadLocalModelFilesFromDisk(
@@ -269,6 +281,30 @@ BravePassageEmbeddingsService::~BravePassageEmbeddingsService() {
   CloseBackgroundContents();
 }
 
+// static
+void BravePassageEmbeddingsService::SetBindCallbackForWebContents(
+    content::WebContents* web_contents,
+    BindCallback callback) {
+  GetBindRegistry()[web_contents] = std::move(callback);
+}
+
+// static
+void BravePassageEmbeddingsService::RemoveBindCallbackForWebContents(
+    content::WebContents* web_contents) {
+  GetBindRegistry().erase(web_contents);
+}
+
+// static
+void BravePassageEmbeddingsService::BindForWebContents(
+    content::WebContents* web_contents,
+    mojo::PendingReceiver<local_ai::mojom::LocalAIService> receiver) {
+  auto& registry = GetBindRegistry();
+  auto it = registry.find(web_contents);
+  if (it != registry.end()) {
+    it->second.Run(std::move(receiver));
+  }
+}
+
 void BravePassageEmbeddingsService::BindLocalAIReceiver(
     mojo::PendingReceiver<local_ai::mojom::LocalAIService> receiver) {
   local_ai_receivers_.Add(this, std::move(receiver));
@@ -315,19 +351,6 @@ void BravePassageEmbeddingsService::RegisterPassageEmbedderFactory(
   if (model_load_barrier_) {
     model_load_barrier_.Run();
   }
-}
-
-void BravePassageEmbeddingsService::GetPassageEmbedder(
-    GetPassageEmbedderCallback callback) {
-  // The renderer does not call this after the refactor. It is kept only
-  // to satisfy the local_ai::mojom::LocalAIService interface.
-  std::move(callback).Run(mojo::PendingRemote<local_ai::mojom::PassageEmbedder>());
-}
-
-void BravePassageEmbeddingsService::NotifyPassageEmbedderIdle() {
-  // Idle is observed by the controller via the service_remote_ idle
-  // handler; this method is a no-op kept for mojom compatibility until
-  // the mojom is slimmed.
 }
 
 void BravePassageEmbeddingsService::OnLocalModelsReady(

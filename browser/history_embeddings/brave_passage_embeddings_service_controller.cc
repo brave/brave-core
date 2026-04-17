@@ -9,7 +9,6 @@
 
 #include "base/functional/bind.h"
 #include "base/logging.h"
-#include "brave/browser/local_ai/local_ai_service_factory.h"
 #include "brave/components/local_ai/content/background_web_contents_impl.h"
 #include "brave/components/local_ai/core/local_models_updater.h"
 #include "brave/components/local_ai/core/url_constants.h"
@@ -42,7 +41,7 @@ void InstallBindCallback(
     content::WebContents* web_contents) {
   auto bind_cb = base::BindRepeating(
       &BravePassageEmbeddingsService::BindLocalAIReceiver, weak_service);
-  local_ai::LocalAIServiceFactory::SetBindCallbackForWebContents(
+  BravePassageEmbeddingsService::SetBindCallbackForWebContents(
       web_contents, std::move(bind_cb));
   task_manager::WebContentsTags::CreateForToolContents(
       web_contents, IDS_LOCAL_AI_TASK_MANAGER_TITLE);

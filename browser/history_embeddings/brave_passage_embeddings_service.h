@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
@@ -25,6 +26,10 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/passage_embeddings/public/mojom/passage_embeddings.mojom.h"
+
+namespace content {
+class WebContents;
+}
 
 namespace passage_embeddings {
 
@@ -119,9 +124,23 @@ class BravePassageEmbeddingsService
   BravePassageEmbeddingsService& operator=(
       const BravePassageEmbeddingsService&) = delete;
 
-  // Binds a renderer-facing receiver. Used by UntrustedLocalAIUI to route
-  // RegisterPassageEmbedderFactory calls from the WASM page to this
-  // service.
+  // Registry for routing mojo binding requests from the background
+  // WebContents (on guest OTR) back to the active service instance.
+  // UntrustedLocalAIUI::BindInterface calls BindForWebContents; the
+  // service installs SetBindCallbackForWebContents when it creates its
+  // background contents.
+  using BindCallback = base::RepeatingCallback<void(
+      mojo::PendingReceiver<local_ai::mojom::LocalAIService>)>;
+  static void SetBindCallbackForWebContents(content::WebContents* web_contents,
+                                            BindCallback callback);
+  static void RemoveBindCallbackForWebContents(
+      content::WebContents* web_contents);
+  static void BindForWebContents(
+      content::WebContents* web_contents,
+      mojo::PendingReceiver<local_ai::mojom::LocalAIService> receiver);
+
+  // Binds a renderer-facing receiver. Installed as the BindCallback by
+  // the controller when it creates the background contents.
   void BindLocalAIReceiver(
       mojo::PendingReceiver<local_ai::mojom::LocalAIService> receiver);
 
@@ -137,8 +156,6 @@ class BravePassageEmbeddingsService
   void RegisterPassageEmbedderFactory(
       mojo::PendingRemote<local_ai::mojom::PassageEmbedderFactory> factory)
       override;
-  void GetPassageEmbedder(GetPassageEmbedderCallback callback) override;
-  void NotifyPassageEmbedderIdle() override;
 
  private:
   struct PendingLoad {

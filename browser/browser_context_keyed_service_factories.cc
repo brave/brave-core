@@ -15,7 +15,6 @@
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
-#include "brave/browser/local_ai/local_ai_service_factory.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
@@ -39,14 +38,12 @@
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
-#include "brave/components/local_ai/core/features.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
@@ -149,10 +146,6 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   SearchEngineProviderServiceFactory::GetInstance();
   misc_metrics::ProfileMiscMetricsServiceFactory::GetInstance();
   BraveFarblingServiceFactory::GetInstance();
-  if (base::FeatureList::IsEnabled(local_ai::features::kLocalAIModels) ||
-      base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings)) {
-    local_ai::LocalAIServiceFactory::GetInstance();
-  }
 #if BUILDFLAG(ENABLE_TOR)
   TorProfileServiceFactory::GetInstance();
 #endif
