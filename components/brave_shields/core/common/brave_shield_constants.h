@@ -116,6 +116,8 @@ inline constexpr char kMobileNotificationsListUuid[] =
     "2F3DCE16-A19A-493C-A88F-2E110FBD37D6";
 inline constexpr char kExperimentalListUuid[] =
     "564C3B75-8731-404C-AD7C-5683258BA0B0";
+inline constexpr char kAdblockOnlySupplementalListUuid[] =
+    "61C6046C-B040-4CE4-8C8E-F3E8F316AA72";
 
 inline constexpr char kAdBlockResourceComponentName[] =
     "Brave Ad Block Resources Library";
@@ -149,9 +151,10 @@ inline constexpr char kCookieListPromptHistogram[] =
     "Brave.Shields.CookieListPrompt";
 
 // The list of UUIDs of filter lists that will be loaded by AdBlockOnlyMode.
-inline constexpr auto kAdblockOnlyModeFilerListUUIDs =
+inline constexpr auto kAdblockOnlyModeFilterListUUIDs =
     base::MakeFixedFlatSet<std::string_view>(
-        {kDefaultAdblockFiltersListUuid, kFirstPartyAdblockFiltersListUuid});
+        {kDefaultAdblockFiltersListUuid, kFirstPartyAdblockFiltersListUuid,
+         kAdblockOnlySupplementalListUuid});
 
 // The list of language codes that are supported by Ad Block Only mode.
 inline constexpr auto kAdblockOnlyModeSupportedLanguageCodes =
