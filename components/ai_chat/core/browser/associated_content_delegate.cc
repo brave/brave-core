@@ -64,6 +64,12 @@ void AssociatedContentDelegate::GetScreenshots(
   std::move(callback).Run(std::nullopt);
 }
 
+void AssociatedContentDelegate::NotifyNewPage() {
+  for (auto& observer : observers_) {
+    observer.OnNewPage(this);
+  }
+}
+
 void AssociatedContentDelegate::SetTitle(std::u16string title) {
   title_ = std::move(title);
 

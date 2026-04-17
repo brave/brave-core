@@ -21,6 +21,7 @@
 #include "base/strings/utf_ostream_operators.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/fixed_array.h"
+#include "base/uuid.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/content/browser/pdf_utils.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
@@ -237,6 +238,13 @@ void AssociatedWebContentsContent::OnNewPage(int64_t navigation_id) {
   if (pending_get_page_content_callback_) {
     std::move(pending_get_page_content_callback_).Run("", false, "");
   }
+
+  // Note: A new page needs a new UUID.
+  set_uuid(base::Uuid::GenerateRandomV4().AsLowercaseString());
+
+  // Notify observers now that url, title, and uuid are all set for the new
+  // page. This fires after OnRequestArchive has completed for all observers.
+  NotifyNewPage();
 }
 
 void AssociatedWebContentsContent::MaybeSameDocumentIsNewPage() {
