@@ -62,7 +62,7 @@
 "statisticsReportingLabel" = "Statistikberichte";
 
 /* A toggle label for Brave Talk feature */
-"talkLabel" = "Talk";
+"talkLabel" = "Gespräche";
 
 /* An upsell point about maintaining core features like adblock, privacy, and speed */
 "upsellCoreFeatures" = "Wichtigste Werbeblockierung, Datenschutz & Geschwindigkeit beibehalten";

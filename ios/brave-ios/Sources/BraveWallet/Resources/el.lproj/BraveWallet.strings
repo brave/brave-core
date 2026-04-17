@@ -1573,6 +1573,9 @@
 /* The title displayed on the 'setup crypto' onboarding screen */
 "wallet.setupCryptoTitle" = "Εγγενές στο πρόγραμμα περιήγησης.\nΜε αυτοφύλαξη.\nΚαι πολλές αλυσίδες.";
 
+/* A button title to confirm a shield ZEC transaction. It is shown below details about a given transaction. */
+"wallet.shieldZEC" = "Θωράκιση ZEC";
+
 /* The description label of the filter option that hides the network logo on NFTs displayed in the grid. Used in NFT filters and display settings. */
 "wallet.showNFTNetworkLogoDescription" = "Εμφάνιση λογότυπου δικτύου στα NFT";
 
@@ -2176,6 +2179,9 @@
 /* The title displayed on the unlock wallet screen */
 "wallet.unlockWalletDescription" = "Εισαγάγετε κωδικό πρόσβασης για ξεκλείδωμα του πορτοφολιού";
 
+/* A button title to confirm an unshield ZEC transaction. It is shown below details about a given transaction. */
+"wallet.unshieldZEC" = "Αποσύρω Θωράκιση ZEC";
+
 /* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
 "wallet.userAssetSymbolNetwork" = "%1$@ σε %2$@";
 
@@ -2260,11 +2266,17 @@
 /* The title for the options to resolve Solana Name service domain names. */
 "wallet.web3DomainOptionsTitle" = "Επίλυση ονομάτων τομέα Υπηρεσίας ονομάτων Solana (SNS).";
 
+/* The title for the entry displaying the preferred option to allow web3 sites to access the Cardano provider API. */
+"wallet.web3PreferencesAllowCardanoProviderAccess" = "Οι ιστότοποι μπορούν να ζητούν πρόσβαση στο πορτοφόλι σας Cardano";
+
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
 "wallet.web3PreferencesAllowEthProviderAccess" = "Οι ιστότοποι μπορούν να ζητούν πρόσβαση στο πορτοφόλι σας Ethereum";
 
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Solana provider API. */
 "wallet.web3PreferencesAllowSolProviderAccess" = "Οι ιστότοποι μπορούν να ζητούν πρόσβαση στο πορτοφόλι σας Solana";
+
+/* The title for the entry displaying the current preferred default Cardano wallet is. */
+"wallet.web3PreferencesDefaultCardanoWallet" = "Προεπιλεγμένο πορτοφόλι Cardano";
 
 /* The title for the entry displaying the current preferred default Ethereum wallet is. */
 "wallet.web3PreferencesDefaultEthWallet" = "Προεπιλεγμένο πορτοφόλι Ethereum";

@@ -682,15 +682,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Nhập tên thư mục";
 
-/* Shown in error pages to suggest a fix to the user. */
-"errorPageCantBeReachedTry" = "Thử nhập lại URL hoặc mở công cụ tìm kiếm và tìm URL mới.";
-
-/* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "Mở trong Safari";
-
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "Tải lại";
-
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "%1$@ thường sử dụng mã hóa để bảo vệ thông tin của bạn. Khi Brave cố gắng kết nối với %2$@ lần này, trang web đã gửi lại thông tin đăng nhập bất thường và không chính xác. Điều này có thể xảy ra khi kẻ tấn công cố gắng giả mạo là %3$@ hoặc màn hình đăng nhập Wi-Fi đã làm gián đoạn kết nối. Thông tin của bạn vẫn an toàn vì Brave đã dừng kết nối trước khi bất kỳ dữ liệu nào được trao đổi.<br />Bạn không thể truy cập %4$@ ngay thời điểm này vì trang web sử dụng cơ chế ghim chứng chỉ. Lỗi mạng và các cuộc tấn công thường là tạm thời, vì vậy trang này có thể sẽ hoạt động sau.";
 
@@ -2251,8 +2242,7 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "Lưu thay đổi";
 
-/* Settings item for clearing passwords and login data
-Settings item for clearing site-specific settings and shields settings. */
+/* Settings item for clearing passwords and login data */
 "SavedLogins" = "Thông tin đăng nhập đã lưu";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2704,6 +2694,9 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "Thanh thẻ";
+
+/* Settings item for clearing site-specific settings and shields settings. */
+"SiteAndShieldsSettings" = "Cài đặt Trang và Khiên";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "Cảm ơn bạn đã thông báo cho các nhà phát triển của Brave biết rằng đã xảy ra sự cố với trang web này. Chúng tôi sẽ cố gắng hết sức để khắc phục sự cố này!";
@@ -3250,9 +3243,6 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
 "ThemesDisplayBrightness" = "Giao diện";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "Các cài đặt này không được áp dụng ở chế độ duyệt riêng tư.";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Sáng";

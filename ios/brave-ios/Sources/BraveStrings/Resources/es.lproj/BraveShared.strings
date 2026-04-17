@@ -251,7 +251,7 @@
 "BraveTranslate.unknownLanguageTitle" = "Idioma desconocido";
 
 /* Title for setting to enable the browser lock privacy feature */
-"BrowserLock" = "Browser Lock";
+"BrowserLock" = "Bloqueo del navegador";
 
 /* Description for setting to enable the browser lock privacy feature */
 "BrowserLockDescription" = "Accede a Brave con Touch ID, Face ID o con un código de acceso generado por el sistema.";
@@ -681,15 +681,6 @@
 
 /* Description for new folder popup */
 "EnterFolderName" = "Editar nombre de carpeta";
-
-/* Shown in error pages to suggest a fix to the user. */
-"errorPageCantBeReachedTry" = "Prueba a introducir de nuevo la URL, o abre un buscador y busca la otra URL.";
-
-/* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "Abrir en Safari";
-
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "Recargar";
 
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "Normalmente, %1$@ utiliza la encriptación para proteger tu información. Esta vez, cuando Brave intentó conectarse a %2$@, el sitio web envió credenciales inusuales e incorrectas. Esto puede ocurrir cuando un atacante trata de hacerse pasar por %3$@ o cuando una pantalla de inicio de sesión por wifi ha interrumpido la conexión. Tu información sigue siendo segura porque Brave detuvo la conexión antes de que se intercambiaran los datos.<br />No puedes visitar %4$@ ahora porque el sitio web utiliza la asignación de certificados. Los errores y ataques de la red suelen ser temporales, por lo que es probable que esta página vuelva a funcionar más tarde.";
@@ -2251,8 +2242,7 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "Guardar cambios";
 
-/* Settings item for clearing passwords and login data
-Settings item for clearing site-specific settings and shields settings. */
+/* Settings item for clearing passwords and login data */
 "SavedLogins" = "Inicios de sesión guardados";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2704,6 +2694,9 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "Barra de pestañas";
+
+/* Settings item for clearing site-specific settings and shields settings. */
+"SiteAndShieldsSettings" = "Configuración de escudos y sitio";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "Gracias por informar a los desarrolladores de Brave sobre el problema de este sitio. ¡Haremos todo lo posible por solucionarlo!";
@@ -3250,9 +3243,6 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
 "ThemesDisplayBrightness" = "Apariencia";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "Estos ajustes no se aplican en el modo de navegación privada.";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Claro";

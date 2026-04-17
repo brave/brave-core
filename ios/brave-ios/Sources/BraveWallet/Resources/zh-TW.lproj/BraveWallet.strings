@@ -1573,6 +1573,9 @@
 /* The title displayed on the 'setup crypto' onboarding screen */
 "wallet.setupCryptoTitle" = "瀏覽器原生、\n自行保管\n且多鏈。";
 
+/* A button title to confirm a shield ZEC transaction. It is shown below details about a given transaction. */
+"wallet.shieldZEC" = "屏蔽 ZEC";
+
 /* The description label of the filter option that hides the network logo on NFTs displayed in the grid. Used in NFT filters and display settings. */
 "wallet.showNFTNetworkLogoDescription" = "在 NFT 上顯示網路標誌";
 
@@ -2176,6 +2179,9 @@
 /* The title displayed on the unlock wallet screen */
 "wallet.unlockWalletDescription" = "輸入密碼以解鎖錢包";
 
+/* A button title to confirm an unshield ZEC transaction. It is shown below details about a given transaction. */
+"wallet.unshieldZEC" = "取消盾牌 ZEC";
+
 /* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
 "wallet.userAssetSymbolNetwork" = "%2$@ 版 %1$@";
 
@@ -2260,11 +2266,17 @@
 /* The title for the options to resolve Solana Name service domain names. */
 "wallet.web3DomainOptionsTitle" = "解析 Solana Name Service (SNS) 網域名稱";
 
+/* The title for the entry displaying the preferred option to allow web3 sites to access the Cardano provider API. */
+"wallet.web3PreferencesAllowCardanoProviderAccess" = "網站可以請求造訪您的 Cardano 錢包";
+
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
 "wallet.web3PreferencesAllowEthProviderAccess" = "網站可以請求造訪您的 Ethereum 錢包";
 
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Solana provider API. */
 "wallet.web3PreferencesAllowSolProviderAccess" = "網站可以請求造訪您的 Solana 錢包";
+
+/* The title for the entry displaying the current preferred default Cardano wallet is. */
+"wallet.web3PreferencesDefaultCardanoWallet" = "預設 Cardano 錢包";
 
 /* The title for the entry displaying the current preferred default Ethereum wallet is. */
 "wallet.web3PreferencesDefaultEthWallet" = "預設以太坊錢包";

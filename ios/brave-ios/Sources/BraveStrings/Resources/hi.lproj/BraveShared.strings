@@ -682,15 +682,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "फ़ोल्डर के नाम में बदलाव करें";
 
-/* Shown in error pages to suggest a fix to the user. */
-"errorPageCantBeReachedTry" = "URL को फिर से टाइप करने या सर्च इंजन खोलकर नया URL खोजने की कोशिश करें।";
-
-/* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "Safari में खोलें";
-
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "फिर लोड करें";
-
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "आम तौर पर, %1$@ आपकी जानकारी को सुरक्षित रखने के लिए एन्क्रिप्शन का इस्तेमाल करता है। जब Brave ने इस बार %2$@ से कनेक्ट करने की कोशिश की, तो वेबसाइट ने अजीब और गलत क्रेडेंशियल वापस भेजे। ऐसा तब हो सकता है, जब कोई हमलावर %3$@ की कोशिश कर रहा हो या वाई-फ़ाई साइन इन स्क्रीन ने कनेक्शन में रुकावट डाली हो। आपकी जानकारी अब भी सुरक्षित है, क्योंकि Brave ने किसी भी डेटा के एक्सचेंज होने से पहले कनेक्शन रोक दिया था।<br />आप अभी %4$@ पर नहीं जा सकते, क्योंकि वेबसाइट प्रमाणपत्र को पिन करती है। औम तौर पर, नेटवर्क की गड़बड़ियाँ और हमले अस्थायी होते हैं, इसलिए यह पेज शायद बाद में काम करेगा।";
 
@@ -2251,8 +2242,7 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "बदलाव सेव करें";
 
-/* Settings item for clearing passwords and login data
-Settings item for clearing site-specific settings and shields settings. */
+/* Settings item for clearing passwords and login data */
 "SavedLogins" = "सेव किए गए लॉगिंस";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2704,6 +2694,9 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "टैब्स बार";
+
+/* Settings item for clearing site-specific settings and shields settings. */
+"SiteAndShieldsSettings" = "साइट और शील्ड सेटिंग";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "इस साइट की समस्या के बारे में Brave के डेवलपर्स को बताने के लिए धन्यवाद। हम इसे ठीक करने की पूरी कोशिश करेंगे!";
@@ -3250,9 +3243,6 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
 "ThemesDisplayBrightness" = "प्रकटन";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "ये सेटिंग प्राइवेट ब्राउज़िंग मोड पर लागू नहीं होतीं।";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "मन्द";

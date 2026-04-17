@@ -682,15 +682,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Введите название папки";
 
-/* Shown in error pages to suggest a fix to the user. */
-"errorPageCantBeReachedTry" = "Введите URL-адрес еще раз или откройте поисковую систему и укажите другой.";
-
-/* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "Открыть в Safari";
-
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "Перезагрузить";
-
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "%1$@ обычно использует шифрование для защиты вашей информации. Когда Brave попытался подключиться к %2$@ в этот раз, сайт прислал в ответ необычные и неправильные учетные данные. Такое может произойти, когда злоумышленник пытается выдать себя за %3$@, или экран входа в систему Wi-Fi прервал соединение. Ваша информация по-прежнему в безопасности, потому что Brave прервал соединение до того, как произошел обмен данными.<br />Вы не можете прямо сейчас посетить %4$@ , потому что сайт использует привязку сертификатов. Сетевые ошибки и атаки обычно носят временный характер, так что эта страница наверняка заработает позже.";
 
@@ -2251,8 +2242,7 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "Сохранить изменения";
 
-/* Settings item for clearing passwords and login data
-Settings item for clearing site-specific settings and shields settings. */
+/* Settings item for clearing passwords and login data */
 "SavedLogins" = "Сохраненные учетные данные";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2704,6 +2694,9 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "Панель вкладок";
+
+/* Settings item for clearing site-specific settings and shields settings. */
+"SiteAndShieldsSettings" = "Настройки сайтов и Защиты";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "Спасибо за предоставленную информацию. Мы постараемся как можно скорее исправить проблему, обещаем.";
@@ -3250,9 +3243,6 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
 "ThemesDisplayBrightness" = "Вид";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "Эти настройки не применяются в приватном режиме";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Светлый";

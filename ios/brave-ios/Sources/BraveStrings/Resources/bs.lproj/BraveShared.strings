@@ -682,15 +682,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Upišite naziv mape";
 
-/* Shown in error pages to suggest a fix to the user. */
-"errorPageCantBeReachedTry" = "Pokušajte ponovno upisati URL ili otvoriti tražilicu i tražiti novi URL.";
-
-/* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "Otvori u pregledniku Safari";
-
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "Ponovno učitaj";
-
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "%1$@ obično upotrebljava šifriranje za zaštitu vaših informacija. Kada se u pregledniku Brave pokušavate povezati sa sljedećim: %2$@, mrežnim mjestom vraćaju se neobične i netočne vjerodajnice. To se može dogoditi kada se napadač pretvara da je %3$@ ili kad se zaslonom za prijavu mreže Wi-Fi prekine veza. Vaše informacije i dalje su sigurne jer se preglednikom Brave zaustavila veza prije razmjene podataka.<br />Trenutačno ne možete posjetiti %4$@ jer se na mrežnom mjestu upotrebljava prikvačivanje certifikata. Mrežne pogreške i napadi obično su privremeni, pa će stranica vjerojatno raditi poslije.";
 
@@ -2251,8 +2242,7 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "Spremi izmjene";
 
-/* Settings item for clearing passwords and login data
-Settings item for clearing site-specific settings and shields settings. */
+/* Settings item for clearing passwords and login data */
 "SavedLogins" = "Spremljene prijave";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2704,6 +2694,9 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "Traka s karticama";
+
+/* Settings item for clearing site-specific settings and shields settings. */
+"SiteAndShieldsSettings" = "Postavke stranice i štitnika";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "Hvala vam što se javili razvojnim inženjerima preglednika Brave da nešto nije u redu s ovim mjestom. Činimo sve da uklonimo navedeni problem!";
@@ -3250,9 +3243,6 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
 "ThemesDisplayBrightness" = "Izgled";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "Ove se postavke ne primjenjuju u načinu privatnog pregledavanja.";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Svijetlo";
