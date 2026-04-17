@@ -26,9 +26,9 @@ class GetSignedTokensUrlRequestBuilder final
  private:
   GURL BuildUrl() const;
 
-  WalletInfo wallet_;
+  const WalletInfo wallet_;
 
-  std::string nonce_;
+  const std::string nonce_;
 };
 
 }  // namespace brave_ads
