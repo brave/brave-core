@@ -5,7 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 
+#include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/tabs/test/tab_manager_observer_mock.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -17,16 +19,12 @@ class BraveAdsTabManagerTest : public test::TestBase {
   void SetUp() override {
     test::TestBase::SetUp();
 
-    TabManager::GetInstance().AddObserver(&tab_manager_observer_mock_);
-  }
-
-  void TearDown() override {
-    TabManager::GetInstance().RemoveObserver(&tab_manager_observer_mock_);
-
-    test::TestBase::TearDown();
+    observation_.Observe(&TabManager::GetInstance());
   }
 
   ::testing::StrictMock<TabManagerObserverMock> tab_manager_observer_mock_;
+  base::ScopedObservation<TabManager, TabManagerObserver> observation_{
+      &tab_manager_observer_mock_};
 };
 
 TEST_F(BraveAdsTabManagerTest, OpenNewTab) {

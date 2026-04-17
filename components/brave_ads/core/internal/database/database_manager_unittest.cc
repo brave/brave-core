@@ -5,7 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 
+#include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/database/database_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/database/test/database_manager_observer_mock.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
@@ -18,8 +20,7 @@ class BraveAdsDatabaseManagerTest : public test::TestBase {
   void SetUpMocks() override {
     // Register before `CreateOrOpen` fires in `MockDefaultAdsServiceState` so
     // the observer catches the initial database creation notifications.
-    GlobalState::GetInstance()->GetDatabaseManager().AddObserver(
-        &observer_mock_);
+    observation_.Observe(&GlobalState::GetInstance()->GetDatabaseManager());
 
     EXPECT_CALL(observer_mock_, OnWillCreateOrOpenDatabase);
     EXPECT_CALL(observer_mock_, OnDidCreateDatabase);
@@ -28,14 +29,9 @@ class BraveAdsDatabaseManagerTest : public test::TestBase {
     EXPECT_CALL(observer_mock_, OnFailedToCreateOrOpenDatabase).Times(0);
   }
 
-  void TearDown() override {
-    GlobalState::GetInstance()->GetDatabaseManager().RemoveObserver(
-        &observer_mock_);
-
-    test::TestBase::TearDown();
-  }
-
   ::testing::StrictMock<DatabaseManagerObserverMock> observer_mock_;
+  base::ScopedObservation<DatabaseManager, DatabaseManagerObserver>
+      observation_{&observer_mock_};
 };
 
 TEST_F(BraveAdsDatabaseManagerTest, NotifiesObserversWhenDatabaseIsCreated) {

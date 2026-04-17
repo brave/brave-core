@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager.h"
 
+#include "base/scoped_observation.h"
+#include "brave/components/brave_ads/core/internal/application_state/browser_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/application_state/test/browser_manager_observer_mock.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -18,17 +20,12 @@ class BraveAdsBrowserManagerTest : public test::TestBase {
   void SetUp() override {
     test::TestBase::SetUp();
 
-    BrowserManager::GetInstance().AddObserver(&browser_manager_observer_mock_);
-  }
-
-  void TearDown() override {
-    BrowserManager::GetInstance().RemoveObserver(
-        &browser_manager_observer_mock_);
-
-    test::TestBase::TearDown();
+    observation_.Observe(&BrowserManager::GetInstance());
   }
 
   BrowserManagerObserverMock browser_manager_observer_mock_;
+  base::ScopedObservation<BrowserManager, BrowserManagerObserver> observation_{
+      &browser_manager_observer_mock_};
 };
 
 TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidBecomeActive) {

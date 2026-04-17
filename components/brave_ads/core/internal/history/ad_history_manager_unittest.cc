@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager.h"
 
+#include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/test/search_result_ad_test_util.h"
@@ -14,6 +15,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/test/creative_notification_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_builder_util.h"
+#include "brave/components/brave_ads/core/internal/history/ad_history_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/history/test/ad_history_manager_observer_mock.h"
 #include "brave/components/brave_ads/core/internal/settings/test/settings_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -30,18 +32,12 @@ class BraveAdsAdHistoryManagerTest : public test::TestBase {
   void SetUp() override {
     test::TestBase::SetUp();
 
-    AdHistoryManager::GetInstance().AddObserver(
-        &history_manager_observer_mock_);
-  }
-
-  void TearDown() override {
-    AdHistoryManager::GetInstance().RemoveObserver(
-        &history_manager_observer_mock_);
-
-    test::TestBase::TearDown();
+    observation_.Observe(&AdHistoryManager::GetInstance());
   }
 
   AdHistoryManagerObserverMock history_manager_observer_mock_;
+  base::ScopedObservation<AdHistoryManager, AdHistoryManagerObserver>
+      observation_{&history_manager_observer_mock_};
 };
 
 TEST_F(BraveAdsAdHistoryManagerTest, AddNotificationAdHistory) {
