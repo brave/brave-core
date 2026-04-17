@@ -128,12 +128,19 @@ AdBlockComponentServiceManager::AdBlockComponentServiceManager(
       catalog_provider_(catalog_provider),
       filters_provider_manager_(filters_provider_manager),
       list_p3a_(list_p3a) {
-  // Register gate providers so filter set loading is blocked until the catalog
-  // loads and all component providers are registered.
-  default_gate_ =
-      std::make_unique<ComponentProvidersGate>(true, filters_provider_manager_);
-  additional_gate_ = std::make_unique<ComponentProvidersGate>(
-      false, filters_provider_manager_);
+  // The gates block filter set loading until the catalog loads and all
+  // component providers are registered, so a single engine build happens
+  // once everything is ready. They are scoped to the DAT cache feature
+  // since that's the path that benefits from deferring the first build;
+  // without DAT cache, the pre-existing startup-suppression flag is
+  // sufficient and we want to avoid changing behavior for users not on
+  // the new path.
+  if (base::FeatureList::IsEnabled(features::kAdblockDATCache)) {
+    default_gate_ = std::make_unique<ComponentProvidersGate>(
+        true, filters_provider_manager_);
+    additional_gate_ = std::make_unique<ComponentProvidersGate>(
+        false, filters_provider_manager_);
+  }
 
   catalog_provider_->LoadFilterListCatalog(
       base::BindOnce(&AdBlockComponentServiceManager::OnFilterListCatalogLoaded,
@@ -195,9 +202,14 @@ void AdBlockComponentServiceManager::StartRegionalServices() {
   // have been registered. This unblocks filter set loading.
   // This happens first so it applies even for early returns below and it's
   // ok because nothing else can check the intialized state until after this
-  // method completes
-  default_gate_->SetInitialized();
-  additional_gate_->SetInitialized();
+  // method completes. The gates are only created when the DAT cache feature
+  // is enabled, so they may be null here.
+  if (default_gate_) {
+    default_gate_->SetInitialized();
+  }
+  if (additional_gate_) {
+    additional_gate_->SetInitialized();
+  }
 
   if (!local_state_) {
     return;

@@ -5,12 +5,14 @@
 
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
 
+#include "base/containers/flat_set.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filter_list_catalog_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_list_p3a.h"
-#include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -18,24 +20,28 @@ namespace brave_shields {
 
 namespace {
 
-class TestFiltersProviderManagerObserver
-    : public AdBlockFiltersProvider::Observer {
- public:
-  void OnChanged(bool is_default_engine) override {
-    if (is_default_engine) {
-      default_changed_count++;
-    } else {
-      additional_changed_count++;
+bool AllProvidersInitialized(
+    const base::flat_set<AdBlockFiltersProvider*>& providers) {
+  for (auto* provider : providers) {
+    if (!provider->IsInitialized()) {
+      return false;
     }
   }
-
-  int default_changed_count = 0;
-  int additional_changed_count = 0;
-};
+  return true;
+}
 
 }  // namespace
 
-TEST(AdBlockComponentServiceManagerTest, EmptyCatalogInitializesGates) {
+class AdBlockComponentServiceManagerTest : public testing::TestWithParam<bool> {
+ protected:
+  bool IsDATCacheEnabled() const { return GetParam(); }
+};
+
+TEST_P(AdBlockComponentServiceManagerTest, EmptyCatalogInitializesGates) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitWithFeatureState(features::kAdblockDATCache,
+                                    IsDATCacheEnabled());
+
   TestingPrefServiceSimple prefs;
   RegisterPrefsForAdBlockService(prefs.registry());
 
@@ -47,20 +53,44 @@ TEST(AdBlockComponentServiceManagerTest, EmptyCatalogInitializesGates) {
       &prefs, &filters_provider_manager, "en", nullptr, &catalog_provider,
       &list_p3a);
 
-  TestFiltersProviderManagerObserver observer;
-  filters_provider_manager.AddObserver(&observer);
+  const auto& default_providers =
+      filters_provider_manager.GetProviders(/*is_for_default_engine=*/true);
+  const auto& additional_providers =
+      filters_provider_manager.GetProviders(/*is_for_default_engine=*/false);
+
+  if (IsDATCacheEnabled()) {
+    // With the feature enabled, component provider gates are registered but
+    // report IsInitialized() == false until the catalog arrives.
+    ASSERT_FALSE(default_providers.empty());
+    ASSERT_FALSE(additional_providers.empty());
+    EXPECT_FALSE(AllProvidersInitialized(default_providers));
+    EXPECT_FALSE(AllProvidersInitialized(additional_providers));
+  } else {
+    // With the feature disabled, no gates exist.
+    EXPECT_TRUE(default_providers.empty());
+    EXPECT_TRUE(additional_providers.empty());
+  }
 
   // Simulate the filter list catalog component providing an empty catalog.
   // Without the fix, StartRegionalServices returns early and leaves the gate
   // providers uninitialized, which permanently blocks filter set loading.
   service_manager.SetFilterListCatalog({});
 
-  // Gates are initialized synchronously, which propagates through the
-  // AdBlockFiltersProviderManager to the external observer.
-  EXPECT_GE(observer.default_changed_count, 1);
-  EXPECT_GE(observer.additional_changed_count, 1);
-
-  filters_provider_manager.RemoveObserver(&observer);
+  if (IsDATCacheEnabled()) {
+    EXPECT_TRUE(AllProvidersInitialized(default_providers));
+    EXPECT_TRUE(AllProvidersInitialized(additional_providers));
+  } else {
+    EXPECT_TRUE(default_providers.empty());
+    EXPECT_TRUE(additional_providers.empty());
+  }
 }
+
+INSTANTIATE_TEST_SUITE_P(All,
+                         AdBlockComponentServiceManagerTest,
+                         testing::Bool(),
+                         [](const auto& info) {
+                           return info.param ? "DATCacheEnabled"
+                                             : "DATCacheDisabled";
+                         });
 
 }  // namespace brave_shields
