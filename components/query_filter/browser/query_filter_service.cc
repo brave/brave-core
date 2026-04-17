@@ -5,8 +5,6 @@
 
 #include "brave/components/query_filter/browser/query_filter_service.h"
 
-#include <utility>
-
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
@@ -47,11 +45,13 @@ QueryFilterService::QueryFilterService() = default;
 
 QueryFilterService::~QueryFilterService() = default;
 
-void QueryFilterService::OnComponentReady(const base::FilePath& install_dir) {
+void QueryFilterService::OnComponentReady(base::FilePath install_dir) {
   install_dir_ = install_dir;
 
   base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
+      FROM_HERE,
+      {base::TaskPriority::BEST_EFFORT,
+       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN, base::MayBlock()},
       base::BindOnce(&brave_component_updater::GetDATFileAsString,
                      install_dir_.AppendASCII(kQueryFilterJsonFile)),
       base::BindOnce(&QueryFilterService::OnRulesJsonLoaded,
@@ -59,6 +59,7 @@ void QueryFilterService::OnComponentReady(const base::FilePath& install_dir) {
 }
 
 void QueryFilterService::OnRulesJsonLoaded(const std::string& contents) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto rules = ParseRulesJson(contents);
   if (!rules.empty()) {
     rules_ = std::move(rules);
@@ -77,14 +78,12 @@ std::vector<QueryFilterRule> ParseRulesJson(const std::string_view contents) {
     return {};
   }
 
-  const base::ListValue* list = parsed->GetIfList();
-  if (!list) {
+  const base::ListValue* root_list = parsed->GetIfList();
+  if (!root_list) {
     DLOG(ERROR) << "query-filter.json: root must be an array";
     return {};
   }
 
-  // Create a new vector of rules to avoid modifying the current rules while
-  // parsing the new ones.
   std::vector<QueryFilterRule> rules;
 
   // Helper to insert valid strings from a list into a vector.
@@ -93,28 +92,37 @@ std::vector<QueryFilterRule> ParseRulesJson(const std::string_view contents) {
     if (!lv || lv->empty()) {
       return;
     }
-    // Resize the output vector in advance for faster insertion and doing only
-    // one time vector memory allocation.
-    auto precomputed_output_size =
+    const size_t precomputed_output_size =
         std::count_if(lv->begin(), lv->end(),
                       [](const base::Value& item) { return item.is_string(); });
-    output.resize(precomputed_output_size);
-    auto output_iter = output.begin();
-    for (const base::Value& item : *lv) {
+    output.reserve(precomputed_output_size);
+    std::for_each(lv->begin(), lv->end(), [&output](const base::Value& item) {
       if (item.is_string()) {
-        *output_iter = item.GetString();
-        ++output_iter;
+        output.push_back(item.GetString());
       } else {
         DLOG(ERROR) << "query-filter.json: non-string item found in list";
       }
-    }
+    });
   };
 
   // Parse each rule entry in the list.
-  for (const base::Value& entry : *list) {
+  for (const base::Value& entry : *root_list) {
     const base::DictValue* rule_dict = entry.GetIfDict();
     if (!rule_dict) {
       DLOG(ERROR) << "query-filter.json: non dict rule entry found";
+      continue;
+    }
+
+    if (!rule_dict->FindList(kQueryFilterRulesIncludeKey) ||
+        !rule_dict->FindList(kQueryFilterRulesExcludeKey) ||
+        !rule_dict->FindList(kQueryFilterRulesParamsKey)) {
+      DLOG(ERROR) << "query-filter.json: missing required fields";
+      continue;
+    }
+
+    if (rule_dict->size() != 3) {
+      DLOG(ERROR) << "query-filter.json: rule entry must have exactly 3 "
+                     "fields: include, exclude and params";
       continue;
     }
 
@@ -128,7 +136,6 @@ std::vector<QueryFilterRule> ParseRulesJson(const std::string_view contents) {
     rules.push_back(std::move(rule));
   }
 
-  // Update rules if valid new rules are found.
   return rules;
 }
 

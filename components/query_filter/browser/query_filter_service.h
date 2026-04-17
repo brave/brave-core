@@ -7,11 +7,13 @@
 #define BRAVE_COMPONENTS_QUERY_FILTER_BROWSER_QUERY_FILTER_SERVICE_H_
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/files/file_path.h"
 #include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
+#include "base/sequence_checker.h"
 
 namespace query_filter {
 
@@ -38,7 +40,7 @@ class QueryFilterService {
   static QueryFilterService* GetInstance();
 
   // Loads the file, parses the rules and stores them in |rules_|.
-  void OnComponentReady(const base::FilePath& install_dir);
+  void OnComponentReady(base::FilePath install_dir);
 
   const std::vector<QueryFilterRule>& rules() const { return rules_; }
 
@@ -48,10 +50,15 @@ class QueryFilterService {
   QueryFilterService();
 
   // Called when the rules JSON is loaded from the DAT file.
+  // Can ignore the new rules if the json |contents| is not
+  // properly structured.
   void OnRulesJsonLoaded(const std::string& contents);
 
   base::FilePath install_dir_;
   std::vector<QueryFilterRule> rules_;
+
+  SEQUENCE_CHECKER(sequence_checker_);
+
   base::WeakPtrFactory<QueryFilterService> weak_factory_{this};
 };
 
