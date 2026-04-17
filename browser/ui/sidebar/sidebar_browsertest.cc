@@ -2126,6 +2126,21 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2ActiveItemStateSync) {
       [&]() { return !model()->active_index().has_value(); }));
 }
 
+// Verify that the upstream SidePanelHeader is never added when a sidebar panel
+// is opened in V2, so Brave can render its own header.
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2NoUpstreamHeaderTest) {
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  auto* side_panel = browser_view->contents_height_side_panel();
+  side_panel->DisableAnimationsForTesting();
+
+  panel_ui->Toggle();
+  ASSERT_TRUE(base::test::RunUntil([&]() { return side_panel->GetVisible(); }));
+
+  EXPECT_EQ(nullptr, side_panel->GetHeaderView<views::View>())
+      << "Upstream SidePanelHeader should not be present after V2 panel open";
+}
+
 #endif  // BUILDFLAG(ENABLE_SIDEBAR_V2)
 
 }  // namespace sidebar
