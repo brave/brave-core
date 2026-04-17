@@ -89,7 +89,7 @@ jobs:
           fi
 
           BRANCH="socket-fix/$(echo "$GHSA_IDS" | tr ', ' '-' | tr -s '-' | cut -c1-60)"
-          HEAD_SHA=$(git rev-parse HEAD)
+          HEAD_SHA=$(gh api "/repos/${GITHUB_REPOSITORY}/git/refs/heads/master" -q '.object.sha')
 
           if gh api "repos/${GITHUB_REPOSITORY}/git/refs/heads/$BRANCH" -q .ref > /dev/null 2>&1; then
             gh api --method PATCH "/repos/${GITHUB_REPOSITORY}/git/refs/heads/$BRANCH" \
@@ -100,9 +100,13 @@ jobs:
           fi
 
           TREE_JSON="[]"
-          while IFS= read -r line; do
+          while IFS= read -r -d $'\0' line; do
             XY="${line:0:2}"
             FILE="${line:3}"
+            # For rename/copy entries the old path follows as the next NUL entry; consume it
+            if [[ "${XY:0:1}" =~ [RC] ]]; then
+              IFS= read -r -d $'\0' _old_path
+            fi
             if [[ "${XY:1:1}" == "D" ]]; then
               TREE_JSON=$(jq --arg path "$FILE" \
                 '. += [{"path": $path, "mode": "100644", "type": "blob", "sha": null}]' \
@@ -111,19 +115,21 @@ jobs:
               MODE=$(git ls-files -s -- "$FILE" | awk 'NR==1 { print $1 }')
               [[ -z "$MODE" ]] && MODE="100644"
               if [[ "$MODE" == "120000" ]]; then
-                CONTENT=$(printf '%s' "$(readlink -- "$FILE")" | base64 -w 0)
+                BLOB_SHA=$(gh api --method POST /repos/${GITHUB_REPOSITORY}/git/blobs \
+                  --field content=@<(printf '%s' "$(readlink -- "$FILE")" | base64 -w 0) \
+                  --field encoding=base64 \
+                  -q .sha)
               else
-                CONTENT=$(base64 -w 0 -- "$FILE")
+                BLOB_SHA=$(gh api --method POST /repos/${GITHUB_REPOSITORY}/git/blobs \
+                  --field content=@<(base64 -w 0 -- "$FILE") \
+                  --field encoding=base64 \
+                  -q .sha)
               fi
-              BLOB_SHA=$(gh api --method POST /repos/${GITHUB_REPOSITORY}/git/blobs \
-                --field content="$CONTENT" \
-                --field encoding=base64 \
-                -q .sha)
               TREE_JSON=$(jq --arg path "$FILE" --arg mode "$MODE" --arg sha "$BLOB_SHA" \
                 '. += [{"path": $path, "mode": $mode, "type": "blob", "sha": $sha}]' \
                 <<< "$TREE_JSON")
             fi
-          done < <(git status --porcelain)
+          done < <(git status --porcelain=v1 -z)
 
           BASE_TREE=$(gh api /repos/${GITHUB_REPOSITORY}/git/commits/"$HEAD_SHA" -q .tree.sha)
 
