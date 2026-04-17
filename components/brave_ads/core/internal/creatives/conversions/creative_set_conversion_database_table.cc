@@ -227,7 +227,7 @@ void CreativeSetConversions::GetActive(
   mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteQueryWithBindings;
   mojom_db_action->sql = base::ReplaceStringPlaceholders(
       R"(
-          SELECT
+          SELECT DISTINCT
             creative_set_conversion.creative_set_id,
             creative_set_conversion.url_pattern,
             creative_set_conversion.observation_window,
