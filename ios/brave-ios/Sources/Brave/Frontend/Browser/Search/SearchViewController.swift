@@ -1253,23 +1253,23 @@ extension SearchViewController: NSFetchedResultsControllerDelegate {
 
 // MARK: - P3A
 
+private enum QuickSearchP3AAnswer: Int, CaseIterable {
+  case leo = 1
+  case defaultEngine = 2
+  case google = 3
+  case youtube = 4
+  case bing = 5
+  case ecosia = 6
+  case duckduckgo = 7
+  case qwant = 8
+  case startpage = 9
+  case brave = 10
+  case other = 11
+}
+
 extension SearchViewController {
   func recordQuickSearchActionP3A(engine: OpenSearchEngine?) {
-    enum Answer: Int, CaseIterable {
-      case leo = 1
-      case defaultEngine = 2
-      case google = 3
-      case youtube = 4
-      case bing = 5
-      case ecosia = 6
-      case duckduckgo = 7
-      case qwant = 8
-      case startpage = 9
-      case brave = 10
-      case other = 11
-    }
-
-    var answer: Answer = .leo
+    var answer: QuickSearchP3AAnswer = .leo
     if let engine {
       if let engineID = engine.engineID, !engine.isCustomEngine {
         let isDefaultEngine =
@@ -1309,7 +1309,33 @@ extension SearchViewController {
         answer = .other
       }
     }
-    UmaHistogramEnumeration("Brave.Search.QuickMostUsedAction", sample: answer)
+    var storage = P3ATimedStorage<Int>.quickSearchMostUsedStorage(for: answer)
+    storage.append(value: 1)
+
+    let maxCount =
+      QuickSearchP3AAnswer.allCases
+      .map { P3ATimedStorage<Int>.quickSearchMostUsedStorage(for: $0).combinedValue }
+      .max() ?? 0
+    let currentCount = P3ATimedStorage<Int>.quickSearchMostUsedStorage(for: answer).combinedValue
+
+    let mostUsedAnswer: QuickSearchP3AAnswer
+    if currentCount == maxCount {
+      // Current engine is tied — prefer it
+      mostUsedAnswer = answer
+    } else {
+      mostUsedAnswer =
+        QuickSearchP3AAnswer.allCases.max { a, b in
+          P3ATimedStorage<Int>.quickSearchMostUsedStorage(for: a).combinedValue
+            < P3ATimedStorage<Int>.quickSearchMostUsedStorage(for: b).combinedValue
+        } ?? answer
+    }
+    UmaHistogramEnumeration("Brave.Search.QuickMostUsedAction", sample: mostUsedAnswer)
+  }
+}
+
+extension P3ATimedStorage where Value == Int {
+  fileprivate static func quickSearchMostUsedStorage(for answer: QuickSearchP3AAnswer) -> Self {
+    .init(name: "quick-search-most-used-\(answer.rawValue)", lifetimeInDays: 7)
   }
 }
 
