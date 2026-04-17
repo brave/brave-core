@@ -32,6 +32,7 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
@@ -120,20 +121,30 @@ void BraveBrowser::OnTabClosing(content::WebContents* contents) {
     return;
   }
 
-  if (chrome::FindAllTabbedBrowsersWithProfile(profile()).size() > 1) {
-    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-        FROM_HERE, base::BindOnce(
-                       [](base::WeakPtr<BraveBrowser> browser) {
-                         if (browser) {
-                           // We don't want close confirm dialog to show up. In
-                           // this case, Shared pinned tabs will be moved to
-                           // another window, so we don't have to warn users.
-                           browser->confirmed_to_close_ = true;
-                           chrome::CloseWindow(browser.get());
-                         }
-                       },
-                       weak_ptr_factory_.GetWeakPtr()));
-  }
+  bool more_than_one = false;
+  ProfileBrowserCollection::GetForProfile(profile())->ForEach(
+      [this, &more_than_one](BrowserWindowInterface* browser) {
+        if (!more_than_one) {
+          more_than_one = true;
+          return true;
+        }
+
+        base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+            FROM_HERE, base::BindOnce(
+                           [](base::WeakPtr<BraveBrowser> browser) {
+                             if (browser) {
+                               // We don't want close confirm dialog to show up.
+                               // In this case, Shared pinned tabs will be moved
+                               // to another window, so we don't have to warn
+                               // users.
+                               browser->confirmed_to_close_ = true;
+                               chrome::CloseWindow(browser.get());
+                             }
+                           },
+                           weak_ptr_factory_.GetWeakPtr()));
+
+        return false;
+      });
 }
 
 void BraveBrowser::TabStripEmpty() {
