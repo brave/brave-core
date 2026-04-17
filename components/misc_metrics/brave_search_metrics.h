@@ -22,15 +22,15 @@ class TemplateURLService;
 namespace misc_metrics {
 
 inline constexpr char kSearchDailyQueriesBraveDefaultHistogramName[] =
-    "Brave.Search.DailyQueries.BraveDefault";
+    "Brave.Search.DailyQueries.BraveDefault.2";
 inline constexpr char kSearchDailyQueriesGoogleDefaultHistogramName[] =
-    "Brave.Search.DailyQueries.GoogleDefault";
+    "Brave.Search.DailyQueries.GoogleDefault.2";
 inline constexpr char kSearchDailyQueriesDDGDefaultHistogramName[] =
-    "Brave.Search.DailyQueries.DDGDefault";
+    "Brave.Search.DailyQueries.DDGDefault.2";
 inline constexpr char kSearchDailyQueriesYahooDefaultHistogramName[] =
-    "Brave.Search.DailyQueries.YahooDefault";
+    "Brave.Search.DailyQueries.YahooDefault.2";
 inline constexpr char kSearchDailyQueriesOtherDefaultHistogramName[] =
-    "Brave.Search.DailyQueries.OtherDefault";
+    "Brave.Search.DailyQueries.OtherDefault.2";
 inline constexpr char kSearchOmniboxTypedPercentHistogramName[] =
     "Brave.Search.OmniboxTypedPercent";
 inline constexpr char kSearchOmniboxSuggestionPercentHistogramName[] =
