@@ -13,7 +13,7 @@ html, body {
   font-family: var(--leo-font-family-default);
   box-sizing: border-box;
   position: relative;
-  padding: 32px;
+  padding: 24px;
 }
 
 .dw-modal-layout {
