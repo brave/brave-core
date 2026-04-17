@@ -19,14 +19,13 @@ class GURL;
 
 namespace brave_ads {
 
-class AdsClientNotifierInterface;
+class AdsClientNotifier;
 
 namespace test {
 
 class AdsClientNotifierWaiter final : public AdsClientNotifierObserver {
  public:
-  explicit AdsClientNotifierWaiter(
-      AdsClientNotifierInterface* ads_client_notifier);
+  explicit AdsClientNotifierWaiter(AdsClientNotifier* ads_client_notifier);
 
   AdsClientNotifierWaiter(const AdsClientNotifierWaiter&) = delete;
   AdsClientNotifierWaiter& operator=(const AdsClientNotifierWaiter&) = delete;
@@ -106,7 +105,7 @@ class AdsClientNotifierWaiter final : public AdsClientNotifierObserver {
   base::RunLoop on_notify_browser_did_resign_active_run_loop_;
   base::RunLoop on_notify_did_solve_adaptive_captcha_run_loop_;
 
-  base::ScopedObservation<AdsClientNotifierInterface, AdsClientNotifierObserver>
+  base::ScopedObservation<AdsClientNotifier, AdsClientNotifierObserver>
       observation_{this};
 };
 

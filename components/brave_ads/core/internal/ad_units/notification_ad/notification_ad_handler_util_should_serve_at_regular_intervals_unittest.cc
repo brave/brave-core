@@ -76,7 +76,7 @@ TEST_P(BraveAdsNotificationAdHandlerUtilShouldServeAtRegularIntervalsTest,
        NotificationAdHandler) {
   // Arrange
   if (GetParam().should_browser_enter_foreground) {
-    NotifyBrowserDidEnterForeground();
+    ads_client_notifier_.NotifyBrowserDidEnterForeground();
   }
 
   // Act & Assert

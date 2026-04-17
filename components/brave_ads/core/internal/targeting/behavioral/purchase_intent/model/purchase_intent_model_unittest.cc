@@ -44,8 +44,8 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
 
 TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
   // Arrange
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
   ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
 
   PurchaseIntentProcessor processor(*resource_);
@@ -64,8 +64,8 @@ TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
 
 TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsIfNeverProcessed) {
   // Arrange
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
   ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
 
   // Act
@@ -78,8 +78,8 @@ TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsIfNeverProcessed) {
 TEST_F(BraveAdsPurchaseIntentModelTest,
        DoNotGetSegmentsIfNeverMatchedFunnelSites) {
   // Arrange
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
   ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
 
   PurchaseIntentProcessor processor(*resource_);
@@ -94,8 +94,8 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
 
 TEST_F(BraveAdsPurchaseIntentModelTest, GetSegmentsForPreviouslyMatchedSite) {
   // Arrange
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
   ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
 
   PurchaseIntentProcessor processor(*resource_);
@@ -115,8 +115,8 @@ TEST_F(BraveAdsPurchaseIntentModelTest, GetSegmentsForPreviouslyMatchedSite) {
 TEST_F(BraveAdsPurchaseIntentModelTest,
        GetSegmentsForPreviouslyMatchedSegmentKeyphrases) {
   // Arrange
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
   ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
 
   const GURL url = GURL("https://duckduckgo.com/?q=segment+keyword+1&foo=bar");
@@ -137,8 +137,8 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
 TEST_F(BraveAdsPurchaseIntentModelTest,
        GetSegmentsForPreviouslyMatchedFunnelKeywords) {
   // Arrange
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
   ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
 
   PurchaseIntentProcessor processor(*resource_);

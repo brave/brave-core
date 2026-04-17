@@ -105,12 +105,12 @@ TEST_F(
 
 TEST_F(BraveAdsSiteVisitUtilTest, ShouldResumePageLand) {
   // Arrange
-  NotifyBrowserDidBecomeActive();
-  NotifyBrowserDidEnterForeground();
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
+  ads_client_notifier_.NotifyBrowserDidEnterForeground();
 
-  SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com")},
-                        net::HTTP_OK);
+  tab_helper_.OpenTab(
+      /*tab_id=*/1,
+      /*redirect_chain=*/{GURL("https://brave.com")}, net::HTTP_OK);
 
   // Act & Assert
   EXPECT_TRUE(ShouldResumePageLand(/*tab_id=*/1));
@@ -118,13 +118,13 @@ TEST_F(BraveAdsSiteVisitUtilTest, ShouldResumePageLand) {
 
 TEST_F(BraveAdsSiteVisitUtilTest, ShouldNotResumePageLandIfTabIsOccluded) {
   // Arrange
-  NotifyBrowserDidBecomeActive();
-  NotifyBrowserDidEnterForeground();
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
+  ads_client_notifier_.NotifyBrowserDidEnterForeground();
 
-  SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com")},
-                        net::HTTP_OK);
-  SimulateOpeningNewTab(
+  tab_helper_.OpenTab(
+      /*tab_id=*/1,
+      /*redirect_chain=*/{GURL("https://brave.com")}, net::HTTP_OK);
+  tab_helper_.OpenTab(
       /*tab_id=*/2,
       /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
       net::HTTP_OK);
@@ -135,12 +135,12 @@ TEST_F(BraveAdsSiteVisitUtilTest, ShouldNotResumePageLandIfTabIsOccluded) {
 
 TEST_F(BraveAdsSiteVisitUtilTest, ShouldNotResumePageLandIfBrowserIsInactive) {
   // Arrange
-  NotifyBrowserDidResignActive();
-  NotifyBrowserDidEnterForeground();
+  ads_client_notifier_.NotifyBrowserDidResignActive();
+  ads_client_notifier_.NotifyBrowserDidEnterForeground();
 
-  SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com")},
-                        net::HTTP_OK);
+  tab_helper_.OpenTab(
+      /*tab_id=*/1,
+      /*redirect_chain=*/{GURL("https://brave.com")}, net::HTTP_OK);
 
   // Act & Assert
   EXPECT_FALSE(ShouldResumePageLand(/*tab_id=*/1));
@@ -149,12 +149,12 @@ TEST_F(BraveAdsSiteVisitUtilTest, ShouldNotResumePageLandIfBrowserIsInactive) {
 TEST_F(BraveAdsSiteVisitUtilTest,
        ShouldNotResumePageLandIfBrowserDidEnterBackground) {
   // Arrange
-  NotifyBrowserDidBecomeActive();
-  NotifyBrowserDidEnterBackground();
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
+  ads_client_notifier_.NotifyBrowserDidEnterBackground();
 
-  SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com")},
-                        net::HTTP_OK);
+  tab_helper_.OpenTab(
+      /*tab_id=*/1,
+      /*redirect_chain=*/{GURL("https://brave.com")}, net::HTTP_OK);
 
   // Act & Assert
   EXPECT_FALSE(ShouldResumePageLand(/*tab_id=*/1));
@@ -162,9 +162,9 @@ TEST_F(BraveAdsSiteVisitUtilTest,
 
 TEST_F(BraveAdsSiteVisitUtilTest, DidLandOnPage) {
   // Arrange
-  SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com")},
-                        net::HTTP_OK);
+  tab_helper_.OpenTab(
+      /*tab_id=*/1,
+      /*redirect_chain=*/{GURL("https://brave.com")}, net::HTTP_OK);
 
   // Act & Assert
   EXPECT_TRUE(DidLandOnPage(/*tab_id=*/1, GURL("https://brave.com")));
@@ -172,11 +172,11 @@ TEST_F(BraveAdsSiteVisitUtilTest, DidLandOnPage) {
 
 TEST_F(BraveAdsSiteVisitUtilTest, DoNotLandOnPageForClosedTab) {
   // Arrange
-  SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://brave.com")},
-                        net::HTTP_OK);
+  tab_helper_.OpenTab(
+      /*tab_id=*/1,
+      /*redirect_chain=*/{GURL("https://brave.com")}, net::HTTP_OK);
 
-  NotifyDidCloseTab(/*tab_id=*/1);
+  ads_client_notifier_.NotifyDidCloseTab(/*tab_id=*/1);
 
   // Act & Assert
   EXPECT_FALSE(DidLandOnPage(/*tab_id=*/1, GURL("https://brave.com")));
@@ -184,9 +184,9 @@ TEST_F(BraveAdsSiteVisitUtilTest, DoNotLandOnPageForClosedTab) {
 
 TEST_F(BraveAdsSiteVisitUtilTest, DoNotLandOnPageForDomainOrHostMismatch) {
   // Arrange
-  SimulateOpeningNewTab(/*tab_id=*/1,
-                        /*redirect_chain=*/{GURL("https://foo.com")},
-                        net::HTTP_OK);
+  tab_helper_.OpenTab(
+      /*tab_id=*/1,
+      /*redirect_chain=*/{GURL("https://foo.com")}, net::HTTP_OK);
 
   // Act & Assert
   EXPECT_FALSE(DidLandOnPage(/*tab_id=*/1, GURL("https://brave.com")));

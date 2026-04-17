@@ -191,7 +191,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
 
   MockUrlResponseForTestParam();
 
-  NotifyDidInitializeAds();
+  ads_client_notifier_.NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = test::kCreativeSetId;
@@ -210,7 +210,7 @@ TEST_P(
 
   MockUrlResponseForTestParam();
 
-  NotifyDidInitializeAds();
+  ads_client_notifier_.NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = test::kCreativeSetId;
@@ -230,7 +230,7 @@ TEST_P(
 
   MockUrlResponseForTestParam();
 
-  NotifyDidInitializeAds();
+  ads_client_notifier_.NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = test::kCreativeSetId;
@@ -253,7 +253,7 @@ TEST_P(
 
   MockUrlResponseForTestParam();
 
-  NotifyDidInitializeAds();
+  ads_client_notifier_.NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = test::kCreativeSetId;
@@ -276,7 +276,7 @@ TEST_P(
 
   MockUrlResponseForTestParam();
 
-  NotifyDidInitializeAds();
+  ads_client_notifier_.NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = test::kCreativeSetId;
@@ -300,7 +300,7 @@ TEST_P(
 
   MockUrlResponseForTestParam();
 
-  NotifyDidInitializeAds();
+  ads_client_notifier_.NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = test::kCreativeSetId;
@@ -318,7 +318,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
 
   MockUrlResponseForTestParam();
 
-  NotifyDidInitializeAds();
+  ads_client_notifier_.NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = test::kCreativeSetId;
@@ -338,7 +338,7 @@ TEST_P(
 
   MockUrlResponseForTestParam();
 
-  NotifyDidInitializeAds();
+  ads_client_notifier_.NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = test::kCreativeSetId;
@@ -363,7 +363,7 @@ TEST_P(
              /*country_code=*/"XX", /*subdivision_code=*/"NO REGION")}}}};
   test::MockUrlResponses(ads_client_mock_, url_responses);
 
-  NotifyDidInitializeAds();
+  ads_client_notifier_.NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = test::kCreativeSetId;
@@ -384,7 +384,7 @@ TEST_P(BraveAdsSubdivisionTargetingExclusionRuleTest,
 
   MockUrlResponseForTestParam();
 
-  NotifyDidInitializeAds();
+  ads_client_notifier_.NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = test::kCreativeSetId;
@@ -406,7 +406,7 @@ TEST_P(
 
   MockUrlResponseForTestParam();
 
-  NotifyDidInitializeAds();
+  ads_client_notifier_.NotifyDidInitializeAds();
 
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = test::kCreativeSetId;

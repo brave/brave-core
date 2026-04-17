@@ -20,24 +20,28 @@
 #include "brave/components/brave_ads/core/internal/common/test/internal/profile_pref_value_test_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/local_state_pref_value_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/profile_pref_value_test_util.h"
-#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 
 namespace brave_ads::test {
 
 void MockAdsClientNotifierAddObserver(AdsClientMock& ads_client_mock,
-                                      TestBase& test_base) {
+                                      AdsClientNotifier& ads_client_notifier) {
   ON_CALL(ads_client_mock, AddObserver)
-      .WillByDefault([&test_base](AdsClientNotifierObserver* const observer) {
-        CHECK(observer);
-        test_base.AddObserver(observer);
-      });
+      .WillByDefault(
+          [&ads_client_notifier](AdsClientNotifierObserver* const observer) {
+            CHECK(observer);
+            ads_client_notifier.AddObserver(observer);
+          });
 }
 
 void MockNotifyPendingObservers(AdsClientMock& ads_client_mock,
-                                TestBase& test_base) {
+                                AdsClientNotifier& ads_client_notifier) {
   ON_CALL(ads_client_mock, NotifyPendingObservers)
-      .WillByDefault([&test_base]() { test_base.NotifyPendingObservers(); });
+      .WillByDefault([&ads_client_notifier]() {
+        ads_client_notifier.NotifyPendingObservers();
+      });
 }
 
 void MockShowNotificationAd(AdsClientMock& ads_client_mock) {
@@ -130,12 +134,13 @@ void MockGetProfilePref(const AdsClientMock& ads_client_mock) {
 }
 
 void MockSetProfilePref(const AdsClientMock& ads_client_mock,
-                        TestBase& test_base) {
+                        AdsClientNotifier& ads_client_notifier) {
   ON_CALL(ads_client_mock, SetProfilePref)
-      .WillByDefault([&test_base](const std::string& path, base::Value value) {
-        SetProfilePrefValue(path, std::move(value));
-        test_base.NotifyPrefDidChange(path);
-      });
+      .WillByDefault(
+          [&ads_client_notifier](const std::string& path, base::Value value) {
+            SetProfilePrefValue(path, std::move(value));
+            ads_client_notifier.NotifyPrefDidChange(path);
+          });
 }
 
 void MockClearProfilePref(AdsClientMock& ads_client_mock) {
@@ -166,12 +171,13 @@ void MockGetLocalStatePref(const AdsClientMock& ads_client_mock) {
 }
 
 void MockSetLocalStatePref(const AdsClientMock& ads_client_mock,
-                           TestBase& test_base) {
+                           AdsClientNotifier& ads_client_notifier) {
   ON_CALL(ads_client_mock, SetLocalStatePref)
-      .WillByDefault([&test_base](const std::string& path, base::Value value) {
-        SetLocalStatePrefValue(path, std::move(value));
-        test_base.NotifyPrefDidChange(path);
-      });
+      .WillByDefault(
+          [&ads_client_notifier](const std::string& path, base::Value value) {
+            SetLocalStatePrefValue(path, std::move(value));
+            ads_client_notifier.NotifyPrefDidChange(path);
+          });
 }
 
 void MockClearLocalStatePref(AdsClientMock& ads_client_mock) {

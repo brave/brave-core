@@ -36,7 +36,7 @@ TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidBecomeActive) {
   EXPECT_CALL(browser_manager_observer_mock_, OnBrowserDidBecomeActive);
 
   // Act
-  NotifyBrowserDidBecomeActive();
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
 
   // Assert
   EXPECT_TRUE(BrowserManager::GetInstance().IsActive());
@@ -44,12 +44,12 @@ TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidBecomeActive) {
 
 TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidResignActive) {
   // Arrange
-  NotifyBrowserDidBecomeActive();
+  ads_client_notifier_.NotifyBrowserDidBecomeActive();
 
   EXPECT_CALL(browser_manager_observer_mock_, OnBrowserDidResignActive);
 
   // Act
-  NotifyBrowserDidResignActive();
+  ads_client_notifier_.NotifyBrowserDidResignActive();
 
   // Assert
   EXPECT_FALSE(BrowserManager::GetInstance().IsActive());
@@ -60,7 +60,7 @@ TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidEnterForeground) {
   EXPECT_CALL(browser_manager_observer_mock_, OnBrowserDidEnterForeground);
 
   // Act
-  NotifyBrowserDidEnterForeground();
+  ads_client_notifier_.NotifyBrowserDidEnterForeground();
 
   // Assert
   EXPECT_TRUE(BrowserManager::GetInstance().IsInForeground());
@@ -68,12 +68,12 @@ TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidEnterForeground) {
 
 TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidEnterBackground) {
   // Arrange
-  NotifyBrowserDidEnterForeground();
+  ads_client_notifier_.NotifyBrowserDidEnterForeground();
 
   EXPECT_CALL(browser_manager_observer_mock_, OnBrowserDidEnterBackground);
 
   // Act
-  NotifyBrowserDidEnterBackground();
+  ads_client_notifier_.NotifyBrowserDidEnterBackground();
 
   // Assert
   EXPECT_FALSE(BrowserManager::GetInstance().IsInForeground());
@@ -82,7 +82,7 @@ TEST_F(BraveAdsBrowserManagerTest, OnNotifyBrowserDidEnterBackground) {
 TEST_F(BraveAdsBrowserManagerTest,
        OnNotifyDidInitializeAdsWhenBrowserIsActive) {
   // Act
-  NotifyDidInitializeAds();
+  ads_client_notifier_.NotifyDidInitializeAds();
 
   // Assert
   EXPECT_TRUE(BrowserManager::GetInstance().IsInForeground());
@@ -94,7 +94,7 @@ TEST_F(BraveAdsBrowserManagerTest,
   test::MockIsBrowserActive(ads_client_mock_, false);
 
   // Act
-  NotifyDidInitializeAds();
+  ads_client_notifier_.NotifyDidInitializeAds();
 
   // Assert
   EXPECT_FALSE(BrowserManager::GetInstance().IsInForeground());

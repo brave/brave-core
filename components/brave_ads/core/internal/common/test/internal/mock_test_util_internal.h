@@ -9,14 +9,16 @@
 #include "base/files/file_path.h"
 #include "brave/components/brave_ads/core/internal/ads_client/test/ads_client_mock.h"
 
-namespace brave_ads::test {
+namespace brave_ads {
 
-class TestBase;
+class AdsClientNotifier;
+
+namespace test {
 
 void MockAdsClientNotifierAddObserver(AdsClientMock& ads_client_mock,
-                                      TestBase& test_base);
+                                      AdsClientNotifier& ads_client_notifier);
 void MockNotifyPendingObservers(AdsClientMock& ads_client_mock,
-                                TestBase& test_base);
+                                AdsClientNotifier& ads_client_notifier);
 
 void MockShowNotificationAd(AdsClientMock& ads_client_mock);
 void MockCloseNotificationAd(AdsClientMock& ads_client_mock);
@@ -32,17 +34,19 @@ void MockLoadResourceComponent(AdsClientMock& ads_client_mock,
 void MockFindProfilePref(const AdsClientMock& ads_client_mock);
 void MockGetProfilePref(const AdsClientMock& ads_client_mock);
 void MockSetProfilePref(const AdsClientMock& ads_client_mock,
-                        TestBase& test_base);
+                        AdsClientNotifier& ads_client_notifier);
 void MockClearProfilePref(AdsClientMock& ads_client_mock);
 void MockHasProfilePrefPath(const AdsClientMock& ads_client_mock);
 
 void MockFindLocalStatePref(const AdsClientMock& ads_client_mock);
 void MockGetLocalStatePref(const AdsClientMock& ads_client_mock);
 void MockSetLocalStatePref(const AdsClientMock& ads_client_mock,
-                           TestBase& test_base);
+                           AdsClientNotifier& ads_client_notifier);
 void MockClearLocalStatePref(AdsClientMock& ads_client_mock);
 void MockHasLocalStatePrefPath(const AdsClientMock& ads_client_mock);
 
-}  // namespace brave_ads::test
+}  // namespace test
+
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TEST_INTERNAL_MOCK_TEST_UTIL_INTERNAL_H_
