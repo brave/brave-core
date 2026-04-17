@@ -6,21 +6,39 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_TRANSACTION_STATUS_TASK_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_TRANSACTION_STATUS_TASK_H_
 
-#include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_wallet/browser/keyring_service.h"
-#include "brave/components/brave_wallet/browser/polkadot/polkadot_extrinsic.h"
-#include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
+#include "base/functional/callback.h"
+#include "base/types/expected.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_block_header.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_chain_metadata.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
 namespace brave_wallet {
 
+class KeyringService;
+class PolkadotWalletService;
+class PolkadotSubstrateRpc;
+
 enum class PolkadotTransactionStatus {
+  // Found the extrinsic, and it succeeded.
   kSuccess,
+  // Found the extrinsic, and it failed.
   kFailed,
+  // Not found within the entire mortality window.
   kNotFound,
+  // Not found, finalized block was within mortality window.
   kNotFinalized,
+  // Found the extrinsic, but events data was corrupted.
   kInvalidResponse,
 };
 
+// Used to probe the provided chain for an extrinsic and its status. Searching
+// encompasses the range: [block_num, block_num + mortality_period). This is
+// because in Polkadot, an extrinsic is tied to a specific signing block and
+// from there is guaranteed to be on-chain within mortality_period blocks
+// relative to the signing block.
+// At a maximum performs mortality_period block fetches.
+// Only finalized blocks are considered.
 class PolkadotTransactionStatusTask {
  public:
   using GetTransactionStatusCallback = base::OnceCallback<void(
@@ -52,7 +70,7 @@ class PolkadotTransactionStatusTask {
       std::optional<PolkadotBlockHeader> block_header,
       std::optional<std::string> err_str);
 
-  void InitRequests();
+  void FetchCurrentBlock();
 
   void OnGetBlockHashForStatus(
       std::optional<std::array<uint8_t, kPolkadotBlockHashSize>> block_hash,
@@ -73,9 +91,10 @@ class PolkadotTransactionStatusTask {
   std::string chain_id_;
   std::string extrinsic_hex_;
   uint32_t block_num_ = 0;
-  uint32_t curr_block_num_ = 0;
   uint32_t mortality_period_ = 0;
+  uint32_t max_block_num_ = 0;
   uint32_t finalized_block_num_ = 0;
+  uint32_t curr_block_num_ = 0;
 
   std::optional<size_t> extrinsic_idx_;
   GetTransactionStatusCallback callback_;

@@ -6,7 +6,10 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_transaction_status_task.h"
 
 #include "base/strings/strcat.h"  // IWYU pragma: keep
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 
 namespace brave_wallet {
 
@@ -36,8 +39,14 @@ PolkadotTransactionStatusTask::PolkadotTransactionStatusTask(
       chain_id_(std::move(chain_id)),
       extrinsic_hex_(base::StrCat({"0x", base::HexEncodeLower(extrinsic)})),
       block_num_{block_num},
-      curr_block_num_{block_num},
-      mortality_period_{mortality_period} {}
+      mortality_period_{mortality_period},
+      curr_block_num_{block_num} {
+  // Use saturating addition here for the sake of simplicity. While it's
+  // unlikely, a block produced near the end of the chain can still have an
+  // extrinsic within its mortality window even if the true end of the mortality
+  // window exceeds numeric limits for a uint32_t.
+  max_block_num_ = base::ClampAdd(block_num_, mortality_period_).RawValue();
+}
 
 PolkadotTransactionStatusTask::~PolkadotTransactionStatusTask() = default;
 
@@ -103,16 +112,16 @@ void PolkadotTransactionStatusTask::OnGetFinalizedBlockHeader(
   }
 
   finalized_block_num_ = block_header->block_number;
-  InitRequests();
+  FetchCurrentBlock();
 }
 
-void PolkadotTransactionStatusTask::InitRequests() {
+void PolkadotTransactionStatusTask::FetchCurrentBlock() {
   if (curr_block_num_ > finalized_block_num_) {
     return std::move(callback_).Run(
         base::ok(std::pair(PolkadotTransactionStatus::kNotFinalized, 0)));
   }
 
-  if (curr_block_num_ >= (block_num_ + mortality_period_)) {
+  if (curr_block_num_ >= max_block_num_) {
     return std::move(callback_).Run(
         base::ok(std::pair(PolkadotTransactionStatus::kNotFound, 0)));
   }
@@ -121,8 +130,6 @@ void PolkadotTransactionStatusTask::InitRequests() {
       chain_id_, curr_block_num_,
       base::BindOnce(&PolkadotTransactionStatusTask::OnGetBlockHashForStatus,
                      weak_ptr_factory_.GetWeakPtr()));
-
-  ++curr_block_num_;
 }
 
 void PolkadotTransactionStatusTask::OnGetBlockHashForStatus(
@@ -168,7 +175,14 @@ void PolkadotTransactionStatusTask::OnGetBlockForStatus(
     return;
   }
 
-  InitRequests();
+  base::CheckedNumeric<uint32_t> curr_block_num{curr_block_num_};
+  curr_block_num += 1;
+  if (!curr_block_num.AssignIfValid(&curr_block_num_)) {
+    return std::move(callback_).Run(
+        base::ok(std::pair(PolkadotTransactionStatus::kNotFound, 0)));
+  }
+
+  FetchCurrentBlock();
 }
 
 void PolkadotTransactionStatusTask::OnGetEvents(
