@@ -167,8 +167,9 @@ jobs:
             LEO_PR=$(gh api "repos/brave/leo/commits/$LEO_REF/pulls" -q '.[0].html_url' 2>/dev/null || true)
             [[ -n "$LEO_PR" ]] && BODY="$BODY"$'\n\n'"Leo: $LEO_PR"
           fi
-          if ! gh pr list --head "$BRANCH" --json number -q '.[].number' | grep -q .; then
+          if ! gh pr list --repo "${GITHUB_REPOSITORY}" --head "$BRANCH" --json number -q '.[].number' | grep -q .; then
             gh pr create \
+              --repo "${GITHUB_REPOSITORY}" \
               --title "fix: address security advisories" \
               --body "$BODY" \
               --head "$BRANCH" \
