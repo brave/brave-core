@@ -743,6 +743,8 @@ if (!is_android) {
     sources = [ "//chrome/test/base/interactive_ui_tests_main.cc" ]
 
     deps = [
+      "//brave:packed_resources",
+      "//chrome:packed_resources",
       "//chrome/browser",
       "//chrome/test:chrome_test_launcher",
       "//chrome/test:test_support",
