@@ -103,9 +103,15 @@ jobs:
           while IFS= read -r -d $'\0' line; do
             XY="${line:0:2}"
             FILE="${line:3}"
-            # For rename/copy entries the old path follows as the next NUL entry; consume it
+            # For rename/copy entries the old path follows as the next NUL entry;
+            # emit a deletion for it so the source path is removed from the tree.
             if [[ "${XY:0:1}" =~ [RC] ]]; then
               IFS= read -r -d $'\0' _old_path
+              if [[ "${XY:0:1}" == "R" ]]; then
+                TREE_JSON=$(jq --arg path "$_old_path" \
+                  '. += [{"path": $path, "mode": "100644", "type": "blob", "sha": null}]' \
+                  <<< "$TREE_JSON")
+              fi
             fi
             if [[ "${XY:1:1}" == "D" ]]; then
               TREE_JSON=$(jq --arg path "$FILE" \
@@ -165,6 +171,7 @@ jobs:
             gh pr create \
               --title "fix: address security advisories" \
               --body "$BODY" \
+              --head "$BRANCH" \
               --base master \
               --label "CI/skip" \
               --label "security"
