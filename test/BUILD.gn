@@ -751,6 +751,10 @@ if (!is_android) {
       "//ui/compositor",
     ]
 
+    if (enable_commander) {
+      deps += [ "//brave/browser/ui/commander:interactive_ui_tests" ]
+    }
+
     if (is_win) {
       deps += [ "//ui/aura:test_support" ]
     }

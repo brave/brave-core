@@ -109,35 +109,6 @@ IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest, CanHideCommander) {
       base::BindLambdaForTesting([&]() { return !commander()->IsShowing(); }));
 }
 
-// NOTE: This test will pass in isolation but they depend on focus
-// so they'll fail if run with other tests. It'd be a good candidate for an
-// interactive UI test.
-IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest, MANUAL_HideClearsText) {
-  commander()->Show();
-  omnibox()->SetUserText(
-      base::StrCat({commander::kCommandPrefix, u" Hello World"}));
-
-  commander()->Hide();
-  WaitUntil(
-      base::BindLambdaForTesting([&]() { return !commander()->IsShowing(); }));
-  EXPECT_EQ(u"about:blank", omnibox()->GetText());
-}
-
-// NOTE: This test will pass in isolation but they depend on focus
-// so they'll fail if run with other tests. It'd be a good candidate for an
-// interactive UI test.
-IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest,
-                       MANUAL_CanHideCommanderViaText) {
-  omnibox()->SetUserText(
-      base::StrCat({commander::kCommandPrefix, u" Hello World"}));
-  WaitUntil(
-      base::BindLambdaForTesting([&]() { return commander()->IsShowing(); }));
-
-  omnibox()->SetUserText(u"Hello World");
-  WaitUntil(
-      base::BindLambdaForTesting([&]() { return !commander()->IsShowing(); }));
-}
-
 IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest,
                        CommandsAreUpdatedViaOmnibox) {
   omnibox()->SetUserText(
