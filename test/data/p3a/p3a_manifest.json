@@ -27,6 +27,7 @@
     "Brave.Rewards.WalletBalance": {
       "attributes": [
         "answer_index",
+        "unknown_attribute",
         "channel",
         "dtoi"
       ]
