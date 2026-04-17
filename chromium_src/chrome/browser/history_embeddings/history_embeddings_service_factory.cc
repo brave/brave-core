@@ -10,25 +10,19 @@
 #include "chrome/browser/history_embeddings/chrome_history_embeddings_service.h"
 #include "chrome/browser/passage_embeddings/chrome_passage_embeddings_service_controller.h"
 
-// Replace Chrome's PassageEmbeddingsServiceController with Brave's
-// Both are in the passage_embeddings namespace, so direct replacement works
+// Replace Chrome's PassageEmbeddingsServiceController with Brave's.
+// Both are in the passage_embeddings namespace, so direct replacement works.
 #define ChromePassageEmbeddingsServiceController \
   BravePassageEmbeddingsServiceController
 
-// Include the chrome header above so the class is declared before renaming.
-// The #define only affects make_unique calls in the .cc body.
-// See docs/gni_sources.md for the template pattern.
+// Route through our template so OnPassageVisibilityCalculated synthesizes a
+// passing visibility score — Brave doesn't use PageContentAnnotationsService
+// for content visibility filtering.
 #define ChromeHistoryEmbeddingsService \
   BraveHistoryEmbeddingsService<       \
       history_embeddings::ChromeHistoryEmbeddingsService>
 
-// Override GetEmbedder() call to return our BraveEmbedder for the given profile
-// instead of base class's embedder_. This passes the profile to create
-// per-profile embedders.
-#define GetEmbedder() GetBraveEmbedder(profile)
-
 #include <chrome/browser/history_embeddings/history_embeddings_service_factory.cc>
 
-#undef GetEmbedder
 #undef ChromeHistoryEmbeddingsService
 #undef ChromePassageEmbeddingsServiceController

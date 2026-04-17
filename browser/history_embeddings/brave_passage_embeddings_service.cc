@@ -115,6 +115,8 @@ void BraveBatchPassageEmbedder::GenerateEmbeddings(
     std::move(callback).Run({});
     return;
   }
+  DVLOG(3) << "GenerateEmbeddings: queued batch of " << passages.size()
+           << " passage(s), priority=" << static_cast<int>(priority);
   Batch batch;
   batch.passages = passages;
   batch.callback = std::move(callback);
@@ -133,9 +135,14 @@ void BraveBatchPassageEmbedder::ProcessNext() {
   pending_batches_.pop_front();
 
   if (!renderer_embedder_.is_bound()) {
+    DVLOG(1) << "Renderer embedder not bound; failing batch of "
+             << current_batch_->passages.size() << " passage(s)";
     FailCurrentBatch();
     return;
   }
+  DVLOG(3) << "ProcessNext: dispatching passage "
+           << current_batch_->next_index + 1 << "/"
+           << current_batch_->passages.size();
   const std::string& text =
       current_batch_->passages[current_batch_->next_index];
   renderer_embedder_->GenerateEmbeddings(
@@ -149,11 +156,17 @@ void BraveBatchPassageEmbedder::OnOneEmbedding(
     return;
   }
   if (embedding.empty()) {
+    DVLOG(1) << "Renderer returned empty embedding for passage "
+             << current_batch_->next_index + 1 << "/"
+             << current_batch_->passages.size() << "; failing batch";
     FailCurrentBatch();
     return;
   }
   auto floats = ToFloatEmbedding(embedding);
   if (!floats) {
+    DVLOG(1) << "Embedding value out of float range for passage "
+             << current_batch_->next_index + 1 << "/"
+             << current_batch_->passages.size() << "; failing batch";
     FailCurrentBatch();
     return;
   }
@@ -163,6 +176,8 @@ void BraveBatchPassageEmbedder::OnOneEmbedding(
   current_batch_->next_index++;
 
   if (current_batch_->next_index == current_batch_->passages.size()) {
+    DVLOG(3) << "Batch complete: " << current_batch_->results.size()
+             << " embedding(s) returned to caller";
     Batch done = std::move(*current_batch_);
     current_batch_.reset();
     std::move(done.callback).Run(std::move(done.results));
@@ -192,6 +207,9 @@ void BraveBatchPassageEmbedder::OnDisconnected() {
     to_fail.push_front(std::move(*current_batch_));
     current_batch_.reset();
   }
+  DVLOG_IF(1, !to_fail.empty())
+      << "BatchEmbedder pipe disconnected with " << to_fail.size()
+      << " in-flight/queued batch(es); failing all";
   for (auto& batch : to_fail) {
     if (batch.callback) {
       std::move(batch.callback).Run({});
@@ -319,6 +337,8 @@ void BravePassageEmbeddingsService::OnLocalModelsReady(
 
 void BravePassageEmbeddingsService::OnBackgroundContentsDestroyed(
     local_ai::BackgroundWebContents::DestroyReason reason) {
+  DVLOG(1) << "Background contents destroyed unexpectedly, reason="
+           << static_cast<int>(reason);
   CloseBackgroundContents();
 }
 
@@ -341,6 +361,12 @@ void BravePassageEmbeddingsService::OnBackgroundContentsCreated(
 }
 
 void BravePassageEmbeddingsService::CloseBackgroundContents() {
+  DVLOG(3) << "CloseBackgroundContents (pending_loads=" << pending_loads_.size()
+           << " batch_embedder=" << (batch_embedder_ ? "set" : "null")
+           << " factory_bound=" << factory_.is_bound()
+           << " model_ready=" << model_ready_
+           << " bg_contents=" << (background_web_contents_ ? "set" : "null")
+           << ")";
   batch_embedder_.reset();
   factory_.reset();
   FailPendingLoads();
@@ -446,7 +472,12 @@ void BravePassageEmbeddingsService::FulfillPendingLoads() {
   }
 
   // Any additional pending loads fail: upstream expects one active
-  // embedder remote at a time.
+  // embedder remote at a time. The controller gates BindPassageEmbedder
+  // behind `!embedder_remote_`, so this branch should only fire if
+  // something else races a second binding in.
+  DVLOG_IF(1, !pending_loads_.empty())
+      << "BraveBatchPassageEmbedder already bound; failing "
+      << pending_loads_.size() << " extra pending load(s)";
   for (auto& load : pending_loads_) {
     std::move(load.callback).Run(false);
   }
@@ -461,6 +492,8 @@ void BravePassageEmbeddingsService::FailPendingLoads() {
 }
 
 void BravePassageEmbeddingsService::OnFactoryDisconnected() {
+  DVLOG(1) << "Renderer factory pipe disconnected; embeddings unavailable "
+              "until the background WebContents reloads";
   factory_.reset();
   batch_embedder_.reset();
   model_ready_ = false;
@@ -469,6 +502,7 @@ void BravePassageEmbeddingsService::OnFactoryDisconnected() {
 }
 
 void BravePassageEmbeddingsService::OnBatchEmbedderDisconnected() {
+  DVLOG(3) << "BraveBatchPassageEmbedder disconnected; resetting";
   batch_embedder_.reset();
 }
 

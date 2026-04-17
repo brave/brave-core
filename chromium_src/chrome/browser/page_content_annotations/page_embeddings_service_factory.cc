@@ -63,8 +63,7 @@ PageEmbeddingsServiceFactory::BuildServiceInstanceForBrowserContext(
       passage_embeddings::BravePassageEmbeddingsServiceController::Get();
   return std::make_unique<PageEmbeddingsService>(
       base::BindRepeating(&GenerateEmbeddingsCandidates),
-      page_content_extraction_service, controller->GetBraveEmbedder(profile),
-      controller);
+      page_content_extraction_service, controller->GetEmbedder(), controller);
 #endif
 }
 

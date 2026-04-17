@@ -5,14 +5,84 @@
 
 #include "brave/browser/history_embeddings/brave_passage_embeddings_service_controller.h"
 
+#include <utility>
+
+#include "base/functional/bind.h"
 #include "base/logging.h"
-#include "brave/browser/history_embeddings/brave_embedder.h"
 #include "brave/browser/local_ai/local_ai_service_factory.h"
+#include "brave/components/local_ai/content/background_web_contents_impl.h"
+#include "brave/components/local_ai/core/local_models_updater.h"
+#include "brave/components/local_ai/core/url_constants.h"
+#include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/task_manager/web_contents_tags.h"
+#include "components/passage_embeddings/core/passage_embeddings_features.h"
+#include "mojo/public/cpp/bindings/callback_helpers.h"
 
 namespace passage_embeddings {
 
-// BravePassageEmbeddingsServiceController implementation
+namespace {
+
+mojom::PassagePriority ToMojom(PassagePriority priority) {
+  switch (priority) {
+    case kUserInitiated:
+      return mojom::PassagePriority::kUserInitiated;
+    case kUrgent:
+      return mojom::PassagePriority::kUrgent;
+    case kPassive:
+    case kLatent:
+      return mojom::PassagePriority::kPassive;
+  }
+}
+
+void InstallBindCallback(
+    base::WeakPtr<BravePassageEmbeddingsService> weak_service,
+    content::WebContents* web_contents) {
+  auto bind_cb = base::BindRepeating(
+      &BravePassageEmbeddingsService::BindLocalAIReceiver, weak_service);
+  local_ai::LocalAIServiceFactory::SetBindCallbackForWebContents(
+      web_contents, std::move(bind_cb));
+  task_manager::WebContentsTags::CreateForToolContents(
+      web_contents, IDS_LOCAL_AI_TASK_MANAGER_TITLE);
+}
+
+void OnGuestProfileCreated(
+    base::WeakPtr<BravePassageEmbeddingsService> weak_service,
+    BravePassageEmbeddingsService::BackgroundWebContentsCreatedCallback
+        callback,
+    Profile* guest_profile) {
+  CHECK(guest_profile);
+  if (!weak_service) {
+    return;
+  }
+  auto* otr = guest_profile->GetPrimaryOTRProfile(/*create_if_needed=*/true);
+  // Register the OTR profile with the controller so we tear the service
+  // down before the profile is destroyed on shutdown — otherwise the
+  // WebContents inside the service would outlive its BrowserContext.
+  BravePassageEmbeddingsServiceController::Get()->ObserveGuestOTRProfile(otr);
+  auto contents = std::make_unique<local_ai::BackgroundWebContentsImpl>(
+      otr, GURL(local_ai::kUntrustedLocalAIURL), weak_service.get(),
+      base::BindOnce(&InstallBindCallback, weak_service));
+  std::move(callback).Run(std::move(contents));
+}
+
+void CreateBackgroundWebContents(
+    local_ai::BackgroundWebContents::Delegate* delegate,
+    BravePassageEmbeddingsService::BackgroundWebContentsCreatedCallback
+        callback) {
+  auto* service = static_cast<BravePassageEmbeddingsService*>(delegate);
+  auto weak_service = service->GetWeakPtr();
+  auto* profile_manager = g_browser_process->profile_manager();
+  CHECK(profile_manager);
+  profile_manager->CreateProfileAsync(
+      ProfileManager::GetGuestProfilePath(),
+      base::BindOnce(&OnGuestProfileCreated, std::move(weak_service),
+                     std::move(callback)));
+}
+
+}  // namespace
 
 // static
 BravePassageEmbeddingsServiceController*
@@ -22,75 +92,126 @@ BravePassageEmbeddingsServiceController::Get() {
 }
 
 BravePassageEmbeddingsServiceController::
-    BravePassageEmbeddingsServiceController() = default;
+    BravePassageEmbeddingsServiceController() {
+  // SchedulingEmbedder (owned by the base class) was added to
+  // observer_list_ during base construction. It's waiting for a
+  // metadata update before it dispatches any work. Our metadata is
+  // static, so fire the notification now.
+  observer_list_.Notify(&EmbedderMetadataObserver::EmbedderMetadataUpdated,
+                        GetEmbedderMetadata());
+}
 
 BravePassageEmbeddingsServiceController::
     ~BravePassageEmbeddingsServiceController() = default;
 
-Embedder* BravePassageEmbeddingsServiceController::GetBraveEmbedder(
-    Profile* profile) {
-  if (!profile) {
-    DVLOG(1) << "GetBraveEmbedder called with null profile";
-    return nullptr;
-  }
-
-  if (!embedder_) {
-    DVLOG(3) << "Creating shared BraveEmbedder";
-    embedder_ = std::make_unique<BraveEmbedder>(
-        local_ai::LocalAIServiceFactory::GetForProfile(profile));
-    embedder_->AddObserver(this);
-  }
-
-  return embedder_.get();
-}
-
-void BravePassageEmbeddingsServiceController::OnEmbedderIdle() {
-  if (embedder_) {
-    embedder_->NotifyServiceIdle();
-  }
+bool BravePassageEmbeddingsServiceController::MaybeUpdateModelInfo(
+    base::optional_ref<const optimization_guide::ModelInfo> model_info) {
+  // No-op: we don't consume optimization_guide's tflite model. See header.
+  return false;
 }
 
 void BravePassageEmbeddingsServiceController::MaybeLaunchService() {
-  // No-op: BraveEmbedder instances are passed directly to
-  // HistoryEmbeddingsService per-profile, so we don't launch a separate
-  // service process. This method is required by the base class but not used
-  // in our implementation.
-  DVLOG(3) << "MaybeLaunchService called (no-op for BraveEmbedder)";
+  if (service_remote_) {
+    return;
+  }
+  service_ = std::make_unique<BravePassageEmbeddingsService>(
+      service_remote_.BindNewPipeAndPassReceiver(),
+      base::BindRepeating(&CreateBackgroundWebContents),
+      local_ai::LocalModelsUpdaterState::GetInstance());
+  service_remote_.set_disconnect_handler(base::BindOnce(
+      &BravePassageEmbeddingsServiceController::ResetServiceRemote,
+      base::Unretained(this)));
+  service_remote_.set_idle_handler(
+      kEmbeddingsServiceTimeout.Get(),
+      base::BindRepeating(
+          &BravePassageEmbeddingsServiceController::ResetServiceRemote,
+          base::Unretained(this)));
 }
 
 void BravePassageEmbeddingsServiceController::ResetServiceRemote() {
-  // No-op: We don't use a separate service process. BraveEmbedder instances
-  // are used directly per-profile.
-  DVLOG(3) << "ResetServiceRemote called (no-op for BraveEmbedder)";
+  DVLOG(3) << "ResetServiceRemote (service_=" << (service_ ? "set" : "null")
+           << ")";
+  ResetEmbedderRemote();
+  service_remote_.reset();
+  service_.reset();
+  otr_profile_observation_.Reset();
+}
+
+void BravePassageEmbeddingsServiceController::ObserveGuestOTRProfile(
+    Profile* otr_profile) {
+  CHECK(otr_profile);
+  if (otr_profile_observation_.IsObservingSource(otr_profile)) {
+    return;
+  }
+  otr_profile_observation_.Reset();
+  otr_profile_observation_.Observe(otr_profile);
+}
+
+void BravePassageEmbeddingsServiceController::OnProfileWillBeDestroyed(
+    Profile* profile) {
+  DVLOG(1) << "Guest OTR profile is being destroyed; tearing down service "
+              "to release BackgroundWebContents";
+  // ResetServiceRemote drops service_ (and with it the BackgroundWebContents)
+  // and calls otr_profile_observation_.Reset() so we stop observing.
+  ResetServiceRemote();
 }
 
 bool BravePassageEmbeddingsServiceController::EmbedderReady() {
-  // We're always ready since we use LocalAIService instead of model files
   return true;
 }
 
 EmbedderMetadata
 BravePassageEmbeddingsServiceController::GetEmbedderMetadata() {
-  // Return metadata for EmbeddingGemma model
-  // Version 1, 768-dimensional output, 0.45 search threshold
-  return EmbedderMetadata(
-      /*model_version=*/1,
-      /*output_size=*/768,
-      /*search_score_threshold=*/0.45);
+  return EmbedderMetadata(/*model_version=*/1,
+                          /*output_size=*/768,
+                          /*search_score_threshold=*/0.45);
 }
 
 void BravePassageEmbeddingsServiceController::GetEmbeddings(
     std::vector<std::string> passages,
     PassagePriority priority,
     GetEmbeddingsResultCallback callback) {
-  // This method is part of the base class interface but not used in our
-  // implementation. BraveEmbedder instances are accessed directly per-profile
-  // via GetBraveEmbedder(profile), and HistoryEmbeddingsService calls
-  // methods on those embedders directly rather than going through this
-  // controller method.
-  DVLOG(1) << "GetEmbeddings called unexpectedly on BravePassage"
-              "EmbeddingsServiceController";
-  std::move(callback).Run({}, ComputeEmbeddingsStatus::kExecutionFailure);
+  if (passages.empty()) {
+    std::move(callback).Run({}, ComputeEmbeddingsStatus::kSuccess);
+    return;
+  }
+
+  if (!embedder_remote_) {
+    MaybeLaunchService();
+    auto receiver = embedder_remote_.BindNewPipeAndPassReceiver();
+    embedder_remote_.set_disconnect_handler(base::BindOnce(
+        &BravePassageEmbeddingsServiceController::ResetEmbedderRemote,
+        base::Unretained(this)));
+    embedder_remote_.set_idle_handler(
+        kEmbedderTimeout.Get(),
+        base::BindRepeating(
+            &BravePassageEmbeddingsServiceController::ResetEmbedderRemote,
+            base::Unretained(this)));
+    // Upstream's LoadModels opens tflite/sentencepiece files from disk;
+    // we use our own WASM-hosted EmbeddingGemma, so the params are
+    // ignored by BravePassageEmbeddingsService.
+    service_remote_->LoadModels(
+        mojom::PassageEmbeddingsLoadModelsParams::New(),
+        mojom::PassageEmbedderParams::New(), std::move(receiver),
+        base::BindOnce([](bool success) {
+          DVLOG_IF(1, !success) << "BravePassageEmbeddingsService::LoadModels "
+                                   "reported failure";
+        }));
+  }
+
+  embedder_remote_->GenerateEmbeddings(
+      std::move(passages), ToMojom(priority),
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+          base::BindOnce(
+              [](GetEmbeddingsResultCallback cb,
+                 std::vector<mojom::PassageEmbeddingsResultPtr> results) {
+                auto status = results.empty()
+                                  ? ComputeEmbeddingsStatus::kExecutionFailure
+                                  : ComputeEmbeddingsStatus::kSuccess;
+                std::move(cb).Run(std::move(results), status);
+              },
+              std::move(callback)),
+          std::vector<mojom::PassageEmbeddingsResultPtr>()));
 }
 
 }  // namespace passage_embeddings

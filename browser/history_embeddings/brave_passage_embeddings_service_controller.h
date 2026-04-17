@@ -7,23 +7,30 @@
 #define BRAVE_BROWSER_HISTORY_EMBEDDINGS_BRAVE_PASSAGE_EMBEDDINGS_SERVICE_CONTROLLER_H_
 
 #include <memory>
+#include <string>
+#include <vector>
 
 #include "base/no_destructor.h"
-#include "brave/browser/history_embeddings/brave_embedder.h"
+#include "base/scoped_observation.h"
+#include "base/types/optional_ref.h"
+#include "brave/browser/history_embeddings/brave_passage_embeddings_service.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_observer.h"
+#include "components/optimization_guide/core/delivery/model_info.h"
 #include "components/passage_embeddings/core/passage_embeddings_service_controller.h"
-
-class Profile;
 
 namespace passage_embeddings {
 
-// Brave's implementation of PassageEmbeddingsServiceController.
-// Instead of launching a separate service process, we use an in-process
-// implementation that forwards to a single shared BraveEmbedder (which
-// uses LocalAIService). The LocalAIService runs its WASM renderer on
-// the guest OTR profile, so there is no per-profile state here.
+// Brave's subclass of PassageEmbeddingsServiceController. Mirrors
+// ChromePassageEmbeddingsServiceController, except MaybeLaunchService()
+// constructs an in-process BravePassageEmbeddingsService (bound to the
+// base class's service_remote_) instead of launching a utility process.
+//
+// Upstream's SchedulingEmbedder, owned by the base class, drives the
+// actual job queue; we just provide the transport.
 class BravePassageEmbeddingsServiceController
     : public PassageEmbeddingsServiceController,
-      public BraveEmbedder::Observer {
+      public ProfileObserver {
  public:
   static BravePassageEmbeddingsServiceController* Get();
 
@@ -32,11 +39,12 @@ class BravePassageEmbeddingsServiceController
   BravePassageEmbeddingsServiceController& operator=(
       const BravePassageEmbeddingsServiceController&) = delete;
 
-  // Return the shared BraveEmbedder. Creates it lazily on first call
-  // using |profile| to obtain the LocalAIService. The profile param
-  // is needed by the chromium_src override that replaces
-  // GetEmbedder() with GetBraveEmbedder(profile).
-  Embedder* GetBraveEmbedder(Profile* profile);
+  // Called by CreateBackgroundWebContents once the guest OTR profile is
+  // available. Observes the profile so we can tear the service down
+  // before it is destroyed on browser shutdown (otherwise the WebContents
+  // inside the service would outlive its BrowserContext, tripping
+  // BrowserContextImpl's `rph_with_bc_reference` NOTREACHED).
+  void ObserveGuestOTRProfile(Profile* otr_profile);
 
  private:
   friend class base::NoDestructor<BravePassageEmbeddingsServiceController>;
@@ -44,10 +52,17 @@ class BravePassageEmbeddingsServiceController
   BravePassageEmbeddingsServiceController();
   ~BravePassageEmbeddingsServiceController() override;
 
-  // BraveEmbedder::Observer:
-  void OnEmbedderIdle() override;
-
   // PassageEmbeddingsServiceController:
+  // Swallow optimization_guide updates. Upstream's PassageEmbedderModelObserver
+  // (created per-profile by PassageEmbedderModelObserverFactory) calls this
+  // whenever the tflite model component changes; the base implementation
+  // clears model paths and resets embedder_remote_ without touching service_,
+  // which leaves the next GetEmbeddings to fail the new embedder against a
+  // still-bound batch_embedder_ on the old service_. We don't use the
+  // upstream model at all, so the notification is noise.
+  bool MaybeUpdateModelInfo(
+      base::optional_ref<const optimization_guide::ModelInfo> model_info)
+      override;
   void MaybeLaunchService() override;
   void ResetServiceRemote() override;
   bool EmbedderReady() override;
@@ -56,9 +71,12 @@ class BravePassageEmbeddingsServiceController
                      PassagePriority priority,
                      GetEmbeddingsResultCallback callback) override;
 
-  // Single shared embedder, created lazily on first GetBraveEmbedder()
-  // call.
-  std::unique_ptr<BraveEmbedder> embedder_;
+  // ProfileObserver:
+  void OnProfileWillBeDestroyed(Profile* profile) override;
+
+  std::unique_ptr<BravePassageEmbeddingsService> service_;
+  base::ScopedObservation<Profile, ProfileObserver> otr_profile_observation_{
+      this};
 };
 
 }  // namespace passage_embeddings
