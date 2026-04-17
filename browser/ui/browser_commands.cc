@@ -64,6 +64,7 @@
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_tabrestore.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/profiles/profile_picker.h"
@@ -182,6 +183,9 @@ int AppendBrowserSessionCommands(
   SessionID window_id = SessionID::NewUnique();
   commands.push_back(sessions::CreateSetWindowTypeCommand(
       window_id, sessions::SessionWindow::TYPE_NORMAL));
+  commands.push_back(sessions::CreateSetWindowBoundsCommand(
+      window_id, browser->window()->GetRestoredBounds(),
+      browser->window()->GetRestoredState()));
 
   // Mark the calling browser's window as the active one.
   if (browser == calling_browser ||
@@ -282,8 +286,18 @@ void DoRestoreWorkspace(
       continue;
     }
 
-    Browser* browser = chrome::OpenEmptyWindow(
-        profile, /*should_trigger_session_restore=*/false);
+    if (Browser::GetCreationStatusForProfile(profile) !=
+        Browser::CreationStatus::kOk) {
+      continue;
+    }
+    Browser::CreateParams params(Browser::TYPE_NORMAL, profile, false);
+    params.initial_bounds = window->bounds;
+    params.initial_show_state = window->show_state;
+    params.initial_workspace = window->workspace;
+    params.initial_visible_on_all_workspaces_state =
+        window->visible_on_all_workspaces;
+    params.should_trigger_session_restore = false;
+    Browser* browser = Browser::Create(params);
     if (!browser) {
       continue;
     }
@@ -322,6 +336,7 @@ void DoRestoreWorkspace(
     if (active < tsm->count()) {
       tsm->ActivateTabAt(active);
     }
+    browser->window()->Show();
   }
 }
 
