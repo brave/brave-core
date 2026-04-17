@@ -47,6 +47,7 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_rewards/core/rewards_util.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "build/build_config.h"
@@ -166,8 +167,9 @@ AdsServiceImpl::AdsServiceImpl(
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-  CHECK(rewards_service);
-  rewards_service_observation_.Observe(rewards_service);
+  if (rewards_service) {
+    rewards_service_observation_.Observe(rewards_service);
+  }
 #endif
 
   if (CanStartBatAdsService()) {
@@ -281,6 +283,12 @@ void AdsServiceImpl::GetDeviceIdAndMaybeStartBatAdsServiceCallback(
 }
 
 bool AdsServiceImpl::CanStartBatAdsService() const {
+  if (!brave_rewards::IsSupported(&*prefs_)) {
+    // Never start if Rewards is disabled by policy, feature flag, or
+    // unsupported region, regardless of which ad unit the user has opted into.
+    return false;
+  }
+
   if (UserHasJoinedBraveRewards()) {
     // Always start the service to update brave://ads-internals,
     // brave://rewards, and brave://rewards-internals if the user has joined
@@ -371,9 +379,13 @@ void AdsServiceImpl::InitializeBasePathDirectoryCallback(bool success) {
 
 void AdsServiceImpl::InitializeRewardsWallet() {
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-  rewards_service_observation_.GetSource()->GetRewardsWallet(
-      base::BindOnce(&AdsServiceImpl::InitializeRewardsWalletCallback,
-                     bat_ads_service_weak_ptr_factory_.GetWeakPtr()));
+  if (rewards_service_observation_.IsObserving()) {
+    rewards_service_observation_.GetSource()->GetRewardsWallet(
+        base::BindOnce(&AdsServiceImpl::InitializeRewardsWalletCallback,
+                       bat_ads_service_weak_ptr_factory_.GetWeakPtr()));
+  } else {
+    InitializeRewardsWalletCallback(/*mojom_rewards_wallet=*/nullptr);
+  }
 #else
   InitializeRewardsWalletCallback(/*mojom_rewards_wallet=*/nullptr);
 #endif
@@ -729,6 +741,10 @@ void AdsServiceImpl::NotifyPrefChanged(const std::string& path) const {
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 void AdsServiceImpl::GetRewardsWallet() {
+  if (!rewards_service_observation_.IsObserving()) {
+    return;
+  }
+
   rewards_service_observation_.GetSource()->GetRewardsWallet(
       base::BindOnce(&AdsServiceImpl::NotifyRewardsWalletDidUpdate,
                      weak_ptr_factory_.GetWeakPtr()));
@@ -1548,8 +1564,10 @@ void AdsServiceImpl::Log(const std::string& file,
                          int32_t verbose_level,
                          const std::string& message) {
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-  rewards_service_observation_.GetSource()->WriteDiagnosticLog(
-      file, line, verbose_level, message);
+  if (rewards_service_observation_.IsObserving()) {
+    rewards_service_observation_.GetSource()->WriteDiagnosticLog(
+        file, line, verbose_level, message);
+  }
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
   const int vlog_level =
