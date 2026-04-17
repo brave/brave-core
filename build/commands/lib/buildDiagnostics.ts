@@ -208,11 +208,12 @@ export function dumpProcessHangDiagnostics(outputDir?: string) {
       .map((line) => line.trim().split(/\s+/)[0])
       .filter(looksLikeNumericPid)
 
+    console.log(`--- Deep Dive into PIDs: ${pidsToProbe.join(', ')} ---`)
+
     if (outputDir) {
       triggerNodeDiagnosticReportsAndPrint(outputDir, nodePids)
     }
-
-    console.log(`--- Deep Dive into PIDs: ${pidsToProbe.join(', ')} ---`)
+    process.exit(1)
 
     // Allow gathering ptrace information. CI currently doesn't restrict sudo.
     try {

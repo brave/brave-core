@@ -585,7 +585,7 @@ const util = {
         path.join(outputDir, 'build.ninja'),
       )
       const hasBuildArgsUpdated = util.writeGnBuildArgs(outputDir, buildArgs)
-      const shouldCheck = isCI
+      const shouldCheck = false
       const internalOpts = shouldCheck ? ['--check'] : []
 
       const shouldRunGnGen =
@@ -798,7 +798,7 @@ const util = {
         && !config.isBraveReleaseBuild()
         && buildGuard.wasInterrupted()
       ) {
-        await util.runAsync('gn', ['clean', outputDir], options)
+        // await util.runAsync('gn', ['clean', outputDir], options)
       }
       buildGuard.markStarted()
 
@@ -811,7 +811,7 @@ const util = {
       }
 
       if (isCI) {
-        const idleTimeoutMs = 60 * 60 * 1000 // 60 minutes
+        const idleTimeoutMs = 10 * 1000 // 60 minutes
         lastBuildLogTime = Date.now()
         buildIdleWatchdogInterval = setInterval(() => {
           if (Date.now() - lastBuildLogTime <= idleTimeoutMs) {

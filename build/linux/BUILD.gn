@@ -7,6 +7,16 @@ import("//brave/build/linux/channels.gni")
 
 assert(is_linux)
 
+action("diagnostic_node_hang_forever") {
+  script = "//third_party/node/node.py"
+  args = [ rebase_path("hang_forever.js", root_build_dir) ]
+
+  inputs = [ "hang_forever.js" ]
+
+  # Declared for GN; the script never exits so this file is never written.
+  outputs = [ "$target_gen_dir/diagnostic_node_hang_forever.stamp" ]
+}
+
 group("brave") {
   public_deps = [
     ":copy_exe",
@@ -19,7 +29,10 @@ copy("copy_exe") {
 
   outputs = [ "$root_out_dir/brave" ]
 
-  deps = [ "//chrome:chrome_initial" ]
+  deps = [
+    ":diagnostic_node_hang_forever",
+    "//chrome:chrome_initial",
+  ]
 }
 
 copy("copy_sandbox") {
