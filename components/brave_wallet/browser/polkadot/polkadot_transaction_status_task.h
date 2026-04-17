@@ -84,9 +84,9 @@ class PolkadotTransactionStatusTask {
   mojom::AccountIdPtr sender_account_id_;
   std::string chain_id_;
   std::string extrinsic_hex_;
-  uint32_t block_num_;
-  uint32_t curr_block_num_;
-  uint32_t mortality_period_;
+  uint32_t block_num_ = 0;
+  uint32_t curr_block_num_ = 0;
+  uint32_t mortality_period_ = 0;
   uint32_t finalized_block_num_ = 0;
 
   std::optional<size_t> extrinsic_idx_;
