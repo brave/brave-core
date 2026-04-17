@@ -1,15 +1,32 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import { useEffect } from 'react'
 
 import { callbackRouter, handler } from '../desktop_wallpaper_startup'
 import { SelectItemEventDetail } from '@brave/leo/types/src/components/menu/menu.svelte'
-import { Scaling, WallpaperStatus, DisplayInfos } from 'gen/brave/browser/ui/webui/desktop_wallpaper/desktop_wallpaper.mojom.m.js'
+import {
+  Scaling,
+  WallpaperStatus,
+  DisplayInfos,
+} from 'gen/brave/components/desktop_wallpaper/desktop_wallpaper.mojom.m.js'
 
 import { useDesktopWallpaperState } from './useDesktopWallpaperState'
 
 export function useDesktopWallpaper(defaultMonitorKey: string) {
   const [state, dispatch] = useDesktopWallpaperState(defaultMonitorKey)
-  const { status, fit, monitor, useAllMonitors, imageSource, displays, path, imageUrl } =
-    state
+  const {
+    status,
+    fit,
+    monitor,
+    useAllMonitors,
+    imageSource,
+    displays,
+    path,
+    imageUrl,
+  } = state
 
   const fitToScaling: Record<string, Scaling> = {
     fill: Scaling.kFillScreen,
@@ -34,7 +51,7 @@ export function useDesktopWallpaper(defaultMonitorKey: string) {
     handler.setImageAsDesktopWallpaper(
       path,
       targetDisplays,
-      fitToScaling[fit] ?? Scaling.kFillScreen
+      fitToScaling[fit] ?? Scaling.kFillScreen,
     )
   }
 
@@ -66,7 +83,11 @@ export function useDesktopWallpaper(defaultMonitorKey: string) {
     handler.fetchImage(imageUrl)
     handler.getDisplayInfos()
 
-    const receiveImageListener = (img: string, ext: string, imagePath: string) => {
+    const receiveImageListener = (
+      img: string,
+      ext: string,
+      imagePath: string,
+    ) => {
       dispatch({
         type: 'RECEIVE_IMAGE',
         payload: {
@@ -91,9 +112,11 @@ export function useDesktopWallpaper(defaultMonitorKey: string) {
       handleCancel()
     }
 
-    const imageListenerId = callbackRouter.receiveImage.addListener(receiveImageListener)
-    const displayListenerId = callbackRouter.receiveDisplayInfos.addListener((d: Array<DisplayInfos>) =>
-      dispatch({ type: 'SET_DISPLAYS', payload: d })
+    const imageListenerId =
+      callbackRouter.receiveImage.addListener(receiveImageListener)
+    const displayListenerId = callbackRouter.receiveDisplayInfos.addListener(
+      (d: Array<DisplayInfos>) =>
+        dispatch({ type: 'SET_DISPLAYS', payload: d }),
     )
     const closeListenerId =
       callbackRouter.receiveWallpaperStatus.addListener(receiveCloseListener)

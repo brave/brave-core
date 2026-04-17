@@ -1,3 +1,8 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 #include "brave/browser/ui/webui/desktop_wallpaper/desktop_wallpaper_ui.h"
 
 #include <optional>
@@ -17,8 +22,6 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
 #include "ui/webui/webui_util.h"
-#include "base/json/json_writer.h"
-#include "base/values.h"
 
 DesktopWallpaperUI::DesktopWallpaperUI(content::WebUI* web_ui)
     : ConstrainedWebDialogUI(web_ui),
@@ -51,13 +54,11 @@ void DesktopWallpaperUI::CreatePageHandler(
     mojo::PendingReceiver<desktop_wallpaper::mojom::PageHandler> receiver) {
   auto* profile = Profile::FromWebUI(web_ui());
   page_handler_ = std::make_unique<DesktopWallpaperHandler>(
-      std::move(receiver), std::move(page),
-      profile->GetURLLoaderFactory());
+      std::move(receiver), std::move(page), profile->GetURLLoaderFactory());
 }
 
 DesktopWallpaperUIConfig::DesktopWallpaperUIConfig()
     : DefaultWebUIConfig(content::kChromeUIScheme, kDesktopWallpaperHost) {}
-
 
 DesktopWallpaperDialogDelegate::DesktopWallpaperDialogDelegate(
     const std::string& image_url,

@@ -1,3 +1,8 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 #ifndef BRAVE_COMPONENTS_DESKTOP_WALLPAPER_DESKTOP_WALLPAPER_SERVICE_H_
 #define BRAVE_COMPONENTS_DESKTOP_WALLPAPER_DESKTOP_WALLPAPER_SERVICE_H_
 
@@ -7,7 +12,7 @@
 #include <vector>
 
 #include "base/files/file_path.h"
-#include "brave/browser/ui/webui/desktop_wallpaper/desktop_wallpaper.mojom.h"
+#include "brave/components/desktop_wallpaper/desktop_wallpaper.mojom.h"
 
 namespace desktop_wallpaper {
 enum class Scaling { kFitToScreen, kFillScreen, kStretchToFill, kCenter };
@@ -41,4 +46,4 @@ class DesktopWallpaper {
 };
 }  // namespace desktop_wallpaper
 
-#endif
+#endif  // BRAVE_COMPONENTS_DESKTOP_WALLPAPER_DESKTOP_WALLPAPER_SERVICE_H_

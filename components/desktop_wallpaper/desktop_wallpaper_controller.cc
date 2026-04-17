@@ -1,5 +1,9 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 #include <filesystem>
-#include <format>
 #include <vector>
 
 #include "base/check.h"
@@ -7,10 +11,10 @@
 #include "base/logging.h"
 #include "base/path_service.h"
 #include "base/strings/string_split.h"
-#include "brave/browser/ui/webui/desktop_wallpaper/desktop_wallpaper.mojom-shared.h"
-#include "brave/browser/ui/webui/desktop_wallpaper/desktop_wallpaper.mojom.h"
+#include "base/strings/stringprintf.h"
+#include "brave/components/desktop_wallpaper/desktop_wallpaper.mojom.h"
 #include "chrome/common/chrome_paths.h"
-#include "desktop_wallpaper_service.h"
+#include "components/desktop_wallpaper/desktop_wallpaper_service.h"
 
 namespace desktop_wallpaper {
 desktop_wallpaper::mojom::WallpaperStatus
@@ -29,10 +33,12 @@ DesktopWallpaper::SetImageAsDesktopWallpaper(
   auto ext = p.extension().string().substr(
       1);  // don't really need to have the dot of the file extension as well
   auto filename =
-      displays.size() > 1 ? ext : std::format("{}_{}", ext, displays[0]->id);
+      displays.size() > 1
+          ? ext
+          : base::StringPrintf("%s_%s", ext.c_str(), displays[0]->id.c_str());
 
   base::FilePath user_path;
-  CHECK(base::PathService::Get(chrome::DIR_USER_DATA, &user_path));
+  CHECK(base::PathService::CheckedGet(chrome::DIR_USER_DATA, &user_path));
 
   auto wallpaper_dir = user_path.Append("wallpapers");
   auto wallpaper = wallpaper_dir.Append(filename).value();
@@ -49,25 +55,24 @@ DesktopWallpaper::SetImageAsDesktopWallpaper(
     }
   }
 
-  auto is_current_screen =
-      [&displays](const std::filesystem::directory_entry& e) {
-        // we are setting a wallpaper
-        // for every screen, so we allow the for loop to delete every file
-        // inside the folder
-        if (displays.size() > 1) {
-          return true;
-        }
+  auto is_current_screen = [&displays](
+                               const std::filesystem::directory_entry& e) {
+    // we are setting a wallpaper
+    // for every screen, so we allow the for loop to delete every file
+    // inside the folder
+    if (displays.size() > 1) {
+      return true;
+    }
 
-        // otherwise we only get the file with the ID of the screen the user
-        // wants a new wallpaper on
-        auto parts =
-            base::SplitString(e.path().filename().string(), "_",
-                              base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
-        if (parts.size() < 2) {
-          return false;
-        }
-        return e.is_regular_file() && parts[1] == displays[0]->id;
-      };
+    // otherwise we only get the file with the ID of the screen the user
+    // wants a new wallpaper on
+    auto parts = base::SplitString(e.path().filename().string(), "_",
+                                   base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
+    if (parts.size() < 2) {
+      return false;
+    }
+    return e.is_regular_file() && parts[1] == displays[0]->id;
+  };
 
   for (const std::filesystem::directory_entry& entry :
        std::filesystem::directory_iterator(wallpaper_dir.value())) {

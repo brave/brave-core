@@ -1,11 +1,16 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 #ifndef BRAVE_BROWSER_UI_WEBUI_DESKTOP_WALLPAPER_DESKTOP_WALLPAPER_UI_H_
 #define BRAVE_BROWSER_UI_WEBUI_DESKTOP_WALLPAPER_DESKTOP_WALLPAPER_UI_H_
 
 #include <memory>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/browser/ui/webui/desktop_wallpaper/desktop_wallpaper.mojom.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/desktop_wallpaper/desktop_wallpaper.mojom.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/webui_config.h"
@@ -51,7 +56,7 @@ class DesktopWallpaperUIConfig
 };
 
 class DesktopWallpaperDialogDelegate : public ui::WebDialogDelegate,
-                                     public content::WebContentsObserver {
+                                       public content::WebContentsObserver {
  public:
   DesktopWallpaperDialogDelegate(
       const std::string& image_url,

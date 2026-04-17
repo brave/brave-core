@@ -1,3 +1,8 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 
 import Button from '@brave/leo/react/button'
@@ -34,12 +39,8 @@ export function App() {
     handleMonitorOnChange,
   } = useDesktopWallpaper('1')
 
-  const {
-    monitorWidth,
-    monitorHeight,
-    containerRef,
-    getBackgroundSize
-  } = useImagePreview(imageSource, monitor, displays, fit)
+  const { monitorWidth, monitorHeight, containerRef, getBackgroundSize } =
+    useImagePreview(imageSource, monitor, displays, fit)
 
   return (
     <div className='dw-card'>
@@ -54,11 +55,20 @@ export function App() {
         {status.type === 'error' && (
           <div className='dw-generic-section'>
             <section>
-              <Icon title={status.message} name='dangerous-filled' className='dw-icon dw-error-icon' />
+              <Icon
+                title={status.message}
+                name='dangerous-filled'
+                className='dw-icon dw-error-icon'
+              />
               <p>{status.message}</p>
             </section>
             <footer>
-              <Button kind='filled' size='small' onClick={handleCancel} className='dw-full-width-button'>
+              <Button
+                kind='filled'
+                size='small'
+                onClick={handleCancel}
+                className='dw-full-width-button'
+              >
                 Close
               </Button>
             </footer>
@@ -68,11 +78,20 @@ export function App() {
         {status.type === 'success' && (
           <div className='dw-generic-section'>
             <section>
-              <Icon title='Success' name='check-circle-filled' className='dw-icon dw-success-icon' />
+              <Icon
+                title='Success'
+                name='check-circle-filled'
+                className='dw-icon dw-success-icon'
+              />
               <p>Wallpaper applied successfully</p>
             </section>
             <footer>
-              <Button kind='filled' size='small' onClick={handleCancel} className='dw-full-width-button'>
+              <Button
+                kind='filled'
+                size='small'
+                onClick={handleCancel}
+                className='dw-full-width-button'
+              >
                 Done!
               </Button>
             </footer>
@@ -92,7 +111,7 @@ export function App() {
                   aspectRatio: `${monitorWidth} / ${monitorHeight}`,
                   backgroundSize: getBackgroundSize(),
                   backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'center'
+                  backgroundPosition: 'center',
                 }}
                 title={fit}
                 ref={containerRef}
@@ -108,15 +127,26 @@ export function App() {
                     onChange={handleMonitorOnChange}
                     value={monitor}
                   >
-                    <div slot='label' className='dw-input-label'>Screen</div>
-                    {displays.map(display => (
-                      <leo-option key={display.id} value={display.id}>
+                    <div
+                      slot='label'
+                      className='dw-input-label'
+                    >
+                      Screen
+                    </div>
+                    {displays.map((display) => (
+                      <leo-option
+                        key={display.id}
+                        value={display.id}
+                      >
                         {display.label}
                       </leo-option>
                     ))}
                   </DropDown>
                 )}
-                <Checkbox checked={useAllMonitors} onChange={handleUseBackgroundOnChange}>
+                <Checkbox
+                  checked={useAllMonitors}
+                  onChange={handleUseBackgroundOnChange}
+                >
                   <span className='dw-input-label'>Apply to all screens</span>
                 </Checkbox>
               </>
@@ -128,9 +158,17 @@ export function App() {
               onChange={handleFitOnChange}
               value={FIT_OPTIONS.get(fit)}
             >
-              <div slot='label' className='dw-input-label'>Wallpaper fit</div>
+              <div
+                slot='label'
+                className='dw-input-label'
+              >
+                Wallpaper fit
+              </div>
               {[...FIT_OPTIONS.keys()].map((key) => (
-                <leo-option key={key} value={key}>
+                <leo-option
+                  key={key}
+                  value={key}
+                >
                   {FIT_OPTIONS.get(key)}
                 </leo-option>
               ))}

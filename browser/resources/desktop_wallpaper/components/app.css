@@ -1,4 +1,10 @@
-html, body {
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+html,
+body {
   overflow: hidden;
 }
 
@@ -10,7 +16,7 @@ html, body {
   background-color: var(--leo-color-container-background);
   border-radius: 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-  font-family: var(--leo-font-family-default);
+  font: var(--leo-font-default-regular);
   box-sizing: border-box;
   position: relative;
   padding: 24px;
@@ -39,10 +45,7 @@ html, body {
 
 .dw-modal-title {
   box-sizing: border-box;
-  font-size: 20px;
-  font-family: var(--leo-font-family-default);
-  line-height: 20px;
-  font-weight: 500;
+  font: var(--leo-font-heading-h3);
   color: var(--leo-color-text-primary);
   margin: 0;
 }
@@ -55,8 +58,7 @@ html, body {
   display: block;
   box-sizing: border-box;
   color: var(--leo-color-text-primary);
-  font-size: 12px;
-  font-family: var(--leo-font-family-default);
+  font: var(--leo-font-small-regular);
   padding-bottom: 4px;
 }
 
@@ -79,13 +81,14 @@ html, body {
   margin: 5px;
 }
 
-.dw-generic-section, .dw-loading-section {
+.dw-generic-section,
+.dw-loading-section {
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 100%;
   flex-direction: column;
-  gap: .5rem;
+  gap: 0.5rem;
   color: var(--leo-color-text-primary);
   section {
     flex: 1;
@@ -93,7 +96,7 @@ html, body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: .5rem;
+    gap: 0.5rem;
   }
   footer {
     width: 100%;

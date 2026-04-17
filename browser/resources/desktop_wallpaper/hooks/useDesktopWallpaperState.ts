@@ -1,6 +1,11 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import { useReducer } from 'react'
 
-import { DisplayInfos } from 'gen/brave/browser/ui/webui/desktop_wallpaper/desktop_wallpaper.mojom.m.js'
+import { DisplayInfos } from 'gen/brave/components/desktop_wallpaper/desktop_wallpaper.mojom.m.js'
 
 export type DesktopWallpaperStatus = {
   type: 'loading' | 'error' | 'success' | 'idle'
@@ -25,13 +30,13 @@ export type DesktopWallpaperAction =
   | { type: 'SET_USE_ALL_MONITORS'; payload: boolean }
   | { type: 'SET_DISPLAYS'; payload: Array<DisplayInfos> }
   | {
-    type: 'RECEIVE_IMAGE'
-    payload: { dataUrl: string; path: string }
-  }
+      type: 'RECEIVE_IMAGE'
+      payload: { dataUrl: string; path: string }
+    }
 
 export function desktopWallpaperReducer(
   state: DesktopWallpaperState,
-  action: DesktopWallpaperAction
+  action: DesktopWallpaperAction,
 ): DesktopWallpaperState {
   switch (action.type) {
     case 'SET_STATUS':

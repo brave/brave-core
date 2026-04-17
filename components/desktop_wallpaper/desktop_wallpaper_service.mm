@@ -1,4 +1,9 @@
-#include "desktop_wallpaper_service.h"
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#include "brave/components/desktop_wallpaper/desktop_wallpaper_service.h"
 
 #include <AppKit/AppKit.h>
 #import <Appkit/AppKit.h>
@@ -8,7 +13,8 @@
 #include <cstdint>
 #include <vector>
 
-#include "brave/browser/ui/webui/desktop_wallpaper/desktop_wallpaper.mojom.h"
+#include "base/strings/string_number_conversions.h"
+#include "brave/components/desktop_wallpaper/desktop_wallpaper.mojom.h"
 
 namespace desktop_wallpaper {
 desktop_wallpaper::mojom::WallpaperStatus DesktopWallpaper::SetWallpaper(
@@ -47,12 +53,15 @@ desktop_wallpaper::mojom::WallpaperStatus DesktopWallpaper::SetWallpaper(
 
       for (auto& display : displays) {
         NSError* err = nil;
+        int64_t display_id;
+        base::StringToInt64(display->id, &display_id);
 
-        if (std::stoll(display->id) == screen_id) {
-           BOOL result = [[NSWorkspace sharedWorkspace] setDesktopImageURL:url
-                                                           forScreen:screen
-                                                             options:options
-                                                               error:&err];
+        if (display_id == screen_id) {
+          BOOL result =
+              [[NSWorkspace sharedWorkspace] setDesktopImageURL:url
+                                                      forScreen:screen
+                                                        options:options
+                                                          error:&err];
 
           if (!result || err) {
             return desktop_wallpaper::mojom::WallpaperStatus::failure;

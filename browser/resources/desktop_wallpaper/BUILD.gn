@@ -1,8 +1,12 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/components/common/typescript.gni")
 import("//brave/resources/brave_grit.gni")
 import("//tools/grit/repack.gni")
 import("//ui/webui/resources/tools/generate_grd.gni")
-
 
 resource_name = "desktop_wallpaper"
 
@@ -18,7 +22,7 @@ transpile_web_ui("js_resources") {
   resource_name = resource_name
 
   deps = [
-    "//brave/browser/ui/webui/desktop_wallpaper:mojo_bindings_js",
+    "//brave/components/desktop_wallpaper:mojo_bindings_js",
     "//brave/components/resources:strings",
   ]
 }

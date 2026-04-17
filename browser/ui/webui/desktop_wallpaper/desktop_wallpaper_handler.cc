@@ -1,3 +1,8 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 #include "brave/browser/ui/webui/desktop_wallpaper/desktop_wallpaper_handler.h"
 
 #include <memory>
@@ -10,10 +15,11 @@
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
-#include "brave/browser/ui/webui/desktop_wallpaper/desktop_wallpaper.mojom-forward.h"
-#include "brave/browser/ui/webui/desktop_wallpaper/desktop_wallpaper.mojom.h"
+#include "brave/components/desktop_wallpaper/desktop_wallpaper.mojom-forward.h"
+#include "brave/components/desktop_wallpaper/desktop_wallpaper.mojom.h"
 #include "brave/components/desktop_wallpaper/desktop_wallpaper_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"
@@ -37,7 +43,8 @@ void DesktopWallpaperHandler::SetImageAsDesktopWallpaper(
     std::vector<desktop_wallpaper::mojom::DisplayInfosPtr> displays,
     desktop_wallpaper::mojom::Scaling scaling) {
   auto status = desktop_wallpaper::DesktopWallpaper::SetImageAsDesktopWallpaper(
-      path, std::move(displays), static_cast<desktop_wallpaper::Scaling>(scaling));
+      path, std::move(displays),
+      static_cast<desktop_wallpaper::Scaling>(scaling));
   page_->ReceiveWallpaperStatus(status);
 }
 
@@ -63,7 +70,7 @@ void DesktopWallpaperHandler::FetchImage(const std::string& source) {
       base::BindOnce(&DesktopWallpaperHandler::OnFetchImageComplete,
                      weak_ptr_.GetWeakPtr()));
 
-  LOG(INFO) << "FetchImage: " << source;
+  VLOG(1) << "FetchImage: " << source;
 }
 
 void DesktopWallpaperHandler::GetDisplayInfos() {
@@ -76,10 +83,10 @@ void DesktopWallpaperHandler::GetDisplayInfos() {
     auto size = display.GetSizeInPixel();
 
     auto dis = desktop_wallpaper::mojom::DisplayInfos::New();
-    dis->id = std::to_string(id);
+    dis->id = base::NumberToString(id);
     dis->label = label;
-    dis->width = std::to_string(size.width());
-    dis->height = std::to_string(size.height());
+    dis->width = base::NumberToString(size.width());
+    dis->height = base::NumberToString(size.height());
 
     displays_vec.push_back(std::move(dis));
   }

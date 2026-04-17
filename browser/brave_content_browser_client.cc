@@ -331,7 +331,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(IS_MAC)
 #include "brave/browser/ui/webui/desktop_wallpaper/desktop_wallpaper_ui.h"
-#include "brave/browser/ui/webui/desktop_wallpaper/desktop_wallpaper.mojom.h"
+#include "brave/components/desktop_wallpaper/desktop_wallpaper.mojom.h"
 #endif
 
 #if BUILDFLAG(IS_WIN)
