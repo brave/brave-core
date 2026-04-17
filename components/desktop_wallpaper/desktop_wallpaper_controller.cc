@@ -14,7 +14,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/desktop_wallpaper/desktop_wallpaper.mojom.h"
 #include "chrome/common/chrome_paths.h"
-#include "components/desktop_wallpaper/desktop_wallpaper_service.h"
+#include "desktop_wallpaper_service.h"
 
 namespace desktop_wallpaper {
 desktop_wallpaper::mojom::WallpaperStatus
