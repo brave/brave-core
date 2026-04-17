@@ -259,13 +259,11 @@ BravePassageEmbeddingsService::PendingLoad::operator=(PendingLoad&&) noexcept =
     default;
 
 BravePassageEmbeddingsService::BravePassageEmbeddingsService(
-    mojo::PendingReceiver<mojom::PassageEmbeddingsService> receiver,
     BackgroundWebContentsFactory background_web_contents_factory,
     local_ai::LocalModelsUpdaterState* updater_state)
     : background_web_contents_factory_(
           std::move(background_web_contents_factory)),
-      updater_state_(updater_state),
-      receiver_(this, std::move(receiver)) {
+      updater_state_(updater_state) {
   CHECK(base::FeatureList::IsEnabled(local_ai::features::kLocalAIModels));
   CHECK(updater_state_);
   // Arm the barrier FIRST so CountComponentReadyOnce can route through
@@ -315,27 +313,31 @@ BravePassageEmbeddingsService::GetWeakPtr() {
   return weak_ptr_factory_.GetWeakPtr();
 }
 
-void BravePassageEmbeddingsService::LoadModels(
-    mojom::PassageEmbeddingsLoadModelsParamsPtr model_params,
-    mojom::PassageEmbedderParamsPtr params,
-    mojo::PendingReceiver<mojom::PassageEmbedder> model,
-    LoadModelsCallback callback) {
-  // Brave does not consume the upstream model file params — we use our
-  // own EmbeddingGemma model hosted by a WASM renderer. Close the files
-  // that the caller opened.
-  model_params.reset();
-  params.reset();
-
+void BravePassageEmbeddingsService::BindPassageEmbedder(
+    mojo::PendingReceiver<mojom::PassageEmbedder> receiver,
+    base::OnceCallback<void(bool)> callback) {
   MaybeCreateBackgroundContents();
 
   PendingLoad load;
-  load.receiver = std::move(model);
+  load.receiver = std::move(receiver);
   load.callback = std::move(callback);
   pending_loads_.push_back(std::move(load));
 
   if (model_ready_ && factory_.is_bound()) {
     FulfillPendingLoads();
   }
+}
+
+void BravePassageEmbeddingsService::LoadModels(
+    mojom::PassageEmbeddingsLoadModelsParamsPtr model_params,
+    mojom::PassageEmbedderParamsPtr params,
+    mojo::PendingReceiver<mojom::PassageEmbedder> model,
+    LoadModelsCallback callback) {
+  // Brave does not consume the upstream model file params — we use our
+  // own EmbeddingGemma model hosted by a WASM renderer. The params
+  // auto-destruct on return (closing any file handles); delegate the
+  // receiver to the in-process path.
+  BindPassageEmbedder(std::move(model), std::move(callback));
 }
 
 void BravePassageEmbeddingsService::RegisterPassageEmbedderFactory(
@@ -390,12 +392,8 @@ void BravePassageEmbeddingsService::CloseBackgroundContents() {
            << " model_ready=" << model_ready_
            << " bg_contents=" << (background_web_contents_ ? "set" : "null")
            << ")";
-  batch_embedder_.reset();
-  factory_.reset();
-  FailPendingLoads();
+  ResetEmbedderState();
   background_web_contents_.reset();
-  model_ready_ = false;
-  MaybeWaitForLocalModelFilesReady();
 }
 
 void BravePassageEmbeddingsService::MaybeWaitForLocalModelFilesReady() {
@@ -514,14 +512,18 @@ void BravePassageEmbeddingsService::FailPendingLoads() {
   pending_loads_.clear();
 }
 
+void BravePassageEmbeddingsService::ResetEmbedderState() {
+  batch_embedder_.reset();
+  factory_.reset();
+  FailPendingLoads();
+  model_ready_ = false;
+  MaybeWaitForLocalModelFilesReady();
+}
+
 void BravePassageEmbeddingsService::OnFactoryDisconnected() {
   DVLOG(1) << "Renderer factory pipe disconnected; embeddings unavailable "
               "until the background WebContents reloads";
-  factory_.reset();
-  batch_embedder_.reset();
-  model_ready_ = false;
-  FailPendingLoads();
-  MaybeWaitForLocalModelFilesReady();
+  ResetEmbedderState();
 }
 
 void BravePassageEmbeddingsService::OnBatchEmbedderDisconnected() {

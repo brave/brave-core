@@ -115,7 +115,6 @@ class BravePassageEmbeddingsService
       BackgroundWebContentsCreatedCallback)>;
 
   BravePassageEmbeddingsService(
-      mojo::PendingReceiver<mojom::PassageEmbeddingsService> receiver,
       BackgroundWebContentsFactory background_web_contents_factory,
       local_ai::LocalModelsUpdaterState* updater_state);
   ~BravePassageEmbeddingsService() override;
@@ -145,6 +144,19 @@ class BravePassageEmbeddingsService
       mojo::PendingReceiver<local_ai::mojom::LocalAIService> receiver);
 
   base::WeakPtr<BravePassageEmbeddingsService> GetWeakPtr();
+
+  // Direct in-process equivalent of mojom::PassageEmbeddingsService::LoadModels
+  // — binds `receiver` to our BraveBatchPassageEmbedder and invokes
+  // `callback` once the WASM renderer is ready. The upstream mojom is
+  // shaped for a tflite + sentencepiece embedder in a sandboxed utility
+  // process; we run in-process with a five-file EmbeddingGemma model, so
+  // the struct doesn't fit and the mojo hop adds no isolation. The
+  // controller calls this directly and leaves service_remote_ unbound.
+  // Model files are delivered separately via PassageEmbedderFactory::Init
+  // as local_ai::mojom::ModelFiles BigBuffers. See README.md for details.
+  void BindPassageEmbedder(
+      mojo::PendingReceiver<mojom::PassageEmbedder> receiver,
+      base::OnceCallback<void(bool)> callback);
 
   // mojom::PassageEmbeddingsService:
   void LoadModels(mojom::PassageEmbeddingsLoadModelsParamsPtr model_params,
@@ -197,6 +209,10 @@ class BravePassageEmbeddingsService
   void OnFactoryInitDone(bool success);
   void FulfillPendingLoads();
   void FailPendingLoads();
+  // Drops the renderer-facing embedder state (batch embedder, factory,
+  // pending loads, model-ready flag) and re-arms the load barrier.
+  // Shared by OnFactoryDisconnected and CloseBackgroundContents.
+  void ResetEmbedderState();
   void OnFactoryDisconnected();
   void OnBatchEmbedderDisconnected();
 
@@ -204,7 +220,6 @@ class BravePassageEmbeddingsService
   BackgroundWebContentsFactory background_web_contents_factory_;
   raw_ptr<local_ai::LocalModelsUpdaterState> updater_state_;
 
-  mojo::Receiver<mojom::PassageEmbeddingsService> receiver_;
   mojo::ReceiverSet<local_ai::mojom::LocalAIService> local_ai_receivers_;
   mojo::Remote<local_ai::mojom::PassageEmbedderFactory> factory_;
 

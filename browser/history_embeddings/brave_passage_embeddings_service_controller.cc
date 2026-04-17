@@ -110,28 +110,23 @@ bool BravePassageEmbeddingsServiceController::MaybeUpdateModelInfo(
 }
 
 void BravePassageEmbeddingsServiceController::MaybeLaunchService() {
-  if (service_remote_) {
+  if (service_) {
     return;
   }
   service_ = std::make_unique<BravePassageEmbeddingsService>(
-      service_remote_.BindNewPipeAndPassReceiver(),
       base::BindRepeating(&CreateBackgroundWebContents),
       local_ai::LocalModelsUpdaterState::GetInstance());
-  service_remote_.set_disconnect_handler(base::BindOnce(
-      &BravePassageEmbeddingsServiceController::ResetServiceRemote,
-      base::Unretained(this)));
-  service_remote_.set_idle_handler(
-      kEmbeddingsServiceTimeout.Get(),
-      base::BindRepeating(
-          &BravePassageEmbeddingsServiceController::ResetServiceRemote,
-          base::Unretained(this)));
+  // service_remote_ is intentionally left unbound:
+  // BravePassageEmbeddingsService exposes an in-process BindPassageEmbedder()
+  // that we call directly from GetEmbeddings() instead of routing LoadModels
+  // through a mojo pipe (the upstream mojom requires physical model files,
+  // which we don't have).
 }
 
 void BravePassageEmbeddingsServiceController::ResetServiceRemote() {
   DVLOG(3) << "ResetServiceRemote (service_=" << (service_ ? "set" : "null")
            << ")";
   ResetEmbedderRemote();
-  service_remote_.reset();
   service_.reset();
   otr_profile_observation_.Reset();
 }
@@ -178,23 +173,22 @@ void BravePassageEmbeddingsServiceController::GetEmbeddings(
   if (!embedder_remote_) {
     MaybeLaunchService();
     auto receiver = embedder_remote_.BindNewPipeAndPassReceiver();
+    // When the embedder pipe goes idle or disconnects, tear the whole
+    // service down to free the WASM renderer.
     embedder_remote_.set_disconnect_handler(base::BindOnce(
-        &BravePassageEmbeddingsServiceController::ResetEmbedderRemote,
+        &BravePassageEmbeddingsServiceController::ResetServiceRemote,
         base::Unretained(this)));
     embedder_remote_.set_idle_handler(
         kEmbedderTimeout.Get(),
         base::BindRepeating(
-            &BravePassageEmbeddingsServiceController::ResetEmbedderRemote,
+            &BravePassageEmbeddingsServiceController::ResetServiceRemote,
             base::Unretained(this)));
-    // Upstream's LoadModels opens tflite/sentencepiece files from disk;
-    // we use our own WASM-hosted EmbeddingGemma, so the params are
-    // ignored by BravePassageEmbeddingsService.
-    service_remote_->LoadModels(
-        mojom::PassageEmbeddingsLoadModelsParams::New(),
-        mojom::PassageEmbedderParams::New(), std::move(receiver),
-        base::BindOnce([](bool success) {
-          DVLOG_IF(1, !success) << "BravePassageEmbeddingsService::LoadModels "
-                                   "reported failure";
+    DVLOG(3) << "GetEmbeddings: binding new PassageEmbedder via service_";
+    service_->BindPassageEmbedder(
+        std::move(receiver), base::BindOnce([](bool success) {
+          DVLOG_IF(1, !success)
+              << "BravePassageEmbeddingsService reported BindPassageEmbedder "
+                 "failure; this batch will return an empty result";
         }));
   }
 
