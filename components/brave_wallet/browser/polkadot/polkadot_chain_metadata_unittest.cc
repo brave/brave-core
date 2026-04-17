@@ -27,12 +27,14 @@ TEST(PolkadotChainMetadataUnitTest, FromFields) {
       /*transaction_payment_pallet_index=*/0x20,
       /*transfer_allow_death_call_index=*/2,
       /*transfer_keep_alive_call_index=*/4,
+      /*transfer_all_call_index=*/5,
       /*ss58_prefix=*/42, /*spec_version=*/1'234'567);
   EXPECT_EQ(metadata.GetSystemPalletIndex(), 0u);
   EXPECT_EQ(metadata.GetBalancesPalletIndex(), 7u);
   EXPECT_EQ(metadata.GetTransactionPaymentPalletIndex(), 0x20u);
   EXPECT_EQ(metadata.GetTransferAllowDeathCallIndex(), 2u);
   EXPECT_EQ(metadata.GetTransferKeepAliveCallIndex(), 4u);
+  EXPECT_EQ(metadata.GetTransferAllCallIndex(), 5u);
   EXPECT_EQ(metadata.GetSs58Prefix(), 42u);
   EXPECT_EQ(metadata.GetSpecVersion(), 1'234'567u);
 }
@@ -45,6 +47,7 @@ TEST(PolkadotChainMetadataUnitTest, FromChainName) {
   EXPECT_EQ(westend->GetTransactionPaymentPalletIndex(), 0x1au);
   EXPECT_EQ(westend->GetTransferAllowDeathCallIndex(), 0u);
   EXPECT_EQ(westend->GetTransferKeepAliveCallIndex(), 3u);
+  EXPECT_EQ(westend->GetTransferAllCallIndex(), 4u);
   EXPECT_EQ(westend->GetSs58Prefix(), 42u);
 
   auto westend_asset_hub =
@@ -55,6 +58,7 @@ TEST(PolkadotChainMetadataUnitTest, FromChainName) {
   EXPECT_EQ(westend_asset_hub->GetTransactionPaymentPalletIndex(), 0x0bu);
   EXPECT_EQ(westend_asset_hub->GetTransferAllowDeathCallIndex(), 0u);
   EXPECT_EQ(westend_asset_hub->GetTransferKeepAliveCallIndex(), 3u);
+  EXPECT_EQ(westend_asset_hub->GetTransferAllCallIndex(), 4u);
   EXPECT_EQ(westend_asset_hub->GetSs58Prefix(), 42u);
 
   auto polkadot = PolkadotChainMetadata::FromChainName("Polkadot");
@@ -64,6 +68,7 @@ TEST(PolkadotChainMetadataUnitTest, FromChainName) {
   EXPECT_EQ(polkadot->GetTransactionPaymentPalletIndex(), 0x20u);
   EXPECT_EQ(polkadot->GetTransferAllowDeathCallIndex(), 0u);
   EXPECT_EQ(polkadot->GetTransferKeepAliveCallIndex(), 3u);
+  EXPECT_EQ(polkadot->GetTransferAllCallIndex(), 4u);
   EXPECT_EQ(polkadot->GetSs58Prefix(), 0u);
 
   auto polkadot_asset_hub =
@@ -74,6 +79,7 @@ TEST(PolkadotChainMetadataUnitTest, FromChainName) {
   EXPECT_EQ(polkadot_asset_hub->GetTransactionPaymentPalletIndex(), 0x0bu);
   EXPECT_EQ(polkadot_asset_hub->GetTransferAllowDeathCallIndex(), 0u);
   EXPECT_EQ(polkadot_asset_hub->GetTransferKeepAliveCallIndex(), 3u);
+  EXPECT_EQ(polkadot_asset_hub->GetTransferAllCallIndex(), 4u);
   EXPECT_EQ(polkadot_asset_hub->GetSs58Prefix(), 0u);
 
   EXPECT_FALSE(PolkadotChainMetadata::FromChainName(""));
@@ -120,6 +126,7 @@ TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponsePolkadot) {
   EXPECT_EQ(metadata->GetSs58Prefix(), 0u);
   EXPECT_EQ(metadata->GetTransferAllowDeathCallIndex(), 0u);
   EXPECT_EQ(metadata->GetTransferKeepAliveCallIndex(), 3u);
+  EXPECT_EQ(metadata->GetTransferAllCallIndex(), 4u);
   EXPECT_EQ(metadata->GetBalancesPalletIndex(), 5u);
   EXPECT_EQ(metadata->GetSpecVersion(), 2'000'007u);
 
@@ -130,6 +137,8 @@ TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponsePolkadot) {
             metadata->GetTransferAllowDeathCallIndex());
   EXPECT_EQ(metadata2->GetTransferKeepAliveCallIndex(),
             metadata->GetTransferKeepAliveCallIndex());
+  EXPECT_EQ(metadata2->GetTransferAllCallIndex(),
+            metadata->GetTransferAllCallIndex());
   EXPECT_EQ(metadata2->GetBalancesPalletIndex(),
             metadata->GetBalancesPalletIndex());
   EXPECT_EQ(metadata2->GetSpecVersion(), 0u);
@@ -164,6 +173,7 @@ TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponseWestend) {
   EXPECT_EQ(metadata->GetSs58Prefix(), 42u);
   EXPECT_EQ(metadata->GetTransferAllowDeathCallIndex(), 0u);
   EXPECT_EQ(metadata->GetTransferKeepAliveCallIndex(), 3u);
+  EXPECT_EQ(metadata->GetTransferAllCallIndex(), 4u);
   EXPECT_EQ(metadata->GetBalancesPalletIndex(), 4u);
   EXPECT_EQ(metadata->GetSpecVersion(), 1022000u);
 
@@ -174,6 +184,8 @@ TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponseWestend) {
             metadata->GetTransferAllowDeathCallIndex());
   EXPECT_EQ(metadata2->GetTransferKeepAliveCallIndex(),
             metadata->GetTransferKeepAliveCallIndex());
+  EXPECT_EQ(metadata2->GetTransferAllCallIndex(),
+            metadata->GetTransferAllCallIndex());
   EXPECT_EQ(metadata2->GetBalancesPalletIndex(),
             metadata->GetBalancesPalletIndex());
   EXPECT_EQ(metadata2->GetSpecVersion(), 0u);

@@ -18,7 +18,7 @@ PolkadotSignedTransferTask::PolkadotSignedTransferTask(
     mojom::AccountIdPtr sender_account_id,
     std::string chain_id,
     bool use_dummy_signature,
-    uint128_t send_amount,
+    std::variant<uint128_t, TransferAll> transfer_amount,
     base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> sender,
     base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient)
     : polkadot_wallet_service_(polkadot_wallet_service),
@@ -26,7 +26,7 @@ PolkadotSignedTransferTask::PolkadotSignedTransferTask(
       sender_account_id_(std::move(sender_account_id)),
       chain_id_(std::move(chain_id)),
       use_dummy_signature_{use_dummy_signature},
-      send_amount_{send_amount} {
+      transfer_amount_(std::move(transfer_amount)) {
   base::span(sender_).copy_from_nonoverlapping(sender);
   base::span(recipient_).copy_from_nonoverlapping(recipient);
 }
@@ -233,13 +233,18 @@ void PolkadotSignedTransferTask::MaybeFinalizeSignTransaction() {
     return;
   }
 
+  bool transfer_all = false;
   std::array<uint8_t, 16> send_amount_bytes = {};
-  base::span(send_amount_bytes)
-      .copy_from(base::byte_span_from_ref(send_amount_));
+
+  if (const auto* amount = std::get_if<uint128_t>(&transfer_amount_)) {
+    base::span(send_amount_bytes).copy_from(base::byte_span_from_ref(*amount));
+  } else {
+    transfer_all = true;
+  }
 
   auto signature_payload = generate_extrinsic_signature_payload(
       *chain_metadata_.value(), account_info_->nonce, send_amount_bytes,
-      recipient_, runtime_version_->spec_version,
+      transfer_all, recipient_, runtime_version_->spec_version,
       runtime_version_->transaction_version, signing_header_->block_number,
       *genesis_hash_, *signing_block_hash_);
 
@@ -259,7 +264,8 @@ void PolkadotSignedTransferTask::MaybeFinalizeSignTransaction() {
 
   extrinsic_ = base::ToVector(make_signed_extrinsic(
       *chain_metadata_.value(), *sender_pubkey, recipient_, send_amount_bytes,
-      signature, signing_header_->block_number, account_info_->nonce));
+      transfer_all, signature, signing_header_->block_number,
+      account_info_->nonce));
 
   std::move(callback_).Run(base::ok(GetMetadata()));
 }

@@ -25,6 +25,8 @@ class NetworkManager;
 class PolkadotWalletService : public mojom::PolkadotWalletService,
                               public KeyringServiceObserverBase {
  public:
+  using TransferAll = PolkadotSignedTransferTask::TransferAll;
+
   using GetChainMetadataCallback = base::OnceCallback<void(
       base::expected<PolkadotChainMetadata, std::string>)>;
 
@@ -72,22 +74,22 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
   void GetChainMetadata(std::string_view chain_id,
                         GetChainMetadataCallback callback);
 
-  // Generates an encoded byte array representing a transfer_allow_death call,
-  // suitable for sending over the network as hex, signed using the account's
-  // private key. The signed extrinsic can be submitted directly using
-  // author_submitExtrinsic or payment information can be queried using
-  // payment_queryInfo.
+  // Generates an encoded byte array representing either a transfer_keep_alive
+  // or transfer_all call, suitable for sending over the network as hex, signed
+  // using the account's private key. The signed extrinsic can be submitted
+  // directly using author_submitExtrinsic or payment information can be queried
+  // using payment_queryInfo.
   void GenerateSignedTransferExtrinsic(
       std::string chain_id,
       mojom::AccountIdPtr account_id,
-      uint128_t send_amount,
+      std::variant<uint128_t, TransferAll> transfer_amount,
       base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
       GenerateSignedTransferExtrinsicCallback callback);
 
   void SignAndSendTransaction(
       std::string chain_id,
       mojom::AccountIdPtr account_id,
-      uint128_t send_amount,
+      std::variant<uint128_t, TransferAll> transfer_amount,
       base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
       SignAndSendTransactionCallback callback);
 
@@ -97,7 +99,7 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
   void GetFeeEstimate(
       std::string chain_id,
       mojom::AccountIdPtr account_id,
-      uint128_t send_amount,
+      std::variant<uint128_t, TransferAll> transfer_amount,
       base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
       GetFeeEstimateCallback callback);
 
@@ -122,7 +124,7 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
       std::string chain_id,
       mojom::AccountIdPtr account_id,
       bool use_dummy_signature,
-      uint128_t send_amount,
+      std::variant<uint128_t, TransferAll> transfer_amount,
       base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
       GenerateSignedTransferExtrinsicCallback callback);
 
