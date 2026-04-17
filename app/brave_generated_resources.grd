@@ -1016,7 +1016,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </if>
 
       <message name="IDS_CONTENT_CONTEXT_SET_IMAGE_AS_BACKGROUND">
-        Set this image as your desktop wallpaper
+        Use Image as Desktop Picture
       </message>
 
       <!-- Brave VPN -->
