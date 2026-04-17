@@ -682,15 +682,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Уведіть назву папки";
 
-/* Shown in error pages to suggest a fix to the user. */
-"errorPageCantBeReachedTry" = "Спробуйте ще раз увести URL-адресу або відкрийте пошукову систему й знайдіть нову URL-адресу.";
-
-/* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "Відкрити в Safari";
-
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "Перезавантажити";
-
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "%1$@ зазвичай використовує шифрування для захисту вашої інформації. Коли Brave намагався підключитися до %2$@ цього разу, вебсайт надіслав незвичні й неправильні облікові дані. Таке може траплятися, коли хакер намагається видати себе за %3$@ або ж якщо екран підключення до Wi-Fi перервав підключення. Ваша інформація повністю захищена, оскільки Brave припинив підключення, перш ніж будь-які дані було передано.<br />Наразі ви не можете відвідати %4$@, тому що вебсайт використовує закріплення сертифікату. Мережеві помилки й атаки зазвичай тимчасові, тож ця сторінка, скоріш за все, працюватиме пізніше.";
 
@@ -2251,8 +2242,7 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "Зберегти зміни";
 
-/* Settings item for clearing passwords and login data
-Settings item for clearing site-specific settings and shields settings. */
+/* Settings item for clearing passwords and login data */
 "SavedLogins" = "Збережені облікові дані";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2704,6 +2694,9 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "Панель вкладок";
+
+/* Settings item for clearing site-specific settings and shields settings. */
+"SiteAndShieldsSettings" = "Налаштування сайтів і щитів";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "Дякуємо, що повідомили розробникам Brave про проблему з вебсайтом. Ми спробуємо вирішити її якнайшвидше!";
@@ -3250,9 +3243,6 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
 "ThemesDisplayBrightness" = "Зовнішній вигляд";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "Ці налаштування не застосовуються в приватному режимі.";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Світла";

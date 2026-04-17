@@ -682,15 +682,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Podaj nazwę folderu";
 
-/* Shown in error pages to suggest a fix to the user. */
-"errorPageCantBeReachedTry" = "Spróbuj ponownie wpisać adres URL lub wyszukaj nowy adres URL w wyszukiwarce.";
-
-/* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "Otwórz w przeglądarce Safari";
-
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "Załaduj ponownie";
-
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "%1$@ zwykle korzysta z szyfrowania w celu ochrony Twoich informacji. Przy próbie połączenia Brave z %2$@ strona tym razem odesłała nietypowe i niepoprawne dane uwierzytelniające. Może tak się stać, gdy atakujący udaje %3$@ lub ekran logowania wi-fi przerwał połączenie. Twoje informacje pozostają bezpieczne, ponieważ połączenie zostało przerwane przez Brave przed wymianą jakichkolwiek danych.<br />Nie możesz teraz odwiedzić %4$@, ponieważ strona korzysta z przypinania certyfikatów. Błędy sieciowe i ataki zwykle są tymczasowe, więc ta strona prawdopodobnie będzie działać ponownie później.";
 
@@ -2251,8 +2242,7 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "Zapisz zmiany";
 
-/* Settings item for clearing passwords and login data
-Settings item for clearing site-specific settings and shields settings. */
+/* Settings item for clearing passwords and login data */
 "SavedLogins" = "Zapisane loginy";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2385,7 +2375,7 @@ Settings item for clearing site-specific settings and shields settings. */
 "settings.blockYouTubeDistractingElementsDesc" = "Blokuje rozpraszające elementy YouTube";
 
 /* Title beside the toggle for blocking YouTube distracting elements */
-"settings.blockYouTubeDistractingElementsTitle" = "Blokuje rozpraszające elementy YouTube";
+"settings.blockYouTubeDistractingElementsTitle" = "Blokuj rozpraszające elementy YouTube";
 
 /* Description beside the toggle for blocking YouTube recommendations */
 "settings.blockYoutubeRecommendationsDesc" = "Blokuje ekrany końcowe i polecane jako następne w serwisie youtube.com";
@@ -2705,6 +2695,9 @@ Settings item for clearing site-specific settings and shields settings. */
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "Pasek kart";
 
+/* Settings item for clearing site-specific settings and shields settings. */
+"SiteAndShieldsSettings" = "Ustawienia stron i tarcz";
+
 /* No comment provided by engineer. */
 "SiteReportedBody" = "Dziękujemy za powiadomienie programistów Brave o tym, że coś jest nie tak z tą stroną. Zrobimy, co w naszej mocy, by to naprawić!";
 
@@ -2874,7 +2867,7 @@ Settings item for clearing site-specific settings and shields settings. */
 "sync.expiredError" = "Ten kod synchronizacji wygasł. Wygeneruj nowy kod synchronizacji i spróbuj ponownie.";
 
 /* Generic Sync Error Description */
-"sync.genericError" = "Przepraszamy, coś poszło nie tak";
+"sync.genericError" = "Niestety, coś poszło nie tak";
 
 /* Grand camera access */
 "sync.grantCameraAccess" = "Włącz aparat";
@@ -3250,9 +3243,6 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
 "ThemesDisplayBrightness" = "Wygląd";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "Ustawienia te nie są stosowane w trybie przeglądania prywatnego.";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Jasny";

@@ -682,15 +682,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Adja meg a mappa nevét";
 
-/* Shown in error pages to suggest a fix to the user. */
-"errorPageCantBeReachedTry" = "Próbálja meg újra beírni az URL-t, vagy nyisson meg egy keresőmotort és keressen rá az új URL-re.";
-
-/* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "Megnyitás Safariban";
-
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "Újratöltés";
-
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "A(z) %1$@ általában titkosítást használ adatai védelme érdekében. Amikor a Brave megpróbált csatlakozni a(z) %2$@ oldalhoz, az szokatlan és hibás hitelesítő adatokat küldött vissza. Ez olyankor fordulhat elő, ha egy hacker a(z) %3$@-nak adja ki magát, vagy egy wifi bejelentkezési képernyő megszakítja a kapcsolatot. Adatai továbbra is biztonságban vannak, mert a Brave leállította a kapcsolatot, mielőtt adatcsere történt volna.<br />Jelenleg nem keresheti fel a(z) %4$@ weboldalt, mert az tanúsítványrögzítést alkalmaz. A hálózati hibák és támadások általában átmenetiek, így az oldal később valószínűleg működni fog.";
 
@@ -2251,8 +2242,7 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "Módosítások mentése";
 
-/* Settings item for clearing passwords and login data
-Settings item for clearing site-specific settings and shields settings. */
+/* Settings item for clearing passwords and login data */
 "SavedLogins" = "Mentett bejelentkezések";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2704,6 +2694,9 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "Lapsáv";
+
+/* Settings item for clearing site-specific settings and shields settings. */
+"SiteAndShieldsSettings" = "Webhely és pajzsok beállításai";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "Köszönjük, hogy értesítette a Brave fejlesztőit arról, hogy valami hiba van az oldalon. Mindent megteszünk, hogy kijavítsuk!";
@@ -3250,9 +3243,6 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
 "ThemesDisplayBrightness" = "Megjelenés";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "Ezeket a beállításokat a rendszer nem alkalmazza privát böngészési módban.";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Világos";

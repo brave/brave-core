@@ -682,15 +682,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Ange mappnamn";
 
-/* Shown in error pages to suggest a fix to the user. */
-"errorPageCantBeReachedTry" = "Prova att skriva in webbadressen igen eller öppna en sökmotor och leta efter den nya adressen.";
-
-/* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "Öppna i Safari";
-
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "Ladda om";
-
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "%1$@ använder normalt kryptering för att skydda din information. När Brave försökte ansluta till %2$@ den här gången skickade webbplatsen tillbaka ovanliga och felaktiga uppgifter. Detta kan inträffa när en angripare försöker låtsas vara %3$@, eller en Wi-Fi-inloggningsskärm har avbrutit anslutningen. Din information är fortfarande säker eftersom Brave stoppade anslutningen innan några data utbyttes.<br />Du kan inte besöka %4$@ just nu eftersom webbplatsen använder certifikatassociering. Nätverksfel och attacker är vanligtvis tillfälliga, så den här sidan kommer förmodligen att fungera senare.";
 
@@ -2251,8 +2242,7 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "Spara ändringar";
 
-/* Settings item for clearing passwords and login data
-Settings item for clearing site-specific settings and shields settings. */
+/* Settings item for clearing passwords and login data */
 "SavedLogins" = "Sparade inloggningar";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2704,6 +2694,9 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "Flikfält";
+
+/* Settings item for clearing site-specific settings and shields settings. */
+"SiteAndShieldsSettings" = "Inställningar för sajt och Shields";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "Tack för att låter Braves utvecklare få veta att det är något fel med denna webbplats. Vi ska göra vårt bästa för att åtgärda problemet!";
@@ -3250,9 +3243,6 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
 "ThemesDisplayBrightness" = "Utseende";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "Dessa inställningar tillämpas inte i privat surfläge.";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Ljus";

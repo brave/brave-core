@@ -682,15 +682,6 @@
 /* Description for new folder popup */
 "EnterFolderName" = "Tast inn navn på mappe";
 
-/* Shown in error pages to suggest a fix to the user. */
-"errorPageCantBeReachedTry" = "Prøv å skrive inn nettadressen på nytt eller åpne en søkemotor og søke etter den nye URL-en.";
-
-/* Shown in error pages for files that can't be shown and need to be downloaded. */
-"ErrorPageOpenInSafariButtonTitle" = "Åpne i Safari";
-
-/* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "Last inn på nytt";
-
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "%1$@ bruker normalt kryptering for å beskytte informasjonen din. Da Brave prøvde å koble til %2$@ denne gangen, returnerte nettstedet uvanlig og ukorrekt legitimasjon. Dette kan skje dersom en angriper prøver å utgi seg for å være %3$@, eller en wifi-påloggingsskjerm har avbrutt tilkoblingen. Informasjonen din er fortsatt sikker, fordi Brave stanset tilkoblingen før noen data ble utvekslet. <br />Du kan ikke besøke %4$@ akkurat nå, fordi nettstedet bruker sertifikatpinning. Nettverksfeil og angrep er vanligvis av begrenset varighet, så denne siden kommer trolig til å virke igjen senere.";
 
@@ -2251,8 +2242,7 @@
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "Lagre endringer";
 
-/* Settings item for clearing passwords and login data
-Settings item for clearing site-specific settings and shields settings. */
+/* Settings item for clearing passwords and login data */
 "SavedLogins" = "Lagrede innlogginger";
 
 /* The title for the folder created when all bookmarks are being */
@@ -2704,6 +2694,9 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to show/hide the tabs bar */
 "ShowTabsBar" = "Fane-linje";
+
+/* Settings item for clearing site-specific settings and shields settings. */
+"SiteAndShieldsSettings" = "Innstillinger for nettstedet og Shields";
 
 /* No comment provided by engineer. */
 "SiteReportedBody" = "Takk for at du forteller Braves utviklere at det er noe galt med dette nettstedet. Vi vil gjøre vårt beste for å fikse det!";
@@ -3250,9 +3243,6 @@ Settings item for clearing site-specific settings and shields settings. */
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
 "ThemesDisplayBrightness" = "Utseende";
-
-/* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
-"ThemesDisplayBrightnessFooter" = "Disse innstillingene brukes ikke i privat nettlesermodus.";
 
 /* Selection to color/style the user interface with a light theme. */
 "ThemesLightOption" = "Lyst";
