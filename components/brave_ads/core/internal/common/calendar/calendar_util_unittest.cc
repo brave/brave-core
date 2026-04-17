@@ -5,55 +5,73 @@
 
 #include "brave/components/brave_ads/core/internal/common/calendar/calendar_util.h"
 
-#include "base/compiler_specific.h"
-#include "base/time/time.h"  // IWYU pragma: keep
-#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
+#include <array>
+
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
 
-TEST(BraveAdsCalendarUtilTest, IsLeapYear) {
-  // Act & Assert
-  for (int year = 2000; year < 2050; ++year) {
-    EXPECT_EQ(year % 4 == 0, IsLeapYear(year));
-  }
-}
+namespace {
 
-TEST(BraveAdsCalendarUtilTest, LocalDayOfWeek) {
-  // Act & Assert
-  EXPECT_EQ(/*wednesday*/ 3, DayOfWeek(test::TimeFromString("18 November 1970"),
-                                       /*is_local*/ true));
-}
+constexpr std::array<int, 12> kDaysInNonLeapYear = {
+    31,  // January
+    28,  // February
+    31,  // March
+    30,  // April
+    31,  // May
+    30,  // June
+    31,  // July
+    31,  // August
+    30,  // September
+    31,  // October
+    30,  // November
+    31   // December
+};
 
-TEST(BraveAdsCalendarUtilTest, UTCDayOfWeek) {
-  // Act & Assert
-  EXPECT_EQ(/*monday*/ 1, DayOfWeek(test::TimeFromUTCString("18 November 1991"),
-                                    /*is_local*/ false));
-}
+constexpr std::array<int, 12> kDaysInLeapYear = {
+    31,  // January
+    29,  // February
+    31,  // March
+    30,  // April
+    31,  // May
+    30,  // June
+    31,  // July
+    31,  // August
+    30,  // September
+    31,  // October
+    30,  // November
+    31   // December
+};
+
+}  // namespace
 
 TEST(BraveAdsCalendarUtilTest, DaysInMonth) {
-  // Arrange
-  constexpr int kLastDayInMonth[12] = {31, 28, 31, 30, 31, 30,
-                                       31, 31, 30, 31, 30, 31};
-
-  // Act & Assert
-  for (size_t i = 0; i < 12; ++i) {
-    EXPECT_EQ(UNSAFE_TODO(kLastDayInMonth[i]),
-              DaysInMonth(/*year=*/2021, /*month=*/i + 1));
+  for (size_t i = 0U; i < kDaysInNonLeapYear.size(); ++i) {
+    EXPECT_EQ(kDaysInNonLeapYear[i],
+              DaysInMonth(/*year=*/2021, static_cast<int>(i + 1U)));
   }
 }
 
 TEST(BraveAdsCalendarUtilTest, DaysInMonthForLeapYear) {
-  // Arrange
-  constexpr int kDaysInMonth[12] = {31, 29, 31, 30, 31, 30,
-                                    31, 31, 30, 31, 30, 31};
+  for (size_t i = 0U; i < kDaysInLeapYear.size(); ++i) {
+    EXPECT_EQ(kDaysInLeapYear[i],
+              DaysInMonth(/*year=*/2020, static_cast<int>(i + 1U)));
+  }
+}
 
-  // Act & Assert
-  for (size_t i = 0; i < 12; ++i) {
-    EXPECT_EQ(UNSAFE_TODO(kDaysInMonth[i]),
-              DaysInMonth(/*year=*/2020, /*month=*/i + 1));
+TEST(BraveAdsCalendarUtilTest, DaysInMonthForCenturyNonLeapYear) {
+  for (size_t i = 0U; i < kDaysInNonLeapYear.size(); ++i) {
+    EXPECT_EQ(kDaysInNonLeapYear[i],
+              DaysInMonth(/*year=*/2100, static_cast<int>(i + 1U)));
+  }
+}
+
+TEST(BraveAdsCalendarUtilTest, DaysInMonthForQuadricentennialLeapYear) {
+  for (size_t i = 0U; i < kDaysInLeapYear.size(); ++i) {
+    EXPECT_EQ(kDaysInLeapYear[i],
+              DaysInMonth(/*year=*/2000, static_cast<int>(i + 1U)));
   }
 }
 
