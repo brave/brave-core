@@ -52,6 +52,7 @@ class OpenWorkspaceDialog : public views::DialogDelegateView {
   std::vector<WorkspaceInfo> workspaces_;
   int selected_index_ = -1;
 
+  raw_ptr<views::ScrollView> scroll_view_ = nullptr;
   raw_ptr<views::View> list_container_ = nullptr;
   raw_ptr<views::LabelButton> delete_button_ = nullptr;
 

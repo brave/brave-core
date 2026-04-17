@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/workspace/open_workspace_dialog.h"
 
+#include <algorithm>
 #include <memory>
 #include <string>
 #include <utility>
@@ -35,6 +36,7 @@ constexpr int kDialogWidth = 420;
 constexpr int kListHeight = 240;
 constexpr int kPadding = 16;
 constexpr int kRowSpacing = 2;
+constexpr int kRowHeight = 36;
 
 std::u16string FormatDate(base::Time time) {
   base::Time::Exploded exploded;
@@ -90,10 +92,9 @@ OpenWorkspaceDialog::OpenWorkspaceDialog(Browser* browser,
     AddChildView(std::make_unique<views::Label>(
         l10n_util::GetStringUTF16(IDS_WORKSPACE_OPEN_DIALOG_EMPTY_MESSAGE)));
   } else {
-    // Scrollable list of workspaces.
+    // Scrollable list of workspaces.  Height is set by BuildWorkspaceList so
+    // it fits the content exactly, up to kListHeight.
     auto scroll_view = std::make_unique<views::ScrollView>();
-    scroll_view->ClipHeightTo(kListHeight, kListHeight);
-    scroll_view->SetPreferredSize(gfx::Size(kDialogWidth - kPadding * 2, 40));
 
     auto list = std::make_unique<views::View>();
     list->SetLayoutManager(std::make_unique<views::BoxLayout>(
@@ -101,7 +102,7 @@ OpenWorkspaceDialog::OpenWorkspaceDialog(Browser* browser,
     list_container_ = list.get();
 
     scroll_view->SetContents(std::move(list));
-    AddChildView(std::move(scroll_view));
+    scroll_view_ = AddChildView(std::move(scroll_view));
 
     BuildWorkspaceList();
 
@@ -134,9 +135,19 @@ void OpenWorkspaceDialog::BuildWorkspaceList() {
         base::UTF8ToUTF16(info.name) + u"  " + FormatDate(info.created_at));
     row_button->SetHorizontalAlignment(gfx::ALIGN_LEFT);
     row_button->SetPreferredSize(
-        gfx::Size(kDialogWidth - kPadding * 2 - kRowSpacing * 2, 36));
+        gfx::Size(kDialogWidth - kPadding * 2 - kRowSpacing * 2, kRowHeight));
 
     list_container_->AddChildView(std::move(row_button));
+  }
+
+  // Resize the scroll view to fit the current row count exactly, up to
+  // kListHeight (at which point the list becomes scrollable).
+  if (scroll_view_) {
+    int n = static_cast<int>(workspaces_.size());
+    int desired = n > 0 ? n * kRowHeight + (n - 1) * kRowSpacing : 0;
+    int height = std::min(desired, kListHeight);
+    scroll_view_->ClipHeightTo(height, height);
+    InvalidateLayout();
   }
 }
 
