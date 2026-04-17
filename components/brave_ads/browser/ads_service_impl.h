@@ -65,18 +65,19 @@ namespace brave_ads {
 
 class AdsTooltipsDelegate;
 class BatAdsServiceFactory;
+class BraveAdsAdsServiceImplTest;
 class DeviceId;
 class ResourceComponent;
 
-class AdsServiceImpl final : public AdsService,
-                             public bat_ads::mojom::BatAdsClient,
-                             public bat_ads::mojom::BatAdsObserver,
-                             public ApplicationStateObserver,
-                             public ResourceComponentObserver,
+class AdsServiceImpl : public AdsService,
+                       public bat_ads::mojom::BatAdsClient,
+                       public bat_ads::mojom::BatAdsObserver,
+                       public ApplicationStateObserver,
+                       public ResourceComponentObserver,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-                             public brave_rewards::RewardsServiceObserver,
+                       public brave_rewards::RewardsServiceObserver,
 #endif
-                             public content_settings::Observer {
+                       public content_settings::Observer {
  public:
   // `http_client`, `resource_component`, `history_service`, and
   // `host_content_settings` can be `nullptr` in tests. `rewards_service`
@@ -109,6 +110,7 @@ class AdsServiceImpl final : public AdsService,
   void Shutdown() override;
 
  private:
+  friend class BraveAdsAdsServiceImplTest;
   bool IsBatAdsServiceBound() const;
 
   void RegisterResourceComponents();

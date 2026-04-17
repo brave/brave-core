@@ -93,6 +93,8 @@ source_set("test_support") {
     "test/fake_ads_tooltips_delegate.h",
     "test/fake_bat_ads.cc",
     "test/fake_bat_ads.h",
+    "test/fake_bat_ads_client_notifier.cc",
+    "test/fake_bat_ads_client_notifier.h",
     "test/fake_bat_ads_service.cc",
     "test/fake_bat_ads_service.h",
     "test/fake_bat_ads_service_factory.cc",
@@ -110,6 +112,7 @@ source_set("test_support") {
     "//brave/components/services/bat_ads/public/interfaces",
     "//components/prefs",
     "//mojo/public/cpp/bindings",
+    "//ui/base/idle",
     "//url",
   ]
 
@@ -154,6 +157,7 @@ source_set("unit_tests") {
     "//components/variations",
     "//content/test:test_support",
     "//testing/gtest",
+    "//ui/base/idle",
   ]
 
   if (enable_brave_rewards) {
