@@ -22,7 +22,7 @@ import {
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 import { useEmailAliases } from './content/use_email_aliases'
 
-export const ManagePageConnected = ({
+function ManagePageConnectedBody({
   emailAliasesService,
   bindObserver,
   metrics,
@@ -31,16 +31,29 @@ export const ManagePageConnected = ({
   bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
   metrics?: ReturnType<typeof EmailAliasesMetrics.getRemote>
 }) => {
-  const { authState, aliasesUpdate } = useEmailAliases(bindObserver)
+  const { accountState, aliasesUpdate } = useEmailAliases(bindObserver)
   return (
     <ManagePage
-      authState={authState}
+      accountState={accountState}
       aliasesUpdate={aliasesUpdate}
       emailAliasesService={emailAliasesService}
       metrics={metrics}
     />
   )
 }
+
+export const ManagePageConnected = ({
+  emailAliasesService,
+  bindObserver,
+}: {
+  emailAliasesService: EmailAliasesServiceInterface
+  bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
+}) => (
+  <ManagePageConnectedBody
+    emailAliasesService={emailAliasesService}
+    bindObserver={bindObserver}
+  />
+)
 
 export const mount = (signInElem: HTMLElement, manageElem: HTMLElement) => {
   setIconBasePath('//resources/brave-icons')

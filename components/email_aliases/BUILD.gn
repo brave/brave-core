@@ -92,13 +92,7 @@ source_set("test_utils") {
   ]
 
   deps = [
-    ":email_aliases_api_types",
     ":service",
-    "//base/test:test_support",
-    "//brave/components/brave_account/endpoint_client",
-    "//brave/components/email_aliases:mojom",
-    "//mojo/public/cpp/bindings",
-    "//testing/gtest",
     "//url",
   ]
 }

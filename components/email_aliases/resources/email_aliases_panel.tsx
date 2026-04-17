@@ -21,9 +21,9 @@ import {
   EmailAliasesPanelHandler,
   MAX_ALIASES,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
-import { useEmailAliases } from './content/use_email_aliases'
+import { getLoggedInEmail, useEmailAliases } from './content/use_email_aliases'
 
-export const EmailAliasesPanelConnected = ({
+function EmailAliasesPanelConnectedBody({
   emailAliasesService,
   emailAliasesPanelHandler,
   bindObserver,
@@ -31,8 +31,8 @@ export const EmailAliasesPanelConnected = ({
   emailAliasesService: EmailAliasesServiceInterface
   emailAliasesPanelHandler: EmailAliasesPanelHandlerInterface
   bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
-}) => {
-  const { authState, aliasesUpdate } = useEmailAliases(bindObserver)
+}) {
+  const { accountState, aliasesUpdate } = useEmailAliases(bindObserver)
   const aliases = aliasesUpdate.error ? [] : (aliasesUpdate.aliases ?? [])
   return (
     <EmailAliasModal
@@ -52,12 +52,28 @@ export const EmailAliasesPanelConnected = ({
         }
       }}
       editing={false}
-      mainEmail={authState.email}
+      mainEmail={getLoggedInEmail(accountState)}
       emailAliasesService={emailAliasesService}
       bubble
     />
   )
 }
+
+export const EmailAliasesPanelConnected = ({
+  emailAliasesService,
+  emailAliasesPanelHandler,
+  bindObserver,
+}: {
+  emailAliasesService: EmailAliasesServiceInterface
+  emailAliasesPanelHandler: EmailAliasesPanelHandlerInterface
+  bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
+}) => (
+  <EmailAliasesPanelConnectedBody
+    emailAliasesService={emailAliasesService}
+    emailAliasesPanelHandler={emailAliasesPanelHandler}
+    bindObserver={bindObserver}
+  />
+)
 
 const mount = () => {
   const rootElement = document.getElementById('mountPoint')!

@@ -5,9 +5,12 @@
 
 import * as React from 'react'
 import {
+  AccountState,
+  Authentication,
+  AuthenticationObserverCallbackRouter,
+} from 'gen/brave/components/brave_account/mojom/brave_account.mojom.m'
+import {
   AliasesUpdate,
-  AuthenticationStatus,
-  AuthState,
   EmailAliasesServiceObserverInterface,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
@@ -16,42 +19,77 @@ const emptyAliasesUpdate = (): AliasesUpdate => ({
   error: undefined,
 })
 
+export function isAccountLoggedIn(
+  accountState: AccountState | undefined,
+): boolean {
+  return accountState !== undefined && accountState.loggedIn !== undefined
+}
+
+export function getLoggedInEmail(
+  accountState: AccountState | undefined,
+): string {
+  if (!isAccountLoggedIn(accountState)) {
+    return ''
+  }
+  return accountState!.loggedIn!.email
+}
+
+function useBraveAccountState(): AccountState | undefined {
+  const [accountState, setAccountState] = React.useState<
+    AccountState | undefined
+  >(undefined)
+
+  React.useEffect(() => {
+    const authentication = Authentication.getRemote()
+    const router = new AuthenticationObserverCallbackRouter()
+    authentication.addObserver(router.$.bindNewPipeAndPassRemote())
+    const listenerId = router.onAccountStateChanged.addListener(
+      (state: AccountState) => {
+        setAccountState(state)
+      },
+    )
+    return () => {
+      router.removeListener(listenerId)
+    }
+  }, [])
+
+  return accountState
+}
+
 /**
- * Subscribes to EmailAliasesService observer callbacks and exposes auth state
- * and alias updates (`AliasesUpdate`: list payload or load error). Pass a
- * stable `bindObserver` from the host (e.g. one created when the Mojo pipes
- * are set up).
+ * Subscribes to Brave Account state and EmailAliasesService observer callbacks.
+ * Exposes account state and alias updates (`AliasesUpdate`: list payload or load
+ * error). Pass a stable `bindObserver` from the host (e.g. one created when
+ * the Mojo pipes are set up).
  */
 export function useEmailAliases(
   bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void,
 ) {
-  const [authState, setAuthState] = React.useState<AuthState>({
-    status: AuthenticationStatus.kStartup,
-    email: '',
-  })
+  const accountState = useBraveAccountState()
+
   const [aliasesUpdate, setAliasesUpdate] =
-    React.useState<AliasesUpdate>(emptyAliasesUpdate)
+    React.useState<AliasesUpdate>(emptyAliasesUpdate())
+
+  const accountStateRef = React.useRef(accountState)
+  accountStateRef.current = accountState
 
   React.useEffect(() => {
-    // Track auth locally so we do not apply alias updates while logged out.
-    let status: AuthenticationStatus = AuthenticationStatus.kStartup
     const observer: EmailAliasesServiceObserverInterface = {
       onAliasesUpdated: (update: AliasesUpdate) => {
-        if (status !== AuthenticationStatus.kAuthenticated) {
+        if (!isAccountLoggedIn(accountStateRef.current)) {
           return
         }
         setAliasesUpdate(update)
       },
-      onAuthStateChanged: (state: AuthState) => {
-        status = state.status
-        setAuthState(state)
-        if (status !== AuthenticationStatus.kAuthenticated) {
-          setAliasesUpdate(emptyAliasesUpdate())
-        }
-      },
     }
     return bindObserver(observer)
-  }, [])
+  }, [bindObserver])
 
-  return { authState, aliasesUpdate }
+  React.useEffect(() => {
+    if (!isAccountLoggedIn(accountState)) {
+      setAliasesUpdate(emptyAliasesUpdate())
+    }
+  }, [accountState])
+
+  return { accountState, aliasesUpdate }
 }

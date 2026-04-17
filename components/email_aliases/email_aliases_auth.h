@@ -6,13 +6,12 @@
 #ifndef BRAVE_COMPONENTS_EMAIL_ALIASES_EMAIL_ALIASES_AUTH_H_
 #define BRAVE_COMPONENTS_EMAIL_ALIASES_EMAIL_ALIASES_AUTH_H_
 
+#include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
-
-class PrefRegistrySimple;
 
 namespace email_aliases {
 
@@ -26,14 +25,10 @@ class EmailAliasesAuth : public brave_account::mojom::AuthenticationObserver {
       OnChangedCallback on_changed = base::DoNothing());
   ~EmailAliasesAuth() override;
 
-  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
-
   bool IsAuthenticated() const;
   std::string GetAuthEmail() const;
   void GetServiceToken(
       brave_account::mojom::Authentication::GetServiceTokenCallback callback);
-
-  void SetAuthEmailForTesting(const std::string& email);
 
  private:
   void OnDisconnect();
