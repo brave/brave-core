@@ -254,10 +254,15 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                           ai_chat::features::IsAIChatHistoryEnabled());
 #endif
 
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  html_source->AddBoolean("isSurveyPanelistAllowed", false);
+#else
   html_source->AddBoolean("isSurveyPanelistAllowed",
                           base::FeatureList::IsEnabled(
                               ntp_background_images::features::
-                                  kBraveNTPBrandedWallpaperSurveyPanelist));
+                                  kBraveNTPBrandedWallpaperSurveyPanelist) &&
+                              !brave_origin::IsBraveOriginPurchased());
+#endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
   html_source->AddBoolean(
       "isPlaylistAllowed",
       base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
