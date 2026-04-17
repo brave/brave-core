@@ -8,9 +8,14 @@ import { useEmailAliases } from '../content/use_email_aliases'
 import {
   Alias,
   AliasesUpdate,
-  AuthenticationStatus,
   EmailAliasesServiceObserverInterface,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+import {
+  installMockAuthentication,
+  makeLoggedInAccountState,
+  makeLoggedOutAccountState,
+  restoreMockAuthentication,
+} from './mock_authentication'
 
 describe('useEmailAliases', () => {
   let lastObserver: EmailAliasesServiceObserverInterface | undefined
@@ -24,47 +29,30 @@ describe('useEmailAliases', () => {
 
   beforeEach(() => {
     lastObserver = undefined
+    installMockAuthentication(makeLoggedOutAccountState())
   })
 
-  it('starts with startup auth and empty aliases', () => {
+  afterEach(() => {
+    restoreMockAuthentication()
+  })
+
+  it('starts with empty aliases when logged out', () => {
     const { result } = renderHook(() => useEmailAliases(bindObserver))
 
-    expect(result.current.authState).toEqual({
-      status: AuthenticationStatus.kStartup,
-      email: '',
-    })
+    act(() => {})
+
+    expect(result.current.accountState).toEqual(makeLoggedOutAccountState())
     expect(result.current.aliasesUpdate).toEqual({ aliases: [] })
   })
 
-  it('updates auth state from onAuthStateChanged', () => {
-    const { result } = renderHook(() => useEmailAliases(bindObserver))
-    expect(lastObserver).toBeDefined()
-
-    act(() => {
-      lastObserver!.onAuthStateChanged({
-        status: AuthenticationStatus.kAuthenticated,
-        email: 'user@brave.com',
-      })
-    })
-
-    expect(result.current.authState).toEqual({
-      status: AuthenticationStatus.kAuthenticated,
-      email: 'user@brave.com',
-    })
-  })
-
-  it('applies alias list when authenticated', () => {
+  it('applies alias list when logged in', () => {
     const aliases: Alias[] = [
       { email: 'a@brave.com', note: 'n', domains: undefined },
     ]
+    installMockAuthentication(makeLoggedInAccountState('user@brave.com'))
     const { result } = renderHook(() => useEmailAliases(bindObserver))
+    expect(lastObserver).toBeDefined()
 
-    act(() => {
-      lastObserver!.onAuthStateChanged({
-        status: AuthenticationStatus.kAuthenticated,
-        email: 'user@brave.com',
-      })
-    })
     act(() => {
       lastObserver!.onAliasesUpdated({ aliases } as AliasesUpdate)
     })
@@ -72,15 +60,10 @@ describe('useEmailAliases', () => {
     expect(result.current.aliasesUpdate).toEqual({ aliases })
   })
 
-  it('applies error payload when authenticated', () => {
+  it('applies error payload when logged in', () => {
+    installMockAuthentication(makeLoggedInAccountState('user@brave.com'))
     const { result } = renderHook(() => useEmailAliases(bindObserver))
 
-    act(() => {
-      lastObserver!.onAuthStateChanged({
-        status: AuthenticationStatus.kAuthenticated,
-        email: 'user@brave.com',
-      })
-    })
     act(() => {
       lastObserver!.onAliasesUpdated({
         error: 'load failed',
@@ -90,18 +73,12 @@ describe('useEmailAliases', () => {
     expect(result.current.aliasesUpdate).toEqual({ error: 'load failed' })
   })
 
-  it('ignores alias updates while not authenticated', () => {
+  it('ignores alias updates while logged out', () => {
     const aliases: Alias[] = [
       { email: 'a@brave.com', note: undefined, domains: undefined },
     ]
     const { result } = renderHook(() => useEmailAliases(bindObserver))
 
-    act(() => {
-      lastObserver!.onAuthStateChanged({
-        status: AuthenticationStatus.kUnauthenticated,
-        email: '',
-      })
-    })
     act(() => {
       lastObserver!.onAliasesUpdated({ aliases } as AliasesUpdate)
     })
@@ -109,26 +86,22 @@ describe('useEmailAliases', () => {
     expect(result.current.aliasesUpdate).toEqual({ aliases: [] })
   })
 
-  it('resets aliases when auth leaves authenticated', () => {
+  it('resets aliases when account logs out', () => {
     const aliases: Alias[] = [
       { email: 'a@brave.com', note: undefined, domains: undefined },
     ]
+    const mockAuth = installMockAuthentication(
+      makeLoggedInAccountState('user@brave.com'),
+    )
     const { result } = renderHook(() => useEmailAliases(bindObserver))
 
     act(() => {
-      lastObserver!.onAuthStateChanged({
-        status: AuthenticationStatus.kAuthenticated,
-        email: 'user@brave.com',
-      })
-    })
-    act(() => {
       lastObserver!.onAliasesUpdated({ aliases } as AliasesUpdate)
     })
+    expect(result.current.aliasesUpdate).toEqual({ aliases })
+
     act(() => {
-      lastObserver!.onAuthStateChanged({
-        status: AuthenticationStatus.kUnauthenticated,
-        email: '',
-      })
+      mockAuth.setAccountState(makeLoggedOutAccountState())
     })
 
     expect(result.current.aliasesUpdate).toEqual({ aliases: [] })

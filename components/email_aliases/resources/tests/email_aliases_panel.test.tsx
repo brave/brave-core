@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import { EmailAliasesPanelConnected } from '../email_aliases_panel'
 import { clickLeoButton } from './test_utils'
@@ -12,6 +11,11 @@ import {
   EmailAliasesPanelHandlerInterface,
   EmailAliasesServiceObserverInterface,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+import {
+  installMockAuthentication,
+  makeLoggedInAccountState,
+  restoreMockAuthentication,
+} from './mock_authentication'
 
 const mockEmailAliasesPanelHandler: EmailAliasesPanelHandlerInterface = {
   onAliasCreated: jest.fn(),
@@ -37,9 +41,14 @@ const createBindObserver =
 describe('PanelConnected', () => {
   beforeEach(() => {
     jest.clearAllMocks()
+    installMockAuthentication(makeLoggedInAccountState('test@brave.com'))
     mockEmailAliasesService.generateAlias = jest
       .fn()
       .mockResolvedValue('generated@brave.com')
+  })
+
+  afterEach(() => {
+    restoreMockAuthentication()
   })
 
   it('manage button', async () => {

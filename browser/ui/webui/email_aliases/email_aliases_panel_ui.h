@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_EMAIL_ALIASES_EMAIL_ALIASES_PANEL_UI_H_
 #define BRAVE_BROWSER_UI_WEBUI_EMAIL_ALIASES_EMAIL_ALIASES_PANEL_UI_H_
 
+#include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "content/public/browser/webui_config.h"
@@ -33,6 +34,9 @@ class EmailAliasesPanelUI
   void BindInterface(
       mojo::PendingReceiver<email_aliases::mojom::EmailAliasesPanelHandler>
           receiver);
+
+  void BindInterface(
+      mojo::PendingReceiver<brave_account::mojom::Authentication> receiver);
 
  private:
   void OnAliasCreated(const std::string& email) override;

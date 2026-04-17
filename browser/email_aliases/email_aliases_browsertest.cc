@@ -45,6 +45,7 @@
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "content/public/test/test_navigation_observer.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "services/network/public/cpp/network_switches.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -141,6 +142,34 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
           token->serviceToken = "email-aliases-token";
           std::move(callback).Run(base::ok(std::move(token)));
         });
+
+    ON_CALL(GetBraveAccountAuth(), AddObserver(testing::_))
+        .WillByDefault(
+            [this](mojo::PendingRemote<
+                   brave_account::mojom::AuthenticationObserver> observer) {
+              email_aliases_auth_observer_remote_.Bind(std::move(observer));
+            });
+  }
+
+  void PushEmailAliasesServiceAccountState(
+      brave_account::mojom::AccountStatePtr state) {
+    email_aliases_service();  // ensure service is created.
+
+    email_aliases_auth_observer_remote_->OnAccountStateChanged(
+        std::move(state));
+    email_aliases_auth_observer_remote_.FlushForTesting();
+  }
+
+  void PushEmailAliasesServiceLoggedIn(const std::string& email) {
+    PushEmailAliasesServiceAccountState(
+        brave_account::mojom::AccountState::NewLoggedIn(
+            brave_account::mojom::LoggedInState::New(email, nullptr)));
+  }
+
+  void PushEmailAliasesServiceLoggedOut() {
+    PushEmailAliasesServiceAccountState(
+        brave_account::mojom::AccountState::NewLoggedOut(
+            brave_account::mojom::LoggedOutState::New()));
   }
 
   void SetUp() override {
@@ -331,6 +360,8 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
   net::EmbeddedTestServer https_server_{net::EmbeddedTestServer::TYPE_HTTPS};
   testing::NiceMock<brave_account::MockBraveAccountAuthentication>
       brave_account_auth_;
+  mojo::Remote<brave_account::mojom::AuthenticationObserver>
+      email_aliases_auth_observer_remote_;
 };
 
 class EmailAliasesBrowserTest : public EmailAliasesBrowserTestBase {
@@ -396,11 +427,7 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuNotAuthorized) {
 }
 
 IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorized) {
-  auto* service = email_aliases_service();
-  {
-    auto initilized = test::AuthStateObserver::Setup(service, true);
-  }
-  service->GetAuth()->SetAuthEmailForTesting(kSuccessEmail);
+  PushEmailAliasesServiceLoggedIn(kSuccessEmail);
   Navigate(GURL("https://a.test/email_aliases/inputs.html"));
   InjectHelpers(ActiveWebContents());
 
@@ -430,7 +457,7 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorized) {
 }
 
 IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorizedManage) {
-  email_aliases_service()->GetAuth()->SetAuthEmailForTesting(kSuccessEmail);
+  PushEmailAliasesServiceLoggedIn(kSuccessEmail);
 
   const GURL settings_page("chrome://settings/email-aliases");
 
@@ -461,7 +488,7 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorizedManage) {
 }
 
 IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorizedCancel) {
-  email_aliases_service()->GetAuth()->SetAuthEmailForTesting(kSuccessEmail);
+  PushEmailAliasesServiceLoggedIn(kSuccessEmail);
 
   Navigate(GURL("https://a.test/email_aliases/inputs.html"));
   InjectHelpers(ActiveWebContents());
@@ -489,21 +516,14 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorizedCancel) {
   EXPECT_TRUE(AwaitText("#type-email", ""));  // text not changed
 }
 IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, LogInLogOut) {
-  // Prepare auth token
-  email_aliases_service()->GetAuth()->SetAuthEmailForTesting(kSuccessEmail);
+  PushEmailAliasesServiceLoggedIn(kSuccessEmail);
+  EXPECT_TRUE(email_aliases_service()->IsAuthenticated());
 
-  // Settings in logged-in state
-  Navigate(GURL("chrome://settings/email-aliases"));
-  InjectHelpers(ActiveWebContents());
-  Wait("#create-new-item-button");
+  PushEmailAliasesServiceLoggedOut();
+  EXPECT_FALSE(email_aliases_service()->IsAuthenticated());
 
-  // Reset token
-  email_aliases_service()->GetAuth()->SetAuthEmailForTesting("");
-  WaitDisappear("#create-new-item-button");  // Settings in sing-in state.
-
-  // Logged-in again
-  email_aliases_service()->GetAuth()->SetAuthEmailForTesting(kSuccessEmail);
-  Wait("#create-new-item-button");  // Logged-in state.
+  PushEmailAliasesServiceLoggedIn(kSuccessEmail);
+  EXPECT_TRUE(email_aliases_service()->IsAuthenticated());
 }
 
 }  // namespace email_aliases
