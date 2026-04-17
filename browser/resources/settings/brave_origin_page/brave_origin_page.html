@@ -65,6 +65,10 @@
     font-size: .875rem;
     padding: 14px 38px;
   }
+
+  #resetToDefaults::part(icon) {
+    display: none;
+  }
 </style>
 
 <template is="dom-if" if="[[!isPurchased_]]">
@@ -192,7 +196,7 @@
   </origin-toggle-button>
   -->
 
-  <cr-link-row class="hr"
+  <cr-link-row id="resetToDefaults" class="hr"
     label="$i18n{braveOriginResetToDefaultsTitle}"
     on-click="resetToDefaults_"
     start-icon="refresh">
