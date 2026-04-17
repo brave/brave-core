@@ -24,12 +24,19 @@ import("./sources.gni")
 
 include_polymer = !is_android && !is_ios
 
+copy("leo_bundle_d_ts") {
+  sources = [ "leo/leo.bundle.d.ts" ]
+  outputs = [ "$root_gen_dir/brave/web-ui-leo/leo.bundle.d.ts" ]
+
+  public_deps = [ ":leo_bundle" ]
+}
+
 group("grdp") {
   public_deps = [
     ":fonts_grdp",
     ":icons_grdp",
-    ":leo_bundle",
     ":static_grdp",
+    ":leo_bundle_d_ts",
     "//brave/components/brave_account/resources/opaque_ke",
   ]
   if (include_polymer) {

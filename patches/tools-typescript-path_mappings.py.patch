@@ -1,0 +1,12 @@
+diff --git a/tools/typescript/path_mappings.py b/tools/typescript/path_mappings.py
+index e7488d4fed803bf9b969bcd9afe32d38ee2aef05..6bb8bd166bd91c2674392c1b6498f11887d7275b 100644
+--- a/tools/typescript/path_mappings.py
++++ b/tools/typescript/path_mappings.py
+@@ -230,6 +230,6 @@ def main(argv):
+   _write_path_mappings_file(path_mappings, args.output_suffix, args.gen_dir,
+                             args.pretty_print)
+ 
+-
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
+ if __name__ == '__main__':
+   main(sys.argv[1:])
