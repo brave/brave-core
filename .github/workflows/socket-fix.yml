@@ -61,7 +61,7 @@ jobs:
           GHSA_IDS: ${{ inputs.ghsa_ids }}
           SOCKET_SECURITY_API_KEY: ${{ secrets.SOCKET_SECURITY_API_KEY }}
           SOCKET_CLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CI: 'true'
+          CI: ''
         run: |
           if ! [[ "$GHSA_IDS" =~ ^GHSA-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}(,[[:space:]]?GHSA-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4})*$ ]]; then
             echo "::error::GHSA_IDS contains invalid entries. Expected format: GHSA-xxxx-xxxx-xxxx (comma or comma-space separated)"
