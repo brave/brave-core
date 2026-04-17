@@ -585,6 +585,60 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_PdfExtractedTextPreferred) {
   VerifyTextBlock(FROM_HERE, messages[0].content[3], "query0");
 }
 
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_TextFileExtractedText) {
+  // Test that text files with extracted_text produce TextContentBlock with
+  // [File: filename] prefix, and text files without extracted_text are skipped.
+  auto history = CreateSampleChatHistory(1);
+
+  auto text_files =
+      CreateSampleUploadedFiles(2, mojom::UploadedFileType::kText);
+  // First text file has extracted text — should produce TextContentBlock
+  text_files[0]->extracted_text = "config_key=config_value";
+  text_files[0]->filename = "app.conf";
+  // Second text file has no extracted text — should be skipped
+  text_files[1]->filename = "failed.txt";
+
+  history[0]->uploaded_files = std::move(text_files);
+
+  PageContentsMap page_contents_map;
+  std::vector<OAIMessage> messages =
+      BuildOAIMessages(std::move(page_contents_map), history, nullptr, true,
+                       10000, [](std::string&) {});
+
+  ASSERT_EQ(messages.size(), 2u);
+  EXPECT_EQ(messages[0].role, "user");
+  // Content: text files intro + extracted text + prompt = 3 blocks
+  // (second file with no extracted_text is skipped)
+  ASSERT_EQ(messages[0].content.size(), 3u);
+  VerifyTextBlock(FROM_HERE, messages[0].content[0],
+                  "These text files are uploaded by the user");
+  VerifyTextBlock(FROM_HERE, messages[0].content[1],
+                  "[File: app.conf]\nconfig_key=config_value");
+  VerifyTextBlock(FROM_HERE, messages[0].content[2], "query0");
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_TextFileDefaultFilename) {
+  // Test that text files with empty filename get default "uploaded.txt"
+  auto history = CreateSampleChatHistory(1);
+
+  auto text_files =
+      CreateSampleUploadedFiles(1, mojom::UploadedFileType::kText);
+  text_files[0]->extracted_text = "some content";
+  text_files[0]->filename.clear();
+
+  history[0]->uploaded_files = std::move(text_files);
+
+  PageContentsMap page_contents_map;
+  std::vector<OAIMessage> messages =
+      BuildOAIMessages(std::move(page_contents_map), history, nullptr, true,
+                       10000, [](std::string&) {});
+
+  ASSERT_EQ(messages.size(), 2u);
+  ASSERT_EQ(messages[0].content.size(), 3u);
+  VerifyTextBlock(FROM_HERE, messages[0].content[1],
+                  "[File: uploaded.txt]\nsome content");
+}
+
 TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory_Excluded) {
   // Enable customization and set data
   prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);

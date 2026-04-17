@@ -27,19 +27,13 @@ export class ImageProcessingError extends Error {
   }
 }
 
-export class UnsupportedFileTypeError extends Error {
-  constructor(message: string) {
-    super(message)
-    this.name = 'UnsupportedFileTypeError'
-  }
-}
-
 // Utility function to convert File objects to UploadedFile format
 export const convertFileToUploadedFile = async (
   file: File,
   processImageFile: AIChatContext['processImageFile'],
   processPdfFile?: AIChatContext['processPdfFile'],
-): Promise<Mojom.UploadedFile> => {
+  processTextFile?: AIChatContext['processTextFile'],
+): Promise<Mojom.UploadedFile | null> => {
   const reader = new FileReader()
   const arrayBuffer = await new Promise<ArrayBuffer>((resolve, reject) => {
     reader.onload = (e) => {
@@ -70,41 +64,41 @@ export const convertFileToUploadedFile = async (
       }
     }
     // Fallback: return raw PDF data without extracted text
-    const uploadedFile: Mojom.UploadedFile = {
+    return {
       filename: file.name,
       filesize: file.size,
       data: Array.from(uint8Array),
       type: Mojom.UploadedFileType.kPdf,
       extractedText: undefined,
     }
-    return uploadedFile
   } else if (mimeType.startsWith('image/')) {
     // Use backend processing for images via mojo call
-    try {
-      const processedFile = await processImageFile([
+    const processedFile = await processImageFile([
+      Array.from(uint8Array),
+      file.name,
+    ])
+
+    if (!processedFile) {
+      throw new ImageProcessingError(
+        'Failed to process image file: Backend returned no result',
+      )
+    }
+
+    return processedFile
+  } else {
+    // Everything else is treated as a text file. The renderer handles
+    // MIME sniffing and will render the file as text if possible.
+    // If extraction fails (e.g. binary file), null is returned and
+    // the file is not attached.
+    if (processTextFile) {
+      const processedFile = await processTextFile([
         Array.from(uint8Array),
         file.name,
       ])
-
-      if (!processedFile) {
-        throw new ImageProcessingError(
-          'Failed to process image file: Backend returned no result',
-        )
+      if (processedFile) {
+        return processedFile
       }
-
-      return processedFile
-    } catch (error) {
-      if (error instanceof ImageProcessingError) {
-        throw error
-      }
-
-      // Re-throw any other errors as-is
-      throw error
     }
-  } else {
-    throw new UnsupportedFileTypeError(
-      `Unsupported file type: ${file.type}. Only images and PDF files `
-        + `are supported.`,
-    )
+    return null
   }
 }

@@ -45,6 +45,9 @@
   <message name="IDS_CHAT_UI_DROP_FILES_DESCRIPTION" desc="Descriptive text shown when dragging files over the page" formatter_data="webui=AiChat">
     Drop any files here to add them to the conversation
   </message>
+  <message name="IDS_CHAT_UI_FILE_UPLOAD_ERROR" desc="Alert shown when one or more files could not be read as text and were not attached" formatter_data="webui=AiChat">
+    Some files could not be read and were not attached
+  </message>
   <message name="IDS_CHAT_UI_SUGGEST_QUESTIONS_LABEL" desc="Button label to ask the AI Chat to suggest some related questions" formatter_data="webui=AiChat">
     Suggest questions…
   </message>

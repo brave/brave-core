@@ -113,6 +113,7 @@ enum UploadedFileType {
   kImage = 0,
   kScreenshot,
   kPdf,
+  kText,
 };
 
 // This does not cover more specific data that the Service owns, such as the
@@ -151,9 +152,9 @@ struct UploadedFile {
   uint32 filesize;
   array<uint8> data;
   UploadedFileType type;
-  // Text extracted from PDF files via the background PDF viewer and ScreenAI
-  // OCR pipeline. Null for non-PDF files or when extraction failed/timed out.
-  // When present, the engine layer sends this text instead of raw PDF bytes.
+  // Text extracted from PDF or text files via a background renderer. Null when
+  // extraction failed/timed out or not applicable. When present, the engine
+  // layer sends this text instead of raw file bytes.
   string? extracted_text;
 };
 

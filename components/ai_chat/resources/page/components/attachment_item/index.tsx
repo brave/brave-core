@@ -175,6 +175,7 @@ function AttachmentUploadItem({
     file.type === Mojom.UploadedFileType.kImage
     || file.type === Mojom.UploadedFileType.kScreenshot
   const isPdf = file.type === Mojom.UploadedFileType.kPdf
+  const isText = file.type === Mojom.UploadedFileType.kText
   const isFileFullPageScreenshot = isFullPageScreenshot(file)
 
   const dataUrl = React.useMemo(() => {
@@ -208,7 +209,7 @@ function AttachmentUploadItem({
         className={className}
       />
     )
-  } else if (isPdf) {
+  } else if (isPdf || isText) {
     return (
       <AttachmentItem
         icon={<Icon name='file' />}
