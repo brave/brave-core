@@ -98,6 +98,7 @@ class BraveOriginPolicyManager {
 
   bool initialized_ = false;
   bool is_purchased_ = false;
+  bool is_purchased_from_pref_ = false;
   BraveOriginPolicyMap browser_policy_definitions_;
   BraveOriginPolicyMap profile_policy_definitions_;
   raw_ptr<PrefService> local_state_ = nullptr;

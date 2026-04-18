@@ -31,6 +31,7 @@ void BraveOriginPolicyManager::Init(
   browser_policy_definitions_ = std::move(browser_policy_definitions);
   profile_policy_definitions_ = std::move(profile_policy_definitions);
   local_state_ = local_state;
+  is_purchased_from_pref_ = local_state_->GetBoolean(kOriginPurchaseValidated);
   initialized_ = true;
 
   // Notify observers that policies are now ready
@@ -172,6 +173,7 @@ void BraveOriginPolicyManager::SetPurchased(bool purchased) {
     return;
   }
   is_purchased_ = purchased;
+  is_purchased_from_pref_ = purchased;
   // Persist purchase state so policies can be applied immediately on next
   // startup, before the async SKU credential check completes.
   if (local_state_) {
@@ -183,20 +185,17 @@ void BraveOriginPolicyManager::SetPurchased(bool purchased) {
 }
 
 bool BraveOriginPolicyManager::IsPurchased() const {
-  if (is_purchased_) {
-    return true;
-  }
-  // Fall back to persisted pref so policies are applied immediately on startup,
-  // before the async purchase verification completes.
-  if (local_state_) {
-    return local_state_->GetBoolean(kOriginPurchaseValidated);
-  }
-  return false;
+  // `is_purchased_` is set by async verification; `is_purchased_from_pref_` is
+  // pre-cached at Init() from the persisted pref so policies apply immediately
+  // on startup. Neither requires PrefService access at call time, making this
+  // safe to call from any sequence.
+  return is_purchased_ || is_purchased_from_pref_;
 }
 
 void BraveOriginPolicyManager::Shutdown() {
   initialized_ = false;
   is_purchased_ = false;
+  is_purchased_from_pref_ = false;
   browser_policy_definitions_.clear();
   profile_policy_definitions_.clear();
   local_state_ = nullptr;

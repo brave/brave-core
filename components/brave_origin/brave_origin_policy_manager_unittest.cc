@@ -495,4 +495,140 @@ TEST_F(BraveOriginPolicyManagerTest,
   manager->RemoveObserver(&observer3);
 }
 
+// ---------------------------------------------------------------------------
+// IsPurchased / SetPurchased tests
+//
+// These cover the is_purchased_from_pref_ caching added to fix a sequence-
+// checker crash: BraveOriginPolicyManager::IsPurchased() was reading
+// local_state_->GetBoolean() at call time, which crashed when called from a
+// database worker thread. The fix pre-caches the pref value at Init() time
+// into is_purchased_from_pref_ so IsPurchased() only reads in-memory bools.
+// ---------------------------------------------------------------------------
+
+TEST_F(BraveOriginPolicyManagerTest, IsPurchased_FalseByDefault) {
+  InitializeManager();
+
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+  EXPECT_FALSE(manager->IsPurchased());
+}
+
+// Key regression test: pref set to true BEFORE Init() must be visible through
+// IsPurchased() without any subsequent SetPurchased() call. This is the
+// startup path — the async SKU check hasn't run yet, but the persisted pref
+// tells us the user was a subscriber last session.
+TEST_F(BraveOriginPolicyManagerTest,
+       IsPurchased_TrueWhenPurchaseValidatedPrefSetBeforeInit) {
+  pref_service_.SetBoolean(kOriginPurchaseValidated, true);
+
+  InitializeManager();
+
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+  EXPECT_TRUE(manager->IsPurchased());
+}
+
+TEST_F(BraveOriginPolicyManagerTest,
+       IsPurchased_FalseWhenPurchaseValidatedPrefFalseBeforeInit) {
+  pref_service_.SetBoolean(kOriginPurchaseValidated, false);
+
+  InitializeManager();
+
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+  EXPECT_FALSE(manager->IsPurchased());
+}
+
+TEST_F(BraveOriginPolicyManagerTest, IsPurchased_TrueAfterSetPurchasedTrue) {
+  InitializeManager();
+
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+  manager->SetPurchased(true);
+
+  EXPECT_TRUE(manager->IsPurchased());
+}
+
+TEST_F(BraveOriginPolicyManagerTest, IsPurchased_FalseAfterSetPurchasedFalse) {
+  InitializeManager();
+
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+  manager->SetPurchased(true);
+  ASSERT_TRUE(manager->IsPurchased());
+
+  manager->SetPurchased(false);
+  EXPECT_FALSE(manager->IsPurchased());
+}
+
+// SetPurchased(true) must keep is_purchased_from_pref_ in sync so that a
+// subsequent SetPurchased(false) correctly brings IsPurchased() back to false.
+TEST_F(BraveOriginPolicyManagerTest,
+       SetPurchased_KeepsIsPurchasedFromPrefInSync) {
+  InitializeManager();
+
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+
+  manager->SetPurchased(true);
+  EXPECT_TRUE(manager->IsPurchased());
+
+  manager->SetPurchased(false);
+  EXPECT_FALSE(manager->IsPurchased());
+}
+
+TEST_F(BraveOriginPolicyManagerTest, SetPurchased_PersistsToPref) {
+  InitializeManager();
+
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+  ASSERT_FALSE(pref_service_.GetBoolean(kOriginPurchaseValidated));
+
+  manager->SetPurchased(true);
+  EXPECT_TRUE(pref_service_.GetBoolean(kOriginPurchaseValidated));
+
+  manager->SetPurchased(false);
+  EXPECT_FALSE(pref_service_.GetBoolean(kOriginPurchaseValidated));
+}
+
+// SetPurchased is idempotent — calling it twice with the same value should
+// not change the observable result.
+TEST_F(BraveOriginPolicyManagerTest, SetPurchased_IdempotentWhenSameValue) {
+  InitializeManager();
+
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+
+  manager->SetPurchased(true);
+  manager->SetPurchased(true);
+  EXPECT_TRUE(manager->IsPurchased());
+
+  manager->SetPurchased(false);
+  manager->SetPurchased(false);
+  EXPECT_FALSE(manager->IsPurchased());
+}
+
+// After Shutdown(), is_purchased_from_pref_ must be reset so a re-Init()
+// starts from a clean slate.
+TEST_F(BraveOriginPolicyManagerTest, Shutdown_ResetsIsPurchasedState) {
+  pref_service_.SetBoolean(kOriginPurchaseValidated, true);
+  InitializeManager();
+
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+  ASSERT_TRUE(manager->IsPurchased());
+
+  manager->Shutdown();
+  EXPECT_FALSE(manager->IsPurchased());
+}
+
+// The pref-cached path and the runtime path are independent — either alone
+// is sufficient to make IsPurchased() return true.
+TEST_F(BraveOriginPolicyManagerTest,
+       IsPurchased_TrueFromPrefCacheOrSetPurchasedIndependently) {
+  // Path 1: pref pre-set, SetPurchased never called.
+  pref_service_.SetBoolean(kOriginPurchaseValidated, true);
+  InitializeManager();
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+  EXPECT_TRUE(manager->IsPurchased());
+  manager->Shutdown();
+
+  // Path 2: pref not set, SetPurchased(true) called at runtime.
+  pref_service_.SetBoolean(kOriginPurchaseValidated, false);
+  InitializeManager();
+  manager->SetPurchased(true);
+  EXPECT_TRUE(manager->IsPurchased());
+}
+
 }  // namespace brave_origin
