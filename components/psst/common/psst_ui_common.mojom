@@ -21,13 +21,14 @@ interface PsstConsentFactory {
 
 // Handler for the UI to backend calls
 interface PsstConsentHelper {
-    ApplyChanges(string site_name, array<string> disabled_settings_list);
+    ApplyChanges(array<string> disabled_settings_list);
     CloseDialog();
 };
 
 struct SettingCardDataItem {
     string description;
     string url;
+    string uid;
 };
 
 struct SettingCardData {
@@ -38,6 +39,6 @@ struct SettingCardData {
 // Handler for the backend to UI calls
 interface PsstConsentDialog {
     SetSettingsCardData(SettingCardData scd);
-    OnSetRequestDone(string url, string? error);
+    OnSetRequestDone(string uid, string? error);
     OnSetCompleted(array<string> applied_checks, array<string> errors);
 };

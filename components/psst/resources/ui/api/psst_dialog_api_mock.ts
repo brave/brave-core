@@ -18,7 +18,7 @@ import { createPsstDialogApi, type PsstDialogAPI } from './psst_dialog_api'
  * const mockAPI = createMockPsstDialogAPI({
  *   settingsCardData: {
  *     siteName: 'custom-site.com',
- *     setting_items: customSettingItems
+ *     items: customSettingItems
  *   }
  * })
  */
@@ -30,18 +30,22 @@ const mockSettingCardData: Mojom.SettingCardData = {
   siteName: 'example.com',
   items: [
     {
+      uid: '1',
       url: 'https://example.com/cookies',
       description: 'Manage cookie preferences and tracking protection',
     },
     {
+      uid: '2',
       url: 'https://example.com/analytics',
       description: 'Control analytics and data collection settings',
     },
     {
+      uid: '3',
       url: 'https://example.com/ads',
       description: 'Configure advertising preferences',
     },
     {
+      uid: '4',
       url: 'https://example.com/location',
       description: 'Manage location data sharing',
     },
@@ -54,9 +58,8 @@ const mockSettingCardData: Mojom.SettingCardData = {
 function createMockConsentHelper(): Mojom.PsstConsentHelperInterface {
   const mock = {
     // Mojom interface methods that endpointsFor/actionsFor expect
-    async applyChanges(siteName: string, disabledSettingsList: string[]) {
+    async applyChanges(disabledSettingsList: string[]) {
       console.log('[Mock] applyChanges called with:', {
-        siteName,
         disabledSettingsList,
       })
     },
@@ -93,9 +96,9 @@ export interface MockPsstDialogAPIOptions {
   requestDelay?: number
 
   /**
-   * Simulate errors for specific URLs
+   * Simulate errors for specific UIDs
    */
-  errorUrls?: string[]
+  errorUids?: string[]
 
   /**
    * Custom close dialog behavior
@@ -118,7 +121,7 @@ export function createMockPsstDialogAPI(
     settingsCardData = {},
     autoLoadSettings = true,
     requestDelay = 1000,
-    errorUrls = [],
+    errorUids = [],
     onCloseDialog = () => console.log('[Mock] Dialog closed'),
   } = options
 
@@ -145,28 +148,26 @@ export function createMockPsstDialogAPI(
 
   // Override the apply changes action with mock behavior
   mockConsentHelper.applyChanges = async (
-    siteName: string,
     disabledSettingsList: string[],
   ) => {
     console.log('[Mock] Processing apply changes for:', {
-      siteName,
       disabledSettingsList,
     })
 
     // For mocking, assume all items are being processed (in real scenario,
     // only checked items would be sent to this method)
-    const allUrls = finalSettingsData.items.map((item) => item.url)
+    const allUids = finalSettingsData.items.map((item) => item.uid)
 
     // Simulate processing each URL
     for (const item of finalSettingsData.items) {
       // Simulate request status update
       setTimeout(() => {
-        const hasError = errorUrls.includes(item.url)
+        const hasError = errorUids.includes(item.uid)
         console.log(
-          `[Mock] Simulate request done for URL: ${item.url} with error: ${hasError ? 'Failed to update setting' : 'Success'}`,
+          `[Mock] Simulate request done for URL: ${item.uid} with error: ${hasError ? 'Failed to update setting' : 'Success'}`,
         )
         dialogHandler.onSetRequestDone(
-          item.url,
+          item.uid,
           hasError ? 'Failed to update setting' : null,
         )
       }, Math.random() * requestDelay)
@@ -174,8 +175,8 @@ export function createMockPsstDialogAPI(
 
     // Simulate completion
     setTimeout(() => {
-      const appliedChecks = allUrls.filter((url) => !errorUrls.includes(url))
-      const errors = errorUrls.filter((url) => allUrls.includes(url))
+      const appliedChecks = allUids.filter((uid) => !errorUids.includes(uid))
+      const errors = errorUids.filter((uid) => allUids.includes(uid))
       console.log(
         `[Mock] Simulate completion with applied checks: ${appliedChecks} and errors: ${errors}`,
       )

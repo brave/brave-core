@@ -16,19 +16,19 @@ import Flex from '$web-common/Flex'
 setIconBasePath('/icons')
 
 // Stable default values to prevent unnecessary re-renders
-const DEFAULT_ERROR_URLS: string[] = []
+const DEFAULT_ERROR_UIDS: string[] = []
 const DEFAULT_ITEMS: Mojom.SettingCardDataItem[] = []
 
 function PsstDialogStory({
   autoLoadSettings = true,
   requestDelay = 1000,
-  errorUrls = DEFAULT_ERROR_URLS,
+  errorUids = DEFAULT_ERROR_UIDS,
   siteName = 'example.com',
   items = DEFAULT_ITEMS,
 }: {
   readonly autoLoadSettings?: boolean
   readonly requestDelay?: number
-  readonly errorUrls?: string[]
+  readonly errorUids?: string[]
   readonly siteName?: string
   readonly items?: Mojom.SettingCardDataItem[]
 }) {
@@ -36,14 +36,14 @@ function PsstDialogStory({
     return createMockPsstDialogAPI({
       autoLoadSettings,
       requestDelay,
-      errorUrls,
+      errorUids,
       settingsCardData: {
         siteName: siteName,
         items,
       },
       onCloseDialog: () => console.log('[Storybook] Dialog closed'),
     })
-  }, [autoLoadSettings, requestDelay, errorUrls, siteName, items])
+  }, [autoLoadSettings, requestDelay, errorUids, siteName, items])
 
   return (
     <Flex
@@ -81,9 +81,9 @@ export default {
       control: { type: 'range', min: 100, max: 5000, step: 100 },
       description: 'Simulated network delay in milliseconds',
     },
-    errorUrls: {
+    errorUids: {
       control: 'object',
-      description: 'Array of URLs that should simulate errors',
+      description: 'Array of UIDs that should simulate errors',
     },
   },
 } satisfies Meta<typeof PsstDialogStory>
@@ -100,23 +100,27 @@ export const Default: Story = {
     requestDelay: 1000,
     items: [
       {
+        uid: '1',
         url: 'https://example.com/cookies',
         description: 'Manage cookie preferences and tracking protection',
       },
       {
+        uid: '2',
         url: 'https://example.com/analytics',
         description: 'Control analytics and data collection settings',
       },
       {
+        uid: '3',
         url: 'https://example.com/ads',
         description: 'Configure advertising preferences',
       },
       {
+        uid: '4',
         url: 'https://example.com/location',
         description: 'Manage location data sharing',
       },
     ],
-    errorUrls: [],
+    errorUids: [],
   },
 }
 
@@ -130,25 +134,26 @@ export const WithErrors: Story = {
     requestDelay: 1500,
     items: [
       {
+        uid: '1',
         url: 'https://example.com/cookies',
         description: 'Manage cookie preferences and tracking protection',
       },
       {
+        uid: '2',
         url: 'https://problematic-site.com/analytics',
         description: 'Control analytics and data collection settings',
       },
       {
+        uid: '3',
         url: 'https://example.com/ads',
         description: 'Configure advertising preferences',
       },
       {
+        uid: '4',
         url: 'https://problematic-site.com/location',
         description: 'Manage location data sharing',
       },
     ],
-    errorUrls: [
-      'https://problematic-site.com/analytics',
-      'https://problematic-site.com/location',
-    ],
+    errorUids: [ '2', '4'],
   },
 }

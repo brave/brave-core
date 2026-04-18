@@ -73,7 +73,7 @@ const IconContainer = styled.div`
 export interface Props {
   title: string
   progressModelState: PsstProgressModalState | null
-  onItemChecked: (url: string, checked: boolean) => void
+  onItemChecked: (uid: string, checked: boolean) => void
 }
 
 const SettingsCard: React.FC<Props> = ({
@@ -93,7 +93,7 @@ const SettingsCard: React.FC<Props> = ({
         && progressModelState.optionsStatuses
         && Array.from(progressModelState.optionsStatuses.values()).map(
           (item) => (
-            <SettingGridRow key={item.url}>
+            <SettingGridRow key={item.uid}>
               {item.settingState === SettingState.Progress && (
                 <Flex
                   direction='row'
@@ -108,7 +108,7 @@ const SettingsCard: React.FC<Props> = ({
                 <Checkbox
                   checked={item.checked}
                   isDisabled={item.disabled}
-                  onChange={(e) => onItemChecked(item.url, e.checked)}
+                  onChange={(e) => onItemChecked(item.uid, e.checked)}
                 >
                   {item.description}
                 </Checkbox>
