@@ -36,8 +36,8 @@ DesktopWallpaper::SetImageAsDesktopWallpaper(
                       ? ext
                       : absl::StrFormat("%s_%s", ext, displays[0]->id);
 
-  base::FilePath user_path;
-  CHECK(base::PathService::CheckedGet(chrome::DIR_USER_DATA, &user_path));
+  base::FilePath user_path =
+      base::PathService::CheckedGet(chrome::DIR_USER_DATA);
 
   auto wallpaper_dir = user_path.Append("wallpapers");
   auto wallpaper = wallpaper_dir.Append(filename).value();
