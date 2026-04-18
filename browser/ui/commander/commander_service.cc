@@ -38,6 +38,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/location_bar/location_bar.h"
 #include "chrome/browser/ui/omnibox/omnibox_view.h"
@@ -191,14 +192,12 @@ void CommanderService::UpdateTextFromCurrentBrowserOmnibox() {
 
   // The last active browser can have no tabs, if we're in the process of moving
   // the last tab from the current window into another one.
-  if (!browser || browser->tab_strip_model()->empty()) {
+  if (!browser || browser->GetTabStripModel()->empty()) {
     return;
   }
 
-  auto* window = browser->window();
-  CHECK(window);
-
-  auto text = window->GetLocationBar()->GetOmniboxView()->GetText();
+  auto text =
+      browser->GetFeatures().location_bar()->GetOmniboxView()->GetText();
   UpdateText(text, /*force=*/true);
 }
 
@@ -209,7 +208,7 @@ void CommanderService::UpdateText(const std::u16string& text, bool force) {
   }
 
   auto has_prefix = text.starts_with(kCommandPrefix);
-  if (!has_prefix && !browser->profile()->GetPrefs()->GetBoolean(
+  if (!has_prefix && !browser->GetProfile()->GetPrefs()->GetBoolean(
                          omnibox::kCommanderSuggestionsEnabled)) {
     return;
   }
@@ -245,9 +244,7 @@ OmniboxView* CommanderService::GetOmnibox() const {
     return nullptr;
   }
 
-  auto* window = browser->window();
-  CHECK(window);
-  return window->GetLocationBar()->GetOmniboxView();
+  return browser->GetFeatures().location_bar()->GetOmniboxView();
 }
 
 bool CommanderService::IsShowing() const {

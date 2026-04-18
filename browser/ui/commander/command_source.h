@@ -19,7 +19,7 @@
 #include "base/functional/callback.h"
 #include "ui/gfx/range/range.h"
 
-class Browser;
+class BrowserWindowInterface;
 
 namespace commander {
 
@@ -40,7 +40,7 @@ class CommandSource {
   // any particular order. |browser| is the browser the active commander
   // is attached to.
   virtual CommandResults GetCommands(const std::u16string& input,
-                                     Browser* browser) const = 0;
+                                     BrowserWindowInterface* browser) const = 0;
 };
 
 // Represents a single option that can be presented in the command palette.

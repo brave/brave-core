@@ -57,7 +57,8 @@ class RewardsPageBubbleDelegate : public RewardsPageHandler::BubbleDelegate {
 
   std::string GetPublisherIdForActiveTab() override {
     if (auto* browser = chrome::FindLastActiveWithProfile(profile_.get())) {
-      if (auto* contents = browser->tab_strip_model()->GetActiveWebContents()) {
+      if (auto* contents =
+              browser->GetTabStripModel()->GetActiveWebContents()) {
         if (auto* tab_helper = RewardsTabHelper::FromWebContents(contents)) {
           return tab_helper->GetPublisherIdForTab();
         }
