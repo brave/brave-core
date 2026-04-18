@@ -10,7 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/check_is_test.h"
 #include "base/rand_util.h"
 #include "base/strings/strcat.h"
 #include "base/task/single_thread_task_runner.h"
@@ -91,7 +90,6 @@ void AdBlockCustomFiltersProvider::CreateSiteExemption(std::string_view host) {
 std::string AdBlockCustomFiltersProvider::GetCustomFilters() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!local_state_) {
-    CHECK_IS_TEST();
     return std::string();
   }
   return local_state_->GetString(prefs::kAdBlockCustomFilters);
@@ -101,7 +99,6 @@ bool AdBlockCustomFiltersProvider::UpdateCustomFilters(
     std::string_view custom_filters) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!local_state_) {
-    CHECK_IS_TEST();
     return false;
   }
   local_state_->SetString(prefs::kAdBlockCustomFilters, custom_filters);
