@@ -216,8 +216,9 @@ function BlockScriptsControls(props: { showDetails: () => void }) {
       </div>
       <Button
         onClick={props.showDetails}
-        isDisabled={
-          !isNoscriptEnabled || !hasBlockedOrAllowed || scriptsBlockedEnforced
+        isDisabled={!hasBlockedOrAllowed || scriptsBlockedEnforced}
+        className={
+          !isNoscriptEnabled || scriptsBlockedEnforced ? 'hidden' : undefined
         }
         kind='plain-faint'
         fab
