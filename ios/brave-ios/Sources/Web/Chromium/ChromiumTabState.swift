@@ -249,6 +249,8 @@ class ChromiumTabState: TabState, TabStateImpl {
 
     self.webView = webView
 
+    print("autofill controller: \(webView.autofillController)")
+
     if isVisible {
       containerView.webView = webView
     }

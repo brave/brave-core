@@ -15,6 +15,8 @@ import Web
 extension BrowserViewController: TabObserver {
   public func tabDidCreateWebView(_ tab: some TabState) {
     tab.view.frame = webViewContainer.frame
+    print("did create web view")
+    autofillManager.attachIfNeeded(to: tab)
 
     if tab.isVisible, let scrollView = tab.webViewProxy?.scrollView {
       toolbarVisibilityViewModel.beginObservingScrollView(scrollView)
