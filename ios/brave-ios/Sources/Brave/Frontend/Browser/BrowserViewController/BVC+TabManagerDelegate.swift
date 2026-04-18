@@ -14,6 +14,7 @@ import Foundation
 import Preferences
 import Shared
 import SwiftUI
+import UserAgent
 import Web
 import WebKit
 import os.log
@@ -88,6 +89,7 @@ extension BrowserViewController: TabManagerDelegate {
     // When `BraveShieldsTabHelper+TabPolicyDecider` is moved to `BraveShields` target,
     // we should add it as a policy decider at initialization.
     tab.addPolicyDecider(braveShieldsHelper)
+    tab.userAgentTabHelper = .init(tab: tab, braveUserAgentExceptions: tab.braveUserAgentExceptions)
     tab.logins = .init(tab: tab, passwordAPI: profileController.passwordAPI)
     tab.nightMode = .init(tab: tab)
 

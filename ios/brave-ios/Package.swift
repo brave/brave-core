@@ -532,7 +532,11 @@ var package = Package(
       ],
       plugins: ["LoggerPlugin"]
     ),
-    .target(name: "UserAgent", dependencies: ["Preferences", "BraveCore"]),
+    .target(
+      name: "UserAgent",
+      dependencies: ["Preferences", "BraveCore", "Web"],
+      plugins: ["LoggerPlugin"]
+    ),
     .target(
       name: "CredentialProviderUI",
       dependencies: ["BraveCore", "DesignSystem", "BraveShared", "Strings", "BraveUI"]
