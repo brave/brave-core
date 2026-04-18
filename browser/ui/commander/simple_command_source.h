@@ -19,8 +19,9 @@ class SimpleCommandSource : public CommandSource {
   SimpleCommandSource& operator=(const SimpleCommandSource& other) = delete;
 
   // CommandSource:
-  CommandSource::CommandResults GetCommands(const std::u16string& input,
-                                            Browser* browser) const override;
+  CommandSource::CommandResults GetCommands(
+      const std::u16string& input,
+      BrowserWindowInterface* browser) const override;
 };
 
 }  // namespace commander

@@ -30,8 +30,9 @@ class OpenURLCommandSource : public CommandSource {
   OpenURLCommandSource& operator=(const OpenURLCommandSource& other) = delete;
 
   // CommandSource overrides
-  CommandSource::CommandResults GetCommands(const std::u16string& input,
-                                            Browser* browser) const override;
+  CommandSource::CommandResults GetCommands(
+      const std::u16string& input,
+      BrowserWindowInterface* browser) const override;
 
  private:
   const std::vector<std::pair<std::u16string, GURL>> title_url_map_;

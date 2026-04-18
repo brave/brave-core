@@ -87,7 +87,7 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
       return nullptr;
     }
 
-    auto* tab_model = browser->tab_strip_model();
+    auto* tab_model = browser->GetTabStripModel();
     DCHECK(tab_model);
     return tab_model->GetActiveWebContents();
 #endif  // BUILDFLAG(IS_ANDROID)
