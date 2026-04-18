@@ -464,6 +464,7 @@ if (is_mac) {
     "//brave/app:command_ids",
     "//brave/browser:sparkle_buildflags",
     "//brave/browser/updater:buildflags",
+    "//brave/browser/ui/webui/desktop_wallpaper",
     "//chrome:strings",
     "//chrome/app:generated_resources",
     "//chrome/common:non_code_constants",

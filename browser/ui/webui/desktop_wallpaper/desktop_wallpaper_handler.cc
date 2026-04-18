@@ -21,8 +21,6 @@
 #include "brave/components/desktop_wallpaper/desktop_wallpaper.mojom-forward.h"
 #include "brave/components/desktop_wallpaper/desktop_wallpaper.mojom.h"
 #include "brave/components/desktop_wallpaper/desktop_wallpaper_service.h"
-#include "chrome/browser/browser_process.h"
-#include "chrome/browser/net/system_network_context_manager.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "ui/display/screen.h"
@@ -49,14 +47,6 @@ void DesktopWallpaperHandler::SetImageAsDesktopWallpaper(
 }
 
 void DesktopWallpaperHandler::FetchImage(const std::string& source) {
-  SystemNetworkContextManager* network =
-      g_browser_process->system_network_context_manager();
-
-  if (!network) {
-    LOG(ERROR) << "SystemNetworkContextManager is not available";
-    return;
-  }
-
   auto req = std::make_unique<network::ResourceRequest>();
   req->url = GURL(source);
 
@@ -153,5 +143,3 @@ DesktopWallpaperHandler::GetNetworkTrafficAnnotationTag() {
 
   )");
 }
-
-// void DesktopWallpaperHandler::HandleCloseModal() {}

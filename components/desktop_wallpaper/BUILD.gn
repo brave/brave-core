@@ -19,6 +19,7 @@ source_set("desktop_wallpaper") {
   deps = [
     ":mojo_bindings",
     "//base",
+    "//chrome/common:constants",
     "//net",
     "//services/network/public/cpp",
     "//third_party/abseil-cpp:absl",

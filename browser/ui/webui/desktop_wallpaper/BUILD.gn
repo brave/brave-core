@@ -14,10 +14,15 @@ source_set("desktop_wallpaper") {
   deps = [
     "//brave/browser/resources/desktop_wallpaper:pack_js_resources",
     "//brave/browser/resources/desktop_wallpaper:pack_static_resources",
+    "//brave/components/constants",
+    "//brave/components/desktop_wallpaper",
     "//brave/components/desktop_wallpaper:mojo_bindings",
+    "//chrome/browser:browser_process",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/webui:webui",
     "//chrome/browser/ui/webui:webui_util",
     "//content/public/browser",
+    "//ui/web_dialogs",
     "//ui/webui",
   ]
 }
