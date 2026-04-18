@@ -72,6 +72,13 @@ IN_PROC_BROWSER_TEST_P(AdBlockDATCacheBrowserTest,
       return base::PathExists(cache_dir.AppendASCII("engine0.dat")) &&
              base::PathExists(cache_dir.AppendASCII("engine1.dat"));
     })) << "Timeout waiting for DAT files to be written";
+  } else {
+    // Verify filter set build happened
+    auto* service = g_brave_browser_process->ad_block_service();
+    ASSERT_TRUE(base::test::RunUntil([service]() {
+      return service->IsFilterListLoadedForTesting(true) &&
+             service->IsFilterListLoadedForTesting(false);
+    })) << "Timeout waiting for cached DAT files to load";
   }
 
   WaitForAdBlockServiceThreads();
@@ -118,6 +125,12 @@ IN_PROC_BROWSER_TEST_P(AdBlockDATCacheBrowserTest, DATCacheLoadedOnRestart) {
         << "Default engine filter set was rebuilt — suppression failed";
     EXPECT_FALSE(service->IsFilterListLoadedForTesting(false))
         << "Additional engine filter set was rebuilt — suppression failed";
+  } else {
+    // Verify filter set build happened
+    ASSERT_TRUE(base::test::RunUntil([service]() {
+      return service->IsFilterListLoadedForTesting(true) &&
+             service->IsFilterListLoadedForTesting(false);
+    })) << "Timeout waiting for cached DAT files to load";
   }
 
   WaitForAdBlockServiceThreads();
