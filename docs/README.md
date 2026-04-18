@@ -63,7 +63,3 @@ This is only an estimate. The **github** view may differ.
     How to exclude files from format and presubmit checks.
 *   [Siso Customization](siso_customization.md) - How we customize Siso to work
     for us.
-
-### Privacy & Credentials
-*   [Premium Account Privacy](premium_account_privacy.md) -
-    How blind tokens decouple payment identity from service usage.
