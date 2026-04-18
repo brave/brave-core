@@ -22,7 +22,6 @@
 #include "components/keyed_service/core/keyed_service.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
-class Browser;
 class OmniboxView;
 class Profile;
 class BrowserCollection;
@@ -86,7 +85,7 @@ class CommanderService : public CommanderFrontendDelegate,
   std::u16string prompt_;
   std::vector<std::unique_ptr<CommandItem>> items_;
   uint32_t current_result_set_id_ = 0;
-  raw_ptr<Browser, DanglingUntriaged> last_browser_;
+  raw_ptr<BrowserWindowInterface, DanglingUntriaged> last_browser_;
   raw_ptr<Profile> profile_;
 
   // Some commands have multiple steps (like move tab to window, pick a
