@@ -14,7 +14,6 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table_util.h"
-#include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_path_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
@@ -28,34 +27,25 @@ namespace {
 constexpr base::TimeDelta kInitialDelay = base::Minutes(1);
 constexpr base::TimeDelta kRecurringInterval = base::Days(1);
 
-void RunOnStartup() {
-  PurgeAllOrphanedAdEvents();
-}
-
-// Notification and search result ad events are not purged since only Brave
-// Rewards users can opt out of them.
-
 void MaybePurgeNewTabPageAdEvents() {
-  if (UserHasJoinedBraveRewards()) {
-    // Do not purge ad events if the user has joined Brave Rewards.
-    return;
-  }
-
-  if (!UserHasOptedInToNewTabPageAds()) {
+  if (!UserHasJoinedBraveRewards() && !UserHasOptedInToNewTabPageAds()) {
     PurgeAdEventsForType(mojom::AdType::kNewTabPageAd);
   }
+}
+
+void RunOnStartup() {
+  MaybePurgeNewTabPageAdEvents();
+  PurgeAllOrphanedAdEvents();
 }
 
 }  // namespace
 
 Maintenance::Maintenance() {
   GetAdsClient().AddObserver(this);
-  DatabaseManager::GetInstance().AddObserver(this);
 }
 
 Maintenance::~Maintenance() {
   GetAdsClient().RemoveObserver(this);
-  DatabaseManager::GetInstance().RemoveObserver(this);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -79,16 +69,24 @@ void Maintenance::RepeatedlyScheduleAfterCallback() {
   RepeatedlyScheduleAfter(kRecurringInterval);
 }
 
-void Maintenance::OnNotifyPrefDidChange(const std::string& path) {
-  if (DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(path)) {
-    MaybePurgeNewTabPageAdEvents();
-  }
-}
+void Maintenance::OnNotifyDidInitializeAds() {
+  is_initialized_ = true;
 
-void Maintenance::OnDatabaseIsReady() {
   RunOnStartup();
 
   RepeatedlyScheduleAfter(kInitialDelay);
+}
+
+void Maintenance::OnNotifyPrefDidChange(const std::string& path) {
+  if (!is_initialized_) {
+    // Ignore pref changes until ads is fully initialized; `RunOnStartup`
+    // handles the initial purge.
+    return;
+  }
+
+  if (DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(path)) {
+    MaybePurgeNewTabPageAdEvents();
+  }
 }
 
 }  // namespace brave_ads::database

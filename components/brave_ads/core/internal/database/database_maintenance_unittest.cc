@@ -16,10 +16,10 @@ namespace brave_ads::database {
 
 class BraveAdsDatabaseMaintenanceTest : public test::TestBase {
  protected:
-  void SetUpMocks() override {
-    // Must be created here so it registers with DatabaseManager before
-    // OnDatabaseIsReady fires during TestBase::SetUp.
+  void SetUp() override {
+    TestBase::SetUp();
     maintenance_ = std::make_unique<Maintenance>();
+    ads_client_notifier_.NotifyDidInitializeAds();
   }
 
   std::unique_ptr<Maintenance> maintenance_;
