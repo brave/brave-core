@@ -604,9 +604,7 @@ TEST_F(
     BraveAdsAdsServiceImplTest,
     DoesNotClearNotificationAdsPrefOnShutdownIfUserHasNotOptedInToNotificationAds) {
   // Arrange
-  base::ListValue list;
-  list.Append("foo");
-  prefs_.SetList(prefs::kNotificationAds, std::move(list));
+  prefs_.SetList(prefs::kNotificationAds, base::ListValue().Append("foo"));
 
   // Act
   Shutdown();
@@ -621,9 +619,7 @@ TEST_F(BraveAdsAdsServiceImplTest,
   // Arrange
   prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
   prefs_.SetBoolean(prefs::kOptedInToNotificationAds, true);
-  base::ListValue list;
-  list.Append("foo");
-  prefs_.SetList(prefs::kNotificationAds, std::move(list));
+  prefs_.SetList(prefs::kNotificationAds, base::ListValue().Append("foo"));
 
   // Act
   Shutdown();

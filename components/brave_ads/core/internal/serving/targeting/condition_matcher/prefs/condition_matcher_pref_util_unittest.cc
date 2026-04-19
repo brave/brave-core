@@ -72,8 +72,8 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
 
 TEST_F(BraveAdsConditionMatcherPrefUtilTest, GetVirtualPrefValueAsString) {
   // Arrange
-  base::DictValue virtual_prefs;
-  virtual_prefs.Set("[virtual]:foo", 42);
+  const base::DictValue virtual_prefs =
+      base::DictValue().Set("[virtual]:foo", 42);
 
   // Act & Assert
   EXPECT_EQ("42", MaybeGetPrefValueAsString(virtual_prefs, "[virtual]:foo"));
@@ -92,8 +92,7 @@ TEST_F(BraveAdsConditionMatcherPrefUtilTest,
 TEST_F(BraveAdsConditionMatcherPrefUtilTest,
        DoNotGetBinaryVirtualPrefValueAsString) {
   // Arrange
-  base::DictValue virtual_prefs;
-  virtual_prefs.Set(
+  const base::DictValue virtual_prefs = base::DictValue().Set(
       "[virtual]:foo",
       base::Value(base::span<const uint8_t>({0x48, 0x65, 0x6C, 0x6C, 0x6F})));
 
