@@ -231,6 +231,7 @@ gfx::Rect BraveBrowserViewTabbedLayoutImpl::CalculateTopContainerLayout(
         toolbar_layout->visibility.value_or(true) &&
         !tabstrip_layout->bounds.IsEmpty() &&
         !toolbar_layout->bounds.IsEmpty()) {
+      constexpr int kOneLinerTopChromeHeight = 60;
       constexpr int kMinOneLinerTabStripWidth = 240;
       const int row_x = tabstrip_layout->bounds.x();
       const int available_width = tabstrip_layout->bounds.width();
@@ -246,16 +247,25 @@ gfx::Rect BraveBrowserViewTabbedLayoutImpl::CalculateTopContainerLayout(
       if (toolbar_width >= views().toolbar->GetMinimumSize().width()) {
         const int row_y =
             std::min(tabstrip_layout->bounds.y(), toolbar_layout->bounds.y());
-        const int row_height = std::max(tabstrip_layout->bounds.height(),
-                                        toolbar_layout->bounds.height());
-        const int vertical_reduction = toolbar_layout->bounds.y() - row_y;
-        const int old_toolbar_bottom = toolbar_layout->bounds.bottom();
+        const int row_height =
+            std::max(kOneLinerTopChromeHeight,
+                     std::max(tabstrip_layout->bounds.height(),
+                              toolbar_layout->bounds.height()));
+        const int tabstrip_y =
+            row_y + (row_height - tabstrip_layout->bounds.height()) / 2;
+        const int toolbar_y =
+            row_y + (row_height - toolbar_layout->bounds.height()) / 2;
+        const int old_stacked_bottom =
+            std::max(tabstrip_layout->bounds.bottom(),
+                     toolbar_layout->bounds.bottom());
+        const int vertical_reduction =
+            old_stacked_bottom - (row_y + row_height);
 
         toolbar_layout->bounds =
-            gfx::Rect(row_x, row_y, toolbar_width,
+            gfx::Rect(row_x, toolbar_y, toolbar_width,
                       toolbar_layout->bounds.height());
         tabstrip_layout->bounds =
-            gfx::Rect(toolbar_layout->bounds.right(), row_y,
+            gfx::Rect(toolbar_layout->bounds.right(), tabstrip_y,
                       available_width - toolbar_width,
                       tabstrip_layout->bounds.height());
 
@@ -266,7 +276,7 @@ gfx::Rect BraveBrowserViewTabbedLayoutImpl::CalculateTopContainerLayout(
               continue;
             }
             if (!child_layout.bounds.IsEmpty() &&
-                child_layout.bounds.y() >= old_toolbar_bottom) {
+                child_layout.bounds.y() >= old_stacked_bottom) {
               child_layout.bounds.Offset(0, -vertical_reduction);
             }
           }
