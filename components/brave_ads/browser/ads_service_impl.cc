@@ -1129,7 +1129,10 @@ void AdsServiceImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
     return std::move(callback).Run(/*diagnostics*/ std::nullopt);
   }
 
-  bat_ads_associated_remote_->GetDiagnostics(std::move(callback));
+  bat_ads_associated_remote_->GetDiagnostics(
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+          std::move(callback),
+          /*diagnostics=*/std::nullopt));
 }
 
 void AdsServiceImpl::GetStatementOfAccounts(
@@ -1149,8 +1152,9 @@ void AdsServiceImpl::ParseAndSaveNewTabPageAds(base::DictValue dict,
     return std::move(callback).Run(/*success*/ false);
   }
 
-  bat_ads_associated_remote_->ParseAndSaveNewTabPageAds(std::move(dict),
-                                                        std::move(callback));
+  bat_ads_associated_remote_->ParseAndSaveNewTabPageAds(
+      std::move(dict), mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+                           std::move(callback), /*success=*/false));
 }
 
 void AdsServiceImpl::MaybeServeNewTabPageAd(
@@ -1159,7 +1163,9 @@ void AdsServiceImpl::MaybeServeNewTabPageAd(
     return std::move(callback).Run(/*ad=*/nullptr);
   }
 
-  bat_ads_associated_remote_->MaybeServeNewTabPageAd(std::move(callback));
+  bat_ads_associated_remote_->MaybeServeNewTabPageAd(
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
+                                                  /*ad=*/nullptr));
 }
 
 void AdsServiceImpl::TriggerNewTabPageAdEvent(
@@ -1176,7 +1182,9 @@ void AdsServiceImpl::TriggerNewTabPageAdEvent(
 
   bat_ads_associated_remote_->TriggerNewTabPageAdEvent(
       placement_id, creative_instance_id, mojom_ad_metric_type,
-      mojom_ad_event_type, std::move(callback));
+      mojom_ad_event_type,
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
+                                                  /*success=*/false));
 }
 
 void AdsServiceImpl::MaybeGetSearchResultAd(
@@ -1186,8 +1194,9 @@ void AdsServiceImpl::MaybeGetSearchResultAd(
     return std::move(callback).Run(/*mojom_creative_ad*/ {});
   }
 
-  bat_ads_associated_remote_->MaybeGetSearchResultAd(placement_id,
-                                                     std::move(callback));
+  bat_ads_associated_remote_->MaybeGetSearchResultAd(
+      placement_id, mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+                        std::move(callback), nullptr));
 }
 
 void AdsServiceImpl::TriggerSearchResultAdEvent(
@@ -1201,7 +1210,9 @@ void AdsServiceImpl::TriggerSearchResultAdEvent(
   }
 
   bat_ads_associated_remote_->TriggerSearchResultAdEvent(
-      std::move(mojom_creative_ad), mojom_ad_event_type, std::move(callback));
+      std::move(mojom_creative_ad), mojom_ad_event_type,
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
+                                                  /*success=*/false));
 }
 
 void AdsServiceImpl::PurgeOrphanedAdEventsForType(mojom::AdType mojom_ad_type,
@@ -1212,8 +1223,9 @@ void AdsServiceImpl::PurgeOrphanedAdEventsForType(mojom::AdType mojom_ad_type,
     return std::move(callback).Run(/*success*/ false);
   }
 
-  bat_ads_associated_remote_->PurgeOrphanedAdEventsForType(mojom_ad_type,
-                                                           std::move(callback));
+  bat_ads_associated_remote_->PurgeOrphanedAdEventsForType(
+      mojom_ad_type, mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+                         std::move(callback), /*success=*/false));
 }
 
 void AdsServiceImpl::GetAdHistory(base::Time from_time,
