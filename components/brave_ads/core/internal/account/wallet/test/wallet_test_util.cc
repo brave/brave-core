@@ -28,4 +28,11 @@ mojom::WalletInfoPtr MojomWallet() {
   return mojom_wallet;
 }
 
+mojom::WalletInfoPtr InvalidMojomWallet() {
+  mojom::WalletInfoPtr mojom_wallet = mojom::WalletInfo::New();
+  mojom_wallet->payment_id = kWalletPaymentId;
+  mojom_wallet->recovery_seed_base64 = kInvalidWalletRecoverySeed;
+  return mojom_wallet;
+}
+
 }  // namespace brave_ads::test

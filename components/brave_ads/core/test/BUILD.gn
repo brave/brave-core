@@ -199,6 +199,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/ads_client/test/ads_client_mock.h",
     "//brave/components/brave_ads/core/internal/ads_client/test/ads_client_notifier_observer_mock.cc",
     "//brave/components/brave_ads/core/internal/ads_client/test/ads_client_notifier_observer_mock.h",
+    "//brave/components/brave_ads/core/internal/ads_impl_unittest.cc",
     "//brave/components/brave_ads/core/internal/ads_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/application_state/browser_manager_unittest.cc",
     "//brave/components/brave_ads/core/internal/application_state/browser_util_unittest.cc",
