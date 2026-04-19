@@ -31,6 +31,7 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/variations/pref_names.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/idle/idle.h"
 
@@ -83,8 +84,7 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
         std::make_unique<test::FakeVirtualPrefProviderDelegate>(),
         /*channel_name=*/"foo", profile_dir_.GetPath(),
         std::make_unique<test::FakeAdsTooltipsDelegate>(), std::move(device_id),
-        std::move(bat_ads_service_factory),
-        /*resource_component=*/nullptr,
+        std::move(bat_ads_service_factory), /*resource_component=*/nullptr,
         /*history_service=*/nullptr,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
         &rewards_service_,
@@ -598,6 +598,38 @@ TEST_F(BraveAdsAdsServiceImplTest, ProcessIdleStateDoesNotNotifyActiveTwice) {
 
   // Assert
   EXPECT_EQ(1U, bat_ads_service_factory_->become_active_count());
+}
+
+TEST_F(
+    BraveAdsAdsServiceImplTest,
+    DoesNotClearNotificationAdsPrefOnShutdownIfUserHasNotOptedInToNotificationAds) {
+  // Arrange
+  base::ListValue list;
+  list.Append("foo");
+  prefs_.SetList(prefs::kNotificationAds, std::move(list));
+
+  // Act
+  Shutdown();
+
+  // Assert
+  EXPECT_THAT(prefs_.GetList(prefs::kNotificationAds),
+              testing::Not(testing::IsEmpty()));
+}
+
+TEST_F(BraveAdsAdsServiceImplTest,
+       ClearsNotificationAdsPrefOnShutdownIfUserHasOptedInToNotificationAds) {
+  // Arrange
+  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
+  prefs_.SetBoolean(prefs::kOptedInToNotificationAds, true);
+  base::ListValue list;
+  list.Append("foo");
+  prefs_.SetList(prefs::kNotificationAds, std::move(list));
+
+  // Act
+  Shutdown();
+
+  // Assert
+  EXPECT_THAT(prefs_.GetList(prefs::kNotificationAds), testing::IsEmpty());
 }
 
 }  // namespace brave_ads
