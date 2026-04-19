@@ -21,13 +21,12 @@ interface PsstConsentFactory {
 
 // Handler for the UI to backend calls
 interface PsstConsentHelper {
-    ApplyChanges(array<string> disabled_settings_list);
+    PerformPrivacyTuning(array<string> perform_for_uids);
     CloseDialog();
 };
 
 struct SettingCardDataItem {
     string description;
-    string url;
     string uid;
 };
 

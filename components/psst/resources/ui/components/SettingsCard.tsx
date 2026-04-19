@@ -72,7 +72,7 @@ const IconContainer = styled.div`
 
 export interface Props {
   title: string
-  progressModelState: PsstProgressModalState | null
+  progressModelState: PsstProgressModalState | undefined
   onItemChecked: (uid: string, checked: boolean) => void
 }
 
@@ -91,51 +91,49 @@ const SettingsCard: React.FC<Props> = ({
       </SettingGridHeaderRow>
       {progressModelState
         && progressModelState.optionsStatuses
-        && Array.from(progressModelState.optionsStatuses.values()).map(
-          (item) => (
-            <SettingGridRow key={item.uid}>
-              {item.settingState === SettingState.Progress && (
-                <Flex
-                  direction='row'
-                  justify='flex-start'
-                  align='flex-start'
-                >
-                  <SettingProgressRing mode='indeterminate' />
-                  <SettingText>{item.description}</SettingText>
-                </Flex>
-              )}
-              {item.settingState === SettingState.Selection && (
-                <Checkbox
-                  checked={item.checked}
-                  isDisabled={item.disabled}
-                  onChange={(e) => onItemChecked(item.uid, e.checked)}
-                >
-                  {item.description}
-                </Checkbox>
-              )}
-              {item.settingState === SettingState.Completed && (
-                <Flex
-                  direction='row'
-                  justify='flex-start'
-                  align='flex-start'
-                >
-                  <CheckBoxIconCompleted name='check-circle-outline' />
-                  <SettingText>{item.description}</SettingText>
-                </Flex>
-              )}
-              {item.settingState === SettingState.Failed && (
-                <Flex
-                  direction='row'
-                  justify='flex-start'
-                  align='flex-start'
-                >
-                  <CheckBoxIconFailed name='close-circle' />
-                  <SettingText>{item.description}</SettingText>
-                </Flex>
-              )}
-            </SettingGridRow>
-          ),
-        )}
+        && Array.from(progressModelState.optionsStatuses).map((item) => (
+          <SettingGridRow key={item.uid}>
+            {item.settingState === SettingState.Progress && (
+              <Flex
+                direction='row'
+                justify='flex-start'
+                align='flex-start'
+              >
+                <SettingProgressRing mode='indeterminate' />
+                <SettingText>{item.description}</SettingText>
+              </Flex>
+            )}
+            {item.settingState === SettingState.Selection && (
+              <Checkbox
+                checked={item.checked}
+                isDisabled={item.disabled}
+                onChange={(e) => onItemChecked(item.uid, e.checked)}
+              >
+                {item.description}
+              </Checkbox>
+            )}
+            {item.settingState === SettingState.Completed && (
+              <Flex
+                direction='row'
+                justify='flex-start'
+                align='flex-start'
+              >
+                <CheckBoxIconCompleted name='check-circle-outline' />
+                <SettingText>{item.description}</SettingText>
+              </Flex>
+            )}
+            {item.settingState === SettingState.Failed && (
+              <Flex
+                direction='row'
+                justify='flex-start'
+                align='flex-start'
+              >
+                <CheckBoxIconFailed name='close-circle' />
+                <SettingText>{item.description}</SettingText>
+              </Flex>
+            )}
+          </SettingGridRow>
+        ))}
     </SettingGrid>
   )
 }

@@ -154,6 +154,6 @@ export const WithErrors: Story = {
         description: 'Manage location data sharing',
       },
     ],
-    errorUids: [ '2', '4'],
+    errorUids: ['2', '4'],
   },
 }

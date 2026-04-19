@@ -58,9 +58,9 @@ const mockSettingCardData: Mojom.SettingCardData = {
 function createMockConsentHelper(): Mojom.PsstConsentHelperInterface {
   const mock = {
     // Mojom interface methods that endpointsFor/actionsFor expect
-    async applyChanges(disabledSettingsList: string[]) {
-      console.log('[Mock] applyChanges called with:', {
-        disabledSettingsList,
+    async performPrivacyTuning(performForUids: string[]) {
+      console.log('[Mock] performPrivacyTuning called with:', {
+        performForUids,
       })
     },
 
@@ -114,9 +114,7 @@ export interface MockPsstDialogAPIOptions {
  */
 export function createMockPsstDialogAPI(
   options: MockPsstDialogAPIOptions = {},
-): PsstDialogAPI & {
-  api: PsstDialogAPI['api'] & { _simulateActions: any }
-} {
+): PsstDialogAPI {
   const {
     settingsCardData = {},
     autoLoadSettings = true,
@@ -146,12 +144,10 @@ export function createMockPsstDialogAPI(
     onCloseDialog()
   }
 
-  // Override the apply changes action with mock behavior
-  mockConsentHelper.applyChanges = async (
-    disabledSettingsList: string[],
-  ) => {
-    console.log('[Mock] Processing apply changes for:', {
-      disabledSettingsList,
+  // Override the perform privacy tuning action with mock behavior
+  mockConsentHelper.performPrivacyTuning = async (performForUids: string[]) => {
+    console.log('[Mock] Processing perform privacy tuning for:', {
+      performForUids,
     })
 
     // For mocking, assume all items are being processed (in real scenario,
@@ -160,8 +156,8 @@ export function createMockPsstDialogAPI(
 
     // Simulate processing each URL
     for (const item of finalSettingsData.items) {
-      if(disabledSettingsList.includes(item.uid)) {
-        continue;
+      if (!performForUids.includes(item.uid)) {
+        continue
       }
       // Simulate request status update
       setTimeout(() => {
@@ -204,7 +200,5 @@ export function createMockPsstDialogAPI(
   return {
     api,
     dialogHandler,
-  } as PsstDialogAPI & {
-    api: PsstDialogAPI['api'] & { _simulateActions: any }
-  }
+  } as PsstDialogAPI
 }

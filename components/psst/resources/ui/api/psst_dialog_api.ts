@@ -21,7 +21,7 @@ export function createPsstDialogApi(
   const api = createInterfaceApi({
     endpoints: {
       ...endpointsFor(consentHelper, {
-        applyChanges: {
+        performPrivacyTuning: {
           mutationResponse: () => {},
         },
       }),

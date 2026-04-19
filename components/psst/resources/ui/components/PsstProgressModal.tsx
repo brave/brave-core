@@ -44,6 +44,12 @@ interface OptionStatus {
   settingState: SettingState
 }
 
+export interface PsstProgressModalState {
+  commonState: SettingState
+  siteName: string
+  optionsStatuses: OptionStatus[] | undefined
+}
+
 export const PsstProgressModal = () => {
   const psstDialogContext = usePsstDialogAPI()
   const { api } = psstDialogContext
@@ -58,7 +64,7 @@ export const PsstProgressModal = () => {
   const settingsData = api.useCurrentSetSettingsCardData()
   const requestStatus = api.useCurrentOnSetRequestDone()
   const completionStatus = api.useCurrentOnSetCompleted()
-  const { applyChanges } = api.useApplyChanges()
+  const { performPrivacyTuning } = api.usePerformPrivacyTuning()
 
   // Extract specific values to avoid object reference issues in useEffect dependencies
   const settingCardData = settingsData.data?.[0]
@@ -66,41 +72,46 @@ export const PsstProgressModal = () => {
   const [appliedChecks, completionErrors] = completionStatus?.data || []
   const [requestUid, requestError] = requestStatus?.data || []
 
-
   // Handle settings data updates
   React.useEffect(() => {
     if (settingCardData) {
-      const optionStatusArray: OptionStatus[] = settingCardData.items.map(item => ({
-        uid: item.uid,
-        description: item.description,
-        error: null,
-        checked: true,
-        disabled: false,
-        settingState: SettingState.Selection
-      }));
+      const optionStatusArray: OptionStatus[] = settingCardData.items.map(
+        (item) => ({
+          uid: item.uid,
+          description: item.description,
+          error: null,
+          checked: true,
+          disabled: false,
+          settingState: SettingState.Selection,
+        }),
+      )
       setOptionsStatuses(optionStatusArray)
     }
   }, [settingCardData])
 
   // Handle request status updates
   React.useEffect(() => {
-    if (!requestUid) return;
+    if (!requestUid) return
 
-    setOptionsStatuses(prevOptionsStatuses => {
-      if (!prevOptionsStatuses) return prevOptionsStatuses;
+    setOptionsStatuses((prevOptionsStatuses) => {
+      if (!prevOptionsStatuses) return prevOptionsStatuses
 
-      const index = prevOptionsStatuses.findIndex(status => status.uid === requestUid);
-      if (index === -1) return prevOptionsStatuses;
+      const index = prevOptionsStatuses.findIndex(
+        (status) => status.uid === requestUid,
+      )
+      if (index === -1) return prevOptionsStatuses
 
-      const updatedOptions = [...prevOptionsStatuses];
+      const updatedOptions = [...prevOptionsStatuses]
       updatedOptions[index] = {
         ...updatedOptions[index],
-        settingState: requestError ? SettingState.Failed : SettingState.Completed,
+        settingState: requestError
+          ? SettingState.Failed
+          : SettingState.Completed,
         error: requestError || null,
-      };
+      }
 
-      return updatedOptions;
-    });
+      return updatedOptions
+    })
   }, [requestUid, requestError])
 
   // Handle completion status updates
@@ -117,49 +128,53 @@ export const PsstProgressModal = () => {
   const handleSettingItemCheck = React.useCallback(
     (uid: string, checked: boolean) => {
       setOptionsStatuses((prevOptionsStatuses) => {
-        if (!prevOptionsStatuses) return prevOptionsStatuses;
+        if (!prevOptionsStatuses) return prevOptionsStatuses
 
-       const index = prevOptionsStatuses.findIndex(status => status.uid === uid);
-       if (index === -1) return prevOptionsStatuses;
+        const index = prevOptionsStatuses.findIndex(
+          (status) => status.uid === uid,
+        )
+        if (index === -1) return prevOptionsStatuses
 
-       const updatedOptions = [...prevOptionsStatuses];
-      updatedOptions[index] = {
-        ...updatedOptions[index],
-        checked,
-      };
+        const updatedOptions = [...prevOptionsStatuses]
+        updatedOptions[index] = {
+          ...updatedOptions[index],
+          checked,
+        }
 
-      return updatedOptions;
+        return updatedOptions
       })
     },
     [],
   )
 
   const handleApplyChanges = React.useCallback(() => {
-    let disabledUids: string[] = []
+    let enabledUids: string[] = []
     if (optionsStatuses) {
-      disabledUids = optionsStatuses
-        .filter(option => !option.checked)
-        .map(option => option.uid);
-      const newOptionsStatuses: OptionStatus[] = optionsStatuses.map(option => {
-        if (option.checked) {
-          return {
-            ...option,
-            settingState: SettingState.Progress,
-          };
-        } else {
-          return {
-            ...option,
-            disabled: true,
-          };
-        }
-      });
-      setOptionsStatuses(newOptionsStatuses);
+      enabledUids = optionsStatuses
+        .filter((option) => option.checked)
+        .map((option) => option.uid)
+      const newOptionsStatuses: OptionStatus[] = optionsStatuses.map(
+        (option) => {
+          if (option.checked) {
+            return {
+              ...option,
+              settingState: SettingState.Progress,
+            }
+          } else {
+            return {
+              ...option,
+              disabled: true,
+            }
+          }
+        },
+      )
+      setOptionsStatuses(newOptionsStatuses)
     }
 
     setCommonState(SettingState.Progress)
 
-    applyChanges([disabledUids])
-  }, [optionsStatuses, applyChanges])
+    performPrivacyTuning([enabledUids])
+  }, [optionsStatuses, performPrivacyTuning])
 
   const isInProgress = commonState === SettingState.Progress
 
