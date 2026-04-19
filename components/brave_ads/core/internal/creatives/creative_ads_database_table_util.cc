@@ -16,6 +16,7 @@ namespace brave_ads::database::table {
 
 CreativeAdInfo CreativeAdFromMojomRow(const mojom::DBRowInfoPtr& mojom_db_row) {
   CHECK(mojom_db_row);
+  CHECK_EQ(9U, mojom_db_row->column_values_union.size());
 
   CreativeAdInfo creative_ad;
 

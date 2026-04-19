@@ -21,6 +21,7 @@ namespace brave_ads::database::table {
 CreativeNewTabPageAdInfo CreativeNewTabPageAdFromMojomRow(
     const mojom::DBRowInfoPtr& mojom_db_row) {
   CHECK(mojom_db_row);
+  CHECK_EQ(25U, mojom_db_row->column_values_union.size());
 
   CreativeNewTabPageAdInfo creative_ad;
 

@@ -18,6 +18,7 @@ namespace brave_ads::database::table {
 
 AdEventInfo AdEventFromMojomRow(const mojom::DBRowInfoPtr& mojom_db_row) {
   CHECK(mojom_db_row);
+  CHECK_EQ(10U, mojom_db_row->column_values_union.size());
 
   AdEventInfo ad_event;
 

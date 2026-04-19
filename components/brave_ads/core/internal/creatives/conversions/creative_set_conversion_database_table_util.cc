@@ -16,6 +16,7 @@ namespace brave_ads::database::table {
 CreativeSetConversionInfo CreativeSetConversionFromMojomRow(
     const mojom::DBRowInfoPtr& mojom_db_row) {
   CHECK(mojom_db_row);
+  CHECK_EQ(4U, mojom_db_row->column_values_union.size());
 
   CreativeSetConversionInfo creative_set_conversion;
 

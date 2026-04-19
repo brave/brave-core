@@ -19,6 +19,7 @@ namespace brave_ads::database::table {
 AdHistoryItemInfo AdHistoryItemFromMojomRow(
     const mojom::DBRowInfoPtr& mojom_db_row) {
   CHECK(mojom_db_row);
+  CHECK_EQ(12U, mojom_db_row->column_values_union.size());
 
   AdHistoryItemInfo ad_history_item;
 

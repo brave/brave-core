@@ -26,6 +26,7 @@ namespace brave_ads::database::table {
 ConfirmationQueueItemInfo ConfirmationQueueItemFromMojomRow(
     const mojom::DBRowInfoPtr& mojom_db_row) {
   CHECK(mojom_db_row);
+  CHECK_EQ(14U, mojom_db_row->column_values_union.size());
 
   ConfirmationQueueItemInfo confirmation_queue_item;
 

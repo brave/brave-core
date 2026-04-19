@@ -18,6 +18,7 @@ namespace brave_ads::database::table {
 TransactionInfo TransactionFromMojomRow(
     const mojom::DBRowInfoPtr& mojom_db_row) {
   CHECK(mojom_db_row);
+  CHECK_EQ(8U, mojom_db_row->column_values_union.size());
 
   TransactionInfo transaction;
 
