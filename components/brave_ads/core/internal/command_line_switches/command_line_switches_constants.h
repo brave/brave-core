@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMAND_LINE_SWITCHES_COMMAND_LINE_SWITCHES_CONSTANTS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMAND_LINE_SWITCHES_COMMAND_LINE_SWITCHES_CONSTANTS_H_
 
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "build/build_config.h"
 
 namespace brave_ads {

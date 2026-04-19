@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "base/check.h"
-#include "components/schema_org/common/metadata.mojom-forward.h"
 #include "components/schema_org/common/metadata.mojom.h"
 
 namespace brave_ads::test {

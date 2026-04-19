@@ -18,7 +18,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/creative_daypart_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creatives_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-data-view.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 
 namespace brave_ads {
 
