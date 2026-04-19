@@ -268,6 +268,8 @@ export const PsstProgressModal = () => {
           <PsstDlgButton
             kind='outline'
             size='medium'
+            isDisabled={isInProgress}
+            isLoading={isInProgress}
             onClick={api.closeDialog}
           >
             {getLocale(S.PSST_COMPLETE_CONSENT_DIALOG_REPORT_FAILED)}
@@ -275,6 +277,8 @@ export const PsstProgressModal = () => {
           <PsstDlgButton
             kind='filled'
             size='medium'
+            isDisabled={isInProgress}
+            isLoading={isInProgress}
             onClick={api.closeDialog}
           >
             {getLocale(S.PSST_COMPLETE_CONSENT_DIALOG_CLOSE)}
