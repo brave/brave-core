@@ -74,14 +74,7 @@ export const PsstProgressModal = () => {
   const settingCardData = settingsData.data?.[0]
   const siteName = settingCardData?.siteName || ''
   const [appliedChecks, completionErrors] = completionStatus?.data || []
-  
-  const requestStatusData = React.useMemo(() => {
-    return requestStatus?.data ? {
-      requestUid: requestStatus.data[0],
-      requestError: requestStatus.data[1],
-      timestamp: Date.now() // Add timestamp to detect actual changes
-    } : null
-  }, [requestStatus?.data?.[0], requestStatus?.data?.[1]])
+  const [requestUid, requestError] = requestStatus?.data || []
 
   const setStateProp = React.useCallback( 
     (
@@ -152,8 +145,7 @@ export const PsstProgressModal = () => {
 
   // Handle request status updates
   React.useEffect(() => {
-    if (requestStatusData?.requestUid) {
-      const { requestUid, requestError } = requestStatusData
+    if (requestUid) {
       setPropForUid(requestUid, {
         settingState: requestError
           ? SettingState.Failed
@@ -161,7 +153,7 @@ export const PsstProgressModal = () => {
         error: requestError || null,
       })
     }
-  }, [requestStatusData, setPropForUid])
+  }, [requestUid, requestError, setPropForUid])
 
   // Handle completion status updates
   React.useEffect(() => {
