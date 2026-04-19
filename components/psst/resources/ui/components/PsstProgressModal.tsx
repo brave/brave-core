@@ -74,8 +74,16 @@ export const PsstProgressModal = () => {
   const settingCardData = settingsData.data?.[0]
   const siteName = settingCardData?.siteName || ''
   const [appliedChecks, completionErrors] = completionStatus?.data || []
+  
+  const requestStatusData = React.useMemo(() => {
+    return requestStatus?.data ? {
+      requestUid: requestStatus.data[0],
+      requestError: requestStatus.data[1],
+      timestamp: Date.now() // Add timestamp to detect actual changes
+    } : null
+  }, [requestStatus?.data?.[0], requestStatus?.data?.[1]])
 
-  const setStateProp = React.useCallback(
+  const setStateProp = React.useCallback( 
     (
       updates: Partial<OptionStatus>,
       predicate: (status: OptionStatus) => boolean = () => true,
@@ -144,24 +152,21 @@ export const PsstProgressModal = () => {
 
   // Handle request status updates
   React.useEffect(() => {
-    if (requestStatus?.data) {
-      const [requestUid, requestError] = requestStatus.data
-      if (requestUid) {
-        setPropForUid(requestUid, {
-          settingState: requestError
-            ? SettingState.Failed
-            : SettingState.Completed,
-          error: requestError || null,
-        })
-      }
+    if (requestStatusData?.requestUid) {
+      const { requestUid, requestError } = requestStatusData
+      setPropForUid(requestUid, {
+        settingState: requestError
+          ? SettingState.Failed
+          : SettingState.Completed,
+        error: requestError || null,
+      })
     }
-  }, [requestStatus, setPropForUid])
+  }, [requestStatusData, setPropForUid])
 
   // Handle completion status updates
   React.useEffect(() => {
     if (completionErrors) {
       setCommonState(SettingState.Failed)
-      return
     }
 
     if (appliedChecks) {
@@ -196,7 +201,6 @@ export const PsstProgressModal = () => {
         .filter(([_, value]) => !value.checked)
         .map(([key]) => key)
     }
-
     setStateProp(
       { settingState: SettingState.Progress },
       (status) => status.checked,
