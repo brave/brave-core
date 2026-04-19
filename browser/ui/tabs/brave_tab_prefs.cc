@@ -14,6 +14,7 @@ namespace brave_tabs {
 void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(kTabHoverMode, TabHoverMode::CARD);
   registry->RegisterBooleanPref(kVerticalTabsEnabled, false);
+  registry->RegisterBooleanPref(kOneLinerTabsEnabled, false);
   registry->RegisterBooleanPref(kVerticalTabsCollapsed, false);
   registry->RegisterBooleanPref(kVerticalTabsExpandedStatePerWindow, false);
 #if BUILDFLAG(IS_WIN)

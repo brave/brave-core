@@ -17,6 +17,8 @@ inline constexpr char kTabHoverMode[] = "brave.tabs.hover_mode";
 
 inline constexpr char kVerticalTabsEnabled[] =
     "brave.tabs.vertical_tabs_enabled";
+inline constexpr char kOneLinerTabsEnabled[] =
+    "brave.tabs.one_liner_enabled";
 inline constexpr char kVerticalTabsCollapsed[] =
     "brave.tabs.vertical_tabs_collapsed";
 inline constexpr char kVerticalTabsExpandedStatePerWindow[] =

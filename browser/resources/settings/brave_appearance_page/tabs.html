@@ -125,6 +125,13 @@
   </settings-dropdown-menu>
 </div>
 
+<settings-toggle-button
+  pref="{{prefs.brave.tabs.one_liner_enabled}}"
+  class="cr-row"
+  label="$i18n{appearanceSettingsTabsOneLiner}"
+  disabled="[[prefs.brave.tabs.vertical_tabs_enabled.value]]">
+</settings-toggle-button>
+
 <template is="dom-if" if="[[isScrollableHorizontalTabStripFlagEnabled()]]">
   <settings-toggle-button
     pref="{{prefs.brave.tabs.scrollable_horizontal_tab_strip}}"

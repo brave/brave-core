@@ -333,6 +333,10 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
       kWebViewRoundedCorners,
       base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
                           base::Unretained(this)));
+  pref_change_registrar_.Add(
+      brave_tabs::kOneLinerTabsEnabled,
+      base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
+                          base::Unretained(this)));
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   pref_change_registrar_.Add(
@@ -407,6 +411,12 @@ void BraveBrowserView::OnPreferenceChanged(const std::string& pref_name) {
 
   if (pref_name == kWebViewRoundedCorners) {
     UpdateRoundedCornersUI();
+    return;
+  }
+
+  if (pref_name == brave_tabs::kOneLinerTabsEnabled) {
+    InvalidateLayout();
+    DeprecatedLayoutImmediately();
     return;
   }
 
