@@ -14,6 +14,7 @@ namespace brave_ads {
 
 class GeoUrlHost final : public UrlHostInterface {
  public:
+  // UrlHostInterface:
   std::string Get() const override;
 };
 

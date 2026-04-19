@@ -15,6 +15,7 @@ namespace brave_ads {
 
 class CashDeposit final : public DepositInterface {
  public:
+  // DepositInterface:
   void GetValue(const std::string& creative_instance_id,
                 GetDepositCallback callback) override;
 

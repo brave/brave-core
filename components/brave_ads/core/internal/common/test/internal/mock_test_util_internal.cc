@@ -143,7 +143,7 @@ void MockSetProfilePref(const AdsClientMock& ads_client_mock,
           });
 }
 
-void MockClearProfilePref(AdsClientMock& ads_client_mock) {
+void MockClearProfilePref(const AdsClientMock& ads_client_mock) {
   ON_CALL(ads_client_mock, ClearProfilePref)
       .WillByDefault(
           [](const std::string& path) { ClearProfilePrefValue(path); });
@@ -180,7 +180,7 @@ void MockSetLocalStatePref(const AdsClientMock& ads_client_mock,
           });
 }
 
-void MockClearLocalStatePref(AdsClientMock& ads_client_mock) {
+void MockClearLocalStatePref(const AdsClientMock& ads_client_mock) {
   ON_CALL(ads_client_mock, ClearLocalStatePref)
       .WillByDefault(
           [](const std::string& path) { ClearLocalStatePrefValue(path); });

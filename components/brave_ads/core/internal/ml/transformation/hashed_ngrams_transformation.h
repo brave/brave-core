@@ -32,6 +32,7 @@ class HashedNGramsTransformation final : public Transformation {
 
   explicit HashedNGramsTransformation(const std::string& parameters);
 
+  // Transformation:
   std::unique_ptr<Data> Apply(
       const std::unique_ptr<Data>& input_data) const override;
 

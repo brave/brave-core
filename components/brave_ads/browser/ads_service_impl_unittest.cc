@@ -100,10 +100,10 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
   TestingPrefServiceSimple prefs_;
   TestingPrefServiceSimple local_state_;
 
-  raw_ptr<test::FakeDeviceId> device_id_;  // not owned
+  raw_ptr<test::FakeDeviceId> device_id_;  // Not owned.
 
   raw_ptr<test::FakeBatAdsServiceFactory>
-      bat_ads_service_factory_;  // not owned
+      bat_ads_service_factory_;  // Not owned.
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   test::FakeRewardsService rewards_service_;

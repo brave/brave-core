@@ -14,6 +14,7 @@ namespace brave_ads {
 
 class NonAnonymousUrlHost final : public UrlHostInterface {
  public:
+  // UrlHostInterface:
   std::string Get() const override;
 };
 

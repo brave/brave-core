@@ -55,7 +55,7 @@ using GetAdHistoryCallback =
     base::OnceCallback<void(std::optional<AdHistoryList> ad_history)>;
 
 // TODO(https://github.com/brave/brave-browser/issues/24595): Transition
-// GetAdHistory from base::Value to a mojom data structure.
+// `GetAdHistory` from `base::Value` to a `mojom` data structure.
 using GetAdHistoryForUICallback =
     base::OnceCallback<void(std::optional<base::ListValue> ad_history)>;
 

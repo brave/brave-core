@@ -37,6 +37,7 @@ class ConfirmationTokens final : public TableInterface {
 
   void GetAll(GetConfirmationTokensCallback callback) const;
 
+  // TableInterface:
   void Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) override;
   void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                int to_version) override;

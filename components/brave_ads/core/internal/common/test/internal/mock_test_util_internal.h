@@ -35,14 +35,14 @@ void MockFindProfilePref(const AdsClientMock& ads_client_mock);
 void MockGetProfilePref(const AdsClientMock& ads_client_mock);
 void MockSetProfilePref(const AdsClientMock& ads_client_mock,
                         AdsClientNotifier& ads_client_notifier);
-void MockClearProfilePref(AdsClientMock& ads_client_mock);
+void MockClearProfilePref(const AdsClientMock& ads_client_mock);
 void MockHasProfilePrefPath(const AdsClientMock& ads_client_mock);
 
 void MockFindLocalStatePref(const AdsClientMock& ads_client_mock);
 void MockGetLocalStatePref(const AdsClientMock& ads_client_mock);
 void MockSetLocalStatePref(const AdsClientMock& ads_client_mock,
                            AdsClientNotifier& ads_client_notifier);
-void MockClearLocalStatePref(AdsClientMock& ads_client_mock);
+void MockClearLocalStatePref(const AdsClientMock& ads_client_mock);
 void MockHasLocalStatePrefPath(const AdsClientMock& ads_client_mock);
 
 }  // namespace test

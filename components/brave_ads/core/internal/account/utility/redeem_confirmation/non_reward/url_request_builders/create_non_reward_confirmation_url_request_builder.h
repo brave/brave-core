@@ -22,6 +22,7 @@ class CreateNonRewardConfirmationUrlRequestBuilder final
   explicit CreateNonRewardConfirmationUrlRequestBuilder(
       ConfirmationInfo confirmation);
 
+  // UrlRequestBuilderInterface:
   mojom::UrlRequestInfoPtr Build() override;
 
  private:

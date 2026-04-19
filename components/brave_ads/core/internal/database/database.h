@@ -66,6 +66,7 @@ class Database final : public base::MemoryPressureListener {
 
   void ErrorCallback(int error, sql::Statement* statement);
 
+  // base::MemoryPressureListener:
   void OnMemoryPressure(base::MemoryPressureLevel level) override;
 
   const base::FilePath db_path_;

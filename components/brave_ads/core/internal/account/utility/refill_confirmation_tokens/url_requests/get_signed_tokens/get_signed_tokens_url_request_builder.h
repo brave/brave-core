@@ -21,6 +21,7 @@ class GetSignedTokensUrlRequestBuilder final
  public:
   GetSignedTokensUrlRequestBuilder(WalletInfo wallet, std::string nonce);
 
+  // UrlRequestBuilderInterface:
   mojom::UrlRequestInfoPtr Build() override;
 
  private:

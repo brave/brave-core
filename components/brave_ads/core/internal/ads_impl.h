@@ -135,8 +135,8 @@ class AdsImpl final : public Ads {
 
   bool is_initialized_ = false;
 
-  // TODO(https://github.com/brave/brave-browser/issues/37622): Deprecate global
-  // state.
+  // TODO(https://github.com/brave/brave-browser/issues/37622): Deprecate
+  // `GlobalState`.
   GlobalState global_state_;
 
   OnceClosureTaskQueue task_queue_;

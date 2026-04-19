@@ -30,9 +30,11 @@ class BraveStatsHelper : public ProfileManagerObserver, public ProfileObserver {
 
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
+  // ProfileManagerObserver:
   void OnProfileAdded(Profile* profile) override;
   void OnProfileManagerDestroying() override;
 
+  // ProfileObserver:
   void OnProfileWillBeDestroyed(Profile* profile) override;
 
   void SetFirstRunTimeForTesting(base::Time time);
