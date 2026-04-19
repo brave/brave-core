@@ -36,13 +36,13 @@ void TokenStateManager::LoadState(ResultCallback callback) {
 void TokenStateManager::GetAllConfirmationTokensCallback(
     ResultCallback callback,
     bool success,
-    ConfirmationTokenList confirmation_tokens) {
+    const ConfirmationTokenList& confirmation_tokens) {
   if (!success) {
     BLOG(0, "Failed to load confirmation tokens");
     return std::move(callback).Run(/*success=*/false);
   }
 
-  confirmation_tokens_.Set(std::move(confirmation_tokens));
+  confirmation_tokens_.Set(confirmation_tokens);
 
   database::table::PaymentTokens payment_tokens_database_table;
   payment_tokens_database_table.GetAll(
@@ -53,13 +53,13 @@ void TokenStateManager::GetAllConfirmationTokensCallback(
 void TokenStateManager::GetAllPaymentTokensCallback(
     ResultCallback callback,
     bool success,
-    PaymentTokenList payment_tokens) {
+    const PaymentTokenList& payment_tokens) {
   if (!success) {
     BLOG(0, "Failed to load payment tokens");
     return std::move(callback).Run(/*success=*/false);
   }
 
-  payment_tokens_.SetTokens(std::move(payment_tokens));
+  payment_tokens_.SetTokens(payment_tokens);
 
   BLOG(3, "Successfully loaded token state");
   is_initialized_ = true;

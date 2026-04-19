@@ -37,7 +37,8 @@ constexpr char kConfirmationsWithCorruptPaymentTokensJsonFilename[] =
 
 size_t GetConfirmationTokenCount() {
   base::test::TestFuture<bool, ConfirmationTokenList> test_future;
-  database::table::ConfirmationTokens().GetAll(test_future.GetCallback());
+  database::table::ConfirmationTokens().GetAll(
+      test_future.GetCallback<bool, const ConfirmationTokenList&>());
   const auto [success, tokens] = test_future.Take();
   EXPECT_TRUE(success);
   return tokens.size();
@@ -45,7 +46,8 @@ size_t GetConfirmationTokenCount() {
 
 size_t GetPaymentTokenCount() {
   base::test::TestFuture<bool, PaymentTokenList> test_future;
-  database::table::PaymentTokens().GetAll(test_future.GetCallback());
+  database::table::PaymentTokens().GetAll(
+      test_future.GetCallback<bool, const PaymentTokenList&>());
   const auto [success, tokens] = test_future.Take();
   EXPECT_TRUE(success);
   return tokens.size();
