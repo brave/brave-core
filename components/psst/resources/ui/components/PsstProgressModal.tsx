@@ -15,7 +15,6 @@ import { getLocale } from '$web-common/locale'
 import SettingsCard from './SettingsCard'
 import { Container, PsstDlgButton, RightAlignedItem } from './basic/structure'
 import { usePsstDialogAPI } from '../api/psst_dialog_api_context'
-import { SettingCardDataItem } from '../api/psst_dialog_api'
 
 import '../strings'
 
@@ -45,12 +44,6 @@ interface OptionStatus {
   settingState: SettingState
 }
 
-export interface PsstProgressModalState {
-  commonState: SettingState
-  siteName: string
-  optionsStatuses: Map<string, OptionStatus> | null
-}
-
 export const PsstProgressModal = () => {
   const psstDialogContext = usePsstDialogAPI()
   const { api } = psstDialogContext
@@ -58,10 +51,7 @@ export const PsstProgressModal = () => {
   const [commonState, setCommonState] = React.useState<SettingState>(
     SettingState.None,
   )
-  const [optionsStatuses, setOptionsStatuses] = React.useState<Map<
-    string,
-    OptionStatus
-  > | null>(new Map())
+  const [optionsStatuses, setOptionsStatuses] = React.useState<OptionStatus[]>()
 
   // Subscribe to API state endpoints (data is pushed via events)
   // Add defensive checks for api
@@ -76,84 +66,42 @@ export const PsstProgressModal = () => {
   const [appliedChecks, completionErrors] = completionStatus?.data || []
   const [requestUid, requestError] = requestStatus?.data || []
 
-  const setStateProp = React.useCallback( 
-    (
-      updates: Partial<OptionStatus>,
-      predicate: (status: OptionStatus) => boolean = () => true,
-    ) => {
-      setOptionsStatuses((prevOptionsStatuses) => {
-        if (!prevOptionsStatuses) {
-          return prevOptionsStatuses
-        }
-        const updatedOptionsStatuses = new Map<string, OptionStatus>()
-        prevOptionsStatuses.forEach((status, key) => {
-          if (predicate(status)) {
-            updatedOptionsStatuses.set(key, { ...status, ...updates })
-          } else {
-            updatedOptionsStatuses.set(key, status)
-          }
-        })
-        return updatedOptionsStatuses
-      })
-    },
-    [],
-  )
-
-  const setPropForUid = React.useCallback(
-    (targetUid: string, updates: Partial<OptionStatus>) => {
-      setOptionsStatuses((prevOptionsStatuses) => {
-        if (!prevOptionsStatuses) {
-          return prevOptionsStatuses
-        }
-
-        const updatedOptionsStatuses = new Map<string, OptionStatus>()
-        let found = false
-        prevOptionsStatuses.forEach((status, key) => {
-          if (status.uid === targetUid) {
-            updatedOptionsStatuses.set(key, { ...status, ...updates })
-            found = true
-          } else {
-            updatedOptionsStatuses.set(key, status)
-          }
-        })
-        if (found) {
-          return updatedOptionsStatuses
-        }
-        return prevOptionsStatuses
-      })
-    },
-    [],
-  )
 
   // Handle settings data updates
   React.useEffect(() => {
     if (settingCardData) {
-      const checkedUidsMap = new Map<string, OptionStatus>()
-      settingCardData.items.forEach((item: SettingCardDataItem) => {
-        checkedUidsMap.set(item.uid, {
-          uid: item.uid,
-          description: item.description,
-          error: null,
-          checked: true,
-          disabled: false,
-          settingState: SettingState.Selection,
-        })
-      })
-      setOptionsStatuses(checkedUidsMap)
+      const optionStatusArray: OptionStatus[] = settingCardData.items.map(item => ({
+        uid: item.uid,
+        description: item.description,
+        error: null,
+        checked: true,
+        disabled: false,
+        settingState: SettingState.Selection
+      }));
+      setOptionsStatuses(optionStatusArray)
     }
   }, [settingCardData])
 
   // Handle request status updates
   React.useEffect(() => {
-    if (requestUid) {
-      setPropForUid(requestUid, {
-        settingState: requestError
-          ? SettingState.Failed
-          : SettingState.Completed,
+    if (!requestUid) return;
+
+    setOptionsStatuses(prevOptionsStatuses => {
+      if (!prevOptionsStatuses) return prevOptionsStatuses;
+
+      const index = prevOptionsStatuses.findIndex(status => status.uid === requestUid);
+      if (index === -1) return prevOptionsStatuses;
+
+      const updatedOptions = [...prevOptionsStatuses];
+      updatedOptions[index] = {
+        ...updatedOptions[index],
+        settingState: requestError ? SettingState.Failed : SettingState.Completed,
         error: requestError || null,
-      })
-    }
-  }, [requestUid, requestError, setPropForUid])
+      };
+
+      return updatedOptions;
+    });
+  }, [requestUid, requestError])
 
   // Handle completion status updates
   React.useEffect(() => {
@@ -169,39 +117,49 @@ export const PsstProgressModal = () => {
   const handleSettingItemCheck = React.useCallback(
     (uid: string, checked: boolean) => {
       setOptionsStatuses((prevOptionsStatuses) => {
-        if (!prevOptionsStatuses) return prevOptionsStatuses
+        if (!prevOptionsStatuses) return prevOptionsStatuses;
 
-        const os = prevOptionsStatuses.get(uid)
-        if (os) {
-          const newMap = new Map(prevOptionsStatuses)
-          newMap.set(uid, {
-            ...os,
-            checked,
-          })
-          return newMap
-        }
-        return prevOptionsStatuses
+       const index = prevOptionsStatuses.findIndex(status => status.uid === uid);
+       if (index === -1) return prevOptionsStatuses;
+
+       const updatedOptions = [...prevOptionsStatuses];
+      updatedOptions[index] = {
+        ...updatedOptions[index],
+        checked,
+      };
+
+      return updatedOptions;
       })
     },
     [],
   )
 
   const handleApplyChanges = React.useCallback(() => {
-    let settingsToProcess: string[] = []
+    let disabledUids: string[] = []
     if (optionsStatuses) {
-      settingsToProcess = Array.from(optionsStatuses.entries())
-        .filter(([_, value]) => !value.checked)
-        .map(([key]) => key)
+      disabledUids = optionsStatuses
+        .filter(option => !option.checked)
+        .map(option => option.uid);
+      const newOptionsStatuses: OptionStatus[] = optionsStatuses.map(option => {
+        if (option.checked) {
+          return {
+            ...option,
+            settingState: SettingState.Progress,
+          };
+        } else {
+          return {
+            ...option,
+            disabled: true,
+          };
+        }
+      });
+      setOptionsStatuses(newOptionsStatuses);
     }
-    setStateProp(
-      { settingState: SettingState.Progress },
-      (status) => status.checked,
-    )
-    setStateProp({ disabled: true }, (status) => !status.checked)
+
     setCommonState(SettingState.Progress)
 
-    applyChanges([settingsToProcess])
-  }, [optionsStatuses, setStateProp, applyChanges])
+    applyChanges([disabledUids])
+  }, [optionsStatuses, applyChanges])
 
   const isInProgress = commonState === SettingState.Progress
 

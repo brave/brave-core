@@ -160,6 +160,9 @@ export function createMockPsstDialogAPI(
 
     // Simulate processing each URL
     for (const item of finalSettingsData.items) {
+      if(disabledSettingsList.includes(item.uid)) {
+        continue;
+      }
       // Simulate request status update
       setTimeout(() => {
         const hasError = errorUids.includes(item.uid)
