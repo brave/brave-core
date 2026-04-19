@@ -7,7 +7,6 @@
 #define BRAVE_IOS_BROWSER_BRAVE_ADS_ADS_SERVICE_IMPL_IOS_H_
 
 #include <memory>
-#include <optional>
 #include <string>
 #include <vector>
 

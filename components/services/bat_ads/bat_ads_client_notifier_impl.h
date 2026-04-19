@@ -18,6 +18,8 @@
 
 namespace bat_ads {
 
+// Receives `BatAdsClientNotifier` Mojo calls from the browser process and
+// forwards them to `AdsClientNotifier`.
 class BatAdsClientNotifierImpl final
     : public bat_ads::mojom::BatAdsClientNotifier {
  public:
@@ -36,92 +38,35 @@ class BatAdsClientNotifierImpl final
 
   void NotifyPendingObservers();
 
-  // Invoked when ads did initialize.
+  // bat_ads::mojom::BatAdsClientNotifier:
   void NotifyDidInitializeAds() override;
-
-  // Invoked when a preference has changed for the specified `path`.
   void NotifyPrefDidChange(const std::string& path) override;
-
-  // Invoked when a resource component with `id` has been updated to
-  // `manifest_version`.
   void NotifyResourceComponentDidChange(const std::string& manifest_version,
                                         const std::string& id) override;
-
-  // Invoked when a resource component with `id` has been unregistered.
   void NotifyDidUnregisterResourceComponent(const std::string& id) override;
-
-  // Invoked when the Brave Reward wallet did change.
   void NotifyRewardsWalletDidUpdate(
       const std::string& payment_id,
       const std::string& recovery_seed_base64) override;
-
-  // Invoked when the page for `tab_id` has loaded and the content is available
-  // for analysis. `redirect_chain` containing a list of redirect URLs that
-  // occurred on the way to the current page. The current page is the last one
-  // in the list (so even when there's no redirect, there should be one entry in
-  // the list). `text` containing the page content as text.
   void NotifyTabTextContentDidChange(int32_t tab_id,
                                      const std::vector<GURL>& redirect_chain,
                                      const std::string& text) override;
-
-  // Invoked when media starts playing on a browser tab for the specified
-  // `tab_id`.
   void NotifyTabDidStartPlayingMedia(int32_t tab_id) override;
-
-  // Called when media stops playing on a browser tab for the specified
-  // `tab_id`.
   void NotifyTabDidStopPlayingMedia(int32_t tab_id) override;
-
-  // Invoked when a browser tab is updated with the specified `redirect_chain`
-  // containing a list of redirect URLs that occurred on the way to the current
-  // page. The current page is the last one in the list (so even when there's no
-  // redirect, there should be one entry in the list). `is_restoring` should be
-  // set to `true` if the page is restoring otherwise should be set to `false`.
-  // `is_visible` should be set to `true` if `tab_id` refers to the currently
-  // visible tab otherwise should be set to `false`.
   void NotifyTabDidChange(int32_t tab_id,
                           const std::vector<GURL>& redirect_chain,
                           bool is_new_navigation,
                           bool is_restoring,
                           bool is_visible) override;
-
-  // Invoked when a browser tab has loaded. `http_status_code` should be set to
-  // the HTTP response code.
   void NotifyTabDidLoad(int32_t tab_id, int http_status_code) override;
-
-  // Invoked when a browser tab with the specified `tab_id` is closed.
   void NotifyDidCloseTab(int32_t tab_id) override;
-
-  // Called when a page navigation was initiated by a user gesture.
-  // `page_transition` containing the page transition type, see enums for
-  // `ui::PageTransition`.
   void NotifyUserGestureEventTriggered(int32_t page_transition) override;
-
-  // Invoked when a user has been idle for the threshold set in
-  // `prefs::kIdleTimeThreshold`. NOTE: This should not be called on mobile
-  // devices.
   void NotifyUserDidBecomeIdle() override;
-
-  // Called when a user is no longer idle. `idle_time` is the amount of time in
-  // seconds that the user was idle. `screen_was_locked` should be `true` if the
-  // screen was locked, otherwise `false`. NOTE: This should not be called on
-  // mobile devices.
   void NotifyUserDidBecomeActive(base::TimeDelta idle_time,
                                  bool screen_was_locked) override;
-
-  // Invoked when the browser did enter the foreground.
   void NotifyBrowserDidEnterForeground() override;
-
-  // Invoked when the browser did enter the background.
   void NotifyBrowserDidEnterBackground() override;
-
-  // Invoked when the browser did become active.
   void NotifyBrowserDidBecomeActive() override;
-
-  // Invoked when the browser did resign active.
   void NotifyBrowserDidResignActive() override;
-
-  // Invoked when the user solves an adaptive captch.
   void NotifyDidSolveAdaptiveCaptcha() override;
 
  private:

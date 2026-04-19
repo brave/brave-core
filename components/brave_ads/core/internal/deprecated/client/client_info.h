@@ -25,7 +25,7 @@ struct ClientInfo final {
 
   ~ClientInfo();
 
-  base::DictValue ToValue() const;
+  base::DictValue ToDict() const;
   [[nodiscard]] bool FromDict(const base::DictValue& dict);
 
   std::string ToJson() const;

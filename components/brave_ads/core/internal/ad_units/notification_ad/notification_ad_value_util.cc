@@ -12,7 +12,7 @@
 
 namespace brave_ads {
 
-base::DictValue NotificationAdToValue(const NotificationAdInfo& ad) {
+base::DictValue NotificationAdToDict(const NotificationAdInfo& ad) {
   return base::DictValue()
       .Set(kNotificationAdTypeKey, ToString(ad.type))
       .Set(kNotificationAdPlacementIdKey, ad.placement_id)
@@ -26,13 +26,13 @@ base::DictValue NotificationAdToValue(const NotificationAdInfo& ad) {
       .Set(kNotificationAdTargetUrlKey, ad.target_url.spec());
 }
 
-base::ListValue NotificationAdsToValue(
+base::ListValue NotificationAdsToList(
     const base::circular_deque<NotificationAdInfo>& ads) {
   base::ListValue list;
   list.reserve(ads.size());
 
   for (const auto& ad : ads) {
-    list.Append(NotificationAdToValue(ad));
+    list.Append(NotificationAdToDict(ad));
   }
 
   return list;

@@ -358,7 +358,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest, ParseAndSaveAds) {
   {
     base::test::TestFuture<bool> test_future;
     ParseAndSaveNewTabPageAds(std::move(dict), test_future.GetCallback());
-    EXPECT_TRUE(test_future.Get());
+    ASSERT_TRUE(test_future.Get());
   }
 
   // Assert

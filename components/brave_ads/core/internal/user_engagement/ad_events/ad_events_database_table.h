@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_AD_EVENTS_AD_EVENTS_DATABASE_TABLE_H_
 
 #include <string>
-#include <vector>
 
 #include "base/containers/flat_set.h"
 #include "base/containers/span.h"

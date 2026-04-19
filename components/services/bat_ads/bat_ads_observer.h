@@ -18,11 +18,8 @@ class BatAdsObserver : public brave_ads::AdsObserver {
   explicit BatAdsObserver(mojo::PendingRemote<mojom::BatAdsObserver>
                               bat_ads_observer_pending_remote);
 
-  BatAdsObserver(const BatAdsObserver&);
-  BatAdsObserver& operator=(const BatAdsObserver&);
-
-  BatAdsObserver(BatAdsObserver&&) noexcept;
-  BatAdsObserver& operator=(BatAdsObserver&&) noexcept;
+  BatAdsObserver(const BatAdsObserver&) = delete;
+  BatAdsObserver& operator=(const BatAdsObserver&) = delete;
 
   ~BatAdsObserver() override;
 

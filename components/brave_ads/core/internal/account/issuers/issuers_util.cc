@@ -20,7 +20,7 @@ void SetIssuers(const IssuersInfo& issuers) {
   SetProfileIntegerPref(prefs::kIssuerPing, issuers.ping);
 
   SetProfileListPref(prefs::kIssuers,
-                     TokenIssuersToValue(issuers.token_issuers));
+                     TokenIssuersToList(issuers.token_issuers));
 }
 
 std::optional<IssuersInfo> GetIssuers() {

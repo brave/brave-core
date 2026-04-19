@@ -8,7 +8,6 @@
 
 #include <cstdint>
 #include <memory>
-#include <string>
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/ml/transformation/transformation.h"

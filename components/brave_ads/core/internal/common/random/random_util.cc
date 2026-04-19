@@ -14,7 +14,11 @@
 namespace brave_ads {
 
 namespace {
+
+constexpr double kMinRandomFactor = 0.5;
+
 std::optional<base::TimeDelta> g_rand_time_delta_with_jitter_for_testing;
+
 }  // namespace
 
 base::TimeDelta RandTimeDeltaWithJitter(base::TimeDelta time_delta) {
@@ -24,7 +28,7 @@ base::TimeDelta RandTimeDeltaWithJitter(base::TimeDelta time_delta) {
     return *g_rand_time_delta_with_jitter_for_testing;
   }
 
-  const double random_factor = 0.5 + base::RandDouble();
+  const double random_factor = kMinRandomFactor + base::RandDouble();
 
   return base::Seconds(time_delta.InSecondsF() * random_factor);
 }

@@ -28,7 +28,7 @@ TEST_F(BraveAdsCatalogUtilTest, ResetCatalog) {
   // Act
   base::test::TestFuture<bool> test_future;
   ResetCatalog(test_future.GetCallback());
-  EXPECT_TRUE(test_future.Get());
+  ASSERT_TRUE(test_future.Get());
 
   // Assert
   EXPECT_THAT(GetProfileStringPref(prefs::kCatalogId), ::testing::IsEmpty());

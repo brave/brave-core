@@ -33,7 +33,7 @@ ClientInfo& ClientInfo::operator=(ClientInfo&& other) noexcept = default;
 
 ClientInfo::~ClientInfo() = default;
 
-base::DictValue ClientInfo::ToValue() const {
+base::DictValue ClientInfo::ToDict() const {
   const base::TimeDelta time_window = kPurchaseIntentTimeWindow.Get();
 
   base::DictValue purchase_intent_signal_history_dict;
@@ -42,7 +42,7 @@ base::DictValue ClientInfo::ToValue() const {
     for (const auto& item : history) {
       const base::Time decay_signal_at = item.at + time_window;
       if (base::Time::Now() < decay_signal_at) {
-        list.Append(PurchaseIntentSignalHistoryToValue(item));
+        list.Append(PurchaseIntentSignalHistoryToDict(item));
       }
     }
 
@@ -148,7 +148,7 @@ std::string ClientInfo::ToJson() const {
   TRACE_EVENT(kTraceEventCategory, "ClientInfo::ToJson");
 
   std::string json;
-  CHECK(base::JSONWriter::Write(ToValue(), &json));
+  CHECK(base::JSONWriter::Write(ToDict(), &json));
   return json;
 }
 

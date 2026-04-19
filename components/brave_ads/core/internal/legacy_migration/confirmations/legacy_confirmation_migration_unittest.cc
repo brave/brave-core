@@ -144,11 +144,9 @@ TEST_F(BraveAdsLegacyConfirmationMigrationTest,
   ASSERT_TRUE(CopyFileFromTestDataPathToProfilePath(
       test::kMalformedJsonFilename, kConfirmationsJsonFilename));
 
-  // Act
+  // Act & Assert
   base::test::TestFuture<bool> test_future;
   MigrateConfirmationState(test::Wallet(), test_future.GetCallback());
-
-  // Assert
   EXPECT_TRUE(test_future.Get());
 }
 
