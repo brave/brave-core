@@ -455,7 +455,7 @@ void AdsServiceImpl::NotifyDidClearAdsServiceData() {
 }
 
 void AdsServiceImpl::ClearDataPrefsAndAdsServiceDataAndMaybeRestart(
-    ClearDataCallback callback,
+    ResultCallback callback,
     bool shutdown_succeeded) {
   if (!shutdown_succeeded) {
     VLOG(0) << "Failed to clear ads data because Ads Service shutdown failed";
@@ -483,7 +483,7 @@ void AdsServiceImpl::ClearDataPrefsAndAdsServiceDataAndMaybeRestart(
 }
 
 void AdsServiceImpl::ClearAllPrefsAndAdsServiceDataAndMaybeRestart(
-    ClearDataCallback callback,
+    ResultCallback callback,
     bool shutdown_succeeded) {
   if (!shutdown_succeeded) {
     VLOG(0) << "Failed to clear ads data because Ads Service shutdown failed";
@@ -498,7 +498,7 @@ void AdsServiceImpl::ClearAllPrefsAndAdsServiceDataAndMaybeRestart(
 }
 
 void AdsServiceImpl::ClearAdsServiceDataAndMaybeRestart(
-    ClearDataCallback callback) {
+    ResultCallback callback) {
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE, base::BindOnce(&DeletePathOnFileTaskRunner, ads_service_path_),
       base::BindOnce(
@@ -507,7 +507,7 @@ void AdsServiceImpl::ClearAdsServiceDataAndMaybeRestart(
 }
 
 void AdsServiceImpl::ClearAdsServiceDataAndMaybeRestartCallback(
-    ClearDataCallback callback,
+    ResultCallback callback,
     bool success) {
   if (!success) {
     VLOG(0) << "Failed to clear ads data";
@@ -932,7 +932,7 @@ void AdsServiceImpl::SnoozeScheduledCaptchaCallback() {
   delegate_->SnoozeScheduledCaptcha();
 }
 
-void AdsServiceImpl::ShutdownAds(ShutdownCallback callback) {
+void AdsServiceImpl::ShutdownAds(ResultCallback callback) {
   if (!bat_ads_associated_remote_) {
     return std::move(callback).Run(/*success=*/true);
   }
@@ -944,7 +944,7 @@ void AdsServiceImpl::ShutdownAds(ShutdownCallback callback) {
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void AdsServiceImpl::ShutdownAdsCallback(ShutdownCallback callback,
+void AdsServiceImpl::ShutdownAdsCallback(ResultCallback callback,
                                          bool success) {
   ShutdownAdsService();
 
@@ -1059,7 +1059,7 @@ void AdsServiceImpl::OnNotificationAdClicked(const std::string& placement_id) {
       /*intentional*/ base::DoNothing());
 }
 
-void AdsServiceImpl::ClearData(ClearDataCallback callback) {
+void AdsServiceImpl::ClearData(ResultCallback callback) {
   UMA_HISTOGRAM_BOOLEAN(kClearDataHistogramName, true);
   ShutdownAds(base::BindOnce(
       &AdsServiceImpl::ClearAllPrefsAndAdsServiceDataAndMaybeRestart,
@@ -1095,9 +1095,8 @@ void AdsServiceImpl::GetStatementOfAccounts(
                                                   /*statement*/ nullptr));
 }
 
-void AdsServiceImpl::ParseAndSaveNewTabPageAds(
-    base::DictValue dict,
-    ParseAndSaveNewTabPageAdsCallback callback) {
+void AdsServiceImpl::ParseAndSaveNewTabPageAds(base::DictValue dict,
+                                               ResultCallback callback) {
   if (!bat_ads_associated_remote_.is_bound()) {
     return std::move(callback).Run(/*success*/ false);
   }
@@ -1120,7 +1119,7 @@ void AdsServiceImpl::TriggerNewTabPageAdEvent(
     const std::string& creative_instance_id,
     mojom::NewTabPageAdMetricType mojom_ad_metric_type,
     mojom::NewTabPageAdEventType mojom_ad_event_type,
-    TriggerAdEventCallback callback) {
+    ResultCallback callback) {
   CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
 
   if (!bat_ads_associated_remote_.is_bound()) {
@@ -1146,7 +1145,7 @@ void AdsServiceImpl::MaybeGetSearchResultAd(
 void AdsServiceImpl::TriggerSearchResultAdEvent(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
     mojom::SearchResultAdEventType mojom_ad_event_type,
-    TriggerAdEventCallback callback) {
+    ResultCallback callback) {
   CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
 
   if (!bat_ads_associated_remote_.is_bound()) {
@@ -1157,9 +1156,8 @@ void AdsServiceImpl::TriggerSearchResultAdEvent(
       std::move(mojom_creative_ad), mojom_ad_event_type, std::move(callback));
 }
 
-void AdsServiceImpl::PurgeOrphanedAdEventsForType(
-    mojom::AdType mojom_ad_type,
-    PurgeOrphanedAdEventsForTypeCallback callback) {
+void AdsServiceImpl::PurgeOrphanedAdEventsForType(mojom::AdType mojom_ad_type,
+                                                  ResultCallback callback) {
   CHECK(mojom::IsKnownEnumValue(mojom_ad_type));
 
   if (!bat_ads_associated_remote_.is_bound()) {
@@ -1184,7 +1182,7 @@ void AdsServiceImpl::GetAdHistory(base::Time from_time,
 }
 
 void AdsServiceImpl::ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
-                                  ToggleReactionCallback callback) {
+                                  ResultCallback callback) {
   if (!bat_ads_associated_remote_.is_bound()) {
     return std::move(callback).Run(/*success*/ false);
   }
@@ -1196,7 +1194,7 @@ void AdsServiceImpl::ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
 }
 
 void AdsServiceImpl::ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
-                                     ToggleReactionCallback callback) {
+                                     ResultCallback callback) {
   if (!bat_ads_associated_remote_.is_bound()) {
     return std::move(callback).Run(/*success*/ false);
   }
@@ -1208,7 +1206,7 @@ void AdsServiceImpl::ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
 }
 
 void AdsServiceImpl::ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
-                                       ToggleReactionCallback callback) {
+                                       ResultCallback callback) {
   if (!bat_ads_associated_remote_.is_bound()) {
     return std::move(callback).Run(/*success*/ false);
   }
@@ -1220,7 +1218,7 @@ void AdsServiceImpl::ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
 }
 
 void AdsServiceImpl::ToggleDislikeSegment(mojom::ReactionInfoPtr mojom_reaction,
-                                          ToggleReactionCallback callback) {
+                                          ResultCallback callback) {
   if (!bat_ads_associated_remote_.is_bound()) {
     return std::move(callback).Run(/*success*/ false);
   }
@@ -1232,7 +1230,7 @@ void AdsServiceImpl::ToggleDislikeSegment(mojom::ReactionInfoPtr mojom_reaction,
 }
 
 void AdsServiceImpl::ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
-                                  ToggleReactionCallback callback) {
+                                  ResultCallback callback) {
   if (!bat_ads_associated_remote_.is_bound()) {
     return std::move(callback).Run(/*success*/ false);
   }
@@ -1245,7 +1243,7 @@ void AdsServiceImpl::ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
 
 void AdsServiceImpl::ToggleMarkAdAsInappropriate(
     mojom::ReactionInfoPtr mojom_reaction,
-    ToggleReactionCallback callback) {
+    ResultCallback callback) {
   if (!bat_ads_associated_remote_.is_bound()) {
     return std::move(callback).Run(/*success*/ false);
   }
@@ -1409,7 +1407,7 @@ void AdsServiceImpl::UrlRequest(mojom::UrlRequestInfoPtr url_request,
 
 void AdsServiceImpl::Save(const std::string& name,
                           const std::string& value,
-                          SaveCallback callback) {
+                          ResultCallback callback) {
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&WriteOnFileTaskRunner,
@@ -1417,7 +1415,7 @@ void AdsServiceImpl::Save(const std::string& name,
       std::move(callback));
 }
 
-void AdsServiceImpl::Remove(const std::string& name, RemoveCallback callback) {
+void AdsServiceImpl::Remove(const std::string& name, ResultCallback callback) {
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&base::DeleteFile, ads_service_path_.AppendASCII(name)),

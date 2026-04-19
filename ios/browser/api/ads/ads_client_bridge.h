@@ -43,9 +43,9 @@
          message:(const std::string&)message;
 - (void)save:(const std::string&)name
        value:(const std::string&)value
-    callback:(brave_ads::SaveCallback)callback;
+    callback:(brave_ads::ResultCallback)callback;
 - (void)remove:(const std::string&)name
-      callback:(brave_ads::RemoveCallback)callback;
+      callback:(brave_ads::ResultCallback)callback;
 - (void)showNotificationAd:(const brave_ads::NotificationAdInfo&)info;
 - (void)closeNotificationAd:(const std::string&)placement_id;
 - (void)UrlRequest:(brave_ads::mojom::UrlRequestInfoPtr)url_request

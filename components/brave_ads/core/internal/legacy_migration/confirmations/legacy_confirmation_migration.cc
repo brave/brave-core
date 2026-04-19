@@ -32,12 +32,12 @@ namespace {
 
 constexpr char kConfirmationsJsonFilename[] = "confirmations.json";
 
-void SuccessfullyMigrated(InitializeCallback callback) {
+void SuccessfullyMigrated(ResultCallback callback) {
   MaybeDeleteFile(kConfirmationsJsonFilename);
   std::move(callback).Run(/*success=*/true);
 }
 
-void MigrationCallback(InitializeCallback callback,
+void MigrationCallback(ResultCallback callback,
                        const std::vector<bool>& results) {
   for (const bool success : results) {
     if (!success) {
@@ -54,7 +54,7 @@ void MigrationCallback(InitializeCallback callback,
 }
 
 void LoadConfirmationStateCallback(std::optional<WalletInfo> wallet,
-                                   InitializeCallback callback,
+                                   ResultCallback callback,
                                    const std::optional<std::string>& json) {
   if (!json) {
     // Confirmation state does not exist. Either the browser is starting
@@ -102,7 +102,7 @@ void LoadConfirmationStateCallback(std::optional<WalletInfo> wallet,
 }  // namespace
 
 void MigrateConfirmationState(std::optional<WalletInfo> wallet,
-                              InitializeCallback callback) {
+                              ResultCallback callback) {
   GetAdsClient().Load(kConfirmationsJsonFilename,
                       base::BindOnce(&LoadConfirmationStateCallback,
                                      std::move(wallet), std::move(callback)));

@@ -196,7 +196,7 @@ TEST_F(BraveAdsNotificationAdForMobileIntegrationTest, TriggerTimedOutEvent) {
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
         // Act & Assert
-        base::MockCallback<TriggerAdEventCallback> callback;
+        base::MockCallback<ResultCallback> callback;
         base::RunLoop ad_event_run_loop(
             base::RunLoop::Type::kNestableTasksAllowed);
         EXPECT_CALL(callback, Run(/*success=*/true))

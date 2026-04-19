@@ -12,6 +12,7 @@
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_callback.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
 namespace brave_ads::database::table {

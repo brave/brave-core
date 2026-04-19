@@ -24,7 +24,7 @@ TokenStateManager& TokenStateManager::GetInstance() {
   return GlobalState::GetInstance()->GetTokenStateManager();
 }
 
-void TokenStateManager::LoadState(InitializeCallback callback) {
+void TokenStateManager::LoadState(ResultCallback callback) {
   BLOG(3, "Loading token state");
 
   database::table::ConfirmationTokens confirmation_tokens_database_table;
@@ -34,7 +34,7 @@ void TokenStateManager::LoadState(InitializeCallback callback) {
 }
 
 void TokenStateManager::GetAllConfirmationTokensCallback(
-    InitializeCallback callback,
+    ResultCallback callback,
     bool success,
     ConfirmationTokenList confirmation_tokens) {
   if (!success) {
@@ -51,7 +51,7 @@ void TokenStateManager::GetAllConfirmationTokensCallback(
 }
 
 void TokenStateManager::GetAllPaymentTokensCallback(
-    InitializeCallback callback,
+    ResultCallback callback,
     bool success,
     PaymentTokenList payment_tokens) {
   if (!success) {

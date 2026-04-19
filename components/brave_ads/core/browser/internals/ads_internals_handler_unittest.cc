@@ -128,7 +128,7 @@ TEST_F(BraveAdsInternalsHandlerTest,
   handler.BindInterface(mojom_remote.BindNewPipeAndPassReceiver());
 
   EXPECT_CALL(ads_service_mock_, ClearData)
-      .WillOnce([](ClearDataCallback callback) {
+      .WillOnce([](ResultCallback callback) {
         std::move(callback).Run(/*success=*/true);
       });
 
@@ -150,7 +150,7 @@ TEST_F(BraveAdsInternalsHandlerTest,
   handler.BindInterface(mojom_remote.BindNewPipeAndPassReceiver());
 
   EXPECT_CALL(ads_service_mock_, ClearData)
-      .WillOnce([](ClearDataCallback callback) {
+      .WillOnce([](ResultCallback callback) {
         std::move(callback).Run(/*success=*/false);
       });
 

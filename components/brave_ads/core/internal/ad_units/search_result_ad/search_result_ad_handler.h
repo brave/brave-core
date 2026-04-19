@@ -37,19 +37,19 @@ class SearchResultAdHandler final : public SearchResultAdEventHandlerDelegate {
 
   void TriggerEvent(mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                     mojom::SearchResultAdEventType mojom_ad_event_type,
-                    TriggerAdEventCallback callback);
+                    ResultCallback callback);
 
  private:
   void FireServedEventCallback(
       mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-      TriggerAdEventCallback callback,
+      ResultCallback callback,
       bool success,
       const std::string& placement_id,
       mojom::SearchResultAdEventType mojom_ad_event_type);
 
-  void MaybeTriggerDeferredAdViewedEvent(TriggerAdEventCallback callback);
+  void MaybeTriggerDeferredAdViewedEvent(ResultCallback callback);
   void FireAdViewedEventCallback(
-      TriggerAdEventCallback callback,
+      ResultCallback callback,
       bool success,
       const std::string& placement_id,
       mojom::SearchResultAdEventType mojom_ad_event_type);

@@ -244,7 +244,7 @@ class SampleBraveAdsCreativeSearchResultAdTabHelperTest
             [&run_loop1, &run_loop2](
                 mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                 mojom::SearchResultAdEventType /*mojom_ad_event_type*/,
-                TriggerAdEventCallback /*callback*/) {
+                ResultCallback /*callback*/) {
               ASSERT_TRUE(mojom_creative_ad);
 
               EXPECT_EQ(mojom_creative_ad,
@@ -292,7 +292,7 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
       .WillOnce([&run_loop](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                     mojom::SearchResultAdEventType mojom_ad_event_type,
-                    TriggerAdEventCallback /*callback*/) {
+                    ResultCallback /*callback*/) {
         EXPECT_EQ(mojom_ad_event_type,
                   mojom::SearchResultAdEventType::kClicked);
 
@@ -321,7 +321,7 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
       .WillOnce([&run_loop](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                     mojom::SearchResultAdEventType mojom_ad_event_type,
-                    TriggerAdEventCallback /*callback*/) {
+                    ResultCallback /*callback*/) {
         EXPECT_EQ(mojom_ad_event_type,
                   mojom::SearchResultAdEventType::kClicked);
 
@@ -363,7 +363,7 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
       .WillOnce([&run_loop](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                     mojom::SearchResultAdEventType mojom_ad_event_type,
-                    TriggerAdEventCallback /*callback*/) {
+                    ResultCallback /*callback*/) {
         EXPECT_EQ(mojom_ad_event_type,
                   mojom::SearchResultAdEventType::kClicked);
 
@@ -403,7 +403,7 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
       .WillOnce([&run_loop](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                     mojom::SearchResultAdEventType mojom_ad_event_type,
-                    TriggerAdEventCallback /*callback*/) {
+                    ResultCallback /*callback*/) {
         EXPECT_EQ(mojom_ad_event_type,
                   mojom::SearchResultAdEventType::kClicked);
 

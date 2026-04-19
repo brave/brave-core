@@ -11,6 +11,7 @@
 
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_ads {
@@ -47,8 +48,8 @@ class AdsClientMock : public AdsClient {
 
   MOCK_METHOD(void,
               Save,
-              (const std::string&, const std::string&, SaveCallback));
-  MOCK_METHOD(void, Remove, (const std::string&, RemoveCallback));
+              (const std::string&, const std::string&, ResultCallback));
+  MOCK_METHOD(void, Remove, (const std::string&, ResultCallback));
   MOCK_METHOD(void, Load, (const std::string&, LoadCallback));
 
   MOCK_METHOD(void,

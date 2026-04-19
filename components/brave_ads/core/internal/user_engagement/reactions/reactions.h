@@ -38,30 +38,30 @@ class Reactions final {
   void RemoveObserver(ReactionsObserver* observer);
 
   void ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
-                    ToggleReactionCallback callback);
+                    ResultCallback callback);
   void ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
-                       ToggleReactionCallback callback);
+                       ResultCallback callback);
   mojom::ReactionType AdReactionTypeForId(
       const std::string& advertiser_id) const;
   const ReactionMap& Ads() const { return ad_reactions_; }
   ReactionMap& AdsForTesting() { return ad_reactions_; }
 
   void ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
-                         ToggleReactionCallback callback);
+                         ResultCallback callback);
   void ToggleDislikeSegment(mojom::ReactionInfoPtr mojom_reaction,
-                            ToggleReactionCallback callback);
+                            ResultCallback callback);
   mojom::ReactionType SegmentReactionTypeForId(
       const std::string& segment) const;
   const ReactionMap& Segments() const { return segment_reactions_; }
   ReactionMap& SegmentsForTesting() { return segment_reactions_; }
 
   void ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
-                    ToggleReactionCallback callback);
+                    ResultCallback callback);
   bool IsAdSaved(const std::string& creative_instance_id) const;
   ReactionSet& SavedAdsForTesting() { return saved_ads_; }
 
   void ToggleMarkAdAsInappropriate(mojom::ReactionInfoPtr mojom_reaction,
-                                   ToggleReactionCallback callback);
+                                   ResultCallback callback);
   bool IsAdMarkedAsInappropriate(const std::string& creative_set_id) const;
   ReactionSet& MarkedAdsAsInappropriateForTesting() {
     return marked_as_inappropriate_;

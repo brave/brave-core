@@ -39,9 +39,9 @@ class AdsClientIOS : public brave_ads::AdsClient {
                   brave_ads::UrlRequestCallback callback) override;
   void Save(const std::string& name,
             const std::string& value,
-            brave_ads::SaveCallback callback) override;
+            brave_ads::ResultCallback callback) override;
   void Remove(const std::string& name,
-              brave_ads::RemoveCallback callback) override;
+              brave_ads::ResultCallback callback) override;
   void Load(const std::string& name, brave_ads::LoadCallback callback) override;
   void LoadResourceComponent(const std::string& id,
                              int version,

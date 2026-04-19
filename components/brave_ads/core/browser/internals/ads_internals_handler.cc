@@ -59,7 +59,7 @@ void AdsInternalsHandler::GetAdsInternals(GetAdsInternalsCallback callback) {
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void AdsInternalsHandler::ClearAdsData(brave_ads::ClearDataCallback callback) {
+void AdsInternalsHandler::ClearAdsData(brave_ads::ResultCallback callback) {
   if (!ads_service_) {
     return std::move(callback).Run(/*success=*/false);
   }
