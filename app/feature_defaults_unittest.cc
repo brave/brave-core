@@ -35,6 +35,7 @@
 #include "components/metrics/metrics_features.h"
 #include "components/metrics/private_metrics/private_metrics_features.h"
 #include "components/metrics/structured/structured_metrics_features.h"
+#include "components/multistep_filter/core/features.h"
 #include "components/network_time/network_time_tracker.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/optimization_guide/core/optimization_guide_features.h"
@@ -202,6 +203,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &metrics::features::kStructuredMetrics,
       &metrics::private_metrics::kPrivateMetricsFeature,
       &metrics::structured::kPhoneHubStructuredMetrics,
+      &multistep_filter::kMultistepFilter,
       &net::features::kEnableWebTransportDraft07,
       &net::features::kTpcdMetadataGrants,
       &net::features::kWaitForFirstPartySetsInit,
