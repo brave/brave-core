@@ -14,6 +14,7 @@
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_info.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_builder.h"
+#include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -24,7 +25,6 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/search_result_ads/test/search_result_ad_event_handler_delegate_mock.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/test/ad_event_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/ad_units/search_result_ad/search_result_ad_feature.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
