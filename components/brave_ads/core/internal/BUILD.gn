@@ -1129,7 +1129,6 @@ static_library("internal") {
   deps = [
     "//base",
     "//brave/components/brave_ads/core/browser/service",
-    "//brave/components/brave_origin",
     "//brave/components/brave_rewards/core",
     "//brave/components/challenge_bypass_ristretto",
     "//brave/components/constants",
