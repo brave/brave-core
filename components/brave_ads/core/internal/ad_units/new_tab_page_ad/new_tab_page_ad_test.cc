@@ -21,7 +21,6 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads.h"
-#include "brave/components/brave_ads/core/public/ads_callback.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -127,7 +126,7 @@ class BraveAdsNewTabPageAdIntegrationTest : public test::TestBase {
       const std::string& creative_instance_id,
       mojom::NewTabPageAdEventType mojom_ad_event_type,
       bool should_fire_event) {
-    base::MockCallback<TriggerAdEventCallback> callback;
+    base::MockCallback<ResultCallback> callback;
     base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
     EXPECT_CALL(callback, Run(/*success=*/should_fire_event))
         .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));

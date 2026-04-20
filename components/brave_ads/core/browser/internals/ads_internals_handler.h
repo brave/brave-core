@@ -44,7 +44,7 @@ class AdsInternalsHandler final : public bat_ads::mojom::AdsInternals {
       mojo::PendingRemote<bat_ads::mojom::AdsInternalsPage>
           mojom_pending_remote) override;
   void GetAdsInternals(GetAdsInternalsCallback callback) override;
-  void ClearAdsData(brave_ads::ClearDataCallback callback) override;
+  void ClearAdsData(brave_ads::ResultCallback callback) override;
 
   void GetInternalsCallback(GetAdsInternalsCallback callback,
                             std::optional<base::DictValue> dict);

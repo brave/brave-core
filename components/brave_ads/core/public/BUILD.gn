@@ -30,6 +30,7 @@ source_set("headers") {
     "common/functional/once_closure_task_queue.h",
     "common/locale/locale_util.h",
     "common/url/url_util.h",
+    "history/ad_history_callback.h",
     "history/ad_history_feature.h",
     "history/ad_history_item_info.h",
     "history/ad_history_item_value_util.h",

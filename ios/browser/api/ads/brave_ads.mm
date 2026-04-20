@@ -1337,7 +1337,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
 - (void)save:(const std::string&)name
        value:(const std::string&)value
-    callback:(brave_ads::SaveCallback)callback {
+    callback:(brave_ads::ResultCallback)callback {
   NSData* valueData =
       [base::SysUTF8ToNSString(value) dataUsingEncoding:NSUTF8StringEncoding];
   const bool success = [self.commonOps saveContents:valueData name:name];
@@ -1345,7 +1345,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 }
 
 - (void)remove:(const std::string&)name
-      callback:(brave_ads::RemoveCallback)callback {
+      callback:(brave_ads::ResultCallback)callback {
   const bool success = [self.commonOps removeFileWithName:name];
   std::move(callback).Run(success);
 }

@@ -28,7 +28,7 @@ namespace {
 SearchResultAdHandler* g_search_result_ad_handler_for_testing = nullptr;
 bool g_defer_triggering_of_ad_viewed_event_for_testing = false;
 
-void FireEventCallback(TriggerAdEventCallback callback,
+void FireEventCallback(ResultCallback callback,
                        bool success,
                        const std::string& /*placement_id*/,
                        mojom::SearchResultAdEventType /*mojom_ad_event_type*/) {
@@ -73,7 +73,7 @@ void SearchResultAdHandler::TriggerDeferredAdViewedEventForTesting() {
 void SearchResultAdHandler::TriggerEvent(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
     mojom::SearchResultAdEventType mojom_ad_event_type,
-    TriggerAdEventCallback callback) {
+    ResultCallback callback) {
   CHECK_NE(mojom::SearchResultAdEventType::kServedImpression,
            mojom_ad_event_type)
       << "Should not be called with kServedImpression as this event is handled "
@@ -106,7 +106,7 @@ void SearchResultAdHandler::TriggerEvent(
 
 void SearchResultAdHandler::FireServedEventCallback(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-    TriggerAdEventCallback callback,
+    ResultCallback callback,
     bool success,
     const std::string& /*placement_id*/,
     mojom::SearchResultAdEventType /*mojom_ad_event_type*/) {
@@ -120,7 +120,7 @@ void SearchResultAdHandler::FireServedEventCallback(
 }
 
 void SearchResultAdHandler::MaybeTriggerDeferredAdViewedEvent(
-    TriggerAdEventCallback callback) {
+    ResultCallback callback) {
   CHECK((!viewed_ad_event_queue_.empty() ||
          !is_processing_viewed_ad_event_queue_));
 
@@ -141,7 +141,7 @@ void SearchResultAdHandler::MaybeTriggerDeferredAdViewedEvent(
 }
 
 void SearchResultAdHandler::FireAdViewedEventCallback(
-    TriggerAdEventCallback callback,
+    ResultCallback callback,
     bool success,
     const std::string& /*placement_id*/,
     mojom::SearchResultAdEventType mojom_ad_event_type) {

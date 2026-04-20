@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_delegate.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
+#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 
 namespace brave_ads {
@@ -37,15 +38,14 @@ class NewTabPageAdHandler final : public NewTabPageAdEventHandlerDelegate,
 
   ~NewTabPageAdHandler() override;
 
-  void ParseAndSave(base::DictValue dict,
-                    ParseAndSaveNewTabPageAdsCallback callback);
+  void ParseAndSave(base::DictValue dict, ResultCallback callback);
 
   void MaybeServe(MaybeServeNewTabPageAdCallback callback);
 
   void TriggerEvent(const std::string& placement_id,
                     const std::string& creative_instance_id,
                     mojom::NewTabPageAdEventType mojom_ad_event_type,
-                    TriggerAdEventCallback callback);
+                    ResultCallback callback);
 
  private:
   void MaybeServeCallback(MaybeServeNewTabPageAdCallback callback,
@@ -53,7 +53,7 @@ class NewTabPageAdHandler final : public NewTabPageAdEventHandlerDelegate,
 
   void TriggerServedEventCallback(
       const std::string& creative_instance_id,
-      TriggerAdEventCallback callback,
+      ResultCallback callback,
       bool success,
       const std::string& placement_id,
       mojom::NewTabPageAdEventType mojom_ad_event_type);

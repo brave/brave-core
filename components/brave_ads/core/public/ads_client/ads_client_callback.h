@@ -17,11 +17,13 @@
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
 
+// Callback types for the `AdsClient` public interface. `AdsClient` is the
+// outward-facing interface that `core` calls into the browser. This header
+// asserts `ENABLE_BRAVE_ADS` and must not be included by always-built targets.
+
 namespace brave_ads {
 
-using SaveCallback = base::OnceCallback<void(bool success)>;
-
-using RemoveCallback = base::OnceCallback<void(bool success)>;
+using ResultCallback = base::OnceCallback<void(bool success)>;
 
 using LoadCallback =
     base::OnceCallback<void(const std::optional<std::string>& value)>;

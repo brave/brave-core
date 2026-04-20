@@ -29,7 +29,7 @@ class TokenStateManager final {
 
   static TokenStateManager& GetInstance();
 
-  void LoadState(InitializeCallback callback);
+  void LoadState(ResultCallback callback);
 
   bool IsInitialized() const { return is_initialized_; }
 
@@ -55,11 +55,11 @@ class TokenStateManager final {
 
  private:
   void GetAllConfirmationTokensCallback(
-      InitializeCallback callback,
+      ResultCallback callback,
       bool success,
       ConfirmationTokenList confirmation_tokens);
 
-  void GetAllPaymentTokensCallback(InitializeCallback callback,
+  void GetAllPaymentTokensCallback(ResultCallback callback,
                                    bool success,
                                    PaymentTokenList payment_tokens);
 

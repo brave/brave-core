@@ -26,6 +26,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_observer.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_observer.h"
+#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 
 namespace brave_ads {
@@ -43,19 +44,18 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
 
   ~AdHandler() override;
 
-  void ParseAndSaveNewTabPageAds(base::DictValue dict,
-                                 ParseAndSaveNewTabPageAdsCallback callback);
+  void ParseAndSaveNewTabPageAds(base::DictValue dict, ResultCallback callback);
   void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback);
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
       mojom::NewTabPageAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback);
+      ResultCallback callback);
 
   void TriggerNotificationAdEvent(
       const std::string& placement_id,
       mojom::NotificationAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback);
+      ResultCallback callback);
 
   std::optional<mojom::CreativeSearchResultAdInfoPtr> MaybeGetSearchResultAd(
       const std::string& placement_id);
@@ -63,7 +63,7 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
   void TriggerSearchResultAdEvent(
       mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
       mojom::SearchResultAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback);
+      ResultCallback callback);
 
  private:
   // ConversionsObserver:

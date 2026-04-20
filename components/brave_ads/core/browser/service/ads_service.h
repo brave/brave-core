@@ -85,7 +85,7 @@ class AdsService : public KeyedService {
 
   // Called to clear ads data. The callback takes one argument - `bool`
   // is set to `true` if successful otherwise `false`
-  virtual void ClearData(ClearDataCallback callback) = 0;
+  virtual void ClearData(ResultCallback callback) = 0;
 
   // Called to add an ads observer.
   virtual void AddBatAdsObserver(
@@ -108,9 +108,8 @@ class AdsService : public KeyedService {
 
   // Called to parse and save creative new tab page ads. The callback takes one
   // argument - `bool` is set to `true` if successful otherwise `false`.
-  virtual void ParseAndSaveNewTabPageAds(
-      base::DictValue dict,
-      ParseAndSaveNewTabPageAdsCallback callback) = 0;
+  virtual void ParseAndSaveNewTabPageAds(base::DictValue dict,
+                                         ResultCallback callback) = 0;
 
   // Called to serve a new tab page ad. The callback takes one argument -
   // `mojom::NewTabPageAdInfoPtr` containing the info for the ad.
@@ -130,7 +129,7 @@ class AdsService : public KeyedService {
       const std::string& creative_instance_id,
       mojom::NewTabPageAdMetricType mojom_ad_metric_type,
       mojom::NewTabPageAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback) = 0;
+      ResultCallback callback) = 0;
 
   // Called to get the search result ad specified by `placement_id`. The
   // callback takes one argument - `mojom::CreativeSearchResultAdInfoPtr`
@@ -147,14 +146,13 @@ class AdsService : public KeyedService {
   virtual void TriggerSearchResultAdEvent(
       mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
       mojom::SearchResultAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback) = 0;
+      ResultCallback callback) = 0;
 
   // Called to purge orphaned served ad events for the specified `mojom_ad_type`
   // before calling `MaybeServe*Ad`. The callback takes one argument - `bool` is
   // set to `true` if successful otherwise `false`.
-  virtual void PurgeOrphanedAdEventsForType(
-      mojom::AdType mojom_ad_type,
-      PurgeOrphanedAdEventsForTypeCallback callback) = 0;
+  virtual void PurgeOrphanedAdEventsForType(mojom::AdType mojom_ad_type,
+                                            ResultCallback callback) = 0;
 
   // Called to get ad history for the given date range in descending order. The
   // callback takes one argument - `base::ListValue` containing info of the
@@ -167,38 +165,38 @@ class AdsService : public KeyedService {
   // setting to the neutral state. The callback takes one argument - `bool` is
   // set to `true` if successful otherwise `false`.
   virtual void ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
-                            ToggleReactionCallback callback) = 0;
+                            ResultCallback callback) = 0;
 
   // Called to dislike an ad. This is a toggle, so calling it again returns the
   // setting to the neutral state. The callback takes one argument - `bool` is
   // set to `true` if successful otherwise `false`.
   virtual void ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
-                               ToggleReactionCallback callback) = 0;
+                               ResultCallback callback) = 0;
 
   // Called to like a category. This is a toggle, so calling it again returns
   // the setting to the neutral state. The callback takes one argument - `bool`
   // is set to `true` if successful otherwise `false`.
   virtual void ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
-                                 ToggleReactionCallback callback) = 0;
+                                 ResultCallback callback) = 0;
 
   // Called to dislike a category. This is a toggle, so calling it again
   // returns the setting to the neutral state. The callback takes one argument -
   // `bool` is set to `true` if successful otherwise `false`.
   virtual void ToggleDislikeSegment(mojom::ReactionInfoPtr mojom_reaction,
-                                    ToggleReactionCallback callback) = 0;
+                                    ResultCallback callback) = 0;
 
   // Called to save an ad for later viewing. This is a toggle, so calling it
   // again removes the ad from the saved list. The callback takes one argument -
   // `bool` is set to `true` if successful otherwise `false`.
   virtual void ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
-                            ToggleReactionCallback callback) = 0;
+                            ResultCallback callback) = 0;
 
   // Called to mark an ad as inappropriate. This is a toggle, so calling it
   // again unmarks the ad. The callback takes one argument - `bool` is
   // set to `true` if successful otherwise `false`.
   virtual void ToggleMarkAdAsInappropriate(
       mojom::ReactionInfoPtr mojom_reaction,
-      ToggleReactionCallback callback) = 0;
+      ResultCallback callback) = 0;
 
   // Called when the page for `tab_id` has loaded and the content is available
   // for analysis. `redirect_chain` containing a list of redirect URLs that

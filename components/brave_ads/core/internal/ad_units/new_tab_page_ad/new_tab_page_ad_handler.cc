@@ -18,7 +18,6 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
-#include "brave/components/brave_ads/core/public/ads_callback.h"
 
 namespace brave_ads {
 
@@ -37,7 +36,7 @@ void FireServedEventCallback(
   std::move(callback).Run(ad);
 }
 
-void FireEventCallback(TriggerAdEventCallback callback,
+void FireEventCallback(ResultCallback callback,
                        bool success,
                        const std::string& /*placement_id*/,
                        mojom::NewTabPageAdEventType /*mojom_ad_event_type*/) {
@@ -58,9 +57,8 @@ NewTabPageAdHandler::NewTabPageAdHandler(
 
 NewTabPageAdHandler::~NewTabPageAdHandler() = default;
 
-void NewTabPageAdHandler::ParseAndSave(
-    base::DictValue dict,
-    ParseAndSaveNewTabPageAdsCallback callback) {
+void NewTabPageAdHandler::ParseAndSave(base::DictValue dict,
+                                       ResultCallback callback) {
   ParseAndSaveNewTabPageAds(std::move(dict), std::move(callback));
 }
 
@@ -79,7 +77,7 @@ void NewTabPageAdHandler::TriggerEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     mojom::NewTabPageAdEventType mojom_ad_event_type,
-    TriggerAdEventCallback callback) {
+    ResultCallback callback) {
   if (creative_instance_id.empty()) {
     return std::move(callback).Run(/*success=*/false);
   }
@@ -111,7 +109,7 @@ void NewTabPageAdHandler::MaybeServeCallback(
 
 void NewTabPageAdHandler::TriggerServedEventCallback(
     const std::string& creative_instance_id,
-    TriggerAdEventCallback callback,
+    ResultCallback callback,
     bool success,
     const std::string& placement_id,
     mojom::NewTabPageAdEventType /*mojom_ad_event_type*/) {
