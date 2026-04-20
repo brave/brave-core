@@ -51,12 +51,6 @@ export default function useProvideAIChatContext(props: AIChatContextProps) {
   const { getConversationsData, isPlaceholderData: isConversationsLoading } =
     api.useGetConversations()
 
-  const [defaultTabContentId, setDefaultTabContentId] = React.useState<number>()
-
-  api.useOnNewDefaultConversation((contentId) => {
-    setDefaultTabContentId(contentId)
-  })
-
   const store = {
     api: props.api,
     initialized:
@@ -164,7 +158,7 @@ export default function useProvideAIChatContext(props: AIChatContextProps) {
      */
     openURL: api.uiHandler.openURL,
 
-    defaultTabContentId,
+    defaultTabContentId: api.useCurrentOnNewDefaultConversation().data?.[0],
     editingConversationId,
     setEditingConversationId,
     deletingConversationId,
