@@ -46,23 +46,25 @@ TEST(PolkadotChainMetadataUnitTest, EqualityOperator) {
       /*transaction_payment_pallet_index=*/0x20,
       /*transfer_allow_death_call_index=*/2,
       /*transfer_keep_alive_call_index=*/4,
+      /*transfer_all_call_index=*/5,
       /*ss58_prefix=*/42, /*spec_version=*/1'234'567);
   auto metadata_b = PolkadotChainMetadata::FromFields(
       /*system_pallet_index=*/0, /*balances_pallet_index=*/7,
       /*transaction_payment_pallet_index=*/0x20,
       /*transfer_allow_death_call_index=*/2,
       /*transfer_keep_alive_call_index=*/4,
+      /*transfer_all_call_index=*/5,
       /*ss58_prefix=*/42, /*spec_version=*/1'234'567);
   auto metadata_c = PolkadotChainMetadata::FromFields(
       /*system_pallet_index=*/0, /*balances_pallet_index=*/7,
       /*transaction_payment_pallet_index=*/0x20,
       /*transfer_allow_death_call_index=*/2,
       /*transfer_keep_alive_call_index=*/4,
+      /*transfer_all_call_index=*/5,
       /*ss58_prefix=*/42, /*spec_version=*/1'234'568);
 
   EXPECT_EQ(metadata_a, metadata_b);
   EXPECT_NE(metadata_a, metadata_c);
->>>>>>> 5d3ee5dd0ee ([Polkadot] Use real chain metadata in polkadot_wallet_service)
 }
 
 TEST(PolkadotChainMetadataUnitTest, FromChainName) {
@@ -95,6 +97,7 @@ TEST(PolkadotChainMetadataUnitTest, FromChainName) {
       /*transaction_payment_pallet_index=*/0x20,
       /*transfer_allow_death_call_index=*/0,
       /*transfer_keep_alive_call_index=*/3,
+      /*transfer_all_call_index=*/4,
       /*ss58_prefix=*/0, /*spec_version=*/0);
   auto polkadot = PolkadotChainMetadata::FromChainName("Polkadot");
   ASSERT_TRUE(polkadot);
@@ -105,6 +108,7 @@ TEST(PolkadotChainMetadataUnitTest, FromChainName) {
       /*transaction_payment_pallet_index=*/0x0b,
       /*transfer_allow_death_call_index=*/0,
       /*transfer_keep_alive_call_index=*/3,
+      /*transfer_all_call_index=*/4,
       /*ss58_prefix=*/0, /*spec_version=*/0);
   auto polkadot_asset_hub =
       PolkadotChainMetadata::FromChainName("Polkadot Asset Hub");

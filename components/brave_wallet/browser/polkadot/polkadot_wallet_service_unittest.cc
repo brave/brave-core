@@ -1998,7 +1998,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction_TransferAll) {
       &url_loader_factory_, network_manager_.get());
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();

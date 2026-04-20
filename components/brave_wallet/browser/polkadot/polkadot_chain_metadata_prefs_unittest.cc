@@ -23,6 +23,7 @@ constexpr char kTransactionPaymentPalletIndex[] =
 constexpr char kTransferAllowDeathCallIndex[] =
     "transfer_allow_death_call_index";
 constexpr char kTransferKeepAliveCallIndex[] = "transfer_keep_alive_call_index";
+constexpr char kTransferAllCallIndex[] = "transfer_all_call_index";
 constexpr char kSs58Prefix[] = "ss58_prefix";
 
 class PolkadotChainMetadataPrefsUnitTest : public testing::Test {
@@ -41,7 +42,9 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, SetAndGetChainMetadataRoundTrip) {
       /*system_pallet_index=*/3, /*balances_pallet_index=*/7,
       /*transaction_payment_pallet_index=*/8,
       /*transfer_allow_death_call_index=*/2,
-      /*transfer_keep_alive_call_index=*/4, /*ss58_prefix=*/42,
+      /*transfer_keep_alive_call_index=*/4,
+      /*transfer_all_call_index=*/5,
+      /*ss58_prefix=*/42,
       /*spec_version=*/1234);
 
   PolkadotChainMetadataPrefs prefs = MakePrefs();
@@ -54,6 +57,7 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, SetAndGetChainMetadataRoundTrip) {
   EXPECT_EQ(loaded->GetTransactionPaymentPalletIndex(), 8u);
   EXPECT_EQ(loaded->GetTransferAllowDeathCallIndex(), 2u);
   EXPECT_EQ(loaded->GetTransferKeepAliveCallIndex(), 4u);
+  EXPECT_EQ(loaded->GetTransferAllCallIndex(), 5u);
   EXPECT_EQ(loaded->GetSs58Prefix(), 42u);
   EXPECT_EQ(loaded->GetSpecVersion(), 1234u);
 }
@@ -72,6 +76,7 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, InvalidRangeRejected) {
   value.Set(kTransactionPaymentPalletIndex, 1);
   value.Set(kTransferAllowDeathCallIndex, 1);
   value.Set(kTransferKeepAliveCallIndex, 1);
+  value.Set(kTransferAllCallIndex, 1);
   value.Set(kSs58Prefix, 0);
   value.Set(kSpecVersion, 100);
 
@@ -90,6 +95,7 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, NegativeValueRejected) {
   value.Set(kTransactionPaymentPalletIndex, 1);
   value.Set(kTransferAllowDeathCallIndex, -1);  // Negative should be rejected.
   value.Set(kTransferKeepAliveCallIndex, 1);
+  value.Set(kTransferAllCallIndex, 1);
   value.Set(kSs58Prefix, 0);
   value.Set(kSpecVersion, 100);
   update->Set(mojom::kPolkadotMainnet, std::move(value));
@@ -107,6 +113,7 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, MissingRequiredFieldRejected) {
   value.Set(kTransactionPaymentPalletIndex, 2);
   value.Set(kTransferAllowDeathCallIndex, 1);
   value.Set(kTransferKeepAliveCallIndex, 4);
+  value.Set(kTransferAllCallIndex, 1);
   value.Set(kSs58Prefix, 42);
   // Missing spec version should reject persisted value.
   update->Set(mojom::kPolkadotMainnet, std::move(value));
