@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_QUERY_FILTER_BROWSER_QUERY_FILTER_SERVICE_H_
-#define BRAVE_COMPONENTS_QUERY_FILTER_BROWSER_QUERY_FILTER_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_QUERY_FILTER_BROWSER_QUERY_FILTER_DATA_H_
+#define BRAVE_COMPONENTS_QUERY_FILTER_BROWSER_QUERY_FILTER_DATA_H_
 
 #include <string>
 #include <string_view>
@@ -62,4 +62,4 @@ class QueryFilterData {
 
 }  // namespace query_filter
 
-#endif  // BRAVE_COMPONENTS_QUERY_FILTER_BROWSER_QUERY_FILTER_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_QUERY_FILTER_BROWSER_QUERY_FILTER_DATA_H_
