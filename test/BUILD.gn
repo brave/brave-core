@@ -1337,6 +1337,7 @@ test("brave_browser_tests") {
       "//brave/browser/ui/toolbar/brave_location_bar_model_delegate_browsertest.cc",
     ]
     deps += [
+      "//brave:packed_resources",
       "//brave/app/theme:brave_theme_resources_grit",
       "//brave/app/theme:brave_unscaled_resources_grit",
       "//brave/browser/banners:browser_tests",
