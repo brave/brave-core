@@ -45,33 +45,11 @@ struct QuickViewToolbarView: View {
 
   var body: some View {
     VStack(spacing: 0) {
-      if #available(iOS 26.0, *), LiquidGlassMode.isEnabled {
-        topRow
-          .padding(.horizontal, 16)
-          .padding(.top, 8)
-        bottomRow
-          .padding(.top, 16)
-          .padding(.leading, 16)
-      } else {
-        topRow
-        bottomRow
-          .padding(.top, 16)
-      }
+      topRow
+      bottomRow
+        .padding(.top, 16)
     }
-    .osAvailabilityModifiers { content in
-      if #available(iOS 26.0, *), LiquidGlassMode.isEnabled {
-        content
-          .padding(8)
-          .background(
-            Color.clear
-              .glassEffect(in: RoundedRectangle(cornerRadius: 30, style: .continuous))
-          )
-          .padding(8)
-      } else {
-        content
-          .padding(16)
-      }
-    }
+    .padding(16)
   }
 
   private var shieldButton: some View {
@@ -86,7 +64,6 @@ struct QuickViewToolbarView: View {
       }
       .labelStyle(QuickViewToolbarLabelIconStyle())
     }
-    .accessibilityLabel(Strings.quickViewShieldAccessibilityLabel)
   }
 
   @ViewBuilder
@@ -97,35 +74,38 @@ struct QuickViewToolbarView: View {
         Button {
           viewModel.onActionButton?(.playlist)
         } label: {
-          Label(
-            Strings.quickViewPlaylistAccessibilityLabel,
-            braveSystemImage: "leo.product.playlist-add"
-          )
+          Label {
+            Text(Strings.quickViewPlaylistAccessibilityLabel)
+          } icon: {
+            Image(braveSystemName: "leo.product.playlist-add")
+              .font(.headline)
+          }
           .labelStyle(QuickViewToolbarLabelIconStyle())
         }
-        .accessibilityLabel(Strings.quickViewPlaylistAccessibilityLabel)
       case .readerMode:
         Button {
           viewModel.onActionButton?(.readerMode)
         } label: {
-          Label(
-            Strings.quickViewReaderModeAccessibilityLabel,
-            braveSystemImage: "leo.product.speedreader"
-          )
+          Label {
+            Text(Strings.quickViewReaderModeAccessibilityLabel)
+          } icon: {
+            Image(braveSystemName: "leo.product.speedreader")
+              .font(.headline)
+          }
           .labelStyle(QuickViewToolbarLabelIconStyle())
         }
-        .accessibilityLabel(Strings.quickViewReaderModeAccessibilityLabel)
       case .translate:
         Button {
           viewModel.onActionButton?(.translate)
         } label: {
-          Label(
-            Strings.quickViewTranslateAccessibilityLabel,
-            braveSystemImage: "leo.product.translate"
-          )
+          Label {
+            Text(Strings.quickViewTranslateAccessibilityLabel)
+          } icon: {
+            Image(braveSystemName: "leo.product.translate")
+              .font(.headline)
+          }
           .labelStyle(QuickViewToolbarLabelIconStyle())
         }
-        .accessibilityLabel(Strings.quickViewTranslateAccessibilityLabel)
       default:
         EmptyView()
       }
@@ -136,13 +116,14 @@ struct QuickViewToolbarView: View {
     Button {
       viewModel.onActionButton?(.refresh)
     } label: {
-      Label(
-        Strings.quickViewRefreshAccessibilityLabel,
-        braveSystemImage: "leo.browser.refresh"
-      )
+      Label {
+        Text(Strings.quickViewRefreshAccessibilityLabel)
+      } icon: {
+        Image(braveSystemName: "leo.browser.refresh")
+          .font(.headline)
+      }
       .labelStyle(QuickViewToolbarLabelIconStyle())
     }
-    .accessibilityLabel(Strings.quickViewRefreshAccessibilityLabel)
   }
 
   private var addressView: some View {
@@ -175,64 +156,57 @@ struct QuickViewToolbarView: View {
     Button {
       viewModel.onActionButton?(.back)
     } label: {
-      Label(
-        Strings.quickViewBackAccessibilityLabel,
-        braveSystemImage: "leo.browser.back"
-      )
-      .labelStyle(QuickViewToolbarLabelIconStyle(font: .title2))
+      Label {
+        Text(Strings.quickViewBackAccessibilityLabel)
+      } icon: {
+        Image(braveSystemName: "leo.browser.back")
+          .font(.title2)
+      }
+      .labelStyle(QuickViewToolbarLabelIconStyle())
     }
     .disabled(viewModel.isBackDisabled)
-    .accessibilityLabel(Strings.quickViewBackAccessibilityLabel)
   }
 
   private var shareButton: some View {
     Button {
       viewModel.onActionButton?(.share)
     } label: {
-      Label(
-        Strings.quickViewShareAccessibilityLabel,
-        braveSystemImage: "leo.share.macos"
-      )
-      .labelStyle(QuickViewToolbarLabelIconStyle(font: .title2))
+      Label {
+        Text(Strings.quickViewShareAccessibilityLabel)
+      } icon: {
+        Image(braveSystemName: "leo.share.macos")
+          .font(.title2)
+      }
+      .labelStyle(QuickViewToolbarLabelIconStyle())
     }
-    .accessibilityLabel(Strings.quickViewShareAccessibilityLabel)
   }
 
   private var openInTabButton: some View {
     Button {
       viewModel.onActionButton?(.openTab)
     } label: {
-      Label(
-        Strings.quickViewOpenTabAccessibilityLabel,
-        braveSystemImage: "leo.add.tab"
-      )
-      .labelStyle(QuickViewToolbarLabelIconStyle(font: .title2))
+      Label {
+        Text(Strings.quickViewOpenTabAccessibilityLabel)
+      } icon: {
+        Image(braveSystemName: "leo.add.tab")
+          .font(.title2)
+      }
+      .labelStyle(QuickViewToolbarLabelIconStyle())
     }
-    .accessibilityLabel(Strings.quickViewOpenTabAccessibilityLabel)
   }
 
   private var closeButton: some View {
     Button {
       viewModel.onActionButton?(.close)
     } label: {
-      if #available(iOS 26.0, *), LiquidGlassMode.isEnabled {
+      Label {
+        Text(Strings.close)
+      } icon: {
         Image(braveSystemName: "leo.close")
           .font(.title2)
-          .padding(14)
-          .foregroundStyle(Color(braveSystemName: .schemesOnPrimary))
-          .glassEffect(
-            .regular
-              .tint(Color(braveSystemName: .buttonBackground))
-              .interactive(),
-            in: .circle
-          )
-      } else {
-        Image(braveSystemName: "leo.close")
-          .font(.title2)
-          .foregroundStyle(Color(braveSystemName: .iconDefault))
       }
+      .labelStyle(QuickViewToolbarLabelIconStyle())
     }
-    .accessibilityLabel(Strings.close)
   }
 
   private var bottomRow: some View {
@@ -255,11 +229,11 @@ struct QuickViewToolbarView: View {
 }
 
 private struct QuickViewToolbarLabelIconStyle: LabelStyle {
-  var font: Font = .headline
-
   func makeBody(configuration: Configuration) -> some View {
     configuration.icon
-      .font(font)
       .tint(Color(braveSystemName: .iconDefault))
+      .accessibilityRepresentation {
+        configuration.title
+      }
   }
 }
