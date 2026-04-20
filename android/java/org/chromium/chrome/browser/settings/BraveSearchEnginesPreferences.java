@@ -12,6 +12,7 @@ import android.view.View;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
+import androidx.preference.PreferenceGroup;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
@@ -86,8 +87,12 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
 
     private void removePreferenceIfPresent(String key) {
         Preference preference = getPreferenceScreen().findPreference(key);
-        if (preference != null) {
-            getPreferenceScreen().removePreference(preference);
+        if (preference == null) {
+            return;
+        }
+        PreferenceGroup parent = preference.getParent();
+        if (parent != null) {
+            parent.removePreference(preference);
         }
     }
 
