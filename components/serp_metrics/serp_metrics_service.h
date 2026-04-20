@@ -11,17 +11,19 @@
 #include "components/keyed_service/core/keyed_service.h"
 
 class PrefService;
-class TimePeriodStoreFactory;
 
 namespace serp_metrics {
+
+class SerpMetricsTimePeriodStoreFactory;
 
 class SerpMetrics;
 
 // A keyed service that stores SERP metrics for a profile.
 class SerpMetricsService : public KeyedService {
  public:
-  SerpMetricsService(PrefService& local_state,
-                     const TimePeriodStoreFactory& time_period_store_factory);
+  SerpMetricsService(
+      PrefService& local_state,
+      const SerpMetricsTimePeriodStoreFactory& time_period_store_factory);
 
   SerpMetricsService(const SerpMetricsService&) = delete;
   SerpMetricsService& operator=(const SerpMetricsService&) = delete;

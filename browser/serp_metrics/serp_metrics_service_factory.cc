@@ -10,7 +10,7 @@
 #include "base/check.h"
 #include "base/check_deref.h"
 #include "base/no_destructor.h"
-#include "brave/browser/serp_metrics/serp_metrics_time_period_store_factory.h"
+#include "brave/browser/serp_metrics/profile_attributes_time_period_store_factory.h"
 #include "brave/components/serp_metrics/serp_metrics_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -56,7 +56,7 @@ SerpMetricsServiceFactory::BuildServiceInstanceForBrowserContext(
   CHECK(profile);
   return std::make_unique<SerpMetricsService>(
       CHECK_DEREF(g_browser_process->local_state()),
-      SerpMetricsTimePeriodStoreFactory(
+      ProfileAttributesTimePeriodStoreFactory(
           profile->GetPath(), profile_manager->GetProfileAttributesStorage()));
 }
 

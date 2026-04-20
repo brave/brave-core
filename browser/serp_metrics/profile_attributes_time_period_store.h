@@ -3,14 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_SERP_METRICS_SERP_METRICS_TIME_PERIOD_STORE_H_
-#define BRAVE_BROWSER_SERP_METRICS_SERP_METRICS_TIME_PERIOD_STORE_H_
+#ifndef BRAVE_BROWSER_SERP_METRICS_PROFILE_ATTRIBUTES_TIME_PERIOD_STORE_H_
+#define BRAVE_BROWSER_SERP_METRICS_PROFILE_ATTRIBUTES_TIME_PERIOD_STORE_H_
 
 #include <string>
 
 #include "base/files/file_path.h"
 #include "base/memory/raw_ref.h"
-#include "brave/components/time_period_storage/time_period_store.h"
+#include "brave/components/serp_metrics/time_period_storage/serp_metrics_time_period_store.h"
 
 class ProfileAttributesStorage;
 
@@ -18,27 +18,30 @@ namespace base {
 class ListValue;
 }  // namespace base
 
-// Implementation of TimePeriodStore for SERP metrics that uses profile
-// attributes for storage and has the following data structure:
+namespace serp_metrics {
+
+// Implementation of `SerpMetricsTimePeriodStore` that uses profile attributes
+// for storage and has the following data structure:
 // "serp_metrics": {
 //   "metric_name_1": [time_period_values_1],
 //   "metric_name_2": [time_period_values_2],
 //   ...
 // }
-class SerpMetricsTimePeriodStore : public TimePeriodStore {
+class ProfileAttributesTimePeriodStore : public SerpMetricsTimePeriodStore {
  public:
-  SerpMetricsTimePeriodStore(
+  ProfileAttributesTimePeriodStore(
       const base::FilePath& profile_path,
       ProfileAttributesStorage& profile_attributes_storage,
       std::string metric_name);
 
-  ~SerpMetricsTimePeriodStore() override;
+  ~ProfileAttributesTimePeriodStore() override;
 
-  SerpMetricsTimePeriodStore(const SerpMetricsTimePeriodStore&) = delete;
-  SerpMetricsTimePeriodStore& operator=(const SerpMetricsTimePeriodStore&) =
+  ProfileAttributesTimePeriodStore(const ProfileAttributesTimePeriodStore&) =
       delete;
+  ProfileAttributesTimePeriodStore& operator=(
+      const ProfileAttributesTimePeriodStore&) = delete;
 
-  // TimePeriodStore:
+  // SerpMetricsTimePeriodStore:
   const base::ListValue* Get() override;
   void Set(base::ListValue list) override;
   void Clear() override;
@@ -49,4 +52,6 @@ class SerpMetricsTimePeriodStore : public TimePeriodStore {
   const std::string metric_name_;
 };
 
-#endif  // BRAVE_BROWSER_SERP_METRICS_SERP_METRICS_TIME_PERIOD_STORE_H_
+}  // namespace serp_metrics
+
+#endif  // BRAVE_BROWSER_SERP_METRICS_PROFILE_ATTRIBUTES_TIME_PERIOD_STORE_H_

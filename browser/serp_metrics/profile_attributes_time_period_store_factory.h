@@ -3,29 +3,29 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_SERP_METRICS_SERP_METRICS_TIME_PERIOD_STORE_FACTORY_H_
-#define BRAVE_BROWSER_SERP_METRICS_SERP_METRICS_TIME_PERIOD_STORE_FACTORY_H_
+#ifndef BRAVE_BROWSER_SERP_METRICS_PROFILE_ATTRIBUTES_TIME_PERIOD_STORE_FACTORY_H_
+#define BRAVE_BROWSER_SERP_METRICS_PROFILE_ATTRIBUTES_TIME_PERIOD_STORE_FACTORY_H_
 
 #include <memory>
 
 #include "base/files/file_path.h"
 #include "base/memory/raw_ref.h"
-#include "brave/components/time_period_storage/time_period_store_factory.h"
+#include "brave/components/serp_metrics/time_period_storage/serp_metrics_time_period_store_factory.h"
 
 class ProfileAttributesStorage;
-class TimePeriodStore;
 
 namespace serp_metrics {
 
-// A factory that creates SerpMetricsTimePeriodStore which uses profile
+// A factory that creates `ProfileAttributesTimePeriodStore` which uses profile
 // attributes for storage.
-class SerpMetricsTimePeriodStoreFactory : public TimePeriodStoreFactory {
+class ProfileAttributesTimePeriodStoreFactory
+    : public SerpMetricsTimePeriodStoreFactory {
  public:
-  SerpMetricsTimePeriodStoreFactory(
+  ProfileAttributesTimePeriodStoreFactory(
       const base::FilePath& profile_path,
       ProfileAttributesStorage& profile_attributes_storage);
 
-  std::unique_ptr<TimePeriodStore> Build(
+  std::unique_ptr<SerpMetricsTimePeriodStore> Build(
       const char* metric_name) const override;
 
  private:
@@ -35,4 +35,4 @@ class SerpMetricsTimePeriodStoreFactory : public TimePeriodStoreFactory {
 
 }  // namespace serp_metrics
 
-#endif  // BRAVE_BROWSER_SERP_METRICS_SERP_METRICS_TIME_PERIOD_STORE_FACTORY_H_
+#endif  // BRAVE_BROWSER_SERP_METRICS_PROFILE_ATTRIBUTES_TIME_PERIOD_STORE_FACTORY_H_

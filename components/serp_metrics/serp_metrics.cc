@@ -15,9 +15,9 @@
 #include "base/time/time.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
-#include "brave/components/time_period_storage/time_period_storage.h"
-#include "brave/components/time_period_storage/time_period_store.h"
-#include "brave/components/time_period_storage/time_period_store_factory.h"
+#include "brave/components/serp_metrics/time_period_storage/serp_metrics_time_period_storage.h"
+#include "brave/components/serp_metrics/time_period_storage/serp_metrics_time_period_store.h"
+#include "brave/components/serp_metrics/time_period_storage/serp_metrics_time_period_store_factory.h"
 #include "components/prefs/pref_service.h"
 
 namespace serp_metrics {
@@ -38,19 +38,20 @@ constexpr TimePeriodStorageInfo kTimePeriodStorages[] = {
      .metric_name = "other_search_engine"},
 };
 
-base::flat_map<SerpMetricType, std::unique_ptr<TimePeriodStorage>>
+base::flat_map<SerpMetricType, std::unique_ptr<SerpMetricsTimePeriodStorage>>
 BuildTimePeriodStorages(
-    const TimePeriodStoreFactory& time_period_store_factory) {
-  base::flat_map<SerpMetricType, std::unique_ptr<TimePeriodStorage>>
+    const SerpMetricsTimePeriodStoreFactory& time_period_store_factory) {
+  base::flat_map<SerpMetricType, std::unique_ptr<SerpMetricsTimePeriodStorage>>
       time_period_storages;
   for (const auto& [type, metric_name] : kTimePeriodStorages) {
-    std::unique_ptr<TimePeriodStore> time_period_store =
+    std::unique_ptr<SerpMetricsTimePeriodStore> time_period_store =
         time_period_store_factory.Build(metric_name);
-    time_period_storages.emplace(type, std::make_unique<TimePeriodStorage>(
-                                           std::move(time_period_store),
-                                           kSerpMetricsTimePeriodInDays.Get(),
-                                           /*should_use_utc=*/false,
-                                           /*should_offset_dst=*/false));
+    time_period_storages.emplace(
+        type,
+        std::make_unique<SerpMetricsTimePeriodStorage>(
+            std::move(time_period_store), kSerpMetricsTimePeriodInDays.Get(),
+            /*should_use_utc=*/false,
+            /*should_offset_dst=*/false));
   }
 
   return time_period_storages;
@@ -85,7 +86,7 @@ base::Time GetEndOfStalePeriod(base::Time now) {
 // reported metrics. If the resulting time range does not include any portion of
 // yesterday, the function returns 0.
 size_t GetYesterdaySumAfterLastCheckedCutoff(
-    const TimePeriodStorage& time_period_storage,
+    const SerpMetricsTimePeriodStorage& time_period_storage,
     base::Time start_of_yesterday,
     base::Time end_of_yesterday,
     base::Time start_of_stale_period) {
@@ -105,7 +106,7 @@ size_t GetYesterdaySumAfterLastCheckedCutoff(
 
 SerpMetrics::SerpMetrics(
     PrefService* local_state,
-    const TimePeriodStoreFactory& time_period_store_factory)
+    const SerpMetricsTimePeriodStoreFactory& time_period_store_factory)
     : local_state_(local_state),
       time_period_storages_(
           BuildTimePeriodStorages(time_period_store_factory)) {

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/serp_metrics/serp_metrics_time_period_store.h"
+#include "brave/browser/serp_metrics/profile_attributes_time_period_store.h"
 
 #include <utility>
 
@@ -11,7 +11,9 @@
 #include "chrome/browser/profiles/profile_attributes_entry.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 
-SerpMetricsTimePeriodStore::SerpMetricsTimePeriodStore(
+namespace serp_metrics {
+
+ProfileAttributesTimePeriodStore::ProfileAttributesTimePeriodStore(
     const base::FilePath& profile_path,
     ProfileAttributesStorage& profile_attributes_storage,
     std::string metric_name)
@@ -19,9 +21,9 @@ SerpMetricsTimePeriodStore::SerpMetricsTimePeriodStore(
       profile_attributes_storage_(profile_attributes_storage),
       metric_name_(std::move(metric_name)) {}
 
-SerpMetricsTimePeriodStore::~SerpMetricsTimePeriodStore() = default;
+ProfileAttributesTimePeriodStore::~ProfileAttributesTimePeriodStore() = default;
 
-const base::ListValue* SerpMetricsTimePeriodStore::Get() {
+const base::ListValue* ProfileAttributesTimePeriodStore::Get() {
   const ProfileAttributesEntry* entry =
       profile_attributes_storage_->GetProfileAttributesWithPath(profile_path_);
   if (!entry) {
@@ -36,7 +38,7 @@ const base::ListValue* SerpMetricsTimePeriodStore::Get() {
   return serp_metrics->FindList(metric_name_);
 }
 
-void SerpMetricsTimePeriodStore::Set(base::ListValue list) {
+void ProfileAttributesTimePeriodStore::Set(base::ListValue list) {
   ProfileAttributesEntry* entry =
       profile_attributes_storage_->GetProfileAttributesWithPath(profile_path_);
   if (!entry) {
@@ -53,7 +55,7 @@ void SerpMetricsTimePeriodStore::Set(base::ListValue list) {
   entry->SetSerpMetrics(std::move(serp_metrics));
 }
 
-void SerpMetricsTimePeriodStore::Clear() {
+void ProfileAttributesTimePeriodStore::Clear() {
   ProfileAttributesEntry* entry =
       profile_attributes_storage_->GetProfileAttributesWithPath(profile_path_);
   if (!entry) {
@@ -69,3 +71,5 @@ void SerpMetricsTimePeriodStore::Clear() {
   mutable_serp_metrics.Remove(metric_name_);
   entry->SetSerpMetrics(std::move(mutable_serp_metrics));
 }
+
+}  // namespace serp_metrics

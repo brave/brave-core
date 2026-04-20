@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/serp_metrics/serp_metrics_time_period_store.h"
+#include "brave/browser/serp_metrics/profile_attributes_time_period_store.h"
 
 #include "base/files/file_path.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
@@ -11,6 +11,8 @@
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+namespace serp_metrics {
 
 namespace {
 
@@ -20,13 +22,13 @@ constexpr base::FilePath::CharType kUserDataDir[] =
 
 }  // namespace
 
-class SerpMetricsTimePeriodStoreTest : public ::testing::Test {
+class ProfileAttributesTimePeriodStoreTest : public ::testing::Test {
  public:
-  SerpMetricsTimePeriodStoreTest()
+  ProfileAttributesTimePeriodStoreTest()
       : profile_path_(
             base::FilePath(kUserDataDir).AppendASCII("testing_profile")) {}
 
-  ~SerpMetricsTimePeriodStoreTest() override = default;
+  ~ProfileAttributesTimePeriodStoreTest() override = default;
 
   void SetUp() override {
     ProfileAttributesStorage::RegisterPrefs(local_state_.registry());
@@ -48,18 +50,18 @@ class SerpMetricsTimePeriodStoreTest : public ::testing::Test {
   std::unique_ptr<ProfileAttributesStorage> storage_;
 };
 
-TEST_F(SerpMetricsTimePeriodStoreTest, SetStore) {
-  SerpMetricsTimePeriodStore store(profile_path(), profile_attributes_storage(),
-                                   kMetricName);
+TEST_F(ProfileAttributesTimePeriodStoreTest, SetStore) {
+  ProfileAttributesTimePeriodStore store(
+      profile_path(), profile_attributes_storage(), kMetricName);
   store.Set(base::ListValue().Append(1));
 
   ASSERT_TRUE(store.Get());
   EXPECT_THAT(*store.Get(), ::testing::ElementsAre(1));
 }
 
-TEST_F(SerpMetricsTimePeriodStoreTest, UpdateStore) {
-  SerpMetricsTimePeriodStore store(profile_path(), profile_attributes_storage(),
-                                   kMetricName);
+TEST_F(ProfileAttributesTimePeriodStoreTest, UpdateStore) {
+  ProfileAttributesTimePeriodStore store(
+      profile_path(), profile_attributes_storage(), kMetricName);
   store.Set(base::ListValue().Append(1));
 
   // Update the store with new list.
@@ -69,25 +71,25 @@ TEST_F(SerpMetricsTimePeriodStoreTest, UpdateStore) {
   EXPECT_THAT(*store.Get(), ::testing::ElementsAre(2, 3));
 }
 
-TEST_F(SerpMetricsTimePeriodStoreTest, ClearStore) {
-  SerpMetricsTimePeriodStore store(profile_path(), profile_attributes_storage(),
-                                   kMetricName);
+TEST_F(ProfileAttributesTimePeriodStoreTest, ClearStore) {
+  ProfileAttributesTimePeriodStore store(
+      profile_path(), profile_attributes_storage(), kMetricName);
   store.Set(base::ListValue().Append(1));
   store.Clear();
 
   EXPECT_FALSE(store.Get());
 }
 
-TEST_F(SerpMetricsTimePeriodStoreTest, GetUninitializedStore) {
-  SerpMetricsTimePeriodStore store(profile_path(), profile_attributes_storage(),
-                                   kMetricName);
+TEST_F(ProfileAttributesTimePeriodStoreTest, GetUninitializedStore) {
+  ProfileAttributesTimePeriodStore store(
+      profile_path(), profile_attributes_storage(), kMetricName);
   EXPECT_FALSE(store.Get());
 }
 
-TEST_F(SerpMetricsTimePeriodStoreTest, SetStoresWithDifferentKeys) {
-  SerpMetricsTimePeriodStore store1(profile_path(),
-                                    profile_attributes_storage(), kMetricName);
-  SerpMetricsTimePeriodStore store2(
+TEST_F(ProfileAttributesTimePeriodStoreTest, SetStoresWithDifferentKeys) {
+  ProfileAttributesTimePeriodStore store1(
+      profile_path(), profile_attributes_storage(), kMetricName);
+  ProfileAttributesTimePeriodStore store2(
       profile_path(), profile_attributes_storage(), "other_testing_metric");
   store1.Set(base::ListValue().Append(1));
   store2.Set(base::ListValue().Append(2).Append(3));
@@ -97,3 +99,5 @@ TEST_F(SerpMetricsTimePeriodStoreTest, SetStoresWithDifferentKeys) {
   ASSERT_TRUE(store2.Get());
   EXPECT_THAT(*store2.Get(), ::testing::ElementsAre(2, 3));
 }
+
+}  // namespace serp_metrics
