@@ -67,6 +67,7 @@ function SelectTheme () {
 
   const handleSelectionChange = (themeType: chrome.braveTheme.ThemeType) => {
     setCurrentTheme?.(themeType)
+    chrome.braveTheme.setBraveThemeType(themeType)
   }
 
   const { forward } = useViewTypeTransition(viewType)
@@ -77,7 +78,6 @@ function SelectTheme () {
 
   const handleSkip = () => goForward()
   const handleNext = () => {
-    chrome.braveTheme.setBraveThemeType(currentSelectedTheme)
     goForward()
   }
 
