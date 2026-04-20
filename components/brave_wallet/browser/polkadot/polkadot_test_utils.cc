@@ -194,7 +194,7 @@ void PolkadotMockRpc::AddGetFinalizedBlockHash() {
     req_res_pairs_.emplace(
         base::test::ParseJsonDict(
             R"({"id":1,"jsonrpc":"2.0","method":"chain_getFinalizedHead","params":[]})"),
-        R"({"jsonrpc":"2.0","id":11,"result":"0xcat!!!})");
+        R"({"jsonrpc":"2.0","id":11,"result":"0xcat!!!"})");
     return;
   }
 
@@ -666,7 +666,6 @@ bool PolkadotMockRpc::HandleBlockRequest(const network::ResourceRequest& req,
       }
 
       auto pos = block_map_.find(block_hash);
-      CHECK(pos != block_map_.end());
       if (pos != block_map_.end()) {
         url_loader_factory_->AddResponse(
             req.url.spec(),
@@ -693,16 +692,18 @@ bool PolkadotMockRpc::HandleEventsRequest(const network::ResourceRequest& req,
           // xxhash(System) | xxhash(Events)
           "26aa394eea5630e07c48ae0c9558cef780d41e5e16056765bc8461851072c9d7") {
         ++pos;
-        const auto& block_hash = pos->GetString();
+        if (pos != params_list->end()) {
+          const auto& block_hash = pos->GetString();
 
-        auto events_iter = events_map_.find(block_hash);
-        if (events_iter != events_map_.end()) {
-          url_loader_factory_->AddResponse(
-              req.url.spec(),
-              absl::StrFormat(R"({"jsonrpc":"2.0","id":18,"result":"%s"})",
-                              events_iter->second));
+          auto events_iter = events_map_.find(block_hash);
+          if (events_iter != events_map_.end()) {
+            url_loader_factory_->AddResponse(
+                req.url.spec(),
+                absl::StrFormat(R"({"jsonrpc":"2.0","id":18,"result":"%s"})",
+                                events_iter->second));
 
-          return true;
+            return true;
+          }
         }
       }
     }
