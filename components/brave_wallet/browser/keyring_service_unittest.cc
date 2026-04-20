@@ -4371,7 +4371,10 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, RestoreWalletTwice) {
   NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
 
   EXPECT_CALL(observer, AccountsChanged()).Times(2);  // Accounts 3 and 10.
-  EXPECT_TRUE(RestoreWallet(&service, saved_mnemonic(), "brave1", false));
+  TestFuture<bool> restore_future;
+  brave_wallet_service.RestoreWallet(saved_mnemonic(), "brave1", false,
+                                     restore_future.GetCallback());
+  EXPECT_TRUE(restore_future.Get());
   observer.WaitAndVerify();
 
   std::vector<mojom::AccountInfoPtr> account_infos =

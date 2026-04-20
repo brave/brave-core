@@ -582,7 +582,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
     isOnboarding = true
     isRestoringWallet = true
     await showOrHideNetworks(networks)
-    let isMnemonicValid = await keyringService.restoreWallet(
+    let isMnemonicValid = await walletService.restoreWallet(
       mnemonic: phrase,
       password: password,
       isLegacyEthSeedFormat: isLegacyEthSeedFormat

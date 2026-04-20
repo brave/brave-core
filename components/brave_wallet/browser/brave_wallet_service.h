@@ -136,6 +136,10 @@ class BraveWalletService : public KeyedService,
   void IsExternalWalletInitialized(
       mojom::ExternalWalletType,
       IsExternalWalletInitializedCallback) override;
+  void RestoreWallet(const std::string& mnemonic,
+                     const std::string& password,
+                     bool is_legacy_eth_seed_format,
+                     RestoreWalletCallback callback) override;
   void ImportFromExternalWallet(
       mojom::ExternalWalletType type,
       const std::string& password,
@@ -421,6 +425,11 @@ class BraveWalletService : public KeyedService,
   void OnWalletUnlockPreferenceChanged(const std::string& pref_name);
 
   void OnNewCardanoTokenDiscovered(mojom::BlockchainTokenPtr token);
+  void OnRestoreWalletRegisterComponentUpdater(const std::string& mnemonic,
+                                               const std::string& password,
+                                               bool is_legacy_eth_seed_format,
+                                               RestoreWalletCallback callback);
+
   void OnGetImportInfo(
       const std::string& new_password,
       base::OnceCallback<void(bool, const std::optional<std::string>&)>

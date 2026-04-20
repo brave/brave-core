@@ -82,8 +82,8 @@ class ZCashGetChainTipStatusTaskTest : public testing::Test {
     keyring_service_ =
         std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
     keyring_service_->Reset();
-    keyring_service_->RestoreWallet(kMnemonicGalleryEqual, kTestWalletPassword,
-                                    false, base::DoNothing());
+    ASSERT_TRUE(keyring_service_->RestoreWalletSync(
+        kMnemonicGalleryEqual, kTestWalletPassword, false));
 
     auto account = AccountUtils(keyring_service_.get())
                        .EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
