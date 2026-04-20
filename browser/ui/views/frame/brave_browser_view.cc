@@ -39,6 +39,7 @@
 #include "brave/browser/ui/views/frame/focus_mode_title_bar_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
+#include "brave/browser/ui/views/frame/top_container_background.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
@@ -161,20 +162,6 @@ class ContentsBackground : public views::View {
   }
 };
 BEGIN_METADATA(ContentsBackground)
-END_METADATA
-
-// Backs the horizontal tab strip and top container while they slide in/out
-// during focus mode reveal, so the contents layer is not visible behind them.
-class TopContainerBackground : public views::View {
-  METADATA_HEADER(TopContainerBackground, views::View)
- public:
-  TopContainerBackground() {
-    SetPaintToLayer();
-    layer()->SetFillsBoundsOpaquely(true);
-    SetCanProcessEventsWithinSubtree(false);
-  }
-};
-BEGIN_METADATA(TopContainerBackground)
 END_METADATA
 
 }  // namespace
@@ -1054,13 +1041,9 @@ void BraveBrowserView::OnWidgetWindowModalVisibilityChanged(
   // parent class to make the scrim view visible
 }
 
-bool BraveBrowserView::IsBraveWebViewRoundedCornersEnabled() {
-  return browser_->profile()->GetPrefs()->GetBoolean(kWebViewRoundedCorners) &&
-         browser_->is_type_normal();
-}
-
 void BraveBrowserView::UpdateContentsShadowVisibility() {
-  bool show_contents_shadow = IsBraveWebViewRoundedCornersEnabled();
+  bool show_contents_shadow =
+      ShouldUseBraveWebViewRoundedCornersForContents(browser_.get());
 
   // With SideBySide, we use chromium's mini toolbar.
   // Unfortunately, it's not rendered well with contents shadow.

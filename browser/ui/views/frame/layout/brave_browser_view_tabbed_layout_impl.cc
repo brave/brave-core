@@ -189,6 +189,11 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
   }
 
   if (auto reveal_fraction = delegate().GetTopOverlayRevealFraction()) {
+    // TODO: Vertical tabs
+    // * Top needs to be adjusted upward by the same amount that we're moving
+    // top controls. But does the top overlay vertical tabs or the other way
+    // around? Probably top overlays vertical tabs.
+    // * Vertical tabs title bar should not be used.
     auto* top_layout = layout.GetLayoutFor(views().top_container);
     auto* tab_layout =
         layout.GetLayoutFor(views().horizontal_tab_strip_region_view);

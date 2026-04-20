@@ -250,7 +250,6 @@ class BraveBrowserView : public BrowserView,
   bool ShouldDrawTabStrokes() const override;
 
   void HandleBrowserWindowMouseEvent(const ui::MouseEvent& event);
-  bool IsBraveWebViewRoundedCornersEnabled();
   void UpdateContentsShadowVisibility();
   void StopTabCycling();
   void UpdateSearchTabsButtonState();
