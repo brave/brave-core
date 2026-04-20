@@ -586,8 +586,7 @@ extension BrowserViewController {
   public func tab(
     _ tab: some TabState,
     didRequestHTTPAuthFor protectionSpace: URLProtectionSpace,
-    proposedCredential credential: URLCredential?,
-    previousFailureCount: Int
+    proposedCredential credential: URLCredential?
   ) async -> URLCredential? {
     let host = protectionSpace.host
     let origin = "\(host):\(protectionSpace.port)"
@@ -618,8 +617,7 @@ extension BrowserViewController {
       let resolvedCredential = try await Authenticator.handleAuthRequest(
         self,
         credential: credential,
-        protectionSpace: protectionSpace,
-        previousFailureCount: previousFailureCount
+        protectionSpace: protectionSpace
       ).credentials
 
       if BasicAuthCredentialsManager.validDomains.contains(host) {

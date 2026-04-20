@@ -26,23 +26,14 @@ class Authenticator {
   enum LoginDataError: Error {
     case usernameOrPasswordFieldLeftBlank
     case userCancelledAuthentication
-    case tooManyAttemptsFailed
     case missingProtectionSpaceHostName
   }
-
-  private static let maxAuthenticationAttempts = 3
 
   static func handleAuthRequest(
     _ viewController: UIViewController,
     credential: URLCredential?,
-    protectionSpace: URLProtectionSpace,
-    previousFailureCount: Int
+    protectionSpace: URLProtectionSpace
   ) async throws -> LoginData {
-    // If there have already been too many login attempts, we'll just fail.
-    if previousFailureCount >= Authenticator.maxAuthenticationAttempts {
-      throw LoginDataError.tooManyAttemptsFailed
-    }
-
     // Show a prompt, possibly prefilled with credentials
     return try await promptForUsernamePassword(
       viewController,
