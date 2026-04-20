@@ -35,7 +35,7 @@ public struct OriginPaywallView: View {
               .padding(.horizontal, -16)
             ProductView(product: viewModel.product)
             // Paywall description has markdown
-            Text(LocalizedStringKey(Strings.Origin.paywallDescription))
+            Text(LocalizedStringKey(Strings.Origin.originFeatureDescription))
               .foregroundStyle(.white)
               .padding(.horizontal, 16)
               .padding(.vertical, 8)
@@ -162,7 +162,7 @@ public struct OriginPaywallView: View {
   private var externalPurchasesAllowedActionView: some View {
     VStack(spacing: 16) {
       VStack(spacing: 0) {
-        Text(Strings.Paywall.startTrialSubtitle)
+        Text(Strings.Origin.purchaseChoiceHeaderText)
           .font(.footnote)
       }
       .multilineTextAlignment(.center)
