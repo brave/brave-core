@@ -93,6 +93,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #endif
 
@@ -238,7 +239,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
       UpdateCommandForBraveRewards();
     }
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-    if (brave_wallet::IsAllowed(browser_->profile()->GetPrefs())) {
+    if (brave_wallet::IsBraveWalletServiceAvailable(browser_->profile())) {
       UpdateCommandForBraveWallet();
     }
 #endif

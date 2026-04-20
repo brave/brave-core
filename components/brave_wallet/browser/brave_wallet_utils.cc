@@ -48,12 +48,6 @@ namespace {
 
 constexpr size_t kCardanoScriptHashSize = 28u;
 
-bool IsDisabledByPolicy(PrefService* prefs) {
-  DCHECK(prefs);
-  return prefs->IsManagedPreference(kBraveWalletDisabledByPolicy) &&
-         prefs->GetBoolean(kBraveWalletDisabledByPolicy);
-}
-
 constexpr const char kEnsRegistryContractAddress[] =
     "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e";
 
@@ -207,8 +201,29 @@ bool EncodeStringArrayInternal(base::span<const StringType> input,
 
 }  // namespace
 
-bool IsAllowed(PrefService* prefs) {
-  return !IsDisabledByPolicy(prefs);
+bool CanBuildWalletServiceInstance(PrefService* prefs,
+                                   bool is_regular_profile,
+                                   bool is_incognito_profile,
+                                   bool is_tor_profile) {
+  if (!prefs) {
+    return false;
+  }
+
+  if (prefs->IsManagedPreference(kBraveWalletDisabledByPolicy) &&
+      prefs->GetBoolean(kBraveWalletDisabledByPolicy)) {
+    return false;
+  }
+
+  if (is_tor_profile) {
+    DCHECK(is_incognito_profile);
+    return false;
+  }
+
+  if (is_incognito_profile) {
+    return prefs->GetBoolean(kBraveWalletPrivateWindowsEnabled);
+  }
+
+  return is_regular_profile;
 }
 
 bool IsEndpointUsingBraveWalletProxy(const GURL& url) {

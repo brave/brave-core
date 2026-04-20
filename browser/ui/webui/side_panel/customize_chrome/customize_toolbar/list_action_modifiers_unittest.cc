@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/containers/fixed_flat_set.h"
+#include "base/functional/callback_helpers.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
@@ -15,6 +16,7 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "brave/components/vector_icons/vector_icons.h"
+#include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
 #include "chrome/browser/ui/webui/util/image_util.h"
 #include "chrome/common/pref_names.h"
@@ -35,6 +37,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #endif
 
@@ -127,6 +130,11 @@ class ListActionModifiersUnitTest : public testing::Test {
   }
 
   void TearDown() override { web_contents_ = nullptr; }
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  brave_wallet::BraveWalletServiceFactory::NotNullForTesting
+      brave_wallet_service_factory_not_null_for_testing_;
+#endif
 
   brave_l10n::test::ScopedDefaultLocale scoped_locale_{"en_US"};
   content::BrowserTaskEnvironment task_environment_;
@@ -315,8 +323,8 @@ TEST_F(ListActionModifiersUnitTest,
 TEST_F(ListActionModifiersUnitTest,
        ApplyBraveSpecificModifications_WalletShouldNotBeAddedWhenDisabled) {
   // Wallet should be available by default.
-  ASSERT_TRUE(
-      brave_wallet::IsAllowedForContext(web_contents_->GetBrowserContext()));
+  ASSERT_TRUE(brave_wallet::IsBraveWalletServiceAvailable(
+      web_contents_->GetBrowserContext()));
   auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
       web_contents_.get(), GetBasicActions());
   auto wallet_action_it =
@@ -324,19 +332,27 @@ TEST_F(ListActionModifiersUnitTest,
                         &side_panel::customize_chrome::mojom::Action::id);
   ASSERT_NE(wallet_action_it, modified_actions.end());
 
-  // Disable Wallet in prefs.
-  prefs()->SetManagedPref(brave_wallet::kBraveWalletDisabledByPolicy,
-                          base::Value(true));
+  // Create profile with no wallet available.
+  TestingProfile::Builder builder;
+  auto prefs = std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
+  RegisterUserProfilePrefs(prefs->registry());
+  prefs->SetManagedPref(brave_wallet::kBraveWalletDisabledByPolicy,
+                        base::Value(true));
+  builder.SetPrefService(std::move(prefs));
+  auto profile_no_wallet = builder.Build();
   ASSERT_FALSE(
-      brave_wallet::IsAllowedForContext(web_contents_->GetBrowserContext()));
+      brave_wallet::IsBraveWalletServiceAvailable(profile_no_wallet.get()));
 
+  // Show Wallet action should not be present.
+  auto* web_contents_no_wallet =
+      test_web_contents_factory_.CreateWebContents(profile_no_wallet.get());
   modified_actions = customize_chrome::ApplyBraveSpecificModifications(
-      web_contents_.get(), GetBasicActions());
+      web_contents_no_wallet, GetBasicActions());
   wallet_action_it =
       std::ranges::find(modified_actions, ActionId::kShowWallet,
                         &side_panel::customize_chrome::mojom::Action::id);
-  // Show Wallet action should not be present
   EXPECT_EQ(wallet_action_it, modified_actions.end());
+  test_web_contents_factory_.DestroyWebContents(web_contents_no_wallet);
 }
 #endif
 
@@ -404,8 +420,8 @@ TEST_F(ListActionModifiersUnitTest,
   ASSERT_TRUE(ai_chat::IsAIChatEnabled(prefs()));
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  ASSERT_TRUE(
-      brave_wallet::IsAllowedForContext(web_contents_->GetBrowserContext()));
+  ASSERT_TRUE(brave_wallet::IsBraveWalletServiceAvailable(
+      web_contents_->GetBrowserContext()));
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   ASSERT_TRUE(brave_rewards::IsSupportedForProfile(

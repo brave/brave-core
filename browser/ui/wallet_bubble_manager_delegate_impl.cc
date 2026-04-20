@@ -197,7 +197,7 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
 std::unique_ptr<WalletBubbleManagerDelegate>
 WalletBubbleManagerDelegate::MaybeCreate(content::WebContents* web_contents,
                                          const GURL& webui_url) {
-  if (!IsAllowedForContext(web_contents->GetBrowserContext())) {
+  if (!IsBraveWalletServiceAvailable(web_contents->GetBrowserContext())) {
     return nullptr;
   }
 

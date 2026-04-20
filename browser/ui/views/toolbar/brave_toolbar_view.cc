@@ -72,7 +72,6 @@
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 #endif
 
 namespace {
@@ -246,15 +245,6 @@ void BraveToolbarView::Init() {
       browser_->profile()->GetPrefs(),
       base::BindRepeating(&BraveToolbarView::UpdateWalletButtonVisibility,
                           base::Unretained(this)));
-
-  if (browser_->profile()->IsIncognitoProfile() &&
-      !browser_->profile()->IsTor()) {
-    wallet_private_window_enabled_.Init(
-        brave_wallet::kBraveWalletPrivateWindowsEnabled,
-        browser_->profile()->GetPrefs(),
-        base::BindRepeating(&BraveToolbarView::UpdateWalletButtonVisibility,
-                            base::Unretained(this)));
-  }
 #endif
 
   // track changes in wide locationbar setting
@@ -625,24 +615,10 @@ void BraveToolbarView::UpdateAIChatButtonVisibility() {
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 void BraveToolbarView::UpdateWalletButtonVisibility() {
-  Profile* profile = browser()->profile();
-  if (brave_wallet::IsAllowedForContext(profile)) {
-    // Hide all if user wants to hide.
-    if (!show_wallet_button_.GetValue()) {
-      wallet_->SetVisible(false);
-      return;
-    }
-
-    if (!profile->IsIncognitoProfile()) {
-      wallet_->SetVisible(true);
-      return;
-    }
-
-    wallet_->SetVisible(wallet_private_window_enabled_.GetValue());
-    return;
-  }
-
-  wallet_->SetVisible(false);
+  auto should_show =
+      brave_wallet::IsBraveWalletServiceAvailable(browser()->profile()) &&
+      show_wallet_button_.GetValue();
+  wallet_->SetVisible(should_show);
 }
 #endif
 

@@ -105,7 +105,7 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
 
   // Check loading |url| in private window is redirected to normal
   // window.
-  void TestURLIsNotLoadedInPrivateWindow(const std::string& url) {
+  Browser* TestURLIsNotLoadedInPrivateWindow(const std::string& url) {
     Browser* private_browser = CreateIncognitoBrowser(nullptr);
     TabStripModel* private_model = private_browser->tab_strip_model();
 
@@ -122,8 +122,8 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
     quit_closure_ = run_loop.QuitClosure();
 
     // Load url to private window.
-    NavigateParams params(
-        private_browser, GURL(url), ui::PAGE_TRANSITION_TYPED);
+    NavigateParams params(private_browser, GURL(url),
+                          ui::PAGE_TRANSITION_TYPED);
     Navigate(&params);
 
     run_loop.Run();
@@ -139,10 +139,13 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
     EXPECT_EQ("about:blank",
               private_model->GetActiveWebContents()->GetVisibleURL().spec());
     EXPECT_EQ(1, private_browser->tab_strip_model()->count());
+
+    return private_browser;
   }
 
   // Check loading |url| wallet URL in private window results in a load failure
-  void TestURLIsNotLoadedInPrivateWindowOrRedirected(const std::string& url) {
+  Browser* TestURLIsNotLoadedInPrivateWindowOrRedirected(
+      const std::string& url) {
     Browser* private_browser = CreateIncognitoBrowser(nullptr);
     TabStripModel* private_model = private_browser->tab_strip_model();
 
@@ -165,6 +168,7 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
         base::UTF16ToUTF8(
             browser()->GetFeatures().location_bar_model()->GetURLForDisplay()));
     EXPECT_EQ(1, browser()->tab_strip_model()->count());
+    return private_browser;
   }
 
   void TestURLIsLoadedInPrivateWindow(const std::string& url) {
@@ -328,8 +332,22 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
                        WalletPageIsNotAllowedInPrivateWindow) {
   EXPECT_TRUE(IsURLAllowedInIncognito(GURL("http://wallet")));
-  TestURLIsNotLoadedInPrivateWindowOrRedirected("brave://wallet");
+
+  auto* browser_1 =
+      TestURLIsNotLoadedInPrivateWindowOrRedirected("brave://wallet");
+
   prefs()->SetBoolean(brave_wallet::kBraveWalletPrivateWindowsEnabled, true);
+
+  // There is an active incognito profile but pref takes effect only when
+  // incognito profile is created.
+  auto* browser_2 = TestURLIsNotLoadedInPrivateWindowOrRedirected(
+      "chrome://wallet/crypto/onboarding/welcome");
+
+  // Close incognito browsers to destroy incognito profile.
+  CloseBrowserSynchronously(browser_1);
+  CloseBrowserSynchronously(browser_2);
+
+  // Wallet navigation works in new incognito profile.
   TestURLIsLoadedInPrivateWindow("chrome://wallet/crypto/onboarding/welcome");
 }
 

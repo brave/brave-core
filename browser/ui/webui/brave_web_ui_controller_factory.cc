@@ -275,7 +275,7 @@ WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
   }
 #else
   if ((url.host() == kWalletPageHost || url.host() == kWalletPanelHost) &&
-      !brave_wallet::IsAllowedForContext(browser_context)) {
+      !brave_wallet::IsBraveWalletServiceAvailable(browser_context)) {
     return WebUI::kNoWebUI;
   }
 #endif  // BUILDFLAG(IS_ANDROID)

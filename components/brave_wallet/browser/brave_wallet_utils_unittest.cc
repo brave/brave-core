@@ -41,6 +41,35 @@ using testing::Not;
 
 namespace brave_wallet {
 
+TEST(BraveWalletUtilsUnitTest, CanBuildWalletServiceInstance) {
+  sync_preferences::TestingPrefServiceSyncable prefs;
+  RegisterProfilePrefs(prefs.registry());
+
+  // Typical success case.
+  EXPECT_TRUE(CanBuildWalletServiceInstance(&prefs, true, false, false));
+
+  // Disabled by policy.
+  prefs.SetManagedPref(kBraveWalletDisabledByPolicy, base::Value(true));
+  EXPECT_FALSE(CanBuildWalletServiceInstance(&prefs, true, false, false));
+  prefs.RemoveManagedPref(kBraveWalletDisabledByPolicy);
+
+  // Policy is set to false but not managed.
+  prefs.SetUserPref(kBraveWalletDisabledByPolicy, base::Value(true));
+  EXPECT_TRUE(CanBuildWalletServiceInstance(&prefs, true, false, false));
+  prefs.RemoveUserPref(kBraveWalletDisabledByPolicy);
+
+  // Tor.
+  EXPECT_FALSE(CanBuildWalletServiceInstance(&prefs, false, true, true));
+
+  // Incognito.
+  EXPECT_FALSE(CanBuildWalletServiceInstance(&prefs, false, true, false));
+
+  // Incognito with pref.
+  prefs.SetUserPref(kBraveWalletPrivateWindowsEnabled, base::Value(true));
+  EXPECT_TRUE(CanBuildWalletServiceInstance(&prefs, false, true, false));
+  prefs.RemoveUserPref(kBraveWalletPrivateWindowsEnabled);
+}
+
 TEST(BraveWalletUtilsUnitTest, EncodeString) {
   std::string output;
   EXPECT_TRUE(EncodeString("one", &output));
@@ -997,48 +1026,6 @@ TEST(BraveWalletCommonUIUnitTest, IsBraveWalletOrigin) {
       IsBraveWalletOrigin(url::Origin::Create(GURL("chrome://wallet/"))));
   ASSERT_FALSE(IsBraveWalletOrigin(url::Origin::Create(GURL("https://a.com"))));
   ASSERT_FALSE(IsBraveWalletOrigin(url::Origin::Create(GURL())));
-}
-
-class BraveWalletPolicyTest : public testing::Test {
- public:
-  BraveWalletPolicyTest() {
-    prefs_.registry()->RegisterBooleanPref(kBraveWalletDisabledByPolicy, false);
-  }
-
- protected:
-  void BlockWalletByPolicy(bool value) {
-    prefs_.SetManagedPref(kBraveWalletDisabledByPolicy, base::Value(value));
-  }
-
-  TestingPrefServiceSimple prefs_;
-};
-
-TEST_F(BraveWalletPolicyTest, PolicyDisablesWallet) {
-  // Set policy to disable Brave Wallet
-  BlockWalletByPolicy(true);
-
-  // Test that the policy preference is set correctly
-  EXPECT_TRUE(prefs_.GetBoolean(kBraveWalletDisabledByPolicy));
-
-  // Policy should be enforced
-  EXPECT_FALSE(IsAllowed(&prefs_));
-}
-
-TEST_F(BraveWalletPolicyTest, PolicyEnablesWallet) {
-  // Set policy to enable Brave Wallet
-  BlockWalletByPolicy(false);
-
-  // Test that the policy preference is set correctly
-  EXPECT_FALSE(prefs_.GetBoolean(kBraveWalletDisabledByPolicy));
-
-  // Test that IsAllowed returns true when policy enables it
-  // This should be true on all platforms
-  EXPECT_TRUE(IsAllowed(&prefs_));
-}
-
-TEST_F(BraveWalletPolicyTest, DefaultBehavior) {
-  // Test that IsAllowed returns true when no policy is set
-  EXPECT_TRUE(IsAllowed(&prefs_));
 }
 
 }  // namespace brave_wallet

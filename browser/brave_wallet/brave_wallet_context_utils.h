@@ -16,7 +16,7 @@ class BrowserContext;
 
 namespace brave_wallet {
 
-bool IsAllowedForContext(content::BrowserContext* context);
+bool IsBraveWalletServiceAvailable(content::BrowserContext* context);
 
 }  // namespace brave_wallet
 

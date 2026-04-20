@@ -72,6 +72,10 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/browser/pref_names.h"
+#endif
+
 class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
  public:
   BraveBrowserCommandControllerTest() {
@@ -282,7 +286,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
+  EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
 #endif
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_ADD_NEW_PROFILE));
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_OPEN_GUEST_PROFILE));
@@ -290,6 +294,17 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
       command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER));
 #if BUILDFLAG(ENABLE_AI_CHAT)
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_TOGGLE_AI_CHAT));
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  CloseBrowserSynchronously(private_browser);
+  // BraveWalletPrivateWindowsEnabled takes effect only when incognito profile
+  // is created.
+  browser()->profile()->GetPrefs()->SetBoolean(
+      brave_wallet::kBraveWalletPrivateWindowsEnabled, true);
+  private_browser = CreateIncognitoBrowser();
+  command_controller = private_browser->command_controller();
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
 #endif
 }
 
@@ -349,9 +364,6 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
     EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
   }
 
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
-#endif
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_ADD_NEW_PROFILE));
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_OPEN_GUEST_PROFILE));
   EXPECT_TRUE(

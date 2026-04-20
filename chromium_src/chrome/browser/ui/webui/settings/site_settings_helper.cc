@@ -163,8 +163,8 @@ std::vector<ContentSettingsType> GetVisiblePermissionCategories(
   types.push_back(ContentSettingsType::BRAVE_OPEN_AI_CHAT);
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  // Only add Web3-related content settings if wallet is allowed
-  if (brave_wallet::IsAllowedForContext(profile)) {
+  // Only add Web3-related content settings if wallet is available.
+  if (brave_wallet::IsBraveWalletServiceAvailable(profile)) {
     types.push_back(ContentSettingsType::BRAVE_ETHEREUM);
     types.push_back(ContentSettingsType::BRAVE_SOLANA);
     types.push_back(ContentSettingsType::BRAVE_CARDANO);

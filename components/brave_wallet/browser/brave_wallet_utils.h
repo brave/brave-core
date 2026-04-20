@@ -24,8 +24,13 @@ namespace brave_wallet {
 
 class CardanoAddress;
 
-// Returns true if Brave Wallet is allowed (not disabled by policy).
-bool IsAllowed(PrefService* prefs);
+// Common function shared between ios and non-ios BraveWalletServiceFactory.
+// Decides whether BraveWalletService should be built based on prefs and
+// properties of profile.
+bool CanBuildWalletServiceInstance(PrefService* prefs,
+                                   bool is_regular_profile,
+                                   bool is_incognito_profile,
+                                   bool is_tor_profile);
 
 bool EncodeString(std::string_view input, std::string* output);
 bool EncodeStringArray(base::span<const std::string> input,

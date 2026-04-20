@@ -51,6 +51,7 @@ source_set("sidebar_impl") {
     "//brave/browser/ui/views/frame/split_view",
     "//brave/components/brave_origin/buildflags",
     "//brave/components/brave_talk/buildflags",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/sidebar/common",
     "//chrome/browser:browser_process",
     "//chrome/browser/favicon",
@@ -72,6 +73,10 @@ source_set("sidebar_impl") {
     "//components/user_prefs",
     "//ui/base",
   ]
+
+  if (enable_brave_wallet) {
+    deps += [ "//brave/browser/brave_wallet" ]
+  }
 }
 
 source_set("browser_tests") {
