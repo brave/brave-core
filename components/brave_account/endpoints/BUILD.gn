@@ -16,6 +16,7 @@ source_set("endpoints") {
     "service_token.h",
     "verify_complete.h",
     "verify_delete.h",
+    "verify_init.h",
     "verify_resend.h",
   ]
 
@@ -37,6 +38,7 @@ generated_types("generated_api_types") {
     "service_token_bodies.idl",
     "verify_complete_bodies.idl",
     "verify_delete_bodies.idl",
+    "verify_init_bodies.idl",
     "verify_resend_bodies.idl",
   ]
 
@@ -59,6 +61,7 @@ source_set("unit_tests") {
     "service_token_unittest.cc",
     "verify_complete_unittest.cc",
     "verify_delete_unittest.cc",
+    "verify_init_unittest.cc",
     "verify_resend_unittest.cc",
   ]
 
