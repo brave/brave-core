@@ -119,7 +119,7 @@ TEST_F(QueryFilterComponentInstallerTest, TestVerifyInstallation) {
   // Setup: create a temporary directory and write the sample query filter JSON
   base::ScopedTempDir component_install_dir_;
   ASSERT_TRUE(component_install_dir_.CreateUniqueTempDir());
-  ASSERT_TRUE(base::WriteFile(component_install_dir_.GetPath().Append(
+  ASSERT_TRUE(base::WriteFile(component_install_dir_.GetPath().AppendASCII(
                                   query_filter::kQueryFilterJsonFile),
                               kSampleQueryFilterJson));
 
@@ -132,7 +132,7 @@ TEST_F(QueryFilterComponentInstallerTest, TestComponentReady) {
   // Setup: create a temporary directory and write the sample query filter JSON
   base::ScopedTempDir component_install_dir_;
   ASSERT_TRUE(component_install_dir_.CreateUniqueTempDir());
-  ASSERT_TRUE(base::WriteFile(component_install_dir_.GetPath().Append(
+  ASSERT_TRUE(base::WriteFile(component_install_dir_.GetPath().AppendASCII(
                                   query_filter::kQueryFilterJsonFile),
                               kSampleQueryFilterJson));
 

@@ -89,7 +89,7 @@ bool QueryFilterComponentInstallerPolicy::VerifyInstallation(
     const base::DictValue& manifest,
     const base::FilePath& install_dir) const {
   return base::PathExists(
-      install_dir.Append(query_filter::kQueryFilterJsonFile));
+      install_dir.AppendASCII(query_filter::kQueryFilterJsonFile));
 }
 
 void QueryFilterComponentInstallerPolicy::ComponentReady(
@@ -103,8 +103,9 @@ void QueryFilterComponentInstallerPolicy::ComponentReady(
       FROM_HERE,
       {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN,
        base::TaskPriority::BEST_EFFORT},
-      base::BindOnce(&ReadQueryFilterFile,
-                     install_dir.Append(query_filter::kQueryFilterJsonFile)),
+      base::BindOnce(
+          &ReadQueryFilterFile,
+          install_dir.AppendASCII(query_filter::kQueryFilterJsonFile)),
       base::BindOnce(&OnQueryFilterFileRead, version));
 }
 
