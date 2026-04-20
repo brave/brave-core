@@ -29,7 +29,7 @@ export function createPsstDialogApi(
     },
 
     actions: {
-      ...actionsFor(consentHelper, ['closeDialog']),
+      ...actionsFor(consentHelper, ['closeDialog', 'reportFailedContent']),
     },
     events: {
       ...eventsFor(

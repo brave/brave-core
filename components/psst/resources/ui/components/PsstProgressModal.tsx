@@ -9,6 +9,7 @@ import styled from 'styled-components'
 import { color, font } from '@brave/leo/tokens/css/variables'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
+import * as leo from '@brave/leo/tokens/css/variables'
 
 import Flex from '$web-common/Flex'
 import { getLocale } from '$web-common/locale'
@@ -20,12 +21,18 @@ import '../strings'
 
 // Styled components
 const ModalTitle = styled.div`
+  margin: ${leo.spacing['2Xl']} 0 ${leo.spacing['2Xl']} 0;
+  gap: ${leo.spacing.xl};
   font: ${font.heading.h4};
+  font-size: ${leo.typography.heading.h4.fontSize};
+  line-height: ${leo.typography.heading.h4.lineHeight};
   color: ${color.text.secondary};
 `
 const ModalTitleBody = styled.div`
-  font: ${font.default.regular};
-  color: ${color.text.primary};
+  font: ${leo.font.default.regular};
+  color: ${leo.color.text.secondary};
+  letter-spacing: ${leo.typography.letterSpacing.small};
+  margin-bottom: ${leo.spacing['2Xl']};
 `
 export enum SettingState {
   None,
@@ -85,10 +92,6 @@ export const PsstProgressModal = () => {
 
   React.useEffect(() => {
     if (!initialData) return
-
-    console.log('[PsstProgressModal] Initializing with settings data:', {
-      initialSettingsData: initialData,
-    })
 
     const optionStatusArray: OptionStatus[] = initialData.items.map((item) => ({
       uid: item.uid,
@@ -235,7 +238,7 @@ export const PsstProgressModal = () => {
             size='medium'
             isDisabled={isInProgress}
             isLoading={isInProgress}
-            onClick={api.closeDialog}
+            onClick={api.reportFailedContent}
           >
             {getLocale(S.PSST_COMPLETE_CONSENT_DIALOG_REPORT_FAILED)}
           </PsstDlgButton>

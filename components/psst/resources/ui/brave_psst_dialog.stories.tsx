@@ -35,9 +35,11 @@ function PsstDialogStory({
       requestDelay,
       errorUids,
       settingsCardData: {
-        siteName: siteName,
+        siteName,
         items,
       },
+      onReportFailedContent: () =>
+        console.log('[Storybook] Report failed content'),
       onCloseDialog: () => console.log('[Storybook] Dialog closed'),
     })
     return {

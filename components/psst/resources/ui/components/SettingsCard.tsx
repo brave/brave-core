@@ -9,7 +9,7 @@ import styled from 'styled-components'
 import Checkbox from '@brave/leo/react/checkbox'
 import Icon from '@brave/leo/react/icon'
 import Ring from '@brave/leo/react/progressRing'
-import { color, font } from '@brave/leo/tokens/css/variables'
+import { color, font, spacing, radius } from '@brave/leo/tokens/css/variables'
 
 import Flex from '$web-common/Flex'
 
@@ -17,60 +17,60 @@ import { PsstProgressModalState, SettingState } from './PsstProgressModal'
 
 // Styled components
 const SettingGrid = styled.div`
-  border-radius: 8px;
-  border: ${color.primitive.neutral[90]} 1px solid;
-  margin-bottom: 18px;
+  border-radius: ${radius.m};
+  border: ${color.divider.subtle} 1px solid;
+  margin-bottom: ${spacing['2Xl']};
 `
 
 const SettingGridHeaderRow = styled.div`
-  padding: 16px;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-  background-color: ${color.container.interactive};
+  padding: ${spacing.l} ${spacing.xl} ${spacing.l} ${spacing.xl};
+  border-top-left-radius: ${radius.m};
+  border-top-right-radius: ${radius.m};
+  background-color: ${color.container.highlight};
   display: flex;
   align-items: center;
 `
 
 const SettingGridRow = styled.div`
-  padding: 16px;
-  border-top: ${color.primitive.neutral[90]} 1px solid;
+  padding: ${spacing.l};
+  border-top: ${color.divider.subtle} 1px solid;
 `
 
 const SettingsGridBoldText = styled.div`
-  color: ${color.text.primary};
+  color: ${color.text.secondary};
   font: ${font.default.semibold};
 `
 
 const SettingProgressRing = styled(Ring)`
-  --leo-progressring-size: 18px;
-  margin-right: 10px;
+  --leo-progressring-size: ${spacing.xl};
+  padding-right: ${spacing.l};
 `
 
 const CheckBoxIconCompleted = styled(Icon)`
   --leo-icon-color: ${color.systemfeedback.successIcon};
-  --leo-icon-size: 20px;
-  margin-right: 8px;
+  --leo-icon-size: ${spacing.xl};
+  padding-right: ${spacing.l};
 `
 
 const CheckBoxIconFailed = styled(Icon)`
   --leo-icon-color: ${color.systemfeedback.errorIcon};
-  --leo-icon-size: 20px;
-  margin-right: 8px;
+  --leo-icon-size: ${spacing.xl};
+  padding-right: ${spacing.l};
 `
 
 const SettingText = styled.span`
   font: ${font.default.regular};
-  color: ${color.text.primary};
+  color: ${color.text.secondary};
 `
 const DummyIconContainer = styled.div`
-  width: 32px;
-  height: 32px;
-  border-radius: 4px;
-  background-color: ${color.white};
+  width: ${spacing['3Xl']};
+  height: ${spacing['3Xl']};
+  border-radius: ${radius.m};
+  background-color: ${color.container.background};
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 12px;
+  margin-right: ${spacing.l};
 `
 
 export interface Props {
@@ -94,49 +94,51 @@ const SettingsCard: React.FC<Props> = ({
       </SettingGridHeaderRow>
       {progressModelState
         && progressModelState.optionsStatuses
-        && Array.from(progressModelState.optionsStatuses).map((item) => (
-          <SettingGridRow key={item.uid}>
-            {item.settingState === SettingState.Progress && (
-              <Flex
-                direction='row'
-                justify='flex-start'
-                align='flex-start'
-              >
-                <SettingProgressRing mode='indeterminate' />
-                <SettingText>{item.description}</SettingText>
-              </Flex>
-            )}
-            {item.settingState === SettingState.Selection && (
-              <Checkbox
-                checked={item.checked}
-                isDisabled={item.disabled}
-                onChange={(e) => onItemChecked(item.uid, e.checked)}
-              >
-                {item.description}
-              </Checkbox>
-            )}
-            {item.settingState === SettingState.Completed && (
-              <Flex
-                direction='row'
-                justify='flex-start'
-                align='flex-start'
-              >
-                <CheckBoxIconCompleted name='check-circle-outline' />
-                <SettingText>{item.description}</SettingText>
-              </Flex>
-            )}
-            {item.settingState === SettingState.Failed && (
-              <Flex
-                direction='row'
-                justify='flex-start'
-                align='flex-start'
-              >
-                <CheckBoxIconFailed name='close-circle' />
-                <SettingText>{item.description}</SettingText>
-              </Flex>
-            )}
-          </SettingGridRow>
-        ))}
+        && Array.from(progressModelState.optionsStatuses)
+          .filter((item) => item.settingState !== SettingState.None)
+          .map((item) => (
+            <SettingGridRow key={item.uid}>
+              {item.settingState === SettingState.Progress && (
+                <Flex
+                  direction='row'
+                  justify='flex-start'
+                  align='flex-start'
+                >
+                  <SettingProgressRing mode='indeterminate' />
+                  <SettingText>{item.description}</SettingText>
+                </Flex>
+              )}
+              {item.settingState === SettingState.Selection && (
+                <Checkbox
+                  checked={item.checked}
+                  isDisabled={item.disabled}
+                  onChange={(e) => onItemChecked(item.uid, e.checked)}
+                >
+                  {item.description}
+                </Checkbox>
+              )}
+              {item.settingState === SettingState.Completed && (
+                <Flex
+                  direction='row'
+                  justify='flex-start'
+                  align='flex-start'
+                >
+                  <CheckBoxIconCompleted name='check-circle-outline' />
+                  <SettingText>{item.description}</SettingText>
+                </Flex>
+              )}
+              {item.settingState === SettingState.Failed && (
+                <Flex
+                  direction='row'
+                  justify='flex-start'
+                  align='flex-start'
+                >
+                  <CheckBoxIconFailed name='close-circle' />
+                  <SettingText>{item.description}</SettingText>
+                </Flex>
+              )}
+            </SettingGridRow>
+          ))}
     </SettingGrid>
   )
 }

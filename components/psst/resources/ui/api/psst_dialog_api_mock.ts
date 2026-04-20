@@ -64,6 +64,10 @@ function createMockConsentHelper(): Mojom.PsstConsentHelperInterface {
       console.log('[Mock] closeDialog called')
     },
 
+    async reportFailedContent() {
+      console.log('[Mock] reportFailedContent called')
+    },
+
     // Mock Mojom remote properties (these are usually
     // auto-generated)
     onConnectionError: { addListener: () => {} } as any,
@@ -92,6 +96,11 @@ export interface MockPsstDialogAPIOptions {
   errorUids?: string[]
 
   /**
+   * Custom report failed content behavior
+   */
+  onReportFailedContent?: () => void
+
+  /**
    * Custom close dialog behavior
    */
   onCloseDialog?: () => void
@@ -110,6 +119,8 @@ export function createMockPsstDialogAPI(
     settingsCardData = {},
     requestDelay = 1000,
     errorUids = [],
+    onReportFailedContent = () =>
+      console.log('[Mock] Report failed content called'),
     onCloseDialog = () => console.log('[Mock] Dialog closed'),
   } = options
 
@@ -134,6 +145,11 @@ export function createMockPsstDialogAPI(
     onCloseDialog()
   }
 
+  // Override the report failed content action
+  mockConsentHelper.reportFailedContent = async () => {
+    onReportFailedContent()
+  }
+
   // Override the perform privacy tuning action with mock behavior
   mockConsentHelper.performPrivacyTuning = async (performForUids: string[]) => {
     console.log('[Mock] Processing perform privacy tuning for:', {
@@ -156,7 +172,6 @@ export function createMockPsstDialogAPI(
       }, Math.random() * requestDelay)
     }
   }
-  console.log('[Mock] Created API:', api)
 
   if (!api) {
     console.error('[Mock] API creation failed!')

@@ -23,6 +23,7 @@ interface PsstConsentFactory {
 // Handler for the UI to backend calls
 interface PsstConsentHelper {
     PerformPrivacyTuning(array<string> perform_for_uids);
+    ReportFailedContent();
     CloseDialog();
 };
 
