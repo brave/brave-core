@@ -397,6 +397,7 @@ class ToolchainBuilder:
                               target_triple / STAGE1_RUSTLIB)
         output_archive = self.out_dir / self._package_name()
 
+        logging.info('Creating output archive at %s', output_archive)
         with tarfile.open(output_archive, 'w:xz') as tar:
             tar.add(Path(self.build_rust_module.RUST_HOST_LLVM_INSTALL_DIR) /
                     'bin' / LLD,
@@ -581,6 +582,11 @@ def main():
                         action='store_true',
                         help='Enable verbose (debug) logging')
     args = parser.parse_args()
+
+    if not args.chromium_src:
+        parser.error('--chromium-src cannot be empty')
+    if not args.out_dir:
+        parser.error('--out-dir cannot be empty')
 
     if args.clone_chromium and not args.use_ref:
         parser.error('--use-ref is required when --clone-chromium is provided')
