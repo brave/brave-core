@@ -38,9 +38,6 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/components/containers/core/common/features.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "chrome/test/base/test_browser_window.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 using bookmarks::BookmarkModel;
@@ -184,21 +181,6 @@ TEST_F(BraveBookmarkContextMenuControllerTest, AddBraveBookmarksSubmenu) {
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-
-TEST_F(BraveBookmarkContextMenuControllerTest,
-       ContainersSubmenuSkippedWithoutBrowser) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeature(containers::features::kContainers);
-
-  const BookmarkNode* url_node = model_->AddNewURL(
-      model_->bookmark_bar_node(), 0, u"t", GURL("https://example.com"));
-  BraveBookmarkContextMenuController controller(
-      gfx::NativeWindow(), nullptr, nullptr, profile_.get(),
-      BookmarkLaunchLocation::kSidePanelFolder, {url_node});
-
-  EXPECT_FALSE(
-      controller.menu_model()->GetIndexOfCommandId(IDC_OPEN_IN_CONTAINER));
-}
 
 TEST_F(BraveBookmarkContextMenuControllerTest,
        ContainersSubmenuNotAddedWhenFeatureDisabled) {

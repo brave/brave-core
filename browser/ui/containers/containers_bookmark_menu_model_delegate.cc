@@ -33,19 +33,13 @@ ContainersBookmarkMenuModelDelegate::~ContainersBookmarkMenuModelDelegate() =
 
 void ContainersBookmarkMenuModelDelegate::OnContainerSelected(
     const mojom::ContainerPtr& container) {
-  if (!browser_) {
-    CHECK_IS_TEST();
-    return;
-  }
+  CHECK(browser_);
   brave::OpenUrlInContainer(base::to_address(browser_), bookmark_url_,
                             container);
 }
 
 void ContainersBookmarkMenuModelDelegate::OnNoContainerSelected() {
-  if (!browser_) {
-    CHECK_IS_TEST();
-    return;
-  }
+  CHECK(browser_);
   brave::OpenUrlWithoutContainer(base::to_address(browser_), bookmark_url_);
 }
 
@@ -77,10 +71,7 @@ ContainersBookmarkMenuModelDelegate::GetCurrentContainerIds() {
 }
 
 Browser* ContainersBookmarkMenuModelDelegate::GetBrowserToOpenSettings() {
-  if (!browser_) {
-    CHECK_IS_TEST();
-    return nullptr;
-  }
+  CHECK(browser_);
   return base::to_address(browser_);
 }
 
