@@ -1,0 +1,148 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+html,
+body {
+  overflow: hidden;
+}
+
+.dw-card {
+  max-width: 100%;
+  width: 100%;
+  height: 635px;
+  margin: 0;
+  background-color: var(--leo-color-container-background);
+  border-radius: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  font: var(--leo-font-default-regular);
+  box-sizing: border-box;
+  position: relative;
+  padding: 24px;
+}
+
+.dw-modal-layout {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  height: 100%;
+  gap: 1rem;
+}
+
+.dw-form-section {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.75rem;
+}
+
+.dw-text-section {
+  margin: 6px 0;
+}
+
+.dw-modal-title {
+  box-sizing: border-box;
+  font: var(--leo-font-heading-h3);
+  color: var(--leo-color-text-primary);
+  margin: 0;
+}
+
+.dw-field-ctr {
+  margin-top: 8px;
+}
+
+.dw-input-label {
+  display: block;
+  box-sizing: border-box;
+  color: var(--leo-color-text-primary);
+  font: var(--leo-font-small-regular);
+  padding-bottom: 4px;
+}
+
+.dw-dropdown {
+  width: 100%;
+}
+
+.dw-side-by-side-buttons {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  right: 1rem;
+}
+
+.dw-padded-button {
+  margin: 5px;
+}
+
+.dw-generic-section,
+.dw-loading-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: var(--leo-color-text-primary);
+  section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  footer {
+    width: 100%;
+  }
+}
+
+.dw-loading-section {
+  justify-content: center;
+}
+
+.dw-full-width-button {
+  width: 100%;
+}
+
+.dw-icon {
+  --leo-icon-size: 48px;
+}
+
+.dw-error-icon {
+  color: var(--leo-color-systemfeedback-error-icon);
+}
+
+.dw-success-icon {
+  color: var(--leo-color-systemfeedback-success-icon);
+}
+
+leo-option {
+  color: var(--leo-color-text-primary);
+}
+
+.preview-container {
+  width: 100%;
+  height: 240px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid var(--leo-color-divider-subtle);
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.preview-box {
+  width: 100%;
+  max-height: 100%;
+  background-color: var(--leo-color-black);
+  background-position: center;
+  background-repeat: no-repeat;
+}

@@ -329,6 +329,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_origin/mojom/brave_origin_startup.mojom.h"
 #endif
 
+#if BUILDFLAG(IS_MAC)
+#include "brave/browser/ui/webui/desktop_wallpaper/desktop_wallpaper_ui.h"
+#endif
+
 #if BUILDFLAG(IS_WIN)
 #include "brave/components/windows_recall/windows_recall.h"
 #endif
@@ -1011,6 +1015,11 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
       brave_browser_command::mojom::BraveBrowserCommandHandlerFactory,
       BraveEducationPageUI>(map);
 #endif
+
+#if BUILDFLAG(IS_MAC)
+  content::RegisterWebUIControllerInterfaceBinder<
+      desktop_wallpaper::mojom::PageHandlerFactory, DesktopWallpaperUI>(map);
+#endif
 }
 
 bool BraveContentBrowserClient::HandleExternalProtocol(
@@ -1319,6 +1328,11 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(
   // no special win10 welcome page
   if (url->host() == kWelcomeHost) {
     *url = GURL(kWelcomeURL);
+    return true;
+  }
+
+  if (url->host() == kDesktopWallpaperHost) {
+    *url = GURL(kDesktopWallpaperURL);
     return true;
   }
 

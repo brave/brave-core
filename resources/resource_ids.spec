@@ -256,6 +256,14 @@
     "META": {"sizes": {"includes": [20]}},
     "includes": [54120],
   },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/browser/resources/desktop_wallpaper/desktop_wallpaper_static_resources.grd": {
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [54140],
+  },
+    "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-desktop_wallpaper/desktop_wallpaper.grd": {
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [54150],
+  },
   # WARNING: The IDs range is 2^16-1. Check
   # out/<BUILD_TYPE>/gen/brave/resources/brave_resource_ids for how much the
   # ids got expanded for the build.

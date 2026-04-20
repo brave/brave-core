@@ -1,0 +1,56 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//mojo/public/tools/bindings/mojom.gni")
+
+mojom("mojo_bindings") {
+  sources = [ "desktop_wallpaper.mojom" ]
+  webui_module_path = "/"
+  generate_legacy_js_bindings = true
+  public_deps = [
+    "//mojo/public/mojom/base",
+    "//url/mojom:url_mojom_gurl",
+  ]
+}
+
+source_set("desktop_wallpaper") {
+  deps = [
+    ":mojo_bindings",
+    "//base",
+    "//chrome/common:constants",
+    "//net",
+    "//services/network/public/cpp",
+    "//third_party/abseil-cpp:absl",
+    "//ui/gfx:gfx",
+    "//url",
+  ]
+
+  sources = [
+    "desktop_wallpaper_controller.cc",
+    "desktop_wallpaper_service.h",
+    "desktop_wallpaper_service.mm",
+  ]
+
+  frameworks = [ "AppKit.framework" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  deps = [
+    ":desktop_wallpaper",
+    ":mojo_bindings",
+    "//base",
+    "//base/test:test_support",
+    "//chrome/common",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//ui/gfx:gfx",
+  ]
+
+  sources = [ "desktop_wallpaper_controller_unittest.cc" ]
+
+  frameworks = [ "AppKit.framework" ]
+}

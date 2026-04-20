@@ -1,0 +1,28 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("desktop_wallpaper") {
+  sources = [
+    "desktop_wallpaper_handler.cc",
+    "desktop_wallpaper_handler.h",
+    "desktop_wallpaper_ui.cc",
+    "desktop_wallpaper_ui.h",
+  ]
+
+  deps = [
+    "//brave/browser/resources/desktop_wallpaper:pack_js_resources",
+    "//brave/browser/resources/desktop_wallpaper:pack_static_resources",
+    "//brave/components/constants",
+    "//brave/components/desktop_wallpaper",
+    "//brave/components/desktop_wallpaper:mojo_bindings",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/webui:webui",
+    "//chrome/browser/ui/webui:webui_util",
+    "//content/public/browser",
+    "//ui/web_dialogs",
+    "//ui/webui",
+  ]
+}

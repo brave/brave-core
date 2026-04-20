@@ -91,6 +91,8 @@ inline constexpr char kBraveGettingStartedURL[] = "chrome://getting-started/";
 inline constexpr char kBraveGettingStartedHost[] = "getting-started";
 inline constexpr char kRewriterUIURL[] = "chrome://rewriter/";
 inline constexpr char kRewriterUIHost[] = "rewriter";
+inline constexpr char kDesktopWallpaperHost[] = "desktop-wallpaper";
+inline constexpr char kDesktopWallpaperURL[] = "chrome://desktop-wallpaper/";
 
 inline constexpr char16_t kTransactionSimulationLearnMoreURL[] =
     u"https://github.com/brave/brave-browser/wiki/Transaction-Simulation";

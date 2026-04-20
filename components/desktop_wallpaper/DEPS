@@ -1,0 +1,4 @@
+include_rules = [
+  "+brave/components/desktop_wallpaper",
+  "+chrome/common/chrome_paths.h",
+]
