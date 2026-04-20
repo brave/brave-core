@@ -27,4 +27,13 @@ bool IsOpenAIChatButtonFromBraveSearchURL(const GURL& url) {
          !url.ref().empty();
 }
 
+const mojom::ConversationTurnPtr& GetLatestTurn(
+    const mojom::ConversationTurnPtr& turn) {
+  return (turn->edits && !turn->edits->empty()) ? turn->edits->back() : turn;
+}
+
+mojom::ConversationTurnPtr& GetLatestTurn(mojom::ConversationTurnPtr& turn) {
+  return (turn->edits && !turn->edits->empty()) ? turn->edits->back() : turn;
+}
+
 }  // namespace ai_chat

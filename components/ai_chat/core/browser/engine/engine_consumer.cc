@@ -13,6 +13,7 @@
 #include "base/strings/escape.h"
 #include "base/strings/strcat.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/common/utils.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/re2/src/re2/re2.h"
 
@@ -43,9 +44,7 @@ EngineConsumer::GenerationResultData::~GenerationResultData() = default;
 // static
 std::string EngineConsumer::GetPromptForEntry(
     const mojom::ConversationTurnPtr& entry) {
-  const mojom::ConversationTurnPtr& prompt_entry =
-      (entry->edits && !entry->edits->empty()) ? entry->edits->back() : entry;
-
+  const mojom::ConversationTurnPtr& prompt_entry = GetLatestTurn(entry);
   return prompt_entry->prompt.value_or(prompt_entry->text);
 }
 

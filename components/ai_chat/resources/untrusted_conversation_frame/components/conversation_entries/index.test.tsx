@@ -287,7 +287,7 @@ describe('conversation entries', () => {
     ).toBe(1)
   })
 
-  it('renders attached tabs from the original turn on edited conversation turns', () => {
+  it('renders attached tabs from the latest edit on edited conversation turns', () => {
     const { container } = render(
       <MockContext
         overrides={{
@@ -299,7 +299,7 @@ describe('conversation entries', () => {
               title: 'Associated Content',
               url: { url: 'https://example.com' },
               uuid: '1234',
-              conversationTurnUuid: '111',
+              conversationTurnUuid: '222',
             },
           ],
         }}
@@ -349,7 +349,7 @@ describe('conversation entries', () => {
     ).toBeInTheDocument()
   })
 
-  it('renders attached tabs from earlier edits on re-edited conversation turns', () => {
+  it('renders attached tabs from the latest edit on re-edited conversation turns', () => {
     const { container } = render(
       <MockContext
         overrides={{
@@ -361,7 +361,7 @@ describe('conversation entries', () => {
               title: 'Associated Content',
               url: { url: 'https://example.com' },
               uuid: '1234',
-              conversationTurnUuid: '222',
+              conversationTurnUuid: '333',
             },
           ],
         }}
