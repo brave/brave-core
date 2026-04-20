@@ -19,6 +19,8 @@ class QueryFilterDataTest : public testing::Test {
         {query_filter::features::kQueryFilterComponent}, {});
   }
 
+  void TearDown() override { instance()->ResetRulesForTesting(); }
+
   std::vector<QueryFilterRule> GetQueryFilterRules() const {
     return instance()->rules();
   }

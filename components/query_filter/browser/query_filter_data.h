@@ -48,6 +48,9 @@ class QueryFilterData {
   // Loads the file, parses the rules and stores them in |rules_|.
   bool PopulateDataFromComponent(std::string_view json_data);
 
+  // Resets the |rules_| to an empty vector and the |version_| to empty.
+  void ResetRulesForTesting();
+
   // Returns the current set of query filter rules.
   // Returns an empty vector if no rules are available.
   const std::vector<QueryFilterRule>& rules() const { return rules_; }

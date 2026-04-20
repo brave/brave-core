@@ -124,4 +124,9 @@ bool QueryFilterData::PopulateDataFromComponent(std::string_view json_data) {
   return true;
 }
 
+void QueryFilterData::ResetRulesForTesting() {
+  rules_.clear();
+  version_ = base::Version();
+}
+
 }  // namespace query_filter

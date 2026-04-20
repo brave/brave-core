@@ -31,7 +31,7 @@ void RegisterComponentsForUpdate(
       .MaybeRegisterWalletDataFilesComponent(
           cus, GetApplicationContext()->GetLocalState());
   brave_user_agent::RegisterBraveUserAgentComponent(cus);
-  RegisterQueryFilterComponent(cus);
+  component_updater::RegisterQueryFilterComponent(cus);
   RegisterZxcvbnDataComponent(cus);
 }
 }  // namespace

@@ -44,10 +44,7 @@ void LoadParseRulesFromDisk(const base::Version& version,
   }
 
   const base::FilePath& query_filter_path =
-      install_dir.AppendASCII(kQueryFilterJsonFile);
-  if (query_filter_path.empty()) {
-    return;
-  }
+      install_dir.Append(kQueryFilterJsonFile);
 
   std::string query_filter_json_data;
   if (!base::ReadFileToString(query_filter_path, &query_filter_json_data)) {
@@ -111,7 +108,7 @@ void QueryFilterComponentInstallerPolicy::ComponentReady(
 bool QueryFilterComponentInstallerPolicy::VerifyInstallation(
     const base::DictValue& manifest,
     const base::FilePath& install_dir) const {
-  return base::PathExists(install_dir.AppendASCII(kQueryFilterJsonFile));
+  return base::PathExists(install_dir.Append(kQueryFilterJsonFile));
 }
 
 base::FilePath QueryFilterComponentInstallerPolicy::GetRelativeInstallDir()
