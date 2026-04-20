@@ -936,6 +936,7 @@ test("brave_browser_tests") {
     "//brave/browser",
     "//brave/browser/autoplay:browser_tests",
     "//brave/browser/brave_shields:brave_shields_impl",
+    "//brave/browser/brave_shields:test_support",
     "//brave/browser/brave_stats:browser_tests",
     "//brave/browser/browsing_data:browser_tests",
     "//brave/browser/ephemeral_storage:browser_tests",

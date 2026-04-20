@@ -3,17 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_shields/ad_block_browser_test_helper.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
-#include "brave/components/brave_shields/content/test/ad_block_test_helper.h"
 #include "brave/components/brave_shields/content/test/engine_test_observer.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
@@ -38,12 +40,15 @@ class EphemeralStorage1pDomainBlockBrowserTest
   EphemeralStorage1pDomainBlockBrowserTest() = default;
   ~EphemeralStorage1pDomainBlockBrowserTest() override = default;
 
+  void SetUpInProcessBrowserTestFixture() override {
+    EphemeralStorageBrowserTest::SetUpInProcessBrowserTestFixture();
+    helper_ = std::make_unique<brave_shields::AdBlockBrowserTestHelper>();
+  }
+
   void SetUpOnMainThread() override {
     EphemeralStorageBrowserTest::SetUpOnMainThread();
     a_site_simple_url_ = https_server_.GetURL("a.com", "/simple.html");
     b_site_simple_url_ = https_server_.GetURL("b.com", "/simple.html");
-    brave_shields::SetupAdBlockServiceForTesting(
-        g_brave_browser_process->ad_block_service());
   }
 
   void UpdateAdBlockInstanceWithRules(const std::string& rules) {
@@ -58,12 +63,6 @@ class EphemeralStorage1pDomainBlockBrowserTest
                        ->GetDefaultEngineForTesting();
     EngineTestObserver engine_observer(&engine);
     engine_observer.Wait();
-  }
-
-  void WaitForAdBlockServiceThreads() {
-    scoped_refptr<base::ThreadTestHelper> tr_helper(new base::ThreadTestHelper(
-        g_brave_browser_process->local_data_files_service()->GetTaskRunner()));
-    ASSERT_TRUE(tr_helper->Run());
   }
 
   void BlockDomainByURL(const GURL& url) {
@@ -176,6 +175,7 @@ class EphemeralStorage1pDomainBlockBrowserTest
   }
 
  protected:
+  std::unique_ptr<brave_shields::AdBlockBrowserTestHelper> helper_;
   std::unique_ptr<brave_shields::TestFiltersProvider> source_provider_;
   GURL a_site_simple_url_;
   GURL b_site_simple_url_;

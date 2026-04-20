@@ -10,9 +10,9 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_shields/ad_block_browser_test_helper.h"
 #include "brave/browser/brave_shields/ad_block_service_browsertest.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
-#include "brave/components/brave_shields/content/test/ad_block_test_helper.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/platform_browser_test.h"
@@ -47,9 +47,7 @@ class AdBlockDATCacheBrowserTest : public AdBlockServiceTest,
   // in that case. Skip it and just wait for the service threads.
   void PreRunTestOnMainThread() override {
     PlatformBrowserTest::PreRunTestOnMainThread();
-    brave_shields::SetupAdBlockServiceForTesting(
-        g_brave_browser_process->ad_block_service());
-    WaitForAdBlockServiceThreads();
+    ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   }
 
  private:
@@ -81,7 +79,7 @@ IN_PROC_BROWSER_TEST_P(AdBlockDATCacheBrowserTest,
     })) << "Timeout waiting for cached DAT files to load";
   }
 
-  WaitForAdBlockServiceThreads();
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
 
   // Custom rule should work within this session.
   GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
@@ -117,7 +115,7 @@ IN_PROC_BROWSER_TEST_P(AdBlockDATCacheBrowserTest, DATCacheLoadedOnRestart) {
              service->IsDATLoadedForTesting(false);
     })) << "Timeout waiting for cached DAT files to load";
 
-    WaitForAdBlockServiceThreads();
+    ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
 
     // Verify no filter set rebuild happened — the cached DATs should have
     // been sufficient.
@@ -133,7 +131,7 @@ IN_PROC_BROWSER_TEST_P(AdBlockDATCacheBrowserTest, DATCacheLoadedOnRestart) {
     })) << "Timeout waiting for cached DAT files to load";
   }
 
-  WaitForAdBlockServiceThreads();
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
 
   // Custom rule should be active (from cached DAT when enabled, from prefs
   // when disabled).
@@ -157,7 +155,7 @@ IN_PROC_BROWSER_TEST_P(AdBlockDATCacheBrowserTest, DATCacheLoadedOnRestart) {
     return service->IsFilterListLoadedForTesting(true);
   })) << "Timeout waiting for filter set to load";
 
-  WaitForAdBlockServiceThreads();
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
 
   // Re-navigate to reset page-level counters.
   NavigateToURL(tab_url);
@@ -205,9 +203,7 @@ class AdBlockDATCacheCorruptBrowserTest : public AdBlockServiceTest {
                       "this is not a valid DAT file");
     }
 
-    brave_shields::SetupAdBlockServiceForTesting(
-        g_brave_browser_process->ad_block_service());
-    WaitForAdBlockServiceThreads();
+    ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   }
 
  private:
@@ -230,7 +226,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockDATCacheCorruptBrowserTest,
   InstallDefaultAdBlockComponent();
   UpdateAdBlockInstanceWithRules("||fallback-rule.com^");
 
-  WaitForAdBlockServiceThreads();
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
 
   // Filter list should have loaded (either via fallback from failed DAT or
   // from the component install).

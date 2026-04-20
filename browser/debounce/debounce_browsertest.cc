@@ -3,15 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "base/base64url.h"
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_content_browser_client.h"
+#include "brave/browser/brave_shields/ad_block_browser_test_helper.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
-#include "brave/components/brave_shields/content/test/ad_block_test_helper.h"
 #include "brave/components/brave_shields/content/test/engine_test_observer.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
@@ -113,10 +115,10 @@ class DebounceBrowserTest : public BaseLocalDataFilesBrowserTest {
     BaseLocalDataFilesBrowserTest::SetUp();
   }
 
-  void SetUpOnMainThread() override {
-    BaseLocalDataFilesBrowserTest::SetUpOnMainThread();
-    brave_shields::SetupAdBlockServiceForTesting(
-        g_brave_browser_process->ad_block_service());
+  void SetUpInProcessBrowserTestFixture() override {
+    BaseLocalDataFilesBrowserTest::SetUpInProcessBrowserTestFixture();
+    ad_block_test_helper_ =
+        std::make_unique<brave_shields::AdBlockBrowserTestHelper>();
   }
 
   // BaseLocalDataFilesBrowserTest overrides
@@ -183,6 +185,7 @@ class DebounceBrowserTest : public BaseLocalDataFilesBrowserTest {
   }
 
   void InitAdBlockForDebounce() {
+    ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
     auto source_provider =
         std::make_unique<brave_shields::TestFiltersProvider>("||blocked.com^");
     source_provider->RegisterAsSourceProvider(
@@ -203,6 +206,8 @@ class DebounceBrowserTest : public BaseLocalDataFilesBrowserTest {
   base::test::ScopedFeatureList scoped_feature_list_;
   std::vector<std::unique_ptr<brave_shields::TestFiltersProvider>>
       source_providers_;
+  std::unique_ptr<brave_shields::AdBlockBrowserTestHelper>
+      ad_block_test_helper_;
 };
 
 // Test simple redirection by query parameter.

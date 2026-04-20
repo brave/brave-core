@@ -84,6 +84,26 @@ source_set("brave_shields_impl") {
   }
 }
 
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "ad_block_browser_test_helper.cc",
+    "ad_block_browser_test_helper.h",
+  ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/browser:browser_process",
+    "//brave/components/brave_shields/content/browser",
+    "//components/keyed_service/content",
+    "//content/public/browser",
+  ]
+
+  public_deps = [ "//brave/components/brave_shields/content/test:test_support" ]
+}
+
 source_set("unit_tests") {
   testonly = true
 

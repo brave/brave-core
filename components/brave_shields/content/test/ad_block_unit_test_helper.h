@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_TEST_AD_BLOCK_TEST_HELPER_H_
-#define BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_TEST_AD_BLOCK_TEST_HELPER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_TEST_AD_BLOCK_UNIT_TEST_HELPER_H_
+#define BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_TEST_AD_BLOCK_UNIT_TEST_HELPER_H_
 
 namespace brave_shields {
 
@@ -18,4 +18,4 @@ void SetupAdBlockServiceForTesting(AdBlockService* ad_block_service);
 
 }  // namespace brave_shields
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_TEST_AD_BLOCK_TEST_HELPER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_TEST_AD_BLOCK_UNIT_TEST_HELPER_H_
