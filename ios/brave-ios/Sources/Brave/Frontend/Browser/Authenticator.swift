@@ -38,36 +38,15 @@ class Authenticator {
     protectionSpace: URLProtectionSpace,
     previousFailureCount: Int
   ) async throws -> LoginData {
-    var credential = credential
     // If there have already been too many login attempts, we'll just fail.
     if previousFailureCount >= Authenticator.maxAuthenticationAttempts {
       throw LoginDataError.tooManyAttemptsFailed
     }
 
-    // If we were passed an initial set of credentials from iOS, try and use them.
-    if let proposed = credential {
-      if !(proposed.user?.isEmpty ?? true) {
-        if previousFailureCount == 0 {
-          return LoginData(credentials: proposed, protectionSpace: protectionSpace)
-        }
-      } else {
-        credential = nil
-      }
-    }
-
-    // If we have some credentials, we'll show a prompt with them.
-    if let credential = credential {
-      return try await promptForUsernamePassword(
-        viewController,
-        credentials: credential,
-        protectionSpace: protectionSpace
-      )
-    }
-
-    // No credentials, so show an empty prompt.
-    return try await self.promptForUsernamePassword(
+    // Show a prompt, possibly prefilled with credentials
+    return try await promptForUsernamePassword(
       viewController,
-      credentials: nil,
+      credentials: credential,
       protectionSpace: protectionSpace
     )
   }
