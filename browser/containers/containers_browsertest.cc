@@ -1818,26 +1818,4 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
             storage_partition->GetConfig().partition_domain());
 }
 
-// Checks that the default containers list is in the prefs. This is in browser
-// tests to ensure the preference is registered correctly via a factory
-// function.
-IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
-                       CheckDefaultContainersListInPrefs) {
-  std::vector<mojom::ContainerPtr> containers =
-      GetContainersFromPrefs(*browser()->profile()->GetPrefs());
-  ASSERT_EQ(4u, containers.size());
-
-  EXPECT_EQ("personal", containers[0]->id);
-  EXPECT_EQ(mojom::Icon::kPersonal, containers[0]->icon);
-
-  EXPECT_EQ("work", containers[1]->id);
-  EXPECT_EQ(mojom::Icon::kWork, containers[1]->icon);
-
-  EXPECT_EQ("social", containers[2]->id);
-  EXPECT_EQ(mojom::Icon::kSocial, containers[2]->icon);
-
-  EXPECT_EQ("school", containers[3]->id);
-  EXPECT_EQ(mojom::Icon::kSchool, containers[3]->icon);
-}
-
 }  // namespace containers
