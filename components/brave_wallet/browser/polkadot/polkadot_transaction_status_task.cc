@@ -143,6 +143,21 @@ void PolkadotTransactionStatusTask::OnGetFinalizedBlockHeader(
 }
 
 void PolkadotTransactionStatusTask::FetchCurrentBlock() {
+  // Fetch the block with number curr_block_num_ from the connected relay/para
+  // chain. The RPC API only permits: block_num -> block_hash -> block
+  // so we first begin by grabbing the block hash, then we can use that to grab
+  // the entire block. We grab the entire block for the extrinsics array. Once
+  // we have the block, we can search the extrinsics for the one we're
+  // interested in. The index where the extrinsic is located is what we use to
+  // probe the block's events for the extrinsic status and the true fee paid by
+  // the sender.
+  //
+  // If curr_block_num_ exceeds the finalized head, the extrinsic hasn't
+  // been included yet but may be in the future (kNotFinalized).
+  // If curr_block_num_ reaches max_block_num_ (signing block + mortality),
+  // the extrinsic was not found (kNotFound). This is because it was dropped by
+  // the mempool.
+  // Otherwise, begin the hash → block request chain below.
   if (curr_block_num_ > finalized_block_num_) {
     return std::move(callback_).Run(
         base::ok(std::pair(PolkadotTransactionStatus::kNotFinalized, 0)));
