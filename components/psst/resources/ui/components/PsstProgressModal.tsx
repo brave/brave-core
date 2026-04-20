@@ -45,7 +45,6 @@ interface OptionStatus {
 }
 
 export interface PsstProgressModalState {
-  commonState: SettingState
   siteName: string
   optionsStatuses: OptionStatus[] | undefined
 }
@@ -53,23 +52,42 @@ export interface PsstProgressModalState {
 export const PsstProgressModal = () => {
   const psstDialogContext = usePsstDialogAPI()
   const { api } = psstDialogContext
-
-  const [commonState, setCommonState] = React.useState<SettingState>(
-    SettingState.None,
-  )
+  
   const [optionsStatuses, setOptionsStatuses] = React.useState<OptionStatus[]>()
+
+  const commonState: SettingState = (() => {
+    if (!optionsStatuses) return SettingState.None
+
+    const allDone = optionsStatuses.every(
+      (option) =>
+        option.settingState === SettingState.Failed
+        || option.settingState === SettingState.Completed,
+    )
+    
+    if (!allDone) {
+      const hasProgress = optionsStatuses.some(
+        (option) => option.settingState === SettingState.Progress
+      )
+      return hasProgress ? SettingState.Progress : SettingState.None
+    }
+
+    const hasFailures = optionsStatuses.some(
+      (option) => option.settingState === SettingState.Failed,
+    )
+    return hasFailures
+      ? SettingState.Failed
+      : SettingState.Completed
+  })()
 
   // Subscribe to API state endpoints (data is pushed via events)
   // Add defensive checks for api
   const settingsData = api.useCurrentSetSettingsCardData()
-  const requestStatus = api.useCurrentOnSetRequestDone()
-  const completionStatus = api.useCurrentOnSetCompleted()
+  const requestStatus = api.useCurrentOnSetRequestStatus()
   const { performPrivacyTuning } = api.usePerformPrivacyTuning()
 
   // Extract specific values to avoid object reference issues in useEffect dependencies
   const settingCardData = settingsData.data?.[0]
   const siteName = settingCardData?.siteName || ''
-  const [appliedChecks, completionErrors] = completionStatus?.data || []
   const [requestUid, requestError] = requestStatus?.data || []
 
   // Handle settings data updates
@@ -113,17 +131,6 @@ export const PsstProgressModal = () => {
       return updatedOptions
     })
   }, [requestUid, requestError])
-
-  // Handle completion status updates
-  React.useEffect(() => {
-    if (completionErrors) {
-      setCommonState(SettingState.Failed)
-    }
-
-    if (appliedChecks) {
-      setCommonState(SettingState.Completed)
-    }
-  }, [appliedChecks, completionErrors])
 
   const handleSettingItemCheck = React.useCallback(
     (uid: string, checked: boolean) => {
@@ -171,8 +178,6 @@ export const PsstProgressModal = () => {
       setOptionsStatuses(newOptionsStatuses)
     }
 
-    setCommonState(SettingState.Progress)
-
     performPrivacyTuning([enabledUids])
   }, [optionsStatuses, performPrivacyTuning])
 
@@ -201,13 +206,12 @@ export const PsstProgressModal = () => {
       <SettingsCard
         title={siteName}
         progressModelState={{
-          commonState,
           siteName,
           optionsStatuses,
         }}
         onItemChecked={handleSettingItemCheck}
       />
-      {commonState !== SettingState.Completed ? (
+      {commonState !== SettingState.Failed ? (
         <RightAlignedItem>
           <PsstDlgButton
             kind='outline'

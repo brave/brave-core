@@ -165,22 +165,12 @@ export function createMockPsstDialogAPI(
         console.log(
           `[Mock] Simulate request done for URL: ${item.uid} with error: ${hasError ? 'Failed to update setting' : 'Success'}`,
         )
-        dialogHandler.onSetRequestDone(
+        dialogHandler.onSetRequestStatus(
           item.uid,
           hasError ? 'Failed to update setting' : null,
         )
       }, Math.random() * requestDelay)
     }
-
-    // Simulate completion
-    setTimeout(() => {
-      const appliedChecks = allUids.filter((uid) => !errorUids.includes(uid))
-      const errors = errorUids.filter((uid) => allUids.includes(uid))
-      console.log(
-        `[Mock] Simulate completion with applied checks: ${appliedChecks} and errors: ${errors}`,
-      )
-      dialogHandler.onSetCompleted(appliedChecks, errors)
-    }, requestDelay + 500)
   }
   console.log('[Mock] Created API:', api)
 

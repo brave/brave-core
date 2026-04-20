@@ -35,8 +35,7 @@ export function createPsstDialogApi(
         Mojom.PsstConsentDialogInterface,
         {
           setSettingsCardData(settingCardData: Mojom.SettingCardData) {},
-          onSetRequestDone(url: string, error: string) {},
-          onSetCompleted(appliedChecks: string[], errors: string[]) {},
+          onSetRequestStatus(url: string, error: string) {},
         },
         (observer) => {
           dialogHandler = observer

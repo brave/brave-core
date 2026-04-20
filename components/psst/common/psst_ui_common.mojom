@@ -38,6 +38,5 @@ struct SettingCardData {
 // Handler for the backend to UI calls
 interface PsstConsentDialog {
     SetSettingsCardData(SettingCardData scd);
-    OnSetRequestDone(string uid, string? error);
-    OnSetCompleted(array<string> applied_checks, array<string> errors);
+    OnSetRequestStatus(string uid, string? error);
 };
