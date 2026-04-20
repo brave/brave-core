@@ -858,7 +858,7 @@ public class SearchViewController: UIViewController, LoaderListener {
       RecentSearch.addItem(type: .website, text: localSearchQuery, websiteUrl: url.absoluteString)
     }
     searchDelegate?.searchViewController(self, didSelectURL: url)
-    recordQuickSearchActionP3A(engine: engine)
+    recordQuickSearchActionP3A(option: .searchEngine(engine))
   }
 
   @objc func didClickSettingsButton() {
@@ -867,7 +867,7 @@ public class SearchViewController: UIViewController, LoaderListener {
 
   @objc func didClickLeoButton() {
     submitSearchQueryToAIChat()
-    recordQuickSearchActionP3A(engine: nil)
+    recordQuickSearchActionP3A(option: .leo)
   }
 
   @objc func onShowMorePressed() {
@@ -1267,10 +1267,18 @@ private enum QuickSearchP3AAnswer: Int, CaseIterable {
   case other = 11
 }
 
+private enum P3AQuickSearchOption {
+  case leo
+  case searchEngine(OpenSearchEngine)
+}
+
 extension SearchViewController {
-  func recordQuickSearchActionP3A(engine: OpenSearchEngine?) {
-    var answer: QuickSearchP3AAnswer = .leo
-    if let engine {
+  fileprivate func recordQuickSearchActionP3A(option: P3AQuickSearchOption) {
+    let answer: QuickSearchP3AAnswer
+    switch option {
+    case .leo:
+      answer = .leo
+    case .searchEngine(let engine):
       if let engineID = engine.engineID, !engine.isCustomEngine {
         let isDefaultEngine =
           dataSource.searchEngines?.isEngineDefault(
@@ -1299,36 +1307,25 @@ extension SearchViewController {
             answer = .other
           }
         }
-      } else if engine.isCustomEngine {
-        if engine.shortName.caseInsensitiveCompare("Youtube") == .orderedSame {
-          answer = .youtube
-        } else {
-          answer = .other
-        }
+      } else if engine.isCustomEngine,
+        engine.shortName.caseInsensitiveCompare("Youtube") == .orderedSame
+      {
+        answer = .youtube
       } else {
         answer = .other
       }
     }
-    var storage = P3ATimedStorage<Int>.quickSearchMostUsedStorage(for: answer)
-    storage.append(value: 1)
-
-    let maxCount =
-      QuickSearchP3AAnswer.allCases
-      .map { P3ATimedStorage<Int>.quickSearchMostUsedStorage(for: $0).combinedValue }
-      .max() ?? 0
-    let currentCount = P3ATimedStorage<Int>.quickSearchMostUsedStorage(for: answer).combinedValue
-
-    let mostUsedAnswer: QuickSearchP3AAnswer
-    if currentCount == maxCount {
-      // Current engine is tied — prefer it
-      mostUsedAnswer = answer
-    } else {
-      mostUsedAnswer =
-        QuickSearchP3AAnswer.allCases.max { a, b in
-          P3ATimedStorage<Int>.quickSearchMostUsedStorage(for: a).combinedValue
-            < P3ATimedStorage<Int>.quickSearchMostUsedStorage(for: b).combinedValue
-        } ?? answer
-    }
+    var storages = Dictionary(
+      uniqueKeysWithValues: QuickSearchP3AAnswer.allCases.map {
+        ($0, P3ATimedStorage<Int>.quickSearchMostUsedStorage(for: $0))
+      }
+    )
+    storages[answer]?.append(value: 1)
+    let maxCount = storages.values.map(\.combinedValue).max() ?? 0
+    let mostUsedAnswer =
+      storages[answer]?.combinedValue == maxCount
+      ? answer
+      : storages.max { $0.value.combinedValue < $1.value.combinedValue }?.key ?? answer
     UmaHistogramEnumeration("Brave.Search.QuickMostUsedAction", sample: mostUsedAnswer)
   }
 }
