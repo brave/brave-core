@@ -1,7 +1,7 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/p3a/p3a_core_metrics.h"
 
@@ -42,8 +42,7 @@ enum class WindowUsageStats {
 };
 
 const char* GetPrefNameForProfile(Profile* profile) {
-  if (profile->IsIncognitoProfile() &&
-      !profile->IsTor()) {
+  if (profile->IsIncognitoProfile() && !profile->IsTor()) {
     return kLastTimeIncognitoUsed;
   }
   return nullptr;
@@ -69,6 +68,16 @@ BraveWindowTracker::~BraveWindowTracker() = default;
 
 void BraveWindowTracker::CreateInstance(PrefService* local_state) {
   g_brave_windows_tracker_instance = new BraveWindowTracker(local_state);
+}
+
+bool BraveWindowTracker::HasInstance() {
+  return g_brave_windows_tracker_instance != nullptr;
+}
+
+void BraveWindowTracker::ClearInstance() {
+  CHECK(g_brave_windows_tracker_instance);
+  delete g_brave_windows_tracker_instance;
+  g_brave_windows_tracker_instance = nullptr;
 }
 
 void BraveWindowTracker::RegisterPrefs(PrefRegistrySimple* registry) {
