@@ -5,12 +5,15 @@
 
 import * as React from 'react'
 import styled from 'styled-components'
+
 import Checkbox from '@brave/leo/react/checkbox'
-import Ring from '@brave/leo/react/progressRing'
 import Icon from '@brave/leo/react/icon'
-import { PsstProgressModalState, SettingState } from './PsstProgressModal'
+import Ring from '@brave/leo/react/progressRing'
 import { color, font } from '@brave/leo/tokens/css/variables'
+
 import Flex from '$web-common/Flex'
+
+import { PsstProgressModalState, SettingState } from './PsstProgressModal'
 
 // Styled components
 const SettingGrid = styled.div`
@@ -59,7 +62,7 @@ const SettingText = styled.span`
   font: ${font.default.regular};
   color: ${color.text.primary};
 `
-const IconContainer = styled.div`
+const DummyIconContainer = styled.div`
   width: 32px;
   height: 32px;
   border-radius: 4px;
@@ -84,7 +87,7 @@ const SettingsCard: React.FC<Props> = ({
   return (
     <SettingGrid>
       <SettingGridHeaderRow>
-        <IconContainer />
+        <DummyIconContainer />
         <div>
           <SettingsGridBoldText>{title}</SettingsGridBoldText>
         </div>
