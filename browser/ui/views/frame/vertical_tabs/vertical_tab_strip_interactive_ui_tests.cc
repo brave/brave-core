@@ -41,22 +41,22 @@ class VerticalTabStripDragAndDropInteractiveUITest
     RunScheduledLayouts();
   }
 
-  void AppendTab(Browser* b) { chrome::AddTabAt(b, GURL(), -1, true); }
-
-  TabStrip* GetTabStrip(Browser* b) {
+  TabStrip* GetTabStrip(BrowserWindowInterface* b) {
     return BrowserView::GetBrowserViewForBrowser(b)
         ->horizontal_tab_strip_for_testing();
   }
 
-  Tab* GetTabAt(Browser* b, int index) { return GetTabStrip(b)->tab_at(index); }
+  Tab* GetTabAt(BrowserWindowInterface* b, int index) {
+    return GetTabStrip(b)->tab_at(index);
+  }
 
   gfx::Point GetCenterPointInScreen(views::View* view) {
     return view->GetBoundsInScreen().CenterPoint();
   }
 
-  void PressTabAt(Browser* browser, int index) {
+  void PressTabAt(BrowserWindowInterface* b, int index) {
     ASSERT_TRUE(ui_test_utils::SendMouseMoveSync(
-        GetCenterPointInScreen(GetTabAt(browser, index))));
+        GetCenterPointInScreen(GetTabAt(b, index))));
     ASSERT_TRUE(ui_test_utils::SendMouseEventsSync(ui_controls::LEFT,
                                                    ui_controls::DOWN));
   }
@@ -81,7 +81,7 @@ class VerticalTabStripDragAndDropInteractiveUITest
     EXPECT_TRUE(base::test::RunUntil([&]() { return moved; }));
   }
 
-  bool IsDraggingTabStrip(Browser* b) {
+  bool IsDraggingTabStrip(BrowserWindowInterface* b) {
     return GetTabStrip(b)->GetDragContext()->GetDragController() != nullptr;
   }
 
@@ -99,7 +99,7 @@ class VerticalTabStripDragAndDropInteractiveUITest
 IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropInteractiveUITest,
                        DragTabToReorder) {
   // Pre-conditions ------------------------------------------------------------
-  AppendTab(browser());
+  chrome::AddTabAt(browser(), GURL(), -1, true);
 
   auto* widget_delegate_view =
       browser_view()->vertical_tab_strip_widget_delegate_view();
@@ -152,7 +152,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropInteractiveUITest,
 IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropInteractiveUITest,
                        DragTabToDetach) {
   // Pre-conditions ------------------------------------------------------------
-  AppendTab(browser());
+  chrome::AddTabAt(browser(), GURL(), -1, true);
 
   // Drag a tab out of tab strip to create browser -----------------------------
   GetTabStrip(browser())->StopAnimating();  // Drag-and-drop doesn't start when
