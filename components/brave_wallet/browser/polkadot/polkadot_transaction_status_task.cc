@@ -14,7 +14,7 @@
 namespace brave_wallet {
 
 template <class R, class T>
-std::optional<size_t> Position(R&& r, const T& val) {
+std::optional<size_t> FindPosition(R&& r, const T& val) {
   size_t i = 0;
   for (const auto& v : r) {
     if (v == val) {
@@ -203,7 +203,7 @@ void PolkadotTransactionStatusTask::OnGetBlockForStatus(
     return HandleError(WalletInternalErrorMessage());
   }
 
-  auto idx = Position(block->extrinsics, extrinsic_hex_);
+  auto idx = FindPosition(block->extrinsics, extrinsic_hex_);
   if (idx.has_value()) {
     extrinsic_idx_ = idx;
     GetPolkadotRpc()->GetEvents(
