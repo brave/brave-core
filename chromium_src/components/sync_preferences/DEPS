@@ -1,6 +1,7 @@
 include_rules = [
   "+brave/components/containers/buildflags",
   "+brave/components/containers/core/browser",
+  "+brave/components/email_aliases/buildflags/buildflags.h",
   "+brave/components/email_aliases/pref_names.h",
   "+components/search_engines",
 ]

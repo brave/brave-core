@@ -15,11 +15,9 @@
 #include "base/notreached.h"
 #include "base/types/to_address.h"
 #include "brave/app/brave_command_ids.h"
-#include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
-#include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
@@ -31,7 +29,7 @@
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/email_aliases/features.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -94,6 +92,12 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/browser/email_aliases/email_aliases_service_factory.h"
+#include "brave/browser/ui/email_aliases/email_aliases_controller.h"
+#include "brave/components/email_aliases/features.h"
 #endif
 
 namespace {
@@ -346,11 +350,13 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY, true);
   UpdateCommandEnabled(IDC_EXPORT_ALL_BOOKMARKS, true);
 
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   UpdateCommandEnabled(
       IDC_SHOW_EMAIL_ALIASES,
       email_aliases::features::IsEmailAliasesEnabled() &&
           email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
               browser_->profile()));
+#endif
 
   if (browser_->is_type_normal()) {
     // Delete these when upstream enables by default.
@@ -731,9 +737,11 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_SHOW_APPS_PAGE:
       brave::ShowAppsPage(&*browser_);
       break;
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
     case IDC_SHOW_EMAIL_ALIASES:
       browser_->GetFeatures().email_aliases_controller()->OpenSettingsPage();
       break;
+#endif
     case IDC_WINDOW_GROUP_UNGROUPED_TABS:
       brave::GroupUngroupedTabs(&*browser_);
       break;

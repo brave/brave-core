@@ -17,7 +17,7 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/debounce/core/common/features.h"
-#include "brave/components/email_aliases/features.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/google_sign_in_permission/features.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/playlist/core/common/features.h"
@@ -37,6 +37,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/components/email_aliases/features.h"
 #endif
 
 // CHROMIUM_SRC_INTERNAL_USE
@@ -69,12 +73,21 @@
 #define BRAVE_VPN_FLAG
 #endif
 
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+// CHROMIUM_SRC_INTERNAL_USE
+#define EMAIL_ALIASES_FLAG &email_aliases::features::kEmailAliases,
+#else
+// CHROMIUM_SRC_INTERNAL_USE
+#define EMAIL_ALIASES_FLAG
+#endif
+
 // clang-format off
 #define kForceWebContentsDarkMode kForceWebContentsDarkMode,                   \
     BRAVE_AI_CHAT_FLAGS                                                        \
     BRAVE_NEW_TAB_PAGE_AD_FLAG                                                 \
     BRAVE_WEB_DISCOVERY_FLAG                                                   \
     BRAVE_VPN_FLAG                                                             \
+    EMAIL_ALIASES_FLAG                                                         \
     &brave_rewards::features::kBraveRewards,                                   \
     &brave_search_conversion::features::kOmniboxBanner,                        \
     &playlist::features::kPlaylist,                                            \
@@ -97,7 +110,6 @@
     &ntp_background_images::features::kBraveNTPBrandedWallpaperSurveyPanelist, \
     &brave_shields::features::kBraveShredFeature,                              \
     &brave_origin::features::kBraveOrigin,                                     \
-    &email_aliases::features::kEmailAliases,                                   \
     &features::kBraveCustomSearchEngines
 
 // clang-format on
@@ -108,7 +120,7 @@
 #undef BRAVE_NEW_TAB_PAGE_AD_FLAG
 #undef BRAVE_WEB_DISCOVERY_FLAG
 #undef BRAVE_VPN_FLAG
-#undef BRAVE_WALLET_FLAG
+#undef EMAIL_ALIASES_FLAG
 
 namespace chrome {
 namespace android {

@@ -5,7 +5,11 @@
 
 #include "brave/components/brave_account/features.h"
 
+#include "brave/components/email_aliases/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 #include "brave/components/email_aliases/features.h"
+#endif
 
 namespace brave_account::features {
 
@@ -17,8 +21,11 @@ BASE_FEATURE(kBraveAccount, base::FEATURE_DISABLED_BY_DEFAULT);
 // - the explicit kBraveAccount feature flag is enabled (dev/testing), OR
 // - a dependent feature (e.g. Email Aliases) requires it
 bool IsBraveAccountEnabled() {
-  return base::FeatureList::IsEnabled(kBraveAccount) ||
-         email_aliases::features::IsEmailAliasesEnabled();
+  return base::FeatureList::IsEnabled(kBraveAccount)
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+         || email_aliases::features::IsEmailAliasesEnabled()
+#endif
+      ;
 }
 
 const base::Feature& BraveAccountFeatureForTesting() {

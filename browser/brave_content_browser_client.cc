@@ -80,8 +80,7 @@
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
 #include "brave/components/de_amp/browser/de_amp_body_handler.h"
 #include "brave/components/debounce/content/browser/debounce_navigation_throttle.h"
-#include "brave/components/email_aliases/email_aliases.mojom.h"
-#include "brave/components/email_aliases/features.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/global_privacy_control/global_privacy_control_utils.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_throttle.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
@@ -160,7 +159,6 @@
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page_ui.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
-#include "brave/browser/ui/webui/email_aliases/email_aliases_panel_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
@@ -311,8 +309,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_news/common/features.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
-#include "brave/components/email_aliases/email_aliases.mojom.h"
-#include "brave/components/email_aliases/features.h"
 #include "components/omnibox/browser/searchbox.mojom.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 
@@ -335,6 +331,12 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_OMAHA4)
 #include "brave/browser/brave_browser_main_extra_parts_p3a.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/browser/ui/webui/email_aliases/email_aliases_panel_ui.h"
+#include "brave/components/email_aliases/email_aliases.mojom.h"
+#include "brave/components/email_aliases/features.h"
 #endif
 
 namespace {
@@ -645,10 +647,12 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
     registry.ForWebUI<BraveSettingsUI>()
         .Add<commands::mojom::CommandsService>();
   }
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   if (email_aliases::features::IsEmailAliasesEnabled()) {
     registry.ForWebUI<BraveSettingsUI>()
         .Add<email_aliases::mojom::EmailAliasesService>();
   }
+#endif
   if (brave_account::features::IsBraveAccountEnabled()) {
     registry.ForWebUI<BraveSettingsUI>()
         .Add<brave_account::mojom::Authentication>()
@@ -765,11 +769,14 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
         .Add<brave_account::mojom::DialogController>()
         .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
   }
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   if (email_aliases::features::IsEmailAliasesEnabled()) {
     registry.ForWebUI<EmailAliasesPanelUI>()
         .Add<email_aliases::mojom::EmailAliasesService>()
         .Add<email_aliases::mojom::EmailAliasesPanelHandler>();
   }
+#endif
 
 #else   // !BUILDFLAG(IS_ANDROID)
   registry.ForWebUI<NewTabTakeoverUI>()

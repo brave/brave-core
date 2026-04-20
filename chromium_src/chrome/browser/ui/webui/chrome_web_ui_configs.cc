@@ -11,6 +11,7 @@
 #include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "content/public/browser/webui_config_map.h"
 
@@ -36,10 +37,8 @@
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page_ui.h"
-#include "brave/browser/ui/webui/email_aliases/email_aliases_panel_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_ui.h"
-#include "brave/components/email_aliases/features.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
@@ -62,6 +61,11 @@
 
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 #include "brave/browser/ui/webui/brave_origin_startup/brave_origin_startup_ui.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/browser/ui/webui/email_aliases/email_aliases_panel_ui.h"
+#include "brave/components/email_aliases/features.h"
 #endif
 
 namespace {
@@ -121,9 +125,6 @@ void RegisterChromeWebUIConfigs() {
   if (brave_account::features::IsBraveAccountEnabled()) {
     map.AddWebUIConfig(std::make_unique<BraveAccountUIDesktopConfig>());
   }
-  if (email_aliases::features::IsEmailAliasesEnabled()) {
-    map.AddWebUIConfig(std::make_unique<EmailAliasesPanelUIConfig>());
-  }
 #else   // !BUILDFLAG(IS_ANDROID)
   map.AddWebUIConfig(std::make_unique<NewTabTakeoverUIConfig>());
   if (brave_account::features::IsBraveAccountEnabled()) {
@@ -145,5 +146,11 @@ void RegisterChromeWebUIConfigs() {
 
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
   map.AddWebUIConfig(std::make_unique<BraveOriginStartupUIConfig>());
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+  if (email_aliases::features::IsEmailAliasesEnabled()) {
+    map.AddWebUIConfig(std::make_unique<EmailAliasesPanelUIConfig>());
+  }
 #endif
 }

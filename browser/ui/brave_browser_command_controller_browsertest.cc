@@ -19,7 +19,7 @@
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
-#include "brave/components/email_aliases/features.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -60,6 +60,10 @@
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/components/email_aliases/features.h"
 #endif
 
 #if defined(TOOLKIT_VIEWS)
@@ -657,6 +661,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithSideBySideTest,
   EXPECT_TRUE(chrome::IsCommandEnabled(browser(), IDC_SWAP_SPLIT_VIEW));
 }
 
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 class BraveBrowserCommandControllerWithEmailAliasesTest
     : public BraveBrowserCommandControllerTest {
  public:
@@ -683,3 +688,4 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithEmailAliasesTest,
       chrome::GetSettingsUrl("email-aliases"),
       browser()->tab_strip_model()->GetActiveWebContents()->GetVisibleURL());
 }
+#endif  // BUILDFLAG(ENABLE_EMAIL_ALIASES)
