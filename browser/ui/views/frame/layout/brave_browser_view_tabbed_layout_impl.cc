@@ -208,7 +208,19 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
     if (tab_layout) {
       tab_layout->bounds.Offset(0, offset);
     }
-    int content_top = BraveContentsViewUtil::kMarginThickness;
+
+    auto* title_bar = views().focus_mode_title_bar.get();
+    const bool title_bar_visible = title_bar && title_bar->GetVisible();
+    int content_top = title_bar_visible
+                          ? title_bar->GetPreferredSize().height()
+                          : BraveContentsViewUtil::kMarginThickness;
+    if (title_bar) {
+      const gfx::Rect browser_bounds = views().browser_view->GetLocalBounds();
+      layout.AddChild(title_bar,
+                      title_bar_visible
+                          ? gfx::Rect(0, 0, browser_bounds.width(), content_top)
+                          : gfx::Rect());
+    }
     if (delegate().IsInfobarVisible()) {
       auto* infobar_layout = layout.GetLayoutFor(views().infobar_container);
       CHECK(infobar_layout);
@@ -235,6 +247,11 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
     }
   } else if (views().top_container_background) {
     layout.AddChild(views().top_container_background, gfx::Rect());
+  }
+
+  if (!delegate().GetTopOverlayRevealFraction() &&
+      views().focus_mode_title_bar) {
+    layout.AddChild(views().focus_mode_title_bar, gfx::Rect());
   }
 
   // Mirroring all views that affected by vertical tab alignment in RTL mode

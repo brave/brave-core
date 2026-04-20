@@ -69,6 +69,7 @@ class BraveBrowser;
 class BraveHelpBubbleHostView;
 class BraveMultiContentsView;
 class ContentsLayoutManager;
+class FocusModeTitleBarView;
 class SidebarContainerView;
 class SidePanelEntry;
 class VerticalTabStripWidgetDelegateView;
@@ -292,6 +293,7 @@ class BraveBrowserView : public BrowserView,
   raw_ptr<views::View> contents_background_view_ = nullptr;
   raw_ptr<views::View> top_container_background_view_ = nullptr;
   raw_ptr<views::View> vertical_tab_strip_host_view_ = nullptr;
+  raw_ptr<FocusModeTitleBarView> focus_mode_title_bar_view_ = nullptr;
   raw_ptr<VerticalTabStripWidgetDelegateView, DanglingUntriaged>
       vertical_tab_strip_widget_delegate_view_ = nullptr;
 

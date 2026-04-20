@@ -23,6 +23,7 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
+#include "brave/browser/ui/focus_mode/focus_mode_features.h"
 #include "brave/browser/ui/page_info/features.h"
 #include "brave/browser/ui/sidebar/buildflags/buildflags.h"
 #include "brave/browser/ui/sidebar/features.h"
@@ -35,6 +36,7 @@
 #include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_host_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
+#include "brave/browser/ui/views/frame/focus_mode_title_bar_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
@@ -805,6 +807,14 @@ void BraveBrowserView::AddedToWidget() {
     top_reveal_controller_->AddRevealableView(horizontal_tab_strip_region_view_,
                                               {.paint_to_layer = true});
     top_reveal_controller_->AddObserver(this);
+
+    if (base::FeatureList::IsEnabled(features::kBraveFocusModeTitleBar)) {
+      focus_mode_title_bar_view_ =
+          AddChildView(std::make_unique<FocusModeTitleBarView>());
+      focus_mode_title_bar_view_->SetVisible(false);
+      GetBrowserViewLayout()->set_focus_mode_title_bar(
+          focus_mode_title_bar_view_);
+    }
   }
 
   if (vertical_tab_strip_host_view_) {
@@ -862,6 +872,15 @@ void BraveBrowserView::OnFocusModeToggled(bool enabled) {
   if (top_reveal_controller_) {
     top_reveal_controller_->SetEnabled(enabled);
   }
+  if (focus_mode_title_bar_view_) {
+    focus_mode_title_bar_view_->SetVisible(enabled);
+    if (enabled) {
+      focus_mode_title_bar_view_->SetWebContents(
+          browser()->tab_strip_model()->GetActiveWebContents());
+    } else {
+      focus_mode_title_bar_view_->SetWebContents(nullptr);
+    }
+  }
   UpdateRoundedCornersUI();
 #if BUILDFLAG(IS_MAC)
   // When focus mode turns off, restore traffic lights to fully visible.
@@ -872,7 +891,6 @@ void BraveBrowserView::OnFocusModeToggled(bool enabled) {
 }
 
 void BraveBrowserView::OnEdgeRevealFractionChanged(double fraction) {
-  LOG(ERROR) << "[OnEdgeRevealFractionChanged] fraction=" << fraction;
   DeprecatedLayoutImmediately();
 #if BUILDFLAG(IS_MAC)
   // Delay the traffic-light fade-in until the slide is nearly complete so the
@@ -1189,6 +1207,10 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
 
   if (top_reveal_controller_) {
     top_reveal_controller_->RevealTemporarily(base::Seconds(2));
+  }
+
+  if (focus_mode_title_bar_view_ && focus_mode_title_bar_view_->GetVisible()) {
+    focus_mode_title_bar_view_->SetWebContents(new_contents);
   }
 
   // Update UI after active tab changing is handled because

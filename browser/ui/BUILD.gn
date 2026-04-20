@@ -601,6 +601,8 @@ source_set("ui") {
       "views/frame/brave_window_frame_graphic.h",
       "views/frame/edge_reveal_controller.cc",
       "views/frame/edge_reveal_controller.h",
+      "views/frame/focus_mode_title_bar_view.cc",
+      "views/frame/focus_mode_title_bar_view.h",
       "views/omnibox/brave_omnibox_popup_view_views.cc",
       "views/omnibox/brave_omnibox_popup_view_views.h",
       "views/omnibox/brave_omnibox_result_view.cc",
