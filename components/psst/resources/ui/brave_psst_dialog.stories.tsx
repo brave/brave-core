@@ -20,21 +20,18 @@ const DEFAULT_ERROR_UIDS: string[] = []
 const DEFAULT_ITEMS: Mojom.SettingCardDataItem[] = []
 
 function PsstDialogStory({
-  autoLoadSettings = true,
   requestDelay = 1000,
   errorUids = DEFAULT_ERROR_UIDS,
   siteName = 'example.com',
   items = DEFAULT_ITEMS,
 }: {
-  readonly autoLoadSettings?: boolean
   readonly requestDelay?: number
   readonly errorUids?: string[]
   readonly siteName?: string
   readonly items?: Mojom.SettingCardDataItem[]
 }) {
   const mockAPI = React.useMemo(() => {
-    return createMockPsstDialogAPI({
-      autoLoadSettings,
+    const result = createMockPsstDialogAPI({
       requestDelay,
       errorUids,
       settingsCardData: {
@@ -43,7 +40,12 @@ function PsstDialogStory({
       },
       onCloseDialog: () => console.log('[Storybook] Dialog closed'),
     })
-  }, [autoLoadSettings, requestDelay, errorUids, siteName, items])
+    return {
+      api: result.api,
+      dialogHandler: result.dialogHandler,
+      initialData: result.initialData,
+    }
+  }, [requestDelay, errorUids, siteName, items])
 
   return (
     <Flex
@@ -73,10 +75,6 @@ export default {
       control: 'text',
       description: 'Name of the site to configure privacy settings for',
     },
-    autoLoadSettings: {
-      control: 'boolean',
-      description: 'Whether to automatically load settings data',
-    },
     requestDelay: {
       control: { type: 'range', min: 100, max: 5000, step: 100 },
       description: 'Simulated network delay in milliseconds',
@@ -96,27 +94,22 @@ type Story = StoryObj<typeof PsstDialogStory>
 export const Default: Story = {
   args: {
     siteName: 'example.com',
-    autoLoadSettings: true,
     requestDelay: 1000,
     items: [
       {
         uid: '1',
-        url: 'https://example.com/cookies',
         description: 'Manage cookie preferences and tracking protection',
       },
       {
         uid: '2',
-        url: 'https://example.com/analytics',
         description: 'Control analytics and data collection settings',
       },
       {
         uid: '3',
-        url: 'https://example.com/ads',
         description: 'Configure advertising preferences',
       },
       {
         uid: '4',
-        url: 'https://example.com/location',
         description: 'Manage location data sharing',
       },
     ],
@@ -130,27 +123,22 @@ export const Default: Story = {
 export const WithErrors: Story = {
   args: {
     siteName: 'example.com',
-    autoLoadSettings: true,
     requestDelay: 1500,
     items: [
       {
         uid: '1',
-        url: 'https://example.com/cookies',
         description: 'Manage cookie preferences and tracking protection',
       },
       {
         uid: '2',
-        url: 'https://problematic-site.com/analytics',
         description: 'Control analytics and data collection settings',
       },
       {
         uid: '3',
-        url: 'https://example.com/ads',
         description: 'Configure advertising preferences',
       },
       {
         uid: '4',
-        url: 'https://problematic-site.com/location',
         description: 'Manage location data sharing',
       },
     ],

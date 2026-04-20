@@ -14,7 +14,10 @@ export interface Props {
 
 export default function PsstDlgContainer(props: Readonly<Props>) {
   return (
-    <PsstDialogAPIProvider api={props.apiContext.api}>
+    <PsstDialogAPIProvider
+      api={props.apiContext.api}
+      initialData={props.apiContext.initialData}
+    >
       <PsstProgressModal />
     </PsstDialogAPIProvider>
   )

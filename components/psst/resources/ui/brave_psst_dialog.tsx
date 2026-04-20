@@ -14,25 +14,27 @@ import PsstDlgContainer from './containers/App'
 
 setIconBasePath('chrome://resources/brave-icons')
 
-function createBrowserPsstApi() {
+async function createBrowserPsstApi() {
   const consentHelper = new Mojom.PsstConsentHelperRemote()
-  const { api, dialogHandler } = createPsstDialogApi(consentHelper)
+  const { api, dialogHandler } = await createPsstDialogApi(consentHelper)
 
   const dialogHandlerReceiver = new Mojom.PsstConsentDialogReceiver(
     dialogHandler,
   )
 
-  Mojom.PsstConsentFactory.getRemote().createPsstConsentHandler(
-    consentHelper.$.bindNewPipeAndPassReceiver(),
-    dialogHandlerReceiver.$.bindNewPipeAndPassRemote(),
-  )
-
-  return { api, dialogHandler }
+  // Get the current site data
+  const { currentSiteData } =
+    await Mojom.PsstConsentFactory.getRemote().createPsstConsentHandler(
+      consentHelper.$.bindNewPipeAndPassReceiver(),
+      dialogHandlerReceiver.$.bindNewPipeAndPassRemote(),
+    )
+  return { api, dialogHandler, initialData: currentSiteData }
 }
 
-function initialize() {
+async function initialize() {
+  const apiContext = await createBrowserPsstApi()
   createRoot(document.getElementById('root')!).render(
-    <PsstDlgContainer apiContext={createBrowserPsstApi()} />,
+    <PsstDlgContainer apiContext={apiContext} />,
   )
 }
 

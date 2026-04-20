@@ -8,6 +8,7 @@ import { type PsstDialogAPI } from './psst_dialog_api'
 
 type PsstDialogContextProps = {
   api: PsstDialogAPI['api']
+  initialData: PsstDialogAPI['initialData']
 }
 
 export default function useProvidePsstDialogContext(
@@ -15,6 +16,7 @@ export default function useProvidePsstDialogContext(
 ) {
   return {
     api: props.api,
+    initialData: props.initialData,
   }
 }
 

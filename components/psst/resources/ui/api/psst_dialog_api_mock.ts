@@ -86,11 +86,6 @@ export interface MockPsstDialogAPIOptions {
   settingsCardData?: Partial<Mojom.SettingCardData>
 
   /**
-   * Whether to auto-trigger setting data on mount
-   */
-  autoLoadSettings?: boolean
-
-  /**
    * Simulate request processing delays (in ms)
    */
   requestDelay?: number
@@ -117,7 +112,6 @@ export function createMockPsstDialogAPI(
 ): PsstDialogAPI {
   const {
     settingsCardData = {},
-    autoLoadSettings = true,
     requestDelay = 1000,
     errorUids = [],
     onCloseDialog = () => console.log('[Mock] Dialog closed'),
@@ -179,16 +173,10 @@ export function createMockPsstDialogAPI(
     throw new Error('Failed to create mock API')
   }
 
-  // Auto-load settings if enabled
-  if (autoLoadSettings) {
-    setTimeout(() => {
-      console.log('[Mock] Auto-loading settings data:', finalSettingsData)
-      dialogHandler.setSettingsCardData(finalSettingsData)
-    }, 100)
-  }
-
+  const initialData: Mojom.SettingCardData = finalSettingsData
   return {
     api,
     dialogHandler,
-  } as PsstDialogAPI
+    initialData,
+  }
 }

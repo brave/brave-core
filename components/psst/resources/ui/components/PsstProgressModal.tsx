@@ -51,9 +51,10 @@ export interface PsstProgressModalState {
 
 export const PsstProgressModal = () => {
   const psstDialogContext = usePsstDialogAPI()
-  const { api } = psstDialogContext
-  
-  const [optionsStatuses, setOptionsStatuses] = React.useState<OptionStatus[]>()
+  const { api, initialData } = psstDialogContext
+
+  const [optionsStatuses, updateAllMatchingOptionsStatuses] =
+    React.useState<OptionStatus[]>()
 
   const commonState: SettingState = (() => {
     if (!optionsStatuses) return SettingState.None
@@ -63,10 +64,10 @@ export const PsstProgressModal = () => {
         option.settingState === SettingState.Failed
         || option.settingState === SettingState.Completed,
     )
-    
+
     if (!allDone) {
       const hasProgress = optionsStatuses.some(
-        (option) => option.settingState === SettingState.Progress
+        (option) => option.settingState === SettingState.Progress,
       )
       return hasProgress ? SettingState.Progress : SettingState.None
     }
@@ -74,44 +75,39 @@ export const PsstProgressModal = () => {
     const hasFailures = optionsStatuses.some(
       (option) => option.settingState === SettingState.Failed,
     )
-    return hasFailures
-      ? SettingState.Failed
-      : SettingState.Completed
+    return hasFailures ? SettingState.Failed : SettingState.Completed
   })()
 
-  // Subscribe to API state endpoints (data is pushed via events)
-  // Add defensive checks for api
-  const settingsData = api.useCurrentSetSettingsCardData()
   const requestStatus = api.useCurrentOnSetRequestStatus()
   const { performPrivacyTuning } = api.usePerformPrivacyTuning()
 
-  // Extract specific values to avoid object reference issues in useEffect dependencies
-  const settingCardData = settingsData.data?.[0]
-  const siteName = settingCardData?.siteName || ''
-  const [requestUid, requestError] = requestStatus?.data || []
+  const siteName = initialData ? initialData.siteName : ''
 
-  // Handle settings data updates
   React.useEffect(() => {
-    if (settingCardData) {
-      const optionStatusArray: OptionStatus[] = settingCardData.items.map(
-        (item) => ({
-          uid: item.uid,
-          description: item.description,
-          error: null,
-          checked: true,
-          disabled: false,
-          settingState: SettingState.Selection,
-        }),
-      )
-      setOptionsStatuses(optionStatusArray)
-    }
-  }, [settingCardData])
+    if (!initialData) return
+
+    console.log('[PsstProgressModal] Initializing with settings data:', {
+      initialSettingsData: initialData,
+    })
+
+    const optionStatusArray: OptionStatus[] = initialData.items.map((item) => ({
+      uid: item.uid,
+      description: item.description,
+      error: null,
+      checked: true,
+      disabled: false,
+      settingState: SettingState.Selection,
+    }))
+    updateAllMatchingOptionsStatuses(optionStatusArray)
+  }, [initialData])
+
+  const [requestUid, requestError] = requestStatus?.data || []
 
   // Handle request status updates
   React.useEffect(() => {
     if (!requestUid) return
 
-    setOptionsStatuses((prevOptionsStatuses) => {
+    updateAllMatchingOptionsStatuses((prevOptionsStatuses) => {
       if (!prevOptionsStatuses) return prevOptionsStatuses
 
       const index = prevOptionsStatuses.findIndex(
@@ -134,7 +130,7 @@ export const PsstProgressModal = () => {
 
   const handleSettingItemCheck = React.useCallback(
     (uid: string, checked: boolean) => {
-      setOptionsStatuses((prevOptionsStatuses) => {
+      updateAllMatchingOptionsStatuses((prevOptionsStatuses) => {
         if (!prevOptionsStatuses) return prevOptionsStatuses
 
         const index = prevOptionsStatuses.findIndex(
@@ -175,7 +171,7 @@ export const PsstProgressModal = () => {
           }
         },
       )
-      setOptionsStatuses(newOptionsStatuses)
+      updateAllMatchingOptionsStatuses(newOptionsStatuses)
     }
 
     performPrivacyTuning([enabledUids])
