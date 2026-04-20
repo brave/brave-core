@@ -54,6 +54,7 @@ android_resources("java_resources") {
     "java/res/color/brave_button_text_color.xml",
     "java/res/drawable/brave_action_button_bg.xml",
     "java/res/drawable/confirmation_dialog_shape.xml",
+    "java/res/layout/add_custom_search_engine_footer_item.xml",
     "java/res/layout/add_custom_search_engine_preference_layout.xml",
     "java/res/layout/confirmation_dialog_layout.xml",
     "java/res/layout/custom_search_engine_item.xml",

@@ -41,8 +41,10 @@ import org.chromium.ui.widget.Toast;
 import java.util.ArrayList;
 
 @NullMarked
-public class CustomSearchEngineAdapter
-        extends ListAdapter<String, CustomSearchEngineAdapter.CustomSearchEngineViewHolder> {
+public class CustomSearchEngineAdapter extends ListAdapter<String, RecyclerView.ViewHolder> {
+    private static final int VIEW_TYPE_ITEM = 0;
+    private static final int VIEW_TYPE_ADD = 1;
+
     private final Context mContext;
     private final @Nullable Profile mProfile;
     private final CustomSearchEnginesManager mCustomSearchEnginesManager;
@@ -82,9 +84,23 @@ public class CustomSearchEngineAdapter
             };
 
     @Override
-    public void onBindViewHolder(
-            CustomSearchEngineAdapter.CustomSearchEngineViewHolder customSearchEngineViewHolder,
-            int position) {
+    public int getItemCount() {
+        return super.getItemCount() + 1;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position == super.getItemCount() ? VIEW_TYPE_ADD : VIEW_TYPE_ITEM;
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof AddCustomSearchEngineViewHolder) {
+            holder.itemView.setOnClickListener(v -> openAddCustomSearchEngineFragment());
+            return;
+        }
+        CustomSearchEngineViewHolder customSearchEngineViewHolder =
+                (CustomSearchEngineViewHolder) holder;
         final String searchEngineKeyword = getItem(position);
 
         String displayName = getSearchEngineName(searchEngineKeyword);
@@ -111,6 +127,24 @@ public class CustomSearchEngineAdapter
             }
         }
         return null;
+    }
+
+    private void openAddCustomSearchEngineFragment() {
+        if (!(mContext instanceof FragmentActivity)) {
+            return;
+        }
+        FragmentActivity activity = (FragmentActivity) mContext;
+        Fragment hostFragment = activity.getSupportFragmentManager().findFragmentById(R.id.content);
+        if (!(hostFragment instanceof PreferenceFragmentCompat)
+                || !(activity
+                        instanceof PreferenceFragmentCompat.OnPreferenceStartFragmentCallback)) {
+            return;
+        }
+        AddCustomSearchEngineItemPreference addPref =
+                new AddCustomSearchEngineItemPreference(mContext);
+        addPref.setFragment(AddCustomSearchEnginePreferenceFragment.class.getName());
+        ((PreferenceFragmentCompat.OnPreferenceStartFragmentCallback) activity)
+                .onPreferenceStartFragment((PreferenceFragmentCompat) hostFragment, addPref);
     }
 
     private void openAddCustomSearchEngineFragment(String searchEngineKeyword) {
@@ -255,12 +289,17 @@ public class CustomSearchEngineAdapter
     }
 
     @Override
-    public CustomSearchEngineAdapter.CustomSearchEngineViewHolder onCreateViewHolder(
-            ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == VIEW_TYPE_ADD) {
+            View view =
+                    LayoutInflater.from(parent.getContext())
+                            .inflate(R.layout.add_custom_search_engine_footer_item, parent, false);
+            return new AddCustomSearchEngineViewHolder(view);
+        }
         View view =
                 LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.custom_search_engine_item, parent, false);
-        return new CustomSearchEngineAdapter.CustomSearchEngineViewHolder(view);
+        return new CustomSearchEngineViewHolder(view);
     }
 
     public static class CustomSearchEngineViewHolder extends RecyclerView.ViewHolder {
@@ -291,6 +330,12 @@ public class CustomSearchEngineAdapter
 
         public View getView() {
             return mView;
+        }
+    }
+
+    public static class AddCustomSearchEngineViewHolder extends RecyclerView.ViewHolder {
+        AddCustomSearchEngineViewHolder(View itemView) {
+            super(itemView);
         }
     }
 }
