@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/component_updater/registration.h"
+
 #include "base/functional/bind.h"
 
 #define RegisterComponentsForUpdate RegisterComponentsForUpdate_ChromiumImpl
@@ -55,7 +56,7 @@ void RegisterComponentsForUpdate() {
 #endif  // BUILDFLAG(IS_ANDROID)
   brave_user_agent::RegisterBraveUserAgentComponent(cus);
   local_ai::ManageLocalModelsComponentRegistration(cus);
-  query_filter::RegisterQueryFilterComponent(cus);
+  RegisterQueryFilterComponent(cus);
 }
 
 }  // namespace component_updater

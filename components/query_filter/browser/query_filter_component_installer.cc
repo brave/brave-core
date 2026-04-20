@@ -8,23 +8,22 @@
 #include <stdint.h>
 
 #include <array>
-#include <memory>
-#include <string>
 #include <vector>
 
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "base/functional/bind.h"
+#include "base/logging.h"
+#include "base/task/thread_pool.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
-#include "brave/components/query_filter/browser/query_filter_service.h"
+#include "brave/components/query_filter/browser/query_filter_data.h"
 #include "brave/components/query_filter/common/features.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
 
-namespace query_filter {
-
 namespace {
-
+constexpr char kQueryFilterJsonFile[] = "query-filter.json";
 inline constexpr char kQueryFilterComponentName[] = "Query Filter";
 
 // Component id and public key must match the signing key used in
@@ -38,35 +37,40 @@ inline constexpr std::array<uint8_t, 32> kQueryFilterComponentPublicKeySHA256 =
      0x7e, 0x95, 0x08, 0xd8, 0x7e, 0xf0, 0x7d, 0xdb, 0x29, 0x5f, 0xe0,
      0x2d, 0xeb, 0x55, 0x74, 0x59, 0x40, 0x0f, 0x17, 0x00, 0x51};
 
-class QueryFilterComponentInstallerPolicy
-    : public component_updater::ComponentInstallerPolicy {
- public:
-  QueryFilterComponentInstallerPolicy();
-  ~QueryFilterComponentInstallerPolicy() override;
+void LoadParseRulesFromDisk(const base::Version& version,
+                            const base::FilePath& install_dir) {
+  if (install_dir.empty()) {
+    return;
+  }
 
-  QueryFilterComponentInstallerPolicy(
-      const QueryFilterComponentInstallerPolicy&) = delete;
-  QueryFilterComponentInstallerPolicy& operator=(
-      const QueryFilterComponentInstallerPolicy&) = delete;
+  const base::FilePath& query_filter_path =
+      install_dir.AppendASCII(kQueryFilterJsonFile);
+  if (query_filter_path.empty()) {
+    return;
+  }
 
-  // component_updater::ComponentInstallerPolicy
-  bool SupportsGroupPolicyEnabledComponentUpdates() const override;
-  bool RequiresNetworkEncryption() const override;
-  update_client::CrxInstaller::Result OnCustomInstall(
-      const base::DictValue& manifest,
-      const base::FilePath& install_dir) override;
-  void OnCustomUninstall() override;
-  bool VerifyInstallation(const base::DictValue& manifest,
-                          const base::FilePath& install_dir) const override;
-  void ComponentReady(const base::Version& version,
-                      const base::FilePath& path,
-                      base::DictValue manifest) override;
-  base::FilePath GetRelativeInstallDir() const override;
-  void GetHash(std::vector<uint8_t>* hash) const override;
-  std::string GetName() const override;
-  update_client::InstallerAttributes GetInstallerAttributes() const override;
-  bool IsBraveComponent() const override;
-};
+  std::string query_filter_json_data;
+  if (!base::ReadFileToString(query_filter_path, &query_filter_json_data)) {
+    LOG(WARNING) << "Failed reading from " << query_filter_path.value();
+    return;
+  }
+
+  auto* query_filter_data = query_filter::QueryFilterData::GetInstance();
+  if (!query_filter_data) {
+    LOG(WARNING) << "QueryFilterData instance is not available";
+    return;
+  }
+
+  if (!query_filter_data->PopulateDataFromComponent(query_filter_json_data)) {
+    LOG(WARNING) << "Failed to populate data from component";
+  }
+
+  query_filter_data->UpdateVersion(version);
+}
+
+}  // namespace
+
+namespace component_updater {
 
 QueryFilterComponentInstallerPolicy::QueryFilterComponentInstallerPolicy() =
     default;
@@ -76,7 +80,7 @@ QueryFilterComponentInstallerPolicy::~QueryFilterComponentInstallerPolicy() =
 
 bool QueryFilterComponentInstallerPolicy::
     SupportsGroupPolicyEnabledComponentUpdates() const {
-  return true;
+  return false;
 }
 
 bool QueryFilterComponentInstallerPolicy::RequiresNetworkEncryption() const {
@@ -94,18 +98,20 @@ void QueryFilterComponentInstallerPolicy::OnCustomUninstall() {}
 
 void QueryFilterComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
-    const base::FilePath& path,
+    const base::FilePath& install_dir,
     base::DictValue manifest) {
-  // Notify the service that the component is ready.
-  if (QueryFilterService* service = QueryFilterService::GetInstance()) {
-    service->OnComponentReady(path);
-  }
+  VLOG(1) << "Component ready, version " << version.GetString() << " in "
+          << install_dir.value();
+
+  base::ThreadPool::PostTask(
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::BEST_EFFORT},
+      base::BindOnce(&LoadParseRulesFromDisk, version, install_dir));
 }
 
 bool QueryFilterComponentInstallerPolicy::VerifyInstallation(
     const base::DictValue& manifest,
     const base::FilePath& install_dir) const {
-  return true;
+  return base::PathExists(install_dir.AppendASCII(kQueryFilterJsonFile));
 }
 
 base::FilePath QueryFilterComponentInstallerPolicy::GetRelativeInstallDir()
@@ -132,11 +138,11 @@ bool QueryFilterComponentInstallerPolicy::IsBraveComponent() const {
   return true;
 }
 
-}  // namespace
-
 void RegisterQueryFilterComponent(
     component_updater::ComponentUpdateService* cus) {
-  if (!base::FeatureList::IsEnabled(features::kQueryFilterComponent) || !cus) {
+  if (!base::FeatureList::IsEnabled(
+          query_filter::features::kQueryFilterComponent) ||
+      !cus) {
     return;
   }
 
@@ -149,4 +155,4 @@ void RegisterQueryFilterComponent(
       }));
 }
 
-}  // namespace query_filter
+}  // namespace component_updater

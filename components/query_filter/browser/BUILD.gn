@@ -7,8 +7,8 @@ static_library("browser") {
   sources = [
     "query_filter_component_installer.cc",
     "query_filter_component_installer.h",
-    "query_filter_service.cc",
-    "query_filter_service.h",
+    "query_filter_data.cc",
+    "query_filter_data.h",
   ]
 
   public_deps = [ "//base" ]
@@ -25,7 +25,7 @@ source_set("unit_tests") {
 
   sources = [
     "query_filter_component_installer_unittest.cc",
-    "query_filter_service_unittest.cc",
+    "query_filter_data_unittest.cc",
   ]
 
   deps = [
