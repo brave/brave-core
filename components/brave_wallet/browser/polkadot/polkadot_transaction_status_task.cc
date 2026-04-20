@@ -158,6 +158,7 @@ void PolkadotTransactionStatusTask::FetchCurrentBlock() {
   // the extrinsic was not found (kNotFound). This is because it was dropped by
   // the mempool.
   // Otherwise, begin the hash → block request chain below.
+
   if (curr_block_num_ > finalized_block_num_) {
     return std::move(callback_).Run(
         base::ok(std::pair(PolkadotTransactionStatus::kNotFinalized, 0)));
@@ -200,10 +201,6 @@ void PolkadotTransactionStatusTask::OnGetBlockForStatus(
 
   if (!block) {
     return HandleError(WalletInternalErrorMessage());
-  }
-
-  if (extrinsic_idx_.has_value()) {
-    return;
   }
 
   auto idx = Position(block->extrinsics, extrinsic_hex_);
