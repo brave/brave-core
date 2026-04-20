@@ -52,8 +52,7 @@ export interface OptionStatus {
 }
 
 export const PsstProgressModal = () => {
-  const psstDialogContext = usePsstDialogAPI()
-  const { api, siteData } = psstDialogContext
+  const { api, siteData } = usePsstDialogAPI()
 
   const [optionsStatuses, updateAllMatchingOptionsStatuses] =
     React.useState<OptionStatus[]>()
@@ -80,7 +79,6 @@ export const PsstProgressModal = () => {
     return hasFailures ? SettingState.Failed : SettingState.Completed
   })()
 
-  const requestStatus = api.useCurrentOnSetRequestStatus()
   const { performPrivacyTuning } = api.usePerformPrivacyTuning()
 
   const siteName = siteData ? siteData.siteName : ''
@@ -99,10 +97,8 @@ export const PsstProgressModal = () => {
     updateAllMatchingOptionsStatuses(optionStatusArray)
   }, [siteData])
 
-  const [requestUid, requestError] = requestStatus?.data || []
-
   // Handle request status updates
-  React.useEffect(() => {
+  api.useOnSetRequestStatus((requestUid, requestError) => {
     if (!requestUid) return
 
     updateAllMatchingOptionsStatuses((prevOptionsStatuses) => {
@@ -124,7 +120,7 @@ export const PsstProgressModal = () => {
 
       return updatedOptions
     })
-  }, [requestUid, requestError])
+  })
 
   const handleSettingItemCheck = React.useCallback(
     (uid: string, checked: boolean) => {

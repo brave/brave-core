@@ -211,7 +211,6 @@ function createStorybookAPI(options: MockPsstDialogAPIOptions) {
 
   mockConsentHelper.performPrivacyTuning = async (performForUids: string[]) => {
     for (const item of finalSettingsData.items) {
-      console.log(`[Mock] Simulating request for URL: ${item.uid}`)
       // Simulate request status update
       setTimeout(() => {
         const hasError = errorUids.includes(item.uid)

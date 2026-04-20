@@ -22,8 +22,11 @@ interface PsstConsentFactory {
 
 // Handler for the UI to backend calls
 interface PsstConsentHelper {
+    // Performs privacy tuning for selected UIDs
     PerformPrivacyTuning(array<string> perform_for_uids);
+    // Prepares a report detailing which settings could not be tuned and why
     ReportFailedContent();
+    // Closes the consent dialog
     CloseDialog();
 };
 
@@ -39,5 +42,7 @@ struct SettingCardData {
 
 // Handler for the backend to UI calls
 interface PsstConsentDialog {
+    // Informs the dialog about the current status of the tuning process
+    // for a given setting.
     OnSetRequestStatus(string uid, string? error);
 };
