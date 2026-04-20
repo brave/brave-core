@@ -28,7 +28,7 @@ async function createBrowserPsstApi() {
       consentHelper.$.bindNewPipeAndPassReceiver(),
       dialogHandlerReceiver.$.bindNewPipeAndPassRemote(),
     )
-  return { api, dialogHandler, siteData: currentSiteData }
+  return { api, siteData: currentSiteData }
 }
 
 async function initialize() {

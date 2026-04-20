@@ -7,11 +7,11 @@ import * as React from 'react'
 import { Meta, StoryObj } from '@storybook/react'
 import { setIconBasePath } from '@brave/leo/react/icon'
 
-import { createMockPsstDialogAPI } from './api/psst_dialog_api_mock'
 import * as Mojom from 'gen/brave/components/psst/common/psst_ui_common.mojom.m.js'
 import Flex from '$web-common/Flex'
 import { PsstDialogAPIProvider } from './api/psst_dialog_api_context'
 import { PsstProgressModal } from './components/PsstProgressModal'
+import { createPsstDialogApi } from './api/psst_dialog_api'
 
 // Set icon path for Storybook
 setIconBasePath('/icons')
@@ -32,7 +32,7 @@ function PsstDialogStory({
   readonly items?: Mojom.SettingCardDataItem[]
 }) {
   const mockAPI = React.useMemo(() => {
-    const result = createMockPsstDialogAPI({
+    const result = createStorybookAPI({
       requestDelay,
       errorUids,
       settingsCardData: {
@@ -152,4 +152,76 @@ export const WithErrors: Story = {
     ],
     errorUids: ['2', '4'],
   },
+}
+
+export interface MockPsstDialogAPIOptions {
+  /**
+   * Initial settings card data to display
+   */
+  settingsCardData?: Partial<Mojom.SettingCardData>
+
+  /**
+   * Simulate request processing delays (in ms)
+   */
+  requestDelay?: number
+
+  /**
+   * Simulate errors for specific UIDs
+   */
+  errorUids?: string[]
+
+  /**
+   * Custom report failed content behavior
+   */
+  onReportFailedContent: () => void
+
+  /**
+   * Custom close dialog behavior
+   */
+  onCloseDialog: () => void
+}
+
+function createStorybookAPI(options: MockPsstDialogAPIOptions) {
+  const {
+    settingsCardData = {},
+    requestDelay = 1000,
+    errorUids = [],
+    onReportFailedContent,
+    onCloseDialog,
+  } = options
+
+  const finalSettingsData: Mojom.SettingCardData = {
+    siteName: settingsCardData.siteName || 'example.com',
+    items: settingsCardData.items || [],
+  }
+
+  const mockConsentHelper: Mojom.PsstConsentHelperInterface = {
+    async performPrivacyTuning(performForUids: string[]) {},
+
+    async closeDialog() {
+      onCloseDialog()
+    },
+
+    async reportFailedContent() {
+      onReportFailedContent()
+    },
+  }
+
+  const { api, dialogHandler } = createPsstDialogApi(mockConsentHelper)
+
+  mockConsentHelper.performPrivacyTuning = async (performForUids: string[]) => {
+    for (const item of finalSettingsData.items) {
+      console.log(`[Mock] Simulating request for URL: ${item.uid}`)
+      // Simulate request status update
+      setTimeout(() => {
+        const hasError = errorUids.includes(item.uid)
+        dialogHandler.onSetRequestStatus(
+          item.uid,
+          hasError ? 'Failed to update setting' : null,
+        )
+      }, Math.random() * requestDelay)
+    }
+  }
+
+  return { api, dialogHandler, siteData: finalSettingsData }
 }
