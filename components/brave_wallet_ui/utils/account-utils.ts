@@ -13,6 +13,7 @@ import {
   BitcoinTestnetKeyringIds,
   ZCashTestnetKeyringIds,
   CardanoTestnetKeyringIds,
+  PolkadotTestnetKeyringIds,
 } from '../constants/types'
 
 // constants
@@ -216,6 +217,9 @@ export const getAccountTypeDescription = (accountId: BraveWallet.AccountId) => {
       }
       return getLocale('braveWalletCardanoAccountDescription')
     case BraveWallet.CoinType.DOT:
+      if (PolkadotTestnetKeyringIds.includes(accountId.keyringId)) {
+        return getLocale('braveWalletPolkadotTestnetAccountDescription')
+      }
       return getLocale('braveWalletPolkadotMainnetAccountDescription')
     default:
       assertNotReached(`Unknown coin ${accountId.coin}`)

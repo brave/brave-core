@@ -755,6 +755,10 @@ export const ZCashTestnetKeyringIds = [BraveWallet.KeyringId.kZCashTestnet]
 
 export const CardanoTestnetKeyringIds = [BraveWallet.KeyringId.kCardanoTestnet]
 
+export const PolkadotTestnetKeyringIds = [
+  BraveWallet.KeyringId.kPolkadotTestnet,
+]
+
 /**
  * Should match BraveWallet.CoinType defined with "as const" to allow for use
  * as a type-guard.
