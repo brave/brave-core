@@ -55,7 +55,7 @@ class PolkadotTransactionStatusTask {
       KeyringService& keyring_service,
       mojom::AccountIdPtr sender_account_id,
       std::string chain_id,
-      std::vector<uint8_t> extrinsic,
+      base::span<const uint8_t> extrinsic,
       uint32_t block_num,
       uint32_t mortality_period);
 
@@ -64,7 +64,7 @@ class PolkadotTransactionStatusTask {
                                 KeyringService& keyring_service,
                                 mojom::AccountIdPtr sender_account_id,
                                 std::string chain_id,
-                                std::vector<uint8_t> extrinsic,
+                                base::span<const uint8_t> extrinsic,
                                 uint32_t block_num,
                                 uint32_t mortality_period);
 

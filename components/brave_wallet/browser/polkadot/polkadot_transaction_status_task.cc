@@ -31,7 +31,7 @@ PolkadotTransactionStatusTask::Create(
     KeyringService& keyring_service,
     mojom::AccountIdPtr sender_account_id,
     std::string chain_id,
-    std::vector<uint8_t> extrinsic,
+    base::span<const uint8_t> extrinsic,
     uint32_t block_num,
     uint32_t mortality_period) {
   static constexpr uint32_t kMaxMortalityPeriod = 1024;
@@ -51,7 +51,7 @@ PolkadotTransactionStatusTask::PolkadotTransactionStatusTask(
     KeyringService& keyring_service,
     mojom::AccountIdPtr sender_account_id,
     std::string chain_id,
-    std::vector<uint8_t> extrinsic,
+    base::span<const uint8_t> extrinsic,
     uint32_t block_num,
     uint32_t mortality_period)
     : polkadot_wallet_service_(polkadot_wallet_service),
@@ -245,7 +245,7 @@ void PolkadotTransactionStatusTask::OnGetEvents(
     // the peer. This is a hard guarantee in Polkadot because including an
     // extrinsic in a finalized block incurs a base_fee, which is non-zero.
     return std::move(callback_).Run(
-        std::pair(PolkadotTransactionStatus::kInvalidResponse, 0));
+        base::ok(std::pair(PolkadotTransactionStatus::kInvalidResponse, 0)));
   }
 
   std::move(callback_).Run(

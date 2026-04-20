@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_test_utils.h"
 
 #include "base/base_paths.h"
+#include "base/containers/map_util.h"
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -592,7 +593,7 @@ bool PolkadotMockRpc::HandleBlockHashRequest(
     const network::ResourceRequest& req,
     const base::DictValue& req_body) {
   if (const auto* method = req_body.FindString("method");
-      *method == "chain_getBlockHash") {
+      method && *method == "chain_getBlockHash") {
     if (const auto* params_list = req_body.FindList("params")) {
       CHECK(!params_list->empty());
 
@@ -600,12 +601,12 @@ bool PolkadotMockRpc::HandleBlockHashRequest(
       CHECK(
           base::HexStringToUInt(params_list->front().GetString(), &block_num));
 
-      auto pos = block_hash_map_.find(block_num);
-      if (pos != block_hash_map_.end()) {
+      const auto* pos = base::FindOrNull(block_hash_map_, block_num);
+      if (pos) {
         url_loader_factory_->AddResponse(
             req.url.spec(),
             absl::StrFormat(R"({"jsonrpc":"2.0","id":18,"result":"%s"})",
-                            pos->second));
+                            *pos));
         return true;
       }
     }
@@ -650,7 +651,7 @@ base::DictValue PolkadotBlockToJson(const PolkadotBlock& chain_block) {
 bool PolkadotMockRpc::HandleBlockRequest(const network::ResourceRequest& req,
                                          const base::DictValue& req_body) {
   if (const auto* method = req_body.FindString("method");
-      *method == "chain_getBlock") {
+      method && *method == "chain_getBlock") {
     if (const auto* params_list = req_body.FindList("params")) {
       CHECK(!params_list->empty());
 
@@ -683,7 +684,7 @@ bool PolkadotMockRpc::HandleBlockRequest(const network::ResourceRequest& req,
 bool PolkadotMockRpc::HandleEventsRequest(const network::ResourceRequest& req,
                                           const base::DictValue& req_body) {
   if (const auto* method = req_body.FindString("method");
-      *method == "state_getStorage") {
+      method && *method == "state_getStorage") {
     if (const auto* params_list = req_body.FindList("params")) {
       CHECK(!params_list->empty());
 
