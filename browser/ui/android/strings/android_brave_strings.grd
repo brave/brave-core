@@ -3246,7 +3246,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Leo AI
     </message>
     <message name="IDS_MENU_ORIGIN" desc="Brave Origin settings menu item text">
-      Origin
+      Brave Origin
     </message>
     <message name="IDS_ORIGIN_REWARDS_TOGGLE" desc="Brave Origin rewards toggle title">
       Rewards
@@ -3258,7 +3258,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Email aliases
     </message>
     <message name="IDS_ORIGIN_LEO_AI_TOGGLE" desc="Brave Origin Leo AI toggle title">
-      AI
+      Leo AI
     </message>
     <message name="IDS_ORIGIN_NEWS_TOGGLE" desc="Brave Origin News toggle title">
       News
@@ -3285,10 +3285,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Customize your browser while still supporting Brave
     </message>
     <message name="IDS_ORIGIN_DESCRIPTION_BODY" desc="Brave Origin description body text">
-      Brave Origin is a paid version of the browser for users who don't need all the features that support Brave as a business, but still want the privacy that only Brave offers. Origin users will continue to benefit from our industry-leading privacy, adblock, and speed (via Shields), as well as regular software updates, Chromium patches, and security and privacy improvements. Origin will remove most other features from the browser.
-    </message>
-    <message name="IDS_ORIGIN_DESCRIPTION_NOTE" desc="Brave Origin description note about Search Premium">
-      Note that a Brave Origin purchase will also include access to Brave Search Premium, as Origin will remove ads from the Brave Search results page.
+      Brave Origin is a paid version of the browser for users who don't need all the features that support Brave as a business, but still want the privacy that only Brave offers. Origin users will continue to benefit from our industry-leading privacy, adblock, and speed (via Shields), as well as regular software updates, Chromium patches, and security and privacy improvements.
     </message>
     <message name="IDS_ORIGIN_CHANGING_BRAVE_FEATURES_TITLE" desc="Title for the snackbar shown when toggling a Brave Origin feature">
       Changing Brave features
@@ -3303,7 +3300,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Disabling features
     </message>
     <message name="IDS_ORIGIN_CHANGING_BRAVE_FEATURES_MESSAGE_POST_PURCHASE" desc="Message for the snackbar shown right after Origin purchase while credentials are being fetched">
-      Enabling or disabling a Brave feature requires a browser restart to apply changes. Please tap <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Restart now<ph name="END_BOLD">&lt;/b&gt;</ph> once Origin has finished updating.
+      Enabling or disabling a Brave feature requires a browser restart to apply changes. Please tap <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Restart now<ph name="END_BOLD">&lt;/b&gt;</ph> once Brave Origin has finished updating.
     </message>
     <message name="IDS_ORIGIN_RESET_DIALOG_MESSAGE" desc="Confirmation message shown when the user taps Reset to defaults in Brave Origin settings">
       Are you sure you want to reset all settings to default?
@@ -3718,7 +3715,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Mobile bookmarks
     </message>
     <message name="IDS_BRAVE_ORIGIN_PREMIUM" desc="Title for Origin Premium">
-      Origin
+      Brave Origin
     </message>
     <message name="IDS_ORIGIN_BUY_NOW" desc="Buy now button for Brave Origin one-time purchase">
       Buy now
@@ -3733,13 +3730,13 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Maintain core adblock, privacy, &amp; speed
     </message>
     <message name="IDS_ORIGIN_PAYWALL_TEXT_4" desc="Brave Origin paywall text">
-      One-time purchase, no additional subscription cost
+      One-time purchase can be activated multiple times across all your devices
     </message>
     <message name="IDS_ORIGIN_ONE_TIME_PURCHASE" desc="Brave Origin one-time purchase plan label">
-      One Time Purchase
+      One-time purchase
     </message>
-    <message name="IDS_ORIGIN_GET_LOGIN_CODE" desc="Brave Origin get login code button text">
-      Get a login code
+    <message name="IDS_ORIGIN_GET_LOGIN_CODE" desc="Brave Origin Verify Brave Origin purchase button text">
+      Verify Brave Origin purchase
     </message>
     <!-- Password Manager backport -->
     <message name="IDS_PASSWORD_SETTINGS_SAVE_PASSWORDS" desc="Title for the checkbox toggling whether passwords are saved or not. [CHAR_LIMIT=32]">
