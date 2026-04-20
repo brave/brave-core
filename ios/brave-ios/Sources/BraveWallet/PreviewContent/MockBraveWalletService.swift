@@ -55,6 +55,15 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
     }
   }
 
+  func restoreWallet(
+    mnemonic: String,
+    password: String,
+    isLegacyEthSeedFormat: Bool,
+    completion: @escaping (Bool) -> Void
+  ) {
+    completion(true)
+  }
+
   func importFromExternalWallet(
     type: BraveWallet.ExternalWalletType,
     password: String,

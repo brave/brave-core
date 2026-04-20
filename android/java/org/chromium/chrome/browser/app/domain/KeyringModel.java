@@ -400,7 +400,7 @@ public class KeyringModel implements KeyringServiceObserver {
             @NonNull final Set<NetworkInfo> selectedNetworks,
             @NonNull final Callback1<Boolean> callback) {
         assertOnUiThread();
-        mKeyringService.restoreWallet(
+        mBraveWalletService.restoreWallet(
                 recoveryPhrase,
                 password,
                 legacyRestoreEnabled,

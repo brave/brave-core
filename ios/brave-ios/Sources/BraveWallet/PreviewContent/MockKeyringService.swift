@@ -151,20 +151,6 @@ class MockKeyringService: BraveWalletKeyringService {
     }
   }
 
-  func restoreWallet(
-    mnemonic: String,
-    password: String,
-    isLegacyEthSeedFormat: Bool,
-    completion: @escaping (Bool) -> Void
-  ) {
-    self.password = password
-    // Test store does not test phrase validity
-    observers.allObjects.forEach {
-      $0.walletRestored()
-    }
-    completion(true)
-  }
-
   func validatePassword(_ password: String, completion: @escaping (Bool) -> Void) {
     completion(password == self.password)
   }
