@@ -59,7 +59,6 @@ class MockModelServiceObserver : public ModelService::Observer {
 class ModelServiceTest : public ::testing::Test {
  public:
   void SetUp() override {
-    OSCryptMocker::SetUp();
     prefs::RegisterProfilePrefs(pref_service_.registry());
     prefs::RegisterProfilePrefsForMigration(pref_service_.registry());
     ModelService::RegisterProfilePrefs(pref_service_.registry());
@@ -75,7 +74,6 @@ class ModelServiceTest : public ::testing::Test {
   }
 
   void TearDown() override {
-    OSCryptMocker::TearDown();
     observer_.reset();
   }
 

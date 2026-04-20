@@ -7,12 +7,14 @@
 #define BRAVE_COMPONENTS_SYNC_SERVICE_BRAVE_SYNC_SERVICE_IMPL_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_sync/brave_sync_p3a.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "components/os_crypt/async/common/encryptor.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/sync/engine/sync_protocol_error.h"
 #include "components/sync/service/sync_service_impl.h"
@@ -88,6 +90,8 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
 
   BraveSyncAuthManager* GetBraveSyncAuthManager();
   SyncServiceCrypto* GetCryptoForTests();
+
+  void OnEncryptorReceived(os_crypt_async::Encryptor encryptor);
 
   void OnBraveSyncPrefsChanged(const std::string& path);
 
