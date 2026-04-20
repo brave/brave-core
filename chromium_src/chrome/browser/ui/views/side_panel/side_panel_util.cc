@@ -45,4 +45,9 @@ void SidePanelUtil::PopulateGlobalEntries(Browser* browser,
         base::NullCallback()));
   }
 #endif
+
+  // Brave has its own side panel header, so hide the built-in entry headers.
+  for (auto& entry : global_registry->entries()) {
+    entry->set_should_show_header(false);
+  }
 }
