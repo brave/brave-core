@@ -76,7 +76,6 @@ source_set("test_utils") {
   deps = [
     ":service",
     "//base/test:test_support",
-    "//brave/components/email_aliases:mojom",
     "//mojo/public/cpp/bindings",
     "//url",
   ]

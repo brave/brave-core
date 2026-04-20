@@ -6,22 +6,19 @@
 import * as React from 'react'
 import { StubEmailAliasesService, demoData } from './utils/stubs'
 import { ManagePageConnected } from '../email_aliases'
-import {
-  AuthenticationStatus,
-  EmailAliasesServiceObserverInterface,
-} from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+import { EmailAliasesServiceObserverInterface } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+import type { AccountState } from 'gen/brave/components/brave_account/mojom/brave_account.mojom.m'
 
-const stubEmailAliasesServiceNoAccountInstance = new StubEmailAliasesService({
-  status: AuthenticationStatus.kUnauthenticated,
-  email: '',
-})
+const stubEmailAliasesServiceNoAccountInstance = new StubEmailAliasesService()
 
-const stubEmailAliasesServiceAccountReadyInstance = new StubEmailAliasesService(
-  {
-    status: AuthenticationStatus.kAuthenticated,
-    email: demoData.email,
-  },
-)
+const stubEmailAliasesServiceAccountReadyInstance =
+  new StubEmailAliasesService()
+
+const loggedOutState = { loggedOut: {} } as AccountState
+
+const loggedInState = {
+  loggedIn: { email: demoData.email },
+} as AccountState
 
 const bindNoAccountObserver = (
   observer: EmailAliasesServiceObserverInterface,
@@ -43,6 +40,7 @@ export const SignInPage = () => {
       // @ts-expect-error https://github.com/brave/brave-browser/issues/48960
       emailAliasesService={stubEmailAliasesServiceNoAccountInstance}
       bindObserver={bindNoAccountObserver}
+      accountStateOverride={loggedOutState}
     />
   )
 }
@@ -53,6 +51,7 @@ export const ManageAliasesPage = () => {
       // @ts-expect-error https://github.com/brave/brave-browser/issues/48960
       emailAliasesService={stubEmailAliasesServiceAccountReadyInstance}
       bindObserver={bindAccountReadyObserver}
+      accountStateOverride={loggedInState}
     />
   )
 }

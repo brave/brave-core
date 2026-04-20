@@ -43,12 +43,8 @@ namespace email_aliases {
 
 using ::testing::_;
 
-using AuthenticationStatus = email_aliases::mojom::AuthenticationStatus;
-
 class AliasObserver : public mojom::EmailAliasesServiceObserver {
  public:
-  void OnAuthStateChanged(mojom::AuthStatePtr) override {}
-
   void OnAliasesUpdated(std::vector<mojom::AliasPtr> aliases) override {
     ++alias_updates;
     last_aliases = std::move(aliases);
@@ -167,7 +163,6 @@ class EmailAliasesAPITest : public ::testing::Test {
     service_ = std::make_unique<EmailAliasesService>(
         brave_account_auth_->BindAndGetRemote(),
         url_loader_factory_.GetSafeWeakWrapper(), prefs_);
-    email_aliases::test::AuthStateObserver::Setup(service_.get(), true);
     service_->GetAuth()->SetAuthEmailForTesting("test@login.com");
 
     mojo::PendingRemote<mojom::EmailAliasesServiceObserver> remote;

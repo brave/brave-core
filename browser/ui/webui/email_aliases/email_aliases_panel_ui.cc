@@ -5,9 +5,12 @@
 
 #include "brave/browser/ui/webui/email_aliases/email_aliases_panel_ui.h"
 
+#include "base/check_deref.h"
+#include "brave/browser/brave_account/brave_account_service_factory.h"
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources.h"
 #include "brave/browser/ui/webui/settings/brave_settings_localized_strings_provider.h"
+#include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
@@ -68,6 +71,14 @@ void EmailAliasesPanelUI ::BindInterface(
         receiver) {
   panel_handler_.reset();
   panel_handler_.Bind(std::move(receiver));
+}
+
+void EmailAliasesPanelUI::BindInterface(
+    mojo::PendingReceiver<brave_account::mojom::Authentication> receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  auto* brave_account_service =
+      brave_account::BraveAccountServiceFactory::GetFor(profile);
+  CHECK_DEREF(brave_account_service).BindInterface(std::move(receiver));
 }
 
 void EmailAliasesPanelUI::OnAliasCreated(const std::string& email) {

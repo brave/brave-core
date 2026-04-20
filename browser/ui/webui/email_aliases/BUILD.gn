@@ -11,8 +11,11 @@ source_set("email_aliases") {
 
   deps = [
     "//base",
+    "//brave/browser/brave_account",
     "//brave/browser/email_aliases",
     "//brave/browser/resources/settings:resources",
+    "//brave/components/brave_account",
+    "//brave/components/brave_account/mojom",
     "//brave/components/constants",
     "//brave/components/resources:static_resources_grit",
     "//chrome/browser/profiles:profile",

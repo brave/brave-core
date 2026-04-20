@@ -766,9 +766,11 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
         .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
   }
   if (email_aliases::features::IsEmailAliasesEnabled()) {
-    registry.ForWebUI<EmailAliasesPanelUI>()
-        .Add<email_aliases::mojom::EmailAliasesService>()
-        .Add<email_aliases::mojom::EmailAliasesPanelHandler>();
+    auto email_aliases_panel =
+        registry.ForWebUI<EmailAliasesPanelUI>()
+            .Add<email_aliases::mojom::EmailAliasesService>()
+            .Add<email_aliases::mojom::EmailAliasesPanelHandler>()
+            .Add<brave_account::mojom::Authentication>();
   }
 
 #else   // !BUILDFLAG(IS_ANDROID)

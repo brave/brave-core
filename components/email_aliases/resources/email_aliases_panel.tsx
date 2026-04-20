@@ -13,8 +13,6 @@ import {
   EmailAliasModalResult,
 } from './content/email_aliases_modal'
 import {
-  AuthenticationStatus,
-  AuthState,
   Alias,
   EmailAliasesServiceInterface,
   EmailAliasesServiceObserverInterface,
@@ -25,39 +23,46 @@ import {
   MAX_ALIASES,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
-export const EmailAliasesPanelConnected = ({
+import type { AccountState } from 'gen/brave/components/brave_account/mojom/brave_account.mojom.m'
+import {
+  getLoggedInEmail,
+  isAccountLoggedIn,
+  useBraveAccountState,
+} from './email_aliases_account_state'
+
+function EmailAliasesPanelConnectedBody({
   emailAliasesService,
   emailAliasesPanelHandler,
   bindObserver,
+  accountState,
 }: {
   emailAliasesService: EmailAliasesServiceInterface
   emailAliasesPanelHandler: EmailAliasesPanelHandlerInterface
   bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
-}) => {
-  const [authState, setAuthState] = React.useState<AuthState>({
-    status: AuthenticationStatus.kStartup,
-    email: '',
-  })
+  accountState: AccountState | undefined
+}) {
+  const accountStateRef = React.useRef(accountState)
+  accountStateRef.current = accountState
+
   const [aliasesState, setAliasesState] = React.useState<Alias[]>([])
   React.useEffect(() => {
-    let status: AuthenticationStatus = AuthenticationStatus.kStartup
+    if (!isAccountLoggedIn(accountState)) {
+      setAliasesState([])
+    }
+  }, [accountState])
+
+  React.useEffect(() => {
     const observer: EmailAliasesServiceObserverInterface = {
       onAliasesUpdated: (aliases: Alias[]) => {
-        if (status !== AuthenticationStatus.kAuthenticated) {
+        if (!isAccountLoggedIn(accountStateRef.current)) {
           return
         }
         setAliasesState(aliases)
       },
-      onAuthStateChanged: (state: AuthState) => {
-        status = state.status
-        setAuthState(state)
-        if (status !== AuthenticationStatus.kAuthenticated) {
-          setAliasesState([])
-        }
-      },
     }
     return bindObserver(observer)
-  }, [])
+  }, [bindObserver])
+
   return (
     <EmailAliasModal
       aliases={aliasesState}
@@ -76,9 +81,59 @@ export const EmailAliasesPanelConnected = ({
         }
       }}
       editing={false}
-      mainEmail={authState.email}
+      mainEmail={getLoggedInEmail(accountState)}
       emailAliasesService={emailAliasesService}
       bubble
+    />
+  )
+}
+
+function EmailAliasesPanelConnectedLive({
+  emailAliasesService,
+  emailAliasesPanelHandler,
+  bindObserver,
+}: {
+  emailAliasesService: EmailAliasesServiceInterface
+  emailAliasesPanelHandler: EmailAliasesPanelHandlerInterface
+  bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
+}) {
+  const accountState = useBraveAccountState()
+  return (
+    <EmailAliasesPanelConnectedBody
+      emailAliasesService={emailAliasesService}
+      emailAliasesPanelHandler={emailAliasesPanelHandler}
+      bindObserver={bindObserver}
+      accountState={accountState}
+    />
+  )
+}
+
+export const EmailAliasesPanelConnected = ({
+  emailAliasesService,
+  emailAliasesPanelHandler,
+  bindObserver,
+  accountStateOverride,
+}: {
+  emailAliasesService: EmailAliasesServiceInterface
+  emailAliasesPanelHandler: EmailAliasesPanelHandlerInterface
+  bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
+  accountStateOverride?: AccountState | undefined
+}) => {
+  if (accountStateOverride !== undefined) {
+    return (
+      <EmailAliasesPanelConnectedBody
+        emailAliasesService={emailAliasesService}
+        emailAliasesPanelHandler={emailAliasesPanelHandler}
+        bindObserver={bindObserver}
+        accountState={accountStateOverride}
+      />
+    )
+  }
+  return (
+    <EmailAliasesPanelConnectedLive
+      emailAliasesService={emailAliasesService}
+      emailAliasesPanelHandler={emailAliasesPanelHandler}
+      bindObserver={bindObserver}
     />
   )
 }

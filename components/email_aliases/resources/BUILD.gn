@@ -27,6 +27,7 @@ transpile_web_ui("email_aliases_ui") {
   resource_name = "email_aliases"
 
   deps = [
+    "//brave/components/brave_account/mojom:mojom_js",
     "//brave/components/email_aliases:mojom_js",
     "//brave/components/resources:strings",
   ]
