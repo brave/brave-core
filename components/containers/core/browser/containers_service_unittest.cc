@@ -72,7 +72,7 @@ class ContainersServiceTest : public testing::Test {
  protected:
   void SetUp() override {
     feature_list_.InitAndEnableFeature(features::kContainers);
-    RegisterProfilePrefs({}, prefs_.registry());
+    RegisterProfilePrefs(prefs_.registry());
 
     auto delegate =
         std::make_unique<testing::NiceMock<MockContainersServiceDelegate>>();

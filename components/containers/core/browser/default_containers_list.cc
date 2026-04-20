@@ -3,9 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/containers/default_containers_list.h"
+#include "brave/components/containers/core/browser/default_containers_list.h"
 
-#include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -15,8 +14,9 @@
 namespace containers {
 
 std::vector<mojom::ContainerPtr> CreateDefaultContainersList() {
-  const auto* color_provider = ui::ColorProviderManager::Get().GetColorProviderFor(
-      ui::ColorProviderKey());
+  const auto* color_provider =
+      ui::ColorProviderManager::Get().GetColorProviderFor(
+          ui::ColorProviderKey());
   CHECK(color_provider);
 
   std::vector<mojom::ContainerPtr> default_containers;

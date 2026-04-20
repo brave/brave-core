@@ -15,16 +15,12 @@ source_set("containers") {
     "containers_service_delegate.h",
     "containers_service_factory.cc",
     "containers_service_factory.h",
-    "default_containers_list.cc",
-    "default_containers_list.h",
   ]
 
   deps = [
     "//brave/components/containers/content/browser",
     "//brave/components/containers/core/browser",
     "//brave/components/containers/core/common",
-    "//brave/components/resources:strings",
-    "//brave/ui/color:nala_color_id",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/tab_contents",
     "//chrome/browser/ui/tabs",
@@ -32,8 +28,6 @@ source_set("containers") {
     "//components/sessions",
     "//content/public/browser",
     "//crypto",
-    "//ui/base",
-    "//ui/color",
   ]
 }
 

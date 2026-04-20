@@ -5,18 +5,18 @@
 
 #include "brave/components/containers/core/browser/prefs_registration.h"
 
+#include "brave/components/containers/core/browser/default_containers_list.h"
 #include "brave/components/containers/core/browser/pref_names.h"
 #include "brave/components/containers/core/browser/prefs.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 
 namespace containers {
 
-void RegisterProfilePrefs(
-    const std::vector<mojom::ContainerPtr>& default_containers,
-    user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterListPref(prefs::kContainersList,
-                             ConvertContainersToListValue(default_containers),
-                             user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
+void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+  registry->RegisterListPref(
+      prefs::kContainersList,
+      ConvertContainersToListValue(CreateDefaultContainersList()),
+      user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
   registry->RegisterDictionaryPref(prefs::kLocallyUsedContainers);
 }
 
