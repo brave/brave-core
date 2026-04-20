@@ -47,7 +47,7 @@ mod ffi {
         pub send_amount_bytes: [u8; 16],
     }
 
-    #[derive(Clone, Copy)]
+    #[derive(Clone, Copy, PartialEq)]
     pub struct CxxPolkadotChainMetadata {
         pub system_pallet_index: u8,
         pub balances_pallet_index: u8,

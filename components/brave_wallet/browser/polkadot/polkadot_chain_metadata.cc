@@ -23,6 +23,11 @@ PolkadotChainMetadata& PolkadotChainMetadata::operator=(
 PolkadotChainMetadata& PolkadotChainMetadata::operator=(
     PolkadotChainMetadata&&) noexcept = default;
 
+bool PolkadotChainMetadata::operator==(
+    const PolkadotChainMetadata& other) const {
+  return chain_metadata_ == other.chain_metadata_;
+}
+
 std::optional<PolkadotChainMetadata> PolkadotChainMetadata::FromBytes(
     base::span<const uint8_t> metadata_bytes) {
   auto result = parse_chain_metadata_from_scale(

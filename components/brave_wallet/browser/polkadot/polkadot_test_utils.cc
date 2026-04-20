@@ -5,8 +5,13 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_test_utils.h"
 
+#include "base/base_paths.h"
+#include "base/files/file_util.h"
+#include "base/json/json_reader.h"
+#include "base/path_service.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -22,6 +27,22 @@ bool IsEmpty(
   return pubkey == decltype(pubkey){};
 }
 
+std::string ReadMetadataFixtureJsonImpl(std::string_view file_name) {
+  const auto fixture_path =
+      base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT)
+          .AppendASCII("brave")
+          .AppendASCII("components")
+          .AppendASCII("test")
+          .AppendASCII("data")
+          .AppendASCII("brave_wallet")
+          .AppendASCII("polkadot")
+          .AppendASCII("chain_metadata")
+          .AppendASCII(file_name);
+  std::string fixture_contents;
+  CHECK(base::ReadFileToString(fixture_path, &fixture_contents));
+  return fixture_contents;
+}
+
 }  // namespace
 
 base::DictValue RequestBodyToJsonDict(const network::ResourceRequest& req) {
@@ -31,6 +52,23 @@ base::DictValue RequestBodyToJsonDict(const network::ResourceRequest& req) {
   const auto& element = body_elems->at(0);
   auto sv = element.As<network::DataElementBytes>().AsStringView();
   return base::test::ParseJsonDict(sv);
+}
+
+std::string ReadMetadataFixtureJson(std::string_view file_name) {
+  return ReadMetadataFixtureJsonImpl(file_name);
+}
+
+std::vector<uint8_t> ReadMetadataFixture(std::string_view file_name) {
+  auto json =
+      base::JSONReader::ReadDict(ReadMetadataFixtureJsonImpl(file_name), 0);
+  CHECK(json.has_value());
+
+  const std::string* metadata_hex = json->FindString("result");
+  CHECK(metadata_hex);
+
+  std::vector<uint8_t> metadata_bytes;
+  CHECK(PrefixedHexStringToBytes(*metadata_hex, &metadata_bytes));
+  return metadata_bytes;
 }
 
 PolkadotMockRpc::PolkadotMockRpc(
@@ -269,46 +307,80 @@ void PolkadotMockRpc::RequestInterceptor(const network::ResourceRequest& req) {
 
 bool PolkadotMockRpc::HandleMetadataRequest(const network::ResourceRequest& req,
                                             const base::DictValue& req_body) {
-  if (req.url == GURL(testnet_url_)) {
-    if (const auto* str = req_body.FindString("method")) {
-      if (*str == "system_chain") {
-        if (use_invalid_metadata_) {
-          url_loader_factory_->AddResponse(req.url.spec(), R"(
-            { "jsonrpc": "2.0",
-              "error": { "code": 1234 },
-              "id": 1 })");
-        } else {
-          url_loader_factory_->AddResponse(req.url.spec(), R"(
-            { "jsonrpc": "2.0",
-              "result": "Westend",
-              "id": 1 })");
-        }
-        return true;
-      }
-    }
+  const auto* method = req_body.FindString("method");
+  if (!method) {
+    return false;
   }
 
-  if (req.url == GURL(mainnet_url_)) {
-    if (const auto* str = req_body.FindString("method")) {
-      if (*str == "system_chain") {
-        if (use_invalid_metadata_) {
-          url_loader_factory_->AddResponse(req.url.spec(), R"(
-            { "jsonrpc": "2.0",
-              "error": { "code": 4321 },
-              "id": 1 })");
-        } else {
-          url_loader_factory_->AddResponse(req.url.spec(), R"(
-            { "jsonrpc": "2.0",
-              "result": "Polkadot",
-              "id": 1 })");
-        }
+  if (*method == "state_getMetadata") {
+    if (use_invalid_metadata_) {
+      url_loader_factory_->AddResponse(req.url.spec(), R"(
+        { "jsonrpc": "2.0",
+          "error": { "code": 1234 },
+          "id": 1 })");
+      return true;
+    }
+
+    if (req.url == GURL(mainnet_url_)) {
+      url_loader_factory_->AddResponse(
+          req.url.spec(),
+          ReadMetadataFixtureJsonImpl("state_getMetadata_polkadot.json"));
+      return true;
+    }
+
+    if (req.url == GURL(testnet_url_)) {
+      url_loader_factory_->AddResponse(
+          req.url.spec(),
+          ReadMetadataFixtureJsonImpl("state_getMetadata_westend.json"));
+      return true;
+    }
+
+    return false;
+  }
+
+  if (*method == "system_chain") {
+    if (use_invalid_metadata_) {
+      if (req.url == GURL(testnet_url_)) {
+        url_loader_factory_->AddResponse(req.url.spec(), R"(
+          { "jsonrpc": "2.0",
+            "error": { "code": 1234 },
+            "id": 1 })");
         return true;
       }
+
+      if (req.url == GURL(mainnet_url_)) {
+        url_loader_factory_->AddResponse(req.url.spec(), R"(
+          { "jsonrpc": "2.0",
+            "error": { "code": 4321 },
+            "id": 1 })");
+        return true;
+      }
+
+      return false;
     }
+
+    if (req.url == GURL(testnet_url_)) {
+      url_loader_factory_->AddResponse(req.url.spec(), R"(
+        { "jsonrpc": "2.0",
+          "result": "Westend",
+          "id": 1 })");
+      return true;
+    }
+
+    if (req.url == GURL(mainnet_url_)) {
+      url_loader_factory_->AddResponse(req.url.spec(), R"(
+        { "jsonrpc": "2.0",
+          "result": "Polkadot",
+          "id": 1 })");
+      return true;
+    }
+
+    return false;
   }
 
   return false;
 }
+
 bool PolkadotMockRpc::HandleGetAccountInfoRequest(
     const network::ResourceRequest& req,
     const base::DictValue& req_body) {

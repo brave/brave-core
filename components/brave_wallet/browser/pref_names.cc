@@ -235,6 +235,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 kDefaultWalletAutoLockMinutes);
   registry->RegisterDictionaryPref(kBraveWalletEthAllowancesCache);
   registry->RegisterDictionaryPref(kBraveWalletLastTransactionSentTimeDict);
+  registry->RegisterDictionaryPref(kBraveWalletPolkadotChainMetadata);
   registry->RegisterTimePref(kBraveWalletLastDiscoveredAssetsAt, base::Time());
 
   registry->RegisterBooleanPref(kShouldShowWalletSuggestionBadge, true);

@@ -34,6 +34,16 @@ namespace {
 inline constexpr const char kBob[] =
     "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48";
 
+void AddValidMetadataResponses(
+    network::TestURLLoaderFactory& url_loader_factory,
+    const std::string& testnet_url,
+    const std::string& mainnet_url) {
+  url_loader_factory.AddResponse(
+      testnet_url, ReadMetadataFixtureJson("state_getMetadata_westend.json"));
+  url_loader_factory.AddResponse(
+      mainnet_url, ReadMetadataFixtureJson("state_getMetadata_polkadot.json"));
+}
+
 }  // namespace
 
 class PolkadotWalletServiceUnitTest : public testing::Test {
@@ -161,21 +171,13 @@ TEST_F(PolkadotWalletServiceUnitTest, Constructor) {
     // Both requests in the constructor complete successfully.
 
     auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-        *keyring_service_, *network_manager_,
+        *keyring_service_, *network_manager_, prefs_,
         url_loader_factory_.GetSafeWeakWrapper());
 
     UnlockWallet();
     EXPECT_EQ(url_loader_factory_.NumPending(), 2);
 
-    url_loader_factory_.AddResponse(testnet_url, R"(
-    { "jsonrpc": "2.0",
-      "result": "Westend",
-      "id": 1 })");
-
-    url_loader_factory_.AddResponse(mainnet_url, R"(
-    { "jsonrpc": "2.0",
-      "result": "Polkadot",
-      "id": 1 })");
+    AddValidMetadataResponses(url_loader_factory_, testnet_url, mainnet_url);
 
     // Do this twice to prove our fetching and caching layers work.
     for (int i = 0; i < 2; ++i) {
@@ -220,7 +222,7 @@ TEST_F(PolkadotWalletServiceUnitTest, Constructor) {
     // Both responses are invalid.
 
     auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-        *keyring_service_, *network_manager_,
+        *keyring_service_, *network_manager_, prefs_,
         url_loader_factory_.GetSafeWeakWrapper());
 
     UnlockWallet();
@@ -291,24 +293,32 @@ TEST_F(PolkadotWalletServiceUnitTest, ConcurrentChainNameFetches) {
   EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();
   EXPECT_EQ(url_loader_factory_.NumPending(), 2);
 
-  url_loader_factory_.AddResponse(testnet_url, R"(
-    { "jsonrpc": "2.0",
-      "result": "Westend",
-      "id": 1 })");
+  AddValidMetadataResponses(url_loader_factory_, testnet_url, mainnet_url);
+  url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+      [&, self = this](const network::ResourceRequest& req) {
+        auto req_json = RequestBodyToJsonDict(req);
+        const auto* method = req_json.FindString("method");
+        if (!method || *method != "state_getMetadata") {
+          return;
+        }
 
-  url_loader_factory_.AddResponse(mainnet_url, R"(
-    { "jsonrpc": "2.0",
-      "result": "Polkadot",
-      "id": 1 })");
+        self->url_loader_factory_.ClearResponses();
+        const std::string fixture_name = req.url.spec() == mainnet_url
+                                             ? "state_getMetadata_polkadot.json"
+                                             : "state_getMetadata_westend.json";
+        self->url_loader_factory_.AddResponse(
+            req.url.spec(), ReadMetadataFixtureJson(fixture_name));
+      }));
 
-  int num_requests = 5;
-  for (int i = 0; i < num_requests; ++i) {
+  constexpr int kNumRequests = 5;
+  int pending_requests = kNumRequests;
+  for (int i = 0; i < kNumRequests; ++i) {
     // Testnet chain metadata.
     polkadot_wallet_service->GetChainMetadata(
         mojom::kPolkadotTestnet,
@@ -322,12 +332,12 @@ TEST_F(PolkadotWalletServiceUnitTest, ConcurrentChainNameFetches) {
                 std::move(quit_closure).Run();
               }
             },
-            task_environment_.QuitClosure(), &num_requests));
+            task_environment_.QuitClosure(), &pending_requests));
   }
   task_environment_.RunUntilQuit();
 
-  num_requests = 5;
-  for (int i = 0; i < num_requests; ++i) {
+  pending_requests = kNumRequests;
+  for (int i = 0; i < kNumRequests; ++i) {
     // Mainnet chain metadata.
     polkadot_wallet_service->GetChainMetadata(
         mojom::kPolkadotMainnet,
@@ -341,14 +351,14 @@ TEST_F(PolkadotWalletServiceUnitTest, ConcurrentChainNameFetches) {
                 std::move(quit_closure).Run();
               }
             },
-            task_environment_.QuitClosure(), &num_requests));
+            task_environment_.QuitClosure(), &pending_requests));
   }
   task_environment_.RunUntilQuit();
 }
 
 TEST_F(PolkadotWalletServiceUnitTest, GetCompatibleNetworks) {
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
   // Start from a known visibility state for deterministic assertions.
   network_manager_->RemoveHiddenNetwork(mojom::CoinType::DOT,
@@ -402,7 +412,7 @@ TEST_F(PolkadotWalletServiceUnitTest, GetCompatibleNetworks) {
 
 TEST_F(PolkadotWalletServiceUnitTest, GetAddress) {
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   // Mainnet address.
@@ -485,7 +495,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic) {
   EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();
@@ -495,15 +505,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic) {
   EXPECT_TRUE(base::HexStringToSpan(kBob, recipient_pubkey));
 
   // For the two initial network calls that fetch the chain metadata.
-  url_loader_factory_.AddResponse(testnet_url, R"(
-    { "jsonrpc": "2.0",
-      "result": "Westend",
-      "id": 1 })");
-
-  url_loader_factory_.AddResponse(mainnet_url, R"(
-    { "jsonrpc": "2.0",
-      "result": "Polkadot",
-      "id": 1 })");
+  AddValidMetadataResponses(url_loader_factory_, testnet_url, mainnet_url);
 
   url_loader_factory_.ClearResponses();
 
@@ -668,6 +670,15 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic) {
         self->url_loader_factory_.ClearResponses();
 
         auto req_json = RequestBodyToJsonDict(req);
+        if (const auto* method = req_json.FindString("method");
+            method && *method == "state_getMetadata") {
+          const std::string fixture_name =
+              req.url.spec() == mainnet_url ? "state_getMetadata_polkadot.json"
+                                            : "state_getMetadata_westend.json";
+          self->url_loader_factory_.AddResponse(
+              req.url.spec(), ReadMetadataFixtureJson(fixture_name));
+          return;
+        }
         auto pos = req_res_pairs.find(req_json);
 
         if (pos != req_res_pairs.end()) {
@@ -737,7 +748,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoChainMetadata) {
   EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();
@@ -746,20 +757,31 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoChainMetadata) {
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> recipient_pubkey = {};
   EXPECT_TRUE(base::HexStringToSpan(kBob, recipient_pubkey));
 
-  // For the two initial network calls that fetch the chain metadata.
-  url_loader_factory_.AddResponse(testnet_url, R"(
-    { "jsonrpc": "2.0",
-      "error": {
-        "code": 1234
-      },
-      "id": 1 })");
+  // Keep metadata responses stable across constructor warmup and the explicit
+  // request below, including init retries.
+  url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+      [&, self = this](const network::ResourceRequest& req) {
+        auto req_json = RequestBodyToJsonDict(req);
+        const auto* method = req_json.FindString("method");
+        if (!method || *method != "state_getMetadata") {
+          return;
+        }
 
-  url_loader_factory_.AddResponse(mainnet_url, R"(
-    { "jsonrpc": "2.0",
-      "result": "Polkadot",
-      "id": 1 })");
+        self->url_loader_factory_.ClearResponses();
+        if (req.url.spec() == testnet_url) {
+          self->url_loader_factory_.AddResponse(req.url.spec(), R"(
+            { "jsonrpc": "2.0",
+              "error": {
+                "code": 1234
+              },
+              "id": 1 })");
+          return;
+        }
 
-  url_loader_factory_.ClearResponses();
+        self->url_loader_factory_.AddResponse(
+            req.url.spec(),
+            ReadMetadataFixtureJson("state_getMetadata_polkadot.json"));
+      }));
 
   base::test::TestFuture<base::expected<PolkadotExtrinsicMetadata, std::string>>
       test_future;
@@ -792,7 +814,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoAccountInfo) {
   EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();
@@ -802,15 +824,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoAccountInfo) {
   EXPECT_TRUE(base::HexStringToSpan(kBob, recipient_pubkey));
 
   // For the two initial network calls that fetch the chain metadata.
-  url_loader_factory_.AddResponse(testnet_url, R"(
-    { "jsonrpc": "2.0",
-      "result": "Westend",
-      "id": 1 })");
-
-  url_loader_factory_.AddResponse(mainnet_url, R"(
-    { "jsonrpc": "2.0",
-      "result": "Polkadot",
-      "id": 1 })");
+  AddValidMetadataResponses(url_loader_factory_, testnet_url, mainnet_url);
 
   url_loader_factory_.ClearResponses();
 
@@ -843,6 +857,15 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoAccountInfo) {
         self->url_loader_factory_.ClearResponses();
 
         auto req_json = RequestBodyToJsonDict(req);
+        if (const auto* method = req_json.FindString("method");
+            method && *method == "state_getMetadata") {
+          const std::string fixture_name =
+              req.url.spec() == mainnet_url ? "state_getMetadata_polkadot.json"
+                                            : "state_getMetadata_westend.json";
+          self->url_loader_factory_.AddResponse(
+              req.url.spec(), ReadMetadataFixtureJson(fixture_name));
+          return;
+        }
         auto pos = req_res_pairs.find(req_json);
 
         if (pos != req_res_pairs.end()) {
@@ -888,7 +911,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoChainHeader) {
   EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();
@@ -898,15 +921,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoChainHeader) {
   EXPECT_TRUE(base::HexStringToSpan(kBob, recipient_pubkey));
 
   // For the two initial network calls that fetch the chain metadata.
-  url_loader_factory_.AddResponse(testnet_url, R"(
-    { "jsonrpc": "2.0",
-      "result": "Westend",
-      "id": 1 })");
-
-  url_loader_factory_.AddResponse(mainnet_url, R"(
-    { "jsonrpc": "2.0",
-      "result": "Polkadot",
-      "id": 1 })");
+  AddValidMetadataResponses(url_loader_factory_, testnet_url, mainnet_url);
 
   url_loader_factory_.ClearResponses();
 
@@ -967,6 +982,15 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoChainHeader) {
         self->url_loader_factory_.ClearResponses();
 
         auto req_json = RequestBodyToJsonDict(req);
+        if (const auto* method = req_json.FindString("method");
+            method && *method == "state_getMetadata") {
+          const std::string fixture_name =
+              req.url.spec() == mainnet_url ? "state_getMetadata_polkadot.json"
+                                            : "state_getMetadata_westend.json";
+          self->url_loader_factory_.AddResponse(
+              req.url.spec(), ReadMetadataFixtureJson(fixture_name));
+          return;
+        }
         auto pos = req_res_pairs.find(req_json);
 
         if (pos != req_res_pairs.end()) {
@@ -1012,7 +1036,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoParentHeader) {
   EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();
@@ -1022,15 +1046,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoParentHeader) {
   EXPECT_TRUE(base::HexStringToSpan(kBob, recipient_pubkey));
 
   // For the two initial network calls that fetch the chain metadata.
-  url_loader_factory_.AddResponse(testnet_url, R"(
-    { "jsonrpc": "2.0",
-      "result": "Westend",
-      "id": 1 })");
-
-  url_loader_factory_.AddResponse(mainnet_url, R"(
-    { "jsonrpc": "2.0",
-      "result": "Polkadot",
-      "id": 1 })");
+  AddValidMetadataResponses(url_loader_factory_, testnet_url, mainnet_url);
 
   url_loader_factory_.ClearResponses();
 
@@ -1124,6 +1140,15 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoParentHeader) {
         self->url_loader_factory_.ClearResponses();
 
         auto req_json = RequestBodyToJsonDict(req);
+        if (const auto* method = req_json.FindString("method");
+            method && *method == "state_getMetadata") {
+          const std::string fixture_name =
+              req.url.spec() == mainnet_url ? "state_getMetadata_polkadot.json"
+                                            : "state_getMetadata_westend.json";
+          self->url_loader_factory_.AddResponse(
+              req.url.spec(), ReadMetadataFixtureJson(fixture_name));
+          return;
+        }
         auto pos = req_res_pairs.find(req_json);
 
         if (pos != req_res_pairs.end()) {
@@ -1169,7 +1194,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoFinalizedHead) {
   EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();
@@ -1179,15 +1204,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoFinalizedHead) {
   EXPECT_TRUE(base::HexStringToSpan(kBob, recipient_pubkey));
 
   // For the two initial network calls that fetch the chain metadata.
-  url_loader_factory_.AddResponse(testnet_url, R"(
-    { "jsonrpc": "2.0",
-      "result": "Westend",
-      "id": 1 })");
-
-  url_loader_factory_.AddResponse(mainnet_url, R"(
-    { "jsonrpc": "2.0",
-      "result": "Polkadot",
-      "id": 1 })");
+  AddValidMetadataResponses(url_loader_factory_, testnet_url, mainnet_url);
 
   url_loader_factory_.ClearResponses();
 
@@ -1264,6 +1281,15 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoFinalizedHead) {
         self->url_loader_factory_.ClearResponses();
 
         auto req_json = RequestBodyToJsonDict(req);
+        if (const auto* method = req_json.FindString("method");
+            method && *method == "state_getMetadata") {
+          const std::string fixture_name =
+              req.url.spec() == mainnet_url ? "state_getMetadata_polkadot.json"
+                                            : "state_getMetadata_westend.json";
+          self->url_loader_factory_.AddResponse(
+              req.url.spec(), ReadMetadataFixtureJson(fixture_name));
+          return;
+        }
         auto pos = req_res_pairs.find(req_json);
 
         if (pos != req_res_pairs.end()) {
@@ -1310,7 +1336,7 @@ TEST_F(PolkadotWalletServiceUnitTest,
   EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();
@@ -1320,15 +1346,7 @@ TEST_F(PolkadotWalletServiceUnitTest,
   EXPECT_TRUE(base::HexStringToSpan(kBob, recipient_pubkey));
 
   // For the two initial network calls that fetch the chain metadata.
-  url_loader_factory_.AddResponse(testnet_url, R"(
-    { "jsonrpc": "2.0",
-      "result": "Westend",
-      "id": 1 })");
-
-  url_loader_factory_.AddResponse(mainnet_url, R"(
-    { "jsonrpc": "2.0",
-      "result": "Polkadot",
-      "id": 1 })");
+  AddValidMetadataResponses(url_loader_factory_, testnet_url, mainnet_url);
 
   url_loader_factory_.ClearResponses();
 
@@ -1445,6 +1463,15 @@ TEST_F(PolkadotWalletServiceUnitTest,
         self->url_loader_factory_.ClearResponses();
 
         auto req_json = RequestBodyToJsonDict(req);
+        if (const auto* method = req_json.FindString("method");
+            method && *method == "state_getMetadata") {
+          const std::string fixture_name =
+              req.url.spec() == mainnet_url ? "state_getMetadata_polkadot.json"
+                                            : "state_getMetadata_westend.json";
+          self->url_loader_factory_.AddResponse(
+              req.url.spec(), ReadMetadataFixtureJson(fixture_name));
+          return;
+        }
         auto pos = req_res_pairs.find(req_json);
 
         if (pos != req_res_pairs.end()) {
@@ -1490,7 +1517,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoGenesisHash) {
   EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();
@@ -1500,15 +1527,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoGenesisHash) {
   EXPECT_TRUE(base::HexStringToSpan(kBob, recipient_pubkey));
 
   // For the two initial network calls that fetch the chain metadata.
-  url_loader_factory_.AddResponse(testnet_url, R"(
-    { "jsonrpc": "2.0",
-      "result": "Westend",
-      "id": 1 })");
-
-  url_loader_factory_.AddResponse(mainnet_url, R"(
-    { "jsonrpc": "2.0",
-      "result": "Polkadot",
-      "id": 1 })");
+  AddValidMetadataResponses(url_loader_factory_, testnet_url, mainnet_url);
 
   url_loader_factory_.ClearResponses();
 
@@ -1674,6 +1693,15 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoGenesisHash) {
         self->url_loader_factory_.ClearResponses();
 
         auto req_json = RequestBodyToJsonDict(req);
+        if (const auto* method = req_json.FindString("method");
+            method && *method == "state_getMetadata") {
+          const std::string fixture_name =
+              req.url.spec() == mainnet_url ? "state_getMetadata_polkadot.json"
+                                            : "state_getMetadata_westend.json";
+          self->url_loader_factory_.AddResponse(
+              req.url.spec(), ReadMetadataFixtureJson(fixture_name));
+          return;
+        }
         auto pos = req_res_pairs.find(req_json);
 
         if (pos != req_res_pairs.end()) {
@@ -1719,7 +1747,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoRuntimeVersion) {
   EXPECT_EQ(mainnet_url, "https://polkadot-mainnet.wallet.brave.com/");
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();
@@ -1729,15 +1757,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoRuntimeVersion) {
   EXPECT_TRUE(base::HexStringToSpan(kBob, recipient_pubkey));
 
   // For the two initial network calls that fetch the chain metadata.
-  url_loader_factory_.AddResponse(testnet_url, R"(
-    { "jsonrpc": "2.0",
-      "result": "Westend",
-      "id": 1 })");
-
-  url_loader_factory_.AddResponse(mainnet_url, R"(
-    { "jsonrpc": "2.0",
-      "result": "Polkadot",
-      "id": 1 })");
+  AddValidMetadataResponses(url_loader_factory_, testnet_url, mainnet_url);
 
   url_loader_factory_.ClearResponses();
 
@@ -1887,6 +1907,15 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoRuntimeVersion) {
         self->url_loader_factory_.ClearResponses();
 
         auto req_json = RequestBodyToJsonDict(req);
+        if (const auto* method = req_json.FindString("method");
+            method && *method == "state_getMetadata") {
+          const std::string fixture_name =
+              req.url.spec() == mainnet_url ? "state_getMetadata_polkadot.json"
+                                            : "state_getMetadata_westend.json";
+          self->url_loader_factory_.AddResponse(
+              req.url.spec(), ReadMetadataFixtureJson(fixture_name));
+          return;
+        }
         auto pos = req_res_pairs.find(req_json);
 
         if (pos != req_res_pairs.end()) {
@@ -1921,7 +1950,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction) {
       &url_loader_factory_, network_manager_.get());
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();
@@ -1969,7 +1998,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction_TransferAll) {
       &url_loader_factory_, network_manager_.get());
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();
@@ -2017,7 +2046,7 @@ TEST_F(PolkadotWalletServiceUnitTest,
       &url_loader_factory_, network_manager_.get());
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();
@@ -2055,7 +2084,7 @@ TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate) {
       &url_loader_factory_, network_manager_.get());
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();
@@ -2091,7 +2120,7 @@ TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate_NetworkFailure) {
       &url_loader_factory_, network_manager_.get());
 
   auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
-      *keyring_service_, *network_manager_,
+      *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
   UnlockWallet();
