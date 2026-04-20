@@ -221,7 +221,10 @@ void PolkadotTransactionStatusTask::OnGetBlockForStatus(
         base::ok(std::pair(PolkadotTransactionStatus::kNotFound, 0)));
   }
 
-  FetchCurrentBlock();
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE,
+      base::BindOnce(&PolkadotTransactionStatusTask::FetchCurrentBlock,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void PolkadotTransactionStatusTask::OnGetEvents(
