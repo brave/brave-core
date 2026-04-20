@@ -31,22 +31,18 @@ const mockSettingCardData: Mojom.SettingCardData = {
   items: [
     {
       uid: '1',
-      url: 'https://example.com/cookies',
       description: 'Manage cookie preferences and tracking protection',
     },
     {
       uid: '2',
-      url: 'https://example.com/analytics',
       description: 'Control analytics and data collection settings',
     },
     {
       uid: '3',
-      url: 'https://example.com/ads',
       description: 'Configure advertising preferences',
     },
     {
       uid: '4',
-      url: 'https://example.com/location',
       description: 'Manage location data sharing',
     },
   ],
