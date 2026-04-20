@@ -144,15 +144,9 @@ export function createMockPsstDialogAPI(
       performForUids,
     })
 
-    // For mocking, assume all items are being processed (in real scenario,
-    // only checked items would be sent to this method)
-    const allUids = finalSettingsData.items.map((item) => item.uid)
-
     // Simulate processing each URL
     for (const item of finalSettingsData.items) {
-      if (!performForUids.includes(item.uid)) {
-        continue
-      }
+      console.log(`[Mock] Simulating request for URL: ${item.uid}`)
       // Simulate request status update
       setTimeout(() => {
         const hasError = errorUids.includes(item.uid)
