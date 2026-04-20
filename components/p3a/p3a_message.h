@@ -43,6 +43,9 @@ class MessageMetainfo {
   std::optional<base::Time> GetActivationDate(
       std::string_view histogram_name) const;
 
+  std::optional<std::string> GetCustomAttribute(
+      std::string_view attribute_name) const;
+
   const std::string& platform() const { return platform_; }
   const std::string& general_platform() const { return general_platform_; }
   const std::string& channel() const { return channel_; }
