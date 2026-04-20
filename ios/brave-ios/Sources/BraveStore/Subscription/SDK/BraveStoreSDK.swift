@@ -543,8 +543,6 @@ public class BraveStoreSDK: AppStoreSDK {
   /// - Throws: An exception if updating the purchase information fails
   @MainActor
   private func updateSkusPurchaseState(for product: BraveStoreProduct) async throws {
-    // This SDK currently only supports Leo
-    // until we update the VPN code to use it
     switch product.group {
     case .vpn:
       return
