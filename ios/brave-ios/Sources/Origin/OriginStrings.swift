@@ -8,7 +8,7 @@ import Strings
 
 extension Strings {
   public struct Origin {
-    public static let originProductName = "Origin"  // This is not translated
+    public static let originProductName = "Brave Origin"  // This is not translated
     public static let adsHeader = NSLocalizedString(
       "adsHeader",
       bundle: .module,
@@ -114,9 +114,9 @@ extension Strings {
 
         Brave Origin is a paid version of the browser for users who don't need all of the features that  support Brave as a business, but still want the privacy that only Brave offers. Brave Origin users will continue to benefit from our industry-leading privacy, adblock, and speed (via Brave Shields), as well as regular software updates, Chromium patches, and security and privacy improvements. They’ll also unlock the option to disable features like AI, Rewards, Wallet, VPN, Web3 domains, and more.
 
-        **Brave Origin is available via one-time purchase. On mobile (Android and iOS) and desktop, Origin can be purchased as an upgrade to your existing release version.** On desktop, Origin is also available as a separate, standalone app. Whether purchased as an upgrade or separate app, Origin users will see a new control panel in the Settings menu. Existing features—as well as any new features we ship in the future—would appear here, and be toggled off by default.*
+        **Brave Origin is available via one-time purchase. On mobile (Android and iOS) and desktop, Brave Origin can be purchased as an upgrade to your existing release version.** On desktop, Brave Origin is also available as a separate, standalone app. Whether purchased as an upgrade or separate app, Brave Origin users will see a new control panel in the Settings menu. Existing features—as well as any new features we ship in the future—would appear here, and be toggled off by default.*
 
-        * Note that if you’ve purchased Origin as an upgrade to your existing version of Brave, Origin will not disable browser features that you currently use. For both the upgrade and standalone version, Origin will not affect Brave Search features or Brave Search Ads.
+        * Note that if you’ve purchased Brave Origin as an upgrade to your existing version of Brave, Brave Origin will not disable browser features that you currently use. For both the upgrade and standalone version, Brave Origin will not affect Brave Search features or Brave Search Ads.
         """,
       comment:
         "A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated."
