@@ -47,10 +47,8 @@ void OnQueryFilterFileRead(const base::Version& version,
     return;
   }
   auto* data = query_filter::QueryFilterData::GetInstance();
-  if (!data) {
-    LOG(WARNING) << "QueryFilterData instance is not available";
-    return;
-  }
+  CHECK(data);
+
   if (!data->PopulateDataFromComponent(json_data)) {
     LOG(WARNING) << "Failed to populate data from component";
   }

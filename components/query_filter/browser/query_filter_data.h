@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/no_destructor.h"
-#include "base/sequence_checker.h"
 #include "base/version.h"
 
 namespace query_filter {
@@ -63,8 +62,6 @@ class QueryFilterData {
 
   std::vector<QueryFilterRule> rules_;
   base::Version version_;
-
-  SEQUENCE_CHECKER(sequence_checker_);
 };
 
 }  // namespace query_filter

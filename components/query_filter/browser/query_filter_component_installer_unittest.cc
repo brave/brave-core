@@ -23,7 +23,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 namespace {
 // Sample query filter JSON which would be written to a file during setup
-// and then read by the query filter service to prepopulate the default rules.
+// and then read by the query filter data to prepopulate the default rules.
 constexpr char kSampleQueryFilterJson[] = R"json(
   [
     {

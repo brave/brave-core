@@ -41,17 +41,14 @@ QueryFilterData::QueryFilterData() = default;
 QueryFilterData::~QueryFilterData() = default;
 
 void QueryFilterData::UpdateVersion(base::Version version) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   version_ = std::move(version);
 }
 
 const std::vector<QueryFilterRule>& QueryFilterData::rules() const {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return rules_;
 }
 
 const std::string QueryFilterData::GetVersion() const {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!version_.IsValid()) {
     return std::string();
   }
@@ -59,7 +56,6 @@ const std::string QueryFilterData::GetVersion() const {
 }
 
 bool QueryFilterData::PopulateDataFromComponent(std::string_view json_data) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (json_data.empty()) {
     return false;
   }
@@ -133,7 +129,6 @@ bool QueryFilterData::PopulateDataFromComponent(std::string_view json_data) {
 }
 
 void QueryFilterData::ResetRulesForTesting() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   rules_.clear();
   version_ = base::Version();
 }
