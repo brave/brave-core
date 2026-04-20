@@ -302,7 +302,12 @@ public class BraveStoreSDK: AppStoreSDK {
   public func restorePurchase(_ product: BraveStoreProduct) async -> Bool {
     if await currentTransaction(for: product) != nil {
       try? await AppStoreReceipt.sync()
-      return true
+      do {
+        try await self.updateSkusPurchaseState(for: product)
+        return true
+      } catch {
+        return false
+      }
     }
 
     return false

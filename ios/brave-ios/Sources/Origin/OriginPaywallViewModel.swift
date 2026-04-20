@@ -53,7 +53,7 @@ public class OriginPaywallViewModel {
         return false
       }
       group.addTask {
-        return await self.store.restorePurchases()
+        return await self.store.restorePurchase(.originPurchase)
       }
       let result = await group.next() ?? false
       group.cancelAll()
