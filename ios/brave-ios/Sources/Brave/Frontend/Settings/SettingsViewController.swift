@@ -821,6 +821,32 @@ class SettingsViewController: TableViewController {
     )
     general.rows.append(websiteRedirectsRow)
 
+    let browserLockRow = Row(
+      text: Strings.Privacy.browserLock,
+      detailText: Strings.Privacy.browserLockDescription,
+      image: UIImage(braveSystemNamed: "leo.biometric.login"),
+      accessory: .view(
+        SwitchAccessoryView(
+          initialValue: Preferences.Privacy.lockWithPasscode.value,
+          valueChange: { [unowned self] isOn in
+            if isOn {
+              Preferences.Privacy.lockWithPasscode.value = isOn
+            } else {
+              self.askForLocalAuthentication { [weak self] success, error in
+                if success {
+                  Preferences.Privacy.lockWithPasscode.value = isOn
+                }
+              }
+            }
+          }
+        )
+      ),
+      cellClass: MultilineSubtitleCell.self,
+      uuid: Preferences.Privacy.lockWithPasscode.key
+    )
+    general.rows.append(browserLockRow)
+
+    // Always keep Brave Origin the last item in the section
     if FeatureList.kBraveOrigin.enabled {
       general.rows.append(
         Row(
@@ -886,31 +912,6 @@ class SettingsViewController: TableViewController {
         )
       )
     }
-
-    let browserLockRow = Row(
-      text: Strings.Privacy.browserLock,
-      detailText: Strings.Privacy.browserLockDescription,
-      image: UIImage(braveSystemNamed: "leo.biometric.login"),
-      accessory: .view(
-        SwitchAccessoryView(
-          initialValue: Preferences.Privacy.lockWithPasscode.value,
-          valueChange: { [unowned self] isOn in
-            if isOn {
-              Preferences.Privacy.lockWithPasscode.value = isOn
-            } else {
-              self.askForLocalAuthentication { [weak self] success, error in
-                if success {
-                  Preferences.Privacy.lockWithPasscode.value = isOn
-                }
-              }
-            }
-          }
-        )
-      ),
-      cellClass: MultilineSubtitleCell.self,
-      uuid: Preferences.Privacy.lockWithPasscode.key
-    )
-    general.rows.append(browserLockRow)
 
     return general
   }()

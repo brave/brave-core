@@ -8,7 +8,7 @@ import Strings
 
 extension Strings {
   public struct Origin {
-    public static let originProductName = "Origin"  // This is not translated
+    public static let originProductName = "Brave Origin"  // This is not translated
     public static let adsHeader = NSLocalizedString(
       "adsHeader",
       bundle: .module,
@@ -87,15 +87,13 @@ extension Strings {
       value: "This feature is enabled because you opted into it",
       comment: "A note that indicates a feature is enabled"
     )
-    public static let featuresFooter = NSLocalizedString(
+    public static let originFeatureDescription = NSLocalizedString(
       "featuresFooter",
       bundle: .module,
       value: """
-        Brave Origin is a version of the Brave browser that allows you to easily disable the revenue-generating features that otherwise support Brave as a business. Brave Origin users will continue to benefit from our industry-leading privacy, adblock, and speed (via Brave Shields), as well as regular software updates, Chromium patches, and security and privacy improvements. They’ll also unlock the option to disable features like Brave Leo, Rewards, Wallet, VPN, Web3 domains, and more.
+        **Customize your browser while still supporting Brave**
 
-        Once purchased, users will see a new control panel in the browser Settings menu. Existing features—as well as any new features we ship in the future—would appear here, and be toggled off by default.
-
-        **Note: Brave Origin will not disable browser features that you currently use, and will not affect Brave Search features or Brave Search Ads.**
+        Brave Origin is a paid version of the browser for users who don't need all the features that support Brave as a business, but still want the privacy that only Brave offers. Origin users will continue to benefit from our industry-leading privacy, adblock, and speed (via Shields), as well as regular software updates, Chromium patches, and security and privacy improvements. Origin will remove most other features from the browser.
         """,
       comment:
         "A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated."
@@ -106,21 +104,6 @@ extension Strings {
       value: "Reset to Defaults",
       comment: "A button label to reset all Origin settings to their default values"
     )
-    public static let paywallDescription = NSLocalizedString(
-      "paywallDescription",
-      bundle: .module,
-      value: """
-        **Customize your browser while still supporting Brave**
-
-        Brave Origin is a paid version of the browser for users who don't need all of the features that  support Brave as a business, but still want the privacy that only Brave offers. Brave Origin users will continue to benefit from our industry-leading privacy, adblock, and speed (via Brave Shields), as well as regular software updates, Chromium patches, and security and privacy improvements. They’ll also unlock the option to disable features like AI, Rewards, Wallet, VPN, Web3 domains, and more.
-
-        **Brave Origin is available via one-time purchase. On mobile (Android and iOS) and desktop, Origin can be purchased as an upgrade to your existing release version.** On desktop, Origin is also available as a separate, standalone app. Whether purchased as an upgrade or separate app, Origin users will see a new control panel in the Settings menu. Existing features—as well as any new features we ship in the future—would appear here, and be toggled off by default.*
-
-        * Note that if you’ve purchased Origin as an upgrade to your existing version of Brave, Origin will not disable browser features that you currently use. For both the upgrade and standalone version, Origin will not affect Brave Search features or Brave Search Ads.
-        """,
-      comment:
-        "A description of Brave Origin displayed on the paywall screen. This text contains Markdown formatting, the stars represent markdown and the same paragraphs should be also be bolded when translated."
-    )
     public static let alreadyPurchasedTitle = NSLocalizedString(
       "alreadyPurchasedTitle",
       bundle: .module,
@@ -130,7 +113,7 @@ extension Strings {
     public static let getLoginCodeButton = NSLocalizedString(
       "getLoginCodeButton",
       bundle: .module,
-      value: "Get A Login Code",
+      value: "Verify Brave Origin Purchase",
       comment: "A button label to get a login code for users who purchased on brave.com"
     )
     public static let promoCodeTitle = NSLocalizedString(
@@ -158,6 +141,12 @@ extension Strings {
         "Unable to complete purchase. Please try again, or check your payment details on Apple and try again.",
       comment: "An error message displayed when a purchase fails"
     )
+    public static let purchaseChoiceHeaderText = NSLocalizedString(
+      "purchaseChoiceHeaderText",
+      bundle: .module,
+      value: "Choose the checkout method that works for you:",
+      comment: "Text shown above buttons that give the user the option to choose a checkout option"
+    )
     public static let buyNowButton = NSLocalizedString(
       "buyNowButton",
       bundle: .module,
@@ -173,7 +162,7 @@ extension Strings {
     public static let upsellMinimalUI = NSLocalizedString(
       "upsellMinimalUI",
       bundle: .module,
-      value: "Minimal browser UI centered on Shields",
+      value: "Minimalist browser UI centered on Brave Shields",
       comment: "An upsell point about minimal browser UI"
     )
     public static let upsellCoreFeatures = NSLocalizedString(
@@ -185,13 +174,13 @@ extension Strings {
     public static let upsellOneTimePurchase = NSLocalizedString(
       "upsellOneTimePurchase",
       bundle: .module,
-      value: "One-time purchase, no additional subscription cost",
+      value: "One-time purchase can be activated multiple times across all your devices",
       comment: "An upsell point about the one-time purchase model"
     )
     public static let oneTimePurchaseLabel = NSLocalizedString(
       "oneTimePurchaseLabel",
       bundle: .module,
-      value: "One Time Purchase",
+      value: "One-Time Purchase",
       comment: "A label indicating this is a one-time purchase product"
     )
     public static let linkPurchase = NSLocalizedString(
