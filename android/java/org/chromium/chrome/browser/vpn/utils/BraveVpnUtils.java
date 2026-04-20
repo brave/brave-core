@@ -26,7 +26,6 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.brave_vpn.mojom.BraveVpnConstants;
 import org.chromium.brave_vpn.mojom.Region;
-import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnSupportActivity;
@@ -310,8 +309,8 @@ public class BraveVpnUtils {
     }
 
     private static boolean isRegionSupported() {
-        BraveRewardsNativeWorker braveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-        return (braveRewardsNativeWorker != null && braveRewardsNativeWorker.isSupported());
+        BraveVpnNativeWorker braveVpnNativeWorker = BraveVpnNativeWorker.getInstance();
+        return braveVpnNativeWorker != null && braveVpnNativeWorker.isSupportedRegion();
     }
 
     public static boolean isVpnFeatureSupported(Context context) {

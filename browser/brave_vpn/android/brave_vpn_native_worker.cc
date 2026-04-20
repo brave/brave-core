@@ -13,6 +13,8 @@
 #include "base/values.h"
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
+#include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/ofac_sanction_util.h"
 #include "chrome/android/chrome_jni_headers/BraveVpnNativeWorker_jni.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -258,6 +260,11 @@ void BraveVpnNativeWorker::ReloadPurchasedState(JNIEnv* env) {
   if (brave_vpn_service) {
     brave_vpn_service->ReloadPurchasedState();
   }
+}
+
+bool BraveVpnNativeWorker::IsSupportedRegion(JNIEnv* env) {
+  return !brave_l10n::IsISOCountryCodeOFACSanctioned(
+      brave_l10n::GetDefaultISOCountryCodeString());
 }
 
 void BraveVpnNativeWorker::ReportForegroundP3A(JNIEnv* env) {

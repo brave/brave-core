@@ -94,6 +94,8 @@ class BraveVpnNativeWorker {
 
   jboolean IsPurchasedUser(JNIEnv* env);
 
+  bool IsSupportedRegion(JNIEnv* env);
+
   void ReportForegroundP3A(JNIEnv* env);
   void ReportBackgroundP3A(JNIEnv* env,
                            jlong session_start_time_ms,
