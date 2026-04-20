@@ -22,6 +22,7 @@ class BraveBrowserMainExtraParts : public ChromeBrowserMainExtraParts {
   void PostBrowserStart() override;
   void PreMainMessageLoopRun() override;
   void PreProfileInit() override;
+  void PostDestroyThreads() override;
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_BROWSER_MAIN_EXTRA_PARTS_H_
