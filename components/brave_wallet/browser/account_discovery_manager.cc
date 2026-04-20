@@ -55,8 +55,7 @@ AccountDiscoveryManager::AccountDiscoveryManager(
     BitcoinWalletService* bitcoin_wallet_service)
     : json_rpc_service_(rpc_service),
       keyring_service_(keyring_service),
-      bitcoin_wallet_service_(bitcoin_wallet_service),
-      wallet_generation_(keyring_service.wallet_generation()) {}
+      bitcoin_wallet_service_(bitcoin_wallet_service) {}
 
 void AccountDiscoveryManager::StartDiscovery() {
   auto derived_count = GetDerivedAccountsCount();
@@ -89,10 +88,6 @@ void AccountDiscoveryManager::StartDiscovery() {
 }
 
 AccountDiscoveryManager::~AccountDiscoveryManager() = default;
-
-bool AccountDiscoveryManager::IsStale() const {
-  return keyring_service_->wallet_generation() != wallet_generation_;
-}
 
 std::map<mojom::KeyringId, uint32_t>
 AccountDiscoveryManager::GetDerivedAccountsCount() {
@@ -151,7 +146,7 @@ void AccountDiscoveryManager::OnResolveAccountBalance(
     const std::string& value,
     mojom::ProviderError error,
     const std::string& error_message) {
-  if (error != mojom::ProviderError::kSuccess || IsStale()) {
+  if (error != mojom::ProviderError::kSuccess) {
     return;
   }
   ProcessDiscoveryResult(std::move(context), value != "0");
@@ -162,7 +157,7 @@ void AccountDiscoveryManager::OnResolveSolanaAccountBalance(
     uint64_t value,
     mojom::SolanaProviderError error,
     const std::string& error_message) {
-  if (error != mojom::SolanaProviderError::kSuccess || IsStale()) {
+  if (error != mojom::SolanaProviderError::kSuccess) {
     return;
   }
   ProcessDiscoveryResult(std::move(context), value > 0);
@@ -173,7 +168,7 @@ void AccountDiscoveryManager::OnEthGetTransactionCount(
     uint256_t result,
     mojom::ProviderError error,
     const std::string& error_message) {
-  if (error != mojom::ProviderError::kSuccess || IsStale()) {
+  if (error != mojom::ProviderError::kSuccess) {
     return;
   }
   ProcessDiscoveryResult(std::move(context), result > 0);
@@ -216,7 +211,7 @@ void AccountDiscoveryManager::OnBitcoinDiscoverAccountsDone(
     mojom::KeyringId keyring_id,
     uint32_t account_index,
     base::expected<DiscoveredBitcoinAccount, std::string> discovered_account) {
-  if (!discovered_account.has_value() || IsStale()) {
+  if (!discovered_account.has_value()) {
     return;
   }
 

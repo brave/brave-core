@@ -340,8 +340,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
       features::kBraveWalletZCashFeature,
       {{"zcash_shielded_transactions_enabled", "true"}});
   keyring_service()->Reset();
-  keyring_service()->RestoreWallet(kMnemonicDivideCruise, kTestWalletPassword,
-                                   false, base::DoNothing());
+  ASSERT_TRUE(keyring_service()->RestoreWalletSync(kMnemonicDivideCruise,
+                                                   kTestWalletPassword, false));
 
   auto account =
       GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 1);
@@ -431,8 +431,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_FeatureDisabled) {
       features::kBraveWalletZCashFeature,
       {{"zcash_shielded_transactions_enabled", "false"}});
   keyring_service()->Reset();
-  keyring_service()->RestoreWallet(kMnemonicDivideCruise, kTestWalletPassword,
-                                   false, base::DoNothing());
+  ASSERT_TRUE(keyring_service()->RestoreWalletSync(kMnemonicDivideCruise,
+                                                   kTestWalletPassword, false));
   auto account =
       GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 1);
   keyring_service()->UpdateNextUnusedAddressForZCashAccount(account->account_id,
@@ -1182,8 +1182,8 @@ TEST_F(ZCashWalletServiceUnitTest, AutoSync) {
       {{"zcash_shielded_transactions_enabled", "true"}});
 
   keyring_service()->Reset();
-  keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
-                                   false, base::DoNothing());
+  ASSERT_TRUE(keyring_service()->RestoreWalletSync(kGateJuniorMnemonic,
+                                                   kTestWalletPassword, false));
   auto account_1 =
       GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
   auto account_id_1 = account_1->account_id.Clone();
@@ -1238,8 +1238,8 @@ TEST_F(ZCashWalletServiceUnitTest, ZCashAccountInfo) {
       {{"zcash_shielded_transactions_enabled", "true"}});
 
   keyring_service()->Reset();
-  keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
-                                   false, base::DoNothing());
+  ASSERT_TRUE(keyring_service()->RestoreWalletSync(kGateJuniorMnemonic,
+                                                   kTestWalletPassword, false));
   auto account_1 =
       GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
   auto account_id_1 = account_1->account_id.Clone();
@@ -1458,8 +1458,8 @@ TEST_F(ZCashWalletServiceUnitTest, MakeAccountShielded) {
       {{"zcash_shielded_transactions_enabled", "true"}});
 
   keyring_service()->Reset();
-  keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
-                                   false, base::DoNothing());
+  ASSERT_TRUE(keyring_service()->RestoreWalletSync(kGateJuniorMnemonic,
+                                                   kTestWalletPassword, false));
   auto account_1 =
       GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
   auto account_2 =
@@ -1549,8 +1549,8 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldFunds_FailsOnNetworkError) {
   );
 
   keyring_service()->Reset();
-  keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
-                                   false, base::DoNothing());
+  ASSERT_TRUE(keyring_service()->RestoreWalletSync(kGateJuniorMnemonic,
+                                                   kTestWalletPassword, false));
   OrchardBundleManager::OverrideRandomSeedForTesting(70972);
   auto account =
       GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
@@ -1636,8 +1636,8 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
   );
 
   keyring_service()->Reset();
-  keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
-                                   false, base::DoNothing());
+  ASSERT_TRUE(keyring_service()->RestoreWalletSync(kGateJuniorMnemonic,
+                                                   kTestWalletPassword, false));
   OrchardBundleManager::OverrideRandomSeedForTesting(10987);
   auto account =
       GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 1);
@@ -2052,8 +2052,8 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldAllFunds) {
   );
 
   keyring_service()->Reset();
-  keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
-                                   false, base::DoNothing());
+  ASSERT_TRUE(keyring_service()->RestoreWalletSync(kGateJuniorMnemonic,
+                                                   kTestWalletPassword, false));
   OrchardBundleManager::OverrideRandomSeedForTesting(70972);
   auto account =
       GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
@@ -2580,8 +2580,8 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
           });
 
   keyring_service()->Reset();
-  keyring_service()->RestoreWallet(kMnemonicGalleryEqual, kTestWalletPassword,
-                                   false, base::DoNothing());
+  ASSERT_TRUE(keyring_service()->RestoreWalletSync(kMnemonicGalleryEqual,
+                                                   kTestWalletPassword, false));
   OrchardBundleManager::OverrideRandomSeedForTesting(985321);
   auto account =
       GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 6);
@@ -3231,8 +3231,8 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_UnshieldFunds) {
       });
 
   keyring_service()->Reset();
-  keyring_service()->RestoreWallet(kMnemonicGalleryEqual, kTestWalletPassword,
-                                   false, base::DoNothing());
+  ASSERT_TRUE(keyring_service()->RestoreWalletSync(kMnemonicGalleryEqual,
+                                                   kTestWalletPassword, false));
   OrchardBundleManager::OverrideRandomSeedForTesting(4234211u);
   auto account =
       GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
@@ -3593,8 +3593,8 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldSync) {
       {{"zcash_shielded_transactions_enabled", "true"}});
 
   keyring_service()->Reset();
-  keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
-                                   false, base::DoNothing());
+  ASSERT_TRUE(keyring_service()->RestoreWalletSync(kGateJuniorMnemonic,
+                                                   kTestWalletPassword, false));
   GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
 
   keyring_service()->SetZCashAccountBirthday(

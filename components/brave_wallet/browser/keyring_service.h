@@ -86,10 +86,6 @@ class KeyringService : public mojom::KeyringService {
   bool IsWalletCreatedSync();
   void CreateWallet(const std::string& password,
                     CreateWalletCallback callback) override;
-  void RestoreWallet(const std::string& mnemonic,
-                     const std::string& password,
-                     bool is_legacy_eth_seed_format,
-                     RestoreWalletCallback callback) override;
   bool RestoreWalletSync(const std::string& mnemonic,
                          const std::string& password,
                          bool is_legacy_eth_seed_format);
@@ -169,10 +165,6 @@ class KeyringService : public mojom::KeyringService {
                       const std::string& name,
                       SetAccountNameCallback callback) override;
   void Reset(bool notify_observer = true);
-
-  // Monotonically increasing counter that changes on every Reset(). Used by
-  // AccountDiscoveryManager to detect stale callbacks after wallet reset.
-  uint32_t wallet_generation() const { return wallet_generation_; }
   void SignTransactionByDefaultKeyring(const mojom::AccountIdPtr& account_id,
                                        EthTransaction* tx);
   std::optional<std::string> SignTransactionByFilecoinKeyring(
@@ -461,11 +453,6 @@ class KeyringService : public mojom::KeyringService {
   void OnCreateWalletRegisterComponentUpdater(const std::string& mnemonic,
                                               const std::string& password,
                                               CreateWalletCallback callback);
-  void OnRestoreWalletRegisterComponentUpdater(const std::string& mnemonic,
-                                               const std::string& password,
-                                               bool is_legacy_eth_seed_format,
-                                               RestoreWalletCallback callback);
-
   std::unique_ptr<std::vector<mojom::AccountInfoPtr>> account_info_cache_;
   std::unique_ptr<base::OneShotTimer> auto_lock_timer_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
@@ -503,7 +490,6 @@ class KeyringService : public mojom::KeyringService {
   raw_ptr<PrefService> profile_prefs_ = nullptr;
   raw_ptr<PrefService> local_state_ = nullptr;
   bool request_unlock_pending_ = false;
-  uint32_t wallet_generation_ = 0;
 
   mojo::RemoteSet<mojom::KeyringServiceObserver> observers_;
   mojo::ReceiverSet<mojom::KeyringService> receivers_;

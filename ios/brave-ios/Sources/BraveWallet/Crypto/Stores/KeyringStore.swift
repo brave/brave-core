@@ -487,7 +487,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
     }
     isOnboarding = true
     isRestoringWallet = true
-    keyringService.restoreWallet(
+    walletService.restoreWallet(
       mnemonic: phrase,
       password: password,
       isLegacyEthSeedFormat: isLegacyEthSeedFormat

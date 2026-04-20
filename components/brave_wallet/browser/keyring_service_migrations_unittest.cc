@@ -628,8 +628,8 @@ TEST_F(KeyringServiceMigrationsLegacyIterationsUnitTest,
 
   KeyringService service(nullptr, GetPrefs(), GetLocalState());
 
-  service.RestoreWallet(kMnemonicDivideCruise, kPassword, false,
-                        base::DoNothing());
+  EXPECT_TRUE(
+      service.RestoreWalletSync(kMnemonicDivideCruise, kPassword, false));
 
   ValidatePrefs();
   ValidateAccounts(service);
@@ -643,8 +643,8 @@ TEST_F(KeyringServiceMigrationsLegacyIterationsUnitTest,
 
   KeyringService service(nullptr, GetPrefs(), GetLocalState());
 
-  service.RestoreWallet(kMnemonicDivideCruise, new_password, false,
-                        base::DoNothing());
+  EXPECT_TRUE(
+      service.RestoreWalletSync(kMnemonicDivideCruise, new_password, false));
 
   EXPECT_EQ(GetWalletMnemonic(new_password, &service), kMnemonicDivideCruise);
   // Just two default accounts.
@@ -817,8 +817,8 @@ TEST_F(KeyringServiceMigrationsLegacyMnemonicFormatUnitTest,
 
   KeyringService service(nullptr, GetPrefs(), GetLocalState());
 
-  service.RestoreWallet(kMnemonicDivideCruise, kPassword, false,
-                        base::DoNothing());
+  EXPECT_TRUE(
+      service.RestoreWalletSync(kMnemonicDivideCruise, kPassword, false));
 
   ValidatePrefs();
   ValidateAccounts(service);
@@ -832,8 +832,8 @@ TEST_F(KeyringServiceMigrationsLegacyMnemonicFormatUnitTest,
 
   KeyringService service(nullptr, GetPrefs(), GetLocalState());
 
-  service.RestoreWallet(kMnemonicDivideCruise, new_password, false,
-                        base::DoNothing());
+  EXPECT_TRUE(
+      service.RestoreWalletSync(kMnemonicDivideCruise, new_password, false));
 
   EXPECT_EQ(GetWalletMnemonic(new_password, &service), kMnemonicDivideCruise);
   // Just two default accounts.
