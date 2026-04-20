@@ -68,7 +68,7 @@ function getBuildConfig() {
   return {
     enable_ai_chat: true,
     enable_brave_wallet: true,
-    enable_email_aliases: true
+    enable_email_aliases: true,
   }
 }
 
@@ -113,7 +113,7 @@ const jestConfig: Config = {
       : ['<rootDir>/components/brave_wallet_ui']),
     ...(buildConfig.enable_email_aliases
       ? []
-      : ['<rootDir>/components/email_aliases'])
+      : ['<rootDir>/components/email_aliases']),
   ],
   testTimeout: 30000,
   transformIgnorePatterns: [
