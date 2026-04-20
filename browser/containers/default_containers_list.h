@@ -12,7 +12,9 @@
 
 namespace containers {
 
-// Creates a list of default containers with predefined names other metadata.
+// Creates a list of default containers with predefined names and other metadata
+// (e.g., icons and colors). This is located in browser to depend on Nala
+// colors.
 std::vector<mojom::ContainerPtr> CreateDefaultContainersList();
 
 }  // namespace containers

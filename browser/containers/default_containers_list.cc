@@ -15,7 +15,7 @@
 namespace containers {
 
 std::vector<mojom::ContainerPtr> CreateDefaultContainersList() {
-  auto* color_provider = ui::ColorProviderManager::Get().GetColorProviderFor(
+  const auto* color_provider = ui::ColorProviderManager::Get().GetColorProviderFor(
       ui::ColorProviderKey());
   CHECK(color_provider);
 
