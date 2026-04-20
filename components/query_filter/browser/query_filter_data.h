@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/no_destructor.h"
+#include "base/sequence_checker.h"
 #include "base/version.h"
 
 namespace query_filter {
@@ -32,6 +33,7 @@ struct QueryFilterRule {
 class QueryFilterData {
  public:
   // Returns a singleton instance of QueryFilterData.
+  // Returns nullptr if kQueryFilterComponent is disabled.
   static QueryFilterData* GetInstance();
 
   QueryFilterData(const QueryFilterData&) = delete;
@@ -53,7 +55,7 @@ class QueryFilterData {
 
   // Returns the current set of query filter rules.
   // Returns an empty vector if no rules are available.
-  const std::vector<QueryFilterRule>& rules() const { return rules_; }
+  const std::vector<QueryFilterRule>& rules() const;
 
  private:
   friend class base::NoDestructor<QueryFilterData>;
@@ -61,6 +63,8 @@ class QueryFilterData {
 
   std::vector<QueryFilterRule> rules_;
   base::Version version_;
+
+  SEQUENCE_CHECKER(sequence_checker_);
 };
 
 }  // namespace query_filter

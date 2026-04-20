@@ -6,6 +6,7 @@
 #include "brave/components/query_filter/browser/query_filter_data.h"
 
 #include "base/test/scoped_feature_list.h"
+#include "brave/components/query_filter/common/constants.h"
 #include "brave/components/query_filter/common/features.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -55,7 +56,7 @@ TEST_F(QueryFilterDataTest, TestEmptyJsonReturnsEmpty) {
   EXPECT_TRUE(GetQueryFilterRules().empty());
 }
 
-TEST_F(QueryFilterDataTest, InvalidJson_ReturnsEmpty) {
+TEST_F(QueryFilterDataTest, TestInvalidJson_ReturnsEmpty) {
   EXPECT_FALSE(instance()->PopulateDataFromComponent("not json"));
   EXPECT_TRUE(GetQueryFilterRules().empty());
 }
@@ -114,7 +115,54 @@ TEST_F(QueryFilterDataTest, TestNonStringListItemsAreIgnored) {
   EXPECT_THAT(rules[0].params, testing::ElementsAre("gclid", "fbclid"));
 }
 
-TEST_F(QueryFilterDataTest, CheckGeneralRulesPopulation) {
+TEST_F(QueryFilterDataTest, TestOnMissingIncludeField_EntryIgnored) {
+  constexpr char kJson[] = R"json([
+    {
+      "exclude": ["example.com"],
+      "params": ["x"]
+    }
+  ])json";
+  EXPECT_TRUE(instance()->PopulateDataFromComponent(kJson));
+  EXPECT_EQ(instance()->rules().size(), 0u);
+}
+
+TEST_F(QueryFilterDataTest, TestOnMissingExcludeField_EntryIgnored) {
+  constexpr char kJson[] = R"json([
+    {
+      "include": ["example.com"],
+      "params": ["x"]
+    }
+  ])json";
+  EXPECT_TRUE(instance()->PopulateDataFromComponent(kJson));
+  EXPECT_EQ(instance()->rules().size(), 0u);
+}
+
+TEST_F(QueryFilterDataTest, TestOnMissingParamsField_EntryIgnored) {
+  constexpr char kJson[] = R"json([
+    {
+      "include": ["example.com"],
+      "exclude": []
+    }
+  ])json";
+  EXPECT_TRUE(instance()->PopulateDataFromComponent(kJson));
+  EXPECT_EQ(instance()->rules().size(), 0u);
+}
+
+TEST_F(QueryFilterDataTest, TestOnNonSupportedFields_EntryIgnored) {
+  // Missing "exclude" field. The corresponding dict should be ignored
+  constexpr char kJson[] = R"json([
+    {
+      "include": ["example.com"],
+      "exclude": [],
+      "params": ["x"],
+      "some-nonsense": []
+    }
+  ])json";
+  EXPECT_TRUE(instance()->PopulateDataFromComponent(kJson));
+  EXPECT_EQ(instance()->rules().size(), 0u);
+}
+
+TEST_F(QueryFilterDataTest, TestCheckGeneralRulesPopulation) {
   constexpr char kJson[] = R"json(
 [
   {

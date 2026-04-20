@@ -18,10 +18,6 @@ class FilePath;
 class Version;
 }  // namespace base
 
-namespace update_client {
-class CrxInstaller;
-}
-
 namespace component_updater {
 class ComponentUpdateService;
 

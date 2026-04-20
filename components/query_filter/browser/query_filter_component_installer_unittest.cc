@@ -15,6 +15,7 @@
 #include "base/test/test_future.h"
 #include "brave/components/brave_component_updater/browser/mock_on_demand_updater.h"
 #include "brave/components/query_filter/browser/query_filter_data.h"
+#include "brave/components/query_filter/common/constants.h"
 #include "brave/components/query_filter/common/features.h"
 #include "components/component_updater/mock_component_updater_service.h"
 #include "components/update_client/update_client.h"
@@ -41,10 +42,6 @@ constexpr char kSampleQueryFilterJson[] = R"json(
     }
   ]
   )json";
-
-inline constexpr char kQueryFilterComponentId[] =
-    "cemdlagocoimleflkfkjoihojfainiho";
-inline constexpr char kQueryFilterJsonFile[] = "query-filter.json";
 
 }  // namespace
 
@@ -80,8 +77,9 @@ TEST(QueryFilterComponentInstallerFeatureOffTest,
   brave_component_updater::MockOnDemandUpdater on_demand_updater;
 
   EXPECT_CALL(*cus, RegisterComponent(testing::_)).Times(0);
-  EXPECT_CALL(on_demand_updater,
-              EnsureInstalled(kQueryFilterComponentId, testing::_))
+  EXPECT_CALL(
+      on_demand_updater,
+      EnsureInstalled(query_filter::kQueryFilterComponentId, testing::_))
       .Times(0);
 
   component_updater::RegisterQueryFilterComponent(cus.get());
@@ -94,8 +92,9 @@ TEST_F(QueryFilterComponentInstallerTest,
   EXPECT_CALL(*cus_, RegisterComponent(testing::_))
       .Times(1)
       .WillOnce(testing::Return(true));
-  EXPECT_CALL(on_demand_updater_,
-              EnsureInstalled(kQueryFilterComponentId, testing::_))
+  EXPECT_CALL(
+      on_demand_updater_,
+      EnsureInstalled(query_filter::kQueryFilterComponentId, testing::_))
       .Times(1)
       .WillOnce([&future](const std::string& /*id*/,
                           component_updater::Callback callback) {
@@ -108,8 +107,9 @@ TEST_F(QueryFilterComponentInstallerTest,
 }
 
 TEST_F(QueryFilterComponentInstallerTest, NoRegisterWhenCUSIsNull) {
-  EXPECT_CALL(on_demand_updater_,
-              EnsureInstalled(kQueryFilterComponentId, testing::_))
+  EXPECT_CALL(
+      on_demand_updater_,
+      EnsureInstalled(query_filter::kQueryFilterComponentId, testing::_))
       .Times(0);
 
   component_updater::RegisterQueryFilterComponent(nullptr);
@@ -119,9 +119,9 @@ TEST_F(QueryFilterComponentInstallerTest, TestVerifyInstallation) {
   // Setup: create a temporary directory and write the sample query filter JSON
   base::ScopedTempDir component_install_dir_;
   ASSERT_TRUE(component_install_dir_.CreateUniqueTempDir());
-  ASSERT_TRUE(base::WriteFile(
-      component_install_dir_.GetPath().Append(kQueryFilterJsonFile),
-      kSampleQueryFilterJson));
+  ASSERT_TRUE(base::WriteFile(component_install_dir_.GetPath().Append(
+                                  query_filter::kQueryFilterJsonFile),
+                              kSampleQueryFilterJson));
 
   EXPECT_TRUE(component_updater::QueryFilterComponentInstallerPolicy()
                   .VerifyInstallation(base::DictValue(),
@@ -132,9 +132,9 @@ TEST_F(QueryFilterComponentInstallerTest, TestComponentReady) {
   // Setup: create a temporary directory and write the sample query filter JSON
   base::ScopedTempDir component_install_dir_;
   ASSERT_TRUE(component_install_dir_.CreateUniqueTempDir());
-  ASSERT_TRUE(base::WriteFile(
-      component_install_dir_.GetPath().Append(kQueryFilterJsonFile),
-      kSampleQueryFilterJson));
+  ASSERT_TRUE(base::WriteFile(component_install_dir_.GetPath().Append(
+                                  query_filter::kQueryFilterJsonFile),
+                              kSampleQueryFilterJson));
 
   // Target version to populate with
   base::Version version("1.0.0");
