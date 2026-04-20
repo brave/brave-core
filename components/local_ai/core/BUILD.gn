@@ -27,6 +27,13 @@ source_set("features") {
   public_deps = [ "//base" ]
 }
 
+mojom("local_ai_internals") {
+  sources = [ "local_ai_internals.mojom" ]
+
+  generate_legacy_js_bindings = true
+  webui_module_path = "chrome://local-ai-internals/"
+}
+
 static_library("core") {
   assert_no_deps = [ "//content/public/*" ]
   friend = [ ":unit_tests" ]

@@ -28,3 +28,23 @@ pack_web_resources("local_ai_generated") {
   output_dir = "$root_gen_dir/brave/components/local_ai/resources"
   deps = [ ":local_ai_ui" ]
 }
+
+# Trusted WebUI at chrome://local-ai-internals
+transpile_web_ui("local_ai_internals_ui") {
+  entry_points = [ [
+        "local_ai_internals",
+        rebase_path("local_ai_internals.ts"),
+      ] ]
+  webpack_aliases = [ "browser" ]
+  resource_name = "local_ai_internals"
+
+  imports_from = [ "//brave/components/local_ai/resources/" ]
+
+  deps = [ "//brave/components/local_ai/core:local_ai_internals_js" ]
+}
+
+pack_web_resources("local_ai_internals_generated") {
+  resource_name = "local_ai_internals"
+  output_dir = "$root_gen_dir/brave/components/local_ai/resources"
+  deps = [ ":local_ai_internals_ui" ]
+}
