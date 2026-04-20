@@ -52,7 +52,7 @@ const mockSettingCardData: Mojom.SettingCardData = {
  * Mock Mojom interfaces for testing
  */
 function createMockConsentHelper(): Mojom.PsstConsentHelperInterface {
-  const mock = {
+  const mock: Mojom.PsstConsentHelperInterface = {
     // Mojom interface methods that endpointsFor/actionsFor expect
     async performPrivacyTuning(performForUids: string[]) {
       console.log('[Mock] performPrivacyTuning called with:', {
@@ -67,15 +67,7 @@ function createMockConsentHelper(): Mojom.PsstConsentHelperInterface {
     async reportFailedContent() {
       console.log('[Mock] reportFailedContent called')
     },
-
-    // Mock Mojom remote properties (these are usually
-    // auto-generated)
-    onConnectionError: { addListener: () => {} } as any,
-    $: {
-      bindNewPipeAndPassReceiver: () => ({}),
-    } as any,
-  } as Mojom.PsstConsentHelperInterface
-
+  }
   return mock
 }
 
@@ -114,7 +106,7 @@ export interface MockPsstDialogAPIOptions {
  */
 export function createMockPsstDialogAPI(
   options: MockPsstDialogAPIOptions = {},
-): PsstDialogAPI {
+) {
   const {
     settingsCardData = {},
     requestDelay = 1000,
@@ -178,10 +170,9 @@ export function createMockPsstDialogAPI(
     throw new Error('Failed to create mock API')
   }
 
-  const initialData: Mojom.SettingCardData = finalSettingsData
   return {
     api,
     dialogHandler,
-    initialData,
+    siteData: finalSettingsData,
   }
 }

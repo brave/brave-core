@@ -42,7 +42,7 @@ export enum SettingState {
   Failed,
 }
 
-interface OptionStatus {
+export interface OptionStatus {
   uid: string
   description: string
   error: string | null
@@ -51,14 +51,9 @@ interface OptionStatus {
   settingState: SettingState
 }
 
-export interface PsstProgressModalState {
-  siteName: string
-  optionsStatuses: OptionStatus[] | undefined
-}
-
 export const PsstProgressModal = () => {
   const psstDialogContext = usePsstDialogAPI()
-  const { api, initialData } = psstDialogContext
+  const { api, siteData } = psstDialogContext
 
   const [optionsStatuses, updateAllMatchingOptionsStatuses] =
     React.useState<OptionStatus[]>()
@@ -88,12 +83,12 @@ export const PsstProgressModal = () => {
   const requestStatus = api.useCurrentOnSetRequestStatus()
   const { performPrivacyTuning } = api.usePerformPrivacyTuning()
 
-  const siteName = initialData ? initialData.siteName : ''
+  const siteName = siteData ? siteData.siteName : ''
 
   React.useEffect(() => {
-    if (!initialData) return
+    if (!siteData) return
 
-    const optionStatusArray: OptionStatus[] = initialData.items.map((item) => ({
+    const optionStatusArray: OptionStatus[] = siteData.items.map((item) => ({
       uid: item.uid,
       description: item.description,
       error: null,
@@ -102,7 +97,7 @@ export const PsstProgressModal = () => {
       settingState: SettingState.Selection,
     }))
     updateAllMatchingOptionsStatuses(optionStatusArray)
-  }, [initialData])
+  }, [siteData])
 
   const [requestUid, requestError] = requestStatus?.data || []
 

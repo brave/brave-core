@@ -8,9 +8,10 @@ import { Meta, StoryObj } from '@storybook/react'
 import { setIconBasePath } from '@brave/leo/react/icon'
 
 import { createMockPsstDialogAPI } from './api/psst_dialog_api_mock'
-import PsstDlgContainer from './containers/App'
 import * as Mojom from 'gen/brave/components/psst/common/psst_ui_common.mojom.m.js'
 import Flex from '$web-common/Flex'
+import { PsstDialogAPIProvider } from './api/psst_dialog_api_context'
+import { PsstProgressModal } from './components/PsstProgressModal'
 
 // Set icon path for Storybook
 setIconBasePath('/icons')
@@ -45,7 +46,7 @@ function PsstDialogStory({
     return {
       api: result.api,
       dialogHandler: result.dialogHandler,
-      initialData: result.initialData,
+      siteData: result.siteData,
     }
   }, [requestDelay, errorUids, siteName, items])
 
@@ -55,7 +56,12 @@ function PsstDialogStory({
       justify='center'
       align='flex-start'
     >
-      <PsstDlgContainer apiContext={mockAPI} />
+      <PsstDialogAPIProvider
+        api={mockAPI.api}
+        siteData={mockAPI.siteData}
+      >
+        <PsstProgressModal />
+      </PsstDialogAPIProvider>
     </Flex>
   )
 }

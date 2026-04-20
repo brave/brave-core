@@ -13,7 +13,7 @@ import { color, font, spacing, radius } from '@brave/leo/tokens/css/variables'
 
 import Flex from '$web-common/Flex'
 
-import { PsstProgressModalState, SettingState } from './PsstProgressModal'
+import { OptionStatus, SettingState } from './PsstProgressModal'
 
 // Styled components
 const SettingGrid = styled.div`
@@ -55,6 +55,7 @@ const CheckBoxIconCompleted = styled(Icon)`
 const CheckBoxIconFailed = styled(Icon)`
   --leo-icon-color: ${color.systemfeedback.errorIcon};
   --leo-icon-size: ${spacing.xl};
+  display: flex;
   padding-right: ${spacing.l};
 `
 
@@ -62,6 +63,11 @@ const SettingText = styled.span`
   font: ${font.default.regular};
   color: ${color.text.secondary};
 `
+const SettingErrorText = styled(SettingText)`
+  font: ${font.default.regular};
+  color: ${color.systemfeedback.errorText};
+`
+
 const DummyIconContainer = styled.div`
   width: ${spacing['3Xl']};
   height: ${spacing['3Xl']};
@@ -72,6 +78,10 @@ const DummyIconContainer = styled.div`
   align-items: center;
   margin-right: ${spacing.l};
 `
+interface PsstProgressModalState {
+  siteName: string
+  optionsStatuses: OptionStatus[] | undefined
+}
 
 export interface Props {
   title: string
@@ -131,10 +141,17 @@ const SettingsCard: React.FC<Props> = ({
                 <Flex
                   direction='row'
                   justify='flex-start'
-                  align='flex-start'
+                  align='center'
                 >
                   <CheckBoxIconFailed name='close-circle' />
-                  <SettingText>{item.description}</SettingText>
+                  <Flex
+                    direction='column'
+                    justify='flex-start'
+                    align='flex-start'
+                  >
+                    <SettingText>{item.description}</SettingText>
+                    <SettingErrorText>{item.error}</SettingErrorText>
+                  </Flex>
                 </Flex>
               )}
             </SettingGridRow>

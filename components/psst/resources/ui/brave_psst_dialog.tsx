@@ -9,14 +9,14 @@ import { setIconBasePath } from '@brave/leo/react/icon'
 import { createPsstDialogApi } from './api/psst_dialog_api'
 import * as Mojom from 'gen/brave/components/psst/common/psst_ui_common.mojom.m.js'
 
-// Containers
-import PsstDlgContainer from './containers/App'
+import { PsstDialogAPIProvider } from './api/psst_dialog_api_context'
+import { PsstProgressModal } from './components/PsstProgressModal'
 
 setIconBasePath('chrome://resources/brave-icons')
 
 async function createBrowserPsstApi() {
   const consentHelper = new Mojom.PsstConsentHelperRemote()
-  const { api, dialogHandler } = await createPsstDialogApi(consentHelper)
+  const { api, dialogHandler } = createPsstDialogApi(consentHelper)
 
   const dialogHandlerReceiver = new Mojom.PsstConsentDialogReceiver(
     dialogHandler,
@@ -28,13 +28,18 @@ async function createBrowserPsstApi() {
       consentHelper.$.bindNewPipeAndPassReceiver(),
       dialogHandlerReceiver.$.bindNewPipeAndPassRemote(),
     )
-  return { api, dialogHandler, initialData: currentSiteData }
+  return { api, dialogHandler, siteData: currentSiteData }
 }
 
 async function initialize() {
-  const apiContext = await createBrowserPsstApi()
+  const apiData = await createBrowserPsstApi()
   createRoot(document.getElementById('root')!).render(
-    <PsstDlgContainer apiContext={apiContext} />,
+    <PsstDialogAPIProvider
+      api={apiData.api}
+      siteData={apiData.siteData}
+    >
+      <PsstProgressModal />
+    </PsstDialogAPIProvider>,
   )
 }
 

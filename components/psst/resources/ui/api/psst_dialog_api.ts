@@ -15,7 +15,6 @@ export * from 'gen/brave/components/psst/common/psst_ui_common.mojom.m.js'
 
 export function createPsstDialogApi(
   consentHelper: Mojom.PsstConsentHelperInterface,
-  initialSettingsData?: Mojom.SettingCardData,
 ) {
   let dialogHandler: Mojom.PsstConsentDialogInterface
 
@@ -47,7 +46,6 @@ export function createPsstDialogApi(
   return {
     api,
     dialogHandler: dialogHandler!,
-    initialData: initialSettingsData,
   }
 }
 
