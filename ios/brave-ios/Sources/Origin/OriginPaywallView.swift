@@ -18,8 +18,11 @@ public struct OriginPaywallView: View {
   @Environment(\.dismiss) private var dismiss
   @Environment(\.openURL) private var openURL
 
-  public init(viewModel: OriginPaywallViewModel) {
+  var didPurchase: (() -> Void)
+
+  public init(viewModel: OriginPaywallViewModel, didPurchase: @escaping () -> Void = {}) {
     self.viewModel = viewModel
+    self.didPurchase = didPurchase
   }
 
   public var body: some View {
@@ -79,7 +82,10 @@ public struct OriginPaywallView: View {
         ToolbarItemGroup(placement: .topBarTrailing) {
           Button(Strings.Origin.restoreButton) {
             Task {
-              await viewModel.restore()
+              if await viewModel.restore() {
+                dismiss()
+                didPurchase()
+              }
             }
           }
           .tint(.white)
@@ -111,7 +117,10 @@ public struct OriginPaywallView: View {
   private var standardPaywallActionView: some View {
     Button {
       Task {
-        await viewModel.purchase()
+        if await viewModel.purchase() {
+          dismiss()
+          didPurchase()
+        }
       }
     } label: {
       HStack {
@@ -160,7 +169,10 @@ public struct OriginPaywallView: View {
       VStack {
         Button {
           Task {
-            await viewModel.purchase()
+            if await viewModel.purchase() {
+              dismiss()
+              didPurchase()
+            }
           }
         } label: {
           HStack {

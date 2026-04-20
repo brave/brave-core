@@ -831,7 +831,7 @@ class SettingsViewController: TableViewController {
             else {
               return
             }
-            if originService.isPurchased() {
+            let originSettingsController: () -> UIViewController = {
               let controller = UIHostingController(
                 rootView: OriginSettingsView(
                   viewModel: .init(
@@ -850,12 +850,24 @@ class SettingsViewController: TableViewController {
                 )
               )
               controller.title = Strings.Origin.originProductName  // Not Translated
-              self.navigationController?.pushViewController(controller, animated: true)
+              return controller
+            }
+            if originService.isPurchased() {
+              self.navigationController?.pushViewController(
+                originSettingsController(),
+                animated: true
+              )
             } else {
               let skusService = Skus.SkusServiceFactory.get(profile: braveCore.profile)
               let controller = UIHostingController(
                 rootView: OriginPaywallView(
-                  viewModel: .init(store: .init(skusService: skusService))
+                  viewModel: .init(store: .init(skusService: skusService)),
+                  didPurchase: { [weak self] in
+                    self?.navigationController?.pushViewController(
+                      originSettingsController(),
+                      animated: true
+                    )
+                  }
                 )
                 .environment(
                   \.openURL,

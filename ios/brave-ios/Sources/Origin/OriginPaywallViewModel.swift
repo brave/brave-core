@@ -29,18 +29,20 @@ public class OriginPaywallViewModel {
 
   var product: Product?
 
-  func purchase() async {
+  func purchase() async -> Bool {
     isStoreOperationActive = true
     defer { isStoreOperationActive = false }
 
     do {
       try await store.purchase(product: .originPurchase)
+      return true
     } catch {
       isErrorPresented = true
     }
+    return false
   }
 
-  func restore() async {
+  func restore() async -> Bool {
     isStoreOperationActive = true
     defer { isStoreOperationActive = false }
 
@@ -60,5 +62,6 @@ public class OriginPaywallViewModel {
     if !success {
       isErrorPresented = true
     }
+    return success
   }
 }
