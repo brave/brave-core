@@ -17,6 +17,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_pages.h"
+#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/workspace/brave_workspace_service_factory.h"
@@ -361,12 +362,14 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 
   UpdateCommandEnabled(
       IDC_SAVE_WORKSPACE,
-      browser_->is_type_normal() && BraveWorkspaceServiceFactory::GetForProfile(
-                                        browser_->profile()) != nullptr);
+      features::IsBraveWorkspaceEnabled() && browser_->is_type_normal() &&
+          BraveWorkspaceServiceFactory::GetForProfile(browser_->profile()) !=
+              nullptr);
   UpdateCommandEnabled(
       IDC_OPEN_WORKSPACE,
-      browser_->is_type_normal() && BraveWorkspaceServiceFactory::GetForProfile(
-                                        browser_->profile()) != nullptr);
+      features::IsBraveWorkspaceEnabled() && browser_->is_type_normal() &&
+          BraveWorkspaceServiceFactory::GetForProfile(browser_->profile()) !=
+              nullptr);
 
   if (browser_->is_type_normal()) {
     // Delete these when upstream enables by default.

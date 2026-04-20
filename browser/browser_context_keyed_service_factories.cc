@@ -25,6 +25,7 @@
 #include "brave/browser/serp_metrics/serp_metrics_service_factory.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/sync/brave_sync_alerts_service_factory.h"
+#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_factory.h"
 #include "brave/browser/workspace/brave_workspace_service_factory.h"
@@ -254,7 +255,9 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 
   serp_metrics::SerpMetricsServiceFactory::GetInstance();
 
-  BraveWorkspaceServiceFactory::GetInstance();
+  if (features::IsBraveWorkspaceEnabled()) {
+    BraveWorkspaceServiceFactory::GetInstance();
+  }
 }
 
 }  // namespace brave

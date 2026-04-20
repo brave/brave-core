@@ -17,6 +17,7 @@
 #include "base/logging.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
+#include "brave/browser/ui/brave_ui_features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/sessions/core/session_service_commands.h"
 
@@ -32,7 +33,9 @@ constexpr char kWorkspaceTabCount[] = "number-of-tabs";
 }  // namespace
 
 BraveWorkspaceService::BraveWorkspaceService(Profile* profile)
-    : profile_(profile) {}
+    : profile_(profile) {
+  CHECK(features::IsBraveWorkspaceEnabled());
+}
 
 BraveWorkspaceService::~BraveWorkspaceService() = default;
 
