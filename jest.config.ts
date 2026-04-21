@@ -107,6 +107,7 @@ const jestConfig: Config = {
     '<rootDir>/build/rustup',
     '<rootDir>/third_party',
     '<rootDir>/tools/crates/vendor',
+    '<rootDir>/leo',
     ...(buildConfig.enable_ai_chat ? [] : ['<rootDir>/components/ai_chat']),
     ...(buildConfig.enable_brave_wallet
       ? []
@@ -123,8 +124,6 @@ const jestConfig: Config = {
     '<rootDir>/node_modules/@jest',
     '<rootDir>/node_modules/jest-runtime',
     '<rootDir>/node_modules/lodash',
-    'signal-exit',
-    'is-typedarray',
   ],
   setupFilesAfterEnv: ['<rootDir>/components/test/testSetup.ts'],
   moduleNameMapper: {

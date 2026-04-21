@@ -23,6 +23,7 @@ function runGitAsyncWithErrorLog(repoPath, gitArgs) {
 function getPatch(gitRepoPath, modifiedFilePath) {
   const singleDiffArgs = [
     'diff',
+    '--no-ext-diff',
     '--src-prefix=a/',
     '--dst-prefix=b/',
     '--full-index',
