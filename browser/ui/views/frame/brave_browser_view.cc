@@ -1186,9 +1186,12 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
                                           content::WebContents* new_contents,
                                           int index,
                                           int reason) {
+  const bool tab_change_in_split_view =
+      IsTabChangeInSplitView(old_contents, new_contents);
+
   BrowserView::OnActiveTabChanged(old_contents, new_contents, index, reason);
 
-  if (top_reveal_controller_) {
+  if (top_reveal_controller_ && !tab_change_in_split_view) {
     top_reveal_controller_->RevealTemporarily(base::Seconds(2));
   }
 
