@@ -10,16 +10,12 @@
 #include <memory>
 
 #include "base/containers/flat_map.h"
-#include "base/memory/raw_ptr.h"
 #include "brave/components/serp_metrics/serp_metric_type.h"
+#include "brave/components/serp_metrics/serp_metrics_day_boundary_calculator.h"
 
 class PrefService;
 class TimePeriodStorage;
 class TimePeriodStoreFactory;
-
-namespace base {
-class Time;
-}  // namespace base
 
 namespace serp_metrics {
 
@@ -31,11 +27,15 @@ namespace serp_metrics {
 //    (00:00:00 to 23:59:59 in the reporting timezone).
 //  - Stale period: searches older than yesterday (but still within the
 //    `TimePeriodStorage` retention window).
+//
+// Day boundaries are computed in UTC when `report_in_utc` is true, or in local
+// time otherwise.
 
 class SerpMetrics final {
  public:
   SerpMetrics(PrefService* local_state,
-              const TimePeriodStoreFactory& time_period_store_factory);
+              const TimePeriodStoreFactory& time_period_store_factory,
+              bool report_in_utc);
 
   SerpMetrics(const SerpMetrics&) = delete;
   SerpMetrics& operator=(const SerpMetrics&) = delete;
@@ -54,14 +54,7 @@ class SerpMetrics final {
   size_t GetSearchCountForTesting(SerpMetricType type) const;
 
  private:
-  // Returns the start of the stale period in local time, based on the last day
-  // a usage ping was sent. Searches recorded on `kLastCheckYMD` have not yet
-  // been reported, so the stale period begins at local midnight of that day. If
-  // the last check date is unavailable or invalid, an empty time is returned to
-  // indicate that the full retention period should be considered stale.
-  base::Time GetStartOfStalePeriod() const;
-
-  const raw_ptr<PrefService> local_state_;  // Not owned.
+  SerpMetricsDayBoundaryCalculator day_boundary_calculator_;
 
   base::flat_map<SerpMetricType, std::unique_ptr<TimePeriodStorage>>
       time_period_storages_;

@@ -19,9 +19,13 @@ SerpMetricsAllProfilesAggregator::SerpMetricsAllProfilesAggregator(
   for (ProfileAttributesEntry* entry :
        profile_attributes_storage.GetAllProfilesAttributes()) {
     const base::FilePath& profile_path = entry->GetPath();
+    // Report SERP metrics in local time to match Desktop/Android daily usage
+    // ping behavior.
     profile_attributes_serp_metrics_.push_back(std::make_unique<SerpMetrics>(
-        local_state, SerpMetricsTimePeriodStoreFactory(
-                         profile_path, profile_attributes_storage)));
+        local_state,
+        SerpMetricsTimePeriodStoreFactory(profile_path,
+                                          profile_attributes_storage),
+        /*report_in_utc=*/false));
   }
 }
 

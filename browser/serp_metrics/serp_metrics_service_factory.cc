@@ -54,10 +54,13 @@ SerpMetricsServiceFactory::BuildServiceInstanceForBrowserContext(
   CHECK(profile_manager);
   Profile* profile = Profile::FromBrowserContext(context);
   CHECK(profile);
+  // Report SERP metrics in local time to match Desktop/Android daily usage
+  // ping behavior.
   return std::make_unique<SerpMetricsService>(
       CHECK_DEREF(g_browser_process->local_state()),
       SerpMetricsTimePeriodStoreFactory(
-          profile->GetPath(), profile_manager->GetProfileAttributesStorage()));
+          profile->GetPath(), profile_manager->GetProfileAttributesStorage()),
+      /*report_in_utc=*/false);
 }
 
 }  // namespace serp_metrics
