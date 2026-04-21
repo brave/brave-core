@@ -56,6 +56,10 @@ class QueryFilterComponentInstallerTest : public testing::Test {
         {query_filter::features::kQueryFilterComponent}, {});
   }
 
+  void TearDown() override {
+    query_filter::QueryFilterData::GetInstance()->ResetRulesForTesting();
+  }
+
  protected:
   std::unique_ptr<component_updater::MockComponentUpdateService> cus_;
   brave_component_updater::MockOnDemandUpdater on_demand_updater_;
@@ -116,7 +120,8 @@ TEST_F(QueryFilterComponentInstallerTest, NoRegisterWhenCUSIsNull) {
 }
 
 TEST_F(QueryFilterComponentInstallerTest, TestVerifyInstallation) {
-  // Setup: create a temporary directory and write the sample query filter JSON
+  // Setup: create a temporary directory and write the sample query filter
+  // JSON
   base::ScopedTempDir component_install_dir_;
   ASSERT_TRUE(component_install_dir_.CreateUniqueTempDir());
   ASSERT_TRUE(base::WriteFile(component_install_dir_.GetPath().AppendASCII(
@@ -129,7 +134,8 @@ TEST_F(QueryFilterComponentInstallerTest, TestVerifyInstallation) {
 }
 
 TEST_F(QueryFilterComponentInstallerTest, TestComponentReady) {
-  // Setup: create a temporary directory and write the sample query filter JSON
+  // Setup: create a temporary directory and write the sample query filter
+  // JSON
   base::ScopedTempDir component_install_dir_;
   ASSERT_TRUE(component_install_dir_.CreateUniqueTempDir());
   ASSERT_TRUE(base::WriteFile(component_install_dir_.GetPath().AppendASCII(
@@ -140,6 +146,7 @@ TEST_F(QueryFilterComponentInstallerTest, TestComponentReady) {
   base::Version version("1.0.0");
 
   // Verify the version is empty before the component is ready
+  ASSERT_NE(nullptr, query_filter::QueryFilterData::GetInstance())
   EXPECT_EQ("", query_filter::QueryFilterData::GetInstance()->GetVersion());
   // Verify also the rules are empty before the component is ready
   EXPECT_TRUE(query_filter::QueryFilterData::GetInstance()->rules().empty());

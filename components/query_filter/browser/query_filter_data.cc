@@ -5,6 +5,8 @@
 
 #include "brave/components/query_filter/browser/query_filter_data.h"
 
+#include <algorithm>
+
 #include "base/feature_list.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
