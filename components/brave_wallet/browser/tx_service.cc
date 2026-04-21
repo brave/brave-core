@@ -189,7 +189,7 @@ void TxService::AddUnapprovedEvmDappTransaction(
     AddUnapprovedEvmTransactionCallback callback) {
   if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(
           tx_data_1559->base_data->to)) {
-    std::move(callback).Run(false, "", WalletRestrictedAddressErrorMessage());
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
   }
 
@@ -205,7 +205,7 @@ void TxService::AddUnapprovedEvmDappTransaction(
     bool sign_only,
     AddUnapprovedEvmTransactionCallback callback) {
   if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(tx_data->to)) {
-    std::move(callback).Run(false, "", WalletRestrictedAddressErrorMessage());
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
   }
 
@@ -222,7 +222,7 @@ void TxService::AddUnapprovedSolanaDappTransaction(
     AddUnapprovedSolanaTransactionCallback callback) {
   if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(
           solana_tx_data->to_wallet_address)) {
-    std::move(callback).Run(false, "", WalletRestrictedAddressErrorMessage());
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
   }
 
@@ -243,7 +243,7 @@ void TxService::AddUnapprovedEvmTransaction(
   }
 
   if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(params->to)) {
-    std::move(callback).Run(false, "", WalletRestrictedAddressErrorMessage());
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
   }
 
@@ -259,7 +259,7 @@ void TxService::AddUnapprovedSolanaTransaction(
     AddUnapprovedSolanaTransactionCallback callback) {
   if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(
           solana_tx_data->to_wallet_address)) {
-    std::move(callback).Run(false, "", WalletRestrictedAddressErrorMessage());
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
   }
 
@@ -275,7 +275,7 @@ void TxService::AddUnapprovedFilecoinTransaction(
     mojom::SwapInfoPtr swap_info,
     AddUnapprovedFilecoinTransactionCallback callback) {
   if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(fil_tx_data->to)) {
-    std::move(callback).Run(false, "", WalletRestrictedAddressErrorMessage());
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
   }
 
@@ -296,7 +296,7 @@ void TxService::AddUnapprovedBitcoinTransaction(
   }
 
   if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(params->to)) {
-    std::move(callback).Run(false, "", WalletRestrictedAddressErrorMessage());
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
   }
 
@@ -316,7 +316,7 @@ void TxService::AddUnapprovedZCashTransaction(
   }
 
   if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(params->to)) {
-    std::move(callback).Run(false, "", WalletRestrictedAddressErrorMessage());
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
   }
 
@@ -336,7 +336,7 @@ void TxService::AddUnapprovedCardanoTransaction(
   }
 
   if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(params->to)) {
-    std::move(callback).Run(false, "", WalletRestrictedAddressErrorMessage());
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
   }
 
@@ -356,7 +356,7 @@ void TxService::AddUnapprovedPolkadotTransaction(
   }
 
   if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(params->to)) {
-    std::move(callback).Run(false, "", WalletRestrictedAddressErrorMessage());
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
   }
 
