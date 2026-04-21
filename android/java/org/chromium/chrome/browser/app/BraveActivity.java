@@ -1371,6 +1371,13 @@ public abstract class BraveActivity extends ChromeActivity
                 && !BraveVpnPolicy.isDisabledByPolicy(mTabModelProfileSupplier.get())) {
             showLinkVpnSubscriptionDialog();
         }
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ORIGIN)) {
+            // Refresh the cached Skus credential summary so sync "is Origin active" readers
+            // (promo/engagement gates) see up-to-date status. Local-first; only hits the
+            // backend when credentials are past their expiry window.
+            BraveOriginSubscriptionPrefs.requestCredentialSummary(
+                    mTabModelProfileSupplier.get(), null);
+        }
         if (isFirstInstall
                 && (OnboardingPrefManager.getInstance().isDormantUsersEngagementEnabled()
                         || getPackageName().equals(BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME))) {
@@ -1394,7 +1401,8 @@ public abstract class BraveActivity extends ChromeActivity
                                 .readBoolean(BravePreferenceKeys.BRAVE_OPENED_YOUTUBE, false)
                         || ChromeSharedPreferences.getInstance()
                                         .readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
-                                >= 7)) {
+                                >= 7)
+                && !BraveOriginSubscriptionPrefs.getIsCredentialSummaryActiveCached()) {
             showAdFreeCalloutDialog();
         }
 
@@ -1455,7 +1463,8 @@ public abstract class BraveActivity extends ChromeActivity
         if (!isFirstInstall
                 && !BravePrefServiceBridge.getInstance().getPlayYTVideoInBrowserEnabled()
                 && ChromeSharedPreferences.getInstance()
-                        .readBoolean(BravePreferenceKeys.OPEN_YT_IN_BRAVE_DIALOG, true)) {
+                        .readBoolean(BravePreferenceKeys.OPEN_YT_IN_BRAVE_DIALOG, true)
+                && !BraveOriginSubscriptionPrefs.getIsCredentialSummaryActiveCached()) {
             openYtInBraveDialog();
             ChromeSharedPreferences.getInstance()
                     .writeBoolean(BravePreferenceKeys.OPEN_YT_IN_BRAVE_DIALOG, false);
@@ -2272,6 +2281,9 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     public void showDormantUsersEngagementDialog(String notificationType) {
+        if (BraveOriginSubscriptionPrefs.getIsCredentialSummaryActiveCached()) {
+            return;
+        }
         if (!BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(BraveActivity.this)) {
             DormantUsersEngagementDialogFragment dormantUsersEngagementDialogFragment =
                     new DormantUsersEngagementDialogFragment();

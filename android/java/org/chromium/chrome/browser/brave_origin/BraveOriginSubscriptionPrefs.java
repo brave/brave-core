@@ -15,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import org.chromium.base.BraveFeatureList;
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Callback;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
@@ -32,6 +33,7 @@ import org.chromium.chrome.browser.billing.PurchaseModel;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.policy.BravePolicyConstants;
 import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.BraveOriginPreferences;
 import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
@@ -166,10 +168,17 @@ public class BraveOriginSubscriptionPrefs {
     }
 
     /**
-     * Gets the Origin subscription active status for the given profile.
+     * Gets the Play Store Origin subscription active status for the given profile.
+     *
+     * <p>Note: this only reflects Play Store purchases recorded in {@code
+     * BRAVE_ORIGIN_SUBSCRIPTION_ACTIVE_ANDROID} by the in-app billing callback. Users whose Origin
+     * subscription was purchased on desktop and linked via their Brave account will read as
+     * inactive here. For an any-source sync check suitable for UI gating, call {@link
+     * #getIsCredentialSummaryActiveCached}. For the authoritative fresh value, call {@link
+     * #requestCredentialSummary} (async, via the Skus mojo service).
      *
      * @param profile The profile to use for preference retrieval
-     * @return The subscription active status, or false if profile is null
+     * @return The Play Store subscription active status, or false if profile is null
      */
     public static boolean getIsSubscriptionActive(@Nullable Profile profile) {
         if (profile == null) {
@@ -379,6 +388,10 @@ public class BraveOriginSubscriptionPrefs {
                         // Store the order ID
                         UserPrefs.get(profile)
                                 .setString(BravePref.BRAVE_ORIGIN_ORDER_ID_ANDROID, orderId);
+                        // A successful Play Store order fetch is an authoritative "Origin is
+                        // active" signal; prime the sync cache immediately so promo gates honor
+                        // it without waiting for the next credential summary refresh.
+                        setIsCredentialSummaryActiveCached(true);
                         success = true;
                     } finally {
                         skusService.close();
@@ -429,6 +442,7 @@ public class BraveOriginSubscriptionPrefs {
                                     PostTask.postTask(
                                             TaskTraits.UI_DEFAULT,
                                             () -> {
+                                                setIsCredentialSummaryActiveCached(isActive);
                                                 if (callback != null) {
                                                     callback.onResult(isActive);
                                                 }
@@ -438,6 +452,30 @@ public class BraveOriginSubscriptionPrefs {
                         skusService.close();
                     }
                 });
+    }
+
+    /**
+     * Caches the authoritative any-source Origin active status returned by the most recent {@link
+     * #requestCredentialSummary} callback. Unlike the Play-Store-only {@link
+     * #getIsSubscriptionActive}, the Skus credential summary covers both Play Store purchases and
+     * desktop-linked subscriptions, so this cache is the correct source for sync "is Origin active"
+     * gating on Android.
+     */
+    private static void setIsCredentialSummaryActiveCached(boolean value) {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_ORIGIN_CREDENTIAL_SUMMARY_CACHED, value);
+    }
+
+    /**
+     * Synchronous "is Origin effectively active" check for UI-thread gating of promo surfaces.
+     * Returns the value written by the most recent {@link #requestCredentialSummary} callback, or
+     * false if no refresh has run yet. Callers that need the authoritative fresh value should call
+     * {@link #requestCredentialSummary} directly; this getter is intended for hot paths that need a
+     * cheap sync answer and tolerate state as of the last refresh.
+     */
+    public static boolean getIsCredentialSummaryActiveCached() {
+        return ChromeSharedPreferences.getInstance()
+                .readBoolean(BravePreferenceKeys.BRAVE_ORIGIN_CREDENTIAL_SUMMARY_CACHED, false);
     }
 
     /**
