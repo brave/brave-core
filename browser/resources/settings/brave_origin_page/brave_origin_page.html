@@ -1,4 +1,9 @@
 <style include="settings-shared cr-shared-style">
+  /* Extra space when fixed #needsRestart bar is shown */
+  .origin-restart-padding-spacer {
+    padding-bottom: 80px;
+  }
+
   .title {
     font: var(--leo-font-default-semibold);
     height: 68px;
@@ -57,6 +62,7 @@
 </template>
 
 <template is="dom-if" if="[[isPurchased_]]">
+<div class$="[[getOriginRestartPaddingClass_(showRestartToast_)]]">
 <settings-section
   id="origin"
   page-title="$i18n{braveOriginTitle}">
@@ -184,6 +190,7 @@
   </cr-link-row>
 </div>
 </settings-section>
+</div>
 <template is="dom-if" if="[[showRestartToast_]]">
   <div id="needsRestart">
     <div class="flex-container">
