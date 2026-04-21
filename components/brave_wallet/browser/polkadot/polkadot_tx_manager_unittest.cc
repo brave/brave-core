@@ -10,10 +10,12 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_forward.h"
+#include "base/strings/string_util.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate_impl.h"
+#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -686,6 +688,29 @@ TEST_F(PolkadotTxManagerUnitTest, RetryTransaction) {
         EXPECT_TRUE(tx_meta_id.empty());
         EXPECT_EQ(error_message, "Not implemented");
       }));
+}
+
+TEST_F(PolkadotTxManagerUnitTest, RestrictedFromAddress) {
+  auto* registry = BlockchainRegistry::GetInstance();
+  registry->UpdateRestrictedAddressesList(
+      {base::ToLowerASCII(polkadot_mainnet_account_->address)});
+
+  auto transaction_params = mojom::NewPolkadotTransactionParams::New(
+      mojom::kPolkadotMainnet, polkadot_mainnet_account_->account_id->Clone(),
+      kBobSS58, mojom::uint128::New(0, 1234), false, nullptr);
+
+  base::test::TestFuture<bool, const std::string&, const std::string&>
+      unapproved_future;
+
+  tx_service_->AddUnapprovedPolkadotTransaction(
+      std::move(transaction_params), unapproved_future.GetCallback());
+
+  const auto& [success, tx_meta_id, err_str] = unapproved_future.Take();
+
+  EXPECT_FALSE(success);
+  EXPECT_TRUE(tx_meta_id.empty());
+  EXPECT_EQ(err_str, WalletInternalErrorMessage());
+  registry->UpdateRestrictedAddressesList({});
 }
 
 }  // namespace brave_wallet
