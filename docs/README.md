@@ -4,29 +4,6 @@ This directory contains documentation for the Brave Browser. For additional reso
 
  * [brave-browser/wiki](https://github.com/brave/brave-browser/wiki)
 
-> [!IMPORTANT]
-> If you add new documents, please also add a link to them in the Document
-> Index below.
-
-## Creating Documentation
-
-### Guidelines
-
-*   Markdown documents must follow the
-    [Markdown Style
-    Guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/markdown/markdown.md).
-
-### Previewing changes
-
-#### Locally using [md_browser](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/tools/md_browser/)
-
-```bash
-# in src/brave/
-npm run docs
-```
-
-This is only an estimate. The **github** view may differ.
-
 ## Document Index
 
 ### Checking Out and Patching
@@ -49,6 +26,8 @@ This is only an estimate. The **github** view may differ.
     beyond standard Chromium encryption.
 
 ### General Development
+*   [Running test suites](running_test_suites.md) - Selectively execute unit,
+    browser and typescript tests.
 *   [`gni` notes](gni_sources.md) - Brief notes on the use of `source.gni`
     files in our code base.
 *   [Rust notes](rust.md) - General recommendations on integrating rust code
@@ -63,3 +42,31 @@ This is only an estimate. The **github** view may differ.
     How to exclude files from format and presubmit checks.
 *   [Siso Customization](siso_customization.md) - How we customize Siso to work
     for us.
+*   [WebUI Frontend](./webui_frontend.md) - General Web UI, React, webpack
+    overview.
+*   [WebUI Testing](./webui_testing.md) - Guide to creating and running *.test.ts(x) suites.
+*   [WebUI Strings Overview](./webui_strings_explainer.md) - Including strings in a Web UI frontend.
+
+
+## Creating Documentation
+
+> [!IMPORTANT]
+> If you add new documents, please also add a link to them in the Document
+> Index below.
+
+### Guidelines
+
+*   Markdown documents must follow the
+    [Markdown Style
+    Guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/markdown/markdown.md).
+
+### Previewing changes
+
+#### Locally using [md_browser](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/tools/md_browser/)
+
+```bash
+# in src/brave/
+npm run docs
+```
+
+This is only an estimate. The **github** view may differ.

@@ -57,6 +57,9 @@ skip this step.
 Run `npm run build` to make sure the code builds. If it fails, fix the build
 errors, amend the commit, and retry.
 
+If work is targeting a different platform, follow the build instructions at
+README.md or confirm with the user which build arguments or technique to use.
+
 ### 6. Run tests
 
 **If the `all` argument was provided:** Run all test suites without filters:
@@ -64,15 +67,24 @@ errors, amend the commit, and retry.
 - `npm run test -- brave_browser_tests`
 - `npm run test -- brave_unit_tests`
 - `npm run test -- brave_component_unittests`
+- `npm run test-unit`
 
-**Otherwise (default):** Determine which test targets are affected by the
-changes in this branch (compare against `master`). Look at the changed files and
-identify the corresponding test targets and relevant test filters.
+**Otherwise (default):** Determine which test suites are affected by the changes
+in this branch (compare against `master`). Look at the changed files and
+identify the corresponding test suites and relevant test filters.
 
-- **Browser tests:** `npm run test -- brave_browser_tests --filter=<TestName>`
-- **Unit tests:** `npm run test -- brave_unit_tests --filter=<TestName>`
-- **Component unit tests:**
-  `npm run test -- brave_component_unittests --filter=<TestName>`
+- `npm run test -- [test suite] --filter="..."`
+
+where test suite is any of:
+
+- brave_components_unittests (C++ unit tests in brave/components)
+- brave_unit_tests (C++ unit tests anywhere else in brave/)
+- brave_browser_tests
+- chromium_unit_tests (Chromium C++ unit tests in src/)
+- browser_tests (Chromium browser tests in src/)
+
+Or `npm run test-unit -- [path blob filter]` to run `jest` for any
+\*.test.{ts,tsx} files.
 
 If no tests are affected, note that and move on.
 

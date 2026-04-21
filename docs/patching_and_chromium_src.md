@@ -89,34 +89,19 @@ No BUILD.gn changes are needed for this.
 
 ### Patch the Chromium files
 
-When other options are exhausted, you can patch the code directly in `src/`. After making the changes, you can run the npm command `npm run update_patches`.   This will update the patches which are stored in  `src/brave/patches`.   Please note that removed changes in `src` currently will not update the patches, so you will have to do that manually.
+When other options are exhausted, you can patch the code directly in `src/`. After making the changes, you can run the npm command `npm run update_patches`. This will update the patches which are stored in  `src/brave/patches`.   Please note that removed changes in `src` currently will not update the patches, so you will have to do that manually.
+
+.patchinfo files are git-ignored metadata files to track which patches have been
+applied. They are created during `npm run apply_patches`. Run that command
+whenever switching branches where .patch files are added, modified, or removed
+so that chromium files get updated. Sync will also run that command, so you
+don't have to yourself if performing that.
+
+_Tip: Directly after generating new patches and when changing branches where patches are modified, ensure you run `npm run apply_patches` to generate the metadata and remove your patched changes when changing to a branch no longer containing the patches._
 
 We aim to make the only patches required to be trivial changes, and not nested logic changes.
-If possible write the patch to add a new line vs appending/prepending to an existing line.
 
-For example, instead of
-```
--  return !url.is_empty() && !url.SchemeIs(content::kChromeUIScheme) &&
-+  return IsBraveTranslateEnabled() && !url.is_empty() && !url.SchemeIs(content::kChromeUIScheme) &&
-!url.SchemeIs(content::kChromeDevToolsScheme) &&
-```
-it should be
-```
-return !url.is_empty() && !url.SchemeIs(content::kChromeUIScheme) &&
-+  IsBraveTranslateEnabled() &&
-!url.SchemeIs(content::kChromeDevToolsScheme) &&
-```
-Do not add comments in patches and ignore lint line length rules to squash patches onto one line whenever possible
-
-You should almost never patch in two methods calls in a row. We should prefer extensible patches. For instance https://github.com/brave/brave-core/pull/2693/files#diff-a9c9a8da7aa4df821394352a0ca04a27R12:
-```
-CopyBraveExtensionLocalization(config, staging_dir, g_archive_inputs)
-CopyBraveRewardsExtensionLocalization(config, staging_dir, g_archive_inputs)
-```
-inside `CopyAllFilesToStagingDir` would be collapsed to
-```
-CopyBraveFilesToStagingDir
-```
+See [best-practices/patches.md](best-practices/patches.md) for important criteria.
 
 Make sure you do NOT have the following in your `~/.gitconfig`:
 
