@@ -678,10 +678,10 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_SHOW_PLAYLIST_BUBBLE:
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
       brave::ShowPlaylistBubble(&*browser_);
+      break;
 #else
       NOTREACHED() << " This command shouldn't be enabled";
 #endif
-      break;
     case IDC_SHOW_WAYBACK_MACHINE_BUBBLE:
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
       brave::ShowWaybackMachineBubble(&*browser_);

@@ -19,7 +19,7 @@
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
@@ -36,6 +36,10 @@
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/core/common/features.h"
 #endif
 
 using ::testing::Eq;
@@ -58,7 +62,10 @@ constexpr sidebar::SidebarItem::BuiltInItemType
         sidebar::SidebarItem::BuiltInItemType::kBookmarks,
         sidebar::SidebarItem::BuiltInItemType::kReadingList,
         sidebar::SidebarItem::BuiltInItemType::kHistory,
-        sidebar::SidebarItem::BuiltInItemType::kPlaylist};
+#if BUILDFLAG(ENABLE_PLAYLIST)
+        sidebar::SidebarItem::BuiltInItemType::kPlaylist,
+#endif
+};
 
 constexpr char sidebar_all_builtin_visible_json[] = R"({
         "hidden_built_in_items": [  ],
@@ -243,9 +250,11 @@ class SidebarServiceTest : public testing::Test {
   size_t GetDefaultItemCount() const {
     auto item_count =
         std::size(kDefaultBuiltInItemTypesForTest) - 1 /* for history*/;
+#if BUILDFLAG(ENABLE_PLAYLIST)
     if (!base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
       item_count -= 1;
     }
+#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
     if (!ai_chat::features::IsAIChatEnabled()) {
@@ -542,10 +551,12 @@ TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
         }
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
         if (!base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
             built_in_type == SidebarItem::BuiltInItemType::kPlaylist) {
           return false;
         }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
         return true;
       });
@@ -855,9 +866,11 @@ TEST_F(SidebarServiceTest, BuiltInItemUpdateTestWithBuiltInItemTypeKey) {
 
   // Brave Talk and Reading list.
   auto expected_count = 2UL;
+#if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     expected_count += 1;
   }
+#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::features::IsAIChatEnabled()) {
@@ -950,6 +963,7 @@ TEST_F(SidebarServiceTest, SidebarEnabledHistogram) {
   histogram_tester_.ExpectTotalCount(p3a::kSidebarEnabledHistogramName, 4);
 }
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
 class SidebarServiceTestWithPlaylist : public SidebarServiceTest {
  public:
   SidebarServiceTestWithPlaylist() {
@@ -992,6 +1006,7 @@ TEST_F(SidebarServiceTestWithPlaylist, GetDefaultPanelItem) {
 
   EXPECT_FALSE(service_->GetDefaultPanelItem());
 }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 class SidebarServiceOrderingTest : public SidebarServiceTest {
  public:
@@ -1071,7 +1086,10 @@ TEST_F(SidebarServiceOrderingTest, BuiltInItemsDefaultOrder) {
       SidebarItem::BuiltInItemType::kBookmarks,
       SidebarItem::BuiltInItemType::kReadingList,
       SidebarItem::BuiltInItemType::kHistory,
-      SidebarItem::BuiltInItemType::kPlaylist}));
+#if BUILDFLAG(ENABLE_PLAYLIST)
+      SidebarItem::BuiltInItemType::kPlaylist,
+#endif
+  }));
 }
 
 TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAllBuiltInVisible) {
@@ -1112,10 +1130,12 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAllBuiltInVisible) {
   expected_count--;
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     expected_count++;
     items.push_back(SidebarItem::BuiltInItemType::kPlaylist);
   }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
   LoadFromPrefsTest(std::move(sidebar), items, expected_count);
 }
 
@@ -1135,7 +1155,9 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsWalletBuiltInHidden) {
 #if BUILDFLAG(ENABLE_AI_CHAT)
       SidebarItem::BuiltInItemType::kChatUI,
 #endif
+#if BUILDFLAG(ENABLE_PLAYLIST)
       SidebarItem::BuiltInItemType::kPlaylist,
+#endif
   };
 
   auto expected_count = sidebar_items->size();
@@ -1150,10 +1172,12 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsWalletBuiltInHidden) {
   expected_count--;
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     expected_count++;
     items.push_back(SidebarItem::BuiltInItemType::kPlaylist);
   }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
   LoadFromPrefsTest(std::move(sidebar), items, expected_count);
 }
@@ -1195,10 +1219,12 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAIChatBuiltInNotListed) {
   expected_count--;
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     expected_count++;
     items.push_back(SidebarItem::BuiltInItemType::kPlaylist);
   }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
   LoadFromPrefsTest(std::move(sidebar), items, expected_count);
 }

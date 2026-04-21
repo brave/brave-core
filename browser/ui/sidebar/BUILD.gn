@@ -7,6 +7,7 @@ import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_origin/buildflags/buildflags.gni")
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 import("//extensions/buildflags/buildflags.gni")
 
@@ -96,7 +97,7 @@ source_set("browser_tests") {
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_talk/buildflags",
     "//brave/components/brave_wallet/common/buildflags",
-    "//brave/components/playlist/core/common",
+    "//brave/components/playlist/core/common/buildflags",
     "//brave/components/sidebar/browser",
     "//brave/components/sidebar/common",
     "//chrome/browser",
@@ -120,6 +121,10 @@ source_set("browser_tests") {
   if (enable_ai_chat) {
     deps += [ "//brave/components/ai_chat/core/common" ]
   }
+
+  if (enable_playlist) {
+    deps += [ "//brave/components/playlist/core/common" ]
+  }
 }
 
 source_set("unit_tests") {
@@ -135,7 +140,7 @@ source_set("unit_tests") {
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_origin/buildflags",
     "//brave/components/brave_talk/buildflags",
-    "//brave/components/playlist/core/common",
+    "//brave/components/playlist/core/common/buildflags",
     "//brave/components/sidebar/browser",
     "//chrome/browser/ui",
     "//chrome/test:test_support",
@@ -145,4 +150,8 @@ source_set("unit_tests") {
     "//testing/gmock",
     "//testing/gtest",
   ]
+
+  if (enable_playlist) {
+    deps += [ "//brave/components/playlist/core/common" ]
+  }
 }

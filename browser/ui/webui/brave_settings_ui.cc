@@ -47,8 +47,7 @@
 #include "brave/components/commands/common/features.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
-#include "brave/components/playlist/core/common/features.h"
-#include "brave/components/playlist/core/common/pref_names.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -103,6 +102,11 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/components/brave_wayback_machine/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -265,10 +269,14 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                                   kBraveNTPBrandedWallpaperSurveyPanelist) &&
                               !profile->GetPrefs()->GetBoolean(
                                   brave_rewards::prefs::kDisabledByPolicy));
+#if BUILDFLAG(ENABLE_PLAYLIST)
   html_source->AddBoolean(
       "isPlaylistAllowed",
       base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
           profile->GetPrefs()->GetBoolean(playlist::kPlaylistEnabledPref));
+#else
+  html_source->AddBoolean("isPlaylistAllowed", false);
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
   html_source->AddBoolean(
       "showCommandsInOmnibox",

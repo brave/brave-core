@@ -21,7 +21,6 @@ import("//brave/browser/new_tab/sources.gni")
 import("//brave/browser/onboarding/sources.gni")
 import("//brave/browser/perf/sources.gni")
 import("//brave/browser/permissions/sources.gni")
-import("//brave/browser/playlist/sources.gni")
 import("//brave/browser/profiles/sources.gni")
 import("//brave/browser/renderer_context_menu/sources.gni")
 import("//brave/browser/request_otr/sources.gni")
@@ -50,6 +49,7 @@ import("//brave/components/commander/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/email_aliases/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
@@ -64,6 +64,10 @@ if (enable_brave_rewards) {
 if (enable_brave_wallet) {
   import("//brave/browser/brave_wallet/android/sources.gni")
   import("//brave/browser/brave_wallet/notifications/sources.gni")
+}
+
+if (enable_playlist) {
+  import("//brave/browser/playlist/sources.gni")
 }
 
 brave_chrome_browser_allow_circular_includes_from = []
@@ -705,7 +709,6 @@ brave_chrome_browser_sources += brave_browser_net_sources
 brave_chrome_browser_sources += brave_browser_new_tab_sources
 brave_chrome_browser_sources += brave_browser_perf_sources
 brave_chrome_browser_sources += brave_browser_permissions_sources
-brave_chrome_browser_sources += brave_browser_playlist_sources
 brave_chrome_browser_sources += brave_browser_renderer_context_menu_sources
 brave_chrome_browser_sources += brave_browser_request_otr_sources
 brave_chrome_browser_sources += brave_browser_search_engines_sources
@@ -730,7 +733,6 @@ brave_chrome_browser_deps += brave_browser_net_deps
 brave_chrome_browser_deps += brave_browser_new_tab_deps
 brave_chrome_browser_deps += brave_browser_perf_deps
 brave_chrome_browser_deps += brave_browser_permissions_deps
-brave_chrome_browser_deps += brave_browser_playlist_deps
 brave_chrome_browser_deps += brave_browser_profiles_deps
 brave_chrome_browser_deps += brave_browser_renderer_context_menu_deps
 brave_chrome_browser_deps += brave_browser_request_otr_deps
@@ -767,6 +769,11 @@ if (enable_ai_chat) {
   # Remove this once webui/ai_chat does not depend on chrome/browser.
   brave_chrome_browser_allow_circular_includes_from +=
       [ "//brave/browser/ui/webui/ai_chat" ]
+}
+
+if (enable_playlist) {
+  brave_chrome_browser_sources += brave_browser_playlist_sources
+  brave_chrome_browser_deps += brave_browser_playlist_deps
 }
 
 if (enable_brave_ai_chat_agent_profile) {

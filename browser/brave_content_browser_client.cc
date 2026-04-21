@@ -87,11 +87,7 @@
 #include "brave/components/local_ai/core/local_ai.mojom.h"
 #include "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.h"
 #include "brave/components/password_strength_meter/password_strength_meter.mojom.h"
-#include "brave/components/playlist/content/browser/playlist_background_web_contents_helper.h"
-#include "brave/components/playlist/content/browser/playlist_media_handler.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
-#include "brave/components/playlist/core/common/features.h"
-#include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/skus/common/skus_internals.mojom.h"
@@ -311,6 +307,13 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
 #include "components/omnibox/browser/searchbox.mojom.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/content/browser/playlist_background_web_contents_helper.h"
+#include "brave/components/playlist/content/browser/playlist_media_handler.h"
+#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/browser/ui/webui/playlist_ui.h"
@@ -606,10 +609,12 @@ void BraveContentBrowserClient::
           &render_frame_host));
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
   associated_registry.AddInterface<playlist::mojom::PlaylistMediaResponder>(
       base::BindRepeating(
           &playlist::PlaylistMediaHandler::BindMediaResponderReceiver,
           &render_frame_host));
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
   associated_registry.AddInterface<
       cosmetic_filters::mojom::CosmeticFiltersHandler>(base::BindRepeating(
@@ -1504,10 +1509,12 @@ void BraveContentBrowserClient::OverrideWebPreferences(
   PreventDarkModeFingerprinting(web_contents, main_frame_site, web_prefs);
   UpdateGlobalPrivacyControlWebPreference(web_contents, web_prefs);
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
   if (playlist::PlaylistBackgroundWebContentsHelper::FromWebContents(
           web_contents)) {
     web_prefs->force_cosmetic_filtering = true;
   }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 }
 
 blink::UserAgentMetadata BraveContentBrowserClient::GetUserAgentMetadata() {

@@ -13,7 +13,6 @@
 #include "brave/browser/metrics/metrics_reporting_util.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
-#include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/updater/buildflags.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -37,6 +36,7 @@
 #include "brave/components/p3a/metric_log_store.h"
 #include "brave/components/p3a/p3a_service.h"
 #include "brave/components/p3a/rotation_scheduler.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -47,6 +47,10 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/webui/chrome_urls/pref_names.h"
 #include "third_party/widevine/cdm/buildflags.h"
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/browser/playlist/playlist_service_factory.h"
+#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
@@ -245,7 +249,9 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 #endif
   brave_search::BackupResultsMetrics::RegisterPrefs(registry);
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
   playlist::PlaylistServiceFactory::RegisterLocalStatePrefs(registry);
+#endif
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   web_discovery::WebDiscoveryService::RegisterLocalStatePrefs(registry);
 #endif

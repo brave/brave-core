@@ -19,6 +19,7 @@
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/common/features.h"
@@ -144,8 +145,10 @@ SidePanelEntryId SidePanelIdFromSideBarItemType(BuiltInItemType type) {
       return SidePanelEntryId::kReadingList;
     case BuiltInItemType::kBookmarks:
       return SidePanelEntryId::kBookmarks;
+#if BUILDFLAG(ENABLE_PLAYLIST)
     case BuiltInItemType::kPlaylist:
       return SidePanelEntryId::kPlaylist;
+#endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
     case BuiltInItemType::kChatUI:
       return SidePanelEntryId::kChatUI;
@@ -173,8 +176,10 @@ std::optional<BuiltInItemType> BuiltInItemTypeFromSidePanelId(
       return BuiltInItemType::kReadingList;
     case SidePanelEntryId::kBookmarks:
       return BuiltInItemType::kBookmarks;
+#if BUILDFLAG(ENABLE_PLAYLIST)
     case SidePanelEntryId::kPlaylist:
       return BuiltInItemType::kPlaylist;
+#endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
     case SidePanelEntryId::kChatUI:
       return BuiltInItemType::kChatUI;
@@ -221,9 +226,11 @@ void SetLastUsedSidePanel(PrefService* prefs,
       case SidePanelEntryId::kBookmarks:
         type = BuiltInItemType::kBookmarks;
         break;
+#if BUILDFLAG(ENABLE_PLAYLIST)
       case SidePanelEntryId::kPlaylist:
         type = BuiltInItemType::kPlaylist;
         break;
+#endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
       case SidePanelEntryId::kChatUI:
         type = BuiltInItemType::kChatUI;
@@ -252,9 +259,12 @@ bool IsDisabledItemForPrivate(SidebarItem::BuiltInItemType type) {
   switch (type) {
 #if BUILDFLAG(ENABLE_AI_CHAT)
     case SidebarItem::BuiltInItemType::kChatUI:
+      return true;
 #endif
+#if BUILDFLAG(ENABLE_PLAYLIST)
     case SidebarItem::BuiltInItemType::kPlaylist:
       return true;
+#endif
     default:
       break;
   }
@@ -265,11 +275,15 @@ bool IsDisabledItemForGuest(SidebarItem::BuiltInItemType type) {
   switch (type) {
     case SidebarItem::BuiltInItemType::kBookmarks:
     case SidebarItem::BuiltInItemType::kReadingList:
+      return true;
 #if BUILDFLAG(ENABLE_AI_CHAT)
     case SidebarItem::BuiltInItemType::kChatUI:
+      return true;
 #endif
+#if BUILDFLAG(ENABLE_PLAYLIST)
     case SidebarItem::BuiltInItemType::kPlaylist:
       return true;
+#endif
     default:
       break;
   }

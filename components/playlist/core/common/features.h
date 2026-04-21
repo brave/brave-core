@@ -7,6 +7,9 @@
 #define BRAVE_COMPONENTS_PLAYLIST_CORE_COMMON_FEATURES_H_
 
 #include "base/feature_list.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
+
+static_assert(BUILDFLAG(ENABLE_PLAYLIST));
 
 namespace playlist::features {
 

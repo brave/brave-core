@@ -44,7 +44,7 @@
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/brave_switches.h"
-#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
@@ -87,6 +87,10 @@
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/core/common/features.h"
 #endif
 
 using ::testing::Eq;
@@ -290,9 +294,11 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     auto item_count =
         std::size(SidebarServiceFactory::kDefaultBuiltInItemTypes) -
         1 /* for history*/;
+#if BUILDFLAG(ENABLE_PLAYLIST)
     if (!base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
       item_count -= 1;
     }
+#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
     if (!ai_chat::features::IsAIChatEnabled()) {
@@ -1620,6 +1626,7 @@ INSTANTIATE_TEST_SUITE_P(
     ::testing::Bool());
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
 class SidebarBrowserTestWithPlaylist : public SidebarBrowserTest {
  public:
   SidebarBrowserTestWithPlaylist() {
@@ -1657,6 +1664,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithPlaylist, Incognito) {
   // Try Remove an item
   sidebar_service->RemoveItemAt(0);
 }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 
