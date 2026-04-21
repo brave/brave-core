@@ -70,6 +70,9 @@ class PolkadotTransactionStatusTask {
 
   ~PolkadotTransactionStatusTask();
 
+  // Can only be called once, otherwise the provided callback is
+  // immediately invoked with an error. The lifetime of the task should exceed
+  // the callback's lifetime.
   void Start(GetTransactionStatusCallback callback);
 
  private:
