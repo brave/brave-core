@@ -2139,6 +2139,17 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2NoUpstreamHeaderTest) {
 
   EXPECT_EQ(nullptr, side_panel->GetHeaderView<views::View>())
       << "Upstream SidePanelHeader should not be present after V2 panel open";
+
+  // Also verify CustomizeChrome panel does not get an upstream header.
+  panel_ui->Show(SidePanelEntryId::kCustomizeChrome);
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return panel_ui->IsSidePanelEntryShowing(
+        SidePanelEntry::Key(SidePanelEntryId::kCustomizeChrome));
+  }));
+
+  EXPECT_EQ(nullptr, side_panel->GetHeaderView<views::View>())
+      << "Upstream SidePanelHeader should not be present for CustomizeChrome "
+         "panel";
 }
 
 #endif  // BUILDFLAG(ENABLE_SIDEBAR_V2)
