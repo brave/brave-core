@@ -1,0 +1,11 @@
+include_rules = [
+  "+base",
+  "+brave/components/body_sniffer",
+  "+brave/components/webcat/core",
+  "+content/public/browser",
+  "+crypto",
+  "+net",
+  "+services/network/public/cpp",
+  "+services/network/public/mojom",
+  "+url",
+]

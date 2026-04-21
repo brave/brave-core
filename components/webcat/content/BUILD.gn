@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("content") {
+  sources = [
+    "webcat_body_handler.cc",
+    "webcat_body_handler.h",
+    "webcat_tab_helper.cc",
+    "webcat_tab_helper.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/body_sniffer",
+    "//brave/components/webcat/core",
+    "//content/public/browser",
+    "//crypto",
+    "//net",
+    "//services/network/public/cpp",
+    "//services/network/public/mojom",
+    "//url",
+  ]
+}
