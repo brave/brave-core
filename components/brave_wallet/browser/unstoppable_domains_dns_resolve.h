@@ -24,9 +24,13 @@ inline constexpr auto kRecordKeys = std::to_array<std::string_view>({
     "dns.AAAA",
     "browser.redirect_url",
     "ipfs.redirect_domain.value",
+    "dweb.webcat",
 });
 
 GURL ResolveUrl(base::span<const std::string> response);
+
+std::optional<std::string> ExtractWebcatCid(
+    base::span<const std::string> response);
 
 }  // namespace brave_wallet::unstoppable_domains
 

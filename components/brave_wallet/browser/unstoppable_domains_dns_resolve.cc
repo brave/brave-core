@@ -18,6 +18,7 @@ enum RecordKeys {
   kDnsAAAA,
   kBrowserRedirectUrl,
   kIpfsRedirectValue,
+  kDwebWebcat,
   kKeyCount,
 };
 
@@ -54,6 +55,20 @@ GURL ResolveUrl(base::span<const std::string> response) {
   }
 
   return GURL();
+}
+
+std::optional<std::string> ExtractWebcatCid(
+    base::span<const std::string> response) {
+  if (response.size() != kRecordKeys.size()) {
+    return std::nullopt;
+  }
+
+  const auto& cid = response[RecordKeys::kDwebWebcat];
+  if (cid.empty()) {
+    return std::nullopt;
+  }
+
+  return cid;
 }
 
 }  // namespace brave_wallet::unstoppable_domains
