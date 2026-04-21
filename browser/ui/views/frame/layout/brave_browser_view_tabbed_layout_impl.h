@@ -69,6 +69,20 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
                               const BrowserLayoutParams& params) const;
   void InsetContentsContainerBounds(ProposedLayout& layout) const;
 
+  // Expands the proposed layout to account for the top-overlay reveal
+  // animation. When a reveal fraction is present, top views (the tab strip
+  // and top container) slide over the contents area; this method offsets
+  // those views by the current reveal amount, sizes the focus-mode title
+  // bar, repositions the infobar, extends the contents bounds and contents
+  // background upward so they begin just below the title bar, and sets the
+  // top-container background to the union of the moved top views. When no
+  // reveal fraction is present, the focus-mode title bar and top-container
+  // background are sized to empty rects. Must be called after
+  // `contents_background` has been added to the layout, and before
+  // `CalculateSideBarLayout()` so the sidebar picks up the adjusted contents
+  // bounds.
+  void AdjustLayoutForTopReveal(ProposedLayout& layout) const;
+
   void UpdateInsetsForVerticalTabStrip();
   void UpdateMarginsForSideBar();
 

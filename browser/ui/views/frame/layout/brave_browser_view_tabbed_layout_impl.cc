@@ -155,6 +155,11 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
         gfx::Insets().set_bottom(-views().webui_tab_strip->size().height()));
   }
 
+  // Apply the top-overlay reveal adjustments BEFORE laying out the sidebar so
+  // the sidebar picks up the expanded contents bounds when top views are
+  // hidden/revealed.
+  AdjustLayoutForTopReveal(layout);
+
   // Handle sidebar and adjust contents container bounds. This should be done
   // BEFORE calling `InsetContentsContainerBounds()` so that the contents
   // container's final bounds is updated considering the sidebar's bounds.
@@ -186,77 +191,6 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
       insets.set_bottom(0);
       infobar_layout->bounds.Inset(insets);
     }
-  }
-
-  if (auto reveal_fraction = delegate().GetTopOverlayRevealFraction()) {
-    // TODO: Vertical tabs
-    // * Top needs to be adjusted upward by the same amount that we're moving
-    // top controls. But does the top overlay vertical tabs or the other way
-    // around? Probably top overlays vertical tabs.
-    // * Vertical tabs title bar should not be used.
-    auto* top_layout = layout.GetLayoutFor(views().top_container);
-    auto* tab_layout =
-        layout.GetLayoutFor(views().horizontal_tab_strip_region_view);
-
-    int top_height = 0;
-    if (top_layout) {
-      top_height += top_layout->bounds.height();
-    }
-    if (tab_layout) {
-      top_height += tab_layout->bounds.height();
-    }
-
-    int offset = -static_cast<int>((1 - *reveal_fraction) * top_height);
-    if (top_layout) {
-      top_layout->bounds.Offset(0, offset);
-    }
-    if (tab_layout) {
-      tab_layout->bounds.Offset(0, offset);
-    }
-
-    auto* title_bar = views().focus_mode_title_bar.get();
-    const bool title_bar_visible = title_bar && title_bar->GetVisible();
-    int content_top = title_bar_visible
-                          ? title_bar->GetPreferredSize().height()
-                          : BraveContentsViewUtil::kMarginThickness;
-    if (title_bar) {
-      const gfx::Rect browser_bounds = views().browser_view->GetLocalBounds();
-      layout.AddChild(title_bar,
-                      title_bar_visible
-                          ? gfx::Rect(0, 0, browser_bounds.width(), content_top)
-                          : gfx::Rect());
-    }
-    if (delegate().IsInfobarVisible()) {
-      auto* infobar_layout = layout.GetLayoutFor(views().infobar_container);
-      CHECK(infobar_layout);
-      infobar_layout->bounds.set_y(content_top);
-      content_top += infobar_layout->bounds.height();
-    }
-    contents_layout->bounds.Outset(
-        gfx::Outsets::TLBR(contents_layout->bounds.y() - content_top, 0, 0, 0));
-    if (auto* background_layout =
-            layout.GetLayoutFor(views().contents_background)) {
-      background_layout->bounds.Outset(
-          gfx::Outsets::TLBR(background_layout->bounds.y(), 0, 0, 0));
-    }
-
-    if (views().top_container_background) {
-      gfx::Rect union_bounds;
-      if (top_layout) {
-        union_bounds.Union(top_layout->bounds);
-      }
-      if (tab_layout) {
-        union_bounds.Union(tab_layout->bounds);
-      }
-      layout.AddChild(views().top_container_background, union_bounds);
-    }
-  } else if (views().top_container_background) {
-    layout.AddChild(views().top_container_background, gfx::Rect());
-  }
-
-  if (!delegate().GetTopOverlayRevealFraction() &&
-      views().focus_mode_title_bar) {
-    layout.AddChild(views().focus_mode_title_bar, gfx::Rect());
   }
 
   // Mirroring all views that affected by vertical tab alignment in RTL mode
@@ -527,6 +461,84 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
   // This is a Brave-specific view; upstream must not have populated it.
   CHECK(views().sidebar_container);
   layout.AddChild(views().sidebar_container, sidebar_bounds);
+}
+
+void BraveBrowserViewTabbedLayoutImpl::AdjustLayoutForTopReveal(
+    ProposedLayout& layout) const {
+  auto reveal_fraction = delegate().GetTopOverlayRevealFraction();
+  if (!reveal_fraction) {
+    if (views().top_container_background) {
+      layout.AddChild(views().top_container_background, gfx::Rect());
+    }
+    if (views().focus_mode_title_bar) {
+      layout.AddChild(views().focus_mode_title_bar, gfx::Rect());
+    }
+    return;
+  }
+
+  auto* contents_layout = layout.GetLayoutFor(views().contents_container);
+  CHECK(contents_layout);
+
+  // TODO: Vertical tabs
+  // * Top needs to be adjusted upward by the same amount that we're moving
+  // top controls. But does the top overlay vertical tabs or the other way
+  // around? Probably top overlays vertical tabs.
+  // * Vertical tabs title bar should not be used.
+  auto* top_layout = layout.GetLayoutFor(views().top_container);
+  auto* tab_layout =
+      layout.GetLayoutFor(views().horizontal_tab_strip_region_view);
+
+  int top_height = 0;
+  if (top_layout) {
+    top_height += top_layout->bounds.height();
+  }
+  if (tab_layout) {
+    top_height += tab_layout->bounds.height();
+  }
+
+  int offset = -static_cast<int>((1 - *reveal_fraction) * top_height);
+  if (top_layout) {
+    top_layout->bounds.Offset(0, offset);
+  }
+  if (tab_layout) {
+    tab_layout->bounds.Offset(0, offset);
+  }
+
+  auto* title_bar = views().focus_mode_title_bar.get();
+  const bool title_bar_visible = title_bar && title_bar->GetVisible();
+  int content_top = title_bar_visible ? title_bar->GetPreferredSize().height()
+                                      : BraveContentsViewUtil::kMarginThickness;
+  if (title_bar) {
+    const gfx::Rect browser_bounds = views().browser_view->GetLocalBounds();
+    layout.AddChild(title_bar,
+                    title_bar_visible
+                        ? gfx::Rect(0, 0, browser_bounds.width(), content_top)
+                        : gfx::Rect());
+  }
+  if (delegate().IsInfobarVisible()) {
+    auto* infobar_layout = layout.GetLayoutFor(views().infobar_container);
+    CHECK(infobar_layout);
+    infobar_layout->bounds.set_y(content_top);
+    content_top += infobar_layout->bounds.height();
+  }
+  contents_layout->bounds.Outset(
+      gfx::Outsets::TLBR(contents_layout->bounds.y() - content_top, 0, 0, 0));
+  if (auto* background_layout =
+          layout.GetLayoutFor(views().contents_background)) {
+    background_layout->bounds.Outset(
+        gfx::Outsets::TLBR(background_layout->bounds.y(), 0, 0, 0));
+  }
+
+  if (views().top_container_background) {
+    gfx::Rect union_bounds;
+    if (top_layout) {
+      union_bounds.Union(top_layout->bounds);
+    }
+    if (tab_layout) {
+      union_bounds.Union(tab_layout->bounds);
+    }
+    layout.AddChild(views().top_container_background, union_bounds);
+  }
 }
 
 void BraveBrowserViewTabbedLayoutImpl::InsetContentsContainerBounds(

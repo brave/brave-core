@@ -766,24 +766,21 @@ void BraveBrowserView::AddedToWidget() {
   UpdateWebViewRoundedCorners();
 
   if (auto* controller = browser()->GetFeatures().focus_mode_controller()) {
-    if (auto top_index = GetIndexOf(top_container())) {
-      if (auto contents_index = GetIndexOf(contents_container_)) {
-        if (top_index.value() < contents_index.value()) {
-          ReorderChildView(top_container(), contents_index.value());
-        }
-      }
-    }
-
-    // Sit between contents_container and top_container in z-order so it backs
-    // the revealing top views without occluding contents.
     top_container_background_view_ =
         AddChildView(std::make_unique<TopContainerBackground>());
-    if (auto top_index = GetIndexOf(top_container())) {
-      ReorderChildView(top_container_background_view_, top_index.value());
-    }
+
     GetBrowserViewLayout()->set_top_container_background(
         top_container_background_view_);
+
     UpdateTopContainerBackgroundColor();
+
+    // Move revealable top views after the top background view so that they
+    // paint on top of the contents view, the top container background and all
+    // other views.
+    ReorderChildView(horizontal_tab_strip_region_view_, -1);
+    ReorderChildView(top_container(), -1);
+
+    // TODO: Do we need to call EnsureFindBarHostViewIsLastChild?
 
     focus_mode_observation_.Observe(controller);
 
