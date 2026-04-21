@@ -113,6 +113,7 @@ source_set("unit_tests") {
     "//brave/components/constants",
     "//brave/components/serp_metrics",
     "//brave/components/serp_metrics:prefs",
+    "//brave/components/serp_metrics:test_support",
     "//brave/components/time_period_storage",
     "//chrome/browser/profiles:profile_util",
     "//components/prefs",

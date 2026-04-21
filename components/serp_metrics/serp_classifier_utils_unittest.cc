@@ -39,14 +39,14 @@ TEST(SerpClassifierUtilsTest, IsGoogleWebSearchWithUdmZero) {
       IsGoogleWebSearch(GURL(R"(https://www.google.com/search?q=foo&udm=0)")));
 }
 
+TEST(SerpClassifierUtilsTest, IsGoogleWebSearchWithWebTabWithoutAiOverviews) {
+  EXPECT_TRUE(
+      IsGoogleWebSearch(GURL(R"(https://www.google.com/search?q=foo&udm=14)")));
+}
+
 TEST(SerpClassifierUtilsTest, IsGoogleWebSearchWithUdmWebString) {
   EXPECT_TRUE(IsGoogleWebSearch(
       GURL(R"(https://www.google.com/search?q=foo&udm=web)")));
-}
-
-TEST(SerpClassifierUtilsTest, IsNotGoogleWebSearchWithUdmShopping) {
-  EXPECT_FALSE(
-      IsGoogleWebSearch(GURL(R"(https://www.google.com/search?q=foo&udm=28)")));
 }
 
 // Vertical searches via tbm.
@@ -75,6 +75,11 @@ TEST(SerpClassifierUtilsTest, IsNotGoogleWebSearchWithTbmBooks) {
       GURL(R"(https://www.google.com/search?q=foo&tbm=bks)")));
 }
 
+TEST(SerpClassifierUtilsTest, IsNotGoogleWebSearchWithEmptyTbm) {
+  EXPECT_FALSE(
+      IsGoogleWebSearch(GURL(R"(https://www.google.com/search?q=foo&tbm=)")));
+}
+
 // Vertical searches via udm.
 TEST(SerpClassifierUtilsTest, IsNotGoogleWebSearchWithUdmImages) {
   EXPECT_FALSE(
@@ -86,19 +91,29 @@ TEST(SerpClassifierUtilsTest, IsNotGoogleWebSearchWithUdmVideo) {
       IsGoogleWebSearch(GURL(R"(https://www.google.com/search?q=foo&udm=7)")));
 }
 
-TEST(SerpClassifierUtilsTest, IsGoogleWebSearchWithUdmFourteen) {
-  EXPECT_TRUE(
-      IsGoogleWebSearch(GURL(R"(https://www.google.com/search?q=foo&udm=14)")));
-}
-
 TEST(SerpClassifierUtilsTest, IsNotGoogleWebSearchWithUdmDiscussions) {
   EXPECT_FALSE(
       IsGoogleWebSearch(GURL(R"(https://www.google.com/search?q=foo&udm=18)")));
 }
 
+TEST(SerpClassifierUtilsTest, IsNotGoogleWebSearchWithUdmShopping) {
+  EXPECT_FALSE(
+      IsGoogleWebSearch(GURL(R"(https://www.google.com/search?q=foo&udm=28)")));
+}
+
 TEST(SerpClassifierUtilsTest, IsNotGoogleWebSearchWithUdmShortVideos) {
   EXPECT_FALSE(
       IsGoogleWebSearch(GURL(R"(https://www.google.com/search?q=foo&udm=39)")));
+}
+
+TEST(SerpClassifierUtilsTest, IsNotGoogleWebSearchWithUdmNonWebString) {
+  EXPECT_FALSE(IsGoogleWebSearch(
+      GURL(R"(https://www.google.com/search?q=foo&udm=foo)")));
+}
+
+TEST(SerpClassifierUtilsTest, IsNotGoogleWebSearchWithEmptyUdm) {
+  EXPECT_FALSE(
+      IsGoogleWebSearch(GURL(R"(https://www.google.com/search?q=foo&udm=)")));
 }
 
 TEST(SerpClassifierUtilsTest, IsNotGoogleWebSearchWithTbmAndUdm) {

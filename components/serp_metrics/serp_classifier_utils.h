@@ -15,11 +15,10 @@ namespace serp_metrics {
 // Returns `true` if the search engine type is allowed to be classified.
 bool IsAllowedSearchEngine(SearchEngineType type);
 
-// Returns `true` if `url` is a Google web search. Returns `false` if `tbm` is
-// present (a vertical search such as images, news, or video) or `udm` is
-// present with a value other than `0`, `14`, or `"web"` (e.g., `28` for
-// shopping or `39` for short videos). `udm=0`, `udm=14` (web without AI
-// Overviews), and `udm=web` all represent a plain web search.
+// Returns `true` if `url` is a Google web search. Returns `false` if `tbm`
+// is present (a vertical such as images, news, or video) or if `udm` is
+// present with a value other than `0` (all results), `14` (web without AI
+// Overviews), or `"web"` (string alias for the web tab).
 bool IsGoogleWebSearch(const GURL& url);
 
 }  // namespace serp_metrics

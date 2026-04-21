@@ -21,11 +21,10 @@ constexpr auto kAllowedSearchEngines = base::MakeFixedFlatSet<SearchEngineType>(
      SEARCH_ENGINE_DUCKDUCKGO, SEARCH_ENGINE_QWANT, SEARCH_ENGINE_ECOSIA,
      SEARCH_ENGINE_BRAVE, SEARCH_ENGINE_STARTPAGE});
 
-// Google URL query parameter names that select a search vertical.
-// Known `tbm` verticals: isch (images), nws (news), vid (video), shop
-// (shopping), bks (books).
-// Known `udm` verticals: 2 (images), 7 (video), 12 (news), 18 (forums), 28
-// (shopping), 39 (short videos).
+// Google URL query parameter names that select a search vertical. Known `tbm`
+// verticals: isch (images), nws (news), vid (video), shop (shopping), bks
+// (books). Known `udm` verticals: 2 (images), 7 (video), 12 (news), 18
+// (forums), 28 (shopping), 39 (short videos).
 constexpr std::string_view kTbmParam = "tbm";
 constexpr std::string_view kUdmParam = "udm";
 
