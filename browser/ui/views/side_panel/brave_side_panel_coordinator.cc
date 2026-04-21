@@ -178,6 +178,10 @@ void BraveSidePanelCoordinator::PopulateSidePanel(
     SidePanelEntry* entry,
     std::optional<std::unique_ptr<views::View>> content_view) {
   CHECK(entry);
+
+  // Brave has its own side panel header, so hide the built-in entry headers.
+  entry->set_should_show_header(false);
+
   actions::ActionItem* const action_item =
       SidePanelUtil::GetActionItem(browser_view_->browser(), entry->key());
   if (!action_item) {

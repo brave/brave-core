@@ -36,11 +36,6 @@ void RegisterContextualSidePanel(SidePanelRegistry* registry,
         /*default_content_width_callback=*/base::NullCallback()));
   }
 #endif
-
-  // Brave has its own side panel header, so hide the built-in entry headers.
-  for (auto& entry : registry->entries()) {
-    entry->set_should_show_header(false);
-  }
 }
 
 }  // namespace brave
