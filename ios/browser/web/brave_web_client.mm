@@ -267,3 +267,7 @@ void BraveWebClient::DidResetConfiguration(web::BrowserState* browser_state,
     BraveWebView.didResetConfiguration(profile_bridge, config);
   }
 }
+
+bool BraveWebClient::IsSmoothScrollingSupported() const {
+  return true;
+}
