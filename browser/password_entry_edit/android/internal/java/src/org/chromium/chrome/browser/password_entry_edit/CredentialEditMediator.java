@@ -9,7 +9,6 @@
 
 package org.chromium.chrome.browser.password_entry_edit;
 
-import static org.chromium.build.NullUtil.assertNonNull;
 import static org.chromium.chrome.browser.password_entry_edit.CredentialEditMediator.CredentialEditError.DUPLICATE_USERNAME;
 import static org.chromium.chrome.browser.password_entry_edit.CredentialEditMediator.CredentialEditError.EMPTY_PASSWORD;
 import static org.chromium.chrome.browser.password_entry_edit.CredentialEditMediator.CredentialEditError.ERROR_COUNT;
@@ -53,8 +52,8 @@ import org.chromium.components.browser_ui.widget.ActionConfirmationDialog.Dialog
 import org.chromium.components.browser_ui.widget.ActionConfirmationDialog.DialogHandle;
 import org.chromium.components.browser_ui.widget.StrictButtonPressController.ButtonClickResult;
 import org.chromium.ui.base.Clipboard;
-import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.DialogDismissalCause;
+import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modelutil.PropertyModel;
 import org.chromium.ui.widget.Toast;
 
@@ -161,7 +160,7 @@ public class CredentialEditMediator implements UiActionHandler {
 
     CredentialEditMediator(
             Activity activity,
-            WindowAndroid windowAndroid,
+            ModalDialogManager modalDialogManager,
             PasswordAccessReauthenticationHelper reauthenticationHelper,
             Resources resources,
             CredentialActionDelegate credentialActionDelegate,
@@ -169,9 +168,7 @@ public class CredentialEditMediator implements UiActionHandler {
             boolean isBlockedCredential) {
         mReauthenticationHelper = reauthenticationHelper;
         mActivity = activity;
-        mActionConfirmationDialog =
-                new ActionConfirmationDialog(
-                        mActivity, assertNonNull(windowAndroid.getModalDialogManager()));
+        mActionConfirmationDialog = new ActionConfirmationDialog(mActivity, modalDialogManager);
         mResources = resources;
         mCredentialActionDelegate = credentialActionDelegate;
         mHelpLauncher = helpLauncher;

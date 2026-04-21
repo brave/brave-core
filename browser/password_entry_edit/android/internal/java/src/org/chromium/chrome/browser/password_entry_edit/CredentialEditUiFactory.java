@@ -13,7 +13,7 @@ import androidx.annotation.VisibleForTesting;
 
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.ui.base.WindowAndroid;
+import org.chromium.ui.modaldialog.ModalDialogManager;
 
 /** Use {@link #create()} to instantiate a {@link CredentialEditCoordinator}. */
 @NullMarked
@@ -27,23 +27,22 @@ public class CredentialEditUiFactory {
         void create(
                 CredentialEntryFragmentViewBase fragmentView,
                 Profile profile,
-                WindowAndroid windowAndroid);
+                ModalDialogManager modalDialogManager);
     }
 
     private CredentialEditUiFactory() {}
 
     private static CreationStrategy sCreationStrategy =
-            (fragmentView, profile, windowAndroid) -> {
+            (fragmentView, profile, modalDialogManager) -> {
                 CredentialEditBridge bridge = CredentialEditBridge.get();
                 if (bridge == null) {
                     // There is no backend to talk to, so the UI shouldn't be shown.
                     fragmentView.dismiss();
                     return;
                 }
-
                 bridge.initialize(
                         new CredentialEditCoordinator(
-                                profile, windowAndroid, fragmentView, bridge, bridge));
+                                profile, modalDialogManager, fragmentView, bridge, bridge));
             };
 
     /**
@@ -54,8 +53,8 @@ public class CredentialEditUiFactory {
     public static void create(
             CredentialEntryFragmentViewBase fragmentView,
             Profile profile,
-            WindowAndroid windowAndroid) {
-        sCreationStrategy.create(fragmentView, profile, windowAndroid);
+            ModalDialogManager modalDialogManager) {
+        sCreationStrategy.create(fragmentView, profile, modalDialogManager);
     }
 
     @VisibleForTesting

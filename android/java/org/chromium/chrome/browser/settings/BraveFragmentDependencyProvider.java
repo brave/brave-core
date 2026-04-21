@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.settings;
 
+import static org.chromium.build.NullUtil.assertNonNull;
+
 import android.app.Activity;
 import android.content.Context;
 
@@ -30,7 +32,7 @@ import java.util.function.Supplier;
 @NullMarked
 public class BraveFragmentDependencyProvider extends FragmentDependencyProvider {
     private final Profile mProfile;
-    private final OneshotSupplier<WindowAndroid> mWindowAndroidSupplier;
+    private final MonotonicObservableSupplier<ModalDialogManager> mModalDialogManagerSupplier;
 
     public BraveFragmentDependencyProvider(
             Activity activity,
@@ -51,17 +53,15 @@ public class BraveFragmentDependencyProvider extends FragmentDependencyProvider 
                 modalDialogManagerSupplier,
                 searchCoordinatorSupplier);
         mProfile = profile;
-        mWindowAndroidSupplier = windowAndroidSupplier;
+        mModalDialogManagerSupplier = modalDialogManagerSupplier;
     }
 
     @Override
     public void onFragmentAttached(
             FragmentManager fragmentManager, Fragment fragment, Context unusedContext) {
-        if (fragment instanceof CredentialEntryFragmentViewBase) {
+        if (fragment instanceof CredentialEntryFragmentViewBase credentialFragment) {
             CredentialEditUiFactory.create(
-                    (CredentialEntryFragmentViewBase) fragment,
-                    mProfile,
-                    mWindowAndroidSupplier.get());
+                    credentialFragment, mProfile, assertNonNull(mModalDialogManagerSupplier.get()));
         }
 
         super.onFragmentAttached(fragmentManager, fragment, unusedContext);
