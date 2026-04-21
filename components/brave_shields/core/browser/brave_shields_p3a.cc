@@ -34,7 +34,7 @@ constexpr std::array<ControlType, 3> kAdsSettingOrder = {
 
 // Increment this version if metrics in `MaybeRecordInitialShieldsSettings`
 // change, so that all metrics can be re-reported after update.
-constexpr int kCurrentReportRevision = 3;
+constexpr int kCurrentReportRevision = 4;
 
 void RecordShieldsLevelSetting(const char* histogram_name,
                                ControlType setting) {
@@ -264,6 +264,34 @@ void RecordForgetFirstPartySetting(HostContentSettingsMap* map) {
   UMA_HISTOGRAM_EXACT_LINEAR(kForgetFirstPartyHistogramName, answer, 4);
 }
 
+void RecordHTTPSUpgradeSettingP3A(HostContentSettingsMap* map) {
+  ContentSetting global_setting = map->GetContentSetting(
+      GURL(), GURL(), ContentSettingsType::BRAVE_HTTPS_UPGRADE);
+  constexpr int kHTTPSUpgradeStrict = 2;
+  constexpr int kHTTPSUpgradeStandard = 1;
+  constexpr int kHTTPSUpgradePerSiteStrict = 1;
+  int global_answer = INT_MAX - 1;
+  if (global_setting != CONTENT_SETTING_ALLOW) {
+    global_answer = global_setting == CONTENT_SETTING_BLOCK
+                        ? kHTTPSUpgradeStrict
+                        : kHTTPSUpgradeStandard;
+  }
+  UMA_HISTOGRAM_EXACT_LINEAR(kUpgradeHTTPSGlobalHistogramName, global_answer,
+                             3);
+
+  auto per_site_settings =
+      map->GetSettingsForOneType(ContentSettingsType::BRAVE_HTTPS_UPGRADE);
+  bool has_per_site_strict = std::ranges::any_of(
+      per_site_settings, [](const ContentSettingPatternSource& entry) {
+        return entry.GetContentSetting() == CONTENT_SETTING_BLOCK &&
+               !entry.primary_pattern.MatchesAllHosts();
+      });
+  int per_site_answer =
+      has_per_site_strict ? kHTTPSUpgradePerSiteStrict : INT_MAX - 1;
+  UMA_HISTOGRAM_EXACT_LINEAR(kUpgradeHTTPSPerSiteHistogramName, per_site_answer,
+                             2);
+}
+
 void MaybeRecordInitialShieldsSettings(
     PrefService* profile_prefs,
     HostContentSettingsMap* map,
@@ -316,6 +344,7 @@ void MaybeRecordInitialShieldsSettings(
   RecordShieldsDomainSettingCounts(profile_prefs, true,
                                    fingerprinting_control_type);
   RecordForgetFirstPartySetting(map);
+  RecordHTTPSUpgradeSettingP3A(map);
 
   profile_prefs->SetInteger(kFirstReportedRevisionPrefName,
                             kCurrentReportRevision);
