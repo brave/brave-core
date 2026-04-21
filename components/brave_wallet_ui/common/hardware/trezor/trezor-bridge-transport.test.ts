@@ -23,10 +23,19 @@ jest.mock('../../../../common/loadTimeData', () => ({
   },
 }))
 
-// Mock crypto.randomUUID
-Object.defineProperty(global.crypto, 'randomUUID', {
-  value: () => 'test-frame-id-123',
-  writable: true,
+// Mock crypto.randomUUID — scoped to this file to avoid polluting other tests
+const originalRandomUUID = crypto.randomUUID.bind(crypto)
+beforeAll(() => {
+  Object.defineProperty(global.crypto, 'randomUUID', {
+    value: () => 'test-frame-id-123',
+    writable: true,
+  })
+})
+afterAll(() => {
+  Object.defineProperty(global.crypto, 'randomUUID', {
+    value: originalRandomUUID,
+    writable: true,
+  })
 })
 
 // We must read and write to protected class attributes in the tests.

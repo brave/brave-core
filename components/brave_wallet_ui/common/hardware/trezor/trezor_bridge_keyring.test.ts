@@ -171,6 +171,10 @@ const handlerResponse = async (handler: TrezorCommandHandler): Promise => {
   })
 }
 
+afterEach(() => {
+  document.body.innerHTML = ''
+})
+
 test('Wait for responses', () => {
   const transport = createTrezorTransport(false)
   transport.expectWindowMessageSubscribers(0)
