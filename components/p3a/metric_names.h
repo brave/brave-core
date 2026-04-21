@@ -271,23 +271,23 @@ inline constexpr auto kCollectedExpressHistograms =
       .ephemeral = true,
       .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kVersion, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kCountryCode},
     }},
-    {"Brave.Search.DailyQueries.BraveDefault", MetricConfig{
+    {"Brave.Search.DailyQueries.BraveDefault.2", MetricConfig{
       .ephemeral = true,
       .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi},
     }},
-    {"Brave.Search.DailyQueries.DDGDefault", MetricConfig{
+    {"Brave.Search.DailyQueries.DDGDefault.2", MetricConfig{
       .ephemeral = true,
       .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi},
     }},
-    {"Brave.Search.DailyQueries.GoogleDefault", MetricConfig{
+    {"Brave.Search.DailyQueries.GoogleDefault.2", MetricConfig{
       .ephemeral = true,
       .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi},
     }},
-    {"Brave.Search.DailyQueries.OtherDefault", MetricConfig{
+    {"Brave.Search.DailyQueries.OtherDefault.2", MetricConfig{
       .ephemeral = true,
       .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi},
     }},
-    {"Brave.Search.DailyQueries.YahooDefault", MetricConfig{
+    {"Brave.Search.DailyQueries.YahooDefault.2", MetricConfig{
       .ephemeral = true,
       .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi},
     }},
