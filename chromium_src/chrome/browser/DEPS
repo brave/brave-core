@@ -9,6 +9,8 @@ include_rules += [
   "+brave/grit",
   "+brave/components/brave_origin/buildflags",
   "+brave/components/constants",
+  "+brave/components/history_embeddings",
+  "+brave/components/local_ai/core",
   "+brave/components/playlist/core/common/buildflags",
   "+brave/components/version_info",
   # Make sure renderer directories are not included for components with
