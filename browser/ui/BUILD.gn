@@ -460,6 +460,7 @@ source_set("ui") {
       "//content/public/browser",
       "//content/public/common",
       "//extensions/buildflags",
+      "//extensions/common:extension_features",
       "//skia",
       "//third_party/abseil-cpp:absl",
       "//ui/actions:actions_headers",

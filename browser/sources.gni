@@ -617,6 +617,7 @@ if (enable_extensions) {
     "//chrome/browser/extensions",
     "//extensions/browser",
     "//extensions/common:common_constants",
+    "//extensions/common:extension_features",
   ]
 }
 

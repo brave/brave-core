@@ -1437,6 +1437,7 @@ test("brave_browser_tests") {
       "//brave/browser/extensions/manifest_v2",
       "//brave/browser/importer:browser_tests",
       "//extensions/browser:crx_installer",
+      "//extensions/common:extension_features",
     ]
   }
 
