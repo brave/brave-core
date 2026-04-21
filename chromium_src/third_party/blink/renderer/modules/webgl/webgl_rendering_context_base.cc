@@ -3,23 +3,80 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.h"
+
 #include <optional>
+#include <string>
 
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
+#include "third_party/blink/public/common/features.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/html/canvas/canvas_rendering_context_host.h"
 #include "third_party/blink/renderer/core/workers/worker_global_scope.h"
-#include "third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.h"
 
 namespace {
 
+// Generalized list of hardcoded extensions that are more or less supported by
+// all WebGL 1.0 implementations.
+static constexpr const char* kGeneralizedExtensions[] = {
+    "ANGLE_instanced_arrays",
+    "EXT_blend_minmax",
+    "EXT_color_buffer_half_float",
+    "EXT_depth_clamp",
+    "EXT_float_blend",
+    "EXT_frag_depth",
+    "EXT_shader_texture_lod",
+    "EXT_sRGB",
+    "EXT_texture_compression_rgtc",
+    "EXT_texture_filter_anisotropic",
+    "OES_element_index_uint",
+    "OES_fbo_render_mipmap",
+    "OES_standard_derivatives",
+    "OES_texture_float",
+    "OES_texture_float_linear",
+    "OES_texture_half_float",
+    "OES_texture_half_float_linear",
+    "OES_vertex_array_object",
+    "WEBGL_color_buffer_float",
+    "WEBGL_compressed_texture_s3tc",
+    "WEBGL_compressed_texture_s3tc_srgb",
+    "WEBGL_debug_renderer_info",
+    "WEBGL_depth_texture",
+    "WEBGL_draw_buffers",
+    "WEBGL_lose_context",
+    "WEBGL_provoking_vertex",
+};
+
+bool RealExtensionsListContains(const blink::Vector<blink::String>& real,
+                                const char* ext_literal) {
+  const blink::String ext(ext_literal);
+  for (const auto& s : real) {
+    if (s == ext) {
+      return true;
+    }
+  }
+  return false;
+}
+
 bool AllowFingerprintingForHost(blink::CanvasRenderingContextHost* host) {
-  if (!host)
+  if (!host) {
     return true;
+  }
   return brave::AllowFingerprinting(host->GetTopExecutionContext(),
                                     ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL);
+}
+
+blink::Vector<blink::String> GetGeneralSupportedExtensions(
+    blink::Vector<blink::String>& real_extensions) {
+  blink::Vector<blink::String> result;
+  for (const char* ext : kGeneralizedExtensions) {
+    if (RealExtensionsListContains(real_extensions, ext)) {
+      result.push_back(blink::String(ext));
+    }
+  }
+  return result;
 }
 
 }  // namespace
@@ -94,21 +151,34 @@ WebGLRenderingContextBase::getSupportedExtensions() {
   if (real_extensions == std::nullopt) {
     return real_extensions;
   }
-  if (AllowFingerprintingForHost(Host()))
+  if (AllowFingerprintingForHost(Host())) {
     return real_extensions;
+  }
 
-  Vector<String> fake_extensions;
-  fake_extensions.push_back(WebGLDebugRendererInfo::ExtensionName());
-  return fake_extensions;
+  // No fingerprinting allowed from this point onwards.
+  auto level = brave::GetBraveFarblingLevelFor(
+      Host()->GetTopExecutionContext(),
+      ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL, BraveFarblingLevel::OFF);
+  if (level == BraveFarblingLevel::MAXIMUM) {
+    return Vector<String>{WebGLDebugRendererInfo::ExtensionName()};
+  }
+
+  // For balanced farbling level, we return the generalized list of extensions
+  // that is present in the real extensions list.
+  CHECK(level == BraveFarblingLevel::BALANCED &&
+        base::FeatureList::IsEnabled(
+            blink::features::kBraveWebGLFingerprintingProtection));
+  return GetGeneralSupportedExtensions(real_extensions.value());
 }
 
-// If fingerprinting is disallowed and they're asking for information about any
-// extension other than WebGLDebugRendererInfo, don't give it to them.
+// If fingerprinting is disallowed and they're asking for information about
+// any extension other than WebGLDebugRendererInfo, don't give it to them.
 ScriptObject WebGLRenderingContextBase::getExtension(ScriptState* script_state,
                                                      const String& name) {
   if (!AllowFingerprintingForHost(Host())) {
-    if (name != WebGLDebugRendererInfo::ExtensionName())
+    if (name != WebGLDebugRendererInfo::ExtensionName()) {
       return ScriptObject::CreateNull(v8::Isolate::GetCurrent());
+    }
   }
   return getExtension_ChromiumImpl(script_state, name);
 }
