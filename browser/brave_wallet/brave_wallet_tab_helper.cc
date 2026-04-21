@@ -18,7 +18,7 @@
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/brave_wallet/browser/solana_provider_impl.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "components/permissions/permission_request.h"
 #include "components/permissions/permission_request_manager.h"

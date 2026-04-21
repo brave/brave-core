@@ -12,6 +12,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/to_string.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/swap_request_helper.h"
@@ -19,7 +20,6 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "brave/components/constants/brave_services_key.h"
 #include "net/base/load_flags.h"
 #include "net/base/url_util.h"
 #include "net/http/http_request_headers.h"
@@ -229,13 +229,13 @@ GURL AppendJupiterQuoteParams(const GURL& swap_url,
 }
 
 base::flat_map<std::string, std::string> GetHeaders() {
-  return {{kBraveServicesKeyHeader, BUILDFLAG(BRAVE_SERVICES_KEY)}};
+  return AddBraveServicesKeyHeaders({});
 }
 
 base::flat_map<std::string, std::string> GetHeadersForZeroEx() {
-  auto headers = GetHeaders();
-  headers[kZeroExAPIVersionHeader] = kZeroExAPIVersion;
-  return headers;
+  return AddBraveServicesKeyHeaders({
+      {kZeroExAPIVersionHeader, kZeroExAPIVersion},
+  });
 }
 
 void HandleGate3Quote(

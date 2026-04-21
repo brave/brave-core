@@ -15,8 +15,6 @@
 #include "brave/browser/ui/color/color_palette.h"
 #include "brave/browser/ui/views/brave_actions/brave_icon_with_badge_image_source.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser.h"
@@ -38,7 +36,6 @@
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/menus/simple_menu_model.h"
 #include "ui/views/controls/highlight_path_generator.h"
-#include "ui/views/layout/fill_layout.h"
 
 namespace {
 

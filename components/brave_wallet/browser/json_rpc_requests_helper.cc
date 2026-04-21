@@ -5,18 +5,14 @@
 
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 
-#include <memory>
 #include <string_view>
 #include <utility>
 #include <vector>
 
-#include "base/environment.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
-#include "brave/components/constants/brave_services_key.h"
 #include "net/http/http_util.h"
 
 namespace brave_wallet {

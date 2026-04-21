@@ -14,9 +14,9 @@ source_set("line_chart") {
   ]
   deps = [
     "//brave/components/brave_wallet/browser:constants",
+    "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet_ui:resources",
     "//brave/components/brave_wallet_ui/line_chart:line_chart_display_generated",
-    "//brave/components/constants",
     "//brave/components/resources:static_resources_grit",
     "//chrome/browser/profiles",
     "//content/public/browser",

@@ -45,7 +45,7 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
-#include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "build/build_config.h"
 #include "chrome/browser/permissions/permission_manager_factory.h"

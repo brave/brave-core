@@ -14,9 +14,9 @@ source_set("trezor") {
     "trezor_ui.h",
   ]
   deps = [
+    "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet_ui:resources",
     "//brave/components/brave_wallet_ui/trezor:trezor_bridge_generated",
-    "//brave/components/constants",
     "//brave/components/resources:static_resources_grit",
     "//content/public/browser",
     "//ui/webui",
@@ -35,6 +35,7 @@ source_set("browser_tests") {
     "//brave/browser/brave_wallet",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:utils",
+    "//brave/components/brave_wallet/common:common_constants",
     "//chrome/browser:browser_process",
     "//chrome/test:test_support",
     "//chrome/test:test_support_ui",

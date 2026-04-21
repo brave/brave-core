@@ -6,5 +6,4 @@ include_rules = [
   "+brave/components/line_chart_display/resources",
   "+brave/components/market_display/resources",
   "+brave/components/nft_display/resources",
-  "+brave/components/constants",
 ]

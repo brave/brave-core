@@ -18,14 +18,11 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
-#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "chrome/common/pref_names.h"
-#include "chrome/common/url_constants.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_service.h"
-#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "components/version_info/channel.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock-matchers.h"
@@ -33,6 +30,10 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/views/bubble/bubble_border.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/common/web_ui_constants.h"
+#endif
 
 using ::testing::Eq;
 using ::testing::Optional;
@@ -280,9 +281,11 @@ TEST(SidebarUtilTest, ConvertURLToBuiltInItemURLTest) {
             ConvertURLToBuiltInItemURL(
                 GURL("https://talk.brave.com/1Ar1vHfLBWX2sAdi")));
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   EXPECT_EQ(
       GURL(kBraveUIWalletPageURL),
       ConvertURLToBuiltInItemURL(GURL("chrome://wallet/crypto/onboarding")));
+#endif
 
   // Not converted for url that doesn't relavant builtin item.
   GURL brave_com("https://www.brave.com/");
