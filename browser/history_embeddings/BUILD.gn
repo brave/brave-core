@@ -31,6 +31,7 @@ source_set("history_embeddings") {
   public_deps = [
     "//base",
     "//brave/components/local_ai/core:mojom",
+    "//chrome/browser/passage_embeddings",
     "//components/passage_embeddings/core",
     "//mojo/public/cpp/bindings",
     "//services/passage_embeddings/public/mojom",

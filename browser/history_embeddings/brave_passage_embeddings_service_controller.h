@@ -14,22 +14,44 @@
 #include "base/scoped_observation.h"
 #include "base/types/optional_ref.h"
 #include "brave/browser/history_embeddings/brave_passage_embeddings_service.h"
+#include "chrome/browser/passage_embeddings/chrome_passage_embeddings_service_controller.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_observer.h"
 #include "components/optimization_guide/core/delivery/model_info.h"
-#include "components/passage_embeddings/core/passage_embeddings_service_controller.h"
 
 namespace passage_embeddings {
 
-// Brave's subclass of PassageEmbeddingsServiceController. Mirrors
-// ChromePassageEmbeddingsServiceController, except MaybeLaunchService()
-// constructs an in-process BravePassageEmbeddingsService (bound to the
-// base class's service_remote_) instead of launching a utility process.
+// Brave's subclass of ChromePassageEmbeddingsServiceController. We
+// inherit from the Chrome class (rather than the base directly) so
+// that our chromium_src override of
+// ChromePassageEmbeddingsServiceController::Get() can return the Brave
+// singleton — upstream factories call Get() and pick us up without needing
+// per-factory chromium_src swaps.
 //
-// Upstream's SchedulingEmbedder, owned by the base class, drives the
-// actual job queue; we just provide the transport.
+// Our overrides of MaybeLaunchService() and ResetServiceRemote()
+// construct/tear down an in-process BravePassageEmbeddingsService
+// (bound to the base class's service_remote_) instead of launching a
+// sandboxed utility process as Chrome's defaults do.
+//
+// Upstream's SchedulingEmbedder, owned by PassageEmbeddingsServiceController,
+// drives the actual job queue; we just provide the transport.
+//
+// Note on the per-profile PassageEmbedderModelObserver:
+// PassageEmbedderModelObserverFactory creates one observer per profile
+// that registers with OptimizationGuide to receive tflite model
+// updates. Brave doesn't use that model, but letting the observer
+// exist is safe because:
+//  (1) MaybeUpdateModelInfo below is a no-op override — the observer's
+//      notifications become dead callbacks.
+//  (2) IsUserPermittedToFetchFromRemoteOptimizationGuide returns false
+//      in Brave (chromium_src/.../optimization_guide_permissions_util.cc),
+//      so OptimizationGuide never actually downloads the tflite model.
+// That means we no longer need a chromium_src override of
+// PageEmbeddingsServiceFactory to skip the observer — upstream's
+// factory works as-is with Brave routing through
+// ChromePassageEmbeddingsServiceController::Get().
 class BravePassageEmbeddingsServiceController
-    : public PassageEmbeddingsServiceController,
+    : public ChromePassageEmbeddingsServiceController,
       public ProfileObserver {
  public:
   static BravePassageEmbeddingsServiceController* Get();

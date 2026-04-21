@@ -5,15 +5,8 @@
 
 #include "chrome/browser/history_embeddings/history_embeddings_service_factory.h"
 
-#include "brave/browser/history_embeddings/brave_passage_embeddings_service_controller.h"
 #include "brave/components/history_embeddings/content/brave_history_embeddings_service.h"
 #include "chrome/browser/history_embeddings/chrome_history_embeddings_service.h"
-#include "chrome/browser/passage_embeddings/chrome_passage_embeddings_service_controller.h"
-
-// Replace Chrome's PassageEmbeddingsServiceController with Brave's.
-// Both are in the passage_embeddings namespace, so direct replacement works.
-#define ChromePassageEmbeddingsServiceController \
-  BravePassageEmbeddingsServiceController
 
 // Route through our template so OnPassageVisibilityCalculated synthesizes a
 // passing visibility score — Brave doesn't use PageContentAnnotationsService
@@ -25,4 +18,3 @@
 #include <chrome/browser/history_embeddings/history_embeddings_service_factory.cc>
 
 #undef ChromeHistoryEmbeddingsService
-#undef ChromePassageEmbeddingsServiceController
