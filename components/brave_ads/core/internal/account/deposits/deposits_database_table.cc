@@ -123,6 +123,13 @@ void MigrateToV43(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
                    /*columns=*/{"expire_at"});
 }
 
+void MigrateToV57(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
+
+  // Redundant with the implicit index on the PRIMARY KEY.
+  DropTableIndex(mojom_db_transaction, "deposits_creative_instance_id_index");
+}
+
 }  // namespace
 
 void Deposits::Save(const DepositInfo& deposit, ResultCallback callback) {
@@ -220,10 +227,6 @@ void Deposits::Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
         expire_at TIMESTAMP NOT NULL
       ))");
 
-  // Optimize database query for `GetForCreativeInstanceId` from schema 43.
-  CreateTableIndex(mojom_db_transaction, kTableName,
-                   /*columns=*/{"creative_instance_id"});
-
   // Optimize database query for `PurgeExpired` from schema 43.
   CreateTableIndex(mojom_db_transaction, kTableName,
                    /*columns=*/{"expire_at"});
@@ -236,6 +239,11 @@ void Deposits::Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
   switch (to_version) {
     case 43: {
       MigrateToV43(mojom_db_transaction);
+      break;
+    }
+
+    case 57: {
+      MigrateToV57(mojom_db_transaction);
       break;
     }
 

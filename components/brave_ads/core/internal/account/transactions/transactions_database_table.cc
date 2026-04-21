@@ -195,6 +195,23 @@ void MigrateToV43(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
                    /*columns=*/{"creative_instance_id"});
 }
 
+void MigrateToV57(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
+
+  // No longer needed now that `Reconcile` matches only on `id`.
+  DropTableIndex(mojom_db_transaction,
+                 "transactions_creative_instance_id_index");
+
+  // Redundant with the implicit index on the PRIMARY KEY.
+  DropTableIndex(mojom_db_transaction, "transactions_id_index");
+
+  // Replaced with a composite index that also covers `created_at`, optimizing
+  // `PurgeExpired` which filters on both columns.
+  DropTableIndex(mojom_db_transaction, "transactions_reconciled_at_index");
+  CreateTableIndex(mojom_db_transaction, /*table_name=*/"transactions",
+                   /*columns=*/{"reconciled_at", "created_at"});
+}
+
 }  // namespace
 
 void Transactions::Save(const TransactionList& transactions,
@@ -273,14 +290,10 @@ void Transactions::Reconcile(const PaymentTokenList& payment_tokens,
             reconciled_at = $2
           WHERE
             reconciled_at == 0
-            AND (
-              id IN $3
-              OR creative_instance_id IN $4
-            ))",
+            AND id IN $3)",
       {kTableName, TimeToSqlValueAsString(base::Time::Now()),
        BuildBindColumnPlaceholder(
-           /*column_count=*/transaction_ids.size()),
-       BuildBindColumnPlaceholder(/*column_count=*/1)},
+           /*column_count=*/transaction_ids.size())},
       nullptr);
 
   int32_t index = 0;
@@ -331,12 +344,9 @@ void Transactions::Create(
   CreateTableIndex(mojom_db_transaction, kTableName,
                    /*columns=*/{"created_at"});
 
-  // Optimize database query for `Reconcile` from schema 43.
+  // Optimize database query for `PurgeExpired` from schema 57.
   CreateTableIndex(mojom_db_transaction, kTableName,
-                   /*columns=*/{"reconciled_at"});
-  CreateTableIndex(mojom_db_transaction, kTableName, /*columns=*/{"id"});
-  CreateTableIndex(mojom_db_transaction, kTableName,
-                   /*columns=*/{"creative_instance_id"});
+                   /*columns=*/{"reconciled_at", "created_at"});
 }
 
 void Transactions::Migrate(
@@ -357,6 +367,11 @@ void Transactions::Migrate(
 
     case 43: {
       MigrateToV43(mojom_db_transaction);
+      break;
+    }
+
+    case 57: {
+      MigrateToV57(mojom_db_transaction);
       break;
     }
 

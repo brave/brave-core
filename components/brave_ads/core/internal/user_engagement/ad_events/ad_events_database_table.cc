@@ -572,28 +572,15 @@ void AdEvents::PurgeExpired(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
 
-  size_t days;
+  const size_t non_new_tab_page_ad_days = UserHasJoinedBraveRewards() ? 90 : 30;
+  const std::string non_new_tab_page_ad_cutoff = TimeToSqlValueAsString(
+      base::Time::Now() - base::Days(non_new_tab_page_ad_days));
 
-  // Non-new tab page ads.
-  days = UserHasJoinedBraveRewards() ? 90 : 30;
-  Execute(mojom_db_transaction, R"(
-            DELETE FROM
-              $1
-            WHERE
-              creative_set_id NOT IN (
-                SELECT
-                  creative_set_id
-                FROM
-                  creative_set_conversions
-              )
-              AND type != 'new_tab_page_ad'
-              AND created_at <= $2)",
-          {kTableName,
-           TimeToSqlValueAsString(base::Time::Now() - base::Days(days))});
-
-  // New tab page ads.
-  days =
+  const size_t new_tab_page_ad_days =
       UserHasJoinedBraveRewards() || UserHasOptedInToSurveyPanelist() ? 90 : 2;
+  const std::string new_tab_page_ad_cutoff = TimeToSqlValueAsString(
+      base::Time::Now() - base::Days(new_tab_page_ad_days));
+
   Execute(mojom_db_transaction, R"(
             DELETE FROM
               $1
@@ -604,10 +591,11 @@ void AdEvents::PurgeExpired(ResultCallback callback) const {
                 FROM
                   creative_set_conversions
               )
-              AND type == 'new_tab_page_ad'
-              AND created_at <= $2)",
-          {kTableName,
-           TimeToSqlValueAsString(base::Time::Now() - base::Days(days))});
+              AND (
+                (type != 'new_tab_page_ad' AND created_at <= $2)
+                OR (type == 'new_tab_page_ad' AND created_at <= $3)
+              ))",
+          {kTableName, non_new_tab_page_ad_cutoff, new_tab_page_ad_cutoff});
 
   RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
                  std::move(callback));
