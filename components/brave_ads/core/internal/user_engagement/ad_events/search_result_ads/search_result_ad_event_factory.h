@@ -17,6 +17,12 @@ struct SearchResultAdInfo;
 
 class SearchResultAdEventFactory final {
  public:
+  // This class contains only static methods.
+  SearchResultAdEventFactory() = delete;
+  SearchResultAdEventFactory(const SearchResultAdEventFactory&) = delete;
+  SearchResultAdEventFactory& operator=(const SearchResultAdEventFactory&) =
+      delete;
+
   static std::unique_ptr<AdEventInterface<SearchResultAdInfo>> Build(
       mojom::SearchResultAdEventType mojom_ad_event_type);
 };

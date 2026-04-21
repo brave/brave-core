@@ -17,6 +17,11 @@ class SubdivisionTargeting;
 
 class EligibleAdsFactory final {
  public:
+  // This class contains only static methods.
+  EligibleAdsFactory() = delete;
+  EligibleAdsFactory(const EligibleAdsFactory&) = delete;
+  EligibleAdsFactory& operator=(const EligibleAdsFactory&) = delete;
+
   static std::unique_ptr<EligibleNewTabPageAdsBase> Build(
       int version,
       const SubdivisionTargeting& subdivision_targeting,

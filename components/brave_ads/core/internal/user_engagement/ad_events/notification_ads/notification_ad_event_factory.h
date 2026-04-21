@@ -17,6 +17,12 @@ struct NotificationAdInfo;
 
 class NotificationAdEventFactory final {
  public:
+  // This class contains only static methods.
+  NotificationAdEventFactory() = delete;
+  NotificationAdEventFactory(const NotificationAdEventFactory&) = delete;
+  NotificationAdEventFactory& operator=(const NotificationAdEventFactory&) =
+      delete;
+
   static std::unique_ptr<AdEventInterface<NotificationAdInfo>> Build(
       mojom::NotificationAdEventType mojom_ad_event_type);
 };
