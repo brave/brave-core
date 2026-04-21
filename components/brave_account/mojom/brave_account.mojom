@@ -34,15 +34,21 @@ struct RegisterVerifyResult {
   // Currently empty, serves as a placeholder for success.
 };
 
-enum RegisterErrorCode {
-  // Client-side errors:
-  kOpaqueError                             = -5,
-  kVerificationTokenEncryptionFailed       = -4,
-  kVerificationTokenDecryptionFailed       = -3,
-  kUserNotInTheVerificationState           = -2,
-  kAuthenticationTokenEncryptionFailed     = -1,
-  // Server-side errors:
-  kMiscServerError                         = 0,
+enum RegisterClientErrorCode {
+  kOpaqueError                         = -5,
+  kVerificationTokenEncryptionFailed   = -4,
+  kVerificationTokenDecryptionFailed   = -3,
+  kUserNotInTheVerificationState       = -2,
+  kAuthenticationTokenEncryptionFailed = -1,
+};
+
+struct RegisterClientError {
+  RegisterClientErrorCode error_code;
+};
+
+enum RegisterServerErrorCode {
+  // Sentinel: server returned "code": null in the JSON body.
+  kNull                                    = 0,
   // /v2/accounts/password/init:
   // - internal:
   kNewAccountEmailRequired                 = 11005,
@@ -65,13 +71,17 @@ enum RegisterErrorCode {
   kInvalidVerificationCode                 = 13011,
 };
 
-struct RegisterError {
-  // null: client-side error
+struct RegisterServerError {
   // < 0: network error code (net_error_list.h)
   // >= 0: HTTP status code (http_status_code_list.h) if available,
   //       otherwise net::OK
-  int32? netErrorOrHttpStatus;
-  RegisterErrorCode? errorCode;
+  int32 net_error_or_http_status;
+  RegisterServerErrorCode error_code;
+};
+
+union RegisterError {
+  RegisterClientError client_error;
+  RegisterServerError server_error;
 };
 
 struct LoginInitializeResult {
@@ -85,62 +95,84 @@ struct LoginFinalizeResult {
   // Currently empty, serves as a placeholder for success.
 };
 
-enum LoginErrorCode {
-  // Client-side errors:
+enum LoginClientErrorCode {
   kOpaqueError                         = -4,
   kLoginTokenEncryptionFailed          = -3,
   kLoginTokenDecryptionFailed          = -2,
   kAuthenticationTokenEncryptionFailed = -1,
-  // Server-side errors:
-  kMiscServerError                     = 0,
+};
+
+struct LoginClientError {
+  LoginClientErrorCode error_code;
+};
+
+enum LoginServerErrorCode {
+  // Sentinel: server returned "code": null in the JSON body.
+  kNull                           = 0,
   // /v2/auth/login/init:
   // - internal: -
   // - user-facing:
-  kEmailNotVerified                    = 11003,
+  kEmailNotVerified               = 11003,
   // /v2/auth/login/finalize:
   // - internal:
-  kInterimPasswordStateNotFound        = 14001,
-  kInterimPasswordStateHasExpired      = 14002,
-  kInterimPasswordStateMismatch        = 14009,
+  kInterimPasswordStateNotFound   = 14001,
+  kInterimPasswordStateHasExpired = 14002,
+  kInterimPasswordStateMismatch   = 14009,
   // - user-facing: -
   // common for both endpoints:
   // - internal:
-  kIncorrectCredentials                = 14004,
+  kIncorrectCredentials           = 14004,
   // - user-facing:
-  kIncorrectEmail                      = 14005,
-  kIncorrectPassword                   = 14006,
+  kIncorrectEmail                 = 14005,
+  kIncorrectPassword              = 14006,
 };
 
-struct LoginError {
-  // null: client-side error
+struct LoginServerError {
   // < 0: network error code (net_error_list.h)
   // >= 0: HTTP status code (http_status_code_list.h) if available,
   //       otherwise net::OK
-  int32? netErrorOrHttpStatus;
-  LoginErrorCode? errorCode;
+  int32 net_error_or_http_status;
+  LoginServerErrorCode error_code;
+};
+
+union LoginError {
+  LoginClientError client_error;
+  LoginServerError server_error;
 };
 
 struct ResendConfirmationEmailResult {
   // Currently empty, serves as a placeholder for success.
 };
 
-enum ResendConfirmationEmailErrorCode {
-  // Client-side errors:
+enum ResendConfirmationEmailClientErrorCode {
+  kOpaqueError                       = -3,
   kUserNotInTheVerificationState     = -2,
   kVerificationTokenDecryptionFailed = -1,
-  // Server-side errors (/v2/verify/resend):
-  kMiscServerError                   = 0,
-  kMaximumEmailSendAttemptsExceeded  = 13008,
-  kEmailAlreadyVerified              = 13009,
 };
 
-struct ResendConfirmationEmailError {
-  // null: client-side error
+struct ResendConfirmationEmailClientError {
+  ResendConfirmationEmailClientErrorCode error_code;
+};
+
+// Server-side errors (/v2/verify/resend).
+enum ResendConfirmationEmailServerErrorCode {
+  // Sentinel: server returned "code": null in the JSON body.
+  kNull                             = 0,
+  kMaximumEmailSendAttemptsExceeded = 13008,
+  kEmailAlreadyVerified             = 13009,
+};
+
+struct ResendConfirmationEmailServerError {
   // < 0: network error code (net_error_list.h)
   // >= 0: HTTP status code (http_status_code_list.h) if available,
   //       otherwise net::OK
-  int32? netErrorOrHttpStatus;
-  ResendConfirmationEmailErrorCode? errorCode;
+  int32 net_error_or_http_status;
+  ResendConfirmationEmailServerErrorCode error_code;
+};
+
+union ResendConfirmationEmailError {
+  ResendConfirmationEmailClientError client_error;
+  ResendConfirmationEmailServerError server_error;
 };
 
 // Services that depend on Brave Account.
@@ -159,26 +191,37 @@ struct GetServiceTokenResult {
   string serviceToken;
 };
 
-enum GetServiceTokenErrorCode {
-  // Client-side errors:
+enum GetServiceTokenClientErrorCode {
   kUserNotLoggedIn                     = -4,
   kAuthenticationTokenDecryptionFailed = -3,
   kAuthenticationSessionChanged        = -2,
   kServiceTokenEncryptionFailed        = -1,
-  // Server-side errors (/v2/auth/service_token):
-  kMiscServerError                     = 0,
-  kEmailDomainNotSupported             = 13006,
-  kIncorrectCredentials                = 14004,
-  kInvalidTokenAudience                = 14007,
 };
 
-struct GetServiceTokenError {
-  // null: client-side error
+struct GetServiceTokenClientError {
+  GetServiceTokenClientErrorCode error_code;
+};
+
+// Server-side errors (/v2/auth/service_token).
+enum GetServiceTokenServerErrorCode {
+  // Sentinel: server returned "code": null in the JSON body.
+  kNull                    = 0,
+  kEmailDomainNotSupported = 13006,
+  kIncorrectCredentials    = 14004,
+  kInvalidTokenAudience    = 14007,
+};
+
+struct GetServiceTokenServerError {
   // < 0: network error code (net_error_list.h)
   // >= 0: HTTP status code (http_status_code_list.h) if available,
   //       otherwise net::OK
-  int32? netErrorOrHttpStatus;
-  GetServiceTokenErrorCode? errorCode;
+  int32 net_error_or_http_status;
+  GetServiceTokenServerErrorCode error_code;
+};
+
+union GetServiceTokenError {
+  GetServiceTokenClientError client_error;
+  GetServiceTokenServerError server_error;
 };
 
 interface AuthenticationObserver {

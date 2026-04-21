@@ -11,8 +11,8 @@ import {
 } from './brave_account_browser_proxy.js'
 import { getHtml } from './brave_account_create_dialog.html.js'
 import {
+  RegisterClientErrorCode,
   RegisterError,
-  RegisterErrorCode,
 } from './brave_account.mojom-webui.js'
 import { showError } from './brave_account_common.js'
 
@@ -70,14 +70,13 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
 
       if (e && typeof e === 'object') {
         error = e as RegisterError
-      } else if (typeof e === 'string') {
-        error = {
-          netErrorOrHttpStatus: null,
-          errorCode: RegisterErrorCode.kOpaqueError,
-        }
       } else {
-        console.error('Unexpected error:', e)
-        error = { netErrorOrHttpStatus: null, errorCode: null }
+        if (typeof e !== 'string') {
+          console.error('Unexpected error:', e)
+        }
+        error = {
+          clientError: { errorCode: RegisterClientErrorCode.kOpaqueError },
+        }
       }
 
       showError({ kind: 'register', details: error })

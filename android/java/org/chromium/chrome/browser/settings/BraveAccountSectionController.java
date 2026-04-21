@@ -21,8 +21,8 @@ import org.chromium.brave_account.mojom.AccountState;
 import org.chromium.brave_account.mojom.Authentication;
 import org.chromium.brave_account.mojom.AuthenticationObserver;
 import org.chromium.brave_account.mojom.ResendConfirmationEmailError;
-import org.chromium.brave_account.mojom.ResendConfirmationEmailErrorCode;
 import org.chromium.brave_account.mojom.ResendConfirmationEmailResult;
+import org.chromium.brave_account.mojom.ResendConfirmationEmailServerErrorCode;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
@@ -40,11 +40,11 @@ import java.util.Map;
 @NullMarked
 public class BraveAccountSectionController
         implements AuthenticationObserver, ConnectionErrorHandler {
-    private static final Map<Integer, Integer> ERROR_STRINGS =
+    private static final Map<Integer, Integer> SERVER_ERROR_STRINGS =
             Map.of(
-                    ResendConfirmationEmailErrorCode.MAXIMUM_EMAIL_SEND_ATTEMPTS_EXCEEDED,
+                    ResendConfirmationEmailServerErrorCode.MAXIMUM_EMAIL_SEND_ATTEMPTS_EXCEEDED,
                     R.string.brave_account_resend_confirmation_email_maximum_send_attempts_exceeded,
-                    ResendConfirmationEmailErrorCode.EMAIL_ALREADY_VERIFIED,
+                    ResendConfirmationEmailServerErrorCode.EMAIL_ALREADY_VERIFIED,
                     R.string.brave_account_resend_confirmation_email_already_verified);
 
     private static final String PREF_BRAVE_ACCOUNT_SECTION = "brave_account_section";
@@ -242,29 +242,28 @@ public class BraveAccountSectionController
             return mFragment.getString(R.string.brave_account_resend_confirmation_email_success);
         }
 
-        if (error.netErrorOrHttpStatus == null) {
-            // client-side error
+        if (error.which() == ResendConfirmationEmailError.Tag.ClientError) {
+            int errorCode = error.getClientError().errorCode;
             return mFragment
                     .getString(R.string.brave_account_client_error)
                     .replace(
                             "$1",
-                            error.errorCode != null
-                                    ? String.format(
-                                            Locale.ROOT,
-                                            " (%s=%d)",
-                                            mFragment.getString(R.string.brave_account_error),
-                                            error.errorCode)
-                                    : "");
+                            String.format(
+                                    Locale.ROOT,
+                                    " (%s=%d)",
+                                    mFragment.getString(R.string.brave_account_error),
+                                    errorCode));
         }
 
-        // server-side error
-        if (error.errorCode != null) {
-            Integer stringId = ERROR_STRINGS.get(error.errorCode);
-            if (stringId != null) {
-                return mFragment.getString(stringId);
-            }
+        int errorCode = error.getServerError().errorCode;
+        Integer stringId = SERVER_ERROR_STRINGS.get(errorCode);
+        if (stringId != null) {
+            return mFragment.getString(stringId);
         }
 
+        int netErrorOrHttpStatus = error.getServerError().netErrorOrHttpStatus;
+        // `kNull == 0` is the sentinel for "server returned null code".
+        boolean hasCode = errorCode != ResendConfirmationEmailServerErrorCode.NULL;
         return mFragment
                 .getString(R.string.brave_account_server_error)
                 .replace(
@@ -272,16 +271,16 @@ public class BraveAccountSectionController
                         String.format(
                                 Locale.ROOT,
                                 "%s=%d",
-                                error.netErrorOrHttpStatus > 0 ? "HTTP" : "NET",
-                                error.netErrorOrHttpStatus))
+                                netErrorOrHttpStatus > 0 ? "HTTP" : "NET",
+                                netErrorOrHttpStatus))
                 .replace(
                         "$2",
-                        error.errorCode != null
+                        hasCode
                                 ? String.format(
                                         Locale.ROOT,
                                         ", %s=%d",
                                         mFragment.getString(R.string.brave_account_error),
-                                        error.errorCode)
+                                        errorCode)
                                 : "");
     }
 

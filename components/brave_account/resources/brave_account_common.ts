@@ -9,11 +9,17 @@ import { loadTimeData } from '//resources/js/load_time_data.js'
 
 import {
   LoginError,
-  LoginErrorCode,
+  LoginErrorFieldTags,
+  LoginServerErrorCode,
   RegisterError,
-  RegisterErrorCode,
+  RegisterErrorFieldTags,
+  RegisterServerErrorCode,
   ResendConfirmationEmailError,
-  ResendConfirmationEmailErrorCode,
+  ResendConfirmationEmailErrorFieldTags,
+  ResendConfirmationEmailServerErrorCode,
+  whichLoginError,
+  whichRegisterError,
+  whichResendConfirmationEmailError,
 } from './brave_account.mojom-webui.js'
 import { BraveAccountStrings } from './brave_components_webui_strings.js'
 
@@ -22,89 +28,110 @@ export type Error =
   | { kind: 'register'; details: RegisterError }
   | { kind: 'resendConfirmationEmail'; details: ResendConfirmationEmailError }
 
-const LOGIN_ERROR_STRINGS: Partial<Record<LoginErrorCode, string>> = {
-  [LoginErrorCode.kEmailNotVerified]:
+const LOGIN_SERVER_ERROR_STRINGS: Partial<
+  Record<LoginServerErrorCode, string>
+> = {
+  [LoginServerErrorCode.kEmailNotVerified]:
     BraveAccountStrings.BRAVE_ACCOUNT_LOGIN_EMAIL_NOT_VERIFIED,
-  [LoginErrorCode.kIncorrectEmail]:
+  [LoginServerErrorCode.kIncorrectEmail]:
     BraveAccountStrings.BRAVE_ACCOUNT_LOGIN_INCORRECT_EMAIL,
-  [LoginErrorCode.kIncorrectPassword]:
+  [LoginServerErrorCode.kIncorrectPassword]:
     BraveAccountStrings.BRAVE_ACCOUNT_LOGIN_INCORRECT_PASSWORD,
 }
 
-const REGISTER_ERROR_STRINGS: Partial<Record<RegisterErrorCode, string>> = {
-  [RegisterErrorCode.kAccountExists]:
+const REGISTER_SERVER_ERROR_STRINGS: Partial<
+  Record<RegisterServerErrorCode, string>
+> = {
+  [RegisterServerErrorCode.kAccountExists]:
     BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_ACCOUNT_EXISTS,
-  [RegisterErrorCode.kEmailDomainNotSupported]:
+  [RegisterServerErrorCode.kEmailDomainNotSupported]:
     BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_EMAIL_DOMAIN_NOT_SUPPORTED,
-  [RegisterErrorCode.kTooManyVerifications]:
+  [RegisterServerErrorCode.kTooManyVerifications]:
     BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_TOO_MANY_VERIFICATIONS,
-  [RegisterErrorCode.kVerificationNotFoundOrInvalidIdOrCode]:
+  [RegisterServerErrorCode.kVerificationNotFoundOrInvalidIdOrCode]:
     BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_VERIFICATION_NOT_FOUND_OR_INVALID_ID_OR_CODE,
-  [RegisterErrorCode.kMaximumCodeVerificationAttemptsExceeded]:
+  [RegisterServerErrorCode.kMaximumCodeVerificationAttemptsExceeded]:
     BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED,
-  [RegisterErrorCode.kInvalidVerificationCode]:
+  [RegisterServerErrorCode.kInvalidVerificationCode]:
     BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_INVALID_VERIFICATION_CODE,
 }
 
-const RESEND_CONFIRMATION_EMAIL_ERROR_STRINGS: Partial<
-  Record<ResendConfirmationEmailErrorCode, string>
+const RESEND_CONFIRMATION_EMAIL_SERVER_ERROR_STRINGS: Partial<
+  Record<ResendConfirmationEmailServerErrorCode, string>
 > = {
-  [ResendConfirmationEmailErrorCode.kMaximumEmailSendAttemptsExceeded]:
+  [ResendConfirmationEmailServerErrorCode.kMaximumEmailSendAttemptsExceeded]:
     BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_SEND_ATTEMPTS_EXCEEDED,
-  [ResendConfirmationEmailErrorCode.kEmailAlreadyVerified]:
+  [ResendConfirmationEmailServerErrorCode.kEmailAlreadyVerified]:
     BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED,
 }
 
-function getErrorMessageImpl<
-  T extends
-    | LoginErrorCode
-    | RegisterErrorCode
-    | ResendConfirmationEmailErrorCode,
->(
-  errorStrings: Partial<Record<T, string>>,
-  details: { netErrorOrHttpStatus: number | null; errorCode: T | null },
-): string {
-  const { netErrorOrHttpStatus, errorCode } = details
+function formatClientError(clientErrorCode: number): string {
+  const errorLabel = loadTimeData.getString(
+    BraveAccountStrings.BRAVE_ACCOUNT_ERROR,
+  )
+  return loadTimeData.getStringF(
+    BraveAccountStrings.BRAVE_ACCOUNT_CLIENT_ERROR,
+    ` (${errorLabel}=${clientErrorCode})`,
+  )
+}
 
+function formatServerError<T extends number>(
+  errorStrings: Partial<Record<T, string>>,
+  netErrorOrHttpStatus: number,
+  serverErrorCode: T,
+): string {
   const errorLabel = loadTimeData.getString(
     BraveAccountStrings.BRAVE_ACCOUNT_ERROR,
   )
 
-  if (netErrorOrHttpStatus == null) {
-    // client-side error
-    return loadTimeData.getStringF(
-      BraveAccountStrings.BRAVE_ACCOUNT_CLIENT_ERROR,
-      errorCode != null ? ` (${errorLabel}=${errorCode})` : '',
-    )
+  const specificErrorMessage = errorStrings[serverErrorCode]
+  if (specificErrorMessage) {
+    return loadTimeData.getString(specificErrorMessage)
   }
 
-  // server-side error
-  const specificErrorMessage =
-    errorCode != null && errorStrings[errorCode]
-      ? loadTimeData.getString(errorStrings[errorCode])
-      : null
-
-  return (
-    specificErrorMessage
-    ?? loadTimeData.getStringF(
-      BraveAccountStrings.BRAVE_ACCOUNT_SERVER_ERROR,
-      `${netErrorOrHttpStatus > 0 ? 'HTTP' : 'NET'}=${netErrorOrHttpStatus}`,
-      errorCode != null ? `, ${errorLabel}=${errorCode}` : '',
-    )
+  // `kNull == 0` is the sentinel for "server returned null code".
+  return loadTimeData.getStringF(
+    BraveAccountStrings.BRAVE_ACCOUNT_SERVER_ERROR,
+    `${netErrorOrHttpStatus > 0 ? 'HTTP' : 'NET'}=${netErrorOrHttpStatus}`,
+    serverErrorCode !== 0 ? `, ${errorLabel}=${serverErrorCode}` : '',
   )
 }
 
 function getErrorMessage(error: Error): string {
   switch (error.kind) {
     case 'login':
-      return getErrorMessageImpl(LOGIN_ERROR_STRINGS, error.details)
+      switch (whichLoginError(error.details)) {
+        case LoginErrorFieldTags.CLIENT_ERROR:
+          return formatClientError(error.details.clientError!.errorCode)
+        case LoginErrorFieldTags.SERVER_ERROR:
+          return formatServerError(
+            LOGIN_SERVER_ERROR_STRINGS,
+            error.details.serverError!.netErrorOrHttpStatus,
+            error.details.serverError!.errorCode,
+          )
+      }
     case 'register':
-      return getErrorMessageImpl(REGISTER_ERROR_STRINGS, error.details)
+      switch (whichRegisterError(error.details)) {
+        case RegisterErrorFieldTags.CLIENT_ERROR:
+          return formatClientError(error.details.clientError!.errorCode)
+        case RegisterErrorFieldTags.SERVER_ERROR:
+          return formatServerError(
+            REGISTER_SERVER_ERROR_STRINGS,
+            error.details.serverError!.netErrorOrHttpStatus,
+            error.details.serverError!.errorCode,
+          )
+      }
     case 'resendConfirmationEmail':
-      return getErrorMessageImpl(
-        RESEND_CONFIRMATION_EMAIL_ERROR_STRINGS,
-        error.details,
-      )
+      switch (whichResendConfirmationEmailError(error.details)) {
+        case ResendConfirmationEmailErrorFieldTags.CLIENT_ERROR:
+          return formatClientError(error.details.clientError!.errorCode)
+        case ResendConfirmationEmailErrorFieldTags.SERVER_ERROR:
+          return formatServerError(
+            RESEND_CONFIRMATION_EMAIL_SERVER_ERROR_STRINGS,
+            error.details.serverError!.netErrorOrHttpStatus,
+            error.details.serverError!.errorCode,
+          )
+      }
   }
 }
 
