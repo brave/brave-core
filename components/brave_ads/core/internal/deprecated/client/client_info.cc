@@ -128,7 +128,10 @@ bool ClientInfo::FromDict(const base::DictValue& dict) {
           page_score = *page_score_value;
         } else if (const auto* const legacy_page_score_value =
                        dict.FindString("pageScore")) {
-          CHECK(base::StringToDouble(*legacy_page_score_value, &page_score));
+          if (!base::StringToDouble(*legacy_page_score_value, &page_score)) {
+            BLOG(0, "Failed to parse legacy pageScore from client state");
+            return false;
+          }
         }
 
         probabilities.insert({*segment, page_score});
