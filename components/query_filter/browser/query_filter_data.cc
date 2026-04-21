@@ -57,6 +57,8 @@ const std::string QueryFilterData::GetVersion() const {
   return version_.GetString();
 }
 
+// TODO(https://github.com/brave/brave-browser/issues/54775): Update this to use
+// an IDL and JSON Compiler to parse the input.
 bool QueryFilterData::PopulateDataFromComponent(std::string_view json_data) {
   if (json_data.empty()) {
     return false;
