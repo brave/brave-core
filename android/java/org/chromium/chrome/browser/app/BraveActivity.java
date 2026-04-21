@@ -212,6 +212,7 @@ import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.util.UsageMonitor;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
+import org.chromium.chrome.browser.vpn.BraveVpnPolicy;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
 import org.chromium.chrome.browser.vpn.fragments.LinkVpnSubscriptionDialogFragment;
 import org.chromium.chrome.browser.vpn.timer.TimerDialogFragment;
@@ -1366,7 +1367,8 @@ public abstract class BraveActivity extends ChromeActivity
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_VPN_LINK_SUBSCRIPTION_ANDROID_UI)
                 && BraveVpnPrefUtils.isSubscriptionPurchase()
-                && !BraveVpnPrefUtils.isLinkSubscriptionDialogShown()) {
+                && !BraveVpnPrefUtils.isLinkSubscriptionDialogShown()
+                && !BraveVpnPolicy.isDisabledByPolicy(mTabModelProfileSupplier.get())) {
             showLinkVpnSubscriptionDialog();
         }
         if (isFirstInstall
