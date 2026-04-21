@@ -5,8 +5,10 @@
 
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 
+#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 class FiltersProviderManagerTestObserver
@@ -77,6 +79,67 @@ TEST(AdBlockFiltersProviderManagerTest, ForceNotifyObserverRespectsEngineType) {
   FiltersProviderManagerTestObserver additional_observer;
   m.ForceNotifyObserver(additional_observer, false);
   EXPECT_EQ(additional_observer.changed_count, 1);
+}
+
+// Feature disabled: normal flow notifies twice — once via OnChanged during
+// provider init, once via ForceNotifyObserver.
+TEST(AdBlockFiltersProviderManagerTest,
+     ForceNotifyObserverNotifiesTwiceWhenFeatureDisabled) {
+  brave_shields::AdBlockFiltersProviderManager m;
+
+  FiltersProviderManagerTestObserver observer;
+  m.AddObserver(&observer);
+
+  brave_shields::TestFiltersProvider provider("rules", true, 0);
+  provider.RegisterAsSourceProvider(&m);
+  EXPECT_EQ(observer.changed_count, 1);
+
+  m.ForceNotifyObserver(observer, true);
+  EXPECT_EQ(observer.changed_count, 2);
+}
+
+// Feature enabled: OnChanged during init is suppressed (caller loads from DAT
+// cache). If the DAT cache load fails, ForceNotifyObserver is the single
+// notification path.
+TEST(AdBlockFiltersProviderManagerTest,
+     ForceNotifyObserverNotifiesOnceWhenFeatureEnabled) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(brave_shields::features::kAdblockDATCache);
+
+  brave_shields::AdBlockFiltersProviderManager m;
+
+  FiltersProviderManagerTestObserver observer;
+  m.AddObserver(&observer);
+
+  brave_shields::TestFiltersProvider provider("rules", true, 0);
+  provider.RegisterAsSourceProvider(&m);
+  EXPECT_EQ(observer.changed_count, 0);
+
+  m.ForceNotifyObserver(observer, true);
+  EXPECT_EQ(observer.changed_count, 1);
+}
+
+// Feature enabled, provider added but not yet initialized. ForceNotifyObserver
+// does not notify immediately; notification fires when the provider later
+// initializes.
+TEST(AdBlockFiltersProviderManagerTest,
+     ForceNotifyObserverFiresWhenProviderLaterInitialized_DATCache) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(brave_shields::features::kAdblockDATCache);
+
+  brave_shields::AdBlockFiltersProviderManager m;
+
+  FiltersProviderManagerTestObserver observer;
+  m.AddObserver(&observer);
+
+  brave_shields::TestFiltersProvider provider("rules", true, 0);
+  m.AddProvider(&provider, true);
+
+  m.ForceNotifyObserver(observer, true);
+  EXPECT_EQ(observer.changed_count, 0);
+
+  provider.Initialize();
+  EXPECT_EQ(observer.changed_count, 1);
 }
 
 TEST(AdBlockFiltersProviderManagerTest,
