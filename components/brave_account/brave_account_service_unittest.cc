@@ -246,9 +246,9 @@ struct RegisterInitializeTestCase {
                   base::test::TaskEnvironment& task_environment,
                   mojom::Authentication& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
-    authentication.RegisterInitialize(std::nullopt, test_case.email,
-                                      test_case.blinded_message,
-                                      std::move(callback));
+    authentication.RegisterInitialize(
+        mojom::Service::kAccounts, test_case.email, test_case.blinded_message,
+        std::move(callback));
   }
 
   std::string test_name;
@@ -2017,7 +2017,7 @@ struct LoginInitializeTestCase {
                   base::test::TaskEnvironment& task_environment,
                   mojom::Authentication& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
-    authentication.LoginInitialize(std::nullopt, test_case.email,
+    authentication.LoginInitialize(mojom::Service::kAccounts, test_case.email,
                                    test_case.serialized_ke1,
                                    std::move(callback));
   }

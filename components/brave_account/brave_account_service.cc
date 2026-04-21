@@ -210,7 +210,7 @@ void BraveAccountService::AddObserver(
 }
 
 void BraveAccountService::RegisterInitialize(
-    std::optional<mojom::Service> initiating_service,
+    mojom::Service initiating_service,
     const std::string& email,
     const std::string& blinded_message,
     RegisterInitializeCallback callback) {
@@ -223,8 +223,7 @@ void BraveAccountService::RegisterInitialize(
   auto request = MakeRequest<PasswordInit::Request>();
   request.body.blinded_message = blinded_message;
   request.body.initiating_service_name =
-      initiating_service ? kServiceToString.at(*initiating_service)
-                         : "accounts";
+      kServiceToString.at(initiating_service);
   request.body.new_account_email = email;
   request.body.serialize_response = true;
   Client<PasswordInit>::Send(
@@ -346,11 +345,10 @@ void BraveAccountService::CancelRegistration() {
                              base::BindOnce([](VerifyDelete::Response) {}));
 }
 
-void BraveAccountService::LoginInitialize(
-    std::optional<mojom::Service> initiating_service,
-    const std::string& email,
-    const std::string& serialized_ke1,
-    LoginInitializeCallback callback) {
+void BraveAccountService::LoginInitialize(mojom::Service initiating_service,
+                                          const std::string& email,
+                                          const std::string& serialized_ke1,
+                                          LoginInitializeCallback callback) {
   if (email.empty() || serialized_ke1.empty()) {
     return std::move(callback).Run(base::unexpected(
         mojom::LoginError::NewClientError(mojom::LoginClientError::New(
@@ -360,8 +358,7 @@ void BraveAccountService::LoginInitialize(
   auto request = MakeRequest<LoginInit::Request>();
   request.body.email = email;
   request.body.initiating_service_name =
-      initiating_service ? kServiceToString.at(*initiating_service)
-                         : "accounts";
+      kServiceToString.at(initiating_service);
   request.body.serialized_ke1 = serialized_ke1;
   Client<LoginInit>::Send(
       url_loader_factory_, std::move(request),
@@ -416,6 +413,7 @@ void BraveAccountService::LogOut() {
 
 void BraveAccountService::GetServiceToken(mojom::Service service,
                                           GetServiceTokenCallback callback) {
+  CHECK(service != mojom::Service::kAccounts);
   std::string service_name(kServiceToString.at(service));
   if (auto service_token = GetCachedServiceToken(service_name);
       !service_token.empty()) {
