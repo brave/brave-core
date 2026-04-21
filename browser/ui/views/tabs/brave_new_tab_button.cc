@@ -144,9 +144,13 @@ void BraveNewTabButton::ShowContextMenuForViewImpl(
       containers_context_menu_runner_ = std::make_unique<views::MenuRunner>(
           containers_menu_model_.get(),
           views::MenuRunner::HAS_MNEMONICS | views::MenuRunner::CONTEXT_MENU);
-      containers_context_menu_runner_->RunMenuAt(
-          source->GetWidget(), nullptr, gfx::Rect(point, gfx::Size()),
-          views::MenuAnchorPosition::kTopLeft, source_type);
+      // In some tests, we want to skip running the menu runner to avoid
+      // blocking the test.
+      if (!skip_containers_context_menu_runner_for_testing_) {
+        containers_context_menu_runner_->RunMenuAt(
+            source->GetWidget(), nullptr, gfx::Rect(point, gfx::Size()),
+            views::MenuAnchorPosition::kTopLeft, source_type);
+      }
       return;
     }
   }

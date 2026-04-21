@@ -233,9 +233,16 @@ class ContainersBrowserTest : public InProcessBrowserTest {
     return ContainersServiceFactory::GetForProfile(browser()->profile());
   }
 
-  bool IsNewTabButtonContainersMenuRunning(BraveNewTabButton* new_tab_button) {
+  void SetBraveNewTabButtonSkipContainersContextMenuRunForTesting(
+      BraveNewTabButton* new_tab_button,
+      bool skip) {
+    new_tab_button->skip_containers_context_menu_runner_for_testing_ = true;
+  }
+
+  bool BraveNewTabButtonHasPreparedContainersContextMenu(
+      BraveNewTabButton* new_tab_button) {
     return new_tab_button->containers_context_menu_runner_ &&
-           new_tab_button->containers_context_menu_runner_->IsRunning();
+           new_tab_button->containers_menu_model_;
   }
 
   bool IsContainersStorageDirectoryEmpty() {
@@ -1843,9 +1850,12 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
       horizontal_tab_strip_region->new_tab_button_for_testing());
   ASSERT_TRUE(new_tab);
 
+  // MenuRunner::RunMenuAt blocks until the menu closes; skip it for the test
+  // and only assert that the containers menu path built model and runner.
+  SetBraveNewTabButtonSkipContainersContextMenuRunForTesting(new_tab, true);
   new_tab->ShowContextMenuForViewImpl(new_tab, gfx::Point(0, 0),
                                       ui::mojom::MenuSourceType::kMouse);
-  EXPECT_TRUE(IsNewTabButtonContainersMenuRunning(new_tab));
+  EXPECT_TRUE(BraveNewTabButtonHasPreparedContainersContextMenu(new_tab));
 }
 
 class BraveNewTabButtonContainersFeatureDisabledBrowserTest
@@ -1875,7 +1885,7 @@ IN_PROC_BROWSER_TEST_F(
 
   new_tab->ShowContextMenuForViewImpl(new_tab, gfx::Point(0, 0),
                                       ui::mojom::MenuSourceType::kMouse);
-  EXPECT_FALSE(IsNewTabButtonContainersMenuRunning(new_tab));
+  EXPECT_FALSE(BraveNewTabButtonHasPreparedContainersContextMenu(new_tab));
 }
 
 }  // namespace containers
