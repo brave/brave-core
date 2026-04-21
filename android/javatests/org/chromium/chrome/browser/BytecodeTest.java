@@ -306,8 +306,6 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/download/MimeUtils"));
         Assert.assertTrue(classExists("org/chromium/components/browser_ui/settings/SettingsUtils"));
-        Assert.assertTrue(
-                classExists("org/chromium/components/browser_ui/settings/BraveSettingsUtils"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/app/ChromeActivity"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ChromeTabbedActivity"));
         Assert.assertTrue(
