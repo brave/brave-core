@@ -1,9 +1,10 @@
-/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <string_view>
+#include <vector>
 
 #include "base/path_service.h"
 #include "base/test/run_until.h"
@@ -157,7 +158,7 @@ IN_PROC_BROWSER_TEST_P(EmailAliasesAutofillTest, NewEmailAliasSuggestion) {
   content::SimulateMouseClickOrTapElementWithId(GetWebContents(), "type-email");
 
   autofill_manager()->WaitForAskForValuesToFill();
-  EXPECT_TRUE(base::test::RunUntil(
+  ASSERT_TRUE(base::test::RunUntil(
       [&]() { return !autofill_client()->suggestions().empty(); }));
 
   ASSERT_LE(3u, autofill_client()->suggestions().size());
@@ -178,6 +179,7 @@ IN_PROC_BROWSER_TEST_P(EmailAliasesAutofillTest, NewEmailAliasSuggestion) {
       autofill_client()->suggestions()[2].brave_new_email_alias_suggestion);
 
   if (GetParam()) {
+    ASSERT_LE(4u, autofill_client()->suggestions().size());
     // EmailAlias ManageAddress (type reused) suggession.
     EXPECT_EQ(autofill_client()->suggestions()[3].type,
               autofill::SuggestionType::kManageAddress);
@@ -204,7 +206,7 @@ IN_PROC_BROWSER_TEST_P(EmailAliasesAutofillTest,
     return;
   }
 
-  EXPECT_TRUE(base::test::RunUntil(
+  ASSERT_TRUE(base::test::RunUntil(
       [&]() { return !autofill_client()->suggestions().empty(); }));
   EXPECT_EQ(1u, autofill_client()->suggestions().size());
 
