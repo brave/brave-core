@@ -119,11 +119,8 @@ TEST(AdBlockFiltersProviderManagerTest,
   EXPECT_EQ(observer.changed_count, 1);
 }
 
-// Feature enabled, provider added but not yet initialized. ForceNotifyObserver
-// does not notify immediately; notification fires when the provider later
-// initializes.
 TEST(AdBlockFiltersProviderManagerTest,
-     ForceNotifyObserverFiresWhenProviderLaterInitialized_DATCache) {
+     ForceNotifyObserverFiresWhenProviderLaterInitialized) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeature(brave_shields::features::kAdblockDATCache);
 
