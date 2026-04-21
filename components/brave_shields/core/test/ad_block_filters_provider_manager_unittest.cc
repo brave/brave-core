@@ -81,64 +81,6 @@ TEST(AdBlockFiltersProviderManagerTest, ForceNotifyObserverRespectsEngineType) {
   EXPECT_EQ(additional_observer.changed_count, 1);
 }
 
-// Feature disabled: normal flow notifies twice — once via OnChanged during
-// provider init, once via ForceNotifyObserver.
-TEST(AdBlockFiltersProviderManagerTest,
-     ForceNotifyObserverNotifiesTwiceWhenFeatureDisabled) {
-  brave_shields::AdBlockFiltersProviderManager m;
-
-  FiltersProviderManagerTestObserver observer;
-  m.AddObserver(&observer);
-
-  brave_shields::TestFiltersProvider provider("rules", true, 0);
-  provider.RegisterAsSourceProvider(&m);
-  EXPECT_EQ(observer.changed_count, 1);
-
-  m.ForceNotifyObserver(observer, true);
-  EXPECT_EQ(observer.changed_count, 2);
-}
-
-// Feature enabled: OnChanged during init is suppressed (caller loads from DAT
-// cache). If the DAT cache load fails, ForceNotifyObserver is the single
-// notification path.
-TEST(AdBlockFiltersProviderManagerTest,
-     ForceNotifyObserverNotifiesOnceWhenFeatureEnabled) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeature(brave_shields::features::kAdblockDATCache);
-
-  brave_shields::AdBlockFiltersProviderManager m;
-
-  FiltersProviderManagerTestObserver observer;
-  m.AddObserver(&observer);
-
-  brave_shields::TestFiltersProvider provider("rules", true, 0);
-  provider.RegisterAsSourceProvider(&m);
-  EXPECT_EQ(observer.changed_count, 0);
-
-  m.ForceNotifyObserver(observer, true);
-  EXPECT_EQ(observer.changed_count, 1);
-}
-
-TEST(AdBlockFiltersProviderManagerTest,
-     ForceNotifyObserverFiresWhenProviderLaterInitialized) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeature(brave_shields::features::kAdblockDATCache);
-
-  brave_shields::AdBlockFiltersProviderManager m;
-
-  FiltersProviderManagerTestObserver observer;
-  m.AddObserver(&observer);
-
-  brave_shields::TestFiltersProvider provider("rules", true, 0);
-  m.AddProvider(&provider, true);
-
-  m.ForceNotifyObserver(observer, true);
-  EXPECT_EQ(observer.changed_count, 0);
-
-  provider.Initialize();
-  EXPECT_EQ(observer.changed_count, 1);
-}
-
 TEST(AdBlockFiltersProviderManagerTest,
      OnChangedWaitsForAllProvidersInitialized) {
   brave_shields::AdBlockFiltersProviderManager m;
@@ -165,3 +107,61 @@ TEST(AdBlockFiltersProviderManagerTest,
   provider2.Initialize();
   EXPECT_EQ(observer.changed_count, 2);
 }
+
+class ForceNotifyObserverTest : public testing::TestWithParam<bool> {
+ protected:
+  void SetUp() override {
+    if (GetParam()) {
+      feature_list_.InitAndEnableFeature(
+          brave_shields::features::kAdblockDATCache);
+    } else {
+      feature_list_.InitAndDisableFeature(
+          brave_shields::features::kAdblockDATCache);
+    }
+  }
+
+  base::test::ScopedFeatureList feature_list_;
+};
+
+// Disabled: init OnChanged fires (count=1), ForceNotify fires again (count=2).
+// Enabled: init OnChanged suppressed (count=0), ForceNotify fires (count=1).
+TEST_P(ForceNotifyObserverTest, NotifiesAfterRegisterAndForceNotify) {
+  const bool dat_cache_enabled = GetParam();
+  brave_shields::AdBlockFiltersProviderManager m;
+
+  FiltersProviderManagerTestObserver observer;
+  m.AddObserver(&observer);
+
+  brave_shields::TestFiltersProvider provider("rules", true, 0);
+  provider.RegisterAsSourceProvider(&m);
+  EXPECT_EQ(observer.changed_count, dat_cache_enabled ? 0 : 1);
+
+  m.ForceNotifyObserver(observer, true);
+  EXPECT_EQ(observer.changed_count, dat_cache_enabled ? 1 : 2);
+}
+
+// Provider added but not initialized. ForceNotify defers; observer fires when
+// provider is later initialized. Same result regardless of flag.
+TEST_P(ForceNotifyObserverTest, FiresWhenProviderLaterInitialized) {
+  brave_shields::AdBlockFiltersProviderManager m;
+
+  FiltersProviderManagerTestObserver observer;
+  m.AddObserver(&observer);
+
+  brave_shields::TestFiltersProvider provider("rules", true, 0);
+  m.AddProvider(&provider, true);
+
+  m.ForceNotifyObserver(observer, true);
+  EXPECT_EQ(observer.changed_count, 0);
+
+  provider.Initialize();
+  EXPECT_EQ(observer.changed_count, 1);
+}
+
+INSTANTIATE_TEST_SUITE_P(All,
+                         ForceNotifyObserverTest,
+                         testing::Bool(),
+                         [](const testing::TestParamInfo<bool>& info) {
+                           return info.param ? "DATCacheEnabled"
+                                             : "DATCacheDisabled";
+                         });
