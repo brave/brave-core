@@ -90,4 +90,8 @@ void ApplicationStateMonitorLinux::OnBrowserDeactivated(
           weak_ptr_factory_.GetWeakPtr()));
 }
 
+void ApplicationStateMonitorLinux::Reset() {
+  browser_collection_observation_.Reset();
+}
+
 }  // namespace brave_ads
