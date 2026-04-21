@@ -180,6 +180,19 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         # plaster .toml file location should be skipped.
         os.path.join('brave', 'rewrite', 'third_party'),
 
+        # vendored boringtun crate has a top-level LICENSE file.
+        os.path.join('brave', 'third_party', 'boringtun', 'vendor',
+                     'boringtun'),
+        # vendored ring third-party dependencies are covered by its top
+        # level license.
+        os.path.join('brave', 'third_party', 'boringtun', 'vendor', 'ring',
+                     'third_party'),
+
+        # TODO(https://github.com/brave/brave-browser/issues/54804)
+        # remove the following line once we start putting
+        # boringtun binaries into the browser distribution.
+        os.path.join('brave', 'third_party', 'boringtun'),
+
         # Transitive deps in brave/third_party/wasm.
         *GetRustWorkspaceTransitiveDeps(Path('brave/third_party/wasm')),
     ])
