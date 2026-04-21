@@ -33,8 +33,9 @@ class BravePolicyTest : public InProcessBrowserTest {
   ~BravePolicyTest() override = default;
 
   void SetUpInProcessBrowserTestFixture() override {
-    EXPECT_CALL(provider_, IsInitializationComplete(_))
-        .WillRepeatedly(Return(true));
+    provider_.SetDefaultReturns(
+        /*is_initialization_complete_return=*/true,
+        /*is_first_policy_load_complete_return=*/true);
     BrowserPolicyConnector::SetPolicyProviderForTesting(&provider_);
   }
 

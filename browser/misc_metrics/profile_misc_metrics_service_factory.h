@@ -41,8 +41,10 @@ class ProfileMiscMetricsServiceFactory
 
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
+  bool ServiceIsCreatedWithBrowserContext() const override;
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;
+  bool ServiceIsNULLWhileTesting() const override;
 };
 
 }  // namespace misc_metrics

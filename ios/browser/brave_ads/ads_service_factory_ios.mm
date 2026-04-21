@@ -30,7 +30,9 @@ AdsServiceFactoryIOS* AdsServiceFactoryIOS::GetInstance() {
 
 AdsServiceFactoryIOS::AdsServiceFactoryIOS()
     : ProfileKeyedServiceFactoryIOS("AdsService",
-                                    ProfileSelection::kNoInstanceInIncognito) {}
+                                    ProfileSelection::kNoInstanceInIncognito,
+                                    ServiceCreation::kCreateWithProfile,
+                                    TestingCreation::kNoServiceForTests) {}
 
 AdsServiceFactoryIOS::~AdsServiceFactoryIOS() = default;
 

@@ -92,8 +92,9 @@ class TorSnowflakeExtensionBrowserTest : public InProcessBrowserTest {
 
  private:
   void SetUpInProcessBrowserTestFixture() override {
-    EXPECT_CALL(provider_, IsInitializationComplete(testing::_))
-        .WillRepeatedly(testing::Return(true));
+    provider_.SetDefaultReturns(
+        /*is_initialization_complete_return=*/true,
+        /*is_first_policy_load_complete_return=*/true);
     policy::BrowserPolicyConnector::SetPolicyProviderForTesting(&provider_);
   }
 
