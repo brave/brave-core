@@ -50,11 +50,11 @@ class SerpMetricsTimePeriodStorageTest
         should_offset_dst());
   }
 
-  bool should_use_utc() const { return GetParam().should_use_utc; }
+  static bool should_use_utc() { return GetParam().should_use_utc; }
 
-  bool should_offset_dst() const { return GetParam().should_offset_dst; }
+  static bool should_offset_dst() { return GetParam().should_offset_dst; }
 
-  base::Time Midnight(base::Time time) const {
+  static base::Time Midnight(base::Time time) {
     return should_use_utc() ? time.UTCMidnight() : time.LocalMidnight();
   }
 
@@ -126,7 +126,7 @@ TEST_P(SerpMetricsTimePeriodStorageTest, GetSumInCustomPeriod) {
   base::Time midnight = Midnight(base::Time::Now());
   EXPECT_EQ(state_->GetPeriodSumInTimeRange(midnight - start_time_delta,
                                             midnight - end_time_delta),
-            0u);
+            0U);
 
   task_environment_.AdvanceClock(base::Days(1));
   midnight = Midnight(base::Time::Now());
@@ -150,7 +150,7 @@ TEST_P(SerpMetricsTimePeriodStorageTest, GetSumInCustomPeriod) {
   midnight = Midnight(base::Time::Now());
   EXPECT_EQ(state_->GetPeriodSumInTimeRange(midnight - start_time_delta,
                                             midnight - end_time_delta),
-            0u);
+            0U);
 }
 
 TEST_P(SerpMetricsTimePeriodStorageTest, ForgetsOldSavingsWeekly) {
@@ -349,17 +349,9 @@ TEST_P(SerpMetricsTimePeriodStorageTest, DstOffsetExpandsQueryRange) {
 // The test is disabled on Windows because `SerpMetricsScopedTimezoneForTesting`
 // relies on `ScopedLibcTimezoneOverride`, which is a no-op for IANA timezone
 // identifiers on Windows, causing spurious failures.
-#if BUILDFLAG(IS_WIN)
-#define MAYBE_GetHighestValueInPeriodExcludesDataOutsideWindowAfterDSTTransition \
-  DISABLED_GetHighestValueInPeriodExcludesDataOutsideWindowAfterDSTTransition
-#else
-#define MAYBE_GetHighestValueInPeriodExcludesDataOutsideWindowAfterDSTTransition \
-  GetHighestValueInPeriodExcludesDataOutsideWindowAfterDSTTransition
-#endif
-
-TEST_P(
-    SerpMetricsTimePeriodStorageTest,
-    MAYBE_GetHighestValueInPeriodExcludesDataOutsideWindowAfterDSTTransition) {
+#if !BUILDFLAG(IS_WIN)
+TEST_P(SerpMetricsTimePeriodStorageTest,
+       GetHighestValueInPeriodExcludesDataOutsideWindowAfterDSTTransition) {
   // America/New_York DST starts in 2050 on March 13 (the second Sunday of
   // March). Clocks advance at 02:00 EST (07:00 UTC) to 03:00 EDT. These
   // dates are safely after the fixture's mock-time start of 2050-01-04.
@@ -386,6 +378,7 @@ TEST_P(
 
   EXPECT_EQ(state_->GetHighestValueInPeriod(), low_value);
 }
+#endif  // !BUILDFLAG(IS_WIN)
 
 INSTANTIATE_TEST_SUITE_P(
     ,

@@ -84,7 +84,7 @@ class SerpMetricsTimePeriodStorage {
  private:
   struct DailyValue {
     base::Time day;
-    uint64_t value = 0ull;
+    uint64_t value = 0ULL;
   };
   base::Time Midnight(base::Time time) const;
   // Returns the midnight that starts the calendar day after `time`. Safe
