@@ -1,0 +1,14 @@
+Name: autocfg
+Short Name: autocfg
+URL: https://github.com/cuviper/autocfg
+Version: 1.5.0
+License: Apache-2.0 OR MIT
+License File: LICENSE-MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/autocfg.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

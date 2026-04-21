@@ -1,0 +1,14 @@
+Name: chacha20poly1305
+Short Name: chacha20poly1305
+URL: https://github.com/RustCrypto/AEADs/tree/master/chacha20poly1305
+Version: 0.10.1
+License: Apache-2.0 OR MIT
+License File: LICENSE-MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/chacha20poly1305.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

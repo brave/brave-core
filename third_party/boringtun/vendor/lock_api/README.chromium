@@ -1,0 +1,14 @@
+Name: lock_api
+Short Name: lock_api
+URL: https://github.com/Amanieu/parking_lot
+Version: 0.4.14
+License: MIT OR Apache-2.0
+License File: LICENSE-MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/lock_api.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

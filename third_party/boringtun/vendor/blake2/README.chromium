@@ -1,0 +1,14 @@
+Name: blake2
+Short Name: blake2
+URL: https://github.com/RustCrypto/hashes
+Version: 0.10.6
+License: MIT OR Apache-2.0
+License File: LICENSE-MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/blake2.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

@@ -1,0 +1,14 @@
+Name: libc
+Short Name: libc
+URL: https://github.com/rust-lang/libc
+Version: 0.2.185
+License: MIT OR Apache-2.0
+License File: LICENSE-MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/libc.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

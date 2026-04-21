@@ -1,0 +1,14 @@
+Name: thread_local
+Short Name: thread_local
+URL: https://github.com/Amanieu/thread_local-rs
+Version: 1.1.9
+License: MIT OR Apache-2.0
+License File: LICENSE-MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/thread_local.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

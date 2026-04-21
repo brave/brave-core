@@ -1,0 +1,14 @@
+Name: windows-sys
+Short Name: windows-sys
+URL: https://github.com/microsoft/windows-rs
+Version: 0.61.2
+License: MIT OR Apache-2.0
+License File: license-mit
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/windows-sys.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.
