@@ -26,6 +26,8 @@ class ApplicationStateMonitorLinux final : public ApplicationStateMonitor,
 
   ~ApplicationStateMonitorLinux() override;
 
+  void Reset() override;
+
  private:
   // BrowserCollectionObserver:
   void OnBrowserActivated(BrowserWindowInterface* browser) override;
