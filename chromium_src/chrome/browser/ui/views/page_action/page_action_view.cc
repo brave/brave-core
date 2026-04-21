@@ -19,8 +19,11 @@
 #define OnNewActiveController OnNewActiveController_Chromium
 #define OnPageActionModelChanged OnPageActionModelChanged_Chromium
 
+// Want to use default color even it's expanded.
+#define SetUseTonalColorsWhenExpanded(...) SetUseTonalColorsWhenExpanded(false)
 #include <chrome/browser/ui/views/page_action/page_action_view.cc>
 
+#undef SetUseTonalColorsWhenExpanded
 #undef OnPageActionModelChanged
 #undef OnNewActiveController
 #undef GetMinimumSize
@@ -113,7 +116,8 @@ SkColor PageActionView::GetBackgroundColor() const {
     return *source->GetOverrideBackgroundColor();
   }
 
-  return IconLabelBubbleView::GetBackgroundColor();
+  // Brave doesn't use a background color for page action chips.
+  return SK_ColorTRANSPARENT;
 }
 
 SkColor PageActionView::GetForegroundColor() const {

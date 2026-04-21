@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/views/page_action/page_action_view.h"
 
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/page_action/page_action_view_params.h"
 #include "chrome/browser/ui/views/page_action/test_support/mock_page_action_controller.h"
 #include "chrome/browser/ui/views/page_action/test_support/mock_page_action_model.h"
@@ -213,6 +214,56 @@ TEST_F(PageActionViewTest, OverrideTriggerableEventUsesCallback) {
   EXPECT_TRUE(page_action_view()->IsTriggerableEvent(left_press));
   EXPECT_FALSE(page_action_view()->IsTriggerableEvent(right_press));
   testing::Mock::VerifyAndClearExpectations(model());
+}
+
+TEST_F(PageActionViewTest, UseTonalColorsWhenExpanded) {
+  EXPECT_FALSE(page_action_view()->GetUseTonalColorsWhenExpanded());
+
+  page_action_view()->OnPageActionModelChanged(*model());
+
+  ASSERT_TRUE(page_action_view()->GetVisible());
+  ASSERT_TRUE(page_action_view()->IsChipVisible());
+
+  // Upstream uses tonal color for bg/fg colors but we don't use it.
+  const SkColor expected_color =
+      page_action_view()->GetColorProvider()->GetColor(
+          kColorOmniboxIconForeground);
+  EXPECT_EQ(page_action_view()->GetCurrentTextColor(), expected_color);
+
+  ASSERT_NE(page_action_view()->GetBackground(), nullptr);
+  EXPECT_EQ(page_action_view()->GetBackground()->color(),
+            page_action_view()->GetColorProvider()->GetColor(
+                kColorOmniboxIconBackground));
+
+  EXPECT_CALL(*model(), ShouldShowSuggestionChip())
+      .WillRepeatedly(Return(false));
+  page_action_view()->OnPageActionModelChanged(*model());
+
+  EXPECT_EQ(page_action_view()->GetBackground(), nullptr);
+}
+
+TEST_F(PageActionViewTest, DefaultBackgroundColorIsTransparent) {
+  EXPECT_CALL(*model(), GetOverrideBackgroundColor())
+      .WillRepeatedly(Return(std::nullopt));
+
+  page_action_view()->OnPageActionModelChanged(*model());
+
+  ASSERT_TRUE(page_action_view()->GetVisible());
+  ASSERT_TRUE(page_action_view()->IsChipVisible());
+
+  EXPECT_EQ(page_action_view()->GetBackgroundColor(), SK_ColorTRANSPARENT);
+}
+
+TEST_F(PageActionViewTest, OverrideBackgroundColorReturnsModelValue) {
+  EXPECT_CALL(*model(), GetOverrideBackgroundColor())
+      .WillRepeatedly(Return(std::optional<SkColor>(SK_ColorRED)));
+
+  page_action_view()->OnPageActionModelChanged(*model());
+
+  ASSERT_TRUE(page_action_view()->GetVisible());
+  ASSERT_TRUE(page_action_view()->IsChipVisible());
+
+  EXPECT_EQ(page_action_view()->GetBackgroundColor(), SK_ColorRED);
 }
 
 }  // namespace page_actions
