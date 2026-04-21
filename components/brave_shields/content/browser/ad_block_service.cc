@@ -262,8 +262,8 @@ void AdBlockService::OnResourcesLoaded(
         base::BindOnce(&AdBlockEngineWrapper::LoadDAT,
                        base::Unretained(engine_wrapper_.get()),
                        is_default_engine, std::move(*dat), std::move(storage)),
-        base::BindOnce(&AdBlockService::OnDATLoaded,
-                       weak_factory_.GetWeakPtr(), is_default_engine));
+        base::BindOnce(&AdBlockService::OnDATLoaded, weak_factory_.GetWeakPtr(),
+                       is_default_engine));
   } else {
     bool should_cache =
         base::FeatureList::IsEnabled(features::kAdblockDATCache);
