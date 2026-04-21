@@ -158,7 +158,7 @@ uint64_t SerpMetricsTimePeriodStorage::GetPeriodSumInTimeRange(
   const base::TimeDelta dst_offset = GetDstOffset();
   // We only record values between the specified time range (inclusive).
   return std::accumulate(
-      daily_values_.begin(), daily_values_.end(), 0ull,
+      daily_values_.begin(), daily_values_.end(), 0ULL,
       [start_time, end_time, dst_offset](uint64_t acc, const auto& u2) {
         uint64_t add = 0;
         // Check only last continious days.
