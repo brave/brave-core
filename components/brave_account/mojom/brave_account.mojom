@@ -195,6 +195,7 @@ union ResendConfirmationEmailError {
 // Note: do not assign explicit values to enumerators,
 // as kMaxValue is used to validate that all services are handled.
 enum Service {
+  kAccounts,
   kEmailAliases,
   kPremium,
   kSync,
@@ -265,7 +266,7 @@ interface Authentication {
   //                   to be sent to the server.
   // Returns `RegisterInitializeResult` on success, or
   //         `RegisterError` on failure.
-  RegisterInitialize(Service? initiatingService,
+  RegisterInitialize(Service initiatingService,
                      string email,
                      string blindedMessage)
     => result<RegisterInitializeResult, RegisterError>;
@@ -309,7 +310,7 @@ interface Authentication {
   //                  to be sent to the server.
   // Returns `LoginInitializeResult` on success, or
   //         `LoginError` on failure.
-  LoginInitialize(Service? initiatingService,
+  LoginInitialize(Service initiatingService,
                   string email,
                   string serializedKE1)
     => result<LoginInitializeResult, LoginError>;
