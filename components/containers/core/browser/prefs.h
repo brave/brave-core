@@ -9,6 +9,7 @@
 #include <string_view>
 #include <vector>
 
+#include "base/values.h"
 #include "brave/components/containers/core/mojom/containers.mojom-forward.h"
 
 class PrefService;
@@ -48,6 +49,10 @@ bool HasLocallyUsedContainerInPrefs(const PrefService& prefs,
 // Removes a locally used container snapshot.
 void RemoveLocallyUsedContainerFromPrefs(std::string_view id,
                                          PrefService& prefs);
+
+// Converts a list of containers to a base::ListValue.
+base::ListValue ConvertContainersToListValue(
+    const std::vector<mojom::ContainerPtr>& containers);
 
 }  // namespace containers
 

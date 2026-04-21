@@ -26,13 +26,43 @@ class ContainersPrefsTest : public testing::Test {
     RegisterProfilePrefs(prefs_.registry());
   }
 
+  static void ExpectDefaultContainer(const mojom::ContainerPtr& container,
+                                     const std::string& id,
+                                     const mojom::Icon icon) {
+    ASSERT_TRUE(container);
+    SCOPED_TRACE(container->id);
+    EXPECT_EQ(container->id, id);
+    EXPECT_EQ(container->icon, icon);
+    EXPECT_FALSE(container->name.empty());
+    EXPECT_NE(container->background_color, SK_ColorTRANSPARENT);
+  }
+
   base::test::ScopedFeatureList feature_list_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
 };
 
-TEST_F(ContainersPrefsTest, GetEmptyContainerList) {
+TEST_F(ContainersPrefsTest, RegisterStoresDefaultContainers) {
   auto containers = GetContainersFromPrefs(prefs_);
-  EXPECT_TRUE(containers.empty());
+  ASSERT_EQ(containers.size(), 4u);
+
+  ExpectDefaultContainer(containers[0], "personal", mojom::Icon::kPersonal);
+  ExpectDefaultContainer(containers[1], "work", mojom::Icon::kWork);
+  ExpectDefaultContainer(containers[2], "social", mojom::Icon::kSocial);
+  ExpectDefaultContainer(containers[3], "school", mojom::Icon::kSchool);
+}
+
+TEST_F(ContainersPrefsTest, ModifyDefaultContainers) {
+  auto containers = GetContainersFromPrefs(prefs_);
+  ASSERT_EQ(containers.size(), 4u);
+
+  containers.erase(containers.begin());
+  SetContainersToPrefs(containers, prefs_);
+
+  containers = GetContainersFromPrefs(prefs_);
+  ASSERT_EQ(containers.size(), 3u);
+  ExpectDefaultContainer(containers[0], "work", mojom::Icon::kWork);
+  ExpectDefaultContainer(containers[1], "social", mojom::Icon::kSocial);
+  ExpectDefaultContainer(containers[2], "school", mojom::Icon::kSchool);
 }
 
 TEST_F(ContainersPrefsTest, SetAndGetContainerList) {

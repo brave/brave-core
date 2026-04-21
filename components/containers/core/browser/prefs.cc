@@ -78,11 +78,8 @@ mojom::ContainerPtr GetContainerFromPrefs(const PrefService& prefs,
 void SetContainersToPrefs(const std::vector<mojom::ContainerPtr>& containers,
                           PrefService& prefs) {
   CHECK(base::FeatureList::IsEnabled(features::kContainers));
-  base::ListValue list;
-  for (const auto& container : containers) {
-    list.Append(ContainerToDict(container));
-  }
-  prefs.SetList(prefs::kContainersList, std::move(list));
+  prefs.SetList(prefs::kContainersList,
+                ConvertContainersToListValue(containers));
 }
 
 std::vector<mojom::ContainerPtr> GetLocallyUsedContainersFromPrefs(
@@ -135,6 +132,15 @@ void RemoveLocallyUsedContainerFromPrefs(std::string_view id,
 
   ScopedDictPrefUpdate update(&prefs, prefs::kLocallyUsedContainers);
   update->Remove(id);
+}
+
+base::ListValue ConvertContainersToListValue(
+    const std::vector<mojom::ContainerPtr>& containers) {
+  base::ListValue list;
+  for (const auto& container : containers) {
+    list.Append(ContainerToDict(container));
+  }
+  return list;
 }
 
 }  // namespace containers

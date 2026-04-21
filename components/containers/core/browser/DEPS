@@ -1,9 +1,13 @@
 include_rules = [
+    "+brave/ui/color/nala/nala_color_id.h",
+    "+components/grit/brave_components_strings.h",
     "+components/keyed_service/core",
     "+components/pref_registry",
     "+components/prefs",
     "+components/sync_preferences",
     "+components/user_prefs",
     "+third_party/re2",
-    "+third_party/skia/include"
+    "+third_party/skia/include",
+    "+ui/base",
+    "+ui/color",
 ]

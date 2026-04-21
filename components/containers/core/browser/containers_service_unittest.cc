@@ -10,8 +10,8 @@
 #include <utility>
 
 #include "base/containers/flat_set.h"
-#include "base/functional/callback.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/components/containers/core/browser/containers_test_utils.h"
 #include "brave/components/containers/core/browser/prefs.h"
 #include "brave/components/containers/core/browser/prefs_registration.h"
 #include "brave/components/containers/core/browser/unknown_container.h"
@@ -26,22 +26,6 @@ namespace containers {
 namespace {
 
 using testing::_;
-
-mojom::ContainerPtr MakeContainer(std::string id,
-                                  std::string name,
-                                  mojom::Icon icon = mojom::Icon::kDefault,
-                                  SkColor color = SK_ColorBLUE) {
-  return mojom::Container::New(std::move(id), std::move(name), icon, color);
-}
-
-void ExpectContainer(const mojom::ContainerPtr& container,
-                     const std::string& id,
-                     const std::string& name,
-                     const mojom::Icon& icon = mojom::Icon::kDefault,
-                     const SkColor& color = SK_ColorBLUE) {
-  ASSERT_TRUE(container);
-  EXPECT_THAT(*container, testing::FieldsAre(id, name, icon, color));
-}
 
 class MockContainersServiceDelegate : public ContainersService::Delegate {
  public:
