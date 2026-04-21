@@ -18,7 +18,7 @@ namespace brave_ads::database::table {
 
 using GetConfirmationTokensCallback =
     base::OnceCallback<void(bool success,
-                            ConfirmationTokenList confirmation_tokens)>;
+                            const ConfirmationTokenList& confirmation_tokens)>;
 
 // Persists unspent confirmation tokens that are pending assignment to an ad
 // confirmation. Tokens are loaded from this table on startup to populate the

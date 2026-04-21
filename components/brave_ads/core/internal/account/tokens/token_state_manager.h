@@ -57,11 +57,11 @@ class TokenStateManager final {
   void GetAllConfirmationTokensCallback(
       ResultCallback callback,
       bool success,
-      ConfirmationTokenList confirmation_tokens);
+      const ConfirmationTokenList& confirmation_tokens);
 
   void GetAllPaymentTokensCallback(ResultCallback callback,
                                    bool success,
-                                   PaymentTokenList payment_tokens);
+                                   const PaymentTokenList& payment_tokens);
 
   bool is_initialized_ = false;
 
