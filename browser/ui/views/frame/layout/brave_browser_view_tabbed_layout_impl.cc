@@ -325,6 +325,16 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateBraveVerticalTabStripLayout(
   // Compute the top edge based on the proposed bounds of bookmark/infobar/top
   // container, not the current view bounds.
   auto get_vertical_tabs_top = [&]() -> int {
+    // In focus mode the top chrome slides over the contents area rather than
+    // pushing it down. Anchor the vertical tab strip to the top of the
+    // contents bounds (already adjusted by `AdjustLayoutForTopReveal`) so it
+    // stays full-height and the revealed top views overlay it.
+    if (delegate().GetTopOverlayRevealFraction()) {
+      auto* contents_layout = layout.GetLayoutFor(views().contents_container);
+      CHECK(contents_layout);
+      return contents_layout->bounds.y();
+    }
+
     if (ShouldPushBookmarkBarForVerticalTabs()) {
       CHECK(views().bookmark_bar);
       auto* bookmark_layout = layout.GetLayoutFor(views().bookmark_bar);
@@ -479,11 +489,6 @@ void BraveBrowserViewTabbedLayoutImpl::AdjustLayoutForTopReveal(
   auto* contents_layout = layout.GetLayoutFor(views().contents_container);
   CHECK(contents_layout);
 
-  // TODO: Vertical tabs
-  // * Top needs to be adjusted upward by the same amount that we're moving
-  // top controls. But does the top overlay vertical tabs or the other way
-  // around? Probably top overlays vertical tabs.
-  // * Vertical tabs title bar should not be used.
   auto* top_layout = layout.GetLayoutFor(views().top_container);
   auto* tab_layout =
       layout.GetLayoutFor(views().horizontal_tab_strip_region_view);

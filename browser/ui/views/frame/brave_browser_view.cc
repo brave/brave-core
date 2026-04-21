@@ -765,7 +765,19 @@ void BraveBrowserView::AddedToWidget() {
 
   UpdateWebViewRoundedCorners();
 
+  int vertical_tabs_insertion_index = -1;
+
   if (auto* controller = browser()->GetFeatures().focus_mode_controller()) {
+    focus_mode_observation_.Observe(controller);
+
+    if (base::FeatureList::IsEnabled(features::kBraveFocusModeTitleBar)) {
+      focus_mode_title_bar_view_ =
+          AddChildView(std::make_unique<FocusModeTitleBarView>());
+      focus_mode_title_bar_view_->SetVisible(false);
+      GetBrowserViewLayout()->set_focus_mode_title_bar(
+          focus_mode_title_bar_view_);
+    }
+
     top_container_background_view_ =
         AddChildView(std::make_unique<TopContainerBackground>());
 
@@ -775,14 +787,16 @@ void BraveBrowserView::AddedToWidget() {
     UpdateTopContainerBackgroundColor();
 
     // Move revealable top views after the top background view so that they
-    // paint on top of the contents view, the top container background and all
+    // paint on top of the contents view, the top container background, and all
     // other views.
     ReorderChildView(horizontal_tab_strip_region_view_, -1);
     ReorderChildView(top_container(), -1);
+    EnsureFindBarHostViewIsLastChild();
 
-    // TODO: Do we need to call EnsureFindBarHostViewIsLastChild?
-
-    focus_mode_observation_.Observe(controller);
+    // The vertical tab region view should be placed before the top container
+    // background.
+    vertical_tabs_insertion_index =
+        GetIndexOf(top_container_background_view_).value();
 
     top_reveal_controller_ = std::make_unique<EdgeRevealController>(
         EdgeRevealController::Edge::kTop, GetWidget());
@@ -791,21 +805,14 @@ void BraveBrowserView::AddedToWidget() {
     top_reveal_controller_->AddRevealableView(horizontal_tab_strip_region_view_,
                                               {.paint_to_layer = true});
     top_reveal_controller_->AddObserver(this);
-
-    if (base::FeatureList::IsEnabled(features::kBraveFocusModeTitleBar)) {
-      focus_mode_title_bar_view_ =
-          AddChildView(std::make_unique<FocusModeTitleBarView>());
-      focus_mode_title_bar_view_->SetVisible(false);
-      GetBrowserViewLayout()->set_focus_mode_title_bar(
-          focus_mode_title_bar_view_);
-    }
   }
 
   if (vertical_tab_strip_host_view_) {
     if (base::FeatureList::IsEnabled(tabs::kBraveVerticalTabStripEmbedded)) {
-      vertical_tab_strip_widget_delegate_view_ = AddChildView(
+      vertical_tab_strip_widget_delegate_view_ = AddChildViewAt(
           VerticalTabStripWidgetDelegateView::CreateEmbeddedInBrowserView(
-              this, vertical_tab_strip_host_view_));
+              this, vertical_tab_strip_host_view_),
+          vertical_tabs_insertion_index);
       EnsureFindBarHostViewIsLastChild();
     } else {
       vertical_tab_strip_widget_ = VerticalTabStripWidgetDelegateView::Create(
