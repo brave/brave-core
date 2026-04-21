@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
+import Icon from '@brave/leo/react/icon'
 import classnames from '$web-common/classnames'
 import styles from './style.module.scss'
 import { useMemo } from 'react'
@@ -24,6 +25,7 @@ export interface Props<T> {
   onAutoSelect?: () => void
 
   onResultsChanged?: (results: { category: string; entries: T[] }[]) => void
+  isFullWidth?: boolean
 
   // Note: undefined means no match.
   matchesQuery: (
@@ -33,6 +35,51 @@ export interface Props<T> {
   ) => Match | undefined
 
   children: (entry: T, category?: string, match?: Match) => React.ReactNode
+}
+
+function FilterMenuCategoryGroup<T>(props: {
+  entries: T[]
+  lookup: Map<T, Match | undefined>
+  renderEntry: Props<T>['children']
+  highlightFirstItem: boolean
+  categoryLabel?: string
+}) {
+  const [isExpanded, setIsExpanded] = React.useState(true)
+
+  return (
+    <>
+      {props.categoryLabel && (
+        <button
+          className={styles.menuSectionTitle}
+          onClick={(e) => {
+            e.stopPropagation()
+            e.preventDefault()
+            setIsExpanded((open) => !open)
+          }}
+        >
+          {props.categoryLabel}
+          <Icon name={isExpanded ? 'carat-up' : 'carat-down'} />
+        </button>
+      )}
+      <leo-menu-section
+        class={classnames(styles.categoryEntriesWrap, {
+          [styles.categoryEntriesWrapExpanded]:
+            !props.categoryLabel || isExpanded,
+          [styles.highlightFirstItem]: props.highlightFirstItem,
+        })}
+      >
+        {props.entries.map((entry, i) => (
+          <React.Fragment key={i}>
+            {props.renderEntry(
+              entry,
+              props.categoryLabel,
+              props.lookup.get(entry),
+            )}
+          </React.Fragment>
+        ))}
+      </leo-menu-section>
+    </>
+  )
 }
 
 export function MatchedText(props: { text: string; match?: Match }) {
@@ -97,6 +144,8 @@ export default function FilterMenu<T>(props: Props<T>) {
     () => !filtered.some((g) => g.entries.length !== 0),
     [filtered],
   )
+  const firstNamedCategoryIndex = filtered.findIndex((g) => g.category)
+  const firstFlatCategoryIndex = filtered.findIndex((g) => !g.category)
   const ref = React.useRef<HTMLElement>(null)
 
   React.useEffect(() => {
@@ -162,8 +211,7 @@ export default function FilterMenu<T>(props: Props<T>) {
       ref={ref}
       className={classnames({
         [styles.buttonMenu]: true,
-        // If we're filtering the list, highlight the first item
-        [styles.highlightFirstItem]: props.query !== null,
+        [styles.fullWidth]: props.isFullWidth,
       })}
       isOpen={props.isOpen}
       onClose={() => {
@@ -173,18 +221,25 @@ export default function FilterMenu<T>(props: Props<T>) {
       widthIsMaxWidth
     >
       {props.header}
-      {filtered.map((category) => {
+      {filtered.map((category, categoryIndex) => {
+        // Idle row tint (see .highlightFirstItem): first named section when any
+        // exist; otherwise the first flat (empty title) block only.
+        const highlightFirstItem =
+          props.query !== null
+          && (category.category
+            ? categoryIndex === firstNamedCategoryIndex
+            : firstNamedCategoryIndex < 0
+              && categoryIndex === firstFlatCategoryIndex)
+
         return (
-          <React.Fragment key={category.category}>
-            {category.category && (
-              <div className={styles.menuSectionTitle}>{category.category}</div>
-            )}
-            {category.entries.map((entry, i) => (
-              <React.Fragment key={i}>
-                {props.children(entry, category.category, lookup.get(entry))}
-              </React.Fragment>
-            ))}
-          </React.Fragment>
+          <FilterMenuCategoryGroup
+            key={category.category || `filter-section-${categoryIndex}`}
+            categoryLabel={category.category}
+            entries={category.entries}
+            lookup={lookup}
+            renderEntry={props.children}
+            highlightFirstItem={highlightFirstItem}
+          />
         )
       })}
       {noMatches && props.noMatchesMessage}

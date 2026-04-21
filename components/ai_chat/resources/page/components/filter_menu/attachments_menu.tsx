@@ -162,6 +162,7 @@ export default function TabsMenu() {
         const hasMatches = results.some((result) => result.entries.length > 0)
         setIsOpen(query !== null && hasMatches)
       }}
+      isFullWidth
     >
       {(item, category, match) => (
         <leo-menu-item
