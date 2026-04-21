@@ -198,18 +198,23 @@ void AdBlockComponentServiceManager::OnAdBlockOnlyModePrefChanged() {
 void AdBlockComponentServiceManager::StartRegionalServices() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  // Mark the gate providers as initialized now that all component providers
-  // have been registered. This unblocks filter set loading.
-  // This happens first so it applies even for early returns below and it's
-  // ok because nothing else can check the intialized state until after this
-  // method completes. The gates are only created when the DAT cache feature
-  // is enabled, so they may be null here.
-  if (default_gate_) {
-    default_gate_->SetInitialized();
-  }
-  if (additional_gate_) {
-    additional_gate_->SetInitialized();
-  }
+  // Mark the gate providers as initialized on every exit path, but only after
+  // any regional component providers below are registered. Running via
+  // ScopedClosureRunner ensures gates fire even on early returns (no local
+  // state, empty catalog) so filter set loading is unblocked in all cases.
+  // Gates are only created when the DAT cache feature is enabled, so they may
+  // be null here.
+  base::ScopedClosureRunner initialize_gates(base::BindOnce(
+      [](ComponentProvidersGate* default_gate,
+         ComponentProvidersGate* additional_gate) {
+        if (default_gate) {
+          default_gate->SetInitialized();
+        }
+        if (additional_gate) {
+          additional_gate->SetInitialized();
+        }
+      },
+      default_gate_.get(), additional_gate_.get()));
 
   if (!local_state_) {
     return;
