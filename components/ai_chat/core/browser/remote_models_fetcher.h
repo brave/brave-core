@@ -49,8 +49,7 @@ class RemoteModelsFetcher {
  private:
   std::vector<mojom::ModelPtr> ParseModelsFromJSON(const base::Value& json);
 
-  void OnFetchComplete(const std::string& original_url,
-                       FetchModelsCallback callback,
+  void OnFetchComplete(FetchModelsCallback callback,
                        api_request_helper::APIRequestResult result);
 
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;

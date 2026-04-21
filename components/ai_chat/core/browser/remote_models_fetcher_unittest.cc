@@ -7,13 +7,12 @@
 
 #include <memory>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
-#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -35,6 +34,7 @@ constexpr char kValidModelsJSON[] = R"({
       "supports_tools": false,
       "is_suggested_model": true,
       "is_near_model": false,
+      "supported_capabilities": ["chat"],
       "options": {
         "type": "leo",
         "name": "test-model-1-api",
@@ -53,6 +53,7 @@ constexpr char kValidModelsJSON[] = R"({
       "supports_tools": true,
       "is_suggested_model": false,
       "is_near_model": false,
+      "supported_capabilities": ["chat", "content_agent"],
       "options": {
         "type": "leo",
         "name": "test-model-2-api",
@@ -63,6 +64,25 @@ constexpr char kValidModelsJSON[] = R"({
         "max_associated_content_length": 150000,
         "long_conversation_warning_character_limit": 300000
       }
+    },
+    {
+      "key": "test-model-3",
+      "display_name": "Test Model 3",
+      "vision_support": false,
+      "supports_tools": false,
+      "is_suggested_model": false,
+      "is_near_model": false,
+      "supported_capabilities": ["chat"],
+      "options": {
+        "type": "leo",
+        "name": "test-model-3-api",
+        "display_maker": "Test Provider",
+        "description": "A summary model",
+        "category": "summary",
+        "access": "basic",
+        "max_associated_content_length": 100000,
+        "long_conversation_warning_character_limit": 200000
+      }
     }
   ]
 })";
@@ -72,16 +92,89 @@ constexpr char kInvalidJSON[] = "{ invalid json";
 constexpr char kMissingKeyJSON[] = R"({
   "models": [
     {
-      "display_name": "Missing Key Model",
-      "vision_support": true,
+      "display_name": "Test Model",
+      "vision_support": false,
       "supports_tools": false,
-      "is_suggested_model": true,
+      "is_suggested_model": false,
       "is_near_model": false,
       "options": {
         "type": "leo",
-        "name": "missing-key-model",
+        "name": "test-model-api",
         "category": "chat",
         "access": "basic",
+        "max_associated_content_length": 100000,
+        "long_conversation_warning_character_limit": 200000
+      }
+    }
+  ]
+})";
+
+constexpr char kMissingDisplayNameJSON[] = R"({
+  "models": [
+    {
+      "key": "test-model",
+      "vision_support": false,
+      "supports_tools": false,
+      "is_suggested_model": false,
+      "is_near_model": false,
+      "options": {
+        "type": "leo",
+        "name": "test-model-api",
+        "category": "chat",
+        "access": "basic",
+        "max_associated_content_length": 100000,
+        "long_conversation_warning_character_limit": 200000
+      }
+    }
+  ]
+})";
+
+constexpr char kMissingOptionsJSON[] = R"({
+  "models": [
+    {
+      "key": "test-model",
+      "display_name": "Test Model",
+      "vision_support": false,
+      "supports_tools": false,
+      "is_suggested_model": false,
+      "is_near_model": false
+    }
+  ]
+})";
+
+constexpr char kMissingNameJSON[] = R"({
+  "models": [
+    {
+      "key": "test-model",
+      "display_name": "Test Model",
+      "vision_support": false,
+      "supports_tools": false,
+      "is_suggested_model": false,
+      "is_near_model": false,
+      "options": {
+        "type": "leo",
+        "category": "chat",
+        "access": "basic",
+        "max_associated_content_length": 100000,
+        "long_conversation_warning_character_limit": 200000
+      }
+    }
+  ]
+})";
+
+constexpr char kMissingAccessJSON[] = R"({
+  "models": [
+    {
+      "key": "test-model",
+      "display_name": "Test Model",
+      "vision_support": false,
+      "supports_tools": false,
+      "is_suggested_model": false,
+      "is_near_model": false,
+      "options": {
+        "type": "leo",
+        "name": "test-model-api",
+        "category": "chat",
         "max_associated_content_length": 100000,
         "long_conversation_warning_character_limit": 200000
       }
@@ -172,217 +265,208 @@ class RemoteModelsFetcherTest : public testing::Test {
 TEST_F(RemoteModelsFetcherTest, SuccessfulFetch) {
   SimulateSuccessfulFetch(kValidModelsJSON);
 
-  bool callback_called = false;
-  std::vector<mojom::ModelPtr> fetched_models;
+  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
+  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  const auto& fetched_models = future.Get();
 
-  fetcher_->FetchModels(
-      kTestEndpoint, base::BindOnce(
-                         [](bool* called, std::vector<mojom::ModelPtr>* models,
-                            std::vector<mojom::ModelPtr> result) {
-                           *called = true;
-                           *models = std::move(result);
-                         },
-                         &callback_called, &fetched_models));
-
-  EXPECT_TRUE(base::test::RunUntil([&]() { return callback_called; }));
-  ASSERT_EQ(2u, fetched_models.size());
+  ASSERT_EQ(3u, fetched_models.size());
 
   EXPECT_EQ("test-model-1", fetched_models[0]->key);
   EXPECT_EQ("Test Model 1", fetched_models[0]->display_name);
   EXPECT_TRUE(fetched_models[0]->vision_support);
   EXPECT_FALSE(fetched_models[0]->supports_tools);
+  EXPECT_FALSE(fetched_models[0]->audio_support);
+  EXPECT_FALSE(fetched_models[0]->video_support);
+  EXPECT_TRUE(fetched_models[0]->is_suggested_model);
+  EXPECT_FALSE(fetched_models[0]->is_near_model);
+  ASSERT_TRUE(fetched_models[0]->options->is_leo_model_options());
+  auto& opts1 = fetched_models[0]->options->get_leo_model_options();
+  EXPECT_EQ("test-model-1-api", opts1->name);
+  EXPECT_EQ("Test Provider", opts1->display_maker);
+  EXPECT_EQ("A basic test model", opts1->description);
+  EXPECT_EQ(mojom::ModelCategory::CHAT, opts1->category);
+  EXPECT_EQ(mojom::ModelAccess::BASIC, opts1->access);
+  EXPECT_EQ(100000u, opts1->max_associated_content_length);
+  EXPECT_EQ(200000u, opts1->long_conversation_warning_character_limit);
+  ASSERT_EQ(1u, fetched_models[0]->supported_capabilities.size());
+  EXPECT_EQ(mojom::ConversationCapability::CHAT,
+            fetched_models[0]->supported_capabilities[0]);
 
   EXPECT_EQ("test-model-2", fetched_models[1]->key);
   EXPECT_EQ("Test Model 2", fetched_models[1]->display_name);
   EXPECT_FALSE(fetched_models[1]->vision_support);
   EXPECT_TRUE(fetched_models[1]->supports_tools);
-}
+  EXPECT_FALSE(fetched_models[1]->audio_support);
+  EXPECT_FALSE(fetched_models[1]->video_support);
+  EXPECT_FALSE(fetched_models[1]->is_suggested_model);
+  EXPECT_FALSE(fetched_models[1]->is_near_model);
+  ASSERT_TRUE(fetched_models[1]->options->is_leo_model_options());
+  auto& opts2 = fetched_models[1]->options->get_leo_model_options();
+  EXPECT_EQ("test-model-2-api", opts2->name);
+  EXPECT_EQ("Test Provider", opts2->display_maker);
+  EXPECT_EQ("A premium test model", opts2->description);
+  EXPECT_EQ(mojom::ModelCategory::CHAT, opts2->category);
+  EXPECT_EQ(mojom::ModelAccess::PREMIUM, opts2->access);
+  EXPECT_EQ(150000u, opts2->max_associated_content_length);
+  EXPECT_EQ(300000u, opts2->long_conversation_warning_character_limit);
+  ASSERT_EQ(2u, fetched_models[1]->supported_capabilities.size());
+  EXPECT_EQ(mojom::ConversationCapability::CHAT,
+            fetched_models[1]->supported_capabilities[0]);
+  EXPECT_EQ(mojom::ConversationCapability::CONTENT_AGENT,
+            fetched_models[1]->supported_capabilities[1]);
 
-TEST_F(RemoteModelsFetcherTest, HTTPError404) {
-  SimulateHTTPError(404);
-
-  bool callback_called = false;
-  std::vector<mojom::ModelPtr> fetched_models;
-
-  fetcher_->FetchModels(
-      kTestEndpoint, base::BindOnce(
-                         [](bool* called, std::vector<mojom::ModelPtr>* models,
-                            std::vector<mojom::ModelPtr> result) {
-                           *called = true;
-                           *models = std::move(result);
-                         },
-                         &callback_called, &fetched_models));
-
-  EXPECT_TRUE(base::test::RunUntil([&]() { return callback_called; }));
-  EXPECT_TRUE(fetched_models.empty());
+  EXPECT_EQ("test-model-3", fetched_models[2]->key);
+  EXPECT_EQ("Test Model 3", fetched_models[2]->display_name);
+  ASSERT_TRUE(fetched_models[2]->options->is_leo_model_options());
+  auto& opts3 = fetched_models[2]->options->get_leo_model_options();
+  EXPECT_EQ(mojom::ModelCategory::SUMMARY, opts3->category);
+  EXPECT_EQ(mojom::ModelAccess::BASIC, opts3->access);
 }
 
 TEST_F(RemoteModelsFetcherTest, HTTPError500) {
   SimulateHTTPError(500);
 
-  bool callback_called = false;
-  std::vector<mojom::ModelPtr> fetched_models;
-
-  fetcher_->FetchModels(
-      kTestEndpoint, base::BindOnce(
-                         [](bool* called, std::vector<mojom::ModelPtr>* models,
-                            std::vector<mojom::ModelPtr> result) {
-                           *called = true;
-                           *models = std::move(result);
-                         },
-                         &callback_called, &fetched_models));
-
-  EXPECT_TRUE(base::test::RunUntil([&]() { return callback_called; }));
-  EXPECT_TRUE(fetched_models.empty());
+  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
+  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  EXPECT_TRUE(future.Get().empty());
 }
 
 TEST_F(RemoteModelsFetcherTest, NetworkError) {
   SimulateNetworkError();
 
-  bool callback_called = false;
-  std::vector<mojom::ModelPtr> fetched_models;
-
-  fetcher_->FetchModels(
-      kTestEndpoint, base::BindOnce(
-                         [](bool* called, std::vector<mojom::ModelPtr>* models,
-                            std::vector<mojom::ModelPtr> result) {
-                           *called = true;
-                           *models = std::move(result);
-                         },
-                         &callback_called, &fetched_models));
-
-  EXPECT_TRUE(base::test::RunUntil([&]() { return callback_called; }));
-  EXPECT_TRUE(fetched_models.empty());
+  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
+  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  EXPECT_TRUE(future.Get().empty());
 }
 
 TEST_F(RemoteModelsFetcherTest, InvalidJSON) {
   SimulateSuccessfulFetch(kInvalidJSON);
 
-  bool callback_called = false;
-  std::vector<mojom::ModelPtr> fetched_models;
-
-  fetcher_->FetchModels(
-      kTestEndpoint, base::BindOnce(
-                         [](bool* called, std::vector<mojom::ModelPtr>* models,
-                            std::vector<mojom::ModelPtr> result) {
-                           *called = true;
-                           *models = std::move(result);
-                         },
-                         &callback_called, &fetched_models));
-
-  EXPECT_TRUE(base::test::RunUntil([&]() { return callback_called; }));
-  EXPECT_TRUE(fetched_models.empty());
+  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
+  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  EXPECT_TRUE(future.Get().empty());
 }
 
-TEST_F(RemoteModelsFetcherTest, MissingRequiredField) {
+TEST_F(RemoteModelsFetcherTest, ValidModelsReturnedWhenSomeFail) {
+  constexpr char kMixedModelsJSON[] = R"({
+    "models": [
+      {
+        "key": "valid-model",
+        "display_name": "Valid Model",
+        "vision_support": false,
+        "supports_tools": false,
+        "is_suggested_model": false,
+        "is_near_model": false,
+        "options": {
+          "type": "leo",
+          "name": "valid-model-api",
+          "display_maker": "Test Provider",
+          "category": "chat",
+          "access": "basic",
+          "max_associated_content_length": 100000,
+          "long_conversation_warning_character_limit": 200000
+        }
+      },
+      {
+        "display_name": "Invalid Model - Missing Key",
+        "vision_support": false,
+        "supports_tools": false,
+        "is_suggested_model": false,
+        "is_near_model": false,
+        "options": {
+          "type": "leo",
+          "name": "invalid-model-api",
+          "category": "chat",
+          "access": "basic",
+          "max_associated_content_length": 100000,
+          "long_conversation_warning_character_limit": 200000
+        }
+      }
+    ]
+  })";
+
+  SimulateSuccessfulFetch(kMixedModelsJSON);
+
+  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
+  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  const auto& fetched_models = future.Get();
+
+  ASSERT_EQ(1u, fetched_models.size());
+  EXPECT_EQ("valid-model", fetched_models[0]->key);
+}
+
+TEST_F(RemoteModelsFetcherTest, MissingKey) {
   SimulateSuccessfulFetch(kMissingKeyJSON);
 
-  bool callback_called = false;
-  std::vector<mojom::ModelPtr> fetched_models;
+  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
+  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  EXPECT_TRUE(future.Get().empty());
+}
 
-  fetcher_->FetchModels(
-      kTestEndpoint, base::BindOnce(
-                         [](bool* called, std::vector<mojom::ModelPtr>* models,
-                            std::vector<mojom::ModelPtr> result) {
-                           *called = true;
-                           *models = std::move(result);
-                         },
-                         &callback_called, &fetched_models));
+TEST_F(RemoteModelsFetcherTest, MissingDisplayName) {
+  SimulateSuccessfulFetch(kMissingDisplayNameJSON);
 
-  EXPECT_TRUE(base::test::RunUntil([&]() { return callback_called; }));
-  EXPECT_TRUE(fetched_models.empty());
+  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
+  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  EXPECT_TRUE(future.Get().empty());
+}
+
+TEST_F(RemoteModelsFetcherTest, MissingOptions) {
+  SimulateSuccessfulFetch(kMissingOptionsJSON);
+
+  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
+  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  EXPECT_TRUE(future.Get().empty());
+}
+
+TEST_F(RemoteModelsFetcherTest, MissingName) {
+  SimulateSuccessfulFetch(kMissingNameJSON);
+
+  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
+  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  EXPECT_TRUE(future.Get().empty());
+}
+
+TEST_F(RemoteModelsFetcherTest, MissingAccess) {
+  SimulateSuccessfulFetch(kMissingAccessJSON);
+
+  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
+  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  EXPECT_TRUE(future.Get().empty());
 }
 
 TEST_F(RemoteModelsFetcherTest, InvalidModelType) {
   SimulateSuccessfulFetch(kInvalidTypeJSON);
 
-  bool callback_called = false;
-  std::vector<mojom::ModelPtr> fetched_models;
-
-  fetcher_->FetchModels(
-      kTestEndpoint, base::BindOnce(
-                         [](bool* called, std::vector<mojom::ModelPtr>* models,
-                            std::vector<mojom::ModelPtr> result) {
-                           *called = true;
-                           *models = std::move(result);
-                         },
-                         &callback_called, &fetched_models));
-
-  EXPECT_TRUE(base::test::RunUntil([&]() { return callback_called; }));
-  EXPECT_TRUE(fetched_models.empty());
+  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
+  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  EXPECT_TRUE(future.Get().empty());
 }
 
 TEST_F(RemoteModelsFetcherTest, RejectsHTTPEndpoint) {
-  bool callback_called = false;
-  std::vector<mojom::ModelPtr> fetched_models;
-
-  fetcher_->FetchModels(
-      "http://example.com/models",
-      base::BindOnce(
-          [](bool* called, std::vector<mojom::ModelPtr>* models,
-             std::vector<mojom::ModelPtr> result) {
-            *called = true;
-            *models = std::move(result);
-          },
-          &callback_called, &fetched_models));
-
-  EXPECT_TRUE(base::test::RunUntil([&]() { return callback_called; }));
-  EXPECT_TRUE(fetched_models.empty());
+  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
+  fetcher_->FetchModels("http://example.com/models", future.GetCallback());
+  EXPECT_TRUE(future.Get().empty());
 }
 
 TEST_F(RemoteModelsFetcherTest, RejectsHTTPForLocalhost) {
-  bool callback_called = false;
-  std::vector<mojom::ModelPtr> fetched_models;
-
-  fetcher_->FetchModels(
-      "http://localhost:8080/models",
-      base::BindOnce(
-          [](bool* called, std::vector<mojom::ModelPtr>* models,
-             std::vector<mojom::ModelPtr> result) {
-            *called = true;
-            *models = std::move(result);
-          },
-          &callback_called, &fetched_models));
-
-  EXPECT_TRUE(base::test::RunUntil([&]() { return callback_called; }));
-  EXPECT_TRUE(fetched_models.empty());
+  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
+  fetcher_->FetchModels("http://localhost:8080/models", future.GetCallback());
+  EXPECT_TRUE(future.Get().empty());
 }
 
 TEST_F(RemoteModelsFetcherTest, RejectsInvalidURL) {
-  bool callback_called = false;
-  std::vector<mojom::ModelPtr> fetched_models;
-
-  fetcher_->FetchModels(
-      "not-a-valid-url",
-      base::BindOnce(
-          [](bool* called, std::vector<mojom::ModelPtr>* models,
-             std::vector<mojom::ModelPtr> result) {
-            *called = true;
-            *models = std::move(result);
-          },
-          &callback_called, &fetched_models));
-
-  EXPECT_TRUE(base::test::RunUntil([&]() { return callback_called; }));
-  EXPECT_TRUE(fetched_models.empty());
+  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
+  fetcher_->FetchModels("not-a-valid-url", future.GetCallback());
+  EXPECT_TRUE(future.Get().empty());
 }
 
 TEST_F(RemoteModelsFetcherTest, EmptyResponse) {
   SimulateSuccessfulFetch(R"({"models": []})");
 
-  bool callback_called = false;
-  std::vector<mojom::ModelPtr> fetched_models;
-
-  fetcher_->FetchModels(
-      kTestEndpoint, base::BindOnce(
-                         [](bool* called, std::vector<mojom::ModelPtr>* models,
-                            std::vector<mojom::ModelPtr> result) {
-                           *called = true;
-                           *models = std::move(result);
-                         },
-                         &callback_called, &fetched_models));
-
-  EXPECT_TRUE(base::test::RunUntil([&]() { return callback_called; }));
-  EXPECT_TRUE(fetched_models.empty());
+  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
+  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  EXPECT_TRUE(future.Get().empty());
 }
 
 TEST_F(RemoteModelsFetcherTest, RejectsUnrecognizedAccessLevel) {
@@ -410,65 +494,9 @@ TEST_F(RemoteModelsFetcherTest, RejectsUnrecognizedAccessLevel) {
 
   SimulateSuccessfulFetch(kUnknownAccessJSON);
 
-  bool callback_called = false;
-  std::vector<mojom::ModelPtr> fetched_models;
-
-  fetcher_->FetchModels(
-      kTestEndpoint, base::BindOnce(
-                         [](bool* called, std::vector<mojom::ModelPtr>* models,
-                            std::vector<mojom::ModelPtr> result) {
-                           *called = true;
-                           *models = std::move(result);
-                         },
-                         &callback_called, &fetched_models));
-
-  EXPECT_TRUE(base::test::RunUntil([&]() { return callback_called; }));
-  EXPECT_TRUE(fetched_models.empty());
-}
-
-TEST_F(RemoteModelsFetcherTest, SummaryCategory) {
-  constexpr char kSummaryModelJSON[] = R"({
-    "models": [
-      {
-        "key": "summary-model",
-        "display_name": "Summary Model",
-        "vision_support": false,
-        "supports_tools": false,
-        "is_suggested_model": false,
-        "is_near_model": false,
-        "options": {
-          "type": "leo",
-          "name": "summary-model-api",
-          "display_maker": "Test Provider",
-          "description": "A summary model",
-          "category": "summary",
-          "access": "basic",
-          "max_associated_content_length": 100000,
-          "long_conversation_warning_character_limit": 200000
-        }
-      }
-    ]
-  })";
-
-  SimulateSuccessfulFetch(kSummaryModelJSON);
-
-  bool callback_called = false;
-  std::vector<mojom::ModelPtr> fetched_models;
-
-  fetcher_->FetchModels(
-      kTestEndpoint, base::BindOnce(
-                         [](bool* called, std::vector<mojom::ModelPtr>* models,
-                            std::vector<mojom::ModelPtr> result) {
-                           *called = true;
-                           *models = std::move(result);
-                         },
-                         &callback_called, &fetched_models));
-
-  EXPECT_TRUE(base::test::RunUntil([&]() { return callback_called; }));
-  ASSERT_EQ(1u, fetched_models.size());
-  ASSERT_TRUE(fetched_models[0]->options->is_leo_model_options());
-  EXPECT_EQ(fetched_models[0]->options->get_leo_model_options()->category,
-            mojom::ModelCategory::SUMMARY);
+  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
+  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  EXPECT_TRUE(future.Get().empty());
 }
 
 TEST_F(RemoteModelsFetcherTest, MissingNumericFieldsGetTierDefaults) {
@@ -509,19 +537,10 @@ TEST_F(RemoteModelsFetcherTest, MissingNumericFieldsGetTierDefaults) {
 
   SimulateSuccessfulFetch(kMissingNumericFieldsJSON);
 
-  bool callback_called = false;
-  std::vector<mojom::ModelPtr> fetched_models;
+  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
+  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  const auto& fetched_models = future.Get();
 
-  fetcher_->FetchModels(
-      kTestEndpoint, base::BindOnce(
-                         [](bool* called, std::vector<mojom::ModelPtr>* models,
-                            std::vector<mojom::ModelPtr> result) {
-                           *called = true;
-                           *models = std::move(result);
-                         },
-                         &callback_called, &fetched_models));
-
-  EXPECT_TRUE(base::test::RunUntil([&]() { return callback_called; }));
   ASSERT_EQ(2u, fetched_models.size());
 
   ASSERT_TRUE(fetched_models[0]->options->is_leo_model_options());
@@ -533,6 +552,136 @@ TEST_F(RemoteModelsFetcherTest, MissingNumericFieldsGetTierDefaults) {
   auto& premium_opts = fetched_models[1]->options->get_leo_model_options();
   EXPECT_EQ(premium_opts->max_associated_content_length, 90000u);
   EXPECT_EQ(premium_opts->long_conversation_warning_character_limit, 160000u);
+}
+
+TEST_F(RemoteModelsFetcherTest, ParsesBareListResponse) {
+  constexpr char kBareListJSON[] = R"([
+    {
+      "key": "test-model-1",
+      "display_name": "Test Model 1",
+      "vision_support": true,
+      "supports_tools": false,
+      "is_suggested_model": true,
+      "is_near_model": false,
+      "supported_capabilities": ["chat"],
+      "options": {
+        "type": "leo",
+        "name": "test-model-1-api",
+        "display_maker": "Test Provider",
+        "description": "A basic test model",
+        "category": "chat",
+        "access": "basic",
+        "max_associated_content_length": 100000,
+        "long_conversation_warning_character_limit": 200000
+      }
+    }
+  ])";
+
+  SimulateSuccessfulFetch(kBareListJSON);
+
+  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
+  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  const auto& fetched_models = future.Get();
+
+  ASSERT_EQ(1u, fetched_models.size());
+  EXPECT_EQ("test-model-1", fetched_models[0]->key);
+  EXPECT_EQ("Test Model 1", fetched_models[0]->display_name);
+}
+
+TEST_F(RemoteModelsFetcherTest, SkipsUnknownCapabilities) {
+  constexpr char kUnknownCapabilityJSON[] = R"({
+    "models": [
+      {
+        "key": "test-model",
+        "display_name": "Test Model",
+        "vision_support": false,
+        "supports_tools": false,
+        "is_suggested_model": false,
+        "is_near_model": false,
+        "supported_capabilities": ["chat", "unknown_capability"],
+        "options": {
+          "type": "leo",
+          "name": "test-model-api",
+          "display_maker": "Test Provider",
+          "category": "chat",
+          "access": "basic",
+          "max_associated_content_length": 100000,
+          "long_conversation_warning_character_limit": 200000
+        }
+      }
+    ]
+  })";
+
+  SimulateSuccessfulFetch(kUnknownCapabilityJSON);
+
+  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
+  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  const auto& fetched_models = future.Get();
+
+  ASSERT_EQ(1u, fetched_models.size());
+  ASSERT_EQ(1u, fetched_models[0]->supported_capabilities.size());
+  EXPECT_EQ(mojom::ConversationCapability::CHAT,
+            fetched_models[0]->supported_capabilities[0]);
+}
+
+TEST_F(RemoteModelsFetcherTest, RejectsNegativeMaxContentLength) {
+  constexpr char kNegativeMaxContentLengthJSON[] = R"({
+    "models": [
+      {
+        "key": "bad-model",
+        "display_name": "Bad Model",
+        "vision_support": false,
+        "supports_tools": false,
+        "is_suggested_model": false,
+        "is_near_model": false,
+        "options": {
+          "type": "leo",
+          "name": "bad-model-api",
+          "display_maker": "Test Provider",
+          "category": "chat",
+          "access": "basic",
+          "max_associated_content_length": -1,
+          "long_conversation_warning_character_limit": 200000
+        }
+      }
+    ]
+  })";
+
+  SimulateSuccessfulFetch(kNegativeMaxContentLengthJSON);
+
+  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
+  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  EXPECT_TRUE(future.Get().empty());
+}
+
+TEST_F(RemoteModelsFetcherTest, RejectsNegativeWarningLimit) {
+  constexpr char kNegativeWarningLimitJSON[] = R"({
+    "models": [
+      {
+        "key": "bad-model",
+        "display_name": "Bad Model",
+        "vision_support": false,
+        "supports_tools": false,
+        "is_suggested_model": false,
+        "is_near_model": false,
+        "options": {
+          "type": "leo",
+          "name": "bad-model-api",
+          "display_maker": "Test Provider",
+          "category": "chat",
+          "access": "basic",
+          "max_associated_content_length": 100000,
+          "long_conversation_warning_character_limit": -1
+        }
+      }
+    ]
+  })";
+
+  SimulateSuccessfulFetch(kNegativeWarningLimitJSON);
+
+  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
+  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  EXPECT_TRUE(future.Get().empty());
 }
 
 }  // namespace ai_chat
