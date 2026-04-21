@@ -376,19 +376,27 @@ void BraveTab::LayoutSmallTabAccentIcon() {
 #if BUILDFLAG(ENABLE_CONTAINERS)
 void BraveTab::MaybeObserveContainerChanges() {
   if (!ShouldPaintTabAccent()) {
+    containers_service_observation_.Reset();
     return;
   }
 
   auto* containers_service =
       ContainersServiceFactory::GetInstance()->GetForProfile(
           controller_->GetBrowserWindowInterface()->GetProfile());
+  if (!containers_service) {
+    containers_service_observation_.Reset();
+    return;
+  }
 
-  container_changed_subscription_ =
-      containers_service->RegisterContainerChangedCallback(base::BindRepeating(
-          &BraveTab::OnContainerChanged, base::Unretained(this)));
+  if (containers_service_observation_.IsObservingSource(containers_service)) {
+    return;
+  }
+
+  containers_service_observation_.Reset();
+  containers_service_observation_.Observe(containers_service);
 }
 
-void BraveTab::OnContainerChanged() {
+void BraveTab::OnContainersListChanged() {
   SchedulePaint();
   if (small_accent_icon_view_->layer()) {
     small_accent_icon_view_->SchedulePaint();

@@ -10,6 +10,7 @@ assert(enable_containers)
 static_library("browser") {
   public = [
     "containers_service.h",
+    "containers_service_observer.h",
     "containers_settings_handler.h",
     "prefs_registration.h",
     "unknown_container.h",

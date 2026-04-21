@@ -11,12 +11,16 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
+#include "base/scoped_observation.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/accent_color/brave_tab_accent_types.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
-#include "components/prefs/pref_change_registrar.h"
 #include "ui/gfx/geometry/point.h"
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/core/browser/containers_service_observer.h"
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 namespace views {
 class ImageButton;
@@ -27,13 +31,19 @@ class TreeTabNode;
 }  // namespace tabs
 
 namespace containers {
+class ContainersService;
 FORWARD_DECLARE_TEST(ContainersBrowserTest, SmallAccentIconViewVisibility);
 }  // namespace containers
 
 // Brave specific tab implementation that extends the base Tab class.
 // It includes features like vertical tab support.
 // Also customizes the tab layout and visual appearance for Brave's UI.
-class BraveTab : public Tab {
+class BraveTab : public Tab
+#if BUILDFLAG(ENABLE_CONTAINERS)
+    ,
+                 public containers::ContainersServiceObserver
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+{
   METADATA_HEADER(BraveTab, Tab)
 
  public:
@@ -165,11 +175,11 @@ class BraveTab : public Tab {
   void LayoutSmallTabAccentIcon();
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-  // Starts observing container changes if not already observing.
+  // Starts observing container list changes if not already observing.
   void MaybeObserveContainerChanges();
 
-  // Called when the container changes.
-  void OnContainerChanged();
+  // containers::ContainersServiceObserver:
+  void OnContainersListChanged() override;
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
   // Test accessors to reveal base class members.
@@ -180,7 +190,9 @@ class BraveTab : public Tab {
   raw_ptr<SmallAccentIconView> small_accent_icon_view_ = nullptr;  // not owned
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-  base::CallbackListSubscription container_changed_subscription_;
+  base::ScopedObservation<containers::ContainersService,
+                          containers::ContainersServiceObserver>
+      containers_service_observation_{this};
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
   base::WeakPtrFactory<BraveTab> weak_factory_{this};

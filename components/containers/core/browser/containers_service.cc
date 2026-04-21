@@ -11,6 +11,7 @@
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/types/to_address.h"
+#include "brave/components/containers/core/browser/containers_service_observer.h"
 #include "brave/components/containers/core/browser/pref_names.h"
 #include "brave/components/containers/core/browser/prefs.h"
 #include "brave/components/containers/core/browser/unknown_container.h"
@@ -76,13 +77,15 @@ void ContainersService::ScheduleOrphanedContainersCleanupForTesting() {
 
 void ContainersService::OnSyncedContainersChanged() {
   RefreshLocallyUsedContainersFromSyncedList();
-  container_changed_callback_list_.Notify();
+  observers_.Notify(&ContainersServiceObserver::OnContainersListChanged);
 }
 
-base::CallbackListSubscription
-ContainersService::RegisterContainerChangedCallback(
-    base::RepeatingCallback<void()> callback) {
-  return container_changed_callback_list_.Add(std::move(callback));
+void ContainersService::AddObserver(ContainersServiceObserver* observer) {
+  observers_.AddObserver(observer);
+}
+
+void ContainersService::RemoveObserver(ContainersServiceObserver* observer) {
+  observers_.RemoveObserver(observer);
 }
 
 void ContainersService::RefreshLocallyUsedContainersFromSyncedList() {

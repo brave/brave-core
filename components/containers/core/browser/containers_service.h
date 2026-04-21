@@ -10,11 +10,12 @@
 #include <string>
 #include <string_view>
 
-#include "base/callback_list.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
+#include "base/observer_list.h"
+#include "brave/components/containers/core/browser/containers_service_observer.h"
 #include "brave/components/containers/core/mojom/containers.mojom-forward.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -68,9 +69,8 @@ class ContainersService : public KeyedService {
 
   void ScheduleOrphanedContainersCleanupForTesting();
 
-  // Registers a callback that will be called when the container list changes.
-  base::CallbackListSubscription RegisterContainerChangedCallback(
-      base::RepeatingCallback<void()> callback);
+  void AddObserver(ContainersServiceObserver* observer);
+  void RemoveObserver(ContainersServiceObserver* observer);
 
  private:
   // Called when the synced containers list changes.
@@ -94,7 +94,7 @@ class ContainersService : public KeyedService {
   raw_ref<PrefService> prefs_;
   std::unique_ptr<Delegate> delegate_;
   PrefChangeRegistrar pref_change_registrar_;
-  base::RepeatingClosureList container_changed_callback_list_;
+  base::ObserverList<ContainersServiceObserver> observers_;
   base::WeakPtrFactory<ContainersService> weak_factory_{this};
 };
 
