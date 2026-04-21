@@ -284,7 +284,6 @@ test("brave_unit_tests") {
     "//components/language/core/browser",
     "//components/language/core/common",
     "//components/lookalikes/core:safety_tips",
-    "//components/os_crypt/sync:test_support",
     "//components/page_load_metrics/common",
     "//components/permissions",
     "//components/pref_registry",
