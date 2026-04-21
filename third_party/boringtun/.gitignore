@@ -1,3 +1,10 @@
-bin/
-include/
-target/
+# Build outputs produced by brave/script/build_boringtun.py.
+# These are regenerated on every build and must NOT be committed.
+/.cargo-home/
+/bin/
+/include/
+/target/
+ 
+# Cargo.lock IS committed (it pins all transitive deps). Make sure no
+# parent .gitignore hides it.
+!Cargo.lock

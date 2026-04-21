@@ -1,0 +1,46 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+if (is_win) {
+  _bt_lib_filename = "boringtun.dll"
+} else if (is_linux) {
+  _bt_lib_filename = "libboringtun.so"
+} else if (is_mac) {
+  _bt_lib_filename = "libboringtun.dylib"
+}
+
+action("build_boringtun") {
+  script = "//brave/script/build_boringtun.py"
+
+  inputs = [
+    ".cargo/config.toml",
+    "Cargo.lock",
+    "Cargo.toml",
+    "src/lib.rs",
+  ]
+
+  outputs = [
+    "$root_out_dir/$_bt_lib_filename",
+    "$target_gen_dir/build_boringtun.stamp",
+  ]
+
+  args = [
+    "--target-os",
+    target_os,
+    "--target-cpu",
+    target_cpu,
+    "--cargo-target-dir",
+    rebase_path("$target_gen_dir/cargo-target", root_build_dir),
+    "--output-lib",
+    rebase_path("$root_out_dir/$_bt_lib_filename", root_build_dir),
+    "--stamp",
+    rebase_path("$target_gen_dir/build_boringtun.stamp", root_build_dir),
+  ]
+}
+
+group("boringtun") {
+  public_deps = [ ":build_boringtun" ]
+  data = [ "$root_out_dir/$_bt_lib_filename" ]
+}
