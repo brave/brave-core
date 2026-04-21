@@ -1,0 +1,6 @@
+include_rules = [
+  "+base",
+  "+brave/components/api_request_helper",
+  "+crypto",
+  "+url",
+]

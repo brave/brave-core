@@ -1,0 +1,30 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("core") {
+  sources = [
+    "bundle_parser.cc",
+    "bundle_parser.h",
+    "constants.h",
+    "csp_validator.cc",
+    "csp_validator.h",
+    "ipfs_bundle_fetcher.cc",
+    "ipfs_bundle_fetcher.h",
+    "manifest_verifier.cc",
+    "manifest_verifier.h",
+    "origin_state.cc",
+    "origin_state.h",
+    "webcat_cache.cc",
+    "webcat_cache.h",
+    "webcat_resolver.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/api_request_helper",
+    "//crypto",
+    "//url",
+  ]
+}
