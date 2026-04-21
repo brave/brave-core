@@ -12,6 +12,7 @@
 #include "base/test/run_until.h"
 #include "brave/components/brave_ads/core/internal/common/resources/test/language_components_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_processor.h"
 
@@ -35,7 +36,6 @@ TEST_F(BraveAdsTextClassificationModelTest,
   // Arrange
   TextClassificationProcessor processor(*resource_);
   processor.Process(/*text=*/"The quick brown fox jumps over the lazy dog");
-  task_environment_.RunUntilIdle();
 
   // Act
   const SegmentList text_classification_segments =
@@ -53,7 +53,6 @@ TEST_F(BraveAdsTextClassificationModelTest, DoNotGetSegmentsForEmptyText) {
 
   TextClassificationProcessor processor(*resource_);
   processor.Process(/*text=*/"");
-  task_environment_.RunUntilIdle();
 
   // Act
   const SegmentList text_classification_segments =
@@ -72,7 +71,11 @@ TEST_F(BraveAdsTextClassificationModelTest,
 
   TextClassificationProcessor processor(*resource_);
   processor.Process(/*text=*/"Some content about technology & computing");
-  task_environment_.RunUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return ClientStateManager::GetInstance()
+               .GetTextClassificationProbabilitiesHistory()
+               .size() == 1U;
+  }));
 
   // Act
   const SegmentList text_classification_segments =
@@ -155,9 +158,11 @@ TEST_F(BraveAdsTextClassificationModelTest,
   for (const auto& text : texts) {
     processor.Process(text);
   }
-
-  // Run the task environment until idle to ensure all tasks are processed.
-  task_environment_.RunUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return ClientStateManager::GetInstance()
+               .GetTextClassificationProbabilitiesHistory()
+               .size() == 3U;
+  }));
 
   // Act
   const SegmentList text_classification_segments =
