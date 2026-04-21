@@ -5,16 +5,12 @@
 
 import * as React from 'react'
 import { Meta, StoryObj } from '@storybook/react'
-import { setIconBasePath } from '@brave/leo/react/icon'
 
 import * as Mojom from 'gen/brave/components/psst/common/psst_ui_common.mojom.m.js'
 import Flex from '$web-common/Flex'
 import { PsstDialogAPIProvider } from './api/psst_dialog_api_context'
 import { PsstProgressModal } from './components/PsstProgressModal'
 import { createPsstDialogApi } from './api/psst_dialog_api'
-
-// Set icon path for Storybook
-setIconBasePath('/icons')
 
 // Stable default values to prevent unnecessary re-renders
 const DEFAULT_ERROR_UIDS: string[] = []
