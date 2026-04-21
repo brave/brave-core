@@ -39,6 +39,10 @@ RequestOTRServiceFactory::RequestOTRServiceFactory()
 
 RequestOTRServiceFactory::~RequestOTRServiceFactory() = default;
 
+bool RequestOTRServiceFactory::ServiceIsCreatedWithBrowserContext() const {
+  return true;
+}
+
 std::unique_ptr<KeyedService>
 RequestOTRServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {

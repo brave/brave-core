@@ -60,10 +60,18 @@ RewardsServiceFactory::RewardsServiceFactory()
 #endif
 }
 
+bool RewardsServiceFactory::ServiceIsCreatedWithBrowserContext() const {
+  return true;
+}
+
 std::unique_ptr<KeyedService>
 RewardsServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   auto* profile = Profile::FromBrowserContext(context);
+
+  if (!IsSupportedForProfile(profile)) {
+    return nullptr;
+  }
 
   // BitmapFetcherServiceFactory has private ProfileKeyedServiceFactory so we
   // can't add `DependsOn` to ensure proper lifetime management.
