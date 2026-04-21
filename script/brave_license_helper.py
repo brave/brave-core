@@ -184,7 +184,7 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         # remove the following line once we start putting
         # WinTun binaries into the browser distribution on Windows.
         os.path.join('brave', 'third_party', 'wintun'),
-
+    
         # vendored boringtun crate has a top-level LICENSE file.
         os.path.join('brave', 'third_party', 'boringtun', 'vendor',
                      'boringtun'),

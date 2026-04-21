@@ -1,0 +1,41 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+#
+# This crate exists ONLY to pin BoringTun as a git dependency at a specific
+# commit. We never build this crate ourselves -- the actual cdylib shipped
+# to consumers is `boringtun` itself.
+#
+# Building boringtun directly (rather than wrapping it) preserves all
+# extern FFI symbols in the produced cdylib.
+#
+# To bump the pinned version of BoringTun:
+#   1. Update `rev` below to the new full 40-char commit SHA.
+#   2. Run the build script: 
+#        cargo update -p boringtun --manifest-path Cargo.toml
+#      (with CARGO_HOME pointed at .cargo-home/, easiest via the build
+#      script: `python3 build.py --no-locked ...`)
+#   3. Commit the updated Cargo.lock.
+#   4. Update commit SHA in ".cargo/config.toml".
+#   5. Update the version + commit SHA in "README.chromium".
+
+[package]
+name = "boringtun_pin"
+version = "0.0.0"
+edition = "2021"
+publish = false
+license = "MPL-2.0"
+description = "Internal pin of cloudflare/boringtun for Brave's vendored cdylib build."
+
+[lib]
+path = "src/lib.rs"
+crate-type = ["rlib"]
+
+[dependencies]
+boringtun = { git = "https://github.com/cloudflare/boringtun.git", rev = "cdf3b24558441ff4dc62bf5992484c5457a36760", default-features = false, features = ["ffi-bindings"] }
+
+[profile.release]
+lto = "fat"
+codegen-units = 1
+strip = "debuginfo"
