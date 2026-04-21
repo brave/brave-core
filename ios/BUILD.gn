@@ -128,6 +128,7 @@ brave_core_public_headers = [
   "//brave/ios/browser/web/logins/logins_tab_helper_bridge.h",
   "//brave/ios/browser/brave_talk/brave_talk_tab_helper_bridge.h",
   "//ios/chrome/browser/web/model/print/print_handler.h",
+  "//brave/ios/browser/youtube/youtube_pref_names_bridge.h",
 ]
 
 brave_core_public_headers += ads_public_headers

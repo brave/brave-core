@@ -83,11 +83,6 @@ extension Preferences {
       key: "general.media-auto-backgrounding",
       default: false
     )
-    /// Controls whether or not youtube videos should play with the highest quality by default
-    static let youtubeHighQuality = Option<String>(
-      key: "general.youtube-high-quality",
-      default: YoutubeHighQualityPreference.off.rawValue
-    )
     /// Controls whether or not to show the last visited bookmarks folder
     static let showLastVisitedBookmarksFolder = Option<Bool>(
       key: "general.bookmarks-show-last-visited-bookmarks-folder",

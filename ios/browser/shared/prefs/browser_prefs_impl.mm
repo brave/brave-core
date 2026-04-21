@@ -32,6 +32,7 @@
 #include "brave/components/playlist/core/common/pref_names.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/ios/browser/brave_stats/brave_stats_prefs.h"
+#include "brave/ios/browser/youtube/pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -83,6 +84,8 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(brave_vpn::prefs::kManagedBraveVPNDisabled,
                                 false);
 #endif
+
+  registry->RegisterIntegerPref(youtube::prefs::kAutoQualityMode, 0);
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
