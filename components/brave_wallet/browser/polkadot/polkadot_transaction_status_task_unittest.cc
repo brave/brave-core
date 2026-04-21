@@ -368,7 +368,7 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, ExtrinsicNotInMortalityWindow) {
   // To test our block walking routines, we deliberately choose a block before
   // the one where our extrinsic actually lives.
   const uint32_t block_num = 30277982;
-  const uint32_t mortality_period = 64;
+  const uint32_t mortality_period = 2;
 
   auto task = PolkadotTransactionStatusTask::Create(
       *polkadot_wallet_service, *keyring_service_,
@@ -381,29 +381,8 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, ExtrinsicNotInMortalityWindow) {
       future;
 
   RegisterDefaultFinalizedHeader(polkadot_mock_rpc.get());
-
-  // For this test, we'll just reuse the same blockhash across all requests and
-  // we'll return an empty block each time. This guarantees the extrinsic won't
-  // be found within the mortality period.
-  {
-    base::flat_map<uint32_t, std::string> block_hash_map;
-    for (uint32_t i = 0; i < 64; ++i) {
-      block_hash_map.emplace(
-          30277982 + i,
-          "0x411f460c170a3cda43f42036999a74ea4ae960121cf59fc421a9b4820beadce2");
-    }
-
-    polkadot_mock_rpc->SetBlockHashMap(std::move(block_hash_map));
-  }
-
-  {
-    base::flat_map<std::string, PolkadotBlock> block_map;
-    block_map.emplace(
-        "411f460c170a3cda43f42036999a74ea4ae960121cf59fc421a9b4820beadce2",
-        PolkadotBlock{});
-
-    polkadot_mock_rpc->SetBlockMap(std::move(block_map));
-  }
+  RegisterDefaultBlockHashes(polkadot_mock_rpc.get());
+  RegisterDefaultBlocks(polkadot_mock_rpc.get());
 
   polkadot_mock_rpc->AddGetFinalizedBlockHash();
   polkadot_mock_rpc->AddGetFinalizedBlockHeader();
