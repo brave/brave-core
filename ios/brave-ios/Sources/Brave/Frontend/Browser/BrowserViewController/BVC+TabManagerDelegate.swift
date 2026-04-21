@@ -26,7 +26,9 @@ extension BrowserViewController: TabManagerDelegate {
     if tab.profile.prefs.isPlaylistAvailable {
       tab.playlist = .init(tab: tab)
     }
-    tab.youtubeQualityTabHelper = .init(tab: tab)
+    if !FeatureList.kUseProfileWebViewConfiguration.enabled {
+      tab.youtubeQualityTabHelper = .init(tab: tab)
+    }
     SnackBarTabHelper.create(for: tab)
     tab.braveUserAgentExceptions = braveCore.braveUserAgentExceptions
     if FeatureList.kUseProfileWebViewConfiguration.enabled {

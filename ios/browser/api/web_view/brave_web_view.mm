@@ -34,6 +34,7 @@
 #include "brave/ios/browser/web/logins/logins_tab_helper_bridge.h"
 #include "brave/ios/browser/web/page_metadata/page_metadata_javascript_feature.h"
 #include "brave/ios/browser/web/reader_mode/reader_mode_javascript_feature.h"
+#include "brave/ios/browser/youtube/youtube_network_change_observer.h"
 #include "components/autofill/core/browser/logging/log_manager.h"
 #include "components/autofill/core/browser/logging/log_router.h"
 #include "components/autofill/ios/browser/autofill_agent.h"
@@ -374,6 +375,8 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
         self.webState,
         ios::FaviconServiceFactory::GetForProfile(
             profile->GetOriginalProfile(), ServiceAccessType::IMPLICIT_ACCESS));
+
+    youtube::YouTubeNetworkChangeObserver::CreateForWebState(self.webState);
   }
 }
 
