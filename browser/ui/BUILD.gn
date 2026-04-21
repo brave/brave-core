@@ -1477,6 +1477,7 @@ source_set("ui") {
   if (enable_containers) {
     deps += [
       "//brave/browser/containers",
+      "//brave/browser/ui/containers",
       "//brave/components/containers/content/browser",
       "//brave/components/containers/core/browser",
       "//brave/components/containers/core/common",
