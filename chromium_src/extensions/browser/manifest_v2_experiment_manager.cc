@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/extensions/manifest_v2_experiment_manager.h"
+#include "extensions/browser/manifest_v2_experiment_manager.h"
 
-#include "brave/browser/extensions/manifest_v2/features.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/mv2_experiment_stage.h"
+#include "extensions/common/extension_features.h"
 
 namespace {
 
@@ -26,6 +26,6 @@ extensions::MV2ExperimentStage AdjustMV2ExperimentStage(
 #define experiment_stage_(...) \
   experiment_stage_(AdjustMV2ExperimentStage(__VA_ARGS__))
 
-#include <chrome/browser/extensions/manifest_v2_experiment_manager.cc>
+#include <extensions/browser/manifest_v2_experiment_manager.cc>
 
 #undef experiment_stage_
