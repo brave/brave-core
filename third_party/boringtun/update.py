@@ -32,6 +32,7 @@ import brave_chromium_utils
 
 PRESERVE_PATTERNS = [
     'vendor/.clang-format',
+    'vendor/.gitattributes',
     'vendor/*/README.chromium',
     'vendor/*/LICENSE-combined-brave-attribution',
     'vendor/*/LICENSE-MIT-brave-attribution',
@@ -152,6 +153,7 @@ def main():
     # If you're re-vendoring because you intentionally changed deps, run
     # `cargo update` (or edit Cargo.toml rev) beforehand -- the new
     # Cargo.lock needs to be consistent before this script runs.
+    print(f'Running cargo vendor...')
     result = subprocess.run(
         [CARGO, 'vendor', '--locked'],
         env=env, check=True, capture_output=True, text=True)

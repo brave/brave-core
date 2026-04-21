@@ -1,0 +1,6 @@
+# cargo vendor records SHA-256 hashes of vendored source files in each
+# crate's .cargo-checksum.json. Git line-ending normalization changes
+# file bytes and breaks those hashes. Force-bypass all line-ending
+# handling for vendored files -- their integrity is protected by the
+# checksum, not by human review of diffs.
+* -text

@@ -1,0 +1,14 @@
+Name: opaque-debug
+Short Name: opaque-debug
+URL: https://github.com/RustCrypto/utils
+Version: 0.3.1
+License: MIT OR Apache-2.0
+License File: LICENSE-MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/opaque-debug.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

@@ -24,7 +24,9 @@ vendor/omaha/
 node_modules/
 patches/**/*.patchinfo
 /third_party/argon2/src
+/third_party/boringtun/.cargo-home/
 /third_party/boringtun/bin/
+/third_party/boringtun/target/
 /third_party/brave-vpn-wireguard-nt-dlls/
 /third_party/brave-vpn-wireguard-tunnel-dlls/
 /third_party/bip39wally-core-native/
@@ -47,6 +49,7 @@ patches/**/*.patchinfo
 .vs/
 .vscode/
 !third_party/wasm/vendor/**/.vscode
+!third_party/boringtun/vendor/**/.vscode
 *.vcxproj
 *.vcxproj.user
 *.vcxproj.filters
@@ -57,15 +60,18 @@ npm-debug.log
 .env*
 !tools/crates/vendor/**/.envrc
 !third_party/wasm/vendor/**/.envrc
+!third_party/boringtun/vendor/**/.envrc
 engflow.crt
 *.key
 !tools/crates/vendor/**/*.key
 !third_party/wasm/vendor/**/*.key
+!third_party/boringtun/vendor/**/*.key
 privkey.pem
 *~
 CMakeLists.txt
 !tools/crates/vendor/**/CMakeLists.txt
 !third_party/wasm/vendor/**/CMakeLists.txt
+!third_party/boringtun/vendor/**/CMakeLists.txt
 cmake-build-debug/
 coverage/
 /build/rustup/

@@ -181,7 +181,11 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         os.path.join('brave', 'rewrite', 'third_party'),
 
         # vendored boringtun crate has a top-level LICENSE file.
-        os.path.join('brave', 'third_party', 'boringtun', 'vendor', 'boringtun'),
+        os.path.join('brave', 'third_party', 'boringtun', 'vendor',
+                     'boringtun'),
+        # vendored ring third-party dependencies are covered by its top level license.
+        os.path.join('brave', 'third_party', 'boringtun', 'vendor',
+                     'ring', 'third_party'),
 
         # Transitive deps in brave/third_party/wasm.
         *GetRustWorkspaceTransitiveDeps(Path('brave/third_party/wasm')),

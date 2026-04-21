@@ -1,0 +1,24 @@
+[package]
+name = "universal-hash"
+version = "0.5.1"
+description = "Traits which describe the functionality of universal hash functions (UHFs)"
+authors = ["RustCrypto Developers"]
+license = "MIT OR Apache-2.0"
+edition = "2021"
+rust-version = "1.56"
+readme = "README.md"
+documentation = "https://docs.rs/universal-hash"
+repository = "https://github.com/RustCrypto/traits"
+keywords = ["crypto", "mac"]
+categories = ["cryptography", "no-std"]
+
+[dependencies]
+crypto-common = "0.1.6"
+subtle = { version = "2.4", default-features = false }
+
+[features]
+std = ["crypto-common/std"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
