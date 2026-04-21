@@ -10,8 +10,7 @@
 #include "base/check.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
-#include "brave/components/serp_metrics/time_period_storage/serp_metrics_scoped_timezone_for_testing.h"
-#include "build/buildflag.h"
+#include "brave/components/serp_metrics/time_period_storage/serp_metrics_pref_time_period_store.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -23,13 +22,7 @@ constexpr char kDictPrefName[] = "brave.weekly_dict_test";
 constexpr char kDictKey1[] = "key1";
 constexpr char kDictKey2[] = "key2";
 
-struct SerpMetricsTimePeriodStorageTestParam {
-  bool should_use_utc;
-  bool should_offset_dst;
-};
-
-class SerpMetricsTimePeriodStorageTest
-    : public ::testing::TestWithParam<SerpMetricsTimePeriodStorageTestParam> {
+class SerpMetricsTimePeriodStorageTest : public ::testing::Test {
  public:
   SerpMetricsTimePeriodStorageTest() {
     pref_service_.registry()->RegisterListPref(kListPrefName);
@@ -46,17 +39,12 @@ class SerpMetricsTimePeriodStorageTest
   void InitStorage(size_t days, const char* dict_key = nullptr) {
     const char* pref_name = dict_key ? kDictPrefName : kListPrefName;
     state_ = std::make_unique<SerpMetricsTimePeriodStorage>(
-        &pref_service_, pref_name, dict_key, days, should_use_utc(),
-        should_offset_dst());
+        std::make_unique<SerpMetricsPrefTimePeriodStore>(&pref_service_,
+                                                         pref_name, dict_key),
+        days);
   }
 
-  static bool should_use_utc() { return GetParam().should_use_utc; }
-
-  static bool should_offset_dst() { return GetParam().should_offset_dst; }
-
-  static base::Time Midnight(base::Time time) {
-    return should_use_utc() ? time.UTCMidnight() : time.LocalMidnight();
-  }
+  static base::Time Midnight(base::Time time) { return time.LocalMidnight(); }
 
  protected:
   base::test::TaskEnvironment task_environment_{
@@ -65,12 +53,12 @@ class SerpMetricsTimePeriodStorageTest
   std::unique_ptr<SerpMetricsTimePeriodStorage> state_;
 };
 
-TEST_P(SerpMetricsTimePeriodStorageTest, StartsZero) {
+TEST_F(SerpMetricsTimePeriodStorageTest, StartsZero) {
   InitStorage(7);
   EXPECT_EQ(state_->GetPeriodSum(), 0ULL);
 }
 
-TEST_P(SerpMetricsTimePeriodStorageTest, AddsSavings) {
+TEST_F(SerpMetricsTimePeriodStorageTest, AddsSavings) {
   InitStorage(7);
   uint64_t saving = 10000;
   state_->AddDelta(saving);
@@ -82,34 +70,7 @@ TEST_P(SerpMetricsTimePeriodStorageTest, AddsSavings) {
   EXPECT_EQ(state_->GetPeriodSum(), saving * 3);
 }
 
-TEST_P(SerpMetricsTimePeriodStorageTest, SubDelta) {
-  InitStorage(7);
-  state_->AddDelta(5000);
-  task_environment_.AdvanceClock(base::Days(1));
-  state_->AddDelta(3000);
-  task_environment_.AdvanceClock(base::Days(1));
-  state_->AddDelta(1000);
-  task_environment_.AdvanceClock(base::Days(1));
-
-  state_->SubDelta(500);
-  EXPECT_EQ(state_->GetPeriodSum(), 8500U);
-  state_->SubDelta(4000);
-  EXPECT_EQ(state_->GetPeriodSum(), 4500U);
-
-  task_environment_.AdvanceClock(base::Days(4));
-  // First day value should expire
-  EXPECT_EQ(state_->GetPeriodSum(), 0U);
-
-  // If subtracting by an amount greater than the current sum,
-  // the sum should not become negative or underflow.
-  state_->AddDelta(3000);
-  state_->SubDelta(5000);
-  EXPECT_EQ(state_->GetPeriodSum(), 0U);
-  state_->SubDelta(100000);
-  EXPECT_EQ(state_->GetPeriodSum(), 0U);
-}
-
-TEST_P(SerpMetricsTimePeriodStorageTest, GetSumInCustomPeriod) {
+TEST_F(SerpMetricsTimePeriodStorageTest, GetSumInCustomPeriod) {
   base::TimeDelta start_time_delta = base::Days(9) + base::Hours(1);
   base::TimeDelta end_time_delta = base::Days(4) - base::Hours(1);
   uint64_t saving = 10000;
@@ -153,7 +114,7 @@ TEST_P(SerpMetricsTimePeriodStorageTest, GetSumInCustomPeriod) {
             0U);
 }
 
-TEST_P(SerpMetricsTimePeriodStorageTest, ForgetsOldSavingsWeekly) {
+TEST_F(SerpMetricsTimePeriodStorageTest, ForgetsOldSavingsWeekly) {
   InitStorage(7);
   uint64_t saving = 10000;
   state_->AddDelta(saving);
@@ -168,7 +129,7 @@ TEST_P(SerpMetricsTimePeriodStorageTest, ForgetsOldSavingsWeekly) {
   EXPECT_EQ(state_->GetPeriodSum(), saving * 2);
 }
 
-TEST_P(SerpMetricsTimePeriodStorageTest, ForgetsOldSavingsMonthly) {
+TEST_F(SerpMetricsTimePeriodStorageTest, ForgetsOldSavingsMonthly) {
   InitStorage(30);
   uint64_t saving = 10000;
   state_->AddDelta(saving);
@@ -183,7 +144,7 @@ TEST_P(SerpMetricsTimePeriodStorageTest, ForgetsOldSavingsMonthly) {
   EXPECT_EQ(state_->GetPeriodSum(), saving * 2);
 }
 
-TEST_P(SerpMetricsTimePeriodStorageTest, RetrievesDailySavings) {
+TEST_F(SerpMetricsTimePeriodStorageTest, RetrievesDailySavings) {
   InitStorage(7);
   uint64_t saving = 10000;
   for (int day = 0; day <= 7; day++) {
@@ -193,7 +154,7 @@ TEST_P(SerpMetricsTimePeriodStorageTest, RetrievesDailySavings) {
   EXPECT_EQ(state_->GetPeriodSum(), 7 * saving);
 }
 
-TEST_P(SerpMetricsTimePeriodStorageTest, HandlesSkippedDay) {
+TEST_F(SerpMetricsTimePeriodStorageTest, HandlesSkippedDay) {
   InitStorage(7);
   uint64_t saving = 10000;
   for (int day = 0; day < 7; day++) {
@@ -206,7 +167,7 @@ TEST_P(SerpMetricsTimePeriodStorageTest, HandlesSkippedDay) {
   EXPECT_EQ(state_->GetPeriodSum(), 6 * saving);
 }
 
-TEST_P(SerpMetricsTimePeriodStorageTest, IntermittentUsageWeekly) {
+TEST_F(SerpMetricsTimePeriodStorageTest, IntermittentUsageWeekly) {
   InitStorage(7);
   uint64_t saving = 10000;
   for (int day = 0; day < 10; day++) {
@@ -216,7 +177,7 @@ TEST_P(SerpMetricsTimePeriodStorageTest, IntermittentUsageWeekly) {
   EXPECT_EQ(state_->GetPeriodSum(), 4 * saving);
 }
 
-TEST_P(SerpMetricsTimePeriodStorageTest, IntermittentUsageMonthly) {
+TEST_F(SerpMetricsTimePeriodStorageTest, IntermittentUsageMonthly) {
   InitStorage(30);
   uint64_t saving = 10000;
   for (int day = 0; day < 40; day++) {
@@ -226,7 +187,7 @@ TEST_P(SerpMetricsTimePeriodStorageTest, IntermittentUsageMonthly) {
   EXPECT_EQ(state_->GetPeriodSum(), 3 * saving);
 }
 
-TEST_P(SerpMetricsTimePeriodStorageTest, InfrequentUsageWeekly) {
+TEST_F(SerpMetricsTimePeriodStorageTest, InfrequentUsageWeekly) {
   InitStorage(7);
   uint64_t saving = 10000;
   state_->AddDelta(saving);
@@ -235,7 +196,7 @@ TEST_P(SerpMetricsTimePeriodStorageTest, InfrequentUsageWeekly) {
   EXPECT_EQ(state_->GetPeriodSum(), 2 * saving);
 }
 
-TEST_P(SerpMetricsTimePeriodStorageTest, InfrequentUsageMonthly) {
+TEST_F(SerpMetricsTimePeriodStorageTest, InfrequentUsageMonthly) {
   InitStorage(30);
   uint64_t saving = 10000;
   state_->AddDelta(saving);
@@ -244,79 +205,7 @@ TEST_P(SerpMetricsTimePeriodStorageTest, InfrequentUsageMonthly) {
   EXPECT_EQ(state_->GetPeriodSum(), 2 * saving);
 }
 
-TEST_P(SerpMetricsTimePeriodStorageTest, GetHighestValueInPeriod) {
-  InitStorage(7);
-  uint64_t lowest_value = 20;
-  uint64_t low_value = 50;
-  uint64_t high_value = 75;
-  state_->AddDelta(low_value);
-  task_environment_.AdvanceClock(base::Days(1));
-  state_->AddDelta(high_value);
-  task_environment_.AdvanceClock(base::Days(1));
-  state_->AddDelta(lowest_value);
-  EXPECT_EQ(state_->GetHighestValueInPeriod(), high_value);
-  task_environment_.AdvanceClock(base::Days(1));
-  EXPECT_EQ(state_->GetHighestValueInPeriod(), high_value);
-}
-
-TEST_P(SerpMetricsTimePeriodStorageTest, RecordsHigherValueForToday) {
-  InitStorage(30);
-  uint64_t low_value = 50;
-  uint64_t high_value = 75;
-  state_->ReplaceTodaysValueIfGreater(low_value);
-  EXPECT_EQ(state_->GetHighestValueInPeriod(), low_value);
-  // Replace with higher value
-  state_->ReplaceTodaysValueIfGreater(high_value);
-  EXPECT_EQ(state_->GetHighestValueInPeriod(), high_value);
-  // Sanity check value was replaced and not added.
-  EXPECT_EQ(state_->GetPeriodSum(), high_value);
-  // Should not replace with lower value
-  state_->ReplaceTodaysValueIfGreater(low_value);
-  EXPECT_EQ(state_->GetHighestValueInPeriod(), high_value);
-}
-
-TEST_P(SerpMetricsTimePeriodStorageTest,
-       GetsHighestValueInWeekFromReplacement) {
-  InitStorage(30);
-  // Add a low value a couple days after a high value,
-  // should return highest day value.
-  uint64_t low_value = 50;
-  uint64_t high_value = 75;
-  state_->ReplaceTodaysValueIfGreater(high_value);
-  task_environment_.AdvanceClock(base::Days(2));
-  state_->ReplaceTodaysValueIfGreater(low_value);
-  EXPECT_EQ(state_->GetHighestValueInPeriod(), high_value);
-  // Sanity check disparate days were not replaced
-  EXPECT_EQ(state_->GetPeriodSum(), high_value + low_value);
-}
-
-TEST_P(SerpMetricsTimePeriodStorageTest, ReplaceIfGreaterForDate) {
-  InitStorage(30);
-
-  state_->AddDelta(4);
-  task_environment_.AdvanceClock(base::Days(1));
-  state_->AddDelta(2);
-  task_environment_.AdvanceClock(base::Days(1));
-  state_->AddDelta(1);
-  task_environment_.AdvanceClock(base::Days(1));
-
-  // should replace
-  state_->ReplaceIfGreaterForDate(base::Time::Now() - base::Days(2), 3);
-  // should not replace
-  state_->ReplaceIfGreaterForDate(base::Time::Now() - base::Days(3), 3);
-
-  EXPECT_EQ(state_->GetPeriodSum(), 8U);
-
-  // should insert new daily value
-  state_->ReplaceIfGreaterForDate(base::Time::Now() - base::Days(4), 3);
-  EXPECT_EQ(state_->GetPeriodSum(), 11U);
-
-  // should store, but should not be in sum because it's too old
-  state_->ReplaceIfGreaterForDate(base::Time::Now() - base::Days(31), 10);
-  EXPECT_EQ(state_->GetPeriodSum(), 11U);
-}
-
-TEST_P(SerpMetricsTimePeriodStorageTest, SegregatedListsInDictionary) {
+TEST_F(SerpMetricsTimePeriodStorageTest, SegregatedListsInDictionary) {
   InitStorage(7, kDictKey1);
   state_->AddDelta(55);
 
@@ -330,73 +219,16 @@ TEST_P(SerpMetricsTimePeriodStorageTest, SegregatedListsInDictionary) {
   EXPECT_EQ(state_->GetPeriodSum(), 33U);
 }
 
-// The DST offset expands the query range by 1 hour, allowing values stored at
-// midnight to be counted when querying up to 1 hour after midnight.
-TEST_P(SerpMetricsTimePeriodStorageTest, DstOffsetExpandsQueryRange) {
+TEST_F(SerpMetricsTimePeriodStorageTest,
+       ValueStoredAtMidnightIsExcludedWhenRangeStartsAfterMidnight) {
   InitStorage(7);
   const uint64_t saving = 10000;
   state_->AddDelta(saving);
 
-  const bool dst_offset_active = !should_use_utc() && should_offset_dst();
-  const uint64_t expected_saving = dst_offset_active ? saving : 0U;
-
   const base::Time midnight = Midnight(base::Time::Now());
   EXPECT_EQ(state_->GetPeriodSumInTimeRange(midnight + base::Minutes(30),
                                             midnight + base::Days(1)),
-            expected_saving);
+            0U);
 }
-
-// The test is disabled on Windows because `SerpMetricsScopedTimezoneForTesting`
-// relies on `ScopedLibcTimezoneOverride`, which is a no-op for IANA timezone
-// identifiers on Windows, causing spurious failures.
-#if !BUILDFLAG(IS_WIN)
-TEST_P(SerpMetricsTimePeriodStorageTest,
-       GetHighestValueInPeriodExcludesDataOutsideWindowAfterDSTTransition) {
-  // America/New_York DST starts in 2050 on March 13 (the second Sunday of
-  // March). Clocks advance at 02:00 EST (07:00 UTC) to 03:00 EDT. These
-  // dates are safely after the fixture's mock-time start of 2050-01-04.
-  const test::SerpMetricsScopedTimezoneForTesting scoped_timezone(
-      "America/New_York");
-  const uint64_t low_value = 50;
-  const uint64_t high_value = 75;
-
-  InitStorage(7);
-
-  base::Time time;
-  ASSERT_TRUE(base::Time::FromString("March 13 2050 01:30:00", &time));
-  task_environment_.AdvanceClock(time - base::Time::Now());
-  state_->AddDelta(high_value);
-
-  ASSERT_TRUE(base::Time::FromString("March 19 2050 02:30:00", &time));
-  task_environment_.AdvanceClock(time - base::Time::Now());
-  state_->AddDelta(low_value);
-  // Advance two days so the high-value entry falls outside the seven-day
-  // window. Two days are needed because the DST transition shifts the local
-  // midnight by one hour — one day is not enough to clear the boundary in
-  // local-time mode.
-  task_environment_.AdvanceClock(base::Days(2));
-
-  EXPECT_EQ(state_->GetHighestValueInPeriod(), low_value);
-}
-#endif  // !BUILDFLAG(IS_WIN)
-
-INSTANTIATE_TEST_SUITE_P(
-    ,
-    SerpMetricsTimePeriodStorageTest,
-    ::testing::Values(
-        SerpMetricsTimePeriodStorageTestParam{/*should_use_utc=*/true,
-                                              /*should_offset_dst=*/true},
-        SerpMetricsTimePeriodStorageTestParam{/*should_use_utc=*/true,
-                                              /*should_offset_dst=*/false},
-        SerpMetricsTimePeriodStorageTestParam{/*should_use_utc=*/false,
-                                              /*should_offset_dst=*/true},
-        SerpMetricsTimePeriodStorageTestParam{/*should_use_utc=*/false,
-                                              /*should_offset_dst=*/false}),
-    [](const ::testing::TestParamInfo<SerpMetricsTimePeriodStorageTestParam>&
-           info) {
-      return std::string(info.param.should_use_utc ? "UTC" : "LocalTime") +
-             (info.param.should_offset_dst ? "WithOffsetDST"
-                                           : "WithoutOffsetDST");
-    });
 
 }  // namespace serp_metrics
