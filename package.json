@@ -127,7 +127,7 @@
     "@types/react-virtualized-auto-sizer": "1.0.4",
     "@types/react-window": "1.8.5",
     "@types/redux-logger": "3.0.9",
-    "@types/styled-components": "5.1.26",
+    "@types/styled-components": "5.1.36",
     "acorn": "8.0.5",
     "browserify-zlib": "0.2.0",
     "buffer": "6.0.3",
