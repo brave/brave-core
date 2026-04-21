@@ -11,7 +11,7 @@
 
 #include "base/scoped_observation.h"
 #include "chrome/browser/profiles/profile_observer.h"
-#include "chrome/browser/ui/browser_list_observer.h"
+#include "chrome/browser/ui/browser_window/public/browser_collection_observer.h"
 #include "chrome/browser/ui/tabs/tab_data.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -20,7 +20,8 @@
 #include "components/prefs/pref_member.h"
 
 class Profile;
-class BrowserList;
+class BrowserWindowInterface;
+class BrowserCollection;
 
 // SharedPinnedTabService observes pinned tabs and synchronizes it to all
 // windows with the same profile. When a pinned tab in a window is activated,
@@ -30,7 +31,7 @@ class BrowserList;
 // This service will be created when profile is created, so we don't have to
 // create this explicitly.
 class SharedPinnedTabService : public KeyedService,
-                               public BrowserListObserver,
+                               public BrowserCollectionObserver,
                                public TabStripModelObserver,
                                public ProfileObserver {
  public:
@@ -57,7 +58,7 @@ class SharedPinnedTabService : public KeyedService,
       int index,
       content::WebContents* maybe_dummy_contents);
 
-  void TabDraggingEnded(Browser* browser);
+  void TabDraggingEnded(BrowserWindowInterface* browser);
 
   // Returns true if the browser will be closed by this method. If true,
   // Browser::OnWindowClosing() should not proceed, as TabStrip::Empty() will
@@ -67,10 +68,10 @@ class SharedPinnedTabService : public KeyedService,
   // KeyedService:
   void Shutdown() override;
 
-  // BrowserListObserver:
-  void OnBrowserAdded(Browser* browser) override;
-  void OnBrowserSetLastActive(Browser* browser) override;
-  void OnBrowserRemoved(Browser* browser) override;
+  // BrowserCollectionObserver:
+  void OnBrowserCreated(BrowserWindowInterface* browser) override;
+  void OnBrowserActivated(BrowserWindowInterface* browser) override;
+  void OnBrowserClosed(BrowserWindowInterface* browser) override;
 
   // TabStripModelObserver:
   void OnTabStripModelChanged(
@@ -101,10 +102,10 @@ class SharedPinnedTabService : public KeyedService,
   void SynchronizeNewPinnedTab(int index);
   void SynchronizeDeletedPinnedTab(int index);
   void SynchronizeMovedPinnedTab(int from, int to);
-  void SynchronizeNewBrowser(Browser* browser);
+  void SynchronizeNewBrowser(BrowserWindowInterface* browser);
 
   void MoveSharedWebContentsToActiveBrowser(int index);
-  void MoveSharedWebContentsToBrowser(Browser* browser,
+  void MoveSharedWebContentsToBrowser(BrowserWindowInterface* browser,
                                       int index,
                                       bool is_last_closing_browser = false);
 
@@ -115,17 +116,17 @@ class SharedPinnedTabService : public KeyedService,
   std::unique_ptr<content::WebContents> CreateDummyWebContents(
       content::WebContents* shared_contents);
 
-  bool IsBrowserInTabDragging(Browser* browser) const;
+  bool IsBrowserInTabDragging(BrowserWindowInterface* browser) const;
 
   raw_ptr<Profile> profile_;
 
-  base::flat_set<Browser*> browsers_;
-  raw_ptr<Browser> last_active_browser_ = nullptr;
+  base::flat_set<BrowserWindowInterface*> browsers_;
+  raw_ptr<BrowserWindowInterface> last_active_browser_ = nullptr;
 
-  base::flat_set<Browser*> closing_browsers_;
+  base::flat_set<BrowserWindowInterface*> closing_browsers_;
   base::flat_set<std::unique_ptr<content::WebContents>>
       cached_shared_contentses_from_closing_browser_;
-  base::flat_set<Browser*> in_tab_dragging_browsers_;
+  base::flat_set<BrowserWindowInterface*> in_tab_dragging_browsers_;
 
   // This data is ordered in the actual pinned tab order.
   std::vector<PinnedTabData> pinned_tab_data_;
@@ -136,8 +137,8 @@ class SharedPinnedTabService : public KeyedService,
 
   base::ScopedObservation<Profile, ProfileObserver> profile_observation_{this};
 
-  base::ScopedObservation<BrowserList, BrowserListObserver>
-      browser_list_observation_{this};
+  base::ScopedObservation<BrowserCollection, BrowserCollectionObserver>
+      browser_collection_observation_{this};
 
   BooleanPrefMember shared_pinned_tab_enabled_;
 

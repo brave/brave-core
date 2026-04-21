@@ -20,9 +20,10 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
@@ -211,7 +212,8 @@ SharedPinnedTabService::SharedPinnedTabService(Profile* profile)
                           weak_ptr_factory_.GetWeakPtr()));
 
   if (*shared_pinned_tab_enabled_) {
-    browser_list_observation_.Observe(BrowserList::GetInstance());
+    browser_collection_observation_.Observe(
+        GlobalBrowserCollection::GetInstance());
   }
 }
 
@@ -255,26 +257,27 @@ void SharedPinnedTabService::Shutdown() {
   pinned_tab_data_.clear();
   change_source_model_ = nullptr;
   profile_observation_.Reset();
-  browser_list_observation_.Reset();
+  browser_collection_observation_.Reset();
 }
 
-void SharedPinnedTabService::OnBrowserAdded(Browser* browser) {
-  DVLOG(1) << "Browser added: " << browser->type();
-  if (profile_ != browser->profile()) {
+void SharedPinnedTabService::OnBrowserCreated(BrowserWindowInterface* browser) {
+  DVLOG(1) << "Browser added: " << browser->GetType();
+  if (profile_ != browser->GetProfile()) {
     return;
   }
 
-  if (!browser->is_type_normal()) {
+  if (browser->GetType() != BrowserWindowInterface::TYPE_NORMAL) {
     return;
   }
 
-  DVLOG(2) << __FUNCTION__ << " " << browser->tab_strip_model()->count();
+  DVLOG(2) << __FUNCTION__ << " " << browser->GetTabStripModel()->count();
 
-  browser->tab_strip_model()->AddObserver(this);
+  browser->GetTabStripModel()->AddObserver(this);
   browsers_.insert(browser);
 }
 
-void SharedPinnedTabService::OnBrowserSetLastActive(Browser* browser) {
+void SharedPinnedTabService::OnBrowserActivated(
+    BrowserWindowInterface* browser) {
   if (change_source_model_) {
     // This could happen when a shared web contents is attached to the closing
     // browser. We attach the shared web contents to the closing browser so that
@@ -284,14 +287,15 @@ void SharedPinnedTabService::OnBrowserSetLastActive(Browser* browser) {
 
   if (!browsers_.contains(browser)) {
     // Browser could be different profile or not a type we're
-    // looking for. Let |OnBrowserAdded| decide which to look for.
-    DCHECK(!browser->is_type_normal() || profile_ != browser->profile() ||
+    // looking for. Let |OnBrowserCreated| decide which to look for.
+    DCHECK(browser->GetType() != BrowserWindowInterface::TYPE_NORMAL ||
+           profile_ != browser->GetProfile() ||
            closing_browsers_.contains(browser))
         << "We expect a Browser to be created before set active";
     return;
   }
 
-  auto* model = browser->tab_strip_model();
+  auto* model = browser->GetTabStripModel();
   DVLOG(2) << __FUNCTION__ << " " << model->count();
   DCHECK_LT(0, model->count()) << "We're assuming that browser has tabs";
 
@@ -299,15 +303,14 @@ void SharedPinnedTabService::OnBrowserSetLastActive(Browser* browser) {
 
   if (last_active_browser_ != browser) {
     last_active_browser_ = browser;
-    OnActiveTabChanged(last_active_browser_->tab_strip_model());
+    OnActiveTabChanged(last_active_browser_->GetTabStripModel());
   }
 }
 
 bool SharedPinnedTabService::BrowserClosing(TabStripModel* tab_strip_model) {
   DVLOG(2) << __FUNCTION__;
-  Browser* browser = tab_strip_model->delegate()
-                         ->GetBrowserWindowInterface()
-                         ->GetBrowserForMigrationOnly();
+  BrowserWindowInterface* browser =
+      tab_strip_model->delegate()->GetBrowserWindowInterface();
   if (!browsers_.contains(browser)) {
     // In case this is called multiple times for the same browser
     return false;
@@ -326,7 +329,7 @@ bool SharedPinnedTabService::BrowserClosing(TabStripModel* tab_strip_model) {
       for (auto i = 0u; i < pinned_tab_data_.size(); i++) {
         if (!pinned_tab_data_.at(i).contents_owner_model ||
             pinned_tab_data_.at(i).contents_owner_model !=
-                browser->tab_strip_model()) {
+                browser->GetTabStripModel()) {
           MoveSharedWebContentsToBrowser(browser, i,
                                          /* is_last_closing_browser */ true);
         }
@@ -356,7 +359,7 @@ bool SharedPinnedTabService::BrowserClosing(TabStripModel* tab_strip_model) {
   }
 }
 
-void SharedPinnedTabService::OnBrowserRemoved(Browser* browser) {
+void SharedPinnedTabService::OnBrowserClosed(BrowserWindowInterface* browser) {
   DVLOG(2) << __FUNCTION__;
   closing_browsers_.erase(browser);
 
@@ -446,7 +449,7 @@ void SharedPinnedTabService::OnTabChangedAt(tabs::TabInterface* tab,
   iter->renderer_data = tabs::TabData::FromTabInterface(
       iter->contents_owner_model->GetTabAtIndex(index));
   for (auto* browser : browsers_) {
-    auto* tab_strip_model = browser->tab_strip_model();
+    auto* tab_strip_model = browser->GetTabStripModel();
     if (tab_strip_model == change_source_model_) {
       continue;
     }
@@ -535,7 +538,9 @@ void SharedPinnedTabService::OnTabRemoved(
   DCHECK(remove);
 
   if (std::ranges::contains(closing_browsers_, tab_strip_model,
-                            &Browser::tab_strip_model)) {
+                            [](BrowserWindowInterface* bwi) {
+                              return bwi->GetTabStripModel();
+                            })) {
     // We don't close pinned tabs if this browser is being closed.
     return;
   }
@@ -579,12 +584,14 @@ void SharedPinnedTabService::OnActiveTabChanged(
 
   // Swap the pinned active web contents with the shared web contents if needed
   if (!last_active_browser_ ||
-      last_active_browser_->tab_strip_model() != tab_strip_model) {
+      last_active_browser_->GetTabStripModel() != tab_strip_model) {
     return;
   }
 
   if (std::ranges::contains(closing_browsers_, tab_strip_model,
-                            &Browser::tab_strip_model)) {
+                            [](BrowserWindowInterface* bwi) {
+                              return bwi->GetTabStripModel();
+                            })) {
     return;
   }
 
@@ -664,7 +671,7 @@ void SharedPinnedTabService::SynchronizeNewPinnedTab(int index) {
   DCHECK(change_source_model_);
 
   for (auto* browser : browsers_) {
-    auto* model = browser->tab_strip_model();
+    auto* model = browser->GetTabStripModel();
     if (model == change_source_model_) {
       continue;
     }
@@ -681,7 +688,7 @@ void SharedPinnedTabService::SynchronizeDeletedPinnedTab(int index) {
   DCHECK(change_source_model_);
 
   for (auto* browser : browsers_) {
-    auto* model = browser->tab_strip_model();
+    auto* model = browser->GetTabStripModel();
     if (model == change_source_model_) {
       continue;
     }
@@ -697,7 +704,7 @@ void SharedPinnedTabService::SynchronizeMovedPinnedTab(int from, int to) {
   DCHECK(change_source_model_);
 
   for (auto* browser : browsers_) {
-    auto* model = browser->tab_strip_model();
+    auto* model = browser->GetTabStripModel();
     if (model == change_source_model_) {
       continue;
     }
@@ -706,23 +713,24 @@ void SharedPinnedTabService::SynchronizeMovedPinnedTab(int from, int to) {
   }
 }
 
-void SharedPinnedTabService::TabDraggingEnded(Browser* browser) {
+void SharedPinnedTabService::TabDraggingEnded(BrowserWindowInterface* browser) {
   if (!in_tab_dragging_browsers_.erase(browser)) {
     return;
   }
 
-  if (!browser->is_delete_scheduled()) {
+  if (!browser->IsDeleteScheduled()) {
     SynchronizeNewBrowser(browser);
   }
 }
 
-void SharedPinnedTabService::SynchronizeNewBrowser(Browser* browser) {
+void SharedPinnedTabService::SynchronizeNewBrowser(
+    BrowserWindowInterface* browser) {
   if (IsBrowserInTabDragging(browser)) {
     in_tab_dragging_browsers_.insert(browser);
     return;
   }
 
-  auto* model = browser->tab_strip_model();
+  auto* model = browser->GetTabStripModel();
   std::vector<PinnedTabData> new_pinned_tabs;
   for (auto i = 0; i < model->IndexOfFirstNonPinnedTab(); i++) {
     new_pinned_tabs.push_back({.renderer_data = tabs::TabData::FromTabInterface(
@@ -790,14 +798,14 @@ void SharedPinnedTabService::MoveSharedWebContentsToActiveBrowser(int index) {
 }
 
 void SharedPinnedTabService::MoveSharedWebContentsToBrowser(
-    Browser* browser,
+    BrowserWindowInterface* browser,
     int index,
     bool is_last_closing_browser) {
   if (IsBrowserInTabDragging(browser)) {
     return;
   }
 
-  auto* tab_strip_model = browser->tab_strip_model();
+  auto* tab_strip_model = browser->GetTabStripModel();
   DCHECK_LT(index, tab_strip_model->count());
 
   LOCK_REENTRANCE(tab_strip_model);
@@ -875,15 +883,16 @@ void SharedPinnedTabService::OnSharedPinnedTabPrefChanged() {
 
 void SharedPinnedTabService::OnSharedPinnedTabEnabled() {
   // Init observers
-  browser_list_observation_.Observe(BrowserList::GetInstance());
+  browser_collection_observation_.Observe(
+      GlobalBrowserCollection::GetInstance());
   auto browsers = chrome::FindAllTabbedBrowsersWithProfile(profile_);
   for (auto* browser : browsers) {
-    OnBrowserAdded(browser);
+    OnBrowserCreated(browser);
   }
 
   // Synchronize all pre-existing pinned tabs.
   for (auto* browser : browsers) {
-    auto* tab_strip_model = browser->tab_strip_model();
+    auto* tab_strip_model = browser->GetTabStripModel();
     for (int i = 0; i < tab_strip_model->IndexOfFirstNonPinnedTab(); ++i) {
       auto* contents = tab_strip_model->GetWebContentsAt(i);
       auto* tab = tab_strip_model->GetTabForWebContents(contents);
@@ -901,13 +910,13 @@ void SharedPinnedTabService::OnSharedPinnedTabDisabled() {
   // Reset observers. Note that we should remove observers first so that
   // closing dummy contents won't close shared contents too.
   for (auto* browser : browsers_) {
-    browser->tab_strip_model()->RemoveObserver(this);
+    browser->GetTabStripModel()->RemoveObserver(this);
   }
-  browser_list_observation_.Reset();
+  browser_collection_observation_.Reset();
 
   // Remove all dummy contents
   for (auto* browser : browsers_) {
-    auto* tab_strip_model = browser->tab_strip_model();
+    auto* tab_strip_model = browser->GetTabStripModel();
     for (auto i = tab_strip_model->IndexOfFirstNonPinnedTab() - 1; i >= 0;
          --i) {
       if (IsDummyContents(tab_strip_model->GetWebContentsAt(i))) {
@@ -936,7 +945,9 @@ SharedPinnedTabService::CreateDummyWebContents(
   return dummy_contents;
 }
 
-bool SharedPinnedTabService::IsBrowserInTabDragging(Browser* browser) const {
+bool SharedPinnedTabService::IsBrowserInTabDragging(
+    BrowserWindowInterface* browser) const {
   CHECK(browser);
-  return static_cast<BraveBrowserWindow*>(browser->window())->IsInTabDragging();
+  return static_cast<BraveBrowserWindow*>(browser->GetWindow())
+      ->IsInTabDragging();
 }
