@@ -15,28 +15,19 @@
   }
 
   #needsRestart {
-    background-color: #fff;
+    background-color: var(--leo-color-container-background);
     bottom: 0;
     box-shadow: 0 -2px 2px 0 var(--shadow-color);
     box-sizing: border-box;
     left: 0;
     opacity: 1;
-    padding: 16px;
+    padding: var(--leo-spacing-xl) var(--leo-spacing-2xl);
     position: fixed;
     transform: translate(0);
     transition: all 225ms var(--ease-in-out);
     width: 100%;
     z-index: 10;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    #needsRestart {
-      background-color: rgb(22, 23, 25);
-    }
-
-    button.primary {
-      color: white;
-    }
+    border-top: 1px solid var(--leo-color-divider-subtle);
   }
 
   #needsRestart .flex:last-child {
@@ -50,20 +41,10 @@
 
   .flex-container {
     display: flex;
-    padding: 8px 1em;
   }
 
   .restart-notice {
-    font-size: .9375rem;
-    line-height: 1.4;
-  }
-
-  button.primary {
-    background: var(--interactive-color);
-    border: 0;
-    border-radius: 3px;
-    font-size: .875rem;
-    padding: 14px 38px;
+    font: var(--leo-font-default-regular);
   }
 
   #resetToDefaults::part(icon) {
@@ -208,10 +189,10 @@
     <div class="flex-container">
       <div class="flex restart-notice">$i18n{braveOriginRestartNotice}</div>
       <div class="flex">
-        <button id="restartButton" class="primary" tabindex="9"
+        <leo-button id="restartButton" kind="filled"
             on-click="restartBrowser_">
           $i18n{relaunchButtonLabel}
-        </button>
+        </leo-button>
       </div>
     </div>
   </div>
