@@ -1493,6 +1493,34 @@ void JsonRpcService::EnsGetContentHash(const std::string& domain,
       std::move(callback));
 }
 
+void JsonRpcService::EnsGetTextRecord(const std::string& domain,
+                                      const std::string& key,
+                                      EnsGetTextRecordCallback callback) {
+  if (ens_get_text_record_tasks_.ContainsTaskForDomain(domain)) {
+    ens_get_text_record_tasks_.AddCallbackForDomain(domain,
+                                                    std::move(callback));
+    return;
+  }
+
+  std::optional<bool> allow_offchain;
+  if (EnsOffchainPrefEnabled(local_state_prefs_)) {
+    allow_offchain = true;
+  } else if (EnsOffchainPrefDisabled(local_state_prefs_)) {
+    allow_offchain = false;
+  }
+
+  auto done_callback = base::BindOnce(
+      &JsonRpcService::OnEnsGetTextRecordTaskDone, base::Unretained(this));
+
+  ens_get_text_record_tasks_.AddTask(
+      std::make_unique<EnsResolverTask>(
+          std::move(done_callback), api_request_helper_.get(),
+          api_request_helper_ens_offchain_.get(),
+          MakeTextRecordCall(domain, key), domain,
+          NetworkManager::GetEnsRpcUrl(), allow_offchain),
+      std::move(callback));
+}
+
 void JsonRpcService::GetUnstoppableDomainsResolveMethod(
     GetUnstoppableDomainsResolveMethodCallback callback) {
   std::move(callback).Run(ToMojomResolveMethod(
@@ -1753,6 +1781,44 @@ void JsonRpcService::OnEnsGetContentHashTaskDone(
   }
 }
 
+void JsonRpcService::OnEnsGetTextRecordTaskDone(
+    EnsResolverTask* task,
+    std::optional<EnsResolverTaskResult> task_result,
+    std::optional<EnsResolverTaskError> task_error) {
+  auto callbacks = ens_get_text_record_tasks_.TaskDone(task);
+  if (callbacks.empty()) {
+    return;
+  }
+
+  std::string value;
+  mojom::ProviderError error =
+      task_error ? task_error->error : mojom::ProviderError::kSuccess;
+  std::string error_message = task_error ? task_error->error_message : "";
+
+  if (task_result && !task_result->resolved_result.empty()) {
+    auto extracted =
+        eth_abi::ExtractStringFromTuple(task_result->resolved_result, 0);
+    if (extracted) {
+      value = std::move(*extracted);
+    } else {
+      error = mojom::ProviderError::kInvalidParams;
+      error_message = l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS);
+    }
+  }
+
+  bool require_offchain_consent =
+      (task_result ? task_result->need_to_allow_offchain : false);
+  if (require_offchain_consent && EnsOffchainPrefDisabled(local_state_prefs_)) {
+    require_offchain_consent = false;
+    error = mojom::ProviderError::kInvalidParams;
+    error_message = l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS);
+  }
+
+  for (auto& cb : callbacks) {
+    std::move(cb).Run(value, require_offchain_consent, error, error_message);
+  }
+}
+
 void JsonRpcService::UnstoppableDomainsResolveDns(
     const std::string& domain,
     UnstoppableDomainsResolveDnsCallback callback) {
@@ -1818,6 +1884,73 @@ void JsonRpcService::OnUnstoppableDomainsResolveDns(
   }
 
   ud_resolve_dns_calls_.SetResult(domain, chain_id, std::move(resolved_url));
+}
+
+void JsonRpcService::UnstoppableDomainsGetWebcatCid(
+    const std::string& domain,
+    UnstoppableDomainsGetWebcatCidCallback callback) {
+  if (ud_get_webcat_cid_calls_.HasCall(domain)) {
+    ud_get_webcat_cid_calls_.AddCallback(domain, std::move(callback));
+    return;
+  }
+
+  if (!IsValidUnstoppableDomain(domain)) {
+    std::move(callback).Run(
+        std::string(), mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  auto data = unstoppable_domains::GetMany(domain);
+  if (!data) {
+    std::move(callback).Run(
+        std::string(), mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  ud_get_webcat_cid_calls_.AddCallback(domain, std::move(callback));
+  for (const auto [chain_id, address] :
+       kUnstoppableDomainsProxyReaderContractAddresses) {
+    auto internal_callback = base::BindOnce(
+        &JsonRpcService::OnUnstoppableDomainsGetWebcatCid,
+        weak_ptr_factory_.GetWeakPtr(), domain, std::string(chain_id));
+
+    RequestInternal(eth::GetCallPayload(address, *data), true,
+                    NetworkManager::GetUnstoppableDomainsRpcUrl(chain_id),
+                    std::move(internal_callback));
+  }
+}
+
+void JsonRpcService::OnUnstoppableDomainsGetWebcatCid(
+    const std::string& domain,
+    const std::string& chain_id,
+    APIRequestResult api_request_result) {
+  if (!api_request_result.Is2XXResponseCode()) {
+    ud_get_webcat_cid_calls_.SetError(
+        domain, chain_id, mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  auto values = eth::ParseUnstoppableDomainsProxyReaderGetMany(
+      api_request_result.value_body());
+  if (!values) {
+    mojom::ProviderError error;
+    std::string error_message;
+    ParseErrorResult<mojom::ProviderError>(api_request_result.value_body(),
+                                           &error, &error_message);
+    ud_get_webcat_cid_calls_.SetError(domain, chain_id, error, error_message);
+    return;
+  }
+
+  auto cid = unstoppable_domains::ExtractWebcatCid(*values);
+  if (!cid) {
+    ud_get_webcat_cid_calls_.SetNoResult(domain, chain_id);
+    return;
+  }
+
+  ud_get_webcat_cid_calls_.SetResult(domain, chain_id, std::move(*cid));
 }
 
 void JsonRpcService::UnstoppableDomainsGetWalletAddr(

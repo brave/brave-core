@@ -85,6 +85,15 @@ class JsonRpcService : public mojom::JsonRpcService {
                               bool require_offchain_consent,
                               mojom::ProviderError error,
                               const std::string& error_message)>;
+  using EnsGetTextRecordCallback =
+      base::OnceCallback<void(const std::string& value,
+                              bool require_offchain_consent,
+                              mojom::ProviderError error,
+                              const std::string& error_message)>;
+  using UnstoppableDomainsGetWebcatCidCallback =
+      base::OnceCallback<void(const std::string& cid,
+                              mojom::ProviderError error,
+                              const std::string& error_message)>;
   using GetBlockNumberCallback =
       base::OnceCallback<void(uint256_t result,
                               mojom::ProviderError error,
@@ -204,6 +213,14 @@ class JsonRpcService : public mojom::JsonRpcService {
 
   void EnsGetContentHash(const std::string& domain,
                          EnsGetContentHashCallback callback) override;
+
+  void EnsGetTextRecord(const std::string& domain,
+                        const std::string& key,
+                        EnsGetTextRecordCallback callback);
+
+  void UnstoppableDomainsGetWebcatCid(
+      const std::string& domain,
+      UnstoppableDomainsGetWebcatCidCallback callback);
 
   void GetUnstoppableDomainsResolveMethod(
       GetUnstoppableDomainsResolveMethodCallback callback) override;
@@ -651,6 +668,14 @@ class JsonRpcService : public mojom::JsonRpcService {
       EnsResolverTask* task,
       std::optional<EnsResolverTaskResult> task_result,
       std::optional<EnsResolverTaskError> error);
+  void OnEnsGetTextRecordTaskDone(
+      EnsResolverTask* task,
+      std::optional<EnsResolverTaskResult> task_result,
+      std::optional<EnsResolverTaskError> error);
+  void OnUnstoppableDomainsGetWebcatCid(
+      const std::string& domain,
+      const std::string& chain_id,
+      APIRequestResult api_request_result);
   void OnSnsGetSolAddrTaskDone(SnsResolverTask* task,
                                std::optional<SnsResolverTaskResult> task_result,
                                std::optional<SnsResolverTaskError> error);
@@ -824,12 +849,16 @@ class JsonRpcService : public mojom::JsonRpcService {
       ud_get_eth_addr_calls_;
   unstoppable_domains::MultichainCalls<std::string, std::optional<GURL>>
       ud_resolve_dns_calls_;
+  unstoppable_domains::MultichainCalls<std::string, std::optional<std::string>>
+      ud_get_webcat_cid_calls_;
 
   mojo::RemoteSet<mojom::JsonRpcServiceObserver> observers_;
 
   EnsResolverTaskContainer<EnsGetEthAddrCallback> ens_get_eth_addr_tasks_;
   EnsResolverTaskContainer<EnsGetContentHashCallback>
       ens_get_content_hash_tasks_;
+  EnsResolverTaskContainer<EnsGetTextRecordCallback>
+      ens_get_text_record_tasks_;
 
   SnsResolverTaskContainer<SnsGetSolAddrCallback> sns_get_sol_addr_tasks_;
   SnsResolverTaskContainer<SnsResolveHostCallback> sns_resolve_host_tasks_;
