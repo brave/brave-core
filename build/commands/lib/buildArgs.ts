@@ -183,10 +183,6 @@ export function getBuildArgs(config: Config) {
     args.last_chrome_installer = config.last_chrome_installer
   }
 
-  if (process.platform === 'darwin') {
-    args.allow_runtime_configurable_key_storage = true
-  }
-
   if (
     config.isDebug()
     && !config.isComponentBuild()
