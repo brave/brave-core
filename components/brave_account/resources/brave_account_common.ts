@@ -8,12 +8,15 @@ import { leoShowAlert } from '//resources/brave/leo.bundle.js'
 import { loadTimeData } from '//resources/js/load_time_data.js'
 
 import {
+  LoginClientErrorCode,
   LoginError,
-  LoginErrorCode,
+  LoginServerErrorCode,
+  RegisterClientErrorCode,
   RegisterError,
-  RegisterErrorCode,
+  RegisterServerErrorCode,
+  ResendConfirmationEmailClientErrorCode,
   ResendConfirmationEmailError,
-  ResendConfirmationEmailErrorCode,
+  ResendConfirmationEmailServerErrorCode,
 } from './brave_account.mojom-webui.js'
 import { BraveAccountStrings } from './brave_components_webui_strings.js'
 
@@ -22,87 +25,97 @@ export type Error =
   | { kind: 'register'; details: RegisterError }
   | { kind: 'resendConfirmationEmail'; details: ResendConfirmationEmailError }
 
-const LOGIN_ERROR_STRINGS: Partial<Record<LoginErrorCode, string>> = {
-  [LoginErrorCode.kEmailNotVerified]:
+const LOGIN_SERVER_ERROR_STRINGS: Partial<
+  Record<LoginServerErrorCode, string>
+> = {
+  [LoginServerErrorCode.kEmailNotVerified]:
     BraveAccountStrings.BRAVE_ACCOUNT_LOGIN_EMAIL_NOT_VERIFIED,
-  [LoginErrorCode.kIncorrectEmail]:
+  [LoginServerErrorCode.kIncorrectEmail]:
     BraveAccountStrings.BRAVE_ACCOUNT_LOGIN_INCORRECT_EMAIL,
-  [LoginErrorCode.kIncorrectPassword]:
+  [LoginServerErrorCode.kIncorrectPassword]:
     BraveAccountStrings.BRAVE_ACCOUNT_LOGIN_INCORRECT_PASSWORD,
 }
 
-const REGISTER_ERROR_STRINGS: Partial<Record<RegisterErrorCode, string>> = {
-  [RegisterErrorCode.kAccountExists]:
+const REGISTER_SERVER_ERROR_STRINGS: Partial<
+  Record<RegisterServerErrorCode, string>
+> = {
+  [RegisterServerErrorCode.kAccountExists]:
     BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_ACCOUNT_EXISTS,
-  [RegisterErrorCode.kEmailDomainNotSupported]:
+  [RegisterServerErrorCode.kEmailDomainNotSupported]:
     BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_EMAIL_DOMAIN_NOT_SUPPORTED,
-  [RegisterErrorCode.kTooManyVerifications]:
+  [RegisterServerErrorCode.kTooManyVerifications]:
     BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_TOO_MANY_VERIFICATIONS,
-  [RegisterErrorCode.kVerificationNotFoundOrInvalidIdOrCode]:
+  [RegisterServerErrorCode.kVerificationNotFoundOrInvalidIdOrCode]:
     BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_VERIFICATION_NOT_FOUND_OR_INVALID_ID_OR_CODE,
-  [RegisterErrorCode.kMaximumCodeVerificationAttemptsExceeded]:
+  [RegisterServerErrorCode.kMaximumCodeVerificationAttemptsExceeded]:
     BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED,
-  [RegisterErrorCode.kInvalidVerificationCode]:
+  [RegisterServerErrorCode.kInvalidVerificationCode]:
     BraveAccountStrings.BRAVE_ACCOUNT_REGISTER_INVALID_VERIFICATION_CODE,
 }
 
-const RESEND_CONFIRMATION_EMAIL_ERROR_STRINGS: Partial<
-  Record<ResendConfirmationEmailErrorCode, string>
+const RESEND_CONFIRMATION_EMAIL_SERVER_ERROR_STRINGS: Partial<
+  Record<ResendConfirmationEmailServerErrorCode, string>
 > = {
-  [ResendConfirmationEmailErrorCode.kMaximumEmailSendAttemptsExceeded]:
+  [ResendConfirmationEmailServerErrorCode.kMaximumEmailSendAttemptsExceeded]:
     BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_SEND_ATTEMPTS_EXCEEDED,
-  [ResendConfirmationEmailErrorCode.kEmailAlreadyVerified]:
+  [ResendConfirmationEmailServerErrorCode.kEmailAlreadyVerified]:
     BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED,
 }
 
 function getErrorMessageImpl<
-  T extends
-    | LoginErrorCode
-    | RegisterErrorCode
-    | ResendConfirmationEmailErrorCode,
+  ClientErrorCode extends
+    | LoginClientErrorCode
+    | RegisterClientErrorCode
+    | ResendConfirmationEmailClientErrorCode,
+  ServerErrorCode extends
+    | LoginServerErrorCode
+    | RegisterServerErrorCode
+    | ResendConfirmationEmailServerErrorCode,
 >(
-  errorStrings: Partial<Record<T, string>>,
-  details: { netErrorOrHttpStatus: number | null; errorCode: T | null },
+  serverErrorStrings: Partial<Record<ServerErrorCode, string>>,
+  error: {
+    clientError?: { errorCode: ClientErrorCode } | null
+    serverError?: {
+      netErrorOrHttpStatus: number
+      errorCode: ServerErrorCode
+    } | null
+  },
 ): string {
-  const { netErrorOrHttpStatus, errorCode } = details
-
   const errorLabel = loadTimeData.getString(
     BraveAccountStrings.BRAVE_ACCOUNT_ERROR,
   )
 
-  if (netErrorOrHttpStatus == null) {
-    // client-side error
+  if (error.clientError) {
     return loadTimeData.getStringF(
       BraveAccountStrings.BRAVE_ACCOUNT_CLIENT_ERROR,
-      errorCode != null ? ` (${errorLabel}=${errorCode})` : '',
+      ` (${errorLabel}=${error.clientError.errorCode})`,
     )
   }
 
-  // server-side error
-  const specificErrorMessage =
-    errorCode != null && errorStrings[errorCode]
-      ? loadTimeData.getString(errorStrings[errorCode])
-      : null
+  const serverError = error.serverError!
+  const stringId = serverErrorStrings[serverError.errorCode]
+  if (stringId) {
+    return loadTimeData.getString(stringId)
+  }
 
-  return (
-    specificErrorMessage
-    ?? loadTimeData.getStringF(
-      BraveAccountStrings.BRAVE_ACCOUNT_SERVER_ERROR,
-      `${netErrorOrHttpStatus > 0 ? 'HTTP' : 'NET'}=${netErrorOrHttpStatus}`,
-      errorCode != null ? `, ${errorLabel}=${errorCode}` : '',
-    )
+  return loadTimeData.getStringF(
+    BraveAccountStrings.BRAVE_ACCOUNT_SERVER_ERROR,
+    `${serverError.netErrorOrHttpStatus > 0 ? 'HTTP' : 'NET'}=${
+      serverError.netErrorOrHttpStatus
+    }`,
+    `, ${errorLabel}=${serverError.errorCode}`,
   )
 }
 
 function getErrorMessage(error: Error): string {
   switch (error.kind) {
     case 'login':
-      return getErrorMessageImpl(LOGIN_ERROR_STRINGS, error.details)
+      return getErrorMessageImpl(LOGIN_SERVER_ERROR_STRINGS, error.details)
     case 'register':
-      return getErrorMessageImpl(REGISTER_ERROR_STRINGS, error.details)
+      return getErrorMessageImpl(REGISTER_SERVER_ERROR_STRINGS, error.details)
     case 'resendConfirmationEmail':
       return getErrorMessageImpl(
-        RESEND_CONFIRMATION_EMAIL_ERROR_STRINGS,
+        RESEND_CONFIRMATION_EMAIL_SERVER_ERROR_STRINGS,
         error.details,
       )
   }

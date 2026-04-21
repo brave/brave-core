@@ -20,8 +20,10 @@ import {
   AccountState,
   AccountStateFieldTags,
   ResendConfirmationEmailError,
-  ResendConfirmationEmailErrorCode,
+  ResendConfirmationEmailErrorFieldTags,
+  ResendConfirmationEmailServerErrorCode,
   whichAccountState,
+  whichResendConfirmationEmailError,
 } from '../brave_account.mojom-webui.js'
 import { getCss } from './brave_account_row.css.js'
 import { getHtml } from './brave_account_row.html.js'
@@ -105,8 +107,10 @@ export class SettingsBraveAccountRowElement extends I18nMixinLit(CrLitElement) {
         error = e as ResendConfirmationEmailError
       } else {
         console.error('Unexpected error:', e)
-        error = { netErrorOrHttpStatus: null, errorCode: null }
+        return
       }
+    } finally {
+      this.isResendingConfirmationEmail = false
     }
 
     leoShowAlert({
@@ -122,8 +126,6 @@ export class SettingsBraveAccountRowElement extends I18nMixinLit(CrLitElement) {
               BraveAccountSettingsStrings
                    .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS)
     }, 30000)
-
-    this.isResendingConfirmationEmail = false
   }
 
   protected onCancelRegistrationButtonClicked() {
@@ -236,46 +238,42 @@ export class SettingsBraveAccountRowElement extends I18nMixinLit(CrLitElement) {
       : stateHtml[whichAccountState(this.state)]()
   }
 
-  private getErrorMessage(details: ResendConfirmationEmailError): string {
-    const ERROR_STRINGS: Partial<
-      Record<ResendConfirmationEmailErrorCode, string>
+  private getErrorMessage(error: ResendConfirmationEmailError): string {
+    const SERVER_ERROR_STRINGS: Partial<
+      Record<ResendConfirmationEmailServerErrorCode, string>
     > = {
-      [ResendConfirmationEmailErrorCode.kMaximumEmailSendAttemptsExceeded]:
-        this.i18n(
-            BraveAccountSettingsStrings
-                 .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_SEND_ATTEMPTS_EXCEEDED),
-      [ResendConfirmationEmailErrorCode.kEmailAlreadyVerified]:
-        this.i18n(
-            BraveAccountSettingsStrings
-                 .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED),
+      [ResendConfirmationEmailServerErrorCode
+          .kMaximumEmailSendAttemptsExceeded]:
+        BraveAccountSettingsStrings
+             .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_SEND_ATTEMPTS_EXCEEDED,
+      [ResendConfirmationEmailServerErrorCode.kEmailAlreadyVerified]:
+        BraveAccountSettingsStrings
+             .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED,
     }
 
-    const { netErrorOrHttpStatus, errorCode } = details
+    const errorLabel = this.i18n(
+        BraveAccountSettingsStrings.BRAVE_ACCOUNT_ERROR)
 
-    if (netErrorOrHttpStatus == null) {
-      // client-side error
+    if (whichResendConfirmationEmailError(error)
+            === ResendConfirmationEmailErrorFieldTags.CLIENT_ERROR) {
       return this.i18n(
           BraveAccountSettingsStrings.BRAVE_ACCOUNT_CLIENT_ERROR,
-          errorCode != null
-            ? ` (${this.i18n(
-                       BraveAccountSettingsStrings
-                            .BRAVE_ACCOUNT_ERROR)}=${errorCode})`
-            : '',
+          ` (${errorLabel}=${error.clientError!.errorCode})`,
       )
     }
 
-    // server-side error
-    return (
-      (errorCode != null ? ERROR_STRINGS[errorCode] : null)
-      ?? this.i18n(
+    const serverError = error.serverError!
+    const stringId = SERVER_ERROR_STRINGS[serverError.errorCode]
+    if (stringId) {
+      return this.i18n(stringId)
+    }
+
+    return this.i18n(
         BraveAccountSettingsStrings.BRAVE_ACCOUNT_SERVER_ERROR,
-        `${netErrorOrHttpStatus > 0 ? 'HTTP' : 'NET'}=${netErrorOrHttpStatus}`,
-        errorCode != null
-          ? `, ${this.i18n(
-                     BraveAccountSettingsStrings
-                          .BRAVE_ACCOUNT_ERROR)}=${errorCode}`
-          : '',
-      )
+        `${serverError.netErrorOrHttpStatus > 0 ? 'HTTP' : 'NET'}=${
+          serverError.netErrorOrHttpStatus
+        }`,
+        `, ${errorLabel}=${serverError.errorCode}`,
     )
   }
 
