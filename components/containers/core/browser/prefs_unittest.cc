@@ -9,6 +9,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "base/values.h"
+#include "brave/components/containers/core/browser/default_containers_list.h"
 #include "brave/components/containers/core/browser/pref_names.h"
 #include "brave/components/containers/core/browser/prefs_registration.h"
 #include "brave/components/containers/core/common/features.h"
@@ -45,10 +46,14 @@ TEST_F(ContainersPrefsTest, RegisterStoresDefaultContainers) {
   auto containers = GetContainersFromPrefs(prefs_);
   ASSERT_EQ(containers.size(), 4u);
 
-  ExpectDefaultContainer(containers[0], "personal", mojom::Icon::kPersonal);
-  ExpectDefaultContainer(containers[1], "work", mojom::Icon::kWork);
-  ExpectDefaultContainer(containers[2], "social", mojom::Icon::kSocial);
-  ExpectDefaultContainer(containers[3], "school", mojom::Icon::kSchool);
+  ExpectDefaultContainer(containers[0], kDefaultContainerIds[0],
+                         mojom::Icon::kPersonal);
+  ExpectDefaultContainer(containers[1], kDefaultContainerIds[1],
+                         mojom::Icon::kWork);
+  ExpectDefaultContainer(containers[2], kDefaultContainerIds[2],
+                         mojom::Icon::kSocial);
+  ExpectDefaultContainer(containers[3], kDefaultContainerIds[3],
+                         mojom::Icon::kSchool);
 }
 
 TEST_F(ContainersPrefsTest, ModifyDefaultContainers) {
@@ -60,9 +65,12 @@ TEST_F(ContainersPrefsTest, ModifyDefaultContainers) {
 
   containers = GetContainersFromPrefs(prefs_);
   ASSERT_EQ(containers.size(), 3u);
-  ExpectDefaultContainer(containers[0], "work", mojom::Icon::kWork);
-  ExpectDefaultContainer(containers[1], "social", mojom::Icon::kSocial);
-  ExpectDefaultContainer(containers[2], "school", mojom::Icon::kSchool);
+  ExpectDefaultContainer(containers[0], kDefaultContainerIds[1],
+                         mojom::Icon::kWork);
+  ExpectDefaultContainer(containers[1], kDefaultContainerIds[2],
+                         mojom::Icon::kSocial);
+  ExpectDefaultContainer(containers[2], kDefaultContainerIds[3],
+                         mojom::Icon::kSchool);
 }
 
 TEST_F(ContainersPrefsTest, SetAndGetContainerList) {

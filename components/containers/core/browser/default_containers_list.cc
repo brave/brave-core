@@ -21,28 +21,28 @@ std::vector<mojom::ContainerPtr> CreateDefaultContainersList() {
 
   std::vector<mojom::ContainerPtr> default_containers;
 
-  // These default containers have fixed ids to work correctly on Sync chain.
-  // Even if a user renames/changes icon/color, the underlying id will remain
-  // the same on all devices even if the device is not Synced yet. This is a
-  // best effort to preserve containers->tab mapping when the user will enable
-  // the Sync chain.
   default_containers.push_back(mojom::Container::New(
-      "personal",
+      kDefaultContainerIds[0],
       l10n_util::GetStringUTF8(IDS_CONTAINERS_DEFAULT_PERSONAL_NAME),
       mojom::Icon::kPersonal,
       color_provider->GetColor(nala::kColorPrimitiveBlue60)));
   default_containers.push_back(mojom::Container::New(
-      "work", l10n_util::GetStringUTF8(IDS_CONTAINERS_DEFAULT_WORK_NAME),
+      kDefaultContainerIds[1],
+      l10n_util::GetStringUTF8(IDS_CONTAINERS_DEFAULT_WORK_NAME),
       mojom::Icon::kWork,
       color_provider->GetColor(nala::kColorPrimitiveRed60)));
   default_containers.push_back(mojom::Container::New(
-      "social", l10n_util::GetStringUTF8(IDS_CONTAINERS_DEFAULT_SOCIAL_NAME),
+      kDefaultContainerIds[2],
+      l10n_util::GetStringUTF8(IDS_CONTAINERS_DEFAULT_SOCIAL_NAME),
       mojom::Icon::kSocial,
       color_provider->GetColor(nala::kColorPrimitivePurple60)));
   default_containers.push_back(mojom::Container::New(
-      "school", l10n_util::GetStringUTF8(IDS_CONTAINERS_DEFAULT_SCHOOL_NAME),
+      kDefaultContainerIds[3],
+      l10n_util::GetStringUTF8(IDS_CONTAINERS_DEFAULT_SCHOOL_NAME),
       mojom::Icon::kSchool,
       color_provider->GetColor(nala::kColorPrimitiveGreen60)));
+
+  DCHECK_EQ(default_containers.size(), kDefaultContainerIds.size());
 
   return default_containers;
 }
