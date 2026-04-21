@@ -11,6 +11,7 @@
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
+#include "brave/components/serp_metrics/time_period_storage/serp_metrics_pref_time_period_store.h"
 #include "brave/components/serp_metrics/time_period_storage/serp_metrics_scoped_timezone_for_testing.h"
 #include "brave/components/serp_metrics/time_period_storage/serp_metrics_time_period_storage.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -137,9 +138,9 @@ TEST_P(SerpMetricsTimePeriodStorageDSTStartTest,
 
   const auto time_period_storage =
       std::make_unique<SerpMetricsTimePeriodStorage>(
-          &pref_service, kPrefName, /*period_days=*/28,
-          /*should_use_utc=*/false,
-          /*should_offset_dst=*/false);
+          std::make_unique<SerpMetricsPrefTimePeriodStore>(&pref_service,
+                                                           kPrefName),
+          /*period_days=*/28);
 
   // Day 1: the DST start day itself. The local day is shorter than 24 hours.
   time_period_storage->AddDelta(1);

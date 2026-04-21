@@ -49,9 +49,7 @@ BuildTimePeriodStorages(
     time_period_storages.emplace(
         type,
         std::make_unique<SerpMetricsTimePeriodStorage>(
-            std::move(time_period_store), kSerpMetricsTimePeriodInDays.Get(),
-            /*should_use_utc=*/false,
-            /*should_offset_dst=*/false));
+            std::move(time_period_store), kSerpMetricsTimePeriodInDays.Get()));
   }
 
   return time_period_storages;

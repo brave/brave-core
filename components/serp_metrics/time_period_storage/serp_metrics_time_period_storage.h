@@ -11,94 +11,42 @@
 
 #include "base/time/time.h"
 
-namespace base {
-class Clock;
-}
-
-class PrefService;
-
 namespace serp_metrics {
 
 class SerpMetricsTimePeriodStore;
 
-// Allows to track a sum of some values added from time to time via |AddDelta|
+// Allows to track a sum of some values added from time to time via `AddDelta`
 // over the last predefined time period.
-// When using deprecated constructors, |pref_name| must be already registered.
 class SerpMetricsTimePeriodStorage {
  public:
-  // Will use a `SerpMetricsTimePeriodStore` for storage.
   SerpMetricsTimePeriodStorage(
       std::unique_ptr<SerpMetricsTimePeriodStore> store,
-      size_t period_days,
-      bool should_use_utc = false,
-      bool should_offset_dst = true);
-
-  // Will use a list pref for storage. This is a deprecated constructor for
-  // backward compatibility. Use constructor with `SerpMetricsTimePeriodStore`
-  // instead.
-  SerpMetricsTimePeriodStorage(PrefService* prefs,
-                               const char* pref_name,
-                               size_t period_days,
-                               bool should_use_utc = false,
-                               bool should_offset_dst = true);
-  // Will use a list within a dictionary pref for storage. This is a deprecated
-  // constructor for backward compatibility. Use constructor with
-  // `SerpMetricsTimePeriodStore` instead.
-  SerpMetricsTimePeriodStorage(PrefService* prefs,
-                               const char* pref_name,
-                               const char* dict_key,
-                               size_t period_days,
-                               bool should_use_utc = false,
-                               bool should_offset_dst = true);
-
-  // For tests only. Deprecated constructor for backward compatibility. Use
-  // constructor with `SerpMetricsTimePeriodStore` instead.
-  SerpMetricsTimePeriodStorage(PrefService* prefs,
-                               const char* pref_name,
-                               const char* dict_key,
-                               size_t period_days,
-                               std::unique_ptr<base::Clock> clock,
-                               bool should_use_utc = false,
-                               bool should_offset_dst = true);
-  ~SerpMetricsTimePeriodStorage();
+      size_t period_days);
 
   SerpMetricsTimePeriodStorage(const SerpMetricsTimePeriodStorage&) = delete;
   SerpMetricsTimePeriodStorage& operator=(const SerpMetricsTimePeriodStorage&) =
       delete;
 
+  ~SerpMetricsTimePeriodStorage();
+
   void AddDelta(uint64_t delta);
-  void SubDelta(uint64_t delta);
-  void ReplaceTodaysValueIfGreater(uint64_t value);
-  void ReplaceIfGreaterForDate(const base::Time& date, uint64_t value);
   uint64_t GetPeriodSumInTimeRange(const base::Time& start_time,
                                    const base::Time& end_time) const;
   uint64_t GetPeriodSum() const;
-  uint64_t GetHighestValueInPeriod() const;
-  bool IsOnePeriodPassed() const;
 
   void Clear();
-
- protected:
-  std::unique_ptr<base::Clock> clock_;
 
  private:
   struct DailyValue {
     base::Time day;
     uint64_t value = 0ULL;
   };
-  base::Time Midnight(base::Time time) const;
-  // Returns the midnight that starts the calendar day after `time`. Safe
-  // across DST transitions and does not require `time` to be at midnight.
-  base::Time NextMidnight(base::Time time) const;
-  base::TimeDelta GetDstOffset() const;
   void FilterToPeriod();
   void Load();
   void Save();
 
   std::unique_ptr<SerpMetricsTimePeriodStore> store_;
   size_t period_days_;
-  const bool should_use_utc_;
-  const bool should_offset_dst_;
 
   std::list<DailyValue> daily_values_;
 };

@@ -10,6 +10,7 @@
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
+#include "brave/components/serp_metrics/time_period_storage/serp_metrics_pref_time_period_store.h"
 #include "brave/components/serp_metrics/time_period_storage/serp_metrics_scoped_timezone_for_testing.h"
 #include "brave/components/serp_metrics/time_period_storage/serp_metrics_time_period_storage.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -176,9 +177,9 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
   ])JSON"));
 
   time_period_storage_ = std::make_unique<SerpMetricsTimePeriodStorage>(
-      &pref_service_, kPrefName, /*period_days=*/28,
-      /*should_use_utc=*/false,
-      /*should_offset_dst=*/false);
+      std::make_unique<SerpMetricsPrefTimePeriodStore>(&pref_service_,
+                                                       kPrefName),
+      /*period_days=*/28);
 
   // April 10 09:00 CEST (April 10 07:00 UTC).
   base::Time april_10;
@@ -323,9 +324,9 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
       "Europe/Berlin");
 
   time_period_storage_ = std::make_unique<SerpMetricsTimePeriodStorage>(
-      &pref_service_, kPrefName, /*period_days=*/28,
-      /*should_use_utc=*/false,
-      /*should_offset_dst=*/false);
+      std::make_unique<SerpMetricsPrefTimePeriodStore>(&pref_service_,
+                                                       kPrefName),
+      /*period_days=*/28);
 
   base::Time march_13_cet_midnight;
   ASSERT_TRUE(base::Time::FromUTCString("12 Mar 2026 23:00:00",
@@ -496,9 +497,9 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
   const test::SerpMetricsScopedTimezoneForTesting scoped_timezone(
       "Europe/Berlin");
   time_period_storage_ = std::make_unique<SerpMetricsTimePeriodStorage>(
-      &pref_service_, kPrefName, kPeriodDays,
-      /*should_use_utc=*/false,
-      /*should_offset_dst=*/false);
+      std::make_unique<SerpMetricsPrefTimePeriodStore>(&pref_service_,
+                                                       kPrefName),
+      kPeriodDays);
 
   // DST starts in Europe/Berlin at 28 March 2027 01:00:00 UTC. Clocks move
   // forward from 02:00 CET to 03:00 CEST, so the day is 23 hours long.
@@ -539,9 +540,9 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
   const test::SerpMetricsScopedTimezoneForTesting scoped_timezone(
       "Antarctica/Troll");
   time_period_storage_ = std::make_unique<SerpMetricsTimePeriodStorage>(
-      &pref_service_, kPrefName, kPeriodDays,
-      /*should_use_utc=*/false,
-      /*should_offset_dst=*/false);
+      std::make_unique<SerpMetricsPrefTimePeriodStore>(&pref_service_,
+                                                       kPrefName),
+      kPeriodDays);
 
   base::Time dst_start;
   ASSERT_TRUE(base::Time::FromUTCString("28 Mar 2027 01:00:00", &dst_start));
@@ -581,9 +582,9 @@ TEST_F(
   const test::SerpMetricsScopedTimezoneForTesting scoped_timezone(
       "Australia/Lord_Howe");
   time_period_storage_ = std::make_unique<SerpMetricsTimePeriodStorage>(
-      &pref_service_, kPrefName, kPeriodDays,
-      /*should_use_utc=*/false,
-      /*should_offset_dst=*/false);
+      std::make_unique<SerpMetricsPrefTimePeriodStore>(&pref_service_,
+                                                       kPrefName),
+      kPeriodDays);
 
   base::Time dst_start;
   ASSERT_TRUE(base::Time::FromUTCString("2 Oct 2027 15:30:00", &dst_start));
@@ -619,9 +620,9 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
   const test::SerpMetricsScopedTimezoneForTesting scoped_timezone(
       "Europe/Berlin");
   time_period_storage_ = std::make_unique<SerpMetricsTimePeriodStorage>(
-      &pref_service_, kPrefName, kPeriodDays,
-      /*should_use_utc=*/false,
-      /*should_offset_dst=*/false);
+      std::make_unique<SerpMetricsPrefTimePeriodStore>(&pref_service_,
+                                                       kPrefName),
+      kPeriodDays);
 
   // DST ends in Europe/Berlin at 31 October 2027 01:00:00 UTC.
   // Clocks move back from 03:00 CEST to 02:00 CET.
@@ -661,9 +662,9 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
   const test::SerpMetricsScopedTimezoneForTesting scoped_timezone(
       "Europe/Berlin");
   time_period_storage_ = std::make_unique<SerpMetricsTimePeriodStorage>(
-      &pref_service_, kPrefName, kPeriodDays,
-      /*should_use_utc=*/false,
-      /*should_offset_dst=*/false);
+      std::make_unique<SerpMetricsPrefTimePeriodStore>(&pref_service_,
+                                                       kPrefName),
+      kPeriodDays);
 
   base::Time dst_start;
   ASSERT_TRUE(base::Time::FromUTCString("28 Mar 2027 01:00:00", &dst_start));
@@ -686,9 +687,8 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
   // hour. Because of that, the gap between those two midnights is 25 hours.
   // GetPeriodSum() returns 6 rather than 7: the October 28 CEST bucket is at
   // October 27 22:00 UTC, one hour before the window start at October 27
-  // 23:00 UTC (CET midnight minus 6 days). With should_offset_dst=false the
-  // DST offset is not applied to the window boundary, so that bucket falls
-  // outside.
+  // 23:00 UTC (CET midnight minus 6 days). The DST offset is not applied to
+  // the window boundary, so that bucket falls outside.
   EXPECT_EQ(base::test::ParseJson(R"JSON([
       {  // November 3 00:00 CET (November 2 23:00 UTC)
         "day": 1825196400.0,
@@ -729,9 +729,9 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
   // Asia/Tokyo stays on UTC+9 all year, so every local day is exactly 24 hours.
   const test::SerpMetricsScopedTimezoneForTesting scoped_timezone("Asia/Tokyo");
   time_period_storage_ = std::make_unique<SerpMetricsTimePeriodStorage>(
-      &pref_service_, kPrefName, kPeriodDays,
-      /*should_use_utc=*/false,
-      /*should_offset_dst=*/false);
+      std::make_unique<SerpMetricsPrefTimePeriodStore>(&pref_service_,
+                                                       kPrefName),
+      kPeriodDays);
 
   base::Time january_1;
   ASSERT_TRUE(base::Time::FromUTCString("1 Jan 2027 00:00:00", &january_1));
@@ -796,9 +796,9 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
   const test::SerpMetricsScopedTimezoneForTesting scoped_auckland_timezone(
       "Pacific/Auckland");
   time_period_storage_ = std::make_unique<SerpMetricsTimePeriodStorage>(
-      &pref_service_, kPrefName, kPeriodDays,
-      /*should_use_utc=*/false,
-      /*should_offset_dst=*/false);
+      std::make_unique<SerpMetricsPrefTimePeriodStore>(&pref_service_,
+                                                       kPrefName),
+      kPeriodDays);
 
   // In Auckland. Bucket is October 10 00:00 NZDT (October 9 11:00 UTC).
   time_period_storage_->AddDelta(1);
@@ -812,7 +812,6 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
     time_period_storage_->AddDelta(1);
   }  // Returning to Auckland.
 
-  EXPECT_EQ(1U, time_period_storage_->GetHighestValueInPeriod());
   EXPECT_EQ(2U, time_period_storage_->GetPeriodSum());
 }
 
@@ -829,9 +828,9 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
   const test::SerpMetricsScopedTimezoneForTesting scoped_los_angeles_timezone(
       "America/Los_Angeles");
   time_period_storage_ = std::make_unique<SerpMetricsTimePeriodStorage>(
-      &pref_service_, kPrefName, kPeriodDays,
-      /*should_use_utc=*/false,
-      /*should_offset_dst=*/false);
+      std::make_unique<SerpMetricsPrefTimePeriodStore>(&pref_service_,
+                                                       kPrefName),
+      kPeriodDays);
 
   // In Los Angeles. Bucket is October 9 00:00 PDT (October 9 07:00 UTC).
   time_period_storage_->AddDelta(1);
@@ -845,7 +844,6 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
     time_period_storage_->AddDelta(1);
   }  // Returning to Los Angeles.
 
-  EXPECT_EQ(1U, time_period_storage_->GetHighestValueInPeriod());
   EXPECT_EQ(2U, time_period_storage_->GetPeriodSum());
 }
 
