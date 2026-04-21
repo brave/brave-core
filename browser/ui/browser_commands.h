@@ -19,12 +19,12 @@
 #include "url/gurl.h"
 #include "url/origin.h"
 
-#if BUILDFLAG(ENABLE_CONTAINERS)
-#include "brave/components/containers/core/mojom/containers.mojom-forward.h"
-
 namespace actions {
 class ActionItem;
 }
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/core/mojom/containers.mojom-forward.h"
 #endif
 
 class Browser;

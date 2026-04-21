@@ -103,46 +103,6 @@ void PartitionedStoragePageActionController::Init() {
   UpdatePageAction();
 }
 
-void PartitionedStoragePageActionController::UpdatePageAction() {
-  content::WebContents* web_contents = tab_->GetContents();
-  std::optional<containers::ContainerModel> model =
-      GetContainerModelForWebContents(web_contents);
-  if (!model) {
-    page_action_controller_->Hide(kActionShowPartitionedStorage);
-    page_action_controller_->ClearOverrideChipColors(
-        kActionShowPartitionedStorage);
-    page_action_controller_->ClearOverrideHeight(kActionShowPartitionedStorage);
-    page_action_controller_->SetOverrideTriggerableEvent(
-        kActionShowPartitionedStorage, std::nullopt);
-    return;
-  }
-
-  const std::u16string name = base::UTF8ToUTF16(model->name());
-  page_action_controller_->Show(kActionShowPartitionedStorage);
-  page_action_controller_->ShowSuggestionChip(kActionShowPartitionedStorage);
-  page_action_controller_->SetAlwaysShowLabel(kActionShowPartitionedStorage,
-                                              true);
-  page_action_controller_->OverrideImage(kActionShowPartitionedStorage,
-                                         model->icon());
-
-  // So far, we didn't have any limit for the name length, so if we don't
-  // truncate the name, it will make url invisible because the PageActinView
-  // will be too wide.
-  const auto truncated_name =
-      gfx::TruncateString(name, 20, gfx::BreakType::CHARACTER_BREAK);
-  page_action_controller_->OverrideText(kActionShowPartitionedStorage,
-                                        truncated_name);
-
-  page_action_controller_->OverrideAccessibleName(kActionShowPartitionedStorage,
-                                                  name);
-  page_action_controller_->OverrideTooltip(kActionShowPartitionedStorage, name);
-  page_action_controller_->OverrideChipColors(
-      kActionShowPartitionedStorage, model->background_color(), SK_ColorWHITE);
-  page_action_controller_->SetOverrideHeight(kActionShowPartitionedStorage, 20);
-  page_action_controller_->SetOverrideTriggerableEvent(
-      kActionShowPartitionedStorage, ui::EF_RIGHT_MOUSE_BUTTON);
-}
-
 void PartitionedStoragePageActionController::ExecuteAction(
     actions::ActionItem* item) {
   if (menu_runner_ && menu_runner_->IsRunning()) {
@@ -194,6 +154,46 @@ void PartitionedStoragePageActionController::ExecuteAction(
   menu_runner_->RunMenuAt(
       anchor_view->GetWidget(), nullptr, anchor_view->GetAnchorBoundsInScreen(),
       views::MenuAnchorPosition::kTopLeft, ui::mojom::MenuSourceType::kMouse);
+}
+
+void PartitionedStoragePageActionController::UpdatePageAction() {
+  content::WebContents* web_contents = tab_->GetContents();
+  std::optional<containers::ContainerModel> model =
+      GetContainerModelForWebContents(web_contents);
+  if (!model) {
+    page_action_controller_->Hide(kActionShowPartitionedStorage);
+    page_action_controller_->ClearOverrideChipColors(
+        kActionShowPartitionedStorage);
+    page_action_controller_->ClearOverrideHeight(kActionShowPartitionedStorage);
+    page_action_controller_->SetOverrideTriggerableEvent(
+        kActionShowPartitionedStorage, std::nullopt);
+    return;
+  }
+
+  const std::u16string name = base::UTF8ToUTF16(model->name());
+  page_action_controller_->Show(kActionShowPartitionedStorage);
+  page_action_controller_->ShowSuggestionChip(kActionShowPartitionedStorage);
+  page_action_controller_->SetAlwaysShowLabel(kActionShowPartitionedStorage,
+                                              true);
+  page_action_controller_->OverrideImage(kActionShowPartitionedStorage,
+                                         model->icon());
+
+  // So far, we didn't have any limit for the name length, so if we don't
+  // truncate the name, it will make url invisible because the PageActinView
+  // will be too wide.
+  const auto truncated_name =
+      gfx::TruncateString(name, 20, gfx::BreakType::CHARACTER_BREAK);
+  page_action_controller_->OverrideText(kActionShowPartitionedStorage,
+                                        truncated_name);
+
+  page_action_controller_->OverrideAccessibleName(kActionShowPartitionedStorage,
+                                                  name);
+  page_action_controller_->OverrideTooltip(kActionShowPartitionedStorage, name);
+  page_action_controller_->OverrideChipColors(
+      kActionShowPartitionedStorage, model->background_color(), SK_ColorWHITE);
+  page_action_controller_->SetOverrideHeight(kActionShowPartitionedStorage, 20);
+  page_action_controller_->SetOverrideTriggerableEvent(
+      kActionShowPartitionedStorage, ui::EF_RIGHT_MOUSE_BUTTON);
 }
 
 void PartitionedStoragePageActionController::OnPartitionedStorageMenuClosed() {

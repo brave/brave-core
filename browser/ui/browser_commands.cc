@@ -1226,13 +1226,13 @@ void OpenUrlWithoutContainer(BrowserWindowInterface* browser_window,
 void OpenContainerMenuOnPageActionView(BrowserWindowInterface* browser_window,
                                        actions::ActionItem* item) {
   if (!browser_window) {
-    LOG(ERROR) << "Browser window is not valid";
+    DVLOG(1) << "Browser window is not valid";
     return;
   }
 
   tabs::TabInterface* tab = browser_window->GetActiveTabInterface();
   if (!tab) {
-    LOG(ERROR) << "Tab is not valid";
+    DVLOG(1) << "Tab is not valid";
     return;
   }
 
