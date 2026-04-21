@@ -108,7 +108,7 @@ BraveNewTabButton::BraveNewTabButton(
                    fixed_flat_edge,
                    animated_flat_edge,
                    browser_window_interface),
-      browser_window_interface_(browser_window_interface) {}
+      browser_window_interface_(*browser_window_interface) {}
 
 BraveNewTabButton::BraveNewTabButton(
     PressedCallback callback,
@@ -128,7 +128,6 @@ void BraveNewTabButton::ShowContextMenuForViewImpl(
     const gfx::Point& point,
     ui::mojom::MenuSourceType source_type) {
   if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
-    CHECK(browser_window_interface_);
     // Profile is guaranteed to be non-null because it's a
     // BrowserWindowInterface.
     auto* profile = browser_window_interface_->GetProfile();

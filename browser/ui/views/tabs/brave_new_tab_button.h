@@ -70,7 +70,7 @@ class BraveNewTabButton : public NewTabButton {
   std::unique_ptr<views::MenuRunner> containers_context_menu_runner_;
 #endif
 
-  raw_ptr<BrowserWindowInterface> browser_window_interface_;
+  const raw_ref<BrowserWindowInterface> browser_window_interface_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_NEW_TAB_BUTTON_H_
