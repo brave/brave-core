@@ -262,7 +262,7 @@ void AdBlockService::OnResourcesLoaded(
         base::BindOnce(&AdBlockEngineWrapper::LoadDAT,
                        base::Unretained(engine_wrapper_.get()),
                        is_default_engine, std::move(*dat), std::move(storage)),
-        base::BindOnce(&AdBlockService::NotifyOnDATLoaded,
+        base::BindOnce(&AdBlockService::OnDATLoaded,
                        weak_factory_.GetWeakPtr(), is_default_engine));
   } else {
     bool should_cache =
@@ -295,7 +295,7 @@ void AdBlockService::OnResourcesLoaded(
   }
 }
 
-void AdBlockService::NotifyOnDATLoaded(bool is_default_engine, bool success) {
+void AdBlockService::OnDATLoaded(bool is_default_engine, bool success) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (is_default_engine) {
     default_dat_loaded_for_testing_ = true;
@@ -342,25 +342,19 @@ void AdBlockService::OnReadCachedDATFiles(
     std::optional<DATFileDataBuffer> additional_dat) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   // Load cached DATs unconditionally for immediate ad-blocking protection.
-  // If a DAT file is missing or fails to load, NotifyOnDATLoaded will
+  // If a DAT file is missing or fails to load, OnDATLoaded will
   // fall back to loading from filter lists via ForceNotifyObserver.
   if (default_dat) {
     default_service_observer_->OnDATFileRead(std::move(*default_dat));
   } else {
-    NotifyOnDATLoaded(true, false);
-    // Trigger filter list loading
-    filters_provider_manager_->ForceNotifyObserver(*default_service_observer_,
-                                                   true);
+    OnDATLoaded(true, false);
   }
 
   if (additional_dat) {
     additional_filters_service_observer_->OnDATFileRead(
         std::move(*additional_dat));
   } else {
-    NotifyOnDATLoaded(false, false);
-    // Trigger filter list loading
-    filters_provider_manager_->ForceNotifyObserver(
-        *additional_filters_service_observer_, false);
+    OnDATLoaded(false, false);
   }
 }
 
