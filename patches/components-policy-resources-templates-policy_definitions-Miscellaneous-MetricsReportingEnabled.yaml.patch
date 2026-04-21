@@ -1,0 +1,12 @@
+diff --git a/components/policy/resources/templates/policy_definitions/Miscellaneous/MetricsReportingEnabled.yaml b/components/policy/resources/templates/policy_definitions/Miscellaneous/MetricsReportingEnabled.yaml
+index 31df634c993eda0a026459655dc7c2a4605ce694..2e40c7c2546f458a2f42b022bc5d5d2060d22427 100644
+--- a/components/policy/resources/templates/policy_definitions/Miscellaneous/MetricsReportingEnabled.yaml
++++ b/components/policy/resources/templates/policy_definitions/Miscellaneous/MetricsReportingEnabled.yaml
+@@ -27,7 +27,6 @@ owners:
+ - zmin@chromium.org
+ schema:
+   type: boolean
+-sensitive: true
+ supported_on:
+ - chrome.*:8-
+ - ios:88-
