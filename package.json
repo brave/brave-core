@@ -114,7 +114,7 @@
     "@types/bs58": "4.0.4",
     "@types/chrome": "0.0.241",
     "@types/diff": "7.0.1",
-    "@types/dom-navigation": "1.0.3",
+    "@types/dom-navigation": "1.0.7",
     "@types/jest": "30.0.0",
     "@types/jszip": "3.4.1",
     "@types/node": "25.0.3",
