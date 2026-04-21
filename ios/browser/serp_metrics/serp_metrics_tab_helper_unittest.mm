@@ -15,8 +15,8 @@
 #include "brave/components/serp_metrics/serp_metric_type.h"
 #include "brave/components/serp_metrics/serp_metrics.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
-#include "brave/components/time_period_storage/time_period_store.h"
-#include "brave/components/time_period_storage/time_period_store_factory.h"
+#include "brave/components/serp_metrics/time_period_storage/serp_metrics_time_period_store.h"
+#include "brave/components/serp_metrics/time_period_storage/serp_metrics_time_period_store_factory.h"
 #include "brave/ios/browser/brave_stats/brave_stats_prefs.h"
 #include "components/prefs/testing_pref_service.h"
 #include "ios/chrome/test/testing_application_context.h"
@@ -31,7 +31,7 @@ namespace serp_metrics {
 
 namespace {
 
-class FakeTimePeriodStore : public TimePeriodStore {
+class FakeTimePeriodStore : public SerpMetricsTimePeriodStore {
  public:
   FakeTimePeriodStore() = default;
 
@@ -50,7 +50,7 @@ class FakeTimePeriodStore : public TimePeriodStore {
   base::ListValue list_;
 };
 
-class FakeTimePeriodStoreFactory : public TimePeriodStoreFactory {
+class FakeTimePeriodStoreFactory : public SerpMetricsTimePeriodStoreFactory {
  public:
   FakeTimePeriodStoreFactory() = default;
 
@@ -60,7 +60,7 @@ class FakeTimePeriodStoreFactory : public TimePeriodStoreFactory {
 
   ~FakeTimePeriodStoreFactory() override = default;
 
-  std::unique_ptr<TimePeriodStore> Build(
+  std::unique_ptr<SerpMetricsTimePeriodStore> Build(
       const char* metric_name) const override {
     return std::make_unique<FakeTimePeriodStore>();
   }

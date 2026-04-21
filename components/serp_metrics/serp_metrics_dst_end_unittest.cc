@@ -16,7 +16,7 @@
 #include "brave/components/serp_metrics/serp_metric_type.h"
 #include "brave/components/serp_metrics/serp_metrics.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
-#include "brave/components/time_period_storage/scoped_timezone_for_testing.h"
+#include "brave/components/serp_metrics/time_period_storage/serp_metrics_scoped_timezone_for_testing.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -78,7 +78,7 @@ class SerpMetricsDSTEndTest
 
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
-  const ScopedTimezoneForTesting scoped_timezone_;
+  const test::SerpMetricsScopedTimezoneForTesting scoped_timezone_;
   base::test::ScopedFeatureList scoped_feature_list_;
   TestingPrefServiceSimple local_state_;
   std::unique_ptr<SerpMetrics> serp_metrics_;

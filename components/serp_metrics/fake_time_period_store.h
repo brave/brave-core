@@ -9,13 +9,13 @@
 #include <memory>
 
 #include "base/values.h"
-#include "brave/components/time_period_storage/time_period_store.h"
-#include "brave/components/time_period_storage/time_period_store_factory.h"
+#include "brave/components/serp_metrics/time_period_storage/serp_metrics_time_period_store.h"
+#include "brave/components/serp_metrics/time_period_storage/serp_metrics_time_period_store_factory.h"
 
 namespace serp_metrics::test {
 
-// In-memory `TimePeriodStore` for use in tests.
-class FakeTimePeriodStore : public TimePeriodStore {
+// In-memory `SerpMetricsTimePeriodStore` for use in tests.
+class FakeTimePeriodStore : public SerpMetricsTimePeriodStore {
  public:
   FakeTimePeriodStore() = default;
 
@@ -34,8 +34,9 @@ class FakeTimePeriodStore : public TimePeriodStore {
   base::ListValue list_;
 };
 
-// `TimePeriodStoreFactory` that builds `FakeTimePeriodStore` instances.
-class FakeTimePeriodStoreFactory : public TimePeriodStoreFactory {
+// `SerpMetricsTimePeriodStoreFactory` that builds `FakeTimePeriodStore`
+// instances.
+class FakeTimePeriodStoreFactory : public SerpMetricsTimePeriodStoreFactory {
  public:
   FakeTimePeriodStoreFactory() = default;
 
@@ -45,7 +46,7 @@ class FakeTimePeriodStoreFactory : public TimePeriodStoreFactory {
 
   ~FakeTimePeriodStoreFactory() override = default;
 
-  std::unique_ptr<TimePeriodStore> Build(
+  std::unique_ptr<SerpMetricsTimePeriodStore> Build(
       const char* metric_name) const override;
 };
 

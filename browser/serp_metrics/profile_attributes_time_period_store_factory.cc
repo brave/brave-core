@@ -3,25 +3,26 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/serp_metrics/serp_metrics_time_period_store_factory.h"
+#include "brave/browser/serp_metrics/profile_attributes_time_period_store_factory.h"
 
 #include <memory>
 
 #include "base/check.h"
-#include "brave/browser/serp_metrics/serp_metrics_time_period_store.h"
+#include "brave/browser/serp_metrics/profile_attributes_time_period_store.h"
 
 namespace serp_metrics {
 
-SerpMetricsTimePeriodStoreFactory::SerpMetricsTimePeriodStoreFactory(
-    const base::FilePath& profile_path,
-    ProfileAttributesStorage& profile_attributes_storage)
+ProfileAttributesTimePeriodStoreFactory::
+    ProfileAttributesTimePeriodStoreFactory(
+        const base::FilePath& profile_path,
+        ProfileAttributesStorage& profile_attributes_storage)
     : profile_path_(profile_path),
       profile_attributes_storage_(profile_attributes_storage) {}
 
-std::unique_ptr<TimePeriodStore> SerpMetricsTimePeriodStoreFactory::Build(
-    const char* metric_name) const {
+std::unique_ptr<SerpMetricsTimePeriodStore>
+ProfileAttributesTimePeriodStoreFactory::Build(const char* metric_name) const {
   CHECK(metric_name);
-  return std::make_unique<SerpMetricsTimePeriodStore>(
+  return std::make_unique<ProfileAttributesTimePeriodStore>(
       profile_path_, profile_attributes_storage_.get(), metric_name);
 }
 

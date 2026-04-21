@@ -14,14 +14,15 @@
 #include "brave/components/serp_metrics/serp_metric_type.h"
 
 class PrefService;
-class TimePeriodStorage;
-class TimePeriodStoreFactory;
 
 namespace base {
 class Time;
 }  // namespace base
 
 namespace serp_metrics {
+
+class SerpMetricsTimePeriodStorage;
+class SerpMetricsTimePeriodStoreFactory;
 
 // SerpMetrics records and aggregates search engine usage counts.
 //
@@ -34,8 +35,9 @@ namespace serp_metrics {
 
 class SerpMetrics final {
  public:
-  SerpMetrics(PrefService* local_state,
-              const TimePeriodStoreFactory& time_period_store_factory);
+  SerpMetrics(
+      PrefService* local_state,
+      const SerpMetricsTimePeriodStoreFactory& time_period_store_factory);
 
   SerpMetrics(const SerpMetrics&) = delete;
   SerpMetrics& operator=(const SerpMetrics&) = delete;
@@ -49,8 +51,9 @@ class SerpMetrics final {
 
   void ClearHistory();
 
-  // Test helpers to return the total search count stored in `TimePeriodStorage`
-  // without filtering by time range or staleness.
+  // Test helpers to return the total search count stored in
+  // `SerpMetricsTimePeriodStorage` without filtering by time range or
+  // staleness.
   size_t GetSearchCountForTesting(SerpMetricType type) const;
 
  private:
@@ -63,7 +66,7 @@ class SerpMetrics final {
 
   const raw_ptr<PrefService> local_state_;  // Not owned.
 
-  base::flat_map<SerpMetricType, std::unique_ptr<TimePeriodStorage>>
+  base::flat_map<SerpMetricType, std::unique_ptr<SerpMetricsTimePeriodStorage>>
       time_period_storages_;
 };
 

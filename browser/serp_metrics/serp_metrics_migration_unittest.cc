@@ -12,11 +12,11 @@
 #include "base/files/file_path.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
-#include "brave/browser/serp_metrics/serp_metrics_time_period_store_factory.h"
+#include "brave/browser/serp_metrics/profile_attributes_time_period_store_factory.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/serp_metrics/pref_names.h"
 #include "brave/components/serp_metrics/serp_metrics.h"
-#include "brave/components/time_period_storage/pref_time_period_store_factory.h"
+#include "brave/components/serp_metrics/time_period_storage/serp_metrics_pref_time_period_store_factory.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -37,7 +37,7 @@ std::unique_ptr<SerpMetrics> CreateProfilePrefsSerpMetrics(
     PrefService* prefs) {
   return std::make_unique<SerpMetrics>(
       local_state,
-      PrefTimePeriodStoreFactory(
+      SerpMetricsPrefTimePeriodStoreFactory(
           prefs, prefs::kDeprecatedSerpMetricsTimePeriodStorage.data()));
 }
 
@@ -94,7 +94,7 @@ TEST_F(SerpMetricsMigrationTest, MigrateFromEmptySerpMetrics) {
                                              profile_attributes_entry());
 
   std::unique_ptr<SerpMetrics> serp_metrics = std::make_unique<SerpMetrics>(
-      local_state(), SerpMetricsTimePeriodStoreFactory(
+      local_state(), ProfileAttributesTimePeriodStoreFactory(
                          profile_path(), profile_attributes_storage()));
   ASSERT_TRUE(serp_metrics);
 
@@ -138,7 +138,7 @@ TEST_F(SerpMetricsMigrationTest, MigrateFromNonEmptySerpMetrics) {
                   .empty());
 
   std::unique_ptr<SerpMetrics> serp_metrics = std::make_unique<SerpMetrics>(
-      local_state(), SerpMetricsTimePeriodStoreFactory(
+      local_state(), ProfileAttributesTimePeriodStoreFactory(
                          profile_path(), profile_attributes_storage()));
   ASSERT_TRUE(serp_metrics);
 
@@ -177,7 +177,7 @@ TEST_F(SerpMetricsMigrationTest,
                   .empty());
 
   std::unique_ptr<SerpMetrics> serp_metrics = std::make_unique<SerpMetrics>(
-      local_state(), SerpMetricsTimePeriodStoreFactory(
+      local_state(), ProfileAttributesTimePeriodStoreFactory(
                          profile_path(), profile_attributes_storage()));
   ASSERT_TRUE(serp_metrics);
 
@@ -222,7 +222,7 @@ TEST_F(SerpMetricsMigrationTest, DoubleMigrationIsNoOp) {
                   .empty());
 
   std::unique_ptr<SerpMetrics> serp_metrics = std::make_unique<SerpMetrics>(
-      local_state(), SerpMetricsTimePeriodStoreFactory(
+      local_state(), ProfileAttributesTimePeriodStoreFactory(
                          profile_path(), profile_attributes_storage()));
   ASSERT_TRUE(serp_metrics);
 

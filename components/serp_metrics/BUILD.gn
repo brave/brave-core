@@ -21,7 +21,7 @@ static_library("serp_metrics") {
 
   public_deps = [
     "//base",
-    "//brave/components/time_period_storage",
+    "//brave/components/serp_metrics/time_period_storage",
     "//components/keyed_service/core",
     "//url",
   ]
@@ -60,7 +60,7 @@ source_set("test_support") {
 
   deps = [
     "//base",
-    "//brave/components/time_period_storage",
+    "//brave/components/serp_metrics/time_period_storage",
     "//testing/gtest",
   ]
 }
@@ -92,7 +92,8 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/components/constants",
     "//brave/components/search_engines",
-    "//brave/components/time_period_storage:test_support",
+    "//brave/components/serp_metrics/time_period_storage:test_support",
+    "//brave/components/serp_metrics/time_period_storage:unit_tests",
     "//components/prefs",
     "//components/prefs:test_support",
     "//components/regional_capabilities",
