@@ -669,7 +669,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "Brave AI Chat Detailed Page Content Extraction",               \
           "Uses optimization_guide-based page content extraction as the " \
           "default method for AI Chat page context.",                     \
-          kOsWin | kOsMac | kOsLinux,                                     \
+          kOsWin | kOsMac | kOsLinux | lOsAndroid,                        \
           FEATURE_VALUE_TYPE(                                             \
               ai_chat::features::kAIChatDetailedPageContentExtraction),   \
       }))
