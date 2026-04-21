@@ -62,6 +62,7 @@ class BraveWebClient : public ChromeWebClient {
 
   void DidResetConfiguration(web::BrowserState* browser_state,
                              WKWebViewConfiguration* configuration) override;
+  bool IsSmoothScrollingSupported() const override;
 
  private:
   std::string legacy_user_agent_;
