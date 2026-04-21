@@ -36,7 +36,7 @@ class Ads {
 
   virtual ~Ads() = default;
 
-  static std::unique_ptr<Ads> CreateInstance(
+  [[nodiscard]] static std::unique_ptr<Ads> CreateInstance(
       AdsClient& ads_client,
       const base::FilePath& database_path);
 
