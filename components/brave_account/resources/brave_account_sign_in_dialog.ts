@@ -11,7 +11,10 @@ import {
 } from './brave_account_browser_proxy.js'
 import { getCss } from './brave_account_sign_in_dialog.css.js'
 import { getHtml } from './brave_account_sign_in_dialog.html.js'
-import { LoginError, LoginErrorCode } from './brave_account.mojom-webui.js'
+import {
+  LoginClientErrorCode,
+  LoginError,
+} from './brave_account.mojom-webui.js'
 import { showError } from './brave_account_common.js'
 
 // @ts-expect-error
@@ -72,12 +75,11 @@ export class BraveAccountSignInDialogElement extends CrLitElement {
         error = e as LoginError
       } else if (typeof e === 'string') {
         error = {
-          netErrorOrHttpStatus: null,
-          errorCode: LoginErrorCode.kOpaqueError,
+          clientError: { errorCode: LoginClientErrorCode.kOpaqueError },
         }
       } else {
         console.error('Unexpected error:', e)
-        error = { netErrorOrHttpStatus: null, errorCode: null }
+        return
       }
 
       showError({ kind: 'login', details: error })

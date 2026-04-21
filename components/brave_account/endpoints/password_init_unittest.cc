@@ -10,6 +10,7 @@
 #include "base/no_destructor.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_account/endpoints/endpoint_test.h"
+#include "net/base/net_errors.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -21,9 +22,9 @@ bool operator==(const PasswordInit::Response::SuccessBody& lhs,
          lhs.verification_token == rhs.verification_token;
 }
 
-using PasswordInitTestCase = EndpointTestCase<PasswordInit>;
-
 namespace {
+
+using PasswordInitTestCase = EndpointTestCase<PasswordInit>;
 
 const PasswordInitTestCase* Success() {
   static const base::NoDestructor<PasswordInitTestCase> kSuccess(
@@ -50,26 +51,46 @@ const PasswordInitTestCase* Success() {
 //   - { "code": 13004, "error": "account already exists", "status": 400 }
 //   - { "code": 13006, "error": "email domain is not supported", "status": 400 }
 // - HTTP 401:
-//   - { "code": 0, "error": "Unauthorized", "status": 401 }
+//   - { "code": null, "error": "Unauthorized", "status": 401 }
 // - HTTP 5XX:
-//   - { "code": 0, "error": "Internal Server Error", "status": <5xx> }
+//   - { "code": null, "error": "Internal Server Error", "status": <5xx> }
 // clang-format on
-const PasswordInitTestCase* ApplicationJsonError() {
-  static const base::NoDestructor<PasswordInitTestCase> kApplicationJsonError(
-      {.test_name = "application_json_error",
-       .http_status_code = net::HTTP_BAD_REQUEST,
-       .raw_response_body =
-           R"({ "code": 13004,
-                "error": "account already exists",
-                "status": 400 })",
-       .expected_response = {.net_error = net::OK,
-                             .status_code = net::HTTP_BAD_REQUEST,
-                             .body = base::unexpected([] {
-                               PasswordInit::Response::ErrorBody error;
-                               error.code = base::Value(13004);
-                               return error;
-                             }())}});
-  return kApplicationJsonError.get();
+const PasswordInitTestCase* ApplicationJsonErrorCodeIsNull() {
+  static const base::NoDestructor<PasswordInitTestCase>
+      kApplicationJsonErrorCodeIsNull(
+          {.test_name = "application_json_error_code_is_null",
+           .http_status_code = net::HTTP_UNAUTHORIZED,
+           .raw_response_body =
+               R"({ "code": null,
+                    "error": "Unauthorized",
+                    "status": 401 })",
+           .expected_response = {.net_error = net::OK,
+                                 .status_code = net::HTTP_UNAUTHORIZED,
+                                 .body = base::unexpected([] {
+                                   PasswordInit::Response::ErrorBody body;
+                                   body.code = base::Value();
+                                   return body;
+                                 }())}});
+  return kApplicationJsonErrorCodeIsNull.get();
+}
+
+const PasswordInitTestCase* ApplicationJsonErrorCodeIsNotNull() {
+  static const base::NoDestructor<PasswordInitTestCase>
+      kApplicationJsonErrorCodeIsNotNull(
+          {.test_name = "application_json_error_code_is_not_null",
+           .http_status_code = net::HTTP_BAD_REQUEST,
+           .raw_response_body =
+               R"({ "code": 13004,
+                    "error": "account already exists",
+                    "status": 400 })",
+           .expected_response = {.net_error = net::OK,
+                                 .status_code = net::HTTP_BAD_REQUEST,
+                                 .body = base::unexpected([] {
+                                   PasswordInit::Response::ErrorBody body;
+                                   body.code = base::Value(13004);
+                                   return body;
+                                 }())}});
+  return kApplicationJsonErrorCodeIsNotNull.get();
 }
 
 // non-application/json errors:
@@ -87,9 +108,9 @@ const PasswordInitTestCase* NonApplicationJsonError() {
   return kNonApplicationJsonError.get();
 }
 
-}  // namespace
-
 using PasswordInitTest = EndpointTest<PasswordInit>;
+
+}  // namespace
 
 TEST_P(PasswordInitTest, HandlesReplies) {
   RunTestCase();
@@ -98,7 +119,8 @@ TEST_P(PasswordInitTest, HandlesReplies) {
 INSTANTIATE_TEST_SUITE_P(PasswordInitTestCases,
                          PasswordInitTest,
                          testing::Values(Success(),
-                                         ApplicationJsonError(),
+                                         ApplicationJsonErrorCodeIsNull(),
+                                         ApplicationJsonErrorCodeIsNotNull(),
                                          NonApplicationJsonError()),
                          PasswordInitTest::kNameGenerator);
 

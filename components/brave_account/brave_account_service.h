@@ -81,7 +81,7 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
   void AddObserver(
       mojo::PendingRemote<mojom::AuthenticationObserver> observer) override;
 
-  void RegisterInitialize(std::optional<mojom::Service> initiating_service,
+  void RegisterInitialize(mojom::Service initiating_service,
                           const std::string& email,
                           const std::string& blinded_message,
                           RegisterInitializeCallback callback) override;
@@ -98,7 +98,7 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
 
   void CancelRegistration() override;
 
-  void LoginInitialize(std::optional<mojom::Service> initiating_service,
+  void LoginInitialize(mojom::Service initiating_service,
                        const std::string& email,
                        const std::string& serialized_ke1,
                        LoginInitializeCallback callback) override;

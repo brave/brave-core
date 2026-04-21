@@ -44,7 +44,7 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
         error = e as RegisterError
       } else {
         console.error('Unexpected error:', e)
-        error = { netErrorOrHttpStatus: null, errorCode: null }
+        return
       }
 
       showError({ kind: 'register', details: error })
@@ -64,8 +64,10 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
         error = e as ResendConfirmationEmailError
       } else {
         console.error('Unexpected error:', e)
-        error = { netErrorOrHttpStatus: null, errorCode: null }
+        return
       }
+    } finally {
+      this.isResendingConfirmationEmail = false
     }
 
     if (error) {
@@ -79,8 +81,6 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
         BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS_TITLE,
       )
     }
-
-    this.isResendingConfirmationEmail = false
   }
 
   private browserProxy: BraveAccountBrowserProxy =

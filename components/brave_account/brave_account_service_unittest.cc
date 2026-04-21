@@ -246,9 +246,9 @@ struct RegisterInitializeTestCase {
                   base::test::TaskEnvironment& task_environment,
                   mojom::Authentication& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
-    authentication.RegisterInitialize(std::nullopt, test_case.email,
-                                      test_case.blinded_message,
-                                      std::move(callback));
+    authentication.RegisterInitialize(
+        mojom::Service::kAccounts, test_case.email, test_case.blinded_message,
+        std::move(callback));
   }
 
   std::string test_name;
@@ -262,34 +262,6 @@ struct RegisterInitializeTestCase {
 
 namespace {
 
-const RegisterInitializeTestCase* RegisterInitializeEmailEmpty() {
-  static const base::NoDestructor<RegisterInitializeTestCase>
-      kRegisterInitializeEmailEmpty({
-          .test_name = "register_initialize_email_empty",
-          .email = "",
-          .blinded_message = {},    // not used
-          .fail_encryption = {},    // not used
-          .fail_decryption = {},    // not used
-          .endpoint_response = {},  // not used
-          .mojo_expected = base::unexpected(mojom::RegisterError::New()),
-      });
-  return kRegisterInitializeEmailEmpty.get();
-}
-
-const RegisterInitializeTestCase* RegisterInitializeBlindedMessageEmpty() {
-  static const base::NoDestructor<RegisterInitializeTestCase>
-      kRegisterInitializeBlindedMessageEmpty({
-          .test_name = "register_initialize_blinded_message_empty",
-          .email = kEmailAddress,
-          .blinded_message = "",
-          .fail_encryption = {},    // not used
-          .fail_decryption = {},    // not used
-          .endpoint_response = {},  // not used
-          .mojo_expected = base::unexpected(mojom::RegisterError::New()),
-      });
-  return kRegisterInitializeBlindedMessageEmpty.get();
-}
-
 const RegisterInitializeTestCase*
 RegisterInitializeBodyMissingOrFailedToParse() {
   static const base::NoDestructor<RegisterInitializeTestCase>
@@ -302,8 +274,11 @@ RegisterInitializeBodyMissingOrFailedToParse() {
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
                                  .body = std::nullopt}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_INTERNAL_SERVER_ERROR,
+                      mojom::RegisterServerErrorCode::kInvalidResponse))),
       });
   return kRegisterInitializeBodyMissingOrFailedToParse.get();
 }
@@ -323,8 +298,11 @@ const RegisterInitializeTestCase* RegisterInitializeErrorCodeIsNull() {
                                    body.code = base::Value();
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(
-              mojom::RegisterError::New(net::HTTP_BAD_REQUEST, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_BAD_REQUEST,
+                      mojom::RegisterServerErrorCode::kNull))),
       });
   return kRegisterInitializeErrorCodeIsNull.get();
 }
@@ -344,9 +322,11 @@ const RegisterInitializeTestCase* RegisterInitializeNewAccountEmailRequired() {
                                    body.code = base::Value(11005);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_BAD_REQUEST,
-              mojom::RegisterErrorCode::kNewAccountEmailRequired)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_BAD_REQUEST, mojom::RegisterServerErrorCode::
+                                                 kNewAccountEmailRequired))),
       });
   return kRegisterInitializeNewAccountEmailRequired.get();
 }
@@ -366,9 +346,11 @@ const RegisterInitializeTestCase* RegisterInitializeIntentNotAllowed() {
                                    body.code = base::Value(13003);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_BAD_REQUEST,
-              mojom::RegisterErrorCode::kIntentNotAllowed)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_BAD_REQUEST,
+                      mojom::RegisterServerErrorCode::kIntentNotAllowed))),
       });
   return kRegisterInitializeIntentNotAllowed.get();
 }
@@ -388,9 +370,11 @@ const RegisterInitializeTestCase* RegisterInitializeTooManyVerifications() {
                                    body.code = base::Value(13001);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_BAD_REQUEST,
-              mojom::RegisterErrorCode::kTooManyVerifications)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_BAD_REQUEST,
+                      mojom::RegisterServerErrorCode::kTooManyVerifications))),
       });
   return kRegisterInitializeTooManyVerifications.get();
 }
@@ -410,8 +394,11 @@ const RegisterInitializeTestCase* RegisterInitializeAccountExists() {
                                    body.code = base::Value(13004);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_BAD_REQUEST, mojom::RegisterErrorCode::kAccountExists)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_BAD_REQUEST,
+                      mojom::RegisterServerErrorCode::kAccountExists))),
       });
   return kRegisterInitializeAccountExists.get();
 }
@@ -431,9 +418,11 @@ const RegisterInitializeTestCase* RegisterInitializeEmailDomainNotSupported() {
                                    body.code = base::Value(13006);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_BAD_REQUEST,
-              mojom::RegisterErrorCode::kEmailDomainNotSupported)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_BAD_REQUEST, mojom::RegisterServerErrorCode::
+                                                 kEmailDomainNotSupported))),
       });
   return kRegisterInitializeEmailDomainNotSupported.get();
 }
@@ -453,9 +442,11 @@ const RegisterInitializeTestCase* RegisterInitializeUnauthorized() {
                                    body.code = base::Value(0);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_UNAUTHORIZED,
-              mojom::RegisterErrorCode::kMiscServerError)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_UNAUTHORIZED,
+                      mojom::RegisterServerErrorCode::kNull))),
       });
   return kRegisterInitializeUnauthorized.get();
 }
@@ -475,9 +466,11 @@ const RegisterInitializeTestCase* RegisterInitializeServerError() {
                                    body.code = base::Value(0);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_INTERNAL_SERVER_ERROR,
-              mojom::RegisterErrorCode::kMiscServerError)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_INTERNAL_SERVER_ERROR,
+                      mojom::RegisterServerErrorCode::kNull))),
       });
   return kRegisterInitializeServerError.get();
 }
@@ -497,8 +490,11 @@ const RegisterInitializeTestCase* RegisterInitializeUnknown() {
                                    body.code = base::Value(42);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(
-              mojom::RegisterError::New(net::HTTP_TOO_EARLY, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_TOO_EARLY,
+                      mojom::RegisterServerErrorCode::kUnknown))),
       });
   return kRegisterInitializeUnknown.get();
 }
@@ -521,8 +517,11 @@ const RegisterInitializeTestCase* RegisterInitializeVerificationTokenEmpty() {
                                            "serialized_response";
                                        return body;
                                      }()}},
-          .mojo_expected = base::unexpected(
-              mojom::RegisterError::New(net::HTTP_OK, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_OK,
+                      mojom::RegisterServerErrorCode::kInvalidResponse))),
       });
   return kRegisterInitializeVerificationTokenEmpty.get();
 }
@@ -545,8 +544,11 @@ const RegisterInitializeTestCase* RegisterInitializeSerializedResponseEmpty() {
                                        body.serialized_response = "";
                                        return body;
                                      }()}},
-          .mojo_expected = base::unexpected(
-              mojom::RegisterError::New(net::HTTP_OK, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_OK,
+                      mojom::RegisterServerErrorCode::kInvalidResponse))),
       });
   return kRegisterInitializeSerializedResponseEmpty.get();
 }
@@ -572,9 +574,11 @@ RegisterInitializeVerificationTokenFailedToEncrypt() {
                                            "serialized_response";
                                        return body;
                                      }()}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              std::nullopt,
-              mojom::RegisterErrorCode::kVerificationTokenEncryptionFailed)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewClientError(
+                  mojom::RegisterClientError::New(
+                      mojom::RegisterClientErrorCode::
+                          kVerificationTokenEncryptionFailed))),
       });
   return kRegisterInitializeVerificationTokenFailedToEncrypt.get();
 }
@@ -617,9 +621,7 @@ TEST_P(BraveAccountServiceRegisterInitializeTest,
 INSTANTIATE_TEST_SUITE_P(
     BraveAccountServiceTests,
     BraveAccountServiceRegisterInitializeTest,
-    testing::Values(RegisterInitializeEmailEmpty(),
-                    RegisterInitializeBlindedMessageEmpty(),
-                    RegisterInitializeBodyMissingOrFailedToParse(),
+    testing::Values(RegisterInitializeBodyMissingOrFailedToParse(),
                     RegisterInitializeErrorCodeIsNull(),
                     RegisterInitializeNewAccountEmailRequired(),
                     RegisterInitializeIntentNotAllowed(),
@@ -663,35 +665,6 @@ struct RegisterFinalizeTestCase {
 namespace {
 
 const RegisterFinalizeTestCase*
-RegisterFinalizeEncryptedVerificationTokenEmpty() {
-  static const base::NoDestructor<RegisterFinalizeTestCase>
-      kRegisterFinalizeEncryptedVerificationTokenEmpty({
-          .test_name = "register_finalize_encrypted_verification_token_empty",
-          .encrypted_verification_token = "",
-          .serialized_record = {},  // not used
-          .fail_encryption = {},    // not used
-          .fail_decryption = {},    // not used
-          .endpoint_response = {},  // not used
-          .mojo_expected = base::unexpected(mojom::RegisterError::New()),
-      });
-  return kRegisterFinalizeEncryptedVerificationTokenEmpty.get();
-}
-
-const RegisterFinalizeTestCase* RegisterFinalizeSerializedRecordEmpty() {
-  static const base::NoDestructor<RegisterFinalizeTestCase>
-      kRegisterFinalizeSerializedRecordEmpty({
-          .test_name = "register_finalize_serialized_record_empty",
-          .encrypted_verification_token = EncryptedVerificationToken(),
-          .serialized_record = "",
-          .fail_encryption = {},    // not used
-          .fail_decryption = {},    // not used
-          .endpoint_response = {},  // not used
-          .mojo_expected = base::unexpected(mojom::RegisterError::New()),
-      });
-  return kRegisterFinalizeSerializedRecordEmpty.get();
-}
-
-const RegisterFinalizeTestCase*
 RegisterFinalizeVerificationTokenFailedToDecrypt() {
   static const base::NoDestructor<RegisterFinalizeTestCase>
       kRegisterFinalizeVerificationTokenFailedToDecrypt({
@@ -701,9 +674,11 @@ RegisterFinalizeVerificationTokenFailedToDecrypt() {
           .fail_encryption = {},  // not used
           .fail_decryption = true,
           .endpoint_response = {},  // not used
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              std::nullopt,
-              mojom::RegisterErrorCode::kVerificationTokenDecryptionFailed)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewClientError(
+                  mojom::RegisterClientError::New(
+                      mojom::RegisterClientErrorCode::
+                          kVerificationTokenDecryptionFailed))),
       });
   return kRegisterFinalizeVerificationTokenFailedToDecrypt.get();
 }
@@ -719,8 +694,11 @@ const RegisterFinalizeTestCase* RegisterFinalizeBodyMissingOrFailedToParse() {
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
                                  .body = std::nullopt}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_INTERNAL_SERVER_ERROR,
+                      mojom::RegisterServerErrorCode::kInvalidResponse))),
       });
   return kRegisterFinalizeBodyMissingOrFailedToParse.get();
 }
@@ -740,8 +718,11 @@ const RegisterFinalizeTestCase* RegisterFinalizeErrorCodeIsNull() {
                                    body.code = base::Value();
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(
-              mojom::RegisterError::New(net::HTTP_NOT_FOUND, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_NOT_FOUND,
+                      mojom::RegisterServerErrorCode::kNull))),
       });
   return kRegisterFinalizeErrorCodeIsNull.get();
 }
@@ -761,9 +742,11 @@ const RegisterFinalizeTestCase* RegisterFinalizeInterimPasswordStateNotFound() {
                                    body.code = base::Value(14001);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_NOT_FOUND,
-              mojom::RegisterErrorCode::kInterimPasswordStateNotFound)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_NOT_FOUND, mojom::RegisterServerErrorCode::
+                                               kInterimPasswordStateNotFound))),
       });
   return kRegisterFinalizeInterimPasswordStateNotFound.get();
 }
@@ -783,9 +766,12 @@ const RegisterFinalizeTestCase* RegisterFinalizeInterimPasswordStateExpired() {
                                    body.code = base::Value(14002);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_BAD_REQUEST,
-              mojom::RegisterErrorCode::kInterimPasswordStateExpired)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_BAD_REQUEST,
+                      mojom::RegisterServerErrorCode::
+                          kInterimPasswordStateExpired))),
       });
   return kRegisterFinalizeInterimPasswordStateExpired.get();
 }
@@ -805,9 +791,11 @@ const RegisterFinalizeTestCase* RegisterFinalizeUnauthorized() {
                                    body.code = base::Value(0);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_UNAUTHORIZED,
-              mojom::RegisterErrorCode::kMiscServerError)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_UNAUTHORIZED,
+                      mojom::RegisterServerErrorCode::kNull))),
       });
   return kRegisterFinalizeUnauthorized.get();
 }
@@ -827,8 +815,11 @@ const RegisterFinalizeTestCase* RegisterFinalizeForbidden() {
                                    body.code = base::Value(0);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_FORBIDDEN, mojom::RegisterErrorCode::kMiscServerError)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_FORBIDDEN,
+                      mojom::RegisterServerErrorCode::kNull))),
       });
   return kRegisterFinalizeForbidden.get();
 }
@@ -848,9 +839,11 @@ const RegisterFinalizeTestCase* RegisterFinalizeServerError() {
                                    body.code = base::Value(0);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_INTERNAL_SERVER_ERROR,
-              mojom::RegisterErrorCode::kMiscServerError)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_INTERNAL_SERVER_ERROR,
+                      mojom::RegisterServerErrorCode::kNull))),
       });
   return kRegisterFinalizeServerError.get();
 }
@@ -870,8 +863,11 @@ const RegisterFinalizeTestCase* RegisterFinalizeUnknown() {
                                    body.code = base::Value(42);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(
-              mojom::RegisterError::New(net::HTTP_TOO_EARLY, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_TOO_EARLY,
+                      mojom::RegisterServerErrorCode::kUnknown))),
       });
   return kRegisterFinalizeUnknown.get();
 }
@@ -912,9 +908,7 @@ TEST_P(BraveAccountServiceRegisterFinalizeTest,
 INSTANTIATE_TEST_SUITE_P(
     BraveAccountServiceTests,
     BraveAccountServiceRegisterFinalizeTest,
-    testing::Values(RegisterFinalizeEncryptedVerificationTokenEmpty(),
-                    RegisterFinalizeSerializedRecordEmpty(),
-                    RegisterFinalizeVerificationTokenFailedToDecrypt(),
+    testing::Values(RegisterFinalizeVerificationTokenFailedToDecrypt(),
                     RegisterFinalizeBodyMissingOrFailedToParse(),
                     RegisterFinalizeErrorCodeIsNull(),
                     RegisterFinalizeInterimPasswordStateNotFound(),
@@ -987,20 +981,6 @@ struct RegisterVerifyTestCase {
 
 namespace {
 
-const RegisterVerifyTestCase* RegisterVerifyCodeEmpty() {
-  static const base::NoDestructor<RegisterVerifyTestCase>
-      kRegisterVerifyCodeEmpty({
-          .test_name = "register_verify_code_empty",
-          .code = "",
-          .encrypted_verification_token = {},  // not used
-          .fail_decryption = {},               // not used
-          .fail_encryption = {},               // not used
-          .endpoint_response = {},             // not used
-          .mojo_expected = base::unexpected(mojom::RegisterError::New()),
-      });
-  return kRegisterVerifyCodeEmpty.get();
-}
-
 const RegisterVerifyTestCase* RegisterVerifyVerificationTokenEmpty() {
   static const base::NoDestructor<RegisterVerifyTestCase>
       kRegisterVerifyVerificationTokenEmpty({
@@ -1010,9 +990,11 @@ const RegisterVerifyTestCase* RegisterVerifyVerificationTokenEmpty() {
           .fail_decryption = {},    // not used
           .fail_encryption = {},    // not used
           .endpoint_response = {},  // not used
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              std::nullopt,
-              mojom::RegisterErrorCode::kUserNotInTheVerificationState)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewClientError(
+                  mojom::RegisterClientError::New(
+                      mojom::RegisterClientErrorCode::
+                          kUserNotInTheVerificationState))),
       });
   return kRegisterVerifyVerificationTokenEmpty.get();
 }
@@ -1026,9 +1008,11 @@ const RegisterVerifyTestCase* RegisterVerifyVerificationTokenFailedToDecrypt() {
           .fail_decryption = true,
           .fail_encryption = {},    // not used
           .endpoint_response = {},  // not used
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              std::nullopt,
-              mojom::RegisterErrorCode::kVerificationTokenDecryptionFailed)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewClientError(
+                  mojom::RegisterClientError::New(
+                      mojom::RegisterClientErrorCode::
+                          kVerificationTokenDecryptionFailed))),
       });
   return kRegisterVerifyVerificationTokenFailedToDecrypt.get();
 }
@@ -1044,8 +1028,11 @@ const RegisterVerifyTestCase* RegisterVerifyNetworkError() {
           .endpoint_response = {{.net_error = net::ERR_CONNECTION_REFUSED,
                                  .status_code = std::nullopt,
                                  .body = std::nullopt}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::ERR_CONNECTION_REFUSED, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::ERR_CONNECTION_REFUSED,
+                      mojom::RegisterServerErrorCode::kInvalidResponse))),
       });
   return kRegisterVerifyNetworkError.get();
 }
@@ -1061,8 +1048,11 @@ const RegisterVerifyTestCase* RegisterVerifyBodyMissingOrFailedToParse() {
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
                                  .body = std::nullopt}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_INTERNAL_SERVER_ERROR,
+                      mojom::RegisterServerErrorCode::kInvalidResponse))),
       });
   return kRegisterVerifyBodyMissingOrFailedToParse.get();
 }
@@ -1082,8 +1072,11 @@ const RegisterVerifyTestCase* RegisterVerifyErrorCodeIsNull() {
                                    body.code = base::Value();
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(
-              mojom::RegisterError::New(net::HTTP_UNAUTHORIZED, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_UNAUTHORIZED,
+                      mojom::RegisterServerErrorCode::kNull))),
       });
   return kRegisterVerifyErrorCodeIsNull.get();
 }
@@ -1105,9 +1098,12 @@ RegisterVerifyVerificationNotFoundOrInvalidIdOrCode() {
                                    body.code = base::Value(13002);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_NOT_FOUND, mojom::RegisterErrorCode::
-                                       kVerificationNotFoundOrInvalidIdOrCode)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_NOT_FOUND,
+                      mojom::RegisterServerErrorCode::
+                          kVerificationNotFoundOrInvalidIdOrCode))),
       });
   return kRegisterVerifyVerificationNotFoundOrInvalidIdOrCode.get();
 }
@@ -1127,9 +1123,11 @@ const RegisterVerifyTestCase* RegisterVerifyEmailAlreadyVerified() {
                                    body.code = base::Value(13009);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_BAD_REQUEST,
-              mojom::RegisterErrorCode::kEmailAlreadyVerified)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_BAD_REQUEST,
+                      mojom::RegisterServerErrorCode::kEmailAlreadyVerified))),
       });
   return kRegisterVerifyEmailAlreadyVerified.get();
 }
@@ -1151,10 +1149,12 @@ RegisterVerifyMaximumCodeVerificationAttemptsExceeded() {
                                    body.code = base::Value(13010);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_BAD_REQUEST,
-              mojom::RegisterErrorCode::
-                  kMaximumCodeVerificationAttemptsExceeded)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_BAD_REQUEST,
+                      mojom::RegisterServerErrorCode::
+                          kMaximumCodeVerificationAttemptsExceeded))),
       });
   return kRegisterVerifyMaximumCodeVerificationAttemptsExceeded.get();
 }
@@ -1174,9 +1174,11 @@ const RegisterVerifyTestCase* RegisterVerifyInvalidVerificationCode() {
                                    body.code = base::Value(13011);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_BAD_REQUEST,
-              mojom::RegisterErrorCode::kInvalidVerificationCode)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_BAD_REQUEST, mojom::RegisterServerErrorCode::
+                                                 kInvalidVerificationCode))),
       });
   return kRegisterVerifyInvalidVerificationCode.get();
 }
@@ -1196,8 +1198,11 @@ const RegisterVerifyTestCase* RegisterVerifyServerError() {
                                    body.code = base::Value();
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_INTERNAL_SERVER_ERROR,
+                      mojom::RegisterServerErrorCode::kNull))),
       });
   return kRegisterVerifyServerError.get();
 }
@@ -1220,8 +1225,11 @@ const RegisterVerifyTestCase* RegisterVerifyAuthTokenEmpty() {
                                        body.email = kEmailAddress;
                                        return body;
                                      }()}},
-          .mojo_expected = base::unexpected(
-              mojom::RegisterError::New(net::HTTP_OK, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_OK,
+                      mojom::RegisterServerErrorCode::kInvalidResponse))),
       });
   return kRegisterVerifyAuthTokenEmpty.get();
 }
@@ -1244,8 +1252,11 @@ const RegisterVerifyTestCase* RegisterVerifyEmailEmpty() {
                                        body.email = "";
                                        return body;
                                      }()}},
-          .mojo_expected = base::unexpected(
-              mojom::RegisterError::New(net::HTTP_OK, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewServerError(
+                  mojom::RegisterServerError::New(
+                      net::HTTP_OK,
+                      mojom::RegisterServerErrorCode::kInvalidResponse))),
       });
   return kRegisterVerifyEmailEmpty.get();
 }
@@ -1269,9 +1280,11 @@ RegisterVerifyAuthenticationTokenEncryptionFailed() {
                                        body.email = kEmailAddress;
                                        return body;
                                      }()}},
-          .mojo_expected = base::unexpected(mojom::RegisterError::New(
-              std::nullopt,
-              mojom::RegisterErrorCode::kAuthenticationTokenEncryptionFailed)),
+          .mojo_expected =
+              base::unexpected(mojom::RegisterError::NewClientError(
+                  mojom::RegisterClientError::New(
+                      mojom::RegisterClientErrorCode::
+                          kAuthenticationTokenEncryptionFailed))),
       });
   return kRegisterVerifyAuthenticationTokenEncryptionFailed.get();
 }
@@ -1312,8 +1325,7 @@ TEST_P(BraveAccountServiceRegisterVerifyTest,
 INSTANTIATE_TEST_SUITE_P(
     BraveAccountServiceTests,
     BraveAccountServiceRegisterVerifyTest,
-    testing::Values(RegisterVerifyCodeEmpty(),
-                    RegisterVerifyVerificationTokenEmpty(),
+    testing::Values(RegisterVerifyVerificationTokenEmpty(),
                     RegisterVerifyVerificationTokenFailedToDecrypt(),
                     RegisterVerifyNetworkError(),
                     RegisterVerifyBodyMissingOrFailedToParse(),
@@ -1365,10 +1377,11 @@ ResendConfirmationEmailVerificationTokenEmpty() {
           .encrypted_verification_token = "",
           .fail_decryption = {},    // not used
           .endpoint_response = {},  // not used
-          .mojo_expected =
-              base::unexpected(mojom::ResendConfirmationEmailError::New(
-                  std::nullopt, mojom::ResendConfirmationEmailErrorCode::
-                                    kUserNotInTheVerificationState)),
+          .mojo_expected = base::unexpected(
+              mojom::ResendConfirmationEmailError::NewClientError(
+                  mojom::ResendConfirmationEmailClientError::New(
+                      mojom::ResendConfirmationEmailClientErrorCode::
+                          kUserNotInTheVerificationState))),
       });
   return kResendConfirmationEmailVerificationTokenEmpty.get();
 }
@@ -1382,10 +1395,11 @@ ResendConfirmationEmailVerificationTokenFailedToDecrypt() {
           .encrypted_verification_token = EncryptedVerificationToken(),
           .fail_decryption = true,
           .endpoint_response = {},  // not used
-          .mojo_expected =
-              base::unexpected(mojom::ResendConfirmationEmailError::New(
-                  std::nullopt, mojom::ResendConfirmationEmailErrorCode::
-                                    kVerificationTokenDecryptionFailed)),
+          .mojo_expected = base::unexpected(
+              mojom::ResendConfirmationEmailError::NewClientError(
+                  mojom::ResendConfirmationEmailClientError::New(
+                      mojom::ResendConfirmationEmailClientErrorCode::
+                          kVerificationTokenDecryptionFailed))),
       });
   return kResendConfirmationEmailVerificationTokenFailedToDecrypt.get();
 }
@@ -1413,9 +1427,12 @@ const ResendConfirmationEmailTestCase* ResendConfirmationEmailNetworkError() {
           .endpoint_response = {{.net_error = net::ERR_CONNECTION_REFUSED,
                                  .status_code = std::nullopt,
                                  .body = std::nullopt}},
-          .mojo_expected =
-              base::unexpected(mojom::ResendConfirmationEmailError::New(
-                  net::ERR_CONNECTION_REFUSED, std::nullopt)),
+          .mojo_expected = base::unexpected(
+              mojom::ResendConfirmationEmailError::NewServerError(
+                  mojom::ResendConfirmationEmailServerError::New(
+                      net::ERR_CONNECTION_REFUSED,
+                      mojom::ResendConfirmationEmailServerErrorCode::
+                          kInvalidResponse))),
       });
   return kResendConfirmationEmailNetworkError.get();
 }
@@ -1431,9 +1448,12 @@ ResendConfirmationEmailBodyMissingOrFailedToParse() {
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
                                  .body = std::nullopt}},
-          .mojo_expected =
-              base::unexpected(mojom::ResendConfirmationEmailError::New(
-                  net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
+          .mojo_expected = base::unexpected(
+              mojom::ResendConfirmationEmailError::NewServerError(
+                  mojom::ResendConfirmationEmailServerError::New(
+                      net::HTTP_INTERNAL_SERVER_ERROR,
+                      mojom::ResendConfirmationEmailServerErrorCode::
+                          kInvalidResponse))),
       });
   return kResendConfirmationEmailBodyMissingOrFailedToParse.get();
 }
@@ -1453,9 +1473,11 @@ ResendConfirmationEmailBadRequestWithNullErrorCode() {
                                    body.code = base::Value();
                                    return body;
                                  }())}},
-          .mojo_expected =
-              base::unexpected(mojom::ResendConfirmationEmailError::New(
-                  net::HTTP_BAD_REQUEST, std::nullopt)),
+          .mojo_expected = base::unexpected(
+              mojom::ResendConfirmationEmailError::NewServerError(
+                  mojom::ResendConfirmationEmailServerError::New(
+                      net::HTTP_BAD_REQUEST,
+                      mojom::ResendConfirmationEmailServerErrorCode::kNull))),
       });
   return kResendConfirmationEmailBadRequestWithNullErrorCode.get();
 }
@@ -1475,11 +1497,12 @@ ResendConfirmationEmailMaximumEmailSendAttemptsExceeded() {
                                    body.code = base::Value(13008);
                                    return body;
                                  }())}},
-          .mojo_expected =
-              base::unexpected(mojom::ResendConfirmationEmailError::New(
-                  net::HTTP_BAD_REQUEST,
-                  mojom::ResendConfirmationEmailErrorCode::
-                      kMaximumEmailSendAttemptsExceeded)),
+          .mojo_expected = base::unexpected(
+              mojom::ResendConfirmationEmailError::NewServerError(
+                  mojom::ResendConfirmationEmailServerError::New(
+                      net::HTTP_BAD_REQUEST,
+                      mojom::ResendConfirmationEmailServerErrorCode::
+                          kMaximumEmailSendAttemptsExceeded))),
       });
   return kResendConfirmationEmailMaximumEmailSendAttemptsExceeded.get();
 }
@@ -1498,11 +1521,12 @@ ResendConfirmationEmailEmailAlreadyVerified() {
                                    body.code = base::Value(13009);
                                    return body;
                                  }())}},
-          .mojo_expected =
-              base::unexpected(mojom::ResendConfirmationEmailError::New(
-                  net::HTTP_BAD_REQUEST,
-                  mojom::ResendConfirmationEmailErrorCode::
-                      kEmailAlreadyVerified)),
+          .mojo_expected = base::unexpected(
+              mojom::ResendConfirmationEmailError::NewServerError(
+                  mojom::ResendConfirmationEmailServerError::New(
+                      net::HTTP_BAD_REQUEST,
+                      mojom::ResendConfirmationEmailServerErrorCode::
+                          kEmailAlreadyVerified))),
       });
   return kResendConfirmationEmailEmailAlreadyVerified.get();
 }
@@ -1520,9 +1544,11 @@ const ResendConfirmationEmailTestCase* ResendConfirmationEmailServerError() {
                                    body.code = base::Value();
                                    return body;
                                  }())}},
-          .mojo_expected =
-              base::unexpected(mojom::ResendConfirmationEmailError::New(
-                  net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
+          .mojo_expected = base::unexpected(
+              mojom::ResendConfirmationEmailError::NewServerError(
+                  mojom::ResendConfirmationEmailServerError::New(
+                      net::HTTP_INTERNAL_SERVER_ERROR,
+                      mojom::ResendConfirmationEmailServerErrorCode::kNull))),
       });
   return kResendConfirmationEmailServerError.get();
 }
@@ -1540,9 +1566,12 @@ const ResendConfirmationEmailTestCase* ResendConfirmationEmailUnknown() {
                                    body.code = base::Value(42);
                                    return body;
                                  }())}},
-          .mojo_expected =
-              base::unexpected(mojom::ResendConfirmationEmailError::New(
-                  net::HTTP_TOO_EARLY, std::nullopt)),
+          .mojo_expected = base::unexpected(
+              mojom::ResendConfirmationEmailError::NewServerError(
+                  mojom::ResendConfirmationEmailServerError::New(
+                      net::HTTP_TOO_EARLY,
+                      mojom::ResendConfirmationEmailServerErrorCode::
+                          kUnknown))),
       });
   return kResendConfirmationEmailUnknown.get();
 }
@@ -1904,7 +1933,7 @@ struct LoginInitializeTestCase {
                   base::test::TaskEnvironment& task_environment,
                   mojom::Authentication& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
-    authentication.LoginInitialize(std::nullopt, test_case.email,
+    authentication.LoginInitialize(mojom::Service::kAccounts, test_case.email,
                                    test_case.serialized_ke1,
                                    std::move(callback));
   }
@@ -1920,34 +1949,6 @@ struct LoginInitializeTestCase {
 
 namespace {
 
-const LoginInitializeTestCase* LoginInitializeEmailEmpty() {
-  static const base::NoDestructor<LoginInitializeTestCase>
-      kLoginInitializeEmailEmpty({
-          .test_name = "login_initialize_email_empty",
-          .email = "",
-          .serialized_ke1 = {},     // not used
-          .fail_encryption = {},    // not used
-          .fail_decryption = {},    // not used
-          .endpoint_response = {},  // not used
-          .mojo_expected = base::unexpected(mojom::LoginError::New()),
-      });
-  return kLoginInitializeEmailEmpty.get();
-}
-
-const LoginInitializeTestCase* LoginInitializeSerializedKe1Empty() {
-  static const base::NoDestructor<LoginInitializeTestCase>
-      kLoginInitializeSerializedKe1Empty({
-          .test_name = "login_initialize_serialized_ke1_empty",
-          .email = kEmailAddress,
-          .serialized_ke1 = "",
-          .fail_encryption = {},    // not used
-          .fail_decryption = {},    // not used
-          .endpoint_response = {},  // not used
-          .mojo_expected = base::unexpected(mojom::LoginError::New()),
-      });
-  return kLoginInitializeSerializedKe1Empty.get();
-}
-
 const LoginInitializeTestCase* LoginInitializeBodyMissingOrFailedToParse() {
   static const base::NoDestructor<LoginInitializeTestCase>
       kLoginInitializeBodyMissingOrFailedToParse({
@@ -1959,8 +1960,10 @@ const LoginInitializeTestCase* LoginInitializeBodyMissingOrFailedToParse() {
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
                                  .body = std::nullopt}},
-          .mojo_expected = base::unexpected(mojom::LoginError::New(
-              net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_INTERNAL_SERVER_ERROR,
+                  mojom::LoginServerErrorCode::kInvalidResponse))),
       });
   return kLoginInitializeBodyMissingOrFailedToParse.get();
 }
@@ -1981,7 +1984,8 @@ const LoginInitializeTestCase* LoginInitializeErrorCodeIsNull() {
                                    return body;
                                  }())}},
           .mojo_expected = base::unexpected(
-              mojom::LoginError::New(net::HTTP_BAD_REQUEST, std::nullopt)),
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_BAD_REQUEST, mojom::LoginServerErrorCode::kNull))),
       });
   return kLoginInitializeErrorCodeIsNull.get();
 }
@@ -2002,8 +2006,9 @@ const LoginInitializeTestCase* LoginInitializeEmailNotVerified() {
                                    return body;
                                  }())}},
           .mojo_expected = base::unexpected(
-              mojom::LoginError::New(net::HTTP_UNAUTHORIZED,
-                                     mojom::LoginErrorCode::kEmailNotVerified)),
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_UNAUTHORIZED,
+                  mojom::LoginServerErrorCode::kEmailNotVerified))),
       });
   return kLoginInitializeEmailNotVerified.get();
 }
@@ -2023,9 +2028,10 @@ const LoginInitializeTestCase* LoginInitializeIncorrectCredentials() {
                                    body.code = base::Value(14004);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::LoginError::New(
-              net::HTTP_UNAUTHORIZED,
-              mojom::LoginErrorCode::kIncorrectCredentials)),
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_UNAUTHORIZED,
+                  mojom::LoginServerErrorCode::kIncorrectCredentials))),
       });
   return kLoginInitializeIncorrectCredentials.get();
 }
@@ -2045,8 +2051,10 @@ const LoginInitializeTestCase* LoginInitializeIncorrectEmail() {
                                    body.code = base::Value(14005);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::LoginError::New(
-              net::HTTP_UNAUTHORIZED, mojom::LoginErrorCode::kIncorrectEmail)),
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_UNAUTHORIZED,
+                  mojom::LoginServerErrorCode::kIncorrectEmail))),
       });
   return kLoginInitializeIncorrectEmail.get();
 }
@@ -2066,9 +2074,10 @@ const LoginInitializeTestCase* LoginInitializeIncorrectPassword() {
                                    body.code = base::Value(14006);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::LoginError::New(
-              net::HTTP_UNAUTHORIZED,
-              mojom::LoginErrorCode::kIncorrectPassword)),
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_UNAUTHORIZED,
+                  mojom::LoginServerErrorCode::kIncorrectPassword))),
       });
   return kLoginInitializeIncorrectPassword.get();
 }
@@ -2089,8 +2098,9 @@ const LoginInitializeTestCase* LoginInitializeServerError() {
                                    return body;
                                  }())}},
           .mojo_expected = base::unexpected(
-              mojom::LoginError::New(net::HTTP_INTERNAL_SERVER_ERROR,
-                                     mojom::LoginErrorCode::kMiscServerError)),
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_INTERNAL_SERVER_ERROR,
+                  mojom::LoginServerErrorCode::kNull))),
       });
   return kLoginInitializeServerError.get();
 }
@@ -2111,7 +2121,8 @@ const LoginInitializeTestCase* LoginInitializeUnknown() {
                                    return body;
                                  }())}},
           .mojo_expected = base::unexpected(
-              mojom::LoginError::New(net::HTTP_TOO_EARLY, std::nullopt)),
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_TOO_EARLY, mojom::LoginServerErrorCode::kUnknown))),
       });
   return kLoginInitializeUnknown.get();
 }
@@ -2134,7 +2145,9 @@ const LoginInitializeTestCase* LoginInitializeLoginTokenEmpty() {
                                        return body;
                                      }()}},
           .mojo_expected = base::unexpected(
-              mojom::LoginError::New(net::HTTP_OK, std::nullopt)),
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_OK,
+                  mojom::LoginServerErrorCode::kInvalidResponse))),
       });
   return kLoginInitializeLoginTokenEmpty.get();
 }
@@ -2157,7 +2170,9 @@ const LoginInitializeTestCase* LoginInitializeSerializedKe2Empty() {
                                        return body;
                                      }()}},
           .mojo_expected = base::unexpected(
-              mojom::LoginError::New(net::HTTP_OK, std::nullopt)),
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_OK,
+                  mojom::LoginServerErrorCode::kInvalidResponse))),
       });
   return kLoginInitializeSerializedKe2Empty.get();
 }
@@ -2179,9 +2194,9 @@ const LoginInitializeTestCase* LoginInitializeLoginTokenFailedToEncrypt() {
                                        body.serialized_ke2 = "serialized_ke2";
                                        return body;
                                      }()}},
-          .mojo_expected = base::unexpected(mojom::LoginError::New(
-              std::nullopt,
-              mojom::LoginErrorCode::kLoginTokenEncryptionFailed)),
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::NewClientError(mojom::LoginClientError::New(
+                  mojom::LoginClientErrorCode::kLoginTokenEncryptionFailed))),
       });
   return kLoginInitializeLoginTokenFailedToEncrypt.get();
 }
@@ -2222,9 +2237,7 @@ TEST_P(BraveAccountServiceLoginInitializeTest,
 INSTANTIATE_TEST_SUITE_P(
     BraveAccountServiceTests,
     BraveAccountServiceLoginInitializeTest,
-    testing::Values(LoginInitializeEmailEmpty(),
-                    LoginInitializeSerializedKe1Empty(),
-                    LoginInitializeBodyMissingOrFailedToParse(),
+    testing::Values(LoginInitializeBodyMissingOrFailedToParse(),
                     LoginInitializeErrorCodeIsNull(),
                     LoginInitializeEmailNotVerified(),
                     LoginInitializeIncorrectCredentials(),
@@ -2278,38 +2291,6 @@ struct LoginFinalizeTestCase {
 
 namespace {
 
-const LoginFinalizeTestCase* LoginFinalizeEncryptedLoginTokenEmpty() {
-  static const base::NoDestructor<LoginFinalizeTestCase>
-      kLoginFinalizeEncryptedLoginTokenEmpty({
-          .test_name = "login_finalize_encrypted_login_token_empty",
-          .encrypted_login_token = "",
-          .client_mac = {},         // not used
-          .fail_encryption = {},    // not used
-          .fail_decryption = {},    // not used
-          .endpoint_response = {},  // not used
-          .expected_email = "",
-          .expected_authentication_token = "",
-          .mojo_expected = base::unexpected(mojom::LoginError::New()),
-      });
-  return kLoginFinalizeEncryptedLoginTokenEmpty.get();
-}
-
-const LoginFinalizeTestCase* LoginFinalizeClientMacEmpty() {
-  static const base::NoDestructor<LoginFinalizeTestCase>
-      kLoginFinalizeClientMacEmpty({
-          .test_name = "login_finalize_client_mac_empty",
-          .encrypted_login_token = EncryptedLoginToken(),
-          .client_mac = "",
-          .fail_encryption = {},    // not used
-          .fail_decryption = {},    // not used
-          .endpoint_response = {},  // not used
-          .expected_email = "",
-          .expected_authentication_token = "",
-          .mojo_expected = base::unexpected(mojom::LoginError::New()),
-      });
-  return kLoginFinalizeClientMacEmpty.get();
-}
-
 const LoginFinalizeTestCase* LoginFinalizeLoginTokenFailedToDecrypt() {
   static const base::NoDestructor<LoginFinalizeTestCase>
       kLoginFinalizeLoginTokenFailedToDecrypt({
@@ -2321,9 +2302,9 @@ const LoginFinalizeTestCase* LoginFinalizeLoginTokenFailedToDecrypt() {
           .endpoint_response = {},  // not used
           .expected_email = "",
           .expected_authentication_token = "",
-          .mojo_expected = base::unexpected(mojom::LoginError::New(
-              std::nullopt,
-              mojom::LoginErrorCode::kLoginTokenDecryptionFailed)),
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::NewClientError(mojom::LoginClientError::New(
+                  mojom::LoginClientErrorCode::kLoginTokenDecryptionFailed))),
       });
   return kLoginFinalizeLoginTokenFailedToDecrypt.get();
 }
@@ -2341,8 +2322,10 @@ const LoginFinalizeTestCase* LoginFinalizeBodyMissingOrFailedToParse() {
                                  .body = std::nullopt}},
           .expected_email = "",
           .expected_authentication_token = "",
-          .mojo_expected = base::unexpected(mojom::LoginError::New(
-              net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_INTERNAL_SERVER_ERROR,
+                  mojom::LoginServerErrorCode::kInvalidResponse))),
       });
   return kLoginFinalizeBodyMissingOrFailedToParse.get();
 }
@@ -2365,7 +2348,8 @@ const LoginFinalizeTestCase* LoginFinalizeErrorCodeIsNull() {
           .expected_email = "",
           .expected_authentication_token = "",
           .mojo_expected = base::unexpected(
-              mojom::LoginError::New(net::HTTP_BAD_REQUEST, std::nullopt)),
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_BAD_REQUEST, mojom::LoginServerErrorCode::kNull))),
       });
   return kLoginFinalizeErrorCodeIsNull.get();
 }
@@ -2387,9 +2371,10 @@ const LoginFinalizeTestCase* LoginFinalizeInterimPasswordStateMismatch() {
                                  }())}},
           .expected_email = "",
           .expected_authentication_token = "",
-          .mojo_expected = base::unexpected(mojom::LoginError::New(
-              net::HTTP_BAD_REQUEST,
-              mojom::LoginErrorCode::kInterimPasswordStateMismatch)),
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_BAD_REQUEST,
+                  mojom::LoginServerErrorCode::kInterimPasswordStateMismatch))),
       });
   return kLoginFinalizeInterimPasswordStateMismatch.get();
 }
@@ -2411,9 +2396,10 @@ const LoginFinalizeTestCase* LoginFinalizeInterimPasswordStateNotFound() {
                                  }())}},
           .expected_email = "",
           .expected_authentication_token = "",
-          .mojo_expected = base::unexpected(mojom::LoginError::New(
-              net::HTTP_UNAUTHORIZED,
-              mojom::LoginErrorCode::kInterimPasswordStateNotFound)),
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_UNAUTHORIZED,
+                  mojom::LoginServerErrorCode::kInterimPasswordStateNotFound))),
       });
   return kLoginFinalizeInterimPasswordStateNotFound.get();
 }
@@ -2435,9 +2421,11 @@ const LoginFinalizeTestCase* LoginFinalizeInterimPasswordStateHasExpired() {
                                  }())}},
           .expected_email = "",
           .expected_authentication_token = "",
-          .mojo_expected = base::unexpected(mojom::LoginError::New(
-              net::HTTP_UNAUTHORIZED,
-              mojom::LoginErrorCode::kInterimPasswordStateHasExpired)),
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_UNAUTHORIZED,
+                  mojom::LoginServerErrorCode::
+                      kInterimPasswordStateHasExpired))),
       });
   return kLoginFinalizeInterimPasswordStateHasExpired.get();
 }
@@ -2459,9 +2447,10 @@ const LoginFinalizeTestCase* LoginFinalizeIncorrectCredentials() {
                                  }())}},
           .expected_email = "",
           .expected_authentication_token = "",
-          .mojo_expected = base::unexpected(mojom::LoginError::New(
-              net::HTTP_UNAUTHORIZED,
-              mojom::LoginErrorCode::kIncorrectCredentials)),
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_UNAUTHORIZED,
+                  mojom::LoginServerErrorCode::kIncorrectCredentials))),
       });
   return kLoginFinalizeIncorrectCredentials.get();
 }
@@ -2483,8 +2472,10 @@ const LoginFinalizeTestCase* LoginFinalizeIncorrectEmail() {
                                  }())}},
           .expected_email = "",
           .expected_authentication_token = "",
-          .mojo_expected = base::unexpected(mojom::LoginError::New(
-              net::HTTP_UNAUTHORIZED, mojom::LoginErrorCode::kIncorrectEmail)),
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_UNAUTHORIZED,
+                  mojom::LoginServerErrorCode::kIncorrectEmail))),
       });
   return kLoginFinalizeIncorrectEmail.get();
 }
@@ -2506,9 +2497,10 @@ const LoginFinalizeTestCase* LoginFinalizeIncorrectPassword() {
                                  }())}},
           .expected_email = "",
           .expected_authentication_token = "",
-          .mojo_expected = base::unexpected(mojom::LoginError::New(
-              net::HTTP_UNAUTHORIZED,
-              mojom::LoginErrorCode::kIncorrectPassword)),
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_UNAUTHORIZED,
+                  mojom::LoginServerErrorCode::kIncorrectPassword))),
       });
   return kLoginFinalizeIncorrectPassword.get();
 }
@@ -2531,8 +2523,9 @@ const LoginFinalizeTestCase* LoginFinalizeServerError() {
           .expected_email = "",
           .expected_authentication_token = "",
           .mojo_expected = base::unexpected(
-              mojom::LoginError::New(net::HTTP_INTERNAL_SERVER_ERROR,
-                                     mojom::LoginErrorCode::kMiscServerError)),
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_INTERNAL_SERVER_ERROR,
+                  mojom::LoginServerErrorCode::kNull))),
       });
   return kLoginFinalizeServerError.get();
 }
@@ -2554,7 +2547,8 @@ const LoginFinalizeTestCase* LoginFinalizeUnknown() {
       .expected_email = "",
       .expected_authentication_token = "",
       .mojo_expected = base::unexpected(
-          mojom::LoginError::New(net::HTTP_TOO_EARLY, std::nullopt)),
+          mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+              net::HTTP_TOO_EARLY, mojom::LoginServerErrorCode::kUnknown))),
   });
   return kLoginFinalizeUnknown.get();
 }
@@ -2580,7 +2574,9 @@ const LoginFinalizeTestCase* LoginFinalizeAuthTokenEmpty() {
           .expected_email = "",
           .expected_authentication_token = "",
           .mojo_expected = base::unexpected(
-              mojom::LoginError::New(net::HTTP_OK, std::nullopt)),
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_OK,
+                  mojom::LoginServerErrorCode::kInvalidResponse))),
       });
   return kLoginFinalizeAuthTokenEmpty.get();
 }
@@ -2606,7 +2602,9 @@ const LoginFinalizeTestCase* LoginFinalizeEmailEmpty() {
           .expected_email = "",
           .expected_authentication_token = "",
           .mojo_expected = base::unexpected(
-              mojom::LoginError::New(net::HTTP_OK, std::nullopt)),
+              mojom::LoginError::NewServerError(mojom::LoginServerError::New(
+                  net::HTTP_OK,
+                  mojom::LoginServerErrorCode::kInvalidResponse))),
       });
   return kLoginFinalizeEmailEmpty.get();
 }
@@ -2631,9 +2629,10 @@ const LoginFinalizeTestCase* LoginFinalizeAuthenticationTokenFailedToEncrypt() {
                                      }()}},
           .expected_email = "",
           .expected_authentication_token = "",
-          .mojo_expected = base::unexpected(mojom::LoginError::New(
-              std::nullopt,
-              mojom::LoginErrorCode::kAuthenticationTokenEncryptionFailed)),
+          .mojo_expected = base::unexpected(
+              mojom::LoginError::NewClientError(mojom::LoginClientError::New(
+                  mojom::LoginClientErrorCode::
+                      kAuthenticationTokenEncryptionFailed))),
       });
   return kLoginFinalizeAuthenticationTokenFailedToEncrypt.get();
 }
@@ -2674,9 +2673,7 @@ TEST_P(BraveAccountServiceLoginFinalizeTest,
 INSTANTIATE_TEST_SUITE_P(
     BraveAccountServiceTests,
     BraveAccountServiceLoginFinalizeTest,
-    testing::Values(LoginFinalizeEncryptedLoginTokenEmpty(),
-                    LoginFinalizeClientMacEmpty(),
-                    LoginFinalizeLoginTokenFailedToDecrypt(),
+    testing::Values(LoginFinalizeLoginTokenFailedToDecrypt(),
                     LoginFinalizeBodyMissingOrFailedToParse(),
                     LoginFinalizeErrorCodeIsNull(),
                     LoginFinalizeInterimPasswordStateMismatch(),
@@ -2805,8 +2802,11 @@ const GetServiceTokenTestCase* GetServiceTokenUserNotLoggedIn() {
           .fail_encryption = {},             // not used
           .time_advance = {},                // not used
           .endpoint_response = {},           // not used
-          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
-              std::nullopt, mojom::GetServiceTokenErrorCode::kUserNotLoggedIn)),
+          .mojo_expected =
+              base::unexpected(mojom::GetServiceTokenError::NewClientError(
+                  mojom::GetServiceTokenClientError::New(
+                      mojom::GetServiceTokenClientErrorCode::
+                          kUserNotLoggedIn))),
       });
   return kGetServiceTokenUserNotLoggedIn.get();
 }
@@ -2825,9 +2825,11 @@ GetServiceTokenAuthenticationTokenDecryptionFailed() {
           .fail_encryption = {},             // not used
           .time_advance = {},                // not used
           .endpoint_response = {},           // not used
-          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
-              std::nullopt, mojom::GetServiceTokenErrorCode::
-                                kAuthenticationTokenDecryptionFailed)),
+          .mojo_expected =
+              base::unexpected(mojom::GetServiceTokenError::NewClientError(
+                  mojom::GetServiceTokenClientError::New(
+                      mojom::GetServiceTokenClientErrorCode::
+                          kAuthenticationTokenDecryptionFailed))),
       });
   return kGetServiceTokenAuthenticationTokenDecryptionFailed.get();
 }
@@ -2852,9 +2854,11 @@ const GetServiceTokenTestCase* GetServiceTokenAuthenticationSessionChanged() {
                                            "fetched_service_token";
                                        return body;
                                      }()}},
-          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
-              std::nullopt,
-              mojom::GetServiceTokenErrorCode::kAuthenticationSessionChanged)),
+          .mojo_expected =
+              base::unexpected(mojom::GetServiceTokenError::NewClientError(
+                  mojom::GetServiceTokenClientError::New(
+                      mojom::GetServiceTokenClientErrorCode::
+                          kAuthenticationSessionChanged))),
       });
   return kGetServiceTokenAuthenticationSessionChanged.get();
 }
@@ -2873,8 +2877,12 @@ const GetServiceTokenTestCase* GetServiceTokenNetworkError() {
           .endpoint_response = {{.net_error = net::ERR_CONNECTION_REFUSED,
                                  .status_code = std::nullopt,
                                  .body = std::nullopt}},
-          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
-              net::ERR_CONNECTION_REFUSED, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::GetServiceTokenError::NewServerError(
+                  mojom::GetServiceTokenServerError::New(
+                      net::ERR_CONNECTION_REFUSED,
+                      mojom::GetServiceTokenServerErrorCode::
+                          kInvalidResponse))),
       });
   return kGetServiceTokenNetworkError.get();
 }
@@ -2893,8 +2901,12 @@ const GetServiceTokenTestCase* GetServiceTokenBodyMissingOrFailedToParse() {
           .endpoint_response = {{.net_error = net::OK,
                                  .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
                                  .body = std::nullopt}},
-          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
-              net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::GetServiceTokenError::NewServerError(
+                  mojom::GetServiceTokenServerError::New(
+                      net::HTTP_INTERNAL_SERVER_ERROR,
+                      mojom::GetServiceTokenServerErrorCode::
+                          kInvalidResponse))),
       });
   return kGetServiceTokenBodyMissingOrFailedToParse.get();
 }
@@ -2917,8 +2929,11 @@ const GetServiceTokenTestCase* GetServiceTokenErrorCodeIsNull() {
                                    body.code = base::Value();
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
-              net::HTTP_BAD_REQUEST, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::GetServiceTokenError::NewServerError(
+                  mojom::GetServiceTokenServerError::New(
+                      net::HTTP_BAD_REQUEST,
+                      mojom::GetServiceTokenServerErrorCode::kNull))),
       });
   return kGetServiceTokenErrorCodeIsNull.get();
 }
@@ -2941,9 +2956,12 @@ const GetServiceTokenTestCase* GetServiceTokenEmailDomainNotSupported() {
                                    body.code = base::Value(13006);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
-              net::HTTP_BAD_REQUEST,
-              mojom::GetServiceTokenErrorCode::kEmailDomainNotSupported)),
+          .mojo_expected =
+              base::unexpected(mojom::GetServiceTokenError::NewServerError(
+                  mojom::GetServiceTokenServerError::New(
+                      net::HTTP_BAD_REQUEST,
+                      mojom::GetServiceTokenServerErrorCode::
+                          kEmailDomainNotSupported))),
       });
   return kGetServiceTokenEmailDomainNotSupported.get();
 }
@@ -2966,9 +2984,12 @@ const GetServiceTokenTestCase* GetServiceTokenIncorrectCredentials() {
                                    body.code = base::Value(14004);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
-              net::HTTP_FORBIDDEN,
-              mojom::GetServiceTokenErrorCode::kIncorrectCredentials)),
+          .mojo_expected =
+              base::unexpected(mojom::GetServiceTokenError::NewServerError(
+                  mojom::GetServiceTokenServerError::New(
+                      net::HTTP_FORBIDDEN,
+                      mojom::GetServiceTokenServerErrorCode::
+                          kIncorrectCredentials))),
       });
   return kGetServiceTokenIncorrectCredentials.get();
 }
@@ -2991,9 +3012,12 @@ const GetServiceTokenTestCase* GetServiceTokenInvalidTokenAudience() {
                                    body.code = base::Value(14007);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
-              net::HTTP_FORBIDDEN,
-              mojom::GetServiceTokenErrorCode::kInvalidTokenAudience)),
+          .mojo_expected =
+              base::unexpected(mojom::GetServiceTokenError::NewServerError(
+                  mojom::GetServiceTokenServerError::New(
+                      net::HTTP_FORBIDDEN,
+                      mojom::GetServiceTokenServerErrorCode::
+                          kInvalidTokenAudience))),
       });
   return kGetServiceTokenInvalidTokenAudience.get();
 }
@@ -3016,9 +3040,11 @@ const GetServiceTokenTestCase* GetServiceTokenBadRequest() {
                                    body.code = base::Value(0);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
-              net::HTTP_BAD_REQUEST,
-              mojom::GetServiceTokenErrorCode::kMiscServerError)),
+          .mojo_expected =
+              base::unexpected(mojom::GetServiceTokenError::NewServerError(
+                  mojom::GetServiceTokenServerError::New(
+                      net::HTTP_BAD_REQUEST,
+                      mojom::GetServiceTokenServerErrorCode::kNull))),
       });
   return kGetServiceTokenBadRequest.get();
 }
@@ -3041,9 +3067,11 @@ const GetServiceTokenTestCase* GetServiceTokenUnauthorized() {
                                    body.code = base::Value(0);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
-              net::HTTP_UNAUTHORIZED,
-              mojom::GetServiceTokenErrorCode::kMiscServerError)),
+          .mojo_expected =
+              base::unexpected(mojom::GetServiceTokenError::NewServerError(
+                  mojom::GetServiceTokenServerError::New(
+                      net::HTTP_UNAUTHORIZED,
+                      mojom::GetServiceTokenServerErrorCode::kNull))),
       });
   return kGetServiceTokenUnauthorized.get();
 }
@@ -3066,9 +3094,11 @@ const GetServiceTokenTestCase* GetServiceTokenServerError() {
                                    body.code = base::Value(0);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
-              net::HTTP_INTERNAL_SERVER_ERROR,
-              mojom::GetServiceTokenErrorCode::kMiscServerError)),
+          .mojo_expected =
+              base::unexpected(mojom::GetServiceTokenError::NewServerError(
+                  mojom::GetServiceTokenServerError::New(
+                      net::HTTP_INTERNAL_SERVER_ERROR,
+                      mojom::GetServiceTokenServerErrorCode::kNull))),
       });
   return kGetServiceTokenInternalServerError.get();
 }
@@ -3091,8 +3121,11 @@ const GetServiceTokenTestCase* GetServiceTokenUnknown() {
                                    body.code = base::Value(42);
                                    return body;
                                  }())}},
-          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
-              net::HTTP_TOO_EARLY, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::GetServiceTokenError::NewServerError(
+                  mojom::GetServiceTokenServerError::New(
+                      net::HTTP_TOO_EARLY,
+                      mojom::GetServiceTokenServerErrorCode::kUnknown))),
       });
   return kGetServiceTokenUnknown.get();
 }
@@ -3116,8 +3149,11 @@ const GetServiceTokenTestCase* GetServiceTokenServiceTokenEmpty() {
                                        body.auth_token = "";
                                        return body;
                                      }()}},
-          .mojo_expected = base::unexpected(
-              mojom::GetServiceTokenError::New(net::HTTP_OK, std::nullopt)),
+          .mojo_expected =
+              base::unexpected(mojom::GetServiceTokenError::NewServerError(
+                  mojom::GetServiceTokenServerError::New(
+                      net::HTTP_OK, mojom::GetServiceTokenServerErrorCode::
+                                        kInvalidResponse))),
       });
   return kGetServiceTokenServiceTokenEmpty.get();
 }
@@ -3142,9 +3178,11 @@ const GetServiceTokenTestCase* GetServiceTokenServiceTokenEncryptionFailed() {
                                            "fetched_service_token";
                                        return body;
                                      }()}},
-          .mojo_expected = base::unexpected(mojom::GetServiceTokenError::New(
-              std::nullopt,
-              mojom::GetServiceTokenErrorCode::kServiceTokenEncryptionFailed)),
+          .mojo_expected =
+              base::unexpected(mojom::GetServiceTokenError::NewClientError(
+                  mojom::GetServiceTokenClientError::New(
+                      mojom::GetServiceTokenClientErrorCode::
+                          kServiceTokenEncryptionFailed))),
       });
   return kGetServiceTokenServiceTokenEncryptionFailed.get();
 }

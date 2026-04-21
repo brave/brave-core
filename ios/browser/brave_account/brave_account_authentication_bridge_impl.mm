@@ -46,12 +46,12 @@ NSString* GetAlertTitle(
 
 NSString* GetAlertMessage(
     const brave_account::mojom::ResendConfirmationEmailErrorPtr& error) {
-  static const auto kErrorStrings = base::MakeFixedFlatMap<
-      brave_account::mojom::ResendConfirmationEmailErrorCode, int>({
-      {brave_account::mojom::ResendConfirmationEmailErrorCode::
+  static const auto kServerErrorStrings = base::MakeFixedFlatMap<
+      brave_account::mojom::ResendConfirmationEmailServerErrorCode, int>({
+      {brave_account::mojom::ResendConfirmationEmailServerErrorCode::
            kMaximumEmailSendAttemptsExceeded,
        IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_SEND_ATTEMPTS_EXCEEDED},
-      {brave_account::mojom::ResendConfirmationEmailErrorCode::
+      {brave_account::mojom::ResendConfirmationEmailServerErrorCode::
            kEmailAlreadyVerified,
        IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED},
   });
@@ -61,35 +61,30 @@ NSString* GetAlertMessage(
         IDS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS);
   }
 
-  if (!error->netErrorOrHttpStatus) {
-    // client-side error
+  const std::string error_label =
+      l10n_util::GetStringUTF8(IDS_BRAVE_ACCOUNT_ERROR);
+
+  if (error->is_client_error()) {
     return l10n_util::GetNSStringF(
         IDS_BRAVE_ACCOUNT_CLIENT_ERROR,
-        error->errorCode
-            ? base::UTF8ToUTF16(absl::StrFormat(
-                  " (%s=%d)", l10n_util::GetStringUTF8(IDS_BRAVE_ACCOUNT_ERROR),
-                  static_cast<int>(*error->errorCode)))
-            : u"");
+        base::UTF8ToUTF16(absl::StrFormat(
+            " (%s=%d)", error_label,
+            static_cast<int>(error->get_client_error()->error_code))));
   }
 
-  // server-side error
-  if (error->errorCode) {
-    if (const auto* string_id =
-            base::FindOrNull(kErrorStrings, *error->errorCode)) {
-      return l10n_util::GetNSString(*string_id);
-    }
+  const auto& server_error = error->get_server_error();
+  if (const auto* string_id =
+          base::FindOrNull(kServerErrorStrings, server_error->error_code)) {
+    return l10n_util::GetNSString(*string_id);
   }
 
   return l10n_util::GetNSStringF(
       IDS_BRAVE_ACCOUNT_SERVER_ERROR,
       base::UTF8ToUTF16(absl::StrFormat(
-          "%s=%d", *error->netErrorOrHttpStatus > 0 ? "HTTP" : "NET",
-          *error->netErrorOrHttpStatus)),
-      error->errorCode
-          ? base::UTF8ToUTF16(absl::StrFormat(
-                ", %s=%d", l10n_util::GetStringUTF8(IDS_BRAVE_ACCOUNT_ERROR),
-                static_cast<int>(*error->errorCode)))
-          : u"");
+          "%s=%d", server_error->net_error_or_http_status > 0 ? "HTTP" : "NET",
+          server_error->net_error_or_http_status)),
+      base::UTF8ToUTF16(absl::StrFormat(
+          ", %s=%d", error_label, static_cast<int>(server_error->error_code))));
 }
 
 }  // namespace

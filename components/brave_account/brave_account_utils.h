@@ -16,6 +16,7 @@ namespace brave_account {
 
 inline constexpr auto kServiceToString =
     base::MakeFixedFlatMap<mojom::Service, std::string_view>({
+        {mojom::Service::kAccounts, "accounts"},
         {mojom::Service::kEmailAliases, "email-aliases"},
         {mojom::Service::kPremium, "premium"},
         {mojom::Service::kSync, "sync"},
@@ -26,6 +27,7 @@ static_assert(kServiceToString.size() ==
 
 inline constexpr auto kServiceFromString =
     base::MakeFixedFlatMap<std::string_view, mojom::Service>({
+        {"accounts", mojom::Service::kAccounts},
         {"email-aliases", mojom::Service::kEmailAliases},
         {"premium", mojom::Service::kPremium},
         {"sync", mojom::Service::kSync},

@@ -23,7 +23,7 @@ export interface BraveAccountBrowserProxy {
   dialog_controller: DialogControllerInterface
   password_strength_meter: PasswordStrengthMeterInterface
   closeDialog: () => void
-  getInitiatingService: () => Service | null
+  getInitiatingService: () => Service
 }
 
 export class BraveAccountBrowserProxyImpl implements BraveAccountBrowserProxy {
@@ -48,11 +48,11 @@ export class BraveAccountBrowserProxyImpl implements BraveAccountBrowserProxy {
     this.dialog_controller.closeDialog()
   }
 
-  getInitiatingService(): Service | null {
+  getInitiatingService(): Service {
     const id = 'initiatingService'
     return loadTimeData.valueExists(id)
       ? (loadTimeData.getInteger(id) as Service)
-      : null
+      : Service.kAccounts
   }
 
   static getInstance(): BraveAccountBrowserProxy {

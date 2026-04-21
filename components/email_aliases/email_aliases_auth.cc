@@ -64,8 +64,12 @@ void EmailAliasesAuth::GetServiceToken(
     brave_account_auth_->GetServiceToken(
         brave_account::mojom::Service::kEmailAliases, std::move(callback));
   } else {
-    auto error = brave_account::mojom::GetServiceTokenError::New();
-    std::move(callback).Run(base::unexpected(std::move(error)));
+    // TODO(https://github.com/brave/brave-browser/issues/54976)
+    std::move(callback).Run(base::unexpected(
+        brave_account::mojom::GetServiceTokenError::NewClientError(
+            brave_account::mojom::GetServiceTokenClientError::New(
+                brave_account::mojom::GetServiceTokenClientErrorCode::
+                    kUserNotLoggedIn))));
   }
 }
 
