@@ -10,7 +10,9 @@
 #include <utility>
 
 #include "base/containers/flat_set.h"
+#include "base/functional/callback.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/components/containers/core/browser/containers_service_observer.h"
 #include "brave/components/containers/core/browser/containers_test_utils.h"
 #include "brave/components/containers/core/browser/prefs.h"
 #include "brave/components/containers/core/browser/prefs_registration.h"
@@ -66,6 +68,11 @@ class MockContainersServiceDelegate : public ContainersService::Delegate {
   std::vector<std::string> delete_requests_;
 };
 
+class MockContainersServiceObserver : public ContainersServiceObserver {
+ public:
+  MOCK_METHOD(void, OnContainersListChanged, (), (override));
+};
+
 }  // namespace
 
 class ContainersServiceTest : public testing::Test {
@@ -113,6 +120,25 @@ TEST_F(ContainersServiceTest, GetContainers) {
 
   auto containers_list = service_->GetContainers();
   ExpectContainer(containers_list[0], "container-id", "Work");
+}
+
+TEST_F(ContainersServiceTest,
+       Observer_OnContainersListChanged_WhenContainersListPrefChanges) {
+  testing::NiceMock<MockContainersServiceObserver> observer;
+  EXPECT_CALL(observer, OnContainersListChanged()).Times(1);
+
+  service_->AddObserver(&observer);
+
+  std::vector<mojom::ContainerPtr> containers;
+  containers.push_back(MakeContainer("container-id", "Work"));
+  SetContainersToPrefs(containers, prefs_);
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  EXPECT_CALL(observer, OnContainersListChanged()).Times(1);
+  SetContainersToPrefs({}, prefs_);
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  service_->RemoveObserver(&observer);
 }
 
 TEST_F(ContainersServiceTest, MarkContainerUsed_PersistsSnapshot) {

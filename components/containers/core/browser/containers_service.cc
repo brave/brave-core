@@ -11,6 +11,7 @@
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/types/to_address.h"
+#include "brave/components/containers/core/browser/containers_service_observer.h"
 #include "brave/components/containers/core/browser/pref_names.h"
 #include "brave/components/containers/core/browser/prefs.h"
 #include "brave/components/containers/core/browser/unknown_container.h"
@@ -38,6 +39,14 @@ void ContainersService::Shutdown() {
   weak_factory_.InvalidateWeakPtrs();
   pref_change_registrar_.RemoveAll();
   delegate_.reset();
+}
+
+void ContainersService::AddObserver(ContainersServiceObserver* observer) {
+  observers_.AddObserver(observer);
+}
+
+void ContainersService::RemoveObserver(ContainersServiceObserver* observer) {
+  observers_.RemoveObserver(observer);
 }
 
 void ContainersService::MarkContainerUsed(std::string_view container_id) {
@@ -76,6 +85,7 @@ void ContainersService::ScheduleOrphanedContainersCleanupForTesting() {
 
 void ContainersService::OnSyncedContainersChanged() {
   RefreshLocallyUsedContainersFromSyncedList();
+  observers_.Notify(&ContainersServiceObserver::OnContainersListChanged);
 }
 
 void ContainersService::RefreshLocallyUsedContainersFromSyncedList() {
