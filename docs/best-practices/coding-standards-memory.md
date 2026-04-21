@@ -6,17 +6,6 @@
 
 ## Ownership and Memory Management
 
-<a id="CSM-002"></a>
-
-### ✅ Comment Non-Owned Raw Pointers
-
-**Raw pointers to non-owned objects should be commented with `// not owned`.** This is a Chromium convention.
-
-```cpp
-// ✅ CORRECT
-ThirdPartyExtractor* third_party_extractor_ = nullptr;  // not owned
-```
-
 <a id="CSM-003"></a>
 
 ### ✅ Prefer unique_ptr Over new/delete
