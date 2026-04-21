@@ -103,7 +103,6 @@ export class Config {
   androidAabToApk: boolean
   useBraveHermeticToolchain: boolean
   braveIOSDeveloperOptionsCode: string | undefined
-  skip_download_rust_toolchain_aux: boolean
   is_asan: boolean | undefined
   is_msan: boolean | undefined
   is_ubsan: boolean | undefined
@@ -265,10 +264,6 @@ export class Config {
     this.braveIOSDeveloperOptionsCode = envConfig.getString([
       'brave_ios_developer_options_code',
     ])
-    this.skip_download_rust_toolchain_aux = envConfig.getBoolean(
-      ['skip_download_rust_toolchain_aux'],
-      false,
-    )
     this.is_asan = envConfig.getBoolean(['is_asan'])
     this.is_msan = envConfig.getBoolean(['is_msan'])
     this.is_ubsan = envConfig.getBoolean(['is_ubsan'])
@@ -866,10 +861,6 @@ export class Config {
     if (process.platform === 'win32') {
       // Disable vcvarsall.bat telemetry.
       env.VSCMD_SKIP_SENDTELEMETRY = '1'
-    }
-
-    if (isCI && this.skip_download_rust_toolchain_aux) {
-      env.SKIP_DOWNLOAD_RUST_TOOLCHAIN_AUX = '1'
     }
 
     // TeamCity displays only stderr on the "Build Problems" page when an error
