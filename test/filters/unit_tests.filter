@@ -652,6 +652,11 @@
 # pass. This is the only one remaining with a failure.
 -ExtensionUpdaterTest.TestProfileDestruction
 
+# Changed PageActionView's default bg/fg colors.
+# https://github.com/brave/brave-core/pull/35714
+-PageActionViewTest.ChipStateUpdatesBackgroundColor
+-PageActionViewTest.ChipStateUpdatesForegroundColor
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.EveryFlagHasMetadata
