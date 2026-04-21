@@ -31,6 +31,7 @@ constexpr char kVisionSupportField[] = "vision_support";
 constexpr char kSupportsToolsField[] = "supports_tools";
 constexpr char kAudioSupportField[] = "audio_support";
 constexpr char kVideoSupportField[] = "video_support";
+constexpr char kSupportedCapabilitiesField[] = "supported_capabilities";
 constexpr char kIsSuggestedModelField[] = "is_suggested_model";
 constexpr char kIsNearModelField[] = "is_near_model";
 constexpr char kOptionsField[] = "options";
@@ -98,6 +99,19 @@ std::optional<mojom::ModelAccess> ParseAccess(const std::string& access_str) {
     return mojom::ModelAccess::BASIC_AND_PREMIUM;
   }
   DVLOG(1) << "Unknown model access: " << access_str;
+  return std::nullopt;
+}
+
+std::optional<mojom::ConversationCapability> ParseCapability(
+    const std::string& capability_str) {
+  if (capability_str == "chat") {
+    return mojom::ConversationCapability::CHAT;
+  } else if (capability_str == "content_agent") {
+    return mojom::ConversationCapability::CONTENT_AGENT;
+  } else if (capability_str == "deep_research") {
+    return mojom::ConversationCapability::DEEP_RESEARCH;
+  }
+  DVLOG(1) << "Unknown conversation capability: " << capability_str;
   return std::nullopt;
 }
 
@@ -169,6 +183,19 @@ mojom::ModelPtr ParseModel(const base::DictValue& model_dict) {
       model_dict.FindBool(kIsSuggestedModelField).value_or(false);
   model->is_near_model = model_dict.FindBool(kIsNearModelField).value_or(false);
 
+  if (const base::ListValue* capabilities_list =
+          model_dict.FindList(kSupportedCapabilitiesField)) {
+    for (const auto& capability_value : *capabilities_list) {
+      if (!capability_value.is_string()) {
+        continue;
+      }
+      auto capability = ParseCapability(capability_value.GetString());
+      if (capability.has_value()) {
+        model->supported_capabilities.push_back(*capability);
+      }
+    }
+  }
+
   auto leo_opts = mojom::LeoModelOptions::New();
   leo_opts->name = *name;
 
@@ -187,11 +214,11 @@ mojom::ModelPtr ParseModel(const base::DictValue& model_dict) {
 
   leo_opts->access = *parsed_access;
 
-  if (!max_content_length.has_value() || *max_content_length <= 0) {
+  if (!max_content_length.has_value()) {
     max_content_length =
         (leo_opts->access == mojom::ModelAccess::PREMIUM) ? 90000 : 32000;
   }
-  if (!warning_limit.has_value() || *warning_limit <= 0) {
+  if (!warning_limit.has_value()) {
     warning_limit =
         (leo_opts->access == mojom::ModelAccess::PREMIUM) ? 160000 : 51200;
   }
@@ -228,7 +255,7 @@ void RemoteModelsFetcher::FetchModels(const std::string& url,
 
   auto result_callback =
       base::BindOnce(&RemoteModelsFetcher::OnFetchComplete,
-                     weak_ptr_factory_.GetWeakPtr(), url, std::move(callback));
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
   api_request_helper::APIRequestOptions options;
   options.max_body_size = kMaxResponseSize;
@@ -267,7 +294,6 @@ std::vector<mojom::ModelPtr> RemoteModelsFetcher::ParseModelsFromJSON(
 }
 
 void RemoteModelsFetcher::OnFetchComplete(
-    const std::string& original_url,
     FetchModelsCallback callback,
     api_request_helper::APIRequestResult result) {
   if (!result.Is2XXResponseCode()) {
