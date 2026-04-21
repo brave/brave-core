@@ -48,6 +48,10 @@ inline constexpr char kDomainFPSettingsBelowHistogramName[] =
     "Brave.Shields.DomainFingerprintSettingsBelowGlobal";
 inline constexpr char kForgetFirstPartyHistogramName[] =
     "Brave.Shields.ForgetFirstParty";
+inline constexpr char kUpgradeHTTPSGlobalHistogramName[] =
+    "Brave.Shields.UpgradeHTTPSGlobal";
+inline constexpr char kUpgradeHTTPSPerSiteHistogramName[] =
+    "Brave.Shields.UpgradeHTTPSPerSite";
 // Note: append-only enumeration! Never remove any existing values, as this enum
 // is used to bucket a UMA histogram, and removing values breaks that.
 enum ShieldsIconUsage {
@@ -89,6 +93,10 @@ void RecordShieldsDomainSettingCountsWithChange(PrefService* profile_prefs,
 // Records global "forget me when I close this site" setting,
 // and any per-site exceptions.
 void RecordForgetFirstPartySetting(HostContentSettingsMap* map);
+
+// Records global HTTPS upgrade setting and whether any per-site
+// strict (HTTPS-Only) exceptions exist.
+void RecordHTTPSUpgradeSettingP3A(HostContentSettingsMap* map);
 
 void RegisterShieldsP3ALocalPrefs(PrefRegistrySimple* local_state);
 
