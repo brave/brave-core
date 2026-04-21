@@ -7,8 +7,8 @@
 
 #include "base/check_is_test.h"
 #include "base/memory/ptr_util.h"
-#include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/autofill/payments/webauthn_dialog_controller_impl.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -23,6 +23,10 @@
 #include "components/strike_database/strike_database.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "ui/base/l10n/l10n_util.h"
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/browser/ui/email_aliases/email_aliases_controller.h"
+#endif
 
 namespace autofill {
 
@@ -42,6 +46,7 @@ bool IsPrivateProfile(content::WebContents* web_contents) {
          profile->IsTor();
 }
 
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 email_aliases::EmailAliasesController* GetEmailAliasesControllerFromWebContents(
     content::WebContents* web_contents) {
   tabs::TabInterface* tab =
@@ -55,6 +60,7 @@ email_aliases::EmailAliasesController* GetEmailAliasesControllerFromWebContents(
   }
   return window_interface->GetFeatures().email_aliases_controller();
 }
+#endif  // BUILDFLAG(ENABLE_EMAIL_ALIASES)
 
 }  // namespace
 
@@ -62,7 +68,7 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
  public:
   using ChromeAutofillClient::ChromeAutofillClient;
 
-  static std::unique_ptr<ChromeAutofillClient> CreateForTesting(
+  static std::unique_ptr<ChromeAutofillClient> CreateForTesting(  // IN-TEST
       content::WebContents* contents) {
     CHECK_IS_TEST();
     return base::WrapUnique(new BraveChromeAutofillClient(contents));
@@ -100,14 +106,14 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
       const PasswordFormClassification& form_classification,
       const FormFieldData& field,
       std::vector<Suggestion>& chrome_suggestions) override {
-#if !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
     AddEmailAliasSuggestsion(form_classification, field, chrome_suggestions);
 #endif
   }
 
   bool BraveHandleSuggestion(const Suggestion& suggestion,
                              const autofill::FieldGlobalId& field) override {
-#if !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
     if (HandleEmailAliasSuggestsion(suggestion, field)) {
       return true;
     }
@@ -116,7 +122,7 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
   }
 
  private:
-#if !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   void AddEmailAliasSuggestsion(
       const PasswordFormClassification& form_classification,
       const FormFieldData& field,
@@ -164,13 +170,14 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
     }
     return true;
   }
-#endif
+#endif  // BUILDFLAG(ENABLE_EMAIL_ALIASES)
 };
 
-std::unique_ptr<ChromeAutofillClient> CreateBraveChromeAutofillClientForTesting(
+std::unique_ptr<ChromeAutofillClient>
+CreateBraveChromeAutofillClientForTesting(  // IN-TEST
     content::WebContents* contents) {
   CHECK_IS_TEST();
-  return BraveChromeAutofillClient::CreateForTesting(contents);
+  return BraveChromeAutofillClient::CreateForTesting(contents);  // IN-TEST
 }
 
 }  // namespace autofill
