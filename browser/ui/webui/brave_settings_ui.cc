@@ -36,6 +36,7 @@
 #include "brave/components/brave_origin/brave_origin_utils.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/features.h"
@@ -261,7 +262,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean("isSurveyPanelistAllowed",
                           base::FeatureList::IsEnabled(
                               ntp_background_images::features::
-                                  kBraveNTPBrandedWallpaperSurveyPanelist));
+                                  kBraveNTPBrandedWallpaperSurveyPanelist) &&
+                              !profile->GetPrefs()->GetBoolean(
+                                  brave_rewards::prefs::kDisabledByPolicy));
   html_source->AddBoolean(
       "isPlaylistAllowed",
       base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
