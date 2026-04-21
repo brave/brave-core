@@ -69,9 +69,7 @@ void AdBlockFiltersProviderManager::ForceNotifyObserver(
     bool is_for_default_engine) {
   // Consume the startup change notification first so it will trigger OnChanged
   // either right now or when all providers are initialized
-  if (MaybeConsumeEngineStartupChangeNotification(is_for_default_engine)) {
-    return;
-  }
+  MaybeConsumeEngineStartupChangeNotification(is_for_default_engine);
 
   if (AreAllProvidersInitialized(is_for_default_engine)) {
     observer.OnChanged(is_for_default_engine);
