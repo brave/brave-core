@@ -16,6 +16,7 @@
 #include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_service.h"
 
@@ -23,8 +24,12 @@ namespace misc_metrics {
 
 namespace {
 
-constexpr int kDailyQueriesBuckets[] = {0, 3, 7};
+// Buckets for DailyQueries. Answers 0 and 1 are reserved for the zero-query
+// cases (no navigation and had navigation respectively), so two dummy leading
+// values push real query counts to indices 2 and above.
+constexpr int kDailyQueriesBuckets[] = {0, 0, 3, 7};
 constexpr char kQueriesCountKey[] = "queries";
+constexpr char kAnyNavigationKey[] = "any_navigation";
 constexpr char kPrimaryQueriesCountKey[] = "primary";
 constexpr char kOmniboxTypedCountKey[] = "omnibox_typed";
 constexpr char kOmniboxSuggestionCountKey[] = "omnibox_suggestion";
@@ -71,6 +76,9 @@ void BraveSearchMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
 
 void BraveSearchMetrics::MaybeRecordBraveQuery(const GURL& previous_url,
                                                const GURL& current_url) {
+  ScopedDictPrefUpdate(local_state_, kMiscMetricsBraveSearchQueryCounts)
+      ->Set(kAnyNavigationKey, true);
+
   if (!IsBraveSearchURL(current_url)) {
     return;
   }
@@ -148,6 +156,7 @@ void BraveSearchMetrics::ReportAllMetrics() {
   const base::DictValue& counts =
       local_state_->GetDict(kMiscMetricsBraveSearchQueryCounts);
   int sum = counts.FindInt(kQueriesCountKey).value_or(0);
+  bool any_navigation = counts.FindBool(kAnyNavigationKey).value_or(false);
 
   auto* histogram_name_ptr =
       base::FindOrNull(kDailyQueriesHistogramMap, engine_type);
@@ -155,7 +164,13 @@ void BraveSearchMetrics::ReportAllMetrics() {
                              ? *histogram_name_ptr
                              : kSearchDailyQueriesOtherDefaultHistogramName;
 
-  p3a_utils::RecordToHistogramBucket(histogram_name, kDailyQueriesBuckets, sum);
+  if (sum == 0) {
+    base::UmaHistogramExactLinear(histogram_name, any_navigation ? 1 : 0,
+                                  std::size(kDailyQueriesBuckets) + 1);
+  } else {
+    p3a_utils::RecordToHistogramBucket(histogram_name, kDailyQueriesBuckets,
+                                       sum);
+  }
 
   int primary_queries = counts.FindInt(kPrimaryQueriesCountKey).value_or(0);
   if (primary_queries > 0) {

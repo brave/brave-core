@@ -80,9 +80,11 @@ TEST_F(BraveSearchMetricsUnitTest, DailyQueriesBuckets) {
   // Advance 24 hours then report.
   FastForwardAndReport(base::Days(1));
 
-  // Should report bucket 1 (3 queries -> 1-3 range).
+  // Buckets 0 and 1 are reserved for zero-query cases (no navigation / had
+  // navigation). Real query counts start at index 2.
+  // Should report bucket 2 (3 queries -> 1-3 range).
   histogram_tester_.ExpectUniqueSample(
-      kSearchDailyQueriesBraveDefaultHistogramName, 1, 1);
+      kSearchDailyQueriesBraveDefaultHistogramName, 2, 1);
   histogram_tester_.ExpectTotalCount(
       kSearchDailyQueriesGoogleDefaultHistogramName, 0);
   histogram_tester_.ExpectTotalCount(
@@ -95,9 +97,9 @@ TEST_F(BraveSearchMetricsUnitTest, DailyQueriesBuckets) {
 
   FastForwardAndReport(base::Days(1));
 
-  // Should report bucket 2 (7 queries -> 4-7 range).
+  // Should report bucket 3 (7 queries -> 4-7 range).
   histogram_tester_.ExpectBucketCount(
-      kSearchDailyQueriesBraveDefaultHistogramName, 2, 1);
+      kSearchDailyQueriesBraveDefaultHistogramName, 3, 1);
 
   // Record 8 queries in the new window.
   for (int i = 0; i < 8; i++) {
@@ -106,9 +108,9 @@ TEST_F(BraveSearchMetricsUnitTest, DailyQueriesBuckets) {
 
   FastForwardAndReport(base::Days(1));
 
-  // Should report bucket 3 (8 queries -> 8+ range).
+  // Should report bucket 4 (8 queries -> 8+ range).
   histogram_tester_.ExpectBucketCount(
-      kSearchDailyQueriesBraveDefaultHistogramName, 3, 1);
+      kSearchDailyQueriesBraveDefaultHistogramName, 4, 1);
 
   histogram_tester_.ExpectTotalCount(
       kSearchDailyQueriesBraveDefaultHistogramName, 3);
@@ -130,9 +132,9 @@ TEST_F(BraveSearchMetricsUnitTest, DailyQueriesEngineSwitch) {
   // Advance past 24 hours then report.
   FastForwardAndReport(base::Days(1));
 
-  // Should report under Google (3 queries -> bucket 1).
+  // Should report under Google (3 queries -> bucket 2, 1-3 range).
   histogram_tester_.ExpectUniqueSample(
-      kSearchDailyQueriesGoogleDefaultHistogramName, 1, 1);
+      kSearchDailyQueriesGoogleDefaultHistogramName, 2, 1);
   histogram_tester_.ExpectTotalCount(
       kSearchDailyQueriesBraveDefaultHistogramName, 0);
   histogram_tester_.ExpectTotalCount(kSearchDailyQueriesDDGDefaultHistogramName,
@@ -153,13 +155,13 @@ TEST_F(BraveSearchMetricsUnitTest, DailyQueriesEngineSwitch) {
   // Advance past 24 hours then report.
   FastForwardAndReport(base::Days(1));
 
-  // Should report under OtherDefault (5 queries -> bucket 2).
+  // Should report under OtherDefault (5 queries -> bucket 3, 4-7 range).
   histogram_tester_.ExpectUniqueSample(
-      kSearchDailyQueriesOtherDefaultHistogramName, 2, 1);
+      kSearchDailyQueriesOtherDefaultHistogramName, 3, 1);
   histogram_tester_.ExpectTotalCount(
       kSearchDailyQueriesBraveDefaultHistogramName, 0);
   histogram_tester_.ExpectUniqueSample(
-      kSearchDailyQueriesGoogleDefaultHistogramName, 1, 1);
+      kSearchDailyQueriesGoogleDefaultHistogramName, 2, 1);
   histogram_tester_.ExpectTotalCount(kSearchDailyQueriesDDGDefaultHistogramName,
                                      0);
   histogram_tester_.ExpectTotalCount(
@@ -176,13 +178,13 @@ TEST_F(BraveSearchMetricsUnitTest, DailyQueriesEngineSwitch) {
   // Advance past 24 hours then report.
   FastForwardAndReport(base::Days(1));
 
-  // Should report under BraveDefault (8 queries -> bucket 3).
+  // Should report under BraveDefault (8 queries -> bucket 4, 8+ range).
   histogram_tester_.ExpectUniqueSample(
-      kSearchDailyQueriesBraveDefaultHistogramName, 3, 1);
+      kSearchDailyQueriesBraveDefaultHistogramName, 4, 1);
   histogram_tester_.ExpectUniqueSample(
-      kSearchDailyQueriesOtherDefaultHistogramName, 2, 1);
+      kSearchDailyQueriesOtherDefaultHistogramName, 3, 1);
   histogram_tester_.ExpectUniqueSample(
-      kSearchDailyQueriesGoogleDefaultHistogramName, 1, 1);
+      kSearchDailyQueriesGoogleDefaultHistogramName, 2, 1);
   histogram_tester_.ExpectTotalCount(kSearchDailyQueriesDDGDefaultHistogramName,
                                      0);
   histogram_tester_.ExpectTotalCount(
@@ -195,9 +197,9 @@ TEST_F(BraveSearchMetricsUnitTest, CountsClearedAfterReport) {
   // Advance past 24 hours then report.
   FastForwardAndReport(base::Days(1));
 
-  // Previous window reported 1 query -> bucket 1.
+  // Previous window reported 1 query -> bucket 2 (1-3 range).
   histogram_tester_.ExpectBucketCount(
-      kSearchDailyQueriesBraveDefaultHistogramName, 1, 1);
+      kSearchDailyQueriesBraveDefaultHistogramName, 2, 1);
 
   // Record 1 query in the new window.
   brave_search_metrics_->MaybeRecordBraveQuery(empty_url_, brave_search_url_);
@@ -207,7 +209,7 @@ TEST_F(BraveSearchMetricsUnitTest, CountsClearedAfterReport) {
 
   // Should report 1 query again for the new window.
   histogram_tester_.ExpectBucketCount(
-      kSearchDailyQueriesBraveDefaultHistogramName, 1, 2);
+      kSearchDailyQueriesBraveDefaultHistogramName, 2, 2);
 }
 
 TEST_F(BraveSearchMetricsUnitTest, ClearQueryCounts) {
@@ -224,9 +226,34 @@ TEST_F(BraveSearchMetricsUnitTest, ClearQueryCounts) {
   // Advance past 24 hours and report.
   FastForwardAndReport(base::Days(1));
 
-  // Should report bucket 0 (0 queries) since counts were cleared.
+  // Counts cleared means sum=0 and any_navigation=false -> bucket 0.
   histogram_tester_.ExpectUniqueSample(
       kSearchDailyQueriesBraveDefaultHistogramName, 0, 1);
+}
+
+TEST_F(BraveSearchMetricsUnitTest, DailyQueriesNoNavigationReportsZero) {
+  // No queries and no navigation in this window -> bucket 0.
+  FastForwardAndReport(base::Days(1));
+  histogram_tester_.ExpectUniqueSample(
+      kSearchDailyQueriesBraveDefaultHistogramName, 0, 1);
+
+  // After reset, another empty window also reports bucket 0.
+  FastForwardAndReport(base::Days(1));
+  histogram_tester_.ExpectBucketCount(
+      kSearchDailyQueriesBraveDefaultHistogramName, 0, 2);
+}
+
+TEST_F(BraveSearchMetricsUnitTest,
+       DailyQueriesNavigationButNoSearchReportsOne) {
+  // Navigate to a non-search URL: sets any_navigation=true but sum stays 0.
+  const GURL non_search_url{"https://example.com"};
+  brave_search_metrics_->MaybeRecordBraveQuery(empty_url_, non_search_url);
+
+  FastForwardAndReport(base::Days(1));
+
+  // any_navigation=true, sum=0 -> bucket 1.
+  histogram_tester_.ExpectUniqueSample(
+      kSearchDailyQueriesBraveDefaultHistogramName, 1, 1);
 }
 
 TEST_F(BraveSearchMetricsUnitTest, NoReportBeforeFrameExpires) {
