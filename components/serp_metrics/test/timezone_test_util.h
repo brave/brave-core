@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_SERP_METRICS_TIMEZONE_TEST_UTIL_H_
-#define BRAVE_COMPONENTS_SERP_METRICS_TIMEZONE_TEST_UTIL_H_
+#ifndef BRAVE_COMPONENTS_SERP_METRICS_TEST_TIMEZONE_TEST_UTIL_H_
+#define BRAVE_COMPONENTS_SERP_METRICS_TEST_TIMEZONE_TEST_UTIL_H_
 
 #include <string>
 #include <string_view>
@@ -39,4 +39,4 @@ inline std::string TimezoneTestParamName(
 
 }  // namespace serp_metrics::test
 
-#endif  // BRAVE_COMPONENTS_SERP_METRICS_TIMEZONE_TEST_UTIL_H_
+#endif  // BRAVE_COMPONENTS_SERP_METRICS_TEST_TIMEZONE_TEST_UTIL_H_

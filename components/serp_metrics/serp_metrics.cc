@@ -26,16 +26,16 @@ namespace {
 
 struct TimePeriodStorageInfo {
   SerpMetricType serp_metric_type = SerpMetricType::kUndefined;
-  const char* metric_name = nullptr;
+  std::string_view pref_key;
 };
 
 constexpr TimePeriodStorageInfo kTimePeriodStorages[] = {
     {.serp_metric_type = SerpMetricType::kBrave,
-     .metric_name = "brave_search_engine"},
+     .pref_key = "brave_search_engine"},
     {.serp_metric_type = SerpMetricType::kGoogle,
-     .metric_name = "google_search_engine"},
+     .pref_key = "google_search_engine"},
     {.serp_metric_type = SerpMetricType::kOther,
-     .metric_name = "other_search_engine"},
+     .pref_key = "other_search_engine"},
 };
 
 base::flat_map<SerpMetricType, std::unique_ptr<SerpMetricsTimePeriodStorage>>
@@ -43,9 +43,9 @@ BuildTimePeriodStorages(
     const SerpMetricsTimePeriodStoreFactory& time_period_store_factory) {
   base::flat_map<SerpMetricType, std::unique_ptr<SerpMetricsTimePeriodStorage>>
       time_period_storages;
-  for (const auto& [type, metric_name] : kTimePeriodStorages) {
+  for (const auto& [type, pref_key] : kTimePeriodStorages) {
     std::unique_ptr<SerpMetricsTimePeriodStore> time_period_store =
-        time_period_store_factory.Build(metric_name);
+        time_period_store_factory.Build(pref_key);
     time_period_storages.emplace(
         type,
         std::make_unique<SerpMetricsTimePeriodStorage>(
@@ -96,8 +96,7 @@ size_t GetYesterdaySumAfterLastCheckedCutoff(
     return 0;
   }
 
-  return time_period_storage.GetPeriodSumInTimeRange(start_time,
-                                                     end_of_yesterday);
+  return time_period_storage.GetCountForTimeRange(start_time, end_of_yesterday);
 }
 
 }  // namespace
@@ -105,10 +104,9 @@ size_t GetYesterdaySumAfterLastCheckedCutoff(
 SerpMetrics::SerpMetrics(
     PrefService* local_state,
     const SerpMetricsTimePeriodStoreFactory& time_period_store_factory)
-    : local_state_(local_state),
+    : local_state_(*local_state),
       time_period_storages_(
           BuildTimePeriodStorages(time_period_store_factory)) {
-  CHECK(local_state_);
   CHECK(base::FeatureList::IsEnabled(serp_metrics::kSerpMetricsFeature));
 }
 
@@ -116,17 +114,23 @@ SerpMetrics::~SerpMetrics() = default;
 
 void SerpMetrics::RecordSearch(SerpMetricType type) {
   CHECK_NE(SerpMetricType::kUndefined, type);
-  CHECK(time_period_storages_.contains(type));
-  time_period_storages_.at(type)->AddDelta(1);
+
+  const auto iter = time_period_storages_.find(type);
+  CHECK(iter != time_period_storages_.cend());
+  SerpMetricsTimePeriodStorage& storage = *iter->second;
+  storage.AddCount(1);
 }
 
 size_t SerpMetrics::GetSearchCountForYesterday(SerpMetricType type) const {
   CHECK_NE(SerpMetricType::kUndefined, type);
-  CHECK(time_period_storages_.contains(type));
+
+  const auto iter = time_period_storages_.find(type);
+  CHECK(iter != time_period_storages_.cend());
+  const SerpMetricsTimePeriodStorage& storage = *iter->second;
   const base::Time now = base::Time::Now();
   return GetYesterdaySumAfterLastCheckedCutoff(
-      *time_period_storages_.at(type), GetStartOfYesterday(now),
-      GetEndOfYesterday(now), GetStartOfStalePeriod());
+      storage, GetStartOfYesterday(now), GetEndOfYesterday(now),
+      GetStartOfStalePeriod());
 }
 
 size_t SerpMetrics::GetSearchCountForStalePeriod() const {
@@ -136,8 +140,8 @@ size_t SerpMetrics::GetSearchCountForStalePeriod() const {
 
   size_t count = 0;
   for (const auto& [_, time_period_storage] : time_period_storages_) {
-    count += time_period_storage->GetPeriodSumInTimeRange(start_of_stale_period,
-                                                          end_of_stale_period);
+    count += time_period_storage->GetCountForTimeRange(start_of_stale_period,
+                                                       end_of_stale_period);
   }
   return count;
 }
@@ -150,8 +154,11 @@ void SerpMetrics::ClearHistory() {
 
 size_t SerpMetrics::GetSearchCountForTesting(SerpMetricType type) const {
   CHECK_NE(SerpMetricType::kUndefined, type);
-  CHECK(time_period_storages_.contains(type));
-  return time_period_storages_.at(type)->GetPeriodSum();
+
+  const auto iter = time_period_storages_.find(type);
+  CHECK(iter != time_period_storages_.cend());
+  const SerpMetricsTimePeriodStorage& storage = *iter->second;
+  return storage.GetCount();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

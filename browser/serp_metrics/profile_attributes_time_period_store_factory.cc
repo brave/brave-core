@@ -6,8 +6,8 @@
 #include "brave/browser/serp_metrics/profile_attributes_time_period_store_factory.h"
 
 #include <memory>
+#include <string_view>
 
-#include "base/check.h"
 #include "brave/browser/serp_metrics/profile_attributes_time_period_store.h"
 
 namespace serp_metrics {
@@ -20,8 +20,8 @@ ProfileAttributesTimePeriodStoreFactory::
       profile_attributes_storage_(profile_attributes_storage) {}
 
 std::unique_ptr<SerpMetricsTimePeriodStore>
-ProfileAttributesTimePeriodStoreFactory::Build(const char* metric_name) const {
-  CHECK(metric_name);
+ProfileAttributesTimePeriodStoreFactory::Build(
+    std::string_view metric_name) const {
   return std::make_unique<ProfileAttributesTimePeriodStore>(
       profile_path_, profile_attributes_storage_.get(), metric_name);
 }

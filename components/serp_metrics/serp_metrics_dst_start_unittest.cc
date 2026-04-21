@@ -12,11 +12,11 @@
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/serp_metrics/fake_time_period_store.h"
 #include "brave/components/serp_metrics/serp_metric_type.h"
 #include "brave/components/serp_metrics/serp_metrics.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
-#include "brave/components/serp_metrics/time_period_storage/serp_metrics_scoped_timezone_for_testing.h"
+#include "brave/components/serp_metrics/test/fake_serp_metrics_time_period_store.h"
+#include "brave/components/serp_metrics/time_period_storage/test/scoped_timezone_for_testing.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -67,7 +67,7 @@ class SerpMetricsDSTStartTest
     scoped_feature_list_.InitAndEnableFeatureWithParameters(
         kSerpMetricsFeature, {{"time_period_in_days", "7"}});
     serp_metrics_ = std::make_unique<SerpMetrics>(
-        &local_state_, test::FakeTimePeriodStoreFactory());
+        &local_state_, test::FakeSerpMetricsTimePeriodStoreFactory());
   }
 
  protected:
@@ -78,7 +78,7 @@ class SerpMetricsDSTStartTest
 
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
-  const test::SerpMetricsScopedTimezoneForTesting scoped_timezone_;
+  const test::ScopedTimezoneForTesting scoped_timezone_;
   base::test::ScopedFeatureList scoped_feature_list_;
   TestingPrefServiceSimple local_state_;
   std::unique_ptr<SerpMetrics> serp_metrics_;

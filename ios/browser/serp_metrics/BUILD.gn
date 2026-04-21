@@ -43,6 +43,7 @@ source_set("unit_tests") {
     "//brave/components/constants",
     "//brave/components/serp_metrics",
     "//brave/components/serp_metrics:features",
+    "//brave/components/serp_metrics:test_support",
     "//brave/components/serp_metrics/time_period_storage",
     "//brave/ios/browser/brave_stats",
     "//components/prefs:test_support",
