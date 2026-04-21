@@ -66,7 +66,7 @@ PolkadotTransactionStatusTask::PolkadotTransactionStatusTask(
   // unlikely, a block produced near the end of the chain can still have an
   // extrinsic within its mortality window even if the true end of the mortality
   // window exceeds numeric limits for a uint32_t.
-  max_block_num_ = base::ClampAdd(block_num_, mortality_period_).RawValue();
+  max_block_num_ = base::ClampAdd(block_num_, mortality_period_);
 }
 
 PolkadotTransactionStatusTask::~PolkadotTransactionStatusTask() = default;
@@ -214,9 +214,7 @@ void PolkadotTransactionStatusTask::OnGetBlockForStatus(
     return;
   }
 
-  base::CheckedNumeric<uint32_t> curr_block_num{curr_block_num_};
-  curr_block_num += 1;
-  if (!curr_block_num.AssignIfValid(&curr_block_num_)) {
+  if (!base::CheckAdd(curr_block_num_, 1).AssignIfValid(&curr_block_num_)) {
     return std::move(callback_).Run(
         base::ok(std::pair(PolkadotTransactionStatus::kNotFound, 0)));
   }
