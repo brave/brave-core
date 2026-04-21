@@ -142,11 +142,11 @@ TEST_F(QueryFilterComponentInstallerTest, TestComponentReady) {
                                   query_filter::kQueryFilterJsonFile),
                               kSampleQueryFilterJson));
 
+  ASSERT_NE(nullptr, query_filter::QueryFilterData::GetInstance());
+
   // Target version to populate with
   base::Version version("1.0.0");
-
   // Verify the version is empty before the component is ready
-  ASSERT_NE(nullptr, query_filter::QueryFilterData::GetInstance())
   EXPECT_EQ("", query_filter::QueryFilterData::GetInstance()->GetVersion());
   // Verify also the rules are empty before the component is ready
   EXPECT_TRUE(query_filter::QueryFilterData::GetInstance()->rules().empty());

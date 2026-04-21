@@ -11,13 +11,15 @@ static_library("browser") {
     "query_filter_data.h",
   ]
 
-  public_deps = [ "//base" ]
+  public_deps = [
+    "//base",
+    "//components/component_updater",
+    "//components/update_client",
+  ]
 
   deps = [
     "//brave/components/brave_component_updater/browser:public",
     "//brave/components/query_filter/common",
-    "//components/component_updater",
-    "//components/update_client",
   ]
 }
 
