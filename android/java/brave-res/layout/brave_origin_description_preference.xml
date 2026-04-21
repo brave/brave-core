@@ -30,13 +30,4 @@
         android:text="@string/origin_description_body"
         android:textColor="@color/text_secondary" />
 
-    <TextView
-        android:id="@+id/origin_description_note"
-        style="@style/SmallRegular"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/origin_description_note"
-        android:textColor="@color/text_tertiary" />
-
 </LinearLayout>
