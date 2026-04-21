@@ -81,6 +81,10 @@ public class OriginSettingsViewModel {
   @OriginPolicyBooleanValue(key: .vpnDisabled)
   var isVPNDisabled: Bool
 
+  @ObservationIgnored
+  @OriginPolicyBooleanValue(key: .playlistEnabled)
+  var isPlaylistEnabled: Bool
+
   private(set) var isPuchaseLinkable: Bool = false
 
   @MainActor

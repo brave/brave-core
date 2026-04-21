@@ -24,3 +24,5 @@ BraveOriginPolicyKey const BraveOriginPolicyKeyP3AEnabled =
     base::SysUTF8ToNSString(policy::key::kBraveP3AEnabled);
 BraveOriginPolicyKey const BraveOriginPolicyKeyStatsPingEnabled =
     base::SysUTF8ToNSString(policy::key::kBraveStatsPingEnabled);
+BraveOriginPolicyKey const BraveOriginPolicyKeyPlaylistEnabled =
+    base::SysUTF8ToNSString(policy::key::kBravePlaylistEnabled);
