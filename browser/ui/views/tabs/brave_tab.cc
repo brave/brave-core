@@ -15,7 +15,6 @@
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
-#include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "cc/paint/paint_flags.h"
 #include "chrome/browser/profiles/profile.h"
@@ -37,6 +36,11 @@
 #include "ui/views/controls/button/image_button.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/view_class_properties.h"
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/containers/containers_service_factory.h"
+#include "brave/components/containers/core/browser/containers_service.h"
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 namespace {
 
@@ -352,6 +356,10 @@ void BraveTab::LayoutSmallTabAccentIcon() {
       ShouldPaintTabAccent() && !ShouldShowLargeAccentIcon();
   small_accent_icon_view_->SetVisible(show_small_accent);
   if (show_small_accent) {
+#if BUILDFLAG(ENABLE_CONTAINERS)
+    MaybeObserveContainerChanges();
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
     const auto tab_bounds = gfx::SkRectToRectF(
         tab_style_views()
             ->GetPath(TabStyle::PathType::kBorder, 1, /*flags=*/{})
@@ -364,6 +372,29 @@ void BraveTab::LayoutSmallTabAccentIcon() {
         kSmallAccentSize);
   }
 }
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+void BraveTab::MaybeObserveContainerChanges() {
+  if (!ShouldPaintTabAccent()) {
+    return;
+  }
+
+  auto* containers_service =
+      ContainersServiceFactory::GetInstance()->GetForProfile(
+          controller_->GetBrowserWindowInterface()->GetProfile());
+
+  container_changed_subscription_ =
+      containers_service->RegisterContainerChangedCallback(base::BindRepeating(
+          &BraveTab::OnContainerChanged, base::Unretained(this)));
+}
+
+void BraveTab::OnContainerChanged() {
+  SchedulePaint();
+  if (small_accent_icon_view_->layer()) {
+    small_accent_icon_view_->SchedulePaint();
+  }
+}
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 bool BraveTab::IsTreeNodeCollapsed() const {
   if (auto* node = GetTreeTabNode()) {
@@ -533,6 +564,16 @@ void BraveTab::MaybeUpdateHoverStatus(const ui::MouseEvent& event) {
   if (tree_tab_node().has_value()) {
     LayoutTreeToggleButton();
   }
+}
+
+void BraveTab::OnPaint(gfx::Canvas* canvas) {
+  Tab::OnPaint(canvas);
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  // In case we are showing large accent icon, we need to try  observing
+  // container pref changes.
+  MaybeObserveContainerChanges();
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 }
 
 bool BraveTab::IsInCollapsedTreeTabNode() const {

@@ -13,7 +13,9 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/accent_color/brave_tab_accent_types.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "ui/gfx/geometry/point.h"
 
 namespace views {
@@ -78,6 +80,7 @@ class BraveTab : public Tab {
   TabNestingInfo GetTabNestingInfo() const override;
   bool IsInCollapsedTreeTabNode() const override;
   void MaybeUpdateHoverStatus(const ui::MouseEvent& event) override;
+  void OnPaint(gfx::Canvas* canvas) override;
 
   // Returns whether this tab should have an accent painted.
   bool ShouldPaintTabAccent() const;
@@ -161,12 +164,24 @@ class BraveTab : public Tab {
   // Lays out the small tab accent icon view (visibility and bounds).
   void LayoutSmallTabAccentIcon();
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  // Starts observing container changes if not already observing.
+  void MaybeObserveContainerChanges();
+
+  // Called when the container changes.
+  void OnContainerChanged();
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
   // Test accessors to reveal base class members.
   TabCloseButton* close_button_for_test() const { return close_button_.get(); }
   bool center_icon_for_test() const { return center_icon_; }
   bool showing_close_button_for_test() const { return showing_close_button_; }
 
   raw_ptr<SmallAccentIconView> small_accent_icon_view_ = nullptr;  // not owned
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  base::CallbackListSubscription container_changed_subscription_;
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
   base::WeakPtrFactory<BraveTab> weak_factory_{this};
 };

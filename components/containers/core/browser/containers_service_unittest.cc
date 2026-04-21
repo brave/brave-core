@@ -10,6 +10,8 @@
 #include <utility>
 
 #include "base/containers/flat_set.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/containers/core/browser/containers_test_utils.h"
 #include "brave/components/containers/core/browser/prefs.h"
@@ -113,6 +115,23 @@ TEST_F(ContainersServiceTest, GetContainers) {
 
   auto containers_list = service_->GetContainers();
   ExpectContainer(containers_list[0], "container-id", "Work");
+}
+
+TEST_F(ContainersServiceTest,
+       RegisterContainerChangedCallback_InvokedWhenContainersListPrefChanges) {
+  int callback_count = 0;
+  auto subscription =
+      service_->RegisterContainerChangedCallback(base::BindRepeating(
+          [](int* count) { ++(*count); }, base::Unretained(&callback_count)));
+
+  std::vector<mojom::ContainerPtr> containers;
+  containers.push_back(MakeContainer("container-id", "Work"));
+  SetContainersToPrefs(containers, prefs_);
+
+  EXPECT_EQ(callback_count, 1);
+
+  SetContainersToPrefs({}, prefs_);
+  EXPECT_EQ(callback_count, 2);
 }
 
 TEST_F(ContainersServiceTest, MarkContainerUsed_PersistsSnapshot) {

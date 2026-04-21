@@ -76,6 +76,13 @@ void ContainersService::ScheduleOrphanedContainersCleanupForTesting() {
 
 void ContainersService::OnSyncedContainersChanged() {
   RefreshLocallyUsedContainersFromSyncedList();
+  container_changed_callback_list_.Notify();
+}
+
+base::CallbackListSubscription
+ContainersService::RegisterContainerChangedCallback(
+    base::RepeatingCallback<void()> callback) {
+  return container_changed_callback_list_.Add(std::move(callback));
 }
 
 void ContainersService::RefreshLocallyUsedContainersFromSyncedList() {

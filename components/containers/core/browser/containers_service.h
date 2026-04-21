@@ -10,6 +10,7 @@
 #include <string>
 #include <string_view>
 
+#include "base/callback_list.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ref.h"
@@ -67,6 +68,10 @@ class ContainersService : public KeyedService {
 
   void ScheduleOrphanedContainersCleanupForTesting();
 
+  // Registers a callback that will be called when the container list changes.
+  base::CallbackListSubscription RegisterContainerChangedCallback(
+      base::RepeatingCallback<void()> callback);
+
  private:
   // Called when the synced containers list changes.
   void OnSyncedContainersChanged();
@@ -89,6 +94,7 @@ class ContainersService : public KeyedService {
   raw_ref<PrefService> prefs_;
   std::unique_ptr<Delegate> delegate_;
   PrefChangeRegistrar pref_change_registrar_;
+  base::RepeatingClosureList container_changed_callback_list_;
   base::WeakPtrFactory<ContainersService> weak_factory_{this};
 };
 
