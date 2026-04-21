@@ -90,7 +90,6 @@ class BraveTab : public Tab
   TabNestingInfo GetTabNestingInfo() const override;
   bool IsInCollapsedTreeTabNode() const override;
   void MaybeUpdateHoverStatus(const ui::MouseEvent& event) override;
-  void OnPaint(gfx::Canvas* canvas) override;
 
   // Returns whether this tab should have an accent painted.
   bool ShouldPaintTabAccent() const;

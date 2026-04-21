@@ -14,8 +14,6 @@ namespace containers {
 // (backed by prefs).
 class ContainersServiceObserver : public base::CheckedObserver {
  public:
-  ~ContainersServiceObserver() override = default;
-
   // Called when the synced containers list pref changes.
   virtual void OnContainersListChanged() {}
 };

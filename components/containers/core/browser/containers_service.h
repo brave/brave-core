@@ -55,6 +55,9 @@ class ContainersService : public KeyedService {
 
   void Shutdown() override;
 
+  void AddObserver(ContainersServiceObserver* observer);
+  void RemoveObserver(ContainersServiceObserver* observer);
+
   // Caches a used-container snapshot: synced metadata when the id exists in
   // the synced list, otherwise a placeholder from `CreateUnknownContainer`.
   void MarkContainerUsed(std::string_view container_id);
@@ -68,9 +71,6 @@ class ContainersService : public KeyedService {
   std::vector<mojom::ContainerPtr> GetContainers() const;
 
   void ScheduleOrphanedContainersCleanupForTesting();
-
-  void AddObserver(ContainersServiceObserver* observer);
-  void RemoveObserver(ContainersServiceObserver* observer);
 
  private:
   // Called when the synced containers list changes.

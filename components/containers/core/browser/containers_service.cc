@@ -41,6 +41,14 @@ void ContainersService::Shutdown() {
   delegate_.reset();
 }
 
+void ContainersService::AddObserver(ContainersServiceObserver* observer) {
+  observers_.AddObserver(observer);
+}
+
+void ContainersService::RemoveObserver(ContainersServiceObserver* observer) {
+  observers_.RemoveObserver(observer);
+}
+
 void ContainersService::MarkContainerUsed(std::string_view container_id) {
   CHECK(!container_id.empty());
 
@@ -78,14 +86,6 @@ void ContainersService::ScheduleOrphanedContainersCleanupForTesting() {
 void ContainersService::OnSyncedContainersChanged() {
   RefreshLocallyUsedContainersFromSyncedList();
   observers_.Notify(&ContainersServiceObserver::OnContainersListChanged);
-}
-
-void ContainersService::AddObserver(ContainersServiceObserver* observer) {
-  observers_.AddObserver(observer);
-}
-
-void ContainersService::RemoveObserver(ContainersServiceObserver* observer) {
-  observers_.RemoveObserver(observer);
 }
 
 void ContainersService::RefreshLocallyUsedContainersFromSyncedList() {

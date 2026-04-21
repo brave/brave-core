@@ -356,10 +356,6 @@ void BraveTab::LayoutSmallTabAccentIcon() {
       ShouldPaintTabAccent() && !ShouldShowLargeAccentIcon();
   small_accent_icon_view_->SetVisible(show_small_accent);
   if (show_small_accent) {
-#if BUILDFLAG(ENABLE_CONTAINERS)
-    MaybeObserveContainerChanges();
-#endif  // BUILDFLAG(ENABLE_CONTAINERS)
-
     const auto tab_bounds = gfx::SkRectToRectF(
         tab_style_views()
             ->GetPath(TabStyle::PathType::kBorder, 1, /*flags=*/{})
@@ -529,6 +525,10 @@ void BraveTab::SetData(tabs::TabData data) {
       small_accent_icon_view_->DestroyLayer();
     }
   }
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  MaybeObserveContainerChanges();
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 }
 
 bool BraveTab::IsActive() const {
@@ -572,16 +572,6 @@ void BraveTab::MaybeUpdateHoverStatus(const ui::MouseEvent& event) {
   if (tree_tab_node().has_value()) {
     LayoutTreeToggleButton();
   }
-}
-
-void BraveTab::OnPaint(gfx::Canvas* canvas) {
-  Tab::OnPaint(canvas);
-
-#if BUILDFLAG(ENABLE_CONTAINERS)
-  // In case we are showing large accent icon, we need to try  observing
-  // container pref changes.
-  MaybeObserveContainerChanges();
-#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 }
 
 bool BraveTab::IsInCollapsedTreeTabNode() const {
