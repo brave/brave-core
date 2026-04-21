@@ -3707,7 +3707,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_ManyCalls) {
                               "gtqy55fbzdi.ipfs.inbrowser.link/"),
           mojom::ProviderError::kSuccess, ""));
 
-  ASSERT_EQ(6u, unstoppable_domains::kRecordKeys.size());
+  ASSERT_EQ(7u, unstoppable_domains::kRecordKeys.size());
   // This will resolve brave.crypto requests.
   eth_mainnet_getmany_call_handler_->AddItem(
       "brave.crypto", unstoppable_domains::kRecordKeys[0],

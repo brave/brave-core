@@ -19,6 +19,7 @@ class UnstoppableDomainsResolveUrlTest : public testing::Test {
         "",                                                // dns.AAAA
         "https://fallback1.test.com",  // browser.redirect_url
         "https://fallback2.test.com",  // ipfs.redirect_domain.value
+        "",                            // dweb.webcat
     };
   }
 };
@@ -65,6 +66,29 @@ TEST_F(UnstoppableDomainsResolveUrlTest, FallbackToIpfsRedirectDomainValue) {
   rpc_result[1] = "";
   rpc_result[4] = "";
   EXPECT_EQ(GURL("https://fallback2.test.com"), ResolveUrl(rpc_result));
+}
+
+TEST_F(UnstoppableDomainsResolveUrlTest, ExtractWebcatCidPresent) {
+  auto rpc_result = DefaultRpcResult();
+  rpc_result[6] = "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi";
+  auto cid = ExtractWebcatCid(rpc_result);
+  ASSERT_TRUE(cid.has_value());
+  EXPECT_EQ(*cid,
+            "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi");
+}
+
+TEST_F(UnstoppableDomainsResolveUrlTest, ExtractWebcatCidEmpty) {
+  auto rpc_result = DefaultRpcResult();
+  auto cid = ExtractWebcatCid(rpc_result);
+  EXPECT_FALSE(cid.has_value());
+}
+
+TEST_F(UnstoppableDomainsResolveUrlTest, ExtractWebcatCidWrongSize) {
+  std::vector<std::string> rpc_result = {
+      "hash", "val", "a", "aaaa", "url", "domain",
+  };
+  auto cid = ExtractWebcatCid(rpc_result);
+  EXPECT_FALSE(cid.has_value());
 }
 
 }  // namespace brave_wallet::unstoppable_domains
