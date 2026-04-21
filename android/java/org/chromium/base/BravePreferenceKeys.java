@@ -121,6 +121,9 @@ public final class BravePreferenceKeys {
 
     public static final String SEARCH_CHOICE_SCREEN_INSTALL = "search_choice_screen_install";
 
+    public static final String BRAVE_ORIGIN_CREDENTIAL_SUMMARY_CACHED =
+            "brave_origin_credential_summary_cached";
+
     /*
      * Checks if preference key is used in Brave.
      * It's no op currently. We might reconsider
