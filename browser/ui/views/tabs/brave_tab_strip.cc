@@ -377,7 +377,7 @@ void BraveTabStrip::OnScrollableHorizontalTabStripPrefChanged() {
 }
 
 brave_tabs::TabMinWidthMode BraveTabStrip::GetTabMinWidthMode() const {
-  PrefService* prefs =
+  const PrefService* prefs =
       controller_->GetBrowserWindowInterface()->GetProfile()->GetPrefs();
   if (!brave_tabs::IsScrollableHorizontalTabStripEnabled(prefs)) {
     return brave_tabs::TabMinWidthMode::kDefault;
