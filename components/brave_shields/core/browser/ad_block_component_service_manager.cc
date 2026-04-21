@@ -40,6 +40,7 @@
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 
 using brave_shields::features::kBraveAdblockCookieListDefault;
 using brave_shields::features::kBraveAdblockExperimentalListDefault;
@@ -200,21 +201,19 @@ void AdBlockComponentServiceManager::StartRegionalServices() {
 
   // Mark the gate providers as initialized on every exit path, but only after
   // any regional component providers below are registered. Running via
-  // ScopedClosureRunner ensures gates fire even on early returns (no local
-  // state, empty catalog) so filter set loading is unblocked in all cases.
-  // Gates are only created when the DAT cache feature is enabled, so they may
-  // be null here.
-  base::ScopedClosureRunner initialize_gates(base::BindOnce(
-      [](ComponentProvidersGate* default_gate,
-         ComponentProvidersGate* additional_gate) {
-        if (default_gate) {
-          default_gate->SetInitialized();
-        }
-        if (additional_gate) {
-          additional_gate->SetInitialized();
-        }
-      },
-      default_gate_.get(), additional_gate_.get()));
+  // absl::Cleanup ensures gates fire even on early returns (no local state,
+  // empty catalog) so filter set loading is unblocked in all cases. Gates are
+  // only created when the DAT cache feature is enabled, so they may be null.
+  ComponentProvidersGate* default_gate = default_gate_.get();
+  ComponentProvidersGate* additional_gate = additional_gate_.get();
+  absl::Cleanup initialize_gates = [default_gate, additional_gate] {
+    if (default_gate) {
+      default_gate->SetInitialized();
+    }
+    if (additional_gate) {
+      additional_gate->SetInitialized();
+    }
+  };
 
   if (!local_state_) {
     return;
