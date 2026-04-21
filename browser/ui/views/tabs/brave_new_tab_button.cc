@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/check_deref.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -108,7 +109,7 @@ BraveNewTabButton::BraveNewTabButton(
                    fixed_flat_edge,
                    animated_flat_edge,
                    browser_window_interface),
-      browser_window_interface_(*browser_window_interface) {}
+      browser_window_interface_(CHECK_DEREF(browser_window_interface)) {}
 
 BraveNewTabButton::BraveNewTabButton(
     PressedCallback callback,
