@@ -109,7 +109,6 @@
 #include "brave/components/psst/common/features.h"
 #endif
 
-
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/common/features.h"
 #endif
@@ -645,6 +644,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "Show a Brave AI chat input on the New Tab Page.",                   \
           kOsDesktop,                                                          \
           FEATURE_VALUE_TYPE(ai_chat::features::kShowAIChatInputOnNewTabPage), \
+      },                                                                       \
+      {                                                                        \
+          "brave-ai-chat-detailed-page-content-extraction",                    \
+          "Brave AI Chat Detailed Page Content Extraction",                    \
+          "Uses optimization_guide-based page content extraction as the "      \
+          "default method for AI Chat page context.",                          \
+          kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
+          FEATURE_VALUE_TYPE(                                                  \
+              ai_chat::features::kAIChatDetailedPageContentExtraction),        \
       })
 #else
 #define BRAVE_AI_CHAT_FEATURE_ENTRIES
@@ -660,19 +668,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
                    kOsDesktop,                                                \
                    FEATURE_VALUE_TYPE(ai_chat::features::kTabManagementTool), \
                }))
-
-#define BRAVE_AI_CHAT_DETAILED_PAGE_CONTENT_EXTRACTION_ENTRY              \
-  IF_BUILDFLAG(                                                           \
-      ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE,                                 \
-      EXPAND_FEATURE_ENTRIES({                                            \
-          "brave-ai-chat-detailed-page-content-extraction",               \
-          "Brave AI Chat Detailed Page Content Extraction",               \
-          "Uses optimization_guide-based page content extraction as the " \
-          "default method for AI Chat page context.",                     \
-          kOsWin | kOsMac | kOsLinux | lOsAndroid,                        \
-          FEATURE_VALUE_TYPE(                                             \
-              ai_chat::features::kAIChatDetailedPageContentExtraction),   \
-      }))
 
 #define BRAVE_LOCAL_AI_MODELS                                 \
   EXPAND_FEATURE_ENTRIES({                                    \
@@ -1338,7 +1333,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_PAGE_INFO_FEATURE_ENTRIES                                              \
   BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
   BRAVE_AI_CHAT_TAB_MANAGEMENT_TOOL_ENTRY                                      \
-  BRAVE_AI_CHAT_DETAILED_PAGE_CONTENT_EXTRACTION_ENTRY                         \
   BRAVE_LOCAL_AI_MODELS                                                        \
   BRAVE_OMNIBOX_FEATURES                                                       \
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \
