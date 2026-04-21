@@ -1,0 +1,9 @@
+include_rules = [
+  "+base",
+  "+base/test",
+  "+brave/components/webcat/content",
+  "+brave/components/webcat/core",
+  "+crypto",
+  "+testing/gtest",
+  "+url",
+]
