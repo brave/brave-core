@@ -1,12 +1,12 @@
 include_rules = [
   "+brave/components/api_request_helper",
   "+brave/components/brave_wallet/browser",
+  "+brave/components/os_crypt/sync",
   "+brave/grit/brave_generated_resources.h",
   "+components/country_codes",
   "+components/favicon",
   "+components/grit/brave_components_strings.h",
   "+components/keyed_service",
-  "+components/os_crypt/sync",
   "+components/prefs",
   "+components/regional_capabilities",
   "+components/sync_preferences/testing_pref_service_syncable.h",

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/os_crypt/sync/os_crypt.h"
 #include "brave/components/sync/service/brave_sync_service_impl.h"
-#include "components/os_crypt/sync/os_crypt.h"
 
 // IsSetupInProgress isn't accurate in brave sync flow especially for the first
 // time setup, we rely on it to display setup dialog

@@ -22,11 +22,11 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/common/importer/scoped_copy_file.h"
+#include "brave/components/os_crypt/sync/os_crypt.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/utility/importer/brave_external_process_importer_bridge.h"
 #include "build/build_config.h"
 #include "chrome/common/importer/importer_bridge.h"
-#include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/json_pref_store.h"
 #include "components/prefs/pref_filter.h"
 #include "components/user_data_importer/common/imported_bookmark_entry.h"
@@ -41,8 +41,8 @@
 #include "url/gurl.h"
 
 #if BUILDFLAG(IS_LINUX)
+#include "brave/components/os_crypt/sync/key_storage_config_linux.h"
 #include "chrome/grit/branded_strings.h"
-#include "components/os_crypt/sync/key_storage_config_linux.h"
 #endif  // BUILDFLAG(IS_LINUX)
 
 #if BUILDFLAG(IS_WIN)
