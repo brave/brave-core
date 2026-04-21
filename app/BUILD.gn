@@ -159,7 +159,7 @@ source_set("unit_tests") {
     "//components/multistep_filter/core:features",
     "//components/network_time",
     "//components/omnibox/browser",
-    "//components/one_time_tokens/core/browser:features",
+    "//components/one_time_tokens/core/common:features",
     "//components/optimization_guide/core",
     "//components/page_image_service",
     "//components/page_info/core",
