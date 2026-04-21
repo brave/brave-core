@@ -125,6 +125,14 @@ std::vector<uint8_t> MakeContentHashCall(const std::string& domain) {
       .EncodeWithSelector(kContentHashBytes32Selector);
 }
 
+std::vector<uint8_t> MakeTextRecordCall(const std::string& domain,
+                                        const std::string& key) {
+  return eth_abi::TupleEncoder()
+      .AddFixedBytes(Namehash(domain))
+      .AddString(key)
+      .EncodeWithSelector(kTextBytes32StringSelector);
+}
+
 OffchainLookupData::OffchainLookupData() = default;
 OffchainLookupData::OffchainLookupData(const OffchainLookupData&) = default;
 OffchainLookupData::OffchainLookupData(OffchainLookupData&&) = default;

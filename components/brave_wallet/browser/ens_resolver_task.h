@@ -39,8 +39,14 @@ inline constexpr uint8_t kAddrBytes32Selector[] = {0x3b, 0x3b, 0x57, 0xde};
 inline constexpr uint8_t kContentHashBytes32Selector[] = {0xbc, 0x1c, 0x58,
                                                           0xd1};
 
+// Selector for `text(bytes32,string)`
+inline constexpr uint8_t kTextBytes32StringSelector[] = {0x59, 0xd1, 0xd4,
+                                                         0x3c};
+
 std::vector<uint8_t> MakeAddrCall(const std::string& domain);
 std::vector<uint8_t> MakeContentHashCall(const std::string& domain);
+std::vector<uint8_t> MakeTextRecordCall(const std::string& domain,
+                                        const std::string& key);
 
 struct OffchainLookupData {
   OffchainLookupData();
