@@ -316,7 +316,6 @@ void BraveBrowserProcessImpl::StartBraveServices() {
 
 brave_shields::AdBlockService* BraveBrowserProcessImpl::ad_block_service() {
   if (!ad_block_service_) {
-    LOG(ERROR) << base::debug::StackTrace().ToString();
     scoped_refptr<base::SequencedTaskRunner> task_runner(
         base::ThreadPool::CreateSequencedTaskRunner(
             {base::MayBlock(), base::TaskPriority::USER_BLOCKING,
