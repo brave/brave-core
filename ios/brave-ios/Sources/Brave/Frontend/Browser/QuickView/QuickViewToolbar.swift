@@ -157,6 +157,17 @@ struct QuickViewToolbarView: View {
     .animation(.easeInOut(duration: 0.2), value: viewModel.loadingProgress)
   }
 
+  private var progressBar: some View {
+    GeometryReader { geo in
+      Color(braveSystemName: .iconInteractive)
+        .frame(width: geo.size.width * viewModel.loadingProgress)
+    }
+    .frame(height: 2)
+    .background(Color(braveSystemName: .containerHighlight))
+    .cornerRadius(1)
+    .animation(.easeInOut(duration: 0.2), value: viewModel.loadingProgress)
+  }
+
   private var backButton: some View {
     Button {
       viewModel.onActionButton?(.back)
