@@ -38,6 +38,10 @@ export const style = scoped.css`
       }
 
       > leo-button[isdisabled=true] {
+        opacity: 0.4;
+      }
+
+      > leo-button.hidden {
         visibility: hidden;
       }
 
