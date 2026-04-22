@@ -54,6 +54,7 @@ public class PasswordEntryPreference extends Preference {
                     mProfile,
                     mOriginUrl,
                     faviconSizePixels,
+                    /* fallbackToHost= */ true,
                     (bitmap, iconUrl) -> {
                         if (bitmap == null) {
                             bitmap =
