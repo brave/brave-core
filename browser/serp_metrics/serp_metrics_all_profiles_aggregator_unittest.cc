@@ -9,6 +9,7 @@
 #include "base/time/time.h"
 #include "brave/browser/serp_metrics/profile_attributes_time_period_store_factory.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/serp_metrics/pref_names.h"
 #include "brave/components/serp_metrics/serp_metric_type.h"
 #include "brave/components/serp_metrics/serp_metrics.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
@@ -32,6 +33,8 @@ class SerpMetricsAllProfilesAggregatorTest : public ::testing::Test {
   void SetUp() override {
     local_state_.registry()->RegisterStringPref(kLastCheckYMD,
                                                 "");  // Never checked.
+    local_state_.registry()->RegisterTimePref(
+        std::string(prefs::kLastReportedAt), /* Never reported */ base::Time());
     ProfileAttributesStorage::RegisterPrefs(local_state_.registry());
     storage_ = std::make_unique<ProfileAttributesStorage>(
         &local_state_, base::FilePath(kUserDataDir));

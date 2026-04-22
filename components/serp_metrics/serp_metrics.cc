@@ -6,15 +6,15 @@
 #include "brave/components/serp_metrics/serp_metrics.h"
 
 #include <algorithm>
-#include <string>
 #include <utility>
 
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/feature_list.h"
 #include "base/time/time.h"
-#include "brave/components/constants/pref_names.h"
+#include "brave/components/serp_metrics/pref_names.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
+#include "brave/components/serp_metrics/serp_metrics_migration.h"
 #include "brave/components/serp_metrics/time_period_storage/serp_metrics_time_period_storage.h"
 #include "brave/components/serp_metrics/time_period_storage/serp_metrics_time_period_store.h"
 #include "brave/components/serp_metrics/time_period_storage/serp_metrics_time_period_store_factory.h"
@@ -55,30 +55,29 @@ BuildTimePeriodStorages(
   return time_period_storages;
 }
 
-// Returns the start of yesterday in local time (midnight at the beginning of
-// the previous calendar day). Subtracting 12 hours ensures we cross into the
-// previous day even during daylight saving time transitions, so the final
-// normalization to local midnight always resolves to the correct day.
+// Returns the start of yesterday in UTC (midnight beginning the previous UTC
+// calendar day). UTC days are always exactly 24 hours, so no DST correction
+// is needed.
 base::Time GetStartOfYesterday(base::Time now) {
-  return (now.LocalMidnight() - base::Hours(12)).LocalMidnight();
+  return now.UTCMidnight() - base::Days(1);
 }
 
-// Returns the end of yesterday in local time, defined as the final millisecond
-// before today's local midnight. Subtracting one millisecond ensures the
+// Returns the end of yesterday in UTC, defined as the final millisecond
+// before today's UTC midnight. Subtracting one millisecond ensures the
 // yesterday time range is inclusive of all events on that day without spilling
 // into today.
 base::Time GetEndOfYesterday(base::Time now) {
-  return now.LocalMidnight() - base::Milliseconds(1);
+  return now.UTCMidnight() - base::Milliseconds(1);
 }
 
-// Returns the end of the stale period in local time, defined as the final
+// Returns the end of the stale period in UTC, defined as the final
 // millisecond before the start of yesterday. This establishes a clear boundary
 // between stale metrics and yesterday's metrics without overlap.
 base::Time GetEndOfStalePeriod(base::Time now) {
   return GetStartOfYesterday(now) - base::Milliseconds(1);
 }
 
-// Returns the sum of metrics recorded during yesterday (local time) that have
+// Returns the sum of metrics recorded during yesterday (UTC) that have
 // not already been reported. The later of the start of yesterday and the start
 // of the stale period is used as the cutoff to avoid double-counting previously
 // reported metrics. If the resulting time range does not include any portion of
@@ -164,25 +163,21 @@ size_t SerpMetrics::GetSearchCountForTesting(SerpMetricType type) const {
 ///////////////////////////////////////////////////////////////////////////////
 
 base::Time SerpMetrics::GetStartOfStalePeriod() const {
-  // `kLastCheckYMD` exists to track when the last daily usage ping was sent,
-  // so we can compute how far back metrics should be considered stale.
-  const std::string& last_check_ymd = local_state_->GetString(kLastCheckYMD);
-  if (last_check_ymd.empty()) {
-    // If never checked, assume the full time period.
-    return {};
+  // `kLastReportedAt` tracks when SERP metrics were last reported, so we can
+  // compute how far back metrics should be considered stale.
+  const base::Time last_reported_at =
+      local_state_->GetTime(prefs::kLastReportedAt);
+  if (last_reported_at.is_null()) {
+    // `kLastReportedAt` was not yet written, so fall back to the daily ping
+    // `kLastCheckYMD` pref. Once the ping with UTC base SERP metric is sent,
+    // `kLastReportedAt` will be populated and this branch will no longer be
+    // taken.
+    return GetMigrationStaleBoundaryFromLastCheckYMD(*local_state_);
   }
 
-  base::Time last_checked_at;
-  const bool success =
-      base::Time::FromString(last_check_ymd.c_str(), &last_checked_at);
-  if (!success) {
-    // If we can't parse the last check date, assume the full time period.
-    return {};
-  }
-
-  // Searches recorded on `kLastCheckYMD` have not yet been reported, so the
-  // stale period begins at local midnight of that day.
-  return last_checked_at.LocalMidnight();
+  // Searches recorded on the day of `kLastReportedAt` have not yet been
+  // reported, so the stale period begins at UTC midnight of that day.
+  return last_reported_at.UTCMidnight();
 }
 
 }  // namespace serp_metrics

@@ -18,6 +18,7 @@
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/serp_metrics/pref_names.h"
 #include "brave/components/serp_metrics/serp_metric_type.h"
 #include "build/build_config.h"
 #include "chrome/browser/headless/headless_mode_util.h"
@@ -135,6 +136,10 @@ void BraveStatsUpdaterParams::SavePrefs() {
   stats_pref_service_->SetInteger(kLastCheckMonth, month_);
   stats_pref_service_->SetBoolean(kFirstCheckMade, true);
   stats_pref_service_->SetString(kWeekOfInstallation, week_of_installation_);
+  // `kLastReportedAt` records the time of the last successful ping; this
+  // method is only reached after a confirmed 2xx server response.
+  stats_pref_service_->SetTime(serp_metrics::prefs::kLastReportedAt,
+                               GetCurrentTimeNow());
 }
 
 std::string BraveStatsUpdaterParams::BooleanToString(bool bool_value) const {

@@ -36,9 +36,8 @@ std::unique_ptr<SerpMetrics> CreateProfilePrefsSerpMetrics(
     PrefService* local_state,
     PrefService* prefs) {
   return std::make_unique<SerpMetrics>(
-      local_state,
-      SerpMetricsPrefTimePeriodStoreFactory(
-          prefs, prefs::kDeprecatedSerpMetricsTimePeriodStorage.data()));
+      local_state, SerpMetricsPrefTimePeriodStoreFactory(
+                       prefs, prefs::kDeprecatedSerpMetricsTimePeriodStorage));
 }
 
 }  // namespace
@@ -53,6 +52,8 @@ class SerpMetricsMigrationTest : public testing::Test {
   void SetUp() override {
     local_state_.registry()->RegisterStringPref(kLastCheckYMD,
                                                 "");  // Never checked.
+    local_state_.registry()->RegisterTimePref(
+        std::string(prefs::kLastReportedAt), /* Never reported */ base::Time());
     profile_prefs_.registry()->RegisterDictionaryPref(
         prefs::kDeprecatedSerpMetricsTimePeriodStorage);
     ProfileAttributesStorage::RegisterPrefs(local_state_.registry());

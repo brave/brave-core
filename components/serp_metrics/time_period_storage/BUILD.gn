@@ -27,7 +27,10 @@ source_set("test_support") {
 
   public = [ "test/scoped_timezone_for_testing.h" ]
 
-  deps = [ "//base/test:test_support" ]
+  deps = [
+    "//base",
+    "//base/test:test_support",
+  ]
 }
 
 source_set("unit_tests") {
@@ -40,13 +43,12 @@ source_set("unit_tests") {
   ]
 
   # `ScopedLibcTimezoneOverride` is a no-op on Windows for IANA timezone
-  # identifiers, so timezone-dependent tests are excluded on Windows to avoid
-  # spurious failures caused by a non-overridable libc timezone.
+  # identifiers, so timezone-parameterized tests are excluded on Windows to
+  # avoid spurious failures caused by a non-overridable libc timezone.
   if (!is_win) {
     sources += [
-      "serp_metrics_time_period_storage_dst_end_unittest.cc",
-      "serp_metrics_time_period_storage_dst_start_unittest.cc",
-      "serp_metrics_time_period_storage_issue_54427_unittest.cc",
+      "serp_metrics_time_period_storage_migration_travel_unittest.cc",
+      "serp_metrics_time_period_storage_migration_unittest.cc",
     ]
   }
 

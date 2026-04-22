@@ -16,6 +16,8 @@ static_library("serp_metrics") {
     "serp_classifier.cc",
     "serp_classifier_utils.cc",
     "serp_metrics.cc",
+    "serp_metrics_migration.cc",
+    "serp_metrics_migration.h",
     "serp_metrics_service.cc",
   ]
 
@@ -28,6 +30,7 @@ static_library("serp_metrics") {
 
   deps = [
     ":features",
+    ":prefs",
     "//brave/components/constants",
     "//components/prefs",
     "//components/regional_capabilities",
@@ -71,21 +74,15 @@ source_set("unit_tests") {
   sources = [
     "serp_classifier_unittest.cc",
     "serp_classifier_utils_unittest.cc",
+    "serp_metrics_last_reported_at_pref_migration_unittest.cc",
+    "serp_metrics_timezone_unittest.cc",
+    "serp_metrics_travel_unittest.cc",
+    "serp_metrics_unittest.cc",
   ]
-
-  # `ScopedLibcTimezoneOverride` is a no-op on Windows for IANA timezone
-  # identifiers, so timezone-parameterized tests are excluded on Windows to
-  # avoid spurious failures caused by a non-overridable libc timezone.
-  if (!is_win) {
-    sources += [
-      "serp_metrics_dst_end_unittest.cc",
-      "serp_metrics_dst_start_unittest.cc",
-      "serp_metrics_unittest.cc",
-    ]
-  }
 
   deps = [
     ":features",
+    ":prefs",
     ":serp_metrics",
     ":test_support",
     "//base",
