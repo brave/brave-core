@@ -156,7 +156,7 @@ SkPath BraveVerticalTabStyle::GetPath(TabStyle::PathType path_type,
     // insetting the bounds of the tab by the required gap plus overlap before
     // drawing the rectangle.
     aligned_bounds.Inset(
-        gfx::InsetsF::VH(tabs::kHorizontalTabVerticalSpacing * scale,
+        gfx::InsetsF::VH(tabs::GetHorizontalTabVerticalSpacing() * scale,
                          tabs::kHorizontalTabInset * scale));
 
     // |aligned_bounds| is tab's bounds(). So, it includes insets also.
@@ -174,7 +174,7 @@ SkPath BraveVerticalTabStyle::GetPath(TabStyle::PathType path_type,
     // card.
     if (path_type == TabStyle::PathType::kHitTest) {
       auto hit_test_outsets =
-          gfx::OutsetsF::VH(tabs::kHorizontalTabVerticalSpacing * scale,
+          gfx::OutsetsF::VH(tabs::GetHorizontalTabVerticalSpacing() * scale,
                             tabs::kHorizontalTabGap / 2 * scale);
 
       // Note that upstream's `ShouldExtendHitTest` does not currently take into

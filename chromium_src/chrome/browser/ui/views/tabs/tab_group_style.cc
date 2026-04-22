@@ -81,7 +81,7 @@ gfx::Point TabGroupStyle::GetTitleChipOffset(
     return TabGroupStyle_ChromiumImpl::GetTitleChipOffset(text_height);
   }
   return gfx::Point(tabs::kHorizontalTabInset,
-                    tabs::kHorizontalTabVerticalSpacing);
+                    tabs::GetHorizontalTabVerticalSpacing());
 }
 
 bool TabGroupStyle::ShouldShowBraveVerticalTabs() const {
