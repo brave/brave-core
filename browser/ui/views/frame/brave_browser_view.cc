@@ -870,7 +870,7 @@ bool BraveBrowserView::MaybeUpdateDevtools(content::WebContents* web_contents) {
   // together. Early return to avoid crash from that.
   if (IsWebPanelContents(web_contents) && IsInSplitView()) {
     return browser_->GetFeatures().devtools_ui_controller()->UpdateDevtools(
-        GetActiveContentsContainerView(), web_contents, false);
+        web_contents, false);
   }
 
   bool result = BrowserView::MaybeUpdateDevtools(web_contents);
