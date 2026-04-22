@@ -39,6 +39,7 @@
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bubble_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_divider.h"
@@ -377,9 +378,10 @@ void BraveToolbarView::Init() {
   }
 #endif
 
-  // Make sure that avatar button should be located right before the app menu.
-  if (auto* avatar = GetAvatarToolbarButton()) {
-    ReorderChildView(avatar, *GetIndexOf(app_menu_button()) - 1);
+  // Make sure that avatar button is located right before the app menu.
+  if (auto* avatar_button = static_cast<AvatarToolbarButton*>(
+          GetAvatarToolbarButtonInterface())) {
+    ReorderChildView(avatar_button, *GetIndexOf(app_menu_button()) - 1);
   }
 
   if (tabs::utils::SupportsBraveVerticalTabs(browser_)) {
@@ -467,7 +469,8 @@ void BraveToolbarView::Update(content::WebContents* tab) {
 
   // Remove avatar menu if only a single user profile exists.
   // Always show if private / tor / guest window, as an indicator.
-  auto* avatar_button = GetAvatarToolbarButton();
+  auto* avatar_button =
+      static_cast<AvatarToolbarButton*>(GetAvatarToolbarButtonInterface());
   if (avatar_button) {
     auto* profile = browser_->profile();
     const bool should_show_profile =
