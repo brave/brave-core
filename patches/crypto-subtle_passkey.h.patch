@@ -1,0 +1,21 @@
+diff --git a/crypto/subtle_passkey.h b/crypto/subtle_passkey.h
+index 50d882eb628271b3d9d29b67e9c94a156bc235cc..7f57b496f09c16ffd9f2b16811d4aadd0408bd87 100644
+--- a/crypto/subtle_passkey.h
++++ b/crypto/subtle_passkey.h
+@@ -42,6 +42,8 @@ namespace webauthn {
+ crypto::SubtlePassKey MakeCryptoPassKey();
+ }  // namespace webauthn
+ 
++class OSCryptImpl;
++
+ namespace crypto {
+ 
+ // A crypto::SubtlePassKey allows you to call subtle, difficult-to-get-right, or
+@@ -80,6 +82,7 @@ class CRYPTO_EXPORT SubtlePassKey final {
+ 
+   // These classes use custom PBKDF2 parameters and have to keep doing so for
+   // compatibility with existing persisted data.
++  friend class ::OSCryptImpl;
+   friend class os_crypt_async::FreedesktopSecretKeyProvider;
+   friend class os_crypt_async::KeychainKeyProvider;
+ 
