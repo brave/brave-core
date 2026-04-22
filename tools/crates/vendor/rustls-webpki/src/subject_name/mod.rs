@@ -164,10 +164,16 @@ fn check_presented_id_conforms_to_constraints(
                 (GeneralName::IpAddress(_), _) => continue,
 
                 // We currently don't support URI constraints -- fail closed for now.
+                //
+                // Rejection is achieved by not matching any PermittedSubtrees, and matching all
+                // ExcludedSubtrees.
                 (
                     GeneralName::UniformResourceIdentifier(_),
                     GeneralName::UniformResourceIdentifier(_),
-                ) => Ok(false),
+                ) => Ok(match subtrees {
+                    Subtrees::Permitted => false,
+                    Subtrees::Excluded => true,
+                }),
                 (GeneralName::UniformResourceIdentifier(_), _) => continue,
 
                 // RFC 4280 says "If a name constraints extension that is marked as
