@@ -10,9 +10,7 @@
 
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
-#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/memory/weak_ptr.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 
@@ -22,8 +20,6 @@ namespace brave_shields {
 
 // Manages DAT file caching for adblock engines. Handles reading cached DATs
 // on startup and writing serialized engine data to disk.
-//
-// This class lives in core/ so it can be shared between desktop and iOS.
 class AdBlockDATCacheManager {
  public:
   explicit AdBlockDATCacheManager(const base::FilePath& profile_dir);
@@ -43,8 +39,6 @@ class AdBlockDATCacheManager {
  private:
   base::FilePath cache_dir_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
-
-  base::WeakPtrFactory<AdBlockDATCacheManager> weak_factory_{this};
 };
 
 }  // namespace brave_shields
