@@ -5,7 +5,12 @@
 
 import * as React from 'react'
 import { useRoute } from '$web-common/useRoute'
+// <if expr="ai_chat_app">
+import * as BindConversation from '../api/bind_app_conversation'
+// </if>
+// <if expr="not ai_chat_app">
 import * as BindConversation from '../api/bind_conversation'
+// </if>
 import useHasConversationStarted from '../hooks/useHasConversationStarted'
 import { useAIChat } from './ai_chat_context'
 

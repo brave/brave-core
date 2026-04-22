@@ -12,4 +12,8 @@ declare_args() {
 declare_args() {
   enable_brave_ai_chat_agent_profile = enable_ai_chat && !is_android
   enable_ai_chat_tab_management_tool = enable_ai_chat && !is_android
+
+  # Build the AI Chat frontend as a standalone web app, replacing the C++/Mojo
+  # backend with TypeScript service stubs.
+  ai_chat_app = false
 }

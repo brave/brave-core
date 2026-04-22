@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Brave AI Chat</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <link rel="stylesheet" href="/leo-variables.css" />
+    <link rel="stylesheet" href="/leo-browser.css" />
+    <link rel="stylesheet" href="/static/css/reset.css" />
+    <link rel="stylesheet" href="/static/fonts/manrope.css" />
+    <link rel="stylesheet" href="/static/fonts/poppins.css" />
+    <link rel="stylesheet" href="/static/fonts/inter.css" />
+    <script src="/load_time_data.js"></script>
+    <script src="/strings.js"></script>
+    <style>
+      body {
+        margin: 0;
+      }
+      #mountPoint {
+        opacity: 0;
+        transition: opacity 0.18s ease-out;
+      }
+      #mountPoint.loaded {
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="mountPoint"></div>
+    <script src="/chat_ui.bundle.js"></script>
+  </body>
+</html>

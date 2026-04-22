@@ -17,15 +17,28 @@ import { useIOSOneTapFix } from '../common/useIOSOneTapFix'
 import '../common/strings'
 // <if expr="is_ios">
 // </if>
+// <if expr="ai_chat_app">
+import {
+  bindAppUntrustedConversation,
+  BoundAppUntrustedConversation as BoundConversation,
+} from './api/bind_app_untrusted_conversation'
+// </if>
+// <if expr="not ai_chat_app">
 import {
   bindUntrustedConversation,
-  BoundUntrustedConversation,
+  BoundUntrustedConversation as BoundConversation,
 } from './api/bind_untrusted_conversation'
+// </if>
 
+// <if expr="ai_chat_app">
+setIconBasePath('./brave-icons')
+// </if>
+// <if expr="not ai_chat_app">
 setIconBasePath('chrome-untrusted://resources/brave-icons')
+// </if>
 
 interface AppProps {
-  boundConversation: BoundUntrustedConversation
+  boundConversation: BoundConversation
 }
 
 function App(props: AppProps) {
@@ -79,8 +92,12 @@ function App(props: AppProps) {
 }
 
 async function initialize() {
-  // Bind the conversation and initialize the API
+  // <if expr="ai_chat_app">
+  const boundConversation = await bindAppUntrustedConversation()
+  // </if>
+  // <if expr="not ai_chat_app">
   const boundConversation = await bindUntrustedConversation()
+  // </if>
 
   const root = createRoot(document.getElementById('mountPoint')!)
   root.render(<App boundConversation={boundConversation} />)

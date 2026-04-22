@@ -12,6 +12,7 @@ generated_file("build_flags_json") {
   outputs = [ "$root_gen_dir/brave/build_flags.json" ]
 
   contents = {
+    ai_chat_app = ai_chat_app
     enable_ai_chat = enable_ai_chat
     enable_ai_chat_tab_management_tool = enable_ai_chat_tab_management_tool
     enable_brave_wallet = enable_brave_wallet

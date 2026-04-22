@@ -7,8 +7,13 @@ import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import { setIconBasePath } from '@brave/leo/react/icon'
 import '$web-common/defaultTrustedTypesPolicy'
+// <if expr="not ai_chat_app">
 import * as Mojom from '../common/mojom'
 import bindWebUiServices from './api/bind_webui_services'
+// </if>
+// <if expr="ai_chat_app">
+import bindAppServices from './api/bind_app_services'
+// </if>
 import useUpdateDocumentTitle from './hooks/useUpdateDocumentTitle'
 import {
   AIChatProvider,
@@ -35,9 +40,17 @@ import { useIOSOneTapFix } from '../common/useIOSOneTapFix'
 
 // Perform any setup specific to this platform
 
+// <if expr="ai_chat_app">
+setIconBasePath('./brave-icons')
+// </if>
+// <if expr="not ai_chat_app">
 setIconBasePath('chrome://resources/brave-icons')
+// </if>
 
-// Create global mojo connections
+// <if expr="ai_chat_app">
+const aiChat = bindAppServices()
+// </if>
+// <if expr="not ai_chat_app">
 const aiChat = bindWebUiServices()
 
 // Receive child frame interface
@@ -46,6 +59,7 @@ aiChat.api.subscribeToOnChildFrameBound((parentPageReceiver) => {
     aiChat.conversationEntriesFrameObserver,
   ).$.bindHandle(parentPageReceiver.handle)
 })
+// </if>
 
 function App() {
   // <if expr="is_ios">
@@ -124,9 +138,14 @@ function ConversationEntries(props: ConversationEntriesProps) {
     if (!state.conversationUuid) {
       return
     }
+    // <if expr="ai_chat_app">
+    setIframeSrc(`/conversation-entries/${state.conversationUuid}`)
+    // </if>
+    // <if expr="not ai_chat_app">
     setIframeSrc(
       `chrome-untrusted://leo-ai-conversation-entries/${state.conversationUuid}`,
     )
+    // </if>
   }, [state.conversationUuid])
 
   return (
