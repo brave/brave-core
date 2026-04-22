@@ -139,6 +139,7 @@ class BraveBrowserView : public BrowserView,
   bool AcceleratorPressed(const ui::Accelerator& accelerator) override;
   bool IsInTabDragging() const override;
   void ReadyToListenFullscreenChanges() override;
+  void FullscreenStateChanged() override;
   bool IsWebPanelContents(content::WebContents* contents) override;
   ClientFrameElementInfo GetFrameElementInfo() const override;
 
@@ -250,6 +251,7 @@ class BraveBrowserView : public BrowserView,
   bool ShouldDrawTabStrokes() const override;
 
   void HandleBrowserWindowMouseEvent(const ui::MouseEvent& event);
+  void UpdateFocusModeEffectiveState();
   void UpdateContentsShadowVisibility();
   void StopTabCycling();
   void UpdateSearchTabsButtonState();

@@ -805,6 +805,8 @@ void BraveBrowserView::AddedToWidget() {
     top_reveal_controller_->AddRevealableView(horizontal_tab_strip_region_view_,
                                               {.paint_to_layer = true});
     top_reveal_controller_->AddObserver(this);
+
+    UpdateFocusModeEffectiveState();
   }
 
   if (vertical_tab_strip_host_view_) {
@@ -860,18 +862,7 @@ bool BraveBrowserView::ShowBraveHelpBubbleView(const std::string& text) {
 }
 
 void BraveBrowserView::OnFocusModeToggled(bool enabled) {
-  if (top_reveal_controller_) {
-    top_reveal_controller_->SetEnabled(enabled);
-  }
-  if (focus_mode_title_bar_view_) {
-    focus_mode_title_bar_view_->SetVisible(enabled);
-    if (enabled) {
-      focus_mode_title_bar_view_->SetWebContents(
-          browser()->tab_strip_model()->GetActiveWebContents());
-    } else {
-      focus_mode_title_bar_view_->SetWebContents(nullptr);
-    }
-  }
+  UpdateFocusModeEffectiveState();
   UpdateRoundedCornersUI();
 #if BUILDFLAG(IS_MAC)
   // When focus mode turns off, restore traffic lights to fully visible.
@@ -879,6 +870,25 @@ void BraveBrowserView::OnFocusModeToggled(bool enabled) {
     brave::SetTrafficLightsAlpha(GetWidget()->GetNativeWindow(), 1.0);
   }
 #endif
+}
+
+void BraveBrowserView::FullscreenStateChanged() {
+  BrowserView::FullscreenStateChanged();
+  UpdateFocusModeEffectiveState();
+}
+
+void BraveBrowserView::UpdateFocusModeEffectiveState() {
+  auto* controller = browser()->GetFeatures().focus_mode_controller();
+  const bool active = controller && controller->IsEnabled() && !IsFullscreen();
+  if (top_reveal_controller_) {
+    top_reveal_controller_->SetEnabled(active);
+  }
+  if (focus_mode_title_bar_view_) {
+    focus_mode_title_bar_view_->SetVisible(active);
+    focus_mode_title_bar_view_->SetWebContents(
+        active ? browser()->tab_strip_model()->GetActiveWebContents()
+               : nullptr);
+  }
 }
 
 void BraveBrowserView::OnEdgeRevealFractionChanged(double fraction) {
