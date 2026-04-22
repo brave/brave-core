@@ -66,7 +66,13 @@ class AdsService : public KeyedService {
   void AddObserver(AdsServiceObserver* observer);
   void RemoveObserver(AdsServiceObserver* observer);
 
-  // Returns true if a browser upgrade is required to serve ads.
+  // Returns `true` if the service determined it was ineligible to start.
+  virtual bool IsIneligibleToStart() const = 0;
+
+  // Returns `true` if the service successfully initialized.
+  virtual bool IsInitialized() const = 0;
+
+  // Returns `true` if a browser upgrade is required to serve ads.
   virtual bool IsBrowserUpgradeRequiredToServeAds() const = 0;
 
   // Returns the maximum number of notification ads that can be served per hour.

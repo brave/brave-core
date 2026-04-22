@@ -12,6 +12,9 @@ namespace brave_ads {
 
 class AdsServiceObserver : public base::CheckedObserver {
  public:
+  // Invoked when the ads service was ineligible to start.
+  virtual void OnAdsServiceIneligibleToStart() {}
+
   // Invoked when the ads service has initialized.
   virtual void OnDidInitializeAdsService() {}
 

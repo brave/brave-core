@@ -5,21 +5,31 @@
 
 #include "brave/browser/brave_ads/ads_service_waiter.h"
 
-#include "base/check.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 
 namespace brave_ads::test {
 
-AdsServiceWaiter::AdsServiceWaiter(AdsService* ads_service) {
-  CHECK(ads_service);
-
-  observation_.Observe(ads_service);
+AdsServiceWaiter::AdsServiceWaiter(AdsService& ads_service)
+    : ads_service_(ads_service) {
+  observation_.Observe(&ads_service);
 }
 
 AdsServiceWaiter::~AdsServiceWaiter() = default;
 
+void AdsServiceWaiter::WaitForOnAdsServiceIneligibleToStart() {
+  // `OnAdsServiceIneligibleToStart` will not fire again if the service was
+  // marked ineligible before observation began.
+  if (!ads_service_->IsIneligibleToStart()) {
+    on_ads_service_ineligible_to_start_run_loop_.Run();
+  }
+}
+
 void AdsServiceWaiter::WaitForOnDidInitializeAdsService() {
-  on_did_initialize_ads_service_run_loop_.Run();
+  // `OnDidInitializeAdsService` will not fire again if the service was already
+  // initialized before observation began.
+  if (!ads_service_->IsInitialized()) {
+    on_did_initialize_ads_service_run_loop_.Run();
+  }
 }
 
 void AdsServiceWaiter::WaitForOnDidShutdownAdsService() {
@@ -31,6 +41,10 @@ void AdsServiceWaiter::WaitForOnDidClearAdsServiceData() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+void AdsServiceWaiter::OnAdsServiceIneligibleToStart() {
+  on_ads_service_ineligible_to_start_run_loop_.Quit();
+}
 
 void AdsServiceWaiter::OnDidInitializeAdsService() {
   on_did_initialize_ads_service_run_loop_.Quit();
