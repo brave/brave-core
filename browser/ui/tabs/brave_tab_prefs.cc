@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 
+#include "base/feature_list.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -61,6 +62,11 @@ bool AreTooltipsEnabled(PrefService* prefs) {
 
 bool AreCardPreviewsEnabled(PrefService* prefs) {
   return prefs->GetInteger(kTabHoverMode) == TabHoverMode::CARD_WITH_PREVIEW;
+}
+
+bool IsScrollableHorizontalTabStripEnabled(const PrefService* prefs) {
+  return base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip) &&
+         prefs->GetBoolean(kScrollableHorizontalTabStrip);
 }
 
 }  // namespace brave_tabs

@@ -1493,13 +1493,17 @@ source_set("unit_tests") {
       "brave_layout_constants_unittest.cc",
       "brave_scheme_utils_unittest.cc",
       "managed_ui_unittest.cc",
+      "tabs/brave_tab_prefs_unittest.cc",
       "views/side_panel/side_panel_web_ui_view_unittest.cc",
     ]
     deps = [
+      ":brave_tab_prefs",
       "//base/test:test_support",
       "//brave/components/l10n/common:test_support",
       "//chrome/browser/ui",
+      "//chrome/browser/ui/tabs:features",
       "//components/javascript_dialogs",
+      "//components/prefs:test_support",
       "//testing/gmock",
       "//testing/gtest",
       "//ui/base:test_support",

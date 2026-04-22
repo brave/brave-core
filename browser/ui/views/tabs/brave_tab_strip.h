@@ -110,6 +110,7 @@ class BraveTabStrip : public TabStrip {
 
   void OnAlwaysHideCloseButtonPrefChanged();
   void OnTabMinWidthModePrefChanged();
+  void OnScrollableHorizontalTabStripPrefChanged();
 
   // Clears tree-tab-node UI state when a tab becomes pinned. There is no
   // dedicated notification when pinning from a group.
@@ -117,6 +118,7 @@ class BraveTabStrip : public TabStrip {
 
   BooleanPrefMember always_hide_close_button_;
   BooleanPrefMember middle_click_close_tab_enabled_;
+  BooleanPrefMember scrollable_horizontal_tab_strip_;
   IntegerPrefMember tab_min_width_mode_;
 
   base::WeakPtrFactory<BraveTabStrip> weak_factory_{this};
