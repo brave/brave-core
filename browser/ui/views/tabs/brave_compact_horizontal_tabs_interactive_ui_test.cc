@@ -16,7 +16,8 @@
 // CUJ: #brave-compact-horizontal-tabs drives smaller toolbar/tab metrics when
 // the flag is on and touch UI is off (see layout_constants.cc).
 
-class BraveCompactHorizontalTabsInteractiveTest : public InteractiveBrowserTest {
+class BraveCompactHorizontalTabsInteractiveTest
+    : public InteractiveBrowserTest {
  public:
   BraveCompactHorizontalTabsInteractiveTest() {
     scoped_feature_list_.InitWithFeatures(
