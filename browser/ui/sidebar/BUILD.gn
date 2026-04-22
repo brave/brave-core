@@ -55,6 +55,7 @@ source_set("sidebar_impl") {
     "//brave/components/sidebar/common",
     "//chrome/browser:browser_process",
     "//chrome/browser/favicon",
+    "//chrome/browser/first_run",
     "//chrome/browser/history",
     "//chrome/browser/image_fetcher",
     "//chrome/browser/profiles",
