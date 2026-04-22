@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
 import("//pdf/features.gni")
 
@@ -14,6 +15,8 @@ static_library("browser") {
     "ai_chat_tab_helper.h",
     "ai_chat_throttle.cc",
     "ai_chat_throttle.h",
+    "ai_page_content_fetcher.cc",
+    "ai_page_content_fetcher.h",
     "associated_url_content.cc",
     "associated_url_content.h",
     "associated_web_contents_content.cc",
@@ -22,6 +25,8 @@ static_library("browser") {
     "full_screenshotter.h",
     "model_service_factory.cc",
     "model_service_factory.h",
+    "page_content_blocks.cc",
+    "page_content_blocks.h",
     "page_content_fetcher.cc",
     "page_content_fetcher.h",
     "pdf_utils.cc",
@@ -51,6 +56,8 @@ static_library("browser") {
     "//components/favicon/content",
     "//components/favicon/core",
     "//components/keyed_service/content",
+    "//components/optimization_guide/content/browser",
+    "//components/optimization_guide/proto:optimization_guide_proto",
     "//components/paint_preview/browser",
     "//components/paint_preview/common",
     "//components/paint_preview/public",
@@ -65,6 +72,7 @@ static_library("browser") {
     "//services/network/public/cpp",
     "//services/service_manager/public/cpp",
     "//services/strings:strings_grit",
+    "//third_party/abseil-cpp:absl",
     "//ui/base",
     "//url",
   ]
@@ -80,12 +88,15 @@ static_library("browser") {
 source_set("unit_tests") {
   testonly = true
   sources = [
+    "ai_page_content_fetcher_unittest.cc",
     "associated_url_content_unittest.cc",
     "associated_web_contents_content_unittest.cc",
+    "page_content_blocks_unittest.cc",
     "page_content_fetcher_unittest.cc",
   ]
 
   deps = [
+    ":test_support",
     "//base",
     "//base/test:test_support",
     "//brave/components/ai_chat/content/browser",
@@ -95,6 +106,8 @@ source_set("unit_tests") {
     "//brave/components/api_request_helper",
     "//components/favicon/content",
     "//components/favicon/core/test:test_support",
+    "//components/optimization_guide/content/browser",
+    "//components/optimization_guide/proto:optimization_guide_proto",
     "//components/pdf/common:constants",
     "//content/public/browser",
     "//content/test:test_support",
@@ -117,4 +130,18 @@ source_set("unit_tests") {
       "//pdf/mojom",
     ]
   }
+}
+
+source_set("test_support") {
+  testonly = true
+  sources = [
+    "annotated_page_content_test_util.cc",
+    "annotated_page_content_test_util.h",
+  ]
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//components/optimization_guide/proto:optimization_guide_proto",
+    "//testing/gtest",
+  ]
 }

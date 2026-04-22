@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_AI_CHAT_ANNOTATED_PAGE_CONTENT_TEST_UTIL_H_
-#define BRAVE_BROWSER_AI_CHAT_ANNOTATED_PAGE_CONTENT_TEST_UTIL_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_ANNOTATED_PAGE_CONTENT_TEST_UTIL_H_
+#define BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_ANNOTATED_PAGE_CONTENT_TEST_UTIL_H_
 
 #include <string>
 #include <vector>
@@ -89,4 +89,4 @@ class ContentNodeBuilder {
 
 }  // namespace ai_chat::annotated_page_content_test_util
 
-#endif  // BRAVE_BROWSER_AI_CHAT_ANNOTATED_PAGE_CONTENT_TEST_UTIL_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_ANNOTATED_PAGE_CONTENT_TEST_UTIL_H_

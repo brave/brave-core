@@ -648,6 +648,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "Show a Brave AI chat input on the New Tab Page.",                   \
           kOsDesktop,                                                          \
           FEATURE_VALUE_TYPE(ai_chat::features::kShowAIChatInputOnNewTabPage), \
+      },                                                                       \
+      {                                                                        \
+          "brave-ai-chat-detailed-page-content-extraction",                    \
+          "Brave AI Chat Detailed Page Content Extraction",                    \
+          "Uses optimization_guide-based page content extraction as the "      \
+          "default method for AI Chat page context.",                          \
+          kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
+          FEATURE_VALUE_TYPE(                                                  \
+              ai_chat::features::kAIChatDetailedPageContentExtraction),        \
       })
 #else
 #define BRAVE_AI_CHAT_FEATURE_ENTRIES

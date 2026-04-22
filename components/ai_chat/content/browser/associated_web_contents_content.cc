@@ -22,11 +22,13 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/fixed_array.h"
 #include "base/uuid.h"
+#include "brave/components/ai_chat/content/browser/ai_page_content_fetcher.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/content/browser/pdf_utils.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
@@ -81,9 +83,14 @@ AssociatedWebContentsContent::AssociatedWebContentsContent(
                                   ->GetDefaultStoragePartition()
                                   ->GetURLLoaderFactoryForBrowserProcess()),
       print_preview_extraction_delegate_(
-          std::move(print_preview_extraction_delegate)),
-      page_content_fetcher_delegate_(
-          std::make_unique<PageContentFetcher>(web_contents)) {
+          std::move(print_preview_extraction_delegate)) {
+  if (features::IsAIChatDetailedPageContentExtractionEnabled()) {
+    page_content_fetcher_delegate_ =
+        std::make_unique<AIPageContentFetcher>(web_contents);
+  } else {
+    page_content_fetcher_delegate_ =
+        std::make_unique<PageContentFetcher>(web_contents);
+  }
   previous_page_title_ = web_contents->GetTitle();
 }
 

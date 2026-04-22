@@ -974,4 +974,46 @@ TEST_F(PageContentFetcherTest, GithubTreeUrl) {
   EXPECT_EQ(requests_made[0].method, "GET");
 }
 
+struct HasCustomExtractionCase {
+  const char* url;
+  bool expected;
+};
+
+class HasCustomExtractionTest
+    : public testing::TestWithParam<HasCustomExtractionCase> {};
+
+TEST_P(HasCustomExtractionTest, Check) {
+  const auto& [url, expected] = GetParam();
+  EXPECT_EQ(PageContentFetcher::HasCustomExtraction(GURL(url)), expected);
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    PageContentFetcherTest,
+    HasCustomExtractionTest,
+    testing::Values(
+        // YouTube hosts → true
+        HasCustomExtractionCase{"https://www.youtube.com/watch?v=abc123", true},
+        HasCustomExtractionCase{"https://m.youtube.com/watch?v=abc123", true},
+        // GitHub matched paths → true
+        HasCustomExtractionCase{
+            "https://github.com/brave/brave-browser/pull/123", true},
+        HasCustomExtractionCase{
+            "https://github.com/brave/brave-browser/commit/abc123", true},
+        HasCustomExtractionCase{
+            "https://github.com/brave/brave-browser/compare/a...b", true},
+        HasCustomExtractionCase{
+            "https://github.com/brave/brave-browser/commits/main", true},
+        HasCustomExtractionCase{
+            "https://github.com/brave/brave-browser/blob/main/README.md", true},
+        HasCustomExtractionCase{
+            "https://github.com/brave/brave-browser/tree/main", true},
+        HasCustomExtractionCase{"https://github.com/brave/brave-browser", true},
+        // GitHub unmatched paths → false
+        HasCustomExtractionCase{
+            "https://github.com/brave/brave-browser/issues/123", false},
+        HasCustomExtractionCase{"https://github.com/brave", false},
+        // Normal URLs → false
+        HasCustomExtractionCase{"https://example.com/page", false},
+        HasCustomExtractionCase{"https://brave.com/about", false}));
+
 }  // namespace ai_chat

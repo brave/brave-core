@@ -77,6 +77,14 @@ bool IsAIChatAgentProfileEnabled() {
 #endif
 }
 
+BASE_FEATURE(kAIChatDetailedPageContentExtraction,
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsAIChatDetailedPageContentExtractionEnabled() {
+  return base::FeatureList::IsEnabled(
+      features::kAIChatDetailedPageContentExtraction);
+}
+
 BASE_FEATURE(kAIChatGlobalSidePanelEverywhere,
              base::FEATURE_DISABLED_BY_DEFAULT);
 

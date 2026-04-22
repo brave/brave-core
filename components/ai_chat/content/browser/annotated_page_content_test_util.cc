@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ai_chat/annotated_page_content_test_util.h"
+#include "brave/components/ai_chat/content/browser/annotated_page_content_test_util.h"
 
 namespace ai_chat::annotated_page_content_test_util {
 
