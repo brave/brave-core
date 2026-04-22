@@ -124,6 +124,7 @@ import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerAnimati
 import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerInterface;
 import org.chromium.chrome.browser.brave_stats.BraveStatsBottomSheetDialogFragment;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
+import org.chromium.chrome.browser.browsing_data.BraveShortcutsUtils;
 import org.chromium.chrome.browser.browsing_data.BrowsingDataBridge;
 import org.chromium.chrome.browser.browsing_data.BrowsingDataType;
 import org.chromium.chrome.browser.browsing_data.TimePeriod;
@@ -1002,21 +1003,6 @@ public abstract class BraveActivity extends ChromeActivity
             CommandLine.getInstance().appendSwitch(ChromeSwitches.NO_RESTORE_STATE);
         }
 
-        if (isClearBrowsingDataOnExit()) {
-            List<Integer> dataTypes =
-                    Arrays.asList(
-                            BrowsingDataType.HISTORY,
-                            BrowsingDataType.SITE_DATA,
-                            BrowsingDataType.CACHE);
-
-            int[] dataTypesArray = CollectionUtil.integerCollectionToIntArray(dataTypes);
-
-            // has onBrowsingDataCleared() as an @Override callback from implementing
-            // BrowsingDataBridge.OnClearBrowsingDataListener
-            BrowsingDataBridge.getForProfile(getCurrentProfile())
-                    .clearBrowsingData(this, dataTypesArray, TimePeriod.ALL_TIME);
-        }
-
         setLoadedFeed(false);
         setComesFromNewTab(false);
         setNewsItemsFeedCards(null);
@@ -1514,6 +1500,28 @@ public abstract class BraveActivity extends ChromeActivity
         }
 
         ContextUtils.getAppSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+
+        if (isClearBrowsingDataOnExit()) {
+            int[] dataTypesArray =
+                    CollectionUtil.integerCollectionToIntArray(
+                            Arrays.asList(
+                                    BrowsingDataType.HISTORY,
+                                    BrowsingDataType.SITE_DATA,
+                                    BrowsingDataType.CACHE));
+            PostTask.postTask(
+                    TaskTraits.UI_DEFAULT,
+                    () -> {
+                        // Force-initialize ShortcutsBackend before clearing so that
+                        // OnHistoryDeletions reaches an initialized backend and correctly
+                        // removes omnibox shortcut suggestions.
+                        BraveShortcutsUtils.initThenRun(
+                                getCurrentProfile(),
+                                () ->
+                                        BrowsingDataBridge.getForProfile(getCurrentProfile())
+                                                .clearBrowsingData(
+                                                        this, dataTypesArray, TimePeriod.ALL_TIME));
+                    });
+        }
     }
 
     private void applyChangesForYahooJp() {
