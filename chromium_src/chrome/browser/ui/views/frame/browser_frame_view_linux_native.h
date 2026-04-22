@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_FRAME_VIEW_LINUX_NATIVE_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_FRAME_VIEW_LINUX_NATIVE_H_
 
+#include "ui/views/window/frame_view_utils_linux.h"
+
 #define MaybeUpdateCachedFrameButtonImages       \
   MaybeUpdateCachedFrameButtonImages_Unused() {} \
   friend class BraveBrowserFrameViewLinuxNative; \

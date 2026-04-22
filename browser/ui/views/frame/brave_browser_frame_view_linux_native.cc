@@ -20,7 +20,7 @@
 
 namespace {
 
-ui::NavButtonProvider::ButtonState ButtonStateToNavButtonProviderState(
+ui::NavButtonProvider::ButtonState CustomButtonStateToNavButtonProviderState(
     views::Button::ButtonState state) {
   switch (state) {
     case views::Button::STATE_NORMAL:
@@ -91,7 +91,7 @@ void BraveBrowserFrameViewLinuxNative::MaybeUpdateCachedFrameButtonImages() {
 
   // In order to lay out window caption buttons over toolbar, we should set
   // height as tall as button's on toolbar
-  DrawFrameButtonParams params{
+  views::DrawFrameButtonParams params{
       .top_area_height =
           GetLayoutConstant(LayoutConstant::kToolbarButtonHeight) +
           GetLayoutInsets(TOOLBAR_BUTTON).height() + GetTopAreaHeight() -
@@ -123,7 +123,7 @@ void BraveBrowserFrameViewLinuxNative::MaybeUpdateCachedFrameButtonImages() {
       static_cast<views::ImageButton*>(button)->SetImageModel(
           button_state,
           ui::ImageModel::FromImageSkia(nav_button_provider_->GetImage(
-              type, ButtonStateToNavButtonProviderState(button_state))));
+              type, CustomButtonStateToNavButtonProviderState(button_state))));
     }
   }
 }
