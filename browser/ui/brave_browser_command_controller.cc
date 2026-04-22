@@ -333,6 +333,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #endif
   UpdateCommandEnabled(IDC_TOGGLE_SHIELDS, true);
   UpdateCommandEnabled(IDC_TOGGLE_JAVASCRIPT, true);
+  UpdateCommandEnabled(IDC_UPDATE_ADBLOCK_FILTER_LISTS, true);
 
   UpdateCommandEnabled(IDC_CLOSE_DUPLICATE_TABS,
                        brave::HasDuplicateTabs(&*browser_));
@@ -674,6 +675,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_TOGGLE_JAVASCRIPT:
       brave::ToggleJavascriptEnabled(&*browser_);
+      break;
+    case IDC_UPDATE_ADBLOCK_FILTER_LISTS:
+      brave::UpdateAdBlockFilterLists(&*browser_);
       break;
     case IDC_SHOW_PLAYLIST_BUBBLE:
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
