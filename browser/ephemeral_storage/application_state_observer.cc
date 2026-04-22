@@ -12,7 +12,7 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
+#include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #endif
 
 namespace ephemeral_storage {
@@ -24,7 +24,8 @@ ApplicationStateObserver::ApplicationStateObserver(
     content::BrowserContext* context)
     : context_(context) {
   browser_collection_observation_.Observe(
-      GlobalBrowserCollection::GetInstance());
+      ProfileBrowserCollection::GetForProfile(
+          Profile::FromBrowserContext(context_)));
 }
 #endif
 
@@ -53,10 +54,6 @@ void ApplicationStateObserver::TriggerCurrentAppStateNotification() {
 #if !BUILDFLAG(IS_ANDROID)
 void ApplicationStateObserver::OnBrowserCreated(
     BrowserWindowInterface* browser) {
-  if (browser->GetProfile() != Profile::FromBrowserContext(context_)) {
-    return;
-  }
-
   if (!has_notified_active_) {
     has_notified_active_ = true;
 
