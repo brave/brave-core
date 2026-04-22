@@ -105,7 +105,6 @@ class AdBlockService {
 
    private:
     void LoadResources(
-        std::optional<DATFileDataBuffer> dat,
         std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set);
     void OnFilterSetLoaded(
         base::OnceCallback<void(rust::Box<adblock::FilterSet>*)> cb);
@@ -115,8 +114,7 @@ class AdBlockService {
     // AdBlockResourceProvider::Observer
     void OnResourcesLoaded(AdblockResourceStorageBox storage) override;
 
-    void OnAllLoaded(std::optional<DATFileDataBuffer> dat,
-                     std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set,
+    void OnAllLoaded(std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set,
                      AdblockResourceStorageBox storage);
 
     OnResourcesLoadedCallback on_resources_loaded_;

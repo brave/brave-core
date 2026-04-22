@@ -92,13 +92,12 @@ void AdBlockService::SourceProviderObserver::OnFilterSetLoaded(
 }
 
 void AdBlockService::SourceProviderObserver::LoadResources(
-    std::optional<DATFileDataBuffer> dat,
     std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set) {
   // multiple AddObserver calls are ignored
   resource_provider_->AddObserver(this);
   resource_provider_->LoadResources(base::BindOnce(
       &SourceProviderObserver::OnAllLoaded, weak_factory_.GetWeakPtr(),
-      std::move(dat), std::move(filter_set)));
+      std::move(filter_set)));
 }
 
 void AdBlockService::SourceProviderObserver::OnDATFileRead(
@@ -109,13 +108,13 @@ void AdBlockService::SourceProviderObserver::OnDATFileRead(
                            adblock::new_empty_resource_storage());
   // Kick off resource loading separately — when resources arrive,
   // OnAllLoaded will call UseResources to update them.
-  LoadResources(std::nullopt, nullptr);
+  LoadResources(nullptr);
 }
 
 void AdBlockService::SourceProviderObserver::OnFilterSetCreated(
     std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set) {
   TRACE_EVENT("brave.adblock", "OnFilterSetCreated");
-  LoadResources(std::nullopt, std::move(filter_set));
+  LoadResources(std::move(filter_set));
 }
 
 void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
@@ -125,10 +124,9 @@ void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
 }
 
 void AdBlockService::SourceProviderObserver::OnAllLoaded(
-    std::optional<DATFileDataBuffer> dat,
     std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set,
     AdblockResourceStorageBox storage) {
-  on_resources_loaded_.Run(engine_is_default_, std::move(dat),
+  on_resources_loaded_.Run(engine_is_default_, std::nullopt,
                            std::move(filter_set), std::move(storage));
 }
 
