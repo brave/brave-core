@@ -78,10 +78,18 @@ GURL GetTxNotificationUrl(const mojom::AccountInfoPtr& account) {
                             account_route_entry, "/transactions"}));
 }
 
-bool AccountMatchesCoinAndChain(const mojom::AccountId& account_id,
+bool AccountMatchesCoinAndChain(NetworkManager& network_manager,
+                                const std::string& chain_id,
                                 mojom::CoinType coin,
-                                const std::string& chain_id) {
-  return std::ranges::contains(GetSupportedKeyringsForNetwork(coin, chain_id),
+                                const mojom::AccountId& account_id) {
+  auto network = network_manager.GetChain(chain_id, account_id.coin);
+  if (!network) {
+    return false;
+  }
+  if (account_id.coin != coin) {
+    return false;
+  }
+  return std::ranges::contains(network->supported_keyrings,
                                account_id.keyring_id);
 }
 
@@ -100,6 +108,7 @@ bool ContainsNativeToken(const std::vector<mojom::BlockchainTokenPtr>& tokens,
 // Ensure token list contains native tokens when appears empty. Only for BTC,
 // ZEC, ADA and DOT by now.
 std::vector<mojom::BlockchainTokenPtr> EnsureNativeTokens(
+    NetworkManager& network_manager,
     const std::string& chain_id,
     mojom::CoinType coin,
     std::vector<mojom::BlockchainTokenPtr> tokens) {
@@ -129,9 +138,13 @@ std::vector<mojom::BlockchainTokenPtr> EnsureNativeTokens(
     tokens.push_back(GetCardanoNativeToken(chain_id));
   }
 
-  if (coin == mojom::CoinType::DOT && IsPolkadotNetwork(chain_id) &&
-      !ContainsNativeToken(tokens, coin, chain_id, false)) {
-    tokens.push_back(GetPolkadotNativeToken(chain_id));
+  if (coin == mojom::CoinType::DOT) {
+    auto polkadot_network =
+        network_manager.GetChain(chain_id, mojom::CoinType::DOT);
+    if (polkadot_network &&
+        !ContainsNativeToken(tokens, coin, chain_id, false)) {
+      tokens.push_back(GetPolkadotNativeToken(chain_id));
+    }
   }
 
   return tokens;
@@ -474,8 +487,8 @@ void BraveWalletService::GetUserAssets(const std::string& chain_id,
     }
   }
 
-  std::move(callback).Run(
-      EnsureNativeTokens(chain_id, coin, std::move(result)));
+  std::move(callback).Run(EnsureNativeTokens(*network_manager(), chain_id, coin,
+                                             std::move(result)));
 }
 
 void BraveWalletService::GetAllUserAssets(GetUserAssetsCallback callback) {
@@ -742,8 +755,8 @@ mojom::AccountIdPtr BraveWalletService::EnsureSelectedAccountForChainSync(
     const std::string& chain_id) {
   auto all_accounts = keyring_service_->GetAllAccountsSync();
   // Selected account already matches coin/chain_id pair, just return.
-  if (AccountMatchesCoinAndChain(*all_accounts->selected_account->account_id,
-                                 coin, chain_id)) {
+  if (AccountMatchesCoinAndChain(*network_manager_, chain_id, coin,
+                                 *all_accounts->selected_account->account_id)) {
     return all_accounts->selected_account->account_id.Clone();
   }
 
@@ -756,23 +769,29 @@ mojom::AccountIdPtr BraveWalletService::EnsureSelectedAccountForChainSync(
   if (coin == mojom::CoinType::ETH && all_accounts->eth_dapp_selected_account) {
     acc_to_select =
         all_accounts->eth_dapp_selected_account->account_id->Clone();
-    DCHECK(AccountMatchesCoinAndChain(*acc_to_select, coin, chain_id));
+    DCHECK(AccountMatchesCoinAndChain(*network_manager_, chain_id, coin,
+                                      *acc_to_select));
+
   } else if (coin == mojom::CoinType::SOL &&
              all_accounts->sol_dapp_selected_account) {
     acc_to_select =
         all_accounts->sol_dapp_selected_account->account_id->Clone();
-    DCHECK(AccountMatchesCoinAndChain(*acc_to_select, coin, chain_id));
+    DCHECK(AccountMatchesCoinAndChain(*network_manager_, chain_id, coin,
+                                      *acc_to_select));
+
   } else if (coin == mojom::CoinType::ADA &&
              all_accounts->ada_dapp_selected_account) {
     acc_to_select =
         all_accounts->ada_dapp_selected_account->account_id->Clone();
-    DCHECK(AccountMatchesCoinAndChain(*acc_to_select, coin, chain_id));
+    DCHECK(AccountMatchesCoinAndChain(*network_manager_, chain_id, coin,
+                                      *acc_to_select));
   }
 
   if (!acc_to_select) {
     // Find any account that matches coin/chain_id
     for (auto& acc : all_accounts->accounts) {
-      if (AccountMatchesCoinAndChain(*acc->account_id, coin, chain_id)) {
+      if (AccountMatchesCoinAndChain(*network_manager_, chain_id, coin,
+                                     *acc->account_id)) {
         acc_to_select = acc->account_id.Clone();
         break;
       }
@@ -817,7 +836,7 @@ mojom::NetworkInfoPtr BraveWalletService::GetNetworkForAccountOnOriginSync(
   }
 
   if (IsFixedSelectedNetworkCoin(account->coin)) {
-    return GetFixedSelectedNetworkForAccount(*network_manager(), account);
+    return GetFixedSelectedNetworkForAccount(*network_manager_, account);
   }
 
   return json_rpc_service_->GetNetworkSync(account->coin, origin);
@@ -831,7 +850,8 @@ bool BraveWalletService::SetNetworkForAccountOnOriginSync(
     return false;
   }
 
-  if (!AccountMatchesCoinAndChain(*account, account->coin, chain_id)) {
+  if (!AccountMatchesCoinAndChain(*network_manager_, chain_id, account->coin,
+                                  *account)) {
     return false;
   }
 
@@ -874,9 +894,9 @@ void BraveWalletService::SetNetworkForSelectedAccountOnActiveOrigin(
     SetNetworkForSelectedAccountOnActiveOriginCallback callback) {
   auto selected_account = keyring_service_->GetSelectedWalletAccount();
   CHECK(selected_account);
-  if (!AccountMatchesCoinAndChain(*selected_account->account_id,
+  if (!AccountMatchesCoinAndChain(*network_manager_, chain_id,
                                   selected_account->account_id->coin,
-                                  chain_id)) {
+                                  *selected_account->account_id)) {
     std::move(callback).Run(false);
     return;
   }

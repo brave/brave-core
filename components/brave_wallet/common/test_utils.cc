@@ -24,7 +24,7 @@ mojom::NetworkInfo GetTestNetworkInfo1(const std::string& chain_id,
           "symbol_name",
           11,
           coin,
-          GetSupportedKeyringsForNetwork(coin, chain_id)};
+          GetSupportedKeyringsForKnownNetwork(coin, chain_id)};
 }
 
 mojom::NetworkInfo GetTestNetworkInfo2(const std::string& chain_id,
@@ -39,7 +39,7 @@ mojom::NetworkInfo GetTestNetworkInfo2(const std::string& chain_id,
           "symbol_name2",
           22,
           coin,
-          GetSupportedKeyringsForNetwork(coin, chain_id)};
+          GetSupportedKeyringsForKnownNetwork(coin, chain_id)};
 }
 
 mojom::NetworkInfo GetTestNetworkInfoWithHttpURL(const std::string& chain_id,
@@ -54,7 +54,7 @@ mojom::NetworkInfo GetTestNetworkInfoWithHttpURL(const std::string& chain_id,
           "symbol_name2",
           22,
           coin,
-          GetSupportedKeyringsForNetwork(coin, chain_id)};
+          GetSupportedKeyringsForKnownNetwork(coin, chain_id)};
 }
 
 mojom::ChainIdPtr EthMainnetChainId() {

@@ -19,7 +19,6 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -37,7 +36,8 @@ PolkadotTxManager::PolkadotTxManager(
           std::make_unique<PolkadotTxStateManager>(tx_storage,
                                                    account_resolver_delegate),
           std::make_unique<PolkadotBlockTracker>(
-              *polkadot_wallet_service.GetPolkadotRpc()),
+              *polkadot_wallet_service.GetPolkadotRpc(),
+              polkadot_wallet_service.GetNetworkManager()),
           tx_service,
           keyring_service),
       polkadot_wallet_service_(polkadot_wallet_service) {
@@ -154,10 +154,9 @@ void PolkadotTxManager::AddUnapprovedPolkadotTransaction(
     mojom::NewPolkadotTransactionParamsPtr params,
     AddUnapprovedPolkadotTransactionCallback callback) {
   auto chain_id = params->chain_id;
-  if (chain_id != GetNetworkForPolkadotAccount(params->from)) {
+  if (!polkadot_wallet_service_->IsPolkadotChain(chain_id)) {
     return std::move(callback).Run(false, "", WalletInternalErrorMessage());
   }
-
   polkadot_wallet_service_->GetChainMetadata(
       chain_id,
       base::BindOnce(&PolkadotTxManager::OnGetChainMetadataForUnapproved,

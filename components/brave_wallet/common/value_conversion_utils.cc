@@ -100,9 +100,6 @@ mojom::NetworkInfoPtr ValueToNetworkInfo(const base::Value& value) {
     chain.coin = mojom::CoinType::ETH;
   }
 
-  chain.supported_keyrings =
-      GetSupportedKeyringsForNetwork(chain.coin, chain.chain_id);
-
   const auto* explorerUrlsListValue =
       params_dict->FindList("blockExplorerUrls");
   if (explorerUrlsListValue) {
@@ -145,6 +142,30 @@ mojom::NetworkInfoPtr ValueToNetworkInfo(const base::Value& value) {
   } else {
     chain.active_rpc_endpoint_index =
         GetFirstValidChainURLIndex(chain.rpc_endpoints);
+  }
+
+  auto* supportedKeyringsValue = params_dict->Find("supportedKeyrings");
+
+  if (supportedKeyringsValue) {
+    const auto* supportedKeyringIdsListValue =
+        params_dict->FindList("supportedKeyrings");
+    if (!supportedKeyringIdsListValue) {
+      return nullptr;
+    }
+    for (const auto& entry : *supportedKeyringIdsListValue) {
+      if (!entry.is_int()) {
+        return nullptr;
+      }
+      if (!mojom::IsKnownEnumValue(
+              static_cast<mojom::KeyringId>(entry.GetInt()))) {
+        return nullptr;
+      }
+      chain.supported_keyrings.push_back(
+          static_cast<mojom::KeyringId>(entry.GetInt()));
+    }
+  } else {
+    chain.supported_keyrings =
+        GetSupportedKeyringsForKnownNetwork(chain.coin, chain.chain_id);
   }
 
   return chain.Clone();
@@ -238,6 +259,11 @@ base::DictValue NetworkInfoToValue(const mojom::NetworkInfo& chain) {
   currency.Set("symbol", chain.symbol);
   currency.Set("decimals", chain.decimals);
   dict.Set("nativeCurrency", std::move(currency));
+  base::ListValue keyringIdsValue;
+  for (const auto& keyring : chain.supported_keyrings) {
+    keyringIdsValue.Append(static_cast<int>(keyring));
+  }
+  dict.Set("supportedKeyrings", std::move(keyringIdsValue));
   return dict;
 }
 

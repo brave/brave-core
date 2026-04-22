@@ -5,19 +5,20 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_block_tracker.h"
 
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 
 namespace brave_wallet {
 
-PolkadotBlockTracker::PolkadotBlockTracker(PolkadotSubstrateRpc& polkadot_rpc)
-    : polkadot_rpc_(polkadot_rpc) {}
+PolkadotBlockTracker::PolkadotBlockTracker(PolkadotSubstrateRpc& polkadot_rpc,
+                                           NetworkManager& network_manager)
+    : polkadot_rpc_(polkadot_rpc), network_manager_(network_manager) {}
 
 PolkadotBlockTracker::~PolkadotBlockTracker() = default;
 
 void PolkadotBlockTracker::Start(const std::string& chain_id,
                                  base::TimeDelta interval) {
-  CHECK(IsPolkadotNetwork(chain_id));
+  CHECK(network_manager_->IsPolkadotChain(chain_id));
 
   auto& timer = timers_[chain_id];
   if (!timer) {

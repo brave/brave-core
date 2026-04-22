@@ -3529,6 +3529,37 @@ TEST_F(KeyringServiceUnitTest, ImportPolkadotAccountTestnet_Error) {
                                                  mojom::kMainnetChainId));
 }
 
+TEST_F(KeyringServiceUnitTest, ImportPolkadotAccount_NonRelayNetwork) {
+  base::test::ScopedFeatureList feature_list{
+      features::kBraveWalletPolkadotFeature};
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+
+  ASSERT_TRUE(CreateWallet(&service, kPasswordBrave));
+
+  auto hd_account =
+      AddAccount(&service, mojom::CoinType::DOT,
+                 mojom::KeyringId::kPolkadotMainnet, "Polkadot HD Account");
+  ASSERT_TRUE(hd_account);
+
+  TestFuture<const std::optional<std::string>&> export_future;
+  service.EncodePolkadotKeyForExport(hd_account->account_id.Clone(),
+                                     kPasswordBrave, "export_pwd",
+                                     export_future.GetCallback());
+  auto json_export = export_future.Get();
+  ASSERT_TRUE(json_export.has_value()) << "Need JSON export to test import";
+
+  // Import requires a Polkadot relay network.
+  auto imported = service.ImportPolkadotAccountSync(
+      "Imported Polkadot", *json_export, "export_pwd", "custom_dot_chain");
+  EXPECT_FALSE(imported);
+
+  auto dot_accounts = std::ranges::count_if(
+      service.GetAllAccountsSync()->accounts, [](const auto& acc) {
+        return acc->account_id->coin == mojom::CoinType::DOT;
+      });
+  EXPECT_EQ(dot_accounts, 1u) << "Only the original HD account should exist";
+}
+
 TEST_F(KeyringServiceUnitTest, ImportPolkadotAccountFails_WrongPassword) {
   base::test::ScopedFeatureList feature_list{
       features::kBraveWalletPolkadotFeature};

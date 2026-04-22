@@ -13,7 +13,6 @@
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_test_utils.h"
@@ -57,8 +56,6 @@ class PolkadotBlockTrackerUnitTest : public testing::Test {
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     network_manager_ = std::make_unique<NetworkManager>(&prefs_);
-    keyring_service_ =
-        std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
 
     polkadot_substrate_rpc_ = std::make_unique<PolkadotSubstrateRpc>(
         *network_manager_, url_loader_factory_.GetSafeWeakWrapper());
@@ -66,7 +63,8 @@ class PolkadotBlockTrackerUnitTest : public testing::Test {
     polkadot_mock_rpc_ = std::make_unique<PolkadotMockRpc>(
         &url_loader_factory_, network_manager_.get());
 
-    tracker_ = std::make_unique<PolkadotBlockTracker>(*polkadot_substrate_rpc_);
+    tracker_ = std::make_unique<PolkadotBlockTracker>(*polkadot_substrate_rpc_,
+                                                      *network_manager_);
   }
 
  protected:
@@ -75,7 +73,6 @@ class PolkadotBlockTrackerUnitTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable prefs_;
   network::TestURLLoaderFactory url_loader_factory_;
   std::unique_ptr<NetworkManager> network_manager_;
-  std::unique_ptr<KeyringService> keyring_service_;
   std::unique_ptr<PolkadotSubstrateRpc> polkadot_substrate_rpc_;
   std::unique_ptr<PolkadotMockRpc> polkadot_mock_rpc_;
   std::unique_ptr<PolkadotBlockTracker> tracker_;

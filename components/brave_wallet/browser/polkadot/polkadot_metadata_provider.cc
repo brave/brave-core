@@ -11,8 +11,8 @@
 #include "base/functional/bind.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 
 namespace brave_wallet {
 
@@ -36,9 +36,11 @@ base::expected<PolkadotChainMetadata, std::string> ParseChainMetadataFromHex(
 }  // namespace
 
 PolkadotMetadataProvider::PolkadotMetadataProvider(
+    NetworkManager& network_manager,
     PolkadotChainMetadataPrefs& chain_metadata_prefs,
     PolkadotSubstrateRpc& polkadot_substrate_rpc)
-    : chain_metadata_prefs_(chain_metadata_prefs),
+    : network_manager_(network_manager),
+      chain_metadata_prefs_(chain_metadata_prefs),
       polkadot_substrate_rpc_(polkadot_substrate_rpc) {}
 
 PolkadotMetadataProvider::~PolkadotMetadataProvider() = default;
@@ -56,7 +58,7 @@ void PolkadotMetadataProvider::Init() {
 void PolkadotMetadataProvider::GetChainMetadata(
     std::string_view chain_id,
     GetChainMetadataCallback callback) {
-  CHECK(IsPolkadotNetwork(chain_id));
+  CHECK(network_manager_->GetChain(chain_id, mojom::CoinType::DOT));
 
   if (const auto* cached_metadata =
           base::FindOrNull(metadata_cache_, chain_id)) {

@@ -67,7 +67,7 @@ class PolkadotMetadataProviderUnitTest : public testing::Test {
     mock_rpc_ = std::make_unique<NiceMock<MockPolkadotSubstrateRpc>>(
         *network_manager_, url_loader_factory_.GetSafeWeakWrapper());
     provider_ = std::make_unique<PolkadotMetadataProvider>(
-        *chain_metadata_prefs_, *mock_rpc_);
+        *network_manager_, *chain_metadata_prefs_, *mock_rpc_);
   }
 
   base::test::TaskEnvironment task_environment_;

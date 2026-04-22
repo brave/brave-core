@@ -18,11 +18,13 @@
 
 namespace brave_wallet {
 
+class NetworkManager;
 class PolkadotSubstrateRpc;
 
 class PolkadotBlockTracker : public BlockTracker {
  public:
-  explicit PolkadotBlockTracker(PolkadotSubstrateRpc& polkadot_rpc);
+  explicit PolkadotBlockTracker(PolkadotSubstrateRpc& polkadot_rpc,
+                                NetworkManager& network_manager);
   ~PolkadotBlockTracker() override;
 
   PolkadotBlockTracker(const PolkadotBlockTracker&) = delete;
@@ -56,6 +58,7 @@ class PolkadotBlockTracker : public BlockTracker {
       latest_block_hashes_map_;
   base::ObserverList<Observer> observers_;
   raw_ref<PolkadotSubstrateRpc> polkadot_rpc_;
+  raw_ref<NetworkManager> network_manager_;
   base::WeakPtrFactory<PolkadotBlockTracker> weak_ptr_factory_{this};
 };
 
