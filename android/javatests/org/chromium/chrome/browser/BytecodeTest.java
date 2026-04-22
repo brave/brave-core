@@ -2299,7 +2299,8 @@ public class BytecodeTest {
                         Supplier.class,
                         MonotonicObservableSupplier.class,
                         GlicToolbarButtonController.GlicButtonDelegate.class,
-                        Supplier.class));
+                        Supplier.class,
+                        BrowserControlsVisibilityManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/SwipeRefreshHandler",
