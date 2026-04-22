@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "content/public/browser/render_frame_host.h"
 #include "third_party/blink/public/mojom/hid/hid.mojom.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)

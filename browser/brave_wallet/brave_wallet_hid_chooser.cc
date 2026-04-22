@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/task/sequenced_task_runner.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/ui/hid/hid_chooser_controller.h"
 #include "content/public/browser/render_frame_host.h"
@@ -33,6 +34,16 @@ bool IsExactlyLedgerVendorOnlyRequest(
              blink::mojom::DeviceIdFilter::NewVendor(kLedgerVendorId), nullptr);
 }
 
+bool IsLedgerSubframe(content::RenderFrameHost* rfh) {
+  // We expect hid request only from ledger subframe.
+  if (!rfh || !rfh->GetParent()) {
+    return false;
+  }
+  auto origin = rfh->GetLastCommittedOrigin();
+  return origin.scheme() == content::kChromeUIUntrustedScheme &&
+         (origin.host() == kUntrustedLedgerHost);
+}
+
 }  // namespace
 
 // static
@@ -52,21 +63,31 @@ BraveWalletHidChooser::BraveWalletHidChooser(
     content::RenderFrameHost* render_frame_host,
     std::vector<blink::mojom::HidDeviceFilterPtr> filters,
     std::vector<blink::mojom::HidDeviceFilterPtr> exclusion_filters,
-    content::HidChooser::Callback callback)
-    : is_valid_ledger_request_(
-          IsExactlyLedgerVendorOnlyRequest(filters, exclusion_filters)),
-      controller_(
-          std::make_unique<HidChooserController>(render_frame_host,
-                                                 std::move(filters),
-                                                 std::move(exclusion_filters),
-                                                 std::move(callback))) {
+    content::HidChooser::Callback callback) {
+  CHECK(BraveWalletHidChooser::IsBraveWalletMainFrameOrigin(render_frame_host));
+
+  if (!IsLedgerSubframe(render_frame_host) ||
+      !IsExactlyLedgerVendorOnlyRequest(filters, exclusion_filters)) {
+    // Request comes from non ledger subframe of wallet mainframe, or has
+    // unexpected filters. Respond with empty device list.
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE,
+        base::BindOnce(std::move(callback),
+                       std::vector<device::mojom::HidDeviceInfoPtr>()));
+    return;
+  }
+
+  controller_ = std::make_unique<HidChooserController>(
+      render_frame_host, std::move(filters), std::move(exclusion_filters),
+      std::move(callback));
+
   controller_->set_view(this);
 }
 
 BraveWalletHidChooser::~BraveWalletHidChooser() = default;
 
 void BraveWalletHidChooser::OnOptionsInitialized() {
-  if (!is_valid_ledger_request_ || controller_->NumOptions() == 0) {
+  if (controller_->NumOptions() == 0) {
     controller_->Cancel();
   } else {
     controller_->Select({0});

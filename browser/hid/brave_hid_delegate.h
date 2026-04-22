@@ -12,8 +12,11 @@
 #include "chrome/browser/hid/chrome_hid_delegate.h"
 #include "content/public/browser/hid_chooser.h"
 #include "content/public/browser/hid_delegate.h"
-#include "content/public/browser/render_frame_host.h"
 #include "third_party/blink/public/mojom/hid/hid.mojom-forward.h"
+
+namespace content {
+class RenderFrameHost;
+}
 
 // Extends `ChromeHidDelegate` so there is custom behavior for HID requests from
 // wallet webui pages.

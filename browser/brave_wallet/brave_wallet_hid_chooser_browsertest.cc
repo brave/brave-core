@@ -95,13 +95,8 @@ class BraveWalletHidChooserBrowserTest : public InProcessBrowserTest {
 
   // Calls navigator.hid.requestDevice({filters, exclusionFilters}) and returns
   // the found device or a error string.
-  content::EvalJsResult RequestDevice(base::ListValue filters) {
-    return RequestDeviceInFrame(web_contents()->GetPrimaryMainFrame(),
-                                std::move(filters));
-  }
-
-  content::EvalJsResult RequestDeviceInFrame(content::RenderFrameHost* frame,
-                                             base::ListValue filters) {
+  content::EvalJsResult RequestDevice(content::RenderFrameHost* frame,
+                                      base::ListValue filters) {
     return content::EvalJs(frame, content::JsReplace(
                                       R"js(
               (async () => {
@@ -134,66 +129,79 @@ class BraveWalletHidChooserBrowserTest : public InProcessBrowserTest {
   device::FakeHidManager hid_manager_;
 };
 
-IN_PROC_BROWSER_TEST_F(BraveWalletHidChooserBrowserTest,
-                       WalletOriginValidLedgerFilter) {
+IN_PROC_BROWSER_TEST_F(BraveWalletHidChooserBrowserTest, WalletMainFrame) {
   auto waiter = test::ChooserBubbleUiWaiter::Create();
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kBraveUIWalletURL)));
 
-  EXPECT_THAT(RequestDevice(MakeVendorFilter(kLedgerVendorId)).ExtractDict(),
-              DictionaryHasValues(ExpectedDevice()));
+  EXPECT_THAT(RequestDevice(web_contents()->GetPrimaryMainFrame(),
+                            MakeVendorFilter(kLedgerVendorId))
+                  .ExtractString(),
+              "No Devices");
 
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), GURL(kBraveUIWalletPanelURL)));
 
-  EXPECT_THAT(RequestDevice(MakeVendorFilter(kLedgerVendorId)).ExtractDict(),
-              DictionaryHasValues(ExpectedDevice()));
+  EXPECT_THAT(RequestDevice(web_contents()->GetPrimaryMainFrame(),
+                            MakeVendorFilter(kLedgerVendorId))
+                  .ExtractString(),
+              "No Devices");
 
   EXPECT_FALSE(waiter->has_shown());
 }
 
-IN_PROC_BROWSER_TEST_F(BraveWalletHidChooserBrowserTest,
-                       WalletSubframeValidLedgerFilter) {
+IN_PROC_BROWSER_TEST_F(BraveWalletHidChooserBrowserTest, LedgerSubframe) {
   auto waiter = test::ChooserBubbleUiWaiter::Create();
 
+  content::RenderFrameHost* ledger_subframe = nullptr;
+
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kBraveUIWalletURL)));
-
-  content::RenderFrameHost* subframe =
-      AppendSubframe(GURL(kUntrustedLedgerURL));
-  ASSERT_TRUE(subframe);
-
-  EXPECT_THAT(RequestDeviceInFrame(subframe, MakeVendorFilter(kLedgerVendorId))
+  ledger_subframe = AppendSubframe(GURL(kUntrustedLedgerURL));
+  ASSERT_TRUE(ledger_subframe);
+  EXPECT_THAT(RequestDevice(ledger_subframe, MakeVendorFilter(kLedgerVendorId))
                   .ExtractDict(),
               DictionaryHasValues(ExpectedDevice()));
 
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), GURL(kBraveUIWalletPanelURL)));
-
-  subframe = AppendSubframe(GURL(kUntrustedLedgerURL));
-  ASSERT_TRUE(subframe);
-
-  EXPECT_THAT(RequestDeviceInFrame(subframe, MakeVendorFilter(kLedgerVendorId))
+  ledger_subframe = AppendSubframe(GURL(kUntrustedLedgerURL));
+  ASSERT_TRUE(ledger_subframe);
+  EXPECT_THAT(RequestDevice(ledger_subframe, MakeVendorFilter(kLedgerVendorId))
                   .ExtractDict(),
               DictionaryHasValues(ExpectedDevice()));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveWalletHidChooserBrowserTest, TrezorSubframe) {
+  auto waiter = test::ChooserBubbleUiWaiter::Create();
+
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL(kBraveUIWalletPanelURL)));
+  auto* trezor_subframe = AppendSubframe(GURL(kUntrustedTrezorURL));
+  ASSERT_TRUE(trezor_subframe);
+  EXPECT_THAT(RequestDevice(trezor_subframe, MakeVendorFilter(kLedgerVendorId))
+                  .ExtractString(),
+              "No Devices");
 
   EXPECT_FALSE(waiter->has_shown());
 }
 
-IN_PROC_BROWSER_TEST_F(BraveWalletHidChooserBrowserTest,
-                       WalletOriginButInvalidFilter) {
+IN_PROC_BROWSER_TEST_F(BraveWalletHidChooserBrowserTest, InvalidFilter) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kBraveUIWalletURL)));
+  auto* ledger_subframe = AppendSubframe(GURL(kUntrustedLedgerURL));
 
-  EXPECT_THAT(RequestDevice({}).ExtractString(), "No Devices");
-  EXPECT_THAT(RequestDevice(MakeVendorFilter(kOtherVendorId)).ExtractString(),
+  EXPECT_THAT(RequestDevice(ledger_subframe, {}).ExtractString(), "No Devices");
+  EXPECT_THAT(RequestDevice(ledger_subframe, MakeVendorFilter(kOtherVendorId))
+                  .ExtractString(),
               "No Devices");
 }
 
-IN_PROC_BROWSER_TEST_F(BraveWalletHidChooserBrowserTest,
-                       WalletOriginValidFilterNoDevices) {
+IN_PROC_BROWSER_TEST_F(BraveWalletHidChooserBrowserTest, NoDevices) {
   RemoveAllDevices();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kBraveUIWalletURL)));
+  auto* ledger_subframe = AppendSubframe(GURL(kUntrustedLedgerURL));
 
-  EXPECT_EQ(RequestDevice(MakeVendorFilter(kLedgerVendorId)).ExtractString(),
+  EXPECT_EQ(RequestDevice(ledger_subframe, MakeVendorFilter(kLedgerVendorId))
+                .ExtractString(),
             "No Devices");
 }
 

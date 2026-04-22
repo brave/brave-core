@@ -66,8 +66,18 @@ class BraveWalletHidChooserTest : public ChromeRenderViewHostTestHarness {
     AddAnotherLedgerDevice();
 
     content::WebContentsTester::For(web_contents())
-        ->NavigateAndCommit(GURL("https://www.example.com/"));
+        ->NavigateAndCommit(GURL("chrome://wallet/"));
+    subframe_rfh_ =
+        content::RenderFrameHostTester::For(main_rfh())->AppendChild("child");
+    SetSubFrameOrigin("chrome-untrusted://ledger-bridge/");
   }
+
+  void TearDown() override {
+    ChromeRenderViewHostTestHarness::TearDown();
+    subframe_rfh_ = nullptr;
+  }
+
+  content::RenderFrameHost* subframe_rfh() { return subframe_rfh_; }
 
   void AddLedgerDevice() {
     hid_manager_.CreateAndAddDevice("ledger", kLedgerVendorId, kProductId,
@@ -101,19 +111,26 @@ class BraveWalletHidChooserTest : public ChromeRenderViewHostTestHarness {
                                          url::Origin::Create(GURL(url)));
   }
 
+  void SetSubFrameOrigin(const std::string& url) {
+    content::OverrideLastCommittedOrigin(subframe_rfh(),
+                                         url::Origin::Create(GURL(url)));
+  }
+
   std::unique_ptr<BraveWalletHidChooser> CreateChooser(
+      content::RenderFrameHost* rfh,
       std::vector<blink::mojom::HidDeviceFilterPtr> filters,
       std::vector<blink::mojom::HidDeviceFilterPtr> exclusion_filters,
       content::HidChooser::Callback callback) {
-    return std::make_unique<BraveWalletHidChooser>(
-        main_rfh(), std::move(filters), std::move(exclusion_filters),
-        std::move(callback));
+    return std::make_unique<BraveWalletHidChooser>(rfh, std::move(filters),
+                                                   std::move(exclusion_filters),
+                                                   std::move(callback));
   }
 
   device::FakeHidManager& hid_manager() { return hid_manager_; }
 
  private:
   device::FakeHidManager hid_manager_;
+  raw_ptr<content::RenderFrameHost> subframe_rfh_ = nullptr;
 };
 
 TEST_F(BraveWalletHidChooserTest, IsBraveWalletMainFrameOrigin_NullRfh) {
@@ -121,7 +138,7 @@ TEST_F(BraveWalletHidChooserTest, IsBraveWalletMainFrameOrigin_NullRfh) {
 }
 
 TEST_F(BraveWalletHidChooserTest, IsBraveWalletMainFrameOrigin_HttpsOrigin) {
-  SetMainFrameOrigin("https://brave/com/");
+  SetMainFrameOrigin("https://brave.com/");
   EXPECT_FALSE(BraveWalletHidChooser::IsBraveWalletMainFrameOrigin(main_rfh()));
 }
 
@@ -141,7 +158,7 @@ TEST_F(BraveWalletHidChooserTest,
 
 TEST_F(BraveWalletHidChooserTest, EmptyFiltersCancels) {
   TestFuture<std::vector<device::mojom::HidDeviceInfoPtr>> future;
-  auto chooser = CreateChooser({}, {}, future.GetCallback());
+  auto chooser = CreateChooser(subframe_rfh(), {}, {}, future.GetCallback());
   EXPECT_TRUE(future.Get().empty());
 }
 
@@ -151,7 +168,8 @@ TEST_F(BraveWalletHidChooserTest, OtherVendorFilterCancels) {
       blink::mojom::DeviceIdFilter::NewVendor(kOtherVendorId), nullptr));
 
   TestFuture<std::vector<device::mojom::HidDeviceInfoPtr>> future;
-  auto chooser = CreateChooser(std::move(filters), {}, future.GetCallback());
+  auto chooser = CreateChooser(subframe_rfh(), std::move(filters), {},
+                               future.GetCallback());
   EXPECT_TRUE(future.Get().empty());
 }
 
@@ -161,14 +179,15 @@ TEST_F(BraveWalletHidChooserTest, MultipleFiltersCancels) {
       blink::mojom::DeviceIdFilter::NewVendor(kOtherVendorId), nullptr));
 
   TestFuture<std::vector<device::mojom::HidDeviceInfoPtr>> future;
-  auto chooser = CreateChooser(std::move(filters), {}, future.GetCallback());
+  auto chooser = CreateChooser(subframe_rfh(), std::move(filters), {},
+                               future.GetCallback());
   EXPECT_TRUE(future.Get().empty());
 }
 
 TEST_F(BraveWalletHidChooserTest, ExclusionFiltersCancels) {
   TestFuture<std::vector<device::mojom::HidDeviceInfoPtr>> future;
   auto chooser =
-      CreateChooser(MakeLedgerVendorOnlyFilters(),
+      CreateChooser(subframe_rfh(), MakeLedgerVendorOnlyFilters(),
                     MakeLedgerVendorOnlyFilters(), future.GetCallback());
   EXPECT_TRUE(future.Get().empty());
 }
@@ -181,7 +200,8 @@ TEST_F(BraveWalletHidChooserTest, VendorAndProductFilterCancels) {
       nullptr));
 
   TestFuture<std::vector<device::mojom::HidDeviceInfoPtr>> future;
-  auto chooser = CreateChooser(std::move(filters), {}, future.GetCallback());
+  auto chooser = CreateChooser(subframe_rfh(), std::move(filters), {},
+                               future.GetCallback());
   EXPECT_TRUE(future.Get().empty());
 }
 
@@ -189,16 +209,54 @@ TEST_F(BraveWalletHidChooserTest, ValidLedgerFilterNoDevicesCancels) {
   RemoveAllDevices();
 
   TestFuture<std::vector<device::mojom::HidDeviceInfoPtr>> future;
-  auto chooser =
-      CreateChooser(MakeLedgerVendorOnlyFilters(), {}, future.GetCallback());
+  auto chooser = CreateChooser(subframe_rfh(), MakeLedgerVendorOnlyFilters(),
+                               {}, future.GetCallback());
   EXPECT_TRUE(future.Get().empty());
+}
+
+TEST_F(BraveWalletHidChooserTest, InvalidSubframeOriginCancels) {
+  TestFuture<std::vector<device::mojom::HidDeviceInfoPtr>> future;
+
+  // Success case by default.
+  auto chooser = CreateChooser(subframe_rfh(), MakeLedgerVendorOnlyFilters(),
+                               {}, future.GetCallback());
+  EXPECT_FALSE(future.Take().empty());
+
+  // Not a subframe.
+  chooser = CreateChooser(main_rfh(), MakeLedgerVendorOnlyFilters(), {},
+                          future.GetCallback());
+  EXPECT_TRUE(future.Take().empty());
+
+  // Not ledger subframe origin.
+  SetSubFrameOrigin("chrome://settings/");
+  chooser = CreateChooser(subframe_rfh(), MakeLedgerVendorOnlyFilters(), {},
+                          future.GetCallback());
+  EXPECT_TRUE(future.Take().empty());
+
+  // Not ledger subframe origin.
+  SetSubFrameOrigin("chrome://wallet/");
+  chooser = CreateChooser(subframe_rfh(), MakeLedgerVendorOnlyFilters(), {},
+                          future.GetCallback());
+  EXPECT_TRUE(future.Take().empty());
+
+  // Not ledger subframe origin.
+  SetSubFrameOrigin("chrome-untrusted://trezor-bridge/");
+  chooser = CreateChooser(subframe_rfh(), MakeLedgerVendorOnlyFilters(), {},
+                          future.GetCallback());
+  EXPECT_TRUE(future.Take().empty());
+
+  // Not ledger subframe origin.
+  SetSubFrameOrigin("https://brave.com/");
+  chooser = CreateChooser(subframe_rfh(), MakeLedgerVendorOnlyFilters(), {},
+                          future.GetCallback());
+  EXPECT_TRUE(future.Take().empty());
 }
 
 TEST_F(BraveWalletHidChooserTest, ValidLedgerFilterSelectsFirstDevice) {
   TestFuture<std::vector<device::mojom::HidDeviceInfoPtr>> future;
 
-  auto chooser =
-      CreateChooser(MakeLedgerVendorOnlyFilters(), {}, future.GetCallback());
+  auto chooser = CreateChooser(subframe_rfh(), MakeLedgerVendorOnlyFilters(),
+                               {}, future.GetCallback());
 
   const auto& result = future.Get();
   ASSERT_EQ(result.size(), 1u);

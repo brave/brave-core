@@ -161,6 +161,10 @@ source_set("brave_wallet_hid_chooser") {
       "//chrome/browser/ui/hid",
       "//services/device/public/cpp/hid",
     ]
+    public_deps = [
+      "//components/permissions",
+      "//content/public/browser",
+    ]
   }
 }
 

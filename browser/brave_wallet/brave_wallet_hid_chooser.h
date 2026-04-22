@@ -9,7 +9,6 @@
 #include <memory>
 #include <vector>
 
-#include "base/memory/weak_ptr.h"
 #include "components/permissions/chooser_controller.h"
 #include "content/public/browser/hid_chooser.h"
 #include "third_party/blink/public/mojom/hid/hid.mojom-forward.h"
@@ -23,12 +22,15 @@ class RenderFrameHost;
 // Headless HID chooser for Brave Wallet WebUI. Creates a standard
 // HidChooserController and subscribes as its View. When
 // OnOptionsInitialized fires, auto-selects the first Ledger device
-// without showing a picker dialog. Only accepts requestDevice calls with
-// exactly `filters: [{ vendorId: 0x2c97 }]`; everything else completes
-// with an empty device list.
+// without showing a picker dialog. Only accepts requestDevice calls from
+// chrome-untrusted://ledger-bridge subframe with exactly
+// `filters: [{ vendorId: 0x2c97 }]` param. Everything else completes with an
+// empty device list.
 class BraveWalletHidChooser : public content::HidChooser,
                               public permissions::ChooserController::View {
  public:
+  // Returns true if the request is coming from a wallet webui page. It is a
+  // CHECKed precondition for BraveWalletHidChooser constructor for given RFH.
   static bool IsBraveWalletMainFrameOrigin(
       content::RenderFrameHost* render_frame_host);
 
@@ -52,10 +54,7 @@ class BraveWalletHidChooser : public content::HidChooser,
   void OnAdapterEnabledChanged(bool enabled) override;
   void OnRefreshStateChanged(bool refreshing) override;
 
-  bool is_valid_ledger_request_ = false;
   std::unique_ptr<HidChooserController> controller_;
-
-  base::WeakPtrFactory<BraveWalletHidChooser> weak_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_HID_CHOOSER_H_
