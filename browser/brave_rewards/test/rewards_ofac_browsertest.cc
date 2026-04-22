@@ -72,8 +72,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsOFACTest, IsBraveRewardsDisabled) {
   }
 }
 
-// Verify that Rewards and Ads services don't get created when in an OFAC
-// sanctioned region.
+// Verify that the Rewards service is not created in an OFAC sanctioned region.
 IN_PROC_BROWSER_TEST_F(BraveRewardsOFACTest, GetRewardsAndAdsServices) {
   {
     const brave_l10n::test::ScopedDefaultLocale locale("en_CA");  // "Canada"
@@ -88,9 +87,6 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsOFACTest, GetRewardsAndAdsServices) {
     const brave_l10n::test::ScopedDefaultLocale locale("es_CU");  // "Cuba"
     EXPECT_EQ(brave_rewards::RewardsServiceFactory::GetForProfile(profile()),
               nullptr);
-#if BUILDFLAG(ENABLE_BRAVE_ADS)
-    EXPECT_EQ(brave_ads::AdsServiceFactory::GetForProfile(profile()), nullptr);
-#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   }
 }
 

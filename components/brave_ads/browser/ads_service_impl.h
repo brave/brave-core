@@ -79,7 +79,8 @@ class AdsServiceImpl final : public AdsService,
                              public content_settings::Observer {
  public:
   // `http_client`, `resource_component`, `history_service`, and
-  // `host_content_settings` can be `nullptr` in tests.
+  // `host_content_settings` can be `nullptr` in tests. `rewards_service`
+  // can be `nullptr` when Rewards is unsupported or disabled by policy.
   explicit AdsServiceImpl(
       std::unique_ptr<Delegate> delegate,
       PrefService& prefs,
