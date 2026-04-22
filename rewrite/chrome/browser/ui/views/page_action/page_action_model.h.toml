@@ -17,14 +17,14 @@ re_pattern = '(class PageActionModelInterface \{.*?)(\n\};)'
 re_flags = ['DOTALL']
 replace = '''\1
   virtual void SetOverrideChipColors(
-      base::PassKey<PageActionController>,
+      PageActionPassKey,
       std::optional<SkColor> override_background_color,
       std::optional<SkColor> override_foreground_color) = 0;
-  virtual void SetAlwaysShowLabel(base::PassKey<PageActionController>,
+  virtual void SetAlwaysShowLabel(PageActionPassKey,
                                   bool always_show) = 0;
-  virtual void SetOverrideHeight(base::PassKey<PageActionController>,
+  virtual void SetOverrideHeight(PageActionPassKey,
                                  std::optional<int> height) = 0;
-  virtual void SetOverrideTriggerableEvent(base::PassKey<PageActionController>,
+  virtual void SetOverrideTriggerableEvent(PageActionPassKey,
                                            std::optional<int> event_flags) = 0;
   virtual std::optional<SkColor> GetOverrideBackgroundColor() const = 0;
   virtual std::optional<SkColor> GetOverrideForegroundColor() const = 0;
