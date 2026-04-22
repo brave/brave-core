@@ -229,6 +229,9 @@ struct ManagePasswordsView: View {
   }
 
   private func exitAfterAuthFailure() {
+    // Invalidate first so any synchronous side effect of dismissal cannot start a new
+    // authentication task on a view that the host controller is still retaining.
+    privacyLock.invalidateSession()
     if let privacyLockExitOnFailure {
       privacyLockExitOnFailure()
     } else {
