@@ -114,6 +114,39 @@ void MigrateToV43(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
                    /*columns=*/{"creative_set_id"});
 }
 
+std::string BuildInsertSql(
+    const mojom::DBActionInfoPtr& mojom_db_action,
+    const CreativeSetConversionList& creative_set_conversions) {
+  CHECK(mojom_db_action);
+  CHECK(!creative_set_conversions.empty());
+
+  const size_t row_count =
+      BindColumns(mojom_db_action, creative_set_conversions);
+
+  return base::ReplaceStringPlaceholders(
+      R"(
+          INSERT INTO $1 (
+            creative_set_id,
+            url_pattern,
+            observation_window,
+            expire_at
+          ) VALUES $2)",
+      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/4, row_count)},
+      nullptr);
+}
+
+void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+            const CreativeSetConversionList& creative_set_conversions) {
+  CHECK(mojom_db_transaction);
+  CHECK(!creative_set_conversions.empty());
+
+  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
+  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;
+  mojom_db_action->sql =
+      BuildInsertSql(mojom_db_action, creative_set_conversions);
+  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
+}
+
 void MigrateToV55(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
@@ -293,42 +326,6 @@ void CreativeSetConversions::Migrate(
       break;
     }
   }
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-void CreativeSetConversions::Insert(
-    const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-    const CreativeSetConversionList& creative_set_conversions) {
-  CHECK(mojom_db_transaction);
-  CHECK(!creative_set_conversions.empty());
-
-  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
-  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;
-  mojom_db_action->sql =
-      BuildInsertSql(mojom_db_action, creative_set_conversions);
-  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
-}
-
-std::string CreativeSetConversions::BuildInsertSql(
-    const mojom::DBActionInfoPtr& mojom_db_action,
-    const CreativeSetConversionList& creative_set_conversions) const {
-  CHECK(mojom_db_action);
-  CHECK(!creative_set_conversions.empty());
-
-  const size_t row_count =
-      BindColumns(mojom_db_action, creative_set_conversions);
-
-  return base::ReplaceStringPlaceholders(
-      R"(
-          INSERT INTO $1 (
-            creative_set_id,
-            url_pattern,
-            observation_window,
-            expire_at
-          ) VALUES $2)",
-      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/4, row_count)},
-      nullptr);
 }
 
 }  // namespace brave_ads::database::table

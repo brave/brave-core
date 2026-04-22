@@ -180,6 +180,49 @@ void GetCallback(
   std::move(callback).Run(/*success=*/true, confirmation_queue_items);
 }
 
+std::string BuildInsertSql(
+    const mojom::DBActionInfoPtr& mojom_db_action,
+    const ConfirmationQueueItemList& confirmation_queue_items) {
+  CHECK(mojom_db_action);
+  CHECK(!confirmation_queue_items.empty());
+
+  const size_t row_count =
+      BindColumns(mojom_db_action, confirmation_queue_items);
+
+  return base::ReplaceStringPlaceholders(
+      R"(
+          INSERT INTO $1 (
+            transaction_id,
+            creative_instance_id,
+            type,
+            ad_type,
+            created_at,
+            token,
+            blinded_token,
+            unblinded_token,
+            public_key,
+            signature,
+            credential_base64url,
+            user_data,
+            process_at,
+            retry_count
+          ) VALUES $2)",
+      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/14, row_count)},
+      nullptr);
+}
+
+void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+            const ConfirmationQueueItemList& confirmation_queue_items) {
+  CHECK(mojom_db_transaction);
+  CHECK(!confirmation_queue_items.empty());
+
+  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
+  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;
+  mojom_db_action->sql =
+      BuildInsertSql(mojom_db_action, confirmation_queue_items);
+  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
+}
+
 void MigrateToV36(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
@@ -455,52 +498,6 @@ void ConfirmationQueue::Migrate(
       break;
     }
   }
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-void ConfirmationQueue::Insert(
-    const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-    const ConfirmationQueueItemList& confirmation_queue_items) const {
-  CHECK(mojom_db_transaction);
-  CHECK(!confirmation_queue_items.empty());
-
-  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
-  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;
-  mojom_db_action->sql =
-      BuildInsertSql(mojom_db_action, confirmation_queue_items);
-  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
-}
-
-std::string ConfirmationQueue::BuildInsertSql(
-    const mojom::DBActionInfoPtr& mojom_db_action,
-    const ConfirmationQueueItemList& confirmation_queue_items) const {
-  CHECK(mojom_db_action);
-  CHECK(!confirmation_queue_items.empty());
-
-  const size_t row_count =
-      BindColumns(mojom_db_action, confirmation_queue_items);
-
-  return base::ReplaceStringPlaceholders(
-      R"(
-          INSERT INTO $1 (
-            transaction_id,
-            creative_instance_id,
-            type,
-            ad_type,
-            created_at,
-            token,
-            blinded_token,
-            unblinded_token,
-            public_key,
-            signature,
-            credential_base64url,
-            user_data,
-            process_at,
-            retry_count
-          ) VALUES $2)",
-      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/14, row_count)},
-      nullptr);
 }
 
 }  // namespace brave_ads::database::table

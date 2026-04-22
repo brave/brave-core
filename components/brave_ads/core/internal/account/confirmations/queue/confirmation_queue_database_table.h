@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_QUEUE_CONFIRMATION_QUEUE_DATABASE_TABLE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_QUEUE_CONFIRMATION_QUEUE_DATABASE_TABLE_H_
 
-#include <string>
-
 #include "base/check_op.h"
 #include "base/functional/callback.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_info.h"
@@ -54,13 +52,6 @@ class ConfirmationQueue final : public TableInterface {
                int to_version) override;
 
  private:
-  void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-              const ConfirmationQueueItemList& confirmation_queue_items) const;
-
-  std::string BuildInsertSql(
-      const mojom::DBActionInfoPtr& mojom_db_action,
-      const ConfirmationQueueItemList& confirmation_queue_items) const;
-
   int batch_size_;
 };
 

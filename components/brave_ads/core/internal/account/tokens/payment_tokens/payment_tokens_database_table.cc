@@ -93,6 +93,40 @@ void GetAllCallback(
   std::move(callback).Run(/*success=*/true, std::move(payment_tokens));
 }
 
+std::string BuildInsertSql(const mojom::DBActionInfoPtr& mojom_db_action,
+                           const PaymentTokenList& payment_tokens) {
+  CHECK(mojom_db_action);
+  CHECK(!payment_tokens.empty());
+
+  const size_t row_count = BindColumns(mojom_db_action, payment_tokens);
+
+  return base::ReplaceStringPlaceholders(
+      R"(
+          INSERT INTO $1 (
+            transaction_id,
+            unblinded_token,
+            public_key,
+            confirmation_type,
+            ad_type
+          ) VALUES $2)",
+      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/5U, row_count)},
+      nullptr);
+}
+
+void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+            const PaymentTokenList& payment_tokens) {
+  CHECK(mojom_db_transaction);
+
+  if (payment_tokens.empty()) {
+    return;
+  }
+
+  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
+  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;
+  mojom_db_action->sql = BuildInsertSql(mojom_db_action, payment_tokens);
+  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
+}
+
 }  // namespace
 
 void PaymentTokens::Save(const PaymentTokenList& payment_tokens,
@@ -108,21 +142,6 @@ void PaymentTokens::Save(const PaymentTokenList& payment_tokens,
 
   RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
                  std::move(callback));
-}
-
-void PaymentTokens::Insert(
-    const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-    const PaymentTokenList& payment_tokens) {
-  CHECK(mojom_db_transaction);
-
-  if (payment_tokens.empty()) {
-    return;
-  }
-
-  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
-  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;
-  mojom_db_action->sql = BuildInsertSql(mojom_db_action, payment_tokens);
-  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 }
 
 void PaymentTokens::Delete(const PaymentTokenInfo& payment_token,
@@ -231,29 +250,6 @@ void PaymentTokens::Migrate(
       break;
     }
   }
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-std::string PaymentTokens::BuildInsertSql(
-    const mojom::DBActionInfoPtr& mojom_db_action,
-    const PaymentTokenList& payment_tokens) const {
-  CHECK(mojom_db_action);
-  CHECK(!payment_tokens.empty());
-
-  const size_t row_count = BindColumns(mojom_db_action, payment_tokens);
-
-  return base::ReplaceStringPlaceholders(
-      R"(
-          INSERT INTO $1 (
-            transaction_id,
-            unblinded_token,
-            public_key,
-            confirmation_type,
-            ad_type
-          ) VALUES $2)",
-      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/5U, row_count)},
-      nullptr);
 }
 
 }  // namespace brave_ads::database::table

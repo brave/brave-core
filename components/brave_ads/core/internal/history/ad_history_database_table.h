@@ -47,12 +47,6 @@ class AdHistory final : public TableInterface {
                int to_version) override;
 
  private:
-  void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-              const AdHistoryList& ad_history) const;
-
-  std::string BuildInsertSql(const mojom::DBActionInfoPtr& mojom_db_action,
-                             const AdHistoryList& ad_history) const;
-
   int batch_size_;
 };
 

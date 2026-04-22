@@ -25,6 +25,7 @@
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/creative_ads_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -152,6 +153,43 @@ void GetAllCallback(
   const SegmentList segments = GetSegments(creative_ads);
 
   std::move(callback).Run(/*success=*/true, segments, std::move(creative_ads));
+}
+
+std::string BuildInsertSql(const mojom::DBActionInfoPtr& mojom_db_action,
+                           const CreativeNotificationAdList& creative_ads) {
+  CHECK(mojom_db_action);
+  CHECK(!creative_ads.empty());
+
+  const size_t row_count = BindColumns(mojom_db_action, creative_ads);
+
+  return base::ReplaceStringPlaceholders(
+      R"(
+          INSERT INTO $1 (
+            creative_instance_id,
+            creative_set_id,
+            campaign_id,
+            title,
+            body
+          ) VALUES $2)",
+      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/5, row_count)},
+      nullptr);
+}
+
+void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+            const CreativeNotificationAdList& creative_ads) {
+  CHECK(mojom_db_transaction);
+
+  if (creative_ads.empty()) {
+    return;
+  }
+
+  InsertCreativeAds(mojom_db_transaction,
+                    CreativeAdList(creative_ads.cbegin(), creative_ads.cend()));
+
+  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
+  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;
+  mojom_db_action->sql = BuildInsertSql(mojom_db_action, creative_ads);
+  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 }
 
 }  // namespace
@@ -355,46 +393,6 @@ void CreativeNotificationAds::MigrateToV48(
         title TEXT NOT NULL,
         body TEXT NOT NULL
       ))");
-}
-
-void CreativeNotificationAds::Insert(
-    const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-    const CreativeNotificationAdList& creative_ads) {
-  CHECK(mojom_db_transaction);
-
-  if (creative_ads.empty()) {
-    return;
-  }
-
-  creative_ads_database_table_.Insert(
-      mojom_db_transaction,
-      CreativeAdList(creative_ads.cbegin(), creative_ads.cend()));
-
-  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
-  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;
-  mojom_db_action->sql = BuildInsertSql(mojom_db_action, creative_ads);
-  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
-}
-
-std::string CreativeNotificationAds::BuildInsertSql(
-    const mojom::DBActionInfoPtr& mojom_db_action,
-    const CreativeNotificationAdList& creative_ads) const {
-  CHECK(mojom_db_action);
-  CHECK(!creative_ads.empty());
-
-  const size_t row_count = BindColumns(mojom_db_action, creative_ads);
-
-  return base::ReplaceStringPlaceholders(
-      R"(
-          INSERT INTO $1 (
-            creative_instance_id,
-            creative_set_id,
-            campaign_id,
-            title,
-            body
-          ) VALUES $2)",
-      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/5, row_count)},
-      nullptr);
 }
 
 }  // namespace brave_ads::database::table

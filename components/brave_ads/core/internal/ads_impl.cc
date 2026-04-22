@@ -71,13 +71,13 @@ void AdsImpl::Initialize(mojom::WalletInfoPtr mojom_wallet,
                          ResultCallback callback) {
   BLOG(1, "Initializing ads");
 
-  TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(kTraceEventCategory, "AdsImpl::Initialize",
-                                    TRACE_ID_LOCAL(this));
+  TRACE_EVENT_BEGIN(kTraceEventCategory, "AdsImpl::Initialize",
+                    perfetto::Track::FromPointer(this));
 
   if (is_initialized_) {
     BLOG(0, "Already initialized ads");
-    TRACE_EVENT_NESTABLE_ASYNC_END1(kTraceEventCategory, "AdsImpl::Initialize",
-                                    TRACE_ID_LOCAL(this), "success", false);
+    TRACE_EVENT_END(kTraceEventCategory, perfetto::Track::FromPointer(this),
+                    "success", false);
     return std::move(callback).Run(/*success=*/false);
   }
 
@@ -339,8 +339,8 @@ void AdsImpl::ToggleMarkAdAsInappropriate(mojom::ReactionInfoPtr mojom_reaction,
 ///////////////////////////////////////////////////////////////////////////////
 
 void AdsImpl::InitializeCallback(ResultCallback callback, bool success) {
-  TRACE_EVENT_NESTABLE_ASYNC_END1(kTraceEventCategory, "AdsImpl::Initialize",
-                                  TRACE_ID_LOCAL(this), "success", success);
+  TRACE_EVENT_END(kTraceEventCategory, perfetto::Track::FromPointer(this),
+                  "success", success);
 
   if (!success) {
     BLOG(0, "Failed to initialize ads");

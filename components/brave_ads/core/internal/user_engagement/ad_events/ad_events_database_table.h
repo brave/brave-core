@@ -71,12 +71,6 @@ class AdEvents final : public TableInterface {
   void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                int to_version) override;
 
- private:
-  void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-              const AdEventList& ad_event);
-
-  std::string BuildInsertSql(const mojom::DBActionInfoPtr& mojom_db_action,
-                             const AdEventList& ad_events) const;
 };
 
 }  // namespace brave_ads::database::table

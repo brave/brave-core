@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_DEPOSITS_DEPOSITS_DATABASE_TABLE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_DEPOSITS_DEPOSITS_DATABASE_TABLE_H_
 
-#include <map>
 #include <optional>
 #include <string>
 
@@ -17,7 +16,6 @@
 
 namespace brave_ads {
 
-struct CreativeDepositInfo;
 struct DepositInfo;
 
 namespace database::table {
@@ -29,12 +27,6 @@ class Deposits final : public TableInterface {
  public:
   void Save(const DepositInfo& deposit, ResultCallback callback);
 
-  void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-              const std::map</*creative_instance_id*/ std::string,
-                             CreativeDepositInfo>& deposits);
-  void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-              const DepositInfo& deposit);
-
   void GetForCreativeInstanceId(const std::string& creative_instance_id,
                                 GetDepositsCallback callback) const;
 
@@ -44,14 +36,6 @@ class Deposits final : public TableInterface {
   void Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) override;
   void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                int to_version) override;
-
- private:
-  std::string BuildInsertSql(
-      const mojom::DBActionInfoPtr& mojom_db_action,
-      const std::map</*creative_instance_id*/ std::string, CreativeDepositInfo>&
-          deposits) const;
-  std::string BuildInsertSql(const mojom::DBActionInfoPtr& mojom_db_action,
-                             const DepositInfo& deposit) const;
 };
 
 }  // namespace database::table

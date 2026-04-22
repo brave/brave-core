@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CONVERSIONS_CREATIVE_SET_CONVERSION_DATABASE_TABLE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CONVERSIONS_CREATIVE_SET_CONVERSION_DATABASE_TABLE_H_
 
-#include <string>
-
 #include "base/functional/callback.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
@@ -35,13 +33,6 @@ class CreativeSetConversions final : public TableInterface {
   void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                int to_version) override;
 
- private:
-  void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-              const CreativeSetConversionList& creative_set_conversions);
-
-  std::string BuildInsertSql(
-      const mojom::DBActionInfoPtr& mojom_db_action,
-      const CreativeSetConversionList& creative_set_conversions) const;
 };
 
 }  // namespace brave_ads::database::table

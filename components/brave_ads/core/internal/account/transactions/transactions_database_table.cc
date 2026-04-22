@@ -160,6 +160,40 @@ void MigrateToV40(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
                    /*columns=*/{"created_at"});
 }
 
+std::string BuildInsertSql(const mojom::DBActionInfoPtr& mojom_db_action,
+                           const TransactionList& transactions) {
+  CHECK(mojom_db_action);
+  CHECK(!transactions.empty());
+
+  const size_t row_count = BindColumns(mojom_db_action, transactions);
+
+  return base::ReplaceStringPlaceholders(
+      R"(
+          INSERT INTO $1 (
+            id,
+            created_at,
+            creative_instance_id,
+            value,
+            segment,
+            ad_type,
+            confirmation_type,
+            reconciled_at
+          ) VALUES $2)",
+      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/8, row_count)},
+      nullptr);
+}
+
+void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+            const TransactionList& transactions) {
+  CHECK(mojom_db_transaction);
+  CHECK(!transactions.empty());
+
+  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
+  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;
+  mojom_db_action->sql = BuildInsertSql(mojom_db_action, transactions);
+  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
+}
+
 void MigrateToV43(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
@@ -357,44 +391,6 @@ void Transactions::Migrate(
       break;
     }
   }
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-void Transactions::Insert(
-    const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-    const TransactionList& transactions) {
-  CHECK(mojom_db_transaction);
-  CHECK(!transactions.empty());
-
-  mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
-  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;
-  mojom_db_action->sql = BuildInsertSql(mojom_db_action, transactions);
-  mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
-}
-
-std::string Transactions::BuildInsertSql(
-    const mojom::DBActionInfoPtr& mojom_db_action,
-    const TransactionList& transactions) const {
-  CHECK(mojom_db_action);
-  CHECK(!transactions.empty());
-
-  const size_t row_count = BindColumns(mojom_db_action, transactions);
-
-  return base::ReplaceStringPlaceholders(
-      R"(
-          INSERT INTO $1 (
-            id,
-            created_at,
-            creative_instance_id,
-            value,
-            segment,
-            ad_type,
-            confirmation_type,
-            reconciled_at
-          ) VALUES $2)",
-      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/8, row_count)},
-      nullptr);
 }
 
 }  // namespace brave_ads::database::table

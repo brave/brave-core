@@ -13,6 +13,10 @@ namespace brave_ads::database::table {
 
 CreativeAdInfo CreativeAdFromMojomRow(const mojom::DBRowInfoPtr& mojom_db_row);
 
+// Appends SQL actions to insert `creative_ads` into the `creative_ads` table.
+void InsertCreativeAds(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+                       const CreativeAdList& creative_ads);
+
 }  // namespace brave_ads::database::table
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CREATIVE_ADS_DATABASE_TABLE_UTIL_H_
