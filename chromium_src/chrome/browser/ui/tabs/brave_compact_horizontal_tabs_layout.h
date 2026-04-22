@@ -23,7 +23,7 @@ namespace compact_horizontal_tabs_layout {
 // --- Tab strip (non-touch, compact) ----------------------------------------
 inline constexpr int kTabVisualHeight = 28;
 inline constexpr int kTabVerticalSpacing = 2;
-inline constexpr int kTabstripToolbarOverlap = 2;
+inline constexpr int kTabstripToolbarOverlap = 6;
 
 // `LayoutConstant::kTabStripHeight` (compact, non-touch). Keep in sync when
 // editing the three values above (no separate magic number).
