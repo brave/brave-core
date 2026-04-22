@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/ssl/ask_before_http_dialog_controller.cc b/chrome/browser/ssl/ask_before_http_dialog_controller.cc
+index da0531ef33708112d7d5bff17f9faa403dc1ec42..cd382467b3c633ef631a27f0af7bc45a62906366 100644
+--- a/chrome/browser/ssl/ask_before_http_dialog_controller.cc
++++ b/chrome/browser/ssl/ask_before_http_dialog_controller.cc
+@@ -53,8 +53,6 @@ using HttpWarningReason =
+ 
+ namespace {
+ 
+-inline constexpr char kLearnMoreLink[] =
+-    "https://support.google.com/chrome?p=first_mode";
+ 
+ // Helper to create the prompt body view based on the Ask-before-HTTP warning
+ // type.
+@@ -440,7 +438,7 @@ void AskBeforeHttpDialogController::OnHelpCenterLinkClicked(
+       security_interstitials::MetricsHelper::SHOW_LEARN_MORE);
+ 
+   content::OpenURLParams params(
+-      GURL(kLearnMoreLink), content::Referrer(),
++      GURL(kBraveLearnMoreLink), content::Referrer(),
+       ui::DispositionFromEventFlags(event.flags(),
+                                     WindowOpenDisposition::NEW_FOREGROUND_TAB),
+       ui::PAGE_TRANSITION_LINK, false);
