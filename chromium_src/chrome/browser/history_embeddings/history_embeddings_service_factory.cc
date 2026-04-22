@@ -5,15 +5,12 @@
 
 #include "chrome/browser/history_embeddings/history_embeddings_service_factory.h"
 
-#include "brave/components/history_embeddings/content/brave_history_embeddings_service.h"
-#include "chrome/browser/history_embeddings/chrome_history_embeddings_service.h"
+#include "brave/browser/history_embeddings/brave_history_embeddings_service.h"
 
-// Route through our template so OnPassageVisibilityCalculated synthesizes a
-// passing visibility score — Brave doesn't use PageContentAnnotationsService
-// for content visibility filtering.
-#define ChromeHistoryEmbeddingsService \
-  BraveHistoryEmbeddingsService<       \
-      history_embeddings::ChromeHistoryEmbeddingsService>
+// Swap Chrome's service for Brave's concrete subclass. Brave overrides
+// OnPassageVisibilityCalculated to synthesize a passing visibility score
+// since Brave doesn't use PageContentAnnotationsService.
+#define ChromeHistoryEmbeddingsService BraveHistoryEmbeddingsService
 
 #include <chrome/browser/history_embeddings/history_embeddings_service_factory.cc>
 
