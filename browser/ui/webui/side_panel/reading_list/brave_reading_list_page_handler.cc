@@ -17,8 +17,7 @@ BraveReadingListPageHandler::BraveReadingListPageHandler(
     : ReadingListPageHandler(std::move(receiver),
                              std::move(page),
                              reading_list_ui,
-                             web_ui),
-      WebContentsObserver(web_ui->GetWebContents()) {}
+                             web_ui) {}
 
 BraveReadingListPageHandler::~BraveReadingListPageHandler() = default;
 
@@ -33,7 +32,6 @@ void BraveReadingListPageHandler::OnVisibilityChanged(
     // should be called once when web contents is visible after panel is opened.
     // After that, upstream code will update properly for relavant events such
     // as tab change and etc.
-    Observe(nullptr);
     UpdateCurrentPageActionButton();
   }
 }
