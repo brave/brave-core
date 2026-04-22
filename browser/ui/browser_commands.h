@@ -16,6 +16,7 @@
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -161,20 +162,22 @@ void ForcePasteInBrowser(Browser* browser);
 void ForcePasteInWebContents(content::WebContents* contents);
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-// Creates a new tab with the given tab's URL in the specified container.
-void OpenTabUrlInContainer(BrowserWindowInterface* browser_window,
-                           const tabs::TabHandle& tab,
-                           const containers::mojom::ContainerPtr& container);
+// Creates new tabs with the given tabs' URLs in the specified container.
+void OpenTabUrlsInContainer(BrowserWindowInterface* browser_window,
+                            const std::vector<tabs::TabHandle>& tabs,
+                            const containers::mojom::ContainerPtr& container);
 // Creates a new tab with the specified URL in the given container.
 void OpenUrlInContainer(BrowserWindowInterface* browser_window,
                         const GURL& url,
-                        const containers::mojom::ContainerPtr& container);
+                        const containers::mojom::ContainerPtr& container,
+                        bool is_link = true);
 
-// Creates a new tab with the given tab's URL without a container.
-void OpenTabUrlWithoutContainer(BrowserWindowInterface* browser_window,
-                                const tabs::TabHandle& tab);
+// Creates new tabs with the given tabs' URLs without a container.
+void OpenTabUrlsWithoutContainer(BrowserWindowInterface* browser_window,
+                                 const std::vector<tabs::TabHandle>& tabs);
 void OpenUrlWithoutContainer(BrowserWindowInterface* browser_window,
-                             const GURL& url);
+                             const GURL& url,
+                             bool is_link = true);
 
 // Opens the container menu on the page action view if the active tab is in a
 // container.

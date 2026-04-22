@@ -28,15 +28,12 @@ ContainersTabMenuModelDelegate::~ContainersTabMenuModelDelegate() = default;
 
 void ContainersTabMenuModelDelegate::OnContainerSelected(
     const containers::mojom::ContainerPtr& container) {
-  for (auto tab_handle : selected_tabs_) {
-    brave::OpenTabUrlInContainer(browser_window_.get(), tab_handle, container);
-  }
+  brave::OpenTabUrlsInContainer(browser_window_.get(), selected_tabs_,
+                                container);
 }
 
 void ContainersTabMenuModelDelegate::OnNoContainerSelected() {
-  for (auto tab_handle : selected_tabs_) {
-    brave::OpenTabUrlWithoutContainer(browser_window_.get(), tab_handle);
-  }
+  brave::OpenTabUrlsWithoutContainer(browser_window_.get(), selected_tabs_);
 }
 
 base::flat_set<std::string>

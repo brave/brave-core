@@ -55,14 +55,16 @@ class BraveNewTabButton::NewTabButtonContainersMenuDelegate
     auto* browser = GetBrowserToOpenSettings();
     CHECK(browser);
     brave::OpenUrlInContainer(base::to_address(browser_window_interface_),
-                              browser->GetNewTabURL(), container);
+                              browser->GetNewTabURL(), container,
+                              /*is_link=*/false);
   }
 
   void OnNoContainerSelected() override {
     auto* browser = GetBrowserToOpenSettings();
     CHECK(browser);
     brave::OpenUrlWithoutContainer(base::to_address(browser_window_interface_),
-                                   browser->GetNewTabURL());
+                                   browser->GetNewTabURL(),
+                                   /*is_link=*/false);
   }
 
   // Unlike tab or link context menus, the new tab button is not tied to a

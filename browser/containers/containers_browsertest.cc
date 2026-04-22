@@ -832,7 +832,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, OpenUrlInContainer) {
             content::EvalJs(web_contents, GetLocalStorageJS("container_key")));
 }
 
-IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, OpenTabUrlInContainer) {
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, OpenTabUrlsInContainer) {
   const GURL url("https://a.test/simple.html");
 
   // Navigate to URL in the default (non-container) tab
@@ -862,7 +862,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, OpenTabUrlInContainer) {
   container->icon = containers::mojom::Icon::kPersonal;
   container->background_color = SK_ColorRED;
 
-  brave::OpenTabUrlInContainer(browser(), tab_handle, container);
+  brave::OpenTabUrlsInContainer(browser(), {tab_handle}, container);
 
   // Verify a new tab was created
   EXPECT_EQ(2, browser()->tab_strip_model()->count());

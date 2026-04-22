@@ -1169,22 +1169,25 @@ void ForcePasteInWebContents(content::WebContents* web_contents) {
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-void OpenTabUrlInContainer(BrowserWindowInterface* browser_window,
-                           const tabs::TabHandle& tab,
-                           const containers::mojom::ContainerPtr& container) {
-  const auto* tab_ptr = tab.Get();
-  if (!tab_ptr) {
-    LOG(ERROR) << "Tab is not valid";
-    return;
-  }
+void OpenTabUrlsInContainer(BrowserWindowInterface* browser_window,
+                            const std::vector<tabs::TabHandle>& tabs,
+                            const containers::mojom::ContainerPtr& container) {
+  for (const auto& tab : tabs) {
+    const auto* tab_ptr = tab.Get();
+    if (!tab_ptr) {
+      LOG(ERROR) << "Tab is not valid";
+      continue;
+    }
 
-  const GURL& url = tab_ptr->GetContents()->GetLastCommittedURL();
-  OpenUrlInContainer(browser_window, url, container);
+    const GURL& url = tab_ptr->GetContents()->GetLastCommittedURL();
+    OpenUrlInContainer(browser_window, url, container);
+  }
 }
 
 void OpenUrlInContainer(BrowserWindowInterface* browser_window,
                         const GURL& url,
-                        const containers::mojom::ContainerPtr& container) {
+                        const containers::mojom::ContainerPtr& container,
+                        bool is_link) {
   if (!url.is_valid()) {
     LOG(ERROR) << "Url is not valid";
     return;
@@ -1192,7 +1195,9 @@ void OpenUrlInContainer(BrowserWindowInterface* browser_window,
 
   CHECK(container);
 
-  NavigateParams params(browser_window, url, ui::PAGE_TRANSITION_LINK);
+  NavigateParams params(
+      browser_window, url,
+      is_link ? ui::PAGE_TRANSITION_LINK : ui::PAGE_TRANSITION_TYPED);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
       browser_window->GetProfile(),
@@ -1202,26 +1207,31 @@ void OpenUrlInContainer(BrowserWindowInterface* browser_window,
   Navigate(&params);
 }
 
-void OpenTabUrlWithoutContainer(BrowserWindowInterface* browser_window,
-                                const tabs::TabHandle& tab) {
-  const auto* tab_ptr = tab.Get();
-  if (!tab_ptr) {
-    LOG(ERROR) << "Tab is not valid";
-    return;
-  }
+void OpenTabUrlsWithoutContainer(BrowserWindowInterface* browser_window,
+                                 const std::vector<tabs::TabHandle>& tabs) {
+  for (const auto& tab : tabs) {
+    const auto* tab_ptr = tab.Get();
+    if (!tab_ptr) {
+      LOG(ERROR) << "Tab is not valid";
+      continue;
+    }
 
-  const GURL& url = tab_ptr->GetContents()->GetLastCommittedURL();
-  OpenUrlWithoutContainer(browser_window, url);
+    const GURL& url = tab_ptr->GetContents()->GetLastCommittedURL();
+    OpenUrlWithoutContainer(browser_window, url);
+  }
 }
 
 void OpenUrlWithoutContainer(BrowserWindowInterface* browser_window,
-                             const GURL& url) {
+                             const GURL& url,
+                             bool is_link) {
   if (!url.is_valid()) {
     LOG(ERROR) << "Url is not valid";
     return;
   }
 
-  NavigateParams params(browser_window, url, ui::PAGE_TRANSITION_LINK);
+  NavigateParams params(
+      browser_window, url,
+      is_link ? ui::PAGE_TRANSITION_LINK : ui::PAGE_TRANSITION_TYPED);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   Navigate(&params);
 }
