@@ -629,7 +629,7 @@ void BraveBrowserView::ShowPlaylistBubble() {
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 void BraveBrowserView::ShowWaybackMachineBubble() {
-  if (auto* anchor = toolbar_button_provider_->GetPageActionIconView(
+  if (auto* anchor = toolbar_button_provider()->GetPageActionIconView(
           brave::kWaybackMachineActionIconType)) {
     DCHECK(anchor->GetVisible());
     // Launch bubble with this anchor.
