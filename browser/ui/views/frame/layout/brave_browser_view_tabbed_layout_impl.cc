@@ -430,6 +430,11 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
     }
     panel_layout->bounds = ComputeAdjustedPanelBounds(on_left, sidebar_bounds,
                                                       panel_layout->bounds);
+    // The upstream layout offsets the panel -1px above the contents to overlap
+    // the toolbar separator. Brave doesn't need that overlap; align the panel's
+    // vertical extent with the contents container instead.
+    panel_layout->bounds.set_y(contents_bounds.y());
+    panel_layout->bounds.set_height(contents_bounds.height());
   };
   adjust_panel(views().contents_height_side_panel.get());
 

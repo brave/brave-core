@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/browser/ui/sidebar/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 
 assert(toolkit_views)
@@ -19,4 +20,11 @@ source_set("side_panel") {
     "//ui/gfx",
     "//ui/views",
   ]
+
+  if (enable_sidebar_v2) {
+    sources += [
+      "brave_side_panel_resize_area.cc",
+      "brave_side_panel_resize_area.h",
+    ]
+  }
 }
