@@ -160,13 +160,13 @@ void PolkadotTransactionStatusTask::FetchCurrentBlock() {
   // Otherwise, begin the hash → block request chain below.
 
   if (curr_block_num_ > finalized_block_num_) {
-    return std::move(callback_).Run(
-        base::ok(std::pair(PolkadotTransactionStatus::kNotFinalized, 0)));
+    return std::move(callback_).Run(base::ok(
+        std::pair(PolkadotTransactionStatus::kNotFinalized, std::nullopt)));
   }
 
   if (curr_block_num_ >= max_block_num_) {
-    return std::move(callback_).Run(
-        base::ok(std::pair(PolkadotTransactionStatus::kNotFound, 0)));
+    return std::move(callback_).Run(base::ok(
+        std::pair(PolkadotTransactionStatus::kNotFound, std::nullopt)));
   }
 
   GetPolkadotRpc()->GetBlockHash(
@@ -215,8 +215,8 @@ void PolkadotTransactionStatusTask::OnGetBlockForStatus(
   }
 
   if (!base::CheckAdd(curr_block_num_, 1).AssignIfValid(&curr_block_num_)) {
-    return std::move(callback_).Run(
-        base::ok(std::pair(PolkadotTransactionStatus::kNotFound, 0)));
+    return std::move(callback_).Run(base::ok(
+        std::pair(PolkadotTransactionStatus::kNotFound, std::nullopt)));
   }
 
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
@@ -245,8 +245,8 @@ void PolkadotTransactionStatusTask::OnGetEvents(
     // If our fee is 0 here, it means that we received an invalid response from
     // the peer. This is a hard guarantee in Polkadot because including an
     // extrinsic in a finalized block incurs a base_fee, which is non-zero.
-    return std::move(callback_).Run(
-        base::ok(std::pair(PolkadotTransactionStatus::kInvalidResponse, 0)));
+    return std::move(callback_).Run(base::ok(
+        std::pair(PolkadotTransactionStatus::kInvalidResponse, std::nullopt)));
   }
 
   std::move(callback_).Run(

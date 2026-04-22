@@ -223,7 +223,8 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, FindExtrinsicSucceeds) {
   ASSERT_TRUE(task);
 
   base::test::TestFuture<base::expected<
-      std::pair<PolkadotTransactionStatus, uint128_t>, std::string>>
+      std::pair<PolkadotTransactionStatus, std::optional<uint128_t>>,
+      std::string>>
       future;
 
   RegisterDefaultFinalizedHeader(polkadot_mock_rpc.get());
@@ -274,7 +275,8 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, FindExtrinsicFailed) {
   ASSERT_TRUE(task);
 
   base::test::TestFuture<base::expected<
-      std::pair<PolkadotTransactionStatus, uint128_t>, std::string>>
+      std::pair<PolkadotTransactionStatus, std::optional<uint128_t>>,
+      std::string>>
       future;
 
   RegisterDefaultFinalizedHeader(polkadot_mock_rpc.get());
@@ -325,7 +327,8 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, InconsistentFees) {
   ASSERT_TRUE(task);
 
   base::test::TestFuture<base::expected<
-      std::pair<PolkadotTransactionStatus, uint128_t>, std::string>>
+      std::pair<PolkadotTransactionStatus, std::optional<uint128_t>>,
+      std::string>>
       future;
 
   RegisterDefaultFinalizedHeader(polkadot_mock_rpc.get());
@@ -346,7 +349,7 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, InconsistentFees) {
 
   const auto [status, fee] = *result;
   EXPECT_EQ(status, PolkadotTransactionStatus::kInvalidResponse);
-  EXPECT_EQ(fee, uint128_t{0});
+  EXPECT_EQ(fee, std::nullopt);
 }
 
 TEST_F(PolkadotTransactionStatusTaskUnitTest, ExtrinsicNotInMortalityWindow) {
@@ -377,7 +380,8 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, ExtrinsicNotInMortalityWindow) {
   ASSERT_TRUE(task);
 
   base::test::TestFuture<base::expected<
-      std::pair<PolkadotTransactionStatus, uint128_t>, std::string>>
+      std::pair<PolkadotTransactionStatus, std::optional<uint128_t>>,
+      std::string>>
       future;
 
   RegisterDefaultFinalizedHeader(polkadot_mock_rpc.get());
@@ -395,7 +399,7 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, ExtrinsicNotInMortalityWindow) {
 
   const auto [status, fee] = *result;
   EXPECT_EQ(status, PolkadotTransactionStatus::kNotFound);
-  EXPECT_EQ(fee, uint128_t{0});
+  EXPECT_EQ(fee, std::nullopt);
 }
 
 TEST_F(PolkadotTransactionStatusTaskUnitTest,
@@ -428,7 +432,8 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest,
   ASSERT_TRUE(task);
 
   base::test::TestFuture<base::expected<
-      std::pair<PolkadotTransactionStatus, uint128_t>, std::string>>
+      std::pair<PolkadotTransactionStatus, std::optional<uint128_t>>,
+      std::string>>
       future;
 
   // Note how the block number is large.
@@ -486,7 +491,7 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest,
 
   const auto [status, fee] = *result;
   EXPECT_EQ(status, PolkadotTransactionStatus::kNotFound);
-  EXPECT_EQ(fee, uint128_t{0});
+  EXPECT_EQ(fee, std::nullopt);
 }
 
 TEST_F(PolkadotTransactionStatusTaskUnitTest, OutpacedFinalizedHead) {
@@ -516,7 +521,8 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, OutpacedFinalizedHead) {
   ASSERT_TRUE(task);
 
   base::test::TestFuture<base::expected<
-      std::pair<PolkadotTransactionStatus, uint128_t>, std::string>>
+      std::pair<PolkadotTransactionStatus, std::optional<uint128_t>>,
+      std::string>>
       future;
 
   // Note here the block number value of 0x01ce0161 which is 30277985 which is 3
@@ -577,7 +583,7 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, OutpacedFinalizedHead) {
 
   const auto [status, fee] = *result;
   EXPECT_EQ(status, PolkadotTransactionStatus::kNotFinalized);
-  EXPECT_EQ(fee, uint128_t{0});
+  EXPECT_EQ(fee, std::nullopt);
 }
 
 TEST_F(PolkadotTransactionStatusTaskUnitTest, NetworkFailure_NoChainMetadata) {
@@ -608,7 +614,8 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, NetworkFailure_NoChainMetadata) {
   ASSERT_TRUE(task);
 
   base::test::TestFuture<base::expected<
-      std::pair<PolkadotTransactionStatus, uint128_t>, std::string>>
+      std::pair<PolkadotTransactionStatus, std::optional<uint128_t>>,
+      std::string>>
       future;
 
   task->Start(future.GetCallback());
@@ -649,7 +656,8 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest,
   ASSERT_TRUE(task);
 
   base::test::TestFuture<base::expected<
-      std::pair<PolkadotTransactionStatus, uint128_t>, std::string>>
+      std::pair<PolkadotTransactionStatus, std::optional<uint128_t>>,
+      std::string>>
       future;
 
   task->Start(future.GetCallback());
@@ -698,7 +706,8 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest,
   ASSERT_TRUE(task);
 
   base::test::TestFuture<base::expected<
-      std::pair<PolkadotTransactionStatus, uint128_t>, std::string>>
+      std::pair<PolkadotTransactionStatus, std::optional<uint128_t>>,
+      std::string>>
       future;
 
   task->Start(future.GetCallback());
@@ -767,7 +776,8 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, NetworkFailure_NoBlockHash) {
   ASSERT_TRUE(task);
 
   base::test::TestFuture<base::expected<
-      std::pair<PolkadotTransactionStatus, uint128_t>, std::string>>
+      std::pair<PolkadotTransactionStatus, std::optional<uint128_t>>,
+      std::string>>
       future;
 
   task->Start(future.GetCallback());
@@ -840,7 +850,8 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, NetworkFailure_NoBlock) {
   ASSERT_TRUE(task);
 
   base::test::TestFuture<base::expected<
-      std::pair<PolkadotTransactionStatus, uint128_t>, std::string>>
+      std::pair<PolkadotTransactionStatus, std::optional<uint128_t>>,
+      std::string>>
       future;
 
   task->Start(future.GetCallback());
@@ -877,7 +888,8 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, NetworkFailure_NoEvents) {
   ASSERT_TRUE(task);
 
   base::test::TestFuture<base::expected<
-      std::pair<PolkadotTransactionStatus, uint128_t>, std::string>>
+      std::pair<PolkadotTransactionStatus, std::optional<uint128_t>>,
+      std::string>>
       future;
 
   RegisterDefaultFinalizedHeader(polkadot_mock_rpc.get());
@@ -924,7 +936,8 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, ConcurrentStartRejected) {
   ASSERT_TRUE(task);
 
   base::test::TestFuture<base::expected<
-      std::pair<PolkadotTransactionStatus, uint128_t>, std::string>>
+      std::pair<PolkadotTransactionStatus, std::optional<uint128_t>>,
+      std::string>>
       future1, future2;
 
   task->Start(future1.GetCallback());

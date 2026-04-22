@@ -45,8 +45,9 @@ class PolkadotTransactionStatusTask {
   using PassKey = base::PassKey<PolkadotTransactionStatusTask>;
 
   using GetTransactionStatusCallback = base::OnceCallback<void(
-      base::expected<std::pair<PolkadotTransactionStatus, uint128_t>,
-                     std::string>)>;
+      base::expected<
+          std::pair<PolkadotTransactionStatus, std::optional<uint128_t>>,
+          std::string>)>;
 
   // Fails to create the task if the mortality period is unreasonably large,
   // currently 1024 blocks.
