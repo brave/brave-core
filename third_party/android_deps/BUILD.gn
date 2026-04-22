@@ -6,7 +6,6 @@ group("android_deps") {
     ":com_github_bumptech_glide_java",
     ":com_google_android_play_app_update_java",
     ":com_google_android_play_integrity_java",
-    ":com_google_android_play_review_java",
     ":com_wireguard_android_java",
     ":google_play_services_safetynet_java",
   ]
@@ -145,16 +144,6 @@ android_aar_prebuilt("androidx_sqlite_sqlite_framework_java") {
 android_aar_prebuilt("com_google_android_play_integrity_java") {
   aar_path = "libs/com_google_android_play_integrity/integrity-1.1.0.aar"
   info_path = "libs/com_google_android_play_integrity/com_google_android_play_integrity.info"
-  deps = [
-    "//third_party/android_deps:google_play_services_basement_java",
-    "//third_party/android_deps:google_play_services_tasks_java",
-  ]
-}
-
-android_aar_prebuilt("com_google_android_play_review_java") {
-  aar_path = "libs/com_google_android_play_review/review-2.0.2.aar"
-  info_path =
-      "libs/com_google_android_play_review/com_google_android_play_review.info"
   deps = [
     "//third_party/android_deps:google_play_services_basement_java",
     "//third_party/android_deps:google_play_services_tasks_java",
