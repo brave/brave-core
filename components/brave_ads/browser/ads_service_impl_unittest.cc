@@ -11,6 +11,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/run_until.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/browser/test/fake_ads_service_delegate.h"
@@ -21,6 +22,7 @@
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_registry.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
@@ -41,6 +43,16 @@ namespace brave_ads {
 class BraveAdsAdsServiceImplTest : public testing::Test {
  public:
   void SetUp() override {
+#if BUILDFLAG(IS_ANDROID)
+    // `brave_rewards::features::kBraveRewards` is `DISABLED_BY_DEFAULT` on
+    // `is_official_build=true` x86/x86_64 Android, which routes
+    // `brave_rewards::IsSupported` through `IsDisabledByFeature` and prevents
+    // the service from starting. Force-enable so Android matches the
+    // non-Android path these tests were written against.
+    scoped_feature_list_.InitAndEnableFeature(
+        brave_rewards::features::kBraveRewards);
+#endif  // BUILDFLAG(IS_ANDROID)
+
     ASSERT_TRUE(profile_dir_.CreateUniqueTempDir());
 
     RegisterProfilePrefs(prefs_.registry());
@@ -94,6 +106,10 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
   }
 
   void Shutdown() { ads_service_->Shutdown(); }
+
+#if BUILDFLAG(IS_ANDROID)
+  base::test::ScopedFeatureList scoped_feature_list_;
+#endif  // BUILDFLAG(IS_ANDROID)
 
   base::test::TaskEnvironment task_environment_;
 

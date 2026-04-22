@@ -144,6 +144,7 @@ source_set("unit_tests") {
     "//brave/components/brave_ads/core/public:headers",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_rewards/core",
+    "//brave/components/brave_rewards/core:features",
     "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/ntp_background_images/common",
     "//components/content_settings/core/browser",
