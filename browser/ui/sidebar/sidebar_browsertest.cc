@@ -93,6 +93,10 @@
 #include "brave/components/playlist/core/common/features.h"
 #endif
 
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+#include "brave/browser/ui/views/side_panel/brave_side_panel_resize_area.h"
+#endif
+
 using ::testing::Eq;
 using ::testing::Ne;
 using ::testing::Optional;
@@ -2057,11 +2061,20 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2PanelPositionTest) {
   // --- Sidebar on right (default LTR: kSidePanelHorizontalAlignment = true)
   ASSERT_FALSE(sidebar->sidebar_on_left());
 
+  auto* contents = browser_view->contents_container();
+
   // Panel sits immediately left of the sidebar control:
   //   [contents] [panel] [sidebar_control]
   EXPECT_EQ(panel->bounds().right(), sidebar->bounds().x())
       << "panel=" << panel->bounds().ToString()
       << " sidebar=" << sidebar->bounds().ToString();
+
+  // Panel top must align with the contents container — the upstream layout
+  // offsets the panel -1px to overlap the toolbar separator; Brave removes
+  // that offset so the separator is fully visible.
+  EXPECT_EQ(panel->bounds().y(), contents->bounds().y())
+      << "panel y=" << panel->bounds().y()
+      << " contents y=" << contents->bounds().y();
 
   // --- Sidebar on left (kSidePanelHorizontalAlignment = false)
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
@@ -2074,6 +2087,10 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2PanelPositionTest) {
   EXPECT_EQ(sidebar->bounds().right(), panel->bounds().x())
       << "sidebar=" << sidebar->bounds().ToString()
       << " panel=" << panel->bounds().ToString();
+
+  EXPECT_EQ(panel->bounds().y(), contents->bounds().y())
+      << "panel y=" << panel->bounds().y()
+      << " contents y=" << contents->bounds().y();
 }
 
 // Verify that the sidebar item active state in SidebarModel is updated:
@@ -2158,6 +2175,56 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarV2NoUpstreamHeaderTest) {
   EXPECT_EQ(nullptr, side_panel->GetHeaderView<views::View>())
       << "Upstream SidePanelHeader should not be present for CustomizeChrome "
          "panel";
+}
+
+// Verify that the resize area is positioned correctly for both border states.
+// With border: the resize area sits inside the border inset strip (its width
+// equals the border inset and it starts at x=0).
+// Without border: the resize area is a narrow kNoBorderResizeAreaWidth strip
+// placed at the inner edge facing the web content.
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
+                       SidebarV2ResizeAreaPositionMatchesBorderState) {
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  auto* side_panel = browser_view->contents_height_side_panel();
+  side_panel->DisableAnimationsForTesting();
+  auto* prefs = browser()->profile()->GetPrefs();
+
+  // Default: sidebar on right.
+  ASSERT_TRUE(prefs->GetBoolean(prefs::kSidePanelHorizontalAlignment));
+
+  panel_ui->Toggle();
+  ASSERT_TRUE(base::test::RunUntil([&]() { return side_panel->GetVisible(); }));
+
+  auto* resize_area = side_panel->resize_area_for_testing();
+  ASSERT_TRUE(resize_area);
+
+  // --- Border case (rounded corners ON) ---
+  prefs->SetBoolean(kWebViewRoundedCorners, true);
+  RunScheduledLayouts();
+  ASSERT_NE(side_panel->GetLocalBounds(), side_panel->GetContentsBounds());
+
+  // In the bordered case the resize strip sits in the gap between the panel
+  // edge and the content, at the left edge (panel is on the right in LTR).
+  const gfx::Rect bordered_bounds = resize_area->bounds();
+  EXPECT_EQ(bordered_bounds.top_right(),
+            side_panel->GetContentParentView()->origin())
+      << "Bordered resize area right edge should align with content origin";
+  EXPECT_EQ(bordered_bounds.width(), side_panel->GetInsets().left())
+      << "Bordered resize area width should match the left border inset";
+
+  // --- No-border case (rounded corners OFF) ---
+  prefs->SetBoolean(kWebViewRoundedCorners, false);
+  RunScheduledLayouts();
+  ASSERT_EQ(side_panel->GetLocalBounds(), side_panel->GetContentsBounds());
+
+  const gfx::Rect no_border_bounds = resize_area->bounds();
+  EXPECT_EQ(no_border_bounds.origin(),
+            side_panel->GetContentParentView()->origin())
+      << "No-border resize area should be placed at the inner edge of content";
+  EXPECT_EQ(no_border_bounds.width(),
+            views::BraveSidePanelResizeArea::kNoBorderResizeAreaWidth)
+      << "No-border resize area width should equal kNoBorderResizeAreaWidth";
 }
 
 #endif  // BUILDFLAG(ENABLE_SIDEBAR_V2)
