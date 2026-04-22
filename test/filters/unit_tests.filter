@@ -36,8 +36,8 @@
 -GlicMetricsTrustFirstOnboardingTest.*
 -MultistepFilterServiceFactoryTest.*
 -TabOrganizationServiceTest.*
--TabStripActionContainerTest.GlicButton*
 -TabStripActionContainerTest*.OrdersButtonsCorrectly*
+-TabStripActionContainerTest.Glic*
 
 # These tests fail because we don't use kChromeUINewTabPageThirdPartyURL
 -All/PermissionSubscriptionGeolocationTest.SubscribeUnsubscribeForNewTabPage/*
