@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/containers/flat_set.h"
-#include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filter_list_catalog_provider.h"
@@ -21,6 +20,7 @@
 #include "brave/components/brave_shields/core/common/features.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_shields {
 
@@ -59,7 +59,7 @@ FilterListCatalogEntry MakeCatalogEntry(const std::string& uuid) {
 std::vector<FilterListCatalogEntry> MakeCatalog(size_t size) {
   std::vector<FilterListCatalogEntry> entries;
   for (size_t i = 0; i < size; ++i) {
-    entries.push_back(MakeCatalogEntry(base::StringPrintf("uuid-%zu", i)));
+    entries.push_back(MakeCatalogEntry(absl::StrFormat("uuid-%zu", i)));
   }
   return entries;
 }
@@ -204,8 +204,8 @@ INSTANTIATE_TEST_SUITE_P(All,
                          AdBlockComponentServiceManagerGatesTest,
                          testing::Values(0u, 1u, 3u),
                          [](const auto& info) {
-                           return base::StringPrintf("CatalogSize%zu",
-                                                     info.param);
+                           return absl::StrFormat("CatalogSize%zu",
+                                                  info.param);
                          });
 
 }  // namespace brave_shields
