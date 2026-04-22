@@ -5,15 +5,17 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 
 #include "base/check_op.h"
 #include "base/strings/string_util.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
+#include "base/values.h"
 #include "brave/components/serp_metrics/time_period_storage/serp_metrics_pref_time_period_store.h"
-#include "brave/components/serp_metrics/time_period_storage/serp_metrics_scoped_timezone_for_testing.h"
 #include "brave/components/serp_metrics/time_period_storage/serp_metrics_time_period_storage.h"
+#include "brave/components/serp_metrics/time_period_storage/test/scoped_timezone_for_testing.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -22,7 +24,8 @@ namespace serp_metrics {
 
 namespace {
 
-constexpr const char* kPrefName = "time_period_storage";
+constexpr std::string_view kBazPrefName = "baz";
+constexpr std::string_view kFooPrefKey = "foo";
 
 struct DSTStartTimezoneParamInfo {
   std::string_view timezone;
@@ -125,11 +128,10 @@ class SerpMetricsTimePeriodStorageDSTStartTest
 TEST_P(SerpMetricsTimePeriodStorageDSTStartTest,
        CreatesNewDailyBucketAfterDSTStart) {
   const DSTStartTimezoneParamInfo& timezone_param = GetParam();
-  const test::SerpMetricsScopedTimezoneForTesting scoped_timezone(
-      timezone_param.timezone);
+  const test::ScopedTimezoneForTesting scoped_timezone(timezone_param.timezone);
 
   TestingPrefServiceSimple pref_service;
-  pref_service.registry()->RegisterListPref(kPrefName);
+  pref_service.registry()->RegisterDictionaryPref(kBazPrefName);
 
   base::Time daylight_time_start;
   ASSERT_TRUE(base::Time::FromUTCString(timezone_param.daylight_time_start,
@@ -138,21 +140,24 @@ TEST_P(SerpMetricsTimePeriodStorageDSTStartTest,
 
   const auto time_period_storage =
       std::make_unique<SerpMetricsTimePeriodStorage>(
-          std::make_unique<SerpMetricsPrefTimePeriodStore>(&pref_service,
-                                                           kPrefName),
+          std::make_unique<SerpMetricsPrefTimePeriodStore>(
+              &pref_service, kBazPrefName, kFooPrefKey),
           /*period_days=*/28);
 
   // Day 1: the DST start day itself. The local day is shorter than 24 hours.
-  time_period_storage->AddDelta(1);
+  time_period_storage->AddCount(1);
 
   // Day 2: one full day later. `NextMidnight` must skip over the shortened day
   // and land at the correct next local midnight, not one clock-hour early.
   task_environment_.AdvanceClock(base::Days(1));
-  time_period_storage->AddDelta(1);
+  time_period_storage->AddCount(1);
 
   // Each call created its own daily bucket. Day 2 is at the front.
-  EXPECT_EQ(base::test::ParseJson(timezone_param.expected_json),
-            pref_service.GetValue(kPrefName));
+  const base::ListValue* const list =
+      pref_service.GetDict(kBazPrefName).FindList(kFooPrefKey);
+  ASSERT_TRUE(list);
+  EXPECT_EQ(base::test::ParseJson(timezone_param.expected_json).GetList(),
+            *list);
 }
 
 INSTANTIATE_TEST_SUITE_P(

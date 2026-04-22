@@ -16,10 +16,10 @@ namespace serp_metrics {
 ProfileAttributesTimePeriodStore::ProfileAttributesTimePeriodStore(
     const base::FilePath& profile_path,
     ProfileAttributesStorage& profile_attributes_storage,
-    std::string metric_name)
+    std::string_view metric_name)
     : profile_path_(profile_path),
       profile_attributes_storage_(profile_attributes_storage),
-      metric_name_(std::move(metric_name)) {}
+      metric_name_(metric_name) {}
 
 ProfileAttributesTimePeriodStore::~ProfileAttributesTimePeriodStore() = default;
 

@@ -7,6 +7,8 @@
 #define BRAVE_COMPONENTS_SERP_METRICS_TIME_PERIOD_STORAGE_SERP_METRICS_PREF_TIME_PERIOD_STORE_FACTORY_H_
 
 #include <memory>
+#include <string>
+#include <string_view>
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/serp_metrics/time_period_storage/serp_metrics_time_period_store_factory.h"
@@ -19,18 +21,25 @@ class SerpMetricsTimePeriodStore;
 
 // A factory that creates `SerpMetricsPrefTimePeriodStore` which uses
 // `PrefService` for storage.
-class SerpMetricsPrefTimePeriodStoreFactory
+class SerpMetricsPrefTimePeriodStoreFactory final
     : public SerpMetricsTimePeriodStoreFactory {
  public:
   SerpMetricsPrefTimePeriodStoreFactory(PrefService* prefs,
-                                        const char* pref_name);
+                                        std::string_view pref_name);
+
+  SerpMetricsPrefTimePeriodStoreFactory(
+      const SerpMetricsPrefTimePeriodStoreFactory&) = delete;
+  SerpMetricsPrefTimePeriodStoreFactory& operator=(
+      const SerpMetricsPrefTimePeriodStoreFactory&) = delete;
+
+  ~SerpMetricsPrefTimePeriodStoreFactory() override = default;
 
   std::unique_ptr<SerpMetricsTimePeriodStore> Build(
-      const char* metric_name) const override;
+      std::string_view pref_key) const override;
 
  private:
   const raw_ptr<PrefService> prefs_;
-  const char* pref_name_;
+  const std::string pref_name_;
 };
 
 }  // namespace serp_metrics

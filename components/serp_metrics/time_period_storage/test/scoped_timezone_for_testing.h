@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_SERP_METRICS_TIME_PERIOD_STORAGE_SERP_METRICS_SCOPED_TIMEZONE_FOR_TESTING_H_
-#define BRAVE_COMPONENTS_SERP_METRICS_TIME_PERIOD_STORAGE_SERP_METRICS_SCOPED_TIMEZONE_FOR_TESTING_H_
+#ifndef BRAVE_COMPONENTS_SERP_METRICS_TIME_PERIOD_STORAGE_TEST_SCOPED_TIMEZONE_FOR_TESTING_H_
+#define BRAVE_COMPONENTS_SERP_METRICS_TIME_PERIOD_STORAGE_TEST_SCOPED_TIMEZONE_FOR_TESTING_H_
 
 #include <string>
 #include <string_view>
@@ -18,17 +18,15 @@ namespace serp_metrics::test {
 // Chromium date operations use both, so setting only one produces inconsistent
 // results for callers of `LocalMidnight()` and ICU date formatting functions.
 
-class SerpMetricsScopedTimezoneForTesting {
+class ScopedTimezoneForTesting final {
  public:
-  explicit SerpMetricsScopedTimezoneForTesting(std::string_view timezone_id)
+  explicit ScopedTimezoneForTesting(std::string_view timezone_id)
       : timezone_(timezone_id), libc_(timezone_), icu_(timezone_.c_str()) {}
 
-  SerpMetricsScopedTimezoneForTesting(
-      const SerpMetricsScopedTimezoneForTesting&) = delete;
-  SerpMetricsScopedTimezoneForTesting& operator=(
-      const SerpMetricsScopedTimezoneForTesting&) = delete;
+  ScopedTimezoneForTesting(const ScopedTimezoneForTesting&) = delete;
+  ScopedTimezoneForTesting& operator=(const ScopedTimezoneForTesting&) = delete;
 
-  ~SerpMetricsScopedTimezoneForTesting() = default;
+  ~ScopedTimezoneForTesting() = default;
 
  private:
   const std::string timezone_;
@@ -38,4 +36,4 @@ class SerpMetricsScopedTimezoneForTesting {
 
 }  // namespace serp_metrics::test
 
-#endif  // BRAVE_COMPONENTS_SERP_METRICS_TIME_PERIOD_STORAGE_SERP_METRICS_SCOPED_TIMEZONE_FOR_TESTING_H_
+#endif  // BRAVE_COMPONENTS_SERP_METRICS_TIME_PERIOD_STORAGE_TEST_SCOPED_TIMEZONE_FOR_TESTING_H_

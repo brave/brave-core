@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_SERP_METRICS_PROFILE_ATTRIBUTES_TIME_PERIOD_STORE_H_
 
 #include <string>
+#include <string_view>
 
 #include "base/files/file_path.h"
 #include "base/memory/raw_ref.h"
@@ -27,19 +28,20 @@ namespace serp_metrics {
 //   "metric_name_2": [time_period_values_2],
 //   ...
 // }
-class ProfileAttributesTimePeriodStore : public SerpMetricsTimePeriodStore {
+class ProfileAttributesTimePeriodStore final
+    : public SerpMetricsTimePeriodStore {
  public:
   ProfileAttributesTimePeriodStore(
       const base::FilePath& profile_path,
       ProfileAttributesStorage& profile_attributes_storage,
-      std::string metric_name);
-
-  ~ProfileAttributesTimePeriodStore() override;
+      std::string_view metric_name);
 
   ProfileAttributesTimePeriodStore(const ProfileAttributesTimePeriodStore&) =
       delete;
   ProfileAttributesTimePeriodStore& operator=(
       const ProfileAttributesTimePeriodStore&) = delete;
+
+  ~ProfileAttributesTimePeriodStore() override;
 
   // SerpMetricsTimePeriodStore:
   const base::ListValue* Get() override;

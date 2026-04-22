@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <optional>
+#include <string_view>
 
 #include "base/memory/raw_ref.h"
 #include "base/test/scoped_feature_list.h"
@@ -15,6 +16,7 @@
 #include "brave/components/serp_metrics/serp_metric_type.h"
 #include "brave/components/serp_metrics/serp_metrics.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
+#include "brave/components/serp_metrics/test/fake_serp_metrics_time_period_store.h"
 #include "brave/components/serp_metrics/time_period_storage/serp_metrics_time_period_store.h"
 #include "brave/components/serp_metrics/time_period_storage/serp_metrics_time_period_store_factory.h"
 #include "brave/ios/browser/brave_stats/brave_stats_prefs.h"
@@ -30,41 +32,6 @@
 namespace serp_metrics {
 
 namespace {
-
-class FakeTimePeriodStore : public SerpMetricsTimePeriodStore {
- public:
-  FakeTimePeriodStore() = default;
-
-  FakeTimePeriodStore(const FakeTimePeriodStore&) = delete;
-  FakeTimePeriodStore& operator=(const FakeTimePeriodStore&) = delete;
-
-  ~FakeTimePeriodStore() override = default;
-
-  const base::ListValue* Get() override { return &list_; }
-
-  void Set(base::ListValue list) override { list_ = std::move(list); }
-
-  void Clear() override { list_.clear(); }
-
- private:
-  base::ListValue list_;
-};
-
-class FakeTimePeriodStoreFactory : public SerpMetricsTimePeriodStoreFactory {
- public:
-  FakeTimePeriodStoreFactory() = default;
-
-  FakeTimePeriodStoreFactory(const FakeTimePeriodStoreFactory&) = delete;
-  FakeTimePeriodStoreFactory& operator=(const FakeTimePeriodStoreFactory&) =
-      delete;
-
-  ~FakeTimePeriodStoreFactory() override = default;
-
-  std::unique_ptr<SerpMetricsTimePeriodStore> Build(
-      const char* metric_name) const override {
-    return std::make_unique<FakeTimePeriodStore>();
-  }
-};
 
 class NavigationBuilder final {
  public:
@@ -130,8 +97,8 @@ class SerpMetricsTabHelperTest : public PlatformTest {
 
     scoped_feature_list_.InitAndEnableFeature(kSerpMetricsFeature);
 
-    serp_metrics_ = std::make_unique<SerpMetrics>(&local_state_,
-                                                  FakeTimePeriodStoreFactory());
+    serp_metrics_ = std::make_unique<SerpMetrics>(
+        &local_state_, test::FakeSerpMetricsTimePeriodStoreFactory());
 
     SerpMetricsTabHelper::CreateForWebState(&web_state_, *serp_metrics_);
   }

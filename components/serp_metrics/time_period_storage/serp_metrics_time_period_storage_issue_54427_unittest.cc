@@ -5,14 +5,16 @@
 
 #include <cstddef>
 #include <memory>
+#include <string_view>
 
 #include "base/check_op.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
+#include "base/values.h"
 #include "brave/components/serp_metrics/time_period_storage/serp_metrics_pref_time_period_store.h"
-#include "brave/components/serp_metrics/time_period_storage/serp_metrics_scoped_timezone_for_testing.h"
 #include "brave/components/serp_metrics/time_period_storage/serp_metrics_time_period_storage.h"
+#include "brave/components/serp_metrics/time_period_storage/test/scoped_timezone_for_testing.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -21,7 +23,8 @@ namespace serp_metrics {
 
 namespace {
 
-constexpr const char* kPrefName = "time_period_storage";
+constexpr std::string_view kPrefName = "baz";
+constexpr std::string_view kFooPrefKey = "foo";
 constexpr size_t kPeriodDays = 7;
 
 }  // namespace
@@ -32,7 +35,7 @@ constexpr size_t kPeriodDays = 7;
 class SerpMetricsTimePeriodStorageIssue54427Test : public ::testing::Test {
  public:
   SerpMetricsTimePeriodStorageIssue54427Test() {
-    pref_service_.registry()->RegisterListPref(kPrefName);
+    pref_service_.registry()->RegisterDictionaryPref(kPrefName);
   }
 
  protected:
@@ -48,18 +51,17 @@ class SerpMetricsTimePeriodStorageIssue54427Test : public ::testing::Test {
 };
 
 TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
-       AddDeltaCreatesNewBucketAfterDSTStartWhenStoredMidnightsAreBad) {
+       AddCountCreatesNewBucketAfterDSTStartWhenStoredMidnightsAreBad) {
   // Loads the production pref data from the bug report and verifies that
-  // `AddDelta` after the DST change creates a new bucket at the correct CEST
+  // `AddCount` after the DST change creates a new bucket at the correct CEST
   // midnight. In the broken code, all stored CEST timestamps from March 30 to
   // April 9 were already 1 hour late, so computing the next bucket by adding
   // 24 hours produced another late timestamp and prevented a new bucket from
   // being created.
-  const test::SerpMetricsScopedTimezoneForTesting scoped_timezone(
-      "Europe/Berlin");
+  const test::ScopedTimezoneForTesting scoped_timezone("Europe/Berlin");
 
   // Pre-populate the pref with the 28 entries from the bug report.
-  pref_service_.Set(kPrefName, base::test::ParseJson(R"JSON([
+  base::Value list_pref = base::test::ParseJson(R"JSON([
     // These CEST entries are all 1 hour past local midnight.
     {  // April 9 00:00 CEST + 1h
       "day": 1775689200.0,
@@ -174,11 +176,14 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
       "day": 1773356400.0,
       "value": 0.0
     }
-  ])JSON"));
+  ])JSON");
+  base::DictValue dict;
+  dict.Set(kFooPrefKey, std::move(list_pref.GetList()));
+  pref_service_.Set(kPrefName, base::Value(std::move(dict)));
 
   time_period_storage_ = std::make_unique<SerpMetricsTimePeriodStorage>(
       std::make_unique<SerpMetricsPrefTimePeriodStore>(&pref_service_,
-                                                       kPrefName),
+                                                       kPrefName, kFooPrefKey),
       /*period_days=*/28);
 
   // April 10 09:00 CEST (April 10 07:00 UTC).
@@ -186,7 +191,7 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
   ASSERT_TRUE(base::Time::FromUTCString("10 Apr 2026 07:00:00", &april_10));
   FastForwardClockTo(april_10);
 
-  time_period_storage_->AddDelta(1);
+  time_period_storage_->AddCount(1);
 
   // The new April 10 bucket is created at the correct CEST midnight. Older bad
   // timestamps are unchanged. March 13 is dropped because the 28 day window can
@@ -306,9 +311,10 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
         "day": 1773442800.0,
         "value": 2.0
       }
-    ])JSON"),
-            pref_service_.GetValue(kPrefName));
-  EXPECT_EQ(143U, time_period_storage_->GetPeriodSum());
+    ])JSON")
+                .GetList(),
+            *pref_service_.GetDict(kPrefName).FindList(kFooPrefKey));
+  EXPECT_EQ(143U, time_period_storage_->GetCount());
 }
 
 TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
@@ -320,12 +326,11 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
   // stored under the previous CET midnight instead of the correct CEST
   // midnight.
 
-  const test::SerpMetricsScopedTimezoneForTesting scoped_munich_timezone(
-      "Europe/Berlin");
+  const test::ScopedTimezoneForTesting scoped_munich_timezone("Europe/Berlin");
 
   time_period_storage_ = std::make_unique<SerpMetricsTimePeriodStorage>(
       std::make_unique<SerpMetricsPrefTimePeriodStore>(&pref_service_,
-                                                       kPrefName),
+                                                       kPrefName, kFooPrefKey),
       /*period_days=*/28);
 
   base::Time march_13_cet_midnight;
@@ -338,17 +343,17 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
     if (day > 0) {
       task_environment_.AdvanceClock(base::Days(1));
     }
-    time_period_storage_->AddDelta(1);
+    time_period_storage_->AddCount(1);
   }
 
   {
-    const test::SerpMetricsScopedTimezoneForTesting scoped_los_angeles_timezone(
+    const test::ScopedTimezoneForTesting scoped_los_angeles_timezone(
         "America/Los_Angeles");
     // March 22 through March 26 in San Francisco (local time). Local midnight
     // is PDT.
     for (size_t day = 0; day < 5; ++day) {
       task_environment_.AdvanceClock(base::Days(1));
-      time_period_storage_->AddDelta(1);
+      time_period_storage_->AddCount(1);
     }
   }
 
@@ -357,7 +362,7 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
   // switches to CEST on March 29.
   for (size_t day = 0; day < 13; ++day) {
     task_environment_.AdvanceClock(base::Days(1));
-    time_period_storage_->AddDelta(1);
+    time_period_storage_->AddCount(1);
   }
 
   // March 22 has two buckets — CET and PDT — because `NextMidnight` from the
@@ -484,21 +489,21 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
       "day": 1773442800.0,
       "value": 1.0
     }
-  ])JSON"),
-            pref_service_.GetValue(kPrefName));
+  ])JSON")
+                .GetList(),
+            *pref_service_.GetDict(kPrefName).FindList(kFooPrefKey));
   // 28 entries: 27 with value 1 and one March 27 with value 0 (no activity
   // during the return flight). March 13 drops off because the extra March 22
   // PDT bucket pushes the list past 28 entries.
-  EXPECT_EQ(27U, time_period_storage_->GetPeriodSum());
+  EXPECT_EQ(27U, time_period_storage_->GetCount());
 }
 
 TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
        NewDailyBucketIsCreatedOneSecondAfterMidnightOnDayAfterDSTStart) {
-  const test::SerpMetricsScopedTimezoneForTesting scoped_timezone(
-      "Europe/Berlin");
+  const test::ScopedTimezoneForTesting scoped_timezone("Europe/Berlin");
   time_period_storage_ = std::make_unique<SerpMetricsTimePeriodStorage>(
       std::make_unique<SerpMetricsPrefTimePeriodStore>(&pref_service_,
-                                                       kPrefName),
+                                                       kPrefName, kFooPrefKey),
       kPeriodDays);
 
   // DST starts in Europe/Berlin at 28 March 2027 01:00:00 UTC. Clocks move
@@ -509,13 +514,13 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
   // Record one second before the DST transition: March 28 00:00 CET
   // (March 27 23:00 UTC).
   FastForwardClockTo(dst_start - base::Seconds(1));
-  time_period_storage_->AddDelta(1);
+  time_period_storage_->AddCount(1);
 
   // Record one second after March 29 midnight in CEST (March 28 22:00:01 UTC).
   // Only 23 hours and 1 second separate the two midnights. A naive +24h
   // calculation would overshoot the next midnight.
   FastForwardClockTo(dst_start + base::Hours(21) + base::Seconds(1));
-  time_period_storage_->AddDelta(1);
+  time_period_storage_->AddCount(1);
 
   EXPECT_EQ(base::test::ParseJson(R"JSON([
       {  // March 29 00:00 CEST (March 28 22:00 UTC)
@@ -526,9 +531,10 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
         "day": 1806188400.0,
         "value": 1.0
       }
-    ])JSON"),
-            pref_service_.GetValue(kPrefName));
-  EXPECT_EQ(2U, time_period_storage_->GetPeriodSum());
+    ])JSON")
+                .GetList(),
+            *pref_service_.GetDict(kPrefName).FindList(kFooPrefKey));
+  EXPECT_EQ(2U, time_period_storage_->GetCount());
 }
 
 TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
@@ -537,11 +543,10 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
   // 2027. March 28 is therefore only 22 hours long. This is the shortest
   // possible calendar day in any active IANA timezone and is a good stress case
   // for bucket rollover.
-  const test::SerpMetricsScopedTimezoneForTesting scoped_timezone(
-      "Antarctica/Troll");
+  const test::ScopedTimezoneForTesting scoped_timezone("Antarctica/Troll");
   time_period_storage_ = std::make_unique<SerpMetricsTimePeriodStorage>(
       std::make_unique<SerpMetricsPrefTimePeriodStore>(&pref_service_,
-                                                       kPrefName),
+                                                       kPrefName, kFooPrefKey),
       kPeriodDays);
 
   base::Time dst_start;
@@ -550,13 +555,13 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
   // Record 30 minutes before the DST transition. This is still March 28 00:00
   // in UTC+0, the midnight of the short day.
   FastForwardClockTo(dst_start - base::Minutes(30));
-  time_period_storage_->AddDelta(1);
+  time_period_storage_->AddCount(1);
 
   // Record one second after March 29 midnight in UTC+2 (March 28 22:00:01 UTC).
   // Only 22 hours and 1 second separate the two midnights. A naive +24h
   // calculation would overshoot the next midnight.
   FastForwardClockTo(dst_start + base::Hours(21) + base::Seconds(1));
-  time_period_storage_->AddDelta(1);
+  time_period_storage_->AddCount(1);
 
   EXPECT_EQ(base::test::ParseJson(R"JSON([
       {  // March 29 00:00 UTC+2 (March 28 22:00 UTC)
@@ -567,9 +572,10 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
         "day": 1806192000.0,
         "value": 1.0
       }
-    ])JSON"),
-            pref_service_.GetValue(kPrefName));
-  EXPECT_EQ(2U, time_period_storage_->GetPeriodSum());
+    ])JSON")
+                .GetList(),
+            *pref_service_.GetDict(kPrefName).FindList(kFooPrefKey));
+  EXPECT_EQ(2U, time_period_storage_->GetCount());
 }
 
 TEST_F(
@@ -579,11 +585,10 @@ TEST_F(
   // 02:00 LHST on 3 October 2027, which is 2 October 2027 15:30 UTC. October 3
   // is therefore only 23 hours and 30 minutes long. This is the only active
   // timezone with a 30-minute DST shift.
-  const test::SerpMetricsScopedTimezoneForTesting scoped_timezone(
-      "Australia/Lord_Howe");
+  const test::ScopedTimezoneForTesting scoped_timezone("Australia/Lord_Howe");
   time_period_storage_ = std::make_unique<SerpMetricsTimePeriodStorage>(
       std::make_unique<SerpMetricsPrefTimePeriodStore>(&pref_service_,
-                                                       kPrefName),
+                                                       kPrefName, kFooPrefKey),
       kPeriodDays);
 
   base::Time dst_start;
@@ -592,14 +597,14 @@ TEST_F(
   // Record 30 minutes before the DST transition. This is still October 3
   // 01:30 LHST, within the midnight of the short day.
   FastForwardClockTo(dst_start - base::Minutes(30));
-  time_period_storage_->AddDelta(1);
+  time_period_storage_->AddCount(1);
 
   // Record one second after October 4 midnight in LHDT (October 3 13:00:01
   // UTC). Only 23 hours, 30 minutes, and 1 second separate the two midnights.
   // A naive +24h calculation would overshoot the next midnight by 30 minutes.
   FastForwardClockTo(dst_start + base::Hours(21) + base::Minutes(30) +
                      base::Seconds(1));
-  time_period_storage_->AddDelta(1);
+  time_period_storage_->AddCount(1);
 
   EXPECT_EQ(base::test::ParseJson(R"JSON([
       {  // October 4 00:00 LHDT (October 3 13:00 UTC)
@@ -610,18 +615,18 @@ TEST_F(
         "day": 1822483800.0,
         "value": 1.0
       }
-    ])JSON"),
-            pref_service_.GetValue(kPrefName));
-  EXPECT_EQ(2U, time_period_storage_->GetPeriodSum());
+    ])JSON")
+                .GetList(),
+            *pref_service_.GetDict(kPrefName).FindList(kFooPrefKey));
+  EXPECT_EQ(2U, time_period_storage_->GetCount());
 }
 
 TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
        NewDailyBucketIsCreatedOneSecondAfterMidnightOnDayAfterDSTEnd) {
-  const test::SerpMetricsScopedTimezoneForTesting scoped_timezone(
-      "Europe/Berlin");
+  const test::ScopedTimezoneForTesting scoped_timezone("Europe/Berlin");
   time_period_storage_ = std::make_unique<SerpMetricsTimePeriodStorage>(
       std::make_unique<SerpMetricsPrefTimePeriodStore>(&pref_service_,
-                                                       kPrefName),
+                                                       kPrefName, kFooPrefKey),
       kPeriodDays);
 
   // DST ends in Europe/Berlin at 31 October 2027 01:00:00 UTC.
@@ -632,14 +637,14 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
   // Record one second before the DST transition: October 31 00:00 CEST
   // (October 30 22:00 UTC).
   FastForwardClockTo(dst_end - base::Seconds(1));
-  time_period_storage_->AddDelta(1);
+  time_period_storage_->AddCount(1);
 
   // Record one second after November 1 midnight in CET
   // (October 31 23:00:01 UTC). Because DST ends, the gap between
   // the two local midnights is 25 hours. A naive +24h calculation
   // would land an hour too early.
   FastForwardClockTo(dst_end + base::Hours(22) + base::Seconds(1));
-  time_period_storage_->AddDelta(1);
+  time_period_storage_->AddCount(1);
 
   EXPECT_EQ(base::test::ParseJson(R"JSON([
       {  // November 1 00:00 CET (October 31 23:00 UTC)
@@ -650,20 +655,20 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
         "day": 1824933600.0,
         "value": 1.0
       }
-    ])JSON"),
-            pref_service_.GetValue(kPrefName));
-  EXPECT_EQ(2U, time_period_storage_->GetPeriodSum());
+    ])JSON")
+                .GetList(),
+            *pref_service_.GetDict(kPrefName).FindList(kFooPrefKey));
+  EXPECT_EQ(2U, time_period_storage_->GetCount());
 }
 
 TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
        EachDayFromCETThroughCESTAndBackToCETHasItsOwnBucket) {
   // In Europe/Berlin, DST starts at 01:00 UTC on 28 March 2027 and ends at
   // 01:00 UTC on 31 October 2027. That covers 217 calendar days.
-  const test::SerpMetricsScopedTimezoneForTesting scoped_timezone(
-      "Europe/Berlin");
+  const test::ScopedTimezoneForTesting scoped_timezone("Europe/Berlin");
   time_period_storage_ = std::make_unique<SerpMetricsTimePeriodStorage>(
       std::make_unique<SerpMetricsPrefTimePeriodStore>(&pref_service_,
-                                                       kPrefName),
+                                                       kPrefName, kFooPrefKey),
       kPeriodDays);
 
   base::Time dst_start;
@@ -673,19 +678,19 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
 
   // Record activity at March 28 midnight in CET, two hours before DST starts.
   FastForwardClockTo(dst_start - base::Hours(2));
-  time_period_storage_->AddDelta(1);
+  time_period_storage_->AddCount(1);
 
   // Advance one day at a time through the full CEST period and two days after
   // it. Each local calendar day should get its own bucket with value 1.
   while (base::Time::Now() < dst_end + base::Days(2)) {
     task_environment_.AdvanceClock(base::Days(1));
-    time_period_storage_->AddDelta(1);
+    time_period_storage_->AddCount(1);
   }
 
   // The loop ends late on November 2 after 220 daily steps. The 7 day window
   // crosses the DST change on October 31, when local midnight shifts by one
   // hour. Because of that, the gap between those two midnights is 25 hours.
-  // GetPeriodSum() returns 6 rather than 7: the October 28 CEST bucket is at
+  // GetCount() returns 6 rather than 7: the October 28 CEST bucket is at
   // October 27 22:00 UTC, one hour before the window start at October 27
   // 23:00 UTC (CET midnight minus 6 days). The DST offset is not applied to
   // the window boundary, so that bucket falls outside.
@@ -719,18 +724,19 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
         "day": 1824674400.0,
         "value": 1.0
       }
-    ])JSON"),
-            pref_service_.GetValue(kPrefName));
-  EXPECT_EQ(6U, time_period_storage_->GetPeriodSum());
+    ])JSON")
+                .GetList(),
+            *pref_service_.GetDict(kPrefName).FindList(kFooPrefKey));
+  EXPECT_EQ(6U, time_period_storage_->GetCount());
 }
 
 TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
        EachDayInFixedOffsetTimezoneHasItsOwnBucket) {
   // Asia/Tokyo stays on UTC+9 all year, so every local day is exactly 24 hours.
-  const test::SerpMetricsScopedTimezoneForTesting scoped_timezone("Asia/Tokyo");
+  const test::ScopedTimezoneForTesting scoped_timezone("Asia/Tokyo");
   time_period_storage_ = std::make_unique<SerpMetricsTimePeriodStorage>(
       std::make_unique<SerpMetricsPrefTimePeriodStore>(&pref_service_,
-                                                       kPrefName),
+                                                       kPrefName, kFooPrefKey),
       kPeriodDays);
 
   base::Time january_1;
@@ -743,7 +749,7 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
     if (day > 0) {
       task_environment_.AdvanceClock(base::Days(1));
     }
-    time_period_storage_->AddDelta(1);
+    time_period_storage_->AddCount(1);
   }
 
   // Recording more than `kPeriodDays` entries pushes the two oldest days out
@@ -777,9 +783,10 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
         "day": 1798902000.0,
         "value": 1.0
       }
-    ])JSON"),
-            pref_service_.GetValue(kPrefName));
-  EXPECT_EQ(7U, time_period_storage_->GetPeriodSum());
+    ])JSON")
+                .GetList(),
+            *pref_service_.GetDict(kPrefName).FindList(kFooPrefKey));
+  EXPECT_EQ(7U, time_period_storage_->GetCount());
 }
 
 TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
@@ -793,26 +800,26 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
       base::Time::FromUTCString("9 Oct 2027 15:00:00", &october_10_nzdt));
   FastForwardClockTo(october_10_nzdt);
 
-  const test::SerpMetricsScopedTimezoneForTesting scoped_auckland_timezone(
+  const test::ScopedTimezoneForTesting scoped_auckland_timezone(
       "Pacific/Auckland");
   time_period_storage_ = std::make_unique<SerpMetricsTimePeriodStorage>(
       std::make_unique<SerpMetricsPrefTimePeriodStore>(&pref_service_,
-                                                       kPrefName),
+                                                       kPrefName, kFooPrefKey),
       kPeriodDays);
 
   // In Auckland. Bucket is October 10 00:00 NZDT (October 9 11:00 UTC).
-  time_period_storage_->AddDelta(1);
+  time_period_storage_->AddCount(1);
 
   {
-    const test::SerpMetricsScopedTimezoneForTesting scoped_los_angeles_timezone(
+    const test::ScopedTimezoneForTesting scoped_los_angeles_timezone(
         "America/Los_Angeles");
     // Arriving in Los Angeles after advancing 24 hours. Bucket is October 10
     // 00:00 PDT (October 10 07:00 UTC).
     task_environment_.AdvanceClock(base::Days(1));
-    time_period_storage_->AddDelta(1);
+    time_period_storage_->AddCount(1);
   }  // Returning to Auckland.
 
-  EXPECT_EQ(2U, time_period_storage_->GetPeriodSum());
+  EXPECT_EQ(2U, time_period_storage_->GetCount());
 }
 
 TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
@@ -825,26 +832,26 @@ TEST_F(SerpMetricsTimePeriodStorageIssue54427Test,
   ASSERT_TRUE(base::Time::FromUTCString("9 Oct 2027 20:00:00", &october_9_pdt));
   FastForwardClockTo(october_9_pdt);
 
-  const test::SerpMetricsScopedTimezoneForTesting scoped_los_angeles_timezone(
+  const test::ScopedTimezoneForTesting scoped_los_angeles_timezone(
       "America/Los_Angeles");
   time_period_storage_ = std::make_unique<SerpMetricsTimePeriodStorage>(
       std::make_unique<SerpMetricsPrefTimePeriodStore>(&pref_service_,
-                                                       kPrefName),
+                                                       kPrefName, kFooPrefKey),
       kPeriodDays);
 
   // In Los Angeles. Bucket is October 9 00:00 PDT (October 9 07:00 UTC).
-  time_period_storage_->AddDelta(1);
+  time_period_storage_->AddCount(1);
 
   {
-    const test::SerpMetricsScopedTimezoneForTesting scoped_auckland_timezone(
+    const test::ScopedTimezoneForTesting scoped_auckland_timezone(
         "Pacific/Auckland");
     // Arriving in Auckland after advancing 24 hours. Bucket is October 11
     // 00:00 NZDT (October 10 11:00 UTC).
     task_environment_.AdvanceClock(base::Days(1));
-    time_period_storage_->AddDelta(1);
+    time_period_storage_->AddCount(1);
   }  // Returning to Los Angeles.
 
-  EXPECT_EQ(2U, time_period_storage_->GetPeriodSum());
+  EXPECT_EQ(2U, time_period_storage_->GetCount());
 }
 
 }  // namespace serp_metrics

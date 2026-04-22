@@ -15,10 +15,10 @@
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/serp_metrics/fake_time_period_store.h"
 #include "brave/components/serp_metrics/serp_metric_type.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
-#include "brave/components/serp_metrics/timezone_test_util.h"
+#include "brave/components/serp_metrics/test/fake_serp_metrics_time_period_store.h"
+#include "brave/components/serp_metrics/test/timezone_test_util.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -50,7 +50,7 @@ class SerpMetricsTest : public testing::TestWithParam<std::string_view> {
         kSerpMetricsFeature, {{"time_period_in_days", "7"}});
 
     serp_metrics_ = std::make_unique<SerpMetrics>(
-        &local_state_, test::FakeTimePeriodStoreFactory());
+        &local_state_, test::FakeSerpMetricsTimePeriodStoreFactory());
   }
 
   // Advances the clock to one millisecond shy of a brand new day.

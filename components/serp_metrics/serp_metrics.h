@@ -10,7 +10,7 @@
 #include <memory>
 
 #include "base/containers/flat_map.h"
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/serp_metrics/serp_metric_type.h"
 
 class PrefService;
@@ -64,7 +64,7 @@ class SerpMetrics final {
   // indicate that the full retention period should be considered stale.
   base::Time GetStartOfStalePeriod() const;
 
-  const raw_ptr<PrefService> local_state_;  // Not owned.
+  const raw_ref<PrefService> local_state_;
 
   base::flat_map<SerpMetricType, std::unique_ptr<SerpMetricsTimePeriodStorage>>
       time_period_storages_;

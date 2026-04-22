@@ -13,6 +13,7 @@ static_library("time_period_storage") {
     "serp_metrics_time_period_storage.h",
     "serp_metrics_time_period_store.h",
     "serp_metrics_time_period_store_factory.h",
+    "serp_time_period_storage_daily_value_info.h",
   ]
 
   deps = [
@@ -24,7 +25,7 @@ static_library("time_period_storage") {
 source_set("test_support") {
   testonly = true
 
-  public = [ "serp_metrics_scoped_timezone_for_testing.h" ]
+  public = [ "test/scoped_timezone_for_testing.h" ]
 
   deps = [ "//base/test:test_support" ]
 }
@@ -33,6 +34,7 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
+    "serp_metrics_pref_time_period_store_factory_unittest.cc",
     "serp_metrics_pref_time_period_store_unittest.cc",
     "serp_metrics_time_period_storage_unittest.cc",
   ]

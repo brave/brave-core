@@ -6,6 +6,7 @@
 #include "brave/components/serp_metrics/time_period_storage/serp_metrics_time_period_storage.h"
 
 #include <memory>
+#include <string_view>
 
 #include "base/check.h"
 #include "base/test/task_environment.h"
@@ -17,218 +18,281 @@
 
 namespace serp_metrics {
 
-constexpr char kListPrefName[] = "brave.weekly_test";
-constexpr char kDictPrefName[] = "brave.weekly_dict_test";
-constexpr char kDictKey1[] = "key1";
-constexpr char kDictKey2[] = "key2";
+namespace {
+
+constexpr std::string_view kPrefName = "baz";
+constexpr std::string_view kFooDictKey = "foo";
+constexpr std::string_view kBarDictKey = "bar";
+
+}  // namespace
 
 class SerpMetricsTimePeriodStorageTest : public ::testing::Test {
  public:
   SerpMetricsTimePeriodStorageTest() {
-    pref_service_.registry()->RegisterListPref(kListPrefName);
-    pref_service_.registry()->RegisterDictionaryPref(kDictPrefName);
+    pref_service_.registry()->RegisterDictionaryPref(kPrefName);
 
     // Advance to a fixed date to avoid DST-related issues. 4 hours before
     // midnight gives tests room to advance forward within the same day.
-    base::Time future_mock_time;
-    CHECK(base::Time::FromString("2050-01-04", &future_mock_time));
-    task_environment_.AdvanceClock(Midnight(future_mock_time) - base::Hours(4) -
+    base::Time time;
+    CHECK(base::Time::FromString("2050-01-04", &time));
+    task_environment_.AdvanceClock(Midnight(time) - base::Hours(4) -
                                    base::Time::Now());
   }
 
-  void InitStorage(size_t days, const char* dict_key = nullptr) {
-    const char* pref_name = dict_key ? kDictPrefName : kListPrefName;
-    state_ = std::make_unique<SerpMetricsTimePeriodStorage>(
+ protected:
+  void InitStorage(size_t days) {
+    storage_ = std::make_unique<SerpMetricsTimePeriodStorage>(
+        std::make_unique<SerpMetricsPrefTimePeriodStore>(
+            &pref_service_, kPrefName, kFooDictKey),
+        days);
+  }
+
+  void InitStorage(size_t days, std::string_view pref_key) {
+    storage_ = std::make_unique<SerpMetricsTimePeriodStorage>(
         std::make_unique<SerpMetricsPrefTimePeriodStore>(&pref_service_,
-                                                         pref_name, dict_key),
+                                                         kPrefName, pref_key),
         days);
   }
 
   static base::Time Midnight(base::Time time) { return time.LocalMidnight(); }
 
- protected:
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
   TestingPrefServiceSimple pref_service_;
-  std::unique_ptr<SerpMetricsTimePeriodStorage> state_;
+  std::unique_ptr<SerpMetricsTimePeriodStorage> storage_;
 };
 
 TEST_F(SerpMetricsTimePeriodStorageTest, StartsZero) {
   InitStorage(7);
-  EXPECT_EQ(state_->GetPeriodSum(), 0ULL);
+  EXPECT_EQ(0ULL, storage_->GetCount());
 }
 
-TEST_F(SerpMetricsTimePeriodStorageTest, AddsSavings) {
+TEST_F(SerpMetricsTimePeriodStorageTest, AccumulatesValues) {
   InitStorage(7);
-  uint64_t saving = 10000;
-  state_->AddDelta(saving);
-  EXPECT_EQ(state_->GetPeriodSum(), saving);
+  storage_->AddCount(10'000);
+  EXPECT_EQ(10'000U, storage_->GetCount());
 
-  // Accumulate
-  state_->AddDelta(saving);
-  state_->AddDelta(saving);
-  EXPECT_EQ(state_->GetPeriodSum(), saving * 3);
+  storage_->AddCount(10'000);
+  storage_->AddCount(10'000);
+  EXPECT_EQ(30'000U, storage_->GetCount());
 }
 
-TEST_F(SerpMetricsTimePeriodStorageTest, GetSumInCustomPeriod) {
-  base::TimeDelta start_time_delta = base::Days(9) + base::Hours(1);
-  base::TimeDelta end_time_delta = base::Days(4) - base::Hours(1);
-  uint64_t saving = 10000;
+TEST_F(SerpMetricsTimePeriodStorageTest, SumsValuesInTimeRange) {
+  const base::TimeDelta start_offset = base::Days(9) + base::Hours(1);
+  const base::TimeDelta end_offset = base::Days(4) - base::Hours(1);
 
   InitStorage(14);
-  state_->AddDelta(saving);
+  storage_->AddCount(10'000);
 
   task_environment_.AdvanceClock(base::Days(1));
-  state_->AddDelta(saving);
-  state_->AddDelta(saving);
+  storage_->AddCount(10'000);
+  storage_->AddCount(10'000);
 
   task_environment_.AdvanceClock(base::Days(2));
 
   base::Time midnight = Midnight(base::Time::Now());
-  EXPECT_EQ(state_->GetPeriodSumInTimeRange(midnight - start_time_delta,
-                                            midnight - end_time_delta),
-            0U);
+  EXPECT_EQ(0U, storage_->GetCountForTimeRange(midnight - start_offset,
+                                               midnight - end_offset));
 
   task_environment_.AdvanceClock(base::Days(1));
   midnight = Midnight(base::Time::Now());
-  EXPECT_EQ(state_->GetPeriodSumInTimeRange(midnight - start_time_delta,
-                                            midnight - end_time_delta),
-            saving);
+  EXPECT_EQ(10'000U, storage_->GetCountForTimeRange(midnight - start_offset,
+                                                    midnight - end_offset));
 
   task_environment_.AdvanceClock(base::Days(1));
   midnight = Midnight(base::Time::Now());
-  EXPECT_EQ(state_->GetPeriodSumInTimeRange(midnight - start_time_delta,
-                                            midnight - end_time_delta),
-            saving * 3);
+  EXPECT_EQ(30'000U, storage_->GetCountForTimeRange(midnight - start_offset,
+                                                    midnight - end_offset));
 
   task_environment_.AdvanceClock(base::Days(5));
   midnight = Midnight(base::Time::Now());
-  EXPECT_EQ(state_->GetPeriodSumInTimeRange(midnight - start_time_delta,
-                                            midnight - end_time_delta),
-            saving * 2);
+  EXPECT_EQ(20'000U, storage_->GetCountForTimeRange(midnight - start_offset,
+                                                    midnight - end_offset));
 
   task_environment_.AdvanceClock(base::Days(1));
   midnight = Midnight(base::Time::Now());
-  EXPECT_EQ(state_->GetPeriodSumInTimeRange(midnight - start_time_delta,
-                                            midnight - end_time_delta),
-            0U);
+  EXPECT_EQ(0U, storage_->GetCountForTimeRange(midnight - start_offset,
+                                               midnight - end_offset));
 }
 
-TEST_F(SerpMetricsTimePeriodStorageTest, ForgetsOldSavingsWeekly) {
+TEST_F(SerpMetricsTimePeriodStorageTest, ForgetsOldValuesWeekly) {
   InitStorage(7);
-  uint64_t saving = 10000;
-  state_->AddDelta(saving);
-  EXPECT_EQ(state_->GetPeriodSum(), saving);
+  storage_->AddCount(10'000);
+  EXPECT_EQ(10'000U, storage_->GetCount());
 
   task_environment_.AdvanceClock(base::Days(8));
 
-  // More savings
-  state_->AddDelta(saving);
-  state_->AddDelta(saving);
-  // Should have forgotten about older days
-  EXPECT_EQ(state_->GetPeriodSum(), saving * 2);
+  storage_->AddCount(10'000);
+  storage_->AddCount(10'000);
+  EXPECT_EQ(20'000U, storage_->GetCount());
 }
 
-TEST_F(SerpMetricsTimePeriodStorageTest, ForgetsOldSavingsMonthly) {
+TEST_F(SerpMetricsTimePeriodStorageTest, ForgetsOldValuesMonthly) {
   InitStorage(30);
-  uint64_t saving = 10000;
-  state_->AddDelta(saving);
-  EXPECT_EQ(state_->GetPeriodSum(), saving);
+  storage_->AddCount(10'000);
+  EXPECT_EQ(10'000U, storage_->GetCount());
 
   task_environment_.AdvanceClock(base::Days(31));
 
-  // More savings
-  state_->AddDelta(saving);
-  state_->AddDelta(saving);
-  // Should have forgotten about older days
-  EXPECT_EQ(state_->GetPeriodSum(), saving * 2);
+  storage_->AddCount(10'000);
+  storage_->AddCount(10'000);
+  EXPECT_EQ(20'000U, storage_->GetCount());
 }
 
-TEST_F(SerpMetricsTimePeriodStorageTest, RetrievesDailySavings) {
+TEST_F(SerpMetricsTimePeriodStorageTest, OneDayWindowForgetsPreviousDay) {
+  // Arrange
+  InitStorage(1);
+  storage_->AddCount(10'000);
+
+  // Act
+  task_environment_.AdvanceClock(base::Days(1));
+  storage_->AddCount(10'000);
+
+  // Assert
+  EXPECT_EQ(10'000U, storage_->GetCount());
+}
+
+TEST_F(SerpMetricsTimePeriodStorageTest, RetrievesDailyValues) {
   InitStorage(7);
-  uint64_t saving = 10000;
   for (int day = 0; day <= 7; day++) {
     task_environment_.AdvanceClock(base::Days(1));
-    state_->AddDelta(saving);
+    storage_->AddCount(10'000);
   }
-  EXPECT_EQ(state_->GetPeriodSum(), 7 * saving);
+  EXPECT_EQ(70'000U, storage_->GetCount());
 }
 
 TEST_F(SerpMetricsTimePeriodStorageTest, HandlesSkippedDay) {
   InitStorage(7);
-  uint64_t saving = 10000;
   for (int day = 0; day < 7; day++) {
     task_environment_.AdvanceClock(base::Days(1));
     if (day == 3) {
       continue;
     }
-    state_->AddDelta(saving);
+    storage_->AddCount(10'000);
   }
-  EXPECT_EQ(state_->GetPeriodSum(), 6 * saving);
+  EXPECT_EQ(60'000U, storage_->GetCount());
 }
 
 TEST_F(SerpMetricsTimePeriodStorageTest, IntermittentUsageWeekly) {
   InitStorage(7);
-  uint64_t saving = 10000;
   for (int day = 0; day < 10; day++) {
     task_environment_.AdvanceClock(base::Days(2));
-    state_->AddDelta(saving);
+    storage_->AddCount(10'000);
   }
-  EXPECT_EQ(state_->GetPeriodSum(), 4 * saving);
+  EXPECT_EQ(40'000U, storage_->GetCount());
 }
 
 TEST_F(SerpMetricsTimePeriodStorageTest, IntermittentUsageMonthly) {
   InitStorage(30);
-  uint64_t saving = 10000;
   for (int day = 0; day < 40; day++) {
     task_environment_.AdvanceClock(base::Days(10));
-    state_->AddDelta(saving);
+    storage_->AddCount(10'000);
   }
-  EXPECT_EQ(state_->GetPeriodSum(), 3 * saving);
+  EXPECT_EQ(30'000U, storage_->GetCount());
 }
 
 TEST_F(SerpMetricsTimePeriodStorageTest, InfrequentUsageWeekly) {
   InitStorage(7);
-  uint64_t saving = 10000;
-  state_->AddDelta(saving);
+  storage_->AddCount(10'000);
   task_environment_.AdvanceClock(base::Days(6));
-  state_->AddDelta(saving);
-  EXPECT_EQ(state_->GetPeriodSum(), 2 * saving);
+  storage_->AddCount(10'000);
+  EXPECT_EQ(20'000U, storage_->GetCount());
 }
 
 TEST_F(SerpMetricsTimePeriodStorageTest, InfrequentUsageMonthly) {
   InitStorage(30);
-  uint64_t saving = 10000;
-  state_->AddDelta(saving);
+  storage_->AddCount(10'000);
   task_environment_.AdvanceClock(base::Days(29));
-  state_->AddDelta(saving);
-  EXPECT_EQ(state_->GetPeriodSum(), 2 * saving);
+  storage_->AddCount(10'000);
+  EXPECT_EQ(20'000U, storage_->GetCount());
 }
 
 TEST_F(SerpMetricsTimePeriodStorageTest, SegregatedListsInDictionary) {
-  InitStorage(7, kDictKey1);
-  state_->AddDelta(55);
+  InitStorage(7, kFooDictKey);
+  storage_->AddCount(55);
 
-  InitStorage(7, kDictKey2);
-  state_->AddDelta(33);
+  InitStorage(7, kBarDictKey);
+  storage_->AddCount(33);
 
-  InitStorage(7, kDictKey1);
-  EXPECT_EQ(state_->GetPeriodSum(), 55U);
+  InitStorage(7, kFooDictKey);
+  EXPECT_EQ(55U, storage_->GetCount());
 
-  InitStorage(7, kDictKey2);
-  EXPECT_EQ(state_->GetPeriodSum(), 33U);
+  InitStorage(7, kBarDictKey);
+  EXPECT_EQ(33U, storage_->GetCount());
+}
+
+TEST_F(SerpMetricsTimePeriodStorageTest, ClearRemovesStoredData) {
+  // Arrange
+  InitStorage(7);
+  storage_->AddCount(10'000);
+
+  // Act
+  storage_->Clear();
+
+  // Assert
+  EXPECT_EQ(0U, storage_->GetCount());
+}
+
+TEST_F(SerpMetricsTimePeriodStorageTest, AccumulatesAfterClear) {
+  // Arrange
+  InitStorage(7);
+  storage_->AddCount(10'000);
+  storage_->Clear();
+
+  // Act
+  storage_->AddCount(5'000);
+
+  // Assert
+  EXPECT_EQ(5'000U, storage_->GetCount());
+}
+
+TEST_F(SerpMetricsTimePeriodStorageTest, RangeQueryExcludesBucketBeforeStart) {
+  // Arrange
+  InitStorage(7);
+  storage_->AddCount(10'000);
+  const base::Time midnight = Midnight(base::Time::Now());
+
+  // Assert
+  EXPECT_EQ(0U, storage_->GetCountForTimeRange(midnight + base::Minutes(30),
+                                               midnight + base::Days(1)));
 }
 
 TEST_F(SerpMetricsTimePeriodStorageTest,
-       ValueStoredAtMidnightIsExcludedWhenRangeStartsAfterMidnight) {
+       RangeQueryIncludesBucketAtStartBoundary) {
+  // Arrange
   InitStorage(7);
-  const uint64_t saving = 10000;
-  state_->AddDelta(saving);
-
+  storage_->AddCount(10'000);
   const base::Time midnight = Midnight(base::Time::Now());
-  EXPECT_EQ(state_->GetPeriodSumInTimeRange(midnight + base::Minutes(30),
-                                            midnight + base::Days(1)),
-            0U);
+
+  // Assert
+  EXPECT_EQ(10'000U,
+            storage_->GetCountForTimeRange(midnight, midnight + base::Days(1)));
+}
+
+TEST_F(SerpMetricsTimePeriodStorageTest,
+       RangeQueryIncludesBucketAtEndBoundary) {
+  // Arrange
+  InitStorage(7);
+  task_environment_.AdvanceClock(base::Days(1));
+  storage_->AddCount(10'000);
+  const base::Time midnight_today = Midnight(base::Time::Now());
+
+  // Assert
+  EXPECT_EQ(10'000U, storage_->GetCountForTimeRange(
+                         midnight_today - base::Days(1), midnight_today));
+}
+
+TEST_F(SerpMetricsTimePeriodStorageTest, RangeQueryExcludesBucketAfterEnd) {
+  // Arrange
+  InitStorage(7);
+  task_environment_.AdvanceClock(base::Days(1));
+  storage_->AddCount(10'000);
+  const base::Time midnight_yesterday =
+      Midnight(base::Time::Now()) - base::Days(1);
+
+  // Assert
+  EXPECT_EQ(0U, storage_->GetCountForTimeRange(
+                    midnight_yesterday, midnight_yesterday + base::Hours(1)));
 }
 
 }  // namespace serp_metrics
