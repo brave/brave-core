@@ -190,6 +190,9 @@ function BlockScriptsControls(props: { showDetails: () => void }) {
     && overrideSource !== ContentSettingSource.kUser
     && overrideSource !== ContentSettingSource.kNone
 
+  const detailsEnabled =
+    isNoscriptEnabled && hasBlockedOrAllowed && !scriptsBlockedEnforced
+
   return (
     <div>
       <Icon name='code' />
@@ -216,9 +219,7 @@ function BlockScriptsControls(props: { showDetails: () => void }) {
       </div>
       <Button
         onClick={props.showDetails}
-        isDisabled={
-          !isNoscriptEnabled || !hasBlockedOrAllowed || scriptsBlockedEnforced
-        }
+        isDisabled={!detailsEnabled}
         kind='plain-faint'
         fab
         aria-label={getString('BRAVE_SHIELDS_VIEW_DETAILS')}
