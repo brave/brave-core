@@ -66,6 +66,10 @@ void MigrateBraveProfilePrefs(PrefService* prefs);
 bool AreTooltipsEnabled(PrefService* prefs);
 bool AreCardPreviewsEnabled(PrefService* prefs);
 
+// True when the scrollable horizontal tab strip feature flag is enabled and the
+// user pref to use it is on.
+bool IsScrollableHorizontalTabStripEnabled(const PrefService* prefs);
+
 }  // namespace brave_tabs
 
 #endif  // BRAVE_BROWSER_UI_TABS_BRAVE_TAB_PREFS_H_
