@@ -1472,6 +1472,15 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_LOCAL_AI_TASK_MANAGER_TITLE" desc="The label for the on-device AI background process in the Task Manager.">
         On-Device AI
       </message>
+
+      <!-- History semantic search disclaimer. Upstream's text implies a
+           round-trip to the vendor with human review; Brave's implementation
+           runs entirely on-device (see
+           brave/browser/history_embeddings/README.md), so we ship our own
+           string and swap the IDS in chromium_src overrides. -->
+      <message name="IDS_BRAVE_HISTORY_EMBEDDINGS_DISCLAIMER" desc="Disclaimer shown on chrome://history and in the history search IPH promo, indicating that history semantic search runs entirely on-device.">
+        Your searches and page contents are processed on this device. Nothing is sent to Brave or seen by human reviewers.
+      </message>
       <!--Add new items to the appropriate sections above -->
     </messages>
   </release>

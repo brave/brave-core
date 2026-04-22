@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/history_embeddings/history_embeddings_utils.cc b/chrome/browser/history_embeddings/history_embeddings_utils.cc
+index 8198ba0c74bbfb0e68f8334f9592dddccb182c28..d829b6e1448dc9ef7c000dfcad93e7039c2d32fe 100644
+--- a/chrome/browser/history_embeddings/history_embeddings_utils.cc
++++ b/chrome/browser/history_embeddings/history_embeddings_utils.cc
+@@ -163,10 +163,10 @@ void PopulateSourceForWebUI(content::WebUIDataSource* source,
+               ModelExecutionEnterprisePolicyValue::kAllowWithoutLogging);
+   if (logging_disabled_by_enterprise) {
+     source->AddLocalizedString("historyEmbeddingsDisclaimer",
+-                               IDS_HISTORY_EMBEDDINGS_DISCLAIMER_LOGGING_OFF);
++                               IDS_BRAVE_HISTORY_EMBEDDINGS_DISCLAIMER);
+   } else {
+     source->AddLocalizedString("historyEmbeddingsDisclaimer",
+-                               IDS_HISTORY_EMBEDDINGS_DISCLAIMER);
++                               IDS_BRAVE_HISTORY_EMBEDDINGS_DISCLAIMER);
+   }
+ }
+ 

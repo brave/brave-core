@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Swap the upstream history semantic search disclaimer IDS references to
+# Brave-owned strings. Brave's implementation runs entirely on-device (see
+# brave/browser/history_embeddings/README.md), so the upstream text about
+# data being sent to Brave and seen by human reviewers is inaccurate. The
+# IDS_BRAVE_* definitions are pulled in by the chromium_src override at
+# brave/chromium_src/chrome/browser/history_embeddings/history_embeddings_utils.cc.
+
+[[substitution]]
+description = 'Swap IDS_HISTORY_EMBEDDINGS_DISCLAIMER_LOGGING_OFF to the Brave-owned string.'
+re_pattern = '\bIDS_HISTORY_EMBEDDINGS_DISCLAIMER_LOGGING_OFF\b'
+replace = 'IDS_BRAVE_HISTORY_EMBEDDINGS_DISCLAIMER'
+
+[[substitution]]
+description = 'Swap IDS_HISTORY_EMBEDDINGS_DISCLAIMER to the Brave-owned string.'
+re_pattern = '\bIDS_HISTORY_EMBEDDINGS_DISCLAIMER\b'
+replace = 'IDS_BRAVE_HISTORY_EMBEDDINGS_DISCLAIMER'

@@ -1,0 +1,17 @@
+diff --git a/components/omnibox/browser/featured_search_provider.cc b/components/omnibox/browser/featured_search_provider.cc
+index 29b83c6edeee8a467ef5bb7e2773586024b4fb22..66d6b9af9ac3315891810d15355d330f50864c97 100644
+--- a/components/omnibox/browser/featured_search_provider.cc
++++ b/components/omnibox/browser/featured_search_provider.cc
+@@ -609,10 +609,10 @@ bool FeaturedSearchProvider::ShouldShowHistoryEmbeddingsDisclaimerIphMatch()
+ 
+ void FeaturedSearchProvider::AddHistoryEmbeddingsDisclaimerIphMatch() {
+   std::u16string text =
+-      l10n_util::GetStringUTF16(IDS_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH) +
++      l10n_util::GetStringUTF16(IDS_BRAVE_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH) +
+       u" ";
+   std::u16string link_text = l10n_util::GetStringUTF16(
+-      IDS_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH_LINK_TEXT);
++      IDS_BRAVE_EMPTY_STRING);
+   AddIPHMatch(IphType::kHistoryEmbeddingsDisclaimer,
+               /*iph_contents=*/text,
+               /*matched_term=*/u"",
