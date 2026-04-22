@@ -30,6 +30,7 @@ static_library("browser") {
 
   friend = [
     "//brave/browser/containers:browser_tests",
+    "//brave/browser/ui/containers:unit_tests",
     ":unit_tests",
   ]
 
@@ -54,19 +55,34 @@ static_library("browser") {
   ]
 }
 
+source_set("test_support") {
+  testonly = true
+  sources = [
+    "containers_test_utils.cc",
+    "containers_test_utils.h",
+  ]
+
+  public_deps = [ ":browser" ]
+
+  deps = [
+    "//testing/gmock",
+    "//testing/gtest",
+    "//ui/color",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
   sources = [
     "containers_service_unittest.cc",
     "containers_settings_handler_unittest.cc",
-    "containers_test_utils.cc",
-    "containers_test_utils.h",
     "default_containers_list_unittest.cc",
     "prefs_unittest.cc",
   ]
 
   deps = [
     ":browser",
+    ":test_support",
     "//base",
     "//base/test:test_support",
     "//brave/components/containers/core/common",

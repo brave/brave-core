@@ -48,6 +48,7 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
+    "container_model_unittest.cc",
     "containers_icon_generator_unittest.cc",
     "containers_menu_model_test_api.cc",
     "containers_menu_model_test_api.h",
@@ -60,9 +61,13 @@ source_set("unit_tests") {
     ":containers",
     "//base",
     "//base/allocator/partition_allocator/src/partition_alloc:test_support",
+    "//base/test:test_support",
     "//brave/app:command_ids",
+    "//brave/components/containers/core/browser:test_support",
+    "//brave/components/containers/core/common",
     "//brave/components/containers/core/mojom",
     "//brave/components/vector_icons",
+    "//components/sync_preferences:test_support",
     "//testing/gmock",
     "//testing/gtest",
   ]

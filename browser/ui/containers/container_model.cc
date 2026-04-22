@@ -47,12 +47,30 @@ ContainerModel& ContainerModel::operator=(ContainerModel&& other) noexcept =
 
 ContainerModel::~ContainerModel() = default;
 
-std::vector<ContainerModel> GetContainerModels(const ContainersService& service,
-                                               float scale_factor) {
+std::vector<ContainerModel> GetContainerModels(
+    const ContainersService& service,
+    const base::flat_set<std::string>& runtime_container_ids,
+    float scale_factor) {
   std::vector<ContainerModel> containers;
   for (auto& container : service.GetContainers()) {
     containers.emplace_back(std::move(container), scale_factor);
   }
+
+  if (!runtime_container_ids.empty()) {
+    base::flat_set<std::string> container_ids;
+    for (const auto& container : containers) {
+      container_ids.insert(container.id());
+    }
+
+    for (const auto& id : runtime_container_ids) {
+      if (container_ids.contains(id)) {
+        continue;
+      }
+      containers.push_back(GetRuntimeContainerModel(service, id, scale_factor));
+      container_ids.insert(id);
+    }
+  }
+
   return containers;
 }
 

@@ -12,6 +12,21 @@
 
 namespace containers {
 
+MockContainersServiceDelegate::MockContainersServiceDelegate() {
+  ON_CALL(*this, GetReferencedContainerIds(testing::_))
+      .WillByDefault([this](OnReferencedContainerIdsReadyCallback callback) {
+        std::move(callback).Run(referenced_container_ids_);
+      });
+  ON_CALL(*this, DeleteContainerStorage(testing::_, testing::_))
+      .WillByDefault([this](const std::string& id,
+                            DeleteContainerStorageCallback callback) {
+        delete_requests_.push_back(id);
+        std::move(callback).Run(delete_result_);
+      });
+}
+
+MockContainersServiceDelegate::~MockContainersServiceDelegate() = default;
+
 mojom::ContainerPtr MakeContainer(std::string id,
                                   std::string name,
                                   mojom::Icon icon,

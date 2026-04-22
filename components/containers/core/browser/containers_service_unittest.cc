@@ -9,8 +9,6 @@
 #include <string>
 #include <utility>
 
-#include "base/containers/flat_set.h"
-#include "base/functional/callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/containers/core/browser/containers_service_observer.h"
 #include "brave/components/containers/core/browser/containers_test_utils.h"
@@ -26,47 +24,6 @@
 namespace containers {
 
 namespace {
-
-using testing::_;
-
-class MockContainersServiceDelegate : public ContainersService::Delegate {
- public:
-  MockContainersServiceDelegate() {
-    ON_CALL(*this, GetReferencedContainerIds(_))
-        .WillByDefault([this](OnReferencedContainerIdsReadyCallback callback) {
-          std::move(callback).Run(referenced_container_ids_);
-        });
-    ON_CALL(*this, DeleteContainerStorage(_, _))
-        .WillByDefault([this](const std::string& id,
-                              DeleteContainerStorageCallback callback) {
-          delete_requests_.push_back(id);
-          std::move(callback).Run(delete_result_);
-        });
-  }
-
-  MOCK_METHOD(void,
-              GetReferencedContainerIds,
-              (OnReferencedContainerIdsReadyCallback),
-              (override));
-  MOCK_METHOD(void,
-              DeleteContainerStorage,
-              (const std::string&, DeleteContainerStorageCallback),
-              (override));
-
-  void SetReferencedContainersIds(base::flat_set<std::string> ids) {
-    referenced_container_ids_ = std::move(ids);
-  }
-
-  void set_delete_result(bool delete_result) { delete_result_ = delete_result; }
-  const std::vector<std::string>& delete_requests() const {
-    return delete_requests_;
-  }
-
- private:
-  base::flat_set<std::string> referenced_container_ids_;
-  bool delete_result_ = true;
-  std::vector<std::string> delete_requests_;
-};
 
 class MockContainersServiceObserver : public ContainersServiceObserver {
  public:

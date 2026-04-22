@@ -8,14 +8,9 @@
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "brave/browser/ui/browser_commands.h"
-#include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/common/features.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "components/tabs/public/tab_interface.h"
-#include "content/public/browser/security_principal.h"
-#include "content/public/browser/site_instance.h"
-#include "content/public/browser/web_contents.h"
 #include "ui/compositor/compositor.h"
 #include "ui/views/widget/widget.h"
 
@@ -45,29 +40,7 @@ void ContainersBookmarkMenuModelDelegate::OnNoContainerSelected() {
 
 base::flat_set<std::string>
 ContainersBookmarkMenuModelDelegate::GetCurrentContainerIds() {
-  if (!browser_) {
-    CHECK_IS_TEST();
-    return {};
-  }
-
-  tabs::TabInterface* active_tab = browser_->GetActiveTabInterface();
-  if (!active_tab) {
-    return {};
-  }
-
-  content::WebContents* contents = active_tab->GetContents();
-  if (!contents) {
-    return {};
-  }
-
-  const auto storage_partition_config = contents->GetSiteInstance()
-                                            ->GetSecurityPrincipal()
-                                            .GetStoragePartitionConfig();
-  if (!IsContainersStoragePartition(storage_partition_config)) {
-    return {};
-  }
-
-  return {storage_partition_config.partition_name()};
+  return {};
 }
 
 Browser* ContainersBookmarkMenuModelDelegate::GetBrowserToOpenSettings() {
