@@ -29,6 +29,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveFeatureUtil;
 import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
+import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
 import org.chromium.chrome.browser.browsing_data.BraveClearBrowsingDataFragment;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletPolicy;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
@@ -427,7 +428,8 @@ public class BravePrivacySettings extends PrivacySettings {
 
         boolean surveyPanelistEnabled =
                 ChromeFeatureList.isEnabled(
-                        BraveFeatureList.BRAVE_NTP_BRANDED_WALLPAPER_SURVEY_PANELIST);
+                                BraveFeatureList.BRAVE_NTP_BRANDED_WALLPAPER_SURVEY_PANELIST)
+                        && !BraveOriginSubscriptionPrefs.getIsCredentialSummaryActiveCached();
         mSurveyPanelist = (ChromeSwitchPreference) findPreference(PREF_SURVEY_PANELIST);
         mSurveyPanelist.setOnPreferenceChangeListener(this);
         mSurveyPanelist.setVisible(surveyPanelistEnabled);
@@ -1062,7 +1064,8 @@ public class BravePrivacySettings extends PrivacySettings {
                                 frag, PREF_ALLOW_ELEMENTS_BLOCKING_ON_PRIVATE_TABS);
                     }
                     if (!ChromeFeatureList.isEnabled(
-                            BraveFeatureList.BRAVE_NTP_BRANDED_WALLPAPER_SURVEY_PANELIST)) {
+                                    BraveFeatureList.BRAVE_NTP_BRANDED_WALLPAPER_SURVEY_PANELIST)
+                            || BraveOriginSubscriptionPrefs.getIsCredentialSummaryActiveCached()) {
                         indexData.removeEntryForKey(frag, PREF_SURVEY_PANELIST);
                     }
                     if (ChromeFeatureList.isEnabled(
