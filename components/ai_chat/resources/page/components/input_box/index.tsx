@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { showAlert } from '@brave/leo/react/alertCenter'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import Tooltip from '@brave/leo/react/tooltip'
@@ -24,7 +23,7 @@ import {
 } from '../attachment_item'
 import { ModelSelector } from '../model_selector'
 import usePromise from '$web-common/usePromise'
-import { convertFileToUploadedFile } from '../../utils/file_utils'
+import { processFiles } from '../../utils/file_utils'
 import { isFullPageScreenshot } from '../../../common/conversation_history_utils'
 import Editable from './editable'
 import { stringifyContent } from './editable_content'
@@ -34,6 +33,7 @@ const LEARN_MORE_CONTENT_AGENT_URL =
 
 type Props = Pick<
   ConversationContext,
+  | 'attachFiles'
   | 'inputText'
   | 'setInputText'
   | 'submitInputTextToAPI'
@@ -49,7 +49,6 @@ type Props = Pick<
   | 'handleVoiceRecognition'
   | 'isGenerating'
   | 'handleStopGenerating'
-  | 'uploadFile'
   | 'getScreenshots'
   | 'pendingMessageFiles'
   | 'removeFile'
@@ -59,7 +58,6 @@ type Props = Pick<
   | 'disassociateContent'
   | 'associateDefaultContent'
   | 'setAttachmentsDialog'
-  | 'attachImages'
   | 'pauseTask'
   | 'resumeTask'
   | 'stopTask'
@@ -230,29 +228,7 @@ function InputBox(props: InputBoxProps) {
     e.preventDefault()
 
     try {
-      const results = await Promise.all(
-        files.map((file) =>
-          convertFileToUploadedFile(
-            file,
-            props.context.processImageFile,
-            props.context.processPdfFile,
-            props.context.processTextFile,
-          ),
-        ),
-      )
-      const uploadedFiles = results.filter(
-        (f): f is Mojom.UploadedFile => f !== null,
-      )
-      if (uploadedFiles.length > 0) {
-        props.context.attachImages(uploadedFiles)
-      }
-      if (uploadedFiles.length < files.length) {
-        showAlert({
-          type: 'error',
-          content: getLocale(S.CHAT_UI_FILE_UPLOAD_ERROR),
-          actions: [],
-        })
-      }
+      processFiles(files, props.context.attachFiles)
     } catch (error) {
       // Silently fail - error will be handled by the upload system
     }
@@ -456,7 +432,7 @@ function InputBox(props: InputBoxProps) {
             </Button>
           )}
           <AttachmentButtonMenu
-            uploadFile={props.context.uploadFile}
+            attachFiles={props.context.attachFiles}
             getScreenshots={props.context.getScreenshots}
             conversationHistory={props.context.conversationHistory}
             associatedContentInfo={props.context.associatedContentInfo}

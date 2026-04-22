@@ -3,370 +3,151 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import {
-  convertFileToUploadedFile,
-  FileReadError,
-  ImageProcessingError,
-} from './file_utils'
+import { processFiles } from './file_utils'
 import * as Mojom from '../../common/mojom'
-import type { AIChatContext } from '../state/ai_chat_context'
 
-describe('convertFileToUploadedFile', () => {
-  let mockProcessImageFile: jest.Mock<
-    ReturnType<AIChatContext['processImageFile']>,
-    Parameters<AIChatContext['processImageFile']>
-  >
-  let mockFileReader: any
-  let originalFileReader: any
+// jsdom doesn't implement File.prototype.arrayBuffer or .text — polyfill via FileReader.
+beforeAll(() => {
+  if (!File.prototype.arrayBuffer) {
+    File.prototype.arrayBuffer = function () {
+      return new Promise<ArrayBuffer>((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = () => resolve(reader.result as ArrayBuffer)
+        reader.onerror = () => reject(reader.error)
+        reader.readAsArrayBuffer(this)
+      })
+    }
+  }
+  if (!File.prototype.text) {
+    File.prototype.text = function () {
+      return new Promise<string>((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = () => resolve(reader.result as string)
+        reader.onerror = () => reject(reader.error)
+        reader.readAsText(this)
+      })
+    }
+  }
+})
+
+describe('processFiles', () => {
+  let mockAttachFiles: jest.Mock
 
   beforeEach(() => {
-    // Mock processImageFile function (now passed as parameter)
-    mockProcessImageFile = jest.fn()
-
-    // Mock FileReader for simulating file reading
-    originalFileReader = global.FileReader
-    mockFileReader = {
-      readAsArrayBuffer: jest.fn(),
-      onload: null,
-      onerror: null,
-      result: null,
-    }
-
-    // Mock the FileReader constructor to return our mock
-    global.FileReader = jest
-      .fn()
-      .mockImplementation(() => mockFileReader) as any
+    mockAttachFiles = jest.fn()
   })
 
-  afterEach(() => {
-    global.FileReader = originalFileReader
-    jest.clearAllMocks()
-  })
-
-  // Test helpers
   const createMockFile = (
     name: string,
     type: string,
-    size: number = 1000,
+    content: string = 'mock content',
   ): File => {
-    return new File(['mock content'], name, { type, size: size })
+    return new File([content], name, { type })
   }
 
-  describe('successful file processing', () => {
-    it('converts image file successfully', async () => {
-      const file = createMockFile('test.png', 'image/png', 1500)
-      const mockArrayBuffer = new ArrayBuffer(8)
-      const expectedData = Array.from(new Uint8Array(mockArrayBuffer))
-      const mockProcessedFile = {
-        filename: 'processed_test.png',
-        filesize: 1200,
-        data: [1, 2, 3, 4],
+  it('converts image file to kImage type', async () => {
+    const file = createMockFile('test.png', 'image/png')
+    await processFiles([file], mockAttachFiles)
+
+    expect(mockAttachFiles).toHaveBeenCalledWith([
+      expect.objectContaining({
+        filename: 'test.png',
         type: Mojom.UploadedFileType.kImage,
         extractedText: undefined,
-      }
+      }),
+    ])
+  })
 
-      mockProcessImageFile.mockResolvedValue(mockProcessedFile)
+  it('converts PDF file to kPdf type', async () => {
+    const file = createMockFile('test.pdf', 'application/pdf')
+    await processFiles([file], mockAttachFiles)
 
-      // Override readAsArrayBuffer to trigger success
-      mockFileReader.readAsArrayBuffer.mockImplementation(() => {
-        process.nextTick(() => {
-          if (mockFileReader.onload) {
-            mockFileReader.onload({ target: { result: mockArrayBuffer } })
-          }
-        })
-      })
-
-      const result = await convertFileToUploadedFile(file, mockProcessImageFile)
-
-      expect(mockFileReader.readAsArrayBuffer).toHaveBeenCalledWith(file)
-      expect(mockProcessImageFile).toHaveBeenCalledWith([
-        expectedData,
-        'test.png',
-      ])
-      expect(result).toEqual(mockProcessedFile)
-    })
-
-    it('handles different file types', async () => {
-      const file = createMockFile('screenshot.jpeg', 'image/jpeg')
-      const mockArrayBuffer = new ArrayBuffer(16)
-      const mockProcessedFile = {
-        filename: 'screenshot.jpeg',
-        filesize: 1000,
-        data: [5, 6, 7, 8],
-        type: Mojom.UploadedFileType.kScreenshot,
-        extractedText: undefined,
-      }
-
-      mockProcessImageFile.mockResolvedValue(mockProcessedFile)
-
-      // Override readAsArrayBuffer to trigger success
-      mockFileReader.readAsArrayBuffer.mockImplementation(() => {
-        process.nextTick(() => {
-          if (mockFileReader.onload) {
-            mockFileReader.onload({ target: { result: mockArrayBuffer } })
-          }
-        })
-      })
-
-      const result = await convertFileToUploadedFile(file, mockProcessImageFile)
-
-      expect(result).toEqual(mockProcessedFile)
-    })
-
-    it('converts PDF file successfully', async () => {
-      const file = createMockFile('test.pdf', 'application/pdf', 2000)
-      const mockArrayBuffer = new ArrayBuffer(8)
-      const expectedData = Array.from(new Uint8Array(mockArrayBuffer))
-
-      // Override readAsArrayBuffer to trigger success
-      mockFileReader.readAsArrayBuffer.mockImplementation(() => {
-        process.nextTick(() => {
-          if (mockFileReader.onload) {
-            mockFileReader.onload({ target: { result: mockArrayBuffer } })
-          }
-        })
-      })
-
-      const result = await convertFileToUploadedFile(file, mockProcessImageFile)
-
-      expect(mockFileReader.readAsArrayBuffer).toHaveBeenCalledWith(file)
-      expect(mockProcessImageFile).not.toHaveBeenCalled()
-      expect(result).toEqual({
+    expect(mockAttachFiles).toHaveBeenCalledWith([
+      expect.objectContaining({
         filename: 'test.pdf',
-        filesize: file.size, // Use actual file size
-        data: expectedData,
         type: Mojom.UploadedFileType.kPdf,
         extractedText: undefined,
-      })
-    })
-
-    it('throws ImageProcessingError for empty files', async () => {
-      const file = createMockFile('empty.png', 'image/png', 0)
-      const mockArrayBuffer = new ArrayBuffer(0)
-
-      // Mock processImageFile to return null for empty files (real behavior)
-      mockProcessImageFile.mockResolvedValue(
-        null as unknown as Mojom.UploadedFile,
-      )
-
-      // Override readAsArrayBuffer to trigger success
-      mockFileReader.readAsArrayBuffer.mockImplementation(() => {
-        process.nextTick(() => {
-          if (mockFileReader.onload) {
-            mockFileReader.onload({ target: { result: mockArrayBuffer } })
-          }
-        })
-      })
-
-      await expect(
-        convertFileToUploadedFile(file, mockProcessImageFile),
-      ).rejects.toThrow(ImageProcessingError)
-      await expect(
-        convertFileToUploadedFile(file, mockProcessImageFile),
-      ).rejects.toThrow(
-        'Failed to process image file: Backend returned no result',
-      )
-      expect(mockProcessImageFile).toHaveBeenCalledWith([[], 'empty.png'])
-    })
+      }),
+    ])
   })
 
-  describe('error handling', () => {
-    it('throws FileReadError when FileReader fails to read file', async () => {
-      const file = createMockFile('test.png', 'image/png')
+  it('converts text file to kText type with extracted text', async () => {
+    const file = createMockFile('test.txt', 'text/plain', 'hello world')
+    await processFiles([file], mockAttachFiles)
 
-      // Override readAsArrayBuffer to trigger error immediately
-      mockFileReader.readAsArrayBuffer.mockImplementation(() => {
-        process.nextTick(() => {
-          if (mockFileReader.onerror) {
-            mockFileReader.onerror()
-          }
-        })
-      })
-
-      await expect(
-        convertFileToUploadedFile(file, mockProcessImageFile),
-      ).rejects.toThrow(FileReadError)
-      await expect(
-        convertFileToUploadedFile(file, mockProcessImageFile),
-      ).rejects.toThrow('Failed to read file: test.png')
-      expect(mockProcessImageFile).not.toHaveBeenCalled()
-    })
-
-    it('throws FileReadError when FileReader result is null', async () => {
-      const file = createMockFile('test.png', 'image/png')
-
-      // Override readAsArrayBuffer to trigger onload with null result
-      mockFileReader.readAsArrayBuffer.mockImplementation(() => {
-        process.nextTick(() => {
-          if (mockFileReader.onload) {
-            mockFileReader.onload({ target: { result: null } })
-          }
-        })
-      })
-
-      await expect(
-        convertFileToUploadedFile(file, mockProcessImageFile),
-      ).rejects.toThrow(FileReadError)
-      await expect(
-        convertFileToUploadedFile(file, mockProcessImageFile),
-      ).rejects.toThrow('Failed to read file: No data received')
-      expect(mockProcessImageFile).not.toHaveBeenCalled()
-    })
-
-    it('throws ImageProcessingError when processImageFile returns null', async () => {
-      const file = createMockFile('test.png', 'image/png')
-      const mockArrayBuffer = new ArrayBuffer(8)
-
-      mockProcessImageFile.mockResolvedValue(
-        null as unknown as Mojom.UploadedFile,
-      )
-
-      // Override readAsArrayBuffer to trigger success
-      mockFileReader.readAsArrayBuffer.mockImplementation(() => {
-        process.nextTick(() => {
-          if (mockFileReader.onload) {
-            mockFileReader.onload({ target: { result: mockArrayBuffer } })
-          }
-        })
-      })
-
-      await expect(
-        convertFileToUploadedFile(file, mockProcessImageFile),
-      ).rejects.toThrow(ImageProcessingError)
-      await expect(
-        convertFileToUploadedFile(file, mockProcessImageFile),
-      ).rejects.toThrow(
-        'Failed to process image file: Backend returned no result',
-      )
-    })
-
-    it('treats text files as kText via processTextFile', async () => {
-      const file = createMockFile('test.txt', 'text/plain')
-      const mockArrayBuffer = new ArrayBuffer(8)
-      const expectedData = Array.from(new Uint8Array(mockArrayBuffer))
-      const mockProcessTextFile = jest.fn().mockResolvedValue({
+    expect(mockAttachFiles).toHaveBeenCalledWith([
+      expect.objectContaining({
         filename: 'test.txt',
-        filesize: file.size,
-        data: expectedData,
         type: Mojom.UploadedFileType.kText,
-        extractedText: 'extracted content',
-      })
-
-      mockFileReader.readAsArrayBuffer.mockImplementation(() => {
-        process.nextTick(() => {
-          if (mockFileReader.onload) {
-            mockFileReader.onload({ target: { result: mockArrayBuffer } })
-          }
-        })
-      })
-
-      const result = await convertFileToUploadedFile(
-        file,
-        mockProcessImageFile,
-        undefined,
-        mockProcessTextFile,
-      )
-
-      expect(mockProcessImageFile).not.toHaveBeenCalled()
-      expect(mockProcessTextFile).toHaveBeenCalled()
-      expect(result).toEqual(
-        expect.objectContaining({
-          filename: 'test.txt',
-          type: Mojom.UploadedFileType.kText,
-          extractedText: 'extracted content',
-        }),
-      )
-    })
-
-    it('returns null for text files when extraction fails', async () => {
-      const file = createMockFile('binary.dat', 'application/octet-stream')
-      const mockArrayBuffer = new ArrayBuffer(8)
-      const mockProcessTextFile = jest.fn().mockResolvedValue(null)
-
-      mockFileReader.readAsArrayBuffer.mockImplementation(() => {
-        process.nextTick(() => {
-          if (mockFileReader.onload) {
-            mockFileReader.onload({ target: { result: mockArrayBuffer } })
-          }
-        })
-      })
-
-      const result = await convertFileToUploadedFile(
-        file,
-        mockProcessImageFile,
-        undefined,
-        mockProcessTextFile,
-      )
-
-      expect(result).toBeNull()
-    })
+        extractedText: 'hello world',
+      }),
+    ])
   })
 
-  describe('data transformation', () => {
-    it('correctly transforms ArrayBuffer to Uint8Array', async () => {
-      const file = createMockFile('data.png', 'image/png')
-      // Create specific byte pattern
-      const mockArrayBuffer = new ArrayBuffer(4)
-      const view = new Uint8Array(mockArrayBuffer)
-      view[0] = 255
-      view[1] = 128
-      view[2] = 64
-      view[3] = 32
-      const expectedData = [255, 128, 64, 32]
+  it('includes byte data for all file types', async () => {
+    const file = createMockFile('test.png', 'image/png', 'abc')
+    await processFiles([file], mockAttachFiles)
 
-      mockProcessImageFile.mockResolvedValue({
-        filename: 'data.png',
-        filesize: 1000,
-        data: expectedData,
+    const [uploadedFiles] = mockAttachFiles.mock.calls[0]
+    expect(uploadedFiles[0].data).toEqual(expect.any(Array))
+    expect(uploadedFiles[0].data.length).toBeGreaterThan(0)
+  })
+
+  it('preserves file size', async () => {
+    const file = createMockFile('test.pdf', 'application/pdf', 'x'.repeat(500))
+    await processFiles([file], mockAttachFiles)
+
+    const [uploadedFiles] = mockAttachFiles.mock.calls[0]
+    expect(uploadedFiles[0].filesize).toBe(file.size)
+  })
+
+  it('converts multiple files and calls attachFiles once', async () => {
+    const files = [
+      createMockFile('image.png', 'image/png'),
+      createMockFile('doc.pdf', 'application/pdf'),
+      createMockFile('notes.txt', 'text/plain', 'some text'),
+    ]
+    await processFiles(files, mockAttachFiles)
+
+    expect(mockAttachFiles).toHaveBeenCalledTimes(1)
+    expect(mockAttachFiles).toHaveBeenCalledWith([
+      expect.objectContaining({
+        filename: 'image.png',
         type: Mojom.UploadedFileType.kImage,
-        extractedText: undefined,
-      })
+      }),
+      expect.objectContaining({
+        filename: 'doc.pdf',
+        type: Mojom.UploadedFileType.kPdf,
+      }),
+      expect.objectContaining({
+        filename: 'notes.txt',
+        type: Mojom.UploadedFileType.kText,
+      }),
+    ])
+  })
 
-      // Override readAsArrayBuffer to trigger success
-      mockFileReader.readAsArrayBuffer.mockImplementation(() => {
-        process.nextTick(() => {
-          if (mockFileReader.onload) {
-            mockFileReader.onload({ target: { result: mockArrayBuffer } })
-          }
-        })
-      })
+  it('treats unknown MIME types as kText', async () => {
+    const file = createMockFile('data.bin', 'application/octet-stream')
+    await processFiles([file], mockAttachFiles)
 
-      await convertFileToUploadedFile(file, mockProcessImageFile)
+    expect(mockAttachFiles).toHaveBeenCalledWith([
+      expect.objectContaining({ type: Mojom.UploadedFileType.kText }),
+    ])
+  })
 
-      expect(mockProcessImageFile).toHaveBeenCalledWith([
-        expectedData,
-        'data.png',
-      ])
-    })
+  it('does not include extractedText for image files', async () => {
+    const file = createMockFile('img.jpeg', 'image/jpeg')
+    await processFiles([file], mockAttachFiles)
 
-    it('preserves original filename', async () => {
-      const filename = 'my special file with spaces.png'
-      const file = createMockFile(filename, 'image/png')
-      const mockArrayBuffer = new ArrayBuffer(8)
+    const [uploadedFiles] = mockAttachFiles.mock.calls[0]
+    expect(uploadedFiles[0].extractedText).toBeUndefined()
+  })
 
-      mockProcessImageFile.mockResolvedValue({
-        filename: filename,
-        filesize: 1000,
-        data: [1, 2, 3],
-        type: Mojom.UploadedFileType.kImage,
-        extractedText: undefined,
-      })
+  it('does not include extractedText for PDF files', async () => {
+    const file = createMockFile('doc.pdf', 'application/pdf')
+    await processFiles([file], mockAttachFiles)
 
-      // Override readAsArrayBuffer to trigger success
-      mockFileReader.readAsArrayBuffer.mockImplementation(() => {
-        process.nextTick(() => {
-          if (mockFileReader.onload) {
-            mockFileReader.onload({ target: { result: mockArrayBuffer } })
-          }
-        })
-      })
-
-      await convertFileToUploadedFile(file, mockProcessImageFile)
-
-      expect(mockProcessImageFile).toHaveBeenCalledWith([
-        expect.any(Array),
-        filename,
-      ])
-    })
+    const [uploadedFiles] = mockAttachFiles.mock.calls[0]
+    expect(uploadedFiles[0].extractedText).toBeUndefined()
   })
 })

@@ -445,37 +445,9 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     })
   }
 
-  // Register handler for when uploadFile is called
-  const uploadFileMutation = aiChat.api.useUploadFile()
-
-  const uploadFile = (
-    args: Parameters<typeof uploadFileMutation.mutate>[0],
-  ) => {
-    uploadFileMutation.mutate(args, {
-      onSuccess: async (uploadedFiles, [useMediaCapture]) => {
-        // Reset event state, avoid us having to make a useState<bool>
-        // for this
-        aiChat.api.resetOnUploadFilesSelected()
-        if (uploadedFiles) {
-          return processUploadedFiles(uploadedFiles)
-        }
-      },
-    })
-  }
-
-  // Listen for user-chosen attached files are processing
-  // to display the uploading indicator only after user has chosen some files
-  // (and not just cancelled the file picker).
-  // Listening via useCurrentXYZ avoids having to create another state property
-  const isAttachedFilesProcessing =
-    aiChat.api.useCurrentOnUploadFilesSelected().hasEmitted
-
   // Is uploading is a combination of if files are being retrieved
   // or if chosen files are being processed.
-  const isUploadingFiles =
-    screenshotsMutation.isPending
-    || uploadFileMutation.isPending
-    || isAttachedFilesProcessing
+  const isUploadingFiles = screenshotsMutation.isPending
 
   const removeFile = (index: number) => {
     const fileToRemove = pendingMessageFiles[index]
@@ -629,21 +601,13 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     setIgnoreExternalLinkWarning,
     disassociateContent,
     associateDefaultContent,
-    attachImages: (images: Mojom.UploadedFile[]) => {
-      processUploadedFiles(images)
-    },
+    attachFiles: processUploadedFiles,
 
     isDragActive,
     isDragOver,
     clearDragState,
 
     pendingMessageFiles,
-
-    /**
-     * @deprecated
-     * Use custom hook instead.
-     */
-    uploadFile,
 
     /**
      * @deprecated
