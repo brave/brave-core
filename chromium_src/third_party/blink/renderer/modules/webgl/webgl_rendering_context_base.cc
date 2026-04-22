@@ -8,7 +8,6 @@
 #include <optional>
 #include <string>
 
-#include "base/no_destructor.h"
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 #include "brave/third_party/blink/renderer/modules/webgl/brave_webgl_fingerprint_handler.h"
 #include "third_party/blink/public/common/features.h"

@@ -173,8 +173,6 @@ bool AllowFingerprinting(ExecutionContext* context,
   CHECK(level == BraveFarblingLevel::BALANCED);
   // We allow the fingerprinting for WebGL if the protection feature flag is
   // disabled.
-  // TODO(ragarwal): Add check on the underlying pref setting as well when we
-  // have the pref.
   return !base::FeatureList::IsEnabled(
       blink::features::kBraveWebGLFingerprintingProtection);
 }
