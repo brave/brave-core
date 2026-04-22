@@ -1,0 +1,26 @@
+diff --git a/chrome/browser/image_editor/screenshot_flow.cc b/chrome/browser/image_editor/screenshot_flow.cc
+--- a/chrome/browser/image_editor/screenshot_flow.cc
++++ b/chrome/browser/image_editor/screenshot_flow.cc
+@@ -229,10 +229,20 @@
+ }
+ 
+ void ScreenshotFlow::OnKeyEvent(ui::KeyEvent* event) {
+-  if (event->type() == ui::EventType::kKeyPressed &&
+-      event->key_code() == ui::VKEY_ESCAPE) {
++  if (event->type() != ui::EventType::kKeyPressed) {
++    return;
++  }
++
++  if (event->key_code() == ui::VKEY_ESCAPE) {
+     event->StopPropagation();
+     CompleteCapture(ScreenshotCaptureResultCode::USER_ESCAPE_EXIT, gfx::Rect());
++    return;
++  }
++
++  if (event->key_code() == ui::VKEY_A && event->IsControlDown()) {
++    event->StopPropagation();
++    CompleteCapture(ScreenshotCaptureResultCode::SUCCESS,
++                    gfx::Rect(web_contents_->GetSize()));
+   }
+ }
+ 
