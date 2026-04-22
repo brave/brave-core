@@ -12,15 +12,19 @@ source_set("browser_tests") {
   sources = [
     "//brave/browser/ui/views/tabs/brave_tab_container_browsertest.cc",
     "//brave/browser/ui/views/tabs/brave_tab_hover_browsertest.cc",
+    "//brave/browser/ui/views/tabs/brave_tab_strip_browsertest.cc",
   ]
 
   deps = [
     "//base",
+    "//base/test:test_support",
+    "//brave/browser/ui:brave_tab_prefs",
     "//chrome:resources",
     "//chrome:strings",
     "//chrome/browser",
     "//chrome/browser/ui",
     "//chrome/browser/ui:ui_features",
+    "//chrome/browser/ui/tabs:features",
     "//chrome/browser/ui/thumbnails",
     "//chrome/common",
     "//chrome/test",
