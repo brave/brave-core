@@ -24,14 +24,13 @@ class PageActionModel : public chromium_impl::PageActionModel {
   ~PageActionModel() override;
 
   void SetOverrideChipColors(
-      base::PassKey<PageActionController>,
+      PageActionPassKey,
       std::optional<SkColor> override_background_color,
       std::optional<SkColor> override_foreground_color) override;
-  void SetAlwaysShowLabel(base::PassKey<PageActionController>,
-                          bool always_show) override;
-  void SetOverrideHeight(base::PassKey<PageActionController>,
+  void SetAlwaysShowLabel(PageActionPassKey, bool always_show) override;
+  void SetOverrideHeight(PageActionPassKey,
                          std::optional<int> height_px) override;
-  void SetOverrideTriggerableEvent(base::PassKey<PageActionController>,
+  void SetOverrideTriggerableEvent(PageActionPassKey,
                                    std::optional<int> event_flags) override;
   std::optional<SkColor> GetOverrideBackgroundColor() const override;
   std::optional<SkColor> GetOverrideForegroundColor() const override;

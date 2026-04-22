@@ -1,20 +1,20 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_model.h b/chrome/browser/ui/views/page_action/page_action_model.h
-index 05c873f91672109a073561149122969c5d906069..0ec41b2c39083146f18f7864add7593b278d4f53 100644
+index 1dce812529afdb47751d91cbf676d2c233213bb3..559528fe32679f8c957df231862b3962bb53ef54 100644
 --- a/chrome/browser/ui/views/page_action/page_action_model.h
 +++ b/chrome/browser/ui/views/page_action/page_action_model.h
-@@ -120,9 +120,25 @@ class PageActionModelInterface {
+@@ -118,9 +118,25 @@ class PageActionModelInterface {
    virtual PageActionColorSource GetColorSource() const = 0;
  
    virtual bool IsEphemeral() const = 0;
 +  virtual void SetOverrideChipColors(
-+      base::PassKey<PageActionController>,
++      PageActionPassKey,
 +      std::optional<SkColor> override_background_color,
 +      std::optional<SkColor> override_foreground_color) = 0;
-+  virtual void SetAlwaysShowLabel(base::PassKey<PageActionController>,
++  virtual void SetAlwaysShowLabel(PageActionPassKey,
 +                                  bool always_show) = 0;
-+  virtual void SetOverrideHeight(base::PassKey<PageActionController>,
++  virtual void SetOverrideHeight(PageActionPassKey,
 +                                 std::optional<int> height) = 0;
-+  virtual void SetOverrideTriggerableEvent(base::PassKey<PageActionController>,
++  virtual void SetOverrideTriggerableEvent(PageActionPassKey,
 +                                           std::optional<int> event_flags) = 0;
 +  virtual std::optional<SkColor> GetOverrideBackgroundColor() const = 0;
 +  virtual std::optional<SkColor> GetOverrideForegroundColor() const = 0;
@@ -27,8 +27,8 @@ index 05c873f91672109a073561149122969c5d906069..0ec41b2c39083146f18f7864add7593b
 +namespace chromium_impl {
  class PageActionModel : public PageActionModelInterface {
   public:
-   explicit PageActionModel(bool is_ephemeral = false);
-@@ -219,6 +235,7 @@ class PageActionModel : public PageActionModelInterface {
+   explicit PageActionModel(actions::ActionId action_id,
+@@ -217,6 +233,7 @@ class PageActionModel : public PageActionModelInterface {
    bool IsEphemeral() const override;
  
   private:
@@ -36,7 +36,7 @@ index 05c873f91672109a073561149122969c5d906069..0ec41b2c39083146f18f7864add7593b
    // Identifies which property triggered a NotifyChange call, used for
    // per-property reentrancy checks.
    enum class Property {
-@@ -241,7 +258,11 @@ class PageActionModel : public PageActionModelInterface {
+@@ -239,7 +256,11 @@ class PageActionModel : public PageActionModelInterface {
      kAnchoredMessageActionIcon,
      kIsAnchoredMessageShowing,
      kAnchoredMessageIcon,
@@ -49,7 +49,7 @@ index 05c873f91672109a073561149122969c5d906069..0ec41b2c39083146f18f7864add7593b
    };
    using PropertySet =
        base::EnumSet<Property, Property::kShowRequested, Property::kMaxValue>;
-@@ -340,6 +361,7 @@ class PageActionModel : public PageActionModelInterface {
+@@ -339,6 +360,7 @@ class PageActionModel : public PageActionModelInterface {
  
    base::ObserverList<PageActionModelObserver> observer_list_;
  };
