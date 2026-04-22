@@ -91,3 +91,4 @@ xcuserdata
 .claude/worktrees/
 
 /.ignore/
+components/ai_chat/resources/page/api/app/app_models_generated.ts

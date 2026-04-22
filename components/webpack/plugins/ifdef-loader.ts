@@ -228,7 +228,12 @@ function applyIf(lines: string[], ifBlock: IfBlock, defs: OptionObject, filePath
  * @return true if block has to be preserved
  */
 function evaluate(condition: string, defs: OptionObject): boolean {
-   const code = `return (${condition}) ? true : false;`;
+   // Translate GN/Python-style operators to JavaScript equivalents.
+   const jsCondition = condition
+      .replace(/\bnot\s+/g, '!')
+      .replace(/\band\b/g, '&&')
+      .replace(/\bor\b/g, '||')
+   const code = `return (${jsCondition}) ? true : false;`;
    const args = Object.keys(defs);
 
    let result: boolean;
