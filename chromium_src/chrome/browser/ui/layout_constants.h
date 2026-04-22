@@ -28,15 +28,16 @@ namespace tabs {
 int GetHorizontalTabHeight();
 
 // Spacing between the top and bottom of tabs and the tab strip bounds. Use this
-// instead of `kHorizontalTabVerticalSpacing` for layout; it reflects compact mode
-// and touch UI.
+// instead of `kHorizontalTabVerticalSpacing` for layout; it reflects compact
+// mode and touch UI.
 int GetHorizontalTabVerticalSpacing();
 
 // The amount of space before the first tab view.
 inline constexpr int kHorizontalTabStripLeftMargin = 3;
 
 // Default vertical spacing when not using compact horizontal tabs (and for
-// touch UI). `GetHorizontalTabVerticalSpacing()` may return a smaller value when
+// touch UI). `GetHorizontalTabVerticalSpacing()` may return a smaller value
+// when
 // `#brave-compact-horizontal-tabs` is enabled.
 inline constexpr int kHorizontalTabVerticalSpacing = 4;
 

@@ -33,7 +33,8 @@ inline constexpr int kTabStripLayoutHeightTarget =
 // Horizontal padding inside the tab label area (see GetHorizontalTabPadding()).
 inline constexpr int kTabHorizontalPadding = 4;
 
-// Tab group header chip horizontal inset (see GetTabGroupTitleHorizontalInset()).
+// Tab group header chip horizontal inset (see
+// GetTabGroupTitleHorizontalInset()).
 inline constexpr int kTabGroupTitleHorizontalInset = 6;
 
 // --- Tab strip (touch + compact) --------------------------------------------
@@ -44,7 +45,8 @@ inline constexpr int kTabVerticalSpacingTouch = 4;
 
 // --- Toolbar + URL bar (non-touch, compact) --------------------------------
 // Vertical 0 keeps tab strip + toolbar within ~60 DIP when the tab strip is
-// taller (e.g. kTabVisualHeight 28); row height is driven by kToolbarButtonHeight.
+// taller (e.g. kTabVisualHeight 28); row height is driven by
+// kToolbarButtonHeight.
 inline constexpr int kToolbarInteriorMarginVertical = 2;
 inline constexpr int kToolbarInteriorMarginHorizontal = 6;
 inline constexpr int kLocationBarHeight = 28;
