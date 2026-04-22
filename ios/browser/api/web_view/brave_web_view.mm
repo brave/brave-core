@@ -20,6 +20,7 @@
 #include "brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge_holder.h"
 #include "brave/ios/browser/ai_chat/tab_data_web_state_observer.h"
 #include "brave/ios/browser/ai_chat/tab_tracker_service_factory.h"
+#include "brave/ios/browser/api/web_view/autofill/brave_autofill_controller.h"
 #include "brave/ios/browser/api/web_view/autofill/brave_web_view_autofill_client.h"
 #include "brave/ios/browser/api/web_view/passwords/brave_web_view_password_manager_client.h"
 #include "brave/ios/browser/brave_ads/ads_tab_helper.h"
@@ -440,10 +441,8 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
                                               formHelper:formHelper
                                         suggestionHelper:suggestionHelper
                                             driverHelper:driverHelper];
-  return [[CWVAutofillController alloc]
+  return [[BraveAutofillController alloc]
            initWithWebState:self.webState
-       createAutofillClient:
-           base::BindRepeating(&autofill::BraveWebViewAutofillClientIOS::Create)
               autofillAgent:autofillAgent
             passwordManager:std::move(passwordManager)
       passwordManagerClient:std::move(passwordManagerClient)

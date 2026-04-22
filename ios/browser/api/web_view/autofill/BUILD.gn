@@ -15,6 +15,8 @@ source_set("autofill") {
   sources = [
     "autofill_credit_card_util.h",
     "autofill_credit_card_util.mm",
+    "brave_autofill_controller.h",
+    "brave_autofill_controller.mm",
     "brave_web_view_autofill_client.h",
     "brave_web_view_autofill_client.mm",
   ]
