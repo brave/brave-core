@@ -79,6 +79,10 @@ inline constexpr char kObliviousHttpKeyConfig[] =
 inline constexpr char kObliviousHttpKeyConfigExpiresAt[] =
     "brave.brave_ads.ohttp.key_config.expires_at";
 
+// Policy prefs. Not prefixed with `brave.brave_ads` so they are not cleared
+// when the user resets ads data.
+inline constexpr char kDisabledByPolicy[] = "brave.ads.disabled_by_policy";
+
 // We don't prefix `brave.brave_ads` to this pref path because we don't want
 // them cleared if the user clears ads data or resets Brave Rewards.
 inline constexpr char kShouldShowSearchResultAdClickedInfoBar[] =

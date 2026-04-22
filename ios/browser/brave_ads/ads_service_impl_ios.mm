@@ -27,6 +27,7 @@
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/command_line_switches/command_line_switches_util.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "sql/database.h"
 #include "ui/base/page_transition_types.h"
@@ -56,8 +57,8 @@ AdsClientNotifier* AdsServiceImplIOS::GetAdsClientNotifier() {
 }
 
 bool AdsServiceImplIOS::IsIneligibleToStart() const {
-  // iOS has no eligibility gate; the service is always eligible to start.
-  return false;
+  return prefs_->IsManagedPreference(prefs::kDisabledByPolicy) &&
+         prefs_->GetBoolean(prefs::kDisabledByPolicy);
 }
 
 bool AdsServiceImplIOS::IsInitialized() const {

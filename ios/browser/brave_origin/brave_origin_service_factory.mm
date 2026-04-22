@@ -38,6 +38,8 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #endif
 
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 #include "brave/components/brave_talk/pref_names.h"
 #endif
@@ -96,6 +98,12 @@ constexpr auto kBraveOriginProfileMetadata =
                            BraveOriginServiceFactory::BraveOriginPrefMetadata>({
         // Brave Rewards preferences
         {brave_rewards::prefs::kDisabledByPolicy,
+         BraveOriginServiceFactory::BraveOriginPrefMetadata(
+             true,
+             /*user_settable=*/false)},
+
+        // Brave Ads preferences
+        {brave_ads::prefs::kDisabledByPolicy,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              true,
              /*user_settable=*/false)},

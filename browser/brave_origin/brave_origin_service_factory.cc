@@ -15,6 +15,7 @@
 #include "brave/browser/policy/brave_simple_policy_map.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/brave_origin/brave_origin_service.h"
@@ -30,6 +31,10 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"
 #include "components/policy/core/browser/browser_policy_connector_base.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/pref_names.h"
@@ -124,6 +129,14 @@ constexpr auto kBraveOriginProfileMetadata =
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              false,
              /*user_settable=*/true)},
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+        // Brave Ads preferences
+        {brave_ads::prefs::kDisabledByPolicy,
+         BraveOriginServiceFactory::BraveOriginPrefMetadata(
+             true,
+             /*user_settable=*/false)},
+#endif
 
         // Brave Rewards preferences
         {brave_rewards::prefs::kDisabledByPolicy,

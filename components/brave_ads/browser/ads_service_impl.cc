@@ -283,9 +283,14 @@ void AdsServiceImpl::GetDeviceIdAndMaybeStartBatAdsServiceCallback(
 }
 
 bool AdsServiceImpl::CanStartBatAdsService() const {
-  if (!brave_rewards::IsSupported(&*prefs_)) {
-    // Never start if Rewards is disabled by policy, feature flag, or
-    // unsupported region, regardless of which ad unit the user has opted into.
+  if (prefs_->IsManagedPreference(prefs::kDisabledByPolicy) &&
+      prefs_->GetBoolean(prefs::kDisabledByPolicy)) {
+    // Never start if Ads are disabled by policy.
+    return false;
+  }
+
+  if (brave_rewards::IsUnsupportedRegion()) {
+    // Never start in regions where Rewards is not available.
     return false;
   }
 
@@ -660,11 +665,19 @@ void AdsServiceImpl::InitializeLocalStatePrefChangeRegistrar() {
 void AdsServiceImpl::InitializePrefChangeRegistrar() {
   pref_change_registrar_.Init(&*prefs_);
 
+  InitializePolicyPrefChangeRegistrar();
   InitializeBraveRewardsPrefChangeRegistrar();
   InitializeSubdivisionTargetingPrefChangeRegistrar();
   InitializeNewTabPageAdsPrefChangeRegistrar();
   InitializeNotificationAdsPrefChangeRegistrar();
   InitializeSearchResultAdsPrefChangeRegistrar();
+}
+
+void AdsServiceImpl::InitializePolicyPrefChangeRegistrar() {
+  pref_change_registrar_.Add(
+      prefs::kDisabledByPolicy,
+      base::BindRepeating(&AdsServiceImpl::OnOptedInToAdsPrefChanged,
+                          base::Unretained(this), prefs::kDisabledByPolicy));
 }
 
 void AdsServiceImpl::InitializeBraveRewardsPrefChangeRegistrar() {

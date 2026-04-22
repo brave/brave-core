@@ -65,6 +65,9 @@ void RegisterProfilePrefs(PrefRegistrySimple* const registry) {
 
   registry->RegisterBooleanPref(prefs::kShouldShowSearchResultAdClickedInfoBar,
                                 true);
+
+  // Policy prefs.
+  registry->RegisterBooleanPref(prefs::kDisabledByPolicy, false);
 }
 
 }  // namespace brave_ads

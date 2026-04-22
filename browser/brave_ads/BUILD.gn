@@ -165,13 +165,27 @@ source_set("browser_tests") {
   deps = [
     ":brave_ads",
     ":impl",
+    "//brave/components/brave_ads/core/public:headers",
     "//chrome/browser",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui",
     "//chrome/test:test_support",
+    "//components/policy:generated",
+    "//components/policy/core/browser",
+    "//components/policy/core/common:test_support",
+    "//components/prefs",
+    "//content/public/browser",
   ]
 
   if (is_android) {
     deps += [ "//chrome/test:test_support_ui_android" ]
   } else {
+    sources += [
+      "ads_disabled_by_policy_browsertest.cc",
+      "ads_enabled_by_policy_browsertest.cc",
+      "test/ads_policy_browsertest_base.cc",
+      "test/ads_policy_browsertest_base.h",
+    ]
     deps += [ "//chrome/test:test_support_ui" ]
   }
 

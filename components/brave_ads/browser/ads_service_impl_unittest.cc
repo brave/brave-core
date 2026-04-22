@@ -381,11 +381,10 @@ TEST_F(
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
 TEST_F(BraveAdsAdsServiceImplTest,
-       ServiceDoesNotStartForSearchResultAdsWhenRewardsIsDisabledByPolicy) {
+       ServiceDoesNotStartForSearchResultAdsWhenAdsAreDisabledByPolicy) {
   // Arrange
   prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, true);
-  prefs_.SetManagedPref(brave_rewards::prefs::kDisabledByPolicy,
-                        base::Value(true));
+  prefs_.SetManagedPref(prefs::kDisabledByPolicy, base::Value(true));
 
   // Act
   Startup();
@@ -395,15 +394,14 @@ TEST_F(BraveAdsAdsServiceImplTest,
 }
 
 TEST_F(BraveAdsAdsServiceImplTest,
-       ServiceDoesNotStartForNewTabPageAdsWhenRewardsIsDisabledByPolicy) {
+       ServiceDoesNotStartForNewTabPageAdsWhenAdsAreDisabledByPolicy) {
   // Arrange
   prefs_.SetBoolean(
       ntp_background_images::prefs::kNewTabPageShowBackgroundImage, true);
   prefs_.SetBoolean(ntp_background_images::prefs::
                         kNewTabPageShowSponsoredImagesBackgroundImage,
                     true);
-  prefs_.SetManagedPref(brave_rewards::prefs::kDisabledByPolicy,
-                        base::Value(true));
+  prefs_.SetManagedPref(prefs::kDisabledByPolicy, base::Value(true));
 
   // Act
   Startup();
@@ -414,13 +412,12 @@ TEST_F(BraveAdsAdsServiceImplTest,
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 TEST_F(BraveAdsAdsServiceImplTest,
-       ServiceDoesNotStartForNotificationAdsWhenRewardsIsDisabledByPolicy) {
+       ServiceDoesNotStartForNotificationAdsWhenAdsAreDisabledByPolicy) {
   // Arrange
   prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, false);
   prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
   prefs_.SetBoolean(prefs::kOptedInToNotificationAds, true);
-  prefs_.SetManagedPref(brave_rewards::prefs::kDisabledByPolicy,
-                        base::Value(true));
+  prefs_.SetManagedPref(prefs::kDisabledByPolicy, base::Value(true));
 
   // Act
   Startup();
@@ -431,12 +428,11 @@ TEST_F(BraveAdsAdsServiceImplTest,
 
 TEST_F(
     BraveAdsAdsServiceImplTest,
-    ServiceDoesNotStartWhenUserHasJoinedBraveRewardsButRewardsIsDisabledByPolicy) {
+    ServiceDoesNotStartWhenUserHasJoinedBraveRewardsButAdsAreDisabledByPolicy) {
   // Arrange
   prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, false);
   prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
-  prefs_.SetManagedPref(brave_rewards::prefs::kDisabledByPolicy,
-                        base::Value(true));
+  prefs_.SetManagedPref(prefs::kDisabledByPolicy, base::Value(true));
 
   // Act
   Startup();

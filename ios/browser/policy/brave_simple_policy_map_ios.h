@@ -7,6 +7,7 @@
 #define BRAVE_IOS_BROWSER_POLICY_BRAVE_SIMPLE_POLICY_MAP_IOS_H_
 
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
@@ -43,6 +44,11 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
     {
         policy::key::kBraveRewardsDisabled,
         brave_rewards::prefs::kDisabledByPolicy,
+        base::Value::Type::BOOLEAN,
+    },
+    {
+        policy::key::kBraveAdsDisabled,
+        brave_ads::prefs::kDisabledByPolicy,
         base::Value::Type::BOOLEAN,
     },
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
