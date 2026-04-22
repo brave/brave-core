@@ -435,7 +435,8 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
       {                                                                      \
           "brave-compact-horizontal-tabs",                                   \
           "Compact horizontal tabs design",                                  \
-          "Reduces the height of horizontal tabs",                           \
+          "Reduces the height of the horizontal tab strip and toolbar "      \
+          "(including the URL bar)",                                         \
           kOsWin | kOsMac | kOsLinux,                                        \
           FEATURE_VALUE_TYPE(tabs::kBraveCompactHorizontalTabs),             \
       },                                                                     \

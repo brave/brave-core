@@ -5,21 +5,36 @@
 
 #include "chrome/browser/ui/layout_constants.h"
 
+#include <algorithm>
 #include <optional>
 
+#include "base/feature_list.h"
+#include "chrome/browser/ui/tabs/brave_compact_horizontal_tabs_layout.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "ui/base/pointer/touch_ui_controller.h"
 #include "ui/gfx/geometry/insets.h"
+
+static_assert(
+    tabs::kHorizontalTabVerticalSpacing ==
+    tabs::compact_horizontal_tabs_layout::kTabVerticalSpacingDefault);
 
 namespace {
 
 using tabs::HorizontalTabsUpdateEnabled;
 
+bool BraveCompactHorizontalTabsMetricsActive() {
+  return base::FeatureList::IsEnabled(tabs::kBraveCompactHorizontalTabs) &&
+         !ui::TouchUiController::Get()->touch_ui();
+}
+
 std::optional<gfx::Insets> GetBraveLayoutInsets(LayoutInset inset) {
   const bool touch_ui = ui::TouchUiController::Get()->touch_ui();
+  const bool compact = BraveCompactHorizontalTabsMetricsActive();
   switch (inset) {
     case LOCATION_BAR_PAGE_INFO_ICON_PADDING:
-      return gfx::Insets::VH(6, 6);
+      return gfx::Insets::VH(compact ? tabs::compact_horizontal_tabs_layout::kPageInfoIconPaddingVertical
+                                     : tabs::compact_horizontal_tabs_layout::kPageInfoIconPaddingVerticalDefault,
+                             tabs::compact_horizontal_tabs_layout::kPageInfoIconPaddingHorizontal);
     case LOCATION_BAR_PAGE_ACTION_ICON_PADDING:
       return gfx::Insets::VH(4, 4);
     case TOOLBAR_BUTTON:
@@ -27,7 +42,15 @@ std::optional<gfx::Insets> GetBraveLayoutInsets(LayoutInset inset) {
       // icon size - ToolbarButton::kDefaultIconSize
       return gfx::Insets(touch_ui ? 12 : 4);
     case TOOLBAR_INTERIOR_MARGIN:
-      return touch_ui ? gfx::Insets() : gfx::Insets::VH(4, 6);
+      if (touch_ui) {
+        return gfx::Insets();
+      }
+      return compact
+                 ? gfx::Insets::VH(tabs::compact_horizontal_tabs_layout::kToolbarInteriorMarginVertical,
+                                   tabs::compact_horizontal_tabs_layout::kToolbarInteriorMarginHorizontal)
+                 : gfx::Insets::VH(
+                       tabs::compact_horizontal_tabs_layout::kToolbarInteriorMarginVerticalDefault,
+                       tabs::compact_horizontal_tabs_layout::kToolbarInteriorMarginHorizontalDefault);
     default:
       break;
   }
@@ -54,7 +77,7 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
     }
     case LayoutConstant::kTabStripPadding: {
       if (HorizontalTabsUpdateEnabled()) {
-        return tabs::kHorizontalTabVerticalSpacing;
+        return tabs::GetHorizontalTabVerticalSpacing();
       }
       return std::nullopt;
     }
@@ -62,7 +85,9 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
       if (!HorizontalTabsUpdateEnabled()) {
         return std::nullopt;
       }
-      return 1;
+      return BraveCompactHorizontalTabsMetricsActive()
+                 ? tabs::compact_horizontal_tabs_layout::kTabstripToolbarOverlap
+                 : tabs::compact_horizontal_tabs_layout::kTabstripToolbarOverlapDefault;
     }
     case LayoutConstant::kLocationBarChildCornerRadius:
       return 4;
@@ -78,7 +103,9 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
 
     case LayoutConstant::kLocationBarHeight:
       // Consider adjust below element padding also when this height is changed.
-      return 32;
+      return BraveCompactHorizontalTabsMetricsActive()
+                 ? tabs::compact_horizontal_tabs_layout::kLocationBarHeight
+                 : tabs::compact_horizontal_tabs_layout::kLocationBarHeightDefault;
     case LayoutConstant::kLocationBarTrailingIconSize:
       return 18;
     case LayoutConstant::kLocationBarIconSize:
@@ -86,7 +113,9 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
     case LayoutConstant::kLocationBarElementPadding:
     case LayoutConstant::kLocationBarPageInfoIconVerticalPadding:
     case LayoutConstant::kLocationBarTrailingDecorationEdgePadding:
-      return 2;
+      return BraveCompactHorizontalTabsMetricsActive()
+                 ? tabs::compact_horizontal_tabs_layout::kLocationBarInnerPadding
+                 : tabs::compact_horizontal_tabs_layout::kLocationBarInnerPaddingDefault;
     default:
       break;
   }
@@ -134,24 +163,41 @@ bool UseCompact() {
 
 }  // namespace
 
+int GetHorizontalTabVerticalSpacing() {
+  if (ui::TouchUiController::Get()->touch_ui()) {
+    return tabs::compact_horizontal_tabs_layout::kTabVerticalSpacingTouch;
+  }
+  return UseCompact() ? tabs::compact_horizontal_tabs_layout::kTabVerticalSpacing
+                      : tabs::compact_horizontal_tabs_layout::kTabVerticalSpacingDefault;
+}
+
 int GetHorizontalTabHeight() {
-  return UseCompact() ? 28 : 32;
+  if (ui::TouchUiController::Get()->touch_ui()) {
+    return UseCompact() ? tabs::compact_horizontal_tabs_layout::kTabVisualHeightTouchCompact
+                        : tabs::compact_horizontal_tabs_layout::kTabVisualHeightDefault;
+  }
+  return UseCompact() ? tabs::compact_horizontal_tabs_layout::kTabVisualHeight
+                      : tabs::compact_horizontal_tabs_layout::kTabVisualHeightDefault;
 }
 
 int GetHorizontalTabStripHeight() {
-  return GetHorizontalTabHeight() + (kHorizontalTabVerticalSpacing * 2);
+  return GetHorizontalTabHeight() +
+         (GetHorizontalTabVerticalSpacing() * 2);
 }
 
 int GetHorizontalTabPadding() {
-  return UseCompact() ? 4 : 8;
+  return UseCompact() ? tabs::compact_horizontal_tabs_layout::kTabHorizontalPadding
+                      : tabs::compact_horizontal_tabs_layout::kTabHorizontalPaddingDefault;
 }
 
 int GetTabGroupTitleVerticalInset() {
-  return (GetHorizontalTabHeight() - kTabGroupLineHeight) / 2;
+  return std::max(0, (GetHorizontalTabHeight() - kTabGroupLineHeight) / 2);
 }
 
 int GetTabGroupTitleHorizontalInset() {
-  return UseCompact() ? 6 : 10;
+  return UseCompact()
+             ? tabs::compact_horizontal_tabs_layout::kTabGroupTitleHorizontalInset
+             : tabs::compact_horizontal_tabs_layout::kTabGroupTitleHorizontalInsetDefault;
 }
 
 }  // namespace tabs
