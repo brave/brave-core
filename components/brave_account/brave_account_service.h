@@ -8,6 +8,7 @@
 
 #include <optional>
 #include <string>
+#include <vector>
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
@@ -26,6 +27,7 @@
 #include "brave/components/brave_account/endpoints/verify_resend.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "components/os_crypt/async/common/encryptor.h"
 #include "components/prefs/pref_member.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -38,8 +40,17 @@ namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
 
+namespace os_crypt_async {
+class OSCryptAsync;
+}  // namespace os_crypt_async
+
 namespace brave_account {
 
+// BraveAccountService has no non-Mojom callers. Its only public entrypoint is
+// `BindInterface()`, and this should remain the case. Receiver binding is
+// deferred until `FinishInitialization()` installs the encrypt/decrypt
+// callbacks, and any service-initiated work that can reach
+// `Encrypt()`/`Decrypt()` is also started only after that point.
 class BraveAccountService : public KeyedService, public mojom::Authentication {
  public:
   using OSCryptCallback =
@@ -47,7 +58,8 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
 
   BraveAccountService(
       PrefService* pref_service,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      os_crypt_async::OSCryptAsync* os_crypt_async);
 
   BraveAccountService(const BraveAccountService&) = delete;
   BraveAccountService& operator=(const BraveAccountService&) = delete;
@@ -67,6 +79,11 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       OSCryptCallback encrypt_callback,
       OSCryptCallback decrypt_callback);
+
+  void OnEncryptorsReady(std::vector<os_crypt_async::Encryptor> encryptors);
+
+  void FinishInitialization(OSCryptCallback encrypt_callback,
+                            OSCryptCallback decrypt_callback);
 
   void AddObserver(
       mojo::PendingRemote<mojom::AuthenticationObserver> observer) override;
@@ -156,6 +173,7 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   OSCryptCallback encrypt_callback_;
   OSCryptCallback decrypt_callback_;
+  std::vector<mojo::PendingReceiver<mojom::Authentication>> pending_receivers_;
   mojo::ReceiverSet<mojom::Authentication> authentication_receivers_;
   mojo::RemoteSet<mojom::AuthenticationObserver> observers_;
   StringPrefMember pref_verification_token_;

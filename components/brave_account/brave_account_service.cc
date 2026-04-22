@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/barrier_callback.h"
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/check_deref.h"
@@ -25,7 +26,7 @@
 #include "brave/components/brave_account/endpoints/error_body.h"
 #include "brave/components/brave_account/endpoints/verify_delete.h"
 #include "brave/components/brave_account/pref_names.h"
-#include "components/os_crypt/sync/os_crypt.h"
+#include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/prefs/pref_service.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_status_code.h"
@@ -110,16 +111,29 @@ auto MakeMojomError(int status_code, ErrorBody error_body) {
 
 BraveAccountService::BraveAccountService(
     PrefService* pref_service,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : BraveAccountService(pref_service,
-                          std::move(url_loader_factory),
-                          base::BindRepeating(&OSCrypt::EncryptString),
-                          base::BindRepeating(&OSCrypt::DecryptString)) {}
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    os_crypt_async::OSCryptAsync* os_crypt_async)
+    : pref_service_(pref_service),
+      url_loader_factory_(std::move(url_loader_factory)) {
+  CHECK(pref_service_);
+  CHECK(url_loader_factory_);
+
+  // Request two `Encryptor` instances so the encrypt and decrypt callbacks
+  // can each own their `Encryptor` and remain self-contained.
+  auto barrier = base::BarrierCallback<os_crypt_async::Encryptor>(
+      2, base::BindOnce(&BraveAccountService::OnEncryptorsReady,
+                        weak_factory_.GetWeakPtr()));
+  CHECK_DEREF(os_crypt_async).GetInstance(barrier);
+  CHECK_DEREF(os_crypt_async).GetInstance(barrier);
+}
 
 BraveAccountService::~BraveAccountService() = default;
 
 void BraveAccountService::BindInterface(
     mojo::PendingReceiver<mojom::Authentication> pending_receiver) {
+  if (!encrypt_callback_ || !decrypt_callback_) {
+    return pending_receivers_.push_back(std::move(pending_receiver));
+  }
   authentication_receivers_.Add(this, std::move(pending_receiver));
 }
 
@@ -129,29 +143,61 @@ BraveAccountService::BraveAccountService(
     OSCryptCallback encrypt_callback,
     OSCryptCallback decrypt_callback)
     : pref_service_(pref_service),
-      url_loader_factory_(std::move(url_loader_factory)),
-      encrypt_callback_(std::move(encrypt_callback)),
-      decrypt_callback_(std::move(decrypt_callback)) {
+      url_loader_factory_(std::move(url_loader_factory)) {
   CHECK(pref_service_);
   CHECK(url_loader_factory_);
-  CHECK(encrypt_callback_);
-  CHECK(decrypt_callback_);
+  FinishInitialization(std::move(encrypt_callback),
+                       std::move(decrypt_callback));
+}
+
+void BraveAccountService::OnEncryptorsReady(
+    std::vector<os_crypt_async::Encryptor> encryptors) {
+  CHECK_EQ(encryptors.size(), 2u);
+
+  FinishInitialization(
+      base::BindRepeating(
+          [](const os_crypt_async::Encryptor& encryptor,
+             const std::string& plaintext, std::string* ciphertext) {
+            return encryptor.EncryptString(plaintext, ciphertext);
+          },
+          base::OwnedRef(std::move(encryptors[0]))),
+      base::BindRepeating(
+          [](const os_crypt_async::Encryptor& encryptor,
+             const std::string& ciphertext, std::string* plaintext) {
+            return encryptor.DecryptString(ciphertext, plaintext);
+          },
+          base::OwnedRef(std::move(encryptors[1]))));
+}
+
+void BraveAccountService::FinishInitialization(
+    OSCryptCallback encrypt_callback,
+    OSCryptCallback decrypt_callback) {
+  CHECK(encrypt_callback);
+  CHECK(decrypt_callback);
+
+  encrypt_callback_ = std::move(encrypt_callback);
+  decrypt_callback_ = std::move(decrypt_callback);
 
   pref_verification_token_.Init(
-      prefs::kBraveAccountVerificationToken, pref_service,
+      prefs::kBraveAccountVerificationToken, pref_service_,
       base::BindRepeating(&BraveAccountService::OnVerificationTokenChanged,
                           base::Unretained(this)));
 
   pref_authentication_token_.Init(
-      prefs::kBraveAccountAuthenticationToken, pref_service,
+      prefs::kBraveAccountAuthenticationToken, pref_service_,
       base::BindRepeating(&BraveAccountService::OnAuthenticationTokenChanged,
                           base::Unretained(this)));
   OnAuthenticationTokenChanged();
 
   pref_email_address_.Init(
-      prefs::kBraveAccountEmailAddress, pref_service,
+      prefs::kBraveAccountEmailAddress, pref_service_,
       base::BindRepeating(&BraveAccountService::OnEmailAddressChanged,
                           base::Unretained(this)));
+
+  for (auto& pending_receiver : pending_receivers_) {
+    authentication_receivers_.Add(this, std::move(pending_receiver));
+  }
+  decltype(pending_receivers_)().swap(pending_receivers_);
 }
 
 void BraveAccountService::AddObserver(
@@ -834,6 +880,8 @@ std::string BraveAccountService::GetCachedServiceToken(
 }
 
 std::string BraveAccountService::Encrypt(const std::string& plain_text) const {
+  CHECK(encrypt_callback_);
+
   if (plain_text.empty()) {
     return std::string();
   }
@@ -847,6 +895,8 @@ std::string BraveAccountService::Encrypt(const std::string& plain_text) const {
 }
 
 std::string BraveAccountService::Decrypt(const std::string& base64) const {
+  CHECK(decrypt_callback_);
+
   if (base64.empty()) {
     return std::string();
   }

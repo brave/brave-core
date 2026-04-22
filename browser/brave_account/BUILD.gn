@@ -16,6 +16,7 @@ static_library("brave_account") {
     "//brave/components/brave_account",
     "//brave/components/brave_account:features",
     "//brave/components/constants",
+    "//chrome/browser:browser_process",
     "//chrome/browser/profiles:profile",
     "//content/public/browser",
     "//content/public/common",
