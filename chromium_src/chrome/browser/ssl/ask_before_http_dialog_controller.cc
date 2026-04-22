@@ -5,9 +5,6 @@
 
 #include "chrome/browser/ssl/ask_before_http_dialog_controller.h"
 
-// Prevent re-defining OpenGURL
-#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-
 namespace {
 
 constexpr char kBraveLearnMoreLink[] =
@@ -15,7 +12,4 @@ constexpr char kBraveLearnMoreLink[] =
 
 }  // namespace
 
-#define OpenGURL(URL, ...) OpenGURL(GURL(kBraveLearnMoreLink), __VA_ARGS__)
-
 #include <chrome/browser/ssl/ask_before_http_dialog_controller.cc>
-#undef OpenGURL
