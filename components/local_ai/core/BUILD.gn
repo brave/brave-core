@@ -54,6 +54,7 @@ static_library("core") {
     "//brave/components/resources:strings_grit",
     "//components/component_updater",
     "//components/component_updater:component_updater_paths",
+    "//components/history_embeddings/core",
     "//components/update_client",
     "//crypto",
     "//mojo/public/cpp/base",
@@ -71,6 +72,7 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/components/brave_component_updater/browser:test_support",
     "//components/component_updater:test_support",
+    "//components/history_embeddings/core",
     "//testing/gmock",
     "//testing/gtest",
   ]

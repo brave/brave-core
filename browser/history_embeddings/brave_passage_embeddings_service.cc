@@ -17,7 +17,7 @@
 #include "base/no_destructor.h"
 #include "base/numerics/safe_math.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/local_ai/core/features.h"
+#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/base/big_buffer.h"
 
@@ -264,7 +264,7 @@ BravePassageEmbeddingsService::BravePassageEmbeddingsService(
     : background_web_contents_factory_(
           std::move(background_web_contents_factory)),
       updater_state_(updater_state) {
-  CHECK(base::FeatureList::IsEnabled(local_ai::features::kLocalAIModels));
+  CHECK(base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings));
   CHECK(updater_state_);
   // Arm the barrier FIRST so CountComponentReadyOnce can route through
   // it. AddObserver's immediate-notify (when install_dir is already
