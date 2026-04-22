@@ -14,12 +14,14 @@
 #include "brave/components/containers/core/browser/containers_test_utils.h"
 #include "brave/components/containers/core/browser/prefs.h"
 #include "brave/components/containers/core/browser/prefs_registration.h"
+#include "brave/components/containers/core/browser/temporary_container.h"
 #include "brave/components/containers/core/browser/unknown_container.h"
 #include "brave/components/containers/core/common/features.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/color/color_provider_manager.h"
 
 namespace containers {
 
@@ -49,6 +51,7 @@ class ContainersServiceTest : public testing::Test {
     delegate_ = nullptr;
     service_->Shutdown();
     service_.reset();
+    ui::ColorProviderManager::ResetForTesting();
   }
 
   base::test::ScopedFeatureList feature_list_;
@@ -77,6 +80,21 @@ TEST_F(ContainersServiceTest, GetContainers) {
 
   auto containers_list = service_->GetContainers();
   ExpectContainer(containers_list[0], "container-id", "Work");
+}
+
+TEST_F(ContainersServiceTest, CreateAndPersistTemporaryContainer) {
+  auto container = service_->CreateAndPersistTemporaryContainer();
+  ASSERT_TRUE(container);
+  EXPECT_TRUE(IsTemporaryContainerId(container->id));
+  EXPECT_FALSE(container->name.empty());
+  EXPECT_GE(container->icon, mojom::Icon::kMinValue);
+  EXPECT_LE(container->icon, mojom::Icon::kMaxValue);
+  EXPECT_NE(SK_ColorTRANSPARENT, container->background_color);
+
+  auto persisted = GetLocallyUsedContainerFromPrefs(prefs_, container->id);
+  ASSERT_TRUE(persisted);
+  ExpectContainer(persisted, container->id, container->name, container->icon,
+                  container->background_color);
 }
 
 TEST_F(ContainersServiceTest,

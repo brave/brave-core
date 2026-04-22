@@ -169,4 +169,13 @@ TEST_F(ContainersMenuModelUnitTest, ExecuteNoContainerCommandCallsDelegate) {
   model.ExecuteCommand(IDC_OPEN_IN_CONTAINER_NO_CONTAINER, 0);
 }
 
+TEST_F(ContainersMenuModelUnitTest, ExecuteNewTemporaryContainerCallsDelegate) {
+  testing::NiceMock<MockContainersMenuModelDelegate> delegate;
+  ContainersMenuModel model =
+      test::ContainersMenuModelTestApi::CreateContainersMenuModel(
+          delegate, GetContainers());
+  EXPECT_CALL(delegate, OnNewTemporaryContainerSelected()).Times(1);
+  model.ExecuteCommand(IDC_NEW_TEMPORARY_CONTAINER, 0);
+}
+
 }  // namespace containers

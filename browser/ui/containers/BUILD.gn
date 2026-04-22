@@ -64,6 +64,7 @@ source_set("unit_tests") {
     "//base/allocator/partition_allocator/src/partition_alloc:test_support",
     "//base/test:test_support",
     "//brave/app:command_ids",
+    "//brave/components/containers/core/browser",
     "//brave/components/containers/core/browser:test_support",
     "//brave/components/containers/core/common",
     "//brave/components/containers/core/mojom",

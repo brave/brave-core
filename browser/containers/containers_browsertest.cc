@@ -13,6 +13,7 @@
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/browser/containers_service.h"
 #include "brave/components/containers/core/browser/prefs.h"
+#include "brave/components/containers/core/browser/temporary_container.h"
 #include "brave/components/containers/core/common/features.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "chrome/browser/profiles/profile.h"
@@ -830,6 +831,57 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, OpenUrlInContainer) {
               std::string::npos);
   EXPECT_EQ("value1",
             content::EvalJs(web_contents, GetLocalStorageJS("container_key")));
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       CreateTemporaryContainerAndOpenUrl) {
+  const GURL url("https://a.test/simple.html");
+  const auto before_containers =
+      GetLocallyUsedContainersFromPrefs(*browser()->profile()->GetPrefs());
+
+  brave::CreateTemporaryContainerAndOpenUrl(browser(), url);
+
+  EXPECT_EQ(2, browser()->tab_strip_model()->count());
+  EXPECT_EQ(1, browser()->tab_strip_model()->active_index());
+
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents);
+  EXPECT_TRUE(content::WaitForLoadStop(web_contents));
+  EXPECT_EQ(url, web_contents->GetLastCommittedURL());
+
+  const auto after_containers =
+      GetLocallyUsedContainersFromPrefs(*browser()->profile()->GetPrefs());
+  ASSERT_EQ(before_containers.size() + 1, after_containers.size());
+
+  content::StoragePartition* storage_partition =
+      web_contents->GetPrimaryMainFrame()->GetStoragePartition();
+  ASSERT_TRUE(storage_partition);
+  const std::string container_id =
+      storage_partition->GetConfig().partition_name();
+  EXPECT_EQ(kContainersStoragePartitionDomain,
+            storage_partition->GetConfig().partition_domain());
+  EXPECT_TRUE(IsTemporaryContainerId(container_id));
+
+  mojom::ContainerPtr container = GetLocallyUsedContainerFromPrefs(
+      *browser()->profile()->GetPrefs(), container_id);
+  ASSERT_TRUE(container);
+  EXPECT_EQ(container_id, container->id);
+
+  const ContainersService* service = GetContainersService();
+  ASSERT_TRUE(service);
+  mojom::ContainerPtr runtime_container =
+      service->GetRuntimeContainerById(container_id);
+  ASSERT_TRUE(runtime_container);
+  EXPECT_EQ(container_id, runtime_container->id);
+
+  content::NavigationEntry* entry =
+      web_contents->GetController().GetLastCommittedEntry();
+  ASSERT_TRUE(entry);
+  auto storage_key = entry->GetStoragePartitionKeyToRestore();
+  ASSERT_TRUE(storage_key.has_value());
+  EXPECT_EQ(kContainersStoragePartitionDomain, storage_key->first);
+  EXPECT_EQ(container_id, storage_key->second);
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, OpenTabUrlsInContainer) {

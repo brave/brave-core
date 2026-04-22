@@ -13,6 +13,7 @@ static_library("browser") {
     "containers_service_observer.h",
     "containers_settings_handler.h",
     "prefs_registration.h",
+    "temporary_container.h",
     "unknown_container.h",
   ]
 
@@ -25,6 +26,7 @@ static_library("browser") {
     "prefs.cc",
     "prefs.h",
     "prefs_registration.cc",
+    "temporary_container.cc",
     "unknown_container.cc",
   ]
 
@@ -40,6 +42,7 @@ static_library("browser") {
     "//base",
     "//brave/components/containers/core/common",
     "//brave/components/resources:strings",
+    "//brave/third_party/bip39wally-core-native:bip39wally-core",
     "//brave/ui/color:nala_color_id",
     "//components/keyed_service/core",
     "//components/pref_registry",
@@ -78,6 +81,7 @@ source_set("unit_tests") {
     "containers_settings_handler_unittest.cc",
     "default_containers_list_unittest.cc",
     "prefs_unittest.cc",
+    "temporary_container_unittest.cc",
   ]
 
   deps = [
@@ -86,6 +90,7 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/components/containers/core/common",
+    "//brave/ui/color:nala_color_id",
     "//components/sync_preferences:test_support",
     "//mojo/public/cpp/bindings",
     "//testing/gmock",

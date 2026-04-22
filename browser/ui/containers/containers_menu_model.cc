@@ -80,7 +80,10 @@ void ContainersMenuModel::BuildMenuItems() {
   // 3. Add a separator.
   AddSeparator(ui::NORMAL_SEPARATOR);
 
-  // 4. Add an item to open settings page.
+  // 4. Add an item to create a new temporary container.
+  AddItemWithStringId(IDC_NEW_TEMPORARY_CONTAINER,
+                      IDS_CXMENU_NEW_TEMPORARY_CONTAINER);
+  // 5. Add an item to open settings page.
   AddItemWithStringId(IDC_OPEN_CONTAINERS_SETTING,
                       IDS_CXMENU_OPEN_CONTAINERS_SETTINGS);
 }
@@ -89,6 +92,11 @@ void ContainersMenuModel::ExecuteCommand(int command_id, int event_flags) {
   if (command_id == IDC_OPEN_IN_CONTAINER_START) {
     // "No container" is selected.
     delegate_->OnNoContainerSelected();
+    return;
+  }
+
+  if (command_id == IDC_NEW_TEMPORARY_CONTAINER) {
+    delegate_->OnNewTemporaryContainerSelected();
     return;
   }
 

@@ -14,6 +14,7 @@
 #include "brave/components/containers/core/browser/containers_service_observer.h"
 #include "brave/components/containers/core/browser/pref_names.h"
 #include "brave/components/containers/core/browser/prefs.h"
+#include "brave/components/containers/core/browser/temporary_container.h"
 #include "brave/components/containers/core/browser/unknown_container.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 
@@ -62,6 +63,12 @@ void ContainersService::MarkContainerUsed(std::string_view container_id) {
   }
 
   SetLocallyUsedContainerToPrefs(container, *prefs_);
+}
+
+mojom::ContainerPtr ContainersService::CreateAndPersistTemporaryContainer() {
+  auto container = CreateTemporaryContainer();
+  SetLocallyUsedContainerToPrefs(container, *prefs_);
+  return container;
 }
 
 mojom::ContainerPtr ContainersService::GetRuntimeContainerById(

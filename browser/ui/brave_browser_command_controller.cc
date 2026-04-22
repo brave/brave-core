@@ -30,6 +30,7 @@
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -99,6 +100,10 @@
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/components/email_aliases/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/containers/containers_service_factory.h"
 #endif
 
 namespace {
@@ -356,6 +361,12 @@ void BraveBrowserCommandController::InitBraveCommandState() {
       email_aliases::features::IsEmailAliasesEnabled() &&
           email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
               browser_->profile()));
+#endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  UpdateCommandEnabled(
+      IDC_NEW_TEMPORARY_CONTAINER,
+      ContainersServiceFactory::GetForProfile(browser_->profile()));
 #endif
 
   if (browser_->is_type_normal()) {
@@ -740,6 +751,13 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
     case IDC_SHOW_EMAIL_ALIASES:
       browser_->GetFeatures().email_aliases_controller()->OpenSettingsPage();
+      break;
+#endif
+#if BUILDFLAG(ENABLE_CONTAINERS)
+    case IDC_NEW_TEMPORARY_CONTAINER:
+      brave::CreateTemporaryContainerAndOpenUrl(base::to_address(browser_),
+                                                browser_->GetNewTabURL(),
+                                                /*is_link=*/false);
       break;
 #endif
     case IDC_WINDOW_GROUP_UNGROUPED_TABS:

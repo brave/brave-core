@@ -38,6 +38,12 @@ void ContainersBookmarkMenuModelDelegate::OnNoContainerSelected() {
   brave::OpenUrlWithoutContainer(base::to_address(browser_), bookmark_url_);
 }
 
+void ContainersBookmarkMenuModelDelegate::OnNewTemporaryContainerSelected() {
+  CHECK(browser_);
+  brave::CreateTemporaryContainerAndOpenUrl(base::to_address(browser_),
+                                            bookmark_url_);
+}
+
 base::flat_set<std::string>
 ContainersBookmarkMenuModelDelegate::GetCurrentContainerIds() {
   // The bookmark menu is not associated with any tab or link, so there are no

@@ -959,6 +959,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_CXMENU_OPEN_CONTAINERS_SETTINGS" desc="The label of the context menu item for opening the Containers settings page.">
           Manage containers
         </message>
+        <message name="IDS_CXMENU_NEW_TEMPORARY_CONTAINER" desc="Creates a new local-only temporary container and opens the URL in it.">
+          New temporary container
+        </message>
       </if>
       <if expr="use_titlecase">
         <message name="IDS_TAB_CXMENU_BOOKMARK_ALL_TABS" desc="In Title Case: The label of the tab context menu item for creating a bookmark folder containing an entry for each open tab.">
@@ -999,6 +1002,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
         <message name="IDS_CXMENU_OPEN_CONTAINERS_SETTINGS" desc="The label of the tab context menu item for opening the Containers settings page.">
           Manage Containers
+        </message>
+        <message name="IDS_CXMENU_NEW_TEMPORARY_CONTAINER" desc="Creates a new local-only temporary container and opens the URL in it.">
+          New Temporary Container
         </message>
       </if>
 

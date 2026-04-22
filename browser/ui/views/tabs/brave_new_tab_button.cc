@@ -108,6 +108,14 @@ class BraveNewTabButton::NewTabButtonContainersMenuDelegate
                                    /*is_link=*/false);
   }
 
+  void OnNewTemporaryContainerSelected() override {
+    auto* browser = GetBrowserToOpenSettings();
+    CHECK(browser);
+    brave::CreateTemporaryContainerAndOpenUrl(
+        base::to_address(browser_window_interface_), browser->GetNewTabURL(),
+        /*is_link=*/false);
+  }
+
   // Unlike tab or link context menus, the new tab button is not tied to a
   // specific container, so no menu items should appear as "current".
   base::flat_set<std::string> GetCurrentContainerIds() override { return {}; }

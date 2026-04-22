@@ -573,4 +573,7 @@
   <message name="IDS_IDC_NEW_EMAIL_ALIAS" desc="Message for context menu that enables the Email Alias generator UI for the page">
     New Email Alias
   </message>
+  <message name="IDS_IDC_NEW_TEMPORARY_CONTAINER" desc="Label for the command that opens the current URL in a new local-only temporary container.">
+    New temporary container
+  </message>
 </grit-part>

@@ -128,10 +128,11 @@
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/containers/containers_service_factory.h"
 #include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/views/page_action/partitioned_storage_page_action_controller.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
-#include "brave/components/containers/core/mojom/containers.mojom.h"
+#include "brave/components/containers/core/browser/containers_service.h"
 #include "components/tabs/public/tab_interface.h"
 #if defined(TOOLKIT_VIEWS)
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -1234,6 +1235,34 @@ void OpenUrlWithoutContainer(BrowserWindowInterface* browser_window,
       is_link ? ui::PAGE_TRANSITION_LINK : ui::PAGE_TRANSITION_TYPED);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   Navigate(&params);
+}
+
+void CreateTemporaryContainerAndOpenTabUrls(
+    BrowserWindowInterface* browser_window,
+    const std::vector<tabs::TabHandle>& tabs) {
+  auto* containers_service =
+      ContainersServiceFactory::GetForProfile(browser_window->GetProfile());
+  CHECK(containers_service);
+  OpenTabUrlsInContainer(
+      browser_window, tabs,
+      containers_service->CreateAndPersistTemporaryContainer());
+}
+
+void CreateTemporaryContainerAndOpenUrl(BrowserWindowInterface* browser_window,
+                                        const GURL& url,
+                                        bool is_link) {
+  CHECK(browser_window);
+  if (!url.is_valid()) {
+    LOG(ERROR) << "Url is not valid";
+    return;
+  }
+
+  auto* containers_service =
+      ContainersServiceFactory::GetForProfile(browser_window->GetProfile());
+  CHECK(containers_service);
+  OpenUrlInContainer(browser_window, url,
+                     containers_service->CreateAndPersistTemporaryContainer(),
+                     is_link);
 }
 
 void OpenContainerMenuOnPageActionView(BrowserWindowInterface* browser_window,

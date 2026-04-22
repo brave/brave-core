@@ -179,6 +179,15 @@ void OpenUrlWithoutContainer(BrowserWindowInterface* browser_window,
                              const GURL& url,
                              bool is_link = true);
 
+// Creates a new temporary container and opens the given tabs' URLs in it.
+void CreateTemporaryContainerAndOpenTabUrls(
+    BrowserWindowInterface* browser_window,
+    const std::vector<tabs::TabHandle>& tabs);
+// Opens |url| in a new tab in a freshly created temporary container.
+void CreateTemporaryContainerAndOpenUrl(BrowserWindowInterface* browser_window,
+                                        const GURL& url,
+                                        bool is_link = true);
+
 // Opens the container menu on the page action view if the active tab is in a
 // container.
 void OpenContainerMenuOnPageActionView(BrowserWindowInterface* browser,
