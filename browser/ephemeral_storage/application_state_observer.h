@@ -23,7 +23,7 @@ class BrowserContext;
 }
 
 class BrowserWindowInterface;
-class ProfileBrowserCollection;
+class BrowserCollection;
 
 #endif
 
@@ -66,6 +66,7 @@ class ApplicationStateObserver
 #endif
 
  private:
+
 #if !BUILDFLAG(IS_ANDROID)
   // BrowserCollectionObserver:
   void OnBrowserCreated(BrowserWindowInterface* browser) override;
@@ -79,7 +80,7 @@ class ApplicationStateObserver
 #if !BUILDFLAG(IS_ANDROID)
   bool has_notified_active_ = false;
   raw_ptr<content::BrowserContext> context_ = nullptr;
-  base::ScopedObservation<ProfileBrowserCollection, BrowserCollectionObserver>
+  base::ScopedObservation<BrowserCollection, BrowserCollectionObserver>
       browser_collection_observation_{this};
 #endif  // !BUILDFLAG(IS_ANDROID)
 
