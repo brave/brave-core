@@ -1056,7 +1056,7 @@ class SettingsViewController: TableViewController {
       .init(
         text: Strings.Settings.mediaRootSetting,
         selection: { [unowned self] in
-          let vc = UIHostingController(rootView: MediaSettingsView())
+          let vc = UIHostingController(rootView: MediaSettingsView(prefs: braveCore.profile.prefs))
           self.navigationController?.pushViewController(vc, animated: true)
         },
         image: UIImage(braveSystemNamed: "leo.media.player"),

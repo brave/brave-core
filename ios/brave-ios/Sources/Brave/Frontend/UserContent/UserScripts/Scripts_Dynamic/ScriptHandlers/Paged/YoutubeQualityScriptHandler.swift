@@ -54,7 +54,10 @@ class YoutubeQualityScriptHandler: NSObject, TabContentScript {
     }
 
     replyHandler(
-      YoutubeQualityTabHelper.canEnableHighQuality(connectionStatus: Reachability.shared.status)
+      YoutubeQualityTabHelper.canEnableHighQuality(
+        tab: tab,
+        connectionStatus: Reachability.shared.status
+      )
         ? Self.highestQuality : "",
       nil
     )
