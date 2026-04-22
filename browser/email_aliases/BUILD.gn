@@ -45,6 +45,7 @@ source_set("unit_tests") {
     "//chrome/browser/profiles",
     "//chrome/test:test_support",
     "//components/keyed_service/core",
+    "//components/os_crypt/async/browser:test_support",
     "//mojo/public/cpp/bindings",
     "//testing/gtest",
   ]
