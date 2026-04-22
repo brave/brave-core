@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import ProgressRing from '@brave/leo/react/progressRing'
 import Icon from '@brave/leo/react/icon'
 import { getLocale, formatLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
@@ -117,18 +116,7 @@ function AssistantEvent(
       />
     )
   }
-  if (
-    props.event.searchStatusEvent
-    && props.isEntryInProgress
-    && !props.hasCompletionStarted
-  ) {
-    return (
-      <div className={styles.actionInProgress}>
-        <ProgressRing />
-        Improving answer with Brave Search…
-      </div>
-    )
-  }
+
   if (props.event.toolUseEvent) {
     if (props.event.toolUseEvent.toolName === Mojom.MEMORY_STORAGE_TOOL_NAME) {
       return <MemoryToolEvent toolUseEvent={props.event.toolUseEvent} />
