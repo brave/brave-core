@@ -1856,6 +1856,12 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   new_tab->ShowContextMenuForViewImpl(new_tab, gfx::Point(0, 0),
                                       ui::mojom::MenuSourceType::kMouse);
   EXPECT_TRUE(BraveNewTabButtonHasPreparedContainersContextMenu(new_tab));
+
+  // Repeating the same test in order to make it sure that there is no dangling
+  // reference problems
+  // https://github.com/brave/brave-core/pull/35529#issuecomment-4287880242
+  new_tab->ShowContextMenuForViewImpl(new_tab, gfx::Point(0, 0),
+                                      ui::mojom::MenuSourceType::kMouse);
 }
 
 class BraveNewTabButtonContainersFeatureDisabledBrowserTest
