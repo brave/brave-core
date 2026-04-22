@@ -7,20 +7,29 @@ static_library("browser") {
   sources = [
     "query_filter_component_installer.cc",
     "query_filter_component_installer.h",
+    "query_filter_data.cc",
+    "query_filter_data.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//components/component_updater",
+    "//components/update_client",
   ]
 
   deps = [
-    "//base",
     "//brave/components/brave_component_updater/browser:public",
     "//brave/components/query_filter/common",
-    "//components/component_updater",
   ]
 }
 
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "query_filter_component_installer_unittest.cc" ]
+  sources = [
+    "query_filter_component_installer_unittest.cc",
+    "query_filter_data_unittest.cc",
+  ]
 
   deps = [
     ":browser",
