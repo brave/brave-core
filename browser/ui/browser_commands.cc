@@ -132,6 +132,9 @@
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "components/tabs/public/tab_interface.h"
+#if defined(TOOLKIT_VIEWS)
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#endif
 #endif
 
 using content::WebContents;
@@ -1230,6 +1233,16 @@ void OpenContainerMenuOnPageActionView(BrowserWindowInterface* browser_window,
     return;
   }
 
+#if !defined(TOOLKIT_VIEWS)
+  return;
+#else
+  BrowserView* const browser_view =
+      BrowserView::GetBrowserViewForBrowser(browser_window);
+  if (!browser_view || !browser_view->toolbar_button_provider()) {
+    DVLOG(1) << "Browser view or toolbar button provider is not valid";
+    return;
+  }
+
   tabs::TabInterface* tab = browser_window->GetActiveTabInterface();
   if (!tab) {
     DVLOG(1) << "Tab is not valid";
@@ -1243,7 +1256,8 @@ void OpenContainerMenuOnPageActionView(BrowserWindowInterface* browser_window,
   page_actions::PartitionedStoragePageActionController* const controller =
       brave_tab_features->partitioned_storage_page_action_controller();
   CHECK(controller);
-  controller->ExecuteAction(item);
+  controller->ExecuteAction(browser_view->toolbar_button_provider(), item);
+#endif
 }
 #endif
 

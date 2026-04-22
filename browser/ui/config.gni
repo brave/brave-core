@@ -58,10 +58,7 @@ if (toolkit_views) {
   }
 
   if (enable_containers) {
-    brave_ui_allow_circular_includes_from += [
-      "//brave/browser/ui/containers",
-      "//brave/browser/ui/views/page_action",
-    ]
+    brave_ui_allow_circular_includes_from += [ "//brave/browser/ui/containers" ]
   }
 
   if (enable_speedreader) {

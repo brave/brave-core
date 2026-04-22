@@ -22,7 +22,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
 #include "content/public/browser/web_contents.h"
@@ -30,6 +29,8 @@
 #include "ui/base/mojom/menu_source_type.mojom.h"
 #include "ui/events/event_constants.h"
 #include "ui/gfx/text_elider.h"
+#include "ui/views/controls/button/button.h"
+#include "ui/views/controls/menu/menu_item_view.h"
 #include "ui/views/controls/menu/menu_model_adapter.h"
 #include "ui/views/controls/menu/menu_runner.h"
 
@@ -76,6 +77,7 @@ PartitionedStoragePageActionController::
   // so teardown runs while this object is still valid.
   weak_ptr_factory_.InvalidateWeakPtrs();
   menu_runner_.reset();
+  menu_anchor_view_tracker_.SetView(nullptr);
   if (action_item_for_menu_) {
     action_item_for_menu_->SetIsShowingBubble(false);
     action_item_for_menu_ = nullptr;
@@ -104,9 +106,14 @@ void PartitionedStoragePageActionController::Init() {
 }
 
 void PartitionedStoragePageActionController::ExecuteAction(
+    ToolbarButtonProvider* toolbar_button_provider,
     actions::ActionItem* item) {
   if (menu_runner_ && menu_runner_->IsRunning()) {
     menu_runner_->Cancel();
+  }
+
+  if (!toolbar_button_provider) {
+    return;
   }
 
   BrowserWindowInterface* const bwi = tab_->GetBrowserWindowInterface();
@@ -121,14 +128,8 @@ void PartitionedStoragePageActionController::ExecuteAction(
     return;
   }
 
-  BrowserView* const browser_view = BrowserView::GetBrowserViewForBrowser(bwi);
-  if (!browser_view) {
-    return;
-  }
-
   IconLabelBubbleView* const anchor_view =
-      browser_view->toolbar_button_provider()->GetPageActionView(
-          kActionShowPartitionedStorage);
+      toolbar_button_provider->GetPageActionView(kActionShowPartitionedStorage);
   if (!anchor_view || !anchor_view->GetWidget()) {
     return;
   }
@@ -139,6 +140,7 @@ void PartitionedStoragePageActionController::ExecuteAction(
   containers_menu_model_ = std::make_unique<containers::ContainersMenuModel>(
       *containers_menu_delegate_, *service);
 
+  menu_anchor_view_tracker_.SetView(anchor_view);
   action_item_for_menu_ = item;
   CHECK_DEREF(action_item_for_menu_).SetIsShowingBubble(true);
 
@@ -200,18 +202,12 @@ void PartitionedStoragePageActionController::OnPartitionedStorageMenuClosed() {
   CHECK_DEREF(action_item_for_menu_).SetIsShowingBubble(false);
   action_item_for_menu_ = nullptr;
 
-  auto* bwi = tab_->GetBrowserWindowInterface();
-  if (bwi) {
-    // In case of the tab is detached from the browser, the browser window might
-    // be null.
-    if (auto* browser_view = BrowserView::GetBrowserViewForBrowser(bwi)) {
-      // browser_view might be null according to the upstream code.
-      auto* anchor_view =
-          browser_view->toolbar_button_provider()->GetPageActionView(
-              kActionShowPartitionedStorage);
-      CHECK_DEREF(anchor_view).SetHighlighted(false);
+  if (views::View* anchor = menu_anchor_view_tracker_.view()) {
+    if (views::Button* button = views::Button::AsButton(anchor)) {
+      button->SetHighlighted(false);
     }
   }
+  menu_anchor_view_tracker_.SetView(nullptr);
 
   menu_runner_.reset();
   menu_model_adapter_.reset();

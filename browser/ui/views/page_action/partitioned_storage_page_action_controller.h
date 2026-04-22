@@ -11,13 +11,15 @@
 #include "base/callback_list.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
-#include "base/memory/weak_ptr.h"
 #include "chrome/browser/ui/views/page_action/page_action_controller.h"
 #include "components/tabs/public/tab_interface.h"
+#include "ui/views/view_tracker.h"
 
 namespace actions {
 class ActionItem;
 }
+
+class ToolbarButtonProvider;
 
 namespace brave {
 class ContainersTabMenuModelDelegate;
@@ -50,7 +52,8 @@ class PartitionedStoragePageActionController {
 
   void Init();
 
-  void ExecuteAction(actions::ActionItem* item);
+  void ExecuteAction(ToolbarButtonProvider* toolbar_button_provider,
+                     actions::ActionItem* item);
 
  private:
   void UpdatePageAction();
@@ -68,6 +71,9 @@ class PartitionedStoragePageActionController {
   std::unique_ptr<views::MenuModelAdapter> menu_model_adapter_;
   std::unique_ptr<views::MenuRunner> menu_runner_;
   raw_ptr<actions::ActionItem> action_item_for_menu_ = nullptr;
+
+  // Clears if the page action `View` is destroyed while a menu is open
+  views::ViewTracker menu_anchor_view_tracker_;
 
   base::WeakPtrFactory<PartitionedStoragePageActionController>
       weak_ptr_factory_{this};
