@@ -12,16 +12,14 @@ import { ContentType, UploadedFileType, TaskState } from '../../../common/mojom'
 import { MockContext } from '../../state/mock_context'
 import InputBox, { InputBoxProps } from '.'
 
-// Mock the convertFileToUploadedFile function
 jest.mock('../../utils/file_utils', () => ({
-  convertFileToUploadedFile: jest.fn(),
+  processFiles: jest.fn(),
 }))
 
-import { convertFileToUploadedFile } from '../../utils/file_utils'
-const mockConvertFileToUploadedFile =
-  convertFileToUploadedFile as jest.MockedFunction<
-    typeof convertFileToUploadedFile
-  >
+import { processFiles } from '../../utils/file_utils'
+const mockProcessFiles = processFiles as jest.MockedFunction<
+  typeof processFiles
+>
 
 // Mock URL.createObjectURL for tests that include image files
 // This is needed because AttachmentUploadItems calls URL.createObjectURL to create blob URLs for images
@@ -34,7 +32,7 @@ const testContext: InputBoxProps['context'] = {
   isMobile: false,
   hasAcceptedAgreement: true,
   getPluralString: () => Promise.resolve(''),
-  attachImages: jest.fn(),
+  attachFiles: jest.fn(),
   isAIChatAgentProfileFeatureEnabled: false,
   isAIChatAgentProfile: false,
   openAIChatAgentProfile: () => {},
@@ -435,20 +433,23 @@ describe('input box', () => {
     beforeEach(() => {
       jest.clearAllMocks()
 
-      mockConvertFileToUploadedFile.mockImplementation((file: File) => {
-        const mimeType = file.type.toLowerCase()
-        let type = UploadedFileType.kText
-        if (mimeType.startsWith('image/')) {
-          type = UploadedFileType.kImage
-        } else if (mimeType === 'application/pdf') {
-          type = UploadedFileType.kPdf
-        }
-        return Promise.resolve({
-          filename: file.name,
-          filesize: file.size,
-          data: Array.from(new Uint8Array(8)),
-          type,
+      mockProcessFiles.mockImplementation((files, attachFiles) => {
+        const uploadedFiles = files.map((file) => {
+          const mimeType = file.type.toLowerCase()
+          let type = UploadedFileType.kText
+          if (mimeType.startsWith('image/')) {
+            type = UploadedFileType.kImage
+          } else if (mimeType === 'application/pdf') {
+            type = UploadedFileType.kPdf
+          }
+          return {
+            filename: file.name,
+            filesize: file.size,
+            data: Array.from(new Uint8Array(8)),
+            type,
+          }
         })
+        return attachFiles(uploadedFiles as any)
       })
     })
 
@@ -459,7 +460,7 @@ describe('input box', () => {
           <InputBox
             context={{
               ...testContext,
-              attachImages: mockAttachImages,
+              attachFiles: mockAttachImages,
             }}
             conversationStarted={false}
           />
