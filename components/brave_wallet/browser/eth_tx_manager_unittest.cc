@@ -604,6 +604,70 @@ TEST_F(EthTxManagerUnitTest, SomeSiteOrigin) {
             url::Origin::Create(GURL("https://some.site.com")));
 }
 
+TEST_F(EthTxManagerUnitTest, RestrictedFromAddress) {
+  const auto from_account = from();
+  auto* registry = BlockchainRegistry::GetInstance();
+  registry->UpdateRestrictedAddressesList(
+      {base::ToLowerASCII(from_account->address)});
+
+  // AddUnapprovedEvmTransaction should fail.
+  {
+    base::test::TestFuture<bool, const std::string&, const std::string&>
+        unapproved_future;
+
+    tx_service_->AddUnapprovedEvmTransaction(
+        mojom::NewEvmTransactionParams::New(
+            mojom::kMainnetChainId, from(),
+            "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x0", "0x0974",
+            std::vector<uint8_t>(), nullptr),
+        unapproved_future.GetCallback());
+
+    const auto& [success, tx_meta_id, error] = unapproved_future.Take();
+
+    EXPECT_FALSE(success);
+    EXPECT_TRUE(tx_meta_id.empty());
+    EXPECT_EQ(error, WalletInternalErrorMessage());
+  }
+
+  // AddUnapprovedEvmDappTransaction (TxData) should fail.
+  {
+    base::test::TestFuture<bool, const std::string&, const std::string&>
+        unapproved_future;
+
+    tx_service_->AddUnapprovedEvmDappTransaction(
+        mojom::TxData::New("0x1", "0x06", "0x09184e72a000", "0x0974",
+                           "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x0",
+                           std::vector<uint8_t>()),
+        from(), GetOrigin(), false, unapproved_future.GetCallback());
+
+    const auto& [success, tx_meta_id, error] = unapproved_future.Take();
+    EXPECT_FALSE(success);
+    EXPECT_TRUE(tx_meta_id.empty());
+    EXPECT_EQ(error, WalletInternalErrorMessage());
+  }
+
+  // AddUnapprovedEvmDappTransaction (TxData1559) should fail.
+  {
+    base::test::TestFuture<bool, const std::string&, const std::string&>
+        unapproved_future;
+
+    tx_service_->AddUnapprovedEvmDappTransaction(
+        mojom::TxData1559::New(
+            mojom::TxData::New("0x1", "", "", "0x0974",
+                               "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
+                               "0x0", std::vector<uint8_t>()),
+            "0x1", "0x1"),
+        from(), GetOrigin(), false, unapproved_future.GetCallback());
+
+    const auto& [success, tx_meta_id, error] = unapproved_future.Take();
+    EXPECT_FALSE(success);
+    EXPECT_TRUE(tx_meta_id.empty());
+    EXPECT_EQ(error, WalletInternalErrorMessage());
+  }
+
+  registry->UpdateRestrictedAddressesList({});
+}
+
 TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithoutGasLimit) {
   std::string gas_price = "0x09184e72a000";
   auto tx_data =

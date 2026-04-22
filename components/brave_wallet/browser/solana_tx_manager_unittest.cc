@@ -997,6 +997,57 @@ TEST_F(SolanaTxManagerUnitTest, RestrictedToAddress) {
       nullptr);
 }
 
+TEST_F(SolanaTxManagerUnitTest, RestrictedFromAddress) {
+  const auto& from = sol_account();
+  const std::string to = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
+
+  const auto from_account_info = GetAccountUtils().EnsureSolAccount(0);
+
+  auto* registry = BlockchainRegistry::GetInstance();
+  registry->UpdateRestrictedAddressesList(
+      {base::ToLowerASCII(from_account_info->address)});
+
+  mojom::SolanaTxDataPtr solana_tx_data = nullptr;
+  TestMakeSystemProgramTransferTxData(from, to, 10000000, nullptr,
+                                      mojom::SolanaProviderError::kSuccess, "",
+                                      &solana_tx_data);
+  ASSERT_TRUE(solana_tx_data);
+
+  // AddUnapprovedSolanaTransaction should fail.
+  {
+    base::test::TestFuture<bool, const std::string&, const std::string&>
+        unapproved_future;
+
+    tx_service_->AddUnapprovedSolanaTransaction(
+        solana_tx_data.Clone(), mojom::kSolanaMainnet, from->Clone(), nullptr,
+        unapproved_future.GetCallback());
+
+    const auto& [success, tx_meta_id, err_str] = unapproved_future.Take();
+
+    EXPECT_FALSE(success);
+    EXPECT_TRUE(tx_meta_id.empty());
+    EXPECT_EQ(err_str, WalletInternalErrorMessage());
+  }
+
+  // AddUnapprovedSolanaDappTransaction should also fail.
+  {
+    base::test::TestFuture<bool, const std::string&, const std::string&>
+        unapproved_future;
+
+    tx_service_->AddUnapprovedSolanaDappTransaction(
+        solana_tx_data.Clone(), mojom::kSolanaMainnet, from->Clone(),
+        GetOrigin(), unapproved_future.GetCallback());
+
+    const auto& [success, tx_meta_id, err_str] = unapproved_future.Take();
+
+    EXPECT_FALSE(success);
+    EXPECT_TRUE(tx_meta_id.empty());
+    EXPECT_EQ(err_str, WalletInternalErrorMessage());
+  }
+
+  registry->UpdateRestrictedAddressesList({});
+}
+
 TEST_F(SolanaTxManagerUnitTest, WalletOrigin) {
   const auto& from = sol_account();
   const std::string to = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";

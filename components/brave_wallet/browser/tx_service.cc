@@ -187,6 +187,13 @@ void TxService::AddUnapprovedEvmDappTransaction(
     const url::Origin& origin,
     bool sign_only,
     AddUnapprovedEvmTransactionCallback callback) {
+  if (auto sender = account_resolver_delegate_->ResolveAddress(from);
+      sender &&
+      BlockchainRegistry::GetInstance()->IsRestrictedAddress(*sender)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
+    return;
+  }
+
   if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(
           tx_data_1559->base_data->to)) {
     std::move(callback).Run(false, "", WalletInternalErrorMessage());
@@ -204,6 +211,13 @@ void TxService::AddUnapprovedEvmDappTransaction(
     const url::Origin& origin,
     bool sign_only,
     AddUnapprovedEvmTransactionCallback callback) {
+  if (auto sender = account_resolver_delegate_->ResolveAddress(from);
+      sender &&
+      BlockchainRegistry::GetInstance()->IsRestrictedAddress(*sender)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
+    return;
+  }
+
   if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(tx_data->to)) {
     std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
@@ -220,6 +234,13 @@ void TxService::AddUnapprovedSolanaDappTransaction(
     mojom::AccountIdPtr from,
     const url::Origin& origin,
     AddUnapprovedSolanaTransactionCallback callback) {
+  if (auto sender = account_resolver_delegate_->ResolveAddress(from);
+      sender &&
+      BlockchainRegistry::GetInstance()->IsRestrictedAddress(*sender)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
+    return;
+  }
+
   if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(
           solana_tx_data->to_wallet_address)) {
     std::move(callback).Run(false, "", WalletInternalErrorMessage());
@@ -235,6 +256,14 @@ void TxService::AddUnapprovedEvmTransaction(
     mojom::NewEvmTransactionParamsPtr params,
     AddUnapprovedEvmTransactionCallback callback) {
   CHECK_EQ(params->from->coin, mojom::CoinType::ETH);
+
+  if (auto sender = account_resolver_delegate_->ResolveAddress(params->from);
+      sender &&
+      BlockchainRegistry::GetInstance()->IsRestrictedAddress(*sender)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
+    return;
+  }
+
   if (!account_resolver_delegate_->ValidateAccountId(params->from)) {
     std::move(callback).Run(
         false, "",
@@ -257,6 +286,13 @@ void TxService::AddUnapprovedSolanaTransaction(
     mojom::AccountIdPtr from,
     mojom::SwapInfoPtr swap_info,
     AddUnapprovedSolanaTransactionCallback callback) {
+  if (auto sender = account_resolver_delegate_->ResolveAddress(from);
+      sender &&
+      BlockchainRegistry::GetInstance()->IsRestrictedAddress(*sender)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
+    return;
+  }
+
   if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(
           solana_tx_data->to_wallet_address)) {
     std::move(callback).Run(false, "", WalletInternalErrorMessage());
@@ -274,6 +310,13 @@ void TxService::AddUnapprovedFilecoinTransaction(
     mojom::AccountIdPtr from,
     mojom::SwapInfoPtr swap_info,
     AddUnapprovedFilecoinTransactionCallback callback) {
+  if (auto sender = account_resolver_delegate_->ResolveAddress(from);
+      sender &&
+      BlockchainRegistry::GetInstance()->IsRestrictedAddress(*sender)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
+    return;
+  }
+
   if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(fil_tx_data->to)) {
     std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
@@ -352,6 +395,13 @@ void TxService::AddUnapprovedPolkadotTransaction(
     std::move(callback).Run(
         false, "",
         l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_FROM_EMPTY));
+    return;
+  }
+
+  if (auto sender = account_resolver_delegate_->ResolveAddress(params->from);
+      sender &&
+      BlockchainRegistry::GetInstance()->IsRestrictedAddress(*sender)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
   }
 
