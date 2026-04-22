@@ -47,6 +47,7 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_rewards/core/rewards_util.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "build/build_config.h"
@@ -166,8 +167,9 @@ AdsServiceImpl::AdsServiceImpl(
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-  CHECK(rewards_service);
-  rewards_service_observation_.Observe(rewards_service);
+  if (rewards_service) {
+    rewards_service_observation_.Observe(rewards_service);
+  }
 #endif
 
   if (CanStartBatAdsService()) {
@@ -281,6 +283,12 @@ void AdsServiceImpl::GetDeviceIdAndMaybeStartBatAdsServiceCallback(
 }
 
 bool AdsServiceImpl::CanStartBatAdsService() const {
+  if (!brave_rewards::IsSupported(&*prefs_)) {
+    // Never start if Rewards is disabled by policy, feature flag, or
+    // unsupported region, regardless of which ad unit the user has opted into.
+    return false;
+  }
+
   if (UserHasJoinedBraveRewards()) {
     // Always start the service to update brave://ads-internals,
     // brave://rewards, and brave://rewards-internals if the user has joined
@@ -371,9 +379,13 @@ void AdsServiceImpl::InitializeBasePathDirectoryCallback(bool success) {
 
 void AdsServiceImpl::InitializeRewardsWallet() {
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-  rewards_service_observation_.GetSource()->GetRewardsWallet(
-      base::BindOnce(&AdsServiceImpl::InitializeRewardsWalletCallback,
-                     bat_ads_service_weak_ptr_factory_.GetWeakPtr()));
+  if (rewards_service_observation_.IsObserving()) {
+    rewards_service_observation_.GetSource()->GetRewardsWallet(
+        base::BindOnce(&AdsServiceImpl::InitializeRewardsWalletCallback,
+                       bat_ads_service_weak_ptr_factory_.GetWeakPtr()));
+  } else {
+    InitializeRewardsWalletCallback(/*mojom_rewards_wallet=*/nullptr);
+  }
 #else
   InitializeRewardsWalletCallback(/*mojom_rewards_wallet=*/nullptr);
 #endif
@@ -382,8 +394,8 @@ void AdsServiceImpl::InitializeRewardsWallet() {
 void AdsServiceImpl::InitializeRewardsWalletCallback(
     brave_rewards::mojom::RewardsWalletPtr mojom_rewards_wallet) {
   // Guaranteed by `bat_ads_service_weak_ptr_factory_`. `ShutdownAdsService`
-  // resets `bat_ads_associated_remote_` before invalidating the factory, so the
-  // remote is bound for the lifetime of any pending init callback.
+  // resets `bat_ads_associated_remote_` before invalidating the factory,
+  // so the remote is bound for the lifetime of any pending init callback.
   CHECK(bat_ads_associated_remote_.is_bound());
 
   if (!mojom_rewards_wallet && UserHasJoinedBraveRewards()) {
@@ -455,7 +467,7 @@ void AdsServiceImpl::NotifyDidClearAdsServiceData() {
 }
 
 void AdsServiceImpl::ClearDataPrefsAndAdsServiceDataAndMaybeRestart(
-    ClearDataCallback callback,
+    ResultCallback callback,
     bool shutdown_succeeded) {
   if (!shutdown_succeeded) {
     VLOG(0) << "Failed to clear ads data because Ads Service shutdown failed";
@@ -483,7 +495,7 @@ void AdsServiceImpl::ClearDataPrefsAndAdsServiceDataAndMaybeRestart(
 }
 
 void AdsServiceImpl::ClearAllPrefsAndAdsServiceDataAndMaybeRestart(
-    ClearDataCallback callback,
+    ResultCallback callback,
     bool shutdown_succeeded) {
   if (!shutdown_succeeded) {
     VLOG(0) << "Failed to clear ads data because Ads Service shutdown failed";
@@ -498,7 +510,7 @@ void AdsServiceImpl::ClearAllPrefsAndAdsServiceDataAndMaybeRestart(
 }
 
 void AdsServiceImpl::ClearAdsServiceDataAndMaybeRestart(
-    ClearDataCallback callback) {
+    ResultCallback callback) {
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE, base::BindOnce(&DeletePathOnFileTaskRunner, ads_service_path_),
       base::BindOnce(
@@ -507,7 +519,7 @@ void AdsServiceImpl::ClearAdsServiceDataAndMaybeRestart(
 }
 
 void AdsServiceImpl::ClearAdsServiceDataAndMaybeRestartCallback(
-    ClearDataCallback callback,
+    ResultCallback callback,
     bool success) {
   if (!success) {
     VLOG(0) << "Failed to clear ads data";
@@ -729,6 +741,10 @@ void AdsServiceImpl::NotifyPrefChanged(const std::string& path) const {
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 void AdsServiceImpl::GetRewardsWallet() {
+  if (!rewards_service_observation_.IsObserving()) {
+    return;
+  }
+
   rewards_service_observation_.GetSource()->GetRewardsWallet(
       base::BindOnce(&AdsServiceImpl::NotifyRewardsWalletDidUpdate,
                      weak_ptr_factory_.GetWeakPtr()));
@@ -932,7 +948,7 @@ void AdsServiceImpl::SnoozeScheduledCaptchaCallback() {
   delegate_->SnoozeScheduledCaptcha();
 }
 
-void AdsServiceImpl::ShutdownAds(ShutdownCallback callback) {
+void AdsServiceImpl::ShutdownAds(ResultCallback callback) {
   if (!bat_ads_associated_remote_) {
     return std::move(callback).Run(/*success=*/true);
   }
@@ -944,7 +960,7 @@ void AdsServiceImpl::ShutdownAds(ShutdownCallback callback) {
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void AdsServiceImpl::ShutdownAdsCallback(ShutdownCallback callback,
+void AdsServiceImpl::ShutdownAdsCallback(ResultCallback callback,
                                          bool success) {
   ShutdownAdsService();
 
@@ -1059,7 +1075,7 @@ void AdsServiceImpl::OnNotificationAdClicked(const std::string& placement_id) {
       /*intentional*/ base::DoNothing());
 }
 
-void AdsServiceImpl::ClearData(ClearDataCallback callback) {
+void AdsServiceImpl::ClearData(ResultCallback callback) {
   UMA_HISTOGRAM_BOOLEAN(kClearDataHistogramName, true);
   ShutdownAds(base::BindOnce(
       &AdsServiceImpl::ClearAllPrefsAndAdsServiceDataAndMaybeRestart,
@@ -1095,9 +1111,8 @@ void AdsServiceImpl::GetStatementOfAccounts(
                                                   /*statement*/ nullptr));
 }
 
-void AdsServiceImpl::ParseAndSaveNewTabPageAds(
-    base::DictValue dict,
-    ParseAndSaveNewTabPageAdsCallback callback) {
+void AdsServiceImpl::ParseAndSaveNewTabPageAds(base::DictValue dict,
+                                               ResultCallback callback) {
   if (!bat_ads_associated_remote_.is_bound()) {
     return std::move(callback).Run(/*success*/ false);
   }
@@ -1120,7 +1135,7 @@ void AdsServiceImpl::TriggerNewTabPageAdEvent(
     const std::string& creative_instance_id,
     mojom::NewTabPageAdMetricType mojom_ad_metric_type,
     mojom::NewTabPageAdEventType mojom_ad_event_type,
-    TriggerAdEventCallback callback) {
+    ResultCallback callback) {
   CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
 
   if (!bat_ads_associated_remote_.is_bound()) {
@@ -1146,7 +1161,7 @@ void AdsServiceImpl::MaybeGetSearchResultAd(
 void AdsServiceImpl::TriggerSearchResultAdEvent(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
     mojom::SearchResultAdEventType mojom_ad_event_type,
-    TriggerAdEventCallback callback) {
+    ResultCallback callback) {
   CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
 
   if (!bat_ads_associated_remote_.is_bound()) {
@@ -1157,9 +1172,8 @@ void AdsServiceImpl::TriggerSearchResultAdEvent(
       std::move(mojom_creative_ad), mojom_ad_event_type, std::move(callback));
 }
 
-void AdsServiceImpl::PurgeOrphanedAdEventsForType(
-    mojom::AdType mojom_ad_type,
-    PurgeOrphanedAdEventsForTypeCallback callback) {
+void AdsServiceImpl::PurgeOrphanedAdEventsForType(mojom::AdType mojom_ad_type,
+                                                  ResultCallback callback) {
   CHECK(mojom::IsKnownEnumValue(mojom_ad_type));
 
   if (!bat_ads_associated_remote_.is_bound()) {
@@ -1184,7 +1198,7 @@ void AdsServiceImpl::GetAdHistory(base::Time from_time,
 }
 
 void AdsServiceImpl::ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
-                                  ToggleReactionCallback callback) {
+                                  ResultCallback callback) {
   if (!bat_ads_associated_remote_.is_bound()) {
     return std::move(callback).Run(/*success*/ false);
   }
@@ -1196,7 +1210,7 @@ void AdsServiceImpl::ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
 }
 
 void AdsServiceImpl::ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
-                                     ToggleReactionCallback callback) {
+                                     ResultCallback callback) {
   if (!bat_ads_associated_remote_.is_bound()) {
     return std::move(callback).Run(/*success*/ false);
   }
@@ -1208,7 +1222,7 @@ void AdsServiceImpl::ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
 }
 
 void AdsServiceImpl::ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
-                                       ToggleReactionCallback callback) {
+                                       ResultCallback callback) {
   if (!bat_ads_associated_remote_.is_bound()) {
     return std::move(callback).Run(/*success*/ false);
   }
@@ -1220,7 +1234,7 @@ void AdsServiceImpl::ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
 }
 
 void AdsServiceImpl::ToggleDislikeSegment(mojom::ReactionInfoPtr mojom_reaction,
-                                          ToggleReactionCallback callback) {
+                                          ResultCallback callback) {
   if (!bat_ads_associated_remote_.is_bound()) {
     return std::move(callback).Run(/*success*/ false);
   }
@@ -1232,7 +1246,7 @@ void AdsServiceImpl::ToggleDislikeSegment(mojom::ReactionInfoPtr mojom_reaction,
 }
 
 void AdsServiceImpl::ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
-                                  ToggleReactionCallback callback) {
+                                  ResultCallback callback) {
   if (!bat_ads_associated_remote_.is_bound()) {
     return std::move(callback).Run(/*success*/ false);
   }
@@ -1245,7 +1259,7 @@ void AdsServiceImpl::ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
 
 void AdsServiceImpl::ToggleMarkAdAsInappropriate(
     mojom::ReactionInfoPtr mojom_reaction,
-    ToggleReactionCallback callback) {
+    ResultCallback callback) {
   if (!bat_ads_associated_remote_.is_bound()) {
     return std::move(callback).Run(/*success*/ false);
   }
@@ -1409,7 +1423,7 @@ void AdsServiceImpl::UrlRequest(mojom::UrlRequestInfoPtr url_request,
 
 void AdsServiceImpl::Save(const std::string& name,
                           const std::string& value,
-                          SaveCallback callback) {
+                          ResultCallback callback) {
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&WriteOnFileTaskRunner,
@@ -1417,7 +1431,7 @@ void AdsServiceImpl::Save(const std::string& name,
       std::move(callback));
 }
 
-void AdsServiceImpl::Remove(const std::string& name, RemoveCallback callback) {
+void AdsServiceImpl::Remove(const std::string& name, ResultCallback callback) {
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&base::DeleteFile, ads_service_path_.AppendASCII(name)),
@@ -1550,8 +1564,10 @@ void AdsServiceImpl::Log(const std::string& file,
                          int32_t verbose_level,
                          const std::string& message) {
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-  rewards_service_observation_.GetSource()->WriteDiagnosticLog(
-      file, line, verbose_level, message);
+  if (rewards_service_observation_.IsObserving()) {
+    rewards_service_observation_.GetSource()->WriteDiagnosticLog(
+        file, line, verbose_level, message);
+  }
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
   const int vlog_level =

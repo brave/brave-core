@@ -18,8 +18,11 @@ public struct OriginPaywallView: View {
   @Environment(\.dismiss) private var dismiss
   @Environment(\.openURL) private var openURL
 
-  public init(viewModel: OriginPaywallViewModel) {
+  var didPurchase: (() -> Void)
+
+  public init(viewModel: OriginPaywallViewModel, didPurchase: @escaping () -> Void = {}) {
     self.viewModel = viewModel
+    self.didPurchase = didPurchase
   }
 
   public var body: some View {
@@ -32,7 +35,7 @@ public struct OriginPaywallView: View {
               .padding(.horizontal, -16)
             ProductView(product: viewModel.product)
             // Paywall description has markdown
-            Text(LocalizedStringKey(Strings.Origin.paywallDescription))
+            Text(LocalizedStringKey(Strings.Origin.originFeatureDescription))
               .foregroundStyle(.white)
               .padding(.horizontal, 16)
               .padding(.vertical, 8)
@@ -79,7 +82,10 @@ public struct OriginPaywallView: View {
         ToolbarItemGroup(placement: .topBarTrailing) {
           Button(Strings.Origin.restoreButton) {
             Task {
-              await viewModel.restore()
+              if await viewModel.restore() {
+                dismiss()
+                didPurchase()
+              }
             }
           }
           .tint(.white)
@@ -111,7 +117,10 @@ public struct OriginPaywallView: View {
   private var standardPaywallActionView: some View {
     Button {
       Task {
-        await viewModel.purchase()
+        if await viewModel.purchase() {
+          dismiss()
+          didPurchase()
+        }
       }
     } label: {
       HStack {
@@ -153,14 +162,17 @@ public struct OriginPaywallView: View {
   private var externalPurchasesAllowedActionView: some View {
     VStack(spacing: 16) {
       VStack(spacing: 0) {
-        Text(Strings.Paywall.startTrialSubtitle)
+        Text(Strings.Origin.purchaseChoiceHeaderText)
           .font(.footnote)
       }
       .multilineTextAlignment(.center)
       VStack {
         Button {
           Task {
-            await viewModel.purchase()
+            if await viewModel.purchase() {
+              dismiss()
+              didPurchase()
+            }
           }
         } label: {
           HStack {

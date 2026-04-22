@@ -302,6 +302,12 @@ BraveTreeTabStripCollectionDelegate::TryAddTabToSameTreeAsOpener(
 
   tabs::TreeTabNodeTabCollection* opener_collection = nullptr;
   if (opener) {
+    // The opener may belong to another Browser (e.g. a PWA / app window) when
+    // opening into this window. It is not under |collection_|, so there is no
+    // valid tree parent in this strip to attach to.
+    if (!collection_->GetIndexOfTabRecursive(opener).has_value()) {
+      return base::unexpected(std::move(tab));
+    }
     opener_collection = static_cast<tabs::TreeTabNodeTabCollection*>(
         GetParentTreeNodeCollectionOfTab(opener));
   } else {

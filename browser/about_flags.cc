@@ -25,9 +25,8 @@
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
-#include "brave/components/email_aliases/features.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/google_sign_in_permission/features.h"
-#include "brave/components/local_ai/core/features.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -41,6 +40,7 @@
 #include "chrome/browser/ui/ui_features.h"
 #include "components/content_settings/core/common/features.h"
 #include "components/history/core/browser/features.h"
+#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/sync/base/command_line_switches.h"
 #include "components/translate/core/browser/translate_prefs.h"
@@ -109,9 +109,12 @@
 #include "brave/components/psst/common/features.h"
 #endif
 
-
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/components/email_aliases/features.h"
 #endif
 
 #if defined(TOOLKIT_VIEWS)
@@ -525,20 +528,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
 #define BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY
 #endif
 
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
-#define BRAVE_FORCE_CONTEXT_MENU_ON_SHIFT_RIGHT_CLICK_FEATURE_ENTRY            \
-  EXPAND_FEATURE_ENTRIES({                                                     \
-      "force-context-menu-on-shift-right-click",                               \
-      "Force context menu on Shift + Right Click on elements in pages",        \
-      "Always show the context menu when Shift + Right Click is used, "        \
-      "even if a web page is preventing it.",                                  \
-      kOsWin | kOsLinux | kOsMac,                                              \
-      FEATURE_VALUE_TYPE(blink::features::kForceContextMenuOnShiftRightClick), \
-  })
-#else
-#define BRAVE_FORCE_CONTEXT_MENU_ON_SHIFT_RIGHT_CLICK_FEATURE_ENTRY
-#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
-
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #define BRAVE_AI_CHAT_FEATURE_ENTRIES                                          \
   EXPAND_FEATURE_ENTRIES(                                                      \
@@ -645,6 +634,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "Show a Brave AI chat input on the New Tab Page.",                   \
           kOsDesktop,                                                          \
           FEATURE_VALUE_TYPE(ai_chat::features::kShowAIChatInputOnNewTabPage), \
+      },                                                                       \
+      {                                                                        \
+          "brave-ai-chat-detailed-page-content-extraction",                    \
+          "Brave AI Chat Detailed Page Content Extraction",                    \
+          "Uses optimization_guide-based page content extraction as the "      \
+          "default method for AI Chat page context.",                          \
+          kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
+          FEATURE_VALUE_TYPE(                                                  \
+              ai_chat::features::kAIChatDetailedPageContentExtraction),        \
       })
 #else
 #define BRAVE_AI_CHAT_FEATURE_ENTRIES
@@ -661,13 +659,16 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
                    FEATURE_VALUE_TYPE(ai_chat::features::kTabManagementTool), \
                }))
 
-#define BRAVE_LOCAL_AI_MODELS                                 \
-  EXPAND_FEATURE_ENTRIES({                                    \
-      "brave-local-ai-models",                                \
-      "Brave Local AI Models",                                \
-      "Enables local AI models to be downloaded",             \
-      kOsWin | kOsMac | kOsLinux,                             \
-      FEATURE_VALUE_TYPE(local_ai::features::kLocalAIModels), \
+// The upstream "history-embeddings" flag expired at M145. Use a
+// different name to bypass the expiry system while controlling the
+// same underlying kHistoryEmbeddings feature.
+#define BRAVE_HISTORY_EMBEDDINGS_FLAG                             \
+  EXPAND_FEATURE_ENTRIES({                                        \
+      "brave-history-embeddings",                                 \
+      "History Embeddings",                                       \
+      "Enables semantic history search using local embeddings.",  \
+      kOsDesktop,                                                 \
+      FEATURE_VALUE_TYPE(history_embeddings::kHistoryEmbeddings), \
   })
 
 #define BRAVE_OMNIBOX_FEATURES                                                \
@@ -761,6 +762,20 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
       kOsDesktop,                                                    \
       FEATURE_VALUE_TYPE(features::kForcePopupToBeOpenedAsTab),      \
   })
+
+#define EMAIL_ALIASES_FEATURE_ENTRIES                                         \
+  IF_BUILDFLAG(                                                               \
+      ENABLE_EMAIL_ALIASES,                                                   \
+      EXPAND_FEATURE_ENTRIES({                                                \
+          "brave-email-aliases",                                              \
+          "Enable Email Aliases",                                             \
+          "Enable Email Aliases to create unique, private "                   \
+          "addresses that forward to your primary inbox. This allows you to " \
+          "sign up for services anonymously and keep your main account free " \
+          "from spam.",                                                       \
+          kOsAll,                                                             \
+          FEATURE_VALUE_TYPE(email_aliases::features::kEmailAliases),         \
+      }))
 
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
@@ -1295,16 +1310,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "for BraveRequestInfo",                                              \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(features::kBraveRequestInfoUniquePtr),            \
-      },                                                                       \
-      {                                                                        \
-          "brave-email-aliases",                                               \
-          "Enable Email Aliases",                                              \
-          "Enable Email Aliases to create unique, private "                    \
-          "addresses that forward to your primary inbox. This allows you to "  \
-          "sign up for services anonymously and keep your main account free "  \
-          "from spam.",                                                        \
-          kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(email_aliases::features::kEmailAliases),          \
       })                                                                       \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_NEWS_FEATURE_ENTRIES                                                   \
@@ -1325,10 +1330,9 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_PAGE_INFO_FEATURE_ENTRIES                                              \
   BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
   BRAVE_AI_CHAT_TAB_MANAGEMENT_TOOL_ENTRY                                      \
-  BRAVE_LOCAL_AI_MODELS                                                        \
+  BRAVE_HISTORY_EMBEDDINGS_FLAG                                                \
   BRAVE_OMNIBOX_FEATURES                                                       \
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \
-  BRAVE_FORCE_CONTEXT_MENU_ON_SHIFT_RIGHT_CLICK_FEATURE_ENTRY                  \
   BRAVE_UPGRADE_WHEN_IDLE_FEATURE_ENTRY                                        \
   BRAVE_EXTENSIONS_MANIFEST_V2                                                 \
   BRAVE_EXTENSION_AUTO_UPDATE_FEATURE_ENTRY                                    \
@@ -1338,6 +1342,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_UPDATER_FEATURE_ENTRIES                                                \
   PSST_FEATURE_ENTRIES                                                         \
   BRAVE_FORCE_POPUP_TO_BE_OPENED_IN_NEW_TAB_FEATURE_ENTRY                      \
+  EMAIL_ALIASES_FEATURE_ENTRIES                                                \
   EXPAND_FEATURE_ENTRIES({                                                     \
       "brave-origin",                                                          \
       "Enable Brave Origin",                                                   \

@@ -14,7 +14,9 @@
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
@@ -22,8 +24,6 @@
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
 
 namespace brave_ads::database::table {
 

@@ -29,6 +29,7 @@ TEST(PolkadotChainMetadataUnitTest, FromFields) {
       /*transfer_keep_alive_call_index=*/4,
       /*transfer_all_call_index=*/5,
       /*ss58_prefix=*/42, /*spec_version=*/1'234'567);
+
   EXPECT_EQ(metadata.GetSystemPalletIndex(), 0u);
   EXPECT_EQ(metadata.GetBalancesPalletIndex(), 7u);
   EXPECT_EQ(metadata.GetTransactionPaymentPalletIndex(), 0x20u);
@@ -39,48 +40,80 @@ TEST(PolkadotChainMetadataUnitTest, FromFields) {
   EXPECT_EQ(metadata.GetSpecVersion(), 1'234'567u);
 }
 
+TEST(PolkadotChainMetadataUnitTest, EqualityOperator) {
+  auto metadata_a = PolkadotChainMetadata::FromFields(
+      /*system_pallet_index=*/0, /*balances_pallet_index=*/7,
+      /*transaction_payment_pallet_index=*/0x20,
+      /*transfer_allow_death_call_index=*/2,
+      /*transfer_keep_alive_call_index=*/4,
+      /*transfer_all_call_index=*/5,
+      /*ss58_prefix=*/42, /*spec_version=*/1'234'567);
+  auto metadata_b = PolkadotChainMetadata::FromFields(
+      /*system_pallet_index=*/0, /*balances_pallet_index=*/7,
+      /*transaction_payment_pallet_index=*/0x20,
+      /*transfer_allow_death_call_index=*/2,
+      /*transfer_keep_alive_call_index=*/4,
+      /*transfer_all_call_index=*/5,
+      /*ss58_prefix=*/42, /*spec_version=*/1'234'567);
+  auto metadata_c = PolkadotChainMetadata::FromFields(
+      /*system_pallet_index=*/0, /*balances_pallet_index=*/7,
+      /*transaction_payment_pallet_index=*/0x20,
+      /*transfer_allow_death_call_index=*/2,
+      /*transfer_keep_alive_call_index=*/4,
+      /*transfer_all_call_index=*/5,
+      /*ss58_prefix=*/42, /*spec_version=*/1'234'568);
+
+  EXPECT_EQ(metadata_a, metadata_b);
+  EXPECT_NE(metadata_a, metadata_c);
+}
+
 TEST(PolkadotChainMetadataUnitTest, FromChainName) {
+  auto expected_westend = PolkadotChainMetadata::FromFields(
+      /*system_pallet_index=*/0, /*balances_pallet_index=*/4,
+      /*transaction_payment_pallet_index=*/0x1a,
+      /*transfer_allow_death_call_index=*/0,
+      /*transfer_keep_alive_call_index=*/3,
+      /*transfer_all_call_index=*/4,
+      /*ss58_prefix=*/42, /*spec_version=*/0);
   auto westend = PolkadotChainMetadata::FromChainName("Westend");
   ASSERT_TRUE(westend);
-  EXPECT_EQ(westend->GetSystemPalletIndex(), 0u);
-  EXPECT_EQ(westend->GetBalancesPalletIndex(), 4u);
-  EXPECT_EQ(westend->GetTransactionPaymentPalletIndex(), 0x1au);
-  EXPECT_EQ(westend->GetTransferAllowDeathCallIndex(), 0u);
-  EXPECT_EQ(westend->GetTransferKeepAliveCallIndex(), 3u);
-  EXPECT_EQ(westend->GetTransferAllCallIndex(), 4u);
-  EXPECT_EQ(westend->GetSs58Prefix(), 42u);
 
+  EXPECT_EQ(*westend, expected_westend);
+
+  auto expected_westend_asset_hub = PolkadotChainMetadata::FromFields(
+      /*system_pallet_index=*/0, /*balances_pallet_index=*/10,
+      /*transaction_payment_pallet_index=*/0x0b,
+      /*transfer_allow_death_call_index=*/0,
+      /*transfer_keep_alive_call_index=*/3,
+      /*transfer_all_call_index=*/4,
+      /*ss58_prefix=*/42, /*spec_version=*/0);
   auto westend_asset_hub =
       PolkadotChainMetadata::FromChainName("Westend Asset Hub");
   ASSERT_TRUE(westend_asset_hub);
-  EXPECT_EQ(westend_asset_hub->GetSystemPalletIndex(), 0u);
-  EXPECT_EQ(westend_asset_hub->GetBalancesPalletIndex(), 10u);
-  EXPECT_EQ(westend_asset_hub->GetTransactionPaymentPalletIndex(), 0x0bu);
-  EXPECT_EQ(westend_asset_hub->GetTransferAllowDeathCallIndex(), 0u);
-  EXPECT_EQ(westend_asset_hub->GetTransferKeepAliveCallIndex(), 3u);
-  EXPECT_EQ(westend_asset_hub->GetTransferAllCallIndex(), 4u);
-  EXPECT_EQ(westend_asset_hub->GetSs58Prefix(), 42u);
+  EXPECT_EQ(*westend_asset_hub, expected_westend_asset_hub);
 
+  auto expected_polkadot = PolkadotChainMetadata::FromFields(
+      /*system_pallet_index=*/0, /*balances_pallet_index=*/5,
+      /*transaction_payment_pallet_index=*/0x20,
+      /*transfer_allow_death_call_index=*/0,
+      /*transfer_keep_alive_call_index=*/3,
+      /*transfer_all_call_index=*/4,
+      /*ss58_prefix=*/0, /*spec_version=*/0);
   auto polkadot = PolkadotChainMetadata::FromChainName("Polkadot");
   ASSERT_TRUE(polkadot);
-  EXPECT_EQ(polkadot->GetSystemPalletIndex(), 0u);
-  EXPECT_EQ(polkadot->GetBalancesPalletIndex(), 5u);
-  EXPECT_EQ(polkadot->GetTransactionPaymentPalletIndex(), 0x20u);
-  EXPECT_EQ(polkadot->GetTransferAllowDeathCallIndex(), 0u);
-  EXPECT_EQ(polkadot->GetTransferKeepAliveCallIndex(), 3u);
-  EXPECT_EQ(polkadot->GetTransferAllCallIndex(), 4u);
-  EXPECT_EQ(polkadot->GetSs58Prefix(), 0u);
+  EXPECT_EQ(*polkadot, expected_polkadot);
 
+  auto expected_polkadot_asset_hub = PolkadotChainMetadata::FromFields(
+      /*system_pallet_index=*/0, /*balances_pallet_index=*/10,
+      /*transaction_payment_pallet_index=*/0x0b,
+      /*transfer_allow_death_call_index=*/0,
+      /*transfer_keep_alive_call_index=*/3,
+      /*transfer_all_call_index=*/4,
+      /*ss58_prefix=*/0, /*spec_version=*/0);
   auto polkadot_asset_hub =
       PolkadotChainMetadata::FromChainName("Polkadot Asset Hub");
   ASSERT_TRUE(polkadot_asset_hub);
-  EXPECT_EQ(polkadot_asset_hub->GetSystemPalletIndex(), 0u);
-  EXPECT_EQ(polkadot_asset_hub->GetBalancesPalletIndex(), 10u);
-  EXPECT_EQ(polkadot_asset_hub->GetTransactionPaymentPalletIndex(), 0x0bu);
-  EXPECT_EQ(polkadot_asset_hub->GetTransferAllowDeathCallIndex(), 0u);
-  EXPECT_EQ(polkadot_asset_hub->GetTransferKeepAliveCallIndex(), 3u);
-  EXPECT_EQ(polkadot_asset_hub->GetTransferAllCallIndex(), 4u);
-  EXPECT_EQ(polkadot_asset_hub->GetSs58Prefix(), 0u);
+  EXPECT_EQ(*polkadot_asset_hub, expected_polkadot_asset_hub);
 
   EXPECT_FALSE(PolkadotChainMetadata::FromChainName(""));
   EXPECT_FALSE(PolkadotChainMetadata::FromChainName("Unknown Chain"));
@@ -123,25 +156,25 @@ TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponsePolkadot) {
 
   auto metadata = PolkadotChainMetadata::FromBytes(metadata_bytes);
   ASSERT_TRUE(metadata);
-  EXPECT_EQ(metadata->GetSs58Prefix(), 0u);
-  EXPECT_EQ(metadata->GetTransferAllowDeathCallIndex(), 0u);
-  EXPECT_EQ(metadata->GetTransferKeepAliveCallIndex(), 3u);
-  EXPECT_EQ(metadata->GetTransferAllCallIndex(), 4u);
-  EXPECT_EQ(metadata->GetBalancesPalletIndex(), 5u);
-  EXPECT_EQ(metadata->GetSpecVersion(), 2'000'007u);
+  auto expected = PolkadotChainMetadata::FromFields(
+      /*system_pallet_index=*/0, /*balances_pallet_index=*/5,
+      /*transaction_payment_pallet_index=*/0x20,
+      /*transfer_allow_death_call_index=*/0,
+      /*transfer_keep_alive_call_index=*/3,
+      /*transfer_all_call_index=*/4,
+      /*ss58_prefix=*/0, /*spec_version=*/2'000'007);
+  EXPECT_EQ(*metadata, expected);
 
   auto metadata2 = PolkadotChainMetadata::FromChainName("Polkadot");
   ASSERT_TRUE(metadata2);
-  EXPECT_EQ(metadata2->GetSs58Prefix(), metadata->GetSs58Prefix());
-  EXPECT_EQ(metadata2->GetTransferAllowDeathCallIndex(),
-            metadata->GetTransferAllowDeathCallIndex());
-  EXPECT_EQ(metadata2->GetTransferKeepAliveCallIndex(),
-            metadata->GetTransferKeepAliveCallIndex());
-  EXPECT_EQ(metadata2->GetTransferAllCallIndex(),
-            metadata->GetTransferAllCallIndex());
-  EXPECT_EQ(metadata2->GetBalancesPalletIndex(),
-            metadata->GetBalancesPalletIndex());
-  EXPECT_EQ(metadata2->GetSpecVersion(), 0u);
+  auto expected_from_name = PolkadotChainMetadata::FromFields(
+      /*system_pallet_index=*/0, /*balances_pallet_index=*/5,
+      /*transaction_payment_pallet_index=*/0x20,
+      /*transfer_allow_death_call_index=*/0,
+      /*transfer_keep_alive_call_index=*/3,
+      /*transfer_all_call_index=*/4,
+      /*ss58_prefix=*/0, /*spec_version=*/0);
+  EXPECT_EQ(*metadata2, expected_from_name);
 }
 
 TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponseWestend) {
@@ -170,25 +203,14 @@ TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponseWestend) {
 
   auto metadata = PolkadotChainMetadata::FromBytes(metadata_bytes);
   ASSERT_TRUE(metadata);
-  EXPECT_EQ(metadata->GetSs58Prefix(), 42u);
-  EXPECT_EQ(metadata->GetTransferAllowDeathCallIndex(), 0u);
-  EXPECT_EQ(metadata->GetTransferKeepAliveCallIndex(), 3u);
-  EXPECT_EQ(metadata->GetTransferAllCallIndex(), 4u);
-  EXPECT_EQ(metadata->GetBalancesPalletIndex(), 4u);
-  EXPECT_EQ(metadata->GetSpecVersion(), 1022000u);
-
-  auto metadata2 = PolkadotChainMetadata::FromChainName("Westend");
-  ASSERT_TRUE(metadata2);
-  EXPECT_EQ(metadata2->GetSs58Prefix(), metadata->GetSs58Prefix());
-  EXPECT_EQ(metadata2->GetTransferAllowDeathCallIndex(),
-            metadata->GetTransferAllowDeathCallIndex());
-  EXPECT_EQ(metadata2->GetTransferKeepAliveCallIndex(),
-            metadata->GetTransferKeepAliveCallIndex());
-  EXPECT_EQ(metadata2->GetTransferAllCallIndex(),
-            metadata->GetTransferAllCallIndex());
-  EXPECT_EQ(metadata2->GetBalancesPalletIndex(),
-            metadata->GetBalancesPalletIndex());
-  EXPECT_EQ(metadata2->GetSpecVersion(), 0u);
+  auto expected = PolkadotChainMetadata::FromFields(
+      /*system_pallet_index=*/0, /*balances_pallet_index=*/4,
+      /*transaction_payment_pallet_index=*/0x1a,
+      /*transfer_allow_death_call_index=*/0,
+      /*transfer_keep_alive_call_index=*/3,
+      /*transfer_all_call_index=*/4,
+      /*ss58_prefix=*/42, /*spec_version=*/1'022'000);
+  EXPECT_EQ(*metadata, expected);
 }
 
 }  // namespace brave_wallet

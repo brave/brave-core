@@ -30,6 +30,11 @@ class PageContentFetcher
   PageContentFetcher(const PageContentFetcher&) = delete;
   PageContentFetcher& operator=(const PageContentFetcher&) = delete;
 
+  // Returns true if the URL has custom extraction logic (e.g. GitHub raw
+  // content, YouTube transcripts, Twitter screenshots) that should be used
+  // instead of the default GetAIPageContent approach.
+  static bool HasCustomExtraction(const GURL& url);
+
   void FetchPageContent(std::string_view invalidation_token,
                         FetchPageContentCallback callback) override;
 

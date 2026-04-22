@@ -41,7 +41,7 @@ class CreativeSearchResultAdTabHelper final
   static void MaybeCreateForWebContents(content::WebContents* web_contents);
 
   void MaybeTriggerCreativeAdClickedEvent(const GURL& url,
-                                          TriggerAdEventCallback callback);
+                                          ResultCallback callback);
 
  private:
   friend class content::WebContentsUserData<CreativeSearchResultAdTabHelper>;

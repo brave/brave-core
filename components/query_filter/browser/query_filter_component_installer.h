@@ -6,15 +6,54 @@
 #ifndef BRAVE_COMPONENTS_QUERY_FILTER_BROWSER_QUERY_FILTER_COMPONENT_INSTALLER_H_
 #define BRAVE_COMPONENTS_QUERY_FILTER_BROWSER_QUERY_FILTER_COMPONENT_INSTALLER_H_
 
+#include <string>
+#include <vector>
+
+#include "base/values.h"
+#include "components/component_updater/component_installer.h"
+#include "components/update_client/update_client.h"
+
+namespace base {
+class FilePath;
+class Version;
+}  // namespace base
+
 namespace component_updater {
 class ComponentUpdateService;
-}  // namespace component_updater
 
-namespace query_filter {
+class QueryFilterComponentInstallerPolicy
+    : public component_updater::ComponentInstallerPolicy {
+ public:
+  QueryFilterComponentInstallerPolicy();
+  ~QueryFilterComponentInstallerPolicy() override;
+
+  QueryFilterComponentInstallerPolicy(
+      const QueryFilterComponentInstallerPolicy&) = delete;
+  QueryFilterComponentInstallerPolicy& operator=(
+      const QueryFilterComponentInstallerPolicy&) = delete;
+
+  // component_updater::ComponentInstallerPolicy
+  bool SupportsGroupPolicyEnabledComponentUpdates() const override;
+  bool RequiresNetworkEncryption() const override;
+  update_client::CrxInstaller::Result OnCustomInstall(
+      const base::DictValue& manifest,
+      const base::FilePath& install_dir) override;
+  void OnCustomUninstall() override;
+  bool VerifyInstallation(const base::DictValue& manifest,
+                          const base::FilePath& install_dir) const override;
+  void ComponentReady(const base::Version& version,
+                      const base::FilePath& install_dir,
+                      base::DictValue manifest) override;
+  base::FilePath GetRelativeInstallDir() const override;
+  void GetHash(std::vector<uint8_t>* hash) const override;
+  std::string GetName() const override;
+  update_client::InstallerAttributes GetInstallerAttributes() const override;
+  bool IsBraveComponent() const override;
+};
+
 // Registers the Query Filter component with the component updater.
 void RegisterQueryFilterComponent(
     component_updater::ComponentUpdateService* cus);
-
-}  // namespace query_filter
+}  // namespace component_updater
 
 #endif  // BRAVE_COMPONENTS_QUERY_FILTER_BROWSER_QUERY_FILTER_COMPONENT_INSTALLER_H_

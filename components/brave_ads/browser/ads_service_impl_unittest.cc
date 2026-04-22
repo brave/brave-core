@@ -12,6 +12,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/test/run_until.h"
 #include "base/test/task_environment.h"
+#include "base/values.h"
 #include "brave/components/brave_ads/browser/test/fake_ads_service_delegate.h"
 #include "brave/components/brave_ads/browser/test/fake_ads_tooltips_delegate.h"
 #include "brave/components/brave_ads/browser/test/fake_bat_ads_service_factory.h"
@@ -23,6 +24,7 @@
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_registry.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
+#include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/variations/pref_names.h"
@@ -100,10 +102,10 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
   TestingPrefServiceSimple prefs_;
   TestingPrefServiceSimple local_state_;
 
-  raw_ptr<test::FakeDeviceId> device_id_;  // not owned
+  raw_ptr<test::FakeDeviceId> device_id_;  // Not owned.
 
   raw_ptr<test::FakeBatAdsServiceFactory>
-      bat_ads_service_factory_;  // not owned
+      bat_ads_service_factory_;  // Not owned.
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   test::FakeRewardsService rewards_service_;
@@ -338,6 +340,92 @@ TEST_F(BraveAdsAdsServiceImplTest, ServiceStartsWhenUserHasJoinedBraveRewards) {
   // Assert
   EXPECT_EQ(1U, bat_ads_service_factory_->launch_count());
 }
+
+TEST_F(
+    BraveAdsAdsServiceImplTest,
+    ServiceDoesNotStopWhenOptedOutOfNotificationAdsWhileOptedInToSearchResultAds) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, true);
+  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
+  prefs_.SetBoolean(prefs::kOptedInToNotificationAds, true);
+  Startup();
+  ASSERT_EQ(1U, bat_ads_service_factory_->launch_count());
+
+  // Act
+  prefs_.SetBoolean(prefs::kOptedInToNotificationAds, false);
+
+  // Assert
+  EXPECT_EQ(1U, bat_ads_service_factory_->launch_count());
+  EXPECT_EQ(0U, bat_ads_service_factory_->shutdown_count());
+}
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
+
+#if !BUILDFLAG(IS_ANDROID)
+TEST_F(BraveAdsAdsServiceImplTest,
+       ServiceDoesNotStartForSearchResultAdsWhenRewardsIsDisabledByPolicy) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, true);
+  prefs_.SetManagedPref(brave_rewards::prefs::kDisabledByPolicy,
+                        base::Value(true));
+
+  // Act
+  Startup();
+
+  // Assert
+  EXPECT_EQ(0U, bat_ads_service_factory_->launch_count());
+}
+
+TEST_F(BraveAdsAdsServiceImplTest,
+       ServiceDoesNotStartForNewTabPageAdsWhenRewardsIsDisabledByPolicy) {
+  // Arrange
+  prefs_.SetBoolean(
+      ntp_background_images::prefs::kNewTabPageShowBackgroundImage, true);
+  prefs_.SetBoolean(ntp_background_images::prefs::
+                        kNewTabPageShowSponsoredImagesBackgroundImage,
+                    true);
+  prefs_.SetManagedPref(brave_rewards::prefs::kDisabledByPolicy,
+                        base::Value(true));
+
+  // Act
+  Startup();
+
+  // Assert
+  EXPECT_EQ(0U, bat_ads_service_factory_->launch_count());
+}
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+TEST_F(BraveAdsAdsServiceImplTest,
+       ServiceDoesNotStartForNotificationAdsWhenRewardsIsDisabledByPolicy) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, false);
+  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
+  prefs_.SetBoolean(prefs::kOptedInToNotificationAds, true);
+  prefs_.SetManagedPref(brave_rewards::prefs::kDisabledByPolicy,
+                        base::Value(true));
+
+  // Act
+  Startup();
+
+  // Assert
+  EXPECT_EQ(0U, bat_ads_service_factory_->launch_count());
+}
+
+TEST_F(
+    BraveAdsAdsServiceImplTest,
+    ServiceDoesNotStartWhenUserHasJoinedBraveRewardsButRewardsIsDisabledByPolicy) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, false);
+  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
+  prefs_.SetManagedPref(brave_rewards::prefs::kDisabledByPolicy,
+                        base::Value(true));
+
+  // Act
+  Startup();
+
+  // Assert
+  EXPECT_EQ(0U, bat_ads_service_factory_->launch_count());
+}
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 }  // namespace brave_ads

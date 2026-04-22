@@ -46,13 +46,13 @@ class NotificationAdHandler final : public AdsClientNotifierObserver,
 
   void TriggerEvent(const std::string& placement_id,
                     mojom::NotificationAdEventType mojom_ad_event_type,
-                    TriggerAdEventCallback callback);
+                    ResultCallback callback);
 
  private:
   void MaybeServeAtRegularIntervals();
 
   void FireServedEventCallback(
-      TriggerAdEventCallback callback,
+      ResultCallback callback,
       bool success,
       const std::string& placement_id,
       mojom::NotificationAdEventType mojom_ad_event_type);

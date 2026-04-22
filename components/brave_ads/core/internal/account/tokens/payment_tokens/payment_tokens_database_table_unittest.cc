@@ -29,7 +29,7 @@ TEST_F(BraveAdsPaymentTokensDatabaseTableTest, SaveEmptyPaymentTokens) {
   // Assert
   base::test::TestFuture<bool, PaymentTokenList> get_all_test_future;
   database_table_.GetAll(
-      get_all_test_future.GetCallback<bool, PaymentTokenList>());
+      get_all_test_future.GetCallback<bool, const PaymentTokenList&>());
   const auto [success, payment_tokens] = get_all_test_future.Take();
   EXPECT_TRUE(success);
   EXPECT_THAT(payment_tokens, ::testing::IsEmpty());
@@ -51,7 +51,7 @@ TEST_F(BraveAdsPaymentTokensDatabaseTableTest, SavePaymentTokens) {
   // Assert
   base::test::TestFuture<bool, PaymentTokenList> get_all_test_future;
   database_table_.GetAll(
-      get_all_test_future.GetCallback<bool, PaymentTokenList>());
+      get_all_test_future.GetCallback<bool, const PaymentTokenList&>());
   const auto [success, payment_tokens] = get_all_test_future.Take();
   EXPECT_TRUE(success);
   EXPECT_EQ((PaymentTokenList{payment_token_1, payment_token_2}),
@@ -73,7 +73,7 @@ TEST_F(BraveAdsPaymentTokensDatabaseTableTest, SaveDuplicatePaymentTokens) {
   // Assert
   base::test::TestFuture<bool, PaymentTokenList> get_all_test_future;
   database_table_.GetAll(
-      get_all_test_future.GetCallback<bool, PaymentTokenList>());
+      get_all_test_future.GetCallback<bool, const PaymentTokenList&>());
   const auto [success, payment_tokens] = get_all_test_future.Take();
   EXPECT_TRUE(success);
   EXPECT_THAT(payment_tokens, ::testing::SizeIs(1U));
@@ -98,7 +98,7 @@ TEST_F(BraveAdsPaymentTokensDatabaseTableTest, DeletePaymentToken) {
   // Assert
   base::test::TestFuture<bool, PaymentTokenList> get_all_test_future;
   database_table_.GetAll(
-      get_all_test_future.GetCallback<bool, PaymentTokenList>());
+      get_all_test_future.GetCallback<bool, const PaymentTokenList&>());
   const auto [success, payment_tokens] = get_all_test_future.Take();
   EXPECT_TRUE(success);
   EXPECT_EQ((PaymentTokenList{payment_token_2}), payment_tokens);
@@ -126,7 +126,7 @@ TEST_F(BraveAdsPaymentTokensDatabaseTableTest, DeletePaymentTokens) {
   // Assert
   base::test::TestFuture<bool, PaymentTokenList> get_all_test_future;
   database_table_.GetAll(
-      get_all_test_future.GetCallback<bool, PaymentTokenList>());
+      get_all_test_future.GetCallback<bool, const PaymentTokenList&>());
   const auto [success, payment_tokens] = get_all_test_future.Take();
   EXPECT_TRUE(success);
   EXPECT_EQ((PaymentTokenList{payment_token_3}), payment_tokens);
@@ -159,7 +159,7 @@ TEST_F(BraveAdsPaymentTokensDatabaseTableTest, DoNotDeleteMissingPaymentToken) {
   // Assert
   base::test::TestFuture<bool, PaymentTokenList> get_all_test_future;
   database_table_.GetAll(
-      get_all_test_future.GetCallback<bool, PaymentTokenList>());
+      get_all_test_future.GetCallback<bool, const PaymentTokenList&>());
   const auto [success, payment_tokens] = get_all_test_future.Take();
   EXPECT_TRUE(success);
   EXPECT_EQ((PaymentTokenList{payment_token}), payment_tokens);
@@ -184,7 +184,7 @@ TEST_F(BraveAdsPaymentTokensDatabaseTableTest, DeleteAllPaymentTokens) {
   // Assert
   base::test::TestFuture<bool, PaymentTokenList> get_all_test_future;
   database_table_.GetAll(
-      get_all_test_future.GetCallback<bool, PaymentTokenList>());
+      get_all_test_future.GetCallback<bool, const PaymentTokenList&>());
   const auto [success, payment_tokens] = get_all_test_future.Take();
   EXPECT_TRUE(success);
   EXPECT_THAT(payment_tokens, ::testing::IsEmpty());

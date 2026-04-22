@@ -16,7 +16,7 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service_callback.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier.h"
 #include "brave/components/brave_ads/core/public/common/functional/once_closure_task_queue.h"
@@ -49,15 +49,15 @@ class AdsServiceImplIOS : public AdsService {
                      mojom::SysInfoPtr mojom_sys_info,
                      mojom::BuildChannelInfoPtr mojom_build_channel,
                      mojom::WalletInfoPtr mojom_wallet,
-                     InitializeCallback callback);
-  void ShutdownAds(ShutdownCallback callback);
+                     ResultCallback callback);
+  void ShutdownAds(ResultCallback callback);
 
   void MaybeGetNotificationAd(const std::string& placement_id,
                               MaybeGetNotificationAdCallback callback);
   void TriggerNotificationAdEvent(
       const std::string& placement_id,
       mojom::NotificationAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback);
+      ResultCallback callback);
 
   void NotifyDidInitializeAdsService() const;
   void NotifyDidShutdownAdsService() const;
@@ -73,7 +73,7 @@ class AdsServiceImplIOS : public AdsService {
                               bool by_user) override;
   void OnNotificationAdClicked(const std::string& placement_id) override;
 
-  void ClearData(ClearDataCallback callback) override;
+  void ClearData(ResultCallback callback) override;
 
   void AddBatAdsObserver(mojo::PendingRemote<bat_ads::mojom::BatAdsObserver>
                              bat_ads_observer_pending_remote) override;
@@ -84,9 +84,8 @@ class AdsServiceImplIOS : public AdsService {
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
-  void ParseAndSaveNewTabPageAds(
-      base::DictValue dict,
-      ParseAndSaveNewTabPageAdsCallback callback) override;
+  void ParseAndSaveNewTabPageAds(base::DictValue dict,
+                                 ResultCallback callback) override;
   void MaybeServeNewTabPageAd(
       MaybeServeMojomNewTabPageAdCallback callback) override;
   void TriggerNewTabPageAdEvent(
@@ -94,35 +93,34 @@ class AdsServiceImplIOS : public AdsService {
       const std::string& creative_instance_id,
       mojom::NewTabPageAdMetricType mojom_ad_metric_type,
       mojom::NewTabPageAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback) override;
+      ResultCallback callback) override;
 
   void MaybeGetSearchResultAd(const std::string& placement_id,
                               MaybeGetSearchResultAdCallback callback) override;
   void TriggerSearchResultAdEvent(
       mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
       mojom::SearchResultAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback) override;
+      ResultCallback callback) override;
 
-  void PurgeOrphanedAdEventsForType(
-      mojom::AdType mojom_ad_type,
-      PurgeOrphanedAdEventsForTypeCallback callback) override;
+  void PurgeOrphanedAdEventsForType(mojom::AdType mojom_ad_type,
+                                    ResultCallback callback) override;
 
   void GetAdHistory(base::Time from_time,
                     base::Time to_time,
                     GetAdHistoryForUICallback callback) override;
 
   void ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
-                    ToggleReactionCallback callback) override;
+                    ResultCallback callback) override;
   void ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
-                       ToggleReactionCallback callback) override;
+                       ResultCallback callback) override;
   void ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
-                         ToggleReactionCallback callback) override;
+                         ResultCallback callback) override;
   void ToggleDislikeSegment(mojom::ReactionInfoPtr mojom_reaction,
-                            ToggleReactionCallback callback) override;
+                            ResultCallback callback) override;
   void ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
-                    ToggleReactionCallback callback) override;
+                    ResultCallback callback) override;
   void ToggleMarkAdAsInappropriate(mojom::ReactionInfoPtr mojom_reaction,
-                                   ToggleReactionCallback callback) override;
+                                   ResultCallback callback) override;
 
   void NotifyTabTextContentDidChange(int32_t tab_id,
                                      const std::vector<GURL>& redirect_chain,
@@ -148,13 +146,13 @@ class AdsServiceImplIOS : public AdsService {
   // KeyedService:
   void Shutdown() override;
 
-  void InitializeAds(InitializeCallback callback);
-  void InitializeAdsCallback(InitializeCallback callback, bool success);
+  void InitializeAds(ResultCallback callback);
+  void InitializeAdsCallback(ResultCallback callback, bool success);
 
-  void ShutdownAdsCallback(ShutdownCallback callback, bool success);
+  void ShutdownAdsCallback(ResultCallback callback, bool success);
 
-  void ClearAdsData(ClearDataCallback callback, bool success);
-  void ClearAdsDataCallback(ClearDataCallback callback);
+  void ClearAdsData(ResultCallback callback, bool success);
+  void ClearAdsDataCallback(ResultCallback callback);
 
   const raw_ref<PrefService> prefs_;
 

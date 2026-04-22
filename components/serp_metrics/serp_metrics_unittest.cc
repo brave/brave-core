@@ -35,8 +35,9 @@ class SerpMetricsTest : public testing::TestWithParam<std::string_view> {
  public:
   SerpMetricsTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-        libc_timezone_(std::string(GetParam())),
-        icu_timezone_(GetParam().data()) {}
+        timezone_(GetParam()),
+        libc_timezone_(timezone_),
+        icu_timezone_(timezone_.c_str()) {}
 
   void SetUp() override {
     // Register `kLastCheckYMD` pref (YYYY-MM-DD). This pref is part of the
@@ -84,6 +85,7 @@ class SerpMetricsTest : public testing::TestWithParam<std::string_view> {
 
  protected:
   base::test::TaskEnvironment task_environment_;
+  const std::string timezone_;
   base::test::ScopedLibcTimezoneOverride libc_timezone_;
   const base::test::ScopedRestoreDefaultTimezone icu_timezone_;
 

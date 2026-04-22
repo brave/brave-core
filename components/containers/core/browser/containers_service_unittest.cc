@@ -12,6 +12,8 @@
 #include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/components/containers/core/browser/containers_service_observer.h"
+#include "brave/components/containers/core/browser/containers_test_utils.h"
 #include "brave/components/containers/core/browser/prefs.h"
 #include "brave/components/containers/core/browser/prefs_registration.h"
 #include "brave/components/containers/core/browser/unknown_container.h"
@@ -26,22 +28,6 @@ namespace containers {
 namespace {
 
 using testing::_;
-
-mojom::ContainerPtr MakeContainer(std::string id,
-                                  std::string name,
-                                  mojom::Icon icon = mojom::Icon::kDefault,
-                                  SkColor color = SK_ColorBLUE) {
-  return mojom::Container::New(std::move(id), std::move(name), icon, color);
-}
-
-void ExpectContainer(const mojom::ContainerPtr& container,
-                     const std::string& id,
-                     const std::string& name,
-                     const mojom::Icon& icon = mojom::Icon::kDefault,
-                     const SkColor& color = SK_ColorBLUE) {
-  ASSERT_TRUE(container);
-  EXPECT_THAT(*container, testing::FieldsAre(id, name, icon, color));
-}
 
 class MockContainersServiceDelegate : public ContainersService::Delegate {
  public:
@@ -80,6 +66,11 @@ class MockContainersServiceDelegate : public ContainersService::Delegate {
   base::flat_set<std::string> referenced_container_ids_;
   bool delete_result_ = true;
   std::vector<std::string> delete_requests_;
+};
+
+class MockContainersServiceObserver : public ContainersServiceObserver {
+ public:
+  MOCK_METHOD(void, OnContainersListChanged, (), (override));
 };
 
 }  // namespace
@@ -129,6 +120,25 @@ TEST_F(ContainersServiceTest, GetContainers) {
 
   auto containers_list = service_->GetContainers();
   ExpectContainer(containers_list[0], "container-id", "Work");
+}
+
+TEST_F(ContainersServiceTest,
+       Observer_OnContainersListChanged_WhenContainersListPrefChanges) {
+  testing::NiceMock<MockContainersServiceObserver> observer;
+  EXPECT_CALL(observer, OnContainersListChanged()).Times(1);
+
+  service_->AddObserver(&observer);
+
+  std::vector<mojom::ContainerPtr> containers;
+  containers.push_back(MakeContainer("container-id", "Work"));
+  SetContainersToPrefs(containers, prefs_);
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  EXPECT_CALL(observer, OnContainersListChanged()).Times(1);
+  SetContainersToPrefs({}, prefs_);
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  service_->RemoveObserver(&observer);
 }
 
 TEST_F(ContainersServiceTest, MarkContainerUsed_PersistsSnapshot) {

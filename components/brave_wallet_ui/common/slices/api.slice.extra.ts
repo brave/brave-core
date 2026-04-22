@@ -43,6 +43,20 @@ export const useAccountsQuery = () => {
   return useGetAccountInfosRegistryQuery(undefined, {
     selectFromResult: (res) => ({
       isLoading: res.isLoading,
+      // True once the accounts registry has actually been fetched.
+      //
+      // `accounts` can't answer this on its own: it falls back to the empty
+      // entity state when `res.data` is undefined, so `accounts.length === 0`
+      // means either "fetch hasn't finished" or "user has zero accounts" —
+      // indistinguishable.
+      //
+      // `!isLoading` can't answer it either: RTK Query dispatches the fetch
+      // from a useEffect, so on the very first render `isLoading` is still
+      // false even though no data has arrived yet.
+      //
+      // Use `hasData` to gate first-render decisions that depend on
+      // knowing the real account list (e.g. redirecting away on not-found).
+      hasData: res.data !== undefined,
       accounts: selectAllAccountInfosFromQuery(res),
     }),
   })

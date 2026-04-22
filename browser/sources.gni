@@ -48,6 +48,7 @@ import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
+import("//brave/components/email_aliases/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
@@ -144,8 +145,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/brave_shields:brave_shields_impl",
   "//brave/browser/brave_stats",
   "//brave/browser/component_updater",
-  "//brave/browser/email_aliases",
-  "//brave/browser/local_ai",
+  "//brave/browser/history_embeddings",
   "//brave/browser/metrics/buildflags",
   "//brave/browser/misc_metrics",
   "//brave/browser/misc_metrics:misc_metrics_impl",
@@ -159,7 +159,6 @@ brave_chrome_browser_deps = [
   "//brave/browser/themes",
   "//brave/browser/ui",
   "//brave/browser/ui/webui/brave_account",
-  "//brave/browser/ui/webui/email_aliases",
   "//brave/browser/ui/webui/local_ai",
   "//brave/browser/updater:buildflags",
   "//brave/common",
@@ -218,9 +217,7 @@ brave_chrome_browser_deps = [
   "//brave/components/de_amp/browser",
   "//brave/components/de_amp/common",
   "//brave/components/debounce/content/browser",
-  "//brave/components/email_aliases:features",
-  "//brave/components/email_aliases:mojom",
-  "//brave/components/email_aliases:service",
+  "//brave/components/email_aliases/buildflags",
   "//brave/components/global_privacy_control",
   "//brave/components/google_sign_in_permission",
   "//brave/components/https_upgrade_exceptions/browser",
@@ -350,6 +347,16 @@ if (enable_brave_wallet) {
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/decentralized_dns/content",
     "//brave/components/decentralized_dns/core",
+  ]
+}
+
+if (enable_email_aliases) {
+  brave_chrome_browser_deps += [
+    "//brave/browser/email_aliases",
+    "//brave/browser/ui/webui/email_aliases",
+    "//brave/components/email_aliases:features",
+    "//brave/components/email_aliases:mojom",
+    "//brave/components/email_aliases:service",
   ]
 }
 
@@ -747,6 +754,7 @@ brave_chrome_browser_ui_allow_circular_includes_from +=
 
 brave_chrome_browser_allow_circular_includes_from += [
   "//brave/browser/brave_shields:brave_shields_impl",
+  "//brave/browser/history_embeddings",
   "//brave/browser/ui",
   "//brave/browser/brave_stats",
   "//brave/browser/ntp_background",

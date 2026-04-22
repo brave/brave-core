@@ -166,6 +166,10 @@ export class SettingsBraveOriginPageElement
     this.showRestartToast_ = needsRestart
   }
 
+  private getOriginRestartPaddingClass_(showRestartToast: boolean): string {
+    return showRestartToast ? 'origin-restart-padding-spacer' : ''
+  }
+
   private restartBrowser_(e: Event) {
     e.stopPropagation()
     this.performRestart(RestartType.RESTART)

@@ -1,0 +1,58 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/common/typescript.gni")
+import("//brave/resources/brave_grit.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+import("//tools/grit/repack.gni")
+
+assert(enable_psst)
+
+transpile_web_ui("dialog") {
+  entry_points = [ [
+        "brave_psst_dialog",
+        rebase_path("ui/brave_psst_dialog.tsx"),
+      ] ]
+
+  deps = [
+    "//brave/components/psst/common:mojom_js",
+    "//brave/components/resources:strings",
+  ]
+
+  resource_name = "brave_psst_dialog"
+
+  imports_from = [ "//brave/components/psst/resources/ui/" ]
+}
+
+pack_web_resources("psst_dialog_generated_resources") {
+  resource_name = "brave_psst_dialog"
+  output_dir = "$root_gen_dir/brave/components/psst/resources"
+
+  deps = [ ":dialog" ]
+}
+
+brave_grit("static_resources") {
+  source = "brave_psst_static_resources.grd"
+
+  outputs = [
+    "grit/brave_psst_resources.h",
+    "brave_psst_static.pak",
+  ]
+}
+
+repack("resources") {
+  public_deps = [
+    ":psst_dialog_generated_resources",
+    ":static_resources",
+  ]
+
+  sources = [
+    "$root_gen_dir/brave/components/psst/resources/brave_psst_dialog_generated.pak",
+    "$root_gen_dir/brave/components/psst/resources/brave_psst_static.pak",
+  ]
+
+  output =
+      "$root_gen_dir/brave/components/psst/resources/brave_psst_resources.pak"
+}

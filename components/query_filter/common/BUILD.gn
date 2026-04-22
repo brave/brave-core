@@ -5,6 +5,7 @@
 
 source_set("common") {
   sources = [
+    "constants.h",
     "features.cc",
     "features.h",
   ]

@@ -30,21 +30,21 @@ AdsInternalsHandler::~AdsInternalsHandler() = default;
 
 void AdsInternalsHandler::BindInterface(
     mojo::PendingReceiver<bat_ads::mojom::AdsInternals>
-        mojom_pending_receiver) {
-  if (mojom_receiver_.is_bound()) {
-    mojom_receiver_.reset();
+        ads_internals_pending_receiver) {
+  if (ads_internals_receiver_.is_bound()) {
+    ads_internals_receiver_.reset();
   }
 
-  mojom_receiver_.Bind(std::move(mojom_pending_receiver));
+  ads_internals_receiver_.Bind(std::move(ads_internals_pending_receiver));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 void AdsInternalsHandler::CreateAdsInternalsPageHandler(
     mojo::PendingRemote<bat_ads::mojom::AdsInternalsPage>
-        mojom_pending_remote) {
-  mojom_remote_ = mojo::Remote<bat_ads::mojom::AdsInternalsPage>(
-      std::move(mojom_pending_remote));
+        ads_internals_page_pending_remote) {
+  ads_internals_page_remote_ = mojo::Remote<bat_ads::mojom::AdsInternalsPage>(
+      std::move(ads_internals_page_pending_remote));
 
   UpdateBraveRewardsEnabled();
 }
@@ -59,7 +59,7 @@ void AdsInternalsHandler::GetAdsInternals(GetAdsInternalsCallback callback) {
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void AdsInternalsHandler::ClearAdsData(brave_ads::ClearDataCallback callback) {
+void AdsInternalsHandler::ClearAdsData(brave_ads::ResultCallback callback) {
   if (!ads_service_) {
     return std::move(callback).Run(/*success=*/false);
   }
@@ -85,10 +85,10 @@ void AdsInternalsHandler::OnBraveRewardsEnabledPrefChanged(
 }
 
 void AdsInternalsHandler::UpdateBraveRewardsEnabled() {
-  if (!mojom_remote_) {
+  if (!ads_internals_page_remote_) {
     return;
   }
 
   const bool is_enabled = prefs_->GetBoolean(brave_rewards::prefs::kEnabled);
-  mojom_remote_->UpdateBraveRewardsEnabled(is_enabled);
+  ads_internals_page_remote_->UpdateBraveRewardsEnabled(is_enabled);
 }

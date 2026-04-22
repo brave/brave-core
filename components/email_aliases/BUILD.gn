@@ -4,8 +4,11 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/buildflag_header_with_env_config.gni")
+import("//brave/components/email_aliases/buildflags/buildflags.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 import("//tools/json_schema_compiler/json_schema_api.gni")
+
+assert(enable_email_aliases)
 
 mojom_component("mojom") {
   output_prefix = "email_aliases_mojom"
@@ -74,10 +77,13 @@ source_set("test_utils") {
   ]
 
   deps = [
+    ":email_aliases_api_types",
     ":service",
     "//base/test:test_support",
+    "//brave/components/brave_account/endpoint_client",
     "//brave/components/email_aliases:mojom",
     "//mojo/public/cpp/bindings",
+    "//testing/gtest",
     "//url",
   ]
 }

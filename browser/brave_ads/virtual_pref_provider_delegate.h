@@ -33,6 +33,7 @@ class VirtualPrefProviderDelegate : public VirtualPrefProvider::Delegate {
 
   ~VirtualPrefProviderDelegate() override;
 
+  // VirtualPrefProvider::Delegate:
   std::string_view GetChannel() const override;
 
   std::string GetDefaultSearchEngineName() const override;

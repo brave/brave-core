@@ -8,6 +8,10 @@ import repository
 
 class GitStatus:
     """Runs `git status` and provides a summary.
+
+    This class is very simple and it is designed around the use case where we
+    want to check for the status of the repository before committing the common
+    version bump patches.
     """
 
     def __init__(self):
@@ -22,14 +26,24 @@ class GitStatus:
         # a list of all untracked files.
         self.untracked = []
 
+        # a list of all staged files.
+        self.staged = []
+
         for line in self.git_status.splitlines():
-            [status, path] = line.lstrip().split(' ', 1)
+            xy = line[:2]
+            path = line[3:]
+            if xy[0] not in (' ', '?'):
+                self.staged.append(path)
+            status = line.lstrip().split(' ', 1)[0]
             if status == 'D':
                 self.deleted.append(path)
             elif status == 'M':
                 self.modified.append(path)
             elif status == '??':
                 self.untracked.append(path)
+
+    def has_staged_files(self):
+        return len(self.staged) > 0
 
     def has_deleted_patch_files(self):
         return any(path.endswith('.patch') for path in self.deleted)

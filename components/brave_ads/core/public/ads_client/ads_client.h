@@ -36,20 +36,21 @@ class AdsClient {
   virtual void NotifyPendingObservers() = 0;
 
   // Returns `true` if there is an available network connection.
-  virtual bool IsNetworkConnectionAvailable() const = 0;
+  [[nodiscard]] virtual bool IsNetworkConnectionAvailable() const = 0;
 
   // Returns `true` if the browser is active.
-  virtual bool IsBrowserActive() const = 0;
+  [[nodiscard]] virtual bool IsBrowserActive() const = 0;
 
   // Returns `true` if the browser is in full screen mode.
-  virtual bool IsBrowserInFullScreenMode() const = 0;
+  [[nodiscard]] virtual bool IsBrowserInFullScreenMode() const = 0;
 
   // Returns `true` if notification ads can be shown.
-  virtual bool CanShowNotificationAds() const = 0;
+  [[nodiscard]] virtual bool CanShowNotificationAds() const = 0;
 
   // Returns `true` if notification ads can be shown while the browser is
   // backgrounded.
-  virtual bool CanShowNotificationAdsWhileBrowserIsBackgrounded() const = 0;
+  [[nodiscard]] virtual bool CanShowNotificationAdsWhileBrowserIsBackgrounded()
+      const = 0;
 
   // Show notification `ad`.
   virtual void ShowNotificationAd(const NotificationAdInfo& ad) = 0;
@@ -75,15 +76,15 @@ class AdsClient {
   // `false`.
   virtual void Save(const std::string& name,
                     const std::string& value,
-                    SaveCallback callback) = 0;
+                    ResultCallback callback) = 0;
 
   // Remove the file for the specified `name` from persistent storage. The
   // callback takes one argument - `bool` is set to `true` if successful
   // otherwise `false`.
-  virtual void Remove(const std::string& name, RemoveCallback callback) = 0;
+  virtual void Remove(const std::string& name, ResultCallback callback) = 0;
 
   // Load a file for the specified `name` from persistent storage. The callback
-  // takes one argument - optional containing the loaded `value`.
+  // takes one argument - `std::optional` containing the loaded `value`.
   virtual void Load(const std::string& name, LoadCallback callback) = 0;
 
   // Load a resource component for the specified `id` and `version` from
@@ -100,11 +101,11 @@ class AdsClient {
                                     const std::string& captcha_id) = 0;
 
   // Returns `true` if the specified profile preference `path` exists.
-  virtual bool FindProfilePref(const std::string& path) const = 0;
+  [[nodiscard]] virtual bool FindProfilePref(const std::string& path) const = 0;
 
   // Get the value from the specified profile preference `path`. Returns the
   // default value if the path does not exist.
-  virtual std::optional<base::Value> GetProfilePref(
+  [[nodiscard]] virtual std::optional<base::Value> GetProfilePref(
       const std::string& path) = 0;
 
   // Update the value for the specified profile preference `path`.
@@ -115,14 +116,16 @@ class AdsClient {
 
   // Returns `true` if a value has been set for the specified profile preference
   // `path`.
-  virtual bool HasProfilePrefPath(const std::string& path) const = 0;
+  [[nodiscard]] virtual bool HasProfilePrefPath(
+      const std::string& path) const = 0;
 
   // Returns `true` if the specified local state preference `path` exists.
-  virtual bool FindLocalStatePref(const std::string& path) const = 0;
+  [[nodiscard]] virtual bool FindLocalStatePref(
+      const std::string& path) const = 0;
 
   // Get the value from the specified local state preference `path`. Returns the
   // default value if the path does not exist.
-  virtual std::optional<base::Value> GetLocalStatePref(
+  [[nodiscard]] virtual std::optional<base::Value> GetLocalStatePref(
       const std::string& path) = 0;
 
   // Update the value for the specified local state preference `path`.
@@ -134,10 +137,11 @@ class AdsClient {
 
   // Returns `true` if a value has been set for the specified local state
   // preference `path`.
-  virtual bool HasLocalStatePrefPath(const std::string& path) const = 0;
+  [[nodiscard]] virtual bool HasLocalStatePrefPath(
+      const std::string& path) const = 0;
 
   // Get the virtual preferences.
-  virtual base::DictValue GetVirtualPrefs() const = 0;
+  [[nodiscard]] virtual base::DictValue GetVirtualPrefs() const = 0;
 
   // Log a `message` to `file` and the console log with `line` and
   // `verbose_level`.

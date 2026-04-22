@@ -7,7 +7,7 @@
 
 #include "base/no_destructor.h"
 #include "brave/components/serp_metrics/serp_metrics_service.h"
-#include "brave/components/time_period_storage/pref_time_period_store_factory.h"
+#include "brave/components/serp_metrics/time_period_storage/serp_metrics_pref_time_period_store_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
@@ -52,8 +52,8 @@ SerpMetricsServiceFactoryIOS::BuildServiceInstanceFor(
     ProfileIOS* profile) const {
   return std::make_unique<SerpMetricsService>(
       *GetApplicationContext()->GetLocalState(),
-      PrefTimePeriodStoreFactory(profile->GetPrefs(),
-                                 kSerpMetricsTimePeriodStorage));
+      SerpMetricsPrefTimePeriodStoreFactory(profile->GetPrefs(),
+                                            kSerpMetricsTimePeriodStorage));
 }
 
 }  // namespace serp_metrics

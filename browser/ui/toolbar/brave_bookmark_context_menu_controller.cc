@@ -21,6 +21,12 @@
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/containers/containers_service_factory.h"
+#include "brave/components/containers/core/common/features.h"
+#endif
 
 BraveBookmarkContextMenuController::BraveBookmarkContextMenuController(
     gfx::NativeWindow parent_window,
@@ -43,6 +49,18 @@ BraveBookmarkContextMenuController::BraveBookmarkContextMenuController(
   }
   AddBraveBookmarksSubmenu(profile);
   AddShowAllBookmarksButtonMenu();
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
+    // Get URL of the selected bookmark.
+    const GURL selection_url = [&]() {
+      if (selection.size() != 1u || !selection[0]->is_url()) {
+        return GURL();
+      }
+      return selection[0]->url();
+    }();
+    MaybeAddContainersBookmarkSubmenu(profile, selection_url);
+  }
+#endif
   bookmark_model_ = BookmarkModelFactory::GetForBrowserContext(profile);
 }
 
@@ -64,6 +82,46 @@ void BraveBookmarkContextMenuController::AddBraveBookmarksSubmenu(
       brave_bookmarks_submenu_model_.get());
 }
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+void BraveBookmarkContextMenuController::MaybeAddContainersBookmarkSubmenu(
+    Profile* profile,
+    const GURL& url) {
+  if (!url.is_valid()) {
+    return;
+  }
+
+  auto* service = ContainersServiceFactory::GetForProfile(profile);
+  if (!service) {
+    return;
+  }
+
+  std::optional<size_t> first_separator_index;
+  for (size_t i = 0; i < menu_model()->GetItemCount(); ++i) {
+    if (menu_model()->GetTypeAt(i) == ui::MenuModel::TYPE_SEPARATOR) {
+      first_separator_index = i;
+      break;
+    }
+  }
+
+  containers_bookmark_menu_model_delegate_ =
+      std::make_unique<containers::ContainersBookmarkMenuModelDelegate>(
+          browser_, url);
+  containers_bookmark_submenu_ =
+      std::make_unique<containers::ContainersMenuModel>(
+          *containers_bookmark_menu_model_delegate_, *service);
+
+  if (first_separator_index.has_value()) {
+    menu_model()->InsertSubMenuWithStringIdAt(
+        *first_separator_index, IDC_OPEN_IN_CONTAINER,
+        IDS_CXMENU_OPEN_IN_CONTAINER, containers_bookmark_submenu_.get());
+  } else {
+    menu_model()->AddSubMenuWithStringId(IDC_OPEN_IN_CONTAINER,
+                                         IDS_CXMENU_OPEN_IN_CONTAINER,
+                                         containers_bookmark_submenu_.get());
+  }
+}
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
 bool BraveBookmarkContextMenuController::IsCommandIdChecked(
     int command_id) const {
   if (brave_bookmarks_submenu_model_->GetIndexOfCommandId(command_id)) {
@@ -80,6 +138,17 @@ bool BraveBookmarkContextMenuController::IsCommandIdChecked(
     return prefs_->GetBoolean(brave::bookmarks::prefs::kShowAllBookmarksButton);
   }
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (containers_bookmark_submenu_) {
+    if (command_id == IDC_OPEN_IN_CONTAINER) {
+      return false;
+    }
+    if (containers_bookmark_submenu_->GetIndexOfCommandId(command_id)) {
+      return containers_bookmark_submenu_->IsCommandIdChecked(command_id);
+    }
+  }
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
   return BookmarkContextMenuController::IsCommandIdChecked(command_id);
 }
 
@@ -92,6 +161,17 @@ bool BraveBookmarkContextMenuController::IsCommandIdEnabled(
   if (command_id == IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY) {
     return true;
   }
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (containers_bookmark_submenu_) {
+    if (command_id == IDC_OPEN_IN_CONTAINER) {
+      return true;
+    }
+    if (containers_bookmark_submenu_->GetIndexOfCommandId(command_id)) {
+      return containers_bookmark_submenu_->IsCommandIdEnabled(command_id);
+    }
+  }
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
   return BookmarkContextMenuController::IsCommandIdEnabled(command_id);
 }
@@ -109,6 +189,17 @@ bool BraveBookmarkContextMenuController::IsCommandIdVisible(
     // returning false if other bookmark node is empty, else true.
     return !bookmark_model_->other_node()->children().empty();
   }
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (containers_bookmark_submenu_) {
+    if (command_id == IDC_OPEN_IN_CONTAINER) {
+      return true;
+    }
+    if (containers_bookmark_submenu_->GetIndexOfCommandId(command_id)) {
+      return containers_bookmark_submenu_->IsCommandIdVisible(command_id);
+    }
+  }
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
   return BookmarkContextMenuController::IsCommandIdVisible(command_id);
 }
@@ -129,6 +220,15 @@ void BraveBookmarkContextMenuController::ExecuteCommand(int command_id,
     return;
   }
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (containers_bookmark_submenu_) {
+    if (containers_bookmark_submenu_->GetIndexOfCommandId(command_id)) {
+      containers_bookmark_submenu_->ExecuteCommand(command_id, event_flags);
+      return;
+    }
+  }
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
   BookmarkContextMenuController::ExecuteCommand(command_id, event_flags);
 }
 
@@ -142,6 +242,17 @@ std::u16string BraveBookmarkContextMenuController::GetLabelForCommandId(
     return l10n_util::GetStringUTF16(IDS_SHOW_ALL_BOOKMARKS_BUTTON);
   }
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (containers_bookmark_submenu_) {
+    if (command_id == IDC_OPEN_IN_CONTAINER) {
+      return l10n_util::GetStringUTF16(IDS_CXMENU_OPEN_IN_CONTAINER);
+    }
+    if (containers_bookmark_submenu_->GetIndexOfCommandId(command_id)) {
+      return containers_bookmark_submenu_->GetLabelForCommandId(command_id);
+    }
+  }
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
   return BookmarkContextMenuController::GetLabelForCommandId(command_id);
 }
 
@@ -149,6 +260,13 @@ BookmarkBarSubMenuModel*
 BraveBookmarkContextMenuController::GetBookmarkSubmenuModel() {
   return brave_bookmarks_submenu_model_.get();
 }
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+containers::ContainersMenuModel*
+BraveBookmarkContextMenuController::GetContainersBookmarkSubmenuModel() {
+  return containers_bookmark_submenu_.get();
+}
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 void BraveBookmarkContextMenuController::AddShowAllBookmarksButtonMenu() {
   menu_model()->AddCheckItemWithStringId(

@@ -30,7 +30,7 @@ class ClientStateManager final {
 
   bool IsInitialized() const { return is_initialized_; }
 
-  void LoadState(InitializeCallback callback);
+  void LoadState(ResultCallback callback);
 
   void AppendToPurchaseIntentSignalHistoryForSegment(
       const std::string& segment,
@@ -45,7 +45,7 @@ class ClientStateManager final {
  private:
   void SaveState();
 
-  void LoadCallback(InitializeCallback callback,
+  void LoadCallback(ResultCallback callback,
                     const std::optional<std::string>& json);
 
   [[nodiscard]] bool FromJson(const std::string& json);

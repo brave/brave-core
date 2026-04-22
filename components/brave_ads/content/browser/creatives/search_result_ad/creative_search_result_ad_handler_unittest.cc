@@ -206,7 +206,7 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
           ::testing::_))
       .WillOnce([](mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                    mojom::SearchResultAdEventType /*mojom_ad_event_type*/,
-                   TriggerAdEventCallback /*callback*/) {
+                   ResultCallback /*callback*/) {
         EXPECT_FALSE(mojom_creative_ad->creative_set_conversion);
       });
 
@@ -238,7 +238,7 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest, TriggerAdViewedEvent) {
       .WillOnce([&mojom_web_page](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                     mojom::SearchResultAdEventType /*mojom_ad_event_type*/,
-                    TriggerAdEventCallback /*callback*/) {
+                    ResultCallback /*callback*/) {
         const std::vector<mojom::CreativeSearchResultAdInfoPtr>
             creative_search_result_ads =
                 ExtractCreativeSearchResultAdsFromMojomWebPageEntities(
@@ -278,7 +278,7 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
       .WillOnce([&mojom_web_page](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                     mojom::SearchResultAdEventType /*mojom_ad_event_type*/,
-                    TriggerAdEventCallback /*callback*/) {
+                    ResultCallback /*callback*/) {
         const std::vector<mojom::CreativeSearchResultAdInfoPtr>
             creative_search_result_ads =
                 ExtractCreativeSearchResultAdsFromMojomWebPageEntities(

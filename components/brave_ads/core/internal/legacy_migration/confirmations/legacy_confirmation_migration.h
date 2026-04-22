@@ -20,7 +20,7 @@ struct WalletInfo;
 // queue is migrated. If the file does not exist the migration is considered
 // complete.
 void MigrateConfirmationState(std::optional<WalletInfo> wallet,
-                              InitializeCallback callback);
+                              ResultCallback callback);
 
 }  // namespace brave_ads
 

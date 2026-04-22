@@ -12,7 +12,6 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_feature.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-data-view.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 

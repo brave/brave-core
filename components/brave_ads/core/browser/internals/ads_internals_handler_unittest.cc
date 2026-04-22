@@ -41,13 +41,13 @@ TEST_F(BraveAdsInternalsHandlerTest,
   // Arrange
   AdsInternalsHandler handler(/*ads_service=*/nullptr, profile_prefs_);
 
-  mojo::Remote<bat_ads::mojom::AdsInternals> mojom_remote;
-  handler.BindInterface(mojom_remote.BindNewPipeAndPassReceiver());
+  mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
+  handler.BindInterface(ads_internals_remote.BindNewPipeAndPassReceiver());
 
   base::test::TestFuture<std::string> test_future;
 
   // Act
-  mojom_remote->GetAdsInternals(base::BindLambdaForTesting(
+  ads_internals_remote->GetAdsInternals(base::BindLambdaForTesting(
       [&test_future](const std::string& json) { test_future.SetValue(json); }));
 
   // Assert
@@ -59,8 +59,8 @@ TEST_F(BraveAdsInternalsHandlerTest,
   // Arrange
   AdsInternalsHandler handler(&ads_service_mock_, profile_prefs_);
 
-  mojo::Remote<bat_ads::mojom::AdsInternals> mojom_remote;
-  handler.BindInterface(mojom_remote.BindNewPipeAndPassReceiver());
+  mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
+  handler.BindInterface(ads_internals_remote.BindNewPipeAndPassReceiver());
 
   EXPECT_CALL(ads_service_mock_, GetInternals)
       .WillOnce([](GetInternalsCallback callback) {
@@ -72,7 +72,7 @@ TEST_F(BraveAdsInternalsHandlerTest,
   base::test::TestFuture<std::string> test_future;
 
   // Act
-  mojom_remote->GetAdsInternals(base::BindLambdaForTesting(
+  ads_internals_remote->GetAdsInternals(base::BindLambdaForTesting(
       [&test_future](const std::string& json) { test_future.SetValue(json); }));
 
   // Assert
@@ -84,8 +84,8 @@ TEST_F(BraveAdsInternalsHandlerTest,
   // Arrange
   AdsInternalsHandler handler(&ads_service_mock_, profile_prefs_);
 
-  mojo::Remote<bat_ads::mojom::AdsInternals> mojom_remote;
-  handler.BindInterface(mojom_remote.BindNewPipeAndPassReceiver());
+  mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
+  handler.BindInterface(ads_internals_remote.BindNewPipeAndPassReceiver());
 
   EXPECT_CALL(ads_service_mock_, GetInternals)
       .WillOnce([](GetInternalsCallback callback) {
@@ -95,7 +95,7 @@ TEST_F(BraveAdsInternalsHandlerTest,
   base::test::TestFuture<std::string> test_future;
 
   // Act
-  mojom_remote->GetAdsInternals(base::BindLambdaForTesting(
+  ads_internals_remote->GetAdsInternals(base::BindLambdaForTesting(
       [&test_future](const std::string& json) { test_future.SetValue(json); }));
 
   // Assert
@@ -107,13 +107,13 @@ TEST_F(BraveAdsInternalsHandlerTest,
   // Arrange
   AdsInternalsHandler handler(/*ads_service=*/nullptr, profile_prefs_);
 
-  mojo::Remote<bat_ads::mojom::AdsInternals> mojom_remote;
-  handler.BindInterface(mojom_remote.BindNewPipeAndPassReceiver());
+  mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
+  handler.BindInterface(ads_internals_remote.BindNewPipeAndPassReceiver());
 
   base::test::TestFuture<bool> test_future;
 
   // Act
-  mojom_remote->ClearAdsData(test_future.GetCallback());
+  ads_internals_remote->ClearAdsData(test_future.GetCallback());
 
   // Assert
   EXPECT_FALSE(test_future.Get());
@@ -124,18 +124,18 @@ TEST_F(BraveAdsInternalsHandlerTest,
   // Arrange
   AdsInternalsHandler handler(&ads_service_mock_, profile_prefs_);
 
-  mojo::Remote<bat_ads::mojom::AdsInternals> mojom_remote;
-  handler.BindInterface(mojom_remote.BindNewPipeAndPassReceiver());
+  mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
+  handler.BindInterface(ads_internals_remote.BindNewPipeAndPassReceiver());
 
   EXPECT_CALL(ads_service_mock_, ClearData)
-      .WillOnce([](ClearDataCallback callback) {
+      .WillOnce([](ResultCallback callback) {
         std::move(callback).Run(/*success=*/true);
       });
 
   base::test::TestFuture<bool> test_future;
 
   // Act
-  mojom_remote->ClearAdsData(test_future.GetCallback());
+  ads_internals_remote->ClearAdsData(test_future.GetCallback());
 
   // Assert
   EXPECT_TRUE(test_future.Get());
@@ -146,18 +146,18 @@ TEST_F(BraveAdsInternalsHandlerTest,
   // Arrange
   AdsInternalsHandler handler(&ads_service_mock_, profile_prefs_);
 
-  mojo::Remote<bat_ads::mojom::AdsInternals> mojom_remote;
-  handler.BindInterface(mojom_remote.BindNewPipeAndPassReceiver());
+  mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
+  handler.BindInterface(ads_internals_remote.BindNewPipeAndPassReceiver());
 
   EXPECT_CALL(ads_service_mock_, ClearData)
-      .WillOnce([](ClearDataCallback callback) {
+      .WillOnce([](ResultCallback callback) {
         std::move(callback).Run(/*success=*/false);
       });
 
   base::test::TestFuture<bool> test_future;
 
   // Act
-  mojom_remote->ClearAdsData(test_future.GetCallback());
+  ads_internals_remote->ClearAdsData(test_future.GetCallback());
 
   // Assert
   EXPECT_FALSE(test_future.Get());

@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-data-view.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 namespace brave_ads {

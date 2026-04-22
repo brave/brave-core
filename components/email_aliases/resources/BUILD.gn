@@ -4,6 +4,9 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/common/typescript.gni")
+import("//brave/components/email_aliases/buildflags/buildflags.gni")
+
+assert(enable_email_aliases)
 
 transpile_web_ui("email_aliases_ui") {
   generate_grdp = true
@@ -27,6 +30,7 @@ transpile_web_ui("email_aliases_ui") {
   resource_name = "email_aliases"
 
   deps = [
+    "//brave/components/brave_account/mojom:mojom_ts__generator",
     "//brave/components/email_aliases:mojom_js",
     "//brave/components/resources:strings",
   ]

@@ -529,25 +529,6 @@ Topic& operator=(Topic&&) noexcept = default;
 
 ---
 
-<a id="CSA-030"></a>
-
-## ✅ Use References for Non-Nullable Parameters; `raw_ref` for Stored References
-
-**When a function parameter cannot be null, use a reference (`T&`) instead of a pointer (`T*`).** For stored member references that cannot be null, use `raw_ref<T>`.
-
-```cpp
-// ❌ WRONG - pointer suggests nullability
-NetworkClient(PrefService* pref_service);
-
-// ✅ CORRECT - reference communicates non-null requirement
-NetworkClient(PrefService& pref_service);
-
-// For stored references:
-raw_ref<PrefService> pref_service_;  // not raw_ptr
-```
-
----
-
 <a id="CSA-031"></a>
 
 ## ❌ Avoid `std::optional<T>&` References

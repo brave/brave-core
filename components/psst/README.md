@@ -170,4 +170,10 @@ The policy script returns the next object as result:
 - `progress` - script calculates the percent of operation completion;
 - `applied_tasks` - array of the completed tasks, each task is an object `url/description/error_description`
 
+# PSST Consent Dialog & Frontend Resources
 
+The PSST feature includes a WebUI dialog for user interaction. All UI code and resources are located in:
+
+    components/psst/resources/ui/
+
+This dialog is responsible for displaying a list of tasks the PSST feature intends to apply, along with the progress and status for each task and the overall global progress.

@@ -129,6 +129,10 @@ specific_include_rules = {
   "brave_local_state_prefs\.cc": [
     "!brave/components/l10n/common/prefs.h",
   ],
+  "brave_vpn_native_worker\.cc": [
+    "!brave/components/l10n/common/locale_util.h",
+    "!brave/components/l10n/common/ofac_sanction_util.h",
+  ],
   "brave_browser_process_impl\.cc": [
     "+brave/components/brave_component_updater/browser/brave_component_updater_delegate.h",
     "+brave/components/brave_component_updater/browser/local_data_files_service.h",

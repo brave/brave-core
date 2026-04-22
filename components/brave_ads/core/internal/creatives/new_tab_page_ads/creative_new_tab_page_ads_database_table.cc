@@ -31,7 +31,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_util.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/condition_matcher_util.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-data-view.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "url/gurl.h"
 
 namespace brave_ads::database::table {

@@ -386,6 +386,8 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
   if (supports_vertical_tabs) {
     vertical_tab_strip_host_view_ =
         AddChildView(std::make_unique<views::View>());
+    vertical_tab_strip_host_view_->SetBackground(
+        views::CreateSolidBackground(kColorToolbar));
   }
 
   if (!supports_vertical_tabs && !can_have_sidebar) {
@@ -1054,15 +1056,6 @@ bool BraveBrowserView::ShouldShowWindowTitle() const {
   }
 
   return false;
-}
-
-void BraveBrowserView::OnThemeChanged() {
-  BrowserView::OnThemeChanged();
-  if (vertical_tab_strip_host_view_) {
-    const auto background_color = GetColorProvider()->GetColor(kColorToolbar);
-    vertical_tab_strip_host_view_->SetBackground(
-        views::CreateSolidBackground(background_color));
-  }
 }
 
 void BraveBrowserView::UpdateRoundedCornersUI() {

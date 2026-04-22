@@ -11,4 +11,6 @@ source_set("browser_window") {
   sources = [ "public/browser_window_features.h" ]
 
   public_deps = [ "//base" ]
+
+  deps = [ "//brave/components/email_aliases/buildflags" ]
 }

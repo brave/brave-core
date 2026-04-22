@@ -26,18 +26,18 @@ namespace brave_ads {
 
 namespace {
 
-void FailedToMigrate(const std::string& reason, InitializeCallback callback) {
+void FailedToMigrate(const std::string& reason, ResultCallback callback) {
   BLOG(0, reason);
   std::move(callback).Run(/*success=*/false);
 }
 
-void SuccessfullyMigrated(InitializeCallback callback) {
+void SuccessfullyMigrated(ResultCallback callback) {
   SetProfileBooleanPref(prefs::kHasMigratedClientState, true);
   std::move(callback).Run(/*success=*/true);
 }
 
 void HandleAdHistoryMigration(const std::string& json,
-                              InitializeCallback callback) {
+                              ResultCallback callback) {
   std::optional<AdHistoryList> ad_history = json::reader::ReadAdHistory(json);
   if (!ad_history) {
     BLOG(3, "Successfully migrated client state");
@@ -47,7 +47,7 @@ void HandleAdHistoryMigration(const std::string& json,
   database::table::AdHistory database_table;
   database_table.Save(*ad_history,
                       base::BindOnce(
-                          [](InitializeCallback callback, bool success) {
+                          [](ResultCallback callback, bool success) {
                             if (!success) {
                               return FailedToMigrate(
                                   "Failed to migrate ad history client state",
@@ -60,13 +60,13 @@ void HandleAdHistoryMigration(const std::string& json,
                           std::move(callback)));
 }
 
-void HandleMalformedClientState(InitializeCallback callback) {
+void HandleMalformedClientState(ResultCallback callback) {
   BLOG(0, "Resetting malformed client state to default values");
 
   GetAdsClient().Save(
       kClientJsonFilename, /*default state*/ "{}",
       base::BindOnce(
-          [](InitializeCallback callback, bool success) {
+          [](ResultCallback callback, bool success) {
             if (!success) {
               return FailedToMigrate(
                   "Failed to reset malformed client state to default values",
@@ -78,7 +78,7 @@ void HandleMalformedClientState(InitializeCallback callback) {
           std::move(callback)));
 }
 
-void HandleClientStateMigration(InitializeCallback callback,
+void HandleClientStateMigration(ResultCallback callback,
                                 const std::optional<std::string>& json) {
   if (!json) {
     // No client state to migrate.
@@ -96,8 +96,7 @@ void HandleClientStateMigration(InitializeCallback callback,
   GetAdsClient().Save(
       kClientJsonFilename, migrated_json,
       base::BindOnce(
-          [](const std::string& json, InitializeCallback callback,
-             bool success) {
+          [](const std::string& json, ResultCallback callback, bool success) {
             if (!success) {
               return FailedToMigrate("Failed to save migrated client state",
                                      std::move(callback));
@@ -110,7 +109,7 @@ void HandleClientStateMigration(InitializeCallback callback,
 
 }  // namespace
 
-void MigrateClientState(InitializeCallback callback) {
+void MigrateClientState(ResultCallback callback) {
   if (HasMigratedClientState()) {
     // Already migrated.
     return std::move(callback).Run(/*success=*/true);

@@ -19,6 +19,7 @@ import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
+import("//brave/components/email_aliases/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
@@ -69,7 +70,6 @@ source_set("ui") {
     "//brave/browser/skus",
     "//brave/browser/ui/page_info",
     "//brave/browser/ui/webui/brave_account",
-    "//brave/browser/ui/webui/email_aliases",
     "//brave/browser/ui/webui/local_ai",
     "//brave/components/ai_chat/core/common/buildflags",
 
@@ -387,7 +387,6 @@ source_set("ui") {
     deps += [
       "//base",
       "//brave/browser/brave_account",
-      "//brave/browser/email_aliases",
       "//brave/browser/ntp_background",
       "//brave/browser/profiles:util",
       "//brave/browser/ui/sidebar:sidebar_impl",
@@ -402,8 +401,7 @@ source_set("ui") {
       "//brave/components/brave_account/mojom",
       "//brave/components/brave_wayback_machine/buildflags",
       "//brave/components/constants",
-      "//brave/components/email_aliases:features",
-      "//brave/components/email_aliases:mojom",
+      "//brave/components/email_aliases/buildflags",
       "//brave/components/misc_metrics",
       "//brave/components/sidebar/browser",
       "//brave/components/sidebar/common",
@@ -1479,6 +1477,7 @@ source_set("ui") {
   if (enable_containers) {
     deps += [
       "//brave/browser/containers",
+      "//brave/browser/ui/containers",
       "//brave/components/containers/content/browser",
       "//brave/components/containers/core/browser",
       "//brave/components/containers/core/common",
@@ -1487,6 +1486,15 @@ source_set("ui") {
 
     public_deps +=
         [ "//brave/components/containers/content/browser:tab_restore" ]
+  }
+
+  if (enable_email_aliases) {
+    deps += [
+      "//brave/browser/email_aliases",
+      "//brave/browser/ui/webui/email_aliases",
+      "//brave/components/email_aliases:features",
+      "//brave/components/email_aliases:mojom",
+    ]
   }
 }
 
@@ -1510,13 +1518,17 @@ source_set("unit_tests") {
       "brave_layout_constants_unittest.cc",
       "brave_scheme_utils_unittest.cc",
       "managed_ui_unittest.cc",
+      "tabs/brave_tab_prefs_unittest.cc",
       "views/side_panel/side_panel_web_ui_view_unittest.cc",
     ]
     deps = [
+      ":brave_tab_prefs",
       "//base/test:test_support",
       "//brave/components/l10n/common:test_support",
       "//chrome/browser/ui",
+      "//chrome/browser/ui/tabs:features",
       "//components/javascript_dialogs",
+      "//components/prefs:test_support",
       "//testing/gmock",
       "//testing/gtest",
       "//ui/base:test_support",

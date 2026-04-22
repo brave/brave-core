@@ -287,6 +287,144 @@ describe('conversation entries', () => {
     ).toBe(1)
   })
 
+  it('renders attached tabs from the original turn on edited conversation turns', () => {
+    const { container } = render(
+      <MockContext
+        overrides={{
+          associatedContent: [
+            {
+              contentId: 1,
+              contentType: Mojom.ContentType.PageContent,
+              contentUsedPercentage: 0.5,
+              title: 'Associated Content',
+              url: { url: 'https://example.com' },
+              uuid: '1234',
+              conversationTurnUuid: '111',
+            },
+          ],
+        }}
+        initialState={{
+          conversationHistory: [
+            {
+              characterType: Mojom.CharacterType.HUMAN,
+              text: 'Summarize this page',
+              actionType: Mojom.ActionType.SUMMARIZE_PAGE,
+              events: [],
+              createdTime: { internalValue: BigInt(0) },
+              edits: [
+                {
+                  characterType: Mojom.CharacterType.HUMAN,
+                  text: 'Summarize this page please',
+                  actionType: Mojom.ActionType.SUMMARIZE_PAGE,
+                  events: [],
+                  createdTime: { internalValue: BigInt(1) },
+                  edits: [],
+                  fromBraveSearchSERP: false,
+                  uploadedFiles: [],
+                  uuid: '222',
+                  prompt: undefined,
+                  selectedText: undefined,
+                  modelKey: 'gpt-4o',
+                },
+              ],
+              fromBraveSearchSERP: false,
+              uploadedFiles: [],
+              uuid: '111',
+              prompt: undefined,
+              selectedText: undefined,
+              modelKey: 'gpt-4o',
+            },
+          ],
+        }}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+
+    expect(
+      screen.getByText('Associated Content', { selector: '.title' }),
+    ).toBeInTheDocument()
+    expect(
+      container.querySelector('img[src*="//favicon2"]'),
+    ).toBeInTheDocument()
+  })
+
+  it('renders attached tabs from earlier edits on re-edited conversation turns', () => {
+    const { container } = render(
+      <MockContext
+        overrides={{
+          associatedContent: [
+            {
+              contentId: 1,
+              contentType: Mojom.ContentType.PageContent,
+              contentUsedPercentage: 0.5,
+              title: 'Associated Content',
+              url: { url: 'https://example.com' },
+              uuid: '1234',
+              conversationTurnUuid: '222',
+            },
+          ],
+        }}
+        initialState={{
+          conversationHistory: [
+            {
+              characterType: Mojom.CharacterType.HUMAN,
+              text: 'Summarize this page',
+              actionType: Mojom.ActionType.SUMMARIZE_PAGE,
+              events: [],
+              createdTime: { internalValue: BigInt(0) },
+              edits: [
+                {
+                  characterType: Mojom.CharacterType.HUMAN,
+                  text: 'Summarize this page please',
+                  actionType: Mojom.ActionType.SUMMARIZE_PAGE,
+                  events: [],
+                  createdTime: { internalValue: BigInt(1) },
+                  edits: [],
+                  fromBraveSearchSERP: false,
+                  uploadedFiles: [],
+                  uuid: '222',
+                  prompt: undefined,
+                  selectedText: undefined,
+                  modelKey: 'gpt-4o',
+                },
+                {
+                  characterType: Mojom.CharacterType.HUMAN,
+                  text: 'Summarize this page now',
+                  actionType: Mojom.ActionType.SUMMARIZE_PAGE,
+                  events: [],
+                  createdTime: { internalValue: BigInt(2) },
+                  edits: [],
+                  fromBraveSearchSERP: false,
+                  uploadedFiles: [],
+                  uuid: '333',
+                  prompt: undefined,
+                  selectedText: undefined,
+                  modelKey: 'gpt-4o',
+                },
+              ],
+              fromBraveSearchSERP: false,
+              uploadedFiles: [],
+              uuid: '111',
+              prompt: undefined,
+              selectedText: undefined,
+              modelKey: 'gpt-4o',
+            },
+          ],
+        }}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+
+    expect(
+      screen.getByText('Associated Content', { selector: '.title' }),
+    ).toBeInTheDocument()
+    expect(
+      container.querySelector('img[src*="//favicon2"]'),
+    ).toBeInTheDocument()
+  })
+
   test('allows editing of entries', () => {
     const humanTurn1: Mojom.ConversationTurn = {
       characterType: Mojom.CharacterType.HUMAN,

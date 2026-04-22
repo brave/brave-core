@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CALENDAR_CALENDAR_UTIL_H_
 
 #include "base/check.h"
-#include "base/compiler_specific.h"
 
 namespace base {
 class Time;
@@ -15,29 +14,32 @@ class Time;
 
 namespace brave_ads {
 
-inline constexpr bool IsLeapYear(int year) noexcept {
+// Returns true if `year` is a leap year.
+constexpr bool IsLeapYear(int year) {
+  // Every 4th year is a leap year; every 100th is not; every 400th is.
   return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
 }
 
-// Returns 0-based day of week (0 = Sunday, etc.).
+// Returns the day of the week, where Sunday is 0 and Saturday is 6, as in
+// `struct tm`.
 int DayOfWeek(base::Time time, bool is_local);
 
-// Expects a 1-based month (1 = January, etc.).
-inline constexpr int DaysInMonth(int year, int month) noexcept {
+// Returns the number of days in `month` for `year`, accounting for leap years.
+// Expects a 1-based month (1 = January, ..., 12 = December).
+constexpr int DaysInMonth(int year, int month) {
   CHECK((month >= 1 && month <= 12));
 
-  constexpr size_t kDaysInMonth[] = {
-      31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31  // non leap year.
-  };
-
-  int days_in_month = UNSAFE_TODO(kDaysInMonth[month - 1]);
-  if (month == /*february*/ 2 && IsLeapYear(year)) {
-    // In a leap year, February gets an extra day, because even the shortest
-    // month deserves a little extra time to shine!
-    days_in_month++;
+  switch (month) {
+    case 2:  // February: short by design, occasionally less so.
+      return IsLeapYear(year) ? 29 : 28;
+    case 4:   // April
+    case 6:   // June
+    case 9:   // September
+    case 11:  // November
+      return 30;
+    default:  // January, March, May, July, August, October, December.
+      return 31;
   }
-
-  return days_in_month;
 }
 
 }  // namespace brave_ads

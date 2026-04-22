@@ -15,7 +15,6 @@
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads.h"
-#include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/common/functional/once_closure_task_queue.h"
 
 namespace base {
@@ -50,8 +49,8 @@ class AdsImpl final : public Ads {
       mojom::ContentSettingsPtr mojom_content_settings) override;
 
   void Initialize(mojom::WalletInfoPtr mojom_wallet,
-                  InitializeCallback callback) override;
-  void Shutdown(ShutdownCallback callback) override;
+                  ResultCallback callback) override;
+  void Shutdown(ResultCallback callback) override;
 
   void GetInternals(GetInternalsCallback callback) override;
 
@@ -61,82 +60,80 @@ class AdsImpl final : public Ads {
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
-  void ParseAndSaveNewTabPageAds(
-      base::DictValue dict,
-      ParseAndSaveNewTabPageAdsCallback callback) override;
+  void ParseAndSaveNewTabPageAds(base::DictValue dict,
+                                 ResultCallback callback) override;
   void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) override;
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
       mojom::NewTabPageAdMetricType mojom_ad_metric_type,
       mojom::NewTabPageAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback) override;
+      ResultCallback callback) override;
 
   void MaybeGetNotificationAd(const std::string& placement_id,
                               MaybeGetNotificationAdCallback callback) override;
   void TriggerNotificationAdEvent(
       const std::string& placement_id,
       mojom::NotificationAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback) override;
+      ResultCallback callback) override;
 
   void MaybeGetSearchResultAd(const std::string& placement_id,
                               MaybeGetSearchResultAdCallback callback) override;
   void TriggerSearchResultAdEvent(
       mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
       mojom::SearchResultAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback) override;
+      ResultCallback callback) override;
 
-  void PurgeOrphanedAdEventsForType(
-      mojom::AdType mojom_ad_type,
-      PurgeOrphanedAdEventsForTypeCallback callback) override;
+  void PurgeOrphanedAdEventsForType(mojom::AdType mojom_ad_type,
+                                    ResultCallback callback) override;
 
   void GetAdHistory(base::Time from_time,
                     base::Time to_time,
                     GetAdHistoryForUICallback callback) override;
 
   void ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
-                    ToggleReactionCallback callback) override;
+                    ResultCallback callback) override;
   void ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
-                       ToggleReactionCallback callback) override;
+                       ResultCallback callback) override;
   void ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
-                         ToggleReactionCallback callback) override;
+                         ResultCallback callback) override;
   void ToggleDislikeSegment(mojom::ReactionInfoPtr mojom_reaction,
-                            ToggleReactionCallback callback) override;
+                            ResultCallback callback) override;
   void ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
-                    ToggleReactionCallback callback) override;
+                    ResultCallback callback) override;
   void ToggleMarkAdAsInappropriate(mojom::ReactionInfoPtr mojom_reaction,
-                                   ToggleReactionCallback callback) override;
+                                   ResultCallback callback) override;
 
  private:
   void CreateOrOpenDatabase(mojom::WalletInfoPtr mojom_wallet,
-                            InitializeCallback callback);
+                            ResultCallback callback);
   void CreateOrOpenDatabaseCallback(mojom::WalletInfoPtr mojom_wallet,
-                                    InitializeCallback callback,
+                                    ResultCallback callback,
                                     bool success);
 
-  void FailedToInitialize(InitializeCallback callback);
+  void FailedToInitialize(ResultCallback callback);
   void SuccessfullyInitialized(mojom::WalletInfoPtr mojom_wallet,
-                               InitializeCallback callback);
+                               ResultCallback callback);
 
   // TODO(https://github.com/brave/brave-browser/issues/39795): Transition away
   // from using JSON state to a more efficient data approach.
   void MigrateClientStateCallback(mojom::WalletInfoPtr mojom_wallet,
-                                  InitializeCallback callback,
+                                  ResultCallback callback,
                                   bool success);
   void LoadClientStateCallback(mojom::WalletInfoPtr mojom_wallet,
-                               InitializeCallback callback,
+                               ResultCallback callback,
                                bool success);
   void MigrateConfirmationStateCallback(mojom::WalletInfoPtr mojom_wallet,
-                                        InitializeCallback callback,
+                                        ResultCallback callback,
                                         bool success);
   void LoadConfirmationStateCallback(mojom::WalletInfoPtr mojom_wallet,
-                                     InitializeCallback callback,
+                                     ResultCallback callback,
                                      bool success);
 
   bool is_initialized_ = false;
 
-  // TODO(https://github.com/brave/brave-browser/issues/37622): Deprecate global
-  // state.
+  // TODO(https://github.com/brave/brave-browser/issues/37622): Deprecate
+  // `GlobalState`.
   GlobalState global_state_;
 
   OnceClosureTaskQueue task_queue_;

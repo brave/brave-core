@@ -15,6 +15,7 @@ namespace brave_ads {
 
 class TokenGenerator final : public TokenGeneratorInterface {
  public:
+  // TokenGeneratorInterface:
   cbr::TokenList Generate(size_t count) const override;
 };
 

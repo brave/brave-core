@@ -27,7 +27,7 @@
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/containers/buildflags/buildflags.h"
-#include "brave/components/email_aliases/features.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -69,6 +69,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/components/email_aliases/features.h"
 #endif
 
 namespace settings {
@@ -176,11 +180,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 
       {"braveGetStartedTitle", IDS_SETTINGS_BRAVE_GET_STARTED_TITLE},
       {"braveOriginTitle", IDS_SETTINGS_BRAVE_ORIGIN_TITLE},
-      {"braveOriginHeadingTitle", IDS_SETTINGS_BRAVE_ORIGIN_HEADING_TITLE},
-      {"braveOriginHeadingDescription1",
-       IDS_SETTINGS_BRAVE_ORIGIN_HEADING_DESCRIPTION1},
-      {"braveOriginHeadingDescription2",
-       IDS_SETTINGS_BRAVE_ORIGIN_HEADING_DESCRIPTION2},
       {"braveOriginSectionAdsTitle",
        IDS_SETTINGS_BRAVE_ORIGIN_ADS_SECTION_TITLE},
       {"braveOriginRewardsToggleTitle",
@@ -216,10 +215,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_TITLE},
       {"braveOriginOnboardingHeadingTitle",
        IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_HEADING_TITLE},
-      {"braveOriginOnboardingDescription1",
-       IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_DESCRIPTION1},
-      {"braveOriginOnboardingDescription2",
-       IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_DESCRIPTION2},
+      {"braveOriginOnboardingDescription",
+       IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_DESCRIPTION},
       {"braveOriginOnboardingBuyNow",
        IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_BUY_NOW},
       {"braveOriginOnboardingLearnMore",
@@ -312,8 +309,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HOVER_MODE_TOOLTIP},
       {"appearanceSettingsTabMinWidthMode",
        IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_MIN_WIDTH_MODE},
-      {"appearanceSettingsTabMinWidthDefault",
-       IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_MIN_WIDTH_DEFAULT},
       {"appearanceSettingsTabMinWidthMinimum",
        IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_MIN_WIDTH_MINIMUM},
       {"appearanceSettingsTabMinWidthMedium",
@@ -1247,10 +1242,12 @@ void BraveAddSyncStrings(content::WebUIDataSource* html_source) {
 }
 
 void BraveAddEmailAliasesStrings(content::WebUIDataSource* html_source) {
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   if (!email_aliases::features::IsEmailAliasesEnabled()) {
     return;
   }
   html_source->AddLocalizedStrings(webui::kEmailAliasesStrings);
+#endif
 }
 
 void BraveAddBraveAccountStrings(content::WebUIDataSource* html_source) {

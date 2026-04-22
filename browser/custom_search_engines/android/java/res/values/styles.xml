@@ -5,7 +5,7 @@
      You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
 <resources>
-    <style name="AddCustomSearchEngineItemTitle">
+    <style name="AddCustomSearchEngineItemTitle" parent="LargeRegular">
         <item name="android:textColor">@color/add_custom_search_engine_title_color</item>
     </style>
 </resources>

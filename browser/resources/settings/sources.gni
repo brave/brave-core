@@ -8,6 +8,7 @@ import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
+import("//brave/components/email_aliases/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 
@@ -136,7 +137,6 @@ brave_settings_ts_files = [
   "brave_sync_page/brave_sync_browser_proxy.ts",
   "default_brave_shields_page/brave_adblock_browser_proxy.ts",
   "default_brave_shields_page/default_brave_shields_browser_proxy.ts",
-  "email_aliases_page/email_aliases_page.ts",
   "getting_started_page/brave_account_browser_proxy.ts",
   "getting_started_page/brave_account_row.html.ts",
   "getting_started_page/brave_account_row.ts",
@@ -278,6 +278,10 @@ if (enable_containers) {
 
 if (enable_speedreader) {
   brave_settings_web_component_files += [ "brave_content_page/speedreader.ts" ]
+}
+
+if (enable_email_aliases) {
+  brave_settings_ts_files += [ "email_aliases_page/email_aliases_page.ts" ]
 }
 
 # Generate the list for inclusion via preprocess and exclusion for chromium's preprocess

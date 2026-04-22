@@ -23,7 +23,6 @@
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
-#include "brave/components/brave_rewards/core/rewards_util.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
@@ -58,10 +57,6 @@ network::mojom::NetworkContext* GetNetworkContextForProfile(
 // static
 AdsService* AdsServiceFactory::GetForProfile(Profile* profile) {
   if (!profile->IsRegularProfile()) {
-    return nullptr;
-  }
-
-  if (!brave_rewards::IsSupported(profile->GetPrefs())) {
     return nullptr;
   }
 
@@ -113,10 +108,9 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
   auto* brave_adaptive_captcha_service =
       brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::GetForProfile(
           profile);
-  CHECK(brave_adaptive_captcha_service);
 
   auto delegate = std::make_unique<AdsServiceDelegate>(
-      *profile, *local_state, *brave_adaptive_captcha_service);
+      *profile, *local_state, brave_adaptive_captcha_service);
 
   auto* history_service = HistoryServiceFactory::GetForProfile(
       profile, ServiceAccessType::EXPLICIT_ACCESS);

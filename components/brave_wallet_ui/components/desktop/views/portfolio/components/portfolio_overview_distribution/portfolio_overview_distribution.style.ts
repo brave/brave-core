@@ -14,15 +14,10 @@ export const Title = styled(Text)`
   letter-spacing: ${leo.typography.letterSpacing.default};
 `
 
-// Named container so fiat can hide when the flex slice is too narrow (panel / small widths).
-const distributionSegmentContainerName = 'distribution-segment'
-
 export const Segment = styled(Column)<{ $grow: number }>`
   flex: ${(p) => p.$grow} 1 0;
   min-width: 0;
   overflow: hidden;
-  container-type: inline-size;
-  container-name: ${distributionSegmentContainerName};
 `
 
 export const SegmentBar = styled.div<{ $color: string }>`
@@ -49,17 +44,10 @@ export const SegmentPercent = styled(Title)`
   flex-shrink: 0;
 `
 
-// ~12px figures: hide fiat below this inline size so labels do not collide in narrow flex slots.
-const minSegmentWidthPxToShowFiat = 104
-
 export const SegmentFiat = styled(Text)`
   width: 100%;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-
-  @container ${distributionSegmentContainerName} (max-width: ${minSegmentWidthPxToShowFiat}px) {
-    display: none;
-  }
 `

@@ -67,14 +67,14 @@ void MockCloseNotificationAd(AdsClientMock& ads_client_mock) {
 void MockSave(AdsClientMock& ads_client_mock) {
   ON_CALL(ads_client_mock, Save)
       .WillByDefault([](const std::string& /*name*/,
-                        const std::string& /*value*/, SaveCallback callback) {
+                        const std::string& /*value*/, ResultCallback callback) {
         std::move(callback).Run(/*success=*/true);
       });
 }
 
 void MockRemove(AdsClientMock& ads_client_mock) {
   ON_CALL(ads_client_mock, Remove)
-      .WillByDefault([](const std::string& /*name*/, RemoveCallback callback) {
+      .WillByDefault([](const std::string& /*name*/, ResultCallback callback) {
         std::move(callback).Run(/*success=*/true);
       });
 }
@@ -143,7 +143,7 @@ void MockSetProfilePref(const AdsClientMock& ads_client_mock,
           });
 }
 
-void MockClearProfilePref(AdsClientMock& ads_client_mock) {
+void MockClearProfilePref(const AdsClientMock& ads_client_mock) {
   ON_CALL(ads_client_mock, ClearProfilePref)
       .WillByDefault(
           [](const std::string& path) { ClearProfilePrefValue(path); });
@@ -180,7 +180,7 @@ void MockSetLocalStatePref(const AdsClientMock& ads_client_mock,
           });
 }
 
-void MockClearLocalStatePref(AdsClientMock& ads_client_mock) {
+void MockClearLocalStatePref(const AdsClientMock& ads_client_mock) {
   ON_CALL(ads_client_mock, ClearLocalStatePref)
       .WillByDefault(
           [](const std::string& path) { ClearLocalStatePrefValue(path); });

@@ -13,18 +13,23 @@
 
 // Add methods to override the IconLabelBubbleView methods.
 // Also add a friend class for testing.
-#define ShouldShowLabelAfterAnimation()                                 \
-  ShouldShowLabelAfterAnimation() const override;                       \
-  FRIEND_TEST_ALL_PREFIXES(PageActionViewTest,                          \
-                           AlwaysShowsLabelEnsuresLabelWidth);          \
-  views::ProposedLayout CalculateProposedLayout(                        \
-      const views::SizeBounds& size_bounds) const override;             \
-  gfx::Size GetSizeForLabelWidth(int label_width) const override;       \
-  bool ShouldShowLabel() const override;                                \
-  SkColor GetBackgroundColor() const override;                          \
-  SkColor GetForegroundColor() const override;                          \
-  std::optional<int> GetOverrideHeight() const;                         \
-  void OnPageActionModelVisualRefresh(PageActionModelInterface* model); \
+#define ShouldShowLabelAfterAnimation()                                     \
+  ShouldShowLabelAfterAnimation() const override;                           \
+  FRIEND_TEST_ALL_PREFIXES(PageActionViewTest,                              \
+                           AlwaysShowsLabelEnsuresLabelWidth);              \
+  FRIEND_TEST_ALL_PREFIXES(PageActionViewTest, UseTonalColorsWhenExpanded); \
+  FRIEND_TEST_ALL_PREFIXES(PageActionViewTest,                              \
+                           DefaultBackgroundColorIsTransparent);            \
+  FRIEND_TEST_ALL_PREFIXES(PageActionViewTest,                              \
+                           OverrideBackgroundColorReturnsModelValue);       \
+  views::ProposedLayout CalculateProposedLayout(                            \
+      const views::SizeBounds& size_bounds) const override;                 \
+  gfx::Size GetSizeForLabelWidth(int label_width) const override;           \
+  bool ShouldShowLabel() const override;                                    \
+  SkColor GetBackgroundColor() const override;                              \
+  SkColor GetForegroundColor() const override;                              \
+  std::optional<int> GetOverrideHeight() const;                             \
+  void OnPageActionModelVisualRefresh(PageActionModelInterface* model);     \
   bool ShouldAlwaysShowLabel()
 
 // Make a OnPageActionModelChanged wrapper

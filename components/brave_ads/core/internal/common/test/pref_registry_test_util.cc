@@ -66,6 +66,7 @@ void RegisterProfilePrefs() {
 
   // Rewards prefs.
   RegisterProfileBooleanPref(brave_rewards::prefs::kEnabled, true);
+  RegisterProfileBooleanPref(brave_rewards::prefs::kDisabledByPolicy, false);
   RegisterProfileStringPref(brave_rewards::prefs::kExternalWalletType,
                             "connected");
 

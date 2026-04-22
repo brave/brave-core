@@ -14,6 +14,7 @@ namespace brave_ads {
 class GetSubdivisionUrlRequestBuilder final
     : public UrlRequestBuilderInterface {
  public:
+  // UrlRequestBuilderInterface:
   mojom::UrlRequestInfoPtr Build() override;
 };
 

@@ -28,6 +28,7 @@ class CreativeAds final : public TableInterface {
   void GetForCreativeInstanceId(const std::string& creative_instance_id,
                                 GetCreativeAdCallback callback) const;
 
+  // TableInterface:
   void Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) override;
   void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                int to_version) override;

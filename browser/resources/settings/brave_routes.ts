@@ -135,9 +135,11 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
     console.error(
       '[Settings] Could not move autofill route to advanced route', r)
   }
+  // <if expr="enable_email_aliases">
   if (loadTimeData.getBoolean('isEmailAliasesEnabled') && r.AUTOFILL) {
     r.EMAIL_ALIASES = r.AUTOFILL.createChild('/email-aliases')
   }
+  // </if>
   // Delete performance menu - system menu includes it instead.
   if (r.PERFORMANCE) {
     delete r.PERFORMANCE

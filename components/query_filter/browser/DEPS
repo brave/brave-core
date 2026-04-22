@@ -1,5 +1,6 @@
 include_rules = [
   "+components/component_updater",
+  "+components/update_client",
 ]
 
 specific_include_rules = {

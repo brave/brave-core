@@ -214,6 +214,9 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       BraveWallet.BlockchainToken | undefined
     >(undefined)
 
+    // Refs
+    const tokenSearchInputRef = React.useRef<HTMLElement | null>(null)
+
     // Computed
     const pendingSelectedAsset = needsAccount
       ? selectedFromToken
@@ -587,6 +590,41 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       return () => cancelAnimationFrame(id)
     }, [])
 
+    const shouldAutofocusTokenSearch =
+      pendingSelectedAsset === undefined && tokenDetails === undefined
+
+    React.useEffect(() => {
+      if (!shouldAutofocusTokenSearch) {
+        return
+      }
+
+      const focusTokenSearch = () => {
+        const host = tokenSearchInputRef.current
+        if (!host) {
+          return
+        }
+        const innerInput =
+          host.shadowRoot?.querySelector<HTMLInputElement>('.leo-input')
+        ;(innerInput ?? host).focus()
+      }
+
+      let cancelled = false
+      requestAnimationFrame(() => {
+        if (cancelled) {
+          return
+        }
+        requestAnimationFrame(() => {
+          if (cancelled) {
+            return
+          }
+          focusTokenSearch()
+        })
+      })
+      return () => {
+        cancelled = true
+      }
+    }, [shouldAutofocusTokenSearch])
+
     // Computed & Memos
     const emptyTokensList =
       !isLoadingBalances && tokensBySearchValue.length === 0
@@ -725,6 +763,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
             padding='16px'
           >
             <SearchInput
+              ref={tokenSearchInputRef}
               value={searchValue}
               onInput={(e) => setSearchValue(e.value)}
               placeholder={

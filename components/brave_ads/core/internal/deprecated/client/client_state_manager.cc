@@ -32,7 +32,7 @@ ClientStateManager& ClientStateManager::GetInstance() {
   return GlobalState::GetInstance()->GetClientStateManager();
 }
 
-void ClientStateManager::LoadState(InitializeCallback callback) {
+void ClientStateManager::LoadState(ResultCallback callback) {
   BLOG(3, "Loading client state");
 
   GetAdsClient().Load(
@@ -109,7 +109,7 @@ void ClientStateManager::SaveState() {
                       }));
 }
 
-void ClientStateManager::LoadCallback(InitializeCallback callback,
+void ClientStateManager::LoadCallback(ResultCallback callback,
                                       const std::optional<std::string>& json) {
   if (!json) {
     BLOG(3, "Client state does not exist, creating default state");

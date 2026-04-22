@@ -8,6 +8,7 @@
 #include "base/threading/thread_restrictions.h"
 #include "brave/browser/containers/containers_service_factory.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/browser/containers_service.h"
@@ -23,6 +24,7 @@
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
 #include "chrome/common/webui_url_constants.h"
@@ -229,6 +231,18 @@ class ContainersBrowserTest : public InProcessBrowserTest {
 
   ContainersService* GetContainersService() {
     return ContainersServiceFactory::GetForProfile(browser()->profile());
+  }
+
+  void SetBraveNewTabButtonSkipContainersContextMenuRunForTesting(
+      BraveNewTabButton* new_tab_button,
+      bool skip) {
+    new_tab_button->skip_containers_context_menu_runner_for_testing_ = true;
+  }
+
+  bool BraveNewTabButtonHasPreparedContainersContextMenu(
+      BraveNewTabButton* new_tab_button) {
+    return new_tab_button->containers_context_menu_runner_ &&
+           new_tab_button->containers_menu_model_;
   }
 
   bool IsContainersStorageDirectoryEmpty() {
@@ -1816,6 +1830,68 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   EXPECT_EQ("test-container", storage_partition->GetConfig().partition_name());
   EXPECT_EQ(kContainersStoragePartitionDomain,
             storage_partition->GetConfig().partition_domain());
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       BraveNewTabButtonShowContextMenuForContainers) {
+  std::vector<mojom::ContainerPtr> synced;
+  synced.push_back(mojom::Container::New(kTestContainerId, "Test",
+                                         mojom::Icon::kWork, SK_ColorRED));
+  SetContainersToPrefs(synced, *browser()->profile()->GetPrefs());
+  ASSERT_TRUE(GetContainersService());
+  BrowserView* const browser_view =
+      BrowserView::GetBrowserViewForBrowser(browser());
+  ASSERT_TRUE(browser_view);
+  auto* horizontal_tab_strip_region =
+      views::AsViewClass<HorizontalTabStripRegionView>(
+          browser_view->tab_strip_view());
+  ASSERT_TRUE(horizontal_tab_strip_region);
+  auto* new_tab = views::AsViewClass<BraveNewTabButton>(
+      horizontal_tab_strip_region->new_tab_button_for_testing());
+  ASSERT_TRUE(new_tab);
+
+  // MenuRunner::RunMenuAt blocks until the menu closes; skip it for the test
+  // and only assert that the containers menu path built model and runner.
+  SetBraveNewTabButtonSkipContainersContextMenuRunForTesting(new_tab, true);
+  new_tab->ShowContextMenuForViewImpl(new_tab, gfx::Point(0, 0),
+                                      ui::mojom::MenuSourceType::kMouse);
+  EXPECT_TRUE(BraveNewTabButtonHasPreparedContainersContextMenu(new_tab));
+
+  // Repeating the same test in order to make it sure that there is no dangling
+  // reference problems
+  // https://github.com/brave/brave-core/pull/35529#issuecomment-4287880242
+  new_tab->ShowContextMenuForViewImpl(new_tab, gfx::Point(0, 0),
+                                      ui::mojom::MenuSourceType::kMouse);
+}
+
+class BraveNewTabButtonContainersFeatureDisabledBrowserTest
+    : public ContainersBrowserTest {
+ public:
+  BraveNewTabButtonContainersFeatureDisabledBrowserTest() {
+    feature_list_override_.InitAndDisableFeature(features::kContainers);
+  }
+
+ protected:
+  base::test::ScopedFeatureList feature_list_override_;
+};
+
+IN_PROC_BROWSER_TEST_F(
+    BraveNewTabButtonContainersFeatureDisabledBrowserTest,
+    BraveNewTabButtonShowContextMenuFallsBackWhenContainersDisabled) {
+  BrowserView* const browser_view =
+      BrowserView::GetBrowserViewForBrowser(browser());
+  ASSERT_TRUE(browser_view);
+  auto* horizontal_tab_strip_region =
+      views::AsViewClass<HorizontalTabStripRegionView>(
+          browser_view->tab_strip_view());
+  ASSERT_TRUE(horizontal_tab_strip_region);
+  auto* new_tab = views::AsViewClass<BraveNewTabButton>(
+      horizontal_tab_strip_region->new_tab_button_for_testing());
+  ASSERT_TRUE(new_tab);
+
+  new_tab->ShowContextMenuForViewImpl(new_tab, gfx::Point(0, 0),
+                                      ui::mojom::MenuSourceType::kMouse);
+  EXPECT_FALSE(BraveNewTabButtonHasPreparedContainersContextMenu(new_tab));
 }
 
 }  // namespace containers

@@ -15,7 +15,6 @@
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
-#include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "cc/paint/paint_flags.h"
 #include "chrome/browser/profiles/profile.h"
@@ -38,6 +37,11 @@
 #include "ui/views/controls/label.h"
 #include "ui/views/view_class_properties.h"
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/containers/containers_service_factory.h"
+#include "brave/components/containers/core/browser/containers_service.h"
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
 namespace {
 
 constexpr int kSmallAccentSize = 16;
@@ -52,6 +56,11 @@ BraveTab::SmallAccentIconView::~SmallAccentIconView() = default;
 
 void BraveTab::SmallAccentIconView::OnPaint(gfx::Canvas* canvas) {
   auto* tab = static_cast<BraveTab*>(parent());
+  if (!tab->ShouldPaintTabAccent()) {
+    // There could be a timing issue where small accent icon view isn't hidden
+    // yet after a tab is being closed.
+    return;
+  }
   constexpr int kCenter = kSmallAccentSize / 2;
   if (auto accent_colors = tab->GetTabAccentColors();
       accent_colors.has_value()) {
@@ -365,6 +374,37 @@ void BraveTab::LayoutSmallTabAccentIcon() {
   }
 }
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+void BraveTab::MaybeObserveContainerChanges() {
+  if (!ShouldPaintTabAccent()) {
+    containers_service_observation_.Reset();
+    return;
+  }
+
+  auto* containers_service =
+      ContainersServiceFactory::GetInstance()->GetForProfile(
+          controller_->GetBrowserWindowInterface()->GetProfile());
+  if (!containers_service) {
+    containers_service_observation_.Reset();
+    return;
+  }
+
+  if (containers_service_observation_.IsObservingSource(containers_service)) {
+    return;
+  }
+
+  containers_service_observation_.Reset();
+  containers_service_observation_.Observe(containers_service);
+}
+
+void BraveTab::OnContainersListChanged() {
+  SchedulePaint();
+  if (small_accent_icon_view_->layer()) {
+    small_accent_icon_view_->SchedulePaint();
+  }
+}
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
 bool BraveTab::IsTreeNodeCollapsed() const {
   if (auto* node = GetTreeTabNode()) {
     return node->collapsed();
@@ -490,6 +530,10 @@ void BraveTab::SetData(tabs::TabData data) {
       small_accent_icon_view_->DestroyLayer();
     }
   }
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  MaybeObserveContainerChanges();
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 }
 
 bool BraveTab::IsActive() const {

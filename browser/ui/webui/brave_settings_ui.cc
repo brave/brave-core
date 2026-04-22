@@ -16,7 +16,6 @@
 #include "brave/brave_domains/service_domains.h"
 #include "brave/browser/brave_account/brave_account_service_factory.h"
 #include "brave/browser/brave_origin/brave_origin_service_factory.h"
-#include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
@@ -37,6 +36,7 @@
 #include "brave/components/brave_origin/brave_origin_utils.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/features.h"
@@ -45,8 +45,7 @@
 #include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
-#include "brave/components/email_aliases/email_aliases.mojom.h"
-#include "brave/components/email_aliases/features.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/playlist/core/common/pref_names.h"
@@ -126,6 +125,12 @@
 #include "brave/browser/ui/webui/settings/brave_wallet_handler.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/browser/email_aliases/email_aliases_service_factory.h"
+#include "brave/components/email_aliases/email_aliases.mojom.h"
+#include "brave/components/email_aliases/features.h"
 #endif
 
 namespace {
@@ -257,7 +262,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean("isSurveyPanelistAllowed",
                           base::FeatureList::IsEnabled(
                               ntp_background_images::features::
-                                  kBraveNTPBrandedWallpaperSurveyPanelist));
+                                  kBraveNTPBrandedWallpaperSurveyPanelist) &&
+                              !profile->GetPrefs()->GetBoolean(
+                                  brave_rewards::prefs::kDisabledByPolicy));
   html_source->AddBoolean(
       "isPlaylistAllowed",
       base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
@@ -269,8 +276,10 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isSharedPinnedTabsEnabled",
       base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs));
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   html_source->AddBoolean("isEmailAliasesEnabled",
                           email_aliases::features::IsEmailAliasesEnabled());
+#endif
 #if BUILDFLAG(ENABLE_CONTAINERS)
   html_source->AddBoolean(
       "isContainersEnabled",
@@ -379,12 +388,14 @@ void BraveSettingsUI::BindInterface(
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 void BraveSettingsUI::BindInterface(
     mojo::PendingReceiver<email_aliases::mojom::EmailAliasesService> receiver) {
   auto* profile = Profile::FromWebUI(web_ui());
   email_aliases::EmailAliasesServiceFactory::BindForProfile(
       profile, std::move(receiver));
 }
+#endif  // BUILDFLAG(ENABLE_EMAIL_ALIASES)
 
 void BraveSettingsUI::BindInterface(
     mojo::PendingReceiver<brave_origin::mojom::BraveOriginSettingsHandler>

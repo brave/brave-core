@@ -982,10 +982,6 @@ std::string WalletAmountTooSmallErrorMessage() {
   return l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_AMOUNT_TOO_SMALL_ERROR);
 }
 
-std::string WalletRestrictedAddressErrorMessage() {
-  return l10n_util::GetStringUTF8(IDS_WALLET_ADDRESS_RESTRICTION);
-}
-
 mojom::BlockchainTokenPtr GetBitcoinNativeToken(std::string_view chain_id) {
   auto network = NetworkManager::GetKnownChain(chain_id, mojom::CoinType::BTC);
   CHECK(network);

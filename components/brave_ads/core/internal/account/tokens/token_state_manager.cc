@@ -24,7 +24,7 @@ TokenStateManager& TokenStateManager::GetInstance() {
   return GlobalState::GetInstance()->GetTokenStateManager();
 }
 
-void TokenStateManager::LoadState(InitializeCallback callback) {
+void TokenStateManager::LoadState(ResultCallback callback) {
   BLOG(3, "Loading token state");
 
   database::table::ConfirmationTokens confirmation_tokens_database_table;
@@ -34,15 +34,15 @@ void TokenStateManager::LoadState(InitializeCallback callback) {
 }
 
 void TokenStateManager::GetAllConfirmationTokensCallback(
-    InitializeCallback callback,
+    ResultCallback callback,
     bool success,
-    ConfirmationTokenList confirmation_tokens) {
+    const ConfirmationTokenList& confirmation_tokens) {
   if (!success) {
     BLOG(0, "Failed to load confirmation tokens");
     return std::move(callback).Run(/*success=*/false);
   }
 
-  confirmation_tokens_.Set(std::move(confirmation_tokens));
+  confirmation_tokens_.Set(confirmation_tokens);
 
   database::table::PaymentTokens payment_tokens_database_table;
   payment_tokens_database_table.GetAll(
@@ -51,15 +51,15 @@ void TokenStateManager::GetAllConfirmationTokensCallback(
 }
 
 void TokenStateManager::GetAllPaymentTokensCallback(
-    InitializeCallback callback,
+    ResultCallback callback,
     bool success,
-    PaymentTokenList payment_tokens) {
+    const PaymentTokenList& payment_tokens) {
   if (!success) {
     BLOG(0, "Failed to load payment tokens");
     return std::move(callback).Run(/*success=*/false);
   }
 
-  payment_tokens_.SetTokens(std::move(payment_tokens));
+  payment_tokens_.SetTokens(payment_tokens);
 
   BLOG(3, "Successfully loaded token state");
   is_initialized_ = true;

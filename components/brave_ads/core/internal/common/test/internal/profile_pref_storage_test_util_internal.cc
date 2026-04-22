@@ -31,6 +31,9 @@ PrefValueInfo& ProfilePref(const std::string& path) {
 }
 
 bool HasProfilePref(const std::string& path) {
+  // Intentionally identical to `FindProfilePref`: the test double uses a
+  // single map for both registration and storage, so both checks reduce to
+  // the same `contains` lookup.
   return ProfilePrefStorage().contains(GetUuidForCurrentTestAndValue(path));
 }
 

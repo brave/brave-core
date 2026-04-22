@@ -30,6 +30,7 @@ class PolkadotChainMetadata {
 
   PolkadotChainMetadata& operator=(const PolkadotChainMetadata&);
   PolkadotChainMetadata& operator=(PolkadotChainMetadata&&) noexcept;
+  bool operator==(const PolkadotChainMetadata& other) const;
 
   // Fallibly parse runtime metadata bytes and extract the minimal
   // fields needed for transfer extrinsics.

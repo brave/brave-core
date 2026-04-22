@@ -23,7 +23,7 @@ void FakeTimePeriodStore::Clear() {
   list_.clear();
 }
 
-std::unique_ptr<TimePeriodStore> FakeTimePeriodStoreFactory::Build(
+std::unique_ptr<SerpMetricsTimePeriodStore> FakeTimePeriodStoreFactory::Build(
     const char* /*metric_name*/) const {
   return std::make_unique<FakeTimePeriodStore>();
 }

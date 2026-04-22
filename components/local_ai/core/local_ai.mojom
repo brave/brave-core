@@ -15,38 +15,29 @@ struct ModelFiles {
   mojo_base.mojom.BigBuffer config;
 };
 
-// Consumer-facing embedding interface. Consumers call
-// GenerateEmbeddings() via a Remote; the renderer implements it.
+// Consumer-facing embedding interface. The browser-side service calls
+// GenerateEmbeddings via a Remote; the renderer implements it.
 interface PassageEmbedder {
   // Produces a dense embedding vector for the given input text.
   GenerateEmbeddings(string text) => (array<double> embedding);
 };
 
-// Renderer-implemented factory that creates direct consumer→renderer
-// PassageEmbedder bindings and manages model lifecycle. Internal to
-// the service — consumers never interact with this interface.
+// Renderer-implemented factory that creates direct
+// browser→renderer PassageEmbedder bindings and manages model lifecycle.
 interface PassageEmbedderFactory {
   // Loads model weights and tokenizer into the runtime.
   Init(ModelFiles model_files) => (bool success);
 
-  // Binds a direct consumer→renderer PassageEmbedder binding.
+  // Binds a direct browser→renderer PassageEmbedder pipe.
   Bind(pending_receiver<PassageEmbedder> receiver);
 };
 
-// Browser-side service that manages on-device ML model lifecycle.
-// Consumers call GetPassageEmbedder() to obtain a PassageEmbedder
-// remote bound directly to the renderer. The renderer calls
-// RegisterPassageEmbedderFactory() to register its factory.
+// Renderer→browser interface. The WASM page calls
+// RegisterPassageEmbedderFactory so the browser-side service can drive
+// model loading and consumer bindings through the factory.
 interface LocalAIService {
-  // Called by the renderer to register a factory that creates direct
-  // consumer→renderer PassageEmbedder bindings.
+  // Called by the renderer to register a factory that the browser-side
+  // service uses to load the model and bind PassageEmbedder pipes.
   RegisterPassageEmbedderFactory(
       pending_remote<PassageEmbedderFactory> factory);
-
-  // Returns a PassageEmbedder bound directly to the renderer worker.
-  // Creates the background WebContents if needed. If the factory is
-  // not yet registered, the callback is deferred until it is.
-  // Callers are responsible for closing the remote when it is not
-  // in use.
-  GetPassageEmbedder() => (pending_remote<PassageEmbedder>? embedder);
 };

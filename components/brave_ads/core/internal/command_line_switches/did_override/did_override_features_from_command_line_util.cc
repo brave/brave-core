@@ -19,6 +19,7 @@
 #include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_feature.h"
 #include "brave/components/brave_ads/core/internal/account/utility/tokens_feature.h"
+#include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_feature.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_feature.h"
 #include "brave/components/brave_ads/core/internal/reminders/reminders_feature.h"
@@ -34,12 +35,11 @@
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_feature.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_feature.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_feature.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_feature.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
-#include "brave/components/brave_ads/core/public/ad_units/search_result_ad/search_result_ad_feature.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_feature.h"
 #include "brave/components/brave_ads/core/public/user_attention/user_idle_detection/user_idle_detection_feature.h"
-#include "brave/components/brave_ads/core/public/user_engagement/site_visit/site_visit_feature.h"
 
 namespace brave_ads {
 

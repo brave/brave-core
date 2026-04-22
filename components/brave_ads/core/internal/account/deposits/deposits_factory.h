@@ -15,6 +15,11 @@ namespace brave_ads {
 
 class DepositsFactory final {
  public:
+  // This class contains only static methods.
+  DepositsFactory() = delete;
+  DepositsFactory(const DepositsFactory&) = delete;
+  DepositsFactory& operator=(const DepositsFactory&) = delete;
+
   static std::unique_ptr<DepositInterface> Build(
       mojom::ConfirmationType mojom_confirmation_type);
 };

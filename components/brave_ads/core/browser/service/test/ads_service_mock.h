@@ -45,7 +45,7 @@ class AdsServiceMock : public AdsService {
 
   MOCK_METHOD(void,
               ParseAndSaveNewTabPageAds,
-              (base::DictValue, ParseAndSaveNewTabPageAdsCallback));
+              (base::DictValue, ResultCallback));
   MOCK_METHOD(void,
               MaybeServeNewTabPageAd,
               (MaybeServeMojomNewTabPageAdCallback));
@@ -55,7 +55,7 @@ class AdsServiceMock : public AdsService {
                const std::string&,
                mojom::NewTabPageAdMetricType,
                mojom::NewTabPageAdEventType,
-               TriggerAdEventCallback));
+               ResultCallback));
 
   MOCK_METHOD(void,
               MaybeGetSearchResultAd,
@@ -64,36 +64,30 @@ class AdsServiceMock : public AdsService {
               TriggerSearchResultAdEvent,
               (mojom::CreativeSearchResultAdInfoPtr,
                mojom::SearchResultAdEventType,
-               TriggerAdEventCallback));
+               ResultCallback));
 
   MOCK_METHOD(void,
               PurgeOrphanedAdEventsForType,
-              (mojom::AdType, PurgeOrphanedAdEventsForTypeCallback));
+              (mojom::AdType, ResultCallback));
 
   MOCK_METHOD(void,
               GetAdHistory,
               (base::Time, base::Time, GetAdHistoryForUICallback));
 
-  MOCK_METHOD(void, ClearData, (ClearDataCallback));
+  MOCK_METHOD(void, ClearData, (ResultCallback));
 
-  MOCK_METHOD(void,
-              ToggleLikeAd,
-              (mojom::ReactionInfoPtr, ToggleReactionCallback));
-  MOCK_METHOD(void,
-              ToggleDislikeAd,
-              (mojom::ReactionInfoPtr, ToggleReactionCallback));
+  MOCK_METHOD(void, ToggleLikeAd, (mojom::ReactionInfoPtr, ResultCallback));
+  MOCK_METHOD(void, ToggleDislikeAd, (mojom::ReactionInfoPtr, ResultCallback));
   MOCK_METHOD(void,
               ToggleLikeSegment,
-              (mojom::ReactionInfoPtr, ToggleReactionCallback));
+              (mojom::ReactionInfoPtr, ResultCallback));
   MOCK_METHOD(void,
               ToggleDislikeSegment,
-              (mojom::ReactionInfoPtr, ToggleReactionCallback));
-  MOCK_METHOD(void,
-              ToggleSaveAd,
-              (mojom::ReactionInfoPtr, ToggleReactionCallback));
+              (mojom::ReactionInfoPtr, ResultCallback));
+  MOCK_METHOD(void, ToggleSaveAd, (mojom::ReactionInfoPtr, ResultCallback));
   MOCK_METHOD(void,
               ToggleMarkAdAsInappropriate,
-              (mojom::ReactionInfoPtr, ToggleReactionCallback));
+              (mojom::ReactionInfoPtr, ResultCallback));
 
   MOCK_METHOD(void,
               NotifyTabTextContentDidChange,

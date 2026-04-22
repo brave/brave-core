@@ -6,17 +6,6 @@
 
 ## Ownership and Memory Management
 
-<a id="CSM-002"></a>
-
-### ✅ Comment Non-Owned Raw Pointers
-
-**Raw pointers to non-owned objects should be commented with `// not owned`.** This is a Chromium convention.
-
-```cpp
-// ✅ CORRECT
-ThirdPartyExtractor* third_party_extractor_ = nullptr;  // not owned
-```
-
 <a id="CSM-003"></a>
 
 ### ✅ Prefer unique_ptr Over new/delete
@@ -606,3 +595,51 @@ When `thread_local` is truly needed, Chromium requires:
 - Cannot be constructed in OOM handlers (POSIX construction may allocate)
 
 If these requirements cannot be met, use `base::ThreadLocalOwnedPointer` instead. See [Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
+
+---
+
+<a id="CSM-036"></a>
+
+## ✅ Use `raw_ref<T>` for Fields That Must Never Be Null; `raw_ptr<T>` Otherwise
+
+**`raw_ptr<T>` is the default for non-owning fields. Choose `raw_ref<T>` when the field must never be null — it communicates that the referenced object is expected to outlive the holder, and the holder cannot function without it. Both types enforce that the pointee remains alive for as long as the field holds a reference to it: they detect use-after-free rather than silently operating on freed memory, and in doing so document the lifetime contract — whenever a field of either type holds a value, the expectation is that the memory it points to is alive.**
+
+```cpp
+// raw_ptr<T> - default for non-owning fields (can be null or reassigned)
+class TabFeatures {
+  raw_ptr<content::WebContents> web_contents_;
+};
+
+// raw_ref<T> - for a mandatory dependency that must outlive the holder
+// Constructor takes a reference when the caller already holds one
+class BraveBrowserDelegate {
+ public:
+  explicit BraveBrowserDelegate(BrowserWindowInterface& window)
+      : window_(window) {}
+
+ private:
+  raw_ref<BrowserWindowInterface> window_;
+};
+
+// CHECK_DEREF - when a pointer-returning function result must be stored in a raw_ref
+class MyService {
+ public:
+  explicit MyService(Profile& profile)
+      : prefs_(CHECK_DEREF(profile.GetPrefs())) {}
+
+ private:
+  raw_ref<PrefService> prefs_;
+};
+```
+
+**Use `CHECK_DEREF` when a pointer-returning function result must be stored in a `raw_ref<T>` field.** It asserts non-null and converts to a reference, which is safer than `*ptr` (undefined behavior on null).
+
+**`RAW_PTR_EXCLUSION` (per-field) is acceptable only for:**
+- Pointers to unprotected memory where BackupRefPtr provides no benefit: literals, stack allocations, `mmap`'d or shared memory, V8/Oilpan/Java heaps, TLS
+- Fields that won't compile with `raw_ptr<T>`: pointer fields in unions (prefer `std::variant`), pointer fields in classes/structs used as `global`, `static`, or `thread_local` variables
+- (Very rare) cases with a measured, documented performance regression
+- (Very rare) cases where `raw_ptr<T>` causes runtime errors — add a comment and consult `base/memory/raw_ptr.md`
+
+Types not flagged by the Clang plugin — raw `T*` is fine, no annotation required: function pointers, ObjC pointers, `const char*`/`const wchar_t*` pointing to string literals (if they may point to heap-allocated objects, use `raw_ptr<const char>` for UaF safety).
+
+Blink renderer code using Oilpan, and any other code whose objects are allocated outside PartitionAlloc (V8 heap, Java heap, etc.), cannot use `raw_ptr<T>` or `raw_ref<T>`.

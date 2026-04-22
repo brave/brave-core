@@ -7,9 +7,7 @@
 
 #include "base/memory/ptr_util.h"
 #include "base/notreached.h"
-#include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ui/brave_browser_window.h"
-#include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/brave_browser_tab_menu_model_delegate.h"
@@ -17,6 +15,7 @@
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
 #include "chrome/browser/ui/browser.h"
@@ -42,6 +41,11 @@ class RewardsPanelCoordinator {};
 #if !BUILDFLAG(ENABLE_BRAVE_VPN)
 // Use stub class to avoid incomplete type build error.
 class BraveVPNController {};
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/browser/email_aliases/email_aliases_service_factory.h"
+#include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #endif
 
 BrowserWindowFeatures::BrowserWindowFeatures() = default;
@@ -100,6 +104,7 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
     }
   }
 
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   if (auto* email_aliases_service =
           email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
               browser_view->GetProfile())) {
@@ -107,6 +112,7 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
         std::make_unique<email_aliases::EmailAliasesController>(
             browser_view, email_aliases_service);
   }
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn_controller_ = std::make_unique<BraveVPNController>(browser_view);
@@ -122,7 +128,9 @@ void BrowserWindowFeatures::TearDownPreBrowserWindowDestruction() {
   brave_vpn_controller_.reset();
 #endif
 
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   email_aliases_controller_.reset();
+#endif
 
   if (sidebar_controller_) {
     sidebar_controller_->TearDownPreBrowserWindowDestruction();

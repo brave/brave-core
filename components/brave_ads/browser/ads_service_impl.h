@@ -78,7 +78,9 @@ class AdsServiceImpl final : public AdsService,
 #endif
                              public content_settings::Observer {
  public:
-  // `http_client` can be `nullptr` in tests.
+  // `http_client`, `resource_component`, `history_service`, and
+  // `host_content_settings` can be `nullptr` in tests. `rewards_service`
+  // can be `nullptr` when Rewards is unsupported or disabled by policy.
   explicit AdsServiceImpl(
       std::unique_ptr<Delegate> delegate,
       PrefService& prefs,
@@ -142,13 +144,12 @@ class AdsServiceImpl final : public AdsService,
   void NotifyDidShutdownAdsService();
   void NotifyDidClearAdsServiceData();
 
-  void ClearDataPrefsAndAdsServiceDataAndMaybeRestart(
-      ClearDataCallback callback,
-      bool shutdown_succeeded);
-  void ClearAllPrefsAndAdsServiceDataAndMaybeRestart(ClearDataCallback callback,
+  void ClearDataPrefsAndAdsServiceDataAndMaybeRestart(ResultCallback callback,
+                                                      bool shutdown_succeeded);
+  void ClearAllPrefsAndAdsServiceDataAndMaybeRestart(ResultCallback callback,
                                                      bool shutdown_succeeded);
-  void ClearAdsServiceDataAndMaybeRestart(ClearDataCallback callback);
-  void ClearAdsServiceDataAndMaybeRestartCallback(ClearDataCallback callback,
+  void ClearAdsServiceDataAndMaybeRestart(ResultCallback callback);
+  void ClearAdsServiceDataAndMaybeRestartCallback(ResultCallback callback,
                                                   bool success);
 
   void OnExternalWalletConnectedCallback(bool success);
@@ -208,8 +209,8 @@ class AdsServiceImpl final : public AdsService,
                                     const std::string& captcha_id);
   void SnoozeScheduledCaptchaCallback();
 
-  void ShutdownAds(ShutdownCallback callback);
-  void ShutdownAdsCallback(ShutdownCallback callback, bool success);
+  void ShutdownAds(ResultCallback callback);
+  void ShutdownAdsCallback(ResultCallback callback, bool success);
 
   void ShutdownAdsService();
 
@@ -226,7 +227,7 @@ class AdsServiceImpl final : public AdsService,
                               bool by_user) override;
   void OnNotificationAdClicked(const std::string& placement_id) override;
 
-  void ClearData(ClearDataCallback callback) override;
+  void ClearData(ResultCallback callback) override;
 
   void GetInternals(GetInternalsCallback callback) override;
 
@@ -234,9 +235,8 @@ class AdsServiceImpl final : public AdsService,
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
-  void ParseAndSaveNewTabPageAds(
-      base::DictValue dict,
-      ParseAndSaveNewTabPageAdsCallback callback) override;
+  void ParseAndSaveNewTabPageAds(base::DictValue dict,
+                                 ResultCallback callback) override;
   void MaybeServeNewTabPageAd(
       MaybeServeMojomNewTabPageAdCallback callback) override;
   void TriggerNewTabPageAdEvent(
@@ -244,35 +244,34 @@ class AdsServiceImpl final : public AdsService,
       const std::string& creative_instance_id,
       mojom::NewTabPageAdMetricType mojom_ad_metric_type,
       mojom::NewTabPageAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback) override;
+      ResultCallback callback) override;
 
   void MaybeGetSearchResultAd(const std::string& placement_id,
                               MaybeGetSearchResultAdCallback callback) override;
   void TriggerSearchResultAdEvent(
       mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
       mojom::SearchResultAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback) override;
+      ResultCallback callback) override;
 
-  void PurgeOrphanedAdEventsForType(
-      mojom::AdType mojom_ad_type,
-      PurgeOrphanedAdEventsForTypeCallback callback) override;
+  void PurgeOrphanedAdEventsForType(mojom::AdType mojom_ad_type,
+                                    ResultCallback callback) override;
 
   void GetAdHistory(base::Time from_time,
                     base::Time to_time,
                     GetAdHistoryForUICallback callback) override;
 
   void ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
-                    ToggleReactionCallback callback) override;
+                    ResultCallback callback) override;
   void ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
-                       ToggleReactionCallback callback) override;
+                       ResultCallback callback) override;
   void ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
-                         ToggleReactionCallback callback) override;
+                         ResultCallback callback) override;
   void ToggleDislikeSegment(mojom::ReactionInfoPtr mojom_reaction,
-                            ToggleReactionCallback callback) override;
+                            ResultCallback callback) override;
   void ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
-                    ToggleReactionCallback callback) override;
+                    ResultCallback callback) override;
   void ToggleMarkAdAsInappropriate(mojom::ReactionInfoPtr mojom_reaction,
-                                   ToggleReactionCallback callback) override;
+                                   ResultCallback callback) override;
 
   void NotifyTabTextContentDidChange(int32_t tab_id,
                                      const std::vector<GURL>& redirect_chain,
@@ -322,8 +321,8 @@ class AdsServiceImpl final : public AdsService,
   // load/save file business logic.
   void Save(const std::string& name,
             const std::string& value,
-            SaveCallback callback) override;
-  void Remove(const std::string& name, RemoveCallback callback) override;
+            ResultCallback callback) override;
+  void Remove(const std::string& name, ResultCallback callback) override;
   void Load(const std::string& name, LoadCallback callback) override;
 
   // TODO(https://github.com/brave/brave-browser/issues/26195) Decouple load

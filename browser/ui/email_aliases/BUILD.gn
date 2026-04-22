@@ -3,6 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/email_aliases/buildflags/buildflags.gni")
+
+assert(enable_email_aliases)
+
 source_set("email_aliases") {
   sources = [
     "email_aliases_controller.cc",

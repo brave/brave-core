@@ -13,6 +13,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
+#include "brave/components/containers/core/browser/pref_names.h"
 #include "brave/components/containers/core/browser/prefs.h"
 #include "brave/components/containers/core/browser/prefs_registration.h"
 #include "brave/components/containers/core/common/features.h"
@@ -84,6 +85,8 @@ class ContainersSettingsHandlerTest : public testing::Test {
   void SetUp() override {
     feature_list_.InitAndEnableFeature(features::kContainers);
     RegisterProfilePrefs(prefs_.registry());
+    // Remove default containers from prefs for this test suite.
+    prefs_.SetList(prefs::kContainersList, base::ListValue());
 
     handler_ = std::make_unique<ContainersSettingsHandler>(&prefs_);
     handler_->BindUI(mock_observer_.BindAndGetRemote());

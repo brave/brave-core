@@ -51,8 +51,7 @@ class TabCWVNavigationHandler: NSObject, BraveWebViewNavigationDelegate {
       let resolvedCredential = await delegate.tab(
         tab,
         didRequestHTTPAuthFor: protectionSpace,
-        proposedCredential: proposedCredential,
-        previousFailureCount: 0
+        proposedCredential: proposedCredential
       )
       handler(resolvedCredential?.user, resolvedCredential?.password)
     }

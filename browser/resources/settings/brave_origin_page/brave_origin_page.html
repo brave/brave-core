@@ -1,4 +1,9 @@
 <style include="settings-shared cr-shared-style">
+  /* Extra space when fixed #needsRestart bar is shown */
+  .origin-restart-padding-spacer {
+    padding-bottom: 80px;
+  }
+
   .title {
     font: var(--leo-font-default-semibold);
     height: 68px;
@@ -15,28 +20,19 @@
   }
 
   #needsRestart {
-    background-color: #fff;
+    background-color: var(--leo-color-container-background);
     bottom: 0;
     box-shadow: 0 -2px 2px 0 var(--shadow-color);
     box-sizing: border-box;
     left: 0;
     opacity: 1;
-    padding: 16px;
+    padding: var(--leo-spacing-xl) var(--leo-spacing-2xl);
     position: fixed;
     transform: translate(0);
     transition: all 225ms var(--ease-in-out);
     width: 100%;
     z-index: 10;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    #needsRestart {
-      background-color: rgb(22, 23, 25);
-    }
-
-    button.primary {
-      color: white;
-    }
+    border-top: 1px solid var(--leo-color-divider-subtle);
   }
 
   #needsRestart .flex:last-child {
@@ -50,20 +46,10 @@
 
   .flex-container {
     display: flex;
-    padding: 8px 1em;
   }
 
   .restart-notice {
-    font-size: .9375rem;
-    line-height: 1.4;
-  }
-
-  button.primary {
-    background: var(--interactive-color);
-    border: 0;
-    border-radius: 3px;
-    font-size: .875rem;
-    padding: 14px 38px;
+    font: var(--leo-font-default-regular);
   }
 
   #resetToDefaults::part(icon) {
@@ -76,16 +62,16 @@
 </template>
 
 <template is="dom-if" if="[[isPurchased_]]">
+<div class$="[[getOriginRestartPaddingClass_(showRestartToast_)]]">
 <settings-section
   id="origin"
   page-title="$i18n{braveOriginTitle}">
 <div>
   <div class="settings-box first">
     <div class="flex">
-      <div class="label primary-title">$i18n{braveOriginHeadingTitle}</div>
+      <div class="label primary-title">$i18n{braveOriginOnboardingHeadingTitle}</div>
       <div class="label secondary secondary-title">
-        <p>$i18n{braveOriginHeadingDescription1}</p>
-        <p>$i18n{braveOriginHeadingDescription2}</p>
+        <p>$i18n{braveOriginOnboardingDescription}</p>
       </div>
     </div>
   </div>
@@ -203,15 +189,16 @@
   </cr-link-row>
 </div>
 </settings-section>
+</div>
 <template is="dom-if" if="[[showRestartToast_]]">
   <div id="needsRestart">
     <div class="flex-container">
       <div class="flex restart-notice">$i18n{braveOriginRestartNotice}</div>
       <div class="flex">
-        <button id="restartButton" class="primary" tabindex="9"
+        <leo-button id="restartButton" kind="filled"
             on-click="restartBrowser_">
           $i18n{relaunchButtonLabel}
-        </button>
+        </leo-button>
       </div>
     </div>
   </div>

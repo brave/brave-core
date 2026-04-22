@@ -32,6 +32,7 @@ class RedeemPaymentTokensUrlRequestBuilder final
 
   ~RedeemPaymentTokensUrlRequestBuilder() override;
 
+  // UrlRequestBuilderInterface:
   mojom::UrlRequestInfoPtr Build() override;
 
  private:

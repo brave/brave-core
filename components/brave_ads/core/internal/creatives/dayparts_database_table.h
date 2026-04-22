@@ -25,6 +25,7 @@ class Dayparts final : public TableInterface {
               const std::map</*campaign_id*/ std::string,
                              base::flat_set<CreativeDaypartInfo>>& dayparts);
 
+  // TableInterface:
   void Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) override;
   void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                int to_version) override;

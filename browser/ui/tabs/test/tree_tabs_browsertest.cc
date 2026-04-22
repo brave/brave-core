@@ -122,7 +122,11 @@ class TreeTabsBrowserTest : public InProcessBrowserTest {
     return *static_cast<BraveTabStripModel*>(browser()->tab_strip_model());
   }
   tabs::TabStripCollection& tab_strip_collection() {
-    return tab_strip_model().GetTabStripCollectionForTesting();
+    return tab_strip_collection_for_model(&tab_strip_model());
+  }
+  tabs::TabStripCollection& tab_strip_collection_for_model(
+      BraveTabStripModel* model) {
+    return model->GetTabStripCollectionForTesting();
   }
   tabs::UnpinnedTabCollection& unpinned_collection() {
     return *tab_strip_collection().unpinned_collection();
@@ -199,6 +203,48 @@ class TreeTabsBrowserTest : public InProcessBrowserTest {
 
   void SetSplitPinned(split_tabs::SplitTabId split, bool pinned) {
     tab_strip_model().SetSplitPinnedImplForTesting(split, pinned);
+  }
+
+  // Adds a tab to |destination_model| with |opener_window|'s first tab as
+  // opener. The opener lives in a different TabStripModel (popup, app window,
+  // etc.); tree insertion must not assume it belongs to |destination_model|.
+  void ExpectAddTabWithCrossStripOpenerSucceeds(
+      Browser* opener_window,
+      BraveTabStripModel& destination_model) {
+    auto* opener_model =
+        static_cast<BraveTabStripModel*>(opener_window->tab_strip_model());
+    tabs::TabInterface* const opener_tab = opener_model->GetTabAtIndex(0);
+    // None normal window should not have tabs in tree node.
+    ASSERT_NE(opener_tab->GetParentCollection()->type(),
+              tabs::TabCollection::Type::TREE_NODE);
+
+    tabs::TabStripCollection& dest_collection =
+        tab_strip_collection_for_model(&destination_model);
+    tabs::UnpinnedTabCollection& dest_unpinned =
+        *dest_collection.unpinned_collection();
+
+    EXPECT_FALSE(
+        dest_collection.GetIndexOfTabRecursive(opener_tab).has_value());
+
+    const int count_before = destination_model.count();
+    auto new_tab = std::make_unique<tabs::TabModel>(CreateWebContents(),
+                                                    &destination_model);
+    new_tab->set_opener(opener_tab);
+
+    destination_model.AddTab(std::move(new_tab), -1,
+                             ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+    ASSERT_EQ(destination_model.count(), count_before + 1);
+    tabs::TabInterface* const added =
+        destination_model.GetTabAtIndex(count_before);
+    ASSERT_TRUE(static_cast<tabs::TabModel*>(added)->opener());
+    EXPECT_EQ(static_cast<tabs::TabModel*>(added)->opener(), opener_tab);
+
+    ASSERT_EQ(added->GetParentCollection()->type(),
+              tabs::TabCollection::Type::TREE_NODE);
+    EXPECT_EQ(added->GetParentCollection()->GetParentCollection(),
+              &dest_unpinned);
+    EXPECT_NE(added->GetParentCollection(), opener_tab->GetParentCollection());
   }
 
   void SetUpOnMainThread() override {
@@ -850,6 +896,24 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, AddTabRecursive) {
             tabs::TabCollection::Type::TREE_NODE);
   EXPECT_EQ(added_tab->GetParentCollection()->GetParentCollection(),
             &unpinned_collection());
+}
+
+// Regression: opening into the tabbed browser from a popup or app (PWA-like)
+// window can pass an opener tab that belongs to another TabStripModel.
+// https://github.com/brave/brave-browser/issues/54334
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       AddTab_OpenerInPopupWindow_DoesNotCrashAndUsesOwnTree) {
+  Browser* const popup_browser = CreateBrowserForPopup(profile());
+  SetTreeTabsEnabled(true);
+  ExpectAddTabWithCrossStripOpenerSucceeds(popup_browser, tab_strip_model());
+}
+
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       AddTab_OpenerInAppWindow_DoesNotCrashAndUsesOwnTree) {
+  Browser* const app_browser =
+      CreateBrowserForApp("TreeTabsOpenerAppBrowserTest", profile());
+  SetTreeTabsEnabled(true);
+  ExpectAddTabWithCrossStripOpenerSucceeds(app_browser, tab_strip_model());
 }
 
 // Mock observer for testing OnTreeTabChanged callback.

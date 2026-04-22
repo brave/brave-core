@@ -21,8 +21,9 @@ FakeBatAds::~FakeBatAds() = default;
 
 void FakeBatAds::BindReceiver(
     mojo::PendingAssociatedReceiver<bat_ads::mojom::BatAds>
-        bat_ads_mojom_pending_associated_receiver) {
-  receiver_.Bind(std::move(bat_ads_mojom_pending_associated_receiver));
+        bat_ads_pending_associated_receiver) {
+  bat_ads_associated_receiver_.Bind(
+      std::move(bat_ads_pending_associated_receiver));
 }
 
 void FakeBatAds::Initialize(brave_ads::mojom::WalletInfoPtr /*mojom_wallet*/,

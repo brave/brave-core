@@ -40,7 +40,7 @@ constexpr char kNotificationAdUrlPrefix[] = "https://www.brave.com/ads/?";
 AdsServiceDelegate::AdsServiceDelegate(
     Profile& profile,
     PrefService& local_state,
-    brave_adaptive_captcha::BraveAdaptiveCaptchaService&
+    brave_adaptive_captcha::BraveAdaptiveCaptchaService*
         adaptive_captcha_service)
     : profile_(profile),
       local_state_(local_state),
@@ -93,15 +93,21 @@ bool AdsServiceDelegate::ShowOnboardingNotification() {
 
 void AdsServiceDelegate::ShowScheduledCaptcha(const std::string& payment_id,
                                               const std::string& captcha_id) {
-  adaptive_captcha_service_->ShowScheduledCaptcha(payment_id, captcha_id);
+  if (adaptive_captcha_service_) {
+    adaptive_captcha_service_->ShowScheduledCaptcha(payment_id, captcha_id);
+  }
 }
 
 void AdsServiceDelegate::ClearScheduledCaptcha() {
-  adaptive_captcha_service_->ClearScheduledCaptcha();
+  if (adaptive_captcha_service_) {
+    adaptive_captcha_service_->ClearScheduledCaptcha();
+  }
 }
 
 void AdsServiceDelegate::SnoozeScheduledCaptcha() {
-  adaptive_captcha_service_->SnoozeScheduledCaptcha();
+  if (adaptive_captcha_service_) {
+    adaptive_captcha_service_->SnoozeScheduledCaptcha();
+  }
 }
 
 void AdsServiceDelegate::ShowNotificationAd(const std::string& id,

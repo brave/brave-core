@@ -12,6 +12,8 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
+#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_observer.h"
 
@@ -24,7 +26,6 @@ class Time;
 namespace brave_ads {
 
 class AdsClient;
-struct NotificationAdInfo;
 
 class Ads {
  public:
@@ -35,7 +36,7 @@ class Ads {
 
   virtual ~Ads() = default;
 
-  static std::unique_ptr<Ads> CreateInstance(
+  [[nodiscard]] static std::unique_ptr<Ads> CreateInstance(
       AdsClient& ads_client,
       const base::FilePath& database_path);
 
@@ -56,11 +57,11 @@ class Ads {
   // `mojom_wallet` can be nullptr if there is no wallet. The callback takes one
   // argument - `bool` is set to `true` if successful otherwise `false`.
   virtual void Initialize(mojom::WalletInfoPtr mojom_wallet,
-                          InitializeCallback callback) = 0;
+                          ResultCallback callback) = 0;
 
   // Called to shutdown ads. The callback takes one argument - `bool` is set to
   // `true` if successful otherwise `false`.
-  virtual void Shutdown(ShutdownCallback callback) = 0;
+  virtual void Shutdown(ResultCallback callback) = 0;
 
   // Called to get internals. The callback takes one argument -
   // `base::ListValue` containing info of the obtained internals.
@@ -78,9 +79,8 @@ class Ads {
 
   // Called to parse and save new tab page ads. The callback takes one argument
   // - `bool` is set to `true` if successful otherwise `false`.
-  virtual void ParseAndSaveNewTabPageAds(
-      base::DictValue dict,
-      ParseAndSaveNewTabPageAdsCallback callback) = 0;
+  virtual void ParseAndSaveNewTabPageAds(base::DictValue dict,
+                                         ResultCallback callback) = 0;
 
   // Called to serve a new tab page ad. The callback takes one argument -
   // `NewTabPageAdInfo` containing the info for the ad.
@@ -100,7 +100,7 @@ class Ads {
       const std::string& creative_instance_id,
       mojom::NewTabPageAdMetricType mojom_ad_metric_type,
       mojom::NewTabPageAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback) = 0;
+      ResultCallback callback) = 0;
 
   // Called to get the notification ad specified by `placement_id`. The callback
   // takes one argument - `NotificationAdInfo` containing the info of the ad.
@@ -119,7 +119,7 @@ class Ads {
   virtual void TriggerNotificationAdEvent(
       const std::string& placement_id,
       mojom::NotificationAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback) = 0;
+      ResultCallback callback) = 0;
 
   // Called to get the search result ad specified by `placement_id`. The
   // callback takes one argument - `mojom::CreativeSearchResultAdInfoPtr`
@@ -136,14 +136,13 @@ class Ads {
   virtual void TriggerSearchResultAdEvent(
       mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
       mojom::SearchResultAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback) = 0;
+      ResultCallback callback) = 0;
 
   // Called to purge orphaned served ad events for the specified `mojom_ad_type`
   // before calling `MaybeServe*Ad`. The callback takes one argument - `bool` is
   // set to `true` if successful otherwise `false`.
-  virtual void PurgeOrphanedAdEventsForType(
-      mojom::AdType mojom_ad_type,
-      PurgeOrphanedAdEventsForTypeCallback callback) = 0;
+  virtual void PurgeOrphanedAdEventsForType(mojom::AdType mojom_ad_type,
+                                            ResultCallback callback) = 0;
 
   // Called to get ad history for the given date range in descending order. The
   // callback takes one argument - `base::ListValue` containing info of the
@@ -156,38 +155,38 @@ class Ads {
   // setting to the neutral state. The callback takes one argument - `bool` is
   // set to `true` if successful otherwise `false`.
   virtual void ToggleLikeAd(mojom::ReactionInfoPtr mojom_reaction,
-                            ToggleReactionCallback callback) = 0;
+                            ResultCallback callback) = 0;
 
   // Called to dislike an ad. This is a toggle, so calling it again returns the
   // setting to the neutral state. The callback takes one argument - `bool` is
   // set to `true` if successful otherwise `false`.
   virtual void ToggleDislikeAd(mojom::ReactionInfoPtr mojom_reaction,
-                               ToggleReactionCallback callback) = 0;
+                               ResultCallback callback) = 0;
 
   // Called to like a category. This is a toggle, so calling it again returns
   // the setting to the neutral state. The callback takes one argument - `bool`
   // is set to `true` if successful otherwise `false`.
   virtual void ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
-                                 ToggleReactionCallback callback) = 0;
+                                 ResultCallback callback) = 0;
 
   // Called to dislike a category. This is a toggle, so calling it again
   // returns the setting to the neutral state. The callback takes one argument -
   // `bool` is set to `true` if successful otherwise `false`.
   virtual void ToggleDislikeSegment(mojom::ReactionInfoPtr mojom_reaction,
-                                    ToggleReactionCallback callback) = 0;
+                                    ResultCallback callback) = 0;
 
   // Called to save an ad for later viewing. This is a toggle, so calling it
   // again removes the ad from the saved list. The callback takes one argument -
   // `bool` is set to `true` if successful otherwise `false`.
   virtual void ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,
-                            ToggleReactionCallback callback) = 0;
+                            ResultCallback callback) = 0;
 
   // Called to mark an ad as inappropriate. This is a toggle, so calling it
   // again unmarks the ad. The callback takes one argument - `bool` is
   // set to `true` if successful otherwise `false`.
   virtual void ToggleMarkAdAsInappropriate(
       mojom::ReactionInfoPtr mojom_reaction,
-      ToggleReactionCallback callback) = 0;
+      ResultCallback callback) = 0;
 };
 
 }  // namespace brave_ads

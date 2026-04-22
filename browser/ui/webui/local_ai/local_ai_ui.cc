@@ -8,14 +8,13 @@
 #include <memory>
 #include <utility>
 
-#include "brave/browser/local_ai/local_ai_service_factory.h"
+#include "brave/browser/history_embeddings/brave_passage_embeddings_service.h"
 #include "brave/components/local_ai/core/local_ai.mojom.h"
 #include "brave/components/local_ai/core/url_constants.h"
 #include "brave/components/local_ai/resources/grit/candle_embedding_module_generated.h"
 #include "brave/components/local_ai/resources/grit/candle_embedding_module_generated_map.h"
 #include "brave/components/local_ai/resources/grit/local_ai_generated.h"
 #include "brave/components/local_ai/resources/grit/local_ai_generated_map.h"
-#include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
@@ -49,8 +48,8 @@ WEB_UI_CONTROLLER_TYPE_IMPL(UntrustedLocalAIUI)
 
 void UntrustedLocalAIUI::BindInterface(
     mojo::PendingReceiver<mojom::LocalAIService> receiver) {
-  auto* profile = Profile::FromWebUI(web_ui());
-  LocalAIServiceFactory::BindForProfile(profile, std::move(receiver));
+  passage_embeddings::BravePassageEmbeddingsService::BindForWebContents(
+      web_ui()->GetWebContents(), std::move(receiver));
 }
 
 ///////////////////////////////////////////////////////////////////////////////

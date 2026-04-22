@@ -45,8 +45,7 @@ public protocol TabDelegate: AnyObject {
   func tab(
     _ tab: some TabState,
     didRequestHTTPAuthFor protectionSpace: URLProtectionSpace,
-    proposedCredential credential: URLCredential?,
-    previousFailureCount: Int
+    proposedCredential credential: URLCredential?
   ) async -> URLCredential?
   func tab(
     _ tab: some TabState,
@@ -135,8 +134,7 @@ extension TabDelegate {
   public func tab(
     _ tab: some TabState,
     didRequestHTTPAuthFor protectionSpace: URLProtectionSpace,
-    proposedCredential credential: URLCredential?,
-    previousFailureCount: Int
+    proposedCredential credential: URLCredential?
   ) async -> URLCredential? {
     return nil
   }

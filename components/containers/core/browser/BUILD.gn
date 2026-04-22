@@ -10,6 +10,7 @@ assert(enable_containers)
 static_library("browser") {
   public = [
     "containers_service.h",
+    "containers_service_observer.h",
     "containers_settings_handler.h",
     "prefs_registration.h",
     "unknown_container.h",
@@ -18,6 +19,8 @@ static_library("browser") {
   sources = [
     "containers_service.cc",
     "containers_settings_handler.cc",
+    "default_containers_list.cc",
+    "default_containers_list.h",
     "pref_names.h",
     "prefs.cc",
     "prefs.h",
@@ -35,6 +38,8 @@ static_library("browser") {
   deps = [
     "//base",
     "//brave/components/containers/core/common",
+    "//brave/components/resources:strings",
+    "//brave/ui/color:nala_color_id",
     "//components/keyed_service/core",
     "//components/pref_registry",
     "//components/prefs",
@@ -43,6 +48,8 @@ static_library("browser") {
     "//services/network/public/cpp",
     "//skia",
     "//third_party/re2",
+    "//ui/base",
+    "//ui/color",
     "//url",
   ]
 }
@@ -52,6 +59,9 @@ source_set("unit_tests") {
   sources = [
     "containers_service_unittest.cc",
     "containers_settings_handler_unittest.cc",
+    "containers_test_utils.cc",
+    "containers_test_utils.h",
+    "default_containers_list_unittest.cc",
     "prefs_unittest.cc",
   ]
 
@@ -64,5 +74,6 @@ source_set("unit_tests") {
     "//mojo/public/cpp/bindings",
     "//testing/gmock",
     "//testing/gtest",
+    "//ui/color",
   ]
 }

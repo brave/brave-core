@@ -31,6 +31,7 @@ class RequestSignedTokensUrlRequestBuilder final
 
   ~RequestSignedTokensUrlRequestBuilder() override;
 
+  // UrlRequestBuilderInterface:
   mojom::UrlRequestInfoPtr Build() override;
 
  private:

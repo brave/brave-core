@@ -1144,6 +1144,47 @@ class Upgrade(Versioned):
             raise InvalidInputException(
                 'Untracked patch files detected. These should be committed as '
                 'their own changes:\n%s' % '\n'.join(status.untracked))
+        if status.has_staged_files():
+            raise InvalidInputException(
+                'Staged files detected after running update_patches. Please make '
+                'sure to commit or unstage any changes, to avoid committing '
+                'changes unintentionally.\n'
+                'Staged files:\n%s' % '\n'.join(status.staged))
+
+        # The resulting updated patches should not be doing anything beyond
+        # what they were doing already, both for "Update patches" and
+        # "Conflict-resolved patches". Therefore, we check all the modified
+        # patches to make sure that the number of hunks in these patch files
+        # have not changed, as any significant change to a patchfile should be
+        # submitted as its own change, with a culprit for visibility.
+        modified_patches = [
+            path for path in status.modified
+            if path.startswith('patches/') and path.endswith('.patch')
+        ]
+        if not modified_patches:
+            return
+
+        def count_hunks(contents: str) -> int:
+            return contents.count('\n@@ -')
+
+        patches_with_hunk_changes = []
+        for patch in modified_patches:
+            hunks_before = count_hunks(repository.brave.read_file(patch))
+            hunks_after = count_hunks(
+                Path(repository.brave.path / patch).read_text())
+            if hunks_before != hunks_after:
+                patches_with_hunk_changes.append(
+                    (patch, hunks_before, hunks_after))
+
+        if patches_with_hunk_changes:
+            list_str = '\n'.join([
+                f'  * {patch}: {b} hunks before, {a} hunks after'
+                for patch, b, a in patches_with_hunk_changes
+            ])
+            raise InvalidInputException(
+                'The following modified patches have changes in the number of hunks, '
+                'and are expected to be submitted separately as fixes with Chromium culprits:\n'
+                f'{list_str}')
 
     def look_for_diffs(self, *files) -> str:
         """Return the diffs for the files provided for this upgrade.

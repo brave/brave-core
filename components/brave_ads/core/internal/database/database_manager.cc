@@ -85,7 +85,7 @@ void DatabaseManager::RunTransaction(
                            weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void DatabaseManager::Shutdown(ShutdownCallback callback) {
+void DatabaseManager::Shutdown(ResultCallback callback) {
   CHECK(callback);
 
   // Wrap `callback` with `DatabaseManager::OnShutdownCallback` to ensure it's
@@ -139,7 +139,7 @@ void DatabaseManager::OnRunTransactionCallback(
   std::move(callback).Run(std::move(mojom_db_transaction_result));
 }
 
-void DatabaseManager::OnShutdownCallback(ShutdownCallback callback,
+void DatabaseManager::OnShutdownCallback(ResultCallback callback,
                                          bool success) {
   CHECK(callback);
   std::move(callback).Run(success);

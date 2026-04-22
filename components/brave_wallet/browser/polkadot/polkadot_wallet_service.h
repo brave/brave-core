@@ -8,13 +8,19 @@
 
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_chain_metadata.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_chain_metadata_prefs.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_extrinsic.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_metadata_provider.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_signed_transfer_task.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
+
+class PrefService;
 
 namespace brave_wallet {
 
@@ -23,7 +29,7 @@ class NetworkManager;
 
 // The main Polkadot-based interface that the front-end interacts with.
 class PolkadotWalletService : public mojom::PolkadotWalletService,
-                              public KeyringServiceObserverBase {
+                              KeyringServiceObserverBase {
  public:
   using TransferAll = PolkadotSignedTransferTask::TransferAll;
 
@@ -40,6 +46,7 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
   PolkadotWalletService(
       KeyringService& keyring_service,
       NetworkManager& network_manager,
+      ::PrefService& profile_prefs,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
   ~PolkadotWalletService() override;
@@ -107,19 +114,6 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
   // KeyringServiceObserverBase:
   void Unlocked() override;
 
-  // Initialize the metadata structures associated with each specified chain
-  // (both mainnet and testnet). This involves RPC calls to the configured
-  // remotes, fetching their identifying data and then parsing it and building
-  // the chain metadata which encompasses pallet indices and call indices.
-  void InitializeChainMetadata();
-
-  // Called by InitializeChainMetadata and is responsible for parsing the
-  // network response and updating the nested metadata data members of the
-  // PolkadotWalletService.
-  void OnInitializeChainMetadata(std::string_view chain_id,
-                                 const std::optional<std::string>&,
-                                 const std::optional<std::string>&);
-
   void GenerateSignedTransferExtrinsicImpl(
       std::string chain_id,
       mojom::AccountIdPtr account_id,
@@ -127,7 +121,6 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
       std::variant<uint128_t, TransferAll> transfer_amount,
       base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
       GenerateSignedTransferExtrinsicCallback callback);
-
   void OnGenerateSignedTransferExtrinsic(
       PolkadotSignedTransferTask* transaction_state,
       GenerateSignedTransferExtrinsicCallback callback,
@@ -156,20 +149,13 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
   const raw_ref<NetworkManager> network_manager_;
   mojo::ReceiverSet<mojom::PolkadotWalletService> receivers_;
 
-  std::optional<base::expected<PolkadotChainMetadata, std::string>>
-      testnet_chain_metadata_;
-  std::optional<base::expected<PolkadotChainMetadata, std::string>>
-      mainnet_chain_metadata_;
-
-  std::vector<GetChainMetadataCallback> mainnet_chain_metadata_callbacks_;
-  std::vector<GetChainMetadataCallback> testnet_chain_metadata_callbacks_;
-
   PolkadotSubstrateRpc polkadot_substrate_rpc_;
+  PolkadotChainMetadataPrefs chain_metadata_prefs_;
+  PolkadotMetadataProvider metadata_provider_;
+  mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
+      keyring_observer_receiver_{this};
   absl::flat_hash_set<std::unique_ptr<PolkadotSignedTransferTask>>
       polkadot_sign_transactions_;
-
-  mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
-      keyring_service_observer_receiver_{this};
 
   base::WeakPtrFactory<PolkadotWalletService> weak_ptr_factory_{this};
 };

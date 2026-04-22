@@ -95,7 +95,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerViewedEvent) {
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
         // Act & Assert
-        base::MockCallback<TriggerAdEventCallback> callback;
+        base::MockCallback<ResultCallback> callback;
         base::RunLoop ad_event_run_loop(
             base::RunLoop::Type::kNestableTasksAllowed);
         EXPECT_CALL(callback, Run(/*success=*/true))
@@ -132,7 +132,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerClickedEvent) {
         EXPECT_CALL(ads_client_mock_, CloseNotificationAd(ad.placement_id))
             .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
 
-        base::MockCallback<TriggerAdEventCallback> callback;
+        base::MockCallback<ResultCallback> callback;
         base::RunLoop ad_event_run_loop(
             base::RunLoop::Type::kNestableTasksAllowed);
         EXPECT_CALL(callback, Run(/*success=*/true))
@@ -166,7 +166,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerDismissedEvent) {
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
         // Act & Assert
-        base::MockCallback<TriggerAdEventCallback> callback;
+        base::MockCallback<ResultCallback> callback;
         base::RunLoop ad_event_run_loop(
             base::RunLoop::Type::kNestableTasksAllowed);
         EXPECT_CALL(callback, Run(/*success=*/true))
@@ -200,7 +200,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerTimedOutEvent) {
             NotificationAdManager::GetInstance().Exists(ad.placement_id));
 
         // Act & Assert
-        base::MockCallback<TriggerAdEventCallback> callback;
+        base::MockCallback<ResultCallback> callback;
         base::RunLoop ad_event_run_loop(
             base::RunLoop::Type::kNestableTasksAllowed);
         EXPECT_CALL(callback, Run(/*success=*/true))

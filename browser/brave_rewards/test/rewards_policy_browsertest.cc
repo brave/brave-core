@@ -89,22 +89,20 @@ IN_PROC_BROWSER_TEST_P(BraveRewardsPolicyTest, IsBraveRewardsDisabled) {
   }
 }
 
-// Verify that Rewards and Ads services don't get created when Brave Rewards are
-// disabled by policy.
+// Verify that the Rewards service is not created when Brave Rewards are
+// disabled by policy, and that the Ads service is always created for regular
+// profiles regardless of the Rewards policy.
 IN_PROC_BROWSER_TEST_P(BraveRewardsPolicyTest, GetRewardsAndAdsServices) {
   if (IsBraveRewardsDisabledTest()) {
     EXPECT_EQ(brave_rewards::RewardsServiceFactory::GetForProfile(profile()),
               nullptr);
-#if BUILDFLAG(ENABLE_BRAVE_ADS)
-    EXPECT_EQ(brave_ads::AdsServiceFactory::GetForProfile(profile()), nullptr);
-#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   } else {
     EXPECT_NE(brave_rewards::RewardsServiceFactory::GetForProfile(profile()),
               nullptr);
-#if BUILDFLAG(ENABLE_BRAVE_ADS)
-    EXPECT_NE(brave_ads::AdsServiceFactory::GetForProfile(profile()), nullptr);
-#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   }
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  EXPECT_NE(brave_ads::AdsServiceFactory::GetForProfile(profile()), nullptr);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
 // Verify that Rewards menu item isn't enabled in the app menu when Brave

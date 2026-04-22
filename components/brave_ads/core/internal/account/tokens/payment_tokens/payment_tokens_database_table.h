@@ -17,7 +17,8 @@
 namespace brave_ads::database::table {
 
 using GetPaymentTokensCallback =
-    base::OnceCallback<void(bool success, PaymentTokenList payment_tokens)>;
+    base::OnceCallback<void(bool success,
+                            const PaymentTokenList& payment_tokens)>;
 
 // Persists unspent payment tokens that have been earned via ad confirmations
 // and are awaiting redemption. Tokens are loaded from this table on startup to
@@ -35,6 +36,7 @@ class PaymentTokens final : public TableInterface {
 
   void GetAll(GetPaymentTokensCallback callback) const;
 
+  // TableInterface:
   void Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) override;
   void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                int to_version) override;

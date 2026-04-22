@@ -124,6 +124,7 @@ import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerAnimati
 import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerInterface;
 import org.chromium.chrome.browser.brave_stats.BraveStatsBottomSheetDialogFragment;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
+import org.chromium.chrome.browser.browsing_data.BraveShortcutsUtils;
 import org.chromium.chrome.browser.browsing_data.BrowsingDataBridge;
 import org.chromium.chrome.browser.browsing_data.BrowsingDataType;
 import org.chromium.chrome.browser.browsing_data.TimePeriod;
@@ -212,6 +213,7 @@ import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.util.UsageMonitor;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
+import org.chromium.chrome.browser.vpn.BraveVpnPolicy;
 import org.chromium.chrome.browser.vpn.activities.BraveVpnProfileActivity;
 import org.chromium.chrome.browser.vpn.fragments.LinkVpnSubscriptionDialogFragment;
 import org.chromium.chrome.browser.vpn.timer.TimerDialogFragment;
@@ -1001,21 +1003,6 @@ public abstract class BraveActivity extends ChromeActivity
             CommandLine.getInstance().appendSwitch(ChromeSwitches.NO_RESTORE_STATE);
         }
 
-        if (isClearBrowsingDataOnExit()) {
-            List<Integer> dataTypes =
-                    Arrays.asList(
-                            BrowsingDataType.HISTORY,
-                            BrowsingDataType.SITE_DATA,
-                            BrowsingDataType.CACHE);
-
-            int[] dataTypesArray = CollectionUtil.integerCollectionToIntArray(dataTypes);
-
-            // has onBrowsingDataCleared() as an @Override callback from implementing
-            // BrowsingDataBridge.OnClearBrowsingDataListener
-            BrowsingDataBridge.getForProfile(getCurrentProfile())
-                    .clearBrowsingData(this, dataTypesArray, TimePeriod.ALL_TIME);
-        }
-
         setLoadedFeed(false);
         setComesFromNewTab(false);
         setNewsItemsFeedCards(null);
@@ -1366,8 +1353,16 @@ public abstract class BraveActivity extends ChromeActivity
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_VPN_LINK_SUBSCRIPTION_ANDROID_UI)
                 && BraveVpnPrefUtils.isSubscriptionPurchase()
-                && !BraveVpnPrefUtils.isLinkSubscriptionDialogShown()) {
+                && !BraveVpnPrefUtils.isLinkSubscriptionDialogShown()
+                && !BraveVpnPolicy.isDisabledByPolicy(mTabModelProfileSupplier.get())) {
             showLinkVpnSubscriptionDialog();
+        }
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ORIGIN)) {
+            // Refresh the cached Skus credential summary so sync "is Origin active" readers
+            // (promo/engagement gates) see up-to-date status. Local-first; only hits the
+            // backend when credentials are past their expiry window.
+            BraveOriginSubscriptionPrefs.requestCredentialSummary(
+                    mTabModelProfileSupplier.get(), null);
         }
         if (isFirstInstall
                 && (OnboardingPrefManager.getInstance().isDormantUsersEngagementEnabled()
@@ -1392,7 +1387,8 @@ public abstract class BraveActivity extends ChromeActivity
                                 .readBoolean(BravePreferenceKeys.BRAVE_OPENED_YOUTUBE, false)
                         || ChromeSharedPreferences.getInstance()
                                         .readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
-                                >= 7)) {
+                                >= 7)
+                && !BraveOriginSubscriptionPrefs.getIsCredentialSummaryActiveCached()) {
             showAdFreeCalloutDialog();
         }
 
@@ -1453,7 +1449,8 @@ public abstract class BraveActivity extends ChromeActivity
         if (!isFirstInstall
                 && !BravePrefServiceBridge.getInstance().getPlayYTVideoInBrowserEnabled()
                 && ChromeSharedPreferences.getInstance()
-                        .readBoolean(BravePreferenceKeys.OPEN_YT_IN_BRAVE_DIALOG, true)) {
+                        .readBoolean(BravePreferenceKeys.OPEN_YT_IN_BRAVE_DIALOG, true)
+                && !BraveOriginSubscriptionPrefs.getIsCredentialSummaryActiveCached()) {
             openYtInBraveDialog();
             ChromeSharedPreferences.getInstance()
                     .writeBoolean(BravePreferenceKeys.OPEN_YT_IN_BRAVE_DIALOG, false);
@@ -1503,6 +1500,28 @@ public abstract class BraveActivity extends ChromeActivity
         }
 
         ContextUtils.getAppSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+
+        if (isClearBrowsingDataOnExit()) {
+            int[] dataTypesArray =
+                    CollectionUtil.integerCollectionToIntArray(
+                            Arrays.asList(
+                                    BrowsingDataType.HISTORY,
+                                    BrowsingDataType.SITE_DATA,
+                                    BrowsingDataType.CACHE));
+            PostTask.postTask(
+                    TaskTraits.UI_DEFAULT,
+                    () -> {
+                        // Force-initialize ShortcutsBackend before clearing so that
+                        // OnHistoryDeletions reaches an initialized backend and correctly
+                        // removes omnibox shortcut suggestions.
+                        BraveShortcutsUtils.initThenRun(
+                                getCurrentProfile(),
+                                () ->
+                                        BrowsingDataBridge.getForProfile(getCurrentProfile())
+                                                .clearBrowsingData(
+                                                        this, dataTypesArray, TimePeriod.ALL_TIME));
+                    });
+        }
     }
 
     private void applyChangesForYahooJp() {
@@ -2270,6 +2289,9 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     public void showDormantUsersEngagementDialog(String notificationType) {
+        if (BraveOriginSubscriptionPrefs.getIsCredentialSummaryActiveCached()) {
+            return;
+        }
         if (!BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(BraveActivity.this)) {
             DormantUsersEngagementDialogFragment dormantUsersEngagementDialogFragment =
                     new DormantUsersEngagementDialogFragment();

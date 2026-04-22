@@ -302,7 +302,12 @@ public class BraveStoreSDK: AppStoreSDK {
   public func restorePurchase(_ product: BraveStoreProduct) async -> Bool {
     if await currentTransaction(for: product) != nil {
       try? await AppStoreReceipt.sync()
-      return true
+      do {
+        try await self.updateSkusPurchaseState(for: product)
+        return true
+      } catch {
+        return false
+      }
     }
 
     return false
@@ -538,8 +543,6 @@ public class BraveStoreSDK: AppStoreSDK {
   /// - Throws: An exception if updating the purchase information fails
   @MainActor
   private func updateSkusPurchaseState(for product: BraveStoreProduct) async throws {
-    // This SDK currently only supports Leo
-    // until we update the VPN code to use it
     switch product.group {
     case .vpn:
       return

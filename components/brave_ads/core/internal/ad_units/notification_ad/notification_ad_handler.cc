@@ -29,7 +29,7 @@ namespace brave_ads {
 
 namespace {
 
-void FireEventCallback(TriggerAdEventCallback callback,
+void FireEventCallback(ResultCallback callback,
                        bool success,
                        const std::string& /*placement_id*/,
                        mojom::NotificationAdEventType /*mojom_ad_event_type*/) {
@@ -76,7 +76,7 @@ void NotificationAdHandler::MaybeServeAtRegularIntervals() {
 void NotificationAdHandler::TriggerEvent(
     const std::string& placement_id,
     mojom::NotificationAdEventType mojom_ad_event_type,
-    TriggerAdEventCallback callback) {
+    ResultCallback callback) {
   CHECK_NE(mojom::NotificationAdEventType::kServedImpression,
            mojom_ad_event_type)
       << "Should not be called with kServedImpression as this event is handled "
@@ -102,7 +102,7 @@ void NotificationAdHandler::TriggerEvent(
 ///////////////////////////////////////////////////////////////////////////////
 
 void NotificationAdHandler::FireServedEventCallback(
-    TriggerAdEventCallback callback,
+    ResultCallback callback,
     bool success,
     const std::string& placement_id,
     mojom::NotificationAdEventType /*mojom_ad_event_type*/) {
