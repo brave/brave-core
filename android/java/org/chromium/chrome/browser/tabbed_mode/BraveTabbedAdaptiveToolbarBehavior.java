@@ -14,6 +14,7 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsVisibilityManager;
 import org.chromium.chrome.browser.glic.GlicToolbarButtonController;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.tab_group_suggestion.toolbar.GroupSuggestionsButtonController;
@@ -58,7 +59,8 @@ public class BraveTabbedAdaptiveToolbarBehavior extends TabbedAdaptiveToolbarBeh
             Supplier<ModalDialogManager> modalDialogManagerSupplier,
             MonotonicObservableSupplier<@StripVisibilityState Integer> tabStripVisibilitySupplier,
             GlicToolbarButtonController.GlicButtonDelegate toggleGlicCallback,
-            Supplier<ChromeAndroidTask> chromeAndroidTaskSupplier) {
+            Supplier<ChromeAndroidTask> chromeAndroidTaskSupplier,
+            BrowserControlsVisibilityManager browserControlsVisibilityManager) {
         super(
                 context,
                 activityLifecycleDispatcher,
@@ -72,7 +74,8 @@ public class BraveTabbedAdaptiveToolbarBehavior extends TabbedAdaptiveToolbarBeh
                 modalDialogManagerSupplier,
                 tabStripVisibilitySupplier,
                 toggleGlicCallback,
-                chromeAndroidTaskSupplier);
+                chromeAndroidTaskSupplier,
+                browserControlsVisibilityManager);
         mContext = context;
     }
 
