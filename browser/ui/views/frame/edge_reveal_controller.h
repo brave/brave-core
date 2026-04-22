@@ -11,11 +11,13 @@
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/observer_list.h"
 #include "base/timer/timer.h"
 #include "ui/events/event_observer.h"
 #include "ui/gfx/animation/animation_delegate.h"
 #include "ui/gfx/animation/slide_animation.h"
+#include "ui/gfx/geometry/point.h"
 #include "ui/views/focus/focus_manager.h"
 #include "ui/views/widget/widget_observer.h"
 
@@ -42,16 +44,19 @@ class EdgeRevealController : public ui::EventObserver,
   enum class Edge { kTop, kLeft, kBottom, kRight };
 
   struct RevealableOptions {
+    // When true, the revealable view will be given a compositor layer when the
+    // controller is enabled.
     bool paint_to_layer = false;
   };
 
   class Observer : public base::CheckedObserver {
    public:
-    // |fraction| ranges from 0 (fully hidden) to 1 (fully shown).
+    // Called when the reveal fraction for the edge has changed. |fraction| is
+    // between 0 and 1.
     virtual void OnEdgeRevealFractionChanged(double fraction) = 0;
   };
 
-  EdgeRevealController(Edge edge, views::Widget* widget);
+  EdgeRevealController(Edge edge, views::Widget& widget);
   EdgeRevealController(const EdgeRevealController&) = delete;
   EdgeRevealController& operator=(const EdgeRevealController&) = delete;
   ~EdgeRevealController() override;
@@ -66,9 +71,12 @@ class EdgeRevealController : public ui::EventObserver,
   void SetEnabled(bool enabled);
   bool IsEnabled() const { return enabled_; }
 
-  // 0 = fully hidden, 1 = fully shown.
+  // Returns a value between 0 and 1 indicating the fraction of the edge that
+  // should be revealed.
   double GetRevealFraction() const;
 
+  // Returns a value indicating whether edge views should be partially or
+  // completely visible.
   bool IsRevealed() const;
 
   // Forces a reveal for |duration|, then resumes normal state-driven reveal.
@@ -77,19 +85,18 @@ class EdgeRevealController : public ui::EventObserver,
   void RevealTemporarily(base::TimeDelta duration);
 
  private:
-  class RevealableState;
-  using RevealableViewMap =
-      base::flat_map<raw_ptr<views::View>, std::unique_ptr<RevealableState>>;
-
   bool ShouldReveal() const;
   bool HasFocusInRevealableViews() const;
+  bool IsPointInRevealableViews(gfx::Point point) const;
   bool ContainsView(const views::View* view) const;
 
   void UpdateRevealState();
   void ScanForAnchoredBubbles();
 
   void SetHoveringWithDelay(bool hovering);
-  void CommitHovering(bool hovering);
+  void OnHoverTimerElapsed(bool hovering);
+
+  void OnTemporaryRevealTimerElapsed();
 
   // ui::EventObserver:
   void OnEvent(const ui::Event& event) override;
@@ -105,12 +112,16 @@ class EdgeRevealController : public ui::EventObserver,
   void AnimationProgressed(const gfx::Animation* animation) override;
   void AnimationEnded(const gfx::Animation* animation) override;
 
+  class RevealableState;
+  using RevealableViewMap =
+      base::flat_map<raw_ptr<views::View>, std::unique_ptr<RevealableState>>;
+
   const Edge edge_;
   bool enabled_ = false;
   bool hovering_ = false;
   bool temporary_reveal_ = false;
 
-  raw_ptr<views::Widget> widget_;
+  raw_ref<views::Widget> widget_;
   base::ObserverList<Observer> observers_;
   gfx::SlideAnimation animation_{this};
   std::unique_ptr<views::EventMonitor> event_monitor_;

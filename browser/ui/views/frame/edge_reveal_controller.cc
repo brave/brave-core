@@ -72,7 +72,7 @@ class EdgeRevealController::RevealableState {
   bool has_layer_ = false;
 };
 
-EdgeRevealController::EdgeRevealController(Edge edge, views::Widget* widget)
+EdgeRevealController::EdgeRevealController(Edge edge, views::Widget& widget)
     : edge_(edge), widget_(widget) {
   animation_.SetSlideDuration(kRevealAnimationDuration);
   animation_.Reset(1.0);
@@ -160,24 +160,21 @@ bool EdgeRevealController::IsRevealed() const {
   return !enabled_ || GetRevealFraction() > 0.0;
 }
 
-bool EdgeRevealController::ShouldReveal() const {
-  return hovering_ || temporary_reveal_ || HasFocusInRevealableViews() ||
-         !observed_bubble_widgets_.empty();
-}
-
 void EdgeRevealController::RevealTemporarily(base::TimeDelta duration) {
   if (!enabled_) {
     return;
   }
   temporary_reveal_ = true;
   UpdateRevealState();
-  temporary_reveal_timer_.Start(FROM_HERE, duration,
-                                base::BindOnce(
-                                    [](EdgeRevealController* self) {
-                                      self->temporary_reveal_ = false;
-                                      self->UpdateRevealState();
-                                    },
-                                    base::Unretained(this)));
+  temporary_reveal_timer_.Start(
+      FROM_HERE, duration,
+      base::BindOnce(&EdgeRevealController::OnTemporaryRevealTimerElapsed,
+                     base::Unretained(this)));
+}
+
+bool EdgeRevealController::ShouldReveal() const {
+  return hovering_ || temporary_reveal_ || HasFocusInRevealableViews() ||
+         !observed_bubble_widgets_.empty();
 }
 
 bool EdgeRevealController::HasFocusInRevealableViews() const {
@@ -189,16 +186,39 @@ bool EdgeRevealController::HasFocusInRevealableViews() const {
   return false;
 }
 
+bool EdgeRevealController::IsPointInRevealableViews(gfx::Point point) const {
+  if (!IsRevealed()) {
+    return false;
+  }
+  for (auto& [view, state] : revealable_views_) {
+    if (view->GetBoundsInScreen().Contains(point)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 bool EdgeRevealController::ContainsView(const views::View* view) const {
   return std::any_of(
       revealable_views_.begin(), revealable_views_.end(),
       [view](const auto& entry) { return entry.first->Contains(view); });
 }
 
+void EdgeRevealController::UpdateRevealState() {
+  if (!enabled_) {
+    return;
+  }
+  if (ShouldReveal()) {
+    animation_.Show();
+  } else {
+    animation_.Hide();
+  }
+}
+
 void EdgeRevealController::ScanForAnchoredBubbles() {
   for (auto& child_widget :
        views::Widget::GetAllChildWidgets(widget_->GetNativeView())) {
-    if (child_widget == widget_ || !child_widget->IsVisible()) {
+    if (child_widget.get() == &widget_.get() || !child_widget->IsVisible()) {
       continue;
     }
     if (observed_bubble_widgets_.contains(child_widget)) {
@@ -213,19 +233,33 @@ void EdgeRevealController::ScanForAnchoredBubbles() {
   }
 }
 
-void EdgeRevealController::UpdateRevealState() {
-  if (!enabled_) {
+void EdgeRevealController::SetHoveringWithDelay(bool hovering) {
+  if (hovering == hovering_) {
+    mouse_hover_timer_.Stop();
     return;
   }
-
-  if (ShouldReveal()) {
-    animation_.Show();
-  } else {
-    animation_.Hide();
+  if (mouse_hover_timer_.IsRunning()) {
+    return;
   }
+  mouse_hover_timer_.Start(
+      FROM_HERE, hovering ? kMouseEnterDelay : kMouseExitDelay,
+      base::BindOnce(&EdgeRevealController::OnHoverTimerElapsed,
+                     base::Unretained(this), hovering));
 }
 
-// ui::EventObserver
+void EdgeRevealController::OnHoverTimerElapsed(bool hovering) {
+  hovering_ = hovering;
+  if (!hovering_) {
+    ScanForAnchoredBubbles();
+  }
+  UpdateRevealState();
+}
+
+void EdgeRevealController::OnTemporaryRevealTimerElapsed() {
+  temporary_reveal_ = false;
+  UpdateRevealState();
+}
+
 void EdgeRevealController::OnEvent(const ui::Event& event) {
   if (!enabled_) {
     return;
@@ -243,56 +277,25 @@ void EdgeRevealController::OnEvent(const ui::Event& event) {
   const gfx::Point cursor = display::Screen::Get()->GetCursorScreenPoint();
   const gfx::Rect hot_zone =
       GetHotZoneForEdge(edge_, widget_->GetWindowBoundsInScreen());
-
-  bool hovering = hot_zone.Contains(cursor);
-
-  // Also treat the area occupied by revealed views as part of the zone.
-  if (!hovering && IsRevealed()) {
-    for (auto& [view, state] : revealable_views_) {
-      gfx::Rect bounds = view->GetBoundsInScreen();
-      if (bounds.Contains(cursor)) {
-        hovering = true;
-        break;
-      }
-    }
-  }
+  bool hovering = hot_zone.Contains(cursor) || IsPointInRevealableViews(cursor);
 
   SetHoveringWithDelay(hovering);
 }
 
-void EdgeRevealController::SetHoveringWithDelay(bool hovering) {
-  if (hovering == hovering_) {
-    mouse_hover_timer_.Stop();
-    return;
-  }
-  if (mouse_hover_timer_.IsRunning()) {
-    return;
-  }
-  mouse_hover_timer_.Start(FROM_HERE,
-                           hovering ? kMouseEnterDelay : kMouseExitDelay,
-                           base::BindOnce(&EdgeRevealController::CommitHovering,
-                                          base::Unretained(this), hovering));
-}
-
-void EdgeRevealController::CommitHovering(bool hovering) {
-  hovering_ = hovering;
-  UpdateRevealState();
-}
-
-// views::FocusChangeListener
 void EdgeRevealController::OnDidChangeFocus(views::View* before,
                                             views::View* after) {
-  ScanForAnchoredBubbles();
-  UpdateRevealState();
+  if (ContainsView(before) != ContainsView(after)) {
+    ScanForAnchoredBubbles();
+    UpdateRevealState();
+  }
 }
 
-// views::WidgetObserver — tracks bubble lifecycle.
 void EdgeRevealController::OnWidgetVisibilityChanged(views::Widget* widget,
                                                      bool visible) {
-  UpdateRevealState();
   if (!visible) {
     widget->RemoveObserver(this);
     observed_bubble_widgets_.erase(widget);
+    UpdateRevealState();
   }
 }
 
@@ -302,7 +305,6 @@ void EdgeRevealController::OnWidgetDestroying(views::Widget* widget) {
   UpdateRevealState();
 }
 
-// gfx::AnimationDelegate
 void EdgeRevealController::AnimationProgressed(
     const gfx::Animation* animation) {
   observers_.Notify(&Observer::OnEdgeRevealFractionChanged,

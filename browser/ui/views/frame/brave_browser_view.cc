@@ -765,7 +765,7 @@ void BraveBrowserView::AddedToWidget() {
 
   UpdateWebViewRoundedCorners();
 
-  int vertical_tabs_insertion_index = -1;
+  std::optional<int> vertical_tabs_insertion_index;
 
   if (auto* controller = browser()->GetFeatures().focus_mode_controller()) {
     focus_mode_observation_.Observe(controller);
@@ -795,13 +795,15 @@ void BraveBrowserView::AddedToWidget() {
 
     // The vertical tab region view should be placed before the top container
     // background.
-    vertical_tabs_insertion_index =
-        GetIndexOf(top_container_background_view_).value();
+    vertical_tabs_insertion_index = GetIndexOf(top_container_background_view_);
 
     top_reveal_controller_ = std::make_unique<EdgeRevealController>(
-        EdgeRevealController::Edge::kTop, GetWidget());
+        EdgeRevealController::Edge::kTop, *GetWidget());
     top_reveal_controller_->AddRevealableView(top_container(),
                                               {.paint_to_layer = true});
+    // TODO: Vertical tabs moves this view into the vertical tab region view.
+    // When that occurs, it should no longer be registered as a revealable top
+    // view.
     top_reveal_controller_->AddRevealableView(horizontal_tab_strip_region_view_,
                                               {.paint_to_layer = true});
     top_reveal_controller_->AddObserver(this);
@@ -814,7 +816,7 @@ void BraveBrowserView::AddedToWidget() {
       vertical_tab_strip_widget_delegate_view_ = AddChildViewAt(
           VerticalTabStripWidgetDelegateView::CreateEmbeddedInBrowserView(
               this, vertical_tab_strip_host_view_),
-          vertical_tabs_insertion_index);
+          vertical_tabs_insertion_index.value_or(children().size()));
       EnsureFindBarHostViewIsLastChild();
     } else {
       vertical_tab_strip_widget_ = VerticalTabStripWidgetDelegateView::Create(
