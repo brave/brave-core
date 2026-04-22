@@ -1815,7 +1815,6 @@ public class BytecodeTest {
                         BraveLocationBarMediator.getOmniboxUmaClass(),
                         BookmarkState.class,
                         BooleanSupplier.class,
-                        Supplier.class,
                         OmniboxActionDelegateImpl.class,
                         BrowserStateBrowserControlsVisibilityDelegate.class,
                         BackPressManager.class,
