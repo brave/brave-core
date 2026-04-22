@@ -16,6 +16,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
+#include "brave/components/brave_shields/core/browser/ad_block_resource_provider.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -192,7 +193,8 @@ void AdBlockCustomResourceProvider::LoadResources(
 
 void AdBlockCustomResourceProvider::OverrideResourcesForTesting(
     AdblockResourceStorageBox storage) {
-  cached_storage_ = adblock::new_empty_resource_storage();
+  cached_storage_ = AdblockResourceStorageBox(std::move(storage));
+  ;
 }
 
 void AdBlockCustomResourceProvider::OnResourcesLoaded(
