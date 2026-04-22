@@ -36,10 +36,6 @@ constexpr char kAdBlockEngine1DATCache[] = "engine1.dat";
 
 std::pair<std::optional<DATFileDataBuffer>, std::optional<DATFileDataBuffer>>
 ReadCachedDATFilesFromDisk(base::FilePath cache_dir) {
-  if (!base::CreateDirectory(cache_dir)) {
-    return std::make_pair(std::nullopt, std::nullopt);
-  }
-
   base::FilePath default_engine_dat_file =
       cache_dir.AppendASCII(kAdBlockEngine0DATCache);
   base::FilePath additional_engine_dat_file =
