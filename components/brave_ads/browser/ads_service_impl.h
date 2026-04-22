@@ -115,11 +115,10 @@ class AdsServiceImpl : public AdsService,
 
  private:
   friend class BraveAdsAdsServiceImplTest;
-  bool IsBatAdsServiceBound() const;
 
   void RegisterResourceComponents();
-  void RegisterResourceComponentsForCurrentCountryCode();
-  void RegisterResourceComponentsForDefaultLanguageCode();
+  void RegisterCountryResourceComponent();
+  void RegisterLanguageResourceComponent();
 
   void Migrate();
 
@@ -128,13 +127,9 @@ class AdsServiceImpl : public AdsService,
   bool UserHasOptedInToNotificationAds() const;
   bool UserHasOptedInToSearchResultAds() const;
 
-  void InitializeNotificationsForCurrentProfile();
-
-  void GetDeviceIdAndMaybeStartBatAdsService();
-  void GetDeviceIdAndMaybeStartBatAdsServiceCallback(std::string device_id);
-
   bool CanStartBatAdsService() const;
   void MaybeStartBatAdsService();
+  void GetDeviceIdAndMaybeStartBatAdsServiceCallback(std::string device_id);
   void StartBatAdsService();
   void DisconnectHandler();
   void BatAdsServiceCreatedCallback();
@@ -408,6 +403,8 @@ class AdsServiceImpl : public AdsService,
 
   mojom::SysInfo sys_info_;
 
+  std::optional<std::string> cached_device_id_;
+
   base::RepeatingTimer idle_state_timer_;
   ui::IdleState last_idle_state_ = ui::IdleState::IDLE_STATE_ACTIVE;
   base::TimeDelta last_idle_time_;
@@ -429,6 +426,7 @@ class AdsServiceImpl : public AdsService,
 
   const std::string channel_name_;
 
+  const raw_ptr<ResourceComponent> resource_component_;  // Not owned.
   base::ScopedObservation<ResourceComponent, ResourceComponentObserver>
       resource_component_observation_{this};
 
@@ -450,6 +448,7 @@ class AdsServiceImpl : public AdsService,
   const base::FilePath ads_service_path_;
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  const raw_ptr<brave_rewards::RewardsService> rewards_service_;  // Not owned.
   base::ScopedObservation<brave_rewards::RewardsService,
                           brave_rewards::RewardsServiceObserver>
       rewards_service_observation_{this};

@@ -64,12 +64,12 @@ void ResourceComponent::RemoveObserver(ResourceComponentObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void ResourceComponent::RegisterComponentForCountryCode(
+void ResourceComponent::RegisterCountryComponent(
     const std::string& country_code) {
   country_resource_component_registrar_.RegisterResourceComponent(country_code);
 }
 
-void ResourceComponent::RegisterComponentForLanguageCode(
+void ResourceComponent::RegisterLanguageComponent(
     const std::string& language_code) {
   language_resource_component_registrar_.RegisterResourceComponent(
       language_code);
