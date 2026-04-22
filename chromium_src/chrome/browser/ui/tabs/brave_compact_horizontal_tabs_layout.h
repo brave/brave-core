@@ -25,8 +25,9 @@ inline constexpr int kTabVisualHeight = 26;
 inline constexpr int kTabVerticalSpacing = 2;
 inline constexpr int kTabstripToolbarOverlap = 8;
 
-// `LayoutConstant::kTabStripHeight` (compact, non-touch). Keep in sync when
-// editing the three values above (no separate magic number).
+// `LayoutConstant::kTabStripHeight` (compact, non-touch). Keep in sync with
+// kTabVisualHeight, kTabVerticalSpacing, and kTabstripToolbarOverlap (no
+// separate magic number).
 inline constexpr int kTabStripLayoutHeightTarget =
     kTabVisualHeight + 2 * kTabVerticalSpacing + kTabstripToolbarOverlap;
 
