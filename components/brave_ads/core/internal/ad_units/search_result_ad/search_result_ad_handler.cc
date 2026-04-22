@@ -20,6 +20,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
+#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 
 namespace brave_ads {
 
@@ -59,15 +60,21 @@ void SearchResultAdHandler::TriggerDeferredAdViewedEventForTesting() {
 
   g_defer_triggering_of_ad_viewed_event_for_testing = false;
 
-  if (g_search_result_ad_handler_for_testing) {
-    g_search_result_ad_handler_for_testing
-        ->is_processing_viewed_ad_event_queue_ = false;
-
-    g_search_result_ad_handler_for_testing->MaybeTriggerDeferredAdViewedEvent(
-        /*intentional*/ base::DoNothing());
-
+  absl::Cleanup cleanup = [] {
+    // `g_search_result_ad_handler_for_testing` was set in
+    // `FireAdViewedEventCallback` to defer the ad viewed event. Reset it when
+    // this scope exits now that the deferred event has been triggered.
     g_search_result_ad_handler_for_testing = nullptr;
+  };
+
+  if (!g_search_result_ad_handler_for_testing) {
+    return;
   }
+
+  g_search_result_ad_handler_for_testing->is_processing_viewed_ad_event_queue_ =
+      false;
+  g_search_result_ad_handler_for_testing->MaybeTriggerDeferredAdViewedEvent(
+      /*intentional*/ base::DoNothing());
 }
 
 void SearchResultAdHandler::TriggerEvent(
