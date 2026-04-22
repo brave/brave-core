@@ -76,10 +76,18 @@ void ResourceComponent::RegisterCountryComponent(
   country_resource_component_registrar_.RegisterResourceComponent(country_code);
 }
 
+void ResourceComponent::UnregisterCountryComponent() {
+  country_resource_component_registrar_.UnregisterResourceComponent();
+}
+
 void ResourceComponent::RegisterLanguageComponent(
     const std::string& language_code) {
   language_resource_component_registrar_.RegisterResourceComponent(
       language_code);
+}
+
+void ResourceComponent::UnregisterLanguageComponent() {
+  language_resource_component_registrar_.UnregisterResourceComponent();
 }
 
 std::optional<base::FilePath> ResourceComponent::MaybeGetPath(
@@ -127,8 +135,6 @@ void ResourceComponent::OnResourceComponentUnregistered(
 void ResourceComponent::LoadManifestCallback(const std::string& component_id,
                                              const base::FilePath& install_dir,
                                              const std::string& json) {
-  VLOG(8) << "Manifest JSON: " << json;
-
   std::optional<base::DictValue> dict =
       base::JSONReader::ReadDict(json, base::JSON_PARSE_RFC);
   if (!dict) {
@@ -155,8 +161,6 @@ void ResourceComponent::LoadResourceCallback(
     const std::string& component_id,
     const base::FilePath& install_dir,
     const std::string& json) {
-  VLOG(8) << "Resource JSON: " << json;
-
   std::optional<base::DictValue> root =
       base::JSONReader::ReadDict(json, base::JSON_PARSE_RFC);
   if (!root) {

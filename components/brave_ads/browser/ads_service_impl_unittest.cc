@@ -22,6 +22,7 @@
 #include "brave/components/brave_ads/browser/test/fake_bat_ads_service_factory.h"
 #include "brave/components/brave_ads/browser/test/fake_device_id.h"
 #include "brave/components/brave_ads/browser/test/fake_virtual_pref_provider_delegate.h"
+#include "brave/components/brave_ads/browser/test/mock_resource_component.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #include "brave/components/brave_policy/policy_initialization_waiter.h"
@@ -92,7 +93,7 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
         std::make_unique<test::FakeVirtualPrefProviderDelegate>(),
         /*channel_name=*/"foo", profile_dir_.GetPath(),
         std::make_unique<test::FakeAdsTooltipsDelegate>(), std::move(device_id),
-        std::move(bat_ads_service_factory), /*resource_component=*/nullptr,
+        std::move(bat_ads_service_factory), &mock_resource_component_,
         /*history_service=*/nullptr,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
         &rewards_service_,
@@ -138,6 +139,8 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   test::FakeRewardsService rewards_service_;
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
+
+  testing::NiceMock<test::MockResourceComponent> mock_resource_component_;
 
   std::unique_ptr<AdsServiceImpl> ads_service_;
 };
@@ -635,5 +638,60 @@ TEST_F(BraveAdsAdsServiceImplTest,
   // Assert
   EXPECT_THAT(prefs_.GetList(prefs::kNotificationAds), testing::IsEmpty());
 }
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+TEST_F(BraveAdsAdsServiceImplTest,
+       RegistersLanguageResourceComponentWhenUserOptsInToNotificationAds) {
+  // Arrange: start the service via search result ads and wait for
+  // initialization so `bat_ads_service_remote_` is bound.
+  prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, true);
+  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
+  prefs_.SetBoolean(prefs::kOptedInToNotificationAds, false);
+  Startup();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->initialize_count() == 1U; }));
+
+  EXPECT_CALL(mock_resource_component_, RegisterLanguageComponent);
+
+  // Act
+  prefs_.SetBoolean(prefs::kOptedInToNotificationAds, true);
+}
+
+TEST_F(BraveAdsAdsServiceImplTest,
+       UnregistersLanguageResourceComponentWhenUserOptsOutOfNotificationAds) {
+  // Arrange: start with notification ads opted in so the language component
+  // is already registered; service must be running before opting out.
+  prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, true);
+  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
+  prefs_.SetBoolean(prefs::kOptedInToNotificationAds, true);
+  Startup();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->initialize_count() == 1U; }));
+
+  EXPECT_CALL(mock_resource_component_, UnregisterLanguageComponent());
+
+  // Act
+  prefs_.SetBoolean(prefs::kOptedInToNotificationAds, false);
+}
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
+
+#if !BUILDFLAG(IS_ANDROID)
+TEST_F(BraveAdsAdsServiceImplTest,
+       UnregistersResourceComponentsWhenServiceBecomesIneligible) {
+  // Arrange: start the service so resource components are registered; then
+  // disable ads via policy to trigger unregistration.
+  prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, true);
+  Startup();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->initialize_count() == 1U; }));
+
+  EXPECT_CALL(mock_resource_component_, UnregisterCountryComponent());
+  EXPECT_CALL(mock_resource_component_, UnregisterLanguageComponent());
+
+  // Act
+  prefs_.SetManagedPref(brave_rewards::prefs::kDisabledByPolicy,
+                        base::Value(true));
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 }  // namespace brave_ads

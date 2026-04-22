@@ -32,6 +32,7 @@ class ResourceComponentRegistrar final
   ~ResourceComponentRegistrar() override;
 
   void RegisterResourceComponent(const std::string& resource_id);
+  void UnregisterResourceComponent();
 
  private:
   // brave_component_updater::BraveComponent:

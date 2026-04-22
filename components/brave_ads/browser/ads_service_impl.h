@@ -97,11 +97,11 @@ class AdsServiceImpl : public AdsService,
 #endif
                        public content_settings::Observer {
  public:
-  // `http_client`, `resource_component`, `history_service`, and
-  // `host_content_settings` can be `nullptr` in tests. `rewards_service`
-  // can be `nullptr` when Rewards is unsupported or disabled by policy.
-  // `policy_initialization_waiter` defers the initial ads-eligibility gate
-  // until the policy bundle has been merged into the managed pref store.
+  // `http_client`, `history_service`, and `host_content_settings` can be
+  // `nullptr` in tests. `rewards_service` can be `nullptr` when Rewards is
+  // unsupported or disabled by policy. `policy_initialization_waiter` defers
+  // the initial ads-eligibility gate until the policy bundle has been merged
+  // into the managed pref store.
   explicit AdsServiceImpl(
       std::unique_ptr<Delegate> delegate,
       PrefService& prefs,
@@ -138,11 +138,13 @@ class AdsServiceImpl : public AdsService,
  private:
   friend class BraveAdsAdsServiceImplTest;
 
+  void Migrate();
+
   void RegisterResourceComponents();
   void RegisterCountryResourceComponent();
+  void UnregisterCountryResourceComponent();
   void RegisterLanguageResourceComponent();
-
-  void Migrate();
+  void UnregisterLanguageResourceComponent();
 
   bool UserHasJoinedBraveRewards() const;
   bool UserHasOptedInToNewTabPageAds() const;

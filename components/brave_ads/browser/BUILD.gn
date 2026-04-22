@@ -113,6 +113,7 @@ source_set("test_support") {
     "//brave/components/services/bat_ads/public/interfaces",
     "//components/prefs",
     "//mojo/public/cpp/bindings",
+    "//testing/gmock",
     "//ui/base/idle",
     "//url",
   ]
@@ -137,6 +138,10 @@ source_set("unit_tests") {
     "ads_service_impl_unittest.cc",
     "application_state/application_state_monitor_unittest.cc",
     "component_updater/resource_component_registrar_unittest.cc",
+    "test/fake_component_updater_delegate.cc",
+    "test/fake_component_updater_delegate.h",
+    "test/mock_resource_component.cc",
+    "test/mock_resource_component.h",
   ]
 
   deps = [
