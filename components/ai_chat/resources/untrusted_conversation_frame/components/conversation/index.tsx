@@ -161,10 +161,12 @@ function Conversation(props: ConversationProps) {
       return
     }
     const observer = new ResizeObserver(() => {
-      document.body.style.setProperty(
-        '--suggested-questions-height',
-        `calc(${el.offsetHeight}px + var(--leo-spacing-2xl) * 2)`,
-      )
+      requestAnimationFrame(() => {
+        document.body.style.setProperty(
+          '--suggested-questions-height',
+          `calc(${el.getBoundingClientRect().height}px + var(--leo-spacing-2xl) * 2)`,
+        )
+      })
     })
     observer.observe(el)
     return () => {
@@ -198,90 +200,89 @@ function Conversation(props: ConversationProps) {
 
         <ConversationEntries />
 
-        {showSuggestions && (
-          <div
-            ref={suggestionsRef}
-            className={styles.suggestionsContainer}
-          >
-            <div className={styles.questionsList}>
-              {state.suggestedQuestions.map((question, i) => (
-                <SuggestedQuestion
-                  key={question}
-                  question={question}
-                  index={i}
-                />
-              ))}
-              {SUGGESTION_STATUS_SHOW_BUTTON.has(state.suggestionStatus)
-                && context.associatedContent
-                && context.associatedContent.length > 0 && (
-                  <GenerateSuggestionsButton />
-                )}
+        <div ref={suggestionsRef}>
+          {showSuggestions && (
+            <div className={styles.suggestionsContainer}>
+              <div className={styles.questionsList}>
+                {state.suggestedQuestions.map((question, i) => (
+                  <SuggestedQuestion
+                    key={question}
+                    question={question}
+                    index={i}
+                  />
+                ))}
+                {SUGGESTION_STATUS_SHOW_BUTTON.has(state.suggestionStatus)
+                  && context.associatedContent
+                  && context.associatedContent.length > 0 && (
+                    <GenerateSuggestionsButton />
+                  )}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {currentErrorElement && (
-          <div className={styles.promptContainer}>{currentErrorElement}</div>
-        )}
+          {currentErrorElement && (
+            <div className={styles.promptContainer}>{currentErrorElement}</div>
+          )}
 
-        {shouldShowStorageNotice && (
-          <div className={styles.promptContainer}>
-            <NoticeConversationStorage />
-          </div>
-        )}
+          {shouldShowStorageNotice && (
+            <div className={styles.promptContainer}>
+              <NoticeConversationStorage />
+            </div>
+          )}
 
-        {shouldShowPremiumSuggestionForModel && (
-          <div className={styles.promptContainer}>
-            <PremiumSuggestion
-              title={getLocale(S.CHAT_UI_UNLOCK_PREMIUM_TITLE)}
-              secondaryActionButton={
-                <Button
-                  kind='plain-faint'
-                  onClick={() => {
-                    context.api.conversationHandler.switchToNonPremiumModel()
-                  }}
-                >
-                  {getLocale(S.CHAT_UI_SWITCH_TO_BASIC_MODEL_BUTTON_LABEL)}
-                </Button>
-              }
-            />
-          </div>
-        )}
+          {shouldShowPremiumSuggestionForModel && (
+            <div className={styles.promptContainer}>
+              <PremiumSuggestion
+                title={getLocale(S.CHAT_UI_UNLOCK_PREMIUM_TITLE)}
+                secondaryActionButton={
+                  <Button
+                    kind='plain-faint'
+                    onClick={() => {
+                      context.api.conversationHandler.switchToNonPremiumModel()
+                    }}
+                  >
+                    {getLocale(S.CHAT_UI_SWITCH_TO_BASIC_MODEL_BUTTON_LABEL)}
+                  </Button>
+                }
+              />
+            </div>
+          )}
 
-        {shouldShowPremiumSuggestionStandalone && (
-          <div className={styles.promptContainer}>
-            <PremiumSuggestion
-              title={getLocale(S.CHAT_UI_UNLOCK_PREMIUM_TITLE)}
-              secondaryActionButton={
-                <Button
-                  kind='plain-faint'
-                  onClick={() => {
-                    // Dismiss premium prompts
-                    if (context.showPremiumSuggestionForRegenerate) {
-                      context.setShowPremiumSuggestionForRegenerate(false)
-                    } else {
-                      context.api.service.dismissPremiumPrompt()
-                    }
-                  }}
-                >
-                  {getLocale(S.CHAT_UI_DISMISS_BUTTON_LABEL)}
-                </Button>
-              }
-            />
-          </div>
-        )}
+          {shouldShowPremiumSuggestionStandalone && (
+            <div className={styles.promptContainer}>
+              <PremiumSuggestion
+                title={getLocale(S.CHAT_UI_UNLOCK_PREMIUM_TITLE)}
+                secondaryActionButton={
+                  <Button
+                    kind='plain-faint'
+                    onClick={() => {
+                      // Dismiss premium prompts
+                      if (context.showPremiumSuggestionForRegenerate) {
+                        context.setShowPremiumSuggestionForRegenerate(false)
+                      } else {
+                        context.api.service.dismissPremiumPrompt()
+                      }
+                    }}
+                  >
+                    {getLocale(S.CHAT_UI_DISMISS_BUTTON_LABEL)}
+                  </Button>
+                }
+              />
+            </div>
+          )}
 
-        {isPremiumUserDisconnected && state.isLeoModel && (
-          <div className={styles.promptContainer}>
-            <WarningPremiumDisconnected />
-          </div>
-        )}
+          {isPremiumUserDisconnected && state.isLeoModel && (
+            <div className={styles.promptContainer}>
+              <WarningPremiumDisconnected />
+            </div>
+          )}
 
-        {shouldShowLongConversationInfo && (
-          <div className={styles.promptContainer}>
-            <LongConversationInfo />
-          </div>
-        )}
+          {shouldShowLongConversationInfo && (
+            <div className={styles.promptContainer}>
+              <LongConversationInfo />
+            </div>
+          )}
+        </div>
       </div>
 
       <div className={styles.scrollButtonContainer}>

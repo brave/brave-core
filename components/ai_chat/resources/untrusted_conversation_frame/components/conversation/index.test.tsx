@@ -35,8 +35,11 @@ const withSuggestionsState = {
 describe('Conversation --suggested-questions-height CSS variable', () => {
   let resizeObserverCallbacks: ResizeObserverCallback[]
 
+  let rafCallbacks: FrameRequestCallback[]
+
   beforeEach(() => {
     resizeObserverCallbacks = []
+    rafCallbacks = []
     document.body.style.removeProperty('--suggested-questions-height')
     ;(window as any).ResizeObserver = class MockResizeObserver
       implements ResizeObserver
@@ -49,6 +52,16 @@ describe('Conversation --suggested-questions-height CSS variable', () => {
       unobserve() {}
       disconnect() {}
     }
+    jest
+      .spyOn(window, 'requestAnimationFrame')
+      .mockImplementation((cb: FrameRequestCallback) => {
+        rafCallbacks.push(cb)
+        return 0
+      })
+  })
+
+  afterEach(() => {
+    jest.restoreAllMocks()
   })
 
   async function renderWithSuggestionsAndTriggerResize(
@@ -65,6 +78,9 @@ describe('Conversation --suggested-questions-height CSS variable', () => {
     await act(async () => {
       for (const cb of resizeObserverCallbacks) {
         cb([], {} as ResizeObserver)
+      }
+      for (const cb of rafCallbacks) {
+        cb(0)
       }
     })
   }
