@@ -6,6 +6,16 @@
 import { mangle } from 'lit_mangler'
 
 mangle(fragment => {
+  const image = fragment.querySelector('img')
+  if (!image) {
+    throw new Error('image not found')
+  }
+  image.setAttribute('src', 'chrome://theme/current-channel-logo')
+  image.setAttribute(
+    'srcset',
+    'chrome://theme/current-channel-logo@1x, chrome://theme/current-channel-logo@2x 2x',
+  )
+
   const anchor = fragment.querySelector('a')
   if (!anchor) {
     throw new Error('anchor not found')
