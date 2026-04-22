@@ -290,8 +290,8 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -      <cr-icon icon="cr:chevron-right" slot="suffix-icon"></cr-icon>
 +      <cr-icon icon="window-edit" slot="prefix-icon"></cr-icon>
      </cr-button>
-     \${this.ntpNextFeaturesEnabled_ && this.aimPolicyEnabled_
-       && this.isSourceTabFirstPartyNtp_() ? html\`
+     \${this.ntpNextFeaturesEnabled_ && this.ntpNextDisablementEnabled_
+       && this.aimPolicyEnabled_ && this.isSourceTabFirstPartyNtp_() ? html\`
        <hr class="sp-cards-separator">
 @@ -108,10 +102,9 @@
      <customize-chrome-wallpaper-search @back-click="\${this.onBackClick_}"
