@@ -30,8 +30,23 @@ inline constexpr char kCardanoTestnetRpcUrl[] = "cardano-testnet-rpc-url";
 // Polkadot mainnet rpc endpoint.
 inline constexpr char kPolkadotMainnetRpcUrl[] = "polkadot-mainnet-rpc-url";
 
+// Acala mainnet rpc endpoint.
+inline constexpr char kAcalaMainnetRpcUrl[] = "acala-mainnet-rpc-url";
+
+// Moonbeam mainnet rpc endpoint.
+inline constexpr char kMoonbeamMainnetRpcUrl[] = "moonbeam-mainnet-rpc-url";
+
+// Bifrost mainnet rpc endpoint.
+inline constexpr char kBifrostMainnetRpcUrl[] = "bifrost-mainnet-rpc-url";
+
 // Polkadot testnet rpc endpoint.
 inline constexpr char kPolkadotTestnetRpcUrl[] = "polkadot-testnet-rpc-url";
+
+// Assets Hub testnet rpc endpoint.
+inline constexpr char kAssetsHubTestnetRpcUrl[] = "assets-hub-testnet-rpc-url";
+
+// Collectives testnet rpc endpoint.
+inline constexpr char kCollectivesTestnetRpcUrl[] = "collectives-testnet-rpc-url";
 
 // Cardano mainnet rpc project id.
 inline constexpr char kCardanoMainnetProjectId[] = "cardano-mainnet-project-id";

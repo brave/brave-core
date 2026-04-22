@@ -1857,7 +1857,7 @@ mojom::AccountInfoPtr KeyringService::ImportPolkadotAccountSync(
     const std::string& password,
     const std::string& network) {
   if (account_name.empty() || json_export.empty() || password.empty() ||
-      IsLockedSync() || !IsPolkadotNetwork(network)) {
+      IsLockedSync() || !IsPolkadotRelayNetwork(network)) {
     return nullptr;
   }
   CHECK(encryptor_);

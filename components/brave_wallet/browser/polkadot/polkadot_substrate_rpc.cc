@@ -726,6 +726,7 @@ void PolkadotSubstrateRpc::OnSubmitExtrinsic(SubmitExtrinsicCallback callback,
 void PolkadotSubstrateRpc::GetPaymentInfo(std::string_view chain_id,
                                           base::span<const uint8_t> extrinsic,
                                           GetPaymentInfoCallback callback) {
+  LOG(ERROR) << "XXXZZZ OnGetPaymentInfo chain_id=" << chain_id;
   auto url = GetNetworkURL(chain_id);
 
   base::ListValue params;
@@ -734,6 +735,7 @@ void PolkadotSubstrateRpc::GetPaymentInfo(std::string_view chain_id,
 
   uint32_t size = 0;
   if (!base::CheckedNumeric<uint32_t>(extrinsic.size()).AssignIfValid(&size)) {
+    LOG(ERROR) << "XXXZZZ OnGetPaymentInfo size conversion failed";
     return std::move(callback).Run(
         base::unexpected(WalletInternalErrorMessage()));
   }
@@ -746,6 +748,8 @@ void PolkadotSubstrateRpc::GetPaymentInfo(std::string_view chain_id,
   auto payload =
       base::WriteJson(MakeRpcRequestJson("state_call", std::move(params)));
   CHECK(payload);
+
+  LOG(ERROR) << "XXXZZZ OnGetPaymentInfo url=" << url.spec();
 
   api_request_helper_.Request(
       net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
@@ -760,12 +764,14 @@ void PolkadotSubstrateRpc::OnGetPaymentInfo(GetPaymentInfoCallback callback,
           api_result);
 
   if (!res.has_value()) {
+    LOG(ERROR) << "XXXZZZ OnGetPaymentInfo res.has_value() failed";
     // We received either a network error, an actual RPC error or JSON that
     // didn't match our schema.
     return std::move(callback).Run(base::unexpected(res.error()));
   }
 
   if (!res->result) {
+    LOG(ERROR) << "XXXZZZ OnGetPaymentInfo res->result failed ";
     // We received { "result": null } from the RPC, treat as an error for this
     // RPC call.
     return std::move(callback).Run(
@@ -774,6 +780,7 @@ void PolkadotSubstrateRpc::OnGetPaymentInfo(GetPaymentInfoCallback callback,
 
   std::vector<uint8_t> query_info;
   if (!PrefixedHexStringToBytes(res->result.value(), &query_info)) {
+    LOG(ERROR) << "XXXZZZ OnGetPaymentInfo PrefixedHexStringToBytes failed";
     return std::move(callback).Run(
         base::unexpected(WalletParsingErrorMessage()));
   }
@@ -781,6 +788,7 @@ void PolkadotSubstrateRpc::OnGetPaymentInfo(GetPaymentInfoCallback callback,
   std::array<uint8_t, 16> partial_fee_bytes = {};
   if (!parse_fee_info(::rust::Slice<const uint8_t>(query_info),
                       partial_fee_bytes)) {
+    LOG(ERROR) << "XXXZZZ OnGetPaymentInfo parse_fee_info failed";
     return std::move(callback).Run(
         base::unexpected(WalletParsingErrorMessage()));
   }

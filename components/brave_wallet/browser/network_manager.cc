@@ -83,10 +83,16 @@ constexpr auto kChainSubdomains =
          {mojom::kCardanoMainnet, "cardano-mainnet"},
          {mojom::kCardanoTestnet, "cardano-preprod"},
 
-         // Polkadot chains.
+         // Polkadot mainnet chains.
          {mojom::kPolkadotMainnet, "polkadot-mainnet"},
-         {mojom::kPolkadotTestnet, "polkadot-westend"}},
-        CaseInsensitiveCompare());
+         {mojom::kAcalaMainnet, "acala-mainnet"},
+         {mojom::kMoonbeamMainnet, "moonbeam-mainnet"},
+         {mojom::kBifrostMainnet, "bifrost-mainnet"},
+         // Polkadot testnet chains.
+         {mojom::kPolkadotTestnet, "polkadot-westend"},
+         {mojom::kAssetsHubTestnet, "assets-hub-testnet"},
+         {mojom::kCollectivesTestnet, "collectives-testnet"},
+        }, CaseInsensitiveCompare());
 
 constexpr char kGanacheLocalhostURL[] = "http://localhost:7545/";
 constexpr char kSolanaLocalhostURL[] = "http://localhost:8899/";
@@ -605,6 +611,56 @@ GURL PolkadotTestnetRpcUrl() {
   return GetURLForKnownChainId(mojom::kPolkadotTestnet).value();
 }
 
+GURL AcalaMainnetRpcUrl() {
+  auto switch_url =
+      GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+          switches::kAcalaMainnetRpcUrl));
+  if (switch_url.is_valid()) {
+    return switch_url;
+  }
+  return GetURLForKnownChainId(mojom::kAcalaMainnet).value();
+}
+
+GURL MoonbeamMainnetRpcUrl() {
+  auto switch_url =
+      GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+          switches::kMoonbeamMainnetRpcUrl));
+  if (switch_url.is_valid()) {
+    return switch_url;
+  }
+  return GetURLForKnownChainId(mojom::kMoonbeamMainnet).value();
+}
+
+GURL BifrostMainnetRpcUrl() {
+  auto switch_url =
+      GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+          switches::kBifrostMainnetRpcUrl));
+  if (switch_url.is_valid()) {
+    return switch_url;
+  }
+  return GetURLForKnownChainId(mojom::kBifrostMainnet).value();
+}
+
+GURL AssetHubTestnetRpcUrl() {
+  auto switch_url =
+      GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+          switches::kAssetsHubTestnetRpcUrl));
+  if (switch_url.is_valid()) {
+    return switch_url;
+  }
+  return GetURLForKnownChainId(mojom::kAssetsHubTestnet).value();
+}
+
+GURL CollectivesTestnetRpcUrl() {
+  auto switch_url =
+      GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+          switches::kCollectivesTestnetRpcUrl));
+  if (switch_url.is_valid()) {
+    return switch_url;
+  }
+  return GetURLForKnownChainId(mojom::kCollectivesTestnet).value();
+}
+
 const mojom::NetworkInfo* GetBitcoinMainnet() {
   const auto coin = mojom::CoinType::BTC;
   const auto* chain_id = mojom::kBitcoinMainnet;
@@ -738,6 +794,62 @@ const mojom::NetworkInfo* GetPolkadotMainnet() {
   return network_info.get();
 }
 
+const mojom::NetworkInfo* GetAcalaMainnet() {
+  const auto coin = mojom::CoinType::DOT;
+  const auto* chain_id = mojom::kAcalaMainnet;
+  static base::NoDestructor<mojom::NetworkInfo> network_info(
+      {chain_id,
+       "Acala",
+       {"https://acala.subscan.io/"},
+       {},
+       0,
+       {AcalaMainnetRpcUrl()},
+       "ACA",
+       "Acala",
+       12,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id)});
+  return network_info.get();
+}
+
+const mojom::NetworkInfo* GetMoonbeamMainnet() {
+  const auto coin = mojom::CoinType::DOT;
+  const auto* chain_id = mojom::kMoonbeamMainnet;
+  // Moonbeam is a chain ID; it uses the Polkadot mainnet keyring.
+  static base::NoDestructor<mojom::NetworkInfo> network_info(
+      {chain_id,
+       "Moonbeam",
+       {"https://moonscan.io/"},
+       {},
+       0,
+       {MoonbeamMainnetRpcUrl()},
+       "GLMR",
+       "Moonbeam",
+       18,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id)});
+  return network_info.get();
+}
+
+const mojom::NetworkInfo* GetBifrostMainnet() {
+  const auto coin = mojom::CoinType::DOT;
+  const auto* chain_id = mojom::kBifrostMainnet;
+  // Bifrost is a chain ID; it uses the Polkadot mainnet keyring.
+  static base::NoDestructor<mojom::NetworkInfo> network_info(
+      {chain_id,
+       "Bifrost",
+       {"https://bifrost.subscan.io/"},
+       {},
+       0,
+       {BifrostMainnetRpcUrl()},
+       "BNC",
+       "Bifrost",
+       12,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id)});
+  return network_info.get();
+}
+
 const mojom::NetworkInfo* GetPolkadotTestnet() {
   const auto coin = mojom::CoinType::DOT;
   const auto* chain_id = mojom::kPolkadotTestnet;
@@ -751,6 +863,42 @@ const mojom::NetworkInfo* GetPolkadotTestnet() {
        {PolkadotTestnetRpcUrl()},
        "WND",
        "Polkadot",
+       12,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id)});
+  return network_info.get();
+}
+
+const mojom::NetworkInfo* GetAssetsHubTestnet() {
+  const auto coin = mojom::CoinType::DOT;
+  const auto* chain_id = mojom::kAssetsHubTestnet;
+  static base::NoDestructor<mojom::NetworkInfo> network_info(
+      {chain_id,
+       "Assets Hub Testnet",
+       {"https://assets-hub.subscan.io/"},
+       {},
+      0,
+       {AssetHubTestnetRpcUrl()},
+       "AUSD",
+       "Assets Hub",
+       12,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id)});
+  return network_info.get();
+}
+
+const mojom::NetworkInfo* GetCollectivesTestnet() {
+  const auto coin = mojom::CoinType::DOT;
+  const auto* chain_id = mojom::kCollectivesTestnet;
+  static base::NoDestructor<mojom::NetworkInfo> network_info(
+      {chain_id,
+       "Collectives Testnet",
+       {"https://collectives.subscan.io/"},
+       {},
+      0,
+       {CollectivesTestnetRpcUrl()},
+       "COL",
+       "Collectives",
        12,
        coin,
        GetSupportedKeyringsForNetwork(coin, chain_id)});
@@ -791,7 +939,12 @@ const std::vector<const mojom::NetworkInfo*>& GetKnownPolkadotNetworks() {
   static base::NoDestructor<std::vector<const mojom::NetworkInfo*>> networks({
       // clang-format off
       GetPolkadotMainnet(),
+      GetAcalaMainnet(),
+      GetMoonbeamMainnet(),
+      GetBifrostMainnet(),
       GetPolkadotTestnet(),
+      GetAssetsHubTestnet(),
+      GetCollectivesTestnet(),
       // clang-format on
   });
   return *networks.get();

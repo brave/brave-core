@@ -178,6 +178,25 @@ export const accountEndpoints = ({
       },
     }),
 
+    getPolkadotKeyringForNetwork: query<BraveWallet.KeyringId | null, string>({
+      queryFn: async (chainId, { endpoint }, _extraOptions, baseQuery) => {
+        try {
+          const { polkadotWalletService } = baseQuery(undefined).data
+          const { keyringId } =
+            await polkadotWalletService.getKeyringForNetwork(chainId)
+          return {
+            data: keyringId,
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            `Unable to fetch Polkadot keyring for chain ${chainId}`,
+            error,
+          )
+        }
+      },
+    }),
+
     addAccount: mutation<
       BraveWallet.AccountInfo,
       {

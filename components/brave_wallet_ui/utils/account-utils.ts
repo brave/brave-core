@@ -133,6 +133,7 @@ export function isHardwareAccount(account: BraveWallet.AccountId) {
 export const keyringIdForNewAccount = (
   coin: BraveWallet.CoinType,
   chainId?: string | undefined,
+  polkadotMainnetChains?: string[] | undefined,
 ) => {
   if (coin === BraveWallet.CoinType.ETH) {
     return BraveWallet.KeyringId.kDefault
@@ -181,13 +182,11 @@ export const keyringIdForNewAccount = (
     }
   }
 
-  if (coin === BraveWallet.CoinType.DOT) {
-    if (chainId === BraveWallet.POLKADOT_MAINNET) {
+  if (coin === BraveWallet.CoinType.DOT && chainId) {
+    if (polkadotMainnetChains?.includes(chainId)) {
       return BraveWallet.KeyringId.kPolkadotMainnet
     }
-    if (chainId === BraveWallet.POLKADOT_TESTNET) {
-      return BraveWallet.KeyringId.kPolkadotTestnet
-    }
+    return BraveWallet.KeyringId.kPolkadotTestnet
   }
 
   assertNotReached(`Unknown coin ${coin} and chainId ${chainId}`)

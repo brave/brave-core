@@ -1518,6 +1518,9 @@ export class MockedWalletApiProxy {
 
       return { address: account.address, errorMessage: null }
     },
+    GetKeyringForNetwork: async (chainId) => {
+      return { keyringId: BraveWallet.KeyringId.kPolkadotMainnet }
+    },
   }
 
   zcashWalletService: Partial<

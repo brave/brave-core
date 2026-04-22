@@ -153,9 +153,11 @@ void PolkadotTxManager::AddUnapprovedPolkadotTransaction(
     mojom::NewPolkadotTransactionParamsPtr params,
     AddUnapprovedPolkadotTransactionCallback callback) {
   auto chain_id = params->chain_id;
-  if (chain_id != GetNetworkForPolkadotAccount(params->from)) {
-    return std::move(callback).Run(false, "", WalletInternalErrorMessage());
-  }
+
+  // if (chain_id != GetNetworkForPolkadotAccount(params->from)) {
+  //   LOG(ERROR) << "XXXZZZ AddUnapprovedPolkadotTransaction chain_id mismatch";
+  //   return std::move(callback).Run(false, "", WalletInternalErrorMessage());
+  // }
 
   polkadot_wallet_service_->GetChainMetadata(
       chain_id,
@@ -203,6 +205,7 @@ void PolkadotTxManager::OnGetFeeForUnapproved(
     AddUnapprovedPolkadotTransactionCallback callback,
     base::expected<uint128_t, std::string> partial_fee) {
   if (!partial_fee.has_value()) {
+    LOG(ERROR) << "XXXZZZ OnGetFeeForUnapproved partial_fee missing";
     return std::move(callback).Run(false, "", WalletInternalErrorMessage());
   }
 

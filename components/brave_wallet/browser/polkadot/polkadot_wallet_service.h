@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_WALLET_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_WALLET_SERVICE_H_
 
+#include <array>
+
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_chain_metadata.h"
@@ -75,10 +77,14 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
                          const std::string& chain_id,
                          GetAccountBalanceCallback callback) override;
 
+
+  void GetKeyringForNetwork(const std::string& chain_id,
+                            GetKeyringForNetworkCallback callback) override;
+
   // Get the chain metadata associated with the provided chain_id. Metadata is
   // required for encoding and decoding extrinsics as chains have their own
   // pallet/call indices.
-  void GetChainMetadata(std::string_view chain_id,
+  void GetChainMetadata(std::string_view chain_id,\
                         GetChainMetadataCallback callback);
 
   // Generates an encoded byte array representing either a transfer_keep_alive
@@ -144,6 +150,10 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
 
   void OnEstimatedFee(GetFeeEstimateCallback callback,
                       base::expected<uint128_t, std::string> partial_fee);
+  void OnGetChainMetadataForAddress(
+      std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey,
+      GetAddressCallback callback,
+      base::expected<PolkadotChainMetadata, std::string> metadata);
 
   const raw_ref<KeyringService> keyring_service_;
   const raw_ref<NetworkManager> network_manager_;

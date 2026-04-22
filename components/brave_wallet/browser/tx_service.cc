@@ -392,6 +392,7 @@ void TxService::AddUnapprovedPolkadotTransaction(
     AddUnapprovedPolkadotTransactionCallback callback) {
   CHECK_EQ(params->from->coin, mojom::CoinType::DOT);
   if (!account_resolver_delegate_->ValidateAccountId(params->from)) {
+    LOG(ERROR) << "XXXZZZ AddUnapprovedPolkadotTransaction missing from";
     std::move(callback).Run(
         false, "",
         l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_FROM_EMPTY));
@@ -406,6 +407,7 @@ void TxService::AddUnapprovedPolkadotTransaction(
   }
 
   if (BlockchainRegistry::GetInstance()->IsRestrictedAddress(params->to)) {
+    LOG(ERROR) << "XXXZZZ AddUnapprovedPolkadotTransaction restricted to";
     std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
   }

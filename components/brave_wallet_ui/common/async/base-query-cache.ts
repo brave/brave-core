@@ -120,7 +120,7 @@ export class BaseQueryCache {
 
   getNetworksRegistry = async () => {
     if (!this._networksRegistry) {
-      const { jsonRpcService } = getAPIProxy()
+      const { jsonRpcService, polkadotWalletService } = getAPIProxy()
 
       // network type flags
       const { enabledCoins } = await this.getWalletInfo()
@@ -132,6 +132,7 @@ export class BaseQueryCache {
       const mainnetIds: string[] = []
       const testnetIds: string[] = []
       const offRampIds: string[] = []
+      const polkadotMainnetChains: string[] = []
 
       const { networks } = await jsonRpcService.getAllNetworks()
 
@@ -168,7 +169,7 @@ export class BaseQueryCache {
           visibleIdsByCoinType[coin] = []
           hiddenIdsByCoinType[coin] = []
 
-          networks.forEach(({ chainId, coin: networkCoin }) => {
+          networks.forEach(async ({ chainId, coin: networkCoin }) => {
             if (networkCoin !== coin) {
               return
             }
@@ -198,6 +199,17 @@ export class BaseQueryCache {
             if (SupportedOffRampNetworks.includes(chainId)) {
               offRampIds.push(networkId)
             }
+
+            if (coin === BraveWallet.CoinType.DOT) {
+              const { keyringId } =
+                await polkadotWalletService.getKeyringForNetwork(chainId)
+              if (
+                keyringId &&
+                keyringId === BraveWallet.KeyringId.kPolkadotMainnet
+              ) {
+                polkadotMainnetChains.push(networkId)
+              }
+            }
           })
 
           // all networks
@@ -218,6 +230,7 @@ export class BaseQueryCache {
           offRampIds,
           mainnetIds,
           testnetIds,
+          polkadotMainnetChains
         },
         networksList,
       )

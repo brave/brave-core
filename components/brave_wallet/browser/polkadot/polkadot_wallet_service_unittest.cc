@@ -415,6 +415,18 @@ TEST_F(PolkadotWalletServiceUnitTest, GetAddress) {
       *keyring_service_, *network_manager_, prefs_,
       url_loader_factory_.GetSafeWeakWrapper());
 
+  std::string testnet_url =
+      network_manager_
+          ->GetKnownChain(mojom::kPolkadotTestnet, mojom::CoinType::DOT)
+          ->rpc_endpoints.front()
+          .spec();
+  std::string mainnet_url =
+      network_manager_
+          ->GetKnownChain(mojom::kPolkadotMainnet, mojom::CoinType::DOT)
+          ->rpc_endpoints.front()
+          .spec();
+  AddValidMetadataResponses(url_loader_factory_, testnet_url, mainnet_url);
+
   // Mainnet address.
   {
     base::test::TestFuture<const std::optional<std::string>&,

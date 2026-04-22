@@ -28,6 +28,7 @@ class NetworkManager {
   ~NetworkManager();
   NetworkManager(NetworkManager&) = delete;
   NetworkManager& operator=(NetworkManager&) = delete;
+  PrefService* prefs() const { return prefs_; }
 
   static GURL GetUnstoppableDomainsRpcUrl(std::string_view chain_id);
   static GURL GetEnsRpcUrl();

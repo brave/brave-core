@@ -256,6 +256,7 @@ TEST_F(PolkadotChainMetadataPrefsUnitTest, MissingVersionClearsMetadataPrefs) {
 
 >>>>>>> 6bd8e983ee3 ([Polkadot] Add version field to polkadot_metadata_prefs)
   PolkadotChainMetadataPrefs prefs = MakePrefs();
+
   EXPECT_FALSE(prefs.GetChainMetadata(mojom::kPolkadotMainnet));
   EXPECT_TRUE(
       profile_prefs_.GetDict(kBraveWalletPolkadotChainMetadata).empty());

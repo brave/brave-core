@@ -56,7 +56,7 @@ void PolkadotMetadataProvider::Init() {
 void PolkadotMetadataProvider::GetChainMetadata(
     std::string_view chain_id,
     GetChainMetadataCallback callback) {
-  CHECK(IsPolkadotNetwork(chain_id));
+  // CHECK(IsPolkadotNetwork(chain_id));
 
   if (const auto* cached_metadata =
           base::FindOrNull(metadata_cache_, chain_id)) {

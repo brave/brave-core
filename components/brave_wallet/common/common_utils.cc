@@ -291,7 +291,7 @@ bool IsPolkadotImportKeyring(mojom::KeyringId keyring_id) {
          keyring_id == mojom::KeyringId::kPolkadotImportTestnet;
 }
 
-bool IsPolkadotNetwork(std::string_view network_id) {
+bool IsPolkadotRelayNetwork(std::string_view network_id) {
   return network_id == mojom::kPolkadotMainnet ||
          network_id == mojom::kPolkadotTestnet;
 }
@@ -510,7 +510,10 @@ std::vector<mojom::KeyringId> GetSupportedKeyringsForNetwork(
         return {mojom::KeyringId::kCardanoTestnet};
       }
     case mojom::CoinType::DOT:
-      if (chain_id == mojom::kPolkadotMainnet) {
+      if (chain_id == mojom::kPolkadotMainnet ||
+          chain_id == mojom::kAcalaMainnet ||
+          chain_id == mojom::kMoonbeamMainnet ||
+          chain_id == mojom::kBifrostMainnet) {
         return {mojom::KeyringId::kPolkadotMainnet,
                 mojom::KeyringId::kPolkadotImport};
       }

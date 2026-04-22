@@ -610,7 +610,7 @@ async function createDefaultAccounts({
     .map((net: BraveWallet.NetworkInfo) => {
       const accountArgs = new AddAccountArgs()
       accountArgs.coin = net.coin
-      accountArgs.keyringId = keyringIdForNewAccount(net.coin, net.chainId)
+      accountArgs.keyringId = keyringIdForNewAccount(net.coin, net.chainId, networksRegistry.polkadotMainnetChains)
       accountArgs.accountName = suggestNewAccountName(accounts, net)
       return accountArgs
     })

@@ -392,15 +392,15 @@ TEST(CommonUtils, IsPolkadotImportKeyring) {
 }
 
 TEST(CommonUtils, IsPolkadotNetwork) {
-  EXPECT_TRUE(IsPolkadotNetwork(mojom::kPolkadotMainnet));
-  EXPECT_TRUE(IsPolkadotNetwork(mojom::kPolkadotTestnet));
+  EXPECT_TRUE(IsPolkadotRelayNetwork(mojom::kPolkadotMainnet));
+  EXPECT_TRUE(IsPolkadotRelayNetwork(mojom::kPolkadotTestnet));
 
-  EXPECT_FALSE(IsPolkadotNetwork(mojom::kMainnetChainId));
-  EXPECT_FALSE(IsPolkadotNetwork(mojom::kFilecoinMainnet));
-  EXPECT_FALSE(IsPolkadotNetwork(mojom::kSolanaMainnet));
-  EXPECT_FALSE(IsPolkadotNetwork(mojom::kBitcoinMainnet));
-  EXPECT_FALSE(IsPolkadotNetwork(""));
-  EXPECT_FALSE(IsPolkadotNetwork("abc"));
+  EXPECT_FALSE(IsPolkadotRelayNetwork(mojom::kMainnetChainId));
+  EXPECT_FALSE(IsPolkadotRelayNetwork(mojom::kFilecoinMainnet));
+  EXPECT_FALSE(IsPolkadotRelayNetwork(mojom::kSolanaMainnet));
+  EXPECT_FALSE(IsPolkadotRelayNetwork(mojom::kBitcoinMainnet));
+  EXPECT_FALSE(IsPolkadotRelayNetwork(""));
+  EXPECT_FALSE(IsPolkadotRelayNetwork("abc"));
 }
 
 TEST(CommonUtils, GetNetworkForPolkadotKeyring) {

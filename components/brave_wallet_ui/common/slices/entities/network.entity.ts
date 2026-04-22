@@ -43,6 +43,7 @@ export type NetworksRegistry = ReturnType<
   testnetIds: string[]
   offRampIds: string[]
   visibleIds: string[]
+  polkadotMainnetChains: string[]
 }
 
 export const emptyNetworksRegistry: NetworksRegistry = {
@@ -54,6 +55,7 @@ export const emptyNetworksRegistry: NetworksRegistry = {
   testnetIds: [],
   offRampIds: [],
   visibleIds: [],
+  polkadotMainnetChains: [],
 }
 
 //

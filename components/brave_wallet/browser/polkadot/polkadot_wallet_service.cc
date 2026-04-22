@@ -8,6 +8,7 @@
 #include <algorithm>
 
 #include "base/check.h"
+#include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -36,7 +37,7 @@ PolkadotWalletService::~PolkadotWalletService() = default;
 void PolkadotWalletService::GetChainMetadata(
     std::string_view chain_id,
     GetChainMetadataCallback callback) {
-  CHECK(IsPolkadotNetwork(chain_id));
+  //CHECK(IsPolkadotRelayNetwork(chain_id));
   metadata_provider_.GetChainMetadata(chain_id, std::move(callback));
 }
 
@@ -73,8 +74,6 @@ void PolkadotWalletService::GetCompatibleNetworks(
     return;
   }
 
-  const std::string compatible_chain_id =
-      GetNetworkForPolkadotKeyring(account_id->keyring_id);
   const auto hidden_networks =
       network_manager_->GetHiddenNetworks(mojom::CoinType::DOT);
 
@@ -84,7 +83,7 @@ void PolkadotWalletService::GetCompatibleNetworks(
       continue;
     }
 
-    if (network_info->chain_id == compatible_chain_id &&
+    if (std::ranges::contains(network_info->supported_keyrings, account_id->keyring_id) &&
         !std::ranges::contains(hidden_networks,
                                base::ToLowerASCII(network_info->chain_id))) {
       compatible_networks.push_back(std::move(network_info));
@@ -98,9 +97,18 @@ void PolkadotWalletService::GetAddress(mojom::AccountIdPtr account_id,
                                        const std::string& chain_id,
                                        GetAddressCallback callback) {
   if (!account_id || account_id->coin != mojom::CoinType::DOT ||
-      !IsPolkadotKeyring(account_id->keyring_id) ||
-      !IsPolkadotNetwork(chain_id) ||
-      GetNetworkForPolkadotKeyring(account_id->keyring_id) != chain_id) {
+      !IsPolkadotKeyring(account_id->keyring_id)) {
+    std::move(callback).Run(std::nullopt, WalletInternalErrorMessage());
+    return;
+  }
+
+  auto network = network_manager_->GetChain(chain_id, mojom::CoinType::DOT);
+  if (!network) {
+    std::move(callback).Run(std::nullopt, WalletInternalErrorMessage());
+    return;
+  }
+
+  if (!std::ranges::contains(network->supported_keyrings, account_id->keyring_id)) {
     std::move(callback).Run(std::nullopt, WalletInternalErrorMessage());
     return;
   }
@@ -111,18 +119,12 @@ void PolkadotWalletService::GetAddress(mojom::AccountIdPtr account_id,
     return;
   }
 
-  const uint16_t prefix =
-      chain_id == mojom::kPolkadotMainnet ? kPolkadotPrefix : kWestendPrefix;
-  PolkadotAddress polkadot_address;
-  polkadot_address.pubkey = *pubkey;
-  polkadot_address.ss58_prefix = prefix;
-  auto address = polkadot_address.ToString();
-  if (!address) {
-    std::move(callback).Run(std::nullopt, WalletInternalErrorMessage());
-    return;
-  }
-
-  std::move(callback).Run(std::move(*address), std::nullopt);
+  LOG(ERROR) << "XXXZZZ Getting address for chain_id: " << chain_id;
+  metadata_provider_.GetChainMetadata(
+      chain_id,
+      base::BindOnce(&PolkadotWalletService::OnGetChainMetadataForAddress,
+                     weak_ptr_factory_.GetWeakPtr(), *pubkey,
+                     std::move(callback)));
 }
 
 void PolkadotWalletService::GetAccountBalance(
@@ -145,8 +147,11 @@ void PolkadotWalletService::GenerateSignedTransferExtrinsicImpl(
     std::variant<uint128_t, TransferAll> transfer_amount,
     base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
     GenerateSignedTransferExtrinsicCallback callback) {
+  LOG(ERROR) << "XXXZZZ GenerateSignedTransferExtrinsicImpl start chain_id="
+             << chain_id << " use_dummy_signature=" << use_dummy_signature;
   auto pubkey = keyring_service_->GetPolkadotPubKey(account_id);
   if (!pubkey) {
+    LOG(ERROR) << "XXXZZZ GenerateSignedTransferExtrinsicImpl missing pubkey";
     return std::move(callback).Run(
         base::unexpected(WalletInternalErrorMessage()));
   }
@@ -172,15 +177,28 @@ void PolkadotWalletService::GenerateSignedTransferExtrinsic(
     std::variant<uint128_t, TransferAll> transfer_amount,
     base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
     GenerateSignedTransferExtrinsicCallback callback) {
+  LOG(ERROR) << "XXXZZZ GenerateSignedTransferExtrinsic chain_id=" << chain_id;
   GenerateSignedTransferExtrinsicImpl(
       std::move(chain_id), std::move(account_id), false,
       std::move(transfer_amount), recipient, std::move(callback));
+}
+
+void PolkadotWalletService::GetKeyringForNetwork(const std::string& chain_id,
+                                                 GetKeyringForNetworkCallback callback) {
+  auto network = network_manager_->GetChain(chain_id, mojom::CoinType::DOT);
+  if (!network) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+  std::move(callback).Run(network->supported_keyrings.front());
 }
 
 void PolkadotWalletService::OnGenerateSignedTransferExtrinsic(
     PolkadotSignedTransferTask* transaction_state,
     GenerateSignedTransferExtrinsicCallback callback,
     base::expected<PolkadotExtrinsicMetadata, std::string> extrinsic_metadata) {
+  LOG(ERROR) << "XXXZZZ OnGenerateSignedTransferExtrinsic has_value="
+             << extrinsic_metadata.has_value();
   polkadot_sign_transactions_.erase(transaction_state);
   std::move(callback).Run(std::move(extrinsic_metadata));
 }
@@ -191,6 +209,7 @@ void PolkadotWalletService::SignAndSendTransaction(
     std::variant<uint128_t, TransferAll> transfer_amount,
     base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
     SignAndSendTransactionCallback callback) {
+  LOG(ERROR) << "XXXZZZ SignAndSendTransaction chain_id=" << chain_id;
   GenerateSignedTransferExtrinsic(
       chain_id, std::move(account_id), std::move(transfer_amount), recipient,
       base::BindOnce(&PolkadotWalletService::OnGenerateSignedTransfer,
@@ -202,7 +221,11 @@ void PolkadotWalletService::OnGenerateSignedTransfer(
     std::string chain_id,
     SignAndSendTransactionCallback callback,
     base::expected<PolkadotExtrinsicMetadata, std::string> extrinsic_metadata) {
+  LOG(ERROR) << "XXXZZZ OnGenerateSignedTransfer has_value="
+             << extrinsic_metadata.has_value() << " chain_id=" << chain_id;
   if (!extrinsic_metadata.has_value()) {
+    LOG(ERROR) << "XXXZZZ OnGenerateSignedTransfer error="
+               << extrinsic_metadata.error();
     return std::move(callback).Run(
         base::unexpected(std::move(extrinsic_metadata.error())));
   }
@@ -221,11 +244,16 @@ void PolkadotWalletService::OnSubmitSignedExtrinsic(
     SignAndSendTransactionCallback callback,
     std::optional<std::string> transaction_hash,
     std::optional<std::string> error_str) {
+  LOG(ERROR) << "XXXZZZ OnSubmitSignedExtrinsic has_error="
+             << error_str.has_value();
   if (error_str) {
+    LOG(ERROR) << "XXXZZZ OnSubmitSignedExtrinsic error=" << *error_str;
     return std::move(callback).Run(base::unexpected(*error_str));
   }
 
   CHECK(transaction_hash.has_value());
+  LOG(ERROR) << "XXXZZZ OnSubmitSignedExtrinsic tx_hash="
+             << transaction_hash.value();
   std::move(callback).Run(base::ok(std::make_pair(
       std::move(transaction_hash.value()), std::move(extrinsic_metadata))));
 }
@@ -236,6 +264,7 @@ void PolkadotWalletService::GetFeeEstimate(
     std::variant<uint128_t, TransferAll> transfer_amount,
     base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
     GetFeeEstimateCallback callback) {
+  LOG(ERROR) << "XXXZZZ GetFeeEstimate chain_id=" << chain_id;
   GenerateSignedTransferExtrinsicImpl(
       chain_id, std::move(account_id), true, std::move(transfer_amount),
       recipient,
@@ -248,7 +277,10 @@ void PolkadotWalletService::OnGenerateTransferForFee(
     std::string chain_id,
     GetFeeEstimateCallback callback,
     base::expected<PolkadotExtrinsicMetadata, std::string> metadata) {
+  LOG(ERROR) << "XXXZZZ OnGenerateTransferForFee has_value="
+             << metadata.has_value() << " chain_id=" << chain_id;
   if (!metadata.has_value()) {
+    LOG(ERROR) << "XXXZZZ OnGenerateTransferForFee error=" << metadata.error();
     return std::move(callback).Run(
         base::unexpected(std::move(metadata.error())));
   }
@@ -262,7 +294,30 @@ void PolkadotWalletService::OnGenerateTransferForFee(
 void PolkadotWalletService::OnEstimatedFee(
     GetFeeEstimateCallback callback,
     base::expected<uint128_t, std::string> partial_fee) {
+  LOG(ERROR) << "XXXZZZ OnEstimatedFee has_value=" << partial_fee.has_value();
   std::move(callback).Run(std::move(partial_fee));
+}
+
+void PolkadotWalletService::OnGetChainMetadataForAddress(
+    std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey,
+    GetAddressCallback callback,
+    base::expected<PolkadotChainMetadata, std::string> metadata) {
+  if (!metadata.has_value()) {
+    std::move(callback).Run(std::nullopt, WalletInternalErrorMessage());
+    return;
+  }
+
+  PolkadotAddress polkadot_address;
+  polkadot_address.pubkey = pubkey;
+  polkadot_address.ss58_prefix = metadata->GetSs58Prefix();
+  LOG(ERROR) << "XXXZZZ SS58 prefix: " << base::NumberToString(polkadot_address.ss58_prefix.value());
+  auto address = polkadot_address.ToString();
+  if (!address) {
+    std::move(callback).Run(std::nullopt, WalletInternalErrorMessage());
+    return;
+  }
+
+  std::move(callback).Run(std::move(*address), std::nullopt);
 }
 
 }  // namespace brave_wallet

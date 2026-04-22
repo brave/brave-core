@@ -82,6 +82,7 @@ bool ContainsNativeToken(const std::vector<mojom::BlockchainTokenPtr>& tokens,
 // Ensure token list contains native tokens when appears empty. Only for BTC,
 // ZEC, ADA and DOT by now.
 std::vector<mojom::BlockchainTokenPtr> EnsureNativeTokens(
+    NetworkManager& network_manager,
     const std::string& chain_id,
     mojom::CoinType coin,
     std::vector<mojom::BlockchainTokenPtr> tokens) {
@@ -111,9 +112,11 @@ std::vector<mojom::BlockchainTokenPtr> EnsureNativeTokens(
     tokens.push_back(GetCardanoNativeToken(chain_id));
   }
 
-  if (coin == mojom::CoinType::DOT && IsPolkadotNetwork(chain_id) &&
-      !ContainsNativeToken(tokens, coin, chain_id, false)) {
-    tokens.push_back(GetPolkadotNativeToken(chain_id));
+  if (coin == mojom::CoinType::DOT) { 
+  auto polkadot_network = network_manager.GetChain(chain_id, mojom::CoinType::DOT);
+    if (polkadot_network && !ContainsNativeToken(tokens, coin, chain_id, false)) {
+      tokens.push_back(GetPolkadotNativeToken(chain_id));
+    }
   }
 
   return tokens;
@@ -455,7 +458,7 @@ void BraveWalletService::GetUserAssets(const std::string& chain_id,
   }
 
   std::move(callback).Run(
-      EnsureNativeTokens(chain_id, coin, std::move(result)));
+      EnsureNativeTokens(*network_manager(), chain_id, coin, std::move(result)));
 }
 
 void BraveWalletService::GetAllUserAssets(GetUserAssetsCallback callback) {
