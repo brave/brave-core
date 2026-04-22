@@ -81,7 +81,7 @@ import {
   ControlsWrapper,
   SegmentedControl,
 } from './account-settings-modal.style'
-import { Column, Text, VerticalSpacer } from '../../../shared/style'
+import { Column, Row, Text, VerticalSpacer } from '../../../shared/style'
 import { Skeleton } from '../../../shared/loading-skeleton/styles'
 
 const zcashAddressOptions: zcashAddressOptionType[] = [
@@ -584,7 +584,12 @@ export const AccountSettingsModal = () => {
           </EditWrapper>
         )}
         {accountModalType === 'privateKey' && (
-          <PrivateKeyWrapper>
+          <PrivateKeyWrapper
+            width='100%'
+            height='100%'
+            justifyContent='flex-start'
+            padding='0px 16px'
+          >
             <Alert type='warning'>
               {getLocale('braveWalletAccountSettingsDisclaimer')}
             </Alert>
@@ -672,7 +677,7 @@ export const AccountSettingsModal = () => {
               && showEncryptionPassword
               && !privateKey ? (
                 // Show Cancel and Confirm buttons for encryption password
-                <ButtonRow>
+                <Row gap='8px'>
                   <Button
                     onClick={onCancelEncryptionPassword}
                     kind='outline'
@@ -686,10 +691,10 @@ export const AccountSettingsModal = () => {
                   >
                     {getLocale('braveWalletAccountSettingsShowKey')}
                   </Button>
-                </ButtonRow>
+                </Row>
               ) : privateKey ? (
                 // Show Download and Hide buttons when key is visible
-                <ButtonRow>
+                <Row gap='8px'>
                   {selectedAccount?.accountId.coin
                     === BraveWallet.CoinType.DOT && (
                     <Button
@@ -705,7 +710,7 @@ export const AccountSettingsModal = () => {
                   >
                     {getLocale('braveWalletAccountSettingsHideKey')}
                   </Button>
-                </ButtonRow>
+                </Row>
               ) : (
                 // Show "Show Key" button when no key is visible
                 <Button
