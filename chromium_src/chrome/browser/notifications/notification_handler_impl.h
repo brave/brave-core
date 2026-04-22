@@ -27,7 +27,8 @@ class NotificationHandler : public NotificationHandler_ChromiumImpl {
     NOTIFICATIONS_MUTED = 10,
     TAILORED_SECURITY = 11,
     DEFAULT_BROWSER_CHANGED = 12,
-    MAX = DEFAULT_BROWSER_CHANGED,
+    BRAVE_WALLET = 13,
+    MAX = BRAVE_WALLET,
   };
 
   static_assert(

@@ -62,6 +62,22 @@ namespace {
 
 inline constexpr char kZCashDataFolderName[] = "zcash_data";
 
+bool ShouldDisplayTxNotification(mojom::TransactionStatus status) {
+  return (status == mojom::TransactionStatus::Confirmed ||
+          status == mojom::TransactionStatus::Error ||
+          status == mojom::TransactionStatus::Dropped);
+}
+
+GURL GetTxNotificationUrl(const mojom::AccountInfoPtr& account) {
+  // Matches `makeAccountRoute` in brave_wallet_routes.ts
+  auto account_route_entry = account->address.empty()
+                                 ? account->account_id->unique_key
+                                 : account->address;
+
+  return GURL(base::StrCat({"chrome://wallet/crypto/accounts/",
+                            account_route_entry, "/transactions"}));
+}
+
 bool AccountMatchesCoinAndChain(const mojom::AccountId& account_id,
                                 mojom::CoinType coin,
                                 const std::string& chain_id) {
@@ -272,6 +288,8 @@ BraveWalletService::BraveWalletService(
       &BraveWalletService::OnWalletReset, weak_ptr_factory_.GetWeakPtr()));
   keyring_service_->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
+  tx_service_->AddObserver(
+      tx_service_observer_receiver_.BindNewPipeAndPassRemote());
 
   DCHECK(profile_prefs_);
 
@@ -1411,6 +1429,21 @@ void BraveWalletService::WalletRestored() {
   account_discovery_manager_->StartDiscovery();
 }
 
+void BraveWalletService::OnTransactionStatusChanged(
+    mojom::TransactionInfoPtr tx_info) {
+  if (!ShouldDisplayTxNotification(tx_info->tx_status)) {
+    return;
+  }
+
+  auto account = keyring_service()->FindAccount(tx_info->from_account_id);
+  if (!account) {
+    return;
+  }
+
+  delegate_->DisplayTxNotification(tx_info->tx_status, account->name,
+                                   tx_info->id, GetTxNotificationUrl(account));
+}
+
 void BraveWalletService::OnDiscoverAssetsStarted() {
   for (const auto& observer : observers_) {
     observer->OnDiscoverAssetsStarted();
@@ -2162,6 +2195,11 @@ BraveWalletService::RegisterSignTransactionRequestAddedCallback(
 
 void BraveWalletService::OnWalletReset() {
   account_discovery_manager_.reset();
+}
+
+void BraveWalletService::SetDelegateForTesting(  // IN-TEST
+    std::unique_ptr<BraveWalletServiceDelegate> delegate) {
+  delegate_ = std::move(delegate);
 }
 
 }  // namespace brave_wallet
