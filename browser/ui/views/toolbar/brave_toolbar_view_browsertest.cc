@@ -42,6 +42,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/custom_corners_background.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
+#include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
 #include "chrome/browser/ui/views/toolbar/split_tabs_button.h"
@@ -139,7 +140,8 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
 
  protected:
   bool is_avatar_button_shown() {
-    views::View* button = toolbar_button_provider_->GetAvatarToolbarButton();
+    auto* button = static_cast<AvatarToolbarButton*>(
+        toolbar_button_provider_->GetAvatarToolbarButtonInterface());
     DCHECK(button);
     return button->GetVisible();
   }
@@ -172,9 +174,10 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
 #endif
 
   AvatarToolbarButton* GetAvatarToolbarButton(Browser* browser) {
-    return BrowserView::GetBrowserViewForBrowser(browser)
-        ->toolbar_button_provider()
-        ->GetAvatarToolbarButton();
+    return static_cast<AvatarToolbarButton*>(
+        BrowserView::GetBrowserViewForBrowser(browser)
+            ->toolbar_button_provider()
+            ->GetAvatarToolbarButtonInterface());
   }
 
   raw_ptr<ToolbarButtonProvider, DanglingUntriaged> toolbar_button_provider_ =
@@ -504,7 +507,8 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   EXPECT_EQ(true, is_avatar_button_shown());
 
   // Check avatar is positioned at the right before app menu button.
-  views::View* avatar = toolbar_button_provider_->GetAvatarToolbarButton();
+  auto* avatar = static_cast<AvatarToolbarButton*>(
+      toolbar_button_provider_->GetAvatarToolbarButtonInterface());
   ASSERT_TRUE(!!avatar);
   views::View* container = avatar->parent();
   ASSERT_TRUE(!!container);
@@ -522,9 +526,10 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
 // Check no crash when clicking private window's avatar button.
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, ClickAvatarButtonTest) {
   auto* incognito_browser = CreateIncognitoBrowser(browser()->profile());
-  auto* avatar_button = BrowserView::GetBrowserViewForBrowser(incognito_browser)
-                            ->toolbar_button_provider()
-                            ->GetAvatarToolbarButton();
+  auto* avatar_button = static_cast<AvatarToolbarButton*>(
+      BrowserView::GetBrowserViewForBrowser(incognito_browser)
+          ->toolbar_button_provider()
+          ->GetAvatarToolbarButtonInterface());
   EXPECT_TRUE(avatar_button->GetVisible());
   avatar_button->button_controller()->NotifyClick();
 }
