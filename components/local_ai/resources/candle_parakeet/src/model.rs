@@ -5,6 +5,8 @@
 
 // Parakeet-CTC-110M model.
 
+mod encoder;
+
 /// Parakeet-CTC-110M architecture hyperparameters. Mirrors the fields of
 /// the `config.json` that ships alongside `model.gguf`.
 ///
