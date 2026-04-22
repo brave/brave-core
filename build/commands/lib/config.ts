@@ -3,8 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-'use strict'
-
 import os from 'node:os'
 import path from 'node:path'
 import fs from 'node:fs'
@@ -19,9 +17,7 @@ type ExecOptions = {
   env: NodeJS.ProcessEnv
   stdio: any
   cwd: string
-  git_cwd: string
   continueOnFail?: boolean
-  outputDir?: string
   onStdOutLine?: (line: string) => void
   onStdErrLine?: (line: string) => void
 }
@@ -799,16 +795,8 @@ export class Config {
 
       // Autoninja generates -j value when RBE is enabled, adjust limits for
       // Brave-specific setup.
-      env.NINJA_CORE_MULTIPLIER = Math.min(
-        20,
-        // @ts-ignore
-        parseInt(env.NINJA_CORE_MULTIPLIER) || 20,
-      ).toString()
-      env.NINJA_CORE_LIMIT = Math.min(
-        kRemoteLimit,
-        // @ts-ignore
-        parseInt(env.NINJA_CORE_LIMIT) || kRemoteLimit,
-      ).toString()
+      Config.#capEnvNumber(env, 'NINJA_CORE_MULTIPLIER', 20)
+      Config.#capEnvNumber(env, 'NINJA_CORE_LIMIT', kRemoteLimit)
 
       // Siso has its own limits for remote execution that do not depend on
       // NINJA_CORE_* values. Set those limits separately. See docs for more
@@ -819,22 +807,32 @@ export class Config {
         remote: this.sisoJobsLimit || kRemoteLimit,
         rewrap: this.sisoJobsLimit || kRemoteLimit,
       }
-      // Parse SISO_LIMITS from env if set.
-      const envSisoLimits = new Map(
-        (env.SISO_LIMITS?.split(',').map((item) => item.split('=', 2)) as [
-          string,
-          string,
-        ][]) || [],
-      )
+      // Parse SISO_LIMITS from env if set (comma-separated key=value pairs).
+      const envSisoLimits = new Map<string, number>()
+      if (env.SISO_LIMITS) {
+        for (const item of env.SISO_LIMITS.split(',')) {
+          const eqIndex = item.indexOf('=')
+          if (eqIndex === -1) {
+            continue
+          }
+          const key = item.slice(0, eqIndex).trim()
+          if (!key) {
+            continue
+          }
+          const num = Number.parseInt(item.slice(eqIndex + 1).trim(), 10)
+          if (Number.isFinite(num)) {
+            envSisoLimits.set(key, num)
+          }
+        }
+      }
       // Merge defaultSisoLimits with envSisoLimits ensuring that the values are
       // not greater than the default values.
       Object.entries(defaultSisoLimits).forEach(([key, defaultValue]) => {
         if (defaultValue === undefined) {
           return
         }
-        // @ts-ignore
-        const valueFromEnv = parseInt(envSisoLimits.get(key)) || defaultValue
-        envSisoLimits.set(key, Math.min(defaultValue, valueFromEnv).toString())
+        const valueFromEnv = envSisoLimits.get(key) ?? defaultValue
+        envSisoLimits.set(key, Math.min(defaultValue, valueFromEnv))
       })
       // Set SISO_LIMITS env var.
       env.SISO_LIMITS = Array.from(envSisoLimits.entries())
@@ -874,7 +872,6 @@ export class Config {
       env,
       stdio,
       cwd: this.srcDir,
-      git_cwd: '.',
     }
   }
 
@@ -946,6 +943,11 @@ export class Config {
       process.exit(1)
     }
     this.#targetOS = value
+  }
+
+  static #capEnvNumber(env: NodeJS.ProcessEnv, name: string, max: number) {
+    const n = Number.parseInt(env[name] ?? '', 10) || max
+    env[name] = Math.min(max, n).toString()
   }
 }
 

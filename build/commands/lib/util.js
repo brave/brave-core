@@ -698,7 +698,7 @@ const util = {
     }
 
     const buildId = crypto.randomUUID()
-    const outputDir = options.outputDir || config.outputDir
+    const outputDir = config.outputDir
     const progressMessage = `build ${targets} (${path.basename(
       outputDir,
     )}, id=${buildId})`
