@@ -9,7 +9,8 @@ namespace page_actions {
 
 void PageActionControllerImpl::SetAlwaysShowLabel(actions::ActionId action_id,
                                                   bool always_show) {
-  FindPageActionModel(action_id).SetAlwaysShowLabel(PassKey(), always_show);
+  FindPageActionModel(action_id).SetAlwaysShowLabel(PageActionPassKey(),
+                                                    always_show);
 }
 
 void PageActionControllerImpl::OverrideChipColors(
@@ -17,32 +18,34 @@ void PageActionControllerImpl::OverrideChipColors(
     std::optional<SkColor> override_background_color,
     std::optional<SkColor> override_foreground_color) {
   FindPageActionModel(action_id).SetOverrideChipColors(
-      PassKey(), override_background_color, override_foreground_color);
+      PageActionPassKey(), override_background_color,
+      override_foreground_color);
 }
 
 void PageActionControllerImpl::ClearOverrideChipColors(
     actions::ActionId action_id) {
   FindPageActionModel(action_id).SetOverrideChipColors(
-      PassKey(), /*override_background_color=*/std::nullopt,
+      PageActionPassKey(), /*override_background_color=*/std::nullopt,
       /*override_foreground_color=*/std::nullopt);
 }
 
 void PageActionControllerImpl::SetOverrideHeight(actions::ActionId action_id,
                                                  int height) {
   CHECK_GT(height, 0);
-  FindPageActionModel(action_id).SetOverrideHeight(PassKey(), height);
+  FindPageActionModel(action_id).SetOverrideHeight(PageActionPassKey(), height);
 }
 
 void PageActionControllerImpl::ClearOverrideHeight(
     actions::ActionId action_id) {
-  FindPageActionModel(action_id).SetOverrideHeight(PassKey(), std::nullopt);
+  FindPageActionModel(action_id).SetOverrideHeight(PageActionPassKey(),
+                                                   std::nullopt);
 }
 
 void PageActionControllerImpl::SetOverrideTriggerableEvent(
     actions::ActionId action_id,
     std::optional<int> event_flags) {
-  FindPageActionModel(action_id).SetOverrideTriggerableEvent(PassKey(),
-                                                             event_flags);
+  FindPageActionModel(action_id).SetOverrideTriggerableEvent(
+      PageActionPassKey(), event_flags);
 }
 
 }  // namespace page_actions
