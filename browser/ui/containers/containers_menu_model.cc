@@ -40,15 +40,21 @@ ContainersMenuModel::ContainersMenuModel(Delegate& delegate,
                  << "Trimming to fit within command ID range.";
   }
 
-  // 1. Add an item to indicate "No container" state.
-  AddCheckItemWithStringId(IDC_OPEN_IN_CONTAINER_NO_CONTAINER,
-                           IDS_CXMENU_NO_CONTAINER);
+  current_container_ids_ = delegate_->GetCurrentContainerIds();
+  const bool includes_no_container_menu_item = !current_container_ids_.empty();
+
+  // 1. Optionally add an item to indicate "No container" state.
+  if (includes_no_container_menu_item) {
+    AddCheckItemWithStringId(IDC_OPEN_IN_CONTAINER_NO_CONTAINER,
+                             IDS_CXMENU_NO_CONTAINER);
+  }
 
   // 2. Add items for each container.
   int index = 0;
+  const int container_menu_start = includes_no_container_menu_item ? 1 : 0;
   for (const auto& item : items_) {
     AddCheckItem(ItemIndexToCommandId(index), base::UTF8ToUTF16(item.name()));
-    SetIcon(index + 1,
+    SetIcon(container_menu_start + index,
 #if BUILDFLAG(IS_MAC)
             // On macOS, vector icon version of menu items are not supported.
             // For the reference, we tried fix this with adhoc patch in
@@ -70,8 +76,6 @@ ContainersMenuModel::ContainersMenuModel(Delegate& delegate,
   // 4. Add an item to open settings page.
   AddItemWithStringId(IDC_OPEN_CONTAINERS_SETTING,
                       IDS_CXMENU_OPEN_CONTAINERS_SETTINGS);
-
-  current_container_ids_ = delegate_->GetCurrentContainerIds();
 }
 
 ContainersMenuModel::~ContainersMenuModel() = default;

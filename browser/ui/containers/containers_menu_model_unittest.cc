@@ -55,11 +55,14 @@ MATCHER_P(EqId, id, "") {
 
 TEST_F(ContainersMenuModelUnitTest, ModelContainsAllContainers) {
   MockContainersMenuModelDelegate delegate;
+  auto containers = GetContainers();
+  EXPECT_CALL(delegate, GetCurrentContainerIds())
+      .WillOnce(
+          testing::Return(base::flat_set<std::string>{containers[0].id()}));
 
   ContainersMenuModel model =
       test::ContainersMenuModelTestApi::CreateContainersMenuModel(
           delegate, GetContainers());
-  auto containers = GetContainers();
 
   // First item should be the "No container" command
   EXPECT_EQ(IDC_OPEN_IN_CONTAINER_NO_CONTAINER, model.GetCommandIdAt(0));
@@ -126,7 +129,7 @@ TEST_F(ContainersMenuModelUnitTest, GetCurrentContainerIdsAreChecked) {
         test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 1)));
   }
 
-  // Test with no container selected
+  // Test with no container selected (omits the "No container" menu row)
   {
     MockContainersMenuModelDelegate delegate;
     EXPECT_CALL(delegate, GetCurrentContainerIds())
@@ -134,7 +137,8 @@ TEST_F(ContainersMenuModelUnitTest, GetCurrentContainerIdsAreChecked) {
     ContainersMenuModel model =
         test::ContainersMenuModelTestApi::CreateContainersMenuModel(
             delegate, GetContainers());
-    EXPECT_TRUE(model.IsCommandIdChecked(IDC_OPEN_IN_CONTAINER_NO_CONTAINER));
+    EXPECT_FALSE(model.GetIndexOfCommandId(IDC_OPEN_IN_CONTAINER_NO_CONTAINER)
+                     .has_value());
     EXPECT_FALSE(model.IsCommandIdChecked(
         test::ContainersMenuModelTestApi::GetCommandIdFromItemIndex(model, 0)));
     EXPECT_FALSE(model.IsCommandIdChecked(
@@ -162,6 +166,9 @@ TEST_F(ContainersMenuModelUnitTest, GetCurrentContainerIdsAreChecked) {
 
 TEST_F(ContainersMenuModelUnitTest, ExecuteNoContainerCommandCallsDelegate) {
   MockContainersMenuModelDelegate delegate;
+  EXPECT_CALL(delegate, GetCurrentContainerIds())
+      .WillOnce(testing::Return(
+          base::flat_set<std::string>{GetContainers()[0].id()}));
   ContainersMenuModel model =
       test::ContainersMenuModelTestApi::CreateContainersMenuModel(
           delegate, GetContainers());

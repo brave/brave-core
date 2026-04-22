@@ -226,10 +226,9 @@ TEST_F(BraveBookmarkContextMenuContainersTest,
   EXPECT_FALSE(controller.IsCommandIdChecked(IDC_OPEN_IN_CONTAINER));
   EXPECT_FALSE(controller.GetLabelForCommandId(IDC_OPEN_IN_CONTAINER).empty());
 
-  EXPECT_TRUE(
-      controller.IsCommandIdEnabled(IDC_OPEN_IN_CONTAINER_NO_CONTAINER));
-  EXPECT_TRUE(
-      controller.IsCommandIdVisible(IDC_OPEN_IN_CONTAINER_NO_CONTAINER));
+  EXPECT_FALSE(controller.GetContainersBookmarkSubmenuModel()
+                   ->GetIndexOfCommandId(IDC_OPEN_IN_CONTAINER_NO_CONTAINER)
+                   .has_value());
 }
 
 TEST_F(BraveBookmarkContextMenuContainersTest,

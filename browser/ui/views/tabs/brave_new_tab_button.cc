@@ -65,8 +65,8 @@ class BraveNewTabButton::NewTabButtonContainersMenuDelegate
                                    browser->GetNewTabURL());
   }
 
-  // Unlike tab or link context menus, the new tab button is not tied to a
-  // specific container, so no menu items should appear as "current".
+  // Not tied to an active tab or link; an empty set omits the "No container"
+  // row from `ContainersMenuModel` (same as other entry points).
   base::flat_set<std::string> GetCurrentContainerIds() override { return {}; }
 
   Browser* GetBrowserToOpenSettings() override {
