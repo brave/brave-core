@@ -22,7 +22,7 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_context.h"
-#include "chrome/browser/ui/views/tabs/window_finder.h"
+#include "chrome/browser/ui/views/tabs/dragging/window_finder.h"
 #include "components/prefs/pref_service.h"
 #include "components/tabs/public/tab_group.h"
 #include "ui/views/view_utils.h"
