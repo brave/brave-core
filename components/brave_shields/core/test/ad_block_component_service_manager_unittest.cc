@@ -204,8 +204,7 @@ INSTANTIATE_TEST_SUITE_P(All,
                          AdBlockComponentServiceManagerGatesTest,
                          testing::Values(0u, 1u, 3u),
                          [](const auto& info) {
-                           return absl::StrFormat("CatalogSize%zu",
-                                                  info.param);
+                           return absl::StrFormat("CatalogSize%zu", info.param);
                          });
 
 }  // namespace brave_shields
