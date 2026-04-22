@@ -13,7 +13,7 @@
 
 namespace brave_ads {
 
-class AdsTooltipsDelegateImpl : public AdsTooltipsDelegate {
+class AdsTooltipsDelegateImpl final : public AdsTooltipsDelegate {
  public:
   AdsTooltipsDelegateImpl();
 

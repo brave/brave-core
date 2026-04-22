@@ -13,7 +13,8 @@ class GURL;
 
 namespace brave_ads {
 
-class ObliviousHttpClientImpl : public network::mojom::ObliviousHttpClient {
+class ObliviousHttpClientImpl final
+    : public network::mojom::ObliviousHttpClient {
  public:
   ObliviousHttpClientImpl(GURL url, SendRequestCallback callback);
 

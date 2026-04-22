@@ -35,7 +35,7 @@ namespace brave_ads {
 // remote endpoint, caching, expiration management, automatic periodic
 // refreshes, and retry logic with exponential backoff. Upon browser startup,
 // any missing or expired key config is fetched immediately.
-class ObliviousHttpKeyConfig {
+class ObliviousHttpKeyConfig final {
  public:
   ObliviousHttpKeyConfig(
       PrefService& local_state,

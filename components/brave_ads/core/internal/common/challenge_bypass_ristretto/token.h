@@ -22,7 +22,7 @@ class BlindedToken;
 // `Token` includes the blinding factor it should be treated as a client secret
 // and NEVER revealed to the server.
 
-class Token {
+class Token final {
  public:
   Token();
   explicit Token(const std::string& token_base64);

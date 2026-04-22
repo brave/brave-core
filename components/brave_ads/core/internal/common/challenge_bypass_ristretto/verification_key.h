@@ -18,7 +18,7 @@ class VerificationSignature;
 // A shared `VerificationKey` for proving and verifying the validity of an
 // `UnblindedToken`. (K = H_2(t, W)).
 
-class VerificationKey {
+class VerificationKey final {
  public:
   explicit VerificationKey(
       const challenge_bypass_ristretto::VerificationKey& verification_key);

@@ -19,7 +19,7 @@ namespace brave_ads {
 // Ensures every ad is served once per rotation before any repeats, and prevents
 // the most recently served ad from being the first served in the next rotation
 // when possible. State is intentionally kept in memory only and not persisted.
-class CreativeAdRoundRobin {
+class CreativeAdRoundRobin final {
  public:
   CreativeAdRoundRobin();
 
