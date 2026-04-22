@@ -95,9 +95,9 @@ void AdBlockService::SourceProviderObserver::LoadResources(
     std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set) {
   // multiple AddObserver calls are ignored
   resource_provider_->AddObserver(this);
-  resource_provider_->LoadResources(base::BindOnce(
-      &SourceProviderObserver::OnAllLoaded, weak_factory_.GetWeakPtr(),
-      std::move(filter_set)));
+  resource_provider_->LoadResources(
+      base::BindOnce(&SourceProviderObserver::OnAllLoaded,
+                     weak_factory_.GetWeakPtr(), std::move(filter_set)));
 }
 
 void AdBlockService::SourceProviderObserver::OnDATFileRead(
