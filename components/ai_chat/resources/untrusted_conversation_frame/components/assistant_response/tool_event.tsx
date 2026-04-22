@@ -5,13 +5,13 @@
 
 import * as React from 'react'
 import classnames from '$web-common/classnames'
-import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 import ToolPermissionChallenge from '../tool_permission_challenge/tool_permission_challenge'
 import { getToolLabel } from './get_tool_label'
 import ToolEventContentUserChoice from './tool_event_content_user_choice'
 import ToolEventContentAssistantDetailStorage from './tool_event_content_assistant_detail_storage'
 import ToolEventCodeExecution from './tool_event_code_execution'
+import ToolEventSearch from './tool_event_search'
 import styles from './tool_event.module.scss'
 
 interface Props {
@@ -138,6 +138,10 @@ function ToolEventContent(
     Component = ToolEventCodeExecution
   }
 
+  if (toolUseEvent.toolName === Mojom.BRAVE_WEB_SEARCH_TOOL_NAME) {
+    Component = ToolEventSearch
+  }
+
   if (Component) {
     return (
       <Component
@@ -204,34 +208,10 @@ export default function ToolEvent(props: Props) {
 }
 
 function ToolContentExpandable(props: Props & ToolUseContent) {
-  const [isExpanded, setIsExpanded] = React.useState<boolean>(false)
-
   return (
     <>
-      <button
-        className={classnames(styles.toolLabel, styles.isExpandable)}
-        onClick={() => {
-          setIsExpanded(!isExpanded)
-        }}
-      >
-        {props.toolLabel}
-      </button>
-      {isExpanded && (
-        <div className={styles.expandedContent}>{props.expandedContent}</div>
-      )}
+      <div>{props.toolLabel}</div>
+      <div className={styles.expandedContent}>{props.expandedContent}</div>
     </>
-  )
-}
-
-export function ToolEventThinking() {
-  return (
-    <div
-      className={classnames(styles.toolUse, styles.isExecuting)}
-      data-testid='tool-event-thinking'
-    >
-      <div className={styles.toolLabel}>
-        {getLocale(S.CHAT_UI_TOOL_LABEL_THINKING)}
-      </div>
-    </div>
   )
 }

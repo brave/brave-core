@@ -72,6 +72,19 @@ class AIChatConversationUIBrowserTestBase : public InProcessBrowserTest {
                           content::RenderFrameHost* frame = nullptr,
                           base::Location location = base::Location::Current());
 
+  // Helper to check that an element with a specific data-testid has the
+  // expected (trimmed) text content. Waits up to 10 seconds for the element
+  // to appear and its text to match.
+  bool VerifyConversationFrameElementText(
+      const std::string& test_id,
+      const std::string& expected_text,
+      base::Location location = base::Location::Current());
+
+  bool VerifyElementText(const std::string& test_id,
+                         const std::string& expected_text,
+                         content::RenderFrameHost* frame = nullptr,
+                         base::Location location = base::Location::Current());
+
   // Helper to click an element with a specific data-testid
   bool ClickElement(const std::string& test_id,
                     content::RenderFrameHost* frame = nullptr);

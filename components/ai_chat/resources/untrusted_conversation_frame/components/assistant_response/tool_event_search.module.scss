@@ -1,0 +1,41 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+.searchSummary {
+  --leo-icon-size: 18px;
+  margin-top: var(--leo-spacing-xl);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--leo-spacing-m);
+  font: var(--leo-font-small-regular);
+  line-height: 1.4;
+  color: var(--leo-color-text-secondary);
+}
+.searchSummary a {
+  width: fit-content;
+  max-width: 100%;
+  vertical-align: baseline;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.searchQueryLink {
+  font: var(--leo-font-small-regular);
+  text-decoration: underline;
+  color: var(--leo-color-text-primary);
+  &:hover {
+    color: var(--leo-color-text-interactive);
+  }
+}
+
+.searchLearnMoreLink {
+  font: var(--leo-font-small-regular);
+  text-decoration: underline;
+  color: var(--leo-color-text-secondary);
+  &:hover {
+    color: var(--leo-color-text-interactive);
+  }
+}

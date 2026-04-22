@@ -17,7 +17,7 @@ const NON_TASK_TOOL_NAMES = [
 
 // How many task tools need to occur within a group for the group
 // to be considered a task.
-const TASK_TOOL_COUNT = 2
+const TASK_TOOL_COUNT = 1
 
 /**
  * Groups consecutive assistant entries for the purposes of combining tool use
@@ -53,20 +53,13 @@ export function groupConversationEntries(
 
 /**
  * A task is when there are multiple entries within a group and there
- * are at least 2 task tool use events and 1 completion event.
+ * are at least X task tool use events and 1 completion event.
  * @param group Group of assistant conversation entries from groupConversationEntries
  * @returns true if the group is a task
  */
 export function isAssistantGroupTask(group: Mojom.ConversationTurn[]) {
-  // Must have at least 1 tool use and a response to the tool use (2 group entries)
-  if (group.length <= 1) {
-    return false
-  }
-
-  // Must have at least 2 task tool uses within the group of responses
+  // Must have at least X task tool uses within the group of responses
   let taskToolCount = 0
-  // Must have at least 1 completion event
-  let hasCompletion = false
   for (const entry of group) {
     // Sanity check: shouldn't have any non-assistant entries
     if (entry.characterType !== Mojom.CharacterType.ASSISTANT) {
@@ -78,18 +71,13 @@ export function isAssistantGroupTask(group: Mojom.ConversationTurn[]) {
     }
     if (entry.events) {
       for (const event of entry.events) {
-        if (event.completionEvent) {
-          hasCompletion = true
-        }
         if (
           !!event.toolUseEvent
           && !NON_TASK_TOOL_NAMES.includes(event.toolUseEvent.toolName)
         ) {
-          taskToolCount++
-        }
-        // Optimization: stop iterating events if we have what we need
-        if (hasCompletion && taskToolCount >= TASK_TOOL_COUNT) {
-          return true
+          if (++taskToolCount >= TASK_TOOL_COUNT) {
+            return true
+          }
         }
       }
     }

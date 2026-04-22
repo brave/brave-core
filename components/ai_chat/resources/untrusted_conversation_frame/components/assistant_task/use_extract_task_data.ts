@@ -6,18 +6,6 @@
 import * as React from 'react'
 import * as Mojom from '../../../common/mojom'
 
-// Important tools are ones worth always showing the latest version of
-// to the user because they convey a longer-term status of the task compared
-// to other tools. For example a navigation in a web page vs a click, or an
-// up to date TODO list of items in the current task.
-// TODO(https://github.com/brave/brave-browser/issues/48535):
-// Should be Navigate and TODO tools.
-// Note: Navigate could be removed if we display the current Url of a related
-// content tab in the Task UI instead (since history navigation affects the
-// "current" URL and not just the most recent navigation tool. This is all
-// experimental.
-const importantToolNames: string[] = [Mojom.NAVIGATE_TOOL_NAME] as const
-
 export default function useExtractTaskData(
   assistantEntryGroup: Mojom.ConversationTurn[],
 ) {
@@ -27,9 +15,6 @@ export default function useExtractTaskData(
     // All completion events are allowed the links provided by the whole response
     // group.
     const allowedLinks = new Set<string>()
-    // Most recent of each type of important tool use event
-    const importantToolUseEvents: Partial<Record<string, Mojom.ToolUseEvent>> =
-      {}
 
     for (const event of assistantEntryGroup.flatMap(
       (entry) => entry.events ?? [],
@@ -49,24 +34,12 @@ export default function useExtractTaskData(
             allowedLinks.add(source.url.url)
           }
         }
-        // Overwrite collection of important tool use events with the latest one of
-        // each type.
-        if (
-          event.toolUseEvent
-          && importantToolNames.includes(event.toolUseEvent.toolName)
-        ) {
-          importantToolUseEvents[event.toolUseEvent.toolName] =
-            event.toolUseEvent
-        }
       }
     }
 
     return {
       taskItems,
       allowedLinks: Array.from(allowedLinks),
-      importantToolUseEvents: Object.values(importantToolUseEvents).filter(
-        (event) => !!event,
-      ), // satisfy that we won't have any undefined value in the array
     }
   }, [assistantEntryGroup])
 }

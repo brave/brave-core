@@ -5,19 +5,16 @@
 
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
-import Label from '@brave/leo/react/label'
 import ProgressRing from '@brave/leo/react/progressRing'
-import Tabs from '@brave/leo/react/tabs'
-import TabItem from '@brave/leo/react/tabItem'
 import classnames from '$web-common/classnames'
-import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import { getToolArtifacts } from '../conversation_entries/conversation_entries_utils'
 import AssistantResponse from '../assistant_response'
-import ToolEvent, { ToolEventThinking } from '../assistant_response/tool_event'
+import ToolEvent from '../assistant_response/tool_event'
 import styles from './assistant_task.module.scss'
 import useExtractTaskData, { TaskData } from './use_extract_task_data'
+import { useProgressBubbleContext } from '../progress_bubble'
 
 interface Props {
   // Entries that make up the task loop
@@ -39,9 +36,6 @@ interface TabProps {
   // Whether the most recent tool use request is being executed
   isToolExecuting: boolean
 
-  // Whether the task is currently generating a response
-  isThinking: boolean
-
   // What the state of the active task is
   toolUseTaskState: Mojom.TaskState
 
@@ -54,13 +48,12 @@ interface TabProps {
 /**
  * The Task is split *not* by ConversationTurn but by CompletionEvent, which is
  * better for descriptive UI.
- * The Progress tab displays the most recent item in that split (the
- * completion text and the subsequent tool uses) as well as any previous
- * "important" tool use (e.g. TODO list or tab navigation).
+ * The Progress tab displays the most recent item in that split - (the
+ * completion text and any tool uses requiring user interaction).
  * The Steps tab displays everything in timeline order.
  */
 export default function AssistantTask(props: Props) {
-  const [showSteps, setShowSteps] = React.useState(false)
+  const { isExpanded: showSteps } = useProgressBubbleContext()
   const [taskThumbnail, setTaskThumbnail] = React.useState<string>()
   const conversationContext = useUntrustedConversationContext()
 
@@ -104,11 +97,6 @@ export default function AssistantTask(props: Props) {
 
   const taskData = useExtractTaskData(props.assistantEntries)
 
-  const isThinking =
-    props.isActiveTask
-    && !conversationContext.isToolExecuting
-    && conversationContext.toolUseTaskState === Mojom.TaskState.kRunning
-
   const shouldOmitArtifacts =
     props.isActiveTask && conversationContext.isGenerating
   const toolArtifacts = !shouldOmitArtifacts
@@ -119,26 +107,12 @@ export default function AssistantTask(props: Props) {
     isGenerating: conversationContext.isGenerating,
     isToolExecuting: conversationContext.isToolExecuting,
     toolUseTaskState: conversationContext.toolUseTaskState,
-    isThinking: isThinking,
-    taskData: taskData,
-    toolArtifacts: toolArtifacts,
+    taskData,
+    toolArtifacts,
   }
 
   return (
-    <div
-      className={styles.task}
-      data-testid='assistant-task'
-    >
-      <Tabs
-        onChange={() => setShowSteps(!showSteps)}
-        value={showSteps ? 'steps' : 'progress'}
-        size='medium'
-      >
-        <TabItem value='progress'>
-          {getLocale(S.AI_CHAT_TASK_PROGRESS_LABEL)}
-        </TabItem>
-        <TabItem value='steps'>{getLocale(S.AI_CHAT_TASK_STEPS_LABEL)}</TabItem>
-      </Tabs>
+    <div data-testid='assistant-task'>
       <div className={styles.taskContent}>
         <div className={styles.taskData}>
           {showSteps && (
@@ -155,34 +129,6 @@ export default function AssistantTask(props: Props) {
               toolArtifacts={toolArtifacts}
             />
           )}
-
-          {props.isActiveTask
-            && conversationContext.toolUseTaskState
-              === Mojom.TaskState.kPaused && (
-              <Label
-                color='neutral'
-                mode='loud'
-                className={styles.taskStateLabel}
-              >
-                <span data-testid='assistant-task-paused-label'>
-                  {getLocale(S.CHAT_UI_TASK_STATE_PAUSED_LABEL)}
-                </span>
-              </Label>
-            )}
-
-          {props.isActiveTask
-            && conversationContext.toolUseTaskState
-              === Mojom.TaskState.kStopped && (
-              <Label
-                color='neutral'
-                mode='loud'
-                className={styles.taskStateLabel}
-              >
-                <span data-testid='assistant-task-stopped-label'>
-                  {getLocale(S.CHAT_UI_TASK_STATE_STOPPED_LABEL)}
-                </span>
-              </Label>
-            )}
         </div>
         {taskThumbnail && (
           <div className={styles.taskImage}>
@@ -196,10 +142,9 @@ export default function AssistantTask(props: Props) {
 
 function Progress(props: Props & TabProps) {
   // The Progress tab should show:
-  // - Any last active complete "important" tool (TODO, navigate)
   // - the most recent completion event
   // - any tool use events from the most recent entry in the group (the active
-  // events)
+  // events) that currently require user interaction.
   const lastTaskItem = props.taskData.taskItems.at(-1)
 
   if (!lastTaskItem || lastTaskItem.length === 0) {
@@ -212,12 +157,13 @@ function Progress(props: Props & TabProps) {
     ? lastTaskItem[0]
     : undefined
 
-  // Include any current tool use events that are not already included in the
-  // "important" section.
+  const ALWAYS_VISIBLE_TOOLS = [Mojom.USER_CHOICE_TOOL_NAME]
+
   const currentToolUseEvents = lastTaskItem.filter(
     (event) =>
       event.toolUseEvent
-      && !props.taskData.importantToolUseEvents.includes(event.toolUseEvent),
+      && (!!event.toolUseEvent.permissionChallenge
+        || ALWAYS_VISIBLE_TOOLS.includes(event.toolUseEvent.toolName)),
   )
 
   // We need to include inline search events so the AssistantResponse knows
@@ -234,14 +180,6 @@ function Progress(props: Props & TabProps) {
 
   return (
     <div className={styles.progress}>
-      {props.taskData.importantToolUseEvents.map((event, index) => (
-        <ToolEvent
-          key={index}
-          toolUseEvent={event}
-          isEntryActive={false}
-          isExecuting={false}
-        />
-      ))}
       {currentCompletionEvent && (
         <div className={styles.progressText}>
           <AssistantResponse
@@ -266,7 +204,6 @@ function Progress(props: Props & TabProps) {
           isExecuting={props.isToolExecuting}
         />
       ))}
-      {props.isThinking && <ToolEventThinking />}
     </div>
   )
 }
@@ -301,8 +238,6 @@ function Steps(props: Props & TabProps) {
         (event) => event.toolUseEvent && !event.toolUseEvent.output,
       )
 
-    const isThinking = isRunnable && props.isThinking
-
     // Non-last steps: strip source/query events (they belong with
     // the completion). Last step: prepend earlier source/query events
     // and keep its own.
@@ -334,7 +269,6 @@ function Steps(props: Props & TabProps) {
           allowedLinks={props.taskData.allowedLinks}
           isLeoModel={props.isLeoModel}
         />
-        {isThinking && <ToolEventThinking />}
       </div>
     )
   })

@@ -593,6 +593,9 @@ void ConversationHandler::SubmitHumanConversationEntry(
   // Submitting a new human entry takes precedence over any pending tool
   // requests, so if we have a previous assistant entry, cancel any pending tool
   // requests.
+  // TODO(https://github.com/brave/brave-browser/issues/55283): Keep these or
+  // otherwise store some state so that we know when previous tool uses were
+  // interrupted by the user.
   if (!chat_history_.empty()) {
     auto& last_entry = chat_history_.back();
     if (last_entry->character_type == mojom::CharacterType::ASSISTANT &&
@@ -980,6 +983,8 @@ void ConversationHandler::StopGenerationAndMaybeGetHumanEntry(
     std::move(callback).Run(nullptr);
     return;
   }
+
+  StopTask();
 
   is_request_in_progress_ = false;
   engine_->ClearAllQueries();

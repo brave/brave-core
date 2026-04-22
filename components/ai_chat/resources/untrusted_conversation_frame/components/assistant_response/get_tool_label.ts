@@ -35,6 +35,17 @@ function getHistoryToolNameLabel(toolInput: any) {
   return getLocale(S.CHAT_UI_TOOL_LABEL_NAVIGATE_WEB_PAGE)
 }
 
+function getSearchToolNameLabel(toolInput: any) {
+  const queries: string[] | undefined = toolInput?.query
+
+  if (!queries) {
+    return getLocale(S.CHAT_UI_SEARCH_GENERIC)
+  }
+  return formatLocale(S.CHAT_UI_SEARCH_QUERIES, {
+    $1: queries.map((query) => `"${query}"`).join(', '),
+  })
+}
+
 /**
  * Get a display label for the specified tool given its name and input properties.
  * To display any more complex UI for a tool and not simply a string label,
@@ -68,12 +79,12 @@ export function getToolLabel(toolName: string, toolInput: any) {
     // </if>
     case Mojom.DEEP_RESEARCH_TOOL_NAME:
       return getLocale(S.CHAT_UI_TOOL_LABEL_DEEP_RESEARCH)
+    case Mojom.USER_CHOICE_TOOL_NAME:
+      return getLocale(S.CHAT_UI_TOOL_LABEL_USER_CHOICE)
     case Mojom.BRAVE_NEWS_SEARCH_TOOL_NAME:
     case Mojom.BRAVE_WEB_SEARCH_TOOL_NAME:
     case Mojom.BRAVE_FAQS_SEARCH_TOOL_NAME:
-      // Tool use events for server search tools are not displayed here but
-      // through existing WebSourcesEvent and SearchQueriesEvent.
-      return null
+      return getSearchToolNameLabel(toolInput)
     default:
       return toolName
   }

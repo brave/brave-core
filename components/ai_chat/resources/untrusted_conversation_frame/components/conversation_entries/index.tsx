@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import ProgressRing from '@brave/leo/react/progressRing'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
@@ -39,6 +38,9 @@ import {
 import useConversationEventClipboardCopyHandler from './use_conversation_event_clipboard_copy_handler'
 import styles from './style.module.scss'
 import AssistantTask from '../assistant_task/assistant_task'
+import ProgressBubble, {
+  ProgressBubbleContextProvider,
+} from '../progress_bubble'
 
 const escape = (text: string): string => (RegExp as any).escape(text)
 
@@ -198,6 +200,12 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
   const [hoverMenuButtonId, setHoverMenuButtonId] = React.useState<number>()
   const [activeMenuId, setActiveMenuId] = React.useState<number>()
   const [editInputId, setEditInputId] = React.useState<number>()
+  /**
+   * An array of pairs of a conversation, each one contained in an array so that
+   * responses are grouped as a single entity where they are multiple loops of
+   * a single response, i.e.:
+   * [[human], [assistant, assistant]], [[human], [assistant, assistant]]]
+   */
   const entryPairs = usePairedConversationGroups()
   const hasGenerated = React.useRef(false)
   hasGenerated.current =
@@ -233,7 +241,7 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
   }
 
   function renderEntryGroup(
-    isLastGroup: boolean,
+    isActiveGroup: boolean,
     group: Mojom.ConversationTurn[],
     entryNumber: number,
   ) {
@@ -245,10 +253,9 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
     const isAIAssistant =
       firstEntryEdit.characterType === Mojom.CharacterType.ASSISTANT
     const isEntryInProgressButGroup =
-      isLastGroup && isAIAssistant && conversationContext.isGenerating
+      isActiveGroup && isAIAssistant && conversationContext.isGenerating
     const isHuman = firstEntryEdit.characterType === Mojom.CharacterType.HUMAN
-    const isGeneratingResponse =
-      isHuman && isLastGroup && conversationContext.isGenerating
+
     const showLongPageContentInfo =
       entryNumber === 1
       && isAIAssistant
@@ -294,12 +301,12 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
     const hasAttachments =
       !!firstEntryEdit.uploadedFiles?.length || tabAttachments.length > 0
 
-    const groupIsTask = isAssistantGroupTask(group)
+    const groupIsTask = isAIAssistant && isAssistantGroupTask(group)
 
     // Omit artifacts until generation is complete so we show
     // the artifacts and the final response text at the same time.
     const shouldOmitToolArtifacts =
-      isLastGroup && conversationContext.isGenerating
+      isActiveGroup && conversationContext.isGenerating
     const toolArtifacts = !shouldOmitToolArtifacts
       ? getToolArtifacts(group)
       : null
@@ -317,7 +324,7 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
             {groupIsTask && (
               <AssistantTask
                 assistantEntries={group}
-                isActiveTask={isLastGroup}
+                isActiveTask={isActiveGroup}
                 isLeoModel={conversationContext.isLeoModel}
               />
             )}
@@ -326,7 +333,7 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
                 const isEntryInProgress =
                   isEntryInProgressButGroup && i === group.length - 1
                 const isLastEntryInLastGroup =
-                  isLastGroup && i === group.length - 1
+                  isActiveGroup && i === group.length - 1
                 const currentEntryEdit = entry.edits?.at(-1) ?? entry
                 const allowedLinksForEntry: string[] =
                   currentEntryEdit.events?.flatMap(
@@ -523,11 +530,6 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
                 )}
             </>
           )}
-          {isGeneratingResponse && (
-            <div className={styles.loading}>
-              <ProgressRing />
-            </div>
-          )}
         </div>
       </div>
     )
@@ -547,15 +549,24 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
               : undefined
           }
         >
-          {pair.map((group, groupIndex) =>
-            renderEntryGroup(
-              pairIndex === entryPairs.length - 1
-                && groupIndex === pair.length - 1,
-              group,
-              // Note, we need to keep track of the entry number across pairs and groups.
-              entryNumber++,
-            ),
-          )}
+          <ProgressBubbleContextProvider>
+            {pair.map((group, groupIndex) => (
+              <React.Fragment key={groupIndex}>
+                {renderEntryGroup(
+                  pairIndex === entryPairs.length - 1,
+                  group,
+                  // Note, we need to keep track of the entry number across pairs and groups.
+                  entryNumber++,
+                )}
+                {groupIndex === 0 && (
+                  <ProgressBubble
+                    responseGroup={pair[1]}
+                    isLastGroup={pairIndex === entryPairs.length - 1}
+                  />
+                )}
+              </React.Fragment>
+            ))}
+          </ProgressBubbleContextProvider>
         </div>
       ))}
     </div>
