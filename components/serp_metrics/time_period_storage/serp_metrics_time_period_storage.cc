@@ -19,37 +19,8 @@ namespace serp_metrics {
 
 namespace {
 
-// 24 hours covers a standard day; the extra 2 hours covers the maximum DST
-// shift (Antarctica/Troll), guaranteeing the result lands inside the next
-// calendar day without overshooting into the day after.
-constexpr base::TimeDelta kNextMidnightOffset =
-    base::Hours(24) + base::Hours(2);
-
 constexpr std::string_view kDayKey = "day";
 constexpr std::string_view kValueKey = "value";
-
-// Returns the midnight that starts the calendar day after `time`. Safe
-// across DST transitions and does not require `time` to be at midnight.
-base::Time NextMidnight(base::Time time) {
-  // No precondition is enforced on `time` being at midnight. Two legitimate
-  // cases produce non-midnight inputs: legacy prefs written by the old
-  // DST-offset code contain timestamps 1 hour past midnight, and travel across
-  // timezones means a timestamp that was midnight in the original timezone is
-  // no longer midnight in the current one. Adding `kNextMidnightOffset` always
-  // lands within the next calendar day regardless of the input, so
-  // `LocalMidnight` returns its correct start.
-  //
-  // Known limitation: if `time` appears later than 22:00 in the current local
-  // timezone (possible when crossing more than 22 timezone hours, e.g. UTC+12
-  // to UTC-11), `time + kNextMidnightOffset` overshoots into the day after next
-  // and one empty bucket is silently skipped. A correct fix requires ICU
-  // calendar arithmetic to advance by exactly one calendar day. DST transitions
-  // shift clocks by at most 2 hours, so the 22:00 bound is never reached for
-  // DST and all DST cases are handled correctly. Migrating all
-  // `SerpMetricsTimePeriodStorage` callers to UTC buckets would eliminate both
-  // the DST and timezone-travel edge cases entirely.
-  return (time + kNextMidnightOffset).LocalMidnight();
-}
 
 }  // namespace
 
@@ -85,7 +56,7 @@ uint64_t SerpMetricsTimePeriodStorage::GetCountForTimeRange(
 uint64_t SerpMetricsTimePeriodStorage::GetCount() const {
   const base::Time now = base::Time::Now();
   const base::Time n_days_ago =
-      now.LocalMidnight() - base::Days(period_days_ - 1);
+      now.UTCMidnight() - base::Days(period_days_ - 1);
   return GetCountForTimeRange(n_days_ago, now);
 }
 
@@ -95,7 +66,7 @@ void SerpMetricsTimePeriodStorage::Clear() {
 }
 
 void SerpMetricsTimePeriodStorage::FillToToday() {
-  const base::Time now_midnight = base::Time::Now().LocalMidnight();
+  const base::Time now_midnight = base::Time::Now().UTCMidnight();
 
   if (daily_values_.empty()) {
     // No prior data; seed with an empty bucket for today.
@@ -103,15 +74,15 @@ void SerpMetricsTimePeriodStorage::FillToToday() {
     return;
   }
 
-  // Use `NextMidnight` to correctly handle short calendar days at DST start.
-  const base::Time last_recorded_midnight = daily_values_.front().time;
-  base::Time midnight_bucket = NextMidnight(last_recorded_midnight);
+  const base::Time last_recorded_time = daily_values_.front().time;
+  base::Time midnight_bucket =
+      (last_recorded_time + base::Days(1)).UTCMidnight();
   while (midnight_bucket <= now_midnight) {
     daily_values_.push_front({midnight_bucket, 0});
     if (daily_values_.size() > period_days_) {
       daily_values_.pop_back();
     }
-    midnight_bucket = NextMidnight(midnight_bucket);
+    midnight_bucket = midnight_bucket + base::Days(1);
   }
 }
 
@@ -143,8 +114,23 @@ void SerpMetricsTimePeriodStorage::Load() {
       break;
     }
 
-    daily_values_.push_back({base::Time::FromSecondsSinceUnixEpoch(*day),
-                             static_cast<uint64_t>(*value)});
+    const base::Time bucket_time = base::Time::FromSecondsSinceUnixEpoch(*day);
+
+    // Legacy buckets carry local-midnight timestamps. Map them to the UTC
+    // midnight of the same local calendar day to preserve correct day
+    // attribution after the switch to UTC buckets.
+    base::Time midnight;
+    if (bucket_time == bucket_time.LocalMidnight()) {
+      base::Time::Exploded exploded;
+      bucket_time.LocalExplode(&exploded);
+      if (!base::Time::FromUTCExploded(exploded, &midnight)) {
+        midnight = bucket_time.UTCMidnight();
+      }
+    } else {
+      midnight = bucket_time.UTCMidnight();
+    }
+
+    daily_values_.push_back({midnight, static_cast<uint64_t>(*value)});
   }
 }
 

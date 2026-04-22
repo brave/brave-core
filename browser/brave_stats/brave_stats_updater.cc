@@ -33,6 +33,7 @@
 #include "brave/components/constants/network_constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/misc_metrics/general_browser_usage.h"
+#include "brave/components/serp_metrics/pref_names.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
 #include "brave/components/version_info/version_info.h"
 #include "chrome/browser/browser_process.h"
@@ -378,6 +379,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(kLastCheckMonth, 0);
   registry->RegisterStringPref(kLastCheckYMD, std::string());
   registry->RegisterStringPref(kWeekOfInstallation, std::string());
+  registry->RegisterTimePref(serp_metrics::prefs::kLastReportedAt,
+                             base::Time());
 }
 
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
