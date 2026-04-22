@@ -1,5 +1,4 @@
 include_rules = [
-  "+brave/components/brave_shields/content/test",
   "+components/content_settings",
   "+components/prefs",
   "+components/sync_preferences/testing_pref_service_syncable.h",
