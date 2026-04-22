@@ -135,6 +135,12 @@ void BraveNewTabButton::ShowContextMenuForViewImpl(
     auto* service = ContainersServiceFactory::GetForProfile(profile);
     if (service && !(containers_context_menu_runner_ &&
                      containers_context_menu_runner_->IsRunning())) {
+      // clear runner/model before the delegate so reopening the menu does not
+      // destroy the delegate first.
+      containers_context_menu_runner_.reset();
+      containers_menu_model_.reset();
+      containers_menu_delegate_.reset();
+
       containers_menu_delegate_ =
           std::make_unique<NewTabButtonContainersMenuDelegate>(
               *browser_window_interface_);
