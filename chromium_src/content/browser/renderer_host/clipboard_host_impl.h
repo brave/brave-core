@@ -12,13 +12,13 @@
   CommitWrite() override; \
   void SanitizeOnNextWriteText()
 
-#define CreateClipboardEndpoint(...) \
-  CreateClipboardEndpoint();         \
+#define StopObservingClipboard(...)    \
+  StopObservingClipboard(__VA_ARGS__); \
   bool sanitize_on_next_write_text_ = false
 
 #include <content/browser/renderer_host/clipboard_host_impl.h>  // IWYU pragma: export
 
 #undef CommitWrite
-#undef CreateClipboardEndpoint
+#undef StopObservingClipboard
 
 #endif  // BRAVE_CHROMIUM_SRC_CONTENT_BROWSER_RENDERER_HOST_CLIPBOARD_HOST_IMPL_H_
