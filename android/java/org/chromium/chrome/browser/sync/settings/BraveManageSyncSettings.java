@@ -33,13 +33,10 @@ import java.util.TimerTask;
 public class BraveManageSyncSettings extends ManageSyncSettings {
     private static final String TAG = "BMSS";
 
-    private static final String PREF_ADVANCED_CATEGORY = "advanced_category";
-
     private Preference mGoogleActivityControls;
     private Preference mSyncEncryption;
 
     private ChromeSwitchPreference mPrefSyncPasswords;
-    private ChromeSwitchPreference mSyncEverything;
 
     private BravePasswordAccessReauthenticationHelper mReauthenticationHelper;
 
@@ -48,6 +45,9 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
     private Boolean mVerboseSyncPasswordsPref = false;
     private static final String VERBOSE_SYNC_PASSWORDS_PREF_COMMAND_LINE_KEY =
             "verbose_sync_passwords_pref";
+
+    // Mirrors ManageSyncSettings.PREF_CENTRAL_ACCOUNT_CARD_PREFERENCE (private there)
+    private static final String PREF_CENTRAL_ACCOUNT_CARD_PREFERENCE = "central_account_card";
 
     // Android Runtime for Chrome
     public static final String ARC_FEATURE = "org.chromium.arc";
@@ -70,52 +70,38 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
             mVerboseSyncPasswordsPref = true;
         }
 
-        Preference reviewSyncData = findPreference(PREF_SYNC_REVIEW_DATA);
-        assert reviewSyncData != null : "Something has changed in the upstream!";
-        if (reviewSyncData != null) {
-            getPreferenceScreen().removePreference(reviewSyncData);
-        }
-
-        Preference turnOffSync = findPreference(PREF_TURN_OFF_SYNC);
-        assert turnOffSync != null : "Something has changed in the upstream!";
-        if (turnOffSync != null) {
-            getPreferenceScreen().removePreference(turnOffSync);
-        }
-
-        Preference syncReadingList = findPreference(PREF_SYNC_READING_LIST);
-        assert syncReadingList != null : "Something has changed in the upstream!";
-        if (syncReadingList != null) {
-            syncReadingList.setVisible(false);
-        }
-
-        Preference syncAutofill = findPreference(PREF_SYNC_AUTOFILL);
-        assert syncAutofill != null : "Something has changed in the upstream!";
-        if (syncAutofill != null) {
-            syncAutofill.setTitle(R.string.brave_sync_autofill);
-        }
-
-        assert mSyncEverything != null : "Something has changed in the upstream!";
-
         getPreferenceScreen().removePreference(mGoogleActivityControls);
         getPreferenceScreen().removePreference(mSyncEncryption);
 
-        findPreference(PREF_ADVANCED_CATEGORY).setVisible(false);
+        // Remove Google-specific preferences not needed for Brave Sync
+        removePreferenceByKey(PREF_CENTRAL_ACCOUNT_CARD_PREFERENCE);
+        removePreferenceByKey(PREF_ACCOUNT_DATA_DASHBOARD);
+        removePreferenceByKey(PREF_SIGN_OUT);
+        removePreferenceByKey(PREF_MANAGE_YOUR_GOOGLE_ACCOUNT);
+        removePreferenceByKey(PREF_ACCOUNT_ANDROID_DEVICE_ACCOUNTS);
+        removePreferenceByKey(PREF_BATCH_UPLOAD_CARD_PREFERENCE);
+        removePreferenceByKey(PREF_IDENTITY_ERROR_CARD_PREFERENCE);
+        Preference prefReadingList = findPreference(PREF_ACCOUNT_SECTION_READING_LIST_TOGGLE);
+        if (prefReadingList != null) prefReadingList.setVisible(false);
 
-        Preference syncPaymentsIntegration = findPreference(PREF_SYNC_PAYMENTS_INTEGRATION);
-        assert syncPaymentsIntegration != null : "Something has changed in the upstream!";
-        if (syncPaymentsIntegration != null) {
-            syncPaymentsIntegration.setVisible(false);
+        Preference prefPayments = findPreference(PREF_ACCOUNT_SECTION_PAYMENTS_TOGGLE);
+        if (prefPayments != null) prefPayments.setVisible(false);
+
+        Preference prefAutofill = findPreference(PREF_ACCOUNT_SECTION_ADDRESSES_TOGGLE);
+        if (prefAutofill != null) prefAutofill.setTitle(R.string.brave_sync_autofill);
+
+        mPrefSyncPasswords =
+                (ChromeSwitchPreference) findPreference(PREF_ACCOUNT_SECTION_PASSWORDS_TOGGLE);
+        if (!isRunningOnChromeOS() && mPrefSyncPasswords != null) {
+            overrideWithAuthConfirmation(mPrefSyncPasswords);
         }
+        updateSyncPasswordsSummary();
+    }
 
-        mPrefSyncPasswords = findPreference(PREF_SYNC_PASSWORDS);
-        assert mPrefSyncPasswords != null : "Something has changed in the upstream!";
-
-        // We cannot require Android screenlock if browser runs at ChromeOS
-        // Google App Runtime emulator, because it is managed by ChromeOS and
-        // not by the Android subsystem
-        if (!isRunningOnChromeOS()) {
-            overrideWithAuthConfirmationSyncPasswords();
-            overrideWithAuthConfirmationSyncEverything();
+    private void removePreferenceByKey(String key) {
+        Preference pref = findPreference(key);
+        if (pref != null) {
+            getPreferenceScreen().removePreference(pref);
         }
     }
 
@@ -139,14 +125,6 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
                         R.string.password_sync_type_set_screen_lock,
                         Toast.LENGTH_LONG)
                 .show();
-    }
-
-    private void overrideWithAuthConfirmationSyncPasswords() {
-        overrideWithAuthConfirmation(mPrefSyncPasswords);
-    }
-
-    private void overrideWithAuthConfirmationSyncEverything() {
-        overrideWithAuthConfirmation(mSyncEverything);
     }
 
     private void overrideWithAuthConfirmation(ChromeSwitchPreference control) {
@@ -263,6 +241,7 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
     }
 
     private void updateSyncPasswordsSummary() {
+        if (mPrefSyncPasswords == null) return;
         if (ReauthenticationManager.isScreenLockSetUp(ContextUtils.getApplicationContext())) {
             verboseIfEnabled("updateSyncPasswordsSummary: screen lock is set up");
             if (ReauthenticationManager.authenticationStillValid(

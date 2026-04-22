@@ -7,6 +7,7 @@
 
 #if BUILDFLAG(IS_ANDROID)
 #include "components/password_manager/core/browser/password_store/login_database.h"
+#include "components/prefs/pref_service.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 namespace password_manager {

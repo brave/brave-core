@@ -2389,11 +2389,6 @@ public class BytecodeTest {
 
         Assert.assertTrue(
                 fieldExists(
-                        "org/chromium/chrome/browser/sync/settings/ManageSyncSettings",
-                        "mSyncEverything"));
-
-        Assert.assertTrue(
-                fieldExists(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator",
                         "mMediator"));
         Assert.assertTrue(
