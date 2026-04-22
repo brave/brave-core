@@ -31,7 +31,12 @@ def _load_branding_and_version(original_method, output_dir, branding,
                                channel) -> dict[str, typing.Any]:
     data = original_method(output_dir, branding, channel)
 
-    data["package_and_channel"] = data["info_vars"]["PACKAGE"]
+    normalized_channel = data.get("channel", channel)
+    package = data["info_vars"]["PACKAGE"]
+    if normalized_channel == "stable":
+        data["package_and_channel"] = package
+    else:
+        data["package_and_channel"] = f"{package}-{normalized_channel}"
 
     version = (f"{data['version_vars']['MINOR']}."
                f"{data['version_vars']['BUILD']}."
