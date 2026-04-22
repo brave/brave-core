@@ -56,6 +56,11 @@ BraveTab::SmallAccentIconView::~SmallAccentIconView() = default;
 
 void BraveTab::SmallAccentIconView::OnPaint(gfx::Canvas* canvas) {
   auto* tab = static_cast<BraveTab*>(parent());
+  if (!tab->ShouldPaintTabAccent()) {
+    // There could be a timing issue where small accent icon view isn't hidden
+    // yet after a tab is being closed.
+    return;
+  }
   constexpr int kCenter = kSmallAccentSize / 2;
   if (auto accent_colors = tab->GetTabAccentColors();
       accent_colors.has_value()) {
