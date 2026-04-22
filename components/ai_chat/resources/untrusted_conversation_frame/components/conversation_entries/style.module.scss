@@ -19,7 +19,7 @@
 }
 
 .hasGenerated .entryPair:last-child {
-  min-height: calc(100vh - var(--suggested-questions-height) * 2);
+  min-height: calc(100vh - var(--notices-height) - var(--leo-spacing-xl));
 }
 
 .message {

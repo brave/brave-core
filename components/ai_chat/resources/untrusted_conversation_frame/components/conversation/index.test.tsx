@@ -32,12 +32,15 @@ const withSuggestionsState = {
   conversationEntriesState: { suggestedQuestions: ['Test question'] },
 }
 
-describe('Conversation --suggested-questions-height CSS variable', () => {
+describe('Conversation --notices-height CSS variable', () => {
   let resizeObserverCallbacks: ResizeObserverCallback[]
+
+  let rafCallbacks: FrameRequestCallback[]
 
   beforeEach(() => {
     resizeObserverCallbacks = []
-    document.body.style.removeProperty('--suggested-questions-height')
+    rafCallbacks = []
+    document.body.style.removeProperty('--notices-height')
     ;(window as any).ResizeObserver = class MockResizeObserver
       implements ResizeObserver
     {
@@ -49,6 +52,16 @@ describe('Conversation --suggested-questions-height CSS variable', () => {
       unobserve() {}
       disconnect() {}
     }
+    jest
+      .spyOn(window, 'requestAnimationFrame')
+      .mockImplementation((cb: FrameRequestCallback) => {
+        rafCallbacks.push(cb)
+        return 0
+      })
+  })
+
+  afterEach(() => {
+    jest.restoreAllMocks()
   })
 
   async function renderWithSuggestionsAndTriggerResize(
@@ -66,15 +79,31 @@ describe('Conversation --suggested-questions-height CSS variable', () => {
       for (const cb of resizeObserverCallbacks) {
         cb([], {} as ResizeObserver)
       }
+      for (const cb of rafCallbacks) {
+        // eslint-disable-next-line n/no-callback-literal
+        cb(0)
+      }
     })
   }
 
   it('sets the CSS variable via ResizeObserver callback when suggestions are visible', async () => {
+    jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({
+      height: 80,
+      width: 0,
+      top: 0,
+      left: 0,
+      bottom: 0,
+      right: 0,
+      x: 0,
+      y: 0,
+      toJSON: () => ({}),
+    } as DOMRect)
+
     await renderWithSuggestionsAndTriggerResize()
 
-    expect(
-      document.body.style.getPropertyValue('--suggested-questions-height'),
-    ).toBe('calc(0px + var(--leo-spacing-2xl) * 2)')
+    expect(document.body.style.getPropertyValue('--notices-height')).toBe(
+      'calc(80px + var(--leo-spacing-2xl) * 2)',
+    )
   })
 
   it('resets the CSS variable to 0px when suggestions are removed', async () => {
@@ -86,9 +115,9 @@ describe('Conversation --suggested-questions-height CSS variable', () => {
     })
 
     await waitFor(() => {
-      expect(
-        document.body.style.getPropertyValue('--suggested-questions-height'),
-      ).toBe('0px')
+      expect(document.body.style.getPropertyValue('--notices-height')).toBe(
+        '0px',
+      )
     })
   })
 
@@ -101,8 +130,6 @@ describe('Conversation --suggested-questions-height CSS variable', () => {
 
     unmount()
 
-    expect(
-      document.body.style.getPropertyValue('--suggested-questions-height'),
-    ).toBe('0px')
+    expect(document.body.style.getPropertyValue('--notices-height')).toBe('0px')
   })
 })
