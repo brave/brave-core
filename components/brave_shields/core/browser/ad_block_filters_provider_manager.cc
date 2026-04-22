@@ -108,6 +108,9 @@ bool AdBlockFiltersProviderManager::MaybeConsumeEngineStartupChangeNotification(
     bool is_for_default_engine) {
   // In most cases we should be loading from DAT cache so we want to consume
   // the startup OnChanged notification to avoid parsing the filter list
+  // We explicitly don't try to handle edge cases like updates that happen
+  // during startup/shutdown and (at least for now) wait for the next component
+  // update to clear it
   bool& suppress_engine_startup_change_notifications =
       is_for_default_engine
           ? suppress_default_engine_startup_change_notification_
