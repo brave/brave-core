@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/no_destructor.h"
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
@@ -151,7 +152,8 @@ AdsServiceFactory::BuildServiceInstanceForBrowserContext(
       brave::GetChannelName(), profile->GetPath(), CreateAdsTooltipsDelegate(),
       std::make_unique<DeviceIdImpl>(),
       std::make_unique<BatAdsServiceFactoryImpl>(),
-      g_brave_browser_process->resource_component(), history_service,
+      CHECK_DEREF(g_brave_browser_process->resource_component()),
+      history_service,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       rewards_service,
 #endif
