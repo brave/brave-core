@@ -16,6 +16,7 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/i18n/file_util_icu.h"
 #include "base/i18n/time_formatting.h"
@@ -26,6 +27,7 @@
 #include "base/path_service.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
@@ -37,6 +39,8 @@
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
+#include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/containers/buildflags/buildflags.h"
@@ -521,6 +525,17 @@ void ToggleJavascriptEnabled(Browser* browser) {
   }
 
   shields->SetIsNoScriptEnabled(!shields->GetNoScriptEnabled());
+}
+
+void UpdateAdBlockFilterLists(Browser* browser) {
+  if (!browser || !g_brave_browser_process ||
+      !g_brave_browser_process->ad_block_service()) {
+    return;
+  }
+
+  g_brave_browser_process->ad_block_service()
+      ->component_service_manager()
+      ->UpdateFilterLists(base::BindOnce([](bool) {}));
 }
 
 #if BUILDFLAG(ENABLE_COMMANDER)

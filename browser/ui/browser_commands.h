@@ -69,6 +69,7 @@ void ToggleSidebar(Browser* browser);
 
 void ToggleShieldsEnabled(Browser* browser);
 void ToggleJavascriptEnabled(Browser* browser);
+void UpdateAdBlockFilterLists(Browser* browser);
 
 #if BUILDFLAG(ENABLE_COMMANDER)
 void ToggleCommander(Browser* browser);
