@@ -7,6 +7,7 @@
 
 #include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/brave_account/features.h"
+#include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/public/browser_state.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -41,7 +42,8 @@ BraveAccountServiceFactoryIOS::BuildServiceInstanceFor(
     ProfileIOS* profile) const {
   CHECK(profile);
   return std::make_unique<BraveAccountService>(
-      profile->GetPrefs(), profile->GetSharedURLLoaderFactory());
+      profile->GetPrefs(), profile->GetSharedURLLoaderFactory(),
+      GetApplicationContext()->GetOSCryptAsync());
 }
 
 }  // namespace brave_account

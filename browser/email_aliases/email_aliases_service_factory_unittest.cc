@@ -5,6 +5,8 @@
 
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
 
+#include <memory>
+
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_account/brave_account_service_factory.h"
@@ -14,6 +16,7 @@
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
+#include "components/os_crypt/async/browser/test_utils.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/test/browser_task_environment.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -37,6 +40,9 @@ class EmailAliasesServiceFactoryTest : public ::testing::Test {
   base::test::ScopedFeatureList scoped_feature_list_;
   TestingProfileManager profile_manager_{TestingBrowserProcess::GetGlobal()};
   network::TestURLLoaderFactory test_url_loader_factory_;
+  std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_async_ =
+      os_crypt_async::GetTestOSCryptAsyncForTesting(
+          /*is_sync_for_unittests=*/true);
 };
 
 // Email Aliases depends on Brave Account. When Email Aliases is enabled,
@@ -54,7 +60,8 @@ TEST_F(EmailAliasesServiceFactoryTest,
                                               -> std::unique_ptr<KeyedService> {
         return std::make_unique<brave_account::BraveAccountService>(
             user_prefs::UserPrefs::Get(context),
-            test_url_loader_factory_.GetSafeWeakWrapper());
+            test_url_loader_factory_.GetSafeWeakWrapper(),
+            os_crypt_async_.get());
       }));
   auto* service = EmailAliasesServiceFactory::GetServiceForProfile(profile);
   EXPECT_NE(service, nullptr);
@@ -102,7 +109,8 @@ TEST_F(EmailAliasesServiceFactoryTest, SameServiceForRegularAndIncognito) {
                                               -> std::unique_ptr<KeyedService> {
         return std::make_unique<brave_account::BraveAccountService>(
             user_prefs::UserPrefs::Get(context),
-            test_url_loader_factory_.GetSafeWeakWrapper());
+            test_url_loader_factory_.GetSafeWeakWrapper(),
+            os_crypt_async_.get());
       }));
   auto* service_regular =
       EmailAliasesServiceFactory::GetServiceForProfile(profile);
