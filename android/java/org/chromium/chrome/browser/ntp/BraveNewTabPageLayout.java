@@ -648,14 +648,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                                                                 newsFeedViewPosition);
                                                 if (currentDisplayAd != null) {
                                                     mCreativeInstanceId =
-                                                            currentDisplayAd != null
-                                                                    ? currentDisplayAd
-                                                                            .creativeInstanceId
-                                                                    : "";
-                                                    mUuid =
-                                                            currentDisplayAd != null
-                                                                    ? currentDisplayAd.uuid
-                                                                    : "";
+                                                            currentDisplayAd.creativeInstanceId;
+                                                    mUuid = currentDisplayAd.uuid;
                                                     mCardType = "displayad";
 
                                                     // if viewed for more than 100 ms and is more

@@ -1396,7 +1396,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 && mBraveRewardsNativeWorker.isSupported()
                 && NtpUtil.shouldShowRewardsIcon()) {
             // Check policy before showing rewards icon
-            Profile profile = tab != null ? Profile.fromWebContents(tab.getWebContents()) : null;
+            Profile profile = Profile.fromWebContents(tab.getWebContents());
             boolean isDisabled = BraveRewardsPolicy.isDisabledByPolicy(profile);
             if (!isDisabled) {
                 mRewardsLayout.setVisibility(View.VISIBLE);
