@@ -64,21 +64,6 @@ public class BraveManageSyncSettingsTest {
     void syncPasswordsOverridden(Boolean isChromeOS, Boolean handlerShouldBeOverridden) {
         setupMockSyncService();
 
-        // The next line triggers presubmit warning
-        // Banned functions were used.
-        // ...
-        // It is safe to ignore this warning if you are just moving an existing
-        // call, or if you want special handling for users in the legacy state.
-        // Support the legacy state is the case for Brave Sync
-        when(mSyncService.hasSyncConsent()).thenReturn(true);
-
-        when(mSyncService.getSetupInProgressHandle())
-                .thenReturn(
-                        new SyncService.SyncSetupInProgressHandle() {
-                            @Override
-                            public void close() {}
-                        });
-
         BraveManageSyncSettings.setIsRunningOnChromeOSForTesting(isChromeOS);
         BraveManageSyncSettings fragment = startManageSyncPreferences();
 
