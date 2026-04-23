@@ -5,6 +5,9 @@
 
 #import "brave/ios/browser/ui/l10n_utils_typed_bridge.h"
 
+#import "base/strings/sys_string_conversions.h"
+#import "ui/base/l10n/l10n_util_mac.h"
+
 @implementation L10nUtils (Typed)
 
 + (NSString*)stringForMessageIDTyped:(MessageIDTyped)messageID {
@@ -18,6 +21,14 @@
 + (NSString*)formatStringForMessageIDTyped:(MessageIDTyped)messageID
                                   argument:(NSString*)argument {
   return [self formatStringForMessageID:(MessageID)messageID argument:argument];
+}
+
++ (NSString*)formatStringForMessageIDTyped:(MessageIDTyped)messageID
+                                 argument1:(NSString*)argument1
+                                 argument2:(NSString*)argument2 {
+  return l10n_util::GetNSStringF((MessageID)messageID,
+                                 base::SysNSStringToUTF16(argument1),
+                                 base::SysNSStringToUTF16(argument2));
 }
 
 + (NSString*)pluralStringForMessageIDTyped:(MessageIDTyped)messageID

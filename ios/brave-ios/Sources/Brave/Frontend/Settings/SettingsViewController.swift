@@ -59,7 +59,7 @@ protocol SettingsDelegate: AnyObject {
   func settingsPresentQuickView()
 }
 
-class SettingsViewController: TableViewController {
+class SettingsViewController: TableViewController, BraveAccountAuthenticationObserver {
   weak var settingsDelegate: SettingsDelegate?
 
   private let profile: LegacyBrowserProfile
@@ -80,11 +80,18 @@ class SettingsViewController: TableViewController {
   private let windowProtection: WindowProtection?
   private let ipfsAPI: IpfsAPI
   private let altIconsModel = AltIconsModel()
-  private let prefsChangeRegistrar: PrefChangeRegistrar
 
   private lazy var braveAccountAuthentication: any BraveAccountAuthentication = {
-    return BraveAccountAuthenticationBridgeImpl(profile: braveCore.profile)
+    return BraveAccount.AuthenticationProvider.authentication(for: braveCore.profile)
   }()
+
+  private var braveAccountState: BraveAccount.AccountState?
+
+  func onAccountStateChanged(state: BraveAccount.AccountState) {
+    braveAccountState = state
+    setUpSections()
+    tableView.reloadData()
+  }
 
   private let braveAccountSectionUUID: UUID = .init()
   private let featureSectionUUID: UUID = .init()
@@ -126,7 +133,6 @@ class SettingsViewController: TableViewController {
     self.keyringStore = keyringStore
     self.cryptoStore = cryptoStore
     self.ipfsAPI = braveCore.ipfsAPI
-    self.prefsChangeRegistrar = PrefChangeRegistrar(prefService: braveCore.profile.prefs)
 
     super.init(style: .insetGrouped)
 
@@ -190,24 +196,7 @@ class SettingsViewController: TableViewController {
       }
       .store(in: &cancellables)
 
-    let refreshUI = { [weak self] (_: Any) in
-      DispatchQueue.main.async {
-        self?.setUpSections()
-        self?.tableView.reloadData()
-      }
-    }
-    prefsChangeRegistrar.addObserver(
-      forPath: BraveAccountAuthenticationTokenPref,
-      callback: refreshUI
-    )
-    prefsChangeRegistrar.addObserver(
-      forPath: BraveAccountEmailAddressPref,
-      callback: refreshUI
-    )
-    prefsChangeRegistrar.addObserver(
-      forPath: BraveAccountVerificationTokenPref,
-      callback: refreshUI
-    )
+    braveAccountAuthentication.addObserver(self)
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -269,7 +258,7 @@ class SettingsViewController: TableViewController {
       aboutSection,
     ]
 
-    if IsBraveAccountEnabled() {
+    if IsBraveAccountEnabled(), let braveAccountSection {
       list.insert(braveAccountSection, at: 1)
     }
 
@@ -426,18 +415,21 @@ class SettingsViewController: TableViewController {
     present(container, animated: true)
   }
 
-  private var braveAccountSection: Static.Section {
-    let authenticationToken = braveCore.profile.prefs.string(
-      forPath: BraveAccountAuthenticationTokenPref
-    )
-    if !authenticationToken.isEmpty {
+  private var braveAccountSection: Static.Section? {
+    guard let braveAccountState else { return nil }
+
+    switch braveAccountState.tag {
+    case .loggedIn:
+      guard let email = braveAccountState.loggedIn?.email else {
+        assertionFailure("Expected email in BraveAccount's .loggedIn state!")
+        return nil
+      }
+
       return Static.Section(
         header: .title(L10nUtils.string(messageId: .BRAVE_ACCOUNT_TITLE)),
         rows: [
           Row(
-            text: braveCore.profile.prefs.string(
-              forPath: BraveAccountEmailAddressPref
-            ),
+            text: email,
             cellClass: BraveAccountIconCell.self,
             context: [
               BraveAccountIconCell.textTruncateMiddle: true
@@ -453,12 +445,7 @@ class SettingsViewController: TableViewController {
           ),
         ]
       )
-    }
-
-    let verificationToken = braveCore.profile.prefs.string(
-      forPath: BraveAccountVerificationTokenPref
-    )
-    if !verificationToken.isEmpty {
+    case .verification:
       return Static.Section(
         header: .title(L10nUtils.string(messageId: .BRAVE_ACCOUNT_TITLE)),
         rows: [
@@ -499,12 +486,12 @@ class SettingsViewController: TableViewController {
                 rowUUID: braveAccountResendConfirmationEmailRowUUID,
                 sectionUUID: braveAccountSectionUUID
               )
-              braveAccountAuthentication.resendConfirmationEmail { [weak self] title, message in
+              braveAccountAuthentication.resendConfirmationEmail { [weak self] _, failure in
                 guard let self else { return }
                 DispatchQueue.main.async {
                   let alert = UIAlertController(
-                    title: title,
-                    message: message,
+                    title: resendConfirmationEmailAlertTitle(failure: failure),
+                    message: resendConfirmationEmailAlertMessage(failure: failure),
                     preferredStyle: .alert
                   )
                   alert.addAction(UIAlertAction(title: Strings.OKString, style: .default))
@@ -536,23 +523,75 @@ class SettingsViewController: TableViewController {
         ],
         uuid: braveAccountSectionUUID.uuidString
       )
+    case .loggedOut:
+      return Static.Section(
+        header: .title(L10nUtils.string(messageId: .BRAVE_ACCOUNT_TITLE)),
+        rows: [
+          Row(
+            text: L10nUtils.string(
+              messageId: .SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL
+            ),
+            selection: { [unowned self] in
+              openBraveAccountDialog()
+            },
+            image: UIImage(sharedNamed: "brave.logo"),
+            accessory: .disclosureIndicator,
+            cellClass: BraveAccountIconCell.self
+          )
+        ]
+      )
+    case .null:
+      assertionFailure("Unexpected .null BraveAccount state!")
+      return nil
+    }
+  }
+
+  private func resendConfirmationEmailAlertTitle(
+    failure: BraveAccount.ResendConfirmationEmailError?
+  ) -> String {
+    return L10nUtils.string(
+      messageId: failure == nil
+        ? .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS_TITLE
+        : .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ERROR_TITLE
+    )
+  }
+
+  private func resendConfirmationEmailAlertMessage(
+    failure: BraveAccount.ResendConfirmationEmailError?
+  ) -> String {
+    let serverErrorStrings: [BraveAccount.ResendConfirmationEmailServerErrorCode: MessageIDTyped] =
+      [
+        .maximumEmailSendAttemptsExceeded:
+          .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_SEND_ATTEMPTS_EXCEEDED,
+        .emailAlreadyVerified:
+          .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED,
+      ]
+
+    guard let failure else {
+      return L10nUtils.string(
+        messageId: .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS
+      )
     }
 
-    return Static.Section(
-      header: .title(L10nUtils.string(messageId: .BRAVE_ACCOUNT_TITLE)),
-      rows: [
-        Row(
-          text: L10nUtils.string(
-            messageId: .SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL
-          ),
-          selection: { [unowned self] in
-            openBraveAccountDialog()
-          },
-          image: UIImage(sharedNamed: "brave.logo"),
-          accessory: .disclosureIndicator,
-          cellClass: BraveAccountIconCell.self
-        )
-      ]
+    let errorLabel = L10nUtils.string(messageId: .BRAVE_ACCOUNT_ERROR)
+
+    if let clientError = failure.clientError {
+      return L10nUtils.formatString(
+        messageId: .BRAVE_ACCOUNT_CLIENT_ERROR,
+        argument: " (\(errorLabel)=\(clientError.errorCode.rawValue))"
+      )
+    }
+
+    let serverError = failure.serverError!
+    if let messageId = serverErrorStrings[serverError.errorCode] {
+      return L10nUtils.string(messageId: messageId)
+    }
+
+    return L10nUtils.formatString(
+      messageId: .BRAVE_ACCOUNT_SERVER_ERROR,
+      argument1:
+        "\(serverError.netErrorOrHttpStatus > 0 ? "HTTP" : "NET")=\(serverError.netErrorOrHttpStatus)",
+      argument2: ", \(errorLabel)=\(serverError.errorCode.rawValue)"
     )
   }
 
