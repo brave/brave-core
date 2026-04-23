@@ -194,8 +194,7 @@ function ConversationEntries() {
       [styles.turnAI]: isAIAssistant,
     })
 
-    const handleCopyText =
-      useConversationEventClipboardCopyHandler(firstEntryEdit)
+    const handleCopyText = useConversationEventClipboardCopyHandler(group)
 
     const tabAttachments =
       conversationContext.associatedContent?.filter((c) =>
