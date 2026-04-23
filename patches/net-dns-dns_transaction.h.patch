@@ -1,0 +1,13 @@
+diff --git a/net/dns/dns_transaction.h b/net/dns/dns_transaction.h
+--- a/net/dns/dns_transaction.h
++++ b/net/dns/dns_transaction.h
+@@ -27,7 +27,7 @@ class DnsSession;
+ class NetLogWithSource;
+ class ResolveContext;
+ 
+ // The hostname probed by CreateDohProbeRunner().
+-inline constexpr std::string_view kDohProbeHostname = "www.gstatic.com";
++inline constexpr std::string_view kDohProbeHostname = "brave.com";
+ 
+ // DnsTransaction implements a stub DNS resolver as defined in RFC 1034.
+ // The DnsTransaction takes care of retransmissions, name server fallback (or
