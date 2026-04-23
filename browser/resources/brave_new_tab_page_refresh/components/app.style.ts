@@ -146,7 +146,7 @@ export const style = scoped.css`
     container-type: inline-size;
     view-timeline-name: --ntp-main-view-timeline;
     position: relative;
-    z-index: 1;
+    z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
