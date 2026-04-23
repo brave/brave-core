@@ -97,6 +97,11 @@ void BraveHorizontalTabStripRegionView::CreateScrollButtonsIfNeeded() {
       views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,
                                views::MaximumFlexSizeRule::kPreferred));
 
+  // Back/forward arrows are horizontal; mirror when the UI is RTL (see
+  // views::ImageButton for the same pattern).
+  tab_scroll_previous_button_->SetFlipCanvasOnPaintForRTLUI(true);
+  tab_scroll_next_button_->SetFlipCanvasOnPaintForRTLUI(true);
+
   tab_scroll_previous_button_->SetTooltipText(
       l10n_util::GetStringUTF16(IDS_TOOLTIP_TAB_SCROLL_LEADING));
   tab_scroll_next_button_->SetTooltipText(
