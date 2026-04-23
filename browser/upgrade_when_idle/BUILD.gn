@@ -14,6 +14,7 @@ source_set("upgrade_when_idle") {
   deps = [
     "//base",
     "//chrome/browser/first_run",
+    "//chrome/browser/lifetime",
     "//chrome/browser/profiles:profile_manager",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/upgrade_detector",
