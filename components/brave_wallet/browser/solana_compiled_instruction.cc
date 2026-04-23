@@ -9,6 +9,7 @@
 #include <optional>
 
 #include "base/check.h"
+#include "base/numerics/checked_math.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
 #include "brave/components/brave_wallet/browser/solana_message_address_table_lookup.h"
 #include "brave/components/brave_wallet/common/solana_address.h"
@@ -36,11 +37,13 @@ std::optional<uint8_t> FindIndexInStaticAccounts(
 std::optional<uint8_t> FindIndexInAddressTableLookups(
     const std::vector<SolanaMessageAddressTableLookup>& addr_table_lookups,
     const SolanaAccountMeta& account,
-    uint8_t num_of_static_accounts,
+    size_t num_of_static_accounts,
     uint8_t num_of_total_write_indexes) {
-  uint8_t index_of_combined_array =
-      account.is_writable ? num_of_static_accounts
-                          : num_of_static_accounts + num_of_total_write_indexes;
+  base::CheckedNumeric<size_t> index_of_combined_array =
+      account.is_writable
+          ? base::CheckedNumeric<size_t>(num_of_static_accounts)
+          : base::CheckedNumeric<size_t>(num_of_static_accounts) +
+                num_of_total_write_indexes;
 
   for (const auto& addr_table_lookup : addr_table_lookups) {
     const auto& indexes = account.is_writable
@@ -54,7 +57,11 @@ std::optional<uint8_t> FindIndexInAddressTableLookups(
     for (size_t i = 0; i < indexes.size(); ++i) {
       CHECK(account.address_table_lookup_index.has_value());
       if (*account.address_table_lookup_index == indexes[i]) {
-        return index_of_combined_array + i;
+        auto result = (index_of_combined_array + i).Cast<uint8_t>();
+        if (!result.IsValid()) {
+          return std::nullopt;
+        }
+        return result.ValueOrDie();
       }
     }
   }
