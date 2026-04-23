@@ -34,6 +34,7 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
 
@@ -62,7 +63,6 @@ class FilTxManagerUnitTest : public testing::Test {
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
   void SetUp() override {
-    BlockchainRegistry::GetInstance()->UpdateRestrictedAddressesList({});
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterProfilePrefsForMigration(prefs_.registry());
@@ -620,6 +620,9 @@ TEST_F(FilTxManagerUnitTest, RestrictedFromAddress) {
   auto* registry = BlockchainRegistry::GetInstance();
   registry->UpdateRestrictedAddressesList(
       {base::ToLowerASCII(from_account->address)});
+  absl::Cleanup clear_restricted = [registry] {
+    registry->UpdateRestrictedAddressesList({});
+  };
 
   auto fil_tx_data = mojom::FilTxData::New(
       "" /* nonce */, "" /* gas_premium */, "" /* gas_fee_cap */,
@@ -638,8 +641,6 @@ TEST_F(FilTxManagerUnitTest, RestrictedFromAddress) {
   EXPECT_FALSE(success);
   EXPECT_TRUE(tx_meta_id.empty());
   EXPECT_EQ(err_str, WalletInternalErrorMessage());
-
-  registry->UpdateRestrictedAddressesList({});
 }
 
 }  //  namespace brave_wallet

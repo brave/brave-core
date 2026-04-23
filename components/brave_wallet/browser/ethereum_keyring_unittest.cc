@@ -20,6 +20,7 @@
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 
 using testing::ElementsAre;
 
@@ -415,13 +416,14 @@ TEST(EthereumKeyringUnitTest, AddNewHDAccount_RestrictedAddress) {
   // Add address to restricted list.
   registry->UpdateRestrictedAddressesList(
       {base::ToLowerASCII(address_to_restrict)});
+  absl::Cleanup clear_restricted = [registry] {
+    registry->UpdateRestrictedAddressesList({});
+  };
 
   // Try to add account again - should fail because it generates the same
   // address.
   auto result = keyring.AddNewHDAccount(0);
   EXPECT_FALSE(result) << "Restricted Ethereum address should be rejected";
-
-  registry->UpdateRestrictedAddressesList({});
 }
 
 TEST(EthereumKeyringUnitTest, ImportAccount_RestrictedAddress) {
@@ -450,12 +452,13 @@ TEST(EthereumKeyringUnitTest, ImportAccount_RestrictedAddress) {
   // Add address to restricted list.
   registry->UpdateRestrictedAddressesList(
       {base::ToLowerASCII(address_to_restrict)});
+  absl::Cleanup clear_restricted = [registry] {
+    registry->UpdateRestrictedAddressesList({});
+  };
 
   // Try to import account again - should fail.
   auto result = keyring.ImportAccount(private_key);
   EXPECT_FALSE(result) << "Restricted Ethereum address should be rejected";
-
-  registry->UpdateRestrictedAddressesList({});
 }
 
 }  // namespace brave_wallet
