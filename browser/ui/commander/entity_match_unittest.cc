@@ -15,7 +15,6 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/commander/command_source.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "chrome/test/base/browser_with_test_window_test.h"
 #include "chrome/test/base/test_browser_window.h"
 #include "chrome/test/base/testing_profile.h"
