@@ -45,6 +45,13 @@
 #include "services/network/public/cpp/network_switches.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/skia/include/core/SkColor.h"
+#include "ui/actions/actions.h"
+#include "ui/events/base_event_utils.h"
+#include "ui/events/event_constants.h"
+#include "ui/events/keycodes/keyboard_codes.h"
+#include "ui/views/controls/button/button.h"
+#include "ui/views/controls/menu/menu_controller.h"
+#include "ui/views/test/button_test_api.h"
 #include "ui/views/test/views_test_utils.h"
 #include "ui/views/view.h"
 #include "url/gurl.h"
@@ -1253,6 +1260,57 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   tab_strip_model->ActivateTabAt(1);
   RunScheduledLayouts();
   EXPECT_TRUE(partitioned_storage_view->GetVisible());
+}
+
+IN_PROC_BROWSER_TEST_F(
+    ContainersBrowserTest,
+    PartitionedStoragePageActionRightClickSetsActionItemShowingBubble) {
+  actions::ActionItem* const partitioned_storage_action =
+      actions::ActionManager::Get().FindAction(kActionShowPartitionedStorage);
+  ASSERT_NE(nullptr, partitioned_storage_action);
+
+  IconLabelBubbleView* const partitioned_storage_view =
+      browser()->GetBrowserView().toolbar_button_provider()->GetPageActionView(
+          kActionShowPartitionedStorage);
+  ASSERT_NE(nullptr, partitioned_storage_view);
+
+  const GURL url("https://a.test/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  auto container = containers::mojom::Container::New();
+  container->id = "test-container";
+  container->name = "Test Container";
+  container->icon = containers::mojom::Icon::kSocial;
+  container->background_color = SK_ColorYELLOW;
+
+  brave::OpenUrlInContainer(browser(), url, container);
+  ASSERT_TRUE(content::WaitForLoadStop(
+      browser()->tab_strip_model()->GetActiveWebContents()));
+  RunScheduledLayouts();
+
+  ASSERT_TRUE(partitioned_storage_view->GetVisible());
+  ASSERT_FALSE(partitioned_storage_action->GetIsShowingBubble());
+
+  const gfx::Point click_location =
+      partitioned_storage_view->GetLocalBounds().CenterPoint();
+  const ui::MouseEvent click_event(ui::EventType::kMousePressed, click_location,
+                                   click_location, ui::EventTimeForNow(),
+                                   ui::EF_RIGHT_MOUSE_BUTTON,
+                                   ui::EF_RIGHT_MOUSE_BUTTON);
+  views::test::ButtonTestApi(views::Button::AsButton(partitioned_storage_view))
+      .NotifyClick(click_event);
+
+  EXPECT_TRUE(base::test::RunUntil(
+      [&]() { return partitioned_storage_action->GetIsShowingBubble(); }));
+
+  if (views::MenuController* menu_controller =
+          views::MenuController::GetActiveInstance()) {
+    ui::KeyEvent escape_event(ui::EventType::kKeyPressed, ui::VKEY_ESCAPE,
+                              ui::EF_NONE);
+    menu_controller->OnWillDispatchKeyEvent(&escape_event);
+  }
+  EXPECT_TRUE(base::test::RunUntil(
+      [&]() { return !partitioned_storage_action->GetIsShowingBubble(); }));
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, GetStoragePartitionKeyToRestore) {

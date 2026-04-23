@@ -110,7 +110,7 @@ void BraveBrowserActions::InitializeBrowserActions() {
             base::BindRepeating(
                 [](BrowserWindowInterface* bwi, actions::ActionItem* item,
                    actions::ActionInvocationContext context) {
-                  brave::OpenContainerMenuOnPageActionView(bwi);
+                  brave::OpenContainerMenuOnPageActionView(bwi, item);
                 },
                 bwi))
             .SetActionId(kActionShowPartitionedStorage)

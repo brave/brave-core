@@ -1478,6 +1478,8 @@ source_set("ui") {
     deps += [
       "//brave/browser/containers",
       "//brave/browser/ui/containers",
+      "//brave/browser/ui/tabs:tabs_public",
+      "//brave/browser/ui/views/page_action",
       "//brave/components/containers/content/browser",
       "//brave/components/containers/core/browser",
       "//brave/components/containers/core/common",
