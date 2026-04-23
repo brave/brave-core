@@ -129,6 +129,14 @@ hooks = [
                '//brave/third_party/brave-vpn-wireguard-tunnel-dlls'],
   },
   {
+    'name': 'download_wintun',
+    'pattern': '.',
+    'condition': 'checkout_win',
+    'action': ['vpython3', 'build/win/download_wintun.py',
+               'wintun/wintun-0.14.1.zip', '//brave/third_party/wintun',
+               '07c256185d6ee3652e09fa55c0b673e2624b565e02c4b9091c79ca7d2f24ef51'],
+  },
+  {
     # Install Web Discovery Project dependencies for Windows, Linux, and macOS
     'name': 'web_discovery_project_npm_deps',
     'pattern': '.',
