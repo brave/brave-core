@@ -28,6 +28,7 @@
 #include "base/threading/thread_restrictions.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_shields/ad_block_browser_test_helper.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
@@ -141,6 +142,8 @@ void AdBlockServiceTest::SetUpCommandLine(base::CommandLine* command_line) {
 void AdBlockServiceTest::SetUpInProcessBrowserTestFixture() {
   PlatformBrowserTest::SetUpInProcessBrowserTestFixture();
   mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+  ad_block_test_helper_ =
+      std::make_unique<brave_shields::AdBlockBrowserTestHelper>();
 }
 
 void AdBlockServiceTest::SetUpOnMainThread() {
@@ -157,7 +160,7 @@ void AdBlockServiceTest::SetUpOnMainThread() {
 
 void AdBlockServiceTest::PreRunTestOnMainThread() {
   PlatformBrowserTest::PreRunTestOnMainThread();
-  WaitForAdBlockServiceThreads();
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
 
   // Wait for initial engine creation to complete, especially on slower
   // platforms
@@ -215,6 +218,7 @@ AdBlockServiceTest::component_service_manager() {
 void AdBlockServiceTest::AddNewRules(const std::string& rules,
                                      uint8_t permission_mask,
                                      bool first_party_protections) {
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   auto source_provider = std::make_unique<brave_shields::TestFiltersProvider>(
       rules, first_party_protections, permission_mask);
   brave_shields::AdBlockService* ad_block_service =
@@ -410,12 +414,6 @@ void AdBlockServiceTest::SetSubscriptionIntervals() {
 
   subscription_service_manager->SetUpdateIntervalsForTesting(&initial_delay,
                                                              &retry_interval);
-}
-
-void AdBlockServiceTest::WaitForAdBlockServiceThreads() {
-  scoped_refptr<base::ThreadTestHelper> tr_helper(new base::ThreadTestHelper(
-      g_brave_browser_process->ad_block_service()->GetTaskRunnerForTesting()));
-  ASSERT_TRUE(tr_helper->Run());
 }
 
 void AdBlockServiceTest::ShieldsDown(const GURL& url) {
@@ -886,7 +884,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
     TestAdBlockSubscriptionServiceManagerObserver sub_observer(
         sub_service_manager);
     sub_observer.Wait();
-    WaitForAdBlockServiceThreads();
+    ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
 
     const auto subscriptions = sub_service_manager->GetSubscriptions();
     ASSERT_EQ(subscriptions.size(), 1ULL);
@@ -1414,7 +1412,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockTagTest) {
   GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
   g_brave_browser_process->ad_block_service()->EnableTag(
       brave_shields::kFacebookEmbeds, true);
-  WaitForAdBlockServiceThreads();
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   GURL resource_url =
       embedded_test_server()->GetURL("example.com", "/logo.png");
   NavigateToURL(tab_url);
@@ -1432,7 +1430,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockDiffTagTest) {
   GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
   g_brave_browser_process->ad_block_service()->EnableTag(
       brave_shields::kFacebookEmbeds, true);
-  WaitForAdBlockServiceThreads();
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   GURL resource_url =
       embedded_test_server()->GetURL("example.com", "/logo.png");
   NavigateToURL(tab_url);
@@ -1448,7 +1446,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockDiffTagTest) {
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ResetPreservesTags) {
   g_brave_browser_process->ad_block_service()->EnableTag(
       brave_shields::kFacebookEmbeds, true);
-  WaitForAdBlockServiceThreads();
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   UpdateAdBlockInstanceWithRules("");
   AssertTagExists(brave_shields::kFacebookEmbeds, true);
 }
@@ -1464,38 +1462,38 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TagPrefsControlTags) {
 
   // Toggling prefs once is reflected in the adblock client.
   prefs->SetBoolean(brave_shields::prefs::kLinkedInEmbedControlType, true);
-  WaitForAdBlockServiceThreads();
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   AssertTagExists(brave_shields::kFacebookEmbeds, true);
   AssertTagExists(brave_shields::kTwitterEmbeds, true);
   AssertTagExists(brave_shields::kLinkedInEmbeds, true);
 
   prefs->SetBoolean(brave_shields::prefs::kFBEmbedControlType, false);
-  WaitForAdBlockServiceThreads();
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   AssertTagExists(brave_shields::kFacebookEmbeds, false);
   AssertTagExists(brave_shields::kTwitterEmbeds, true);
   AssertTagExists(brave_shields::kLinkedInEmbeds, true);
 
   prefs->SetBoolean(brave_shields::prefs::kTwitterEmbedControlType, false);
-  WaitForAdBlockServiceThreads();
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   AssertTagExists(brave_shields::kFacebookEmbeds, false);
   AssertTagExists(brave_shields::kTwitterEmbeds, false);
   AssertTagExists(brave_shields::kLinkedInEmbeds, true);
 
   // Toggling prefs back is reflected in the adblock client.
   prefs->SetBoolean(brave_shields::prefs::kLinkedInEmbedControlType, false);
-  WaitForAdBlockServiceThreads();
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   AssertTagExists(brave_shields::kFacebookEmbeds, false);
   AssertTagExists(brave_shields::kTwitterEmbeds, false);
   AssertTagExists(brave_shields::kLinkedInEmbeds, false);
 
   prefs->SetBoolean(brave_shields::prefs::kFBEmbedControlType, true);
-  WaitForAdBlockServiceThreads();
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   AssertTagExists(brave_shields::kFacebookEmbeds, true);
   AssertTagExists(brave_shields::kTwitterEmbeds, false);
   AssertTagExists(brave_shields::kLinkedInEmbeds, false);
 
   prefs->SetBoolean(brave_shields::prefs::kTwitterEmbedControlType, true);
-  WaitForAdBlockServiceThreads();
+  ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
   AssertTagExists(brave_shields::kFacebookEmbeds, true);
   AssertTagExists(brave_shields::kTwitterEmbeds, true);
   AssertTagExists(brave_shields::kLinkedInEmbeds, false);

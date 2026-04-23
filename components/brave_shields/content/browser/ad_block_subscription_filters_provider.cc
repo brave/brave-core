@@ -40,7 +40,6 @@ void AddDATBufferToFilterSet(
 }  // namespace
 
 AdBlockSubscriptionFiltersProvider::AdBlockSubscriptionFiltersProvider(
-    PrefService* local_state,
     AdBlockFiltersProviderManager* manager,
     base::FilePath list_file,
     base::RepeatingCallback<void(const adblock::FilterListMetadata&)>

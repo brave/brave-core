@@ -5,10 +5,13 @@
 
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 
+#include <memory>
+
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/values.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_shields/ad_block_browser_test_helper.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
@@ -63,6 +66,10 @@ class TestBraveShieldsWebContentsObserver
 class BraveShieldsWebContentsObserverBrowserTest : public InProcessBrowserTest {
  public:
   BraveShieldsWebContentsObserverBrowserTest() = default;
+
+  void SetUpInProcessBrowserTestFixture() override {
+    helper_ = std::make_unique<brave_shields::AdBlockBrowserTestHelper>();
+  }
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -122,6 +129,7 @@ class BraveShieldsWebContentsObserverBrowserTest : public InProcessBrowserTest {
   }
 
  private:
+  std::unique_ptr<brave_shields::AdBlockBrowserTestHelper> helper_;
   raw_ptr<HostContentSettingsMap> content_settings_ = nullptr;
   raw_ptr<TestBraveShieldsWebContentsObserver>
       brave_shields_web_contents_observer_ = nullptr;

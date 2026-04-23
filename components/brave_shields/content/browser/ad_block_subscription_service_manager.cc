@@ -247,7 +247,7 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
 
   auto subscription_filters_provider =
       std::make_unique<AdBlockSubscriptionFiltersProvider>(
-          local_state_, filters_provider_manager_,
+          filters_provider_manager_,
           GetSubscriptionPath(sub_url).Append(kCustomSubscriptionListText),
           base::BindRepeating(
               &AdBlockSubscriptionServiceManager::OnListMetadata,
@@ -288,7 +288,7 @@ void AdBlockSubscriptionServiceManager::EnableSubscription(const GURL& sub_url,
     DCHECK(it == subscription_filters_providers_.end());
     auto subscription_filters_provider =
         std::make_unique<AdBlockSubscriptionFiltersProvider>(
-            local_state_, filters_provider_manager_,
+            filters_provider_manager_,
             GetSubscriptionPath(sub_url).Append(kCustomSubscriptionListText),
             base::BindRepeating(
                 &AdBlockSubscriptionServiceManager::OnListMetadata,
@@ -437,7 +437,7 @@ void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
       if (info.enabled) {
         auto subscription_filters_provider =
             std::make_unique<AdBlockSubscriptionFiltersProvider>(
-                local_state_, filters_provider_manager_,
+                filters_provider_manager_,
                 GetSubscriptionPath(sub_url).Append(
                     kCustomSubscriptionListText),
                 base::BindRepeating(

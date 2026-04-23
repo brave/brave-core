@@ -48,10 +48,15 @@ class AdBlockEngineWrapper {
       bool previously_matched_exception,
       bool previously_matched_important);
 
-  void OnResourcesLoaded(
-      bool is_default_engine,
-      std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set,
-      AdblockResourceStorageBox storage);
+  bool Load(bool is_default_engine,
+            std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set,
+            AdblockResourceStorageBox storage);
+
+  bool LoadDAT(bool is_default_engine,
+               DATFileDataBuffer dat,
+               AdblockResourceStorageBox storage);
+
+  DATFileDataBuffer Serialize(bool is_default_engine);
 
   std::optional<std::string> GetCspDirectives(
       const GURL& url,
