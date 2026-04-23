@@ -38,6 +38,7 @@ class AdsClientNotifier final {
   void RemoveObserver(AdsClientNotifierObserver* observer);
   void NotifyPendingObservers();
   void NotifyDidInitializeAds();
+  void NotifyNetworkConnectionChanged();
   void NotifyPrefDidChange(const std::string& path);
   void NotifyResourceComponentDidChange(const std::string& manifest_version,
                                         const std::string& id);
