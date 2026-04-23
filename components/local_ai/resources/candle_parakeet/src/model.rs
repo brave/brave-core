@@ -6,13 +6,16 @@
 // Parakeet-CTC-110M model.
 
 mod attention;
+mod builder;
 mod conformer;
 mod decoder;
 mod encoder;
 
 use candle_core::{Result, Tensor};
 use candle_nn::VarBuilder;
+use serde::Deserialize;
 
+pub use builder::ModelBuilder;
 use decoder::ConvASRDecoder;
 use encoder::ConformerEncoder;
 
@@ -30,6 +33,12 @@ use encoder::ConformerEncoder;
 /// - `vocab_size`           = aux_ctc.decoder.num_classes + 1 (+1 for the CTC
 ///   blank token appended by Brave's conversion script)
 /// - `subsampling_channels` = encoder.subsampling_conv_channels
+///
+/// `tensor_data_offset` is Brave-specific: the byte offset in
+/// `model.gguf` where the tensor-data blob starts. The JS loader
+/// splits the file at this offset so the header can be parsed
+/// separately from the streamed tensor-data chunks.
+#[derive(Deserialize)]
 pub struct ParakeetConfig {
     pub hidden_size: usize,
     pub num_heads: usize,
@@ -39,6 +48,7 @@ pub struct ParakeetConfig {
     pub num_mel_bins: usize,
     pub vocab_size: usize,
     pub subsampling_channels: usize,
+    pub tensor_data_offset: usize,
 }
 
 /// Parakeet-CTC-110M model: the `ConformerEncoder` that reads log-mel
