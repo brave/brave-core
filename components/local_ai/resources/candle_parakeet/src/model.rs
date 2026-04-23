@@ -6,6 +6,7 @@
 // Parakeet-CTC-110M model.
 
 mod attention;
+mod conformer;
 mod encoder;
 
 /// Parakeet-CTC-110M architecture hyperparameters. Mirrors the fields of
