@@ -51,6 +51,7 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "net/base/network_change_notifier.h"
 #include "ui/base/idle/idle.h"
 
 namespace brave_rewards {
@@ -87,15 +88,17 @@ class ResourceComponent;
 class ApplicationStateMonitor;
 class HttpClient;
 
-class AdsServiceImpl : public AdsService,
-                       public bat_ads::mojom::BatAdsClient,
-                       public bat_ads::mojom::BatAdsObserver,
-                       public ApplicationStateObserver,
-                       public ResourceComponentObserver,
+class AdsServiceImpl
+    : public AdsService,
+      public bat_ads::mojom::BatAdsClient,
+      public bat_ads::mojom::BatAdsObserver,
+      public ApplicationStateObserver,
+      public ResourceComponentObserver,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-                       public brave_rewards::RewardsServiceObserver,
+      public brave_rewards::RewardsServiceObserver,
 #endif
-                       public content_settings::Observer {
+      public content_settings::Observer,
+      public net::NetworkChangeNotifier::NetworkChangeObserver {
  public:
   // `http_client`, `history_service`, and `host_content_settings` can be
   // `nullptr` in tests. `rewards_service` can be `nullptr` when Rewards is
@@ -413,6 +416,10 @@ class AdsServiceImpl : public AdsService,
       const ContentSettingsPattern& primary_pattern,
       const ContentSettingsPattern& secondary_pattern,
       ContentSettingsTypeSet content_type_set) override;
+
+  // net::NetworkChangeNotifier::NetworkChangeObserver:
+  void OnNetworkChanged(
+      net::NetworkChangeNotifier::ConnectionType connection_type) override;
 
   bool is_ineligible_to_start_ = false;
 

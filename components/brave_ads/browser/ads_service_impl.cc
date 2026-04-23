@@ -199,6 +199,8 @@ AdsServiceImpl::AdsServiceImpl(
   InitializeLocalStatePrefChangeRegistrar();
   InitializePrefChangeRegistrar();
 
+  net::NetworkChangeNotifier::AddNetworkChangeObserver(this);
+
   // Defer the initial start until the policy bundle has been merged into the
   // managed pref store, so that `BraveRewardsDisabled` (and any other policy
   // that gates ads eligibility) takes effect before the gate evaluates.
@@ -207,11 +209,11 @@ AdsServiceImpl::AdsServiceImpl(
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-AdsServiceImpl::~AdsServiceImpl() = default;
+AdsServiceImpl::~AdsServiceImpl() {
+  net::NetworkChangeNotifier::RemoveNetworkChangeObserver(this);
+}
 
 ///////////////////////////////////////////////////////////////////////////////
-
-
 
 void AdsServiceImpl::Migrate() {
   // Added 10/2025.
@@ -1733,6 +1735,17 @@ void AdsServiceImpl::OnContentSettingChanged(
     ContentSettingsTypeSet content_type_set) {
   if (content_type_set.Contains(ContentSettingsType::JAVASCRIPT)) {
     SetContentSettings();
+  }
+}
+
+void AdsServiceImpl::OnNetworkChanged(
+    net::NetworkChangeNotifier::ConnectionType connection_type) {
+  if (connection_type == net::NetworkChangeNotifier::CONNECTION_NONE) {
+    return;
+  }
+
+  if (bat_ads_client_notifier_remote_.is_bound()) {
+    bat_ads_client_notifier_remote_->NotifyNetworkConnectionChanged();
   }
 }
 

@@ -49,6 +49,17 @@ void AdsClientNotifier::NotifyDidInitializeAds() {
   observers_.Notify(&AdsClientNotifierObserver::OnNotifyDidInitializeAds);
 }
 
+void AdsClientNotifier::NotifyNetworkConnectionChanged() {
+  if (task_queue_->should_queue()) {
+    return task_queue_->Add(
+        base::BindOnce(&AdsClientNotifier::NotifyNetworkConnectionChanged,
+                       weak_factory_.GetWeakPtr()));
+  }
+
+  observers_.Notify(
+      &AdsClientNotifierObserver::OnNotifyNetworkConnectionChanged);
+}
+
 void AdsClientNotifier::NotifyRewardsWalletDidUpdate(
     const std::string& payment_id,
     const std::string& recovery_seed_base64) {

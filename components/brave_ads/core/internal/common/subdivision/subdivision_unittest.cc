@@ -98,6 +98,34 @@ TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingOutOfNotificationAds) {
   SetProfileBooleanPref(prefs::kOptedInToNotificationAds, false);
 }
 
+TEST_F(BraveAdsSubdivisionTest, FetchIfNetworkConnectionChanges) {
+  // Arrange
+  MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
+
+  ads_client_notifier_.NotifyDidInitializeAds();
+
+  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision("US-CA"));
+
+  // Act
+  ads_client_notifier_.NotifyNetworkConnectionChanged();
+
+  // Assert
+  EXPECT_TRUE(HasPendingTasks());
+}
+
+TEST_F(BraveAdsSubdivisionTest,
+       DoNotFetchIfNetworkConnectionChangesWhenSubdivisionFetchingIsDisabled) {
+  // Arrange
+  test::OptOutOfAllAds();
+
+  MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
+
+  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
+
+  // Act & Assert
+  ads_client_notifier_.NotifyNetworkConnectionChanged();
+}
+
 TEST_F(BraveAdsSubdivisionTest, FetchWhenOptingInToNotificationAds) {
   // Arrange
   test::OptOutOfAllAds();

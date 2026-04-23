@@ -25,6 +25,9 @@ class AdsClientNotifierObserver : public base::CheckedObserver {
   // Called when ads did initialize.
   virtual void OnNotifyDidInitializeAds() {}
 
+  // Invoked when the network connection type changes.
+  virtual void OnNotifyNetworkConnectionChanged() {}
+
   // Invoked when a preference has changed for the specified `path`.
   virtual void OnNotifyPrefDidChange(const std::string& path) {}
 
