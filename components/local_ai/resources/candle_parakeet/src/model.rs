@@ -10,6 +10,12 @@ mod conformer;
 mod decoder;
 mod encoder;
 
+use candle_core::{Result, Tensor};
+use candle_nn::VarBuilder;
+
+use decoder::ConvASRDecoder;
+use encoder::ConformerEncoder;
+
 /// Parakeet-CTC-110M architecture hyperparameters. Mirrors the fields of
 /// the `config.json` that ships alongside `model.gguf`.
 ///
@@ -33,4 +39,59 @@ pub struct ParakeetConfig {
     pub num_mel_bins: usize,
     pub vocab_size: usize,
     pub subsampling_channels: usize,
+}
+
+/// Parakeet-CTC-110M model: the `ConformerEncoder` that reads log-mel
+/// features and the `ConvASRDecoder` CTC head that projects encoder
+/// hidden states to per-frame token logits.
+///
+/// ```text
+/// input mel:  (B, T, num_mel_bins)  10 ms per frame
+///   -> ConformerEncoder
+///   -> (B, T/8, hidden_size)        80 ms per frame
+///   -> ConvASRDecoder
+///   -> logits (B, T/8, vocab_size)
+/// ```
+///
+/// Top-level tensor prefixes loaded from the supplied VarBuilder:
+///
+/// ```text
+/// encoder.pre_encode.*                 ConvSubsampling weights
+/// encoder.layers.{0..num_layers-1}.*   num_layers × ConformerLayer
+/// ctc_decoder.decoder_layers.0.*       1×1 Conv1d CTC head
+/// ```
+///
+/// Module layout:
+///
+/// - `encoder` — `ConvSubsampling` + `RelPositionalEncoding` +
+///   `ConformerEncoder` (the top-level encoder composition).
+/// - `conformer` — one `ConformerLayer` and its two sub-blocks
+///   `ConformerFeedForward` + `ConformerConvolution`.
+/// - `attention` — `RelPositionMultiHeadAttention` and the Transformer-XL
+///   `rel_shift` index trick.
+/// - `decoder` — `ConvASRDecoder`, the 1×1 Conv1d CTC head.
+///
+/// Upstream reference: NeMo v2.7.2
+/// (<https://github.com/NVIDIA-NeMo/NeMo/tree/v2.7.2/nemo/collections/asr>),
+/// Apache-2.0. Per-struct doc comments cite the exact Python source
+/// file they port from.
+pub struct Parakeet {
+    encoder: ConformerEncoder,
+    decoder: ConvASRDecoder,
+}
+
+impl Parakeet {
+    pub fn new(cfg: &ParakeetConfig, vb: VarBuilder) -> Result<Self> {
+        Ok(Self {
+            encoder: ConformerEncoder::new(cfg, vb.pp("encoder"))?,
+            decoder: ConvASRDecoder::new(cfg, vb.pp("ctc_decoder"))?,
+        })
+    }
+
+    /// Forward pass. `mel` shape: `(B, T, num_mel_bins)`. Returns
+    /// logits of shape `(B, T/8, vocab_size)`.
+    pub fn forward(&self, mel: &Tensor) -> Result<Tensor> {
+        let encoded = self.encoder.forward(mel)?;
+        self.decoder.forward(&encoded)
+    }
 }
