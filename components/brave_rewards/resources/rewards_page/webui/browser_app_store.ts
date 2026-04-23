@@ -66,6 +66,25 @@ function isValidWeb3URL(url: string) {
   return false
 }
 
+function createTimer() {
+  let timeout: any = null
+  return {
+    stop() {
+      if (timeout) {
+        clearTimeout(timeout)
+        timeout = null
+      }
+    },
+    start(ms: number, callback: () => void) {
+      this.stop()
+      timeout = setTimeout(() => {
+        callback()
+        timeout = null
+      }, ms)
+    },
+  }
+}
+
 function createAppStoreForUnsupportedRegion(): AppStore {
   const store = defaultAppStore()
   store.update({
@@ -96,6 +115,7 @@ export function createAppStore(): AppStore {
   const creatorParam = searchParams.get('creator') ?? ''
   const isAutoResizeBubble = loadTimeData.getBoolean('isAutoResizeBubble')
   const isBubble = isAutoResizeBubble || searchParams.has('bubble')
+  const loadTimer = createTimer()
   let lastPublisherRefresh = 0
 
   // Expose the state manager for devtools diagnostic purposes.
@@ -328,6 +348,9 @@ export function createAppStore(): AppStore {
     // should be wrapped with this decorator.
     const inBackground = (promise: Promise<unknown>) => null
 
+    store.update({ loading: true })
+    loadTimer.start(3000, () => store.update({ loading: false }))
+
     await Promise.all([
       updatePaymentId(),
       updateCountryCode(),
@@ -341,7 +364,7 @@ export function createAppStore(): AppStore {
       updateRecurringContributions(),
       updateRewardsParameters(),
       updateNotifications(),
-      inBackground(updateCurrentCreator()),
+      updateCurrentCreator(),
       inBackground(updateCaptchaInfo({ pendingOnly: true })),
       inBackground(updateCards()),
     ])
@@ -361,17 +384,15 @@ export function createAppStore(): AppStore {
   // view state when the bubble is re-opened with cached contents, we update the
   // "openTime" state when the document visibility changes and reload data.
   if (isBubble) {
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState !== 'visible') {
-        return
-      }
-      const now = Date.now()
-      const { openTime } = store.getState()
-      if (now - openTime > 200) {
-        store.update({ openTime: now })
-        loadData()
-      }
-    })
+    document.addEventListener(
+      'visibilitychange',
+      debounce(() => {
+        if (document.visibilityState === 'visible') {
+          store.update({ openTime: Date.now() })
+          loadData()
+        }
+      }, 60),
+    )
   }
 
   loadData()
