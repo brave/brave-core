@@ -18,6 +18,7 @@
 #include "brave/browser/workspace/brave_workspace_service.h"
 #include "brave/browser/workspace/brave_workspace_service_factory.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/simple_message_box.h"
@@ -29,10 +30,13 @@
 #include "ui/base/mojom/dialog_button.mojom.h"
 #include "ui/color/color_id.h"
 #include "ui/views/background.h"
+#include "ui/views/controls/button/image_button.h"
+#include "ui/views/controls/button/image_button_factory.h"
 #include "ui/views/controls/button/label_button.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/controls/scroll_view.h"
 #include "ui/views/layout/box_layout.h"
+#include "ui/views/view_utils.h"
 
 namespace {
 
@@ -82,11 +86,17 @@ class WorkspaceRowView : public views::View {
       SetBackground(nullptr);
     }
     for (views::View* child : children()) {
-      auto* btn = static_cast<views::LabelButton*>(child);
-      if (selected_) {
-        btn->SetEnabledTextColors(SK_ColorWHITE);
-      } else {
-        btn->SetEnabledTextColors(std::nullopt);
+      if (auto* btn = views::AsViewClass<views::LabelButton>(child)) {
+        btn->SetEnabledTextColors(
+            selected_ ? std::optional<ui::ColorVariant>(SK_ColorWHITE)
+                      : std::nullopt);
+      } else if (auto* img_btn =
+                     views::AsViewClass<views::ImageButton>(child)) {
+        views::SetImageFromVectorIconWithColor(
+            img_btn, kTrashCanIcon,
+            selected_
+                ? views::IconColors(SK_ColorWHITE, SK_ColorWHITE)
+                : views::IconColors(ui::kColorIcon, ui::kColorIconDisabled));
       }
     }
   }
@@ -169,7 +179,6 @@ void OpenWorkspaceDialog::BuildWorkspaceList() {
   }
   list_container_->RemoveAllChildViews();
 
-  constexpr int kDeleteButtonWidth = kRowHeight;
   const int kRowContentWidth = kDialogWidth - kPadding * 2;
 
   for (size_t i = 0; i < workspaces_.size(); ++i) {
@@ -204,13 +213,12 @@ void OpenWorkspaceDialog::BuildWorkspaceList() {
     auto* name_btn_raw = row->AddChildView(std::move(name_btn));
     row_layout->SetFlexForView(name_btn_raw, 1);
 
-    auto del_btn = std::make_unique<views::LabelButton>(
+    auto del_btn = views::CreateVectorImageButtonWithNativeTheme(
         base::BindRepeating(&OpenWorkspaceDialog::OnDeleteClicked,
                             base::Unretained(this), static_cast<int>(i)),
-        u"✕");
+        kTrashCanIcon);
     del_btn->SetTooltipText(
         l10n_util::GetStringUTF16(IDS_WORKSPACE_OPEN_DIALOG_ROW_DELETE_BUTTON));
-    del_btn->SetPreferredSize(gfx::Size(kDeleteButtonWidth, kRowHeight));
     row->AddChildView(std::move(del_btn));
 
     list_container_->AddChildView(std::move(row));
