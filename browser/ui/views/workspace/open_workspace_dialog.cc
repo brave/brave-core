@@ -288,7 +288,7 @@ void OpenWorkspaceDialog::OnDeleteClicked(int index) {
       browser_->window()->GetNativeWindow(),
       l10n_util::GetStringUTF16(IDS_WORKSPACE_DELETE_CONFIRM_TITLE),
       l10n_util::GetStringFUTF16(IDS_WORKSPACE_DELETE_CONFIRM_MESSAGE,
-                                 base::UTF8ToUTF16(name)),
+                                 base::UTF8ToUTF16(workspaces_[index].name)),
       base::BindOnce(&OpenWorkspaceDialog::OnDeleteConfirmed,
                      weak_factory_.GetWeakPtr(), std::move(name)));
 }
