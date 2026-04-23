@@ -33,6 +33,10 @@ class SubdivisionUrlRequest final {
 
   void PeriodicallyFetch();
 
+  // Stops any pending timer and re-triggers a fetch. Safe to call while a
+  // fetch is already in-flight; the in-flight fetch will complete normally.
+  void Refetch();
+
  private:
   void Fetch();
   void FetchCallback(const mojom::UrlResponseInfo& mojom_url_response);

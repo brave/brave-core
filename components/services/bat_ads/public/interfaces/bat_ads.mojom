@@ -27,6 +27,8 @@ interface BatAdsClientNotifier {
 
   NotifyDidInitializeAds();
 
+  NotifyNetworkConnectionChanged();
+
   NotifyPrefDidChange(string path);
 
   NotifyResourceComponentDidChange(string manifest_version, string id);

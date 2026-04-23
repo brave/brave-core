@@ -71,6 +71,7 @@ class FakeBatAdsClientNotifier : public bat_ads::mojom::BatAdsClientNotifier {
   void NotifyUserDidBecomeIdle() override;
   void NotifyUserDidBecomeActive(base::TimeDelta idle_time,
                                  bool screen_was_locked) override;
+  void NotifyNetworkConnectionChanged() override {}
   void NotifyBrowserDidEnterForeground() override {}
   void NotifyBrowserDidEnterBackground() override {}
   void NotifyBrowserDidBecomeActive() override {}
