@@ -34,29 +34,27 @@ bool IsExactlyLedgerVendorOnlyRequest(
              blink::mojom::DeviceIdFilter::NewVendor(kLedgerVendorId), nullptr);
 }
 
-bool IsLedgerSubframe(content::RenderFrameHost* rfh) {
-  // We expect hid request only from ledger subframe.
-  if (!rfh || !rfh->GetParent()) {
-    return false;
-  }
-  auto origin = rfh->GetLastCommittedOrigin();
-  return origin.scheme() == content::kChromeUIUntrustedScheme &&
-         (origin.host() == kUntrustedLedgerHost);
-}
-
 }  // namespace
 
 // static
-bool BraveWalletHidChooser::IsBraveWalletMainFrameOrigin(
+bool BraveWalletHidChooser::IsLedgerSubframeOfBraveWallet(
     content::RenderFrameHost* rfh) {
   if (!rfh) {
     return false;
   }
 
-  const auto& origin = rfh->GetMainFrame()->GetLastCommittedOrigin();
-  return origin.scheme() == content::kChromeUIScheme &&
-         (origin.host() == kWalletPageHost ||
-          origin.host() == kWalletPanelHost);
+  const auto& main_frame_origin = rfh->GetMainFrame()->GetLastCommittedOrigin();
+  const bool is_wallet_mainframe =
+      main_frame_origin.scheme() == content::kChromeUIScheme &&
+      (main_frame_origin.host() == kWalletPageHost ||
+       main_frame_origin.host() == kWalletPanelHost);
+
+  auto origin = rfh->GetLastCommittedOrigin();
+  const bool is_ledger_subframe =
+      origin.scheme() == content::kChromeUIUntrustedScheme &&
+      origin.host() == kUntrustedLedgerHost;
+
+  return is_wallet_mainframe && is_ledger_subframe;
 }
 
 BraveWalletHidChooser::BraveWalletHidChooser(
@@ -64,12 +62,11 @@ BraveWalletHidChooser::BraveWalletHidChooser(
     std::vector<blink::mojom::HidDeviceFilterPtr> filters,
     std::vector<blink::mojom::HidDeviceFilterPtr> exclusion_filters,
     content::HidChooser::Callback callback) {
-  CHECK(BraveWalletHidChooser::IsBraveWalletMainFrameOrigin(render_frame_host));
+  CHECK(
+      BraveWalletHidChooser::IsLedgerSubframeOfBraveWallet(render_frame_host));
 
-  if (!IsLedgerSubframe(render_frame_host) ||
-      !IsExactlyLedgerVendorOnlyRequest(filters, exclusion_filters)) {
-    // Request comes from non ledger subframe of wallet mainframe, or has
-    // unexpected filters. Respond with empty device list.
+  if (!IsExactlyLedgerVendorOnlyRequest(filters, exclusion_filters)) {
+    // Request has unexpected filters. Respond with empty device list.
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE,
         base::BindOnce(std::move(callback),

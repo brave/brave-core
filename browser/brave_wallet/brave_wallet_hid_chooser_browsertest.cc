@@ -93,10 +93,15 @@ class BraveWalletHidChooserBrowserTest : public InProcessBrowserTest {
         base::DictValue().Set("vendorId", static_cast<int>(vendor_id)));
   }
 
+  static base::ListValue MakeLedgerFilter() {
+    return MakeVendorFilter(kLedgerVendorId);
+  }
+
   // Calls navigator.hid.requestDevice({filters, exclusionFilters}) and returns
   // the found device or a error string.
-  content::EvalJsResult RequestDevice(content::RenderFrameHost* frame,
-                                      base::ListValue filters) {
+  content::EvalJsResult RequestDevice(
+      content::RenderFrameHost* frame,
+      base::ListValue filters = MakeLedgerFilter()) {
     return content::EvalJs(frame, content::JsReplace(
                                       R"js(
               (async () => {
@@ -109,6 +114,23 @@ class BraveWalletHidChooserBrowserTest : public InProcessBrowserTest {
               })()
               )js",
                                       base::Value(std::move(filters))));
+  }
+
+  // Calls navigator.hid.requestDevice({filters, exclusionFilters}) without
+  // awaiting result. Expects chromium's chooser bubble to be shown.
+  void RequestDeviceAndExpectChromiumChooserBubble(
+      content::RenderFrameHost* frame,
+      base::ListValue filters = MakeLedgerFilter()) {
+    auto waiter = test::ChooserBubbleUiWaiter::Create();
+
+    ASSERT_TRUE(content::ExecJs(
+        frame,
+        content::JsReplace(R"js(navigator.hid.requestDevice({filters: $1}))js",
+                           base::Value(std::move(filters))),
+        content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES));
+
+    waiter->WaitForChange();
+    EXPECT_TRUE(waiter->has_shown());
   }
 
   content::RenderFrameHost* AppendSubframe(const GURL& url) {
@@ -129,27 +151,6 @@ class BraveWalletHidChooserBrowserTest : public InProcessBrowserTest {
   device::FakeHidManager hid_manager_;
 };
 
-IN_PROC_BROWSER_TEST_F(BraveWalletHidChooserBrowserTest, WalletMainFrame) {
-  auto waiter = test::ChooserBubbleUiWaiter::Create();
-
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kBraveUIWalletURL)));
-
-  EXPECT_THAT(RequestDevice(web_contents()->GetPrimaryMainFrame(),
-                            MakeVendorFilter(kLedgerVendorId))
-                  .ExtractString(),
-              "No Devices");
-
-  ASSERT_TRUE(
-      ui_test_utils::NavigateToURL(browser(), GURL(kBraveUIWalletPanelURL)));
-
-  EXPECT_THAT(RequestDevice(web_contents()->GetPrimaryMainFrame(),
-                            MakeVendorFilter(kLedgerVendorId))
-                  .ExtractString(),
-              "No Devices");
-
-  EXPECT_FALSE(waiter->has_shown());
-}
-
 IN_PROC_BROWSER_TEST_F(BraveWalletHidChooserBrowserTest, LedgerSubframe) {
   auto waiter = test::ChooserBubbleUiWaiter::Create();
 
@@ -169,20 +170,46 @@ IN_PROC_BROWSER_TEST_F(BraveWalletHidChooserBrowserTest, LedgerSubframe) {
   EXPECT_THAT(RequestDevice(ledger_subframe, MakeVendorFilter(kLedgerVendorId))
                   .ExtractDict(),
               DictionaryHasValues(ExpectedDevice()));
+
+  EXPECT_FALSE(waiter->has_shown());
 }
 
-IN_PROC_BROWSER_TEST_F(BraveWalletHidChooserBrowserTest, TrezorSubframe) {
-  auto waiter = test::ChooserBubbleUiWaiter::Create();
+IN_PROC_BROWSER_TEST_F(BraveWalletHidChooserBrowserTest, NoDevices) {
+  RemoveAllDevices();
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kBraveUIWalletURL)));
+  auto* ledger_subframe = AppendSubframe(GURL(kUntrustedLedgerURL));
 
+  EXPECT_EQ(RequestDevice(ledger_subframe).ExtractString(), "No Devices");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveWalletHidChooserBrowserTest,
+                       WalletMainFrameShowsChooserBubble) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kBraveUIWalletURL)));
+  RequestDeviceAndExpectChromiumChooserBubble(
+      web_contents()->GetPrimaryMainFrame());
+
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL(kBraveUIWalletPanelURL)));
+  RequestDeviceAndExpectChromiumChooserBubble(
+      web_contents()->GetPrimaryMainFrame());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveWalletHidChooserBrowserTest,
+                       NonWalletOriginShowsChooserBubble) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), embedded_test_server()->GetURL("/simple.html")));
+
+  RequestDeviceAndExpectChromiumChooserBubble(
+      web_contents()->GetPrimaryMainFrame());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveWalletHidChooserBrowserTest,
+                       TrezorSubframeShowsChooserBubble) {
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), GURL(kBraveUIWalletPanelURL)));
   auto* trezor_subframe = AppendSubframe(GURL(kUntrustedTrezorURL));
   ASSERT_TRUE(trezor_subframe);
-  EXPECT_THAT(RequestDevice(trezor_subframe, MakeVendorFilter(kLedgerVendorId))
-                  .ExtractString(),
-              "No Devices");
-
-  EXPECT_FALSE(waiter->has_shown());
+  RequestDeviceAndExpectChromiumChooserBubble(trezor_subframe);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletHidChooserBrowserTest, InvalidFilter) {
@@ -193,33 +220,4 @@ IN_PROC_BROWSER_TEST_F(BraveWalletHidChooserBrowserTest, InvalidFilter) {
   EXPECT_THAT(RequestDevice(ledger_subframe, MakeVendorFilter(kOtherVendorId))
                   .ExtractString(),
               "No Devices");
-}
-
-IN_PROC_BROWSER_TEST_F(BraveWalletHidChooserBrowserTest, NoDevices) {
-  RemoveAllDevices();
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kBraveUIWalletURL)));
-  auto* ledger_subframe = AppendSubframe(GURL(kUntrustedLedgerURL));
-
-  EXPECT_EQ(RequestDevice(ledger_subframe, MakeVendorFilter(kLedgerVendorId))
-                .ExtractString(),
-            "No Devices");
-}
-
-IN_PROC_BROWSER_TEST_F(BraveWalletHidChooserBrowserTest,
-                       NonWalletOriginShowsChooserBubble) {
-  auto waiter = test::ChooserBubbleUiWaiter::Create();
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(
-      browser(), embedded_test_server()->GetURL("/simple.html")));
-
-  // Start requestDevice without awaiting — chromiums's chooser will show a
-  // bubble.
-  ASSERT_TRUE(content::ExecJs(
-      web_contents(),
-      content::JsReplace(
-          "navigator.hid.requestDevice({filters: [{vendorId: $1}]})",
-          static_cast<int>(kLedgerVendorId)),
-      content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES));
-
-  waiter->WaitForChange();
-  EXPECT_TRUE(waiter->has_shown());
 }

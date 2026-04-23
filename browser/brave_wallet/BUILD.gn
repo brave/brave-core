@@ -150,33 +150,19 @@ source_set("tab_helper") {
 }
 
 source_set("brave_wallet_hid_chooser") {
-  if (!is_android) {
-    sources = [
-      "brave_wallet_hid_chooser.cc",
-      "brave_wallet_hid_chooser.h",
-    ]
-    deps = [
-      "//brave/components/constants",
-      "//chrome/browser/hid",
-      "//chrome/browser/ui/hid",
-      "//services/device/public/cpp/hid",
-    ]
-    public_deps = [
-      "//components/permissions",
-      "//content/public/browser",
-    ]
-  }
-}
-
-source_set("brave_wallet_data_files_installer_delegate_impl") {
   sources = [
-    "wallet_data_files_installer_delegate_impl.cc",
-    "wallet_data_files_installer_delegate_impl.h",
+    "brave_wallet_hid_chooser.cc",
+    "brave_wallet_hid_chooser.h",
   ]
   deps = [
-    "//brave/components/brave_wallet/browser",
-    "//brave/components/brave_wallet/common/buildflags",
-    "//chrome/browser:browser_process",
+    "//brave/components/constants",
+    "//chrome/browser/hid",
+    "//chrome/browser/ui/hid",
+    "//services/device/public/cpp/hid",
+  ]
+  public_deps = [
+    "//components/permissions",
+    "//content/public/browser",
   ]
 }
 

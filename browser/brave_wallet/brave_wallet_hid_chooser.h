@@ -29,9 +29,10 @@ class RenderFrameHost;
 class BraveWalletHidChooser : public content::HidChooser,
                               public permissions::ChooserController::View {
  public:
-  // Returns true if the request is coming from a wallet webui page. It is a
-  // CHECKed precondition for BraveWalletHidChooser constructor for given RFH.
-  static bool IsBraveWalletMainFrameOrigin(
+  // Returns true if the request is coming from ledger subframe of wallet webui
+  // page. It is a CHECKed precondition for BraveWalletHidChooser constructor
+  // for given RFH.
+  static bool IsLedgerSubframeOfBraveWallet(
       content::RenderFrameHost* render_frame_host);
 
   BraveWalletHidChooser(

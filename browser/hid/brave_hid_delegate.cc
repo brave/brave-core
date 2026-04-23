@@ -27,7 +27,7 @@ std::unique_ptr<content::HidChooser> BraveHidDelegate::RunChooser(
   DCHECK(render_frame_host);
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  if (BraveWalletHidChooser::IsBraveWalletMainFrameOrigin(render_frame_host)) {
+  if (BraveWalletHidChooser::IsLedgerSubframeOfBraveWallet(render_frame_host)) {
     return std::make_unique<BraveWalletHidChooser>(
         render_frame_host, std::move(filters), std::move(exclusion_filters),
         std::move(callback));

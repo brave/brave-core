@@ -19,7 +19,7 @@ class RenderFrameHost;
 }
 
 // Extends `ChromeHidDelegate` so there is custom behavior for HID requests from
-// wallet webui pages.
+// wallet's ledger webui pages.
 class BraveHidDelegate : public ChromeHidDelegate {
  public:
   BraveHidDelegate();
