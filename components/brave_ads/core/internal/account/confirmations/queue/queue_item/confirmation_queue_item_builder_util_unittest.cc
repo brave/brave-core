@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_builder_util.h"
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/common/random/random_util.h"
+#include "brave/components/brave_ads/core/internal/common/random/test/scoped_rand_time_delta_with_jitter_for_testing.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -18,8 +18,8 @@ class BraveAdsConfirmationQueueItemBuilderUtilTest : public test::TestBase {};
 TEST_F(BraveAdsConfirmationQueueItemBuilderUtilTest,
        RetryProcessingConfirmationAfter) {
   // Arrange
-  const ScopedRandTimeDeltaWithJitterSetterForTesting scoped_rand_time_delta(
-      base::Seconds(7));
+  const test::ScopedRandTimeDeltaWithJitterForTesting
+      scoped_rand_time_delta_with_jitter(base::Seconds(7));
 
   // Act
   const base::TimeDelta retry_processing_confirmation_after =

@@ -263,6 +263,8 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/common/platform/test/fake_platform_helper.cc",
     "//brave/components/brave_ads/core/internal/common/platform/test/fake_platform_helper.h",
     "//brave/components/brave_ads/core/internal/common/random/random_util_unittest.cc",
+    "//brave/components/brave_ads/core/internal/common/random/test/scoped_rand_time_delta_with_jitter_for_testing.cc",
+    "//brave/components/brave_ads/core/internal/common/random/test/scoped_rand_time_delta_with_jitter_for_testing.h",
     "//brave/components/brave_ads/core/internal/common/resources/test/country_components_test_constants.h",
     "//brave/components/brave_ads/core/internal/common/resources/test/language_components_test_constants.h",
     "//brave/components/brave_ads/core/internal/common/resources/test/resource_test_constants.h",

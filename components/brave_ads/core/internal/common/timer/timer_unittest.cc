@@ -10,7 +10,7 @@
 #include "base/test/bind.h"
 #include "base/test/gtest_util.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/common/random/random_util.h"
+#include "brave/components/brave_ads/core/internal/common/random/test/scoped_rand_time_delta_with_jitter_for_testing.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -130,8 +130,8 @@ TEST_F(BraveAdsTimerTest, StopReturnsFalseIfNotRunning) {
 
 TEST_F(BraveAdsTimerTest, StartWithPrivacyChecksNegativeDelay) {
   // Arrange
-  const ScopedRandTimeDeltaWithJitterSetterForTesting scoped_rand_delay(
-      base::Milliseconds(-1));
+  const test::ScopedRandTimeDeltaWithJitterForTesting
+      scoped_rand_time_delta_with_jitter(base::Milliseconds(-1));
 
   // Act & Assert
   EXPECT_CHECK_DEATH(
