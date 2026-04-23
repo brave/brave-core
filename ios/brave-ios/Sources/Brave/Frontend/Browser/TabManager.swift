@@ -1354,7 +1354,11 @@ class TabManager: NSObject {
 
     var tabToSelect: (any TabState)?
     for savedTab in savedTabs {
-      if let tabURL = savedTab.url {
+      if var tabURL = savedTab.url {
+        // Replace any old NTP tab urls with the updated one
+        if InternalURL.isValid(url: tabURL) && tabURL.path.contains("about/home") {
+          tabURL = Self.ntpInteralURL
+        }
         // Provide an empty request to prevent a new tab from loading the home screen
         let request =
           InternalURL.isValid(url: tabURL)
