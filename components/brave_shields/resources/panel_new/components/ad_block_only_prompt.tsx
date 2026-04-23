@@ -30,9 +30,9 @@ export function MaybeAdBlockOnlyPrompt() {
     siteBlockInfo.showShieldsDisabledAdBlockOnlyModePrompt
 
   if (!adblockOnlyEnabled) {
-    const showForRepeatedDownloads = shieldsEnabled && repeatedReloadsDetected
+    const showForRepeatedReloads = shieldsEnabled && repeatedReloadsDetected
     const showForShieldsDisabled = !shieldsEnabled && showDisabledPrompt
-    if (showForRepeatedDownloads || showForShieldsDisabled) {
+    if (showForRepeatedReloads || showForShieldsDisabled) {
       return <AdBlockOnlyEnablePrompt />
     }
   }
@@ -46,6 +46,7 @@ export function MaybeAdBlockOnlyPrompt() {
 
 function AdBlockOnlyEnablePrompt() {
   const api = useShieldsApi()
+  const setShieldsEnabled = api.setBraveShieldsEnabled
   const setAdBlockOnlyModeEnabled = api.setBraveShieldsAdBlockOnlyModeEnabled
   const setAdBlockOnlyModePromptDismissed =
     api.setBraveShieldsAdBlockOnlyModePromptDismissed
@@ -72,7 +73,12 @@ function AdBlockOnlyEnablePrompt() {
         )}
       </p>
       <div className='actions'>
-        <Button onClick={() => setAdBlockOnlyModeEnabled([true])}>
+        <Button
+          onClick={() => {
+            setShieldsEnabled([true])
+            setAdBlockOnlyModeEnabled([true])
+          }}
+        >
           {getString('BRAVE_SHIELDS_ENABLE_AD_BLOCK_ONLY_MODE')}
         </Button>
         <Button
