@@ -292,9 +292,6 @@ class BraveTabContainer : public TabContainerImpl,
   // In case of unit tests, the pref can be uninitialized, so we return false.
   bool IsHorizontalScrollableTabStripEnabled() const;
 
-  // Called when the horizontal tab scroll buttons pref changes.
-  void OnHorizontalTabScrollButtonsPrefChanged();
-
   base::flat_set<Tab*> closing_tabs_;
 
   raw_ptr<TabDragContext> drag_context_;
@@ -314,7 +311,6 @@ class BraveTabContainer : public TabContainerImpl,
   BooleanPrefMember tree_tabs_enabled_;
   BooleanPrefMember should_show_scroll_bar_;
   BooleanPrefMember scrollable_horizontal_tab_strip_;
-  BooleanPrefMember show_horizontal_tab_scroll_buttons_;
 
   bool layout_locked_ = false;
 

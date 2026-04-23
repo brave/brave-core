@@ -8,6 +8,7 @@
 
 #include "base/callback_list.h"
 #include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
+#include "components/prefs/pref_member.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
 class TabStripControlButton;
@@ -49,6 +50,7 @@ class BraveHorizontalTabStripRegionView : public HorizontalTabStripRegionView {
   void Initialize();
   void CreateScrollButtonsIfNeeded();
   void UpdateScrollButtonsVisibility();
+  void OnShowHorizontalTabScrollButtonsChanged();
   void UpdateTrailingScrollButtonMargin(bool vertical_tabs);
   void OnScrollPreviousPressed();
   void OnScrollNextPressed();
@@ -58,6 +60,8 @@ class BraveHorizontalTabStripRegionView : public HorizontalTabStripRegionView {
   raw_ptr<TabStripControlButton> tab_scroll_next_button_ = nullptr;
 
   base::CallbackListSubscription horizontal_scroll_offset_changed_subscription_;
+
+  BooleanPrefMember show_horizontal_tab_scroll_buttons_;
 
   base::WeakPtrFactory<BraveHorizontalTabStripRegionView> weak_factory_{this};
 };

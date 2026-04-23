@@ -106,11 +106,6 @@ BraveTabContainer::BraveTabContainer(
         base::BindRepeating(
             &BraveTabContainer::OnScrollableHorizontalTabStripPrefChanged,
             base::Unretained(this)));
-    show_horizontal_tab_scroll_buttons_.Init(
-        brave_tabs::kShowHorizontalTabScrollButtons, prefs,
-        base::BindRepeating(
-            &BraveTabContainer::OnHorizontalTabScrollButtonsPrefChanged,
-            base::Unretained(this)));
   }
 
   if (!tabs::utils::SupportsBraveVerticalTabs(browser)) {
@@ -1813,23 +1808,12 @@ bool BraveTabContainer::IsPinned(const Tab* tab) const {
   return tab_index && *tab_index < pinned_tab_count;
 }
 
-void BraveTabContainer::OnHorizontalTabScrollButtonsPrefChanged() {
-  PreferredSizeChanged();
-  if (views::View* p = parent()) {
-    p->InvalidateLayout();
-  }
-}
-
 bool BraveTabContainer::ShouldShowHorizontalScrollButton() const {
   // Scrollable strip behavior comes from kBraveScrollableTabStrip alone; this
   // pref only gates the scroll *buttons* in BraveHorizontalTabStripRegionView.
   if (!base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)) {
     return false;
   }
-  if (!show_horizontal_tab_scroll_buttons_.GetValue()) {
-    return false;
-  }
-
   const auto direction = GetScrollDirection();
   if (direction != views::LayoutOrientation::kHorizontal) {
     return false;

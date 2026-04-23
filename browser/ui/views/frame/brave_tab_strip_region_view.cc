@@ -7,12 +7,15 @@
 
 #include <algorithm>
 
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "build/build_config.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tab_search_feature.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -22,6 +25,7 @@
 #include "chrome/browser/ui/views/tabs/shared/tab_strip_combo_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_control_button.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/prefs/pref_service.h"
 #include "components/vector_icons/vector_icons.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -48,7 +52,11 @@ BraveHorizontalTabStripRegionView::~BraveHorizontalTabStripRegionView() =
     default;
 
 void BraveHorizontalTabStripRegionView::CreateScrollButtonsIfNeeded() {
-  if (tab_scroll_previous_button_) {
+  if (!base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)) {
+    return;
+  }
+
+  if (HaveScrollButtons()) {
     return;
   }
   auto* bwi = tab_strip_->GetBrowserWindowInterface();
@@ -102,6 +110,14 @@ void BraveHorizontalTabStripRegionView::CreateScrollButtonsIfNeeded() {
   tab_scroll_next_button_->SetVisible(false);
 }
 
+void BraveHorizontalTabStripRegionView::
+    OnShowHorizontalTabScrollButtonsChanged() {
+  InvalidateLayout();
+  auto* strip = views::AsViewClass<BraveTabStrip>(tab_strip_);
+  CHECK(strip);
+  strip->InvalidateTabContainerLayout();
+}
+
 void BraveHorizontalTabStripRegionView::UpdateScrollButtonsVisibility() {
   if (!HaveScrollButtons()) {
     return;
@@ -113,7 +129,8 @@ void BraveHorizontalTabStripRegionView::UpdateScrollButtonsVisibility() {
     // Can be null if the container isn't yet created.
     return;
   }
-  const bool show = container->ShouldShowHorizontalScrollButton();
+  const bool show = container->ShouldShowHorizontalScrollButton() &&
+                    *show_horizontal_tab_scroll_buttons_;
   tab_scroll_previous_button_->SetVisible(show);
   tab_scroll_next_button_->SetVisible(show);
   if (show) {
@@ -258,7 +275,8 @@ void BraveHorizontalTabStripRegionView::UpdateTrailingScrollButtonMargin(
     return;
   }
 
-  const bool scroll_active = container->ShouldShowHorizontalScrollButton();
+  const bool scroll_active = container->ShouldShowHorizontalScrollButton() &&
+                             *show_horizontal_tab_scroll_buttons_;
 
   if (scroll_active) {
     // Upstream reserves a right margin on the tab strip so the layered NTB can
@@ -331,14 +349,26 @@ void BraveHorizontalTabStripRegionView::Initialize() {
 
   CreateScrollButtonsIfNeeded();
 
-  if (auto* strip = views::AsViewClass<BraveTabStrip>(tab_strip_)) {
-    if (BraveTabContainer* container = strip->GetBraveTabContainer()) {
-      horizontal_scroll_offset_changed_subscription_ =
-          container->RegisterHorizontalScrollOffsetChangedCallback(
-              base::BindRepeating(&BraveHorizontalTabStripRegionView::
-                                      UpdateScrollButtonsVisibility,
-                                  weak_factory_.GetWeakPtr()));
+  if (base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)) {
+    if (auto* strip = views::AsViewClass<BraveTabStrip>(tab_strip_)) {
+      if (BraveTabContainer* container = strip->GetBraveTabContainer()) {
+        horizontal_scroll_offset_changed_subscription_ =
+            container->RegisterHorizontalScrollOffsetChangedCallback(
+                base::BindRepeating(&BraveHorizontalTabStripRegionView::
+                                        UpdateScrollButtonsVisibility,
+                                    weak_factory_.GetWeakPtr()));
+      }
     }
+
+    auto* bwi = tab_strip_->GetBrowserWindowInterface();
+    CHECK(bwi);
+    PrefService* prefs = bwi->GetProfile()->GetPrefs();
+    CHECK(prefs);
+    show_horizontal_tab_scroll_buttons_.Init(
+        brave_tabs::kShowHorizontalTabScrollButtons, prefs,
+        base::BindRepeating(&BraveHorizontalTabStripRegionView::
+                                OnShowHorizontalTabScrollButtonsChanged,
+                            base::Unretained(this)));
   }
 }
 
