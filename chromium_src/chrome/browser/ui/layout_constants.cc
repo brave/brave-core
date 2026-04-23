@@ -168,16 +168,16 @@ int GetLayoutConstant(LayoutConstant constant) {
 
 namespace tabs {
 
-int GetHorizontalTabVerticalSpacing() {
-  return ShouldUseCompactHorizontalTabsForNonTouchUI()
-             ? tabs::compact_horizontal_tabs_layout::kTabVerticalSpacing
-             : tabs::compact_horizontal_tabs_layout::kTabVerticalSpacingDefault;
-}
-
 int GetHorizontalTabHeight() {
   return ShouldUseCompactHorizontalTabsForNonTouchUI()
              ? tabs::compact_horizontal_tabs_layout::kTabVisualHeight
              : tabs::compact_horizontal_tabs_layout::kTabVisualHeightDefault;
+}
+
+int GetHorizontalTabVerticalSpacing() {
+  return ShouldUseCompactHorizontalTabsForNonTouchUI()
+             ? tabs::compact_horizontal_tabs_layout::kTabVerticalSpacing
+             : tabs::compact_horizontal_tabs_layout::kTabVerticalSpacingDefault;
 }
 
 int GetHorizontalTabStripHeight() {

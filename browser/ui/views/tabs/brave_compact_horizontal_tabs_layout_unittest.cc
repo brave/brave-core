@@ -13,24 +13,23 @@
 
 namespace tabs {
 
-// Verifies that when `#brave-compact-horizontal-tabs` is enabled and touch UI
-// is off, `GetLayoutConstant` returns the compact metrics defined in
-// `brave_compact_horizontal_tabs_layout.h`.
+// Verifies that `GetLayoutConstant` selects compact vs default metrics based
+// on the `#brave-compact-horizontal-tabs` flag and touch UI state. Both sides
+// of the guard condition are covered below.
 class BraveCompactHorizontalTabsLayoutTest : public ::testing::Test {
- public:
-  BraveCompactHorizontalTabsLayoutTest() {
-    scoped_feature_list_.InitWithFeatures(
-        {tabs::kBraveCompactHorizontalTabs, tabs::kBraveHorizontalTabsUpdate},
-        {});
-  }
-
- private:
+ protected:
   base::test::ScopedFeatureList scoped_feature_list_;
-  ui::TouchUiController::TouchUiScoperForTesting touch_ui_scoper_{
-      /*touch_ui_enabled=*/false};
 };
 
+// Compact flag on + touch UI off: `GetLayoutConstant` should return the
+// compact metrics from `brave_compact_horizontal_tabs_layout.h`.
 TEST_F(BraveCompactHorizontalTabsLayoutTest, SelectsCompactLayoutConstants) {
+  scoped_feature_list_.InitWithFeatures(
+      {tabs::kBraveCompactHorizontalTabs, tabs::kBraveHorizontalTabsUpdate},
+      {});
+  ui::TouchUiController::TouchUiScoperForTesting touch_ui_scoper(
+      /*touch_ui_enabled=*/false);
+
   ASSERT_FALSE(ui::TouchUiController::Get()->touch_ui());
 
   EXPECT_EQ(compact_horizontal_tabs_layout::kLocationBarHeight,
@@ -38,6 +37,47 @@ TEST_F(BraveCompactHorizontalTabsLayoutTest, SelectsCompactLayoutConstants) {
   EXPECT_EQ(compact_horizontal_tabs_layout::kTabVerticalSpacing,
             GetLayoutConstant(LayoutConstant::kTabStripPadding));
   EXPECT_EQ(compact_horizontal_tabs_layout::kTabstripToolbarOverlap,
+            GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap));
+}
+
+// Compact flag off: `GetLayoutConstant` should return the default metrics
+// regardless of touch UI (exercises the `!UseCompactHorizontalTabs()` side of
+// the guard in `ShouldUseCompactHorizontalTabsForNonTouchUI`).
+TEST_F(BraveCompactHorizontalTabsLayoutTest,
+       FlagDisabledReturnsDefaultLayoutConstants) {
+  scoped_feature_list_.InitWithFeatures({tabs::kBraveHorizontalTabsUpdate},
+                                        {tabs::kBraveCompactHorizontalTabs});
+  ui::TouchUiController::TouchUiScoperForTesting touch_ui_scoper(
+      /*touch_ui_enabled=*/false);
+
+  ASSERT_FALSE(ui::TouchUiController::Get()->touch_ui());
+
+  EXPECT_EQ(compact_horizontal_tabs_layout::kLocationBarHeightDefault,
+            GetLayoutConstant(LayoutConstant::kLocationBarHeight));
+  EXPECT_EQ(compact_horizontal_tabs_layout::kTabVerticalSpacingDefault,
+            GetLayoutConstant(LayoutConstant::kTabStripPadding));
+  EXPECT_EQ(compact_horizontal_tabs_layout::kTabstripToolbarOverlapDefault,
+            GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap));
+}
+
+// Compact flag on but touch UI active: compact metrics are intentionally
+// suppressed so touch targets stay usable; defaults should be returned
+// (exercises the `!touch_ui()` side of the guard).
+TEST_F(BraveCompactHorizontalTabsLayoutTest,
+       TouchUiReturnsDefaultLayoutConstants) {
+  scoped_feature_list_.InitWithFeatures(
+      {tabs::kBraveCompactHorizontalTabs, tabs::kBraveHorizontalTabsUpdate},
+      {});
+  ui::TouchUiController::TouchUiScoperForTesting touch_ui_scoper(
+      /*touch_ui_enabled=*/true);
+
+  ASSERT_TRUE(ui::TouchUiController::Get()->touch_ui());
+
+  EXPECT_EQ(compact_horizontal_tabs_layout::kLocationBarHeightDefault,
+            GetLayoutConstant(LayoutConstant::kLocationBarHeight));
+  EXPECT_EQ(compact_horizontal_tabs_layout::kTabVerticalSpacingDefault,
+            GetLayoutConstant(LayoutConstant::kTabStripPadding));
+  EXPECT_EQ(compact_horizontal_tabs_layout::kTabstripToolbarOverlapDefault,
             GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap));
 }
 
