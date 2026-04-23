@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/strings/strcat.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
@@ -20,8 +19,8 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/playlist/content/browser/playlist_service.h"
 #include "brave/components/playlist/content/browser/resources/grit/playlist_generated_map.h"
-#include "brave/components/playlist/core/common/features.h"
 #include "brave/components/playlist/core/common/pref_names.h"
+#include "brave/components/playlist/core/common/utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -275,7 +274,8 @@ WEB_UI_CONTROLLER_TYPE_IMPL(PlaylistUI)
 //
 bool UntrustedPlaylistUIConfig::IsWebUIEnabled(
     content::BrowserContext* browser_context) {
-  return base::FeatureList::IsEnabled(playlist::features::kPlaylist);
+  return playlist::IsPlaylistEnabled(
+      user_prefs::UserPrefs::Get(browser_context));
 }
 
 UntrustedPlaylistUIConfig::UntrustedPlaylistUIConfig()

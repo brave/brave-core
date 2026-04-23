@@ -101,7 +101,7 @@
       icon="bar-chart">
   </origin-toggle-button>
 
-  <if expr="enable_ai_chat or enable_brave_news or enable_speedreader or enable_brave_talk or enable_tor or enable_brave_vpn or enable_brave_wallet or enable_brave_wayback_machine">
+  <if expr="enable_ai_chat or enable_brave_news or enable_speedreader or enable_brave_talk or enable_tor or enable_brave_vpn or enable_brave_wallet or enable_brave_wayback_machine or enable_playlist">
     <div class="cr-row title">$i18n{braveOriginSectionFeaturesTitle}</div>
   </if>
 
@@ -128,6 +128,16 @@
         label="$i18n{braveOriginSpeedReaderToggleTitle}"
         icon="product-speedreader">
     </origin-toggle-button>
+  </if>
+
+  <if expr="enable_playlist">
+    <template is="dom-if" if="[[isPlaylistFeatureEnabled_]]">
+      <origin-toggle-button id="togglePlaylistButton"
+          policy-key="BravePlaylistEnabled"
+          label="$i18n{braveOriginPlaylistToggleTitle}"
+          icon="product-playlist">
+      </origin-toggle-button>
+    </template>
   </if>
 
   <if expr="enable_brave_talk">

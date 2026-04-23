@@ -28,6 +28,7 @@
 #include "brave/components/commands/common/commands.mojom-forward.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -59,6 +60,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/components/brave_wayback_machine/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/core/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
@@ -472,6 +477,12 @@ bool AcceleratorService::IsCommandDisabledByPolicy(int command_id) const {
       return !pref_service_->GetBoolean(kBraveWaybackMachineEnabled);
 #else
       return true;  // Wayback Machine not compiled in, always disabled
+#endif
+    case IDC_SHOW_PLAYLIST_BUBBLE:
+#if BUILDFLAG(ENABLE_PLAYLIST)
+      return !pref_service_->GetBoolean(playlist::kPlaylistEnabledPref);
+#else
+      return true;  // Playlist not compiled in, always disabled
 #endif
     default:
       return false;  // Unknown command - Not subject to policy filtering

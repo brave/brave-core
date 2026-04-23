@@ -25,6 +25,7 @@
 #include "brave/components/brave_wayback_machine/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/p3a/pref_names.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -57,6 +58,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 #include "brave/components/brave_talk/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/core/common/pref_names.h"
 #endif
 
 namespace policy {
@@ -150,6 +155,14 @@ constexpr auto kBraveOriginProfileMetadata =
 #if BUILDFLAG(ENABLE_SPEEDREADER)
         // Speedreader preferences
         {speedreader::kSpeedreaderEnabled,
+         BraveOriginServiceFactory::BraveOriginPrefMetadata(
+             false,
+             /*user_settable=*/true)},
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+        // Playlist preferences
+        {playlist::kPlaylistEnabledPref,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              false,
              /*user_settable=*/true)},

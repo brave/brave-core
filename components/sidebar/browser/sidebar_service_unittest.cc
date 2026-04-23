@@ -40,6 +40,7 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/pref_names.h"
 #endif
 
 using ::testing::Eq;
@@ -228,6 +229,12 @@ class SidebarServiceTest : public testing::Test {
     // Register the Brave Talk policy preference that SidebarService now checks
     prefs_.registry()->RegisterBooleanPref(brave_talk::prefs::kDisabledByPolicy,
                                            false);
+#endif
+#if BUILDFLAG(ENABLE_PLAYLIST)
+    // Register the Playlist pref that SidebarService observes for the
+    // BravePlaylistEnabled policy.
+    prefs_.registry()->RegisterBooleanPref(playlist::kPlaylistEnabledPref,
+                                           true);
 #endif
   }
   void TearDown() override { ResetService(); }
@@ -1005,6 +1012,43 @@ TEST_F(SidebarServiceTestWithPlaylist, GetDefaultPanelItem) {
   }
 
   EXPECT_FALSE(service_->GetDefaultPanelItem());
+}
+
+namespace {
+
+bool HasPlaylistItem(const std::vector<SidebarItem>& items) {
+  return std::ranges::any_of(items, [](const SidebarItem& item) {
+    return item.built_in_item_type == SidebarItem::BuiltInItemType::kPlaylist;
+  });
+}
+
+}  // namespace
+
+// BravePlaylistEnabled policy set managed-false should hide the sidebar item
+// even when the Playlist feature flag is on. A non-managed user toggle must
+// not hide it.
+TEST_F(SidebarServiceTestWithPlaylist, PlaylistHiddenWhenPolicyDisabled) {
+  InitService();
+  EXPECT_TRUE(HasPlaylistItem(service_->items()));
+
+  // A user toggling the pref via settings is NOT a policy-managed state --
+  // the sidebar item must remain so the user can flip it back.
+  prefs_.SetUserPref(playlist::kPlaylistEnabledPref, base::Value(false));
+  EXPECT_TRUE(HasPlaylistItem(service_->items()));
+
+  // Admin policy forces the pref off -- the item should go away.
+  // RefreshBuiltInItems only removes items (matching existing AI Chat / Wallet
+  // behavior), so re-enabling mid-session requires a browser restart.
+  prefs_.SetManagedPref(playlist::kPlaylistEnabledPref, base::Value(false));
+  EXPECT_FALSE(HasPlaylistItem(service_->items()));
+}
+
+// If the BravePlaylistEnabled policy is already managed-false at startup, the
+// sidebar item should never be added.
+TEST_F(SidebarServiceTestWithPlaylist, PlaylistHiddenOnStartupWhenPolicyOff) {
+  prefs_.SetManagedPref(playlist::kPlaylistEnabledPref, base::Value(false));
+  InitService();
+  EXPECT_FALSE(HasPlaylistItem(service_->items()));
 }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
