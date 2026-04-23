@@ -1,12 +1,74 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
-index 79ee74e12d1f40d1ea8665efaa3616d3ef82d77b..f538023a9f185638a8a64152ab21e88984b952b4 100644
+index 79ee74e12d1f40d1ea8665efaa3616d3ef82d77b..2027761eb8cb832a4db030ed64dd3408eeb7d13b 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
-@@ -319,6 +319,7 @@ public abstract class FullscreenHtmlApiHandlerBase
+@@ -319,6 +319,11 @@ public abstract class FullscreenHtmlApiHandlerBase
  
                      @Override
                      public void onHidden(Tab tab, @TabHidingType int reason) {
-+                        BraveFullscreenHtmlApiHandlerBase.class.cast(FullscreenHtmlApiHandlerBase.this).mTabHiddenByChangedTabs = reason == TabHidingType.CHANGED_TABS;
++                        BraveFullscreenHtmlApiHandlerBase brave = BraveFullscreenHtmlApiHandlerBase.class.cast(FullscreenHtmlApiHandlerBase.this);
++                        brave.mTabHiddenByChangedTabs = reason == TabHidingType.CHANGED_TABS;
++                        if (brave.shouldPreservePersistentFullscreenForPictureInPicture(mActivity)) {
++                            return;
++                        }
                          // Clean up any fullscreen state that might impact other tabs.
                          mFullscreenManagerDelegate.onExitFullscreen(null);
                      }
+@@ -624,6 +629,14 @@ public abstract class FullscreenHtmlApiHandlerBase
+ 
+     @Override
+     public void exitPersistentFullscreenMode() {
++        exitPersistentFullscreenMode(true);
++    }
++
++    public void exitPersistentFullscreenModeForPictureInPicture() {
++        exitPersistentFullscreenMode(false);
++    }
++
++    private void exitPersistentFullscreenMode(boolean exitWebContentsFullscreen) {
+         // Return to the original starting position and bounds if the fullscreen was opening on
+         // another display.
+         returnFromTargetScreenIfNeeded();
+@@ -646,7 +659,10 @@ public abstract class FullscreenHtmlApiHandlerBase
+             if (mWebContentsInFullscreen != null && mTabInFullscreen != null) {
+                 // mContentViewInFullscreen is non-null, since mWebContentsInFullscreen is non-null
+                 assumeNonNull(mContentViewInFullscreen);
+-                exitFullscreen(mWebContentsInFullscreen, mContentViewInFullscreen);
++                exitFullscreen(
++                        mWebContentsInFullscreen,
++                        mContentViewInFullscreen,
++                        exitWebContentsFullscreen);
+             } else {
+                 if (mPendingFullscreenOptions != null) mPendingFullscreenOptions.setCanceled();
+                 if (mAreControlsHidden.get()) {
+@@ -719,7 +735,8 @@ public abstract class FullscreenHtmlApiHandlerBase
+         return mPersistentModeSupplier;
+     }
+ 
+-    private void exitFullscreen(WebContents webContents, View contentView) {
++    private void exitFullscreen(
++            WebContents webContents, View contentView, boolean exitWebContentsFullscreen) {
+         getToast().onExitFullscreen();
+         mHandler.removeMessages(MSG_ID_SET_VISIBILITY_FOR_SYSTEM_BARS);
+         mHandler.removeMessages(MSG_ID_UNSET_FULLSCREEN_LAYOUT);
+@@ -728,7 +745,9 @@ public abstract class FullscreenHtmlApiHandlerBase
+         showSystemBars(contentView);
+         if (DEBUG_LOGS) logExitFullscreen(contentView);
+         resetExitFullscreenLayoutChangeListener(contentView);
+-        if (webContents != null && !webContents.isDestroyed()) webContents.exitFullscreen();
++        if (exitWebContentsFullscreen && webContents != null && !webContents.isDestroyed()) {
++            webContents.exitFullscreen();
++        }
+ 
+         // Often - when edge to edge is enabled, or when we are in multi window
+         //  mode, or on automotive devices that never hide system bars - onLayoutChange doesn't
+@@ -884,6 +903,9 @@ public abstract class FullscreenHtmlApiHandlerBase
+     @Override
+     public void onActivityStateChange(Activity activity, int newState) {
+         if (newState == ActivityState.STOPPED && mExitFullscreenOnStop) {
++            if (BraveFullscreenHtmlApiHandlerBase.class.cast(FullscreenHtmlApiHandlerBase.this).shouldPreservePersistentFullscreenForPictureInPicture(activity)) {
++                return;
++            }
+             // Exit fullscreen in onStop to ensure the system UI flags are set
+             // correctly when
+             // showing again (on JB MR2+ builds, the omnibox would be covered by the
