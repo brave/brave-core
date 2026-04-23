@@ -165,13 +165,10 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
   }
 
   UpdateTabStripMargin();
+  UpdateScrollButtonsVisibility();
 
   if (!tabs::utils::ShouldShowBraveVerticalTabs(
           tab_strip_->GetBrowserWindowInterface())) {
-    // FlexLayout skips non-visible children; scroll buttons must be visible
-    // before flex runs or they get no bounds and their right margin does not
-    // reserve space before the next flex child (e.g. combo / grab handle).
-    UpdateScrollButtonsVisibility();
     LayoutSuperclass<HorizontalTabStripRegionView>(this);
 
     // NTB is ignored by flex (`kViewIgnoredByLayoutKey`) and positioned
@@ -194,7 +191,6 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
   // in vertical tabs mode, we make tab strip's height is the same with this
   // view's height to avoid extra gaps.
   tab_strip_->SetBoundsRect(gfx::Rect(0, 0, width(), height()));
-  UpdateScrollButtonsVisibility();
 }
 
 void BraveHorizontalTabStripRegionView::UpdateTabStripMargin() {
