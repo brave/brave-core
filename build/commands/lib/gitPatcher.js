@@ -39,6 +39,18 @@ export const patchApplyReasonMessages = [
 // https://regex101.com/r/jP1JEP/1
 const regexGitApplyNumStats = /^((\d|-)+\s+){2}/
 
+// Matches the `new file mode` header emitted by git for new-file patches.
+const regexNewFileMode = /^new file mode /m
+
+async function patchCreatesNewFile(patchPath) {
+  try {
+    const contents = await fs.readFile(patchPath, 'utf8')
+    return regexNewFileMode.test(contents)
+  } catch {
+    return false
+  }
+}
+
 // Create a reverse lookup object
 const patchApplyReasonsReverse = Object.fromEntries(
   Object.entries(patchApplyReasons).map(([key, value]) => [value, key]),
@@ -183,12 +195,19 @@ export class GitPatcher {
     if (currentPatchChecksum !== patchChecksum) {
       return patchApplyReasons.PATCH_CHANGED
     }
+    const isNewFilePatch = await patchCreatesNewFile(patchPath)
     // Detect if any of the files the patch applies to have changed
     for (const { path: localPath, checksum } of appliesTo) {
       const fullPath = path.join(this.repoPath, localPath)
       try {
         await fs.access(fullPath)
       } catch (err) {
+        // For new-file patches, the target is expected to be missing on a
+        // fresh checkout. Flag as SRC_CHANGED so apply proceeds instead of
+        // bailing out with SRC_REMOVED.
+        if (isNewFilePatch) {
+          return patchApplyReasons.SRC_CHANGED
+        }
         return patchApplyReasons.SRC_REMOVED
       }
       const currentChecksum = await calculateFileChecksum(fullPath)
@@ -261,8 +280,23 @@ export class GitPatcher {
     this.logProgress('Applying patches:')
     // Apply patches (in series)
     for (const patchData of patchSets) {
-      const { patchPath } = patchData
+      const { patchPath, appliesTo } = patchData
       this.logProgress('.')
+      // For new-file patches, the target file must not exist before apply
+      // (git apply refuses to overwrite). A leftover from a previous run of
+      // this script would otherwise block re-application.
+      if (appliesTo && (await patchCreatesNewFile(patchPath))) {
+        for (const { path: localPath } of appliesTo) {
+          const fullPath = path.join(this.repoPath, localPath)
+          try {
+            await fs.unlink(fullPath)
+          } catch (err) {
+            if (err.code !== 'ENOENT') {
+              throw err
+            }
+          }
+        }
+      }
       try {
         await util.runGitAsync(this.repoPath, [
           'apply',
