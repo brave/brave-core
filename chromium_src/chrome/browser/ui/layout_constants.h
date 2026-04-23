@@ -37,6 +37,11 @@ int GetHorizontalTabHeight();
 // UI active).
 int GetHorizontalTabVerticalSpacing();
 
+// Control-only overlap compensation in horizontal tabs mode. This is separate
+// from `LayoutConstant::kTabstripToolbarOverlap` so tab shape overlap can be
+// tuned without unintentionally shifting navigation/caption controls.
+int GetHorizontalTabControlOverlap();
+
 // The amount of space before the first tab view.
 inline constexpr int kHorizontalTabStripLeftMargin = 3;
 

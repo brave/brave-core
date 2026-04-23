@@ -38,6 +38,8 @@ TEST_F(BraveCompactHorizontalTabsLayoutTest, SelectsCompactLayoutConstants) {
             GetLayoutConstant(LayoutConstant::kTabStripPadding));
   EXPECT_EQ(compact_horizontal_tabs_layout::kTabstripToolbarOverlap,
             GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap));
+  EXPECT_EQ(compact_horizontal_tabs_layout::kTabstripToolbarControlsOverlap,
+            GetHorizontalTabControlOverlap());
 }
 
 // Compact flag off: `GetLayoutConstant` should return the default metrics
@@ -58,6 +60,9 @@ TEST_F(BraveCompactHorizontalTabsLayoutTest,
             GetLayoutConstant(LayoutConstant::kTabStripPadding));
   EXPECT_EQ(compact_horizontal_tabs_layout::kTabstripToolbarOverlapDefault,
             GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap));
+  EXPECT_EQ(
+      compact_horizontal_tabs_layout::kTabstripToolbarControlsOverlapDefault,
+      GetHorizontalTabControlOverlap());
 }
 
 // Compact flag on but touch UI active: compact metrics are intentionally
@@ -79,6 +84,9 @@ TEST_F(BraveCompactHorizontalTabsLayoutTest,
             GetLayoutConstant(LayoutConstant::kTabStripPadding));
   EXPECT_EQ(compact_horizontal_tabs_layout::kTabstripToolbarOverlapDefault,
             GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap));
+  EXPECT_EQ(
+      compact_horizontal_tabs_layout::kTabstripToolbarControlsOverlapDefault,
+      GetHorizontalTabControlOverlap());
 }
 
 }  // namespace tabs
