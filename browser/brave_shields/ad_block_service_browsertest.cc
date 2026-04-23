@@ -185,6 +185,7 @@ void AdBlockServiceTest::PreRunTestOnMainThread() {
 }
 
 void AdBlockServiceTest::TearDownOnMainThread() {
+  ad_block_test_helper_.reset();
   source_providers_.clear();
   temp_dirs_.clear();
   // Unset the host resolver so as not to interfere with later tests.

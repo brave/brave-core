@@ -36,10 +36,4 @@ void AdBlockServiceTestObserver::OnFilterListLoaded(
   (is_default_engine ? default_loop_ : additional_loop_).Quit();
 }
 
-void AdBlockServiceTestObserver::OnAdBlockServiceShutdown() {
-  // Detach from the service before it finishes destroying itself so our
-  // dtor's ScopedObservation::Reset doesn't dereference a dead service.
-  observation_.Reset();
-}
-
 }  // namespace brave_shields

@@ -204,6 +204,13 @@ class DebounceBrowserTest : public BaseLocalDataFilesBrowserTest {
     BaseLocalDataFilesBrowserTest::PostRunTestOnMainThread();
   }
 
+  void TearDownOnMainThread() override {
+    // Reset before service shutdown so the helper's observer detaches while
+    // the service is still alive.
+    ad_block_test_helper_.reset();
+    BaseLocalDataFilesBrowserTest::TearDownOnMainThread();
+  }
+
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
   std::vector<std::unique_ptr<brave_shields::TestFiltersProvider>>

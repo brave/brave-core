@@ -241,7 +241,6 @@ AdBlockService::AdBlockService(
 }
 
 AdBlockService::~AdBlockService() {
-  observers_.Notify(&Observer::OnAdBlockServiceShutdown);
   // The engines are deleted on the task runner with SKIP_ON_SHUTDOWN trait,
   // therefore they leak during shutdown.
   ANNOTATE_LEAKING_OBJECT_PTR(engine_wrapper_.get());

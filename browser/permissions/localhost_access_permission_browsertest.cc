@@ -130,7 +130,11 @@ class LocalhostAccessBrowserTest
     InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
   }
 
-  void TearDownOnMainThread() override { prompt_factory_.reset(); }
+  void TearDownOnMainThread() override {
+    ad_block_test_helper_.reset();
+    prompt_factory_.reset();
+    InProcessBrowserTest::TearDownOnMainThread();
+  }
 
   permissions::MockPermissionPromptFactory* prompt_factory() {
     return prompt_factory_.get();

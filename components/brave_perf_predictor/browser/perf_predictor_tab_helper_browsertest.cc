@@ -75,6 +75,11 @@ class PerfPredictorTabHelperTest : public InProcessBrowserTest {
 
   void TearDown() override { InProcessBrowserTest::TearDown(); }
 
+  void TearDownOnMainThread() override {
+    ad_block_test_helper_.reset();
+    InProcessBrowserTest::TearDownOnMainThread();
+  }
+
   void InitEmbeddedTestServer() {
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);

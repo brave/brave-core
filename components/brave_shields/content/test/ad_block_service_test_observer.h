@@ -37,7 +37,6 @@ class AdBlockServiceTestObserver : public AdBlockService::Observer {
   // AdBlockService::Observer:
   void OnFilterListLoaded(bool is_default_engine,
                           AdBlockService::FilterListLoadResult result) override;
-  void OnAdBlockServiceShutdown() override;
 
   base::RunLoop default_loop_;
   base::RunLoop additional_loop_;

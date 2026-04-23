@@ -45,6 +45,11 @@ class EphemeralStorage1pDomainBlockBrowserTest
     helper_ = std::make_unique<brave_shields::AdBlockBrowserTestHelper>();
   }
 
+  void TearDownOnMainThread() override {
+    helper_.reset();
+    EphemeralStorageBrowserTest::TearDownOnMainThread();
+  }
+
   void SetUpOnMainThread() override {
     EphemeralStorageBrowserTest::SetUpOnMainThread();
     a_site_simple_url_ = https_server_.GetURL("a.com", "/simple.html");
