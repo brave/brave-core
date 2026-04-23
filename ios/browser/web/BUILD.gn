@@ -37,6 +37,7 @@ source_set("web") {
     "//brave/ios/browser/web/night_mode",
     "//brave/ios/browser/web/page_metadata",
     "//brave/ios/browser/web/reader_mode",
+    "//brave/ios/browser/youtube",
     "//brave/ios/web/js_messaging",
     "//components/component_updater/installer_policies",
     "//components/language/ios/browser",

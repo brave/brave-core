@@ -29,6 +29,7 @@
 #include "brave/ios/browser/web/night_mode/night_mode_javascript_feature.h"
 #include "brave/ios/browser/web/page_metadata/page_metadata_javascript_feature.h"
 #include "brave/ios/browser/web/reader_mode/reader_mode_javascript_feature.h"
+#include "brave/ios/browser/youtube/youtube_quality_javascript_feature.h"
 #include "brave/ios/web/js_messaging/safe_builtins_javascript_feature.h"
 #include "components/autofill/ios/browser/autofill_java_script_feature.h"
 #include "components/autofill/ios/browser/suggestion_controller_java_script_feature.h"
@@ -143,6 +144,7 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
     features.push_back(NightModeJavaScriptFeature::GetInstance());
     features.push_back(PageMetadataJavaScriptFeature::GetInstance());
     features.push_back(brave::ReaderModeJavaScriptFeature::GetInstance());
+    features.push_back(youtube::YouTubeQualityJavaScriptFeature::GetInstance());
     if (!base::FeatureList::IsEnabled(
             brave::features::kUseChromiumWebViewsAutofill)) {
       features.push_back(LoginsJavaScriptFeature::GetInstance());
