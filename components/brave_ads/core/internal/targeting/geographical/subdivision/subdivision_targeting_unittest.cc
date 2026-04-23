@@ -31,7 +31,7 @@ class BraveAdsSubdivisionTargetingTest : public test::TestBase {
 
     subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
     subdivision_ = std::make_unique<Subdivision>();
-    subdivision_->AddObserver(&*subdivision_targeting_);
+    subdivision_->AddObserver(subdivision_targeting_.get());
   }
 
   void MockHttpOkUrlResponse(const std::string& country_code,
