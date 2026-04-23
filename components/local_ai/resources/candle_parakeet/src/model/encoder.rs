@@ -27,6 +27,7 @@
 use candle_core::{Device, Module, Result, Tensor};
 use candle_nn::{conv2d, linear, Conv2d, Conv2dConfig, Linear, VarBuilder};
 
+use super::conformer::ConformerLayer;
 use super::ParakeetConfig;
 
 /// Convolutional subsampling frontend. `dw_striding` variant with
@@ -177,5 +178,62 @@ impl RelPositionalEncoding {
             }
         }
         Tensor::from_vec(pe, (1, len, d), device)
+    }
+}
+
+/// Top-level Parakeet-CTC-110M encoder: runs log-mel features
+/// through ConvSubsampling, RelPositionalEncoding, then a stack
+/// of `num_layers` ConformerLayer instances, all sharing the same
+/// pos_emb produced by the positional-encoding module.
+///
+/// ```text
+/// input mel  (B, T, num_mel_bins)  @ 10 ms/frame
+///   -> ConvSubsampling               8× time downsample
+///   -> RelPositionalEncoding         (x_scaled, pos_emb)
+///   -> num_layers × ConformerLayer   each reads shared pos_emb
+///   -> encoder_output (B, T/8, hidden_size)  @ 80 ms/frame
+/// ```
+///
+/// Tensor name prefixes under `encoder.`:
+/// ```text
+/// pre_encode.*                 ConvSubsampling
+/// layers.{0..num_layers-1}.*   ConformerLayer instances
+/// ```
+/// `pos_enc` has no loaded weights (sinusoidal is fixed math),
+/// so no tensors live under that prefix.
+///
+/// From NeMo v2.7.2 at
+/// <https://github.com/NVIDIA-NeMo/NeMo/blob/v2.7.2/nemo/collections/asr/modules/conformer_encoder.py>
+/// — implements `ConformerEncoder` inference with
+/// `self_attention_model='rel_pos'`. The `feat_out` projection,
+/// streaming caches, pad mask, stochastic depth, adapters, and
+/// access hooks are omitted (Parakeet-CTC-110M doesn't use
+/// `feat_out`, and the rest aren't needed for chunk-based
+/// batch-size-1 inference).
+pub struct ConformerEncoder {
+    pre_encode: ConvSubsampling,
+    pos_enc: RelPositionalEncoding,
+    layers: Vec<ConformerLayer>,
+}
+
+impl ConformerEncoder {
+    pub fn new(cfg: &ParakeetConfig, vb: VarBuilder) -> Result<Self> {
+        let pre_encode = ConvSubsampling::new(cfg, vb.pp("pre_encode"))?;
+        let pos_enc = RelPositionalEncoding::new(cfg);
+        let vb_layers = vb.pp("layers");
+        let mut layers = Vec::with_capacity(cfg.num_layers);
+        for i in 0..cfg.num_layers {
+            layers.push(ConformerLayer::new(cfg, vb_layers.pp(i.to_string()))?);
+        }
+        Ok(Self { pre_encode, pos_enc, layers })
+    }
+
+    pub fn forward(&self, x: &Tensor) -> Result<Tensor> {
+        let x = self.pre_encode.forward(x)?;
+        let (mut x, pos_emb) = self.pos_enc.forward(&x)?;
+        for layer in &self.layers {
+            x = layer.forward(&x, &pos_emb)?;
+        }
+        Ok(x)
     }
 }
