@@ -95,88 +95,143 @@ constexpr char16_t kYoutubePictureInPictureSupport[] =
 }());
 )";
 
+// Keep selector lists in sync so the exit path can target whichever fullscreen
+// button the YouTube player variant rendered on entry.
+//
+// The script tries to put the YouTube player into fullscreen. On a cold load
+// the player and its controls hydrate asynchronously, so the fullscreen button
+// may not be present in the DOM at injection time. Rather than poll on a
+// timer, we make a couple of synchronous attempts and then wait for a
+// MutationObserver to fire when the button is inserted. A single hard timeout
+// prevents the observer from leaking on broken pages.
 constexpr char16_t kYoutubeFullscreen[] =
     uR"(
 (function() {
   return new Promise((resolve) => {
-    const videoPlaySelector = "video.html5-main-video";
-    const fullscreenSelector = "button.fullscreen-icon";
-    function triggerFullscreen() {
-      // Check if the video is not in fullscreen mode already.
-      if (!document.fullscreenElement) {
-        var fullscreenBtn = document.querySelector(fullscreenSelector);
-        var videoPlayer = document.querySelector(videoPlaySelector);
-        // Check if fullscreen button and video are available.
-        if (fullscreenBtn && videoPlayer) {
-         requestFullscreen(fullscreenBtn, resolve, videoPlayer);
-        } else {
-          // When fullscreen button is not available
-          // clicking the movie player resume the UI.
-          var playerContainer = document.getElementById("player-container-id");
-          if (videoPlayer && playerContainer) {
-            let observerTimeout;
-            // Create a MutationObserver to watch for changes in the DOM.
-            const observer = new MutationObserver(
-            (_mutationsList, observer) => {
-              var fullscreenBtn = document.querySelector(fullscreenSelector);
-              var videoPlayer = document.querySelector(videoPlaySelector);
-              if (fullscreenBtn && videoPlayer) {
-                clearTimeout(observerTimeout);
-                observer.disconnect()
-                requestFullscreen(fullscreenBtn, resolve, videoPlayer);
-              }
-            });
-            // Auto-disconnect the observer after 30 seconds,
-            // a reasonable duration picked after some testing.
-            observerTimeout = setTimeout(() => {
-              observer.disconnect();
-              resolve('timeout');
-            }, 30000);
-            // Start observing the DOM.
-            observer.observe(playerContainer, {
-              childList: true, subtree: true
-            });
-            // Make sure the player is in focus or responsive.
-            videoPlayer.click();
-          } else {
-            // No fullscreen elements found, resolve immediately
-            resolve('no_elements');
-          }
+    const videoSelector = "video.html5-main-video";
+    const fullscreenSelector = "button.fullscreen-icon, "
+        + "button.ytp-fullscreen-button, .ytp-fullscreen-button";
+    const playerSelector = "#movie_player, .html5-video-player";
+    const playerContainerSelector = "#player-container-id, ytm-player, #player";
+    // Hard ceiling so the MutationObserver does not outlive a broken page.
+    // Healthy loads resolve in well under a second; 30 s is generous enough
+    // to absorb cold-cache loads on slow networks.
+    const TIMEOUT_MS = 30000;
+
+    let resolved = false;
+    function resolveOnce(value) {
+      if (resolved) return;
+      resolved = true;
+      resolve(value);
+    }
+
+    function isFullscreen() {
+      const player = document.querySelector(playerSelector);
+      return !!document.fullscreenElement || !!player?.isFullscreen?.();
+    }
+
+    // Click YouTube's fullscreen button if both it and the video are present.
+    // Returns true if the promise was resolved (fullscreen triggered or
+    // already in fullscreen) and the caller should stop trying.
+    function attempt() {
+      if (resolved) return true;
+      if (isFullscreen()) {
+        resolveOnce('already_fullscreen');
+        return true;
+      }
+      const btn = document.querySelector(fullscreenSelector);
+      const video = document.querySelector(videoSelector);
+      if (btn && video) {
+        if (video.readyState >= 3) {
+          // Video is decodable; tap it to give the player input focus before
+          // the button click is dispatched.
+          video.click();
         }
-      } else {
-        // Already in fullscreen, resolve immediately
-        resolve('already_fullscreen');
+        btn.click();
+        resolveOnce('fullscreen_triggered');
+        return true;
+      }
+      return false;
+    }
+
+    function tryYoutubeApi() {
+      const player = document.querySelector(playerSelector);
+      if (!player?.toggleFullscreen
+          || player.classList.contains('ytp-fullscreen')) {
+        return false;
+      }
+      // Use YouTube's own toggle. Do not also call requestFullscreen on the
+      // same element - the two APIs race on Android.
+      try {
+        player.toggleFullscreen();
+        return true;
+      } catch (e) {
+        return false;
       }
     }
-    // Attempts to request fullscreen mode for the given movie player element.
-    // Resolves with 'fullscreen_triggered' if successful, or
-    // 'requestFullscreen_failed' if the request fails.
-    function requestFullscreen(fullscreenBtn, resolve, videoPlayer) {
-      if (videoPlayer.readyState >= 3) {
-        videoPlayer.click();
-        clickFullscreenButton(fullscreenBtn, resolve);
-      } else {
-        videoPlayer.addEventListener("canplay", () => {
-          videoPlayer.click();
-          clickFullscreenButton(fullscreenBtn, resolve);
-        }, { once: true });
+
+    function tryElementFullscreen() {
+      const target = document.querySelector(playerSelector)
+          || document.querySelector(playerContainerSelector)
+          || document.querySelector(videoSelector);
+      if (!target?.requestFullscreen) return false;
+      try {
+        const result = target.requestFullscreen();
+        if (result?.then) {
+          result.then(() => resolveOnce('fullscreen_triggered')).catch(() => {});
+        } else {
+          resolveOnce('fullscreen_triggered');
+        }
+        return true;
+      } catch (e) {
+        return false;
       }
     }
-    function clickFullscreenButton(fullscreenBtn, resolve) {
-      if (fullscreenBtn && !document.hidden) {
-        fullscreenBtn.click();
-        resolve('fullscreen_triggered');
-      } else {
-        resolve('requestFullscreen_failed');
-      }
+
+    function start() {
+      // Fast path: button is already in the tree.
+      if (attempt()) return;
+
+      // Tap to reveal controls in case the button is hidden behind a YouTube
+      // overlay that only renders on first interaction.
+      (document.querySelector(videoSelector)
+          || document.querySelector(playerSelector)
+          || document.querySelector(playerContainerSelector))?.click();
+      if (attempt()) return;
+
+      // Fallbacks if the button never materialises but the player exposes its
+      // own fullscreen API or supports the standard requestFullscreen call.
+      if (tryYoutubeApi() || tryElementFullscreen()) return;
+
+      // Watch the player subtree for the button to be inserted or revealed
+      // (e.g. via a class/style change). The callback re-runs attempt() on
+      // every mutation - a cheap pair of querySelector calls.
+      const observerRoot = document.querySelector(playerContainerSelector)
+          || document.body;
+      const observer = new MutationObserver(() => {
+        if (resolved) {
+          observer.disconnect();
+          return;
+        }
+        if (attempt()) {
+          observer.disconnect();
+        }
+      });
+      // childList + subtree is sufficient: querySelector finds the button as
+      // soon as it is inserted into the tree regardless of visibility, so we
+      // do not need to observe attribute mutations.
+      observer.observe(observerRoot, { childList: true, subtree: true });
+
+      setTimeout(() => {
+        observer.disconnect();
+        resolveOnce('timeout');
+      }, TIMEOUT_MS);
     }
+
     if (document.readyState === "loading") {
-      // Loading hasn't finished yet.
-      document.addEventListener("DOMContentLoaded",
-      triggerFullscreen, { once: true });
+      document.addEventListener("DOMContentLoaded", start, { once: true });
     } else {
-      // `DOMContentLoaded` has already fired.
-      triggerFullscreen();
+      start();
     }
   });
 }());
