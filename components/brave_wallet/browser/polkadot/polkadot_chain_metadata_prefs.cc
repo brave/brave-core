@@ -26,9 +26,11 @@ constexpr char kTransferKeepAliveCallIndex[] = "transfer_keep_alive_call_index";
 constexpr char kTransferAllCallIndex[] = "transfer_all_call_index";
 constexpr char kSs58Prefix[] = "ss58_prefix";
 constexpr char kSpecVersion[] = "spec_version";
+constexpr char kVersionField[] = "version";
 
 // Pref structure stored under kBraveWalletPolkadotChainMetadata:
 // {
+//   "version": int,                             // metadata schema version
 //   "<chain_id>": {
 //     "system_pallet_index": int,               // u8
 //     "balances_pallet_index": int,             // u8
@@ -58,9 +60,21 @@ bool ReadUint(const base::DictValue& dict,
 
 PolkadotChainMetadataPrefs::PolkadotChainMetadataPrefs(
     PrefService& profile_prefs)
-    : profile_prefs_(profile_prefs) {}
+    : profile_prefs_(profile_prefs) {
+  ClearMetadataPrefsOnVersionMismatch();
+}
 
 PolkadotChainMetadataPrefs::~PolkadotChainMetadataPrefs() = default;
+
+void PolkadotChainMetadataPrefs::ClearMetadataPrefsOnVersionMismatch() {
+  const auto& all_metadata =
+      profile_prefs_->GetDict(brave_wallet::kBraveWalletPolkadotChainMetadata);
+  int version = 0;
+  if (!ReadUint(all_metadata, kVersionField, &version) ||
+      version != PolkadotChainMetadataPrefs::kVersion) {
+    profile_prefs_->ClearPref(brave_wallet::kBraveWalletPolkadotChainMetadata);
+  }
+}
 
 std::optional<PolkadotChainMetadata>
 PolkadotChainMetadataPrefs::GetChainMetadata(std::string_view chain_id) const {
@@ -162,9 +176,9 @@ bool PolkadotChainMetadataPrefs::SetChainMetadata(
   value.Set(kTransferAllCallIndex, transfer_all_call_index);
   value.Set(kSs58Prefix, ss58_prefix);
   value.Set(kSpecVersion, spec_version);
-
   ScopedDictPrefUpdate update(profile_prefs_.get(),
                               brave_wallet::kBraveWalletPolkadotChainMetadata);
+  update->Set(kVersionField, PolkadotChainMetadataPrefs::kVersion);
   update->Set(std::string(chain_id), std::move(value));
   return true;
 }
