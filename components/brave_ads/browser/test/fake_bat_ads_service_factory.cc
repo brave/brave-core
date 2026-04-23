@@ -48,6 +48,11 @@ bool FakeBatAdsServiceFactory::last_screen_was_locked() const {
   return notifier ? notifier->last_screen_was_locked() : false;
 }
 
+size_t FakeBatAdsServiceFactory::network_connection_changed_count() const {
+  const FakeBatAdsClientNotifier* const notifier = bat_ads_client_notifier();
+  return notifier ? notifier->network_connection_changed_count() : 0U;
+}
+
 mojo::Remote<bat_ads::mojom::BatAdsService> FakeBatAdsServiceFactory::Launch()
     const {
   ++launch_count_;

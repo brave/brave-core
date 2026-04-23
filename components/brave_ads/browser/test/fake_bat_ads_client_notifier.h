@@ -24,8 +24,9 @@ class PendingReceiver;
 
 namespace brave_ads::test {
 
-// Records calls to `NotifyUserDidBecomeIdle` and `NotifyUserDidBecomeActive`
-// so tests can assert on idle notification counts and arguments.
+// Records calls to `NotifyUserDidBecomeIdle`, `NotifyUserDidBecomeActive`, and
+// `NotifyNetworkConnectionChanged` so tests can assert on notification counts
+// and arguments.
 class FakeBatAdsClientNotifier : public bat_ads::mojom::BatAdsClientNotifier {
  public:
   FakeBatAdsClientNotifier();
@@ -42,6 +43,9 @@ class FakeBatAdsClientNotifier : public bat_ads::mojom::BatAdsClientNotifier {
   size_t become_active_count() const { return become_active_count_; }
   base::TimeDelta last_idle_time() const { return last_idle_time_; }
   bool last_screen_was_locked() const { return last_screen_was_locked_; }
+  size_t network_connection_changed_count() const {
+    return network_connection_changed_count_;
+  }
 
   // bat_ads::mojom::BatAdsClientNotifier:
   void NotifyDidInitializeAds() override {}
@@ -72,6 +76,7 @@ class FakeBatAdsClientNotifier : public bat_ads::mojom::BatAdsClientNotifier {
   void NotifyUserDidBecomeIdle() override;
   void NotifyUserDidBecomeActive(base::TimeDelta idle_time,
                                  bool screen_was_locked) override;
+  void NotifyNetworkConnectionChanged() override;
   void NotifyBrowserDidEnterForeground() override {}
   void NotifyBrowserDidEnterBackground() override {}
   void NotifyBrowserDidBecomeActive() override {}
@@ -83,6 +88,7 @@ class FakeBatAdsClientNotifier : public bat_ads::mojom::BatAdsClientNotifier {
   size_t become_active_count_ = 0;
   base::TimeDelta last_idle_time_;
   bool last_screen_was_locked_ = false;
+  size_t network_connection_changed_count_ = 0;
 
   mojo::Receiver<bat_ads::mojom::BatAdsClientNotifier> receiver_{this};
 };
