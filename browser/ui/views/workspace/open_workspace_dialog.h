@@ -12,12 +12,12 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/workspace/brave_workspace.h"
+#include "chrome/browser/ui/simple_message_box.h"
 #include "ui/views/window/dialog_delegate.h"
 
 class Browser;
 
 namespace views {
-class LabelButton;
 class ScrollView;
 class View;
 }  // namespace views
@@ -43,10 +43,12 @@ class OpenWorkspaceDialog : public views::DialogDelegateView {
   bool IsDialogButtonEnabled(ui::mojom::DialogButton button) const override;
 
   void BuildWorkspaceList();
+  void UpdateRowSelection();
   void OnWorkspaceSelected(int index);
   void OnAccept();
-  void OnDeleteClicked();
-  void OnDeleteCompleted(int index, bool success);
+  void OnDeleteClicked(int index);
+  void OnDeleteConfirmed(std::string name, chrome::MessageBoxResult result);
+  void OnDeleteCompleted(std::string name, bool success);
 
   raw_ptr<Browser> browser_;
   std::vector<WorkspaceInfo> workspaces_;
@@ -54,7 +56,6 @@ class OpenWorkspaceDialog : public views::DialogDelegateView {
 
   raw_ptr<views::ScrollView> scroll_view_ = nullptr;
   raw_ptr<views::View> list_container_ = nullptr;
-  raw_ptr<views::LabelButton> delete_button_ = nullptr;
 
   // Tracks the currently highlighted row view.
   raw_ptr<views::View> selected_row_ = nullptr;

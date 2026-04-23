@@ -20,11 +20,15 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/simple_message_box.h"
 #include "components/constrained_window/constrained_window_views.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/mojom/dialog_button.mojom.h"
+#include "ui/color/color_id.h"
+#include "ui/views/background.h"
 #include "ui/views/controls/button/label_button.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/controls/scroll_view.h"
@@ -38,14 +42,61 @@ constexpr int kPadding = 16;
 constexpr int kRowSpacing = 2;
 constexpr int kRowHeight = 36;
 
-// TODO: show date in a ... menu
-// std::u16string FormatDate(base::Time time) {
-//   base::Time::Exploded exploded;
-//   time.LocalExplode(&exploded);
-//   return base::UTF8ToUTF16(absl::StrFormat(
-//       "%04d-%02d-%02d", exploded.year, exploded.month,
-//       exploded.day_of_month));
-// }
+// A workspace list row that highlights its background on hover and shows a
+// darker tint when selected.  SetNotifyEnterExitOnChild propagates mouse
+// enter/exit from child buttons up to this view so the whole row responds.
+class WorkspaceRowView : public views::View {
+  METADATA_HEADER(WorkspaceRowView, views::View)
+ public:
+  WorkspaceRowView() { SetNotifyEnterExitOnChild(true); }
+
+  void SetSelected(bool selected) {
+    if (selected_ == selected) {
+      return;
+    }
+    selected_ = selected;
+    UpdateBackground();
+  }
+
+  void OnMouseEntered(const ui::MouseEvent& event) override {
+    views::View::OnMouseEntered(event);
+    hovered_ = true;
+    UpdateBackground();
+  }
+
+  void OnMouseExited(const ui::MouseEvent& event) override {
+    views::View::OnMouseExited(event);
+    hovered_ = false;
+    UpdateBackground();
+  }
+
+ private:
+  void UpdateBackground() {
+    if (selected_) {
+      SetBackground(
+          views::CreateSolidBackground(ui::kColorSysOnSurfaceSecondary));
+    } else if (hovered_) {
+      SetBackground(
+          views::CreateSolidBackground(ui::kColorSysStateHoverOnSubtle));
+    } else {
+      SetBackground(nullptr);
+    }
+    for (views::View* child : children()) {
+      auto* btn = static_cast<views::LabelButton*>(child);
+      if (selected_) {
+        btn->SetEnabledTextColors(SK_ColorWHITE);
+      } else {
+        btn->SetEnabledTextColors(std::nullopt);
+      }
+    }
+  }
+
+  bool hovered_ = false;
+  bool selected_ = false;
+};
+
+BEGIN_METADATA(WorkspaceRowView)
+END_METADATA
 
 }  // namespace
 
@@ -107,14 +158,6 @@ OpenWorkspaceDialog::OpenWorkspaceDialog(Browser* browser,
     scroll_view_ = AddChildView(std::move(scroll_view));
 
     BuildWorkspaceList();
-
-    // Delete button placed below the list.
-    auto delete_btn = std::make_unique<views::LabelButton>(
-        base::BindRepeating(&OpenWorkspaceDialog::OnDeleteClicked,
-                            base::Unretained(this)),
-        l10n_util::GetStringUTF16(IDS_WORKSPACE_OPEN_DIALOG_DELETE_BUTTON));
-    delete_button_ = AddChildView(std::move(delete_btn));
-    delete_button_->SetEnabled(false);
   }
 }
 
@@ -126,9 +169,12 @@ void OpenWorkspaceDialog::BuildWorkspaceList() {
   }
   list_container_->RemoveAllChildViews();
 
+  constexpr int kDeleteButtonWidth = kRowHeight;
+  const int kRowContentWidth = kDialogWidth - kPadding * 2;
+
   for (size_t i = 0; i < workspaces_.size(); ++i) {
     const auto& info = workspaces_[i];
-    std::u16string ws_stats_text = u"";
+    std::u16string ws_stats_text;
     if (info.number_of_windows > 1) {
       ws_stats_text = base::UTF8ToUTF16(absl::StrFormat(
           "%d windows - %d ", info.number_of_windows, info.number_of_tabs));
@@ -139,18 +185,35 @@ void OpenWorkspaceDialog::BuildWorkspaceList() {
     ws_stats_text +=
         base::UTF8ToUTF16((info.number_of_tabs == 1 ? "tab" : "tabs"));
 
-    // Each workspace is rendered as a full-width label button showing the
-    // workspace name and creation date.
-    auto row_button = std::make_unique<views::LabelButton>(
+    // Each row is a horizontal container: name button (flex) + delete button.
+    // WorkspaceRowView installs an InkDrop so the row highlights on hover.
+    auto row = std::make_unique<WorkspaceRowView>();
+    auto row_box = std::make_unique<views::BoxLayout>(
+        views::BoxLayout::Orientation::kHorizontal, gfx::Insets(), 0);
+    row_box->set_cross_axis_alignment(
+        views::BoxLayout::CrossAxisAlignment::kCenter);
+    auto* row_layout = row_box.get();
+    row->SetLayoutManager(std::move(row_box));
+    row->SetPreferredSize(gfx::Size(kRowContentWidth, kRowHeight));
+
+    auto name_btn = std::make_unique<views::LabelButton>(
         base::BindRepeating(&OpenWorkspaceDialog::OnWorkspaceSelected,
                             base::Unretained(this), static_cast<int>(i)),
         base::UTF8ToUTF16(info.name) + u"  " + ws_stats_text);
+    name_btn->SetHorizontalAlignment(gfx::ALIGN_LEFT);
+    auto* name_btn_raw = row->AddChildView(std::move(name_btn));
+    row_layout->SetFlexForView(name_btn_raw, 1);
 
-    row_button->SetHorizontalAlignment(gfx::ALIGN_LEFT);
-    row_button->SetPreferredSize(
-        gfx::Size(kDialogWidth - kPadding * 2 - kRowSpacing * 2, kRowHeight));
+    auto del_btn = std::make_unique<views::LabelButton>(
+        base::BindRepeating(&OpenWorkspaceDialog::OnDeleteClicked,
+                            base::Unretained(this), static_cast<int>(i)),
+        u"✕");
+    del_btn->SetTooltipText(
+        l10n_util::GetStringUTF16(IDS_WORKSPACE_OPEN_DIALOG_ROW_DELETE_BUTTON));
+    del_btn->SetPreferredSize(gfx::Size(kDeleteButtonWidth, kRowHeight));
+    row->AddChildView(std::move(del_btn));
 
-    list_container_->AddChildView(std::move(row_button));
+    list_container_->AddChildView(std::move(row));
   }
 
   // Resize the scroll view to fit the current row count exactly, up to
@@ -162,14 +225,24 @@ void OpenWorkspaceDialog::BuildWorkspaceList() {
     scroll_view_->ClipHeightTo(height, height);
     InvalidateLayout();
   }
+
+  UpdateRowSelection();
+}
+
+void OpenWorkspaceDialog::UpdateRowSelection() {
+  if (!list_container_) {
+    return;
+  }
+  const auto& children = list_container_->children();
+  for (size_t i = 0; i < children.size(); ++i) {
+    static_cast<WorkspaceRowView*>(children[i].get())
+        ->SetSelected(static_cast<int>(i) == selected_index_);
+  }
 }
 
 void OpenWorkspaceDialog::OnWorkspaceSelected(int index) {
   selected_index_ = index;
-  if (delete_button_) {
-    delete_button_->SetEnabled(true);
-  }
-  // Update the OK button state.
+  UpdateRowSelection();
   DialogModelChanged();
 }
 
@@ -198,9 +271,23 @@ void OpenWorkspaceDialog::OnAccept() {
   brave::RestoreWorkspace(browser_, workspaces_[selected_index_].name);
 }
 
-void OpenWorkspaceDialog::OnDeleteClicked() {
-  if (selected_index_ < 0 ||
-      selected_index_ >= static_cast<int>(workspaces_.size())) {
+void OpenWorkspaceDialog::OnDeleteClicked(int index) {
+  if (index < 0 || index >= static_cast<int>(workspaces_.size())) {
+    return;
+  }
+  std::string name = workspaces_[index].name;
+  chrome::ShowQuestionMessageBoxAsync(
+      browser_->window()->GetNativeWindow(),
+      l10n_util::GetStringUTF16(IDS_WORKSPACE_DELETE_CONFIRM_TITLE),
+      l10n_util::GetStringFUTF16(IDS_WORKSPACE_DELETE_CONFIRM_MESSAGE,
+                                 base::UTF8ToUTF16(name)),
+      base::BindOnce(&OpenWorkspaceDialog::OnDeleteConfirmed,
+                     weak_factory_.GetWeakPtr(), std::move(name)));
+}
+
+void OpenWorkspaceDialog::OnDeleteConfirmed(std::string name,
+                                            chrome::MessageBoxResult result) {
+  if (result != chrome::MESSAGE_BOX_RESULT_YES) {
     return;
   }
   auto* service =
@@ -208,31 +295,32 @@ void OpenWorkspaceDialog::OnDeleteClicked() {
   if (!service) {
     return;
   }
-
-  // Disable immediately to prevent double-clicks while I/O is in flight.
-  if (delete_button_) {
-    delete_button_->SetEnabled(false);
-  }
-
-  int index = selected_index_;
-  std::string name = workspaces_[index].name;
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
       {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
        base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
       base::BindOnce(&BraveWorkspaceService::DeleteWorkspace,
-                     base::Unretained(service), std::move(name)),
+                     base::Unretained(service), name),
       base::BindOnce(&OpenWorkspaceDialog::OnDeleteCompleted,
-                     weak_factory_.GetWeakPtr(), index));
+                     weak_factory_.GetWeakPtr(), std::move(name)));
 }
 
-void OpenWorkspaceDialog::OnDeleteCompleted(int index, bool success) {
-  if (!success || index < 0 ||
-      index >= static_cast<int>(workspaces_.size())) {
+void OpenWorkspaceDialog::OnDeleteCompleted(std::string name, bool success) {
+  if (!success) {
     return;
   }
-  workspaces_.erase(workspaces_.begin() + index);
-  selected_index_ = -1;
+  auto it =
+      std::find_if(workspaces_.begin(), workspaces_.end(),
+                   [&name](const WorkspaceInfo& w) { return w.name == name; });
+  if (it == workspaces_.end()) {
+    return;
+  }
+  if (selected_index_ >= 0 &&
+      static_cast<size_t>(selected_index_) ==
+          static_cast<size_t>(it - workspaces_.begin())) {
+    selected_index_ = -1;
+  }
+  workspaces_.erase(it);
   BuildWorkspaceList();
   DialogModelChanged();
 }

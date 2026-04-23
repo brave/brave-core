@@ -290,6 +290,15 @@
       <message name="IDS_WORKSPACE_DIALOG_CANCEL_BUTTON" desc="Cancel button label shared by workspace dialogs">
         Cancel
       </message>
+      <message name="IDS_WORKSPACE_DELETE_CONFIRM_TITLE" desc="Title of the confirmation dialog shown before deleting a saved workspace">
+        Delete Workspace
+      </message>
+      <message name="IDS_WORKSPACE_DELETE_CONFIRM_MESSAGE" desc="Body of the confirmation dialog asking the user to confirm deleting a named workspace">
+        Are you sure you want to delete the workspace "<ph name="WORKSPACE_NAME">$1<ex>My Workspace</ex></ph>"?
+      </message>
+      <message name="IDS_WORKSPACE_OPEN_DIALOG_ROW_DELETE_BUTTON" desc="Tooltip/accessible label for the per-row delete button in the open workspace dialog">
+        Delete workspace
+      </message>
 
       <!-- Widevine -->
       <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
