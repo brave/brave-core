@@ -74,6 +74,9 @@ class AdBlockService {
     virtual void OnFilterListLoaded(bool is_default_engine,
                                     FilterListLoadResult result) {}
     virtual void OnDATLoaded(bool is_default_engine, bool success) {}
+    // Fires from ~AdBlockService so observers that outlive the service can
+    // detach cleanly.
+    virtual void OnAdBlockServiceShutdown() {}
   };
 
   class SourceProviderObserver : public AdBlockResourceProvider::Observer,

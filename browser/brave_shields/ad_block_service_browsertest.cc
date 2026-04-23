@@ -36,7 +36,7 @@
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager_observer.h"
-#include "brave/components/brave_shields/content/test/engine_test_observer.h"
+#include "brave/components/brave_shields/content/test/ad_block_service_test_observer.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_default_resource_provider.h"
@@ -230,11 +230,8 @@ void AdBlockServiceTest::AddNewRules(const std::string& rules,
   source_provider->RegisterAsSourceProvider(ad_block_service);
   source_providers_.push_back(std::move(source_provider));
 
-  auto& engine = first_party_protections
-                     ? ad_block_service->GetDefaultEngineForTesting()
-                     : ad_block_service->GetAdditionalFiltersEngineForTesting();
-  EngineTestObserver engine_observer(&engine);
-  engine_observer.Wait();
+  brave_shields::AdBlockServiceTestObserver observer(ad_block_service);
+  observer.Wait(first_party_protections);
 }
 
 // Returns the path of the new directory, not the file. Intended for use with
@@ -299,9 +296,8 @@ void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
   EXPECT_TRUE(provider);
   provider->OnComponentReady(component_path);
 
-  auto& engine = service->GetDefaultEngineForTesting();
-  EngineTestObserver engine_observer(&engine);
-  engine_observer.Wait();
+  brave_shields::AdBlockServiceTestObserver observer(service);
+  observer.WaitForDefault();
 }
 
 void AdBlockServiceTest::EnableDeveloperMode(bool enabled) {
@@ -315,9 +311,8 @@ void AdBlockServiceTest::UpdateCustomAdBlockInstanceWithRules(
       g_brave_browser_process->ad_block_service();
   ad_block_service->custom_filters_provider()->UpdateCustomFilters(rules);
 
-  auto& engine = ad_block_service->GetAdditionalFiltersEngineForTesting();
-  EngineTestObserver engine_observer(&engine);
-  engine_observer.Wait();
+  brave_shields::AdBlockServiceTestObserver observer(ad_block_service);
+  observer.WaitForAdditional();
 }
 
 void AdBlockServiceTest::AssertTagExists(const std::string& tag,
@@ -378,11 +373,8 @@ void AdBlockServiceTest::InstallComponent(
     EXPECT_TRUE(provider);
     provider->OnComponentReady(component_path);
 
-    auto& engine = catalog_entry.first_party_protections
-                       ? service->GetDefaultEngineForTesting()
-                       : service->GetAdditionalFiltersEngineForTesting();
-    EngineTestObserver engine_observer(&engine);
-    engine_observer.Wait();
+    brave_shields::AdBlockServiceTestObserver observer(service);
+    observer.Wait(catalog_entry.first_party_protections);
   }
 }
 

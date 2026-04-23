@@ -14,8 +14,8 @@
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/content/test/ad_block_service_test_observer.h"
 #include "brave/components/brave_shields/content/test/ad_block_unit_test_helper.h"
-#include "brave/components/brave_shields/content/test/engine_test_observer.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 
 namespace brave_shields {
@@ -39,23 +39,22 @@ AdBlockBrowserTestHelper::AdBlockBrowserTestHelper(
 AdBlockBrowserTestHelper::~AdBlockBrowserTestHelper() = default;
 
 void AdBlockBrowserTestHelper::WaitForAdBlockEngineInitialLoad() {
-  if (initial_engine_observer_) {
-    initial_engine_observer_->Wait();
-    initial_engine_observer_.reset();
+  if (initial_observer_) {
+    initial_observer_->WaitForDefault();
+    initial_observer_.reset();
   }
 }
 
 void AdBlockBrowserTestHelper::SetUpAdBlockService(
     content::BrowserContext* context) {
-  if (!initial_engine_observer_) {
+  if (!initial_observer_) {
     // Attach before SetupAdBlockServiceForTesting posts
     // SetFilterListCatalog({}) so the observer is guaranteed to catch the
-    // resulting OnEngineUpdated. Tests that want to wait on the initial build
-    // call WaitForAdBlockEngineInitialLoad() before registering any
+    // resulting OnFilterListLoaded. Tests that want to wait on the initial
+    // build call WaitForAdBlockEngineInitialLoad() before registering any
     // TestFiltersProvider; other tests simply ignore it.
-    initial_engine_observer_ = std::make_unique<EngineTestObserver>(
-        &g_brave_browser_process->ad_block_service()
-             ->GetDefaultEngineForTesting());
+    initial_observer_ = std::make_unique<AdBlockServiceTestObserver>(
+        g_brave_browser_process->ad_block_service());
   }
   SetupAdBlockServiceForTesting(g_brave_browser_process->ad_block_service());
   callback_.Run();
