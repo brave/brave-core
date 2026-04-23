@@ -8,8 +8,7 @@
 
 #include "brave/components/brave_ads/core/browser/network/http_client_callback.h"
 #include "services/network/public/mojom/oblivious_http_request.mojom.h"
-
-class GURL;
+#include "url/gurl.h"
 
 namespace brave_ads {
 

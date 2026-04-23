@@ -45,13 +45,23 @@ source_set("unit_tests") {
 
   sources = [
     "http_client_util_unittest.cc",
+    "oblivious_http_client_impl_unittest.cc",
     "oblivious_http_feature_unittest.cc",
+    "oblivious_http_key_config_unittest.cc",
   ]
 
   deps = [
     ":network",
     "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_ads/core/mojom",
+    "//brave/components/brave_ads/core/public:headers",
+    "//components/prefs",
+    "//components/prefs:test_support",
     "//net",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
+    "//testing/gmock",
     "//testing/gtest",
     "//url",
   ]
