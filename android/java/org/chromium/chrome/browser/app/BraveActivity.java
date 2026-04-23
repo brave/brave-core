@@ -6,12 +6,15 @@
 package org.chromium.chrome.browser.app;
 
 import android.app.Activity;
+import android.app.KeyguardManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PictureInPictureParams;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -21,6 +24,7 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -62,6 +66,7 @@ import com.wireguard.android.backend.GoBackend;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
+import org.chromium.base.ActivityState;
 import org.chromium.base.ApplicationState;
 import org.chromium.base.ApplicationStatus;
 import org.chromium.base.ApplicationStatus.ApplicationStateListener;
@@ -142,6 +147,7 @@ import org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
+import org.chromium.chrome.browser.fullscreen.BraveFullscreenHtmlApiHandlerBase;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.informers.BraveSyncAccountDeletedInformer;
 import org.chromium.chrome.browser.lifetime.ApplicationLifetime;
@@ -293,6 +299,10 @@ public abstract class BraveActivity extends ChromeActivity
             "https://github.com/brave/brave-browser/wiki/Web-compatibility-reports";
     private static final String KEY_RESUME_MEDIA_SESSION =
             "org.chromium.chrome.browser.app.KEY_RESUME_MEDIA_SESSION";
+    private static final String KEY_YOUTUBE_PICTURE_IN_PICTURE_ACTIVE =
+            "org.chromium.chrome.browser.app.KEY_YOUTUBE_PICTURE_IN_PICTURE_ACTIVE";
+    private static final String KEY_YOUTUBE_PICTURE_IN_PICTURE_INTERRUPTED_BY_SCREEN_LOCK =
+            "org.chromium.chrome.browser.app.KEY_YOUTUBE_PICTURE_IN_PICTURE_INTERRUPTED_BY_SCREEN_LOCK";
 
     private static final int DAYS_4 = 4;
     private static final int DAYS_7 = 7;
@@ -321,6 +331,8 @@ public abstract class BraveActivity extends ChromeActivity
             Arrays.asList("AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "UZ");
 
     private static final int PIP_UPDATE_DELAY_MS = 500;
+    private static final int YOUTUBE_PIP_FULLSCREEN_EXIT_DELAY_MS = 300;
+    private static final int YOUTUBE_PIP_DISMISS_CHECK_DELAY_MS = 1000;
     private boolean mIsVerification;
     public boolean mIsDeepLink;
     private BraveWalletService mBraveWalletService;
@@ -350,6 +362,12 @@ public abstract class BraveActivity extends ChromeActivity
     // Boolean flag that indicates if the media session must be resumed
     // when switching in picture-in-picture mode.
     private boolean mResumeMediaSession;
+    private @Nullable WebContents mYouTubePictureInPictureWebContents;
+    private boolean mIsYouTubePictureInPictureActive;
+    private boolean mIsYouTubePictureInPictureExiting;
+    private boolean mIsYouTubePictureInPictureInterruptedByScreenLock;
+    private int mYouTubePictureInPictureSessionId;
+    private @Nullable BroadcastReceiver mYouTubePictureInPictureScreenStateReceiver;
 
     private View mQuickSearchEnginesView;
 
@@ -372,6 +390,11 @@ public abstract class BraveActivity extends ChromeActivity
         final Bundle savedInstanceState = getSavedInstanceState();
         if (savedInstanceState != null) {
             mResumeMediaSession = savedInstanceState.getBoolean(KEY_RESUME_MEDIA_SESSION, false);
+            mIsYouTubePictureInPictureActive =
+                    savedInstanceState.getBoolean(KEY_YOUTUBE_PICTURE_IN_PICTURE_ACTIVE, false);
+            mIsYouTubePictureInPictureInterruptedByScreenLock =
+                    savedInstanceState.getBoolean(
+                            KEY_YOUTUBE_PICTURE_IN_PICTURE_INTERRUPTED_BY_SCREEN_LOCK, false);
         }
     }
 
@@ -379,6 +402,11 @@ public abstract class BraveActivity extends ChromeActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(KEY_RESUME_MEDIA_SESSION, mResumeMediaSession);
+        outState.putBoolean(
+                KEY_YOUTUBE_PICTURE_IN_PICTURE_ACTIVE, mIsYouTubePictureInPictureActive);
+        outState.putBoolean(
+                KEY_YOUTUBE_PICTURE_IN_PICTURE_INTERRUPTED_BY_SCREEN_LOCK,
+                mIsYouTubePictureInPictureInterruptedByScreenLock);
     }
 
     @Override
@@ -445,6 +473,8 @@ public abstract class BraveActivity extends ChromeActivity
                 mMiscAndroidMetrics.recordIntentUrl(resumeIntent.getData().toString());
             }
         }
+
+        maybeResumeYouTubePictureInPictureAfterScreenLock();
     }
 
     @Override
@@ -596,6 +626,7 @@ public abstract class BraveActivity extends ChromeActivity
         if (mAppUpdateManager != null) {
             mAppUpdateManager.unregisterListener(mInstallStateUpdatedListener);
         }
+        unregisterYouTubePictureInPictureScreenStateReceiver();
         super.onDestroyInternal();
         cleanUpWalletNativeServices();
         cleanUpMiscAndroidMetrics();
@@ -604,7 +635,11 @@ public abstract class BraveActivity extends ChromeActivity
     @Override
     public void onPictureInPictureModeChanged(boolean inPicture, Configuration newConfig) {
         super.onPictureInPictureModeChanged(inPicture, newConfig);
-        if (mResumeMediaSession) {
+        if (inPicture) {
+            mIsYouTubePictureInPictureExiting = false;
+            mIsYouTubePictureInPictureInterruptedByScreenLock = false;
+        }
+        if (inPicture && mResumeMediaSession) {
             mResumeMediaSession = false;
             MediaSession mediaSession = MediaSession.fromWebContents(getCurrentWebContents());
             if (mediaSession != null) {
@@ -625,19 +660,12 @@ public abstract class BraveActivity extends ChromeActivity
                                             new PictureInPictureParams.Builder().build()),
                     PIP_UPDATE_DELAY_MS);
         }
-        if (!inPicture
-                && getCurrentWebContents() != null
-                && BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(
-                        getCurrentWebContents())) {
-            // PiP has been dismissed when watching a YT video, then pause it.
-            MediaSession mediaSession = MediaSession.fromWebContents(getCurrentWebContents());
-            if (mediaSession != null) {
-                mediaSession.suspend();
+        if (!inPicture && mIsYouTubePictureInPictureActive) {
+            if (isScreenOffOrLocked()) {
+                markYouTubePictureInPictureInterruptedByScreenLock();
+                return;
             }
-            FullscreenManager fullscreenManager = getFullscreenManager();
-            if (fullscreenManager.getPersistentFullscreenMode()) {
-                fullscreenManager.exitPersistentFullscreenMode();
-            }
+            handleYouTubePictureInPictureModeExited();
         }
     }
 
@@ -1091,6 +1119,7 @@ public abstract class BraveActivity extends ChromeActivity
         }
 
         super.onStartWithNative();
+        maybeResumeYouTubePictureInPictureAfterScreenLock();
     }
 
     /**
@@ -2324,12 +2353,236 @@ public abstract class BraveActivity extends ChromeActivity
         getBraveToolbarLayout().showRewardsPage();
     }
 
-    /**
-     * Sets a flag to resume the currently active media session when entering picture-in-picture
-     * mode, so the user won't have to manually resume the video after the transition.
-     */
-    public void resumeMediaSession(final boolean resume) {
-        mResumeMediaSession = resume;
+    public void onYouTubePictureInPictureRequested(final WebContents webContents) {
+        mResumeMediaSession = true;
+        mYouTubePictureInPictureWebContents = webContents;
+        mIsYouTubePictureInPictureActive = true;
+        mIsYouTubePictureInPictureExiting = false;
+        mIsYouTubePictureInPictureInterruptedByScreenLock = false;
+        mYouTubePictureInPictureSessionId++;
+    }
+
+    public void onYouTubePictureInPictureEnterFailed() {
+        mResumeMediaSession = false;
+        clearYouTubePictureInPictureSession(
+                mYouTubePictureInPictureSessionId, mYouTubePictureInPictureWebContents);
+    }
+
+    public boolean isYouTubePictureInPictureActive() {
+        return mIsYouTubePictureInPictureActive;
+    }
+
+    public void onYouTubePictureInPictureFullscreenInterrupted() {
+        if (mIsYouTubePictureInPictureActive) {
+            markYouTubePictureInPictureInterruptedByScreenLock();
+        }
+    }
+
+    private void handleYouTubePictureInPictureModeExited() {
+        if (isScreenOffOrLocked()) {
+            markYouTubePictureInPictureInterruptedByScreenLock();
+            return;
+        }
+
+        if (mIsYouTubePictureInPictureExiting) {
+            return;
+        }
+
+        final WebContents webContents = getYouTubePictureInPictureWebContents();
+        if (webContents == null || webContents.isDestroyed()) {
+            clearYouTubePictureInPictureSession(
+                    mYouTubePictureInPictureSessionId, mYouTubePictureInPictureWebContents);
+            return;
+        }
+
+        final int sessionId = mYouTubePictureInPictureSessionId;
+        mIsYouTubePictureInPictureExiting = true;
+        BraveYouTubeScriptInjectorNativeHelper.exitFullscreen(webContents);
+
+        PostTask.postDelayedTask(
+                TaskTraits.UI_DEFAULT,
+                () -> maybeRestoreYouTubePictureInPictureFullscreenUi(sessionId, webContents),
+                YOUTUBE_PIP_FULLSCREEN_EXIT_DELAY_MS);
+        PostTask.postDelayedTask(
+                TaskTraits.UI_DEFAULT,
+                () -> maybeSuspendDismissedYouTubePictureInPicture(sessionId, webContents),
+                YOUTUBE_PIP_DISMISS_CHECK_DELAY_MS);
+    }
+
+    private @Nullable WebContents getYouTubePictureInPictureWebContents() {
+        if (mYouTubePictureInPictureWebContents != null
+                && !mYouTubePictureInPictureWebContents.isDestroyed()) {
+            return mYouTubePictureInPictureWebContents;
+        }
+        WebContents currentWebContents = getCurrentWebContents();
+        if (currentWebContents != null
+                && !currentWebContents.isDestroyed()
+                && BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(
+                        currentWebContents)) {
+            mYouTubePictureInPictureWebContents = currentWebContents;
+            return currentWebContents;
+        }
+        return null;
+    }
+
+    private void maybeRestoreYouTubePictureInPictureFullscreenUi(
+            final int sessionId, final WebContents webContents) {
+        if (!isCurrentYouTubePictureInPictureSession(sessionId, webContents)
+                || isInPictureInPictureMode()) {
+            return;
+        }
+
+        if (isScreenOffOrLocked()) {
+            markYouTubePictureInPictureInterruptedByScreenLock();
+            return;
+        }
+
+        FullscreenManager fullscreenManager = getFullscreenManager();
+        assert fullscreenManager instanceof BraveFullscreenHtmlApiHandlerBase;
+        if (fullscreenManager.getPersistentFullscreenMode()) {
+            BraveFullscreenHtmlApiHandlerBase braveFullscreen = (BraveFullscreenHtmlApiHandlerBase) fullscreenManager;
+            braveFullscreen.exitPersistentFullscreenModeForPictureInPicture();
+        }
+    }
+
+    private void maybeSuspendDismissedYouTubePictureInPicture(
+            final int sessionId, final WebContents webContents) {
+        if (!isCurrentYouTubePictureInPictureSession(sessionId, webContents)) {
+            return;
+        }
+
+        if (isScreenOffOrLocked()) {
+            markYouTubePictureInPictureInterruptedByScreenLock();
+            return;
+        }
+
+        if (!isActivityVisibleAfterPictureInPicture()) {
+            MediaSession mediaSession = MediaSession.fromWebContents(webContents);
+            if (mediaSession != null) {
+                mediaSession.suspend();
+            }
+        }
+        clearYouTubePictureInPictureSession(sessionId, webContents);
+    }
+
+    private boolean isActivityVisibleAfterPictureInPicture() {
+        return ApplicationStatus.getStateForActivity(this) == ActivityState.RESUMED
+                && hasWindowFocus();
+    }
+
+    private void maybeResumeYouTubePictureInPictureAfterScreenLock() {
+        if (!mIsYouTubePictureInPictureActive
+                || !mIsYouTubePictureInPictureInterruptedByScreenLock
+                || isScreenOffOrLocked()) {
+            return;
+        }
+
+        final WebContents webContents = getYouTubePictureInPictureWebContents();
+        if (webContents == null || webContents.isDestroyed()) {
+            clearYouTubePictureInPictureSession(
+                    mYouTubePictureInPictureSessionId, mYouTubePictureInPictureWebContents);
+            return;
+        }
+
+        mIsYouTubePictureInPictureInterruptedByScreenLock = false;
+        unregisterYouTubePictureInPictureScreenStateReceiver();
+        MediaSession mediaSession = MediaSession.fromWebContents(webContents);
+        if (mediaSession != null) {
+            mediaSession.resume();
+        }
+
+        if (isInPictureInPictureMode()
+                || isChangingConfigurations()
+                || isFinishing()
+                || !BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(
+                        webContents)) {
+            return;
+        }
+
+        try {
+            if (!enterPictureInPictureMode(new PictureInPictureParams.Builder().build())) {
+                clearYouTubePictureInPictureSession(mYouTubePictureInPictureSessionId, webContents);
+            }
+        } catch (IllegalStateException | IllegalArgumentException e) {
+            Log.e("BraveActivity", "Error restoring YouTube picture-in-picture mode.", e);
+            clearYouTubePictureInPictureSession(mYouTubePictureInPictureSessionId, webContents);
+        }
+    }
+
+    private void markYouTubePictureInPictureInterruptedByScreenLock() {
+        mIsYouTubePictureInPictureInterruptedByScreenLock = true;
+        registerYouTubePictureInPictureScreenStateReceiver();
+    }
+
+    private void registerYouTubePictureInPictureScreenStateReceiver() {
+        if (mYouTubePictureInPictureScreenStateReceiver != null) {
+            return;
+        }
+
+        mYouTubePictureInPictureScreenStateReceiver =
+                new BroadcastReceiver() {
+                    @Override
+                    public void onReceive(Context context, Intent intent) {
+                        final String action = intent.getAction();
+                        if (!Intent.ACTION_SCREEN_ON.equals(action)
+                                && !Intent.ACTION_USER_PRESENT.equals(action)) {
+                            return;
+                        }
+                        maybeResumeYouTubePictureInPictureAfterScreenLock();
+                    }
+                };
+        final IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_SCREEN_ON);
+        filter.addAction(Intent.ACTION_USER_PRESENT);
+        ContextUtils.registerProtectedBroadcastReceiver(
+                this, mYouTubePictureInPictureScreenStateReceiver, filter);
+    }
+
+    private void unregisterYouTubePictureInPictureScreenStateReceiver() {
+        if (mYouTubePictureInPictureScreenStateReceiver == null) {
+            return;
+        }
+
+        try {
+            unregisterReceiver(mYouTubePictureInPictureScreenStateReceiver);
+        } catch (IllegalArgumentException e) {
+            Log.w("BraveActivity", "YouTube PiP screen receiver was already unregistered.", e);
+        }
+        mYouTubePictureInPictureScreenStateReceiver = null;
+    }
+
+    private boolean isScreenOffOrLocked() {
+        PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        if (powerManager != null && !powerManager.isInteractive()) {
+            return true;
+        }
+
+        KeyguardManager keyguardManager =
+                (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+        return keyguardManager != null && keyguardManager.isKeyguardLocked();
+    }
+
+    private boolean isCurrentYouTubePictureInPictureSession(
+            final int sessionId, final WebContents webContents) {
+        return mIsYouTubePictureInPictureActive
+                && mIsYouTubePictureInPictureExiting
+                && sessionId == mYouTubePictureInPictureSessionId
+                && webContents == mYouTubePictureInPictureWebContents
+                && !webContents.isDestroyed();
+    }
+
+    private void clearYouTubePictureInPictureSession(
+            final int sessionId, @Nullable final WebContents webContents) {
+        if (sessionId != mYouTubePictureInPictureSessionId
+                || webContents != mYouTubePictureInPictureWebContents) {
+            return;
+        }
+
+        mIsYouTubePictureInPictureActive = false;
+        mIsYouTubePictureInPictureExiting = false;
+        mIsYouTubePictureInPictureInterruptedByScreenLock = false;
+        unregisterYouTubePictureInPictureScreenStateReceiver();
+        mYouTubePictureInPictureWebContents = null;
     }
 
     public static ChromeTabbedActivity getChromeTabbedActivity() {
