@@ -83,11 +83,11 @@ TEST_F(BraveAdsLegacyConfirmationMigrationPaymentTokensJsonParserTest,
   // Assert
   EXPECT_THAT(payment_tokens,
               ::testing::Optional(::testing::ElementsAre(::testing::FieldsAre(
-                  /*transaction_id*/ ::testing::Not(::testing::IsEmpty()),
-                  /*unblinded_token*/ ::testing::_,
-                  /*public_key*/ ::testing::_,
-                  /*confirmation_type*/ ::testing::_,
-                  /*ad_type*/ ::testing::_))));
+                  /*transaction_id=*/::testing::Not(::testing::IsEmpty()),
+                  /*unblinded_token=*/::testing::_,
+                  /*public_key=*/::testing::_,
+                  /*confirmation_type=*/::testing::_,
+                  /*ad_type=*/::testing::_))));
 }
 
 TEST_F(BraveAdsLegacyConfirmationMigrationPaymentTokensJsonParserTest,
