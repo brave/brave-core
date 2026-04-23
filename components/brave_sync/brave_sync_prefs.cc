@@ -104,8 +104,7 @@ void Prefs::RegisterProfilePrefsForMigration(PrefRegistrySimple* registry) {
   registry->RegisterTimePref(kSyncLatestRecordTime, base::Time());
   registry->RegisterTimePref(kSyncLatestDeviceRecordTime, base::Time());
   registry->RegisterTimePref(kSyncLastFetchTime, base::Time());
-  registry->RegisterTimePref(kSyncLastCompactTimeBookmarks,
-                             base::Time());
+  registry->RegisterTimePref(kSyncLastCompactTimeBookmarks, base::Time());
   registry->RegisterStringPref(kSyncDeviceList, std::string());
   registry->RegisterStringPref(kSyncApiVersion, std::string("0"));
   registry->RegisterIntegerPref(kSyncMigrateBookmarksVersion, 0);
@@ -145,15 +144,16 @@ std::optional<std::string> Prefs::GetSeed() const {
 
 bool Prefs::SetSeed(const std::string& seed) {
   DCHECK(!seed.empty());
-  std::string encrypted_seed;
-  if (!OSCrypt::EncryptString(seed, &encrypted_seed)) {
-    LOG(ERROR) << "Encrypt sync seed failure";
-    return false;
-  }
-  // String stored in prefs has to be UTF8 string so we use base64 to encode it.
-  pref_service_->SetString(kSyncV2Seed, base::Base64Encode(encrypted_seed));
-  SetSyncAccountDeletedNoticePending(false);
-  return true;
+  // std::string encrypted_seed;
+  // if (!OSCrypt::EncryptString(seed, &encrypted_seed)) {
+  //   LOG(ERROR) << "Encrypt sync seed failure";
+  return false;
+  //}
+  //// String stored in prefs has to be UTF8 string so we use base64 to encode
+  ////it.
+  // pref_service_->SetString(kSyncV2Seed, base::Base64Encode(encrypted_seed));
+  // SetSyncAccountDeletedNoticePending(false);
+  // return true;
 }
 
 bool Prefs::IsFailedDecryptSeedNoticeDismissed() const {

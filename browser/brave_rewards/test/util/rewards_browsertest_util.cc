@@ -233,11 +233,11 @@ void SetOnboardingBypassed(Browser* browser, bool bypassed) {
 }
 
 std::optional<std::string> EncryptPrefString(const std::string& value) {
-  std::string encrypted;
-  if (!OSCrypt::EncryptString(value, &encrypted)) {
-    return {};
-  }
-  return base::Base64Encode(encrypted);
+  // std::string encrypted;
+  // if (!OSCrypt::EncryptString(value, &encrypted)) {
+  return {};
+  //}
+  // return base::Base64Encode(encrypted);
 }
 
 }  // namespace brave_rewards::test_util

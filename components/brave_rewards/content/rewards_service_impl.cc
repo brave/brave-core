@@ -2012,20 +2012,20 @@ void RewardsServiceImpl::GetEventLogs(GetEventLogsCallback callback) {
 
 void RewardsServiceImpl::EncryptString(const std::string& value,
                                        EncryptStringCallback callback) {
-  std::string encrypted;
-  if (OSCrypt::EncryptString(value, &encrypted)) {
-    return std::move(callback).Run(std::move(encrypted));
-  }
+  // std::string encrypted;
+  // if (OSCrypt::EncryptString(value, &encrypted)) {
+  //   return std::move(callback).Run(std::move(encrypted));
+  // }
 
   std::move(callback).Run(std::nullopt);
 }
 
 void RewardsServiceImpl::DecryptString(const std::string& value,
                                        DecryptStringCallback callback) {
-  std::string decrypted;
-  if (OSCrypt::DecryptString(value, &decrypted)) {
-    return std::move(callback).Run(std::move(decrypted));
-  }
+  // std::string decrypted;
+  // if (OSCrypt::DecryptString(value, &decrypted)) {
+  //   return std::move(callback).Run(std::move(decrypted));
+  // }
 
   std::move(callback).Run(std::nullopt);
 }

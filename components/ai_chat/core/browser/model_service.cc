@@ -564,13 +564,13 @@ std::string EncryptAPIKey(const std::string& api_key) {
     return std::string();
   }
 
-  std::string encrypted_api_key;
-  if (!OSCrypt::EncryptString(api_key, &encrypted_api_key)) {
-    VLOG(1) << "Encrypt api key failure";
-    return std::string();
-  }
+  // std::string encrypted_api_key;
+  // if (!OSCrypt::EncryptString(api_key, &encrypted_api_key)) {
+  //   VLOG(1) << "Encrypt api key failure";
+  return std::string();
+  //}
 
-  return base::Base64Encode(encrypted_api_key);
+  // return base::Base64Encode(encrypted_api_key);
 }
 
 std::string DecryptAPIKey(const std::string& encoded_api_key) {
@@ -584,13 +584,13 @@ std::string DecryptAPIKey(const std::string& encoded_api_key) {
     return std::string();
   }
 
-  std::string api_key;
-  if (!OSCrypt::DecryptString(encrypted_api_key, &api_key)) {
-    VLOG(1) << "Decrypt api key failure";
-    return std::string();
-  }
+  // std::string api_key;
+  // if (!OSCrypt::DecryptString(encrypted_api_key, &api_key)) {
+  //   VLOG(1) << "Decrypt api key failure";
+  return std::string();
+  //}
 
-  return api_key;
+  // return api_key;
 }
 
 base::DictValue GetModelDict(mojom::ModelPtr model) {
