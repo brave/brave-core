@@ -49,7 +49,7 @@ source_set("ai_chat") {
     "//ios/web_view/framework:web_view_sources",
     "//mojo/public/cpp/bindings",
     "//mojo/public/js:resources",
-    "//services/data_decoder/public/cpp",
+    "//skia",
     "//ui/gfx/codec",
   ]
 }
