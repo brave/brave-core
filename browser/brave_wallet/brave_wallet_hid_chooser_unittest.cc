@@ -73,8 +73,8 @@ class BraveWalletHidChooserTest : public ChromeRenderViewHostTestHarness {
   }
 
   void TearDown() override {
-    ChromeRenderViewHostTestHarness::TearDown();
     subframe_rfh_ = nullptr;
+    ChromeRenderViewHostTestHarness::TearDown();
   }
 
   content::RenderFrameHost* subframe_rfh() { return subframe_rfh_; }
