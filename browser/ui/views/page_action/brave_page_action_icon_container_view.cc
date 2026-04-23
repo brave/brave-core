@@ -9,13 +9,17 @@
 
 #include "base/check_is_test.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
-#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_params.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/core/common/features.h"
+#endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/common/features.h"
@@ -41,6 +45,7 @@ PageActionIconParams& ModifyIconParamsForBrave(PageActionIconParams& params) {
       brave::kWaybackMachineActionIconType);
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     // Browser could be null if the location bar was created for
     // PresentationReceiverWindowView.
@@ -53,6 +58,7 @@ PageActionIconParams& ModifyIconParamsForBrave(PageActionIconParams& params) {
           brave::kPlaylistPageActionIconType);
     }
   }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   if (base::FeatureList::IsEnabled(

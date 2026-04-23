@@ -5,8 +5,12 @@
 
 #include "chrome/browser/ui/views/side_panel/side_panel_util.h"
 
-#include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
+#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
@@ -23,12 +27,14 @@ void SidePanelUtil::PopulateGlobalEntries(Browser* browser,
                                           SidePanelRegistry* global_registry) {
   PopulateGlobalEntries_ChromiumImpl(browser, global_registry);
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
   // the playlist coordinator is not created for popup windows, or for
   // desktop PWAs.
   if (auto* playlist_coordinator =
           browser->GetFeatures().playlist_side_panel_coordinator()) {
     playlist_coordinator->CreateAndRegisterEntry(global_registry);
   }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   // AI Chat side panel as a global panel and not tab-specific is conditional

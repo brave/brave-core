@@ -26,7 +26,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/locale_util.h"
-#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
@@ -51,6 +51,10 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/core/common/features.h"
+#endif
 
 namespace sidebar {
 
@@ -496,7 +500,10 @@ std::optional<SidebarItem> SidebarService::GetDefaultPanelItem() const {
 #endif
       SidebarItem::BuiltInItemType::kReadingList,
       SidebarItem::BuiltInItemType::kBookmarks,
-      SidebarItem::BuiltInItemType::kPlaylist};
+#if BUILDFLAG(ENABLE_PLAYLIST)
+      SidebarItem::BuiltInItemType::kPlaylist,
+#endif
+  };
 
   std::optional<SidebarItem> default_item;
   for (const auto& type : kPreferredPanelOrder) {
@@ -695,6 +702,7 @@ SidebarItem SidebarService::GetBuiltInItemForType(
         return SidebarItem();
       }
     }
+#if BUILDFLAG(ENABLE_PLAYLIST)
     case SidebarItem::BuiltInItemType::kPlaylist: {
       if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
         return SidebarItem::Create(
@@ -707,6 +715,7 @@ SidebarItem SidebarService::GetBuiltInItemForType(
 
       return SidebarItem();
     }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 #if BUILDFLAG(ENABLE_AI_CHAT)
     case SidebarItem::BuiltInItemType::kChatUI: {
       if (ai_chat::IsAIChatEnabled(prefs_)) {

@@ -15,8 +15,7 @@
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
-#include "brave/components/playlist/content/renderer/playlist_render_frame_observer.h"
-#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/safe_builtins/renderer/safe_builtins.h"
 #include "brave/components/script_injector/renderer/script_injector_render_frame_observer.h"
 #include "brave/components/skus/common/features.h"
@@ -47,6 +46,11 @@
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/renderer/speedreader_render_frame_observer.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/content/renderer/playlist_render_frame_observer.h"
+#include "brave/components/playlist/core/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -208,6 +212,7 @@ void BraveContentRendererClient::RenderFrameCreated(
   }
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
       !process_state::IsIncognitoProcess()) {
     new playlist::PlaylistRenderFrameObserver(
@@ -216,6 +221,7 @@ void BraveContentRendererClient::RenderFrameCreated(
         }),
         ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::features::IsAIChatEnabled() &&
@@ -252,24 +258,28 @@ void BraveContentRendererClient::RunScriptsAtDocumentStart(
     observer->RunScriptsAtDocumentStart();
   }
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     if (auto* playlist_observer =
             playlist::PlaylistRenderFrameObserver::Get(render_frame)) {
       playlist_observer->RunScriptsAtDocumentStart();
     }
   }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
   ChromeContentRendererClient::RunScriptsAtDocumentStart(render_frame);
 }
 
 void BraveContentRendererClient::RunScriptsAtDocumentEnd(
     content::RenderFrame* render_frame) {
+#if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     if (auto* playlist_observer =
             playlist::PlaylistRenderFrameObserver::Get(render_frame)) {
       playlist_observer->RunScriptsAtDocumentEnd();
     }
   }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
   ChromeContentRendererClient::RunScriptsAtDocumentEnd(render_frame);
 }

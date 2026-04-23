@@ -27,7 +27,7 @@
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/google_sign_in_permission/features.h"
-#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
@@ -60,6 +60,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/core/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -257,6 +261,7 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
 #define BRAVE_NEWS_FEATURE_ENTRIES
 #endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
 #define PLAYLIST_FEATURE_ENTRIES                                   \
   EXPAND_FEATURE_ENTRIES(                                          \
       {                                                            \
@@ -273,6 +278,9 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
           kOsMac | kOsWin | kOsLinux | kOsAndroid,                 \
           FEATURE_VALUE_TYPE(playlist::features::kPlaylistFakeUA), \
       })
+#else
+#define PLAYLIST_FEATURE_ENTRIES
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 #define PSST_FEATURE_ENTRIES                                           \
   IF_BUILDFLAG(ENABLE_PSST,                                            \

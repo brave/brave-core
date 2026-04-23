@@ -21,7 +21,7 @@
 #include "brave/components/decentralized_dns/core/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
-#include "brave/components/playlist/core/common/pref_names.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -66,6 +66,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/core/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(IS_WIN)
@@ -348,10 +352,12 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
   (*s_brave_allowlist)[playlist::kPlaylistEnabledPref] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[playlist::kPlaylistCacheByDefault] =
       settings_api::PrefType::kBoolean;
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 #if !BUILDFLAG(IS_ANDROID)
   (*s_brave_allowlist)[brave_tabs::kSharedPinnedTab] =

@@ -19,10 +19,10 @@
 #include "brave/browser/ui/views/location_bar/brave_search_conversion/promotion_button_controller.h"
 #include "brave/browser/ui/views/location_bar/brave_search_conversion/promotion_button_view.h"
 #include "brave/browser/ui/views/location_bar/brave_shields_page_info_controller.h"
-#include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service_factory.h"
@@ -50,6 +50,10 @@
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/view_utils.h"
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+#include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
+#endif
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/ui/views/location_bar/onion_location_view.h"
@@ -160,6 +164,7 @@ void BraveLocationBarView::Init() {
   }
 }
 
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 void BraveLocationBarView::ShowPlaylistBubble(
     playlist::PlaylistBubblesController::BubbleType type) {
   if (auto* playlist_action_icon_view = GetPlaylistActionIconView()) {
@@ -176,6 +181,7 @@ PlaylistActionIconView* BraveLocationBarView::GetPlaylistActionIconView() {
 
   return views::AsViewClass<PlaylistActionIconView>(playlist_action_icon_view);
 }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 
 void BraveLocationBarView::Update(content::WebContents* contents) {
   // base Init calls update before our Init is run, so our children

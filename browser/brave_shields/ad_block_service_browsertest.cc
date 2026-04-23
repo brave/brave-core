@@ -30,7 +30,6 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/ad_block_browser_test_helper.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
-#include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
@@ -49,9 +48,7 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
-#include "brave/components/playlist/content/browser/playlist_background_web_contentses.h"
-#include "brave/components/playlist/content/browser/playlist_service.h"
-#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -82,6 +79,13 @@
 #include "brave/components/speedreader/speedreader_service.h"  // nogncheck
 #include "third_party/blink/public/common/web_preferences/web_preferences.h"
 #endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/components/playlist/content/browser/playlist_background_web_contentses.h"
+#include "brave/components/playlist/content/browser/playlist_service.h"
+#include "brave/components/playlist/core/common/features.h"
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 constexpr char kAdBlockTestPage[] = "/blocking.html";
 
@@ -2042,6 +2046,7 @@ IN_PROC_BROWSER_TEST_F(ProceduralFilteringFlagDisabledTest,
   }
 }
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
 class CosmeticFilteringPlaylistFlagEnabledTest : public AdBlockServiceTest {
  public:
   CosmeticFilteringPlaylistFlagEnabledTest() {
@@ -2076,6 +2081,7 @@ IN_PROC_BROWSER_TEST_F(CosmeticFilteringPlaylistFlagEnabledTest,
   EXPECT_EQ(false, EvalJs(web_contents,
                           "checkSelector('#ad-banner', 'display', 'block')"));
 }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 // Ensure no cosmetic filtering occurs when the shields setting is disabled
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDisabled) {

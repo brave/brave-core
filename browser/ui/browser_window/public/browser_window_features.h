@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "brave/components/email_aliases/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 
 class BraveShieldsUIContentsCache;
 class BraveVPNController;
@@ -50,9 +51,11 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
 
   BraveVPNController* brave_vpn_controller();
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
   PlaylistSidePanelCoordinator* playlist_side_panel_coordinator() {
     return playlist_side_panel_coordinator_.get();
   }
+#endif
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   email_aliases::EmailAliasesController* email_aliases_controller() {
@@ -69,8 +72,10 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
   std::unique_ptr<BraveVPNController> brave_vpn_controller_;
   std::unique_ptr<brave_rewards::RewardsPanelCoordinator>
       rewards_panel_coordinator_;
+#if BUILDFLAG(ENABLE_PLAYLIST)
   std::unique_ptr<PlaylistSidePanelCoordinator>
       playlist_side_panel_coordinator_;
+#endif
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   std::unique_ptr<email_aliases::EmailAliasesController>
       email_aliases_controller_;

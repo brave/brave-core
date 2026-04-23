@@ -18,7 +18,6 @@
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
-#include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
@@ -38,7 +37,7 @@
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
-#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -127,6 +126,11 @@
 #include "brave/components/email_aliases/features.h"
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/components/playlist/core/common/features.h"
+#endif
+
 namespace brave {
 
 void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
@@ -190,9 +194,11 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn::BraveVpnServiceFactory::GetInstance();
 #endif
+#if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     playlist::PlaylistServiceFactory::GetInstance();
   }
+#endif
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
   request_otr::RequestOTRServiceFactory::GetInstance();
 #endif
