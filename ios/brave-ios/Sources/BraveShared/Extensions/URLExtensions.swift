@@ -25,6 +25,10 @@ extension URL {
   }
 
   public var isNewTabURL: Bool {
+    // For now also include the prior legacy URL in the check
+    if InternalURL.isValid(url: self) && path.contains("about/home") {
+      return true
+    }
     return scheme == "about" && host == "newtab"
   }
 
