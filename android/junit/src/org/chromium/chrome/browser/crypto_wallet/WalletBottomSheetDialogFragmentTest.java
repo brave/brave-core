@@ -12,6 +12,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -59,13 +60,9 @@ public class WalletBottomSheetDialogFragmentTest {
         FragmentActivity activity = Robolectric.buildActivity(FragmentActivity.class).setup().get();
 
         TestWalletBottomSheetFragment fragment = new TestWalletBottomSheetFragment();
-        assertThrows(
-                IllegalStateException.class,
-                () ->
-                        activity.getSupportFragmentManager()
-                                .beginTransaction()
-                                .add(fragment, "tag")
-                                .commitNow());
+        FragmentTransaction fragmentTransaction =
+                activity.getSupportFragmentManager().beginTransaction().add(fragment, "tag");
+        assertThrows(IllegalStateException.class, fragmentTransaction::commitNow);
     }
 
     /** Simple fragment that exposes {@link WalletBottomSheetDialogFragment#getWalletModel()}. */

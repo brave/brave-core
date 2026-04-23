@@ -11,6 +11,7 @@ import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.when;
 
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -52,14 +53,10 @@ public class ApproveTxBottomSheetDialogFragmentTest {
 
         ApproveTxBottomSheetDialogFragment fragment = new ApproveTxBottomSheetDialogFragment();
 
+        FragmentTransaction fragmentTransaction =
+                activity.getSupportFragmentManager().beginTransaction().add(fragment, "tag");
         IllegalStateException thrown =
-                assertThrows(
-                        IllegalStateException.class,
-                        () ->
-                                activity.getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .add(fragment, "tag")
-                                        .commitNow());
+                assertThrows(IllegalStateException.class, fragmentTransaction::commitNow);
         // Sanity check for the error message, ensuring the new requirement is documented.
         assertThrowsContains("TransactionListener", thrown);
     }
