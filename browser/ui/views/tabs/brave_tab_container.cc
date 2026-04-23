@@ -1815,7 +1815,6 @@ bool BraveTabContainer::IsPinned(const Tab* tab) const {
 
 void BraveTabContainer::OnHorizontalTabScrollButtonsPrefChanged() {
   PreferredSizeChanged();
-  InvalidateLayout();
   if (views::View* p = parent()) {
     p->InvalidateLayout();
   }
