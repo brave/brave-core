@@ -180,6 +180,11 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         # plaster .toml file location should be skipped.
         os.path.join('brave', 'rewrite', 'third_party'),
 
+        # TODO(https://github.com/brave/brave-browser/issues/54804)
+        # remove the following line once we start putting
+        # WinTun binaries into the browser distribution on Windows.
+        os.path.join('brave', 'third_party', 'wintun'),
+
         # Transitive deps in brave/third_party/wasm.
         *GetRustWorkspaceTransitiveDeps(Path('brave/third_party/wasm')),
     ])
