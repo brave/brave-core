@@ -287,9 +287,14 @@ def filter_prs(prs, mode, days, cache, org_members, reviewer_priority=None):
         pr_num = str(pr["number"])
 
         # Bot previously approved this PR — don't come back
+        # UNLESS the bot has been explicitly re-requested as a reviewer
         if pr_num in approved:
-            skipped_approved += 1
-            continue
+            if reviewer_priority and is_requested_reviewer(
+                    pr, reviewer_priority):
+                pass  # Explicit re-review request after approval
+            else:
+                skipped_approved += 1
+                continue
 
         head_sha = pr.get("headRefOid", "")
         if cache.get(pr_num) == head_sha:
