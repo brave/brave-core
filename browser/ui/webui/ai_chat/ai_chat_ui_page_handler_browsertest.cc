@@ -752,6 +752,59 @@ IN_PROC_BROWSER_TEST_F(AIChatGlobalSidePanelPageHandlerBrowserTest,
       << "New conversation on chrome:// page should have no associated content";
 }
 
+// Subclass of AIChatUIPageHandlerBrowserTest that disables
+// kPageContextEnabledInitially, to verify content is not attached when the flag
+// is off. Inherits the HTTPS server and cert verifier setup.
+class AIChatUIPageHandlerPageContextDisabledBrowserTest
+    : public AIChatUIPageHandlerBrowserTest {
+ public:
+  AIChatUIPageHandlerPageContextDisabledBrowserTest() {
+    scoped_feature_list_.InitAndDisableFeature(
+        ai_chat::features::kPageContextEnabledInitially);
+  }
+
+  // Creates a handler whose active_chat_tab_helper_ is set to |context|, which
+  // puts BindRelatedConversation into its content-associated else branch.
+  std::unique_ptr<AIChatUIPageHandler> CreateHandlerForContents(
+      content::WebContents* context) {
+    mojo::PendingReceiver<mojom::AIChatUIHandler> receiver;
+    return std::make_unique<AIChatUIPageHandler>(
+        context, context,
+        Profile::FromBrowserContext(context->GetBrowserContext()),
+        std::move(receiver), browser()->tab_strip_model());
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(
+    AIChatUIPageHandlerPageContextDisabledBrowserTest,
+    BindRelatedConversation_DoesNotAddContentWhenFlagDisabled) {
+  // OpenNewTab navigates to an HTTPS URL, so CanAssociateContent would normally
+  // pass — the flag check is the only thing preventing content from attaching.
+  OpenNewTab();
+  auto* tab_contents = web_contents();
+  ASSERT_TRUE(tab_contents);
+
+  auto handler = CreateHandlerForContents(tab_contents);
+
+  FakeConversationUI fake_conversation_ui;
+  mojo::Receiver<mojom::ConversationUI> conversation_ui_receiver(
+      &fake_conversation_ui);
+  mojo::Remote<mojom::ConversationHandler> conversation;
+  handler->BindRelatedConversation(
+      conversation.BindNewPipeAndPassReceiver(),
+      conversation_ui_receiver.BindNewPipeAndPassRemote());
+
+  base::test::TestFuture<std::vector<mojom::AssociatedContentPtr>>
+      content_future;
+  conversation->GetAssociatedContentInfo(content_future.GetCallback());
+  EXPECT_TRUE(content_future.Take().empty())
+      << "BindRelatedConversation should not add page content when "
+         "kPageContextEnabledInitially is disabled";
+}
+
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 }  // namespace ai_chat

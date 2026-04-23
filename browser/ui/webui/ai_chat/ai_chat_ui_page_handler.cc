@@ -671,7 +671,8 @@ void AIChatUIPageHandler::BindRelatedConversation(
   } else {
     conversation = AIChatServiceFactory::GetForBrowserContext(profile_)
                        ->CreateConversation();
-    if (ai_chat::CanAssociateContent(
+    if (features::IsPageContextEnabledInitially() &&
+        ai_chat::CanAssociateContent(
             &active_chat_tab_helper_->web_contents_content())) {
       conversation->associated_content_manager()->AddContent(
           &active_chat_tab_helper_->web_contents_content());
