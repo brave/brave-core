@@ -123,29 +123,23 @@ std::string Prefs::GetSeedPath() {
   return kSyncV2Seed;
 }
 
-std::string Prefs::GetSeed(bool* failed_to_decrypt) const {
-  CHECK(failed_to_decrypt);
-  *failed_to_decrypt = true;
-
+std::optional<std::string> Prefs::GetSeed() const {
   const auto& encoded_seed = pref_service_->GetString(kSyncV2Seed);
   if (encoded_seed.empty()) {
-    *failed_to_decrypt = false;
     return std::string();
   }
 
   std::string encrypted_seed;
   if (!base::Base64Decode(encoded_seed, &encrypted_seed)) {
     LOG(ERROR) << "base64 decode sync seed failure";
-    return std::string();
+    return std::nullopt;
   }
 
   std::string seed;
   if (!OSCrypt::DecryptString(encrypted_seed, &seed)) {
     LOG(ERROR) << "Decrypt sync seed failure";
-    return std::string();
+    return std::nullopt;
   }
-
-  *failed_to_decrypt = false;
   return seed;
 }
 
@@ -227,6 +221,12 @@ void Prefs::SetAddLeaveChainDetailBehaviourForTests(
 void Prefs::Clear() {
   pref_service_->ClearPref(kSyncV2Seed);
   pref_service_->ClearPref(kSyncFailedDecryptSeedNoticeDismissed);
+}
+
+bool Prefs::IsEncryptionAvailable() const {
+  // This is being added here only temporarily, as the async backend will come
+  // in to replace this OSCrypt use.
+  return OSCrypt::IsEncryptionAvailable();
 }
 
 void MigrateBraveSyncPrefs(PrefService* prefs) {

@@ -45,10 +45,9 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(
       brave_sync::Prefs::GetSeedPath(),
       base::BindRepeating(&BraveSyncServiceImpl::OnBraveSyncPrefsChanged,
                           base::Unretained(this)));
-  bool failed_to_decrypt = false;
-  GetBraveSyncAuthManager()->DeriveSigningKeys(
-      brave_sync_prefs_.GetSeed(&failed_to_decrypt));
-  DCHECK(!failed_to_decrypt);
+  std::optional<std::string> seed = brave_sync_prefs_.GetSeed();
+  CHECK(seed.has_value());
+  GetBraveSyncAuthManager()->DeriveSigningKeys(*seed);
 
   sync_service_impl_delegate_->set_profile_sync_service(this);
 }
@@ -87,27 +86,24 @@ void BraveSyncServiceImpl::StopAndClear(ResetEngineReason reset_engine_reason) {
 }
 
 std::string BraveSyncServiceImpl::GetOrCreateSyncCode() {
-  bool failed_to_decrypt = false;
-  std::string sync_code = brave_sync_prefs_.GetSeed(&failed_to_decrypt);
-
-  if (failed_to_decrypt) {
+  std::optional<std::string> sync_code = brave_sync_prefs_.GetSeed();
+  if (!sync_code.has_value()) {
     // Do not try to re-create seed when OSCrypt fails, for example on macOS
     // when the keyring is locked.
-    DCHECK(sync_code.empty());
     return std::string();
   }
 
-  if (sync_code.empty()) {
+  if (sync_code->empty()) {
     std::vector<uint8_t> seed = brave_sync::crypto::GetSeed();
-    sync_code = brave_sync::crypto::PassphraseFromBytes32(seed);
+    *sync_code = brave_sync::crypto::PassphraseFromBytes32(seed);
     sync_code_monitor_.RecordCodeGenerated();
   }
 
-  CHECK(!sync_code.empty()) << "Attempt to return empty sync code";
-  CHECK(brave_sync::crypto::IsPassphraseValid(sync_code))
+  CHECK(!sync_code->empty()) << "Attempt to return empty sync code";
+  CHECK(brave_sync::crypto::IsPassphraseValid(*sync_code))
       << "Attempt to return non-valid sync code";
 
-  return sync_code;
+  return std::move(sync_code).value();
 }
 
 bool BraveSyncServiceImpl::SetSyncCode(const std::string& sync_code) {
@@ -161,12 +157,11 @@ BraveSyncAuthManager* BraveSyncServiceImpl::GetBraveSyncAuthManager() {
 void BraveSyncServiceImpl::OnBraveSyncPrefsChanged(const std::string& path) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (path == brave_sync::Prefs::GetSeedPath()) {
-    bool failed_to_decrypt = false;
-    const std::string seed = brave_sync_prefs_.GetSeed(&failed_to_decrypt);
-    DCHECK(!failed_to_decrypt);
+    std::optional<std::string> seed = brave_sync_prefs_.GetSeed();
+    CHECK(seed.has_value());
 
-    if (!seed.empty()) {
-      GetBraveSyncAuthManager()->DeriveSigningKeys(seed);
+    if (!seed->empty()) {
+      GetBraveSyncAuthManager()->DeriveSigningKeys(*seed);
       // Default enabled types: Bookmarks, Passwords
 
       // Related Chromium change: 33441a0f3f9a591693157f2fd16852ce072e6f9d
@@ -218,16 +213,15 @@ void BraveSyncServiceImpl::OnEngineInitialized(
     return;
   }
 
-  bool failed_to_decrypt = false;
-  std::string passphrase = brave_sync_prefs_.GetSeed(&failed_to_decrypt);
-  DCHECK(!failed_to_decrypt);
-  if (passphrase.empty()) {
+  std::optional<std::string> passphrase = brave_sync_prefs_.GetSeed();
+  CHECK(passphrase.has_value());
+  if (passphrase->empty()) {
     return;
   }
 
   if (sync_user_settings->IsPassphraseRequired()) {
     bool set_passphrase_result =
-        sync_user_settings->SetDecryptionPassphrase(passphrase);
+        sync_user_settings->SetDecryptionPassphrase(*passphrase);
     VLOG(1) << "Forced set decryption passphrase result is "
             << set_passphrase_result;
   }

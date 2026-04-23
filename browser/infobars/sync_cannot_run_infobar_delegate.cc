@@ -23,17 +23,6 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/views/vector_icons.h"
 
-namespace {
-
-bool SeedDecryptionFailed(raw_ptr<brave_sync::Prefs> brave_sync_prefs) {
-  CHECK_NE(brave_sync_prefs, nullptr);
-  bool failed_to_decrypt = false;
-  std::string seed = brave_sync_prefs->GetSeed(&failed_to_decrypt);
-  return failed_to_decrypt;
-}
-
-}  // namespace
-
 // static
 void SyncCannotRunInfoBarDelegate::Create(
     infobars::ContentInfoBarManager* infobar_manager,
@@ -44,7 +33,7 @@ void SyncCannotRunInfoBarDelegate::Create(
     return;
   }
 
-  if (!SeedDecryptionFailed(&brave_sync_prefs)) {
+  if (brave_sync_prefs.GetSeed().has_value()) {
     return;
   }
 

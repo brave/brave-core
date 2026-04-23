@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_PREFS_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/memory/raw_ref.h"
@@ -37,7 +38,7 @@ class Prefs {
 
   static std::string GetSeedPath();
 
-  std::string GetSeed(bool* failed_to_decrypt) const;
+  std::optional<std::string> GetSeed() const;
   bool SetSeed(const std::string& seed);
 
   bool IsSyncAccountDeletedNoticePending() const;
@@ -54,6 +55,7 @@ class Prefs {
   static std::string GetLeaveChainDetailsPathForTests();
   void SetAddLeaveChainDetailBehaviourForTests(
       AddLeaveChainDetailBehaviour add_leave_chain_detail_behaviour);
+  bool IsEncryptionAvailable() const;
 
   void Clear();
 
