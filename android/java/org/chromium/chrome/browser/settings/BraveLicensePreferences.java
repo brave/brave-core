@@ -47,12 +47,12 @@ public class BraveLicensePreferences extends BravePreferenceFragment {
         mPageTitle.set(getString(R.string.brave_license_text));
         BraveLicensePreference licenseText =
                 (BraveLicensePreference) findPreference(PREF_BRAVE_LICENSE_TEXT);
-        try {
-            InputStream in = getActivity().getAssets().open(ASSET_BRAVE_LICENSE);
-            Scanner scanner = new Scanner(in).useDelimiter("\\A");
-            String summary = scanner.hasNext() ? scanner.next() : "";
-            in.close();
-            licenseText.setSummary(BraveRewardsHelper.spannedFromHtmlString(summary));
+        try (BufferedReader reader = new BufferedReader(
+                 new InputStreamReader(
+                         getActivity().getAssets().open(ASSET_BRAVE_LICENSE),
+                         StandardCharsets.UTF_8))) {
+        String summary = reader.lines().collect(Collectors.joining("\n"));
+        licenseText.setSummary(BraveRewardsHelper.spannedFromHtmlString(summary));
         } catch (IOException e) {
             Log.e(TAG, "Could not load license text: " + e);
         }
