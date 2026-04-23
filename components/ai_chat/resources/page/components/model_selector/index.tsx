@@ -28,6 +28,7 @@ export function ModelSelector() {
 
   // State
   const [isOpen, setIsOpen] = React.useState(false)
+  const [isReflowingMenu, setIsReflowingMenu] = React.useState(false)
   const [showAllModels, setShowAllModels] = React.useState(false)
 
   // Memos
@@ -119,10 +120,21 @@ export function ModelSelector() {
     })
   }, [aiChatContext.api.uiHandler])
 
+  React.useEffect(() => {
+    // When transitioning from displaying "recommended" to "all" models, the
+    // menu can briefly render taller than the configured max-height, which can
+    // result in an unnecessary scroll as the page attempts to bring the top of
+    // the menu into view. As a workaround, we close the menu briefly while the
+    // new menu content is first rendered.
+    if (isReflowingMenu) {
+      setTimeout(() => setIsReflowingMenu(false), 0)
+    }
+  }, [isReflowingMenu])
+
   return (
     <ButtonMenu
       className={styles.buttonMenu}
-      isOpen={isOpen}
+      isOpen={isOpen && !isReflowingMenu}
       onClose={() => setIsOpen(false)}
     >
       <Button
@@ -220,8 +232,8 @@ export function ModelSelector() {
       >
         <leo-menu-item
           data-testid='show-all-models-button'
-          onClick={(e) => {
-            e.stopPropagation()
+          onClick={() => {
+            setIsReflowingMenu(true)
             setShowAllModels(!showAllModels)
           }}
         >

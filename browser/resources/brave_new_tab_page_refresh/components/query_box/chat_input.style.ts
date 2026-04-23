@@ -7,6 +7,9 @@ import { scoped } from '$web-common/scoped_css'
 
 export const style = scoped.css`
   & {
+    --filter-menu-max-height: 300px;
+    --model-selector-menu-max-height: 300px;
+
     container-type: inline-size;
   }
 
