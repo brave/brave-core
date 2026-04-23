@@ -106,6 +106,10 @@ class AdsServiceImpl : public AdsService,
 
   ~AdsServiceImpl() override;
 
+  // AdsService:
+  bool IsIneligibleToStart() const override;
+  bool IsInitialized() const override;
+
   // KeyedService:
   void Shutdown() override;
 
@@ -142,6 +146,7 @@ class AdsServiceImpl : public AdsService,
       brave_rewards::mojom::RewardsWalletPtr mojom_rewards_wallet);
   void InitializeBatAdsCallback(bool success);
 
+  void NotifyAdsServiceIneligibleToStart();
   void NotifyDidInitializeAdsService();
   void NotifyDidShutdownAdsService();
   void NotifyDidClearAdsServiceData();
@@ -388,6 +393,8 @@ class AdsServiceImpl : public AdsService,
       const ContentSettingsPattern& primary_pattern,
       const ContentSettingsPattern& secondary_pattern,
       ContentSettingsTypeSet content_type_set) override;
+
+  bool was_marked_ineligible_to_start_ = false;
 
   bool is_bat_ads_initialized_ = false;
 

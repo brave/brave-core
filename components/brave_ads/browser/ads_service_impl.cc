@@ -305,7 +305,12 @@ void AdsServiceImpl::MaybeStartBatAdsService() {
   // `is_shutting_down_` is set permanently when `KeyedService::Shutdown` is
   // called and the profile begins tearing down. There is no recovery from that
   // state, so any subsequent attempt to restart the service must be suppressed.
-  if (is_shutting_down_ || IsBatAdsServiceBound() || !CanStartBatAdsService()) {
+  if (is_shutting_down_ || IsBatAdsServiceBound()) {
+    return;
+  }
+
+  if (!CanStartBatAdsService()) {
+    NotifyAdsServiceIneligibleToStart();
     return;
   }
 
@@ -448,6 +453,20 @@ void AdsServiceImpl::InitializeBatAdsCallback(bool success) {
   CheckIdleStateAfterDelay();
 
   NotifyDidInitializeAdsService();
+}
+
+bool AdsServiceImpl::IsIneligibleToStart() const {
+  return was_marked_ineligible_to_start_;
+}
+
+bool AdsServiceImpl::IsInitialized() const {
+  return is_bat_ads_initialized_;
+}
+
+void AdsServiceImpl::NotifyAdsServiceIneligibleToStart() {
+  was_marked_ineligible_to_start_ = true;
+
+  observers_.Notify(&AdsServiceObserver::OnAdsServiceIneligibleToStart);
 }
 
 void AdsServiceImpl::NotifyDidInitializeAdsService() {

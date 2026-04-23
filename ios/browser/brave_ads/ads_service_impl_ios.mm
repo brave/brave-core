@@ -55,6 +55,11 @@ AdsClientNotifier* AdsServiceImplIOS::GetAdsClientNotifier() {
   return ads_client_notifier_.get();
 }
 
+bool AdsServiceImplIOS::IsIneligibleToStart() const {
+  // iOS has no eligibility gate; the service is always eligible to start.
+  return false;
+}
+
 bool AdsServiceImplIOS::IsInitialized() const {
   return !!ads_;
 }
