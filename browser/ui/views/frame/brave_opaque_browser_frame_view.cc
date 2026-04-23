@@ -14,6 +14,7 @@
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/opaque_browser_frame_view_layout.h"
@@ -23,6 +24,7 @@
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/scoped_canvas.h"
+#include "ui/views/window/non_client_view.h"
 
 BraveOpaqueBrowserFrameView::BraveOpaqueBrowserFrameView(
     BrowserWidget* frame,
@@ -31,9 +33,21 @@ BraveOpaqueBrowserFrameView::BraveOpaqueBrowserFrameView(
     : OpaqueBrowserFrameView(frame, browser_view, layout) {
   frame_graphic_ = std::make_unique<BraveWindowFrameGraphic>(
       browser_view->browser()->profile());
+
+  if (auto* focus_mode =
+          browser_view->browser()->GetFeatures().focus_mode_controller()) {
+    focus_mode_observation_.Observe(focus_mode);
+  }
 }
 
 BraveOpaqueBrowserFrameView::~BraveOpaqueBrowserFrameView() = default;
+
+void BraveOpaqueBrowserFrameView::OnFocusModeToggled(bool /*enabled*/) {
+  UpdateCaptionButtonPlaceholderContainerBackground();
+  if (auto* non_client_view = browser_widget()->non_client_view()) {
+    non_client_view->InvalidateLayout();
+  }
+}
 
 void BraveOpaqueBrowserFrameView::OnPaint(gfx::Canvas* canvas) {
   OpaqueBrowserFrameView::OnPaint(canvas);

@@ -432,6 +432,7 @@ void BraveVerticalTabStripRegionView::OnFullscreenStateChanged() {
 }
 
 void BraveVerticalTabStripRegionView::OnFocusModeToggled(bool enabled) {
+  // TODO: This function body duplicates OnFullscreenStateChanged.
   if (!tabs::utils::ShouldShowBraveVerticalTabs(browser_)) {
     return;
   }

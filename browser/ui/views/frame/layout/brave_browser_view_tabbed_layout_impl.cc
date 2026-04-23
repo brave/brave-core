@@ -478,7 +478,7 @@ void BraveBrowserViewTabbedLayoutImpl::AdjustLayoutForTopReveal(
   auto reveal_fraction = delegate().GetTopOverlayRevealFraction();
   if (!reveal_fraction) {
     if (views().top_container_background) {
-      layout.AddChild(views().top_container_background, gfx::Rect());
+      layout.AddChild(views().top_container_background, gfx::Rect(), false);
     }
     if (views().focus_mode_title_bar) {
       layout.AddChild(views().focus_mode_title_bar, gfx::Rect());
@@ -535,14 +535,17 @@ void BraveBrowserViewTabbedLayoutImpl::AdjustLayoutForTopReveal(
   }
 
   if (views().top_container_background) {
-    gfx::Rect union_bounds;
-    if (top_layout) {
-      union_bounds.Union(top_layout->bounds);
+    gfx::Rect top_bounds;
+    if (reveal_fraction.value_or(0) > 0) {
+      if (top_layout) {
+        top_bounds.Union(top_layout->bounds);
+      }
+      if (tab_layout) {
+        top_bounds.Union(tab_layout->bounds);
+      }
     }
-    if (tab_layout) {
-      union_bounds.Union(tab_layout->bounds);
-    }
-    layout.AddChild(views().top_container_background, union_bounds);
+    layout.AddChild(views().top_container_background, top_bounds,
+                    !top_bounds.IsEmpty());
   }
 }
 

@@ -8,12 +8,15 @@
 
 #include <memory>
 
+#include "base/scoped_observation.h"
+#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "chrome/browser/ui/views/frame/opaque_browser_frame_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
 class BraveWindowFrameGraphic;
 
-class BraveOpaqueBrowserFrameView : public OpaqueBrowserFrameView {
+class BraveOpaqueBrowserFrameView : public OpaqueBrowserFrameView,
+                                    public FocusModeController::Observer {
   METADATA_HEADER(BraveOpaqueBrowserFrameView, OpaqueBrowserFrameView)
  public:
   BraveOpaqueBrowserFrameView(BrowserWidget* frame,
@@ -33,9 +36,15 @@ class BraveOpaqueBrowserFrameView : public OpaqueBrowserFrameView {
   int GetTopInset(bool restored) const override;
   int GetTopAreaHeight() const override;
 
+  // FocusModeController::Observer:
+  void OnFocusModeToggled(bool enabled) override;
+
  private:
   bool ShouldShowVerticalTabs() const;
   std::unique_ptr<BraveWindowFrameGraphic> frame_graphic_;
+
+  base::ScopedObservation<FocusModeController, FocusModeController::Observer>
+      focus_mode_observation_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_OPAQUE_BROWSER_FRAME_VIEW_H_

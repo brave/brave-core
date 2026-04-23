@@ -1156,6 +1156,7 @@ bool BraveBrowserView::ShouldShowWindowTitle() const {
 
 void BraveBrowserView::OnThemeChanged() {
   BrowserView::OnThemeChanged();
+  // TODO: Move this into top_container_background.
   UpdateTopContainerBackgroundColor();
 }
 
@@ -1208,6 +1209,8 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
   BrowserView::OnActiveTabChanged(old_contents, new_contents, index, reason);
 
   if (top_reveal_controller_ && !tab_change_in_split_view) {
+    // TODO: In vertical tabs, we probably either want the top revealed or the
+    // vertical tab region revealed, but not both at the same time.
     top_reveal_controller_->RevealTemporarily(base::Seconds(2));
   }
 

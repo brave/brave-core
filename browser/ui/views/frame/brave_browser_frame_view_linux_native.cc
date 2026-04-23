@@ -13,12 +13,15 @@
 #include "base/notreached.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/common/pref_names.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/controls/button/image_button.h"
 #include "ui/views/window/caption_button_layout_constants.h"
+#include "ui/views/window/non_client_view.h"
 #include "ui/views/window/window_button_order_provider.h"
 
 namespace {
@@ -50,9 +53,22 @@ BraveBrowserFrameViewLinuxNative::BraveBrowserFrameViewLinuxNative(
     : BrowserFrameViewLinuxNative(frame,
                                   browser_view,
                                   layout,
-                                  std::move(nav_button_provider)) {}
+                                  std::move(nav_button_provider)) {
+  if (auto* focus_mode =
+          browser_view->browser()->GetFeatures().focus_mode_controller()) {
+    focus_mode_observation_.Observe(focus_mode);
+  }
+}
 
 BraveBrowserFrameViewLinuxNative::~BraveBrowserFrameViewLinuxNative() = default;
+
+void BraveBrowserFrameViewLinuxNative::OnFocusModeToggled(bool /*enabled*/) {
+  MaybeUpdateCachedFrameButtonImages();
+  UpdateLeadingTrailingCaptionButtonWidth();
+  if (auto* non_client_view = browser_widget()->non_client_view()) {
+    non_client_view->InvalidateLayout();
+  }
+}
 
 void BraveBrowserFrameViewLinuxNative::MaybeUpdateCachedFrameButtonImages() {
   auto* browser = GetBrowserView()->browser();

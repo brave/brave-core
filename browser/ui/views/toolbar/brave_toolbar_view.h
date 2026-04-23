@@ -9,6 +9,7 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
+#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
@@ -30,7 +31,8 @@ class ToolbarButton;
 class WalletButton;
 
 class BraveToolbarView : public ToolbarView,
-                         public ProfileAttributesStorage::Observer {
+                         public ProfileAttributesStorage::Observer,
+                         public FocusModeController::Observer {
   METADATA_HEADER(BraveToolbarView, ToolbarView)
  public:
   class LayoutGuard;
@@ -67,6 +69,9 @@ class BraveToolbarView : public ToolbarView,
   void VisibilityChanged(views::View* starting_from, bool visible) override;
   void ViewHierarchyChanged(
       const views::ViewHierarchyChangedDetails& details) override;
+
+  // FocusModeController::Observer:
+  void OnFocusModeToggled(bool enabled) override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, ToolbarCornerRadiusTest);
@@ -133,6 +138,9 @@ class BraveToolbarView : public ToolbarView,
   base::ScopedObservation<ProfileAttributesStorage,
                           ProfileAttributesStorage::Observer>
       profile_observer_{this};
+
+  base::ScopedObservation<FocusModeController, FocusModeController::Observer>
+      focus_mode_observation_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_TOOLBAR_VIEW_H_
