@@ -30,6 +30,10 @@ public class BraveYouTubeScriptInjectorNativeHelper {
         BraveYouTubeScriptInjectorNativeHelperJni.get().setFullscreen(webContents);
     }
 
+    public static void exitFullscreen(WebContents webContents) {
+        BraveYouTubeScriptInjectorNativeHelperJni.get().exitFullscreen(webContents);
+    }
+
     public static boolean hasFullscreenBeenRequested(WebContents webContents) {
         return BraveYouTubeScriptInjectorNativeHelperJni.get()
                 .hasFullscreenBeenRequested(webContents);
@@ -55,13 +59,17 @@ public class BraveYouTubeScriptInjectorNativeHelper {
             }
             if (activity instanceof final BraveActivity braveActivity) {
                 // Resume the media session when the transition completes.
-                braveActivity.resumeMediaSession(true);
+                braveActivity.onYouTubePictureInPictureRequested(webContents);
                 try {
-                    braveActivity.enterPictureInPictureMode(
-                            new PictureInPictureParams.Builder().build());
+                    boolean entered =
+                            braveActivity.enterPictureInPictureMode(
+                                    new PictureInPictureParams.Builder().build());
+                    if (!entered) {
+                        braveActivity.onYouTubePictureInPictureEnterFailed();
+                    }
                 } catch (IllegalStateException | IllegalArgumentException e) {
                     Log.e(TAG, "Error entering picture in picture mode.", e);
-                    braveActivity.resumeMediaSession(false);
+                    braveActivity.onYouTubePictureInPictureEnterFailed();
                 }
             }
         }
@@ -73,6 +81,8 @@ public class BraveYouTubeScriptInjectorNativeHelper {
     @NativeMethods
     interface Natives {
         void setFullscreen(WebContents webContents);
+
+        void exitFullscreen(WebContents webContents);
 
         boolean hasFullscreenBeenRequested(WebContents webContents);
 

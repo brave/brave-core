@@ -28,6 +28,7 @@ class YouTubeScriptInjectorTabHelper
   bool IsYouTubeDomain(bool mobileOnly = false) const;
   bool IsYouTubeVideo(bool mobileOnly = false) const;
   void MaybeSetFullscreen();
+  void MaybeExitFullscreen();
 
   // Fullscreen state management using PageUserData
   bool HasFullscreenBeenRequested() const;
