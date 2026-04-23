@@ -20,8 +20,8 @@ base::DictValue NotificationAdToValue(const NotificationAdInfo& ad);
 base::ListValue NotificationAdsToValue(
     const base::circular_deque<NotificationAdInfo>& ads);
 
-NotificationAdInfo NotificationAdFromValue(const base::DictValue& dict);
-base::circular_deque<NotificationAdInfo> NotificationAdsFromValue(
+NotificationAdInfo NotificationAdFromDict(const base::DictValue& dict);
+base::circular_deque<NotificationAdInfo> NotificationAdsFromList(
     const base::ListValue& list);
 
 }  // namespace brave_ads

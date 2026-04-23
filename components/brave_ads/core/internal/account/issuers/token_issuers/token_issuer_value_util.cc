@@ -143,7 +143,7 @@ base::ListValue TokenIssuersToValue(const TokenIssuerList& token_issuers) {
   return list;
 }
 
-std::optional<TokenIssuerList> TokenIssuersFromValue(
+std::optional<TokenIssuerList> MaybeBuildTokenIssuersFromList(
     const base::ListValue& list) {
   TokenIssuerList token_issuers;
   token_issuers.reserve(list.size());

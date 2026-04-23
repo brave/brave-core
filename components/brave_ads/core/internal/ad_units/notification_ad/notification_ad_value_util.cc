@@ -38,7 +38,7 @@ base::ListValue NotificationAdsToValue(
   return list;
 }
 
-NotificationAdInfo NotificationAdFromValue(const base::DictValue& dict) {
+NotificationAdInfo NotificationAdFromDict(const base::DictValue& dict) {
   NotificationAdInfo ad;
 
   if (const auto* const value = dict.FindString(kNotificationAdTypeKey)) {
@@ -88,13 +88,13 @@ NotificationAdInfo NotificationAdFromValue(const base::DictValue& dict) {
   return ad;
 }
 
-base::circular_deque<NotificationAdInfo> NotificationAdsFromValue(
+base::circular_deque<NotificationAdInfo> NotificationAdsFromList(
     const base::ListValue& list) {
   base::circular_deque<NotificationAdInfo> ads;
 
   for (const auto& value : list) {
     if (const auto* const dict = value.GetIfDict()) {
-      ads.push_back(NotificationAdFromValue(*dict));
+      ads.push_back(NotificationAdFromDict(*dict));
     }
   }
 

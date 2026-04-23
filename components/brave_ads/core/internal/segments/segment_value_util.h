@@ -12,7 +12,7 @@
 namespace brave_ads {
 
 base::ListValue SegmentsToValue(const SegmentList& segments);
-SegmentList SegmentsFromValue(const base::ListValue& list);
+SegmentList SegmentsFromList(const base::ListValue& list);
 
 }  // namespace brave_ads
 

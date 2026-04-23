@@ -22,7 +22,7 @@ base::ListValue SegmentsToValue(const SegmentList& segments) {
   return list;
 }
 
-SegmentList SegmentsFromValue(const base::ListValue& list) {
+SegmentList SegmentsFromList(const base::ListValue& list) {
   SegmentList segments;
   segments.reserve(list.size());
 

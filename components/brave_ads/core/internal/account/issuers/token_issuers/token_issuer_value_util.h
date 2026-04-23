@@ -14,7 +14,7 @@
 namespace brave_ads {
 
 base::ListValue TokenIssuersToValue(const TokenIssuerList& token_issuers);
-std::optional<TokenIssuerList> TokenIssuersFromValue(
+std::optional<TokenIssuerList> MaybeBuildTokenIssuersFromList(
     const base::ListValue& list);
 
 }  // namespace brave_ads

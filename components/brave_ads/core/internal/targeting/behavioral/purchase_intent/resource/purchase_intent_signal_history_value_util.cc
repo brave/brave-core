@@ -27,7 +27,7 @@ base::DictValue PurchaseIntentSignalHistoryToValue(
       .Set(kWeightKey, purchase_intent_signal_history.weight);
 }
 
-PurchaseIntentSignalHistoryInfo PurchaseIntentSignalHistoryFromValue(
+PurchaseIntentSignalHistoryInfo PurchaseIntentSignalHistoryFromDict(
     const base::DictValue& dict) {
   base::Time signaled_at = base::Time();
 

@@ -872,7 +872,7 @@ void AdsServiceImpl::CloseAllNotificationAds() {
   const auto& list = prefs_->GetList(prefs::kNotificationAds);
 
   const base::circular_deque<NotificationAdInfo> ads =
-      NotificationAdsFromValue(list);
+      NotificationAdsFromList(list);
 
   for (const auto& ad : ads) {
     CloseNotificationAd(ad.placement_id);
@@ -918,7 +918,7 @@ void AdsServiceImpl::OpenNewTabWithAdCallback(
     return VLOG(0) << "Failed to get notification ad";
   }
 
-  const NotificationAdInfo notification_ad = NotificationAdFromValue(*dict);
+  const NotificationAdInfo notification_ad = NotificationAdFromDict(*dict);
 
   OpenNewTabWithUrl(notification_ad.target_url);
 }
@@ -1370,7 +1370,7 @@ void AdsServiceImpl::CanShowNotificationAdsWhileBrowserIsBackgrounded(
 }
 
 void AdsServiceImpl::ShowNotificationAd(base::DictValue dict) {
-  const NotificationAdInfo ad = NotificationAdFromValue(dict);
+  const NotificationAdInfo ad = NotificationAdFromDict(dict);
 
   std::u16string title;
   if (base::IsStringUTF8(ad.title)) {

@@ -27,7 +27,7 @@ std::optional<AdHistoryList> ParseAdHistory(const base::DictValue& dict) {
 
   for (const auto& value : *list) {
     if (const auto* const ad_history_item = value.GetIfDict()) {
-      ad_history.push_back(AdHistoryItemFromValue(*ad_history_item));
+      ad_history.push_back(AdHistoryItemFromDict(*ad_history_item));
     }
   }
 
