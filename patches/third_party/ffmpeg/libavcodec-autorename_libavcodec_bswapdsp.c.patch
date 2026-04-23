@@ -1,5 +1,6 @@
 diff --git a/libavcodec/autorename_libavcodec_bswapdsp.c b/libavcodec/autorename_libavcodec_bswapdsp.c
 new file mode 100644
+index 0000000000000000000000000000000000000000..51e396e6f048c06a95b6b503f629466fd2fe322f
 --- /dev/null
 +++ b/libavcodec/autorename_libavcodec_bswapdsp.c
 @@ -0,0 +1,2 @@

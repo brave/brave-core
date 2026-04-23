@@ -1,5 +1,6 @@
 diff --git a/libavcodec/hevc/autorename_libavcodec_hevc_parser.c b/libavcodec/hevc/autorename_libavcodec_hevc_parser.c
 new file mode 100644
+index 0000000000000000000000000000000000000000..23066b536278dd855ccb118c99d76af99823a456
 --- /dev/null
 +++ b/libavcodec/hevc/autorename_libavcodec_hevc_parser.c
 @@ -0,0 +1,2 @@

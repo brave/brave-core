@@ -1,5 +1,5 @@
 diff --git a/chromium/config/Chrome/linux/x64/config.h b/chromium/config/Chrome/linux/x64/config.h
-index 466810c90cf22e8fd971c7a137c5ce0f461d1b80..68e8fa1cba790f1d0a19f6218b5be561c078b056 100644
+index 38a00479d5f53b224bb3371306e408b2c367562b..5d062cacec6a2a8e085a0abf6139bb7953292655 100644
 --- a/chromium/config/Chrome/linux/x64/config.h
 +++ b/chromium/config/Chrome/linux/x64/config.h
 @@ -711,7 +711,7 @@
