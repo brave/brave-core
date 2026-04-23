@@ -48,9 +48,6 @@ class ChromeImporter : public Importer {
 
   void ImportBookmarks();
   void ImportHistory();
-  void ImportPayments();
-
-  double chromeTimeToDouble(int64_t time);
 
   base::FilePath source_path_;
 
