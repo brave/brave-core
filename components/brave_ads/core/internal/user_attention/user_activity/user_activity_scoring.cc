@@ -22,8 +22,10 @@ UserActivityTriggerList SortTriggers(const UserActivityTriggerList& triggers) {
 
   std::ranges::sort(sorted_triggers, [](const UserActivityTriggerInfo& lhs,
                                         const UserActivityTriggerInfo& rhs) {
-    return lhs.event_sequence.length() > rhs.event_sequence.length() &&
-           lhs.score > rhs.score;
+    if (lhs.event_sequence.length() != rhs.event_sequence.length()) {
+      return lhs.event_sequence.length() > rhs.event_sequence.length();
+    }
+    return lhs.score > rhs.score;
   });
 
   return sorted_triggers;
