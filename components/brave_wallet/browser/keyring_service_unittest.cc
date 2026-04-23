@@ -64,6 +64,7 @@
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 #include "ui/base/l10n/l10n_util.h"
 
 using base::test::ParseJsonDict;
@@ -2269,6 +2270,9 @@ TEST_F(KeyringServiceUnitTest, AddHardwareAccounts_RestrictedAddress) {
       base::ToLowerASCII(restricted_fil_address),
       base::ToLowerASCII(restricted_dot_address),
   });
+  absl::Cleanup clear_hw_restricted = [registry] {
+    registry->UpdateRestrictedAddressesList({});
+  };
 
   // Test: Ethereum restricted address should be rejected
   {
@@ -2341,9 +2345,6 @@ TEST_F(KeyringServiceUnitTest, AddHardwareAccounts_RestrictedAddress) {
     EXPECT_EQ(result.size(), 1u) << "Only valid address should be added";
     EXPECT_EQ(result[0]->address, valid_eth_address);
   }
-
-  // Clear restricted list
-  registry->UpdateRestrictedAddressesList({});
 }
 
 TEST_F(KeyringServiceUnitTest, ImportEthereumAccount_RestrictedAddress) {
@@ -2370,6 +2371,9 @@ TEST_F(KeyringServiceUnitTest, ImportEthereumAccount_RestrictedAddress) {
   // Update restricted list with the address.
   registry->UpdateRestrictedAddressesList(
       {base::ToLowerASCII(address_to_restrict)});
+  absl::Cleanup clear_eth_import_restricted = [registry] {
+    registry->UpdateRestrictedAddressesList({});
+  };
 
   // Test: Import with Restricted address should fail.
   auto result = ImportEthereumAccount(&keyring_service, "Restricted Account",
@@ -2384,8 +2388,6 @@ TEST_F(KeyringServiceUnitTest, ImportEthereumAccount_RestrictedAddress) {
                                             valid_private_key);
   EXPECT_TRUE(valid_result)
       << "Non-restricted Ethereum address should be accepted";
-
-  registry->UpdateRestrictedAddressesList({});
 }
 
 TEST_F(KeyringServiceUnitTest, ImportSolanaAccount_RestrictedAddress) {
@@ -2415,14 +2417,14 @@ TEST_F(KeyringServiceUnitTest, ImportSolanaAccount_RestrictedAddress) {
   // Update restricted list with the address
   registry->UpdateRestrictedAddressesList(
       {base::ToLowerASCII(address_to_restrict)});
+  absl::Cleanup clear_sol_import_restricted = [registry] {
+    registry->UpdateRestrictedAddressesList({});
+  };
 
   // Test: Import with Restricted address should fail
   auto result = ImportSolanaAccount(&keyring_service, "Restricted Account",
                                     known_private_key);
   EXPECT_FALSE(result) << "Restricted Solana address should be rejected";
-
-  // Clear restricted list
-  registry->UpdateRestrictedAddressesList({});
 }
 
 TEST_F(KeyringServiceUnitTest, ImportFilecoinAccount_RestrictedAddress) {
@@ -2455,19 +2457,15 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccount_RestrictedAddress) {
   // Update restricted list with the address.
   registry->UpdateRestrictedAddressesList(
       {base::ToLowerASCII(address_to_restrict)});
+  absl::Cleanup clear_fil_import_restricted = [registry] {
+    registry->UpdateRestrictedAddressesList({});
+  };
 
   // Test: Import with Restricted address should fail
   auto result =
       ImportFilecoinAccount(&keyring_service, "Restricted Account",
                             known_private_key, mojom::kFilecoinTestnet);
   EXPECT_FALSE(result) << "Restricted Filecoin address should be rejected";
-
-  // Test: Import with different network (mainnet) should work if address is
-  // different or use a different private key for a valid import For this test,
-  // we verify the restricted check works for the testnet address
-
-  // Clear restricted list
-  registry->UpdateRestrictedAddressesList({});
 }
 
 TEST_F(KeyringServiceUnitTest, ImportPolkadotAccount_RestrictedAddress) {
@@ -2513,14 +2511,14 @@ TEST_F(KeyringServiceUnitTest, ImportPolkadotAccount_RestrictedAddress) {
   // Update restricted list with the address.
   registry->UpdateRestrictedAddressesList(
       {base::ToLowerASCII(*address_to_restrict)});
+  absl::Cleanup clear_dot_import_restricted = [registry] {
+    registry->UpdateRestrictedAddressesList({});
+  };
 
   auto result =
       ImportPolkadotAccount(&service, "Imported Polkadot", *json_export,
                             "export_pwd", mojom::kPolkadotMainnet);
   EXPECT_FALSE(result);
-
-  // Clear restricted list
-  registry->UpdateRestrictedAddressesList({});
 }
 
 TEST_F(KeyringServiceUnitTest, CreateDefaultAccountsForSelectedNetworks) {
@@ -2573,6 +2571,9 @@ TEST_F(KeyringServiceUnitTest, AddHDAccountForKeyring_RestrictedAddress) {
        base::ToLowerASCII("BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8"),
        base::ToLowerASCII("f1qjidlytseoouzfhsgzczf3ettbhuaezorczeava"),
        base::ToLowerASCII("158HHeYTmEXMiMM1XufQt5bEe2CTia3EcVcfrpYBYcXA6bdb")});
+  absl::Cleanup clear_hd_restricted = [registry] {
+    registry->UpdateRestrictedAddressesList({});
+  };
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   AccountUtils(&service).CreateWallet(kMnemonicDivideCruise, kPasswordBrave);
 
@@ -2584,8 +2585,6 @@ TEST_F(KeyringServiceUnitTest, AddHDAccountForKeyring_RestrictedAddress) {
                           mojom::KeyringId::kFilecoin, "Account 1"));
   EXPECT_FALSE(AddAccount(&service, mojom::CoinType::DOT,
                           mojom::KeyringId::kPolkadotMainnet, "Account 1"));
-
-  registry->UpdateRestrictedAddressesList({});
 }
 
 TEST_F(KeyringServiceUnitTest,
@@ -2597,6 +2596,9 @@ TEST_F(KeyringServiceUnitTest,
   registry->UpdateRestrictedAddressesList(
       {base::ToLowerASCII("f1qjidlytseoouzfhsgzczf3ettbhuaezorczeava"),
        base::ToLowerASCII("158HHeYTmEXMiMM1XufQt5bEe2CTia3EcVcfrpYBYcXA6bdb")});
+  absl::Cleanup clear_default_restricted = [registry] {
+    registry->UpdateRestrictedAddressesList({});
+  };
 
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
@@ -2632,8 +2634,6 @@ TEST_F(KeyringServiceUnitTest,
   EXPECT_TRUE(service.GetAllAccountInfos().empty());
   EXPECT_CALL(observer, WalletReset());
   observer.WaitAndVerify();
-
-  registry->UpdateRestrictedAddressesList({});
 }
 
 TEST_F(KeyringServiceUnitTest, SetSelectedAccount_CardanoEnabled) {

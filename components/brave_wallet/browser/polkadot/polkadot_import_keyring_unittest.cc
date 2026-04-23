@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 
 namespace brave_wallet {
 
@@ -219,15 +220,15 @@ TEST(PolkadotImportKeyringTest, AddAccount_RestrictedAddress) {
   // Add address to restricted list.
   registry->UpdateRestrictedAddressesList(
       {base::ToLowerASCII(address_to_restrict)});
+  absl::Cleanup clear_restricted = [registry] {
+    registry->UpdateRestrictedAddressesList({});
+  };
 
   ASSERT_TRUE(import_keyring.RemoveAccount(0));
 
   EXPECT_FALSE(import_keyring.AddAccount(0, pkcs8_key));
   EXPECT_FALSE(import_keyring.RemoveAccount(0));
   EXPECT_TRUE(import_keyring.AddAccount(1, pkcs8_key1));
-
-  // Clear restricted list
-  registry->UpdateRestrictedAddressesList({});
 }
 
 }  // namespace brave_wallet
