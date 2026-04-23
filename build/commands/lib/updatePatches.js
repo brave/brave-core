@@ -10,82 +10,6 @@ import util from './util.js'
 const desiredReplacementSeparator = '-'
 const patchExtension = '.patch'
 
-/**
- * Gets a list of modified files in a git repo
- * @param {string} gitRepoPath The repository to get modified files from
- * @param {(file: string) => boolean} [filter] Filter function for file paths to include or exclude (all included by default)
- * @param {string[]} [onlyFiles] If not empty, only modified paths for these files will be considered.
- * @returns {Promise<string[]>} List of modified file paths
- */
-async function getModifiedPaths(gitRepoPath, filter, onlyFiles) {
-  const onlyFilesSet = new Set(onlyFiles)
-  const modifiedDiffArgs = [
-    'diff',
-    '--ignore-submodules',
-    '--diff-filter=M',
-    '--name-only',
-    '--ignore-space-at-eol',
-  ]
-  const cmdOutput = await util.runAsync('git', modifiedDiffArgs, {
-    cwd: gitRepoPath,
-    verbose: false,
-  })
-  return cmdOutput
-    .split('\n')
-    .filter((s) => s)
-    .filter((s) => (onlyFilesSet.size ? onlyFilesSet.has(s) : true))
-    .filter(filter ?? (() => true))
-}
-
-async function writePatchFiles(modifiedPaths, gitRepoPath, patchDirPath) {
-  // replacing forward slashes and adding the patch extension to get nice filenames
-  // since git on Windows doesn't use backslashes, this is sufficient
-  const patchFilenames = modifiedPaths.map(
-    (s) => s.replace(/\//g, desiredReplacementSeparator) + patchExtension,
-  )
-
-  // When splitting one large diff into a per-file diff, there are a few ways
-  // you can go about it. Because different files can have the same name
-  // (by being located in different directories), you need to avoid collisions.
-  // Mirroring the directory structure seems undesirable.
-  // Prefixing with numbers works but is O(n) volatile for O(1) additions
-  // We choose here to flatten the directory structure by replacing separators
-  // In practice this will avoid collisions. Should a pathological case ever
-  // appear, you can quickly patch this by changing the separator, even
-  // to something longer
-
-  if (modifiedPaths.length) {
-    await fs.ensureDir(patchDirPath)
-  }
-
-  let writeOpsDoneCount = 0
-  let writePatchOps = modifiedPaths.map(async (old, i) => {
-    const singleDiffArgs = [
-      'diff',
-      '--src-prefix=a/',
-      '--dst-prefix=b/',
-      '--default-prefix',
-      '--full-index',
-      old,
-    ]
-    const patchContents = await util.runAsync('git', singleDiffArgs, {
-      cwd: gitRepoPath,
-      verbose: false,
-    })
-    const patchFilename = patchFilenames[i]
-    await fs.writeFile(path.join(patchDirPath, patchFilename), patchContents)
-
-    writeOpsDoneCount++
-    const logRepoName = path.basename(gitRepoPath)
-    console.log(
-      `updatePatches [${logRepoName}] wrote ${writeOpsDoneCount} / ${modifiedPaths.length}: ${patchFilename}`,
-    )
-  })
-
-  await Promise.all(writePatchOps)
-  return patchFilenames
-}
-
 const readDirPromise = (pathName) =>
   new Promise((resolve, reject) =>
     fs.readdir(pathName, (err, fileList) => {
@@ -95,6 +19,172 @@ const readDirPromise = (pathName) =>
       return resolve(fileList)
     }),
   )
+
+/**
+ * Reads the patch directory and returns the set of repo-relative paths covered
+ * by existing patches (derived from the patch filenames).
+ */
+async function getExistingPatchPaths(patchDirPath) {
+  try {
+    return new Set(
+      (await readDirPromise(patchDirPath))
+        .filter((s) => s.endsWith(patchExtension))
+        .map((s) =>
+          s
+            .slice(0, -patchExtension.length)
+            .replace(new RegExp(desiredReplacementSeparator, 'g'), '/'),
+        ),
+    )
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      return new Set()
+    }
+    throw err
+  }
+}
+
+/**
+ * Gets paths in `gitRepoPath` that should be refreshed as patches.
+ *
+ * Returns both modified files (tracked) and untracked files that correspond to
+ * an existing new-file patch. `git apply` creates new files without staging
+ * them, so without this second set, round-tripping a new-file patch through
+ * apply_patches / update_patches would drop the patch.
+ *
+ * @returns {Promise<{modified: string[], untracked: string[]}>}
+ */
+async function getModifiedPaths(gitRepoPath, patchDirPath, filter, onlyFiles) {
+  const onlyFilesSet = new Set(onlyFiles)
+  const pickFilter = (s) =>
+    (onlyFilesSet.size ? onlyFilesSet.has(s) : true)
+    && (filter ?? (() => true))(s)
+
+  const modifiedOutput = await util.runAsync(
+    'git',
+    [
+      'diff',
+      '--ignore-submodules',
+      '--diff-filter=M',
+      '--name-only',
+      '--ignore-space-at-eol',
+    ],
+    { cwd: gitRepoPath, verbose: false },
+  )
+  const modified = modifiedOutput
+    .split('\n')
+    .filter((s) => s)
+    .filter(pickFilter)
+
+  const untrackedOutput = await util.runAsync(
+    'git',
+    ['ls-files', '--others', '--exclude-standard'],
+    { cwd: gitRepoPath, verbose: false },
+  )
+  const untrackedPaths = untrackedOutput.split('\n').filter((s) => s)
+  let untracked = []
+  if (untrackedPaths.length) {
+    const existingPatchPaths = await getExistingPatchPaths(patchDirPath)
+    untracked = untrackedPaths
+      .filter((p) => existingPatchPaths.has(p))
+      .filter(pickFilter)
+  }
+
+  return { modified, untracked }
+}
+
+async function writePatchFile(repoPath, patchDirPath, patchFilename, diffArgs) {
+  // `git diff --no-index` (used for untracked files) exits with code 1 when a
+  // diff exists, which util.runAsync surfaces as an error. Pass
+  // continueOnFail so we can read the diff from the error's stdout instead of
+  // killing the process.
+  let patchContents
+  try {
+    patchContents = await util.runAsync('git', diffArgs, {
+      cwd: repoPath,
+      verbose: false,
+      continueOnFail: true,
+    })
+  } catch (err) {
+    if (err && typeof err.stdout === 'string' && err.stdout.length > 0) {
+      patchContents = err.stdout
+    } else {
+      throw err
+    }
+  }
+  await fs.writeFile(path.join(patchDirPath, patchFilename), patchContents)
+}
+
+function toPatchFilename(repoRelativePath) {
+  return (
+    repoRelativePath.replace(/\//g, desiredReplacementSeparator)
+    + patchExtension
+  )
+}
+
+async function writePatchFiles(
+  modifiedPaths,
+  untrackedPaths,
+  gitRepoPath,
+  patchDirPath,
+) {
+  // When splitting one large diff into a per-file diff, there are a few ways
+  // you can go about it. Because different files can have the same name
+  // (by being located in different directories), you need to avoid collisions.
+  // Mirroring the directory structure seems undesirable.
+  // Prefixing with numbers works but is O(n) volatile for O(1) additions
+  // We choose here to flatten the directory structure by replacing separators
+  // In practice this will avoid collisions. Should a pathological case ever
+  // appear, you can quickly patch this by changing the separator, even
+  // to something longer.
+  const total = modifiedPaths.length + untrackedPaths.length
+  if (total) {
+    await fs.ensureDir(patchDirPath)
+  }
+
+  const logRepoName = path.basename(gitRepoPath)
+  let writeOpsDoneCount = 0
+  const logDone = (patchFilename) => {
+    writeOpsDoneCount++
+    console.log(
+      `updatePatches [${logRepoName}] wrote ${writeOpsDoneCount} / ${total}: ${patchFilename}`,
+    )
+  }
+
+  const modifiedFilenames = modifiedPaths.map(toPatchFilename)
+  const modifiedOps = modifiedPaths.map(async (repoPath, i) => {
+    const patchFilename = modifiedFilenames[i]
+    await writePatchFile(gitRepoPath, patchDirPath, patchFilename, [
+      'diff',
+      '--src-prefix=a/',
+      '--dst-prefix=b/',
+      '--default-prefix',
+      '--full-index',
+      repoPath,
+    ])
+    logDone(patchFilename)
+  })
+
+  // Untracked files: use `git diff --no-index` so the output is a synthetic
+  // new-file diff that matches the format produced by `git apply`.
+  const untrackedFilenames = untrackedPaths.map(toPatchFilename)
+  const untrackedOps = untrackedPaths.map(async (repoPath, i) => {
+    const patchFilename = untrackedFilenames[i]
+    await writePatchFile(gitRepoPath, patchDirPath, patchFilename, [
+      'diff',
+      '--src-prefix=a/',
+      '--dst-prefix=b/',
+      '--default-prefix',
+      '--full-index',
+      '--no-index',
+      '/dev/null',
+      repoPath,
+    ])
+    logDone(patchFilename)
+  })
+
+  await Promise.all([...modifiedOps, ...untrackedOps])
+  return modifiedFilenames.concat(untrackedFilenames)
+}
 
 async function removeStalePatchFiles(
   patchFilenames,
@@ -150,13 +240,15 @@ async function updatePatches(
   repoPathFilter,
   keepPatchFilenames = [],
 ) {
-  const modifiedPaths = await getModifiedPaths(
+  const { modified, untracked } = await getModifiedPaths(
     gitRepoPath,
+    patchDirPath,
     repoPathFilter,
     onlyFiles,
   )
   const patchFilenames = await writePatchFiles(
-    modifiedPaths,
+    modified,
+    untracked,
     gitRepoPath,
     patchDirPath,
   )

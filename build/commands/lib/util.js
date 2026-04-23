@@ -108,13 +108,11 @@ async function applyPatches(printPatchFailuresInJson) {
     (s) =>
       (s.path = path.join('third_party', 'devtools-frontend', 'src', s.path)),
   )
-  ffmpegPatchStatus.forEach(
-    (s) => {
-      if (s.path) {
-        s.path = path.join('third_party', 'ffmpeg', s.path)
-      }
-    },
-  )
+  ffmpegPatchStatus.forEach((s) => {
+    if (s.path) {
+      s.path = path.join('third_party', 'ffmpeg', s.path)
+    }
+  })
   const allPatchStatus = [
     ...chromiumPatchStatus,
     ...v8PatchStatus,
