@@ -316,33 +316,6 @@ IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest, ProcessPdfFile) {
   EXPECT_EQ(*result->extracted_text, kExpectedPdfText);
 }
 
-IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest,
-                       OnFilesUploaded_WithPdf) {
-  auto* page_handler = GetPageHandler(web_contents());
-  ASSERT_TRUE(page_handler);
-
-  auto [pdf_path, pdf_bytes] = ReadTestPdf();
-
-  // Build UploadedFile with full path as filename (simulating what
-  // UploadFileHelper returns from the file picker).
-  std::vector<ai_chat::mojom::UploadedFilePtr> files;
-  files.push_back(ai_chat::mojom::UploadedFile::New(
-      pdf_path.AsUTF8Unsafe(), pdf_bytes.size(), std::move(pdf_bytes),
-      ai_chat::mojom::UploadedFileType::kPdf, std::nullopt));
-
-  base::test::TestFuture<
-      std::optional<std::vector<ai_chat::mojom::UploadedFilePtr>>>
-      future;
-  page_handler->OnFilesUploaded(future.GetCallback(),
-                                std::make_optional(std::move(files)));
-
-  auto result = future.Take();
-  ASSERT_TRUE(result.has_value());
-  ASSERT_EQ(result->size(), 1u);
-  EXPECT_EQ((*result)[0]->filename, "dummy.pdf");
-  ASSERT_TRUE((*result)[0]->extracted_text.has_value());
-  EXPECT_EQ(*(*result)[0]->extracted_text, kExpectedPdfText);
-}
 #endif  // BUILDFLAG(ENABLE_PDF)
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -405,41 +378,6 @@ IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest, ProcessHtmlFile) {
   EXPECT_TRUE(result->extracted_text->find("<script>") != std::string::npos);
 }
 
-IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest,
-                       OnFilesUploaded_WithText) {
-  auto* page_handler = GetPageHandler(web_contents());
-  ASSERT_TRUE(page_handler);
-
-  base::FilePath txt_path;
-  std::vector<uint8_t> txt_bytes;
-  {
-    base::ScopedAllowBlockingForTesting allow_blocking;
-    txt_path = base::PathService::CheckedGet(brave::DIR_TEST_DATA)
-                   .AppendASCII("leo")
-                   .AppendASCII("dummy.txt");
-    auto bytes = base::ReadFileToBytes(txt_path);
-    ASSERT_TRUE(bytes.has_value());
-    txt_bytes = std::move(*bytes);
-  }
-
-  std::vector<ai_chat::mojom::UploadedFilePtr> files;
-  files.push_back(ai_chat::mojom::UploadedFile::New(
-      txt_path.AsUTF8Unsafe(), txt_bytes.size(), std::move(txt_bytes),
-      ai_chat::mojom::UploadedFileType::kText, std::nullopt));
-
-  base::test::TestFuture<
-      std::optional<std::vector<ai_chat::mojom::UploadedFilePtr>>>
-      future;
-  page_handler->OnFilesUploaded(future.GetCallback(),
-                                std::make_optional(std::move(files)));
-
-  auto result = future.Take();
-  ASSERT_TRUE(result.has_value());
-  ASSERT_EQ(result->size(), 1u);
-  EXPECT_EQ((*result)[0]->filename, "dummy.txt");
-  ASSERT_TRUE((*result)[0]->extracted_text.has_value());
-  EXPECT_EQ(*(*result)[0]->extracted_text, kExpectedTextContent);
-}
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest,
@@ -483,7 +421,6 @@ class FakeChatUI : public mojom::ChatUI {
   }
   void OnChildFrameBound(
       mojo::PendingReceiver<mojom::ParentUIFrame> receiver) override {}
-  void OnUploadFilesSelected() override {}
 
   std::optional<int32_t> last_content_id_;
   int call_count_ = 0;

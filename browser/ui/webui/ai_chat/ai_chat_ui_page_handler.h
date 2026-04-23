@@ -128,19 +128,6 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
       mojo::PendingReceiver<mojom::ParentUIFrame> receiver);
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(AIChatUIPageHandlerBrowserTest,
-                           OnFilesUploaded_WithPdf);
-#if !BUILDFLAG(IS_ANDROID)
-  FRIEND_TEST_ALL_PREFIXES(AIChatUIPageHandlerBrowserTest,
-                           OnFilesUploaded_WithText);
-#endif
-  FRIEND_TEST_ALL_PREFIXES(AIChatUIPageHandlerTest,
-                           FinishUpload_StripsPathToBasename);
-  FRIEND_TEST_ALL_PREFIXES(AIChatUIPageHandlerTest,
-                           OnFilesUploaded_NonPdfGoesToFinish);
-  FRIEND_TEST_ALL_PREFIXES(AIChatUIPageHandlerTest,
-                           OnAllFilesExtracted_AppliesResults);
-
   class ChatContextObserver : public content::WebContentsObserver {
    public:
     explicit ChatContextObserver(content::WebContents* web_contents,
