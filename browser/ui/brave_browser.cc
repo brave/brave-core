@@ -323,20 +323,6 @@ bool BraveBrowser::NormalBrowserSupportsWindowFeature(
                                                      check_can_support);
 }
 
-bool BraveBrowser::IsWebContentsVisible(content::WebContents* web_contents) {
-  const auto original_visible = Browser::IsWebContentsVisible(web_contents);
-  auto* tab = tabs::TabInterface::MaybeGetFromContents(web_contents);
-  if (!tab) {
-    return original_visible;
-  }
-
-  if (original_visible && !tab->IsActivated()) {
-    return false;
-  }
-
-  return original_visible;
-}
-
 void BraveBrowser::UpdateTargetURL(content::WebContents* source,
                                    const GURL& url) {
   GURL target_url = url;

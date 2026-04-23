@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/web_modal/browser_window_modal_dialog_delegate.h b/chrome/browser/ui/web_modal/browser_window_modal_dialog_delegate.h
+index b72d333bb51b47a2e5e1baaaab7659bc2ff7963a..f58b1f1a660d2405eadbf2737ca5f29720490ecf 100644
+--- a/chrome/browser/ui/web_modal/browser_window_modal_dialog_delegate.h
++++ b/chrome/browser/ui/web_modal/browser_window_modal_dialog_delegate.h
+@@ -31,6 +31,7 @@ class BrowserWindowModalDialogDelegate
+       BrowserWindowInterface* browser);
+ 
+   // ChromeWebModalDialogManagerDelegate:
++  bool IsWebContentsVisible(content::WebContents* web_contents) override;
+   void SetWebContentsBlocked(content::WebContents* web_contents,
+                              bool blocked) override;
+   web_modal::WebContentsModalDialogHost* GetWebContentsModalDialogHost(
