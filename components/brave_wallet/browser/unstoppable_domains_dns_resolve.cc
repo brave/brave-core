@@ -50,7 +50,11 @@ GURL ResolveUrl(base::span<const std::string> response) {
     fallback_url = response[RecordKeys::kIpfsRedirectValue];
   }
   if (!fallback_url.empty()) {
-    return GURL(fallback_url);
+    GURL url(fallback_url);
+    if (url.SchemeIsHTTPOrHTTPS()) {
+      return url;
+    }
+    return GURL();
   }
 
   return GURL();
