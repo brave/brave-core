@@ -32,12 +32,10 @@ bool DoesRequireResource() {
 }  // namespace
 
 TextClassificationResource::TextClassificationResource() {
-  GetAdsClient().AddObserver(this);
+  ads_client_observation_.Observe(&GetAdsClient());
 }
 
-TextClassificationResource::~TextClassificationResource() {
-  GetAdsClient().RemoveObserver(this);
-}
+TextClassificationResource::~TextClassificationResource() = default;
 
 void TextClassificationResource::ClassifyPage(const std::string& text,
                                               ClassifyPageCallback callback) {

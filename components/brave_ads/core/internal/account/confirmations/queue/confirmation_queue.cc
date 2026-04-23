@@ -22,11 +22,10 @@
 namespace brave_ads {
 
 ConfirmationQueue::ConfirmationQueue() {
-  GetAdsClient().AddObserver(this);
+  ads_client_observation_.Observe(&GetAdsClient());
 }
 
 ConfirmationQueue::~ConfirmationQueue() {
-  GetAdsClient().RemoveObserver(this);
   delegate_ = nullptr;
 }
 

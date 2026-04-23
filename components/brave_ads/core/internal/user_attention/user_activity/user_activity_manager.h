@@ -8,6 +8,7 @@
 
 #include <cstdint>
 
+#include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_event_info.h"
@@ -21,6 +22,9 @@ class TimeDelta;
 
 namespace brave_ads {
 
+class AdsClient;
+class BrowserManager;
+class TabManager;
 struct TabInfo;
 
 class UserActivityManager final : public AdsClientNotifierObserver,
@@ -64,6 +68,15 @@ class UserActivityManager final : public AdsClientNotifierObserver,
   void OnTabDidStopPlayingMedia(int32_t tab_id) override;
 
   UserActivityEventList user_activity_events_;
+
+  base::ScopedObservation<AdsClient, AdsClientNotifierObserver>
+      ads_client_observation_{this};
+
+  base::ScopedObservation<BrowserManager, BrowserManagerObserver>
+      browser_manager_observation_{this};
+
+  base::ScopedObservation<TabManager, TabManagerObserver>
+      tab_manager_observation_{this};
 };
 
 }  // namespace brave_ads

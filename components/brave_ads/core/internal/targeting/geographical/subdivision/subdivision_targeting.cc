@@ -39,12 +39,10 @@ bool DoesRequireResource() {
 }  // namespace
 
 SubdivisionTargeting::SubdivisionTargeting() {
-  GetAdsClient().AddObserver(this);
+  ads_client_observation_.Observe(&GetAdsClient());
 }
 
-SubdivisionTargeting::~SubdivisionTargeting() {
-  GetAdsClient().RemoveObserver(this);
-}
+SubdivisionTargeting::~SubdivisionTargeting() = default;
 
 bool SubdivisionTargeting::IsDisabled() const {
   return GetLazyUserSelectedSubdivision() == kSubdivisionTargetingDisabled;

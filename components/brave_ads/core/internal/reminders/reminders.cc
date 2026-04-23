@@ -15,12 +15,10 @@
 namespace brave_ads {
 
 Reminders::Reminders() {
-  AdHistoryManager::GetInstance().AddObserver(this);
+  ad_history_manager_observation_.Observe(&AdHistoryManager::GetInstance());
 }
 
-Reminders::~Reminders() {
-  AdHistoryManager::GetInstance().RemoveObserver(this);
-}
+Reminders::~Reminders() = default;
 
 ///////////////////////////////////////////////////////////////////////////////
 

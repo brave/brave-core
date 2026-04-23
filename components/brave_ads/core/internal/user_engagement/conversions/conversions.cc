@@ -29,12 +29,10 @@
 namespace brave_ads {
 
 Conversions::Conversions() {
-  TabManager::GetInstance().AddObserver(this);
+  tab_manager_observation_.Observe(&TabManager::GetInstance());
 }
 
-Conversions::~Conversions() {
-  TabManager::GetInstance().RemoveObserver(this);
-}
+Conversions::~Conversions() = default;
 
 void Conversions::AddObserver(ConversionsObserver* const observer) {
   CHECK(observer);

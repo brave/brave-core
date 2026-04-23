@@ -47,16 +47,12 @@ void LogEvent(UserActivityEventType event_type) {
 }  // namespace
 
 UserActivityManager::UserActivityManager() {
-  GetAdsClient().AddObserver(this);
-  BrowserManager::GetInstance().AddObserver(this);
-  TabManager::GetInstance().AddObserver(this);
+  ads_client_observation_.Observe(&GetAdsClient());
+  browser_manager_observation_.Observe(&BrowserManager::GetInstance());
+  tab_manager_observation_.Observe(&TabManager::GetInstance());
 }
 
-UserActivityManager::~UserActivityManager() {
-  GetAdsClient().RemoveObserver(this);
-  BrowserManager::GetInstance().RemoveObserver(this);
-  TabManager::GetInstance().RemoveObserver(this);
-}
+UserActivityManager::~UserActivityManager() = default;
 
 // static
 UserActivityManager& UserActivityManager::GetInstance() {

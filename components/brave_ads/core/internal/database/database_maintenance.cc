@@ -49,14 +49,11 @@ void MaybePurgeNewTabPageAdEvents() {
 }  // namespace
 
 Maintenance::Maintenance() {
-  GetAdsClient().AddObserver(this);
-  DatabaseManager::GetInstance().AddObserver(this);
+  ads_client_observation_.Observe(&GetAdsClient());
+  database_manager_observation_.Observe(&DatabaseManager::GetInstance());
 }
 
-Maintenance::~Maintenance() {
-  GetAdsClient().RemoveObserver(this);
-  DatabaseManager::GetInstance().RemoveObserver(this);
-}
+Maintenance::~Maintenance() = default;
 
 ///////////////////////////////////////////////////////////////////////////////
 

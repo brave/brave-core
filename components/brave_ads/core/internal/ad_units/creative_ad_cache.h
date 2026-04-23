@@ -14,10 +14,13 @@
 #include <variant>
 #include <vector>
 
+#include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
+
+class TabManager;
 
 using CreativeAdVariant = std::variant<mojom::CreativeSearchResultAdInfoPtr>;
 using CreativeAdVariantMap =
@@ -68,6 +71,9 @@ class CreativeAdCache final : public TabManagerObserver {
 
   // TabManagerObserver:
   void OnDidCloseTab(int32_t tab_id) override;
+
+  base::ScopedObservation<TabManager, TabManagerObserver>
+      tab_manager_observation_{this};
 
   CreativeAdVariantMap creative_ad_variants_;
   PlacementIdMap placement_ids_;

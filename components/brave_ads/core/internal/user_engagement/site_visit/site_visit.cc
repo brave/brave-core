@@ -23,14 +23,11 @@
 namespace brave_ads {
 
 SiteVisit::SiteVisit() {
-  BrowserManager::GetInstance().AddObserver(this);
-  TabManager::GetInstance().AddObserver(this);
+  browser_manager_observation_.Observe(&BrowserManager::GetInstance());
+  tab_manager_observation_.Observe(&TabManager::GetInstance());
 }
 
-SiteVisit::~SiteVisit() {
-  BrowserManager::GetInstance().RemoveObserver(this);
-  TabManager::GetInstance().RemoveObserver(this);
-}
+SiteVisit::~SiteVisit() = default;
 
 void SiteVisit::AddObserver(SiteVisitObserver* const observer) {
   CHECK(observer);

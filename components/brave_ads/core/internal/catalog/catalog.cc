@@ -32,14 +32,11 @@ bool DoesRequireResource() {
 }  // namespace
 
 Catalog::Catalog() {
-  GetAdsClient().AddObserver(this);
-  DatabaseManager::GetInstance().AddObserver(this);
+  ads_client_observation_.Observe(&GetAdsClient());
+  database_manager_observation_.Observe(&DatabaseManager::GetInstance());
 }
 
-Catalog::~Catalog() {
-  GetAdsClient().RemoveObserver(this);
-  DatabaseManager::GetInstance().RemoveObserver(this);
-}
+Catalog::~Catalog() = default;
 
 void Catalog::AddObserver(CatalogObserver* const observer) {
   CHECK(observer);

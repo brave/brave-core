@@ -17,12 +17,10 @@
 namespace brave_ads {
 
 TabManager::TabManager() {
-  GetAdsClient().AddObserver(this);
+  ads_client_observation_.Observe(&GetAdsClient());
 }
 
-TabManager::~TabManager() {
-  GetAdsClient().RemoveObserver(this);
-}
+TabManager::~TabManager() = default;
 
 // static
 TabManager& TabManager::GetInstance() {

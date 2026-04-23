@@ -95,6 +95,8 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
 
   SubdivisionTargeting subdivision_targeting_;
   Subdivision subdivision_;
+  base::ScopedObservation<Subdivision, SubdivisionObserver>
+      subdivision_observation_{&subdivision_targeting_};
 
   AntiTargetingResource anti_targeting_resource_;
 

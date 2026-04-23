@@ -14,12 +14,10 @@
 namespace brave_ads {
 
 BrowserManager::BrowserManager() {
-  GetAdsClient().AddObserver(this);
+  ads_client_observation_.Observe(&GetAdsClient());
 }
 
-BrowserManager::~BrowserManager() {
-  GetAdsClient().RemoveObserver(this);
-}
+BrowserManager::~BrowserManager() = default;
 
 // static
 BrowserManager& BrowserManager::GetInstance() {
