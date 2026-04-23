@@ -6,14 +6,13 @@
 #include "brave/components/brave_ads/core/browser/virtual_pref/virtual_pref_provider.h"
 
 #include <memory>
-#include <string>
-#include <string_view>
 #include <utility>
 
 #include "base/memory/raw_ptr.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "base/version_info/version_info.h"
+#include "brave/components/brave_ads/core/browser/virtual_pref/test/virtual_pref_provider_delegate_mock.h"
 #include "brave/components/brave_ads/core/public/common/locale/scoped_locale_for_testing.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
@@ -26,15 +25,6 @@
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
-
-class VirtualPrefProviderDelegateMock : public VirtualPrefProvider::Delegate {
- public:
-  MOCK_METHOD(std::string_view, GetChannel, (), (const));
-
-  MOCK_METHOD(std::string, GetDefaultSearchEngineName, (), (const));
-
-  MOCK_METHOD(base::DictValue, GetSerpMetrics, (), (const));
-};
 
 class BraveAdsVirtualPrefProviderTest : public ::testing::Test {
  public:

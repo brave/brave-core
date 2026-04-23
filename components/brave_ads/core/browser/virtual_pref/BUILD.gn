@@ -26,12 +26,29 @@ source_set("virtual_pref") {
   ]
 }
 
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "test/virtual_pref_provider_delegate_mock.cc",
+    "test/virtual_pref_provider_delegate_mock.h",
+  ]
+
+  public_deps = [ ":virtual_pref" ]
+
+  deps = [
+    "//base",
+    "//testing/gmock",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
 
   sources = [ "virtual_pref_provider_unittest.cc" ]
 
   deps = [
+    ":test_support",
     ":virtual_pref",
     "//base",
     "//base/test:test_support",
