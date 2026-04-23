@@ -761,8 +761,6 @@ if (!is_android) {
       "//ui/compositor",
     ]
 
-    deps += [ "//brave/browser/ui/views/tabs:interactive_ui_tests" ]
-
     if (enable_commander) {
       deps += [ "//brave/browser/ui/commander:interactive_ui_tests" ]
     }

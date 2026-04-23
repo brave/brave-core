@@ -41,33 +41,6 @@ source_set("browser_tests") {
   }
 }
 
-source_set("interactive_ui_tests") {
-  testonly = true
-  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
-
-  sources = [ "brave_compact_horizontal_tabs_interactive_ui_test.cc" ]
-
-  deps = [
-    "//base",
-    "//base/test:test_support",
-    "//chrome/browser/ui",
-    "//chrome/browser/ui:layout_constants",
-    "//chrome/browser/ui/tabs:features",
-    "//chrome/test:test_support_ui",
-    "//content/test:test_support",
-    "//testing/gtest",
-    "//ui/base:test_support",
-    "//ui/base/interaction:test_support",
-  ]
-
-  if (use_ozone) {
-    public_deps = [
-      "//ui/ozone",
-      "//ui/platform_window/common",
-    ]
-  }
-}
-
 source_set("unit_tests") {
   testonly = true
 
@@ -76,6 +49,7 @@ source_set("unit_tests") {
     "//chrome/browser/ui/views/tabs/fake_base_tab_strip_controller.h",
     "//chrome/browser/ui/views/tabs/fake_tab_slot_controller.cc",
     "//chrome/browser/ui/views/tabs/fake_tab_slot_controller.h",
+    "brave_compact_horizontal_tabs_layout_unittest.cc",
     "brave_tab_strip_layout_helper_unittest.cc",
     "brave_tab_strip_unittest.cc",
     "brave_tab_unittest.cc",
@@ -84,15 +58,19 @@ source_set("unit_tests") {
 
   deps = [
     "//base",
+    "//base/test:test_support",
     "//brave/common",
     "//brave/components/tabs",
     "//chrome/browser/ui",
+    "//chrome/browser/ui:layout_constants",
+    "//chrome/browser/ui/tabs:features",
     "//chrome/test:test_support",
     "//components/tabs:public",
     "//components/tabs:test_support",
     "//content/test:test_support",
     "//testing/gmock",
     "//testing/gtest",
+    "//ui/base",
     "//ui/events",
   ]
 }
