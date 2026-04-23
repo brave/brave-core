@@ -24,7 +24,7 @@
 // FastConformer encoder components for Parakeet-CTC-110M. Each struct
 // below cites its NeMo source in its own doc comment.
 
-use candle_core::{Module, Result, Tensor};
+use candle_core::{Device, Module, Result, Tensor};
 use candle_nn::{conv2d, linear, Conv2d, Conv2dConfig, Linear, VarBuilder};
 
 use super::ParakeetConfig;
@@ -105,5 +105,77 @@ impl ConvSubsampling {
         let x = x.transpose(1, 2)?.contiguous()?.reshape((b, t, c * f))?;
 
         self.out.forward(&x)
+    }
+}
+
+/// Sinusoidal relative positional encoding (Transformer-XL style).
+///
+/// Emits one sinusoidal vector per relative distance in `[-(T-1), T-1]`,
+/// consumed by each Conformer layer's self-attention alongside the
+/// usual content Q/K/V. Also applies the `xscaling` input scale
+/// (`x * sqrt(hidden_size)`) that the NeMo Conformer encoder routes
+/// through this module when `xscaling=true` — which is the case for
+/// Parakeet-CTC-110M.
+///
+/// Input:  `x: (B, T, hidden_size)` — subsampled encoder states
+/// Output: `(x_scaled, pos_emb)`
+///   - `x_scaled: (B, T, hidden_size)` — `x * sqrt(hidden_size)`
+///   - `pos_emb:  (1, 2T-1, hidden_size)` — sinusoidal vectors for relative
+///     positions `T-1, T-2, ..., 0, ..., -(T-1)` in that order
+///
+/// Has no weights to load from the GGUF: the sinusoidal pattern is
+/// fixed math, not trained. `new` takes only `&ParakeetConfig` — no
+/// `VarBuilder`. This matches NeMo, which registers `pe` as a
+/// non-persistent buffer so PyTorch excludes it from `state_dict()`.
+/// Unlike NeMo, which caches `pe` on a buffer and extends it on
+/// demand, we recompute per forward: Parakeet frame counts are small
+/// (25 frames for 2 s audio) so the sin/cos cost is negligible, and
+/// avoiding the cache keeps this module stateless.
+///
+/// From NeMo v2.7.2 at
+/// <https://github.com/NVIDIA-NeMo/NeMo/blob/v2.7.2/nemo/collections/asr/parts/submodules/multi_head_attention.py>
+/// — implements `RelPositionalEncoding`. NeMo's two dropout calls on
+/// `x` and `pos_emb` are omitted: dropout is a no-op at inference
+/// (`model.eval()`), which is all we ever run.
+pub struct RelPositionalEncoding {
+    d_model: usize,
+    xscale: f64,
+}
+
+impl RelPositionalEncoding {
+    pub fn new(cfg: &ParakeetConfig) -> Self {
+        Self { d_model: cfg.hidden_size, xscale: (cfg.hidden_size as f64).sqrt() }
+    }
+
+    /// Forward pass. `x` shape: `(B, T, hidden_size)`. Returns
+    /// `(x * sqrt(hidden_size), pos_emb)` with `pos_emb` shape
+    /// `(1, 2T-1, hidden_size)`.
+    pub fn forward(&self, x: &Tensor) -> Result<(Tensor, Tensor)> {
+        let t = x.dim(1)?;
+        let pos_emb = self.build_pos_emb(t, x.device())?;
+        let x_scaled = x.affine(self.xscale, 0.0)?;
+        Ok((x_scaled, pos_emb))
+    }
+
+    fn build_pos_emb(&self, t: usize, device: &Device) -> Result<Tensor> {
+        // Positions run from +(T-1) down to -(T-1), inclusive. Even
+        // dims carry sin, odd dims carry cos — standard Transformer
+        // formulation with base 10000.
+        let d = self.d_model;
+        let len = 2 * t - 1;
+        let log_base = (10000.0_f32).ln();
+        let d_f = d as f32;
+
+        let mut pe = vec![0.0_f32; len * d];
+        for row in 0..len {
+            let p = (t as i64 - 1 - row as i64) as f32;
+            for i in 0..(d / 2) {
+                let div = (-(2.0 * i as f32) * log_base / d_f).exp();
+                let arg = p * div;
+                pe[row * d + 2 * i] = arg.sin();
+                pe[row * d + 2 * i + 1] = arg.cos();
+            }
+        }
+        Tensor::from_vec(pe, (1, len, d), device)
     }
 }
