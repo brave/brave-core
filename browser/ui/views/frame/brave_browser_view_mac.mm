@@ -11,6 +11,13 @@
 
 namespace brave {
 
+// We may want to Slide traffic lights in/out with the top views instead of only
+// fading. Approach: extend this helper (or add a sibling) to also set
+// `button.frame.origin.y` on each standardWindowButton, driven by the
+// edge-reveal fraction. NSThemeFrame relayouts buttons on window resize,
+// style-mask changes, fullscreen transitions, and focus changes, so the
+// offsets must be re-applied from a layout hook - e.g. NSWindowDelegate
+// callbacks or by observing the buttons' frame via KVO and re-clamping.
 void SetTrafficLightsAlpha(gfx::NativeWindow window, double alpha) {
   NSWindow* ns_window = window.GetNativeNSWindow();
   if (!ns_window) {

@@ -7,6 +7,7 @@
 
 #include "base/check.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/brave_window_frame_graphic.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
@@ -168,5 +169,13 @@ void BraveBrowserFrameViewWin::LayoutCaptionButtons() {
         CaptionButtonsOnLeadingEdge()
             ? 0
             : width() - caption_button_container_->width());
+  }
+
+  if (caption_button_container_) {
+    if (int offset =
+            BraveBrowserView::From(GetBrowserView())->GetTopRevealOffset();
+        offset != 0) {
+      caption_button_container_->SetY(caption_button_container_->y() + offset);
+    }
   }
 }

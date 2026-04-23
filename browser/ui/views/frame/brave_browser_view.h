@@ -169,6 +169,13 @@ class BraveBrowserView : public BrowserView,
     return top_reveal_controller_.get();
   }
 
+  // Returns the current vertical pixel offset that revealable top views are
+  // translated by during focus-mode edge reveal (negative when the top views
+  // are partially or fully hidden, zero when fully revealed or focus mode is
+  // off). Frame views query this to slide their caption/window-control buttons
+  // in sync with the top views.
+  int GetTopRevealOffset() const;
+
   // FocusModeController::Observer:
   void OnFocusModeToggled(bool enabled) override;
 

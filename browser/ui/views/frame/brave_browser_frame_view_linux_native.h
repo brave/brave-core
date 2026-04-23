@@ -9,12 +9,9 @@
 #include <memory>
 #include <utility>
 
-#include "base/scoped_observation.h"
-#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view_linux_native.h"
 
-class BraveBrowserFrameViewLinuxNative : public BrowserFrameViewLinuxNative,
-                                         public FocusModeController::Observer {
+class BraveBrowserFrameViewLinuxNative : public BrowserFrameViewLinuxNative {
   METADATA_HEADER(BraveBrowserFrameViewLinuxNative, BrowserFrameViewLinuxNative)
  public:
   BraveBrowserFrameViewLinuxNative(
@@ -42,9 +39,6 @@ class BraveBrowserFrameViewLinuxNative : public BrowserFrameViewLinuxNative,
   void UpdateLeadingTrailingCaptionButtonWidth();
 
   std::pair<int, int> leading_trailing_caption_button_width_;
-
-  base::ScopedObservation<FocusModeController, FocusModeController::Observer>
-      focus_mode_observation_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_VIEW_LINUX_NATIVE_H_

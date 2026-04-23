@@ -895,6 +895,9 @@ void BraveBrowserView::UpdateFocusModeEffectiveState() {
 
 void BraveBrowserView::OnEdgeRevealFractionChanged(double fraction) {
   DeprecatedLayoutImmediately();
+  if (auto* frame_view = GetFrameView()) {
+    frame_view->DeprecatedLayoutImmediately();
+  }
 #if BUILDFLAG(IS_MAC)
   // Delay the traffic-light fade-in until the slide is nearly complete so the
   // buttons don't appear to float ahead of the top container.
@@ -904,6 +907,19 @@ void BraveBrowserView::OnEdgeRevealFractionChanged(double fraction) {
                                   0.0, 1.0);
   brave::SetTrafficLightsAlpha(GetWidget()->GetNativeWindow(), alpha);
 #endif
+}
+
+int BraveBrowserView::GetTopRevealOffset() const {
+  if (!top_reveal_controller_) {
+    return 0;
+  }
+  const double fraction = top_reveal_controller_->GetRevealFraction();
+  int top_height = top_container_ ? top_container_->height() : 0;
+  if (horizontal_tab_strip_region_view_ &&
+      horizontal_tab_strip_region_view_->parent() == this) {
+    top_height += horizontal_tab_strip_region_view_->height();
+  }
+  return -static_cast<int>((1.0 - fraction) * top_height);
 }
 
 void BraveBrowserView::LoadAccelerators() {

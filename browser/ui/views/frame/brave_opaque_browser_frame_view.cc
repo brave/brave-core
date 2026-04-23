@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/check.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/brave_window_frame_graphic.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
@@ -164,6 +165,22 @@ bool BraveOpaqueBrowserFrameView::ShouldShowVerticalTabs() const {
   auto* browser = GetBrowserView()->browser();
   DCHECK(browser);
   return tabs::utils::ShouldShowBraveVerticalTabs(browser);
+}
+
+void BraveOpaqueBrowserFrameView::Layout(PassKey) {
+  LayoutSuperclass<OpaqueBrowserFrameView>(this);
+
+  const int offset =
+      BraveBrowserView::From(GetBrowserView())->GetTopRevealOffset();
+  if (offset == 0) {
+    return;
+  }
+  for (views::Button* button : {minimize_button_.get(), maximize_button_.get(),
+                                restore_button_.get(), close_button_.get()}) {
+    if (button) {
+      button->SetY(button->y() + offset);
+    }
+  }
 }
 
 BEGIN_METADATA(BraveOpaqueBrowserFrameView)

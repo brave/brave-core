@@ -11,6 +11,7 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/notreached.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "chrome/browser/ui/browser.h"
@@ -53,21 +54,14 @@ BraveBrowserFrameViewLinuxNative::BraveBrowserFrameViewLinuxNative(
     : BrowserFrameViewLinuxNative(frame,
                                   browser_view,
                                   layout,
-                                  std::move(nav_button_provider)) {
-  if (auto* focus_mode =
-          browser_view->browser()->GetFeatures().focus_mode_controller()) {
-    focus_mode_observation_.Observe(focus_mode);
-  }
-}
+                                  std::move(nav_button_provider)) {}
 
 BraveBrowserFrameViewLinuxNative::~BraveBrowserFrameViewLinuxNative() = default;
 
-void BraveBrowserFrameViewLinuxNative::OnFocusModeToggled(bool /*enabled*/) {
+void BraveBrowserFrameViewLinuxNative::OnFocusModeToggled(bool enabled) {
+  BrowserFrameViewLinuxNative::OnFocusModeToggled(enabled);
   MaybeUpdateCachedFrameButtonImages();
   UpdateLeadingTrailingCaptionButtonWidth();
-  if (auto* non_client_view = browser_widget()->non_client_view()) {
-    non_client_view->InvalidateLayout();
-  }
 }
 
 void BraveBrowserFrameViewLinuxNative::MaybeUpdateCachedFrameButtonImages() {
@@ -126,6 +120,17 @@ void BraveBrowserFrameViewLinuxNative::Layout(PassKey) {
   LayoutSuperclass<BrowserFrameViewLinuxNative>(this);
 
   UpdateLeadingTrailingCaptionButtonWidth();
+
+  if (const int offset =
+          BraveBrowserView::From(GetBrowserView())->GetTopRevealOffset();
+      offset != 0) {
+    for (views::Button* button : {minimize_button(), maximize_button(),
+                                  restore_button(), close_button()}) {
+      if (button) {
+        button->SetY(button->y() + offset);
+      }
+    }
+  }
 }
 
 views::Button* BraveBrowserFrameViewLinuxNative::FrameButtonToButton(
