@@ -1,0 +1,62 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = 'Preserve fullscreen state while Brave-managed YouTube PiP is active when a tab is hidden'
+re_pattern = '''(public void onHidden\(Tab tab, @TabHidingType int reason\)\s+\{\n)(\s+//[^\n]*\n\s+mFullscreenManagerDelegate\.onExitFullscreen\(null\);)'''
+replace = '''\1                        BraveFullscreenHtmlApiHandlerBase brave = BraveFullscreenHtmlApiHandlerBase.class.cast(FullscreenHtmlApiHandlerBase.this);
+                        brave.mTabHiddenByChangedTabs = reason == TabHidingType.CHANGED_TABS;
+                        if (brave.shouldPreservePersistentFullscreenForPictureInPicture(mActivity)) {
+                            return;
+                        }
+\2'''
+count = 1
+
+[[substitution]]
+description = 'Add a PiP-specific persistent fullscreen exit path'
+re_pattern = '''(@Override\n\s+public void exitPersistentFullscreenMode\(\)\s+\{\n)(\s+//[^\n]*\n)'''
+replace = '''\1        exitPersistentFullscreenMode(true);
+    }
+
+    public void exitPersistentFullscreenModeForPictureInPicture() {
+        exitPersistentFullscreenMode(false);
+    }
+
+    private void exitPersistentFullscreenMode(boolean exitWebContentsFullscreen) {
+\2'''
+count = 1
+
+[[substitution]]
+description = 'Thread the WebContents fullscreen exit flag into fullscreen teardown'
+re_pattern = '''(private void exitPersistentFullscreenMode\(boolean exitWebContentsFullscreen\)[\s\S]+?assumeNonNull\(mContentViewInFullscreen\);\n\s+)exitFullscreen\(\s*mWebContentsInFullscreen,\s*mContentViewInFullscreen\);'''
+replace = '''\1exitFullscreen(
+                        mWebContentsInFullscreen,
+                        mContentViewInFullscreen,
+                        exitWebContentsFullscreen);'''
+count = 1
+
+[[substitution]]
+description = 'Allow fullscreen teardown to decide whether WebContents fullscreen should exit'
+re_pattern = '''private void exitFullscreen\(WebContents webContents, View contentView\)\s+\{'''
+replace = '''private void exitFullscreen(
+            WebContents webContents, View contentView, boolean exitWebContentsFullscreen) {'''
+count = 1
+
+[[substitution]]
+description = 'Skip WebContents fullscreen exit for the Brave-managed PiP path'
+re_pattern = '''(private void exitFullscreen\(\s*WebContents webContents,\s*View contentView,\s*boolean exitWebContentsFullscreen\)\s+\{[\s\S]+?resetExitFullscreenLayoutChangeListener\(contentView\);\n\s+)if\s+\(webContents != null && !webContents\.isDestroyed\(\)\) webContents\.exitFullscreen\(\);'''
+replace = '''\1if (exitWebContentsFullscreen && webContents != null && !webContents.isDestroyed()) {
+            webContents.exitFullscreen();
+        }'''
+count = 1
+
+[[substitution]]
+description = 'Preserve fullscreen state while Brave-managed YouTube PiP is active when the activity stops'
+re_pattern = '''(public void onActivityStateChange\(Activity activity, int newState\)\s+\{\n\s+if\s+\(newState == ActivityState\.STOPPED && mExitFullscreenOnStop\)\s+\{\n)(\s+//[^\n]*\n)'''
+replace = '''\1            if (BraveFullscreenHtmlApiHandlerBase.class.cast(FullscreenHtmlApiHandlerBase.this).shouldPreservePersistentFullscreenForPictureInPicture(activity)) {
+                return;
+            }
+\2'''
+count = 1
