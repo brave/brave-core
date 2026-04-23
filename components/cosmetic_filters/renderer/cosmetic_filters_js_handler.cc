@@ -723,10 +723,11 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
       isolated_world_id_,
       blink::WebScriptSource(blink::WebString::FromUTF8(pre_init_script)),
       blink::BackForwardCacheAware::kAllow);
-  ExecuteObservingBundleEntryPoint();
 
-  CSSRulesRoutine(*resources_dict_);
-
+  // Execute procedural actions script before the observing bundle so that
+  // CC.hasProceduralActions is set when content_cosmetic.ts runs. Otherwise
+  // the immediate executeProceduralActions() call at the end of the bundle
+  // always misses, leaving procedural filters dependent on requestIdleCallback.
   const std::string* procedural_actions_script =
       resources_dict_->FindString("procedural_actions_script");
   if (procedural_actions_script) {
@@ -750,6 +751,10 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
       }
     }
   }
+
+  ExecuteObservingBundleEntryPoint();
+
+  CSSRulesRoutine(*resources_dict_);
 }
 
 void CosmeticFiltersJSHandler::CSSRulesRoutine(
