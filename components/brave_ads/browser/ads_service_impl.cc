@@ -776,7 +776,7 @@ void AdsServiceImpl::CheckIdleState() {
   last_idle_time_ = base::Seconds(ui::CalculateIdleTime());
 }
 
-void AdsServiceImpl::ProcessIdleState(const ui::IdleState idle_state,
+void AdsServiceImpl::ProcessIdleState(ui::IdleState idle_state,
                                       base::TimeDelta idle_time) {
   if (idle_state == last_idle_state_) {
     return;
@@ -804,7 +804,10 @@ void AdsServiceImpl::ProcessIdleState(const ui::IdleState idle_state,
     }
 
     case ui::IdleState::IDLE_STATE_UNKNOWN: {
-      break;
+      // Preserve the last known state; the OS cannot determine the current
+      // state, so treating this as a real transition would corrupt
+      // `last_idle_state_` and cause missed or duplicate notifications.
+      return;
     }
   }
 

@@ -9,11 +9,13 @@
 #include <cstddef>
 #include <memory>
 
+#include "base/time/time.h"
 #include "brave/components/brave_ads/browser/bat_ads_service_factory.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
 namespace brave_ads::test {
 
+class FakeBatAdsClientNotifier;
 class FakeBatAdsService;
 
 // Records launch, initialization, and shutdown counts and controls whether
@@ -32,6 +34,11 @@ class FakeBatAdsServiceFactory : public BatAdsServiceFactory {
   size_t initialize_count() const { return initialize_count_; }
   size_t shutdown_count() const { return shutdown_count_; }
 
+  size_t become_idle_count() const;
+  size_t become_active_count() const;
+  base::TimeDelta last_idle_time() const;
+  bool last_screen_was_locked() const;
+
   // Causes subsequently launched services to report initialization failure.
   void set_simulate_initialization_failure() {
     simulate_initialization_failure_ = true;
@@ -43,6 +50,10 @@ class FakeBatAdsServiceFactory : public BatAdsServiceFactory {
  private:
   void OnInitialize() const { ++initialize_count_; }
   void OnShutdown() const { ++shutdown_count_; }
+
+  // Returns the notifier from the most recently launched service, or `nullptr`
+  // if no service has been launched yet.
+  const FakeBatAdsClientNotifier* bat_ads_client_notifier() const;
 
   // `mutable` because `Launch`, `OnInitialize`, and `OnShutdown` are `const`
   // per the base class interface but must increment these counters.
