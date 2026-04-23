@@ -48,10 +48,10 @@ void AdBlockBrowserTestHelper::WaitForAdBlockEngineInitialLoad() {
 void AdBlockBrowserTestHelper::SetUpAdBlockService(
     content::BrowserContext* context) {
   if (!initial_engine_observer_) {
-    // Attach before SetupAdBlockServiceForTesting posts SetFilterListCatalog({})
-    // so the observer is guaranteed to catch the resulting OnEngineUpdated.
-    // Tests that want to wait on the initial build call
-    // WaitForAdBlockEngineInitialLoad() before registering any
+    // Attach before SetupAdBlockServiceForTesting posts
+    // SetFilterListCatalog({}) so the observer is guaranteed to catch the
+    // resulting OnEngineUpdated. Tests that want to wait on the initial build
+    // call WaitForAdBlockEngineInitialLoad() before registering any
     // TestFiltersProvider; other tests simply ignore it.
     initial_engine_observer_ = std::make_unique<EngineTestObserver>(
         &g_brave_browser_process->ad_block_service()
