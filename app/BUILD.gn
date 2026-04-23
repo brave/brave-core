@@ -197,6 +197,7 @@ source_set("unit_tests") {
       "//brave/components/commands/common",
       "//chrome/app:command_ids",
       "//chrome/browser/sharing_hub",
+      "//chrome/browser/ui/tabs:features",
       "//chrome/browser/ui/toasts",
       "//chrome/common:chrome_features",
       "//components/private_ai",
