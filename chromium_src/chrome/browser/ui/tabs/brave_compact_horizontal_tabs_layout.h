@@ -21,7 +21,11 @@ namespace compact_horizontal_tabs_layout {
 // --- Tab strip (non-touch, compact) ----------------------------------------
 inline constexpr int kTabVisualHeight = 26;
 inline constexpr int kTabVerticalSpacing = 2;
-inline constexpr int kTabstripToolbarOverlap = 0;
+inline constexpr int kTabstripToolbarOverlap = 8;
+// Control-specific overlap compensation used by navigation/caption controls.
+// Keep this separate from `kTabstripToolbarOverlap` so tab rendering overlap
+// can be tuned independently from control placement.
+inline constexpr int kTabstripToolbarControlsOverlap = -5;
 
 // `LayoutConstant::kTabStripHeight` (compact, non-touch). Keep in sync with
 // kTabVisualHeight, kTabVerticalSpacing, and kTabstripToolbarOverlap (no
@@ -61,6 +65,7 @@ inline constexpr int kDragHandleExtensionDefault = 4;
 inline constexpr int kTabVisualHeightDefault = 32;
 inline constexpr int kTabVerticalSpacingDefault = 4;
 inline constexpr int kTabstripToolbarOverlapDefault = 1;
+inline constexpr int kTabstripToolbarControlsOverlapDefault = -4;
 inline constexpr int kTabHorizontalPaddingDefault = 8;
 inline constexpr int kTabGroupTitleHorizontalInsetDefault = 10;
 

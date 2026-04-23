@@ -180,6 +180,14 @@ int GetHorizontalTabVerticalSpacing() {
              : tabs::compact_horizontal_tabs_layout::kTabVerticalSpacingDefault;
 }
 
+int GetHorizontalTabControlOverlap() {
+  return ShouldUseCompactHorizontalTabsForNonTouchUI()
+             ? tabs::compact_horizontal_tabs_layout::
+                   kTabstripToolbarControlsOverlap
+             : tabs::compact_horizontal_tabs_layout::
+                   kTabstripToolbarControlsOverlapDefault;
+}
+
 int GetHorizontalTabStripHeight() {
   return GetHorizontalTabHeight() + (GetHorizontalTabVerticalSpacing() * 2);
 }

@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/frame/webui_tab_strip_container_view.h"
 
 // Override invokation of Browser::SupportsWindowFeature() and
@@ -30,7 +31,20 @@
            ? WebUITabStripContainerView::SupportsTouchableTabStrip(browser) \
            : tabs::utils::SupportsBraveVerticalTabs(browser))
 
+namespace {
+
+int GetLayoutConstantForBraveWindowControls(LayoutConstant constant) {
+  if (constant == LayoutConstant::kTabstripToolbarOverlap) {
+    return tabs::GetHorizontalTabControlOverlap();
+  }
+  return GetLayoutConstant(constant);
+}
+
+}  // namespace
+
+#define GetLayoutConstant GetLayoutConstantForBraveWindowControls
 #include <chrome/browser/ui/views/frame/browser_frame_view_win.cc>
 
+#undef GetLayoutConstant
 #undef SupportsTouchableTabStrip
 #undef SupportsWindowFeature

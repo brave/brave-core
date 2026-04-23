@@ -305,14 +305,22 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
     // strip edge. When scroll buttons are visible, leave a gap using layout
     // constants (same family as toolbar spacing). That can overlap the combo's
     // flex slot; we paint NTB above the combo in GetChildrenInZOrder so it
-    // stays clickable.
-    if (new_tab_button_ && tab_scroll_next_button_ &&
-        tab_scroll_next_button_->GetVisible()) {
-      const gfx::Size button_size = new_tab_button_->GetPreferredSize();
-      const int x = tab_scroll_next_button_->bounds().right() +
-                    GetLayoutConstant(LayoutConstant::kTabStripPadding) +
-                    GetLayoutConstant(LayoutConstant::kToolbarDividerSpacing);
-      new_tab_button_->SetBoundsRect(gfx::Rect(gfx::Point(x, 0), button_size));
+    // stays clickable. Otherwise place after the last tab. Vertical position
+    // uses explicit control overlap (decoupled from tab shape tuning).
+    if (new_tab_button_) {
+      const int y = tabs::GetHorizontalTabControlOverlap();
+      if (tab_scroll_next_button_ && tab_scroll_next_button_->GetVisible()) {
+        const gfx::Size button_size = new_tab_button_->GetPreferredSize();
+        const int x = tab_scroll_next_button_->bounds().right() +
+                      GetLayoutConstant(LayoutConstant::kTabStripPadding) +
+                      GetLayoutConstant(LayoutConstant::kToolbarDividerSpacing);
+        new_tab_button_->SetBoundsRect(gfx::Rect(gfx::Point(x, y), button_size));
+      } else {
+        new_tab_button_->SetX(
+            tab_strip_->bounds().right() +
+            GetLayoutConstant(LayoutConstant::kTabStripPadding));
+        new_tab_button_->SetY(y);
+      }
     }
     return;
   }

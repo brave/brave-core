@@ -14,6 +14,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/fullscreen_util_mac.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/view_ids.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -96,6 +97,14 @@ int BraveBrowserFrameViewMac::GetTopInset(bool restored) const {
   }
 
   return 0;
+}
+
+BrowserFrameViewMac::BoundsAndMargins
+BraveBrowserFrameViewMac::GetCaptionButtonBounds() const {
+  auto bounds_and_margins = BrowserFrameViewMac::GetCaptionButtonBounds();
+  bounds_and_margins.bounds.set_y(bounds_and_margins.bounds.y() +
+                                  tabs::GetHorizontalTabControlOverlap());
+  return bounds_and_margins;
 }
 
 bool BraveBrowserFrameViewMac::ShouldShowWindowTitleForVerticalTabs() const {

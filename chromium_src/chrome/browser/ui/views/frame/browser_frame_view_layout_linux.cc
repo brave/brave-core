@@ -7,6 +7,7 @@
 #include "base/check_is_test.h"
 #include "base/check_op.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
@@ -53,4 +54,6 @@ void BrowserFrameViewLayoutLinux::SetBoundsForButton(
     static_cast<views::FrameCaptionButton*>(button)->SetInkDropCornerRadius(
         views::kCaptionButtonInkDropDefaultCornerRadius);
   }
+
+  button->SetY(button->y() + tabs::GetHorizontalTabControlOverlap());
 }
