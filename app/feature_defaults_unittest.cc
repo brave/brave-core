@@ -13,6 +13,7 @@
 #include "chrome/browser/policy/policy_util.h"
 #include "chrome/browser/preloading/preloading_features.h"
 #include "chrome/browser/ui/tab_search_feature.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/chrome_features.h"
 #include "components/aggregation_service/features.h"
@@ -248,6 +249,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &subresource_filter::kAdTagging,
       &switches::kSyncEnableBookmarksInTransportMode,
       &syncer::kSyncDetermineAccountManagedStatus,
+#if !BUILDFLAG(IS_ANDROID)
+      &tabs::kHorizontalTabStripComboButton,
+#endif  // !BUILDFLAG(IS_ANDROID)
       &variations::kReportOmniboxAutofocusHeader,
       &webapps::features::kWebAppsEnableMLModelForPromotion,
   };
