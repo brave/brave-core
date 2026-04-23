@@ -206,6 +206,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest,
 
   // No transactions in incognito profile.
   wallet_service()->SetPrivateWindowsEnabled(true);
+  WaitForTxStorageInitialized(
+      incognito_wallet_service()->tx_service()->GetTxStorageForTesting());
   EXPECT_EQ(0u, incognito_wallet_service()
                     ->tx_service()
                     ->GetPendingTransactionsCountSync());
