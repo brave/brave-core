@@ -128,7 +128,6 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/components/playlist/core/common/features.h"
 #endif
 
 namespace brave {
@@ -195,9 +194,10 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_vpn::BraveVpnServiceFactory::GetInstance();
 #endif
 #if BUILDFLAG(ENABLE_PLAYLIST)
-  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
-    playlist::PlaylistServiceFactory::GetInstance();
-  }
+  // Always instantiate the factory so Playlist prefs are registered, even when
+  // the feature flag is off. The factory itself returns null from
+  // BuildServiceInstanceForBrowserContext when the feature is disabled.
+  playlist::PlaylistServiceFactory::GetInstance();
 #endif
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
   request_otr::RequestOTRServiceFactory::GetInstance();

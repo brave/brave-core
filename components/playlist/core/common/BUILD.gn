@@ -16,6 +16,8 @@ static_library("common") {
     "playlist_render_frame_observer_helper.cc",
     "playlist_render_frame_observer_helper.h",
     "pref_names.h",
+    "utils.cc",
+    "utils.h",
   ]
 
   public_deps = [
@@ -23,18 +25,27 @@ static_library("common") {
     "//brave/components/playlist/core/common/mojom",
   ]
 
-  deps = [ "//base" ]
+  deps = [
+    "//base",
+    "//components/prefs",
+  ]
 }
 
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "playlist_render_frame_observer_helper_unittest.cc" ]
+  sources = [
+    "playlist_render_frame_observer_helper_unittest.cc",
+    "utils_unittest.cc",
+  ]
 
   deps = [
     "//base",
     "//base/test:test_support",
     "//brave/components/playlist/core/common",
+    "//components/prefs",
+    "//components/prefs:test_support",
+    "//testing/gtest",
     "//url",
   ]
 }
