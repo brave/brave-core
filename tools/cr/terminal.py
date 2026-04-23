@@ -7,6 +7,7 @@ from contextlib import contextmanager
 import logging
 import platform
 import secrets
+import shutil
 import subprocess
 import threading
 import time
@@ -144,18 +145,24 @@ class Terminal:
             self.current_command_start_time = time.time()
             self.running_command = " ".join(cmd)
 
+        if platform.system() == 'Windows':
+            # On Windows, resolve the command to an absolute path to avoid
+            # issues with bat/cmd wrappers (e.g. `npm` → `npm.cmd`). This
+            # avoids the use of shell=True.
+            resolved = shutil.which(cmd[0])
+            if resolved is None:
+                raise RuntimeError(f'Command not found: {cmd[0]}')
+            if resolved != cmd[0]:
+                cmd = [resolved] + cmd[1:]
+
         try:
-            # It is necessary to pass `shell=True` on Windows, otherwise the
-            # process handle is entirely orphan and can't resolve things like
-            # `npm`.
             result = subprocess.run(cmd,
                                     capture_output=True,
                                     text=True,
                                     check=True,
                                     encoding='utf-8',
                                     env=env,
-                                    cwd=cwd,
-                                    shell=platform.system() == 'Windows')
+                                    cwd=cwd)
         except subprocess.CalledProcessError as e:
             logging.debug('❯ %s', e.stderr.strip())
             raise e
