@@ -11,7 +11,6 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/function_ref.h"
 #include "base/memory/raw_ptr.h"
-#include "base/numerics/safe_math.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -34,6 +33,7 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/variations/pref_names.h"
+#include "net/base/network_change_notifier.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/idle/idle.h"
@@ -121,6 +121,11 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
 
   void SimulateIdleState(ui::IdleState idle_state, base::TimeDelta idle_time) {
     ads_service_->ProcessIdleState(idle_state, idle_time);
+  }
+
+  void SimulateNetworkChanged(
+      net::NetworkChangeNotifier::ConnectionType connection_type) {
+    ads_service_->OnNetworkChanged(connection_type);
   }
 
   base::test::TaskEnvironment task_environment_;
@@ -694,5 +699,47 @@ TEST_F(BraveAdsAdsServiceImplTest,
                         base::Value(true));
 }
 #endif  // !BUILDFLAG(IS_ANDROID)
+
+TEST_F(BraveAdsAdsServiceImplTest,
+       NotifiesNetworkConnectionChangedWhenConnected) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, true);
+  Startup();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->initialize_count() == 1U; }));
+
+  // Act
+  SimulateNetworkChanged(net::NetworkChangeNotifier::CONNECTION_WIFI);
+
+  // Assert
+  EXPECT_TRUE(base::test::RunUntil([&] {
+    return bat_ads_service_factory_->network_connection_changed_count() == 1U;
+  }));
+}
+
+TEST_F(BraveAdsAdsServiceImplTest,
+       DoesNotNotifyNetworkConnectionChangedWhenDisconnected) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kOptedInToSearchResultAds, true);
+  Startup();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->initialize_count() == 1U; }));
+
+  // Act
+  SimulateNetworkChanged(net::NetworkChangeNotifier::CONNECTION_NONE);
+
+  // Assert
+  EXPECT_EQ(0U, bat_ads_service_factory_->network_connection_changed_count());
+}
+
+TEST_F(BraveAdsAdsServiceImplTest,
+       DoesNotNotifyNetworkConnectionChangedBeforeServiceHasStarted) {
+  // Act: the service is never started, so `bat_ads_client_notifier_remote_`
+  // is never bound.
+  SimulateNetworkChanged(net::NetworkChangeNotifier::CONNECTION_WIFI);
+
+  // Assert
+  EXPECT_EQ(0U, bat_ads_service_factory_->network_connection_changed_count());
+}
 
 }  // namespace brave_ads

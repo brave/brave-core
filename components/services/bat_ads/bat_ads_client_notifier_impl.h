@@ -40,6 +40,7 @@ class BatAdsClientNotifierImpl final
 
   // bat_ads::mojom::BatAdsClientNotifier:
   void NotifyDidInitializeAds() override;
+  void NotifyNetworkConnectionChanged() override;
   void NotifyPrefDidChange(const std::string& path) override;
   void NotifyResourceComponentDidChange(const std::string& manifest_version,
                                         const std::string& id) override;

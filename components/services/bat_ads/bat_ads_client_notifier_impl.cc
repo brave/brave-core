@@ -45,6 +45,10 @@ void BatAdsClientNotifierImpl::NotifyDidInitializeAds() {
   ads_client_notifier_.NotifyDidInitializeAds();
 }
 
+void BatAdsClientNotifierImpl::NotifyNetworkConnectionChanged() {
+  ads_client_notifier_.NotifyNetworkConnectionChanged();
+}
+
 void BatAdsClientNotifierImpl::NotifyPrefDidChange(const std::string& path) {
   ads_client_notifier_.NotifyPrefDidChange(path);
 }

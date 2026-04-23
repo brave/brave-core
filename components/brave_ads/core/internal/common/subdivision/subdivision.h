@@ -46,6 +46,7 @@ class Subdivision final : public AdsClientNotifierObserver,
 
   // AdsClientNotifierObserver:
   void OnNotifyDidInitializeAds() override;
+  void OnNotifyNetworkConnectionChanged() override;
   void OnNotifyPrefDidChange(const std::string& path) override;
 
   // SubdivisionUrlRequestDelegate:
