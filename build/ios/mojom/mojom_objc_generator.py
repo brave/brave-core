@@ -452,7 +452,9 @@ class Generator(generator.Generator):
             "objc_method_name_formatter": self._ObjCMethodNameFormatter,
             "objc_enum_formatter": self._ObjCEnumFormatter,
             "objc_argument_modifiers": self._GetObjCArgumentModifiers,
-            "cpp_to_objc_assign": self._CppToObjCAssign,
+            "cpp_result_callback_type": self._CppResultCallbackType,
+            "cpp_to_objc_assign": self._CppToObjCAssignFromField,
+            "cpp_to_objc_assign_kind": self._CppToObjCAssignFromKind,
             "const_objc_assign": self._ConstObjCAssign,
             "objc_to_cpp_assign": self._ObjCToCppAssign,
             "expected_cpp_param_type": self._GetExpectedCppParamType,
@@ -599,10 +601,36 @@ class Generator(generator.Generator):
                 cpp_assign = "%s ? %s : nullptr" % (accessor, cpp_assign)
         return cpp_assign
 
-    def _CppToObjCAssign(self, field, prefix=None, suffix=None):
-        kind = field.kind
-        accessor = "%s%s%s" % (prefix if prefix else "",
-                               field.name, (suffix if suffix else ""))
+    def _CppResultCallbackType(self, method):
+        # A `result<S, F>` callback is represented as two nullable
+        # Obj-C object pointer parameters, exactly one of which is nil.
+        # Since `_Nullable` only applies to Obj-C object pointer types,
+        # both arms must map to object pointers.
+        success_kind = method.result_response.success_kind
+        failure_kind = method.result_response.failure_kind
+
+        for kind in (success_kind, failure_kind):
+            if not (mojom.IsObjectKind(kind)
+                    or mojom.IsPendingRemoteKind(kind)):
+                raise Exception(
+                    f"result<S, F> callback for {method.name} contains a kind "
+                    "that does not map to an Obj-C object pointer!")
+
+        success = MojoTypemapForKind(success_kind, False).ExpectedCppType()
+        failure = MojoTypemapForKind(failure_kind, False).ExpectedCppType()
+
+        return f"base::expected<{success}, {failure}>"
+
+    def _CppToObjCAssignFromField(self, field, prefix=None, suffix=None):
+        return self._CppToObjCAssignImpl(
+            kind=field.kind,
+            accessor=f"{prefix or ''}{field.name}{suffix or ''}",
+        )
+
+    def _CppToObjCAssignFromKind(self, kind, accessor):
+        return self._CppToObjCAssignImpl(kind=kind, accessor=accessor)
+
+    def _CppToObjCAssignImpl(self, *, kind, accessor):
         typemap = MojoTypemapForKind(kind)
         if mojom.IsNullableKind(kind):
             if ((self._IsTypemappedKind(kind)
