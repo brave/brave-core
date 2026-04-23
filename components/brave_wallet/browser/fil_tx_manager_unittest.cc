@@ -62,6 +62,7 @@ class FilTxManagerUnitTest : public testing::Test {
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
   void SetUp() override {
+    BlockchainRegistry::GetInstance()->UpdateRestrictedAddressesList({});
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterProfilePrefsForMigration(prefs_.registry());
@@ -78,7 +79,7 @@ class FilTxManagerUnitTest : public testing::Test {
         CreateTxStorageForTest(temp_dir_.GetPath()));
 
     GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
-    GetAccountUtils().EnsureFilTestAccount(0);
+    ASSERT_TRUE(GetAccountUtils().EnsureFilTestAccount(0));
   }
 
   AccountUtils GetAccountUtils() {
@@ -86,7 +87,9 @@ class FilTxManagerUnitTest : public testing::Test {
   }
 
   mojom::AccountIdPtr FilTestAcc(size_t index) {
-    return GetAccountUtils().EnsureFilTestAccount(index)->account_id->Clone();
+    auto account = GetAccountUtils().EnsureFilTestAccount(index);
+    CHECK(account);
+    return account->account_id->Clone();
   }
 
   void SetInterceptor(const GURL& expected_url,
