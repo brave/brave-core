@@ -32,6 +32,14 @@ type Props = Pick<
     conversationStarted: boolean
   }
 
+// On Android we don't run the SandboxedTextExtractor or PdfExtractor, so we need some mime protections.
+const accept =
+  // <if expr="is_android">
+  'image/*,application/pdf'
+// <else>
+undefined
+// </if>
+
 export default function AttachmentButtonMenu(props: Props) {
   const isMenuDisabled = shouldDisableAttachmentsButton(
     props.conversationHistory,
@@ -66,6 +74,7 @@ export default function AttachmentButtonMenu(props: Props) {
           onClick={async () => {
             const files = await pickFiles({
               multiple: true,
+              accept,
             })
             if (files.length > 0) {
               props.attachFiles(files)
@@ -99,6 +108,7 @@ export default function AttachmentButtonMenu(props: Props) {
             onClick={async () => {
               const files = await pickFiles({
                 capture: 'camera',
+                accept,
               })
               if (files.length > 0) {
                 props.attachFiles(files)

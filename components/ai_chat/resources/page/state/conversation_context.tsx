@@ -448,40 +448,36 @@ export function useProvideConversationContext(props: ConversationContextProps) {
         return Mojom.UploadedFileType.kPdf
       } else if (mimeType.startsWith('image/')) {
         return Mojom.UploadedFileType.kImage
-      } else if (mimeType.startsWith('text/')) {
+      } else {
+        // Note: We attempt to parse any unknown files as text.
         return Mojom.UploadedFileType.kText
       }
-
-      return undefined
     }
 
     // Processes the file using the C++ sanitizers
     const processFile = async (
       file: File,
     ): Promise<Mojom.UploadedFile | null> => {
-      const type = fileTypeToUploadedFileType(file)
-      if (type === undefined) return null
+      try {
+        const type = fileTypeToUploadedFileType(file)
 
-      const data = Array.from(new Uint8Array(await file.arrayBuffer()))
-      let promise: Promise<{ processedFile: Mojom.UploadedFile | null }>
+        const data = Array.from(new Uint8Array(await file.arrayBuffer()))
+        let promise: Promise<{ processedFile: Mojom.UploadedFile | null }>
 
-      // TODO(https://github.com/brave/brave-browser/issues/54918): We should just expose a `ProcessFile` function on the mojo API and do the file type detection on the C++ side.
-      if (type === Mojom.UploadedFileType.kText) {
-        promise = aiChat.api.uiHandler.processTextFile(data, file.name)
-      } else if (type === Mojom.UploadedFileType.kImage) {
-        promise = aiChat.api.uiHandler.processImageFile(data, file.name)
-      } else {
-        promise = aiChat.api.uiHandler.processPdfFile(data, file.name)
+        // TODO(https://github.com/brave/brave-browser/issues/54918): We should just expose a `ProcessFile` function on the mojo API and do the file type detection on the C++ side.
+        if (type === Mojom.UploadedFileType.kText) {
+          promise = aiChat.api.uiHandler.processTextFile(data, file.name)
+        } else if (type === Mojom.UploadedFileType.kImage) {
+          promise = aiChat.api.uiHandler.processImageFile(data, file.name)
+        } else {
+          promise = aiChat.api.uiHandler.processPdfFile(data, file.name)
+        }
+
+        return await promise.then((p) => p.processedFile)
+      } catch (error) {
+        // Note: Error notifications will happen when attaching the files.
+        return null
       }
-
-      return (
-        promise
-          ?.then((p) => p.processedFile)
-          .catch(() => {
-            // Silently fail - this is handled by the check all files were processed correctly.
-            return null
-          }) ?? null
-      )
     }
 
     const processedFiles = await Promise.all(files.map(processFile))
