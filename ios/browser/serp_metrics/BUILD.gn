@@ -5,6 +5,11 @@
 
 source_set("serp_metrics") {
   sources = [
+    "serp_metrics_bridge.h",
+    "serp_metrics_bridge_impl.h",
+    "serp_metrics_bridge_impl.mm",
+    "serp_metrics_service_factory_bridge.h",
+    "serp_metrics_service_factory_bridge.mm",
     "serp_metrics_service_factory_ios.h",
     "serp_metrics_service_factory_ios.mm",
     "serp_metrics_tab_helper.h",
@@ -21,6 +26,7 @@ source_set("serp_metrics") {
     "//brave/components/serp_metrics",
     "//brave/components/serp_metrics:features",
     "//brave/components/serp_metrics/time_period_storage",
+    "//brave/ios/browser/keyed_service",
     "//components/keyed_service/core",
     "//components/pref_registry",
     "//components/search_engines",
