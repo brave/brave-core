@@ -22,7 +22,8 @@
 
 namespace brave_ads {
 
-Confirmations::Confirmations() {
+Confirmations::Confirmations(AdsClient& ads_client)
+    : confirmation_queue_(ads_client) {
   confirmation_queue_.SetDelegate(this);
 }
 

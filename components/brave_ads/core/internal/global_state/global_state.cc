@@ -43,7 +43,7 @@ GlobalState::GlobalState(
   notification_ad_manager_ = std::make_unique<NotificationAdManager>();
   tab_manager_ = std::make_unique<TabManager>();
   user_activity_manager_ = std::make_unique<UserActivityManager>();
-  ads_core_ = std::make_unique<AdsCore>(std::move(token_generator));
+  ads_core_ = std::make_unique<AdsCore>(ads_client, std::move(token_generator));
 }
 
 GlobalState::~GlobalState() {

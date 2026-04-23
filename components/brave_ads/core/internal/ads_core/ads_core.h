@@ -19,11 +19,13 @@
 
 namespace brave_ads {
 
+class AdsClient;
 class TokenGeneratorInterface;
 
 class AdsCore final {
  public:
-  explicit AdsCore(std::unique_ptr<TokenGeneratorInterface> token_generator);
+  AdsCore(AdsClient& ads_client,
+          std::unique_ptr<TokenGeneratorInterface> token_generator);
 
   AdsCore(const AdsCore& other) = delete;
   AdsCore& operator=(const AdsCore& other) = delete;
