@@ -205,6 +205,7 @@ source_set("ui") {
     deps += [
       "//brave/browser/brave_rewards",
       "//chrome/browser:flags",
+      "//chrome/browser/lifetime",
     ]
 
     sources += [
