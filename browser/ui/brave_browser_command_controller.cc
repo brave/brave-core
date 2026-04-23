@@ -16,6 +16,7 @@
 #include "base/types/to_address.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
@@ -310,6 +311,9 @@ void BraveBrowserCommandController::InitBraveCommandState() {
                        !browser_->profile()->IsPrimaryOTRProfile());
 
   UpdateCommandEnabled(IDC_BRAVE_BOOKMARK_BAR_SUBMENU, true);
+  UpdateCommandEnabled(IDC_BRAVE_BOOKMARK_BAR_ALWAYS, true);
+  UpdateCommandEnabled(IDC_BRAVE_BOOKMARK_BAR_NTP, true);
+  UpdateCommandEnabled(IDC_BRAVE_BOOKMARK_BAR_NEVER, true);
 
   UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS, true);
   UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS_WINDOW_TITLE, true);
@@ -736,6 +740,18 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_SHOW_APPS_PAGE:
       brave::ShowAppsPage(&*browser_);
+      break;
+    case IDC_BRAVE_BOOKMARK_BAR_ALWAYS:
+      brave::SetBookmarkState(brave::BookmarkBarState::kAlways,
+                              browser_->profile()->GetPrefs());
+      break;
+    case IDC_BRAVE_BOOKMARK_BAR_NTP:
+      brave::SetBookmarkState(brave::BookmarkBarState::kNtp,
+                              browser_->profile()->GetPrefs());
+      break;
+    case IDC_BRAVE_BOOKMARK_BAR_NEVER:
+      brave::SetBookmarkState(brave::BookmarkBarState::kNever,
+                              browser_->profile()->GetPrefs());
       break;
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
     case IDC_SHOW_EMAIL_ALIASES:
