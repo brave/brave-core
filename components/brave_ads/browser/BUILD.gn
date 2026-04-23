@@ -143,6 +143,7 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/components/brave_ads/browser",
+    "//brave/components/brave_ads/browser/application_state:test_support",
     "//brave/components/brave_ads/core",
     "//brave/components/brave_ads/core/public:headers",
     "//brave/components/brave_component_updater/browser",
