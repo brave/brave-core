@@ -201,7 +201,7 @@
   },
   "dependencies": {
     "@brave/brave-ui": "0.40.6",
-    "@brave/leo": "github:brave/leo#c60b65212d7342d89596964170373a056a9a3cbd",
+    "@brave/leo": "github:brave/leo#eae4be033e636b8699a2459caa8b00bed1970b7f",
     "@brave/leo-sf-symbols": "github:brave/leo-sf-symbols#10e967f89a7a5d70fb03b820b13be03421eb53d3",
     "@brave/wallet-standard-brave": "0.0.16",
     "@dnd-kit/core": "6.0.5",
@@ -253,6 +253,7 @@
     "tiny-secp256k1": "1.1.7",
     "flatted": "3.4.2",
     "yaml@1": "1.10.3",
-    "yaml@2": "2.8.3"
+    "yaml@2": "2.8.3",
+    "uuid": "14.0.0"
   }
 }
