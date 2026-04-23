@@ -52,6 +52,7 @@ class EphemeralStorage1pDomainBlockBrowserTest
   }
 
   void UpdateAdBlockInstanceWithRules(const std::string& rules) {
+    helper_->WaitForAdBlockEngineInitialLoad();
     source_provider_ =
         std::make_unique<brave_shields::TestFiltersProvider>(rules);
 

@@ -6,7 +6,6 @@
 #include <memory>
 
 #include "base/base64url.h"
-#include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/test/scoped_feature_list.h"
@@ -119,15 +118,7 @@ class DebounceBrowserTest : public BaseLocalDataFilesBrowserTest {
   void SetUpInProcessBrowserTestFixture() override {
     BaseLocalDataFilesBrowserTest::SetUpInProcessBrowserTestFixture();
     ad_block_test_helper_ =
-        std::make_unique<brave_shields::AdBlockBrowserTestHelper>(
-            base::BindRepeating(&DebounceBrowserTest::OnAdBlockServiceCreated,
-                                base::Unretained(this)));
-  }
-
-  void OnAdBlockServiceCreated() {
-    initial_engine_observer_ = std::make_unique<EngineTestObserver>(
-        &g_brave_browser_process->ad_block_service()
-             ->GetDefaultEngineForTesting());
+        std::make_unique<brave_shields::AdBlockBrowserTestHelper>();
   }
 
   // BaseLocalDataFilesBrowserTest overrides
@@ -196,9 +187,7 @@ class DebounceBrowserTest : public BaseLocalDataFilesBrowserTest {
   void InitAdBlockForDebounce() {
     // Drain the initial empty-catalog engine update first so the observer
     // below can only wake on the rule-load update (not a stale one).
-    ASSERT_TRUE(initial_engine_observer_);
-    initial_engine_observer_->Wait();
-    initial_engine_observer_.reset();
+    ad_block_test_helper_->WaitForAdBlockEngineInitialLoad();
 
     auto source_provider =
         std::make_unique<brave_shields::TestFiltersProvider>("||blocked.com^");
@@ -222,7 +211,6 @@ class DebounceBrowserTest : public BaseLocalDataFilesBrowserTest {
       source_providers_;
   std::unique_ptr<brave_shields::AdBlockBrowserTestHelper>
       ad_block_test_helper_;
-  std::unique_ptr<EngineTestObserver> initial_engine_observer_;
 };
 
 // Test simple redirection by query parameter.
