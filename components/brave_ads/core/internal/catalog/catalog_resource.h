@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CATALOG_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CATALOG_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CATALOG_RESOURCE_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CATALOG_RESOURCE_H_
 
 #include <memory>
 #include <string>
@@ -24,16 +24,18 @@ class CatalogUrlRequest;
 class DatabaseManager;
 struct CatalogInfo;
 
-class Catalog final : public AdsClientNotifierObserver,
-                      public CatalogUrlRequestDelegate,
-                      public DatabaseManagerObserver {
+// Manages periodic fetching, storage, and distribution of the Brave Ads
+// catalog component.
+class CatalogResource final : public AdsClientNotifierObserver,
+                              public CatalogUrlRequestDelegate,
+                              public DatabaseManagerObserver {
  public:
-  Catalog();
+  CatalogResource();
 
-  Catalog(const Catalog&) = delete;
-  Catalog& operator=(const Catalog&) = delete;
+  CatalogResource(const CatalogResource&) = delete;
+  CatalogResource& operator=(const CatalogResource&) = delete;
 
-  ~Catalog() override;
+  ~CatalogResource() override;
 
   void AddObserver(CatalogObserver* observer);
   void RemoveObserver(CatalogObserver* observer);
@@ -72,9 +74,9 @@ class Catalog final : public AdsClientNotifierObserver,
   base::ScopedObservation<DatabaseManager, DatabaseManagerObserver>
       database_manager_observation_{this};
 
-  base::WeakPtrFactory<Catalog> weak_factory_{this};
+  base::WeakPtrFactory<CatalogResource> weak_factory_{this};
 };
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CATALOG_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CATALOG_RESOURCE_H_
