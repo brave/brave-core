@@ -361,6 +361,8 @@ class KeyringService : public mojom::KeyringService {
                            ManuallyAddAccount);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceAccountDiscoveryUnitTest,
                            RestoreWalletTwice);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceAccountDiscoveryUnitTest,
+                           ImportFromExternalWalletDuringDiscovery);
   FRIEND_TEST_ALL_PREFIXES(AssetDiscoveryManagerUnitTest,
                            KeyringServiceObserver);
   FRIEND_TEST_ALL_PREFIXES(SolanaProviderImplUnitTest,
