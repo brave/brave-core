@@ -52,6 +52,7 @@ class BraveHorizontalTabStripRegionView : public HorizontalTabStripRegionView {
   void UpdateTrailingScrollButtonMargin(bool vertical_tabs);
   void OnScrollPreviousPressed();
   void OnScrollNextPressed();
+  bool HaveScrollButtons() const;
 
   raw_ptr<TabStripControlButton> tab_scroll_previous_button_ = nullptr;
   raw_ptr<TabStripControlButton> tab_scroll_next_button_ = nullptr;

@@ -103,7 +103,7 @@ void BraveHorizontalTabStripRegionView::CreateScrollButtonsIfNeeded() {
 }
 
 void BraveHorizontalTabStripRegionView::UpdateScrollButtonsVisibility() {
-  if (!tab_scroll_previous_button_ || !tab_scroll_next_button_) {
+  if (!HaveScrollButtons()) {
     return;
   }
   auto* strip = views::AsViewClass<BraveTabStrip>(tab_strip_);
@@ -140,10 +140,14 @@ void BraveHorizontalTabStripRegionView::OnScrollNextPressed() {
   UpdateScrollButtonsVisibility();
 }
 
+bool BraveHorizontalTabStripRegionView::HaveScrollButtons() const {
+  return tab_scroll_previous_button_ && tab_scroll_next_button_;
+}
+
 views::View::Views BraveHorizontalTabStripRegionView::GetChildrenInZOrder() {
   views::View::Views order =
       HorizontalTabStripRegionView::GetChildrenInZOrder();
-  if (!tab_scroll_previous_button_ || !tab_scroll_next_button_) {
+  if (!HaveScrollButtons()) {
     return order;
   }
 
@@ -236,7 +240,7 @@ void BraveHorizontalTabStripRegionView::UpdateTabStripMargin() {
 
 void BraveHorizontalTabStripRegionView::UpdateTrailingScrollButtonMargin(
     bool vertical_tabs) {
-  if (!tab_scroll_next_button_) {
+  if (!HaveScrollButtons()) {
     return;
   }
 
