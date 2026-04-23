@@ -10,6 +10,7 @@
 #include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/ui/startup/startup_browser_creator_impl.h"
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -19,7 +20,6 @@
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 #include "brave/browser/ui/views/brave_origin/brave_origin_startup_view.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/platform_util.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"

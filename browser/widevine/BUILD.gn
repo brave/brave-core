@@ -23,6 +23,7 @@ source_set("widevine") {
     "//chrome/browser:browser_process",
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/component_updater",
+    "//chrome/browser/lifetime",
     "//chrome/browser/profiles:profile",
     "//chrome/common",
     "//components/component_updater",

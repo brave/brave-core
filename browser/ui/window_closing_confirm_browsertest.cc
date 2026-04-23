@@ -13,7 +13,6 @@
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/download/download_manager_utils.h"
 #include "chrome/browser/download/download_prefs.h"
-#include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/lifetime/application_lifetime_desktop.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
