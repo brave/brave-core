@@ -153,7 +153,10 @@ export default function createAIChatApi(
       >,
       uiHandler: uiHandler as Pick<
         Mojom.AIChatUIHandlerInterface,
-        VoidMethodKeys<Mojom.AIChatUIHandlerInterface>
+        | VoidMethodKeys<Mojom.AIChatUIHandlerInterface>
+        | `processTextFile`
+        | `processImageFile`
+        | `processPdfFile`
       >,
       metrics: metrics as Pick<
         Mojom.MetricsInterface,

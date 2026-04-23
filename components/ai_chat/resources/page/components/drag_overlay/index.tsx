@@ -8,7 +8,6 @@ import { getLocale } from '$web-common/locale'
 import Icon from '@brave/leo/react/icon'
 import styles from './style.module.scss'
 import { useConversation } from '../../state/conversation_context'
-import { processFiles } from '../../utils/file_utils'
 
 export default function DragOverlay() {
   const { isDragActive, isDragOver, clearDragState, attachFiles } =
@@ -24,11 +23,7 @@ export default function DragOverlay() {
       return
     }
 
-    try {
-      await processFiles(files, attachFiles)
-    } catch (error) {
-      // Silently fail - error will be handled by the upload system
-    }
+    await attachFiles(files)
   }
 
   const handleOverlayDragOver = (e: React.DragEvent) => {

@@ -18,8 +18,6 @@ import { pickFiles } from '$web-common/uploadFile'
 // Styles
 import styles from './style.module.scss'
 
-import { processFiles } from '../../utils/file_utils'
-
 type Props = Pick<
   ConversationContext,
   | 'attachFiles'
@@ -70,7 +68,7 @@ export default function AttachmentButtonMenu(props: Props) {
               multiple: true,
             })
             if (files.length > 0) {
-              processFiles(files, props.attachFiles)
+              props.attachFiles(files)
             }
           }}
         >
@@ -103,7 +101,7 @@ export default function AttachmentButtonMenu(props: Props) {
                 capture: 'camera',
               })
               if (files.length > 0) {
-                processFiles(files, props.attachFiles)
+                props.attachFiles(files)
               }
             }}
           >

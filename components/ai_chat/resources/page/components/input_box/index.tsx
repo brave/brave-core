@@ -23,7 +23,6 @@ import {
 } from '../attachment_item'
 import { ModelSelector } from '../model_selector'
 import usePromise from '$web-common/usePromise'
-import { processFiles } from '../../utils/file_utils'
 import { isFullPageScreenshot } from '../../../common/conversation_history_utils'
 import Editable from './editable'
 import { stringifyContent } from './editable_content'
@@ -227,11 +226,7 @@ function InputBox(props: InputBoxProps) {
     // Prevent the default paste behavior for files
     e.preventDefault()
 
-    try {
-      processFiles(files, props.context.attachFiles)
-    } catch (error) {
-      // Silently fail - error will be handled by the upload system
-    }
+    props.context.attachFiles(files)
   }
 
   const maybeAutofocus = (node: HTMLElement | null) => {

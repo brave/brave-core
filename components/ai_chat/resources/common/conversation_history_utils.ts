@@ -197,14 +197,14 @@ export function shouldDisableAttachmentsButton(
 }
 
 /**
- * Process uploaded files with limits to different types
+ * Attach uploaded files with limits to different types
  *
  * @param files - The uploaded file to be processed
  * @param conversationHistory - The current conversation history
  * @param currentPendingFiles - The current files in the staging area
  * @returns The files the user can upload after checking limits
  */
-export const processUploadedFilesWithLimits = (
+export const attachUploadedFilesWithLimits = (
   files: readonly Mojom.UploadedFile[],
   conversationHistory: readonly Mojom.ConversationTurn[],
   currentPendingFiles: readonly Mojom.UploadedFile[],

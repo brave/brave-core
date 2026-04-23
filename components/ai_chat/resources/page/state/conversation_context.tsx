@@ -11,7 +11,7 @@ import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import { IGNORE_EXTERNAL_LINK_WARNING_KEY } from '../../common/constants'
 import {
   isFullPageScreenshot,
-  processUploadedFilesWithLimits,
+  attachUploadedFilesWithLimits,
 } from '../../common/conversation_history_utils'
 import * as Mojom from '../../common/mojom'
 import { useIsDragging } from '../hooks/useIsDragging'
@@ -392,18 +392,24 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     )
   }
 
-  const processUploadedFiles = async (files: Mojom.UploadedFile[]) => {
+  const attachUploadedFiles = async (
+    uploadedFiles: (Mojom.UploadedFile | null)[],
+  ) => {
     // Filter out text files where extraction failed (no extracted text).
-    const validFiles = files.filter(
-      (f) =>
-        f.type !== Mojom.UploadedFileType.kText
-        || (f.extractedText !== undefined && f.extractedText !== null),
-    )
+    const validFiles = uploadedFiles
+      .filter((f) => f)
+      .map((f) => f!)
+      .filter(
+        (f) =>
+          f.type !== Mojom.UploadedFileType.kText
+          || (f.extractedText !== undefined && f.extractedText !== null),
+      )
+
     // Show error when some files were dropped: either text extraction
     // failed, or unsupported files were included (the backend returns
     // empty stubs for unsupported types like zip so they are filtered
     // out here, while cancellation returns null and skips this path).
-    if (validFiles.length < files.length) {
+    if (validFiles.length < uploadedFiles.length) {
       showAlert({
         type: 'error',
         content: getLocale(S.CHAT_UI_FILE_UPLOAD_ERROR),
@@ -418,7 +424,7 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     // Since we're in an async callback, we need to get the latest version of
     // data.
     setPendingMessageFiles((pendingMessageFiles) => {
-      const newFiles = processUploadedFilesWithLimits(
+      const newFiles = attachUploadedFilesWithLimits(
         validFiles,
         conversationHistory,
         pendingMessageFiles,
@@ -431,6 +437,57 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     })
   }
 
+  // This function converts files into uploaded files by processing them with the C++ sanitizers.
+  const processUploadedFiles = async (files: File[]) => {
+    // Determine the mojom file type from the file.
+    const fileTypeToUploadedFileType = (
+      file: File,
+    ): Mojom.UploadedFileType | undefined => {
+      const mimeType = file.type.toLowerCase()
+      if (mimeType === 'application/pdf') {
+        return Mojom.UploadedFileType.kPdf
+      } else if (mimeType.startsWith('image/')) {
+        return Mojom.UploadedFileType.kImage
+      } else if (mimeType.startsWith('text/')) {
+        return Mojom.UploadedFileType.kText
+      }
+
+      return undefined
+    }
+
+    // Processes the file using the C++ sanitizers
+    const processFile = async (
+      file: File,
+    ): Promise<Mojom.UploadedFile | null> => {
+      const type = fileTypeToUploadedFileType(file)
+      if (type === undefined) return null
+
+      const data = Array.from(new Uint8Array(await file.arrayBuffer()))
+      let promise: Promise<{ processedFile: Mojom.UploadedFile | null }>
+
+      // TODO(https://github.com/brave/brave-browser/issues/54918): We should just expose a `ProcessFile` function on the mojo API and do the file type detection on the C++ side.
+      if (type === Mojom.UploadedFileType.kText) {
+        promise = aiChat.api.uiHandler.processTextFile(data, file.name)
+      } else if (type === Mojom.UploadedFileType.kImage) {
+        promise = aiChat.api.uiHandler.processImageFile(data, file.name)
+      } else {
+        promise = aiChat.api.uiHandler.processPdfFile(data, file.name)
+      }
+
+      return (
+        promise
+          ?.then((p) => p.processedFile)
+          .catch(() => {
+            // Silently fail - this is handled by the check all files were processed correctly.
+            return null
+          }) ?? null
+      )
+    }
+
+    const processedFiles = await Promise.all(files.map(processFile))
+    return attachUploadedFiles(processedFiles)
+  }
+
   // Register handler for when getScreenshots is called from
   // somewhere in the UI, and also keep track of whether it's in progress.
   const screenshotsMutation = api.useGetScreenshots()
@@ -439,7 +496,7 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     screenshotsMutation.mutate([], {
       onSuccess: async (screenshots) => {
         if (screenshots) {
-          return processUploadedFiles(screenshots)
+          return attachUploadedFiles(screenshots)
         }
       },
     })
