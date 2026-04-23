@@ -598,7 +598,7 @@ impl<'a> IssuingDistributionPoint<'a> {
         if self.only_contains_ca_certs && node.role() != Role::Issuer
             || self.only_contains_user_certs && node.role() != Role::EndEntity
         {
-            return false;
+            return false; // CRL scope excludes this cert's role.
         }
 
         let cert_dps = match node.cert.crl_distribution_points() {
@@ -608,61 +608,49 @@ impl<'a> IssuingDistributionPoint<'a> {
             Some(cert_dps) => cert_dps,
         };
 
-        let mut idp_general_names = match self.names() {
-            Ok(Some(DistributionPointName::FullName(general_names))) => general_names,
-            _ => return false, // Note: Either no full names, or malformed. Shouldn't occur, we check at CRL parse time.
-        };
-
         for cert_dp in cert_dps {
-            let cert_dp = match cert_dp {
-                Ok(cert_dp) => cert_dp,
-                // certificate CRL DP was invalid, can't match.
-                Err(_) => return false,
+            let Ok(cert_dp) = cert_dp else {
+                continue; // Malformed DP, try next cert DP.
             };
 
             // If the certificate CRL DP was for an indirect CRL, or a CRL
             // sharded by revocation reason, it can't match.
             if cert_dp.crl_issuer.is_some() || cert_dp.reasons.is_some() {
-                return false;
+                continue; // Indirect CRL or reason-partitioned DP, try next cert DP.
             }
 
-            let mut dp_general_names = match cert_dp.names() {
-                Ok(Some(DistributionPointName::FullName(general_names))) => general_names,
-                _ => return false, // Either no full names, or malformed.
+            let Ok(Some(DistributionPointName::FullName(dp_general_names))) = cert_dp.names()
+            else {
+                continue; // No full names or malformed, try next cert DP.
             };
 
             // At least one URI type name in the IDP full names must match a URI type name in the
             // DP full names.
-            if Self::uri_name_in_common(&mut idp_general_names, &mut dp_general_names) {
-                return true;
-            }
-        }
+            for dp_name in dp_general_names {
+                let dp_uri = match dp_name {
+                    Ok(GeneralName::UniformResourceIdentifier(dp_uri)) => dp_uri,
+                    Ok(_) => continue,  // Not a URI type name, skip.
+                    Err(_) => continue, // Malformed general name, try next name.
+                };
 
-        false
-    }
+                let Ok(Some(DistributionPointName::FullName(idp_general_names))) = self.names()
+                else {
+                    return false; // IDP has no full names or is malformed.
+                };
 
-    fn uri_name_in_common(
-        idp_general_names: &mut DerIterator<'a, GeneralName<'a>>,
-        dp_general_names: &mut DerIterator<'a, GeneralName<'a>>,
-    ) -> bool {
-        use GeneralName::UniformResourceIdentifier;
-        for name in idp_general_names.flatten() {
-            let uri = match name {
-                UniformResourceIdentifier(uri) => uri,
-                _ => continue,
-            };
-
-            for other_name in (&mut *dp_general_names).flatten() {
-                match other_name {
-                    UniformResourceIdentifier(other_uri)
-                        if uri.as_slice_less_safe() == other_uri.as_slice_less_safe() =>
-                    {
-                        return true;
+                for idp_name in idp_general_names.flatten() {
+                    match idp_name {
+                        GeneralName::UniformResourceIdentifier(idp_uri)
+                            if dp_uri.as_slice_less_safe() == idp_uri.as_slice_less_safe() =>
+                        {
+                            return true; // DP URI matches IDP URI.
+                        }
+                        _ => continue, // Not a matching URI, try next IDP name.
                     }
-                    _ => continue,
                 }
             }
         }
+
         false
     }
 }
@@ -927,7 +915,6 @@ mod tests {
     use std::time::Duration;
 
     use pki_types::CertificateDer;
-    use std::prelude::v1::*;
     use std::println;
 
     use super::*;
@@ -1282,5 +1269,23 @@ mod tests {
         let crl =
             include_bytes!("../../tests/client_auth_revocation/ee_revoked_crl_ku_ee_depth.crl.der");
         assert!(OwnedCertRevocationList::from_der(crl).is_ok())
+    }
+
+    #[test]
+    fn test_crl_issuing_distribution_point_illegal_bit_string() {
+        let crl = &[
+            0x30, 0x65, 0x30, 0x50, 0x02, 0x01, 0x01, 0x30, 0x0d, 0x06, 0x09, 0x2a, 0x86, 0x48,
+            0x86, 0xf7, 0x0d, 0x01, 0x01, 0x0b, 0x05, 0x00, 0x30, 0x0c, 0x31, 0x0a, 0x30, 0x08,
+            0x06, 0x03, 0x55, 0x04, 0x03, 0x13, 0x01, 0x41, 0x17, 0x0d, 0x32, 0x30, 0x30, 0x31,
+            0x30, 0x31, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x5a, 0x17, 0x0d, 0x32, 0x31, 0x30,
+            0x31, 0x30, 0x31, 0x30, 0x30, 0x30, 0x30, 0x30, 0x30, 0x5a, 0xa0, 0x10, 0x30, 0x0e,
+            0x30, 0x0c, 0x06, 0x03, 0x55, 0x1d, 0x1c, 0x04, 0x05, 0x30, 0x03, 0x83, 0x01, 0x00,
+            0x30, 0x0d, 0x06, 0x09, 0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01, 0x01, 0x0b, 0x05,
+            0x00, 0x03, 0x02, 0x00, 0x00,
+        ];
+        assert_eq!(
+            BorrowedCertRevocationList::from_der(crl).err(),
+            Some(Error::UnsupportedRevocationReasonsPartitioning)
+        );
     }
 }
