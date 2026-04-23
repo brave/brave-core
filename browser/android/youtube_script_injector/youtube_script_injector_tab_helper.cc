@@ -100,83 +100,169 @@ constexpr char16_t kYoutubeFullscreen[] =
 (function() {
   return new Promise((resolve) => {
     const videoPlaySelector = "video.html5-main-video";
-    const fullscreenSelector = "button.fullscreen-icon";
-    function triggerFullscreen() {
-      // Check if the video is not in fullscreen mode already.
-      if (!document.fullscreenElement) {
-        var fullscreenBtn = document.querySelector(fullscreenSelector);
-        var videoPlayer = document.querySelector(videoPlaySelector);
-        // Check if fullscreen button and video are available.
-        if (fullscreenBtn && videoPlayer) {
-         requestFullscreen(fullscreenBtn, resolve, videoPlayer);
-        } else {
-          // When fullscreen button is not available
-          // clicking the movie player resume the UI.
-          var playerContainer = document.getElementById("player-container-id");
-          if (videoPlayer && playerContainer) {
-            let observerTimeout;
-            // Create a MutationObserver to watch for changes in the DOM.
-            const observer = new MutationObserver(
-            (_mutationsList, observer) => {
-              var fullscreenBtn = document.querySelector(fullscreenSelector);
-              var videoPlayer = document.querySelector(videoPlaySelector);
-              if (fullscreenBtn && videoPlayer) {
-                clearTimeout(observerTimeout);
-                observer.disconnect()
-                requestFullscreen(fullscreenBtn, resolve, videoPlayer);
-              }
-            });
-            // Auto-disconnect the observer after 30 seconds,
-            // a reasonable duration picked after some testing.
-            observerTimeout = setTimeout(() => {
-              observer.disconnect();
-              resolve('timeout');
-            }, 30000);
-            // Start observing the DOM.
-            observer.observe(playerContainer, {
-              childList: true, subtree: true
-            });
-            // Make sure the player is in focus or responsive.
-            videoPlayer.click();
-          } else {
-            // No fullscreen elements found, resolve immediately
-            resolve('no_elements');
-          }
-        }
-      } else {
-        // Already in fullscreen, resolve immediately
-        resolve('already_fullscreen');
+    const fullscreenSelector = "button.fullscreen-icon, "
+        + "button.ytp-fullscreen-button, .ytp-fullscreen-button";
+    const playerSelector = "#movie_player, .html5-video-player";
+    const playerContainerSelector = "#player-container-id, ytm-player, #player";
+    const maxAttempts = 6;
+    const retryDelayMs = 350;
+    function isFullscreen(player) {
+      player = player || document.querySelector(playerSelector);
+      const isPlayerFullscreen = player?.isFullscreen?.();
+      return !!document.fullscreenElement || !!isPlayerFullscreen;
+    }
+    function hasFullscreenClass(player) {
+      return !!(player && player.classList.contains("ytp-fullscreen"));
+    }
+    function revealControls(videoPlayer, player, playerContainer) {
+      if (videoPlayer) {
+        videoPlayer.click();
+      } else if (player) {
+        player.click();
+      } else if (playerContainer) {
+        playerContainer.click();
       }
     }
-    // Attempts to request fullscreen mode for the given movie player element.
-    // Resolves with 'fullscreen_triggered' if successful, or
-    // 'requestFullscreen_failed' if the request fails.
-    function requestFullscreen(fullscreenBtn, resolve, videoPlayer) {
+    function triggerFullscreen(attempt) {
+      const player = document.querySelector(playerSelector);
+      if (isFullscreen(player)) {
+        resolve('already_fullscreen');
+        return;
+      }
+
+      const fullscreenBtn = document.querySelector(fullscreenSelector);
+      const videoPlayer = document.querySelector(videoPlaySelector);
+      const playerContainer = document.querySelector(playerContainerSelector);
+      if (videoPlayer) {
+        const playResult = videoPlayer.play?.();
+        if (playResult) {
+          playResult.catch(() => {});
+        }
+      }
+
+      if (fullscreenBtn && videoPlayer) {
+        requestFullscreen(fullscreenBtn, videoPlayer, attempt);
+        return;
+      }
+
+      // YouTube sometimes hides the fullscreen button until the player
+      // receives a tap (e.g. on fresh load). Reveal controls then retry.
+      revealControls(videoPlayer, player, playerContainer);
+      if (requestYoutubeFullscreen(player, attempt)) {
+        return;
+      }
+      if (requestElementFullscreen(player || playerContainer || videoPlayer,
+              attempt)) {
+        return;
+      }
+      scheduleRetry(attempt);
+    }
+    function requestFullscreen(fullscreenBtn, videoPlayer, attempt) {
       if (videoPlayer.readyState >= 3) {
         videoPlayer.click();
-        clickFullscreenButton(fullscreenBtn, resolve);
+        clickFullscreenButton(fullscreenBtn, attempt);
       } else {
         videoPlayer.addEventListener("canplay", () => {
           videoPlayer.click();
-          clickFullscreenButton(fullscreenBtn, resolve);
+          clickFullscreenButton(fullscreenBtn, attempt);
         }, { once: true });
+        scheduleRetry(attempt);
       }
     }
-    function clickFullscreenButton(fullscreenBtn, resolve) {
-      if (fullscreenBtn && !document.hidden) {
+    function clickFullscreenButton(fullscreenBtn, attempt) {
+      if (isFullscreen()) {
+        resolve('already_fullscreen');
+        return;
+      }
+      if (fullscreenBtn) {
         fullscreenBtn.click();
         resolve('fullscreen_triggered');
       } else {
-        resolve('requestFullscreen_failed');
+        scheduleRetry(attempt);
       }
+    }
+    function requestYoutubeFullscreen(player, attempt) {
+      if (isFullscreen(player)) {
+        resolve('already_fullscreen');
+        return true;
+      }
+      if (!player || !player.toggleFullscreen || hasFullscreenClass(player)) {
+        return false;
+      }
+
+      try {
+        player.toggleFullscreen();
+        if (requestElementFullscreen(player, attempt)) {
+          return true;
+        }
+        waitForFullscreen(attempt);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function waitForFullscreen(attempt) {
+      setTimeout(() => {
+        if (isFullscreen()) {
+          resolve('fullscreen_triggered');
+          return;
+        }
+        scheduleRetry(attempt);
+      }, retryDelayMs);
+    }
+    function requestElementFullscreen(element, attempt) {
+      if (isFullscreen()) {
+        resolve('already_fullscreen');
+        return true;
+      }
+
+      if (!element?.requestFullscreen) {
+        return false;
+      }
+
+      try {
+        const result = element.requestFullscreen();
+        if (result && result.then) {
+          result.then(() => resolve('fullscreen_triggered'))
+              .catch(() => scheduleRetry(attempt));
+        } else {
+          resolve('fullscreen_triggered');
+        }
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function scheduleRetry(attempt) {
+      if (attempt >= maxAttempts) {
+        resolve('no_elements');
+        return;
+      }
+      setTimeout(() => triggerFullscreen(attempt + 1), retryDelayMs);
     }
     if (document.readyState === "loading") {
       // Loading hasn't finished yet.
       document.addEventListener("DOMContentLoaded",
-      triggerFullscreen, { once: true });
+      () => triggerFullscreen(0), { once: true });
     } else {
       // `DOMContentLoaded` has already fired.
-      triggerFullscreen();
+      triggerFullscreen(0);
+    }
+  });
+}());
+)";
+
+constexpr char16_t kYoutubeExitFullscreen[] =
+    uR"(
+(function() {
+  if (!document.fullscreenElement || !document.exitFullscreen) {
+    return;
+  }
+
+  document.exitFullscreen().catch(() => {
+    const fullscreenBtn = document.querySelector("button.fullscreen-icon");
+    if (fullscreenBtn && document.fullscreenElement) {
+      fullscreenBtn.click();
     }
   });
 }());
@@ -269,6 +355,16 @@ void YouTubeScriptInjectorTabHelper::MaybeSetFullscreen() {
       base::BindOnce(
           &YouTubeScriptInjectorTabHelper::OnFullscreenScriptComplete,
           weak_factory_.GetWeakPtr(), rfh->GetGlobalFrameToken()));
+}
+
+void YouTubeScriptInjectorTabHelper::MaybeExitFullscreen() {
+  content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
+  if (!rfh || !rfh->IsRenderFrameLive()) {
+    return;
+  }
+
+  content::RenderFrameHost::AllowInjectingJavaScript();
+  rfh->ExecuteJavaScript(kYoutubeExitFullscreen, base::NullCallback());
 }
 
 bool YouTubeScriptInjectorTabHelper::IsYouTubeDomain(bool mobileOnly) const {
