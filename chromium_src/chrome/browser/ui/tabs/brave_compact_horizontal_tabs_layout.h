@@ -12,12 +12,10 @@ namespace compact_horizontal_tabs_layout {
 // ---------------------------------------------------------------------------
 // Single place to tweak `#brave-compact-horizontal-tabs` layout (DIP).
 //
-// Non-touch: these values are used together with
-// `BraveCompactHorizontalTabsMetricsActive()` in layout_constants.cc (flag on,
-// touch UI off). Goal: ~60px tab strip + toolbar row.
-//
-// Touch UI: only the "Tab strip (touch + compact)" values apply; toolbar and
-// omnibox use the normal (non-compact) metrics so targets stay large enough.
+// Compact metrics are applied together with
+// `ShouldUseCompactHorizontalTabsForNonTouchUI()` in layout_constants.cc (flag
+// on AND touch UI off). Goal: ~60px tab strip + toolbar row. When touch UI is
+// active, the non-compact defaults below apply so touch targets stay usable.
 // ---------------------------------------------------------------------------
 
 // --- Tab strip (non-touch, compact) ----------------------------------------
@@ -37,12 +35,6 @@ inline constexpr int kTabHorizontalPadding = 4;
 // Tab group header chip horizontal inset (see
 // GetTabGroupTitleHorizontalInset()).
 inline constexpr int kTabGroupTitleHorizontalInset = 6;
-
-// --- Tab strip (touch + compact) --------------------------------------------
-// Milder than kTabVisualHeight so touch targets stay usable.
-inline constexpr int kTabVisualHeightTouchCompact = 28;
-// Same as `kHorizontalTabVerticalSpacing` / non-compact spacing.
-inline constexpr int kTabVerticalSpacingTouch = 4;
 
 // --- Toolbar + URL bar (non-touch, compact) --------------------------------
 // Vertical 0 keeps tab strip + toolbar within ~60 DIP when the tab strip is
