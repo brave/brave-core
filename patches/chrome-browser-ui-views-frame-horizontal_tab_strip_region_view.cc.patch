@@ -11,3 +11,18 @@ index 8365eb0a18e923c178bd7f35ce2825a5d833cb45..0188b309f671ab862eb8077db0cf4915
                                                std::move(hover_card_controller));
    return tab_strip;
  }
+@@ -704,12 +704,12 @@ void HorizontalTabStripRegionView::LogTabSearchPositionForTesting() {
+ void HorizontalTabStripRegionView::UpdateButtonBorders() {
+   const int extra_vertical_space =
+       GetLayoutConstant(LayoutConstant::kTabStripHeight) -
+-      GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap) -
++      tabs::GetHorizontalTabControlOverlap() -
+       NewTabButton::kButtonSize.height();
+   const int top_inset = extra_vertical_space / 2;
+   const int bottom_inset =
+       extra_vertical_space - top_inset +
+-      GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap);
++      tabs::GetHorizontalTabControlOverlap();
+   // The new tab button is placed vertically exactly in the center of the
+   // tabstrip. Extend the border of the button such that it extends to the top
+   // of the tabstrip bounds. This is essential to ensure it is targetable on the

@@ -12,6 +12,21 @@
 #include "ui/base/pointer/touch_ui_controller.h"
 
 namespace tabs {
+namespace {
+
+void ExpectDefaultLayoutConstants() {
+  EXPECT_EQ(compact_horizontal_tabs_layout::kLocationBarHeightDefault,
+            GetLayoutConstant(LayoutConstant::kLocationBarHeight));
+  EXPECT_EQ(compact_horizontal_tabs_layout::kTabVerticalSpacingDefault,
+            GetLayoutConstant(LayoutConstant::kTabStripPadding));
+  EXPECT_EQ(compact_horizontal_tabs_layout::kTabstripToolbarOverlapDefault,
+            GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap));
+  EXPECT_EQ(
+      compact_horizontal_tabs_layout::kTabstripToolbarControlsOverlapDefault,
+      GetHorizontalTabControlOverlap());
+}
+
+}  // namespace
 
 // Verifies that `GetLayoutConstant` selects compact vs default metrics based
 // on the `#brave-compact-horizontal-tabs` flag and touch UI state. Both sides
@@ -54,15 +69,7 @@ TEST_F(BraveCompactHorizontalTabsLayoutTest,
 
   ASSERT_FALSE(ui::TouchUiController::Get()->touch_ui());
 
-  EXPECT_EQ(compact_horizontal_tabs_layout::kLocationBarHeightDefault,
-            GetLayoutConstant(LayoutConstant::kLocationBarHeight));
-  EXPECT_EQ(compact_horizontal_tabs_layout::kTabVerticalSpacingDefault,
-            GetLayoutConstant(LayoutConstant::kTabStripPadding));
-  EXPECT_EQ(compact_horizontal_tabs_layout::kTabstripToolbarOverlapDefault,
-            GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap));
-  EXPECT_EQ(
-      compact_horizontal_tabs_layout::kTabstripToolbarControlsOverlapDefault,
-      GetHorizontalTabControlOverlap());
+  ExpectDefaultLayoutConstants();
 }
 
 // Compact flag on but touch UI active: compact metrics are intentionally
@@ -78,15 +85,7 @@ TEST_F(BraveCompactHorizontalTabsLayoutTest,
 
   ASSERT_TRUE(ui::TouchUiController::Get()->touch_ui());
 
-  EXPECT_EQ(compact_horizontal_tabs_layout::kLocationBarHeightDefault,
-            GetLayoutConstant(LayoutConstant::kLocationBarHeight));
-  EXPECT_EQ(compact_horizontal_tabs_layout::kTabVerticalSpacingDefault,
-            GetLayoutConstant(LayoutConstant::kTabStripPadding));
-  EXPECT_EQ(compact_horizontal_tabs_layout::kTabstripToolbarOverlapDefault,
-            GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap));
-  EXPECT_EQ(
-      compact_horizontal_tabs_layout::kTabstripToolbarControlsOverlapDefault,
-      GetHorizontalTabControlOverlap());
+  ExpectDefaultLayoutConstants();
 }
 
 }  // namespace tabs
