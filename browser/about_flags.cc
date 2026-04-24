@@ -203,6 +203,14 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
            brave_wallet::features::kBraveWalletZCashFeature,                  \
            kZCashFeatureVariations, "BraveWalletZCash")},                     \
       {                                                                       \
+          "brave-wallet-polkadot",                                            \
+          "Enable Brave Wallet Polkadot support",                             \
+          "Polkadot support for native Brave Wallet",                         \
+          kOsDesktop,                                                         \
+          FEATURE_VALUE_TYPE(                                                 \
+              brave_wallet::features::kBraveWalletPolkadotFeature),           \
+      },                                                                      \
+      {                                                                       \
           "brave-wallet-bitcoin",                                             \
           "Enable Brave Wallet Bitcoin support",                              \
           "Bitcoin support for native Brave Wallet",                          \
