@@ -170,7 +170,7 @@ extension BrowserViewController {
         present(controller, animated: true)
       }
 
-      let data = await image?.imageDataForLeo
+      let data = await image?.scaledForLeo?.imageDataForLeo
       guard let data else {
         completion(nil)
         return
@@ -328,8 +328,12 @@ extension AiChat.UploadedFile {
         }
       }
       let filename = provider.suggestedName ?? "image"
-      let filesize = UInt32(data.count)
-      let dataArray = [UInt8](data).map { NSNumber(value: $0) }
+      guard let imageData = await UIImage(data: data)?.scaledForLeo?.imageDataForLeo else {
+        return nil
+      }
+
+      let filesize = UInt32(imageData.count)
+      let dataArray = [UInt8](imageData).map { NSNumber(value: $0) }
 
       self.init(
         filename: filename,
@@ -345,6 +349,15 @@ extension AiChat.UploadedFile {
 }
 
 extension UIImage {
+  fileprivate var scaledForLeo: UIImage? {
+    get async {
+      let targetSize = CGSize(width: 1024, height: 768)
+      if size.width > targetSize.width && size.height > targetSize.height {
+        return await byPreparingThumbnail(ofSize: targetSize)
+      }
+      return self
+    }
+  }
   fileprivate var imageDataForLeo: Data? {
     get async {
       return self.pngData()
