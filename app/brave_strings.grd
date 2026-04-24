@@ -894,6 +894,11 @@ Brave is unable to recover your settings.
         <message name="IDS_EXTENSION_INSTALLED_HEADING" desc="Title of the extension-installed bubble. Instructs that the extension was installed.">
           <ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph> has been added to Brave
         </message>
+        <if expr="is_android">
+          <message name="IDS_EXTENSION_INSTALLED_MANAGE_INFO_IN_MAIN_MENU" desc="Text displayed in the post install dialog when the extensions menu is unpinned on Android informing them they can manage their extensions in the main menu.">
+            Manage your extensions by clicking Extensions in the Brave main menu.
+          </message>
+        </if>
 
         <!-- Extension uninstall prompt -->
         <message name="IDS_EXTENSION_UNINSTALL_PROMPT_REMOVE_DATA_CHECKBOX" desc="Checkbox text to ask the user whether they want to remove associated data at uninstall time. Only used when uninstalling an app associated with a particular website.">
@@ -3066,6 +3071,18 @@ Brave is unable to recover your settings.
       </message>
       <message name="IDS_INDIGO_ENTRYPOINT_ANCHORED_MESSAGE_TEXT" desc="The text shown in the anchored message bubble for the Indigo page action." translateable="false">
         Indigo is available for this page
+      </message>
+      <message name="IDS_INDIGO_TITLE" desc="Title for the Indigo page." translateable="false">
+        Indigo
+      </message>
+      <message name="IDS_INDIGO_TEXT_LAYER_STEP_1" desc="The text for step 1 of the Indigo text layer." translateable="false">
+        Loading (1/3)...
+      </message>
+      <message name="IDS_INDIGO_TEXT_LAYER_STEP_2" desc="The text for step 2 of the Indigo text layer." translateable="false">
+        Loading (2/3)...
+      </message>
+      <message name="IDS_INDIGO_TEXT_LAYER_STEP_3" desc="The text for step 3 of the Indigo text layer." translateable="false">
+        Loading (3/3)...
       </message>
     <message name="IDS_CHROME_SHORTCUT_NAME_BETA" desc="The Chrome shortcut name for beta channel">
           Google Chrome Beta
