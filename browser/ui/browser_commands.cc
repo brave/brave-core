@@ -59,13 +59,13 @@
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_tabrestore.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/profiles/profile_picker.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -1364,22 +1364,23 @@ void SaveWorkspace(Browser* calling_browser, const std::string& name) {
   // background task (WriteWorkspaceToDisk does blocking file I/O).
   std::vector<std::unique_ptr<sessions::SessionCommand>> commands;
 
-  auto browsers =
-      chrome::FindAllTabbedBrowsersWithProfile(calling_browser->profile());
-
   SessionID active_window_id = SessionID::InvalidValue();
   int window_count = 0;
   int tab_count = 0;
 
-  for (Browser* browser : browsers) {
-    if (browser->profile() != calling_browser->profile() ||
-        !browser->is_type_normal()) {
-      continue;
-    }
-    window_count++;
-    tab_count += AppendBrowserSessionCommands(browser, calling_browser,
-                                              commands, active_window_id);
-  }
+  Profile* profile = calling_browser->profile();
+  GlobalBrowserCollection::GetInstance()->ForEach(
+      [&](BrowserWindowInterface* bwi) {
+        if (bwi->GetProfile() != profile ||
+            bwi->GetType() != BrowserWindowInterface::Type::TYPE_NORMAL) {
+          return true;
+        }
+        window_count++;
+        tab_count += AppendBrowserSessionCommands(
+            bwi->GetBrowserForMigrationOnly(), calling_browser, commands,
+            active_window_id);
+        return true;
+      });
 
   if (tab_count == 0) {
     return;
