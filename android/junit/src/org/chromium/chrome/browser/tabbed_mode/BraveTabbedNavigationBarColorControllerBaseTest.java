@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.tabbed_mode;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
@@ -34,9 +35,11 @@ import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.layouts.LayoutManager;
+import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.toolbar.ToolbarPositionController.ToolbarPositionAndSource;
 import org.chromium.components.browser_ui.styles.SemanticColorUtils;
 import org.chromium.ui.edge_to_edge.EdgeToEdgeSystemBarColorHelper;
 
@@ -104,6 +107,7 @@ public class BraveTabbedNavigationBarColorControllerBaseTest {
                 .removeKey(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_SET_KEY);
         ChromeSharedPreferences.getInstance()
                 .removeKey(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY);
+        ChromeSharedPreferences.getInstance().removeKey(ChromePreferenceKeys.TOOLBAR_TOP_ANCHORED);
     }
 
     @Test
@@ -131,5 +135,19 @@ public class BraveTabbedNavigationBarColorControllerBaseTest {
         assertEquals(
                 SemanticColorUtils.getBottomSystemNavColor(mContext),
                 mBase.getNavigationBarColor(false));
+    }
+
+    @Test
+    public void testUseActiveTabColor_bottomAnchored_returnsFalse() {
+        // When the address bar is bottom-anchored, useActiveTabColor() must short-circuit to
+        // false so upstream's getNavigationBarColor falls through past the "use active tab's
+        // page background" branch and reaches the themed surface branch instead. Otherwise
+        // the system nav bar ends up with an arbitrary page background color rather than
+        // matching the adjacent bottom toolbar.
+        ChromeSharedPreferences.getInstance()
+                .writeInt(
+                        ChromePreferenceKeys.TOOLBAR_TOP_ANCHORED,
+                        ToolbarPositionAndSource.BOTTOM_SETTINGS);
+        assertFalse(mBase.useActiveTabColor());
     }
 }
