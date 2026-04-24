@@ -8,9 +8,9 @@
 namespace permissions {
 
 bool PermissionsClient::BraveCanBypassEmbeddingOriginCheck(
+    ContentSettingsType type,
     const GURL& requesting_origin,
-    const GURL& embedding_origin,
-    ContentSettingsType type) {
+    const GURL& embedding_origin) {
   return CanBypassEmbeddingOriginCheck(requesting_origin, embedding_origin);
 }
 

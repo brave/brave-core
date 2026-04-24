@@ -8,15 +8,8 @@
 #include "base/check.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/permissions/permission_lifetime_manager.h"
-#include "components/permissions/permissions_client.h"
 
-#define CanBypassEmbeddingOriginCheck(REQUESTING_ORIGIN, EMBEDDING_ORIGIN) \
-  BraveCanBypassEmbeddingOriginCheck(REQUESTING_ORIGIN, EMBEDDING_ORIGIN,  \
-                                     content_settings_type_)
-#define PermissionContextBase PermissionContextBase_ChromiumImpl
 #include <components/permissions/permission_context_base.cc>
-#undef CanBypassEmbeddingOriginCheck
-#undef PermissionContextBase
 
 namespace permissions {
 
@@ -24,9 +17,9 @@ PermissionContextBase::PermissionContextBase(
     content::BrowserContext* browser_context,
     ContentSettingsType content_settings_type,
     network::mojom::PermissionsPolicyFeature permissions_policy_feature)
-    : PermissionContextBase_ChromiumImpl(browser_context,
-                                         content_settings_type,
-                                         permissions_policy_feature) {}
+    : chromium_impl::PermissionContextBase(browser_context,
+                                           content_settings_type,
+                                           permissions_policy_feature) {}
 
 PermissionContextBase::~PermissionContextBase() = default;
 
@@ -54,7 +47,8 @@ void PermissionContextBase::PermissionDecided(
     }
   }
 
-  PermissionContextBase_ChromiumImpl::PermissionDecided(decision, request_data);
+  chromium_impl::PermissionContextBase::PermissionDecided(decision,
+                                                          request_data);
 }
 
 }  // namespace permissions
