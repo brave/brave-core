@@ -52,4 +52,10 @@ bool ContentBrowserClient::ShouldInheritStoragePartition(
   return false;
 }
 
+mojo::PendingRemote<local_ai::mojom::OnDeviceSpeechRecognitionService>
+ContentBrowserClient::GetOnDeviceSpeechRecognitionService(
+    BrowserContext* browser_context) {
+  return {};
+}
+
 }  // namespace content

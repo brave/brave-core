@@ -13,9 +13,11 @@
 
 #include "base/memory/scoped_refptr.h"
 #include "brave/browser/net/resource_context_data.h"
+#include "brave/components/local_ai/core/local_ai.mojom-forward.h"
 #include "chrome/browser/chrome_content_browser_client.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/content_browser_client.h"
+#include "media/mojo/mojom/speech_recognizer.mojom-forward.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/metrics/public/cpp/ukm_source_id.h"
 #include "third_party/blink/public/mojom/loader/referrer.mojom.h"
@@ -89,6 +91,15 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   brave_shields::mojom::ShieldsSettingsPtr WorkerGetBraveShieldSettings(
       const GURL& url,
       content::BrowserContext* browser_context) override;
+
+  mojo::PendingRemote<local_ai::mojom::OnDeviceSpeechRecognitionService>
+  GetOnDeviceSpeechRecognitionService(
+      content::BrowserContext* browser_context) override;
+
+  media::mojom::AvailabilityStatus
+  GetOnDeviceSpeechRecognitionAvailabilityStatus(
+      content::BrowserContext* context,
+      const std::string& language) override;
 
   content::ContentBrowserClient::AllowWebBluetoothResult AllowWebBluetooth(
       content::BrowserContext* browser_context,

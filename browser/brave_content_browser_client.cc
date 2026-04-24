@@ -40,6 +40,7 @@
 #include "brave/browser/profiles/brave_renderer_updater.h"
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/skus/skus_service_factory.h"
+#include "brave/browser/speech/on_device_speech_recognition_controller.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/local_ai/local_ai_ui.h"
 #include "brave/browser/ui/webui/local_ai/on_device_speech_recognition_worker_ui.h"
@@ -85,6 +86,7 @@
 #include "brave/components/global_privacy_control/global_privacy_control_utils.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_throttle.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
+#include "brave/components/local_ai/core/features.h"
 #include "brave/components/local_ai/core/local_ai.mojom.h"
 #include "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.h"
 #include "brave/components/password_strength_meter/password_strength_meter.mojom.h"
@@ -862,6 +864,30 @@ BraveContentBrowserClient::WorkerGetBraveShieldSettings(
       farbling_level, farbling_token, std::vector<std::string>(),
       brave_shields::IsReduceLanguageEnabledForProfile(pref_service),
       IsJsBlockingEnforced(browser_context, url));
+}
+
+mojo::PendingRemote<local_ai::mojom::OnDeviceSpeechRecognitionService>
+BraveContentBrowserClient::GetOnDeviceSpeechRecognitionService(
+    content::BrowserContext* browser_context) {
+  if (!base::FeatureList::IsEnabled(
+          local_ai::kBraveOnDeviceSpeechRecognition)) {
+    return {};
+  }
+  return speech::OnDeviceSpeechRecognitionController::Get()->MakeRemote();
+}
+
+media::mojom::AvailabilityStatus
+BraveContentBrowserClient::GetOnDeviceSpeechRecognitionAvailabilityStatus(
+    content::BrowserContext* context,
+    const std::string& language) {
+  if (base::FeatureList::IsEnabled(local_ai::kBraveOnDeviceSpeechRecognition)) {
+    if (l10n_util::GetLanguage(language) == "en") {
+      return media::mojom::AvailabilityStatus::kAvailable;
+    }
+    return media::mojom::AvailabilityStatus::kUnavailable;
+  }
+  return ChromeContentBrowserClient::
+      GetOnDeviceSpeechRecognitionAvailabilityStatus(context, language);
 }
 
 content::ContentBrowserClient::AllowWebBluetoothResult
