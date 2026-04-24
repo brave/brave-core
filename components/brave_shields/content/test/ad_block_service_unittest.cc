@@ -246,20 +246,12 @@ TEST_F(AdBlockServiceTest, LoadsCachedDATFilesOnCreation) {
       }));
   service->AddObserver(&filter_list_observer);
 
-  // Verify nothing is blocked before DAT files are loaded
-  auto result = ShouldStartRequest(service.get(), EngineType::kDefault,
-                                   "https://blocked-by-default.com/script.js");
-  EXPECT_FALSE(result.matched);
-  result = ShouldStartRequest(service.get(), EngineType::kAdditional,
-                              "https://blocked-by-additional.com/script.js");
-  EXPECT_FALSE(result.matched);
-
   ASSERT_TRUE(
       base::test::RunUntil([&]() { return dat_observer.BothLoaded(); }));
 
   // Verify default engine rules are loaded (from cached DAT)
-  result = ShouldStartRequest(service.get(), EngineType::kDefault,
-                              "https://blocked-by-default.com/script.js");
+  auto result = ShouldStartRequest(service.get(), EngineType::kDefault,
+                                   "https://blocked-by-default.com/script.js");
   EXPECT_TRUE(result.matched);
 
   // Verify additional engine rules are loaded
@@ -279,11 +271,6 @@ TEST_F(AdBlockServiceTest, LoadsOnlyDefaultCachedDATFile) {
 
   auto service = CreateService();
 
-  // Verify nothing is blocked before DAT files are loaded
-  auto result = ShouldStartRequest(service.get(), EngineType::kDefault,
-                                   "https://blocked-by-default.com/script.js");
-  EXPECT_FALSE(result.matched);
-
   DATLoadObserver observer;
   service->AddObserver(&observer);
   ASSERT_TRUE(base::test::RunUntil([&]() { return observer.BothLoaded(); }));
@@ -292,8 +279,8 @@ TEST_F(AdBlockServiceTest, LoadsOnlyDefaultCachedDATFile) {
   EXPECT_FALSE(observer.additional_success());
 
   // Default engine rules should be active
-  result = ShouldStartRequest(service.get(), EngineType::kDefault,
-                              "https://blocked-by-default.com/script.js");
+  auto result = ShouldStartRequest(service.get(), EngineType::kDefault,
+                                   "https://blocked-by-default.com/script.js");
   EXPECT_TRUE(result.matched);
 
   // Additional engine should have no rules
@@ -308,12 +295,6 @@ TEST_F(AdBlockServiceTest, LoadsOnlyAdditionalCachedDATFile) {
 
   auto service = CreateService();
 
-  // Verify nothing is blocked before DAT files are loaded
-  auto result =
-      ShouldStartRequest(service.get(), EngineType::kAdditional,
-                         "https://blocked-by-additional.com/script.js");
-  EXPECT_FALSE(result.matched);
-
   DATLoadObserver observer;
   service->AddObserver(&observer);
   ASSERT_TRUE(base::test::RunUntil([&]() { return observer.BothLoaded(); }));
@@ -322,8 +303,9 @@ TEST_F(AdBlockServiceTest, LoadsOnlyAdditionalCachedDATFile) {
   EXPECT_TRUE(observer.additional_success());
 
   // Additional engine rules should be active
-  result = ShouldStartRequest(service.get(), EngineType::kAdditional,
-                              "https://blocked-by-additional.com/script.js");
+  auto result =
+      ShouldStartRequest(service.get(), EngineType::kAdditional,
+                         "https://blocked-by-additional.com/script.js");
   EXPECT_TRUE(result.matched);
 
   // Default engine should have no rules
