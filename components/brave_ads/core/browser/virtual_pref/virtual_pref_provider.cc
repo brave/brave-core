@@ -13,7 +13,7 @@
 #include "base/values.h"
 #include "base/version_info/version_info.h"
 #include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
-#include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -122,7 +122,7 @@ base::DictValue GetSkus(const PrefService& local_state) {
 }
 
 bool IsSurveyPanelist(const PrefService& prefs) {
-  if (prefs.GetBoolean(brave_rewards::prefs::kDisabledByPolicy)) {
+  if (prefs.GetBoolean(prefs::kDisabledByPolicy)) {
     return false;
   }
   return prefs.GetBoolean(

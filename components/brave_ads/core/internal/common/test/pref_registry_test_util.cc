@@ -64,6 +64,8 @@ void RegisterProfilePrefs() {
 
   RegisterProfileStringPref(prefs::kBrowserVersionNumber, "");
 
+  RegisterProfileBooleanPref(prefs::kDisabledByPolicy, false);
+
   // Rewards prefs.
   RegisterProfileBooleanPref(brave_rewards::prefs::kEnabled, true);
   RegisterProfileBooleanPref(brave_rewards::prefs::kDisabledByPolicy, false);

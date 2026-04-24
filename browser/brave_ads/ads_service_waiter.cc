@@ -17,16 +17,16 @@ AdsServiceWaiter::AdsServiceWaiter(AdsService& ads_service)
 AdsServiceWaiter::~AdsServiceWaiter() = default;
 
 void AdsServiceWaiter::WaitForOnAdsServiceIneligibleToStart() {
-  // `OnAdsServiceIneligibleToStart` will not fire again if the service was
-  // marked ineligible before observation began.
+  // `OnAdsServiceIneligibleToStart` will not be notified again if the service
+  // was marked ineligible before observation began.
   if (!ads_service_->IsIneligibleToStart()) {
     on_ads_service_ineligible_to_start_run_loop_.Run();
   }
 }
 
 void AdsServiceWaiter::WaitForOnDidInitializeAdsService() {
-  // `OnDidInitializeAdsService` will not fire again if the service was already
-  // initialized before observation began.
+  // `OnDidInitializeAdsService` will not be notified again if the service was
+  // already initialized before observation began.
   if (!ads_service_->IsInitialized()) {
     on_did_initialize_ads_service_run_loop_.Run();
   }

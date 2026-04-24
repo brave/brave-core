@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_POLICY_BRAVE_SIMPLE_POLICY_MAP_H_
 
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
@@ -28,6 +29,10 @@
 #include "build/build_config.h"
 #include "components/policy/core/browser/configuration_policy_handler.h"
 #include "components/policy/policy_constants.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -72,6 +77,10 @@
 namespace policy {
 
 inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+    {policy::key::kBraveAdsDisabled, brave_ads::prefs::kDisabledByPolicy,
+     base::Value::Type::BOOLEAN},
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
     {policy::key::kBraveRewardsDisabled,
      brave_rewards::prefs::kDisabledByPolicy, base::Value::Type::BOOLEAN},
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
