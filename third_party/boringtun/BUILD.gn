@@ -3,6 +3,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//build/config/clang/clang.gni")
+import("//build/config/sysroot.gni")
+
 if (is_win) {
   _bt_out_filename = "boringtun.dll"
 } else if (is_linux) {
@@ -35,6 +38,8 @@ action("build_boringtun") {
     target_cpu,
     "--cargo-target-dir",
     rebase_path("$target_gen_dir/cargo-target", root_build_dir),
+    "--cc-binpath",
+    rebase_path("$clang_base_path/bin", root_build_dir),
     "--output-lib",
     rebase_path("$root_out_dir/$_bt_out_filename", root_build_dir),
     "--depfile",
@@ -43,6 +48,20 @@ action("build_boringtun") {
     rebase_path("$target_gen_dir/boringtun.stamp", root_build_dir),
     "--quiet-until-error",
   ]
+
+  if (sysroot != "") {
+    args += [
+      "--cc-sysroot",
+      rebase_path(sysroot, root_build_dir),
+    ]
+  }
+
+  if (is_mac) {
+    args += [
+      "--mac-min-version",
+      mac_deployment_target,
+    ]
+  }
 }
 
 group("boringtun") {

@@ -34,10 +34,4 @@ source_set("brave_vpn") {
   if (is_mac) {
     deps += [ "//brave/browser/brave_vpn/mac" ]
   }
-
-  # Make sure boringtun keeps getting built even if we don't use
-  # and don't distribute it (for now).
-  if (is_mac || is_win || is_linux) {
-    deps += [ "//brave/third_party/boringtun" ]
-  }
 }

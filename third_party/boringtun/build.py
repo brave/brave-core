@@ -110,6 +110,48 @@ def build_merged_vendor(target_dir: Path, project_vendor: Path,
     return merged
 
 
+def setup_cc_env(env, triple, target_os, target_cpu, binpath: Path,
+                 sysroot: Path, mac_min_version):
+    """Configure env vars for cc-rs and cargo's target linker.
+
+    Ring and other Rust crates that build C via build.rs use cc-rs,
+    which looks up CC_<triple>, CFLAGS_<triple>, AR_<triple>. Cargo
+    itself looks up CARGO_TARGET_<TRIPLE>_LINKER. All of these are
+    expected to be set consistently for a clean cross-compile.
+
+    CRATE_CC_NO_DEFAULTS=1 stops cc-rs from adding host-probed flags
+    on top of what we pass, which is essential for cross-builds where
+    host defaults would be wrong.
+    """
+    env['CRATE_CC_NO_DEFAULTS'] = '1'
+
+    triple_env_suffix_uc = triple.upper().replace('-', '_')
+    triple_env_suffix_lc = triple_env_suffix_uc.lower()
+
+    cc_name = 'clang-cl.exe' if target_os == 'win' else 'clang'
+    ar_name = 'llvm-ar.exe' if target_os == 'win' else 'llvm-ar'
+    link_name = 'lld-link.exe' if target_os == 'win' else 'clang'
+
+    if binpath:
+        clang_path = binpath / cc_name
+        ar_path = binpath / ar_name
+        linker_path = binpath / link_name
+        for tool, label in [(clang_path, 'CC'), (ar_path, 'AR'),
+                            (linker_path, 'Linker')]:
+            if not tool.is_file():
+                raise FileNotFoundError(f'{label} not found at {tool}')
+        env['CC_' + triple_env_suffix_lc] = str(clang_path)
+        env['AR_' + triple_env_suffix_lc] = str(ar_path)
+        env[f'CARGO_TARGET_{triple_env_suffix_uc}_LINKER'] = str(linker_path)
+
+    cflags = [f'--target={triple}']
+    if sysroot:
+        cflags.append(f'--sysroot={sysroot}')
+    if target_os == 'mac' and mac_min_version:
+        cflags.append(f'-mmacosx-version-min={mac_min_version}')
+    env[f"CFLAGS_{triple_env_suffix_lc}"] = ' '.join(cflags)
+
+
 def run_cargo(cargo,
               manifest,
               triple,
@@ -188,6 +230,9 @@ def main():
                     required=True,
                     choices=['x86', 'x64', 'arm64'])
     ap.add_argument('--cargo-target-dir')
+    ap.add_argument('--cc-binpath')
+    ap.add_argument('--cc-sysroot')
+    ap.add_argument('--mac-min-version')
     ap.add_argument('--output-lib',
                     help='Optional extra path to copy the built lib to.')
     ap.add_argument('--depfile', help='Write this depfile for GN.')
@@ -285,16 +330,25 @@ def main():
         env['RUSTC'] = str(bundled_rustc)
         env['PATH'] = str(toolchain_bin) + os.pathsep + env.get('PATH', '')
 
+    bin_path = Path(args.cc_binpath).resolve() if args.cc_binpath else None
+    sysroot_path = Path(args.cc_sysroot).resolve() if args.cc_sysroot else None
+
     log(f'cargo:            {cargo}')
     log(f'rustc:            {env.get("RUSTC", "(default, via PATH)")}')
     log(f'CARGO_HOME:       {cargo_home}')
     log(f'CARGO_TARGET_DIR: {target_dir}')
+    log(f'CC path:          {bin_path}')
+    log(f'sysroot:          {sysroot_path}')
 
     lib_filename = LIB_NAME[args.target_os]
     out_dir = boringtun / 'bin'
     out_dir.mkdir(parents=True, exist_ok=True)
     built_lib = out_dir / lib_filename
     triple = TRIPLE[(args.target_os, args.target_cpu)]
+
+    # Set up any necessary C compiler env vars for build scripts.
+    setup_cc_env(env, triple, args.target_os, args.target_cpu, bin_path,
+                 sysroot_path, args.mac_min_version)
 
     # Decide whether to compile std from source. Brave's bundled rust
     # toolchain ships prebuilt rust-std only for the host triple per
