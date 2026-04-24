@@ -14,7 +14,6 @@
 #include "components/permissions/permission_request_data.h"
 #include "components/permissions/permission_request_id.h"
 #include "components/permissions/permission_request_manager.h"
-#include "components/permissions/resolvers/content_setting_permission_resolver.h"
 #include "components/permissions/test/mock_permission_prompt_factory.h"
 #include "content/public/browser/permission_descriptor_util.h"
 #include "content/public/browser/permission_result.h"
@@ -41,12 +40,12 @@ class BraveOpenAIChatPermissionContextTest
         PermissionRequestID::RequestLocalId());
     content::PermissionStatus status;
     base::RunLoop run_loop;
+    auto request_data = std::make_unique<PermissionRequestData>(
+        blink::mojom::PermissionDescriptorPtr{}, id,
+        /*user_gesture=*/true, url);
+    request_data->request_type = RequestType::kBraveOpenAIChat;
     permission_context->RequestPermission(
-        std::make_unique<PermissionRequestData>(
-            std::make_unique<permissions::ContentSettingPermissionResolver>(
-                RequestType::kBraveOpenAIChat),
-            id,
-            /*user_gesture=*/true, url),
+        std::move(request_data),
         base::BindLambdaForTesting([&](content::PermissionResult result) {
           status = result.status;
           run_loop.Quit();
