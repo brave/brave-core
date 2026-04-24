@@ -1,0 +1,36 @@
+caption: Disable Email Aliases
+default: null
+desc: |-
+  Disable Email Aliases in Brave.
+
+  Email Aliases is a feature that allows users to sign up for services anonymously and keep their emails free from spam.
+
+            If this policy is set to true, Email Aliases will always be disabled and all related UI elements will be hidden.
+
+            If this policy is set to false, Email Aliases will always be enabled.
+
+            If you set this policy, users cannot change or override it.
+
+            If this policy is left unset, Email Aliases will be enabled by default (subject to user preferences).
+example_value: true
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: false
+  per_profile: true
+items:
+- caption: Enable Email Aliases
+  value: false
+- caption: Disable Email Aliases
+  value: true
+- caption: Allow the user to decide
+  value: null
+owners:
+- ssahib@brave.com
+- boocmp@brave.com
+schema:
+  type: boolean
+supported_on:
+- chrome.*:147-
+tags: []
+type: main

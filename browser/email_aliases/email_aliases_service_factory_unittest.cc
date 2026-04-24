@@ -13,10 +13,12 @@
 #include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/email_aliases/features.h"
+#include "brave/components/email_aliases/pref_names.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
 #include "components/os_crypt/async/browser/test_utils.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/test/browser_task_environment.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -24,13 +26,6 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace email_aliases {
-
-class FakeEmailAliasesServiceObserver
-    : public mojom::EmailAliasesServiceObserver {
- public:
-  FakeEmailAliasesServiceObserver() = default;
-  ~FakeEmailAliasesServiceObserver() override = default;
-};
 
 class EmailAliasesServiceFactoryTest : public ::testing::Test {
  protected:
@@ -75,6 +70,38 @@ TEST_F(EmailAliasesServiceFactoryTest, NoServiceWhenFeatureDisabled) {
   auto* profile = profile_manager_.CreateTestingProfile("test");
   auto* service = EmailAliasesServiceFactory::GetServiceForProfile(profile);
   EXPECT_EQ(service, nullptr);
+}
+
+TEST_F(EmailAliasesServiceFactoryTest, ServiceWithPolicy) {
+  scoped_feature_list_.Reset();
+  scoped_feature_list_.InitWithFeatures(
+      {brave_account::features::BraveAccountFeatureForTesting(),
+       features::kEmailAliases},
+      {});
+  auto* profile = profile_manager_.CreateTestingProfile("test");
+
+  brave_account::BraveAccountServiceFactory::GetInstance()->SetTestingFactory(
+      profile, base::BindLambdaForTesting([&](content::BrowserContext* context)
+                                              -> std::unique_ptr<KeyedService> {
+        return std::make_unique<brave_account::BraveAccountService>(
+            user_prefs::UserPrefs::Get(context),
+            test_url_loader_factory_.GetSafeWeakWrapper());
+      }));
+
+  {
+    // Policy off
+    profile->GetTestingPrefService()->SetManagedPref(
+        prefs::kEmailAliasesDisabledByPolicy, base::Value(false));
+    auto* service = EmailAliasesServiceFactory::GetServiceForProfile(profile);
+    EXPECT_NE(service, nullptr);
+  }
+  {
+    // Policy on
+    profile->GetTestingPrefService()->SetManagedPref(
+        prefs::kEmailAliasesDisabledByPolicy, base::Value(true));
+    auto* service = EmailAliasesServiceFactory::GetServiceForProfile(profile);
+    EXPECT_EQ(service, nullptr);
+  }
 }
 
 #if !BUILDFLAG(IS_ANDROID)

@@ -8,6 +8,9 @@
 
 namespace email_aliases::prefs {
 
+inline constexpr char kEmailAliasesDisabledByPolicy[] =
+    "brave.email_aliases.disabled_by_policy";
+
 // Preference key for storing the aliases notes.
 inline constexpr char kEmailAliasesNotes[] = "brave.email_aliases.notes";
 
