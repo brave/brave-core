@@ -874,6 +874,8 @@ static_library("internal") {
     "serving/targeting/condition_matcher/matchers/regex_condition_matcher_util.h",
     "serving/targeting/condition_matcher/prefs/condition_matcher_pref_util.cc",
     "serving/targeting/condition_matcher/prefs/condition_matcher_pref_util.h",
+    "serving/targeting/condition_matcher/prefs/internal/condition_matcher_feature_pref_util_internal.cc",
+    "serving/targeting/condition_matcher/prefs/internal/condition_matcher_feature_pref_util_internal.h",
     "serving/targeting/condition_matcher/prefs/internal/condition_matcher_keyword_path_component_util.cc",
     "serving/targeting/condition_matcher/prefs/internal/condition_matcher_keyword_path_component_util.h",
     "serving/targeting/condition_matcher/prefs/internal/condition_matcher_pref_util_internal.cc",

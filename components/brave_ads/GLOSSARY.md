@@ -20,6 +20,7 @@ A place to define all specific terms and vocabulary for the Brave Ads component,
 | Catalog  | A collection of available campaigns, creative sets and creative instances.  |
 | Click  | Refers to a user interacting with an advertisement by clicking on the ad.  |
 | Click-through rate  | The percentage of ad impressions that result in clicks.  |
+| Condition matcher  | One or more pref path and condition pairs, evaluated with AND logic on the user's device, that must all match before a new tab page ad can be served. Paths may reference stored prefs or virtual prefs computed at runtime, and conditions may use epoch, numerical, regex, or pattern operators.  |
 | Confirmations  | Confirm events, i.e., views, without revealing to Brave the particular user involved. See [security and privacy model for ad confirmations](https://github.com/brave/brave-browser/wiki/Security-and-privacy-model-for-ad-confirmations).  |
 | Contextual  | Contextual advertising targets ads based on the web page's content or the user's online activity context to deliver relevant and personalized advertisements.  |
 | Conversion  | When a user triggers an action, it is counted as a conversion. Conversions include making a purchase or signing up for a newsletter.  |
