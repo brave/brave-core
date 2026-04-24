@@ -36,22 +36,21 @@ export class TrezorBridgeTransport extends MessagingTransport {
    * `T` is response type, e.g. UnlockResponse. Resolves as `false` if transport
    * error
    */
-  sendCommandToTrezorFrame = <T>(
+  sendCommandToTrezorFrame = async <T>(
     command: TrezorFrameCommand,
   ): Promise<T | TrezorErrorsCodes> => {
-    return new Promise<T | TrezorErrorsCodes>(async (resolve) => {
-      if (!this.bridge && !this.hasBridgeCreated()) {
-        this.bridge = await this.createBridge()
-      }
-      if (!this.bridge || !this.bridge.contentWindow) {
-        resolve(TrezorErrorsCodes.BridgeNotReady)
-        return
-      }
+    if (!this.bridge && !this.hasBridgeCreated()) {
+      this.bridge = await this.createBridge()
+    }
+    if (!this.bridge || !this.bridge.contentWindow) {
+      return TrezorErrorsCodes.BridgeNotReady
+    }
+    return new Promise<T | TrezorErrorsCodes>((resolve) => {
       if (!this.addCommandHandler(command.id, resolve)) {
         resolve(TrezorErrorsCodes.CommandInProgress)
         return
       }
-      this.bridge.contentWindow.postMessage(command, this.bridgeFrameUrl)
+      this.bridge!.contentWindow!.postMessage(command, this.bridgeFrameUrl)
     })
   }
 
