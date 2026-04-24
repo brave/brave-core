@@ -136,7 +136,7 @@ void BraveSearchEnginesHandler::HandleSetDefaultPrivateSearchEngine(
   CHECK_EQ(1U, args.size());
   int index = args[0].GetInt();
   if (index < 0 || static_cast<size_t>(index) >=
-                       list_controller_.table_model()->RowCount()) {
+                       list_controller_.table_model()->engine_count()) {
     return;
   }
 
