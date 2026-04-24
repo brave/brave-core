@@ -13,6 +13,7 @@
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/check_op.h"
+#include "base/feature_list.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
@@ -40,6 +41,7 @@
 #include "chrome/browser/ui/views/tabs/tab_slot_view.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_observer.h"
+#include "components/prefs/pref_service.h"
 #include "components/tab_groups/tab_group_id.h"
 #include "components/tabs/public/tab_group.h"
 #include "content/public/browser/web_contents.h"
@@ -79,6 +81,14 @@ BraveTabStrip::BraveTabStrip(
       controller_->GetBrowserWindowInterface()->GetProfile()->GetPrefs(),
       base::BindRepeating(&BraveTabStrip::OnTabMinWidthModePrefChanged,
                           base::Unretained(this)));
+  if (base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)) {
+    scrollable_horizontal_tab_strip_.Init(
+        brave_tabs::kScrollableHorizontalTabStrip,
+        controller_->GetBrowserWindowInterface()->GetProfile()->GetPrefs(),
+        base::BindRepeating(
+            &BraveTabStrip::OnScrollableHorizontalTabStripPrefChanged,
+            base::Unretained(this)));
+  }
 }
 
 BraveTabStrip::~BraveTabStrip() = default;
@@ -138,15 +148,14 @@ bool BraveTabStrip::IsVerticalTabsAnimatingButNotFinalState() const {
 }
 
 bool BraveTabStrip::CanPaintThrobberToLayer() const {
-  if (!ShouldShowVerticalTabs() &&
-      !base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)) {
-    return TabStrip::CanPaintThrobberToLayer();
+  if (static_cast<BraveTabContainer*>(tab_container_)->GetScrollDirection()) {
+    // Don't allow throbber to be painted to layer. When tabs are scrollable,
+    // a tab could be out of the viewport. Otherwise, throbber would be
+    // painted even when the tab is not in the viewport.
+    return false;
   }
 
-  // Don't allow throbber to be painted to layer. When tabs are scrollable,
-  // a tab could be out of the viewport. Otherwise, throbber would be
-  // painted even when the tab is not in the viewport.
-  return false;
+  return TabStrip::CanPaintThrobberToLayer();
 }
 
 bool BraveTabStrip::CanCloseTabViaMiddleButtonClick() const {
@@ -355,13 +364,27 @@ void BraveTabStrip::OnTabMinWidthModePrefChanged() {
   tab_container_->InvalidateLayout();
 }
 
+void BraveTabStrip::OnScrollableHorizontalTabStripPrefChanged() {
+  InvalidateTabContainerLayout();
+}
+
 brave_tabs::TabMinWidthMode BraveTabStrip::GetTabMinWidthMode() const {
+  const PrefService* prefs =
+      controller_->GetBrowserWindowInterface()->GetProfile()->GetPrefs();
+  if (!brave_tabs::IsScrollableHorizontalTabStripEnabled(prefs)) {
+    return brave_tabs::TabMinWidthMode::kDefault;
+  }
   return static_cast<brave_tabs::TabMinWidthMode>(
       tab_min_width_mode_.GetValue());
 }
 
 TabContainer* BraveTabStrip::GetTabContainerForTesting() {
   return tab_container_.get();  // IN-TEST
+}
+
+void BraveTabStrip::InvalidateTabContainerLayout() {
+  tab_container_->InvalidateIdealBounds();
+  tab_container_->InvalidateLayout();
 }
 
 bool BraveTabStrip::ShouldPaintTabAccent(const Tab* tab) const {
