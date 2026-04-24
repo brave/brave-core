@@ -17,7 +17,6 @@
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/mojom/ollama.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
-#include "components/os_crypt/sync/os_crypt_mocker.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -49,7 +48,6 @@ class OllamaModelFetcherTest : public testing::Test {
   ~OllamaModelFetcherTest() override = default;
 
   void SetUp() override {
-    OSCryptMocker::SetUp();
     prefs::RegisterProfilePrefs(pref_service_.registry());
     ModelService::RegisterProfilePrefs(pref_service_.registry());
 
@@ -62,8 +60,6 @@ class OllamaModelFetcherTest : public testing::Test {
     ollama_model_fetcher_ = std::make_unique<OllamaModelFetcher>(
         *model_service_, &pref_service_, mock_delegate_.get());
   }
-
-  void TearDown() override { OSCryptMocker::TearDown(); }
 
   ModelService* model_service() { return model_service_.get(); }
   OllamaModelFetcher* ollama_model_fetcher() {

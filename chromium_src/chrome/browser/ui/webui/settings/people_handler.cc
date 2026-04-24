@@ -17,11 +17,10 @@
     syncer::BraveSyncServiceImpl* brave_sync_service =                       \
         static_cast<syncer::BraveSyncServiceImpl*>(service);                 \
     if (brave_sync_service) {                                                \
-      bool failed_to_decrypt = false;                                        \
-      brave_sync_service->prefs().GetSeed(&failed_to_decrypt);               \
-      sync_status.Set("hasSyncWordsDecryptionError", failed_to_decrypt);     \
+      auto seed = brave_sync_service->prefs().GetSeed();                     \
+      sync_status.Set("hasSyncWordsDecryptionError", !seed.has_value());     \
       sync_status.Set("isOsEncryptionAvailable",                             \
-                      OSCrypt::IsEncryptionAvailable());                     \
+                      brave_sync_service->prefs().IsEncryptionAvailable());  \
     }                                                                        \
   }
 

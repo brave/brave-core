@@ -7,11 +7,13 @@
 #define BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_PREFS_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/memory/raw_ref.h"
 #include "base/values.h"
 #include "build/build_config.h"
+#include "components/os_crypt/async/common/encryptor.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -37,7 +39,7 @@ class Prefs {
 
   static std::string GetSeedPath();
 
-  std::string GetSeed(bool* failed_to_decrypt) const;
+  std::optional<std::string> GetSeed() const;
   bool SetSeed(const std::string& seed);
 
   bool IsSyncAccountDeletedNoticePending() const;
@@ -55,11 +57,15 @@ class Prefs {
   void SetAddLeaveChainDetailBehaviourForTests(
       AddLeaveChainDetailBehaviour add_leave_chain_detail_behaviour);
 
+  void SetEncryptor(os_crypt_async::Encryptor encryptor);
+  bool IsEncryptionAvailable() const;
+
   void Clear();
 
  private:
   const raw_ref<PrefService> pref_service_;
   AddLeaveChainDetailBehaviour add_leave_chain_detail_behaviour_;
+  std::optional<os_crypt_async::Encryptor> encryptor_;
 };
 
 void MigrateBraveSyncPrefs(PrefService* prefs);

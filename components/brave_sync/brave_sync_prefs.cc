@@ -13,7 +13,6 @@
 #include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "build/build_config.h"
-#include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -123,36 +122,34 @@ std::string Prefs::GetSeedPath() {
   return kSyncV2Seed;
 }
 
-std::string Prefs::GetSeed(bool* failed_to_decrypt) const {
-  CHECK(failed_to_decrypt);
-  *failed_to_decrypt = true;
-
+std::optional<std::string> Prefs::GetSeed() const {
   const auto& encoded_seed = pref_service_->GetString(kSyncV2Seed);
   if (encoded_seed.empty()) {
-    *failed_to_decrypt = false;
+    // Not a failure.
     return std::string();
   }
 
   std::string encrypted_seed;
   if (!base::Base64Decode(encoded_seed, &encrypted_seed)) {
     LOG(ERROR) << "base64 decode sync seed failure";
-    return std::string();
+    return std::nullopt;
   }
 
   std::string seed;
-  if (!OSCrypt::DecryptString(encrypted_seed, &seed)) {
+  CHECK(encryptor_);
+  if (!encryptor_->DecryptString(encrypted_seed, &seed)) {
     LOG(ERROR) << "Decrypt sync seed failure";
-    return std::string();
+    return std::nullopt;
   }
 
-  *failed_to_decrypt = false;
   return seed;
 }
 
 bool Prefs::SetSeed(const std::string& seed) {
   DCHECK(!seed.empty());
   std::string encrypted_seed;
-  if (!OSCrypt::EncryptString(seed, &encrypted_seed)) {
+  CHECK(encryptor_);
+  if (!encryptor_->EncryptString(seed, &encrypted_seed)) {
     LOG(ERROR) << "Encrypt sync seed failure";
     return false;
   }
@@ -222,6 +219,15 @@ std::string Prefs::GetLeaveChainDetailsPathForTests() {
 void Prefs::SetAddLeaveChainDetailBehaviourForTests(
     AddLeaveChainDetailBehaviour add_leave_chain_detail_behaviour) {
   add_leave_chain_detail_behaviour_ = add_leave_chain_detail_behaviour;
+}
+
+void Prefs::SetEncryptor(os_crypt_async::Encryptor encryptor) {
+  encryptor_ = std::move(encryptor);
+}
+
+bool Prefs::IsEncryptionAvailable() const {
+  CHECK(encryptor_.has_value());
+  return encryptor_->IsEncryptionAvailable();
 }
 
 void Prefs::Clear() {

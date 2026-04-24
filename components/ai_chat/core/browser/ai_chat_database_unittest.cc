@@ -1179,7 +1179,6 @@ class AIChatDatabaseMigrationTest : public testing::Test,
   AIChatDatabaseMigrationTest() = default;
 
   void SetUp() override {
-    OSCryptMocker::SetUp();
     CHECK(temp_directory_.CreateUniqueTempDir());
     database_dump_location_ = database_dump_location_.AppendASCII("brave")
                                   .AppendASCII("components")
@@ -1212,7 +1211,6 @@ class AIChatDatabaseMigrationTest : public testing::Test,
               meta_table.GetCompatibleVersionNumber());
     EXPECT_EQ(kCurrentDatabaseVersion, meta_table.GetVersionNumber());
     db.Close();
-    OSCryptMocker::TearDown();
     task_environment_.RunUntilIdle();
     ASSERT_TRUE(temp_directory_.Delete());
   }

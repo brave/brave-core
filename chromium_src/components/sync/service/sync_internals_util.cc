@@ -28,17 +28,16 @@ base::DictValue ConstructAboutInformation(
       section_brave_sync.AddBoolStat("Passphrase is set");
   BraveSyncServiceImpl* brave_sync_service =
       static_cast<BraveSyncServiceImpl*>(service);
-  bool failed_to_decrypt = false;
-  std::string seed = brave_sync_service->prefs().GetSeed(&failed_to_decrypt);
+  std::optional<std::string> seed = brave_sync_service->prefs().GetSeed();
   // If the passphrase has been set, either we can see it or we failed to
   // decrypt it
-  bool is_passphrase_set_val = !seed.empty() || failed_to_decrypt;
+  bool is_passphrase_set_val = !seed || !seed->empty();
   is_passphrase_set->Set(is_passphrase_set_val);
 
   // OSCrypt behavior varies depending on OS. It is possible that
   // OSCrypt::IsEncryptionAvailable reports false, but OSCrypt::DecryptString
   // succeeds. So put the additional field with actual decryption result.
-  if (failed_to_decrypt) {
+  if (!seed) {
     Stat<bool>* failed_to_decrypt_passphrase =
         section_brave_sync.AddBoolStat("Passphrase decryption failed");
     failed_to_decrypt_passphrase->Set(true);
@@ -46,7 +45,8 @@ base::DictValue ConstructAboutInformation(
 
   Stat<bool>* is_os_encryption_available =
       section_brave_sync.AddBoolStat("OS encryption available");
-  is_os_encryption_available->Set(OSCrypt::IsEncryptionAvailable());
+  is_os_encryption_available->Set(
+      brave_sync_service->prefs().IsEncryptionAvailable());
 
   Stat<std::string>* leave_chain_details =
       section_brave_sync.AddStringStat("Leave chain details");
