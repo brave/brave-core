@@ -1,5 +1,5 @@
 diff --git a/tools/gritsettings/resource_ids.spec b/tools/gritsettings/resource_ids.spec
-index 8d1b243710f81537a54871c770b1fd34b7e83440..f1ed988d32b28e07ccff153328c8b6db5d53a098 100644
+index 591fac265d15cdaf922cec2ebce931261f0340a8..fb4dcf3deacb4e0b5ee1955706917baddbe6e1cc 100644
 --- a/tools/gritsettings/resource_ids.spec
 +++ b/tools/gritsettings/resource_ids.spec
 @@ -38,6 +38,12 @@
@@ -15,7 +15,7 @@ index 8d1b243710f81537a54871c770b1fd34b7e83440..f1ed988d32b28e07ccff153328c8b6db
    "chrome/app/google_chrome_strings.grd": {
      "messages": [800],
    },
-@@ -431,7 +437,7 @@
+@@ -435,7 +441,7 @@
      "includes": [3900],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/extensions/resources.grd": {
@@ -24,7 +24,7 @@ index 8d1b243710f81537a54871c770b1fd34b7e83440..f1ed988d32b28e07ccff153328c8b6db
      "includes": [3920],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/extensions_zero_state_promo/resources.grd": {
-@@ -471,7 +477,7 @@
+@@ -475,7 +481,7 @@
      "includes": [4035],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/history/resources.grd": {
@@ -33,7 +33,7 @@ index 8d1b243710f81537a54871c770b1fd34b7e83440..f1ed988d32b28e07ccff153328c8b6db
      "includes": [4040],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/indigo/resources.grd": {
-@@ -639,7 +645,7 @@
+@@ -643,7 +649,7 @@
      "includes": [4720],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings/resources.grd": {
@@ -42,7 +42,7 @@ index 8d1b243710f81537a54871c770b1fd34b7e83440..f1ed988d32b28e07ccff153328c8b6db
      "includes": [4740],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings_shared/resources.grd": {
-@@ -667,7 +673,7 @@
+@@ -671,7 +677,7 @@
      "includes": [4820],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/side_panel/customize_chrome/resources.grd": {
@@ -51,7 +51,7 @@ index 8d1b243710f81537a54871c770b1fd34b7e83440..f1ed988d32b28e07ccff153328c8b6db
      "includes": [4840],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/side_panel/history/resources.grd": {
-@@ -1130,6 +1136,12 @@
+@@ -1134,6 +1140,12 @@
      "META": {"join": 2},
      "messages": [7020],
    },
@@ -64,7 +64,7 @@ index 8d1b243710f81537a54871c770b1fd34b7e83440..f1ed988d32b28e07ccff153328c8b6db
    "components/components_google_chrome_strings.grd": {
      "messages": [7020],
    },
-@@ -1650,11 +1662,11 @@
+@@ -1664,11 +1676,11 @@
      "includes": [9980],
    },
    "<(SHARED_INTERMEDIATE_DIR)/ui/webui/resources/webui_code_cache_resources.grd": {

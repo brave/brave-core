@@ -22,13 +22,13 @@ index a08f783b268a791fafb2387d9c1490bf2ffa4161..b73b54356b9065c0ca54bf38e07d9bc9
 +  virtual bool GetAlwaysShowLabel() const = 0;
 +  virtual std::optional<int> GetOverrideHeight() const = 0;
 +  virtual std::optional<int> GetOverrideTriggerableEvent() const = 0;
-
+ 
    virtual void AddObserver(PageActionModelObserver* observer) = 0;
    virtual void RemoveObserver(PageActionModelObserver* observer) = 0;
-@@ -130,6 +146,31 @@ class PageActionModel : public PageActionModelInterface {
+@@ -126,6 +142,31 @@ class PageActionModel : public PageActionModelInterface {
    PageActionModel& operator=(const PageActionModel&) = delete;
    ~PageActionModel() override;
-
+ 
 +  void SetOverrideChipColors(
 +      PageActionPassKey,
 +      std::optional<SkColor> override_background_color,
@@ -56,8 +56,8 @@ index a08f783b268a791fafb2387d9c1490bf2ffa4161..b73b54356b9065c0ca54bf38e07d9bc9
 +
    void AddObserver(PageActionModelObserver* observer) override;
    void RemoveObserver(PageActionModelObserver* observer) override;
-
-@@ -223,6 +264,10 @@ class PageActionModel : public PageActionModelInterface {
+ 
+@@ -216,6 +257,10 @@ class PageActionModel : public PageActionModelInterface {
    // per-property reentrancy checks.
    enum class Property {
      kShowRequested,

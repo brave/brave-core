@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
-index c539021cac45f33ba567b6f689d52cd6011a48fa..e156ea055ee39558ffb427b5e2f9b6857cf09699 100644
+index 96b20f2cc4ef52470fb1f9f5006d9bd9c2fb3fc1..af4470acfe957fc106291017b196b19843c764a9 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
 @@ -26,7 +26,7 @@ public final class SearchIndexProviderRegistry {
@@ -11,7 +11,7 @@ index c539021cac45f33ba567b6f689d52cd6011a48fa..e156ea055ee39558ffb427b5e2f9b685
                      org.chromium.chrome.browser.about_settings.AboutChromeSettings
                              .SEARCH_INDEX_DATA_PROVIDER,
                      org.chromium.chrome.browser.toolbar.adaptive.settings
-@@ -100,8 +100,6 @@ public final class SearchIndexProviderRegistry {
+@@ -102,8 +102,6 @@ public final class SearchIndexProviderRegistry {
                              .SEARCH_INDEX_DATA_PROVIDER,
                      org.chromium.chrome.browser.autofill.settings.AndroidPaymentAppsFragment
                              .SEARCH_INDEX_DATA_PROVIDER,
@@ -20,7 +20,7 @@ index c539021cac45f33ba567b6f689d52cd6011a48fa..e156ea055ee39558ffb427b5e2f9b685
                      org.chromium.chrome.browser.autofill.settings.AutofillBuyNowPayLaterFragment
                              .SEARCH_INDEX_DATA_PROVIDER,
                      org.chromium.chrome.browser.autofill.settings.AutofillCardBenefitsFragment
-@@ -120,14 +118,10 @@ public final class SearchIndexProviderRegistry {
+@@ -126,14 +124,10 @@ public final class SearchIndexProviderRegistry {
                              .SEARCH_INDEX_DATA_PROVIDER,
                      org.chromium.chrome.browser.ssl.HttpsFirstModeSettingsFragment
                              .SEARCH_INDEX_DATA_PROVIDER,
@@ -35,7 +35,7 @@ index c539021cac45f33ba567b6f689d52cd6011a48fa..e156ea055ee39558ffb427b5e2f9b685
                      org.chromium.chrome.browser.safety_check.SafetyCheckSettingsFragment
                              .SEARCH_INDEX_DATA_PROVIDER,
                      org.chromium.chrome.browser.tasks.tab_management.TabsSettings
-@@ -144,6 +138,7 @@ public final class SearchIndexProviderRegistry {
+@@ -150,6 +144,7 @@ public final class SearchIndexProviderRegistry {
                              .SEARCH_INDEX_DATA_PROVIDER,
                      org.chromium.chrome.browser.tracing.settings.TracingSettings
                              .SEARCH_INDEX_DATA_PROVIDER,

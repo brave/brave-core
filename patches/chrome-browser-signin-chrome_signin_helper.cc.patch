@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/signin/chrome_signin_helper.cc b/chrome/browser/signin/chrome_signin_helper.cc
-index b8976d02ad591cdf241ab6cb5aa19bc21d3fe56f..3e621abb5b6388e275e631e38b6b19baba70862f 100644
+index c6a47e6d5f8e99372ad8110d7e2257ccffb193ef..f0f06564fdb8096ef59633e782d62f991b10ab20 100644
 --- a/chrome/browser/signin/chrome_signin_helper.cc
 +++ b/chrome/browser/signin/chrome_signin_helper.cc
-@@ -251,6 +251,7 @@ void ProcessMirrorHeader(
+@@ -244,6 +244,7 @@ void ProcessMirrorHeader(
    // Do not allow non-Google origins to open incognito windows.
    // TODO(crbug.com/40064889): Expand this check to all Mirror headers,
    //                          regardless of `service_type`.

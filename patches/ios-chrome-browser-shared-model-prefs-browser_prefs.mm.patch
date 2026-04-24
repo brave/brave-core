@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index a991e45660ba7718f4e67cfa13ee783c3acc1283..ad57013c5ffc63d367b76cd84e8a0b704ae34d67 100644
+index 18b992f790f7688ba83fc1c981b6ae46b6b10558..d348c367c08aff32c457c70af56ee106433f7a97 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -576,6 +576,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -550,6 +550,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
    // Deprecated 01/2026.
    registry->RegisterListPref(kMagicStackSafetyCheckNotificationsShown);
    registry->RegisterListPref(kBottomOmniboxByDefault);
@@ -10,7 +10,7 @@ index a991e45660ba7718f4e67cfa13ee783c3acc1283..ad57013c5ffc63d367b76cd84e8a0b70
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1034,6 +1035,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -1002,6 +1003,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    // Deprecated 12/2025.
    registry->RegisterStringPref(kAutofillStatesDataDir, std::string());
    registry->RegisterBooleanPref(prefs::kIosMiniMapShowNativeMap, true);

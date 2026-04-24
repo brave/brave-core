@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/scheduler/scheduled_action.cc b/third_party/blink/renderer/core/scheduler/scheduled_action.cc
-index f16b775b33c44fc2e1ab6724b6da936c1c895404..de0defc3aebd1712e976809f99e88d1661c03c24 100644
+index b43d781c4a1b439a1a821a83b87006eaf6f374ea..6a6b98a3607bc6e1d7c6b72713724064807a45df 100644
 --- a/third_party/blink/renderer/core/scheduler/scheduled_action.cc
 +++ b/third_party/blink/renderer/core/scheduler/scheduled_action.cc
 @@ -84,6 +84,7 @@ ScheduledAction::ScheduledAction(ScriptState* script_state,

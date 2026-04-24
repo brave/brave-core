@@ -1,5 +1,5 @@
 diff --git a/third_party/search_engines_data/BUILD.gn b/third_party/search_engines_data/BUILD.gn
-index 7cea872118fbadfacb42ce97c3222007a6b047fd..def1687351a2274bf1c0729da9655dccb6f0870b 100644
+index 47d965df9a375c2003db45f501fdfdc1b1f5445e..75bae16c7f74dcb99d254f46cef45ec54bdff84b 100644
 --- a/third_party/search_engines_data/BUILD.gn
 +++ b/third_party/search_engines_data/BUILD.gn
 @@ -17,6 +17,7 @@ json_to_struct("prepopulated_engines") {

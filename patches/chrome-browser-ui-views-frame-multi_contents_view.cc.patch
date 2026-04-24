@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/multi_contents_view.cc b/chrome/browser/ui/views/frame/multi_contents_view.cc
-index 6d4c7cd1b3f1e8f0a4f2eae52f0363e323f8a3b0..eb30f037d7c9a7d76584e450db5d9d2996e44469 100644
+index 47ced2eadfdce5f8f3be4e437c708711ef956fd2..ff53cb6a794f57d340305182f9467161a9cdd772 100644
 --- a/chrome/browser/ui/views/frame/multi_contents_view.cc
 +++ b/chrome/browser/ui/views/frame/multi_contents_view.cc
 @@ -81,7 +81,7 @@ MultiContentsView::MultiContentsView(

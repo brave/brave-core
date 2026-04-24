@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 6789a0bbbf47a56b97b47e8260c2bad5a5c649ea..9686b8a70b5357d246fc801b9885dbd8a8331e80 100644
+index 6283645c1bd62dbfe03078888edea9b1f42e59ca..0aa7958b555f6a39c3006f4718a90c4a91c430f9 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -62,7 +62,9 @@ by a child template that "extends" this file.
@@ -86,7 +86,7 @@ index 6789a0bbbf47a56b97b47e8260c2bad5a5c649ea..9686b8a70b5357d246fc801b9885dbd8
              <meta-data android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
          </activity-alias>
-@@ -910,6 +927,7 @@ by a child template that "extends" this file.
+@@ -954,6 +971,7 @@ by a child template that "extends" this file.
          </service>
  
          <!-- Quick Action Search widget -->
@@ -94,7 +94,7 @@ index 6789a0bbbf47a56b97b47e8260c2bad5a5c649ea..9686b8a70b5357d246fc801b9885dbd8
          <receiver
              android:name="org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderSearch"
              android:label="@string/quick_action_search_widget_title"
-@@ -939,6 +957,7 @@ by a child template that "extends" this file.
+@@ -983,6 +1001,7 @@ by a child template that "extends" this file.
                  android:name="android.appwidget.provider"
                  android:resource="@xml/quick_action_search_widget_dino_info" />
          </receiver>
@@ -102,7 +102,7 @@ index 6789a0bbbf47a56b97b47e8260c2bad5a5c649ea..9686b8a70b5357d246fc801b9885dbd8
  
          <!-- Bookmarks widget -->
          <receiver android:name="com.google.android.apps.chrome.appwidget.bookmarks.BookmarkThumbnailWidgetProvider"
-@@ -1152,7 +1171,7 @@ by a child template that "extends" this file.
+@@ -1196,7 +1215,7 @@ by a child template that "extends" this file.
  
          <service android:name="org.chromium.chrome.browser.media.MediaCaptureNotificationService"
              {% if enable_screen_capture == "true" %}
@@ -111,7 +111,7 @@ index 6789a0bbbf47a56b97b47e8260c2bad5a5c649ea..9686b8a70b5357d246fc801b9885dbd8
              {% else %}
              android:foregroundServiceType="camera|microphone"
              {% endif %}
-@@ -1240,6 +1259,7 @@ by a child template that "extends" this file.
+@@ -1284,6 +1303,7 @@ by a child template that "extends" this file.
            </activity>
          {% endif %}
  

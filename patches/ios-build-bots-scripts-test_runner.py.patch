@@ -1,5 +1,5 @@
 diff --git a/ios/build/bots/scripts/test_runner.py b/ios/build/bots/scripts/test_runner.py
-index f66023dbc07d2bc867f89b8769d5bc0f091fc628..2309fa4a28a3f054c07adc64897df054eaa3a276 100644
+index 155b723cfff45b5e733f8571a33034f53d304891..ffb3d068aa468dadc0cabde8e076e0b15fb18c61 100644
 --- a/ios/build/bots/scripts/test_runner.py
 +++ b/ios/build/bots/scripts/test_runner.py
 @@ -404,6 +404,7 @@ class TestRunner(object):

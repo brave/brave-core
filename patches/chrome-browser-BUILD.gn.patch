@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 1d25571ff5ef64abacf9cd8c7ce11e2452dff7ba..d5a05931ae1df869b37b4531aaf2a366a0dea845 100644
+index 2bc66d968cfe9ea1c2b4c35a36e4fc85227042cb..a6e3b1c7a62e092623470876d1a56f30dc0e2f52 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -2005,6 +2005,7 @@ static_library("browser") {
+@@ -1750,6 +1750,7 @@ static_library("browser") {
      "//chrome/browser/page_load_metrics:impl",
      "//chrome/browser/ui/webauthn:impl",
    ]
@@ -10,7 +10,7 @@ index 1d25571ff5ef64abacf9cd8c7ce11e2452dff7ba..d5a05931ae1df869b37b4531aaf2a366
  
    if (!is_android) {
      deps += [
-@@ -6382,6 +6383,7 @@ group("browser_public_dependencies") {
+@@ -5422,6 +5423,7 @@ group("browser_public_dependencies") {
        "//components/offline_pages/core/background:background_offliner",
      ]
    }
