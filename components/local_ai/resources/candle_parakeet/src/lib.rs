@@ -22,17 +22,15 @@ use model::{ModelBuilder, Parakeet, ParakeetConfig};
 // accepts (baked into the mel filterbank and the encoder config).
 const SAMPLE_RATE: usize = 16_000;
 
-// Commit threshold: once the audio buffer holds this many samples,
-// drain exactly that many as a finished segment and append its
-// decoded text to `accumulated_transcript`. 2 s gives CTC enough
-// context to resolve word boundaries cleanly while staying
-// comfortably real-time on Parakeet-CTC-110M.
-const PARAKEET_COMMIT_SAMPLES: usize = SAMPLE_RATE * 2; // 2 s
+// Growing-window cap: re-transcribe the whole accumulating buffer
+// each call so Parakeet sees full context, and only drain when the
+// buffer would otherwise exceed this length. 30 s mirrors Whisper's
+// hard segment length and matches the previous working baseline.
+const PARAKEET_COMMIT_SAMPLES: usize = SAMPLE_RATE * 30; // 30 s
 
-// Minimum buffer length before running an interim transcription.
-// Below this, we return the cached result to save compute. 500 ms
-// is short enough that users see their first result quickly and
-// long enough for recognition to be useful.
+// Minimum buffer length before running inference. Below this,
+// run_inference returns an empty string; the streaming caller still
+// emits the accumulated_transcript as the interim text.
 const PARAKEET_MIN_SAMPLES: usize = SAMPLE_RATE / 2; // 500 ms
 
 // RMS energy below this is treated as silence; the `add_audio`
@@ -155,6 +153,9 @@ impl ParakeetTranscriber {
         if !matches!(self.state, ParakeetState::Ready(_)) {
             return Err(JsError::new("model not finalized"));
         }
+        // Skip silent chunks entirely. Don't extend the buffer
+        // (avoids encoding bloat with trailing silence) and don't
+        // re-run inference (buffer unchanged → result unchanged).
         if rms_energy(&audio) < SILENCE_ENERGY_THRESHOLD {
             return Ok(String::new());
         }
@@ -162,20 +163,16 @@ impl ParakeetTranscriber {
         self.audio_buffer.extend_from_slice(&audio);
         self.buffer_dirty = true;
 
-        // Commit path: buffer is full.
-        if self.audio_buffer.len() >= PARAKEET_COMMIT_SAMPLES {
+        // When the buffer exceeds the growing-window cap, drain the
+        // first PARAKEET_COMMIT_SAMPLES into accumulated_transcript
+        // and keep the overflow as the new in-flight buffer.
+        if self.audio_buffer.len() > PARAKEET_COMMIT_SAMPLES {
             self.commit_segment()?;
-            self.last_result = self.accumulated_transcript.clone();
-            self.buffer_dirty = false;
-            return result_json(&self.last_result, false);
         }
 
-        // Too little audio for a useful interim — return cached.
-        if self.audio_buffer.len() < PARAKEET_MIN_SAMPLES {
-            return result_json(&self.last_result, false);
-        }
-
-        // Interim: re-transcribe whole buffer for a partial update.
+        // Always re-transcribe so the caller sees a fresh interim
+        // covering the leftover after a commit. run_inference's
+        // MIN_SAMPLES guard handles too-short buffers internally.
         self.transcribe(false)
     }
 
@@ -233,7 +230,11 @@ impl ParakeetTranscriber {
     }
 
     fn run_inference(&self, pcm: &[f32]) -> Result<String, JsError> {
-        if pcm.is_empty() {
+        // Buffer too short to be useful — encoder needs at least a
+        // few mel frames of context before CTC produces anything
+        // meaningful. The streaming caller still emits the
+        // accumulated_transcript as the interim.
+        if pcm.len() < PARAKEET_MIN_SAMPLES {
             return Ok(String::new());
         }
 
