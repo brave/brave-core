@@ -1061,26 +1061,6 @@ constexpr base::TimeDelta kAnimationDuration = base::Milliseconds(200);
 
 ---
 
-<a id="CS-064"></a>
-
-## ✅ Prefer `const` for Local Variables Where Possible
-
-**Mark local variables `const` when they are not modified after initialization.** This communicates intent, prevents accidental mutation, and can enable compiler optimizations.
-
-```cpp
-// ❌ WRONG - mutable but never modified
-size_t index = items.size() - 1;
-auto result = DoComputation(index);
-
-// ✅ CORRECT - const communicates intent
-const size_t index = items.size() - 1;
-const auto result = DoComputation(index);
-```
-
-This is a preference, not a hard rule — always prefix with `nit:` and do not insist if the developer declines.
-
----
-
 <a id="CS-066"></a>
 
 ## ❌ Don't Commit Commented-Out Code
