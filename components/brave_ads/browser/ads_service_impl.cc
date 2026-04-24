@@ -456,7 +456,7 @@ void AdsServiceImpl::InitializeBatAdsCallback(bool success) {
 }
 
 bool AdsServiceImpl::IsIneligibleToStart() const {
-  return was_marked_ineligible_to_start_;
+  return is_ineligible_to_start_;
 }
 
 bool AdsServiceImpl::IsInitialized() const {
@@ -464,12 +464,22 @@ bool AdsServiceImpl::IsInitialized() const {
 }
 
 void AdsServiceImpl::NotifyAdsServiceIneligibleToStart() {
-  was_marked_ineligible_to_start_ = true;
+  if (is_ineligible_to_start_) {
+    // Guard against notifying observers multiple times since
+    // `MaybeStartBatAdsService` is called from multiple pref change handlers.
+    return;
+  }
+
+  is_ineligible_to_start_ = true;
 
   observers_.Notify(&AdsServiceObserver::OnAdsServiceIneligibleToStart);
 }
 
 void AdsServiceImpl::NotifyDidInitializeAdsService() {
+  // Re-arm the single-notification guard so that a subsequent pref change can
+  // still notify observers of ineligibility.
+  is_ineligible_to_start_ = false;
+
   if (bat_ads_client_notifier_remote_.is_bound()) {
     bat_ads_client_notifier_remote_->NotifyDidInitializeAds();
   }
@@ -693,13 +703,13 @@ void AdsServiceImpl::InitializeNewTabPageAdsPrefChangeRegistrar() {
   pref_change_registrar_.Add(
       ntp_background_images::prefs::kNewTabPageShowBackgroundImage,
       base::BindRepeating(
-          &AdsServiceImpl::OnOptedInToAdsPrefChanged, base::Unretained(this),
+          &AdsServiceImpl::OnAdsPrefChanged, base::Unretained(this),
           ntp_background_images::prefs::kNewTabPageShowBackgroundImage));
 
   pref_change_registrar_.Add(
       ntp_background_images::prefs::
           kNewTabPageShowSponsoredImagesBackgroundImage,
-      base::BindRepeating(&AdsServiceImpl::OnOptedInToAdsPrefChanged,
+      base::BindRepeating(&AdsServiceImpl::OnAdsPrefChanged,
                           base::Unretained(this),
                           ntp_background_images::prefs::
                               kNewTabPageShowSponsoredImagesBackgroundImage));
@@ -708,7 +718,7 @@ void AdsServiceImpl::InitializeNewTabPageAdsPrefChangeRegistrar() {
 void AdsServiceImpl::InitializeNotificationAdsPrefChangeRegistrar() {
   pref_change_registrar_.Add(
       prefs::kOptedInToNotificationAds,
-      base::BindRepeating(&AdsServiceImpl::OnOptedInToAdsPrefChanged,
+      base::BindRepeating(&AdsServiceImpl::OnAdsPrefChanged,
                           base::Unretained(this)));
 
   pref_change_registrar_.Add(
@@ -721,11 +731,11 @@ void AdsServiceImpl::InitializeNotificationAdsPrefChangeRegistrar() {
 void AdsServiceImpl::InitializeSearchResultAdsPrefChangeRegistrar() {
   pref_change_registrar_.Add(
       prefs::kOptedInToSearchResultAds,
-      base::BindRepeating(&AdsServiceImpl::OnOptedInToAdsPrefChanged,
+      base::BindRepeating(&AdsServiceImpl::OnAdsPrefChanged,
                           base::Unretained(this)));
 }
 
-void AdsServiceImpl::OnOptedInToAdsPrefChanged(const std::string& path) {
+void AdsServiceImpl::OnAdsPrefChanged(const std::string& path) {
   if (!CanStartBatAdsService()) {
     return ShutdownAdsService();
   }
