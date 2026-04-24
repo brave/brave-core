@@ -142,6 +142,9 @@ void RemoveSplitWithSideBySide(Browser* browser);
 // Swap tabs in active tab.
 void SwapTabsInSplitWithSideBySide(Browser* browser);
 
+// Focuses the location bar in fullscreen mode, showing it temporarily
+void FocusLocationBarInFullscreen(Browser* browser);
+
 }  // namespace brave
 
 #endif  // BRAVE_BROWSER_UI_BROWSER_COMMANDS_H_

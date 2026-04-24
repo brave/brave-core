@@ -106,6 +106,9 @@ class BraveLocationBarView : public LocationBarView {
     ignore_layout_ = ignore;
   }
 
+  // Brave-specific methods
+  void SetTemporaryVisibilityInFullscreen(bool visible);
+
  private:
   FRIEND_TEST_ALL_PREFIXES(playlist::PlaylistBrowserTest, AddItemsToList);
   FRIEND_TEST_ALL_PREFIXES(playlist::PlaylistBrowserTest, UIHiddenWhenDisabled);
@@ -131,6 +134,10 @@ class BraveLocationBarView : public LocationBarView {
   // It also could make omnibox popup have wrong position.
   // See the comments of BraveToolbarView::Layout().
   bool ignore_layout_ = false;
+
+  // Tracks if we're showing the location bar temporarily in fullscreen
+  bool is_temporarily_visible_in_fullscreen_ = false;
+
   std::unique_ptr<ViewShadow> shadow_;
   raw_ptr<BraveActionsContainer> brave_actions_ = nullptr;
   raw_ptr<BraveNewsActionIconView> brave_news_action_icon_view_ = nullptr;

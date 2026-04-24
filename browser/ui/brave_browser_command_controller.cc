@@ -744,6 +744,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
         brave::SwapTabsInSplitWithSideBySide(base::to_address(browser_));
       break;
     }
+    case IDC_FOCUS_LOCATION_FULLSCREEN:
+      brave::FocusLocationBarInFullscreen(base::to_address(browser_));
+      break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;
       break;
