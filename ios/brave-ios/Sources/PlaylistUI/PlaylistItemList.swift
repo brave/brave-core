@@ -55,18 +55,16 @@ struct PlaylistItemList: View {
             isSelected: selectedItemID == item.id,
             isPlaying: isPlaying,
             downloadState: {
-              if let uuid = item.uuid, let state = downloadStates[uuid] {
-                if state == .downloaded {
-                  return .completed
-                }
-                if state == .inProgress {
-                  // PlaylistDownloadManager reports percent as 0...100 not 0...1
-                  let percentCompleted = downloadProgress[uuid, default: 0.0] / 100.0
-                  return .downloading(percentComplete: percentCompleted)
-                }
+              guard let uuid = item.uuid, let state = downloadStates[uuid] else {
+                return nil
               }
-              if let cachedData = item.cachedData, !cachedData.isEmpty {
+              if state == .downloaded {
                 return .completed
+              }
+              if state == .inProgress {
+                // PlaylistDownloadManager reports percent as 0...100 not 0...1
+                let percentCompleted = downloadProgress[uuid, default: 0.0] / 100.0
+                return .downloading(percentComplete: percentCompleted)
               }
               return nil
             }()
