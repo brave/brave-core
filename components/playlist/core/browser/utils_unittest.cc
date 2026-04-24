@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/playlist/core/common/utils.h"
+#include "brave/components/playlist/core/browser/utils.h"
 
 #include "base/test/scoped_feature_list.h"
 #include "base/values.h"
@@ -25,34 +25,34 @@ class PlaylistUtilsTest : public testing::Test {
   base::test::ScopedFeatureList feature_list_;
 };
 
-TEST_F(PlaylistUtilsTest, DisabledWhenFeatureOff) {
+TEST_F(PlaylistUtilsTest, DisallowedWhenFeatureOff) {
   feature_list_.InitAndDisableFeature(features::kPlaylist);
-  EXPECT_FALSE(IsPlaylistEnabled(&prefs_));
+  EXPECT_FALSE(IsPlaylistAllowed(&prefs_));
 }
 
-TEST_F(PlaylistUtilsTest, EnabledByDefaultWithFeatureOn) {
+TEST_F(PlaylistUtilsTest, AllowedByDefaultWithFeatureOn) {
   feature_list_.InitAndEnableFeature(features::kPlaylist);
-  EXPECT_TRUE(IsPlaylistEnabled(&prefs_));
+  EXPECT_TRUE(IsPlaylistAllowed(&prefs_));
 }
 
-TEST_F(PlaylistUtilsTest, UserPrefOffKeepsFeatureAvailable) {
+TEST_F(PlaylistUtilsTest, UserPrefOffKeepsPlaylistAllowed) {
   feature_list_.InitAndEnableFeature(features::kPlaylist);
   // A user turning the pref off from settings is not a policy-managed state:
   // the UI must remain reachable so the user can flip the pref back.
   prefs_.SetUserPref(kPlaylistEnabledPref, base::Value(false));
-  EXPECT_TRUE(IsPlaylistEnabled(&prefs_));
+  EXPECT_TRUE(IsPlaylistAllowed(&prefs_));
 }
 
-TEST_F(PlaylistUtilsTest, ManagedPrefForcedOffDisables) {
+TEST_F(PlaylistUtilsTest, ManagedPrefForcedOffDisallows) {
   feature_list_.InitAndEnableFeature(features::kPlaylist);
   prefs_.SetManagedPref(kPlaylistEnabledPref, base::Value(false));
-  EXPECT_FALSE(IsPlaylistEnabled(&prefs_));
+  EXPECT_FALSE(IsPlaylistAllowed(&prefs_));
 }
 
-TEST_F(PlaylistUtilsTest, ManagedPrefForcedOnKeepsEnabled) {
+TEST_F(PlaylistUtilsTest, ManagedPrefForcedOnKeepsAllowed) {
   feature_list_.InitAndEnableFeature(features::kPlaylist);
   prefs_.SetManagedPref(kPlaylistEnabledPref, base::Value(true));
-  EXPECT_TRUE(IsPlaylistEnabled(&prefs_));
+  EXPECT_TRUE(IsPlaylistAllowed(&prefs_));
 }
 
 }  // namespace playlist

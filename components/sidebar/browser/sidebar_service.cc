@@ -53,8 +53,8 @@
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/core/browser/utils.h"
 #include "brave/components/playlist/core/common/pref_names.h"
-#include "brave/components/playlist/core/common/utils.h"
 #endif
 
 namespace sidebar {
@@ -708,7 +708,7 @@ SidebarItem SidebarService::GetBuiltInItemForType(
     }
 #if BUILDFLAG(ENABLE_PLAYLIST)
     case SidebarItem::BuiltInItemType::kPlaylist: {
-      if (playlist::IsPlaylistEnabled(prefs_)) {
+      if (playlist::IsPlaylistAllowed(prefs_)) {
         return SidebarItem::Create(
             GURL(kPlaylistURL),
             l10n_util::GetStringUTF16(IDS_SIDEBAR_PLAYLIST_ITEM_TITLE),

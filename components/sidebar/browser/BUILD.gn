@@ -44,7 +44,10 @@ static_library("browser") {
   ]
 
   if (enable_playlist) {
-    deps += [ "//brave/components/playlist/core/common" ]
+    deps += [
+      "//brave/components/playlist/core/browser",
+      "//brave/components/playlist/core/common",
+    ]
   }
 
   if (enable_ai_chat) {

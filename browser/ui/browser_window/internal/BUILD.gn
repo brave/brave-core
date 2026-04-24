@@ -26,7 +26,10 @@ source_set("internal") {
   ]
 
   if (enable_playlist) {
-    deps += [ "//brave/components/playlist/core/common" ]
+    deps += [
+      "//brave/components/playlist/core/browser",
+      "//brave/components/playlist/core/common",
+    ]
   }
 
   if (toolkit_views) {

@@ -105,7 +105,8 @@ function getPageVisibility () {
     containers: loadTimeData.getBoolean('isContainersEnabled'),
     // </if>
     content: alwaysTrueProxy,
-    playlist: loadTimeData.getBoolean('isPlaylistAllowed'),
+    playlist: loadTimeData.getBoolean('isPlaylistFeatureEnabled') &&
+              !loadTimeData.getBoolean('isPlaylistDisabledByPolicy'),
     // <if expr="enable_speedreader">
     speedreader: loadTimeData.getBoolean('isSpeedreaderAllowed'),
     // </if>
