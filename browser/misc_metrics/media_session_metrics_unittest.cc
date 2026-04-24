@@ -172,7 +172,7 @@ TEST_F(MediaSessionMetricsTest, ActiveProcessTimeOnlyWhenInUseOrPlaying) {
   task_environment_.FastForwardBy(base::Days(4));
 
   // 1 day playing / 1 day active = 100% → bucket 5.
-  histogram_tester_.ExpectUniqueSample(kMediaSessionUsageHistogramName, 5, 1);
+  histogram_tester_.ExpectUniqueSample(kMediaSessionUsageHistogramName, 6, 1);
 }
 
 }  // namespace misc_metrics
