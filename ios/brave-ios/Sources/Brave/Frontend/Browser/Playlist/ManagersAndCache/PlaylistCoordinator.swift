@@ -121,15 +121,15 @@ public class PlaylistCoordinator: NSObject {
         openTabURL: { [weak browserController] url, isPrivate in
           guard let browserController else { return }
           let isPrivate = Preferences.Privacy.privateBrowsingOnly.value ? true : isPrivate
-          let openTab: () -> Void = { [weak browserController] in
-            browserController?.dismiss(animated: true)
-            browserController?.openURLInNewTab(
+          let openTab: () -> Void = {
+            browserController.dismiss(animated: true)
+            browserController.openURLInNewTab(
               url,
               isPrivate: isPrivate,
               isPrivileged: false
             )
           }
-          
+
           if isPrivate,
             !browserController.privateBrowsingManager.isPrivateBrowsing,
             Preferences.Privacy.privateBrowsingLock.value
