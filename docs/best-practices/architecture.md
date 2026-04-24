@@ -1401,3 +1401,45 @@ Examples of ride-along changes to avoid:
 - Adding unrelated refactoring alongside a behavioral change
 - Large-scale renaming or reformatting unrelated to your change
 - Reordering functions or methods for aesthetic reasons
+
+---
+
+<a id="ARCH-071"></a>
+
+## ❌ No Browser-Process-Only APIs in `common/` Directories
+
+**Code under `components/.../common/` must not depend on APIs that only exist in the browser process** — `PrefService`, `content::BrowserContext`, `Profile`, `g_browser_process`, etc. `common/` is compiled into any process that links the component (browser, renderer, utility), so referencing browser-only types there is meaningless or unsafe for non-browser callers.
+
+This is the inverse of the `common/` rule above: code moves *into* `common/` only when it is genuinely safe for every process.
+
+```cpp
+// ❌ WRONG - common/ helper that takes a PrefService
+// components/playlist/core/common/utils.h
+namespace playlist {
+bool IsPlaylistEnabled(PrefService* prefs);  // PrefService is browser-only!
+}
+```
+
+```
+# ❌ WRONG - common/DEPS opening access to browser-only deps
+# components/playlist/core/common/DEPS
+include_rules = [
+  "+components/prefs",
+]
+```
+
+```cpp
+// ✅ CORRECT - helper lives in browser/, where PrefService is valid
+// components/playlist/core/browser/utils.h
+namespace playlist {
+bool IsPlaylistEnabled(PrefService* prefs);
+}
+```
+
+**Directory rules:**
+- `common/` — deps must be safe for every process: `//base`, mojom, shared structs
+- `browser/` — browser process only; `PrefService`, `BrowserContext`, `Profile`, `g_browser_process`
+- `renderer/` — renderer process only
+- `services/` — utility process services
+
+A new `+components/prefs` line (or similar) in a `common/DEPS` file is almost always a sign that the helper belongs in `browser/` instead.
