@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/statement/next_payment_date_util.h"
 
+#include <optional>
+
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/test/transactions_test_util.h"
@@ -47,12 +49,14 @@ TEST_F(BraveAdsNextPaymentDateUtilTest,
       test::TimeFromUTCString("5 February 2020");
 
   // Act
-  const base::Time next_payment_date =
-      CalculateNextPaymentDate(next_payment_token_redemption_at, transactions);
+  const std::optional<base::Time> next_payment_date =
+      MaybeCalculateNextPaymentDate(next_payment_token_redemption_at,
+                                    transactions);
 
   // Assert
+  ASSERT_TRUE(next_payment_date);
   EXPECT_EQ(test::TimeFromUTCString("5 February 2020 23:59:59.999"),
-            next_payment_date);
+            *next_payment_date);
 }
 
 TEST_F(BraveAdsNextPaymentDateUtilTest,
@@ -64,12 +68,14 @@ TEST_F(BraveAdsNextPaymentDateUtilTest,
       test::TimeFromUTCString("5 February 2020");
 
   // Act
-  const base::Time next_payment_date = CalculateNextPaymentDate(
-      next_payment_token_redemption_at, /*transactions=*/{});
+  const std::optional<base::Time> next_payment_date =
+      MaybeCalculateNextPaymentDate(next_payment_token_redemption_at,
+                                    /*transactions=*/{});
 
   // Assert
+  ASSERT_TRUE(next_payment_date);
   EXPECT_EQ(test::TimeFromUTCString("5 March 2020 23:59:59.999"),
-            next_payment_date);
+            *next_payment_date);
 }
 
 TEST_F(BraveAdsNextPaymentDateUtilTest,
@@ -88,12 +94,14 @@ TEST_F(BraveAdsNextPaymentDateUtilTest,
       test::TimeFromUTCString("5 February 2020");
 
   // Act
-  const base::Time next_payment_date =
-      CalculateNextPaymentDate(next_payment_token_redemption_at, transactions);
+  const std::optional<base::Time> next_payment_date =
+      MaybeCalculateNextPaymentDate(next_payment_token_redemption_at,
+                                    transactions);
 
   // Act & Assert
+  ASSERT_TRUE(next_payment_date);
   EXPECT_EQ(test::TimeFromUTCString("5 February 2020 23:59:59.999"),
-            next_payment_date);
+            *next_payment_date);
 }
 
 TEST_F(
@@ -106,12 +114,14 @@ TEST_F(
       test::TimeFromUTCString("31 January 2020");
 
   // Act
-  const base::Time next_payment_date = CalculateNextPaymentDate(
-      next_payment_token_redemption_at, /*transactions=*/{});
+  const std::optional<base::Time> next_payment_date =
+      MaybeCalculateNextPaymentDate(next_payment_token_redemption_at,
+                                    /*transactions=*/{});
 
   // Assert
+  ASSERT_TRUE(next_payment_date);
   EXPECT_EQ(test::TimeFromUTCString("5 February 2020 23:59:59.999"),
-            next_payment_date);
+            *next_payment_date);
 }
 
 TEST_F(
@@ -124,12 +134,38 @@ TEST_F(
       test::TimeFromUTCString("5 February 2020");
 
   // Act
-  const base::Time next_payment_date = CalculateNextPaymentDate(
-      next_payment_token_redemption_at, /*transactions=*/{});
+  const std::optional<base::Time> next_payment_date =
+      MaybeCalculateNextPaymentDate(next_payment_token_redemption_at,
+                                    /*transactions=*/{});
 
   // Assert
+  ASSERT_TRUE(next_payment_date);
   EXPECT_EQ(test::TimeFromUTCString("5 March 2020 23:59:59.999"),
-            next_payment_date);
+            *next_payment_date);
+}
+
+TEST_F(BraveAdsNextPaymentDateUtilTest,
+       DoesNotCalculateNextPaymentDateWhenPaymentDayIsInvalidForMonth) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kAccountStatementFeature, {{"next_payment_day", "31"}});
+
+  // Today (March 1) is on or before payment day 31, and there are no
+  // reconciled transactions from last month, so the next payment is scheduled
+  // for April. April has no 31st day, so the date is uncalculable.
+  AdvanceClockTo(test::TimeFromUTCString("1 March 2020"));
+
+  const base::Time next_payment_token_redemption_at =
+      test::TimeFromUTCString("5 March 2020");
+
+  // Act
+  const std::optional<base::Time> next_payment_date =
+      MaybeCalculateNextPaymentDate(next_payment_token_redemption_at,
+                                    /*transactions=*/{});
+
+  // Assert
+  EXPECT_FALSE(next_payment_date);
 }
 
 }  // namespace brave_ads

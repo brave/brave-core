@@ -5,15 +5,25 @@
 
 #include "brave/components/brave_ads/core/internal/account/statement/next_payment_date_util.h"
 
-#include "base/check.h"
+#include <optional>
+
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/reconciled_transactions_util.h"
 
 namespace brave_ads {
 
-base::Time CalculateNextPaymentDate(base::Time next_payment_token_redemption_at,
-                                    const TransactionList& transactions) {
+namespace {
+
+constexpr int kMonthAfterNext = 2;
+constexpr int kMonthsPerYear = 12;
+constexpr int kEndOfDayHour = 23;
+
+}  // namespace
+
+std::optional<base::Time> MaybeCalculateNextPaymentDate(
+    base::Time next_payment_token_redemption_at,
+    const TransactionList& transactions) {
   const base::Time now = base::Time::Now();
 
   base::Time::Exploded now_exploded;
@@ -51,15 +61,15 @@ base::Time CalculateNextPaymentDate(base::Time next_payment_token_redemption_at,
         // If this month does not have reconciled transactions and our next
         // token redemption date is next month, then the next payment date will
         // occur the month after next
-        month += 2;
+        month += kMonthAfterNext;
       }
     }
   }
 
   int year = now_exploded.year;
 
-  if (month > 12) {
-    month -= 12;
+  if (month > kMonthsPerYear) {
+    month -= kMonthsPerYear;
     ++year;
   }
 
@@ -67,14 +77,16 @@ base::Time CalculateNextPaymentDate(base::Time next_payment_token_redemption_at,
   next_payment_date_exploded.year = year;
   next_payment_date_exploded.month = month;
   next_payment_date_exploded.day_of_month = kNextPaymentDay.Get();
-  next_payment_date_exploded.hour = 23;
+  next_payment_date_exploded.hour = kEndOfDayHour;
   next_payment_date_exploded.minute = 59;
   next_payment_date_exploded.second = 59;
   next_payment_date_exploded.millisecond = 999;
 
   base::Time next_payment_date;
-  CHECK(base::Time::FromUTCExploded(next_payment_date_exploded,
-                                    &next_payment_date));
+  if (!base::Time::FromUTCExploded(next_payment_date_exploded,
+                                   &next_payment_date)) {
+    return std::nullopt;
+  }
 
   return next_payment_date;
 }
