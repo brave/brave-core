@@ -20,6 +20,7 @@
 #include "brave/browser/ui/containers/container_model.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
+class BraveTabContainer;
 class BraveVerticalTabStripRegionView;
 class Tab;
 class BraveTabStrip : public TabStrip {
@@ -35,6 +36,8 @@ class BraveTabStrip : public TabStrip {
   bool ShouldShowPinnedTabsInGrid() const;
 
   TabContainer* GetTabContainerForTesting();
+
+  BraveTabContainer* GetBraveTabContainer();
 
   void InvalidateTabContainerLayout();
 

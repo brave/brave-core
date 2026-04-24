@@ -165,6 +165,9 @@
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_SHOW_SCROLLBAR" desc="Title for checkbox to show scrollbar on vertical tabs">
     Show scrollbar
   </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HORIZONTAL_SCROLL_BUTTONS" desc="Title for checkbox to show scroll buttons next to the horizontal tab strip when tabs overflow">
+    Show scroll buttons on horizontal tab strip
+  </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_ON_RIGHT" desc="The label for radio button to show vertical tab on right">
     Show on the right
   </message>

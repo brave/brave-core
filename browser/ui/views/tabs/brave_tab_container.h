@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/callback_list.h"
 #include "base/gtest_prod_util.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_context.h"
@@ -48,6 +49,35 @@ class BraveTabContainer : public TabContainerImpl,
   // Returns the scroll direction if scrolling is enabled. Returns nullopt if
   // browser is null or scrolling is not enabled.
   std::optional<views::LayoutOrientation> GetScrollDirection() const;
+
+  // True when the horizontal scroll buttons should be visible: profile pref on,
+  // tabs::kBraveScrollableTabStrip enabled, horizontal (non-vertical) strip,
+  // and unpinned overflow. The pref affects button visibility only, not whether
+  // the strip scrolls (that is controlled by the feature flag alone).
+  bool ShouldShowHorizontalScrollButton() const;
+
+  // Helper methods to check if the tabs can be scrolled towards the start or
+  // end.
+  bool CanScrollTabsStart() const;
+  bool CanScrollTabsEnd() const;
+
+  // Scroll the unpinned tabs by the given offset.
+  void ScrollTabsBy(int offset);
+
+  // Returns the step size for the horizontal tab scroll.
+  int GetHorizontalTabScrollStep() const;
+
+  int GetScrollOffsetForTesting() const;       // IN-TEST
+  int GetMaxScrollOffsetForTesting() const;    // IN-TEST
+  void SetScrollOffsetForTesting(int offset);  // IN-TEST
+
+  // Notifies when horizontal unpinned scroll offset changes (wheel, scrollbar,
+  // button scroll, etc.). Used by BraveHorizontalTabStripRegionView to refresh
+  // scroll button enabled state. Destroy the returned subscription to
+  // unregister.
+  [[nodiscard]] base::CallbackListSubscription
+  RegisterHorizontalScrollOffsetChangedCallback(
+      base::RepeatingClosure callback);
 
   // TabContainerImpl:
   gfx::Size CalculatePreferredSize(
@@ -118,23 +148,6 @@ class BraveTabContainer : public TabContainerImpl,
                            ScrollBarVisibilityWithManyTabs);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
                            RichAnimationIsDisabled);
-  FRIEND_TEST_ALL_PREFIXES(HorizontalScrollableTabStripBrowserTest,
-                           GetScrollDirectionIsHorizontal);
-  FRIEND_TEST_ALL_PREFIXES(
-      HorizontalScrollableTabStripBrowserTest,
-      GetScrollDirectionNotHorizontalWhenScrollableHorizontalPrefDisabled);
-  FRIEND_TEST_ALL_PREFIXES(HorizontalScrollableTabStripBrowserTest,
-                           MaxScrollOffsetZeroWithFewTabs);
-  FRIEND_TEST_ALL_PREFIXES(HorizontalScrollableTabStripBrowserTest,
-                           MaxScrollOffsetPositiveWithManyTabs);
-  FRIEND_TEST_ALL_PREFIXES(HorizontalScrollableTabStripBrowserTest,
-                           ActiveTabScrollsIntoViewWhenSelectingLast);
-  FRIEND_TEST_ALL_PREFIXES(HorizontalScrollableTabStripBrowserTest,
-                           ScrollOffsetClampedWhenTabRemoved);
-  FRIEND_TEST_ALL_PREFIXES(HorizontalScrollableTabStripBrowserTest,
-                           MaxScrollOffsetZeroWithPinnedAndUnpinnedTab);
-  FRIEND_TEST_ALL_PREFIXES(HorizontalScrollableTabStripBrowserTest,
-                           AddingNewTabShouldScrollToBeVisible);
 
   class DropArrow {
    public:
@@ -276,7 +289,7 @@ class BraveTabContainer : public TabContainerImpl,
   void OnTreeTabsEnabledChanged();
 
   // Returns true if the horizontal scrollable tab strip is enabled by pref.
-  // In case of unit tests, the pref can be unintialized, so we return false.
+  // In case of unit tests, the pref can be uninitialized, so we return false.
   bool IsHorizontalScrollableTabStripEnabled() const;
 
   base::flat_set<Tab*> closing_tabs_;
@@ -308,6 +321,8 @@ class BraveTabContainer : public TabContainerImpl,
   // y-axis offset. For horizontal tabs, this is the x-axis offset.
   // Do not manipulate this value directly. Use SetScrollOffset() instead.
   int scroll_offset_ = 0;
+
+  base::RepeatingClosureList horizontal_scroll_offset_changed_callbacks_;
 
   // Separator view between pinned and unpinned tabs
   raw_ptr<views::View> separator_ = nullptr;
