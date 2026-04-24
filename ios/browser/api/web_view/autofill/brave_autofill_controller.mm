@@ -16,9 +16,12 @@
 #include "brave/ios/browser/api/web_view/autofill/brave_web_view_autofill_client.h"
 #include "components/autofill/core/browser/foundations/autofill_client.h"
 #include "components/autofill/core/browser/ui/payments/card_unmask_prompt_options.h"
+#include "components/autofill/core/common/autofill_prefs.h"
 #include "components/autofill/ios/browser/autofill_agent.h"
 #include "components/autofill/ios/browser/autofill_client_ios_bridge.h"
 #include "components/autofill/ios/browser/autofill_driver_ios_bridge.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
+#include "ios/web/common/url_scheme_util.h"
 #include "ios/web_view/internal/autofill/cwv_autofill_client_ios_bridge.h"
 #include "ios/web_view/internal/autofill/cwv_autofill_controller+testing.h"
 #include "ios/web_view/internal/autofill/cwv_autofill_controller_internal.h"
@@ -42,7 +45,9 @@ using UserDecision = autofill::AutofillClient::AddressPromptUserDecision;
 @property(nonatomic) BraveAutofillClientBridge* bridge;
 @end
 
-@implementation BraveAutofillController
+@implementation BraveAutofillController {
+  raw_ptr<web::WebState> _webState;  // not owned
+}
 
 - (instancetype)initWithWebState:(web::WebState*)webState
                    autofillAgent:(AutofillAgent*)autofillAgent
@@ -55,17 +60,51 @@ using UserDecision = autofill::AutofillClient::AddressPromptUserDecision;
               passwordController:(SharedPasswordController*)passwordController {
   BraveAutofillClientBridge* bridge =
       [[BraveAutofillClientBridge alloc] initWithAutofillAgent:autofillAgent];
-  self =
-      [super initWithWebState:webState
-          autofillClientForTest:autofill::BraveWebViewAutofillClientIOS::Create(
-                                    webState, bridge)
-                  autofillAgent:autofillAgent
-                passwordManager:std::move(passwordManager)
-          passwordManagerClient:std::move(passwordManagerClient)
-             passwordController:passwordController];
-  self.bridge = bridge;
-  bridge.autofillController = self;
+  if ((self = [super initWithWebState:webState
+                autofillClientForTest:autofill::BraveWebViewAutofillClientIOS::
+                                          Create(webState, bridge)
+                        autofillAgent:autofillAgent
+                      passwordManager:std::move(passwordManager)
+                passwordManagerClient:std::move(passwordManagerClient)
+                   passwordController:passwordController])) {
+    self.bridge = bridge;
+    bridge.autofillController = self;
+    _webState = webState;
+  }
   return self;
+}
+
+- (void)fetchSuggestionsForFormWithName:(NSString*)formName
+                        fieldIdentifier:(NSString*)fieldIdentifier
+                              fieldType:(NSString*)fieldType
+                                frameID:(NSString*)frameID
+                      completionHandler:
+                          (void (^)(NSArray<CWVAutofillSuggestion*>*))
+                              completionHandler {
+  if (![self isAutofillEnabled]) {
+    completionHandler(@[]);
+    return;
+  }
+  [super fetchSuggestionsForFormWithName:formName
+                         fieldIdentifier:fieldIdentifier
+                               fieldType:fieldType
+                                 frameID:frameID
+                       completionHandler:completionHandler];
+}
+
+#pragma mark - Private
+
+- (bool)isAutofillEnabled {
+  PrefService* prefService =
+      ProfileIOS::FromBrowserState(_webState->GetBrowserState())->GetPrefs();
+  if (!autofill::prefs::IsAutofillProfileEnabled(prefService) &&
+      !autofill::prefs::IsAutofillPaymentMethodsEnabled(prefService)) {
+    return NO;
+  }
+
+  // Only web URLs are supported by Autofill.
+  return web::UrlHasWebScheme(_webState->GetLastCommittedURL()) &&
+         _webState->ContentIsHTML();
 }
 
 @end
