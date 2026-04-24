@@ -16,6 +16,7 @@ nala_icon_overrides = [
 # Please keep this list sorted alphabetically.
 nala_icons = [
   "ic_accessibility.xml",
+  "ic_antenna.xml",
   "ic_appearance.xml",
   "ic_bar_chart_search.xml",
   "ic_bar_chart.xml",
@@ -42,6 +43,7 @@ nala_icons = [
   "ic_product_brave_leo.xml",
   "ic_product_brave_news.xml",
   "ic_product_origin.xml",
+  "ic_product_private_window.xml",
   "ic_product_brave_wallet.xml",
   "ic_product_sync.xml",
   "ic_product_translate.xml",

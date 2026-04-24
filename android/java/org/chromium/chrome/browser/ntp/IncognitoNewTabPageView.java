@@ -7,10 +7,13 @@ package org.chromium.chrome.browser.ntp;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -75,7 +78,6 @@ public class IncognitoNewTabPageView extends FrameLayout {
         super.onFinishInflate();
 
         mScrollView = (NewTabPageScrollView) findViewById(R.id.ntp_scrollview);
-        mScrollView.setBackgroundColor(getContext().getColor(R.color.ntp_bg_incognito));
         setContentDescription(
                 getResources().getText(R.string.accessibility_new_incognito_tab_page));
 
@@ -89,6 +91,23 @@ public class IncognitoNewTabPageView extends FrameLayout {
         mVpnCta = findViewById(R.id.tv_try_vpn);
         // Hide by default, will be shown by setVpnDisabledByPolicy() if allowed
         setVpnSectionVisibility(View.GONE);
+
+        // Nala icons default to @color/icon_default; override just the icon layer
+        // (not the circle) so the private NTP shows the designed purple.
+        int iconTint = getContext().getColor(R.color.primitive_private_window_60);
+        tintLayerListIcon(R.id.iv_first_icon, iconTint);
+        tintLayerListIcon(R.id.iv_second_icon, iconTint);
+        tintLayerListIcon(R.id.iv_third_icon, iconTint);
+    }
+
+    private void tintLayerListIcon(int imageViewId, int tint) {
+        ImageView imageView = findViewById(imageViewId);
+        if (imageView == null) return;
+        Drawable drawable = imageView.getDrawable();
+        if (!(drawable instanceof LayerDrawable)) return;
+        LayerDrawable layers = (LayerDrawable) drawable.mutate();
+        Drawable iconLayer = layers.getDrawable(1).mutate();
+        iconLayer.setTint(tint);
     }
 
     private void setVpnSectionVisibility(int visibility) {
