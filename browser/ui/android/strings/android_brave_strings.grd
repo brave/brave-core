@@ -3964,6 +3964,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_SAVE_CHANGES_ACTION_TEXT" desc="Save changes action text">
       Save changes
     </message>
+    <message name="IDS_SYNC_CATEGORY_TITLE" desc="Title for the Brave Sync settings page.">
+      Sync
+    </message>
   </messages>
   </release>
 </grit>

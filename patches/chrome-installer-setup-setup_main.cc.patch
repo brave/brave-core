@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/setup/setup_main.cc b/chrome/installer/setup/setup_main.cc
-index accfea57a58b7ade93a5f25ec200cfc5293c76a9..7c2ead1b34e4e77df7603fa431029b8dd70bc214 100644
+index 83ef04703fb620f97f71b18ffc0ca9f306a3816c..3eb99611f7293f248d2ebd0a022b7a323024ac90 100644
 --- a/chrome/installer/setup/setup_main.cc
 +++ b/chrome/installer/setup/setup_main.cc
-@@ -716,6 +716,7 @@ installer::InstallStatus InstallProducts(InstallationState& original_state,
+@@ -781,6 +781,7 @@ installer::InstallStatus InstallProducts(InstallationState& original_state,
      }
    }
  
@@ -10,7 +10,7 @@ index accfea57a58b7ade93a5f25ec200cfc5293c76a9..7c2ead1b34e4e77df7603fa431029b8d
    return install_status;
  }
  
-@@ -1543,6 +1544,7 @@ int SetupMain() {
+@@ -1621,6 +1622,7 @@ int SetupMain() {
                                       &exit_code)) {
      return exit_code;
    }

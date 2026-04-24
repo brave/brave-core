@@ -44,6 +44,7 @@ source_set("brave_stats") {
     "//brave/components/serp_metrics:features",
     "//brave/components/version_info",
     "//chrome/browser:browser_process",
+    "//chrome/browser/first_run",
     "//chrome/browser/headless",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/profiles:profile_manager",

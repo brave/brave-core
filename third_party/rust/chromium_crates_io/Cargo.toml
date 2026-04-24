@@ -197,8 +197,8 @@ package = "itoa"
 path = "../../../../third_party/rust/chromium_crates_io/vendor/hashbrown-v0_15"
 package = "hashbrown"
 
-[patch.crates-io.hashbrown_v0_16]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/hashbrown-v0_16"
+[patch.crates-io.hashbrown_v0_17]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/hashbrown-v0_17"
 package = "hashbrown"
 
 [patch.crates-io.lazy_static_v1]

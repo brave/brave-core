@@ -25,9 +25,11 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
+#include "chrome/browser/ui/browser_navigator_params_utils.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/singleton_tabs.h"
@@ -77,16 +79,19 @@ bool SidebarController::DoesBrowserHaveOpenedTabForItem(
   DCHECK(item.is_built_in_type());
   DCHECK(!item.open_in_panel);
 
-  const std::vector<Browser*> browsers =
-      chrome::FindAllTabbedBrowsersWithProfile(profile_);
-  for (Browser* browser : browsers) {
-    const auto all_index = GetAllExistingTabIndexForHost(
-        browser->tab_strip_model(), item.url.host());
-    if (!all_index.empty())
-      return true;
-  }
+  bool result = false;
+  ProfileBrowserCollection::GetForProfile(profile_)->ForEach(
+      [&item, &result](BrowserWindowInterface* browser) {
+        const auto all_index = GetAllExistingTabIndexForHost(
+            browser->GetTabStripModel(), item.url.host());
+        if (!all_index.empty()) {
+          result = true;
+          return false;
+        }
+        return true;
+      });
 
-  return false;
+  return result;
 }
 
 void SidebarController::TearDownPreBrowserWindowDestruction() {
@@ -156,7 +161,7 @@ void SidebarController::ActivatePanelItem(
   }
   CHECK(side_panel_ui);
   if (panel_item == SidebarItem::BuiltInItemType::kNone) {
-    side_panel_ui->Close(SidePanelEntry::PanelType::kContent);
+    side_panel_ui->Close(SidePanelType::kContent);
     return;
   }
 
@@ -168,27 +173,29 @@ void SidebarController::DeactivateCurrentPanel() {
 }
 
 bool SidebarController::ActiveTabFromOtherBrowsersForHost(const GURL& url) {
-  const std::vector<Browser*> browsers =
-      chrome::FindAllTabbedBrowsersWithProfile(profile_);
-  for (Browser* browser : browsers) {
-    // Skip current browser. we are here because current active browser doesn't
-    // have a tab that loads |url|.
-    if (browser == browser_) {
-      continue;
-    }
+  bool found = false;
+  ProfileBrowserCollection::GetForProfile(profile_)->ForEach(
+      [this, &found, &url](BrowserWindowInterface* browser) {
+        // Skip current browser. we are here because current active browser
+        // doesn't have a tab that loads |url|.
+        if (browser == browser_) {
+          return true;
+        }
 
-    const auto all_index =
-        GetAllExistingTabIndexForHost(browser->tab_strip_model(), url.host());
-    if (all_index.empty())
-      continue;
+        const auto all_index = GetAllExistingTabIndexForHost(
+            browser->GetTabStripModel(), url.host());
+        if (all_index.empty()) {
+          return true;
+        }
 
-    // Pick first tab for simplicity.
-    browser->tab_strip_model()->ActivateTabAt(all_index[0]);
-    browser->window()->Activate();
-    return true;
-  }
+        // Pick first tab for simplicity.
+        browser->GetTabStripModel()->ActivateTabAt(all_index[0]);
+        browser->GetBrowserForMigrationOnly()->window()->Activate();
+        found = true;
+        return false;
+      });
 
-  return false;
+  return found;
 }
 
 void SidebarController::IterateOrLoadAtActiveTab(const GURL& url) {
@@ -219,7 +226,7 @@ void SidebarController::IterateOrLoadAtActiveTab(const GURL& url) {
 
 void SidebarController::LoadAtTab(const GURL& url) {
   auto params = GetSingletonTabNavigateParams(browser_, url);
-  int tab_index = GetIndexOfExistingTab(browser_, params);
+  int tab_index = GetIndexOfExistingTabMatchingURL(browser_, params);
   // If browser has a tab that already loaded |item.url|, just activate it.
   if (tab_index >= 0) {
     tab_strip_model_->ActivateTabAt(tab_index);

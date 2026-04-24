@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
-index 9603137595182b9f442bd54cd6711fffc1fe7af8..dd2f9d4313cea9b71e00e329ce163e98a930fe24 100644
+index 6277b04593768d5de235b2176933cbea11613ec6..f38833ee3ac9167ba6e6cba012283a1fb4cec8f8 100644
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
-@@ -559,7 +559,7 @@ Browser* Browser::Create(const CreateParams& params) {
-   // should handle this; see e.g. crbug.com/1141608 and crbug.com/1261628.
+@@ -557,7 +557,7 @@ Browser* Browser::Create(const CreateParams& params) {
+   // should handle this; see e.g. crbug.com/40154317 and crbug.com/40798999.
    CHECK_EQ(CreationStatus::kOk, GetCreationStatusForProfile(params.profile));
  
 -  std::unique_ptr<Browser> browser = base::WrapUnique(new Browser(params));
@@ -11,8 +11,8 @@ index 9603137595182b9f442bd54cd6711fffc1fe7af8..dd2f9d4313cea9b71e00e329ce163e98
    Browser* const browser_ptr = browser.get();
    BrowserManagerServiceFactory::GetForProfile(params.profile)
        ->AddBrowser(std::move(browser));
-@@ -575,7 +575,7 @@ std::unique_ptr<Browser> Browser::DeprecatedCreateOwnedForTesting(
-   // should handle this; see e.g. crbug.com/1141608 and crbug.com/1261628.
+@@ -573,7 +573,7 @@ std::unique_ptr<Browser> Browser::DeprecatedCreateOwnedForTesting(
+   // should handle this; see e.g. crbug.com/40154317 and crbug.com/40798999.
    CHECK_EQ(CreationStatus::kOk, GetCreationStatusForProfile(params.profile));
  
 -  std::unique_ptr<Browser> browser = base::WrapUnique(new Browser(params));
@@ -20,7 +20,7 @@ index 9603137595182b9f442bd54cd6711fffc1fe7af8..dd2f9d4313cea9b71e00e329ce163e98
    BrowserManagerServiceFactory::GetForProfile(params.profile)
        ->AddBrowserForTesting(browser.get());
    return browser;
-@@ -588,7 +588,7 @@ Browser::Browser(const CreateParams& params)
+@@ -586,7 +586,7 @@ Browser::Browser(const CreateParams& params)
        window_(nullptr),
        tab_strip_model_delegate_(
            std::make_unique<chrome::BrowserTabStripModelDelegate>(this)),
@@ -29,7 +29,7 @@ index 9603137595182b9f442bd54cd6711fffc1fe7af8..dd2f9d4313cea9b71e00e329ce163e98
            tab_strip_model_delegate_.get(),
            params.profile,
            // Tab groups are disabled for app browsers.
-@@ -1299,6 +1299,7 @@ void Browser::OnWindowClosing() {
+@@ -1306,6 +1306,7 @@ void Browser::OnWindowClosing() {
    if (tab_restore_service && notify_restore_service) {
      tab_restore_service->BrowserClosing(GetFeatures().live_tab_context());
    }

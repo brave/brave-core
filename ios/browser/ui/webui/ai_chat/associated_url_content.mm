@@ -6,6 +6,7 @@
 #include "brave/ios/browser/ui/webui/ai_chat/associated_url_content.h"
 
 #include "base/functional/callback_helpers.h"
+#include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/time/time.h"

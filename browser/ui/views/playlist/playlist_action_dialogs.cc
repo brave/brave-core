@@ -256,7 +256,7 @@ void ClosePanel(content::WebContents* contents) {
   // closing the tab.
   if (SidePanelUI* ui =
           browser_view->browser()->GetFeatures().side_panel_ui()) {
-    ui->Close(SidePanelEntry::PanelType::kContent);
+    ui->Close(SidePanelType::kContent);
   }
 }
 

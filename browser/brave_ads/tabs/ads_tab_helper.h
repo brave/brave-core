@@ -20,12 +20,13 @@
 #include "content/public/browser/web_contents_user_data.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "chrome/browser/ui/browser_list_observer.h"
+#include "base/scoped_observation.h"
+#include "chrome/browser/ui/browser_window/public/browser_collection_observer.h"
 #endif
 
-class Browser;
 class GURL;
-
+class BrowserWindowInterface;
+class BrowserCollection;
 
 namespace brave_ads {
 
@@ -33,7 +34,7 @@ class AdsService;
 
 class AdsTabHelper final : public content::WebContentsObserver,
 #if !BUILDFLAG(IS_ANDROID)
-                           public BrowserListObserver,
+                           public BrowserCollectionObserver,
 #endif
                            public content::WebContentsUserData<AdsTabHelper> {
  public:
@@ -103,9 +104,9 @@ class AdsTabHelper final : public content::WebContentsObserver,
   void WebContentsDestroyed() override;
 
 #if !BUILDFLAG(IS_ANDROID)
-  // BrowserListObserver:
-  void OnBrowserSetLastActive(Browser* browser) override;
-  void OnBrowserNoLongerActive(Browser* browser) override;
+  // BrowserCollectionObserver:
+  void OnBrowserActivated(BrowserWindowInterface* browser) override;
+  void OnBrowserDeactivated(BrowserWindowInterface* browser) override;
 #endif
 
   SessionID session_id_;
@@ -127,6 +128,11 @@ class AdsTabHelper final : public content::WebContentsObserver,
   base::flat_set<content::MediaPlayerId> media_players_with_audio_;
 
   std::optional<bool> is_browser_active_;
+
+#if !BUILDFLAG(IS_ANDROID)
+  base::ScopedObservation<BrowserCollection, BrowserCollectionObserver>
+      browser_collection_observation_{this};
+#endif
 
   base::WeakPtrFactory<AdsTabHelper> weak_factory_{this};
 

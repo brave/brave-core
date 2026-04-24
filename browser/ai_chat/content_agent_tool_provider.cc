@@ -37,7 +37,7 @@
 #include "chrome/common/actor.mojom.h"
 #include "chrome/common/actor/action_result.h"
 #include "chrome/common/actor/task_id.h"
-#include "components/actor/task_source_info.h"
+#include "components/actor/core/task_source_info.h"
 #include "components/optimization_guide/content/browser/page_content_proto_provider.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
@@ -186,7 +186,7 @@ void ContentAgentToolProvider::GetOrCreateTabHandleForTask(
     return;
   }
   task->AddTab(
-      task_tab_handle_,
+      task_tab_handle_, /*stop_task_on_detach=*/true,
       base::BindOnce(&ContentAgentToolProvider::TabAddedToTask,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
   task->Resume();

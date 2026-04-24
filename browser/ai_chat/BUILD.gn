@@ -225,7 +225,6 @@ if (enable_brave_ai_chat_agent_profile) {
       "//chrome/browser/profiles:profile",
       "//chrome/browser/profiles:profile_util",
       "//chrome/browser/ui",
-      "//chrome/browser/ui:browser_list",
       "//components/optimization_guide/content/browser",
     ]
 

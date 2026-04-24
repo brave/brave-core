@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc b/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc
-index 422bf37acb26c6c2fd4c8df72d646e075b3a478a..26b746f7f6b52ca3e8d60a26582c33e765032ed4 100644
+index a652daeb9aed5bdce23e8be4e8cc7715c2dc388a..7221345fecf525c5529ef76a109511fe0b4adc24 100644
 --- a/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc
 +++ b/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc
 @@ -199,6 +199,7 @@ void ExtensionsMenuMainPageView::CreateAndInsertMenuEntry(

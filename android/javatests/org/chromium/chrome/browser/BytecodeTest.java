@@ -78,10 +78,10 @@ import org.chromium.chrome.browser.data_sharing.DataSharingTabManager;
 import org.chromium.chrome.browser.feed.FeedActionDelegate;
 import org.chromium.chrome.browser.feed.FeedSurfaceCoordinator;
 import org.chromium.chrome.browser.feed.SnapScrollHelper;
-import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
+import org.chromium.chrome.browser.glic.GlicToolbarButtonController;
 import org.chromium.chrome.browser.homepage.settings.BraveRadioButtonGroupHomepagePreference;
 import org.chromium.chrome.browser.hub.HubShowPaneHelper;
 import org.chromium.chrome.browser.hub.PaneListBuilder;
@@ -105,6 +105,7 @@ import org.chromium.chrome.browser.omnibox.DeferredIMEWindowInsetApplicationCall
 import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.chrome.browser.omnibox.LocationBarEmbedder;
 import org.chromium.chrome.browser.omnibox.LocationBarEmbedderUiOverrides;
+import org.chromium.chrome.browser.omnibox.LocationBarFocusScrimHandler;
 import org.chromium.chrome.browser.omnibox.LocationBarLayout;
 import org.chromium.chrome.browser.omnibox.OmniboxChipManager;
 import org.chromium.chrome.browser.omnibox.OverrideUrlLoadingDelegate;
@@ -1432,7 +1433,6 @@ public class BytecodeTest {
                         AppMenuDelegate.class,
                         OneshotSupplier.class,
                         NullableObservableSupplier.class,
-                        WebFeedSnackbarController.FeedLauncher.class,
                         ModalDialogManager.class,
                         SnackbarManager.class,
                         OneshotSupplier.class,
@@ -1494,7 +1494,7 @@ public class BytecodeTest {
                         DataSharingTabManager.class,
                         TabContentManager.class,
                         TabCreatorManager.class,
-                        Supplier.class,
+                        MonotonicObservableSupplier.class,
                         OmniboxActionDelegateImpl.class,
                         MonotonicObservableSupplier.class,
                         boolean.class,
@@ -1832,7 +1832,8 @@ public class BytecodeTest {
                         Function.class,
                         SnackbarManager.class,
                         View.class,
-                        OmniboxChipManager.class));
+                        OmniboxChipManager.class,
+                        LocationBarFocusScrimHandler.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/LocationBarMediator",
@@ -1858,7 +1859,8 @@ public class BytecodeTest {
                         PageZoomIndicatorCoordinator.class,
                         FuseboxCoordinator.class,
                         LocationBarEmbedder.class,
-                        OmniboxChipManager.class));
+                        OmniboxChipManager.class,
+                        LocationBarFocusScrimHandler.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/AppHooks",
@@ -1949,9 +1951,9 @@ public class BytecodeTest {
                         MonotonicObservableSupplier.class,
                         AppMenuBlocker.class,
                         BooleanSupplier.class,
-                        Supplier.class,
+                        MonotonicObservableSupplier.class,
                         FullscreenManager.class,
-                        Supplier.class,
+                        MonotonicObservableSupplier.class,
                         Supplier.class,
                         MonotonicObservableSupplier.class,
                         SettableMonotonicObservableSupplier.class,
@@ -2313,9 +2315,10 @@ public class BytecodeTest {
                         Runnable.class,
                         Supplier.class,
                         Supplier.class,
-                        Supplier.class,
                         MonotonicObservableSupplier.class,
-                        Runnable.class));
+                        GlicToolbarButtonController.GlicButtonDelegate.class,
+                        Supplier.class,
+                        BrowserControlsVisibilityManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/SwipeRefreshHandler",
@@ -2385,11 +2388,6 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/sync/settings/ManageSyncSettings",
                         "mSyncEncryption"));
-
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/sync/settings/ManageSyncSettings",
-                        "mSyncEverything"));
 
         Assert.assertTrue(
                 fieldExists(

@@ -17,3 +17,44 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 }});
 
 }  // namespace extensions_features
+
+// Adds Brave's MV2 extension features here so that we don't have to patch
+// upstream GN files with dependencies.
+namespace extensions_mv2::features {
+
+BASE_FEATURE(kExtensionsManifestV2, base::FEATURE_DISABLED_BY_DEFAULT);
+
+BASE_FEATURE_PARAM(bool,
+                   kExtensionsManifestV2BackupSettings,
+                   &kExtensionsManifestV2,
+                   "backup_settings",
+                   false);
+
+BASE_FEATURE_PARAM(bool,
+                   kExtensionsManifestV2BImportSettingsOnInstall,
+                   &kExtensionsManifestV2,
+                   "import_settings",
+                   false);
+
+BASE_FEATURE_PARAM(bool,
+                   kExtensionsManifestV2AutoInstallBraveHosted,
+                   &kExtensionsManifestV2,
+                   "auto_install_brave_hosted",
+                   false);
+
+bool IsSettingsBackupEnabled() {
+  return base::FeatureList::IsEnabled(features::kExtensionsManifestV2) &&
+         features::kExtensionsManifestV2BackupSettings.Get();
+}
+
+bool IsSettingsImportEnabled() {
+  return IsSettingsBackupEnabled() &&
+         features::kExtensionsManifestV2BImportSettingsOnInstall.Get();
+}
+
+bool IsExtensionReplacementEnabled() {
+  return IsSettingsImportEnabled() &&
+         features::kExtensionsManifestV2AutoInstallBraveHosted.Get();
+}
+
+}  // namespace extensions_mv2::features

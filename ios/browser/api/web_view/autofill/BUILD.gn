@@ -22,7 +22,7 @@ source_set("autofill") {
     "//components/application_locale_storage",
     "//ios/chrome/browser/affiliations/model",
     "//ios/chrome/browser/autofill/model",
-    "//ios/chrome/browser/autofill/ui_bundled:util",
+    "//ios/chrome/browser/autofill/ui_bundled/util",
     "//ios/chrome/browser/passwords/model",
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/profile",

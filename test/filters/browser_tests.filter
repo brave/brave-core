@@ -102,7 +102,7 @@
 -AttemptFormFillingToolTest.*
 -AudioProcessMlModelForwarderBrowserTest.TriggerRegistrationWithOptimizationGuide
 -AutofillPrivateApi*Test.*
--ChromeComposeClientBrowserTest.TextFieldChangeThresholdHidesProactiveNudge
+-ChromeComposeClientBrowserTest.*
 -ChromeRenderFrameObserverTest.OptGuideGetsText
 -ComposeSessionBrowserTest.*
 -ContextualCueingControllerBrowserTest.*
@@ -432,6 +432,7 @@
 -ServiceWorker/ExtensionBackForwardCacheBrowserTest.MessageSentToCachedIdFails/0
 -ServiceWorker/ExtensionBackForwardCacheWithPrerenderBrowserTest.PortIsStillOpenAfterPrerenderAndActivate/0
 -SoftNavigationPrerenderTest.*
+-UnifiedAutoplayPrerenderBrowserTest.*
 -WebAppLinkCapturingBrowserTest.PrerenderNavigation*
 -WebNavigationApiPrerenderTest.GetFrame
 -WebNavigationApiPrerenderTestWithServiceWorker.Prerendering
@@ -647,6 +648,7 @@
 -ProfileMenuClickTest_*.*/*
 -ProfileMenuViewBookmarksLimitExceededTest.ResolveBookmarksLimitExceededError/kSyncTheFeature
 -ProfileMenuViewBookmarksLimitExceededTest.ResolveBookmarksLimitExceededError/kSyncTransportOnly
+-SearchAIModeSignInPromoViewPixelTest.*
 -ShoppingUiHandlerDelegateBrowserTest.*
 -SigninPromoTabHelperTest.CallAddressMoveCallbackAfterReauthenticationFromTab
 -SigninPromoTabHelperTest.CallPasswordMoveCallbackAfterSignInFromTab
@@ -680,6 +682,14 @@
 -UploadExtensionToAccountDialogBrowserTest.InvokeUi_NormalExtension
 -WithSyncFeatureEnabled/EnclaveAuthenticatorConditionalCreateBrowserTest.ConditionalCreate/*
 -WithSyncFeatureEnabled/EnclaveAuthenticatorConditionalCreateBrowserTest.ConditionalCreate_*/*
+
+# These tests fail because there's no signin UI shown.
+-All/OidcAuthenticationSigninInterceptorFetchFailureTest.PolicyFetchFailure/1
+-All/OidcAuthenticationSigninInterceptorIdFailureTest.DeviceIdFailure/1
+-All/OidcAuthenticationSigninInterceptorTest.MultipleProfileCreationSameIssuer/1
+-All/OidcAuthenticationSigninInterceptorTest.MultipleProfileCreationSameSubject/1
+-All/OidcAuthenticationSigninInterceptorTest.PolicyRecoveryFromPref/1
+-All/OidcAuthenticationSigninInterceptorTest.ProfileCreationThenSwitch/1
 
 # These tests fail because they expect being signed into the primary account on
 # the web.
@@ -1013,11 +1023,13 @@
 -DiceManageAccountBrowserTest.*
 -DiceSigninUiUtilBrowserTest.*
 -DiceWebSigninInterceptionBubbleBrowserTest.*
+-DiceWebSigninInterceptionBubbleWithParamBrowserTest.*
 -DiceWebSigninInterceptorBrowserTest.*
 -DiceWebSigninInterceptorSigninBubbleBrowserTest.*
 -DiceWebSigninInterceptorWithHatsSurveyBrowserTest.ShowHatsSurveyOnChromeSigninInterceptAccepted
 -LaunchWebAuthFlowFunctionTest.CloseBrowser
 -LaunchWebAuthFlowFunctionTest.DestroyProfile
+-ProfileManagementNavigationThrottleRedirectTest.EmptyDomain
 -ProfileMenuSigninAccessPointTest.DefaultSigninAccessPoint
 -ProfileMenuSigninAccessPointTest.SigninAccessPointFromAvatarPromo
 -ProfilePickerSigninToolbarUIPixelTest.InvokeUi_default/*
@@ -1045,6 +1057,7 @@
 -All/GlicProfileManagerPreloadingTest.ShouldPreloadForProfile_NotSupportedProfile/*
 -All/GlicProfileManagerPreloadingTest.ShouldPreloadForProfile_Success/*
 -All/GlicProfileManagerPreloadingTest.ShouldPreloadForProfile_WillBeDestroyed/*
+-All/PolicyUIManagedStatusTest.*
 -All/WalletablePassSaveBubbleViewBrowserTest.*/*
 -AvatarToolbarButtonEnterpriseBadgingBrowserTest.*
 -AvatarToolbarButtonProfileColorBrowserTest.*/*
@@ -1091,11 +1104,15 @@
 -IOSPromosUtilsTest.InvokeUi_addresses
 -IOSPromosUtilsTest.InvokeUi_passwords
 -IOSPromosUtilsTest.InvokeUi_payments
+-MultistepFilterBrowserTest.ExtractsAnnotationAndGeneratesSuggestionOnNavigation
+-MultistepFilterBrowserTest.NoExtractionOrSuggestionWhenNotSignedIn
+-MultistepFilterDisabledBrowserTest.ServiceNotCreatedWhenFeatureDisabled
 -PdfViewerPrivateBrowserTestGlicEnabled.GlicSummarize
 -PlusAddressServiceBrowserTest.VerifyShouldShowManualFallback
 -PolicyManagedUITestInstance/ManagementUIManagedStatusTest.*/*
 -PolicyManagedUITestInstance/PolicyUIManagedStatusTest.*/*
 -ProfileMenuViewSigninPendingTest.OpenReauthTab
+-ProfileMenuViewSyncServiceUnavailableTest.DoesNotCrashWhenSyncPaused
 -ProfileMenuViewWebOnlyTest.ContinueAs
 -SaveCardBubbleViewsFullFormBrowserTest.Upload_ClickingSave_DisablesCardholderNameField/*
 -SaveCardBubbleViewsFullFormBrowserTest.Upload_ClickingSave_ShowsLoadingView/*
@@ -1383,6 +1400,7 @@
 -All/LensOverlayControllerBrowserPDFIncreaseLimitTest.PartialPdfCharacterLimitReached_IncludedInRequest/*
 -All/LensOverlayControllerBrowserPDFTest.ContextMenuOpensOverlay/*
 -All/LensOverlayControllerBrowserPDFUpdatedContentFieldsTest.PartialPdfIncludedInRequest/*
+-ContextualTasksNoMockBrowserTest.InitSidePanelWithGhostLoader_WaitUntilPanelOpen
 -LensComposeboxControllerBrowserTest.*
 -LensOverlayControllerApcOnlyTest.*
 -LensOverlayControllerBrowserFullscreenDisabled.*
@@ -1516,6 +1534,7 @@
 -All/ContextMenuBrowserTest.ContextMenuForVideoWithoutReadableFrame/LinkPreviewDisabled
 -All/ContextMenuBrowserTest.ContextMenuForVideoWithoutReadableFrame/LinkPreviewEnabled
 -All/ContextMenuBrowserTest.SaveLinkAsEntryIsDisabledForBlockedUrls/LinkPreviewDisabled
+-ContextualTasksLensInteractionBrowserTest.*
 
 # These tests fail because the Brave extension has a persistent background page,
 # which affects the metrics count. The tests pass when run with
@@ -1622,13 +1641,6 @@
 -HistoryEmbeddingsWithLowAggregationBrowserTest.PassageContextSelectionLimitedByWordCount
 -HistoryEmbeddingsWithUrlFilterBrowserTest.DoesNotFilterUrlNotOnBlocklist
 -HistoryEmbeddingsWithUrlFilterBrowserTest.FilterUrlOnBlocklist
-
-# This test fails because we disable kTpcdMetadataGrants
--All/ManagerPrefsBrowserTest.NoSpecificBlockedCookieSpecs*
--All/ManagerPrefsBrowserTest.RelevantUserCookieSpecsPrecede/*
--GetAffectedUrlsForThirdPartyCookieMetadataTest.*
--ManagerBrowserTest.TpcdDtGracePeriodEnforced_InValidDtToken
--PrivacySandboxInternalsMojoTest.GetTpcdMetadataGrants
 
 # These tests fail because we override prefs::kSearchSuggestEnabled to false.
 -All/SearchEnginePreconnectorEnabledOnlyBrowserTest.AllowedSearch/*
@@ -1976,8 +1988,10 @@
 -GlicInstanceCoordinatorBrowserTest.*
 -GlicInstanceCoordinatorTrustFirstOnboardingArm1BrowserTest.TabContentsDaisyChainingNotSuppressedWhenTrustFirstArm1Shown
 -GlicInstanceCoordinatorUnbindOnCloseTest.KeptBoundWhenInputSubmitted
+-GlicInstanceCoordinatorUnbindOnCloseTest.KeptBoundWhenPinnedViaContextMenu
 -GlicPermissionEnforcementUiTest.*
 -GlicTabSubMenuModelTest.UnpinThenNavigateToOtherTabAndRemainsUnpinned
+-NewGlicApiTest.*
 -PdfViewerPrivateBrowserTestGlicEnabled.GlicSummarize
 -SkillsApiFunctionalBrowserTest.*
 
@@ -2024,10 +2038,7 @@
 # Temporarily commented out while we add support for features::kWebUILocationBar
 # and related features (see https://github.com/brave/brave-browser/issues/54461)
 -WebUILocationBarBrowserTest.*
--WebUIPinnedToolbarActionsBrowserTest.InvokeActions
--WebUIPinnedToolbarActionsBrowserTest.PinAllTogether
--WebUIPinnedToolbarActionsBrowserTest.PinUnpinIndividually
--WebUIPinnedToolbarActionsBrowserTest.SetActionElementIdentifier
+-WebUIPinnedToolbarActionsBrowserTest.*
 -WebUIToolbarWebViewPixelBrowserTest.*
 
 # Tests below this point have not been diagnosed or had issues created yet.

@@ -26,9 +26,7 @@ if (!is_android) {
     "//brave/common/importer",
     "//brave/common/importer:interfaces",
     "//chrome/app:branded_strings",
-    "//components/os_crypt/sync",
     "//components/user_data_importer/common",
-    "//components/webdata/common",
   ]
 }
 

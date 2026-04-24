@@ -7,8 +7,7 @@
 
 namespace page_actions {
 
-void PageActionModel::SetAlwaysShowLabel(base::PassKey<PageActionController>,
-                                         bool always_show) {
+void PageActionModel::SetAlwaysShowLabel(PageActionPassKey, bool always_show) {
   if (always_show_label_ == always_show) {
     return;
   }
@@ -21,7 +20,7 @@ bool PageActionModel::GetAlwaysShowLabel() const {
 }
 
 void PageActionModel::SetOverrideChipColors(
-    base::PassKey<PageActionController>,
+    PageActionPassKey,
     std::optional<SkColor> override_background_color,
     std::optional<SkColor> override_foreground_color) {
   if (override_background_color_ == override_background_color &&
@@ -41,7 +40,7 @@ std::optional<SkColor> PageActionModel::GetOverrideForegroundColor() const {
   return override_foreground_color_;
 }
 
-void PageActionModel::SetOverrideHeight(base::PassKey<PageActionController>,
+void PageActionModel::SetOverrideHeight(PageActionPassKey,
                                         std::optional<int> height) {
   if (override_height_ == height) {
     return;
@@ -55,7 +54,7 @@ std::optional<int> PageActionModel::GetOverrideHeight() const {
 }
 
 void PageActionModel::SetOverrideTriggerableEvent(
-    base::PassKey<PageActionController>,
+    PageActionPassKey,
     std::optional<int> event_flags) {
   if (override_triggerable_event_flags_ == event_flags) {
     return;

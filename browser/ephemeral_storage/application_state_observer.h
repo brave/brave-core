@@ -15,11 +15,15 @@
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "chrome/browser/ui/browser_list_observer.h"
+#include "base/scoped_observation.h"
+#include "chrome/browser/ui/browser_window/public/browser_collection_observer.h"
 
 namespace content {
 class BrowserContext;
 }
+
+class BrowserWindowInterface;
+class BrowserCollection;
 
 #endif
 
@@ -27,7 +31,7 @@ namespace ephemeral_storage {
 
 class ApplicationStateObserver
 #if !BUILDFLAG(IS_ANDROID)
-    : public BrowserListObserver
+    : public BrowserCollectionObserver
 #endif
 {
  public:
@@ -64,8 +68,8 @@ class ApplicationStateObserver
  private:
 
 #if !BUILDFLAG(IS_ANDROID)
-  // BrowserListObserver:
-  void OnBrowserAdded(Browser* browser) override;
+  // BrowserCollectionObserver:
+  void OnBrowserCreated(BrowserWindowInterface* browser) override;
 #endif
 
   void NotifyApplicationBecameActive();
@@ -76,6 +80,8 @@ class ApplicationStateObserver
 #if !BUILDFLAG(IS_ANDROID)
   bool has_notified_active_ = false;
   raw_ptr<content::BrowserContext> context_ = nullptr;
+  base::ScopedObservation<BrowserCollection, BrowserCollectionObserver>
+      browser_collection_observation_{this};
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   base::WeakPtrFactory<ApplicationStateObserver> weak_ptr_factory_{this};

@@ -65,14 +65,14 @@ void BraveSidePanelCoordinator::Show(
 #endif
 }
 
-void BraveSidePanelCoordinator::Close(SidePanelEntry::PanelType panel_type,
+void BraveSidePanelCoordinator::Close(SidePanelType panel_type,
                                       SidePanelEntryHideReason hide_reason,
                                       bool suppress_animations) {
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
   // Same as Show(): sidebar v2 does not rely on SidebarContainerView to
   // propagate panel close events, so clear the active item state here.
   CHECK(browser_view_->browser()->GetFeatures().sidebar_controller());
-  if (panel_type == SidePanelEntry::PanelType::kContent) {
+  if (panel_type == SidePanelType::kContent) {
     browser_view_->browser()
         ->GetFeatures()
         .sidebar_controller()
@@ -99,9 +99,9 @@ void BraveSidePanelCoordinator::OnActiveTabChanged(
 }
 
 void BraveSidePanelCoordinator::Toggle() {
-  if (IsSidePanelShowing(SidePanelEntry::PanelType::kContent) &&
+  if (IsSidePanelShowing(SidePanelType::kContent) &&
       !browser_view_->contents_height_side_panel()->IsClosing()) {
-    SidePanelCoordinator::Close(SidePanelEntry::PanelType::kContent);
+    SidePanelCoordinator::Close(SidePanelType::kContent);
   } else if (const auto key = GetLastActiveEntryKey()) {
     SidePanelUIBase::Show(*key, SidePanelOpenTrigger::kToolbarButton);
   }
@@ -121,8 +121,7 @@ void BraveSidePanelCoordinator::OnViewVisibilityChanged(
   // See the comment of SidePanelCoordinator::OnViewVisibilityChanged()
   // about this condition.
   bool update_items_state = true;
-  if (observed_view->GetVisible() ||
-      !current_key(SidePanelEntry::PanelType::kContent)) {
+  if (observed_view->GetVisible() || !current_key(SidePanelType::kContent)) {
     update_items_state = false;
   }
 

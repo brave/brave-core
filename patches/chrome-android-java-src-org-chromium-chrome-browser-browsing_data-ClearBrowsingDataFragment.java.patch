@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment.java
-index 55641e77837597f10d0a4fbcff9d57c7b66d305a..917624d4f2f53bc63ad8e183898fe532a4289e43 100644
+index 85ec3b34682d36e773d2d20181c10f419e0f803b..23ab3fa63e8d1840bfcfdafce6b9524d68cdac73 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment.java
 @@ -356,7 +356,7 @@ public class ClearBrowsingDataFragment extends ChromeBaseSettingsFragment

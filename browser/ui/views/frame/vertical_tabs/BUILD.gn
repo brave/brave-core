@@ -30,7 +30,6 @@ source_set("vertical_tabs") {
     "//chrome/app:command_ids",
     "//chrome/browser/profiles",
     "//chrome/browser/themes",
-    "//chrome/browser/ui:browser_list",
     "//chrome/browser/ui:ui_features",
     "//chrome/browser/ui/color:color_headers",
     "//chrome/browser/ui/color:mixers",

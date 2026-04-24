@@ -1,0 +1,34 @@
+diff --git a/net/cookies/cookie_monster_change_dispatcher.h b/net/cookies/cookie_monster_change_dispatcher.h
+index 03a9b7458ce56ae45a5e9ef0d7f715d22e8e41b0..5a8910ae8ca5954444295551ec53da5dad1481f4 100644
+--- a/net/cookies/cookie_monster_change_dispatcher.h
++++ b/net/cookies/cookie_monster_change_dispatcher.h
+@@ -24,16 +24,18 @@
+ namespace net {
+ 
+ class CookieAccessDelegate;
++namespace chromium_impl {
+ class CookieMonster;
++}
+ 
+-// CookieChangeDispatcher implementation used by CookieMonster.
++// CookieChangeDispatcher implementation used by chromium_impl::CookieMonster.
+ class CookieMonsterChangeDispatcher : public CookieChangeDispatcher {
+  public:
+   using CookieChangeCallbackList =
+       base::RepeatingCallbackList<void(const CookieChangeInfo&)>;
+ 
+   // Expects |cookie_monster| to outlive this.
+-  explicit CookieMonsterChangeDispatcher(const CookieMonster* cookie_monster);
++  explicit CookieMonsterChangeDispatcher(const chromium_impl::CookieMonster* cookie_monster);
+ 
+   CookieMonsterChangeDispatcher(const CookieMonsterChangeDispatcher&) = delete;
+   CookieMonsterChangeDispatcher& operator=(
+@@ -150,7 +152,7 @@ class CookieMonsterChangeDispatcher : public CookieChangeDispatcher {
+   // Called by the Subscription destructor.
+   void UnlinkSubscription(Subscription* subscription);
+ 
+-  raw_ptr<const CookieMonster> cookie_monster_;
++  raw_ptr<const chromium_impl::CookieMonster> cookie_monster_;
+ 
+   CookieDomainMap cookie_domain_map_;
+ 

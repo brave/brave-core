@@ -12,8 +12,8 @@
 #include "brave/components/misc_metrics/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -120,7 +120,8 @@ VerticalTabMetrics::VerticalTabMetrics(PrefService* local_state) {
         local_state, GetStoragePrefNameForCountType(count_type));
   }
 
-  BrowserList::GetInstance()->AddObserver(this);
+  browser_collection_observation_.Observe(
+      GlobalBrowserCollection::GetInstance());
 }
 
 VerticalTabMetrics::~VerticalTabMetrics() = default;
@@ -151,26 +152,26 @@ void VerticalTabMetrics::UpdateMetrics() {
   }
 }
 
-void VerticalTabMetrics::OnBrowserAdded(Browser* browser) {
-  if (!browser->is_type_normal()) {
+void VerticalTabMetrics::OnBrowserCreated(BrowserWindowInterface* browser) {
+  if (browser->GetType() != BrowserWindowInterface::TYPE_NORMAL) {
     return;
   }
-  Profile* profile = browser->profile();
+  Profile* profile = browser->GetProfile();
   if (!profile || profile->IsOffTheRecord() || !profile->IsRegularProfile()) {
     // Do not monitor incognito windows.
     return;
   }
   PrefService* profile_prefs = profile->GetPrefs();
   CHECK(profile_prefs);
-  SessionID session_id = browser->session_id();
+  SessionID session_id = browser->GetSessionID();
   browser_metrics_[session_id] = std::make_unique<VerticalTabBrowserMetrics>(
       profile_prefs, base::BindRepeating(&VerticalTabMetrics::UpdateMetrics,
                                          base::Unretained(this)));
-  browser->tab_strip_model()->AddObserver(browser_metrics_[session_id].get());
+  browser->GetTabStripModel()->AddObserver(browser_metrics_[session_id].get());
 }
 
-void VerticalTabMetrics::OnBrowserRemoved(Browser* browser) {
-  browser_metrics_.erase(browser->session_id());
+void VerticalTabMetrics::OnBrowserClosed(BrowserWindowInterface* browser) {
+  browser_metrics_.erase(browser->GetSessionID());
 }
 
 }  // namespace misc_metrics

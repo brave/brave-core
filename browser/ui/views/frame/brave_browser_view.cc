@@ -58,7 +58,6 @@
 #include "chrome/browser/app_mode/app_mode_utils.h"
 #include "chrome/browser/devtools/devtools_ui_controller.h"
 #include "chrome/browser/devtools/devtools_window.h"
-#include "chrome/browser/enterprise/watermark/watermark_view.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_element_identifiers.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -629,7 +628,7 @@ void BraveBrowserView::ShowPlaylistBubble() {
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 void BraveBrowserView::ShowWaybackMachineBubble() {
-  if (auto* anchor = toolbar_button_provider_->GetPageActionIconView(
+  if (auto* anchor = toolbar_button_provider()->GetPageActionIconView(
           brave::kWaybackMachineActionIconType)) {
     DCHECK(anchor->GetVisible());
     // Launch bubble with this anchor.
@@ -870,7 +869,7 @@ bool BraveBrowserView::MaybeUpdateDevtools(content::WebContents* web_contents) {
   // together. Early return to avoid crash from that.
   if (IsWebPanelContents(web_contents) && IsInSplitView()) {
     return browser_->GetFeatures().devtools_ui_controller()->UpdateDevtools(
-        GetActiveContentsContainerView(), web_contents, false);
+        web_contents, false);
   }
 
   bool result = BrowserView::MaybeUpdateDevtools(web_contents);

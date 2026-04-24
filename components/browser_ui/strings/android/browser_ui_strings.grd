@@ -324,9 +324,6 @@
       <message name="IDS_ALWAYS" desc="Generic label for a user to select an always option">
         Always
       </message>
-      <message name="IDS_PROVIDED_BY_GOOGLE" desc="Generic label for something that comes from Brave servers.">
-        Provided by Brave
-      </message>
       <message name="IDS_TURN_ON" desc="Generic label for a user to turn">
         Turn on
       </message>
@@ -589,6 +586,9 @@
       </message>
       <message name="IDS_PAGE_INFO_COOKIES_SITE_NOT_WORKING_DESCRIPTION_TRACKING_PROTECTION" desc="Descriptive text in the Page Info UI explaining the trade-off of temporarily allowing third-party cookies for this site, a change that will automatically expire in the future.">
         Try temporarily allowing third-party cookies, which means less browsing protection but site features are more likely to work as expected.
+      </message>
+      <message name="IDS_PAGE_INFO_COOKIES_SITE_NOT_WORKING_DESCRIPTION" desc="Descriptive text in the Page Info UI explaining the trade-off of allowing third-party cookies for the current site." translateable="false">
+        Try allowing third-party cookies, which means less browsing protection but site features are more likely to work as expected.
       </message>
       <message name="IDS_PAGE_INFO_COOKIES_SUBTITLE_ALLOWED" desc="Description text in the Page Info dialog to indicate that third-party cookies are allowed on this site.">
         Third-party cookies allowed
@@ -1662,6 +1662,11 @@
       </message>
       <message name="IDS_JAVASCRIPT_OPTIMIZER_DISABLED_DUE_TO_ADVANCED_PROTECTION_SETTINGS_MESSAGE" desc="Message displayed in Javascript-Optimizer site-settings page to inform user that Javascript-Optimizer toggle is disabled because Android Advanced Protection was enabled in Android OS Settings.">
         This setting is disabled because you turned on Advanced Protection in Android Settings.
+      </message>
+      <message name="IDS_OFFLINE_ITEMS_TRUNCATED" desc="Toast message shown when only some items could be loaded due to low memory. The first placeholder is the number of items shown, and the second is the total number of items. [ICU Syntax]">
+        {LOADED_COUNT, plural,
+          =1 {Showing 1 of {TOTAL_COUNT} items due to low memory}
+          other {Showing # of {TOTAL_COUNT} items due to low memory}}
       </message>
     </messages>
   </release>

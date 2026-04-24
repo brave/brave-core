@@ -10,14 +10,10 @@
 #include "base/path_service.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/extensions/manifest_v2/brave_extensions_manifest_v2_migrator.h"
-#include "brave/browser/extensions/manifest_v2/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/extensions/extension_management.h"
 #include "chrome/browser/extensions/extension_service_test_base.h"
 #include "chrome/browser/extensions/install_verifier_factory.h"
-#include "chrome/browser/extensions/manifest_v2_experiment_manager.h"
-#include "chrome/browser/extensions/mv2_deprecation_impact_checker.h"
-#include "chrome/browser/extensions/mv2_experiment_stage.h"
 #include "extensions/browser/extension_file_task_runner.h"
 #include "extensions/browser/extension_prefs.h"
 #include "extensions/browser/extension_registrar.h"
@@ -25,6 +21,9 @@
 #include "extensions/browser/extension_util.h"
 #include "extensions/browser/install_signer.h"
 #include "extensions/browser/install_verifier.h"
+#include "extensions/browser/manifest_v2_experiment_manager.h"
+#include "extensions/browser/mv2_deprecation_impact_checker.h"
+#include "extensions/browser/mv2_experiment_stage.h"
 #include "extensions/common/constants.h"
 #include "extensions/common/extension_builder.h"
 #include "extensions/common/extension_features.h"
@@ -128,8 +127,7 @@ TEST_P(BraveExtensionsManifestV2DeprecationTest, CheckStages) {
 
 TEST_P(BraveExtensionsManifestV2DeprecationTest,
        KnownMV2ExtensionsNotDeprecated) {
-  extensions::MV2DeprecationImpactChecker checker(
-      extensions::ExtensionManagementFactory::GetForBrowserContext(profile()));
+  extensions::MV2DeprecationImpactChecker checker(profile());
 
   for (const auto& known_mv2 :
        extensions_mv2::kPreconfiguredManifestV2Extensions) {

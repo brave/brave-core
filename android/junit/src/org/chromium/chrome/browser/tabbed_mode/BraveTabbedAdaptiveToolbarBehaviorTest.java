@@ -23,6 +23,7 @@ import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsVisibilityManager;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.tab_group_suggestion.toolbar.GroupSuggestionsButtonController;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
@@ -30,7 +31,6 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabstrip.StripVisibilityState;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarBehavior;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarButtonVariant;
-import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.Arrays;
 import java.util.function.Supplier;
@@ -56,7 +56,6 @@ public class BraveTabbedAdaptiveToolbarBehaviorTest {
         Supplier<@Nullable TabCreatorManager> tabCreatorManagerSupplier = () -> null;
         Supplier<GroupSuggestionsButtonController> groupSuggestionsControllerSupplier = () -> null;
         Supplier<TabModelSelector> tabModelSelectorSupplier = () -> null;
-        Supplier<ModalDialogManager> modalDialogManagerSupplier = () -> null;
 
         mBehavior =
                 new BraveTabbedAdaptiveToolbarBehavior(
@@ -69,9 +68,10 @@ public class BraveTabbedAdaptiveToolbarBehaviorTest {
                         () -> {},
                         groupSuggestionsControllerSupplier,
                         tabModelSelectorSupplier,
-                        modalDialogManagerSupplier,
                         tabStripVisibilitySupplier,
-                        () -> {});
+                        preventClose -> {},
+                        () -> null,
+                        Mockito.mock(BrowserControlsVisibilityManager.class));
     }
 
     @After

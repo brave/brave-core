@@ -1,9 +1,10 @@
 include_rules = [
-  "+brave/components/sync/service",
-  "+brave/components/brave_vpn/common/buildflags",
-  "+brave/components/brave_wallet/common/buildflags",
-  "+brave/net/dns",
-  "+brave/components/brave_vpn/common",
   "+brave/components/brave_shields/core/common",
+  "+brave/components/brave_vpn/common/buildflags",
+  "+brave/components/brave_vpn/common",
+  "+brave/components/brave_wallet/common/buildflags",
   "+brave/components/content_settings/core/browser",
+  "+brave/components/os_crypt/sync",
+  "+brave/components/sync/service",
+  "+brave/net/dns",
 ]

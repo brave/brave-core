@@ -29,6 +29,8 @@
 -GlicButtonControllerTest.*
 -GlicEnablingStandardFreTest.NotConsented_Returns*
 -GlicEnablingTrustFirstOnboardingTest.*
+-GlicFreControllerTest.*
+-GlicMediaIntegrationTest.*
 -GlicMetricsFeaturesEnabledTest.*
 -GlicMetricsTest.*
 -GlicMetricsTrustFirstOnboardingTest.*
@@ -115,6 +117,7 @@
 # These tests crash or fail because we have kOptimizationHints feature disabled,
 # which causes OptimizationGuideKeyedServiceFactory::GetForProfile return a
 # nullptr.
+-AIClassifierTest.*
 -AILanguageModel*Test.*
 -AILanguageModelTestWithLanguageParams.PromptWithEnabledLanguages/*
 -AIManagerTest.*
@@ -272,6 +275,7 @@
 -AvatarButtonPromoManagerTest.SigninPromoHasLastExternalEventTimeCheck
 -AvatarButtonPromoManagerTest.SigninPromoSupportIndependantProfileAndAccount*
 -BrowserSigninDetectorServiceTest.LateObservation
+-ConnectorsServiceRealTimeURLIdentifierTest.ReturnsCorrectIdentifier/*
 -ContextualSearchboxHandlerSignedInTestTabsTest.GetRecentTabs_SetsShowInRecentTabChip
 -DeveloperPrivateApiTransportModeUnitTest.CannotUploadAfterSignOut
 -DeveloperPrivateApiTransportModeUnitTest.CannotUploadWithFullSync
@@ -321,7 +325,9 @@
 -ChromePingManagerFactoryTest.ShouldSendPersistedReport_Yes
 -ChromeTailoredSecurityServiceTest.*
 -ClientSideDetectionHostCreditCardFormTest.*
+-ClientSideDetectionHostNewObserversForceRequestTest.*
 -ClientSideDetectionHostNotificationTest.*
+-ClientSideDetectionHostPriorityTest.*
 -ClientSideDetectionHostScamDetectionTest.*
 -ClientSideDetectionHostTest.*
 -ClientSideDetectionIntelligentScanDelegateDesktopTest*
@@ -381,6 +387,7 @@
 # optimization_guide::features::kOptimizationGuideFetchingForSRP
 -ChangePasswordFormFillingSubmissionHelperTest.*
 -ChromeHintsManagerFetchingTest.HintsFetched_*
+-FindsTabHelperTest.TestSRPBackNavigationThresholdMet
 -PasswordChangeDelegateImplTest.MetricsReportedFlowCanceledDuringSignInCheck
 -PasswordChangeDelegateImplTest.OtpDetectionProcessed
 -PasswordChangeDelegateImplTest.PasswordChangeFormNotFound
@@ -507,10 +514,6 @@
 -ContextualCueingHelperTest.*
 -ContextualCueingServiceTestZeroStateSuggestions.*
 
-# These tests fail because we disable kTpcdMetadataGrants.
--ChromeBrowsingDataRemoverDelegateTpcdMetadataTest.ResetAllCohort_PreserveSome
--ChromeBrowsingDataRemoverDelegateTpcdMetadataTest.ResetAllCohorts
-
 # These tests fail because we disable
 # ntp_features::kCustomizeChromeWallpaperSearch.
 -WallpaperSearchBackgroundManagerTest.*
@@ -543,6 +546,9 @@
 -OneTimePermissionProviderTest.*
 -PageInfoToggleStatesUnitTest.TogglePermissionWithAllowOnceDefaultAskTest
 -PageInfoToggleStatesUnitTest.TogglePermissionWithAllowOnceDefaultBlockTest
+
+# These tests fail because we disable popular site suggestions functionality
+-MostVisitedHandlerTest/MostVisitedAutoRemovalTest.OnMostVisitedTileHoverMetrics/*
 
 # These fail because we override GetChromeChannel to always use
 # with_extended_stable = false and override channel info
@@ -663,6 +669,15 @@
 
 # These tests fail because we disable `blink::features::kAIRewriterAPI`
 -AIRewriterTest.*
+
+# These tests fail because we change kRemoteFrontendDomain to devtools.brave.com
+-DevToolsUIBindingsLoadNetworkResourceTest.BlocksFileSchemeFromRemoteFrontend
+-DevToolsUIBindingsLoadNetworkResourceTest.BlocksFileSchemeFromRemoteFrontendWithLocalTarget
+
+# These tests fail because brave.omnibox.history_suggestions_enabled is not
+# registered.
+-OmniboxEditModelPopupTest.AiModeButtonClick*
+-OmniboxEditModelPopupTest.AimPopup*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*

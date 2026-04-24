@@ -56,7 +56,7 @@ bool BrowserViewLayoutDelegateImpl::IsContentTypeSidePanelVisible() const {
       .browser()
       ->GetFeatures()
       .side_panel_ui()
-      ->GetCurrentEntryId(SidePanelEntry::PanelType::kContent)
+      ->GetCurrentEntryId(SidePanelType::kContent)
       .has_value();
 }
 

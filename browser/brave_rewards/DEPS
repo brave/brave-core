@@ -1,5 +1,6 @@
 include_rules = [
   "+brave/components/brave_rewards/core/engine",
   "+brave/components/brave_rewards/resources",
+  "+brave/components/os_crypt/sync",
   "+brave/components/script_injector/common",
 ]

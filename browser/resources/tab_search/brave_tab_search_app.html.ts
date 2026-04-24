@@ -12,7 +12,7 @@ export function getHtml(this: BraveTabSearchAppElement) {
     ? html` <tab-search-page available-height="${this.availableHeight}">
       </tab-search-page>`
     : html` <cr-tabs
-          .tabNames="${this.tabNames_}"
+          .tabNames="${this.tabNames_()}"
           .selected="${this.selectedTabIndex_}"
           @selected-changed="${this.onTabSelectedChanged_}"
         >

@@ -21,14 +21,16 @@
 #include "components/tab_groups/tab_group_id.h"
 #include "ui/gfx/range/range.h"
 
-class Browser;
+class BrowserWindowInterface;
 
 namespace commander {
 
 // Intermediate result type for browser windows that are eligible to be
 // presented to the user as an option for a particular command.
 struct WindowMatch {
-  WindowMatch(Browser* browser, const std::u16string& title, double score);
+  WindowMatch(BrowserWindowInterface* browser,
+              const std::u16string& title,
+              double score);
   ~WindowMatch();
 
   WindowMatch(WindowMatch&& other);
@@ -36,7 +38,7 @@ struct WindowMatch {
 
   std::unique_ptr<CommandItem> ToCommandItem() const;
 
-  raw_ptr<Browser> browser;
+  raw_ptr<BrowserWindowInterface> browser;
   std::u16string title;
   std::vector<gfx::Range> matched_ranges;
   double score;
@@ -88,15 +90,16 @@ struct TabMatch {
 // returns all eligible browser windows with score reflecting MRU order.
 // `browser_to_exclude` is excluded from the list, as are all browser windows
 // from a different profile unless `match_profile` is false.
-std::vector<WindowMatch> WindowsMatchingInput(const Browser* browser_to_exclude,
-                                              const std::u16string& input,
-                                              bool match_profile = false);
+std::vector<WindowMatch> WindowsMatchingInput(
+    const BrowserWindowInterface* browser_to_exclude,
+    const std::u16string& input,
+    bool match_profile = false);
 
 // Returns tab groups in `browser` whose titles fuzzy match `input`. If input is
 // empty, returns all groups in an arbitrary order. If `group_to_exclude` is
 // set, it is excluded from the list.
 std::vector<GroupMatch> GroupsMatchingInput(
-    const Browser* browser,
+    const BrowserWindowInterface* browser,
     const std::u16string& input,
     std::optional<tab_groups::TabGroupId> group_to_exclude = std::nullopt);
 
@@ -122,7 +125,7 @@ struct TabSearchOptions {
 
 // Returns tabs in `browser` whose titles fuzzy match `input`. If input is
 // empty, returns all groups in the order they appear in the tab strip.
-std::vector<TabMatch> TabsMatchingInput(const Browser* browser,
+std::vector<TabMatch> TabsMatchingInput(const BrowserWindowInterface* browser,
                                         const std::u16string& input,
                                         const TabSearchOptions& options = {});
 

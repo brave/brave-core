@@ -65,11 +65,6 @@ public class BraveSigninManager implements SigninManager {
     public void addSignInStateObserver(SignInStateObserver observer) {}
 
     @Override
-    public boolean isForceSigninEnabled() {
-        return false;
-    }
-
-    @Override
     public IdentityManager getIdentityManager() {
         return mIdentityManager;
     }
@@ -92,13 +87,7 @@ public class BraveSigninManager implements SigninManager {
     void destroy() {}
 
     @Override
-    public void wipeSyncUserData(Runnable wipeDataCallback, @DataWipeOption int dataWipeOption) {}
-
-    @Override
-    public void revokeSyncConsent(
-            @SignoutReason int signoutSource,
-            @Nullable SignOutCallback signOutCallback,
-            boolean forceWipeUserData) {}
+    public void wipeSyncUserData(Runnable wipeDataCallback) {}
 
     @Override
     public void signin(

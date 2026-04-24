@@ -43,8 +43,8 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/os_crypt/sync/os_crypt.h"
 #include "components/grit/brave_components_strings.h"
-#include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -564,13 +564,13 @@ std::string EncryptAPIKey(const std::string& api_key) {
     return std::string();
   }
 
-  std::string encrypted_api_key;
-  if (!OSCrypt::EncryptString(api_key, &encrypted_api_key)) {
-    VLOG(1) << "Encrypt api key failure";
-    return std::string();
-  }
+  // std::string encrypted_api_key;
+  // if (!OSCrypt::EncryptString(api_key, &encrypted_api_key)) {
+  //   VLOG(1) << "Encrypt api key failure";
+  return std::string();
+  //}
 
-  return base::Base64Encode(encrypted_api_key);
+  // return base::Base64Encode(encrypted_api_key);
 }
 
 std::string DecryptAPIKey(const std::string& encoded_api_key) {
@@ -584,13 +584,13 @@ std::string DecryptAPIKey(const std::string& encoded_api_key) {
     return std::string();
   }
 
-  std::string api_key;
-  if (!OSCrypt::DecryptString(encrypted_api_key, &api_key)) {
-    VLOG(1) << "Decrypt api key failure";
-    return std::string();
-  }
+  // std::string api_key;
+  // if (!OSCrypt::DecryptString(encrypted_api_key, &api_key)) {
+  //   VLOG(1) << "Decrypt api key failure";
+  return std::string();
+  //}
 
-  return api_key;
+  // return api_key;
 }
 
 base::DictValue GetModelDict(mojom::ModelPtr model) {

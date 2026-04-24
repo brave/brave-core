@@ -122,6 +122,7 @@ class BraveHistoryQuickProviderTest : public testing::Test {
 
   // Fills test data into the history system.
   void FillData() {
+    std::vector<history::URLRow> rows;
     history::URLRow row{GURL("http://example.com/")};
     ASSERT_TRUE(row.url().is_valid());
     row.set_title(u"Example");
@@ -129,7 +130,8 @@ class BraveHistoryQuickProviderTest : public testing::Test {
     row.set_typed_count(3);
     row.set_last_visit(base::Time::Now());
 
-    AddFakeURLToHistoryDB(history_backend()->db(), row);
+    rows.push_back(row);
+    history::AddFakeURLsToHistoryService(client_->GetHistoryService(), rows);
   }
 
   // Runs an autocomplete query on |text| and checks to see that the returned

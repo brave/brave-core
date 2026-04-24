@@ -8,9 +8,6 @@
 
 #include "components/infobars/core/confirm_infobar_delegate.h"
 
-class Browser;
-class Profile;
-
 namespace brave_sync {
 class Prefs;
 }  // namespace brave_sync
@@ -19,6 +16,8 @@ namespace infobars {
 class ContentInfoBarManager;
 }  // namespace infobars
 
+class BrowserWindowInterface;
+
 class SyncCannotRunInfoBarDelegate : public ConfirmInfoBarDelegate {
  public:
   SyncCannotRunInfoBarDelegate(const SyncCannotRunInfoBarDelegate&) = delete;
@@ -26,11 +25,10 @@ class SyncCannotRunInfoBarDelegate : public ConfirmInfoBarDelegate {
       delete;
 
   static void Create(infobars::ContentInfoBarManager* infobar_manager,
-                     Profile* profile,
-                     Browser* browser);
+                     BrowserWindowInterface* browser);
 
  private:
-  explicit SyncCannotRunInfoBarDelegate(Browser* browser, Profile* profile);
+  explicit SyncCannotRunInfoBarDelegate(BrowserWindowInterface* browser);
   ~SyncCannotRunInfoBarDelegate() override;
 
   // ConfirmInfoBarDelegate overrides
@@ -44,8 +42,7 @@ class SyncCannotRunInfoBarDelegate : public ConfirmInfoBarDelegate {
   bool Accept() override;
   bool Cancel() override;
 
-  raw_ptr<Profile> profile_ = nullptr;
-  raw_ptr<Browser> browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface> browser_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_INFOBARS_SYNC_CANNOT_RUN_INFOBAR_DELEGATE_H_

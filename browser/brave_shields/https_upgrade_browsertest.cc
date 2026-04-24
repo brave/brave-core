@@ -208,7 +208,7 @@ class HttpsUpgradeBrowserTest : public PlatformBrowserTest {
     if (!dialog_controller) {
       return false;
     }
-    return dialog_controller->HasOpenDialogWidget();
+    return dialog_controller->HasOpenDialog();
   }
 #endif
 

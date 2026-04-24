@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_group_views.cc b/chrome/browser/ui/views/tabs/tab_group_views.cc
-index 39d323aefcda20408523320a7585ccec799bb96e..13a38e5514e299f0c462f18dca5ab6a7873812d9 100644
+index 4a4678bceb38a2750a885f9d169465d1ae1c4319..65358c890846bd5f3514084d60340affdc392c58 100644
 --- a/chrome/browser/ui/views/tabs/tab_group_views.cc
 +++ b/chrome/browser/ui/views/tabs/tab_group_views.cc
 @@ -168,6 +168,7 @@ TabGroupViews::GetLeadingTrailingGroupViews(

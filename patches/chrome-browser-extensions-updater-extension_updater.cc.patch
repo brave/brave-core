@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/updater/extension_updater.cc b/chrome/browser/extensions/updater/extension_updater.cc
-index bd09a394594415cdc7a61ec525bca97bcd8acc7a..424c25682c9aa3d932fc0a49ea2f66b555f8b114 100644
+index 63e011d646602aa070d8bc33d549fcd0245ade04..277f4666ec49ed5fc79957cc110ad9d1e69e5262 100644
 --- a/chrome/browser/extensions/updater/extension_updater.cc
 +++ b/chrome/browser/extensions/updater/extension_updater.cc
 @@ -232,6 +232,7 @@ void ExtensionUpdater::Start() {

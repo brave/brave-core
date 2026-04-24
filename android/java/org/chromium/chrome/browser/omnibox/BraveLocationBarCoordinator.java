@@ -99,7 +99,8 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             Function<Tab, @Nullable Bitmap> tabFaviconFunction,
             SnackbarManager snackbarManager,
             View bottomContainerView,
-            @Nullable OmniboxChipManager omniboxChipManager) {
+            @Nullable OmniboxChipManager omniboxChipManager,
+            @Nullable LocationBarFocusScrimHandler scrimHandler) {
         super(
                 locationBarLayout,
                 autocompleteAnchorView,
@@ -140,7 +141,8 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 tabFaviconFunction,
                 snackbarManager,
                 bottomContainerView,
-                omniboxChipManager);
+                omniboxChipManager,
+                scrimHandler);
 
         if (mUrlBar != null) {
             ((UrlBar) mUrlBar).setSelectAllOnFocus(true);

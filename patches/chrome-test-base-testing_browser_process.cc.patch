@@ -1,5 +1,5 @@
 diff --git a/chrome/test/base/testing_browser_process.cc b/chrome/test/base/testing_browser_process.cc
-index 43c78124cfd9853997cc59b2875dc7660d7bfece..6ce6727278c526b67d8ef2e916472a108707ac8f 100644
+index becaf95bd0e5773d5cb88c2ef891918282a268e5..dc26ecbe1bd176d8a6cf3e8ce2d6ee440fc222b9 100644
 --- a/chrome/test/base/testing_browser_process.cc
 +++ b/chrome/test/base/testing_browser_process.cc
 @@ -151,15 +151,18 @@ void TestingBrowserProcess::CreateInstance() {

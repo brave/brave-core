@@ -34,21 +34,23 @@ namespace {
 double constexpr kMaxTitleWidth = 1000;
 
 // TODO(crbug.com/418774949) Move to TabGroupFeatures for desktop.
-std::u16string GetContentString(const Browser* browser, const TabGroup& group) {
+std::u16string GetContentString(const BrowserWindowInterface* browser,
+                                const TabGroup& group) {
   constexpr size_t kContextMenuTabTitleMaxLength = 30;
   std::u16string format_string = l10n_util::GetPluralStringFUTF16(
       IDS_TAB_CXMENU_PLACEHOLDER_GROUP_TITLE, group.tab_count() - 1);
 
   std::u16string short_title;
   gfx::ElideString(
-      TabUIHelper::From(browser->tab_strip_model()->GetActiveTab())->GetTitle(),
+      TabUIHelper::From(browser->GetTabStripModel()->GetActiveTab())
+          ->GetTitle(),
       kContextMenuTabTitleMaxLength, &short_title);
   return base::ReplaceStringPlaceholders(format_string, short_title, nullptr);
 }
 
 }  // namespace
 
-WindowMatch::WindowMatch(Browser* browser,
+WindowMatch::WindowMatch(BrowserWindowInterface* browser,
                          const std::u16string& title,
                          double score)
     : browser(browser), title(title), score(score) {}
@@ -94,7 +96,7 @@ std::unique_ptr<CommandItem> TabMatch::ToCommandItem() const {
 TabSearchOptions::TabSearchOptions() = default;
 TabSearchOptions::~TabSearchOptions() = default;
 
-std::vector<TabMatch> TabsMatchingInput(const Browser* browser,
+std::vector<TabMatch> TabsMatchingInput(const BrowserWindowInterface* browser,
                                         const std::u16string& input,
                                         const TabSearchOptions& options) {
   DCHECK(browser);
@@ -106,7 +108,7 @@ std::vector<TabMatch> TabsMatchingInput(const Browser* browser,
   std::vector<TabMatch> results;
   FuzzyFinder finder(input);
   std::vector<gfx::Range> ranges;
-  TabStripModel* tab_strip_model = browser->tab_strip_model();
+  const TabStripModel* tab_strip_model = browser->GetTabStripModel();
   for (int i = 0; i < tab_strip_model->count(); ++i) {
     if (tab_strip_model->IsTabPinned(i) ? options.only_unpinned
                                         : options.only_pinned) {
@@ -147,9 +149,10 @@ std::vector<TabMatch> TabsMatchingInput(const Browser* browser,
   return results;
 }
 
-std::vector<WindowMatch> WindowsMatchingInput(const Browser* browser_to_exclude,
-                                              const std::u16string& input,
-                                              bool match_profile) {
+std::vector<WindowMatch> WindowsMatchingInput(
+    const BrowserWindowInterface* browser_to_exclude,
+    const std::u16string& input,
+    bool match_profile) {
   std::vector<WindowMatch> results;
   double mru_score = .95;
   FuzzyFinder finder(input);
@@ -164,7 +167,7 @@ std::vector<WindowMatch> WindowsMatchingInput(const Browser* browser_to_exclude,
           return true;  // continue iterating
         }
         if (match_profile &&
-            browser->profile() != browser_to_exclude->profile()) {
+            browser->profile() != browser_to_exclude->GetProfile()) {
           return true;  // continue iterating
         }
         std::u16string title =
@@ -188,14 +191,14 @@ std::vector<WindowMatch> WindowsMatchingInput(const Browser* browser_to_exclude,
 }
 
 std::vector<GroupMatch> GroupsMatchingInput(
-    const Browser* browser,
+    const BrowserWindowInterface* browser,
     const std::u16string& input,
     std::optional<tab_groups::TabGroupId> group_to_exclude) {
   DCHECK(browser);
   std::vector<GroupMatch> results;
   FuzzyFinder finder(input);
   std::vector<gfx::Range> ranges;
-  TabGroupModel* model = browser->tab_strip_model()->group_model();
+  TabGroupModel* model = browser->GetTabStripModel()->group_model();
   if (!model) {
     return results;
   }

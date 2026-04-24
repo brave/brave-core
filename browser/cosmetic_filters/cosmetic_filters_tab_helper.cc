@@ -101,8 +101,7 @@ void CosmeticFiltersTabHelper::ManageCustomFilters() {
   if (!browser_window_interface) {
     return;
   }
-  brave::ShowBraveAdblock(
-      browser_window_interface->GetBrowserForMigrationOnly());
+  brave::ShowBraveAdblock(browser_window_interface);
 #else   // !BUILDFLAG(IS_ANDROID)
   ShowCustomFilterSettings();
 #endif  // !BUILDFLAG(IS_ANDROID)

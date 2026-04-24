@@ -290,7 +290,7 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
     }
 
     @Override
-    @CalledByNative("LargeIconCallback")
+    @CalledByNative
     public void onLargeIconAvailable(
             @Nullable Bitmap icon,
             int fallbackColor,

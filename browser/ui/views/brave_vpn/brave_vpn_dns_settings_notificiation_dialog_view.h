@@ -8,7 +8,7 @@
 
 #include "ui/views/window/dialog_delegate.h"
 
-class Browser;
+class BrowserWindowInterface;
 class PrefService;
 
 namespace views {
@@ -22,8 +22,7 @@ class BraveVpnDnsSettingsNotificiationDialogView
   METADATA_HEADER(BraveVpnDnsSettingsNotificiationDialogView,
                   views::DialogDelegateView)
  public:
-
-  static void Show(Browser* browser);
+  static void Show(BrowserWindowInterface* browser);
 
   BraveVpnDnsSettingsNotificiationDialogView(
       const BraveVpnDnsSettingsNotificiationDialogView&) = delete;
@@ -31,7 +30,8 @@ class BraveVpnDnsSettingsNotificiationDialogView
       const BraveVpnDnsSettingsNotificiationDialogView&) = delete;
 
  private:
-  explicit BraveVpnDnsSettingsNotificiationDialogView(Browser* browser);
+  explicit BraveVpnDnsSettingsNotificiationDialogView(
+      BrowserWindowInterface* browser);
   ~BraveVpnDnsSettingsNotificiationDialogView() override;
 
   void OnAccept();
@@ -45,7 +45,7 @@ class BraveVpnDnsSettingsNotificiationDialogView
   bool ShouldShowWindowTitle() const override;
 
   bool close_window_ = true;
-  raw_ptr<Browser> browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface> browser_ = nullptr;
   raw_ptr<PrefService> prefs_ = nullptr;
   raw_ptr<views::Checkbox> dont_ask_again_checkbox_ = nullptr;
 };

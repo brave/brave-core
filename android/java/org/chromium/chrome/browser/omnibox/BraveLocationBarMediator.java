@@ -32,6 +32,7 @@ import org.chromium.chrome.browser.theme.ThemeUtils;
 import org.chromium.chrome.browser.ui.theme.BrandedColorScheme;
 import org.chromium.components.browser_ui.accessibility.PageZoomIndicatorCoordinator;
 import org.chromium.components.omnibox.AutocompleteInput;
+import org.chromium.components.omnibox.AutocompleteInput.AutocompleteState;
 import org.chromium.components.omnibox.OmniboxFocusReason;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.ui.base.PageTransition;
@@ -86,7 +87,8 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             @Nullable PageZoomIndicatorCoordinator pageZoomIndicatorCoordinator,
             FuseboxCoordinator fuseboxCoordinator,
             LocationBarEmbedder locationBarEmbedder,
-            @Nullable OmniboxChipManager omniboxChipManager) {
+            @Nullable OmniboxChipManager omniboxChipManager,
+            @Nullable LocationBarFocusScrimHandler scrimHandler) {
         super(
                 context,
                 locationBarLayout,
@@ -109,7 +111,8 @@ public class BraveLocationBarMediator extends LocationBarMediator {
                 pageZoomIndicatorCoordinator,
                 fuseboxCoordinator,
                 locationBarEmbedder,
-                omniboxChipManager);
+                omniboxChipManager,
+                scrimHandler);
     }
 
     public static Class<OmniboxUma> getOmniboxUmaClass() {
@@ -267,7 +270,7 @@ public class BraveLocationBarMediator extends LocationBarMediator {
         // autocomplete text will be updated but the visible text will not.
         beginInput(
                 new AutocompleteInput()
-                        .setSuppressAutomaticSuggestionsUntilUserStartsTyping(true)
+                        .setAutocompleteState(AutocompleteState.STANDBY)
                         .setFocusReason(OmniboxFocusReason.DEFAULT_WITH_HARDWARE_KEYBOARD));
         setUrlBarText(
                 UrlBarData.forNonUrlText(query),

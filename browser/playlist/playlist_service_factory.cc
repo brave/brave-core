@@ -87,7 +87,7 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
       return nullptr;
     }
 
-    auto* tab_model = browser->tab_strip_model();
+    auto* tab_model = browser->GetTabStripModel();
     DCHECK(tab_model);
     return tab_model->GetActiveWebContents();
 #endif  // BUILDFLAG(IS_ANDROID)
@@ -115,13 +115,13 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
           }
 
           auto* side_panel_ui = browser->GetFeatures().side_panel_ui();
-          if (!side_panel_ui || side_panel_ui->GetCurrentEntryId(
-                                    SidePanelEntry::PanelType::kContent) !=
-                                    SidePanelEntryId::kPlaylist) {
+          if (!side_panel_ui ||
+              side_panel_ui->GetCurrentEntryId(SidePanelType::kContent) !=
+                  SidePanelEntryId::kPlaylist) {
             return true;
           }
 
-          side_panel_ui->Close(SidePanelEntry::PanelType::kContent);
+          side_panel_ui->Close(SidePanelType::kContent);
           return true;
         });
 #endif  // !BUILDFLAG(IS_ANDROID)

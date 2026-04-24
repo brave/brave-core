@@ -29,19 +29,19 @@ namespace commander {
 namespace {
 
 // Activates `browser` if it's still present.
-void SwitchToBrowser(base::WeakPtr<Browser> browser) {
+void SwitchToBrowser(base::WeakPtr<BrowserWindowInterface> browser) {
   if (browser.get()) {
-    browser->window()->Show();
+    browser->GetBrowserForMigrationOnly()->window()->Show();
   }
 }
 
 // Merges all tabs from `source` into `target`, if they are both present.
-void MergeBrowsers(base::WeakPtr<Browser> source,
-                   base::WeakPtr<Browser> target) {
+void MergeBrowsers(base::WeakPtr<BrowserWindowInterface> source,
+                   base::WeakPtr<BrowserWindowInterface> target) {
   if (!source.get() || !target.get()) {
     return;
   }
-  size_t source_count = source->tab_strip_model()->count();
+  size_t source_count = source->GetTabStripModel()->count();
   std::vector<int> indices(source_count);
   std::iota(indices.begin(), indices.end(), 0);
   chrome::MoveTabsToExistingWindow(source.get(), target.get(), indices);
@@ -54,20 +54,21 @@ void MergeBrowsers(base::WeakPtr<Browser> source,
 
 std::unique_ptr<CommandItem> CreateSwitchWindowItem(const WindowMatch& match) {
   auto item = match.ToCommandItem();
-  item->command = base::BindOnce(&SwitchToBrowser, match.browser->AsWeakPtr());
+  item->command = base::BindOnce(&SwitchToBrowser, match.browser->GetWeakPtr());
   return item;
 }
 
-std::unique_ptr<CommandItem> CreateMergeWindowItem(Browser* source,
-                                                   const WindowMatch& target) {
+std::unique_ptr<CommandItem> CreateMergeWindowItem(
+    BrowserWindowInterface* source,
+    const WindowMatch& target) {
   auto item = target.ToCommandItem();
-  item->command = base::BindOnce(&MergeBrowsers, source->AsWeakPtr(),
-                                 target.browser->AsWeakPtr());
+  item->command = base::BindOnce(&MergeBrowsers, source->GetWeakPtr(),
+                                 target.browser->GetWeakPtr());
   return item;
 }
 
 CommandSource::CommandResults SwitchCommandsForWindowsMatching(
-    Browser* browser_to_exclude,
+    BrowserWindowInterface* browser_to_exclude,
     const std::u16string& input) {
   CommandSource::CommandResults results;
   for (auto& match : WindowsMatchingInput(browser_to_exclude, input)) {
@@ -77,7 +78,7 @@ CommandSource::CommandResults SwitchCommandsForWindowsMatching(
 }
 
 CommandSource::CommandResults MergeCommandsForWindowsMatching(
-    Browser* source_browser,
+    BrowserWindowInterface* source_browser,
     const std::u16string& input) {
   CommandSource::CommandResults results;
   for (auto& match : WindowsMatchingInput(source_browser, input, true)) {
@@ -93,7 +94,7 @@ WindowCommandSource::~WindowCommandSource() = default;
 
 CommandSource::CommandResults WindowCommandSource::GetCommands(
     const std::u16string& input,
-    Browser* browser) const {
+    BrowserWindowInterface* browser) const {
   CommandSource::CommandResults results;
   if (GlobalBrowserCollection::GetInstance()->GetSize() < 2) {
     return results;
@@ -114,7 +115,8 @@ CommandSource::CommandResults WindowCommandSource::GetCommands(
     results.push_back(std::move(verb));
   }
   score = finder.Find(merge_title, ranges);
-  if (score > 0 && !browser->is_type_devtools()) {
+  if (score > 0 &&
+      browser->GetType() != BrowserWindowInterface::Type::TYPE_DEVTOOLS) {
     auto verb = std::make_unique<CommandItem>(merge_title, score, ranges);
     verb->command = std::make_pair(
         merge_title, base::BindRepeating(&MergeCommandsForWindowsMatching,

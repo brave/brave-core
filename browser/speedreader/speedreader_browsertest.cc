@@ -40,7 +40,6 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
@@ -876,20 +875,18 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
 #if BUILDFLAG(ENABLE_AI_CHAT)
   Click(toolbar, "ai");
   auto* side_panel = browser()->GetFeatures().side_panel_ui();
-  while (side_panel->GetCurrentEntryId(SidePanelEntry::PanelType::kContent) !=
+  while (side_panel->GetCurrentEntryId(SidePanelType::kContent) !=
          SidePanelEntryId::kChatUI) {
     NonBlockingDelay(base::Milliseconds(10));
   }
   EXPECT_EQ(SidePanelEntryId::kChatUI,
-            side_panel->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
+            side_panel->GetCurrentEntryId(SidePanelType::kContent));
   Click(toolbar, "ai");
-  while (side_panel->GetCurrentEntryId(SidePanelEntry::PanelType::kContent)
-             .has_value()) {
+  while (side_panel->GetCurrentEntryId(SidePanelType::kContent).has_value()) {
     NonBlockingDelay(base::Milliseconds(10));
   }
   EXPECT_FALSE(
-      side_panel->GetCurrentEntryId(SidePanelEntry::PanelType::kContent)
-          .has_value());
+      side_panel->GetCurrentEntryId(SidePanelType::kContent).has_value());
 #endif
 
   Click(toolbar, "appearance");

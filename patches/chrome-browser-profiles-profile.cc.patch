@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/profile.cc b/chrome/browser/profiles/profile.cc
-index 9fbd8722baf2ce422c1c12b84780e9ec5111555d..ec953765495582e248958e5f9f822a53b266a78f 100644
+index ea33f97b95f8a60ee64c1cb2eeb607fb12be16ea..822494f1693fc9c765b41d48c8531d6f85d8b205 100644
 --- a/chrome/browser/profiles/profile.cc
 +++ b/chrome/browser/profiles/profile.cc
-@@ -114,6 +114,7 @@ bool Profile::OTRProfileID::AllowsBrowserWindows() const {
+@@ -115,6 +115,7 @@ bool Profile::OTRProfileID::AllowsBrowserWindows() const {
    // DevTools::BrowserContext, MediaRouter::Presentation, and
    // CaptivePortal::Signin are exceptions to this ban.
    if (*this == PrimaryID() || IsDevTools() ||

@@ -193,8 +193,9 @@ SidebarShowOptionMenu::SidebarShowOptionMenu(BraveAppMenu* app_menu,
 
 BraveAppMenu::BraveAppMenu(Browser* browser,
                            ui::MenuModel* model,
-                           int run_types)
-    : AppMenu(browser, model, run_types),
+                           int run_types,
+                           base::RepeatingClosure on_menu_closed_callback)
+    : AppMenu(browser, model, run_types, std::move(on_menu_closed_callback)),
       menu_metrics_(
           g_brave_browser_process->process_misc_metrics()->menu_metrics()) {
   DCHECK(menu_metrics_);

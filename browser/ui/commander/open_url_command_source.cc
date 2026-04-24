@@ -54,7 +54,7 @@ OpenURLCommandSource::~OpenURLCommandSource() = default;
 
 CommandSource::CommandResults OpenURLCommandSource::GetCommands(
     const std::u16string& input,
-    Browser* browser) const {
+    BrowserWindowInterface* browser) const {
   CommandSource::CommandResults results;
   std::vector<gfx::Range> ranges;
   FuzzyFinder finder(input);

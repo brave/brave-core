@@ -21,10 +21,10 @@
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
+#include "brave/components/os_crypt/sync/os_crypt.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_service.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
@@ -233,11 +233,11 @@ void SetOnboardingBypassed(Browser* browser, bool bypassed) {
 }
 
 std::optional<std::string> EncryptPrefString(const std::string& value) {
-  std::string encrypted;
-  if (!OSCrypt::EncryptString(value, &encrypted)) {
-    return {};
-  }
-  return base::Base64Encode(encrypted);
+  // std::string encrypted;
+  // if (!OSCrypt::EncryptString(value, &encrypted)) {
+  return {};
+  //}
+  // return base::Base64Encode(encrypted);
 }
 
 }  // namespace brave_rewards::test_util

@@ -1396,7 +1396,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 && mBraveRewardsNativeWorker.isSupported()
                 && NtpUtil.shouldShowRewardsIcon()) {
             // Check policy before showing rewards icon
-            Profile profile = tab != null ? Profile.fromWebContents(tab.getWebContents()) : null;
+            Profile profile = Profile.fromWebContents(tab.getWebContents());
             boolean isDisabled = BraveRewardsPolicy.isDisabledByPolicy(profile);
             if (!isDisabled) {
                 mRewardsLayout.setVisibility(View.VISIBLE);
@@ -1610,6 +1610,16 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private boolean isTabSwitcherOnBottomControls() {
         return mIsBottomControlsVisible
                 && BottomToolbarVariationManager.isTabSwitcherOnBottomControls();
+    }
+
+    // Return null when Brave's tab switcher lives on the bottom toolbar so that
+    // ToolbarPhone.updateButtonVisibility() skips setHasSpaceToShow(true), which
+    // would otherwise override the GONE state set in onBottomControlsVisibilityChanged.
+    @Override
+    @Nullable
+    ToggleTabStackButtonCoordinator getTabSwitcherButtonCoordinator() {
+        if (isTabSwitcherOnBottomControls()) return null;
+        return super.getTabSwitcherButtonCoordinator();
     }
 
     private boolean isMenuButtonOnBottomControls() {

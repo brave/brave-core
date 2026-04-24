@@ -7,13 +7,16 @@
 #define BRAVE_BROWSER_BRAVE_ADS_APPLICATION_STATE_APPLICATION_STATE_MONITOR_APPLICATION_STATE_MONITOR_LINUX_H_
 
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_observation.h"
 #include "brave/components/brave_ads/browser/application_state/application_state_monitor.h"
-#include "chrome/browser/ui/browser_list_observer.h"
+#include "chrome/browser/ui/browser_window/public/browser_collection_observer.h"
+
+class BrowserCollection;
 
 namespace brave_ads {
 
 class ApplicationStateMonitorLinux final : public ApplicationStateMonitor,
-                                           public BrowserListObserver {
+                                           public BrowserCollectionObserver {
  public:
   ApplicationStateMonitorLinux();
 
@@ -23,14 +26,18 @@ class ApplicationStateMonitorLinux final : public ApplicationStateMonitor,
 
   ~ApplicationStateMonitorLinux() override;
 
+  void Reset() override;
+
  private:
-  // BrowserListObserver:
-  void OnBrowserSetLastActive(Browser* browser) override;
-  void OnBrowserNoLongerActive(Browser* browser) override;
+  // BrowserCollectionObserver:
+  void OnBrowserActivated(BrowserWindowInterface* browser) override;
+  void OnBrowserDeactivated(BrowserWindowInterface* browser) override;
 
   // ApplicationStateMonitor:
   bool IsBrowserActive() const override;
 
+  base::ScopedObservation<BrowserCollection, BrowserCollectionObserver>
+      browser_collection_observation_{this};
   base::WeakPtrFactory<ApplicationStateMonitorLinux> weak_ptr_factory_{this};
 };
 

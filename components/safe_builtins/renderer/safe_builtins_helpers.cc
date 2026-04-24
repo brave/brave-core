@@ -81,7 +81,7 @@ v8::Local<v8::Value> RunScript(v8::Local<v8::Context> context,
     blink::WebConsoleMessage::LogWebConsoleMessage(
         context, blink::WebConsoleMessage(
                      blink::mojom::ConsoleMessageLevel::kError,
-                     blink::WebString::FromUTF8(
+                     blink::WebString::FromUtf8(
                          CreateExceptionString(context, try_catch))));
     return v8::Undefined(v8::Isolate::GetCurrent());
   }
@@ -91,7 +91,7 @@ v8::Local<v8::Value> RunScript(v8::Local<v8::Context> context,
     blink::WebConsoleMessage::LogWebConsoleMessage(
         context, blink::WebConsoleMessage(
                      blink::mojom::ConsoleMessageLevel::kError,
-                     blink::WebString::FromUTF8(
+                     blink::WebString::FromUtf8(
                          CreateExceptionString(context, try_catch))));
     return v8::Undefined(v8::Isolate::GetCurrent());
   }
@@ -132,7 +132,7 @@ v8::MaybeLocal<v8::Value> LoadScriptWithSafeBuiltins(
   if (func_as_value.IsEmpty() || func_as_value->IsUndefined()) {
     web_frame->AddMessageToConsole(
         blink::WebConsoleMessage(blink::mojom::ConsoleMessageLevel::kError,
-                                 blink::WebString::FromUTF8("Bad source")));
+                                 blink::WebString::FromUtf8("Bad source")));
     return v8::MaybeLocal<v8::Value>();
   }
 

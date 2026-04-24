@@ -159,6 +159,7 @@ source_set("ui") {
     deps += [
       "//brave/browser/brave_rewards",
       "//chrome/browser:flags",
+      "//chrome/browser/lifetime",
     ]
 
     sources += [
@@ -419,7 +420,9 @@ source_set("ui") {
       "//chrome/browser/content_settings:content_settings_factory",
       "//chrome/browser/contextual_search",
       "//chrome/browser/favicon",
+      "//chrome/browser/first_run",
       "//chrome/browser/importer",
+      "//chrome/browser/metrics",
       "//chrome/browser/profiles",
       "//chrome/browser/search",
       "//chrome/browser/send_tab_to_self",
@@ -460,6 +463,7 @@ source_set("ui") {
       "//content/public/browser",
       "//content/public/common",
       "//extensions/buildflags",
+      "//extensions/common:extension_features",
       "//skia",
       "//third_party/abseil-cpp:absl",
       "//ui/actions:actions_headers",
@@ -699,6 +703,7 @@ source_set("ui") {
       "//chrome/browser/devtools",
       "//chrome/browser/enterprise/watermark:watermark_view_lib",
       "//chrome/browser/glic",
+      "//chrome/browser/metrics",
       "//chrome/browser/sharing_hub",
       "//chrome/browser/ui/download",
       "//chrome/browser/ui/exclusive_access",
@@ -776,6 +781,8 @@ source_set("ui") {
         "views/frame/brave_browser_native_widget_mac.h",
         "views/frame/brave_browser_native_widget_mac.mm",
       ]
+
+      deps += [ "//chrome/browser/ui/cocoa" ]
     }
   }
 

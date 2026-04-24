@@ -6,11 +6,16 @@
 #include "chrome/browser/ui/tabs/features.h"
 
 #include "base/feature_list.h"
+#include "base/feature_override.h"
 #include "chrome/browser/ui/ui_features.h"
 
 #include <chrome/browser/ui/tabs/features.cc>
 
 namespace tabs {
+
+OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kHorizontalTabStripComboButton, base::FEATURE_DISABLED_BY_DEFAULT},
+}});
 
 #if BUILDFLAG(IS_LINUX)
 BASE_FEATURE(kBraveChangeActiveTabOnScrollEvent,

@@ -85,10 +85,10 @@ TEST_F(BraveFontWhitelistRenderViewTest, MAYBE_FontLocalSource) {
   LoadHTMLWithUrlOverride(kFontLocalSourceHTML, GURL("http://b.test/").spec());
   blink::WebDocument document = GetMainFrame()->GetDocument();
   blink::WebElement p1 =
-      document.GetElementById(blink::WebString::FromUTF8("test1"));
+      document.GetElementById(blink::WebString::FromUtf8("test1"));
   ASSERT_FALSE(p1.IsNull());
   blink::WebElement p2 =
-      document.GetElementById(blink::WebString::FromUTF8("test2"));
+      document.GetElementById(blink::WebString::FromUtf8("test2"));
   ASSERT_FALSE(p2.IsNull());
 
   // If the width of both spans is the same, that means they were both blocked

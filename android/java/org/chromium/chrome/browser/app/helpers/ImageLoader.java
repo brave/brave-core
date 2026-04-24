@@ -467,6 +467,7 @@ public class ImageLoader {
                             activity.getCurrentProfile(),
                             new GURL(originSpecUrl),
                             0,
+                            true,
                             imageCallback);
 
         } catch (Exception ignored) {

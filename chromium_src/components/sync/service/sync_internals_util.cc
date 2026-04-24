@@ -6,8 +6,8 @@
 #include "components/sync/service/sync_internals_util.h"
 
 #include "base/check_op.h"
+#include "brave/components/os_crypt/sync/os_crypt.h"
 #include "brave/components/sync/service/brave_sync_service_impl.h"
-#include "components/os_crypt/sync/os_crypt.h"
 
 #define ConstructAboutInformation ConstructAboutInformation_ChromiumImpl
 #include <components/sync/service/sync_internals_util.cc>

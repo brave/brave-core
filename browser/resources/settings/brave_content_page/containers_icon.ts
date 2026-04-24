@@ -48,7 +48,7 @@ export class SettingsBraveContentContainersIconElement extends CrLitElement {
   }
 
   accessor icon: Icon
-  get leoIcon() {
+  leoIcon() {
     const icon = iconsMap.get(this.icon)
     if (!icon) {
       console.warn(`No Leo icon found for icon: ${this.icon} from `, iconsMap)

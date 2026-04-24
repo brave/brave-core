@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.cc b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-index 1701b7550912ab4dba2ce3741af6016394afe37e..f37a53f7c0a210bfefe92c295300d25e5163bd39 100644
+index f8824b7e592a86cf604a064c9861344ea46ccc55..a0bc75f92540e76c41aacbaae94accdc6e3c5d19 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.cc
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-@@ -572,6 +572,7 @@ void ToolbarView::Init() {
-     }
+@@ -576,6 +576,7 @@ void ToolbarView::Init() {
    }
  
-+  BRAVE_TOOLBAR_VIEW_INIT
-   avatar_ = AddChildView(std::make_unique<AvatarToolbarButton>(browser_view_));
-   bool show_avatar_toolbar_button = true;
- #if BUILDFLAG(IS_CHROMEOS)
+   if (!features::IsWebUIAvatarButtonEnabled()) {
++    BRAVE_TOOLBAR_VIEW_INIT
+     avatar_ =
+         AddChildView(std::make_unique<AvatarToolbarButton>(browser_view_));
+     bool show_avatar_toolbar_button = true;

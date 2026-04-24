@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/profile_impl.cc b/chrome/browser/profiles/profile_impl.cc
-index 6bb023367ec7092507fb25d9382ee978506a4b77..9cce33cca5646bd8def126f5931e9e9b52e72f83 100644
+index c30d684e1f8b3f785e90d598b2199874fca24bd7..086d9b0aaa89268c728baab17eab0b0779fcd2c9 100644
 --- a/chrome/browser/profiles/profile_impl.cc
 +++ b/chrome/browser/profiles/profile_impl.cc
-@@ -574,6 +574,7 @@ void ProfileImpl::TakePrefsFromStartupData() {
+@@ -576,6 +576,7 @@ void ProfileImpl::TakePrefsFromStartupData() {
        CreateExtensionPrefStore(this, /*incognito_pref_store=*/false));
  
    ProfileKeyStartupAccessor::GetInstance()->Reset();

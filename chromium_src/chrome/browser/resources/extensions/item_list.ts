@@ -5,6 +5,6 @@
 
 import { ExtensionsItemListElement } from './item_list-chromium.js'
 
-(ExtensionsItemListElement.prototype as any).shouldShowEmptyItemsMessage_ = () => true;
+(ExtensionsItemListElement.prototype as unknown as { shouldShowEmptyItemsMessage_: () => boolean }).shouldShowEmptyItemsMessage_ = () => true
 
 export * from './item_list-chromium.js'

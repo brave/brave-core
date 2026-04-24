@@ -32,7 +32,7 @@ namespace {
 
 std::unique_ptr<CommandItem> CreateOpenBookmarkItem(
     const bookmarks::UrlAndTitle& bookmark,
-    Browser* browser) {
+    BrowserWindowInterface* browser) {
   auto item = std::make_unique<CommandItem>();
   item->title = bookmark.title;
   item->entity_type = CommandItem::Entity::kBookmark;
@@ -46,11 +46,11 @@ std::unique_ptr<CommandItem> CreateOpenBookmarkItem(
 }
 
 CommandSource::CommandResults GetMatchingBookmarks(
-    Browser* browser,
+    BrowserWindowInterface* browser,
     const std::u16string& input) {
   CommandSource::CommandResults results;
   bookmarks::BookmarkModel* model =
-      BookmarkModelFactory::GetForBrowserContext(browser->profile());
+      BookmarkModelFactory::GetForBrowserContext(browser->GetProfile());
   // This should have been checked already.
   DCHECK(model && model->loaded());
   FuzzyFinder finder(input);
@@ -74,10 +74,10 @@ BookmarkCommandSource::~BookmarkCommandSource() = default;
 
 CommandSource::CommandResults BookmarkCommandSource::GetCommands(
     const std::u16string& input,
-    Browser* browser) const {
+    BrowserWindowInterface* browser) const {
   CommandSource::CommandResults results;
   bookmarks::BookmarkModel* model =
-      BookmarkModelFactory::GetForBrowserContext(browser->profile());
+      BookmarkModelFactory::GetForBrowserContext(browser->GetProfile());
   // Just no-op instead of waiting for the model to load, since this isn't
   // a persistent UI surface and they can just try again.
   if (!model || !model->loaded() || !model->HasBookmarks()) {

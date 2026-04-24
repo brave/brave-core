@@ -262,7 +262,12 @@ class RewardsService : public KeyedService {
   virtual void OnRewardsPageShown() = 0;
 
  protected:
-  base::ObserverList<RewardsServiceObserver> observers_;
+  // TODO(zenparsing): Investigate if reentrancy can be removed.
+  base::ObserverList<
+      RewardsServiceObserver,
+      /*check_empty=*/false,
+      base::ObserverListReentrancyPolicy::kAllowReentrancyUntriaged>
+      observers_;
 };
 
 }  // namespace brave_rewards

@@ -17,13 +17,10 @@ class MockPageActionModel : public MockPageActionModel_Chromium {
   MockPageActionModel();
   ~MockPageActionModel() override;
 
-  MOCK_METHOD(void,
-              SetAlwaysShowLabel,
-              (base::PassKey<PageActionController>, bool),
-              (override));
+  MOCK_METHOD(void, SetAlwaysShowLabel, (PageActionPassKey, bool), (override));
   MOCK_METHOD(void,
               SetOverrideChipColors,
-              (base::PassKey<PageActionController>,
+              (PageActionPassKey,
                std::optional<SkColor>,
                std::optional<SkColor>),
               (override));
@@ -38,12 +35,12 @@ class MockPageActionModel : public MockPageActionModel_Chromium {
   MOCK_METHOD(bool, GetAlwaysShowLabel, (), (const, override));
   MOCK_METHOD(void,
               SetOverrideHeight,
-              (base::PassKey<PageActionController>, std::optional<int>),
+              (PageActionPassKey, std::optional<int>),
               (override));
   MOCK_METHOD(std::optional<int>, GetOverrideHeight, (), (const, override));
   MOCK_METHOD(void,
               SetOverrideTriggerableEvent,
-              (base::PassKey<PageActionController>, std::optional<int>),
+              (PageActionPassKey, std::optional<int>),
               (override));
   MOCK_METHOD(std::optional<int>,
               GetOverrideTriggerableEvent,

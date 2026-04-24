@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.toolbar.adaptive;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
@@ -21,6 +20,7 @@ import org.chromium.chrome.browser.download.DownloadUtils;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.toolbar.optional_button.BaseButtonDataProvider;
+import org.chromium.chrome.browser.toolbar.optional_button.ButtonData.ButtonSpec;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 /** Handles displaying downloads button on toolbar. */
@@ -38,13 +38,13 @@ public class BraveDownloadsButtonController extends BaseButtonDataProvider {
         super(
                 tabProvider,
                 modalDialogManager,
-                buttonDrawable,
-                context.getString(R.string.menu_downloads),
-                /* actionChipLabelResId= */ Resources.ID_NULL,
-                /* supportsTinting= */ true,
-                /* iphCommandBuilder= */ null,
-                AdaptiveToolbarButtonVariant.DOWNLOADS,
-                /* tooltipTextResId= */ R.string.menu_downloads);
+                new ButtonSpec.Builder(
+                                buttonDrawable,
+                                context.getString(R.string.menu_downloads),
+                                /* supportsTinting= */ true)
+                        .setButtonVariant(AdaptiveToolbarButtonVariant.DOWNLOADS)
+                        .setHoverTooltipTextId(R.string.menu_downloads)
+                        .build());
 
         mContext = context;
         mProfileSupplier = profileSupplier;

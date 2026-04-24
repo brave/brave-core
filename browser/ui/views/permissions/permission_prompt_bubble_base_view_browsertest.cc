@@ -11,9 +11,8 @@
 #include "chrome/browser/ui/views/chrome_widget_sublevel.h"
 #include "chrome/browser/ui/views/permissions/permission_prompt_style.h"
 #include "chrome/test/base/in_process_browser_test.h"
-#include "components/content_settings/core/common/content_settings_types.mojom.h"
 #include "components/permissions/permission_request.h"
-#include "components/permissions/resolvers/content_setting_permission_resolver.h"
+#include "components/permissions/request_type.h"
 #include "components/permissions/test/mock_permission_prompt.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -30,9 +29,7 @@ class MockPermissionPromptDelegate
   MockPermissionPromptDelegate() {
     request_.push_back(std::make_unique<permissions::PermissionRequest>(
         std::make_unique<permissions::PermissionRequestData>(
-            std::make_unique<permissions::ContentSettingPermissionResolver>(
-                ContentSettingsType::MEDIASTREAM_CAMERA),
-            true, GURL()),
+            permissions::RequestType::kCameraStream, true, GURL()),
         base::DoNothing()));
   }
   ~MockPermissionPromptDelegate() override = default;

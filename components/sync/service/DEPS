@@ -1,8 +1,8 @@
 include_rules = [
   "+brave/components/constants",
   "+brave/components/sync/test",
+  "+brave/components/os_crypt/sync",
   "+components/network_time",
-  "+components/os_crypt/sync",
   "+components/prefs",
   "+components/saved_tab_groups/public/pref_names.h",
   "+components/signin",
@@ -13,4 +13,3 @@ include_rules = [
   "+services/network/public",
   "+services/network/test",
 ]
-

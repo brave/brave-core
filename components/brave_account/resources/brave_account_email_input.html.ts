@@ -19,11 +19,11 @@ export function getHtml(this: BraveAccountEmailInputElement) {
       type="email"
       @input=${this.onInput}
     >
-      <div class="label ${this.shouldStyleAsError ? 'error' : ''}">
+      <div class="label ${this.shouldStyleAsError() ? 'error' : ''}">
         $i18n{BRAVE_ACCOUNT_EMAIL_INPUT_LABEL}
       </div>
       <div
-        class="dropdown ${this.blockBraveAlias && this.isBraveAlias
+        class="dropdown ${this.blockBraveAlias && this.isBraveAlias()
           ? 'visible'
           : ''}"
         slot="errors"

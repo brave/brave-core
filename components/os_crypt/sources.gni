@@ -13,7 +13,8 @@ brave_components_os_crypt_visibility = [
   "//brave/components/email_aliases:auth",
   "//brave/components/sync/service:unit_tests",
   "//chrome/utility",
-  "//components/os_crypt/sync",
+  "//brave/components/os_crypt/sync",
+  "//brave/browser/brave_rewards/test:browser_tests",
 ]
 
 if (is_ios) {
