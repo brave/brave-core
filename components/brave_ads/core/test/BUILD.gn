@@ -455,6 +455,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/ml/transformation/lowercase_transformation_unittest.cc",
     "//brave/components/brave_ads/core/internal/ml/transformation/mapped_tokens_transformation_unittest.cc",
     "//brave/components/brave_ads/core/internal/ml/transformation/normalization_transformation_unittest.cc",
+    "//brave/components/brave_ads/core/internal/prefs/obsolete_pref_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/reminders/reminder/clicked_same_ad_multiple_times_reminder_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/reminders/reminders_feature_unittest.cc",
     "//brave/components/brave_ads/core/internal/reminders/reminders_unittest.cc",

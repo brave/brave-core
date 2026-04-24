@@ -8,6 +8,7 @@
 #include <string_view>
 
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
@@ -125,6 +126,14 @@ void MigrateObsoleteProfilePrefs(PrefService* const prefs) {
   // Added 04/2026.
   prefs->ClearPref(kObsoleteHasMigratedConfirmationStateV8);
   prefs->ClearPref(kObsoleteHasMigratedStateV2);
+
+  if (prefs->IsManagedPreference(brave_rewards::prefs::kDisabledByPolicy) &&
+      prefs->GetBoolean(brave_rewards::prefs::kDisabledByPolicy) &&
+      !prefs->HasPrefPath(prefs::kEnabledByPolicy)) {
+    // On first run, preserve ads-disabled state for admins who used
+    // `BraveRewardsDisabled` before `BraveAdsEnabled` existed.
+    prefs->SetBoolean(prefs::kEnabledByPolicy, false);
+  }
 }
 
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {

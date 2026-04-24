@@ -13,6 +13,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT NSString* const kBraveAdsFirstRunAtPrefName;
+OBJC_EXPORT NSString* const kBraveAdsEnabledByPolicyPrefName;
 
 @class NotificationAdIOS, NewTabPageAdIOS;
 
@@ -57,6 +58,10 @@ OBJC_EXPORT
 
 /// Returns `true` if the ads service is running otherwise returns `false`.
 - (BOOL)isServiceRunning;
+
+/// Returns `true` if an administrator policy prevents the ads service from
+/// starting.
+- (BOOL)isIneligibleToStart;
 
 /// Returns `true` if should show Sponsored Images & Videos option in settings.
 /// This function will be deprecated once Sponsored Video is available globally.

@@ -482,6 +482,13 @@ public class BrowserViewController: UIViewController {
       [weak self] _ in
       self?.updateRewardsButtonState()
     }
+    prefsChangeRegistrar.addObserver(forPath: kBraveAdsEnabledByPolicyPrefName) {
+      [weak self] _ in
+      guard let self, self.rewards.ads.isServiceRunning() else { return }
+      if self.rewards.ads.isIneligibleToStart() {
+        self.rewards.ads.shutdownService(nil)
+      }
+    }
     prefsChangeRegistrar.addObserver(forPath: kManagedBraveVPNDisabledPrefName) { [weak self] _ in
       self?.disconnectVPNIfDisabledByPolicy()
     }

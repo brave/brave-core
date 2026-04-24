@@ -59,7 +59,7 @@ bool UserHasOptedInToSearchResultAds() {
 }
 
 bool UserHasOptedInToSurveyPanelist() {
-  if (GetProfileBooleanPref(brave_rewards::prefs::kDisabledByPolicy)) {
+  if (!GetProfileBooleanPref(prefs::kEnabledByPolicy)) {
     return false;
   }
   return GetProfileBooleanPref(
