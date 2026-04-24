@@ -6,6 +6,7 @@
 module local_ai.mojom;
 
 import "mojo/public/mojom/base/big_buffer.mojom";
+import "services/on_device_model/public/mojom/on_device_model.mojom";
 
 struct ModelFiles {
   mojo_base.mojom.BigBuffer weights;
@@ -55,16 +56,31 @@ struct SpeechRecognitionInitFiles {
 };
 
 // Browser-implemented service. Bound by the WASM worker renderer
-// to register a SpeechRecognitionFactory that the browser drives.
+// (to register a SpeechRecognitionFactory) and by Chromium's speech
+// engine (to create and release ASR sessions).
 interface OnDeviceSpeechRecognitionService {
   // Called by the WASM worker renderer once the WASM module is
   // instantiated.
   RegisterSpeechRecognitionFactory(
       pending_remote<SpeechRecognitionFactory> factory);
+
+  // Called by Chromium's speech engine to start an ASR session. The
+  // controller forwards options/stream/responder to the WASM worker's
+  // SpeechRecognitionFactory.CreateAsrStream method.
+  CreateAsrSession(
+      on_device_model.mojom.AsrStreamOptions options,
+      pending_receiver<on_device_model.mojom.AsrStreamInput> stream,
+      pending_remote<on_device_model.mojom.AsrStreamResponder> responder);
+
+  // Called by the engine when an ASR session has ended. Balances
+  // CreateAsrSession so the controller can tear down after the last
+  // active session.
+  NotifySpeechRecognitionIdle();
 };
 
 // Renderer (WASM worker)-implemented factory driven by the browser
-// to load the Parakeet model in chunks.
+// to load the Parakeet model in chunks and to create per-utterance
+// ASR sessions once the model is loaded.
 interface SpeechRecognitionFactory {
   // Initialize the WASM transcriber with the small companion files
   // plus the GGUF header.
@@ -75,4 +91,10 @@ interface SpeechRecognitionFactory {
 
   // Build the model from all accumulated chunks.
   Finalize() => (bool success);
+
+  // Start a new ASR stream on the loaded model.
+  CreateAsrStream(
+      on_device_model.mojom.AsrStreamOptions options,
+      pending_receiver<on_device_model.mojom.AsrStreamInput> stream,
+      pending_remote<on_device_model.mojom.AsrStreamResponder> responder);
 };

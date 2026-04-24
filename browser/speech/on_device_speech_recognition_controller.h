@@ -15,6 +15,8 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
+#include "base/time/time.h"
+#include "base/timer/timer.h"
 #include "brave/components/local_ai/core/background_web_contents.h"
 #include "brave/components/local_ai/core/local_ai.mojom.h"
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
@@ -24,6 +26,7 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "services/on_device_model/public/mojom/on_device_model.mojom.h"
 
 namespace base {
 template <typename T>
@@ -62,6 +65,12 @@ class OnDeviceSpeechRecognitionController
   void RegisterSpeechRecognitionFactory(
       mojo::PendingRemote<local_ai::mojom::SpeechRecognitionFactory> factory)
       override;
+  void CreateAsrSession(
+      on_device_model::mojom::AsrStreamOptionsPtr options,
+      mojo::PendingReceiver<on_device_model::mojom::AsrStreamInput> stream,
+      mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder> responder)
+      override;
+  void NotifySpeechRecognitionIdle() override;
 
   // local_ai::BackgroundWebContents::Delegate:
   void OnBackgroundContentsDestroyed(
@@ -113,6 +122,16 @@ class OnDeviceSpeechRecognitionController
   void OnChunkAck(bool success);
   void OnFinalizeResult(bool success);
 
+  void ForwardPendingSessions();
+  void ForwardSession(
+      on_device_model::mojom::AsrStreamOptionsPtr options,
+      mojo::PendingReceiver<on_device_model::mojom::AsrStreamInput> stream,
+      mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder>
+          responder);
+
+  void StartIdleTimer();
+  void OnIdleTimeout();
+
   void OnFactoryDisconnected();
   void TearDown();
 
@@ -129,6 +148,22 @@ class OnDeviceSpeechRecognitionController
 
   int64_t model_bytes_total_ = 0;
   int64_t model_bytes_sent_ = 0;
+
+  struct PendingSession {
+    PendingSession();
+    PendingSession(PendingSession&&);
+    PendingSession& operator=(PendingSession&&);
+    ~PendingSession();
+
+    on_device_model::mojom::AsrStreamOptionsPtr options;
+    mojo::PendingReceiver<on_device_model::mojom::AsrStreamInput> stream;
+    mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder> responder;
+  };
+  std::vector<PendingSession> pending_sessions_;
+
+  int active_session_count_ = 0;
+  base::OneShotTimer idle_timer_;
+  static constexpr base::TimeDelta kIdleTimeout = base::Seconds(60);
 
   base::WeakPtrFactory<OnDeviceSpeechRecognitionController> weak_factory_{this};
 };

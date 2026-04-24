@@ -49,6 +49,15 @@ OnDeviceSpeechRecognitionController::InitReadResult::operator=(
 OnDeviceSpeechRecognitionController::InitReadResult::~InitReadResult() =
     default;
 
+OnDeviceSpeechRecognitionController::PendingSession::PendingSession() = default;
+OnDeviceSpeechRecognitionController::PendingSession::PendingSession(
+    PendingSession&&) = default;
+OnDeviceSpeechRecognitionController::PendingSession&
+OnDeviceSpeechRecognitionController::PendingSession::operator=(
+    PendingSession&&) = default;
+OnDeviceSpeechRecognitionController::PendingSession::~PendingSession() =
+    default;
+
 namespace {
 
 // Runs on a ThreadPool blocking sequence. Reads the three small
@@ -174,6 +183,39 @@ void OnDeviceSpeechRecognitionController::RegisterSpeechRecognitionFactory(
       weak_factory_.GetWeakPtr()));
   state_ = State::kModelLoading;
   LoadInitFiles();
+}
+
+void OnDeviceSpeechRecognitionController::CreateAsrSession(
+    on_device_model::mojom::AsrStreamOptionsPtr options,
+    mojo::PendingReceiver<on_device_model::mojom::AsrStreamInput> stream,
+    mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder>
+        responder) {
+  ++active_session_count_;
+  idle_timer_.Stop();
+
+  if (state_ == State::kIdle) {
+    StartModelLoad();
+  }
+
+  if (state_ != State::kReady) {
+    PendingSession pending;
+    pending.options = std::move(options);
+    pending.stream = std::move(stream);
+    pending.responder = std::move(responder);
+    pending_sessions_.push_back(std::move(pending));
+    return;
+  }
+
+  ForwardSession(std::move(options), std::move(stream), std::move(responder));
+}
+
+void OnDeviceSpeechRecognitionController::NotifySpeechRecognitionIdle() {
+  if (active_session_count_ > 0) {
+    --active_session_count_;
+  }
+  if (active_session_count_ == 0) {
+    StartIdleTimer();
+  }
 }
 
 void OnDeviceSpeechRecognitionController::OnBackgroundContentsDestroyed(
@@ -330,6 +372,42 @@ void OnDeviceSpeechRecognitionController::OnFinalizeResult(bool success) {
     return;
   }
   state_ = State::kReady;
+  ForwardPendingSessions();
+}
+
+void OnDeviceSpeechRecognitionController::ForwardPendingSessions() {
+  std::vector<PendingSession> drained;
+  drained.swap(pending_sessions_);
+  for (auto& pending : drained) {
+    ForwardSession(std::move(pending.options), std::move(pending.stream),
+                   std::move(pending.responder));
+  }
+}
+
+void OnDeviceSpeechRecognitionController::ForwardSession(
+    on_device_model::mojom::AsrStreamOptionsPtr options,
+    mojo::PendingReceiver<on_device_model::mojom::AsrStreamInput> stream,
+    mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder>
+        responder) {
+  if (!factory_.is_bound()) {
+    return;
+  }
+  factory_->CreateAsrStream(std::move(options), std::move(stream),
+                            std::move(responder));
+}
+
+void OnDeviceSpeechRecognitionController::StartIdleTimer() {
+  idle_timer_.Start(
+      FROM_HERE, kIdleTimeout,
+      base::BindOnce(&OnDeviceSpeechRecognitionController::OnIdleTimeout,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void OnDeviceSpeechRecognitionController::OnIdleTimeout() {
+  if (active_session_count_ > 0) {
+    return;
+  }
+  TearDown();
 }
 
 void OnDeviceSpeechRecognitionController::OnFactoryDisconnected() {
@@ -337,12 +415,15 @@ void OnDeviceSpeechRecognitionController::OnFactoryDisconnected() {
 }
 
 void OnDeviceSpeechRecognitionController::TearDown() {
+  idle_timer_.Stop();
   factory_.reset();
   background_web_contents_.reset();
   profile_observation_.Reset();
   guest_profile_ = nullptr;
   model_bytes_total_ = 0;
   model_bytes_sent_ = 0;
+  pending_sessions_.clear();
+  active_session_count_ = 0;
   state_ = State::kIdle;
 }
 
