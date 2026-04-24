@@ -8,10 +8,10 @@
 
 #include "components/permissions/permissions_client.h"
 
-#define CanBypassEmbeddingOriginCheck                                    \
-  BraveCanBypassEmbeddingOriginCheck(const GURL& requesting_origin,      \
-                                     const GURL& embedding_origin,       \
-                                     ContentSettingsType type) override; \
+#define CanBypassEmbeddingOriginCheck                                        \
+  BraveCanBypassEmbeddingOriginCheck(ContentSettingsType type,               \
+                                     const GURL& requesting_origin,          \
+                                     const GURL& embedding_origin) override; \
   bool CanBypassEmbeddingOriginCheck
 
 #define MaybeCreateMessageUI                                        \

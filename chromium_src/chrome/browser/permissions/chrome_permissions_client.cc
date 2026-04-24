@@ -23,9 +23,9 @@
 #endif
 
 bool ChromePermissionsClient::BraveCanBypassEmbeddingOriginCheck(
+    ContentSettingsType type,
     const GURL& requesting_origin,
-    const GURL& embedding_origin,
-    ContentSettingsType type) {
+    const GURL& embedding_origin) {
   // Note that requesting_origin has an address in it at this point.
   // But even if we get the original origin without the address, we can't
   // check it against the embedding origin for BRAVE_ETHEREUM and BRAVE_SOLANA

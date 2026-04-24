@@ -7,9 +7,9 @@
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSIONS_CLIENT_H_
 
 #define CanBypassEmbeddingOriginCheck                               \
-  BraveCanBypassEmbeddingOriginCheck(const GURL& requesting_origin, \
-                                     const GURL& embedding_origin,  \
-                                     ContentSettingsType type);     \
+  BraveCanBypassEmbeddingOriginCheck(ContentSettingsType type,      \
+                                     const GURL& requesting_origin, \
+                                     const GURL& embedding_origin); \
   virtual bool CanBypassEmbeddingOriginCheck
 
 #include <components/permissions/permissions_client.h>  // IWYU pragma: export

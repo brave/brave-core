@@ -6,30 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_CONTEXT_BASE_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_CONTEXT_BASE_H_
 
-#include "components/permissions/permission_request_data.h"
-
-namespace permissions {
-class PermissionContextBase;
-using PermissionContextBase_BraveImpl = PermissionContextBase;
-class PermissionLifetimeManager;
-}  // namespace permissions
-
-#define PermissionContextBaseTests \
-  PermissionContextBaseTests;      \
-  friend PermissionContextBase_BraveImpl
-
-#define PermissionContextBase PermissionContextBase_ChromiumImpl
-#define PermissionDecided virtual PermissionDecided
-
 #include <components/permissions/permission_context_base.h>  // IWYU pragma: export
 
-#undef PermissionContextBaseTests
-#undef PermissionContextBase
-#undef PermissionDecided
-
 namespace permissions {
 
-class PermissionContextBase : public PermissionContextBase_ChromiumImpl {
+class PermissionLifetimeManager;
+
+class PermissionContextBase : public chromium_impl::PermissionContextBase {
  public:
   PermissionContextBase(
       content::BrowserContext* browser_context,
