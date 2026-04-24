@@ -16,15 +16,24 @@ const inlineSearchRegex = /^::search\[.+?\]{type=\w+?}$/gm
 // Possibly expose an event handler for copying the entry's text to clipboard,
 // if the entry is simple enough for the text to be extracted
 export default function useConversationEventClipboardCopyHandler(
-  entry: Mojom.ConversationTurn,
+  group: Mojom.ConversationTurn[],
 ) {
   return () => {
+    const entry = group[0]
     if (entry.characterType === Mojom.CharacterType.ASSISTANT) {
-      const event = entry.events?.findLast((event) => event.completionEvent)
-      if (!event?.completionEvent) return
-      let text = event.completionEvent.completion
+      // Collect completion text from all turns in the group (e.g. tool use turns
+      // split the completion across multiple entries in the group).
+      const allEvents = group.flatMap((turn) => turn.events ?? [])
+      const completionTexts = group.flatMap((turn) => {
+        const event = turn.events?.findLast((e) => e.completionEvent)
+        return event?.completionEvent?.completion
+          ? [event.completionEvent.completion]
+          : []
+      })
+      let text = completionTexts.join('\n\n') || entry.text
+      if (!text) return
       // Replace citations with URLs
-      const allowedLinks = extractAllowedLinksFromTurn(entry.events)
+      const allowedLinks = extractAllowedLinksFromTurn(allEvents)
       text = replaceCitationsWithUrls(text, allowedLinks)
       text = text.replaceAll(inlineSearchRegex, '')
       navigator.clipboard.writeText(text)
