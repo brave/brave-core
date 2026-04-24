@@ -340,6 +340,8 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
             R.id.add_to_group_menu_id,
             R.id.divider_line_id,
             R.id.open_history_menu_id,
+            R.id.info_menu_id,
+            R.id.page_info_divider_line_id,
             R.id.downloads_menu_id,
             R.id.all_bookmarks_menu_id,
             R.id.brave_wallet_id,
@@ -376,6 +378,8 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         expectedItems.add(R.id.add_to_group_menu_id);
         expectedItems.add(R.id.divider_line_id);
         expectedItems.add(R.id.open_history_menu_id);
+        expectedItems.add(R.id.info_menu_id);
+        expectedItems.add(R.id.page_info_divider_line_id);
         expectedItems.add(R.id.downloads_menu_id);
         expectedItems.add(R.id.all_bookmarks_menu_id);
         expectedItems.add(R.id.brave_wallet_id);
@@ -440,6 +444,8 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
             R.id.add_to_group_menu_id,
             R.id.divider_line_id,
             R.id.open_history_menu_id,
+            R.id.info_menu_id,
+            R.id.page_info_divider_line_id,
             R.id.downloads_menu_id,
             R.id.all_bookmarks_menu_id,
             // R.id.brave_wallet_id is NOT included - disabled by policy
