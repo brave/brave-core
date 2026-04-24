@@ -13,7 +13,6 @@
 #include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
-#include "base/time/time.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/workspace/brave_workspace_service.h"
 #include "brave/browser/workspace/brave_workspace_service_factory.h"
@@ -117,22 +116,10 @@ void OpenWorkspaceDialog::Show(Browser* browser) {
   if (!service) {
     return;
   }
-  base::FilePath dir = service->GetWorkspacesDir();
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE,
-      {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
-       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
-      base::BindOnce(&BraveWorkspaceService::ListWorkspacesInDir,
-                     std::move(dir)),
-      base::BindOnce(
-          [](Browser* browser, std::vector<WorkspaceInfo> workspaces) {
-            auto* dialog =
-                new OpenWorkspaceDialog(browser, std::move(workspaces));
-            constrained_window::CreateBrowserModalDialogViews(
-                dialog, browser->window()->GetNativeWindow())
-                ->Show();
-          },
-          base::Unretained(browser)));
+  auto* dialog = new OpenWorkspaceDialog(browser, service->ListWorkspaces());
+  constrained_window::CreateBrowserModalDialogViews(
+      dialog, browser->window()->GetNativeWindow())
+      ->Show();
 }
 
 OpenWorkspaceDialog::OpenWorkspaceDialog(Browser* browser,
@@ -316,6 +303,11 @@ void OpenWorkspaceDialog::OnDeleteConfirmed(std::string name,
 void OpenWorkspaceDialog::OnDeleteCompleted(std::string name, bool success) {
   if (!success) {
     return;
+  }
+  auto* service =
+      BraveWorkspaceServiceFactory::GetForProfile(browser_->profile());
+  if (service) {
+    service->RemoveWorkspaceMetadata(name);
   }
   auto it =
       std::find_if(workspaces_.begin(), workspaces_.end(),

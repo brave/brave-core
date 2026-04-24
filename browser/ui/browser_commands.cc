@@ -1377,8 +1377,8 @@ void SaveWorkspace(Browser* calling_browser, const std::string& name) {
       continue;
     }
     window_count++;
-    tab_count = AppendBrowserSessionCommands(browser, calling_browser, commands,
-                                             active_window_id);
+    tab_count += AppendBrowserSessionCommands(browser, calling_browser,
+                                              commands, active_window_id);
   }
 
   if (tab_count == 0) {
@@ -1402,12 +1402,21 @@ void SaveWorkspace(Browser* calling_browser, const std::string& name) {
   auto backend = base::MakeRefCounted<sessions::CommandStorageBackend>(
       task_runner, workspace_dir, BraveWorkspaceService::kWorkspaceSessionType);
 
-  task_runner->PostTask(
+  base::Time save_time = base::Time::Now();
+  task_runner->PostTaskAndReplyWithResult(
       FROM_HERE,
+      base::BindOnce(&BraveWorkspaceService::WriteWorkspaceToDisk,
+                     std::move(commands), std::move(workspace_dir),
+                     std::move(backend)),
       base::BindOnce(
-          base::IgnoreResult(&BraveWorkspaceService::WriteWorkspaceToDisk),
-          name, window_count, tab_count, std::move(commands),
-          std::move(workspace_dir), std::move(backend)));
+          [](BraveWorkspaceService* service, std::string name, int window_count,
+             int tab_count, base::Time modified_at, bool success) {
+            if (success) {
+              service->SaveWorkspaceMetadata(name, window_count, tab_count,
+                                             modified_at);
+            }
+          },
+          base::Unretained(service), name, window_count, tab_count, save_time));
 }
 
 void ShowSaveWorkspaceDialog(Browser* browser) {

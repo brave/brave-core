@@ -37,6 +37,11 @@ BraveWorkspaceServiceFactory::BuildServiceInstanceForBrowserContext(
       Profile::FromBrowserContext(context));
 }
 
+void BraveWorkspaceServiceFactory::RegisterProfilePrefs(
+    user_prefs::PrefRegistrySyncable* registry) {
+  BraveWorkspaceService::RegisterProfilePrefs(registry);
+}
+
 bool BraveWorkspaceServiceFactory::ServiceIsCreatedWithBrowserContext() const {
   return false;
 }

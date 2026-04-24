@@ -17,7 +17,7 @@ struct WorkspaceInfo {
   ~WorkspaceInfo();
 
   std::string name;
-  base::Time created_at;
+  base::Time modified_at;
   int number_of_windows;
   int number_of_tabs;
 };

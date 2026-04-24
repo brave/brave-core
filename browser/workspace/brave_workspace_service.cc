@@ -10,26 +10,35 @@
 #include <utility>
 #include <vector>
 
-#include "base/files/file_enumerator.h"
 #include "base/files/file_util.h"
-#include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
+#include "base/time/time.h"
 #include "base/values.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/pref_registry/pref_registry_syncable.h"
+#include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/pref_service.h"
 #include "components/sessions/core/session_service_commands.h"
 
 namespace {
 
-// Name of the metadata file stored inside each workspace directory.
-constexpr char kInfoFileName[] = "info.json";
-// Properties in the metadata file.
-constexpr char kWorkspaceName[] = "name";
-constexpr char kWorkspaceWindowCount[] = "number-of-windows";
-constexpr char kWorkspaceTabCount[] = "number-of-tabs";
+// Profile preference key — stores a dict keyed by sanitized workspace name.
+const char kWorkspacesMetadataPref[] = "brave.workspaces";
+
+// Keys within each per-workspace dict entry.
+const char kWorkspaceName[] = "name";
+const char kWorkspaceWindowCount[] = "number-of-windows";
+const char kWorkspaceTabCount[] = "number-of-tabs";
+const char kWorkspaceModifiedAt[] = "modifed-at";
 
 }  // namespace
+
+// static
+void BraveWorkspaceService::RegisterProfilePrefs(
+    user_prefs::PrefRegistrySyncable* registry) {
+  registry->RegisterDictionaryPref(kWorkspacesMetadataPref);
+}
 
 BraveWorkspaceService::BraveWorkspaceService(Profile* profile)
     : profile_(profile) {}
@@ -37,7 +46,60 @@ BraveWorkspaceService::BraveWorkspaceService(Profile* profile)
 BraveWorkspaceService::~BraveWorkspaceService() = default;
 
 std::vector<WorkspaceInfo> BraveWorkspaceService::ListWorkspaces() const {
-  return ListWorkspacesInDir(WorkspacesDir());
+  std::vector<WorkspaceInfo> result;
+  const base::DictValue& all =
+      profile_->GetPrefs()->GetDict(kWorkspacesMetadataPref);
+
+  for (const auto [key, value] : all) {
+    const base::DictValue* entry = value.GetIfDict();
+    if (!entry) {
+      continue;
+    }
+    const std::string* name = entry->FindString(kWorkspaceName);
+    if (!name || name->empty()) {
+      continue;
+    }
+    std::optional<double> modified_at = entry->FindDouble(kWorkspaceModifiedAt);
+    if (!modified_at) {
+      continue;
+    }
+    WorkspaceInfo info;
+    info.name = *name;
+    info.number_of_windows = entry->FindInt(kWorkspaceWindowCount).value_or(1);
+    info.number_of_tabs = entry->FindInt(kWorkspaceTabCount).value_or(0);
+    info.modified_at = base::Time::FromSecondsSinceUnixEpoch(*modified_at);
+    result.push_back(std::move(info));
+  }
+
+  std::sort(result.begin(), result.end(),
+            [](const WorkspaceInfo& a, const WorkspaceInfo& b) {
+              return a.modified_at > b.modified_at;
+            });
+  return result;
+}
+
+void BraveWorkspaceService::SaveWorkspaceMetadata(const std::string& name,
+                                                  int window_count,
+                                                  int tab_count,
+                                                  base::Time modified_at) {
+  PrefService* prefs = profile_->GetPrefs();
+  base::DictValue updated = prefs->GetDict(kWorkspacesMetadataPref).Clone();
+
+  base::DictValue entry;
+  entry.Set(kWorkspaceName, name);
+  entry.Set(kWorkspaceWindowCount, window_count);
+  entry.Set(kWorkspaceTabCount, tab_count);
+  entry.Set(kWorkspaceModifiedAt, modified_at.InSecondsFSinceUnixEpoch());
+
+  updated.Set(SanitizeName(name), std::move(entry));
+  prefs->SetDict(kWorkspacesMetadataPref, std::move(updated));
+}
+
+void BraveWorkspaceService::RemoveWorkspaceMetadata(const std::string& name) {
+  PrefService* prefs = profile_->GetPrefs();
+  base::DictValue updated = prefs->GetDict(kWorkspacesMetadataPref).Clone();
+  updated.Remove(SanitizeName(name));
+  prefs->SetDict(kWorkspacesMetadataPref, std::move(updated));
 }
 
 bool BraveWorkspaceService::DeleteWorkspace(const std::string& name) {
@@ -59,31 +121,15 @@ base::FilePath BraveWorkspaceService::GetWorkspaceDirForName(
 
 // static
 bool BraveWorkspaceService::WriteWorkspaceToDisk(
-    const std::string& name,
-    int window_count,
-    int tab_count,
     std::vector<std::unique_ptr<sessions::SessionCommand>> commands,
     const base::FilePath& workspace_dir,
     scoped_refptr<sessions::CommandStorageBackend> backend) {
-  if (name.empty() || commands.empty()) {
+  if (commands.empty()) {
     return false;
   }
 
   if (!base::CreateDirectory(workspace_dir)) {
     LOG(ERROR) << "Failed to create workspace directory: " << workspace_dir;
-    return false;
-  }
-
-  // Write the name and other info to info.json so ListWorkspacesInDir can
-  // show this without parsing the binary session file.
-  base::DictValue info;
-  info.Set(kWorkspaceName, name);
-  info.Set(kWorkspaceWindowCount, window_count);
-  info.Set(kWorkspaceTabCount, tab_count);
-  std::string info_json;
-  if (!base::JSONWriter::Write(base::Value(std::move(info)), &info_json) ||
-      !base::WriteFile(workspace_dir.AppendASCII(kInfoFileName), info_json)) {
-    LOG(ERROR) << "Failed to write workspace info.json";
     return false;
   }
 
@@ -118,71 +164,6 @@ BraveWorkspaceService::ReadWorkspaceFromDisk(
     return {};
   }
   return std::move(result.commands);
-}
-
-// static
-std::vector<WorkspaceInfo> BraveWorkspaceService::ListWorkspacesInDir(
-    const base::FilePath& workspaces_dir) {
-  std::vector<WorkspaceInfo> result;
-
-  if (!base::DirectoryExists(workspaces_dir)) {
-    return result;
-  }
-
-  // Enumerate direct subdirectories — each is a workspace.
-  base::FileEnumerator dir_enum(workspaces_dir, /*recursive=*/false,
-                                base::FileEnumerator::DIRECTORIES);
-  for (base::FilePath workspace_dir = dir_enum.Next(); !workspace_dir.empty();
-       workspace_dir = dir_enum.Next()) {
-    // Read the display name from info.json.
-    base::FilePath info_path = workspace_dir.AppendASCII(kInfoFileName);
-    std::string info_json;
-    if (!base::ReadFileToString(info_path, &info_json)) {
-      continue;
-    }
-    auto parsed = base::JSONReader::ReadDict(
-        info_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
-    if (!parsed) {
-      continue;
-    }
-
-    // Workspace name / item counts
-    const std::string* name = parsed->FindString(kWorkspaceName);
-    if (!name || name->empty()) {
-      continue;
-    }
-    int window_count = parsed->FindInt(kWorkspaceWindowCount).value_or(0);
-    int tab_count = parsed->FindInt(kWorkspaceTabCount).value_or(0);
-
-    // Derive created_at from the timestamp embedded in the Session_* filename.
-    base::Time created_at;
-    auto session_paths = sessions::CommandStorageBackend::GetSessionFilePaths(
-        workspace_dir, kWorkspaceSessionType);
-    for (const auto& session_path : session_paths) {
-      base::Time t;
-      if (sessions::CommandStorageBackend::TimestampFromPath(session_path, t) &&
-          t > created_at) {
-        created_at = t;
-      }
-    }
-    if (created_at.is_null()) {
-      continue;
-    }
-
-    WorkspaceInfo info;
-    info.name = *name;
-    info.created_at = created_at;
-    info.number_of_windows = window_count;
-    info.number_of_tabs = tab_count;
-    result.push_back(std::move(info));
-  }
-
-  // Most-recently created first.
-  std::sort(result.begin(), result.end(),
-            [](const WorkspaceInfo& a, const WorkspaceInfo& b) {
-              return a.created_at > b.created_at;
-            });
-  return result;
 }
 
 // static

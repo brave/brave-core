@@ -8,6 +8,7 @@
 
 #include "base/no_destructor.h"
 #include "chrome/browser/profiles/profile_keyed_service_factory.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 
 class BraveWorkspaceService;
 class Profile;
@@ -30,6 +31,8 @@ class BraveWorkspaceServiceFactory : public ProfileKeyedServiceFactory {
   // ProfileKeyedServiceFactory:
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
+  void RegisterProfilePrefs(
+      user_prefs::PrefRegistrySyncable* registry) override;
   bool ServiceIsCreatedWithBrowserContext() const override;
 };
 

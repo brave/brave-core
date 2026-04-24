@@ -15,8 +15,8 @@ source_set("workspace") {
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/workspace",
-    "//chrome/app/vector_icons:vector_icons",
-    "//components/constrained_window:constrained_window",
+    "//chrome/app/vector_icons",
+    "//components/constrained_window",
     "//ui/views",
   ]
 }

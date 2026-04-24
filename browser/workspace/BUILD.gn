@@ -17,6 +17,8 @@ source_set("workspace") {
     "//base",
     "//chrome/browser/profiles:profile",
     "//components/keyed_service/core",
+    "//components/pref_registry",
+    "//components/prefs",
     "//components/sessions",
   ]
 }
