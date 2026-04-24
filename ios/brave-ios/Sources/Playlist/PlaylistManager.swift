@@ -259,10 +259,10 @@ public class PlaylistManager: NSObject {
       return .inProgress
     }
 
-    if let assetUrl = await downloadManager.localAsset(for: itemId)?.url {
-      if await AsyncFileManager.default.fileExists(atPath: assetUrl.path) {
-        return .downloaded
-      }
+    if let assetUrl = await downloadManager.localAsset(for: itemId)?.url,
+      await AsyncFileManager.default.fileExists(atPath: assetUrl.path)
+    {
+      return .downloaded
     }
 
     return .invalid
@@ -596,40 +596,67 @@ public class PlaylistManager: NSObject {
   }
 
   @MainActor private func deleteDanglingManagedAssets() async {
-    if let playlistFolderPath = await PlaylistDownloadManager.playlistDirectory {
-      let items = PlaylistItem.all().compactMap(\.cachedData)
-      Task.detached {
-        let cachedURLs = items.compactMap { cachedData in
-          var isStale: Bool = false
-          if let url = try? URL(resolvingBookmarkData: cachedData, bookmarkDataIsStale: &isStale) {
-            return url
+    guard let playlistFolderPath = await PlaylistDownloadManager.playlistDirectory else {
+      return
+    }
+
+    // Snapshot every item's bookmark on the main actor so the resolution work below can run off the main actor without touching CoreData.
+    let cachedItems: [(itemId: String, cachedData: Data)] = PlaylistItem.all().compactMap { item in
+      guard let itemId = item.uuid, let cachedData = item.cachedData, !cachedData.isEmpty else {
+        return nil
+      }
+      return (itemId, cachedData)
+    }
+
+    let (validCachedPaths, staleItemIDs): (Set<String>, [String]) =
+      await Task.detached {
+        var validCachedPaths = Set<String>()
+        var staleItemIDs = [String]()
+
+        for entry in cachedItems {
+          var isStale = false
+          guard
+            let url = try? URL(
+              resolvingBookmarkData: entry.cachedData,
+              bookmarkDataIsStale: &isStale
+            ),
+            !isStale,
+            FileManager.default.fileExists(atPath: url.path)
+          else {
+            staleItemIDs.append(entry.itemId)
+            continue
           }
-          return nil
+          validCachedPaths.insert(url.path)
         }
+        return (validCachedPaths, staleItemIDs)
+      }.value
+
+    for itemId in staleItemIDs {
+      invalidateCachedState(for: itemId)
+    }
+
+    do {
+      let urls = try await AsyncFileManager.default.contentsOfDirectory(
+        at: playlistFolderPath,
+        includingPropertiesForKeys: nil,
+        options: [.skipsHiddenFiles]
+      )
+      for url in urls {
         do {
-          let urls = try FileManager.default.contentsOfDirectory(
-            at: playlistFolderPath,
-            includingPropertiesForKeys: nil,
-            options: [.skipsHiddenFiles]
-          )
-          for url in urls {
-            do {
-              // Playlist doesn't contain such an offline item, so it's dangling somehow and should be deleted.
-              if !cachedURLs.contains(where: { $0.path == url.path }) {
-                try FileManager.default.removeItem(at: url)
-              }
-            } catch {
-              Logger.module.error(
-                "Deleting Dangling Playlist Item for \(url.absoluteString) failed: \(error.localizedDescription)"
-              )
-            }
+          if !validCachedPaths.contains(url.path) {
+            // Playlist doesn't contain such an offline item, so it's dangling somehow and should be deleted.
+            try await AsyncFileManager.default.removeItem(at: url)
           }
         } catch {
           Logger.module.error(
-            "Deleting Dangling Playlist Incomplete Items failed: \(error.localizedDescription)"
+            "Deleting Dangling Playlist Item for \(url.absoluteString) failed: \(error.localizedDescription)"
           )
         }
       }
+    } catch {
+      Logger.module.error(
+        "Deleting Dangling Playlist Incomplete Items failed: \(error.localizedDescription)"
+      )
     }
   }
 
@@ -684,6 +711,23 @@ public class PlaylistManager: NSObject {
       Logger.module.error("Error Retrieving Disk Space: \(error.localizedDescription)")
     }
     return nil
+  }
+
+  /// Clears the persisted `cachedData` bookmark for `itemId` and notifies observers that the item is no longer downloaded.
+  /// Cancels any in-flight download as well so the item ends up in a fully invalid state.
+  /// No-op if the item is gone or already has no cached bookmark.
+  @MainActor private func invalidateCachedState(for itemId: String) {
+    guard
+      let item = PlaylistItem.getItem(uuid: itemId),
+      let cachedData = item.cachedData,
+      !cachedData.isEmpty
+    else {
+      return
+    }
+
+    cancelDownload(itemId: itemId)
+    PlaylistItem.updateCache(uuid: itemId, pageSrc: item.pageSrc, cachedData: nil)
+    onDownloadStateChanged(id: itemId, state: .invalid, displayName: nil, error: nil)
   }
 }
 
