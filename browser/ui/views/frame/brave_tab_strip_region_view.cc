@@ -118,9 +118,6 @@ void BraveHorizontalTabStripRegionView::CreateScrollButtonsIfNeeded() {
 void BraveHorizontalTabStripRegionView::
     OnShowHorizontalTabScrollButtonsChanged() {
   InvalidateLayout();
-  auto* strip = views::AsViewClass<BraveTabStrip>(tab_strip_);
-  CHECK(strip);
-  strip->InvalidateTabContainerLayout();
 }
 
 void BraveHorizontalTabStripRegionView::UpdateScrollButtonsVisibility() {
