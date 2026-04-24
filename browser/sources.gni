@@ -374,14 +374,6 @@ if (!is_android) {
     "feed/feed_service_factory.h",
     "feed/rss_links_fetcher.cc",
     "feed/rss_links_fetcher.h",
-    "feed/web_feed_page_information_fetcher.cc",
-    "feed/web_feed_page_information_fetcher.h",
-    "feed/web_feed_tab_helper.cc",
-    "feed/web_feed_tab_helper.h",
-    "feed/web_feed_ui_util.cc",
-    "feed/web_feed_ui_util.h",
-    "feed/web_feed_util.cc",
-    "feed/web_feed_util.h",
   ]
 
   brave_chrome_browser_deps += [
