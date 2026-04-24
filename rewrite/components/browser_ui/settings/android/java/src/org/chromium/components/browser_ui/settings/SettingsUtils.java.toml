@@ -7,7 +7,7 @@
 # can call it from the bytecode-redirected getVisiblePreferences implementation.
 
 [[substitution]]
-description = 'Make addVisiblePreferences package-private'
-re_pattern = 'private static void addVisiblePreferences\('
+description = 'Make addVisiblePreferences package-private to call it at BraveSettingsUtils.getVisiblePreferences override'
+pattern = 'private static void addVisiblePreferences('
 replace = 'static void addVisiblePreferences('
 count = 1
