@@ -18,7 +18,9 @@ mojom_component("mojom") {
   public_deps = [ "//mojo/public/mojom/base" ]
 }
 
-source_set("features") {
+component("features") {
+  defines = [ "IS_LOCAL_AI_FEATURES_IMPL" ]
+
   sources = [
     "features.cc",
     "features.h",
@@ -34,6 +36,7 @@ static_library("core") {
   public = [
     "background_web_contents.h",
     "local_models_updater.h",
+    "on_device_speech_models_state.h",
     "url_constants.h",
   ]
 
@@ -41,6 +44,8 @@ static_library("core") {
     "background_web_contents.h",
     "local_models_updater.cc",
     "local_models_updater.h",
+    "on_device_speech_models_state.cc",
+    "on_device_speech_models_state.h",
   ]
 
   public_deps = [
