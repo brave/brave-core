@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
+#include "brave/components/brave_ads/core/internal/common/operating_system/operating_system_util.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rule_feature.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
@@ -18,7 +18,7 @@ bool HasFullScreenModePermission() {
     return true;
   }
 
-  if (PlatformHelper::GetInstance().IsMobile()) {
+  if (IsMobile()) {
     return true;
   }
 

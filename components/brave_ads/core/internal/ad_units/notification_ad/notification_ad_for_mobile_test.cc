@@ -9,7 +9,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
-#include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
+#include "brave/components/brave_ads/core/internal/common/operating_system/operating_system.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
@@ -31,8 +31,8 @@ class BraveAdsNotificationAdForMobileIntegrationTest : public test::TestBase {
 
  protected:
   void SetUpMocks() override {
-    fake_platform_helper_.SetPlatformType(PlatformType::kAndroid);
-    PlatformHelper::SetForTesting(&fake_platform_helper_);
+    fake_operating_system_.SetType(OperatingSystemType::kAndroid);
+    OperatingSystem::SetForTesting(&fake_operating_system_);
 
     const test::URLResponseMap url_responses = {
         {BuildCatalogUrlPath(),

@@ -8,7 +8,7 @@
 #include <string>
 #include <string_view>
 
-#include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
+#include "brave/components/brave_ads/core/internal/common/operating_system/operating_system.h"
 
 namespace brave_ads {
 
@@ -17,7 +17,7 @@ constexpr std::string_view kPlatformKey = "platform";
 }  // namespace
 
 base::DictValue BuildPlatformUserData() {
-  const std::string platform_name = PlatformHelper::GetInstance().GetName();
+  const std::string platform_name = OperatingSystem::GetInstance().GetName();
   if (platform_name.empty()) {
     // Invalid platform name.
     return {};

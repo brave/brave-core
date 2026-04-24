@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/do_not_disturb_permission_rule.h"
 
-#include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
+#include "brave/components/brave_ads/core/internal/common/operating_system/operating_system_types.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -17,8 +17,7 @@ class BraveAdsDoNotDisturbPermissionRuleTest : public test::TestBase {};
 TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
        ShouldAllowWhileBrowserIsInactiveBetween6amAnd9pmOnAndroid) {
   // Arrange
-  fake_platform_helper_.SetPlatformType(PlatformType::kAndroid);
-  PlatformHelper::SetForTesting(&fake_platform_helper_);
+  fake_operating_system_.SetType(OperatingSystemType::kAndroid);
 
   ads_client_notifier_.NotifyBrowserDidResignActive();
   ads_client_notifier_.NotifyBrowserDidEnterBackground();
@@ -54,8 +53,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
 TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
        ShouldAllowWhileBrowserIsActiveOnAndroid) {
   // Arrange
-  fake_platform_helper_.SetPlatformType(PlatformType::kAndroid);
-  PlatformHelper::SetForTesting(&fake_platform_helper_);
+  fake_operating_system_.SetType(OperatingSystemType::kAndroid);
 
   ads_client_notifier_.NotifyBrowserDidBecomeActive();
   ads_client_notifier_.NotifyBrowserDidEnterForeground();
@@ -90,8 +88,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
 
 TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnIOS) {
   // Arrange
-  fake_platform_helper_.SetPlatformType(PlatformType::kIOS);
-  PlatformHelper::SetForTesting(&fake_platform_helper_);
+  fake_operating_system_.SetType(OperatingSystemType::kIOS);
 
   ads_client_notifier_.NotifyBrowserDidBecomeActive();
   ads_client_notifier_.NotifyBrowserDidEnterForeground();
@@ -113,8 +110,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnIOS) {
 
 TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnMacOS) {
   // Arrange
-  fake_platform_helper_.SetPlatformType(PlatformType::kMacOS);
-  PlatformHelper::SetForTesting(&fake_platform_helper_);
+  fake_operating_system_.SetType(OperatingSystemType::kMacOS);
 
   ads_client_notifier_.NotifyBrowserDidBecomeActive();
   ads_client_notifier_.NotifyBrowserDidEnterForeground();
@@ -136,8 +132,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnMacOS) {
 
 TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnWindows) {
   // Arrange
-  fake_platform_helper_.SetPlatformType(PlatformType::kWindows);
-  PlatformHelper::SetForTesting(&fake_platform_helper_);
+  fake_operating_system_.SetType(OperatingSystemType::kWindows);
 
   ads_client_notifier_.NotifyBrowserDidBecomeActive();
   ads_client_notifier_.NotifyBrowserDidEnterForeground();
@@ -159,8 +154,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnWindows) {
 
 TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnLinux) {
   // Arrange
-  fake_platform_helper_.SetPlatformType(PlatformType::kLinux);
-  PlatformHelper::SetForTesting(&fake_platform_helper_);
+  fake_operating_system_.SetType(OperatingSystemType::kLinux);
 
   ads_client_notifier_.NotifyBrowserDidBecomeActive();
   ads_client_notifier_.NotifyBrowserDidEnterForeground();

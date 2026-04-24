@@ -18,7 +18,7 @@
 #include "base/test/task_environment.h"
 #include "brave/components/brave_ads/core/internal/ads_client/test/ads_client_mock.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_util.h"
-#include "brave/components/brave_ads/core/internal/common/platform/test/fake_platform_helper.h"
+#include "brave/components/brave_ads/core/internal/common/operating_system/test/fake_operating_system.h"
 #include "brave/components/brave_ads/core/internal/common/test/tab_test_helper.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier.h"
 #include "brave/components/brave_ads/core/public/common/locale/scoped_locale_for_testing.h"
@@ -140,7 +140,7 @@ class TestBase : public ::testing::Test {
 
   base::test::TaskEnvironment task_environment_;
 
-  FakePlatformHelper fake_platform_helper_;
+  FakeOperatingSystem fake_operating_system_;
 
   ::testing::NiceMock<AdsClientMock> ads_client_mock_;
   AdsClientNotifier ads_client_notifier_;
