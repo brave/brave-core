@@ -35,15 +35,27 @@ class WebContents;
 namespace passage_embeddings {
 
 // In-process implementation of passage_embeddings::mojom::PassageEmbedder
-// that wraps a renderer-side local_ai PassageEmbedder. Upstream's
-// SchedulingEmbedder speaks this mojom; we translate its batch calls to
-// the renderer's single-passage interface, processing passages
-// sequentially so callbacks resolve with all embeddings in order.
+// that wraps a renderer-side local_ai PassageEmbedder.
+//
+// Owns the full renderer-side lifecycle for a single LoadModels call:
+// it receives the PassageEmbedderFactory remote + loaded ModelFiles
+// from BravePassageEmbeddingsService, drives factory->Init on
+// construction, binds the per-embedder renderer pipe on success, and
+// self-signals disconnect so the service can reset and accept a new
+// load request. This mirrors upstream's PassageEmbedder, which
+// similarly self-manages receiver, model load, and disconnect.
+//
+// Upstream's SchedulingEmbedder speaks mojom::PassageEmbedder in
+// batches; we translate to the renderer's single-passage interface,
+// processing passages sequentially so callbacks resolve with all
+// embeddings in order.
 class BraveBatchPassageEmbedder : public mojom::PassageEmbedder {
  public:
   BraveBatchPassageEmbedder(
       mojo::PendingReceiver<mojom::PassageEmbedder> receiver,
-      mojo::PendingRemote<local_ai::mojom::PassageEmbedder> renderer_embedder,
+      mojo::Remote<local_ai::mojom::PassageEmbedderFactory> factory,
+      local_ai::mojom::ModelFilesPtr model_files,
+      base::OnceCallback<void(bool)> load_callback,
       base::OnceClosure on_disconnect);
   ~BraveBatchPassageEmbedder() override;
 
@@ -69,6 +81,7 @@ class BraveBatchPassageEmbedder : public mojom::PassageEmbedder {
     size_t next_index = 0;
   };
 
+  void OnInitDone(bool success);
   void ProcessNext();
   void OnOneEmbedding(const std::vector<double>& embedding);
   void FailCurrentBatch();
@@ -81,7 +94,11 @@ class BraveBatchPassageEmbedder : public mojom::PassageEmbedder {
   std::deque<Batch> pending_batches_;
 
   mojo::Receiver<mojom::PassageEmbedder> receiver_;
+  mojo::Remote<local_ai::mojom::PassageEmbedderFactory> factory_;
   mojo::Remote<local_ai::mojom::PassageEmbedder> renderer_embedder_;
+  // Run exactly once with true on successful Init+Bind or false on any
+  // failure path (Init error, early disconnect before Init replies).
+  base::OnceCallback<void(bool)> load_callback_;
   base::OnceClosure on_disconnect_;
 
   base::WeakPtrFactory<BraveBatchPassageEmbedder> weak_ptr_factory_{this};
@@ -94,11 +111,20 @@ class BraveBatchPassageEmbedder : public mojom::PassageEmbedder {
 // service_remote_ directly to an instance of this class, so no IPC hop
 // is involved.
 //
-// Owns:
+// Matches the shape of upstream's PassageEmbeddingsService: on
+// LoadModels we create a PassageEmbedder (here,
+// BraveBatchPassageEmbedder) and hand it the loaded model files plus
+// the factory remote. All init/bind/disconnect bookkeeping lives
+// inside the BatchEmbedder, which calls us back via on_disconnect when
+// it is torn down.
+//
+// This service still owns:
 //   - The guest-OTR BackgroundWebContents that hosts the WASM worker.
-//   - The renderer-registered PassageEmbedderFactory remote.
-//   - A BraveBatchPassageEmbedder that implements the upstream mojom
-//     PassageEmbedder by fanning batches to the renderer.
+//   - The OneShotEvents that gate file loading on the EmbeddingGemma
+//     component install and the renderer registering its factory.
+//   - The PassageEmbedderFactory remote received via
+//     RegisterPassageEmbedderFactory (until it is moved into the
+//     BatchEmbedder on successful load).
 //
 // Also implements local_ai::mojom::LocalAIService so the renderer WASM
 // page can register its PassageEmbedderFactory back to us via
@@ -147,14 +173,14 @@ class BravePassageEmbeddingsService
   base::WeakPtr<BravePassageEmbeddingsService> GetWeakPtr();
 
   // Direct in-process equivalent of mojom::PassageEmbeddingsService::LoadModels
-  // — binds `receiver` to our BraveBatchPassageEmbedder and invokes
-  // `callback` once the WASM renderer is ready. The upstream mojom is
-  // shaped for a tflite + sentencepiece embedder in a sandboxed utility
-  // process; we run in-process with a five-file EmbeddingGemma model, so
-  // the struct doesn't fit and the mojo hop adds no isolation. The
-  // controller calls this directly and leaves service_remote_ unbound.
-  // Model files are delivered separately via PassageEmbedderFactory::Init
-  // as local_ai::mojom::ModelFiles BigBuffers. See README.md for details.
+  // — queues the receiver + callback as the pending load and drives
+  // the startup flow. The upstream mojom is shaped for a tflite +
+  // sentencepiece embedder in a sandboxed utility process; we run
+  // in-process with a five-file EmbeddingGemma model, so the struct
+  // doesn't fit and the mojo hop adds no isolation. The controller
+  // calls this directly and leaves service_remote_ unbound. Model
+  // files are delivered separately via PassageEmbedderFactory::Init as
+  // local_ai::mojom::ModelFiles BigBuffers. See README.md for details.
   void BindPassageEmbedder(
       mojo::PendingReceiver<mojom::PassageEmbedder> receiver,
       base::OnceCallback<void(bool)> callback);
@@ -178,7 +204,7 @@ class BravePassageEmbeddingsService
     PendingLoad& operator=(PendingLoad&&) noexcept;
 
     mojo::PendingReceiver<mojom::PassageEmbedder> receiver;
-    LoadModelsCallback callback;
+    base::OnceCallback<void(bool)> callback;
   };
 
   // LocalModelsUpdaterState::Observer:
@@ -192,27 +218,26 @@ class BravePassageEmbeddingsService
   void OnBackgroundContentsCreated(
       std::unique_ptr<local_ai::BackgroundWebContents> contents);
   void CloseBackgroundContents();
-  // Arms a fresh pair of OneShotEvents that chain into
-  // LoadLocalModelFiles once both (1) the EmbeddingGemma component is
-  // installed (OnLocalModelsReady signals component_ready_event_, or
-  // install_dir is already non-empty at arm time) and (2) the
-  // renderer's PassageEmbedderFactory registers via
-  // RegisterPassageEmbedderFactory.
+  // Arms a fresh pair of OneShotEvents. Signal() on each is idempotent
+  // under is_signaled() — AddObserver's sync re-fire of
+  // OnLocalModelsReady cannot double-count.
   void MaybeWaitForLocalModelFilesReady();
-  // Posted on component_ready_event_. Chains through
-  // factory_registered_event_ to LoadLocalModelFiles.
-  void OnComponentReadyForLoad();
+  // Invoked from BindPassageEmbedder, RegisterPassageEmbedderFactory,
+  // and OnLocalModelsReady. Proceeds to LoadLocalModelFiles only when
+  // (1) both OneShotEvents have signaled and (2) a pending load is
+  // queued and (3) no BatchEmbedder is already active.
+  void MaybeStartLoad();
   void LoadLocalModelFiles();
   void OnLocalModelFilesLoaded(local_ai::mojom::ModelFilesPtr model_files);
-  void OnFactoryInitDone(bool success);
-  void FulfillPendingLoads();
-  void FailPendingLoads();
-  // Drops the renderer-facing embedder state (batch embedder, factory,
-  // pending loads, model-ready flag) and re-arms the load barrier.
-  // Shared by OnFactoryDisconnected and CloseBackgroundContents.
-  void ResetEmbedderState();
-  void OnFactoryDisconnected();
   void OnBatchEmbedderDisconnected();
+  // Handler installed on factory_ while the remote is held by the
+  // service (before it is moved into the BatchEmbedder). Once the
+  // BatchEmbedder owns the factory it installs its own disconnect
+  // handler.
+  void OnEarlyFactoryDisconnected();
+  // Drops batch_embedder_/factory_, fails any pending load, re-arms
+  // the load events, and invalidates in-flight load callbacks.
+  void ResetEmbedderState();
 
   std::unique_ptr<local_ai::BackgroundWebContents> background_web_contents_;
   // Set while the factory callback is in flight so successive
@@ -223,23 +248,25 @@ class BravePassageEmbeddingsService
   raw_ptr<local_ai::LocalModelsUpdaterState> updater_state_;
 
   mojo::ReceiverSet<local_ai::mojom::LocalAIService> local_ai_receivers_;
+  // Holds the renderer's factory remote from RegisterPassageEmbedderFactory
+  // until a successful load moves it into the BatchEmbedder.
   mojo::Remote<local_ai::mojom::PassageEmbedderFactory> factory_;
 
   std::unique_ptr<BraveBatchPassageEmbedder> batch_embedder_;
-  std::vector<PendingLoad> pending_loads_;
+  std::optional<PendingLoad> pending_load_;
 
-  // Signaled when the EmbeddingGemma component is installed. When
-  // fired, OnComponentReadyForLoad chains to factory_registered_event_.
-  // Re-armed (new OneShotEvent instance) on each arm cycle by
+  // Signaled when the EmbeddingGemma component is installed. Re-armed
+  // (new OneShotEvent instance) on each arm cycle by
   // MaybeWaitForLocalModelFilesReady; Signal() is idempotent via the
   // is_signaled() guard at each call site.
   std::unique_ptr<base::OneShotEvent> component_ready_event_;
   // Signaled when the renderer's PassageEmbedderFactory registers.
-  // LoadLocalModelFiles is posted on this event (after component is
-  // also ready) by OnComponentReadyForLoad.
   std::unique_ptr<base::OneShotEvent> factory_registered_event_;
-  bool model_ready_ = false;
 
+  // Separate factory for the ThreadPool file-load reply so
+  // ResetEmbedderState can cancel an in-flight load without also
+  // invalidating the rest of the service's weak-bound callbacks.
+  base::WeakPtrFactory<BravePassageEmbeddingsService> load_weak_factory_{this};
   base::WeakPtrFactory<BravePassageEmbeddingsService> weak_ptr_factory_{this};
 };
 
