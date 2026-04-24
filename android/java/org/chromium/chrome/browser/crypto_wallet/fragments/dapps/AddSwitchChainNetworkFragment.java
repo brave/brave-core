@@ -197,7 +197,7 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
                     (bitmap, iconUrl) -> setBitmapOnImageView(url, bitmap);
             // 0 is a max bitmap size for download
             mFaviconHelper.getLocalFaviconImageForURL(
-                    activity.getCurrentProfile(), url, 0, imageCallback);
+                    activity.getCurrentProfile(), url, 0, true, imageCallback);
 
         } catch (Exception ignored) {
             /* Ignored. */
