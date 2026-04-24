@@ -1,5 +1,5 @@
 diff --git a/ui/views/widget/desktop_aura/desktop_native_widget_aura.cc b/ui/views/widget/desktop_aura/desktop_native_widget_aura.cc
-index e458843a00770588cf90b0c23118450df215fdf6..9d495514c4b80f530dd2f39d99cef0233642cba5 100644
+index 446d82985dab4486f876fb957caea143de98a7ba..508269bb9fd9c41e43c0aef00cb5ffa19abe3c71 100644
 --- a/ui/views/widget/desktop_aura/desktop_native_widget_aura.cc
 +++ b/ui/views/widget/desktop_aura/desktop_native_widget_aura.cc
 @@ -540,10 +540,10 @@ void DesktopNativeWidgetAura::UpdateWindowTransparency() {

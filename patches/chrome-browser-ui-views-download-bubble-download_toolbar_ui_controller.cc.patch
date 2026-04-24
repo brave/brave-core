@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc b/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc
-index c67a71bad966bebb540b74a031f6310999dfc529..3cb0ac987e2bae17edfce9970661add88cf8355a 100644
+index 2a37f9974008e4f2e59c53619ca5142daea6bbe9..bb6a9d51a3f9d61f6d82d3eeeede84ef312b0d8f 100644
 --- a/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc
 +++ b/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc
 @@ -674,6 +674,7 @@ void DownloadToolbarUIController::UpdateIcon() {

@@ -1,5 +1,5 @@
 diff --git a/components/sync_sessions/synced_session.cc b/components/sync_sessions/synced_session.cc
-index b4601c19bb8af018fb9e2bb990e485237a6c0d1c..99228bcde98fa106113eb463e7b8ae77aed8ef2b 100644
+index 9426a50483c72e4cb1339a6a290ba12e900917e3..9724d7b1f207fe411be6891984bf1a3a0d6fe916 100644
 --- a/components/sync_sessions/synced_session.cc
 +++ b/components/sync_sessions/synced_session.cc
 @@ -103,7 +103,7 @@ sync_pb::TabNavigation SessionNavigationToSyncData(

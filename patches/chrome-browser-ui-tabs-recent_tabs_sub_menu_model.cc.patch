@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc b/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc
-index 53dbacdb3bb81881eb48f6979a01891dc5aa13c6..c6b676e5bde6cc4c5cf3b1303567dc69c872789b 100644
+index fd79d4c0db301d3f107e3ec4ebcee34f108c15c8..f16157906c9d3e594971b3c3ef82571c9387d0b7 100644
 --- a/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc
 +++ b/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc
-@@ -520,6 +520,7 @@ void RecentTabsSubMenuModel::BuildTabsFromOtherDevices() {
+@@ -516,6 +516,7 @@ void RecentTabsSubMenuModel::BuildTabsFromOtherDevices() {
      DCHECK(!session->GetSessionName().empty());
      std::unique_ptr<ui::SimpleMenuModel> device_menu_model =
          CreateOtherDeviceSubMenu(session, tabs_in_session);

@@ -1,8 +1,8 @@
 diff --git a/components/omnibox/browser/featured_search_provider.cc b/components/omnibox/browser/featured_search_provider.cc
-index 29b83c6edeee8a467ef5bb7e2773586024b4fb22..66d6b9af9ac3315891810d15355d330f50864c97 100644
+index 766588861b85c3a4ef69ed85522761aaf41cb620..8543840c0640d303ddd2b59934a743551480604c 100644
 --- a/components/omnibox/browser/featured_search_provider.cc
 +++ b/components/omnibox/browser/featured_search_provider.cc
-@@ -609,10 +609,10 @@ bool FeaturedSearchProvider::ShouldShowHistoryEmbeddingsDisclaimerIphMatch()
+@@ -611,10 +611,10 @@ bool FeaturedSearchProvider::ShouldShowHistoryEmbeddingsDisclaimerIphMatch()
  
  void FeaturedSearchProvider::AddHistoryEmbeddingsDisclaimerIphMatch() {
    std::u16string text =

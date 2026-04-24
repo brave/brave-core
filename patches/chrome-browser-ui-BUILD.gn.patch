@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 9982aaf1824bec360c1b0dd84725ce3fcea0e298..8c16b6280522590e194a0d0b456b5aa4ea30f08a 100644
+index 5907498d01115ce03dcdad1606fc8f436a7e00e8..8c3a7ad22f8e9a0f1c2508522279f5b67c30e936 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -819,6 +819,7 @@ static_library("ui") {
+@@ -825,6 +825,7 @@ static_library("ui") {
      # translate's impl no longer includes headers from //chrome/browser/ui.
      "//chrome/browser/translate:impl",
    ]
@@ -10,7 +10,7 @@ index 9982aaf1824bec360c1b0dd84725ce3fcea0e298..8c16b6280522590e194a0d0b456b5aa4
  
    if (enable_vr && is_win) {
      deps += [ "//chrome/browser/vr:vr_base" ]
-@@ -3489,7 +3490,10 @@ static_library("ui") {
+@@ -3496,7 +3497,10 @@ static_library("ui") {
          "//chrome/updater/app/server/win:updater_legacy_idl",
        ]
      } else {
@@ -22,7 +22,7 @@ index 9982aaf1824bec360c1b0dd84725ce3fcea0e298..8c16b6280522590e194a0d0b456b5aa4
      }
    }
  
-@@ -5612,6 +5616,7 @@ group("ui_public_dependencies") {
+@@ -5621,6 +5625,7 @@ group("ui_public_dependencies") {
      "//components/enterprise/buildflags",
      "//components/paint_preview/buildflags",
      "//components/safe_browsing:buildflags",
@@ -30,7 +30,7 @@ index 9982aaf1824bec360c1b0dd84725ce3fcea0e298..8c16b6280522590e194a0d0b456b5aa4
      "//components/segmentation_platform/public",
      "//components/sync",
      "//components/sync_user_events",
-@@ -5624,6 +5629,7 @@ group("ui_public_dependencies") {
+@@ -5633,6 +5638,7 @@ group("ui_public_dependencies") {
    if (enable_extensions_core) {
      public_deps += [ "//extensions/browser" ]
    }
@@ -38,7 +38,7 @@ index 9982aaf1824bec360c1b0dd84725ce3fcea0e298..8c16b6280522590e194a0d0b456b5aa4
    if (!is_android) {
      public_deps += [
        "//build:branding_buildflags",
-@@ -5762,6 +5768,7 @@ source_set("browser_navigator_params_headers") {
+@@ -5771,6 +5777,7 @@ source_set("browser_navigator_params_headers") {
      "//url",
    ]
    deps = []

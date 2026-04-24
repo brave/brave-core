@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/bindings/core/v8/to_v8_traits.h b/third_party/blink/renderer/bindings/core/v8/to_v8_traits.h
-index 1bf0d9d5debf62bb1e3b6447c5a2e436a5572ab5..3182c2943da0b2f9e16fcf6ab1c047260b0be856 100644
+index 174981a570d00bcb5d56e4261d9160e24fb660d0..2afd2e01999e67d9389d75dc684050c976d44ee6 100644
 --- a/third_party/blink/renderer/bindings/core/v8/to_v8_traits.h
 +++ b/third_party/blink/renderer/bindings/core/v8/to_v8_traits.h
-@@ -749,6 +749,7 @@ struct ToV8Traits<IDLNullable<IDLSequence<T>>> {
+@@ -750,6 +750,7 @@ struct ToV8Traits<IDLNullable<IDLSequence<T>>> {
        return v8::Null(script_state->GetIsolate());
      return ToV8Traits<IDLSequence<T>>::ToV8(script_state, *value);
    }

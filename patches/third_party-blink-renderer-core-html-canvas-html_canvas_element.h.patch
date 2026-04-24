@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-index 155ffba894235427e00db358d8bf2609cbf75321..b34c7f9c104f4926dc7f8b8d53e59a380afa5d6d 100644
+index 0fade3f45655352c8df21f9a3de43d9874ea2d4d..a1880754fe60b1f029f71ce84204c050d74acd07 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-@@ -356,6 +356,7 @@ class CORE_EXPORT HTMLCanvasElement final
+@@ -359,6 +359,7 @@ class CORE_EXPORT HTMLCanvasElement final
  
    ElementImage* captureElementImage(Element* element, ExceptionState&);
  

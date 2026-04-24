@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_model.cc b/chrome/browser/ui/tabs/tab_strip_model.cc
-index cb0db177da8287674b22fc6e2bde8dbcbfc2c431..ea771606ffc87f69e8e8342f41341c2df79b9eea 100644
+index a08a0071d3eb45d9adf887f960da660183231428..2fd99e5df898aa0dc91042d82f2f085874184112 100644
 --- a/chrome/browser/ui/tabs/tab_strip_model.cc
 +++ b/chrome/browser/ui/tabs/tab_strip_model.cc
-@@ -1763,6 +1763,7 @@ void TabStripModel::AddTab(std::unique_ptr<tabs::TabModel> tab,
+@@ -1785,6 +1785,7 @@ void TabStripModel::AddTab(std::unique_ptr<tabs::TabModel> tab,
      // in the address bar and presses Alt+Enter. This allows for opening a new
      // Tab to quickly look up something. When this Tab is closed, the old one
      // is re-activated, not the next-adjacent.

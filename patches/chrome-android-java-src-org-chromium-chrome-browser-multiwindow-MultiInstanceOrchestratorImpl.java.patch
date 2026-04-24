@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/multiwindow/MultiInstanceOrchestratorImpl.java b/chrome/android/java/src/org/chromium/chrome/browser/multiwindow/MultiInstanceOrchestratorImpl.java
-index a6d8b55b10f10afdb8a4d05c452dc55451718d8b..2f7af3f6ccc440a439826bd0d378c8bce4293ea9 100644
+index 351956ae3b3f03b591f24a240cb7c889f83498dc..f404c3c694f123c9595d2c7f4aaef64322b00e3d 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/multiwindow/MultiInstanceOrchestratorImpl.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/multiwindow/MultiInstanceOrchestratorImpl.java
-@@ -26,7 +26,7 @@ import java.util.Map;
+@@ -42,7 +42,7 @@ import java.util.Set;
  
  /** Implements {@link MultiInstanceOrchestrator} as a singleton. */
  @NullMarked
@@ -11,7 +11,7 @@ index a6d8b55b10f10afdb8a4d05c452dc55451718d8b..2f7af3f6ccc440a439826bd0d378c8bc
      private static @Nullable MultiInstanceOrchestrator sInstance;
      private static @Nullable TabReparentingDelegate sTabReparentingDelegateForTesting;
  
-@@ -47,7 +47,7 @@ import java.util.Map;
+@@ -63,7 +63,7 @@ import java.util.Set;
          return sInstance;
      }
  

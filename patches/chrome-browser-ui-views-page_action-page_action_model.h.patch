@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_model.h b/chrome/browser/ui/views/page_action/page_action_model.h
-index a3d1abf58e71b25edb1487e2cf92c5587539d85b..e928a6a2c80bac025e6a64258fdc3c693e08562e 100644
+index 05c873f91672109a073561149122969c5d906069..2cab1aaf5e6c742e437bcb849105912af57a106e 100644
 --- a/chrome/browser/ui/views/page_action/page_action_model.h
 +++ b/chrome/browser/ui/views/page_action/page_action_model.h
-@@ -33,6 +33,22 @@ class PageActionModelInterface {
+@@ -40,6 +40,22 @@ class PageActionModelInterface {
   public:
    PageActionModelInterface() = default;
    virtual ~PageActionModelInterface() = default;
@@ -25,7 +25,7 @@ index a3d1abf58e71b25edb1487e2cf92c5587539d85b..e928a6a2c80bac025e6a64258fdc3c69
  
    virtual void AddObserver(PageActionModelObserver* observer) = 0;
    virtual void RemoveObserver(PageActionModelObserver* observer) = 0;
-@@ -120,6 +136,31 @@ class PageActionModel : public PageActionModelInterface {
+@@ -130,6 +146,31 @@ class PageActionModel : public PageActionModelInterface {
    PageActionModel& operator=(const PageActionModel&) = delete;
    ~PageActionModel() override;
  
@@ -57,7 +57,7 @@ index a3d1abf58e71b25edb1487e2cf92c5587539d85b..e928a6a2c80bac025e6a64258fdc3c69
    void AddObserver(PageActionModelObserver* observer) override;
    void RemoveObserver(PageActionModelObserver* observer) override;
  
-@@ -210,6 +251,10 @@ class PageActionModel : public PageActionModelInterface {
+@@ -223,6 +264,10 @@ class PageActionModel : public PageActionModelInterface {
    // per-property reentrancy checks.
    enum class Property {
      kShowRequested,

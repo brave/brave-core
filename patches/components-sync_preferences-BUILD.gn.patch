@@ -1,8 +1,8 @@
 diff --git a/components/sync_preferences/BUILD.gn b/components/sync_preferences/BUILD.gn
-index 78a68a137b42a0862505c9a9f58901f36b3269bb..5ed9628d796b57bb88554f914e3afb443ec195f1 100644
+index 31e2d14b1d3b979121951e843099bc7b528e5960..4b6ff666c62b8f598b4df99a949c2c10ba636bd3 100644
 --- a/components/sync_preferences/BUILD.gn
 +++ b/components/sync_preferences/BUILD.gn
-@@ -76,6 +76,7 @@ source_set("common_syncable_prefs_database") {
+@@ -78,6 +78,7 @@ source_set("common_syncable_prefs_database") {
      "//components/translate/core/browser",
      "//components/variations/service",
    ]
