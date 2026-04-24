@@ -17,6 +17,7 @@
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/one_shot_event.h"
 #include "brave/components/local_ai/core/background_web_contents.h"
 #include "brave/components/local_ai/core/local_ai.mojom.h"
 #include "brave/components/local_ai/core/local_models_updater.h"
@@ -191,19 +192,16 @@ class BravePassageEmbeddingsService
   void OnBackgroundContentsCreated(
       std::unique_ptr<local_ai::BackgroundWebContents> contents);
   void CloseBackgroundContents();
-  // Arms a fresh barrier that waits for two events before triggering
-  // LoadLocalModelFiles: (1) the EmbeddingGemma component is installed
-  // (OnLocalModelsReady fires, or install_dir is already non-empty
-  // at arm time) and (2) the renderer's PassageEmbedderFactory
-  // registers via RegisterPassageEmbedderFactory.
+  // Arms a fresh pair of OneShotEvents that chain into
+  // LoadLocalModelFiles once both (1) the EmbeddingGemma component is
+  // installed (OnLocalModelsReady signals component_ready_event_, or
+  // install_dir is already non-empty at arm time) and (2) the
+  // renderer's PassageEmbedderFactory registers via
+  // RegisterPassageEmbedderFactory.
   void MaybeWaitForLocalModelFilesReady();
-  // Counts the "component ready" half of the barrier exactly once per
-  // barrier lifetime. Both MaybeWaitForLocalModelFilesReady's sync
-  // check AND OnLocalModelsReady route through here, so AddObserver's
-  // immediate-notify (which fires OnLocalModelsReady synchronously
-  // when the component was already installed at AddObserver time)
-  // doesn't double-count the same signal.
-  void CountComponentReadyOnce();
+  // Posted on component_ready_event_. Chains through
+  // factory_registered_event_ to LoadLocalModelFiles.
+  void OnComponentReadyForLoad();
   void LoadLocalModelFiles();
   void OnLocalModelFilesLoaded(local_ai::mojom::ModelFilesPtr model_files);
   void OnFactoryInitDone(bool success);
@@ -230,15 +228,16 @@ class BravePassageEmbeddingsService
   std::unique_ptr<BraveBatchPassageEmbedder> batch_embedder_;
   std::vector<PendingLoad> pending_loads_;
 
-  // BarrierClosure that fires LoadLocalModelFiles once both halves
-  // (component-ready + factory-registered) have contributed their
-  // count. Re-armed on each arm cycle by MaybeWaitForLocalModelFilesReady.
-  base::RepeatingClosure model_load_barrier_;
-  // Prevents AddObserver's immediate OnLocalModelsReady notification
-  // from counting install_dir twice for the same barrier — once from
-  // MaybeWaitForLocalModelFilesReady's sync check and once from the
-  // observer callback.
-  bool component_ready_counted_ = false;
+  // Signaled when the EmbeddingGemma component is installed. When
+  // fired, OnComponentReadyForLoad chains to factory_registered_event_.
+  // Re-armed (new OneShotEvent instance) on each arm cycle by
+  // MaybeWaitForLocalModelFilesReady; Signal() is idempotent via the
+  // is_signaled() guard at each call site.
+  std::unique_ptr<base::OneShotEvent> component_ready_event_;
+  // Signaled when the renderer's PassageEmbedderFactory registers.
+  // LoadLocalModelFiles is posted on this event (after component is
+  // also ready) by OnComponentReadyForLoad.
+  std::unique_ptr<base::OneShotEvent> factory_registered_event_;
   bool model_ready_ = false;
 
   base::WeakPtrFactory<BravePassageEmbeddingsService> weak_ptr_factory_{this};

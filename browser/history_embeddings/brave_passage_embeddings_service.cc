@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/barrier_closure.h"
 #include "base/check.h"
 #include "base/containers/flat_map.h"
 #include "base/feature_list.h"
@@ -266,10 +265,12 @@ BravePassageEmbeddingsService::BravePassageEmbeddingsService(
       updater_state_(updater_state) {
   CHECK(base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings));
   CHECK(updater_state_);
-  // Arm the barrier FIRST so CountComponentReadyOnce can route through
-  // it. AddObserver's immediate-notify (when install_dir is already
-  // set) will invoke OnLocalModelsReady synchronously; the flag guard
-  // inside CountComponentReadyOnce keeps that from counting twice.
+  // Arm the events FIRST so AddObserver's immediate-notify (when
+  // install_dir is already set) has a live component_ready_event_ to
+  // signal. OneShotEvent::Signal() is idempotent under the
+  // is_signaled() guard, so the sync install_dir check inside
+  // MaybeWaitForLocalModelFilesReady and the observer callback can
+  // both fire without double-counting.
   MaybeWaitForLocalModelFilesReady();
   updater_state_->AddObserver(this);
 }
@@ -350,14 +351,16 @@ void BravePassageEmbeddingsService::RegisterPassageEmbedderFactory(
   factory_.set_disconnect_handler(
       base::BindOnce(&BravePassageEmbeddingsService::OnFactoryDisconnected,
                      weak_ptr_factory_.GetWeakPtr()));
-  if (model_load_barrier_) {
-    model_load_barrier_.Run();
+  if (factory_registered_event_ && !factory_registered_event_->is_signaled()) {
+    factory_registered_event_->Signal();
   }
 }
 
 void BravePassageEmbeddingsService::OnLocalModelsReady(
     const base::FilePath& install_dir) {
-  CountComponentReadyOnce();
+  if (component_ready_event_ && !component_ready_event_->is_signaled()) {
+    component_ready_event_->Signal();
+  }
 }
 
 void BravePassageEmbeddingsService::OnBackgroundContentsDestroyed(
@@ -400,21 +403,30 @@ void BravePassageEmbeddingsService::CloseBackgroundContents() {
 }
 
 void BravePassageEmbeddingsService::MaybeWaitForLocalModelFilesReady() {
-  component_ready_counted_ = false;
-  model_load_barrier_ = base::BarrierClosure(
-      2, base::BindOnce(&BravePassageEmbeddingsService::LoadLocalModelFiles,
-                        weak_ptr_factory_.GetWeakPtr()));
+  component_ready_event_ = std::make_unique<base::OneShotEvent>();
+  factory_registered_event_ = std::make_unique<base::OneShotEvent>();
+  // Chain: once the component is ready, wait for the factory
+  // registration and then load the model files. OneShotEvent::Post
+  // runs the closure asynchronously whether the event is already
+  // signaled or signals later, matching the pre-existing barrier's
+  // fire-once semantics.
+  component_ready_event_->Post(
+      FROM_HERE,
+      base::BindOnce(&BravePassageEmbeddingsService::OnComponentReadyForLoad,
+                     weak_ptr_factory_.GetWeakPtr()));
   if (!updater_state_->GetInstallDir().empty()) {
-    CountComponentReadyOnce();
+    component_ready_event_->Signal();
   }
 }
 
-void BravePassageEmbeddingsService::CountComponentReadyOnce() {
-  if (component_ready_counted_ || !model_load_barrier_) {
+void BravePassageEmbeddingsService::OnComponentReadyForLoad() {
+  if (!factory_registered_event_) {
     return;
   }
-  component_ready_counted_ = true;
-  model_load_barrier_.Run();
+  factory_registered_event_->Post(
+      FROM_HERE,
+      base::BindOnce(&BravePassageEmbeddingsService::LoadLocalModelFiles,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void BravePassageEmbeddingsService::LoadLocalModelFiles() {
