@@ -6,6 +6,7 @@
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 #include <memory>
 #include <optional>
@@ -60,19 +61,31 @@ namespace ai_chat {
 
 namespace {
 
-void OnImageDecoded(
-    base::OnceCallback<void(std::optional<std::vector<uint8_t>>)> callback,
-    const SkBitmap& decoded_bitmap) {
-  if (decoded_bitmap.drawsNothing()) {
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
+void DecodeAndScaleImage(
+    const std::vector<uint8_t>& file_data,
+    base::OnceCallback<void(std::optional<std::vector<uint8_t>>)> callback) {
+  NSData* ns_data = [NSData dataWithBytes:file_data.data()
+                                   length:file_data.size()];
   auto encode_image = base::BindOnce(
-      [](const SkBitmap& decoded_bitmap) {
-        return gfx::PNGCodec::EncodeBGRASkBitmap(
-            ScaleDownBitmap(decoded_bitmap), false);
+      [](NSData* data) -> std::optional<std::vector<uint8_t>> {
+        CGSize target_size = CGSizeMake(1024, 768);
+        UIImage* image = [[UIImage alloc] initWithData:data];
+        if (image.size.width > target_size.width &&
+            image.size.height > target_size.height) {
+          image = [image imageByPreparingThumbnailOfSize:target_size];
+        }
+        if (!image) {
+          return std::nullopt;
+        }
+        NSData* png_data = UIImagePNGRepresentation(image);
+        if (!png_data) {
+          return std::nullopt;
+        }
+        auto png_span = base::apple::NSDataToSpan(png_data);
+        return std::vector<uint8_t>(png_span.begin(), png_span.end());
       },
-      decoded_bitmap);
+      ns_data);
+
   base::ThreadPool::PostTaskAndReplyWithResult(FROM_HERE, {base::MayBlock()},
                                                std::move(encode_image),
                                                std::move(callback));
@@ -157,15 +170,8 @@ void AIChatUIPageHandler::ProcessImageFile(
     const std::vector<uint8_t>& file_data,
     const std::string& filename,
     ProcessImageFileCallback callback) {
-  NSData* ns_data = [NSData dataWithBytes:file_data.data()
-                                   length:file_data.size()];
-  const std::vector<SkBitmap> bitmaps = skia::ImageDataToSkBitmaps(ns_data);
-  if (bitmaps.empty()) {
-    std::move(callback).Run(nullptr);
-    return;
-  }
-  const SkBitmap decoded_bitmap = bitmaps.front();
-  OnImageDecoded(
+  DecodeAndScaleImage(
+      file_data,
       base::BindOnce(
           [](const std::string& filename, ProcessImageFileCallback callback,
              std::optional<std::vector<uint8_t>> processed_data) {
@@ -178,8 +184,7 @@ void AIChatUIPageHandler::ProcessImageFile(
                 ai_chat::mojom::UploadedFileType::kImage, std::nullopt);
             std::move(callback).Run(std::move(uploaded_file));
           },
-          filename, std::move(callback)),
-      decoded_bitmap);
+          filename, std::move(callback)));
 }
 
 void AIChatUIPageHandler::ProcessPdfFile(const std::vector<uint8_t>& file_data,
