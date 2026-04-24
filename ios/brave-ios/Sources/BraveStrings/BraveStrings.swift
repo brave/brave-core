@@ -9544,6 +9544,15 @@ extension Strings {
       "Accessibility text for an icon button which will go back to the previous page in QuickView mode."
   )
 
+  public static let quickViewForwardAccessibilityLabel = NSLocalizedString(
+    "quickview.forward.accessibility.label",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Next Page",
+    comment:
+      "Accessibility text for an icon button which will go forward to the next page in QuickView mode."
+  )
+
   public static let quickViewShareAccessibilityLabel = NSLocalizedString(
     "quickview.share.accessibility.label",
     tableName: "BraveShared",

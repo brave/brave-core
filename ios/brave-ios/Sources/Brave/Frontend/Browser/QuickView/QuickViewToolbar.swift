@@ -17,6 +17,7 @@ enum QuickViewActionButton {
   case refresh
   case close
   case back
+  case forward
   case share
   case openTab
 }
@@ -27,6 +28,9 @@ class QuickViewToolbarModel {
   var secondaryTopButton: QuickViewActionButton?
   var isShieldDisabled: Bool = false
   var isBackDisabled: Bool = true
+  var isForwardDisabled: Bool = true
+  var isLoading: Bool = true
+  var loadingProgress: Double = 0.2
   var onActionButton: ((QuickViewActionButton) -> Void)?
 
   init(
@@ -47,7 +51,7 @@ struct QuickViewToolbarView: View {
     VStack(spacing: 0) {
       topRow
       bottomRow
-        .padding(.top, 16)
+        .padding(.top, 12)
     }
     .padding(16)
   }
@@ -127,14 +131,30 @@ struct QuickViewToolbarView: View {
   }
 
   private var topRow: some View {
-    HStack(spacing: 8) {
+    HStack(alignment: .top, spacing: 8) {
       shieldButton
 
-      addressView
+      VStack(spacing: 12) {
+        addressView
+        progressBar
+          .padding(.horizontal, 16)
+          .hidden(isHidden: !viewModel.isLoading)
+      }
 
       topRightButtonsView
     }
     .labelStyle(QuickViewToolbarLabelTopIconStyle())
+  }
+
+  private var progressBar: some View {
+    GeometryReader { geo in
+      Color(braveSystemName: .iconInteractive)
+        .frame(width: geo.size.width * viewModel.loadingProgress)
+    }
+    .frame(height: 2)
+    .background(Color(braveSystemName: .containerHighlight))
+    .cornerRadius(1)
+    .animation(.easeInOut(duration: 0.2), value: viewModel.loadingProgress)
   }
 
   private var backButton: some View {
@@ -144,6 +164,14 @@ struct QuickViewToolbarView: View {
       Label(Strings.quickViewBackAccessibilityLabel, braveSystemImage: "leo.browser.back")
     }
     .disabled(viewModel.isBackDisabled)
+  }
+
+  private var forwardButton: some View {
+    Button {
+      viewModel.onActionButton?(.forward)
+    } label: {
+      Label(Strings.quickViewForwardAccessibilityLabel, braveSystemImage: "leo.browser.forward")
+    }
   }
 
   private var shareButton: some View {
@@ -158,7 +186,7 @@ struct QuickViewToolbarView: View {
     Button {
       viewModel.onActionButton?(.openTab)
     } label: {
-      Label(Strings.quickViewOpenTabAccessibilityLabel, braveSystemImage: "leo.add.tab")
+      Label(Strings.quickViewOpenTabAccessibilityLabel, braveSystemImage: "leo.open.in-tab")
     }
   }
 
@@ -176,7 +204,11 @@ struct QuickViewToolbarView: View {
 
       Spacer()
 
-      shareButton
+      if viewModel.isForwardDisabled {
+        shareButton
+      } else {
+        forwardButton
+      }
 
       Spacer()
 
