@@ -51,7 +51,7 @@ inline constexpr char kForgetFirstPartyHistogramName[] =
 inline constexpr char kUpgradeHTTPSGlobalHistogramName[] =
     "Brave.Shields.UpgradeHTTPSGlobal";
 inline constexpr char kUpgradeHTTPSPerSiteHistogramName[] =
-    "Brave.Shields.UpgradeHTTPSPerSite";
+    "Brave.Shields.UpgradeHTTPSPerSite.2";
 // Note: append-only enumeration! Never remove any existing values, as this enum
 // is used to bucket a UMA histogram, and removing values breaks that.
 enum ShieldsIconUsage {
