@@ -2333,7 +2333,6 @@ public class BytecodeTest {
                         Runnable.class,
                         Supplier.class,
                         Supplier.class,
-                        Supplier.class,
                         MonotonicObservableSupplier.class,
                         GlicToolbarButtonController.GlicButtonDelegate.class,
                         Supplier.class,
