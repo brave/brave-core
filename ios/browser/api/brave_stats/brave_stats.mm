@@ -5,6 +5,7 @@
 
 #include "brave/ios/browser/api/brave_stats/brave_stats.h"
 
+#include "base/check.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/time/time.h"
@@ -61,7 +62,18 @@ NSString* const kWebcompatReportEndpoint =
     return nil;
   }
   // Daily usage pings on iOS use UTC for the date boundary.
-  return brave_stats::GetYMDAsDate(ymd, /*use_utc=*/true).ToNSDate();
+  std::optional<base::Time> time =
+      brave_stats::GetYMDAsDate(ymd, /*use_utc=*/true);
+  if (!time) {
+    // If we can't parse the last daily usage ping date, reset it to today to
+    // avoid double reporting of previous daily usage pings data.
+    const std::string ymd_today =
+        brave_stats::GetDateAsYMD(base::Time::Now(), /*use_utc=*/true);
+    _localPrefs->SetString(kLastCheckYMD, ymd_today);
+    time = brave_stats::GetYMDAsDate(ymd_today, /*use_utc=*/true);
+    CHECK(time);
+  }
+  return time->ToNSDate();
 }
 
 - (void)setLastPingDate:(NSDate*)date {

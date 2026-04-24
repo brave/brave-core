@@ -88,6 +88,7 @@ source_set("unit_tests") {
 
   sources = [
     "//brave/browser/brave_stats/brave_stats_updater_unittest.cc",
+    "//brave/browser/brave_stats/brave_stats_updater_util_unittest.cc",
     "//brave/browser/brave_stats/first_run_util_unittest.cc",
   ]
 
