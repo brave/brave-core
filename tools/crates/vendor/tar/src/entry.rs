@@ -74,7 +74,7 @@ impl<'a, R: Read> Entry<'a, R> {
     ///
     /// It is recommended to use this method instead of inspecting the `header`
     /// directly to ensure that various archive formats are handled correctly.
-    pub fn path(&self) -> io::Result<Cow<Path>> {
+    pub fn path(&self) -> io::Result<Cow<'_, Path>> {
         self.fields.path()
     }
 
@@ -84,7 +84,7 @@ impl<'a, R: Read> Entry<'a, R> {
     /// separators, and it will not always return the same value as
     /// `self.header().path_bytes()` as some archive formats have support for
     /// longer path names described in separate entries.
-    pub fn path_bytes(&self) -> Cow<[u8]> {
+    pub fn path_bytes(&self) -> Cow<'_, [u8]> {
         self.fields.path_bytes()
     }
 
@@ -101,7 +101,7 @@ impl<'a, R: Read> Entry<'a, R> {
     ///
     /// It is recommended to use this method instead of inspecting the `header`
     /// directly to ensure that various archive formats are handled correctly.
-    pub fn link_name(&self) -> io::Result<Option<Cow<Path>>> {
+    pub fn link_name(&self) -> io::Result<Option<Cow<'_, Path>>> {
         self.fields.link_name()
     }
 
@@ -110,7 +110,7 @@ impl<'a, R: Read> Entry<'a, R> {
     /// Note that this will not always return the same value as
     /// `self.header().link_name_bytes()` as some archive formats have support for
     /// longer path names described in separate entries.
-    pub fn link_name_bytes(&self) -> Option<Cow<[u8]>> {
+    pub fn link_name_bytes(&self) -> Option<Cow<'_, [u8]>> {
         self.fields.link_name_bytes()
     }
 
@@ -132,7 +132,7 @@ impl<'a, R: Read> Entry<'a, R> {
     ///
     /// Also note that this function will read the entire entry if the entry
     /// itself is a list of extensions.
-    pub fn pax_extensions(&mut self) -> io::Result<Option<PaxExtensions>> {
+    pub fn pax_extensions(&mut self) -> io::Result<Option<PaxExtensions<'_>>> {
         self.fields.pax_extensions()
     }
 
@@ -212,8 +212,9 @@ impl<'a, R: Read> Entry<'a, R> {
     /// also be propagated to the path `dst`. Any existing file at the location
     /// `dst` will be overwritten.
     ///
-    /// This function carefully avoids writing outside of `dst`. If the file has
-    /// a '..' in its path, this function will skip it and return false.
+    /// # Security
+    ///
+    /// See [`Archive::unpack`].
     ///
     /// # Examples
     ///
@@ -300,11 +301,11 @@ impl<'a> EntryFields<'a> {
         self.read_to_end(&mut v).map(|_| v)
     }
 
-    fn path(&self) -> io::Result<Cow<Path>> {
+    fn path(&self) -> io::Result<Cow<'_, Path>> {
         bytes2path(self.path_bytes())
     }
 
-    fn path_bytes(&self) -> Cow<[u8]> {
+    fn path_bytes(&self) -> Cow<'_, [u8]> {
         match self.long_pathname {
             Some(ref bytes) => {
                 if let Some(&0) = bytes.last() {
@@ -333,14 +334,14 @@ impl<'a> EntryFields<'a> {
         String::from_utf8_lossy(&self.path_bytes()).to_string()
     }
 
-    fn link_name(&self) -> io::Result<Option<Cow<Path>>> {
+    fn link_name(&self) -> io::Result<Option<Cow<'_, Path>>> {
         match self.link_name_bytes() {
             Some(bytes) => bytes2path(bytes).map(Some),
             None => Ok(None),
         }
     }
 
-    fn link_name_bytes(&self) -> Option<Cow<[u8]>> {
+    fn link_name_bytes(&self) -> Option<Cow<'_, [u8]>> {
         match self.long_linkname {
             Some(ref bytes) => {
                 if let Some(&0) = bytes.last() {
@@ -364,7 +365,7 @@ impl<'a> EntryFields<'a> {
         }
     }
 
-    fn pax_extensions(&mut self) -> io::Result<Option<PaxExtensions>> {
+    fn pax_extensions(&mut self) -> io::Result<Option<PaxExtensions<'_>>> {
         if self.pax_extensions.is_none() {
             if !self.header.entry_type().is_pax_global_extensions()
                 && !self.header.entry_type().is_pax_local_extensions()
@@ -430,10 +431,10 @@ impl<'a> EntryFields<'a> {
             None => return Ok(false),
         };
 
-        self.ensure_dir_created(&dst, parent)
+        self.ensure_dir_created(dst, parent)
             .map_err(|e| TarError::new(format!("failed to create `{}`", parent.display()), e))?;
 
-        let canon_target = self.validate_inside_dst(&dst, parent)?;
+        let canon_target = self.validate_inside_dst(dst, parent)?;
 
         self.unpack(Some(&canon_target), &file_dst)
             .map_err(|e| TarError::new(format!("failed to unpack `{}`", file_dst.display()), e))?;
@@ -446,7 +447,7 @@ impl<'a> EntryFields<'a> {
         // If the directory already exists just let it slide
         fs::create_dir(dst).or_else(|err| {
             if err.kind() == ErrorKind::AlreadyExists {
-                let prev = fs::metadata(dst);
+                let prev = fs::symlink_metadata(dst);
                 if prev.map(|m| m.is_dir()).unwrap_or(false) {
                     return Ok(());
                 }
@@ -537,7 +538,7 @@ impl<'a> EntryFields<'a> {
                     // use canonicalization to ensure this guarantee. For hard
                     // links though they're canonicalized to their existing path
                     // so we need to validate at this time.
-                    Some(ref p) => {
+                    Some(p) => {
                         let link_src = p.join(src);
                         self.validate_inside_dst(p, &link_src)?;
                         link_src

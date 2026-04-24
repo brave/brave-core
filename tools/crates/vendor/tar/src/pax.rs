@@ -89,7 +89,7 @@ impl<'entry> Iterator for PaxExtensions<'entry> {
 
     fn next(&mut self) -> Option<io::Result<PaxExtension<'entry>>> {
         let line = match self.data.next() {
-            Some(line) if line.is_empty() => return None,
+            Some([]) => return None,
             Some(line) => line,
             None => return None,
         };
