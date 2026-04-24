@@ -724,16 +724,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                                 R.string.disable_price_tracking_menu_item,
                                 0)));
 
-        // AI / AI PDF
-        if (ChromeFeatureList.isEnabled(
-                ChromeFeatureList.ADAPTIVE_BUTTON_IN_TOP_TOOLBAR_PAGE_SUMMARY)) {
-            modelList.add(
-                    new MVCListAdapter.ListItem(
-                            AppMenuHandler.AppMenuItemType.STANDARD,
-                            buildModelForStandardMenuItem(
-                                    R.id.ai_web_menu_id, R.string.menu_summarize_with_ai, 0)));
-        }
-
         // Find in page
         modelList.add(
                 new MVCListAdapter.ListItem(
