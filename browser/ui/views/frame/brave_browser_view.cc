@@ -619,8 +619,11 @@ void BraveBrowserView::ShowUpdateChromeDialog() {
 }
 
 gfx::Rect BraveBrowserView::GetBoundingBoxInScreenForMouseOverHandling() const {
-  CHECK(contents_background_view_);
-  return contents_background_view_->GetBoundsInScreen();
+  gfx::Rect browser_bounds = GetBoundsInScreen();
+  gfx::Rect top_container_bounds = top_container_->GetBoundsInScreen();
+  int top = top_container_bounds.bottom();
+  return gfx::Rect(browser_bounds.x(), top, browser_bounds.width(),
+                   browser_bounds.bottom() - top);
 }
 
 bool BraveBrowserView::HasSelectedURL() const {

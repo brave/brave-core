@@ -563,6 +563,43 @@ INSTANTIATE_TEST_SUITE_P(
     BraveBrowserViewWithRoundedCornersTest,
     testing::Bool());
 
+IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
+                       BoundingBoxStableWithSidePanelTest) {
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* brave_view = brave_browser_view();
+
+  // Get bounds with panel closed.
+  auto bounds_panel_closed =
+      brave_view->GetBoundingBoxInScreenForMouseOverHandling();
+
+  // Bounds should span the full browser width.
+  EXPECT_EQ(browser_view()->width(), bounds_panel_closed.width());
+
+  // Bounds should start at the bottom of the top container.
+  EXPECT_EQ(browser_view()->top_container()->GetBoundsInScreen().bottom(),
+            bounds_panel_closed.y());
+
+  // Bounds should extend to the bottom of the browser window.
+  EXPECT_EQ(brave_view->GetBoundsInScreen().bottom(),
+            bounds_panel_closed.bottom());
+
+  // Open the side panel.
+  panel_ui->Toggle();
+  RunScheduledLayouts();
+
+  // Bounds should be unchanged after opening the side panel.
+  EXPECT_EQ(bounds_panel_closed,
+            brave_view->GetBoundingBoxInScreenForMouseOverHandling());
+
+  // Close the side panel.
+  panel_ui->Toggle();
+  RunScheduledLayouts();
+
+  // Bounds should be unchanged after closing the side panel.
+  EXPECT_EQ(bounds_panel_closed,
+            brave_view->GetBoundingBoxInScreenForMouseOverHandling());
+}
+
 // MacOS does not need views window scrim. We use sheet to show window modals
 // (-[NSWindow beginSheet:]), which natively draws a scrim since macOS 11.
 // Tests that a scrim is still disabled when a window modal dialog is active.
