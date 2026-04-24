@@ -27,6 +27,7 @@ std::optional<WalletInfo> CreateWalletFromRecoverySeed(
 
   std::optional<crypto::KeyPairInfo> key_pair =
       crypto::GenerateSignKeyPairFromSeed(*recovery_seed);
+  crypto::SecureZero(*recovery_seed);
   if (!key_pair || !key_pair->IsValid()) {
     return std::nullopt;
   }
@@ -35,6 +36,7 @@ std::optional<WalletInfo> CreateWalletFromRecoverySeed(
       .payment_id = payment_id,
       .public_key_base64 = base::Base64Encode(key_pair->public_key),
       .secret_key_base64 = base::Base64Encode(key_pair->secret_key)};
+  crypto::SecureZero(key_pair->secret_key);
 
   if (!wallet.IsValid()) {
     return std::nullopt;
