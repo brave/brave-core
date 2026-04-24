@@ -8,9 +8,11 @@
 
 #include <stdint.h>
 
+#include <memory>
 #include <optional>
 #include <set>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/sequence_checker.h"
