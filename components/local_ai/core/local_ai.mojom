@@ -41,3 +41,38 @@ interface LocalAIService {
   RegisterPassageEmbedderFactory(
       pending_remote<PassageEmbedderFactory> factory);
 };
+
+// ---------- On-device speech recognition (Parakeet-CTC-110M) ----------
+
+// Small companion files the WASM worker needs up front, plus the
+// parsed GGUF header. The rest of the GGUF (tensor-data blob, ~417 MB)
+// follows in chunks via SpeechRecognitionFactory.LoadWeightChunk().
+struct SpeechRecognitionInitFiles {
+  mojo_base.mojom.BigBuffer gguf_header;
+  mojo_base.mojom.BigBuffer config;
+  mojo_base.mojom.BigBuffer tokenizer;
+  mojo_base.mojom.BigBuffer mel_filters;
+};
+
+// Browser-implemented service. Bound by the WASM worker renderer
+// to register a SpeechRecognitionFactory that the browser drives.
+interface OnDeviceSpeechRecognitionService {
+  // Called by the WASM worker renderer once the WASM module is
+  // instantiated.
+  RegisterSpeechRecognitionFactory(
+      pending_remote<SpeechRecognitionFactory> factory);
+};
+
+// Renderer (WASM worker)-implemented factory driven by the browser
+// to load the Parakeet model in chunks.
+interface SpeechRecognitionFactory {
+  // Initialize the WASM transcriber with the small companion files
+  // plus the GGUF header.
+  Init(SpeechRecognitionInitFiles files) => (bool success);
+
+  // Stream one ~8 MB chunk of the GGUF tensor-data blob.
+  LoadWeightChunk(mojo_base.mojom.BigBuffer chunk) => (bool success);
+
+  // Build the model from all accumulated chunks.
+  Finalize() => (bool success);
+};
