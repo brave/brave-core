@@ -135,13 +135,24 @@ class BravePassageEmbeddingsServiceTest : public testing::Test {
       local_ai::BackgroundWebContents::Delegate* delegate,
       BravePassageEmbeddingsService::BackgroundWebContentsCreatedCallback
           callback) {
+    ++web_contents_create_count_;
     auto web_contents = std::make_unique<FakeBackgroundWebContents>(
         delegate,
         base::BindOnce(
             [](raw_ptr<FakeBackgroundWebContents>* ref) { *ref = nullptr; },
             &last_created_web_contents_));
     last_created_web_contents_ = web_contents.get();
+    if (defer_create_callback_) {
+      pending_create_callback_ =
+          base::BindOnce(std::move(callback), std::move(web_contents));
+      return;
+    }
     std::move(callback).Run(std::move(web_contents));
+  }
+
+  void RunDeferredCreate() {
+    ASSERT_TRUE(pending_create_callback_);
+    std::move(pending_create_callback_).Run();
   }
 
   void RegisterFactory() {
@@ -198,6 +209,9 @@ class BravePassageEmbeddingsServiceTest : public testing::Test {
   FakeRendererEmbedder fake_worker_;
   FakePassageEmbedderFactory fake_factory_{&fake_worker_};
   raw_ptr<FakeBackgroundWebContents> last_created_web_contents_ = nullptr;
+  size_t web_contents_create_count_ = 0;
+  bool defer_create_callback_ = false;
+  base::OnceClosure pending_create_callback_;
   base::ScopedTempDir temp_dir_;
 };
 
@@ -265,6 +279,27 @@ TEST_F(BravePassageEmbeddingsServiceTest, BackgroundContentsDestroyedCloses) {
   // A new load should recreate background contents.
   auto load2 = IssueLoad();
   EXPECT_TRUE(last_created_web_contents_);
+}
+
+TEST_F(BravePassageEmbeddingsServiceTest,
+       ConcurrentBindOnlyCreatesOneBackgroundContents) {
+  // While a BackgroundWebContents creation is in flight, a second
+  // BindPassageEmbedder call must not spawn a duplicate factory run.
+  // Defer the first creation callback so the in-flight flag is
+  // exercised before background_web_contents_ is set.
+  defer_create_callback_ = true;
+  auto load1 = IssueLoad();
+  EXPECT_EQ(1u, web_contents_create_count_);
+
+  auto load2 = IssueLoad();
+  // Second Bind sees background_web_contents_creating_ true and
+  // short-circuits — no new factory invocation.
+  EXPECT_EQ(1u, web_contents_create_count_);
+
+  // Letting the deferred callback run resolves the contents and
+  // clears the in-flight flag; no further creates fire.
+  RunDeferredCreate();
+  EXPECT_EQ(1u, web_contents_create_count_);
 }
 
 TEST_F(BravePassageEmbeddingsServiceTest, BindRegistryRoutesToService) {

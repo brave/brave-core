@@ -368,9 +368,10 @@ void BravePassageEmbeddingsService::OnBackgroundContentsDestroyed(
 }
 
 void BravePassageEmbeddingsService::MaybeCreateBackgroundContents() {
-  if (background_web_contents_) {
+  if (background_web_contents_ || background_web_contents_creating_) {
     return;
   }
+  background_web_contents_creating_ = true;
   background_web_contents_factory_.Run(
       this, base::BindOnce(
                 &BravePassageEmbeddingsService::OnBackgroundContentsCreated,
@@ -379,6 +380,7 @@ void BravePassageEmbeddingsService::MaybeCreateBackgroundContents() {
 
 void BravePassageEmbeddingsService::OnBackgroundContentsCreated(
     std::unique_ptr<local_ai::BackgroundWebContents> contents) {
+  background_web_contents_creating_ = false;
   if (background_web_contents_ || !contents) {
     return;
   }
@@ -394,6 +396,7 @@ void BravePassageEmbeddingsService::CloseBackgroundContents() {
            << ")";
   ResetEmbedderState();
   background_web_contents_.reset();
+  background_web_contents_creating_ = false;
 }
 
 void BravePassageEmbeddingsService::MaybeWaitForLocalModelFilesReady() {
