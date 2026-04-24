@@ -217,6 +217,10 @@ class BravePassageEmbeddingsService
   void OnBatchEmbedderDisconnected();
 
   std::unique_ptr<local_ai::BackgroundWebContents> background_web_contents_;
+  // Set while the factory callback is in flight so successive
+  // MaybeCreateBackgroundContents calls don't kick off duplicate
+  // creations before OnBackgroundContentsCreated runs.
+  bool background_web_contents_creating_ = false;
   BackgroundWebContentsFactory background_web_contents_factory_;
   raw_ptr<local_ai::LocalModelsUpdaterState> updater_state_;
 
