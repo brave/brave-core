@@ -1612,6 +1612,16 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 && BottomToolbarVariationManager.isTabSwitcherOnBottomControls();
     }
 
+    // Return null when Brave's tab switcher lives on the bottom toolbar so that
+    // ToolbarPhone.updateButtonVisibility() skips setHasSpaceToShow(true), which
+    // would otherwise override the GONE state set in onBottomControlsVisibilityChanged.
+    @Override
+    @Nullable
+    ToggleTabStackButtonCoordinator getTabSwitcherButtonCoordinator() {
+        if (isTabSwitcherOnBottomControls()) return null;
+        return super.getTabSwitcherButtonCoordinator();
+    }
+
     private boolean isMenuButtonOnBottomControls() {
         return mIsBottomControlsVisible
                 && BottomToolbarVariationManager.isMenuButtonOnBottomControls();
