@@ -66,6 +66,8 @@ export class Config {
   notary_password: string | undefined
   channel: string
   isBraveOriginBranded: boolean | undefined
+  // Parent cache directory for all internal caches (git, siso, vpython).
+  readonly cacheDir: string | undefined
   gitCachePath: string | undefined
   rbeService: string
   rbeTlsClientAuthCert: string | undefined
@@ -198,8 +200,11 @@ export class Config {
     this.isBraveOriginBranded = envConfig.getBoolean([
       'is_brave_origin_branded',
     ])
+    this.cacheDir = envConfig.getPath(['cache_dir'])
     this.gitCachePath =
-      envConfig.getPath(['git_cache_path']) || process.env.GIT_CACHE_PATH
+      envConfig.getPath(['git_cache_path'])
+      || this.resolveCacheDir('git')
+      || process.env.GIT_CACHE_PATH
     this.rbeService = envConfig.getString(['rbe_service'], '')
     this.rbeTlsClientAuthCert = envConfig.getPath(['rbe_tls_client_auth_cert'])
     this.rbeTlsClientAuthKey = envConfig.getPath(['rbe_tls_client_auth_key'])
@@ -222,7 +227,8 @@ export class Config {
     this.extraGnGenOpts = envConfig.getString(['brave_extra_gn_gen_opts'], '')
     this.extraNinjaOpts = []
     this.sisoJobsLimit = undefined
-    this.sisoCacheDir = envConfig.getPath(['siso_cache_dir'])
+    this.sisoCacheDir =
+      envConfig.getPath(['siso_cache_dir']) || this.resolveCacheDir('siso')
     this.braveAndroidSafeBrowsingApiKey = envConfig.getString([
       'brave_safebrowsing_api_key',
     ])
@@ -280,6 +286,10 @@ export class Config {
           }
         : {}),
       ...envConfig.getMergedObject(['projects', 'chrome', 'custom_vars']),
+    }
+
+    if (this.cacheDir && !fs.existsSync(this.cacheDir)) {
+      fs.mkdirSync(this.cacheDir, { recursive: true })
     }
   }
 
@@ -438,6 +448,13 @@ export class Config {
     }
 
     return defaultValue
+  }
+
+  resolveCacheDir(name: string): string | undefined {
+    if (!this.cacheDir) {
+      return undefined
+    }
+    return path.join(this.cacheDir, name)
   }
 
   updateInternal(options) {
@@ -750,6 +767,10 @@ export class Config {
 
     if (this.channel) {
       env.BRAVE_CHANNEL = this.channel
+    }
+
+    if (this.cacheDir) {
+      env.VPYTHON_VIRTUALENV_ROOT = this.resolveCacheDir('vpython')
     }
 
     if (!this.useBraveHermeticToolchain) {
