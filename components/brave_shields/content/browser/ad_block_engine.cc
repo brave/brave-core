@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/check_is_test.h"
 #include "base/containers/to_vector.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
