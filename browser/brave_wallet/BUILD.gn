@@ -149,21 +149,23 @@ source_set("tab_helper") {
   }
 }
 
-source_set("brave_wallet_hid_chooser") {
-  sources = [
-    "brave_wallet_hid_chooser.cc",
-    "brave_wallet_hid_chooser.h",
-  ]
-  deps = [
-    "//brave/components/constants",
-    "//chrome/browser/hid",
-    "//chrome/browser/ui/hid",
-    "//services/device/public/cpp/hid",
-  ]
-  public_deps = [
-    "//components/permissions",
-    "//content/public/browser",
-  ]
+if (!is_android) {
+  source_set("brave_wallet_hid_chooser") {
+    sources = [
+      "brave_wallet_hid_chooser.cc",
+      "brave_wallet_hid_chooser.h",
+    ]
+    deps = [
+      "//brave/components/constants",
+      "//chrome/browser/hid",
+      "//chrome/browser/ui/hid",
+      "//services/device/public/cpp/hid",
+    ]
+    public_deps = [
+      "//components/permissions",
+      "//content/public/browser",
+    ]
+  }
 }
 
 source_set("unit_tests") {
