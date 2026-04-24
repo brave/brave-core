@@ -155,4 +155,7 @@ void BraveBrowserFrameViewWin::LayoutCaptionButtons() {
             ? 0
             : width() - caption_button_container_->width());
   }
+
+  caption_button_container_->SetY(caption_button_container_->y() +
+                                  tabs::GetHorizontalTabControlOverlap());
 }

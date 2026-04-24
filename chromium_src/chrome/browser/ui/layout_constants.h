@@ -24,15 +24,31 @@ namespace tabs {
 
 // The visual height of tabs in horizontal tabs mode. Note that the height of
 // the view may be greater than the visual height of the tab shape. See also
-// `kHorizontalTabVerticalSpacing`.
+// `GetHorizontalTabVerticalSpacing()`.
 int GetHorizontalTabHeight();
+
+// Spacing between the top and bottom of tabs and the tab strip bounds. Use
+// this instead of `kHorizontalTabVerticalSpacing` for layout.
+//
+// Returns `compact_horizontal_tabs_layout::kTabVerticalSpacing` (2) when the
+// `#brave-compact-horizontal-tabs` flag is enabled and touch UI is off.
+// Returns `compact_horizontal_tabs_layout::kTabVerticalSpacingDefault` (which
+// equals `kHorizontalTabVerticalSpacing`, 4) otherwise (flag disabled or touch
+// UI active).
+int GetHorizontalTabVerticalSpacing();
+
+// Control-only overlap compensation in horizontal tabs mode. This is separate
+// from `LayoutConstant::kTabstripToolbarOverlap` so tab shape overlap can be
+// tuned without unintentionally shifting navigation/caption controls.
+int GetHorizontalTabControlOverlap();
 
 // The amount of space before the first tab view.
 inline constexpr int kHorizontalTabStripLeftMargin = 3;
 
-// The amount of visual spacing between the top and bottom of tabs and the
-// bounds of the tab strip region. The portion of this space below tabs will be
-// occupied by tab group underlines.
+// Default vertical spacing when not using compact horizontal tabs (and for
+// touch UI). `GetHorizontalTabVerticalSpacing()` may return a smaller value
+// when
+// `#brave-compact-horizontal-tabs` is enabled.
 inline constexpr int kHorizontalTabVerticalSpacing = 4;
 
 inline constexpr int kHorizontalSplitViewTabVerticalSpacing = 6;

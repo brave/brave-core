@@ -56,6 +56,9 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
       new_tab_button_->SetX(
           tab_strip_->bounds().right() +
           GetLayoutConstant(LayoutConstant::kTabStripPadding));
+      // Apply explicit vertical offset for tabstrip controls so their position
+      // is decoupled from tab shape overlap tuning.
+      new_tab_button_->SetY(tabs::GetHorizontalTabControlOverlap());
     }
     return;
   }
