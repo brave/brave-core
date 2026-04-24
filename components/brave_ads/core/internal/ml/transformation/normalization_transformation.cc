@@ -12,8 +12,7 @@
 
 namespace brave_ads::ml {
 
-NormalizationTransformation::NormalizationTransformation()
-    : Transformation(TransformationType::kNormalization) {}
+NormalizationTransformation::NormalizationTransformation() = default;
 
 std::unique_ptr<Data> NormalizationTransformation::Apply(
     const std::unique_ptr<Data>& input_data) const {

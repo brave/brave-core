@@ -681,7 +681,6 @@ static_library("internal") {
     "ml/transformation/normalization_transformation.h",
     "ml/transformation/transformation.cc",
     "ml/transformation/transformation.h",
-    "ml/transformation/transformation_types.h",
     "prefs/obsolete_pref_util.cc",
     "prefs/pref_path_util.cc",
     "prefs/pref_path_util.h",
