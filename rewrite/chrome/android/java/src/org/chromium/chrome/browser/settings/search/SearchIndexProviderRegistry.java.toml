@@ -24,9 +24,9 @@ re_pattern = '\n\s+org\.chromium\.chrome\.browser\.privacy\.settings\.PrivacySet
 replace = ''
 
 [[substitution]]
-description = 'Add Brave settings search index providers after TracingSettings'
-re_pattern = '(org\.chromium\.chrome\.browser\.tracing\.settings\.TracingSettings\n\s+\.SEARCH_INDEX_DATA_PROVIDER,)'
-replace = '''\1
+description = 'Append Brave settings search index providers at the end of ALL_PROVIDERS'
+re_pattern = '(public static final List<SearchIndexProvider> ALL_PROVIDERS =\s+List\.of\([\s\S]*\.SEARCH_INDEX_DATA_PROVIDER)\);'
+replace = '''\1,
                     org.chromium.components.browser_ui.site_settings.BraveSiteSettingsPreferencesBase
                             .SEARCH_INDEX_DATA_PROVIDER,
                     org.chromium.chrome.browser.password_manager.settings.PasswordSettings
@@ -76,4 +76,4 @@ replace = '''\1
                     org.chromium.chrome.browser.settings.AppearancePreferences
                             .SEARCH_INDEX_DATA_PROVIDER,
                     org.chromium.chrome.browser.language.settings.BraveLanguageSettings
-                            .SEARCH_INDEX_DATA_PROVIDER,'''
+                            .SEARCH_INDEX_DATA_PROVIDER);'''
