@@ -270,15 +270,15 @@ test('Bridge not ready', () => {
     kTrezorBridgeUrl,
     new TrezorBridgeTransport(kTrezorBridgeUrl),
   )
-  // Mock createBridge to add a DOM element (so hasBridgeCreated returns true)
-  // without using a real iframe. Real iframes in jsdom can fire onload
-  // asynchronously, causing the pending createBridge promise to resolve during
-  // a later test and interfere with its execution.
-  const frameId = (hardwareTransport as any).frameId
+  // Use a flag instead of a real DOM element to signal that bridge creation
+  // has started. A DOM element would leak across tests and cause
+  // hasBridgeCreated() to return true for later transports sharing the same
+  // frameId (possible when crypto.randomUUID is mocked to a fixed value by
+  // another test file).
+  let bridgeCreationStarted = false
+  ;(hardwareTransport as any).hasBridgeCreated = () => bridgeCreationStarted
   hardwareTransport.createBridge = () => {
-    const el = document.createElement('div')
-    el.id = frameId
-    document.body.appendChild(el)
+    bridgeCreationStarted = true
     return new Promise(() => {}) // never resolves
   }
   hardwareKeyring.sendTrezorCommand = (
