@@ -86,7 +86,8 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             @Nullable PageZoomIndicatorCoordinator pageZoomIndicatorCoordinator,
             FuseboxCoordinator fuseboxCoordinator,
             LocationBarEmbedder locationBarEmbedder,
-            @Nullable OmniboxChipManager omniboxChipManager) {
+            @Nullable OmniboxChipManager omniboxChipManager,
+            @Nullable LocationBarFocusScrimHandler scrimHandler) {
         super(
                 context,
                 locationBarLayout,
@@ -109,7 +110,8 @@ public class BraveLocationBarMediator extends LocationBarMediator {
                 pageZoomIndicatorCoordinator,
                 fuseboxCoordinator,
                 locationBarEmbedder,
-                omniboxChipManager);
+                omniboxChipManager,
+                scrimHandler);
     }
 
     public static Class<OmniboxUma> getOmniboxUmaClass() {
