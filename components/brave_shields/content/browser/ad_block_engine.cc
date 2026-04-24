@@ -270,9 +270,6 @@ void AdBlockEngine::UpdateAdBlockClient(
   }
   UseResources(storage);
   AddKnownTagsToAdBlockInstance();
-  if (test_observer_) {
-    test_observer_->OnEngineUpdated();
-  }
 }
 
 void AdBlockEngine::AddKnownTagsToAdBlockInstance() {
@@ -379,14 +376,6 @@ bool AdBlockEngine::OnDATLoaded(
 DATFileDataBuffer AdBlockEngine::Serialize() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return base::ToVector(ad_block_client_->serialize());
-}
-
-void AdBlockEngine::AddObserverForTest(AdBlockEngine::TestObserver* observer) {
-  test_observer_ = observer;
-}
-
-void AdBlockEngine::RemoveObserverForTest() {
-  test_observer_ = nullptr;
 }
 
 }  // namespace brave_shields

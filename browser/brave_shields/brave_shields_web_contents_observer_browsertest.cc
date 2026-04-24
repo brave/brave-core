@@ -115,6 +115,7 @@ class BraveShieldsWebContentsObserverBrowserTest : public InProcessBrowserTest {
   }
 
   void TearDownOnMainThread() override {
+    helper_.reset();
     BraveShieldsWebContentsObserver::SetReceiverImplForTesting(nullptr);
   }
 

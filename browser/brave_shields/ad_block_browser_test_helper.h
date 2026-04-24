@@ -12,13 +12,13 @@
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
 
-class EngineTestObserver;
-
 namespace content {
 class BrowserContext;
 }
 
 namespace brave_shields {
+
+class AdBlockServiceTestObserver;
 
 // Runs the ad block service's task runner until idle.
 bool WaitForAdBlockServiceThreads();
@@ -35,10 +35,10 @@ class AdBlockBrowserTestHelper {
   AdBlockBrowserTestHelper& operator=(const AdBlockBrowserTestHelper&) = delete;
   ~AdBlockBrowserTestHelper();
 
-  // Blocks until the initial empty-catalog engine update fires. Idempotent —
-  // calling more than once is a no-op. Call this before registering any
-  // TestFiltersProvider so the subsequent EngineTestObserver only wakes for
-  // the rule load (not for a stale initial update).
+  // Blocks until the initial empty-catalog default-engine filter list load
+  // fires. Idempotent — calling more than once is a no-op. Call this before
+  // registering any TestFiltersProvider so the subsequent observer only wakes
+  // for the rule load (not for a stale initial update).
   //
   // NOT safe with the DAT cache feature enabled — a cached DAT load may
   // suppress the initial filter set build, making this wait hang. DAT cache
@@ -49,7 +49,7 @@ class AdBlockBrowserTestHelper {
   void SetUpAdBlockService(content::BrowserContext* context);
 
   base::RepeatingClosure callback_;
-  std::unique_ptr<EngineTestObserver> initial_engine_observer_;
+  std::unique_ptr<AdBlockServiceTestObserver> initial_observer_;
   base::CallbackListSubscription create_services_subscription_;
 };
 

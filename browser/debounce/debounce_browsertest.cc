@@ -14,7 +14,7 @@
 #include "brave/browser/brave_shields/ad_block_browser_test_helper.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
-#include "brave/components/brave_shields/content/test/engine_test_observer.h"
+#include "brave/components/brave_shields/content/test/ad_block_service_test_observer.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
@@ -194,15 +194,21 @@ class DebounceBrowserTest : public BaseLocalDataFilesBrowserTest {
     source_provider->RegisterAsSourceProvider(
         g_brave_browser_process->ad_block_service());
     source_providers_.push_back(std::move(source_provider));
-    auto& engine = g_brave_browser_process->ad_block_service()
-                       ->GetDefaultEngineForTesting();
-    EngineTestObserver engine_observer(&engine);
-    engine_observer.Wait();
+    brave_shields::AdBlockServiceTestObserver observer(
+        g_brave_browser_process->ad_block_service());
+    observer.WaitForDefault();
   }
 
   void PostRunTestOnMainThread() override {
     source_providers_.clear();
     BaseLocalDataFilesBrowserTest::PostRunTestOnMainThread();
+  }
+
+  void TearDownOnMainThread() override {
+    // Reset before service shutdown so the helper's observer detaches while
+    // the service is still alive.
+    ad_block_test_helper_.reset();
+    BaseLocalDataFilesBrowserTest::TearDownOnMainThread();
   }
 
  private:
