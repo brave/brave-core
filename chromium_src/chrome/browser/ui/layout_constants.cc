@@ -14,9 +14,6 @@
 #include "ui/base/pointer/touch_ui_controller.h"
 #include "ui/gfx/geometry/insets.h"
 
-static_assert(tabs::kHorizontalTabVerticalSpacing ==
-              tabs::compact_horizontal_tabs_layout::kTabVerticalSpacingDefault);
-
 namespace {
 
 using tabs::HorizontalTabsUpdateEnabled;

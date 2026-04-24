@@ -17,18 +17,6 @@
 // `BraveNewTabButton::GetButtonSize` function.
 #define kButtonSize GetButtonSize()
 
-namespace {
-
-int GetLayoutConstantForBraveTabStripControls(LayoutConstant constant) {
-  if (constant == LayoutConstant::kTabstripToolbarOverlap) {
-    return tabs::GetHorizontalTabControlOverlap();
-  }
-  return GetLayoutConstant(constant);
-}
-
-}  // namespace
-
-#define GetLayoutConstant GetLayoutConstantForBraveTabStripControls
 #define BrowserTabStripController BraveBrowserTabStripController
 #define NewTabButton BraveNewTabButton
 #define TabHoverCardController BraveTabHoverCardController
@@ -36,5 +24,4 @@ int GetLayoutConstantForBraveTabStripControls(LayoutConstant constant) {
 #undef TabHoverCardController
 #undef NewTabButton
 #undef BrowserTabStripController
-#undef GetLayoutConstant
 #undef kButtonSize

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
-index 11fbfe4bc7acacd18e25e0819a89811b377bcd98..a2d3ea11492e12073e18b15ed6d777e2b10ef767 100644
+index 11fbfe4bc7aca..3c45c2ddcf672 100644
 --- a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
 +++ b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
 @@ -159,7 +159,7 @@ std::unique_ptr<TabStrip> CreateTabStrip(
@@ -11,3 +11,18 @@ index 11fbfe4bc7acacd18e25e0819a89811b377bcd98..a2d3ea11492e12073e18b15ed6d777e2
                                                std::move(hover_card_controller));
    return tab_strip;
  }
+@@ -704,12 +704,12 @@ void HorizontalTabStripRegionView::LogTabSearchPositionForTesting() {
+ void HorizontalTabStripRegionView::UpdateButtonBorders() {
+   const int extra_vertical_space =
+       GetLayoutConstant(LayoutConstant::kTabStripHeight) -
+-      GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap) -
++      tabs::GetHorizontalTabControlOverlap() -
+       NewTabButton::kButtonSize.height();
+   const int top_inset = extra_vertical_space / 2;
+   const int bottom_inset =
+       extra_vertical_space - top_inset +
+-      GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap);
++      tabs::GetHorizontalTabControlOverlap();
+   // The new tab button is placed vertically exactly in the center of the
+   // tabstrip. Extend the border of the button such that it extends to the top
+   // of the tabstrip bounds. This is essential to ensure it is targetable on the

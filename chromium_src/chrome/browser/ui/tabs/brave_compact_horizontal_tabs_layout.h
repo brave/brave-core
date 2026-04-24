@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_BRAVE_COMPACT_HORIZONTAL_TABS_LAYOUT_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_BRAVE_COMPACT_HORIZONTAL_TABS_LAYOUT_H_
 
+#include "chrome/browser/ui/layout_constants.h"
+
 namespace tabs {
 namespace compact_horizontal_tabs_layout {
 
@@ -63,7 +65,7 @@ inline constexpr int kDragHandleExtensionDefault = 4;
 
 // --- Horizontal tabs: defaults when compact flag is off --------------------
 inline constexpr int kTabVisualHeightDefault = 32;
-inline constexpr int kTabVerticalSpacingDefault = 4;
+inline constexpr int kTabVerticalSpacingDefault = kHorizontalTabVerticalSpacing;
 inline constexpr int kTabstripToolbarOverlapDefault = 1;
 inline constexpr int kTabstripToolbarControlsOverlapDefault = -4;
 inline constexpr int kTabHorizontalPaddingDefault = 8;

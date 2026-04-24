@@ -8,3 +8,9 @@ description = "Replace TabStrip construction with BraveTabStrip"
 pattern = "std::make_unique<TabStrip>"
 replace = "std::make_unique<BraveTabStrip>"
 count = 1
+
+[[substitution]]
+description = "Tab strip button border math uses control overlap (see GetHorizontalTabControlOverlap) instead of tab/toolbar overlap from GetLayoutConstant"
+pattern = "GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap)"
+replace = "tabs::GetHorizontalTabControlOverlap()"
+count = 2
