@@ -50,9 +50,7 @@
 #include "ios/web/public/web_state_observer.h"
 #include "ios/web_view/internal/cwv_web_view_internal.h"
 #include "net/base/apple/url_conversions.h"
-#include "services/data_decoder/public/cpp/data_decoder.h"
-#include "services/data_decoder/public/mojom/data_decoder_service.mojom.h"
-#include "services/data_decoder/public/mojom/image_decoder.mojom.h"
+#include "skia/ext/skia_utils_ios.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/page_transition_types.h"
@@ -78,41 +76,6 @@ void OnImageDecoded(
   base::ThreadPool::PostTaskAndReplyWithResult(FROM_HERE, {base::MayBlock()},
                                                std::move(encode_image),
                                                std::move(callback));
-}
-
-// A constant defined in services/data_decoder/public/cpp/decode_image.h
-const uint64_t kDataDecoderDefaultMaxSizeInBytes = 128 * 1024 * 1024;
-
-// iOS can't access the standard cpp image decoder in the data_decoder as its
-// only compiled with use_blink=true, so we must use the mojom API instead to
-// use the in-process service
-//
-// The implementation of this method matches the one in
-// services/data_decoder/public/cpp/decode_image.cc
-void DecodeImageUsingServiceProcess(
-    data_decoder::DataDecoder* data_decoder,
-    base::span<const uint8_t> encoded_bytes,
-    data_decoder::mojom::ImageCodec codec,
-    bool shrink_to_fit,
-    uint64_t max_size_in_bytes,
-    const gfx::Size& desired_image_frame_size,
-    base::OnceCallback<void(const SkBitmap& decoded_bitmap)> callback) {
-  mojo::Remote<data_decoder::mojom::ImageDecoder> decoder;
-  data_decoder->GetService()->BindImageDecoder(
-      decoder.BindNewPipeAndPassReceiver());
-
-  // `callback` will be run exactly once. Disconnect implies no response, and
-  // OnDecodeImage promptly discards the decoder preventing further disconnect
-  // calls.
-  auto callback_pair = base::SplitOnceCallback(std::move(callback));
-  decoder.set_disconnect_handler(
-      base::BindOnce(std::move(callback_pair.first), SkBitmap()));
-
-  data_decoder::mojom::ImageDecoder* raw_decoder = decoder.get();
-  raw_decoder->DecodeImage(
-      encoded_bytes, codec, shrink_to_fit, max_size_in_bytes,
-      desired_image_frame_size,
-      base::IgnoreArgs<base::TimeDelta>(std::move(callback_pair.second)));
 }
 
 }  // namespace
@@ -194,24 +157,29 @@ void AIChatUIPageHandler::ProcessImageFile(
     const std::vector<uint8_t>& file_data,
     const std::string& filename,
     ProcessImageFileCallback callback) {
-  DecodeImageUsingServiceProcess(
-      &data_decoder_, file_data, data_decoder::mojom::ImageCodec::kDefault,
-      /*shrink_to_fit=*/true, kDataDecoderDefaultMaxSizeInBytes, gfx::Size(),
+  NSData* ns_data = [NSData dataWithBytes:file_data.data()
+                                   length:file_data.size()];
+  const std::vector<SkBitmap> bitmaps = skia::ImageDataToSkBitmaps(ns_data);
+  if (bitmaps.empty()) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+  const SkBitmap decoded_bitmap = bitmaps.front();
+  OnImageDecoded(
       base::BindOnce(
-          &OnImageDecoded,
-          base::BindOnce(
-              [](const std::string& filename, ProcessImageFileCallback callback,
-                 std::optional<std::vector<uint8_t>> processed_data) {
-                if (!processed_data) {
-                  std::move(callback).Run(nullptr);
-                  return;
-                }
-                auto uploaded_file = ai_chat::mojom::UploadedFile::New(
-                    filename, processed_data->size(), *processed_data,
-                    ai_chat::mojom::UploadedFileType::kImage);
-                std::move(callback).Run(std::move(uploaded_file));
-              },
-              filename, std::move(callback))));
+          [](const std::string& filename, ProcessImageFileCallback callback,
+             std::optional<std::vector<uint8_t>> processed_data) {
+            if (!processed_data) {
+              std::move(callback).Run(nullptr);
+              return;
+            }
+            auto uploaded_file = ai_chat::mojom::UploadedFile::New(
+                filename, processed_data->size(), *processed_data,
+                ai_chat::mojom::UploadedFileType::kImage);
+            std::move(callback).Run(std::move(uploaded_file));
+          },
+          filename, std::move(callback)),
+      decoded_bitmap);
 }
 
 void AIChatUIPageHandler::UploadFile(bool use_media_capture,
