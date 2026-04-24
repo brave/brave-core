@@ -97,7 +97,7 @@ class QuickViewController: UIViewController {
       case .close:
         self?.dismiss(animated: true)
       case .shield, .refresh, .playlist, .readerMode,
-        .translate, .back, .share, .openTab:
+        .translate, .back, .forward, .share, .openTab:
         break
       }
     }
