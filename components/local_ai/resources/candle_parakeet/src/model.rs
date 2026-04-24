@@ -36,8 +36,11 @@ use encoder::ConformerEncoder;
 ///
 /// `tensor_data_offset` is Brave-specific: the byte offset in
 /// `model.gguf` where the tensor-data blob starts. The JS loader
-/// splits the file at this offset so the header can be parsed
-/// separately from the streamed tensor-data chunks.
+/// uses it to split the file between the header (passed to the
+/// wasm-bindgen constructor) and the tensor-data chunks (streamed
+/// via `load_weight_chunk`). Rust reads it to validate that JS
+/// sliced the header correctly and that `config.json` is in sync
+/// with the shipped GGUF.
 #[derive(Deserialize)]
 pub struct ParakeetConfig {
     pub hidden_size: usize,
