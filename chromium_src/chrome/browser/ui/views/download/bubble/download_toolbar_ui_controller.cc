@@ -7,15 +7,13 @@
 
 #include "chrome/browser/download/bubble/download_bubble_update_service.h"
 #include "chrome/browser/download/bubble/download_bubble_update_service_factory.h"
-#include "chrome/browser/download/download_ui_model.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "components/vector_icons/vector_icons.h"
-#include "ui/base/models/image_model.h"
 
 namespace {
 
-SkColor GetIconColor(SkColor chromium_color,
-                     DownloadDisplay::IconState state,
+SkColor GetIconColor(DownloadDisplay::IconState state,
                      DownloadDisplay::IconActive active,
                      const ui::ColorProvider* color_provider) {
   // Apply active color only when download is completed and user doesn't
@@ -29,51 +27,9 @@ SkColor GetIconColor(SkColor chromium_color,
   return color_provider->GetColor(kColorDownloadToolbarButtonInactive);
 }
 
-}  // namespace
-
-#define DownloadToolbarUIController DownloadToolbarUIController_ChromiumImpl
-
-// Update upstream color with our own. Pass COLOR in so that icon_color variable
-// in the original file isn't flagged as unused by the compiler.
-#define FromVectorIcon(ICON, COLOR)                         \
-  FromVectorIcon(ICON, GetIconColor(COLOR, state_, active_, \
-                                    browser_view_->GetColorProvider()))
-
-#include <chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc>
-#undef FromVectorIcon
-#undef DownloadToolbarUIController
-
-void DownloadToolbarUIController::UpdateIcon() {
-  DownloadToolbarUIController_ChromiumImpl::UpdateIcon();
-
-  if (!action_item_.get()) {
-    return;
-  }
-
-  auto* button = GetDownloadsButton(browser_view_);
-  if (!button) {
-    return;
-  }
-
-  // Use an exclamation point icon while there's an insecure download in the
-  // download models.
-  if (HasInsecureDownloads()) {
-    auto icon_color = browser_view_->GetColorProvider()->GetColor(
-        ui::kColorAlertMediumSeverityIcon);
-    button->SetIconEnabledColorsOverride(icon_color);
-    button->SetVectorIcon(vector_icons::kNotSecureWarningIcon);
-    const gfx::VectorIcon* new_icon = &vector_icons::kNotSecureWarningIcon;
-    const int icon_size = action_item_->GetImage().Size().height();
-    action_item_->SetImage(
-        ui::ImageModel::FromVectorIcon(*new_icon, icon_color, icon_size));
-  } else {
-    button->SetIconEnabledColorsOverride(std::nullopt);
-  }
-}
-
-bool DownloadToolbarUIController::HasInsecureDownloads() {
+bool HasInsecureDownloads(BrowserView* browser_view) {
   auto* update_service = DownloadBubbleUpdateServiceFactory::GetForProfile(
-      browser_view_->GetProfile());
+      browser_view->GetProfile());
   if (!update_service || !update_service->IsInitialized()) {
     return false;
   }
@@ -89,3 +45,44 @@ bool DownloadToolbarUIController::HasInsecureDownloads() {
                 download::DownloadItem::InsecureDownloadStatus::WARN);
   });
 }
+
+// Forward-declaring this customisation point as it depends on
+// `GetDownloadsButton`, which is declared in the unamed namespace of the
+// shadowed source.
+void UpdateIcon_BraveImpl(BrowserView* browser_view,
+                          actions::ActionItem* action_item);
+
+}  // namespace
+
+#include <chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.cc>
+
+namespace {
+
+void UpdateIcon_BraveImpl(BrowserView* browser_view,
+                          actions::ActionItem* action_item) {
+  if (!action_item) {
+    return;
+  }
+
+  auto* button = GetDownloadsButton(browser_view);
+  if (!button) {
+    return;
+  }
+
+  // Use an exclamation point icon while there's an insecure download in the
+  // download models.
+  if (HasInsecureDownloads(browser_view)) {
+    auto icon_color = browser_view->GetColorProvider()->GetColor(
+        ui::kColorAlertMediumSeverityIcon);
+    button->SetIconEnabledColorsOverride(icon_color);
+    button->SetVectorIcon(vector_icons::kNotSecureWarningIcon);
+    const gfx::VectorIcon* new_icon = &vector_icons::kNotSecureWarningIcon;
+    const int icon_size = action_item->GetImage().Size().height();
+    action_item->SetImage(
+        ui::ImageModel::FromVectorIcon(*new_icon, icon_color, icon_size));
+  } else {
+    button->SetIconEnabledColorsOverride(std::nullopt);
+  }
+}
+
+}  // namespace

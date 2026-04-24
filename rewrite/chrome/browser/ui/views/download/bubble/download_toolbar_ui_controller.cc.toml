@@ -1,0 +1,22 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = '''Override to show insecure icon on insecure download link.'
+
+This replacement adds a `UpdateIcon_BraveImpl` call at the end of the function.
+'''
+re_pattern = '(DownloadToolbarUIController::UpdateIcon\(.*?\n)^\}'
+replace = '''\1  UpdateIcon_BraveImpl(browser_view_, action_item_);
+}'''
+re_flags = ['MULTILINE', 'DOTALL']
+count = 1
+
+[[substitution]]
+description = 'Override for the icon colour.'
+re_pattern = '^(\s*)action_item_->SetImage'
+replace = '\1icon_color = GetIconColor(state_, active_, browser_view_->GetColorProvider());\1action_item_->SetImage'
+re_flags = ['MULTILINE']
+count = 1
