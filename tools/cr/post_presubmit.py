@@ -38,13 +38,18 @@ def post_comments(presubmit_entries: Dict[str, List[Dict[str, Any]]],
             The pull request number where the comments will be posted.
     """
     # Get a list of existing comments for this PR
-    existing_comments: List[str] = json.loads(
-        subprocess.check_output([
-            'gh', 'api', f'repos/brave/brave-core/issues/{pr_number}/comments',
-            '--paginate', '--jq', '[.[] | {id: .id, body: .body}]'
-        ],
-                                text=True,
-                                stderr=subprocess.PIPE))
+    comments_response = subprocess.check_output([
+        'gh', 'api', f'repos/brave/brave-core/issues/{pr_number}/comments',
+        '--paginate', '--jq', '[.[] | {id: .id, body: .body}]'
+    ],
+                                                text=True,
+                                                stderr=subprocess.PIPE)
+    logging.debug('Existing comments response: %s', comments_response)
+    existing_comments: List[Dict[str, Any]] = []
+    for line in comments_response.splitlines():
+        if not line.strip():
+            continue
+        existing_comments.extend(json.loads(line))
 
     # Filtering out all comments that do not contain a presubmit hash as those
     # are not relevant to our comment management.
