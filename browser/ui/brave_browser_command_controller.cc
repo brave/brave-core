@@ -94,6 +94,7 @@ bool IsBraveOverrideCommands(int id) {
       IDC_NEW_WINDOW,
       IDC_NEW_INCOGNITO_WINDOW,
       IDC_TOGGLE_VERTICAL_TABS,
+      IDC_FOCUS_LOCATION,
   });
   return kOverrideCommands.contains(id);
 }
@@ -533,6 +534,13 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       }
       NewIncognitoWindow(browser_->profile()->GetOriginalProfile());
       break;
+    case IDC_FOCUS_LOCATION:
+      if (browser_->window() && browser_->window()->IsFullscreen()) {
+        brave::FocusLocationBarInFullscreen(base::to_address(browser_));
+        return true;
+      }
+      return BrowserCommandController::ExecuteCommandWithDisposition(
+          id, disposition, time_stamp);
     case IDC_SHOW_BRAVE_REWARDS:
       brave::ShowBraveRewards(&*browser_);
       break;
