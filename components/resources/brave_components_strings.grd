@@ -949,6 +949,18 @@
       <if expr="enable_psst">
         <part file="psst_ui_strings.grdp" />
       </if>
+
+      <!-- History semantic search disclaimer shown in the omnibox @history
+           scope. Upstream's text implies a round-trip to the vendor with
+           human review; Brave's implementation runs entirely on-device
+           (see brave/browser/history_embeddings/README.md), so we ship our
+           own string and swap the IDS in the chromium_src override for
+           components/omnibox/browser/featured_search_provider.cc. -->
+      <message name="IDS_BRAVE_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH" desc="Disclaimer shown as the last row in the omnibox @history scope, indicating that history semantic search runs entirely on-device.">
+        Your searches and page contents are processed on this device. Nothing is sent to Brave or seen by human reviewers. This is an experimental feature and won't always get it right.
+      </message>
+      <message name="IDS_BRAVE_EMPTY_STRING" desc="Empty string. Swapped into upstream IDSes whose value we want to suppress without patching the call site." translateable="false">
+      </message>
     </messages>
   </release>
 </grit>

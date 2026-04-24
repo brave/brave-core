@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/resources/side_panel/history_clusters/app.html.ts b/chrome/browser/resources/side_panel/history_clusters/app.html.ts
+index 9276e87e8d156faf0a497fe25fdb1ff106a80afd..86d512837eb507d177b50c92855060e5e42b1cc9 100644
+--- a/chrome/browser/resources/side_panel/history_clusters/app.html.ts
++++ b/chrome/browser/resources/side_panel/history_clusters/app.html.ts
+@@ -21,12 +21,6 @@ export function getHtml(this: HistoryClustersAppElement) {
+ ${this.enableHistoryEmbeddings_ ? html`
+ <div id="historyEmbeddingsDisclaimer">
+   $i18n{historyEmbeddingsDisclaimer}
+-  <a id="historyEmbeddingsDisclaimerLink" href="#"
+-      aria-describedby="historyEmbeddingsDisclaimer"
+-      @click="${this.onHistoryEmbeddingsDisclaimerLinkClick_}"
+-      @auxclick="${this.onHistoryEmbeddingsDisclaimerLinkAuxclick_}">
+-    $i18n{learnMore}
+-  </a>
+ </div>
+ ` : ''}
+ <div id="embeddingsScrollContainer"
