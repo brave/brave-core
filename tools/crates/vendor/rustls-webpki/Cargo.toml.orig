@@ -21,7 +21,7 @@ license = "ISC"
 name = "rustls-webpki"
 readme = "README.md"
 repository = "https://github.com/rustls/webpki"
-version = "0.103.12"
+version = "0.103.13"
 
 include = [
     "Cargo.toml",
