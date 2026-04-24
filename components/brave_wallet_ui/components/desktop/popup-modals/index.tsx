@@ -89,8 +89,9 @@ export const PopupModal = React.forwardRef<HTMLDivElement, Props>(
           )}
           {showDivider && <Divider />}
           <ModalContent
-            fullWidth
-            flex={1}
+            justifyContent='flex-start'
+            width='100%'
+            height='100%'
           >
             {children}
           </ModalContent>

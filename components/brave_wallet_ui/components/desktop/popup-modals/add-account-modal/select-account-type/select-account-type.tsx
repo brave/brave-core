@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import Icon from '@brave/leo/react/icon'
 
 // utils
 import { getLocale } from '$web-common/locale'
@@ -15,28 +16,29 @@ import {
 } from '../../../../../constants/types'
 
 // components
-import { DividerLine } from '../../../../extension/divider/index'
 import AccountTypeItem from '../account-type-item'
 
 // style
 import {
+  SectionWrapper,
   SelectAccountItemWrapper,
   SelectAccountTitle,
-  SelectAccountTypeWrapper,
+  TestAccountsButton,
+  StyledWrapper,
 } from './select-account-type.style'
-import { Text, Row } from '../../../../shared/style'
 
 interface Props {
   createAccountOptions: CreateAccountOptionsType[]
   onSelectAccountType: (accountType: CreateAccountOptionsType) => () => void
-  buttonText: string
 }
 
 export const SelectAccountType = ({
   createAccountOptions,
-  buttonText,
   onSelectAccountType,
 }: Props) => {
+  // State
+  const [showTestnetAccounts, setShowTestnetAccounts] = React.useState(false)
+
   // Memos
   const mainnetAccountOptions = React.useMemo(
     () =>
@@ -56,54 +58,56 @@ export const SelectAccountType = ({
 
   // render
   return (
-    <SelectAccountTypeWrapper>
-      <SelectAccountTitle>
+    <StyledWrapper
+      gap='16px'
+      justifyContent='flex-start'
+      alignItems='flex-start'
+    >
+      <SelectAccountTitle textColor='primary'>
         {getLocale('braveWalletCreateAccountTitle')}
       </SelectAccountTitle>
 
-      <DividerLine />
-
-      {mainnetAccountOptions.map((network, index) => (
-        <SelectAccountItemWrapper key={network.name}>
-          <AccountTypeItem
-            onClickCreate={onSelectAccountType(network)}
-            icon={network.icon}
-            description={network.description}
-            title={network.name}
-            buttonText={buttonText}
-          />
-          {index + 1 !== mainnetAccountOptions.length && <DividerLine />}
-        </SelectAccountItemWrapper>
-      ))}
+      <SectionWrapper width='100%'>
+        {mainnetAccountOptions.map((network) => (
+          <SelectAccountItemWrapper
+            width='100%'
+            key={network.name}
+          >
+            <AccountTypeItem
+              onClickCreate={onSelectAccountType(network)}
+              icon={network.icon}
+              description={network.description}
+              title={network.name}
+            />
+          </SelectAccountItemWrapper>
+        ))}
+      </SectionWrapper>
 
       {testnetAccountOptions.length > 0 && (
-        <Row
-          margin='32px 0px 0px 0px'
-          justifyContent='flex-start'
-        >
-          <Text
-            textSize='12px'
-            isBold={true}
-            textColor='primary'
+        <SectionWrapper width='100%'>
+          <TestAccountsButton
+            isOpen={showTestnetAccounts}
+            onClick={() => setShowTestnetAccounts(!showTestnetAccounts)}
           >
-            {getLocale('braveWalletTestnetAccounts')}
-          </Text>
-        </Row>
+            {getLocale('braveWalletLookingForTestnetAccounts')}
+            <Icon name={showTestnetAccounts ? 'carat-up' : 'carat-down'} />
+          </TestAccountsButton>
+          {showTestnetAccounts
+            && testnetAccountOptions.map((network, index) => (
+              <SelectAccountItemWrapper
+                width='100%'
+                key={network.name}
+              >
+                <AccountTypeItem
+                  onClickCreate={onSelectAccountType(network)}
+                  icon={network.icon}
+                  description={network.description}
+                  title={network.name}
+                />
+              </SelectAccountItemWrapper>
+            ))}
+        </SectionWrapper>
       )}
-
-      {testnetAccountOptions.map((network, index) => (
-        <SelectAccountItemWrapper key={network.name}>
-          <AccountTypeItem
-            onClickCreate={onSelectAccountType(network)}
-            icon={network.icon}
-            description={network.description}
-            title={network.name}
-            buttonText={buttonText}
-          />
-
-          {index + 1 !== testnetAccountOptions.length && <DividerLine />}
-        </SelectAccountItemWrapper>
-      ))}
-    </SelectAccountTypeWrapper>
+    </StyledWrapper>
   )
 }

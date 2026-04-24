@@ -32,6 +32,15 @@ import {
   CardanoIcon,
   PolkadotIcon,
 } from '../assets/network_token_icons/network_token_icons'
+import {
+  CreateETHIcon,
+  CreateSOLIcon,
+  CreateBTCIcon,
+  CreateZECIcon,
+  CreateFILIcon,
+  CreateADAIcon,
+  CreateDOTIcon,
+} from '../assets/create_account_icons/create_account_icons'
 
 export const getNetworkLogo = (chainId: string, symbol: string): string => {
   if (chainId === BraveWallet.AURORA_MAINNET_CHAIN_ID) return AuroraIcon
@@ -62,6 +71,27 @@ export const getNetworkLogo = (chainId: string, symbol: string): string => {
       return CardanoIcon
     case 'DOT':
       return PolkadotIcon
+  }
+
+  return ''
+}
+
+export const getCreateAccountLogo = (coin: BraveWallet.CoinType) => {
+  switch (coin) {
+    case BraveWallet.CoinType.SOL:
+      return CreateSOLIcon
+    case BraveWallet.CoinType.ETH:
+      return CreateETHIcon
+    case BraveWallet.CoinType.FIL:
+      return CreateFILIcon
+    case BraveWallet.CoinType.BTC:
+      return CreateBTCIcon
+    case BraveWallet.CoinType.ZEC:
+      return CreateZECIcon
+    case BraveWallet.CoinType.ADA:
+      return CreateADAIcon
+    case BraveWallet.CoinType.DOT:
+      return CreateDOTIcon
   }
 
   return ''

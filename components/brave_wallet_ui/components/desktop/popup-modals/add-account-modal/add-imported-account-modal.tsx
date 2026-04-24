@@ -353,156 +353,159 @@ export const ImportAccountModal = () => {
       title={modalTitle}
       onClose={onClickClose}
     >
-      <DividerLine />
-
       {!selectedAccountType && (
         <SelectAccountType
           createAccountOptions={createAccountOptions}
-          buttonText={getLocale('braveWalletAddAccountImport')}
           onSelectAccountType={onSelectAccountType}
         />
       )}
 
       {selectedAccountType && (
-        <StyledWrapper>
-          {isDAppCoin && (
-            <Alert type='warning'>
-              {getLocale('braveWalletImportAccountDisclaimer')}
-            </Alert>
-          )}
+        <>
+          <DividerLine />
+          <StyledWrapper>
+            {isDAppCoin && (
+              <Alert type='warning'>
+                {getLocale('braveWalletImportAccountDisclaimer')}
+              </Alert>
+            )}
 
-          {selectedAccountType.coin === BraveWallet.CoinType.FIL && (
-            <Alert type='warning'>{filPrivateKeyFormatDescription}</Alert>
-          )}
-          {selectedAccountType.coin === BraveWallet.CoinType.BTC && (
-            <Alert type='warning'>
-              {getLocale(
-                'braveWalletBtcImportPrivateKeyFormatDescription',
-              ).replace(
-                '$1',
-                selectedAccountType.fixedNetwork === BraveWallet.BITCOIN_MAINNET
-                  ? 'zprv'
-                  : 'tprv',
+            {selectedAccountType.coin === BraveWallet.CoinType.FIL && (
+              <Alert type='warning'>{filPrivateKeyFormatDescription}</Alert>
+            )}
+            {selectedAccountType.coin === BraveWallet.CoinType.BTC && (
+              <Alert type='warning'>
+                {getLocale(
+                  'braveWalletBtcImportPrivateKeyFormatDescription',
+                ).replace(
+                  '$1',
+                  selectedAccountType.fixedNetwork
+                    === BraveWallet.BITCOIN_MAINNET
+                    ? 'zprv'
+                    : 'tprv',
+                )}
+              </Alert>
+            )}
+            {selectedAccountType.coin === BraveWallet.CoinType.DOT && (
+              <Alert type='warning'>
+                {getLocale('braveWalletPolkadotImportJsonDescription')}
+              </Alert>
+            )}
+
+            <CreateAccountStyledWrapper>
+              {selectedAccountType.coin === BraveWallet.CoinType.ETH && (
+                <Dropdown
+                  value={importOption}
+                  onChange={onChangeImportOption}
+                >
+                  <div slot='label'>
+                    {getLocale('braveWalletPrivateKeyImportType')}
+                  </div>
+
+                  <div slot='value'>
+                    {getLocale(
+                      importOption === 'key'
+                        ? 'braveWalletImportAccountKey'
+                        : 'braveWalletImportAccountFile',
+                    )}
+                  </div>
+
+                  <leo-option
+                    key={'key'}
+                    value='key'
+                  >
+                    {getLocale('braveWalletImportAccountKey')}
+                  </leo-option>
+
+                  <leo-option
+                    key={'file'}
+                    value='file'
+                  >
+                    {getLocale('braveWalletImportAccountFile')}
+                  </leo-option>
+                </Dropdown>
               )}
-            </Alert>
-          )}
-          {selectedAccountType.coin === BraveWallet.CoinType.DOT && (
-            <Alert type='warning'>
-              {getLocale('braveWalletPolkadotImportJsonDescription')}
-            </Alert>
-          )}
 
-          <CreateAccountStyledWrapper>
-            {selectedAccountType.coin === BraveWallet.CoinType.ETH && (
-              <Dropdown
-                value={importOption}
-                onChange={onChangeImportOption}
-              >
-                <div slot='label'>
-                  {getLocale('braveWalletPrivateKeyImportType')}
-                </div>
+              {hasImportError && (
+                <ErrorText>
+                  {getLocale('braveWalletImportAccountError')}
+                </ErrorText>
+              )}
 
-                <div slot='value'>
-                  {getLocale(
-                    importOption === 'key'
-                      ? 'braveWalletImportAccountKey'
-                      : 'braveWalletImportAccountFile',
-                  )}
-                </div>
-
-                <leo-option
-                  key={'key'}
-                  value='key'
-                >
-                  {getLocale('braveWalletImportAccountKey')}
-                </leo-option>
-
-                <leo-option
-                  key={'file'}
-                  value='file'
-                >
-                  {getLocale('braveWalletImportAccountFile')}
-                </leo-option>
-              </Dropdown>
-            )}
-
-            {hasImportError && (
-              <ErrorText>
-                {getLocale('braveWalletImportAccountError')}
-              </ErrorText>
-            )}
-
-            {!isPolkadotImport && importOption === 'key' ? (
-              <Input
-                placeholder={getLocale('braveWalletImportAccountPlaceholder')}
-                onBlur={clearClipboard}
-                type='password'
-                onInput={handlePrivateKeyChanged}
-                onKeyDown={handleKeyDown}
-              >
-                {
-                  // Label
-                  getLocale('braveWalletImportAccountKey')
-                }
-              </Input>
-            ) : (
-              <>
-                <ImportRow>
-                  <ImportButton htmlFor='recoverFile'>
-                    {getLocale('braveWalletImportAccountUploadButton')}
-                  </ImportButton>
-                  <DisclaimerText>
-                    {file
-                      ? reduceFileName(file[0].name)
-                      : getLocale('braveWalletImportAccountUploadPlaceholder')}
-                  </DisclaimerText>
-                </ImportRow>
-                <input
-                  type='file'
-                  id='recoverFile'
-                  name='recoverFile'
-                  style={{ display: 'none' }}
-                  onChange={onFileUpload}
-                />
+              {!isPolkadotImport && importOption === 'key' ? (
                 <Input
-                  placeholder={getLocale('braveWalletInputLabelPassword')}
-                  onInput={handlePasswordChanged}
-                  onKeyDown={handleKeyDown}
+                  placeholder={getLocale('braveWalletImportAccountPlaceholder')}
                   onBlur={clearClipboard}
                   type='password'
-                  ref={passwordInputRef}
+                  onInput={handlePrivateKeyChanged}
+                  onKeyDown={handleKeyDown}
                 >
                   {
                     // Label
-                    getLocale('braveWalletEnterPasswordIfApplicable')
+                    getLocale('braveWalletImportAccountKey')
                   }
                 </Input>
-              </>
-            )}
+              ) : (
+                <>
+                  <ImportRow>
+                    <ImportButton htmlFor='recoverFile'>
+                      {getLocale('braveWalletImportAccountUploadButton')}
+                    </ImportButton>
+                    <DisclaimerText>
+                      {file
+                        ? reduceFileName(file[0].name)
+                        : getLocale(
+                            'braveWalletImportAccountUploadPlaceholder',
+                          )}
+                    </DisclaimerText>
+                  </ImportRow>
+                  <input
+                    type='file'
+                    id='recoverFile'
+                    name='recoverFile'
+                    style={{ display: 'none' }}
+                    onChange={onFileUpload}
+                  />
+                  <Input
+                    placeholder={getLocale('braveWalletInputLabelPassword')}
+                    onInput={handlePasswordChanged}
+                    onKeyDown={handleKeyDown}
+                    onBlur={clearClipboard}
+                    type='password'
+                    ref={passwordInputRef}
+                  >
+                    {
+                      // Label
+                      getLocale('braveWalletEnterPasswordIfApplicable')
+                    }
+                  </Input>
+                </>
+              )}
 
-            <Input
-              value={accountName}
-              placeholder={getLocale('braveWalletAddAccountPlaceholder')}
-              onInput={handleAccountNameChanged}
-              onKeyDown={handleKeyDown}
-              showErrors={hasAccountNameError}
-              maxlength={BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH}
-            >
-              {
-                // Label
-                getLocale('braveWalletAddAccountPlaceholder')
-              }
-            </Input>
+              <Input
+                value={accountName}
+                placeholder={getLocale('braveWalletAddAccountPlaceholder')}
+                onInput={handleAccountNameChanged}
+                onKeyDown={handleKeyDown}
+                showErrors={hasAccountNameError}
+                maxlength={BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH}
+              >
+                {
+                  // Label
+                  getLocale('braveWalletAddAccountPlaceholder')
+                }
+              </Input>
 
-            <Button
-              onClick={onClickCreateAccount}
-              isDisabled={isDisabled}
-              kind='filled'
-            >
-              {getLocale('braveWalletAddAccountImport')}
-            </Button>
-          </CreateAccountStyledWrapper>
-        </StyledWrapper>
+              <Button
+                onClick={onClickCreateAccount}
+                isDisabled={isDisabled}
+                kind='filled'
+              >
+                {getLocale('braveWalletAddAccountImport')}
+              </Button>
+            </CreateAccountStyledWrapper>
+          </StyledWrapper>
+        </>
       )}
     </PopupModal>
   )
