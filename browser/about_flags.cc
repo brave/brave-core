@@ -123,6 +123,7 @@
 
 #if defined(TOOLKIT_VIEWS)
 #include "brave/browser/ui/darker_theme/features.h"
+#include "brave/browser/ui/focus_mode/focus_mode_features.h"
 #include "brave/browser/ui/page_info/features.h"
 #endif
 
@@ -508,6 +509,20 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   })
 #else
 #define BRAVE_DARKER_THEME_FEATURE_ENTRIES
+#endif  // defined(TOOLKIT_VIEWS)
+
+#if defined(TOOLKIT_VIEWS)
+#define BRAVE_FOCUS_MODE_FEATURE_ENTRIES                             \
+  EXPAND_FEATURE_ENTRIES({                                           \
+      "brave-focus-mode",                                            \
+      "Focus Mode",                                                  \
+      "Enables Focus Mode, which hides browser chrome and provides " \
+      "hover-to-reveal access to hidden UI elements",                \
+      kOsWin | kOsMac | kOsLinux,                                    \
+      FEATURE_VALUE_TYPE(features::kBraveFocusMode),                 \
+  })
+#else
+#define BRAVE_FOCUS_MODE_FEATURE_ENTRIES
 #endif  // defined(TOOLKIT_VIEWS)
 
 #if defined(TOOLKIT_VIEWS)
@@ -1338,6 +1353,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_TABS_FEATURE_ENTRIES                                                   \
   BRAVE_DARKER_THEME_FEATURE_ENTRIES                                           \
   BRAVE_PAGE_INFO_FEATURE_ENTRIES                                              \
+  BRAVE_FOCUS_MODE_FEATURE_ENTRIES                                             \
   BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
   BRAVE_AI_CHAT_TAB_MANAGEMENT_TOOL_ENTRY                                      \
   BRAVE_HISTORY_EMBEDDINGS_FLAG                                                \
