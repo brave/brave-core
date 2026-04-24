@@ -29,22 +29,12 @@
         android:visibility="gone">
     </FrameLayout>
 
-    <FrameLayout
-        android:id="@+id/logo_holder"
+    <!-- Search provider logo -->
+    <ViewStub
+        android:id="@+id/logo_view_stub"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <org.chromium.chrome.browser.logo.LogoView
-            android:id="@+id/search_provider_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/ntp_logo_height"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="@dimen/ntp_logo_margin_top"
-            android:layout_marginBottom="23dp" />
-
-    </FrameLayout>
+        android:layout_height="wrap_content"
+        android:layout="@layout/logo_view_layout" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
