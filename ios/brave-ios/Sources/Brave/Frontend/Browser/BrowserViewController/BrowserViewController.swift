@@ -2378,13 +2378,19 @@ extension BrowserViewController: SettingsDelegate {
     }
 
     // TODO: Load actual ref link https://github.com/brave/brave-browser/issues/53569
-    let testURL = URL(string: "https://search.brave.com/ask?q=brave")!
+    let testURL = URL(string: "https://brave.com/")!
 
     let quickViewController = QuickViewController(
       url: testURL,
       for: currentTab,
       privateBrowsingManager: privateBrowsingManager
-    )
+    ) { [weak self] request in
+      guard let self else { return }
+      self.tabManager.addTabAndSelect(
+        request,
+        isPrivate: self.privateBrowsingManager.isPrivateBrowsing
+      )
+    }
 
     present(quickViewController, animated: true) {
       Logger.module.debug("QuickView presented from Settings: \(testURL)")

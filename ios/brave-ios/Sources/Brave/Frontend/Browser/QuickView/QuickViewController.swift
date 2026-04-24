@@ -23,16 +23,19 @@ class QuickViewController: UIViewController {
   private lazy var toolbarHostingController = UIHostingController(
     rootView: QuickViewToolbarView(viewModel: toolbarViewModel)
   )
+  private let onOpenInNewTab: ((URLRequest) -> Void)?
 
   init(
     url: URL,
     for tab: some TabState,
-    privateBrowsingManager: PrivateBrowsingManager
+    privateBrowsingManager: PrivateBrowsingManager,
+    onOpenInNewTab: ((URLRequest) -> Void)?
   ) {
     self.url = url
     self.parentTab = tab
     self.toolbarViewModel = QuickViewToolbarModel(url: url)
     self.privateBrowsingManager = privateBrowsingManager
+    self.onOpenInNewTab = onOpenInNewTab
     super.init(nibName: nil, bundle: nil)
     modalPresentationStyle = .fullScreen
 
@@ -59,6 +62,8 @@ class QuickViewController: UIViewController {
       with: .init(profile: parentTab.profile, initialConfiguration: initialConfiguration)
     )
     tab.createWebView()
+    tab.addObserver(self)
+    tab.delegate = self
     let braveShieldsTabHelper: BraveShieldsTabHelper = .init(
       tab: tab,
       braveShieldsSettings: BraveShieldsSettingsServiceFactory.get(profile: tab.profile)
@@ -96,8 +101,14 @@ class QuickViewController: UIViewController {
       switch button {
       case .close:
         self?.dismiss(animated: true)
+      case .back:
+        guard let currentTab = self?.currentTab else { return }
+        currentTab.goBack()
+      case .forward:
+        guard let currentTab = self?.currentTab else { return }
+        currentTab.goForward()
       case .shield, .refresh, .playlist, .readerMode,
-        .translate, .back, .forward, .share, .openTab:
+        .translate, .share, .openTab:
         break
       }
     }
@@ -127,5 +138,50 @@ class QuickViewController: UIViewController {
       $0.leading.trailing.equalTo(view)
       $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
     }
+  }
+}
+
+// MARK: - TabObserver
+
+extension QuickViewController: TabObserver {
+  func tabDidUpdateURL(_ tab: some TabState) {
+    if let url = tab.visibleURL {
+      toolbarViewModel.url = url
+    }
+  }
+
+  func tabDidStartLoading(_ tab: some TabState) {
+    toolbarViewModel.isLoading = true
+  }
+
+  func tabDidStopLoading(_ tab: some TabState) {
+    toolbarViewModel.isLoading = false
+  }
+
+  func tabDidChangeLoadProgress(_ tab: some TabState) {
+    toolbarViewModel.loadingProgress = tab.estimatedProgress
+  }
+
+  func tabDidChangeBackForwardState(_ tab: some TabState) {
+    toolbarViewModel.updateBackForwardActionStatus(for: tab)
+  }
+
+  func tabWillBeDestroyed(_ tab: some TabState) {
+    tab.removeObserver(self)
+  }
+}
+
+// MARK: - TabDelegate
+extension QuickViewController: TabDelegate {
+  func tab(
+    _ tab: some TabState,
+    createNewTabWithRequest request: URLRequest,
+    isUserInitiated: Bool
+  ) -> (any TabState)? {
+    // window.open should open in a regular tab
+    dismiss(animated: true) { [weak self] in
+      self?.onOpenInNewTab?(request)
+    }
+    return nil
   }
 }
