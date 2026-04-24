@@ -105,6 +105,7 @@ import org.chromium.chrome.browser.omnibox.DeferredIMEWindowInsetApplicationCall
 import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.chrome.browser.omnibox.LocationBarEmbedder;
 import org.chromium.chrome.browser.omnibox.LocationBarEmbedderUiOverrides;
+import org.chromium.chrome.browser.omnibox.LocationBarFocusScrimHandler;
 import org.chromium.chrome.browser.omnibox.LocationBarLayout;
 import org.chromium.chrome.browser.omnibox.OmniboxChipManager;
 import org.chromium.chrome.browser.omnibox.OverrideUrlLoadingDelegate;
@@ -1831,7 +1832,8 @@ public class BytecodeTest {
                         Function.class,
                         SnackbarManager.class,
                         View.class,
-                        OmniboxChipManager.class));
+                        OmniboxChipManager.class,
+                        LocationBarFocusScrimHandler.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/LocationBarMediator",
@@ -1857,7 +1859,8 @@ public class BytecodeTest {
                         PageZoomIndicatorCoordinator.class,
                         FuseboxCoordinator.class,
                         LocationBarEmbedder.class,
-                        OmniboxChipManager.class));
+                        OmniboxChipManager.class,
+                        LocationBarFocusScrimHandler.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/AppHooks",
