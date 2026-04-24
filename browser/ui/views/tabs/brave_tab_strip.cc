@@ -382,6 +382,11 @@ TabContainer* BraveTabStrip::GetTabContainerForTesting() {
   return tab_container_.get();  // IN-TEST
 }
 
+void BraveTabStrip::InvalidateTabContainerLayout() {
+  tab_container_->InvalidateIdealBounds();
+  tab_container_->InvalidateLayout();
+}
+
 bool BraveTabStrip::ShouldPaintTabAccent(const Tab* tab) const {
 #if BUILDFLAG(ENABLE_CONTAINERS)
   if (!base::FeatureList::IsEnabled(containers::features::kContainers)) {
