@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/ad_units/new_tab_page_ad/new_tab_page_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_handler.h"
-#include "brave/components/brave_ads/core/internal/catalog/catalog.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_resource.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_processor.h"
@@ -81,7 +81,7 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
   void OnDidNotLandOnPage(int32_t tab_id, const AdInfo& ad) override;
   void OnCanceledPageLand(int32_t tab_id, const AdInfo& ad) override;
 
-  Catalog catalog_;
+  CatalogResource catalog_resource_;
 
   CreativeAdCache creative_ad_cache_;
 

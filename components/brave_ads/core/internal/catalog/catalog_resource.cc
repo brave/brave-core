@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/catalog/catalog.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_resource.h"
 
 #include "base/check.h"
 #include "base/functional/bind.h"
@@ -31,20 +31,20 @@ bool DoesRequireResource() {
 
 }  // namespace
 
-Catalog::Catalog() {
+CatalogResource::CatalogResource() {
   ads_client_observation_.Observe(&GetAdsClient());
   database_manager_observation_.Observe(&DatabaseManager::GetInstance());
 }
 
-Catalog::~Catalog() = default;
+CatalogResource::~CatalogResource() = default;
 
-void Catalog::AddObserver(CatalogObserver* const observer) {
+void CatalogResource::AddObserver(CatalogObserver* const observer) {
   CHECK(observer);
 
   observers_.AddObserver(observer);
 }
 
-void Catalog::RemoveObserver(CatalogObserver* const observer) {
+void CatalogResource::RemoveObserver(CatalogObserver* const observer) {
   CHECK(observer);
 
   observers_.RemoveObserver(observer);
@@ -52,17 +52,17 @@ void Catalog::RemoveObserver(CatalogObserver* const observer) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Catalog::Initialize() {
+void CatalogResource::Initialize() {
   MaybeRequireCatalog();
   MaybeFetchCatalog();
 }
 
-void Catalog::MaybeRequireCatalog() {
+void CatalogResource::MaybeRequireCatalog() {
   DoesRequireResource() ? InitializeCatalogUrlRequest()
                         : ShutdownCatalogUrlRequest();
 }
 
-void Catalog::InitializeCatalogUrlRequest() {
+void CatalogResource::InitializeCatalogUrlRequest() {
   if (!catalog_url_request_) {
     BLOG(1, "Initialize catalog URL request");
     catalog_url_request_ = std::make_unique<CatalogUrlRequest>();
@@ -70,7 +70,7 @@ void Catalog::InitializeCatalogUrlRequest() {
   }
 }
 
-void Catalog::ShutdownCatalogUrlRequest() {
+void CatalogResource::ShutdownCatalogUrlRequest() {
   if (catalog_url_request_) {
     catalog_url_request_.reset();
     BLOG(1, "Shutdown catalog URL request");
@@ -79,25 +79,25 @@ void Catalog::ShutdownCatalogUrlRequest() {
   }
 }
 
-void Catalog::MaybeFetchCatalog() const {
+void CatalogResource::MaybeFetchCatalog() const {
   if (catalog_url_request_) {
     catalog_url_request_->PeriodicallyFetch();
   }
 }
 
-void Catalog::NotifyDidFetchCatalog(const CatalogInfo& catalog) {
+void CatalogResource::NotifyDidFetchCatalog(const CatalogInfo& catalog) {
   observers_.Notify(&CatalogObserver::OnDidFetchCatalog, catalog);
 }
 
-void Catalog::NotifyFailedToFetchCatalog() {
+void CatalogResource::NotifyFailedToFetchCatalog() {
   observers_.Notify(&CatalogObserver::OnFailedToFetchCatalog);
 }
 
-void Catalog::OnNotifyDidInitializeAds() {
+void CatalogResource::OnNotifyDidInitializeAds() {
   Initialize();
 }
 
-void Catalog::OnNotifyPrefDidChange(const std::string& path) {
+void CatalogResource::OnNotifyPrefDidChange(const std::string& path) {
   if (DoesMatchUserHasJoinedBraveRewardsPrefPath(path) ||
       DoesMatchUserHasOptedInToNotificationAdsPrefPath(path)) {
     // This condition should include all the preferences that are present in the
@@ -106,7 +106,7 @@ void Catalog::OnNotifyPrefDidChange(const std::string& path) {
   }
 }
 
-void Catalog::OnDidFetchCatalog(const CatalogInfo& catalog) {
+void CatalogResource::OnDidFetchCatalog(const CatalogInfo& catalog) {
   SetCatalogLastUpdated(base::Time::Now());
 
   // Update the ping after fetching, even if saving fails or the catalog is
@@ -117,12 +117,13 @@ void Catalog::OnDidFetchCatalog(const CatalogInfo& catalog) {
     return BLOG(1, "Catalog id " << catalog.id << " is up to date");
   }
 
-  SaveCatalog(catalog, base::BindOnce(&Catalog::OnDidFetchCatalogCallback,
-                                      weak_factory_.GetWeakPtr(), catalog));
+  SaveCatalog(catalog,
+              base::BindOnce(&CatalogResource::OnDidFetchCatalogCallback,
+                             weak_factory_.GetWeakPtr(), catalog));
 }
 
-void Catalog::OnDidFetchCatalogCallback(const CatalogInfo& catalog,
-                                        bool success) {
+void CatalogResource::OnDidFetchCatalogCallback(const CatalogInfo& catalog,
+                                                bool success) {
   if (success) {
     NotifyDidFetchCatalog(catalog);
   } else {
@@ -130,11 +131,12 @@ void Catalog::OnDidFetchCatalogCallback(const CatalogInfo& catalog,
   }
 }
 
-void Catalog::OnFailedToFetchCatalog() {
+void CatalogResource::OnFailedToFetchCatalog() {
   NotifyFailedToFetchCatalog();
 }
 
-void Catalog::OnDidMigrateDatabase(int /*from_version*/, int /*to_version*/) {
+void CatalogResource::OnDidMigrateDatabase(int /*from_version*/,
+                                           int /*to_version*/) {
   ResetCatalog(/*intentional*/ base::DoNothing());
 }
 
