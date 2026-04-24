@@ -5,31 +5,12 @@
 
 #include "brave/components/brave_ads/browser/application_state/application_state_monitor.h"
 
-#include <cstddef>
-
-#include "brave/components/brave_ads/browser/application_state/application_state_observer.h"
+#include "brave/components/brave_ads/browser/application_state/test/test_application_state_observer.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
 namespace brave_ads {
-
-namespace {
-
-class TestApplicationStateObserver : public ApplicationStateObserver {
- public:
-  void OnBrowserDidBecomeActive() override { ++foreground_count_; }
-  void OnBrowserDidResignActive() override { ++background_count_; }
-
-  size_t foreground_count() const { return foreground_count_; }
-  size_t background_count() const { return background_count_; }
-
- private:
-  size_t foreground_count_ = 0;
-  size_t background_count_ = 0;
-};
-
-}  // namespace
 
 class BraveAdsApplicationStateMonitorTest : public testing::Test,
                                             public ApplicationStateMonitor {

@@ -16,3 +16,14 @@ source_set("application_state") {
 
   public_deps = [ "//base" ]
 }
+
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "test/test_application_state_observer.cc",
+    "test/test_application_state_observer.h",
+  ]
+
+  public_deps = [ ":application_state" ]
+}
