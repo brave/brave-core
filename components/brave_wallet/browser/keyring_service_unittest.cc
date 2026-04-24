@@ -4435,7 +4435,7 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest,
         }
       }));
 
-  EXPECT_TRUE(RestoreWallet(&service, saved_mnemonic(), "brave1", false));
+  ASSERT_TRUE(RestoreWallet(&service, saved_mnemonic(), "brave1", false));
   run_loop.Run();
   EXPECT_THAT(requested_addresses, ElementsAreArray(&saved_addresses()[1], 5));
   requested_addresses.clear();
@@ -4446,16 +4446,12 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest,
   NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
 
   EXPECT_CALL(observer, AccountsChanged()).Times(2);
-  base::RunLoop import_loop;
+  TestFuture<bool, std::optional<std::string>> import_future;
   brave_wallet_service.ImportFromExternalWallet(
       mojom::ExternalWalletType::MetaMask, "brave1", "brave1",
-      base::BindLambdaForTesting(
-          [&](bool success, const std::optional<std::string>& err) {
-            EXPECT_TRUE(success);
-            EXPECT_FALSE(err.has_value());
-            import_loop.Quit();
-          }));
-  import_loop.Run();
+      import_future.GetCallback<bool, const std::optional<std::string>&>());
+  EXPECT_TRUE(import_future.Get<0>());
+  EXPECT_FALSE(import_future.Get<1>().has_value());
   observer.WaitAndVerify();
 
   std::vector<mojom::AccountInfoPtr> account_infos =
