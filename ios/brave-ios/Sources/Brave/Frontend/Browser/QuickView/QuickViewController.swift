@@ -5,9 +5,11 @@
 
 import BraveCore
 import BraveShields
+import BraveUI
 import Data
 import Shared
 import SnapKit
+import SwiftUI
 import UIKit
 import Web
 import WebKit
@@ -16,13 +18,25 @@ class QuickViewController: UIViewController {
   private let url: URL
   private weak var parentTab: (any TabState)?
   private var currentTab: (any TabState)?
-  private let toolbar = QuickViewToolbar()
+  private let privateBrowsingManager: PrivateBrowsingManager
+  private let toolbarViewModel: QuickViewToolbarModel
+  private lazy var toolbarHostingController = UIHostingController(
+    rootView: QuickViewToolbarView(viewModel: toolbarViewModel)
+  )
 
-  init(url: URL, for tab: some TabState) {
+  init(
+    url: URL,
+    for tab: some TabState,
+    privateBrowsingManager: PrivateBrowsingManager
+  ) {
     self.url = url
     self.parentTab = tab
+    self.toolbarViewModel = QuickViewToolbarModel(url: url)
+    self.privateBrowsingManager = privateBrowsingManager
     super.init(nibName: nil, bundle: nil)
     modalPresentationStyle = .fullScreen
+
+    updateViewModel()
   }
 
   @available(*, unavailable)
@@ -72,33 +86,46 @@ class QuickViewController: UIViewController {
       }
     }
 
-    // Setup UI layout first
     setupUI()
 
     currentTab.loadRequest(URLRequest(url: url))
+  }
+
+  private func updateViewModel() {
+    toolbarViewModel.onActionButton = { [weak self] button in
+      switch button {
+      case .close:
+        self?.dismiss(animated: true)
+      case .shield, .refresh, .playlist, .readerMode,
+        .translate, .back, .share, .openTab:
+        break
+      }
+    }
+    // TODO: https://github.com/brave/brave-browser/issues/53567
+    toolbarViewModel.secondaryTopButton = .playlist
   }
 
   private func setupUI() {
     guard let currentTab = currentTab else {
       return
     }
-    view.backgroundColor = .braveGroupedBackground
+
+    view.backgroundColor = privateBrowsingManager.browserColors.chromeBackground
     view.addSubview(currentTab.view)
-    view.addSubview(toolbar)
+
+    toolbarHostingController.view.backgroundColor = .clear
+    addChild(toolbarHostingController)
+    view.addSubview(toolbarHostingController.view)
+    toolbarHostingController.didMove(toParent: self)
+
     currentTab.view.snp.makeConstraints {
-      $0.top.leading.trailing.equalTo(view)
-      $0.bottom.equalTo(toolbar.snp.top)
+      $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+      $0.leading.trailing.equalTo(view)
+      $0.bottom.equalTo(toolbarHostingController.view.snp.top)
     }
-    toolbar.snp.makeConstraints {
+    toolbarHostingController.view.snp.makeConstraints {
       $0.leading.trailing.equalTo(view)
       $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
-      $0.height.equalTo(120)
     }
-
-    toolbar.onClose = { [weak self] in
-      self?.dismiss(animated: true)
-    }
-
-    toolbar.updateURL(url)
   }
 }

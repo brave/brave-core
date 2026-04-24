@@ -9487,3 +9487,78 @@ extension Strings {
     )
   }
 }
+
+// MARK: - QuickView
+extension Strings {
+  public static let quickViewShieldAccessibilityLabel = NSLocalizedString(
+    "quickview.shield.accessibility.label",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Shield",
+    comment:
+      "Accessibility text for an icon button which will open shield screen in QuickView mode."
+  )
+
+  public static let quickViewPlaylistAccessibilityLabel = NSLocalizedString(
+    "quickview.playlist.accessibility.label",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Add to Playlist",
+    comment:
+      "Accessibility text for an icon button which will add media source to Playlist in QuickView mode."
+  )
+
+  public static let quickViewReaderModeAccessibilityLabel = NSLocalizedString(
+    "quickview.reader.mode.accessibility.label",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Enable Reader Mode",
+    comment:
+      "Accessibility text for an icon button which will enable reader mode for the current page in QuickView mode."
+  )
+
+  public static let quickViewTranslateAccessibilityLabel = NSLocalizedString(
+    "quickview.translate.accessibility.label",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Enable Translate",
+    comment:
+      "Accessibility text for an icon button which will translate the current page in QuickView mode."
+  )
+
+  public static let quickViewRefreshAccessibilityLabel = NSLocalizedString(
+    "quickview.refresh.accessibility.label",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Refresh",
+    comment:
+      "Accessibility text for an icon button which will refresh the current page in QuickView mode."
+  )
+
+  public static let quickViewBackAccessibilityLabel = NSLocalizedString(
+    "quickview.back.accessibility.label",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Previous Page",
+    comment:
+      "Accessibility text for an icon button which will go back to the previous page in QuickView mode."
+  )
+
+  public static let quickViewShareAccessibilityLabel = NSLocalizedString(
+    "quickview.share.accessibility.label",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Share",
+    comment:
+      "Accessibility text for an icon button which will share the current page in QuickView mode."
+  )
+
+  public static let quickViewOpenTabAccessibilityLabel = NSLocalizedString(
+    "quickview.open.tab.accessibility.label",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Open in tab",
+    comment:
+      "Accessibility text for an icon button which will exit QuickView mode and open the current page in a regular tab."
+  )
+}
