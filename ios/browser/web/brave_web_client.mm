@@ -111,12 +111,14 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
           GetInstance());
   if (base::FeatureList::IsEnabled(
           brave::features::kUseChromiumWebViewsAutofill)) {
-    features.push_back(
-        password_manager::PasswordManagerJavaScriptFeature::GetInstance());
+    // Order matters for these scripts, `PasswordManagerJavaScriptFeature` must
+    // be _after_ the autofill features for it to function correctly.
     features.push_back(autofill::AutofillJavaScriptFeature::GetInstance());
     features.push_back(autofill::FormHandlersJavaScriptFeature::GetInstance());
     features.push_back(
         autofill::SuggestionControllerJavaScriptFeature::GetInstance());
+    features.push_back(
+        password_manager::PasswordManagerJavaScriptFeature::GetInstance());
   }
   if (base::FeatureList::IsEnabled(
           brave::features::kUseProfileWebViewConfiguration)) {
