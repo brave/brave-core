@@ -399,7 +399,7 @@ program
   .option(
     '--android_test_emulator_name <emulator_name',
     'set name of the Android emulator for tests',
-    'android_33_google_atd_x64',
+    'android_33_google_apis_x64',
   )
   .option(
     '--use_remoteexec [arg]',

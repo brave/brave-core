@@ -63,8 +63,7 @@ class ContentAgentToolProvider : public ToolProvider,
   friend class ContentAgentToolProviderTest;
   friend class ContentAgentToolProviderBrowserTest;
 
-  void OnActorTaskStateChanged(actor::TaskId task_id,
-                               actor::ActorTask::State task_state);
+  void OnActorTaskStateChanged(actor::ActorTask& task);
 
   void CreateTools();
 
@@ -72,8 +71,6 @@ class ContentAgentToolProvider : public ToolProvider,
                       actor::mojom::ActionResultPtr result);
   void OnActionsFinished(
       Tool::UseToolCallback callback,
-      actor::mojom::ActionResultCode result_code,
-      std::optional<size_t> index_of_failed_action,
       std::vector<actor::ActionResultWithLatencyInfo> action_results);
   void ReceivedAnnotatedPageContent(
       Tool::UseToolCallback callback,

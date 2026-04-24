@@ -28,6 +28,18 @@ BASE_FEATURE(kUpgradeWhenIdle,
              base::FEATURE_DISABLED_BY_DEFAULT);
 }
 
+namespace {
+
+bool UsesOmaha4() {
+#if BUILDFLAG(ENABLE_OMAHA4)
+  return brave_updater::ShouldUseOmaha4();
+#else
+  return false;
+#endif
+}
+
+}  // namespace
+
 BraveBrowserMainPartsMac::BraveBrowserMainPartsMac(bool is_integration_test,
                                                    StartupData* startup_data)
     : ChromeBrowserMainPartsMac(is_integration_test, startup_data) {}
@@ -37,13 +49,19 @@ BraveBrowserMainPartsMac::~BraveBrowserMainPartsMac() = default;
 void BraveBrowserMainPartsMac::PreCreateMainMessageLoop() {
   ChromeBrowserMainPartsMac::PreCreateMainMessageLoop();
 
-  bool use_omaha4 = false;
-#if BUILDFLAG(ENABLE_OMAHA4)
-  use_omaha4 = brave_updater::ShouldUseOmaha4();
-#endif
+#if BUILDFLAG(ENABLE_SPARKLE)
+  if (!UsesOmaha4()) {
+    // It would be a no-op if updates are disabled.
+    [[SparkleGlue sharedSparkleGlue] registerWithSparkle];
+  }
+#endif  // BUILDFLAG(ENABLE_SPARKLE)
+}
+
+int BraveBrowserMainPartsMac::PreMainMessageLoopRun() {
+  int result = ChromeBrowserMainPartsMac::PreMainMessageLoopRun();
 
   if (base::FeatureList::IsEnabled(brave::kUpgradeWhenIdle)) {
-    if (use_omaha4) {
+    if (UsesOmaha4()) {
       upgrade_when_idle_ = std::make_unique<brave::UpgradeWhenIdle>(
           // It's OK to pass profile_manager() here because it stays constant
           // until we reset upgrade_when_idle_ in PostMainMessageLoopRun below.
@@ -61,12 +79,7 @@ void BraveBrowserMainPartsMac::PreCreateMainMessageLoop() {
     }
   }
 
-#if BUILDFLAG(ENABLE_SPARKLE)
-  if (!use_omaha4) {
-    // It would be a no-op if updates are disabled.
-    [[SparkleGlue sharedSparkleGlue] registerWithSparkle];
-  }
-#endif  // BUILDFLAG(ENABLE_SPARKLE)
+  return result;
 }
 
 void BraveBrowserMainPartsMac::PostProfileInit(Profile* profile,

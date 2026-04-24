@@ -1,8 +1,8 @@
 diff --git a/components/feature_engagement/public/feature_list.h b/components/feature_engagement/public/feature_list.h
-index 52849ba8f9a612f1233871b1a3061841bf171e66..c16edf0968d3a29ec2405c7bf15dd4b4b289470b 100644
+index 9226cd25d0b03ffd1b806a14ae6e3568e201aece..0ab999b748dfbc6fabc16a9388b44e2cb41c6a74 100644
 --- a/components/feature_engagement/public/feature_list.h
 +++ b/components/feature_engagement/public/feature_list.h
-@@ -573,6 +573,7 @@ DEFINE_VARIATION_PARAM(kIPHiOSTabGroupsDesktopFeature,
+@@ -580,6 +580,7 @@ DEFINE_VARIATION_PARAM(kIPHiOSTabGroupsDesktopFeature,
  DEFINE_VARIATION_PARAM(kIPHiOSPriceTrackingDesktopFeature,
                         "IPH_iOSPriceTrackingDesktop");
  #endif  // !BUILDFLAG(IS_ANDROID)
@@ -10,11 +10,11 @@ index 52849ba8f9a612f1233871b1a3061841bf171e66..c16edf0968d3a29ec2405c7bf15dd4b4
  
  #if !BUILDFLAG(IS_IOS)
  DEFINE_VARIATION_PARAM(kIPHResumptionRailFeature, "IPH_ResumptionRail");
-@@ -583,6 +584,7 @@ DEFINE_VARIATION_PARAM(kIPHResumptionRailFeature, "IPH_ResumptionRail");
- // are possible to enable on their own in demo mode.
+@@ -591,6 +592,7 @@ DEFINE_VARIATION_PARAM(kIPHResumptionRailFeature, "IPH_ResumptionRail");
  inline constexpr flags_ui::FeatureEntry::FeatureVariation
      kIPHDemoModeChoiceVariations[] = {
+ // clang-format off
 +        BRAVE_FEATURE_ENGAGEMENT_VARIATION_ENTRIES
  #if BUILDFLAG(IS_ANDROID)
-         VARIATION_ENTRY(kIPHAccountSettingsHistorySync),
-         VARIATION_ENTRY(
+ // keep-sorted start case=no
+ // VARIATION_ENTRY_ANDROID_START

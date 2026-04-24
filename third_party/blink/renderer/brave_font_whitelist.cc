@@ -1983,7 +1983,7 @@ bool AllowFontByFamilyName(const blink::AtomicString& family_name,
   if (fontWhitelist.empty()) {
     return true;
   }
-  std::string lower_ascii_name = family_name.LowerASCII().Ascii();
+  std::string lower_ascii_name = family_name.ToAsciiLower().Ascii();
   if (std::ranges::binary_search(fontWhitelist, lower_ascii_name)) {
     return true;
   }
@@ -2004,7 +2004,7 @@ bool AllowFontByFamilyName(const blink::AtomicString& family_name,
 }
 
 bool IsFontAllowedForFarbling(const blink::AtomicString& family_name) {
-  std::string lower_ascii_name = family_name.LowerASCII().Ascii();
+  std::string lower_ascii_name = family_name.ToAsciiLower().Ascii();
   return kFontFarblingSet.contains(lower_ascii_name);
 }
 

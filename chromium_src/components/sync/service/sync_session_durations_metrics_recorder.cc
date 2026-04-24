@@ -5,16 +5,19 @@
 
 #include "components/sync/service/sync_session_durations_metrics_recorder.h"
 
+#include "base/check_deref.h"
 #include "base/notreached.h"
 
 namespace syncer {
 
 SyncSessionDurationsMetricsRecorder::SyncSessionDurationsMetricsRecorder(
     SyncService* sync_service,
-    signin::IdentityManager* identity_manager)
+    signin::IdentityManager* identity_manager,
+    metrics::ProfileMetricsService* profile_metrics_service)
     : sync_service_(sync_service),
       identity_manager_(identity_manager),
-      history_sync_recorder_(sync_service) {}
+      history_sync_recorder_(sync_service, profile_metrics_service),
+      profile_metrics_service_(CHECK_DEREF(profile_metrics_service)) {}
 
 SyncSessionDurationsMetricsRecorder::~SyncSessionDurationsMetricsRecorder() {}
 

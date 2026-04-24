@@ -28,7 +28,6 @@
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/brave_policy/ad_block_only_mode/ad_block_only_mode_policy_manager.h"
-#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -79,6 +78,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/components/tor/brave_tor_client_updater.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/pref_names.h"
@@ -146,22 +146,11 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
   g_browser_process = this;
   g_brave_browser_process = this;
 
-  // early initialize referrals
-  brave_referrals_service();
-
   // Disabled on mobile platforms, see for instance issues/6176
   // Create P3A Service early to catch more histograms. The full initialization
   // should be started once browser process impl is ready.
   p3a_service();
   histogram_braveizer_ = p3a::HistogramsBraveizer::Create();
-
-#if BUILDFLAG(ENABLE_BRAVE_ADS)
-  // initialize ads stats helper
-  ads_brave_stats_helper();
-#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
-
-  // early initialize brave stats
-  brave_stats_updater();
 
   // early initialize misc metrics
   process_misc_metrics();
@@ -249,10 +238,21 @@ void BraveBrowserProcessImpl::StartTearDown() {
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
   ai_chat_agent_profile_manager_.reset();
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  // Reset WalletDataFilesInstaller to prevent dangling pointer to
+  // CrxUpdateService. WalletDataFilesInstaller instance is a static
+  // base::NoDestructor<> and makes use of
+  // component_updater::ComponentUpdateService::Observer, so it needs to be
+  // reset before the CrxUpdateService is destroyed.
+  brave_wallet::WalletDataFilesInstaller::GetInstance().Reset();
+#endif
   // Reset BraveOriginPolicyManager to prevent dangling pointer to local_state_
   brave_origin::BraveOriginPolicyManager::GetInstance()->Shutdown();
   brave_policy::AdBlockOnlyModePolicyManager::GetInstance()->Shutdown();
   brave_sync::NetworkTimeHelper::GetInstance()->Shutdown();
+#if BUILDFLAG(ENABLE_TOR)
+  TorProfileManager::GetInstance().Shutdown();
+#endif
   BrowserProcessImpl::StartTearDown();
 }
 

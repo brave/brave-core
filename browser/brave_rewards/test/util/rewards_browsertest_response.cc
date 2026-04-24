@@ -60,8 +60,7 @@ std::string GetPublisherChannelResponse(
     bool use_alternate_publisher_list) {
   std::string key;
   for (const auto& pair : prefix_map) {
-    std::string hex = base::ToLowerASCII(
-        base::HexEncode(pair.first.data(), pair.first.size()));
+    std::string hex = base::HexEncodeLower(pair.first);
     if (hex.find(prefix) == 0) {
       key = pair.second;
       break;

@@ -488,31 +488,6 @@ const util = {
     Log.progressFinish('touch original files overridden by chromium_src')
   },
 
-  touchGsutilChangeLogFile: () => {
-    // Chromium team confirmed that ChangeLog file was likely removed by accident
-    // https://chromium-review.googlesource.com/c/catapult/+/4567074?tab=comments
-
-    // However this is just a temp solution. This file is not
-    // used in Chromium tests, so eventually we should find out what is the
-    // difference in the way we run the tests. Follow up issue
-    // https://github.com/brave/brave-browser/issues/31641
-    console.log('touch gsutil ChangeLog file...')
-
-    const changeLogFile = path.join(
-      config.srcDir,
-      'third_party',
-      'catapult',
-      'third_party',
-      'gsutil',
-      'third_party',
-      'mock',
-      'ChangeLog',
-    )
-    if (!fs.existsSync(changeLogFile)) {
-      fs.writeFileSync(changeLogFile, '')
-    }
-  },
-
   mergeWithDefault: (options) => {
     return Object.assign({}, config.defaultOptions, options)
   },

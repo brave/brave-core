@@ -119,7 +119,7 @@ class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
 
     // We need to prevent the wallet creation from being stuck waiting to
     // download a restrictions list that doesn't exist.
-    brave_wallet::WalletDataFilesInstaller::GetInstance().ResetForTesting();
+    brave_wallet::WalletDataFilesInstaller::GetInstance().Reset();
   }
 
   content::WebContents* web_contents() {

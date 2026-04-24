@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/api/developer_private/extension_info_generator.cc b/chrome/browser/extensions/api/developer_private/extension_info_generator.cc
-index 3905ec19874e708bfe4fa889b64050173e3595cf..f61cc0f405d43931342642a226f80e6333493dbf 100644
+index 3a4f7a305b2021cf26a4ffd6e5dd9480a5e36e34..774cdd3517f97243f4d583fbda3f46e25490d456 100644
 --- a/chrome/browser/extensions/api/developer_private/extension_info_generator.cc
 +++ b/chrome/browser/extensions/api/developer_private/extension_info_generator.cc
-@@ -710,6 +710,7 @@ void ExtensionInfoGenerator::FillExtensionInfo(const Extension& extension,
+@@ -711,6 +711,7 @@ void ExtensionInfoGenerator::FillExtensionInfo(const Extension& extension,
  #else
    info.incognito_access_pending_change = false;
  #endif

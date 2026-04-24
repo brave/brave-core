@@ -14,6 +14,7 @@ source_set("unit_tests") {
   sources = [
     "//brave/components/sync/service/brave_sync_auth_manager_unittest.cc",
     "//brave/components/sync/service/brave_sync_service_impl_unittest.cc",
+    "//brave/components/sync/service/brave_sync_user_settings_impl_unittest.cc",
   ]
 
   deps = [
@@ -30,6 +31,8 @@ source_set("unit_tests") {
     "//components/os_crypt/sync",
     "//components/os_crypt/sync:test_support",
     "//components/prefs",
+    "//components/prefs:test_support",
+    "//components/saved_tab_groups/public:prefs",
     "//components/signin/public/identity_manager:test_support",
     "//components/sync:test_support",
     "//components/sync/engine",

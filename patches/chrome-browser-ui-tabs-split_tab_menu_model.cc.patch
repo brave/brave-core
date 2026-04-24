@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/tabs/split_tab_menu_model.cc b/chrome/browser/ui/tabs/split_tab_menu_model.cc
-index 782da15b492fc4990807057a506473b77abdc6f8..cef41539f8a2b17d18aecac810278d3a405275d7 100644
+index 702745840296e66652f0e4f87c5c68a464d0a584..d6256d6afd4e7b3d4563d206b45f555398c23b3f 100644
 --- a/chrome/browser/ui/tabs/split_tab_menu_model.cc
 +++ b/chrome/browser/ui/tabs/split_tab_menu_model.cc
 @@ -79,6 +79,7 @@ std::string_view GetMetricsSuffixForCommand(
@@ -10,7 +10,7 @@ index 782da15b492fc4990807057a506473b77abdc6f8..cef41539f8a2b17d18aecac810278d3a
    }
  }
  
-@@ -247,6 +248,7 @@ void SplitTabMenuModel::ExecuteCommand(int command_id, int event_flags) {
+@@ -246,6 +247,7 @@ void SplitTabMenuModel::ExecuteCommand(int command_id, int event_flags) {
      case CommandId::kSendFeedback:
        SendFeedback();
        break;

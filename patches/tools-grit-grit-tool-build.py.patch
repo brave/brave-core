@@ -1,8 +1,8 @@
 diff --git a/tools/grit/grit/tool/build.py b/tools/grit/grit/tool/build.py
-index 06346a66be9ba66cbbd6a6aeeb342d117f2327b7..6783903d7d85eefa0a6aa575b5dac967e085acfd 100644
+index f3d1acbd47c47bbe4a4f55b9b9426ed358ab639b..bb67f88459b727c925e2d56a46632d343d6e786c 100644
 --- a/tools/grit/grit/tool/build.py
 +++ b/tools/grit/grit/tool/build.py
-@@ -673,3 +673,4 @@ Duplicate actual output files:
+@@ -753,3 +753,4 @@ Duplicate actual output files:
      dir = os.path.split(file)[0]
      if not os.path.exists(dir):
        os.makedirs(dir, exist_ok=True)

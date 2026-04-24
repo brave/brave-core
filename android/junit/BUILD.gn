@@ -106,8 +106,8 @@ if (is_android) {
     sources = [ "src/org/chromium/chrome/browser/rate/BraveAskPlayStoreRatingDialogTest.java" ]
 
     deps = [
-      "//brave/third_party/android_deps:com_google_android_play_review_java",
       "//chrome/android/junit:chrome_junit_tests_helper",
+      "//third_party/android_deps:com_google_android_play_review_java",
     ]
   }
 

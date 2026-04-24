@@ -22,7 +22,6 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.lens.LensController;
 import org.chromium.chrome.browser.locale.LocaleManager;
-import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
 import org.chromium.chrome.browser.omnibox.UrlBar.ScrollType;
 import org.chromium.chrome.browser.omnibox.fusebox.FuseboxCoordinator;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteCoordinator;
@@ -86,7 +85,6 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             Supplier<@Nullable ModalDialogManager> modalDialogManagerSupplier,
             @Nullable PageZoomIndicatorCoordinator pageZoomIndicatorCoordinator,
             FuseboxCoordinator fuseboxCoordinator,
-            @Nullable MultiInstanceManager multiInstanceManager,
             LocationBarEmbedder locationBarEmbedder,
             @Nullable OmniboxChipManager omniboxChipManager) {
         super(
@@ -110,7 +108,6 @@ public class BraveLocationBarMediator extends LocationBarMediator {
                 modalDialogManagerSupplier,
                 pageZoomIndicatorCoordinator,
                 fuseboxCoordinator,
-                multiInstanceManager,
                 locationBarEmbedder,
                 omniboxChipManager);
     }

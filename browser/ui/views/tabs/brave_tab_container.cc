@@ -1530,8 +1530,15 @@ int BraveTabContainer::GetUnpinnedTabsTotalHeight() const {
   }
 
   auto [first_slot_view, last_slot_view] = FindVisibleUnpinnedSlotViews();
+  if (!first_slot_view || !last_slot_view) {
+    // All tabs may already have data().pinned == true (set eagerly via
+    // TabModel::UpdateProperties during MoveTabsRecursive) while the layout
+    // helper still has a stale count. This can happen mid-notification when
+    // pinning a split - both tabs get UpdateProperties at once, but
+    // layout_helper_ is updated one notification at a time.
+    return 0;
+  }
   int total_height = 0;
-  CHECK(first_slot_view && last_slot_view);
 
   const gfx::Rect first_bounds = GetIdealBoundsOf(first_slot_view);
   const gfx::Rect last_bounds = GetIdealBoundsOf(last_slot_view);

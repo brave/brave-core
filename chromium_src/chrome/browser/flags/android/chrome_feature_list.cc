@@ -121,13 +121,3 @@
 #undef BRAVE_WEB_DISCOVERY_FLAG
 #undef BRAVE_VPN_FLAG
 #undef EMAIL_ALIASES_FLAG
-
-namespace chrome {
-namespace android {
-
-OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kMagicStackAndroid, base::FEATURE_DISABLED_BY_DEFAULT},
-}});
-
-}  // namespace android
-}  // namespace chrome

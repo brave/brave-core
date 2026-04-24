@@ -47,7 +47,7 @@ export interface DefaultBraveShieldsBrowserProxy {
 export class DefaultBraveShieldsBrowserProxyImpl
 implements DefaultBraveShieldsBrowserProxy {
   isAdControlEnabled () {
-    return sendWithPromise('isAdControlEnabled')
+    return sendWithPromise<boolean>('isAdControlEnabled')
   }
 
   setAdControlType (value: boolean) {
@@ -55,7 +55,7 @@ implements DefaultBraveShieldsBrowserProxy {
   }
 
   isFirstPartyCosmeticFilteringEnabled () {
-    return sendWithPromise('isFirstPartyCosmeticFilteringEnabled')
+    return sendWithPromise<boolean>('isFirstPartyCosmeticFilteringEnabled')
   }
 
   setCosmeticFilteringControlType (value: string) {
@@ -63,7 +63,7 @@ implements DefaultBraveShieldsBrowserProxy {
   }
 
   getCookieControlType () {
-    return sendWithPromise('getCookieControlType')
+    return sendWithPromise<string>('getCookieControlType')
   }
 
   setCookieControlType (value: string) {
@@ -71,7 +71,7 @@ implements DefaultBraveShieldsBrowserProxy {
   }
 
   getFingerprintingControlType () {
-    return sendWithPromise('getFingerprintingControlType')
+    return sendWithPromise<string>('getFingerprintingControlType')
   }
 
   setFingerprintingControlType (value: string) {
@@ -79,7 +79,7 @@ implements DefaultBraveShieldsBrowserProxy {
   }
 
   getFingerprintingBlockEnabled () {
-    return sendWithPromise('getFingerprintingBlockEnabled')
+    return sendWithPromise<boolean>('getFingerprintingBlockEnabled')
   }
 
   setFingerprintingBlockEnabled (value: boolean) {
@@ -87,7 +87,7 @@ implements DefaultBraveShieldsBrowserProxy {
   }
 
   getHttpsUpgradeControlType () {
-    return sendWithPromise('getHttpsUpgradeControlType')
+    return sendWithPromise<string>('getHttpsUpgradeControlType')
   }
 
   setHttpsUpgradeControlType (value: string) {
@@ -95,7 +95,7 @@ implements DefaultBraveShieldsBrowserProxy {
   }
 
   getNoScriptControlType () {
-    return sendWithPromise('getNoScriptControlType')
+    return sendWithPromise<boolean>('getNoScriptControlType')
   }
 
   setNoScriptControlType (value: boolean) {
@@ -103,7 +103,7 @@ implements DefaultBraveShieldsBrowserProxy {
   }
 
   getForgetFirstPartyStorageEnabled () {
-    return sendWithPromise('getForgetFirstPartyStorageEnabled')
+    return sendWithPromise<boolean>('getForgetFirstPartyStorageEnabled')
   }
 
   setForgetFirstPartyStorageEnabled (value: boolean) {
@@ -115,15 +115,15 @@ implements DefaultBraveShieldsBrowserProxy {
   }
 
   getContactInfo () {
-    return sendWithPromise('getContactInfo')
+    return sendWithPromise<ContactInfo>('getContactInfo')
   }
 
   getHideBlockAllCookieTogle () {
-    return sendWithPromise('getHideBlockAllCookieTogle')
+    return sendWithPromise<boolean>('getHideBlockAllCookieTogle')
   }
 
   getAllowElementBlockerInPrivateModeEnabled () {
-    return sendWithPromise('getAllowElementBlockerInPrivateModeEnabled')
+    return sendWithPromise<boolean>('getAllowElementBlockerInPrivateModeEnabled')
   }
   setAllowElementBlockerInPrivateModeEnabled (value: boolean) {
     chrome.send('setAllowElementBlockerInPrivateModeEnabled', [value])

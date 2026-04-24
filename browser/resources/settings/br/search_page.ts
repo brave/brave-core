@@ -15,7 +15,7 @@ import {
 
 import {SettingsSearchPageElement} from '../search_page/search_page.js'
 import {routes} from '../route.js'
-import {type Route, RouteObserverMixin, Router} from '../router.js'
+import {RouteObserverMixin, Router} from '../router.js'
 import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
 import {loadTimeData} from '../i18n_setup.js'
 
@@ -46,18 +46,26 @@ RegisterPolymerTemplateModifications({
       }
     }
 
-    const enginesSubpageTrigger =
-      templateContent.getElementById('enginesSubpageTrigger')
-    if (!enginesSubpageTrigger) {
-      console.error(`[Settings] Couldn't find enginesSubpageTrigger`)
+    const searchSettingsUpdateTemplate = templateContent.querySelector(
+      'template[is=dom-if][if="[[!searchSettingsUpdateEnabled_]]"]')
+    if (!searchSettingsUpdateTemplate) {
+      console.error(
+        `[Settings] Couldn't find searchSettingsUpdateEnabled_ template`)
     } else {
-      enginesSubpageTrigger.insertAdjacentHTML(
-        'beforebegin',
-        getTrustedHTML`
-          <settings-brave-search-page prefs="{{prefs}}">
-          </settings-brave-search-page>
-        `)
+      const enginesSubpageTrigger = searchSettingsUpdateTemplate.content.
+        getElementById('enginesSubpageTrigger')
+      if (!enginesSubpageTrigger) {
+        console.error(`[Settings] Couldn't find enginesSubpageTrigger`)
+      } else {
+        enginesSubpageTrigger.insertAdjacentHTML(
+          'beforebegin',
+          getTrustedHTML`
+            <settings-brave-search-page prefs="{{prefs}}">
+            </settings-brave-search-page>
+          `)
+      }
     }
+
     const searchEngineTitleElement =
       templateContent.querySelector('.default-search-engine')
     if (searchEngineTitleElement?.firstChild?.nodeType === Node.TEXT_NODE) {

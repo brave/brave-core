@@ -75,8 +75,6 @@ class DummyContentsData
   raw_ptr<content::WebContents> shared_contents_ = nullptr;
 
   bool stop_propagation_ = false;
-
-  std::unique_ptr<SharedPinnedTabDummyView> dummy_view_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -189,12 +187,7 @@ void DummyContentsData::SynchronizeURL() {
 }
 
 void DummyContentsData::ShowDummyView() {
-  if (!dummy_view_) {
-    dummy_view_ =
-        SharedPinnedTabDummyView::Create(shared_contents_, dummy_contents_);
-  }
-
-  dummy_view_->Install();
+  SharedPinnedTabDummyView::CreateAndInstall(shared_contents_, dummy_contents_);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(DummyContentsData);

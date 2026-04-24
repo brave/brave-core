@@ -36,7 +36,7 @@ public abstract class BraveTabCollectionTabModelImplBase extends TabModelJniBrid
                                                 BravePreferenceKeys
                                                         .BRAVE_TAB_GROUPS_ENABLED_DEFAULT_VALUE,
                                                 true))
-                && isTabModelRestored()) {
+                && isTabModelRestoredViaReflection()) {
             return true;
         }
         // Otherwise just call parent.
@@ -58,7 +58,7 @@ public abstract class BraveTabCollectionTabModelImplBase extends TabModelJniBrid
         return type == TabLaunchType.FROM_LINK || type == TabLaunchType.FROM_LONGPRESS_FOREGROUND;
     }
 
-    private boolean isTabModelRestored() {
+    private boolean isTabModelRestoredViaReflection() {
         @Nullable Boolean isRestored =
                 (Boolean)
                         BraveReflectionUtil.invokeMethod(

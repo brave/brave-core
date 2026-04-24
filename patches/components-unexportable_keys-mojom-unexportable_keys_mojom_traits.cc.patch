@@ -1,5 +1,5 @@
 diff --git a/components/unexportable_keys/mojom/unexportable_keys_mojom_traits.cc b/components/unexportable_keys/mojom/unexportable_keys_mojom_traits.cc
-index 157ec02a5182431ee55e01fe833ad59bb61076c9..adce9d11945c4c2fb9630b0a3bb19acb25653268 100644
+index 22910665d452c40e631b5b24fb6861f7ed8c88c2..0a8bcf8bd65eff64178332a1c509690c58280731 100644
 --- a/components/unexportable_keys/mojom/unexportable_keys_mojom_traits.cc
 +++ b/components/unexportable_keys/mojom/unexportable_keys_mojom_traits.cc
 @@ -29,6 +29,7 @@ EnumTraits<unexportable_keys::mojom::SignatureAlgorithm,

@@ -16,13 +16,10 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kDesktopPWAsTabStripSettings, base::FEATURE_ENABLED_BY_DEFAULT},
     {kHttpsFirstBalancedMode, base::FEATURE_DISABLED_BY_DEFAULT},
     {kIndigo, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kSCTAuditing, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kSCTAuditingHashdance, base::FEATURE_DISABLED_BY_DEFAULT},
 #if !BUILDFLAG(IS_ANDROID)
     {kTrustSafetySentimentSurvey, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTrustSafetySentimentSurveyV2, base::FEATURE_DISABLED_BY_DEFAULT},
-#endif
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-    {kShortcutsNotApps, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
 }});
 

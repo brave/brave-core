@@ -143,7 +143,7 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
 
     // We need to prevent the wallet creation from being stuck waiting to
     // download a restrictions list that doesn't exist.
-    WalletDataFilesInstaller::GetInstance().ResetForTesting();
+    WalletDataFilesInstaller::GetInstance().Reset();
 
     brave_wallet_service()->keyring_service()->CreateWallet("password_123",
                                                             base::DoNothing());

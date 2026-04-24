@@ -1,0 +1,10 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = 'Call BraveAdjustPreferredDataTypes to remove AUTOFILL_VALUABLE types from sync'
+re_pattern = '(SyncUserSettingsImpl::GetPreferredDataTypes[\s\S]+?)(\s+return types;\n})'
+re_flags = ['MULTILINE']
+replace = '\1\n  BraveAdjustPreferredDataTypes(&types);\2'

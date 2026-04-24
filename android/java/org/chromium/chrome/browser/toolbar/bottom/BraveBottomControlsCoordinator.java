@@ -22,6 +22,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.browser_controls.BottomControlsStacker;
+import org.chromium.chrome.browser.browser_controls.BottomControlsStacker.LayerType;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
@@ -75,6 +76,7 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
             FullscreenManager fullscreenManager,
             MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
             ScrollingBottomViewResourceFrameLayout root,
+            @LayerType int layerType,
             OneshotSupplier<BottomControlsContentDelegate> contentDelegateSupplier,
             TabObscuringHandler tabObscuringHandler,
             NonNullObservableSupplier<Boolean> overlayPanelVisibilitySupplier,
@@ -89,6 +91,7 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
                 fullscreenManager,
                 edgeToEdgeControllerSupplier,
                 root,
+                layerType,
                 contentDelegateSupplier,
                 tabObscuringHandler,
                 overlayPanelVisibilitySupplier,

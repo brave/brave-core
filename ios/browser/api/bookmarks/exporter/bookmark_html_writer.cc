@@ -273,13 +273,14 @@ class Writer : public base::RefCountedThreadSafe<Writer> {
   }
 
   // Writes raw text out returning true on success. This does not escape
-  // the text in anyway.
+  // the text in any way.
   bool Write(const std::string& text) {
-    if (!text.length())
+    if (text.empty()) {
       return true;
-    size_t wrote =
-        UNSAFE_TODO(file_->WriteAtCurrentPos(text.c_str(), text.length()));
-    bool result = (wrote == text.length());
+    }
+    std::optional<size_t> wrote =
+        file_->WriteAtCurrentPos(base::as_bytes(base::span(text)));
+    const bool result = wrote == text.length();
     if (!result) {
       PLOG(ERROR) << "Could not write text to " << path_;
       return false;

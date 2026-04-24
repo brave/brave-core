@@ -8,6 +8,7 @@
 # These tests fail because we disable prerender
 -All/PrerenderHostRegistryLimitGroupTest.*
 -PrerenderHandleImplTest.CallbackCalledOnFailure
+-PrerenderHandleImplTest.GetPrerenderHostId
 -PrerenderHandleImplTest.OnResponseHeadersReceived
 
 # These tests fail because we override FileSystemAccessHandleBase::DoMove to

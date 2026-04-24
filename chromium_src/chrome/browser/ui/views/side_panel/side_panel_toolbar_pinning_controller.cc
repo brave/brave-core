@@ -16,7 +16,7 @@
 void SidePanelToolbarPinningController::UpdateActiveState(
     SidePanelEntryKey key,
     bool show_active_in_toolbar) {
-  if (!browser_view_->toolbar()->pinned_toolbar_actions_container()) {
+  if (!browser_view_->toolbar_button_provider()->GetPinnedToolbarActions()) {
     return;
   }
 

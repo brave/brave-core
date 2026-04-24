@@ -18,9 +18,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.chromium.base.Log;
+import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
-import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.ui.messages.R;
 import org.chromium.ui.base.WindowAndroid;
 
@@ -55,8 +55,14 @@ public class BraveSnackbarView extends SnackbarView {
             Snackbar snackbar,
             ViewGroup parentView,
             @Nullable WindowAndroid windowAndroid,
-            @Nullable EdgeToEdgeController edgeToEdgeSupplier) {
-        super(activity, manager, snackbar, parentView, windowAndroid, edgeToEdgeSupplier);
+            NonNullObservableSupplier<Integer> additionalBottomMarginPxSupplier) {
+        super(
+                activity,
+                manager,
+                snackbar,
+                parentView,
+                windowAndroid,
+                additionalBottomMarginPxSupplier);
     }
 
     /**

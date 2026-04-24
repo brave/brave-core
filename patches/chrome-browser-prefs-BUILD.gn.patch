@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/prefs/BUILD.gn b/chrome/browser/prefs/BUILD.gn
-index c9f76e7418faaa56ec5025d5689649a648f4d326..a2a5d01a92339eec4d94aa1a2049f1cde041675c 100644
+index 8d26ff42799fa78c02a2fb52c8c7785662de4180..3856cb5ff6505aa98a66bbdefe668bcace8d7d17 100644
 --- a/chrome/browser/prefs/BUILD.gn
 +++ b/chrome/browser/prefs/BUILD.gn
-@@ -170,6 +170,7 @@ source_set("impl") {
+@@ -180,6 +180,7 @@ source_set("impl") {
      "//services/preferences/tracked",
      "//services/preferences/tracked:features",
    ]
 +  import("//brave/browser/sources.gni") deps += brave_chrome_browser_prefs_impl_deps
  
-   if (enable_extensions_core) {
-     deps += [ "//extensions/common" ]
+   if (enable_print_preview) {
+     deps += [ "//chrome/browser/printing" ]

@@ -47,6 +47,7 @@ class RealboxHandler;
 class BraveNewTabPageHandler;
 
 class BraveNewTabUI : public ui::MojoWebUIController,
+                      public searchbox::mojom::PageHandlerFactory,
                       public brave_new_tab_page::mojom::PageHandlerFactory {
  public:
   BraveNewTabUI(content::WebUI* web_ui,
@@ -70,8 +71,10 @@ class BraveNewTabUI : public ui::MojoWebUIController,
       mojo::PendingReceiver<brave_new_tab_page::mojom::PageHandlerFactory>
           pending_receiver);
 
-  void BindInterface(mojo::PendingReceiver<searchbox::mojom::PageHandler>
-                         pending_page_handler);
+  // Instantiates the implementor of the searchbox::mojom::PageHandlerFactory
+  // mojo interface passing the pending receiver that will be internally bound.
+  void BindInterface(mojo::PendingReceiver<searchbox::mojom::PageHandlerFactory>
+                         pending_receiver);
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   void BindInterface(mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler>
@@ -84,6 +87,12 @@ class BraveNewTabUI : public ui::MojoWebUIController,
   GetContextualSessionHandle();
 
  private:
+  // searchbox::mojom::PageHandlerFactory:
+  void CreatePageHandler(
+      mojo::PendingRemote<searchbox::mojom::Page> pending_page,
+      mojo::PendingReceiver<searchbox::mojom::PageHandler> pending_page_handler)
+      override;
+
   // new_tab_page::mojom::PageHandlerFactory:
   void CreatePageHandler(
       mojo::PendingRemote<brave_new_tab_page::mojom::Page> pending_page,
@@ -101,6 +110,8 @@ class BraveNewTabUI : public ui::MojoWebUIController,
 
   std::unique_ptr<BraveNewTabPageHandler> page_handler_;
   std::unique_ptr<RealboxHandler> realbox_handler_;
+  mojo::Receiver<searchbox::mojom::PageHandlerFactory>
+      searchbox_page_factory_receiver_{this};
   mojo::Receiver<brave_new_tab_page::mojom::PageHandlerFactory>
       page_factory_receiver_;
   std::unique_ptr<ntp_background_images::NTPSponsoredRichMediaAdEventHandler>

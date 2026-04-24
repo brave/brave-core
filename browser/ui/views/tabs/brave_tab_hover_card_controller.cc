@@ -11,10 +11,10 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.h"
+#include "chrome/browser/ui/views/tabs/hovercard/tab_hover_card_controller.h"
+#include "chrome/browser/ui/views/tabs/hovercard/tab_hover_card_thumbnail_observer.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
-#include "chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h"
-#include "chrome/browser/ui/views/tabs/tab_hover_card_controller.h"
-#include "chrome/browser/ui/views/tabs/tab_hover_card_thumbnail_observer.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 
 BraveTabHoverCardController::~BraveTabHoverCardController() = default;

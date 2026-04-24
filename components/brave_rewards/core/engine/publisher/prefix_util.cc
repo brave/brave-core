@@ -23,7 +23,7 @@ std::string GetHashPrefixRaw(const std::string& publisher_key,
 std::string GetHashPrefixInHex(const std::string& publisher_key,
                                size_t prefix_size) {
   const std::string raw = GetHashPrefixRaw(publisher_key, prefix_size);
-  return base::HexEncode(raw.data(), raw.size());
+  return base::HexEncode(raw);
 }
 
 }  // namespace brave_rewards::internal::publisher

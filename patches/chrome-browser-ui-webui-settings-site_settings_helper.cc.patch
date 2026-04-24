@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index a37a4d23d7bee7b46f24c1bdb9d7072b1fb2820f..98fdb84587ccfdb279351e9597793b0f0f207847 100644
+index 42d603bb9dc9accf799f9409b8b4e35743e22db3..1d03fd8e6a754d8a908a00ba083835cc95b94882 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -258,6 +258,7 @@ constexpr auto kContentSettingsTypeGroupNames = std::to_array<
-     {ContentSettingsType::DEVICE_ATTRIBUTES, nullptr},
+@@ -261,6 +261,7 @@ constexpr auto kContentSettingsTypeGroupNames = std::to_array<
      {ContentSettingsType::PERMISSION_ACTIONS_HISTORY, nullptr},
      {ContentSettingsType::SUSPICIOUS_NOTIFICATION_SHOW_ORIGINAL, nullptr},
+     {ContentSettingsType::DEPRECATED_SUB_APP_INSTALLATION_PROMPTS, nullptr},
 +    BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
  });
  
  static_assert(
-@@ -532,6 +533,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -535,6 +536,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
@@ -18,7 +18,7 @@ index a37a4d23d7bee7b46f24c1bdb9d7072b1fb2820f..98fdb84587ccfdb279351e9597793b0f
    for (const auto& entry : kContentSettingsTypeGroupNames) {
      // Content setting types that aren't represented in the settings UI
      // will have `nullptr` as their `name`. However, converting `nullptr`
-@@ -546,6 +548,7 @@ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
+@@ -549,6 +551,7 @@ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
  }
  
  std::string_view ContentSettingsTypeToGroupName(ContentSettingsType type) {
@@ -26,7 +26,7 @@ index a37a4d23d7bee7b46f24c1bdb9d7072b1fb2820f..98fdb84587ccfdb279351e9597793b0f
    for (const auto& entry : kContentSettingsTypeGroupNames) {
      if (type == entry.type) {
        // Content setting types that aren't represented in the settings UI
-@@ -720,6 +723,7 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
+@@ -723,6 +726,7 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
  SiteSettingSource ProviderTypeToSiteSettingsSource(
      const ProviderType provider_type) {
    switch (provider_type) {
@@ -34,7 +34,7 @@ index a37a4d23d7bee7b46f24c1bdb9d7072b1fb2820f..98fdb84587ccfdb279351e9597793b0f
      case ProviderType::kWebuiAllowlistProvider:
      case ProviderType::kComponentExtensionProvider:
        return SiteSettingSource::kAllowlist;
-@@ -748,6 +752,7 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
+@@ -752,6 +756,7 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
  std::string_view ProviderToDefaultSettingSourceString(
      const ProviderType provider) {
    switch (provider) {
@@ -42,7 +42,7 @@ index a37a4d23d7bee7b46f24c1bdb9d7072b1fb2820f..98fdb84587ccfdb279351e9597793b0f
      case ProviderType::kPolicyProvider:
        return "policy";
      case ProviderType::kSupervisedProvider:
-@@ -872,6 +877,7 @@ base::DictValue GetExceptionForPage(
+@@ -877,6 +882,7 @@ base::DictValue GetExceptionForPage(
    exception.Set(kSource, SiteSettingSourceToString(source));
    exception.Set(kIncognito, incognito);
    exception.Set(kIsEmbargoed, is_embargoed);

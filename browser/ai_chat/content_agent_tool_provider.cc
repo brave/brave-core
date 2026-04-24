@@ -35,7 +35,9 @@
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/common/actor.mojom.h"
+#include "chrome/common/actor/action_result.h"
 #include "chrome/common/actor/task_id.h"
+#include "components/actor/task_source_info.h"
 #include "components/optimization_guide/content/browser/page_content_proto_provider.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
@@ -77,6 +79,8 @@ ContentAgentToolProvider::ContentAgentToolProvider(
   // not have access to any tabs previously acted on in the same conversation,
   // we should create a new task inside `ToolProvider::OnNewGenerationLoop`.
   task_id_ = actor_service_->CreateTask(
+      actor::TaskSourceInfo(actor::TaskSourceInfo::Client::kExperimentalActor,
+                            /*id=*/std::nullopt),
       AIChatEnterprisePolicyChecker::NoEnterprisePolicyChecker());
 
   actor_task_state_changed_subscription_ =
@@ -132,6 +136,8 @@ void ContentAgentToolProvider::StopAllTasks() {
   if (!task_id_.is_null()) {
     actor::TaskId stopping_task_id = std::move(task_id_);
     task_id_ = actor_service_->CreateTask(
+        actor::TaskSourceInfo(actor::TaskSourceInfo::Client::kExperimentalActor,
+                              /*id=*/std::nullopt),
         AIChatEnterprisePolicyChecker::NoEnterprisePolicyChecker());
     actor_service_->StopTask(stopping_task_id,
                              actor::ActorTask::StoppedReason::kTaskComplete);
@@ -212,12 +218,10 @@ void ContentAgentToolProvider::ExecuteActions(
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void ContentAgentToolProvider::OnActorTaskStateChanged(
-    actor::TaskId task_id,
-    actor::ActorTask::State task_state) {
-  DVLOG(4) << __func__ << " " << task_state;
-  if (!task_id_.is_null() && task_id_ == task_id &&
-      kActorStatesToNotify.contains(task_state)) {
+void ContentAgentToolProvider::OnActorTaskStateChanged(actor::ActorTask& task) {
+  DVLOG(4) << __func__ << " " << task.GetState();
+  if (!task_id_.is_null() && task_id_ == task.id() &&
+      kActorStatesToNotify.contains(task.GetState())) {
     NotifyTaskStateChanged();
   }
 }
@@ -238,9 +242,11 @@ void ContentAgentToolProvider::CreateTools() {
 
 void ContentAgentToolProvider::OnActionsFinished(
     Tool::UseToolCallback callback,
-    actor::mojom::ActionResultCode result_code,
-    std::optional<size_t> index_of_failed_action,
     std::vector<actor::ActionResultWithLatencyInfo> action_results) {
+  actor::mojom::ActionResultCode result_code =
+      actor::mojom::ActionResultCode::kOk;
+  std::optional<size_t> index_of_failed_action;
+  ExtractErrorResult(action_results, &result_code, index_of_failed_action);
   if (result_code == actor::mojom::ActionResultCode::kOk) {
     // Send current page content for result
 

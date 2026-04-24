@@ -34,11 +34,6 @@
 # disalow component installation.
 -AmountExtractionHeuristicRegexesInstallerPolicyTest.ComponentRegistered
 
-# This test fails because we disable omnibox::kDocumentProviderNoSyncRequirement
--DocumentProviderTest.CachingForSyncMatches
--DocumentProviderTest.IsDocumentProviderAllowed
--DocumentProviderTest.MaxMatches
-
 # This test crashes due to sequence check in BraveSearchProvider::DoHistoryQuery
 # https://github.com/brave/brave-browser/issues/47218
 -OmniboxTextUtilTest.AdjustTextForCopy
@@ -66,9 +61,6 @@
 
 # These tests fail because we disable commerce::kShoppingList
 -All/ShoppingServiceTest.TestShoppingList*/*
-
-# This test fails because we disable omnibox::kDocumentProviderNoSyncRequirement
--DocumentProviderTest.IsDocumentProviderAllowed
 
 # These tests fail because we override SyncAuthManager::DetermineAccountToUse.
 -SyncServiceImplStartupWithDetermineAccountTypeTest.StartupWithConsumerAccount
@@ -170,6 +162,12 @@
 
 # These tests fail because we disable kAimEnabled.
 -AimEligibilityServiceTest.*
+
+# These tests fail because the default search engine is Brave instead of Google.
+-DefaultSearchManagerTest.DefaultSearchOverridesIgnoredWhenFlagEnabled
+
+# This test fails because we disable Actor Safety Lists component.
+-ActorSafetyListsComponentInstallerPolicyTest.ComponentRegistered
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*

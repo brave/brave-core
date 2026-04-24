@@ -240,6 +240,8 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         removePreferenceIfPresent(PREF_ADVANCED_SECTION);
         removePreferenceIfPresent(PREF_PRIVACY);
         removePreferenceIfPresent(PREF_BRAVE_VPN_CALLOUT);
+        removePreferenceIfPresent(MainSettings.PREF_SETTINGS_PROMO_CARD);
+        removePreferenceIfPresent(MainSettings.PREF_MANAGE_SYNC);
 
         if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
             removePreferenceIfPresent(PREF_BRAVE_PLAYLIST);
@@ -686,6 +688,8 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_SEARCH_ENGINE));
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_DOWNLOADS));
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_SAFETY_HUB));
+                    indexData.removeEntry(getUniqueId(MainSettings.PREF_SETTINGS_PROMO_CARD));
+                    indexData.removeEntry(getUniqueId(MainSettings.PREF_MANAGE_SYNC));
                     indexData.removeEntry(
                             getUniqueId(MainSettings.PREF_ACCOUNT_AND_GOOGLE_SERVICES_SECTION));
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_GOOGLE_SERVICES));

@@ -8,12 +8,9 @@ package org.chromium.chrome.browser.multiwindow;
 import android.app.Activity;
 import android.content.Intent;
 
-import androidx.annotation.VisibleForTesting;
-
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Log;
 import org.chromium.build.annotations.NullMarked;
-import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager.PersistedInstanceType;
@@ -32,22 +29,28 @@ public class BraveMultiWindowUtils extends MultiWindowUtils {
         super();
     }
 
-    public boolean shouldShowEnableWindow(@Nullable Activity activity) {
-        return super.isOpenInOtherWindowSupported(activity) || super.canEnterMultiWindowMode();
+    public boolean shouldShowEnableWindow(Activity activity) {
+        return super.isLinkNavigationToOtherWindowSupported(activity)
+                || MultiWindowUtils.canEnterMultiWindowMode();
     }
 
     public static boolean shouldShowManageWindowsMenu() {
         return shouldEnableMultiWindows() && MultiWindowUtils.shouldShowManageWindowsMenu();
     }
 
-    @VisibleForTesting
-    public static Class<TabReparentingDelegate> getTabReparentingDelegateClass() {
-        return TabReparentingDelegate.class;
+    public static boolean isLinkNavigationToNewWindowSupported() {
+        return shouldEnableMultiWindows()
+                && MultiWindowUtils.isLinkNavigationToNewWindowSupported();
+    }
+
+    public static boolean isLinkNavigationToIncognitoWindowSupported() {
+        return shouldEnableMultiWindows()
+                && MultiWindowUtils.isLinkNavigationToIncognitoWindowSupported();
     }
 
     @Override
-    public boolean isOpenInOtherWindowSupported(@Nullable Activity activity) {
-        return shouldEnableMultiWindows() && super.isOpenInOtherWindowSupported(activity);
+    public boolean isLinkNavigationToOtherWindowSupported(Activity activity) {
+        return shouldEnableMultiWindows() && super.isLinkNavigationToOtherWindowSupported(activity);
     }
 
     @Override
@@ -57,9 +60,8 @@ public class BraveMultiWindowUtils extends MultiWindowUtils {
                 && super.isMoveToOtherWindowSupported(activity, tabModelSelector);
     }
 
-    @Override
-    public boolean canEnterMultiWindowMode() {
-        return shouldEnableMultiWindows() && super.canEnterMultiWindowMode();
+    public static boolean canEnterMultiWindowMode() {
+        return shouldEnableMultiWindows() && MultiWindowUtils.canEnterMultiWindowMode();
     }
 
     public static boolean shouldEnableMultiWindows() {

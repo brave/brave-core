@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/linux/common/wrapper b/chrome/installer/linux/common/wrapper
-index 0d79eaba3942f64cd3692b9b434e3dc3ec55004e..43084a84e8b38b58956c1aa4601c67952986df7e 100755
+index eb38e146d5f24e8f9b70457e8d337bfe2a5dbd2c..c6123bf2d09bfe890531e998f6c10a02dc0cedd3 100755
 --- a/chrome/installer/linux/common/wrapper
 +++ b/chrome/installer/linux/common/wrapper
-@@ -37,4 +37,4 @@ exec > >(exec cat)
+@@ -27,4 +27,4 @@ exec > >(exec cat)
  exec 2> >(exec cat >&2)
  
  # Note: exec -a below is a bashism.

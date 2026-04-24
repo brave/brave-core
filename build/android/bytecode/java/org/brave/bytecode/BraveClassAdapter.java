@@ -26,6 +26,7 @@ public class BraveClassAdapter {
         chain = new BraveAutocompleteMediatorBaseClassAdapter(chain);
         chain = new BraveAutocompleteMediatorClassAdapter(chain);
         chain = new BraveAutofillClientProviderUtilsClassAdapter(chain);
+        chain = new BraveAutofillPaymentMethodsFragmentBaseClassAdapter(chain);
         chain = new BraveBookmarkActivityClassAdapter(chain);
         chain = new BraveBookmarkBridgeClassAdapter(chain);
         chain = new BraveBookmarkDelegateClassAdapter(chain);
@@ -95,8 +96,10 @@ public class BraveClassAdapter {
         chain = new BraveMostVisitedTilesLayoutBaseClassAdapter(chain);
         chain = new BraveMostVisitedTilesMediatorClassAdapter(chain);
         chain = new BraveMultiInstanceManagerApi31ClassAdapter(chain);
+        chain = new BraveMultiInstanceOrchestratorImplClassAdapter(chain);
         chain = new BraveMultiWindowUtilsClassAdapter(chain);
         chain = new BraveNewTabPageClassAdapter(chain);
+        chain = new BraveNewTabPageCoordinatorClassAdapter(chain);
         chain = new BraveNewTabPageLayoutClassAdapter(chain);
         chain = new BraveNtpCustomizationUtilsClassAdapter(chain);
         chain = new BraveNotificationBuilderClassAdapter(chain);

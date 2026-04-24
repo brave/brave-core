@@ -40,7 +40,7 @@ std::string EncodeEvents(const UserActivityEventList& events) {
                  [](const auto& event) { return event.type; });
 
   const std::string encoded_eligible_events =
-      base::HexEncode(eligible_events.data(), eligible_events.size());
+      base::HexEncode(base::as_byte_span(eligible_events));
 
   return base::ToUpperASCII(encoded_eligible_events);
 }

@@ -49,7 +49,7 @@ IN_PROC_BROWSER_TEST_F(OmniboxAutocompleteTest, AutocompleteDisabledTest) {
       omnibox::kAutocompleteEnabled));
 
   omnibox_view()->SetUserText(u"foo", /* update_popup=*/true);
-  edit_model()->StartAutocomplete(false, false);
+  edit_model()->StartAutocomplete(false);
 
   // Check popup is opened and results are not empty.
   EXPECT_FALSE(location_bar_view()
@@ -65,7 +65,7 @@ IN_PROC_BROWSER_TEST_F(OmniboxAutocompleteTest, AutocompleteDisabledTest) {
   browser()->profile()->GetPrefs()->SetBoolean(omnibox::kAutocompleteEnabled,
                                                false);
   omnibox_view()->SetUserText(u"bar", /* update_popup=*/true);
-  edit_model()->StartAutocomplete(false, false);
+  edit_model()->StartAutocomplete(false);
 
   // Check popup isn't opened and result is empty.
   EXPECT_TRUE(location_bar_view()

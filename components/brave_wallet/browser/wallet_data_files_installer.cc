@@ -238,7 +238,7 @@ void WalletDataFilesInstaller::OnEvent(
   }
 }
 
-void WalletDataFilesInstaller::ResetForTesting() {
+void WalletDataFilesInstaller::Reset() {
   component_updater_observation_.Reset();
   delegate_.reset();
   registered_ = false;

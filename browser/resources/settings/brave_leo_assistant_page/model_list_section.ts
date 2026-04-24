@@ -16,11 +16,13 @@ import { BaseMixin } from '../base_mixin.js'
 
 import { getTemplate } from './model_list_section.html.js'
 import {
-  type BraveLeoAssistantBrowserProxy,
-  type Model,
   OperationResult,
   BraveLeoAssistantBrowserProxyImpl,
   OLLAMA_ENDPOINT
+} from './brave_leo_assistant_browser_proxy.js'
+import type {
+  BraveLeoAssistantBrowserProxy,
+  Model
 } from './brave_leo_assistant_browser_proxy.js'
 
 const ModelListSectionBase = PrefsMixin(I18nMixin(BaseMixin(PolymerElement)))
@@ -172,7 +174,7 @@ class ModelListSection extends ModelListSectionBase {
     // 3. Ollama is actually connected
     const isOllamaEndpoint =
         model.options.customModelOptions?.endpoint === OLLAMA_ENDPOINT
-    return !!(isOllamaEndpoint && ollamaSyncEnabled && isOllamaConnected)
+    return isOllamaEndpoint && ollamaSyncEnabled && isOllamaConnected
   }
 }
 

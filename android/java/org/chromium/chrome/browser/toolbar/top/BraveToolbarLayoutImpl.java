@@ -107,6 +107,7 @@ import org.chromium.chrome.browser.toolbar.home_button.HomeButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.reload_button.ReloadButtonCoordinator;
+import org.chromium.chrome.browser.toolbar.signin_button.SigninButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.top.NavigationPopup.HistoryDelegate;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.chrome.browser.util.BraveConstants;
@@ -1630,6 +1631,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             @Nullable BackButtonCoordinator backButtonCoordinator,
             @Nullable ForwardButtonCoordinator forwardButtonCoordinator,
             HomeButtonCoordinator homeButtonCoordinator,
+            @Nullable SigninButtonCoordinator signinButtonCoordinator,
             ThemeColorProvider themeColorProvider,
             IncognitoStateProvider incognitoStateProvider,
             @Nullable Supplier<Integer> incognitoWindowCountSupplier) {
@@ -1646,6 +1648,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 backButtonCoordinator,
                 forwardButtonCoordinator,
                 homeButtonCoordinator,
+                signinButtonCoordinator,
                 themeColorProvider,
                 incognitoStateProvider,
                 incognitoWindowCountSupplier);

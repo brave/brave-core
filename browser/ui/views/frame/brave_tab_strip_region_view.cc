@@ -23,6 +23,7 @@
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/tabs/shared/tab_strip_combo_button.h"
+#include "chrome/browser/ui/views/tabs/tab_search_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_control_button.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/prefs/pref_service.h"
@@ -343,10 +344,10 @@ void BraveHorizontalTabStripRegionView::Initialize() {
     ntb->SetVectorIcon(kLeoPlusAddIcon);
   }
 
-  if (features::HasTabSearchToolbarButton() && tab_search_container_) {
+  if (features::HasTabSearchToolbarButton() && tab_search_button_) {
     // We have tab search button on toolbar, so we don't need to show the
     // tab search container in horizontal tab strip region view.
-    tab_search_container_->SetVisible(false);
+    tab_search_button_->SetVisible(false);
   }
 
   CreateScrollButtonsIfNeeded();

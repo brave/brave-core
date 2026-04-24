@@ -8,8 +8,10 @@ package org.chromium.chrome.browser.toolbar.bottom;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.ObservableSuppliers;
+import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.SettableNonNullObservableSupplier;
 import org.chromium.chrome.browser.browser_controls.BottomControlsStacker;
+import org.chromium.chrome.browser.browser_controls.BottomControlsStacker.LayerType;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
@@ -38,6 +40,8 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
             BottomControlsStacker controlsStacker,
             BrowserStateBrowserControlsVisibilityDelegate browserControlsVisibilityDelegate,
             FullscreenManager fullscreenManager,
+            @LayerType int layerType,
+            OneshotSupplier<BottomControlsContentDelegate> contentDelegateSupplier,
             TabObscuringHandler tabObscuringHandler,
             int bottomControlsHeight,
             int bottomControlsShadowHeight,
@@ -50,6 +54,8 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
                 controlsStacker,
                 browserControlsVisibilityDelegate,
                 fullscreenManager,
+                layerType,
+                contentDelegateSupplier,
                 tabObscuringHandler,
                 bottomControlsHeight,
                 bottomControlsShadowHeight,

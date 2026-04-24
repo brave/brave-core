@@ -10,13 +10,17 @@
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/files/scoped_temp_dir.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "brave/components/omnibox/browser/brave_fake_autocomplete_provider_client.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+#include "components/history/core/browser/history_database_params.h"
 #include "components/history/core/browser/history_service.h"
+#include "components/history/core/test/history_service_test_util.h"
+#include "components/history/core/test/test_history_database.h"
 #include "components/omnibox/browser/autocomplete_input.h"
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/shortcuts_backend.h"
@@ -31,8 +35,14 @@
 
 class MockHistoryService : public history::HistoryService {
  public:
-  MockHistoryService() = default;
+  MockHistoryService() {
+    CHECK(history_dir_.CreateUniqueTempDir());
+    Init(history::TestHistoryDatabaseParamsForPath(history_dir_.GetPath()));
+  }
   MOCK_METHOD1(DeleteURLs, void(const std::vector<GURL>&));
+
+ private:
+  base::ScopedTempDir history_dir_;
 };
 
 class BraveShortcutsProviderTest : public testing::Test {
@@ -74,6 +84,13 @@ class BraveShortcutsProviderTest : public testing::Test {
     EXPECT_EQ(1ul, backend_->shortcuts_map().size());
 
     provider_ = base::MakeRefCounted<BraveShortcutsProvider>(&client_);
+  }
+
+  void TearDown() override {
+    provider_ = nullptr;
+    history::BlockUntilHistoryProcessesPendingRequests(
+        client_.GetHistoryService());
+    task_environment_.RunUntilIdle();
   }
 
   PrefService* prefs() { return client_.GetPrefs(); }

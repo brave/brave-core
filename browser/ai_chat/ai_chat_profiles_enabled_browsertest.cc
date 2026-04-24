@@ -21,7 +21,6 @@
 #include "chrome/browser/ui/omnibox/omnibox_controller.h"
 #include "chrome/browser/ui/omnibox/omnibox_view.h"
 #include "chrome/browser/ui/side_panel/side_panel_registry.h"
-#include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/omnibox/browser/autocomplete_controller.h"
@@ -154,9 +153,8 @@ IN_PROC_BROWSER_TEST_P(AIChatProfilesEnabledTest, ContextMenu) {
 }
 
 IN_PROC_BROWSER_TEST_P(AIChatProfilesEnabledTest, SidePanelRegistry) {
-  auto* registry = browser_->GetActiveTabInterface()
-                       ->GetTabFeatures()
-                       ->side_panel_registry();
+  auto* registry = SidePanelRegistry::From(browser_->GetActiveTabInterface());
+  ASSERT_TRUE(registry);
   auto* entry = registry->GetEntryForKey(
       SidePanelEntry::Key(SidePanelEntry::Id::kChatUI));
   if (IsAIChatEnabled()) {

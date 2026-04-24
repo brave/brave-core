@@ -45,7 +45,6 @@
 }
 
 -keep class org.chromium.chrome.browser.ntp.NewTabPageLayout {
-    *** mProfile;
     *** initializeSiteSectionView(...);
 }
 
@@ -61,6 +60,7 @@
 -keep class org.chromium.chrome.browser.ntp.NewTabPage {
     public <init>(...);
     *** mBrowserControlsStateProvider;
+    *** mNewTabPageCoordinator;
     *** mNewTabPageLayout;
     *** mFeedSurfaceProvider;
     *** mToolbarSupplier;
@@ -70,6 +70,14 @@
 }
 
 -keep class org.chromium.chrome.browser.ntp.BraveNewTabPage {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.ntp.NewTabPageCoordinator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.ntp.BraveNewTabPageCoordinator {
     public <init>(...);
 }
 
@@ -133,7 +141,7 @@
 
 -keep class org.chromium.chrome.browser.toolbar.ToolbarManager {
     public <init>(...);
-    *** mBottomControlsCoordinatorSupplier;
+    *** mTabGroupUiBottomControlsCoordinatorSupplier;
     *** mCallbackController;
     *** mBottomControlsStacker;
     *** mFullscreenManager;
@@ -536,7 +544,9 @@
 
 -keep class org.chromium.chrome.browser.multiwindow.MultiWindowUtils {
     *** shouldShowManageWindowsMenu(...);
-    *** isOpenInOtherWindowSupported(...);
+    *** isLinkNavigationToOtherWindowSupported(...);
+    *** isLinkNavigationToNewWindowSupported(...);
+    *** isLinkNavigationToIncognitoWindowSupported(...);
     *** isMoveToOtherWindowSupported(...);
     *** canEnterMultiWindowMode(...);
     <init>(...);
@@ -916,8 +926,13 @@
 -keep class org.chromium.chrome.browser.suggestions.tile.BraveMostVisitedTilesLayoutBase
 
 -keep class org.chromium.chrome.browser.hub.HubManagerImpl {
+    public <init>(...);
     *** ensureHubCoordinatorIsInitialized(...);
     *** mEdgeToEdgeSupplier;
+}
+
+-keep class org.chromium.chrome.browser.hub.BraveHubManagerImpl {
+    public <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.ui.system.StatusBarColorController {

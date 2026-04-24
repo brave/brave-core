@@ -35,7 +35,7 @@
 #include "chrome/browser/themes/theme_syncable_service.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-#include "chrome/browser/ui/chrome_select_file_policy.h"
+#include "chrome/browser/ui/select_file_policy/chrome_select_file_policy.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/prefs/pref_service.h"

@@ -9,10 +9,9 @@ import android.app.Activity;
 import android.view.ViewGroup;
 
 import org.chromium.base.Log;
-import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
-import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
@@ -31,14 +30,13 @@ public class BraveSnackbarManager extends SnackbarManager {
             Activity activity,
             ViewGroup snackbarParentView,
             @Nullable WindowAndroid windowAndroid,
-            @Nullable MonotonicObservableSupplier<EdgeToEdgeController>
-                    edgeToEdgeControllerSupplier,
+            @Nullable NonNullObservableSupplier<Integer> additionalBottomMarginPxSupplier,
             @Nullable ModalDialogManager modalDialogManager) {
         super(
                 activity,
                 snackbarParentView,
                 windowAndroid,
-                edgeToEdgeControllerSupplier,
+                additionalBottomMarginPxSupplier,
                 modalDialogManager);
     }
 

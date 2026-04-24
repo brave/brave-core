@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/common/content_settings.h b/components/content_settings/core/common/content_settings.h
-index 747e02407363e93f43e03c6c282a4f1a987249a4..8e382a92c34746107df90fe2761ae7c8e22ce0f2 100644
+index e41e55092dccb3de966911f0a293f175b82b4208..b8d8fb03041c9bf7c0a09394653ba02f17458b53 100644
 --- a/components/content_settings/core/common/content_settings.h
 +++ b/components/content_settings/core/common/content_settings.h
 @@ -144,6 +144,7 @@ enum class SettingSource {

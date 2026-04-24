@@ -120,7 +120,7 @@ void BraveLocationBarView::Init() {
     focus_ring->SetPathGenerator(
         std::make_unique<
             BraveLocationBarViewFocusRingHighlightPathGenerator>());
-    if (const auto color_id = GetFocusRingColor(profile())) {
+    if (const auto color_id = GetFocusRingColor(GetProfile())) {
       focus_ring->SetColorId(color_id.value());
     }
   }
@@ -140,7 +140,7 @@ void BraveLocationBarView::Init() {
       std::make_unique<OnionLocationView>(browser_->profile(), this, this));
 #endif
 
-  if (PromotionButtonController::PromotionEnabled(profile()->GetPrefs())) {
+  if (PromotionButtonController::PromotionEnabled(GetProfile()->GetPrefs())) {
     promotion_button_ = AddChildView(std::make_unique<PromotionButtonView>());
     promotion_controller_ = std::make_unique<PromotionButtonController>(
         promotion_button_, omnibox_view_, browser());
@@ -153,7 +153,7 @@ void BraveLocationBarView::Init() {
 
   // brave action buttons
   brave_actions_ = AddChildView(
-      std::make_unique<BraveActionsContainer>(browser_, profile()));
+      std::make_unique<BraveActionsContainer>(browser_, GetProfile()));
   brave_actions_->Init();
   // Call Update again to cause a Layout
   Update(nullptr);

@@ -16,6 +16,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.tabmodel.TabModelOrchestrator;
 import org.chromium.chrome.browser.app.tabwindow.TabWindowManagerSingleton;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
+import org.chromium.chrome.browser.multiwindow.MultiInstanceManager.CloseWindowAppSource;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager.PersistedInstanceType;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -45,8 +46,7 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
             MonotonicObservableSupplier<ModalDialogManager> modalDialogManagerSupplier,
             MenuOrKeyboardActionController menuOrKeyboardActionController,
-            Supplier<DesktopWindowStateManager> desktopWindowStateManagerSupplier,
-            TabReparentingDelegate tabReparentingDelegate) {
+            Supplier<DesktopWindowStateManager> desktopWindowStateManagerSupplier) {
         super(
                 activity,
                 tabModelOrchestratorSupplier,
@@ -54,23 +54,32 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
                 activityLifecycleDispatcher,
                 modalDialogManagerSupplier,
                 menuOrKeyboardActionController,
-                desktopWindowStateManagerSupplier,
-                tabReparentingDelegate);
+                desktopWindowStateManagerSupplier);
     }
 
     @Override
     public boolean handleMenuOrKeyboardAction(int id, boolean fromMenu) {
         if (id == org.chromium.chrome.R.id.move_to_other_window_menu_id) {
             mIsMoveTabsFromSettings = !fromMenu;
+
+            assert mMultiInstanceOrchestrator instanceof BraveMultiInstanceOrchestratorImpl;
+
+            // As CloseWindow()/mActivity/getCurrentInstanceId() are still at
+            // MultiInstanceManagerApi31, but moveTabsToWindowByIdChecked was moved to
+            // MultiInstanceOrchestratorImpl - will do the moveTabsToWindowByIdChecked call
+            // from BraveMultiInstanceManagerApi31 class here later, and save it
+            ((BraveMultiInstanceOrchestratorImpl) mMultiInstanceOrchestrator)
+                    .setBraveMultiInstanceManager(this);
         }
         return super.handleMenuOrKeyboardAction(id, fromMenu);
     }
 
-    @Override
     public void moveTabsToWindowByIdChecked(
-            int destWindowId, List<Tab> tabs, int destTabIndex, int destGroupTabId) {
-        super.moveTabsToWindowByIdChecked(destWindowId, tabs, destTabIndex, destGroupTabId);
-
+            int destWindowId,
+            List<Tab> tabs,
+            int destTabIndex,
+            int destGroupTabId,
+            boolean bringToFront) {
         if (mIsMoveTabsFromSettings && !tabs.isEmpty()) {
             mIsMoveTabsFromSettings = false;
             TabModelSelector selector =
@@ -81,7 +90,7 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
                         Collections.singletonList(getCurrentInstanceId()),
                         CloseWindowAppSource.NO_TABS_IN_WINDOW);
             }
-            if (MultiWindowUtils.getInstanceCountWithFallback(PersistedInstanceType.ACTIVE) == 1) {
+            if (MultiWindowUtils.getInstanceCount(PersistedInstanceType.ACTIVE) == 1) {
                 BraveMultiWindowUtils.updateEnableMultiWindows(false);
             } else {
                 Snackbar snackbar =
@@ -94,13 +103,12 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
                                             public void onDismissNoAction(
                                                     @Nullable Object actionData) {}
 
-                                            // TODO(https://github.com/brave/brave-browser/issues/50673)
-                                            // BraveMultiWindowUtils.mergeWindows takes non-null
-                                            // activity and can't do anything when null is passed
-                                            @SuppressWarnings("NullAway")
                                             @Override
                                             public void onAction(@Nullable Object actionData) {
-                                                BraveMultiWindowUtils.mergeWindows(null);
+                                                if (!mActivity.isDestroyed()
+                                                        && !mActivity.isFinishing()) {
+                                                    BraveMultiWindowUtils.mergeWindows(mActivity);
+                                                }
                                             }
                                         },
                                         Snackbar.TYPE_ACTION,

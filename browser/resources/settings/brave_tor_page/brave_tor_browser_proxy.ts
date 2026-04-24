@@ -25,7 +25,7 @@ export class BraveTorBrowserProxyImpl implements BraveTorBrowserProxy {
   }
 
   getBridgesConfig() {
-    return sendWithPromise('brave_tor.getBridgesConfig')
+    return sendWithPromise<any>('brave_tor.getBridgesConfig')
   }
 
   setBridgesConfig(config: any) {
@@ -33,11 +33,11 @@ export class BraveTorBrowserProxyImpl implements BraveTorBrowserProxy {
   }
 
   requestBridgesCaptcha() {
-    return sendWithPromise('brave_tor.requestBridgesCaptcha')
+    return sendWithPromise<any>('brave_tor.requestBridgesCaptcha')
   }
 
   resolveBridgesCaptcha(captcha: any) {
-    return sendWithPromise('brave_tor.resolveBridgesCaptcha', captcha)
+    return sendWithPromise<any>('brave_tor.resolveBridgesCaptcha', captcha)
   }
 
   setTorEnabled(value: boolean) {
@@ -45,23 +45,23 @@ export class BraveTorBrowserProxyImpl implements BraveTorBrowserProxy {
   }
 
   isTorEnabled() {
-    return sendWithPromise('brave_tor.isTorEnabled')
+    return sendWithPromise<boolean>('brave_tor.isTorEnabled')
   }
 
   isTorManaged() {
-    return sendWithPromise('brave_tor.isTorManaged')
+    return sendWithPromise<boolean>('brave_tor.isTorManaged')
   }
 
   isSnowflakeExtensionAllowed() {
-    return sendWithPromise('brave_tor.isSnowflakeExtensionAllowed')
+    return sendWithPromise<boolean>('brave_tor.isSnowflakeExtensionAllowed')
   }
 
   isSnowflakeExtensionEnabled() {
-    return sendWithPromise('brave_tor.isSnowflakeExtensionEnabled')
+    return sendWithPromise<boolean>('brave_tor.isSnowflakeExtensionEnabled')
   }
 
   enableSnowflakeExtension(enable: boolean) {
-    return sendWithPromise('brave_tor.enableSnowflakeExtension', enable)
+    return sendWithPromise<boolean>('brave_tor.enableSnowflakeExtension', enable)
   }
 }
 

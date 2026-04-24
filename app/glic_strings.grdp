@@ -8,6 +8,9 @@
   <message name="IDS_TOOLTIP_TAB_ALERT_STATE_GLIC_SHARING" desc="Extra tool tip text, when the tab's context is being shared with Gemini">
     You're sharing this tab with Gemini
   </message>
+  <message name="IDS_TOOLTIP_GLIC_CLOSE" desc="The tooltip for the close button within the Glic nudge button.">
+    Dismiss suggestion
+  </message>
   <message name="IDS_TAB_AX_LABEL_GLIC_ACCESSING" is_accessibility_with_no_ui="true" desc="Accessibility label text, when the tab is sharing data with Gemini. Example: 'Wikipedia - Tab context shared with Gemini'">
     <ph name="WINDOW_TITLE">
       $1<ex>Wikipedia</ex>
@@ -286,6 +289,9 @@
   <message name="IDS_SETTINGS_GLIC_INSTRUCTIONS_BUTTON_SUBLABEL" desc="Description for the Gemini instructions linkout.">
     Customize how Gemini responds to you
   </message>
+  <message name="IDS_SETTINGS_GLIC_EXPERIMENTAL_TRIGGERING_TOGGLE" desc="Label for the Gemini experimental triggering setting" translateable="false">
+    Allow experimental triggering
+  </message>
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_CHROME_WEB_ACTUATION_TOGGLE" desc="Title for the Gemini feature introduction screen" formatter_data="android_java">
     Let Brave browse for you
   </message>
@@ -304,12 +310,42 @@
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_WEB_ACTUATION_TOGGLE_CONSIDER_2" desc="Second point in 'things to consider' column of the 'let Gemini browse for you' expands" formatter_data="android_java">
     Use Gemini carefully and <ph name="BEGIN_LINK1">&lt;a href="$1" target="_blank"&gt;</ph>safely<ph name="LINK_END1">&lt;/a&gt;</ph>. You are responsible for Gemini's actions during a task, including mistakes and <ph name="BEGIN_LINK2">&lt;a href="$2" target="_blank"&gt;</ph>unexpected results<ph name="LINK_END2">&lt;/a&gt;</ph> like purchases.
   </message>
+  <message name="IDS_SETTINGS_GLIC_ACTOR_LOGIN_PERMISSIONS_SECTION_TITLE" desc="Title for the Gemini web login linkout.">
+    Sites Gemini can sign you in to
+  </message>
+  <message name="IDS_SETTINGS_GLIC_ACTOR_LOGIN_PERMISSIONS_SECTION_SUBLABEL" desc="Description for the Gemini web login linkout.">
+    Let Gemini automatically sign you in to complete tasks for you on the web
+  </message>
+  <message name="IDS_SETTINGS_GLIC_LOGIN_PERMISSIONS_PAGE_TITLE" desc="Title for the sites and accounts section on the Gemini web login permissions page.">
+    Sites and accounts
+  </message>
+  <message name="IDS_SETTINGS_GLIC_LOGIN_PERMISSIONS_OFFLINE_WARNING" desc="Warning message shown at the top of the Gemini web login permissions page when the user is offline.">
+    You’re offline. Check your internet connection to manage sites Gemini can sign you in to.
+  </message>
+  <message name="IDS_SETTINGS_GLIC_LOGIN_PERMISSIONS_PAGE_DESCRIPTION" desc="Description for the sites and accounts section on the Gemini web login permissions page.">
+    You've allowed Gemini to automatically sign you in to these sites and apps using your accounts
+  </message>
+  <message name="IDS_SETTINGS_GLIC_LOGIN_PERMISSIONS_NO_SITES" desc="Message shown when there are no sites in the Gemini web login permissions page.">
+    Sites where Gemini can sign you in will appear here
+  </message>
+  <message name="IDS_SETTINGS_GLIC_REVOKE_ACTOR_LOGIN_PERMISSION_ARIA_LABEL" desc="Aria label for the button to remove a login permission.">
+    Remove permission for <ph name="URL">$1<ex>google.com</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_GLIC_REMOVE_ACTOR_LOGIN_DIALOG_TITLE" desc="Title for the dialog to remove a login permission.">
+    Remove permission
+  </message>
+  <message name="IDS_SETTINGS_GLIC_REMOVE_ACTOR_LOGIN_DIALOG_DESCRIPTION" desc="Description for the dialog to remove a login permission.">
+    Gemini will no longer be able to sign you in to <ph name="URL">$1<ex>google.com</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_GLIC_LOGIN_PERMISSIONS_REMOVE_ERROR" desc="Toast message to show when a login permission was unable to be removed.">
+    Couldn't remove permission. Try again later.
+  </message>
 
   <!-- Glic button and tab strip context menu -->
-  <message name="IDS_GLIC_PIN" desc="Name of the context menu item for toggling Gemini pinning, when Gemini is unpinned.">
+  <message name="IDS_GLIC_PIN" desc="Name of the context menu item for toggling Gemini pinning, when Gemini is unpinned." formatter_data="android_java">
     Pin Gemini
   </message>
-  <message name="IDS_GLIC_UNPIN" desc="Name of the context menu item for toggling Gemini pinning, when Gemini is pinned.">
+  <message name="IDS_GLIC_UNPIN" desc="Name of the context menu item for toggling Gemini pinning, when Gemini is pinned." formatter_data="android_java">
     Unpin Gemini
   </message>
 
@@ -393,7 +429,7 @@
   </message>
 
   <!-- Glic button context menu. -->
-  <message name="IDS_GLIC_BUTTON_CXMENU_UNPIN" desc="Name of the Glic button context menu item for unpinning Glic.">
+  <message name="IDS_GLIC_BUTTON_CXMENU_UNPIN" desc="Name of the Glic button context menu item for unpinning Glic." formatter_data="android_java">
     Unpin
   </message>
 
@@ -415,14 +451,14 @@
   <!-- Content area context menu. -->
   <if expr="use_titlecase">
     <message name="IDS_CONTENT_CONTEXT_GLICSHAREIMAGE" desc="Share image with Gemini and recreate based on user-selected prompt">Create Image with Gemini</message>
-    <message name="IDS_GLIC_CONTEXT_MENU_SUMMARIZE_PAGE_WITH_GEMINI" desc="Text for the 'Summarize this page' context menu item." translateable="false">Summarize this page with Gemini</message>
+    <message name="IDS_GLIC_CONTEXT_MENU_SUMMARIZE_PAGE_WITH_GEMINI" desc="Text for the 'Summarize this page' context menu item.">Summarize this page with Gemini</message>
   </if>
   <if expr="not use_titlecase">
     <message name="IDS_CONTENT_CONTEXT_GLICSHAREIMAGE" desc="Share image with Gemini and recreate based on user-selected prompt">Create image with Gemini</message>
-    <message name="IDS_GLIC_CONTEXT_MENU_SUMMARIZE_PAGE_WITH_GEMINI" desc="Text for the 'Summarize this page' context menu item." translateable="false">Summarize this page with Gemini</message>
+    <message name="IDS_GLIC_CONTEXT_MENU_SUMMARIZE_PAGE_WITH_GEMINI" desc="Text for the 'Summarize this page' context menu item.">Summarize this page with Gemini</message>
   </if>
 
-  <message name="IDS_GLIC_SUMMARIZE_PAGE_PROMPT" desc="Prompt sent to request page summarization via context menu." translateable="false">Summarize this page</message>
+  <message name="IDS_GLIC_SUMMARIZE_PAGE_PROMPT" desc="Prompt sent to request page summarization via context menu.">Summarize this page</message>
 
   <!-- IPH -->
   <if expr="use_titlecase">

@@ -23,6 +23,7 @@ void WalletHttpClientImpl::UpsertPublicPass(Pass pass,
 
 void WalletHttpClientImpl::UpsertPrivatePass(
     PrivatePass pass,
+    std::optional<consent_auditor::ConsentAuditor::SessionId> session_id,
     UpsertPrivatePassCallback callback) {
   std::move(callback).Run(
       base::unexpected(WalletHttpClient::WalletRequestError::kGenericError));
