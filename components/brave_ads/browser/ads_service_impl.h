@@ -180,7 +180,7 @@ class AdsServiceImpl : public AdsService,
   void InitializeNewTabPageAdsPrefChangeRegistrar();
   void InitializeNotificationAdsPrefChangeRegistrar();
   void InitializeSearchResultAdsPrefChangeRegistrar();
-  void OnOptedInToAdsPrefChanged(const std::string& path);
+  void OnAdsPrefChanged(const std::string& path);
   void OnVariationsCountryPrefChanged();
   void NotifyPrefChanged(const std::string& path) const;
 
@@ -394,7 +394,7 @@ class AdsServiceImpl : public AdsService,
       const ContentSettingsPattern& secondary_pattern,
       ContentSettingsTypeSet content_type_set) override;
 
-  bool was_marked_ineligible_to_start_ = false;
+  bool is_ineligible_to_start_ = false;
 
   bool is_bat_ads_initialized_ = false;
 

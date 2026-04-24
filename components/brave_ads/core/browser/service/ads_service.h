@@ -66,7 +66,7 @@ class AdsService : public KeyedService {
   void AddObserver(AdsServiceObserver* observer);
   void RemoveObserver(AdsServiceObserver* observer);
 
-  // Returns `true` if the service determined it was ineligible to start.
+  // Returns `true` if the service is ineligible to start.
   virtual bool IsIneligibleToStart() const = 0;
 
   // Returns `true` if the service successfully initialized.
