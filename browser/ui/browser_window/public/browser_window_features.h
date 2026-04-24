@@ -13,6 +13,7 @@
 
 class BraveShieldsUIContentsCache;
 class BraveVPNController;
+class FocusModeController;
 class PlaylistSidePanelCoordinator;
 
 namespace brave_rewards {
@@ -63,6 +64,14 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
   }
 #endif
 
+  FocusModeController* focus_mode_controller() {
+    return focus_mode_controller_.get();
+  }
+
+  const FocusModeController* focus_mode_controller() const {
+    return focus_mode_controller_.get();
+  }
+
   BraveShieldsUIContentsCache* brave_shields_ui_contents_cache() {
     return brave_shields_ui_contents_cache_.get();
   }
@@ -80,6 +89,7 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
   std::unique_ptr<email_aliases::EmailAliasesController>
       email_aliases_controller_;
 #endif
+  std::unique_ptr<FocusModeController> focus_mode_controller_;
   std::unique_ptr<BraveShieldsUIContentsCache> brave_shields_ui_contents_cache_;
 };
 

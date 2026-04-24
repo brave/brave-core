@@ -8,6 +8,8 @@
 #include "base/memory/ptr_util.h"
 #include "base/notreached.h"
 #include "brave/browser/ui/brave_browser_window.h"
+#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
+#include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/brave_browser_tab_menu_model_delegate.h"
@@ -119,6 +121,10 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
             browser_view, email_aliases_service);
   }
 #endif
+
+  if (BrowserSupportsFocusMode(browser_view->browser())) {
+    focus_mode_controller_ = std::make_unique<FocusModeController>();
+  }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn_controller_ = std::make_unique<BraveVPNController>(browser_view);

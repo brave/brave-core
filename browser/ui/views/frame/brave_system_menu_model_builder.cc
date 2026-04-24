@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/frame/brave_system_menu_model_builder.h"
 
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -15,14 +16,28 @@ BraveSystemMenuModelBuilder::~BraveSystemMenuModelBuilder() = default;
 
 void BraveSystemMenuModelBuilder::InsertBraveSystemMenuForBrowserWindow(
     ui::SimpleMenuModel* model) {
-  if (tabs::utils::SupportsBraveVerticalTabs(browser())) {
-    std::optional<size_t> bookmark_all_tabs_index =
-        model->GetIndexOfCommandId(IDC_BOOKMARK_ALL_TABS);
+  std::optional<size_t> insert_after =
+      model->GetIndexOfCommandId(IDC_BOOKMARK_ALL_TABS);
 
-    if (bookmark_all_tabs_index.has_value()) {
-      model->InsertCheckItemWithStringIdAt(bookmark_all_tabs_index.value() + 1,
+  auto get_next_position = [&]() -> std::optional<size_t> {
+    if (insert_after) {
+      insert_after.value() += 1;
+    }
+    return insert_after;
+  };
+
+  if (tabs::utils::SupportsBraveVerticalTabs(browser())) {
+    if (auto pos = get_next_position()) {
+      model->InsertCheckItemWithStringIdAt(pos.value(),
                                            IDC_TOGGLE_VERTICAL_TABS,
                                            IDS_TAB_CXMENU_SHOW_VERTICAL_TABS);
+    }
+  }
+
+  if (BrowserSupportsFocusMode(browser())) {
+    if (auto pos = get_next_position()) {
+      model->InsertCheckItemWithStringIdAt(pos.value(), IDC_TOGGLE_FOCUS_MODE,
+                                           IDS_SYSTEM_MENU_FOCUS_MODE);
     }
   }
 }

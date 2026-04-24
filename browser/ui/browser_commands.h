@@ -71,6 +71,8 @@ void ToggleActiveTabAudioMute(Browser* browser);
 void ToggleSidebarPosition(Browser* browser);
 void ToggleSidebar(Browser* browser);
 
+void ToggleFocusMode(BrowserWindowInterface* browser);
+
 void ToggleShieldsEnabled(Browser* browser);
 void ToggleJavascriptEnabled(Browser* browser);
 

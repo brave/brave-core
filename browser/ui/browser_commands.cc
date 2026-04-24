@@ -29,6 +29,7 @@
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
@@ -490,6 +491,12 @@ void CleanAndCopySelectedURL(Browser* browser) {
   auto* brave_browser_window = BraveBrowserWindow::From(browser->window());
   if (brave_browser_window) {
     brave_browser_window->CleanAndCopySelectedURL();
+  }
+}
+
+void ToggleFocusMode(BrowserWindowInterface* browser) {
+  if (auto* controller = browser->GetFeatures().focus_mode_controller()) {
+    controller->ToggleEnabled();
   }
 }
 

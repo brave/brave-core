@@ -14,6 +14,8 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
+#include "brave/browser/ui/focus_mode/focus_mode_features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/features.h"
@@ -654,6 +656,42 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithSideBySideTest,
   EXPECT_FALSE(chrome::IsCommandEnabled(browser(), IDC_TILE_TABS));
   EXPECT_TRUE(chrome::IsCommandEnabled(browser(), IDC_BREAK_TILE));
   EXPECT_TRUE(chrome::IsCommandEnabled(browser(), IDC_SWAP_SPLIT_VIEW));
+}
+
+class BraveBrowserCommandControllerFocusModeTest
+    : public BraveBrowserCommandControllerTest {
+ public:
+  BraveBrowserCommandControllerFocusModeTest() {
+    scoped_features_.InitWithFeatures({features::kBraveFocusMode}, {});
+  }
+  ~BraveBrowserCommandControllerFocusModeTest() override = default;
+
+ private:
+  base::test::ScopedFeatureList scoped_features_;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerFocusModeTest,
+                       FocusModeToggle) {
+  auto* controller = browser()->GetFeatures().focus_mode_controller();
+  ASSERT_TRUE(controller);
+
+  EXPECT_FALSE(controller->IsEnabled());
+
+  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_FOCUS_MODE);
+  EXPECT_TRUE(controller->IsEnabled());
+
+  browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_FOCUS_MODE);
+  EXPECT_FALSE(controller->IsEnabled());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerFocusModeTest,
+                       FocusModeDisabledForPopupWindow) {
+  Browser* popup = Browser::Create(
+      Browser::CreateParams(Browser::TYPE_POPUP, browser()->profile(), true));
+  chrome::AddTabAt(popup, GURL("about:blank"), -1, true);
+  popup->window()->Show();
+  EXPECT_FALSE(
+      popup->command_controller()->IsCommandEnabled(IDC_TOGGLE_FOCUS_MODE));
 }
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
