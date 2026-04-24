@@ -128,6 +128,14 @@
 # https://github.com/brave/brave-browser/issues/54159
 -ObservationDelayControllerTest.UsePageStabilityForSameDocumentNavigation
 
+# Brave's canvas farbling (PerturbPixels) modifies getImageData() results,
+# breaking this test's canvas-based video playback detection. The test only
+# compiles on Linux non-sanitizer builds (#if BUILDFLAG(IS_LINUX)).
+# Upstream stable: 640x480 0.6%, 3840x2160 0.3% flake rate (30-day LUCI).
+# https://github.com/brave/brave-browser/issues/54521
+-All/GetDisplayMediaHiDpiBrowserTest.Capture/640x480
+-All/GetDisplayMediaHiDpiBrowserTest.Capture/3840x2160
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccessCodeCastHandlerBrowserTest.*
 -AdsPageLoadMetricsObserverBrowserTest.*
