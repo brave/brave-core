@@ -7,9 +7,11 @@
 
 #include "base/feature_list.h"
 #include "brave/browser/ui/webui/local_ai/local_ai_ui.h"
+#include "brave/browser/ui/webui/local_ai/on_device_speech_recognition_worker_ui.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/local_ai/core/features.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "components/history_embeddings/core/history_embeddings_features.h"
@@ -68,6 +70,11 @@ void RegisterChromeUntrustedWebUIConfigs() {
   if (base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings)) {
     content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
         std::make_unique<local_ai::UntrustedLocalAIUIConfig>());
+  }
+  if (base::FeatureList::IsEnabled(local_ai::kBraveOnDeviceSpeechRecognition)) {
+    content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
+        std::make_unique<
+            local_ai::UntrustedOnDeviceSpeechRecognitionWorkerUIConfig>());
   }
 #if !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_BRAVE_VPN)

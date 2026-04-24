@@ -42,6 +42,7 @@
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/local_ai/local_ai_ui.h"
+#include "brave/browser/ui/webui/local_ai/on_device_speech_recognition_worker_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/browser/updater/buildflags.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
@@ -960,6 +961,11 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   if (base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings)) {
     content::RegisterWebUIControllerInterfaceBinder<
         local_ai::mojom::LocalAIService, local_ai::UntrustedLocalAIUI>(map);
+  }
+  if (base::FeatureList::IsEnabled(local_ai::kBraveOnDeviceSpeechRecognition)) {
+    content::RegisterWebUIControllerInterfaceBinder<
+        local_ai::mojom::OnDeviceSpeechRecognitionService,
+        local_ai::UntrustedOnDeviceSpeechRecognitionWorkerUI>(map);
   }
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   map->Add<brave_vpn::mojom::ServiceHandler>(

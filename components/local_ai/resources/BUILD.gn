@@ -28,3 +28,27 @@ pack_web_resources("local_ai_generated") {
   output_dir = "$root_gen_dir/brave/components/local_ai/resources"
   deps = [ ":local_ai_ui" ]
 }
+
+# Untrusted WebUI for Parakeet speech recognition at
+# chrome-untrusted://on-device-speech-recognition-worker/
+transpile_web_ui("on_device_speech_recognition_worker_ui") {
+  entry_points = [ [
+        "speech_worker",
+        rebase_path("speech_worker.ts"),
+      ] ]
+  webpack_aliases = [ "browser" ]
+  resource_name = "on_device_speech_recognition_worker"
+
+  imports_from = [ "//brave/components/local_ai/resources/" ]
+
+  deps = [
+    "//brave/components/local_ai/core:mojom_js",
+    "//services/on_device_model/public/mojom:mojom_js",
+  ]
+}
+
+pack_web_resources("on_device_speech_recognition_worker_generated") {
+  resource_name = "on_device_speech_recognition_worker"
+  output_dir = "$root_gen_dir/brave/components/local_ai/resources"
+  deps = [ ":on_device_speech_recognition_worker_ui" ]
+}
