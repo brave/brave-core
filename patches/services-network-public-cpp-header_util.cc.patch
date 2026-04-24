@@ -1,0 +1,22 @@
+diff --git a/services/network/public/cpp/header_util.cc b/services/network/public/cpp/header_util.cc
+index ca0abc83883d9cb03d0fbcb53adf27f9232273a7..6211127ac172c9365b009ab0a8e9f3030036970c 100644
+--- a/services/network/public/cpp/header_util.cc
++++ b/services/network/public/cpp/header_util.cc
+@@ -43,7 +43,8 @@ const char* kUnsafeHeaders[] = {
+     net::HttpRequestHeaders::kHost,
+ 
+     // Trailers are not supported.
+-    "Trailer", "Te",
++    "Trailer",
++    "Te",
+ 
+     // Websockets use a different API.
+     "Upgrade",
+@@ -120,6 +121,7 @@ bool ContainsForbiddenSecurityHeader(net::HttpRequestHeaders& headers) {
+ 
+   auto sanitize_and_check_security_header = [&](std::string_view name,
+                                                 std::string_view value) {
++    BRAVE_CONTAINS_FORBIDDEN_SECURITY_HEADER
+     // Client Hints are harmless and set by the renderer.
+     if (base::StartsWith(name, "Sec-CH-",
+                          base::CompareCase::INSENSITIVE_ASCII)) {
