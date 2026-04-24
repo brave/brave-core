@@ -85,22 +85,22 @@ export const AddHardwareAccountModal = ({ onSelectAccountType }: Props) => {
       title={getLocale('braveWalletAddAccountImportHardware')}
       onClose={closeModal}
     >
-      <DividerLine />
-
       {selectedAccountType && (
-        <StyledWrapper>
-          <HardwareWalletConnect
-            selectedAccountType={selectedAccountType}
-            onSuccess={closeModal}
-          />
-        </StyledWrapper>
+        <>
+          <DividerLine />
+          <StyledWrapper>
+            <HardwareWalletConnect
+              selectedAccountType={selectedAccountType}
+              onSuccess={closeModal}
+            />
+          </StyledWrapper>
+        </>
       )}
 
       {!selectedAccountType && (
         <SelectAccountType
           createAccountOptions={createAccountOptions}
           onSelectAccountType={onSelectAccountType}
-          buttonText={getLocale('braveWalletAddAccountConnect')}
         />
       )}
     </PopupModal>
