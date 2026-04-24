@@ -278,9 +278,10 @@ TEST_F(AdBlockServiceTest, LoadsOnlyAdditionalCachedDATFile) {
   EXPECT_TRUE(observer.additional_success());
 
   // Additional engine rules should be active
-  auto result = service->GetAdditionalFiltersEngineForTesting().ShouldStartRequest(
-      GURL("https://blocked-by-additional.com/script.js"),
-      blink::mojom::ResourceType::kScript, "test.com", false, false, false);
+  auto result =
+      service->GetAdditionalFiltersEngineForTesting().ShouldStartRequest(
+          GURL("https://blocked-by-additional.com/script.js"),
+          blink::mojom::ResourceType::kScript, "test.com", false, false, false);
   EXPECT_TRUE(result.matched);
 
   // Default engine should have no rules
