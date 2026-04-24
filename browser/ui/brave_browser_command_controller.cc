@@ -71,7 +71,7 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/components/playlist/core/common/utils.h"
+#include "brave/components/playlist/core/browser/utils.h"
 #endif
 
 #if BUILDFLAG(ENABLE_COMMANDER)
@@ -457,7 +457,7 @@ void BraveBrowserCommandController::UpdateCommandForBraveVPN() {
 
 void BraveBrowserCommandController::UpdateCommandForPlaylist() {
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-  if (playlist::IsPlaylistEnabled(browser_->profile()->GetPrefs())) {
+  if (playlist::IsPlaylistAllowed(browser_->profile()->GetPrefs())) {
     UpdateCommandEnabled(
         IDC_SHOW_PLAYLIST_BUBBLE,
         browser_->is_type_normal() &&

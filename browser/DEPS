@@ -64,6 +64,7 @@ include_rules += [
   "+brave/components/ntp_background_images/buildflags",
   "+brave/components/password_strength_meter",
   "+brave/components/playlist/content/browser",
+  "+brave/components/playlist/core/browser",
   "+brave/components/playlist/core/common",
   "+brave/components/psst/browser/content",
   "+brave/components/psst/common",
