@@ -25,8 +25,6 @@ node_modules/
 patches/**/*.patchinfo
 /third_party/argon2/src
 /third_party/boringtun/.cargo-home/
-/third_party/boringtun/bin/
-/third_party/boringtun/include/
 /third_party/boringtun/target/
 /third_party/brave-vpn-wireguard-nt-dlls/
 /third_party/brave-vpn-wireguard-tunnel-dlls/
