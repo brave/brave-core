@@ -19,14 +19,28 @@ public enum LoggerType {
       return "userAgentLogs"
     }
   }
+
+  var loggingEnabledKey: String {
+    return "\(prefsKey)Enabled"
+  }
+
+  var isLoggingEnabled: Bool {
+    get {
+      // Default to disabled
+      if UserDefaults.standard.object(forKey: loggingEnabledKey) == nil {
+        return false
+      }
+      return UserDefaults.standard.bool(forKey: loggingEnabledKey)
+    }
+    set {
+      UserDefaults.standard.set(newValue, forKey: loggingEnabledKey)
+    }
+  }
 }
 
 public struct DebugLogger {
   public static func log(for type: LoggerType, text: String) {
-    // Logger should not be invoked for public channels unless developer options enabled
-    if AppConstants.isOfficialBuild && !Preferences.Debug.developerOptionsEnabled.value {
-      return
-    }
+    guard type.isLoggingEnabled else { return }
 
     var logs = UserDefaults.standard.string(forKey: type.prefsKey) ?? ""
 
@@ -86,12 +100,18 @@ public class DebugLogViewController: UIViewController {
       title = "User Agent Debug"
     }
 
-    let rightBarButtonItem = UIBarButtonItem(
+    let shareBarButtonItem = UIBarButtonItem(
       barButtonSystemItem: .action,
       target: self,
       action: #selector(shareButtonTapped)
     )
-    navigationItem.rightBarButtonItem = rightBarButtonItem
+
+    let loggingSwitch = UISwitch()
+    loggingSwitch.isOn = loggerType.isLoggingEnabled
+    loggingSwitch.addTarget(self, action: #selector(loggingSwitchToggled(_:)), for: .valueChanged)
+    let switchBarButtonItem = UIBarButtonItem(customView: loggingSwitch)
+
+    navigationItem.rightBarButtonItems = [shareBarButtonItem, switchBarButtonItem]
 
     let textView = UITextView()
     textView.translatesAutoresizingMaskIntoConstraints = false
@@ -124,6 +144,10 @@ public class DebugLogViewController: UIViewController {
     textView.text = title + logs
   }
 
+  @objc func loggingSwitchToggled(_ sender: UISwitch) {
+    loggerType.isLoggingEnabled = sender.isOn
+  }
+
   @objc func shareButtonTapped() {
     guard let logs = UserDefaults.standard.string(forKey: loggerType.prefsKey) else { return }
 
@@ -135,7 +159,7 @@ public class DebugLogViewController: UIViewController {
 
     // Present the activity view controller
     if let popoverController = activityViewController.popoverPresentationController {
-      popoverController.barButtonItem = navigationItem.rightBarButtonItem
+      popoverController.barButtonItem = navigationItem.rightBarButtonItems?.first
     }
     present(activityViewController, animated: true, completion: nil)
   }
