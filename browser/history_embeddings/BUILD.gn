@@ -22,6 +22,8 @@ source_set("unit_tests") {
 
 source_set("history_embeddings") {
   sources = [
+    "brave_batch_passage_embedder.cc",
+    "brave_batch_passage_embedder.h",
     "brave_history_embeddings_service.cc",
     "brave_history_embeddings_service.h",
     "brave_passage_embeddings_service.cc",
