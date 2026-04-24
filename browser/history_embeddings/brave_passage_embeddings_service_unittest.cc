@@ -155,6 +155,15 @@ class BravePassageEmbeddingsServiceTest : public testing::Test {
     std::move(pending_create_callback_).Run();
   }
 
+  void RecreateService() {
+    service_.reset();
+    service_ = std::make_unique<BravePassageEmbeddingsService>(
+        base::BindRepeating(
+            &BravePassageEmbeddingsServiceTest::CreateFakeWebContents,
+            base::Unretained(this)),
+        local_ai::LocalModelsUpdaterState::GetInstance());
+  }
+
   void RegisterFactory() {
     mojo::Remote<local_ai::mojom::LocalAIService> local_ai_remote;
     service_->BindLocalAIReceiver(local_ai_remote.BindNewPipeAndPassReceiver());
@@ -300,6 +309,22 @@ TEST_F(BravePassageEmbeddingsServiceTest,
   // clears the in-flight flag; no further creates fire.
   RunDeferredCreate();
   EXPECT_EQ(1u, web_contents_create_count_);
+}
+
+TEST_F(BravePassageEmbeddingsServiceTest,
+       PreInstalledModelDirCompletesLoadOnFactoryRegister) {
+  // Set install_dir before constructing the service. AddObserver
+  // re-fires OnLocalModelsReady synchronously when install_dir is
+  // already set, exercising the OneShotEvent's idempotent Signal()
+  // alongside the explicit signal in MaybeWaitForLocalModelFilesReady.
+  SetUpModelFiles();
+  RecreateService();
+
+  auto load = IssueLoad();
+  RegisterFactory();
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return fake_factory_.init_count() > 0; }));
+  EXPECT_TRUE(load->load_success.Get());
 }
 
 TEST_F(BravePassageEmbeddingsServiceTest, BindRegistryRoutesToService) {
