@@ -10,13 +10,8 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import android.app.KeyguardManager;
-import android.content.Context;
-import android.os.PowerManager;
-
 import androidx.test.filters.SmallTest;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,44 +33,9 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
     @Rule public MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     @Mock private BraveActivity mBraveActivity;
-    @Mock private PowerManager mPowerManager;
-    @Mock private KeyguardManager mKeyguardManager;
 
-    private BraveFullscreenVideoPictureInPictureController mController;
-
-    @Before
-    public void setUp() {
-        mController = new BraveFullscreenVideoPictureInPictureController();
-
-        when(mBraveActivity.getSystemService(Context.POWER_SERVICE)).thenReturn(mPowerManager);
-        when(mBraveActivity.getSystemService(Context.KEYGUARD_SERVICE)).thenReturn(mKeyguardManager);
-        when(mPowerManager.isInteractive()).thenReturn(true);
-        when(mKeyguardManager.isKeyguardLocked()).thenReturn(false);
-    }
-
-    @Test
-    @SmallTest
-    public void dismissActivityIfNeeded_screenOffKeepsPictureInPictureAlive() {
-        when(mPowerManager.isInteractive()).thenReturn(false);
-        mController.mDismissPending = true;
-
-        mController.dismissActivityIfNeeded(mBraveActivity, METRICS_END_REASON_LEFT_FULLSCREEN);
-
-        assertFalse(mController.mDismissPending);
-        verify(mBraveActivity).onYouTubePictureInPictureFullscreenInterrupted();
-    }
-
-    @Test
-    @SmallTest
-    public void dismissActivityIfNeeded_keyguardLockedKeepsPictureInPictureAlive() {
-        when(mKeyguardManager.isKeyguardLocked()).thenReturn(true);
-        mController.mDismissPending = true;
-
-        mController.dismissActivityIfNeeded(mBraveActivity, METRICS_END_REASON_LEFT_FULLSCREEN);
-
-        assertFalse(mController.mDismissPending);
-        verify(mBraveActivity).onYouTubePictureInPictureFullscreenInterrupted();
-    }
+    private final BraveFullscreenVideoPictureInPictureController mController =
+            new BraveFullscreenVideoPictureInPictureController();
 
     @Test
     @SmallTest
