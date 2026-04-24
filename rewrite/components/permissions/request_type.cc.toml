@@ -1,0 +1,104 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# These substitutions are made resilient by avoiding anchoring on enum keys.
+# Each pattern anchors to the function name (argument list and return type are
+# wildcarded) and the switch opening, then targets either the `default:` entry
+# or the closing `}` of the switch. DOTALL is used so `.` matches newlines,
+# allowing `.*?` in place of `[\s\S]*?`.
+
+[[substitution]]
+description = 'Brave mappings for `ContentSettingsType` -> `RequestType`'
+re_pattern = '(ContentSettingsTypeToRequestTypeIfExists\([^)]*\)\s*\{.*?\n\s*switch[^{]*\{.*?)(\n\s*default:)'
+re_flags = ['DOTALL']
+count = 1
+replace = '''\1
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+    case ContentSettingsType::BRAVE_ETHEREUM:
+      return RequestType::kBraveEthereum;
+    case ContentSettingsType::BRAVE_SOLANA:
+      return RequestType::kBraveSolana;
+    case ContentSettingsType::BRAVE_CARDANO:
+      return RequestType::kBraveCardano;
+#endif
+    case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
+      return RequestType::kBraveGoogleSignInPermission;
+    case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
+      return RequestType::kBraveOpenAIChat;
+    case ContentSettingsType::DEFAULT:
+      return RequestType::kWidevine;\2'''
+
+[[substitution]]
+description = 'Add Brave permission types to `GetIconIdAndroid`'
+re_pattern = '(GetIconIdAndroid\([^)]*\)\s*\{.*?\n\s*switch[^{]*\{.*?)(\n\s*\})'
+re_flags = ['DOTALL']
+count = 1
+replace = '''\1
+    case RequestType::kWidevine:
+    case RequestType::kBraveEthereum:
+    case RequestType::kBraveSolana:
+    case RequestType::kBraveCardano:
+    case RequestType::kBraveGoogleSignInPermission:
+    case RequestType::kBraveOpenAIChat:
+      return IDR_ANDROID_INFOBAR_PERMISSION_COOKIE;\2'''
+
+[[substitution]]
+description = 'Add Brave permission types to `GetIconIdDesktop`'
+re_pattern = '(GetIconIdDesktop\([^)]*\)\s*\{.*?\n\s*switch[^{]*\{.*?)(\n\s*\})'
+re_flags = ['DOTALL']
+count = 1
+replace = '''\1
+    case RequestType::kWidevine:
+    case RequestType::kBraveEthereum:
+    case RequestType::kBraveSolana:
+    case RequestType::kBraveCardano:
+    case RequestType::kBraveGoogleSignInPermission:
+    case RequestType::kBraveOpenAIChat:
+      return vector_icons::kExtensionIcon;\2'''
+
+[[substitution]]
+description = 'Brave mappings for `RequestType` -> `ContentSettingsType`'
+re_pattern = '(RequestTypeToContentSettingsType\([^)]*\)\s*\{.*?\n\s*switch[^{]*\{.*?)(\n\s*default:)'
+count = 1
+re_flags = ['DOTALL']
+replace = '''\1
+    case RequestType::kBraveGoogleSignInPermission:
+      return ContentSettingsType::BRAVE_GOOGLE_SIGN_IN;
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+    case RequestType::kBraveEthereum:
+      return ContentSettingsType::BRAVE_ETHEREUM;
+    case RequestType::kBraveSolana:
+      return ContentSettingsType::BRAVE_SOLANA;
+    case RequestType::kBraveCardano:
+      return ContentSettingsType::BRAVE_CARDANO;
+#endif
+    case RequestType::kBraveOpenAIChat:
+      return ContentSettingsType::BRAVE_OPEN_AI_CHAT;\2'''
+
+[[substitution]]
+description = 'Brave mappings for `RequestType` to permission key'
+re_pattern = '(PermissionKeyForRequestType\([^)]*\)\s*\{.*?\n\s*switch[^{]*\{.*?)(\n\s*\})'
+re_flags = ['DOTALL']
+count = 1
+replace = '''\1
+    case permissions::RequestType::kWidevine:
+      return "widevine";
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+    case permissions::RequestType::kBraveEthereum:
+      return "brave_ethereum";
+    case permissions::RequestType::kBraveSolana:
+      return "brave_solana";
+    case permissions::RequestType::kBraveCardano:
+      return "brave_cardano";
+#else
+    case permissions::RequestType::kBraveEthereum:
+    case permissions::RequestType::kBraveSolana:
+    case permissions::RequestType::kBraveCardano:
+      NOTREACHED();
+#endif
+    case permissions::RequestType::kBraveGoogleSignInPermission:
+      return "brave_google_sign_in";
+    case permissions::RequestType::kBraveOpenAIChat:
+      return "brave_ai_chat";\2'''
