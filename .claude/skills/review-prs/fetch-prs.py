@@ -191,6 +191,11 @@ def load_cache():
         return {}
 
 
+def save_cache(cache):
+    with open(CACHE_PATH, "w") as f:
+        json.dump(cache, f, indent=2)
+
+
 def load_org_members():
     """Load Brave org member logins from the cached file."""
     if not os.path.isfile(ORG_MEMBERS_PATH):
@@ -247,6 +252,7 @@ def filter_prs(prs, mode, days, cache, org_members, reviewer_priority=None):
     skipped_approved = 0
     skipped_external = 0
     skipped_uplift = 0
+    cache_dirty = False
 
     for pr in prs:
         if pr.get("isDraft"):
@@ -285,13 +291,25 @@ def filter_prs(prs, mode, days, cache, org_members, reviewer_priority=None):
                     continue
 
         pr_num = str(pr["number"])
-
-        # Bot previously approved this PR — don't come back
-        if pr_num in approved:
-            skipped_approved += 1
-            continue
-
         head_sha = pr.get("headRefOid", "")
+
+        # Bot previously approved this PR — don't come back UNLESS the bot
+        # has been explicitly re-requested as a reviewer AND new commits have
+        # landed since the prior review. In that case the prior approval is
+        # stale and must be cleared so the bot can re-approve if appropriate.
+        if pr_num in approved:
+            is_rerequest_on_new_sha = (reviewer_priority
+                                       and is_requested_reviewer(
+                                           pr, reviewer_priority)
+                                       and cache.get(pr_num) != head_sha)
+            if is_rerequest_on_new_sha:
+                approved.discard(pr_num)
+                cache["_approved"] = sorted(approved)
+                cache_dirty = True
+            else:
+                skipped_approved += 1
+                continue
+
         if cache.get(pr_num) == head_sha:
             # If the bot is a requested reviewer, force a full re-review
             # even if the SHA hasn't changed (explicit re-request)
@@ -304,6 +322,9 @@ def filter_prs(prs, mode, days, cache, org_members, reviewer_priority=None):
                 continue
 
         to_review.append(pr)
+
+    if cache_dirty:
+        save_cache(cache)
 
     return (
         to_review,
