@@ -1,12 +1,98 @@
 diff --git a/components/permissions/request_type.cc b/components/permissions/request_type.cc
-index fd25f0b4cc846a0096b7ad12c8332f2c1e43f7fa..337a341071183dcee00da3a913e2f104d99cd800 100644
+index fd25f0b4cc846a0096b7ad12c8332f2c1e43f7fa..fdea4494d0408a9f946a073df4cafd8366a03b60 100644
 --- a/components/permissions/request_type.cc
 +++ b/components/permissions/request_type.cc
-@@ -510,6 +510,7 @@ const char* PermissionKeyForRequestType(permissions::RequestType request_type) {
+@@ -76,6 +76,13 @@ int GetIconIdAndroid(RequestType type) {
+       return IDR_ANDROID_STORAGE_ACCESS;
+     case RequestType::kWindowManagement:
+       return IDR_ANDROID_INFOBAR_WINDOW_MANAGEMENT;
++    case RequestType::kWidevine:
++    case RequestType::kBraveEthereum:
++    case RequestType::kBraveSolana:
++    case RequestType::kBraveCardano:
++    case RequestType::kBraveGoogleSignInPermission:
++    case RequestType::kBraveOpenAIChat:
++      return IDR_ANDROID_INFOBAR_PERMISSION_COOKIE;
+   }
+   NOTREACHED();
+ }
+@@ -153,6 +160,13 @@ const gfx::VectorIcon& GetIconIdDesktop(RequestType type) {
+     case RequestType::kIdentityProvider:
+       // TODO(crbug.com/40252825): provide a dedicated icon.
+       return vector_icons::kFolderIcon;
++    case RequestType::kWidevine:
++    case RequestType::kBraveEthereum:
++    case RequestType::kBraveSolana:
++    case RequestType::kBraveCardano:
++    case RequestType::kBraveGoogleSignInPermission:
++    case RequestType::kBraveOpenAIChat:
++      return vector_icons::kExtensionIcon;
+   }
+   NOTREACHED();
+ }
+@@ -286,6 +300,20 @@ std::optional<RequestType> ContentSettingsTypeToRequestTypeIfExists(
+ #endif
+     case ContentSettingsType::FEDERATED_IDENTITY_API:
+       return RequestType::kIdentityProvider;
++#if BUILDFLAG(ENABLE_BRAVE_WALLET)
++    case ContentSettingsType::BRAVE_ETHEREUM:
++      return RequestType::kBraveEthereum;
++    case ContentSettingsType::BRAVE_SOLANA:
++      return RequestType::kBraveSolana;
++    case ContentSettingsType::BRAVE_CARDANO:
++      return RequestType::kBraveCardano;
++#endif
++    case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
++      return RequestType::kBraveGoogleSignInPermission;
++    case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
++      return RequestType::kBraveOpenAIChat;
++    case ContentSettingsType::DEFAULT:
++      return RequestType::kWidevine;
+     default:
+       return std::nullopt;
+ #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+@@ -380,6 +408,18 @@ std::optional<ContentSettingsType> RequestTypeToContentSettingsType(
+     case RequestType::kWebAppInstallation:
+       return ContentSettingsType::WEB_APP_INSTALLATION;
+ #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
++    case RequestType::kBraveGoogleSignInPermission:
++      return ContentSettingsType::BRAVE_GOOGLE_SIGN_IN;
++#if BUILDFLAG(ENABLE_BRAVE_WALLET)
++    case RequestType::kBraveEthereum:
++      return ContentSettingsType::BRAVE_ETHEREUM;
++    case RequestType::kBraveSolana:
++      return ContentSettingsType::BRAVE_SOLANA;
++    case RequestType::kBraveCardano:
++      return ContentSettingsType::BRAVE_CARDANO;
++#endif
++    case RequestType::kBraveOpenAIChat:
++      return ContentSettingsType::BRAVE_OPEN_AI_CHAT;
+     default:
+       // Not associated with a ContentSettingsType.
+       return std::nullopt;
+@@ -510,6 +550,25 @@ const char* PermissionKeyForRequestType(permissions::RequestType request_type) {
        return "window_management";
      case permissions::RequestType::kIdentityProvider:
        return "identity_provider";
-+    BRAVE_PERMISSION_KEY_FOR_REQUEST_TYPE
++    case permissions::RequestType::kWidevine:
++      return "widevine";
++#if BUILDFLAG(ENABLE_BRAVE_WALLET)
++    case permissions::RequestType::kBraveEthereum:
++      return "brave_ethereum";
++    case permissions::RequestType::kBraveSolana:
++      return "brave_solana";
++    case permissions::RequestType::kBraveCardano:
++      return "brave_cardano";
++#else
++    case permissions::RequestType::kBraveEthereum:
++    case permissions::RequestType::kBraveSolana:
++    case permissions::RequestType::kBraveCardano:
++      NOTREACHED();
++#endif
++    case permissions::RequestType::kBraveGoogleSignInPermission:
++      return "brave_google_sign_in";
++    case permissions::RequestType::kBraveOpenAIChat:
++      return "brave_ai_chat";
    }
  
    return nullptr;

@@ -5,41 +5,10 @@
 
 #include "components/permissions/permission_request_data.h"
 
-#include <optional>
-
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "components/permissions/content_setting_permission_context_base.h"
-
-namespace permissions {
-
-std::optional<RequestType> ContentSettingsTypeToRequestTypeIfExists_BraveImpl(
-    ContentSettingsType content_settings_type) {
-  switch (content_settings_type) {
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-    case ContentSettingsType::BRAVE_ETHEREUM:
-      return RequestType::kBraveEthereum;
-    case ContentSettingsType::BRAVE_SOLANA:
-      return RequestType::kBraveSolana;
-    case ContentSettingsType::BRAVE_CARDANO:
-      return RequestType::kBraveCardano;
-#endif
-    case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
-      return RequestType::kBraveGoogleSignInPermission;
-    case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
-      return RequestType::kBraveOpenAIChat;
-    default:
-      return ContentSettingsTypeToRequestTypeIfExists(content_settings_type);
-  }
-}
-
-}  // namespace permissions
 
 #define PermissionContextBase PermissionContextBase_ChromiumImpl
 
-#define ContentSettingsTypeToRequestTypeIfExists \
-  ContentSettingsTypeToRequestTypeIfExists_BraveImpl
-
 #include <components/permissions/permission_request_data.cc>
 
-#undef ContentSettingsTypeToRequestTypeIfExists
 #undef PermissionContextBase
