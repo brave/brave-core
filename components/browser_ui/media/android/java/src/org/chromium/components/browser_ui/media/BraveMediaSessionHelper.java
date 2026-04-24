@@ -5,6 +5,7 @@
 
 package org.chromium.components.browser_ui.media;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 
 import androidx.annotation.Nullable;
@@ -19,8 +20,10 @@ import org.chromium.content_public.browser.WebContents;
 import org.chromium.services.media_session.MediaImage;
 import org.chromium.services.media_session.MediaMetadata;
 import org.chromium.services.media_session.MediaPosition;
+import org.chromium.ui.base.WindowAndroid;
 import org.chromium.url.GURL;
 
+import java.lang.ref.WeakReference;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -61,7 +64,9 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
                         BraveReflectionUtil.getField(
                                 MediaSessionHelper.class, "mWebContents", this);
 
-        return isBraveTalk(webContents) || isBackgroundVideo(webContents);
+        return isBraveTalk(webContents)
+                || isBackgroundVideo(webContents)
+                || isYouTubePictureInPicture(webContents);
     }
 
     private boolean isYouTube(WebContents webContents) {
@@ -84,6 +89,25 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
                 CommandLine.getInstance().hasSwitch("disable-background-media-suspend")
                         && isYouTube(webContents);
         return enabled;
+    }
+
+    private boolean isYouTubePictureInPicture(final WebContents webContents) {
+        if (!isYouTube(webContents)) {
+            return false;
+        }
+
+        final WindowAndroid windowAndroid = webContents.getTopLevelNativeWindow();
+        if (windowAndroid == null) {
+            return false;
+        }
+
+        final WeakReference<Activity> activityRef = windowAndroid.getActivity();
+        if (activityRef == null) {
+            return false;
+        }
+
+        final Activity activity = activityRef.get();
+        return activity != null && activity.isInPictureInPictureMode();
     }
 
     @Override
@@ -121,7 +145,7 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
                                 mediaSession);
         assert mediaSessionObserver != null;
 
-        if (!shouldSuppressMediaPause()) {
+        if (!(mediaSession instanceof MediaSessionImpl)) {
             return mediaSessionObserver;
         }
         ((MediaSessionImpl) mediaSession).removeObserver(mediaSessionObserver);
@@ -133,9 +157,12 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
 
             @Override
             public void mediaSessionStateChanged(boolean isControllable, boolean isPaused) {
-                if (!isControllable) {
+                // Keep the Android media controls alive for Brave Talk, background YouTube audio,
+                // and active YouTube PiP sessions when the page transiently reports itself as not
+                // controllable. Preserve the real paused state so SystemUI shows the correct
+                // action and forwards the right command after wake/restore transitions.
+                if (!isControllable && shouldSuppressMediaPause()) {
                     isControllable = true;
-                    isPaused = false;
                 }
                 mediaSessionObserver.mediaSessionStateChanged(isControllable, isPaused);
             }
