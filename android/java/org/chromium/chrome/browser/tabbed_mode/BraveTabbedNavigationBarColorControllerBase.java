@@ -83,6 +83,15 @@ class BraveTabbedNavigationBarColorControllerBase {
             return false;
         }
 
+        // When the toolbar is bottom-anchored (upstream's "Address bar: Bottom"), the system
+        // nav bar sits directly below the toolbar and should match the toolbar/surface color
+        // - not the active tab's page background. Returning false here lets upstream fall
+        // through to its default branch (colorSurface), which naturally follows dynamic
+        // colors when the flag is on and the baseline theme otherwise.
+        if (BottomToolbarConfiguration.isToolbarBottomAnchored()) {
+            return false;
+        }
+
         // Otherwise just call upstream's method.
         return (boolean)
                 BraveReflectionUtil.invokeMethod(
