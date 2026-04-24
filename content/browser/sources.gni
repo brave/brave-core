@@ -3,8 +3,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-brave_content_browser_sources =
-    [ "//brave/content/browser/devtools/adblock_devtools_instrumentation.cc" ]
+brave_content_browser_sources = [
+  "//brave/content/browser/devtools/adblock_devtools_instrumentation.cc",
+  "//brave/content/browser/speech/brave_speech_recognition_engine.cc",
+  "//brave/content/browser/speech/brave_speech_recognition_engine.h",
+]
 
 if (is_android) {
   brave_content_browser_sources += [
@@ -18,5 +21,7 @@ brave_content_browser_deps = [
   "//brave/components/brave_service_keys",
   "//brave/components/brave_shields/core/common:mojom",
   "//brave/components/brave_wallet/common/buildflags",
+  "//brave/components/local_ai/core",
+  "//brave/components/local_ai/core:mojom",
   "//brave/components/speech_to_text",
 ]
