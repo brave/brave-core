@@ -20,7 +20,9 @@
 #include "brave/components/email_aliases/email_aliases_api.h"
 #include "brave/components/email_aliases/email_aliases_notes.h"
 #include "brave/components/email_aliases/features.h"
+#include "brave/components/email_aliases/pref_names.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -107,6 +109,7 @@ EmailAliasesService::~EmailAliasesService() = default;
 
 // static
 void EmailAliasesService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
+  registry->RegisterBooleanPref(prefs::kEmailAliasesDisabledByPolicy, false);
   EmailAliasesNotes::RegisterProfilePrefs(registry);
 }
 

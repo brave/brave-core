@@ -20,6 +20,7 @@
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/components/playlist/core/common/pref_names.h"
 #include "brave/ios/browser/policy/brave_simple_policy_map_ios.h"
@@ -49,6 +50,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
 #include "brave/components/brave_news/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/components/email_aliases/pref_names.h"
 #endif
 
 namespace brave_origin {
@@ -146,6 +151,14 @@ constexpr auto kBraveOriginProfileMetadata =
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              false,
              /*user_settable=*/false)},
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+        // Email Aliases preferences
+        {email_aliases::prefs::kEmailAliasesDisabledByPolicy,
+         BraveOriginServiceFactory::BraveOriginPrefMetadata(
+             true,
+             /*user_settable=*/false)},
+#endif
     });
 
 }  // namespace

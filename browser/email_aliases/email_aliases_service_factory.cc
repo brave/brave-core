@@ -12,8 +12,10 @@
 #include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/email_aliases/email_aliases_service.h"
 #include "brave/components/email_aliases/features.h"
+#include "brave/components/email_aliases/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"
+#include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/storage_partition.h"
 
@@ -22,7 +24,7 @@ namespace email_aliases {
 // static
 EmailAliasesService* EmailAliasesServiceFactory::GetServiceForProfile(
     Profile* profile) {
-  if (!features::IsEmailAliasesEnabled()) {
+  if (IsServiceDisabled(profile)) {
     return nullptr;
   }
   return static_cast<EmailAliasesService*>(
@@ -43,6 +45,21 @@ void EmailAliasesServiceFactory::BindForProfile(
 EmailAliasesServiceFactory* EmailAliasesServiceFactory::GetInstance() {
   static base::NoDestructor<EmailAliasesServiceFactory> instance;
   return instance.get();
+}
+
+// static
+bool EmailAliasesServiceFactory::IsServiceDisabled(
+    content::BrowserContext* context) {
+  if (!features::IsEmailAliasesEnabled()) {
+    return true;
+  }
+  const auto* pref_service = user_prefs::UserPrefs::Get(context);
+  if (pref_service &&
+      pref_service->IsManagedPreference(prefs::kEmailAliasesDisabledByPolicy) &&
+      pref_service->GetBoolean(prefs::kEmailAliasesDisabledByPolicy)) {
+    return true;
+  }
+  return false;
 }
 
 EmailAliasesServiceFactory::EmailAliasesServiceFactory()

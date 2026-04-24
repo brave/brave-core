@@ -15,6 +15,10 @@
 class KeyedService;
 class Profile;
 
+namespace content {
+class BrowserContext;
+}
+
 namespace email_aliases {
 
 class EmailAliasesService;
@@ -26,6 +30,8 @@ class EmailAliasesServiceFactory : public ProfileKeyedServiceFactory {
       Profile* profile,
       mojo::PendingReceiver<mojom::EmailAliasesService> receiver);
   static EmailAliasesServiceFactory* GetInstance();
+
+  static bool IsServiceDisabled(content::BrowserContext* context);
 
   EmailAliasesServiceFactory();
 

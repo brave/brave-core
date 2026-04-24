@@ -9,6 +9,7 @@ import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
+import("//brave/components/email_aliases/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
@@ -37,6 +38,7 @@ source_set("brave_origin") {
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/constants",
+    "//brave/components/email_aliases/buildflags",
     "//brave/components/ipfs/buildflags",
     "//brave/components/p3a",
     "//brave/components/playlist/core/common/buildflags",
@@ -92,6 +94,10 @@ source_set("brave_origin") {
 
   if (enable_brave_talk) {
     deps += [ "//brave/components/brave_talk" ]
+  }
+
+  if (enable_email_aliases) {
+    deps += [ "//brave/components/email_aliases:service" ]
   }
 }
 
