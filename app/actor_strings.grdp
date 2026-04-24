@@ -59,9 +59,68 @@
       $1<ex>Wikipedia</ex>
     </ph> - Gemini is working on your task...
   </message>
+  <!-- TODO(crbug.com/491585996): Make strings translatable once they are finalized -->
+  <message name="IDS_ACTOR_PIP_WORKING_STATUS" desc="Status text shown in Picture-in-Picture when the actor is actively performing a task." formatter_data="android_java" translateable="false">
+    Working on your task…
+  </message>
+  <message name="IDS_ACTOR_PIP_PAUSED_STATUS" desc="Status text shown in Picture-in-Picture when the task has been paused by the user." formatter_data="android_java" translateable="false">
+    Task Paused
+  </message>
+  <message name="IDS_ACTOR_PIP_NEEDS_ATTENTION_STATUS" desc="Status text shown in Picture-in-Picture when the task requires user input to continue." formatter_data="android_java" translateable="false">
+    Needs your attention
+  </message>
+  <message name="IDS_ACTOR_PIP_COMPLETE_STATUS" desc="Status text shown in Picture-in-Picture when the actor has finished the assigned task." formatter_data="android_java" translateable="false">
+    Task Complete
+  </message>
 
   <!-- Android specific strings. -->
   <message name="IDS_ACTOR_OVERLAY_SNACKBAR_MESSAGE" desc="Message shown in a snackbar when the user clicks on the actor overlay but they cannot interact with the tab until the task is paused or complete." formatter_data="android_java">
     You cannot interact with this tab until the task is paused or complete
+  </message>
+  <message name="IDS_GLIC_BUTTON_STATUS_REVIEW" desc="Label on the Gemini entry point button when Gemini requires user attention." formatter_data="android_java">
+    Review
+  </message>
+  <message name="IDS_GLIC_BUTTON_STATUS_DONE" desc="Label on the Gemini entry point button when Gemini has completed a task." formatter_data="android_java">
+    Done
+  </message>
+
+  <message name="IDS_ACTOR_NOTIFICATION_TITLE_WORKING_ON_TASK" desc="Notification title when the actor is actively working on a task." formatter_data="android_java">
+   Working on your task
+  </message>
+  <message name="IDS_ACTOR_NOTIFICATION_TITLE_CHECK_YOUR_TASK" desc="Notification title when the actor is waiting for user input to proceed with a task." formatter_data="android_java">
+   Check your task
+  </message>
+  <message name="IDS_ACTOR_NOTIFICATION_TITLE_TASK_PAUSED" desc="Notification title when a task has been paused by the user or the actor." formatter_data="android_java">
+   Task paused
+  </message>
+  <message name="IDS_ACTOR_NOTIFICATION_TITLE_TASK_INTERRUPTED" desc="Notification title when a task has been interrupted." formatter_data="android_java">
+   Task interrupted
+  </message>
+  <message name="IDS_ACTOR_NOTIFICATION_TITLE_TASK_COMPLETE" desc="Notification title when a task has finished successfully." formatter_data="android_java">
+   Task complete
+  </message>
+  <message name="IDS_ACTOR_NOTIFICATION_BUTTON_VIEW_TASK" desc="Label for the notification button that takes the user to the tab where the task is running." formatter_data="android_java">
+    View task
+  </message>
+  <message name="IDS_ACTOR_NOTIFICATION_BUTTON_PAUSE_TASK" desc="Label for the notification button that pauses the currently running task." formatter_data="android_java">
+    Pause task
+  </message>
+  <message name="IDS_ACTOR_NOTIFICATION_BUTTON_RESUME_TASK" desc="Label for the notification button that resumes a paused task." formatter_data="android_java">
+    Resume task
+  </message>
+  <message name="IDS_ACTOR_NOTIFICATION_BODY_WORKING" desc="Notification body text when the actor is working on a task." formatter_data="android_java">
+    <ph name="TASK_TITLE">%s<ex>My Task</ex></ph>\nGemini is working on your task, and will let you know if more action is needed.
+  </message>
+  <message name="IDS_ACTOR_NOTIFICATION_BODY_USER_INPUT" desc="Notification body text when the actor is waiting for user input." formatter_data="android_java">
+    <ph name="TASK_TITLE">%s<ex>My Task</ex></ph>\nGemini needs your help to continue working on your task.
+  </message>
+  <message name="IDS_ACTOR_NOTIFICATION_BODY_PAUSED" desc="Notification body text when the actor has paused a task." formatter_data="android_java">
+    <ph name="TASK_TITLE">%s<ex>My Task</ex></ph>\nGemini stopped working on your task.
+  </message>
+  <message name="IDS_ACTOR_NOTIFICATION_BODY_COMPLETE" desc="Notification body text when the actor has completed a task." formatter_data="android_java">
+    <ph name="TASK_TITLE">%s<ex>My Task</ex></ph>\nGemini completed your task, you can view it in Brave.
+  </message>
+  <message name="IDS_ACTOR_NOTIFICATION_BODY_INTERRUPTED" desc="Notification body text when the actor has task is stopped not by user." formatter_data="android_java">
+    <ph name="TASK_TITLE">%s<ex>My Task</ex></ph>\nGemini stopped your task. Return to Brave to review it.
   </message>
 </grit-part>

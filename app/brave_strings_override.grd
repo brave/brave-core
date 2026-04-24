@@ -208,7 +208,10 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
 
       <if expr="enable_extensions_core">
-        </if>
+        <message name="IDS_OPEN_WEB_STORE_BUTTON_TEXT" desc="Text for the open Web Store button." formatter_data="android_java">
+          Open Web Store
+        </message>
+      </if>
 
       <message name="IDS_SAFETY_CHECK_EXTENSIONS_POLICY_VIOLATION" desc="The text explaining the reason for disabling extension. The extension in question violates Web Store policy.">
         This extension violates the Web Store policy, and might be unsafe. Remove it from Brave so it can no longer see and change your data on sites you visit, including your personal info.
