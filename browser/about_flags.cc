@@ -202,6 +202,14 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
            brave_wallet::features::kBraveWalletZCashFeature,                  \
            kZCashFeatureVariations, "BraveWalletZCash")},                     \
       {                                                                       \
+          "brave-wallet-polkadot",                                            \
+          "Enable Brave Wallet Polkadot support",                             \
+          "Polkadot support for native Brave Wallet",                         \
+          kOsDesktop | kOsAndroid,                                            \
+          FEATURE_VALUE_TYPE(                                                 \
+              brave_wallet::features::kBraveWalletPolkadotFeature),           \
+      },                                                                      \
+      {                                                                       \
           "brave-wallet-bitcoin",                                             \
           "Enable Brave Wallet Bitcoin support",                              \
           "Bitcoin support for native Brave Wallet",                          \
@@ -628,6 +636,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "when the conversation is created.",                                 \
           kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
           FEATURE_VALUE_TYPE(ai_chat::features::kPageContextEnabledInitially), \
+      },                                                                       \
+      {                                                                        \
+          "brave-ai-chat-conversation-api-v2",                                 \
+          "Brave AI Chat Conversation API V2",                                 \
+          "Enables Conversation API V2 for AI Chat",                           \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatConversationAPIV2),     \
       },                                                                       \
       {                                                                        \
           "brave-ai-chat-show-input-on-new-tab-page",                          \
