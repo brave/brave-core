@@ -484,6 +484,21 @@
         <item name="fontStyle">normal</item>
     </style>
 
+    <style name="FontHeadingDisplay2">
+        <item name="android:textSize">40sp</item>
+        <item name="android:fontWeight">600</item>
+        <item name="lineHeight">48sp</item>
+        <item name="fontStyle">normal</item>
+    </style>
+
+    <style name="IncognitoNtpTitle" parent="HeadingH1"/>
+
+    <style name="IncognitoNtpSectionTitle" parent="DefaultSemibold"/>
+
+    <style name="IncognitoNtpSectionDescription" parent="SmallRegular"/>
+
+    <style name="IncognitoNtpCta" parent="SmallSemibold"/>
+
   <style name="MonospaceSmall">
     <item name="android:textSize">@dimen/monospace_small</item>
     <item name="lineHeight">16sp</item>

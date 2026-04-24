@@ -12,9 +12,9 @@
     <dimen name="onboarding_2_animation_height">300dp</dimen>
     <dimen name="onboarding_2_animation_width">500dp</dimen>
 
-    <dimen name="new_tab_page_incognito_title_text_size">40sp</dimen>
-    <dimen name="new_tab_page_incognito_logo_size">56sp</dimen>
-    <dimen name="new_tab_page_incognito_icon_size">48sp</dimen>
+    <dimen name="new_tab_page_incognito_logo_size">56dp</dimen>
+    <dimen name="new_tab_page_incognito_icon_size">48dp</dimen>
+    <dimen name="new_tab_page_incognito_icon_inner_size">24dp</dimen>
 
     <!-- Match this value with the upstream for Accessibility -->
     <dimen name="omnibox_search_engine_logo_composed_size">24dp</dimen>
