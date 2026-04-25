@@ -42,19 +42,17 @@
         android:title="@string/brave_wallet_clear_tx_and_nonce_setting_title"
         android:summary="@string/brave_wallet_clear_tx_and_nonce_setting_desc"/>
 
-    <org.chromium.chrome.browser.settings.BraveWalletResetPreference
-        android:key="pref_brave_wallet_reset"
-        android:title="@string/brave_wallet_reset_settings_option" />
-
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="nft_auto_discovery_switch"
         android:title="@string/settings_enable_nft_discovery_label"
         android:summaryOn="@string/text_on"
-        android:summaryOff="@string/text_off"
-        app:allowDividerBelow="false"/>
+        android:summaryOff="@string/text_off" />
 
     <!-- A description with hyperlink to explain more about NFT discovery settings. -->
-    <org.chromium.components.browser_ui.settings.TextMessagePreference
-        app:icon="@drawable/ic_info_outline"
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:key="nft_auto_discovery_learn_more" />
+
+    <org.chromium.chrome.browser.settings.BraveWalletResetPreference
+        android:key="pref_brave_wallet_reset"
+        android:title="@string/brave_wallet_reset_settings_option" />
 </PreferenceScreen>
