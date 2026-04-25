@@ -6,13 +6,37 @@
 #include "third_party/blink/public/platform/web_content_settings_client.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/html/media/html_media_element.h"
+#include "third_party/blink/renderer/platform/wtf/casting.h"
 
 namespace blink {
 namespace {
 
+bool TreeHasUserActivation(Frame* frame) {
+  for (Frame* frame_video = frame; frame_video;
+       frame_video = frame_video->Tree().Parent()) {
+    if (frame_video->HasStickyUserActivation()) {
+      return true;
+    }
+
+    if (auto* local = DynamicTo<LocalFrame>(frame_video)) {
+      if (LocalFrame::HasTransientUserActivation(local)) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
 bool IsAutoplayAllowedForFrame(LocalFrame* frame, bool play_requested) {
-  if (!frame)
+  if (!frame) {
     return false;
+  }
+
+  if (TreeHasUserActivation(frame)) {
+    return true;
+  }
+
   if (auto* settings_client = frame->GetContentSettingsClient()) {
     bool allow_autoplay = settings_client->AllowAutoplay(play_requested);
     // Clear it in order to block media when refresh or navigate
