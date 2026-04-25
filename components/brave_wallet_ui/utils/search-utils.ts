@@ -18,7 +18,7 @@ import {
   NetworksRegistry,
   networkEntityAdapter,
 } from '../common/slices/entities/network.entity'
-import { makeNetworkAsset } from '../options/asset-options'
+import { makeNetworkAsset } from './asset-utils'
 import { getAddressLabel, getAccountLabel } from './account-utils'
 import Amount from './amount'
 import { getCoinFromTxDataUnion } from './network-utils'

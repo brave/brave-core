@@ -3,11 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-// magics
-import { SKIP_PRICE_LOOKUP_COINGECKO_ID } from '../common/constants/magics'
-
 // types
-import { BraveWallet, SupportedTestNetworks } from '../constants/types'
+import { BraveWallet } from '../constants/types'
 
 // options
 import { AllNetworksOption } from './network-filter-options'
@@ -74,35 +71,3 @@ export const makeNativeAssetLogo = (symbol: string, chainId: string) => {
   )
 }
 
-type UndefinedIf<R, T> = T extends undefined ? undefined : R
-export const makeNetworkAsset = <
-  T extends BraveWallet.NetworkInfo | undefined | null,
->(
-  network: T,
-): UndefinedIf<BraveWallet.BlockchainToken, T> => {
-  if (!network) {
-    return undefined as UndefinedIf<BraveWallet.BlockchainToken, T>
-  }
-
-  return {
-    contractAddress: '',
-    name: network.symbolName,
-    symbol: network.symbol,
-    logo: makeNativeAssetLogo(network.symbol, network.chainId),
-    isErc20: false,
-    isErc721: false,
-    isErc1155: false,
-    isNft: false,
-    isSpam: false,
-    decimals: network.decimals,
-    visible: true,
-    tokenId: '',
-    coingeckoId:
-      // skip getting prices of known testnet tokens
-      SupportedTestNetworks.includes(network.chainId)
-        ? SKIP_PRICE_LOOKUP_COINGECKO_ID
-        : '',
-    chainId: network.chainId,
-    coin: network.coin,
-  } as UndefinedIf<BraveWallet.BlockchainToken, T>
-}

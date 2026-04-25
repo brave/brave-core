@@ -47,7 +47,7 @@ import {
   makePortfolioAssetRoute,
   openTab,
 } from '../../../../utils/routes-utils'
-import { makeNetworkAsset } from '../../../../options/asset-options'
+import { makeNetworkAsset } from '../../../../utils/asset-utils'
 
 import Amount from '../../../../utils/amount'
 import {

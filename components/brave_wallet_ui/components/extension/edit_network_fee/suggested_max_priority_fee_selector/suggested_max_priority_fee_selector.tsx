@@ -28,7 +28,7 @@ import {
 import { getLocale } from '../../../../../common/locale'
 import {
   makeNetworkAsset, //
-} from '../../../../options/asset-options'
+} from '../../../../utils/asset-utils'
 import {
   getPriceRequestsForTokens,
   getTokenPriceAmountFromRegistry,

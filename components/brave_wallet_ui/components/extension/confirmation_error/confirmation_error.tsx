@@ -18,7 +18,7 @@ import { ParsedTransaction } from '../../../utils/tx-utils'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
-import { makeNetworkAsset } from '../../../options/asset-options'
+import { makeNetworkAsset } from '../../../utils/asset-utils'
 import {
   makeFundWalletRoute,
   openWalletRouteTab,

@@ -42,11 +42,9 @@ import {
   GetBlockchainTokenIdArg,
   getDeletedTokenIds,
   isNativeAsset,
-} from '../../utils/asset-utils'
-import {
-  makeNativeAssetLogo,
   makeNetworkAsset,
-} from '../../options/asset-options'
+} from '../../utils/asset-utils'
+import { makeNativeAssetLogo } from '../../options/asset-options'
 import { isIpfs } from '../../utils/string-utils'
 import { getBraveRewardsProxy } from './brave_rewards_api_proxy'
 import {

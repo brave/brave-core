@@ -33,7 +33,7 @@ import {
   isEIP1559Transaction,
   isCardanoTransaction,
 } from '../../utils/tx-utils'
-import { makeNetworkAsset } from '../../options/asset-options'
+import { makeNetworkAsset } from '../../utils/asset-utils'
 
 // Custom Hooks
 import useGetTokenInfo from './use-get-token-info'
