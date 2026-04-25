@@ -7,7 +7,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_types.h"
-#include "brave/components/brave_ads/core/public/common/locale/scoped_locale_for_testing.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds.*
 
@@ -17,8 +16,6 @@ class BraveAdsLanguageDiagnosticEntryTest : public test::TestBase {};
 
 TEST_F(BraveAdsLanguageDiagnosticEntryTest, GetValue) {
   // Arrange
-  const test::ScopedCurrentLanguageCode scoped_current_language_code{"en"};
-
   const LanguageDiagnosticEntry diagnostic_entry;
 
   // Act & Assert
