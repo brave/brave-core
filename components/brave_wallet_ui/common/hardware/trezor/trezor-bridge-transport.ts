@@ -23,13 +23,16 @@ export class TrezorBridgeTransport extends MessagingTransport {
   private readonly frameId: string
   private readonly bridgeFrameUrl: string
   private bridge?: HTMLIFrameElement
+  private bridgePromise?: Promise<HTMLIFrameElement>
 
   closeBridge = () => {
-    if (!this.bridge || !this.hasBridgeCreated()) {
+    if (!this.bridge) {
       return
     }
     const element = document.getElementById(this.frameId)
     element?.parentNode?.removeChild(element)
+    this.bridge = undefined
+    this.bridgePromise = undefined
   }
 
   /**
@@ -40,8 +43,11 @@ export class TrezorBridgeTransport extends MessagingTransport {
     command: TrezorFrameCommand,
   ): Promise<T | TrezorErrorsCodes> => {
     return new Promise<T | TrezorErrorsCodes>(async (resolve) => {
-      if (!this.bridge && !this.hasBridgeCreated()) {
-        this.bridge = await this.createBridge()
+      if (!this.bridge) {
+        if (!this.bridgePromise) {
+          this.bridgePromise = this.createBridge()
+        }
+        this.bridge = await this.bridgePromise
       }
       if (!this.bridge || !this.bridge.contentWindow) {
         resolve(TrezorErrorsCodes.BridgeNotReady)
@@ -88,10 +94,6 @@ export class TrezorBridgeTransport extends MessagingTransport {
       }
       document.body.appendChild(element)
     })
-  }
-
-  private readonly hasBridgeCreated = (): boolean => {
-    return document.getElementById(this.frameId) !== null
   }
 }
 
