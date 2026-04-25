@@ -417,6 +417,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_CONTENT_CONTEXT_OPENLINKTOR_INAPP" desc="Title case: The name of the open a link in private window with Tor command">
           Open Link in Brave Private Window with Tor
         </message>
+        <message name="IDS_CONTENT_CONTEXT_BRAVE_TRANSLATE_SELECTION" desc="Context menu item to translate selected text via Brave Translate">
+          Translate Selection with Brave
+        </message>
       </if>
       <if expr="not use_titlecase">
         <message name="IDS_NEW_OFFTHERECORD_WINDOW_TOR" desc="The text label of a menu item to open a new off-the-record window with Tor.">
@@ -427,6 +430,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
         <message name="IDS_CONTENT_CONTEXT_OPENLINKTOR_INAPP" desc="The name of the open a link in private window with Tor command">
           Open link in Brave private window with Tor
+        </message>
+        <message name="IDS_CONTENT_CONTEXT_BRAVE_TRANSLATE_SELECTION" desc="Context menu item to translate selected text via Brave Translate">
+          Translate selection with Brave
         </message>
       </if>
       <!-- Dev channel deprecation infobar -->
