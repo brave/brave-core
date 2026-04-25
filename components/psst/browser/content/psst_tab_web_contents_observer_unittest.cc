@@ -646,6 +646,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
                            .Set("applied_tasks",
                                 base::ListValue().Append(
                                     base::DictValue()
+                                        .Set("uid", "1")
                                         .Set("url", "https://example1.com")
                                         .Set("description", "settings"))))
           .Set("result", true));
@@ -864,6 +865,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
                            .Set("applied_tasks",
                                 base::ListValue().Append(
                                     base::DictValue()
+                                        .Set("uid", "1")
                                         .Set("url", url.spec())
                                         .Set("description", task_description))))
           .Set("result", true));

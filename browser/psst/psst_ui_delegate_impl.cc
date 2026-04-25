@@ -41,29 +41,23 @@ void PsstUiDelegateImpl::Show(
 
 void PsstUiDelegateImpl::UpdateTasks(
     long progress,
-    const std::vector<PolicyTask>& applied_tasks,
+    const std::vector<PolicyTask>& performed_tasks,
     const mojom::PsstStatus status) {
-  // Implementation for setting the current progress.
-  for (Observer& obs : observer_list_) {
-    std::ranges::for_each(applied_tasks, [&obs](const PolicyTask& task) {
-      obs.OnSetRequestDone(task.url, task.error_description);
-    });
-  }
-
-  if (status != mojom::PsstStatus::kCompleted) {
+  if (!ui_presenter_->IsDialogShown()) {
     return;
   }
 
-  std::vector<std::string> applied_list;
-  std::vector<std::string> failed_list;
-  std::ranges::for_each(
-      applied_tasks, [&applied_list, &failed_list](const PolicyTask& task) {
-        (!task.error_description.has_value() || task.error_description->empty())
-            ? applied_list.emplace_back(task.url)
-            : failed_list.emplace_back(task.url);
-      });
+  // Implementation for setting the current progress.
   for (Observer& obs : observer_list_) {
-    obs.OnSetCompleted(applied_list, failed_list);
+    if (performed_tasks.empty() && progress == 100) {
+      // Update common dialog status
+      obs.OnSetRequestStatus("", "");
+    } else {
+      // Update individual task statuses.
+      for (const PolicyTask& task : performed_tasks) {
+        obs.OnSetRequestStatus(task.uid, task.error_description);
+      }
+    }
   }
 }
 
@@ -113,7 +107,7 @@ void PsstUiDelegateImpl::OnUserAcceptedPsstSettings(
       dialog_data_->user_id, std::move(perform_for_uids_list));
 
   if (apply_changes_callback_) {
-    std::move(apply_changes_callback_).Run(urls_to_skip);
+    std::move(apply_changes_callback_).Run(perform_for_uids);
   }
 }
 
