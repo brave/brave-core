@@ -1139,17 +1139,19 @@ class Upgrade(Versioned):
         if status.has_deleted_patch_files():
             raise InvalidInputException(
                 'Deleted patches detected. These should be committed as their '
-                'own changes:\n%s' % '\n'.join(status.deleted))
+                'own changes:\n%s' %
+                '\n'.join(status.staged.deleted + status.unstaged.deleted))
         if status.has_untracked_patch_files():
             raise InvalidInputException(
                 'Untracked patch files detected. These should be committed as '
-                'their own changes:\n%s' % '\n'.join(status.untracked))
+                'their own changes:\n%s' % '\n'.join(status.unstaged.added))
         if status.has_staged_files():
             raise InvalidInputException(
-                'Staged files detected after running update_patches. Please make '
-                'sure to commit or unstage any changes, to avoid committing '
-                'changes unintentionally.\n'
-                'Staged files:\n%s' % '\n'.join(status.staged))
+                'Staged files detected after running update_patches. Please '
+                'make sure to commit or unstage any changes, to avoid '
+                'committing changes unintentionally.\n'
+                'Staged files:\n%s' %
+                '\n'.join(status.get_all_staged_entries()))
 
         # The resulting updated patches should not be doing anything beyond
         # what they were doing already, both for "Update patches" and
@@ -1157,8 +1159,9 @@ class Upgrade(Versioned):
         # patches to make sure that the number of hunks in these patch files
         # have not changed, as any significant change to a patchfile should be
         # submitted as its own change, with a culprit for visibility.
+        all_modified = status.staged.modified + status.unstaged.modified
         modified_patches = [
-            path for path in status.modified
+            path for path in all_modified
             if path.startswith('patches/') and path.endswith('.patch')
         ]
         if not modified_patches:
@@ -1182,8 +1185,9 @@ class Upgrade(Versioned):
                 for patch, b, a in patches_with_hunk_changes
             ])
             raise InvalidInputException(
-                'The following modified patches have changes in the number of hunks, '
-                'and are expected to be submitted separately as fixes with Chromium culprits:\n'
+                'The following modified patches have changes in the number of '
+                'hunks, and are expected to be submitted separately as fixes '
+                'with Chromium culprits:\n'
                 f'{list_str}')
 
     def look_for_diffs(self, *files) -> str:
@@ -2035,6 +2039,13 @@ class Reassign(Task):
             The change for which the authorship should be reassigned. This is
             any valid git reference that resolves to a single commit.
         """
+
+        status = GitStatus()
+        if status.has_staged_files():
+            raise InvalidInputException(
+                'Staged files detected. Please commit or unstage changes '
+                'before reassigning:\n%s' %
+                '\n'.join(status.get_all_staged_entries()))
 
         commit, message = repository.brave.run_git('log', '-1', change, '-s',
                                                    '--format=%h %s').split(
