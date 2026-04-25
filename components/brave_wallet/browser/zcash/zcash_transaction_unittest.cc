@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
 
+#include <limits>
 #include <memory>
 #include <utility>
 
@@ -184,7 +185,7 @@ TEST(ZCashTransaction, IsSigned) {
 
 TEST(ZCashTransaction, TotalInputsAmount) {
   ZCashTransaction tx;
-  EXPECT_EQ(tx.TotalInputsAmount(), 0u);
+  EXPECT_EQ(tx.TotalInputsAmount().ValueOrDie(), 0u);
 
   ZCashTransaction::TxInput input1;
   input1.utxo_address = kAddress1;
@@ -193,7 +194,7 @@ TEST(ZCashTransaction, TotalInputsAmount) {
   input1.utxo_value = 555666777;
   input1.script_sig = {1, 2, 3};
   tx.transparent_part().inputs.push_back(std::move(input1));
-  EXPECT_EQ(tx.TotalInputsAmount(), 555666777u);
+  EXPECT_EQ(tx.TotalInputsAmount().ValueOrDie(), 555666777u);
 
   ZCashTransaction::TxInput input2;
   input2.utxo_address = kAddress2;
@@ -201,7 +202,21 @@ TEST(ZCashTransaction, TotalInputsAmount) {
   base::HexStringToSpan(kTxid2, input2.utxo_outpoint.txid);
   input2.utxo_value = 555;
   tx.transparent_part().inputs.push_back(input2);
-  EXPECT_EQ(tx.TotalInputsAmount(), 555666777u + 555u);
+  EXPECT_EQ(tx.TotalInputsAmount().ValueOrDie(), 555666777u + 555u);
+}
+
+TEST(ZCashTransaction, TotalInputsAmountOverflow) {
+  ZCashTransaction tx;
+
+  ZCashTransaction::TxInput input1;
+  input1.utxo_value = std::numeric_limits<uint64_t>::max();
+  tx.transparent_part().inputs.push_back(std::move(input1));
+
+  ZCashTransaction::TxInput input2;
+  input2.utxo_value = 1;
+  tx.transparent_part().inputs.push_back(std::move(input2));
+
+  EXPECT_FALSE(tx.TotalInputsAmount().IsValid());
 }
 
 TEST(ZCashTransaction, ShieldedOutputs) {
