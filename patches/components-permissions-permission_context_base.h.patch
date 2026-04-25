@@ -1,0 +1,37 @@
+diff --git a/components/permissions/permission_context_base.h b/components/permissions/permission_context_base.h
+index 24959f851ac9eb4a29b6719850e21b8f3c0139ae..8f28db1e8d2fedc21009b8e0d9765ad17438e0cf 100644
+--- a/components/permissions/permission_context_base.h
++++ b/components/permissions/permission_context_base.h
+@@ -88,6 +88,7 @@ using BrowserPermissionCallback =
+ // See midi_permission_context.h/cc or push_permission_context.cc/h for some
+ // examples.
+ 
++namespace chromium_impl {
+ class PermissionContextBase : public content_settings::Observer {
+  public:
+   PermissionContextBase(
+@@ -284,6 +285,7 @@ class PermissionContextBase : public content_settings::Observer {
+ #endif  // BUILDFLAG(IS_ANDROID)
+ 
+  private:
++  friend class ::permissions::PermissionContextBase;
+   friend class PermissionContextBaseTests;
+ 
+   // Called when a request is no longer used so it can be cleaned up.
+@@ -297,7 +299,7 @@ class PermissionContextBase : public content_settings::Observer {
+       PermissionSetting new_value);
+   // This is the callback for PermissionRequest and is called once the user
+   // allows/blocks/dismisses a permission prompt.
+-  void PermissionDecided(const permissions::PermissionPromptDecision& decision,
++  virtual void PermissionDecided(const permissions::PermissionPromptDecision& decision,
+                          const PermissionRequestData& request_data);
+ 
+   raw_ptr<content::BrowserContext> browser_context_;
+@@ -318,6 +320,7 @@ class PermissionContextBase : public content_settings::Observer {
+   base::WeakPtrFactory<PermissionContextBase> weak_factory_{this};
+ };
+ 
++}  // namespace chromium_impl
+ }  // namespace permissions
+ 
+ #endif  // COMPONENTS_PERMISSIONS_PERMISSION_CONTEXT_BASE_H_

@@ -1,0 +1,37 @@
+diff --git a/components/permissions/permission_context_base.cc b/components/permissions/permission_context_base.cc
+index 87596e9383e482a7bc2635fa4efa348052dd3d1f..8625415bf1a42f52f4344963150c8548f5ea0b38 100644
+--- a/components/permissions/permission_context_base.cc
++++ b/components/permissions/permission_context_base.cc
+@@ -74,7 +74,7 @@
+ #include "ui/android/window_android.h"
+ #endif
+ 
+-namespace permissions {
++namespace permissions::chromium_impl {
+ namespace {
+ 
+ using PermissionStatus = blink::mojom::PermissionStatus;
+@@ -509,7 +509,7 @@ bool PermissionContextBase::IsPermissionAvailableToOrigins(
+     // possible as this corresponds to the requirements of the secure contexts
+     // spec and matches what is implemented in blink. Right now we just check
+     // the top level and requesting origins.
+-    if (!PermissionsClient::Get()->CanBypassEmbeddingOriginCheck(
++    if (!PermissionsClient::Get()->BraveCanBypassEmbeddingOriginCheck(content_settings_type_, 
+             requesting_origin, embedding_origin) &&
+         !network::IsUrlPotentiallyTrustworthy(embedding_origin)) {
+       return false;
+@@ -605,7 +605,7 @@ void PermissionContextBase::DecidePermission(
+   // origin displayed in the prompt should never differ from the top-level
+   // origin. Storage access API requests are excluded as they are expected to
+   // request permissions from the frame origin needing access.
+-  DCHECK(PermissionsClient::Get()->CanBypassEmbeddingOriginCheck(
++  DCHECK(PermissionsClient::Get()->BraveCanBypassEmbeddingOriginCheck(content_settings_type_, 
+              request_data->requesting_origin, request_data->embedding_origin) ||
+          request_data->requesting_origin == request_data->embedding_origin ||
+          content_settings_type_ == ContentSettingsType::STORAGE_ACCESS);
+@@ -895,4 +895,4 @@ void PermissionContextBase::NotifyObservers(
+   }
+ }
+ 
+-}  // namespace permissions
++}  // namespace permissions::chromium_impl
