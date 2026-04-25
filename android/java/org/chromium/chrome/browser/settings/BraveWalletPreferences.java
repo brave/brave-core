@@ -10,7 +10,7 @@ import static org.chromium.build.NullUtil.assumeNonNull;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 
 import androidx.preference.Preference;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,13 +30,12 @@ import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.util.TabUtils;
+import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
-import org.chromium.components.browser_ui.settings.TextMessagePreference;
 import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
-import org.chromium.ui.text.ChromeClickableSpan;
 import org.chromium.ui.text.SpanApplier;
 
 @NullMarked
@@ -187,24 +186,23 @@ public class BraveWalletPreferences extends BravePreferenceFragment
                                         .setChecked(isNftDiscoveryEnabled));
         mWeb3NftDiscoverySwitch.setOnPreferenceChangeListener(this);
 
-        TextMessagePreference learnMorePreference =
+        ChromeBasePreference learnMorePreference =
                 findPreference(BRAVE_WALLET_WEB3_NFT_DISCOVERY_LEARN_MORE);
         if (learnMorePreference != null) {
-            SpannableString learnMoreDesc =
+            learnMorePreference.setTitle(
                     SpanApplier.applySpans(
                             getString(R.string.settings_enable_nft_discovery_desc),
                             new SpanApplier.SpanInfo(
                                     "<LINK_1>",
                                     "</LINK_1>",
-                                    new ChromeClickableSpan(
-                                            requireContext().getColor(R.color.brave_link),
-                                            result -> {
-                                                TabUtils.openUrlInCustomTab(
-                                                        requireContext(),
-                                                        WalletConstants
-                                                                .NFT_DISCOVERY_LEARN_MORE_LINK);
-                                            })));
-            learnMorePreference.setSummary(learnMoreDesc);
+                                    new ForegroundColorSpan(
+                                            requireContext().getColor(R.color.brave_link)))));
+            learnMorePreference.setOnPreferenceClickListener(
+                    preference -> {
+                        TabUtils.openUrlInCustomTab(
+                                requireContext(), WalletConstants.NFT_DISCOVERY_LEARN_MORE_LINK);
+                        return true;
+                    });
         }
     }
 

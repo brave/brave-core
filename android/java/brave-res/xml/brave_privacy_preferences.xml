@@ -195,8 +195,7 @@
             android:summary="@string/survey_panelist_summary"
             android:defaultValue="false"
             android:visibility="gone" />
-        <org.chromium.components.browser_ui.settings.ClickableSpansTextMessagePreference
+        <org.chromium.components.browser_ui.settings.ChromeBasePreference
             android:key="survey_panelist_learn_more"
-            app:allowDividerAbove="false"
             android:visibility="gone" />
 </PreferenceScreen>

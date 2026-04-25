@@ -1,0 +1,13 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Make addVisiblePreferences package-private so BraveSettingsUtils (same package)
+# can call it from the bytecode-redirected getVisiblePreferences implementation.
+
+[[substitution]]
+description = 'Make addVisiblePreferences package-private to call it at BraveSettingsUtils.getVisiblePreferences override'
+pattern = 'private static void addVisiblePreferences('
+replace = 'static void addVisiblePreferences('
+count = 1

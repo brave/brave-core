@@ -450,6 +450,10 @@
     *** getAndroidAutofillFrameworkAvailability(...);
 }
 
+-keep class org.chromium.components.browser_ui.settings.SettingsUtils {
+    *** getVisiblePreferences(...);
+}
+
 -keep class org.chromium.components.browser_ui.site_settings.WebsitePermissionsFetcher {
     *** getPermissionsType(...);
 }

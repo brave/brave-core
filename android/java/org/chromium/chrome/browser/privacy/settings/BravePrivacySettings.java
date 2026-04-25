@@ -53,7 +53,6 @@ import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.webcompat_reporter.WebcompatReporterServiceFactory;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
-import org.chromium.components.browser_ui.settings.ClickableSpansTextMessagePreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.TextMessagePreference;
 import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
@@ -228,7 +227,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private @Nullable ChromeSwitchPreference mSendCrashReports;
     private @Nullable ChromeSwitchPreference mBraveStatsUsagePing;
     private ChromeSwitchPreference mSurveyPanelist;
-    private ClickableSpansTextMessagePreference mSurveyPanelistLearnMore;
+    private ChromeBasePreference mSurveyPanelistLearnMore;
     private ChromeSwitchPreference mBlockSwitchToAppNoticesPref;
     private PreferenceCategory mSocialBlockingCategory;
     private ChromeSwitchPreference mSocialBlockingGoogle;
@@ -434,20 +433,21 @@ public class BravePrivacySettings extends PrivacySettings {
         mSurveyPanelist.setOnPreferenceChangeListener(this);
         mSurveyPanelist.setVisible(surveyPanelistEnabled);
         mSurveyPanelistLearnMore =
-                (ClickableSpansTextMessagePreference)
-                        findPreference(PREF_SURVEY_PANELIST_LEARN_MORE);
+                (ChromeBasePreference) findPreference(PREF_SURVEY_PANELIST_LEARN_MORE);
         mSurveyPanelistLearnMore.setVisible(surveyPanelistEnabled);
-        ChromeClickableSpan chromeClickableSpan =
-                new ChromeClickableSpan(
-                        getContext().getColor(R.color.brave_link),
-                        result -> {
-                            TabUtils.openUrlInCustomTab(
-                                    requireContext(), SURVEY_PANELIST_LEARN_MORE_LINK);
-                        });
         SpannableString spannableString =
                 new SpannableString(getContext().getString(R.string.survey_panelist_learn_more));
-        spannableString.setSpan(chromeClickableSpan, 0, spannableString.length(), 0);
-        mSurveyPanelistLearnMore.setSummary(spannableString);
+        spannableString.setSpan(
+                new ForegroundColorSpan(getContext().getColor(R.color.brave_link)),
+                0,
+                spannableString.length(),
+                0);
+        mSurveyPanelistLearnMore.setTitle(spannableString);
+        mSurveyPanelistLearnMore.setOnPreferenceClickListener(
+                preference -> {
+                    TabUtils.openUrlInCustomTab(requireContext(), SURVEY_PANELIST_LEARN_MORE_LINK);
+                    return true;
+                });
 
         mSocialBlockingCategory =
                 (PreferenceCategory) findPreference(PREF_BRAVE_SOCIAL_BLOCKING_SECTION);
