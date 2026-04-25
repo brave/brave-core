@@ -13,7 +13,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
+#include "brave/components/brave_ads/core/internal/common/operating_system/operating_system.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_daypart_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creatives_info.h"
@@ -51,7 +51,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
       // Operating system
       if (!creative_set.DoesSupportOS()) {
         BLOG(1, "Creative set id " << creative_set.id << " does not support "
-                                   << PlatformHelper::GetInstance().GetName());
+                                   << OperatingSystem::GetInstance().GetName());
         continue;
       }
 

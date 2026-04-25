@@ -9,7 +9,7 @@
 #include <limits>
 
 #include "base/numerics/ranges.h"
-#include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
+#include "brave/components/brave_ads/core/internal/common/operating_system/operating_system.h"
 
 namespace brave_ads {
 
@@ -48,7 +48,7 @@ bool CatalogCreativeSetInfo::DoesSupportOS() const {
     return true;
   }
 
-  const std::string platform_name = PlatformHelper::GetInstance().GetName();
+  const std::string platform_name = OperatingSystem::GetInstance().GetName();
 
   return std::ranges::any_of(oses, [&platform_name](const CatalogOsInfo& os) {
     return os.name == platform_name;

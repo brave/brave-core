@@ -422,9 +422,11 @@ static_library("internal") {
     "common/net/http/http_status_code_class_types.h",
     "common/net/http/http_status_code_util.cc",
     "common/net/http/http_status_code_util.h",
-    "common/platform/platform_helper.cc",
-    "common/platform/platform_helper.h",
-    "common/platform/platform_helper_types.h",
+    "common/operating_system/operating_system.cc",
+    "common/operating_system/operating_system.h",
+    "common/operating_system/operating_system_types.h",
+    "common/operating_system/operating_system_util.cc",
+    "common/operating_system/operating_system_util.h",
     "common/random/random_util.cc",
     "common/random/random_util.h",
     "common/resources/country_components.cc",
@@ -1096,40 +1098,40 @@ static_library("internal") {
   if (is_android) {
     sources += [
       "common/locale/language_code_android.cc",
-      "common/platform/platform_helper_android.cc",
-      "common/platform/platform_helper_android.h",
+      "common/operating_system/operating_system_android.cc",
+      "common/operating_system/operating_system_android.h",
     ]
   }
 
   if (is_linux) {
     sources += [
       "common/locale/language_code_linux.cc",
-      "common/platform/platform_helper_linux.cc",
-      "common/platform/platform_helper_linux.h",
+      "common/operating_system/operating_system_linux.cc",
+      "common/operating_system/operating_system_linux.h",
     ]
   }
 
   if (is_mac) {
     sources += [
       "common/locale/language_code_mac.mm",
-      "common/platform/platform_helper_mac.h",
-      "common/platform/platform_helper_mac.mm",
+      "common/operating_system/operating_system_mac.h",
+      "common/operating_system/operating_system_mac.mm",
     ]
   }
 
   if (is_ios) {
     sources += [
       "common/locale/language_code_ios.mm",
-      "common/platform/platform_helper_ios.h",
-      "common/platform/platform_helper_ios.mm",
+      "common/operating_system/operating_system_ios.h",
+      "common/operating_system/operating_system_ios.mm",
     ]
   }
 
   if (is_win) {
     sources += [
       "common/locale/language_code_win.cc",
-      "common/platform/platform_helper_win.cc",
-      "common/platform/platform_helper_win.h",
+      "common/operating_system/operating_system_win.cc",
+      "common/operating_system/operating_system_win.h",
     ]
   }
 
