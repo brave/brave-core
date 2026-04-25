@@ -1,0 +1,68 @@
+.modelInfo {
+  margin-top: var(--leo-spacing-2xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+  align-items: start;
+}
+
+.modelIcon {
+  --leo-icon-color: white;
+  --leo-icon-width: 18px;
+  width: 32px;
+  height: 32px;
+  background: var(--leo-gradient-icons-active);
+  padding: 9px;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.meta {
+  .category {
+    margin: 0;
+    font: var(--leo-font-heading-h4);
+    color: var(--leo-color-text-primary);
+  }
+
+  .name {
+    margin: 0;
+    font: var(--leo-font-small-regular);
+    color: var(--leo-color-text-tertiary);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+}
+
+.tooltipButton {
+  --leo-button-padding: 0;
+
+  leo-icon {
+    --leo-icon-size: 14px;
+    --leo-icon-color: var(--leo-color-text-tertiary);
+  }
+}
+
+.tooltip {
+  --leo-tooltip-padding: var(--leo-spacing-xl);
+  height: 14px;
+}
+
+.tooltipContent {
+  max-width: 240px;
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-primary);
+
+  button {
+    cursor: pointer;
+    font: inherit;
+    display: block;
+    background: none;
+    border: none;
+    color: var(--leo-color-text-interactive);
+    padding: 0;
+    text-decoration: underline;
+  }
+}

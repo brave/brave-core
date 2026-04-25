@@ -1,0 +1,1817 @@
+
+<!DOCTYPE html>
+<html lang="en-US" class="no-js">
+	<head>
+		<meta charset="UTF-8" /><script type="text/javascript">(window.NREUM||(NREUM={})).init={ajax:{deny_list:["bam.nr-data.net"]}};(window.NREUM||(NREUM={})).loader_config={licenseKey:"b9d80a2312",applicationID:"467627310"};window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var i=e[n]={exports:{}};t[n][0].call(i.exports,function(e){var i=t[n][1][e];return r(i||e)},i,i.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var i=0;i<n.length;i++)r(n[i]);return r}({1:[function(t,e,n){function r(){}function i(t,e,n,r){return function(){return s.recordSupportability("API/"+e+"/called"),o(t+e,[u.now()].concat(c(arguments)),n?null:this,r),n?void 0:this}}var o=t("handle"),a=t(9),c=t(10),f=t("ee").get("tracer"),u=t("loader"),s=t(4),d=NREUM;"undefined"==typeof window.newrelic&&(newrelic=d);var p=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],l="api-",v=l+"ixn-";a(p,function(t,e){d[e]=i(l,e,!0,"api")}),d.addPageAction=i(l,"addPageAction",!0),d.setCurrentRouteName=i(l,"routeName",!0),e.exports=newrelic,d.interaction=function(){return(new r).get()};var m=r.prototype={createTracer:function(t,e){var n={},r=this,i="function"==typeof e;return o(v+"tracer",[u.now(),t,n],r),function(){if(f.emit((i?"":"no-")+"fn-start",[u.now(),r,i],n),i)try{return e.apply(this,arguments)}catch(t){throw f.emit("fn-err",[arguments,this,t],n),t}finally{f.emit("fn-end",[u.now()],n)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(t,e){m[e]=i(v,e)}),newrelic.noticeError=function(t,e){"string"==typeof t&&(t=new Error(t)),s.recordSupportability("API/noticeError/called"),o("err",[t,u.now(),!1,e])}},{}],2:[function(t,e,n){function r(t){if(NREUM.init){for(var e=NREUM.init,n=t.split("."),r=0;r<n.length-1;r++)if(e=e[n[r]],"object"!=typeof e)return;return e=e[n[n.length-1]]}}e.exports={getConfiguration:r}},{}],3:[function(t,e,n){var r=!1;try{var i=Object.defineProperty({},"passive",{get:function(){r=!0}});window.addEventListener("testPassive",null,i),window.removeEventListener("testPassive",null,i)}catch(o){}e.exports=function(t){return r?{passive:!0,capture:!!t}:!!t}},{}],4:[function(t,e,n){function r(t,e){var n=[a,t,{name:t},e];return o("storeMetric",n,null,"api"),n}function i(t,e){var n=[c,t,{name:t},e];return o("storeEventMetrics",n,null,"api"),n}var o=t("handle"),a="sm",c="cm";e.exports={constants:{SUPPORTABILITY_METRIC:a,CUSTOM_METRIC:c},recordSupportability:r,recordCustom:i}},{}],5:[function(t,e,n){function r(){return c.exists&&performance.now?Math.round(performance.now()):(o=Math.max((new Date).getTime(),o))-a}function i(){return o}var o=(new Date).getTime(),a=o,c=t(11);e.exports=r,e.exports.offset=a,e.exports.getLastTimestamp=i},{}],6:[function(t,e,n){function r(t,e){var n=t.getEntries();n.forEach(function(t){"first-paint"===t.name?l("timing",["fp",Math.floor(t.startTime)]):"first-contentful-paint"===t.name&&l("timing",["fcp",Math.floor(t.startTime)])})}function i(t,e){var n=t.getEntries();if(n.length>0){var r=n[n.length-1];if(u&&u<r.startTime)return;var i=[r],o=a({});o&&i.push(o),l("lcp",i)}}function o(t){t.getEntries().forEach(function(t){t.hadRecentInput||l("cls",[t])})}function a(t){var e=navigator.connection||navigator.mozConnection||navigator.webkitConnection;if(e)return e.type&&(t["net-type"]=e.type),e.effectiveType&&(t["net-etype"]=e.effectiveType),e.rtt&&(t["net-rtt"]=e.rtt),e.downlink&&(t["net-dlink"]=e.downlink),t}function c(t){if(t instanceof y&&!w){var e=Math.round(t.timeStamp),n={type:t.type};a(n),e<=v.now()?n.fid=v.now()-e:e>v.offset&&e<=Date.now()?(e-=v.offset,n.fid=v.now()-e):e=v.now(),w=!0,l("timing",["fi",e,n])}}function f(t){"hidden"===t&&(u=v.now(),l("pageHide",[u]))}if(!("init"in NREUM&&"page_view_timing"in NREUM.init&&"enabled"in NREUM.init.page_view_timing&&NREUM.init.page_view_timing.enabled===!1)){var u,s,d,p,l=t("handle"),v=t("loader"),m=t(8),g=t(3),y=NREUM.o.EV;if("PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){s=new PerformanceObserver(r);try{s.observe({entryTypes:["paint"]})}catch(h){}d=new PerformanceObserver(i);try{d.observe({entryTypes:["largest-contentful-paint"]})}catch(h){}p=new PerformanceObserver(o);try{p.observe({type:"layout-shift",buffered:!0})}catch(h){}}if("addEventListener"in document){var w=!1,b=["click","keydown","mousedown","pointerdown","touchstart"];b.forEach(function(t){document.addEventListener(t,c,g(!1))})}m(f)}},{}],7:[function(t,e,n){function r(t,e){if(!i)return!1;if(t!==i)return!1;if(!e)return!0;if(!o)return!1;for(var n=o.split("."),r=e.split("."),a=0;a<r.length;a++)if(r[a]!==n[a])return!1;return!0}var i=null,o=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var c=navigator.userAgent,f=c.match(a);f&&c.indexOf("Chrome")===-1&&c.indexOf("Chromium")===-1&&(i="Safari",o=f[1])}e.exports={agent:i,version:o,match:r}},{}],8:[function(t,e,n){function r(t){function e(){t(c&&document[c]?document[c]:document[o]?"hidden":"visible")}"addEventListener"in document&&a&&document.addEventListener(a,e,i(!1))}var i=t(3);e.exports=r;var o,a,c;"undefined"!=typeof document.hidden?(o="hidden",a="visibilitychange",c="visibilityState"):"undefined"!=typeof document.msHidden?(o="msHidden",a="msvisibilitychange"):"undefined"!=typeof document.webkitHidden&&(o="webkitHidden",a="webkitvisibilitychange",c="webkitVisibilityState")},{}],9:[function(t,e,n){function r(t,e){var n=[],r="",o=0;for(r in t)i.call(t,r)&&(n[o]=e(r,t[r]),o+=1);return n}var i=Object.prototype.hasOwnProperty;e.exports=r},{}],10:[function(t,e,n){function r(t,e,n){e||(e=0),"undefined"==typeof n&&(n=t?t.length:0);for(var r=-1,i=n-e||0,o=Array(i<0?0:i);++r<i;)o[r]=t[e+r];return o}e.exports=r},{}],11:[function(t,e,n){e.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(t,e,n){function r(){}function i(t){function e(t){return t&&t instanceof r?t:t?u(t,f,a):a()}function n(n,r,i,o,a){if(a!==!1&&(a=!0),!l.aborted||o){t&&a&&t(n,r,i);for(var c=e(i),f=m(n),u=f.length,s=0;s<u;s++)f[s].apply(c,r);var p=d[w[n]];return p&&p.push([b,n,r,c]),c}}function o(t,e){h[t]=m(t).concat(e)}function v(t,e){var n=h[t];if(n)for(var r=0;r<n.length;r++)n[r]===e&&n.splice(r,1)}function m(t){return h[t]||[]}function g(t){return p[t]=p[t]||i(n)}function y(t,e){l.aborted||s(t,function(t,n){e=e||"feature",w[n]=e,e in d||(d[e]=[])})}var h={},w={},b={on:o,addEventListener:o,removeEventListener:v,emit:n,get:g,listeners:m,context:e,buffer:y,abort:c,aborted:!1};return b}function o(t){return u(t,f,a)}function a(){return new r}function c(){(d.api||d.feature)&&(l.aborted=!0,d=l.backlog={})}var f="nr@context",u=t("gos"),s=t(9),d={},p={},l=e.exports=i();e.exports.getOrSetContext=o,l.backlog=d},{}],gos:[function(t,e,n){function r(t,e,n){if(i.call(t,e))return t[e];var r=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,e,{value:r,writable:!0,enumerable:!1}),r}catch(o){}return t[e]=r,r}var i=Object.prototype.hasOwnProperty;e.exports=r},{}],handle:[function(t,e,n){function r(t,e,n,r){i.buffer([t],r),i.emit(t,e,n)}var i=t("ee").get("handle");e.exports=r,r.ee=i},{}],id:[function(t,e,n){function r(t){var e=typeof t;return!t||"object"!==e&&"function"!==e?-1:t===window?0:a(t,o,function(){return i++})}var i=1,o="nr@id",a=t("gos");e.exports=r},{}],loader:[function(t,e,n){function r(){if(!M++){var t=T.info=NREUM.info,e=m.getElementsByTagName("script")[0];if(setTimeout(u.abort,3e4),!(t&&t.licenseKey&&t.applicationID&&e))return u.abort();f(x,function(e,n){t[e]||(t[e]=n)});var n=a();c("mark",["onload",n+T.offset],null,"api"),c("timing",["load",n]);var r=m.createElement("script");0===t.agent.indexOf("http://")||0===t.agent.indexOf("https://")?r.src=t.agent:r.src=l+"://"+t.agent,e.parentNode.insertBefore(r,e)}}function i(){"complete"===m.readyState&&o()}function o(){c("mark",["domContent",a()+T.offset],null,"api")}var a=t(5),c=t("handle"),f=t(9),u=t("ee"),s=t(7),d=t(2),p=t(3),l=d.getConfiguration("ssl")===!1?"http":"https",v=window,m=v.document,g="addEventListener",y="attachEvent",h=v.XMLHttpRequest,w=h&&h.prototype,b=!1;NREUM.o={ST:setTimeout,SI:v.setImmediate,CT:clearTimeout,XHR:h,REQ:v.Request,EV:v.Event,PR:v.Promise,MO:v.MutationObserver};var E=""+location,x={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1216.min.js"},O=h&&w&&w[g]&&!/CriOS/.test(navigator.userAgent),T=e.exports={offset:a.getLastTimestamp(),now:a,origin:E,features:{},xhrWrappable:O,userAgent:s,disabled:b};if(!b){t(1),t(6),m[g]?(m[g]("DOMContentLoaded",o,p(!1)),v[g]("load",r,p(!1))):(m[y]("onreadystatechange",i),v[y]("onload",r)),c("mark",["firstbyte",a.getLastTimestamp()],null,"api");var M=0}},{}],"wrap-function":[function(t,e,n){function r(t,e){function n(e,n,r,f,u){function nrWrapper(){var o,a,s,p;try{a=this,o=d(arguments),s="function"==typeof r?r(o,a):r||{}}catch(l){i([l,"",[o,a,f],s],t)}c(n+"start",[o,a,f],s,u);try{return p=e.apply(a,o)}catch(v){throw c(n+"err",[o,a,v],s,u),v}finally{c(n+"end",[o,a,p],s,u)}}return a(e)?e:(n||(n=""),nrWrapper[p]=e,o(e,nrWrapper,t),nrWrapper)}function r(t,e,r,i,o){r||(r="");var c,f,u,s="-"===r.charAt(0);for(u=0;u<e.length;u++)f=e[u],c=t[f],a(c)||(t[f]=n(c,s?f+r:r,i,f,o))}function c(n,r,o,a){if(!v||e){var c=v;v=!0;try{t.emit(n,r,o,e,a)}catch(f){i([f,n,r,o],t)}v=c}}return t||(t=s),n.inPlace=r,n.flag=p,n}function i(t,e){e||(e=s);try{e.emit("internal-error",t)}catch(n){}}function o(t,e,n){if(Object.defineProperty&&Object.keys)try{var r=Object.keys(t);return r.forEach(function(n){Object.defineProperty(e,n,{get:function(){return t[n]},set:function(e){return t[n]=e,e}})}),e}catch(o){i([o],n)}for(var a in t)l.call(t,a)&&(e[a]=t[a]);return e}function a(t){return!(t&&t instanceof Function&&t.apply&&!t[p])}function c(t,e){var n=e(t);return n[p]=t,o(t,n,s),n}function f(t,e,n){var r=t[e];t[e]=c(r,n)}function u(){for(var t=arguments.length,e=new Array(t),n=0;n<t;++n)e[n]=arguments[n];return e}var s=t("ee"),d=t(10),p="nr@original",l=Object.prototype.hasOwnProperty,v=!1;e.exports=r,e.exports.wrapFunction=c,e.exports.wrapInPlace=f,e.exports.argsToArray=u},{}]},{},["loader"]);</script>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+						<!-- OneTrust Cookies Consent Notice start for boston.com -->
+		<script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js" type="text/javascript" charset="UTF-8" data-domain-script="1744ffcc-f9fb-436a-97fd-6530afa75829"></script>		<!-- OneTrust Cookies Consent Notice end for boston.com -->
+		<script>(function(html){html.className = html.className.replace(/\bno-js\b/,'js')})(document.documentElement);</script>
+	<style id="typekit-font-loading">
+		@import url("https://p.typekit.net/p.css?s=1&k=mlo6ffw&ht=tk&f=12784.12786.12093.12095.39347.39348&a=43290994&app=typekit&e=css");
+
+		@font-face {
+			font-family:"franklin-gothic-urw-cond";
+			src:url("https://use.typekit.net/af/f4a030/000000000000000077359dfa/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("woff2"),url("https://use.typekit.net/af/f4a030/000000000000000077359dfa/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("woff");
+			font-display:swap;font-style:normal;font-weight:400;
+		}
+
+		@font-face {
+			font-family:"franklin-gothic-urw-cond";
+			src:url("https://use.typekit.net/af/a2031c/0000000000000000000118b9/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff2"),url("https://use.typekit.net/af/a2031c/0000000000000000000118b9/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff");
+			font-display:swap;font-style:normal;font-weight:700;
+		}
+	</style>
+		<style id="cls-ad-css">
+		[id="ad_lead1"] {
+			min-height: 50px;
+		}
+
+		@media only screen and (min-width: 768px) {
+			[id="ad_lead1"] {
+				min-height: 90px;
+			}
+		}
+
+		[id="ad_sectionfront1"],
+		[id="ad_sectionfront2"],
+		[id="ad_articlerail1"],
+		[id="ad_articlerail2"] {
+			position: relative;
+		}
+
+		[id="ad_sectionfront1"]::before,
+		[id="ad_sectionfront2"]::before,
+		[id="ad_articlerail1"]::before,
+		[id="ad_articlerail2"]::before {
+			content: "Advertisement";
+			color: #68686d;
+			display: block;
+			font-family:"franklin-gothic-urw-cond";
+			font-size: .875rem;
+			font-weight: 700;
+			padding-bottom: 0.25rem;
+			text-align: center;
+			text-transform: uppercase;
+		}
+
+		.m-advert--600 {
+			height: 600px;
+		}
+
+		.m-sports-bar {
+			min-height: 59px;
+		}
+
+	</style>
+	<link rel="preconnect" href="//c.amazon-adsystem.com" crossorigin /><link rel="preconnect" href="//ads.pubmatic.com" crossorigin /><link rel="preconnect" href="//securepubads.g.doubleclick.net" crossorigin /><link rel="preconnect" href="https://use.typekit.net" crossorigin /><link rel="preconnect" href="https://p.typekit.net" crossorigin /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /><link rel="preload" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" as="style" /><link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet"><link rel="preload" as="font/woff" href="https://use.typekit.net/af/f4a030/000000000000000077359dfa/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3" /><link rel="preload" as="font/woff2" href="https://use.typekit.net/af/f4a030/000000000000000077359dfa/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3" /><link rel="preload" as="font/woff" href="https://use.typekit.net/af/a2031c/0000000000000000000118b9/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3" /><link rel="preload" as="font/woff2" href="https://use.typekit.net/af/a2031c/0000000000000000000118b9/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3" /><meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+		<script type="text/javascript" id="pwt-inserter">
+		(function() {
+			window.performance.mark('pwt start');
+			var setProfile = window.matchMedia('(min-width: 1024px)').matches;
+			var reportingId = setProfile ? '2890' : '2891';
+			var url = '//ads.pubmatic.com/AdServer/js/pwt/159928/' + reportingId;
+			var profileVersionId = '';
+
+			var wtads = document.createElement('script');
+
+			wtads.async = true;
+			wtads.type = 'text/javascript';
+			wtads.src = url + profileVersionId + '/pwt.js';
+
+			var node = document.getElementById('pwt-inserter');
+			node.parentNode.insertBefore(wtads, node.nextSibling);
+			window.performance.mark('pwt end');
+		})();
+		</script>
+
+	
+	<script src="https://www.boston.com/wp-content/themes/bdc-2020/includes/gam/lazy-load-ad.min.js" type="text/javascript"></script>
+	<script src="//securepubads.g.doubleclick.net/tag/js/gpt.js" type="text/javascript" async></script>
+	<script src="//c.amazon-adsystem.com/aax2/apstag.js" type="text/javascript" async></script>
+	<script id="boston-ads" type="text/javascript">
+		var PWT = {};
+		var adLazyLoading = false;
+		var googletag = googletag || {};
+		var gptRan = false;
+		var FAILSAFE_TIMEOUT = 600;
+		const DYNAMIC_NAME = '/news';
+		var adSlots = [];
+
+		googletag.cmd = googletag.cmd || [];
+
+	</script>
+
+	<script id="boston-init-adserver" type="text/javascript">
+		// this function will act as a lock and will call the GPT API
+		function initAdserver(forced) {
+			if((forced === true && window.initAdserverFlag !== true) || (PWT.a9_BidsReceived && PWT.ow_BidsReceived)){
+				window.initAdserverFlag = true;
+				PWT.a9_BidsReceived = PWT.ow_BidsReceived = false;
+
+				if( 'undefined' !== typeof AdLazyLoader ) {
+					adLazyLoading = true;
+					var slotsToLazyLoad = [];
+					for ( var prop in window.adSlots ) {
+						if ( window.adSlots.hasOwnProperty( prop ) ) {
+							slotsToLazyLoad.push( window.adSlots[ prop ] );
+						}
+					}
+					AdLazyLoader.registerSlots( slotsToLazyLoad );
+				} else {
+					googletag.pubads().refresh();
+				}
+			}
+		}
+	</script>
+
+	<script id="boston-init-tam" type="text/javascript">
+		!function(a9,a,p,s,t,A,g) {
+			if( a[a9] )return;
+			function q( c, r ) {
+				a[a9]._Q.push( [c,r] )
+			}
+			a[a9]={
+				init:function() {
+					q("i",arguments)
+				},
+				fetchBids:function() {
+					q("f",arguments)
+				},
+				setDisplayBids:function(){},
+				_Q:[]
+			};
+		}("apstag", window, document, "script", "//c.amazon-adsystem.com/aax2/apstag.js" );
+
+		apstag.init({
+			pubID: '3453',
+			adServer: 'googletag'
+		});
+
+		let slots = [];
+
+					slots = [
+				{
+					slotID: 'ad_lead1',
+					sizes: [[728, 90], [970, 90], [320, 50]]
+				},
+				{
+					slotID: 'ad_articlerail1',
+					sizes: [[300,250], [300,600], [160,600]]
+				},
+				{
+					slotID: 'ad_articlerail2',
+					sizes: [[300,250], [300,600], [160,600]]
+				},
+			];
+
+							slots.push({ slotID: 'ad_inarticle1', sizes: [[ 728, 90 ], [ 970, 90 ], [ 970, 250 ], [ 300, 250 ], [ 320, 100 ], [ 320, 50 ]] })
+							slots.push({ slotID: 'ad_inarticle2', sizes: [[ 728, 90 ], [ 970, 90 ], [ 970, 250 ], [ 300, 250 ], [ 320, 100 ], [ 320, 50 ]] })
+							slots.push({ slotID: 'ad_inarticle3', sizes: [[ 728, 90 ], [ 970, 90 ], [ 970, 250 ], [ 300, 250 ], [ 320, 100 ], [ 320, 50 ]] })
+							slots.push({ slotID: 'ad_inarticle4', sizes: [[ 728, 90 ], [ 970, 90 ], [ 970, 250 ], [ 300, 250 ], [ 320, 100 ], [ 320, 50 ]] })
+					
+		apstag.fetchBids({
+			slots: slots,
+			timeout: 2e3 // Make Sure this timeout is less than or equal to OpenWrap TimeOut
+		}, function(bids) {
+			googletag.cmd.push(function(){
+				apstag.setDisplayBids();
+				PWT.a9_BidsReceived = true;
+				initAdserver(false);
+			});
+		});
+	</script>
+
+	<script id="boston-gam" type="text/javascript">
+		googletag.cmd.push(function() {
+
+			var leaderMapping = googletag
+				.sizeMapping()
+				.addSize([0, 0], [[300, 250], [320, 50], [320, 100], [ 325, 508 ], [ 325, 204 ]])
+				.addSize([768, 200], [[728, 90], [300,250]])
+				.addSize([960, 200], [[728, 90], [620, 366], [300, 250]])
+				.addSize([1280, 200], [[970, 250], [970, 90], [728, 90], [620, 366], [300, 250]])
+				.build();
+
+			var leader1Mapping = googletag
+				.sizeMapping()
+				.addSize([0, 0], [320, 50])
+				.addSize([768, 200], [[768, 90], [728, 90]])
+				.addSize([1050, 200], [[970, 90], [728, 90]])
+				.build();
+
+			var leader2Mapping = googletag
+				.sizeMapping()
+				.addSize([0, 0], [[300, 250], [320, 100], [320, 50], [ 325, 508 ], [ 325, 204 ]])
+				.addSize([768, 200], [[728, 90], [300, 250]])
+				.addSize([1050, 200], [[728, 90], [620, 366], [300, 250]])
+				.build();
+
+			var railMapping = googletag
+				.sizeMapping()
+				.addSize([0, 0], [])
+				.addSize([768, 200], [])
+				.addSize([1050, 200], [[300, 250], [300, 600], [160,600]])
+				.build();
+
+			
+				adSlots['ad_lead1'] = googletag
+					.defineSlot('/61381659/boston.com' + DYNAMIC_NAME, [[768, 90], [728, 90], [970, 90], [320, 50]], 'ad_lead1' )
+					.setTargeting('pos', [['lead1'], ['atf']])
+					.defineSizeMapping( leader1Mapping )
+					.addService( googletag.pubads() );
+
+				adSlots['ad_articlerail1'] = googletag
+					.defineSlot('/61381659/boston.com' + DYNAMIC_NAME, [[300,250], [300,600], [160,600]], 'ad_articlerail1')
+					.setTargeting('pos', [['articlerail1'], ['atf']])
+					.defineSizeMapping(railMapping)
+					.addService( googletag.pubads() );
+
+				adSlots['ad_articlerail2'] = googletag
+					.defineSlot('/61381659/boston.com' + DYNAMIC_NAME, [[300,250], [300,600], [160,600]], 'ad_articlerail2')
+					.setTargeting('pos', [['articlerail2'], ['atf']])
+					.defineSizeMapping(railMapping)
+					.addService( googletag.pubads() );
+
+				// Dynamically build the in-article ad definitoins and add to the config definition based off of the number of in-article ads
+				
+					adSlots['ad_inarticle1'] = googletag
+						.defineSlot('/61381659/boston.com' + DYNAMIC_NAME, [[ 728, 90 ], [ 970, 90 ], [ 970, 250 ], [ 300, 250 ], [ 320, 100 ], [ 320, 50 ]], 'ad_inarticle1' )
+						.setTargeting('pos', [['inarticle1'], ['btf']])
+						.defineSizeMapping( leader2Mapping )
+						.addService( googletag.pubads() );
+
+				
+					adSlots['ad_inarticle2'] = googletag
+						.defineSlot('/61381659/boston.com' + DYNAMIC_NAME, [[ 728, 90 ], [ 970, 90 ], [ 970, 250 ], [ 300, 250 ], [ 320, 100 ], [ 320, 50 ]], 'ad_inarticle2' )
+						.setTargeting('pos', [['inarticle2'], ['btf']])
+						.defineSizeMapping( leader2Mapping )
+						.addService( googletag.pubads() );
+
+				
+					adSlots['ad_inarticle3'] = googletag
+						.defineSlot('/61381659/boston.com' + DYNAMIC_NAME, [[ 728, 90 ], [ 970, 90 ], [ 970, 250 ], [ 300, 250 ], [ 320, 100 ], [ 320, 50 ]], 'ad_inarticle3' )
+						.setTargeting('pos', [['inarticle3'], ['btf']])
+						.defineSizeMapping( leader2Mapping )
+						.addService( googletag.pubads() );
+
+				
+					adSlots['ad_inarticle4'] = googletag
+						.defineSlot('/61381659/boston.com' + DYNAMIC_NAME, [[ 728, 90 ], [ 970, 90 ], [ 970, 250 ], [ 300, 250 ], [ 320, 100 ], [ 320, 50 ]], 'ad_inarticle4' )
+						.setTargeting('pos', [['inarticle4'], ['btf']])
+						.defineSizeMapping( leader2Mapping )
+						.addService( googletag.pubads() );
+
+				
+				
+					adSlots['nativeteasebot'] = googletag
+						.defineSlot('/61381659/boston.com' + DYNAMIC_NAME, [300,100], 'nativeteasebot')
+						.setTargeting('pos', ['nativeteasebot'])
+						.addService(googletag.pubads());
+
+				
+				adSlots['presentedby'] = googletag
+					.defineOutOfPageSlot('/61381659/boston.com' + DYNAMIC_NAME, 'presentedby')
+					.setTargeting('pos', [['presentedby'], ['outofpage']])
+					.addService(googletag.pubads());
+
+				adSlots['oosvideo'] = googletag
+					.defineOutOfPageSlot('/61381659/boston.com' + DYNAMIC_NAME, 'oosvideo')
+					.setTargeting('pos', [['oosvideo'], ['outofpage']])
+					.addService(googletag.pubads());
+
+			
+			
+			// common targetings
+			googletag.pubads()
+														.setTargeting( 'pgtype', 'post' )
+				
+														.setTargeting( 'authors', 'christopher.gavin' )
+				
+														.setTargeting( 'ptag', 'politics' )
+				
+														.setTargeting( 'tag', '2022-massachusetts-elections,local,massachusetts,politics' )
+					
+														.setTargeting( 's1', 'boston.com' )
+				
+														.setTargeting( 's2', 'news' )
+				
+														.setTargeting( 'pageurl', '_news_politics_2022_08_15_trump-vaccine-mandates-and-the-millionaires-tax-key-takeaways-from-the-massgop-lieutenant-governor-debate_' )
+				
+				
+				.setTargeting( 'environment', ['production'])
+
+				
+				.setTargeting( 'adunblock', ['undefined' !== typeof( window._bcm_il ) ? 'true' : 'false']
+			);
+
+			if( typeof Krux !== 'undefined' ) {
+				if ( 'segments' in Krux ) googletag.pubads().setTargeting("ksg", Krux.segments);
+				if ( 'user' in Krux ) googletag.pubads().setTargeting("kuid", Krux.user);
+			}
+
+			googletag.pubads().addEventListener('slotRenderEnded', function(event) {
+				var size = event.size;
+				if(size === null) return;
+				var slot = event.slot;
+				var slotDiv = document.getElementById(slot.getSlotElementId());
+
+				if (size[0] > slotDiv.clientWidth) {
+					slotDiv.style.width = size[0] + 'px';
+				}
+
+				if (size[1] > slotDiv.clientHeight) {
+					slotDiv.style.height = size[1] + 'px';
+				}
+			});
+
+			googletag.pubads().enableSingleRequest();
+			googletag.pubads().disableInitialLoad();
+			googletag.enableServices();
+
+			// OpenWrap code START here
+			if(typeof PWT.requestBids === 'function') {
+
+				PWT.requestBids(
+					PWT.generateConfForGPT(googletag.pubads().getSlots()),
+					function(adUnitsArray) {
+						PWT.addKeyValuePairsToGPTSlots(adUnitsArray);
+						PWT.ow_BidsReceived = true;
+						initAdserver(false);
+					}
+				);
+			}
+
+			// No need to handle "else" part as we have A9 wrapper on page
+			// OpenWrap code END here
+
+			setTimeout(function() {
+				initAdserver(true); // calling this function with forced mode set to true so that GPT API is always executed
+			}, FAILSAFE_TIMEOUT);
+
+			if ( (PWT.a9_BidsReceived && PWT.ow_BidsReceived) && ! adLazyLoading && 'undefined' !== typeof AdLazyLoader ) {
+				// This is a fallback for if prebid has already returned and
+				// attempted to register ads to lazy load before the ads have
+				// all been defined.
+				adLazyLoading = true;
+				var slotsToLazyLoad = [];
+				for ( var prop in window.adSlots ) {
+					if ( window.adSlots.hasOwnProperty( prop ) ) {
+						slotsToLazyLoad.push( window.adSlots[ prop ] );
+					}
+				}
+				AdLazyLoader.registerSlots( slotsToLazyLoad );
+			}
+
+
+			const hasArcVideo = document.getElementsByClassName( 'a-video' ).length > 0;
+
+			/**
+			 * ===================
+			 * Arc Video
+			 * ===================
+			 */
+			if ( hasArcVideo ) {
+				const params = [
+					'sz=640x480',
+					`iu=/61381659/boston.com${DYNAMIC_NAME}`,
+					'gdfp_req=1',
+					'env=vp',
+					'output=xml_vast3',
+					'unviewed_position_start=1',
+					'description_url=https%3A%2F%2Fboston.com',
+					'ciu_szs=300x250',
+					`cust_params=${buildCustomParams()}`,
+				].join('&')
+
+				window.PoWaSettings = window.PoWaSettings || {};
+				window.PoWaSettings.advertising = window.PoWaSettings.advertising || {};
+
+				// Define the ad tag to be used by the player.
+				window.PoWaSettings.advertising.adTag = function () {
+					return `//pubads.g.doubleclick.net/gampad/ads?${params}`;
+				};
+
+				/**
+				 * Builds the custom parameters needed for the ARC video preroll
+				 *
+				 * @return string - URL encoded string of parameters
+				 */
+				function buildCustomParams() {
+
+					const getCurrentBreakPoint = function() {
+						if ( window.outerWidth < 768 ) { return 'mobile'; }
+						if ( window.outerWidth < 960 ) { return 'tablet'; }
+						return 'desktop';
+					};
+
+					const getTestQueryString = function() {
+						var queryString = window.location.search;
+						var regex = /[\?\&]test=([^&]*)/;
+						return queryString.match( regex ) ? queryString.match( regex )[1] : '';
+					};
+
+					const customParams = [
+						'pos=preroll',
+						'breakpoint=' + getCurrentBreakPoint(),
+						'test=' + getTestQueryString(),
+					];
+
+					googletag
+						.pubads()
+						.getTargetingKeys()
+						.forEach((key) => customParams.push(`${key}=${googletag.pubads().getTargeting(key)}`));
+
+					return encodeURIComponent(
+						customParams.join('&')
+						.replace('pgtype=post', 'pgtype=article') // Match legacy ad call format
+					);
+				};
+			}
+		});
+	</script>
+
+	
+	<!-- This site is optimized with the Yoast SEO Premium plugin v16.8 (Yoast SEO v18.5.1) - https://yoast.com/wordpress/plugins/seo/ -->
+	<title>Key takeaways from the MassGOP lieutenant governor debate</title>
+	<meta name="description" content="Former state Reps. Kate Campanale and Leah Cole Allen tackled everything from the proposed millionaires tax to navigating vaccine mandates." />
+	<link rel="canonical" href="https://www.boston.com/news/politics/2022/08/15/trump-vaccine-mandates-and-the-millionaires-tax-key-takeaways-from-the-massgop-lieutenant-governor-debate/" />
+	<meta property="og:locale" content="en_US" />
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="Trump, vaccine mandates, and the &#039;millionaires tax&#039;: Key takeaways from the MassGOP lieutenant governor debate" />
+	<meta property="og:description" content="Former state Reps. Kate Campanale and Leah Cole Allen tackled everything from the proposed millionaires tax to navigating vaccine mandates." />
+	<meta property="og:url" content="https://www.boston.com/news/politics/2022/08/15/trump-vaccine-mandates-and-the-millionaires-tax-key-takeaways-from-the-massgop-lieutenant-governor-debate/" />
+	<meta property="og:site_name" content="Boston.com" />
+	<meta property="article:publisher" content="https://www.facebook.com/boston" />
+	<meta property="article:published_time" content="2022-08-15T20:37:57+00:00" />
+	<meta property="article:modified_time" content="2022-08-15T20:38:10+00:00" />
+	<meta property="og:image" content="https://www.boston.com/wp-content/uploads/2022/08/Screen-Shot-2022-08-15-at-1.42.02-PM-62fa859d22fda.png" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="829" />
+	<meta property="og:image:type" content="image/png" />
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:description" content="Former state Reps. Kate Campanale and Leah Cole Allen tackled everything from the proposed millionaires tax to navigating vaccine mandates." />
+	<meta name="twitter:image" content="https://bdc2020.o0bc.com/wp-content/uploads/2022/08/Screen-Shot-2022-08-15-at-1.42.02-PM-62fa859d22fda-768x432.png" />
+	<meta name="twitter:creator" content="@chris_m_gavin" />
+	<meta name="twitter:site" content="@BostonDotCom" />
+	<meta name="twitter:label1" content="Written by" />
+	<meta name="twitter:data1" content="Christopher Gavin" />
+	<meta name="twitter:label2" content="Est. reading time" />
+	<meta name="twitter:data2" content="5 minutes" />
+	<script type="application/ld+json" class="yoast-schema-graph">{
+	    "@context": "https://schema.org",
+	    "@graph": [
+	        {
+	            "@type": "Organization",
+	            "@id": "https://www.boston.com/#organization",
+	            "name": "Boston.com",
+	            "url": "https://www.boston.com/",
+	            "sameAs": [
+	                "https://www.facebook.com/boston",
+	                "https://instagram.com/boston/",
+	                "https://www.youtube.com/channel/UC8IkdxFyPXgw11n4Ew0osHQ",
+	                "https://twitter.com/BostonDotCom"
+	            ],
+	            "logo": {
+	                "@type": "ImageObject",
+	                "@id": "https://www.boston.com/#logo",
+	                "inLanguage": "en-US",
+	                "url": "https://bdc2020.o0bc.com/wp-content/uploads/2021/05/Boston.com-Logo-609cb231cf4d6.png",
+	                "contentUrl": "https://bdc2020.o0bc.com/wp-content/uploads/2021/05/Boston.com-Logo-609cb231cf4d6.png",
+	                "width": 2820,
+	                "height": 876,
+	                "caption": "Boston.com"
+	            },
+	            "image": {
+	                "@id": "https://www.boston.com/#logo"
+	            }
+	        },
+	        {
+	            "@type": "WebSite",
+	            "@id": "https://www.boston.com/#website",
+	            "url": "https://www.boston.com/",
+	            "name": "Boston.com",
+	            "description": "Boston.com",
+	            "publisher": {
+	                "@id": "https://www.boston.com/#organization"
+	            },
+	            "potentialAction": [
+	                {
+	                    "@type": "SearchAction",
+	                    "target": {
+	                        "@type": "EntryPoint",
+	                        "urlTemplate": "https://www.boston.com/?s={search_term_string}"
+	                    },
+	                    "query-input": "required name=search_term_string"
+	                }
+	            ],
+	            "inLanguage": "en-US"
+	        },
+	        {
+	            "@type": "ImageObject",
+	            "@id": "https://www.boston.com/news/politics/2022/08/15/trump-vaccine-mandates-and-the-millionaires-tax-key-takeaways-from-the-massgop-lieutenant-governor-debate/#primaryimage",
+	            "inLanguage": "en-US",
+	            "url": "https://bdc2020.o0bc.com/wp-content/uploads/2022/08/Screen-Shot-2022-08-15-at-1.42.02-PM-62fa859d22fda.png",
+	            "contentUrl": "https://bdc2020.o0bc.com/wp-content/uploads/2022/08/Screen-Shot-2022-08-15-at-1.42.02-PM-62fa859d22fda.png",
+	            "width": 1200,
+	            "height": 829,
+	            "caption": "Former state Reps. Kate Campanale, left, and Leah Cole Allen. Both women are running for the Republican nomination for lieutenant governor."
+	        },
+	        {
+	            "@type": "WebPage",
+	            "@id": "https://www.boston.com/news/politics/2022/08/15/trump-vaccine-mandates-and-the-millionaires-tax-key-takeaways-from-the-massgop-lieutenant-governor-debate/#webpage",
+	            "url": "https://www.boston.com/news/politics/2022/08/15/trump-vaccine-mandates-and-the-millionaires-tax-key-takeaways-from-the-massgop-lieutenant-governor-debate/",
+	            "name": "Key takeaways from the MassGOP lieutenant governor debate",
+	            "isPartOf": {
+	                "@id": "https://www.boston.com/#website"
+	            },
+	            "primaryImageOfPage": {
+	                "@id": "https://www.boston.com/news/politics/2022/08/15/trump-vaccine-mandates-and-the-millionaires-tax-key-takeaways-from-the-massgop-lieutenant-governor-debate/#primaryimage"
+	            },
+	            "datePublished": "2022-08-15T20:37:57+00:00",
+	            "dateModified": "2022-08-15T20:38:10+00:00",
+	            "description": "Former state Reps. Kate Campanale and Leah Cole Allen tackled everything from the proposed millionaires tax to navigating vaccine mandates.",
+	            "breadcrumb": {
+	                "@id": "https://www.boston.com/news/politics/2022/08/15/trump-vaccine-mandates-and-the-millionaires-tax-key-takeaways-from-the-massgop-lieutenant-governor-debate/#breadcrumb"
+	            },
+	            "inLanguage": "en-US",
+	            "potentialAction": [
+	                {
+	                    "@type": "ReadAction",
+	                    "target": [
+	                        "https://www.boston.com/news/politics/2022/08/15/trump-vaccine-mandates-and-the-millionaires-tax-key-takeaways-from-the-massgop-lieutenant-governor-debate/"
+	                    ]
+	                }
+	            ]
+	        },
+	        {
+	            "@type": "BreadcrumbList",
+	            "@id": "https://www.boston.com/news/politics/2022/08/15/trump-vaccine-mandates-and-the-millionaires-tax-key-takeaways-from-the-massgop-lieutenant-governor-debate/#breadcrumb",
+	            "itemListElement": [
+	                {
+	                    "@type": "ListItem",
+	                    "position": 1,
+	                    "name": "Home",
+	                    "item": "https://www.boston.com/"
+	                },
+	                {
+	                    "@type": "ListItem",
+	                    "position": 2,
+	                    "name": "Trump, vaccine mandates, and the &#8216;millionaires tax&#8217;: Key takeaways from the MassGOP lieutenant governor debate"
+	                }
+	            ]
+	        },
+	        {
+	            "@type": "NewsArticle",
+	            "@id": "https://www.boston.com/news/politics/2022/08/15/trump-vaccine-mandates-and-the-millionaires-tax-key-takeaways-from-the-massgop-lieutenant-governor-debate/#article",
+	            "isPartOf": {
+	                "@id": "https://www.boston.com/news/politics/2022/08/15/trump-vaccine-mandates-and-the-millionaires-tax-key-takeaways-from-the-massgop-lieutenant-governor-debate/#webpage"
+	            },
+	            "author": {
+	                "@id": "https://www.boston.com/#/schema/person/956b015c95d3d48667d0c1d279cc29a6"
+	            },
+	            "headline": "Trump, vaccine mandates, and the &#8216;millionaires tax&#8217;: Key takeaways from the MassGOP lieutenant governor debate",
+	            "datePublished": "2022-08-15T20:37:57+00:00",
+	            "dateModified": "2022-08-15T20:38:10+00:00",
+	            "mainEntityOfPage": {
+	                "@id": "https://www.boston.com/news/politics/2022/08/15/trump-vaccine-mandates-and-the-millionaires-tax-key-takeaways-from-the-massgop-lieutenant-governor-debate/#webpage"
+	            },
+	            "wordCount": 1038,
+	            "commentCount": 0,
+	            "publisher": {
+	                "@id": "https://www.boston.com/#organization"
+	            },
+	            "image": {
+	                "@id": "https://www.boston.com/news/politics/2022/08/15/trump-vaccine-mandates-and-the-millionaires-tax-key-takeaways-from-the-massgop-lieutenant-governor-debate/#primaryimage"
+	            },
+	            "thumbnailUrl": "https://bdc2020.o0bc.com/wp-content/uploads/2022/08/Screen-Shot-2022-08-15-at-1.42.02-PM-62fa859d22fda.png",
+	            "keywords": [
+	                "2022 Massachusetts elections",
+	                "Local",
+	                "Massachusetts",
+	                "Politics"
+	            ],
+	            "articleSection": [
+	                "News"
+	            ],
+	            "inLanguage": "en-US",
+	            "potentialAction": [
+	                {
+	                    "@type": "CommentAction",
+	                    "name": "Comment",
+	                    "target": [
+	                        "https://www.boston.com/news/politics/2022/08/15/trump-vaccine-mandates-and-the-millionaires-tax-key-takeaways-from-the-massgop-lieutenant-governor-debate/#respond"
+	                    ]
+	                }
+	            ]
+	        },
+	        {
+	            "@id": "https://www.boston.com/news/politics/2022/08/15/trump-vaccine-mandates-and-the-millionaires-tax-key-takeaways-from-the-massgop-lieutenant-governor-debate/#author",
+	            "@type": "Person",
+	            "name": "Christopher Gavin",
+	            "description": "Editorial - South Bureau",
+	            "sameAs": [
+	                "https://twitter.com/chris_m_gavin",
+	                "https://www.boston.com/author/christopher-gavin/"
+	            ]
+	        }
+	    ]
+	}</script>
+	<!-- / Yoast SEO Premium plugin. -->
+
+
+<link rel='dns-prefetch' href='//assets.juicer.io' />
+<link rel='dns-prefetch' href='//dz9qn8fh4jznm.cloudfront.net.' />
+<link rel='dns-prefetch' href='//static.chartbeat.com' />
+<link rel='dns-prefetch' href='//cdn.blueconic.net' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel="alternate" type="application/rss+xml" title="Boston.com &raquo; Feed" href="https://www.boston.com/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Boston.com &raquo; Comments Feed" href="https://www.boston.com/comments/feed/" />
+<link rel="alternate" type="text/calendar" title="Boston.com &raquo; iCal Feed" href="https://www.boston.com/things-to-do/?ical=1" />
+<link rel="alternate" type="application/rss+xml" title="Boston.com &raquo; Trump, vaccine mandates, and the &#8216;millionaires tax&#8217;: Key takeaways from the MassGOP lieutenant governor debate Comments Feed" href="https://www.boston.com/news/politics/2022/08/15/trump-vaccine-mandates-and-the-millionaires-tax-key-takeaways-from-the-massgop-lieutenant-governor-debate/feed/" />
+<link rel='stylesheet' id='juicerstyle-css'  href='//assets.juicer.io/embed.css?ver=6.0.1' type='text/css' media='all' />
+<link rel='stylesheet' id='tribe-events-pro-mini-calendar-block-styles-css'  href='https://bdc2020.o0bc.com/wp-content/plugins/events-calendar-pro/src/resources/css/tribe-events-pro-mini-calendar-block.min.css?ver=5.13.0' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-block-library-css'  href='https://bdc2020.o0bc.com/wp-includes/css/dist/block-library/style.min.css?ver=6.0.1' type='text/css' media='all' />
+<link rel='stylesheet' id='wp_blocks_embed_weather_podcast-cgb-style-css-css'  href='https://bdc2020.o0bc.com/wp-content/plugins/wp-block-embed-weather-podcast/dist/blocks.style.build.css' type='text/css' media='all' />
+<link rel='stylesheet' id='elasticpress-related-posts-block-css'  href='https://bdc2020.o0bc.com/wp-content/plugins/elasticpress/dist/css/related-posts-block-styles.min.css?ver=3.5.6' type='text/css' media='all' />
+<style id='global-styles-inline-css' type='text/css'>
+body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--color--red: #bb2525;--wp--preset--color--background-black: #1a1a1a;--wp--preset--color--line-gray: #e1e1e1;--wp--preset--color--blue: #2c74de;--wp--preset--color--light-gray: #f1f1f1;--wp--preset--color--off-white: #fbf1e7;--wp--preset--color--mid-gray: #b6b6b6;--wp--preset--color--dark-gray: #68686d;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--duotone--dark-grayscale: url('#wp-duotone-dark-grayscale');--wp--preset--duotone--grayscale: url('#wp-duotone-grayscale');--wp--preset--duotone--purple-yellow: url('#wp-duotone-purple-yellow');--wp--preset--duotone--blue-red: url('#wp-duotone-blue-red');--wp--preset--duotone--midnight: url('#wp-duotone-midnight');--wp--preset--duotone--magenta-yellow: url('#wp-duotone-magenta-yellow');--wp--preset--duotone--purple-green: url('#wp-duotone-purple-green');--wp--preset--duotone--blue-orange: url('#wp-duotone-blue-orange');--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+</style>
+<link rel='stylesheet' id='tenup-block-library-frontend-accordion-styles-css'  href='https://bdc2020.o0bc.com/wp-content/plugins/block-library/dist/css/frontend-accordion-styles.css?ver=d899f5cabdebab30a4d631759350a871' type='text/css' media='all' />
+<link rel='stylesheet' id='global-css'  href='https://bdc2020.o0bc.com/wp-content/themes/bdc-2020/dist/css/global.css?ver=a81301a7632c85301043ae0471bdda08' type='text/css' media='all' />
+<link rel='stylesheet' id='base-css'  href='https://bdc2020.o0bc.com/wp-content/themes/bdc-2020/dist/css/base.css?ver=c4996d8d33b5d1b32e4f466ed9346ac4' type='text/css' media='all' />
+<link rel='stylesheet' id='blocks-css'  href='https://bdc2020.o0bc.com/wp-content/themes/bdc-2020/dist/css/blocks.css?ver=f0213447e5d3d72e5a3ebcca647a995d' type='text/css' media='all' />
+<link rel='stylesheet' id='molecules-css'  href='https://bdc2020.o0bc.com/wp-content/themes/bdc-2020/dist/css/molecules.css?ver=651448e88e823c1d0691c982ec02743d' type='text/css' media='all' />
+<link rel='stylesheet' id='organisms-css'  href='https://bdc2020.o0bc.com/wp-content/themes/bdc-2020/dist/css/organisms.css?ver=abcec7b5ac0f091b569e27284a2a853c' type='text/css' media='all' />
+<link rel='stylesheet' id='styles-css'  href='https://bdc2020.o0bc.com/wp-content/themes/bdc-2020/dist/css/style.css?ver=c9ec8843b8c5436abc42d085694cf79a' type='text/css' media='all' />
+<script type='text/javascript' src='https://bdc2020.o0bc.com/wp-includes/js/jquery/jquery.min.js?ver=3.6.0' id='jquery-core-js'></script>
+<script type='text/javascript' src='//assets.juicer.io/embed-no-jquery.js?ver=6.0.1' id='juicerembed-js'></script>
+<script type='text/javascript' src='//dz9qn8fh4jznm.cloudfront.net./script.js' id='cleancreative_js-js'></script>
+<script type='text/javascript' id='chartbeat_head_js-js-extra'>
+/* <![CDATA[ */
+var chartbeat_config = {"domain":"boston.com","uid":"8544","useCanonical":"1","useAB":"","authors":"Christopher Gavin","sections":"News","title":"Key takeaways from the MassGOP lieutenant governor debate"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://bdc2020.o0bc.com/wp-content/plugins/bdc-chartbeat/js/bdc.chartbeat-head.js?ver=1659733414' id='chartbeat_head_js-js'></script>
+<script type='text/javascript' src='//static.chartbeat.com/js/chartbeat_mab.js?ver=6.0.1' id='chartbeat_mab-js'></script>
+<script type='text/javascript' id='ua-wn-js-extra'>
+/* <![CDATA[ */
+var uaWnSettings = {"prompt":{"enabled":true,"prompt_views":2,"prompt_again_views":8}};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://bdc2020.o0bc.com/wp-content/plugins/urban-airship-web-push-notifications/assets/js/notification.js?ver=1.3.4' id='ua-wn-js'></script>
+<script type='text/javascript' src='//cdn.blueconic.net/bostonglobemedia.js' id='blueconic_js-js'></script>
+<link rel="https://api.w.org/" href="https://www.boston.com/wp-json/" /><link rel="alternate" type="application/json" href="https://www.boston.com/wp-json/wp/v2/posts/25463506" /><link rel='shortlink' href='https://www.boston.com/?p=25463506' />
+<link rel="alternate" type="application/json+oembed" href="https://www.boston.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.boston.com%2Fnews%2Fpolitics%2F2022%2F08%2F15%2Ftrump-vaccine-mandates-and-the-millionaires-tax-key-takeaways-from-the-massgop-lieutenant-governor-debate%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://www.boston.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.boston.com%2Fnews%2Fpolitics%2F2022%2F08%2F15%2Ftrump-vaccine-mandates-and-the-millionaires-tax-key-takeaways-from-the-massgop-lieutenant-governor-debate%2F&#038;format=xml" />
+<script type="text/javascript">!(function(o,n,t){t=o.createElement(n),o=o.getElementsByTagName(n)[0],t.async=1,t.src="https://fallaciousfifth.com/v2ojfJQXItusfVrUEda5saSZ5uxEMzujCipb6jl01lNcP_fOujjlpKPeM-wc-_90A",o.parentNode.insertBefore(t,o)})(document,"script"),(function(o,n){o[n]=o[n]||function(){(o[n].q=o[n].q||[]).push(arguments)}})(window,"admiral");!(function(c,e,o,t,n){function r(o,t){(function n(){try{return 0<(localStorage.getItem("v4ac1eiZr0")||"").split(",")[4]}catch(o){}return!1})()&&(t=c[e].pubads())&&t.setTargeting("admiral-engaged","true")}(n=c[e]=c[e]||{}).cmd=n.cmd||[],typeof n.pubads===o?r():typeof n.cmd.unshift===o?n.cmd.unshift(r):n.cmd.push(r)})(window,"googletag","function");</script><!-- REGI ENV = PRD--><script type="text/javascript">
+//Registration base URL
+regiBaseUrl = 'http://tomcat.boston.com/profiles/outside/REST/';
+</script><meta name="tec-api-version" content="v1"><meta name="tec-api-origin" content="https://www.boston.com"><link rel="alternate" href="https://www.boston.com/wp-json/tribe/events/v1/" />        <script class="kxct" data-id="snn54e4ln" data-timing="async" data-version="3.0"
+                type="text/javascript">
+            window.Krux || ((Krux = function () {
+                Krux.q.push(arguments)
+            }).q = []);
+            (function () {
+                var k = document.createElement('script');
+                k.type = 'text/javascript';
+                k.async = true;
+                k.src = (location.protocol === 'https:' ? 'https:' : 'http:') + '//cdn.krxd.net/controltag/snn54e4ln.js';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(k, s);
+            }());
+        </script>
+		        <script class="kxint" data-namespace="bostonglobe" type="text/javascript">
+            window.Krux || ((Krux = function () {
+                Krux.q.push(arguments);
+            }).q = []);
+            (function () {
+                function retrieve(n) {
+                    var k = 'kx' + 'bostonglobe_' + n, ls = (function () {
+                        try {
+                            return window.localStorage;
+                        } catch (e) {
+                            return null;
+                        }
+                    })();
+                    if (ls) {
+                        return ls[k] || '';
+                    } else if (navigator.cookieEnabled) {
+                        var m = document.cookie.match(k + '=([^;]*)');
+                        return (m && unescape(m[1])) || '';
+                    } else {
+                        return '';
+                    }
+                }
+
+                Krux.user = retrieve('user');
+                Krux.segments = retrieve('segs') ? retrieve('segs').split(',') : [];
+            })();
+        </script>
+		<link rel='manifest' href='https://www.boston.com/wp-content/themes/bdc-2020/manifest.json' /><link rel="amphtml" href="https://www.boston.com/news/politics/2022/08/15/trump-vaccine-mandates-and-the-millionaires-tax-key-takeaways-from-the-massgop-lieutenant-governor-debate/?amp=1">	<!-- Facebook Pixel Code -->
+	<script>
+	if (typeof(window.bgmpGdpr) !== 'undefined' && !window.bgmpGdpr.isOptedOut()) {
+	!function(f,b,e,v,n,t,s)
+	{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+	n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+	if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+	n.queue=[];t=b.createElement(e);t.async=!0;
+	t.src=v;s=b.getElementsByTagName(e)[0];
+	s.parentNode.insertBefore(t,s)}(window, document,'script',
+	'https://connect.facebook.net/en_US/fbevents.js');
+	fbq('init', '989222871864976');
+	fbq('track', 'PageView');}</script>
+	<noscript><img height="1" width="1" style="display:none"
+	src="https://www.facebook.com/tr?id=989222871864976&ev=PageView&noscript=1"
+	/></noscript>
+	<!-- End Facebook Pixel Code -->
+	<!-- The following line must be placed in the head tag -->
+	<script type="text/javascript" src="https://p.teads.tv/teads-fellow.js" async="true"></script>
+	<script>
+	if (typeof(window.bgmpGdpr) !== 'undefined' && !window.bgmpGdpr.isOptedOut()) {
+	window.teads_e = window.teads_e || [];
+	window.teads_adv_id = 39960;}
+	</script>
+	<!--
+		Start of global snippet: Please do not remove
+		Place this snippet between the <head> and </head> tags on every page of your site.
+	-->
+	<!-- Global site tag (gtag.js) - Google Marketing Platform -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=DC-11164343"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+
+	  gtag('config', 'DC-11164343');
+	</script>
+	<!-- End of global snippet: Please do not remove -->
+<link rel="icon" href="https://bdc2020.o0bc.com/wp-content/uploads/2021/05/BDC_Logo_2020_Social_WhiteBG-609c79a967eee-150x150.png" sizes="32x32" />
+<link rel="icon" href="https://bdc2020.o0bc.com/wp-content/uploads/2021/05/BDC_Logo_2020_Social_WhiteBG-609c79a967eee-200x200.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://bdc2020.o0bc.com/wp-content/uploads/2021/05/BDC_Logo_2020_Social_WhiteBG-609c79a967eee-200x200.png" />
+<meta name="msapplication-TileImage" content="https://bdc2020.o0bc.com/wp-content/uploads/2021/05/BDC_Logo_2020_Social_WhiteBG-609c79a967eee.png" />
+		<style type="text/css" id="wp-custom-css">
+			.m-gforms-poll-block .gpoll_button { display: none }		</style>
+					<meta property="og:type" content="article"/> 
+			<meta property="article:opinion" content="false"/> 
+			<meta property="article:content_tier" content="free"/>
+				</head>
+
+	<body class="post-template-default single single-post postid-25463506 single-format-standard wp-embed-responsive site-body tribe-no-js">
+
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;" ><defs><filter id="wp-duotone-dark-grayscale"><feColorMatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 " /><feComponentTransfer color-interpolation-filters="sRGB" ><feFuncR type="table" tableValues="0 0.49803921568627" /><feFuncG type="table" tableValues="0 0.49803921568627" /><feFuncB type="table" tableValues="0 0.49803921568627" /><feFuncA type="table" tableValues="1 1" /></feComponentTransfer><feComposite in2="SourceGraphic" operator="in" /></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;" ><defs><filter id="wp-duotone-grayscale"><feColorMatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 " /><feComponentTransfer color-interpolation-filters="sRGB" ><feFuncR type="table" tableValues="0 1" /><feFuncG type="table" tableValues="0 1" /><feFuncB type="table" tableValues="0 1" /><feFuncA type="table" tableValues="1 1" /></feComponentTransfer><feComposite in2="SourceGraphic" operator="in" /></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;" ><defs><filter id="wp-duotone-purple-yellow"><feColorMatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 " /><feComponentTransfer color-interpolation-filters="sRGB" ><feFuncR type="table" tableValues="0.54901960784314 0.98823529411765" /><feFuncG type="table" tableValues="0 1" /><feFuncB type="table" tableValues="0.71764705882353 0.25490196078431" /><feFuncA type="table" tableValues="1 1" /></feComponentTransfer><feComposite in2="SourceGraphic" operator="in" /></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;" ><defs><filter id="wp-duotone-blue-red"><feColorMatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 " /><feComponentTransfer color-interpolation-filters="sRGB" ><feFuncR type="table" tableValues="0 1" /><feFuncG type="table" tableValues="0 0.27843137254902" /><feFuncB type="table" tableValues="0.5921568627451 0.27843137254902" /><feFuncA type="table" tableValues="1 1" /></feComponentTransfer><feComposite in2="SourceGraphic" operator="in" /></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;" ><defs><filter id="wp-duotone-midnight"><feColorMatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 " /><feComponentTransfer color-interpolation-filters="sRGB" ><feFuncR type="table" tableValues="0 0" /><feFuncG type="table" tableValues="0 0.64705882352941" /><feFuncB type="table" tableValues="0 1" /><feFuncA type="table" tableValues="1 1" /></feComponentTransfer><feComposite in2="SourceGraphic" operator="in" /></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;" ><defs><filter id="wp-duotone-magenta-yellow"><feColorMatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 " /><feComponentTransfer color-interpolation-filters="sRGB" ><feFuncR type="table" tableValues="0.78039215686275 1" /><feFuncG type="table" tableValues="0 0.94901960784314" /><feFuncB type="table" tableValues="0.35294117647059 0.47058823529412" /><feFuncA type="table" tableValues="1 1" /></feComponentTransfer><feComposite in2="SourceGraphic" operator="in" /></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;" ><defs><filter id="wp-duotone-purple-green"><feColorMatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 " /><feComponentTransfer color-interpolation-filters="sRGB" ><feFuncR type="table" tableValues="0.65098039215686 0.40392156862745" /><feFuncG type="table" tableValues="0 1" /><feFuncB type="table" tableValues="0.44705882352941 0.4" /><feFuncA type="table" tableValues="1 1" /></feComponentTransfer><feComposite in2="SourceGraphic" operator="in" /></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;" ><defs><filter id="wp-duotone-blue-orange"><feColorMatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 " /><feComponentTransfer color-interpolation-filters="sRGB" ><feFuncR type="table" tableValues="0.098039215686275 1" /><feFuncG type="table" tableValues="0 0.66274509803922" /><feFuncB type="table" tableValues="0.84705882352941 0.41960784313725" /><feFuncA type="table" tableValues="1 1" /></feComponentTransfer><feComposite in2="SourceGraphic" operator="in" /></filter></defs></svg>			<script src="https://www.boston.com/wp-content/plugins/bdc-chartbeat/js/bdc.chartbeat-body.js"></script>
+		
+		<header class="o-site-header" id="site-header" aria-label="Site Header">
+			<section class="o-site-header__advert" aria-label="Leaderboard Advert">
+				<div id="js-advert--lead1" class="m-advert m-advert--lead1 m-advert--with-gray m-advert--header "><div class="m-advert__container"><div id="ad_lead1"><script type="type/javascript">googletag.cmd.push(function() { googletag.display("ad_lead1") })</script></div></div></div>			</section>
+
+			<a class="screen-reader-text" href="#site-content">
+				Skip to Main Content			</a>
+
+			<div class="o-site-header__masthead">
+				<div class="m-grid m-grid-container">
+
+					<div class="m-panel-menu">
+						
+<button aria-label="Toggle Panel menu" class="a-button a-button--with-icon m-panel-navigation__toggle" id="js-panel-navigation-trigger" aria-haspopup="true" aria-controls="js-panel-navigation" aria-expanded="false">
+	<svg class="a-icon m-panel-navigation__open" aria-hidden="true" width="19" height="15"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#menu"></use><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#menu"></use></svg><span class="screen-reader-text">Open</span>	<svg class="a-icon m-panel-navigation__close" aria-hidden="true" width="19" height="15"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#close-symbol"></use><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#close-symbol"></use></svg><span class="screen-reader-text">Close</span>	<span class="a-hide-mobile">Menu</span>
+</button>
+
+<nav id="js-panel-navigation" class="m-panel-navigation" aria-label="Mobile Navigation"  aria-hidden="true">
+	<div class="m-panel-navigation__wrap" tabindex="-1">
+		<div class="m-panel-navigation_expose">
+			<ul class="a-list a-list--no-style m-panel-navigation__list">
+				<li class="m-panel-navigation__list-item menu-item">
+					<a href="https://www.boston.com">
+						Home					</a>
+				</li>
+			</ul>
+
+			<div class="menu-bdc-main-container"><ul id="panel-primary-nav" class="a-list a-list--no-style m-panel-navigation__menu"><li id="menu-item-22274386" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-has-children menu-item-22274386 current-menu-ancestor current-post-category"><a href="https://www.boston.com/category/news/">News</a>
+<ul class="sub-menu">
+	<li id="menu-item-22667276" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22667276"><a href="https://www.boston.com/tag/coronavirus/">COVID</a></li>
+	<li id="menu-item-22667248" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22667248"><a href="https://www.boston.com/tag/local-news/">Local</a></li>
+	<li id="menu-item-22667254" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22667254"><a href="https://www.boston.com/tag/national-news/">National</a></li>
+	<li id="menu-item-22667253" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22667253 current-post-primary-term"><a href="https://www.boston.com/tag/politics/">Politics</a></li>
+	<li id="menu-item-22667264" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22667264"><a href="https://www.boston.com/tag/crime/">Crime</a></li>
+	<li id="menu-item-22688550" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22688550"><a href="https://www.boston.com/tag/traffic/">Traffic</a></li>
+	<li id="menu-item-22667271" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22667271"><a href="https://www.boston.com/tag/jobs/">Jobs</a></li>
+</ul>
+</li>
+<li id="menu-item-22274480" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-22274480"><a href="https://www.boston.com/category/sports/">Sports</a>
+<ul class="sub-menu">
+	<li id="menu-item-22497520" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22497520"><a href="https://www.boston.com/tag/boston-red-sox/">Red Sox</a></li>
+	<li id="menu-item-22497515" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22497515"><a href="https://www.boston.com/tag/new-england-patriots/">Patriots</a></li>
+	<li id="menu-item-22497525" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22497525"><a href="https://www.boston.com/tag/boston-celtics/">Celtics</a></li>
+	<li id="menu-item-22497530" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22497530"><a href="https://www.boston.com/tag/boston-bruins/">Bruins</a></li>
+	<li id="menu-item-22672278" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672278"><a href="https://www.boston.com/tag/new-england-revolution/">Revs</a></li>
+	<li id="menu-item-22360533" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22360533"><a href="http://www.boston.com/author/chad-finn">Chad Finn</a></li>
+</ul>
+</li>
+<li id="menu-item-22359876" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-22359876"><a href="https://www.boston.com/category/weather/">Weather</a>
+<ul class="sub-menu">
+	<li id="menu-item-23008219" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-23008219"><a href="https://www.boston.com/tag/weather-maps/">Maps</a></li>
+	<li id="menu-item-23008224" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-23008224"><a href="https://www.boston.com/tag/storms/">Storms</a></li>
+	<li id="menu-item-23008199" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-23008199"><a href="https://www.boston.com/tag/climate-change/">Climate Change</a></li>
+	<li id="menu-item-23008255" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-23008255"><a href="https://www.boston.com/tag/snow/">Snow</a></li>
+	<li id="menu-item-22360741" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22360741"><a href="http://www.boston.com/author/david-epstein">David Epstein</a></li>
+</ul>
+</li>
+<li id="menu-item-24270121" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-24270121"><a href="https://www.boston.com/category/community/">Community</a>
+<ul class="sub-menu">
+	<li id="menu-item-24063234" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-24063234"><a href="https://www.boston.com/tag/tell-us/">Tell Us</a></li>
+	<li id="menu-item-24063232" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-24063232"><a href="https://www.boston.com/tag/readers-say/">Readers Say</a></li>
+	<li id="menu-item-24063239" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-24063239"><a href="https://www.boston.com/tag/book-club/">Book Club</a></li>
+	<li id="menu-item-24063244" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-24063244"><a href="https://www.boston.com/tag/cocktail-club/">Cocktail Club</a></li>
+	<li id="menu-item-25021659" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-25021659"><a href="https://www.boston.com/tag/music-club/">Music Club</a></li>
+	<li id="menu-item-24063208" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-24063208"><a href="https://www.boston.com/tag/as-told-to/">As Told To</a></li>
+</ul>
+</li>
+<li id="menu-item-22274485" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-22274485"><a href="https://www.boston.com/category/culture/">Culture</a>
+<ul class="sub-menu">
+	<li id="menu-item-22672234" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672234"><a href="https://www.boston.com/tag/movies/">Movies</a></li>
+	<li id="menu-item-22672235" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672235"><a href="https://www.boston.com/tag/tv/">TV</a></li>
+	<li id="menu-item-24669784" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-24669784"><a href="https://www.boston.com/tag/streaming/">Streaming</a></li>
+	<li id="menu-item-22672238" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672238"><a href="https://www.boston.com/tag/celebs/">Celebs</a></li>
+	<li id="menu-item-22672229" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672229"><a href="https://www.boston.com/tag/entertainment/">Entertainment</a></li>
+	<li id="menu-item-22672218" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672218"><a href="https://www.boston.com/tag/arts/">Arts</a></li>
+	<li id="menu-item-22672241" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672241"><a href="https://www.boston.com/tag/music/">Music</a></li>
+	<li id="menu-item-22360713" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22360713"><a href="https://loveletters.boston.com/">Love Letters</a></li>
+</ul>
+</li>
+<li id="menu-item-22274495" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-22274495"><a href="https://www.boston.com/category/food/">Food</a>
+<ul class="sub-menu">
+	<li id="menu-item-22672249" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672249"><a href="https://www.boston.com/tag/restaurants/">Restaurants</a></li>
+	<li id="menu-item-22672303" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672303"><a href="https://www.boston.com/tag/food-news/">News</a></li>
+	<li id="menu-item-22672295" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672295"><a href="https://www.boston.com/tag/restaurant-reviews/">Reviews</a></li>
+	<li id="menu-item-22672298" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672298"><a href="https://www.boston.com/tag/food-events/">Events</a></li>
+	<li id="menu-item-22672251" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672251"><a href="https://www.boston.com/tag/breweries-bars/">Breweries &amp; Bars</a></li>
+	<li id="menu-item-22672290" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672290"><a href="https://www.boston.com/tag/restaurant-openings/">Openings</a></li>
+	<li id="menu-item-22672285" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672285"><a href="https://www.boston.com/tag/restaurant-closings/">Closings</a></li>
+</ul>
+</li>
+<li id="menu-item-22360356" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-22360356"><a href="https://www.boston.com/category/travel/">Travel</a>
+<ul class="sub-menu">
+	<li id="menu-item-24676059" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-24676059"><a href="https://www.boston.com/tag/beaches/">Beaches</a></li>
+	<li id="menu-item-24676057" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-24676057"><a href="https://www.boston.com/tag/outdoors/">Outdoors</a></li>
+	<li id="menu-item-24976054" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-24976054"><a href="https://www.boston.com/tag/flights/">Flights</a></li>
+	<li id="menu-item-22993850" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22993850"><a href="https://www.boston.com/tag/visiting-boston/">Visiting Boston</a></li>
+	<li id="menu-item-24976055" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-24976055"><a href="https://www.boston.com/tag/cape-cod-travel/">Cape Cod</a></li>
+	<li id="menu-item-22672269" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672269"><a href="https://www.boston.com/tag/new-england-travel/">New England</a></li>
+</ul>
+</li>
+<li id="menu-item-23474810" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-23474810"><a href="https://www.boston.com/things-to-do/">Things To Do</a>
+<ul class="sub-menu">
+	<li id="menu-item-23527961" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-23527961"><a href="https://www.boston.com/calendar-submission/">Submit a Listing</a></li>
+</ul>
+</li>
+<li id="menu-item-639592" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-639592"><a href="http://realestate.boston.com/">Real Estate</a></li>
+<li id="menu-item-25195153" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-25195153"><a href="https://www.boston.com/category/cars/">Cars</a>
+<ul class="sub-menu">
+	<li id="menu-item-25195157" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-25195157"><a href="https://www.boston.com/new-car-specials/">New Car Specials</a></li>
+</ul>
+</li>
+<li id="menu-item-22360995" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-has-children menu-item-22360995 menu-item-hamburger-only"><a href="https://www.boston.com/">Extra</a>
+<ul class="sub-menu">
+	<li id="menu-item-22360996" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22360996 menu-item-hamburger-only"><a href="https://www.boston.com/fresh-start-submit-your-appeal">Fresh Start</a></li>
+	<li id="menu-item-22360999" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22360999 menu-item-hamburger-only"><a href="https://www.bostonglobemedia.com/">Advertise</a></li>
+	<li id="menu-item-22361010" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22361010 menu-item-hamburger-only"><a href="https://advertising.bostonglobemedia.com/">Classified Ads</a></li>
+	<li id="menu-item-22361025" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22361025 menu-item-hamburger-only"><a href="https://www.boston.com/customer-support">Customer Support</a></li>
+	<li id="menu-item-22864808" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22864808"><a href="https://www.boston.com/tag/newsletters/">Newsletters</a></li>
+	<li id="menu-item-22361055" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22361055 menu-item-hamburger-only"><a href="https://bostonglobemediapartners.applytojob.com/apply">Careers</a></li>
+	<li id="menu-item-22361026" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22361026 menu-item-hamburger-only"><a href="https://www.boston.com/contact-us">Contact Us</a></li>
+	<li id="menu-item-22361019" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22361019 menu-item-hamburger-only"><a href="https://www.legacy.com/obituaries/bostonglobe/">Obituaries</a></li>
+	<li id="menu-item-22361031" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22361031 menu-item-hamburger-only"><a href="https://www.boston.com/lottery">Lottery</a></li>
+	<li id="menu-item-22361035" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22361035 menu-item-hamburger-only"><a href="https://www.boston.com/horoscope">Horoscopes</a></li>
+	<li id="menu-item-22361043" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22361043 menu-item-hamburger-only"><a href="https://www.boston.com/comics">Comics</a></li>
+	<li id="menu-item-22361045" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22361045 menu-item-hamburger-only"><a href="https://www.boston.com/today-in-history">Today in History</a></li>
+	<li id="menu-item-22361079" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22361079 menu-item-hamburger-only"><a href="https://www.boston.com/section/deals">Deals</a></li>
+	<li id="menu-item-23262418" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-23262418 menu-item-hamburger-only"><a href="https://www.boston.com/partner-landing/partners/">Partners</a></li>
+</ul>
+</li>
+<li id="menu-item-22363175" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-22363175 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/">Coupons</a>
+<ul class="sub-menu">
+	<li id="menu-item-22363196" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363196 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/doordash">DoorDash Promo Codes</a></li>
+	<li id="menu-item-22363198" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363198 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/office-depot">Office Depot Coupons</a></li>
+	<li id="menu-item-22363199" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363199 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/h-m">H&#038;M Coupons</a></li>
+	<li id="menu-item-22363203" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363203 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/adidas">adidas Promo Codes</a></li>
+	<li id="menu-item-22363206" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363206 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/walmart">Walmart Promo Codes</a></li>
+	<li id="menu-item-22363215" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363215 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/grubhub">GrubHub Promo Codes</a></li>
+	<li id="menu-item-22363218" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363218 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/ebay">ebay Coupons</a></li>
+	<li id="menu-item-22363220" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363220 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/dicks-sporting-goods">Dick&#8217;s Sporting Goods Coupons</a></li>
+	<li id="menu-item-22363225" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363225 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/overstock">Overstock Coupons</a></li>
+	<li id="menu-item-22363248" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363248 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/hotels-com">Hotels.com Coupons</a></li>
+	<li id="menu-item-22363255" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363255 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/vitacost">Vitacost Coupons</a></li>
+	<li id="menu-item-22363259" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363259 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/samsung">Samsung Promo Codes</a></li>
+	<li id="menu-item-22363264" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363264 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/forever-21">Forever 21 Coupons</a></li>
+	<li id="menu-item-22363269" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363269 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/macys">Macy&#8217;s Coupons</a></li>
+	<li id="menu-item-22363270" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363270 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/verizon-wireless">Verizon Promo Codes</a></li>
+</ul>
+</li>
+<li id="menu-item-24512309" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-24512309 menu-item-hamburger-only"><a href="https://games.boston.com/">Games</a></li>
+</ul></div>		</div>
+	</div>
+</nav>
+						<div class="m-panel-overlay"></div>
+					</div>
+
+					<div id="site-logo" class="m-site-logo">
+						
+	<a class="m-site-logo__link"  href="https://www.boston.com">
+		<span class="screen-reader-text">Boston.com</span>
+		<img width="133" height="39" src="https://www.boston.com/wp-content/themes/bdc-2020/dist/images/boston-com-logo.png" aria-hidden="true" alt="" />
+	</a>
+						</div>
+
+					<nav class="m-secondary-menu" aria-label="Utility Navigation" id="utility-navigation">
+						
+<ul class="m-secondary-menu__list a-list--no-style">
+	<li class="m-header-search">
+		<button id="js-search-button" aria-controls="header-search-form" aria-expanded="false" aria-haspopup="true" class="a-button a-button--icon a-button--icon-svg" type="button">
+			<svg class="a-icon" aria-hidden="true" width="20" height="20"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#search"></use><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#search"></use></svg>			<svg class="a-icon a-icon--close" aria-hidden="true" width="20" height="20"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#close"></use><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#close"></use></svg>			<span class="screen-reader-text">Toggle Search Panel</span>
+		</button>
+		<div id="js-search-form" class="m-header-search__form" aria-hidden="true">
+			
+<form role="search" id="searchform--header" class="m-search-form m-search-form--header" method="get" action="https://www.boston.com/">
+		<label for="search-field-search-form-2" class="screen-reader-text m-search-form__label">
+		Search for:	</label>
+	<input class="m-search-form__input" type="text" id="search-field-search-form-2" value="" placeholder="Search Boston.com" name="s" />
+	<button class="m-search-form__button" tabindex="-1" type="submit" aria-label="Submit">
+		<svg class="a-icon a-icon--no-action" aria-hidden="true" width="20" height="20"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#search"></use><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#search"></use></svg><span class="screen-reader-text">Search Boston.com</span>	</button>
+		</form>
+		</div>
+	</li>
+	<li id="events-calender-icon" class="m-header-events">
+		<a href="https://www.boston.com/things-to-do/">
+			<svg class="a-icon" aria-hidden="true" width="20" height="20"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#events"></use><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#events"></use></svg><span class="screen-reader-text">View Boston Events</span>		</a>
+	</li>
+</ul>
+					</nav>
+
+				</div>
+			</div>
+
+			<div class="o-site-header__menu">
+
+				<div class="m-grid-container m-grid-container-inline">
+					
+	<nav aria-label="Main Site Navigation" class="m-site-navigation m-site-navigation--left" id="site-navigation" itemscope itemtype="https://schema.org/SiteNavigationElement">
+		<div class="menu-bdc-main-container"><ul id="menu-bdc-main" class="m-primary-menu m-primary-menu--section-level a-list--no-style"><li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-has-children menu-item-22274386 current-menu-ancestor current-post-category"><a href="https://www.boston.com/category/news/">News</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22667276"><a href="https://www.boston.com/tag/coronavirus/">COVID</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22667248"><a href="https://www.boston.com/tag/local-news/">Local</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22667254"><a href="https://www.boston.com/tag/national-news/">National</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22667253 current-post-primary-term"><a href="https://www.boston.com/tag/politics/">Politics</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22667264"><a href="https://www.boston.com/tag/crime/">Crime</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22688550"><a href="https://www.boston.com/tag/traffic/">Traffic</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22667271"><a href="https://www.boston.com/tag/jobs/">Jobs</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-22274480"><a href="https://www.boston.com/category/sports/">Sports</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22497520"><a href="https://www.boston.com/tag/boston-red-sox/">Red Sox</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22497515"><a href="https://www.boston.com/tag/new-england-patriots/">Patriots</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22497525"><a href="https://www.boston.com/tag/boston-celtics/">Celtics</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22497530"><a href="https://www.boston.com/tag/boston-bruins/">Bruins</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672278"><a href="https://www.boston.com/tag/new-england-revolution/">Revs</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22360533"><a href="http://www.boston.com/author/chad-finn">Chad Finn</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-22359876"><a href="https://www.boston.com/category/weather/">Weather</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-23008219"><a href="https://www.boston.com/tag/weather-maps/">Maps</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-23008224"><a href="https://www.boston.com/tag/storms/">Storms</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-23008199"><a href="https://www.boston.com/tag/climate-change/">Climate Change</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-23008255"><a href="https://www.boston.com/tag/snow/">Snow</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22360741"><a href="http://www.boston.com/author/david-epstein">David Epstein</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-24270121"><a href="https://www.boston.com/category/community/">Community</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-24063234"><a href="https://www.boston.com/tag/tell-us/">Tell Us</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-24063232"><a href="https://www.boston.com/tag/readers-say/">Readers Say</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-24063239"><a href="https://www.boston.com/tag/book-club/">Book Club</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-24063244"><a href="https://www.boston.com/tag/cocktail-club/">Cocktail Club</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-25021659"><a href="https://www.boston.com/tag/music-club/">Music Club</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-24063208"><a href="https://www.boston.com/tag/as-told-to/">As Told To</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-22274485"><a href="https://www.boston.com/category/culture/">Culture</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672234"><a href="https://www.boston.com/tag/movies/">Movies</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672235"><a href="https://www.boston.com/tag/tv/">TV</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-24669784"><a href="https://www.boston.com/tag/streaming/">Streaming</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672238"><a href="https://www.boston.com/tag/celebs/">Celebs</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672229"><a href="https://www.boston.com/tag/entertainment/">Entertainment</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672218"><a href="https://www.boston.com/tag/arts/">Arts</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672241"><a href="https://www.boston.com/tag/music/">Music</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22360713"><a href="https://loveletters.boston.com/">Love Letters</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-22274495"><a href="https://www.boston.com/category/food/">Food</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672249"><a href="https://www.boston.com/tag/restaurants/">Restaurants</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672303"><a href="https://www.boston.com/tag/food-news/">News</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672295"><a href="https://www.boston.com/tag/restaurant-reviews/">Reviews</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672298"><a href="https://www.boston.com/tag/food-events/">Events</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672251"><a href="https://www.boston.com/tag/breweries-bars/">Breweries &amp; Bars</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672290"><a href="https://www.boston.com/tag/restaurant-openings/">Openings</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672285"><a href="https://www.boston.com/tag/restaurant-closings/">Closings</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-22360356"><a href="https://www.boston.com/category/travel/">Travel</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-24676059"><a href="https://www.boston.com/tag/beaches/">Beaches</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-24676057"><a href="https://www.boston.com/tag/outdoors/">Outdoors</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-24976054"><a href="https://www.boston.com/tag/flights/">Flights</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22993850"><a href="https://www.boston.com/tag/visiting-boston/">Visiting Boston</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-24976055"><a href="https://www.boston.com/tag/cape-cod-travel/">Cape Cod</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-22672269"><a href="https://www.boston.com/tag/new-england-travel/">New England</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-23474810"><a href="https://www.boston.com/things-to-do/">Things To Do</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-23527961"><a href="https://www.boston.com/calendar-submission/">Submit a Listing</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-639592"><a href="http://realestate.boston.com/">Real Estate</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-25195153"><a href="https://www.boston.com/category/cars/">Cars</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-25195157"><a href="https://www.boston.com/new-car-specials/">New Car Specials</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-has-children menu-item-22360995 menu-item-hamburger-only"><a href="https://www.boston.com/">Extra</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22360996 menu-item-hamburger-only"><a href="https://www.boston.com/fresh-start-submit-your-appeal">Fresh Start</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22360999 menu-item-hamburger-only"><a href="https://www.bostonglobemedia.com/">Advertise</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22361010 menu-item-hamburger-only"><a href="https://advertising.bostonglobemedia.com/">Classified Ads</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22361025 menu-item-hamburger-only"><a href="https://www.boston.com/customer-support">Customer Support</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22864808"><a href="https://www.boston.com/tag/newsletters/">Newsletters</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22361055 menu-item-hamburger-only"><a href="https://bostonglobemediapartners.applytojob.com/apply">Careers</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22361026 menu-item-hamburger-only"><a href="https://www.boston.com/contact-us">Contact Us</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22361019 menu-item-hamburger-only"><a href="https://www.legacy.com/obituaries/bostonglobe/">Obituaries</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22361031 menu-item-hamburger-only"><a href="https://www.boston.com/lottery">Lottery</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22361035 menu-item-hamburger-only"><a href="https://www.boston.com/horoscope">Horoscopes</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22361043 menu-item-hamburger-only"><a href="https://www.boston.com/comics">Comics</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22361045 menu-item-hamburger-only"><a href="https://www.boston.com/today-in-history">Today in History</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22361079 menu-item-hamburger-only"><a href="https://www.boston.com/section/deals">Deals</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-23262418 menu-item-hamburger-only"><a href="https://www.boston.com/partner-landing/partners/">Partners</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-22363175 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/">Coupons</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363196 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/doordash">DoorDash Promo Codes</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363198 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/office-depot">Office Depot Coupons</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363199 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/h-m">H&#038;M Coupons</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363203 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/adidas">adidas Promo Codes</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363206 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/walmart">Walmart Promo Codes</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363215 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/grubhub">GrubHub Promo Codes</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363218 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/ebay">ebay Coupons</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363220 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/dicks-sporting-goods">Dick&#8217;s Sporting Goods Coupons</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363225 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/overstock">Overstock Coupons</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363248 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/hotels-com">Hotels.com Coupons</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363255 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/vitacost">Vitacost Coupons</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363259 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/samsung">Samsung Promo Codes</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363264 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/forever-21">Forever 21 Coupons</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363269 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/macys">Macy&#8217;s Coupons</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22363270 menu-item-hamburger-only"><a href="https://www.boston.com/coupons/verizon-wireless">Verizon Promo Codes</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-24512309 menu-item-hamburger-only"><a href="https://games.boston.com/">Games</a></li>
+</ul></div>	</nav>
+
+	<nav aria-label="Trending Navigation" class="m-site-navigation m-site-navigation--right m-site-navigation--trending" id="trending-navigation" itemscope itemtype="https://schema.org/SiteNavigationElement">
+		<div class="menu-bdc-trending-container"><ul id="menu-bdc-trending" class="m-primary-menu m-primary-menu--trending a-list--no-style"><li id="menu-item-23396806" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-23396806"><a href="https://www.boston.com/tease/the-celtics-should-want-nothing-to-do-with-kevin-durant/">Durant</a></li>
+<li id="menu-item-24792333" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-24792333"><a href="https://www.boston.com/community/tell-us/tell-us-how-are-you-preparing-for-the-orange-line-shutdown/">Orange Line</a></li>
+<li id="menu-item-24650756" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-24650756"><a href="https://www.boston.com/news/local-news/2022/08/14/boston-police-officer-saves-wedding-thompson-island-patrickhannah-mahoney-joseph-matthews/">&#8216;Groom in distress&#8217;</a></li>
+<li id="menu-item-24336919" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-24336919"><a href="https://www.boston.com/tease/i-dont-know-what-to-do-after-this-breakup/">Love Letters</a></li>
+</ul></div>	</nav>
+				</div>
+			</div>
+
+		</header>
+
+		
+		
+		<main class="t-main" id="site-content" aria-label="Main Site Content">
+
+					<div id="oosvideo">
+				<script>
+					googletag.cmd.push(function() {
+						googletag.display('oosvideo');
+					});
+				</script>
+			</div>
+		
+
+		<div class="m-grid-container t-layout t-layout--is-single t-layout--with-sidebar t-layout--standard-image ">
+		<section class="t-layout__main ">
+			<article class="content-well content-well--article" role="main">
+				<div id="presentedby">
+					<script>
+						googletag.cmd.push(function() {
+							googletag.display('presentedby');
+						});
+					</script>
+				</div>
+
+				<header class="m-article-header m-article-header--standard">
+												<span id="article-header-primary-term">
+								<a class="a-term a-term--primary" href="https://www.boston.com/tag/politics/">
+								Politics								</a>
+							</span>
+							
+					<h1 class="m-article-header__headline">Trump, vaccine mandates, and the &#8216;millionaires tax&#8217;: Key takeaways from the MassGOP lieutenant governor debate</h1>
+					<h2 class="m-article-header__sub-headline">Former state Reps. Kate Campanale and Leah Cole Allen tackled everything from the proposed millionaires tax to navigating vaccine mandates.</h2>
+
+					<figure class="a-photo m-article-header__photo ">
+<img width="768" height="432" src="https://bdc2020.o0bc.com/wp-content/uploads/2022/08/Screen-Shot-2022-08-15-at-1.42.02-PM-62fa859d22fda-768x432.png" class="attachment-16:9 size-16:9 wp-post-image" alt="" srcset="https://bdc2020.o0bc.com/wp-content/uploads/2022/08/Screen-Shot-2022-08-15-at-1.42.02-PM-62fa859d22fda-768x432.png?width=200 200w, https://bdc2020.o0bc.com/wp-content/uploads/2022/08/Screen-Shot-2022-08-15-at-1.42.02-PM-62fa859d22fda-768x432.png?width=300 300w, https://bdc2020.o0bc.com/wp-content/uploads/2022/08/Screen-Shot-2022-08-15-at-1.42.02-PM-62fa859d22fda-768x432.png?width=400 400w, https://bdc2020.o0bc.com/wp-content/uploads/2022/08/Screen-Shot-2022-08-15-at-1.42.02-PM-62fa859d22fda-768x432.png?width=500 500w, https://bdc2020.o0bc.com/wp-content/uploads/2022/08/Screen-Shot-2022-08-15-at-1.42.02-PM-62fa859d22fda-768x432.png?width=600 600w, https://bdc2020.o0bc.com/wp-content/uploads/2022/08/Screen-Shot-2022-08-15-at-1.42.02-PM-62fa859d22fda-768x432.png?width=700 700w, https://bdc2020.o0bc.com/wp-content/uploads/2022/08/Screen-Shot-2022-08-15-at-1.42.02-PM-62fa859d22fda-768x432.png?width=800 800w, https://bdc2020.o0bc.com/wp-content/uploads/2022/08/Screen-Shot-2022-08-15-at-1.42.02-PM-62fa859d22fda-768x432.png?width=900 900w" sizes="(max-width: 768px) 100vw, 768px" />	<figcaption class="a-photo__caption">
+	Former state Reps. Kate Campanale, left, and Leah Cole Allen. Both women are running for the Republican nomination for lieutenant governor.<em> John Tlumacki/Globe Staff, Barry Chin/Globe Staff</em>	</figcaption>
+</figure>
+
+					<div class="m-article-header__meta">
+						<div class="m-article-header__byline">
+							<p class="m-article-header__author">
+								By <a class="a-link a-link--inline" href="https://www.boston.com/author/christopher-gavin/">Christopher Gavin</a>							</p>
+
+							<time class="m-article-header__date">
+								August 15, 2022 | 4:37 PM							</time>
+						</div>
+						<div class="m-article-header__social">
+							<ul class="a-list--no-style m-social-share"><li class="m-social-share__item"><a id="sharetools-facebook" class="m-social-share__link" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.boston.com%2F%3Fpost_type%3Dpost%26p%3D25463506" rel="noopener noreferr" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" class="a-icon" aria-hidden="true" role="presentation" width="18" height="15"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#facebook-white"></use><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#facebook-white"></use></svg><span class="screen-reader-text">Facebook</span></a></li><li class="m-social-share__item"><a id="sharetools-twitter" class="m-social-share__link" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.boston.com%2F%3Fpost_type%3Dpost%26p%3D25463506" rel="noopener noreferr" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" class="a-icon" aria-hidden="true" role="presentation" width="18" height="15"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#twitter-white"></use><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#twitter-white"></use></svg><span class="screen-reader-text">Twitter</span></a></li><li class="m-social-share__item"><a id="sharetools-email" class="m-social-share__link" href="/cdn-cgi/l/email-protection#e5da9690878f808691d8b197908895c0d7a6c0d7d5938486868c8b80c0d7d588848b8184918096c0d7a6c0d7d5848b81c0d7d5918d80c0d7d5c0d7d3c0d7d6ddd7d4d3c0d6a7888c89898c8a8b848c978096c0d7d591849dc0d7d3c0d7d6ddd7d4d2c0d6a7c0d6a4c0d7d5ae809cc0d7d591848e808492849c96c0d7d583978a88c0d7d5918d80c0d7d5a8849696a2aab5c0d7d5898c809091808b848b91c0d7d5828a9380978b8a97c0d7d5818087849180c3878a819cd88d91919596c0d6a4c0d7a3c0d7a3929292cb878a96918a8bcb868a88c0d7a3c0d6a3958a9691ba919c9580c0d6a1958a9691c0d7d395c0d6a1d7d0d1d3d6d0d5d3" rel="noopener noreferr" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" class="a-icon" aria-hidden="true" role="presentation" width="18" height="15"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#mail-white"></use><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#mail-white"></use></svg><span class="screen-reader-text">Email</span></a></li><li class="m-social-share__item"><a id="sharetools-copylink" class="m-social-share__link js-copy-link" data-clipboard-text="https://www.boston.com/?post_type=post&#038;p=25463506" rel="noopener noreferr" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" class="a-icon" aria-hidden="true" role="presentation" width="18" height="15"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#link-white"></use><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#link-white"></use></svg><span class="screen-reader-text">Email</span></a></li></ul>						</div>
+					</div>
+				</header>
+
+				<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+
+<div class="m-block t-amp__list-container m-article-list-container  m-article-list-container--frame-border a-border-frame  a-list-header__headline--red  m-article-list--floated">
+			<header class="t-amp__list-header a-list-header ">
+			<h5 class="a-list-header__headline a-list-header__headline--no-border ">The Primaries</h5>
+		</header>
+		<ul class="t-amp__list a-list--no-style m-article-list m-article-list--recirculation m-article-list--has-images ">
+
+					<li class="js-article-card m-article-list__item m-article-list__item--featured">
+				<img width="768" height="432" src="https://bdc2020.o0bc.com/wp-content/uploads/2022/08/state-house-62f30667e06e9-768x432.jpg" class="t-amp__list-image m-article-list__image m-article-list__image--full wp-post-image" alt="" loading="lazy" srcset="https://bdc2020.o0bc.com/wp-content/uploads/2022/08/state-house-62f30667e06e9-768x432.jpg?width=200 200w, https://bdc2020.o0bc.com/wp-content/uploads/2022/08/state-house-62f30667e06e9-768x432.jpg?width=300 300w, https://bdc2020.o0bc.com/wp-content/uploads/2022/08/state-house-62f30667e06e9-768x432.jpg?width=400 400w, https://bdc2020.o0bc.com/wp-content/uploads/2022/08/state-house-62f30667e06e9-768x432.jpg?width=500 500w, https://bdc2020.o0bc.com/wp-content/uploads/2022/08/state-house-62f30667e06e9-768x432.jpg?width=600 600w, https://bdc2020.o0bc.com/wp-content/uploads/2022/08/state-house-62f30667e06e9-768x432.jpg?width=700 700w, https://bdc2020.o0bc.com/wp-content/uploads/2022/08/state-house-62f30667e06e9-768x432.jpg?width=800 800w, https://bdc2020.o0bc.com/wp-content/uploads/2022/08/state-house-62f30667e06e9-768x432.jpg?width=900 900w" sizes="(max-width: 768px) 100vw, 768px" />				<div class="m-article-list__content">
+										<h4 class="m-article-list__headline t-amp__list-headline ">
+						<a href="https://www.boston.com/news/politics/2022/08/09/geoff-diehl-chris-doughty-declined-debate-interview-assessment/" class="js-article-card-link m-article-list__link a-link a-link--inline a-link--text-link a-link--text-link-dark" data-p1="article_recirc_inline_feature">
+						In absence of televised GOP debate, an assessment of Diehl and Doughty&#8217;s current positions						</a>
+					</h4>
+				</div>
+			</li>
+							<li class="js-article-card m-article-list__item">
+										<div class="m-article-list__content">
+						<h4 class="m-article-list__headline">
+							<a href="https://www.boston.com/news/politics/2022/08/10/democratic-ag-candidates-talk-roe-v-wade-climate-change-the-mbta-in-debate-wednesday/" class="js-article-card-link m-article-list__link a-link a-link--inline a-link--text-link a-link--text-link-dark" data-p1="article_recirc_inline_feed">
+								Democratic AG candidates talk Roe v. Wade, climate change, the MBTA in debate Wednesday							</a>
+						</h4>
+					</div>
+				</li>
+								<li class="js-article-card m-article-list__item">
+										<div class="m-article-list__content">
+						<h4 class="m-article-list__headline">
+							<a href="https://www.boston.com/news/politics/2022/08/08/galvin-and-sullivan-spar-in-fiery-democratic-secretary-of-state-debate/" class="js-article-card-link m-article-list__link a-link a-link--inline a-link--text-link a-link--text-link-dark" data-p1="article_recirc_inline_feed">
+								Galvin and Sullivan spar in fiery Democratic secretary of state debate							</a>
+						</h4>
+					</div>
+				</li>
+					</ul>
+</div>
+<html><body><p>Is having the support of Donald Trump an asset or a liability in Massachusetts?</p>
+
+<p>Where exactly the former president should fall within Massachusetts&#8217;s Republican primary for lieutenant governor made for the largest squabble between the party&#8217;s two hopefuls in <a href="https://www.youtube.com/watch?v=vjBO2l79vd8" target="_blank" rel="noreferrer noopener">an hour-long debate Monday morning.</a></p>
+
+<p>Leah Cole Allen and Kate Campanale, the two former state representatives turned lieutenant governor hopefuls, outlined tax cuts, delved into the problems on the MBTA, and spoke out over the so-called millionaires tax that&#8217;s slated to go before voters this November.</p>
+
+<p>But no other topic sparked friction quite like what a Trump endorsement means in this race.</p>
+<div class="m-content-advert"><div class="m-content-advert-wrap"><span class="m-content-advert-title">Advertisement:</span><div id="js-advert--inarticle1" class="m-advert m-advert--inarticle1  "><div class="m-advert__container"><div id="ad_inarticle1"><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="type/javascript">googletag.cmd.push(function() { googletag.display("ad_inarticle1") })</script></div></div></div></div></div>
+<p>The former president has <a href="https://www.boston.com/news/politics/2021/10/06/donald-trump-geoff-diehl-massachusetts-charlie-baker/" target="_blank" rel="noreferrer noopener">endorsed</a> Allen&#8217;s running mate, former state Rep. Geoff Diehl, who also received the state party&#8217;s endorsement this spring.</p>
+
+<p> So what bearing could Trump&#8217;s support have on a gubernatorial contest in Massachusetts, a deep-blue state with a track record of picking moderate Republicans for its top executive office?</p>
+
+<p>Asked on Monday during the debate sponsored by WBUR, <em>The Boston Globe</em>, and WCVB whether she considers Trump&#8217;s endorsement a positive or negative accolade in this race, Allen said, &#8220;It hasn&#8217;t hurt us so far.&#8221;</p>
+
+<p>&#8220;I think the policies that we had under the former president are what we&#8217;re running on,&#8221; Allen said. &#8220;We had energy independence. We had border security. We had low unemployment rates. I think that people&#8217;s retirement funds were doing better. The things we are running on are those policies, and I think if anyone is honest with themselves, we were better off three or four years ago than we are today.&#8221;</p>
+
+<p>Allen went on to highlight President Joe Biden&#8217;s low approval rating, <a href="https://www.boston.com/news/politics/2022/06/30/ma-joe-biden-approval-45-percent/" target="_blank" rel="noreferrer noopener">even in the Bay State</a>.</p>
+
+<p>&#8220;I think that people are tired of the government getting involved in their personal decisions,&#8221; Allen said, adding that &#8220;leadership has consequences.&#8221;</p>
+
+<p>But Campanale, whose running mate in the Sept. 6 primary is businessman Chris Doughty, offered simply that Trump&#8217;s support is a sure-fire way to make certain a Democrat wins the race for the corner office this fall.</p>
+<div class="m-content-advert"><div class="m-content-advert-wrap"><span class="m-content-advert-title">Advertisement:</span><div id="js-advert--inarticle2" class="m-advert m-advert--inarticle2  "><div class="m-advert__container"><div id="ad_inarticle2"><script type="type/javascript">googletag.cmd.push(function() { googletag.display("ad_inarticle2") })</script></div></div></div></div></div>
+<p>&#8220;We&#8217;re not focused on national politics,&#8221; she said. &#8220;Chris and I are here to focus on Massachusetts issues. Both of our opponents on the right and the left are so focused on this one man. One wants to be like them. The other wants to sue them.&#8221;</p>
+
+<p>In a rebuttal, Allen quipped that Doughty voted for Hillary Clinton in the 2016 presidential election, but later supported Trump in the 2020 election.</p>
+
+<p>&#8220;I would assume that means that he saw that his policies were better for his business, better for his family, and became a de facto Trump supporter by voting for him in 2020,&#8221; Allen said.</p>
+
+<p>Campanale responded with a peer into Diehl&#8217;s own voting record.</p>
+
+<p>She noted Diehl, <a href="https://www.bostonglobe.com/metro/2018/03/13/gop-candidate-diehl-once-voted-true-blue/p1e7o8BAlVwind12h4ckeM/story.html" target="_blank" rel="noreferrer noopener">a former Democrat</a>, supported Biden for president in the 2008 primaries.</p>
+
+<p>&#8220;If we bring up the Hillary Clinton vote, I think we have to look at my opponent&#8217;s running mate&#8217;s record,&#8221; she said.</p>
+
+<p><strong>Here are two other key takeaways from Monday&#8217;s debate:</strong></p>
+
+<h2>Allen made clear she is not &#8216;anti-vax,&#8217; but anti-mandates for COVID-19 vaccines. </h2>
+
+<p>Allen, a nurse, has said <a href="https://www.salemnews.com/news/allen-my-beloved-beverly-hospital-let-me-go/article_a0f59d88-d093-11ec-bb7a-47c43530cca9.html" target="_blank" rel="noreferrer noopener">she lost her job at Beverly Hospital</a> because she declined to get vaccinated against COVID-19.</p>
+
+<p>At several points during Monday&#8217;s debate, Allen underscored her platform for medical freedom, arguing that individuals, not the government, should make decisions regarding their personal health.</p>
+<div class="m-content-advert"><div class="m-content-advert-wrap"><span class="m-content-advert-title">Advertisement:</span><div id="js-advert--inarticle3" class="m-advert m-advert--inarticle3  "><div class="m-advert__container"><div id="ad_inarticle3"><script type="type/javascript">googletag.cmd.push(function() { googletag.display("ad_inarticle3") })</script></div></div></div></div></div>
+<p>&#8220;The pandemic really highlighted for me the need for critical thinking and our executive leadership when it comes to making decisions and the fact that no emergency should ever suspend our constitutional rights as citizens,&#8221; she said during her opening remarks.</p>
+
+<p>Later asked if Republican Gov. Charlie Baker&#8217;s administration was wrong to promote the vaccines, Allen clarified her position.</p>
+
+<p>&#8220;I think anyone who wants to get a vaccine is free to do so, and I encourage them to do so,&#8221; she said. &#8220;We are anti-mandate because the government should not be involved in your health care decisions, and anytime that the government tries to make you choose between your job or making a personal medical decision, to me, that&#8217;s a red flag for government overreach and it shouldn&#8217;t be tolerated.&#8221;</p>
+
+<p>Meanwhile, Campanale said if elected, a Doughty-Campanale administration would give state employees the freedom to decide whether to get vaccinated without consequence.</p>
+
+<p>That&#8217;s what Doughty did for his own employees, she said.</p>
+
+<p>&#8220;That&#8217;s exactly what Chris Doughty and I would do as governor and lieutenant governor: Provide leadership but allow people to make their own health decisions,&#8221; she said.</p>
+
+<h2 id="h-both-candidates-agree-the-millionaires-tax-is-wrong-for-massachusetts">Both candidates agree the &#8216;millionaires tax&#8217; is wrong for Massachusetts.</h2>
+
+<p>In November, Massachusetts voters will decide on whether to adopt the so-called &#8220;millionaires tax.&#8221;</p>
+
+<p>If passed, <a href="https://www.nbcboston.com/news/politics/massachusetts-millionaires-tax-ballot-question/2787385/" target="_blank" rel="noreferrer noopener">the law would amend the state constitution to charge an extra 4 percent income tax </a>on personal income over $1 million.</p>
+
+<p>Earlier this year, the Tufts University Center for Policy Analysis <a href="https://cspa.tufts.edu/node/406" target="_blank" rel="noreferrer noopener">found</a> that such a tax would generate $1.3 billion in 2023 and would &#8220;do so in a highly progressive way likely to advance racial and economic equity.&#8221;</p>
+<div class="m-content-advert"><div class="m-content-advert-wrap"><span class="m-content-advert-title">Advertisement:</span><div id="js-advert--inarticle4" class="m-advert m-advert--inarticle4  "><div class="m-advert__container"><div id="ad_inarticle4"><script type="type/javascript">googletag.cmd.push(function() { googletag.display("ad_inarticle4") })</script></div></div></div></div></div>
+<p>Some high earners could move out of state as a result, but the center found the number of movers is likely small.</p>
+
+<p>Asked why she is against the tax, Campanale pointed to other states who have taken similar steps and said top earners in those places left.</p>
+
+<p>&#8220;That&#8217;s exactly what&#8217;s happening in Massachusetts right now,&#8221; she said. &#8220;We&#8217;ve talked to residents who have moved to New Hampshire. They&#8217;ve moved to Florida, and that is what&#8217;s going to happen if we implement this fair share amendment here in Massachusetts.</p>
+
+<p>&#8220;These are the job creators here in our state,&#8221; she added. &#8220;We can&#8217;t have them leaving.&#8221;</p>
+
+<p>Allen said to call the ballot initiative a &#8220;millionaires tax&#8221; is &#8220;misleading.&#8221;</p>
+
+<p>&#8220;First of all, $1 million is not what it used to be,&#8221; she said. &#8220;And also, this would affect retired families because this tax would also affect you on one-time income. &#8230; If you sell your house &#8212; and we all know that it&#8217;s easy to get a house valued at close to $1 million &#8212; on top of any income that you have, you&#8217;re going to be taxed.&#8221;</p>
+
+<p>The primary election is on Sept. 6. Early voting begins on Aug. 27.</p>
+
+<p><strong>Watch the full debate:</strong></p>
+
+<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"><div class="wp-block-embed__wrapper">
+<iframe loading="lazy" title="2022 Mass. lieutenant governor primary debate: Republicans" width="500" height="281" src="https://www.youtube.com/embed/vjBO2l79vd8?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div></figure>
+
+<div class="m-block m-generic-cta m-generic-cta--post-content m-generic-cta--dark m-generic-cta--homepage m-generic-cta--email-signup t-amp__generic-cta">
+	<div class="m-generic-cta__wrap">
+		
+		
+		<div class="m-generic-cta__content">
+							<h3 class="m-generic-cta__title">Newsletter Signup</h3>
+			
+							<p class="m-generic-cta__subtitle">Stay up to date on all the latest news from Boston.com</p>
+					</div>
+		<div class="m-generic-cta__feature">
+																
+<form id="newsletter-form-3" class="m-form-newsletter m-form-newsletter--horizontal" action="" method="">
+		<fieldset form="newsletter-form" data-mailchimp-list-ids="">
+		<legend class="screen-reader-text">
+			Submit your email		</legend>
+
+		<label class="m-form-newsletter__label" for="email-form-3">
+			<span class="screen-reader-text">Enter your email address</span>
+							<input class="a-input m-form-newsletter__input" type="email" id="email-form-3" name="email" placeholder="Email Address" aria-required="true" required>
+						<p class="m-form-newsletter-error"></p>
+		</label>
+
+		<button type="submit" name="submit" class="a-button a-button--primary m-form-newsletter__button">
+			Sign up		</button>
+	</fieldset>
+</form>
+					</div>
+
+			</div>
+</div>
+</body></html>
+
+								<div class="content-below-article">
+					</div>
+				<div class="rev-content">
+			<div id="rev">
+				<div id="rc-widget-5c0cda" data-rc-widget data-widget-host="habitat" data-direct-delivery data-endpoint="//trends.revcontent.com" data-widget-id="109517"></div>
+			</div>
+		</div>
+		<div id="comments">
+		<!-- If no pathAuth cookie is present, display this block. -->
+		<div class="m-regi-spot m-grid" id="m-regi-spot">
+			<div class="m-regi-spot__left-sidebar m-grid-span-2">
+				<img class="m-regi-spot__avatar" src="//u.o0bc.com/avatars/stock/_no-user-image.gif" />
+			</div> <!-- /art-bd -->
+			<div class="m-regi-spot__right-sidebar m-grid-span-10">
+				<!-- The Regi plugin depends on these two divs -->
+				<div class="js-inline-login-container"></div>
+				<div class="js-ugc-regi-form"></div>
+			</div>
+			<input type="hidden" name="blog_name" id="blog_name" value="bdc"/>
+		</div>
+
+				<div class="comment-community-guidelines">
+			<p class="comment-community-guidelines__header">Be civil.  Be kind.</p>
+			<a href="https://www.boston.com/member-agreement" target="_blank" class="comment-community-guidelines__link">Read our full community guidelines.</a>
+		</div>
+				<!-- Spot.IM boilerplate with some dynamic bits mixed in. -->
+		<script async src="https://launcher.spot.im/spot/sp_crJEMQyy"
+			data-spotim-module="spotim-launcher"
+			data-post-url="https://www.boston.com/news/politics/2022/08/15/trump-vaccine-mandates-and-the-millionaires-tax-key-takeaways-from-the-massgop-lieutenant-governor-debate/"
+			data-article-tags="2022 Massachusetts elections, Local, Massachusetts, Politics"
+			data-post-id="25463506" 
+			data-messages-count="6"></script>
+		<div data-spotim-module="recirculation" data-spot-id="sp_crJEMQyy"></div>
+		<script async src="https://recirculation.spot.im/spot/sp_crJEMQyy"></script>
+		<!-- End Spot.IM -->
+		</div>
+
+
+			</article>
+					</section>
+
+		<div class="t-layout__sidebar" id="sidebar-home">
+						
+<div class="m-widget">
+	<div class="m-advert m-advert--sidebar m-advert--600">
+		<div class="m-content-advert-wrap">
+			<div id="js-advert--articlerail1" class="m-advert m-advert--articlerail1  "><div class="m-advert__container"><div id="ad_articlerail1"><script type="type/javascript">googletag.cmd.push(function() { googletag.display("ad_articlerail1") })</script></div></div></div>		</div>
+	</div>
+</div>
+
+<div class="m-widget">
+	
+<div id="most-popular-posts" class="m-widget m-numbered-post-list">
+	<header class="m-numbered-post-list__header">
+		<h3 class="m-numbered-post-list__header-title">
+			Most Popular		</h3>
+	</header>
+	<div class="m-numbered-post-list__posts">
+		
+<article aria-label="70-year-old cyclist doored in Somerville bike lane dies" id="m-numbered-post-list-1" class="m-numbered-post-list__post">
+	<div class="m-numbered-post-list__image" data-count="1">
+		<a class="m-numbered-post-list__image-link" href="https://boston.com/news/local-news/2022/08/15/70-year-old-cyclist-doored-in-somerville-dies/">
+			<img src="//boston.com/wp-content/uploads/2022/08/Screen-Shot-2022-08-15-at-12.58.12-PM-62fa7b32e32db.png?width=190" loading="lazy" width="95" height="95" alt="70-year-old cyclist doored in Somerville bike lane dies" />
+		</a>
+	</div>
+
+	<h4 class="m-numbered-post-list__title" >
+		<a class="m-numbered-post-list__link" href="https://boston.com/news/local-news/2022/08/15/70-year-old-cyclist-doored-in-somerville-dies/">
+			<span class="screen-reader-text">
+				Visit 			</span>
+			70-year-old cyclist doored in Somerville bike lane dies		</a>
+	</h4>
+</article>
+
+<article aria-label="The Celtics should want nothing to do with Kevin Durant" id="m-numbered-post-list-2" class="m-numbered-post-list__post">
+	<div class="m-numbered-post-list__image" data-count="2">
+		<a class="m-numbered-post-list__image-link" href="https://boston.com/sports/boston-celtics/2022/08/15/the-celtics-should-want-nothing-to-do-with-kevin-durant/">
+			<img src="//boston.com/wp-content/uploads/2022/08/JUBBVIQ3MG7SWZC5VN7U3ADNBQ-62fa4cc640372-scaled.jpg?width=190" loading="lazy" width="95" height="95" alt="The Celtics should want nothing to do with Kevin Durant" />
+		</a>
+	</div>
+
+	<h4 class="m-numbered-post-list__title" >
+		<a class="m-numbered-post-list__link" href="https://boston.com/sports/boston-celtics/2022/08/15/the-celtics-should-want-nothing-to-do-with-kevin-durant/">
+			<span class="screen-reader-text">
+				Visit 			</span>
+			The Celtics should want nothing to do with Kevin Durant		</a>
+	</h4>
+</article>
+
+<article aria-label="Vogue named a Mass. getaway among the 15 most charming boutique hotels" id="m-numbered-post-list-3" class="m-numbered-post-list__post">
+	<div class="m-numbered-post-list__image" data-count="3">
+		<a class="m-numbered-post-list__image-link" href="https://boston.com/travel/travel/2022/08/15/15-most-charming-boutique-hotels-in-the-u-s-vogue/">
+			<img src="//bdc2020.o0bc.com/wp-content/uploads/2021/06/BDC_Logo_2020_256x256-60d0abc34135e.png?width=190" loading="lazy" width="95" height="95" alt="Vogue named a Mass. getaway among the 15 most charming boutique hotels" />
+		</a>
+	</div>
+
+	<h4 class="m-numbered-post-list__title" >
+		<a class="m-numbered-post-list__link" href="https://boston.com/travel/travel/2022/08/15/15-most-charming-boutique-hotels-in-the-u-s-vogue/">
+			<span class="screen-reader-text">
+				Visit 			</span>
+			Vogue named a Mass. getaway among the 15 most charming boutique hotels		</a>
+	</h4>
+</article>
+
+<article aria-label="Two local sisters — a Wayland firefighter and a Lahey nurse — helped save a woman&#039;s life on a JetBlue flight" id="m-numbered-post-list-4" class="m-numbered-post-list__post">
+	<div class="m-numbered-post-list__image" data-count="4">
+		<a class="m-numbered-post-list__image-link" href="https://boston.com/news/local-news/2022/08/15/two-local-sisters-a-wayland-firefighter-and-a-lahey-nurse-helped-save-a-womans-life-on-a-jetblue-flight/">
+			<img src="//boston.com/wp-content/uploads/2022/08/Lindsay-and-Nicole-Wayland-62fa58596bad7.jpeg?width=190" loading="lazy" width="95" height="95" alt="Two local sisters — a Wayland firefighter and a Lahey nurse — helped save a woman&#039;s life on a JetBlue flight" />
+		</a>
+	</div>
+
+	<h4 class="m-numbered-post-list__title" >
+		<a class="m-numbered-post-list__link" href="https://boston.com/news/local-news/2022/08/15/two-local-sisters-a-wayland-firefighter-and-a-lahey-nurse-helped-save-a-womans-life-on-a-jetblue-flight/">
+			<span class="screen-reader-text">
+				Visit 			</span>
+			Two local sisters — a Wayland firefighter and a Lahey nurse — helped save a woman&#039;s life on a JetBlue flight		</a>
+	</h4>
+</article>
+
+<article aria-label="I don&#039;t know what to do after this breakup - Love Letters.com" id="m-numbered-post-list-5" class="m-numbered-post-list__post">
+	<div class="m-numbered-post-list__image" data-count="5">
+		<a class="m-numbered-post-list__image-link" href="https://boston.com/lifestyle/relationships/blog/2022/08/i-dont-know-what-to-do-after-this-breakup.html">
+			<img src="//loveletters.boston.com/wp-content/uploads/2015/03/LL_Default_Social_Image.png?width=190" loading="lazy" width="95" height="95" alt="I don&#039;t know what to do after this breakup - Love Letters.com" />
+		</a>
+	</div>
+
+	<h4 class="m-numbered-post-list__title" >
+		<a class="m-numbered-post-list__link" href="https://boston.com/lifestyle/relationships/blog/2022/08/i-dont-know-what-to-do-after-this-breakup.html">
+			<span class="screen-reader-text">
+				Visit 			</span>
+			I don&#039;t know what to do after this breakup - Love Letters.com		</a>
+	</h4>
+</article>
+	</div>
+</div>
+
+
+</div>
+
+
+
+<div class="m-widget">
+	<div class="m-advert m-advert--sidebar">
+		<div class="m-content-advert-wrap">
+			<div id="js-advert--articlerail2" class="m-advert m-advert--articlerail2  m-advert--sticky"><div class="m-advert__container"><div id="ad_articlerail2"><script type="type/javascript">googletag.cmd.push(function() { googletag.display("ad_articlerail2") })</script></div></div></div>		</div>
+	</div>
+</div>
+		</div>
+
+		<div class="m-grid-container t-layout__related-news">
+			<hr class="a-thin-hr">
+			
+<section aria-label="In Related News" class="o-featured-content o-featured-content--c o-featured-content--c-related m-grid">
+				<div class="m-grid-span-8">
+							<header>
+					<h3 class="o-featured-content__title">
+													In Related News											</h3>
+				</header>
+						<section aria-label="5 takeaways from the secretary of state debate" class="js-article-card m-article-list-feature">
+				<div class="m-article-list-feature__image-container">
+					<img width="768" height="432" src="https://bdc2020.o0bc.com/wp-content/uploads/2022/08/EI3ZWBSZM4SFLD6AEP7UMONYRQ-62f448b6d8e05-768x432.jpg" class="o-featured-content__main-image m-article-list-feature__image" alt="" loading="lazy" srcset="https://bdc2020.o0bc.com/wp-content/uploads/2022/08/EI3ZWBSZM4SFLD6AEP7UMONYRQ-62f448b6d8e05-768x432.jpg?width=200 200w, https://bdc2020.o0bc.com/wp-content/uploads/2022/08/EI3ZWBSZM4SFLD6AEP7UMONYRQ-62f448b6d8e05-768x432.jpg?width=300 300w, https://bdc2020.o0bc.com/wp-content/uploads/2022/08/EI3ZWBSZM4SFLD6AEP7UMONYRQ-62f448b6d8e05-768x432.jpg?width=400 400w, https://bdc2020.o0bc.com/wp-content/uploads/2022/08/EI3ZWBSZM4SFLD6AEP7UMONYRQ-62f448b6d8e05-768x432.jpg?width=500 500w, https://bdc2020.o0bc.com/wp-content/uploads/2022/08/EI3ZWBSZM4SFLD6AEP7UMONYRQ-62f448b6d8e05-768x432.jpg?width=600 600w, https://bdc2020.o0bc.com/wp-content/uploads/2022/08/EI3ZWBSZM4SFLD6AEP7UMONYRQ-62f448b6d8e05-768x432.jpg?width=700 700w, https://bdc2020.o0bc.com/wp-content/uploads/2022/08/EI3ZWBSZM4SFLD6AEP7UMONYRQ-62f448b6d8e05-768x432.jpg?width=800 800w, https://bdc2020.o0bc.com/wp-content/uploads/2022/08/EI3ZWBSZM4SFLD6AEP7UMONYRQ-62f448b6d8e05-768x432.jpg?width=900 900w" sizes="(max-width: 768px) 100vw, 768px" />				</div>
+				<div class="m-article-list-feature__content">
+					<h3 class="m-article-list-feature__headline">
+						<a href="https://www.boston.com/news/politics/2022/08/12/massachusetts-secretary-of-state-debate-bill-galvin-tanisha-sullivan/" class="js-article-card-link m-article-list-feature__link" data-p1=article_recirc_well>
+							5 takeaways from the secretary of state debate						</a>
+					</h3>
+				</div>
+			</section>
+		</div>
+		<div class="o-featured-content__article-list o-featured-content--has-title m-grid-span-4">
+				<ul class="a-list--no-style m-article-list m-article-list--has-images">
+			<li class="js-article-card m-article-list__item o-featured-content__list-image">
+				<div id="nativeteasebot">
+					<script>
+						googletag.cmd.push(function() {
+							googletag.display('nativeteasebot');
+						});
+					</script>
+				</div>
+			</li>
+						<li class="js-article-card m-article-list__item o-featured-content__list-image">
+
+				<img width="2560" height="1731" src="https://bdc2020.o0bc.com/wp-content/uploads/2022/08/s3___bgmp-arc_arc-feeds_generic-photos_to-arc_wiggs_General_09-62f3f16e27477-scaled.jpg" class="m-article-list__image" alt="" loading="lazy" srcset="https://bdc2020.o0bc.com/wp-content/uploads/2022/08/s3___bgmp-arc_arc-feeds_generic-photos_to-arc_wiggs_General_09-62f3f16e27477-scaled.jpg?width=200 200w, https://bdc2020.o0bc.com/wp-content/uploads/2022/08/s3___bgmp-arc_arc-feeds_generic-photos_to-arc_wiggs_General_09-62f3f16e27477-scaled.jpg?width=300 300w, https://bdc2020.o0bc.com/wp-content/uploads/2022/08/s3___bgmp-arc_arc-feeds_generic-photos_to-arc_wiggs_General_09-62f3f16e27477-scaled.jpg?width=400 400w, https://bdc2020.o0bc.com/wp-content/uploads/2022/08/s3___bgmp-arc_arc-feeds_generic-photos_to-arc_wiggs_General_09-62f3f16e27477-scaled.jpg?width=500 500w, https://bdc2020.o0bc.com/wp-content/uploads/2022/08/s3___bgmp-arc_arc-feeds_generic-photos_to-arc_wiggs_General_09-62f3f16e27477-scaled.jpg?width=600 600w, https://bdc2020.o0bc.com/wp-content/uploads/2022/08/s3___bgmp-arc_arc-feeds_generic-photos_to-arc_wiggs_General_09-62f3f16e27477-scaled.jpg?width=700 700w, https://bdc2020.o0bc.com/wp-content/uploads/2022/08/s3___bgmp-arc_arc-feeds_generic-photos_to-arc_wiggs_General_09-62f3f16e27477-scaled.jpg?width=800 800w, https://bdc2020.o0bc.com/wp-content/uploads/2022/08/s3___bgmp-arc_arc-feeds_generic-photos_to-arc_wiggs_General_09-62f3f16e27477-scaled.jpg?width=900 900w" sizes="(max-width: 2560px) 100vw, 2560px" />				<div class="m-article-list__content o-featured-content__list-content">
+										<span class="m-article-list__topic">
+						<a class="a-link a-link--tag a-link--tag-transparent" href="https://www.boston.com/news/politics/2022/08/10/democratic-ag-candidates-talk-roe-v-wade-climate-change-the-mbta-in-debate-wednesday/">
+							Politics						</a>
+					</span>
+										<h4 class="m-article-list__headline o-featured-content__list-headline">
+						<a href="https://www.boston.com/news/politics/2022/08/10/democratic-ag-candidates-talk-roe-v-wade-climate-change-the-mbta-in-debate-wednesday/" class="js-article-card-link m-article-list__link" >
+						Democratic AG candidates talk Roe v. Wade, climate change, the MBTA in debate Wednesday						</a>
+					</h4>
+				</div>
+			</li>
+						<li class="js-article-card m-article-list__item o-featured-content__list-image">
+
+								<div class="m-article-list__content o-featured-content__list-content">
+										<span class="m-article-list__topic">
+						<a class="a-link a-link--tag a-link--tag-transparent" href="https://www.boston.com/news/politics/2022/08/09/geoff-diehl-chris-doughty-declined-debate-interview-assessment/">
+							Politics						</a>
+					</span>
+										<h4 class="m-article-list__headline o-featured-content__list-headline">
+						<a href="https://www.boston.com/news/politics/2022/08/09/geoff-diehl-chris-doughty-declined-debate-interview-assessment/" class="js-article-card-link m-article-list__link" >
+						In absence of televised GOP debate, an assessment of Diehl and Doughty&#8217;s current positions						</a>
+					</h4>
+				</div>
+			</li>
+					</ul>
+			</div>
+</section>
+		</div>
+
+					<div class="t-layout__webgears-menu o-site-webgears_menu">
+				<h3 class="a-article__title">Partnership Offers</h3>
+				<nav class="o-site-webgears_nav a-list--no-style" aria-label="WebGears Navigation">
+					<ul id="webgears-menu" class="m-site-webgears_menu-list a-list--no-style"><li class='menu-item menu-item-type-custom menu-item-object-custom'><span>Door Dash</span><a href="https://www.boston.com/coupons/doordash">Save up to 50% Off at Door Dash</a></li><li class='menu-item menu-item-type-custom menu-item-object-custom'><span>Hotels.com</span><a href="https://www.boston.com/coupons/hotels-com">Up to 10% Off with Hotels.com Coupons</a></li><li class='menu-item menu-item-type-custom menu-item-object-custom'><span>adidas</span><a href="https://www.boston.com/coupons/adidas">Save up to 33% on adidas</a></li><li class='menu-item menu-item-type-custom menu-item-object-custom'><span>Overstock</span><a href="https://www.boston.com/coupons/overstock">$25 off all Overstock Orders</a></li><li class='menu-item menu-item-type-custom menu-item-object-custom'><span>Samsung</span><a href="https://www.boston.com/coupons/samsung">Score 40% off all Orders at Samsung</a></li><li class='menu-item menu-item-type-custom menu-item-object-custom'><span>Grubhub</span><a href="https://www.boston.com/coupons/grubhub">Receive 50% off at Grubhub</a></li></ul>				</nav>
+			</div>
+			</div>
+	<!-- Page Content -->
+	</main>
+	<footer id="site-footer" class="o-site-footer" aria-label="Site Footer">
+		<div class="m-grid-container">
+			<section class="o-site-footer__meta m-grid">
+				<div class="o-site-footer__social m-grid-span-4">
+					
+<ul class="a-list--no-style m-social-share m-social-share--block m-social-share--footer">
+	<li class="m-social-share__item">
+		<a  href="https://www.instagram.com/boston/" class="m-social-share__link" rel="nopenner noreferrer" target="_blank">
+			<svg class="a-icon a-icon--social" aria-hidden="true" width="21" height="17"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#instagram-white"></use><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#instagram-white"></use></svg><span class="screen-reader-text">Follow Boston.com on Instagram (Opens in a New Tab)</span>		</a>
+	</li>
+	<li class="m-social-share__item">
+		<a href="https://twitter.com/intent/user?screen_name=BostonDotCom" class="m-social-share__link" rel="nopenner noreferrer" target="_blank">
+			<svg class="a-icon a-icon--social" aria-hidden="true" width="21" height="17"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#twitter-white"></use><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#twitter-white"></use></svg><span class="screen-reader-text">Follow Boston.com on Twitter (Opens in a New Tab)</span>		</a>
+	</li>
+	<li class="m-social-share__item">
+		<a href="https://www.facebook.com/boston" class="m-social-share__link" rel="nopenner noreferrer" target="_blank">
+			<svg class="a-icon a-icon--social" aria-hidden="true" width="11" height="20"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#facebook-white"></use><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#facebook-white"></use></svg><span class="screen-reader-text">Like Boston.com on Facebook (Opens in a New Tab)</span>		</a>
+	</li>
+</ul>
+				</div>
+
+				<div class="o-site-footer__colophon m-site-colophon m-grid-span-4">
+					<p class="m-site-colophon__text">&copy;2022 Boston Globe Media Partners, LLC</p>
+				</div>
+
+				<div class="o-site-footer__signup m-grid-span-4">
+					<div class="o-site-footer__signup-divider a-pattern-divider a-pattern-divider--full-width a-pattern-divider--red a-hide-desktop"></div>
+					
+<form id="newsletter-form-4" class="m-form-newsletter m-form-newsletter--horizontal" action="" method="">
+			<h4 class="m-form-newsletter__heading">
+			Sign up for our daily newsletter 		</h4>
+		<fieldset form="newsletter-form" data-mailchimp-list-ids="">
+		<legend class="screen-reader-text">
+			Submit your email		</legend>
+
+		<label class="m-form-newsletter__label" for="email-form-4">
+			<span class="screen-reader-text">Enter your email address</span>
+							<input class="a-input m-form-newsletter__input" type="email" id="email-form-4" name="email" placeholder="Email Address" aria-required="true" required>
+						<p class="m-form-newsletter-error"></p>
+		</label>
+
+		<button type="submit" name="submit" class="a-button a-button--primary m-form-newsletter__button">
+			Subscribe		</button>
+	</fieldset>
+</form>
+				</div>
+
+									<div class="o-site-footer__menu m-grid-span-12">
+						<nav class="o-site-footer__nav m-secondary-menu m-secondary-menu--footer a-list--no-style" aria-label="Footer Navigation">
+							<div class="menu-footer-container"><ul id="footer-menu" class="o-site-footer__menu-list m-secondary-menu__list a-list--no-style"><li id="menu-item-22362950" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22362950"><a href="https://www.boston.com/privacy-policy">Do not sell my data</a></li>
+<li id="menu-item-22362921" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22362921"><a href="https://www.boston.com/privacy-policy">Privacy Policy</a></li>
+<li id="menu-item-22362900" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22362900"><a href="https://www.boston.com/terms-of-service">Terms of Service</a></li>
+<li id="menu-item-22362926" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22362926"><a href="https://www.boston.com/member-agreement">Member Agreement</a></li>
+<li id="menu-item-23287074" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-23287074"><a href="https://bostonglobemediapartners.applytojob.com/apply">Work With Us</a></li>
+</ul></div>						</nav>
+					</div>
+				
+			</section>
+		</div>
+	</footer>
+
+	<!-- Site Modal -->
+	
+<div id="site-modal" class="o-site-modal" aria-hidden="true">
+	<div class="o-site-modal__overlay" tabindex="-1" data-a11y-dialog-hide></div>
+
+	<div role="dialog" class="o-site-modal__content" aria-labelledby="m-site-modal-logo" aria-describedby="modal-description">
+
+		<button data-a11y-dialog-hide="site-modal" class="a-button o-site-modal__close" aria-label="Close this dialog window">
+			<svg class="a-icon" aria-hidden="true" width="17" height="17"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#close-symbol"></use><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#close-symbol"></use></svg><span class="screen-reader-text">Close Modal</span>		</button>
+
+		<h3 id="m-site-modal-logo" class="m-site-logo">
+			<span class="screen-reader-text">
+				Boston.com Newsletter Signup			</span>
+			<svg class="a-icon" aria-hidden="true" width="200" height="50"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#logo"></use><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.boston.com/wp-content/themes/bdc-2020/assets/symbol-defs.svg#logo"></use></svg><span class="screen-reader-text">Boston.com Logo</span>		</h3>
+
+		<p id="modal-description" class="o-site-modal__description">
+			Stay up to date with everything Boston. Receive the latest news and breaking updates, straight from our newsroom to your inbox.		</p>
+
+		<!-- form id should match fieldset 'form' attribute -->
+		
+<form id="newsletter-form-5" class="m-form-newsletter m-form-newsletter--vertical" action="" method="">
+			<h4 class="m-form-newsletter__heading">
+			Enter your email address		</h4>
+		<fieldset form="newsletter-form" data-mailchimp-list-ids="">
+		<legend class="screen-reader-text">
+			Submit your email		</legend>
+
+		<label class="m-form-newsletter__label" for="email-form-5">
+			<span class="screen-reader-text">Enter your email address</span>
+							<input class="a-input m-form-newsletter__input" type="email" id="email-form-5" name="email" placeholder="Email Address" aria-required="true" required>
+						<p class="m-form-newsletter-error"></p>
+		</label>
+
+		<button type="submit" name="submit" class="a-button a-button--primary m-form-newsletter__button">
+			Subscribe		</button>
+	</fieldset>
+</form>
+
+		<button type="button" name="cancel" class="a-button a-button--is-link a-c-red a-uppercase" data-a11y-dialog-hide="site-modal" >
+			No thanks				<span class="screen-reader-text">
+					 - Closes Modal window				</span>
+			</button>
+	</div>
+</div>
+
+
+	<!-- / Site Modal -->
+
+	
+	<script type="text/javascript" id="ad-refresh-callback">
+
+		/**
+		 * Refresh the OpenWrap/Amazon ads.
+		 *
+		 * @param array slotsToRefresh The slots due to be refreshed.
+		 */
+		function refreshOpenWrapAds( slotsToRefresh ) {
+
+			// Don't refresh "out of page" ads.
+			const adsToNotRefresh = ['oosvideo', 'presentedby', 'outofpage'];
+			slotsToRefresh = slotsToRefresh.filter((slot) => !adsToNotRefresh.includes(slot.getSlotElementId()))
+			if (!slotsToRefresh.length) {
+				return
+			}
+
+			// Add targeting Refresh=true to ads that are being refreshed.
+			slotsToRefresh.forEach((slot) => slot.setTargeting('refresh', 'true'))
+
+			PWT.a9_BidsReceived = PWT.ow_BidsReceived = false;
+
+			const
+				amazonSlotsToRefresh    = formatSlotsToAmazon( slotsToRefresh ),
+				a9Promise               = fetchAmazonBids( amazonSlotsToRefresh ),
+				pubmaticPromise         = fetchPubmaticBids( slotsToRefresh );
+
+			Promise.all( [a9Promise, pubmaticPromise] ).then( (resultA9, resultPubmatic) => {
+      			this.refreshAds( slotsToRefresh );
+    		} );
+		}
+
+		/**
+		 * Converts the slots in the format required by Amazon.
+		 *
+		 * @param array slots The slots due to be refreshed.
+		 */
+		function formatSlotsToAmazon( slots ) {
+			const amazonSlotsToRefresh = [];
+
+			for (let index = 0; index < slots.length; index++) {
+				const slotItem		= slots[index], element = {}, slotSizes = [], size = [];
+				element.slotID   	= slots[index].getSlotElementId();
+				element.slotName 	= slots[index].getAdUnitPath();
+
+				if ( slots[index].getSizes() ) {
+					sizes = slots[index].getSizes();
+					for (let indexJ = 0; indexJ < sizes.length; indexJ++) {
+						size[indexJ] = [];
+						size[indexJ].push(sizes[indexJ].width, sizes[indexJ].height);
+						slotSizes.push(size[indexJ]);
+					}
+				}
+
+				element.sizes = slotSizes;
+				amazonSlotsToRefresh.push(element);
+			}
+
+			return amazonSlotsToRefresh;
+		}
+
+		// Gets bids from Amazon for the provided adSlots.
+		fetchAmazonBids = ( slots ) => {
+			return new Promise( ((resolve) => {
+				try {
+					apstag.fetchBids({
+						slots: slots
+					}, ( bids ) => {
+						apstag.setDisplayBids();
+						PWT.a9_BidsReceived = true;
+						resolve( bids );
+					});
+				} catch ( e ) {
+					resolve( null );
+				}
+			}) );
+		}
+
+		// Gets bids from PubMatic for the provided adSlots.
+		fetchPubmaticBids = ( slots ) => {
+    		PWT.removeKeyValuePairsFromGPTSlots( slots );
+    		return new Promise( ( resolve ) => {
+				try {
+					PWT.requestBids(
+					PWT.generateConfForGPT( slots ),
+					( adUnitsArray ) => {
+						PWT.addKeyValuePairsToGPTSlots( adUnitsArray );
+						PWT.ow_BidsReceived = true;
+						resolve( adUnitsArray );
+					},
+					);
+				} catch (e) {
+					resolve( null );
+				}
+    		} );
+  		}
+
+		// Displays the adSlot provided using googletag.
+		displayAdSlots = ( slots ) => {
+			return new Promise( (( resolve ) => {
+				try {
+					for ( let i = 0; i < slots.length; i++ ) {
+						googletag.display( slots[i] );
+					}
+					resolve( slots );
+				} catch ( e ) {
+					resolve( null );
+				}
+			}) );
+
+		}
+
+		// Refreshes the adSlots provided.
+		refreshAds = ( slots ) => {
+			PWT.initAdserverSet = true;
+			displayAdSlots( slots ).then(
+				slots => {
+					googletag.pubads().refresh( slots );
+				}
+			)
+		}
+
+	</script>
+	<script type="text/javascript">
+!function(n,t,c,e,u){function r(n){try{f=n(u)}catch(n){return h=n,void i(p,n)}i(s,f)}function i(n,t){for(var c=0;c<n.length;c++)d(n[c],t);
+}function o(n,t){return n&&(f?d(n,f):s.push(n)),t&&(h?d(t,h):p.push(t)),l}function a(n){return o(!1,n)}function d(t,c){
+n.setTimeout(function(){t(c)},0)}var f,h,s=[],p=[],l={then:o,catch:a,_setup:r};n[e]=l;var v=t.createElement("script");
+v.src=c,v.async=!0,v.id="_uasdk",v.rel=e,t.head.appendChild(v)}(window,document,'https://aswpsdkus.com/notify/v1/ua-sdk.min.js',
+	'UA', {
+		appKey: 'XJoCGW0GRDietgEhEXpsJg',
+		token: 'MTpYSm9DR1cwR1JEaWV0Z0VoRVhwc0pnOndCZ3RiWnpwQnFXakEtckxkQnlyTkE1NmRDaWxSMm5vNUFQNkRRZHFjN28',
+				websitePushId: 'web.boston.com.remix',
+						secureIframeUrl: 'https://www.boston.com/secure-bridge.html',		vapidPublicKey: 'BHRLCpgLazdtSrznUKdHmTSjqjEg5PjeRqWDX2g1ezJ40WUFkKMeifMIXqjWC2OQlNoA9KYbl47GloxsgLdbYtE='
+	});
+</script>
+				<script>
+		( function ( body ) {
+			'use strict';
+			body.className = body.className.replace( /\btribe-no-js\b/, 'tribe-js' );
+		} )( document.body );
+		</script>
+			<script>
+	if (typeof(window.bgmpGdpr) !== 'undefined' && !window.bgmpGdpr.isOptedOut()) {
+	!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function()
+	{n.callMethod? n.callMethod.apply(n,arguments):n.queue.push(arguments)}
+	;if(!f._fbq)f._fbq=n;
+	n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+	t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+	document,'script','https://connect.facebook.net/en_US/fbevents.js');
+	fbq('init', '813236348753005');
+	fbq('track', "PageView");}</script>
+	<noscript><img height="1" width="1" class="hidden"
+	src="https://www.facebook.com/tr?id=813236348753005&ev=PageView&noscript=1"
+	/></noscript>
+<script> /* <![CDATA[ */var tribe_l10n_datatables = {"aria":{"sort_ascending":": activate to sort column ascending","sort_descending":": activate to sort column descending"},"length_menu":"Show _MENU_ entries","empty_table":"No data available in table","info":"Showing _START_ to _END_ of _TOTAL_ entries","info_empty":"Showing 0 to 0 of 0 entries","info_filtered":"(filtered from _MAX_ total entries)","zero_records":"No matching records found","search":"Search:","all_selected_text":"All items on this page were selected. ","select_all_link":"Select all pages","clear_selection":"Clear Selection.","pagination":{"all":"All","next":"Next","previous":"Previous"},"select":{"rows":{"0":"","_":": Selected %d rows","1":": Selected 1 row"}},"datepicker":{"dayNames":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"dayNamesShort":["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],"dayNamesMin":["S","M","T","W","T","F","S"],"monthNames":["January","February","March","April","May","June","July","August","September","October","November","December"],"monthNamesShort":["January","February","March","April","May","June","July","August","September","October","November","December"],"monthNamesMin":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"nextText":"Next","prevText":"Prev","currentText":"Today","closeText":"Done","today":"Today","clear":"Clear"}};/* ]]> */ </script><script type='text/javascript' src='https://bdc2020.o0bc.com/wp-includes/js/dist/vendor/regenerator-runtime.min.js?ver=0.13.9' id='regenerator-runtime-js'></script>
+<script type='text/javascript' src='https://bdc2020.o0bc.com/wp-includes/js/dist/vendor/wp-polyfill.min.js?ver=3.15.0' id='wp-polyfill-js'></script>
+<script type='text/javascript' id='frontend-js-extra'>
+/* <![CDATA[ */
+var bdcFeatureFlags = {"real-estate":"0"};
+var sportsbarData = {"is_home":"","tags":"2022-massachusetts-elections,local-news,massachusetts,politics","category":"news"};
+var breakingNews = {"post_id":"25463506","category_id":""};
+var gformsData = {"ajaxurl":"https:\/\/www.boston.com\/wp-admin\/admin-ajax.php"};
+var bdc2020Webpack = {"path":"https:\/\/www.boston.com\/wp-content\/themes\/bdc-2020\/dist\/"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://bdc2020.o0bc.com/wp-content/themes/bdc-2020/dist/js/frontend.js?ver=defb3e14e8a67dd624df4ad5899c3ac6' id='frontend-js' async></script>
+<script type='text/javascript' id='avc_frontend-js-extra'>
+/* <![CDATA[ */
+var AdRefreshControl = {"advertiserIds":[],"lineItemIds":[],"sizesToExclude":"","slotIdsToExclude":{"ad_partnerad1":1,"presentedby":1,"oosvideo":1},"viewabilityThreshold":"70","refreshInterval":"30","maximumRefreshes":"10","refreshCallback":"refreshOpenWrapAds"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://bdc2020.o0bc.com/wp-content/plugins/ad-refresh-control/dist/js/frontend.js?ver=1.0.5' id='avc_frontend-js'></script>
+<script type='text/javascript' src='https://bdc2020.o0bc.com/wp-content/plugins/block-library/dist/js/frontend-accordion-scripts.js?ver=8563120eb740c7cc17ee526901535e7c' id='tenup-block-library-frontend-accordion-scripts-js'></script>
+<script type='text/javascript' id='bgmp-regi-bundle-js-js-extra'>
+/* <![CDATA[ */
+var bgmpRegi = {"regi_signup_form_path":"https:\/\/www.boston.com\/wp-content\/plugins\/wp-plugin-regi-spot-im\/markup\/signup-form.php?blog_name=Boston.com","blog_name":"Boston.com"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://bdc2020.o0bc.com/wp-content/plugins/wp-plugin-regi-spot-im//bgmp-regi-bundle.js?ver=0.0.2' id='bgmp-regi-bundle-js-js'></script>
+<script type='text/javascript' src='https://bdc2020.o0bc.com/wp-content/plugins/bdc-functionality/assets/js/tracker/lib/AppMeasurement/AppMeasurement.js?ver=2.22.0' id='app_measurement-js'></script>
+<script type='text/javascript' id='bdc_tracker-js-extra'>
+/* <![CDATA[ */
+var bdcfunctionalityWebpack = {"path":"https:\/\/www.boston.com\/wp-content\/plugins\/bdc-functionality\/dist\/"};
+var bdcDigitalData = {"settings":{"reportSuite":"nytbglobe,nytbgglobal","customLinksReportSuite":"nytbglobe","trackingServer":"smetrics.boston.com"},"pageInstanceID":"Trump, vaccine mandates, and the \u2018millionaires tax\u2019: Key takeaways from the MassGOP lieutenant governor debate-www.boston.com","page":{"pageInfo":{"pageID":"Trump, vaccine mandates, and the \u2018millionaires tax\u2019: Key takeaways from the MassGOP lieutenant governor debate","internalLinks":"javascript:,cars.com,boston.com,bostonglobe.com,globe.com,cityfeet.com,legacy.com,monstermoving.com,movietickets.com,newsbank.com,salary.com,snocountry.com,travidia.com,uclick.com,zap2it.com,bostondirtdogs.com,adperfect.com,bankrate.com,ce.com,flightview.com,gabriels.com,harvestadsdepot.com,interviewmastery.com,localattitude.com,pair.com,resume.com,sportsballot.com,vanlines.com,boston.addresses.com,boston.jiwire.com,boston.stats.com,gadzoo.com,jobview.boston.monster.com,mrboffo.com,mypublicnotices.com,upickem.com,realtraffic.maptuit.com,caspio.com,upickem.net,boston.houzz.com,localhost,www.boston.com","destinationURL":"https:\/\/www.boston.com\/news\/politics\/2022\/08\/15\/trump-vaccine-mandates-and-the-millionaires-tax-key-takeaways-from-the-massgop-lieutenant-governor-debate\/","pageURL":"https:\/\/www.boston.com\/news\/politics\/2022\/08\/15\/trump-vaccine-mandates-and-the-millionaires-tax-key-takeaways-from-the-massgop-lieutenant-governor-debate\/","channel":"News","campaign":"","subsection":"Politics","rssID":"","authors":"Christopher Gavin","pageLayout":"rail-header-standard","pagination":"","p1":"","pageType":"article page","publishDate":"08\/15\/2022","videoName":"2022 Mass. lieutenant governor primary debate: Republicans","cms":"WordPress","environment":"Live","summaryLength":218,"searchKeyword":"","trackingCode":"","keywords":"2022 Massachusetts elections,Local,Massachusetts,Politics","sponsorName":"","loginStatus":"logged out","publicationName":"Boston.com","galleryName":null,"codeVersion":"2.22.0","articleID":"BDC-25463506","refresh":"","registrationID":"","newsletter":""}}};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://bdc2020.o0bc.com/wp-content/plugins/bdc-functionality/dist/js/tracker.js?ver=0d017a3f38b6ec41a2a05e8fb17832b1' id='bdc_tracker-js'></script>
+		<!-- OneTrust Cookies Settings button start -->
+		<button id="ot-sdk-btn" class="ot-sdk-show-settings">Cookie Settings</button>
+		<!-- OneTrust Cookies Settings button end -->
+
+		<!-- This can be enabled if you want to show the OneTrust Cookie Consent Table Overview on the frontend -->
+		<!-- OneTrust Cookies List start  <div id="ot-sdk-cookie-policy"></div> --><!-- OneTrust Cookies List end -->
+			<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"b9d80a2312","applicationID":"467627310","transactionName":"NF0DYxYAXUJSV0xaVw0XIkIXFVxcHGdRXV8PXUEaRDFcQkc=","queueTime":0,"applicationTime":1127,"atts":"GBoUFV4aTh0RVRoJQx5F","errorBeacon":"bam.nr-data.net","agent":""}</script></body>
+</html>
+
+<!-- Performance optimized by Redis Object Cache. Learn more: https://wprediscache.com -->

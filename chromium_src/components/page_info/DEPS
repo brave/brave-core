@@ -1,0 +1,4 @@
+include_rules = [
+  "+brave/components/ipfs",
+  "+components/grit/brave_components_strings.h",
+]

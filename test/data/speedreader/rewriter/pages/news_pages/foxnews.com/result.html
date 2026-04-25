@@ -1,0 +1,502 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Americans say they're unhappy with the state of the nation, agree political divisiveness is a serious concern</title><meta charset="UTF-8"/><body id="article"><h1 class="title metadata">Americans say they're unhappy with the state of the nation, agree political divisiveness is a serious concern</h1><p class="subhead metadata">Americans in St. Louis, Missouri, shared their dissatisfaction with the political divisiveness in America and some pleaded for congressional bipartisanship.</p><div class=""><p class="metadata">By Megan Myers</p><p class="metadata date">Updated Aug. 15, 2022 08:03 PM</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr><p><span class="label-bg">NEW</span>You can now listen to Fox News articles!
+  </p><p class="speakable"><span class="dateline">ST. LOUIS – </span>Americans outside Busch Stadium told Fox News how they felt about the state of the nation, with many unhappy with its divisiveness.</p><p class="speakable">"I’m very concerned about with the direction of the country and some of the very serious animosity that’s going on," Sandra, from Oklahoma, said. "I worry about my grandchildren and my great-grandchildren and what we’re gonna leave for them in the future."</p><p>Three-quarters of registered voters are <a href="https://www.foxnews.com/official-polls/fox-news-poll-75-dissatisfied-nations-direction" target="_blank">dissatisfied with America's direction</a>, a nearly 25-point increase from April 2021, according to a recent Fox News Poll.&nbsp;</p><p>"I think we need to get to a point where we stop arguing within our own tribes and start working together," Zack, from St. Louis, said. "We all still want what’s best for the country, even when it looks differently."&nbsp;</p><p><a href="https://www.foxnews.com/official-polls/fox-news-poll-record-70-say-life-will-worse-next-generation" target="_blank"><strong>FOX NEWS POLL: RECORD 70% SAY LIFE WILL BE WORSE FOR THE NEXT GENERATION</strong></a></p><div baseimage="https://static.foxnews.com/foxnews.com/content/uploads/2022/08/thumbnail_image001.png" class="image-ct inline" source="Fox News"><div class="m"><picture><source media="(max-width: 767px)" srcset="https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2022/08/343/192/thumbnail_image001.png?ve=1&amp;tl=1, https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2022/08/686/384/thumbnail_image001.png?ve=1&amp;tl=1 2x"><source media="(min-width: 767px) and (max-width: 1023px)" srcset="https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2022/08/672/378/thumbnail_image001.png?ve=1&amp;tl=1, https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2022/08/1344/756/thumbnail_image001.png?ve=1&amp;tl=1 2x"><source media="(min-width: 1024px) and (max-width: 1279px)" srcset="https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2022/08/931/523/thumbnail_image001.png?ve=1&amp;tl=1, https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2022/08/1862/1046/thumbnail_image001.png?ve=1&amp;tl=1 2x"><source media="(min-width: 1280px)" srcset="https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2022/08/720/405/thumbnail_image001.png?ve=1&amp;tl=1, https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2022/08/1440/810/thumbnail_image001.png?ve=1&amp;tl=1 2x"> <img alt="A Fox News poll of how voters feel things are going in the US found 75% of respondents are dissatisfied with the state of America.&nbsp;" src="https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2022/08/640/320/thumbnail_image001.png?ve=1&amp;tl=1"></picture></div> <p>
+      A Fox News poll of how voters feel things are going in the US found 75% of respondents are dissatisfied with the state of America.&nbsp;
+      <span class="copyright">(Fox News)</span></p></div><p>Betsy, visiting the Gateway to the West, told Fox News: "I would like to see Congress in particular try to work together rather than keep throwing barbs at one another and keep pointing fingers."</p><p>Bill, from St. Louis, said the country would be better without radicals on either end of the political spectrum.</p><p>"Most of us get along," Bill said. "It would be nice to quit arguing with each other."</p><p><a href="https://www.foxnews.com/opinion/14-year-old-world-war-2-enlistee-offers-lessons-rebuilding-america" target="_blank"><strong>14-YEAR OLD WORLD WAR II ENLISTEE OFFERS LESSONS ON REBUILDING A DIVIDED AMERICA</strong></a></p><p>One man said he'd like to see improvements from the Biden administration on a few key issues.&nbsp;</p><p>"I wish they had better foreign policy, better economic stuff going on," he told Fox News. "But I think they've done a halfway decent job."</p><div baseimage="https://static.foxnews.com/foxnews.com/content/uploads/2022/08/WOMAN-2.jpg" class="image-ct inline" source="Fox News"><div class="m"><picture><source media="(max-width: 767px)" srcset="https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2022/08/343/192/WOMAN-2.jpg?ve=1&amp;tl=1, https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2022/08/686/384/WOMAN-2.jpg?ve=1&amp;tl=1 2x"><source media="(min-width: 767px) and (max-width: 1023px)" srcset="https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2022/08/672/378/WOMAN-2.jpg?ve=1&amp;tl=1, https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2022/08/1344/756/WOMAN-2.jpg?ve=1&amp;tl=1 2x"><source media="(min-width: 1024px) and (max-width: 1279px)" srcset="https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2022/08/931/523/WOMAN-2.jpg?ve=1&amp;tl=1, https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2022/08/1862/1046/WOMAN-2.jpg?ve=1&amp;tl=1 2x"><source media="(min-width: 1280px)" srcset="https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2022/08/720/405/WOMAN-2.jpg?ve=1&amp;tl=1, https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2022/08/1440/810/WOMAN-2.jpg?ve=1&amp;tl=1 2x"> <img alt="Betsy, visiting Saint Louis, says Congress needs to work together across the political aisle." src="https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2022/08/640/320/WOMAN-2.jpg?ve=1&amp;tl=1"></picture></div> <p>
+      Betsy, visiting Saint Louis, says Congress needs to work together across the political aisle.
+      <span class="copyright">(Megan Myers/Fox News Digital)</span></p></div><p><a href="https://www.foxnews.com/politics/biden-approval-hits-two-month-high-after-week-wins-democrats" target="_blank">President Biden's approval rating</a> recently rose to 40%&nbsp;– his highest in two months – following a series of legislative wins, according to a Reuters/Ipsos survey.</p><p>"I don't like our president," Becky, from Springfield, Missouri, said. "I think his presidency has failed us."</p><p><a href="https://www.foxnews.com/politics/americans-grade-biden-following-boost-national-approval-rating" target="_blank"><strong>AMERICANS GRADE BIDEN FOLLOWING BOOST IN NATIONAL APPROVAL RATING</strong></a></p><p>Becky cited concerns about fuel costs and the economy.&nbsp;</p><div baseimage="https://static.foxnews.com/foxnews.com/content/uploads/2022/08/sandra-2.jpg" class="image-ct inline" source="Fox News"><div class="m"><picture><source media="(max-width: 767px)" srcset="https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2022/08/343/192/sandra-2.jpg?ve=1&amp;tl=1, https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2022/08/686/384/sandra-2.jpg?ve=1&amp;tl=1 2x"><source media="(min-width: 767px) and (max-width: 1023px)" srcset="https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2022/08/672/378/sandra-2.jpg?ve=1&amp;tl=1, https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2022/08/1344/756/sandra-2.jpg?ve=1&amp;tl=1 2x"><source media="(min-width: 1024px) and (max-width: 1279px)" srcset="https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2022/08/931/523/sandra-2.jpg?ve=1&amp;tl=1, https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2022/08/1862/1046/sandra-2.jpg?ve=1&amp;tl=1 2x"><source media="(min-width: 1280px)" srcset="https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2022/08/720/405/sandra-2.jpg?ve=1&amp;tl=1, https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2022/08/1440/810/sandra-2.jpg?ve=1&amp;tl=1 2x"> <img alt="Sandra, from Oklahoma, says she is concerned about the direction of the country." src="https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2022/08/640/320/sandra-2.jpg?ve=1&amp;tl=1"></picture></div> <p>
+      Sandra, from Oklahoma, says she is concerned about the direction of the country.
+      <span class="copyright">(&nbsp;Megan Myers/Fox News Digital)</span></p></div><p><a href="https://foxnews.onelink.me/xLDS?pid=AppArticleLink&amp;af_dp=foxnewsaf%3A%2F%2F&amp;af_web_dp=https%3A%2F%2Fwww.foxnews.com%2Fapps-products" target="_blank"><strong><u>CLICK HERE TO GET THE FOX NEWS APP</u></strong></a></p><p><a href="https://www.foxbusiness.com/economy/gas-prices-dip-below-4-gallon-heres-why-still-could-bad-news-biden" target="_blank">Gas prices dipped</a> below $4 a gallon in August after passing $5 per gallon in June, a record high, according to AAA. Inflation, which also reached a record high early in 2022, eased slightly down to 8.5% in July, according to the Department of Labor.&nbsp;</p><p>"The gas prices going down where we live that's a positive," Sandra told Fox News, though she noted that grocery prices are still high.</p><p>"If the politicians and the people in power would listen to us on the ground, maybe they would go ‘oh, well, maybe we could do something a little bit different that might help the country a little bit better,’" Sandra said.</p>  <p>Megan Myers is an associate producer/writer for Fox News Digital Originals. Follow her on Twitter @meglmyers</p></body>

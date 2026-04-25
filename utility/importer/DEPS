@@ -1,0 +1,16 @@
+include_rules = [
+  "+brave/components/constants/brave_paths.h",
+  "+components/password_manager/core/common",
+  "+components/user_data_importer/common",
+  "+components/user_data_importer/content",
+  "+components/webdata/common",
+]
+
+specific_include_rules = {
+  "chrome_importer(_unittest)?\.(cc|h)$": [
+    "!components/password_manager/core/browser",
+    "!components/os_crypt/sync",
+    "!components/prefs",
+    "!components/favicon_base",
+  ]
+}

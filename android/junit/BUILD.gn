@@ -1,0 +1,162 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//build/config/android/config.gni")
+import("//third_party/jni_zero/jni_zero.gni")
+
+testonly = true
+
+if (is_android) {
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.homepage") {
+    sources = [
+      "src/org/chromium/chrome/browser/homepage/BraveHomepageManagerTest.java",
+      "src/org/chromium/chrome/browser/homepage/settings/BraveHomepageSettingsUnitTest.java",
+    ]
+
+    deps = [
+      "//chrome/android/junit:chrome_junit_tests_helper",
+      "//components/bookmarks/common/android:bookmark_type_javagen",
+      "//components/bookmarks/common/android:bookmarks_java",
+    ]
+  }
+
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.tabbed_mode") {
+    sources = [
+      "src/org/chromium/chrome/browser/tabbed_mode/BraveTabbedAdaptiveToolbarBehaviorTest.java",
+      "src/org/chromium/chrome/browser/tabbed_mode/BraveTabbedAppMenuPropertiesDelegateUnitTest.java",
+      "src/org/chromium/chrome/browser/tabbed_mode/BraveTabbedNavigationBarColorControllerBaseTest.java",
+    ]
+
+    deps = [
+      "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/tab_group_suggestion:toolbar_java",
+      "//chrome/browser/ui/messages/android:java",
+      "//components/browser_ui/accessibility/android:page_zoom_utils_java",
+    ]
+  }
+
+  robolectric_library("brave_junit_tests_org.chromium.chrome.browser.toolbar") {
+    resources_package = "org.chromium.chrome.browser.toolbar"
+    sources = [
+      "src/org/chromium/chrome/browser/toolbar/BraveToolbarLongPressMenuHandlerUnitTest.java",
+      "src/org/chromium/chrome/browser/toolbar/adaptive/settings/BraveAdaptiveToolbarSettingsFragmentTest.java",
+    ]
+
+    deps = [
+      "//brave/browser/ui/android/toolbar:java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/settings:java",
+    ]
+  }
+
+  robolectric_library("brave_junit_tests_org.chromium.chrome.browser.vpn") {
+    resources_package = "org.chromium.chrome.browser.vpn"
+    sources = [ "src/org/chromium/chrome/browser/vpn/activities/BraveVpnParentActivityTest.java" ]
+
+    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+  }
+
+  if (enable_brave_wallet) {
+    robolectric_library(
+        "brave_junit_tests_org.chromium.chrome.browser.crypto_wallet") {
+      sources = [
+        "src/org/chromium/chrome/browser/crypto_wallet/ApproveTxBottomSheetDialogFragmentTest.java",
+        "src/org/chromium/chrome/browser/crypto_wallet/TwoLineItemBottomSheetFragmentTest.java",
+        "src/org/chromium/chrome/browser/crypto_wallet/WalletBottomSheetDialogFragmentTest.java",
+      ]
+
+      deps = [
+        "//brave/components/brave_wallet/common:mojom_java",
+        "//chrome/android/junit:chrome_junit_tests_helper",
+      ]
+    }
+  }
+
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.referrer") {
+    sources =
+        [ "src/org/chromium/chrome/browser/referrer/BraveReferrerTest.java" ]
+
+    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+  }
+
+  robolectric_library("brave_junit_tests_org.chromium.chrome.browser") {
+    sources =
+        [ "src/org/chromium/chrome/browser/BraveIntentHandlerUnitTest.java" ]
+
+    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+  }
+
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.settings") {
+    sources = [ "src/org/chromium/chrome/browser/settings/BraveSearchEngineUtilsTest.java" ]
+
+    deps = [
+      "//brave/android/java/org/chromium/chrome/browser/search_engines:java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+    ]
+  }
+
+  robolectric_library("brave_junit_tests_org.chromium.chrome.browser.rate") {
+    sources = [ "src/org/chromium/chrome/browser/rate/BraveAskPlayStoreRatingDialogTest.java" ]
+
+    deps = [
+      "//brave/third_party/android_deps:com_google_android_play_review_java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+    ]
+  }
+
+  robolectric_library("brave_junit_tests_org.chromium.chrome.browser.app") {
+    sources = [
+      "src/org/chromium/chrome/browser/app/BraveActivityInAppUpdateTest.java",
+    ]
+
+    deps = [
+      "//brave/third_party/android_deps:com_google_android_play_app_update_java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+    ]
+  }
+
+  robolectric_library("brave_junit_tests_org.chromium.chrome.browser.ntp") {
+    resources_package = "org.chromium.chrome.browser.ntp"
+    sources = [
+      "src/org/chromium/chrome/browser/ntp/BraveNewTabPageUtilUnitTest.java",
+    ]
+
+    deps = [
+      "//brave/browser/ntp_customization:java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+    ]
+  }
+
+  robolectric_library("brave_junit_tests_org.chromium.chrome.browser.tasks") {
+    sources = [ "src/org/chromium/chrome/browser/tasks/BraveReturnToChromeUtilUnitTest.java" ]
+
+    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+  }
+
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.autofill") {
+    sources = [
+      "src/org/chromium/chrome/browser/autofill/BraveAutofillServiceImplUnitTest.java",
+      "src/org/chromium/chrome/browser/autofill/BraveAutofillViewStructureParserUnitTest.java",
+    ]
+
+    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+  }
+
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.custom_search_engines") {
+    sources = [ "src/org/chromium/brave/browser/custom_search_engines/CustomSearchEnginesManagerTest.java" ]
+
+    deps = [
+      "//brave/browser/custom_search_engines/android:java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+    ]
+  }
+}

@@ -1,0 +1,282 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+package org.chromium.chrome.browser.omnibox;
+
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.text.TextUtils;
+import android.util.Range;
+import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
+import org.chromium.chrome.browser.lens.LensController;
+import org.chromium.chrome.browser.locale.LocaleManager;
+import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
+import org.chromium.chrome.browser.omnibox.UrlBar.ScrollType;
+import org.chromium.chrome.browser.omnibox.fusebox.FuseboxCoordinator;
+import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteCoordinator;
+import org.chromium.chrome.browser.omnibox.suggestions.OmniboxLoadUrlParams;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.theme.ThemeUtils;
+import org.chromium.chrome.browser.ui.theme.BrandedColorScheme;
+import org.chromium.components.browser_ui.accessibility.PageZoomIndicatorCoordinator;
+import org.chromium.components.omnibox.AutocompleteInput;
+import org.chromium.components.omnibox.OmniboxFocusReason;
+import org.chromium.components.search_engines.TemplateUrlService;
+import org.chromium.ui.base.PageTransition;
+import org.chromium.ui.base.WindowAndroid;
+import org.chromium.ui.modaldialog.ModalDialogManager;
+import org.chromium.ui.permissions.PermissionCallback;
+
+import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
+
+@NullMarked
+public class BraveLocationBarMediator extends LocationBarMediator {
+    // To delete in bytecode, members from parent class will be used instead.
+    private WindowAndroid mWindowAndroid;
+    private LocationBarLayout mLocationBarLayout;
+    private boolean mIsUrlFocusChangeInProgress;
+    private boolean mUrlHasFocus;
+    private boolean mIsTablet;
+    private boolean mNativeInitialized;
+    private boolean mIsLocationBarFocusedFromNtpScroll;
+    private Context mContext;
+    private OneshotSupplier<TemplateUrlService> mTemplateUrlServiceSupplier;
+    private AutocompleteCoordinator mAutocompleteCoordinator;
+    private UrlBarCoordinator mUrlCoordinator;
+
+    private static final @BrandedColorScheme int BRANDED_COLOR_SCHEME =
+            BrandedColorScheme.APP_DEFAULT;
+
+    // The fields mWindowAndroid, mLocationBarLayout, mContext, mTemplateUrlServiceSupplier are
+    // initialized at LocationBarMediator.ctor and are declared here only to be removed later
+    // with asm. NullAway expects them to be initialized here, so ignore this warning.
+    @SuppressWarnings("NullAway")
+    public BraveLocationBarMediator(
+            Context context,
+            LocationBarLayout locationBarLayout,
+            LocationBarDataProvider locationBarDataProvider,
+            LocationBarEmbedderUiOverrides embedderUiOverrides,
+            MonotonicObservableSupplier<Profile> profileSupplier,
+            OverrideUrlLoadingDelegate overrideUrlLoadingDelegate,
+            LocaleManager localeManager,
+            OneshotSupplier<TemplateUrlService> templateUrlServiceSupplier,
+            BackKeyBehaviorDelegate backKeyBehavior,
+            WindowAndroid windowAndroid,
+            boolean isTablet,
+            LensController lensController,
+            OmniboxUma omniboxUma,
+            BooleanSupplier isToolbarMicEnabledSupplier,
+            OmniboxSuggestionsDropdownEmbedderImpl dropdownEmbedder,
+            MonotonicObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
+            @Nullable BrowserControlsStateProvider browserControlsStateProvider,
+            Supplier<@Nullable ModalDialogManager> modalDialogManagerSupplier,
+            @Nullable PageZoomIndicatorCoordinator pageZoomIndicatorCoordinator,
+            FuseboxCoordinator fuseboxCoordinator,
+            @Nullable MultiInstanceManager multiInstanceManager,
+            LocationBarEmbedder locationBarEmbedder,
+            @Nullable OmniboxChipManager omniboxChipManager) {
+        super(
+                context,
+                locationBarLayout,
+                locationBarDataProvider,
+                embedderUiOverrides,
+                profileSupplier,
+                overrideUrlLoadingDelegate,
+                localeManager,
+                templateUrlServiceSupplier,
+                backKeyBehavior,
+                windowAndroid,
+                isTablet,
+                lensController,
+                omniboxUma,
+                isToolbarMicEnabledSupplier,
+                dropdownEmbedder,
+                tabModelSelectorSupplier,
+                browserControlsStateProvider,
+                modalDialogManagerSupplier,
+                pageZoomIndicatorCoordinator,
+                fuseboxCoordinator,
+                multiInstanceManager,
+                locationBarEmbedder,
+                omniboxChipManager);
+    }
+
+    public static Class<OmniboxUma> getOmniboxUmaClass() {
+        return OmniboxUma.class;
+    }
+
+    public static Class<LensController> getLensControllerClass() {
+        return LensController.class;
+    }
+
+    public static Class<LocaleManager> getLocaleManagerClass() {
+        return LocaleManager.class;
+    }
+
+    public static Class<OmniboxSuggestionsDropdownEmbedderImpl>
+            getOmniboxSuggestionsDropdownEmbedderImplClass() {
+        return OmniboxSuggestionsDropdownEmbedderImpl.class;
+    }
+
+    @Override
+    void updateButtonVisibility() {
+        super.updateButtonVisibility();
+        updateQRButtonVisibility();
+    }
+
+    @Override
+    public void onPrimaryColorChanged() {
+        super.onPrimaryColorChanged();
+        updateQRButtonColors();
+    }
+
+    @Override
+    public void onResumeWithNative() {
+        if (mTemplateUrlServiceSupplier.get() != null
+                && !mTemplateUrlServiceSupplier.get().isLoaded()) {
+            mTemplateUrlServiceSupplier
+                    .get()
+                    .runWhenLoaded(
+                            () -> {
+                                super.onResumeWithNative();
+                            });
+            return;
+        }
+        super.onResumeWithNative();
+    }
+
+    void updateQRButtonColors() {
+        if (mLocationBarLayout instanceof BraveLocationBarLayout) {
+            ((BraveLocationBarLayout) mLocationBarLayout)
+                    .setQRButtonTint(
+                            ThemeUtils.getThemedToolbarIconTint(mContext, BRANDED_COLOR_SCHEME));
+        }
+    }
+
+    private void updateQRButtonVisibility() {
+        if (mLocationBarLayout instanceof BraveLocationBarLayout) {
+            ((BraveLocationBarLayout) mLocationBarLayout)
+                    .setQRButtonVisibility(shouldShowQRButton());
+        }
+    }
+
+    private boolean shouldShowQRButton() {
+        if (!mNativeInitialized) {
+            return false;
+        }
+        if (mIsTablet) {
+            return mUrlHasFocus || mIsUrlFocusChangeInProgress;
+        } else {
+            return !isUrlBarFocusedWithUserInput()
+                    && (mUrlHasFocus
+                            || mIsUrlFocusChangeInProgress
+                            || mIsLocationBarFocusedFromNtpScroll);
+        }
+    }
+
+    void qrButtonClicked(View view) {
+        if (!mNativeInitialized) return;
+        if (ensureCameraPermission()) {
+            openQRCodeDialog();
+        }
+    }
+
+    private boolean ensureCameraPermission() {
+        if (mWindowAndroid.hasPermission(Manifest.permission.CAMERA)) {
+            return true;
+        }
+
+        PermissionCallback callback = (permissions, grantResults) -> {
+            if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openQRCodeDialog();
+            }
+        };
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mWindowAndroid.requestPermissions(new String[] {Manifest.permission.CAMERA}, callback);
+        }
+
+        return false;
+    }
+
+    private void openQRCodeDialog() {
+        if (mContext != null && mContext instanceof AppCompatActivity) {
+            BraveLocationBarQRDialogFragment braveLocationBarQRDialogFragment =
+                    BraveLocationBarQRDialogFragment.newInstance(this);
+            braveLocationBarQRDialogFragment.setCancelable(false);
+            braveLocationBarQRDialogFragment.show(
+                    ((AppCompatActivity) mContext).getSupportFragmentManager(),
+                    "BraveLocationBarQRDialogFragment");
+        }
+    }
+
+    // This method was removed at upstream's LocationBarMediator.
+    // Backported it here to still have ability immediately jump to search
+    // result when QR code is scanned for the regular strings, not the URLs.
+    // See BraveLocationBarQRDialogFragment.onDetectedQrCode.
+    public void performSearchQuery(String query) {
+        if (TextUtils.isEmpty(query)) return;
+
+        TemplateUrlService templateUrlService = mTemplateUrlServiceSupplier.get();
+        assert templateUrlService != null;
+        String queryUrl = templateUrlService.getUrlForSearchQuery(query, null);
+
+        if (!TextUtils.isEmpty(queryUrl)) {
+            loadUrl(
+                    new OmniboxLoadUrlParams.Builder(queryUrl, PageTransition.GENERATED)
+                            .setOpenInNewTab(false)
+                            .build());
+        } else {
+            setSearchQuery(query);
+        }
+    }
+
+    // Expose UrlCoordinator.setUrlBarData to be used at
+    // BraveLocationBarQRDialogFragment.onDetectedQrCode to keep pre cr146
+    // behavior.
+    public boolean setUrlBarData(
+            UrlBarData data, @ScrollType int scrollType, Range<Integer> selection) {
+        return mUrlCoordinator.setUrlBarData(data, scrollType, selection);
+    }
+
+    /**
+     * Populates the omnibox with the given query and triggers autocomplete. Required for Brave's QR
+     * code scanner: (1) when a URL-like QR code is scanned, to show the URL in the omnibox for
+     * navigation; (2) as a fallback in performSearchQuery when no default search engine is
+     * configured and a search URL cannot be generated.
+     */
+    public void setSearchQuery(String query) {
+        if (TextUtils.isEmpty(query)) return;
+
+        if (!mNativeInitialized) {
+            return;
+        }
+
+        // Ensure the UrlBar has focus before entering text. If the UrlBar is not focused,
+        // autocomplete text will be updated but the visible text will not.
+        beginInput(
+                new AutocompleteInput()
+                        .setSuppressAutomaticSuggestionsUntilUserStartsTyping(true)
+                        .setFocusReason(OmniboxFocusReason.DEFAULT_WITH_HARDWARE_KEYBOARD));
+        setUrlBarText(
+                UrlBarData.forNonUrlText(query),
+                UrlBar.ScrollType.NO_SCROLL,
+                UrlBarData.SELECT_ALL);
+        mAutocompleteCoordinator.startAutocompleteForQuery(query);
+        mUrlCoordinator.setKeyboardVisibility(true, false);
+    }
+}

@@ -1,0 +1,42 @@
+/* The title of the button that changes the screen to next */
+"focusOnboarding.continueButtonTitle" = "Pokračovať";
+
+/* The subtitle of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "Nastavte si Brave ako predvolený prehliadač ešte dnes.";
+
+/* The title of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "Získajte blokovanie reklám na každej stránke, ktorú navštívite";
+
+/* The title of the button that closes the default browser full screen callout */
+"focusOnboarding.notNowActionButtonTitle" = "Teraz nie";
+
+/* The subtitle of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenDescription" = "Zablokujte nepríjemné prerušenia na svojich obľúbených streamovacích stránkach.";
+
+/* The title of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenTitle" = "Blokujte prerušenia pri streamovaní";
+
+/* The subtitle of the screen that asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenDescription" = "Dajte nám vedieť, ktoré funkcie sa vám páčia najviac.";
+
+/* The title of the screen which asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenTitle" = "Pomôžte zlepšiť Brave";
+
+/* The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment */
+"focusOnboarding.p3aToggleDescription" = "Odhlásiť sa môžete kedykoľvek v Nastaveniach v časti **Štíty a súkromie**. [Ďalšie informácie](#p3a-learn-more) o našej analýze produktov zachovávajúcej súkromie.";
+
+/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "completely private & anonymous" snippet should be bold in all languages */
+"focusOnboarding.p3aToggleTitle" = "Zdieľajte **úplne súkromné a anonymné** poznatky o produktoch.";
+
+/* The title of the button that finishes the onboarding without setting default */
+"focusOnboarding.startBrowseActionButtonTitle" = "Začať prehľadávanie";
+
+/* The title of the button that triggers navigation link to settings */
+"focusOnboarding.systemSettingsButtonTitle" = "Nastaviť ako predvolené";
+
+/* The description of the popup which points to URL Bar after onboarding */
+"focusOnboarding.urlBarIndicatorDescription" = "Začnite streamovať a užívajte si menej reklám a trackerov.";
+
+/* The title of the popup which points to URL Bar after onboarding */
+"focusOnboarding.urlBarIndicatorTitle" = "Objavte rozdiely prehliadača Brave";
+

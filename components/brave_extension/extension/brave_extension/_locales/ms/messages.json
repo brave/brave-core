@@ -1,0 +1,226 @@
+{
+  "appName": {
+    "message": "Sambungan Brave",
+    "description": "The name of the extension."
+  },
+  "shields": {
+    "message": "Perisai",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "dihidupkan",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "dimatikan",
+    "description": "Message for when shields is disabled"
+  },
+  "forThisSite": {
+    "message": "untuk laman ini",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "Jika laman kelihatan rosak, cuba tutup perisai",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "Anda melayari laman ini tanpa perlindungan privasi dan keselamatan Brave. Adakah ia tidak berfungsi dengan betul apabila Perisai dihidupkan?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "Laporkan laman rosak",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
+  },
+  "itemsBlocked": {
+    "message": "Item disekat",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
+  },
+  "itemBlocked": {
+    "message": "Item disekat",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
+  },
+  "and": {
+    "message": "dan",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
+  },
+  "connectionsUpgraded": {
+    "message": "sambungan dipertingkatkan ",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
+  },
+  "connectionUpgraded": {
+    "message": "sambungan dipertingkatkan",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
+  },
+  "thirdPartyTrackersBlocked": {
+    "message": "Penjejak merentas laman disekat",
+    "description": "Message for the scripts blocked row label"
+  },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "Penjejak & iklan disekat",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "Penjejak & iklan disekat (agresif)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "Penjejak & iklan disekat (standard)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "Benarkan semua penjejak & iklan",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
+  "connectionsUpgradedHTTPS": {
+    "message": "Sambungan dipertingkatkan kepada HTTPS",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
+  },
+  "connectionUpgradedHTTPS": {
+    "message": "Sambungan dipertingkatkan kepada HTTPS",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
+  },
+  "scriptsBlocked": {
+    "message": "Skrip disekat",
+    "description": "Message for the scripts blocked row label"
+  },
+  "thirdPartyCookiesBlocked": {
+    "message": "Kuki merentas laman disekat",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "Kuki disekat",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "Semua kuki dibenarkan",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "Pengecaman cap jari disekat",
+    "description": "Message for the option in the fingerprinting field in read only view"
+  },
+  "standardFingerprinting": {
+    "message": "Pengecaman cap jari disekat (standard)",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
+  },
+  "strictFingerprinting": {
+    "message": "Pengecaman cap jari disekat (ketat, mungkin menyebabkan laman tidak berfungsi)",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
+  },
+  "allowAllFingerprinting": {
+    "message": "Benarkan semua pengecaman cap jari",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Percubaan pengecaman cap jari",
+    "description": "Message for the fingerprinting attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Skrip pada laman ini",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Skrip disekat",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Skrip dibenarkan",
+    "description": "Message for the script resources allowed"
+  },
+  "blockAll": {
+    "message": "Sekat semua",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "Benarkan semua",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "block": {
+    "message": "Sekat",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "allow": {
+    "message": "Benarkan",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "blockedOnce": {
+    "message": "Pernah disekat sekali",
+    "description": "Message for the resources blocked *blocked once* option"
+  },
+  "allowedOnce": {
+    "message": "Dibenarkan sekali",
+    "description": "Message for the resources blocked *allowed once* option"
+  },
+  "allowScriptsOnce": {
+    "message": "Benarkan skrip sekali",
+    "description": "Message for the shortcut in the main interface to allow all scripts once"
+  },
+  "cancel": {
+    "message": "Batal",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Kembali",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "Guna sekali",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "Tukar lalai perisai global",
+    "description": "Message for the button action linking to the settings page"
+  },
+  "manageCustomFilters": {
+    "message": "Urus penapis tersuai",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
+  "elementPickerMode": {
+    "message": "Sekat elemen",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
+  },
+  "advancedView": {
+    "message": "Paparan Lanjutan",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "Paparan Ringkas",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "Laman web sering menggunakan kuki dan skrip yang cuba mengenal pasti diri anda dan peranti anda (biasanya dimasukkan ke dalam iklan). Kuki dan skrip ini ingin mengenal pasti identiti anda dan mengikuti anda di serata web - menjejak aktiviti anda di setiap laman. Brave menyekat perkara ini supaya anda boleh belayar tanpa dikesan.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "Penjejak merentas laman dan perkara mencurigakan lain yang disekat",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "Mengubah tetapan Perisai dalam paparan ini boleh menjejaskan keserasian web di laman ini.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "Faham",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "Ketahui lebih lanjut",
+    "description": "Message inviting the user to learn more about Shields"
+  },
+  "addToBrave": {
+    "message": "Tambah ke Brave",
+    "description": "Message for adding an extension to Brave"
+  },
+  "removeFromBrave": {
+    "message": "Alih keluar daripada Brave",
+    "description": "Message for removing an extension from Brave"
+  },
+  "addToChrome": {
+    "message": "Tambahkan pada Chrome",
+    "description": "Message for adding an extension to Chrome"
+  },
+  "removeFromChrome": {
+    "message": "Alih Keluar dari Chrome",
+    "description": "Message for removing an extension from Chrome"
+  }
+}

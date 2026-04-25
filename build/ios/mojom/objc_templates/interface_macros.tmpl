@@ -1,0 +1,95 @@
+{%- macro result_or_response_callback_type(method) -%}
+{%- if method.result_response -%}
+({{method.result_response.success_kind|objc_wrapper_type}} _Nullable success, {{method.result_response.failure_kind|objc_wrapper_type}} _Nullable failure)
+{%- else -%}
+(
+{%- for param in method.response_parameters -%}
+{%-   set nullable = param.kind|objc_argument_modifiers(inside_callback=True) -%}
+{%-   set type = "%s%s"|format(param.kind|objc_wrapper_type, " " + nullable if nullable) -%}
+{{type}} {{param.name|under_to_lower_camel}}
+{%- if not loop.last -%},{{" "}}{%- endif -%}
+{%- endfor -%}
+)
+{%- endif -%}
+{%- endmacro -%}
+
+{%- macro objc_method(method) -%}
+{%-   set name = method|objc_method_name_formatter %}
+- (void){{name}}
+{%- if method.parameters or method.response_parameters %}:{%- endif -%}
+{%- for param in method.parameters -%}
+{%-   if not loop.first -%}{{param.name|under_to_lower_camel}}:{%- endif -%}
+{%-   set nullable = param.kind|objc_argument_modifiers -%}
+{%-   set type = "%s%s"|format(nullable + " " if nullable, param.kind|objc_wrapper_type) -%}
+({{type}}){{param.name|under_to_lower_camel}}
+{%- if not loop.last -%}{{" "}}{%- endif -%}
+{%- endfor -%}
+{%- if method.response_parameters -%}
+{%- if method.parameters -%}
+{{" "}}completion:
+{%- endif -%}
+(void (^){{ result_or_response_callback_type(method) }})completion
+{%- endif -%}
+{%- if method.parameters or method.response_parameters -%}
+{%- set swift_name = "initialize" if name == "init" else name -%}
+{{" "}}NS_SWIFT_NAME({{swift_name}}(
+{%- for param in method.parameters -%}
+{%- set param_name = param.name|under_to_lower_camel %}
+{%- if loop.first and (name | lower).endswith(param_name|lower) -%}
+_
+{%- else -%}
+{{param_name}}
+{%- endif -%}
+:
+{%- endfor -%}
+{%- if method.response_parameters -%}
+completion:
+{%- endif -%}
+))
+{%- endif -%}
+{%- endmacro -%}
+
+{%- macro objc_methods(interface) -%}
+{%-  for method in interface.methods -%}
+{{ objc_method(method) }};
+{%- endfor -%}
+{%- endmacro -%}
+
+{%- macro cpp_declare_params(parameters) %}
+{%-   for param in parameters -%}
+{{param.kind|expected_cpp_param_type}} {{param.name}}
+{%- if not loop.last %}, {% endif %}
+{%-   endfor %}
+{%- endmacro %}
+
+{%- macro cpp_declare_params_names(parameters) %}
+{%-   for param in parameters -%}
+std::move({{param.name}})
+{%- if not loop.last %}, {% endif %}
+{%-   endfor %}
+{%- endmacro %}
+
+{%- macro cpp_declare_callback(method) -%}
+base::OnceCallback<void(
+{%-   for param in method.response_parameters -%}
+{{param.kind|expected_cpp_param_type}}
+{%-     if not loop.last %}, {% endif %}
+{%-   endfor -%}
+)>
+{%- endmacro -%}
+
+{%- macro cpp_declare_request_params(method, cpp_namespace) -%}
+{{cpp_declare_params(method.parameters)}}
+{%-   if method.response_parameters != None -%}
+{%-     if method.parameters %}, {% endif -%}
+{{cpp_namespace}}::{{method.name}}Callback callback
+{%-   endif -%}
+{%- endmacro -%}
+
+{%- macro cpp_declare_request_params_names(method) -%}
+{{cpp_declare_params_names(method.parameters)}}
+{%-   if method.response_parameters != None -%}
+{%-     if method.parameters %}, {% endif -%}
+std::move(callback)
+{%-   endif -%}
+{%- endmacro -%}

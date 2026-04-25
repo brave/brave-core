@@ -1,0 +1,24 @@
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+package org.chromium.chrome.browser.password_manager.settings;
+
+import org.chromium.build.annotations.NullMarked;
+
+/** This is an interface for delaying running of callbacks. */
+@NullMarked
+public interface CallbackDelayer {
+    /**
+     * Run a callback after a delay specific to a particular implementation. The callback is always
+     * run asynchronously.
+     *
+     * @param callback The callback to be run.
+     */
+    void delay(Runnable callback);
+}

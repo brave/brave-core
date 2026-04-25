@@ -1,0 +1,226 @@
+{
+  "appName": {
+    "message": "התוסף ל-Brave",
+    "description": "The name of the extension."
+  },
+  "shields": {
+    "message": "הגנות",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "למעלה",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "למטה",
+    "description": "Message for when shields is disabled"
+  },
+  "forThisSite": {
+    "message": "באתר זה",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "אם אתר לא נראה תקין, נסו להסיר הגנות",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "הנך גולש/ת באתר זה ללא הגנות הפרטיות והאבטחה של Brave. האם הן לא עובדות כמו שצריך כאשר Shields פועל?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "דווח/י על אתר לא תקין",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
+  },
+  "itemsBlocked": {
+    "message": "פריטים שנחסמו",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
+  },
+  "itemBlocked": {
+    "message": "פריט נחסם",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
+  },
+  "and": {
+    "message": "ו",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
+  },
+  "connectionsUpgraded": {
+    "message": "החיבורים שודרגו",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
+  },
+  "connectionUpgraded": {
+    "message": "החיבור שודרג",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
+  },
+  "thirdPartyTrackersBlocked": {
+    "message": "עוקבים מרובי-אתרים (cross-site) נחסמו",
+    "description": "Message for the scripts blocked row label"
+  },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "עוקבים ופרסומות חסומים",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "עוקבים ופרסומות חסומים (אגרסיבי)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "עוקבים ופרסומות חסומים (סטנדרטי)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "אפשר את כל העוקבים והפרסומות",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
+  "connectionsUpgradedHTTPS": {
+    "message": "החיבורים שודרגו ל-HTTPS",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
+  },
+  "connectionUpgradedHTTPS": {
+    "message": "החיבור שודרג ל-HTTPS",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
+  },
+  "scriptsBlocked": {
+    "message": "סרקיפטים נחסמו.",
+    "description": "Message for the scripts blocked row label"
+  },
+  "thirdPartyCookiesBlocked": {
+    "message": "קבצי cookie מרובי-אתרים (cross-site) נחסמו",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "קבצי עוגיות חסומים",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "אפשר את כל קבצי העוגיות",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "טביעות אצבעות נחסמו",
+    "description": "Message for the option in the fingerprinting field in read only view"
+  },
+  "standardFingerprinting": {
+    "message": "טביעות אצבע חסומות (סטנדרטי)",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
+  },
+  "strictFingerprinting": {
+    "message": "טביעות אצבע חסומות (מחמיר, עשוי לשבש פעולה תקינה של אתרים)",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
+  },
+  "allowAllFingerprinting": {
+    "message": "אפשר כל לקיחת טביעות אצבע",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "ניסיונות טביעת אצבע",
+    "description": "Message for the fingerprinting attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "פקודות באתר זה",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "פקודות חסומות",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "פקודות מותרות",
+    "description": "Message for the script resources allowed"
+  },
+  "blockAll": {
+    "message": "חסום הכל",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "מתן הרשאה לכול",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "block": {
+    "message": "חסום",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "allow": {
+    "message": "אפשר",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "blockedOnce": {
+    "message": "נחסם פעם אחת",
+    "description": "Message for the resources blocked *blocked once* option"
+  },
+  "allowedOnce": {
+    "message": "הותר פעם אחת",
+    "description": "Message for the resources blocked *allowed once* option"
+  },
+  "allowScriptsOnce": {
+    "message": "התר סקריפטים פעם אחת",
+    "description": "Message for the shortcut in the main interface to allow all scripts once"
+  },
+  "cancel": {
+    "message": "ביטול",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "חזור",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "יישם פעם אחת",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "שנה את ברירות המחדל הגלובליות של המגן",
+    "description": "Message for the button action linking to the settings page"
+  },
+  "manageCustomFilters": {
+    "message": "נהל  מסננים מותאמים אישית",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
+  "elementPickerMode": {
+    "message": "חסום אלמנט",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
+  },
+  "advancedView": {
+    "message": "תצוגה מתקדמת",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "תצוגה רגילה",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "אתרים כוללים לעתים קרובות קובצי עוגייה (cookies) וסקריפטים שמנסים לזהות אותך ואת המכשיר שלך (לרוב הם מוטמעים במודעות פרסומת). הם רוצים להבין מי את/ה ולעקוב אחריך ברחבי האינטרנט - לעקוב אחר פעולותיך בכל אתר. Brave חוסם דברים אלה כך שתוכל/י לגלוש מבלי שיעקבו אחריך.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "עוקבים מרובי אתרים (Cross-site) ודברים מפחידים אחרים נחסמו",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "שינוי הגדרות Shield בתצוגה זו עשוי להשפיע על תאימות האינטרנט באתר זה.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "הבנתי",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "למדו עוד",
+    "description": "Message inviting the user to learn more about Shields"
+  },
+  "addToBrave": {
+    "message": "‏הוסף ל-‏Brave‏",
+    "description": "Message for adding an extension to Brave"
+  },
+  "removeFromBrave": {
+    "message": "‏הסר מ-Brave",
+    "description": "Message for removing an extension from Brave"
+  },
+  "addToChrome": {
+    "message": "‏הוספה ל-Chrome",
+    "description": "Message for adding an extension to Chrome"
+  },
+  "removeFromChrome": {
+    "message": "‏הסרה מ-Chrome",
+    "description": "Message for removing an extension from Chrome"
+  }
+}

@@ -1,0 +1,66 @@
+/* A button title shown below language introducing the Brave Playlist feature. i.e. 'Discover how to use use this feature' */
+"advanceInitialOnboardingButtonTitle" = "Descobreix com";
+
+/* A button title that when tapped will advance the onboarding to guide a user to add some content to Playlist */
+"advanceStep2OnboardingButtonTitle" = "Intenta-ho!";
+
+/* A button that allows the user to disable the brave translate feature. When pressed, the page will not be automatically translated to the user's language. */
+"BraveTranslateOnboarding.disableTranslateButtonTitle" = "Desactivar aquesta funció";
+
+/* A text element that describes the translation feature and explains that hte user might have to download or configure languages on their device. */
+"BraveTranslateOnboarding.translateDescription" = "Les pàgines es poden traduir als idiomes compatibles amb el teu dispositiu iOS. És possible que hagis de configurar els idiomes si és el primer cop que utilitzes aquesta funció.";
+
+/* A text element that explains we're translating pages. */
+"BraveTranslateOnboarding.translateTitle" = "Traduccions de la pàgina";
+
+/* A button title that when tapped opens Brave Playlist */
+"confirmationActionButtonTitle" = "Porta'm a la meva Llista de reproducció";
+
+/* Shown above a button that will let the user open the playlist feature */
+"confirmationPrompt" = "Ara, fem una ullada a la teva Llista de reproducció.";
+
+/* Shown below a title that confirms the user completed the task of adding something to playlist. %@ will be replaced with the folder the content was added to. i.e. 'Content added to Play Later' */
+"confirmationSubtitle" = "Contingut afegit a %@";
+
+/* Guides the user to tap on an icon where the onboarding is pointing to. '%@' will be replaced with said icon. */
+"confirmationTitle" = "Bona feina";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissOnboardingButtonTitle" = "Omet";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep2OnboardingButtonTitle" = "Potser més tard";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep4OnboardingButtonTitle" = "Tanca";
+
+/* A title shown on the first 2 steps of onboarding for Brave Playlist. Brave Playlist is a product name */
+"introducingBravePlaylist" = "Presentació de la Llista de reproducció de Brave";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleOne" = "Crea llistes de reproducció del teu contingut preferit. Estalvia dades mòbils. I reprodueix sense anuncis.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleThree" = "Imatge en imatge. Joc de fons. Control des de la pantalla de bloqueig. I més…";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleTwo" = "Estigues al corrent: afegeix vídeos mentre navegues i mira'ls més tard.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleOne" = "Afegeix vídeos a la llista de reproducció de Brave. Reproducció en qualsevol moment. Fins i tot sense connexió.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleThree" = "La reproducció és millor a la llista de reproducció";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleTwo" = "Prem el botó per a afegir vídeos a una llista de reproducció";
+
+/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
+"playlistOnboardingDescription" = "Crea llistes de reproducció amb contingut que t'agrada. Afegeix contingut multimèdia des de qualsevol pàgina.\nJuga en qualsevol moment. Fins i tot fora de línia!";
+
+/* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
+"userActionPrompt" = "Prem %@ per afegir el teu primer element";
+
+/* Will be shown next to an icon inside of some other text. i.e. "Tap 'Add to Playlist' to add your first item" */
+"userActionPromptFill" = "Afegeix a la llista de reproducció";
+

@@ -1,0 +1,17 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("credential_provider") {
+  sources = [
+    "credential_provider_api.h",
+    "credential_provider_api.mm",
+  ]
+  deps = [
+    "//ios/chrome/common/app_group",
+    "//ios/chrome/common/credential_provider",
+    "//ios/chrome/common/credential_provider:ui",
+  ]
+  frameworks = [ "Foundation.framework" ]
+}

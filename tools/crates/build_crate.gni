@@ -1,0 +1,87 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/host_os_constants.gni")
+
+template("build_crate") {
+  if (defined(invoker["crates"])) {
+    crates = invoker["crates"]
+  } else {
+    crates = [ target_name ]
+  }
+
+  if (defined(invoker["executable_outputs"])) {
+    executable_outputs = invoker["executable_outputs"]
+  } else {
+    executable_outputs = [ target_name ]
+  }
+
+  cargo_target_dir = "$root_gen_dir/brave/tools/crates/$target_name"
+  cargo_profile = "release"
+
+  executable_output_paths = []
+  foreach(output, executable_outputs) {
+    executable_output_paths +=
+        [ "$cargo_target_dir/$cargo_profile/$output$host_exe_suffix" ]
+  }
+
+  action("${target_name}__build") {
+    assert(current_toolchain == host_toolchain)
+
+    forward_variables_from(invoker, [ "deps" ])
+
+    script = "//brave/build/gn_run_rsp.py"
+    args = [ "{{response_file_name}}" ]
+
+    cargo_exe = "//third_party/rust-toolchain/bin/cargo$host_exe_suffix"
+    inputs = [
+      cargo_exe,
+      "//brave/tools/crates/.cargo/config.toml",
+      "//brave/tools/crates/Cargo.lock",
+      "//brave/tools/crates/Cargo.toml",
+    ]
+
+    outputs = executable_output_paths
+
+    # To avoid irreproducible builds,
+    # `build_crate`s MUST always build with `cargo vendor`ed deps,
+    # hence they always have to pass:
+    #   --config .cargo/config.toml
+    #   --frozen (--locked + --offline)
+    # when running `cargo build`.
+    response_file_contents = [
+      "TMPDIR=" + rebase_path(cargo_target_dir),
+      "TEMP=" + rebase_path(cargo_target_dir),
+      "TMP=" + rebase_path(cargo_target_dir),
+      "PATH=" +
+          rebase_path("//third_party/rust-toolchain/bin", root_build_dir) +
+          host_path_sep + getenv("PATH"),
+      rebase_path(cargo_exe),
+      "build",
+      "--quiet",
+      "--profile",
+      cargo_profile,
+      "--manifest-path",
+      rebase_path("//brave/tools/crates/Cargo.toml"),
+      "--config",
+      rebase_path("//brave/tools/crates/.cargo/config.toml"),
+      "--target-dir",
+      rebase_path(cargo_target_dir),
+      "--frozen",
+    ]
+    foreach(crate, crates) {
+      response_file_contents += [
+        "--package",
+        crate,
+      ]
+    }
+  }
+
+  copy(target_name) {
+    sources = get_target_outputs(":${target_name}__build")
+    outputs = [ "$root_build_dir/{{source_file_part}}" ]
+    deps = [ ":${target_name}__build" ]
+  }
+}

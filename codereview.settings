@@ -1,0 +1,7 @@
+# This file is used by git-cl to get repository specific information.
+
+# Don't add GERRIT_HOST, it will make PRESUBMIT checks do unnecessary stuff.
+# CODE_REVIEW_SERVER is a mock value to not generate errors during PRESUBMIT.
+CODE_REVIEW_SERVER: github.com
+
+LINT_IGNORE_REGEX: win_build_output/midl/google_update/.*

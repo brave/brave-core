@@ -1,0 +1,152 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "lol_html"
+  epoch = "2"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/base/align.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/base/bytes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/base/debug_trace.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/base/encoding.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/base/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/base/range.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/html/local_name.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/html/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/html/namespace.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/html/tag.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/html/text_type.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/memory/arena.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/memory/limited_vec.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/memory/limiter.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/memory/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/lexer/actions.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/lexer/conditions.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/lexer/lexeme/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/lexer/lexeme/token_outline.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/lexer/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/state_machine/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/state_machine/syntax/comment.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/state_machine/syntax/doctype.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/state_machine/syntax/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/state_machine/syntax/tag/attributes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/state_machine/syntax/tag/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/state_machine/syntax/text/cdata_section.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/state_machine/syntax/text/data.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/state_machine/syntax/text/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/state_machine/syntax/text/plaintext.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/state_machine/syntax/text/rawtext.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/state_machine/syntax/text/rcdata.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/state_machine/syntax/text/script_data/double_escaped.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/state_machine/syntax/text/script_data/escaped.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/state_machine/syntax/text/script_data/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/state_machine/syntax_dsl/action.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/state_machine/syntax_dsl/action_list.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/state_machine/syntax_dsl/arm_pattern/ch_sequence.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/state_machine/syntax_dsl/arm_pattern/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/state_machine/syntax_dsl/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/state_machine/syntax_dsl/state.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/state_machine/syntax_dsl/state_body.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/tag_scanner/actions.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/tag_scanner/conditions.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/tag_scanner/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/tree_builder_simulator/ambiguity_guard.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/parser/tree_builder_simulator/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewritable_units/document_end.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewritable_units/element.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewritable_units/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewritable_units/mutations.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewritable_units/text_encoder.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewritable_units/tokens/attributes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewritable_units/tokens/capturer/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewritable_units/tokens/capturer/text_decoder.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewritable_units/tokens/capturer/to_token.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewritable_units/tokens/comment.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewritable_units/tokens/doctype.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewritable_units/tokens/end_tag.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewritable_units/tokens/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewritable_units/tokens/start_tag.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewritable_units/tokens/text_chunk.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewriter/handlers_dispatcher.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewriter/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewriter/rewrite_controller.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewriter/settings.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/selectors_vm/ast.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/selectors_vm/attribute_matcher.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/selectors_vm/compiler.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/selectors_vm/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/selectors_vm/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/selectors_vm/parser.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/selectors_vm/program.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/selectors_vm/stack.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/transform_stream/dispatcher.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/transform_stream/mod.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_authors = "Ivan Nikulin <inikulin@cloudflare.com, ifaaan@gmail.com>"
+  cargo_pkg_name = "lol_html"
+  cargo_pkg_description =
+      "Streaming HTML rewriter/parser with CSS selector-based API"
+  cargo_pkg_repository = "https://github.com/cloudflare/lol-html"
+  cargo_pkg_version = "2.2.0"
+
+  allow_unsafe = false
+
+  deps = [
+    "//brave/third_party/rust/bitflags/v2:lib",
+    "//brave/third_party/rust/cfg_if/v1:lib",
+    "//brave/third_party/rust/cssparser/v0_29:lib",
+    "//brave/third_party/rust/encoding_rs/v0_8:lib",
+    "//brave/third_party/rust/hashbrown/v0_15:lib",
+    "//brave/third_party/rust/memchr/v2:lib",
+    "//brave/third_party/rust/mime/v0_3:lib",
+    "//brave/third_party/rust/selectors/v0_24:lib",
+    "//brave/third_party/rust/thiserror/v2:lib",
+  ]
+  rustenv = []
+  rustflags = []
+
+  #####################################################################
+  # Tweaking which GN `config`s apply to this target.
+
+  # Config changes that apply to all `//third_party/rust` crates.
+  _configs_to_remove = [
+    # We don't need code coverage data for any `chromium_crates_io` crates.
+    "//build/config/coverage:default_coverage",
+
+    # This is third-party code, so remove `chromium_code` config.  We are not
+    # at the same time adding `//build/config/compiler:no_chromium_code`,
+    # because 1) we don't want to pull how warnings are handled by that config
+    # and 2) that config doesn't have any non-warnings-related stuff.
+    "//build/config/compiler:chromium_code",
+  ]
+  _configs_to_add = []
+
+  # Changing (if needed) which configs apply to this specific crate (based on
+  # `extra_kv.configs_to_remove` and `extra_kv.configs_to_add` from
+  # `gnrt_config.toml`).
+  _configs_to_remove += []
+  _configs_to_add += []
+
+  # Applying config changes.
+  library_configs -= _configs_to_remove
+  library_configs += _configs_to_add
+  executable_configs -= _configs_to_remove
+  executable_configs += _configs_to_add
+  proc_macro_configs -= _configs_to_remove
+  proc_macro_configs += _configs_to_add
+}

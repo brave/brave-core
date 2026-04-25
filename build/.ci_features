@@ -1,0 +1,8 @@
+# This file contains supported CI features in the current checkout to
+# conditionally enable them on CI. Use lower_snake_case naming.
+
+generate_about_credits
+
+presubmit_all_files
+
+brave_interactive_ui_tests

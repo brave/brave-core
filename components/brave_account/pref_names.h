@@ -1,0 +1,64 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_PREF_NAMES_H_
+#define BRAVE_COMPONENTS_BRAVE_ACCOUNT_PREF_NAMES_H_
+
+namespace brave_account::prefs {
+
+// This preference will store (`OSCrypt`-encrypted) the `verificationToken`
+// returned by the POST /v2/accounts/password/init endpoint.
+// It is then used for:
+// - calling POST /v2/accounts/password/finalize
+//   to complete the registration flow
+// - polling POST /v2/verify/result
+//   to exchange the `verificationToken` for the `authToken`
+//   after the user has verified their email
+inline constexpr char kBraveAccountVerificationToken[] =
+    "brave.account.verification_token";
+
+// This preference will store (`OSCrypt`-encrypted) the (JWT) `authToken`
+// returned by the POST /v2/verify/result endpoint.
+// It is then used for:
+// - authenticating subsequent Brave Account requests
+// - creating new service tokens
+inline constexpr char kBraveAccountAuthenticationToken[] =
+    "brave.account.authentication_token";
+
+// This preference will store the email address of the authenticated user
+// returned by the GET /v2/auth/validate endpoint.
+inline constexpr char kBraveAccountEmailAddress[] =
+    "brave.account.email_address";
+
+// This preference will store a dictionary of service tokens with their
+// fetch times. Each entry maps a service name to a dict containing:
+// - "service_token": the service token (`OSCrypt`-encrypted)
+// - "last_fetched": when the service token was retrieved (base::Time as
+// base::Value via base::TimeToValue())
+//
+// Example:
+// ...
+// "service_tokens": {
+//     "email-aliases": {
+//         "last_fetched": "...",
+//         "service_token": "..."
+//     },
+//     ...
+// },
+// ...
+inline constexpr char kBraveAccountServiceTokens[] =
+    "brave.account.service_tokens";
+
+namespace keys {
+
+// Dictionary keys used within kBraveAccountServiceTokens.
+inline constexpr char kServiceToken[] = "service_token";
+inline constexpr char kLastFetched[] = "last_fetched";
+
+}  // namespace keys
+
+}  // namespace brave_account::prefs
+
+#endif  // BRAVE_COMPONENTS_BRAVE_ACCOUNT_PREF_NAMES_H_

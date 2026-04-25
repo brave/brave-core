@@ -1,0 +1,123 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/ios_sdk.gni")
+
+# Template to generate Obj-C wrappers for generated C++ mojo target
+#
+# Arguments
+#
+#   mojom_target
+#     the target which generates C++ mojom files
+#   exclude_types
+#     a list of types to exclude from within the mojom file provided
+#
+template("ios_objc_mojom_wrappers") {
+  assert(defined(invoker.sources) && invoker.sources != [],
+         "sources must be defined for $target_name")
+  assert(defined(invoker.mojom_target) && invoker.mojom_target != "",
+         "mojom_target must be defined for $target_name")
+  mojom_target = invoker.mojom_target
+  mojom_target_path = get_label_info(mojom_target, "dir")
+  mojom_target_name = get_label_info(mojom_target, "name")
+  mojom_target_parser =
+      get_path_info("${mojom_target_path}:${mojom_target_name}__parser",
+                    "abspath")
+  mojom_output_dir = target_gen_dir
+  dep_target_gen = get_label_info(mojom_target, "target_gen_dir")
+
+  if (defined(invoker.output_dir)) {
+    mojom_output_dir = invoker.output_dir
+  }
+
+  generate_wrappers_output = []
+  foreach(source, invoker.sources) {
+    _file = get_path_info(source, "file")
+    generate_wrappers_output += [
+      "$mojom_output_dir/${_file}.objc.h",
+      "$mojom_output_dir/${_file}.objc+private.h",
+      "$mojom_output_dir/${_file}.objc.mm",
+    ]
+  }
+
+  generate_namespace = true
+  if (defined(invoker.generate_namespace)) {
+    generate_namespace = invoker.generate_namespace
+  }
+  generate_wrappers_target = "${target_name}_generate_wrappers"
+
+  action_foreach(generate_wrappers_target) {
+    script = "//brave/build/ios/mojom/gen_model_wrappers.py"
+    inputs = [
+      "//brave/build/ios/mojom/cpp_transformations.h",
+      "//brave/build/ios/mojom/mojom_objc_generator.py",
+      "$root_gen_dir/brave/build/ios/mojom/objc_templates.zip",
+    ]
+    sources = invoker.sources
+    outputs = [
+      "$mojom_output_dir/{{source_file_part}}.objc.h",
+      "$mojom_output_dir/{{source_file_part}}.objc+private.h",
+      "$mojom_output_dir/{{source_file_part}}.objc.mm",
+    ]
+    _module_path = rebase_path("$dep_target_gen/{{source_file_part}}-module")
+    bytecode_path = rebase_path("$root_gen_dir/brave/build/ios/mojom")
+    args = [
+      "--mojom-module=$_module_path",
+      "--output-dir=" + rebase_path(mojom_output_dir),
+      "--bytecode-path=$bytecode_path",
+    ]
+    if (!generate_namespace) {
+      args += [ "--no-namespace-generation" ]
+    }
+    if (defined(invoker.exclude_types)) {
+      _excluded_types = string_join(",", invoker.exclude_types)
+      args += [ "--exclude=$_excluded_types" ]
+    }
+    deps = [
+      "//brave/build/ios/mojom:precompile_templates",
+      "//mojo/public/cpp/bindings",
+      mojom_target,
+      mojom_target_parser,
+    ]
+  }
+
+  type_headers_target_name = "${target_name}_type_headers"
+
+  config(type_headers_target_name) {
+    include_dirs = [
+      "//brave/base/apple",
+      "//brave/ios/browser/api/url",
+    ]
+  }
+
+  no_shadows_config_name = "${target_name}_no_shadows"
+
+  config(no_shadows_config_name) {
+    cflags = [ "-Wno-shadow" ]
+  }
+
+  source_set(target_name) {
+    forward_variables_from(invoker,
+                           "*",
+                           [
+                             "mojom_target",
+                             "sources",
+                           ])
+    if (!defined(public_deps)) {
+      public_deps = []
+    }
+    configs += [ ":$no_shadows_config_name" ]
+    sources = generate_wrappers_output
+    public_configs = [ ":$type_headers_target_name" ]
+    public_deps += [
+      ":$generate_wrappers_target",
+      "//base",
+      "//brave/base/apple",
+      "//brave/build/ios/mojom:precompile_templates",
+      "//net",
+      mojom_target,
+    ]
+  }
+}

@@ -1,0 +1,56 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[JavaPackage="org.chromium.components.content_settings"]
+module content_settings.mojom;
+
+[BraveExtend]
+enum ContentSettingsType {
+  BRAVE_START,
+  BRAVE_ADS = BRAVE_START,
+  BRAVE_COSMETIC_FILTERING,
+  BRAVE_TRACKERS,
+  BRAVE_HTTP_UPGRADABLE_RESOURCES,
+  BRAVE_FINGERPRINTING_V2,
+  BRAVE_SHIELDS,
+  BRAVE_REFERRERS,
+  BRAVE_COOKIES,
+  BRAVE_SPEEDREADER,
+  BRAVE_ETHEREUM,
+  BRAVE_SOLANA,
+  BRAVE_GOOGLE_SIGN_IN,
+  BRAVE_HTTPS_UPGRADE,
+  BRAVE_REMEMBER_1P_STORAGE,
+  // Allow a site to open AI Chat (in side panel on Desktop).
+  // This is limited to Brave Search only.
+  BRAVE_OPEN_AI_CHAT,
+  // Allow a site data to be cleared on last tab closed, or app exit.
+  BRAVE_AUTO_SHRED,
+
+  BRAVE_WEBCOMPAT_NONE,
+  BRAVE_WEBCOMPAT_AUDIO,
+  BRAVE_WEBCOMPAT_CANVAS,
+  BRAVE_WEBCOMPAT_DEVICE_MEMORY,
+  BRAVE_WEBCOMPAT_EVENT_SOURCE_POOL,
+  BRAVE_WEBCOMPAT_FONT,
+  BRAVE_WEBCOMPAT_HARDWARE_CONCURRENCY,
+  BRAVE_WEBCOMPAT_KEYBOARD,
+  BRAVE_WEBCOMPAT_LANGUAGE,
+  BRAVE_WEBCOMPAT_MEDIA_DEVICES,
+  BRAVE_WEBCOMPAT_PLUGINS,
+  BRAVE_WEBCOMPAT_SCREEN,
+  BRAVE_WEBCOMPAT_SPEECH_SYNTHESIS,
+  BRAVE_WEBCOMPAT_USB_DEVICE_SERIAL_NUMBER,
+  BRAVE_WEBCOMPAT_USER_AGENT,
+  BRAVE_WEBCOMPAT_WEBGL,
+  BRAVE_WEBCOMPAT_WEBGL2,
+  BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL,
+  BRAVE_WEBCOMPAT_ALL,
+
+  BRAVE_SHIELDS_METADATA,
+
+  BRAVE_CARDANO,
+  BRAVE_PSST,
+};

@@ -1,0 +1,27 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "chrome/browser/ui/views/extensions/extensions_menu_main_page_view.h"
+
+#include "brave/browser/ui/views/extensions/brave_extensions_menu_entry_view.h"
+
+#define BRAVE_EXTENSION_MENU_MAIN_PAGE_VIEW_CREATE_AND_INSERT_MENU_ITEM        \
+  {                                                                            \
+    auto item = std::make_unique<BraveExtensionsMenuEntryView>(                \
+        browser_, entry_state.is_enterprise, action_model,                     \
+        base::BindRepeating(&ExtensionsMenuHandler::OnActionButtonClicked,     \
+                            base::Unretained(menu_handler_), extension_id),    \
+        base::BindRepeating(&ExtensionsMenuHandler::OnExtensionToggleSelected, \
+                            base::Unretained(menu_handler_), extension_id),    \
+        base::BindRepeating(&ExtensionsMenuHandler::OpenSitePermissionsPage,   \
+                            base::Unretained(menu_handler_), extension_id));   \
+    item->Update(entry_state);                                                 \
+    menu_entries_->AddChildViewAt(std::move(item), index);                     \
+    return;                                                                    \
+  }
+
+#include <chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc>
+
+#undef BRAVE_EXTENSION_MENU_MAIN_PAGE_VIEW_CREATE_AND_INSERT_MENU_ITEM

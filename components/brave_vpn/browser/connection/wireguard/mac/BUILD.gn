@@ -1,0 +1,26 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+
+assert(enable_brave_vpn)
+assert(is_mac)
+
+source_set("mac") {
+  visibility = [ "//brave/components/brave_vpn/browser/connection/*" ]
+
+  sources = [
+    "wireguard_connection_api_impl_mac.h",
+    "wireguard_connection_api_impl_mac.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_vpn/browser/connection/wireguard",
+    "//brave/components/brave_vpn/browser/connection/wireguard/credentials",
+    "//services/network/public/cpp",
+    "//third_party/boringssl",
+  ]
+}

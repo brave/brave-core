@@ -1,0 +1,12 @@
+diff --git a/components/metrics/BUILD.gn b/components/metrics/BUILD.gn
+index 90d4450f792ae0f6ce742ad874470b49b4757229..c4e08b81a2011ef8908ec8e0097eb690bc959dab 100644
+--- a/components/metrics/BUILD.gn
++++ b/components/metrics/BUILD.gn
+@@ -351,6 +351,7 @@ if (!is_cronet_build || is_ios) {
+         "motherboard_metrics_provider.h",
+       ]
+     }
++    import("//brave/components/metrics/sources.gni") deps += brave_components_metrics_deps
+   }
+ 
+   static_library("test_support") {

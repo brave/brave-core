@@ -1,0 +1,31 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+import("//net/features.gni")
+
+source_set("net") {
+  sources = [
+    "certificate_utility.h",
+    "certificate_utility.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//net",
+    "//third_party/boringssl",
+    "//url",
+  ]
+
+  if (include_transport_security_state_preload_list) {
+    deps += [ "//net/http:generate_transport_security_state" ]
+  }
+
+  frameworks = [
+    "Foundation.framework",
+    "WebKit.framework",
+  ]
+}

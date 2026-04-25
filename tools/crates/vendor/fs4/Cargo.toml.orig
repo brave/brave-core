@@ -1,0 +1,47 @@
+[package]
+name = "fs4"
+# NB: When modifying, also modify html_root_url in lib.rs
+version = "0.6.6"
+authors = ["Dan Burkert <dan@danburkert.com>", "Al Liu <scygliu1@gmail.com>"]
+license = "MIT/Apache-2.0"
+repository = "https://github.com/al8n/fs4-rs"
+documentation = "https://docs.rs/fs4"
+description = "No libc, pure Rust cross-platform file locks. Original fs2, now supports async and replace libc by rustix."
+keywords = ["file", "fs2", "lock", "duplicate", "flock"]
+categories = ["filesystem", "external-ffi-bindings", "asynchronous"]
+edition = "2021"
+
+[features]
+default = ["sync"]
+sync = []
+std-async = ["async-std/async-io", "async-trait"]
+tokio-async = ["tokio/fs", "async-trait"]
+smol-async = ["smol", "async-trait"]
+
+[target.'cfg(not(windows))'.dependencies]
+rustix = { version = "0.38.1", features = ["fs"] }
+
+[target.'cfg(windows)'.dependencies.windows-sys]
+version = "0.48.0"
+features = [
+    "Win32_Foundation",
+    "Win32_Storage_FileSystem",
+    "Win32_System_IO"
+]
+
+[dependencies]
+async-trait = { version = "0.1", optional = true }
+async-std = { version = "1.12", optional = true }
+smol = { version = "1.2", optional = true }
+tokio = { version = "1.19", optional = true }
+
+[dev-dependencies]
+async-std = { version = "1.12", features = ["attributes"] }
+smol-potat = "1.1"
+tempdir = "0.3"
+tokio = { version = "1.19", features = ["full"]}
+libc = "0.2.126"
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]

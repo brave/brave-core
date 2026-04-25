@@ -1,0 +1,85 @@
+name: Sync and rebase PR from fork
+
+on:
+  workflow_dispatch:
+    inputs:
+      PR_NUMBER:
+        required: false
+        description: "Number of the PR from the fork"
+      COMMIT_HASH:
+        required: true
+        description: "Commit hash of the PR"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync-and-rebase-pr-from-fork:
+    runs-on: ubuntu-slim
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: Setup Git
+        run: |
+          git config user.name brave-builds
+          git config user.email devops@brave.com
+          git config push.default simple
+
+      - name: Sync and rebase PR from fork
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          PR_NUMBER: ${{ inputs.PR_NUMBER }}
+          COMMIT_HASH: ${{ inputs.COMMIT_HASH }}
+        run: |
+          set -x
+
+          if ! grep -qix '[0-9a-f]\{40,40\}' <<<"$COMMIT_HASH"; then 
+            echo "Provide a full commit hash; got: $COMMIT_HASH"
+            exit 1
+          fi
+
+          pr_number="${PR_NUMBER:-"$(gh pr list --search "$COMMIT_HASH" --json number -q '.[].number')"}"
+          gh_pr_view=$(gh pr view "${pr_number:?}" --json baseRefName,headRefName,headRepository,headRepositoryOwner,id,isCrossRepository,url)
+
+          JQ="jq -e -r"
+          baseRefName=$($JQ ".baseRefName" <<<"$gh_pr_view")
+          headRefName=$($JQ ".headRefName" <<<"$gh_pr_view")
+          headRepositoryName=$($JQ ".headRepository.name" <<<"$gh_pr_view")
+          headRepositoryOwnerLogin=$($JQ ".headRepositoryOwner.login" <<<"$gh_pr_view")
+          isCrossRepository=$($JQ ".isCrossRepository" <<<"$gh_pr_view")
+          url=$($JQ ".url" <<<"$gh_pr_view")
+
+          [[ "$isCrossRepository" = "true" ]] || { echo "PR is not cross repo. Exiting!"; exit 1; }
+
+          git remote add contributor "https://github.com/$headRepositoryOwnerLogin/$headRepositoryName.git" || :
+          contribHeadRefName="contributor-$headRepositoryOwnerLogin-$headRefName"
+          git fetch --no-tags contributor +"$headRefName":"$contribHeadRefName"
+          # Note we are checking out the provided commit hash instead of the pr-branch to avoid race condition
+          # The author could have commited malicious code between the last review and the execution of this workflow
+          git checkout "$COMMIT_HASH"
+          
+          # Rebase the branch with the latest targeting branch HEAD
+          git fetch origin "$baseRefName"
+          if ! git rebase FETCH_HEAD; then
+            echo "Rebase conflict detected. Please resolve the conflicts and push the changes to your fork. Exiting!"
+            exit 1
+          fi
+          git push -f origin HEAD:"refs/heads/$contribHeadRefName"
+
+          existing_prs=$(gh pr list -H "$contribHeadRefName" --json number)
+          if [[ "$existing_prs" = "[]" ]]; then
+            gh pr create \
+              --draft \
+              --base "$baseRefName" \
+              --head "$contribHeadRefName" \
+              --title "CI run for contributor PR #$pr_number" \
+              --body \
+          "## Description
+          This PR is created to run CI on the changes proposed in PR #$pr_number by @$headRepositoryOwnerLogin.
+
+          **This PR should not be merged.**"
+          fi

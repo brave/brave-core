@@ -1,0 +1,45 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import BraveCore
+import Foundation
+import Shared
+@_spi(ChromiumWebViewAccess) import Web
+import WebKit
+import os.log
+
+class AdsMediaReportingScriptHandler: TabContentScript {
+  static let scriptName = "AdsMediaReportingScript"
+  static let scriptId = UUID().uuidString
+  static let messageHandlerName = "adsMediaReporting"
+  static let scriptSandbox: WKContentWorld = .defaultClient
+  static let userScript: WKUserScript? = nil
+
+  func tab(
+    _ tab: some TabState,
+    receivedScriptMessage message: WKScriptMessage,
+    replyHandler: @escaping (Any?, String?) -> Void
+  ) {
+    defer { replyHandler(nil, nil) }
+
+    if !verifyMessage(message: message, securityToken: UserScriptManager.securityToken) {
+      assertionFailure("Missing required security token.")
+      return
+    }
+
+    guard let body = message.body as? [String: AnyObject] else {
+      return
+    }
+
+    if let isPlaying = body["data"]?["playing"] as? Bool,
+      let webView = BraveWebView.from(tab: tab)
+    {
+      if isPlaying {
+        webView.notifyTabDidStartPlayingMedia()
+      } else {
+        webView.notifyTabDidStopPlayingMedia()
+      }
+    }
+  }
+}

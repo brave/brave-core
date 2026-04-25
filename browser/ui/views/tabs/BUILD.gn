@@ -1,0 +1,71 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/ozone.gni")
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [
+    "//brave/browser/ui/views/tabs/brave_tab_container_browsertest.cc",
+    "//brave/browser/ui/views/tabs/brave_tab_hover_browsertest.cc",
+    "//brave/browser/ui/views/tabs/brave_tab_strip_browsertest.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/browser/ui:brave_tab_prefs",
+    "//chrome:resources",
+    "//chrome:strings",
+    "//chrome/browser",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui:ui_features",
+    "//chrome/browser/ui/tabs:features",
+    "//chrome/browser/ui/thumbnails",
+    "//chrome/common",
+    "//chrome/test",
+    "//chrome/test:test_support",
+    "//components/prefs",
+    "//ui/base:test_support",
+  ]
+
+  if (use_ozone) {
+    public_deps = [
+      "//ui/ozone",
+      "//ui/platform_window/common",
+    ]
+  }
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "//chrome/browser/ui/views/tabs/fake_base_tab_strip_controller.cc",
+    "//chrome/browser/ui/views/tabs/fake_base_tab_strip_controller.h",
+    "//chrome/browser/ui/views/tabs/fake_tab_slot_controller.cc",
+    "//chrome/browser/ui/views/tabs/fake_tab_slot_controller.h",
+    "brave_tab_strip_layout_helper_unittest.cc",
+    "brave_tab_strip_unittest.cc",
+    "brave_tab_unittest.cc",
+    "tab_style_views_unittest.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/common",
+    "//brave/components/tabs",
+    "//chrome/browser/ui",
+    "//chrome/test:test_support",
+    "//components/tabs:public",
+    "//components/tabs:test_support",
+    "//content/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//ui/events",
+  ]
+}

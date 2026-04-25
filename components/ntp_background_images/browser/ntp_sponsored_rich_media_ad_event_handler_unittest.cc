@@ -1,0 +1,118 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
+
+#include "brave/components/brave_ads/core/browser/service/test/ads_service_mock.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "testing/gtest/include/gtest/gtest.h"
+
+namespace ntp_background_images {
+
+namespace {
+
+constexpr char kPlacementId[] = "15c6eecc-b8c2-4033-924e-26a12500e7be";
+constexpr char kCreativeInstanceId[] = "7e352bd8-affc-4d47-90d8-316480152bd8";
+
+void VerifyReportAdEventExpectation(
+    brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type,
+    brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type,
+    bool should_report) {
+  brave_ads::AdsServiceMock ads_service;
+
+  NTPSponsoredRichMediaAdEventHandler ad_event_handler(&ads_service);
+
+  if (should_report) {
+    EXPECT_CALL(ads_service, TriggerNewTabPageAdEvent(
+                                 kPlacementId, kCreativeInstanceId,
+                                 mojom_ad_metric_type, mojom_ad_event_type,
+                                 /*callback=*/::testing::_));
+
+  } else {
+    EXPECT_CALL(ads_service, TriggerNewTabPageAdEvent).Times(0);
+  }
+
+  ad_event_handler.MaybeReportRichMediaAdEvent(
+      kPlacementId, kCreativeInstanceId, mojom_ad_metric_type,
+      mojom_ad_event_type);
+}
+
+}  // namespace
+
+class NTPSponsoredRichMediaAdEventHandlerTest : public testing::Test {};
+
+TEST_F(NTPSponsoredRichMediaAdEventHandlerTest,
+       ReportAdEventWhenMetricTypeIsConfirmation) {
+  VerifyReportAdEventExpectation(
+      brave_ads::mojom::NewTabPageAdEventType::kClicked,
+      brave_ads::mojom::NewTabPageAdMetricType::kConfirmation,
+      /*should_report=*/true);
+  VerifyReportAdEventExpectation(
+      brave_ads::mojom::NewTabPageAdEventType::kInteraction,
+      brave_ads::mojom::NewTabPageAdMetricType::kConfirmation,
+      /*should_report=*/true);
+  VerifyReportAdEventExpectation(
+      brave_ads::mojom::NewTabPageAdEventType::kMediaPlay,
+      brave_ads::mojom::NewTabPageAdMetricType::kConfirmation,
+      /*should_report=*/true);
+  VerifyReportAdEventExpectation(
+      brave_ads::mojom::NewTabPageAdEventType::kMedia25,
+      brave_ads::mojom::NewTabPageAdMetricType::kConfirmation,
+      /*should_report=*/true);
+  VerifyReportAdEventExpectation(
+      brave_ads::mojom::NewTabPageAdEventType::kMedia100,
+      brave_ads::mojom::NewTabPageAdMetricType::kConfirmation,
+      /*should_report=*/true);
+}
+
+TEST_F(NTPSponsoredRichMediaAdEventHandlerTest,
+       DoNotReportAdEventWhenMetricTypeIsConfirmation) {
+  VerifyReportAdEventExpectation(
+      brave_ads::mojom::NewTabPageAdEventType::kServedImpression,
+      brave_ads::mojom::NewTabPageAdMetricType::kConfirmation,
+      /*should_report=*/false);
+  VerifyReportAdEventExpectation(
+      brave_ads::mojom::NewTabPageAdEventType::kViewedImpression,
+      brave_ads::mojom::NewTabPageAdMetricType::kConfirmation,
+      /*should_report=*/false);
+}
+
+TEST_F(NTPSponsoredRichMediaAdEventHandlerTest,
+       ReportAdEventWhenMetricTypeIsDisabled) {
+  VerifyReportAdEventExpectation(
+      brave_ads::mojom::NewTabPageAdEventType::kClicked,
+      brave_ads::mojom::NewTabPageAdMetricType::kDisabled,
+      /*should_report=*/true);
+  VerifyReportAdEventExpectation(
+      brave_ads::mojom::NewTabPageAdEventType::kInteraction,
+      brave_ads::mojom::NewTabPageAdMetricType::kDisabled,
+      /*should_report=*/true);
+  VerifyReportAdEventExpectation(
+      brave_ads::mojom::NewTabPageAdEventType::kMediaPlay,
+      brave_ads::mojom::NewTabPageAdMetricType::kDisabled,
+      /*should_report=*/true);
+  VerifyReportAdEventExpectation(
+      brave_ads::mojom::NewTabPageAdEventType::kMedia25,
+      brave_ads::mojom::NewTabPageAdMetricType::kDisabled,
+      /*should_report=*/true);
+  VerifyReportAdEventExpectation(
+      brave_ads::mojom::NewTabPageAdEventType::kMedia100,
+      brave_ads::mojom::NewTabPageAdMetricType::kDisabled,
+      /*should_report=*/true);
+}
+
+TEST_F(NTPSponsoredRichMediaAdEventHandlerTest,
+       DoNotReportAdEventWhenMetricTypeIsDisabled) {
+  VerifyReportAdEventExpectation(
+      brave_ads::mojom::NewTabPageAdEventType::kServedImpression,
+      brave_ads::mojom::NewTabPageAdMetricType::kDisabled,
+      /*should_report=*/false);
+  VerifyReportAdEventExpectation(
+      brave_ads::mojom::NewTabPageAdEventType::kViewedImpression,
+      brave_ads::mojom::NewTabPageAdMetricType::kDisabled,
+      /*should_report=*/false);
+}
+
+}  // namespace ntp_background_images

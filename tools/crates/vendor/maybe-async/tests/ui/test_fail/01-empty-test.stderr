@@ -1,0 +1,7 @@
+error: Arguments cannot be empty, at least specify the condition for sync code
+ --> tests/ui/test_fail/01-empty-test.rs:9:1
+  |
+9 | #[maybe_async::test()]
+  | ^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: this error originates in the attribute macro `maybe_async::test` (in Nightly builds, run with -Z macro-backtrace for more info)

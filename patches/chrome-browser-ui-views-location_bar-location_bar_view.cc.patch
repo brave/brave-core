@@ -1,0 +1,36 @@
+diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.cc b/chrome/browser/ui/views/location_bar/location_bar_view.cc
+index f920fdfb0bcaca755c92ee459270b78011503952..67f8ed8ada65a6da8562edfdbb10c837dfd0c593 100644
+--- a/chrome/browser/ui/views/location_bar/location_bar_view.cc
++++ b/chrome/browser/ui/views/location_bar/location_bar_view.cc
+@@ -860,6 +860,7 @@ void LocationBarView::Layout(PassKey) {
+                                   .indent_input_when_popup_closed) &&
+                              !location_icon_view_->ShouldShowLabel() &&
+                              !ShouldShowKeywordBubble();
++  BRAVE_LOCATION_BAR_VIEW_LAYOUT_LEADING_DECORATIONS
+   if (should_indent) {
+     icon_left += 7 /*icon_indent*/;
+     icon_left += omnibox_feature_configs::AdjustOmniboxIndent()
+@@ -948,6 +949,7 @@ void LocationBarView::Layout(PassKey) {
+       }
+       selected_keyword_view_->SetCustomImage(image);
+     }
++    BRAVE_LOCATION_BAR_VIEW_LAYOUT_HANDLE_SEARCH_PROMOTION_BUTTON_VISIBILITY
+   } else if (location_icon_view_->GetShowText() &&
+              !ShouldChipOverrideLocationIcon()) {
+     location_icon_view_->SetVisible(true);
+@@ -1013,6 +1015,7 @@ void LocationBarView::Layout(PassKey) {
+       (info.num_legacy_page_actions_shown == 0) && !all_page_actions_migrated
+           ? 4
+           : trailing_decorations_edge_padding;
++  BRAVE_LOCATION_BAR_VIEW_LAYOUT_RIGHT_MOST_TRAILING_DECORATIONS
+   add_trailing_decoration(page_action_icon_container_,
+                           /*intra_item_padding=*/0,
+                           /*edge_padding=*/
+@@ -1036,6 +1039,7 @@ void LocationBarView::Layout(PassKey) {
+ 
+   add_trailing_decoration(clear_all_button_, /*intra_item_padding=*/0,
+                           /*edge_padding=*/trailing_decorations_edge_padding);
++  BRAVE_LOCATION_BAR_VIEW_LAYOUT_LEFT_MOST_TRAILING_DECORATIONS
+ 
+   // Perform layout.
+   int entry_width = width();

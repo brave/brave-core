@@ -1,0 +1,47 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.0.3 effective-5.10 (swiftlang-6.0.3.1.10 clang-1600.0.30.1)
+// swift-module-flags: -target arm64-apple-ios15.1-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-bare-slash-regex -module-name JitsiMeetSDK
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface
+@_exported import JitsiMeetSDK
+import Swift
+import UIKit
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+public typealias AnimationCompletion = (Swift.Bool) -> Swift.Void
+public protocol PiPViewCoordinatorDelegate : AnyObject {
+  func exitPictureInPicture()
+}
+public class PiPViewCoordinator {
+  public enum Position {
+    case lowerRightCorner
+    case upperRightCorner
+    case lowerLeftCorner
+    case upperLeftCorner
+    public static func == (a: JitsiMeetSDK.PiPViewCoordinator.Position, b: JitsiMeetSDK.PiPViewCoordinator.Position) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public var dragBoundInsets: UIKit.UIEdgeInsets {
+    get
+    set
+  }
+  public var initialPositionInSuperView: JitsiMeetSDK.PiPViewCoordinator.Position
+  @available(*, deprecated, message: "The PiP window size is now fixed to 150px.")
+  public var c: CoreFoundation.CGFloat
+  weak public var delegate: (any JitsiMeetSDK.PiPViewCoordinatorDelegate)?
+  public init(withView view: UIKit.UIView)
+  public func configureAsStickyView(withParentView parentView: UIKit.UIView? = nil)
+  public func show(completion: JitsiMeetSDK.AnimationCompletion? = nil)
+  public func hide(completion: JitsiMeetSDK.AnimationCompletion? = nil)
+  public func enterPictureInPicture()
+  @objc public func exitPictureInPicture()
+  public func resetBounds(bounds: CoreFoundation.CGRect)
+  public func stopDragGesture()
+  open func configureExitPiPButton(target: Any, action: ObjectiveC.Selector) -> UIKit.UIButton
+  @objc deinit
+}
+extension JitsiMeetSDK.PiPViewCoordinator.Position : Swift.Equatable {}
+extension JitsiMeetSDK.PiPViewCoordinator.Position : Swift.Hashable {}

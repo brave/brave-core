@@ -1,0 +1,62 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/features.gni")
+
+source_set("importer") {
+  sources = [
+    "brave_importer_p3a.cc",
+    "brave_importer_p3a.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/user_data_importer/common",
+  ]
+}
+if (!is_android) {
+  source_set("unit_tests") {
+    testonly = true
+    sources = [
+      "brave_external_process_importer_host_unittest.cc",
+      "brave_importer_p3a_unittest.cc",
+      "brave_importer_type_unittest.cc",
+    ]
+
+    deps = [
+      ":importer",
+      "//base",
+      "//base/test:test_support",
+      "//brave/common/importer",
+      "//chrome/browser",
+      "//chrome/common",
+      "//chrome/test:test_support",
+      "//components/user_data_importer/common",
+      "//components/value_store:test_support",
+      "//extensions/browser",
+      "//extensions/common:common_constants",
+      "//testing/gtest",
+    ]
+  }
+
+  source_set("browser_tests") {
+    testonly = true
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+    sources = [ "brave_importer_browsertest.cc" ]
+
+    deps = [
+      "//base",
+      "//brave/common/importer",
+      "//chrome/browser/importer",
+      "//chrome/browser/ui",
+      "//chrome/common:constants",
+      "//chrome/test:test_support",
+      "//components/value_store:test_support",
+      "//content/test:test_support",
+      "//testing/gtest",
+    ]
+  }
+}

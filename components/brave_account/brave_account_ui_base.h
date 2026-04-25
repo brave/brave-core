@@ -1,0 +1,115 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_BASE_H_
+#define BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_BASE_H_
+
+#include <utility>
+
+#include "base/check.h"
+#include "base/check_deref.h"
+#include "base/containers/map_util.h"
+#include "base/containers/span.h"
+#include "base/functional/callback_forward.h"
+#include "base/functional/callback_helpers.h"
+#include "base/memory/raw_ref.h"
+#include "brave/components/brave_account/brave_account_constants.h"
+#include "brave/components/brave_account/brave_account_service.h"
+#include "brave/components/brave_account/brave_account_utils.h"
+#include "brave/components/brave_account/features.h"
+#include "brave/components/brave_account/mojom/brave_account.mojom.h"
+#include "brave/components/brave_account/resources/grit/brave_account_resources.h"
+#include "brave/components/brave_account/resources/grit/brave_account_resources_map.h"
+#include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/password_strength_meter/password_strength_meter.h"
+#include "brave/components/password_strength_meter/password_strength_meter.mojom.h"
+#include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_webui_strings.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "net/base/url_util.h"
+#include "services/network/public/mojom/content_security_policy.mojom.h"
+#include "ui/base/webui/resource_path.h"
+#include "url/gurl.h"
+
+// Template base class for Brave Account WebUI controllers.
+//
+// `BraveAccountUIBase` encapsulates shared setup logic for Brave Account WebUIs
+// across desktop, Android, and iOS. It streamlines the creation and
+// configuration of a WebUIDataSource.
+//
+// Intended to be subclassed with the appropriate WebUIDataSource and
+// BraveAccountServiceFactory types.
+template <typename WebUIDataSource, typename BraveAccountServiceFactory>
+class BraveAccountUIBase {
+ public:
+  template <typename Profile>
+  explicit BraveAccountUIBase(
+      Profile* profile,
+      const GURL& url,
+      base::OnceCallback<void(WebUIDataSource*,
+                              base::span<const webui::ResourcePath>,
+                              int)> setup_webui_data_source = base::DoNothing())
+      : brave_account_service_(
+            CHECK_DEREF(BraveAccountServiceFactory::GetFor(profile))) {
+    CHECK(brave_account::features::IsBraveAccountEnabled());
+
+    auto* source = WebUIDataSource::CreateAndAdd(profile, kBraveAccountHost);
+    std::move(setup_webui_data_source)
+        .Run(source, kBraveAccountResources,
+             IDR_BRAVE_ACCOUNT_BRAVE_ACCOUNT_PAGE_HTML);
+    SetupWebUIDataSource(source, url);
+  }
+
+  void BindInterface(mojo::PendingReceiver<brave_account::mojom::Authentication>
+                         pending_receiver) {
+    brave_account_service_->BindInterface(std::move(pending_receiver));
+  }
+
+  void BindInterface(mojo::PendingReceiver<
+                     password_strength_meter::mojom::PasswordStrengthMeter>
+                         pending_receiver) {
+    password_strength_meter::BindInterface(std::move(pending_receiver));
+  }
+
+ private:
+  void SetupWebUIDataSource(WebUIDataSource* source, const GURL& url) {
+    source->OverrideContentSecurityPolicy(
+        network::mojom::CSPDirectiveName::ScriptSrc,
+        "script-src chrome://resources 'self' 'wasm-unsafe-eval';");
+    source->OverrideContentSecurityPolicy(
+        network::mojom::CSPDirectiveName::RequireTrustedTypesFor,
+        "require-trusted-types-for 'script';");
+    source->OverrideContentSecurityPolicy(
+        network::mojom::CSPDirectiveName::TrustedTypes,
+        "trusted-types lit-html-desktop;");
+
+    source->UseStringsJs();
+    source->EnableReplaceI18nInJS();
+
+    source->AddResourcePaths(kBraveAccountResources);
+    source->SetDefaultResource(IDR_BRAVE_ACCOUNT_BRAVE_ACCOUNT_PAGE_HTML);
+
+    source->AddLocalizedStrings(webui::kBraveAccountStrings);
+
+    source->AddResourcePath("full_brave_brand.svg",
+                            IDR_BRAVE_ACCOUNT_IMAGES_FULL_BRAVE_BRAND_SVG);
+    source->AddResourcePath("full_brave_brand_dark.svg",
+                            IDR_BRAVE_ACCOUNT_IMAGES_FULL_BRAVE_BRAND_DARK_SVG);
+
+    if (std::string initiating_service_name; net::GetValueForKeyInQuery(
+            url, brave_account::kInitiatingServiceNameQueryParam,
+            &initiating_service_name)) {
+      source->AddInteger(
+          "initiatingService",
+          static_cast<int32_t>(CHECK_DEREF(base::FindOrNull(
+              brave_account::kServiceFromString, initiating_service_name))));
+    }
+  }
+
+ private:
+  const raw_ref<brave_account::BraveAccountService> brave_account_service_;
+};
+
+#endif  // BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_BASE_H_

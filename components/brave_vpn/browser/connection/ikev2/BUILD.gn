@@ -1,0 +1,64 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+
+assert(enable_brave_vpn)
+assert(!is_android)
+
+source_set("ikev2") {
+  sources = [
+    "system_vpn_connection_api_impl_base.cc",
+    "system_vpn_connection_api_impl_base.h",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/brave_vpn/browser/api",
+    "//brave/components/brave_vpn/browser/connection:api",
+    "//brave/components/brave_vpn/browser/connection:common",
+    "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/common/mojom",
+    "//components/prefs",
+  ]
+
+  public_deps = [ "//services/network/public/cpp" ]
+}
+
+source_set("sim") {
+  testonly = true
+  sources = [
+    "connection_api_impl_sim.cc",
+    "connection_api_impl_sim.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave//components/brave_vpn/browser/connection/ikev2",
+    "//brave/components/brave_vpn/browser/connection:api",
+    "//brave/components/brave_vpn/browser/connection:common",
+    "//brave/components/brave_vpn/common",
+    "//components/version_info:channel",
+    "//third_party/icu",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "system_vpn_connection_api_unittest.cc" ]
+
+  deps = [
+    ":sim",
+    "//brave/components/brave_vpn/browser",
+    "//brave/components/brave_vpn/browser/connection:api",
+    "//brave/components/brave_vpn/browser/connection:common",
+    "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/common/mojom",
+    "//components/sync_preferences:test_support",
+    "//content/test:test_support",
+    "//services/network:test_support",
+    "//testing/gtest",
+  ]
+}

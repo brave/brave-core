@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22E261" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="BlockedResource" representedClassName="Data.BlockedResource" syncable="YES">
+        <attribute name="domain" optional="YES" attributeType="String"/>
+        <attribute name="faviconUrl" optional="YES" attributeType="String"/>
+        <attribute name="host" optional="YES" attributeType="String"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <fetchIndex name="byHost">
+            <fetchIndexElement property="host" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byDomain">
+            <fetchIndexElement property="domain" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="Bookmark" representedClassName="Data.Favorite" syncable="YES">
+        <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="customTitle" optional="YES" attributeType="String"/>
+        <attribute name="isFavorite" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isFolder" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="lastVisited" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="order" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="syncDisplayUUID" optional="YES" attributeType="String"/>
+        <attribute name="syncOrder" optional="YES" attributeType="String"/>
+        <attribute name="syncParentDisplayUUID" optional="YES" attributeType="String"/>
+        <attribute name="tags" optional="YES" attributeType="Transformable"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="url" optional="YES" attributeType="String"/>
+        <attribute name="visits" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="domain" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Domain" inverseName="bookmarks" inverseEntity="Domain"/>
+        <fetchIndex name="byLastVisitedIndex">
+            <fetchIndexElement property="lastVisited" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byUrlIndex">
+            <fetchIndexElement property="url" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byVisitsIndex">
+            <fetchIndexElement property="visits" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="BraveVPNAlert" representedClassName="Data.BraveVPNAlert" syncable="YES">
+        <attribute name="action" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="category" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="host" optional="YES" attributeType="String"/>
+        <attribute name="message" optional="YES" attributeType="String"/>
+        <attribute name="timestamp" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="uuid" optional="YES" attributeType="String"/>
+        <fetchIndex name="byUUID">
+            <fetchIndexElement property="uuid" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="uuid"/>
+            </uniquenessConstraint>
+            <uniquenessConstraint>
+                <constraint value="timestamp"/>
+                <constraint value="host"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="CustomFilterListSetting" representedClassName="Data.CustomFilterListSetting" syncable="YES">
+        <attribute name="externalURL" optional="YES" attributeType="URI"/>
+        <attribute name="isEnabled" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="uuid" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="DataSaved" representedClassName="Data.DataSaved" syncable="YES">
+        <attribute name="amount" optional="YES" attributeType="String"/>
+        <attribute name="savedUrl" optional="YES" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="savedUrl"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="Device" representedClassName="Data.Device" syncable="YES">
+        <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="deviceDisplayId" optional="YES" attributeType="String"/>
+        <attribute name="isCurrentDevice" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isSynced" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="syncDisplayUUID" optional="YES" attributeType="String"/>
+        <relationship name="tabs" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TabMO" inverseName="device" inverseEntity="TabMO"/>
+    </entity>
+    <entity name="Domain" representedClassName="Data.Domain" syncable="YES">
+        <attribute name="blockedFromTopSites" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="shield_adblockAndTp" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="shield_allOff" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="shield_fpProtection" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="shield_httpse" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="shield_noScript" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="shield_safeBrowsing" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="topsite" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="url" optional="YES" attributeType="String"/>
+        <attribute name="visits" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="wallet_permittedAccounts" optional="YES" attributeType="String"/>
+        <attribute name="wallet_solanaPermittedAcccounts" optional="YES" attributeType="String"/>
+        <attribute name="zoom_level" optional="YES" attributeType="Double" usesScalarValueType="NO"/>
+        <relationship name="bookmarks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Bookmark" inverseName="domain" inverseEntity="Bookmark"/>
+        <fetchIndex name="byBlockedFromTopSitesIndex">
+            <fetchIndexElement property="blockedFromTopSites" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byUrlIndex">
+            <fetchIndexElement property="url" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byVisitsIndex">
+            <fetchIndexElement property="visits" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="FeedSourceOverride" representedClassName="Data.FeedSourceOverride" syncable="YES">
+        <attribute name="enabled" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="publisherID" attributeType="String"/>
+        <fetchIndex name="byPublisherID">
+            <fetchIndexElement property="publisherID" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="publisherID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="FilterListSetting" representedClassName="Data.FilterListSetting" syncable="YES">
+        <attribute name="componentId" optional="YES" attributeType="String"/>
+        <attribute name="folderPath" optional="YES" attributeType="String"/>
+        <attribute name="isEnabled" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="order" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="uuid" attributeType="String"/>
+    </entity>
+    <entity name="PlaylistFolder" representedClassName="Data.PlaylistFolder" syncable="YES">
+        <attribute name="creatorLink" optional="YES" attributeType="String"/>
+        <attribute name="creatorName" optional="YES" attributeType="String"/>
+        <attribute name="dateAdded" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="order" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="sharedFolderETag" optional="YES" attributeType="String"/>
+        <attribute name="sharedFolderId" optional="YES" attributeType="String"/>
+        <attribute name="sharedFolderUrl" optional="YES" attributeType="String"/>
+        <attribute name="title" attributeType="String"/>
+        <attribute name="uuid" attributeType="String"/>
+        <relationship name="playlistItems" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PlaylistItem" inverseName="playlistFolder" inverseEntity="PlaylistItem"/>
+    </entity>
+    <entity name="PlaylistItem" representedClassName="Data.PlaylistItem" syncable="YES">
+        <attribute name="cachedData" optional="YES" attributeType="Binary"/>
+        <attribute name="dateAdded" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="duration" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="lastPlayedOffset" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="mediaSrc" attributeType="String"/>
+        <attribute name="mimeType" attributeType="String"/>
+        <attribute name="name" attributeType="String"/>
+        <attribute name="order" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="pageSrc" attributeType="String"/>
+        <attribute name="pageTitle" optional="YES" attributeType="String"/>
+        <attribute name="uuid" optional="YES" attributeType="String"/>
+        <relationship name="playlistFolder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PlaylistFolder" inverseName="playlistItems" inverseEntity="PlaylistFolder"/>
+    </entity>
+    <entity name="RecentlyClosed" representedClassName="Data.RecentlyClosed" syncable="YES">
+        <attribute name="dateAdded" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="historyIndex" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="historyList" optional="YES" attributeType="Transformable"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="url" attributeType="String"/>
+    </entity>
+    <entity name="RecentSearch" representedClassName="Data.RecentSearch" syncable="YES">
+        <attribute name="dateAdded" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="searchType" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="text" optional="YES" attributeType="String"/>
+        <attribute name="websiteUrl" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="RSSFeedSource" representedClassName="Data.RSSFeedSource" syncable="YES">
+        <attribute name="feedUrl" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="feedUrl"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="TabMO" representedClassName="Data.TabMO" syncable="YES">
+        <attribute name="color" optional="YES" attributeType="String"/>
+        <attribute name="isPrivate" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isSelected" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="lastUpdate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="order" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="screenshot" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
+        <attribute name="screenshotUUID" optional="YES" attributeType="String"/>
+        <attribute name="syncUUID" optional="YES" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="url" optional="YES" attributeType="String"/>
+        <attribute name="urlHistoryCurrentIndex" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="urlHistorySnapshot" optional="YES" attributeType="Transformable"/>
+        <relationship name="device" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Device" inverseName="tabs" inverseEntity="Device"/>
+    </entity>
+</model>

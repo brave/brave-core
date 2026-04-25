@@ -1,0 +1,45 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module ai_chat.mojom;
+
+import "brave/components/ai_chat/core/common/mojom/ai_chat.mojom";
+import "brave/components/ai_chat/core/common/mojom/common.mojom";
+
+enum OperationResult {
+  Success,
+  InvalidUrl,
+  InvalidContextSize,
+  // for use with the `brave-ai-chat-allow-private-ips` feature.
+  UrlValidAsPrivateEndpoint,
+};
+
+interface AIChatSettingsHelper {
+  GetPremiumStatus() => (PremiumStatus status, PremiumInfo? info);
+  GetModelsWithSubtitles() => (array<ModelWithSubtitle> models);
+  GetManageUrl() => (string url);
+  GetCustomModels() => (array<Model> models);
+  AddCustomModel(Model model) => (OperationResult result);
+  SaveCustomModel(uint32 index, Model model) => (OperationResult result);
+  DeleteCustomModel(uint32 index);
+  SetDefaultModelKey(string key);
+  GetDefaultModelKey() => (string key);
+  SetClientPage(pending_remote<SettingsPage> page);
+  DeleteConversations(int32 time_period);
+
+  [EnableIf=is_android]
+  CreateOrderId() => (string order_id);
+
+  [EnableIf=is_android]
+  FetchOrderCredentials(string order_id) => (string response);
+
+  [EnableIf=is_android]
+  RefreshOrder(string order_id) => (string response);
+};
+
+interface SettingsPage {
+  OnModelListChanged(array<Model> models);
+  OnDefaultModelChanged(string key);
+};

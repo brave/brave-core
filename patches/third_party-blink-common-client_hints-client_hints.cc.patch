@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/common/client_hints/client_hints.cc b/third_party/blink/common/client_hints/client_hints.cc
+index ab8af78c7a48343250a25a7104b20d95181c1967..6bb2ec35dc5f51b0b784a8a1802f07a2fc227796 100644
+--- a/third_party/blink/common/client_hints/client_hints.cc
++++ b/third_party/blink/common/client_hints/client_hints.cc
+@@ -21,6 +21,7 @@
+ namespace blink {
+ 
+ bool IsClientHintSentByDefault(network::mojom::WebClientHintsType type) {
++  BRAVE_CLIENT_HINTS_IS_CLIENT_HINT_SENT_BY_DEFAULT
+   switch (type) {
+     case network::mojom::WebClientHintsType::kSaveData:
+     case network::mojom::WebClientHintsType::kUA:

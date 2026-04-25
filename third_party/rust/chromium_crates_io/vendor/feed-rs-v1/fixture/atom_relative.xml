@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Example Feed with Relative URLs</title>
+  <link href="/blog/" />
+  <link rel="self" href="https://example.com/blog/feed.xml" />
+  <updated>2003-12-13T18:30:02Z</updated>
+  <logo>feed_logo.jpg</logo>
+  <icon>/favicon.ico</icon>
+  <author>
+    <name>Jane Doe</name>
+  </author>
+  <id>urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6</id>
+  <entry>
+    <title>Atom-Powered Robots Run Amok</title>
+    <link href="/blog/2003/12/13/atom03" />
+    <id>urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a</id>
+    <updated>2003-12-13T18:30:02Z</updated>
+    <summary>Some text.</summary>
+  </entry>
+</feed>

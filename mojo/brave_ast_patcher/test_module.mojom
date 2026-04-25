@@ -1,0 +1,43 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at http://mozilla.org/MPL/2.0/.
+
+// This is an original mojom file which should be patched.
+
+module brave_ast_patcher.mojom;
+
+const int32 kGlobalConstant1 = 1;
+
+enum GlobalEnum {
+  VALUE = 0,
+  VALUE_GLOBAL_CONSTANT = kGlobalConstant1,
+};
+
+struct GlobalStruct {
+  const int32 kNestedConstant1 = 1;
+
+  enum NestedEnum {
+    VALUE = 0,
+    VALUE_NESTED_CONSTANT = kNestedConstant1,
+  };
+
+  GlobalEnum global_enum_member = GlobalEnum.VALUE_GLOBAL_CONSTANT;
+  NestedEnum nested_enum_member = NestedEnum.VALUE_NESTED_CONSTANT;
+};
+
+union GlobalUnion {
+  bool bool_value;
+  string string_value;
+};
+
+interface GlobalInterface {
+  const int32 kNestedConstant1 = 1;
+
+  enum NestedEnum {
+    VALUE = 0,
+    VALUE_NESTED_CONSTANT = kNestedConstant1,
+  };
+
+  TestNestedEnum() => (NestedEnum nested_enum);
+};

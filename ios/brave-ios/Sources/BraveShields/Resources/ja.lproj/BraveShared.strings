@@ -1,0 +1,252 @@
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "信頼できるコミュニティにより作成および管理されているリストを追加します。";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "信頼する機関のリストにのみ登録してください**。ブラウザでは入力されたURLを用いて定期的にリストの更新があるかチェックを行います。";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "URLでフィルターを追加";
+
+/* A discription of the Brave Player. */
+"AntiAdBlockWarningBravePlayerDescription" = "**Braveプレーヤー**は、広告なしで途切れることのない動画視聴をお楽しみいただけるツールです。";
+
+/* A button that disables ad-blocking and uses brave player. */
+"AntiAdBlockWarningConfirmationButton" = "プレーヤーを使用する";
+
+/* A descriptive message explaining this site's ad-blocking crackdown. */
+"AntiAdBlockWarningDescription" = "このサイトで一部の広告ブロッカーのブロックを開始しました。予期せぬ動作が観察される可能性があります。";
+
+/* A descriptive message explaining to disable shields on this site. */
+"AntiAdBlockWarningDescription2" = "この問題に対処するため、Braveではシールドの設定を調整することができます。調整後は、代わりにBrave プレーヤーでこのコンテンツの視聴をお試しください。";
+
+/* A button that dismisses the warning and does nothing. */
+"AntiAdBlockWarningDismissButton" = "現在の設定を維持する";
+
+/* A title for a popup that tells the user we recommend turning shields off for this site. */
+"AntiAdBlockWarningTitle" = "このサイトの広告ブロック設定を調整";
+
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "自動削除";
+
+/* The option the user can select to do aggressive ad and tracker blocking */
+"BlockAdsAndTrackingAggressive" = "積極的";
+
+/* A description for a shield options that allows you to switch between different blocking levels for trackers and ads blocking. Options include disabled, standard and aggressive. */
+"BlockAdsAndTrackingDescription" = "広告、ポップアップ、トラッキングの読み込みをブロックします。";
+
+/* The option the user can select to disable ad and tracker blocking */
+"BlockAdsAndTrackingDisabled" = "無効";
+
+/* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
+"BlockAdsAndTrackingStandard" = "標準";
+
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "「アプリに切り替える」通知をブロック";
+
+/* Title for the brave player feature */
+"BravePlayer" = "Braveプレーヤー";
+
+/* A label for a toggle that enables automatic launching of brave player for certain sites */
+"BravePlayerAlwaysOpenYouTubeLinks" = "このサイトからの動画を常にBraveプレーヤーで開く";
+
+/* A button that confirms to use the brave player. */
+"BravePlayerConfirmButton" = "利用する";
+
+/* A button that ignores the brave player */
+"BravePlayerDismissButton" = "後で";
+
+/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
+"BravePlayerInfoMessage" = "Braveプレーヤーなら、途切れることなく動画の視聴をお楽しみいただけます。";
+
+/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
+"BravePlayerInfoTitle" = "代わりにBraveプレーヤーで視聴";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "コンテンツフィルター";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "カスタムフィルターを有効にすると、地域や言語に応じたトラッカーや不快な表示をブロックできます";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "カスタムフィルターリスト";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "カスタムフィルターリストのURL";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "カスタムフィルター";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "カスタムフィルターをここに追加します。Adblockフィルター構文を使用してください。";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "%2$i行目のルール `%1$@` が無効です";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "ここに、カスタムフィルターを1行に1つずつ追加します。";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "カスタムフィルターは%i行以上をサポートしていません";
+
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "デフォルトフィルターリスト";
+
+/* Text for a button in a blocked page info screen that takes you back where you came from */
+"DomainBlockedGoBackAction" = "戻る";
+
+/* A description in the warning page that appears when a page was blocked */
+"DomainBlockedPageDescription" = "トラッカーや広告のブロックをリクエストされたため、Braveは初回のネットワーク接続の前にこのサイトをブロックしています。";
+
+/* A message in the warning page that appears when a page was blocked */
+"DomainBlockedPageMessage" = "Braveは、次のサイトの読み込みを防止しました：";
+
+/* A title in the warning page that appears when a page was blocked */
+"DomainBlockedPageTitle" = "このサイトは他のサイト間であなたの行動を追跡する可能性があります";
+
+/* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
+"DomainBlockedProceedAction" = "続行する";
+
+/* A tab title for the warning page that appears when a page was blocked */
+"DomainBlockedTitle" = "ドメインがブロックされました";
+
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "自分のデータを販売または共有しないよう、ウェブサイトに要求します。[詳細はこちら](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "Global Privacy Controlを有効にする";
+
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "外部フィルターリスト";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "入力されたURLが無効です";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "カスタムフィルターリストでは安全な (https) URLのみが許可されます";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "追加";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "その他の人気コミュニティリスト。フィルターが多すぎると、ブラウジング速度が遅くなる場合があります。";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "ダウンロード エラー";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "ダウンロード待ち";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "編集する";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "フィルターリストのURLを入力";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "最終更新 %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "フィルターリストのURLをここに入力してください";
+
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "サイトを閉じる際に、Cookieやその他のサイトデータを消去します";
+
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "このサイトを閉じる際にデータを削除";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "厳格";
+
+/* This is a label on a button that updates filter lists which signifies that lists have been updated */
+"ListsUpdated" = "リストを更新しました";
+
+/* A label displayed above a value indicating if the site is in aggressive mode in Blocked Requests view. */
+"shields.aggressiveLabel" = "積極的";
+
+/* A label displayed above the location a request was blocked in Blocked Requests view. */
+"shields.blockedByLabel" = "ブロック中";
+
+/* The title displayed in the navigation bar of Blocked Requests view. */
+"shields.blockedRequestsTitle" = "ブロックしたリクエスト";
+
+/* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
+"shields.contentBlocker" = "コンテンツブロッカー";
+
+/* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
+"shields.requestBlocking" = "ブロックをリクエスト";
+
+/* A label displayed above the request url that was blocked in Blocked Requests view. */
+"shields.requestURLLabel" = "URL をリクエスト";
+
+/* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
+"shields.resourceTypeLabel" = "リソースタイプ";
+
+/* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowDescription" = "Shredがhistoryアイテムを削除すべきかどうか。";
+
+/* A title beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowTitle" = "Shredで履歴を削除";
+
+/* A row description that appears in the Shields & Privacy settings. */
+"shields.shredRowDescription" = "自動Shredを更新し、削除するデータを調整します。";
+
+/* A row title that appears in the Shields & Privacy settings. */
+"shields.shredRowTitle" = "削除";
+
+/* A title for the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredSettingsViewTitle" = "削除";
+
+/* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
+"shields.sourceURLLabel" = "ソースURL";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "データを削除";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "使用しない";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "アプリの終了時";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "サイトタブの終了時";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "削除を選択すると、このサイトに開いている全タブを閉じ、すべてのサイトデータを削除します。これは元に戻せません。";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "サイトデータを削除";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "削除を選択すると、このサイトに開いている全タブを閉じ、すべてのサイトデータを削除します。これは元に戻せません。";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "サイトデータを削除しますか？";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "サイトデータを削除";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "削除を選択すると、選択したタブを閉じ、すべてのサイトデータを削除します。これは元に戻せません。";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "サイトは安全ではありません";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "%@への接続は保護されていません";
+
+/* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
+"TrackersAndAdsBlocking" = "トラッカー&広告をブロック";
+
+/* This is a label for a button which when pressed updates all the filter lists */
+"UpdateLists" = "リストを更新";
+
+/* This is a label on a button that updates filter lists which signifies that lista are being updated */
+"UpdatingLists" = "リストを更新中";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "HTTPSに接続をアップグレードする";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "警告: このサイトはHTTPSをサポートしていません。";
+

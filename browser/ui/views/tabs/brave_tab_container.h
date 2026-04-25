@@ -1,0 +1,331 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_CONTAINER_H_
+#define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_CONTAINER_H_
+
+#include <memory>
+#include <optional>
+#include <utility>
+#include <vector>
+
+#include "base/callback_list.h"
+#include "base/gtest_prod_util.h"
+#include "chrome/browser/ui/tabs/tab_style.h"
+#include "chrome/browser/ui/views/tabs/dragging/tab_drag_context.h"
+#include "chrome/browser/ui/views/tabs/tab_container_impl.h"
+#include "components/prefs/pref_member.h"
+#include "ui/gfx/canvas.h"
+#include "ui/views/controls/scroll_view.h"
+#include "ui/views/controls/scrollbar/scroll_bar.h"
+#include "ui/views/layout/layout_types.h"
+
+namespace views {
+class ScrollView;
+}  // namespace views
+
+class BraveTabContainer : public TabContainerImpl,
+                          public views::ScrollBarController {
+  METADATA_HEADER(BraveTabContainer, TabContainerImpl)
+ public:
+  BraveTabContainer(TabContainerController& controller,
+                    TabHoverCardController* hover_card_controller,
+                    TabDragPositioningDelegateBase* drag_position_delegate,
+                    TabSlotController& tab_slot_controller);
+  ~BraveTabContainer() override;
+
+  // Calling this will freeze this view's layout. When the returned closure
+  // runs, layout will be unlocked and run immediately.
+  // This is to avoid accessing invalid index during reconstruction
+  // of TabContainer. In addition, we can avoid redundant layout as a side
+  // effect.
+  base::OnceClosure LockLayout();
+
+  // Returns the ScrollBarMode for the scroll view used in vertical tab strip.
+  views::ScrollView::ScrollBarMode GetScrollBarMode() const;
+
+  // Returns the scroll direction if scrolling is enabled. Returns nullopt if
+  // browser is null or scrolling is not enabled.
+  std::optional<views::LayoutOrientation> GetScrollDirection() const;
+
+  // True when the horizontal scroll buttons should be visible: profile pref on,
+  // tabs::kBraveScrollableTabStrip enabled, horizontal (non-vertical) strip,
+  // and unpinned overflow. The pref affects button visibility only, not whether
+  // the strip scrolls (that is controlled by the feature flag alone).
+  bool ShouldShowHorizontalScrollButton() const;
+
+  // Helper methods to check if the tabs can be scrolled towards the start or
+  // end.
+  bool CanScrollTabsStart() const;
+  bool CanScrollTabsEnd() const;
+
+  // Scroll the unpinned tabs by the given offset.
+  void ScrollTabsBy(int offset);
+
+  // Returns the step size for the horizontal tab scroll.
+  int GetHorizontalTabScrollStep() const;
+
+  int GetScrollOffsetForTesting() const;       // IN-TEST
+  int GetMaxScrollOffsetForTesting() const;    // IN-TEST
+  void SetScrollOffsetForTesting(int offset);  // IN-TEST
+
+  // Notifies when horizontal unpinned scroll offset changes (wheel, scrollbar,
+  // button scroll, etc.). Used by BraveHorizontalTabStripRegionView to refresh
+  // scroll button enabled state. Destroy the returned subscription to
+  // unregister.
+  [[nodiscard]] base::CallbackListSubscription
+  RegisterHorizontalScrollOffsetChangedCallback(
+      base::RepeatingClosure callback);
+
+  // TabContainerImpl:
+  gfx::Size CalculatePreferredSize(
+      const views::SizeBounds& available_size) const override;
+  std::vector<Tab*> AddTabs(
+      std::vector<TabInsertionParams> tabs_params) override;
+  void UpdateClosingModeOnRemovedTab(int model_index, bool was_active) override;
+  gfx::Rect GetTargetBoundsForClosingTab(Tab* tab,
+                                         int former_model_index) const override;
+  void EnterTabClosingMode(std::optional<int> override_width,
+                           CloseTabSource source) override;
+  bool ShouldTabBeVisible(const Tab* tab) const override;
+  void StartInsertTabAnimation(int model_index) override;
+  void RemoveTab(int index, bool was_active) override;
+  void OnTabCloseAnimationCompleted(Tab* tab) override;
+  void CompleteAnimationAndLayout() override;
+  void PaintChildren(const views::PaintInfo& paint_info) override;
+  void SetTabSlotVisibility() override;
+  void InvalidateIdealBounds() override;
+  void Layout(PassKey) override;
+  void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
+  void OnSplitCreated(const std::vector<int>& indices) override;
+  void OnSplitRemoved(const std::vector<int>& indices) override;
+  void OnSplitContentsChanged(const std::vector<int>& indices) override;
+  bool OnMouseWheel(const ui::MouseWheelEvent& event) override;
+  void OnScrollEvent(ui::ScrollEvent* event) override;
+  views::View* TargetForRect(views::View* root, const gfx::Rect& rect) override;
+  bool IsPointInTab(Tab* tab,
+                    const gfx::Point& point_in_tabstrip_coords) override;
+  void AnimateToIdealBounds() override;
+  void UpdateIdealBounds() override;
+  void OnTabSlotAnimationProgressed(TabSlotView* view) override;
+  void SetActiveTab(std::optional<size_t> prev_active_index,
+                    std::optional<size_t> new_active_index) override;
+  void SetTabPinned(int model_index, TabPinned pinned) override;
+  void MoveTab(int from_model_index, int to_model_index) override;
+  void OnGroupContentsChanged(const tab_groups::TabGroupId& group) override;
+  void UpdateTabGroupVisuals(tab_groups::TabGroupId group_id) override;
+
+  // BrowserRootView::DropTarget
+  std::optional<BrowserRootView::DropIndex> GetDropIndex(
+      const ui::DropTargetEvent& event) override;
+  void HandleDragUpdate(
+      const std::optional<BrowserRootView::DropIndex>& index) override;
+  void HandleDragExited() override;
+
+  // views::ScrollBarController:
+  void ScrollToPosition(views::ScrollBar* source, int position) override;
+  int GetScrollIncrement(views::ScrollBar* source,
+                         bool is_page,
+                         bool is_positive) override;
+
+ private:
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
+                           BraveTabContainerSeparator);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollOffset);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
+                           GetMaxScrollOffsetWithGroups);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ClipPathOnScrollOffset);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
+                           LayoutAfterFirstTabCreation);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
+                           ScrollBarBoundsWithPinnedTabs);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollBarThumbState);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
+                           ScrollBarDisabledWhenHorizontal);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
+                           ScrollBarVisibilityWithManyTabs);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
+                           RichAnimationIsDisabled);
+
+  class DropArrow {
+   public:
+    enum class Position { Vertical, Horizontal };
+
+    DropArrow(const BrowserRootView::DropIndex& index,
+              Position position,
+              bool beneath,
+              views::Widget* context);
+    DropArrow(const DropArrow&) = delete;
+    DropArrow& operator=(const DropArrow&) = delete;
+    virtual ~DropArrow();
+
+    void set_index(const BrowserRootView::DropIndex& index) { index_ = index; }
+    BrowserRootView::DropIndex index() const { return index_; }
+
+    void SetBeneath(bool beneath);
+    bool beneath() const { return beneath_; }
+
+    void SetWindowBounds(const gfx::Rect& bounds);
+
+   private:
+    // Index of the tab to drop on.
+    BrowserRootView::DropIndex index_;
+
+    Position position_ = Position::Vertical;
+
+    bool beneath_ = false;
+
+    // Renders the drop indicator.
+    std::unique_ptr<views::Widget> arrow_window_;
+    raw_ptr<views::ImageView, DanglingUntriaged> arrow_view_ = nullptr;
+  };
+
+  void UpdateLayoutOrientation();
+
+  void PaintBoundingBoxForSplitTabs(gfx::Canvas& canvas);
+  void PaintBoundingBoxForSplitTab(gfx::Canvas& canvas,
+                                   const std::vector<int>& indices);
+
+  static gfx::ImageSkia* GetDropArrowImage(
+      BraveTabContainer::DropArrow::Position pos,
+      bool beneath);
+
+  void OnUnlockLayout();
+
+  void SetDropArrow(const std::optional<BrowserRootView::DropIndex>& index);
+  gfx::Rect GetDropBounds(int drop_index,
+                          bool drop_before,
+                          bool drop_in_group,
+                          bool* is_beneath);
+
+  void UpdateTabsBorderInSplitTab(const std::vector<int>& indices);
+
+  // Returns the bottom y-coordinate of the pinned tabs area, including the
+  // separator between pinned and unpinned tabs if both exist. This represents
+  // the top boundary where unpinned tabs begin and is used to calculate the
+  // visible rect of unpinned tabs.
+  int GetPinnedTabsAreaBottom() const;
+
+  // Returns the boundary coordinate of the pinned tabs area. For vertical tabs,
+  // returns the bottom (y-coordinate). For horizontal tabs, returns the right
+  // (x-coordinate). This represents where unpinned tabs begin.
+  int GetPinnedTabsAreaBoundary() const;
+
+  // Sets the scroll offset for unpinned tabs. If the offset changes, triggers
+  // a layout.
+  void SetScrollOffset(int offset);
+
+  // Returns the maximum scroll offset for unpinned tabs.
+  int GetMaxScrollOffset() const;
+
+  // Returns the first and last visible unpinned slot views (tabs or group
+  // headers). Returns {nullptr, nullptr} when no visible unpinned slot views
+  // exist.
+  std::pair<TabSlotView*, TabSlotView*> FindVisibleUnpinnedSlotViews() const;
+
+  // Returns the ideal bounds for the given slot view (tab or group header).
+  gfx::Rect GetIdealBoundsOf(TabSlotView* slot_view) const;
+
+  // Returns the total height of unpinned tabs including margins.
+  int GetUnpinnedTabsTotalHeight() const;
+
+  // Returns the viewport height available for unpinned tabs.
+  // This excludes the pinned tabs area if any pinned tabs exist.
+  int GetUnpinnedTabsViewportHeight() const;
+
+  // Returns the total size (height for vertical, width for horizontal) of
+  // unpinned tabs including margins.
+  int GetUnpinnedTabsTotalSize() const;
+
+  // Returns the viewport size (height for vertical, width for horizontal)
+  // available for unpinned tabs. This excludes the pinned tabs area if any
+  // pinned tabs exist.
+  int GetUnpinnedTabsViewportSize() const;
+
+  // Clamp the current scroll_offset_ within valid range.
+  void ClampScrollOffset();
+
+  // Used to sets the clip path for child views (tabs, group views and etc).
+  // For vertical tabs, pinned_tabs_area_boundary is the bottom y-coordinate.
+  // For horizontal tabs, pinned_tabs_area_boundary is the right x-coordinate.
+  void UpdateClipPathForChildren(views::View* view,
+                                 int pinned_tabs_area_boundary);
+
+  // Updates clip path for all slot views (tabs and group views) based on
+  // scroll_offset.
+  void UpdateClipPathForSlotViews();
+
+  // Update scroll offset to make the given tab visible.
+  void ScrollTabToBeVisible(Tab* tab);
+
+  // Callback when the scrollable horizontal tab strip preference changes.
+  void OnScrollableHorizontalTabStripPrefChanged();
+
+  // Show or hide scrollbar based on the preference
+  void UpdateScrollBarVisibility();
+
+  // Updates the bounds of the scroll bar.
+  void UpdateScrollBarBounds();
+
+  // Update the scroll bar's content size, viewport size and offset.
+  void UpdateScrollBarState();
+
+  // Handles scroll input for unpinned tabs. Returns true if the scroll
+  // was handled. The scroll direction is determined automatically based on
+  // the current tab strip orientation.
+  bool HandleScroll(int offset);
+
+  // Updates the separator visibility and position between pinned and unpinned
+  // tabs.
+  void UpdatePinnedUnpinnedSeparator();
+
+  // Checks if the vertical tabs should be shown
+  bool ShouldShowVerticalTabs() const;
+  bool IsPinned(const Tab* tab) const;
+
+  // Called when the tree tabs enabled state changes.
+  void OnTreeTabsEnabledChanged();
+
+  // Returns true if the horizontal scrollable tab strip is enabled by pref.
+  // In case of unit tests, the pref can be uninitialized, so we return false.
+  bool IsHorizontalScrollableTabStripEnabled() const;
+
+  base::flat_set<Tab*> closing_tabs_;
+
+  raw_ptr<TabDragContext> drag_context_;
+
+  // A pointer storing the global tab style to be used.
+  const raw_ptr<const TabStyle> tab_style_;
+
+  const raw_ref<TabContainerController, DanglingUntriaged> controller_;
+
+  std::unique_ptr<DropArrow> drop_arrow_;
+
+  raw_ptr<views::ScrollBar> scroll_bar_;
+
+  BooleanPrefMember show_vertical_tabs_;
+  BooleanPrefMember vertical_tabs_floating_mode_enabled_;
+  BooleanPrefMember vertical_tabs_collapsed_;
+  BooleanPrefMember tree_tabs_enabled_;
+  BooleanPrefMember should_show_scroll_bar_;
+  BooleanPrefMember scrollable_horizontal_tab_strip_;
+
+  bool layout_locked_ = false;
+
+  // Size we last laid out at.
+  std::optional<gfx::Size> last_layout_size_;
+
+  // Manual scroll offset for unpinned tabs. For vertical tabs, this is the
+  // y-axis offset. For horizontal tabs, this is the x-axis offset.
+  // Do not manipulate this value directly. Use SetScrollOffset() instead.
+  int scroll_offset_ = 0;
+
+  base::RepeatingClosureList horizontal_scroll_offset_changed_callbacks_;
+
+  // Separator view between pinned and unpinned tabs
+  raw_ptr<views::View> separator_ = nullptr;
+};
+
+#endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_CONTAINER_H_

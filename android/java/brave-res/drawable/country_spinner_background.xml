@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <layer-list>
+            <item>
+                <shape>
+                    <corners android:radius="4dp" />
+                    <padding
+                        android:bottom="8dp"
+                        android:left="8dp"
+                        android:right="8dp"
+                        android:top="8dp" />
+                    <stroke
+                        android:width="1dp"
+                        android:color="#AEB1C2"/>
+                </shape>
+            </item>
+            <item android:drawable="@drawable/ic_carat_down_country_spinner"
+                android:gravity="right">
+            </item>
+      </layer-list>
+    </item>
+</selector>

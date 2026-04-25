@@ -1,0 +1,42 @@
+/* The title of the button that changes the screen to next */
+"focusOnboarding.continueButtonTitle" = "続ける";
+
+/* The subtitle of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "Braveを今すぐデフォルトブラウザに設定。";
+
+/* The title of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "アクセスするすべてのサイトで広告をブロック";
+
+/* The title of the button that closes the default browser full screen callout */
+"focusOnboarding.notNowActionButtonTitle" = "後で";
+
+/* The subtitle of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenDescription" = "お気に入りの動画サイトで、ストリーミングを中断する迷惑な広告をブロックします。";
+
+/* The title of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenTitle" = "ストリーミングを中断する広告をブロック";
+
+/* The subtitle of the screen that asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenDescription" = "お気に入りの機能についてご意見をお聞かせください";
+
+/* The title of the screen which asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenTitle" = "Braveは進化を続けます";
+
+/* The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment */
+"focusOnboarding.p3aToggleDescription" = "この設定は **Shields & プライバシー** でいつでもオプトアウトできます。P3A（プライバシー保護製品分析）の[詳細はこちら](#p3a-learn-more) をご覧ください。";
+
+/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "completely private & anonymous" snippet should be bold in all languages */
+"focusOnboarding.p3aToggleTitle" = "製品に関するインサイトが **完全にプライベートな匿名情報** として共有されます。";
+
+/* The title of the button that finishes the onboarding without setting default */
+"focusOnboarding.startBrowseActionButtonTitle" = "ブラウジングを開始する";
+
+/* The title of the button that triggers navigation link to settings */
+"focusOnboarding.systemSettingsButtonTitle" = "デフォルトとして設定";
+
+/* The description of the popup which points to URL Bar after onboarding */
+"focusOnboarding.urlBarIndicatorDescription" = "広告&トラッカーを減らして、動画を楽しみましょう。";
+
+/* The title of the popup which points to URL Bar after onboarding */
+"focusOnboarding.urlBarIndicatorTitle" = "Braveと他社ブラウザの比較を見る";
+

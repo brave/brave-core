@@ -1,0 +1,84 @@
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "chrome/browser/ui/views/tabs/tab.h"
+
+#include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/components/constants/pref_names.h"
+#include "chrome/browser/ui/layout_constants.h"
+
+// Upstream is no longer centering the tab favicon vertically within the tab
+// view (likely due to the fact that their tab contents rect happens to be the
+// same height as the favicon). Ensure that the favicon is centered vertically
+// within the tab.
+#define BRAVE_UI_VIEWS_TABS_TAB_LAYOUT_ADJUST_ICON_POSITION \
+  favicon_bounds.set_y(contents_rect.y() +                  \
+                       Center(contents_rect.height(), gfx::kFaviconSize));
+
+// Set alert indicator's pos to start of the title and
+// move title after the alert indicator.
+// Title right should respect close btn's space
+#define BRAVE_UI_VIEWS_TABS_TAB_ALERT_INDICATOR_POSITION           \
+  alert_indicator_button_->SetX(title_left - after_title_padding); \
+  title_right = close_x - after_title_padding;                     \
+  if (showing_close_button_)                                       \
+    title_right = close_x - after_title_padding;                   \
+  title_left = alert_indicator_button_->x() +                      \
+               alert_indicator_button_->width() + after_title_padding;
+
+// `UpdateIconVisibility` currently has an early return when the tab view's
+// height is less than `GetLayoutConstant(LayoutConstant::kTabHeight)`.
+// Unfortunately, when in vertical tabs mode this will prevent the favicon and
+// close button from appearing. As a workaround, use `tabs::kVerticalTabHeight`
+// instead of LayoutConstant::kTabHeight when in vertical tabs mode.
+#define GetLayoutConstant(COMPONENT)                \
+  ((COMPONENT == LayoutConstant::kTabHeight &&      \
+    tabs::utils::ShouldShowBraveVerticalTabs(       \
+        controller()->GetBrowserWindowInterface())) \
+       ? tabs::kVerticalTabHeight                   \
+       : GetLayoutConstant(COMPONENT))
+
+#include <chrome/browser/ui/views/tabs/tab.cc>
+
+#undef GetLayoutConstant
+#undef BRAVE_UI_VIEWS_TABS_TAB_ALERT_INDICATOR_POSITION
+#undef BRAVE_UI_VIEWS_TABS_TAB_LAYOUT_ADJUST_ICON_POSITION
+
+ControllableCloseButtonState::ControllableCloseButtonState(
+    TabSlotController& controller,
+    Tab& tab)
+    : controller(controller), tab(tab) {}
+
+ControllableCloseButtonState::~ControllableCloseButtonState() = default;
+
+bool ControllableCloseButtonState::operator=(bool show) {
+  showing_close_button = show;
+  return showing_close_button;
+}
+
+ControllableCloseButtonState::operator bool() const {
+  return !controller->ShouldAlwaysHideCloseButton() &&
+         (tab->IsActive() || tab->mouse_hovered()) && showing_close_button;
+}
+
+bool Tab::IsTabMuteIndicatorNotClickable() {
+  auto* browser = controller()->GetBrowserWindowInterface();
+  // We have clickable mute indicators enabled by default. Thus, if our pref is
+  // disabled we can force the indicator off.
+  // Note: We have a test which checks the feature is enabled by default. If
+  // that changes this may need to as well.
+  // Note: |browser| is |nullptr| in some unit_tests.
+  return browser && browser->GetProfile()->GetPrefs()->GetBoolean(
+                        kTabMuteIndicatorNotClickable);
+}
+
+void Tab::ResetTabStyle(std::unique_ptr<TabStyleViews> new_style) {
+  tab_style_views_ = std::move(new_style);
+
+  views::HighlightPathGenerator::Install(
+      this,
+      std::make_unique<TabStyleHighlightPathGenerator>(tab_style_views()));
+}

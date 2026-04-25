@@ -1,0 +1,457 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//brave/build/mac/config.gni")
+import("//brave/updater/config.gni")
+import("//build/util/branding.gni")
+import("//chrome/common/features.gni")
+import("//chrome/updater/branding.gni")
+import("//chrome/version.gni")
+import("//components/crx_file/crx3.gni")
+import("//third_party/widevine/cdm/widevine.gni")
+
+packaging_dir = "$root_out_dir/$chrome_product_full_name Packaging"
+packaging_out_dir = "$root_out_dir/packaged"
+
+unsigned_app_path = "$root_out_dir/$brave_exe"
+
+packaged_basename =
+    "$packaging_out_dir/" + string_replace(chrome_product_full_name, " ", "") +
+    "-$chrome_version_full"
+
+dmg_path = "$packaged_basename.dmg"
+zip_path = "$packaged_basename.zip"
+
+if (is_universal_binary) {
+  assert(target_cpu == "arm64")
+  x64_arch_app_path = "$root_out_dir/x64/$brave_exe"
+  universal_dir = "$root_out_dir/universal"
+  universal_app_path = "$universal_dir/$brave_exe"
+
+  action("universalize") {
+    script = "//chrome/installer/mac/universalizer.py"
+
+    args = [
+      rebase_path(x64_arch_app_path),
+      rebase_path(unsigned_app_path),
+      rebase_path(universal_app_path),
+    ]
+
+    inputs = [
+      script,
+      unsigned_app_path,
+      x64_arch_app_path,
+    ]
+
+    outputs = [ universal_app_path ]
+
+    public_deps = [
+      ":copy_x64",
+      "//chrome:chrome_app",
+    ]
+  }
+
+  # placeholder script to allow manual copying of binary into output dir
+  action("copy_x64") {
+    script = "//brave/installer/mac/copy_x64_binary.py"
+
+    x64_root_out_dir = string_replace(root_out_dir, "_arm64", "")
+    x64_arch_src_path = "$x64_root_out_dir/$brave_exe"
+
+    args = [
+      rebase_path(x64_arch_src_path),
+      rebase_path(x64_arch_app_path),
+    ]
+
+    inputs = [
+      script,
+      x64_arch_src_path,
+    ]
+
+    outputs = [ x64_arch_app_path ]
+  }
+}
+
+# //brave depends on this via "build/$target_os:brave".
+group("brave") {
+  exe_path = "$unsigned_app_path/Contents/MacOS/$chrome_product_full_name"
+
+  # start.js uses this file to know which binary to run.
+  write_file("$root_out_dir/brave_helper",
+             [ string_replace(rebase_path(exe_path), " ", "\\ ") ])
+}
+
+action("generate_dsa_sig_for_dmg") {
+  script = "generate_sig.py"
+
+  if (build_sparkle) {
+    sign_update_path = "$root_out_dir/old_dsa_scripts/sign_update"
+  } else {
+    sign_update_path = "//build/mac_files/sparkle_binaries/sign_update_dsa"
+  }
+  output_dmg_dsa_path = "$root_out_dir/$brave_dmg.dsa"
+
+  args = [
+    "--sign-update",
+    rebase_path("$sign_update_path"),
+    "--sign-key-file",
+    "$sparkle_dsa_private_key_file",
+    "--target",
+    rebase_path(dmg_path),
+    "--output",
+    rebase_path("$output_dmg_dsa_path"),
+    "--dsa",
+  ]
+
+  inputs = [
+    script,
+    "$sign_update_path",
+    dmg_path,
+  ]
+
+  outputs = [ "$output_dmg_dsa_path" ]
+
+  deps = [ ":package" ]
+
+  if (build_sparkle) {
+    deps += [ "//brave/vendor/sparkle:copy_old_sign_update" ]
+  }
+}
+
+action("generate_eddsa_sig_for_dmg") {
+  script = "generate_sig.py"
+
+  if (build_sparkle) {
+    sign_update_path = "$root_out_dir/sign_update"
+  } else {
+    sign_update_path = "//build/mac_files/sparkle_binaries/sign_update"
+  }
+
+  output_dmg_eddsa_path = "$root_out_dir/$brave_dmg.eddsa"
+
+  args = [
+    "--sign-update",
+    rebase_path("$sign_update_path"),
+    "--sign-key",
+    "$sparkle_eddsa_private_key",
+    "--target",
+    rebase_path(dmg_path),
+    "--output",
+    rebase_path("$output_dmg_eddsa_path"),
+    "--eddsa",
+  ]
+
+  inputs = [
+    script,
+    "$sign_update_path",
+    dmg_path,
+  ]
+
+  outputs = [ "$output_dmg_eddsa_path" ]
+
+  deps = [ ":package" ]
+
+  if (build_sparkle) {
+    deps += [ "//brave/vendor/sparkle:build_sparkle_framework" ]
+  }
+}
+
+action("build_delta_installer") {
+  script = "build_delta_installer.py"
+
+  if (build_sparkle) {
+    binary_delta_path = "$root_out_dir/BinaryDelta"
+  } else {
+    binary_delta_path = "//build/mac_files/sparkle_binaries/BinaryDelta"
+  }
+
+  output_delta_path = "$root_out_dir/$brave_delta"
+
+  args = [
+    "--binary-delta",
+    rebase_path("$binary_delta_path"),
+    "--root-out-dir",
+    rebase_path("$root_out_dir"),
+    "--old-dmg",
+    rebase_path("$root_out_dir/$last_chrome_installer"),
+    "--new-dmg",
+    rebase_path(dmg_path),
+    "--delta-output",
+    rebase_path("$output_delta_path"),
+  ]
+
+  inputs = [
+    script,
+    "$binary_delta_path",
+    dmg_path,
+  ]
+
+  outputs = [ "$output_delta_path" ]
+
+  deps = [ ":package" ]
+
+  if (build_sparkle) {
+    deps += [ "//brave/vendor/sparkle:build_sparkle_framework" ]
+  }
+}
+
+action("generate_eddsa_sig_for_delta") {
+  script = "generate_sig.py"
+
+  sign_update_path = "//build/mac_files/sparkle_binaries/sign_update"
+  target_delta_path = "$root_out_dir/$brave_delta"
+  output_delta_eddsa_path = "$root_out_dir/$brave_delta.eddsa"
+
+  args = [
+    "--sign-update",
+    rebase_path("$sign_update_path"),
+    "--sign-key",
+    "$sparkle_eddsa_private_key",
+    "--target",
+    rebase_path("$target_delta_path"),
+    "--output",
+    rebase_path("$output_delta_eddsa_path"),
+    "--eddsa",
+  ]
+
+  inputs = [
+    script,
+    "$sign_update_path",
+    "$target_delta_path",
+  ]
+
+  outputs = [ "$output_delta_eddsa_path" ]
+
+  deps = [ ":build_delta_installer" ]
+}
+
+# Upstream takes pkg_preinstall.in and pkg_postinstall.in from $packaging_dir.
+# Our Python implementation overrides this to $packaging_dir/brave.
+preinstall_script = "$packaging_dir/brave/pkg_preinstall.in"
+postinstall_script = "$packaging_dir/brave/pkg_postinstall.in"
+
+if (install_omaha4_with_pkg) {
+  action("preinstall") {
+    script = "create_pkg_install_scripts.py"
+
+    output = preinstall_script
+
+    args = [
+      rebase_path("//chrome/installer/mac/pkg_preinstall.in"),
+      brave_exe,
+      "Contents/Frameworks/$chrome_product_full_name Framework.framework",
+      mac_browser_bundle_identifier,
+      rebase_path(output),
+    ]
+
+    inputs = [
+      script,
+      "//chrome/installer/mac/pkg_preinstall.in",
+    ]
+
+    outputs = [ output ]
+  }
+  action("postinstall") {
+    script = "create_pkg_install_scripts.py"
+
+    output = postinstall_script
+
+    args = [
+      rebase_path("//chrome/installer/mac/pkg_postinstall.in"),
+      brave_exe,
+      "Contents/Frameworks/$chrome_product_full_name Framework.framework",
+      mac_browser_bundle_identifier,
+      rebase_path(output),
+    ]
+
+    inputs = [
+      script,
+      "//chrome/installer/mac/pkg_postinstall.in",
+    ]
+
+    outputs = [ output ]
+  }
+} else {
+  copy("copy_preinstall") {
+    sources = [ "pkg-scripts/preinstall" ]
+    outputs = [ preinstall_script ]
+  }
+  copy("copy_postinstall") {
+    sources = [ "pkg-scripts/postinstall" ]
+    outputs = [ postinstall_script ]
+  }
+}
+
+if (is_official_build && !skip_signing) {
+  if (is_release_channel) {
+    provisionprofile_basename = "release"
+  } else {
+    provisionprofile_basename = brave_channel
+  }
+  copy("copy_provisionprofile") {
+    sources = [ "${provisionprofile_basename}.provisionprofile" ]
+    outputs = [ "${packaging_dir}/${provisionprofile_basename}.24b42420108116ac21f215640e39f7d004e51498.provisionprofile" ]
+  }
+}
+
+action("package") {
+  outputs = [
+    dmg_path,
+    "$packaged_basename.pkg",
+    zip_path,
+  ]
+  deps = [
+    ":copy_browser_install_script",
+    ":copy_dmg_background_image",
+    ":copy_dmg_icon",
+    ":copy_dmg_preinstall",
+    ":copy_ds_store",
+    ":copy_helper_entitlements",
+    ":copy_postinstall",
+    ":copy_preinstall",
+    ":copy_signing_config",
+    "//chrome:chrome_app",
+    "//chrome/installer/mac",
+  ]
+  script = "$packaging_dir/sign_chrome.py"
+  installer_identity = mac_installer_signing_identifier
+  if (skip_signing && installer_identity == "") {
+    # Prevent an AssertionError in upstream:
+    installer_identity = "stub"
+  }
+  args = [
+    "--input",
+    rebase_path(root_build_dir, root_build_dir),
+    "--output",
+    rebase_path(packaging_out_dir, root_build_dir),
+
+    # sign_chrome.py requires --identity even when signing is skipped.
+    "--identity=$mac_signing_identifier",
+    "--installer-identity=$installer_identity",
+  ]
+  if (!is_official_build) {
+    args += [ "--development" ]
+  }
+  if (skip_signing) {
+    args += [ "--skip_signing" ]
+  } else if (is_official_build) {
+    deps += [ ":copy_provisionprofile" ]
+    args += [ "--provisioning_profile_basename=$provisionprofile_basename" ]
+  }
+  if (notarize) {
+    args += [ "--notarize" ]
+    notary_args = [
+      "--apple-id",
+      notary_user,
+      "--password",
+      notary_password,
+      "--team-id",
+      chrome_mac_team_id,
+    ]
+    foreach(arg, notary_args) {
+      args += [ "--notary-arg=$arg" ]
+    }
+  }
+  if (is_universal_binary) {
+    args += [ "--universal" ]
+    deps += [ ":universalize" ]
+  }
+}
+
+copy("copy_signing_config") {
+  visibility = [ ":package" ]
+  sources = [
+    "signing/internal_config.py",
+    "signing/internal_invoker.py",
+  ]
+  outputs = [ "$packaging_dir/signing/{{source_file_part}}" ]
+}
+
+copy("copy_browser_install_script") {
+  deps = [ "//chrome/updater/mac:browser_install_script" ]
+  sources = [ "$root_out_dir/$browser_product_name Packaging/updater/.install" ]
+  outputs = [ "$packaging_dir/keystone_install.sh" ]
+}
+
+copy("copy_dmg_background_image") {
+  dmg_background_file_name = "dmg-background"
+  if (is_brave_origin_branded) {
+    dmg_background_file_name += ".origin"
+  }
+  sources = [ "$dmg_background_file_name.png" ]
+  outputs = [ "$packaging_dir/chrome_dmg_background.png" ]
+}
+
+copy("copy_dmg_icon") {
+  dmg_icon_file_name = "dmg"
+  if (!is_release_channel) {
+    dmg_icon_file_name = "dmg-$brave_channel"
+  }
+  sources = [ "$dmg_icon_file_name.icns" ]
+  outputs = [ "$packaging_dir/chrome_dmg_icon.icns" ]
+}
+
+copy("copy_dmg_preinstall") {
+  sources = [ "dmg_preinstall.sh" ]
+  outputs = [ "$packaging_dir/dmg_preinstall.sh" ]
+}
+
+copy("copy_ds_store") {
+  ds_store_file_name = "DS_Store"
+  if (is_brave_origin_branded) {
+    ds_store_file_name += ".origin"
+  }
+  if (!is_release_channel) {
+    ds_store_file_name += ".$brave_channel"
+  }
+  sources = [ "ds_store/$ds_store_file_name" ]
+  outputs = [ "$packaging_dir/chrome_dmg_dsstore" ]
+}
+
+copy("copy_helper_entitlements") {
+  visibility = [ ":package" ]
+  sources = [ "//brave/app/helper-entitlements.plist" ]
+  public_deps = [ "//chrome/installer/mac" ]
+  outputs = [ "$packaging_dir/{{source_file_part}}" ]
+}
+
+group("create_dist_mac") {
+  deps = [ ":package" ]
+  if (!skip_signing) {
+    if (sparkle_dsa_private_key_file != "") {
+      deps += [ ":generate_dsa_sig_for_dmg" ]
+    }
+
+    if (sparkle_eddsa_private_key != "") {
+      deps += [ ":generate_eddsa_sig_for_dmg" ]
+    }
+
+    if (last_chrome_installer != "") {
+      deps += [ ":build_delta_installer" ]
+      if (sparkle_eddsa_private_key != "") {
+        deps += [ ":generate_eddsa_sig_for_delta" ]
+      }
+    }
+  }
+  if (dmg_crx_private_key != "") {
+    deps += [ ":crx" ]
+  }
+}
+
+if (dmg_crx_private_key != "") {
+  compiled_action("crx") {
+    tool = "//components/crx_file:crx3_build_action"
+    inputs = [ zip_path ]
+    crx_path = "$packaged_basename.crx3"
+    outputs = [ crx_path ]
+    args = [
+      rebase_path(crx_path, root_build_dir),
+      rebase_path(zip_path, root_build_dir),
+      rebase_path(dmg_crx_private_key, root_build_dir),
+    ]
+    deps = [ ":package" ]
+  }
+}

@@ -1,0 +1,77 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//build/config/features.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+
+source_set("webui") {
+  sources = [
+    "brave_web_ui_controller_factory.h",
+    "brave_web_ui_controller_factory.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/brave_account:features",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/constants",
+    "//brave/components/webui",
+    "//brave/ios/browser/brave_wallet",
+    "//brave/ios/browser/ui/webui/ads",
+    "//brave/ios/browser/ui/webui/ai_chat",
+    "//brave/ios/browser/ui/webui/brave_account",
+    "//brave/ios/browser/ui/webui/brave_wallet",
+    "//brave/ios/browser/ui/webui/skus",
+    "//brave/ios/web/webui",
+    "//components/prefs",
+    "//components/resources:components_resources_grit",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/chrome/browser/shared/model/url:constants",
+    "//ios/chrome/browser/webui/ui_bundled:webui_internal",
+    "//ios/components/webui:url_constants",
+    "//ios/web/public",
+    "//ios/web/public/webui",
+    "//ui/base",
+    "//url",
+  ]
+}
+
+source_set("data_sources") {
+  sources = [
+    "favicon_source.h",
+    "favicon_source.mm",
+    "sanitized_image_source.h",
+    "sanitized_image_source.mm",
+    "untrusted_sanitized_image_source.h",
+    "untrusted_sanitized_image_source.mm",
+  ]
+
+  deps = [
+    "//brave/brave_domains",
+    "//brave/components/brave_private_cdn",
+    "//brave/ios/browser/favicon",
+    "//components/favicon/core",
+    "//components/favicon_base",
+    "//components/history/core/browser",
+    "//components/image_fetcher/ios",
+    "//components/signin/public/identity_manager",
+    "//ios/chrome/browser/favicon/model",
+    "//ios/chrome/browser/history/model",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/chrome/browser/shared/model/url:constants",
+    "//ios/chrome/browser/signin/model",
+    "//ios/chrome/common/ui/favicon:favicon_constants",
+    "//ios/components/webui:url_constants",
+    "//ios/web/public",
+    "//ios/web/public/thread",
+    "//ios/web/public/webui",
+    "//services/data_decoder/public/cpp",
+    "//services/data_decoder/public/mojom",
+    "//ui/base",
+    "//ui/resources:ui_resources_grd",
+  ]
+}

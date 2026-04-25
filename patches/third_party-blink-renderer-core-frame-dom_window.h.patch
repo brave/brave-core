@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/frame/dom_window.h b/third_party/blink/renderer/core/frame/dom_window.h
+index f369c7dd035f681935ea13067ac2074162f8dab8..90be0a6b2c8d6d97e4ce6c943ca861f51605264a 100644
+--- a/third_party/blink/renderer/core/frame/dom_window.h
++++ b/third_party/blink/renderer/core/frame/dom_window.h
+@@ -195,6 +195,7 @@ class CORE_EXPORT DOMWindow : public WindowProperties, public DOMOriginUtils {
+ 
+   void DisconnectFromFrame() { frame_ = nullptr; }
+ 
++  BRAVE_DOM_WINDOW_H
+  private:
+   void DoPostMessage(scoped_refptr<SerializedScriptValue> message,
+                      const MessagePortArray&,

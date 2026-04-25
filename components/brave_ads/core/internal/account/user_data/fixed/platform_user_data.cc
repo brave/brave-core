@@ -1,0 +1,29 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_ads/core/internal/account/user_data/fixed/platform_user_data.h"
+
+#include <string>
+#include <string_view>
+
+#include "brave/components/brave_ads/core/internal/common/operating_system/operating_system.h"
+
+namespace brave_ads {
+
+namespace {
+constexpr std::string_view kPlatformKey = "platform";
+}  // namespace
+
+base::DictValue BuildPlatformUserData() {
+  const std::string platform_name = OperatingSystem::GetInstance().GetName();
+  if (platform_name.empty()) {
+    // Invalid platform name.
+    return {};
+  }
+
+  return base::DictValue().Set(kPlatformKey, platform_name);
+}
+
+}  // namespace brave_ads

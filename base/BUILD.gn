@@ -1,0 +1,36 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+source_set("base") {
+  sources = [ "process/process_launcher.h" ]
+
+  if (is_posix) {
+    sources += [ "process/process_launcher_posix.cc" ]
+  } else if (!is_ios) {
+    sources += [ "process/process_launcher_win.cc" ]
+  }
+
+  deps = [ "//base" ]
+}
+
+source_set("base_unittests") {
+  testonly = true
+  sources = [
+    "//base/tools_sanity_unittest.cc",
+    "build_time_unittest.cc",
+    "feature_override_unittest.cc",
+    "test/current_test_vendor_is_brave_unittest.cc",
+    "test/launcher/teamcity_reporter_integration_unittest.cc",
+    "test/launcher/teamcity_reporter_unittest.cc",
+    "test/launcher/teamcity_service_messages_unittest.cc",
+  ]
+  deps = [
+    "//base",
+    "//base:build_time",
+    "//base/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}

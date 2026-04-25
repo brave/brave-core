@@ -1,0 +1,10 @@
+Name: parity-scale-codec
+URL: https://crates.io/crates/parity-scale-codec
+Version: 3.7.5
+Revision: 085b1ba8ba2fd4fcd3922afed07a034c1cb885d0
+License: Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/parity-scale-codec-v3/LICENSE
+Shipped: yes
+Security Critical: yes
+
+Description: SCALE - Simple Concatenating Aggregated Little Endians

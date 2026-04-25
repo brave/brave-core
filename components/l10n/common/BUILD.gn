@@ -1,0 +1,96 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("common") {
+  # Brave l10n components are deprecated. Use Chromium's functionality
+  # unless no equivalent is available.
+  visibility = [
+    ":*",
+    "//brave/browser/ui",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/brave_ads/browser",
+    "//brave/components/brave_ads/core/internal",
+    "//brave/components/brave_ads/core/test:brave_ads_unit_tests",
+    "//brave/components/brave_news/browser",
+    "//brave/components/brave_news/common",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/p3a",
+    "//brave/components/sidebar/browser",
+    "//brave/components/text_recognition/browser",
+    "//brave/ios/browser/api/ads",
+    "//brave/ios/browser/shared/prefs",
+    "//brave/test:*",
+    "//chrome/browser",
+  ]
+
+  friend = [
+    ":test_support",
+    ":unit_tests",
+  ]
+
+  public = [
+    "locale_util.h",
+    "ofac_sanction_util.h",
+    "prefs.h",
+  ]
+
+  sources = [
+    "default_locale.cc",
+    "default_locale.h",
+    "locale_subtag_info.cc",
+    "locale_subtag_info.h",
+    "locale_subtag_parser_util.cc",
+    "locale_subtag_parser_util.h",
+    "locale_util.cc",
+    "locale_util.h",
+    "ofac_sanction_util.cc",
+    "ofac_sanction_util.h",
+    "ofac_sanctioned_iso_3166_1_country_code_constants.h",
+    "ofac_sanctioned_un_m49_code_constants.h",
+    "prefs.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/l10n/browser",
+    "//components/prefs",
+    "//ui/base",
+  ]
+}
+
+static_library("test_support") {
+  testonly = true
+
+  sources = [
+    "test/scoped_default_locale.cc",
+    "test/scoped_default_locale.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/l10n/common",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "locale_subtag_parser_util_unittest.cc",
+    "locale_util_unittest.cc",
+    "ofac_sanction_util_unittest.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/l10n/common",
+    "//brave/components/l10n/common:test_support",
+    "//brave/components/resources:strings_grit",
+    "//components/prefs:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}

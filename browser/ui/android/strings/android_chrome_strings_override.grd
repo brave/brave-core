@@ -1,0 +1,424 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- android_chrome_strings.grd contains strings for Brave for Android.
+
+FAQ:
+  - How do I add, change, or remove a string?
+      Just update this file.
+  - Translations will happen automatically??
+      Yes, indeed. Just add your string before the branch point and
+      make the description good.
+  - Tell me more, please?
+      Ok: http://www.chromium.org/developers/design-documents/ui-localization
+
+CHAR_LIMIT guidelines:
+  Certain strings need character limits to prevent a long translation from breaking the UI.
+  Translators will ensure the translation fits within the limit, but may be forced to use odd
+  abbreviations to do so. There is a tradeoff here, so only use character limits when they're
+  necessary.
+
+  For example, a main menu item needs a character limit because the menu item can't wrap, so a long
+  translation will be cut off. On the other hand, an error message that can wrap over multiple lines
+  doesn't need a limit.
+
+  * Most strings - No limit. Omit "[CHAR_LIMIT=...]" altogether.
+  * Main menu items - 27, or 24 characters if it has a checkbox
+  * Settings headers - 32 characters
+  * Settings items - 32 characters
+  * Half-screen buttons - 20 characters
+  * Context menu items - 30 characters
+  * Action bar items - 32 characters
+-->
+<grit current_release="1" latest_public_release="0">
+  <translations>
+    <file path="translations/android_chrome_strings_override_af.xtb" lang="af" />
+    <file path="translations/android_chrome_strings_override_am.xtb" lang="am" />
+    <file path="translations/android_chrome_strings_override_ar.xtb" lang="ar" />
+    <file path="translations/android_chrome_strings_override_as.xtb" lang="as" />
+    <file path="translations/android_chrome_strings_override_az.xtb" lang="az" />
+    <file path="translations/android_chrome_strings_override_be.xtb" lang="be" />
+    <file path="translations/android_chrome_strings_override_bg.xtb" lang="bg" />
+    <file path="translations/android_chrome_strings_override_bn.xtb" lang="bn" />
+    <file path="translations/android_chrome_strings_override_bs.xtb" lang="bs" />
+    <file path="translations/android_chrome_strings_override_ca.xtb" lang="ca" />
+    <file path="translations/android_chrome_strings_override_cs.xtb" lang="cs" />
+    <file path="translations/android_chrome_strings_override_cy.xtb" lang="cy" />
+    <file path="translations/android_chrome_strings_override_da.xtb" lang="da" />
+    <file path="translations/android_chrome_strings_override_de.xtb" lang="de" />
+    <file path="translations/android_chrome_strings_override_el.xtb" lang="el" />
+    <file path="translations/android_chrome_strings_override_en-GB.xtb" lang="en-GB" />
+    <file path="translations/android_chrome_strings_override_es.xtb" lang="es" />
+    <file path="translations/android_chrome_strings_override_es-419.xtb" lang="es-419" />
+    <file path="translations/android_chrome_strings_override_et.xtb" lang="et" />
+    <file path="translations/android_chrome_strings_override_eu.xtb" lang="eu" />
+    <file path="translations/android_chrome_strings_override_fa.xtb" lang="fa" />
+    <file path="translations/android_chrome_strings_override_fi.xtb" lang="fi" />
+    <file path="translations/android_chrome_strings_override_fil.xtb" lang="fil" />
+    <file path="translations/android_chrome_strings_override_fr.xtb" lang="fr" />
+    <file path="translations/android_chrome_strings_override_fr-CA.xtb" lang="fr-CA" />
+    <file path="translations/android_chrome_strings_override_gl.xtb" lang="gl" />
+    <file path="translations/android_chrome_strings_override_gu.xtb" lang="gu" />
+    <file path="translations/android_chrome_strings_override_hi.xtb" lang="hi" />
+    <file path="translations/android_chrome_strings_override_hr.xtb" lang="hr" />
+    <file path="translations/android_chrome_strings_override_hu.xtb" lang="hu" />
+    <file path="translations/android_chrome_strings_override_hy.xtb" lang="hy" />
+    <file path="translations/android_chrome_strings_override_id.xtb" lang="id" />
+    <file path="translations/android_chrome_strings_override_is.xtb" lang="is" />
+    <file path="translations/android_chrome_strings_override_it.xtb" lang="it" />
+    <file path="translations/android_chrome_strings_override_iw.xtb" lang="iw" />
+    <file path="translations/android_chrome_strings_override_ja.xtb" lang="ja" />
+    <file path="translations/android_chrome_strings_override_ka.xtb" lang="ka" />
+    <file path="translations/android_chrome_strings_override_kk.xtb" lang="kk" />
+    <file path="translations/android_chrome_strings_override_km.xtb" lang="km" />
+    <file path="translations/android_chrome_strings_override_kn.xtb" lang="kn" />
+    <file path="translations/android_chrome_strings_override_ko.xtb" lang="ko" />
+    <file path="translations/android_chrome_strings_override_ky.xtb" lang="ky" />
+    <file path="translations/android_chrome_strings_override_lo.xtb" lang="lo" />
+    <file path="translations/android_chrome_strings_override_lt.xtb" lang="lt" />
+    <file path="translations/android_chrome_strings_override_lv.xtb" lang="lv" />
+    <file path="translations/android_chrome_strings_override_mk.xtb" lang="mk" />
+    <file path="translations/android_chrome_strings_override_ml.xtb" lang="ml" />
+    <file path="translations/android_chrome_strings_override_mn.xtb" lang="mn" />
+    <file path="translations/android_chrome_strings_override_mr.xtb" lang="mr" />
+    <file path="translations/android_chrome_strings_override_ms.xtb" lang="ms" />
+    <file path="translations/android_chrome_strings_override_my.xtb" lang="my" />
+    <file path="translations/android_chrome_strings_override_ne.xtb" lang="ne" />
+    <file path="translations/android_chrome_strings_override_nl.xtb" lang="nl" />
+    <file path="translations/android_chrome_strings_override_no.xtb" lang="no" />
+    <file path="translations/android_chrome_strings_override_or.xtb" lang="or" />
+    <file path="translations/android_chrome_strings_override_pa.xtb" lang="pa" />
+    <file path="translations/android_chrome_strings_override_pl.xtb" lang="pl" />
+    <file path="translations/android_chrome_strings_override_pt-BR.xtb" lang="pt-BR" />
+    <file path="translations/android_chrome_strings_override_pt-PT.xtb" lang="pt-PT" />
+    <file path="translations/android_chrome_strings_override_ro.xtb" lang="ro" />
+    <file path="translations/android_chrome_strings_override_ru.xtb" lang="ru" />
+    <file path="translations/android_chrome_strings_override_si.xtb" lang="si" />
+    <file path="translations/android_chrome_strings_override_sk.xtb" lang="sk" />
+    <file path="translations/android_chrome_strings_override_sl.xtb" lang="sl" />
+    <file path="translations/android_chrome_strings_override_sq.xtb" lang="sq" />
+    <file path="translations/android_chrome_strings_override_sr.xtb" lang="sr" />
+    <file path="translations/android_chrome_strings_override_sr-Latn.xtb" lang="sr-Latn" />
+    <file path="translations/android_chrome_strings_override_sv.xtb" lang="sv" />
+    <file path="translations/android_chrome_strings_override_sw.xtb" lang="sw" />
+    <file path="translations/android_chrome_strings_override_ta.xtb" lang="ta" />
+    <file path="translations/android_chrome_strings_override_te.xtb" lang="te" />
+    <file path="translations/android_chrome_strings_override_th.xtb" lang="th" />
+    <file path="translations/android_chrome_strings_override_tr.xtb" lang="tr" />
+    <file path="translations/android_chrome_strings_override_uk.xtb" lang="uk" />
+    <file path="translations/android_chrome_strings_override_ur.xtb" lang="ur" />
+    <file path="translations/android_chrome_strings_override_uz.xtb" lang="uz" />
+    <file path="translations/android_chrome_strings_override_vi.xtb" lang="vi" />
+    <file path="translations/android_chrome_strings_override_zh-CN.xtb" lang="zh-CN" />
+    <file path="translations/android_chrome_strings_override_zh-HK.xtb" lang="zh-HK" />
+    <file path="translations/android_chrome_strings_override_zh-TW.xtb" lang="zh-TW" />
+    <file path="translations/android_chrome_strings_override_zu.xtb" lang="zu" />
+  </translations>
+  <release seq="1">
+    <messages fallback_to_english="true">
+      <message name="IDS_NOTIFICATION_CATEGORY_INCOGNITO" desc="Label for notification that indicates Private mode is active, within a list of notification categories. [CHAR_LIMIT=32]">
+        Private
+      </message>
+      <message name="IDS_IMPROVE_SEARCH_SUGGESTIONS_SUMMARY" desc="Summary for a checkbox in Settings that controls URL and search autocompletion and informs the user about the data shared by this feature.">
+        When you type in the address bar or search box, Brave sends what you type to your default search engine to get better suggestions. This is off in Private.
+      </message>
+      <message name="IDS_SETTINGS_INCOGNITO_TAB_LOCK_TITLE" desc="Title for a toggle in Settings that allows users to lock their existing Private tabs with a device reauthentication mechanism.">
+        Lock Private tabs when you leave Brave
+      </message>
+      <message name="IDS_SETTINGS_INCOGNITO_WINDOW_LOCK_TITLE" desc="Title for a toggle in Settings that allows users to lock their existing Private windows with a device reauthentication mechanism.">
+        Lock Private windows when you leave Brave
+      </message>
+      <message name="IDS_SETTINGS_INCOGNITO_TAB_LOCK_SUMMARY_ANDROID_SETTING_ON" desc="Summary for a toggle in Settings that allows users to lock their existing Private tabs with a device reauthentication mechanism. This summary is shown to the user when the screen lock setting is on in the device.">
+        Use screen lock to see open Private tabs
+      </message>
+      <message name="IDS_SETTINGS_INCOGNITO_WINDOW_LOCK_SUMMARY_ANDROID_SETTING_ON" desc="Summary for a toggle in Settings that allows users to lock their existing Private windows with a device reauthentication mechanism. This summary is shown to the user when the screen lock setting is on in the device.">
+        Use screen lock to see open Private windows
+      </message>
+      <message name="IDS_SAFETY_HUB_SAFETY_TIPS_INCOGNITO_TITLE" desc="Title for a entry in the Safety Hub user education section. The entry leads the user to a help center article about Private.">
+        Brave Private
+      </message>
+      <message name="IDS_SAFETY_HUB_SAFETY_TIPS_INCOGNITO_SUMMARY" desc="Subtitle for a entry in the Safety Hub user education section. The entry leads the user to a help center article about Private.">
+        Private mode keeps your browsing private from others who use your device
+      </message>
+      <if expr="enable_screen_capture">
+        </if>
+
+      <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_INCOGNITO_STACK" desc="Content description for the Private stack selection 'button'.">
+        Private tabs
+      </message>
+      <message name="IDS_CONTEXTMENU_OPEN_IN_INCOGNITO_TAB" desc="Context sensitive menu item to open the selected link in a new Private tab. [CHAR_LIMIT=30]">
+        Open in Private tab
+      </message>
+      <message name="IDS_CONTEXTMENU_OPEN_IN_INCOGNITO_WINDOW" desc="Context sensitive menu item to open the selected link in a new Private window. [CHAR_LIMIT=30]">
+        Open in Private window
+      </message>
+      <message name="IDS_CONTEXTMENU_OPEN_IN_CHROME_INCOGNITO_TAB" desc="Context sensitive menu item to open the selected link in a Brave Private tab from Brave Custom Tab. [CHAR_LIMIT=30]">
+        Open in Private tab
+      </message>
+      <message name="IDS_DOWNLOAD_NOTIFICATION_INCOGNITO_SUBTEXT" desc="Displayed in Private mode download notification as subtext.">
+        Private tab
+      </message>
+      <message name="IDS_INCOGNITO_HISTORY_PLACEHOLDER_TITLE" desc="Title that states sites the users visit are not saved in Private mode.">
+        Sites you visit aren’t saved in Private
+      </message>
+      <message name="IDS_INCOGNITO_HISTORY_PLACEHOLDER_DESCRIPTION" desc="Description that states to delete Private browsing history from the device, users need to close all private tabs.">
+        To delete Private browsing history from your device, close all Private tabs.
+      </message>
+
+      <message name="IDS_CLOSE_ALL_INCOGNITO_NOTIFICATION_TITLE" desc="Title on the notification that closes all Private tabs on Android N+.">
+        Private Tabs
+      </message>
+      <message name="IDS_CLOSE_ALL_INCOGNITO_NOTIFICATION" desc="Message on the notification that closes all Private tabs.">
+        Close all Private tabs
+      </message>
+      <message name="IDS_HISTORY_OPEN_IN_INCOGNITO_CHROME" desc="App-specific history selection men item to open the selected link in Brave in private mode. [CHAR_LIMIT=30]">
+        Open in Private Brave tab
+      </message>
+
+      <message name="IDS_INCOGNITO_REAUTH_PAGE_UNLOCK_INCOGNITO_BUTTON_LABEL" desc="The label of button which upon click allows user to start the re-authentication process to view their existing Private tabs.">
+       Unlock Private
+     </message>
+     <message name="IDS_INCOGNITO_REAUTH_PROMO_TITLE" desc="The title of the private re-auth promo card.">
+       Lock Private tabs when you leave Brave
+     </message>
+     <message name="IDS_INCOGNITO_WINDOW_REAUTH_PROMO_TITLE" desc="The title of the private re-auth promo card when there is a dedicated window for Private tabs.">
+       Lock Private windows when you leave Brave
+     </message>
+     <message name="IDS_INCOGNITO_REAUTH_PROMO_DESCRIPTION" desc="The description of the private re-auth promo card.">
+       Use screen lock to see open Private tabs
+     </message>
+     <message name="IDS_INCOGNITO_WINDOW_REAUTH_PROMO_DESCRIPTION" desc="The description of the private re-auth promo card when there is a dedicated window for Private tabs.">
+       Use screen lock to see open Private windows
+     </message>
+     <message name="IDS_INCOGNITO_REAUTH_LOCK_ACTION_TEXT" desc="The label of the button which upon click would turn on the corresponding Brave level Private lock setting after a re-authentication.">
+       Turn on Private lock
+     </message>
+     <message name="IDS_INCOGNITO_REAUTH_SNACKBAR_TEXT" desc="The label of the snackbar notification which appears after the private re-authentication is turned on from the promo card shown inside the Private grid tab switcher.">
+        Private tabs will be locked when you leave Brave
+     </message>
+
+      <message name="IDS_NEW_INCOGNITO_TAB_TITLE" desc="Title in tab strip when opening a new Private tab.">
+        New Private tab
+      </message>
+      <message name="IDS_BUTTON_NEW_INCOGNITO_TAB" desc="Tooltip for the button to open a new Private browser tab.">
+        New Private tab
+      </message>
+      <message name="IDS_MENU_NEW_INCOGNITO_WINDOW" desc="Menu item for opening a new private window. [CHAR_LIMIT=27]">
+        New Private window
+      </message>
+      <message name="IDS_MENU_INCOGNITO_WINDOW" desc="Short label of menu item for opening a new private window. [CHAR_LIMIT=27]">
+        Private window
+      </message>
+      <message name="IDS_MENU_NEW_INCOGNITO_TAB" desc="Menu item for opening a new Private tab that facilitates pseudononymous browsing. [CHAR_LIMIT=27]" meaning="Android menu">
+        New Private tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_INCOGNITO_TAB" desc="Content description for tabs that are in Private mode">
+        Private Tab
+      </message>
+      <message name="IDS_MENU_CHROME_WEBSTORE" desc="Menu item for opening the chrome webstore that allows the user to install extensions. [CHAR_LIMIT=27]">
+        Visit Web Store
+      </message>
+      <message name="IDS_MENU_CLOSE_ALL_INCOGNITO_TABS" desc="Menu item for closing all open Private tabs. [CHAR_LIMIT=27]">
+        Close all Private tabs
+      </message>
+      <message name="IDS_MENU_CLOSE_ALL_INCOGNITO_WINDOWS" desc="Menu item to close all private windows. [ICU Syntax]">
+        {NUM_WINDOWS, plural,
+          =1 {Close 1 Private window}
+          other {Close # Private windows}}
+      </message>
+      <message name="IDS_MENU_OPEN_IN_INCOGNITO_CHROME" desc="Context sensitive menu item for opening a link in Brave in a Private tab. [CHAR_LIMIT=30]" translateable="false">
+        Open in Private Brave
+      </message>
+      <message name="IDS_ACCESSIBILITY_NEW_INCOGNITO_TAB_PAGE" desc="Accessibility text to read aloud when the user focuses the new Private tab view.">
+        New Private tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_NEW_INCOGNITO_TAB" desc="Content description for the new Private tab button.">
+        New Private tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_INCOGNITO_BADGE" desc="Content description for the badge indicating that the user is in Private mode.">
+        Private mode
+      </message>
+      <message name="IDS_INCOGNITO_BADGE" desc="Text appearing in the private badge on toolbar indicating that the user is in Private mode.">
+        Private
+      </message>
+
+      <if expr="enable_extensions_core">
+        </if>
+
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_BTN_INCOGNITO_TOGGLE_STANDARD" desc="Content description for the Private tabs toggle button when viewing standard tabs.">
+        Enter Private mode
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_BTN_INCOGNITO_TOGGLE_INCOGNITO" desc="Content description for the Private tabs toggle button when viewing Private tabs.">
+        Leave Private mode
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_INCOGNITO" desc="Content description for tabs that are not selected in Private mode">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED_INCOGNITO" desc="Content description for the tabs that are selected in Private mode">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_PINNED_INCOGNITO" desc="Content description for pinned tabs that are not selected in Private mode">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Pinned Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_PINNED_SELECTED_INCOGNITO" desc="Content description for the pinned tabs that are selected in Private mode">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Pinned Selected Private Tab
+      </message>
+         <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_AUDIBLE_INCOGNITO" desc="Content description for a tab that is playing audio in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Audible Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_PINNED_AUDIBLE_INCOGNITO" desc="Content description for a pinned tab that is playing audio in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Pinned Audible Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED_AUDIBLE_INCOGNITO" desc="Content description for a selected tab that is playing audio in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Audible Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED_PINNED_AUDIBLE_INCOGNITO" desc="Content description for a selected pinned tab that is playing audio in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Pinned Audible Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_AUDIBLE_INCOGNITO" desc="Content description for a multiselected tab that is playing audio in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Audible Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_PINNED_AUDIBLE_INCOGNITO" desc="Content description for a multiselected pinned tab that is playing audio in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Pinned Audible Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MUTED_INCOGNITO" desc="Content description for a tab that is muted in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Muted Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_PINNED_MUTED_INCOGNITO" desc="Content description for a pinned tab that is muted in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Pinned Muted Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED_MUTED_INCOGNITO" desc="Content description for a selected tab that is muted in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Muted Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED_PINNED_MUTED_INCOGNITO" desc="Content description for a selected pinned tab that is muted in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Pinned Muted Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_MUTED_INCOGNITO" desc="Content description for a multiselected tab that is muted in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Muted Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_PINNED_MUTED_INCOGNITO" desc="Content description for a multiselected pinned tab that is muted in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Pinned Muted Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_RECORDING_INCOGNITO" desc="Content description for a tab that is recording media in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Recording Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_PINNED_RECORDING_INCOGNITO" desc="Content description for a pinned tab that is recording media in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Pinned Recording Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED_RECORDING_INCOGNITO" desc="Content description for a selected tab that is recording media in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Recording Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED_PINNED_RECORDING_INCOGNITO" desc="Content description for a selected pinned tab that is recording media in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Pinned Recording Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_RECORDING_INCOGNITO" desc="Content description for a multiselected tab that is recording media in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Recording Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_PINNED_RECORDING_INCOGNITO" desc="Content description for a multiselected pinned tab that is recording media in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Pinned Recording Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SHARING_INCOGNITO" desc="Content description for a tab that is sharing its content in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Sharing Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_PINNED_SHARING_INCOGNITO" desc="Content description for a pinned tab that is sharing its content in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Pinned Sharing Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED_SHARING_INCOGNITO" desc="Content description for a selected tab that is sharing its content in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Sharing Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED_PINNED_SHARING_INCOGNITO" desc="Content description for a selected pinned tab that is sharing its content in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Pinned Sharing Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_SHARING_INCOGNITO" desc="Content description for a multiselected tab that is sharing its content in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Sharing Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_PINNED_SHARING_INCOGNITO" desc="Content description for a multiselected pinned tab that is sharing its content in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Pinned Sharing Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_PICTURE_IN_PICTURE_INCOGNITO" desc="Content description for a tab that is in picture-in-picture mode in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Picture-in-Picture Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_PINNED_PICTURE_IN_PICTURE_INCOGNITO" desc="Content description for a pinned tab that is in picture-in-picture mode in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Pinned Picture-in-Picture Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED_PICTURE_IN_PICTURE_INCOGNITO" desc="Content description for a selected tab that is in picture-in-picture mode in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Picture-in-Picture Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED_PINNED_PICTURE_IN_PICTURE_INCOGNITO" desc="Content description for a selected pinned tab that is in picture-in-picture mode in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Pinned Picture-in-Picture Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_PICTURE_IN_PICTURE_INCOGNITO" desc="Content description for a multiselected tab that is in picture-in-picture mode in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Picture-in-Picture Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_PINNED_PICTURE_IN_PICTURE_INCOGNITO" desc="Content description for a multiselected pinned tab that is in picture-in-picture mode in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Pinned Picture-in-Picture Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_INCOGNITO" desc="Content description for tabs that are multiselected in Private mode">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_PINNED_INCOGNITO" desc="Content description for tabs that are multiselected and pinned in Private mode">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Pinned Private Tab
+      </message>
+
+      <message name="IDS_KEYBOARD_SHORTCUT_NEW_INCOGNITO_TAB" desc="A text label that appears next to a keyboard shortcut to open a new tab in Private mode in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
+        Open a new tab in Private mode
+      </message>
+      <message name="IDS_KEYBOARD_SHORTCUT_NEW_INCOGNITO_WINDOW" desc="A text label that appears next to a keyboard shortcut to open a new window in Private mode in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
+        Open a new window in Private mode
+      </message>
+       <if expr="enable_arcore">
+        </if>
+
+      <message name="IDS_INSTANCE_SWITCHER_TITLE_INCOGNITO_WINDOW" desc="Title of an instance entry that has private tabs in it.">
+        Private window
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_DESC_INCOGNITO" desc="Description of an instance entry with private tab(s) only.">
+        {TAB_COUNT, plural,
+          =1 {<ph name="TAB_COUNT_ONE">%1$s</ph> private tab}
+          other {<ph name="TAB_COUNT_NORMAL">%1$s<ex>2</ex></ph> private tabs}}
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_DESC_MIXED" desc="Description of an instance entry showing both normal and private tabs.">
+        {TAB_COUNT, plural,
+          =1 {<ph name="TAB_COUNT_ONE">%1$s</ph> tab}
+          other {<ph name="TAB_COUNT_MANY">%2$s<ex>1</ex></ph> tabs, <ph name="TAB_COUNT_INCOGNITO">%1$s</ph> private}}
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_INCOGNITO" desc="The phrase used in the message for deleting private-only instance.">
+        {TAB_COUNT, plural,
+          =1 {<ph name="TAB_COUNT_ONE">%1$s<ex>1</ex></ph> private tab will be closed}
+          other {<ph name="TAB_COUNT_MANY">%1$s<ex>4</ex></ph> private tabs will be closed}}
+      </message>
+      <message name="IDS_INSTANCE_SWITCHER_CLOSE_CONFIRM_DELETED_INCOGNITO_MIXED_V2" desc="The phrase used in the message for deleting private-selected instance.">
+        {TAB_COUNT, plural,
+          =1 {<ph name="INCOGNITO_TAB_COUNT">%1$s<ex>2</ex></ph> private and <ph name="TAB_COUNT_ONE">%2$s<ex>1</ex></ph> other tab will be closed}
+          other {<ph name="INCOGNITO_TAB_COUNT">%1$s<ex>4</ex></ph> private and <ph name="TAB_COUNT_MANY">%2$s<ex>4</ex></ph> other tabs will be closed}}
+      </message>
+      <message name="IDS_IPH_TAB_SWITCHER_SWITCH_INTO_INCOGNITO_TEXT" desc="The in-product-help message to long press the tab switcher button to switch to private.">
+        Touch and hold to switch to Private
+      </message>
+      <message name="IDS_IPH_TAB_SWITCHER_SWITCH_INTO_INCOGNITO_ACCESSIBILITY_TEXT" desc="The in-product-help message to long press the tab switcher button to switch to private.">
+        Double tap and hold to switch to Private
+      </message>
+      <message name="IDS_IPH_TAB_SWITCHER_SWITCH_OUT_OF_INCOGNITO_TEXT" desc="The in-product-help message to long press the tab switcher button to switch to private.">
+        Touch and hold to switch out of Private
+      </message>
+      <message name="IDS_IPH_TAB_SWITCHER_SWITCH_OUT_OF_INCOGNITO_ACCESSIBILITY_TEXT" desc="The in-product-help message to long press the tab switcher button to switch to private.">
+        Double tap and hold to switch out of Private
+      </message>
+      <message name="IDS_QUICK_ACTION_SEARCH_WIDGET_DESCRIPTION" desc="Description text for the quick action search widget">
+        Search using keyboard, voice, Private, or camera
+      </message>
+
+      <message name="IDS_INCOGNITO_NOT_AVAILABLE_MESSAGE" desc="Toast message shown when the user tries to open Private tab or window which is disabled on the device.">
+        Private is not available on this device
+      </message>
+
+      <message name="IDS_NOTIFICATION_PERMISSION_RATIONALE_DIALOG_MESSAGE" desc="The body text of a dialog explaining the benefits of enabling Brave notifications.">
+        You’ll be able to easily manage media controls, Private sessions, downloads and more
+      </message>
+      <message name="IDS_WEBAUTHN_INCOGNITO_CONFIRMATION_TITLE" desc="The title of a bottomsheet that appears before the user saves passkey in Private mode. (See the glossary for translations of the word 'passkey'. Do not translate as 'password'.)" formatter_data="android_java">
+        Save passkey outside Private?
+      </message>
+      <message name="IDS_HUB_SEARCH_EMPTY_HINT_INCOGNITO" desc="The text displayed in the private search box when it's empty.">
+        Search your Private tabs
+      </message>
+      </messages>
+  </release>
+</grit>

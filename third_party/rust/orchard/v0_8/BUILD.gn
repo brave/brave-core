@@ -1,0 +1,125 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "orchard"
+  epoch = "0.8"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/action.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/address.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/builder.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/bundle.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/bundle/batch.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/bundle/commitments.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/circuit.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/circuit/commit_ivk.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/circuit/gadget.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/circuit/gadget/add_chip.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/circuit/note_commit.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/constants.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/constants/fixed_bases.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/constants/fixed_bases/commit_ivk_r.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/constants/fixed_bases/note_commit_r.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/constants/fixed_bases/nullifier_k.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/constants/fixed_bases/spend_auth_g.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/constants/fixed_bases/value_commit_r.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/constants/fixed_bases/value_commit_v.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/constants/load.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/constants/sinsemilla.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/constants/util.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/keys.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/note.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/note/commitment.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/note/nullifier.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/note_encryption.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/primitives.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/primitives/redpallas.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/spec.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/test_vectors.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/test_vectors/commitment_tree.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/test_vectors/keys.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/test_vectors/merkle_path.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/test_vectors/note_encryption.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/tree.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/value.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/orchard-v0_8/src/zip32.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_authors = "Sean Bowe <sean@electriccoin.co>, Jack Grigg <jack@electriccoin.co>, Daira-Emma Hopwood <daira@jacaranda.org>, Ying Tong Lai, Kris Nuttycombe <kris@electriccoin.co>"
+  cargo_pkg_name = "orchard"
+  cargo_pkg_description = "The Orchard shielded transaction protocol"
+  cargo_pkg_repository = "https://github.com/zcash/orchard"
+  cargo_pkg_version = "0.8.0"
+
+  allow_unsafe = false
+
+  deps = [
+    "//brave/third_party/rust/aes/v0_8:lib",
+    "//brave/third_party/rust/bitvec/v1:lib",
+    "//brave/third_party/rust/blake2b_simd/v1:lib",
+    "//brave/third_party/rust/ff/v0_13:lib",
+    "//brave/third_party/rust/fpe/v0_6:lib",
+    "//brave/third_party/rust/group/v0_13:lib",
+    "//brave/third_party/rust/halo2_gadgets/v0_3:lib",
+    "//brave/third_party/rust/halo2_proofs/v0_3:lib",
+    "//brave/third_party/rust/hex/v0_4:lib",
+    "//brave/third_party/rust/incrementalmerkletree/v0_5:lib",
+    "//brave/third_party/rust/lazy_static/v1:lib",
+    "//brave/third_party/rust/memuse/v0_2:lib",
+    "//brave/third_party/rust/nonempty/v0_7:lib",
+    "//brave/third_party/rust/pasta_curves/v0_5:lib",
+    "//brave/third_party/rust/rand/v0_8:lib",
+    "//brave/third_party/rust/reddsa/v0_5:lib",
+    "//brave/third_party/rust/serde/v1:lib",
+    "//brave/third_party/rust/subtle/v2:lib",
+    "//brave/third_party/rust/tracing/v0_1:lib",
+    "//brave/third_party/rust/zcash_note_encryption/v0_4:lib",
+    "//brave/third_party/rust/zcash_spec/v0_1:lib",
+    "//brave/third_party/rust/zip32/v0_1:lib",
+  ]
+  rustenv = []
+  rustflags = []
+
+  #####################################################################
+  # Tweaking which GN `config`s apply to this target.
+
+  # Config changes that apply to all `//third_party/rust` crates.
+  _configs_to_remove = [
+    # We don't need code coverage data for any `chromium_crates_io` crates.
+    "//build/config/coverage:default_coverage",
+
+    # This is third-party code, so remove `chromium_code` config.  We are not
+    # at the same time adding `//build/config/compiler:no_chromium_code`,
+    # because 1) we don't want to pull how warnings are handled by that config
+    # and 2) that config doesn't have any non-warnings-related stuff.
+    "//build/config/compiler:chromium_code",
+  ]
+  _configs_to_add = []
+
+  # Changing (if needed) which configs apply to this specific crate (based on
+  # `extra_kv.configs_to_remove` and `extra_kv.configs_to_add` from
+  # `gnrt_config.toml`).
+  _configs_to_remove += []
+  _configs_to_add += []
+
+  # Applying config changes.
+  library_configs -= _configs_to_remove
+  library_configs += _configs_to_add
+  executable_configs -= _configs_to_remove
+  executable_configs += _configs_to_add
+  proc_macro_configs -= _configs_to_remove
+  proc_macro_configs += _configs_to_add
+}

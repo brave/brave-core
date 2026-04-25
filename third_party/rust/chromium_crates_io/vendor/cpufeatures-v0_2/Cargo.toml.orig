@@ -1,0 +1,27 @@
+[package]
+name = "cpufeatures"
+version = "0.2.11"
+description = """
+Lightweight runtime CPU feature detection for aarch64, loongarch64, and x86/x86_64 targets, 
+with no_std support and support for mobile targets including Android and iOS
+"""
+authors = ["RustCrypto Developers"]
+license = "MIT OR Apache-2.0"
+documentation = "https://docs.rs/cpufeatures"
+repository = "https://github.com/RustCrypto/utils"
+keywords = ["cpuid", "target-feature"]
+categories = ["hardware-support", "no-std"]
+edition = "2018"
+readme = "README.md"
+
+[target.'cfg(all(target_arch = "aarch64", target_vendor = "apple"))'.dependencies]
+libc = "0.2.149"
+
+[target.'cfg(all(target_arch = "aarch64", target_os = "linux"))'.dependencies]
+libc = "0.2.149"
+
+[target.'cfg(all(target_arch = "loongarch64", target_os = "linux"))'.dependencies]
+libc = "0.2.149"
+
+[target.aarch64-linux-android.dependencies]
+libc = "0.2.149"

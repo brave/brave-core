@@ -1,0 +1,27 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("google_sign_in_permission") {
+  sources = [
+    "features.cc",
+    "features.h",
+    "google_sign_in_permission_throttle.cc",
+    "google_sign_in_permission_throttle.h",
+    "google_sign_in_permission_util.cc",
+    "google_sign_in_permission_util.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/constants",
+    "//components/content_settings/core/common",
+    "//components/prefs",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//net/base/registry_controlled_domains",
+    "//services/network/public/cpp",
+    "//url",
+  ]
+}

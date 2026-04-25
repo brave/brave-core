@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<!-- navigator.userAgent dynamic iframe test 5 -->
+<!-- iframe, accessed through frames array -->
+<html>
+    <head>
+        <title></title>
+    </head>
+    <body>
+        <script>
+         const element = document.createElement("iframe");
+         document.body.appendChild(element);
+         const iframeWindow = frames[frames.length-1];
+         var iframeNavigator = iframeWindow.navigator;
+         if (window.navigator.userAgent == iframeNavigator["userAgent"]) {
+             document.title = "pass";
+         }
+        </script>
+    </body>
+</html>

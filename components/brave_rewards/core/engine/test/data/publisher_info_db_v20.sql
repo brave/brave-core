@@ -1,0 +1,240 @@
+BEGIN TRANSACTION;
+CREATE TABLE IF NOT EXISTS "meta" (
+	"key"	LONGVARCHAR NOT NULL UNIQUE,
+	"value"	LONGVARCHAR,
+	PRIMARY KEY("key")
+);
+CREATE TABLE IF NOT EXISTS "publisher_info" (
+	"publisher_id"	LONGVARCHAR NOT NULL UNIQUE,
+	"excluded"	INTEGER NOT NULL DEFAULT 0,
+	"name"	TEXT NOT NULL,
+	"favIcon"	TEXT NOT NULL,
+	"url"	TEXT NOT NULL,
+	"provider"	TEXT NOT NULL,
+	PRIMARY KEY("publisher_id")
+);
+CREATE TABLE IF NOT EXISTS "server_publisher_info" (
+	"publisher_key"	LONGVARCHAR NOT NULL UNIQUE,
+	"status"	INTEGER NOT NULL DEFAULT 0,
+	"excluded"	INTEGER NOT NULL DEFAULT 0,
+	"address"	TEXT NOT NULL,
+	PRIMARY KEY("publisher_key")
+);
+CREATE TABLE IF NOT EXISTS "contribution_queue" (
+	"contribution_queue_id"	INTEGER NOT NULL,
+	"type"	INTEGER NOT NULL,
+	"amount"	DOUBLE NOT NULL,
+	"partial"	INTEGER NOT NULL DEFAULT 0,
+	"created_at"	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY("contribution_queue_id" AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS "promotion" (
+	"promotion_id"	TEXT NOT NULL,
+	"version"	INTEGER NOT NULL,
+	"type"	INTEGER NOT NULL,
+	"public_keys"	TEXT NOT NULL,
+	"suggestions"	INTEGER NOT NULL DEFAULT 0,
+	"approximate_value"	DOUBLE NOT NULL DEFAULT 0,
+	"status"	INTEGER NOT NULL DEFAULT 0,
+	"expires_at"	TIMESTAMP NOT NULL,
+	"created_at"	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	"claimed_at"	TIMESTAMP,
+	"claim_id"	TEXT,
+	PRIMARY KEY("promotion_id")
+);
+CREATE TABLE IF NOT EXISTS "contribution_info" (
+	"contribution_id"	TEXT NOT NULL,
+	"amount"	DOUBLE NOT NULL,
+	"type"	INTEGER NOT NULL,
+	"step"	INTEGER NOT NULL DEFAULT -1,
+	"retry_count"	INTEGER NOT NULL DEFAULT -1,
+	"created_at"	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	"processor"	INTEGER NOT NULL DEFAULT 1,
+	PRIMARY KEY("contribution_id")
+);
+CREATE TABLE IF NOT EXISTS "activity_info" (
+	"publisher_id"	LONGVARCHAR NOT NULL,
+	"duration"	INTEGER NOT NULL DEFAULT 0,
+	"visits"	INTEGER NOT NULL DEFAULT 0,
+	"score"	DOUBLE NOT NULL DEFAULT 0,
+	"percent"	INTEGER NOT NULL DEFAULT 0,
+	"weight"	DOUBLE NOT NULL DEFAULT 0,
+	"reconcile_stamp"	INTEGER NOT NULL DEFAULT 0,
+	CONSTRAINT "activity_unique" UNIQUE("publisher_id","reconcile_stamp")
+);
+CREATE TABLE IF NOT EXISTS "contribution_queue_publishers" (
+	"contribution_queue_id"	INTEGER NOT NULL,
+	"publisher_key"	TEXT NOT NULL,
+	"amount_percent"	DOUBLE NOT NULL
+);
+CREATE TABLE IF NOT EXISTS "media_publisher_info" (
+	"media_key"	TEXT NOT NULL UNIQUE,
+	"publisher_id"	LONGVARCHAR NOT NULL,
+	PRIMARY KEY("media_key")
+);
+CREATE TABLE IF NOT EXISTS "pending_contribution" (
+	"pending_contribution_id"	INTEGER NOT NULL,
+	"publisher_id"	LONGVARCHAR NOT NULL,
+	"amount"	DOUBLE NOT NULL DEFAULT 0,
+	"added_date"	INTEGER NOT NULL DEFAULT 0,
+	"viewing_id"	LONGVARCHAR NOT NULL,
+	"type"	INTEGER NOT NULL,
+	PRIMARY KEY("pending_contribution_id" AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS "recurring_donation" (
+	"publisher_id"	LONGVARCHAR NOT NULL UNIQUE,
+	"amount"	DOUBLE NOT NULL DEFAULT 0,
+	"added_date"	INTEGER NOT NULL DEFAULT 0,
+	PRIMARY KEY("publisher_id")
+);
+CREATE TABLE IF NOT EXISTS "server_publisher_banner" (
+	"publisher_key"	LONGVARCHAR NOT NULL UNIQUE,
+	"title"	TEXT,
+	"description"	TEXT,
+	"background"	TEXT,
+	"logo"	TEXT,
+	PRIMARY KEY("publisher_key")
+);
+CREATE TABLE IF NOT EXISTS "server_publisher_links" (
+	"publisher_key"	LONGVARCHAR NOT NULL,
+	"provider"	TEXT,
+	"link"	TEXT,
+	CONSTRAINT "server_publisher_links_unique" UNIQUE("publisher_key","provider")
+);
+CREATE TABLE IF NOT EXISTS "server_publisher_amounts" (
+	"publisher_key"	LONGVARCHAR NOT NULL,
+	"amount"	DOUBLE NOT NULL DEFAULT 0,
+	CONSTRAINT "server_publisher_amounts_unique" UNIQUE("publisher_key","amount")
+);
+CREATE TABLE IF NOT EXISTS "creds_batch" (
+	"creds_id"	TEXT NOT NULL,
+	"trigger_id"	TEXT NOT NULL,
+	"trigger_type"	INT NOT NULL,
+	"creds"	TEXT NOT NULL,
+	"blinded_creds"	TEXT NOT NULL,
+	"signed_creds"	TEXT,
+	"public_key"	TEXT,
+	"batch_proof"	TEXT,
+	"status"	INT NOT NULL DEFAULT 0,
+	"created_at"	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY("creds_id"),
+	CONSTRAINT "creds_batch_unique" UNIQUE("trigger_id","trigger_type")
+);
+CREATE TABLE IF NOT EXISTS "unblinded_tokens" (
+	"token_id"	INTEGER NOT NULL,
+	"token_value"	TEXT,
+	"public_key"	TEXT,
+	"value"	DOUBLE NOT NULL DEFAULT 0,
+	"creds_id"	TEXT,
+	"expires_at"	TIMESTAMP NOT NULL DEFAULT 0,
+	"created_at"	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	"redeemed_at"	TIMESTAMP NOT NULL DEFAULT 0,
+	"redeem_id"	TEXT,
+	"redeem_type"	INTEGER NOT NULL DEFAULT 0,
+	PRIMARY KEY("token_id" AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS "sku_order" (
+	"order_id"	TEXT NOT NULL,
+	"total_amount"	DOUBLE,
+	"merchant_id"	TEXT,
+	"location"	TEXT,
+	"status"	INTEGER NOT NULL DEFAULT 0,
+	"contribution_id"	TEXT,
+	"created_at"	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY("order_id")
+);
+CREATE TABLE IF NOT EXISTS "sku_order_items" (
+	"order_item_id"	TEXT NOT NULL,
+	"order_id"	TEXT NOT NULL,
+	"sku"	TEXT,
+	"quantity"	INTEGER,
+	"price"	DOUBLE,
+	"name"	TEXT,
+	"description"	TEXT,
+	"type"	INTEGER,
+	"expires_at"	TIMESTAMP,
+	"created_at"	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT "sku_order_items_unique" UNIQUE("order_item_id","order_id")
+);
+CREATE TABLE IF NOT EXISTS "sku_transaction" (
+	"transaction_id"	TEXT NOT NULL,
+	"order_id"	TEXT NOT NULL,
+	"external_transaction_id"	TEXT NOT NULL,
+	"type"	INTEGER NOT NULL,
+	"amount"	DOUBLE NOT NULL,
+	"status"	INTEGER NOT NULL,
+	"created_at"	TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY("transaction_id")
+);
+CREATE TABLE IF NOT EXISTS "contribution_info_publishers" (
+	"contribution_id"	TEXT NOT NULL,
+	"publisher_key"	TEXT NOT NULL,
+	"total_amount"	DOUBLE NOT NULL,
+	"contributed_amount"	DOUBLE
+);
+INSERT INTO "meta" VALUES ('mmap_status','-1');
+INSERT INTO "meta" VALUES ('version','20');
+INSERT INTO "meta" VALUES ('last_compatible_version','1');
+INSERT INTO "contribution_info_publishers" VALUES ('1','publisher.com',15.0,15.0);
+INSERT INTO "contribution_info_publishers" VALUES ('1','publisher.com',20.0,20.0);
+INSERT INTO "contribution_info_publishers" VALUES ('2','publisher.com',10.0,5.0);
+INSERT INTO "contribution_info_publishers" VALUES ('2','publisher.tv',5.0,5.0);
+INSERT INTO "contribution_info_publishers" VALUES ('3','publisher.org',1.0,1.0);
+CREATE INDEX IF NOT EXISTS "server_publisher_info_publisher_key_index" ON "server_publisher_info" (
+	"publisher_key"
+);
+CREATE INDEX IF NOT EXISTS "promotion_promotion_id_index" ON "promotion" (
+	"promotion_id"
+);
+CREATE INDEX IF NOT EXISTS "activity_info_publisher_id_index" ON "activity_info" (
+	"publisher_id"
+);
+CREATE INDEX IF NOT EXISTS "contribution_queue_publishers_contribution_queue_id_index" ON "contribution_queue_publishers" (
+	"contribution_queue_id"
+);
+CREATE INDEX IF NOT EXISTS "contribution_queue_publishers_publisher_key_index" ON "contribution_queue_publishers" (
+	"publisher_key"
+);
+CREATE INDEX IF NOT EXISTS "media_publisher_info_media_key_index" ON "media_publisher_info" (
+	"media_key"
+);
+CREATE INDEX IF NOT EXISTS "media_publisher_info_publisher_id_index" ON "media_publisher_info" (
+	"publisher_id"
+);
+CREATE INDEX IF NOT EXISTS "pending_contribution_publisher_id_index" ON "pending_contribution" (
+	"publisher_id"
+);
+CREATE INDEX IF NOT EXISTS "recurring_donation_publisher_id_index" ON "recurring_donation" (
+	"publisher_id"
+);
+CREATE INDEX IF NOT EXISTS "server_publisher_banner_publisher_key_index" ON "server_publisher_banner" (
+	"publisher_key"
+);
+CREATE INDEX IF NOT EXISTS "server_publisher_links_publisher_key_index" ON "server_publisher_links" (
+	"publisher_key"
+);
+CREATE INDEX IF NOT EXISTS "server_publisher_amounts_publisher_key_index" ON "server_publisher_amounts" (
+	"publisher_key"
+);
+CREATE INDEX IF NOT EXISTS "creds_batch_trigger_id_index" ON "creds_batch" (
+	"trigger_id"
+);
+CREATE INDEX IF NOT EXISTS "creds_batch_trigger_type_index" ON "creds_batch" (
+	"trigger_type"
+);
+CREATE INDEX IF NOT EXISTS "sku_order_items_order_id_index" ON "sku_order_items" (
+	"order_id"
+);
+CREATE INDEX IF NOT EXISTS "sku_order_items_order_item_id_index" ON "sku_order_items" (
+	"order_item_id"
+);
+CREATE INDEX IF NOT EXISTS "sku_transaction_order_id_index" ON "sku_transaction" (
+	"order_id"
+);
+CREATE INDEX IF NOT EXISTS "unblinded_tokens_creds_id_index" ON "unblinded_tokens" (
+	"creds_id"
+);
+CREATE INDEX IF NOT EXISTS "unblinded_tokens_redeem_id_index" ON "unblinded_tokens" (
+	"redeem_id"
+);
+COMMIT;

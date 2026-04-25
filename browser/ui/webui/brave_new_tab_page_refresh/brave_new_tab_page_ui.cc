@@ -1,0 +1,279 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#include "brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page_ui.h"
+
+#include <utility>
+
+#include "brave/browser/brave_browser_process.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
+#include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
+#include "brave/browser/ntp_background/custom_background_file_manager.h"
+#include "brave/browser/ntp_background/view_counter_service_factory.h"
+#include "brave/browser/ui/webui/brave_new_tab_page_refresh/background_facade.h"
+#include "brave/browser/ui/webui/brave_new_tab_page_refresh/custom_image_chooser.h"
+#include "brave/browser/ui/webui/brave_new_tab_page_refresh/new_tab_page_handler.h"
+#include "brave/browser/ui/webui/brave_new_tab_page_refresh/new_tab_page_initializer.h"
+#include "brave/browser/ui/webui/brave_new_tab_page_refresh/top_sites_facade.h"
+#include "brave/browser/ui/webui/brave_new_tab_page_refresh/vpn_facade.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "brave/components/misc_metrics/page_metrics.h"
+#include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/browser/contextual_search/contextual_search_service_factory.h"
+#include "chrome/browser/ntp_tiles/chrome_most_visited_sites_factory.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/search_engines/template_url_service_factory.h"
+#include "chrome/browser/ui/webui/searchbox/realbox_handler.h"
+#include "components/contextual_search/contextual_search_service.h"
+#include "components/contextual_search/contextual_search_session_handle.h"
+#include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_entry.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ai_chat/tab_tracker_service_factory.h"
+#include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/bookmarks_page_handler.h"
+#include "brave/components/ai_chat/core/browser/history_ui_handler.h"
+#include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#include "chrome/browser/bookmarks/bookmark_model_factory.h"
+#include "chrome/browser/history/history_service_factory.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/ads_service_factory.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/browser/brave_news/brave_news_controller_factory.h"
+#include "brave/components/brave_news/browser/brave_news_controller.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_service.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/browser/ui/webui/brave_rewards/rewards_page_handler.h"
+#endif
+
+namespace {
+
+using brave_new_tab_page_refresh::BackgroundFacade;
+using brave_new_tab_page_refresh::CustomImageChooser;
+using brave_new_tab_page_refresh::NewTabPageHandler;
+using brave_new_tab_page_refresh::NewTabPageInitializer;
+using brave_new_tab_page_refresh::TopSitesFacade;
+using brave_new_tab_page_refresh::VPNFacade;
+
+}  // namespace
+
+BraveNewTabPageUI::BraveNewTabPageUI(content::WebUI* web_ui)
+    : ui::MojoWebUIController(web_ui, /* enable_chrome_send = */ true) {
+  NewTabPageInitializer(*web_ui).Initialize();
+
+  auto* web_contents = web_ui->GetWebContents();
+  CHECK(web_contents);
+  const content::NavigationEntry* navigation_entry =
+      web_contents->GetController().GetLastCommittedEntry();
+  was_restored_ = navigation_entry && navigation_entry->IsRestored();
+}
+
+BraveNewTabPageUI::~BraveNewTabPageUI() = default;
+
+void BraveNewTabPageUI::BindInterface(
+    mojo::PendingReceiver<brave_new_tab_page_refresh::mojom::NewTabPageHandler>
+        receiver) {
+  auto* web_contents = web_ui()->GetWebContents();
+  auto* profile = Profile::FromWebUI(web_ui());
+  auto* prefs = profile->GetPrefs();
+  auto image_chooser =
+      std::make_unique<CustomImageChooser>(*web_contents, *profile);
+  auto background_facade = std::make_unique<BackgroundFacade>(
+      std::make_unique<CustomBackgroundFileManager>(profile), *prefs,
+      g_brave_browser_process->ntp_background_images_service(),
+      ntp_background_images::ViewCounterServiceFactory::GetForProfile(profile));
+  auto top_sites_facade = std::make_unique<TopSitesFacade>(
+      ChromeMostVisitedSitesFactory::NewForProfile(profile), *prefs);
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  auto vpn_facade = std::make_unique<VPNFacade>(
+      *web_contents, brave_vpn::BraveVpnServiceFactory::GetForProfile(profile));
+#else
+  auto vpn_facade = std::make_unique<VPNFacade>();
+#endif
+
+  auto* profile_metrics =
+      misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
+          profile);
+  misc_metrics::PageMetrics* page_metrics =
+      profile_metrics ? profile_metrics->GetPageMetrics() : nullptr;
+
+  page_handler_ = std::make_unique<NewTabPageHandler>(
+      std::move(receiver), std::move(image_chooser),
+      std::move(background_facade), std::move(top_sites_facade),
+      std::move(vpn_facade), *web_contents, *prefs,
+      *TemplateURLServiceFactory::GetForProfile(profile),
+      *g_brave_browser_process->process_misc_metrics()->new_tab_metrics(),
+      page_metrics, was_restored_);
+
+  // Reset `was_restored_` flag so with the next reload the current tab won't be
+  // treated as a restored tab.
+  // TODO(https://github.com/brave/brave-browser/issues/51359): Use tab
+  // visibility instead of `was_restored_` flag.
+  was_restored_ = false;
+}
+
+void BraveNewTabPageUI::BindInterface(
+    mojo::PendingReceiver<
+        ntp_background_images::mojom::SponsoredRichMediaAdEventHandler>
+        receiver) {
+  rich_media_ad_event_handler_ = std::make_unique<
+      ntp_background_images::NTPSponsoredRichMediaAdEventHandler>(
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+      brave_ads::AdsServiceFactory::GetForProfile(Profile::FromWebUI(web_ui()))
+#else
+      nullptr
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+  );
+  rich_media_ad_event_handler_->Bind(std::move(receiver));
+}
+
+void BraveNewTabPageUI::BindInterface(
+    mojo::PendingReceiver<searchbox::mojom::PageHandler> receiver) {
+  realbox_handler_ = std::make_unique<RealboxHandler>(
+      std::move(receiver), Profile::FromWebUI(web_ui()),
+      web_ui()->GetWebContents(),
+      base::BindRepeating(&BraveNewTabPageUI::GetContextualSessionHandle,
+                          base::Unretained(this)));
+}
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+void BraveNewTabPageUI::BindInterface(
+    mojo::PendingReceiver<brave_rewards::mojom::RewardsPageHandler> receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  auto* rewards_service =
+      brave_rewards::RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    return;
+  }
+  rewards_page_handler_ = std::make_unique<brave_rewards::RewardsPageHandler>(
+      std::move(receiver), nullptr, rewards_service,
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+      brave_ads::AdsServiceFactory::GetForProfile(profile),
+#else
+      nullptr,
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+      nullptr, profile->GetPrefs());
+}
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+void BraveNewTabPageUI::BindInterface(
+    mojo::PendingReceiver<brave_news::mojom::BraveNewsController> receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  auto* brave_news_controller =
+      brave_news::BraveNewsControllerFactory::GetForBrowserContext(profile);
+  if (brave_news_controller) {
+    brave_news_controller->Bind(std::move(receiver));
+  }
+}
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+void BraveNewTabPageUI::BindInterface(
+    mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver) {
+  auto* vpn_service = brave_vpn::BraveVpnServiceFactory::GetForProfile(
+      Profile::FromWebUI(web_ui()));
+  if (vpn_service) {
+    vpn_service->BindInterface(std::move(receiver));
+  }
+}
+#endif
+
+contextual_search::ContextualSearchSessionHandle*
+BraveNewTabPageUI::GetContextualSessionHandle() {
+  if (!session_handle_) {
+    auto* service = ContextualSearchServiceFactory::GetForProfile(
+        Profile::FromWebUI(web_ui()));
+    if (service) {
+      session_handle_ = service->CreateSession(
+          std::make_unique<
+              contextual_search::ContextualSearchContextController::
+                  ConfigParams>(),
+          contextual_search::ContextualSearchSource::kOmnibox,
+          /*invocation_source=*/std::nullopt);
+    }
+  }
+  return session_handle_.get();
+}
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+void BraveNewTabPageUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::AIChatUIHandler> receiver) {
+  CHECK(ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled());
+  auto* profile = Profile::FromWebUI(web_ui());
+  if (!ai_chat::AIChatServiceFactory::GetForBrowserContext(profile)) {
+    return;
+  }
+  ai_chat_page_handler_ = std::make_unique<ai_chat::AIChatUIPageHandler>(
+      web_ui()->GetWebContents(), nullptr, profile, std::move(receiver));
+}
+
+void BraveNewTabPageUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::Service> receiver) {
+  CHECK(ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled());
+  auto* profile = Profile::FromWebUI(web_ui());
+  auto* service = ai_chat::AIChatServiceFactory::GetForBrowserContext(profile);
+  if (!service) {
+    return;
+  }
+  service->Bind(std::move(receiver));
+}
+
+void BraveNewTabPageUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::TabTrackerService> pending_receiver) {
+  CHECK(ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled());
+  auto* profile = Profile::FromWebUI(web_ui());
+  auto* service =
+      ai_chat::TabTrackerServiceFactory::GetForBrowserContext(profile);
+  if (!service) {
+    return;
+  }
+  service->Bind(std::move(pending_receiver));
+}
+
+void BraveNewTabPageUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::BookmarksPageHandler>
+        pending_receiver) {
+  CHECK(ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled());
+  auto* profile = Profile::FromWebUI(web_ui());
+  bookmarks_page_handler_ = std::make_unique<ai_chat::BookmarksPageHandler>(
+      BookmarkModelFactory::GetForBrowserContext(profile),
+      std::move(pending_receiver));
+}
+
+void BraveNewTabPageUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::HistoryUIHandler> pending_receiver) {
+  CHECK(ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled());
+  auto* profile = Profile::FromWebUI(web_ui());
+  history_ui_handler_ = std::make_unique<ai_chat::HistoryUIHandler>(
+      std::move(pending_receiver),
+      HistoryServiceFactory::GetForProfile(profile,
+                                           ServiceAccessType::EXPLICIT_ACCESS));
+  CHECK(history_ui_handler_);
+}
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+WEB_UI_CONTROLLER_TYPE_IMPL(BraveNewTabPageUI)

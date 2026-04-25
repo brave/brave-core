@@ -1,0 +1,1699 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include <utility>
+
+#include "base/functional/callback_helpers.h"
+#include "base/test/run_until.h"
+#include "brave/browser/ui/bookmark/bookmark_helper.h"
+#include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/split_view/split_view_features.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
+#include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
+#include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
+#include "brave/common/pref_names.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
+#include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
+#include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/split_tab_menu_model.h"
+#include "chrome/browser/ui/tabs/tab_model.h"
+#include "chrome/browser/ui/ui_features.h"
+#include "chrome/browser/ui/views/frame/browser_frame_view.h"
+#include "chrome/browser/ui/views/frame/multi_contents_background_view.h"
+#include "chrome/browser/ui/views/frame/multi_contents_resize_area.h"
+#include "chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h"
+#include "chrome/browser/ui/views/infobars/infobar_container_view.h"
+#include "chrome/browser/ui/views/tabs/tab.h"
+#include "chrome/browser/ui/views/tabs/tab_strip.h"
+#include "chrome/browser/ui/views/tabs/tab_style_views.h"
+#include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
+#include "chrome/test/base/chrome_test_utils.h"
+#include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
+#include "components/grit/brave_components_strings.h"
+#include "components/infobars/content/content_infobar_manager.h"
+#include "components/javascript_dialogs/tab_modal_dialog_manager.h"
+#include "components/permissions/permission_request_manager.h"
+#include "components/tabs/public/split_tab_data.h"
+#include "components/tabs/public/tab_interface.h"
+#include "components/web_modal/web_contents_modal_dialog_manager.h"
+#include "content/public/browser/navigation_handle.h"
+#include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
+#include "content/public/test/test_navigation_observer.h"
+#include "net/dns/mock_host_resolver.h"
+#include "net/test/embedded_test_server/embedded_test_server.h"
+#include "net/test/embedded_test_server/http_request.h"
+#include "net/test/embedded_test_server/http_response.h"
+#include "third_party/skia/include/core/SkPath.h"
+#include "third_party/skia/include/core/SkRegion.h"
+#include "ui/compositor/layer.h"
+#include "ui/events/base_event_utils.h"
+#include "ui/events/event.h"
+#include "ui/gfx/geometry/insets.h"
+#include "ui/gfx/geometry/rect.h"
+#include "ui/gfx/geometry/skia_conversions.h"
+#include "ui/views/view_utils.h"
+#include "ui/views/widget/widget.h"
+
+namespace {
+ui::MouseEvent GetDummyEvent() {
+  return ui::MouseEvent(ui::EventType::kMousePressed, gfx::PointF(),
+                        gfx::PointF(), base::TimeTicks::Now(), 0, 0);
+}
+
+constexpr char kTestPageWithTargetBlankLink[] = R"(
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Page with target="_blank" link</title>
+</head>
+<body>
+  <a id="target-blank-link" href="/target.html" target="_blank">
+    Open in new tab
+  </a>
+  <a id="target-blank-noreferrer-link"
+     href="/target.html"
+     target="_blank" rel="noreferrer">
+    Open in new tab (noreferrer)
+  </a>
+  <script>
+    function clickTargetBlankLink() {
+      document.getElementById('target-blank-link').click();
+    }
+    function clickTargetBlankNoReferrerLink() {
+      document.getElementById('target-blank-noreferrer-link').click();
+    }
+    // window.open() variations
+    function windowOpenBasic() {
+      window.open('/target.html', '_blank');
+    }
+    function windowOpenWithNoreferrer() {
+      window.open('/target.html', '_blank', 'noreferrer');
+    }
+    function windowOpenWithFeatures() {
+      window.open('/target.html', '_blank', 'width=800,height=600');
+    }
+  </script>
+</body>
+</html>
+)";
+
+constexpr char kTargetPage[] = R"(
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Target Page</title>
+</head>
+<body>
+  <p>This is the target page</p>
+</body>
+</html>
+)";
+
+constexpr char kTestPageWithLink[] = R"(
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Page with link</title>
+</head>
+<body>
+  <a id="normal-link" href="/target.html">Normal link</a>
+  <a id="hash-link" href="#section">Hash link</a>
+  <form id="post-form" method="post" action="/target.html">
+    <input type="submit" value="Submit">
+  </form>
+  <script>
+    function clickNormalLink() {
+      document.getElementById('normal-link').click();
+    }
+    function clickHashLink() {
+      document.getElementById('hash-link').click();
+    }
+    function submitForm() {
+      document.getElementById('post-form').submit();
+    }
+  </script>
+</body>
+</html>
+)";
+
+// Observer for same-document navigations. Uses DidFinishNavigation to detect
+// same-document commits (event-driven), and RunUntil for the wait mechanism
+// (provides timeout safety instead of RunLoop::Run() which can hang
+// indefinitely).
+class SameDocumentCommitObserver : public content::WebContentsObserver {
+ public:
+  explicit SameDocumentCommitObserver(content::WebContents* web_contents)
+      : content::WebContentsObserver(web_contents) {
+    EXPECT_TRUE(web_contents);
+  }
+
+  SameDocumentCommitObserver(const SameDocumentCommitObserver&) = delete;
+  SameDocumentCommitObserver& operator=(const SameDocumentCommitObserver&) =
+      delete;
+
+  // Returns true if a same-document navigation was observed, false on timeout.
+  bool Wait() {
+    return did_navigate_ ||
+           base::test::RunUntil([this]() { return did_navigate_; });
+  }
+
+  const GURL& last_committed_url() const { return last_committed_url_; }
+
+ private:
+  void DidFinishNavigation(
+      content::NavigationHandle* navigation_handle) override {
+    if (navigation_handle->IsSameDocument() &&
+        navigation_handle->HasCommitted()) {
+      did_navigate_ = true;
+      last_committed_url_ = navigation_handle->GetURL();
+    }
+  }
+
+  bool did_navigate_ = false;
+  GURL last_committed_url_;
+};
+
+}  // namespace
+
+class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
+ public:
+  SideBySideEnabledBrowserTest() = default;
+  ~SideBySideEnabledBrowserTest() override = default;
+
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, false);
+  }
+
+  TabStrip* tab_strip() {
+    return BrowserView::GetBrowserViewForBrowser(browser())
+        ->horizontal_tab_strip_for_testing();
+  }
+
+  BraveBrowserView* brave_browser_view() const {
+    return BraveBrowserView::From(
+        BrowserView::GetBrowserViewForBrowser(browser()));
+  }
+
+  views::View* split_view_separator() const {
+    return brave_multi_contents_view()->resize_area_for_testing();
+  }
+
+  BraveMultiContentsView* brave_multi_contents_view() const {
+    return static_cast<BraveMultiContentsView*>(
+        brave_browser_view()->multi_contents_view());
+  }
+
+  BrowserFrameView* browser_non_client_frame_view() {
+    return brave_browser_view()->browser_widget()->GetFrameView();
+  }
+
+  void ToggleVerticalTabStrip() {
+    brave::ToggleVerticalTabStrip(browser());
+    browser_non_client_frame_view()->DeprecatedLayoutImmediately();
+  }
+
+ protected:
+  base::test::ScopedFeatureList scoped_features_;
+};
+
+IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
+                       BraveMultiContentsViewTest) {
+  EXPECT_FALSE(split_view_separator()->GetVisible());
+
+  auto* browser_view = brave_browser_view();
+
+  // Remove all infobars to test top container separator visibility.
+  // Infobar visibility affects that separator visibility.
+  // Start test w/o infobar.
+  infobars::ContentInfoBarManager::FromWebContents(
+      browser()->tab_strip_model()->GetWebContentsAt(0))
+      ->RemoveAllInfoBars(/*animate=*/false);
+  RunScheduledLayouts();
+  ASSERT_FALSE(browser_view->infobar_container()->GetVisible());
+
+  // separator should not be empty and visible when split view is closed.
+  EXPECT_TRUE(
+      browser_view->top_container_separator_for_testing()->GetVisible());
+  EXPECT_NE(gfx::Size(),
+            browser_view->top_container_separator_for_testing()->size());
+
+  chrome::NewSplitTab(browser(),
+                      split_tabs::SplitTabCreatedSource::kToolbarButton);
+  RunScheduledLayouts();
+
+  // separator should be empty when split view is opened.
+  EXPECT_EQ(gfx::Size(),
+            browser_view->top_container_separator_for_testing()->size());
+  EXPECT_FALSE(
+      browser_view->top_container_separator_for_testing()->GetVisible());
+  EXPECT_TRUE(split_view_separator()->GetVisible());
+  EXPECT_EQ(4, split_view_separator()->GetPreferredSize().width());
+
+  // Check corner radius.
+  auto* multi_contents_view = brave_multi_contents_view();
+  ASSERT_TRUE(multi_contents_view);
+  auto* start_contents_container_view =
+      static_cast<BraveContentsContainerView*>(
+          multi_contents_view->contents_container_views_for_testing()[0]);
+  auto* end_contents_container_view = static_cast<BraveContentsContainerView*>(
+      multi_contents_view->contents_container_views_for_testing()[1]);
+  ASSERT_TRUE(start_contents_container_view);
+  ASSERT_TRUE(end_contents_container_view);
+  EXPECT_FALSE(
+      multi_contents_view->background_view_for_testing()->GetVisible());
+
+  FullscreenController* fullscreen_controller = browser()
+                                                    ->GetFeatures()
+                                                    .exclusive_access_manager()
+                                                    ->fullscreen_controller();
+  fullscreen_controller->set_is_tab_fullscreen_for_testing(true);
+  EXPECT_EQ(gfx::RoundedCornersF(),
+            start_contents_container_view->GetCornerRadius(true));
+  fullscreen_controller->set_is_tab_fullscreen_for_testing(false);
+
+  auto* start_contents_web_view =
+      multi_contents_view->start_contents_view_for_testing();
+  auto* end_contents_web_view =
+      multi_contents_view->end_contents_view_for_testing();
+  ASSERT_TRUE(start_contents_web_view);
+  ASSERT_TRUE(end_contents_web_view);
+  EXPECT_EQ(start_contents_web_view->layer()->rounded_corner_radii(),
+            start_contents_container_view->GetCornerRadius(false));
+  EXPECT_EQ(end_contents_web_view->layer()->rounded_corner_radii(),
+            end_contents_container_view->GetCornerRadius(false));
+
+  // Check borders.
+  EXPECT_EQ(gfx::Insets(BraveContentsContainerView::kBorderThickness),
+            start_contents_container_view->GetBorder()->GetInsets());
+  EXPECT_EQ(gfx::Insets(BraveContentsContainerView::kBorderThickness),
+            end_contents_container_view->GetBorder()->GetInsets());
+
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return start_contents_web_view->width() == end_contents_web_view->width();
+  }));
+
+  multi_contents_view->OnResize(30, false);
+  multi_contents_view->OnResize(30, true);
+
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return start_contents_web_view->width() != end_contents_web_view->width();
+  }));
+
+  // Check double click makes both contents view have same width.
+  const gfx::Point point(0, 0);
+  ui::MouseEvent event(ui::EventType::kMousePressed, point, point,
+                       ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON,
+                       ui::EF_LEFT_MOUSE_BUTTON);
+  event.SetClickCount(2);
+  split_view_separator()->OnMouseReleased(event);
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return start_contents_web_view->width() == end_contents_web_view->width();
+  }));
+}
+
+IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  EXPECT_EQ(2, tab_strip()->GetActiveIndex());
+
+  EXPECT_FALSE(split_view_separator()->GetVisible());
+
+  // Created new tab(at 3) for new split view with existing tab(at 2).
+  chrome::NewSplitTab(browser(),
+                      split_tabs::SplitTabCreatedSource::kToolbarButton);
+  EXPECT_TRUE(tab_strip()->tab_at(2)->split().has_value());
+  EXPECT_FALSE(tab_strip()->tab_at(2)->IsActive());
+  EXPECT_TRUE(tab_strip()->tab_at(3)->split().has_value());
+  EXPECT_TRUE(tab_strip()->tab_at(3)->IsActive());
+  EXPECT_TRUE(split_view_separator()->GetVisible());
+
+  // Chromium's mini toolbar should be visible.
+  EXPECT_TRUE(
+      brave_multi_contents_view()->mini_toolbar_for_testing(0)->GetVisible());
+  EXPECT_TRUE(
+      brave_multi_contents_view()->mini_toolbar_for_testing(1)->GetVisible());
+
+  // Check mini toolbar uses our menu model.
+  brave_multi_contents_view()->mini_toolbar_for_testing(0)->OpenSplitViewMenu();
+  auto* menu_model =
+      static_cast<SplitTabMenuModel*>(brave_multi_contents_view()
+                                          ->mini_toolbar_for_testing(0)
+                                          ->menu_model_.get());
+
+  // This id calc is copied from GetCommandIdInt() at split_tab_menu_model.cc
+  // Check that method if test failed.
+  int command_id =
+      ExistingBaseSubMenuModel::kMinSplitTabMenuModelCommandId +
+      static_cast<int>(SplitTabMenuModel::CommandId::kReversePosition);
+  EXPECT_EQ(l10n_util::GetStringUTF16(IDS_IDC_SWAP_SPLIT_VIEW),
+            menu_model->GetLabelForCommandId(command_id));
+
+  // Activate non split view tab.
+  tab_strip()->SelectTab(tab_strip()->tab_at(0), GetDummyEvent());
+  EXPECT_EQ(0, tab_strip()->GetActiveIndex());
+  EXPECT_FALSE(split_view_separator()->GetVisible());
+
+  // Check only hovered split tab has hover animation.
+  auto* hovered_split_tab = tab_strip()->tab_at(2);
+  auto* not_hovered_split_tab = tab_strip()->tab_at(3);
+  EXPECT_TRUE(hovered_split_tab->split().has_value());
+  EXPECT_EQ(hovered_split_tab->split(), not_hovered_split_tab->split());
+  hovered_split_tab->controller()->ShowHover(hovered_split_tab,
+                                             TabStyle::ShowHoverStyle::kSubtle);
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return hovered_split_tab->tab_style_views()->GetHoverAnimationValue() != 0;
+  }));
+  EXPECT_EQ(not_hovered_split_tab->tab_style_views()->GetHoverAnimationValue(),
+            0);
+
+  // Check selected split tab becomes active tab.
+  tab_strip()->SelectTab(tab_strip()->tab_at(2), GetDummyEvent());
+  EXPECT_EQ(2, tab_strip()->GetActiveIndex());
+  EXPECT_TRUE(tab_strip()->tab_at(2)->IsActive());
+  EXPECT_FALSE(tab_strip()->tab_at(3)->IsActive());
+  EXPECT_TRUE(split_view_separator()->GetVisible());
+
+  tab_strip()->SelectTab(tab_strip()->tab_at(0), GetDummyEvent());
+  EXPECT_EQ(0, tab_strip()->GetActiveIndex());
+
+  tab_strip()->SelectTab(tab_strip()->tab_at(3), GetDummyEvent());
+  EXPECT_EQ(3, tab_strip()->GetActiveIndex());
+  EXPECT_FALSE(tab_strip()->tab_at(2)->IsActive());
+  EXPECT_TRUE(tab_strip()->tab_at(3)->IsActive());
+}
+
+class SideBySideWithRoundedCornersTest : public SideBySideEnabledBrowserTest {
+ public:
+  SideBySideWithRoundedCornersTest() = default;
+  ~SideBySideWithRoundedCornersTest() override = default;
+
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, true);
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(SideBySideWithRoundedCornersTest, ContentsShadowTest) {
+  // Shadow if split tab is not active.
+  EXPECT_TRUE(brave_browser_view()->contents_shadow_);
+
+  chrome::NewSplitTab(browser(),
+                      split_tabs::SplitTabCreatedSource::kToolbarButton);
+
+  auto* tab_strip_model = browser()->tab_strip_model();
+
+  // No shadow if split tab is active.
+  EXPECT_TRUE(tab_strip_model->IsActiveTabSplit());
+  EXPECT_FALSE(brave_browser_view()->contents_shadow_);
+
+  // Shadow if split tab is not active.
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  EXPECT_FALSE(tab_strip_model->IsActiveTabSplit());
+  EXPECT_TRUE(brave_browser_view()->contents_shadow_);
+
+  // Turn off the rounded corners.
+  browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, false);
+
+  // Shadow should be gone.
+  EXPECT_FALSE(brave_browser_view()->contents_shadow_);
+  browser()->tab_strip_model()->ActivateTabAt(0);
+  EXPECT_TRUE(tab_strip_model->IsActiveTabSplit());
+  EXPECT_FALSE(brave_browser_view()->contents_shadow_);
+
+  // Turn on the rounded corners.
+  browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, true);
+
+  // Still don't have shadow as split view is active.
+  EXPECT_FALSE(brave_browser_view()->contents_shadow_);
+
+  // Have shadow when split view is not active.
+  browser()->tab_strip_model()->ActivateTabAt(2);
+  EXPECT_FALSE(tab_strip_model->IsActiveTabSplit());
+  EXPECT_TRUE(brave_browser_view()->contents_shadow_);
+}
+
+// Test multi contents view's rounded corners with fullscreen state w/o split
+// view.
+IN_PROC_BROWSER_TEST_F(SideBySideWithRoundedCornersTest,
+                       TabFullscreenStateTest) {
+  auto* contents_container = brave_browser_view()->contents_container();
+  auto* contents_view = brave_browser_view()->GetContentsView();
+
+  const gfx::RoundedCornersF border_radius(
+      BraveContentsViewUtil::GetRoundedCornersForContentsView(browser(),
+                                                              nullptr));
+
+  // Check it has rounded corners.
+  EXPECT_EQ(contents_container->layer()->rounded_corner_radii(), border_radius);
+  EXPECT_EQ(contents_view->layer()->rounded_corner_radii(), border_radius);
+
+  FullscreenController* fullscreen_controller = browser()
+                                                    ->GetFeatures()
+                                                    .exclusive_access_manager()
+                                                    ->fullscreen_controller();
+
+  // Check rounded corners are cleared in tab fullscreen.
+  fullscreen_controller->set_is_tab_fullscreen_for_testing(true);
+  brave_browser_view()->UpdateWebViewRoundedCorners();
+  EXPECT_EQ(contents_container->layer()->rounded_corner_radii(),
+            gfx::RoundedCornersF());
+  EXPECT_EQ(contents_view->layer()->rounded_corner_radii(),
+            gfx::RoundedCornersF());
+
+  // Check it has rounded corners again.
+  fullscreen_controller->set_is_tab_fullscreen_for_testing(false);
+  brave_browser_view()->UpdateWebViewRoundedCorners();
+  EXPECT_EQ(contents_container->layer()->rounded_corner_radii(), border_radius);
+  EXPECT_EQ(contents_view->layer()->rounded_corner_radii(), border_radius);
+}
+
+// Use for testing brave split view and SideBySide together.
+class SplitViewCommonBrowserTest : public InProcessBrowserTest {
+ public:
+  SplitViewCommonBrowserTest() = default;
+  ~SplitViewCommonBrowserTest() override = default;
+
+  bool GetIsTabHiddenFromPermissionManagerFromTabAt(int index) {
+    auto* tab_strip_model = browser()->tab_strip_model();
+    return !permissions::PermissionRequestManager::FromWebContents(
+                tab_strip_model->GetWebContentsAt(index))
+                ->tab_is_active_for_testing();
+  }
+
+  // blocked(true) when tab at |index| has tab modal dialog.
+  bool GetIsWebContentsBlockedFromTabAt(int index) {
+    auto* tab_strip_model = browser()->tab_strip_model();
+    return static_cast<tabs::TabModel*>(tab_strip_model->GetTabAtIndex(index))
+        ->IsBlocked();
+  }
+
+  web_modal::WebContentsModalDialogManager* GetWebModalDialogManagerAt(
+      int index) {
+    return web_modal::WebContentsModalDialogManager::FromWebContents(
+        browser()->tab_strip_model()->GetWebContentsAt(index));
+  }
+
+  bool HasWebModalDialogAt(int index) {
+    return !GetWebModalDialogManagerAt(index)->child_dialogs_.empty();
+  }
+
+  bool IsWebModalDialogVisibleAt(int index) {
+    return views::Widget::GetWidgetForNativeWindow(
+               GetWebModalDialogManagerAt(index)
+                   ->child_dialogs_.front()
+                   .manager->dialog())
+        ->IsVisible();
+  }
+
+  javascript_dialogs::TabModalDialogManager* GetTabModalDialogManagerAt(
+      int index) {
+    return javascript_dialogs::TabModalDialogManager::FromWebContents(
+        browser()->tab_strip_model()->GetWebContentsAt(index));
+  }
+
+  content::WebContents* GetWebContentsAt(int index) {
+    return browser()->tab_strip_model()->GetWebContentsAt(index);
+  }
+
+  void NewSplitTab() {
+    chrome::NewSplitTab(browser(),
+                        split_tabs::SplitTabCreatedSource::kToolbarButton);
+  }
+
+  bool IsSplitTabAt(int index) {
+    return IsSplitWebContents(GetWebContentsAt(index));
+  }
+
+  void SwapActiveSplitTab() {
+    auto* tab_strip_model = browser()->tab_strip_model();
+    auto split_id =
+        tab_strip_model->GetSplitForTab(tab_strip_model->active_index());
+    ASSERT_TRUE(split_id);
+    tab_strip_model->ReverseTabsInSplit(split_id.value());
+  }
+
+  bool IsSplitWebContents(content::WebContents* web_contents) {
+    auto tab_handle =
+        tabs::TabInterface::GetFromContents(web_contents)->GetHandle();
+    return tab_handle.Get()->IsSplit();
+  }
+
+  ContentsWebView* GetContentsWebView() {
+    return BrowserView::GetBrowserViewForBrowser(browser())
+        ->contents_web_view();
+  }
+
+  TabStrip* tab_strip() {
+    return BrowserView::GetBrowserViewForBrowser(browser())
+        ->horizontal_tab_strip_for_testing();
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_features_;
+};
+
+IN_PROC_BROWSER_TEST_F(SplitViewCommonBrowserTest, SplitTabInsetsTest) {
+  brave::ToggleVerticalTabStrip(browser());
+
+  auto* tab_strip_model = browser()->tab_strip_model();
+  tab_strip_model->SetTabPinned(0, true);
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  NewSplitTab();
+  EXPECT_EQ(3, tab_strip_model->active_index());
+  EXPECT_FALSE(IsSplitTabAt(0));
+  EXPECT_FALSE(IsSplitTabAt(1));
+  EXPECT_TRUE(IsSplitTabAt(2));
+  EXPECT_TRUE(IsSplitTabAt(3));
+  EXPECT_TRUE(tab_strip_model->IsTabPinned(0));
+  EXPECT_FALSE(tab_strip_model->IsTabPinned(1));
+  EXPECT_FALSE(tab_strip_model->IsTabPinned(2));
+  EXPECT_FALSE(tab_strip_model->IsTabPinned(3));
+
+  // Get normal tab's border insets.
+  const auto insets = tab_strip()->tab_at(1)->GetBorder()->GetInsets();
+
+  // Check split tab's first & second tabs' insets are different.
+  // value 4 here is copied from |kPaddingForVerticalTabInTile| in
+  // brave_tab_style_views.inc.cc.
+  EXPECT_EQ(tab_strip()->tab_at(2)->GetBorder()->GetInsets(),
+            insets + gfx::Insets::TLBR(4, 0, 0, 0));
+  EXPECT_EQ(tab_strip()->tab_at(3)->GetBorder()->GetInsets(),
+            insets + gfx::Insets::TLBR(0, 0, 4, 0));
+
+  SwapActiveSplitTab();
+  EXPECT_EQ(2, tab_strip()->GetActiveIndex());
+
+  // Check split tabs have proper insets after swap
+  EXPECT_EQ(tab_strip()->tab_at(2)->GetBorder()->GetInsets(),
+            insets + gfx::Insets::TLBR(4, 0, 0, 0));
+  EXPECT_EQ(tab_strip()->tab_at(3)->GetBorder()->GetInsets(),
+            insets + gfx::Insets::TLBR(0, 0, 4, 0));
+
+  // Check pinned split tabs have same insets with other pinned tab
+  chrome::PinTab(browser());
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return tab_strip_model->IsTabPinned(1) && tab_strip_model->IsTabPinned(2);
+  }));
+
+  EXPECT_FALSE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+  EXPECT_TRUE(IsSplitTabAt(2));
+  EXPECT_FALSE(IsSplitTabAt(3));
+  EXPECT_TRUE(tab_strip_model->IsTabPinned(0));
+  EXPECT_TRUE(tab_strip_model->IsTabPinned(1));
+  EXPECT_TRUE(tab_strip_model->IsTabPinned(2));
+  EXPECT_FALSE(tab_strip_model->IsTabPinned(3));
+
+  EXPECT_EQ(tab_strip()->tab_at(0)->GetBorder()->GetInsets(),
+            tab_strip()->tab_at(1)->GetBorder()->GetInsets());
+  EXPECT_EQ(tab_strip()->tab_at(0)->GetBorder()->GetInsets(),
+            tab_strip()->tab_at(2)->GetBorder()->GetInsets());
+
+  tab_strip_model->ActivateTabAt(3);
+  NewSplitTab();
+  EXPECT_TRUE(IsSplitTabAt(3));
+  EXPECT_TRUE(IsSplitTabAt(4));
+
+  // vertical tab off.
+  brave::ToggleVerticalTabStrip(browser());
+
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  EXPECT_EQ(5, tab_strip()->GetActiveIndex());
+  NewSplitTab();
+  EXPECT_TRUE(IsSplitTabAt(5));
+  EXPECT_TRUE(IsSplitTabAt(6));
+
+  // Check split tabs(at 3, 4) created at vertical tab and split tabs(5, 6)
+  // created at horizontal tab have same insets.
+  EXPECT_EQ(tab_strip()->tab_at(3)->GetBorder()->GetInsets(),
+            tab_strip()->tab_at(5)->GetBorder()->GetInsets());
+  EXPECT_EQ(tab_strip()->tab_at(4)->GetBorder()->GetInsets(),
+            tab_strip()->tab_at(6)->GetBorder()->GetInsets());
+}
+
+// Check split view works with pinned tabs.
+IN_PROC_BROWSER_TEST_F(SplitViewCommonBrowserTest, SplitViewWithPinnedTabTest) {
+  auto* tab_strip_model = browser()->tab_strip_model();
+  tab_strip_model->SetTabPinned(0, true);
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  EXPECT_EQ(1, tab_strip_model->active_index());
+  NewSplitTab();
+  EXPECT_EQ(2, tab_strip_model->active_index());
+
+  brave::ToggleVerticalTabStrip(browser());
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  EXPECT_EQ(3, tab_strip_model->active_index());
+  NewSplitTab();
+  EXPECT_EQ(4, tab_strip_model->active_index());
+  EXPECT_TRUE(IsSplitTabAt(4));
+
+  // Pin active tab(split tab at 4).
+  chrome::PinTab(browser());
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewCommonBrowserTest, BookmarksBarVisibilityTest) {
+  auto* prefs = browser()->profile()->GetPrefs();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  NewSplitTab();
+
+  // Check no bookmarks when any split tab is activated.
+  brave::SetBookmarkState(brave::BookmarkBarState::kNever, prefs);
+  ASSERT_TRUE(IsSplitWebContents(GetWebContentsAt(0)));
+  ASSERT_TRUE(IsSplitWebContents(GetWebContentsAt(1)));
+
+  // Wait newly created tab to get its valid url via GetLastCommittedURL().
+  EXPECT_TRUE(content::WaitForLoadStop(GetWebContentsAt(1)));
+  EXPECT_FALSE(NewTabUI::IsNewTab(GetWebContentsAt(0)->GetLastCommittedURL()));
+  EXPECT_TRUE(NewTabUI::IsNewTab(GetWebContentsAt(1)->GetLastCommittedURL()));
+  EXPECT_EQ(1, tab_strip_model->active_index());
+  EXPECT_EQ(BookmarkBar::HIDDEN,
+            BookmarkBarController::From(browser())->bookmark_bar_state());
+  tab_strip_model->ActivateTabAt(0);
+  EXPECT_EQ(0, tab_strip_model->active_index());
+  EXPECT_EQ(BookmarkBar::HIDDEN,
+            BookmarkBarController::From(browser())->bookmark_bar_state());
+
+  // With SideBySide, bookmarks bar is shown always if one of split tab is NTP.
+  // Otherwise, it's shown only when active split tab is NTP.
+  brave::SetBookmarkState(brave::BookmarkBarState::kNtp, prefs);
+  EXPECT_EQ(BookmarkBar::SHOW,
+            BookmarkBarController::From(browser())->bookmark_bar_state());
+  tab_strip_model->ActivateTabAt(1);
+  EXPECT_EQ(BookmarkBar::SHOW,
+            BookmarkBarController::From(browser())->bookmark_bar_state());
+
+  // Check bookmarks is shown always.
+  brave::SetBookmarkState(brave::BookmarkBarState::kAlways, prefs);
+  EXPECT_EQ(BookmarkBar::SHOW,
+            BookmarkBarController::From(browser())->bookmark_bar_state());
+  tab_strip_model->ActivateTabAt(0);
+  EXPECT_EQ(BookmarkBar::SHOW,
+            BookmarkBarController::From(browser())->bookmark_bar_state());
+
+// Upstream's window fullscreen test is disabled on macOS.
+// See the comment of SideBySideBrowserTest at browser_browsertest.cc.
+#if !BUILDFLAG(IS_MAC)
+  ui_test_utils::ToggleFullscreenModeAndWait(browser());
+  EXPECT_TRUE(browser()->window()->IsFullscreen());
+
+  // Same reason with above for having different result with SideBySide
+  // enabled state.
+  EXPECT_EQ(BookmarkBar::SHOW,
+            BookmarkBarController::From(browser())->bookmark_bar_state());
+
+  tab_strip_model->ActivateTabAt(1);
+  EXPECT_EQ(BookmarkBar::SHOW,
+            BookmarkBarController::From(browser())->bookmark_bar_state());
+#endif
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewCommonBrowserTest, InactiveSplitTabTest) {
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+
+  tab_strip_model->ActivateTabAt(1);
+  EXPECT_TRUE(tab_strip_model->GetTabAtIndex(1)->IsActivated());
+  EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(0));
+
+  // Final state can be set asynchronously sometimes.
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !GetIsTabHiddenFromPermissionManagerFromTabAt(1); }));
+
+  tab_strip_model->ActivateTabAt(0);
+  EXPECT_TRUE(tab_strip_model->GetTabAtIndex(0)->IsActivated());
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !GetIsTabHiddenFromPermissionManagerFromTabAt(0); }));
+  EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(1));
+
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  EXPECT_TRUE(tab_strip_model->GetTabAtIndex(2)->IsActivated());
+  EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(0));
+  EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(1));
+  EXPECT_FALSE(GetIsTabHiddenFromPermissionManagerFromTabAt(2));
+
+  tab_strip_model->ActivateTabAt(1);
+  EXPECT_TRUE(tab_strip_model->GetTabAtIndex(1)->IsActivated());
+  EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(0));
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !GetIsTabHiddenFromPermissionManagerFromTabAt(1); }));
+  EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(2));
+
+  // Launch dialog from inactive split tab (at 0).
+  bool did_suppress = false;
+  GetTabModalDialogManagerAt(0)->RunJavaScriptDialog(
+      GetWebContentsAt(0), GetWebContentsAt(0)->GetPrimaryMainFrame(),
+      content::JAVASCRIPT_DIALOG_TYPE_ALERT, std::u16string(), std::u16string(),
+      base::BindOnce([](bool, const std::u16string&) {}), &did_suppress);
+
+  // Active tab is still tab at 1 because tab modal manager will not active the
+  // tab when showing a dialog.
+  EXPECT_EQ(1, tab_strip_model->active_index());
+  EXPECT_TRUE(GetTabModalDialogManagerAt(0)->IsShowingDialogForTesting());
+  EXPECT_TRUE(GetWebModalDialogManagerAt(0)->IsDialogActive());
+  EXPECT_TRUE(GetIsWebContentsBlockedFromTabAt(0));
+
+  // tab at 1 doesn't have any modal dialog.
+  EXPECT_FALSE(GetTabModalDialogManagerAt(1)->IsShowingDialogForTesting());
+
+  // Launch dialog from active split tab (at 1) and check dialog is shown
+  // immediately.
+  GetTabModalDialogManagerAt(1)->RunJavaScriptDialog(
+      GetWebContentsAt(1), GetWebContentsAt(1)->GetPrimaryMainFrame(),
+      content::JAVASCRIPT_DIALOG_TYPE_ALERT, std::u16string(), std::u16string(),
+      base::BindOnce([](bool, const std::u16string&) {}), &did_suppress);
+  ASSERT_TRUE(base::test::RunUntil([&]() { return HasWebModalDialogAt(1); }));
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return IsWebModalDialogVisibleAt(1); }));
+}
+
+namespace {
+
+class LoadObserver : public content::WebContentsObserver {
+ public:
+  explicit LoadObserver(content::WebContents* web_contents)
+      : WebContentsObserver(web_contents) {}
+
+  void DidStopLoading() override { did_load_ = true; }
+
+  bool did_load() const { return did_load_; }
+
+ private:
+  bool did_load_ = false;
+};
+
+}  // namespace
+
+IN_PROC_BROWSER_TEST_F(SplitViewCommonBrowserTest, SplitViewReloadTest) {
+  NewSplitTab();
+  content::WaitForLoadStop(GetWebContentsAt(0));
+  content::WaitForLoadStop(GetWebContentsAt(1));
+
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(1, tab_strip_model->active_index());
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Check only active split tab(at 1) is loaded when split tab is active.
+  {
+    LoadObserver observer_0(GetWebContentsAt(0));
+    LoadObserver observer_1(GetWebContentsAt(1));
+
+    chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
+    content::WaitForLoadStop(GetWebContentsAt(0));
+    content::WaitForLoadStop(GetWebContentsAt(1));
+
+    EXPECT_FALSE(observer_0.did_load());
+    EXPECT_TRUE(observer_1.did_load());
+  }
+
+  // Create another active tab.
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  content::WaitForLoadStop(GetWebContentsAt(2));
+  EXPECT_EQ(2, tab_strip_model->active_index());
+  EXPECT_EQ(3, tab_strip_model->count());
+  EXPECT_FALSE(IsSplitTabAt(2));
+
+  // Check only non-split active tab is loaded.
+  {
+    LoadObserver observer_0(GetWebContentsAt(0));
+    LoadObserver observer_1(GetWebContentsAt(1));
+    LoadObserver observer_2(GetWebContentsAt(2));
+
+    chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
+    content::WaitForLoadStop(GetWebContentsAt(0));
+    content::WaitForLoadStop(GetWebContentsAt(1));
+    content::WaitForLoadStop(GetWebContentsAt(2));
+
+    EXPECT_FALSE(observer_0.did_load());
+    EXPECT_FALSE(observer_1.did_load());
+    EXPECT_TRUE(observer_2.did_load());
+  }
+
+  // Activate split tab at 0 and check only active split tab is loaded.
+  tab_strip_model->ActivateTabAt(0);
+  {
+    LoadObserver observer_0(GetWebContentsAt(0));
+    LoadObserver observer_1(GetWebContentsAt(1));
+    LoadObserver observer_2(GetWebContentsAt(2));
+
+    chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
+    content::WaitForLoadStop(GetWebContentsAt(0));
+    content::WaitForLoadStop(GetWebContentsAt(1));
+    content::WaitForLoadStop(GetWebContentsAt(2));
+
+    EXPECT_TRUE(observer_0.did_load());
+    EXPECT_FALSE(observer_1.did_load());
+    EXPECT_FALSE(observer_2.did_load());
+  }
+
+  // Select all tabs and check all tabs(split & normal tabs) are reloaded
+  // as we only filter inactive split tab when reloading if only one pair
+  // of split tab is selected.
+  tab_strip_model->ExtendSelectionTo(2);
+  {
+    LoadObserver observer_0(GetWebContentsAt(0));
+    LoadObserver observer_1(GetWebContentsAt(1));
+    LoadObserver observer_2(GetWebContentsAt(2));
+
+    chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
+    content::WaitForLoadStop(GetWebContentsAt(0));
+    content::WaitForLoadStop(GetWebContentsAt(1));
+    content::WaitForLoadStop(GetWebContentsAt(2));
+
+    EXPECT_TRUE(observer_0.did_load());
+    EXPECT_TRUE(observer_1.did_load());
+    EXPECT_TRUE(observer_2.did_load());
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewCommonBrowserTest, SplitViewCloseTabTest) {
+  NewSplitTab();
+
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(1, tab_strip_model->active_index());
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Check only active tab is closed from split tab when split tab is
+  // the only selected tabs.
+  chrome::CloseTab(browser());
+  EXPECT_EQ(0, tab_strip_model->active_index());
+  EXPECT_EQ(1, tab_strip_model->count());
+
+  // Create another active tab.
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  NewSplitTab();
+
+  EXPECT_EQ(2, tab_strip_model->active_index());
+  EXPECT_EQ(3, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(1));
+  EXPECT_TRUE(IsSplitTabAt(2));
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+
+  // Make tabs at 1, 2, 3 selected.
+  // Check selected tab is not the only split tab,
+  // we'll close all selected tabs.
+  tab_strip_model->ExtendSelectionTo(1);
+  EXPECT_TRUE(IsSplitTabAt(1));
+  EXPECT_TRUE(IsSplitTabAt(2));
+  EXPECT_EQ(1, tab_strip_model->active_index());
+  EXPECT_EQ(4, tab_strip_model->count());
+
+  // Check all selected tabs are closed (tab at 1, 2, 3).
+  chrome::CloseTab(browser());
+  EXPECT_EQ(0, tab_strip_model->active_index());
+  EXPECT_EQ(1, tab_strip_model->count());
+}
+
+// Test class for testing link handling in split view (both normal links and
+// target="_blank" links).
+class SplitViewLinkTest : public SplitViewCommonBrowserTest {
+ public:
+  SplitViewLinkTest() {
+    // Enable the split view link feature for these tests
+    scoped_features_.InitAndEnableFeature(split_view::features::kSplitViewLink);
+  }
+  ~SplitViewLinkTest() override = default;
+
+  void SetUpOnMainThread() override {
+    SplitViewCommonBrowserTest::SetUpOnMainThread();
+    host_resolver()->AddRule("*", "127.0.0.1");
+    embedded_test_server()->RegisterRequestHandler(base::BindRepeating(
+        &SplitViewLinkTest::HandleRequest, base::Unretained(this)));
+    ASSERT_TRUE(embedded_test_server()->Start());
+  }
+
+  std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
+      const net::test_server::HttpRequest& request) {
+    auto response = std::make_unique<net::test_server::BasicHttpResponse>();
+    if (request.relative_url == "/test.html") {
+      response->set_code(net::HTTP_OK);
+      response->set_content_type("text/html");
+      response->set_content(kTestPageWithTargetBlankLink);
+    } else if (request.relative_url == "/link-test.html") {
+      response->set_code(net::HTTP_OK);
+      response->set_content_type("text/html");
+      response->set_content(kTestPageWithLink);
+    } else if (request.relative_url == "/target.html") {
+      response->set_code(net::HTTP_OK);
+      response->set_content_type("text/html");
+      response->set_content(kTargetPage);
+    } else {
+      return nullptr;
+    }
+    return response;
+  }
+
+  void SetSplitViewLinked(bool linked) {
+    auto* tab_strip_model = browser()->tab_strip_model();
+    auto split_id =
+        tab_strip_model->GetSplitForTab(tab_strip_model->active_index());
+    ASSERT_TRUE(split_id);
+    tab_strip_model->GetSplitData(split_id.value())->set_linked(linked);
+    ;
+  }
+
+  bool IsSplitViewLinked() {
+    auto* tab_strip_model = browser()->tab_strip_model();
+    auto split_id =
+        tab_strip_model->GetSplitForTab(tab_strip_model->active_index());
+    if (!split_id) {
+      return false;
+    }
+
+    return tab_strip_model->GetSplitData(split_id.value())->linked();
+    ;
+  }
+
+  GURL GetTestPageURL() {
+    return embedded_test_server()->GetURL("example.com", "/test.html");
+  }
+
+  GURL GetLinkTestPageURL() {
+    return embedded_test_server()->GetURL("example.com", "/link-test.html");
+  }
+
+  GURL GetTargetPageURL() {
+    return embedded_test_server()->GetURL("example.com", "/target.html");
+  }
+
+  content::WebContents* GetLeftPaneContents() {
+    auto* tab_strip_model = browser()->tab_strip_model();
+    auto split_id =
+        tab_strip_model->GetSplitForTab(tab_strip_model->active_index());
+    if (!split_id) {
+      return nullptr;
+    }
+
+    const auto tabs_in_split =
+        tab_strip_model->GetSplitData(split_id.value())->ListTabs();
+    if (tabs_in_split.size() == 2) {
+      return tabs_in_split[0]->GetContents();
+    }
+
+    return nullptr;
+  }
+
+  content::WebContents* GetRightPaneContents() {
+    auto* tab_strip_model = browser()->tab_strip_model();
+    auto split_id =
+        tab_strip_model->GetSplitForTab(tab_strip_model->active_index());
+    if (!split_id) {
+      return nullptr;
+    }
+
+    const auto tabs_in_split =
+        tab_strip_model->GetSplitData(split_id.value())->ListTabs();
+    if (tabs_in_split.size() == 2) {
+      return tabs_in_split[1]->GetContents();
+    }
+
+    return nullptr;
+  }
+
+ protected:
+  base::test::ScopedFeatureList scoped_features_;
+};
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
+                       TargetBlankLinkRedirectsToRightPaneWhenLinked) {
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Link the split view
+  SetSplitViewLinked(true);
+  EXPECT_TRUE(IsSplitViewLinked());
+
+  // Navigate left pane to test page
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Get initial tab count
+  int initial_tab_count = tab_strip_model->count();
+
+  // Get right pane and set up navigation observer
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+  content::TestNavigationObserver right_pane_observer(right_pane);
+  right_pane_observer.StartWatchingNewWebContents();
+
+  // Click the target="_blank" link from left pane
+  ASSERT_TRUE(content::ExecJs(left_pane, "clickTargetBlankLink();"));
+
+  // Wait for navigation in right pane
+  right_pane_observer.Wait();
+  EXPECT_EQ(GetTargetPageURL(), right_pane->GetLastCommittedURL());
+
+  // Verify no new tab was opened
+  EXPECT_EQ(initial_tab_count, tab_strip_model->count());
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
+                       TargetBlankLinkOpensNewTabWhenNotLinked) {
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Don't link the split view
+  SetSplitViewLinked(false);
+  EXPECT_FALSE(IsSplitViewLinked());
+
+  // Navigate left pane to test page
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Get initial tab count
+  int initial_tab_count = tab_strip_model->count();
+
+  // Set up observer for new tab navigation
+  content::TestNavigationObserver new_tab_observer(GetTargetPageURL());
+  new_tab_observer.StartWatchingNewWebContents();
+
+  // Click the target="_blank" link from left pane
+  ASSERT_TRUE(content::ExecJs(left_pane, "clickTargetBlankLink();"));
+
+  // Wait for new tab to be created and navigate
+  new_tab_observer.Wait();
+
+  // Verify a new tab was opened
+  EXPECT_EQ(initial_tab_count + 1, tab_strip_model->count());
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
+                       TargetBlankLinkOpensNewTabWhenNotInSplitView) {
+  // Don't create split view - just use a normal tab
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(1, tab_strip_model->count());
+  EXPECT_FALSE(IsSplitTabAt(0));
+
+  // Navigate to test page
+  content::WebContents* web_contents = GetWebContentsAt(0);
+  ASSERT_TRUE(content::NavigateToURL(web_contents, GetTestPageURL()));
+  content::WaitForLoadStop(web_contents);
+
+  // Get initial tab count
+  int initial_tab_count = tab_strip_model->count();
+
+  // Set up observer for new tab navigation
+  content::TestNavigationObserver new_tab_observer(GetTargetPageURL());
+  new_tab_observer.StartWatchingNewWebContents();
+
+  // Click the target="_blank" link
+  ASSERT_TRUE(content::ExecJs(web_contents, "clickTargetBlankLink();"));
+
+  // Wait for new tab to be created and navigate
+  new_tab_observer.Wait();
+
+  // Verify a new tab was opened
+  EXPECT_EQ(initial_tab_count + 1, tab_strip_model->count());
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
+                       NormalLinkRedirectsToRightPaneWhenLinked) {
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Link the split view
+  SetSplitViewLinked(true);
+  EXPECT_TRUE(IsSplitViewLinked());
+
+  // Navigate left pane to test page
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetLinkTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Get right pane and set up navigation observer
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+  content::TestNavigationObserver right_pane_observer(right_pane);
+
+  // Click the normal link from left pane
+  ASSERT_TRUE(content::ExecJs(left_pane, "clickNormalLink();"));
+
+  // Wait for navigation in right pane
+  right_pane_observer.Wait();
+  EXPECT_EQ(GetTargetPageURL(), right_pane->GetLastCommittedURL());
+
+  // Verify left pane didn't navigate
+  EXPECT_NE(GetTargetPageURL(), left_pane->GetLastCommittedURL());
+  EXPECT_EQ(GetLinkTestPageURL(), left_pane->GetLastCommittedURL());
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
+                       NormalLinkDoesNotRedirectWhenNotLinked) {
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Don't link the split view
+  SetSplitViewLinked(false);
+  EXPECT_FALSE(IsSplitViewLinked());
+
+  // Navigate left pane to test page
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetLinkTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Set up navigation observer for left pane
+  content::TestNavigationObserver left_pane_observer(left_pane);
+
+  // Click the normal link from left pane
+  ASSERT_TRUE(content::ExecJs(left_pane, "clickNormalLink();"));
+
+  // Wait for navigation in left pane (should navigate normally)
+  left_pane_observer.Wait();
+  EXPECT_EQ(GetTargetPageURL(), left_pane->GetLastCommittedURL());
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
+                       NormalLinkDoesNotRedirectWhenNotInSplitView) {
+  // Don't create split view - just use a normal tab
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(1, tab_strip_model->count());
+  EXPECT_FALSE(IsSplitTabAt(0));
+
+  // Navigate to test page
+  content::WebContents* web_contents = GetWebContentsAt(0);
+  ASSERT_TRUE(content::NavigateToURL(web_contents, GetLinkTestPageURL()));
+  content::WaitForLoadStop(web_contents);
+
+  // Set up navigation observer
+  content::TestNavigationObserver observer(web_contents);
+
+  // Click the normal link
+  ASSERT_TRUE(content::ExecJs(web_contents, "clickNormalLink();"));
+
+  // Wait for navigation (should navigate normally)
+  observer.Wait();
+  EXPECT_EQ(GetTargetPageURL(), web_contents->GetLastCommittedURL());
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest, PostFormDoesNotRedirect) {
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+
+  // Link the split view
+  SetSplitViewLinked(true);
+  EXPECT_TRUE(IsSplitViewLinked());
+
+  // Navigate left pane to test page
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetLinkTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Set up navigation observer for left pane
+  content::TestNavigationObserver left_pane_observer(left_pane);
+
+  // Submit the POST form from left pane
+  ASSERT_TRUE(content::ExecJs(left_pane, "submitForm();"));
+
+  // Wait for navigation in left pane (POST should not be intercepted)
+  left_pane_observer.Wait();
+  EXPECT_EQ(GetTargetPageURL(), left_pane->GetLastCommittedURL());
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
+                       SameDocumentNavigationDoesNotRedirect) {
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+
+  // Link the split view
+  SetSplitViewLinked(true);
+  EXPECT_TRUE(IsSplitViewLinked());
+
+  // Navigate left pane to test page
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetLinkTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Record right pane URL before clicking to verify no redirect occurs.
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+  GURL right_pane_url_before = right_pane->GetLastCommittedURL();
+
+  // Set up observer for same-document navigation BEFORE triggering the click.
+  SameDocumentCommitObserver same_doc_observer(left_pane);
+
+  // Click the hash link (same-document navigation)
+  ASSERT_TRUE(content::ExecJs(left_pane, "clickHashLink();"));
+
+  // Wait for the same-document navigation to complete. The observer uses
+  // RunUntil internally for timeout safety (prevents indefinite hang).
+  ASSERT_TRUE(same_doc_observer.Wait());
+
+  // Same-document navigation should not redirect to right pane
+  EXPECT_TRUE(same_doc_observer.last_committed_url().has_ref());
+  EXPECT_EQ(GetLinkTestPageURL().spec() + "#section",
+            same_doc_observer.last_committed_url().spec());
+  EXPECT_EQ(right_pane_url_before, right_pane->GetLastCommittedURL());
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest, RightPaneNavigationDoesNotRedirect) {
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+
+  // Link the split view
+  SetSplitViewLinked(true);
+  EXPECT_TRUE(IsSplitViewLinked());
+
+  // Navigate right pane to test page
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+  ASSERT_TRUE(content::NavigateToURL(right_pane, GetLinkTestPageURL()));
+  content::WaitForLoadStop(right_pane);
+
+  // Set up navigation observer for right pane
+  content::TestNavigationObserver right_pane_observer(right_pane);
+
+  // Click the normal link from right pane (should navigate normally)
+  ASSERT_TRUE(content::ExecJs(right_pane, "clickNormalLink();"));
+
+  // Wait for navigation in right pane (should navigate normally, not redirect)
+  right_pane_observer.Wait();
+  EXPECT_EQ(GetTargetPageURL(), right_pane->GetLastCommittedURL());
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
+                       TargetBlankLinkPreservesReferrerWhenRedirected) {
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Link the split view
+  SetSplitViewLinked(true);
+  EXPECT_TRUE(IsSplitViewLinked());
+
+  // Navigate left pane to test page
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Get right pane and set up navigation observer
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+
+  // Test 1: Regular target="_blank" link should preserve referrer
+  {
+    content::TestNavigationObserver right_pane_observer(right_pane);
+    right_pane_observer.StartWatchingNewWebContents();
+
+    // Click the target="_blank" link from left pane
+    ASSERT_TRUE(content::ExecJs(left_pane, "clickTargetBlankLink();"));
+
+    // Wait for navigation in right pane
+    right_pane_observer.Wait();
+    EXPECT_EQ(GetTargetPageURL(), right_pane->GetLastCommittedURL());
+
+    // Verify referrer is set correctly - should be the test page URL
+    EXPECT_EQ(GetTestPageURL().spec(),
+              content::EvalJs(right_pane, "document.referrer").ExtractString());
+
+    // Verify no new tab was created
+    EXPECT_EQ(2, tab_strip_model->count());
+  }
+
+  // Navigate left pane back to test page for second test
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Test 2: target="_blank" with rel="noreferrer" should NOT preserve referrer
+  {
+    content::TestNavigationObserver right_pane_observer(right_pane);
+    right_pane_observer.StartWatchingNewWebContents();
+
+    // Click the noreferrer link from left pane
+    ASSERT_TRUE(
+        content::ExecJs(left_pane, "clickTargetBlankNoReferrerLink();"));
+
+    // Wait for navigation in right pane
+    right_pane_observer.Wait();
+    EXPECT_EQ(GetTargetPageURL(), right_pane->GetLastCommittedURL());
+
+    // Verify referrer is empty due to rel="noreferrer"
+    EXPECT_EQ("",
+              content::EvalJs(right_pane, "document.referrer").ExtractString());
+
+    // Verify no new tab was created
+    EXPECT_EQ(2, tab_strip_model->count());
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest, WindowOpenVariationsWhenRedirected) {
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Link the split view
+  SetSplitViewLinked(true);
+  EXPECT_TRUE(IsSplitViewLinked());
+
+  // Navigate left pane to test page
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Get right pane
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+
+  // Test 1: Basic window.open() should preserve referrer
+  {
+    content::TestNavigationObserver right_pane_observer(right_pane);
+    right_pane_observer.StartWatchingNewWebContents();
+
+    ASSERT_TRUE(content::ExecJs(left_pane, "windowOpenBasic();"));
+
+    right_pane_observer.Wait();
+    EXPECT_EQ(GetTargetPageURL(), right_pane->GetLastCommittedURL());
+
+    // Verify referrer is preserved
+    EXPECT_EQ(GetTestPageURL().spec(),
+              content::EvalJs(right_pane, "document.referrer").ExtractString());
+
+    // Verify no new tab was created
+    EXPECT_EQ(2, tab_strip_model->count());
+  }
+
+  // Navigate left pane back to test page
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Test 2: window.open() with 'noreferrer' - referrer should NOT be preserved
+  {
+    content::TestNavigationObserver right_pane_observer(right_pane);
+    right_pane_observer.StartWatchingNewWebContents();
+
+    ASSERT_TRUE(content::ExecJs(left_pane, "windowOpenWithNoreferrer();"));
+
+    right_pane_observer.Wait();
+    EXPECT_EQ(GetTargetPageURL(), right_pane->GetLastCommittedURL());
+
+    // Verify referrer is empty due to noreferrer
+    EXPECT_EQ("",
+              content::EvalJs(right_pane, "document.referrer").ExtractString());
+
+    EXPECT_EQ(2, tab_strip_model->count());
+  }
+
+  // Navigate left pane back to test page
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Test 3: window.open() with window features (width, height) should NOT be
+  // redirected - it creates a popup window instead
+  {
+    // Set up observer for new browser window creation
+    ui_test_utils::BrowserCreatedObserver browser_created_observer;
+
+    ASSERT_TRUE(content::ExecJs(left_pane, "windowOpenWithFeatures();"));
+
+    // Wait for new browser window (popup) to be created
+    Browser* popup_browser = browser_created_observer.Wait();
+    ASSERT_TRUE(popup_browser);
+
+    // Verify a popup window was created
+    EXPECT_TRUE(popup_browser->is_type_popup())
+        << "window.open() with features should create a popup window";
+
+    // Verify the original split view tabs remain unchanged
+    EXPECT_EQ(2, tab_strip_model->count())
+        << "Split view should still have 2 tabs (no redirect occurred)";
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewLinkTest,
+                       WindowOpenOpenerIsPreservedDuringRedirect) {
+  // This test verifies that when window.open() or target="_blank" links create
+  // a temporary tab that gets redirected to the right pane, the opener
+  // relationship from the original navigation is preserved through the
+  // redirect.
+
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Link the split view
+  SetSplitViewLinked(true);
+  EXPECT_TRUE(IsSplitViewLinked());
+
+  // Navigate left pane to test page
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Get right pane
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+
+  // Test 1: window.open() redirect
+  {
+    // Verify right pane has no opener BEFORE the redirect
+    EXPECT_FALSE(right_pane->HasOpener())
+        << "Right pane should have no opener before window.open() redirect";
+    EXPECT_EQ("null",
+              content::EvalJs(right_pane,
+                              "window.opener === null ? 'null' : 'has_opener'")
+                  .ExtractString())
+        << "Right pane's window.opener should be null before redirect";
+
+    content::TestNavigationObserver right_pane_observer(right_pane);
+    right_pane_observer.StartWatchingNewWebContents();
+
+    // Call window.open() which creates a temporary tab with left_pane as opener
+    ASSERT_TRUE(content::ExecJs(left_pane, "windowOpenBasic();"));
+
+    // Wait for navigation in right pane
+    right_pane_observer.Wait();
+    EXPECT_EQ(GetTargetPageURL(), right_pane->GetLastCommittedURL());
+
+    // The temporary tab created by window.open() had left_pane as its opener.
+    // When the navigation was redirected to right_pane, the opener should have
+    // been passed through the NavigateParams. However, since right_pane already
+    // exists, it won't have window.opener set (you can't change the opener of
+    // an existing WebContents).
+
+    // Verify no new tab was created - the temporary tab was closed
+    EXPECT_EQ(2, tab_strip_model->count());
+
+    // Verify right pane's opener is STILL null AFTER the redirect
+    // The opener relationship cannot be changed on an existing WebContents,
+    // so even though the temporary tab had left_pane as its opener and we
+    // passed it through NavigateParams.opener, the right_pane's opener remains
+    // null because it existed before the window.open() call.
+    EXPECT_FALSE(right_pane->HasOpener())
+        << "Right pane should still have no opener after window.open() "
+           "redirect";
+    EXPECT_EQ("null",
+              content::EvalJs(right_pane,
+                              "window.opener === null ? 'null' : 'has_opener'")
+                  .ExtractString())
+        << "Right pane's window.opener should still be null after redirect. "
+           "The opener relationship is established at WebContents creation "
+           "time, "
+           "not during navigation. The NavigateParams.opener field preserves "
+           "the "
+           "opener information through the redirect, but doesn't modify "
+           "existing "
+           "WebContents.";
+  }
+
+  // Navigate left pane back to test page for second test
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Test 2: target="_blank" link redirect
+  {
+    // Verify right pane still has no opener before the link click redirect
+    EXPECT_FALSE(right_pane->HasOpener())
+        << "Right pane should have no opener before target='_blank' redirect";
+    EXPECT_EQ("null",
+              content::EvalJs(right_pane,
+                              "window.opener === null ? 'null' : 'has_opener'")
+                  .ExtractString())
+        << "Right pane's window.opener should be null before redirect";
+
+    content::TestNavigationObserver right_pane_observer(right_pane);
+    right_pane_observer.StartWatchingNewWebContents();
+
+    // Click target="_blank" link which creates a temporary tab with left_pane
+    // as opener
+    ASSERT_TRUE(content::ExecJs(left_pane, "clickTargetBlankLink();"));
+
+    // Wait for navigation in right pane
+    right_pane_observer.Wait();
+    EXPECT_EQ(GetTargetPageURL(), right_pane->GetLastCommittedURL());
+
+    // Verify no new tab was created - the temporary tab was closed
+    EXPECT_EQ(2, tab_strip_model->count());
+
+    // Verify right pane's opener is STILL null AFTER the target="_blank"
+    // redirect Same behavior as window.open() - the opener cannot be changed on
+    // existing WebContents even though the temporary tab had left_pane as its
+    // opener.
+    EXPECT_FALSE(right_pane->HasOpener())
+        << "Right pane should still have no opener after target='_blank' "
+           "redirect";
+    EXPECT_EQ("null",
+              content::EvalJs(right_pane,
+                              "window.opener === null ? 'null' : 'has_opener'")
+                  .ExtractString())
+        << "Right pane's window.opener should still be null after "
+           "target='_blank' redirect. "
+           "Same as window.open(), the opener relationship cannot be changed "
+           "on "
+           "existing WebContents.";
+  }
+}
+
+// Test class for testing that split view link feature can be disabled
+class SplitViewLinkDisabledTest : public SplitViewLinkTest {
+ public:
+  SplitViewLinkDisabledTest() {
+    // Override parent class to explicitly disable the split view link feature
+    // Reset as disabled is by default.
+    scoped_features_.Reset();
+  }
+  ~SplitViewLinkDisabledTest() override = default;
+};
+
+// Test that when the feature is disabled, normal links navigate normally
+// in the left pane (no redirect to right pane)
+IN_PROC_BROWSER_TEST_F(SplitViewLinkDisabledTest,
+                       NormalLinkDoesNotRedirectWhenFeatureDisabled) {
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Link the split view
+  SetSplitViewLinked(true);
+
+  // Navigate left pane to test page
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetLinkTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Get right pane URL before click
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+  GURL right_pane_url_before = right_pane->GetLastCommittedURL();
+
+  // Set up navigation observer for left pane
+  content::TestNavigationObserver left_pane_observer(left_pane);
+
+  // Click the normal link from left pane
+  ASSERT_TRUE(content::ExecJs(left_pane, "clickNormalLink();"));
+
+  // Wait for navigation in left pane
+  left_pane_observer.Wait();
+
+  // With feature disabled, left pane should navigate normally
+  EXPECT_EQ(GetTargetPageURL(), left_pane->GetLastCommittedURL());
+
+  // Right pane should not have changed
+  EXPECT_EQ(right_pane_url_before, right_pane->GetLastCommittedURL());
+}
+
+// Test that when the feature is disabled, target="_blank" links create
+// new tabs (no redirect to right pane)
+IN_PROC_BROWSER_TEST_F(SplitViewLinkDisabledTest,
+                       TargetBlankLinkOpensNewTabWhenFeatureDisabled) {
+  // Set up split view
+  NewSplitTab();
+  auto* tab_strip_model = browser()->tab_strip_model();
+  EXPECT_EQ(2, tab_strip_model->count());
+  EXPECT_TRUE(IsSplitTabAt(0));
+  EXPECT_TRUE(IsSplitTabAt(1));
+
+  // Link the split view
+  SetSplitViewLinked(true);
+
+  // Navigate left pane to test page
+  content::WebContents* left_pane = GetLeftPaneContents();
+  ASSERT_TRUE(left_pane);
+  ASSERT_TRUE(content::NavigateToURL(left_pane, GetTestPageURL()));
+  content::WaitForLoadStop(left_pane);
+
+  // Get initial tab count
+  int initial_tab_count = tab_strip_model->count();
+
+  // Get right pane URL before click
+  content::WebContents* right_pane = GetRightPaneContents();
+  ASSERT_TRUE(right_pane);
+  GURL right_pane_url_before = right_pane->GetLastCommittedURL();
+
+  // Set up observer for new tab navigation
+  content::TestNavigationObserver new_tab_observer(GetTargetPageURL());
+  new_tab_observer.StartWatchingNewWebContents();
+
+  // Click the target="_blank" link from left pane
+  ASSERT_TRUE(content::ExecJs(left_pane, "clickTargetBlankLink();"));
+
+  // Wait for new tab to be created and navigate
+  new_tab_observer.Wait();
+
+  // With feature disabled, a new tab should be created
+  EXPECT_EQ(initial_tab_count + 1, tab_strip_model->count());
+
+  // Right pane should not have changed
+  EXPECT_EQ(right_pane_url_before, right_pane->GetLastCommittedURL());
+}

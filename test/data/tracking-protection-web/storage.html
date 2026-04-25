@@ -1,0 +1,141 @@
+<script>
+var indexedDBParsed = false;
+var dbParsed = false;
+
+var sessionStorageAvailable = false;
+var localStorageAvailable = false;
+var indexedDBAvailable = false;
+var dbAvailable = false;
+
+function sendMessage() {
+  if (dbParsed && indexedDBParsed && window.domAutomationController) {
+        domAutomationController.send(true);
+  }
+}
+
+function populateDB(tx) {
+  tx.executeSql('DROP TABLE DETAILS', [], function() { }, onDBError);
+  tx.executeSql('CREATE TABLE IF NOT EXISTS DETAILS(id unique, text)', [], function() { }, onDBError);
+  tx.executeSql('INSERT INTO DETAILS (id, text) VALUES (1, "text")', [], function() { }, onDBError);
+  tx.executeSql('SELECT * FROM DETAILS', [], function (tx, results) {
+    if (results.rows.length > 0) {
+      dbAvailable = true;
+      dbParsed = true;
+      sendMessage();
+    }
+  });
+}
+
+function onDBError(error) {
+  dbAvailable = false;
+  dbParsed = true;
+  sendMessage();
+}
+
+function indexedDBError() {
+  indexedDBAvailable = false;
+  indexedDBParsed = true;
+  sendMessage();
+}
+
+function indexedDBSuccess() {
+  indexedDBAvailable = true;
+  indexedDBParsed = true;
+  sendMessage();
+}
+
+function Store() {
+  try {
+    var db = window.openDatabase("UserDetails", "1.0", "User Details", 10000);
+    db.transaction(populateDB, onDBError);
+  } catch (e) {
+    dbAvailable = false;
+    dbParsed = true;
+    sendMessage();
+  }
+
+  try {
+    var indexedDB = window.indexedDB;
+    var open = indexedDB.open("stp", 1);
+
+    open.onupgradeneeded = function(e) {
+      var db = e.target.result;
+
+      if(!db.objectStoreNames.contains("test")) {
+        var objectStore = db.createObjectStore("test", { keyPath: "id"});
+        objectStore.createIndex("title", "title", { unique: false });
+
+        var request = db.transaction(['test'], 'readwrite')
+                        .objectStore('test')
+                        .add({ id: 1, title: 'Title' });
+
+        request.onsuccess = function (event) {
+          var transaction = db.transaction(['test']);
+          var objectStore = transaction.objectStore('test');
+          var request = objectStore.get(1);
+
+          request.onerror = function(event) {
+            indexedDBError();
+          };
+
+          request.onsuccess = function( event) {
+            if (request.result && request.result.title == "Title") {
+              indexedDBSuccess();
+            } else {
+              indexedDBError();
+            }
+          };
+        };
+
+        request.onerror = function (event) {
+          indexedDBError();
+        };
+      }
+    }
+
+    open.onerror = function() {
+      indexedDBError();
+    }
+  } catch (e) {
+    indexedDBError();
+  }
+
+  try {
+    localStorage.stp = 'stp';
+    localStorageAvailable = (localStorage.stp == 'stp');
+  } catch (e) {
+    localStorageAvailable = false;
+  }
+
+  try {
+    sessionStorage.stp = "stp";
+    sessionStorageAvailable = (sessionStorage.stp == "stp");
+  } catch (e) {
+    sessionStorageAvailable = false;
+  }
+
+  document.cookie = "stp=stp";
+}
+
+function IsCookieAvailable() {
+  return document.cookie.length != 0;
+}
+
+function IsLocalStorageAvailable() {
+  return localStorageAvailable;
+}
+
+function IsSessionStorageAvailable() {
+  return sessionStorageAvailable;
+}
+
+function IsIndexedDBAvailable() {
+  return indexedDBAvailable;
+}
+
+function IsDBAvailable() {
+  return dbAvailable;  
+}
+
+window.onload = Store();
+</script>

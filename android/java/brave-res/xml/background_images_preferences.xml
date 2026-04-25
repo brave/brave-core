@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <PreferenceCategory
+        android:key="background_images"
+        android:title="@string/background_images">
+
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="show_background_images"
+            android:title="@string/show_background_images"
+            android:summaryOn="@string/text_on"
+            android:summaryOff="@string/text_off" />
+
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="show_sponsored_images"
+            android:title="@string/show_sponsored_images"
+            android:summaryOn="@string/text_on"
+            android:summaryOff="@string/text_off" />
+
+        <org.chromium.components.browser_ui.settings.ClickableSpansTextMessagePreference
+            android:key="sponsored_images_learn_more" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="widgets"
+        android:title="@string/widgets">
+
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="show_top_sites"
+            android:title="@string/show_top_sites"
+            android:summaryOn="@string/text_on"
+            android:summaryOff="@string/text_off" />
+
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="show_brave_stats"
+            android:title="@string/show_brave_stats"
+            android:summaryOn="@string/text_on"
+            android:summaryOff="@string/text_off" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="opening_screen"
+        android:title="@string/opening_screen_title">
+
+        <org.chromium.chrome.browser.settings.BraveRadioButtonGroupOpeningScreenPreference
+            android:key="opening_screen_option"
+            android:selectable="false"
+            app:allowDividerAbove="true" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

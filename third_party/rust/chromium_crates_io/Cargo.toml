@@ -1,0 +1,366 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# This file defines all third-party Rust dependencies approved for use
+# in Chromium.
+#
+# Crates which do not satisfy the rule-of-2 or which are testonly must be
+# marked as such in gnrt_config.toml.
+
+[package]
+name = "chromium"
+version = "0.1.0"
+edition = "2021"
+
+[workspace]
+
+[dependencies]
+speedreader-ffi = "0.1"
+skus-cxx = "0.1"
+json-cxx = "1"
+filecoin-cxx = "1"
+brave-news-cxx = "1"
+brave_wallet = "1"
+adblock-cxx = { version = "1" }
+constellation-cxx = "0.1"
+challenge-bypass-ristretto-cxx = "1"
+zcash = "1"
+anonymous-credentials = "0.1"
+document-extractor = "0.1"
+
+[patch.crates-io.idna_v1]
+path = "../idna/v1/crate"
+package = "idna"
+
+[patch.crates-io.url_v2]
+path = "../url/v2/crate"
+package = "url"
+
+[patch.crates-io.futures-retry_v0_5]
+path = "../futures_retry/v0_5/crate"
+package = "futures-retry"
+
+[patch.crates-io.speedreader-ffi_v0_1]
+path = "../../../components/speedreader/rust/ffi"
+package = "speedreader-ffi"
+
+[patch.crates-io.speedreader_v1]
+path = "../../../components/speedreader/rust/lib"
+package = "speedreader"
+
+[patch.crates-io.skus-cxx_v0_1]
+path = "../../../components/skus/browser/rs/cxx"
+package = "skus-cxx"
+
+[patch.crates-io.skus_v1]
+path = "../../../components/skus/browser/rs/lib"
+package = "skus"
+
+[patch.crates-io.json-cxx_v1]
+path = "../../../components/json/rs"
+package = "json-cxx"
+
+[patch.crates-io.filecoin-cxx_v1]
+path = "../../../components/filecoin/rs"
+package = "filecoin-cxx"
+
+[patch.crates-io.brave-news-cxx_v1]
+path = "../../../components/brave_news/browser"
+package = "brave-news-cxx"
+
+[patch.crates-io.brave_wallet_v1]
+path = "../../../components/brave_wallet/common"
+package = "brave_wallet"
+
+[patch.crates-io.adblock-cxx_v1]
+path = "../../../components/brave_shields/core/common/adblock/rs"
+package = "adblock-cxx"
+
+[patch.crates-io.constellation-cxx_v0_1]
+path = "../../../components/p3a/constellation/rs/cxx"
+package = "constellation-cxx"
+
+[patch.crates-io.challenge-bypass-ristretto-cxx_v1]
+path = "../../../components/challenge_bypass_ristretto/rust/cxx"
+package = "challenge-bypass-ristretto-cxx"
+
+[patch.crates-io.anonymous-credentials_v0_1]
+path = "../../../components/web_discovery/browser/anonymous_credentials"
+package = "anonymous-credentials"
+
+[patch.crates-io.document-extractor_v0_1]
+path = "../../../components/web_discovery/browser/document_extractor"
+package = "document-extractor"
+
+[patch.crates-io.anstyle]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/anstyle-v1"
+package = "anstyle"
+
+[patch.crates-io.arrayvec_v0_7]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/arrayvec-v0_7"
+package = "arrayvec"
+
+[patch.crates-io.autocfg_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/autocfg-v1"
+package = "autocfg"
+
+[patch.crates-io.base64_v0_22]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/base64-v0_22"
+package = "base64"
+
+[patch.crates-io.bytes_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/bytes-v1"
+package = "bytes"
+
+[patch.crates-io.bitflags_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/bitflags-v1"
+package = "bitflags"
+
+[patch.crates-io.bitflags_v2]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/bitflags-v2"
+package = "bitflags"
+
+[patch.crates-io.cfg-if_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/cfg-if-v1"
+package = "cfg-if"
+
+[patch.crates-io.clap]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/clap-v4"
+package = "clap"
+
+[patch.crates-io.clap_builder]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/clap_builder-v4"
+package = "clap_builder"
+
+[patch.crates-io.clap_lex]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/clap_lex-v1"
+package = "clap_lex"
+
+[patch.crates-io.codespan-reporting]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/codespan-reporting-v0_13"
+package = "codespan-reporting"
+
+[patch.crates-io.crc32fast]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/crc32fast-v1"
+package = "crc32fast"
+
+[patch.crates-io.cxx-build]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/cxx-build-v1"
+package = "cxx-build"
+
+[patch.crates-io.scratch]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/scratch-v1"
+package = "scratch"
+
+[patch.crates-io.cxx_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/cxx-v1"
+package = "cxx"
+
+[patch.crates-io.cxxbridge-cmd]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/cxxbridge-cmd-v1"
+package = "cxxbridge-cmd"
+
+[patch.crates-io.cxxbridge-flags_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/cxxbridge-flags-v1"
+package = "cxxbridge-flags"
+
+[patch.crates-io.cxxbridge-macro_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/cxxbridge-macro-v1"
+package = "cxxbridge-macro"
+
+[patch.crates-io.encoding_rs_v0_8]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/encoding_rs-v0_8"
+package = "encoding_rs"
+
+[patch.crates-io.equivalent_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/equivalent-v1"
+package = "equivalent"
+
+[patch.crates-io.foldhash_v0_2]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/foldhash-v0_2"
+package = "foldhash"
+
+[patch.crates-io.hex_v0_4]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/hex-v0_4"
+package = "hex"
+
+[patch.crates-io.indexmap_v2]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/indexmap-v2"
+package = "indexmap"
+
+[patch.crates-io.itoa_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/itoa-v1"
+package = "itoa"
+
+[patch.crates-io.hashbrown_v0_15]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/hashbrown-v0_15"
+package = "hashbrown"
+
+[patch.crates-io.hashbrown_v0_16]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/hashbrown-v0_16"
+package = "hashbrown"
+
+[patch.crates-io.lazy_static_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/lazy_static-v1"
+package = "lazy_static"
+
+[patch.crates-io.libc_v0_2]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/libc-v0_2"
+package = "libc"
+
+[patch.crates-io.log_v0_4]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/log-v0_4"
+package = "log"
+
+[patch.crates-io.libm_v0_2]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/libm-v0_2"
+package = "libm"
+
+[patch.crates-io.memchr_v2]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/memchr-v2"
+package = "memchr"
+
+[patch.crates-io.num-bigint_v0_4]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/num-bigint-v0_4"
+package = "num-bigint"
+
+[patch.crates-io.num-integer_v0_1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/num-integer-v0_1"
+package = "num-integer"
+
+[patch.crates-io.num-traits_v0_2]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/num-traits-v0_2"
+package = "num-traits"
+
+[patch.crates-io.proc_macro2_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/proc-macro2-v1"
+package = "proc-macro2"
+
+[patch.crates-io.quote_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/quote-v1"
+package = "quote"
+
+[patch.crates-io.regex_automata_v0_4]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4"
+package = "regex-automata"
+
+[patch.crates-io.regex-syntax_v0_8]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/regex-syntax-v0_8"
+package = "regex-syntax"
+
+[patch.crates-io.serde_core_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/serde_core-v1"
+package = "serde_core"
+
+[patch.crates-io.serde_derive_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/serde_derive-v1"
+package = "serde_derive"
+
+[patch.crates-io.serde_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/serde-v1"
+package = "serde"
+
+[patch.crates-io.serde_json_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/serde_json-v1"
+package = "serde_json"
+
+[patch.crates-io.static_assertions_v0_1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/static_assertions-v1"
+package = "static_assertions"
+
+[patch.crates-io.strsim]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/strsim-v0_11"
+package = "strsim"
+
+[patch.crates-io.syn_v2]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/syn-v2"
+package = "syn"
+
+[patch.crates-io.termcolor]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/termcolor-v1"
+package = "termcolor"
+
+[patch.crates-io.thiserror_v2]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/thiserror-v2"
+package = "thiserror"
+
+[patch.crates-io.thiserror-impl_v2]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/thiserror-impl-v2"
+package = "thiserror-impl"
+
+[patch.crates-io.unicode-ident_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/unicode-ident-v1"
+package = "unicode-ident"
+
+[patch.crates-io.unicode-width]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/unicode-width-v0_2"
+package = "unicode-width"
+
+[patch.crates-io.winapi-util]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/winapi-util-v0_1"
+package = "winapi-util"
+
+[patch.crates-io.windows_aarch64_gnullvm]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/windows_aarch64_gnullvm-v0_52"
+package = "windows_aarch64_gnullvm"
+
+[patch.crates-io.windows_aarch64_msvc]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/windows_aarch64_msvc-v0_52"
+package = "windows_aarch64_msvc"
+
+[patch.crates-io.windows_i686_gnu]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/windows_i686_gnu-v0_52"
+package = "windows_i686_gnu"
+
+[patch.crates-io.windows_i686_gnullvm]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/windows_i686_gnullvm-v0_52"
+package = "windows_i686_gnullvm"
+
+[patch.crates-io.windows_i686_msvc]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/windows_i686_msvc-v0_52"
+package = "windows_i686_msvc"
+
+[patch.crates-io.windows_x86_64_gnu]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/windows_x86_64_gnu-v0_52"
+package = "windows_x86_64_gnu"
+
+[patch.crates-io.windows_x86_64_gnullvm]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/windows_x86_64_gnullvm-v0_52"
+package = "windows_x86_64_gnullvm"
+
+[patch.crates-io.windows_x86_64_msvc]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/windows_x86_64_msvc-v0_52"
+package = "windows_x86_64_msvc"
+
+[patch.crates-io.windows-sys]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/windows-sys-v0_52"
+package = "windows-sys"
+
+[patch.crates-io.windows-targets]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/windows-targets-v0_52"
+package = "windows-targets"
+
+[patch.crates-io.zcash_v1]
+path = "../../../components/brave_wallet/browser/zcash/rust"
+package = "zcash"
+
+[patch.crates-io.zcash_protocol_v0_1]
+path = "../../../components/brave_wallet/browser/zcash/rust/librustzcash/src/components/zcash_protocol"
+package = "zcash_protocol"
+
+[patch.crates-io.zcash_encoding_v0_2]
+path = "../../../components/brave_wallet/browser/zcash/rust/librustzcash/src/components/zcash_encoding"
+package = "zcash_encoding"
+
+[patch.crates-io.zcash_primitives_v0_15]
+path = "../../../components/brave_wallet/browser/zcash/rust/librustzcash/src/zcash_primitives"
+package = "zcash_primitives"
+
+[patch.crates-io.zcash_client_backend_v0_12]
+path = "../../../components/brave_wallet/browser/zcash/rust/librustzcash/src/zcash_client_backend"
+package = "zcash_client_backend"
+
+[patch.crates-io.zmij_v1]
+path = "../../../../third_party/rust/chromium_crates_io/vendor/zmij-v1"
+package = "zmij"

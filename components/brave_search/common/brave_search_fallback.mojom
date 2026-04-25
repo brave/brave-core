@@ -1,0 +1,13 @@
+module brave_search.mojom;
+
+import "mojo/public/mojom/base/values.mojom";
+
+interface BraveSearchFallback {
+  FetchBackupResults(string query_string,
+                     string lang,
+                     string country,
+                     string geo,
+                     bool filter_explicit_results,
+                     int32 page_index,
+                     string? cookie_header_value) => (string response);
+};

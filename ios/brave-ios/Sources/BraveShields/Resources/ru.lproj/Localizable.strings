@@ -1,0 +1,27 @@
+/* Shields Ads Stat */
+"AdsAndTrackersrBlocked" = "Трекеры & блокировка рекламы";
+
+/* Shields Ads Stat */
+"AdsrBlocked" = "Заблоки-\nрованная\nреклама";
+
+/* Data Saved Shield Stat */
+"DataSavedStat" = "Прим. данных\nСохранено";
+
+/* Shields Time Saved Stat */
+"EstTimerSaved" = "Времени\nсэкономлено";
+
+/* Time Saved Days */
+"ShieldsTimeStatsDays" = "дн.";
+
+/* Time Saved Hours */
+"ShieldsTimeStatsHour" = "ч.";
+
+/* Time Saved Minutes */
+"ShieldsTimeStatsMinutes" = "мин.";
+
+/* Time Saved Seconds */
+"ShieldsTimeStatsSeconds" = "сек.";
+
+/* Shields Trackers Stat */
+"TrackersrBlocked" = "Заблоки-\nрованные\nтрекеры";
+

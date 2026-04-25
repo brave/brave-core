@@ -1,0 +1,66 @@
+/* A button title shown below language introducing the Brave Playlist feature. i.e. 'Discover how to use use this feature' */
+"advanceInitialOnboardingButtonTitle" = "לגלות איך";
+
+/* A button title that when tapped will advance the onboarding to guide a user to add some content to Playlist */
+"advanceStep2OnboardingButtonTitle" = "לנסות את זה!";
+
+/* A button that allows the user to disable the brave translate feature. When pressed, the page will not be automatically translated to the user's language. */
+"BraveTranslateOnboarding.disableTranslateButtonTitle" = "השבתת הפיצ׳ר הזה";
+
+/* A text element that describes the translation feature and explains that hte user might have to download or configure languages on their device. */
+"BraveTranslateOnboarding.translateDescription" = "ניתן לתרגם דפים לשפות שנתמכות על ידי מכשיר ה-iOS שלך. יתכן שתידרש/י להגדיר שפות אם זה השימוש הראשון שלך בפיצ׳ר הזה.";
+
+/* A text element that explains we're translating pages. */
+"BraveTranslateOnboarding.translateTitle" = "תרגומי דפים";
+
+/* A button title that when tapped opens Brave Playlist */
+"confirmationActionButtonTitle" = "תקחו אותי לפלייליסט שלי";
+
+/* Shown above a button that will let the user open the playlist feature */
+"confirmationPrompt" = "הגיע הזמן להראות לך את הפלייליסט שלך.";
+
+/* Shown below a title that confirms the user completed the task of adding something to playlist. %@ will be replaced with the folder the content was added to. i.e. 'Content added to Play Later' */
+"confirmationSubtitle" = "נוסף תוכן אל %@";
+
+/* Guides the user to tap on an icon where the onboarding is pointing to. '%@' will be replaced with said icon. */
+"confirmationTitle" = "עבודה טובה";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissOnboardingButtonTitle" = "סגור";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep2OnboardingButtonTitle" = "אולי אחר כך";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep4OnboardingButtonTitle" = "סגור";
+
+/* A title shown on the first 2 steps of onboarding for Brave Playlist. Brave Playlist is a product name */
+"introducingBravePlaylist" = "מציגים: פלייליסט Brave";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleOne" = "צור רשימות השמעה של התוכן האהוב עליך. שמור נתונים סלולריים. והשמעה ללא פרסומות.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleThree" = "תמונה בתוך תמונה. נגינה ברקע. שליטה ממסך הנעילה. ועוד...";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleTwo" = "הישאר בזרימה: הוסף סרטונים בזמן שאתה גולש, צפה מאוחר יותר.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleOne" = "להוסיף סרטונים לפלייליסט Brave. לנגן בכל עת. אפילו במצב לא מקוון.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleThree" = "ההשמעה טובה יותר ברשימת השמעה";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleTwo" = "פשוט הקש על הכפתור כדי להוסיף סרטונים לפלייליסט";
+
+/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
+"playlistOnboardingDescription" = "ליצור פלייליסטים עם תוכן שאוהבים. להוסיף מדיה מכל דף.\nלנגן בכל עת. אפילו במצב לא מקוון!";
+
+/* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
+"userActionPrompt" = "יש ללחוץ על %@ כדי להוסיף את הפריט הראשון שלך";
+
+/* Will be shown next to an icon inside of some other text. i.e. "Tap 'Add to Playlist' to add your first item" */
+"userActionPromptFill" = "הוסף לרשימת השמעה";
+

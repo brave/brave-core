@@ -1,0 +1,69 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_talk/buildflags/buildflags.gni")
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+
+group("browser") {
+  deps = [
+    "api/bookmarks",
+    "api/bookmarks/exporter",
+    "api/bookmarks/importer",
+    "api/brave_domains",
+    "api/brave_services_key",
+    "api/brave_shields",
+    "api/brave_wallet:wallet_mojom_wrappers",
+    "api/certificate",
+    "api/content_settings",
+    "api/credential_provider",
+    "api/developer_options_code",
+    "api/favicon",
+    "api/features",
+    "api/history",
+    "api/history/importer",
+    "api/https_upgrades",
+    "api/ipfs",
+    "api/net",
+    "api/ntp_background_images",
+    "api/omnibox",
+    "api/opentabs",
+    "api/p3a",
+    "api/password",
+    "api/session_restore",
+    "api/storekit_receipt",
+    "api/sync",
+    "api/translate",
+    "api/unicode",
+    "api/unzip",
+    "api/url",
+    "api/version_info",
+    "api/web",
+    "api/web_image",
+    "api/web_view",
+    "brave_wallet",
+    "//brave/browser/sync",
+    "//brave/components/brave_policy",
+    "//brave/components/constants",
+    "//brave/ios/browser/ai_chat",
+    "//brave/ios/browser/application_context",
+    "//brave/ios/browser/brave_news",
+    "//brave/ios/browser/brave_origin",
+    "//brave/ios/browser/brave_vpn",
+    "//brave/ios/browser/brave_wallet",
+    "//brave/ios/browser/playlist",
+    "//brave/ios/browser/policy",
+    "//brave/ios/browser/profile/model",
+    "//brave/ios/browser/safari_data_import",
+    "//brave/ios/browser/shared/prefs",
+    "//brave/ios/browser/ui/webui",
+    "//brave/ios/browser/web",
+    "//brave/ios/components/prefs",
+    "//ios/chrome/browser/shared/model/prefs",
+  ]
+  if (enable_brave_talk) {
+    deps += [ "//brave/ios/browser/brave_talk" ]
+  }
+}

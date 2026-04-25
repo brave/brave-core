@@ -1,0 +1,147 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
+import("//pdf/features.gni")
+
+static_library("browser") {
+  sources = [
+    "ai_chat_brave_search_throttle.cc",
+    "ai_chat_brave_search_throttle.h",
+    "ai_chat_tab_helper.cc",
+    "ai_chat_tab_helper.h",
+    "ai_chat_throttle.cc",
+    "ai_chat_throttle.h",
+    "ai_page_content_fetcher.cc",
+    "ai_page_content_fetcher.h",
+    "associated_url_content.cc",
+    "associated_url_content.h",
+    "associated_web_contents_content.cc",
+    "associated_web_contents_content.h",
+    "full_screenshotter.cc",
+    "full_screenshotter.h",
+    "model_service_factory.cc",
+    "model_service_factory.h",
+    "page_content_blocks.cc",
+    "page_content_blocks.h",
+    "page_content_fetcher.cc",
+    "page_content_fetcher.h",
+    "pdf_utils.cc",
+    "pdf_utils.h",
+  ]
+
+  if (enable_pdf) {
+    sources += [
+      "pdf_text_helper.cc",
+      "pdf_text_helper.h",
+    ]
+  }
+
+  public_deps = [ "//mojo/public/cpp/bindings" ]
+
+  deps = [
+    "//base",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common:common_impl",
+    "//brave/components/ai_chat/core/common/mojom",
+    "//brave/components/api_request_helper",
+    "//brave/components/brave_stats/browser",
+    "//brave/components/constants",
+    "//brave/components/resources:strings_grit",
+    "//brave/components/text_recognition/common/buildflags",
+    "//components/favicon/content",
+    "//components/favicon/core",
+    "//components/keyed_service/content",
+    "//components/optimization_guide/content/browser",
+    "//components/optimization_guide/proto:optimization_guide_proto",
+    "//components/paint_preview/browser",
+    "//components/paint_preview/common",
+    "//components/paint_preview/public",
+    "//components/prefs",
+    "//components/strings:components_strings_grit",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//net",
+    "//net/traffic_annotation",
+    "//pdf:buildflags",
+    "//services/data_decoder/public/cpp",
+    "//services/network/public/cpp",
+    "//services/service_manager/public/cpp",
+    "//services/strings:strings_grit",
+    "//third_party/abseil-cpp:absl",
+    "//ui/base",
+    "//url",
+  ]
+
+  if (enable_pdf) {
+    deps += [
+      "//components/pdf/browser",
+      "//pdf/mojom",
+    ]
+  }
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "ai_page_content_fetcher_unittest.cc",
+    "associated_url_content_unittest.cc",
+    "associated_web_contents_content_unittest.cc",
+    "page_content_blocks_unittest.cc",
+    "page_content_fetcher_unittest.cc",
+  ]
+
+  deps = [
+    ":test_support",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/ai_chat/content/browser",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/mojom",
+    "//brave/components/api_request_helper",
+    "//components/favicon/content",
+    "//components/favicon/core/test:test_support",
+    "//components/optimization_guide/content/browser",
+    "//components/optimization_guide/proto:optimization_guide_proto",
+    "//components/pdf/common:constants",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//net:test_support",
+    "//pdf:buildflags",
+    "//services/data_decoder/public/cpp",
+    "//services/data_decoder/public/cpp:test_support",
+    "//services/network:test_support",
+    "//services/network/public/cpp:test_support",
+    "//services/service_manager/public/cpp",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//url",
+  ]
+
+  if (enable_pdf) {
+    sources += [ "pdf_text_helper_unittest.cc" ]
+    deps += [
+      "//components/pdf/browser",
+      "//pdf/mojom",
+    ]
+  }
+}
+
+source_set("test_support") {
+  testonly = true
+  sources = [
+    "annotated_page_content_test_util.cc",
+    "annotated_page_content_test_util.h",
+  ]
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//components/optimization_guide/proto:optimization_guide_proto",
+    "//testing/gtest",
+  ]
+}

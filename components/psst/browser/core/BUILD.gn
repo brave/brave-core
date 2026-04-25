@@ -1,0 +1,66 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/psst/buildflags/buildflags.gni")
+
+assert(enable_psst)
+
+static_library("core") {
+  public = [
+    "matched_rule.h",
+    "psst_component_installer.h",
+    "psst_rule.h",
+    "psst_rule_registry.h",
+    "psst_settings_service.h",
+  ]
+
+  friend = [ ":unit_tests" ]
+
+  sources = [
+    "matched_rule.cc",
+    "psst_component_installer.cc",
+    "psst_rule.cc",
+    "psst_rule_registry_impl.cc",
+    "psst_rule_registry_impl.h",
+    "psst_settings_service.cc",
+    "rule_data_reader.cc",
+    "rule_data_reader.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//url",
+  ]
+
+  deps = [
+    "//brave/components/brave_component_updater/browser:public",
+    "//brave/components/psst/common",
+    "//brave/extensions:common",
+    "//components/component_updater",
+    "//components/content_settings/core/browser",
+    "//components/prefs",
+    "//crypto",
+    "//net",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "matched_rule_unittest.cc",
+    "psst_rule_registry_unittest.cc",
+    "psst_rule_unittest.cc",
+    "rule_data_reader_unittest.cc",
+  ]
+
+  deps = [
+    ":core",
+    "//base/test:test_support",
+    "//brave/components/psst/common",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}

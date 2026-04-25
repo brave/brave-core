@@ -1,0 +1,12 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# These sources are included directly into chrome_java rather than the
+# brave/browser/autofill/android:java target to avoid a circular dependency
+# (they depend on ChromeBrowserInitializer which is part of chrome_java).
+brave_browser_autofill_service_java_sources = [
+  "//brave/browser/autofill/android/java/src/org/chromium/chrome/browser/autofill/BraveAutofillServiceImpl.java",
+  "//brave/browser/autofill/android/java/src/org/chromium/chrome/browser/autofill/BraveAutofillViewStructureParser.java",
+]

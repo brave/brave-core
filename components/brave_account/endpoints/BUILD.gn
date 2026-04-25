@@ -1,0 +1,79 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//tools/json_schema_compiler/json_schema_api.gni")
+
+source_set("endpoints") {
+  sources = [
+    "auth_logout.h",
+    "auth_validate.h",
+    "login_finalize.h",
+    "login_init.h",
+    "password_finalize.h",
+    "password_init.h",
+    "service_token.h",
+    "verify_complete.h",
+    "verify_delete.h",
+    "verify_init.h",
+    "verify_resend.h",
+  ]
+
+  deps = [ "//brave/components/brave_account/endpoint_client" ]
+
+  public_deps =
+      [ "//brave/components/brave_account/endpoints:generated_api_types" ]
+}
+
+generated_types("generated_api_types") {
+  sources = [
+    "auth_logout_bodies.idl",
+    "auth_validate_bodies.idl",
+    "error_body.idl",
+    "login_finalize_bodies.idl",
+    "login_init_bodies.idl",
+    "password_finalize_bodies.idl",
+    "password_init_bodies.idl",
+    "service_token_bodies.idl",
+    "verify_complete_bodies.idl",
+    "verify_delete_bodies.idl",
+    "verify_init_bodies.idl",
+    "verify_resend_bodies.idl",
+  ]
+
+  deps = [ "//base" ]
+
+  root_namespace = "brave_account::%(namespace)s"
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "auth_logout_unittest.cc",
+    "auth_validate_unittest.cc",
+    "endpoint_test.h",
+    "login_finalize_unittest.cc",
+    "login_init_unittest.cc",
+    "password_finalize_unittest.cc",
+    "password_init_unittest.cc",
+    "service_token_unittest.cc",
+    "verify_complete_unittest.cc",
+    "verify_delete_unittest.cc",
+    "verify_init_unittest.cc",
+    "verify_resend_unittest.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_account/endpoint_client",
+    "//brave/components/brave_account/endpoints",
+    "//net",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
+    "//testing/gtest",
+    "//url",
+  ]
+}

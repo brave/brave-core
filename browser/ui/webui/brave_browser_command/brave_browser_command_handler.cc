@@ -1,0 +1,154 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+// based on //chrome/browser/ui/webui/browser_command/browser_command_handler.cc
+
+#include "brave/browser/ui/webui/brave_browser_command/brave_browser_command_handler.h"
+
+#include <algorithm>
+
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_education/education_urls.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/constants/webui_url_constants.h"
+#include "chrome/browser/profiles/profile.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/brave_vpn/vpn_utils.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+
+namespace {
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+bool CanShowWalletOnboarding(Profile* profile) {
+  return brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+             profile) != nullptr;
+}
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+
+bool CanShowRewardsOnboarding(Profile* profile) {
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  return brave_rewards::RewardsServiceFactory::GetForProfile(profile) !=
+         nullptr;
+#else
+  return false;
+#endif
+}
+
+bool CanShowVPNBubble(Profile* profile) {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  return brave_vpn::IsAllowedForContext(profile);
+#else
+  return false;
+#endif
+}
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+bool CanShowAIChat(Profile* profile) {
+  return ai_chat::AIChatServiceFactory::GetForBrowserContext(profile) !=
+         nullptr;
+}
+#endif
+
+}  // namespace
+
+BraveBrowserCommandHandler::BraveBrowserCommandHandler(
+    mojo::PendingReceiver<
+        brave_browser_command::mojom::BraveBrowserCommandHandler>
+        pending_page_handler,
+    Profile* profile,
+    std::vector<brave_browser_command::mojom::Command> supported_commands,
+    std::unique_ptr<Delegate> delegate)
+    : profile_(profile),
+      supported_commands_(supported_commands),
+      delegate_(std::move(delegate)),
+      page_handler_(this, std::move(pending_page_handler)) {}
+
+BraveBrowserCommandHandler::~BraveBrowserCommandHandler() = default;
+
+void BraveBrowserCommandHandler::CanExecuteCommand(
+    brave_browser_command::mojom::Command command_id,
+    CanExecuteCommandCallback callback) {
+  if (!std::ranges::contains(supported_commands_, command_id)) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  bool can_execute = false;
+  switch (command_id) {
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+    case brave_browser_command::mojom::Command::kOpenWalletOnboarding:
+      can_execute = CanShowWalletOnboarding(profile_);
+      break;
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+    case brave_browser_command::mojom::Command::kOpenRewardsOnboarding:
+      can_execute = CanShowRewardsOnboarding(profile_);
+      break;
+    case brave_browser_command::mojom::Command::kOpenVPNOnboarding:
+      can_execute = CanShowVPNBubble(profile_);
+      break;
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    case brave_browser_command::mojom::Command::kOpenAIChat:
+      can_execute = CanShowAIChat(profile_);
+      break;
+#endif
+  }
+  std::move(callback).Run(can_execute);
+}
+
+void BraveBrowserCommandHandler::ExecuteCommand(
+    brave_browser_command::mojom::Command command_id,
+    ExecuteCommandCallback callback) {
+  if (!std::ranges::contains(supported_commands_, command_id)) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  switch (command_id) {
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+    case brave_browser_command::mojom::Command::kOpenWalletOnboarding:
+      delegate_->OpenURL(GURL(kBraveUIWalletURL),
+                         WindowOpenDisposition::NEW_FOREGROUND_TAB);
+      break;
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+    case brave_browser_command::mojom::Command::kOpenRewardsOnboarding:
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+      delegate_->OpenRewardsPanel();
+      break;
+#else
+      std::move(callback).Run(false);
+      return;
+#endif
+    case brave_browser_command::mojom::Command::kOpenVPNOnboarding:
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+      delegate_->OpenVPNPanel();
+      break;
+#else
+      std::move(callback).Run(false);
+      return;
+#endif
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    case brave_browser_command::mojom::Command::kOpenAIChat:
+      delegate_->OpenAIChat();
+      break;
+#endif
+  }
+
+  std::move(callback).Run(true);
+}

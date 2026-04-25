@@ -1,0 +1,32 @@
+<html>
+
+<script>
+  var inactiveTabError
+  function wallet_watchAsset(type, address, symbol, decimals) {
+    const params = {
+      options: {
+        address,
+        symbol,
+        decimals
+      },
+      type
+    }
+
+    window.ethereum.request({
+      method: 'wallet_watchAsset',
+      params
+    }).then(result => {
+      inactiveTabError = false
+    }).catch(error => {
+      inactiveTabError = false
+      if (error.code == -32002) {
+        inactiveTabError = true
+      }
+    })
+  }
+</script>
+
+<body>
+</body>
+</html>
+

@@ -1,0 +1,14 @@
+{
+  "locale": "us",
+  "version": 1,
+  "timestamp": "2021-03-32 00:00:00",
+  "sites": {
+    "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123": [
+      "https://www.brave.com",
+      "https://www.basicattentiontoken.org"
+    ],
+    "ccdaf616-b8a8-481a-aa8b-caf5fb131353": [
+      "https://www.bravesoftware.com"
+    ]
+  }
+}

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2024 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+<org.chromium.chrome.browser.ntp.BraveNewTabPageLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ntp_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:paddingTop="@dimen/toolbar_height_no_shadow"
+    android:visibility="gone" >
+
+    <ImageView
+        android:id="@+id/bg_image_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@null"/>
+
+    <FrameLayout
+        android:id="@+id/bg_sponsored_rich_media_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/logo_holder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <org.chromium.chrome.browser.logo.LogoView
+            android:id="@+id/search_provider_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/ntp_logo_height"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="@dimen/ntp_logo_margin_top"
+            android:layout_marginBottom="23dp" />
+
+    </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/news_settings_bar"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@color/card_background_solid"
+            android:orientation="horizontal"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/news_settings_text"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:textSize = "17sp"
+                android:gravity="center_vertical"
+                android:text="@string/brave_news_title"
+                android:textColor="@color/news_text_color" />
+
+            <ImageView
+                android:id="@+id/news_settings_button"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center"
+                android:scaleType="fitCenter"
+                android:padding="8dp"
+                android:gravity="center"
+                tools:ignore="ContentDescription"
+                android:src="@drawable/ic_news_settings"/>
+
+        </LinearLayout>
+
+        <include
+            android:id="@+id/news_load_new_content"
+            layout="@layout/brave_news_load_new_content"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ntp_main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+            <!-- Search box -->
+            <include layout="@layout/fake_search_box_layout"/>
+
+            <ViewStub
+                android:id="@+id/composeplate_view_stub"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/composeplate_view_height"
+                android:layout_marginTop="@dimen/composeplate_view_margin_top_v1"
+                android:layout_marginStart="@dimen/mvt_container_lateral_margin"
+                android:layout_marginEnd="@dimen/mvt_container_lateral_margin"
+                android:layout="@layout/composeplate_view_layout"
+                android:visibility="gone" />
+
+            <ViewStub
+                android:id="@+id/composeplate_view_v2_stub"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/composeplate_view_height"
+                android:layout_marginTop="@dimen/composeplate_view_margin_top"
+                android:layout_marginStart="@dimen/mvt_container_lateral_margin"
+                android:layout_marginEnd="@dimen/mvt_container_lateral_margin"
+                android:layout="@layout/composeplate_view_layout_v2"
+                android:visibility="gone" />
+
+            <!-- Query tiles -->
+            <FrameLayout
+                android:id="@+id/query_tiles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:visibility="gone"/>
+
+            <ViewStub
+                android:id="@+id/signin_promo_view_container_stub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout="@layout/signin_promo_view_new_tab_page" />
+
+            <ViewStub
+                android:id="@+id/home_modules_recycler_view_stub"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout="@layout/home_modules_recycler_view_layout"
+                android:visibility="gone" />
+
+            <!-- Single tab card -->
+            <ViewStub
+                android:id="@+id/tab_switcher_module_container_stub"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout="@layout/tab_switcher_module_container" />
+
+            <ViewStub
+                android:id="@+id/search_resumption_module_container_stub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/search_resumption_module_margin_top"
+                android:layout="@layout/search_resumption_module_layout" />
+
+            <ViewStub
+                android:id="@+id/mv_tiles_layout_stub"
+                android:inflatedId="@+id/mv_tiles_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/mvt_container_top_margin"
+                android:layout_marginLeft="@dimen/mvt_container_lateral_margin"
+                android:layout_marginRight="@dimen/mvt_container_lateral_margin"
+                android:layout="@layout/mv_tiles_layout" />
+
+            <!-- Spacer for when there is no search provider logo. -->
+            <View
+                android:id="@+id/no_search_logo_spacer"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+</org.chromium.chrome.browser.ntp.BraveNewTabPageLayout>

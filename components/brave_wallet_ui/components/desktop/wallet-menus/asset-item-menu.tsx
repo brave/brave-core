@@ -1,0 +1,311 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
+
+// Types
+import { BraveWallet } from '../../../constants/types'
+
+// Selectors
+import {
+  useSafeWalletSelector,
+  useSafeUISelector,
+} from '../../../common/hooks/use-safe-selector'
+import { WalletSelectors, UISelectors } from '../../../common/selectors'
+
+// Queries
+import {
+  useGetAvailableShieldedAccountQuery,
+  useUpdateUserAssetVisibleMutation, //
+} from '../../../common/slices/api.slice'
+import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
+
+// Hooks
+import {
+  useMultiChainSellAssets, //
+} from '../../../common/hooks/use-multi-chain-sell-assets'
+import {
+  useFindBuySupportedToken, //
+} from '../../../common/hooks/use-multi-chain-buy-assets'
+import { useRoute } from '../../../common/hooks/use_route'
+
+// Utils
+import { getLocale } from '../../../../common/locale'
+import Amount from '../../../utils/amount'
+import {
+  makeDepositFundsRoute,
+  makeFundWalletRoute,
+  makeSendRoute,
+  makeSwapOrBridgeRoute,
+} from '../../../utils/routes-utils'
+import {
+  getAssetIdKey,
+  getDoesCoinSupportSwap,
+  getDoesCoinSupportBridge,
+} from '../../../utils/asset-utils'
+
+// Components
+import {
+  SellAssetModal, //
+} from '../popup-modals/sell-asset-modal/sell-asset-modal'
+import { MenuWrapper } from './menu_wrapper'
+
+// Styled Components
+import { PopupButton, PopupButtonText, ButtonIcon } from './wellet-menus.style'
+import { VerticalDivider } from '../../shared/style'
+
+interface Props {
+  asset: BraveWallet.BlockchainToken
+  assetBalance: string
+  account?: BraveWallet.AccountInfo
+  onClickEditToken?: () => void
+}
+
+export const AssetItemMenu = (props: Props) => {
+  const { asset, assetBalance, account, onClickEditToken } = props
+
+  // State
+  const [showSellModal, setShowSellModal] = React.useState<boolean>(false)
+
+  // Selectors
+  const isZCashShieldedTransactionsEnabled = useSafeWalletSelector(
+    WalletSelectors.isZCashShieldedTransactionsEnabled,
+  )
+  const isIOS = useSafeUISelector(UISelectors.isIOS)
+
+  // Mutations
+  const [updateUserAssetVisible] = useUpdateUserAssetVisibleMutation()
+
+  // Queries
+  const { accounts } = useAccountsQuery()
+  const zcashAccountIds = accounts
+    .filter((account) => account.accountId.coin === BraveWallet.CoinType.ZEC)
+    .map((account) => account.accountId)
+
+  const { data: availableShieldedAccountData } =
+    useGetAvailableShieldedAccountQuery(
+      asset.coin === BraveWallet.CoinType.ZEC
+        && isZCashShieldedTransactionsEnabled
+        && zcashAccountIds
+        ? zcashAccountIds
+        : skipToken,
+    )
+
+  const shieldedAccount = React.useMemo(() => {
+    if (!availableShieldedAccountData) {
+      return undefined
+    }
+    return accounts.find(
+      (a) =>
+        a.accountId.uniqueKey
+        === availableShieldedAccountData.accountId.uniqueKey,
+    )
+  }, [accounts, availableShieldedAccountData])
+
+  // Hooks
+  const {
+    selectedSellAsset,
+    setSelectedSellAsset,
+    sellAmount,
+    setSellAmount,
+    openSellAssetLink,
+    checkIsAssetSellSupported,
+  } = useMultiChainSellAssets()
+
+  const { foundMeldBuyToken } = useFindBuySupportedToken(asset)
+  const { openOrPushRoute } = useRoute()
+
+  // Memos
+  const isAssetsBalanceZero = React.useMemo(() => {
+    return new Amount(assetBalance).isZero()
+  }, [assetBalance])
+
+  const canShieldFunds =
+    availableShieldedAccountData && !asset.isShielded && !isAssetsBalanceZero
+
+  const canUnshieldFunds =
+    availableShieldedAccountData && asset.isShielded && !isAssetsBalanceZero
+
+  const isSwapSupported = getDoesCoinSupportSwap(asset.coin)
+  const isBridgeSupported = getDoesCoinSupportBridge(asset.coin)
+
+  const isSellSupported = React.useMemo(() => {
+    return account !== undefined && checkIsAssetSellSupported(asset)
+  }, [account, checkIsAssetSellSupported, asset])
+
+  // Methods
+  const onClickBuy = React.useCallback(() => {
+    if (foundMeldBuyToken) {
+      openOrPushRoute(makeFundWalletRoute(foundMeldBuyToken, account))
+    }
+  }, [foundMeldBuyToken, openOrPushRoute, account])
+
+  const onClickSend = React.useCallback(() => {
+    openOrPushRoute(makeSendRoute(asset, account))
+  }, [account, openOrPushRoute, asset])
+
+  const onClickSwapOrBridge = React.useCallback(
+    (routeType: 'swap' | 'bridge') => {
+      openOrPushRoute(
+        makeSwapOrBridgeRoute({
+          fromToken: asset,
+          fromAccount: account,
+          routeType,
+        }),
+      )
+    },
+    [account, openOrPushRoute, asset],
+  )
+
+  const onClickDeposit = React.useCallback(() => {
+    openOrPushRoute(makeDepositFundsRoute(getAssetIdKey(asset)))
+  }, [asset, openOrPushRoute])
+
+  const onClickSell = React.useCallback(() => {
+    setSelectedSellAsset(asset)
+    setShowSellModal(true)
+  }, [setSelectedSellAsset, asset])
+
+  const onOpenSellAssetLink = React.useCallback(() => {
+    openSellAssetLink({
+      sellAsset: selectedSellAsset,
+    })
+  }, [openSellAssetLink, selectedSellAsset])
+
+  const onClickHide = React.useCallback(async () => {
+    await updateUserAssetVisible({
+      token: asset,
+      isVisible: false,
+    }).unwrap()
+  }, [updateUserAssetVisible, asset])
+
+  const onClickShieldFunds = React.useCallback(() => {
+    if (!availableShieldedAccountData) {
+      return
+    }
+
+    openOrPushRoute(
+      makeSendRoute(
+        asset,
+        account,
+        availableShieldedAccountData.zcashAccountInfo.orchardInternalAddress,
+      ),
+    )
+  }, [availableShieldedAccountData, asset, openOrPushRoute, account])
+
+  const onClickUnshieldFunds = React.useCallback(() => {
+    if (
+      !canUnshieldFunds
+      || !shieldedAccount
+      || !availableShieldedAccountData
+    ) {
+      return
+    }
+    openOrPushRoute(
+      makeSendRoute(
+        asset,
+        shieldedAccount,
+        availableShieldedAccountData.zcashAccountInfo
+          .nextTransparentReceiveAddress.addressString,
+      ),
+    )
+  }, [
+    canUnshieldFunds,
+    asset,
+    openOrPushRoute,
+    shieldedAccount,
+    availableShieldedAccountData,
+  ])
+
+  return (
+    <MenuWrapper yPosition={42}>
+      {foundMeldBuyToken && (
+        <PopupButton onClick={onClickBuy}>
+          <ButtonIcon name='coins-alt1' />
+          <PopupButtonText>{getLocale('braveWalletBuy')}</PopupButtonText>
+        </PopupButton>
+      )}
+      {!isAssetsBalanceZero && (
+        <PopupButton onClick={onClickSend}>
+          <ButtonIcon name='send' />
+          <PopupButtonText>{getLocale('braveWalletSend')}</PopupButtonText>
+        </PopupButton>
+      )}
+      {isSwapSupported && (
+        <PopupButton onClick={() => onClickSwapOrBridge('swap')}>
+          <ButtonIcon name='currency-exchange' />
+          <PopupButtonText>{getLocale('braveWalletSwap')}</PopupButtonText>
+        </PopupButton>
+      )}
+      {!isIOS && isBridgeSupported && (
+        <PopupButton onClick={() => onClickSwapOrBridge('bridge')}>
+          <ButtonIcon name='web3-bridge' />
+          <PopupButtonText>{getLocale('braveWalletBridge')}</PopupButtonText>
+        </PopupButton>
+      )}
+      <PopupButton onClick={onClickDeposit}>
+        <ButtonIcon name='money-bag-coins' />
+        <PopupButtonText>
+          {getLocale('braveWalletAccountsDeposit')}
+        </PopupButtonText>
+      </PopupButton>
+      {isSellSupported && (
+        <PopupButton onClick={onClickSell}>
+          <ButtonIcon name='usd-circle' />
+          <PopupButtonText>{getLocale('braveWalletSell')}</PopupButtonText>
+        </PopupButton>
+      )}
+      {onClickEditToken && (
+        <PopupButton onClick={onClickEditToken}>
+          <ButtonIcon name='edit-pencil' />
+          <PopupButtonText>
+            {getLocale('braveWalletAllowSpendEditButton')}
+          </PopupButtonText>
+        </PopupButton>
+      )}
+      <PopupButton onClick={onClickHide}>
+        <ButtonIcon name='eye-off' />
+        <PopupButtonText>
+          {getLocale('braveWalletConfirmHidingToken')}
+        </PopupButtonText>
+      </PopupButton>
+      {canShieldFunds && (
+        <>
+          <VerticalDivider margin='0px 0px 8px 0px' />
+          <PopupButton onClick={onClickShieldFunds}>
+            <ButtonIcon name='shield-done' />
+            <PopupButtonText>
+              {getLocale('braveWalletShieldFunds')}
+            </PopupButtonText>
+          </PopupButton>
+        </>
+      )}
+      {canUnshieldFunds && (
+        <>
+          <VerticalDivider margin='0px 0px 8px 0px' />
+          <PopupButton onClick={onClickUnshieldFunds}>
+            <ButtonIcon name='shield-disable' />
+            <PopupButtonText>
+              {getLocale('braveWalletUnshieldFunds')}
+            </PopupButtonText>
+          </PopupButton>
+        </>
+      )}
+      {showSellModal && selectedSellAsset && (
+        <SellAssetModal
+          selectedAsset={selectedSellAsset}
+          onClose={() => setShowSellModal(false)}
+          sellAmount={sellAmount}
+          setSellAmount={setSellAmount}
+          openSellAssetLink={onOpenSellAssetLink}
+          showSellModal={showSellModal}
+          account={account}
+          sellAssetBalance={assetBalance}
+        />
+      )}
+    </MenuWrapper>
+  )
+}

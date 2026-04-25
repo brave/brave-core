@@ -1,0 +1,5 @@
+include_rules = [
+  "+ios/web/favicon/favicon_util.h",
+  "+ios/web/js_messaging",
+  "!ios/web/navigation/navigation_context_impl.h",
+]

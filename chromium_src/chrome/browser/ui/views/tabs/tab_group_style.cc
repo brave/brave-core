@@ -1,0 +1,104 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "chrome/browser/ui/views/tabs/tab_group_style.h"
+
+#include "brave/browser/ui/views/tabs/brave_tab_group_underline.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/tabs/features.h"
+#include "third_party/skia/include/core/SkPathBuilder.h"
+
+#define TabGroupUnderline BraveTabGroupUnderline
+#define TabGroupStyle TabGroupStyle_ChromiumImpl
+
+#include <chrome/browser/ui/views/tabs/tab_group_style.cc>
+
+#undef TabGroupStyle
+#undef TabGroupUnderline
+
+bool TabGroupStyle::TabGroupUnderlineShouldBeHidden() const {
+  return false;
+}
+
+// Upstream currently hides the tab group underline in certain scenarios,
+// whereas we always show the underline.
+bool TabGroupStyle::TabGroupUnderlineShouldBeHidden(
+    const views::View* leading_view,
+    const views::View* trailing_view) const {
+  return false;
+}
+
+SkPath TabGroupStyle::GetUnderlinePath(gfx::Rect local_bounds) const {
+  if (!ShouldShowBraveVerticalTabs()) {
+    return TabGroupStyle_ChromiumImpl::GetUnderlinePath(local_bounds);
+  }
+
+  // In vertical tabs, underline is not actually "underline'. It's vertical line
+  // at the left side of the tab group. And it has half rounded corners.
+  //
+  // +   group header   | '+' is the underline.
+  // ++  tab 1          | Drawing starts from top-right and goes
+  // ++  tab 2          | counter-clockwise
+  // +   tab 3          |
+  //
+  return SkPathBuilder()
+      .arcTo({/* rx = */ kStrokeThicknessForVerticalTabs,
+              /* ry = */ kStrokeThicknessForVerticalTabs},
+             /* angle = */ 180.f, SkPathBuilder::kSmall_ArcSize,
+             SkPathDirection::kCW,
+             {/* x = */ kStrokeThicknessForVerticalTabs,
+              /* y = */ kStrokeThicknessForVerticalTabs})
+      .lineTo(kStrokeThicknessForVerticalTabs,
+              local_bounds.height() - kStrokeThicknessForVerticalTabs)
+      .arcTo({/* rx = */ kStrokeThicknessForVerticalTabs,
+              /* ry = */ kStrokeThicknessForVerticalTabs},
+             /* angle = */ 180.f, SkPathBuilder::kSmall_ArcSize,
+             SkPathDirection::kCW,
+             {/* x = */ 0,
+              /* y = */ static_cast<float>(local_bounds.height())})
+      .close()
+      .detach();
+}
+
+gfx::Insets TabGroupStyle::GetInsetsForHeaderChip() const {
+  auto insets = TabGroupStyle_ChromiumImpl::GetInsetsForHeaderChip();
+  if (!tabs::HorizontalTabsUpdateEnabled()) {
+    return insets;
+  }
+  if (!ShouldShowBraveVerticalTabs()) {
+    return gfx::Insets::VH(tabs::GetTabGroupTitleVerticalInset(),
+                           tabs::GetTabGroupTitleHorizontalInset());
+  }
+  return insets;
+}
+
+gfx::Point TabGroupStyle::GetTitleChipOffset(
+    std::optional<int> text_height) const {
+  if (!tabs::HorizontalTabsUpdateEnabled()) {
+    return TabGroupStyle_ChromiumImpl::GetTitleChipOffset(text_height);
+  }
+  return gfx::Point(tabs::kHorizontalTabInset,
+                    tabs::kHorizontalTabVerticalSpacing);
+}
+
+bool TabGroupStyle::ShouldShowBraveVerticalTabs() const {
+  return tabs::utils::ShouldShowBraveVerticalTabs(
+      tab_group_views_->GetBrowserWindowInterface());
+}
+
+float TabGroupStyle::GetEmptyChipSize() const {
+  if (!tabs::HorizontalTabsUpdateEnabled()) {
+    return TabGroupStyle_ChromiumImpl::GetEmptyChipSize();
+  }
+  return tabs::GetHorizontalTabHeight();
+}
+
+int TabGroupStyle::GetChipCornerRadius() const {
+  if (!tabs::HorizontalTabsUpdateEnabled()) {
+    return TabGroupStyle_ChromiumImpl::GetChipCornerRadius();
+  }
+  return tabs::kTabBorderRadius;
+}

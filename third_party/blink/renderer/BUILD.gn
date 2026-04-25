@@ -1,0 +1,21 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+component("renderer") {
+  sources = [
+    "brave_farbling_constants.h",
+    "brave_font_whitelist.cc",
+    "brave_font_whitelist.h",
+  ]
+
+  deps = [
+    "//brave/components/brave_drm:brave_drm_blink",
+    "//brave/components/brave_shields/core/common:mojom",
+  ]
+
+  defines = [ "BLINK_IMPLEMENTATION=1" ]
+
+  output_name = "brave_blink_renderer_addon"
+}

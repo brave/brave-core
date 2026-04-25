@@ -1,0 +1,7 @@
+browser_api_url_public_headers = [
+  "//brave/ios/browser/api/url/url_formatter.h",
+  "//brave/ios/browser/api/url/url_origin_ios.h",
+  "//brave/ios/browser/api/url/url_pattern_ios.h",
+  "//brave/ios/browser/api/url/url_spoof_checker.h",
+  "//brave/ios/browser/api/url/url_utils.h",
+]

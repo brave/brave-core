@@ -1,0 +1,495 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Hackers are finding ways around multi-factor authentication. Here's what to watch for</title><meta charset="utf-8"/><body id="article"><h1 class="title metadata">Hackers are finding ways around multi-factor authentication. Here's what to watch for</h1><p class="subhead metadata">MFA provides a significant barrier against cyber attacks - but isn't infallible.</p><div class=""><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr><figure class="c-shortcodeImage u-clearfix c-shortcodeImage-large"><div class="c-shortcodeImage_imageContainer"><div class="c-shortcodeImage_image"><picture class="c-cmsImage"> </picture></div>  </div>  <figcaption> <span class="c-shortcodeImage_credit g-outer-spacing-top-xsmall u-block">Image: Getty/MoMo Productions</span></figcaption></figure><p>It's often said that the most important things you can do protect your accounts and wider network from hackers is to use <a href="https://www.zdnet.com/article/multi-factor-authentication-use-it-for-all-the-people-that-access-your-network-all-the-time/" rel="follow">multi-factor authentication</a> (MFA).&nbsp;</p><p>That's because one of the <a href="https://www.zdnet.com/article/phishing-these-are-the-most-common-techniques-used-to-attack-your-pc/" rel="follow">most common</a> ways cyber criminals breach networks is by using <a href="https://www.zdnet.com/article/what-is-phishing-how-to-protect-yourself-from-scam-emails-and-more/" rel="follow">phishing attacks</a>&nbsp;to steal passwords or simply by guessing <a href="https://www.zdnet.com/article/why-are-you-still-using-qwerty-2021s-most-common-passwords-revealed/" rel="follow">weak ones</a>. Either way, so long as they are using a real password many systems will assume it's safe to give them access.</p><p><a href="https://www.zdnet.com/article/better-than-the-best-password-how-to-use-2fa-to-improve-your-security/" rel="follow">MFA creates and additional barrier</a>&nbsp;to attackers because it requires the user to additionally verify that the login attempt was really made by them. This verification can be via an SMS message, an authenticator app or even a physical security key. If the attacker has the password, but not the verification message or physical device, then the system won't let them in and they can't get any further.</p><p>Using MFA protects against the vast majority of attempted account takeovers, but recently there's been a surge in cyber attacks which aim to dodge past multi-factor authentication security. According to Microsoft, in just one campaign <a href="https://www.microsoft.com/security/blog/2022/07/12/from-cookie-theft-to-bec-attackers-use-aitm-phishing-sites-as-entry-point-to-further-financial-fraud/" rel="noopener noreferrer nofollow" target="_blank">10,000 organisations</a> have been targeted in this way <a href="https://www.zdnet.com/article/microsoft-warning-this-phishing-attack-can-skip-your-defenses-and-has-hit-10000-firms-already/" rel="follow">during the last year</a>.&nbsp;</p><p>One option to for hackers who want to get around MFA is to use so-called adversary-in-the-middle (AiTM) attack which combined a phishing attack with a proxy server between the victim and the website they're trying to login to. This allows the attackers to steal the password and session cookie which provides the additional level of authentication they can exploit - in this case to steal email. The user simply thinks they have logged into their account as usual.</p><p>"Note that this is not a vulnerability in MFA; since AiTM phishing steals the session cookie, the attacker gets authenticated to a session on the user's behalf, regardless of the sign-in method the latter uses," as Microsoft notes of that particular campaign.</p><p>That's because the attackers haven't broken the MFA themselves, they've managed to bypass it by stealing the cookies, and are now able to use the account as if they were the user, even if they go away and come back later. That means despite the presence of multi-factor authentication, it's unfortunately being made redundant in this situation – and that's bad for everyone.&nbsp;</p><p><strong><strong>SEE:&nbsp;</strong><a href="http://www.zdnet.com/topic/a-winning-strategy-for-cybersecurity/#link=%7B%22role%22:%22standard%22,%22href%22:%22http://www.zdnet.com/topic/a-winning-strategy-for-cybersecurity/%22,%22target%22:%22_blank%22,%22absolute%22:%22%22,%22linkText%22:%22%3Cstrong%3EA%20winning%20strategy%20for%20cybersecurity%3C/strong%3E%22%7D" rel="follow"><strong>A winning strategy for cybersecurity</strong></a><strong>&nbsp;(ZDNet special report)</strong></strong></p><p>So while <a href="https://www.zdnet.com/article/why-you-really-need-multi-factor-authentication-these-ransomware-hackers-gave-up-when-they-saw-it/" rel="follow">multi-factor authentication is a deterrent most of the time,</a> these attacks show that it isn't infallible.&nbsp;</p><p>"Even though security features such as multi-factor authentication (MFA) add an extra layer of security, they should not be considered as a silver bullet to protect against phishing attacks. With the use of advanced phishing kits (AiTM) and clever evasion techniques, threat actors can bypass both traditional as well as advanced security solutions," said security company ZScaler in its analysis of a similar attack.</p><p>And there are other scenarios which can be exploited to bypass multi-factor authentication too, because in many instances, a code is required, and a person needs to enter that code. And people can be tricked or manipulated even while the technology tries to protect us.</p><p>"At the end of the day, whether it's a number or it's a piece of information, as soon as the user sees it, it becomes something they know and if it's something that they know it's something the attacker can steal," says Etay Maor, senior director of security strategy at Cato Networks.&nbsp;</p><p>It takes a little more effort from the attacker, but it's possible to grab these codes. For example, SMS verification is still a common method of MFA for many, particularly for things like bank accounts and phone contracts. In some cases, the user is required to read out a code over the phone or input it into a service.&nbsp;</p><p>It's a potentially complex process, but it's possible for cyber criminals to spoof helplines and other services which ask for codes to devices – especially if people think they're talking to someone who is trying to help them. It's why many services will preface an SMS code with a warning that they'll never call you to ask for it.&nbsp;</p><p>"It's not that surprising attackers prey on the human aspect, the people components of the system. People being busy, people being stressed, all sorts of things influence decisions we make," says Oz Alashe, CEO &amp; Founder of CybSafe.</p><p><strong>SEE: </strong><a href="https://www.zdnet.com/article/the-biggest-cyber-crime-threat-is-also-the-one-that-nobody-wants-to-talk-about/" rel="follow"><strong>The biggest cyber-crime threat is also the one that nobody wants to talk about</strong></a></p><p>Another method cyber criminals can exploit to bypass MFA is by using <a href="https://www.zdnet.com/article/what-is-malware-everything-you-need-to-know-about-viruses-trojans-and-malicious-software/" rel="follow">malware</a> which actively steals codes. For example, the hackers could gain access to an account by using trojan malware to watch a user gain access to their account, then use the access they have from the infected device to go about their business. &nbsp;</p><p>There's also the potential for them to <a href="https://www.zdnet.com/article/this-new-android-malware-bypasses-multi-factor-authentication-to-steal-your-passwords/" rel="follow">take control of devices without the victim knowing</a>, using the authenticator app and using the code that's provided to remotely access the account they're after from another machine.&nbsp;</p><p>As far as the network or account is concerned, because the authentication has been used correctly, it's the legitimate user using the service. But there are signs which networks and information security teams could be set up to watch for, signs something might not be right, even if the correct details are used.&nbsp;</p><p>"The system itself should consider whether this person doesn't normally log in from here or at this time and, therefore, do we need to do another level, another layer of verification before we provide them access?" says Alashe. &nbsp;</p><p>While it isn't totally infallible, using multi-factor authentication is still a must as it stops a significant amount of attempted account takeover attempts. But as <a href="https://www.zdnet.com/article/these-are-the-cybersecurity-threats-of-tomorrow-that-you-should-be-thinking-about-today/" rel="follow">cyber criminals get smarter</a> they're increasingly going to go after it – and that requires extra levels of defence, particularly from those responsible for securing networks.&nbsp;</p><p>"It's good it's recommended because you won't be the lower hanging fruit. But you definitely need to augment it with an additional layers of security because, just like just like any other siloed security solution, it can be circumvented and you can't think everything is secure, just because of one security layer," says Maor. &nbsp;</p><p>And technology can only do so much, especially when attackers are explicitly attempting to manipulate people into making bad decisions. That needs to be taken into account too, especially as more of what we do shifts towards cloud and other online services.&nbsp;</p><p>"This is a really important challenge for society right now as we increasingly digitize we've got an incredible opportunity to continue to put technology really good use. But we've also got to address these challenges when it comes to resilience and the human aspect," says Alashe.&nbsp;</p><p>"People are wonderful, they want to be helpful, so they'll get tricked sometimes," he adds.&nbsp;</p><p><strong>MORE ON CYBERSECURITY</strong></p><ul><li><a href="https://www.zdnet.com/article/the-next-big-security-threat-is-staring-us-in-the-face-tackling-it-is-going-to-be-tough/" rel="follow"><strong>The next big security threat is staring us in the face. Tackling it is going to be tough</strong></a></li><li><a href="https://www.zdnet.com/article/microsoft-aims-to-improve-anti-phishing-multi-factor-authentication-for-white-house-zero-trust-push/" rel="follow"><strong>Microsoft aims to improve anti-phishing MFA for White House 'zero trust' push</strong></a></li><li><a href="https://www.zdnet.com/article/these-are-the-biggest-cybersecurity-threats-make-sure-you-arent-ignoring-them/" rel="follow"><strong>These are the biggest cybersecurity threats. Make sure you aren't ignoring them</strong></a></li><li><a href="https://www.zdnet.com/article/dont-use-these-passwords-these-are-the-most-popular-log-in-details-found-for-sale-online/" rel="follow"><strong>Don't use these passwords: These are the 10 logins most regularly found for sale online</strong></a></li><li><a href="https://www.zdnet.com/article/dont-let-your-cloud-cybersecurity-choices-leave-the-door-open-for-hackers/" rel="follow"><strong>Don't let your cloud cybersecurity choices leave the door open for hackers</strong></a></li></ul></body>

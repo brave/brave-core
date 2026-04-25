@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/safety_hub/android/java/res/layout/safety_hub_expandable_preference.xml b/chrome/browser/safety_hub/android/java/res/layout/safety_hub_expandable_preference.xml
+index 5fbdaf2b7e1d11c59ea29a3fdb73388389e38163..6d344c84136b601932d6914bfc4bb11b5ca88a1f 100644
+--- a/chrome/browser/safety_hub/android/java/res/layout/safety_hub_expandable_preference.xml
++++ b/chrome/browser/safety_hub/android/java/res/layout/safety_hub_expandable_preference.xml
+@@ -77,6 +77,7 @@ found in the LICENSE file.
+             android:layout_width="32dp"
+             android:layout_height="32dp"
+             android:scaleType="center"
++            android:visibility="gone"
+             android:layout_alignParentEnd="true"
+             android:layout_alignParentTop="true"/>
+     </RelativeLayout>

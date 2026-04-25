@@ -1,0 +1,18 @@
+{
+  "unblinded_tokens": [
+    {
+      "unblinded_token": "IXDCnZnVEJ0orkbZfr2ut2NQPQ0ofdervKBmQ2hyjcClGCjA3/ExbBumO0ua5cxwo//nN0uKQ60kknru8hRXx0DWhwHwuFlxmot8WgVbnQ0XtPx7q9BG0jbI00AJStwN",
+      "public_key": "QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=",
+      "signature": "QDgYBeSL9ZWx8+/EHa3x3/LjVaQfiVu1ix7pnlTEgAzJw4Sc1e48Jyrj0/p/+NPqk8udleb4jZWlWDjy+m7fCA=="
+    }
+  ],
+  "unblinded_payment_tokens": [
+    {
+      "transaction_id": "8b742869-6e4a-490c-ac31-31b49130098a",
+      "unblinded_token": "IXDCnZnVEJ0orkbZfr2ut2NQPQ0ofdervKBmQ2hyjcClGCjA3/ExbBumO0ua5cxwo//nN0uKQ60kknru8hRXx0DWhwHwuFlxmot8WgVbnQ0XtPx7q9BG0jbI00AJStwN",
+      "public_key": "QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=",
+      "confirmation_type": "view",
+      "ad_type": "ad_notification"
+    }
+  ]
+}

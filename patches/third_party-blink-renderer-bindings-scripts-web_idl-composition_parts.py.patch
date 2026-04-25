@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/bindings/scripts/web_idl/composition_parts.py b/third_party/blink/renderer/bindings/scripts/web_idl/composition_parts.py
+index 6d965b89b03d09860c0063251cf021424d3fe9a7..11c8c1697190c6d8795274acd7efc3381a6d5630 100644
+--- a/third_party/blink/renderer/bindings/scripts/web_idl/composition_parts.py
++++ b/third_party/blink/renderer/bindings/scripts/web_idl/composition_parts.py
+@@ -157,6 +157,7 @@ class Location(object):
+         # Canonicalize the paths heuristically.
+         if filepath is not None:
+             index = filepath.find(self._blink_path_prefix)
++            if filepath.find(posixpath.sep + posixpath.join('brave', 'third_party', 'blink', 'renderer', '')) >= 0: index = -1
+             if index >= 0:
+                 filepath = filepath[index + 1:]
+ 

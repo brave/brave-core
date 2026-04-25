@@ -1,0 +1,43 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_origin.mojom;
+
+// Interface for communicating with BraveOriginService from WebUI
+interface BraveOriginSettingsHandler {
+  // Check if the current user is a Brave Origin user (has purchased Origin
+  // or is using a branded build). This performs an async SKU credential check.
+  IsBraveOriginUser() => (bool is_brave_origin_user);
+
+  // Re-check purchase state from SKU service. Call this after returning from
+  // the account page to detect a new purchase.
+  RefreshPurchaseState() => (bool is_purchased);
+
+  // Check if a specific policy is controlled by Brave Origin
+  IsPolicyControlledByBraveOrigin(string policy_key) =>
+      (bool is_controlled);
+
+  // Get the current value of a Brave Origin controlled policy
+  GetPolicyValue(string policy_key) => (bool? value);
+
+  // Set the value of a Brave Origin controlled policy
+  SetPolicyValue(string policy_key, bool value) => (bool success);
+
+  // Check if any Brave Origin policy values have been changed since
+  // browser startup, indicating a restart is needed.
+  GetNeedsRestart() => (bool needs_restart);
+
+  // Accept the Linux free tier without purchasing. Only functional on
+  // Linux builds; returns false on all other platforms.
+  ProceedFree() => (bool success);
+};
+
+// Interface for interaction between SubscriptionRenderFrameObserver
+// (renderer process) and browser process for Origin subscription linking.
+[EnableIf=is_android]
+interface OriginIAPSubscription {
+  GetPurchaseTokenOrderId() => (string token, string order_id);
+  SetLinkStatus(int32 status);
+};

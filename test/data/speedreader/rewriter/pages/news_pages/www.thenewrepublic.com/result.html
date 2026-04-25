@@ -1,0 +1,495 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Trump’s Republican Defenders Inexplicably Forgot To Expect the Worst</title><meta charset="utf-8"/><body id="article"><h1 class="title metadata">Trump’s Republican Defenders Inexplicably Forgot To Expect the Worst</h1><p class="subhead metadata">After the Mar-a-Lago search, Trump's allies were swift to jump into the breach on behalf of the former president. Beginner's mistake!</p><div class=""><p class="metadata">By Matt Ford</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr><main class="ArticlePage article-container  default regular soapboxVertical opaque" id="main"><article class="article default" itemscope="" itemtype="http://schema.org/Article"><div class="article-body"><div class="article-body-wrap"><div class="article-text-wrap"><div class="article-text-grid"><p>When news broke last week that <a href="/article/167364/trump-fbi-rule-of-law">the FBI had searched</a> former President Donald Trump’s residence and offices at Mar-a-Lago, South Carolina Senator Tim Scott reacted with concerned caution. “We need to let this play out and see exactly what happens,” he said in <a href="https://www.cbsnews.com/news/tim-scott-trump-mar-a-lago-fbi-search-florida/" rel="nofollow" target="_blank">a CBS News interview</a>. “But we should have been stunned and surprised and shocked with what happened yesterday.”<br></p><p>Scott’s measured reaction was the exception and not the rule. Most Republican officials responded to the search with threats to open investigations of their own into Attorney General <a href="/article/167388/merrick-garland-warrant-doj-trump">Merrick Garland and the FBI</a>, with calls to <a href="/article/167366/gop-fbi-raid-defund-police">defund the FBI</a> and <a href="/article/167394/ricky-shiffer-fbi-shooting-gop">retaliate against federal agents</a>, and with freewheeling claims that the United States had become, <a href="https://twitter.com/RichardGrenell/status/1556780928692678656" rel="nofollow" target="_blank">in their words</a>, a <a href="https://www.washingtonpost.com/opinions/2022/07/31/justice-department-prosecute-trump-what-a-banana-republic-looks-like/" rel="nofollow" target="_blank">banana republic</a>, a <a href="https://twitter.com/tribelaw/status/1466411367745863682?lang=en" rel="nofollow" target="_blank">Third-World dictatorship</a>, or some other kind of <a href="https://twitter.com/LouDobbs/status/1556793863934803968" rel="nofollow" target="_blank">foreign autocracy</a>.</p></div></div><p>The knee-jerk reactions looked bad in real time, as I noted last week. They look even worse now. And they represent a surprising departure from what had once been a time-tested series of responses for whenever Trump did or said something boorish, authoritarian, or outright bigoted: Don’t be the first to rush to his defense. This was the time tested means by which Republican electeds dealt with Trump’s firehose of controversy throughout his time in office: “Sorry, no, I didn’t see the tweet you’re talking about.”</p><div class="article-text-wrap"><div class="article-text-grid"><p>As Election Day neared in November 2020, for instance, it looked possible and even likely from polls and early-voting counts that Trump would not win reelection. The former president suggested that he wouldn’t concede the election if he lost, would file legal challenges if he disagreed with the margins, and wanted to stop states from counting mail-in ballots after Election Night. “We’re going in the night of—as soon as the election is over—we’re going in with our lawyers,” he <a href="https://www.reuters.com/article/us-usa-election/with-two-days-to-go-trump-casts-doubt-on-integrity-of-prolonged-vote-count-idUSKBN27H12Z" rel="nofollow" target="_blank">told reporters</a> at one point.</p><p><span>Trump’s reasons were transparently self-serving. Thanks to his own misinformation campaign about voting by mail, those who relied on it tended to be considerably more likely to vote for then-candidate Joe Biden. This led to a </span><a href="https://www.theatlantic.com/ideas/archive/2020/08/brace-blue-shift/615097/" rel="nofollow" target="_blank">predicted</a><span> and </span><a href="https://medium.com/mit-election-lab/the-blue-shift-in-the-2020-election-669a0cffdb2f" rel="nofollow" target="_blank">semi-observed</a><span> phenomenon known as the “red mirage” and the “blue shift”: in-person votes that trended Republican would be counted first, while absentee votes that trended Democratic would be counted later. This would not be a problem in a healthy democracy where leaders expressed confidence in the democratic process. For a party that had spent years gorging itself on voter-fraud myths and chosen a would-be autocrat as its leader, it was a recipe for disaster.</span></p></div></div><div class="article-text-wrap"><div class="article-text-grid"><p>For most elected Republicans—or at least those who weren’t actively part of Trump’s pre-January 6 schemes—his efforts to undermine American democracy were something to ignore. “It’s not new for Trump’s party brethren to duck and cover when he says something troubling,” Politico <a href="https://www.politico.com/news/2020/11/03/republicans-trump-election-threats-433910" rel="nofollow" target="_blank">noted</a> at the time. “But after five years of perfecting the art of explaining how they ‘didn’t see the tweet’—the much parodied talking point to which Republicans on Capitol Hill often resort—it is shocking but not surprising that they aren’t speaking up now, even when the integrity of America’s electoral system is under attack by their party’s leader.”</p><p>There were a few instances where some leading Republicans expressed mild criticism of Trump. Only after January 6, when he sent a mob to attack Congress, some top GOP lawmakers did condemn him. (It didn’t last long in most cases: McConnell famously denounced Trump for his role in the insurrection and then voted to acquit him for incitement of insurrection during the impeachment trial a few weeks later.) His infamous Helsinki summit with Russian President Vladimir Putin and his corrosive remarks after the white supremacist rally in Charlottesville, Virginia drew above-average levels of Republican consternation.</p><p>But those few moments stood out mainly because they occurred against a backdrop of acquiescence and silence by top Republicans. When Trump wrote on Twitter in 2019 that four Democratic lawmakers—all of whom were women of color—were “people who hate America” who should “go back” to where they came from, it drew a flurry of condemnation from the left and mostly chirping crickets from the right. “The reality is I want to shift back to the issues and the America they represent versus the America that I want to see,” North Carolina Senator Thom Tillis, who was up for reelection at the time, said while <a href="https://www.nytimes.com/2019/07/15/us/politics/republicans-trump-tweet.html" rel="nofollow" target="_blank">brushing off requests</a> from reporters to weigh in on the president’s remarks.</p></div></div><div class="article-text-wrap"><div class="article-text-grid"><p><span>This inclination to avoid commenting was strategic on two levels. For one, many Republicans apparently considered it unwise to criticize Trump lest they become victims of his wrath, as many other anti-Trump Republicans became over the four years of his presidency. As for defending Trump when they agreed with him, there was another strong point in favor of keeping silent: He might inflame things even further and place any Republicans who had defended him in an even more uncomfortable spot.</span></p><p>Those lessons were apparently unlearned during his 18 months out of power. Since the search of Mar-a-Lago, reports emerged that some of the classified materials pertained to the nuclear secrets of either the U.S. or other countries, which are among the most sensitive secrets held by the federal government. (The exact nature of these reported secrets hasn’t been made public and may never be.) Multiple news outlets also reported that the search was far from spontaneous: Government officials had already spent months quietly trying to recover classified documents and other official records before resorting to a search warrant. Trump and his lawyers, for some inexplicable reason, apparently held some back.</p><p>Some of Trump’s more fervent allies fell back to wilder assertions to defend him. <i>Trump had a standing order to declassify anything that went into his personal residence!</i> (That’s <a href="https://www.nytimes.com/2022/08/14/us/politics/trump-classified-documents.html" rel="nofollow" target="_blank">not how it works</a>.) <i>The FBI may have tried to plant evidence!</i> (Astonishingly unlikely.) <i>There was a spy or a traitor inside Mar-a-Lago!</i> (Trump loyalists are free to spend as much time as they want accusing each other of betrayal.) One Fox News host even approvingly cited Richard Nixon’s infamous claim that if the president does it, then it’s not illegal. That is not a sign that things are going well for you, to say the least. When it comes to a certain segment of Trumpworld, the last 96 hours felt like watching someone try to swim while wearing a tuxedo.</p></div></div><p>Over the weekend, however, leading Republicans have remembered their best practices and have started to fall curiously silent—a modified, limited hang<i>back</i>, if you please. House Minority Leader Kevin McCarthy, who threatened to investigate Garland if the GOP retakes the House in the fall, has returned to tweeting about inflation and Afghanistan. Senate Minority Leader Mitch McConnell kept himself at a similar arms-length approach. Perhaps they and their colleagues have relearned a maxim that the writer Tom Scocca first proffered on Twitter in 2016 at the dawn of the Trump era. “Nothing about Trump has ever looked kinda bad at first but turned out OK,” <a href="https://twitter.com/tomscocca/status/784562781559422976" rel="nofollow" target="_blank">Scocca wrote</a>. “He’s always worse than you thought.”</p></div></div></article></main></body>

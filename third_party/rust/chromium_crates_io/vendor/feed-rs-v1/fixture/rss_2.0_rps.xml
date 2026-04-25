@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" media="screen" href="/~d/styles/rss2full.xsl"?><?xml-stylesheet type="text/css" media="screen" href="http://feeds.feedburner.com/~d/styles/itemcontent.css"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/"
+     xmlns:feedburner="http://rssnamespace.org/feedburner/ext/1.0" version="2.0">
+    <channel>
+        <title>Rock, Paper, Shotgun</title>
+        <link>https://www.rockpapershotgun.com/feed</link>
+        <description>This is a feed of all the latest articles from Rock Paper Shotgun.</description>
+        <language>en-us</language>
+        <lastBuildDate>Sun, 22 Aug 2021 10:00:00 +0000</lastBuildDate>
+        <atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="self" type="application/rss+xml"
+                     href="http://feeds.feedburner.com/RockPaperShotgun"/>
+        <feedburner:info uri="rockpapershotgun"/>
+        <atom10:link xmlns:atom10="http://www.w3.org/2005/Atom" rel="hub" href="http://pubsubhubbub.appspot.com/"/>
+        <image>
+            <link>http://www.rockpapershotgun.com</link>
+            <url>http://www.rockpapershotgun.com/images/rpsrss.jpg</url>
+        </image>
+        <feedburner:feedFlare
+                href="https://add.my.yahoo.com/rss?url=http%3A%2F%2Ffeeds.feedburner.com%2FRockPaperShotgun"
+                src="http://us.i1.yimg.com/us.yimg.com/i/us/my/addtomyyahoo4.gif">Subscribe with My Yahoo!
+        </feedburner:feedFlare>
+        <feedburner:feedFlare
+                href="http://www.newsgator.com/ngs/subscriber/subext.aspx?url=http%3A%2F%2Ffeeds.feedburner.com%2FRockPaperShotgun"
+                src="http://www.newsgator.com/images/ngsub1.gif">Subscribe with NewsGator
+        </feedburner:feedFlare>
+        <feedburner:feedFlare href="http://www.bloglines.com/sub/http://feeds.feedburner.com/RockPaperShotgun"
+                              src="http://www.bloglines.com/images/sub_modern11.gif">Subscribe with Bloglines
+        </feedburner:feedFlare>
+        <feedburner:feedFlare
+                href="http://www.netvibes.com/subscribe.php?url=http%3A%2F%2Ffeeds.feedburner.com%2FRockPaperShotgun"
+                src="//www.netvibes.com/img/add2netvibes.gif">Subscribe with Netvibes
+        </feedburner:feedFlare>
+        <feedburner:feedFlare
+                href="http://fusion.google.com/add?feedurl=http%3A%2F%2Ffeeds.feedburner.com%2FRockPaperShotgun"
+                src="http://buttons.googlesyndication.com/fusion/add.gif">Subscribe with Google
+        </feedburner:feedFlare>
+        <feedburner:feedFlare
+                href="https://www.addtoany.com/?linkname=Rock%2C%20Paper%2C%20Shotgun&amp;linkurl=http%3A%2F%2Ffeeds.feedburner.com%2FRockPaperShotgun&amp;type=feed"
+                src="//static.addtoany.com/buttons/legacy/addfr-b.gif">Add to Any Feed Reader
+        </feedburner:feedFlare>
+        <item>
+            <title>The Sunday Papers</title>
+            <link>http://feedproxy.google.com/~r/RockPaperShotgun/~3/YzgyCq5DQhs/the-sunday-papers-607</link>
+            <dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Ed Thorn</dc:creator>
+            <pubDate>Sun, 22 Aug 2021 10:00:00 +0000</pubDate>
+            <guid isPermaLink="false">https://www.rockpapershotgun.com/the-sunday-papers-607</guid>
+            <category>Indie</category>
+            <category>Blockbuster</category>
+            <category>The Sunday Papers</category>
+            <media:content medium="image" type="image/jpeg"
+                           url="https://assets2.rockpapershotgun.com/the-sunday-papers-big.jpg/BROK/resize/1920x1920%3E/format/jpg/quality/80/the-sunday-papers-big.jpg"/>
+            <description>&lt;img
+                src="https://assets2.rockpapershotgun.com/the-sunday-papers-big.jpg/BROK/resize/1920x1920%3E/format/jpg/quality/80/the-sunday-papers-big.jpg"
+                /&gt;
+                &lt;p&gt;Sundays are for watching back to back episodes of Come Dine With Me. Before you settle in,
+                let's read this week's best writing about games.&lt;/p&gt;
+                &lt;p&gt;&lt;a href="https://www.rockpapershotgun.com/the-sunday-papers-607"&gt;Read more&lt;/a&gt;&lt;/p&gt;&lt;div
+                class="feedflare"&gt;
+                &lt;a href="http://feeds.feedburner.com/~ff/RockPaperShotgun?a=YzgyCq5DQhs:S8yN_ezj_0E:nQ_hWtDbxek"&gt;&lt;img
+                src="http://feeds.feedburner.com/~ff/RockPaperShotgun?d=nQ_hWtDbxek" border="0"&gt;&lt;/img&gt;&lt;/a&gt;
+                &lt;a href="http://feeds.feedburner.com/~ff/RockPaperShotgun?a=YzgyCq5DQhs:S8yN_ezj_0E:yIl2AUoC8zA"&gt;&lt;img
+                src="http://feeds.feedburner.com/~ff/RockPaperShotgun?d=yIl2AUoC8zA" border="0"&gt;&lt;/img&gt;&lt;/a&gt;
+                &lt;/div&gt;&lt;img src="http://feeds.feedburner.com/~r/RockPaperShotgun/~4/YzgyCq5DQhs" height="1"
+                width="1" alt=""/&gt;
+            </description>
+            <feedburner:origLink>https://www.rockpapershotgun.com/the-sunday-papers-607</feedburner:origLink>
+        </item>
+    </channel>
+</rss>

@@ -1,0 +1,35 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#include "brave/components/brave_shields/core/browser/ad_block_resource_provider.h"
+
+namespace brave_shields {
+
+AdBlockResourceProvider::AdBlockResourceProvider() = default;
+
+AdBlockResourceProvider::~AdBlockResourceProvider() = default;
+
+void AdBlockResourceProvider::AddObserver(
+    AdBlockResourceProvider::Observer* observer) {
+  if (!observers_.HasObserver(observer)) {
+    observers_.AddObserver(observer);
+  }
+}
+
+void AdBlockResourceProvider::RemoveObserver(
+    AdBlockResourceProvider::Observer* observer) {
+  if (observers_.HasObserver(observer)) {
+    observers_.RemoveObserver(observer);
+  }
+}
+
+void AdBlockResourceProvider::NotifyResourcesLoaded(
+    AdblockResourceStorageBox storage) {
+  for (auto& observer : observers_) {
+    observer.OnResourcesLoaded(adblock::clone_resource_storage(*storage));
+  }
+}
+
+}  // namespace brave_shields

@@ -1,0 +1,525 @@
+/* The description for the error message when the user's session has expired */
+"aichat.accountSessionExpiredDescription" = "Braveアカウントのセッションの有効期限が切れました。アカウントページを開いて更新し、この画面に戻ってプレミアム機能をご利用ください。";
+
+/* The title for button that submits feedback */
+"aichat.addFeedbackActionTitle" = "フィードバックを追加";
+
+/* The description for the settings to show search suggestions from Leo in url-address bar */
+"aichat.advancedSettingsAutocompleteDescription" = "オンにして、アドレスバーからLeoを起動するショートカットを表示します。";
+
+/* The title for the settings to change default model for conversations */
+"aichat.advancedSettingsDefaultModelTitle" = "デフォルトモデル";
+
+/* The title for the header for adjusting leo ai settings */
+"aichat.advancedSettingsHeaderTitle" = "Leoはブラウザに組み込まれたAI搭載のスマートアシスタントです。";
+
+/* The subtitle for the button which links purchase to Brave Account */
+"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "App Storeで購入した商品をBraveアカウントにリンクさせると、他のデバイスでLeoを利用できます。";
+
+/* The title for the button which links purchase to Brave Account */
+"aichat.advancedSettingsLinkPurchaseActionTitle" = "Braveアカウントに購入情報をリンク";
+
+/* The description for the settings to show Leo in Quick Search Engines Bar. */
+"aichat.advancedSettingsShowInQSEBarDescription" = "クイック検索エンジンバーからLeoを起動するショートカットを有効にします。";
+
+/* The title for the settings to show Leo in Quick Search Engines Bar. */
+"aichat.advancedSettingsShowInQSEBarTitle" = "クイック検索エンジンバーに表示";
+
+/* The title for the label showing the date which subscription expires */
+"aichat.advancedSettingsSubscriptionExpiresTitle" = "有効期限";
+
+/* The title for the header for subscription details */
+"aichat.advancedSettingsSubscriptionHeaderTitle" = "購読";
+
+/* The title for the label showing status if the subscription */
+"aichat.advancedSettingsSubscriptionStatusTitle" = "稼働状況";
+
+/* The title for the button that allows the user to view the App Store Receipt */
+"aichat.advancedSettingsViewReceiptTitle" = "App Storeのレシートを見る";
+
+/* The subtitle for the error showing there is an error from App Store */
+"aichat.appStoreErrorSubTitle" = "App Storeに接続できませんでした。後でもう一度お試しください。";
+
+/* The title for the error showing there is an error from App Store */
+"aichat.appStoreErrorTitle" = "App Storeとの接続時にエラーが発生しました";
+
+/* The title of the search bar suggestion when prompting to Ask Leo */
+"aichat.askLeoSearchSuggestionTitle" = "Leoに聞く";
+
+/* The title for view that shows when leo is too busy (active disconnected) and the user is premium */
+"aichat.busyErrorDescription" = "Leoは現在ビジー状態です。しばらくしてからもう一度お試しください。";
+
+/* The button title for adding a new custom model */
+"aichat.byomAddNewModelButtonTitle" = "新しいモデルを追加";
+
+/* The description shown when no custom models have been added, prompting the user to add one */
+"aichat.byomEmptyStateDescription" = "「新しいモデルを追加」をタップして始めてください";
+
+/* The title shown when no custom models have been added yet */
+"aichat.byomEmptyStateTitle" = "まだモデルが接続されていません";
+
+/* The section header description explaining the Bring Your Own Model feature with a link to learn more. The text inside square brackets should be translated. */
+"aichat.byomSectionHeaderDescription" = "自己ホストまたはサードパーティホストのLLMをLeoに接続し、ブラウザ内で使用します。OllamaなどのOpenAI Chat Protocolに対応したフレームワークを使用してください。[詳細を確認](https://support.brave.app/hc/en-us/articles/34070140231821-How-do-I-use-the-Bring-Your-Own-Model-BYOM-with-Brave-Leo)";
+
+/* The section header title for the Bring Your Own Model feature */
+"aichat.byomSectionHeaderTitle" = "モデルを自由にカスタマイズ";
+
+/* The subtitle for intro view which triggers just chat */
+"aichat.chatIntroJustTalkSubTitle" = "何でも聞いてください！どんな話題でも構いません。より良い答えを提供するために、Leoは常に学び、向上しています。";
+
+/* The title for intro view which triggers just chat */
+"aichat.chatIntroJustTalkTitle" = "チャットを開始しますか？";
+
+/* The subtitle for intro view */
+"aichat.chatIntroSubTitle" = "Braveに組み込まれた、AI搭載型のインテリジェント・アシスタントです。";
+
+/* The title for intro view */
+"aichat.chatIntroTitle" = "こんにちは、私はLeoです。";
+
+/* The subtitle for intro view which triggers website help for article */
+"aichat.chatIntroWebsiteHelpSubtitleArticleSummarize" = "記事を要約したり、サイトのコンテンツを充実させたり、その他いろいろお手伝いします。";
+
+/* The subtitle for intro view which triggers website help for summary */
+"aichat.chatIntroWebsiteHelpSubtitlePageSummarize" = "記事を要約したり、サイトのコンテンツを充実させたり、その他いろいろお手伝いします。はじめ方が分からないという方は、こちらを試してみてください:";
+
+/* The title for intro view which triggers website help */
+"aichat.chatIntroWebsiteHelpTitle" = "ウェブサイトのヘルプが必要ですか？";
+
+/* The title for the chat section in the menu */
+"aichat.chatMenuSectionTitle" = "チャット";
+
+/* The title shown on limit reached error view, which is suggesting user to change default model */
+"aichat.contextLimitErrorTitle" = "この会話は長すぎるため、続行できません。\nLeoがより長い会話の精度を維持できるよう、他のモデルをご利用いただくことをおすすめします。";
+
+/* The title of the section where custom models are displayed as a list. */
+"aichat.customModelChatSectionTitle" = "カスタムモデル";
+
+/* The navigation bar title when adding a new custom model */
+"aichat.customModelFormAddModelNavigationTitle" = "モデルを追加";
+
+/* The footer text explaining when and how API keys are used */
+"aichat.customModelFormApiKeyFieldFooter" = "サービングフレームワークによっては、APIキーやアクセストークンなどの認証情報を必要とする場合があります。これらはリクエストヘッダーに追加されます。";
+
+/* The label for the API key field */
+"aichat.customModelFormApiKeyFieldTitle" = "APIキー";
+
+/* The footer text explaining what context size means for AI models */
+"aichat.customModelFormContextSizeFieldFooter" = "モデルが1つのインタラクションで処理できるトークンの最大値です。コンテキストサイズが大きいほど、モデルは長い会話を処理することが可能になります。コンテキストサイズの最大値はモデルにより異なります。";
+
+/* The label for the context size field */
+"aichat.customModelFormContextSizeFieldTitle" = "コンテキストサイズ";
+
+/* The placeholder text for generic detail input fields */
+"aichat.customModelFormDetailsFieldPlaceholder" = "詳細を入力";
+
+/* The button title for dismissing the keyboard */
+"aichat.customModelFormDoneButtonTitle" = "完了";
+
+/* The navigation bar title when editing an existing custom model */
+"aichat.customModelFormEditModelNavigationTitle" = "モデルを編集";
+
+/* The alert title shown when saving a custom model fails */
+"aichat.customModelFormFailedToSaveAlertTitle" = "モデルの保存に失敗しました";
+
+/* The error message shown when the context size is invalid */
+"aichat.customModelFormInvalidContextSizeErrorMessage" = "無効なコンテキストサイズ";
+
+/* The error message shown when the server endpoint URL is invalid */
+"aichat.customModelFormInvalidUrlErrorMessage" = "無効なURL";
+
+/* The footer text explaining the purpose of the label field */
+"aichat.customModelFormLabelFieldFooter" = "Leoのモデルセレクターで使用するモデル名。";
+
+/* The placeholder text for the custom model name field */
+"aichat.customModelFormLabelFieldPlaceholder" = "このモデルのラベルを入力";
+
+/* The label for the custom model name field in the custom model form */
+"aichat.customModelFormLabelFieldTitle" = "ラベル";
+
+/* The error message shown when trying to use a private network address, explaining why it's blocked and how to enable it */
+"aichat.customModelFormPrivateEndpointErrorMessage" = "入力されたアドレスはルーターやローカルサーバーなどのプライベートネットワークからのものと思われます。Braveはセキュリティを確保するため、これらを自動的にブロックしていますが、安全であると確信している場合は有効にすることができます。\n\n続行するには、brave://flags/にアクセスし、「brave-ai-chat-allow-private-ips」を検索して機能を有効にしてください。有効にすると、Leoの設定でプライベートネットワークアドレスを使用できるようになります。";
+
+/* The footer text explaining what the model request name is used for and providing an example */
+"aichat.customModelFormRequestNameFieldFooter" = "サービングフレームワークへのリクエストで表示されるべきモデルの名前。例：phi-3（この名前がサービングフレームワークが期待する値と正確に一致しない場合、統合が機能しない点に注意してください）。";
+
+/* The placeholder text for the model request name field */
+"aichat.customModelFormRequestNameFieldPlaceholder" = "モデルのリクエスト名を入力";
+
+/* The label for the model request name field */
+"aichat.customModelFormRequestNameFieldTitle" = "モデルのリクエスト名";
+
+/* The indicator text shown next to required fields in forms */
+"aichat.customModelFormRequiredFieldIndicator" = "必須";
+
+/* The button title for saving a custom model */
+"aichat.customModelFormSaveButtonTitle" = "保存";
+
+/* The footer text explaining what the server endpoint is and providing an example URL for Ollama */
+"aichat.customModelFormServerEndpointFieldFooter" = "サービングフレームワークがリクエストをリッスンしているURL。不確かな場合は、サービングフレームワークのドキュメントを確認してください。例えばOllamaの場合、常に`http://localhost:11434/v1/chat/completions`です。Braveはこれらのリクエストをプロキシしていません。選択したプロバイダーのプライバシー条件をお読みください。";
+
+/* The label for the server endpoint URL field */
+"aichat.customModelFormServerEndpointFieldTitle" = "サーバーのエンドポイント";
+
+/* The footer text explaining what a system prompt is and noting the %datetime% placeholder */
+"aichat.customModelFormSystemPromptFieldFooter" = "モデルの応答をガイドするためのカスタム指示またはコンテキスト。現在の日付と時刻を挿入する場所に%datetime%を使用してください。";
+
+/* The label for the system prompt field */
+"aichat.customModelFormSystemPromptFieldTitle" = "システムプロンプト";
+
+/* Warning message shown when user enters an HTTP (not HTTPS) endpoint */
+"aichat.customModelFormUnsafeEndpointWarning" = "このエンドポイントは安全ではない可能性があります。";
+
+/* The description text explaining what vision support means with an example */
+"aichat.customModelFormVisionSupportFieldDescription" = "このモデルが画像を入力とする場合。例: Llama 3.2b vision";
+
+/* The label for the vision support toggle */
+"aichat.customModelFormVisionSupportFieldTitle" = "ビジョンサポート";
+
+/* The title for the custom models section in the menu */
+"aichat.customModelsMenuSectionTitle" = "カスタムモデル";
+
+/* The title of the section where chat models are displayed as a list. */
+"aichat.defaultModelChatSectionTitle" = "チャット";
+
+/* The title of the section where language models are displayed as a list. */
+"aichat.defaultModelLanguageSectionTitle" = "言語モデル";
+
+/* The title of the menu where user can change the default model */
+"aichat.defaultModelViewTitle" = "デフォルトモデル";
+
+/* The checkbox title for the privacy alert warning that will make it not warn the user again */
+"aichat.dontShowAgainTitle" = "次回から表示しない";
+
+/* The text displayed under an edited user prompt/message beside a timestamp. */
+"aichat.editedMessageCaption" = "編集済み";
+
+/* The title for view which user type feedback */
+"aichat.feedbackInputViewTitle" = "フィードバックをここに入力してください";
+
+/* The title for view which listsfeedback option list */
+"aichat.feedbackOptionsViewTitle" = "フィードバックのカテゴリを選択してください";
+
+/* The title for incorrect feedback option */
+"aichat.feedbackOptionTitleIncorrect" = "間違っていた";
+
+/* The title for helpful feedback option */
+"aichat.feedbackOptionTitleNotHelpful" = "役に立たなかった";
+
+/* The title for other feedback option */
+"aichat.feedbackOptionTitleOther" = "その他";
+
+/* The title for unsafe/harmful feedback option */
+"aichat.feedbackOptionTitleUnsafeHarmful" = "危険 / 危害につながるものであった";
+
+/* The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
+"aichat.feedbackPremiumAdTitle" = "Leo Premiumでは、さらに拡張された言語モデルセットを利用できるため、さらに豊かなニュアンスの回答を提供できます。[詳細はこちら](https://brave.com/) - [閉じる](braveai://dismiss)";
+
+/* The title for the button that submits feedback */
+"aichat.feedbackSubmitActionTitle" = "送信";
+
+/* The title for feedback view when it fails to submit feedback */
+"aichat.feedbackSubmittedErrorTitle" = "問題が発生しました。もう一度お試しください。";
+
+/* The title for feedback view when it is submitted */
+"aichat.feedbackSubmittedTitle" = "フィードバックを送信しました";
+
+/* The title for feedback view when response is sucessfull but disliked */
+"aichat.feedbackSuccessAnswerDisLikedTitle" = "回答が「不満」と評価されました";
+
+/* The title for feedback view when response is sucessfull also liked */
+"aichat.feedbackSuccessAnswerLikedTitle" = "回答に「いいね」がつきました";
+
+/* The title for view which user type feedback */
+"aichat.feedbackViewMainTitle" = "Brave AIのフィードバックを送信";
+
+/* The button title for opening paywall screen */
+"aichat.goPremiumButtonTitle" = "プレミアムプラン";
+
+/* Description about answers are changing with page context */
+"aichat.infoAboutPageContext" = "ページのコンテンツに基づいて回答を作成";
+
+/* The title for view that shows an internal error screen. Suggests to try again later. */
+"aichat.internalErrorViewTitle" = "リクエストの処理中にエラーが発生しました。もう一度お試しください。";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeHaikuMessageDescription" = "こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Claude Haikuを搭載しています。このモデルはAnthropicによって作成されたもので、会話・テキスト処理タスクをパワーアップさせます。Claude HaikuはBrave独自の安全なインフラを通じてホストされています。";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageClaudeHaikuModelPurposeDescription" = "超高速チャット";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeInstantMessageDescription" = "こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Claude Instantを搭載しています。このモデルはAnthropicによって作成されたもので、会話・テキスト処理タスクをパワーアップさせます。Claude InstantはBrave独自の安全なインフラを通じてホストされています。";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeSonnetMessageDescription" = "こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Claude Sonnetを搭載しています。このモデルはAnthropicによって作成されたもので、会話・テキスト処理タスクをパワーアップさせます。Claude SonnetはBrave独自の安全なインフラを通じてホストされています。";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageClaudeSonnetModelPurposeDescription" = "均整の取れたスピード＆インテリジェンス";
+
+/* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
+"aichat.introMessageGenericMessageDescription" = "こんにちは、私はLeo。BraveのAIアシスタントで、%@ により提供されています。できる限り適した回答を提供しますので、何でも質問してください。";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageLlamaMessageDescription" = "こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Llama 3.1 8Bを搭載しています。このモデルはMetaによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。LlamaはBrave独自の安全なインフラを通じて、ホストされています。";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageLlamaModelPurposeDescription" = "一般チャット";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageQwenMessageDescription" = "こんにちは、Leoです。私はBraveのAIアシスタントで、Alibaba Cloudによって作成されたパフォーマンスに優れ、多くのユースケースに適用可能なモデルであるQwen VL 30Bを搭載しています。QwenはBrave独自の安全なインフラを通じてホストされています。";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageQwenModelPurposeDescription" = "汎用系チャット、コーディングなど";
+
+/* The title for intro message */
+"aichat.introMessageTitle" = "チャット";
+
+/* The title for view that shows an invalid API key error screen. Suggests to try again later. */
+"aichat.invalidApiKeyErrorViewTitle" = "このモデルに設定されているAPIキーが無効です。設定を確認し、もう一度お試しください。";
+
+/* The title for view that shows an invalid endpoint error screen. Suggests to try again later. */
+"aichat.invalidEndpointErrorViewTitle" = "このモデルのエンドポイントは無効です。設定を確認し、再試行してください。";
+
+/* The name of the AI-Assistant that's responsing to the user */
+"aichat.leoAssistantNameTitle" = "Leo";
+
+/* The default title displayed above a code block when the language of the code is not known. */
+"aichat.leoCodeExampleDefaultTitle" = "コードサンプル";
+
+/* The message that shows in an alert, to let the user know the 'Leo' feature is disabled, and explains how to re-enable the feature. */
+"aichat.leoDisabledMessageDescription" = "レオは現在、機能フラグによって無効化されています。Leoを再度有効にするには、brave://flagsにアクセスして有効にしてください。";
+
+/* The title that shows in an alert when the Leo/AI-Chat feature is disabled. */
+"aichat.leoDisabledMessageTitle" = "レオ・ディスエーブルド";
+
+/* The message that shows in an alert, to let the user know the 'Leo' feature is disabled in private browsing mode. */
+"aichat.leoDisabledPrivateBrowsingMessageDescription" = "Leoは現在、プライベートモードではご利用いただけません。使用するには、プライベートモードを終了してもう一度お試しください。";
+
+/* The title that shows in an alert when the Leo/AI-Chat is disabled due to the user being in private browsing mode. */
+"aichat.leoDisabledPrivateBrowsingMessageTitle" = "このモードではLeoが使えません";
+
+/* The text that's read aloud to the user when accessibility is enabled for the Document Picker button */
+"aichat.leoDocumentPickerButtonAccessibilityTitle" = "画像をアップロード";
+
+/* The text displayed on the loading screen when searching for a user query */
+"aichat.leoImprovedAnswerBraveSearch" = "次のクエリについて、より良い回答を検索しています:";
+
+/* The text displayed on the loading screen when searching for a user query */
+"aichat.leoImprovingAnswerBraveSearch" = "Brave検索で回答を推敲しています...";
+
+/* The title of the advanced settings view */
+"aichat.leoNavigationTitle" = "Leo AI";
+
+/* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
+"aichat.leoPageContextInfoDescriptionTitle" = "このページについて質問するには、トグルをクリックしてください。あなたが入力したメッセージとともに、ページのコンテンツがBrave Leoに送信されます。";
+
+/* The accessibility text to read out loud when the user taps on the info icon on the page context view */
+"aichat.leoPageContextInfoIconAccessibilityTitle" = "ページコンテキスト情報";
+
+/* The text that's read aloud to the user when accessibility is enabled for the Slash Tools button */
+"aichat.leoSlashToolsButtonAccessibilityTitle" = "スラッシュツール";
+
+/* The text that's displayed when the user selects an invalid slash tools option */
+"aichat.leoSlashToolsOptionNull" = "なし";
+
+/* The text that's displayed when the user selects an invalid slash tools option */
+"aichat.leoSlashToolsOptionUnknown" = "不明";
+
+/* The title to display when the duration of the subscription is unknown */
+"aichat.leoSubscriptionUnknownDateTitle" = "該当なし";
+
+/* The button title for managing subscriptions */
+"aichat.manageSubscriptionsButtonTitle" = "サブスクリプションの管理";
+
+/* The description for alert needed to have microphone permission */
+"aichat.microphonePermissionAlertDescription" = "Braveで匿名音声入力を使用するには、iOSのシステム設定でマイクへのアクセスを許可してください。";
+
+/* The description for alert needed to have microphone permission */
+"aichat.microphonePermissionAlertTitle" = "マイクへのアクセスが必要です";
+
+/* Title showing monthly subscription */
+"aichat.monthlySubscriptionTitle" = "毎月の定期購読";
+
+/* The title for view that shows network - connection error and suggesting to try again */
+"aichat.networkErrorViewTitle" = "Leoに接続する際にネットワーク上の問題が発生しました。接続を解除してもう一度お試しください。";
+
+/* The title for button that starts a new chat */
+"aichat.newChatActionTitle" = "新しいチャット";
+
+/* The text which will be used to indicate period of payments like 10 / month */
+"aichat.paywallMonthlyPriceDividend" = "月";
+
+/* Title indicating monthly subscription */
+"aichat.paywallMontlySubscriptionTitle" = "毎月";
+
+/* The title for dismiss button when premium upsell when paywall is triggered */
+"aichat.paywallPremiumUpsellDismissAction" = "あとで";
+
+/* The title for button when premium upsell when paywall is triggered */
+"aichat.paywallPremiumUpsellPrimaryAction" = "アップグレード";
+
+/* The title for premium upsell when paywall is triggered */
+"aichat.paywallPremiumUpsellTitle" = "プレミアムでLeoの全機能を利用しましょう:";
+
+/* The title of the button for action triggering purchase */
+"aichat.paywallPurchaseActionIntroOfferTitle" = "7日間無料でお試し";
+
+/* The title of the button for action triggering purchase */
+"aichat.paywallPurchaseActionTitle" = "今すぐアップグレード";
+
+/* The text displayed on the bottom of paywall screen which indicates subscriptions are auto renewable. */
+"aichat.paywallPurchaseDeepNote" = "すべてのサブスクリプションは自動更新されますが、更新前にいつでもキャンセルすることができます。";
+
+/* The error description when in app purcahse is erroneous. */
+"aichat.paywallPurchaseErrorDescription" = "購入を完了できません。再度お試しいただくか、Appleでお支払い内容をご確認の上、再度お試しください。";
+
+/* The subtitle for premium upseel when rate limit is shown after sending a message */
+"aichat.paywallRateLimitSubTitle" = "より回答速度を上げたい場合は、Premiumにお申し込みいただくか、後ほどもう一度お試しください";
+
+/* The title for premium upseel when rate limit is shown after sending a message */
+"aichat.paywallRateLimitTitle" = "回答速度の制限に達しました";
+
+/* The subtitle accuracy entry in paywall upsell screen */
+"aichat.paywallUpsellAccuracyTopicSubTitle" = "より細やかなニュアンスの会話に対して、より正確な回答を提供します。";
+
+/* The title accuracy entry in paywall upsell screen */
+"aichat.paywallUpsellAccuracyTopicTitle" = "トピックに集中";
+
+/* The subtitle chat length entry in paywall upsell screen */
+"aichat.paywallUpsellChatLengthTopicSubTitle" = "より高いレート制限により、より長い会話が可能になります。";
+
+/* The title chat length entry in paywall upsell screen */
+"aichat.paywallUpsellChatLengthTopicTitle" = "より長時間のチャット";
+
+/* The subtitle creativity entry in paywall upsell screen */
+"aichat.paywallUpsellCreativityTopicSubTitle" = "クリエイティブなタスクやコンテンツ生成により適したモデルにアクセスできます。";
+
+/* The title creativity entry in paywall upsell screen */
+"aichat.paywallUpsellCreativityTopicTitle" = "創造性を発揮";
+
+/* The subtitle model type entry in paywall upsell screen */
+"aichat.paywallUpsellModelTypeTopicSubTitle" = "さまざまなスキルを持つパワフルなモデルへの優先アクセス。";
+
+/* The title model type entry in paywall upsell screen */
+"aichat.paywallUpsellModelTypeTopicTitle" = "さまざまなAIモデルを探索";
+
+/* The title for paywall view */
+"aichat.paywallViewTitle" = "Leoプレミアム";
+
+/* The text which will be used to indicate period of payments like 150 / year */
+"aichat.paywallYearlyPriceDividend" = "年";
+
+/* The description indicating how valuable the yearly subscription is, compared to purchasing monthly */
+"aichat.paywallYearlySubscriptionDescription" = "一番お得";
+
+/* Title indicating yearly subscription */
+"aichat.paywallYearlySubscriptionTitle" = "1 年";
+
+/* The title of the badge where a model which can be used limited */
+"aichat.premiumModelStatusTitle" = "プレミアム";
+
+/* Title shown next to Leo in navigation bar when user has premium subcription */
+"aichat.premiumNavigationBarBadgeTitle" = "プレミアム";
+
+/* Title showing premium subscription - not determined monthly por yearly */
+"aichat.premiumSubscriptionTitle" = "プレミアムサブスクリプション";
+
+/* The text for placeholder on textfield for entering questions for AI, after the user has asked initial question */
+"aichat.promptFollowUpPlaceHolderDescription" = "フォローアップを頼む";
+
+/* The text for placeholder on textfield for entering questions for AI */
+"aichat.promptPlaceHolderDescription" = "今日は何をお手伝いしましょうか？";
+
+/* The title of action for quick menu which displaying advanced settings */
+"aichat.quickMenuAdvancedSettingsActionTitle" = "詳細設定";
+
+/* The title of action for quick menu which presents payment screen for premium */
+"aichat.quickMenuGoPremiumActionTitle" = "プレミアムプラン";
+
+/* The title of action for quick menu which display subscription management view */
+"aichat.quickMenuManageSubscriptionActionTitle" = "サブスクリプションの管理";
+
+/* The title for error when rating a response is not success */
+"aichat.rateAnswerActionErrorText" = "回答の評価中にエラーが発生しました";
+
+/* The message for privacy warning alert when rating a response */
+"aichat.rateAnswerFeedbackPrivacyWarningMessage" = "回答の良し悪しを答えると、評価、会話、モデル、言語、バージョン、プレミアムステータスがBraveに送信され、Leoを改善するために使われます。 [詳細はこちら](%@)";
+
+/* The title for privacy warning alert when rating a response */
+"aichat.rateAnswerFeedbackPrivacyWarningTitle" = "回答を評価";
+
+/* The title for button that refreshes user credentials */
+"aichat.refreshCredentialsActionTitle" = "更新";
+
+/* The title for the button where it triggers reset leo data */
+"aichat.resetLeoDataActionTitle" = "Leoデータのリセットとクリア";
+
+/* The title of a button that will reset data for leo */
+"aichat.resetLeoDataAlertButtonTitle" = "リセットする";
+
+/* The description for the error whre leo data reset */
+"aichat.resetLeoDataErrorDescription" = "Leoのデータをリセット＆クリアしてよろしいですか？";
+
+/* The title for the error whre leo data reset */
+"aichat.resetLeoDataErrorTitle" = "Leoデータをリセット";
+
+/* The title for copying response to clipboard action */
+"aichat.responseContextMenuCopyTitle" = "コピー";
+
+/* The title for disliking response to clipboard action */
+"aichat.responseContextMenuDislikeAnswerTitle" = "回答を「不満」と評価する";
+
+/* The title for editing AI response action from context menu */
+"aichat.responseContextMenuEditAnswerTitle" = "回答を編集";
+
+/* The title for editing user prompt action from context menu */
+"aichat.responseContextMenuEditPromptTitle" = "プロンプトを編集";
+
+/* The title for liking response to clipboard action */
+"aichat.responseContextMenuLikeAnswerTitle" = "回答に「いいね」する";
+
+/* The title for regenerating response action from context menu */
+"aichat.responseContextMenuRegenerateTitle" = "再生成";
+
+/* The button title for restoring ai-app purchse for Leo. */
+"aichat.restorePaywallButtonTitle" = "復元";
+
+/* The title for button for re-try */
+"aichat.retryActionTitle" = "再試行";
+
+/* The title for view that shows a service overloaded error screen. Suggests to try again later. */
+"aichat.serviceOverloadedErrorViewTitle" = "エンドポイントは現在過負荷の状態です。時間をおいて再度お試しください。";
+
+/* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
+"aichat.speechRecognizerDisclaimer" = "Braveが音声検索結果を保存または共有することはありません。";
+
+/* Title showing the user has no subscription. */
+"aichat.subscriptionNoneTitle" = "なし";
+
+/* The title for the button to generate suggestions */
+"aichat.suggestionsGenerationButtonTitle" = "質問を推奨...";
+
+/* The title for button that start summarizing page */
+"aichat.summarizePageActionTitle" = "このページを要約";
+
+/* The title for expressing acknowledgement for the terms and conditions of Brave AI */
+"aichat.termsConditionsApproveActionTitle" = "了解しました";
+
+/* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
+"aichat.termsConditionsDescription" = "Brave Leoは、Webの利用を向上させるプライベートなAIスマートアシスタントです。Leoは無料でご利用いただけますが、アクセスには制限があります。サブスクリプションサービスのBrave Leo Premiumでは制限が緩和され、より多くのモデルが提供されており、新機能にいち早くアクセスすることができます。デフォルトモデルは随時変わります。詳細はBraveの**[ヘルプセンター](%1$@)**をご覧ください。\n\nデフォルトでは、閲覧中のWebページやページ上でハイライトしたテキストについてLeoに質問すると、Leoが回答できるよう、検索クエリ同様にBrave サーバーに送信されます。場合によっては、Leoはあなたの入力から引き出したクエリをBrave検索に送信し、その検索結果を使用してより適切に回答します。Braveは回答の正確性を保証しておらず、回答には不正確な、誤解を招く、あるいは虚偽の情報が含まれる場合があります。Brave Leoに機密・個人情報は送信しないでください。また、健康、金融、個人の安全などに関する回答には十分ご注意ください。Leoのオプションは、設定 > Leoからいつでも調整できます。\n\nLeoは、IPアドレスのような個人を特定できる識別子を収集しません。検索クエリやBrave Leoの回答を含むあなたのデータが、AIモデルのトレーニングに使用されることはありません。また個人データがBraveのサーバーに保管されたり、Braveにより保持されることはありません。詳しくは、**[プライバシーポリシー](%2$@)**をご覧ください。";
+
+/* The title terms and conditions for AI chat usage */
+"aichat.termsConditionsTitle" = "Brave Leoとプライベートチャット";
+
+/* The title of the badge where a model which can be used unlimited */
+"aichat.unlimitedModelStatusTitle" = "無制限";
+
+/* The accessibility description when pressing the microphone button to access voice entry. */
+"aichat.voiceInputButtonTitle" = "音声入力";
+
+/* Title showing yearly subscription - annual */
+"aichat.yearlySubscriptionTitle" = "年額サブスクリプション";
+
+/* The word 'You' as in 'Me', 'Myself', 'I' (the user). */
+"aichat.youMessageTitle" = "あなた";
+

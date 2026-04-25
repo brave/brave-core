@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2019 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/view_add_laptop"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:layout_marginHorizontal="20dp"
+    android:layout_marginTop="30dp"
+    android:layout_marginBottom="20dp" >
+
+    <LinearLayout android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:paddingHorizontal="2dip"
+        android:paddingTop="2dip" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingHorizontal="15dip"
+            android:paddingBottom="15dip">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/brave_sync_add_laptop_text_title"
+                style="@style/BraveSyncTitleTextHeadingH4"
+                android:gravity="top" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/brave_sync_add_laptop_text"
+                android:gravity="top"
+                android:layout_marginTop="20dp"
+                style="@style/BraveSyncDescriptionTextDefaultRegular"  />
+
+            <TextView android:id="@+id/brave_sync_warning_text_add_laptop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/BraveSyncRedWarningTextSmallSemibold"
+                android:text="@string/brave_sync_code_warning"
+                android:layout_marginTop="20dp" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="15dip"
+            android:layout_marginTop="10dp" >
+
+            <TextView android:id="@+id/brave_sync_add_device_code_words"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|top"
+                android:textSize="12sp"
+                android:background="@drawable/brave_sync_top_rounded"
+                android:padding="16dip"
+                android:textColor="@color/text_primary"
+                style="@style/MonospaceSmall" />
+        </FrameLayout>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/brave_sync_count_down_code_words"
+            android:name="org.chromium.chrome.browser.settings.BraveSyncCodeCountdownFragment"
+            android:layout_marginHorizontal="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="30dp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom" >
+
+            <android.widget.Button android:id="@+id/brave_sync_copy_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/brave_sync_copy_button_text"
+                style="@style/BraveSyncBottomButton"
+                android:background="@android:color/transparent"
+                android:textColor="@color/brave_sync_copy_words_text_color"
+                android:textSize="14sp" />
+
+            <android.widget.Button android:id="@+id/brave_sync_btn_add_laptop_new_code"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/brave_sync_generate_new_code_button"
+                style="@style/BraveSyncButtonTransparent"/>
+
+            <android.widget.Button android:id="@+id/brave_sync_btn_add_laptop_done"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/brave_sync_btn_done"
+                android:textSize="14sp"
+                style="@style/BraveSyncButton"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

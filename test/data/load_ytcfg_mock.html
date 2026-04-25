@@ -1,0 +1,61 @@
+<html>
+<head>
+    <title>OK</title>
+    <script>
+    // Backup the original `replace` method.
+    const originalReplace = String.prototype.replace;
+
+    // Add a counter to track the number of times `replace` is called.
+    let replaceCallCount = 0;
+
+    // Override `String.prototype.replace`.
+    String.prototype.replace = function (...args) {
+      // Increment the counter.
+      replaceCallCount++;
+
+      // Call the original `replace` method and return the result.
+      return originalReplace.apply(this, args);
+    };
+
+    // Function to get the current replace call count.
+    window.getReplaceCallCount = function () {
+      return replaceCallCount;
+    };
+
+    // `window.ytcfg` object is not created immediately
+    // as it will be injected from tests.
+    window.simulateScriptLoadEvent = function () {
+      const script = document.createElement('script');
+      script.tagName = 'SCRIPT'; // Emulate SCRIPT tag behavior.
+      script.textContent = `
+      // Mock window.ytcfg object here.
+      window.ytcfg = {
+        data_: {
+          WEB_PLAYER_CONTEXT_CONFIGS: {
+            WEB_PLAYER_CONTEXT_CONFIG_ID_MWEB_WATCH: {
+              serializedExperimentFlags: "html5_picture_in_picture_blocking_ontimeupdate=true&"
+              + "html5_picture_in_picture_blocking_onresize=true&"
+              + "html5_picture_in_picture_blocking_document_fullscreen=true&"
+              + "html5_picture_in_picture_blocking_standard_api=true&"
+              + "html5_picture_in_picture_logging_onresize=true&"
+              + "another_flag_for_testing=true"
+            }
+          }
+        },
+        get(key) {
+          // Allow access to keys via a simple getter.
+          return this.data_[key];
+        }
+      };
+  `;
+      document.head.appendChild(script);
+      const loadEvent = new Event('load', { bubbles: true, cancelable: false });
+      script.dispatchEvent(loadEvent);
+    };
+    </script>
+</head>
+<body>
+  <a href="#section1" id="link1">Go to Section 1</a>
+  <a href="#section2" id="link2">Go to Section 2</a>
+</body>
+</html>

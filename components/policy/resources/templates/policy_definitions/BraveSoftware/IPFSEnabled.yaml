@@ -1,0 +1,22 @@
+caption: Enable IPFS feature
+default: null
+desc: |-
+  This policy allows an admin to specify whether IPFS feature can be enabled.
+example_value: true
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: false
+  per_profile: true
+owners:
+- clifton@brave.com
+- fmarier@brave.com
+- anthony@brave.com
+- vstruts@brave.com
+schema:
+  type: boolean
+supported_on:
+- chrome.*:87-
+deprecated: true
+tags: []
+type: main

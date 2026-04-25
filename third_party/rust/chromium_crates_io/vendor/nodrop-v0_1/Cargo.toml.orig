@@ -1,0 +1,44 @@
+[package]
+name = "nodrop"
+version = "0.1.14"
+authors = ["bluss"]
+
+license = "MIT/Apache-2.0"
+
+description = """
+A wrapper type to inhibit drop (destructor).
+
+***Deprecated: Use ManuallyDrop or MaybeUninit instead!***
+"""
+documentation = "https://docs.rs/nodrop/"
+repository = "https://github.com/bluss/arrayvec"
+
+keywords = []
+categories = ["rust-patterns"]
+
+[features]
+default = ["std"]
+
+# Default, requires Rust 1.6+ to disable
+# Use libstd
+std = []
+
+# Optional, Rust 1.21.0
+# Use `needs_drop` to skip overwriting if not necessary
+use_needs_drop = []
+
+# Optional, nightly channel
+use_union = ["nodrop-union"]
+
+[dependencies.nodrop-union]
+path = "../nodrop-union"
+version = "0.1.8"
+optional = true
+
+[package.metadata.release]
+no-dev-version = true
+tag-name = "nodrop-{{version}}"
+
+
+[badges.maintenance]
+status = "deprecated"

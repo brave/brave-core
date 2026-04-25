@@ -1,0 +1,109 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_BROWSER_UI_TABS_BRAVE_TAB_STRIP_MODEL_H_
+#define BRAVE_BROWSER_UI_TABS_BRAVE_TAB_STRIP_MODEL_H_
+
+#include <cstdint>
+#include <vector>
+
+#include "base/callback_list.h"
+#include "base/containers/span.h"
+#include "base/memory/weak_ptr.h"
+#include "brave/components/tabs/public/brave_tab_strip_collection.h"
+#include "chrome/browser/ui/tabs/tab_enums.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
+#include "components/prefs/pref_member.h"
+
+class TreeTabModel;
+
+class BraveTabStripModel : public TabStripModel {
+ public:
+  explicit BraveTabStripModel(TabStripModelDelegate* delegate,
+                              Profile* profile,
+                              TabGroupModelFactory* group_model_factory);
+
+  ~BraveTabStripModel() override;
+
+  BraveTabStripModel(const BraveTabStripModel&) = delete;
+  BraveTabStripModel operator=(const BraveTabStripModel&) = delete;
+
+  // Set the next tab when doing a MRU cycling with Ctrl-tab
+  void SelectMRUTab(
+      TabRelativeDirection direction,
+      TabStripUserGestureDetails detail = TabStripUserGestureDetails(
+          TabStripUserGestureDetails::GestureType::kOther));
+
+  // Stop MRU cycling, called when releasing the Ctrl key
+  void StopMRUCycling();
+
+  // Exposes a |TabStripModel| api to |BraveTabMenuModel|.
+  std::vector<int> GetTabIndicesForCommandAt(int tab_index);
+
+  // Returns true if all tabs at the specified indices are muted.
+  bool GetAllTabsMuted(const std::vector<int>& indices) const;
+
+  // Closes the tabs at the specified indices.
+  void CloseTabs(
+      base::span<int> indices,
+      uint32_t close_flags = TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB);
+
+  // Can be null when tree tab feature is disabled via flag or pref.
+  const TreeTabModel* tree_model() const { return tree_tab_model_.get(); }
+  TreeTabModel* tree_model() { return tree_tab_model_.get(); }
+
+  // Sets the collapsed state of a tree tab node. When it changes, notifies
+  // observers
+  void SetTreeTabNodeCollapsed(const tree_tab::TreeTabNodeId& id,
+                               bool collapsed);
+
+  // Returns the tree tab node id wrapping the given group, or nullptr if the
+  // group is not wrapped in a tree node (e.g. tree tabs off).
+  const tree_tab::TreeTabNodeId* GetTreeTabNodeIdForGroup(
+      tab_groups::TabGroupId group_id) const;
+
+  // TabStripModel:
+  void SelectRelativeTab(TabRelativeDirection direction,
+                         TabStripUserGestureDetails detail) override;
+
+ private:
+  friend class TreeTabsBrowserTest;
+
+  void OnTreeTabRelatedPrefChanged();
+  void BuildTreeTabs();
+  void FlattenTreeTabs();
+
+  void NotifyTreeTabNodeCreated(const tabs::TreeTabNode& node);
+  void NotifyTreeTabNodeWillBeDestroyed(const tree_tab::TreeTabNodeId& id);
+
+  tabs::BraveTabStripCollection* contents_data() {
+    return static_cast<tabs::BraveTabStripCollection*>(contents_data_.get());
+  }
+
+  tabs::TabStripCollection& GetTabStripCollectionForTesting();
+
+  void SetSplitPinnedImplForTesting(split_tabs::SplitTabId split, bool pinned);
+
+  // List of tab indexes sorted by most recently used
+  std::vector<int> mru_cycle_list_;
+
+  BooleanPrefMember tree_tabs_enabled_;
+  BooleanPrefMember vertical_tabs_enabled_;
+
+  // The model for tree tabs hosted within this TabStripModel. When the feature
+  // flag is disabled or the feature is turned off via related preferences,
+  // this will be null.
+  std::unique_ptr<TreeTabModel> tree_tab_model_;
+
+  // Note that we wrapped the subscriptions in a unique_ptr so that we can reset
+  // them when the tree tabs are flattened.
+  std::unique_ptr<base::CallbackListSubscription>
+      tree_tab_node_created_subscription_;
+  std::unique_ptr<base::CallbackListSubscription>
+      tree_tab_node_will_be_destroyed_subscription_;
+};
+
+#endif  // BRAVE_BROWSER_UI_TABS_BRAVE_TAB_STRIP_MODEL_H_

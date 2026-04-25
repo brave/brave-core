@@ -1,0 +1,15 @@
+include_rules = [
+  "+brave/gin",
+  "+content/public/renderer",
+  "+gin",
+  "+third_party/blink/public",
+  "+v8/include",
+]
+
+specific_include_rules = {
+  "subscription_render_frame_observer_browsertest\.cc": [
+    "+content/public/common/isolated_world_ids.h",
+    "+content/public/test/content_mock_cert_verifier.h",
+    "+content/public/test/render_view_test.h",
+  ],
+}

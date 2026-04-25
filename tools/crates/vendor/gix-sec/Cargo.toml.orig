@@ -1,0 +1,48 @@
+lints.workspace = true
+
+[package]
+name = "gix-sec"
+version = "0.12.2"
+repository = "https://github.com/GitoxideLabs/gitoxide"
+license = "MIT OR Apache-2.0"
+description = "A crate of the gitoxide project providing a shared trust model"
+authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
+edition = "2021"
+include = ["src/**/*", "LICENSE-*"]
+rust-version = "1.82"
+
+[lib]
+doctest = false
+
+[features]
+## Data structures implement `serde::Serialize` and `serde::Deserialize`.
+serde = ["dep:serde", "bitflags/serde"]
+
+[dependencies]
+serde = { version = "1.0.114", optional = true, default-features = false, features = [
+    "std",
+    "derive",
+] }
+bitflags = "2"
+
+document-features = { version = "0.2.1", optional = true }
+
+[target.'cfg(not(windows))'.dependencies]
+libc = "0.2.176"
+
+[target.'cfg(windows)'.dependencies]
+gix-path = { version = "^0.10.21", path = "../gix-path" }
+windows-sys = { version = "0.61.1", features = [
+    "Win32_Foundation",
+    "Win32_Security_Authorization",
+    "Win32_Storage_FileSystem",
+    "Win32_System_Memory",
+    "Win32_System_Threading",
+] }
+
+[dev-dependencies]
+tempfile = "3.23.0"
+
+[package.metadata.docs.rs]
+all-features = true
+features = ["document-features"]

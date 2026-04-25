@@ -1,0 +1,112 @@
+##
+## Upstream tests to disable
+##
+## When adding a new filter to this list, please include a short description of
+## why the filter is required and create an associated tracking issue.
+##
+
+# These tests fail because we disable prerender
+-All/PrerenderHostRegistryLimitGroupTest.*
+-PrerenderHandleImplTest.CallbackCalledOnFailure
+-PrerenderHandleImplTest.OnResponseHeadersReceived
+
+# These tests fail because we override FileSystemAccessHandleBase::DoMove to
+# only allow moving temp files.
+-All/FileSystemAccessFileHandleImplMoveWriteModeTest.RequestsCorrectPermissions/*
+-All/FileSystemAccessFileHandleImplRenameWriteModeTest.RequestsCorrectPermissions/*
+-FileSystemAccessFileHandleImplMoveTest.HasDestWriteAccess
+-FileSystemAccessFileHandleImplMoveTest.NoDestWriteAccess
+-FileSystemAccessFileHandleImplRenameTest.HasWriteAccess
+
+# These tests fail because we disable the client hints that the tests check.
+-ClientHintsTest.AddNavigationRequestClientHintsHeaders_MainFrame
+-ClientHintsTest.AddNavigationRequestClientHintsHeaders_Subframe
+-ClientHintsTest.AddPrefetchNavigationRequestClientHintsHeaders
+-ClientHintsTest.GetCriticalHintsMissingStatus
+-ClientHintsTest.GetEnabledClientHintsSubframeNotAllowed
+-ClientHintsTest.IntegrationTestsOnParseLookUp
+
+# These tests fail because we disable Prefetch/Preload
+-PrefetchContainerXClientDataTests/PrefetchContainerXClientDataHeaderTest.AddHeaderForEligibleRedirectUrlOnlyWhenNotInIncognito/0
+-PrefetchContainerXClientDataTests/PrefetchContainerXClientDataHeaderTest.AddHeaderForEligibleUrlOnlyWhenNotInIncognito/0
+-PrefetchServiceEventTest.*
+
+# Intermittent Mojo data pipe race: response_body().ReadData() returns 0 bytes
+# after RunUntilComplete() because data hasn't been flushed through the pipe yet.
+# Variant /1 is stable upstream (0.0% flake rate) so it is not filtered.
+# https://github.com/brave/brave-browser/issues/52657
+-WebUIURLLoaderFactoryTest.RangeRequest/0
+-WebUIURLLoaderFactoryTest.RangeRequest/2
+-WebUIURLLoaderFactoryTest.RangeRequest/3
+-WebUIURLLoaderFactoryTest.RangeRequest/4
+
+# Tests below this point have not been diagnosed or had issues created yet.
+-AdAuctionServiceImplPrivateAggregationEnabledTest.*
+-AggregatableAttributionUtilsTest.*
+-AggregatableDebugReportGoldenLatestVersionTest.VerifyGoldenReport
+-AggregatableDebugReportTest.*
+-AggregationServiceImplTest.*
+-All/FileSystemAccessFileHandleImplMovePermissionsTest.Move*
+-All/FileSystemAccessFileHandleImplMovePermissionsTest.Rename*
+-AttributionAggregatableReportGoldenLatestVersionTest.VerifyGoldenReport
+-AttributionDataHostManagerImplTest.*
+-AttributionDataHostManagerImplTest.SourceModeReceiverConnectsDisconnects_DelayedTriggersFlushed
+-AttributionDataHostManagerImplTest.TriggerDataHost_ReceiverModeCheckPerformed
+-AttributionDataHostManagerImplWithInBrowserMigrationTest.Background_NonNavigationTied
+-AttributionDebugReportTest.*
+-AttributionHostOriginTrustworthyChecksTest.*
+-AttributionHostTest.*
+-AttributionHostTest.*
+-AttributionInteropTest.*
+-AttributionManagerImplNullAggregatableReportTest.*
+-AttributionManagerImplOnlineConnectionTypeTest.OnlineConnectionTypeChanges_ReportTimesNotAdjusted
+-AttributionManagerImplTest.*
+-AttributionReportNetworkSenderTest.AggregatableReportSent_DebugMetricsRecorded
+-AttributionReportNetworkSenderTest.AggregatableReportSent_MetricsRecorded
+-AttributionReportNetworkSenderTest.NullAggregatableReportSent_MetricsRecorded
+-AttributionReportTest.NullAggregatableReport
+-AttributionReportTest.ReportBody_Aggregatable
+-AttributionReportTest.ReportBody_AggregatableAttributionReport
+-AttributionReportTest.ReportURL
+-AttributionResolverTest.*
+-AttributionStorageSqlMigrationsTest.MigrateVersion56ToCurrent
+-AttributionStorageSqlTest.*
+-AttributionStorageSqlTest.*
+-AttributionSuitableContextTest.*
+-AttributionSuitableContextTest.ConversionMeasurementDisabled_NonSuitable
+-BidderWorkletTest.ContributeToHistogramOnEventPermissionEnforced
+-BidderWorkletTest.ContributeToHistogramOnEventPermissionNotEnforced
+-BrowsingTopicsURLLoaderTest.*
+-ContextRecyclerPrivateAggregationAdditionalExtensionsDisabledTest.PrivateAggregationForEventBindings
+-ContextRecyclerPrivateAggregationErrorReportingDisabledTest.PrivateAggregationForEventErrorBindings
+-ContextRecyclerPrivateAggregationErrorReportingEnabledTest.PrivateAggregationForEventErrorBindings
+-ContextRecyclerPrivateAggregationExtensionsEnabledTest.PrivateAggregationForEventBindingsReservedOnceOff
+-ContextRecyclerPrivateAggregationExtensionsEnabledTest.PrivateAggregationForEventNonErrorBindings
+-FencedFrameReporterTest.AttributionManagerShutDown_NoCrash
+-FencedFrameReporterTest.SendFledgeReportsBeforeMapsReceivedWithErrors
+-FencedFrameReporterTest.SendFledgeReportsNoMapReceived
+-FetchLaterKeepAliveURLLoaderServiceTest.ForwardRedirectsAndResponseToAttributionRequestHelper
+-KeepAliveAttributionRequestHelperTest.*
+-KeepAliveAttributionRequestHelperTest.CreateIfNeeded_MetricRecorded
+-KeepAliveAttributionRequestHelperTest.HelperNotNeeded
+-KeepAliveURLLoaderServiceTest.ForwardErrorToAttributionRequestHelper
+-KeepAliveURLLoaderServiceTest.ForwardRedirectsAndResponseToAttributionRequestHelper
+-KeepAliveURLLoaderServiceTest.OnReceiveRedirectWithErrorRedirectMode_NotForwardedToAttributionRequestHelper
+-LocalResourceURLLoaderFactoryCanServeTest/LocalResourceURLLoaderFactoryCanServeTest.CanServe/1
+-LocalResourceURLLoaderFactoryCanServeTest/LocalResourceURLLoaderFactoryCanServeTest.CanServe/2
+-ParametrizedTests/PrefetchService*
+-PrerenderHostRegistryTest.*
+-PrerenderHostRegistryTest.*
+-PrerenderHostTest.*
+-PrerenderHostTest.*
+-PrerendererTest.*
+-PrivateAggregationInternalsHandlerImplTest.ClearStorage
+-PrivateAggregationReportGoldenLatestVersionTest.VerifyGoldenReport
+-RenderFrameHostImplTest.*
+-SharedStorageLockManagerTest.*
+-SharedStorageLockManagerTransactionalBatchUpdateDisabledTest.*
+-SpeculationHostImplLinkPreviewTest.FencedFrameNetworkCutoffDisablesLinkPreview
+-StoragePartitionImplTest.AttributionManagerCreatedInIncognito
+-WebContentsImplTest.NavigateToViewSourceRendererDebugURL
+-WebUILoadingUtilSendDataTest/WebUILoadingUtilSendDataTest.SendData/0
+-WebUILoadingUtilSendDataTest/WebUILoadingUtilSendDataTest.SendData/1

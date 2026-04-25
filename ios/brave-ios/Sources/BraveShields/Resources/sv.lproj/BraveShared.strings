@@ -1,0 +1,252 @@
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "Lägg till ytterligare listor som skapas och underhålls av gemenskapen som du litar på.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**Prenumerera bara på listor från entiteter som du litar på.** Din webbläsare söker regelbundet efter listuppdateringar från webbadressen du anger.";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "Lägg till filter efter webbadress";
+
+/* A discription of the Brave Player. */
+"AntiAdBlockWarningBravePlayerDescription" = "**Brave Player** är din biljett till en reklamfri och oavbruten videoupplevelse.";
+
+/* A button that disables ad-blocking and uses brave player. */
+"AntiAdBlockWarningConfirmationButton" = "Justera Shields åt mig";
+
+/* A descriptive message explaining this site's ad-blocking crackdown. */
+"AntiAdBlockWarningDescription" = "Den här webbplatsen har börjat blockera vissa annonsblockerare, vilket innebär att deras webbplats kanske inte fungerar som förväntat.";
+
+/* A descriptive message explaining to disable shields on this site. */
+"AntiAdBlockWarningDescription2" = "För att lösa det här problemet kan Brave justera dina Shields-inställningar åt dig. När du har justerat kan du prova att titta på det här innehållet i Brave Player istället.";
+
+/* A button that dismisses the warning and does nothing. */
+"AntiAdBlockWarningDismissButton" = "Behåll nuvarande inställningar";
+
+/* A title for a popup that tells the user we recommend turning shields off for this site. */
+"AntiAdBlockWarningTitle" = "Justera inställningarna för annonsblockering för den här webbplatsen";
+
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "Ta bort automatiskt";
+
+/* The option the user can select to do aggressive ad and tracker blocking */
+"BlockAdsAndTrackingAggressive" = "Aggressiv";
+
+/* A description for a shield options that allows you to switch between different blocking levels for trackers and ads blocking. Options include disabled, standard and aggressive. */
+"BlockAdsAndTrackingDescription" = "Förhindrar att annonser, popups och spårare läses in.";
+
+/* The option the user can select to disable ad and tracker blocking */
+"BlockAdsAndTrackingDisabled" = "Inaktiverad";
+
+/* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
+"BlockAdsAndTrackingStandard" = "Standard";
+
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "Blockera \"Växla till appen\"-aviseringar";
+
+/* Title for the brave player feature */
+"BravePlayer" = "Brave Player";
+
+/* A label for a toggle that enables automatic launching of brave player for certain sites */
+"BravePlayerAlwaysOpenYouTubeLinks" = "Öppna alltid videor från den här webbplatsen med Brave Player";
+
+/* A button that confirms to use the brave player. */
+"BravePlayerConfirmButton" = "Prova det";
+
+/* A button that ignores the brave player */
+"BravePlayerDismissButton" = "Inte nu";
+
+/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
+"BravePlayerInfoMessage" = "Med Brave Player kan du titta på videor utan avbrott.";
+
+/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
+"BravePlayerInfoTitle" = "Titta i Brave Player istället";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "Innehållsfiltrering";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "Aktivera anpassade filter som blockerar regionala och språkspecifika spårare och irritationsmoment.";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "Anpassa filterlista";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "Ange webbadress för filterlista";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "Anpassade filter";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "Lägg till anpassade filter här. Var noga med att använda filtersyntax för Adblock.";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "Ogiltig regel `%1$@` på rad %2$i";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "Lägg till dina egna filter här, ett per rad.";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "Anpassade filter stöder inte mer än %i rader";
+
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "Filterlistor som standard";
+
+/* Text for a button in a blocked page info screen that takes you back where you came from */
+"DomainBlockedGoBackAction" = "Gå tillbaka";
+
+/* A description in the warning page that appears when a page was blocked */
+"DomainBlockedPageDescription" = "Eftersom du begärde att aggressivt blockera spårare och annonser blockerar Brave den här webbplatsen före den första nätverksanslutningen.";
+
+/* A message in the warning page that appears when a page was blocked */
+"DomainBlockedPageMessage" = "Brave har förhindrat följande webbplats från att laddas:";
+
+/* A title in the warning page that appears when a page was blocked */
+"DomainBlockedPageTitle" = "Den här webbplatsen kan försöka spåra dig på andra webbplatser";
+
+/* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
+"DomainBlockedProceedAction" = "Fortsätt";
+
+/* A tab title for the warning page that appears when a page was blocked */
+"DomainBlockedTitle" = "Blockerad domän";
+
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "Be webbplatser att inte sälja eller dela dina uppgifter. [Läs mer](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "Aktivera Global Privacy Control";
+
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "Externa filterlistor";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "Den webbadress du angav är ogiltig";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "Endast säkra webbadresser (https) tillåts för anpassade filterlistor";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "Lägg till";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "Ytterligare populära listor från gemenskapen. Observera att webbläsarens hastighet försämras om för många filter aktiveras.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "Nedladdningen misslyckades";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "Väntande nedladdning";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "Ändra";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "Ange filterlistans URL";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "Senast uppdaterad %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "Ange filterlistans webbadress här";
+
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "Rensa cookies och andra webbplatsdata när du stänger en webbplats";
+
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "Glöm mig när jag stänger den här webbplatsen";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "Strikt";
+
+/* This is a label on a button that updates filter lists which signifies that lists have been updated */
+"ListsUpdated" = "Listorna har uppdaterats";
+
+/* A label displayed above a value indicating if the site is in aggressive mode in Blocked Requests view. */
+"shields.aggressiveLabel" = "Aggressiv";
+
+/* A label displayed above the location a request was blocked in Blocked Requests view. */
+"shields.blockedByLabel" = "Blockerad av";
+
+/* The title displayed in the navigation bar of Blocked Requests view. */
+"shields.blockedRequestsTitle" = "Blockerade förfrågningar";
+
+/* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
+"shields.contentBlocker" = "Blockerare av innehåll";
+
+/* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
+"shields.requestBlocking" = "Begär blockering";
+
+/* A label displayed above the request url that was blocked in Blocked Requests view. */
+"shields.requestURLLabel" = "Begär URL";
+
+/* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
+"shields.resourceTypeLabel" = "Resurstyp";
+
+/* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowDescription" = "Om Shred ska ta bort historikobjekt.";
+
+/* A title beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowTitle" = "Shred tar bort historik";
+
+/* A row description that appears in the Shields & Privacy settings. */
+"shields.shredRowDescription" = "Uppdatera Auto Shred och justera vilka data som ska raderas.";
+
+/* A row title that appears in the Shields & Privacy settings. */
+"shields.shredRowTitle" = "Ta bort";
+
+/* A title for the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredSettingsViewTitle" = "Ta bort";
+
+/* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
+"shields.sourceURLLabel" = "Käll-URL";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "Ta bort data";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "Aldrig";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "Appen stängd";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "Webbplatsflikar stängda";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "Borttagning stänger alla flikar och tar bort alla webbplatsdata. Detta kan inte ångras.";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "Ta bort webbplatsdata";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "Borttagning stänger alla flikar som är öppna för den här webbplatsen och tar bort alla webbplatsdata. Detta kan inte ångras.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "Vill du ta bort webbplatsdata?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "Ta bort webbplatsdata nu";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "Borttagning stänger de valda flikarna och tar bort alla webbplatsdata. Detta kan inte ångras.";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "Webbplatsen är inte säker";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "Anslutningen till %@ är inte säker";
+
+/* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
+"TrackersAndAdsBlocking" = "Blockning av spårare & annonser";
+
+/* This is a label for a button which when pressed updates all the filter lists */
+"UpdateLists" = "Uppdatera listor";
+
+/* This is a label on a button that updates filter lists which signifies that lista are being updated */
+"UpdatingLists" = "Uppdaterar listor";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "Uppgradera anslutningar till HTTPS";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "Du ser den här varningen eftersom webbplats inte stöder HTTPS.";
+

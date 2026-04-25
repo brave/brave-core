@@ -1,0 +1,66 @@
+/* A button title shown below language introducing the Brave Playlist feature. i.e. 'Discover how to use use this feature' */
+"advanceInitialOnboardingButtonTitle" = "方法をチェック:";
+
+/* A button title that when tapped will advance the onboarding to guide a user to add some content to Playlist */
+"advanceStep2OnboardingButtonTitle" = "お試しください！";
+
+/* A button that allows the user to disable the brave translate feature. When pressed, the page will not be automatically translated to the user's language. */
+"BraveTranslateOnboarding.disableTranslateButtonTitle" = "この機能を無効にする";
+
+/* A text element that describes the translation feature and explains that hte user might have to download or configure languages on their device. */
+"BraveTranslateOnboarding.translateDescription" = "ページはあなたのiOSデバイスでサポートされている言語に翻訳することができます。この機能を初めて使用するにあたり、言語の設定が必要になる場合があります。";
+
+/* A text element that explains we're translating pages. */
+"BraveTranslateOnboarding.translateTitle" = "ページ翻訳";
+
+/* A button title that when tapped opens Brave Playlist */
+"confirmationActionButtonTitle" = "マイプレイリストを見る";
+
+/* Shown above a button that will let the user open the playlist feature */
+"confirmationPrompt" = "作成したプレイリストを見てみましょう。";
+
+/* Shown below a title that confirms the user completed the task of adding something to playlist. %@ will be replaced with the folder the content was added to. i.e. 'Content added to Play Later' */
+"confirmationSubtitle" = "コンテンツが%@に追加されました";
+
+/* Guides the user to tap on an icon where the onboarding is pointing to. '%@' will be replaced with said icon. */
+"confirmationTitle" = "準備完了";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissOnboardingButtonTitle" = "表示しない";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep2OnboardingButtonTitle" = "あとで";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep4OnboardingButtonTitle" = "閉じる";
+
+/* A title shown on the first 2 steps of onboarding for Brave Playlist. Brave Playlist is a product name */
+"introducingBravePlaylist" = "Braveプレイリストへようこそ";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleOne" = "お気に入りのコンテンツのプレイリストを作成しましょう。モバイルデータを節約しながら、広告なしで再生を楽しめます。";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleThree" = "ピクチャーインピクチャー、バックグラウンド再生、ロック画面からのコントロールなど、さまざまな機能を利用できます。";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleTwo" = "気になったらいつでも追加: 視聴中に別の動画を追加して、後で視聴できます。";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleOne" = "Braveプレイリストから動画を追加しましょう。好きなときに、オフラインでも視聴できます。";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleThree" = "プレイリストで動画再生をもっと快適に";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleTwo" = "ボタンをタップするだけでプレイリストに動画を追加できます";
+
+/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
+"playlistOnboardingDescription" = "大好きなコンテンツを集めてプレイリストを作成し、あらゆるページからメディアを追加しましょう。\nいつでも好きなときに、オフラインでも視聴できます。";
+
+/* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
+"userActionPrompt" = "%@をタップして最初のアイテムを追加";
+
+/* Will be shown next to an icon inside of some other text. i.e. "Tap 'Add to Playlist' to add your first item" */
+"userActionPromptFill" = "プレイリストに追加";
+

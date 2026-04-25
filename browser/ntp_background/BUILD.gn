@@ -1,0 +1,140 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
+import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
+import("//testing/test.gni")
+
+source_set("ntp_background") {
+  sources = [
+    "new_tab_takeover_infobar_delegate.cc",
+    "new_tab_takeover_infobar_delegate.h",
+    "view_counter_service_factory.cc",
+    "view_counter_service_factory.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/app:brave_generated_resources_grit_grit",
+    "//brave/browser:browser_process",
+    "//brave/components/brave_ads/buildflags",
+    "//brave/components/brave_ads/core/browser/service",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/constants",
+    "//brave/components/infobars/core",
+    "//brave/components/ntp_background_images/browser",
+    "//brave/components/ntp_background_images/buildflags",
+    "//brave/components/ntp_background_images/common",
+    "//brave/components/p3a",
+    "//chrome/browser:browser_process",
+    "//chrome/browser:browser_public_dependencies",
+    "//chrome/browser/content_settings:content_settings_factory",
+    "//chrome/browser/infobars",
+    "//chrome/browser/profiles:profile",
+    "//components/infobars/content",
+    "//components/infobars/core",
+    "//components/keyed_service/content",
+    "//components/pref_registry",
+    "//components/prefs",
+    "//components/strings:components_strings_grit",
+    "//components/vector_icons",
+    "//content/public/browser",
+    "//ui/base",
+    "//url",
+  ]
+
+  if (enable_brave_ads) {
+    deps += [
+      "//brave/browser/brave_ads",
+      "//brave/components/brave_ads/browser",
+      "//brave/components/brave_ads/core/public:headers",
+    ]
+  }
+
+  if (enable_custom_background) {
+    sources += [
+      "brave_ntp_custom_background_service_delegate.cc",
+      "brave_ntp_custom_background_service_delegate.h",
+      "brave_ntp_custom_background_service_factory.cc",
+      "brave_ntp_custom_background_service_factory.h",
+      "constants.h",
+      "custom_background_file_manager.cc",
+      "custom_background_file_manager.h",
+      "ntp_background_prefs.cc",
+      "ntp_background_prefs.h",
+    ]
+
+    deps += [
+      "//chrome/browser/image_fetcher",
+      "//chrome/browser/themes",
+      "//services/data_decoder/public/cpp",
+    ]
+  }
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "new_tab_takeover_infobar_delegate_unittest.cc" ]
+
+  deps = [
+    ":ntp_background",
+    "//base",
+    "//brave/browser:browser_process",
+    "//brave/components/brave_referrals/browser",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/ntp_background_images/browser",
+    "//brave/components/ntp_background_images/common",
+    "//brave/components/p3a",
+    "//chrome/test:test_support",
+    "//components/infobars/content",
+    "//components/prefs:test_support",
+    "//components/sync_preferences:test_support",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
+
+  if (enable_custom_background) {
+    sources += [
+      "brave_ntp_custom_background_service_delegate_unittest.cc",
+      "ntp_background_prefs_unittest.cc",
+    ]
+
+    deps += [
+      "//brave/components/constants",
+      "//chrome/test:test_support",
+    ]
+  }
+}
+
+if (enable_custom_background) {
+  source_set("browser_tests") {
+    testonly = true
+
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+    sources = [
+      "custom_background_file_manager_browsertest.cc",
+      "ntp_sponsored_rich_media_browsertest.cc",
+      "ntp_sponsored_rich_media_with_csp_violation_browsertest.cc",
+    ]
+
+    deps = [
+      ":ntp_background",
+      "//base",
+      "//base/test:test_support",
+      "//brave/components/constants",
+      "//brave/components/ntp_background_images/browser",
+      "//brave/components/ntp_background_images/browser:test_support",
+      "//chrome/browser/profiles:profile",
+      "//chrome/browser/ui",
+      "//chrome/test:test_support",
+      "//chrome/test:test_support_ui",
+      "//content/test:test_support",
+    ]
+
+    data = [ "//brave/test/data/ntp_background/background.jpg" ]
+  }
+}

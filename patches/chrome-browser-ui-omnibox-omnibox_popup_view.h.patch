@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/omnibox/omnibox_popup_view.h b/chrome/browser/ui/omnibox/omnibox_popup_view.h
+index 5b3851817155858fdec46769674e2a70c33c7c13..e60d128d4db2301a4b2bcbcb799005d01c36b63f 100644
+--- a/chrome/browser/ui/omnibox/omnibox_popup_view.h
++++ b/chrome/browser/ui/omnibox/omnibox_popup_view.h
+@@ -69,6 +69,7 @@ class OmniboxPopupView {
+   virtual bool IsSelectionPopupControlled() const = 0;
+ 
+  protected:
++  BRAVE_OMNIBOX_POPUP_VIEW_FRIEND
+   friend class OmniboxResultView;
+   friend class OmniboxSuggestionButtonRowView;
+ 

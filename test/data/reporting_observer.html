@@ -1,0 +1,21 @@
+<script>
+  function isReportingObserverNoop() {
+    try {
+      const observer = new ReportingObserver(() => {},
+        { types: ['deprecation'], buffered: true }
+      );
+      observer.observe();
+      const xhr = new XMLHttpRequest();
+      // false makes it synchronous, which is deprecated.
+      xhr.open('GET', '/', false);
+      xhr.send(null);
+      const reports = observer.takeRecords();
+      console.log("Reports:", reports);
+      // Even though we made a synchronous request, we should not have any reports.
+      return reports.length === 0;
+    } catch (error) {
+      console.error("Error occurred:", error);
+      return false;
+    }
+  }
+</script>

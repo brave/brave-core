@@ -1,0 +1,42 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+
+source_set("web_state") {
+  sources = [
+    "web_state+private.h",
+    "web_state.h",
+    "web_state.mm",
+    "web_state_native.h",
+    "web_state_native.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//components/keyed_service/ios",
+    "//ios/chrome/browser/sessions/model",
+    "//ios/chrome/browser/shared/model/browser",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/chrome/browser/shared/model/web_state_list",
+    "//ios/chrome/browser/sync/model",
+    "//ios/chrome/browser/tabs/model",
+    "//ios/chrome/browser/tabs/model:synced_tabs",
+    "//ios/web/common:user_agent",
+    "//ios/web/public/session",
+    "//ios/web/public/thread",
+    "//ios/web/web_state",
+    "//ios/web/web_state:web_state_impl_header",
+    "//ios/web/web_state/ui:crw_web_view_navigation_proxy",
+    "//ui/base",
+    "//url",
+  ]
+
+  frameworks = [
+    "Foundation.framework",
+    "WebKit.framework",
+  ]
+}

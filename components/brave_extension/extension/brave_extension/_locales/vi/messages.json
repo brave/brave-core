@@ -1,0 +1,226 @@
+{
+  "appName": {
+    "message": "Phần mở rộng Brave",
+    "description": "The name of the extension."
+  },
+  "shields": {
+    "message": "Lá chắn",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "lên",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "không hoạt động",
+    "description": "Message for when shields is disabled"
+  },
+  "forThisSite": {
+    "message": "cho trang này",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "Nếu trang web hiển thị lỗi, hãy thử tắt lá chắn",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "Bạn đang duyệt qua trang web này mà không sử dụng biện pháp bảo vệ quyền riêng tư và bảo mật của Brave. Trang web có không hoạt động đúng cách khi bạn bật Shields không?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "Báo cáo trang web bị hỏng",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
+  },
+  "itemsBlocked": {
+    "message": "Mục đã chặn",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
+  },
+  "itemBlocked": {
+    "message": "Mục đã chặn",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
+  },
+  "and": {
+    "message": "và",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
+  },
+  "connectionsUpgraded": {
+    "message": "kết nối đã được nâng cấp",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
+  },
+  "connectionUpgraded": {
+    "message": "kết nối đã được nâng cấp",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
+  },
+  "thirdPartyTrackersBlocked": {
+    "message": "Đã chặn các bộ theo dõi trên mọi website",
+    "description": "Message for the scripts blocked row label"
+  },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "Trình theo dõi và quảng cáo bị chặn",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "Trình theo dõi và quảng cáo đã bị chặn (tích cực)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "Trình theo dõi và quảng cáo đã bị chặn (tiêu chuẩn)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "Cho phép tất cả trình theo dõi và quảng cáo",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
+  "connectionsUpgradedHTTPS": {
+    "message": "Kết nối đã được nâng cấp lên HPPTS",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
+  },
+  "connectionUpgradedHTTPS": {
+    "message": "Kết nối đã được nâng cấp lên HPPTS",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
+  },
+  "scriptsBlocked": {
+    "message": "Đã chặn kịch bản",
+    "description": "Message for the scripts blocked row label"
+  },
+  "thirdPartyCookiesBlocked": {
+    "message": "Đã chặn cookie trên mọi website",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "Đã chặn cookie",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "Đã cho phép toàn bộ cookie",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "Đã chặn tính năng tạo dấu vân tay",
+    "description": "Message for the option in the fingerprinting field in read only view"
+  },
+  "standardFingerprinting": {
+    "message": "Vân tay bị chặn (tiêu chuẩn)",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
+  },
+  "strictFingerprinting": {
+    "message": "Vân tay bị chặn (chặt chẽ, có thể khiến các website bị lỗi)",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
+  },
+  "allowAllFingerprinting": {
+    "message": "Cho phép tất cả vân tay",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Ý định theo dõi dấu vân tay",
+    "description": "Message for the fingerprinting attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Các script trên trang web này",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Các script đã bị chặn",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Script được cho phép",
+    "description": "Message for the script resources allowed"
+  },
+  "blockAll": {
+    "message": "Chặn tất cả",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "Cho phép toàn bộ",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "block": {
+    "message": "Chặn",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "allow": {
+    "message": "Cho phép",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "blockedOnce": {
+    "message": "Bị chặn một lần",
+    "description": "Message for the resources blocked *blocked once* option"
+  },
+  "allowedOnce": {
+    "message": "Được cho phép một lần",
+    "description": "Message for the resources blocked *allowed once* option"
+  },
+  "allowScriptsOnce": {
+    "message": "Cho phép các tập lệnh script một lần",
+    "description": "Message for the shortcut in the main interface to allow all scripts once"
+  },
+  "cancel": {
+    "message": "Hủy",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Quay lại",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "Áp dụng một lần",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "Thay đổi cài đặt mặc định tổng thể của khiên",
+    "description": "Message for the button action linking to the settings page"
+  },
+  "manageCustomFilters": {
+    "message": "Quản lý bộ lọc tùy chỉnh",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
+  "elementPickerMode": {
+    "message": "Chặn thành phần",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
+  },
+  "advancedView": {
+    "message": "Dạng xem Nâng cao",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "Dạng xem Đơn giản",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "Các trang thường có cookie và tập lệnh tìm cách xác định danh tính của bạn và thiết bị của bạn (thường được nhúng trong quảng cáo). Họ muốn tìm hiểu xem bạn là ai và theo dõi bạn trên mạng - theo dõi hoạt động của bạn trên mọi trang. Brave chặn những thứ này để bạn có thể lướt web mà không bị theo dõi.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "Trình theo dõi chéo và những thứ nguy hiểm khác đã bị chặn",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "Thay đổi cài đặt Shield trong chế độ xem này có thể ảnh hưởng đến tính tương thích web trên trang này.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "Bỏ qua",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "Tìm hiểu thêm",
+    "description": "Message inviting the user to learn more about Shields"
+  },
+  "addToBrave": {
+    "message": "Thêm vào Brave",
+    "description": "Message for adding an extension to Brave"
+  },
+  "removeFromBrave": {
+    "message": "Xóa khỏi Brave",
+    "description": "Message for removing an extension from Brave"
+  },
+  "addToChrome": {
+    "message": "Thêm vào Chrome",
+    "description": "Message for adding an extension to Chrome"
+  },
+  "removeFromChrome": {
+    "message": "Xóa khỏi Chrome",
+    "description": "Message for removing an extension from Chrome"
+  }
+}

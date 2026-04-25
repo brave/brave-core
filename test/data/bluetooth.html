@@ -1,0 +1,15 @@
+<script>
+function bluetoothBlocked() {
+  let options = {
+    filters: [
+      {namePrefix: 'Prefix'}
+    ]
+  }
+  try {
+    navigator.bluetooth.requestDevice(options).resolve('Waiting');
+  } catch (e) {
+    return true;
+  }
+  return false;
+}
+</script>

@@ -1,0 +1,20 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/buildflag_header.gni")
+import("//build/config/features.gni")
+
+declare_args() {
+  safebrowsing_api_endpoint = ""
+}
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [ "SAFEBROWSING_ENDPOINT=\"$safebrowsing_api_endpoint\"" ]
+}
+
+source_set("safebrowsing") {
+  public_deps = [ ":buildflags" ]
+}

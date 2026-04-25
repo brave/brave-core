@@ -1,0 +1,29 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
+
+assert(enable_brave_ads)
+
+source_set("application_state") {
+  sources = [
+    "application_state_monitor.cc",
+    "application_state_monitor.h",
+    "application_state_observer.h",
+  ]
+
+  public_deps = [ "//base" ]
+}
+
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "test/test_application_state_observer.cc",
+    "test/test_application_state_observer.h",
+  ]
+
+  public_deps = [ ":application_state" ]
+}

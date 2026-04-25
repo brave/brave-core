@@ -1,0 +1,263 @@
+// Copyright 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import BraveCore
+import Foundation
+import JitsiMeetSDK
+import Preferences
+import Shared
+
+/// Handles coordinating when to use the Jitsi SDK for better Brave Talk integration
+@MainActor public class BraveTalkJitsiCoordinator: Sendable {
+  /// Whether or not the jitsi SDK integration is enabled
+  static func isIntegrationEnabled(for prefs: PrefService) -> Bool {
+    // Currently the Jitsi SDK integration is available as long as the feature itself is available
+    return prefs.isBraveTalkAvailable
+  }
+
+  public init(prefService: PrefService) {
+    self.prefService = prefService
+
+    if !AppConstants.isOfficialBuild || Preferences.Debug.developerOptionsEnabled.value {
+      JitsiMeetLogger.add(BraveTalkJitsiLogHandler())
+    }
+  }
+
+  public enum AppLifetimeEvent {
+    case continueUserActivity(
+      NSUserActivity,
+      restorationHandler: (([UIUserActivityRestoring]) -> Void)? = nil
+    )
+  }
+
+  @discardableResult
+  public static func sendAppLifetimeEvent(
+    _ event: AppLifetimeEvent,
+    prefService: PrefService
+  ) -> Bool {
+    guard Self.isIntegrationEnabled(for: prefService) else { return false }
+    let application = UIApplication.shared
+    // Warning: Grabbing this shared instance automatically creates a React Native bridge
+    let meet = JitsiMeet.sharedInstance()
+    meet.destroyReactNativeBridge()
+    // --
+    switch event {
+    case .continueUserActivity(let activity, let restorationHandler):
+      return meet.application(
+        application,
+        continue: activity,
+        restorationHandler: restorationHandler
+      )
+    }
+  }
+
+  private let prefService: PrefService
+  private var pipViewCoordinator: PiPViewCoordinator?
+  private var jitsiMeetView: JitsiMeetView?
+  public private(set) var jitsiTranscriptProcessor: BraveTalkJitsiTranscriptProcessor?
+  private var delegate: JitsiDelegate?
+  private var isMuted: Bool = false
+  public private(set) var isBraveTalkInPiPMode: Bool = false
+  public private(set) var isCallActive: Bool = false
+
+  public var isIntegrationEnabled: Bool {
+    Self.isIntegrationEnabled(for: prefService)
+  }
+
+  public func toggleMute() {
+    guard isIntegrationEnabled else { return }
+    // The SDK doesn't seem to call `audioMutedChanged` when we call setAudioMuted below…
+    isMuted.toggle()
+    jitsiMeetView?.setAudioMuted(isMuted)
+  }
+
+  public enum KeyboardPressPhase {
+    case began, changed, ended, cancelled
+  }
+
+  public func handleResponderPresses(presses: Set<UIPress>, phase: KeyboardPressPhase) {
+    guard isIntegrationEnabled, isCallActive, !isBraveTalkInPiPMode else {
+      return
+    }
+    let isSpacebarPressed = presses.contains(where: { $0.key?.keyCode == .keyboardSpacebar })
+    switch phase {
+    case .began:
+      if isSpacebarPressed {
+        isMuted = false
+      }
+    case .changed:
+      if !isMuted && !isSpacebarPressed {
+        isMuted = true
+      }
+    case .cancelled, .ended:
+      if isSpacebarPressed {
+        isMuted = true
+      }
+    }
+    jitsiMeetView?.setAudioMuted(isMuted)
+  }
+
+  private func dismissJitsiMeetView(_ completion: @escaping () -> Void) {
+    self.pipViewCoordinator?.hide { _ in
+      self.jitsiMeetView?.removeFromSuperview()
+      self.jitsiMeetView = nil
+      self.pipViewCoordinator = nil
+      self.isCallActive = false
+      // Destroy the bridge after they're done
+      JitsiMeet.sharedInstance().destroyReactNativeBridge()
+      completion()
+    }
+  }
+
+  public func launchNativeBraveTalk(
+    for room: String,
+    token: String,
+    host: String,
+    onEnterCall: @escaping () -> Void,
+    onExitCall: @escaping () -> Void
+  ) {
+    guard isIntegrationEnabled else { return }
+
+    // Only create the RN bridge when the user joins a call
+    JitsiMeet.sharedInstance().instantiateReactNativeBridge()
+
+    // Call this right away instead of waiting for the conference to join so that we can stop the page load
+    // faster.
+    onEnterCall()
+    delegate = JitsiDelegate(
+      conferenceWillJoin: { [weak self] in
+        self?.jitsiTranscriptProcessor = BraveTalkJitsiTranscriptProcessor()
+
+        // Its possible for a permission prompt for mic to appear on the web page after joining but the
+        // alert gets placed on top of the JitsiMeetView and eats touches. Weirdly it isn't actually visible
+        // on top of the JitsiMeetView so the user can't even dismiss it.
+        guard let jmv = self?.jitsiMeetView else { return }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+          jmv.window?.bringSubviewToFront(jmv)
+        }
+      },
+      conferenceJoined: { [weak self] in
+        self?.isCallActive = true
+      },
+      conferenceTerminated: { [weak self] in
+        guard let self = self else { return }
+        self.dismissJitsiMeetView { [weak self] in
+          self?.jitsiTranscriptProcessor = nil
+          onExitCall()
+        }
+      },
+      enterPictureInPicture: { [weak self] in
+        self?.isBraveTalkInPiPMode = true
+        self?.pipViewCoordinator?.enterPictureInPicture()
+      },
+      exitedPictureInPicture: { [weak self] in
+        self?.isBraveTalkInPiPMode = false
+      },
+      audioIsMuted: { [weak self] isMuted in
+        self?.isMuted = isMuted
+      },
+      readyToClose: { [weak self] in
+        guard let self = self else { return }
+        if !self.isCallActive {
+          // Trying to leave the join screen
+          self.dismissJitsiMeetView { [weak self] in
+            self?.jitsiTranscriptProcessor = nil
+            onExitCall()
+          }
+        }
+      },
+      transcriptChunkReceived: { data in
+        Task { [weak self] in
+          await self?.jitsiTranscriptProcessor?.processTranscript(dictionary: data)
+        }
+      }
+    )
+
+    jitsiMeetView = JitsiMeetView()
+    jitsiMeetView?.delegate = delegate
+
+    pipViewCoordinator = PiPViewCoordinator(withView: jitsiMeetView!)
+    pipViewCoordinator?.delegate = delegate
+    pipViewCoordinator?.configureAsStickyView()
+
+    jitsiMeetView?.join(.braveTalkOptions(room: room, token: token, host: host))
+    jitsiMeetView?.alpha = 0
+
+    pipViewCoordinator?.show()
+  }
+
+  public func resetPictureInPictureBounds(_ bounds: CGRect) {
+    guard isIntegrationEnabled, let pip = pipViewCoordinator else { return }
+    pip.resetBounds(bounds: bounds)
+  }
+}
+
+private class JitsiDelegate: NSObject, JitsiMeetViewDelegate, PiPViewCoordinatorDelegate {
+  var conferenceWillJoin: () -> Void
+  var conferenceJoined: () -> Void
+  var conferenceTerminated: () -> Void
+  var enterPiP: () -> Void
+  var exitedPiP: () -> Void
+  var audioIsMuted: (Bool) -> Void
+  var readyToClose: () -> Void
+  var transcriptChunkReceived: ([AnyHashable: Any]) -> Void
+
+  init(
+    conferenceWillJoin: @escaping () -> Void,
+    conferenceJoined: @escaping () -> Void,
+    conferenceTerminated: @escaping () -> Void,
+    enterPictureInPicture: @escaping () -> Void,
+    exitedPictureInPicture: @escaping () -> Void,
+    audioIsMuted: @escaping (Bool) -> Void,
+    readyToClose: @escaping () -> Void,
+    transcriptChunkReceived: @escaping ([AnyHashable: Any]) -> Void
+  ) {
+    self.conferenceWillJoin = conferenceWillJoin
+    self.conferenceJoined = conferenceJoined
+    self.conferenceTerminated = conferenceTerminated
+    self.enterPiP = enterPictureInPicture
+    self.exitedPiP = exitedPictureInPicture
+    self.audioIsMuted = audioIsMuted
+    self.readyToClose = readyToClose
+    self.transcriptChunkReceived = transcriptChunkReceived
+  }
+
+  func conferenceJoined(_ data: [AnyHashable: Any]!) {
+    if let isMuted = data?["isAudioMuted"] as? Bool {
+      audioIsMuted(isMuted)
+    }
+    conferenceJoined()
+  }
+
+  func conferenceWillJoin(_ data: [AnyHashable: Any]!) {
+    conferenceWillJoin()
+  }
+
+  func conferenceTerminated(_ data: [AnyHashable: Any]!) {
+    conferenceTerminated()
+  }
+
+  func enterPicture(inPicture data: [AnyHashable: Any]!) {
+    enterPiP()
+  }
+
+  func exitPictureInPicture() {
+    // Actually happens after exiting PiP, unlike entering PiP
+    exitedPiP()
+  }
+
+  func audioMutedChanged(_ data: [AnyHashable: Any]!) {
+    guard let isMuted = data?["muted"] as? Bool else { return }
+    audioIsMuted(isMuted)
+  }
+
+  func ready(toClose data: [AnyHashable: Any]!) {
+    readyToClose()
+  }
+
+  func transcriptionChunkReceived(_ data: [AnyHashable: Any]!) {
+    transcriptChunkReceived(data)
+  }
+}

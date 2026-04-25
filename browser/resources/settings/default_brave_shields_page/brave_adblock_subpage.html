@@ -1,0 +1,367 @@
+<style include="cr-shared-style settings-shared">
+  :host {
+    --selected-background-color: #F8F9FA;
+    --table-header-background-color: #E9E9F4;
+    --tinted-color: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 97.4%);
+    --text02: #495057;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :host {
+      --selected-background-color: #222325;
+      --table-header-background-color: #3B3E4F;
+      --tinted-color: linear-gradient(180deg, rgba(41, 42, 45, 0) 0%, #292a2d 97.4%);
+      --text02: #C2C4CF;
+    }
+  }
+
+  mark {
+    background: transparent;
+    color: #E32444;
+  }
+
+  .label.shields-primary-title {
+    font-size: 16px;
+    font-family: Poppins,sans-serif;
+    font-weight: 500;
+    margin: 24px 0 8px 0;
+  }
+
+  .label.shields-primary-title-sm {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text02);
+  }
+
+  .label.shields-secondary-title {
+    margin-bottom: 16px;
+  }
+
+  .label.shields-secondary-title.bold {
+    font-weight: 500;
+    margin-bottom: 0;
+  }
+
+  .filter-list-description {
+    font-size: 0.9em;
+    color: var(--text02);
+  }
+
+  .flex {
+    align-self: center;
+    flex: 1 1 auto;
+  }
+
+  .flex-container {
+    display: flex;
+    padding: 8px 1em;
+  }
+
+  .filter-list-box {
+    height: 200px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    position: relative;
+  }
+
+  .filter-list-box.expanded-true {
+    height: auto;
+    overflow: unset;
+  }
+
+  .filter-list-box.expanded-false::after {
+    content: '';
+    background: var(--tinted-color);
+    width: 100%;
+    height: 80px;
+    display: block;
+    position: absolute;
+    bottom: 0;
+    pointer-events: none;
+  }
+
+  .filter-list-item {
+    padding: 3px 10px;
+    border-radius: 4px;
+  }
+
+  .filter-list-item.selected-true {
+    background-color: var(--selected-background-color);
+    font-weight: 500;
+  }
+
+  .list-actions-box {
+    display: flex;
+    margin-bottom: 10px;
+    gap: 8px;
+  }
+
+  .update-lists-updated {
+    --leo-button-color: var(--leo-color-systemfeedback-success-text);
+  }
+
+  .update-lists-failed {
+    --leo-button-color: var(--leo-color-systemfeedback-error-text);
+  }
+
+  .subscribe-url-form {
+    display: grid;
+    grid-template-columns: 1fr 80px;
+    grid-gap: 10px;
+    align-items: flex-start;
+  }
+
+  .subscribe-url-item.header {
+    font-weight: 500;
+    background: var(--table-header-background-color);
+    border-radius: 4px 4px 0 0;
+    padding: 10px;
+    border: 0;
+  }
+
+  .subscribe-url-item {
+    display: grid;
+    grid-template-columns: 26px 1fr 0.5fr 50px;
+    grid-gap: 5px;
+    align-items: center;
+    padding: 5px 10px;
+    border-bottom: 1px solid var(--table-header-background-color);
+  }
+
+  .subscribe-url-item.selected-true {
+    background-color: var(--selected-background-color);
+  }
+
+  .subscribe-url-item:last-of-type {
+    border-bottom: 0;
+  }
+
+  .subscribe-url-item-name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 40ch;
+  }
+
+  .subscribe-url-item-name.selected-true {
+    font-weight: 500;
+  }
+
+  .subscribe-url-list-title {
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .subscribe-url-list-th-name { grid-column: 2; }
+  .subscribe-url-list-th-updated { grid-column: 3; }
+
+  .subscribe-url-list {
+    margin-bottom: 24px;
+    overflow: hidden;
+    border-radius: 4px;
+    border: 1px solid var(--table-header-background-color);
+    margin-top: 5px;
+  }
+
+  #search-box {
+    padding: 5px;
+  }
+
+  #search-box iron-icon {
+    --iron-icon-fill-color: var(--google-grey-500);
+  }
+
+  #adblock-section .settings-box:first-child {
+    border-top: transparent;
+  }
+</style>
+
+<settings-subpage page-title="$i18n{adblockContentFiltersLabel}">
+<div id="adblock-section">
+  <div class="settings-box">
+    <div class="flex">
+        <div class="label shields-primary-title">$i18n{adblockTrackingFiltersLabel}</div>
+        <div class="label secondary shields-secondary-title">
+          $i18n{adblockTrackingFiltersDesc}
+        </div>
+        <cr-input
+          type="text"
+          placeholder="$i18n{adblockFilterListsInputPlaceHolder}"
+          min="1"
+          max="100"
+          value="{{filterListTitle}}"
+        >
+          <span id="search-box" slot="inline-suffix">
+            <iron-icon icon="search"></iron-icon>
+          </span>
+        </cr-input>
+        <div class$="filter-list-box expanded-[[hasListExpanded_]]">
+          <template is="dom-repeat" items="[[filterList_]]"
+          filter="{{searchListBy_(filterListTitle)}}" observe="val" initial-count="10">
+            <div class$="filter-list-item selected-[[item.enabled]]">
+              <cr-checkbox checked="{{item.enabled}}" on-change="handleFilterListItemToggle_">
+                <div>
+                  <div>[[item.title]]</div>
+                  <div class="filter-list-description">[[item.desc]]</div>
+                </div>
+              </cr-checkbox>
+            </div>
+          </template>
+        </div>
+        <div class="list-actions-box">
+          <template is="dom-if" if="[[!hasListExpanded_]]">
+            <div>
+              <cr-button on-click="handleShowList_">$i18n{adblockShowFullListsButtonLabel}</cr-button>
+            </div>
+          </template>
+          <div class$="update-lists-[[listsUpdatingState_]]">
+            <template is="dom-if" if="[[!listsUpdatingState_]]">
+              <cr-button on-click="handleUpdateLists_">
+                <span>$i18n{adblockUpdateListsButtonLabel}</span>
+              </cr-button>
+            </template>
+            <template is="dom-if" if="[[isEqual_(listsUpdatingState_, 'updating')]]">
+              <cr-button on-click="handleUpdateLists_">
+                <leo-progressring slot="prefix-icon"></leo-progressring>
+                <span>$i18n{adblockUpdateListsUpdatingButtonLabel}</span>
+              </cr-button>
+            </template>
+            <template is="dom-if" if="[[isEqual_(listsUpdatingState_, 'updated')]]">
+              <cr-button on-click="handleUpdateLists_">
+                <leo-icon name="check-circle-outline" slot="prefix-icon"></leo-icon>
+                <span>$i18n{adblockUpdateListsUpdatedButtonLabel}</span>
+              </cr-button>
+            </template>
+            <template is="dom-if" if="[[isEqual_(listsUpdatingState_, 'failed')]]">
+              <cr-button on-click="handleUpdateLists_">
+                <leo-icon name="warning-circle-outline" slot="prefix-icon"></leo-icon>
+                <span>$i18n{adblockUpdateListsRetryButtonLabel}</span>
+              </cr-button>
+            </template>
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="settings-box">
+    <div class="flex">
+      <div class="label shields-primary-title">
+        $i18n{adblockAddCustomFiltersListsLabel}
+      </div>
+      <div class="label secondary shields-secondary-title bold">
+        $i18n{adblockAddCustomFiltersListsDesc}
+      </div>
+      <div class="label secondary shields-secondary-title">
+        $i18n{adblockAddCustomFiltersListsNote}
+      </div>
+      <div class="subscribe-url-form">
+        <cr-input
+          type="url"
+          spellcheck="false"
+          placeholder="$i18n{adblockFilterListsInputURLPlaceholder}"
+          min="1"
+          max="500"
+          value="{{subscribeUrl_}}"
+          on-keyup="onKeyUp_"
+        >
+        </cr-input>
+        <cr-button type="submit" on-click="handleSubmitUrl_">
+          $i18n{adblockAddListsButtonLabel}
+        </cr-button>
+      </div>
+      <template is="dom-if" if="[[subscriptionList_.length]]">
+        <div class="label shields-primary-title-sm">
+          $i18n{adblockCustomListsLabel}
+        </div>
+        <div class="subscribe-url-list">
+          <div class="subscribe-url-item header">
+            <span class="subscribe-url-list-th-name">
+              $i18n{adblockFilterListsTableTitleHeader}
+            </span>
+            <span class="subscribe-url-list-th-updated">
+              $i18n{adblockFilterListsTableUpdatedHeader}
+            </span>
+          </div>
+          <template is="dom-repeat" items="[[subscriptionList_]]" initial-count="10">
+            <div class$="subscribe-url-item
+            selected-[[item.enabled]]">
+              <cr-checkbox
+                checked="{{item.enabled}}"
+                on-change="handleSubscribeUrlItemItemToggle_"
+              ></cr-checkbox>
+              <span
+                title="[[item.subscription_url]]" class$="subscribe-url-item-name
+                selected-[[item.enabled]]"
+              >
+                [[item.title]]
+              </span>
+              <!--
+                /* "Last updated" column can have four distinct states:
+                * No update ever attempted: fine to show blank
+                * Update attempted and failed, and never succeeded previously: show
+                * "Download failure"
+                * Update attempted and failed, but succeeded previously: show
+                * "Download failure since + last updated time"
+                * Update attempted and succeeded: show the last updated time
+                */
+              -->
+              <span>
+                <template is="dom-if" if="[[isEqual_(item.last_update_attempt, 0)]]">
+                  <span>—</span>
+                </template>
+                <template is="dom-if" if="[[isEqual_(item.last_successful_update_attempt, 0)]]">
+                  <mark>[[i18n('adblockSubscribeUrlDownloadFailed')]]</mark>
+                </template>
+                <template is="dom-if" if="[[isFailedUpdate_(item)]]">
+                  <span>[[item.last_updated_pretty_text]] <mark>[[i18n('adblockSubscribeUrlUpdateFailed')]]</mark></span>
+                </template>
+                <template is="dom-if" if="[[isLastAttemptFailed_(item)]]">
+                  <span>[[item.last_updated_pretty_text]]</span>
+                </template>
+              </span>
+              <adblock-subscribe-dropdown
+                on-update-subscription="handleUpdateSubscription_"
+                on-view-subscription="handleViewSubscription_"
+                on-delete-subscription="handleDeleteSubscription_"
+              ></adblock-subscribe-dropdown>
+            </div>
+          </template>
+        </div>
+      </template>
+    </div>
+</div>
+
+<settings-toggle-button
+  class="cr-row"
+  pref="{{prefs.brave.ad_block.developer_mode}}"
+  label="$i18n{adblockDeveloperModeLabel}"
+  sub-label="$i18n{adblockDeveloperModeDesc}">
+</settings-toggle-button>
+
+<template is="dom-if" if="[[shouldShowCustomFilters_]]" restamp>
+  <div class="settings-box">
+    <div class="flex">
+      <div class="label shields-primary-title">
+        $i18n{adblockCustomFiltersLabel}
+      </div>
+      <div class="label secondary shields-secondary-title" inner-h-t-m-l="[[getStringHtml_('adblockCustomFiltersDesc', 'https://support.brave.app/hc/en-us/articles/6449369961741')]]"></div>
+      <adblock-filter-editor
+        prefs="{{prefs}}"
+        value="{{customFilters_}}"
+        on-save="handleSave_"
+      ></adblock-filter-editor>
+    </div>
+  </div>
+</template>
+
+<template is="dom-if" if="[[shouldShowCustomScriptlets_]]" restamp>
+  <div class="settings-box">
+    <div class="flex">
+      <div class="label shields-primary-title">
+        $i18n{adblockCustomSciptletsListLabel}
+      </div>
+      <adblock-scriptlet-list prefs="{{prefs}}">
+      </adblock-scriptlet-list>
+    </div>
+  </div>
+</template>
+</settings-subpage>

@@ -1,0 +1,42 @@
+/* The title of the button that changes the screen to next */
+"focusOnboarding.continueButtonTitle" = "Tiếp tục";
+
+/* The subtitle of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "Đặt Brave làm trình duyệt mặc định của bạn ngay hôm nay.";
+
+/* The title of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "Chặn quảng cáo trên mọi trang bạn truy cập";
+
+/* The title of the button that closes the default browser full screen callout */
+"focusOnboarding.notNowActionButtonTitle" = "Không phải Bây giờ";
+
+/* The subtitle of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenDescription" = "Chặn các yếu tố ngắt quãng phiền nhiễu trên các trang nội dung trực tuyến bạn yêu thích.";
+
+/* The title of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenTitle" = "Chặn Các Yếu Tố Ngắt Quãng Nội Dung Phát Trực Tuyến";
+
+/* The subtitle of the screen that asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenDescription" = "Hãy cho chúng tôi biết bạn thích nhất tính năng nào.";
+
+/* The title of the screen which asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenTitle" = "Giúp cải thiện Brave";
+
+/* The description shown below the toggle for enabling privacy preserving analytics. This uses standard markdown syntax. The Learn More is a link and #p3a-learn-more is a URL fragment */
+"focusOnboarding.p3aToggleDescription" = "Bạn có thể chọn không tham gia bất cứ lúc nào trong phần Cài đặt của **Lá chắn và Quyền riêng tư**. [Tìm hiểu thêm](#p3a-learn-more) về Phân tích Sản phẩm bảo vệ quyền riêng tư.";
+
+/* The title of the toggle for enable / disable the privacy preserving analytics. This uses standard markdown syntax. The "completely private & anonymous" snippet should be bold in all languages */
+"focusOnboarding.p3aToggleTitle" = "Chia sẻ thông tin chuyên sâu về sản phẩm **hoàn toàn riêng tư & ẩn danh**.";
+
+/* The title of the button that finishes the onboarding without setting default */
+"focusOnboarding.startBrowseActionButtonTitle" = "Bắt đầu duyệt";
+
+/* The title of the button that triggers navigation link to settings */
+"focusOnboarding.systemSettingsButtonTitle" = "Đặt làm mặc định";
+
+/* The description of the popup which points to URL Bar after onboarding */
+"focusOnboarding.urlBarIndicatorDescription" = "Tận hưởng nội dung trực tuyến với ít quảng cáo & trình theo dõi hơn.";
+
+/* The title of the popup which points to URL Bar after onboarding */
+"focusOnboarding.urlBarIndicatorTitle" = "Sự khác biệt mang tên Brave";
+

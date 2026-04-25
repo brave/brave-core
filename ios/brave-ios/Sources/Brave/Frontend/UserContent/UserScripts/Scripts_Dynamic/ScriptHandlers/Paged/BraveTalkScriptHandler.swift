@@ -1,0 +1,105 @@
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import BraveCore
+import BraveShared
+import BraveTalk
+import Foundation
+import Shared
+import Web
+import WebKit
+import os.log
+
+class BraveTalkScriptHandler: TabContentScript {
+  init() {}
+
+  static let scriptName = "BraveTalkScript"
+  static let scriptId = UUID().uuidString
+  static let messageHandlerName = "\(scriptName)_\(messageUUID)"
+  static let scriptSandbox: WKContentWorld = .page
+  static let userScript: WKUserScript? = {
+    guard var script = loadUserScript(named: scriptName) else {
+      return nil
+    }
+    return WKUserScript(
+      source: secureScript(
+        handlerName: messageHandlerName,
+        securityToken: scriptId,
+        script: script
+      ),
+      injectionTime: .atDocumentStart,
+      forMainFrameOnly: false,
+      in: scriptSandbox
+    )
+  }()
+
+  private struct Payload: Decodable {
+    enum Kind: Decodable {
+      case launchNativeBraveTalk(String)
+    }
+    var kind: Kind
+    var securityToken: String
+
+    enum CodingKeys: String, CodingKey {
+      case kind
+      case url
+      case securityToken = "securityToken"
+    }
+
+    init(from decoder: Decoder) throws {
+      enum RawKindKey: String, Decodable {
+        case launchNativeBraveTalk
+      }
+      let container = try decoder.container(keyedBy: CodingKeys.self)
+      let kind = try container.decode(RawKindKey.self, forKey: .kind)
+      self.securityToken = try container.decode(String.self, forKey: .securityToken)
+      switch kind {
+      case .launchNativeBraveTalk:
+        let url = try container.decode(String.self, forKey: .url)
+        self.kind = .launchNativeBraveTalk(url)
+      }
+    }
+  }
+
+  func tab(
+    _ tab: some TabState,
+    receivedScriptMessage message: WKScriptMessage,
+    replyHandler: @escaping (Any?, String?) -> Void
+  ) {
+    if !verifyMessage(message: message) {
+      assertionFailure("Missing required security token.")
+      return
+    }
+
+    let allowedHosts = DomainUserScript.braveTalkHelper.associatedDomains
+
+    guard let requestHost = message.frameInfo.request.url?.host,
+      allowedHosts.contains(requestHost),
+      message.frameInfo.isMainFrame
+    else {
+      Logger.module.error("Backup search request called from disallowed host")
+      replyHandler(nil, nil)
+      return
+    }
+
+    guard let json = try? JSONSerialization.data(withJSONObject: message.body, options: []),
+      let payload = try? JSONDecoder().decode(Payload.self, from: json)
+    else {
+      return
+    }
+
+    switch payload.kind {
+    case .launchNativeBraveTalk(let url):
+      guard let components = URLComponents(string: url),
+        case let room = String(components.path.dropFirst(1)),
+        let jwt = components.queryItems?.first(where: { $0.name == "jwt" })?.value
+      else {
+        return
+      }
+      tab.braveTalk?.launchBraveTalk(withRoom: room, jwtKey: jwt)
+      replyHandler(nil, nil)
+    }
+  }
+}

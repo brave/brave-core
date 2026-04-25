@@ -1,0 +1,28 @@
+diff --git a/components/permissions/permission_util.cc b/components/permissions/permission_util.cc
+index 2f6fbe5270245ddb1ef82f097ac1258781acb66e..13e15be5c372a6835fbd08494ecdc326b5852851 100644
+--- a/components/permissions/permission_util.cc
++++ b/components/permissions/permission_util.cc
+@@ -116,6 +116,7 @@ RequestTypeForUma PermissionUtil::GetUmaValueForRequests(
+   if (requests.size() == 1) {
+     return GetUmaValueForRequestType(request_type);
+   }
++  BRAVE_GET_UMA_VALUE_FOR_REQUESTS
+   return permissions::GetUmaValueForRequests(request_type);
+ }
+ 
+@@ -217,6 +218,7 @@ RequestTypeForUma PermissionUtil::GetUmaValueForRequestType(
+ #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+     case RequestType::kIdentityProvider:
+       return RequestTypeForUma::PERMISSION_IDENTITY_PROVIDER;
++    BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE
+   }
+ }
+ 
+@@ -556,6 +558,7 @@ ContentSettingsType PermissionUtil::PermissionTypeToContentSettingsTypeSafe(
+       return ContentSettingsType::LOOPBACK_NETWORK;
+     case PermissionType::NUM:
+       break;
++    PERMISSION_UTIL_PERMISSION_TYPE_TO_CONTENT_SETTINGS_TYPE
+   }
+ 
+   return ContentSettingsType::DEFAULT;

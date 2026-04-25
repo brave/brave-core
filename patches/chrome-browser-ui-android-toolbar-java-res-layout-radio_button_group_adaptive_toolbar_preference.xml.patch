@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/android/toolbar/java/res/layout/radio_button_group_adaptive_toolbar_preference.xml b/chrome/browser/ui/android/toolbar/java/res/layout/radio_button_group_adaptive_toolbar_preference.xml
+index ffaa6e6a77985d61dc0dbda7aa2ea4a95a301ceb..43a3176e7ce01a5a4a7559c355f2e2f61cd01f67 100644
+--- a/chrome/browser/ui/android/toolbar/java/res/layout/radio_button_group_adaptive_toolbar_preference.xml
++++ b/chrome/browser/ui/android/toolbar/java/res/layout/radio_button_group_adaptive_toolbar_preference.xml
+@@ -36,6 +36,7 @@ found in the LICENSE file.
+           app:iconSrc="@drawable/new_tab_icon"
+           app:primaryText="@string/adaptive_toolbar_button_preference_new_tab"/>
+ 
++      <include layout="@layout/brave_adaptive_preference_buttons" />
+       <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
+           android:id="@+id/adaptive_option_share"
+           android:layout_width="match_parent"

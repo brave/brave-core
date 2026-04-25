@@ -1,0 +1,12 @@
+diff --git a/components/security_interstitials/content/resources/connection_help.html b/components/security_interstitials/content/resources/connection_help.html
+index 5bb01aa1eedbdcebcaccc06d6c43d3a697229b27..d0b2071bfb73368e675080ba59f53f5cd0d0dc47 100644
+--- a/components/security_interstitials/content/resources/connection_help.html
++++ b/components/security_interstitials/content/resources/connection_help.html
+@@ -7,6 +7,7 @@
+     <link rel="stylesheet" href="chrome://resources/css/text_defaults.css">
+     <link rel="stylesheet" href="interstitial_core.css">
+     <link rel="stylesheet" href="interstitial_common.css">
++    <link rel="stylesheet" href="../../../../../brave/components/security_interstitials/core/common/resources/interstitial_common.css">
+     <link rel="stylesheet" href="connection_help.css">
+     <script type="module" src="connection_help.js"></script>
+   </head>

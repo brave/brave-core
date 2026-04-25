@@ -1,0 +1,31 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# based on //ui/webui/resources/js/browser_command/BUILD.gn
+
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+
+mojom("mojo_bindings") {
+  sources = [ "brave_browser_command.mojom" ]
+
+  enabled_features = []
+  if (enable_ai_chat) {
+    enabled_features += [ "enable_ai_chat" ]
+  }
+  if (enable_brave_wallet) {
+    enabled_features += [ "enable_brave_wallet" ]
+  }
+
+  public_deps = []
+  if (enable_ai_chat) {
+    public_deps += [ "//brave/components/ai_chat/core/common/mojom" ]
+  }
+
+  # The generated mojo bindings are part of the ui/webui/resources/brave/
+  # build_webui() target, so are served from chrome://resources/brave/
+  webui_module_path = "chrome://resources/brave/"
+}

@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/importer/BUILD.gn b/chrome/browser/importer/BUILD.gn
+index 0b36e87039987f567294e9a9785583e32f46a5fa..bf8cb3c79264ff713ffd58654bf052789f31849b 100644
+--- a/chrome/browser/importer/BUILD.gn
++++ b/chrome/browser/importer/BUILD.gn
+@@ -31,6 +31,7 @@ source_set("importer") {
+     "//ui/gfx",
+     "//url",
+   ]
++  import("//brave/browser/importer/sources.gni") sources += brave_browser_importer_sources public_deps += brave_browser_importer_public_deps
+ }
+ 
+ source_set("impl") {
+@@ -63,6 +64,7 @@ source_set("impl") {
+     "//components/password_manager/core/browser:password_form",
+     "//components/password_manager/core/browser/password_store:password_store_interface",
+   ]
++  import("//brave/browser/importer/sources.gni") sources += brave_browser_importer_impl_sources deps += brave_browser_importer_impl_deps
+ 
+   if (is_win) {
+     sources += [ "firefox_profile_lock_win.cc" ]

@@ -1,0 +1,12 @@
+diff --git a/third_party/widevine/cdm/widevine.gni b/third_party/widevine/cdm/widevine.gni
+index e31de0a5528cfb5e182e2fd4341ebea0c0aad73c..c289f3765ad1dc6d7e9c8b46f0b38e5044d79f4f 100644
+--- a/third_party/widevine/cdm/widevine.gni
++++ b/third_party/widevine/cdm/widevine.gni
+@@ -31,6 +31,7 @@ library_widevine_cdm_available =
+     (target_os == "mac" && (target_cpu == "x64" || target_cpu == "arm64")) ||
+     (target_os == "win" &&
+      (target_cpu == "x86" || target_cpu == "x64" || target_cpu == "arm64"))
++if (target_os == "linux") { library_widevine_cdm_available = true } # Let Linux users manually supply Widevine on architectures where it isn't publicly available.
+ 
+ # Widevine CDM is available as a library CDM and it's supported by Chromium.
+ # This does not define how the CDM will be deployed. It can be bundled or

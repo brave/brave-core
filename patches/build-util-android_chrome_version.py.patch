@@ -1,0 +1,21 @@
+diff --git a/build/util/android_chrome_version.py b/build/util/android_chrome_version.py
+index f408f6851b77f669aa8345948d858b2c1a15f3b8..b05203b7ef62f285ef78b1740562d47675939564 100755
+--- a/build/util/android_chrome_version.py
++++ b/build/util/android_chrome_version.py
+@@ -236,6 +236,7 @@ def _GetAbisToDigitMask(build_number, patch_number):
+     mapped to version code suffix.
+   """
+   # Scheme change was made directly to M113 and M114 branches.
++  from brave_version_utils import remap_build_number; build_number = remap_build_number(build_number)
+   use_new_scheme = (build_number >= 5750
+                     or (build_number == 5672 and patch_number >= 176)
+                     or (build_number == 5735 and patch_number >= 53))
+@@ -372,7 +373,7 @@ def GenerateVersionCodes(build_number, patch_number, arch):
+ 
+   Thus, this method is responsible for the final two digits of versionCode.
+   """
+-  base_version_code = (build_number * 1000 + patch_number) * 100
++  base_version_code = int('%02d%02d%03d00' % (42, build_number, patch_number))
+ 
+   mfg, bitness = _ARCH_TO_MFG_AND_BITNESS[arch]
+ 

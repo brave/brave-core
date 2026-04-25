@@ -1,0 +1,73 @@
+[package]
+name = "reddsa"
+edition = "2021"
+rust-version = "1.65"
+# When releasing to crates.io:
+# - Update CHANGELOG.md
+# - Create git tag.
+version = "0.5.1"
+authors = [
+    "Henry de Valence <hdevalence@hdevalence.ca>",
+    "Deirdre Connolly <durumcrustulum@gmail.com>",
+    "Chelsea Komlo <me@chelseakomlo.com>",
+    "Jack Grigg <jack@electriccoin.co>",
+    "Conrado Gouvea <conradoplg@gmail.com>",
+]
+readme = "README.md"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/ZcashFoundation/reddsa"
+categories = ["cryptography", "no-std"]
+keywords = ["cryptography", "crypto", "zcash"]
+description = "A standalone implementation of the RedDSA signature scheme."
+
+[package.metadata.docs.rs]
+features = ["nightly"]
+
+[dependencies]
+blake2b_simd = { version = "1", default-features = false }
+byteorder = { version = "1.4", default-features = false }
+group = { version = "0.13", default-features = false }
+hex = { version = "0.4", optional = true, default-features = false, features = ["alloc"] }
+jubjub = { version = "0.10", default-features = false }
+pasta_curves = { version = "0.5", default-features = false }
+rand_core = { version = "0.6", default-features = false }
+serde = { version = "1", optional = true, features = ["derive"] }
+thiserror = { version = "1.0", optional = true }
+frost-rerandomized = { version = "0.6.0", optional = true }
+
+[dependencies.zeroize]
+version = "1"
+features = ["zeroize_derive"]
+optional = true
+
+[dev-dependencies]
+bincode = "1"
+criterion = "0.4"
+hex = "0.4.3"
+proptest-derive = "0.3"
+lazy_static = "1.4"
+proptest = "1.0"
+rand = "0.8"
+rand_chacha = "0.3"
+serde_json = "1.0"
+frost-rerandomized = { version = "0.6.0", features=["test-impl"] }
+num-bigint = "0.4.3"
+num-traits = "0.2.15"
+
+# `alloc` is only used in test code
+[dev-dependencies.pasta_curves]
+version = "0.5"
+default-features = false
+features = ["alloc"]
+
+[features]
+std = ["blake2b_simd/std", "thiserror", "zeroize", "alloc",
+       "serde"] # conditional compilation for serde not complete (issue #9)
+alloc = ["hex"]
+nightly = []
+frost = ["std", "frost-rerandomized"]
+default = ["std"]
+
+[[bench]]
+name = "bench"
+harness = false

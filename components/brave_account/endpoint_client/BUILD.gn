@@ -1,0 +1,95 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//third_party/protobuf/proto_library.gni")
+import("//tools/json_schema_compiler/json_schema_api.gni")
+
+source_set("endpoint_client") {
+  sources = [
+    "brave_endpoint.h",
+    "client.h",
+    "is_endpoint.h",
+    "is_request.h",
+    "is_request_body.h",
+    "is_response.h",
+    "is_response_body.h",
+    "maybe_strip_with_headers.h",
+    "request.h",
+    "request_handle.cc",
+    "request_handle.h",
+    "request_types.h",
+    "response.h",
+    "static_string.h",
+    "with_headers.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/brave_domains",
+    "//net",
+    "//services/network/public/cpp",
+    "//third_party/protobuf:protobuf_lite",
+    "//url",
+  ]
+}
+
+source_set("test_support") {
+  testonly = true
+
+  sources = [ "test_support.h" ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_account/endpoint_client",
+    "//net",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "client_unittest.cc",
+    "is_endpoint_unittest.cc",
+    "is_request_body_unittest.cc",
+    "is_request_unittest.cc",
+    "is_response_body_unittest.cc",
+    "is_response_unittest.cc",
+    "maybe_strip_with_headers_unittest.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_account/endpoint_client",
+    "//brave/components/brave_account/endpoint_client:json_test_endpoint_bodies",
+    "//brave/components/brave_account/endpoint_client:protobuf_test_endpoint_bodies",
+    "//net",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
+    "//services/network/public/mojom",
+    "//testing/gtest",
+    "//third_party/protobuf:protobuf_lite",
+    "//url",
+  ]
+}
+
+generated_types("json_test_endpoint_bodies") {
+  # testonly = true
+
+  sources = [ "json_test_endpoint_bodies.idl" ]
+
+  deps = [ "//base" ]
+
+  root_namespace = "brave_account::%(namespace)s"
+}
+
+proto_library("protobuf_test_endpoint_bodies") {
+  testonly = true
+
+  sources = [ "protobuf_test_endpoint_bodies.proto" ]
+}

@@ -1,0 +1,28 @@
+lints.workspace = true
+
+[package]
+name = "gix-shallow"
+version = "0.6.0"
+repository = "https://github.com/GitoxideLabs/gitoxide"
+authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
+license = "MIT OR Apache-2.0"
+description = "Handle files specifying the shallow boundary"
+edition = "2021"
+include = ["src/**/*", "LICENSE-*"]
+rust-version = "1.82"
+
+[lib]
+doctest = false
+test = false
+
+[features]
+## Data structures implement `serde::Serialize` and `serde::Deserialize`.
+serde = ["dep:serde", "gix-hash/serde"]
+
+[dependencies]
+gix-hash = { version = "^0.20.0", path = "../gix-hash" }
+gix-lock = { version = "^19.0.0", path = "../gix-lock" }
+
+thiserror = "2.0.17"
+bstr = { version = "1.12.0", default-features = false }
+serde = { version = "1.0.114", optional = true, default-features = false, features = ["std", "derive"] }

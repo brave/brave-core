@@ -1,0 +1,81 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+
+assert(is_android)
+
+source_set("android") {
+  sources = [
+    "subscription_render_frame_observer.cc",
+    "subscription_render_frame_observer.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/mojom",
+    "//brave/components/brave_origin:features",
+    "//brave/components/brave_origin/mojom",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/skus/renderer",
+    "//brave/gin:converter_specializations",
+    "//content/public/renderer",
+    "//gin",
+    "//mojo/public/cpp/bindings",
+    "//third_party/blink/public:blink",
+    "//third_party/blink/public/common",
+    "//third_party/blink/public/strings",
+    "//v8",
+  ]
+
+  if (enable_brave_vpn) {
+    deps += [
+      "//brave/components/brave_vpn/common",
+      "//brave/components/brave_vpn/common/mojom",
+    ]
+  }
+}
+
+source_set("browser_tests") {
+  testonly = true
+
+  sources = [ "subscription_render_frame_observer_browsertest.cc" ]
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  deps = [
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/brave_mobile_subscription/renderer/android",
+    "//brave/components/brave_origin:features",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/skus/common",
+    "//chrome/common",
+    "//content/public/common",
+    "//content/test:test_support",
+    "//url",
+  ]
+
+  if (enable_brave_vpn) {
+    deps += [
+      "//brave/components/brave_vpn/common",
+      "//brave/components/brave_vpn/common/mojom",
+    ]
+  }
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "subscription_render_frame_observer_unittest.cc" ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_mobile_subscription/renderer/android",
+    "//content/public/renderer",
+    "//testing/gtest",
+    "//v8",
+  ]
+}

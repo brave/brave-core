@@ -1,0 +1,64 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+
+brave_browser_brave_vpn_sources = []
+brave_browser_brave_vpn_deps = []
+
+if (enable_brave_vpn) {
+  brave_browser_brave_vpn_sources += [
+    "//brave/browser/brave_vpn/brave_vpn_service_factory.cc",
+    "//brave/browser/brave_vpn/brave_vpn_service_factory.h",
+  ]
+
+  if (is_win) {
+    brave_browser_brave_vpn_sources += [
+      "//brave/browser/brave_vpn/dns/brave_vpn_dns_observer_factory_win.cc",
+      "//brave/browser/brave_vpn/dns/brave_vpn_dns_observer_factory_win.h",
+      "//brave/browser/brave_vpn/dns/brave_vpn_dns_observer_service_win.cc",
+      "//brave/browser/brave_vpn/dns/brave_vpn_dns_observer_service_win.h",
+      "//brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_factory_win.cc",
+      "//brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_factory_win.h",
+      "//brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_service_win.cc",
+      "//brave/browser/brave_vpn/win/brave_vpn_wireguard_observer_service_win.h",
+    ]
+
+    brave_browser_brave_vpn_deps += [
+      "//brave/app:brave_generated_resources_grit",
+      "//brave/browser:browser_process",
+      "//brave/browser/brave_vpn/win",
+      "//brave/browser/brave_vpn/win:wireguard_utils",
+      "//brave/browser/brave_vpn/win/brave_vpn_helper:common",
+      "//brave/components/brave_vpn/common/win",
+      "//chrome/common:constants",
+      "//components/prefs",
+      "//net",
+    ]
+  }
+
+  brave_browser_brave_vpn_deps += [
+    "//base",
+    "//brave/browser/brave_vpn",
+    "//brave/components/brave_vpn/browser",
+    "//chrome/browser/profiles:profile",
+    "//components/keyed_service/content",
+    "//components/user_prefs",
+    "//content/public/browser",
+  ]
+
+  if (is_android) {
+    brave_browser_brave_vpn_sources += [
+      "//brave/browser/brave_vpn/android/brave_vpn_native_worker.cc",
+      "//brave/browser/brave_vpn/android/brave_vpn_native_worker.h",
+      "//brave/browser/brave_vpn/android/brave_vpn_service_factory_android.cc",
+    ]
+    brave_browser_brave_vpn_deps += [
+      "//brave/build/android:jni_headers",
+      "//brave/components/l10n/common",
+      "//mojo/public/cpp/bindings",
+    ]
+  }
+}

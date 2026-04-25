@@ -1,0 +1,55 @@
+Each subdirectory in this folder is a Chrome user data directory [0] populated
+with test data for testing the Chrome profile importer.
+
+The files in each test user data directory were created via the following
+process:
+
+1. Create a new profile in Chrome.
+2. Simulate browsing activity (visit sites, save bookmarks, passwords, etc.).
+3. Copy relevant files from the new profile's user data directory to the
+   test user data directory.
+
+If special care was taken to generate a certain type of test data, the process
+should be documented below.
+
+[0]: https://chromium.googlesource.com/chromium/src/+/master/docs/user_data_dir.md
+
+# Login Data
+
+## Using the mock keychain
+
+Some of the fields in the Login Data SQLite db, such as saved passwords, are
+encrypted by Chrome's OSCrypt class. To test them reliably, Chrome was
+launched with the `--use-mock-keychain` argument for the session where the
+test login data was simulated:
+
+    /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --use-mock-keychain
+
+When `--use-mock- keychain` is enabled, a fixed key is used to encrypt all
+data that is encrypted with OSCrypt. We may then enable the mock keychain
+during tests so the corresponding decryption will use the same fixed key.
+
+## Triggering a password save prompt in Chrome
+
+A web form submission must meet several criteria in order for it to cause
+Chrome to prompt to save a password. To aid in creating additional test cases,
+use `trigger_password_save_prompt.html`, included in this directory. To use,
+serve on a local web server and navigate your test Chrome profile to the
+corresponding address. For example, you could run Python 3's built-in
+`http.server` in the same directory:
+
+    python3 -m http.server 8080 --bind 127.0.0.1
+
+Then navigate to `127.0.0.1:8080/trigger_password_save_prompt.html` in Chrome.
+Enter any username and password, and click `Submit`. You should be prompted to
+save the password.
+
+I recommend using a different port number to easily distinguish each test case.
+
+# Cookies
+
+Start Chrome with a test profile. Make sure to `--use-mock-keychain` if you
+want to be able to test the decrypted value of the cookie.
+
+Run `node cookies_server.js` and navigate to http://localhost:8080 in a test
+Chrome profile to have a test cookie set on localhost.

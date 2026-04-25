@@ -1,0 +1,6 @@
+TOML parse error at line 4, column 1
+  |
+4 | [fruit.apple.taste] # INVALID
+  | ^
+invalid table header
+duplicate key `taste` in table `fruit.apple`

@@ -1,0 +1,260 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//brave/components/containers/buildflags/buildflags.gni")
+import("//brave/components/email_aliases/buildflags/buildflags.gni")
+import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
+import("//brave/components/psst/buildflags/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
+import("//brave/resources/brave_grit.gni")
+import("//build/config/locales.gni")
+import("//extensions/buildflags/buildflags.gni")
+import("//tools/grit/repack.gni")
+
+brave_grit("scaled_resources") {
+  source = "brave_components_scaled_resources.grd"
+
+  outputs = [
+    "grit/brave_components_scaled_resources.h",
+    "grit/brave_components_scaled_resources_map.cc",
+    "grit/brave_components_scaled_resources_map.h",
+    "brave_components_resources_100_percent.pak",
+    "brave_components_resources_200_percent.pak",
+  ]
+
+  output_dir = "$root_gen_dir/components"
+}
+
+brave_grit("static_resources") {
+  source = "brave_components_resources.grd"
+
+  output_name = "brave_components_resources_new"
+
+  outputs = [
+    "grit/brave_components_resources.h",
+    "brave_components_static.pak",
+  ]
+  deps = [
+    ":strings",
+    "//brave/components/brave_shields/resources:bundle_js",
+    "//brave/components/request_otr/resources:bundle_js",
+  ]
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/resources" ]
+  }
+
+  if (enable_brave_rewards) {
+    deps += [ "//brave/components/brave_rewards/resources" ]
+  }
+
+  if (enable_brave_wallet) {
+    deps += [
+      "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
+      "//brave/components/decentralized_dns/content/resources:bundle_js",
+    ]
+  }
+
+  if (enable_extensions) {
+    deps += [ "//brave/components/brave_extension/extension/brave_extension" ]
+  }
+
+  if (enable_tor) {
+    deps += [ "//brave/components/tor/resources" ]
+  }
+
+  if (enable_psst) {
+    deps += [ "//brave/components/psst/resources" ]
+  }
+
+  defines = [
+    "enable_ai_chat=$enable_ai_chat",
+    "enable_brave_vpn=$enable_brave_vpn",
+    "enable_brave_wallet=$enable_brave_wallet",
+    "enable_email_aliases=$enable_email_aliases",
+    "enable_playlist_webui=$enable_playlist_webui",
+    "enable_speedreader=$enable_speedreader",
+  ]
+
+  output_dir = "$root_gen_dir/components"
+}
+
+repack("resources") {
+  deps = [
+    ":scaled_resources",
+    ":static_resources",
+    "//brave/components/brave_account/resources",
+    "//brave/components/cosmetic_filters/resources/data:generated_resources",
+    "//brave/components/local_ai/resources:local_ai_generated",
+    "//brave/components/local_ai/resources/candle_embedding_gemma:candle_embedding_module_generated",
+    "//brave/components/skus/browser/resources:generated_resources",
+  ]
+  sources = [
+    "$root_gen_dir/brave/components/brave_account/resources/brave_account_resources.pak",
+    "$root_gen_dir/brave/components/cosmetic_filters/resources/cosmetic_filters_generated.pak",
+    "$root_gen_dir/brave/components/local_ai/resources/candle_embedding_module_generated.pak",
+    "$root_gen_dir/brave/components/local_ai/resources/local_ai_generated.pak",
+    "$root_gen_dir/brave/components/skus/browser/resources/skus_internals_generated.pak",
+    "$root_gen_dir/components/brave_components_static.pak",
+  ]
+
+  if (enable_brave_ads) {
+    deps +=
+        [ "//brave/components/brave_ads/browser/resources:generated_resources" ]
+    sources += [ "$root_gen_dir/brave/components/brave_ads/browser/resources/ads_internals_generated.pak" ]
+  }
+
+  if (enable_brave_wallet) {
+    deps += [ "//brave/components/brave_wallet_ui:resources" ]
+    sources += [
+      "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet.pak",
+    ]
+  }
+
+  if (enable_ai_chat) {
+    deps += [
+      "//brave/components/ai_chat/resources",
+      "//brave/components/ai_chat/resources/custom_site_distiller_scripts:generated_resources",
+    ]
+    sources += [
+      "$root_gen_dir/brave/components/ai_chat/resources/ai_chat_ui_generated.pak",
+      "$root_gen_dir/brave/components/ai_chat/resources/custom_site_distiller_scripts/custom_site_distiller_scripts_generated.pak",
+    ]
+  }
+
+  if (is_android) {
+    deps += [ "//brave/components/new_tab_takeover:new_tab_takeover_generated_resources" ]
+    sources += [ "$root_gen_dir/brave/components/new_tab_takeover/new_tab_takeover_generated.pak" ]
+  }
+
+  if (!is_ios) {
+    deps += [
+      "//brave/components/brave_adblock_ui:generated_resources",
+      "//brave/components/brave_adblock_ui/adblock_internals:generated_resources",
+    ]
+
+    sources += [
+      "$root_gen_dir/brave/components/brave_adblock/adblock_internals/resources/brave_adblock_internals_generated.pak",
+      "$root_gen_dir/brave/components/brave_adblock/resources/brave_adblock_generated.pak",
+    ]
+  }
+
+  if (!is_android && !is_ios) {
+    deps += [
+      "//brave/components/brave_new_tab_ui:generated_resources",
+      "//brave/components/brave_private_new_tab_ui/resources/page:generated_resources",
+      "//brave/components/brave_shields/resources/panel:brave_shields_panel_generated",
+      "//brave/components/brave_shields/resources/panel_new:generated_resources",
+      "//brave/components/brave_welcome_ui:generated_resources",
+      "//brave/components/webcompat_reporter/ui:generated_resources",
+    ]
+
+    sources += [
+      "$root_gen_dir/brave/components/brave_new_tab/resources/brave_new_tab_generated.pak",
+      "$root_gen_dir/brave/components/brave_private_new_tab/resources/page/brave_private_new_tab_generated.pak",
+      "$root_gen_dir/brave/components/brave_shields/resources/panel/brave_shields_panel_generated.pak",
+      "$root_gen_dir/brave/components/brave_shields/resources/panel_new/brave_shields_panel_new_generated.pak",
+      "$root_gen_dir/brave/components/brave_welcome/resources/brave_welcome_generated.pak",
+      "$root_gen_dir/brave/components/webcompat_reporter/resources/webcompat_reporter_generated.pak",
+    ]
+
+    if (enable_brave_news) {
+      deps += [
+        "//brave/components/brave_news/browser/resources:generated_resources",
+      ]
+      sources += [ "$root_gen_dir/brave/components/brave_news/browser/resources/brave_news_internals_generated.pak" ]
+    }
+
+    if (enable_speedreader) {
+      deps += [
+        "//brave/components/speedreader/resources/panel:generated_resources",
+      ]
+      sources += [ "$root_gen_dir/brave/components/speedreader/resources/panel/brave_speedreader_toolbar_generated.pak" ]
+    }
+  }
+
+  if (enable_brave_wallet) {
+    deps += [ "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources" ]
+    sources += [ "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet_script_generated.pak" ]
+  }
+
+  if (enable_brave_vpn_panel) {
+    deps += [ "//brave/components/brave_vpn/resources/panel:resources" ]
+    sources += [
+      "$root_gen_dir/brave/components/brave_vpn/brave_vpn_panel_resources.pak",
+    ]
+  }
+
+  if (enable_playlist_webui) {
+    deps += [ "//brave/components/playlist/content/browser/resources:generated_resources" ]
+    sources += [ "$root_gen_dir/brave/components/playlist/content/browser/resources/playlist_generated.pak" ]
+  }
+
+  output = "$root_gen_dir/components/brave_components_resources.pak"
+}
+
+brave_grit("strings") {
+  source = "brave_components_strings.grd"
+
+  outputs = [
+    "grit/brave_components_strings.h",
+    "grit/brave_components_webui_strings.h",
+    "grit/brave_components_webui_strings.ts",
+    "grit/brave_components_webui_mock_strings.ts",
+  ]
+
+  if (is_ios) {
+    outputs += [
+      "grit/brave_components_swift_strings.h",
+      "grit/brave_components_swift_strings.mm",
+    ]
+  }
+
+  defines = [
+    "enable_ai_chat=$enable_ai_chat",
+    "enable_brave_ai_chat_agent_profile=$enable_brave_ai_chat_agent_profile",
+    "enable_ai_chat_tab_management_tool=$enable_ai_chat_tab_management_tool",
+    "enable_email_aliases=$enable_email_aliases",
+    "enable_containers=$enable_containers",
+    "enable_speedreader=$enable_speedreader",
+    "enable_tor=$enable_tor",
+    "enable_brave_vpn=$enable_brave_vpn",
+    "enable_psst=$enable_psst",
+  ]
+
+  foreach(locale, all_chrome_locales) {
+    outputs += [ "brave_components_strings_$locale.pak" ]
+  }
+
+  output_dir = "$root_gen_dir/components"
+
+  if (is_android) {
+    create_android_resources = true
+  }
+}
+
+if (is_android) {
+  java_strings_grd_prebuilt("brave_components_strings_grd") {
+    generating_target = ":strings"
+  }
+}
+
+action("about_credits") {
+  script = "//brave/script/check_npm_licenses.py"
+  deps = [ "//brave/components/common:preprocess_package_json" ]
+
+  inputs = [ "$root_gen_dir/brave/components/common/package.json" ]
+
+  outputs = [ "$root_gen_dir/npm_licenses.checked" ]
+
+  args = [ rebase_path("$root_gen_dir/npm_licenses.checked") ]
+}

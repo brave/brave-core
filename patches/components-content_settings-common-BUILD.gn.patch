@@ -1,0 +1,10 @@
+diff --git a/components/content_settings/common/BUILD.gn b/components/content_settings/common/BUILD.gn
+index 04c77e73d6817ad6f1d77cc3f89630d273535574..9ad65d0e080caabe40becf9385052363b94f449a 100644
+--- a/components/content_settings/common/BUILD.gn
++++ b/components/content_settings/common/BUILD.gn
+@@ -19,4 +19,5 @@ mojom("mojom") {
+     "//url/mojom:url_mojom_gurl",
+     "//url/mojom:url_mojom_origin",
+   ]
++  import("//brave/components/content_settings/sources.gni") deps += brave_components_content_settings_common_mojom_deps
+ }

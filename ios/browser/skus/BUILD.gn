@@ -1,0 +1,28 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("skus") {
+  sources = [
+    "skus_sdk_factory_wrappers.h",
+    "skus_sdk_factory_wrappers.mm",
+    "skus_service_factory.h",
+    "skus_service_factory.mm",
+  ]
+  deps = [
+    "//brave/components/skus/browser",
+    "//brave/components/skus/common",
+    "//brave/components/skus/common:mojom",
+    "//brave/ios/browser/api/skus:skus_mojom_wrappers",
+    "//brave/ios/browser/keyed_service",
+    "//components/keyed_service/core",
+    "//components/pref_registry",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/chrome/browser/shared/model/profile:profile_keyed_service_factory",
+    "//ios/web/public",
+    "//mojo/public/cpp/bindings",
+    "//services/network/public/cpp",
+  ]
+}

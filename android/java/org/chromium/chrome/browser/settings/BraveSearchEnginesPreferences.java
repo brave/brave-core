@@ -1,0 +1,290 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+package org.chromium.chrome.browser.settings;
+
+import android.app.Activity;
+import android.content.Context;
+import android.os.Bundle;
+import android.view.View;
+
+import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
+import androidx.preference.PreferenceGroup;
+
+import org.chromium.base.BraveFeatureList;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.ObservableSuppliers;
+import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
+import org.chromium.brave.browser.custom_search_engines.settings.CustomSearchEnginesPreference;
+import org.chromium.build.annotations.Nullable;
+import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveConfig;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.preferences.Pref;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
+import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
+import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.browser_ui.settings.search.PreferenceParser;
+import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
+import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.components.web_discovery.WebDiscoveryPrefs;
+
+public class BraveSearchEnginesPreferences extends BravePreferenceFragment
+        implements Preference.OnPreferenceChangeListener {
+    private static final String PREF_STANDARD_SEARCH_ENGINE = "standard_search_engine";
+    private static final String PREF_PRIVATE_SEARCH_ENGINE = "private_search_engine";
+
+    private static final String PREF_SEARCH_SUGGESTIONS = "search_suggestions";
+    private static final String PREF_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR =
+            "show_autocomplete_in_address_bar";
+    private static final String PREF_SEND_WEB_DISCOVERY = "send_web_discovery";
+
+    private static final String PREF_CUSTOM_SEARCH_ENGINES_CATEGORY =
+            "custom_search_engines_category";
+    private static final String PREF_CUSTOM_SEARCH_ENGINE_LIST = "custom_search_engine_list";
+    private ChromeManagedPreferenceDelegate mManagedPreferenceDelegate;
+
+    private ChromeSwitchPreference mShowAutocompleteInAddressBar;
+    private ChromeSwitchPreference mSearchSuggestions;
+    private @Nullable ChromeSwitchPreference mSendWebDiscovery;
+
+    private final SettableMonotonicObservableSupplier<String> mPageTitle =
+            ObservableSuppliers.createMonotonic();
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mPageTitle.set(getString(R.string.brave_search_engines));
+        SettingsUtils.addPreferencesFromResource(this, R.xml.brave_search_engines_preferences);
+    }
+
+    @Override
+    public MonotonicObservableSupplier<String> getPageTitle() {
+        return mPageTitle;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // updateSearchEnginePreference method does a lot of preference finding,
+        // listener setting, and state updates. There are native callse inside.
+        // Defer it's execution to ensure that preference screen is fully
+        // inflated before complex updates.
+        PostTask.postTask(TaskTraits.UI_DEFAULT, this::updateSearchEnginePreference);
+    }
+
+    @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        mManagedPreferenceDelegate = createManagedPreferenceDelegate();
+    }
+
+    private void removePreferenceIfPresent(String key) {
+        Preference preference = getPreferenceScreen().findPreference(key);
+        if (preference == null) {
+            return;
+        }
+        PreferenceGroup parent = preference.getParent();
+        if (parent != null) {
+            parent.removePreference(preference);
+        }
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        updateCustomSearchEnginesPreference();
+    }
+
+    private void updateCustomSearchEnginesPreference() {
+        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_CUSTOM_SEARCH_ENGINES)) {
+            removePreferenceIfPresent(PREF_CUSTOM_SEARCH_ENGINES_CATEGORY);
+            return;
+        }
+
+        PreferenceCategory preferenceCategory =
+                (PreferenceCategory) findPreference(PREF_CUSTOM_SEARCH_ENGINES_CATEGORY);
+        Preference customSearchEnginesListPreference =
+                findPreference(PREF_CUSTOM_SEARCH_ENGINE_LIST);
+
+        if (customSearchEnginesListPreference instanceof CustomSearchEnginesPreference) {
+            ((CustomSearchEnginesPreference) customSearchEnginesListPreference)
+                    .updateCustomSearchEngines();
+        } else if (preferenceCategory != null) {
+            CustomSearchEnginesPreference newPreference =
+                    new CustomSearchEnginesPreference(requireContext());
+            newPreference.initialize(getProfile());
+            newPreference.setKey(PREF_CUSTOM_SEARCH_ENGINE_LIST);
+            newPreference.setOrder(1);
+            preferenceCategory.addPreference(newPreference);
+        }
+    }
+
+    private ChromeManagedPreferenceDelegate createManagedPreferenceDelegate() {
+        return new ChromeManagedPreferenceDelegate(getProfile()) {
+            @Override
+            public boolean isPreferenceControlledByPolicy(Preference preference) {
+                String key = preference.getKey();
+                if (PREF_SEARCH_SUGGESTIONS.equals(key)) {
+                    return UserPrefs.get(getProfile())
+                            .isManagedPreference(Pref.SEARCH_SUGGEST_ENABLED);
+                }
+                return false;
+            }
+        };
+    }
+
+    private void updateSearchEnginePreference() {
+        // Check if fragment is still attached before updating preferences
+        Activity activity = getActivity();
+        if (activity == null || !isAdded() || activity.isFinishing() || getProfile() == null) {
+            return;
+        }
+
+        Preference searchEnginePreference = findPreference(PREF_STANDARD_SEARCH_ENGINE);
+        if (searchEnginePreference != null) {
+            searchEnginePreference.setEnabled(true);
+            searchEnginePreference.setSummary(
+                    BraveSearchEngineUtils.getDSEShortName(getProfile(), false));
+        }
+
+        searchEnginePreference = findPreference(PREF_PRIVATE_SEARCH_ENGINE);
+        if (searchEnginePreference != null) {
+            searchEnginePreference.setEnabled(true);
+            searchEnginePreference.setSummary(
+                    BraveSearchEngineUtils.getDSEShortName(
+                            getProfile().getPrimaryOtrProfile(/* createIfNeeded= */ true), true));
+        }
+
+        mSearchSuggestions = (ChromeSwitchPreference) findPreference(PREF_SEARCH_SUGGESTIONS);
+        if (mSearchSuggestions != null) {
+            mSearchSuggestions.setOnPreferenceChangeListener(this);
+            mSearchSuggestions.setManagedPreferenceDelegate(mManagedPreferenceDelegate);
+        }
+
+        mShowAutocompleteInAddressBar =
+                (ChromeSwitchPreference) findPreference(PREF_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR);
+        if (mShowAutocompleteInAddressBar != null) {
+            mShowAutocompleteInAddressBar.setOnPreferenceChangeListener(this);
+        }
+
+        boolean autocompleteEnabled =
+                UserPrefs.get(getProfile()).getBoolean(BravePref.AUTOCOMPLETE_ENABLED);
+        if (mSearchSuggestions != null) {
+            mSearchSuggestions.setVisible(autocompleteEnabled);
+        }
+
+        if (mShowAutocompleteInAddressBar != null) {
+            mShowAutocompleteInAddressBar.setChecked(autocompleteEnabled);
+        }
+        if (mSearchSuggestions != null) {
+            mSearchSuggestions.setChecked(
+                    UserPrefs.get(getProfile()).getBoolean(Pref.SEARCH_SUGGEST_ENABLED));
+        }
+
+        if (BraveConfig.WEB_DISCOVERY_ENABLED) {
+            // Check if web discovery is managed by policy
+            boolean isWebDiscoveryManaged =
+                    UserPrefs.get(getProfile())
+                            .isManagedPreference(WebDiscoveryPrefs.WEB_DISCOVERY_ENABLED);
+            if (!isWebDiscoveryManaged) {
+                mSendWebDiscovery =
+                        (ChromeSwitchPreference) findPreference(PREF_SEND_WEB_DISCOVERY);
+                if (mSendWebDiscovery != null) {
+                    mSendWebDiscovery.setOnPreferenceChangeListener(this);
+                }
+            }
+        }
+
+        if (mSendWebDiscovery != null) {
+            mSendWebDiscovery.setTitle(
+                    activity.getResources().getString(R.string.send_web_discovery_title));
+            mSendWebDiscovery.setSummary(
+                    activity.getResources().getString(R.string.send_web_discovery_summary));
+            mSendWebDiscovery.setChecked(
+                    UserPrefs.get(getProfile())
+                            .getBoolean(WebDiscoveryPrefs.WEB_DISCOVERY_ENABLED));
+        } else {
+            removePreferenceIfPresent(PREF_SEND_WEB_DISCOVERY);
+        }
+
+        Preference customSearchEnginesListPreference =
+                findPreference(PREF_CUSTOM_SEARCH_ENGINE_LIST);
+        if (customSearchEnginesListPreference != null
+                && customSearchEnginesListPreference instanceof CustomSearchEnginesPreference) {
+            ((CustomSearchEnginesPreference) customSearchEnginesListPreference)
+                    .updateCustomSearchEngines();
+        }
+        updateCustomSearchEnginesPreference();
+    }
+
+    private static void updateIndexSummaryForKey(
+            SettingsIndexData indexData, String fragment, String key, String summary) {
+        String id = PreferenceParser.createUniqueId(fragment, key);
+        SettingsIndexData.Entry entry = indexData.getEntry(id);
+        if (entry != null) {
+            indexData.updateEntry(
+                    id, new SettingsIndexData.Entry.Builder(entry).setSummary(summary).build());
+        }
+    }
+
+    public static final ChromeBaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new ChromeBaseSearchIndexProvider(
+                    BraveSearchEnginesPreferences.class.getName(),
+                    R.xml.brave_search_engines_preferences) {
+
+                @Override
+                public void updateDynamicPreferences(
+                        Context context, SettingsIndexData indexData, Profile profile) {
+                    String frag = BraveSearchEnginesPreferences.class.getName();
+                    updateIndexSummaryForKey(
+                            indexData,
+                            frag,
+                            PREF_STANDARD_SEARCH_ENGINE,
+                            BraveSearchEngineUtils.getDSEShortName(profile, false));
+                    updateIndexSummaryForKey(
+                            indexData,
+                            frag,
+                            PREF_PRIVATE_SEARCH_ENGINE,
+                            BraveSearchEngineUtils.getDSEShortName(
+                                    profile.getPrimaryOtrProfile(/* createIfNeeded= */ true),
+                                    true));
+
+                    if (!BraveConfig.WEB_DISCOVERY_ENABLED
+                            || UserPrefs.get(profile)
+                                    .isManagedPreference(WebDiscoveryPrefs.WEB_DISCOVERY_ENABLED)) {
+                        indexData.removeEntryForKey(frag, PREF_SEND_WEB_DISCOVERY);
+                    } else {
+                        indexData.updateEntryForKey(
+                                frag, PREF_SEND_WEB_DISCOVERY, R.string.send_web_discovery_title);
+                        indexData.updateEntrySummaryForKey(
+                                frag, PREF_SEND_WEB_DISCOVERY, R.string.send_web_discovery_summary);
+                    }
+                    // PREF_CUSTOM_SEARCH_ENGINE_LIST and its "Add" footer are added via Java — not
+                    // indexed for settings search.
+                }
+            };
+
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        String key = preference.getKey();
+        if (PREF_SEARCH_SUGGESTIONS.equals(key)) {
+            UserPrefs.get(getProfile()).setBoolean(Pref.SEARCH_SUGGEST_ENABLED, (boolean) newValue);
+        } else if (PREF_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR.equals(key)) {
+            boolean autocompleteEnabled = (boolean) newValue;
+            mSearchSuggestions.setVisible(autocompleteEnabled);
+            UserPrefs.get(getProfile())
+                    .setBoolean(BravePref.AUTOCOMPLETE_ENABLED, autocompleteEnabled);
+        } else if (PREF_SEND_WEB_DISCOVERY.equals(key)) {
+            UserPrefs.get(getProfile())
+                    .setBoolean(WebDiscoveryPrefs.WEB_DISCOVERY_ENABLED, (boolean) newValue);
+        }
+        return true;
+    }
+}

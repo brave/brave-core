@@ -1,0 +1,211 @@
+<style include="settings-shared cr-shared-style">
+  /* Extra space when fixed #needsRestart bar is shown */
+  .origin-restart-padding-spacer {
+    padding-bottom: 80px;
+  }
+
+  .title {
+    font: var(--leo-font-default-semibold);
+    height: 68px;
+  }
+
+  .label.primary-title
+  {
+    font: var(--leo-font-large-regular);
+    padding-top: var(--leo-spacing-xl);
+  }
+
+  .label.secondary-title {
+    padding-bottom: var(--leo-spacing-xl);
+  }
+
+  #needsRestart {
+    background-color: var(--leo-color-container-background);
+    bottom: 0;
+    box-shadow: 0 -2px 2px 0 var(--shadow-color);
+    box-sizing: border-box;
+    left: 0;
+    opacity: 1;
+    padding: var(--leo-spacing-xl) var(--leo-spacing-2xl);
+    position: fixed;
+    transform: translate(0);
+    transition: all 225ms var(--ease-in-out);
+    width: 100%;
+    z-index: 10;
+    border-top: 1px solid var(--leo-color-divider-subtle);
+  }
+
+  #needsRestart .flex:last-child {
+    text-align: right;
+  }
+
+  .flex {
+    align-self: center;
+    flex: 1 1 auto;
+  }
+
+  .flex-container {
+    display: flex;
+  }
+
+  .restart-notice {
+    font: var(--leo-font-default-regular);
+  }
+
+  #resetToDefaults::part(icon) {
+    display: none;
+  }
+</style>
+
+<template is="dom-if" if="[[!isPurchased_]]">
+  <settings-brave-origin-onboarding></settings-brave-origin-onboarding>
+</template>
+
+<template is="dom-if" if="[[isPurchased_]]">
+<div class$="[[getOriginRestartPaddingClass_(showRestartToast_)]]">
+<settings-section
+  id="origin"
+  page-title="$i18n{braveOriginTitle}">
+<div>
+  <div class="settings-box first">
+    <div class="flex">
+      <div class="label primary-title">$i18n{braveOriginOnboardingHeadingTitle}</div>
+      <div class="label secondary secondary-title">
+        <p>$i18n{braveOriginOnboardingDescription}</p>
+      </div>
+    </div>
+  </div>
+
+  <if expr="enable_brave_rewards">
+    <div class="cr-row title">$i18n{braveOriginSectionAdsTitle}</div>
+
+    <origin-toggle-button id="toggleRewardsButton"
+        policy-key="BraveRewardsDisabled"
+        inverted
+        label="$i18n{braveOriginRewardsToggleTitle}"
+        icon="product-bat-outline">
+    </origin-toggle-button>
+  </if>
+
+  <div class="cr-row title">$i18n{braveOriginSectionAnalyticsTitle}</div>
+
+  <origin-toggle-button id="toggleP3AButton"
+      policy-key="BraveP3AEnabled"
+      label="$i18n{braveOriginP3AToggleTitle}"
+      icon="bar-chart">
+  </origin-toggle-button>
+
+  <origin-toggle-button id="toggleStatsReportingButton"
+      policy-key="BraveStatsPingEnabled"
+      label="$i18n{braveOriginStatsReportingToggleTitle}"
+      icon="bar-chart">
+  </origin-toggle-button>
+
+  <if expr="enable_ai_chat or enable_brave_news or enable_speedreader or enable_brave_talk or enable_tor or enable_brave_vpn or enable_brave_wallet or enable_brave_wayback_machine">
+    <div class="cr-row title">$i18n{braveOriginSectionFeaturesTitle}</div>
+  </if>
+
+  <if expr="enable_ai_chat">
+    <origin-toggle-button id="toggleLeoAiButton"
+        policy-key="BraveAIChatEnabled"
+        label="$i18n{braveOriginLeoAiToggleTitle}"
+        icon="product-brave-leo">
+    </origin-toggle-button>
+  </if>
+
+  <if expr="enable_brave_news">
+    <origin-toggle-button id="toggleNewsButton"
+        policy-key="BraveNewsDisabled"
+        inverted
+        label="$i18n{braveOriginNewsToggleTitle}"
+        icon="product-brave-news">
+    </origin-toggle-button>
+  </if>
+
+  <if expr="enable_speedreader">
+    <origin-toggle-button id="toggleSpeedreaderButton"
+        policy-key="BraveSpeedreaderEnabled"
+        label="$i18n{braveOriginSpeedReaderToggleTitle}"
+        icon="product-speedreader">
+    </origin-toggle-button>
+  </if>
+
+  <if expr="enable_brave_talk">
+    <origin-toggle-button id="toggleTalkButton"
+        policy-key="BraveTalkDisabled"
+        inverted
+        label="$i18n{braveOriginTalkToggleTitle}"
+        icon="product-brave-talk">
+    </origin-toggle-button>
+  </if>
+
+  <if expr="enable_tor">
+    <origin-toggle-button id="toggleTorWindowsButton"
+        policy-key="TorDisabled"
+        inverted
+        label="$i18n{braveOriginTorWindowsToggleTitle}"
+        icon="product-tor">
+    </origin-toggle-button>
+  </if>
+
+  <if expr="enable_brave_vpn">
+    <origin-toggle-button id="toggleVpnButton"
+        policy-key="BraveVPNDisabled"
+        inverted
+        label="$i18n{braveOriginVpnToggleTitle}"
+        icon="product-vpn">
+    </origin-toggle-button>
+  </if>
+
+  <if expr="enable_brave_wallet">
+    <origin-toggle-button id="toggleWalletButton"
+        policy-key="BraveWalletDisabled"
+        inverted
+        label="$i18n{braveOriginWalletToggleTitle}"
+        icon="product-brave-wallet">
+    </origin-toggle-button>
+  </if>
+
+  <if expr="enable_brave_wayback_machine">
+    <origin-toggle-button id="toggleWaybackMachineButton"
+        policy-key="BraveWaybackMachineEnabled"
+        label="$i18n{braveOriginWaybackMachineToggleTitle}"
+        icon="window-404">
+    </origin-toggle-button>
+  </if>
+
+  <!-- TODO: Web Discovery policy not yet registered in Brave Origin
+  <origin-toggle-button id="toggleWebDiscoveryProjectButton"
+      policy-key="BraveWebDiscoveryEnabled"
+      label="$i18n{braveOriginWebDiscoveryProjectToggleTitle}"
+      icon="brave-icon-search">
+  </origin-toggle-button>
+  -->
+
+  <cr-link-row id="resetToDefaults" class="hr"
+    label="$i18n{braveOriginResetToDefaultsTitle}"
+    on-click="resetToDefaults_"
+    start-icon="refresh">
+  </cr-link-row>
+</div>
+</settings-section>
+</div>
+<template is="dom-if" if="[[showRestartToast_]]">
+  <div id="needsRestart">
+    <div class="flex-container">
+      <div class="flex restart-notice">$i18n{braveOriginRestartNotice}</div>
+      <div class="flex">
+        <leo-button id="restartButton" kind="filled"
+            on-click="restartBrowser_">
+          $i18n{relaunchButtonLabel}
+        </leo-button>
+      </div>
+    </div>
+  </div>
+</template>
+<template is="dom-if" if="[[shouldShowRelaunchDialog]]" restamp>
+  <relaunch-confirmation-dialog restart-type="[[restartTypeEnum.RESTART]]"
+      on-close="onRelaunchDialogClose">
+  </relaunch-confirmation-dialog>
+</template>
+</template>

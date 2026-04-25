@@ -1,0 +1,30 @@
+diff --git a/content/public/browser/web_ui_browser_interface_broker_registry.h b/content/public/browser/web_ui_browser_interface_broker_registry.h
+index 7be0b6fe1ef41668009647536d32ec09932437a2..defaa38177323c16b64e57e6ddad878f869ecd1e 100644
+--- a/content/public/browser/web_ui_browser_interface_broker_registry.h
++++ b/content/public/browser/web_ui_browser_interface_broker_registry.h
+@@ -31,7 +31,7 @@ class InterfaceRegistrationHelper {
+     // binder_map.
+     binder_initializers_->push_back(
+         base::BindRepeating([](WebUIBinderMap* binder_map) {
+-          CHECK(!binder_map->Contains<Interface>());
++          /* CHECK(!binder_map->Contains<Interface>()); */
+           binder_map->Add<Interface>(
+               [](WebUIController* controller,
+                  mojo::PendingReceiver<Interface> receiver) {
+@@ -114,6 +114,7 @@ class CONTENT_EXPORT WebUIBrowserInterfaceBrokerRegistry {
+     // class declaration.
+     WebUIController::Type type = &ControllerType::kWebUIControllerType;
+ 
++    BRAVE_WEBUI_BROWSER_INTERFACE_BROKER_REGISTRY_FOR_WEBUI
+     DCHECK(binder_initializers_.count(type) == 0)
+         << "Interfaces for a WebUI should be registered together.";
+ 
+@@ -147,7 +148,7 @@ class CONTENT_EXPORT WebUIBrowserInterfaceBrokerRegistry {
+         [](base::RepeatingCallback<void(
+                WebUIController*, mojo::PendingReceiver<Interface>)> binder,
+            WebUIBinderMap* binder_map) {
+-          CHECK(!binder_map->Contains<Interface>());
++          /* CHECK(!binder_map->Contains<Interface>()); */
+           binder_map->Add<Interface>(std::move(binder));
+         },
+         std::move(binder)));

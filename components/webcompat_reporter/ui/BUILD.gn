@@ -1,0 +1,25 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/common/typescript.gni")
+
+assert(!is_android)
+
+transpile_web_ui("ui") {
+  output_module = false
+  entry_points = [ [
+        "webcompat_reporter",
+        rebase_path("webcompat_reporter.tsx"),
+      ] ]
+
+  resource_name = "webcompat_reporter"
+  imports_from = [ "//brave/components/webcompat_reporter/ui/" ]
+}
+
+pack_web_resources("generated_resources") {
+  resource_name = "webcompat_reporter"
+  output_dir = "$root_gen_dir/brave/components/webcompat_reporter/resources"
+  deps = [ ":ui" ]
+}

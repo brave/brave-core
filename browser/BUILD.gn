@@ -1,0 +1,101 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/browser/updater/buildflags.gni")
+import("//brave/build/config.gni")
+import("//build/buildflag_header.gni")
+import("//build/config/features.gni")
+import("//chrome/common/features.gni")
+
+buildflag_header("sparkle_buildflags") {
+  header = "sparkle_buildflags.h"
+  flags = [ "ENABLE_SPARKLE=$enable_sparkle" ]
+}
+
+if (enable_sparkle && !build_sparkle) {
+  bundle_data("prebuilt_sparkle_framework_bundle_data") {
+    sources = [ "//build/mac_files/sparkle_binaries/Sparkle.framework" ]
+    outputs = [ "{{bundle_contents_dir}}/Frameworks/{{source_file_part}}" ]
+  }
+}
+
+source_set("browser_process") {
+  visibility = [
+    "//brave/browser/*",
+    "//chrome/browser/*",
+  ]
+
+  sources = [ "brave_browser_process.h" ]
+
+  deps = [
+    "//brave/components/brave_ads/buildflags",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/local_ai/core",
+    "//brave/components/request_otr/common/buildflags",
+    "//brave/components/speedreader/common/buildflags",
+    "//brave/components/tor/buildflags",
+    "//chrome/browser:browser_process",
+    "//extensions/buildflags",
+  ]
+}
+
+source_set("brave_global_features") {
+  sources = [ "brave_global_features.h" ]
+
+  public_deps = [ "//chrome/browser:global_features" ]
+}
+
+source_set("brave_global_features_impl") {
+  visibility = [ "//chrome/browser" ]
+  sources = [ "brave_global_features.cc" ]
+
+  deps = [
+    "//brave/browser:brave_global_features",
+    "//chrome/browser:global_features",
+  ]
+}
+
+group("browser") {
+  visibility = [
+    "//brave:browser_dependencies",
+    "//brave/browser/*",
+    "//brave/components/brave_rewards/core/engine:headers",
+    "//brave/test:*",
+
+    # these are layering violation and need to be fixed
+    "//brave/components/brave_rewards/content:testutil",
+    "//brave/components/brave_rewards/test:brave_rewards_unit_tests",
+  ]
+
+  if (enable_sparkle) {
+    if (build_sparkle) {
+      deps = [ "//brave/vendor/sparkle:sparkle_framework_bundle_data" ]
+    } else {
+      deps = [ ":prebuilt_sparkle_framework_bundle_data" ]
+    }
+  }
+
+  # Group depending on upstream's counterpart to make it easier to manage
+  # dependencies in brave/ (//chrome/browser does not depend on this target
+  # so //brave/browser becomes essentially an alias for //chrome/browser now).
+  public_deps = [ "//chrome/browser" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = []
+  deps = []
+
+  if (is_win) {
+    sources += [ "default_protocol_handler_utils_win_unittest.cc" ]
+
+    deps += [
+      "//base",
+      "//brave/browser",
+      "//testing/gtest",
+    ]
+  }
+}

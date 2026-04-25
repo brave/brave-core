@@ -1,0 +1,6 @@
+TOML parse error at line 3, column 3
+  |
+3 |   I don't belong,
+  |   ^
+invalid array
+expected `]`

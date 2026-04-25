@@ -1,0 +1,12 @@
+diff --git a/components/history/core/browser/BUILD.gn b/components/history/core/browser/BUILD.gn
+index df29c15f41572c5fd62a3d0932936a3210665894..4e40761acca96e758d0dd5b127efbf174726eac0 100644
+--- a/components/history/core/browser/BUILD.gn
++++ b/components/history/core/browser/BUILD.gn
+@@ -148,6 +148,7 @@ static_library("browser") {
+     "//ui/gfx",
+     "//url",
+   ]
++  import("//brave/components/history/core/browser/sources.gni") sources += brave_components_history_core_browser_sources deps += brave_components_history_core_browser_deps
+ }
+ 
+ source_set("unit_tests") {

@@ -1,0 +1,34 @@
+﻿<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#fff">
+  <meta http-equiv="Content-Security-Policy"
+    content="require-trusted-types-for 'script'; trusted-types;">
+  <title>$i18n{tabTitle}</title>
+  <link rel="stylesheet" href="../../../../components/security_interstitials/core/common/resources/interstitial_core.css">
+  <link rel="stylesheet" href="../../../../components/security_interstitials/core/common/resources/interstitial_common.css">
+  <link rel="stylesheet" href="../../security_interstitials/core/common/resources/interstitial_common.css">
+  <link rel="stylesheet" href="domain_block_interstitial.css">
+  <script src="%ROOT_GEN_DIR%/brave/components/brave_shields/resources/domain_block_interstitial/domain_block_interstitial.rollup.js"></script>
+</head>
+<body id="body" class="domainblock">
+  <div class="interstitial-wrapper">
+    <div id="main-content">
+      <div class="icon" id="icon"></div>
+      <div id="main-message">
+        <h1>$i18nRaw{heading}</h1>
+        <p>$i18nRaw{primaryParagraph}</p>
+        <pre id="domain">$i18nRaw{domain}</pre>
+        <p>$i18nRaw{explanationParagraph}</p>
+      </div>
+      <div id="dont-warn-again" class="hidden">
+        <input type="checkbox" id="dont-warn-again-checkbox">
+        <label for="dont-warn-again-checkbox" id="dont-warn-again-label">$i18nRaw{dontWarnAgainText}</label>
+      </div>
+    </div>
+    <div class="nav-wrapper">
+      <button id="primary-button" class="primary-button">$i18n{proceedAnywayText}</button>
+      <button id="back-button" class="back-button secondary-button">$i18n{goBackText}</button>
+    </div>
+  </div>
+</body>

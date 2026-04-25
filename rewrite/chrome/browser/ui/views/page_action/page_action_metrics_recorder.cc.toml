@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = 'Replaces RecordChipShown with RecordChipShown_Chromium'
+re_pattern = '(void PageActionPerActionMetricsRecorder::RecordChipShown)\(\)'
+replace = '\1_Chromium()'
+
+[[substitution]]
+description = 'Replaces RecordIconShown with RecordIconShown_Chromium'
+re_pattern = '(void PageActionPerActionMetricsRecorder::RecordIconShown)\(\)'
+replace = '\1_Chromium()'
+
+[[substitution]]
+description = 'Replaces RecordIconClick with RecordIconClick_Chromium'
+re_pattern = '(void PageActionPerActionMetricsRecorder::RecordIconClick)\(\)'
+replace = '\1_Chromium()'
+
+[[substitution]]
+description = 'Replaces RecordChipClick with RecordChipClick_Chromium'
+re_pattern = '(void PageActionPerActionMetricsRecorder::RecordChipClick)\(\)'
+replace = '\1_Chromium()'

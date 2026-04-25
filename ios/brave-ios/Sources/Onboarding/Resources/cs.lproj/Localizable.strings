@@ -1,0 +1,66 @@
+/* A button title shown below language introducing the Brave Playlist feature. i.e. 'Discover how to use use this feature' */
+"advanceInitialOnboardingButtonTitle" = "Zjistit jak";
+
+/* A button title that when tapped will advance the onboarding to guide a user to add some content to Playlist */
+"advanceStep2OnboardingButtonTitle" = "Vyzkoušet to!";
+
+/* A button that allows the user to disable the brave translate feature. When pressed, the page will not be automatically translated to the user's language. */
+"BraveTranslateOnboarding.disableTranslateButtonTitle" = "Zakázat tuto funkci";
+
+/* A text element that describes the translation feature and explains that hte user might have to download or configure languages on their device. */
+"BraveTranslateOnboarding.translateDescription" = "Stránky lze přeložit do jazyků podporovaných vaším zařízením iOS. Pokud tuto funkci používáte poprvé, může být nutné jazyky nakonfigurovat.";
+
+/* A text element that explains we're translating pages. */
+"BraveTranslateOnboarding.translateTitle" = "Překlady stránek";
+
+/* A button title that when tapped opens Brave Playlist */
+"confirmationActionButtonTitle" = "Přejít na můj seznam skladeb";
+
+/* Shown above a button that will let the user open the playlist feature */
+"confirmationPrompt" = "Nyní se podívejme na váš seznam skladeb.";
+
+/* Shown below a title that confirms the user completed the task of adding something to playlist. %@ will be replaced with the folder the content was added to. i.e. 'Content added to Play Later' */
+"confirmationSubtitle" = "Obsah přidán do %@";
+
+/* Guides the user to tap on an icon where the onboarding is pointing to. '%@' will be replaced with said icon. */
+"confirmationTitle" = "Dobrá práce";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissOnboardingButtonTitle" = "Dismiss";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep2OnboardingButtonTitle" = "Možná později";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep4OnboardingButtonTitle" = "Zavřít";
+
+/* A title shown on the first 2 steps of onboarding for Brave Playlist. Brave Playlist is a product name */
+"introducingBravePlaylist" = "Představování seznamu skladeb Brave";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleOne" = "Vytvořte seznamy skladeb svého oblíbeného obsahu. Ukládejte mobilní data. A přehrávání bez reklam.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleThree" = "Obraz v obraze. Přehrávání na pozadí. Kontrola ze zamykací obrazovky. A další...";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleTwo" = "Zůstaňte na vlně: Přidávejte videa během procházení a podívejte se na ně později.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleOne" = "Přidejte videa do seznamu skladeb Brave. Přehrávejte kdykoli. I když jste offline";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleThree" = "Přehrávání je lepší v seznamu skladeb";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleTwo" = "Jednoduše poklepejte na tlačítko a přidejte videa na seznam skladeb";
+
+/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
+"playlistOnboardingDescription" = "Vytvářejte seznamy skladeb s obsahem, který milujete. Přidávejte média z kterékoli stránky.\nPřehrávejte kdykoli. I když jste offline!";
+
+/* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
+"userActionPrompt" = "Klepněte na %@ a přidejte svou první položku";
+
+/* Will be shown next to an icon inside of some other text. i.e. "Tap 'Add to Playlist' to add your first item" */
+"userActionPromptFill" = "Přidat do seznamu stop";
+

@@ -1,0 +1,921 @@
+/* Copyright (c) 2018 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
+
+#include <optional>
+
+#include "base/check.h"
+#include "base/check_is_test.h"
+#include "base/containers/fixed_flat_map.h"
+#include "base/containers/fixed_flat_set.h"
+#include "base/feature_list.h"
+#include "base/logging.h"
+#include "base/notimplemented.h"
+#include "base/strings/strcat.h"
+#include "base/strings/utf_string_conversions.h"
+#include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
+#include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_shields/brave_shields_tab_helper.h"
+#include "brave/browser/cosmetic_filters/cosmetic_filters_tab_helper.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
+#include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
+#include "brave/browser/ui/brave_pages.h"
+#include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/browser_dialogs.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/grit/brave_theme_resources.h"
+#include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
+#include "chrome/common/channel_info.h"
+#include "components/grit/brave_components_strings.h"
+#include "components/infobars/content/content_infobar_manager.h"
+#include "components/omnibox/browser/autocomplete_classifier.h"
+#include "components/omnibox/browser/autocomplete_controller.h"
+#include "components/omnibox/browser/autocomplete_match_type.h"
+#include "content/public/browser/security_principal.h"
+#include "content/public/browser/web_contents.h"
+#include "net/base/filename_util.h"
+#include "ui/base/models/menu_separator_types.h"
+#include "ui/base/resource/resource_bundle.h"
+#include "ui/gfx/image/image_skia.h"
+#include "ui/gfx/paint_vector_icon.h"
+#include "url/origin.h"
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_manager.h"
+#include "brave/browser/tor/tor_profile_service_factory.h"
+#include "chrome/browser/ui/incognito_allowed_url.h"
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ui/ai_chat/utils.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/content/browser/associated_web_contents_content.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/containers/containers_service_factory.h"
+#include "brave/components/containers/content/browser/storage_partition_utils.h"
+#include "brave/components/containers/core/common/features.h"
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/browser/ui/email_aliases/email_aliases_controller.h"
+#include "brave/components/email_aliases/features.h"
+#endif
+
+namespace {
+
+AutocompleteMatch GetAutocompleteMatchForText(Profile* profile,
+                                              const std::u16string& text) {
+  AutocompleteMatch match;
+  AutocompleteClassifier classifier(
+      std::make_unique<AutocompleteController>(
+          std::make_unique<ChromeAutocompleteProviderClient>(profile),
+          AutocompleteControllerConfig{
+              .provider_types =
+                  AutocompleteClassifier::DefaultOmniboxProviders()}),
+      std::make_unique<BraveAutocompleteSchemeClassifier>(profile));
+  classifier.Classify(text, false, false,
+                      metrics::OmniboxEventProto::INVALID_SPEC, &match, NULL);
+  classifier.Shutdown();
+  return match;
+}
+
+GURL GetSelectionNavigationURL(Profile* profile, const std::u16string& text) {
+  return GetAutocompleteMatchForText(profile, text).destination_url;
+}
+
+std::optional<GURL> GetSelectedURL(Profile* profile,
+                                   const std::u16string& text) {
+  auto match = GetAutocompleteMatchForText(profile, text);
+  if (match.type != AutocompleteMatchType::URL_WHAT_YOU_TYPED) {
+    return std::nullopt;
+  }
+  return match.destination_url;
+}
+
+base::OnceCallback<void(RenderViewContextMenu*)>* BraveGetMenuShownCallback() {
+  static base::NoDestructor<base::OnceCallback<void(RenderViewContextMenu*)>>
+      callback;
+  return callback.get();
+}
+
+}  // namespace
+
+void RenderViewContextMenu_Chromium::RegisterMenuShownCallbackForTesting(
+    base::OnceCallback<void(RenderViewContextMenu*)> cb) {
+  *BraveGetMenuShownCallback() = std::move(cb);
+}
+
+#define BRAVE_APPEND_SEARCH_PROVIDER                                     \
+  if (GetProfile()->IsOffTheRecord()) {                                  \
+    selection_navigation_url_ =                                          \
+        GetSelectionNavigationURL(GetProfile(), params_.selection_text); \
+    if (!selection_navigation_url_.is_valid())                           \
+      return;                                                            \
+  }
+
+// Use our subclass to initialize SpellingOptionsSubMenuObserver.
+#define SpellingOptionsSubMenuObserver BraveSpellingOptionsSubMenuObserver
+#define RegisterMenuShownCallbackForTesting \
+  RegisterMenuShownCallbackForTesting_unused
+#define RenderViewContextMenu RenderViewContextMenu_Chromium
+
+#include <chrome/browser/renderer_context_menu/render_view_context_menu.cc>
+
+#undef SpellingOptionsSubMenuObserver
+#undef RegisterMenuShownCallbackForTesting
+
+// Make it clear which class we mean here.
+#undef RenderViewContextMenu
+#undef BRAVE_APPEND_SEARCH_PROVIDER
+
+namespace {
+
+#if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
+void OnGetImageForTextCopy(base::WeakPtr<content::WebContents> web_contents,
+                           const SkBitmap& image) {
+  if (!web_contents) {
+    return;
+  }
+
+  brave::ShowTextRecognitionDialog(web_contents.get(), image);
+}
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+constexpr char kAIChatRewriteDataKey[] = "ai_chat_rewrite_data";
+
+struct AIChatRewriteData : public base::SupportsUserData::Data {
+  std::string accumulated_text;
+};
+
+bool IsRewriteCommand(int command) {
+  static constexpr auto kRewriteCommands = base::MakeFixedFlatSet<int>(
+      {IDC_AI_CHAT_CONTEXT_PARAPHRASE, IDC_AI_CHAT_CONTEXT_IMPROVE,
+       IDC_AI_CHAT_CONTEXT_ACADEMICIZE, IDC_AI_CHAT_CONTEXT_PROFESSIONALIZE,
+       IDC_AI_CHAT_CONTEXT_PERSUASIVE_TONE, IDC_AI_CHAT_CONTEXT_CASUALIZE,
+       IDC_AI_CHAT_CONTEXT_FUNNY_TONE, IDC_AI_CHAT_CONTEXT_SHORTEN,
+       IDC_AI_CHAT_CONTEXT_EXPAND});
+
+  return kRewriteCommands.contains(command);
+}
+
+std::pair<ai_chat::mojom::ActionType, ai_chat::ContextMenuAction>
+GetActionTypeAndP3A(int command) {
+  static constexpr auto kActionTypeMap = base::MakeFixedFlatMap<
+      int, std::pair<ai_chat::mojom::ActionType, ai_chat::ContextMenuAction>>(
+      {{IDC_AI_CHAT_CONTEXT_SUMMARIZE_TEXT,
+        {ai_chat::mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
+         ai_chat::ContextMenuAction::kSummarize}},
+       {IDC_AI_CHAT_CONTEXT_EXPLAIN,
+        {ai_chat::mojom::ActionType::EXPLAIN,
+         ai_chat::ContextMenuAction::kExplain}},
+       {IDC_AI_CHAT_CONTEXT_PARAPHRASE,
+        {ai_chat::mojom::ActionType::PARAPHRASE,
+         ai_chat::ContextMenuAction::kParaphrase}},
+       {IDC_AI_CHAT_CONTEXT_CREATE_TAGLINE,
+        {ai_chat::mojom::ActionType::CREATE_TAGLINE,
+         ai_chat::ContextMenuAction::kCreateTagline}},
+       {IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_SHORT,
+        {ai_chat::mojom::ActionType::CREATE_SOCIAL_MEDIA_COMMENT_SHORT,
+         ai_chat::ContextMenuAction::kCreateSocialMedia}},
+       {IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_LONG,
+        {ai_chat::mojom::ActionType::CREATE_SOCIAL_MEDIA_COMMENT_LONG,
+         ai_chat::ContextMenuAction::kCreateSocialMedia}},
+       {IDC_AI_CHAT_CONTEXT_IMPROVE,
+        {ai_chat::mojom::ActionType::IMPROVE,
+         ai_chat::ContextMenuAction::kImprove}},
+       {IDC_AI_CHAT_CONTEXT_ACADEMICIZE,
+        {ai_chat::mojom::ActionType::ACADEMICIZE,
+         ai_chat::ContextMenuAction::kChangeTone}},
+       {IDC_AI_CHAT_CONTEXT_PROFESSIONALIZE,
+        {ai_chat::mojom::ActionType::PROFESSIONALIZE,
+         ai_chat::ContextMenuAction::kChangeTone}},
+       {IDC_AI_CHAT_CONTEXT_PERSUASIVE_TONE,
+        {ai_chat::mojom::ActionType::PERSUASIVE_TONE,
+         ai_chat::ContextMenuAction::kChangeTone}},
+       {IDC_AI_CHAT_CONTEXT_CASUALIZE,
+        {ai_chat::mojom::ActionType::CASUALIZE,
+         ai_chat::ContextMenuAction::kChangeTone}},
+       {IDC_AI_CHAT_CONTEXT_FUNNY_TONE,
+        {ai_chat::mojom::ActionType::FUNNY_TONE,
+         ai_chat::ContextMenuAction::kChangeTone}},
+       {IDC_AI_CHAT_CONTEXT_SHORTEN,
+        {ai_chat::mojom::ActionType::SHORTEN,
+         ai_chat::ContextMenuAction::kChangeLength}},
+       {IDC_AI_CHAT_CONTEXT_EXPAND,
+        {ai_chat::mojom::ActionType::EXPAND,
+         ai_chat::ContextMenuAction::kChangeLength}}});
+  CHECK(kActionTypeMap.contains(command));
+  return kActionTypeMap.at(command);
+}
+
+void OnRewriteSuggestionDataReceived(
+    base::WeakPtr<content::WebContents> web_contents,
+    const std::string& suggestion) {
+  if (!web_contents) {
+    return;
+  }
+
+  auto* rewrite_data = static_cast<AIChatRewriteData*>(
+      web_contents->GetUserData(kAIChatRewriteDataKey));
+  if (!rewrite_data) {
+    return;
+  }
+
+  if (!rewrite_data->accumulated_text.empty()) {
+    // Subsequent data received, undo previous streaming result.
+    web_contents->Undo();
+  }
+
+  // Accumulate the delta to build the full text.
+  base::StrAppend(&rewrite_data->accumulated_text, {suggestion});
+  web_contents->Replace(base::UTF8ToUTF16(rewrite_data->accumulated_text));
+}
+
+void OnRewriteSuggestionCompleted(
+    base::WeakPtr<content::WebContents> web_contents,
+    const std::string& selected_text,
+    ai_chat::mojom::ActionType action_type,
+    base::expected<ai_chat::EngineConsumer::GenerationResultData,
+                   ai_chat::mojom::APIError> result) {
+  if (!web_contents) {
+    return;
+  }
+
+  if (!result.has_value()) {
+    // If the content has been rewritten by previous streaming result, undo to
+    // get back to original text.
+    auto* rewrite_data = static_cast<AIChatRewriteData*>(
+        web_contents->GetUserData(kAIChatRewriteDataKey));
+    if (!rewrite_data) {
+      return;
+    }
+
+    if (!rewrite_data->accumulated_text.empty()) {
+      web_contents->Undo();
+    }
+
+    // Show the error in Leo side panel UI.
+    ai_chat::AIChatService* ai_chat_service =
+        ai_chat::AIChatServiceFactory::GetForBrowserContext(
+            web_contents.get()->GetBrowserContext());
+    if (!ai_chat_service) {
+      return;
+    }
+    ai_chat::AIChatTabHelper* helper =
+        ai_chat::AIChatTabHelper::FromWebContents(web_contents.get());
+    if (!helper) {
+      return;
+    }
+    ai_chat::ConversationHandler* conversation =
+        ai_chat_service->GetOrCreateConversationHandlerForContent(
+            helper->web_contents_content().content_id(),
+            helper->web_contents_content().GetWeakPtr());
+    if (!conversation) {
+      return;
+    }
+    conversation->MaybeUnlinkAssociatedContent();
+
+    ai_chat::OpenAIChatForTab(web_contents.get());
+
+    conversation->AddSubmitSelectedTextError(selected_text, action_type,
+                                             result.error());
+  }
+
+  web_contents->RemoveUserData(kAIChatRewriteDataKey);
+}
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+email_aliases::EmailAliasesController* GetEmailAliasesController(
+    BrowserWindowInterface* browser) {
+  if (!browser) {
+    return nullptr;
+  }
+  return browser->GetFeatures().email_aliases_controller();
+}
+#endif  // BUILDFLAG(ENABLE_EMAIL_ALIASES)
+
+}  // namespace
+
+RenderViewContextMenu::RenderViewContextMenu(
+    content::RenderFrameHost& render_frame_host,
+    const content::ContextMenuParams& params,
+    bool is_paste_enabled)
+    : RenderViewContextMenu_Chromium(render_frame_host,
+                                     params,
+                                     is_paste_enabled)
+#if BUILDFLAG(ENABLE_AI_CHAT)
+      ,
+      ai_chat_submenu_model_(this),
+      ai_chat_change_tone_submenu_model_(this),
+      ai_chat_change_length_submenu_model_(this),
+      ai_chat_social_media_post_submenu_model_(this)
+#endif
+{
+}
+
+RenderViewContextMenu::~RenderViewContextMenu() = default;
+
+bool RenderViewContextMenu::IsCommandIdEnabled(int id) const {
+  switch (id) {
+#if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
+    case IDC_CONTENT_CONTEXT_COPY_TEXT_FROM_IMAGE:
+      return params_.has_image_contents;
+#endif
+    case IDC_COPY_CLEAN_LINK:
+      return params_.link_url.is_valid() ||
+             GetSelectedURL(GetProfile(), params_.selection_text).has_value();
+    case IDC_CONTENT_CONTEXT_FORCE_PASTE:
+      // only enable if there is plain text data to paste - this is what
+      // IsPasteAndMatchStyleEnabled checks internally, but IsPasteEnabled
+      // allows non text types
+      return IsPasteAndMatchStyleEnabled();
+    case IDC_CONTENT_CONTEXT_OPENLINKTOR:
+#if BUILDFLAG(ENABLE_TOR)
+      if (TorProfileServiceFactory::IsTorDisabled(GetProfile())) {
+        return false;
+      }
+
+      return params_.link_url.is_valid() &&
+             IsURLAllowedInIncognito(params_.link_url) &&
+             !GetProfile()->IsTor();
+#else
+      return false;
+#endif
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    case IDC_AI_CHAT_CONTEXT_SUMMARIZE_TEXT:
+    case IDC_AI_CHAT_CONTEXT_LEO_TOOLS:
+    case IDC_AI_CHAT_CONTEXT_EXPLAIN:
+    case IDC_AI_CHAT_CONTEXT_PARAPHRASE:
+    case IDC_AI_CHAT_CONTEXT_CREATE_TAGLINE:
+    case IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_SHORT:
+    case IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_LONG:
+    case IDC_AI_CHAT_CONTEXT_IMPROVE:
+    case IDC_AI_CHAT_CONTEXT_CHANGE_TONE:
+    case IDC_AI_CHAT_CONTEXT_ACADEMICIZE:
+    case IDC_AI_CHAT_CONTEXT_PROFESSIONALIZE:
+    case IDC_AI_CHAT_CONTEXT_PERSUASIVE_TONE:
+    case IDC_AI_CHAT_CONTEXT_CASUALIZE:
+    case IDC_AI_CHAT_CONTEXT_FUNNY_TONE:
+    case IDC_AI_CHAT_CONTEXT_SHORTEN:
+    case IDC_AI_CHAT_CONTEXT_EXPAND:
+    case IDC_AI_CHAT_CONTEXT_CHANGE_LENGTH:
+    case IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_POST:
+      return IsAIChatEnabled();
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+    case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS:
+      return true;
+    case IDC_OPEN_IN_CONTAINER:
+      return true;
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+    case IDC_NEW_EMAIL_ALIAS:
+      return !!GetEmailAliasesController(GetBrowser());
+#endif
+    default:
+      return RenderViewContextMenu_Chromium::IsCommandIdEnabled(id);
+  }
+}
+
+void RenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
+  switch (id) {
+    case IDC_COPY_CLEAN_LINK: {
+      GURL link_url = params_.link_url;
+      if (!link_url.is_valid()) {
+        auto selected_url =
+            GetSelectedURL(GetProfile(), params_.selection_text);
+        if (selected_url.has_value()) {
+          link_url = selected_url.value();
+        } else {
+          return;
+        }
+      }
+      brave::CopyLinkWithStrictCleaning(GetBrowser(), link_url);
+    }; break;
+    case IDC_CONTENT_CONTEXT_FORCE_PASTE: {
+      brave::ForcePasteInWebContents(source_web_contents_);
+    }; break;
+#if BUILDFLAG(ENABLE_TOR)
+    case IDC_CONTENT_CONTEXT_OPENLINKTOR:
+      TorProfileManager::SwitchToTorProfile(GetProfile(), params_.link_url,
+                                            params_.frame_origin);
+      break;
+#endif
+#if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
+    case IDC_CONTENT_CONTEXT_COPY_TEXT_FROM_IMAGE:
+      CopyTextFromImage();
+      break;
+#endif
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    case IDC_AI_CHAT_CONTEXT_SUMMARIZE_TEXT:
+    case IDC_AI_CHAT_CONTEXT_EXPLAIN:
+    case IDC_AI_CHAT_CONTEXT_PARAPHRASE:
+    case IDC_AI_CHAT_CONTEXT_CREATE_TAGLINE:
+    case IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_SHORT:
+    case IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_LONG:
+    case IDC_AI_CHAT_CONTEXT_IMPROVE:
+    case IDC_AI_CHAT_CONTEXT_ACADEMICIZE:
+    case IDC_AI_CHAT_CONTEXT_PROFESSIONALIZE:
+    case IDC_AI_CHAT_CONTEXT_PERSUASIVE_TONE:
+    case IDC_AI_CHAT_CONTEXT_CASUALIZE:
+    case IDC_AI_CHAT_CONTEXT_FUNNY_TONE:
+    case IDC_AI_CHAT_CONTEXT_SHORTEN:
+    case IDC_AI_CHAT_CONTEXT_EXPAND:
+      ExecuteAIChatCommand(id);
+      break;
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+    case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS:
+      cosmetic_filters::CosmeticFiltersTabHelper::LaunchContentPicker(
+          source_web_contents_);
+      break;
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+    case IDC_NEW_EMAIL_ALIAS:
+      if (auto* email_aliases = GetEmailAliasesController(GetBrowser())) {
+        email_aliases->ShowBubble(source_web_contents_, GetRenderFrameHost(),
+                                  params_.field_renderer_id);
+      }
+      break;
+#endif
+    default:
+      RenderViewContextMenu_Chromium::ExecuteCommand(id, event_flags);
+  }
+}
+
+#if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
+void RenderViewContextMenu::CopyTextFromImage() {
+  RenderFrameHost* frame_host = GetRenderFrameHost();
+  if (frame_host) {
+    frame_host->GetImageAt(params_.x, params_.y,
+                           base::BindOnce(OnGetImageForTextCopy,
+                                          source_web_contents_->GetWeakPtr()));
+  }
+}
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+bool RenderViewContextMenu::IsAIChatEnabled() const {
+  return !params_.selection_text.empty() &&
+         ai_chat::IsAIChatEnabled(GetProfile()->GetPrefs()) &&
+         GetProfile()->IsRegularProfile() &&
+         GetProfile()->GetPrefs()->GetBoolean(
+             ai_chat::prefs::kBraveAIChatContextMenuEnabled) &&
+         !IsInProgressiveWebApp();
+}
+
+void RenderViewContextMenu::ExecuteAIChatCommand(int command) {
+  // To do rewrite in-place, the following conditions must be met:
+  // 1) Selected content is editable.
+  // 2) User has opted in to Leo.
+  // 3) Context menu rewrite in place feature is enabled.
+  // 4) SSE is enabled, it is required otherwise the UI update will be too slow.
+  // 5) The command is a rewrite command.
+  // 6) Not in the case of MimeHandlerView (ex: PDF) where
+  // embedder_web_contents_ is different from source_web_contents_.
+  // 7) There's no in-progress in-place rewrite.
+  bool rewrite_in_place =
+      params_.is_editable &&
+      ai_chat::HasUserOptedIn(GetProfile()->GetPrefs()) &&
+      ai_chat::features::IsContextMenuRewriteInPlaceEnabled() &&
+      ai_chat::features::kAIChatSSE.Get() && IsRewriteCommand(command) &&
+      source_web_contents_ == embedder_web_contents_ &&
+      !source_web_contents_->GetUserData(kAIChatRewriteDataKey);
+
+  auto [action_type, p3a_action] = GetActionTypeAndP3A(command);
+  auto selected_text = base::UTF16ToUTF8(params_.selection_text);
+
+  auto* browser = GetBrowser();
+  ai_chat::AIChatMetrics* ai_chat_metrics = nullptr;
+  if (browser) {
+    auto* profile_metrics =
+        misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
+            browser->profile());
+    if (profile_metrics) {
+      ai_chat_metrics = profile_metrics->GetAIChatMetrics();
+      if (ai_chat_metrics) {
+        ai_chat_metrics->OnQuickActionStatusChange(true);
+      }
+    }
+  }
+
+  if (rewrite_in_place) {
+    source_web_contents_->SetUserData(kAIChatRewriteDataKey,
+                                      std::make_unique<AIChatRewriteData>());
+    if (!ai_engine_) {
+      ai_engine_ = ai_chat::AIChatServiceFactory::GetForBrowserContext(
+                       source_web_contents_->GetBrowserContext())
+                       ->GetDefaultAIEngine();
+    }
+    ai_engine_->GenerateRewriteSuggestion(
+        selected_text, action_type,
+        ai_chat::BindParseRewriteReceivedData(
+            base::BindRepeating(&OnRewriteSuggestionDataReceived,
+                                source_web_contents_->GetWeakPtr())),
+        base::BindOnce(&OnRewriteSuggestionCompleted,
+                       source_web_contents_->GetWeakPtr(), selected_text,
+                       action_type));
+  } else {
+    ai_chat::AIChatTabHelper* helper =
+        ai_chat::AIChatTabHelper::FromWebContents(embedder_web_contents_);
+    if (!helper) {
+      VLOG(1) << "Can't get AI chat tab helper";
+      return;
+    }
+
+    ai_chat::ConversationHandler* conversation =
+        ai_chat::AIChatServiceFactory::GetForBrowserContext(
+            embedder_web_contents_->GetBrowserContext())
+            ->GetOrCreateConversationHandlerForContent(
+                helper->web_contents_content().content_id(),
+                helper->web_contents_content().GetWeakPtr());
+    // Before trying to activate the panel, unlink page content if needed.
+    // This needs to be called before activating the panel to check against the
+    // current state.
+    conversation->MaybeUnlinkAssociatedContent();
+
+    // Active the panel.
+    ai_chat::OpenAIChatForTab(embedder_web_contents_);
+    conversation->SubmitSelectedText(selected_text, action_type);
+  }
+
+  if (ai_chat_metrics) {
+    ai_chat_metrics->RecordContextMenuUsage(p3a_action);
+  }
+}
+
+void RenderViewContextMenu::BuildAIChatMenu() {
+  if (!IsAIChatEnabled()) {
+    return;
+  }
+  std::optional<size_t> print_index =
+      menu_model_.GetIndexOfCommandId(IDC_PRINT);
+  if (!print_index.has_value()) {
+    return;
+  }
+
+  ai_chat_submenu_model_.AddTitleWithStringId(
+      IDS_AI_CHAT_CONTEXT_QUICK_ACTIONS);
+
+  ai_chat_submenu_model_.AddItemWithStringId(
+      IDC_AI_CHAT_CONTEXT_SUMMARIZE_TEXT, IDS_AI_CHAT_CONTEXT_SUMMARIZE_TEXT);
+  ai_chat_submenu_model_.AddItemWithStringId(IDC_AI_CHAT_CONTEXT_EXPLAIN,
+                                             IDS_AI_CHAT_CONTEXT_EXPLAIN);
+  ai_chat_submenu_model_.AddSeparator(ui::NORMAL_SEPARATOR);
+
+  ai_chat_submenu_model_.AddTitleWithStringId(IDS_AI_CHAT_CONTEXT_REWRITE);
+  ai_chat_submenu_model_.AddItemWithStringId(IDC_AI_CHAT_CONTEXT_PARAPHRASE,
+                                             IDS_AI_CHAT_CONTEXT_PARAPHRASE);
+  ai_chat_submenu_model_.AddItemWithStringId(IDC_AI_CHAT_CONTEXT_IMPROVE,
+                                             IDS_AI_CHAT_CONTEXT_IMPROVE);
+
+  ai_chat_change_tone_submenu_model_.AddItemWithStringId(
+      IDC_AI_CHAT_CONTEXT_ACADEMICIZE, IDS_AI_CHAT_CONTEXT_ACADEMICIZE);
+  ai_chat_change_tone_submenu_model_.AddItemWithStringId(
+      IDC_AI_CHAT_CONTEXT_PROFESSIONALIZE, IDS_AI_CHAT_CONTEXT_PROFESSIONALIZE);
+  ai_chat_change_tone_submenu_model_.AddItemWithStringId(
+      IDC_AI_CHAT_CONTEXT_PERSUASIVE_TONE, IDS_AI_CHAT_CONTEXT_PERSUASIVE_TONE);
+  ai_chat_change_tone_submenu_model_.AddItemWithStringId(
+      IDC_AI_CHAT_CONTEXT_CASUALIZE, IDS_AI_CHAT_CONTEXT_CASUALIZE);
+  ai_chat_change_tone_submenu_model_.AddItemWithStringId(
+      IDC_AI_CHAT_CONTEXT_FUNNY_TONE, IDS_AI_CHAT_CONTEXT_FUNNY_TONE);
+
+  ai_chat_submenu_model_.AddSubMenuWithStringId(
+      IDC_AI_CHAT_CONTEXT_CHANGE_TONE, IDS_AI_CHAT_CONTEXT_CHANGE_TONE,
+      &ai_chat_change_tone_submenu_model_);
+
+  ai_chat_change_length_submenu_model_.AddItemWithStringId(
+      IDC_AI_CHAT_CONTEXT_SHORTEN, IDS_AI_CHAT_CONTEXT_SHORTEN);
+  ai_chat_change_length_submenu_model_.AddItemWithStringId(
+      IDC_AI_CHAT_CONTEXT_EXPAND, IDS_AI_CHAT_CONTEXT_EXPAND);
+  ai_chat_submenu_model_.AddSubMenuWithStringId(
+      IDC_AI_CHAT_CONTEXT_CHANGE_LENGTH, IDS_AI_CHAT_CONTEXT_CHANGE_LENGTH,
+      &ai_chat_change_length_submenu_model_);
+
+  ai_chat_submenu_model_.AddSeparator(ui::NORMAL_SEPARATOR);
+
+  ai_chat_submenu_model_.AddTitleWithStringId(IDS_AI_CHAT_CONTEXT_CREATE);
+  ai_chat_submenu_model_.AddItemWithStringId(
+      IDC_AI_CHAT_CONTEXT_CREATE_TAGLINE, IDS_AI_CHAT_CONTEXT_CREATE_TAGLINE);
+
+  ai_chat_social_media_post_submenu_model_.AddItemWithStringId(
+      IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_SHORT,
+      IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_SHORT);
+  ai_chat_social_media_post_submenu_model_.AddItemWithStringId(
+      IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_LONG,
+      IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_LONG);
+  ai_chat_submenu_model_.AddSubMenuWithStringId(
+      IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_POST,
+      IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_POST,
+      &ai_chat_social_media_post_submenu_model_);
+
+  menu_model_.InsertSubMenuWithStringIdAt(
+      *print_index, IDC_AI_CHAT_CONTEXT_LEO_TOOLS,
+      IDS_AI_CHAT_CONTEXT_LEO_TOOLS, &ai_chat_submenu_model_);
+}
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+void RenderViewContextMenu::BuildContainersMenu() {
+  if (!base::FeatureList::IsEnabled(containers::features::kContainers) ||
+      !params_.link_url.is_valid()) {
+    return;
+  }
+
+  auto* service = ContainersServiceFactory::GetForProfile(GetProfile());
+  if (!service) {
+    return;
+  }
+
+  std::optional<size_t> first_separator_index;
+  for (size_t i = 0; i < menu_model_.GetItemCount(); ++i) {
+    if (menu_model_.GetTypeAt(i) == ui::MenuModel::TYPE_SEPARATOR) {
+      first_separator_index = i;
+      break;
+    }
+  }
+
+  containers_submenu_model_ =
+      std::make_unique<containers::ContainersMenuModel>(*this, *service);
+
+  if (first_separator_index.has_value()) {
+    menu_model_.InsertSubMenuWithStringIdAt(
+        *first_separator_index, IDC_OPEN_IN_CONTAINER,
+        IDS_CXMENU_OPEN_LINK_IN_CONTAINER, containers_submenu_model_.get());
+  } else {
+    menu_model_.AddSubMenuWithStringId(IDC_OPEN_IN_CONTAINER,
+                                       IDS_CXMENU_OPEN_LINK_IN_CONTAINER,
+                                       containers_submenu_model_.get());
+  }
+}
+
+Browser* RenderViewContextMenu::GetBrowserToOpenSettings() {
+  return GetBrowser();
+}
+
+float RenderViewContextMenu::GetScaleFactor() {
+  auto* render_frame_host = GetRenderFrameHost();
+  CHECK(render_frame_host);
+  auto* render_view = render_frame_host->GetView();
+  if (!render_view) {
+    CHECK_IS_TEST();
+    return 1.0f;
+  }
+  return render_view->GetDeviceScaleFactor();
+}
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+void RenderViewContextMenu::AddSpellCheckServiceItem(bool is_checked) {
+  // Call our implementation, not the one in the base class.
+  // Assumption:
+  // Use of spelling service is disabled in Brave profile preferences.
+  DCHECK(!GetProfile()->GetPrefs()->GetBoolean(
+      spellcheck::prefs::kSpellCheckUseSpellingService));
+  AddSpellCheckServiceItem(&menu_model_, is_checked);
+}
+
+// static
+void RenderViewContextMenu::AddSpellCheckServiceItem(ui::SimpleMenuModel* menu,
+                                                     bool is_checked) {
+  // Suppress adding "Spellcheck->Ask Brave for suggestions" item.
+}
+
+void RenderViewContextMenu::AddAccessibilityLabelsServiceItem(bool is_checked) {
+  // Suppress adding "Get image descriptions from Brave"
+}
+
+void RenderViewContextMenu::AppendDeveloperItems() {
+  RenderViewContextMenu_Chromium::AppendDeveloperItems();
+
+  auto* shields_tab_helper =
+      brave_shields::BraveShieldsTabHelper::FromWebContents(
+          source_web_contents_);
+  bool add_block_elements = shields_tab_helper &&
+                            shields_tab_helper->GetBraveShieldsEnabled() &&
+                            shields_tab_helper->GetAdBlockMode() !=
+                                brave_shields::mojom::AdBlockMode::ALLOW;
+  add_block_elements &=
+      params_.selection_text.empty() || !params_.link_url.is_empty();
+
+  const auto page_url = source_web_contents_->GetLastCommittedURL();
+  add_block_elements &= page_url.SchemeIsHTTPOrHTTPS();
+  add_block_elements &= base::FeatureList::IsEnabled(
+      brave_shields::features::kBraveShieldsElementPicker);
+
+  const auto* profile = GetProfile();
+  add_block_elements &=
+      profile &&
+      (!profile->IsOffTheRecord() ||
+       shields_tab_helper->GetAllowElementBlockerInPrivateModeEnabled());
+  if (add_block_elements) {
+    std::optional<size_t> inspect_index =
+        menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_INSPECTELEMENT);
+    if (inspect_index) {
+      menu_model_.InsertItemWithStringIdAt(*inspect_index,
+                                           IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS,
+                                           IDS_ADBLOCK_CONTEXT_BLOCK_ELEMENTS);
+    } else {
+      menu_model_.AddItemWithStringId(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS,
+                                      IDS_ADBLOCK_CONTEXT_BLOCK_ELEMENTS);
+    }
+  }
+}
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+void RenderViewContextMenu::OnContainerSelected(
+    const containers::mojom::ContainerPtr& container) {
+  if (!params_.link_url.is_valid()) {
+    return;
+  }
+
+  brave::OpenUrlInContainer(GetBrowser(), params_.link_url, container);
+}
+
+void RenderViewContextMenu::OnNoContainerSelected() {
+  if (!params_.link_url.is_valid()) {
+    return;
+  }
+
+  brave::OpenUrlWithoutContainer(GetBrowser(), params_.link_url);
+}
+
+base::flat_set<std::string> RenderViewContextMenu::GetCurrentContainerIds() {
+  CHECK(base::FeatureList::IsEnabled(containers::features::kContainers));
+
+  const auto& storage_partition_config = source_web_contents_->GetSiteInstance()
+                                             ->GetSecurityPrincipal()
+                                             .GetStoragePartitionConfig();
+  if (!containers::IsContainersStoragePartition(storage_partition_config)) {
+    return {};
+  }
+
+  return {storage_partition_config.partition_name()};
+}
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+void RenderViewContextMenu::SetAIEngineForTesting(
+    std::unique_ptr<ai_chat::EngineConsumer> ai_engine) {
+  ai_engine_ = std::move(ai_engine);
+}
+#endif
+
+void RenderViewContextMenu::InitMenu() {
+  RenderViewContextMenu_Chromium::InitMenu();
+
+  // Move "Open link in split view" to the last item of the first section (right
+  // before the first separator) when present.
+  std::optional<size_t> split_index =
+      menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_OPENLINKSPLITVIEW);
+  if (split_index.has_value()) {
+    std::optional<size_t> separator_index;
+    for (size_t i = 0; i < menu_model_.GetItemCount(); ++i) {
+      if (menu_model_.GetTypeAt(i) == ui::MenuModel::TYPE_SEPARATOR) {
+        separator_index = i;
+        break;
+      }
+    }
+    if (separator_index.has_value() &&
+        split_index.value() < separator_index.value()) {
+      menu_model_.InsertItemAt(separator_index.value(),
+                               IDC_CONTENT_CONTEXT_OPENLINKSPLITVIEW,
+                               menu_model_.GetLabelAt(split_index.value()));
+      menu_model_.SetIcon(separator_index.value(),
+                          menu_model_.GetIconAt(split_index.value()));
+      menu_model_.RemoveItemAt(split_index.value());
+    }
+  }
+
+  std::optional<size_t> index = menu_model_.GetIndexOfCommandId(
+      IDC_CONTENT_CONTEXT_PASTE_AND_MATCH_STYLE);
+  if (index.has_value()) {
+    menu_model_.InsertItemWithStringIdAt(
+        index.value() + 1, IDC_CONTENT_CONTEXT_FORCE_PASTE, IDS_FORCE_PASTE);
+  }
+#if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
+  const bool media_image = content_type_->SupportsGroup(
+      ContextMenuContentType::ITEM_GROUP_MEDIA_IMAGE);
+  if (media_image) {
+    index =
+        menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_COPYIMAGELOCATION);
+    DCHECK(index);
+    menu_model_.InsertItemWithStringIdAt(
+        index.value() + 1, IDC_CONTENT_CONTEXT_COPY_TEXT_FROM_IMAGE,
+        IDS_CONTENT_CONTEXT_COPY_TEXT_FROM_IMAGE);
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+  // Add Open Link with Tor
+  if (!TorProfileServiceFactory::IsTorDisabled(GetProfile()) &&
+      content_type_->SupportsGroup(ContextMenuContentType::ITEM_GROUP_LINK) &&
+      !params_.link_url.is_empty()) {
+    const Browser* browser = GetBrowser();
+    const bool is_app = browser && browser->is_type_app();
+
+    index = menu_model_.GetIndexOfCommandId(
+        IDC_CONTENT_CONTEXT_OPENLINKOFFTHERECORD);
+    DCHECK(index.has_value());
+
+    menu_model_.InsertItemWithStringIdAt(
+        index.value() + 1, IDC_CONTENT_CONTEXT_OPENLINKTOR,
+        is_app ? IDS_CONTENT_CONTEXT_OPENLINKTOR_INAPP
+               : IDS_CONTENT_CONTEXT_OPENLINKTOR);
+  }
+#endif
+  if (!params_.link_url.is_empty() && params_.link_url.SchemeIsHTTPOrHTTPS()) {
+    std::optional<size_t> link_index =
+        menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_COPYLINKLOCATION);
+    if (link_index.has_value()) {
+      menu_model_.InsertItemWithStringIdAt(
+          link_index.value() + 1, IDC_COPY_CLEAN_LINK, IDS_COPY_CLEAN_LINK);
+    }
+  }
+  if (GetSelectedURL(GetProfile(), params_.selection_text).has_value()) {
+    std::optional<size_t> copy_index =
+        menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_COPY);
+    if (copy_index.has_value() &&
+        !menu_model_.GetIndexOfCommandId(IDC_COPY_CLEAN_LINK).has_value()) {
+      menu_model_.InsertItemWithStringIdAt(
+          copy_index.value() + 1, IDC_COPY_CLEAN_LINK, IDS_COPY_CLEAN_LINK);
+    }
+  }
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  BuildAIChatMenu();
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  BuildContainersMenu();
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+  BuildEmailAliasesMenu();
+#endif
+}
+
+void RenderViewContextMenu::NotifyMenuShown() {
+  auto* cb = BraveGetMenuShownCallback();
+  if (!cb->is_null()) {
+    std::move(*cb).Run(this);
+  }
+}
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+void RenderViewContextMenu::BuildEmailAliasesMenu() {
+  if (!email_aliases::features::IsEmailAliasesEnabled()) {
+    return;
+  }
+  auto* email_aliases = GetEmailAliasesController(GetBrowser());
+  if (!email_aliases || !email_aliases->IsAvailableFor(params_)) {
+    return;
+  }
+
+  const auto autofill_anchor = [&]() -> std::optional<int> {
+    constexpr int kAutofillAnchors[] = {
+        IDC_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORDS_SELECT_PASSWORD,
+        IDC_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORDS_SUGGEST_PASSWORD,
+        IDC_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORDS_IMPORT_PASSWORDS,
+        IDC_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORDS_USE_PASSKEY_FROM_ANOTHER_DEVICE};
+
+    for (const auto anchor : kAutofillAnchors) {
+      if (const auto index = menu_model_.GetIndexOfCommandId(anchor);
+          index.has_value()) {
+        return index;
+      }
+    }
+
+    return std::nullopt;
+  }();
+
+  if (autofill_anchor.has_value()) {
+    menu_model_.InsertItemWithStringIdAt(autofill_anchor.value() + 1,
+                                         IDC_NEW_EMAIL_ALIAS,
+                                         IDS_IDC_NEW_EMAIL_ALIAS);
+  } else {
+    menu_model_.AddSeparator(ui::NORMAL_SEPARATOR);
+    menu_model_.AddItemWithStringId(IDC_NEW_EMAIL_ALIAS,
+                                    IDS_IDC_NEW_EMAIL_ALIAS);
+  }
+}
+#endif  // BUILDFLAG(ENABLE_EMAIL_ALIASES)

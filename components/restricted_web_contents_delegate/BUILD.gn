@@ -1,0 +1,13 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("restricted_web_contents_delegate") {
+  sources = [
+    "restricted_web_contents_delegate.cc",
+    "restricted_web_contents_delegate.h",
+  ]
+
+  public_deps = [ "//content/public/browser" ]
+}

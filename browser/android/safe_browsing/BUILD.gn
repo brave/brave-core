@@ -1,0 +1,28 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/buildflag_header.gni")
+import("//build/config/android/rules.gni")
+
+declare_args() {
+  brave_safebrowsing_api_key = ""
+}
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [ "SAFEBROWSING_API_KEY=\"$brave_safebrowsing_api_key\"" ]
+}
+
+source_set("safe_browsing") {
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+
+  deps = [
+    ":buildflags",
+    "//base",
+  ]
+}

@@ -1,0 +1,495 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Woman struck by lightning near White House talks her road to recovery with 'GMA'</title><meta charset="utf-8"/><body id="article"><h1 class="title metadata">Woman struck by lightning near White House talks her road to recovery with 'GMA'</h1><p class="subhead metadata">In an exclusive interview with "Good Morning America," Amber Escudero-Kontostathis discusses being the sole survivor of a lightning strike near the White House on Aug. 4.</p><div class=""><p class="metadata">By ABC News</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr><p class="fnmMv geuMB alqtB wqIGQ ">In an exclusive interview with "Good Morning America," Amber Escudero-Kontostathis sits down to talk for the first time about being the sole survivor of a lightning strike near the White House <a class="  uOtk efBMc LIsPj wIScF " href="https://abcnews.go.com/US/people-critical-condition-apparent-lightning-strike-dc-park/story?id=87957127" tabindex="0" target="_blank">earlier this month</a>, on her 28th birthday, and her road to recovery.</p><p class="fnmMv geuMB alqtB wqIGQ ">"I don't remember much of that day at all," Escudero-Kontostathis told "GMA" in her first interview since the incident.</p><p class="fnmMv geuMB alqtB wqIGQ ">On Aug. 4, Escudero-Kontostathis, 28, was canvassing outside the White House for Threshold Giving, a nonprofit organization through the International Rescue Committee that helps refugees, when she and three others took cover underneath a tree at Lafayette Square after it began to rain.</p><div class="snXP  FYsKf rNiFf  vABDa LKeu uJbEF "><div class="InlineImage fnIPT "><figure class="GKCm dkOCJ oGxfq GkpGd "><img alt="PHOTO: Amber Escudero-Kontostathis, survivor of the Aug. 4 lightning strike near the White House, is interviewed by Good Morning America, in Washington, Aug. 15, 2022." class="sRQoy DZhB  kXXJS " draggable="false" src="https://s.abcnews.com/images/GMA/lightning-strike-washington-white-house-02-abc-llr-220815_1660605499486_hpEmbed_16x9_992.jpg"><figcaption><div class="SUcsq "><p><span class="Vazkv cFeHI EhGqu kXXJS Vxqj GPHpJ UvhRR "><span><span class="BYPR XnCit wAxXa tLmN vpbH NLayE Ejtl fVjQS Rtzw pBIKW brmof mjVrX jogbi GMWpL KRsj iFQpk ">Amber Escudero-Kontostathis, survivor of the Aug. 4 lightning strike near the White House, is interviewed by Good Morning America, in Washington, Aug. 15, 2022.</span></span></span></p><p><span aria-label="ABC News" class="VQiJ xTlfF  BYPR XnCit wAxXa tLmN vpbH NLayE Ejtl fVjQS Rtzw pBIKW brmof mjVrX jogbi GMWpL KRsj iFQpk ">ABC News</span></p></div></figcaption></figure></div></div><p class="fnmMv geuMB alqtB wqIGQ ">Six bolts of lightning struck the group within half a second, killing three others, including 76-year-old James Mueller and 75-year-old Donna Mueller, a married couple celebrating their anniversary, and Brooks Lambertson, a 29-year-old Los Angeles man who was in D.C. for business.</p><p class="fnmMv geuMB alqtB wqIGQ ">The interview with Escudero-Kontostathis will air Tuesday on "Good Morning America" and across ABC News. "GMA" airs at 7 a.m. ET on ABC.</p><p class="fnmMv geuMB alqtB wqIGQ ">Escudero-Kontostathis said the lightning struck her through the ground and traveled through her body, resulting in significant burns on her body.</p><div class="snXP  FYsKf rNiFf  vABDa LKeu uJbEF "><div class="InlineImage fnIPT "><figure class="GKCm dkOCJ oGxfq GkpGd "><img alt="PHOTO: Amber Escudero-Kontostathis, survivor of the Aug. 4 lightning strike near the White House, is interviewed by Good Morning America, in Washington, Aug. 15, 2022." class="sRQoy DZhB  kXXJS " draggable="false" src="https://s.abcnews.com/images/GMA/lightning-strike-washington-white-house-03-abc-llr-220815_1660605123628_hpMain_16x9_992.jpg"><figcaption><div class="SUcsq "><p><span class="Vazkv cFeHI EhGqu kXXJS Vxqj GPHpJ UvhRR "><span><span class="BYPR XnCit wAxXa tLmN vpbH NLayE Ejtl fVjQS Rtzw pBIKW brmof mjVrX jogbi GMWpL KRsj iFQpk ">Amber Escudero-Kontostathis, survivor of the Aug. 4 lightning strike near the White House, is interviewed by Good Morning America, in Washington, Aug. 15, 2022.</span></span></span></p><p><span aria-label="ABC News" class="VQiJ xTlfF  BYPR XnCit wAxXa tLmN vpbH NLayE Ejtl fVjQS Rtzw pBIKW brmof mjVrX jogbi GMWpL KRsj iFQpk ">ABC News</span></p></div></figcaption></figure></div></div><p class="fnmMv geuMB alqtB wqIGQ ">"I don't know why I survived," she said. "I don't feel good about being the only survivor, that's for sure. I'm grateful, but I just don't feel good about being the only one."</p><p class="fnmMv geuMB alqtB wqIGQ ">She doesn't recall much of her stay at the hospital, where she was placed in the Intensive Care Unit, but does remember the nurses trying to keep her calm and telling her things would be OK.</p><p class="fnmMv geuMB alqtB wqIGQ ">Escudero-Kontostathis praised the burn and ICU nurses for checking on her and providing constant care.</p><p class="fnmMv geuMB alqtB wqIGQ ">"You would hit the little things saying you were in pain and they'd be like 'we're coming,' and they walk in and their name was always on the board," she said. "I had more of a personal relationship and memory with the burn center nurses, but I'm excited to eventually get to meet the ICU nurses in person again now that I'm more conscious of that."</p><p class="fnmMv geuMB alqtB wqIGQ ">She said her path to recovery has been frustrating both physically and mentally. "I forget that I can't just get up and do stuff. I have to use a walker, for example," she said.</p><p class="fnmMv geuMB alqtB wqIGQ ">"You wake up and you think that you can just get up and go and brush your teeth or get a cup of coffee yourself and I can't, my whole left sides like pretty charred," Escudero-Kontostathis said. "Mentally, also a little frustrated because I want to be working and doing things."</p><div class="snXP  FYsKf rNiFf  vABDa LKeu uJbEF "><div class="InlineImage fnIPT "><figure class="GKCm dkOCJ oGxfq GkpGd "><img alt="PHOTO: A lightning strike hits a tree in Lafayette Park across from the White House, killing three people and injuring one person below, during a thunderstorm in Washington, Aug. 4, 2022." class="sRQoy DZhB  kXXJS " draggable="false" src="https://s.abcnews.com/images/GMA/lightning-strike-washington-white-house-01-rt-llr-220815_1660603761676_hpMain_16x9_992.jpg"><figcaption><div class="SUcsq "><p><span class="Vazkv cFeHI EhGqu kXXJS Vxqj GPHpJ UvhRR "><span><span class="BYPR XnCit wAxXa tLmN vpbH NLayE Ejtl fVjQS Rtzw pBIKW brmof mjVrX jogbi GMWpL KRsj iFQpk ">A lightning strike hits a tree in Lafayette Park across from the White House, killing three people and injuring one person below, during a thunderstorm in Washington, Aug. 4, 2022.</span></span></span></p><p><span aria-label="Reuters " class="VQiJ xTlfF  BYPR XnCit wAxXa tLmN vpbH NLayE Ejtl fVjQS Rtzw pBIKW brmof mjVrX jogbi GMWpL KRsj iFQpk ">Reuters </span></p></div></figcaption></figure></div></div><p class="fnmMv geuMB alqtB wqIGQ ">Escudero, who's the director of Threshold Giving's canvassing team, said she enjoyed the work she did and that being unable to work while she recovers is one of the more painful parts of this experience.</p><p class="fnmMv geuMB alqtB wqIGQ ">"I get to help people find their inner activist and bridge them to the work they want to see in the world," Escudero-Kontostathis said. "Not getting to do that every day is probably more painful than cleaning the burns, which is pretty painful."</p></body>

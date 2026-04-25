@@ -1,0 +1,252 @@
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "Ajoutez des listes supplémentaires créées et maintenues par une communauté de confiance.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**Inscrivez-vous uniquement aux listes des entités auxquelles vous faites confiance**. Votre navigateur vérifiera régulièrement les mises à jour de liste à partir de l’URL que vous saisissez.";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "Ajouter un filtre par URL";
+
+/* A discription of the Brave Player. */
+"AntiAdBlockWarningBravePlayerDescription" = "Avec le **lecteur Brave**, regardez vos vidéos sans publicité ni interruption.";
+
+/* A button that disables ad-blocking and uses brave player. */
+"AntiAdBlockWarningConfirmationButton" = "Ajuster les boucliers pour moi";
+
+/* A descriptive message explaining this site's ad-blocking crackdown. */
+"AntiAdBlockWarningDescription" = "Ce site a commencé à bloquer certains bloqueurs de publicité, ce qui signifie qu’il peut ne pas fonctionner correctement.";
+
+/* A descriptive message explaining to disable shields on this site. */
+"AntiAdBlockWarningDescription2" = "Pour faire face à ce problème, Brave peut ajuster vos paramètres de boucliers pour vous. Une fois qu’ils seront ajustés, vous pourrez essayer de regarder ce contenu dans le lecteur Brave.";
+
+/* A button that dismisses the warning and does nothing. */
+"AntiAdBlockWarningDismissButton" = "Conserver les paramètres actuels";
+
+/* A title for a popup that tells the user we recommend turning shields off for this site. */
+"AntiAdBlockWarningTitle" = "Ajuster les paramètres de blocage des publicités pour ce site";
+
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "Suppression automatique";
+
+/* The option the user can select to do aggressive ad and tracker blocking */
+"BlockAdsAndTrackingAggressive" = "Agressif";
+
+/* A description for a shield options that allows you to switch between different blocking levels for trackers and ads blocking. Options include disabled, standard and aggressive. */
+"BlockAdsAndTrackingDescription" = "Bloque le chargement des publicités, des pop-ups et des traqueurs.";
+
+/* The option the user can select to disable ad and tracker blocking */
+"BlockAdsAndTrackingDisabled" = "Désactivé";
+
+/* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
+"BlockAdsAndTrackingStandard" = "Standard";
+
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "Blocage des demandes d’installation d’applications";
+
+/* Title for the brave player feature */
+"BravePlayer" = "Lecteur Brave";
+
+/* A label for a toggle that enables automatic launching of brave player for certain sites */
+"BravePlayerAlwaysOpenYouTubeLinks" = "Toujours ouvrir les vidéos de ce site avec le lecteur Brave";
+
+/* A button that confirms to use the brave player. */
+"BravePlayerConfirmButton" = "Faire un essai";
+
+/* A button that ignores the brave player */
+"BravePlayerDismissButton" = "Pas maintenant";
+
+/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
+"BravePlayerInfoMessage" = "Le lecteur Brave vous permet de regarder des vidéos sans interruption.";
+
+/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
+"BravePlayerInfoTitle" = "Regardez vos contenus dans le lecteur Brave";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "Filtrage du contenu";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "Active les filtres personnalisés pour bloquer les traqueurs et les nuisances propres à votre région ou à votre langue";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "Liste de filtres personnalisés";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "URL de la liste de filtres personnalisés";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "Filtres personnalisés";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "Ajoutez des filtres personnalisés ici. Veillez à utiliser la syntaxe de filtre Adblock.";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "Règle non valide « %1$@ » sur la ligne %2$i";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "Ajoutez vos filtres personnalisés ici, un par ligne.";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "Les filtres personnalisés prennent en charge %i lignes maximum";
+
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "Listes de filtres par défaut";
+
+/* Text for a button in a blocked page info screen that takes you back where you came from */
+"DomainBlockedGoBackAction" = "Retour";
+
+/* A description in the warning page that appears when a page was blocked */
+"DomainBlockedPageDescription" = "Parce que vous avez demandé un blocage agressif des traqueurs et des publicités, Brave bloque ce site avant la première connexion au réseau.";
+
+/* A message in the warning page that appears when a page was blocked */
+"DomainBlockedPageMessage" = "Brave a empêché le site suivant de charger :";
+
+/* A title in the warning page that appears when a page was blocked */
+"DomainBlockedPageTitle" = "Ce site risque de vous pister lorsque vous consultez d’autres sites";
+
+/* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
+"DomainBlockedProceedAction" = "Continuer";
+
+/* A tab title for the warning page that appears when a page was blocked */
+"DomainBlockedTitle" = "Domaine bloqué";
+
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "Demande aux sites de ne pas vendre ni de partager vos données. [En savoir plus](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "Activer Global Privacy Control";
+
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "Listes de filtres externes";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "L’URL saisie n’est pas valide";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "Seules les URL sécurisées (HTTPS) sont autorisées pour les listes de filtres personnalisés";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "Ajouter";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "Listes les plus populaires créées par la communauté. Notez que l’activation d’un trop grand nombre de filtres risque de ralentir le chargement des pages.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "Échec du téléchargement";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "Téléchargement en attente";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "Modifier";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "Saisissez l'URL de la liste de filtres";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "Dernière mise à jour %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "Saisissez l’URL de la liste de filtres ici";
+
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "Efface les cookies et autres données de site lorsque vous fermez un site";
+
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "M'oublier quand je ferme ce site";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "Strict";
+
+/* This is a label on a button that updates filter lists which signifies that lists have been updated */
+"ListsUpdated" = "Listes mises à jour";
+
+/* A label displayed above a value indicating if the site is in aggressive mode in Blocked Requests view. */
+"shields.aggressiveLabel" = "Agressif";
+
+/* A label displayed above the location a request was blocked in Blocked Requests view. */
+"shields.blockedByLabel" = "Bloquée par";
+
+/* The title displayed in the navigation bar of Blocked Requests view. */
+"shields.blockedRequestsTitle" = "Requêtes bloquées";
+
+/* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
+"shields.contentBlocker" = "Bloqueur de contenu";
+
+/* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
+"shields.requestBlocking" = "Blocage de requêtes";
+
+/* A label displayed above the request url that was blocked in Blocked Requests view. */
+"shields.requestURLLabel" = "URL de la requête";
+
+/* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
+"shields.resourceTypeLabel" = "Type de ressource";
+
+/* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowDescription" = "Si Shred doit supprimer les éléments d'historique.";
+
+/* A title beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowTitle" = "Shred supprime l'historique";
+
+/* A row description that appears in the Shields & Privacy settings. */
+"shields.shredRowDescription" = "Mettez à jour Auto Shred et ajustez les données supprimées.";
+
+/* A row title that appears in the Shields & Privacy settings. */
+"shields.shredRowTitle" = "Effacer les données";
+
+/* A title for the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredSettingsViewTitle" = "Effacer les données";
+
+/* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
+"shields.sourceURLLabel" = "URL d’origine";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "Effacer les données";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "Jamais";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "Fermeture de l'application";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "Onglets du site fermés";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "La suppression fermera tous les onglets ouverts sur ce site et effacera toutes les données du site. Cette action est irréversible.";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "Effacer les données du site";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "La suppression fermera tous les onglets ouverts sur ce site et effacera toutes les données du site. Cette action est irréversible.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "Effacer les données du site ?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "Effacer les données du site maintenant";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "La suppression fermera les onglets sélectionnés et effacera toutes les données du site. Cette action est irréversible.";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "Le site n'est pas sécurisé";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "La connexion à %@ n'est pas sécurisée";
+
+/* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
+"TrackersAndAdsBlocking" = "Blocage des traqueurs et annonces";
+
+/* This is a label for a button which when pressed updates all the filter lists */
+"UpdateLists" = "Mettre à jour les listes";
+
+/* This is a label on a button that updates filter lists which signifies that lista are being updated */
+"UpdatingLists" = "Mise à jour des listes en cours…";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "Mise à niveau des connexions vers HTTPS";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "Vous voyez cet avertissement parce que ce site ne prend pas en charge le protocole HTTPS.";
+

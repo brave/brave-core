@@ -1,0 +1,31 @@
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+  object,
+  oleautomation,
+  uuid(6D319801-690B-441E-8C94-5C18D8E7E9D7),
+  helpstring("IBraveVpnWireguardManager Interface"),
+  pointer_default(unique)
+]
+interface IBraveVpnWireguardManager : IUnknown
+{
+  HRESULT EnableVpn([in] BSTR public_key,
+                    [in] BSTR private_key,
+                    [in] BSTR address,
+                    [in] BSTR endpoint,
+                    [out] DWORD* last_error);
+
+  HRESULT DisableVpn([out] DWORD* last_error);
+};
+
+[
+  uuid(A0575AC4-E934-4055-B210-655CCCB40535),
+  version(1.0),
+  helpstring("BraveVpnWireguardService 1.0 Type Library")
+]
+library BraveVpnWireguardServiceLib {
+  importlib("stdole2.tlb");
+
+  interface IBraveVpnWireguardManager;
+};

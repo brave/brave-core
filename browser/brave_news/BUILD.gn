@@ -1,0 +1,37 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+
+assert(enable_brave_news)
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  if (!is_android) {
+    sources = [
+      "brave_news_tab_helper_browsertest.cc",
+      "direct_feed_fetcher_browsertest.cc",
+    ]
+
+    deps = [
+      "//brave/components/brave_news/browser",
+      "//brave/components/brave_news/common",
+      "//brave/components/brave_news/common:mojom",
+      "//brave/components/constants",
+      "//chrome/browser",
+      "//chrome/browser:browser_process",
+      "//chrome/browser/profiles",
+      "//chrome/browser/profiles:profile",
+      "//chrome/browser/ui",
+      "//chrome/test:test_support_ui",
+      "//content/test:test_support",
+      "//net:test_support",
+      "//testing/gmock",
+      "//testing/gtest",
+    ]
+  }
+}

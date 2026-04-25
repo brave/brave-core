@@ -1,0 +1,252 @@
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "Güvenilir topluluğunuz tarafından oluşturulan ve sürdürülen ilave listeler ekleyin.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**Yalnızca güvendiğiniz işletmelerin listelerine abone olun**. Tarayıcınız, girdiğiniz URL'deki liste güncellemelerini düzenli olarak kontrol edecektir.";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "URL'ye Göre Filtre Ekle";
+
+/* A discription of the Brave Player. */
+"AntiAdBlockWarningBravePlayerDescription" = "**Brave Player** ile reklamsız ve kesintisiz bir video deneyimi elde edin.";
+
+/* A button that disables ad-blocking and uses brave player. */
+"AntiAdBlockWarningConfirmationButton" = "Kalkanları Benim İçin Ayarla";
+
+/* A descriptive message explaining this site's ad-blocking crackdown. */
+"AntiAdBlockWarningDescription" = "Bu site bazı reklam engelleyicileri engellemeye başladı, bu durumda bu siteler beklendiği gibi çalışmayabilir.";
+
+/* A descriptive message explaining to disable shields on this site. */
+"AntiAdBlockWarningDescription2" = "Bu sorunu çözmek amacıyla Brave sizin için kalkan ayarlarını yapabilir. Ayar yapıldıktan sonra bu içeriği Brave Player'da izlemeyi deneyebilirsiniz.";
+
+/* A button that dismisses the warning and does nothing. */
+"AntiAdBlockWarningDismissButton" = "Mevcut Ayarları Tut";
+
+/* A title for a popup that tells the user we recommend turning shields off for this site. */
+"AntiAdBlockWarningTitle" = "Bu Site için Reklam Engelleme Ayarlarını Yap";
+
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "Otomatik Yok Et";
+
+/* The option the user can select to do aggressive ad and tracker blocking */
+"BlockAdsAndTrackingAggressive" = "Agresif";
+
+/* A description for a shield options that allows you to switch between different blocking levels for trackers and ads blocking. Options include disabled, standard and aggressive. */
+"BlockAdsAndTrackingDescription" = "Reklamların, açılır pencerelerin ve izleyicilerin yüklenmesini engeller.";
+
+/* The option the user can select to disable ad and tracker blocking */
+"BlockAdsAndTrackingDisabled" = "sakat";
+
+/* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
+"BlockAdsAndTrackingStandard" = "Standart";
+
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "\"Uygulamaya Git\" Bildirimlerini engelle";
+
+/* Title for the brave player feature */
+"BravePlayer" = "Brave Player";
+
+/* A label for a toggle that enables automatic launching of brave player for certain sites */
+"BravePlayerAlwaysOpenYouTubeLinks" = "Bu sitedeki videoları her zaman Brave Player ile aç";
+
+/* A button that confirms to use the brave player. */
+"BravePlayerConfirmButton" = "Dene";
+
+/* A button that ignores the brave player */
+"BravePlayerDismissButton" = "Şimdi Değil";
+
+/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
+"BravePlayerInfoMessage" = "Brave Player ile videoları kesintisiz izleyin.";
+
+/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
+"BravePlayerInfoTitle" = "Brave Player'da İzle";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "İçerik Filtreleme";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "Bölge ve dile özgü izleyicileri ve Rahatsızlık verici şeyleri engelleyen özel filtreleri etkinleştirin";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "Özel Filtre Listesi";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "Özel Filtre Listesi URL'si";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "Özel Filtreler";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "Buraya özel filtreler ekleyin. Reklam engelleyici filtre sözdizimini kullandığınızdan emin olun.";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "%2$i. satırda geçersiz `%1$@` kuralı";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "Özel kurallarınızı buraya ekleyin, her satıra bir kural koyun.";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "Özel filtreler %i satırdan fazlasını desteklemez";
+
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "Varsayılan Filtre Listeleri";
+
+/* Text for a button in a blocked page info screen that takes you back where you came from */
+"DomainBlockedGoBackAction" = "Geri Git";
+
+/* A description in the warning page that appears when a page was blocked */
+"DomainBlockedPageDescription" = "İzleyicilerin ve reklamların katı bir şekilde engellenmesini istediğiniz için, Brave bu siteyi ilk ağ bağlantısından önce engelliyor.";
+
+/* A message in the warning page that appears when a page was blocked */
+"DomainBlockedPageMessage" = "Brave şu sitenin yüklenmesini engelledi:";
+
+/* A title in the warning page that appears when a page was blocked */
+"DomainBlockedPageTitle" = "Bu Site Diğer Sitelerdeki Hareketinizi İzleme Girişiminde Bulunabilir";
+
+/* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
+"DomainBlockedProceedAction" = "İlerle";
+
+/* A tab title for the warning page that appears when a page was blocked */
+"DomainBlockedTitle" = "Etki Alanı Engellendi";
+
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "Web sitelerinden verilerinizi satmamalarını veya paylaşmamalarını isteyin. [Daha fazla bilgi](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "Genel Gizlilik Denetimini Etkinleştir";
+
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "Harici Filtre Listeleri";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "Girdiğiniz URL geçersiz";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "Özel filtre listeleri için yalnızca güvenli (https) URL'lere izin verilir";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "Ekle";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "Ek popüler topluluklar listeleri. Çok fazla filtre etkinleştirmenin tarama hızını düşürebileceğini unutmayın.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "İndirilemedi";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "Bekleyen indirme işlemi";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "Düzenle";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "Filtre listesi URL'sini girin";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "Son güncelleme %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "Filtre listesi URL'sini buraya girin";
+
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "Bir siteyi kapattığınızda çerezleri ve diğer site verilerini temizler";
+
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "Bu Siteyi Kapattığımda Beni Unut";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "Katı";
+
+/* This is a label on a button that updates filter lists which signifies that lists have been updated */
+"ListsUpdated" = "Listeler Güncellendi";
+
+/* A label displayed above a value indicating if the site is in aggressive mode in Blocked Requests view. */
+"shields.aggressiveLabel" = "Agresif";
+
+/* A label displayed above the location a request was blocked in Blocked Requests view. */
+"shields.blockedByLabel" = "Engelleyen:";
+
+/* The title displayed in the navigation bar of Blocked Requests view. */
+"shields.blockedRequestsTitle" = "Engellenen İstekler";
+
+/* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
+"shields.contentBlocker" = "İçerik Engelleyici";
+
+/* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
+"shields.requestBlocking" = "İstek Engelleme";
+
+/* A label displayed above the request url that was blocked in Blocked Requests view. */
+"shields.requestURLLabel" = "İstek URL'si";
+
+/* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
+"shields.resourceTypeLabel" = "Kaynak Türü";
+
+/* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowDescription" = "Shred'in geçmiş öğelerini kaldırıp kaldırmayacağı.";
+
+/* A title beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowTitle" = "Shred Geçmişi Kaldırır";
+
+/* A row description that appears in the Shields & Privacy settings. */
+"shields.shredRowDescription" = "Otomatik Shred'i güncelleyin ve hangi verilerin silineceğini ayarlayın.";
+
+/* A row title that appears in the Shields & Privacy settings. */
+"shields.shredRowTitle" = "Yok et";
+
+/* A title for the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredSettingsViewTitle" = "Yok et";
+
+/* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
+"shields.sourceURLLabel" = "Kaynak URL'si";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "Verileri Yok Et";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "Hiçbir Zaman";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "Uygulama Kapatıldığında";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "Site Sekmeleri Kapatıldığında";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "Yok etme bu sitenin açık tüm sekmelerini kapatacak ve tüm site verilerini silecek. Bu işlem geri alınamaz.";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "Site Verilerini Yok Et";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "Yok etme bu sitenin açık tüm sekmelerini kapatacak ve tüm site verilerini silecek. Bu işlem geri alınamaz.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "Site Verileri Yok Edilsin mi?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "Site Verilerini Şimdi Yok Et";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "Yok etme seçilen sekmeleri kapatacak ve tüm site verilerini silecek. Bu işlem geri alınamaz.";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "Site güvenli değil";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "%@ ile bağlantı güvenli değil";
+
+/* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
+"TrackersAndAdsBlocking" = "İzleyiciler & Reklam Engelleme";
+
+/* This is a label for a button which when pressed updates all the filter lists */
+"UpdateLists" = "Listeleri Güncelle";
+
+/* This is a label on a button that updates filter lists which signifies that lista are being updated */
+"UpdatingLists" = "Listeler Güncelleniyor";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "Bağlantıları HTTPS'ye Yükselt";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "Bu site HTTPS'yi desteklemediği için bu uyarıyı görüyorsunuz.";
+

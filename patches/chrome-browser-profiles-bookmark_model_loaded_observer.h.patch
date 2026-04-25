@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/profiles/bookmark_model_loaded_observer.h b/chrome/browser/profiles/bookmark_model_loaded_observer.h
+index d2a19acb7815bb7f3b1b678657c9ff05b08a24b0..3a255af9e41e45442ed7fe330adf1c8715ae0ada 100644
+--- a/chrome/browser/profiles/bookmark_model_loaded_observer.h
++++ b/chrome/browser/profiles/bookmark_model_loaded_observer.h
+@@ -26,6 +26,7 @@ class BookmarkModelLoadedObserver
+   BookmarkModelLoadedObserver& operator=(const BookmarkModelLoadedObserver&) =
+       delete;
+ 
++  BRAVE_BOOKMARK_MODEL_LOADED_OBSERVER_H_
+  private:
+   void BookmarkModelChanged() override;
+   void BookmarkModelLoaded(bool ids_reassigned) override;

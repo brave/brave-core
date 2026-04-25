@@ -1,0 +1,14 @@
+diff --git a/chrome/installer/linux/rpm/chrome.spec.template b/chrome/installer/linux/rpm/chrome.spec.template
+index 50edd6732593d2a913ff4e8b7e1519481b354957..c9cd509a9fa072ab775a0ca18d1d3eba1e855ba5 100644
+--- a/chrome/installer/linux/rpm/chrome.spec.template
++++ b/chrome/installer/linux/rpm/chrome.spec.template
+@@ -129,7 +129,8 @@ if [ ! -e "$DEFAULTS_FILE" ]; then
+   echo 'repo_add_once="true"' > "$DEFAULTS_FILE"
+ fi
+ 
+-. "$DEFAULTS_FILE"
++# Don't install the Chrome repo (brave/brave-browser#1967)
++#. "$DEFAULTS_FILE"
+ 
+ if [ "$repo_add_once" = "true" ]; then
+   determine_rpm_package_manager

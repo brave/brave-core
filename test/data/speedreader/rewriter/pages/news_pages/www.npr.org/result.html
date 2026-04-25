@@ -1,0 +1,547 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Giuliani is the target of a Georgia election probe, his lawyers are told</title><meta charset="utf-8"/><body id="article"><h1 class="title metadata">Giuliani is the target of a Georgia election probe, his lawyers are told</h1><p class="subhead metadata">Rudy Giuliani's lawyers say he is the target of a criminal investigation into possible illegal attempts by then-President Donald Trump and others to interfere in the 2020 election in Georgia.</p><div class=""><p class="metadata date">Updated Aug. 15, 2022 03:24 PM</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+      <div class="bucketwrap image large" id="res1117590677">
+            
+<div class="credit-caption">
+    <div class="caption-wrap">
+        <p>
+                Former New York City mayor Rudy Giuliani speaks during a news conference on June 7, 2022, in New York. Giuliani's lawyer says prosecutors in Atlanta have said Giuliani is a target of their criminal investigation into possible illegal attempts by then-President Donald Trump and others to interfere in the 2020 general election in Georgia.
+                
+                <b aria-label="Image credit" class="credit">
+                    
+                    Mary Altaffer/AP
+                    
+                </b>
+                <b class="hide-caption"><b>hide caption</b></b>
+            </p>
+
+
+            <p><b class="toggle-caption"><b>toggle caption</b></b></p></div>
+
+    <p><span aria-label="Image credit" class="credit">
+        
+        Mary Altaffer/AP
+        
+    </span></p></div>
+<div class="enlarge_measure">
+    <div class="img_wrap">
+        <picture>
+            <source data-original="https://media.npr.org/assets/img/2022/08/15/ap22227658784004-54f59608a575e41c2d02cba8c05a91551add4fd1-s1200.webp" type="image/webp">
+            <source data-original="https://media.npr.org/assets/img/2022/08/15/ap22227658784004-54f59608a575e41c2d02cba8c05a91551add4fd1-s1200.jpg" type="image/jpeg">
+            <img alt="" data-original="https://media.npr.org/assets/img/2022/08/15/ap22227658784004-54f59608a575e41c2d02cba8c05a91551add4fd1-s1200.jpg" src="https://media.npr.org/assets/img/2022/08/15/ap22227658784004-54f59608a575e41c2d02cba8c05a91551add4fd1-s1200.jpg">
+        </picture>
+    </div>
+</div>
+<div class="enlarge_html">
+    <div class="image_data">
+        <p class="caption">Former New York City mayor Rudy Giuliani speaks during a news conference on June 7, 2022, in New York. Giuliani's lawyer says prosecutors in Atlanta have said Giuliani is a target of their criminal investigation into possible illegal attempts by then-President Donald Trump and others to interfere in the 2020 general election in Georgia.</p>
+        <p><span aria-label="Image credit" class="credit">
+            
+            Mary Altaffer/AP
+            
+        </span></p></div>
+</div>
+   </div>
+   <p>ATLANTA — Prosecutors in Atlanta on Monday told lawyers for Rudy Giuliani that he's a target of their criminal investigation into possible illegal attempts by then-President Donald Trump and others to interfere in the 2020 general election in Georgia, one of Giuliani's lawyers said Monday.</p>   <p>Special prosecutor Nathan Wade alerted Giuliani's local attorney in Atlanta that the former New York City mayor could face criminal charges, another Giuliani attorney, Bob Costello said. News of the disclosure was first reported by <em>The New York Times.</em></p>   <p>Fulton County District Attorney Fani Willis opened the investigation last year, and a special grand jury was seated in May at her request. County Superior Court Judge Robert McBurney, who's overseeing the special grand jury, has instructed Giuliani to appear before the panel to testify on Wednesday.</p>   <p>Willis' investigation was spurred by a phone call between Trump and Georgia Secretary of State Brad Raffensperger. During that January 2021 conversation, Trump suggested that Raffensperger could "find" the votes needed to overturn his narrow loss in the state.</p>   <p>It has also become clear that the district attorney is interested in Georgia legislative committee hearings that were held in December 2020 where Giuliani appeared and spread false claims of election fraud in Atlanta's Fulton County.<br>Willis last month filed petitions seeking to compel testimony from seven Trump associates and advisers. Because they don't live in Georgia, she had to use a process that involves asking a judge in the states where they live to order them to appear.</p>   
+   
+   
+
+   <p>In a petition seeking Giuliani's testimony, Willis identified him as both a personal attorney for Trump and a lead attorney for his campaign. She wrote that he and others appeared at a state Senate committee meeting and presented a video that Giuliani said showed election workers producing "suitcases" of unlawful ballots from unknown sources, outside the view of election poll watchers.</p>   <p>Within 24 hours of that Dec. 3, 2020, hearing, Raffensperger's office had debunked the video. But Giuliani continued to make statements to the public and in subsequent legislative hearings claiming widespread voter fraud using the debunked video, Willis wrote.</p>   <p>Evidence shows that Giuliani's hearing appearance and testimony "was part of a multi-state, coordinated plan by the Trump Campaign to influence the results of the November 2020 election in Georgia and elsewhere," the petition says.</p>   <h3 class="edTag">Lindsey Graham was ordered to testify in Atlanta</h3>   <p>Also Monday, a federal judge said U.S. Sen. Lindsey Graham must testify before a special grand jury in Atlanta that is investigating whether then-President Donald Trump and his allies broke any laws while trying to overturn his narrow 2020 general election loss in the state. </p>   <p>Attorneys for Graham, R-S.C., had argued that his position as a U.S. senator provided him immunity from having to appear before the investigative panel and asked the judge to quash his subpoena. But U.S. District Judge Leigh Martin May wrote in an order Monday that immunities related to his role as a senator do not protect him from having to testify. Graham's subpoena instructs him to appear before the special grand jury on Aug. 23, but his office said Monday he plans to appeal to the 11th U.S. Circuit Court of Appeals.</p>   
+   <p>Prosecutors have indicated they want to ask Graham about phone calls they say he made to Georgia Secretary of State Raffensperger and his staff in the weeks following Trump's election loss to Democrat Joe Biden.</p>   
+   
+
+   <p>Graham had argued that a provision of the Constitution provides absolute protection against a senator being questioned about legislative acts. But the judge found there are "considerable areas of potential grand jury inquiry" that fall outside that provision's scope. The judge also rejected Graham's argument that the principle of "sovereign immunity" protects a senator from being summoned by a state prosecutor.</p>   <p>Graham also argued that Willis, a Democrat, had not demonstrated extraordinary circumstances necessary to compel testimony from a high-ranking official. But the judge disagreed, finding that Willis had shown "extraordinary circumstances and a special need" for Graham's testimony on issues related to an alleged attempt to influence or disrupt the election in Georgia.</p>   <p>May, the judge, last month rejected a similar attempt by U.S. Rep. Jody Hice, R-Ga., to avoid testifying before the special grand jury. Former New York mayor and Trump attorney Rudy Giuliani had argued he couldn't travel to Atlanta to testify because of health issues, but Fulton County Judge McBurney instructed him to appear on Wednesday.</p>   <p>Graham's office said in a statement Monday that the senator disagrees with the judge's interpretation of the provision of the Constitution he believes protects him from being questioned by a state official. His lawyers have said that he was making inquiries that were clearly part of his legislative duties, related to certification of the vote and to the proposal of election-related legislation.</p>   <p>But the judge wrote that that ignores "the fact that individuals on the calls have publicly suggested that Senator Graham was not simply engaged in legislative factfinding but was instead suggesting or implying that Georgia election officials change their processes or otherwise potentially alter the state's results."<br>In calls made shortly after the 2020 general election, Graham "questioned Raffensperger and his staff about reexamining certain absentee ballots cast in Georgia in order to explore the possibility of a more favorable outcome for former President Donald Trump," Willis wrote in a petition.</p>   <p>Graham also "made reference to allegations of widespread voter fraud in the November 2020 election in Georgia, consistent with public statements made by known affiliates of the Trump Campaign," she wrote.</p>   <p>Republican and Democratic state election officials across the country, courts and even Trump's attorney general found there was no evidence of any voter fraud sufficient to affect the outcome of his 2020 presidential election loss.<br>Trump-allied lawmakers were planning to challenge the tallies from several battleground states when Congress convened on Jan. 6, 2021, to certify the results under the Electoral Count Act, but after the Capitol attack that day Georgia's tally was never contested.</p>   <p>Trump has denied any wrongdoing and has described his call to Raffensperger as "perfect."</p>
+</body>

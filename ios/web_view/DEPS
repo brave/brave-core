@@ -1,0 +1,7 @@
+include_rules = [
+  "+components/autofill/core/browser",
+  "+components/password_manager/core/browser",
+  "+components/ssl_errors",
+  "+ios/web",
+  "+ios/web_view",
+]

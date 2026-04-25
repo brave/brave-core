@@ -1,0 +1,45 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_ads/core/internal/history/ad_history_value_util.h"
+
+#include <string_view>
+
+#include "base/strings/string_number_conversions.h"
+#include "base/values.h"
+#include "brave/components/brave_ads/core/internal/history/ad_history_value_util_internal.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
+#include "brave/components/brave_ads/core/public/history/ad_history_item_value_util.h"
+
+namespace brave_ads {
+
+namespace {
+
+constexpr std::string_view kUuidKey = "uuid";
+constexpr std::string_view kCreatedAtKey = "timestampInMilliseconds";
+constexpr std::string_view kRowKey = "adDetailRows";
+
+}  // namespace
+
+base::ListValue AdHistoryToValue(const AdHistoryList& ad_history) {
+  base::ListValue list;
+  list.reserve(ad_history.size());
+
+  size_t row = 0;
+
+  for (const auto& ad_history_item : ad_history) {
+    list.Append(base::DictValue()
+                    .Set(kUuidKey, base::NumberToString(row++))
+                    .Set(kCreatedAtKey,
+                         ad_history_item.created_at
+                             .InMillisecondsFSinceUnixEpochIgnoringNull())
+                    .Set(kRowKey, base::ListValue().Append(
+                                      AdHistoryItemToValue(ad_history_item))));
+  }
+
+  return list;
+}
+
+}  // namespace brave_ads

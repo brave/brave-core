@@ -1,0 +1,444 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#include "brave/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/list_action_modifiers.h"
+
+#include <utility>
+
+#include "base/containers/fixed_flat_set.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/l10n/common/test/scoped_default_locale.h"
+#include "brave/components/vector_icons/vector_icons.h"
+#include "chrome/browser/sharing_hub/sharing_hub_features.h"
+#include "chrome/browser/ui/webui/util/image_util.h"
+#include "chrome/common/pref_names.h"
+#include "chrome/test/base/testing_profile.h"
+#include "components/grit/brave_components_strings.h"
+#include "components/prefs/pref_service.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/web_contents.h"
+#include "content/public/test/browser_task_environment.h"
+#include "content/public/test/test_web_contents_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "ui/base/models/image_model.h"
+#include "ui/color/color_provider.h"
+#include "ui/gfx/image/image_skia.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/brave_vpn/vpn_utils.h"
+#include "brave/components/brave_vpn/common/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_news/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_util.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
+#endif
+
+using ActionId = side_panel::customize_chrome::mojom::ActionId;
+
+MATCHER_P(EqId, id, "") {
+  if (arg->id == id) {
+    return true;
+  }
+  *result_listener << " Actual id   : " << static_cast<int>(arg->id)
+                   << " Expected id : " << static_cast<int>(id);
+  return false;
+}
+
+class ListActionModifiersUnitTest : public testing::Test {
+ protected:
+  static constexpr auto kUnsupportedChromiumActions =
+      base::MakeFixedFlatSet<ActionId>({
+          ActionId::kShowPaymentMethods,
+          ActionId::kShowTranslate,
+          ActionId::kShowReadAnything,
+          ActionId::kShowAddresses,
+      });
+
+  // Returns a vector of basic actions that are used as anchor points for
+  // modifying other actions. brave specific actions.
+  std::vector<side_panel::customize_chrome::mojom::ActionPtr>
+  GetBasicActions() {
+    std::vector<side_panel::customize_chrome::mojom::ActionPtr> actions;
+
+    auto forward_action = side_panel::customize_chrome::mojom::Action::New();
+    forward_action->id = ActionId::kForward;
+    forward_action->category =
+        side_panel::customize_chrome::mojom::CategoryId::kNavigation;
+    actions.push_back(std::move(forward_action));
+
+    auto incognito_action = side_panel::customize_chrome::mojom::Action::New();
+    incognito_action->id = ActionId::kNewIncognitoWindow;
+    incognito_action->category =
+        side_panel::customize_chrome::mojom::CategoryId::kNavigation;
+    actions.push_back(std::move(incognito_action));
+
+    auto tab_search_action = side_panel::customize_chrome::mojom::Action::New();
+    tab_search_action->id = ActionId::kTabSearch;
+    tab_search_action->category =
+        side_panel::customize_chrome::mojom::CategoryId::kTools;
+    actions.push_back(std::move(tab_search_action));
+
+    auto bookmark_panel = side_panel::customize_chrome::mojom::Action::New();
+    bookmark_panel->id = ActionId::kShowBookmarks;
+    bookmark_panel->category =
+        side_panel::customize_chrome::mojom::CategoryId::kTools;
+    actions.push_back(std::move(bookmark_panel));
+
+    auto dev_tools_action = side_panel::customize_chrome::mojom::Action::New();
+    dev_tools_action->id = ActionId::kDevTools;
+    dev_tools_action->category =
+        side_panel::customize_chrome::mojom::CategoryId::kTools;
+    actions.push_back(std::move(dev_tools_action));
+
+    return actions;
+  }
+
+  sync_preferences::TestingPrefServiceSyncable* prefs() {
+    return testing_profile_.GetTestingPrefService();
+  }
+
+  void SetUp() override {
+    web_contents_ =
+        test_web_contents_factory_.CreateWebContents(&testing_profile_);
+  }
+
+  void TearDown() override { web_contents_ = nullptr; }
+
+  brave_l10n::test::ScopedDefaultLocale scoped_locale_{"en_US"};
+  content::BrowserTaskEnvironment task_environment_;
+  TestingProfile testing_profile_;
+  content::TestWebContentsFactory test_web_contents_factory_;
+  raw_ptr<content::WebContents> web_contents_;
+};
+
+TEST_F(ListActionModifiersUnitTest,
+       FilterUnsupportedChromiumAction_IndividualActions) {
+  // For each possible action, verify it's either filtered or preserved
+  // correctly
+
+  // Test each action individually to ensure proper filtering
+  for (ActionId id = ActionId::kMinValue; id <= ActionId::kMaxValue;
+       id = static_cast<ActionId>(static_cast<int>(id) + 1)) {
+    std::vector<side_panel::customize_chrome::mojom::ActionPtr> single_action;
+    auto action = side_panel::customize_chrome::mojom::Action::New();
+    action->id = id;
+    single_action.push_back(std::move(action));
+
+    const auto filtered = customize_chrome::FilterUnsupportedChromiumActions(
+        std::move(single_action));
+
+    // Check if this action should be filtered out
+    const bool should_be_filtered = kUnsupportedChromiumActions.contains(id);
+
+    if (should_be_filtered) {
+      EXPECT_TRUE(filtered.empty()) << "Action ID " << static_cast<int>(id)
+                                    << " should be filtered out but wasn't.";
+    } else {
+      EXPECT_EQ(filtered.size(), 1u) << "Action ID " << static_cast<int>(id)
+                                     << " was incorrectly filtered out.";
+      if (!filtered.empty()) {
+        EXPECT_EQ(filtered[0]->id, id);
+      }
+    }
+  }
+}
+
+TEST_F(ListActionModifiersUnitTest,
+       FilterUnsupportedChromiumAction_PossibleActions) {
+  // Create vector with all possible actions
+  std::vector<side_panel::customize_chrome::mojom::ActionPtr> all_actions;
+  for (ActionId id = ActionId::kMinValue; id <= ActionId::kMaxValue;
+       id = static_cast<ActionId>(static_cast<int>(id) + 1)) {
+    auto action = side_panel::customize_chrome::mojom::Action::New();
+    action->id = id;
+    all_actions.push_back(std::move(action));
+  }
+
+  // Test that the exact expected number of actions remain
+  const auto filtered_all = customize_chrome::FilterUnsupportedChromiumActions(
+      std::move(all_actions));
+
+  const size_t expected_size = static_cast<int>(ActionId::kMaxValue) -
+                               static_cast<int>(ActionId::kMinValue) + 1 -
+                               kUnsupportedChromiumActions.size();
+
+  EXPECT_EQ(expected_size, filtered_all.size())
+      << "Wrong number of actions after filtering.";
+
+  // Verify none of the unsupported actions remain
+  for (const auto& action : filtered_all) {
+    EXPECT_FALSE(kUnsupportedChromiumActions.contains(action->id))
+        << "Found unsupported action ID " << static_cast<int>(action->id)
+        << " in filtered results.";
+  }
+}
+
+TEST_F(ListActionModifiersUnitTest,
+       ApplyBraveSpecificModifications_TabSearchShouldBeInNavigationCategory) {
+  // Apply modifications
+  auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
+      web_contents_.get(), GetBasicActions());
+
+  // Verify Tab Search is now in Navigation category and follows Side panel
+  // action.
+  auto it = std::ranges::find(modified_actions, ActionId::kShowSidePanel,
+                              &side_panel::customize_chrome::mojom::Action::id);
+  ASSERT_NE(it, modified_actions.end());
+  ++it;  // Move iterator to next element
+  // The next action should be Tab Search
+  EXPECT_EQ((*it)->id, ActionId::kTabSearch);
+  EXPECT_EQ((*it)->category,
+            side_panel::customize_chrome::mojom::CategoryId::kNavigation);
+}
+
+TEST_F(ListActionModifiersUnitTest,
+       ApplyBraveSpecificModifications_NewPrivateWindowShouldHaveCorrectIcon) {
+  // Apply modifications
+  auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
+      web_contents_.get(), GetBasicActions());
+
+  auto incognito_action_it =
+      std::ranges::find(modified_actions, ActionId::kNewIncognitoWindow,
+                        &side_panel::customize_chrome::mojom::Action::id);
+  ASSERT_NE(incognito_action_it, modified_actions.end());
+
+  const auto& cp = web_contents_->GetColorProvider();
+  auto expected_url = GURL(webui::EncodePNGAndMakeDataURI(
+      ui::ImageModel::FromVectorIcon(kLeoProductPrivateWindowIcon,
+                                     ui::kColorSysOnSurface)
+          .Rasterize(&cp),
+      1.0f));
+
+  // Compare encoded data uri
+  EXPECT_EQ((*incognito_action_it)->icon_url, expected_url)
+      << "New Incognito Window action icon URL does not match expected value.";
+}
+
+TEST_F(
+    ListActionModifiersUnitTest,
+    ApplyBraveSpecificModifications_ShowBookmarksShouldHaveCorrectDisplayName) {
+  auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
+      web_contents_.get(), GetBasicActions());
+
+  auto show_bookmarks_action_it =
+      std::ranges::find(modified_actions, ActionId::kShowBookmarks,
+                        &side_panel::customize_chrome::mojom::Action::id);
+  ASSERT_NE(show_bookmarks_action_it, modified_actions.end());
+
+  EXPECT_EQ(
+      (*show_bookmarks_action_it)->display_name,
+      l10n_util::GetStringUTF8(IDS_CUSTOMIZE_TOOLBAR_TOGGLE_BOOKMARKS_PANEL));
+}
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+TEST_F(ListActionModifiersUnitTest,
+       ApplyBraveSpecificModifications_VPNShouldNotBeAddedWhenDisabled) {
+  // VPN should be added by default(VPN enabled by default)
+  ASSERT_TRUE(brave_vpn::IsBraveVPNEnabled(web_contents_->GetBrowserContext()));
+  auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
+      web_contents_.get(), GetBasicActions());
+  auto vpn_action_it =
+      std::ranges::find(modified_actions, ActionId::kShowVPN,
+                        &side_panel::customize_chrome::mojom::Action::id);
+  ASSERT_NE(vpn_action_it, modified_actions.end());
+
+  // Disable VPN in prefs
+  prefs()->SetManagedPref(brave_vpn::prefs::kManagedBraveVPNDisabled,
+                          base::Value(true));
+  ASSERT_FALSE(
+      brave_vpn::IsBraveVPNEnabled(web_contents_->GetBrowserContext()));
+
+  modified_actions = customize_chrome::ApplyBraveSpecificModifications(
+      web_contents_.get(), GetBasicActions());
+  vpn_action_it =
+      std::ranges::find(modified_actions, ActionId::kShowVPN,
+                        &side_panel::customize_chrome::mojom::Action::id);
+  // Show VPN action should not be present
+  EXPECT_EQ(vpn_action_it, modified_actions.end());
+}
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+
+TEST_F(ListActionModifiersUnitTest,
+       ApplyBraveSpecificModifications_AIChatShouldNotBeAddedWhenDisabled) {
+  // AI Chat should be added by default(AI Chat enabled by default)
+  ASSERT_TRUE(ai_chat::IsAIChatEnabled(prefs()));
+  auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
+      web_contents_.get(), GetBasicActions());
+
+  auto ai_chat_action_it =
+      std::ranges::find(modified_actions, ActionId::kShowAIChat,
+                        &side_panel::customize_chrome::mojom::Action::id);
+  ASSERT_NE(ai_chat_action_it, modified_actions.end());
+
+  // Disable AI Chat in prefs
+  prefs()->SetManagedPref(ai_chat::prefs::kEnabledByPolicy, base::Value(false));
+  ASSERT_FALSE(ai_chat::IsAIChatEnabled(prefs()));
+
+  // AI Chat should not be added when disabled
+  modified_actions = customize_chrome::ApplyBraveSpecificModifications(
+      web_contents_.get(), GetBasicActions());
+  ai_chat_action_it =
+      std::ranges::find(modified_actions, ActionId::kShowAIChat,
+                        &side_panel::customize_chrome::mojom::Action::id);
+  EXPECT_EQ(ai_chat_action_it, modified_actions.end());
+}
+
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+TEST_F(ListActionModifiersUnitTest,
+       ApplyBraveSpecificModifications_WalletShouldNotBeAddedWhenDisabled) {
+  // Wallet should be available by default.
+  ASSERT_TRUE(
+      brave_wallet::IsAllowedForContext(web_contents_->GetBrowserContext()));
+  auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
+      web_contents_.get(), GetBasicActions());
+  auto wallet_action_it =
+      std::ranges::find(modified_actions, ActionId::kShowWallet,
+                        &side_panel::customize_chrome::mojom::Action::id);
+  ASSERT_NE(wallet_action_it, modified_actions.end());
+
+  // Disable Wallet in prefs.
+  prefs()->SetManagedPref(brave_wallet::kBraveWalletDisabledByPolicy,
+                          base::Value(true));
+  ASSERT_FALSE(
+      brave_wallet::IsAllowedForContext(web_contents_->GetBrowserContext()));
+
+  modified_actions = customize_chrome::ApplyBraveSpecificModifications(
+      web_contents_.get(), GetBasicActions());
+  wallet_action_it =
+      std::ranges::find(modified_actions, ActionId::kShowWallet,
+                        &side_panel::customize_chrome::mojom::Action::id);
+  // Show Wallet action should not be present
+  EXPECT_EQ(wallet_action_it, modified_actions.end());
+}
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+TEST_F(ListActionModifiersUnitTest,
+       ApplyBraveSpecificModifications_RewardsShouldNotBeAddedWhenDisabled) {
+  // Rewards should be added by default(Rewards enabled by default)
+  ASSERT_TRUE(brave_rewards::IsSupportedForProfile(
+      Profile::FromBrowserContext(web_contents_->GetBrowserContext())));
+  auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
+      web_contents_.get(), GetBasicActions());
+  auto rewards_action_it =
+      std::ranges::find(modified_actions, ActionId::kShowReward,
+                        &side_panel::customize_chrome::mojom::Action::id);
+  ASSERT_NE(rewards_action_it, modified_actions.end());
+
+  // Disable Rewards using managed pref
+  prefs()->SetManagedPref(brave_rewards::prefs::kDisabledByPolicy,
+                          base::Value(true));
+  ASSERT_TRUE(
+      prefs()->IsManagedPreference(brave_rewards::prefs::kDisabledByPolicy));
+
+  modified_actions = customize_chrome::ApplyBraveSpecificModifications(
+      web_contents_.get(), GetBasicActions());
+  rewards_action_it =
+      std::ranges::find(modified_actions, ActionId::kShowReward,
+                        &side_panel::customize_chrome::mojom::Action::id);
+  // Show Rewards action should not be present
+  EXPECT_EQ(rewards_action_it, modified_actions.end());
+}
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
+
+TEST_F(ListActionModifiersUnitTest,
+       ApplyBraveSpecificModifications_ShareMenuShouldNotBeAddedWhenDisabled) {
+  // Share Menu should be added by default (Sharing Hub enabled by default)
+  ASSERT_FALSE(sharing_hub::SharingIsDisabledByPolicy(
+      web_contents_->GetBrowserContext()));
+  auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
+      web_contents_.get(), GetBasicActions());
+  auto share_menu_action_it =
+      std::ranges::find(modified_actions, ActionId::kShowShareMenu,
+                        &side_panel::customize_chrome::mojom::Action::id);
+  ASSERT_NE(share_menu_action_it, modified_actions.end());
+
+  // Disable Sharing Hub using pref
+  prefs()->SetBoolean(prefs::kDesktopSharingHubEnabled, false);
+  ASSERT_TRUE(sharing_hub::SharingIsDisabledByPolicy(
+      web_contents_->GetBrowserContext()));
+
+  modified_actions = customize_chrome::ApplyBraveSpecificModifications(
+      web_contents_.get(), GetBasicActions());
+  share_menu_action_it =
+      std::ranges::find(modified_actions, ActionId::kShowShareMenu,
+                        &side_panel::customize_chrome::mojom::Action::id);
+  // Show Share Menu action should not be present
+  EXPECT_EQ(share_menu_action_it, modified_actions.end());
+}
+
+TEST_F(ListActionModifiersUnitTest,
+       ApplyBraveSpecificModifications_ComprehensiveOrderTest) {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  ASSERT_TRUE(brave_vpn::IsBraveVPNEnabled(web_contents_->GetBrowserContext()));
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  ASSERT_TRUE(ai_chat::IsAIChatEnabled(prefs()));
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  ASSERT_TRUE(
+      brave_wallet::IsAllowedForContext(web_contents_->GetBrowserContext()));
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  ASSERT_TRUE(brave_rewards::IsSupportedForProfile(
+      Profile::FromBrowserContext(web_contents_->GetBrowserContext())));
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  ASSERT_TRUE(
+      !prefs()->GetBoolean(brave_news::prefs::kBraveNewsDisabledByPolicy));
+#endif
+
+  auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
+      web_contents_.get(), GetBasicActions());
+  EXPECT_THAT(
+      modified_actions,
+      testing::ElementsAre(
+          EqId(ActionId::kForward), EqId(ActionId::kShowAddBookmarkButton),
+          EqId(ActionId::kNewIncognitoWindow), EqId(ActionId::kShowSidePanel),
+          EqId(ActionId::kTabSearch),
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+          EqId(ActionId::kShowWallet),
+#endif
+#if BUILDFLAG(ENABLE_AI_CHAT)
+          EqId(ActionId::kShowAIChat),
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+          EqId(ActionId::kShowVPN),
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
+          EqId(ActionId::kShowBookmarks), EqId(ActionId::kDevTools),
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+          EqId(ActionId::kShowReward),
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+          EqId(ActionId::kShowBraveNews),
+#endif
+          EqId(ActionId::kShowShareMenu), EqId(ActionId::kShowPwaInstall)));
+}

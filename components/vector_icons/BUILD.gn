@@ -1,0 +1,169 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/containers/buildflags/buildflags.gni")
+import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
+import("//components/vector_icons/vector_icons.gni")
+
+aggregate_vector_icons("brave_components_vector_icons") {
+  icon_directory = "."
+
+  # Note: Before adding another icon here, check if the icon is available in Leo
+  # https://leo.bravesoftware.com/?path=/story/icon--all-icons
+  sources = [
+    "app_menu_color.icon",
+    "app_menu_outline.icon",
+    "autoplay_status.icon",
+  ]
+
+  # The Skia icon names are transformed to make them easier to use in Brave Core
+  # `arrow-right.svg` becomes `leo_arrow_right.icon`
+  leo_icons = [
+    "leo_arrow_right.icon",
+    "leo_arrow_small_right.icon",
+    "leo_brave_icon_monochrome.icon",
+    "leo_brave_icon_only_face.icon",
+    "leo_browser_add.icon",
+    "leo_browser_bookmark_add.icon",
+    "leo_browser_bookmark_normal.icon",
+    "leo_browser_bookmark_plural.icon",
+    "leo_browser_extensions_check.icon",
+    "leo_browser_extensions_remove.icon",
+    "leo_browser_extensions.icon",
+    "leo_browser_group.icon",
+    "leo_browser_sidebar_right.icon",
+    "leo_browser_split_view_unsplit.icon",
+    "leo_browser_split_view_vertical.icon",
+    "leo_carat_last.icon",
+    "leo_carat_right.icon",
+    "leo_check_circle_filled.icon",
+    "leo_check_circle_outline.icon",
+    "leo_chrome_cast.icon",
+    "leo_clipboard.icon",
+    "leo_close_circle.icon",
+    "leo_close.icon",
+    "leo_code.icon",
+    "leo_copy_plain_text.icon",
+    "leo_copy.icon",
+    "leo_credit_card.icon",
+    "leo_desktop_vpn_error_color.icon",
+    "leo_desktop_vpn_on_color.icon",
+    "leo_download.icon",
+    "leo_edit_box.icon",
+    "leo_email_shield.icon",
+    "leo_eye_on.icon",
+    "leo_file_download.icon",
+    "leo_file_search.icon",
+    "leo_folder_exchange.icon",
+    "leo_folder.icon",
+    "leo_fullscreen_on.icon",
+    "leo_grid04.icon",
+    "leo_heart_filled.icon",
+    "leo_heart_outline.icon",
+    "leo_help_outline.icon",
+    "leo_history.icon",
+    "leo_import_arrow.icon",
+    "leo_info_outline.icon",
+    "leo_key.icon",
+    "leo_launch.icon",
+    "leo_link_broken.icon",
+    "leo_link_normal.icon",
+    "leo_location_on.icon",
+    "leo_message_bubble_ask.icon",
+    "leo_message_bubble_heart.icon",
+    "leo_more_vertical.icon",
+    "leo_network_speed_fast.icon",
+    "leo_next_outline.icon",
+    "leo_pause_filled.icon",
+    "leo_picture_in_picture_return.icon",
+    "leo_pin.icon",
+    "leo_pin_disable.icon",
+    "leo_play_filled.icon",
+    "leo_plus_add.icon",
+    "leo_previous_outline.icon",
+    "leo_print.icon",
+    "leo_product_bat_outline.icon",
+    "leo_product_bookmarks.icon",
+    "leo_product_brave_leo.icon",
+    "leo_product_brave_talk.icon",
+    "leo_product_brave_wallet.icon",
+    "leo_product_private_window.icon",
+    "leo_product_speedreader.icon",
+    "leo_product_sync.icon",
+    "leo_product_tor.icon",
+    "leo_product_vpn.icon",
+    "leo_pwa_install.icon",
+    "leo_qr_code.icon",
+    "leo_reading_list_add.icon",
+    "leo_reading_list.icon",
+    "leo_reload.icon",
+    "leo_rocket.icon",
+    "leo_rss.icon",
+    "leo_screenshot.icon",
+    "leo_search_zoom_in.icon",
+    "leo_search.icon",
+    "leo_settings.icon",
+    "leo_share_windows.icon",
+    "leo_shield_disable_filled.icon",
+    "leo_shield_done.icon",
+    "leo_shopping_bag.icon",
+    "leo_shred_data.icon",
+    "leo_smartphone_laptop.icon",
+    "leo_swap_horizontal.icon",
+    "leo_trash.icon",
+    "leo_tune_small.icon",
+    "leo_user_add.icon",
+    "leo_user_circle.icon",
+    "leo_user_picture.icon",
+    "leo_verification_filled.icon",
+    "leo_warning_triangle_outline.icon",
+    "leo_window_binary_code.icon",
+    "leo_window_bookmark.icon",
+    "leo_window_screwdriver.icon",
+    "leo_window_tab_new.icon",
+    "leo_window_tab_private.icon",
+    "leo_window_tab_tor.icon",
+  ]
+
+  if (enable_playlist_webui) {
+    leo_icons += [
+      "leo_product_playlist.icon",
+      "leo_product_playlist_add.icon",
+      "leo_product_playlist_added.icon",
+    ]
+  }
+
+  if (enable_containers) {
+    leo_icons += [
+      "leo_container_banking.icon",
+      "leo_container_events.icon",
+      "leo_container_messaging.icon",
+      "leo_container_personal.icon",
+      "leo_container_private.icon",
+      "leo_container_school.icon",
+      "leo_container_shopping.icon",
+      "leo_container_social.icon",
+      "leo_container_star.icon",
+      "leo_container_travel.icon",
+      "leo_container_work.icon",
+    ]
+  }
+
+  sources +=
+      rebase_path(leo_icons, ".", "//brave/node_modules/@brave/leo/icons-skia")
+}
+
+static_library("vector_icons") {
+  sources = get_target_outputs(":brave_components_vector_icons")
+
+  defines = [ "BRAVE_COMPONENTS_VECTOR_ICONS_IMPL" ]
+
+  deps = [
+    ":brave_components_vector_icons",
+    "//base",
+    "//skia",
+    "//ui/gfx",
+  ]
+}

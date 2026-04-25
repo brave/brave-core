@@ -1,0 +1,966 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit latest_public_release="0" current_release="1" source_lang_id="en">
+  <outputs>
+    <output filename="grit/brave_components_strings.h" type="rc_header">
+      <emit emit_type='prepend'></emit>
+    </output>
+    <output filename="grit/brave_components_webui_strings.h" type="webui_header" />
+    <output filename="grit/brave_components_webui_strings.ts" type="webui_ts" />
+    <output filename="grit/brave_components_webui_mock_strings.ts" type="webui_mock" />
+    <if expr="is_ios">
+      <output filename="grit/brave_components_swift_strings.h" type="objc_header" />
+      <output filename="grit/brave_components_swift_strings.mm" type="objc_mm" />
+    </if>
+    <output filename="brave_components_strings_af.pak" type="data_package" lang="af" />
+    <output filename="brave_components_strings_am.pak" type="data_package" lang="am" />
+    <output filename="brave_components_strings_ar.pak" type="data_package" lang="ar" />
+    <output filename="brave_components_strings_as.pak" type="data_package" lang="as" />
+    <output filename="brave_components_strings_az.pak" type="data_package" lang="az" />
+    <output filename="brave_components_strings_be.pak" type="data_package" lang="be" />
+    <output filename="brave_components_strings_bg.pak" type="data_package" lang="bg" />
+    <output filename="brave_components_strings_bn.pak" type="data_package" lang="bn" />
+    <output filename="brave_components_strings_bs.pak" type="data_package" lang="bs" />
+    <output filename="brave_components_strings_ca.pak" type="data_package" lang="ca" />
+    <output filename="brave_components_strings_cs.pak" type="data_package" lang="cs" />
+    <output filename="brave_components_strings_cy.pak" type="data_package" lang="cy" />
+    <output filename="brave_components_strings_da.pak" type="data_package" lang="da" />
+    <output filename="brave_components_strings_de.pak" type="data_package" lang="de" />
+    <output filename="brave_components_strings_el.pak" type="data_package" lang="el" />
+    <output filename="brave_components_strings_en-GB.pak" type="data_package" lang="en-GB" />
+    <output filename="brave_components_strings_en-US.pak" type="data_package" lang="en" />
+    <output filename="brave_components_strings_es.pak" type="data_package" lang="es" />
+    <if expr="is_ios">
+      <!-- iOS uses es-MX for es-419 -->
+      <output filename="brave_components_strings_es-MX.pak" type="data_package" lang="es-419" />
+    </if>
+    <if expr="not is_ios">
+      <output filename="brave_components_strings_es-419.pak" type="data_package" lang="es-419" />
+    </if>
+    <output filename="brave_components_strings_et.pak" type="data_package" lang="et" />
+    <output filename="brave_components_strings_eu.pak" type="data_package" lang="eu" />
+    <output filename="brave_components_strings_fa.pak" type="data_package" lang="fa" />
+    <output filename="brave_components_strings_fi.pak" type="data_package" lang="fi" />
+    <output filename="brave_components_strings_fil.pak" type="data_package" lang="fil" />
+    <output filename="brave_components_strings_fr.pak" type="data_package" lang="fr" />
+    <output filename="brave_components_strings_fr-CA.pak" type="data_package" lang="fr-CA" />
+    <output filename="brave_components_strings_gl.pak" type="data_package" lang="gl" />
+    <output filename="brave_components_strings_gu.pak" type="data_package" lang="gu" />
+    <output filename="brave_components_strings_he.pak" type="data_package" lang="he" />
+    <output filename="brave_components_strings_hi.pak" type="data_package" lang="hi" />
+    <output filename="brave_components_strings_hr.pak" type="data_package" lang="hr" />
+    <output filename="brave_components_strings_hu.pak" type="data_package" lang="hu" />
+    <output filename="brave_components_strings_hy.pak" type="data_package" lang="hy" />
+    <output filename="brave_components_strings_id.pak" type="data_package" lang="id" />
+    <output filename="brave_components_strings_it.pak" type="data_package" lang="it" />
+    <output filename="brave_components_strings_is.pak" type="data_package" lang="is" />
+    <output filename="brave_components_strings_ja.pak" type="data_package" lang="ja" />
+    <output filename="brave_components_strings_ka.pak" type="data_package" lang="ka" />
+    <output filename="brave_components_strings_kk.pak" type="data_package" lang="kk" />
+    <output filename="brave_components_strings_km.pak" type="data_package" lang="km" />
+    <output filename="brave_components_strings_kn.pak" type="data_package" lang="kn" />
+    <output filename="brave_components_strings_ko.pak" type="data_package" lang="ko" />
+    <output filename="brave_components_strings_ky.pak" type="data_package" lang="ky" />
+    <output filename="brave_components_strings_lo.pak" type="data_package" lang="lo" />
+    <output filename="brave_components_strings_lt.pak" type="data_package" lang="lt" />
+    <output filename="brave_components_strings_lv.pak" type="data_package" lang="lv" />
+    <output filename="brave_components_strings_mk.pak" type="data_package" lang="mk" />
+    <output filename="brave_components_strings_ml.pak" type="data_package" lang="ml" />
+    <output filename="brave_components_strings_mn.pak" type="data_package" lang="mn" />
+    <output filename="brave_components_strings_mr.pak" type="data_package" lang="mr" />
+    <output filename="brave_components_strings_ms.pak" type="data_package" lang="ms" />
+    <output filename="brave_components_strings_my.pak" type="data_package" lang="my" />
+    <!-- The translation console uses 'no' for Norwegian Bokmål. It should
+         be 'nb'. -->
+    <output filename="brave_components_strings_nb.pak" type="data_package" lang="no" />
+    <output filename="brave_components_strings_ne.pak" type="data_package" lang="ne" />
+    <output filename="brave_components_strings_nl.pak" type="data_package" lang="nl" />
+    <output filename="brave_components_strings_or.pak" type="data_package" lang="or" />
+    <output filename="brave_components_strings_pa.pak" type="data_package" lang="pa" />
+    <output filename="brave_components_strings_pl.pak" type="data_package" lang="pl" />
+    <if expr="is_ios">
+      <!-- iOS uses pt for pt-BR -->
+      <output filename="brave_components_strings_pt.pak" type="data_package" lang="pt-BR" />
+    </if>
+    <if expr="not is_ios">
+      <output filename="brave_components_strings_pt-BR.pak" type="data_package" lang="pt-BR" />
+    </if>
+    <output filename="brave_components_strings_pt-PT.pak" type="data_package" lang="pt-PT" />
+    <output filename="brave_components_strings_ro.pak" type="data_package" lang="ro" />
+    <output filename="brave_components_strings_ru.pak" type="data_package" lang="ru" />
+    <output filename="brave_components_strings_si.pak" type="data_package" lang="si" />
+    <output filename="brave_components_strings_sk.pak" type="data_package" lang="sk" />
+    <output filename="brave_components_strings_sl.pak" type="data_package" lang="sl" />
+    <output filename="brave_components_strings_sq.pak" type="data_package" lang="sq" />
+    <output filename="brave_components_strings_sr.pak" type="data_package" lang="sr" />
+    <output filename="brave_components_strings_sr-Latn.pak" type="data_package" lang="sr-Latn" />
+    <output filename="brave_components_strings_sv.pak" type="data_package" lang="sv" />
+    <output filename="brave_components_strings_sw.pak" type="data_package" lang="sw" />
+    <output filename="brave_components_strings_ta.pak" type="data_package" lang="ta" />
+    <output filename="brave_components_strings_te.pak" type="data_package" lang="te" />
+    <output filename="brave_components_strings_th.pak" type="data_package" lang="th" />
+    <output filename="brave_components_strings_tr.pak" type="data_package" lang="tr" />
+    <output filename="brave_components_strings_uk.pak" type="data_package" lang="uk" />
+    <output filename="brave_components_strings_ur.pak" type="data_package" lang="ur" />
+    <output filename="brave_components_strings_uz.pak" type="data_package" lang="uz" />
+    <output filename="brave_components_strings_vi.pak" type="data_package" lang="vi" />
+    <output filename="brave_components_strings_zh-CN.pak" type="data_package" lang="zh-CN" />
+    <output filename="brave_components_strings_zh-HK.pak" type="data_package" lang="zh-HK" />
+    <output filename="brave_components_strings_zh-TW.pak" type="data_package" lang="zh-TW" />
+    <output filename="brave_components_strings_zu.pak" type="data_package" lang="zu" />
+    <!-- Pseudolocales -->
+    <output filename="brave_components_strings_ar-XB.pak" type="data_package" lang="ar-XB" />
+    <output filename="brave_components_strings_en-XA.pak" type="data_package" lang="en-XA" />
+
+    <!-- On Android, output some strings into Android's xml string format.
+         These strings are tagged with formatter_data="android_java" -->
+    <if expr="is_android">
+      <output filename="java/res/values-af/brave_components_strings.xml" lang="af" type="android" context="android_java" />
+      <output filename="java/res/values-am/brave_components_strings.xml" lang="am" type="android" context="android_java" />
+      <output filename="java/res/values-ar/brave_components_strings.xml" lang="ar" type="android" context="android_java" />
+      <output filename="java/res/values-as/brave_components_strings.xml" lang="as" type="android" context="android_java" />
+      <output filename="java/res/values-az/brave_components_strings.xml" lang="az" type="android" context="android_java" />
+      <output filename="java/res/values-be/brave_components_strings.xml" lang="be" type="android" context="android_java" />
+      <output filename="java/res/values-bg/brave_components_strings.xml" lang="bg" type="android" context="android_java" />
+      <output filename="java/res/values-bn/brave_components_strings.xml" lang="bn" type="android" context="android_java" />
+      <output filename="java/res/values-bs/brave_components_strings.xml" lang="bs" type="android" context="android_java" />
+      <output filename="java/res/values-ca/brave_components_strings.xml" lang="ca" type="android" context="android_java" />
+      <output filename="java/res/values-cs/brave_components_strings.xml" lang="cs" type="android" context="android_java" />
+      <output filename="java/res/values-da/brave_components_strings.xml" lang="da" type="android" context="android_java" />
+      <output filename="java/res/values-de/brave_components_strings.xml" lang="de" type="android" context="android_java" />
+      <output filename="java/res/values-el/brave_components_strings.xml" lang="el" type="android" context="android_java" />
+      <output filename="java/res/values/brave_components_strings.xml" lang="en" type="android" context="android_java" />
+      <output filename="java/res/values-en-rGB/brave_components_strings.xml" lang="en-GB" type="android" context="android_java" />
+      <output filename="java/res/values-es/brave_components_strings.xml" lang="es" type="android" context="android_java" />
+      <output filename="java/res/values-es-rUS/brave_components_strings.xml" lang="es-419" type="android" context="android_java" />
+      <output filename="java/res/values-et/brave_components_strings.xml" lang="et" type="android" context="android_java" />
+      <output filename="java/res/values-eu/brave_components_strings.xml" lang="eu" type="android" context="android_java" />
+      <output filename="java/res/values-fa/brave_components_strings.xml" lang="fa" type="android" context="android_java" />
+      <output filename="java/res/values-fi/brave_components_strings.xml" lang="fi" type="android" context="android_java" />
+      <output filename="java/res/values-tl/brave_components_strings.xml" lang="fil" type="android" context="android_java" />
+      <output filename="java/res/values-fr/brave_components_strings.xml" lang="fr" type="android" context="android_java" />
+      <output filename="java/res/values-fr-rCA/brave_components_strings.xml" lang="fr-CA" type="android" context="android_java" />
+      <output filename="java/res/values-gl/brave_components_strings.xml" lang="gl" type="android" context="android_java" />
+      <output filename="java/res/values-gu/brave_components_strings.xml" lang="gu" type="android" context="android_java" />
+      <output filename="java/res/values-hi/brave_components_strings.xml" lang="hi" type="android" context="android_java" />
+      <output filename="java/res/values-hr/brave_components_strings.xml" lang="hr" type="android" context="android_java" />
+      <output filename="java/res/values-hu/brave_components_strings.xml" lang="hu" type="android" context="android_java" />
+      <output filename="java/res/values-hy/brave_components_strings.xml" lang="hy" type="android" context="android_java" />
+      <output filename="java/res/values-in/brave_components_strings.xml" lang="id" type="android" context="android_java" />
+      <output filename="java/res/values-is/brave_components_strings.xml" lang="is" type="android" context="android_java" />
+      <output filename="java/res/values-it/brave_components_strings.xml" lang="it" type="android" context="android_java" />
+      <output filename="java/res/values-iw/brave_components_strings.xml" lang="he" type="android" context="android_java" />
+      <output filename="java/res/values-ja/brave_components_strings.xml" lang="ja" type="android" context="android_java" />
+      <output filename="java/res/values-ka/brave_components_strings.xml" lang="ka" type="android" context="android_java" />
+      <output filename="java/res/values-kk/brave_components_strings.xml" lang="kk" type="android" context="android_java" />
+      <output filename="java/res/values-km/brave_components_strings.xml" lang="km" type="android" context="android_java" />
+      <output filename="java/res/values-kn/brave_components_strings.xml" lang="kn" type="android" context="android_java" />
+      <output filename="java/res/values-ko/brave_components_strings.xml" lang="ko" type="android" context="android_java" />
+      <output filename="java/res/values-ky/brave_components_strings.xml" lang="ky" type="android" context="android_java" />
+      <output filename="java/res/values-lo/brave_components_strings.xml" lang="lo" type="android" context="android_java" />
+      <output filename="java/res/values-lt/brave_components_strings.xml" lang="lt" type="android" context="android_java" />
+      <output filename="java/res/values-lv/brave_components_strings.xml" lang="lv" type="android" context="android_java" />
+      <output filename="java/res/values-mk/brave_components_strings.xml" lang="mk" type="android" context="android_java" />
+      <output filename="java/res/values-ml/brave_components_strings.xml" lang="ml" type="android" context="android_java" />
+      <output filename="java/res/values-mn/brave_components_strings.xml" lang="mn" type="android" context="android_java" />
+      <output filename="java/res/values-mr/brave_components_strings.xml" lang="mr" type="android" context="android_java" />
+      <output filename="java/res/values-ms/brave_components_strings.xml" lang="ms" type="android" context="android_java" />
+      <output filename="java/res/values-my/brave_components_strings.xml" lang="my" type="android" context="android_java" />
+      <output filename="java/res/values-ne/brave_components_strings.xml" lang="ne" type="android" context="android_java" />
+      <output filename="java/res/values-nl/brave_components_strings.xml" lang="nl" type="android" context="android_java" />
+      <output filename="java/res/values-nb/brave_components_strings.xml" lang="no" type="android" context="android_java" />
+      <output filename="java/res/values-or/brave_components_strings.xml" lang="or" type="android" context="android_java" />
+      <output filename="java/res/values-pa/brave_components_strings.xml" lang="pa" type="android" context="android_java" />
+      <output filename="java/res/values-pl/brave_components_strings.xml" lang="pl" type="android" context="android_java" />
+      <output filename="java/res/values-pt-rBR/brave_components_strings.xml" lang="pt-BR" type="android" context="android_java" />
+      <output filename="java/res/values-pt-rPT/brave_components_strings.xml" lang="pt-PT" type="android" context="android_java" />
+      <output filename="java/res/values-ro/brave_components_strings.xml" lang="ro" type="android" context="android_java" />
+      <output filename="java/res/values-ru/brave_components_strings.xml" lang="ru" type="android" context="android_java" />
+      <output filename="java/res/values-si/brave_components_strings.xml" lang="si" type="android" context="android_java" />
+      <output filename="java/res/values-sk/brave_components_strings.xml" lang="sk" type="android" context="android_java" />
+      <output filename="java/res/values-sl/brave_components_strings.xml" lang="sl" type="android" context="android_java" />
+      <output filename="java/res/values-sq/brave_components_strings.xml" lang="sq" type="android" context="android_java" />
+      <output filename="java/res/values-sr/brave_components_strings.xml" lang="sr" type="android" context="android_java" />
+      <output filename="java/res/values-b+sr+Latn/brave_components_strings.xml" lang="sr-Latn" type="android" context="android_java" />
+      <output filename="java/res/values-sv/brave_components_strings.xml" lang="sv" type="android" context="android_java" />
+      <output filename="java/res/values-sw/brave_components_strings.xml" lang="sw" type="android" context="android_java" />
+      <output filename="java/res/values-ta/brave_components_strings.xml" lang="ta" type="android" context="android_java" />
+      <output filename="java/res/values-te/brave_components_strings.xml" lang="te" type="android" context="android_java" />
+      <output filename="java/res/values-th/brave_components_strings.xml" lang="th" type="android" context="android_java" />
+      <output filename="java/res/values-tr/brave_components_strings.xml" lang="tr" type="android" context="android_java" />
+      <output filename="java/res/values-uk/brave_components_strings.xml" lang="uk" type="android" context="android_java" />
+      <output filename="java/res/values-ur/brave_components_strings.xml" lang="ur" type="android" context="android_java" />
+      <output filename="java/res/values-uz/brave_components_strings.xml" lang="uz" type="android" context="android_java" />
+      <output filename="java/res/values-vi/brave_components_strings.xml" lang="vi" type="android" context="android_java" />
+      <output filename="java/res/values-zh-rCN/brave_components_strings.xml" lang="zh-CN" type="android" context="android_java" />
+      <output filename="java/res/values-zh-rHK/brave_components_strings.xml" lang="zh-HK" type="android" context="android_java" />
+      <output filename="java/res/values-zh-rTW/brave_components_strings.xml" lang="zh-TW" type="android" context="android_java" />
+      <output filename="java/res/values-zu/brave_components_strings.xml" lang="zu" type="android" context="android_java" />
+      <!-- Pseudolocales -->
+      <output filename="java/res/values-ar-rXB/brave_components_strings.xml" lang="ar-XB" type="android" context="android_java" />
+      <output filename="java/res/values-en-rXA/brave_components_strings.xml" lang="en-XA" type="android" context="android_java" />
+    </if>
+  </outputs>
+  <translations>
+    <file path="strings/brave_components_resources_am.xtb" lang="am" />
+    <file path="strings/brave_components_resources_ar.xtb" lang="ar" />
+    <file path="strings/brave_components_resources_az.xtb" lang="az" />
+    <file path="strings/brave_components_resources_bg.xtb" lang="bg" />
+    <file path="strings/brave_components_resources_bn.xtb" lang="bn" />
+    <file path="strings/brave_components_resources_ca.xtb" lang="ca" />
+    <file path="strings/brave_components_resources_cs.xtb" lang="cs" />
+    <file path="strings/brave_components_resources_da.xtb" lang="da" />
+    <file path="strings/brave_components_resources_de.xtb" lang="de" />
+    <file path="strings/brave_components_resources_el.xtb" lang="el" />
+    <file path="strings/brave_components_resources_en-GB.xtb" lang="en-GB" />
+    <file path="strings/brave_components_resources_es.xtb" lang="es" />
+    <file path="strings/brave_components_resources_es-419.xtb" lang="es-419" />
+    <file path="strings/brave_components_resources_et.xtb" lang="et" />
+    <file path="strings/brave_components_resources_fa.xtb" lang="fa" />
+    <file path="strings/brave_components_resources_fi.xtb" lang="fi" />
+    <file path="strings/brave_components_resources_fil.xtb" lang="fil" />
+    <file path="strings/brave_components_resources_fr.xtb" lang="fr" />
+    <file path="strings/brave_components_resources_fr-CA.xtb" lang="fr-CA" />
+    <file path="strings/brave_components_resources_gl.xtb" lang="gl" />
+    <file path="strings/brave_components_resources_gu.xtb" lang="gu" />
+    <file path="strings/brave_components_resources_hi.xtb" lang="hi" />
+    <file path="strings/brave_components_resources_hr.xtb" lang="hr" />
+    <file path="strings/brave_components_resources_hu.xtb" lang="hu" />
+    <file path="strings/brave_components_resources_id.xtb" lang="id" />
+    <file path="strings/brave_components_resources_it.xtb" lang="it" />
+    <file path="strings/brave_components_resources_iw.xtb" lang="he" />
+    <file path="strings/brave_components_resources_ja.xtb" lang="ja" />
+    <file path="strings/brave_components_resources_ka.xtb" lang="ka" />
+    <file path="strings/brave_components_resources_kk.xtb" lang="kk" />
+    <file path="strings/brave_components_resources_km.xtb" lang="km" />
+    <file path="strings/brave_components_resources_kn.xtb" lang="kn" />
+    <file path="strings/brave_components_resources_ko.xtb" lang="ko" />
+    <file path="strings/brave_components_resources_lo.xtb" lang="lo" />
+    <file path="strings/brave_components_resources_lt.xtb" lang="lt" />
+    <file path="strings/brave_components_resources_lv.xtb" lang="lv" />
+    <file path="strings/brave_components_resources_mk.xtb" lang="mk" />
+    <file path="strings/brave_components_resources_ml.xtb" lang="ml" />
+    <file path="strings/brave_components_resources_mn.xtb" lang="mn" />
+    <file path="strings/brave_components_resources_mr.xtb" lang="mr" />
+    <file path="strings/brave_components_resources_ms.xtb" lang="ms" />
+    <file path="strings/brave_components_resources_my.xtb" lang="my" />
+    <file path="strings/brave_components_resources_nl.xtb" lang="nl" />
+    <file path="strings/brave_components_resources_no.xtb" lang="no" />
+    <file path="strings/brave_components_resources_pl.xtb" lang="pl" />
+    <file path="strings/brave_components_resources_pt-BR.xtb" lang="pt-BR" />
+    <file path="strings/brave_components_resources_pt-PT.xtb" lang="pt-PT" />
+    <file path="strings/brave_components_resources_ro.xtb" lang="ro" />
+    <file path="strings/brave_components_resources_ru.xtb" lang="ru" />
+    <file path="strings/brave_components_resources_si.xtb" lang="si" />
+    <file path="strings/brave_components_resources_sk.xtb" lang="sk" />
+    <file path="strings/brave_components_resources_sl.xtb" lang="sl" />
+    <file path="strings/brave_components_resources_sq.xtb" lang="sq" />
+    <file path="strings/brave_components_resources_sr.xtb" lang="sr" />
+    <file path="strings/brave_components_resources_sr-Latn.xtb" lang="sr-Latn" />
+    <file path="strings/brave_components_resources_sv.xtb" lang="sv" />
+    <file path="strings/brave_components_resources_sw.xtb" lang="sw" />
+    <file path="strings/brave_components_resources_ta.xtb" lang="ta" />
+    <file path="strings/brave_components_resources_te.xtb" lang="te" />
+    <file path="strings/brave_components_resources_th.xtb" lang="th" />
+    <file path="strings/brave_components_resources_tr.xtb" lang="tr" />
+    <file path="strings/brave_components_resources_uk.xtb" lang="uk" />
+    <file path="strings/brave_components_resources_uz.xtb" lang="uz" />
+    <file path="strings/brave_components_resources_vi.xtb" lang="vi" />
+    <file path="strings/brave_components_resources_zh-CN.xtb" lang="zh-CN" />
+    <file path="strings/brave_components_resources_zh-TW.xtb" lang="zh-TW" />
+  </translations>
+  <release seq="1">
+    <messages fallback_to_english="true">
+      <!-- WebUI newtab resources -->
+      <message name="IDS_BRAVE_NEW_TAB_TOTAL_ADS_TRACKERS_BLOCKED" desc="total number of ads and trackers blocked">Trackers &amp; ads blocked</message>
+      <message name="IDS_BRAVE_NEW_TAB_TOTAL_HTTPS_UPGRADES" desc="total number of HTTPS upgrades">HTTPS Upgrades</message>
+      <message name="IDS_BRAVE_NEW_TAB_TOTAL_TIME_SAVED" desc="total time saved from blocking ads and trackers">Time saved</message>
+      <message name="IDS_BRAVE_NEW_TAB_ESTIMATED_BANDWIDTH_SAVED" desc="total bandwidth saved from blocking ads and trackers">Bandwidth saved</message>
+      <message name="IDS_BRAVE_NEW_TAB_THUMB_REMOVED" desc="Shown when a thumbnail is removed from the new tab page">Top site removed.</message>
+      <message name="IDS_BRAVE_NEW_TAB_UNDO_REMOVED" desc="Shown when a user wants to undo removing a tile.">Undo</message>
+      <message name="IDS_BRAVE_NEW_TAB_CLOSE" desc="Shown when a user wants to close the site removal notification.">Close</message>
+      <message name="IDS_BRAVE_NEW_TAB_RESTORE_ALL" desc="Allows restoring all top sites back to the original.">Restore All</message>
+      <message name="IDS_BRAVE_NEW_TAB_SECOND" desc="Displays the number of seconds.">second</message>
+      <message name="IDS_BRAVE_NEW_TAB_SECONDS" desc="Displays the number of seconds.">seconds</message>
+      <message name="IDS_BRAVE_NEW_TAB_MINUTE" desc="Displays the number of minutes.">minute</message>
+      <message name="IDS_BRAVE_NEW_TAB_MINUTES" desc="Displays the number of minutes.">minutes</message>
+      <message name="IDS_BRAVE_NEW_TAB_HOUR" desc="Displays the number of hours.">hour</message>
+      <message name="IDS_BRAVE_NEW_TAB_HOURS" desc="Displays the number of hours.">hours</message>
+      <message name="IDS_BRAVE_NEW_TAB_DAY" desc="Displays the number of days.">day</message>
+      <message name="IDS_BRAVE_NEW_TAB_DAYS" desc="Displays the number of days.">days</message>
+      <message name="IDS_BRAVE_NEW_TAB_BYTES" desc="Displays the number of bytes.">B</message>
+      <message name="IDS_BRAVE_NEW_TAB_KILOBYTES" desc="Displays the number of kilobytes.">KB</message>
+      <message name="IDS_BRAVE_NEW_TAB_MEGABYTES" desc="Displays the number of megabytes.">MB</message>
+      <message name="IDS_BRAVE_NEW_TAB_GIGABYTES" desc="Displays the number of gigabytes.">GB</message>
+
+      <message name="IDS_BRAVE_NEW_TAB_PHOTO_BY" desc="Prefix for photographer name">Photo by</message>
+      <message name="IDS_BRAVE_NEW_TAB_HIDE" desc="Shown as an option for a widget to hide itself">Hide</message>
+      <message name="IDS_BRAVE_NEW_TAB_DASHBOARD_SETTINGS_TITLE" desc="Title for dashboard settings">Customize Dashboard</message>
+      <message name="IDS_BRAVE_NEW_TAB_CUSTOMIZE" desc="Title for dashboard settings">Customize</message>
+      <message name="IDS_BRAVE_NEW_TAB_SHOW_BACKGROUND_IMAGE" desc="Text for settings background option">Show Background Images</message>
+      <message name="IDS_BRAVE_NEW_TAB_BRAVE_BACKGROUND_IMAGE_OPTION_TITLE" desc="Text for brave background option">Brave backgrounds</message>
+      <message name="IDS_BRAVE_NEW_TAB_CUSTOM_BACKGROUND_IMAGE_OPTION_TITLE" desc="Text for custom background option">Use your own</message>
+      <message name="IDS_BRAVE_NEW_TAB_CUSTOM_BACKGROUND_IMAGE_OPTION_UPLOAD_LABEL" desc="Text for custom background option upload">Upload from device</message>
+      <message name="IDS_BRAVE_NEW_TAB_SHOW_BRAVE_STATS" desc="Text for settings show stats option">Show Brave Stats</message>
+      <message name="IDS_BRAVE_NEW_TAB_SHOW_CLOCK" desc="Text describing 'Show Clock' setting">Show Clock</message>
+      <message name="IDS_BRAVE_NEW_TAB_CLOCK_FORMAT" desc="Text describing 'Format' setting under Clock">Format</message>
+      <message name="IDS_BRAVE_NEW_TAB_CLOCK_FORMAT_DEFAULT" desc="Text for default choice Clock>Format setting">Automatic</message>
+      <message name="IDS_BRAVE_NEW_TAB_CLOCK_FORMAT_12" desc="Text for choice '12-hour clock' Clock>Format setting">12-hour clock</message>
+      <message name="IDS_BRAVE_NEW_TAB_CLOCK_FORMAT_24" desc="Text for choice '24-hour clock' Clock>Format setting">24-hour clock</message>
+
+      <message name="IDS_BRAVE_NEW_TAB_ADD_TOP_SITE_DIALOG_TITLE" desc="Title text for adding top site dialog ">Add site</message>
+      <message name="IDS_BRAVE_NEW_TAB_EDIT_TOP_SITE_DIALOG_TITLE" desc="Title text for editing top site dialog">Edit site</message>
+      <message name="IDS_BRAVE_NEW_TAB_EDIT_SITE_TILE_MENU_ITEM" desc="Text for editing site tile menu item">Edit site</message>
+      <message name="IDS_BRAVE_NEW_TAB_REMOVE_TILE_MENU_ITEM" desc="Text for removing top site tile menu item">Remove</message>
+      <message name="IDS_BRAVE_NEW_TAB_ADD_TOP_SITE_DIALOG_URL_LABEL" desc="Text for settings show top sites option">URL</message>
+      <message name="IDS_BRAVE_NEW_TAB_ADD_TOP_SITE_DIALOG_URL_INPUT_PLACEHOLDER" desc="Text for settings show top sites option">Website address</message>
+      <message name="IDS_BRAVE_NEW_TAB_ADD_TOP_SITE_DIALOG_NAME_LABEL" desc="Text for settings show top sites option">Name</message>
+      <message name="IDS_BRAVE_NEW_TAB_ADD_TOP_SITE_DIALOG_NAME_INPUT_PLACEHOLDER" desc="Text for settings show top sites option">Website title</message>
+      <message name="IDS_BRAVE_NEW_TAB_ADD_TOP_SITE_DIALOG_SAVE_BUTTON_LABEL" desc="Text for settings show top sites option">Save</message>
+      <message name="IDS_BRAVE_NEW_TAB_ADD_TOP_SITE_DIALOG_CANCEL_BUTTON_LABEL" desc="Text for settings show top sites option">Cancel</message>
+      <message name="IDS_BRAVE_NEW_TAB_SHOW_TOP_SITES" desc="Text for settings show top sites option">Top Sites</message>
+      <message name="IDS_BRAVE_NEW_TAB_SHOW_FAVORITES_LABEL" desc="Label for allowing customizing of top sites">Favorites</message>
+      <message name="IDS_BRAVE_NEW_TAB_SHOW_FAVORITES_DESC" desc="Desc for allowing customizing of top sites">Top sites are curated by you</message>
+      <message name="IDS_BRAVE_NEW_TAB_SHOW_FRECENCY_LABEL" desc="Label for showing most visited istes as top sites">Frequently Visited</message>
+      <message name="IDS_BRAVE_NEW_TAB_SHOW_FRECENCY_DESC" desc="Desc for showing most visited sites as top sites">Top sites are suggested based on websites you visit often</message>
+      <message name="IDS_BRAVE_NEW_TAB_ADD_SITE_MENU_LABEL" desc="Label for adding site to top sites menu item of topsites tiles">Add site</message>
+      <message name="IDS_BRAVE_NEW_TAB_SHOW_FRECENCY_MENU_LABEL" desc="Label for showing frecency menu item of topsites tiles">Show frequently visited</message>
+      <message name="IDS_BRAVE_NEW_TAB_SHOW_FAVORITES_MENU_LABEL" desc="Label for showing favorites menu item of topsites tiles">Show favorites</message>
+
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_CUSTOMIZE_LIST" desc="Label for the customize list">
+        Customize list
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_BRAVE_PLACEHOLDER" desc="Placeholder text for when Brave is the selected search engine">
+        Search the web privately with AI
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_NON_BRAVE_PLACEHOLDER" desc="Placeholder text for when Brave is not the selected search engine">
+        Search the web
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_SHOW_SETTING" desc="Setting for enabling the searchbox on the NTP">
+        Show search widget on the new tab page
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_ENABLE_SEARCH_ENGINES_TITLE" desc="Title above the list of search engines">
+        Enable search engines on the New Tab Page
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_CUSTOMIZE_SEARCH_ENGINES">
+        Customize available engines
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_HIDE_SEARCH" desc="Message for the menu entry to hide the search box on the NTP">
+        Hide Search
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_ENABLE_SEARCH_SUGGESTIONS_TITLE" desc="Title for the Enable search suggestions prompt">
+        Enable search suggestions?
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_ENABLE_SEARCH_SUGGESTIONS_EXPLANATION" desc="Explanation for the Enable search suggestions prompt">
+        When you search, what you type will be sent to your search engine for better suggestions.
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_ENABLE_SEARCH_SUGGESTIONS_ENABLE" desc="Button for enabling search suggestions">
+        Enable
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_ENABLE_SEARCH_SUGGESTIONS_DISMISS" desc="Button to dismiss the prompt for enabling search suggestions">
+        No thanks
+      </message>
+
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_TITLE_1" desc="The text for brave search promotion from NTP">
+        Want even better privacy?
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_TITLE_2" desc="The text for brave search promotion from NTP">
+        It's time to ditch Google.
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_DESC" desc="The text for brave search promotion from NTP">
+        Brave Search doesn't bias or censor results, and it doesn't profile you.
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_POPUP_BOTTOM" desc="The text for brave search promotion from NTP">
+        Try Brave Search now
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH_PROMOTION_SEARCH_BOX_PLACEHOLDER" desc="The place holder text of search box at brave search promotion from NTP">
+        Search the web privately
+      </message>
+
+      <message name="IDS_BRAVE_NEW_TAB_SHOW_REWARDS" desc="Text for settings show rewards option">Show Brave Rewards</message>
+      <message name="IDS_BRAVE_NEW_TAB_SHOW_CARDS" desc="Text for cards option">Cards</message>
+      <message name="IDS_BRAVE_NEW_TAB_BRANDED_WALLPAPER_OPT_IN" desc="Text for setting to opt-in to Branded Wallpapers on New Tab Page">Show Sponsored Images</message>
+      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_CAN_EARN_DESCRIPTION" desc="Description text for learn more label for Sponsored Images setting on New Tab Page that informs users they can earn BAT">You can earn for seeing Sponsored Images.</message>
+      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_EARNING_DESCRIPTION" desc="Description text for learn more label for Sponsored Images setting on New Tab Page that informs users they are currently earning BAT">You're earning BAT for Sponsored Images. Disabling Sponsored Images will reduce how much you earn.</message>
+      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_LEARN_MORE" desc="Learn more link text for Sponsored Images setting on New Tab Page">Learn more</message>
+      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_EARNING_TITLE" desc="Title of message about already earning from sponsored images">You're earning BAT for Sponsored Images.</message>
+      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ENABLE_REWARDS" desc="Text of the button to enable Rewards">Enable Rewards</message>
+      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_NOT_EARNING_TITLE" desc="Title of message about not yet earning from sponsored images">You can earn for seeing Sponsored Images.</message>
+      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_OFF_REWARDS_ON_DESCRPTION" desc="Description about turning on Sponsored Images when Rewards is on">As a Brave Rewards user, you can earn BAT for seeing Sponsored Images.</message>
+      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON_DESCRIPTION" desc="Description about turning off Sponsored Images">As a Brave Rewards user, you earn BAT for Sponsored Images you see. Disabling Sponsored Images will reduce how much you earn.</message>
+      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_ON_REWARDS_ON_NO_CUSTODIAN_DESCRIPTION" desc="Description about not having a connected Rewards custodian">You can earn BAT for seeing Sponsored Images when you connect a custodial account to Brave Rewards. In the meantime, you're helping to support creators with Sponsored Images.</message>
+      <message name="IDS_BRAVE_NEW_TAB_SPONSORED_IMAGE_REWARDS_OFF_DESCRIPTION" desc="Description about sponsored images when Rewards is off">You can earn BAT for seeing Sponsored Images with Brave Rewards. Not a Rewards user? Turning on Sponsored Images still supports Brave's mission.</message>
+      <message name="IDS_BRAVE_NEW_TAB_TOP_SITES" desc="Top Sites title">top sites</message>
+      <message name="IDS_BRAVE_NEW_TAB_STATS" desc="Brave Stats title">Brave Stats</message>
+      <message name="IDS_BRAVE_NEW_TAB_CLOCK" desc="Clock title">clock</message>
+      <message name="IDS_BRAVE_NEW_TAB_SEARCH" desc="Search title">Search</message>
+      <message name="IDS_BRAVE_NEW_TAB_REWARDS" desc="Brave Rewards Title">Brave Rewards</message>
+      <message name="IDS_BRAVE_NEW_TAB_BACKGROUND_IMAGE" desc="Background image title">Background Image</message>
+      <message name="IDS_BRAVE_NEW_TAB_SETTINGS_BACK" desc="Navigate back to the previous settings section">
+        Back
+      </message>
+      <message name="IDS_BRAVE_NEW_TAB_BRAVE_BACKGROUND" desc="Brave background colors title">Brave backgrounds</message>
+      <message name="IDS_BRAVE_NEW_TAB_SOLID_COLOR" desc="Solid background colors title">Solid colors</message>
+      <message name="IDS_BRAVE_NEW_TAB_GRADIENT_COLOR" desc="Gradient background colors title">Gradients</message>
+      <message name="IDS_BRAVE_NEW_TAB_REFRESH_BACKGROUND_ON_NEW_TAB" desc="Label for random toggle button">Refresh on every new tab</message>
+      <message name="IDS_BRAVE_NEW_TAB_REWARDS_OPEN_PANEL" desc="Label for menu item to open the Rewards panel">Open Rewards panel</message>
+
+      <message name="IDS_BRAVE_NEWS_TITLE" translateable="false" desc="Title for Brave News news feed section">
+        Brave News
+      </message>
+      <message name="IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_LOADING" desc="The text displayed while a feed is being subscribed or unsubscribed">
+        Loading...
+      </message>
+      <message name="IDS_BRAVE_NEWS_ACTION_VIEW_TOOLTIP" desc="The tooltip text displayed when hovering over the Brave News action view in the toolbar">
+        Manage Subscriptions
+      </message>
+      <message name="IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_SUBSCRIBE" desc="The text on the button for subscribing to a feed">
+        Follow
+      </message>
+      <message name="IDS_BRAVE_NEWS_BUBBLE_FEED_ITEM_UNSUBSCRIBE" desc="The text on the button for unsubscribing from a feed">
+        Unfollow
+      </message>
+      <message name="IDS_BRAVE_NEWS_BUBBLE_TITLE" desc="The title for the Brave News bubble">
+        Follow this source in 1-click.
+      </message>
+      <message name="IDS_BRAVE_NEWS_BUBBLE_SUBTITLE" desc="The subtitle for the Brave News bubble">
+        Get all the latest stories in Brave News.
+      </message>
+      <message name="IDS_BRAVE_NEWS_BUBBLE_MANAGE_FEEDS" desc="The text on the button for opening the Brave News configuration page">
+        Manage Feeds
+      </message>
+      <message name="IDS_BRAVE_NEWS_STATUS_FETCHING" desc="Indication that the content is being downloaded...">
+        Fetching…
+      </message>
+      <message name="IDS_BRAVE_NEWS_ACTION_REFRESH" desc="Button text to refresh the feed content">
+        Load new content
+      </message>
+      <message name="IDS_BRAVE_NEWS_SCROLL_HINT" desc="Indicator text that Brave News content must be scrolled down to. Do not translate the title Brave News.">
+        Scroll for Brave News
+      </message>
+      <message name="IDS_BRAVE_NEWS_RESET_ACTION" desc="Button text to reset all Brave News publisher options. Do not translate the title Brave News.">
+        Reset Brave News sources
+      </message>
+      <message name="IDS_BRAVE_NEWS_RESET_CONFIRM" desc="Confirmation dialog text to reset all Brave News settings. Do not translate the title Brave News.">
+        Reset all your Brave News publisher choices to their default?
+      </message>
+      <message name="IDS_BRAVE_NEWS_CATEGORY_NAME_ALL" desc="Title for the category which shows all content sources">
+        All sources
+      </message>
+      <message name="IDS_BRAVE_NEWS_SOURCES_TITLE" desc="Title for the list of source publishers in Brave News settings">
+        Sources
+      </message>
+      <message name="IDS_BRAVE_NEWS_DISABLE_SOURCE_COMMAND" desc="Command text to disable a specific publisher from showing in the feed">
+        Disable content from <ph name="PUBLISHER_NAME">$1<ex>The New York Times</ex></ph>
+      </message>
+      <message name="IDS_BRAVE_NEWS_PROMOTED" desc="Label for promoted content">
+        Promoted
+      </message>
+      <message name="IDS_BRAVE_NEWS_DISPLAY_AD_LABEL" desc="Label for an advertisement">
+        Ad
+      </message>
+
+      <message name="IDS_BRAVE_NEW_TAB_STATS_TAB" desc="Brave Stats title">Brave Stats</message>
+      <message name="IDS_BRAVE_NEW_TAB_CLOCK_TAB" desc="Clock title">Clock</message>
+      <message name="IDS_BRAVE_NEW_TAB_TOP_SITES_TAB" desc="Top Sites title">Top Sites</message>
+      <message name="IDS_BRAVE_NEW_TAB_BACKGROUND_IMG_TAB" desc="Background image title">Background Image</message>
+      <message name="IDS_BRAVE_NEW_TAB_WIDGET_ADD" desc="Add Widget Text">Add</message>
+      <message name="IDS_BRAVE_NEW_TAB_WIDGET_HIDE" desc="Hide Widget Text">Hide</message>
+      <message name="IDS_BRAVE_NEW_TAB_BRAVE_REWARDS_TITLE" desc="">Brave Rewards</message>
+      <message name="IDS_BRAVE_NEW_TAB_REWARDS_WIDGET_DESC" desc="Rewards widget description">Earn tokens for viewing privacy-respecting ads.</message>
+      <message name="IDS_BRAVE_NEW_TAB_CARDS_TITLE" desc="Toggle cards title">Cards</message>
+      <message name="IDS_BRAVE_NEW_TAB_CARDS_DESC" desc="Toggle cards description">By turning off Cards, all cards currently visible will be hidden. However, you may still be notified of new cards.</message>
+
+      <message name="IDS_BRAVE_ADS_SCHEDULED_CAPTCHA_NOTIFICATION_TITLE" desc="">Brave Ads paused</message>
+      <message name="IDS_BRAVE_ADS_SCHEDULED_CAPTCHA_NOTIFICATION_BODY" desc="">To keep Brave Rewards safe from abuse, we'll randomly ask users to solve a captcha. Click &#8220;Solve&#8221; to resume ads.</message>
+      <message name="IDS_BRAVE_ADS_SCHEDULED_CAPTCHA_NOTIFICATION_OK_BUTTON_TEXT" desc="">Solve</message>
+      <message name="IDS_BRAVE_ADS_SCHEDULED_CAPTCHA_NOTIFICATION_CANCEL_BUTTON_TEXT" desc="">Later</message>
+
+      <if expr="toolkit_views">
+        <message name="IDS_SIDEBAR_BRAVE_TALK_ITEM_TITLE" desc="Title for Brave Talk item in sidebar">
+          Brave Talk
+        </message>
+        <message name="IDS_SIDEBAR_WALLET_ITEM_TITLE" desc="Title for crypto wallet item in sidebar">
+          Brave Wallet
+        </message>
+        <message name="IDS_SIDEBAR_BOOKMARKS_ITEM_TITLE" desc="Title for bookmarks item in sidebar">
+          Bookmarks
+        </message>
+        <message name="IDS_SIDEBAR_HISTORY_ITEM_TITLE" desc="Title for history item in sidebar">
+          History
+        </message>
+        <message name="IDS_SIDEBAR_READING_LIST_ITEM_TITLE" desc="Title for Reading List item in sidebar">
+          Reading List
+        </message>
+        <message name="IDS_SIDEBAR_PLAYLIST_ITEM_TITLE" desc="Title for plyalist item in sidebar">
+          Playlist
+        </message>
+        <message name="IDS_SIDEBAR_CHAT_SUMMARIZER_ITEM_TITLE" desc="Title for chat summarizer item in sidebar">
+          Chat Summarizer
+        </message>
+      </if>
+
+      <!-- WebUI private tab resources -->
+      <if expr="not is_android">
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_LEARN_MORE" desc="">Learn more</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_DONE" desc="">Done</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_THIS_IS_A" desc="">This is a</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW" desc="">Private Window</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_DESC" desc="">Brave doesn’t remember what you do in a Private Window. Sites you visit won't show up in your history, and cookies vanish when you’re done. Private Windows don’t make you completely anonymous online, though.</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_DESC1" desc="">Brave never remembers what you do in a Private Window. Sites you visit won't show up in your history. Cookies, form data, and site data vanish once you close all open private windows. Note that your activity could still be visible to your internet service provider, passive network observers, or your employer (if you're using a work machine or network).</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_DESC2" desc="">For more privacy, open a private window with Tor.</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_BUTTON" desc="">Learn more.</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR" desc="">Private Window with Tor connectivity</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR_DESC" desc="">Brave doesn't store browsing activity from Private Windows. With Tor connectivity, it becomes more difficult for sites to see your true IP address and for network observers to see what sites you visit. However, if your personal safety depends on remaining anonymous, use the Tor Browser instead.</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_LABEL" desc="">Search Privately with</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_TITLE" desc="">DuckDuckGo</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_TEXT_1" desc="">With private search, Brave will use DuckDuckGo for searches in Private Windows. DuckDuckGo doesn’t track your search history, so you can search privately.</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_TEXT_2" desc="">In Private Windows with Tor, DuckDuckGo is the default search engine. Some of the other popular search engines are harder to use with Tor. DuckDuckGo doesn’t track your search history; with Tor, they don’t even know your IP address.</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_BUTTON" desc="">Search with DuckDuckGo</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_LABEL" desc="">Make Private Windows more private</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_LABEL_2" desc="">This Private Window is more private</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TITLE" desc="">with Tor connectivity</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TEXT_1" desc="">Tor hides your IP address from the sites you visit, by routing your browsing through several Tor servers before it reaches your destination. Tor can slow down browsing and some sites might not work at all.</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TEXT_2" desc="">Using Private Windows only changes what Brave does on your device — it doesn't change anyone else's behavior. Tor hides your IP address from the sites you visit and makes it somewhat more difficult, but not impossible, for your ISP or employer to see what sites you are visiting. Open a Private Window with Tor from the menu, or with [[ key ]].</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_BUTTON" desc="">Learn more about Tor in Brave</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS" desc="">Tor Status</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTED" desc="">Tor connected successfully</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_DISCONNECTED" desc="">Disconnected</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTION_SLOW" desc="">Still connecting...</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTION_SLOW_DESC" desc="">There's some slowness in the Tor network</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTION_FAILED" desc="">Tor connection failed</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_INITIALIZING" desc="">
+          Tor is connecting... <ph name="PERCENTAGE">$1<ex>50</ex></ph>%
+        </message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_CONNECTING" desc="">Having problems connecting? Try <ph name="BEGIN_LINK">$1</ph>turning off<ph name="END_LINK">$2</ph> Private Window with Tor and back on again in settings.</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_DISCONNECTED_REENABLE" desc="">Open <ph name="BEGIN_LINK">$1</ph>Brave Settings<ph name="END_LINK">$2</ph>, disable Private Window with Tor, then re-enable.</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_DISCONNECTED_BRIDGES" desc=""><ph name="BEGIN_BOLD">$1</ph>Still having trouble?<ph name="END_BOLD">$2</ph> Try using <ph name="BEGIN_BRIDGES_LINK">$3</ph>bridges<ph name="END_BRIDGES_LINK">$4</ph> or <ph name="BEGIN_SUPPORT_LINK">$5</ph>contact support<ph name="END_SUPPORT_LINK">$6</ph>.</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_CONTACT_SUPPORT" desc="">Contact support.</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_PLACEHOLDER" desc="A placeholder label to display on neutral state of the input box in private new tab page">Search the web privately</message>
+      </if>
+
+      <!-- WebUI adblock resources -->
+      <message name="IDS_ADBLOCK_ADDITIONAL_FILTERS_TITLE" desc="Title for additional filters section">Additional Filters</message>
+      <message name="IDS_ADBLOCK_ADDITIONAL_FILTERS_WARNING" desc="Warning for additional filters section">Warning: Turning on too many filters will degrade performance</message>
+      <message name="IDS_ADBLOCK_TOTAL_ADS_BLOCKED" desc="total number of ads blocked">Total ads and trackers blocked:</message>
+      <message name="IDS_ADBLOCK_CUSTOM_FILTERS_TITLE" desc="Title for custom filters section">Custom Filters</message>
+      <message name="IDS_ADBLOCK_CUSTOM_FILTERS_INSTRUCTIONS" desc="Instructions for custom filters section">One per line, a filter is described in Adblock Plus filter syntax</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_TITLE" desc="Title for custom filter list subscriptions section">Subscribe to filter lists</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_INSTRUCTIONS" desc="Instructions for custom filter list subscriptions section">Add additional lists created and maintained by your trusted community</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_DISCLAIMER" desc="Warning about risk of periodic IP address leakage from custom filter list subscriptions">Only subscribe to lists from entities you trust. Your browser will periodically check for list updates from the URL you enter, revealing your IP address to their server.</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_ADD_NEW_FILTER_LIST" desc="Text for button to begin adding a new filter list subscription by entering its URL">Add filter list via URL</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_ENTER_SUBSCRIPTION_URL_PLACEHOLDER" desc="Placeholder text for filter list URL input">Enter URL</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_SUBMIT_NEW_SUBSCRIPTION" desc="Text for filter list subscription submission button">Submit</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_CANCEL_ADD_SUBSCRIPTION" desc="Text for filter list subscription cancel button">Cancel</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_TABLE_FILTER_LIST_COLUMN" desc="Header for the filter list name column in a table of all list subscriptions">Filter list</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_TABLE_LAST_UPDATED_COLUMN" desc="Header for the time of last update in a table of all list subscriptions">Last updated</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_TRIGGER_UPDATE" desc="Text for button to immediately download and apply the latest filter list version">Update now</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_VIEW_LIST_SOURCE" desc="Text for button to view the raw source for a custom filter list subscription">View source</message>
+      <message name="IDS_ADBLOCK_CUSTOM_LIST_SUBSCRIPTIONS_UNSUBSCRIBE" desc="Text for button to unsubscribe from a custom filter list subscription">Unsubscribe</message>
+
+      <!-- WebUI webcompat reporter resources -->
+      <if expr="not is_android">
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_MODAL_TITLE" desc="Title for broken website report dialog window">Report a broken site</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_EXPLANATION" desc="Label for a website's URL indicating that it will be reported for compatibility issues">Let Brave's developers know that this site isn't working as expected:</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_NON_HTTP_EXPLANATION" desc="Notifies the user that non-HTTP/HTTPS browser pages cannot be reported">This page cannot be reported because it was not served over HTTP/HTTPS.</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_LOCAL_EXPLANATION" desc="Notifies the user that local pages (i.e. via localhost) cannot be reported">This page is a local web page and is not eligible for reporting.</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_ERROR_PAGE_EXPLANATION" desc="Notifies the user that the error page cannot be reported">This is an error page. It cannot be reported as a broken site.</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_CONTACT_INFO_APOPUP_EXPL" desc="Informs user about auto populating of the contact information.">If you provide contact info it will be stored for future reports.</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_DISCLAIMER2" desc="Thanks the user for sending the report, and informs them that relevant website information will be reported to Brave servers.">Thank you for helping make Brave better for all. This report will only contain information necessary for us to fix this site.</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_INFO_LINK" desc="Text for link to webcompat report wiki page.">Learn more.</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_PLACEHOLDER" desc="Placeholder text that instructs the user to select one of the following categories of issues on a webpage">Select one option</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_DETAILS" desc="Placeholder text for the details field in the broken website report">Additional details</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_OPTIONAL_FIELD" desc="Appended to a field label in the broken website report if it is not required to be filled out">(optional)</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_CONTACT_LABEL" desc="Label for the optional contact information field in the broken website report">Contact me at: (optional)</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_CONTACT_PLACEHOLDER" desc="Placeholder text for the optional contact information field in the broken website report">Email, Twitter, etc.</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_ATTACH_SCREENSHOT_LABEL" desc="Label for the checkbox for attaching a screenshot with the broken website report">Include screenshot of the current page</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_VIEW_SCREENSHOT_LABEL" desc="Link text for viewing a screenshot for a broken website report">View screenshot</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_CANCEL" desc="Text for button to cancel sending a broken website report">Cancel</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_CLOSE" desc="Text for button to close a broken website report dialog">Close</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_SUBMIT" desc="Text for button to submit a broken website report">Submit</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_THANK_YOU" desc="Thanks the user for submitting a report of a broken website">Thank you!</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_CONFIRMATION_NOTICE" desc="Assures the user that a problem with a website reported as broken will be fixed soon">Thanks for letting Brave's developers know that there's something wrong with this site. We'll do our best to fix it!</message>
+      </if>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_LABEL" desc="Label for a dropdown containing categories of issues on a webpage">What's the main issue you're seeing?</message>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_ADS" desc="Category of website problems relating to visible advertisements">Ads are still visible</message>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_BLANK" desc="Category of website problems relating to blank pages or missing content">Blank page or missing content</message>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_SCROLL" desc="Category of website problems relating to inability to scroll on the page">Can't scroll</message>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_FORM" desc="Category of website problems relating to form entry elements not working">Can't enter text in a form</message>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_COOKIE" desc="Category of website problems relating to visible cookie notices">Visible cookie-consent notice</message>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_ANTIADBLOCK" desc="Category of website problems relating to appeals to disable the user's adblocker">There's an anti-adblock measure</message>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_TRACKING" desc="Category of website problems relating to unblocked tracking or analytics scripts">Unblocked tracking/analytics script</message>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_NEWSLETTER" desc="Category of website problems relating to visible newsletter popups">Newsletter popup</message>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_SOCIAL" desc="Category of website problems relating to visible social media icons or sharing requests">Social widget</message>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_CHAT" desc="Category of website problems relating to visible chatbot or customer service chat buttons">Chat widget</message>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_BROWSER_NOT_SUPPORTED" desc="Category of website problems relating to browsers that are not supported">Browser not supported</message>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_OTHER" desc="Category of miscellaneous website problems">Other</message>
+
+      <!-- WebUI rewards resources -->
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE" desc="">Manage Brave Ads</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DESCRIPTION" desc="">
+        Control what kinds of Brave Ads you see, and how often.
+      </message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DESCRIPTION_EARN" desc="">
+        The more you see, the more you can earn.
+      </message>
+      <message name="IDS_BRAVE_REWARDS_NEW_TAB_AD_COUNT_LABEL" desc="">
+        New tab page ads
+      </message>
+      <message name="IDS_BRAVE_REWARDS_NOTIFICATION_AD_COUNT_LABEL" desc="">
+        Notification ads
+      </message>
+      <message name="IDS_BRAVE_REWARDS_SEARCH_AD_COUNT_LABEL" desc="">
+        Search ads
+      </message>
+      <message name="IDS_BRAVE_REWARDS_SEARCH_AD_INFO" desc="">
+        Brave Search Ads appear on <ph name="BEGIN_LINK">$1</ph>Brave Search<ph name="END_LINK">$2</ph>.
+      </message>
+      <message name="IDS_BRAVE_REWARDS_SEARCH_AD_CONNECTED_INFO" desc="">
+        You cannot earn BAT from Brave Search Ads yet, but you help support Brave by having them on.
+      </message>
+      <message name="IDS_BRAVE_REWARDS_NEWS_AD_COUNT_LABEL" desc="">
+        Brave News ads
+      </message>
+      <message name="IDS_BRAVE_REWARDS_NEWS_AD_INFO" desc="">
+        Brave News contains ads that cannot be independently disabled.
+      </message>
+      <message name="IDS_BRAVE_REWARDS_NEWS_AD_INFO_DISABLED" desc="">
+        Brave News is currently disabled.
+      </message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TITLE" desc="">Auto-Contribute</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DESC" desc="">An automatic way to support sites and content creators. Set a monthly contribution and browse normally. <ph name="BEGIN_LINK">$1</ph>Verified sites and creators<ph name="END_LINK">$2</ph> you visit will receive contributions from you each month based on the amount of time you spend on their content.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CURRENT_EARNINGS" desc="">Earnings so far this month</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PAYMENT_DATE" desc="">Next earnings payout date</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_TOTAL_RECEIVED" desc="">Total ads received this month</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED_REGION" desc="">Sorry! Ads are not yet available in your region.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED_DEVICE" desc="">Brave Rewards and Ads are not available on your device at this time.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR" desc="">Notification ad frequency</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_0" desc="">None</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_1" desc="">Max 1 per hour</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_2" desc="">Max 2 per hour</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_3" desc="">Max 3 per hour</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_4" desc="">Max 4 per hour</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_5" desc="">Max 5 per hour</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_10" desc="">Max 10 per hour</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_TITLE" desc="">Regional ad relevance</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_DESCRIPTION" desc="">This allows Brave to show you ads meant specifically for your region.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_LEARN" desc="">Learn More</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_AUTO_DETECTED_AS" desc="">Auto-detected as <ph name="SUBDIVISION">$1</ph></message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_AUTO_DETECT" desc="">Auto-detect</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_DISABLE" desc="">Disable</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SUBDIVISION_TARGETING_DISABLED" desc="">Disabled</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_SERVER_DISCONNECT_FAILED" desc="">Sorry, there was an error when trying to disconnect your <ph name="PROVIDER">$1</ph> account. Please try again in a little while.</message>
+      <message name="IDS_BRAVE_UI_BAT_REWARDS_TEXT" desc="">BAT</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_MONTHLY" desc="">Monthly Payment</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_NEXT_DATE" desc="">Next contribution date</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_SITES" desc="">Sites viewed</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TITLE" desc="">Contributions</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DESC" desc="">See the on-demand contributions you've given to websites and creators.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DESC_LEARN_MORE" desc="">Learn more about contributions.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_TIPS_TITLE" desc="">Monthly Contributions</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_TIPS_DESC" desc="">Set up recurring monthly contributions so you can continually support your favorite creators.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_TIPS_EMPTY" desc="">No monthly contributions set up yet.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_NEXT_CONTRIBUTION" desc="">Next contribution</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_SOME" desc="">Sites will appear as you browse</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL_DONATIONS" desc="">Total contributions this month</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_VISIT_SOME" desc="">Have you contributed to your favorite content creator today?</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_MIN_TIME" desc="">Minimum page time before logging a visit</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_MIN_VISITS" desc="">Minimum visits for publisher relevancy</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_OTHER" desc="">Other settings</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_1" desc="">1 visit</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_5" desc="">5 visits</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_10" desc="">10 visits</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TIME_5" desc="">5 seconds</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TIME_8" desc="">8 seconds</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TIME_60" desc="">1 minute</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_UP_TO" desc="">Up to</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_CLICK" desc="">Clicked</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_DISMISS" desc="">Dismissed</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_LANDED" desc="">Clicked</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_VIEW" desc="">Viewed</message>
+
+      <message name="IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_CLOSE" desc="">Close</message>
+
+      <message name="IDS_BRAVE_REWARDS_LOCAL_TOS_AND_PP" desc="">By turning on <ph name="TITLE">$1<ex>Brave Private Ads</ex></ph>, you agree to the <ph name="BEGIN_LINK1">$2</ph>Terms of Service<ph name="END_LINK1">$3</ph> and <ph name="BEGIN_LINK2">$4</ph>Privacy Policy<ph name="END_LINK2">$5</ph>.</message>
+
+      <message name="IDS_BRAVE_REWARDS_CONTRIBUTION_PENDING_UNTIL" desc="A label on Pending Contributions modal showing the date until which the contribution will be pending">
+        Pending until <ph name="DATE">$1</ph>
+      </message>
+
+      <message name="IDS_REWARDS_BROWSER_CANNOT_RECEIVE_ADS" desc="">Oops! Your browser cannot receive Brave Private Ads.</message>
+      <message name="IDS_REWARDS_BROWSER_NEEDS_UPDATE_TO_SEE_ADS" desc="">Your browser needs to be updated to continue seeing ads.</message>
+
+      <!-- WebUI rewards internals resources -->
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_AD_DIAGNOSTIC_ID" desc="Ad diagnostic id">Diagnostic Id</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_AD_DIAGNOSTIC_INFO" desc="Ad diagnostic info">Diagnostic Info</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_ADS_NOT_INITIALIZED" desc="Ads not initialized">Ads not initialized, please refresh the page.</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_AMOUNT" desc="Amount">Amount:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_AUTO_REFRESH" desc="">Automatically refresh every 5 seconds</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_BALANCE_INFO" desc="">Balance info</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_BOOT_STAMP" desc="Wallet start time">Rewards profile created at:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CLEAR_BUTTON" desc="">Clear</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTED_AMOUNT" desc="Contributed Amount">Contributed amount:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTED_CREATED_AT" desc="">Created at:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION" desc="Contribution">Contribution</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_PROCESSOR" desc="Contribution processor">Processor:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP" desc="">Step:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_AUTO_CONTRIBUTE_TABLE_EMPTY" desc="">Auto Contribute table empty</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_NOT_ENOUGH_FUNDS" desc="">Not enough funds</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_FAILED" desc="">Failed</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_COMPLETED" desc="">Completed</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_NO" desc="">Unknown</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_START" desc="">Start</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_PREPARE" desc="">Prepare</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_RESERVE" desc="">Reserve</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_EXTERNAL_TRANSACTION" desc="">External transaction</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_CREDS" desc="">Creds</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_REWARDS_OFF" desc="">Rewards was turned off</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_AUTO_CONTRIBUTE_OFF" desc="">Auto-contribute was turned off</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_RETRY_COUNT" desc="">Stopped retrying</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_EXTERNAL_WALLET_TYPE" desc="The external wallet type">Account type:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_EXTERNAL_WALLET_ACCOUNT" desc="The external wallet account ID">Account:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_EVENT_LOG_KEY" desc="event log key">Key</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_EVENT_LOG_VALUE" desc="event log value">Value</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_EVENT_LOG_TIME" desc="when event was logged">Logged at</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_MAIN_DISCLAIMER" desc="">WARNING: Data on these pages may be sensitive. Be careful who you share them with.</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_LOG_DISCLAIMER" desc="">WARNING: This log file may contain sensitive data. Be careful who you share it with.</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_TYPE" desc="Contribution type">Type:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTIONS" desc="">Contributions</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_DOWNLOAD_BUTTON" desc="">Download full log</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_EXTERNAL_WALLET" desc="">Connected accounts info</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_INVALID" desc="Invalid indicator">Invalid</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_KEY_INFO_SEED" desc="Key info seed">Key info seed:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_LOG_NOTICE" desc="">We show the last [[numberOfLines]] lines of the log. If you want the whole log, you can download it above.</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_MAIN_TITLE" desc="">Rewards internals</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_NOT_SET" desc="Not set">Not set</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_PERSONA_ID" desc="Wallet persona ID">Persona ID</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_REFRESH_BUTTON" desc="Refresh button">Refresh</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_COUNT" desc="Retry count">Retry Count:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_COUNTRY" desc="Rewards	country">Rewards country:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_AUTO" desc="Auto Contribute">Auto Contribute</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_ONE_TIME_TIP" desc="On-demand tip">Contribution</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_RECURRING_TIP" desc="Recurring tip">Recurring contribution</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_AD_DIAGNOSTICS" desc="">Ad diagnostics</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_CONTRIBUTIONS" desc="">Contributions</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_EVENT_LOGS" desc="">Event logs</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_GENERAL_INFO" desc="">General info</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_LOGS" desc="">Logs</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_TOTAL_AMOUNT" desc="Total Amount">Total amount:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_TOTAL_BALANCE" desc="Total balance">Total balance</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_USER_ID" desc="Wallet user ID">User ID</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_VALID" desc="Valid indicator">Valid</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_ADDRESS" desc="">Account deposit address:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_HISTORY" desc="">Wallet History</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_INFO" desc="">Rewards info</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_NOT_CREATED" desc="">Rewards profile not yet created</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_PAYMENT_ID" desc="Rewards payment ID">Rewards payment ID:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS" desc="Wallet status">Rewards state:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_NOT_CONNECTED" desc="">Non-connected</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_CONNECTED" desc="">Connected</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_DISCONNECTED" desc="">Disconnected</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_CREATION_ENVIRONMENT" desc="">Creation environment:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_CURRENT_ENVIRONMENT" desc="">Current environment:</message>
+
+      <!-- WebUI brave ui resources -->
+      <message name="IDS_BRAVE_UI_ACTIVITY_COPY" desc=""> Brave Software. Brave is a registered trademark of Brave Software. Site names may be trademarks or registered trademarks of the site owner.</message>
+      <message name="IDS_BRAVE_UI_ACTIVITY_NOTE" desc="">To protect your privacy, this Brave Rewards statement is not saved, recorded or logged anywhere other than on your device (this computer). It cannot be retrieved from Brave in the event of data loss on your device.</message>
+      <message name="IDS_BRAVE_UI_ADS" desc="">Ads</message>
+      <message name="IDS_BRAVE_UI_ADS_ALL">All</message>
+      <message name="IDS_BRAVE_UI_ADS_CATEGORY">Category</message>
+      <message name="IDS_BRAVE_UI_ADS_CURRENTLY_VIEWING" desc="">Maximum ads received per hour: </message>
+      <message name="IDS_BRAVE_UI_ADS_HISTORY_NONE" desc="">No ads viewed in the last <ph name="TOTAL_DAYS">$1</ph> days.</message>
+      <message name="IDS_BRAVE_UI_ADS_HISTORY_SUBTITLE" desc="">Ads you've received in the past [[totalDays]] days</message>
+      <message name="IDS_BRAVE_UI_ADS_HISTORY_TITLE" desc="">Ads History</message>
+      <message name="IDS_BRAVE_UI_ADS_MARK_AS_INAPPROPRIATE" desc="">Mark As Inappropriate</message>
+      <message name="IDS_BRAVE_UI_ADS_MARK_AS_INAPPROPRIATE_CHECKED" desc="">Mark As Inappropriate ✓</message>
+      <message name="IDS_BRAVE_UI_ADS_NO_ADS_HISTORY" desc="">There is currently no Brave Ads history</message>
+      <message name="IDS_BRAVE_UI_ADS_OPT_OUT_TOOLTIP" desc="">You will no longer receive ads from this category</message>
+      <message name="IDS_BRAVE_UI_ADS_SAVED">Saved</message>
+      <message name="IDS_BRAVE_UI_ADS_SAVE_AD">Save</message>
+      <message name="IDS_BRAVE_UI_BAT_TEXT" desc="">BAT</message>
+      <message name="IDS_BRAVE_UI_AMOUNT" desc="">Amount</message>
+      <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_TITLE" desc="">Auto-Contribute</message>
+      <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_TRANSACTION" desc="">Auto-Contribute [[processor]]</message>
+      <message name="IDS_BRAVE_UI_BRAVE_REWARDS" desc="">Brave Rewards</message>
+      <message name="IDS_BRAVE_UI_BRAVE_REWARDS_TOOLBAR" desc="">Rewards</message>
+      <message name="IDS_BRAVE_UI_PRIVACY_POLICY" desc="">Privacy Policy</message>
+      <message name="IDS_BRAVE_UI_CANCEL" desc="">Cancel</message>
+      <message name="IDS_BRAVE_UI_CAPTCHA_DRAG" desc="">Drag the BAT Icon on to the</message>
+      <message name="IDS_BRAVE_UI_CAPTCHA_TARGET" desc="">target.</message>
+      <message name="IDS_BRAVE_UI_CLAIM" desc="">Claim</message>
+      <message name="IDS_BRAVE_UI_CONTRIBUTE" desc="">Contribute</message>
+      <message name="IDS_BRAVE_UI_DATE" desc="">Date</message>
+      <message name="IDS_BRAVE_UI_DEPOSITS" desc="">Deposits</message>
+      <message name="IDS_BRAVE_UI_DESCRIPTION" desc="">Description</message>
+      <message name="IDS_BRAVE_UI_DISABLED_PANEL_TITLE" desc="">Brave Rewards is</message>
+      <message name="IDS_BRAVE_UI_DONATION" desc="">Contribute</message>
+      <message name="IDS_BRAVE_UI_DONE" desc="">Done</message>
+      <message name="IDS_BRAVE_UI_EARNINGS_ADS" desc="">Earnings from Ads</message>
+      <message name="IDS_BRAVE_UI_EARNINGS_VIEW_DEPOSIT_HISTORY" desc="">View deposit history</message>
+      <message name="IDS_BRAVE_UI_EXCLUDE_SITE" desc="">Exclude this site</message>
+      <message name="IDS_BRAVE_UI_EXCLUDED_SITES" desc="">Total number of sites you excluded from Auto-Contribute:</message>
+      <message name="IDS_BRAVE_UI_IMPORT" desc="">import</message>
+      <message name="IDS_BRAVE_UI_LEARN_MORE" desc="">Learn More</message>
+      <message name="IDS_BRAVE_UI_MONTHLY_TIPS_BANG" desc="">Monthly Contributions!</message>
+      <message name="IDS_BRAVE_UI_MONTHLY_TIPS" desc="">Monthly Contributions</message>
+      <message name="IDS_BRAVE_UI_MONTHLY_TIP" desc="">Monthly Contribution</message>
+      <message name="IDS_BRAVE_UI_NO_ACTIVITY" desc="">No activities yet…</message>
+      <message name="IDS_BRAVE_UI_OFF" desc="">off</message>
+      <message name="IDS_BRAVE_UI_OK" desc="">ok</message>
+      <message name="IDS_BRAVE_UI_ON" desc="">on</message>
+      <message name="IDS_BRAVE_UI_ONE_TIME" desc="">Contribution</message>
+      <message name="IDS_BRAVE_UI_ONE_TIME_DONATION" desc="">Contributions</message>
+      <message name="IDS_BRAVE_UI_OPEN_ADS_HISTORY" desc="">30-day Ads History</message>
+      <message name="IDS_BRAVE_UI_PAYMENT" desc="">Payment</message>
+      <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_HEADER" desc="">Pinned sites are now</message>
+      <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_MSG" desc="">Here's how monthly contributions work:</message>
+      <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_ONE" desc="">Monthly contributions do not come out of your Auto-Contribute payment. They're separate.</message>
+      <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_TWO" desc="">Each site is paid a fixed amount monthly.</message>
+      <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_THREE" desc="">Monthly contributions are paid out all at once, each month. If you're using Auto-Contribute, contributions go out at the same time as your monthly Auto-Contribute payment.</message>
+      <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_FOUR" desc="">You can remove any site receiving monthly contributions from inside of the Contribution panel.</message>
+      <message name="IDS_BRAVE_UI_PLEASE_NOTE" desc="">Please note:</message>
+      <message name="IDS_BRAVE_UI_PRINT" desc="">Print</message>
+      <message name="IDS_BRAVE_UI_PROCESSOR_BRAVE_TOKENS" desc="">Rewards BAT</message>
+      <message name="IDS_BRAVE_UI_PROCESSOR_BITFLYER" desc="">bitFlyer</message>
+      <message name="IDS_BRAVE_UI_PROCESSOR_UPHOLD" desc="">Uphold</message>
+      <message name="IDS_BRAVE_UI_PROCESSOR_ZEBPAY" desc="">ZebPay</message>
+      <message name="IDS_BRAVE_UI_PROCESSOR_SOLANA" desc="">Solana</message>
+      <message name="IDS_BRAVE_UI_RECURRING" desc="">Recurring</message>
+      <message name="IDS_BRAVE_UI_RECURRING_DONATIONS" desc="">Monthly Contributions</message>
+      <message name="IDS_BRAVE_UI_RELAUNCH" desc="">Relaunch</message>
+      <message name="IDS_BRAVE_UI_REMOVE" desc="">remove</message>
+      <message name="IDS_BRAVE_UI_REMOVE_AD_FROM_SAVED" desc="">Remove From Saved</message>
+      <message name="IDS_BRAVE_UI_CLEAR_EXCLUDE_LIST" desc="">Clear exclude list</message>
+      <message name="IDS_BRAVE_UI_REVIEW_SITE_MSG" desc="">Your pinned sites have been moved to</message>
+      <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE" desc="">Auto-Contribute</message>
+      <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION" desc="">Attention</message>
+      <message name="IDS_BRAVE_UI_REWARDS_SUMMARY" desc="">Rewards Summary</message>
+      <message name="IDS_BRAVE_UI_SAVE" desc="">Save</message>
+      <message name="IDS_BRAVE_UI_SEE_ALL_ITEMS" desc="">See all [[numItems]] items</message>
+      <message name="IDS_BRAVE_UI_SEND_TIP" desc="">Send my Contribution</message>
+      <message name="IDS_BRAVE_UI_SETTINGS" desc="">Settings</message>
+      <message name="IDS_BRAVE_UI_SITE" desc="">site</message>
+      <message name="IDS_BRAVE_UI_TIP_ON_LIKE" desc="">Tip on like</message>
+      <message name="IDS_BRAVE_UI_TOKENS" desc="">tokens</message>
+      <message name="IDS_BRAVE_UI_TOKEN" desc="">Token</message>
+      <message name="IDS_BRAVE_UI_TOTAL" desc="">Total</message>
+      <message name="IDS_BRAVE_UI_TRANSACTIONS" desc="">Transactions</message>
+      <message name="IDS_BRAVE_UI_TYPE" desc="">Type</message>
+      <message name="IDS_BRAVE_UI_VERIFIED_PUBLISHER" desc="">Brave Verified Publisher</message>
+      <message name="IDS_BRAVE_UI_VIEW_MONTHLY" desc="">View Monthly Statement for Details</message>
+      <message name="IDS_BRAVE_UI_WALLET_ACTIVITY" desc="">Activity</message>
+      <message name="IDS_BRAVE_UI_WALLET_BALANCE" desc="">Rewards balance</message>
+      <message name="IDS_BRAVE_UI_YOUR_WALLET" desc="">Your Brave Rewards</message>
+      <message name="IDS_BRAVE_UI_VIEW_DETAILS" desc="">View Details</message>
+      <message name="IDS_BRAVE_UI_REWARDS_CREATING_TEXT" desc="">Creating your Brave Rewards profile</message>
+
+      <message name="IDS_BRAVE_UI_EXCLUDED_SITES_TEXT" desc="">Sites Excluded</message>
+      <message name="IDS_BRAVE_UI_REMOVE_FROM_EXCLUDED" desc="">Remove from excluded</message>
+      <message name="IDS_BRAVE_UI_REWARDS_EXCLUDED_TEXT_1" desc="">You've excluded</message>
+      <message name="IDS_BRAVE_UI_REWARDS_EXCLUDED_TEXT_2" desc="">sites from Auto-Contribute.</message>
+      <message name="IDS_BRAVE_UI_SHOW_ALL" desc="">Show All</message>
+      <message name="IDS_BRAVE_UI_VIEWED_SITES" desc="">Sites Viewed</message>
+
+      <message name="IDS_BRAVE_UI_PROMO_LEARN_MORE" desc="">Learn more</message>
+      <message name="IDS_BRAVE_UI_PROMO_DISMISS" desc="">Don't show again</message>
+
+      <message name="IDS_BRAVE_UI_BITFLYER_VERIFICATION_PROMO_TITLE" desc="">Connect to bitFlyer</message>
+      <message name="IDS_BRAVE_UI_BITFLYER_VERIFICATION_PROMO_INFO" desc="">Connecting Brave Rewards to a bitFlyer account will let you earn BAT and withdraw your BAT earnings from Brave Rewards.</message>
+
+      <message name="IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_TITLE" desc="">Become a Brave Creator!</message>
+      <message name="IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_INFO_1" desc="">Visit creators.brave.com to sign up today and start earning BAT from your fans and followers.</message>
+      <message name="IDS_BRAVE_UI_BRAVE_CREATORS_PROMO_INFO_2" desc="">Brave supports YouTube, Twitch, Vimeo and more!</message>
+
+      <message name="IDS_BRAVE_UI_TAP_NETWORK_TITLE" desc="">Redeem BAT for Gift Cards</message>
+      <message name="IDS_BRAVE_UI_TAP_NETWORK_INFO" desc="">With TAP Network, you can redeem your BAT for popular name-brand gift cards.</message>
+      <message name="IDS_BRAVE_UI_TAP_NETWORK_DISCLAIMER" desc="">* Requires Uphold account.</message>
+
+      <message name="IDS_BRAVE_UI_UPHOLD_PROMO_TITLE" desc="">Get 2% cryptoback with the Uphold card</message>
+      <message name="IDS_BRAVE_UI_UPHOLD_PROMO_INFO" desc="">Spend your crypto and other assets at nearly 50 million merchants and ATMs worldwide. Spend crypto to get crypto!</message>
+
+      <!-- Rewards New Tab Widget resources -->
+      <message name="IDS_EDIT_CARDS_TITLE" desc="">Edit Cards</message>
+      <message name="IDS_REWARDS_WIDGET_START_USING" desc="">Start using Brave Rewards</message>
+      <message name="IDS_BRAVE_TALK_WIDGET_TITLE" desc="">Talk</message>
+      <message name="IDS_BRAVE_TALK_WIDGET_WELCOME_TITLE" desc="">Start a private video call with your friends and colleagues.</message>
+      <message name="IDS_BRAVE_TALK_WIDGET_START_BUTTON" desc="">Start call</message>
+      <message name="IDS_BRAVE_TALK_WIDGET_ABOUT_DATA" desc="">About your data</message>
+
+      <!-- WebUI Brave Toolbar resources -->
+      <message name="IDS_WALLETS_TITLE" desc="The toolbar title for the brave://wallets page">Wallet</message>
+      <!-- WebUI Crypto Wallets resources -->
+      <message name="IDS_BRAVE_WALLET_WELCOME" desc="">Welcome to Brave Crypto Wallets</message>
+      <message name="IDS_BRAVE_WALLET_DISCLOSURE_ONE" desc="">Crypto Wallets lets you work with cryptocurrency and related assets in Brave. Crypto Wallets supports Ethereum tokens like ETH and BAT, as well as collectibles, and lets you work with Ðapps and other smart contracts. All this is meant for people who are familiar with Ethereum and other blockchain systems — or are excited to learn.</message>
+      <message name="IDS_BRAVE_WALLET_DISCLOSURE_TWO" desc="">Only use Crypto Wallets if you accept that you alone are responsible for all risk associated with this use, and that Brave Software bears no responsibility or liability for any losses including incidental or consequential losses you might suffer as a result of this use.</message>
+      <message name="IDS_BRAVE_WALLET_DISCLOSURE_THREE" desc="">All of this is completely separate from</message>
+      <message name="IDS_BRAVE_WALLET_DISCLOSURE_FOUR" desc="">So if you were looking to support your favorite sites, head over there instead.</message>
+      <message name="IDS_BRAVE_WALLET_BRAVE_REWARDS" desc="">Brave Rewards</message>
+      <message name="IDS_BRAVE_WALLET_DOWNLOADING" desc="">Downloading Component...</message>
+      <message name="IDS_BRAVE_WALLET_DISCLOSURE_CONFIRM" desc="">I understand</message>
+
+      <message name="IDS_TEST_STRING_FOR_PLACEHOLDERS" desc="Only for test purpose. Don't need to translate">
+        Test string for <ph name="PART_ONE">$1</ph>place holders<ph name="PART_ONE_END">$2</ph>. <ph name="PART_TWO">$3</ph>Learn more<ph name="PART_TWO_END">$4</ph>
+      </message>
+
+       <!-- Policy UI -->
+      <message name="IDS_POLICY_SOURCE_BRAVE" desc="Indicates that a policy is set by Brave" translateable="false">
+        Brave
+      </message>
+
+      <if expr="not is_ios">
+        <part file="decentralized_dns_strings.grdp" />
+      </if>
+      <part file="domain_block_strings.grdp" />
+      <part file="request_otr_strings.grdp" />
+      <part file="permissions_strings.grdp" />
+      <part file="google_sign_in_permission_strings.grdp" />
+      <part file="ads_strings.grdp" />
+      <part file="rewards_strings.grdp" />
+      <part file="wallet_strings.grdp" />
+      <part file="tor_strings.grdp" />
+      <part file="brave_news_strings.grdp" />
+      <part file="commands.grdp" />
+      <part file="speedreader_strings.grdp" />
+      <part file="ai_chat_prompts.grdp" />
+      <part file="ai_chat_ui_strings.grdp" />
+      <if expr="enable_brave_ai_chat_agent_profile">
+        <part file="ai_chat_agent_ntp_strings.grdp" />
+      </if>
+      <if expr="enable_email_aliases">
+        <part file="email_aliases_strings.grdp" />
+      </if>
+      <if expr="not is_android">
+        <part file="brave_new_tab_page_strings.grdp" />
+        <part file="brave_shields_strings.grdp" />
+        <part file="brave_welcome_strings.grdp" />
+        <part file="brave_welcome_page_strings.grdp" />
+        <part file="customize_chrome_ui_strings.grdp" />
+        <part file="customize_toolbar_ui_strings.grdp" />
+      </if>
+      <if expr="enable_brave_vpn">
+        <part file="brave_vpn_strings.grdp" />
+      </if>
+      <part file="omnibox_strings.grdp" />
+      <part file="playlist_strings.grdp" />
+      <if expr="enable_containers">
+        <part file="containers_strings.grdp" />
+      </if>
+      <part file="brave_origin_startup_strings.grdp" />
+      <part file="../brave_account/resources/brave_account_strings.grdp" />
+      <if expr="enable_psst">
+        <part file="psst_ui_strings.grdp" />
+      </if>
+
+      <!-- History semantic search disclaimer shown in the omnibox @history
+           scope. Upstream's text implies a round-trip to the vendor with
+           human review; Brave's implementation runs entirely on-device
+           (see brave/browser/history_embeddings/README.md), so we ship our
+           own string and swap the IDS in the chromium_src override for
+           components/omnibox/browser/featured_search_provider.cc. -->
+      <message name="IDS_BRAVE_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH" desc="Disclaimer shown as the last row in the omnibox @history scope, indicating that history semantic search runs entirely on-device.">
+        Your searches and page contents are processed on this device. Nothing is sent to Brave or seen by human reviewers. This is an experimental feature and won't always get it right.
+      </message>
+      <message name="IDS_BRAVE_EMPTY_STRING" desc="Empty string. Swapped into upstream IDSes whose value we want to suppress without patching the call site." translateable="false">
+      </message>
+    </messages>
+  </release>
+</grit>

@@ -1,0 +1,69 @@
+/* A message shown when a user tries to access their passwords and are presented with a Touch ID or passcode prompt. */
+"CredentialProvider.authenticationReason" = "Potvrdite autentičnost za pristupanje svojim lozinkama";
+
+/* A title for a button shown to a user to authenticate themselves to display their passwords */
+"CredentialProvider.authenticationUnlockButtonTitle" = "Otključaj";
+
+/* A button that cancels the autofill request and dismisses the screen */
+"CredentialProvider.cancelButtonTitle" = "Otkaži";
+
+/* A title for a button that when tapped copies the content highlighted into the users clipboard */
+"CredentialProvider.copyMenuItemTitle" = "Kopiraj";
+
+/* The title shown at the top of a list of credentials. 'Brave' in this case is the company name */
+"CredentialProvider.credentialListTitle" = "Zaporke preglednika Brave";
+
+/* The password field in the details form. Shows the password (if revealed) or a mask of the users password for the website next to it */
+"CredentialProvider.detailsFormPasswordField" = "Lozinka";
+
+/* The URL field in the details form. Shows a website URL next to it */
+"CredentialProvider.detailsFormURLField" = "URL";
+
+/* The username field in the details form. Shows the username for the website next to it */
+"CredentialProvider.detailsFormUsernameField" = "Korisničko ime";
+
+/* Some text shown when there are no suggested logins for the website the user is trying to autofill on */
+"CredentialProvider.emptySuggestions" = "Nema prijedloga";
+
+/* A title for a button that when tapped hides a password that was previously revealed */
+"CredentialProvider.hidePasswordMenuItemTitle" = "Sakrij lozinku";
+
+/* A header label shown above a list of logins (username/password combinations) for a particular website. '%@' is replaced by a website host for example: 'Logins for apple.com' */
+"CredentialProvider.loginsForWebsite" = "Prijave za %@";
+
+/* The title on a button that dismisses the onboarding view */
+"CredentialProvider.onboardingViewContinueCTA" = "Nastavite";
+
+/* A footnote shown on a screen shown when the user turns on Brave as a password autofill provider. 'iCloud Keychain' is an Apple product. */
+"CredentialProvider.onboardingViewFootnote" = "Za brže pristupanje lozinkama poništite odabir za iCloud Keychain";
+
+/* The subtitle on a screen shown when the user turns on Brave as a password autofill provider */
+"CredentialProvider.onboardingViewSubtitle" = "Možete upotrijebiti spremljene lozinke u drugim aplikacijama na svom uređaju";
+
+/* The title on a screen shown when the user turns on Brave as a password autofill provider */
+"CredentialProvider.onboardingViewTitle" = "Uključeno je automatsko popunjavanje";
+
+/* A header label shown above a list of website logins (username/password combinations) */
+"CredentialProvider.otherLogins" = "Druge prijave";
+
+/* A title for a button that when tapped reveals a users password that is currently masked */
+"CredentialProvider.revealPasswordMenuItemTitle" = "Otkrij lozinku";
+
+/* The placeholder/prompt that is shown in the search bar */
+"CredentialProvider.searchBarPrompt" = "Pretražite prijave";
+
+/* A label shown when the users search has no results */
+"CredentialProvider.searchEmptyResults" = "Nema rezultata za „%@”";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"CredentialProvider.setPasscodeAlertMessage" = "Kako biste pristupili lozinkama, prvo morate postaviti šifru na svom uređaju.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"CredentialProvider.setPasscodeAlertTitle" = "Postavljanje šifre";
+
+/* A title for a button shown as a confirmation action on a login's detail screen. Tapping it uses the password when autofilling into the website */
+"CredentialProvider.useButtonTitle" = "Upotrijebi";
+
+/* An accessibility label read out when a user activates VoiceOver on a button that when taps drills down into a credentials details */
+"CredentialProvider.viewCredentialDetails" = "Pregledaj pojedinosti";
+

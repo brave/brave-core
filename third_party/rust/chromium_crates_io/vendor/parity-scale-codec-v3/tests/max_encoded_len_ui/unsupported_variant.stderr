@@ -1,0 +1,16 @@
+error[E0277]: the trait bound `NotMel: MaxEncodedLen` is not satisfied
+ --> tests/max_encoded_len_ui/unsupported_variant.rs:8:9
+  |
+8 |     NotMel(NotMel),
+  |            ^^^^^^ the trait `MaxEncodedLen` is not implemented for `NotMel`
+  |
+  = help: the following other types implement trait `MaxEncodedLen`:
+            ()
+            (TupleElement0, TupleElement1)
+            (TupleElement0, TupleElement1, TupleElement2)
+            (TupleElement0, TupleElement1, TupleElement2, TupleElement3)
+            (TupleElement0, TupleElement1, TupleElement2, TupleElement3, TupleElement4)
+            (TupleElement0, TupleElement1, TupleElement2, TupleElement3, TupleElement4, TupleElement5)
+            (TupleElement0, TupleElement1, TupleElement2, TupleElement3, TupleElement4, TupleElement5, TupleElement6)
+            (TupleElement0, TupleElement1, TupleElement2, TupleElement3, TupleElement4, TupleElement5, TupleElement6, TupleElement7)
+          and $N others

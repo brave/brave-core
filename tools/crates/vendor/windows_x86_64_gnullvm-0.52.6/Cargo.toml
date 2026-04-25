@@ -1,0 +1,3 @@
+[package]
+name = "windows_x86_64_gnullvm"
+version = "0.52.6"

@@ -1,0 +1,20 @@
+{
+  "version": "1.0.0",
+  "name": "Brave",
+  "manifest_version": 3,
+  "description": "API test for google oauth",
+  "web_accessible_resources": [
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "oauth2": {
+    // client_id below is specific to the application key. Follow the
+    // documentation to obtain one for your app.
+    "client_id": "497291774654.apps.googleusercontent.com",
+    "scopes": ["https://www.googleapis.com/auth/userinfo.profile"]
+  },
+  "permissions": [ "identity" ],
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmwo2g/5m0YBi1jqZ368J428UijIezEYaoJqZYshkqUdBz7Cqh0ZMAC/abalRKNzaP72gXiz2QTRa/QYGNNgXVoDZLEB3679MHZ0aiXbSZrL7al1StOTga0/lryZdr7TF1UtoLK2HssNiJtDSSjZFY6biDPm7+pIkMuHHcvPqBVzHl6qyfA7QAJQMVLq6RVPNQL7+Xaxu9htldzmOEz5v+G6tlrYZHb9jdPTTSV4bP/YtWqJL0j5tEPGIUMeVxDz4HA7KKafmlWkeSRJTbGJNjgFEyoUOOvdRemDSA2+ipAdVntZPjr59zleS7GZJ801mcpO69EsTC8KccANGZdBCfwIDAQAB"
+}

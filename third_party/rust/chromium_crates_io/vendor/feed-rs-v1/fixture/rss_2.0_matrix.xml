@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title><![CDATA[matrix.org]]></title>
+        <description><![CDATA[Blog for the Matrix project]]></description>
+        <link>https://matrix.org</link>
+        <generator>GatsbyJS</generator>
+        <lastBuildDate>Tue, 27 Sep 2022 07:57:22 GMT</lastBuildDate>
+        <item>
+            <title><![CDATA[This Week in Matrix 2022-09-23]]></title>
+            <description>
+                <![CDATA[Matrix Live Dept of Social Good 🙆 carla  says Carla Griggio, a researcher at the University of Aarhus , is conducting Human-Computer…]]></description>
+            <link>https://matrix.org/blog/2022/09/23/this-week-in-matrix-2022-09-23</link>
+            <guid isPermaLink="false">https://matrix.org/blog/2022/09/23/this-week-in-matrix-2022-09-23</guid>
+            <pubDate>Fri, 23 Sep 2022 00:00:00 GMT</pubDate>
+            <content:encoded/>
+        </item>
+    </channel>
+</rss>

@@ -1,0 +1,43 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/rust/rust_static_library.gni")
+
+rust_static_library("rust_lib") {
+  visibility = [ "//brave/components/skus/browser" ]
+  crate_name = "skus_cxx"
+  crate_root = "src/lib.rs"
+  allow_unsafe = true
+  sources = [
+    "src/errors.rs",
+    "src/httpclient.rs",
+    "src/lib.rs",
+    "src/storage.rs",
+  ]
+  cxx_bindings = [ "src/lib.rs" ]
+
+  public_deps = [ ":shim" ]
+
+  deps = [
+    "//brave/components/skus/browser/rs/lib:rust_lib",
+    "//brave/third_party/rust/async_trait/v0_1:lib",
+    "//brave/third_party/rust/futures/v0_3:lib",
+    "//brave/third_party/rust/serde_json/v1:lib",
+    "//brave/third_party/rust/tracing_log/v0_2:lib",
+    "//third_party/rust/log/v0_4:lib",
+  ]
+}
+
+source_set("shim") {
+  visibility = [ ":*" ]
+  sources = [ "src/shim.h" ]
+
+  public_deps = [
+    "//base",
+    "//build/rust:cxx_cppdeps",
+  ]
+
+  deps = [ "//brave/components/skus/common:mojom" ]
+}

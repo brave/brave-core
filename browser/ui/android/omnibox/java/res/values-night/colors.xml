@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2022 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="brave_search_promo_title_color">@android:color/white</color>
+    <color name="brave_search_promo_desc_color">#E2E3E7</color>
+    <color name="brave_search_promo_secondary_button_color">#ECEFF2</color>
+    <color name="brave_search_promo_bg_color">#2E3039</color>
+    <color name="brave_search_promo_bg_stroke_color">#00000000</color>
+</resources>

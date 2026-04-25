@@ -1,0 +1,84 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+import("//brave/components/containers/buildflags/buildflags.gni")
+import("//brave/components/email_aliases/buildflags/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//build/config/ui.gni")
+
+brave_ui_allow_circular_includes_from = []
+
+if (enable_ai_chat) {
+  brave_ui_allow_circular_includes_from +=
+      [ "//brave/browser/ui/webui/ai_chat" ]
+}
+
+# TODO(bbondy): Remove this circular dependency when
+# chrome/browser/ui/chrome_pages.h gets componentized.
+brave_ui_allow_circular_includes_from += [ "//brave/browser/ui/brave_origin" ]
+if (!is_android) {
+  brave_ui_allow_circular_includes_from += [
+    "//brave/browser/ui/browser_window/internal",
+    "//brave/browser/ui/tabs:tabs_public",
+    "//brave/browser/ui/webui/brave_education",
+    "//brave/browser/ui/webui/brave_new_tab_page_refresh",
+    "//brave/browser/ui/webui/side_panel/customize_chrome",
+    "//brave/browser/ui/tabs:tab_strip",
+  ]
+  if (enable_brave_news) {
+    brave_ui_allow_circular_includes_from +=
+        [ "//brave/browser/ui/webui/brave_news_internals" ]
+  }
+}
+if (is_android) {
+  brave_ui_allow_circular_includes_from +=
+      [ "//brave/browser/ui/webui/new_tab_takeover/android:new_tab_takeover" ]
+}
+if (toolkit_views) {
+  brave_ui_allow_circular_includes_from += [
+    "//brave/browser/ui/tabs:tab_menu",
+    "//brave/browser/ui/sidebar:sidebar_impl",
+    "//brave/browser/ui/split_view",
+    "//brave/browser/ui/views:layout_provider",
+    "//brave/browser/ui/views/frame",
+    "//brave/browser/ui/views/frame/split_view",
+    "//brave/browser/ui/views/frame/vertical_tabs",
+    "//brave/browser/ui/views/location_bar",
+    "//brave/browser/ui/views/page_info",
+  ]
+
+  if (enable_ai_chat) {
+    brave_ui_allow_circular_includes_from +=
+        [ "//brave/browser/ui/views/side_panel/ai_chat" ]
+  }
+
+  if (enable_containers) {
+    brave_ui_allow_circular_includes_from += [ "//brave/browser/ui/containers" ]
+  }
+
+  if (enable_speedreader) {
+    brave_ui_allow_circular_includes_from +=
+        [ "//brave/browser/ui/views/speedreader" ]
+  }
+}
+
+if (enable_brave_ads) {
+  brave_ui_allow_circular_includes_from +=
+      [ "//brave/browser/ui/webui/ads_internals" ]
+}
+
+if (enable_speedreader) {
+  brave_ui_allow_circular_includes_from += [ "//brave/browser/ui/speedreader" ]
+}
+
+if (enable_email_aliases) {
+  brave_ui_allow_circular_includes_from += [
+    "//brave/browser/ui/email_aliases",
+    "//brave/browser/ui/webui/email_aliases",
+  ]
+}

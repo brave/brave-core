@@ -1,0 +1,90 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//testing/libfuzzer/fuzzer_test.gni")
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "commander_service_browsertest.cc" ]
+
+  deps = [
+    "//base",
+    "//brave/components/commander/browser",
+    "//brave/components/resources:strings_grit",
+    "//chrome/browser/profiles",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui/location_bar",
+    "//chrome/test:test_support_ui",
+    "//components/omnibox/browser",
+    "//content/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}
+
+source_set("interactive_ui_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "commander_service_interactive_ui_tests.cc" ]
+
+  deps = [
+    "//base",
+    "//brave/components/commander/browser",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui/location_bar",
+    "//chrome/test:test_support_ui",
+    "//content/test:test_support",
+    "//ui/base/interaction:test_support",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "entity_match_unittest.cc",
+    "fuzzy_finder_unittest.cc",
+    "ranker_unittest.cc",
+  ]
+
+  deps = [
+    ":fuzzy_finder",
+    "//base",
+    "//brave/components/commander/browser",
+    "//chrome/browser/ui",
+    "//chrome/test:test_support",
+    "//components/prefs:test_support",
+    "//components/sync_preferences:test_support",
+    "//testing/gtest",
+  ]
+}
+
+source_set("fuzzy_finder") {
+  sources = [
+    "fuzzy_finder.cc",
+    "fuzzy_finder.h",
+  ]
+
+  configs += [ "//build/config/compiler:wexit_time_destructors" ]
+
+  deps = [
+    "//base",
+    "//base:i18n",
+    "//ui/gfx/range",
+  ]
+}
+
+fuzzer_test("fuzzy_finder_fuzzer") {
+  sources = [ "fuzzy_finder_fuzzer.cc" ]
+  deps = [
+    ":fuzzy_finder",
+    "//base",
+  ]
+}

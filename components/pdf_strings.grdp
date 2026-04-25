@@ -1,0 +1,460 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
+<grit-part>
+  <if expr="enable_pdf">
+    <message name="IDS_PDF_DOWNLOAD_ORIGINAL" desc="The label for the menu option to download the original, unedited PDF document (without user's changes).">
+      Without your changes
+    </message>
+    <message name="IDS_PDF_DOWNLOAD_EDITED" desc="The label for the menu option to download the edited PDF document (with user's changes).">
+      With your changes
+    </message>
+    <message name="IDS_PDF_PRESENT" desc="The label for the menu option to switch to Presentation mode.">
+      Present
+    </message>
+    <message name="IDS_PDF_NEED_PASSWORD" desc="A message asking the user for a password to open a PDF file.">
+      This document is password protected.  Please enter a password.
+    </message>
+    <message name="IDS_PDF_PASSWORD_DIALOG_TITLE" desc="Title of the dialog which asks the user for a password to open a PDF file.">
+      Password required
+    </message>
+    <message name="IDS_PDF_PASSWORD_SUBMIT" desc="Button label for the button to submit the PDF password form">
+      Submit
+    </message>
+    <message name="IDS_PDF_PASSWORD_INVALID" desc="Error message when an invalid password is entered">
+      Incorrect password
+    </message>
+    <message name="IDS_PDF_SIDEBAR_LABEL" desc="Label for the thumbnails and bookmarks sidebar menu button">
+      Toggle sidebar
+    </message>
+
+    <message name="IDS_PDF_PAGE_LOADING" desc="A message displayed on the PDF page while page is loading.">
+      Loading...
+    </message>
+    <message name="IDS_PDF_ERROR_DIALOG_TITLE" desc="Title of the dialog which shows a message indicating that there was an error while loading the PDF document.">
+      Error
+    </message>
+    <message name="IDS_PDF_PAGE_LOAD_FAILED" desc="A message displayed on the PDF control to indicate that the PDF document failed to load.">
+      Failed to load PDF document.
+    </message>
+    <message name="IDS_PDF_PAGE_RELOAD_BUTTON" desc="Button label for the button to reload a PDF which has failed to load">
+      Reload
+    </message>
+
+    <message name="IDS_PDF_BOOKMARKS" desc="Label for the bookmarks (table of contents) of a PDF document. Used as a heading for the bookmarks menu, and as a tooltip to open that menu">
+      Bookmarks
+    </message>
+    <message name="IDS_PDF_BOOKMARK_EXPAND_ICON_ARIA_LABEL" desc="aria-label describing the icon button that expands/collapses a bookmark entry that has children">
+      Section
+    </message>
+
+    <message name="IDS_PDF_PROPERTIES_DIALOG_TITLE" desc="Title of the dialog that displays the PDF document properties.">
+      Document properties
+    </message>
+    <message name="IDS_PDF_PROPERTIES_FILE_NAME" desc="Name of the property describing the file name of the PDF document.">
+      File name:
+    </message>
+    <message name="IDS_PDF_PROPERTIES_FILE_SIZE" desc="Name of the property describing the size of the PDF document.">
+      File size:
+    </message>
+    <message name="IDS_PDF_PROPERTIES_TITLE" desc="Name of the property describing the title of the PDF document.">
+      Title:
+    </message>
+    <message name="IDS_PDF_PROPERTIES_AUTHOR" desc="Name of the property describing the author of the PDF document.">
+      Author:
+    </message>
+    <message name="IDS_PDF_PROPERTIES_SUBJECT" desc="Name of the property describing the subject of the PDF document.">
+      Subject:
+    </message>
+    <message name="IDS_PDF_PROPERTIES_KEYWORDS" desc="Name of the property describing the keywords associated with the PDF document.">
+      Keywords:
+    </message>
+    <message name="IDS_PDF_PROPERTIES_CREATED" desc="Name of the property describing the date and time when the PDF document was created.">
+      Created:
+    </message>
+    <message name="IDS_PDF_PROPERTIES_MODIFIED" desc="Name of the property describing the date and time when the PDF document was most recently modified.">
+      Modified:
+    </message>
+    <message name="IDS_PDF_PROPERTIES_APPLICATION" desc="Name of the property describing the application that created the original document from which the PDF document was made.">
+      Application:
+    </message>
+    <message name="IDS_PDF_PROPERTIES_PDF_PRODUCER" desc="Name of the property describing the name of the application that converted the original document to a PDF document.">
+      PDF producer:
+    </message>
+    <message name="IDS_PDF_PROPERTIES_PDF_VERSION" desc="Name of the property describing the version of the PDF document.">
+      PDF version:
+    </message>
+    <message name="IDS_PDF_PROPERTIES_PAGE_COUNT" desc="Name of the property describing the number of pages in the PDF document.">
+      Page count:
+    </message>
+    <message name="IDS_PDF_PROPERTIES_PAGE_SIZE" desc="Name of the property describing the size of the pages of the PDF document.">
+      Page size:
+    </message>
+    <message name="IDS_PDF_PROPERTIES_PAGE_SIZE_VALUE_INCH" desc="Value for the page size of a PDF in inches.">
+      <ph name="WIDTH">$1<ex>8.5</ex></ph> × <ph name="HEIGHT">$2<ex>11.00</ex></ph> in (<ph name="ORIENTATION">$3<ex>portrait</ex></ph>)
+    </message>
+    <message name="IDS_PDF_PROPERTIES_PAGE_SIZE_VALUE_MM" desc="Value for the page size of a PDF in millimeters.">
+      <ph name="WIDTH">$1<ex>210</ex></ph> × <ph name="HEIGHT">$2<ex>297</ex></ph> mm (<ph name="ORIENTATION">$3<ex>portrait</ex></ph>)
+    </message>
+    <message name="IDS_PDF_PROPERTIES_PAGE_SIZE_PORTRAIT" desc="Label for a portrait page orientation.">
+      portrait
+    </message>
+    <message name="IDS_PDF_PROPERTIES_PAGE_SIZE_LANDSCAPE" desc="Label for a landscape page orientation.">
+      landscape
+    </message>
+    <message name="IDS_PDF_PROPERTIES_PAGE_SIZE_SQUARE" desc="Label for a square page that has neither portrait nor landscape orientation.">
+      square
+    </message>
+    <message name="IDS_PDF_PROPERTIES_PAGE_SIZE_VARIABLE" desc="Value for the page size of a PDF that lacks a uniform page size.">
+      Varies
+    </message>
+    <message name="IDS_PDF_PROPERTIES_FAST_WEB_VIEW" desc="Name of the property describing whether the PDF document is organized to be viewed efficiently in network environments.">
+      Fast web view:
+    </message>
+    <message name="IDS_PDF_PROPERTIES_FAST_WEB_VIEW_NO" desc="Label indicating that the PDF document is not organized to be viewed efficiently in network environments.">
+      No
+    </message>
+    <message name="IDS_PDF_PROPERTIES_FAST_WEB_VIEW_YES" desc="Label indicating that the PDF document is organized to be viewed efficiently in network environments.">
+      Yes
+    </message>
+
+    <message name="IDS_PDF_TOOLTIP_ROTATE_CCW" desc="Button tooltip for the button which rotates a PDF document counterclockwise">
+      Rotate counterclockwise
+    </message>
+    <message name="IDS_PDF_ROTATION_STATE_LABEL_0" desc="Label spoken by screen readers after rotating the PDF document, but is not visually rendered. Describes how many degrees the PDF document is rotated clockwise">
+      0 degrees
+    </message>
+    <message name="IDS_PDF_ROTATION_STATE_LABEL_90" desc="Label spoken by screen readers after rotating the PDF document, but is not visually rendered. Describes how many degrees the PDF document is rotated clockwise">
+      90 degrees
+    </message>
+    <message name="IDS_PDF_ROTATION_STATE_LABEL_180" desc="Label spoken by screen readers after rotating the PDF document, but is not visually rendered. Describes how many degrees the PDF document is rotated clockwise">
+      180 degrees
+    </message>
+    <message name="IDS_PDF_ROTATION_STATE_LABEL_270" desc="Label spoken by screen readers after rotating the PDF document, but is not visually rendered. Describes how many degrees the PDF document is rotated clockwise">
+      270 degrees
+    </message>
+    <message name="IDS_PDF_TOOLTIP_DOWNLOAD" desc="Button tooltip for the button to download a PDF document">
+      Download
+    </message>
+    <message name="IDS_PDF_TOOLTIP_PRINT" desc="Button tooltip for the button to print a PDF document">
+      Print
+    </message>
+    <message name="IDS_PDF_TOOLTIP_FIT_PAGE" desc="Button tooltip for the button which zooms a PDF so that a single page is visible on screen">
+      Fit to page
+    </message>
+    <message name="IDS_PDF_TOOLTIP_FIT_WIDTH" desc="Button tooltip for the button which zooms a PDF so that the width of a single page fills the window horizontally">
+      Fit to width
+    </message>
+    <message name="IDS_PDF_TWO_UP_VIEW_ENABLE" desc="Button text for the button which enables displaying two pages of a PDF on the screen horizontally">
+      Two page view
+    </message>
+    <message name="IDS_PDF_ANNOTATIONS_SHOW_TOGGLE" desc="Button text for toggling showing annotations on the PDF document">
+      Annotations
+    </message>
+    <message name="IDS_PDF_ZOOM_TEXT_INPUT_ARIA_LABEL" desc="aria-label describing the zoom level text input">
+      Zoom level
+    </message>
+    <message name="IDS_PDF_TOOLTIP_ZOOM_IN" desc="Button tooltip for the button which zooms in a PDF, so that the document appears larger">
+      Zoom in
+    </message>
+    <message name="IDS_PDF_TOOLTIP_ZOOM_OUT" desc="Button tooltip for the button which zooms out a PDF, so that the document appears smaller">
+      Zoom out
+    </message>
+    <message name="IDS_PDF_TOOLTIP_THUMBNAILS" desc="Button tooltip for the button which selects the PDF thumbnail view in the sidenav">
+      Thumbnails
+    </message>
+    <message name="IDS_PDF_TOOLTIP_DOCUMENT_OUTLINE" desc="Button tooltip for the button which selects the PDF document outline view in the sidenav">
+      Document outline
+    </message>
+    <message name="IDS_PDF_TOOLTIP_ATTACHMENTS" desc="Button tooltip for the button which selects the PDF document attachment view in the sidenav">
+      Attachments
+    </message>
+    <message name="IDS_PDF_TOOLTIP_DOWNLOAD_ATTACHMENT" desc="Button tooltip for the button which downloads the PDF attachment">
+      Download the attachment
+    </message>
+    <message name="IDS_PDF_LABEL_PAGE_NUMBER" desc="Label for the input field containing the current page number">
+      Page number
+    </message>
+    <message name="IDS_PDF_LOADING_TO_A11Y_TREE" is_accessibility_with_no_ui="true" desc="Notification to inform the user that PDF content is being loaded to an accessibility tree.">
+      Loading PDF
+    </message>
+    <message name="IDS_PDF_LOADED_TO_A11Y_TREE" is_accessibility_with_no_ui="true" desc="Notification to inform the user that PDF content has been loaded to an accessibility tree.">
+      Finished loading PDF
+    </message>
+    <message name="IDS_PDF_OVERSIZE_ATTACHMENT_WARNING" desc="Disclaimer for why download buttons are not available for oversize attachments">
+      Files over 100MB are not available for download
+    </message>
+    <message name="IDS_PDF_PAGE_INDEX" desc="Accessible label for each page, describing the page number">
+      {COUNT, plural,
+         =1 {Page 1}
+         other {Page {COUNT}}}
+    </message>
+    <message name="IDS_PDF_DOCUMENT_PAGE_COUNT" desc="Accessible name of PDF document. It gives information about the number of pages in the PDF file">
+      {COUNT, plural,
+      =1 {PDF document containing {COUNT} page}
+      other {PDF document containing {COUNT} pages}}
+    </message>
+    <message name="IDS_PDF_THUMBNAIL_PAGE_ARIA_LABEL" desc="aria-label describing a thumbnail by its corresponding PDF page number">
+      Thumbnail for page <ph name="THUMBNAIL_PAGE"><ex>1</ex>$1</ph>
+    </message>
+    <if expr="enable_pdf_ink2">
+      <message name="IDS_PDF_ANNOTATION_PEN" desc="Button tooltip for selecting a tool that draws like a 'Pen' on top of the PDF document">
+        Pen
+      </message>
+      <message name="IDS_PDF_ANNOTATION_HIGHLIGHTER" desc="Button tooltip for selecting a tool that draws like a 'Highlighter' on top of the PDF document">
+        Highlighter
+      </message>
+      <message name="IDS_PDF_ANNOTATION_ERASER" desc="Button tooltip for selecting a tool that erases strokes that were drawn on top of the PDF document">
+        Eraser
+      </message>
+      <message name="IDS_PDF_ANNOTATION_UNDO" desc="Button tooltip for undoing an annotation edit (drawing a stroke, erasing a stroke)">
+        Undo
+      </message>
+      <message name="IDS_PDF_ANNOTATION_REDO" desc="Button tooltip for redoing an annotation edit (drawing a stroke, erasing a stroke)">
+        Redo
+      </message>
+
+      <message name="IDS_PDF_ANNOTATION_COLOR_BLACK" desc="Button tooltip for selecting the Black color for drawing on top of the PDF document or for text color for adding text annotations to the document">
+        Black
+      </message>
+      <message name="IDS_PDF_ANNOTATION_COLOR_RED" desc="Button tooltip for selecting the Red color for drawing on top of the PDF document">
+        Red
+      </message>
+      <message name="IDS_PDF_ANNOTATION_COLOR_YELLOW" desc="Button tooltip for selecting the Yellow color for drawing on top of the PDF document">
+        Yellow
+      </message>
+      <message name="IDS_PDF_ANNOTATION_COLOR_GREEN" desc="Button tooltip for selecting the Green color for drawing on top of the PDF document">
+        Green
+      </message>
+      <message name="IDS_PDF_ANNOTATION_COLOR_WHITE" desc="Button tooltip for selecting the White color for drawing on top of the PDF document or for text color for adding text annotations to the document.">
+        White
+      </message>
+      <message name="IDS_PDF_ANNOTATION_COLOR_ORANGE" desc="Button tooltip for selecting the Orange color for drawing on top of the PDF document">
+        Orange
+      </message>
+      <message name="IDS_PDF_ANNOTATION_COLOR_BLUE" desc="Button tooltip for selecting the Blue color for drawing on top of the PDF document">
+        Blue
+      </message>
+      <message name="IDS_PDF_ANNOTATION_COLOR_LIGHT_GREY" desc="Button tooltip for selecting the Light Grey color for drawing on top of the PDF document or for text color for adding text annotations to the document">
+        Light Grey
+      </message>
+      <message name="IDS_PDF_ANNOTATION_COLOR_LIGHT_ORANGE" desc="Button tooltip for selecting the Light Orange color for drawing on top of the PDF document">
+        Light Orange
+      </message>
+      <message name="IDS_PDF_ANNOTATION_COLOR_LIGHT_GREEN" desc="Button tooltip for selecting the Light Green color for drawing on top of the PDF document">
+        Light Green
+      </message>
+      <message name="IDS_PDF_ANNOTATION_COLOR_LIGHT_BLUE" desc="Button tooltip for selecting the Light Blue color for drawing on top of the PDF document">
+        Light Blue
+      </message>
+      <message name="IDS_PDF_INK2_DRAW" desc="The button label for entering 'annotation mode' in the PDF viewer, which allows for drawing and erasing strokes.">
+        Draw
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_TOOL" desc="The accessible label for the control for selecting the annotation tool in the PDF viewer.">
+        Tool
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_SIZE" desc="The dropdown menu and section header text label for selecting brush sizes for drawing and erasing strokes in the PDF viewer.">
+        Size
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_COLOR" desc="The dropdown menu and section header text label for selecting brush colors for drawing strokes in the PDF viewer.">
+        Color
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_SIZE_EXTRA_THIN" desc="The button label for selecting the 'extra thin' brush size for drawing and erasing strokes in the PDF viewer.">
+        Extra thin
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_SIZE_THIN" desc="The button label for selecting the 'thin' brush size for drawing and erasing strokes in the PDF viewer.">
+        Thin
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_SIZE_MEDIUM" desc="The button label for selecting the 'medium' brush size for drawing and erasing strokes in the PDF viewer.">
+        Medium
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_SIZE_THICK" desc="The button label for selecting the 'thick' brush size for drawing and erasing strokes in the PDF viewer.">
+        Thick
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_SIZE_EXTRA_THICK" desc="The button label for selecting the 'extra thick' brush size for drawing and erasing strokes in the PDF viewer.">
+        Extra thick
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_COLOR_LIGHT_RED" desc="The button label for selecting the 'light red' brush color for drawing strokes in the PDF viewer.">
+        Light Red
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_COLOR_LIGHT_YELLOW" desc="The button label for selecting the 'light yellow' brush color for drawing strokes in the PDF viewer.">
+        Light Yellow
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_COLOR_DARK_GREY_1" desc="The button label for selecting the 'dark grey 1' color for drawing strokes or for adding annotation text in the PDF viewer.">
+        Dark Grey 1
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_COLOR_DARK_GREY_2" desc="The button label for selecting the 'dark grey 2' color for drawing strokes or for adding annotation text in the PDF viewer.">
+        Dark Grey 2
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_COLOR_RED_1" desc="The button label for selecting the 'red 1' color for drawing strokes or for adding annotation text in the PDF viewer.">
+        Red 1
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_COLOR_YELLOW_1" desc="The button label for selecting the 'yellow 1' color for drawing strokes or for adding annotation text in the PDF viewer.">
+        Yellow 1
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_COLOR_GREEN_1" desc="The button label for selecting the 'green 1' color for drawing strokes or for adding annotation text in the PDF viewer.">
+        Green 1
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_COLOR_CYAN_1" desc="The button label for selecting the 'cyan 1' color for adding annotation text in the PDF viewer.">
+        Cyan 1
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_COLOR_BLUE_1" desc="The button label for selecting the 'blue 1' color for drawing strokes or for adding annotation text in the PDF viewer.">
+        Blue 1
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_COLOR_TAN_1" desc="The button label for selecting the 'tan 1' brush color for drawing strokes in the PDF viewer.">
+        Tan 1
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_COLOR_RED_2" desc="The button label for selecting the 'red 2' color for drawing strokes or for adding annotation text in the PDF viewer.">
+        Red 2
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_COLOR_YELLOW_2" desc="The button label for selecting the 'yellow 2' color for drawing strokes or for adding annotation text in the PDF viewer.">
+        Yellow 2
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_COLOR_GREEN_2" desc="The button label for selecting the 'green 2' color for drawing strokes or for adding annotation text in the PDF viewer.">
+        Green 2
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_COLOR_CYAN_2" desc="The button label for selecting the 'cyan 2' color for adding annotation text in the PDF viewer.">
+        Cyan 2
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_COLOR_BLUE_2" desc="The button label for selecting the 'blue 2' color for drawing strokes or for adding annotation text in the PDF viewer.">
+        Blue 2
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_COLOR_TAN_2" desc="The button label for selecting the 'tan 2' brush color for drawing strokes in the PDF viewer.">
+        Tan 2
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_COLOR_RED_3" desc="The button label for selecting the 'red 3' color for drawing strokes or for adding annotation text in the PDF viewer.">
+        Red 3
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_COLOR_YELLOW_3" desc="The button label for selecting the 'yellow 3' color for drawing strokes or for adding annotation text in the PDF viewer.">
+        Yellow 3
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_COLOR_GREEN_3" desc="The button label for selecting the 'green 3' color for drawing strokes or for adding annotation text in the PDF viewer.">
+        Green 3
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_COLOR_CYAN_3" desc="The button label for selecting the 'cyan 3' color for adding annotation text in the PDF viewer.">
+        Cyan 3
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_COLOR_BLUE_3" desc="The button label for selecting the 'blue 3' color for drawing strokes or for adding annotation text in the PDF viewer.">
+        Blue 3
+      </message>
+      <message name="IDS_PDF_INK2_ANNOTATION_COLOR_TAN_3" desc="The button label for selecting the 'tan 3' brush color for drawing strokes in the PDF viewer.">
+        Tan 3
+      </message>
+      <message name="IDS_PDF_INK2_TEXT_ANNOTATION" desc="The button label for entering 'text annotation mode' in the PDF viewer, which allows for adding and editing text annotations.">
+        Add text
+      </message>
+      <message name="IDS_PDF_INK2_TEXT_FONT" desc="The dropdown menu and section header text label for selecting the font to be used in a text annotation in the PDF viewer.">
+        Font
+      </message>
+      <message name="IDS_PDF_INK2_TEXT_FONT_SANS_SERIF" desc="The dropdown menu option for using sans serif font in a text annotation in the PDF Viewer.">
+        Sans Serif
+      </message>
+      <message name="IDS_PDF_INK2_TEXT_FONT_SERIF" desc="The dropdown menu option for using serif font in a text annotation in the PDF Viewer.">
+        Serif
+      </message>
+      <message name="IDS_PDF_INK2_TEXT_FONT_MONOSPACE" desc="The dropdown menu option for using monospace font in a text annotation in the PDF Viewer.">
+        Monospace
+      </message>
+      <message name="IDS_PDF_INK2_TEXT_FONT_SIZE" desc="The accessible label for the dropdown menu for selecting font size for a text annotation in the PDF viewer.">
+        Font size
+      </message>
+      <message name="IDS_PDF_INK2_TEXT_STYLES" desc="The section header text for selecting font styles and alignment for a text annotation in the PDF viewer.">
+        Styles
+      </message>
+      <message name="IDS_PDF_INK2_TEXT_STYLE_BOLD" desc="The button label for the toggle button to apply bold font styling to a text annotation in the PDF viewer.">
+        Bold
+      </message>
+      <message name="IDS_PDF_INK2_TEXT_STYLE_ITALIC" desc="The button label for the toggle button to apply bold italic styling to a text annotation in the PDF viewer.">
+        Italic
+      </message>
+      <message name="IDS_PDF_INK2_TEXT_ALIGNMENT" desc="The accessibility label for the group of text alignment options for a text annotation in the PDF viewer. The user can pick one option from the group.">
+        Text alignment
+      </message>
+      <message name="IDS_PDF_INK2_TEXT_ALIGN_LEFT" desc="The button label for the button to align text on the left in a text annotation in the PDF viewer.">
+        Left
+      </message>
+      <message name="IDS_PDF_INK2_TEXT_ALIGN_CENTER" desc="The button label for the button to align text in the center in a text annotation in the PDF viewer.">
+        Center
+      </message>
+      <message name="IDS_PDF_INK2_TEXT_ALIGN_RIGHT" desc="The button label for the button to align text on the right in a text annotation in the PDF viewer.">
+        Right
+      </message>
+      <message name="IDS_PDF_INK2_TEXT_COLOR" desc="The section header and accessibility label for the group of options for selecting a text color for a text annotation in the PDF Viewer.">
+        Text color
+      </message>
+    </if>
+
+    <message name="IDS_AX_ROLE_DESCRIPTION_PDF_HIGHLIGHT" desc="Accessibility role description for PDF highlight">
+      Highlight
+    </message>
+    <message name="IDS_AX_ROLE_DESCRIPTION_PDF_POPUP_NOTE" desc="Accessibility role description for popup note annotation associated with a PDF highlight">
+      Note
+    </message>
+    <if expr="enable_pdf_save_to_drive">
+      <message name="IDS_PDF_TOOLTIP_SAVE_TO_DRIVE" desc="Button tooltip for saving a PDF document to Google Drive">
+        Save to Google Drive
+      </message>
+      <message name="IDS_SAVE_TO_DRIVE_DIALOG_CANCEL_UPLOAD_BUTTON_LABEL" desc="Label for the button that will cancel the upload.">
+        Cancel upload
+      </message>
+      <message name="IDS_SAVE_TO_DRIVE_DIALOG_CONNECTION_ERROR_MESSAGE" desc="A message telling the user that the upload failed due to a connection error.">
+        Check your internet connection
+      </message>
+      <message name="IDS_SAVE_TO_DRIVE_DIALOG_ERROR_TITLE" desc="Title of the dialog that appears when a file fails to upload to Google Drive due to a connection error.">
+        Upload unsuccessful
+      </message>
+      <message name="IDS_SAVE_TO_DRIVE_DIALOG_MANAGE_STORAGE_BUTTON_LABEL" desc="Label for the manage storage button in the Save to Drive dialog.">
+        Manage storage
+      </message>
+      <message name="IDS_SAVE_TO_DRIVE_DIALOG_OPEN_IN_DRIVE_BUTTON_LABEL" desc="Label for the open in Drive button in the Save to Drive dialog.">
+        Open in Drive
+      </message>
+      <message name="IDS_SAVE_TO_DRIVE_DIALOG_RETRY_BUTTON_LABEL" desc="Label for the retry button in the Save to Drive dialog.">
+        Retry
+      </message>
+      <message name="IDS_SAVE_TO_DRIVE_DIALOG_SESSION_TIMEOUT_ERROR_MESSAGE" desc="A message telling the user that the upload failed due to their Google Drive session timing out.">
+        Session timed out
+      </message>
+      <message name="IDS_SAVE_TO_DRIVE_DIALOG_STORAGE_FULL_ERROR_MESSAGE" desc="A message telling the user that the upload failed due to their Google Drive storage being full.">
+        Your Google Drive storage is full
+      </message>
+      <message name="IDS_SAVE_TO_DRIVE_DIALOG_SUCCESS_MESSAGE" desc="A message telling the user can find their newly uploaded file in the bolded folder name in Google Drive. 'Save from Brave' is a folder name example.">
+        Saved to your <ph name="FOLDER_NAME">&lt;b&gt;$1<ex>Save from Brave</ex>&lt;/b&gt;</ph> folder
+      </message>
+      <message name="IDS_SAVE_TO_DRIVE_DIALOG_SUCCESS_TITLE" desc="Title of the dialog that appears when a file is successfully uploaded to Google Drive.">
+        Upload successful
+      </message>
+      <message name="IDS_SAVE_TO_DRIVE_DIALOG_UNKNOWN_ERROR_MESSAGE" desc="A message telling the user that the upload failed due to an unknown error.">
+        Something unexpected happened. <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Learn more about Drive uploads<ph name="END_LINK">&lt;/a&gt; <ex>&lt;/a&gt;</ex> </ph>
+      </message>
+      <message name="IDS_SAVE_TO_DRIVE_DIALOG_UPLOAD_STATUS_DONE" desc="When a download is finished, let the user know.">
+        Done
+      </message>
+      <message name="IDS_SAVE_TO_DRIVE_DIALOG_UPLOAD_STATUS_WITH_SEPARATOR" desc="The upload status and message are separated by a symbol, in this case bullet •, with a white space before it and a white space after it. If the bullet • resembles another symbol in the language, please translate the bullet • as a symbol (A) that is not easily mistaken for a number or letter in the language and (B) that is typically used to separate elements.">
+        <ph name="STATUS">$1<ex>100/120 MB</ex></ph> • <ph name="MESSAGE">$2<ex>4 seconds left</ex></ph>
+      </message>
+      <message name="IDS_SAVE_TO_DRIVE_DIALOG_UPLOADING_TITLE" desc="Title of the dialog that appears when a file is being uploaded to Google Drive.">
+        Uploading to Google Drive...
+      </message>
+    </if>
+  </if>
+  <if expr="enable_screen_ai_service">
+    <message name="IDS_PDF_OCR_FEATURE_ALERT" is_accessibility_with_no_ui="true" desc="Notification of the PDF OCR feature when the user encounters an inaccessible PDF.">
+      This PDF is inaccessible. Couldn't download text extraction files. Please try again later.
+    </message>
+    <message name="IDS_PDF_OCR_IN_PROGRESS" is_accessibility_with_no_ui="true" desc="Notification to inform the user that OCR is in progress.">
+      This PDF is inaccessible. Extracting text, powered by Google AI
+    </message>
+    <message name="IDS_PDF_OCR_COMPLETED" is_accessibility_with_no_ui="true" desc="Notification to inform the user that OCR is completed.">
+      This PDF is inaccessible. Text extracted, powered by Google AI
+    </message>
+    <message name="IDS_PDF_OCR_NO_RESULT" is_accessibility_with_no_ui="true" desc="Notification to inform the user that no text was converted by OCR from images.">
+      This PDF is inaccessible. No text extracted
+    </message>
+    <message name="IDS_PDF_OCR_POSTAMBLE_PAGE" is_accessibility_with_no_ui="true" desc="Notification that appears on a page on its own and which is used to inform the user that OCR is still in progress.">
+      Extracting text in next few pages
+    </message>
+    <message name="IDS_PDF_SEARCHIFY_IN_PROGRESS" desc="Notification that extracting text from PDF is in progress.">
+      Extracting text from PDF...
+    </message>
+  </if>
+</grit-part>

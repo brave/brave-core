@@ -1,0 +1,20 @@
+namespace brave_ads.linear_text_classification.flat;
+
+table LowercaseTransformation {}
+
+table NormalizeTransformation {}
+
+table HashedNGramsTransformation {
+  ngrams_range: [uint32] (required);
+  num_buckets: uint32;
+}
+
+union TransformationType {
+  LowercaseTransformation,
+  NormalizeTransformation,
+  HashedNGramsTransformation
+}
+
+table Transformation {
+  transformation: TransformationType (required);
+}

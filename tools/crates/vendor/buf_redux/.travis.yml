@@ -1,0 +1,27 @@
+language: rust
+sudo: false
+os:
+  - linux
+  - osx
+rust:
+  - stable
+  - beta
+  - nightly
+matrix:
+  allow_failures:
+    - rust: nightly
+  fast_finish: true
+
+script:
+ - |
+   if [ ${TRAVIS_RUST_VERSION} = "nightly" ]; then
+       cargo build --verbose $ARGS --features "nightly";
+       cargo test --verbose --features "nightly";
+       cargo doc --verbose --features "nightly";
+   fi
+ - cargo build --verbose
+ - cargo test --verbose
+ - cargo doc --verbose
+ - cargo build --verbose --no-default-features
+ - cargo test --verbose --no-default-features
+ - cargo doc --verbose --no-default-features

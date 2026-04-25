@@ -1,0 +1,63 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/build/ios/mojom/mojom_wrappers.gni")
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+
+config("mojom_header_config") {
+  visibility = [
+    ":*",
+    "//brave/ios/app",
+  ]
+  include_dirs = [ "$target_gen_dir" ]
+}
+
+source_set("brave_wallet") {
+  configs += [ ":mojom_header_config" ]
+  sources = [
+    "brave_wallet_api+private.h",
+    "brave_wallet_api.h",
+    "brave_wallet_api.mm",
+    "brave_wallet_provider_delegate_ios+private.h",
+    "brave_wallet_provider_delegate_ios.h",
+    "brave_wallet_provider_delegate_ios.mm",
+    "brave_wallet_solana_utils.h",
+    "brave_wallet_solana_utils.mm",
+    "token_registry_utils.h",
+    "token_registry_utils.mm",
+  ]
+  deps = [
+    ":wallet_mojom_wrappers",
+    "//base",
+    "//brave/base/apple",
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/browser:constants",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
+    "//brave/components/resources:static_resources_grit",
+    "//brave/ios/browser/api/url",
+    "//brave/ios/browser/brave_wallet",
+    "//ios/chrome/browser/content_settings/model",
+    "//ios/chrome/browser/shared/model/paths",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/web/public/thread",
+    "//net",
+    "//ui/base",
+  ]
+}
+
+ios_objc_mojom_wrappers("wallet_mojom_wrappers") {
+  mojom_target = "//brave/components/brave_wallet/common:mojom"
+  sources = [
+    "//brave/components/brave_wallet/common/brave_wallet.mojom",
+    "//brave/components/brave_wallet/common/meld_integration.mojom",
+  ]
+  generate_namespace = false
+  exclude_types = [
+    "PageHandlerFactory",
+    "PanelHandlerFactory",
+  ]
+}

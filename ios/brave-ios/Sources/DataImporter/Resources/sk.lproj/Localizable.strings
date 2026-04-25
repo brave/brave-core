@@ -1,0 +1,111 @@
+/* Error message shown when importing bookmarks failed */
+"failedToImportBookmarks" = "Pri importovaní záložiek došlo k chybe.";
+
+/* Error message shown when importing history failed */
+"failedToImportHistory" = "Pri importovaní histórie došlo k chybe.";
+
+/* Error message shown when importing passwords failed due to a password already existing (a conflict) */
+"failedToImportPasswordsDueToConflictError" = "Pri importovaní hesiel došlo k chybe.\nNiektoré heslá nebolo možné importovať z dôvodu konfliktov.";
+
+/* Error message shown when importing passwords failed */
+"failedToImportPasswordsError" = "Pri importovaní hesiel došlo k chybe.";
+
+/* Error message shown when unzipping a zip file failed */
+"failedToUnzipError" = "Pri rozbaľovaní súboru došlo k chybe.";
+
+/* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
+"importDataFileSelectorButtonTitle" = "Vybrať súbor...";
+
+/* The message of a Text on screen that explains to the user what type of data can be imported. */
+"importDataFileSelectorMessage" = "Preneste svoje záložky, históriu a ďalšie údaje do prehliadača Brave.";
+
+/* The title of the main screen that lets the user import data. The title is shown in the navigation bar. */
+"importDataFileSelectorNavigationTitle" = "Import údajov prehliadača";
+
+/* The title of a Text on screen that explains to the user what type of data can be imported. */
+"importDataFileSelectorTitle" = "Import záložiek a ďalších";
+
+/* The title of the button on the file selector screen that lets the user view the tutorial screen on how to import data. */
+"importDataViewTutorialButtonTitle" = "Ako exportovať zo Safari";
+
+/* The message shown on the import data screen when importing the data from the browser profile failed. */
+"importStateFailureMessage" = "Pri importe vašich údajov sa niečo pokazilo.\nSkúste to prosím znova.\nAk problém pretrváva, kontaktujte podporu.";
+
+/* The title shown on the import data screen when importing the data from the browser profile failed. */
+"importStateFailureTitle" = "Import bol neúspešný";
+
+/* The title of the button on the import error screen when there is a conflict, that lets the user keep your existing Brave passwords. */
+"importStatePasswordConflictKeepExistingPasswordsTitle" = "Ponechať heslá z Brave";
+
+/* The title of the button on the import error screen when there is a conflict, that lets the user use the passwords that were imported, overwriting your existing passwords. */
+"importStatePasswordConflictKeepImportedPasswordsTitle" = "Použiť heslá zo Safari";
+
+/* The message shown on the import data screen when importing the data from has conflicting passwords (when two passwords exist for the same account, but are different, they are conflicting). %d is a placeholder for the number of conflicting passwords. */
+"importStatePasswordConflictMessage" = "%d Boli zistené konflikty hesiel.\nVyberte, čo chcete importovať.";
+
+/* The title shown on the import data screen when importing the data from has conflicting passwords (when two passwords exist for the same account, but are different, they are conflicting). */
+"importStatePasswordConflictTitle" = "Konflikty hesiel";
+
+/* The title of the button on the import success screen to let the user continue using the app as before. */
+"importStateSuccessContinueTitle" = "Pokračovať";
+
+/* The message shown on the import data screen when importing the data from the browser profile succeeded. */
+"importStateSuccessMessage" = "Vaše údaje boli úspešne importované.\nMôžete sa pustiť do prehliadania s Brave.";
+
+/* The title shown on the import data screen when importing the data from the browser profile succeeded. */
+"importStateSuccessTitle" = "Hotovo!";
+
+/* The title of the button on the import error screen that lets the user try to import the data again */
+"importStateTryAgainTitle" = "Skúsiť znova";
+
+/* The message on the tutorial page explaining the detailed process to export your data from other browsers. */
+"importTutorialDetailedProcessMessage" = "Otvoriť stránku s pomocníkom Safari";
+
+/* The title on the tutorial page explaining the detailed process to export your data from other browsers. */
+"importTutorialDetailedProcessTitle" = "Chcete podrobný postup exportu?";
+
+/* The title of the tutorial page that shows in the Navigation Bar. */
+"importTutorialScreenTitle" = "Ako exportovať zo Safari";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepFiveTitle" = "Uložte súbor do priečinka **Súbory** a vyberte si miesto, ktoré neskôr ľahko nájdete.";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepFourTitle" = "**Vyberte** údaje, ktoré chcete exportovať (Záložky, História, Kreditné karty, Heslá).";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepOneTitle" = "Otvorte **Nastavenia**, prejdite nadol a ťuknite na **Apky**.";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepThreeTitle" = "Prejdite nadol a ťuknite na *Exportovať**.";
+
+/* The title on each card indicating the tutorial step that has been completed. Step 1, Step 2, Step 3, etc... %d is a placeholder for the step number. */
+"importTutorialStepTitle" = "Krok %d";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepTwoTitle" = "V zozname aplikácií (zoradených podľa abecedy) vyhľadajte a ťuknite na **Safari**.";
+
+/* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
+"invalidZipFileDataError" = "Súbor zip neobsahuje importované údaje.";
+
+/* The message shown on the import data screen when the data is being loaded or imported. */
+"loadingMessage" = "Počkajte, prosím, kým bezpečne prenesieme vaše údaje.\nMôže to chvíľu trvať.";
+
+/* The title shown on the import data screen when the data is being loaded or imported. */
+"loadingTitle" = "Importovanie údajov...";
+
+/* The message shown on the import data screen when there are multiple profiles such as Personal, Work, School, etc. */
+"multipleProfilesMessage" = "Vyberte profil, z ktorého chcete importovať údaje";
+
+/* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
+"multipleProfilesTitle" = "Zistilo sa viacero profilov";
+
+/* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
+"personalImportTitle" = "Osobný";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "Importované záložky";
+
+/* An unknown error occurred during data importing. */
+"unknownError" = "Súbor zip neobsahuje importované údaje.";
+

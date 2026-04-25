@@ -1,0 +1,67 @@
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "components/translate/core/browser/translate_script.h"
+
+#include "base/functional/callback.h"
+#include "base/strings/strcat.h"
+#include "base/strings/to_string.h"
+#include "base/task/sequenced_task_runner.h"
+#include "brave/components/constants/brave_services_key.h"
+#include "brave/components/translate/core/common/brave_translate_constants.h"
+#include "brave/components/translate/core/common/brave_translate_features.h"
+#include "components/grit/brave_components_resources.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "ui/base/resource/resource_bundle.h"
+
+namespace translate::google_apis {
+std::string GetAPIKey() {
+  return BUILDFLAG(BRAVE_SERVICES_KEY);
+}
+}  // namespace translate::google_apis
+
+#define TranslateScript ChromiumTranslateScript
+#include <components/translate/core/browser/translate_script.cc>
+#undef TranslateScript
+
+namespace translate {
+
+// Redirect the translate script request to the Brave endpoints.
+GURL ChromiumTranslateScript::AddHostLocaleToUrl(const GURL& url) {
+  GURL result = ::translate::AddHostLocaleToUrl(url);
+  const GURL google_translate_script(kScriptURL);
+  if (result.host() == google_translate_script.host()) {
+    const GURL brave_translate_script(kBraveTranslateScriptURL);
+    GURL::Replacements replaces;
+    replaces.SetHostStr(brave_translate_script.host());
+    replaces.SetPathStr(brave_translate_script.path());
+    return result.ReplaceComponents(replaces);
+  }
+  return result;
+}
+
+void TranslateScript::Request(RequestCallback callback, bool is_incognito) {
+  if (!IsBraveTranslateGoAvailable()) {
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(std::move(callback), false));
+    return;
+  }
+  ChromiumTranslateScript::Request(std::move(callback), is_incognito);
+}
+
+void TranslateScript::OnScriptFetchComplete(bool success,
+                                            const std::string& data) {
+  const std::string new_data = base::StrCat(
+      {absl::StrFormat("const useGoogleTranslateEndpoint = %s;",
+                       base::ToString(translate::UseGoogleTranslateEndpoint())),
+       absl::StrFormat("const braveTranslateStaticPath = '%s';",
+                       kBraveTranslateStaticPath),
+       ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
+           IDR_BRAVE_TRANSLATE_JS),
+       data});
+  ChromiumTranslateScript::OnScriptFetchComplete(success, new_data);
+}
+
+}  // namespace translate

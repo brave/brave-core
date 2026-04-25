@@ -1,0 +1,986 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <message name="IDS_UTILITY_PROCESS_REWARDS_NAME" desc="The utility process running rewards">
+    Bat Rewards Service
+  </message>
+
+  <!-- Rewards Reset -->
+  <message name="IDS_BRAVE_UI_RESET" desc="">
+    Reset
+  </message>
+  <message name="IDS_BRAVE_UI_RESET_WALLET" desc="">
+    Reset Brave Rewards
+  </message>
+  <message name="IDS_BRAVE_UI_REWARDS_RESET_TEXT" desc="">
+    By resetting, your current Brave Rewards profile will be deleted, and Brave Rewards will no longer be enabled. If you enable Brave Rewards again later, you will start with a new profile. Read our <ph name="LINK_BEGIN">$1</ph>support article about resetting<ph name="LINK_END">/$1</ph> for more details.
+  </message>
+  <message name="IDS_BRAVE_UI_REWARDS_RESET_CONSENT" desc="">
+    I understand that my current Brave Rewards profile and Brave Rewards data will be deleted from my device, and I've read the <ph name="LINK_BEGIN">$1</ph>support article about resetting<ph name="LINK_END">/$1</ph>.
+  </message>
+  <message name="IDS_REWARDS_RESET_REWARDS_BUTTON_LABEL" desc="">
+    Disable and reset Rewards
+  </message>
+
+  <!-- Reset External Wallet -->
+  <message name="IDS_REWARDS_RESET_EXTERNAL_WALLET_BUTTON_LABEL" desc="">
+    Reset now
+  </message>
+  <message name="IDS_REWARDS_RESET_EXTERNAL_WALLET_NOTE" desc="">
+    Don't worry: Any BAT already in your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account won't be affected by resetting.
+  </message>
+  <message name="IDS_REWARDS_RESET_EXTERNAL_WALLET_TEXT" desc="" formatter_data="webui=BraveRewards">
+    You will not earn for ads while connected to <ph name="PROVIDER">$1<ex>Uphold</ex></ph>. Reset Brave Rewards and connect a different payout account to keep earning. <ph name="LINK_BEGIN">$2</ph>Learn more<ph name="LINK_END">/$2</ph>
+  </message>
+  <message name="IDS_REWARDS_RESET_EXTERNAL_WALLET_TITLE" desc="" formatter_data="webui=BraveRewards">
+    <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account no longer supported.
+  </message>
+
+  <!-- Switch Account -->
+  <message name="IDS_REWARDS_SWITCH_ACCOUNT_COUNTRY_SELECT_LABEL" desc="">
+    Confirm your region
+  </message>
+  <message name="IDS_REWARDS_SWITCH_ACCOUNT_TEXT_1" desc="">
+    Any BAT already in your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account will stay there.
+  </message>
+  <message name="IDS_REWARDS_SWITCH_ACCOUNT_TEXT_2" desc="">
+    Your 30-day Ads History and other Brave Rewards settings will reset.
+  </message>
+  <message name="IDS_REWARDS_SWITCH_ACCOUNT_TEXT_3" desc="">
+    You can choose a different payout account after this step.
+  </message>
+  <message name="IDS_REWARDS_SWITCH_ACCOUNT_TITLE" desc="">
+    Your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account will be disconnected, and your Brave Rewards profile will be reset.
+  </message>
+
+  <!-- Payout status banner -->
+  <message name="IDS_REWARDS_PAYMENT_CHECK_STATUS" desc="">
+    Check status
+  </message>
+  <message name="IDS_REWARDS_PAYMENT_COMPLETED" desc="" formatter_data="webui=BraveRewards">
+    The payout for <ph name="MONTH">$1<ex>October</ex></ph> rewards has completed.
+  </message>
+  <message name="IDS_REWARDS_PAYMENT_PENDING" desc="">
+    The payout for <ph name="MONTH">$1<ex>October</ex></ph> rewards will begin processing by <ph name="DATE">$2<ex>October 5</ex></ph>.
+  </message>
+  <message name="IDS_REWARDS_PAYMENT_PROCESSING" desc="" formatter_data="webui=BraveRewards">
+    The payout for <ph name="MONTH">$1<ex>October</ex></ph> rewards is in progress.
+  </message>
+  <message name="IDS_REWARDS_PAYMENT_SUPPORT" desc="">
+    Support
+  </message>
+
+  <!-- Rewards "card-and-summary" -->
+  <message name="IDS_REWARDS_LOG_IN_TO_SEE_BALANCE" desc="">
+    <ph name="BEGIN_BOLD">$1</ph>Log in to <ph name="PROVIDER">$2<ex>Uphold</ex></ph><ph name="END_BOLD">/$1</ph> to see your balance
+  </message>
+  <message name="IDS_REWARDS_WALLET_ACCOUNT_LINK" desc="">
+    Go to my <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account
+  </message>
+  <message name="IDS_REWARDS_WALLET_AUTO_CONTRIBUTE" desc="">
+    Auto-Contribute
+  </message>
+  <message name="IDS_REWARDS_WALLET_DISCONNECTED" desc="">
+    Logged out
+  </message>
+  <message name="IDS_REWARDS_WALLET_LOG_INTO_YOUR_ACCOUNT" desc="">
+    Log in to your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account
+  </message>
+  <message name="IDS_REWARDS_WALLET_MANAGE_ADS" desc="">
+    Manage ads
+  </message>
+  <message name="IDS_REWARDS_WALLET_MONTHLY_TIPS" desc="">
+    Monthly Contributions
+  </message>
+  <message name="IDS_REWARDS_WALLET_ONE_TIME_TIPS" desc="">
+    Contributions
+  </message>
+  <message name="IDS_REWARDS_WALLET_REWARDS_FROM_ADS" desc="">
+    Rewards from Ads
+  </message>
+  <message name="IDS_REWARDS_WALLET_REWARDS_SUMMARY" desc="">
+    Rewards Summary
+  </message>
+  <message name="IDS_REWARDS_WALLET_UNVERIFIED" desc="">
+    Connect
+  </message>
+  <message name="IDS_REWARDS_WALLET_VIEW_STATEMENT" desc="">
+    View statement
+  </message>
+  <message name="IDS_REWARDS_WALLET_VERIFIED" desc="">
+    Connected
+  </message>
+  <message name="IDS_REWARDS_WALLET_BALANCE_TITLE" desc="">
+    Balance
+  </message>
+
+  <!-- Rewards "limited" view -->
+  <message name="IDS_REWARDS_CONNECT_ACCOUNT" desc="">
+    Connect account
+  </message>
+  <message name="IDS_REWARDS_CONNECT_ACCOUNT_TEXT" desc="">
+    <ph name="BOLD_BEGIN">$1</ph>Ready to start earning?<ph name="BOLD_END">/$1</ph> Connect an account so we have a place to send your earnings.
+  </message>
+  <message name="IDS_REWARDS_CONNECT_CONTRIBUTE_HEADER" desc="">
+    Send contributions with Brave Rewards
+  </message>
+  <message name="IDS_REWARDS_CONNECT_CONTRIBUTE_TEXT" desc="">
+    You'll be able to send on-demand contributions to your favorite creators with your Brave Rewards balance once you have a custodial account connected.
+  </message>
+  <message name="IDS_REWARDS_PUBLISHER_COUNT_TEXT" desc="">
+    {PUBLISHER_COUNT, plural,
+      =1 {This month, you've visited # creator supported by Brave Rewards}
+      other {This month, you've visited # creators supported by Brave Rewards}
+    }
+  </message>
+  <message name="IDS_REWARDS_CONNECT_ACCOUNT_TEXT_2" desc="">
+    Ready to start earning?
+  </message>
+  <message name="IDS_REWARDS_CONNECT_ACCOUNT_SUBTEXT" desc="">
+    Connect a payout account
+  </message>
+  <message name="IDS_REWARDS_UNCONNECTED_ADS_VIEWED_TEXT" desc="">
+    {ADS_VIEWED, plural,
+      =0 {You've seen <ph name="COUNT_BEGIN">$1</ph> # Ads<ph name="COUNT_END">/$1</ph> this month}
+      =1 {You could be getting paid for the <ph name="COUNT_BEGIN">$1</ph> # Ad<ph name="COUNT_END">/$1</ph> you've seen this month.}
+      other {You could be getting paid for the <ph name="COUNT_BEGIN">$1</ph> # Ads<ph name="COUNT_END">/$1</ph> you've seen this month.}
+    }
+  </message>
+  <message name="IDS_REWARDS_CONNECTED_ADS_VIEWED_TEXT" desc="" formatter_data="webui=BraveRewards">
+    {ADS_VIEWED, plural,
+      =0 {You've seen <ph name="COUNT_BEGIN">$1</ph> # Ads<ph name="COUNT_END">/$1</ph> this month}
+      =1 {You're earning for seeing <ph name="COUNT_BEGIN">$1</ph> # Ad<ph name="COUNT_END">/$1</ph> this month}
+      other {You're earning for seeing <ph name="COUNT_BEGIN">$1</ph> # Ads<ph name="COUNT_END">/$1</ph> this month}
+    }
+  </message>
+
+  <!-- Rewards new tab page widget -->
+  <message name="IDS_REWARDS_WIDGET_ABOUT_REWARDS" desc="">
+    Using Brave Rewards helps support content creators, and lets you earn BAT.
+  </message>
+  <message name="IDS_REWARDS_WIDGET_BRAVE_REWARDS" desc="">
+    Rewards
+  </message>
+  <message name="IDS_REWARDS_WIDGET_CONTINUE" desc="">
+    Continue
+  </message>
+  <message name="IDS_REWARDS_WIDGET_HOW_DOES_IT_WORK" desc="">
+    How does it work?
+  </message>
+  <message name="IDS_REWARDS_WIDGET_OPT_IN_HEADER" desc="">
+    Earn tokens for private ads you see in Brave
+  </message>
+  <message name="IDS_REWARDS_WIDGET_OPT_IN_TEXT" desc="">
+    Support content creators and use your tokens to buy gift cards, exchange for other currencies, and more.
+  </message>
+  <message name="IDS_REWARDS_WIDGET_SETTINGS" desc="">
+    Rewards settings
+  </message>
+  <message name="IDS_REWARDS_WIDGET_SELECT_COUNTRY_HEADER" desc="">
+    Select your country
+  </message>
+  <message name="IDS_REWARDS_WIDGET_SELECT_COUNTRY_TEXT" desc="">
+    To continue using Brave Rewards, select your country so we can show you the right options and ads for your region. <ph name="LINK_BEGIN">$1</ph>Privacy Policy<ph name="LINK_END">/$1</ph>
+  </message>
+  <message name="IDS_REWARDS_WIDGET_START_USING_REWARDS" desc="">
+    Start using Rewards
+  </message>
+  <message name="IDS_REWARDS_WIDGET_BALANCE_TITLE" desc="">
+    Balance
+  </message>
+
+  <!-- Rewards panel -->
+  <message name="IDS_REWARDS_PANEL_SUMMARY" desc="">
+    Summary
+  </message>
+  <message name="IDS_REWARDS_PANEL_TIP" desc="">
+    Contribute
+  </message>
+  <message name="IDS_REWARDS_PANEL_UNVERIFIED_CREATOR" desc="">
+    Unverified Creator
+  </message>
+  <message name="IDS_REWARDS_PANEL_UNVERIFIED_TEXT" desc="">
+    This creator is not yet verified with Brave Creators. You'll be able to send them contributions once they're verified.
+  </message>
+  <message name="IDS_REWARDS_PANEL_VERIFIED_CREATOR" desc="">
+    Verified Creator
+  </message>
+  <message name="IDS_REWARDS_PANEL_REFRESH_STATUS" desc="">
+    Refresh creator verification status
+  </message>
+  <message name="IDS_REWARDS_PANEL_PLATFORM_PUBLISHER_TITLE" desc="">
+    <ph name="NAME">$1<ex>Brave</ex></ph> on <ph name="PLATFORM">$2<ex>Twitter</ex></ph>
+  </message>
+  <message name="IDS_REWARDS_PANEL_ATTENTION" desc="">
+    Attention
+  </message>
+  <message name="IDS_REWARDS_PANEL_SEND_TIP" desc="">
+    Send Contribution
+  </message>
+  <message name="IDS_REWARDS_PANEL_INCLUDE_IN_AUTO_CONTRIBUTE" desc="">
+    Include in Auto-Contribute
+  </message>
+  <message name="IDS_REWARDS_PANEL_MONTHLY_TIP" desc="">
+    Monthly Contribution
+  </message>
+  <message name="IDS_REWARDS_PANEL_OK" desc="">
+    OK
+  </message>
+  <message name="IDS_REWARDS_PANEL_SET" desc="">
+    Set
+  </message>
+  <message name="IDS_REWARDS_PANEL_CHANGE_AMOUNT" desc="">
+    Change amount
+  </message>
+  <message name="IDS_REWARDS_PANEL_CANCEL" desc="">
+    Cancel
+  </message>
+  <message name="IDS_REWARDS_PANEL_HEADER_TITLE" desc="">
+    Brave Rewards
+  </message>
+  <message name="IDS_REWARDS_PANEL_HEADER_TEXT" desc="">
+    You are helping support Brave and the BAT community
+  </message>
+  <message name="IDS_REWARDS_PANEL_REWARDS_SETTINGS" desc="">
+    Rewards settings
+  </message>
+  <message name="IDS_REWARDS_PANEL_LEARN_MORE_ABOUT_BAT" desc="">
+    Learn more about earning BAT
+  </message>
+
+  <!-- VBAT info -->
+  <message name="IDS_REWARDS_VBAT_NOTICE_TEXT1" desc="">
+    On <ph name="DATE">$1</ph>, we will be discontinuing support for existing virtual BAT balances. Connect a custodial account before this date so we can transfer your earned balance to your custodial account, otherwise your balance will be lost.
+  </message>
+  <message name="IDS_REWARDS_VBAT_NOTICE_TITLE1" desc="">
+    Action required: Connect a custodial account or your vBAT will be lost
+  </message>
+
+  <!-- Rewards panel notifications -->
+  <message name="IDS_REWARDS_NOTIFICATION_AUTO_CONTRIBUTE_COMPLETED_TITLE" desc="">
+    Auto-Contribute
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_AUTO_CONTRIBUTE_COMPLETED_TEXT" desc="">
+    You've contributed <ph name="AMOUNT">$1<ex>2 BAT</ex></ph>.
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_WALLET_DISCONNECTED_TITLE" desc="">
+    You are logged out
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_WALLET_DISCONNECTED_TEXT" desc="">
+    This happens from time to time to keep your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account secure. While logged out, you will continue to receive payouts, but won't be able to see your balance or send contributions from your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account.
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_UPHOLD_BAT_NOT_ALLOWED_TITLE" desc="">
+    Error: BAT unavailable
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_UPHOLD_BAT_NOT_ALLOWED_TEXT" desc="">
+    BAT is not yet supported in your region on Uphold.
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_UPHOLD_INSUFFICIENT_CAPABILITIES_TITLE" desc="">
+    Error: Limited Uphold account functionality
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_UPHOLD_INSUFFICIENT_CAPABILITIES_TEXT" desc="">
+    According to Uphold, there are currently some limitations on your Uphold account. Please log in to your Uphold account and check whether there are any notices or remaining account requirements to complete, then try again.
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_WALLET_DISCONNECTED_ACTION" desc="">
+    Log in again
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_MONTHLY_CONTRIBUTION_FAILED_TEXT" desc="">
+    There was a problem processing your contribution.
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_MONTHLY_CONTRIBUTION_FAILED_TITLE" desc="">
+    Monthly contribution failed
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_MONTHLY_TIP_COMPLETED_TITLE" desc="">
+    Contributions
+  </message>
+  <message name="IDS_REWARDS_NOTIFICATION_MONTHLY_TIP_COMPLETED_TEXT" desc="">
+    Your monthly contributions have been processed.
+  </message>
+
+  <!-- Adaptive captcha -->
+  <message name="IDS_REWARDS_CAPTCHA_MAX_ATTEMPTS_EXCEEDED_TEXT" desc="">
+    Looks like this is not working, Brave ads will remain paused. Contact us if you need help with the captcha.
+  </message>
+  <message name="IDS_REWARDS_CAPTCHA_MAX_ATTEMPTS_EXCEEDED_TITLE" desc="">
+    Max attempts exceeded
+  </message>
+  <message name="IDS_REWARDS_CAPTCHA_SOLVED_TITLE" desc="">
+    Solved!
+  </message>
+  <message name="IDS_REWARDS_CAPTCHA_SOLVED_TEXT" desc="">
+    Brave Ads will resume. Thanks for helping us protect Brave Rewards.
+  </message>
+  <message name="IDS_REWARDS_CAPTCHA_CONTACT_SUPPORT" desc="">
+    Contact support
+  </message>
+  <message name="IDS_REWARDS_CAPTCHA_DISMISS" desc="">
+    Dismiss
+  </message>
+
+  <!-- Rewards onboarding tour -->
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_CLOSE" desc="">
+    Close
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_DONE" desc="">
+    Done
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_CONTINUE" desc="">
+    Continue
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_EARN_HEADER" desc="">
+    Earn tokens for private ads you see in Brave
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_EARN_TEXT" desc="">
+    Use tokens to buy gift cards, exchange for other currencies, support content creators, and more.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_HOW_DOES_IT_WORK" desc="">
+    How does it work?
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_ERROR_HEADER" desc="">
+    Something went wrong
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_ERROR_HEADER_DISABLED" desc="">
+    Brave Rewards not available
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_ERROR_TEXT" desc="">
+    Unfortunately, there was an error while trying to set up Brave Rewards. Please try again.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_ERROR_TEXT_DECLARE_COUNTRY" desc="">
+    Unfortunately, there was an error while trying to set your country. Please try again.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_ERROR_TEXT_DISABLED" desc="">
+    New signups for Brave Rewards are currently disabled in your region. However, you can always try again later. <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">/$1</ph>
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_HEADER" desc="">
+    Select your country
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_SUCCESS_HEADER" desc="">
+    Woohoo! You’re all set!
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_SUCCESS_TEXT" desc="">
+    Now you can get rewarded for viewing ads. You're helping make the web a better place for everyone. And that's awesome!
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_HOW_DOES_BRAVE_REWARDS_WORK" desc="">
+    How does Brave Rewards work?
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_GEO_TEXT" desc="">
+    Select your country so we can show you the right options and ads for your region.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_SELECT_COUNTRY" desc="">
+    Select
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_START_USING_REWARDS" desc="">
+    Start using Rewards
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_START_USING_REWARDS_TEXT_ONLY" desc="">
+    Press the <ph name="BAT_ICON">$1</ph> BAT icon in the URL bar to start.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_ONBOARDING_TERMS" desc="">
+    By proceeding, you agree to the <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Service<ph name="TOS_LINK_END">/$1</ph> and <ph name="PP_LINK_BEGIN">$2</ph>Privacy Policy<ph name="PP_LINK_END">/$2</ph>.
+  </message>
+  <message name="IDS_REWARDS_COUNTRY_SELECT_TITLE" desc="">
+    Select your region
+  </message>
+  <message name="IDS_REWARDS_COUNTRY_SELECT_TEXT" desc="">
+    Select your region so we can show you the right options and ads for your region.
+  </message>
+  <message name="IDS_REWARDS_ONBOARDING_BUTTON_LABEL" desc="">
+    Start using Brave Rewards
+  </message>
+  <message name="IDS_REWARDS_ONBOARDING_TERMS_TEXT" desc="">
+    By enabling Rewards, you agree to the <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Service<ph name="TOS_LINK_END">/$1</ph> and <ph name="PP_LINK_BEGIN">$2</ph>Privacy Policy<ph name="PP_LINK_END">/$2</ph>.
+  </message>
+  <message name="IDS_REWARDS_ONBOARDING_TEXT_ITEM_1" desc="" formatter_data="webui=BraveRewards">
+    Get paid for private ads you see in Brave
+  </message>
+  <message name="IDS_REWARDS_ONBOARDING_TEXT_ITEM_2" desc="" formatter_data="webui=BraveRewards">
+    Get special benefits and discounts
+  </message>
+  <message name="IDS_REWARDS_ONBOARDING_TITLE" desc="">
+    Turn on Brave Rewards
+  </message>
+
+  <!-- Rewards unsupported region notice -->
+  <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_HEADER" desc="">
+    Sorry, Brave Rewards is not available
+  </message>
+  <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_SUBHEADER" desc="">
+    Unfortunately, it looks like you’re in a region where Brave Rewards is not available.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_LEARN_MORE" desc="">
+    <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">/$1</ph>
+  </message>
+  <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_TEXT_1" desc="">
+    Don’t worry.
+  </message>
+  <message name="IDS_BRAVE_REWARDS_UNSUPPORTED_REGION_NOTICE_TEXT_2" desc="">
+    You can still browse privately!
+  </message>
+
+  <!-- Rewards common strings -->
+  <message name="IDS_BRAVE_REWARDS_LOADING_LABEL" desc="">
+    Loading...
+  </message>
+  <message name="IDS_REWARDS_LEARN_MORE" desc="">
+    Learn more
+  </message>
+  <message name="IDS_REWARDS_ESTIMATED_EARNINGS_TITLE" desc="">
+    Ads seen this month
+  </message>
+  <message name="IDS_REWARDS_APP_ERROR_TITLE" desc="">
+    Something went wrong
+  </message>
+  <message name="IDS_REWARDS_PAGE_TITLE" desc="">
+    Rewards
+  </message>
+  <message name="IDS_REWARDS_HELP_BUTTON_LABEL" desc="">
+    Help
+  </message>
+  <message name="IDS_REWARDS_MORE_BUTTON_LABEL" desc="" formatter_data="webui=BraveRewards">
+    More
+  </message>
+  <message name="IDS_REWARDS_NAVIGATION_CREATORS_LABEL" desc="">
+    Creators
+  </message>
+  <message name="IDS_REWARDS_NAVIGATION_EXPLORE_LABEL" desc="">
+    Explore
+  </message>
+  <message name="IDS_REWARDS_NAVIGATION_HOME_LABEL" desc="">
+    Home
+  </message>
+
+  <!-- Self-custody invitation -->
+  <message name="IDS_REWARDS_NOT_NOW" desc="">
+    Not now
+  </message>
+  <message name="IDS_REWARDS_SELF_CUSTODY_INVITE_HEADER" desc="">
+    Receive BAT directly to a self-custody crypto address
+  </message>
+  <message name="IDS_REWARDS_SELF_CUSTODY_INVITE_TEXT" desc="">
+    We’ve added a new way for you to receive your monthly BAT rewards. Connect an account from one of our partners or use the new self-custody option to start earning now.
+  </message>
+
+  <!-- Terms of Service update notification -->
+  <message name="IDS_REWARDS_TOS_UPDATE_HEADING" desc="" formatter_data="webui=BraveRewards">
+    Updated Terms of Service
+  </message>
+  <message name="IDS_REWARDS_TOS_UPDATE_TEXT" desc="">
+    We’ve updated the Terms of Service for Brave Rewards. We’ve made these updates to clarify our terms and ensure they cover new features. If you continue to use Brave Rewards, you are agreeing to the updated Terms of Service. If you do not agree, you can <ph name="LINK_BEGIN">$1</ph>reset<ph name="LINK_END">/$1</ph> Brave Rewards, which will disable the feature.
+  </message>
+  <message name="IDS_REWARDS_TOS_UPDATE_NTP_TEXT" desc="" formatter_data="webui=BraveRewards">
+    We've updated our Terms of Service. To keep using Brave Rewards, please review and agree to the updated terms.
+  </message>
+  <message name="IDS_REWARDS_TOS_UPDATE_LINK_TEXT" desc="">
+    See <ph name="LINK_BEGIN">$1</ph>Brave Rewards Terms of Service<ph name="LINK_END">/$1</ph>
+  </message>
+  <message name="IDS_REWARDS_TOS_UPDATE_BUTTON_LABEL" desc="">
+    I agree
+  </message>
+  <message name="IDS_REWARDS_TOS_UPDATE_NTP_BUTTON_LABEL" desc="" formatter_data="webui=BraveRewards">
+    Review Terms
+  </message>
+
+  <!-- Tip panel -->
+  <message name="IDS_REWARDS_TIP_BALANCE_LABEL" desc="">
+    Rewards balance
+  </message>
+  <message name="IDS_REWARDS_TIP_MONTHLY_TOGGLE_LABEL" desc="">
+    Set as monthly contribution
+  </message>
+  <message name="IDS_REWARDS_TIP_FEE_NOTICE" desc="">
+    Brave collects <ph name="FEE_PCT">$1</ph> of the sent amount as a processing fee.
+  </message>
+  <message name="IDS_REWARDS_TIP_SEND_FORM_TITLE" desc="">
+    Support this creator
+  </message>
+  <message name="IDS_REWARDS_TIP_SEND_BUTTON_LABEL" desc="">
+    Send
+  </message>
+  <message name="IDS_REWARDS_TIP_SEND_WITH_BUTTON_LABEL" desc="">
+    Send with <ph name="PROVIDER">$1</ph>
+  </message>
+  <message name="IDS_REWARDS_TIP_WEB3_BUTTON_LABEL" desc="">
+    Use Web3 Wallet
+  </message>
+  <message name="IDS_REWARDS_TIP_VERIFIED_TOOLTIP_TITLE" desc="">
+    Verified Creator
+  </message>
+  <message name="IDS_REWARDS_TIP_VERIFIED_TOOLTIP_TEXT" desc="">
+    This creator has registered with Brave and can receive contributions from Brave Rewards users.
+  </message>
+  <message name="IDS_REWARDS_TIP_MONTHLY_TOOLTIP_TEXT" desc="">
+    Make this a monthly recurring contribution. You can cancel it at any time.
+  </message>
+  <message name="IDS_REWARDS_TIP_LEARN_MORE_LABEL" desc="">
+    Learn more
+  </message>
+  <message name="IDS_REWARDS_TIP_CUSTOM_AMOUNT_LABEL" desc="">
+    Custom
+  </message>
+  <message name="IDS_REWARDS_TIP_MONTHLY_SET_TITLE" desc="">
+    You're already sending monthly contributions to this creator
+  </message>
+  <message name="IDS_REWARDS_TIP_MONTHLY_SET_TEXT" desc="">
+    You can still send a contribution now, and you can cancel your monthly contributions to this creator by removing them from <ph name="LINK_BEGIN">$1</ph>Monthly Contributions<ph name="LINK_END">/$1</ph>.
+  </message>
+  <message name="IDS_REWARDS_TIP_PROVIDER_MISMATCH_TITLE" desc="">
+    Can't send your contribution
+  </message>
+  <message name="IDS_REWARDS_TIP_PROVIDER_MISMATCH_TEXT" desc="">
+    This creator is unable to receive contributions from <ph name="PROVIDER">$1</ph>.
+  </message>
+  <message name="IDS_REWARDS_TIP_PROVIDER_MISMATCH_WEB3_TEXT" desc="">
+    You can still send crypto contributions to this creator by using your Web3 wallet.
+  </message>
+  <message name="IDS_REWARDS_TIP_WEB3_ONLY_TITLE" desc="">
+    Send Crypto contributions
+  </message>
+  <message name="IDS_REWARDS_TIP_RECONNECT_TITLE" desc="">
+    Logged out of <ph name="PROVIDER">$1</ph>
+  </message>
+  <message name="IDS_REWARDS_TIP_RECONNECT_TEXT" desc="">
+    It looks like you're logged out of <ph name="PROVIDER">$1</ph> for Brave Rewards. Log in again to continue.
+  </message>
+  <message name="IDS_REWARDS_TIP_RECONNECT_WEB3_TEXT" desc="">
+    You can also send crypto contributions to this creator by using your Web3 wallet.
+  </message>
+  <message name="IDS_REWARDS_TIP_RECONNECT_BUTTON_LABEL" desc="">
+    Log in to <ph name="PROVIDER">$1</ph>
+  </message>
+  <message name="IDS_REWARDS_TIP_INSUFFICIENT_BALANCE_TITLE" desc="">
+    You don't have enough tokens
+  </message>
+  <message name="IDS_REWARDS_TIP_INSUFFICIENT_BALANCE_TEXT" desc="">
+    You can only send up to <ph name="AMOUNT">$1</ph> BAT using your Brave Rewards balance.
+  </message>
+  <message name="IDS_REWARDS_TIP_CONTRIBUTION_FAILED_TITLE" desc="">
+    There was a problem sending your contribution
+  </message>
+  <message name="IDS_REWARDS_TIP_CONTRIBUTION_FAILED_TEXT" desc="">
+    Please try again.
+  </message>
+  <message name="IDS_REWARDS_TIP_TRY_AGAIN_BUTTON_LABEL" desc="">
+    Try again
+  </message>
+  <message name="IDS_REWARDS_TIP_CONTRIBUTION_SENT_TITLE" desc="">
+    Contribution sent!
+  </message>
+  <message name="IDS_REWARDS_TIP_CONTRIBUTION_SENT_TEXT" desc="">
+    Thanks for supporting your favorite creators
+  </message>
+  <message name="IDS_REWARDS_TIP_SHARE_BUTTON_LABEL" desc="">
+    Share your support
+  </message>
+  <message name="IDS_REWARDS_TIP_SHARE_TEXT" desc="">
+    I just contributed <ph name="AMOUNT">$1</ph> BAT using the Brave Browser! See how you can support your favorite creators and sites too: https://brave.com/rewards
+  </message>
+  <message name="IDS_REWARDS_TIP_UNEXPECTED_ERROR_TITLE" desc="">
+    An unexpected error has occurred
+  </message>
+  <message name="IDS_REWARDS_TIP_UNEXPECTED_ERROR_TEXT" desc="">
+    Please reopen the contribution panel to try again.
+  </message>
+  <message name="IDS_REWARDS_TIP_DEFAULT_CREATOR_DESCRIPTION" desc="">
+    Welcome! Users can support this content creator by sending them contributions. It’s a way of thanking them for making great content.
+  </message>
+  <message name="IDS_REWARDS_TIP_SELF_CUSTODY_TITLE" desc="">
+    Support your favorite creators
+  </message>
+  <message name="IDS_REWARDS_TIP_SELF_CUSTODY_HEADER" desc="">
+    Show your love and send a token of your gratitude
+  </message>
+  <message name="IDS_REWARDS_TIP_SELF_CUSTODY_TEXT" desc="">
+    Use your Web3 wallet to send a one time contribution to this creator and show them your appreciation
+  </message>
+  <message name="IDS_REWARDS_TIP_SELF_CUSTODY_SEND_BUTTON_LABEL" desc="">
+    Send with Web3 wallet
+  </message>
+  <message name="IDS_REWARDS_TIP_SELF_CUSTODY_NO_WEB3_LABEL" desc="">
+    It looks like this creator isn't set up to receive contributions via Web3 wallets yet.
+  </message>
+
+  <!-- Connect UI -->
+  <message name="IDS_REWARDS_CONNECT_CUSTODIAL_TITLE" desc="">
+    Custodial accounts (requires ID verification)
+  </message>
+  <message name="IDS_REWARDS_CONNECT_CUSTODIAL_TOOLTIP" desc="">
+    Custodial accounts are accounts with trusted third-party services that hold your BAT for you.
+  </message>
+  <message name="IDS_REWARDS_CONNECT_SELF_CUSTODY_TITLE" desc="">
+    Self-custody
+  </message>
+  <message name="IDS_REWARDS_CONNECT_SELF_CUSTODY_TOOLTIP" desc="">
+    Self-custody gives you exclusive control over your BAT, along with complete responsibility for its security.
+  </message>
+  <message name="IDS_REWARDS_CONNECT_SELF_CUSTODY_NOTE" desc="">
+    With self-custody, BAT earnings will be paid out as SPL-BAT on the Solana network.
+  </message>
+  <message name="IDS_REWARDS_CONNECT_TITLE" desc="">
+    Choose where you'd like to receive BAT
+  </message>
+  <message name="IDS_REWARDS_CONNECT_REGIONS_LEARN_MORE_TEXT" desc="">
+    Learn more about regions and support.
+  </message>
+  <message name="IDS_REWARDS_CONNECT_PROVIDER_NOT_AVAILABLE" desc="">
+    Currently not available in your region
+  </message>
+  <message name="IDS_REWARDS_CONNECT_PROVIDERS_UNAVAILABLE_TEXT" desc="">
+    We don’t have any payout options in your region yet. You can check again later to see if availability has changed.
+  </message>
+  <message name="IDS_REWARDS_CONNECT_PROVIDERS_UNAVAILABLE_TITLE" desc="">
+    Payout options unavailable
+  </message>
+  <message name="IDS_REWARDS_CONNECT_TEXT" desc="">
+    To begin earning Basic Attention Token (BAT) rewards, connect an account. BAT you earn will be automatically transferred to your account every month.
+  </message>
+  <message name="IDS_REWARDS_CONNECT_SOLANA_BUTTON_LABEL" desc="">
+    Brave Wallet
+  </message>
+  <message name="IDS_REWARDS_CONNECT_SOLANA_MESSAGE" desc="">
+    Or other wallet that supports Solana
+  </message>
+  <message name="IDS_REWARDS_CONNECT_SELF_CUSTODY_TERMS" desc="">
+    <ph name="TOS_LINK_BEGIN">$1</ph>Terms of Use<ph name="TOS_LINK_END">/$1</ph> and <ph name="PP_LINK_BEGIN">$2</ph>Privacy Policy<ph name="PP_LINK_END">/$2</ph>.
+  </message>
+  <message name="IDS_REWARDS_CONNECT_SELF_CUSTODY_ERROR" desc="">
+    Something went wrong. Please try again
+  </message>
+  <message name="IDS_REWARDS_CONNECT_LOGIN_TEXT" desc="">
+    Log in or sign up
+  </message>
+  <message name="IDS_REWARDS_NEW_BADGE_TEXT" desc="">
+    NEW
+  </message>
+
+  <!-- Authorization modal -->
+  <message name="IDS_REWARDS_AUTHORIZE_ERROR_TITLE" desc="">
+    Error
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_DEVICE_LIMIT_REACHED_TEXT" desc="">
+    You’ve connected the maximum number of Brave Rewards profiles to this <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_DEVICE_LIMIT_REACHED_TITLE" desc="">
+    Limit reached on payout account
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_FLAGGED_WALLET_TEXT_1" desc="">
+    Unfortunately, your Brave Rewards profile was flagged because our automated checks found some unexpected Brave Ads activity.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_FLAGGED_WALLET_TEXT_2" desc="">
+    While your profile is flagged, you may continue to see ads, but won't be eligible to receive payouts. You also won't be able to connect a custodial account to Brave Rewards.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_FLAGGED_WALLET_TEXT_3" desc="">
+    It's possible your profile was flagged in error, and no immediate action is required on your part. The flag on your profile may be removed in the future.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_FLAGGED_WALLET_TEXT_4" desc="">
+    Learn more about Brave's process for flagging Rewards profiles.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_FLAGGED_WALLET_TITLE" desc="">
+    Brave Rewards profile is flagged
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_KYC_REQUIRED_TEXT" desc="">
+    Please try again after you have completed ID verification on <ph name="PROVIDER">$1<ex>Uphold</ex></ph>.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_KYC_REQUIRED_TITLE" desc="">
+    You need a verified account to log in
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_MISMATCHED_COUNTRIES_TEXT" desc="">
+    Hmm, it looks like your Brave Rewards country does not match the country of the <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account you're trying to connect.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_MISMATCHED_COUNTRIES_TITLE" desc="">
+    Country mismatch
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_MISMATCHED_PROVIDER_ACCOUNTS_TEXT" desc="">
+    Hmm, it looks like your Brave Rewards has already been verified with another <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account. Please try verifying again using your previous account.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_MISMATCHED_PROVIDER_ACCOUNTS_TITLE" desc="">
+    Different account
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_PROVIDER_UNAVAILABLE_TEXT_1" desc="">
+    It looks like connecting <ph name="PROVIDER">$1<ex>Uphold</ex></ph> to Brave Rewards is temporarily unavailable. Please try again later.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_PROVIDER_UNAVAILABLE_TEXT_2" desc="">
+    You can view <ph name="BEGIN_LINK">$1</ph>service status here<ph name="END_LINK">/$1</ph>.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_PROVIDER_UNAVAILABLE_TITLE" desc="">
+    Connecting to selected custodian temporarily unavailable
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_REGION_NOT_SUPPORTED_TEXT_1" desc="">
+    Your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account can't be connected to your Brave Rewards profile at this time. Your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account is registered in a country that's not currently supported for connecting to Brave Rewards.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_REGION_NOT_SUPPORTED_TEXT_2" desc="">
+    See the <ph name="LINK_BEGIN">$1</ph>current list of supported regions and learn more<ph name="END_LINK">/$1</ph> about connecting a custodial account to Brave Rewards.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_REGION_NOT_SUPPORTED_TITLE" desc="">
+    Region currently not supported
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_UPHOLD_BAT_NOT_ALLOWED_TEXT" desc="">
+    BAT is not yet supported in your region on Uphold.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_UPHOLD_BAT_NOT_ALLOWED_TITLE" desc="">
+    Error: BAT unavailable
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_UPHOLD_INSUFFICIENT_CAPABILITIES_TEXT" desc="">
+    According to Uphold, there are currently some limitations on your Uphold account. Please log in to your Uphold account and check whether there are any notices or remaining account requirements to complete, then try again. For example, you may need to submit more information to Uphold.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_UPHOLD_INSUFFICIENT_CAPABILITIES_TITLE" desc="">
+    Limited Uphold account functionality
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_SIGNATURE_VERIFICATION_ERROR_TEXT" desc="">
+    There was a problem validating your request to connect your <ph name="PROVIDER">$1<ex>Uphold</ex></ph> account to Brave Rewards. You can <ph name="BEGIN_LINK">$2</ph>contact support<ph name="END_LINK">/$2</ph> for more help.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_SIGNATURE_VERIFICATION_ERROR_TITLE" desc="">
+    Request could not be validated
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_UNEXPECTED_ERROR_TITLE" desc="">
+    Something went wrong
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_UNEXPECTED_ERROR_TEXT" desc="">
+    We weren’t able to complete your request. Please try again, and <ph name="LINK_BEGIN">$1</ph>contact support<ph name="LINK_END">/$1</ph> if the problem persists.
+  </message>
+  <message name="IDS_REWARDS_AUTHORIZE_PROCESSING_TEXT" desc="">
+    Your request is still being processed, please wait.
+  </message>
+
+  <!-- Ads History -->
+  <message name="IDS_REWARDS_ADS_HISTORY_BUTTON_LABEL" desc="">
+    30-day Ads History
+  </message>
+  <message name="IDS_REWARDS_ADS_HISTORY_MARK_INAPPROPRIATE_LABEL" desc="">
+    Mark as inappropriate
+  </message>
+  <message name="IDS_REWARDS_ADS_HISTORY_EMPTY_TEXT" desc="">
+    There is currently no Brave Ads history.
+  </message>
+  <message name="IDS_REWARDS_ADS_HISTORY_TITLE" desc="">
+    Ads history
+  </message>
+  <message name="IDS_REWARDS_ADS_HISTORY_TEXT" desc="">
+    Ads you've received in the past 30 days
+  </message>
+
+  <!-- Ads Settings -->
+  <message name="IDS_REWARDS_ADS_SETTINGS_ADS_PER_HOUR_NONE_TEXT" desc="">
+    None
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_ADS_PER_HOUR_TEXT" desc="">
+    Max <ph name="NUM">$1</ph>/hr
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_AD_TYPE_TITLE" desc="">
+    Ad type
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_AD_VIEWS_TITLE" desc="">
+    Views this month
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_BUTTON_LABEL" desc="">
+    Ads Settings
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_PAYOUT_DATE_LABEL" desc="">
+    Next earnings payout date
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_TOTAL_ADS_LABEL" desc="">
+    Total ads received this month
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_NEWS_OFF_TOOLTIP" desc="">
+    Brave News is currently disabled.
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_NEWS_ON_TOOLTIP" desc="">
+    Brave News contains ads that cannot be independently disabled.
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_SUBDIVISION_LABEL" desc="">
+    Regional ad relevance
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_SUBDIVISION_TEXT" desc="">
+    This allows Brave to show you ads meant specifically for your region.
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_SUBDIVISION_DISABLED_LABEL" desc="">
+    Disabled
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_SUBDIVISION_AUTO_LABEL" desc="">
+    Auto-detect
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_TITLE" desc="">
+    Ads settings
+  </message>
+  <message name="IDS_REWARDS_ADS_SETTINGS_TEXT" desc="">
+    Control what kinds of Brave Ads you see, and how often. The more you see, the more you can earn.
+  </message>
+  <message name="IDS_REWARDS_ADS_VIEWED_TOOLTIP" desc="" formatter_data="webui=BraveRewards">
+    This shows the number of Brave Ads you've seen this month that qualify for earning BAT.
+  </message>
+  <message name="IDS_REWARDS_AD_TYPE_NEW_TAB_PAGE_LABEL" desc="">
+    New tab page ads
+  </message>
+  <message name="IDS_REWARDS_AD_TYPE_NOTIFICATION_LABEL" desc="">
+    Notification ads
+  </message>
+  <message name="IDS_REWARDS_AD_TYPE_OFF_LABEL" desc="">
+    Off
+  </message>
+  <message name="IDS_REWARDS_AD_TYPE_ON_LABEL" desc="">
+    On
+  </message>
+
+  <message name="IDS_REWARDS_EARNINGS_ADS_RECEIVED_TEXT" desc="">
+    <ph name="NUM">$1</ph> Ads received this month
+  </message>
+
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_BALANCE_LABEL" desc="">
+    Your balance
+  </message>
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_CONNECTED_LABEL" desc="">
+    Connected
+  </message>
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_LABEL" desc="">
+    Payout account
+  </message>
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_LINK" desc="">
+    Go to my account
+  </message>
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_LOGGED_OUT_TITLE" desc="">
+    Logged Out
+  </message>
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_LOGIN_BUTTON_LABEL" desc="">
+    Log in to <ph name="PROVIDER">$1</ph>
+  </message>
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_LOGIN_TEXT" desc="">
+    Log in to <ph name="PROVIDER">$1</ph> to see your balance
+  </message>
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_TITLE" desc="">
+    Payout Account
+  </message>
+  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_TOOLTIP" desc="">
+    Your BAT earnings will be paid to this payout account.
+  </message>
+
+  <message name="IDS_REWARDS_BENEFITS_STORE_SUBTEXT" desc="">
+    Use promo code BRAVEREWARDS to get 10% off on all Brave merch store items.
+  </message>
+  <message name="IDS_REWARDS_BENEFITS_STORE_TEXT" desc="">
+    Brave merch store
+  </message>
+  <message name="IDS_REWARDS_BENEFITS_TITLE" desc="">
+    Your benefits
+  </message>
+  <message name="IDS_REWARDS_RECURRING_NEXT_CONTRIBUTION_LABEL" desc="">
+    Next contribution:
+  </message>
+  <message name="IDS_REWARDS_RECURRING_TITLE" desc="">
+    Recurring Contributions
+  </message>
+  <message name="IDS_REWARDS_REMOVE_BUTTON_LABEL" desc="">
+    Remove
+  </message>
+  <message name="IDS_REWARDS_SHOW_ALL_BUTTON_LABEL" desc="">
+    Show all
+  </message>
+
+  <message name="IDS_REWARDS_CONTRIBUTE_ABOUT_METHODS_LINK" desc="">
+    Learn more about contribution methods
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_AMOUNT_TITLE" desc="">
+    Contribution amount
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_AVAILABLE_METHODS_TEXT" desc="">
+    This creator currently only accepts contributions via the following methods:
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_BALANCE_TITLE" desc="">
+    Rewards Balance
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_BALANCE_UNAVAILABLE_TEXT" desc="">
+    Not available
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_BUTTON_LABEL" desc="">
+    Contribute
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_CHOOSE_METHOD_TEXT" desc="">
+    Choose the method you want to use to contribute to Brave Software:
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_CUSTODIAL_SUBTEXT" desc="">
+    Custodial wallet
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_ERROR_TEXT" desc="">
+    You can try again later.
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_ERROR_TITLE" desc="">
+    There was a problem sending your contribution
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_INSUFFICIENT_FUNDS_BUTTON_LABEL" desc="">
+    Insufficient Funds
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_LOGIN_BUTTON_LABEL" desc="">
+    Log in to <ph name="PROVIDER">$1<ex>Uphold</ex></ph>
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_LOGGED_OUT_TEXT" desc="">
+    It looks like you’re logged out of <ph name="PROVIDER">$1<ex>Uphold</ex></ph> for Brave Rewards. Log in again to continue.
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_LOGGED_OUT_TITLE" desc="">
+    Logged out of <ph name="PROVIDER">$1<ex>Uphold</ex></ph>
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_LOGGED_OUT_WEB3BUTTON_LABEL" desc="">
+    Use Web3 Wallet
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_LOGGED_OUT_WEB3TEXT" desc="">
+    You can also send crypto contributions to this creator by using your Web3 wallet.
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_MONTHLY_LABEL" desc="">
+    Monthly
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_OTHER_LABEL" desc="">
+    Other
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_RECURRING_LABEL" desc="">
+    Recurring contribution
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_SEND_AMOUNT_BUTTON_LABEL" desc="">
+    Send <ph name="AMOUNT">$1<ex>1.23</ex></ph> BAT
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_SEND_BUTTON_LABEL" desc="">
+    Send
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_SENDING_TEXT" desc="">
+    Sending contribution
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_SUCCESS_TEXT" desc="">
+    Thanks for supporting your favorite creators
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_SUCCESS_TITLE" desc="">
+    Contribution sent!
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_WEB3LABEL" desc="">
+    Web3 Wallet
+  </message>
+  <message name="IDS_REWARDS_CONTRIBUTE_WEB3SUBTEXT" desc="">
+    Use your Web3 wallet
+  </message>
+
+  <message name="IDS_REWARDS_ADS_REGION_NOT_SUPPORTED_TEXT" desc="">
+    Brave Private Ads are not yet available in your region.
+  </message>
+  <message name="IDS_REWARDS_ADS_BROWSER_UPGRADE_REQUIRED_TEXT" desc="">
+    Your browser needs to be updated to continue seeing ads.
+  </message>
+
+  <message name="IDS_REWARDS_WDP_CHECKBOX_LABEL" desc="">
+    Yes, I’d also like to contribute to Brave Search and opt in to <ph name="LINK_BEGIN">$1</ph>Web Discovery Project<ph name="LINK_END">/$1</ph>.
+  </message>
+  <message name="IDS_REWARDS_WDP_OPT_IN_TEXT" desc="">
+    Contribute some anonymous search and browsing data to refine Brave Search with Web Discovery Project. It’s completely open-source.
+  </message>
+  <message name="IDS_REWARDS_WDP_OPT_IN_TITLE" desc="">
+    Web Discovery Project
+  </message>
+
+  <message name="IDS_REWARDS_COMMUNITY_TITLE" desc="">
+    Community
+  </message>
+  <message name="IDS_REWARDS_MERCH_STORE_TITLE" desc="">
+    Brave merch store
+  </message>
+  <message name="IDS_REWARDS_VIEW_STORE_LINK" desc="">
+    View Store
+  </message>
+
+  <message name="IDS_REWARDS_BAT_UTILITY_TITLE" desc="">
+    Basic Attention Token – BAT
+  </message>
+
+</grit-part>

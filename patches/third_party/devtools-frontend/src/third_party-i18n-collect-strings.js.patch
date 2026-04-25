@@ -1,0 +1,12 @@
+diff --git a/third_party/i18n/collect-strings.js b/third_party/i18n/collect-strings.js
+index 437947bb664d67b474966bb7d189283d22daa268..29061971d0575c96c363d3d293f9ab689eddc55a 100644
+--- a/third_party/i18n/collect-strings.js
++++ b/third_party/i18n/collect-strings.js
+@@ -28,6 +28,7 @@ export const IGNORED_PATH_COMPONENTS = [
+   '**/third_party/**',
+   '**/*.test.ts',
+ ];
++IGNORED_PATH_COMPONENTS.push('**/*.patch.ts', '**/RequestAdblockView.ts')
+ 
+ /**
+  * Extract the description and examples (if any) from a jsDoc annotation.

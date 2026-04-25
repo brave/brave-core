@@ -1,0 +1,7 @@
+include_rules = [
+  "+base/supports_user_data.h",
+  "+content/browser/screen_orientation",
+  "+content/common",
+  "+content/public/browser",
+  "+services/device/public/mojom",
+]

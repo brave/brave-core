@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<grit latest_public_release="0" current_release="1">
+  <outputs>
+    <output filename="grit/brave_unscaled_resources.h" type="rc_header">
+      <emit emit_type='prepend'></emit>
+    </output>
+    <output filename="brave_unscaled_resources.pak" type="data_package" />
+  </outputs>
+  <release seq="1">
+    <includes>
+      <if expr="is_linux">
+        <include name="IDR_PRODUCT_LOGO_128_BETA" file="brave/linux/product_logo_128_beta.png" type="BINDATA" />
+        <include name="IDR_PRODUCT_LOGO_128_DEV" file="brave/linux/product_logo_128_dev.png" type="BINDATA" />
+        <include name="IDR_PRODUCT_LOGO_128_DEVELOPMENT" file="brave/linux/product_logo_128_development.png" type="BINDATA" />
+        <include name="IDR_PRODUCT_LOGO_128_NIGHTLY" file="brave/linux/product_logo_128_nightly.png" type="BINDATA" />
+      </if>
+      <include name="IDR_BRAVE_PASSWORD_MANAGER_LOGO" file="brave/password_manager_logo.svg" type="BINDATA" />
+    </includes>
+  </release>
+</grit>

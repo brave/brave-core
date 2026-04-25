@@ -1,0 +1,22 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+group("adblock") {
+  visibility = [
+    "//brave/components/brave_shields/content/browser:*",
+    "//brave/components/brave_shields/content/test:test_support",
+    "//brave/components/brave_shields/content/test:unit_tests",
+    "//brave/components/brave_shields/core/browser:*",
+    "//brave/components/brave_shields/core/common:*",
+    "//brave/fuzzers:*",
+    "//brave/ios/browser/api/brave_shields:*",
+  ]
+  deps = [
+    "resolver",
+    "rs:rust_lib",
+  ]
+
+  public_deps = [ "rs:rust_lib_cxx_generated_gen" ]
+}

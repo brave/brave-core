@@ -1,0 +1,112 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//build/toolchain/win/midl.gni")
+import("//build/util/process_version.gni")
+import("//chrome/process_version_rc_template.gni")
+
+assert(is_win)
+
+# Must be in a config because of how GN orders flags (otherwise /W4 will appear
+# after this, and turn it back on).
+config("no-missing-braces") {
+  # Macros invoked by WRL CoCreatableClass omit optional braces.
+  cflags = [ "-Wno-missing-braces" ]
+}
+
+source_set("common") {
+  sources = [
+    "brave_vpn_helper_constants.h",
+    "brave_vpn_helper_utils.cc",
+    "brave_vpn_helper_utils.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_vpn/common/win",
+    "//chrome/common:channel_info",
+    "//chrome/install_static:install_static_util",
+    "//chrome/installer/util:with_no_strings",
+    "//components/version_info",
+  ]
+}
+
+source_set("lib") {
+  visibility = [
+    ":brave_vpn_helper",
+    ":unit_tests",
+  ]
+  sources = [
+    "brave_vpn_dns_delegate.h",
+    "vpn_dns_handler.cc",
+    "vpn_dns_handler.h",
+    "vpn_utils.cc",
+    "vpn_utils.h",
+  ]
+
+  deps = [
+    ":common",
+    "//base",
+    "//brave/browser/brave_vpn/win:wireguard_utils",
+    "//brave/components/brave_vpn/browser/connection/ikev2/win:ras_utils",
+    "//chrome/common:channel_info",
+    "//components/version_info:channel",
+  ]
+
+  libs = [
+    "fwpuclnt.lib",
+    "iphlpapi.lib",
+    "rasapi32.lib",
+  ]
+}
+
+executable("brave_vpn_helper") {
+  sources = [
+    "brave_vpn_helper_crash_reporter_client.cc",
+    "brave_vpn_helper_crash_reporter_client.h",
+    "main.cc",
+    "service_main.cc",
+    "service_main.h",
+  ]
+
+  deps = [
+    ":common",
+    ":lib",
+    ":version_resources",
+    "//base",
+    "//base:base_static",
+    "//brave/components/brave_vpn/common",
+    "//build/win:default_exe_manifest",
+    "//chrome/install_static:install_static_util",
+    "//components/crash/core/app",
+    "//components/crash/core/app:crash_export_thunks",
+    "//components/crash/core/app:run_as_crashpad_handler",
+    "//components/version_info:channel",
+  ]
+}
+
+process_version_rc_template("version_resources") {
+  sources = [ "brave_vpn_helper.ver" ]
+  output = "$target_gen_dir/brave_vpn_helper_exe.rc"
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "vpn_dns_handler_unittest.cc" ]
+
+  deps = [
+    ":common",
+    ":lib",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_vpn/browser/connection/ikev2/win:ras_utils",
+    "//brave/components/brave_vpn/common",
+    "//testing/gtest",
+  ]
+}

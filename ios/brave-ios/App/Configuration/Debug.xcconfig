@@ -1,0 +1,27 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+#include "Base.xcconfig"
+
+MOZ_BUNDLE_DISPLAY_NAME = Brave ($(USER))
+
+BRAVE_URL_SCHEME = brave-debug
+
+// Bundle Identifier (Same as nightly)
+MOZ_BUNDLE_ID = $(BASE_BUNDLE_ID).BrowserBeta
+BRAVE_GROUP_ID = group.$(MOZ_BUNDLE_ID).unique
+
+// Flag to indicate if we want to include the debug settings bundle or not
+INCLUDE_SETTINGS_BUNDLE = YES
+
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG BRAVE_CHANNEL_DEBUG $(brave_swift_active_compliation_conditions)
+
+// Defines Swift Flags, (used as #if/#endif) inside *Swift* code
+// BASE 'inheritence' at end, due to dynamic nature of those flags
+// debug-prefix-map is used to fix the invalid source mapping with breakpoints & LLDB
+OTHER_SWIFT_FLAGS=$(brave_ios_debug_prefix_map_flag)
+
+ENABLE_TESTABILITY = YES
+
+GCC_PREPROCESSOR_DEFINITIONS= DEBUG=1

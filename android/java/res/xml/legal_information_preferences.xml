@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2020 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <org.chromium.chrome.browser.about_settings.HyperlinkPreference
+        android:key="open_source_license"
+        android:title="@string/open_source_license_title"
+        app:url="@string/open_source_license_url" />
+    <org.chromium.chrome.browser.about_settings.HyperlinkPreference
+        android:key="terms_of_service"
+        android:title="@string/google_terms_of_service_title"
+        app:url="@string/brave_terms_of_service_url" />
+    <org.chromium.chrome.browser.about_settings.HyperlinkPreference
+        android:key="privacy_policy"
+        android:title="@string/privacy_policy_title"
+        app:url="@string/brave_privacy_notice_url" />
+    <Preference
+        android:fragment="org.chromium.chrome.browser.settings.BraveLicensePreferences"
+        android:key="brave_license"
+        android:title="@string/brave_license_text" />
+</PreferenceScreen>

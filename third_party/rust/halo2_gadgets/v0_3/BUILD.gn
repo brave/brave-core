@@ -1,0 +1,129 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "halo2_gadgets"
+  epoch = "0.3"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/ecc.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/ecc/chip.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/ecc/chip/add.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/ecc/chip/add_incomplete.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/ecc/chip/constants.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/ecc/chip/mul.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/ecc/chip/mul/complete.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/ecc/chip/mul/incomplete.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/ecc/chip/mul/overflow.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/ecc/chip/mul_fixed.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/ecc/chip/mul_fixed/base_field_elem.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/ecc/chip/mul_fixed/full_width.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/ecc/chip/mul_fixed/short.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/ecc/chip/witness_point.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/poseidon.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/poseidon/pow5.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/poseidon/primitives.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/poseidon/primitives/fp.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/poseidon/primitives/fq.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/poseidon/primitives/grain.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/poseidon/primitives/mds.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/poseidon/primitives/p128pow5t3.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/poseidon/primitives/test_vectors.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/sha256.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/sha256/table16.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/sha256/table16/compression.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/sha256/table16/compression/compression_gates.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/sha256/table16/compression/compression_util.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/sha256/table16/compression/subregion_digest.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/sha256/table16/compression/subregion_initial.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/sha256/table16/compression/subregion_main.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/sha256/table16/gates.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/sha256/table16/message_schedule.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/sha256/table16/message_schedule/schedule_gates.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/sha256/table16/message_schedule/schedule_util.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/sha256/table16/message_schedule/subregion1.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/sha256/table16/message_schedule/subregion2.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/sha256/table16/message_schedule/subregion3.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/sha256/table16/spread_table.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/sha256/table16/util.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/sinsemilla.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/sinsemilla/chip.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/sinsemilla/chip/generator_table.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/sinsemilla/chip/hash_to_point.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/sinsemilla/merkle.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/sinsemilla/merkle/chip.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/sinsemilla/message.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/sinsemilla/primitives.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/sinsemilla/primitives/addition.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/sinsemilla/primitives/sinsemilla_s.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/utilities.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/utilities/cond_swap.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/utilities/decompose_running_sum.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/halo2_gadgets-v0_3/src/utilities/lookup_range_check.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_authors = "Sean Bowe <sean@electriccoin.co>, Jack Grigg <jack@electriccoin.co>, Daira Hopwood <daira@jacaranda.org>, Ying Tong Lai <yingtong@electriccoin.co>, Kris Nuttycombe <kris@electriccoin.co>"
+  cargo_pkg_name = "halo2_gadgets"
+  cargo_pkg_description = "Reusable gadgets and chip implementations for Halo 2"
+  cargo_pkg_repository = "https://github.com/zcash/halo2"
+  cargo_pkg_version = "0.3.0"
+
+  allow_unsafe = false
+
+  deps = [
+    "//brave/third_party/rust/arrayvec/v0_7:lib",
+    "//brave/third_party/rust/bitvec/v1:lib",
+    "//brave/third_party/rust/ff/v0_13:lib",
+    "//brave/third_party/rust/group/v0_13:lib",
+    "//brave/third_party/rust/halo2_proofs/v0_3:lib",
+    "//brave/third_party/rust/lazy_static/v1:lib",
+    "//brave/third_party/rust/pasta_curves/v0_5:lib",
+    "//brave/third_party/rust/rand/v0_8:lib",
+    "//brave/third_party/rust/subtle/v2:lib",
+    "//brave/third_party/rust/uint/v0_9:lib",
+  ]
+  rustenv = []
+  rustflags = []
+
+  #####################################################################
+  # Tweaking which GN `config`s apply to this target.
+
+  # Config changes that apply to all `//third_party/rust` crates.
+  _configs_to_remove = [
+    # We don't need code coverage data for any `chromium_crates_io` crates.
+    "//build/config/coverage:default_coverage",
+
+    # This is third-party code, so remove `chromium_code` config.  We are not
+    # at the same time adding `//build/config/compiler:no_chromium_code`,
+    # because 1) we don't want to pull how warnings are handled by that config
+    # and 2) that config doesn't have any non-warnings-related stuff.
+    "//build/config/compiler:chromium_code",
+  ]
+  _configs_to_add = []
+
+  # Changing (if needed) which configs apply to this specific crate (based on
+  # `extra_kv.configs_to_remove` and `extra_kv.configs_to_add` from
+  # `gnrt_config.toml`).
+  _configs_to_remove += []
+  _configs_to_add += []
+
+  # Applying config changes.
+  library_configs -= _configs_to_remove
+  library_configs += _configs_to_add
+  executable_configs -= _configs_to_remove
+  executable_configs += _configs_to_add
+  proc_macro_configs -= _configs_to_remove
+  proc_macro_configs += _configs_to_add
+}

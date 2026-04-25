@@ -1,0 +1,6 @@
+TOML parse error at line 9, column 22
+  |
+9 | string-null = "null\x00"
+  |                      ^
+invalid escape sequence
+expected `b`, `f`, `n`, `r`, `t`, `u`, `U`, `\`, `"`

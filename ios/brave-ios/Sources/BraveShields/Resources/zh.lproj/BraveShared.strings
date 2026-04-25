@@ -1,0 +1,252 @@
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "添加由您信任的社区创建和维护的其他列表。";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**僅訂閱來自您信任的實體的清單**。您的瀏覽器將會定期檢查您輸入網址的清單更新。";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "通过 URL 添加筛选条件";
+
+/* A discription of the Brave Player. */
+"AntiAdBlockWarningBravePlayerDescription" = "**Brave Player** 是您获得无广告、不间断视频体验的入场券。";
+
+/* A button that disables ad-blocking and uses brave player. */
+"AntiAdBlockWarningConfirmationButton" = "为我调整 Shields";
+
+/* A descriptive message explaining this site's ad-blocking crackdown. */
+"AntiAdBlockWarningDescription" = "该网站已开始阻止某些广告拦截器，这意味着其网站可能无法正常运行。";
+
+/* A descriptive message explaining to disable shields on this site. */
+"AntiAdBlockWarningDescription2" = "为了解决这个问题，Brave 可以为你调整 shields 设置。调整后，你可以尝试在 Brave Player 中观看这些内容。";
+
+/* A button that dismisses the warning and does nothing. */
+"AntiAdBlockWarningDismissButton" = "保持当前设置";
+
+/* A title for a popup that tells the user we recommend turning shields off for this site. */
+"AntiAdBlockWarningTitle" = "调整本网站的广告屏蔽设置";
+
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "自动销毁";
+
+/* The option the user can select to do aggressive ad and tracker blocking */
+"BlockAdsAndTrackingAggressive" = "攻击性";
+
+/* A description for a shield options that allows you to switch between different blocking levels for trackers and ads blocking. Options include disabled, standard and aggressive. */
+"BlockAdsAndTrackingDescription" = "禁止載入廣告、彈出式視窗和追蹤器。";
+
+/* The option the user can select to disable ad and tracker blocking */
+"BlockAdsAndTrackingDisabled" = "禁用";
+
+/* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
+"BlockAdsAndTrackingStandard" = "标准";
+
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "封鎖「切換至應用程式」通知";
+
+/* Title for the brave player feature */
+"BravePlayer" = "Brave Player";
+
+/* A label for a toggle that enables automatic launching of brave player for certain sites */
+"BravePlayerAlwaysOpenYouTubeLinks" = "始终使用 Brave Player 打开本网站的视频";
+
+/* A button that confirms to use the brave player. */
+"BravePlayerConfirmButton" = "了解详情";
+
+/* A button that ignores the brave player */
+"BravePlayerDismissButton" = "现在不";
+
+/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
+"BravePlayerInfoMessage" = "Brave Player 可让你不受干扰地观看视频。";
+
+/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
+"BravePlayerInfoTitle" = "改为在 Brave Player 中观看";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "内容过滤";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "啟用自訂過濾器，封鎖特定區域和語言的追蹤器，以及惱人的內容";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "自訂篩選清單";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "自訂篩選清單網址";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "自定过滤器";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "请在此添加筛选条件。请遵守 Adblock 筛选语法。";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "行 %2$i 命令 `%1$@` 无效";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "请在此添加您的自定义筛选条件，每行一条。";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "自定义筛选条件不可超过 %i 行";
+
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "預設篩選清單";
+
+/* Text for a button in a blocked page info screen that takes you back where you came from */
+"DomainBlockedGoBackAction" = "返回";
+
+/* A description in the warning page that appears when a page was blocked */
+"DomainBlockedPageDescription" = "由于您要求积极阻止跟踪器和广告，Brave 会在第一次网络连接之前阻止该网站。";
+
+/* A message in the warning page that appears when a page was blocked */
+"DomainBlockedPageMessage" = "Brave 已阻止以下站点加载：";
+
+/* A title in the warning page that appears when a page was blocked */
+"DomainBlockedPageTitle" = "该网站可能会跨网站追踪您";
+
+/* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
+"DomainBlockedProceedAction" = "继续";
+
+/* A tab title for the warning page that appears when a page was blocked */
+"DomainBlockedTitle" = "已被阻止的域";
+
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "要求网站不出售或共享您的数据。[了解更多](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "啟用全球隱私控制";
+
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "外部筛选条件列表";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "輸入的網址無效";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "自訂篩選清單只允許使用安全的 (https) 網址";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "添加";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "其他热门社群清单。请注意，启用太多过滤器可能会导致浏览速度变慢。";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "下載失败";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "等待下載";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "编辑";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "輸入过滤器清单 URL";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "最後一次更新在 %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "在此處輸入篩選清單網址";
+
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "关闭网站时清除 cookie 和其他网站数据";
+
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "关闭此网站后删除我的资料";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "严格";
+
+/* This is a label on a button that updates filter lists which signifies that lists have been updated */
+"ListsUpdated" = "已更新列表";
+
+/* A label displayed above a value indicating if the site is in aggressive mode in Blocked Requests view. */
+"shields.aggressiveLabel" = "攻击性";
+
+/* A label displayed above the location a request was blocked in Blocked Requests view. */
+"shields.blockedByLabel" = "拦截方";
+
+/* The title displayed in the navigation bar of Blocked Requests view. */
+"shields.blockedRequestsTitle" = "已拦截请求";
+
+/* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
+"shields.contentBlocker" = "内容拦截器";
+
+/* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
+"shields.requestBlocking" = "请求正在拦截";
+
+/* A label displayed above the request url that was blocked in Blocked Requests view. */
+"shields.requestURLLabel" = "请求 URL";
+
+/* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
+"shields.resourceTypeLabel" = "资源类型";
+
+/* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowDescription" = "如果 Shred 应删除历史记录项。";
+
+/* A title beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowTitle" = "Shred 删除历史记录";
+
+/* A row description that appears in the Shields & Privacy settings. */
+"shields.shredRowDescription" = "更新自动 Shred 并调整哪些数据被 shred。";
+
+/* A row title that appears in the Shields & Privacy settings. */
+"shields.shredRowTitle" = "销毁";
+
+/* A title for the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredSettingsViewTitle" = "销毁";
+
+/* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
+"shields.sourceURLLabel" = "源 URL";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "销毁数据";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "一律不";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "关闭应用程序";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "网站标签已关闭";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "销毁操作将关闭所有打开到该网站的标签页，并删除所有网站数据。此操作无法撤销。";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "销毁网站数据";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "销毁操作将关闭所有打开到该网站的标签页，并删除所有网站数据。此操作无法撤销。";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "要销毁网站数据吗？";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "立即销毁网站数据";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "销毁操作将关闭所选标签页，并删除所有网站数据。此操作无法撤销。";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "该网站不安全";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "至 %@ 的连接不安全";
+
+/* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
+"TrackersAndAdsBlocking" = "跟踪器 & 广告拦截";
+
+/* This is a label for a button which when pressed updates all the filter lists */
+"UpdateLists" = "更新列表";
+
+/* This is a label on a button that updates filter lists which signifies that lista are being updated */
+"UpdatingLists" = "正在更新列表";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "將連線升級為 HTTPS";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "您当前看到警告提示，是由于该网站不支持 HTTPS。";
+

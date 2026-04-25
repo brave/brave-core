@@ -1,0 +1,31 @@
+<if expr="enable_brave_vpn_wireguard">
+  <style include="settings-shared cr-shared-style">
+    .title {
+      font-size: 14px;
+      font-weight: 600;
+      height: 68px;
+    }
+  </style>
+
+  <settings-section
+    page-title="$i18n{vpnPageTitle}">
+    <settings-vpn-page prefs="{{prefs}}">
+
+      <settings-toggle-button id="toggleWireguardButton"
+        pref="{{prefs.brave.brave_vpn.wireguard_enabled}}"
+        label="$i18n{useWireguardLabel}"
+        sub-label="[[toggleWireguardSubLabel_]]"
+        disabled="[[braveVpnConnected_]]">
+      </settings-toggle-button>
+
+      <if expr="is_win">
+        <settings-toggle-button id="toggleShowInSystemTray"
+          pref="[[showInSystemTrayPref_]]"
+          label="$i18n{showInSystemTrayWindows}"
+          on-settings-boolean-control-change="onToggleShowInSystemTrayChange_"
+          sub-label="$i18n{showInSystemTrayWindowsSubLabel}">
+        </settings-toggle-button>
+      </if>
+    </settings-vpn-page>
+  </settings-section>
+</if>

@@ -1,0 +1,1490 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_wallet/browser/swap_service.h"
+
+#include <map>
+#include <memory>
+#include <utility>
+#include <vector>
+
+#include "base/test/bind.h"
+#include "base/test/mock_callback.h"
+#include "base/test/task_environment.h"
+#include "base/test/test_future.h"
+#include "base/test/values_test_util.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/swap_response_parser.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/test_utils.h"
+#include "components/grit/brave_components_strings.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
+#include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "ui/base/l10n/l10n_util.h"
+
+using base::test::ParseJson;
+
+namespace {
+
+auto IsTruthy(bool truthy) {
+  return testing::Truly(
+      [=](const auto& candidate) { return !!candidate == truthy; });
+}
+
+}  // namespace
+
+namespace brave_wallet {
+
+namespace {
+
+mojom::SwapQuoteParamsPtr GetCannedSwapQuoteParams(
+    mojom::CoinType from_coin,
+    const std::string& from_chain_id,
+    const std::string& from_token,
+    mojom::CoinType to_coin,
+    const std::string& to_chain_id,
+    const std::string& to_token,
+    mojom::SwapProvider provider) {
+  auto params = mojom::SwapQuoteParams::New();
+
+  params->from_account_id = MakeAccountId(
+      from_coin, mojom::KeyringId::kDefault, mojom::AccountKind::kDerived,
+      from_coin == mojom::CoinType::ETH
+          ? "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4"
+          : "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4");
+  params->from_chain_id = from_chain_id;
+  params->from_token = from_token;
+  params->from_amount = "1000000000000000000000";
+
+  params->to_account_id = MakeAccountId(
+      to_coin, mojom::KeyringId::kDefault, mojom::AccountKind::kDerived,
+      to_coin == mojom::CoinType::ETH
+          ? "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4"
+          : "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4");
+  params->to_chain_id = to_chain_id;
+  params->to_token = to_token;
+
+  params->slippage_percentage = "3";
+  params->route_priority = mojom::RoutePriority::kFastest;
+  params->provider = provider;
+  return params;
+}
+
+mojom::SwapTransactionParamsUnionPtr GetCannedJupiterTransactionParams(
+    const std::string& output_mint) {
+  auto params = mojom::JupiterTransactionParams::New();
+
+  auto quote = brave_wallet::mojom::JupiterQuote::New();
+  quote->input_mint = "So11111111111111111111111111111111111111112";
+  quote->in_amount = "100000000";
+  quote->output_mint = output_mint;
+  quote->out_amount = "10886298";
+  quote->other_amount_threshold = "10885210";
+  quote->swap_mode = "ExactIn";
+  quote->slippage_bps = "1";
+  quote->price_impact_pct = "0.008955716118219659";
+
+  auto platform_fee = brave_wallet::mojom::JupiterPlatformFee::New();
+  platform_fee->amount = "93326";
+  platform_fee->fee_bps = "85";
+  quote->platform_fee = std::move(platform_fee);
+
+  auto swap_info_1 = brave_wallet::mojom::JupiterSwapInfo::New();
+  swap_info_1->amm_key = "EiEAydLqSKFqRPpuwYoVxEJ6h9UZh9tsTaHgs4f8b8Z5";
+  swap_info_1->label = "Lifinity V2";
+  swap_info_1->input_mint = "So11111111111111111111111111111111111111112";
+  swap_info_1->output_mint = "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB";
+  swap_info_1->in_amount = "100000000";
+  swap_info_1->out_amount = "10964919";
+  swap_info_1->fee_amount = "20000";
+  swap_info_1->fee_mint = "So11111111111111111111111111111111111111112";
+  auto step_1 = brave_wallet::mojom::JupiterRouteStep::New();
+  step_1->percent = "100";
+  step_1->swap_info = std::move(swap_info_1);
+
+  auto swap_info_2 = brave_wallet::mojom::JupiterSwapInfo::New();
+  swap_info_2->amm_key = "UXD3M3N6Hn1JjbxugKguhJVHbYm8zHvdF5pNf7dumd5";
+  swap_info_2->label = "Mercurial";
+  swap_info_2->input_mint = "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB";
+  swap_info_2->output_mint = output_mint;
+  swap_info_2->in_amount = "10964919";
+  swap_info_2->out_amount = "10979624";
+  swap_info_2->fee_amount = "1098";
+  swap_info_2->fee_mint = output_mint;
+  auto step_2 = brave_wallet::mojom::JupiterRouteStep::New();
+  step_2->percent = "100";
+  step_2->swap_info = std::move(swap_info_2);
+
+  quote->route_plan.push_back(step_1.Clone());
+  quote->route_plan.push_back(step_2.Clone());
+
+  params->quote = quote.Clone();
+  params->user_public_key = "S5ARSDD3ddZqqqqqb2EUE2h2F1XQHBk7bErRW1WPGe4";
+  params->chain_id = mojom::kSolanaMainnet;
+
+  return mojom::SwapTransactionParamsUnion::NewJupiterTransactionParams(
+      std::move(params));
+}
+
+}  // namespace
+
+class SwapServiceUnitTest : public testing::Test {
+ public:
+  SwapServiceUnitTest() {
+    brave_wallet::RegisterProfilePrefs(prefs_.registry());
+    swap_service_ =
+        std::make_unique<SwapService>(url_loader_factory_.GetSafeWeakWrapper());
+  }
+
+  ~SwapServiceUnitTest() override = default;
+
+  void SetInterceptor(const std::string& content) {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&, content](const network::ResourceRequest& request) {
+          url_loader_factory_.ClearResponses();
+          url_loader_factory_.AddResponse(request.url.spec(), content);
+        }));
+  }
+
+  void SetErrorInterceptor(const std::string& content) {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&](const network::ResourceRequest& request) {
+          url_loader_factory_.ClearResponses();
+          url_loader_factory_.AddResponse(request.url.spec(), content,
+                                          net::HTTP_REQUEST_TIMEOUT);
+        }));
+  }
+
+  void IsSwapSupported(const std::string& chain_id, bool expected_response) {
+    base::MockCallback<mojom::SwapService::IsSwapSupportedCallback> callback;
+    EXPECT_CALL(callback, Run(IsTruthy(expected_response)));
+    swap_service_->IsSwapSupported(chain_id, callback.Get());
+    task_environment_.RunUntilIdle();
+  }
+
+  void TestGetQuoteCase(const std::string& json,
+                        mojom::CoinType from_coin,
+                        const std::string& from_chain_id,
+                        mojom::CoinType to_coin,
+                        const std::string& to_chain_id,
+                        const bool expected_success,
+                        mojom::SwapProvider provider) {
+    SetInterceptor(json);
+    auto expected_error_string =
+        expected_success ? ""
+                         : l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR);
+    base::MockCallback<mojom::SwapService::GetQuoteCallback> callback;
+    EXPECT_CALL(
+        callback,
+        Run(IsTruthy(expected_success), IsTruthy(expected_success),
+            EqualsMojo(mojom::SwapErrorUnionPtr()), expected_error_string));
+
+    swap_service_->GetQuote(
+        GetCannedSwapQuoteParams(from_coin, from_chain_id, "DAI", to_coin,
+                                 to_chain_id, "ETH", provider),
+        callback.Get());
+    task_environment_.RunUntilIdle();
+  }
+
+  void TestGetJupiterTransaction(
+      const bool expected_success,
+      const std::string& expected_response,
+      const bool has_error,
+      const std::string& output_mint =
+          "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"  // USDC
+  ) {
+    auto expected_error_string =
+        expected_success
+            ? testing::AnyOf(std::string(), std::string())
+            : testing::AnyOf(
+                  l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR),
+                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    base::MockCallback<mojom::SwapService::GetTransactionCallback> callback;
+    EXPECT_CALL(callback, Run(IsTruthy(expected_success),
+                              EqualsMojo(mojom::SwapErrorUnionPtr()),
+                              expected_error_string));
+
+    swap_service_->GetTransaction(
+        GetCannedJupiterTransactionParams(output_mint), callback.Get());
+    task_environment_.RunUntilIdle();
+  }
+
+ protected:
+  sync_preferences::TestingPrefServiceSyncable prefs_;
+  std::unique_ptr<SwapService> swap_service_;
+  base::test::TaskEnvironment task_environment_;
+
+ private:
+  network::TestURLLoaderFactory url_loader_factory_;
+};
+
+TEST_F(SwapServiceUnitTest, GetZeroExQuote) {
+  // Case 1: non-null zeroExFee
+  SetInterceptor(R"(
+    {
+      "blockNumber": "20114676",
+      "buyAmount": "100032748",
+      "buyToken": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+      "fees": {
+        "integratorFee": null,
+        "zeroExFee": {
+          "amount": "0",
+          "token": "0xdeadbeef",
+          "type": "volume"
+        },
+        "gasFee": null
+      },
+      "gas": "288095",
+      "gasPrice": "7062490000",
+      "issues": {
+        "allowance": {
+          "actual": "0",
+          "spender": "0x0000000000001ff3684f28c67538d4d072c22734"
+        },
+        "balance": {
+          "token": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+          "actual": "0",
+          "expected": "100000000"
+        },
+        "simulationIncomplete": false,
+        "invalidSourcesPassed": []
+      },
+      "liquidityAvailable": true,
+      "minBuyAmount": "99032421",
+      "route": {
+        "fills": [
+          {
+            "from": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+            "to": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+            "source": "SolidlyV3",
+            "proportionBps": "10000"
+          }
+        ],
+        "tokens": [
+          {
+            "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+            "symbol": "USDC"
+          },
+          {
+            "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+            "symbol": "USDT"
+          }
+        ]
+      },
+      "sellAmount": "100000000",
+      "sellToken": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+      "tokenMetadata": {
+        "buyToken": {
+          "buyTaxBps": "0",
+          "sellTaxBps": "0"
+        },
+        "sellToken": {
+          "buyTaxBps": "0",
+          "sellTaxBps": "0"
+        }
+      },
+      "totalNetworkFee": "2034668056550000",
+      "zid": "0x111111111111111111111111"
+    }
+  )");
+
+  auto expected_zero_ex_quote = mojom::ZeroExQuote::New();
+  expected_zero_ex_quote->buy_amount = "100032748";
+  expected_zero_ex_quote->buy_token =
+      "0xdac17f958d2ee523a2206206994597c13d831ec7";
+  expected_zero_ex_quote->sell_amount = "100000000";
+  expected_zero_ex_quote->sell_token =
+      "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48";
+
+  auto zero_ex_fee = mojom::ZeroExFee::New();
+  zero_ex_fee->type = "volume";
+  zero_ex_fee->token = "0xdeadbeef";
+  zero_ex_fee->amount = "0";
+  expected_zero_ex_quote->fees = mojom::ZeroExFees::New();
+  expected_zero_ex_quote->fees->zero_ex_fee = std::move(zero_ex_fee);
+
+  expected_zero_ex_quote->gas = "288095";
+  expected_zero_ex_quote->gas_price = "7062490000";
+  expected_zero_ex_quote->liquidity_available = true;
+  expected_zero_ex_quote->min_buy_amount = "99032421";
+  expected_zero_ex_quote->total_network_fee = "2034668056550000";
+
+  auto fill = mojom::ZeroExRouteFill::New();
+  fill->from = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48";
+  fill->to = "0xdac17f958d2ee523a2206206994597c13d831ec7";
+  fill->source = "SolidlyV3";
+  fill->proportion_bps = "10000";
+  expected_zero_ex_quote->route = mojom::ZeroExRoute::New();
+  expected_zero_ex_quote->route->fills.push_back(fill.Clone());
+
+  expected_zero_ex_quote->allowance_target =
+      "0x0000000000001fF3684f28c67538d4D072C22734";
+
+  auto expected_swap_fees = mojom::SwapFees::New();
+  expected_swap_fees->fee_pct = "0";
+  expected_swap_fees->discount_pct = "0";
+  expected_swap_fees->effective_fee_pct = "0";
+  expected_swap_fees->discount_code = mojom::SwapDiscountCode::kNone;
+  expected_swap_fees->fee_param = "";
+
+  base::MockCallback<mojom::SwapService::GetQuoteCallback> callback;
+  EXPECT_CALL(callback, Run(EqualsMojo(mojom::SwapQuoteUnion::NewZeroExQuote(
+                                expected_zero_ex_quote.Clone())),
+                            EqualsMojo(expected_swap_fees.Clone()),
+                            EqualsMojo(mojom::SwapErrorUnionPtr()), ""));
+
+  swap_service_->GetQuote(
+      GetCannedSwapQuoteParams(
+          mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "DAI",
+          mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "ETH",
+          mojom::SwapProvider::kZeroEx),
+      callback.Get());
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Case 2: null zeroExFee
+  SetInterceptor(R"(
+    {
+      "blockNumber": "20114676",
+      "buyAmount": "100032748",
+      "buyToken": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+      "fees": {
+        "integratorFee": null,
+        "zeroExFee": null,
+        "gasFee": null
+      },
+      "gas": "288095",
+      "gasPrice": "7062490000",
+      "issues": {
+        "allowance": {
+          "actual": "0",
+          "spender": "0x0000000000001ff3684f28c67538d4d072c22734"
+        },
+        "balance": {
+          "token": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+          "actual": "0",
+          "expected": "100000000"
+        },
+        "simulationIncomplete": false,
+        "invalidSourcesPassed": []
+      },
+      "liquidityAvailable": true,
+      "minBuyAmount": "99032421",
+      "route": {
+        "fills": [
+          {
+            "from": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+            "to": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+            "source": "SolidlyV3",
+            "proportionBps": "10000"
+          }
+        ],
+        "tokens": [
+          {
+            "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+            "symbol": "USDC"
+          },
+          {
+            "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+            "symbol": "USDT"
+          }
+        ]
+      },
+      "sellAmount": "100000000",
+      "sellToken": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+      "tokenMetadata": {
+        "buyToken": {
+          "buyTaxBps": "0",
+          "sellTaxBps": "0"
+        },
+        "sellToken": {
+          "buyTaxBps": "0",
+          "sellTaxBps": "0"
+        }
+      },
+      "totalNetworkFee": "2034668056550000",
+      "zid": "0x111111111111111111111111"
+    }
+  )");
+
+  expected_zero_ex_quote->fees->zero_ex_fee = nullptr;
+  EXPECT_CALL(callback, Run(EqualsMojo(mojom::SwapQuoteUnion::NewZeroExQuote(
+                                std::move(expected_zero_ex_quote))),
+                            EqualsMojo(expected_swap_fees.Clone()),
+                            EqualsMojo(mojom::SwapErrorUnionPtr()), ""));
+
+  swap_service_->GetQuote(
+      GetCannedSwapQuoteParams(
+          mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "DAI",
+          mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "ETH",
+          mojom::SwapProvider::kZeroEx),
+      callback.Get());
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+}
+
+TEST_F(SwapServiceUnitTest, GetZeroExQuoteError) {
+  // Case 1: validation error
+  std::string error = R"(
+    {
+      "name": "INPUT_INVALID",
+      "message": "Validation Failed"
+    })";
+  SetErrorInterceptor(error);
+
+  base::MockCallback<mojom::SwapService::GetQuoteCallback> callback;
+  EXPECT_CALL(callback, Run(EqualsMojo(mojom::SwapQuoteUnionPtr()),
+                            EqualsMojo(mojom::SwapFeesPtr()),
+                            EqualsMojo(mojom::SwapErrorUnion::NewZeroExError(
+                                zeroex::ParseErrorResponse(ParseJson(error)))),
+                            ""));
+
+  swap_service_->GetQuote(
+      GetCannedSwapQuoteParams(
+          mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "DAI",
+          mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "ETH",
+          mojom::SwapProvider::kZeroEx),
+      callback.Get());
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // Case 2: insufficient liquidity
+  SetInterceptor(R"(
+    {
+      "liquidityAvailable": false,
+      "zid": "0x111111111111111111111111"
+    }
+  )");
+  auto error_response = mojom::ZeroExError::New();
+  error_response->name = "INSUFFICIENT_LIQUIDITY";
+  error_response->message =
+      l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_LIQUIDITY);
+  error_response->is_insufficient_liquidity = true;
+
+  EXPECT_CALL(callback, Run(EqualsMojo(mojom::SwapQuoteUnionPtr()),
+                            EqualsMojo(mojom::SwapFeesPtr()),
+                            EqualsMojo(mojom::SwapErrorUnion::NewZeroExError(
+                                std::move(error_response))),
+                            ""));
+
+  swap_service_->GetQuote(
+      GetCannedSwapQuoteParams(
+          mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "DAI",
+          mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "ETH",
+          mojom::SwapProvider::kZeroEx),
+      callback.Get());
+  task_environment_.RunUntilIdle();
+}
+
+TEST_F(SwapServiceUnitTest, GetZeroExQuoteUnexpectedReturn) {
+  std::string unexpected_return = "Woot";
+  SetInterceptor(unexpected_return);
+
+  base::MockCallback<mojom::SwapService::GetQuoteCallback> callback;
+  EXPECT_CALL(callback,
+              Run(EqualsMojo(mojom::SwapQuoteUnionPtr()),
+                  EqualsMojo(mojom::SwapFeesPtr()),
+                  EqualsMojo(mojom::SwapErrorUnionPtr()),
+                  l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
+
+  swap_service_->GetQuote(
+      GetCannedSwapQuoteParams(
+          mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "DAI",
+          mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "ETH",
+          mojom::SwapProvider::kZeroEx),
+      callback.Get());
+  task_environment_.RunUntilIdle();
+}
+
+TEST_F(SwapServiceUnitTest, GetZeroExTransaction) {
+  SetInterceptor(R"(
+    {
+      "transaction": {
+        "to": "0x7f6cee965959295cc64d0e6c00d99d6532d8e86b",
+        "data": "0xdeadbeef",
+        "gas": "288079",
+        "gasPrice": "4837860000",
+        "value": "0"
+      }
+    }
+  )");
+
+  auto expected_zero_ex_transaction = mojom::ZeroExTransaction::New();
+  expected_zero_ex_transaction->to =
+      "0x7f6cee965959295cc64d0e6c00d99d6532d8e86b";
+  expected_zero_ex_transaction->data = "0xdeadbeef";
+  expected_zero_ex_transaction->gas = "288079";
+  expected_zero_ex_transaction->gas_price = "4837860000";
+  expected_zero_ex_transaction->value = "0";
+
+  base::MockCallback<mojom::SwapService::GetTransactionCallback> callback;
+  EXPECT_CALL(callback,
+              Run(EqualsMojo(mojom::SwapTransactionUnion::NewZeroExTransaction(
+                      expected_zero_ex_transaction.Clone())),
+                  EqualsMojo(mojom::SwapErrorUnionPtr()), ""));
+
+  swap_service_->GetTransaction(
+      mojom::SwapTransactionParamsUnion::NewZeroExTransactionParams(
+          GetCannedSwapQuoteParams(
+              mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "DAI",
+              mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "ETH",
+              mojom::SwapProvider::kZeroEx)),
+      callback.Get());
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+}
+
+TEST_F(SwapServiceUnitTest, GetZeroExTransactionError) {
+  std::string error =
+      R"({"name":"INPUT_INVALID","message":"Validation Failed"})";
+  SetErrorInterceptor(error);
+
+  base::MockCallback<mojom::SwapService::GetTransactionCallback> callback;
+  EXPECT_CALL(callback, Run(EqualsMojo(mojom::SwapTransactionUnionPtr()),
+                            EqualsMojo(mojom::SwapErrorUnion::NewZeroExError(
+                                zeroex::ParseErrorResponse(ParseJson(error)))),
+                            ""));
+
+  swap_service_->GetTransaction(
+      mojom::SwapTransactionParamsUnion::NewZeroExTransactionParams(
+          GetCannedSwapQuoteParams(
+              mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "DAI",
+              mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "ETH",
+              mojom::SwapProvider::kZeroEx)),
+      callback.Get());
+  task_environment_.RunUntilIdle();
+}
+
+TEST_F(SwapServiceUnitTest, GetZeroExTransactionUnexpectedReturn) {
+  SetInterceptor("Woot");
+
+  base::MockCallback<mojom::SwapService::GetTransactionCallback> callback;
+  EXPECT_CALL(callback,
+              Run(EqualsMojo(mojom::SwapTransactionUnionPtr()),
+                  EqualsMojo(mojom::SwapErrorUnionPtr()),
+                  l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
+
+  swap_service_->GetTransaction(
+      mojom::SwapTransactionParamsUnion::NewZeroExTransactionParams(
+          GetCannedSwapQuoteParams(
+              mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "DAI",
+              mojom::CoinType::ETH, mojom::kPolygonMainnetChainId, "ETH",
+              mojom::SwapProvider::kZeroEx)),
+      callback.Get());
+  task_environment_.RunUntilIdle();
+}
+
+TEST_F(SwapServiceUnitTest, GetZeroExQuoteURL) {
+  const std::map<std::string, std::string> chain_ids = {
+      {mojom::kMainnetChainId, "1"},
+      {mojom::kArbitrumMainnetChainId, "42161"},
+      {mojom::kAvalancheMainnetChainId, "43114"},
+      {mojom::kBaseMainnetChainId, "8453"},
+      {mojom::kBlastMainnetChainId, "238"},
+      {mojom::kBnbSmartChainMainnetChainId, "56"},
+      {mojom::kLineaChainId, "59144"},
+      {mojom::kOptimismMainnetChainId, "10"},
+      {mojom::kPolygonMainnetChainId, "137"},
+      {mojom::kScrollChainId, "534352"}};
+
+  for (const auto& [chain_id, encoded_chain_id] : chain_ids) {
+    SCOPED_TRACE(testing::Message() << "chain_id: " << chain_id);
+
+    // OK: with fees
+    auto url = swap_service_->GetZeroExQuoteURL(
+        *GetCannedSwapQuoteParams(mojom::CoinType::ETH, chain_id, "DAI",
+                                  mojom::CoinType::ETH, chain_id, "ETH",
+                                  mojom::SwapProvider::kZeroEx),
+        "85");
+    EXPECT_EQ(url,
+              absl::StrFormat(
+                  "https://api.0x.wallet.brave.com/swap/allowance-holder/price?"
+                  "chainId=%s&"
+                  "taker=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
+                  "sellAmount=1000000000000000000000&"
+                  "buyToken=ETH&"
+                  "sellToken=DAI&"
+                  "swapFeeBps=85&"
+                  "swapFeeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+                  "swapFeeToken=ETH&"
+                  "slippageBps=300",
+                  encoded_chain_id));
+
+    // Ok: no fees
+    url = swap_service_->GetZeroExQuoteURL(
+        *GetCannedSwapQuoteParams(mojom::CoinType::ETH, chain_id, "DAI",
+                                  mojom::CoinType::ETH, chain_id, "ETH",
+                                  mojom::SwapProvider::kZeroEx),
+        "");
+    EXPECT_EQ(url,
+              absl::StrFormat(
+                  "https://api.0x.wallet.brave.com/swap/allowance-holder/price?"
+                  "chainId=%s&"
+                  "taker=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
+                  "sellAmount=1000000000000000000000&"
+                  "buyToken=ETH&"
+                  "sellToken=DAI&"
+                  "slippageBps=300",
+                  encoded_chain_id));
+  }
+
+  // KO: unsupported network
+  EXPECT_EQ(swap_service_->GetZeroExQuoteURL(
+                *GetCannedSwapQuoteParams(mojom::CoinType::ETH, "0x3", "DAI",
+                                          mojom::CoinType::ETH, "0x3", "ETH",
+                                          mojom::SwapProvider::kZeroEx),
+                "0.00875"),
+            "");
+}
+
+TEST_F(SwapServiceUnitTest, GetZeroExTransactionURL) {
+  const std::map<std::string, std::string> chain_ids = {
+      {mojom::kMainnetChainId, "1"},
+      {mojom::kArbitrumMainnetChainId, "42161"},
+      {mojom::kAvalancheMainnetChainId, "43114"},
+      {mojom::kBaseMainnetChainId, "8453"},
+      {mojom::kBlastMainnetChainId, "238"},
+      {mojom::kBnbSmartChainMainnetChainId, "56"},
+      {mojom::kLineaChainId, "59144"},
+      {mojom::kOptimismMainnetChainId, "10"},
+      {mojom::kPolygonMainnetChainId, "137"},
+      {mojom::kScrollChainId, "534352"}};
+
+  for (const auto& [chain_id, encoded_chain_id] : chain_ids) {
+    SCOPED_TRACE(testing::Message() << "chain_id: " << chain_id);
+
+    // OK: with fees
+    auto url = swap_service_->GetZeroExTransactionURL(
+        *GetCannedSwapQuoteParams(mojom::CoinType::ETH, chain_id, "DAI",
+                                  mojom::CoinType::ETH, chain_id, "ETH",
+                                  mojom::SwapProvider::kZeroEx),
+        "85");
+    EXPECT_EQ(url,
+              absl::StrFormat(
+                  "https://api.0x.wallet.brave.com/swap/allowance-holder/quote?"
+                  "chainId=%s&"
+                  "taker=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
+                  "sellAmount=1000000000000000000000&"
+                  "buyToken=ETH&"
+                  "sellToken=DAI&"
+                  "swapFeeBps=85&"
+                  "swapFeeRecipient=0xbd9420A98a7Bd6B89765e5715e169481602D9c3d&"
+                  "swapFeeToken=ETH&"
+                  "slippageBps=300",
+                  encoded_chain_id));
+
+    // OK: no fees
+    url = swap_service_->GetZeroExTransactionURL(
+        *GetCannedSwapQuoteParams(mojom::CoinType::ETH, chain_id, "DAI",
+                                  mojom::CoinType::ETH, chain_id, "ETH",
+                                  mojom::SwapProvider::kZeroEx),
+        "");
+    EXPECT_EQ(url,
+              absl::StrFormat(
+                  "https://api.0x.wallet.brave.com/swap/allowance-holder/quote?"
+                  "chainId=%s&"
+                  "taker=0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4&"
+                  "sellAmount=1000000000000000000000&"
+                  "buyToken=ETH&"
+                  "sellToken=DAI&"
+                  "slippageBps=300",
+                  encoded_chain_id));
+  }
+
+  // KO: unsupported network
+  EXPECT_EQ(swap_service_->GetZeroExTransactionURL(
+                *GetCannedSwapQuoteParams(mojom::CoinType::ETH, "0x3", "DAI",
+                                          mojom::CoinType::ETH, "0x3", "ETH",
+                                          mojom::SwapProvider::kZeroEx),
+                "85"),
+            "");
+}
+
+TEST_F(SwapServiceUnitTest, IsSwapSupported) {
+  const std::vector<std::string> supported_chain_ids(
+      {// ZeroEx
+       mojom::kMainnetChainId, mojom::kArbitrumMainnetChainId,
+       mojom::kAvalancheMainnetChainId, mojom::kBaseMainnetChainId,
+       mojom::kBlastMainnetChainId, mojom::kBnbSmartChainMainnetChainId,
+       mojom::kLineaChainId, mojom::kOptimismMainnetChainId,
+       mojom::kPolygonMainnetChainId, mojom::kScrollChainId,
+
+       // Jupiter
+       mojom::kSolanaMainnet,
+
+       // LiFi (in addition to ZeroEx)
+       mojom::kPolygonZKEVMChainId, mojom::kGnosisChainId,
+       mojom::kZkSyncEraChainId, mojom::kAuroraMainnetChainId});
+
+  for (auto& chain_id : supported_chain_ids) {
+    SCOPED_TRACE(testing::Message() << "chain_id: " << chain_id);
+    IsSwapSupported(chain_id, true);
+  }
+
+  IsSwapSupported("0x4", false);
+  IsSwapSupported("0x3", false);
+  IsSwapSupported("", false);
+  IsSwapSupported("invalid chain_id", false);
+}
+
+TEST_F(SwapServiceUnitTest, GetJupiterQuoteURL) {
+  auto params = GetCannedSwapQuoteParams(
+      mojom::CoinType::SOL, mojom::kSolanaMainnet, "", mojom::CoinType::SOL,
+      mojom::kSolanaMainnet, "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      mojom::SwapProvider::kAuto);
+  params->from_token = "So11111111111111111111111111111111111111112";
+  params->to_token = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+  params->from_amount = "10000";
+
+  // OK: with fees
+  auto url = swap_service_->GetJupiterQuoteURL(*params, "85");
+  EXPECT_EQ(url,
+            "https://jupiter-lite.wallet.brave.com/swap/v1/quote?"
+            "inputMint=So11111111111111111111111111111111111111112&"
+            "outputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v&"
+            "amount=10000&"
+            "swapMode=ExactIn&"
+            "slippageBps=300&"
+            "platformFeeBps=85");
+
+  // OK: no fees
+  url = swap_service_->GetJupiterQuoteURL(*params, "");
+  EXPECT_EQ(url,
+            "https://jupiter-lite.wallet.brave.com/swap/v1/quote?"
+            "inputMint=So11111111111111111111111111111111111111112&"
+            "outputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v&"
+            "amount=10000&"
+            "swapMode=ExactIn&"
+            "slippageBps=300");
+}
+
+TEST_F(SwapServiceUnitTest, GetJupiterTransactionURL) {
+  auto url = swap_service_->GetJupiterTransactionURL(mojom::kSolanaMainnet);
+  EXPECT_EQ(url, "https://jupiter-lite.wallet.brave.com/swap/v1/swap");
+}
+
+TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
+  SetInterceptor(R"(
+    {
+      "inputMint": "So11111111111111111111111111111111111111112",
+      "inAmount": "100000000",
+      "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "outAmount": "10886298",
+      "otherAmountThreshold": "10885210",
+      "swapMode": "ExactIn",
+      "slippageBps": 1,
+      "platformFee": {
+        "amount": "93326",
+        "feeBps": 85
+      },
+      "priceImpactPct": "0.008955716118219659",
+      "routePlan": [
+        {
+          "swapInfo": {
+            "ammKey": "EiEAydLqSKFqRPpuwYoVxEJ6h9UZh9tsTaHgs4f8b8Z5",
+            "label": "Lifinity V2",
+            "inputMint": "So11111111111111111111111111111111111111112",
+            "outputMint": "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
+            "inAmount": "100000000",
+            "outAmount": "10964919",
+            "feeAmount": "20000",
+            "feeMint": "So11111111111111111111111111111111111111112"
+          },
+          "percent": 100
+        },
+        {
+          "swapInfo": {
+            "ammKey": "UXD3M3N6Hn1JjbxugKguhJVHbYm8zHvdF5pNf7dumd5",
+            "label": "Mercurial",
+            "inputMint": "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
+            "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            "inAmount": "10964919",
+            "outAmount": "10979624",
+            "feeAmount": "1098",
+            "feeMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+          },
+          "percent": 100
+        }
+      ]
+    })");
+
+  const auto& params = GetCannedJupiterTransactionParams(
+      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
+  auto& expected_quote = params->get_jupiter_transaction_params()->quote;
+
+  auto expected_swap_fees = mojom::SwapFees::New();
+  expected_swap_fees->fee_pct = "0";
+  expected_swap_fees->discount_pct = "0";
+  expected_swap_fees->effective_fee_pct = "0";
+  expected_swap_fees->discount_code = mojom::SwapDiscountCode::kNone;
+  expected_swap_fees->fee_param = "";
+
+  base::MockCallback<mojom::SwapService::GetQuoteCallback> callback;
+  EXPECT_CALL(callback, Run(EqualsMojo(mojom::SwapQuoteUnion::NewJupiterQuote(
+                                std::move(expected_quote))),
+                            EqualsMojo(expected_swap_fees.Clone()),
+                            EqualsMojo(mojom::SwapErrorUnionPtr()), ""));
+  swap_service_->GetQuote(
+      GetCannedSwapQuoteParams(mojom::CoinType::SOL, mojom::kSolanaMainnet, "",
+                               mojom::CoinType::SOL, mojom::kSolanaMainnet,
+                               "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+                               mojom::SwapProvider::kJupiterLegacy),
+      callback.Get());
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&callback);
+
+  // KO: empty JSON for conversion
+  TestGetQuoteCase(R"({})", mojom::CoinType::SOL, mojom::kSolanaMainnet,
+                   mojom::CoinType::SOL, mojom::kSolanaMainnet, false,
+                   mojom::SwapProvider::kJupiterLegacy);
+
+  // KO: invalid JSON
+  TestGetQuoteCase(R"(foo)", mojom::CoinType::SOL, mojom::kSolanaMainnet,
+                   mojom::CoinType::SOL, mojom::kSolanaMainnet, false,
+                   mojom::SwapProvider::kJupiterLegacy);
+}
+
+TEST_F(SwapServiceUnitTest, GetJupiterGate3Quote) {
+  SetInterceptor(R"(
+    {
+      "routes": [
+        {
+          "id": "jup_test123",
+          "provider": "JUPITER",
+          "steps": [
+            {
+              "sourceToken": {
+                "coin": "SOL",
+                "chainId": "0x65",
+                "contractAddress": "",
+                "symbol": "SOL",
+                "decimals": "9",
+                "logo": null
+              },
+              "sourceAmount": "1000000000",
+              "destinationToken": {
+                "coin": "SOL",
+                "chainId": "0x65",
+                "contractAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+                "symbol": "USDC",
+                "decimals": "6",
+                "logo": null
+              },
+              "destinationAmount": "10886298",
+              "tool": {
+                "name": "Jupiter",
+                "logo": "https://example.com/jupiter.png"
+              },
+              "percent": "100"
+            }
+          ],
+          "sourceAmount": "1000000000",
+          "destinationAmount": "10886298",
+          "destinationAmountMin": "10885210",
+          "estimatedTime": 10,
+          "priceImpact": -0.01,
+          "networkFee": null,
+          "gasless": false,
+          "depositAddress": null,
+          "depositMemo": null,
+          "expiresAt": null,
+          "slippagePercentage": "0.5",
+          "transactionParams": null,
+          "requiresTokenAllowance": false,
+          "requiresFirmRoute": true
+        }
+      ]
+    }
+  )");
+
+  base::test::TestFuture<mojom::SwapQuoteUnionPtr, mojom::SwapFeesPtr,
+                         mojom::SwapErrorUnionPtr, const std::string&>
+      future;
+  swap_service_->GetQuote(
+      GetCannedSwapQuoteParams(mojom::CoinType::SOL, mojom::kSolanaMainnet, "",
+                               mojom::CoinType::SOL, mojom::kSolanaMainnet,
+                               "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+                               mojom::SwapProvider::kAuto),
+      future.GetCallback());
+  auto [quote, fees, error, error_string] = future.Take();
+  ASSERT_TRUE(quote);
+  ASSERT_TRUE(quote->is_gate3_quote());
+  EXPECT_FALSE(fees);
+  EXPECT_FALSE(error);
+  EXPECT_TRUE(error_string.empty());
+
+  const auto& gate3_quote = quote->get_gate3_quote();
+  ASSERT_EQ(gate3_quote->routes.size(), 1u);
+
+  const auto& route = gate3_quote->routes[0];
+  EXPECT_EQ(route->id, "jup_test123");
+  EXPECT_EQ(route->provider, mojom::SwapProvider::kJupiter);
+  EXPECT_EQ(route->source_amount, "1000000000");
+  EXPECT_EQ(route->destination_amount, "10886298");
+  EXPECT_EQ(route->destination_amount_min, "10885210");
+  EXPECT_FALSE(route->gasless);
+  EXPECT_TRUE(route->requires_firm_route);
+
+  ASSERT_EQ(route->steps.size(), 1u);
+  const auto& step = route->steps[0];
+  EXPECT_EQ(step->source_token->coin, mojom::CoinType::SOL);
+  EXPECT_EQ(step->source_token->chain_id, "0x65");
+  EXPECT_EQ(step->source_token->symbol, "SOL");
+  EXPECT_EQ(step->destination_token->coin, mojom::CoinType::SOL);
+  EXPECT_EQ(step->destination_token->chain_id, "0x65");
+  EXPECT_EQ(step->destination_token->symbol, "USDC");
+  EXPECT_EQ(step->destination_token->contract_address,
+            "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
+  EXPECT_EQ(step->source_amount, "1000000000");
+  EXPECT_EQ(step->destination_amount, "10886298");
+  EXPECT_EQ(step->tool->name, "Jupiter");
+  EXPECT_EQ(step->tool->logo, "https://example.com/jupiter.png");
+  EXPECT_EQ(step->percent, "100");
+
+  // KO: empty JSON
+  TestGetQuoteCase(R"({})", mojom::CoinType::SOL, mojom::kSolanaMainnet,
+                   mojom::CoinType::SOL, mojom::kSolanaMainnet, false,
+                   mojom::SwapProvider::kAuto);
+
+  // KO: invalid JSON
+  TestGetQuoteCase(R"(foo)", mojom::CoinType::SOL, mojom::kSolanaMainnet,
+                   mojom::CoinType::SOL, mojom::kSolanaMainnet, false,
+                   mojom::SwapProvider::kAuto);
+}
+
+TEST_F(SwapServiceUnitTest, GetJupiterGate3QuoteError) {
+  std::string error_response = R"(
+    {
+      "message": "No routes found for this swap",
+      "kind": "UNKNOWN"
+    }
+  )";
+  SetErrorInterceptor(error_response);
+
+  base::test::TestFuture<mojom::SwapQuoteUnionPtr, mojom::SwapFeesPtr,
+                         mojom::SwapErrorUnionPtr, const std::string&>
+      future;
+  swap_service_->GetQuote(
+      GetCannedSwapQuoteParams(mojom::CoinType::SOL, mojom::kSolanaMainnet, "",
+                               mojom::CoinType::SOL, mojom::kSolanaMainnet,
+                               "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+                               mojom::SwapProvider::kAuto),
+      future.GetCallback());
+  auto [quote, fees, error, error_string] = future.Take();
+  EXPECT_FALSE(quote);
+  EXPECT_FALSE(fees);
+  ASSERT_TRUE(error);
+  ASSERT_TRUE(error->is_gate3_error());
+  EXPECT_EQ(error->get_gate3_error()->message, "No routes found for this swap");
+  EXPECT_EQ(error->get_gate3_error()->kind,
+            mojom::Gate3SwapErrorKind::kUnknown);
+  EXPECT_TRUE(error_string.empty());
+}
+
+TEST_F(SwapServiceUnitTest, GetJupiterTransaction) {
+  SetInterceptor(R"(
+    {
+      "swapTransaction": "bar"
+    })");
+
+  // OK: valid case
+  TestGetJupiterTransaction(true, "foo", false);
+
+  // KO: invalid output mint
+  TestGetJupiterTransaction(false, "", true, "invalid output mint");
+
+  // KO: invalid JSON
+  SetInterceptor(R"(foo)");
+  TestGetJupiterTransaction(false, "", true);
+}
+
+TEST_F(SwapServiceUnitTest, GetLiFiGate3Quote) {
+  SetInterceptor(R"(
+    {
+      "routes": [
+        {
+          "id": "lifi_test123",
+          "provider": "LIFI",
+          "steps": [
+            {
+              "sourceToken": {
+                "coin": "ETH",
+                "chainId": "0x1",
+                "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+                "symbol": "USDT",
+                "decimals": "6",
+                "logo": null
+              },
+              "sourceAmount": "1000000",
+              "destinationToken": {
+                "coin": "ETH",
+                "chainId": "0x1",
+                "contractAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+                "symbol": "USDC",
+                "decimals": "6",
+                "logo": null
+              },
+              "destinationAmount": "999000",
+              "tool": {
+                "name": "LiFi",
+                "logo": "https://example.com/lifi.png"
+              },
+              "percent": "100"
+            }
+          ],
+          "sourceAmount": "1000000",
+          "destinationAmount": "999000",
+          "destinationAmountMin": "998000",
+          "estimatedTime": 30,
+          "priceImpact": -0.001,
+          "networkFee": null,
+          "gasless": false,
+          "depositAddress": null,
+          "depositMemo": null,
+          "expiresAt": null,
+          "slippagePercentage": "0.5",
+          "transactionParams": null,
+          "requiresTokenAllowance": false,
+          "requiresFirmRoute": true
+        }
+      ]
+    }
+  )");
+
+  base::test::TestFuture<mojom::SwapQuoteUnionPtr, mojom::SwapFeesPtr,
+                         mojom::SwapErrorUnionPtr, const std::string&>
+      future;
+  swap_service_->GetQuote(
+      GetCannedSwapQuoteParams(mojom::CoinType::ETH, mojom::kMainnetChainId,
+                               "0xdac17f958d2ee523a2206206994597c13d831ec7",
+                               mojom::CoinType::ETH, mojom::kMainnetChainId,
+                               "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+                               mojom::SwapProvider::kLiFi),
+      future.GetCallback());
+  auto [quote, fees, error, error_string] = future.Take();
+  ASSERT_TRUE(quote);
+  ASSERT_TRUE(quote->is_gate3_quote());
+  EXPECT_FALSE(fees);
+  EXPECT_FALSE(error);
+  EXPECT_TRUE(error_string.empty());
+
+  const auto& gate3_quote = quote->get_gate3_quote();
+  ASSERT_EQ(gate3_quote->routes.size(), 1u);
+
+  const auto& route = gate3_quote->routes[0];
+  EXPECT_EQ(route->id, "lifi_test123");
+  EXPECT_EQ(route->provider, mojom::SwapProvider::kLiFi);
+  EXPECT_EQ(route->source_amount, "1000000");
+  EXPECT_EQ(route->destination_amount, "999000");
+  EXPECT_EQ(route->destination_amount_min, "998000");
+  EXPECT_FALSE(route->gasless);
+  EXPECT_TRUE(route->requires_firm_route);
+
+  ASSERT_EQ(route->steps.size(), 1u);
+  const auto& step = route->steps[0];
+  EXPECT_EQ(step->source_token->coin, mojom::CoinType::ETH);
+  EXPECT_EQ(step->source_token->chain_id, "0x1");
+  EXPECT_EQ(step->source_token->symbol, "USDT");
+  EXPECT_EQ(step->destination_token->coin, mojom::CoinType::ETH);
+  EXPECT_EQ(step->destination_token->chain_id, "0x1");
+  EXPECT_EQ(step->destination_token->symbol, "USDC");
+  EXPECT_EQ(step->destination_token->contract_address,
+            "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");
+  EXPECT_EQ(step->source_amount, "1000000");
+  EXPECT_EQ(step->destination_amount, "999000");
+  EXPECT_EQ(step->tool->name, "LiFi");
+  EXPECT_EQ(step->tool->logo, "https://example.com/lifi.png");
+  EXPECT_EQ(step->percent, "100");
+
+  // KO: empty JSON
+  TestGetQuoteCase(R"({})", mojom::CoinType::ETH, mojom::kMainnetChainId,
+                   mojom::CoinType::ETH, mojom::kMainnetChainId, false,
+                   mojom::SwapProvider::kLiFi);
+
+  // KO: invalid JSON
+  TestGetQuoteCase(R"(foo)", mojom::CoinType::ETH, mojom::kMainnetChainId,
+                   mojom::CoinType::ETH, mojom::kMainnetChainId, false,
+                   mojom::SwapProvider::kLiFi);
+}
+
+TEST_F(SwapServiceUnitTest, GetGate3Quote) {
+  // Indicative quote response
+  SetInterceptor(R"(
+    {
+      "routes": [
+        {
+          "id": "ni_test123",
+          "provider": "NEAR_INTENTS",
+          "steps": [
+            {
+              "sourceToken": {
+                "coin": "ETH",
+                "chainId": "0x1",
+                "contractAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+                "symbol": "USDC",
+                "decimals": "6",
+                "logo": null
+              },
+              "sourceAmount": "1000000",
+              "destinationToken": {
+                "coin": "SOL",
+                "chainId": "0x65",
+                "contractAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+                "symbol": "USDC",
+                "decimals": "6",
+                "logo": null
+              },
+              "destinationAmount": "714449",
+              "tool": {
+                "name": "NEAR Intents",
+                "logo": "https://example.com/logo.png"
+              },
+              "percent": "100"
+            }
+          ],
+          "sourceAmount": "1000000",
+          "destinationAmount": "714449",
+          "destinationAmountMin": "710876",
+          "estimatedTime": 42,
+          "priceImpact": -0.5,
+          "networkFee": null,
+          "gasless": false,
+          "depositAddress": null,
+          "depositMemo": null,
+          "expiresAt": null,
+          "slippagePercentage": "0.5",
+          "transactionParams": null,
+          "requiresTokenAllowance": false,
+          "requiresFirmRoute": true
+        }
+      ]
+    }
+  )");
+
+  base::test::TestFuture<mojom::SwapQuoteUnionPtr, mojom::SwapFeesPtr,
+                         mojom::SwapErrorUnionPtr, const std::string&>
+      future;
+  swap_service_->GetQuote(
+      GetCannedSwapQuoteParams(mojom::CoinType::ETH, mojom::kMainnetChainId,
+                               "USDC", mojom::CoinType::SOL,
+                               mojom::kSolanaMainnet, "USDC",
+                               mojom::SwapProvider::kNearIntents),
+      future.GetCallback());
+  auto [quote, fees, error, error_string] = future.Take();
+  ASSERT_TRUE(quote);
+  EXPECT_FALSE(fees);
+  EXPECT_FALSE(error);
+  EXPECT_TRUE(error_string.empty());
+}
+
+TEST_F(SwapServiceUnitTest, GetGate3QuoteError) {
+  std::string error_response = R"(
+    {
+      "message": "Provider NEAR_INTENTS does not support this swap",
+      "kind": "UNKNOWN"
+    }
+  )";
+  SetErrorInterceptor(error_response);
+
+  base::test::TestFuture<mojom::SwapQuoteUnionPtr, mojom::SwapFeesPtr,
+                         mojom::SwapErrorUnionPtr, const std::string&>
+      future;
+  swap_service_->GetQuote(
+      GetCannedSwapQuoteParams(mojom::CoinType::ETH, mojom::kMainnetChainId,
+                               "USDC", mojom::CoinType::SOL,
+                               mojom::kSolanaMainnet, "USDC",
+                               mojom::SwapProvider::kNearIntents),
+      future.GetCallback());
+  auto [quote, fees, error, error_string] = future.Take();
+  EXPECT_FALSE(quote);
+  EXPECT_FALSE(fees);
+  ASSERT_TRUE(error);
+  ASSERT_TRUE(error->is_gate3_error());
+  EXPECT_EQ(error->get_gate3_error()->message,
+            "Provider NEAR_INTENTS does not support this swap");
+  EXPECT_EQ(error->get_gate3_error()->kind,
+            mojom::Gate3SwapErrorKind::kUnknown);
+  EXPECT_TRUE(error_string.empty());
+}
+
+TEST_F(SwapServiceUnitTest, GetGate3Transaction) {
+  // Firm quote response with EVM transaction params
+  SetInterceptor(R"(
+    {
+      "routes": [
+        {
+          "id": "ni_firm_test",
+          "provider": "NEAR_INTENTS",
+          "steps": [
+            {
+              "sourceToken": {
+                "coin": "ETH",
+                "chainId": "0x1",
+                "contractAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+                "symbol": "USDC",
+                "decimals": "6",
+                "logo": null
+              },
+              "sourceAmount": "1000000",
+              "destinationToken": {
+                "coin": "SOL",
+                "chainId": "0x65",
+                "contractAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+                "symbol": "USDC",
+                "decimals": "6",
+                "logo": null
+              },
+              "destinationAmount": "714488",
+              "tool": {
+                "name": "NEAR Intents",
+                "logo": "https://example.com/logo.png"
+              },
+              "percent": "100"
+            }
+          ],
+          "sourceAmount": "1000000",
+          "destinationAmount": "714488",
+          "destinationAmountMin": "710915",
+          "estimatedTime": 42,
+          "priceImpact": -0.5,
+          "networkFee": null,
+          "gasless": false,
+          "depositAddress": "0x16a0FdeB69D821753440dFA092316F54eF95E967",
+          "depositMemo": null,
+          "expiresAt": "1767810375",
+          "slippagePercentage": "0.5",
+          "transactionParams": {
+            "evm": {
+              "chain": {
+                "coin": "ETH",
+                "chainId": "0x1"
+              },
+              "from": "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
+              "to": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+              "value": "0",
+              "data": "0xdeadbeef",
+              "gasLimit": "0xfde8",
+              "gasPrice": null
+            },
+            "solana": null,
+            "bitcoin": null,
+            "cardano": null,
+            "zcash": null
+          },
+          "requiresTokenAllowance": false,
+          "requiresFirmRoute": true
+        }
+      ]
+    }
+  )");
+
+  auto expected_evm_params = mojom::Gate3SwapEvmTransactionParams::New();
+  expected_evm_params->chain =
+      mojom::ChainId::New(mojom::CoinType::ETH, mojom::kMainnetChainId);
+  expected_evm_params->from = "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4";
+  expected_evm_params->to = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48";
+  expected_evm_params->value = "0";
+  expected_evm_params->data = "0xdeadbeef";
+  expected_evm_params->gas_limit = "0xfde8";
+
+  // Create expected route step
+  auto expected_step = mojom::Gate3SwapRouteStep::New();
+  auto source_token = mojom::Gate3SwapStepToken::New();
+  source_token->coin = mojom::CoinType::ETH;
+  source_token->chain_id = "0x1";
+  source_token->contract_address = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48";
+  source_token->symbol = "USDC";
+  source_token->logo = "";
+  expected_step->source_token = std::move(source_token);
+  expected_step->source_amount = "1000000";
+  auto destination_token = mojom::Gate3SwapStepToken::New();
+  destination_token->coin = mojom::CoinType::SOL;
+  destination_token->chain_id = "0x65";
+  destination_token->contract_address =
+      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+  destination_token->symbol = "USDC";
+  destination_token->logo = "";
+  expected_step->destination_token = std::move(destination_token);
+  expected_step->destination_amount = "714488";
+  auto tool = mojom::Gate3SwapTool::New();
+  tool->name = "NEAR Intents";
+  tool->logo = "https://example.com/logo.png";
+  expected_step->tool = std::move(tool);
+  expected_step->percent = "100";
+
+  // Create expected route
+  auto expected_route = mojom::Gate3SwapRoute::New();
+  expected_route->id = "ni_firm_test";
+  expected_route->provider = mojom::SwapProvider::kNearIntents;
+  expected_route->steps.push_back(std::move(expected_step));
+  expected_route->source_amount = "1000000";
+  expected_route->destination_amount = "714488";
+  expected_route->destination_amount_min = "710915";
+  expected_route->estimated_time = "42";
+  expected_route->price_impact = "-0.5";
+  expected_route->network_fee = nullptr;
+  expected_route->gasless = false;
+  expected_route->deposit_address =
+      "0x16a0FdeB69D821753440dFA092316F54eF95E967";
+  expected_route->deposit_memo = std::nullopt;
+  expected_route->expires_at = "1767810375";
+  expected_route->slippage_percentage = "0.5";
+  expected_route->transaction_params =
+      mojom::Gate3SwapTransactionParamsUnion::NewEvmTransactionParams(
+          std::move(expected_evm_params));
+  expected_route->requires_token_allowance = false;
+  expected_route->requires_firm_route = true;
+
+  auto quote_params = GetCannedSwapQuoteParams(
+      mojom::CoinType::ETH, mojom::kMainnetChainId, "USDC",
+      mojom::CoinType::SOL, mojom::kSolanaMainnet, "USDC",
+      mojom::SwapProvider::kNearIntents);
+
+  base::RunLoop run_loop;
+  base::MockCallback<mojom::SwapService::GetTransactionCallback> callback;
+  EXPECT_CALL(callback,
+              Run(EqualsMojo(mojom::SwapTransactionUnion::NewGate3Route(
+                      std::move(expected_route))),
+                  EqualsMojo(mojom::SwapErrorUnionPtr()), ""))
+      .WillOnce(testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
+
+  swap_service_->GetTransaction(
+      mojom::SwapTransactionParamsUnion::NewGate3TransactionParams(
+          std::move(quote_params)),
+      callback.Get());
+  run_loop.Run();
+}
+
+TEST_F(SwapServiceUnitTest, GetGate3TransactionError) {
+  std::string error = R"(
+    {
+      "message": "Insufficient liquidity",
+      "kind": "INSUFFICIENT_LIQUIDITY"
+    }
+  )";
+  SetErrorInterceptor(error);
+
+  auto quote_params = GetCannedSwapQuoteParams(
+      mojom::CoinType::ETH, mojom::kMainnetChainId, "USDC",
+      mojom::CoinType::SOL, mojom::kSolanaMainnet, "USDC",
+      mojom::SwapProvider::kNearIntents);
+
+  base::RunLoop run_loop;
+  base::MockCallback<mojom::SwapService::GetTransactionCallback> callback;
+
+  EXPECT_CALL(callback,
+              Run(EqualsMojo(mojom::SwapTransactionUnionPtr()),
+                  EqualsMojo(mojom::SwapErrorUnion::NewGate3Error(
+                      mojom::Gate3SwapError::New(
+                          "Insufficient liquidity",
+                          mojom::Gate3SwapErrorKind::kInsufficientLiquidity))),
+                  ""))
+      .WillOnce(testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
+
+  swap_service_->GetTransaction(
+      mojom::SwapTransactionParamsUnion::NewGate3TransactionParams(
+          std::move(quote_params)),
+      callback.Get());
+  run_loop.Run();
+}
+
+TEST_F(SwapServiceUnitTest, GetGate3Status) {
+  std::string response = R"({
+    "status": "SUCCESS",
+    "internalStatus": "completed",
+    "explorerUrl": "https://solscan.io/tx/abc123"
+  })";
+  SetInterceptor(response);
+
+  auto params = mojom::Gate3SwapStatusParams::New();
+  params->route_id = "test-route-id";
+  params->tx_hash = "0xdeadbeef";
+  params->source_coin = mojom::CoinType::ETH;
+  params->source_chain_id = "0x1";
+  params->destination_coin = mojom::CoinType::SOL;
+  params->destination_chain_id = "0x65";
+  params->deposit_address = "0xDeposit";
+  params->deposit_memo = std::nullopt;
+  params->provider = mojom::SwapProvider::kNearIntents;
+
+  base::test::TestFuture<mojom::Gate3SwapStatusPtr, mojom::Gate3SwapErrorPtr,
+                         const std::string&>
+      future;
+  swap_service_->GetStatus(std::move(params), future.GetCallback());
+  auto [status, error, error_string] = future.Take();
+
+  ASSERT_TRUE(status);
+  EXPECT_FALSE(error);
+  EXPECT_TRUE(error_string.empty());
+  EXPECT_EQ(status->status, mojom::Gate3SwapStatusCode::kSuccess);
+  EXPECT_EQ(status->internal_status, "completed");
+  EXPECT_EQ(status->explorer_url, "https://solscan.io/tx/abc123");
+}
+
+TEST_F(SwapServiceUnitTest, GetGate3StatusError) {
+  std::string error_response = R"({
+    "message": "Route not found",
+    "kind": "UNKNOWN"
+  })";
+  SetErrorInterceptor(error_response);
+
+  auto params = mojom::Gate3SwapStatusParams::New();
+  params->route_id = "invalid-route";
+  params->tx_hash = "0x123";
+  params->source_coin = mojom::CoinType::ETH;
+  params->source_chain_id = "0x1";
+  params->destination_coin = mojom::CoinType::SOL;
+  params->destination_chain_id = "0x65";
+  params->deposit_address = "0xDeposit";
+  params->deposit_memo = std::nullopt;
+  params->provider = mojom::SwapProvider::kNearIntents;
+
+  base::test::TestFuture<mojom::Gate3SwapStatusPtr, mojom::Gate3SwapErrorPtr,
+                         const std::string&>
+      future;
+  swap_service_->GetStatus(std::move(params), future.GetCallback());
+  auto [status, error, error_string] = future.Take();
+
+  EXPECT_FALSE(status);
+  ASSERT_TRUE(error);
+  EXPECT_TRUE(error_string.empty());
+  EXPECT_EQ(error->message, "Route not found");
+  EXPECT_EQ(error->kind, mojom::Gate3SwapErrorKind::kUnknown);
+}
+
+TEST_F(SwapServiceUnitTest, GetGate3StatusParsingError) {
+  std::string malformed_response = R"({"invalid": "json"})";
+  SetInterceptor(malformed_response);
+
+  auto params = mojom::Gate3SwapStatusParams::New();
+  params->route_id = "route";
+  params->tx_hash = "0x123";
+  params->source_coin = mojom::CoinType::ETH;
+  params->source_chain_id = "0x1";
+  params->destination_coin = mojom::CoinType::SOL;
+  params->destination_chain_id = "0x65";
+  params->deposit_address = "0xDeposit";
+  params->deposit_memo = std::nullopt;
+  params->provider = mojom::SwapProvider::kNearIntents;
+
+  base::test::TestFuture<mojom::Gate3SwapStatusPtr, mojom::Gate3SwapErrorPtr,
+                         const std::string&>
+      future;
+  swap_service_->GetStatus(std::move(params), future.GetCallback());
+  auto [status, error, error_string] = future.Take();
+
+  EXPECT_FALSE(status);
+  EXPECT_FALSE(error);
+  EXPECT_EQ(error_string, l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+}
+
+}  // namespace brave_wallet

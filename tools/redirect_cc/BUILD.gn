@@ -1,0 +1,62 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/buildflag_header.gni")
+
+if (current_toolchain == host_toolchain) {
+  assert(!is_debug)
+
+  declare_args() {
+    real_rewrapper = ""
+  }
+
+  executable("redirect_cc_executable") {
+    sources = [ "redirect_cc.cc" ]
+
+    deps = [ "//base" ]
+
+    output_name = "redirect_cc"
+
+    # Always optimize for speed
+    configs -= [ "//build/config/compiler:thinlto_optimize_default" ]
+    configs += [ "//build/config/compiler:thinlto_optimize_max" ]
+    configs -= [ "//build/config/compiler:default_optimization" ]
+    configs += [ "//build/config/compiler:optimize_speed" ]
+  }
+
+  buildflag_header("rewrapper_buildflags") {
+    header = "rewrapper_buildflags.h"
+    real_rewrapper_relative_to_out = rebase_path(real_rewrapper, root_out_dir)
+    flags = [ "REAL_REWRAPPER=\"$real_rewrapper_relative_to_out\"" ]
+  }
+
+  executable("rewrapper_executable") {
+    sources = [ "redirect_cc.cc" ]
+
+    deps = [
+      ":rewrapper_buildflags",
+      "//base",
+    ]
+
+    defines = [ "REDIRECT_CC_AS_REWRAPPER" ]
+
+    output_name = "rewrapper"
+
+    # Always optimize for speed
+    configs -= [ "//build/config/compiler:thinlto_optimize_default" ]
+    configs += [ "//build/config/compiler:thinlto_optimize_max" ]
+    configs -= [ "//build/config/compiler:default_optimization" ]
+    configs += [ "//build/config/compiler:optimize_speed" ]
+  }
+}
+
+group("redirect_cc") {
+  if (current_toolchain == host_toolchain) {
+    deps = [
+      ":redirect_cc_executable",
+      ":rewrapper_executable",
+    ]
+  }
+}

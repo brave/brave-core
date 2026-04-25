@@ -1,0 +1,44 @@
+from brave_chromium_utils import inline_file
+inline_file("//chrome/DEPS", globals(), locals())
+
+chrome_renderer_deps = {}
+inline_file("//chrome/renderer/DEPS", {}, chrome_renderer_deps)
+include_rules += chrome_renderer_deps["include_rules"]
+
+include_rules += [
+  "+brave/common",
+  "+chrome/renderer",
+  "+brave/components/ai_chat/core/common",
+  "+brave/components/ai_chat/renderer",
+  "+brave/components/brave_search/common",
+  "+brave/components/brave_search/renderer",
+  "+brave/components/brave_shields/core/common",
+  "+brave/components/brave_vpn/common/buildflags/buildflags.h",
+  "+brave/components/brave_wallet/common",
+  "+brave/components/cosmetic_filters/renderer",
+  "+brave/components/playlist/core/common",
+  "+brave/components/safe_builtins/renderer/safe_builtins.h",
+  "+brave/components/script_injector/renderer",
+  "+brave/components/skus/common",
+  "+brave/components/skus/renderer",
+  "+brave/components/speedreader/common",
+  "+brave/components/speedreader/common",
+  "+brave/components/speedreader/renderer",
+  "+brave/components/brave_vpn/common",
+  "!brave/components/brave_mobile_subscription/renderer/android/subscription_render_frame_observer.h",
+  "+brave/components/brave_origin/features.h",
+  "+brave/components/playlist/core/common",
+  "+brave/components/playlist/content/renderer",
+  "+brave/components/web_discovery/buildflags",
+  "+brave/components/web_discovery/common",
+  "+brave/components/web_discovery/renderer",
+]
+
+specific_include_rules = {
+  ".*browsertest\.cc": [
+    "+chrome/test",
+    "+chrome/app/chrome_command_ids.h",
+    "+content/public/test",
+    "+net",
+  ]
+}

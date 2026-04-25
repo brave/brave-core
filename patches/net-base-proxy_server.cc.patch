@@ -1,0 +1,20 @@
+diff --git a/net/base/proxy_server.cc b/net/base/proxy_server.cc
+index 42554e13328632066469b9385214e3130abb7991..8fe037a417b31bf5d44e0fdd0ea411721ff30879 100644
+--- a/net/base/proxy_server.cc
++++ b/net/base/proxy_server.cc
+@@ -76,6 +76,7 @@ ProxyServer ProxyServer::FromSchemeHostAndPort(Scheme scheme,
+ ProxyServer ProxyServer::FromSchemeHostAndPort(Scheme scheme,
+                                                std::string_view host,
+                                                std::optional<uint16_t> port) {
++  BRAVE_PROXY_SERVER_FROM_SCHEME_HOST_AND_PORT_EXTRACT_AUTH_INFO
+   // Create INVALID proxies directly using `ProxyServer()`.
+   DCHECK_NE(scheme, SCHEME_INVALID);
+ 
+@@ -114,6 +115,7 @@ ProxyServer ProxyServer::FromSchemeHostAndPort(Scheme scheme,
+   // A uint16_t port is always valid and canonicalized.
+   uint16_t fixed_port = port.value_or(GetDefaultPortForScheme(scheme));
+ 
++  BRAVE_PROXY_SERVER_FROM_SCHEME_HOST_AND_PORT_RETURN_HOST_PORT_PAIR
+   return ProxyServer(scheme, HostPortPair(unbracketed_host, fixed_port));
+ }
+ 

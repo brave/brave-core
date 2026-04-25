@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc b/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc
+index 422bf37acb26c6c2fd4c8df72d646e075b3a478a..26b746f7f6b52ca3e8d60a26582c33e765032ed4 100644
+--- a/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc
++++ b/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc
+@@ -199,6 +199,7 @@ void ExtensionsMenuMainPageView::CreateAndInsertMenuEntry(
+     ExtensionsMenuViewModel::MenuEntryState entry_state,
+     int index) {
+   auto extension_id = action_model->GetId();
++  BRAVE_EXTENSION_MENU_MAIN_PAGE_VIEW_CREATE_AND_INSERT_MENU_ITEM
+   // base::Unretained() below is safe because `menu_handler_` lifetime is
+   // tied to this view lifetime by the extensions menu coordinator.
+   auto item = std::make_unique<ExtensionsMenuEntryView>(

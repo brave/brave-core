@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/updater/BUILD.gn b/chrome/browser/updater/BUILD.gn
+index 924151133e660019818f8f789c44c9d665fe77db..6c7193776c2d9708db358d9890e5f796a4584f67 100644
+--- a/chrome/browser/updater/BUILD.gn
++++ b/chrome/browser/updater/BUILD.gn
+@@ -36,6 +36,7 @@ source_set("updater") {
+       "//chrome/updater:browser_sources",
+     ]
+ 
++    import("//brave/browser/updater/sources.gni") deps += brave_chrome_updater_scheduler_deps
+     if (is_win) {
+       sources += [
+         "browser_updater_client_util_win.cc",

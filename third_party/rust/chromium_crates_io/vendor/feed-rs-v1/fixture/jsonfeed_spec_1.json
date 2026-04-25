@@ -1,0 +1,21 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "user_comment": "This feed allows you to read the posts from this site in any feed reader that supports the JSON Feed format. To add this feed to your reader, copy the following URL — https://jsonfeed.org/feed.json — and add it your reader.",
+  "title": "JSON Feed",
+  "description": "JSON Feed is a pragmatic syndication format for blogs, microblogs, and other time-based content.",
+  "home_page_url": "https://jsonfeed.org/",
+  "feed_url": "https://jsonfeed.org/feed.json",
+  "author": {
+    "name": "Brent Simmons and Manton Reece",
+    "url": "https://jsonfeed.org/"
+  },
+  "items": [
+    {
+      "title": "Announcing JSON Feed",
+      "date_published": "2017-05-17T08:02:12-07:00",
+      "id": "https://jsonfeed.org/2017/05/17/announcing_json_feed",
+      "url": "https://jsonfeed.org/2017/05/17/announcing_json_feed",
+      "content_html": "<p>We — Manton Reece and Brent Simmons — have noticed that JSON has become the developers’ choice for APIs, and that developers will often go out of their way to avoid XML. JSON is simpler to read and write, and it’s less prone to bugs.</p>\n<p>So we developed JSON Feed, a format similar to <a href=\"http://cyber.harvard.edu/rss/rss.html\">RSS</a> and <a href=\"https://tools.ietf.org/html/rfc4287\">Atom</a> but in JSON. It reflects the lessons learned from our years of work reading and publishing feeds.</p>..."
+    }
+  ]
+}

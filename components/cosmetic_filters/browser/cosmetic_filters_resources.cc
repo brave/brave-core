@@ -1,0 +1,134 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
+
+#include <algorithm>
+#include <optional>
+#include <utility>
+
+#include "base/check.h"
+#include "base/feature_list.h"
+#include "base/json/json_reader.h"
+#include "base/json/string_escape.h"
+#include "base/memory/scoped_refptr.h"
+#include "base/strings/string_util.h"
+#include "base/values.h"
+#include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
+#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/features.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
+
+namespace {
+
+constexpr char kProceduralActionsScript[] =
+    R"((function() {
+          const CC = window.content_cosmetic;
+          let stylesheet = '';
+          const takeStyleFilter = filter => {
+            if (filter.selector.length === 1 && filter.selector[0].type === 'css-selector' && filter.action && filter.action.type === 'style') {
+              stylesheet += filter.selector[0].arg + '{' + filter.action.arg + '}\n';
+              return false;
+            }
+            return $1;
+          };
+          CC.proceduralActionFilters = JSON.parse($2).filter(f => takeStyleFilter(f));
+          CC.hasProceduralActions = CC.proceduralActionFilters.length > 0;
+          return stylesheet;
+        })();)";
+
+}  // namespace
+
+namespace cosmetic_filters {
+
+CosmeticFiltersResources::CosmeticFiltersResources(
+    brave_shields::AdBlockEngineWrapper* engine_wrapper)
+    : engine_wrapper_(engine_wrapper) {}
+
+CosmeticFiltersResources::~CosmeticFiltersResources() = default;
+
+void CosmeticFiltersResources::HiddenClassIdSelectors(
+    const std::string& input,
+    const std::vector<std::string>& exceptions,
+    HiddenClassIdSelectorsCallback callback) {
+  std::optional<base::DictValue> input_dict = base::JSONReader::ReadDict(
+      input, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                 base::JSON_REPLACE_INVALID_CHARACTERS);
+  if (!input_dict) {
+    // Nothing to work with
+    std::move(callback).Run(base::DictValue());
+    return;
+  }
+
+  std::vector<std::string> classes;
+  base::ListValue* classes_list = input_dict->FindList("classes");
+  if (classes_list) {
+    for (const auto& class_item : *classes_list) {
+      if (!class_item.is_string()) {
+        continue;
+      }
+      classes.push_back(class_item.GetString());
+    }
+  }
+  std::vector<std::string> ids;
+  base::ListValue* ids_list = input_dict->FindList("ids");
+  if (ids_list) {
+    for (const auto& id_item : *ids_list) {
+      if (!id_item.is_string()) {
+        continue;
+      }
+      ids.push_back(id_item.GetString());
+    }
+  }
+
+  auto selectors =
+      engine_wrapper_->HiddenClassIdSelectors(classes, ids, exceptions);
+
+  std::move(callback).Run(std::move(selectors));
+}
+
+void CosmeticFiltersResources::UrlCosmeticResources(
+    const std::string& url,
+    bool aggressive_blocking,
+    UrlCosmeticResourcesCallback callback) {
+  auto resources =
+      engine_wrapper_->UrlCosmeticResources(url, aggressive_blocking);
+
+  const auto* procedural_actions_list =
+      resources.FindList(brave_shields::kCosmeticResourcesProceduralActions);
+  if (procedural_actions_list && !procedural_actions_list->empty()) {
+    const char* procedural_filtering_feature_enabled =
+        base::FeatureList::IsEnabled(
+            brave_shields::features::kBraveAdblockProceduralFiltering)
+            ? "true"
+            : "false";
+
+    // Each element of procedural_actions_list is already formatted as JSON.
+    // Combine them into a single JSON list using string concatenation to avoid
+    // double-escaping.
+    auto procedural_actions_strings = std::vector<std::string>();
+    std::transform(procedural_actions_list->cbegin(),
+                   procedural_actions_list->cend(),
+                   std::back_inserter(procedural_actions_strings),
+                   [](const base::Value& action) -> std::string {
+                     return action.GetString();
+                   });
+    std::string procedural_actions_json = base::StrCat(
+        {"[", base::JoinString(procedural_actions_strings, ","), "]"});
+    std::string escaped_procedural_actions;
+    base::EscapeJSONString(procedural_actions_json, true,
+                           &escaped_procedural_actions);
+    std::string procedural_actions_script = base::ReplaceStringPlaceholders(
+        kProceduralActionsScript,
+        {procedural_filtering_feature_enabled, escaped_procedural_actions},
+        nullptr);
+    resources.Set("procedural_actions_script", procedural_actions_script);
+  }
+  resources.Remove("procedural_actions");
+
+  std::move(callback).Run(base::Value(std::move(resources)));
+}
+
+}  // namespace cosmetic_filters

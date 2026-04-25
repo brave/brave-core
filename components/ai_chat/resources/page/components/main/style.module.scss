@@ -1,0 +1,221 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+.main {
+  --conversation-content-margin: var(--leo-spacing-5xl);
+  --conversation-content-max-width: calc(
+    768px + calc(var(--conversation-content-margin) * 2)
+  );
+
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: clip;
+}
+
+.mainPanel {
+  --conversation-content-margin: var(--leo-spacing-2xl);
+}
+
+.mainMobile {
+  --conversation-content-margin: var(--leo-spacing-xl);
+}
+
+.attachmentsDialog {
+  --leo-dialog-padding: 0;
+  --leo-dialog-width: 500px;
+  --leo-dialog-backdrop-background: var(--leo-color-dialogs-scrim-background);
+  --leo-dialog-backdrop-filter: blur(4px);
+
+  & > * {
+    width: min(var(--leo-dialog-width), calc(100vw - var(--leo-spacing-xl)));
+  }
+}
+
+.input {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: fit-content;
+  min-width: 0;
+  max-width: var(--conversation-content-max-width);
+  margin: 0 auto;
+  padding: 0 var(--leo-spacing-m) var(--leo-spacing-m) var(--leo-spacing-m);
+
+  container-name: input-container;
+  container-type: inline-size;
+}
+
+.siteTitleContainer {
+  margin-top: var(--conversation-content-margin);
+}
+
+.conversationContainer {
+  height: 100%;
+  width: 100%;
+}
+
+.centeredContent {
+  display: grid;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header {
+  padding: var(--leo-spacing-m) var(--leo-spacing-xl);
+  border-bottom: 1px solid var(--leo-color-divider-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 60px;
+}
+
+.actions {
+  --leo-icon-size: 20px;
+  --gap: 12px;
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+}
+
+.closeButton {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.divider {
+  height: 20px;
+  width: 1px;
+  background: var(--leo-color-divider-subtle);
+}
+
+.logo {
+  --leo-icon-size: 20px;
+  --leo-icon-color: linear-gradient(
+    314.42deg,
+    #fa7250 8.49%,
+    #ff1893 43.72%,
+    #a78aff 99.51%
+  );
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: var(--leo-font-large-regular);
+}
+
+.logoTitle {
+  font: var(--leo-font-heading-h4);
+  color: var(--leo-color-text-primary);
+  font-size: 16px;
+  line-height: 1;
+}
+
+.promptContainer {
+  margin: var(--conversation-content-margin) 0;
+  container-type: inline-size;
+}
+
+.badgePremium {
+  background: var(--leo-color-blue-20);
+  color: var(--leo-color-blue-50);
+  user-select: none;
+  padding: 3px 5px;
+  font: var(--leo-font-x-small-semibold);
+  border-radius: 4px;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+}
+
+.alertCenter {
+  --leo-alert-center-width: calc(100% - 32px);
+  /* remove scrollbar space */
+  position: absolute;
+  left: 0;
+  z-index: 5;
+  width: 100%;
+}
+
+.toggleContainer {
+  margin-bottom: var(--leo-spacing-m);
+}
+
+.conversationsList {
+  background: var(--leo-color-container-background);
+  position: absolute;
+  z-index: 4;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.conversationsListHeader {
+  padding: 0 var(--leo-spacing-xl);
+  width: 100%;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  border-bottom: 1px solid var(--leo-color-divider-subtle);
+}
+
+.suggestionsContainer {
+  margin: var(--conversation-content-margin) 0;
+}
+
+.questionsList {
+  --leo-button-radius: var(--leo-radius-l);
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: var(--leo-spacing-m);
+}
+
+.dragActive iframe {
+  pointer-events: none; // Disable iframe interaction during drag operations
+}
+
+.scrollButtonContainer {
+  height: 0;
+  position: sticky;
+  bottom: 0;
+
+  opacity: 0.8;
+}
+
+.scrollToBottomButton {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+
+  transform: translateX(-50%);
+  z-index: 10;
+  background: var(--leo-color-container-background);
+  border-radius: 100%;
+}
+
+.scrollToBottomButton.hasScrollableContent {
+  animation: scroll-button-fade linear both;
+  animation-timeline: scroll();
+  animation-range: calc(100% - 96px) 100%;
+}
+
+@keyframes scroll-button-fade {
+  from {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  to {
+    opacity: 0;
+    pointer-events: none;
+  }
+}

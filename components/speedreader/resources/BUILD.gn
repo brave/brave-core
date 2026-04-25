@@ -1,0 +1,19 @@
+import("//brave/resources/brave_grit.gni")
+import("//tools/grit/repack.gni")
+
+brave_grit("static_resources") {
+  source = "speedreader_static_resources.grd"
+
+  outputs = [
+    "grit/speedreader_resources.h",
+    "speedreader_static.pak",
+  ]
+}
+
+repack("resources") {
+  public_deps = [ ":static_resources" ]
+
+  sources = [ "$root_gen_dir/brave/components/speedreader/resources/speedreader_static.pak" ]
+
+  output = "$root_gen_dir/brave/components/speedreader/resources/speedreader_resources.pak"
+}

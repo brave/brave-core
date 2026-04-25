@@ -1,0 +1,8 @@
+include_rules = [
+  "+brave/components/ai_chat/core/common",
+  "+brave/components/ai_chat/core/common/buildflags",
+  "+brave/components/sync/service",
+  "+brave/components/constants",
+  "+brave/components/tor",
+  "+brave/components/constants",
+]

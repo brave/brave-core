@@ -1,0 +1,34 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+module brave.mojom;
+
+// The renderer configuration parameters which can change post renderer launch.
+struct DynamicParams {
+  [EnableIf=enable_brave_wallet]
+  bool install_window_brave_ethereum_provider = false;
+  [EnableIf=enable_brave_wallet]
+  bool install_window_ethereum_provider = false;
+  [EnableIf=enable_brave_wallet]
+  bool install_window_brave_cardano_provider = false;
+  [EnableIf=enable_brave_wallet]
+  bool allow_overwrite_window_ethereum_provider = true;
+  [EnableIf=enable_brave_wallet]
+  bool brave_use_native_solana_wallet = false;
+  [EnableIf=enable_brave_wallet]
+  bool allow_overwrite_window_solana_provider = true;
+  bool de_amp_enabled = true;
+  bool onion_only_in_tor_windows = true;
+  bool widevine_enabled = false;
+  bool playlist_enabled = false;
+};
+
+// Configures the renderer.
+interface BraveRendererConfiguration {
+  // Configures the renderer with settings that won't change.
+  SetInitialConfiguration(bool is_tor_process, bool is_brave_wallet_available);
+  // Update renderer configuration with settings that can change.
+  SetConfiguration(DynamicParams params);
+};

@@ -1,0 +1,33 @@
+include_rules = [
+  "+brave/components/version_info",
+  "+components/cbor",
+  "+components/component_updater",
+  "+components/metrics",
+  "+components/prefs",
+  "+content/public/browser",
+  "+content/public/test",
+  "+crypto",
+  "+ios/web/public/thread",
+  "+services/network/public",
+  "+services/network/test",
+  "+third_party/boringssl",
+  "+third_party/metrics_proto",
+]
+
+specific_include_rules = {
+  "scheduler\.cc": [
+    "+brave/vendor/brave_base/random.h",
+  ],
+  "star_randomness_meta\.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+  "star_randomness_points\.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+  "p3a_message\.cc": [
+    "!brave/components/l10n/common/locale_util.h",
+  ],
+  "remote_config_manager_unittest\.cc": [
+    "!brave/components/constants/brave_paths.h",
+  ],
+}

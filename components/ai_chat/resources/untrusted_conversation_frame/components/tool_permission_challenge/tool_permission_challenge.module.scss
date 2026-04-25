@@ -1,0 +1,56 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.container {
+  max-width: 400px;
+  border: 1px solid var(--leo-color-yellow-10);
+  border-radius: var(--leo-radius-m);
+  // Overflow: hidden ensures the border radius clips the header background
+  overflow: hidden;
+  background: var(--leo-color-yellow-5);
+}
+
+.header {
+  background: var(--leo-color-yellow-10);
+  padding: var(--leo-spacing-m) var(--leo-spacing-l);
+  color: var(--leo-color-yellow-50);
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+}
+
+.headerIcon {
+  --leo-icon-size: 16px;
+}
+
+.headerText {
+  font: var(--leo-font-default-semibold);
+}
+
+.content {
+  padding: var(--leo-spacing-l);
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-l);
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-yellow-60);
+  p {
+    margin: 0;
+  }
+}
+
+.assessment {
+  padding: 0 var(--leo-spacing-s);
+  font-style: italic;
+}
+
+.permissionButton {
+  --leo-button-color: var(--leo-color-divider-subtle);
+}
+
+.permissionButtonText {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-secondary);
+}

@@ -1,0 +1,19 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/resources/brave_grit.gni")
+
+brave_grit("bookmark_icon_resources") {
+  source = "bookmark_icon_resources.grd"
+  outputs = [
+    "grit/bookmark_icon_resources.h",
+    "grit/bookmark_icon_resources_map.cc",
+    "grit/bookmark_icon_resources_map.h",
+    "bookmark_icon_resources_100_percent.pak",
+    "bookmark_icon_resources_200_percent.pak",
+  ]
+
+  output_dir = "$root_gen_dir/brave/browser/resources/bookmark_icon"
+}

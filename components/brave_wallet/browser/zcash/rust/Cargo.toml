@@ -1,0 +1,20 @@
+[package]
+name = "zcash"
+version = "1.0.0"
+edition = "2021"
+license = "MPL-2.0"
+
+[dependencies]
+brave_wallet = { version = "1" }
+cxx = { version = "1" }
+orchard = { version = "0.8.0",  default-features = false }
+rand = "0.8"
+zcash_primitives  = { version = "0.15.1", default-features = false }
+zcash_note_encryption = "0.4"
+zcash_client_backend = { version = "0.12.1", default-features = false }
+shardtree = { version="0.3.2", features=["legacy-api"] }
+
+[lib]
+name = "zcash"
+path = "lib.rs"
+crate-type = ["rlib"]

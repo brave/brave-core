@@ -1,0 +1,38 @@
+--- components/brave_wallet_ui/utils/asset-utils.ts
++++ components/brave_wallet_ui/utils/asset-utils.ts
+@@ -569,3 +573,35 @@
+   return SupportedBridgeCoinTypes.includes(coin)
+ }
+ 
++type UndefinedIf<R, T> = T extends undefined ? undefined : R
++export const makeNetworkAsset = <
++  T extends BraveWallet.NetworkInfo | undefined | null,
++>(
++  network: T,
++): UndefinedIf<BraveWallet.BlockchainToken, T> => {
++  if (!network) {
++    return undefined as UndefinedIf<BraveWallet.BlockchainToken, T>
++  }
++
++  return {
++    contractAddress: '',
++    name: network.symbolName,
++    symbol: network.symbol,
++    logo: makeNativeAssetLogo(network.symbol, network.chainId),
++    isErc20: false,
++    isErc721: false,
++    isErc1155: false,
++    isNft: false,
++    isSpam: false,
++    decimals: network.decimals,
++    visible: true,
++    tokenId: '',
++    coingeckoId:
++      // skip getting prices of known testnet tokens
++      SupportedTestNetworks.includes(network.chainId)
++        ? SKIP_PRICE_LOOKUP_COINGECKO_ID
++        : '',
++    chainId: network.chainId,
++    coin: network.coin,
++  } as UndefinedIf<BraveWallet.BlockchainToken, T>
++}

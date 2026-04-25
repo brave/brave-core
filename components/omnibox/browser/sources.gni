@@ -1,0 +1,83 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/commander/common/buildflags/buildflags.gni")
+import("//brave/components/omnibox/buildflags/buildflags.gni")
+
+brave_components_omnibox_browser_sources = [
+  "//brave/components/omnibox/browser/brave_bookmark_provider.cc",
+  "//brave/components/omnibox/browser/brave_bookmark_provider.h",
+  "//brave/components/omnibox/browser/brave_history_quick_provider.cc",
+  "//brave/components/omnibox/browser/brave_history_quick_provider.h",
+  "//brave/components/omnibox/browser/brave_history_url_provider.cc",
+  "//brave/components/omnibox/browser/brave_history_url_provider.h",
+  "//brave/components/omnibox/browser/brave_local_history_zero_suggest_provider.cc",
+  "//brave/components/omnibox/browser/brave_local_history_zero_suggest_provider.h",
+  "//brave/components/omnibox/browser/brave_omnibox_prefs.cc",
+  "//brave/components/omnibox/browser/brave_omnibox_prefs.h",
+  "//brave/components/omnibox/browser/brave_on_device_head_provider.cc",
+  "//brave/components/omnibox/browser/brave_on_device_head_provider.h",
+  "//brave/components/omnibox/browser/brave_search_provider.cc",
+  "//brave/components/omnibox/browser/brave_search_provider.h",
+  "//brave/components/omnibox/browser/brave_search_suggestion_parser.cc",
+  "//brave/components/omnibox/browser/brave_search_suggestion_parser.h",
+  "//brave/components/omnibox/browser/brave_shortcuts_provider.cc",
+  "//brave/components/omnibox/browser/brave_shortcuts_provider.h",
+  "//brave/components/omnibox/browser/open_here_action.cc",
+  "//brave/components/omnibox/browser/open_here_action.h",
+  "//brave/components/omnibox/browser/promotion_provider.cc",
+  "//brave/components/omnibox/browser/promotion_provider.h",
+  "//brave/components/omnibox/browser/promotion_utils.cc",
+  "//brave/components/omnibox/browser/promotion_utils.h",
+]
+
+brave_components_omnibox_browser_deps = [
+  "//base",
+  "//brave/components/brave_search_conversion",
+  "//brave/components/constants",
+  "//brave/components/omnibox/buildflags",
+  "//brave/components/resources:strings",
+  "//brave/components/vector_icons",
+  "//components/prefs",
+  "//components/vector_icons",
+  "//url",
+]
+
+brave_components_omnibox_browser_public_deps = [
+  "//brave/components/ai_chat/core/common/buildflags",
+  "//brave/components/commander/common/buildflags",
+]
+
+if (enable_ai_chat) {
+  brave_components_omnibox_browser_sources += [
+    "//brave/components/omnibox/browser/leo_action.cc",
+    "//brave/components/omnibox/browser/leo_action.h",
+    "//brave/components/omnibox/browser/leo_provider.cc",
+    "//brave/components/omnibox/browser/leo_provider.h",
+  ]
+
+  brave_components_omnibox_browser_deps += [
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
+  ]
+}
+
+if (enable_commander) {
+  brave_components_omnibox_browser_sources += [
+    "//brave/components/omnibox/browser/commander_action.cc",
+    "//brave/components/omnibox/browser/commander_action.h",
+    "//brave/components/omnibox/browser/commander_provider.cc",
+    "//brave/components/omnibox/browser/commander_provider.h",
+  ]
+
+  brave_components_omnibox_browser_deps +=
+      [ "//brave/components/commander/browser" ]
+}
+
+if (enable_strict_query_check_for_search_suggestions) {
+  brave_components_omnibox_browser_deps +=
+      [ "//brave/components/omnibox/browser/search_suggestions" ]
+}

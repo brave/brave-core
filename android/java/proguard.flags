@@ -1,0 +1,111 @@
+-keep class org.chromium.components.media_router.caf.CastOptionsProvider { *; }
+
+-keep class com.google.android.material.bottomsheet.BottomSheetBehavior { *; }
+
+-keep class com.google.android.material.behavior.HideBottomViewOnScrollBehavior { *; }
+
+-keep class org.chromium.chrome.browser.BraveSyncWorker { *; }
+
+# Add methods for invocation below
+-keep class org.chromium.chrome.browser.ChromeTabbedActivity {
+    *** mLayoutManager;
+    *** mMultiInstanceManager;
+    *** hideOverview(...);
+    *** maybeHandleUrlIntent(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.suggestions.AutocompleteCoordinator {
+    *** createViewProvider(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.suggestions.AutocompleteMediator {
+    *** mContext;
+    *** mDataProvider;
+    *** loadUrlForOmniboxMatch(...);
+}
+
+-keep class org.chromium.components.browser_ui.site_settings.ContentSettingsResources {
+    *** getResourceItem(...);
+}
+
+-keep class org.chromium.components.browser_ui.site_settings.SingleCategorySettings {
+    *** mCategory;
+    *** getAddExceptionDialogMessageResourceId(...);
+    *** resetList(...);
+}
+
+-keep class org.chromium.components.browser_ui.site_settings.SingleWebsiteSettings {
+    *** mSite;
+    *** getPreferenceKey(...);
+    *** setupContentSettingsPreferences(...);
+    *** setupContentSettingsPreference(...);
+}
+
+-keep class org.chromium.components.browser_ui.site_settings.Website {
+    *** getPermissionInfo(...);
+    *** getContentSettingException(...);
+    *** getAddress(...);
+    *** setContentSettingException(...);
+    *** setContentSetting(...);
+}
+
+-keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
+
+-keep class org.chromium.chrome.browser.tabmodel.TabCollectionTabModelImpl {
+    *** shouldGroupWithParent(...);
+    *** isTabModelRestored(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.suggestions.editurl.EditUrlSuggestionProcessor {
+    *** onCopyLink(...);
+}
+
+-keep class org.chromium.chrome.browser.toolbar.top.ToolbarPhone {
+    *** mLocationBarBackgroundColorForNtp;
+    *** mToolbarBackgroundColorForNtp;
+}
+
+-keep class org.chromium.chrome.browser.hub.HubManagerImpl {
+    *** ensureHubCoordinatorIsInitialized(...);
+}
+
+-keep class org.chromium.chrome.browser.tasks.tab_management.IncognitoTabSwitcherPane {
+    *** mReferenceButtonData;
+}
+
+-keep class org.chromium.chrome.browser.undo_tab_close_snackbar.UndoBarController {
+    *** showUndoBar(...);
+}
+
+-keep class org.chromium.chrome.browser.tabbed_mode.TabbedNavigationBarColorController {
+    private *** getNavigationBarColor(...);
+    *** useActiveTabColor(...);
+}
+
+-keep class org.chromium.components.browser_ui.media.MediaSessionHelper {
+    *** mWebContents;
+    *** mNotificationInfoBuilder;
+    *** mMediaSessionActions;
+    *** showNotification(...);
+    *** createMediaSessionObserver(...);
+}
+
+-keep class org.chromium.chrome.browser.media.FullscreenVideoPictureInPictureController {
+    *** dismissActivityIfNeeded(...);
+}
+
+-keep class org.chromium.chrome.browser.notifications.channels.SiteChannelsManager {
+    *** toChannelStatus(...);
+}
+
+-keep class org.chromium.ui.base.Clipboard {
+    *** clear(...);
+}
+
+# Keep Play Core Review classes to prevent ClassNotFoundException during Parcelable deserialization
+-keep class com.google.android.play.core.review.** { *; }
+-keep class com.google.android.play.core.common.** { *; }
+
+# Keep Play Core App Update classes to prevent ClassNotFoundException during Parcelable deserialization
+-keep class com.google.android.play.core.appupdate.** { *; }
+-keep class com.google.android.play.core.install.** { *; }

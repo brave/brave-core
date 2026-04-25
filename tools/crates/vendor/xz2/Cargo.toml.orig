@@ -1,0 +1,36 @@
+[package]
+name = "xz2"
+version = "0.1.7"
+authors = ["Alex Crichton <alex@alexcrichton.com>"]
+license = "MIT/Apache-2.0"
+readme = "README.md"
+keywords = ["lzma", "xz", "encoding"]
+repository = "https://github.com/alexcrichton/xz2-rs"
+homepage = "https://github.com/alexcrichton/xz2-rs"
+documentation = "https://docs.rs/xz2"
+description = """
+Rust bindings to liblzma providing Read/Write streams as well as low-level
+in-memory encoding/decoding.
+"""
+categories = ["compression", "api-bindings"]
+edition = "2018"
+
+[workspace]
+members = ["systest"]
+
+[dependencies]
+lzma-sys = { path = "lzma-sys", version = "0.1.18" }
+tokio-io = { version = "0.1.12", optional = true }
+futures = { version = "0.1.26", optional = true }
+
+[dev-dependencies]
+rand = "0.8.0"
+quickcheck = "1.0.1"
+tokio-core = "0.1.17"
+
+[features]
+tokio = ["tokio-io", "futures"]
+static = ["lzma-sys/static"]
+
+[package.metadata.docs.rs]
+features = ["tokio-io", "futures"]

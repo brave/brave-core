@@ -1,0 +1,50 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//mojo/public/tools/bindings/mojom.gni")
+
+assert(!is_android && !is_ios)
+
+component("common") {
+  output_name = "commands_common"
+  defines = [ "IS_COMMANDS_COMMON_IMPL" ]
+
+  sources = [
+    "accelerator_parsing.cc",
+    "accelerator_parsing.h",
+    "features.cc",
+    "features.h",
+  ]
+
+  deps = [
+    "//base",
+    "//ui/base",
+    "//ui/events:dom_keyboard_layout",
+  ]
+
+  public_deps = [ ":mojom" ]
+}
+
+mojom_component("mojom") {
+  output_prefix = "brave_commands_mojom"
+  macro_prefix = "BRAVE_COMMANDS_MOJOM"
+
+  sources = [ "commands.mojom" ]
+  public_deps = [ "//mojo/public/mojom/base" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "accelerator_parsing_unittest.cc" ]
+
+  deps = [
+    ":common",
+    "//base/test:test_support",
+    "//testing/gtest",
+    "//ui/base",
+    "//ui/events:event_constants",
+  ]
+}

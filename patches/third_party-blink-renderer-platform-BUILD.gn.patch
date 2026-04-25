@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/platform/BUILD.gn b/third_party/blink/renderer/platform/BUILD.gn
+index eb2472737bd6e20a6bf9fdb311a412036d7dbff7..c428c6fd5c2f755805bdaed1919bb2d9edd2086c 100644
+--- a/third_party/blink/renderer/platform/BUILD.gn
++++ b/third_party/blink/renderer/platform/BUILD.gn
+@@ -1984,6 +1984,7 @@ component("platform") {
+ 
+   configs -= [ "//build/config/compiler:default_symbols" ]
+   configs += blink_symbols_config
++  visibility += brave_blink_renderer_platform_visibility public_deps += brave_blink_renderer_platform_public_deps sources += brave_blink_renderer_platform_sources deps += brave_blink_renderer_platform_deps
+ }
+ 
+ static_library("test_support") {

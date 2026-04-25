@@ -1,0 +1,10 @@
+from brave_chromium_utils import inline_file
+inline_file("//chrome/common/DEPS", globals(), locals())
+
+include_rules += [
+  "+brave/common",
+  "+brave/components/brave_origin/buildflags",
+  "+brave/components/constants",
+  "+brave/components/ipfs/buildflags",
+  "+brave/grit",
+]

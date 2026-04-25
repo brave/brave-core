@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+ <ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="vertical"
+    android:fadeScrollbars="false">
+
+    <LinearLayout
+        android:id="@+id/onboarding_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/stats_bottomsheet_background"
+        android:orientation="vertical">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/onboarding_image"
+            android:layout_width="@dimen/onboarding_2_animation_width"
+            android:layout_height="@dimen/onboarding_2_animation_height"
+            android:gravity="center"
+            android:contentDescription="@null"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/onboarding_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/onboarding_2_title_size"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:textColor="@color/brave_stats_text_color"/>
+
+        <TextView
+            android:id="@+id/onboarding_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/onboarding_2_text_size"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:textColor="@color/brave_stats_text_color"
+            android:layout_marginBottom="16dp"/>
+
+        <LinearLayout
+            android:id="@+id/indicator_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"
+            android:visibility="gone"
+            android:orientation="horizontal">
+
+            <View 
+                android:id="@+id/indicator_1"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:background="@drawable/default_indicator"/>
+
+            <View 
+                android:id="@+id/indicator_2"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:background="@drawable/default_indicator"/>
+
+            <View 
+                android:id="@+id/indicator_3"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:background="@drawable/default_indicator"/>
+
+            <View 
+                android:id="@+id/indicator_4"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:background="@drawable/default_indicator"/>
+
+
+        </LinearLayout>
+
+        <android.widget.Button
+            android:id="@+id/btn_turn_on_privacy_stats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@drawable/rounded_filled"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:text="@string/turn_on_privacy_stats"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:textColor="@android:color/white"
+            style="?android:attr/borderlessButtonStyle"/>
+
+        <android.widget.Button
+            android:id="@+id/btn_learn_more"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@drawable/rounded_holo_button"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:text="@string/learn_more"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:visibility="gone"
+            android:textColor="@color/brave_stats_text_color"
+            style="?android:attr/borderlessButtonStyle"/>
+
+    </LinearLayout>
+
+</ScrollView>

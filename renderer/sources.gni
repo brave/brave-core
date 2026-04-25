@@ -1,0 +1,97 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
+import("//brave/components/web_discovery/buildflags/buildflags.gni")
+import("//third_party/widevine/cdm/widevine.gni")
+
+brave_chrome_renderer_sources = [
+  "//brave/renderer/brave_content_renderer_client.cc",
+  "//brave/renderer/brave_content_renderer_client.h",
+  "//brave/renderer/brave_render_frame_observer.cc",
+  "//brave/renderer/brave_render_frame_observer.h",
+  "//brave/renderer/brave_render_thread_observer.cc",
+  "//brave/renderer/brave_render_thread_observer.h",
+]
+
+brave_chrome_renderer_deps = [
+  "//brave/common:mojo_bindings",
+  "//brave/components/ai_chat/core/common/buildflags",
+  "//brave/components/brave_origin:features",
+  "//brave/components/brave_search/common",
+  "//brave/components/brave_search/renderer",
+  "//brave/components/brave_shields/core/common",
+  "//brave/components/brave_vpn/common/buildflags",
+  "//brave/components/brave_wallet/common/buildflags",
+  "//brave/components/cosmetic_filters/renderer",
+  "//brave/components/playlist/core/common/buildflags",
+  "//brave/components/safe_builtins/renderer",
+  "//brave/components/script_injector/renderer",
+  "//brave/components/skus/common",
+  "//brave/components/skus/renderer",
+  "//brave/components/speedreader/common/buildflags",
+  "//brave/components/tor/buildflags",
+  "//brave/components/web_discovery/buildflags",
+  "//mojo/public/cpp/bindings",
+  "//third_party/blink/public:blink",
+  "//third_party/blink/public/common",
+]
+
+if (enable_ai_chat) {
+  brave_chrome_renderer_deps += [
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/renderer",
+  ]
+}
+
+if (enable_tor) {
+  brave_chrome_renderer_deps += [ "//brave/components/tor/renderer" ]
+}
+
+if (enable_speedreader) {
+  brave_chrome_renderer_deps += [
+    "//brave/components/speedreader/common",
+    "//brave/components/speedreader/renderer",
+  ]
+}
+
+if (enable_brave_vpn) {
+  brave_chrome_renderer_deps += [ "//brave/components/brave_vpn/common" ]
+}
+
+if (enable_brave_wallet) {
+  brave_chrome_renderer_deps += [
+    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/renderer",
+    "//brave/renderer/brave_wallet",
+  ]
+}
+
+if (enable_playlist) {
+  brave_chrome_renderer_deps +=
+      [ "//brave/components/playlist/content/renderer" ]
+}
+
+if (is_android) {
+  brave_chrome_renderer_deps +=
+      [ "//brave/components/brave_mobile_subscription/renderer/android" ]
+}
+
+if (enable_web_discovery_native) {
+  brave_chrome_renderer_deps += [
+    "//brave/components/web_discovery/common",
+    "//brave/components/web_discovery/renderer",
+  ]
+}
+
+brave_chrome_renderer_deps += [ "//third_party/widevine/cdm:headers" ]
+
+# do not add anything else here
+brave_chrome_renderer_public_deps = []

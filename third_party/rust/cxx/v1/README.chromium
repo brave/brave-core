@@ -1,0 +1,9 @@
+Name: cxx
+URL: https://crates.io/crates/cxx
+Version: 1.0.194
+License: Apache-2.0
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: Safe interop between Rust and C++

@@ -1,0 +1,39 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import * as React from 'react'
+
+import { LocaleContext } from '../lib/locale_context'
+import { formatString } from '$web-common/formatString'
+import { NewTabLink } from './new_tab_link'
+
+import * as urls from '../lib/rewards_urls'
+
+interface Props {
+  text?: string
+}
+
+export function TermsOfService (props: Props) {
+  const { getString } = React.useContext(LocaleContext)
+  const message = props.text || getString('onboardingTerms')
+  return (
+    <span>
+      {
+        formatString(message, {
+          $1: (content) => (
+            <NewTabLink href={urls.termsOfServiceURL}>
+              {content}
+            </NewTabLink>
+          ),
+          $2: (content) => (
+            <NewTabLink href={urls.privacyPolicyURL}>
+              {content}
+            </NewTabLink>
+          )
+        })
+      }
+    </span>
+  )
+}

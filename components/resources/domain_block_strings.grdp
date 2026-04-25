@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <message name="IDS_DOMAIN_BLOCK_TITLE" desc="Title of domain block interstitial page.">
+    Domain Blocked
+  </message>
+  <message name="IDS_DOMAIN_BLOCK_HEADING" desc="Heading of domain block interstitial page.">
+    This site may attempt to track you across other sites
+  </message>
+  <message name="IDS_DOMAIN_BLOCK_PRIMARY_PARAGRAPH" desc="Main paragraph of domain block interstitial page.">
+    Brave has prevented the following site from loading:
+  </message>
+  <message name="IDS_DOMAIN_BLOCK_EXPLANATION" desc="Second paragraph of domain block interstitial page.">
+    Because you requested to aggressively block trackers and ads, Brave is blocking this site before the first network connection.
+  </message>
+  <message name="IDS_DOMAIN_BLOCK_DONT_WARN_AGAIN_BUTTON" desc="The text for the domain block interstitial don't warn again checkbox.">
+    Don't warn me about this site again
+  </message>
+  <message name="IDS_DOMAIN_BLOCK_PROCEED_ANYWAY_BUTTON" desc="The text for the proceed button on the domain block interstitial page.">
+    Proceed
+  </message>
+  <message name="IDS_DOMAIN_BLOCK_GO_BACK_BUTTON" desc="The text for the go back button on the domain block interstitial page.">
+    Go back
+  </message>
+</grit-part>

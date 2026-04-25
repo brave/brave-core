@@ -1,0 +1,200 @@
+{
+  "normal": {
+    "urlPatterns": [
+      "^https://example1.com",
+      "^https://notasearchengine.biz",
+      "^https://search.example2.com"
+    ],
+    "searchEngines": [
+      "0",
+      "2"
+    ],
+    "scrape": {
+      "0": {
+        "form .search": {
+          "q": {
+            "item": "input",
+            "type": "searchQuery",
+            "etype": "value",
+            "keyName": "q"
+          }
+        }
+      },
+      "1": {
+        ".field1 input": {
+          "t": {
+            "type": "other",
+            "etype": "href",
+            "keyName": "t"
+          }
+        },
+        ".field2 input": {
+          "t": {
+            "type": "other",
+            "etype": "href",
+            "keyName": "t",
+            "functionsApplied": [
+              [
+                "parseU",
+                "qs",
+                "t"
+              ]
+            ]
+          }, 
+          "b": {
+            "type": "other",
+            "etype": "textContent",
+            "keyName": "b"
+          }
+        }
+      },
+      "2": {
+        "form .search-box": {
+          "q": {
+            "item": "input",
+            "type": "searchQuery",
+            "etype": "value",
+            "keyName": "q"
+          }
+        }
+      }
+    },
+    "payloads": {
+      "1": {
+        "key1": {
+          "type": "single",
+          "results": "single",
+          "action": "t"
+        }
+      }
+    },
+    "idMapping": {
+      "0": "ex1",
+      "1": "nase",
+      "2": "ex2"
+    }
+  },
+  "strict": {
+    "urlPatterns": [
+      "^https://example1.com.",
+      "^https://notasearchengine.biz",
+      "^https://search.example2.com"
+    ],
+    "searchEngines": [
+      "0",
+      "2"
+    ],
+    "scrape": {
+      "0": {
+        "form .search": {
+          "q": {
+            "item": "input",
+            "type": "searchQuery",
+            "etype": "value",
+            "keyName": "q"
+          }
+        },
+        "qurl": {
+          "qurl": {
+            "type": "standard",
+            "etype": "url",
+            "keyName": "qurl",
+            "functionsApplied": [
+              [
+                "maskU",
+                false,
+                false
+              ]
+            ]
+          }
+        },
+        "ctry": {
+          "ctry": {
+            "type": "standard",
+            "etype": "ctry",
+            "keyName": "ctry"
+          }
+        }
+      },
+      "1": {
+        "ctry": {
+          "ctry": {
+            "type": "standard",
+            "etype": "ctry",
+            "keyName": "ctry"
+          }
+        },
+        "#content .a1": {
+          "age": {
+            "type": "arr",
+            "etype": "textContent",
+            "keyName": "age"
+          }
+        }
+      },
+      "2": {
+        "form .search-box": {
+          "age": {
+            "item": ".created-at",
+            "type": "other",
+            "etype": "value",
+            "keyName": "age"
+          }
+        }
+      }
+    },
+    "payloads": {
+      "0": {
+        "key1": {
+          "type": "single",
+          "results": "single",
+          "action": "query"
+        }
+      },
+      "1": {
+        "key1": {
+          "type": "query",
+          "results": "clustered",
+          "action": "age-info",
+          "fields": [
+            [
+              "#content .a1",
+              "age"
+            ],
+            [
+              "ctry",
+              "ctry"
+            ]
+          ]
+        }
+      },
+      "2": {
+        "key2": {
+          "type": "query",
+          "results": "clustered",
+          "action": "age-info",
+          "fields": [
+            [
+              "form .search-box",
+              "age",
+              "join"
+            ]
+          ]
+        }
+      }
+    },
+    "queryTemplate": {
+      "0": {
+        "prefix": "search?query="
+      },
+      "1": {
+        "prefix": "directory?query="
+      }
+    },
+    "idMapping": {
+      "0": "ex1",
+      "1": "nase",
+      "2": "ex2"
+    }
+  }
+}

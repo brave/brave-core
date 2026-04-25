@@ -1,0 +1,140 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+import("//ios/build/chrome_build.gni")
+import("//ios/build/config.gni")
+import("//ios/public/provider/chrome/browser/build_config.gni")
+
+source_set("app") {
+  configs += [
+    "//brave/ios/browser/api/webcompat_reporter:mojom_header_config",
+    "//brave/ios/browser/api/brave_wallet:mojom_header_config",
+    "//brave/ios/browser/api/skus:mojom_header_config",
+  ]
+
+  sources = [
+    "brave_core_main.h",
+    "brave_core_main.mm",
+    "brave_core_switches.h",
+    "brave_core_switches.mm",
+    "brave_main_delegate.h",
+    "brave_main_delegate.mm",
+    "brave_profile_controller+private.h",
+    "brave_profile_controller.h",
+    "brave_profile_controller.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/ios/browser",
+    "//brave/components/ai_chat/ios/common:mojom",
+    "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_shields/ios/browser",
+    "//brave/components/brave_sync:constants",
+    "//brave/components/brave_user_agent/browser",
+    "//brave/components/brave_user_agent/ios/common",
+    "//brave/components/constants",
+    "//brave/components/ntp_background_images/browser",
+    "//brave/components/ntp_background_images/common",
+    "//brave/components/p3a",
+    "//brave/components/skus/browser",
+    "//brave/components/update_client:buildflags",
+    "//brave/components/variations",
+    "//brave/ios/app/resources",
+    "//brave/ios/browser",
+    "//brave/ios/browser/ai_chat",
+    "//brave/ios/browser/api/ads",
+    "//brave/ios/browser/api/ads:brave_ads_mojom_wrappers",
+    "//brave/ios/browser/api/bookmarks",
+    "//brave/ios/browser/api/brave_rewards",
+    "//brave/ios/browser/api/brave_shields",
+    "//brave/ios/browser/api/brave_stats",
+    "//brave/ios/browser/api/brave_user_agent",
+    "//brave/ios/browser/api/brave_wallet",
+    "//brave/ios/browser/api/brave_wallet:wallet_mojom_wrappers",
+    "//brave/ios/browser/api/content_settings",
+    "//brave/ios/browser/api/de_amp",
+    "//brave/ios/browser/api/history",
+    "//brave/ios/browser/api/https_upgrade_exceptions",
+    "//brave/ios/browser/api/ipfs",
+    "//brave/ios/browser/api/ntp_background_images",
+    "//brave/ios/browser/api/opentabs",
+    "//brave/ios/browser/api/p3a",
+    "//brave/ios/browser/api/password",
+    "//brave/ios/browser/api/profile",
+    "//brave/ios/browser/api/qr_code",
+    "//brave/ios/browser/api/query_filter",
+    "//brave/ios/browser/api/skus:skus_mojom_wrappers",
+    "//brave/ios/browser/api/sync/driver",
+    "//brave/ios/browser/api/web_image",
+    "//brave/ios/browser/api/web_view",
+    "//brave/ios/browser/api/webcompat_reporter",
+    "//brave/ios/browser/api/webcompat_reporter:webcompat_reporter_mojom_wrappers",
+    "//brave/ios/browser/application_context",
+    "//brave/ios/browser/brave_ads",
+    "//brave/ios/browser/brave_shields",
+    "//brave/ios/browser/content_settings",
+    "//brave/ios/browser/skus",
+    "//brave/ios/browser/ui/webui",
+    "//brave/ios/browser/web",
+    "//brave/ios/components/prefs",
+    "//build:blink_buildflags",
+    "//components/browser_sync",
+    "//components/component_updater",
+    "//components/content_settings/core/browser",
+    "//components/history/core/browser",
+    "//components/keyed_service/core",
+    "//components/password_manager/core/browser",
+    "//components/safe_browsing/core/common:safe_browsing_prefs",
+    "//components/send_tab_to_self",
+    "//components/sync/base",
+    "//components/sync/service",
+    "//components/variations",
+    "//ios/chrome/app:app_internal",
+    "//ios/chrome/app:tests_fake_hook",
+    "//ios/chrome/app/startup",
+    "//ios/chrome/app/startup:startup_basic",
+    "//ios/chrome/browser/bookmarks/model",
+    "//ios/chrome/browser/browsing_data/model",
+    "//ios/chrome/browser/content_settings/model",
+    "//ios/chrome/browser/credential_provider/model:buildflags",
+    "//ios/chrome/browser/flags:system_flags",
+    "//ios/chrome/browser/history/model",
+    "//ios/chrome/browser/main/model",
+    "//ios/chrome/browser/passwords/model:store_factory",
+    "//ios/chrome/browser/providers/ui_utils:chromium_ui_utils",
+    "//ios/chrome/browser/sessions/model:session_restoration_service",
+    "//ios/chrome/browser/sessions/model:session_restoration_service_factory",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/paths",
+    "//ios/chrome/browser/shared/model/prefs:pref_names",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/chrome/browser/shared/model/web_state_list",
+    "//ios/chrome/browser/shared/public/commands",
+    "//ios/chrome/browser/sync/model",
+    "//ios/chrome/browser/webui/ui_bundled:webui_internal",
+    "//ios/chrome/common",
+    "//ios/public/provider/chrome/browser/font:font_api",
+    "//ios/public/provider/chrome/browser/overrides:overrides_api",
+    "//ios/public/provider/chrome/browser/ui_utils:ui_utils_api",
+    "//ios/web/public/init",
+    "//ios/web/public/webui",
+    "//ios/web_view/framework:web_view_sources",
+
+    # Use the provider API controlled by args.gn.
+    ios_provider_target,
+  ]
+
+  if (ios_enable_credential_provider_extension) {
+    deps += [ "//ios/chrome/browser/credential_provider/model" ]
+  }
+
+  frameworks = [
+    "Foundation.framework",
+    "UIKit.framework",
+  ]
+}

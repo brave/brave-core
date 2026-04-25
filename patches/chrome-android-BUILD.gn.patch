@@ -1,0 +1,76 @@
+diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
+index d8bd462bc9349d5a4dbe8b07bf3bcac97cda8272..77c77159d847ec53b3dfb68f6379deab29e5e0d8 100644
+--- a/chrome/android/BUILD.gn
++++ b/chrome/android/BUILD.gn
+@@ -164,6 +164,7 @@ if (_is_default_toolchain) {
+       "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
+       "java/res_chromium_base/values/channel_constants.xml",
+     ]
++    sources += brave_base_module_resources
+   }
+ 
+   android_resources("chrome_app_java_resources") {
+@@ -277,6 +278,7 @@ if (_is_default_toolchain) {
+     if (enable_extensions_core) {
+       deps += [ "//chrome/browser/ui/android/extensions:java_resources" ]
+     }
++    deps += brave_chrome_app_java_resources_deps sources += brave_java_resources resource_overlay = true
+   }
+ 
+   android_resources("java_overlay_resources") {
+@@ -823,6 +825,7 @@ if (_is_default_toolchain) {
+     ]
+ 
+     deps += feed_deps
++    deps += brave_chrome_java_deps
+ 
+     srcjar_deps = [
+       ":chrome_android_java_enums_srcjar",
+@@ -840,6 +843,7 @@ if (_is_default_toolchain) {
+       "//components/supervised_user/core/browser:supervised_user_utils_enum_javagen",
+       "//components/touch_to_search/core/browser:quick_action_category_enum_javagen",
+     ]
++    srcjar_deps += brave_chrome_java_srcjar_deps
+ 
+     # From java_sources.gni.
+     sources = chrome_java_sources
+@@ -979,6 +983,7 @@ if (_is_default_toolchain) {
+       # TODO(crbug.com/434123514): see if we can remove these stub targets.
+       deps += [ "//chrome/browser/ui/android/extensions/windowing/stub:java" ]
+     }
++    deps += brave_chrome_all_java_deps
+   }
+ 
+   action_with_pydeps("chrome_android_java_google_api_keys_srcjar") {
+@@ -1737,6 +1742,7 @@ if (_is_default_toolchain) {
+       "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
+       "java/res_chromium_base/values/channel_constants.xml",
+     ]
++    sources += brave_base_module_resources
+ 
+     # Dep needed to ensure override works properly.
+     deps = [ ":chrome_base_module_resources" ]
+@@ -1889,6 +1895,7 @@ if (_is_default_toolchain) {
+         ":${_variant}_locale_pak_assets",
+         ":${_variant}_paks",
+       ]
++      deps += [ "//brave:brave_pak_assets" ]
+     }
+   }
+ 
+@@ -2148,6 +2155,7 @@ if (_is_default_toolchain) {
+       "//third_party/androidx:androidx_annotation_annotation_experimental_java",
+       "//third_party/androidx:androidx_browser_browser_java",
+     ]
++    sources += brave_java_base_module_sources deps += brave_java_base_module_deps
+ 
+     # More deps for DFMs.
+     if (dfmify_dev_ui) {
+@@ -3135,6 +3143,7 @@ if (_is_default_toolchain) {
+       "java/src/org/chromium/chrome/browser/webapps/WebApkUpdateManager.java",
+       "java/src/org/chromium/chrome/browser/webapps/WebappRegistry.java",
+     ]
++    sources += brave_jni_headers_sources
+ 
+     if (enable_screen_capture) {
+       sources += [ "java/src/org/chromium/chrome/browser/media/MediaCapturePickerManagerBridge.java" ]

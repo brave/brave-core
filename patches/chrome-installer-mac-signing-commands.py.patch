@@ -1,0 +1,10 @@
+diff --git a/chrome/installer/mac/signing/commands.py b/chrome/installer/mac/signing/commands.py
+index 6b653b4a6c19f02b7c741dc037d66de1921b2703..e50ea1d21cec1068e9a7cc829d4162831bb11fd8 100644
+--- a/chrome/installer/mac/signing/commands.py
++++ b/chrome/installer/mac/signing/commands.py
+@@ -227,3 +227,4 @@ class WorkDirectory(object):
+ 
+     def __exit__(self, exc_type, value, traceback):
+         shutil.rmtree(self._workdir)
++from brave_chromium_utils import inline_file; inline_file("//brave/chromium_src/chrome/installer/mac/signing/commands.py", globals(), locals())
+\ No newline at end of file

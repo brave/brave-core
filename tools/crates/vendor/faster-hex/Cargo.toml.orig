@@ -1,0 +1,47 @@
+[package]
+name = "faster-hex"
+version = "0.10.0"
+authors = ["zhangsoledad <787953403@qq.com>"]
+edition = "2018"
+keywords = ["simd", "hex", "no-std"]
+license = "MIT"
+description = "Fast hex encoding."
+repository = "https://github.com/NervosFoundation/faster-hex"
+homepage = "https://github.com/NervosFoundation/faster-hex"
+readme = "README.md"
+exclude = [
+    "afl/*",
+    "benches/*",
+    "fuzz/*",
+    "CHANGELOG.md"
+]
+
+[dependencies]
+serde = { version = "1.0", default-features = false, optional = true }
+
+[features]
+default = ["std", "serde"]
+std = ["alloc", "serde?/std"]
+alloc = []
+serde = ["dep:serde", "alloc"]
+
+[target.'cfg(not(feature = "alloc"))'.dependencies]
+heapless = { version = "0.8" }
+
+[dev-dependencies]
+criterion = "0.5"
+rustc-hex = "1.0"
+hex = "0.3.2"
+proptest = "1.0"
+serde = { version = "1.0", features = ["derive"]}
+bytes = {version = "1.4.0"}
+serde_json ={ version = "1.0"}
+
+[[bench]]
+name = "hex"
+harness = false
+
+
+[[bench]]
+name = "check"
+harness = false

@@ -1,0 +1,66 @@
+/* A button title shown below language introducing the Brave Playlist feature. i.e. 'Discover how to use use this feature' */
+"advanceInitialOnboardingButtonTitle" = "了解发现";
+
+/* A button title that when tapped will advance the onboarding to guide a user to add some content to Playlist */
+"advanceStep2OnboardingButtonTitle" = "欢迎试用";
+
+/* A button that allows the user to disable the brave translate feature. When pressed, the page will not be automatically translated to the user's language. */
+"BraveTranslateOnboarding.disableTranslateButtonTitle" = "禁用此功能";
+
+/* A text element that describes the translation feature and explains that hte user might have to download or configure languages on their device. */
+"BraveTranslateOnboarding.translateDescription" = "页面可以翻译成 iOS 设备支持的语言。如果您是第一次使用此功能，您可能需要配置语言。";
+
+/* A text element that explains we're translating pages. */
+"BraveTranslateOnboarding.translateTitle" = "页面翻译";
+
+/* A button title that when tapped opens Brave Playlist */
+"confirmationActionButtonTitle" = "转到我的播放列表";
+
+/* Shown above a button that will let the user open the playlist feature */
+"confirmationPrompt" = "现在，让我们看看你的播放列表。";
+
+/* Shown below a title that confirms the user completed the task of adding something to playlist. %@ will be replaced with the folder the content was added to. i.e. 'Content added to Play Later' */
+"confirmationSubtitle" = "添加到 %@ 的内容";
+
+/* Guides the user to tap on an icon where the onboarding is pointing to. '%@' will be replaced with said icon. */
+"confirmationTitle" = "干得好";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissOnboardingButtonTitle" = "关闭";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep2OnboardingButtonTitle" = "可能在稍后";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep4OnboardingButtonTitle" = "关闭";
+
+/* A title shown on the first 2 steps of onboarding for Brave Playlist. Brave Playlist is a product name */
+"introducingBravePlaylist" = "介绍 Brave 播放列表";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleOne" = "制作您喜欢的内容的播放列表。保存移动数据。并且免费播放广告。";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleThree" = "画中画。背景播放。从锁屏控制等等……";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleTwo" = "保持流畅：在浏览时添加视频，稍后观看。";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleOne" = "将视频添加到 Brave 播放列表。随时播放。即使是离线";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleThree" = "播放列表中的播放效果更好";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleTwo" = "只需点击按钮即可将视频添加到播放列表";
+
+/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
+"playlistOnboardingDescription" = "用你喜欢的内容创建播放列表。从任何页面添加媒体。\n随时播放。甚至是离线时！";
+
+/* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
+"userActionPrompt" = "点击 %@ 添加你的第一项目";
+
+/* Will be shown next to an icon inside of some other text. i.e. "Tap 'Add to Playlist' to add your first item" */
+"userActionPromptFill" = "添加至播放列表";
+

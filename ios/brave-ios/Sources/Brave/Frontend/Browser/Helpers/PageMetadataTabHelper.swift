@@ -1,0 +1,143 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import BraveCore
+import Foundation
+import Shared
+import Storage
+@_spi(ChromiumWebViewAccess) import Web
+import WebKit
+import os.log
+
+extension TabDataValues {
+  private struct PageMetadataTabHelperKey: TabDataKey {
+    static var defaultValue: PageMetadataTabHelper?
+  }
+
+  var pageMetadataHelper: PageMetadataTabHelper? {
+    get { self[PageMetadataTabHelperKey.self] }
+    set { self[PageMetadataTabHelperKey.self] = newValue }
+  }
+}
+
+/// Value types representing a page's metadata
+struct PageMetadata: Decodable {
+  let search: Link?
+  let feeds: [Link]
+
+  enum CodingKeys: String, CodingKey {
+    case search
+    case feeds
+  }
+
+  init(
+    search: Link? = nil,
+    feeds: [Link] = []
+  ) {
+    self.search = search
+    self.feeds = feeds
+  }
+
+  struct Link: Decodable {
+    var href: String
+    var title: String
+  }
+}
+
+class PageMetadataTabHelper: TabObserver {
+  private weak var tab: (any TabState)?
+  private(set) var metadata: PageMetadata?
+
+  init(tab: some TabState) {
+    self.tab = tab
+    tab.addObserver(self)
+  }
+
+  deinit {
+    tab?.removeObserver(self)
+  }
+
+  private func fetchMetadata(in tab: some TabState) {
+    // Get the metadata out of the page-metadata-parser, and into a type safe struct as soon
+    // as possible.
+    guard let url = tab.visibleURL, url.isWebPage(includeDataURIs: false),
+      !InternalURL.isValid(url: url)
+    else {
+      metadata = nil
+      return
+    }
+
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+      guard let webView = BraveWebView.from(tab: tab) else {
+        metadata = nil
+        return
+      }
+      webView.fetchMetadata { [weak self] json in
+        guard let self, let json else {
+          self?.metadata = nil
+          return
+        }
+        let data = Data(json.utf8)
+        do {
+          let pageMetadata = try JSONDecoder().decode(PageMetadata.self, from: data)
+          metadata = pageMetadata
+        } catch {
+          Logger.module.error(
+            "Failed to parse metadata: \(error.localizedDescription, privacy: .public)"
+          )
+          // To avoid issues where `pageMetadata` points to the last website to successfully
+          // parse metadata, set to nil
+          metadata = nil
+        }
+      }
+    } else {
+      tab.evaluateJavaScript(
+        functionName: "__firefox__.metadata && __firefox__.metadata.getMetadata()",
+        contentWorld: .defaultClient,
+        asFunction: false
+      ) { [self] (result, error) in
+        guard error == nil else {
+          metadata = nil
+          return
+        }
+
+        guard let dict = result as? [String: Any],
+          let data = try? JSONSerialization.data(withJSONObject: dict, options: [])
+        else {
+          Logger.module.debug("Page contains no metadata!")
+          metadata = nil
+          return
+        }
+
+        do {
+          let pageMetadata = try JSONDecoder().decode(PageMetadata.self, from: data)
+          metadata = pageMetadata
+        } catch {
+          Logger.module.error(
+            "Failed to parse metadata: \(error.localizedDescription, privacy: .public)"
+          )
+          // To avoid issues where `pageMetadata` points to the last website to successfully
+          // parse metadata, set to nil
+          metadata = nil
+        }
+      }
+    }
+  }
+
+  func tabDidStartNavigation(_ tab: some TabState) {
+    metadata = nil
+  }
+
+  func tabDidFinishNavigation(_ tab: some TabState) {
+    fetchMetadata(in: tab)
+  }
+
+  func tabDidUpdateURL(_ tab: some TabState) {
+    fetchMetadata(in: tab)
+  }
+
+  func tabWillBeDestroyed(_ tab: some TabState) {
+    tab.removeObserver(self)
+  }
+}

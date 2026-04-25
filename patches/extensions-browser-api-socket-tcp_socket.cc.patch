@@ -1,0 +1,23 @@
+diff --git a/extensions/browser/api/socket/tcp_socket.cc b/extensions/browser/api/socket/tcp_socket.cc
+index 4e96e1d61d81fb1b5144bab2255608905011f13b..fe2fa1324fc46b9dd2758628c3e9a70435cd5d66 100644
+--- a/extensions/browser/api/socket/tcp_socket.cc
++++ b/extensions/browser/api/socket/tcp_socket.cc
+@@ -152,8 +152,16 @@ void TCPSocket::Disconnect(bool socket_destroying) {
+   client_socket_.reset();
+   server_socket_.reset();
+   listen_callback_.Reset();
+-  connect_callback_.Reset();
+-  accept_callback_.Reset();
++  if (connect_callback_) {
++    std::move(connect_callback_)
++        .Run(net::ERR_CONNECTION_CLOSED);
++  }
++  if (accept_callback_) {
++    std::move(accept_callback_)
++        .Run(net::ERR_CONNECTION_CLOSED, mojo::NullRemote(), std::nullopt,
++            mojo::ScopedDataPipeConsumerHandle(),
++            mojo::ScopedDataPipeProducerHandle());
++  }
+   // TODO(devlin): Should we do this for all callbacks?
+   if (read_callback_) {
+     std::move(read_callback_)

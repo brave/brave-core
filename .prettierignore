@@ -1,0 +1,84 @@
+# Don't add paths that are already ignored in .gitignore:
+# npm run format/presubmit does it automatically.
+# For manual run:
+# npm run format -- --all-files --only-prettier [--dry-run]
+
+# Ignore HTML Files - incompatible with presubmit rules
+*.html
+
+# Ignore some non-component top level folders (remove to opt-in):
+/chromium_src/chrome/
+/chromium_src/components/
+/chromium_src/third_party/
+/chromium_src/ui/
+/docs
+/ios
+/resources
+/test
+/.storybook/
+
+# Ignore external dependencies:
+/tools/crates/vendor/
+/third_party/
+/third_party/wasm/vendor/
+
+# Ignore github .yml files:
+.github/**/*.yml
+
+# Ignore some markdown files:
+.github/PULL_REQUEST_TEMPLATE.md
+CONTRIBUTING.md
+README.md
+browser/ui/commander/fuzzy_finder.md
+browser/ui/views/brave_ads/overview.md
+components/ai_chat/core/browser/tools/tools.md
+
+# Ignored top-level files:
+.clang-tidy
+chromium_presubmit_config.json5
+jest.config.js
+snapcraft.yaml
+
+# Ignored minified javascript
+components/brave_wallet/resources/solana_web3_script.js
+
+# Ignore browser/resources sub folders that still need to be formatted
+/browser/resources/settings/
+
+# Ignore components folders with a lot of formatting issues
+/components/brave_new_tab_ui/
+/components/brave_rewards/resources/shared
+/components/brave_shields/resources/panel
+/components/brave_vpn/
+/components/brave_news/
+/components/web-components/
+/components/brave_welcome_ui/
+/components/brave_ads/
+/components/brave_extension/
+/components/brave_perf_predictor/
+/components/brave_private_new_tab_ui/
+/components/policy/resources/templates/
+/components/playlist/
+/components/speedreader/
+/components/common/
+/components/definitions/
+/components/new_tab_takeover/
+/components/skus/
+/components/tor/
+/components/webcompat_reporter/
+/components/webpack/
+/components/browser_ui/
+/components/decentralized_dns/
+/components/embedder_support/
+/components/flags_ui/
+/components/permissions/
+/components/request_otr/
+/components/safe_browsing/
+/components/security_interstitials/
+/components/signin/
+/components/test/
+
+# Ignore some folders that still need to be formatted
+/ui/webui/resources/
+/android/java/org/chromium/chrome/browser/
+/common/extensions/api/

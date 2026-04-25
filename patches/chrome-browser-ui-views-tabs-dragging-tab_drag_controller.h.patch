@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h b/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h
+index 48a432ac2db8c7119d3bf36754419f07390893f5..8c4deefe04c532f5370ef6ac6a8d224d408fcbbe 100644
+--- a/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h
++++ b/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h
+@@ -135,7 +135,7 @@ class TabDragController : public views::WidgetObserver,
+   // call, and Liveness::ALIVE if `this` still exists.
+   // Note: `dragging_views` must be ordered by their position in the source
+   // tabstrip (both visually and in the model).
+-  [[nodiscard]] Liveness Init(TabDragContext* source_context,
++  [[nodiscard]] virtual Liveness Init(TabDragContext* source_context,
+                               TabSlotView* source_view,
+                               const std::vector<TabSlotView*>& dragging_views,
+                               const gfx::Point& offset_from_source_view,

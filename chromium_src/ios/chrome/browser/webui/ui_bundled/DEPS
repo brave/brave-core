@@ -1,0 +1,4 @@
+include_rules = [
+  "+brave/components/version_info/version_info.h",
+  "+brave/components/webui/about_ui.h",
+]

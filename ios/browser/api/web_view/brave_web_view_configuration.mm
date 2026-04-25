@@ -1,0 +1,79 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#include "brave/ios/browser/api/web_view/brave_web_view_configuration.h"
+
+#include <WebKit/WebKit.h>
+
+#include "base/apple/foundation_util.h"
+#include "brave/ios/browser/api/profile/profile_bridge_impl.h"
+#include "brave/ios/browser/api/web_view/brave_web_view_configuration_provider.h"
+#include "brave/ios/browser/ui/web_view/features.h"
+#include "components/autofill/core/browser/data_manager/personal_data_manager.h"
+#include "components/keyed_service/core/service_access_type.h"
+#include "components/password_manager/core/browser/password_store/password_store_interface.h"
+#include "ios/chrome/browser/autofill/model/personal_data_manager_factory.h"
+#include "ios/chrome/browser/passwords/model/ios_chrome_profile_password_store_factory.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
+#include "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
+#include "ios/web_view/internal/autofill/cwv_autofill_data_manager_internal.h"
+#include "ios/web_view/internal/cwv_web_view_configuration_internal.h"
+
+@implementation BraveWebViewConfiguration {
+  CWVAutofillDataManager* _autofillDataManager;
+}
+
+- (id<ProfileBridge>)profile {
+  auto* profile = ProfileIOS::FromBrowserState(self.browserState);
+  return [[ProfileBridgeImpl alloc] initWithProfile:profile];
+}
+
+- (WKWebsiteDataStore*)websiteDataStore {
+  DCHECK(base::FeatureList::IsEnabled(
+      brave::features::kUseProfileWebViewConfiguration))
+      << "The resulting website data store is only valid when we don't "
+         "override the configuration with every created BraveWebView";
+  return web::WKWebViewConfigurationProvider::FromBrowserState(
+             self.browserState)
+      .GetWebsiteDataStore();
+}
+
+- (CWVAutofillDataManager*)autofillDataManager {
+  // Reimplements CWVWebViewConfiguration's `autofillDataManager` method to
+  // instead create a CWVAutofillDataManager using Chrome factories instead
+  // of `//ios/web_view` specific factories.
+  if (!base::FeatureList::IsEnabled(
+          brave::features::kUseChromiumWebViewsAutofill)) {
+    return nil;
+  }
+  if (!_autofillDataManager && self.persistent) {
+    ProfileIOS* profile = ProfileIOS::FromBrowserState(self.browserState);
+    autofill::PersonalDataManager* personalDataManager =
+        autofill::PersonalDataManagerFactory::GetForProfile(profile);
+    scoped_refptr<password_manager::PasswordStoreInterface> passwordStore =
+        IOSChromeProfilePasswordStoreFactory::GetForProfile(
+            profile, ServiceAccessType::EXPLICIT_ACCESS);
+    _autofillDataManager = [[CWVAutofillDataManager alloc]
+         initWithPersonalDataManager:personalDataManager
+                       passwordStore:passwordStore.get()
+        isPasswordAffiliationEnabled:NO];
+  }
+  return _autofillDataManager;
+}
+
+- (void)shutDown {
+  [_autofillDataManager shutDown];
+  [super shutDown];
+}
+
++ (BraveWebViewConfiguration*)configurationForProfile:
+    (id<ProfileBridge>)profileBridge {
+  ProfileIOS* profile =
+      base::apple::ObjCCastStrict<ProfileBridgeImpl>(profileBridge).profile;
+  return BraveWebViewConfigurationProvider::FromBrowserState(profile)
+      .GetConfiguration();
+}
+
+@end

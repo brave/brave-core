@@ -1,0 +1,252 @@
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "Přidá další seznamy vytvořené a spravované komunitou, které věříte.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**Přihlaste se pouze k odběru seznamů od subjektů, kterým důvěřuje**. Váš prohlížeč bude pravidelně kontrolovat aktualizace seznamu z adresy URL, kterou zadáte.";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "Přidat filtr podle adresy URL";
+
+/* A discription of the Brave Player. */
+"AntiAdBlockWarningBravePlayerDescription" = "**Přehrávač Brave** je vaše vstupenka na video bez reklam a nepřerušované zážitky z videa.";
+
+/* A button that disables ad-blocking and uses brave player. */
+"AntiAdBlockWarningConfirmationButton" = "Upravit moje štíty";
+
+/* A descriptive message explaining this site's ad-blocking crackdown. */
+"AntiAdBlockWarningDescription" = "Tato webová stránka začala blokovat některé blokátory reklam, což znamená, že jejich webová stránka nemusí fungovat podle očekávání.";
+
+/* A descriptive message explaining to disable shields on this site. */
+"AntiAdBlockWarningDescription2" = "Chcete-li tento problém vyřešit, může za vás Brave upravit nastavení vašich štítů. Po úpravě můžete zkusit sledovat tento obsah v přehrávači Brave.";
+
+/* A button that dismisses the warning and does nothing. */
+"AntiAdBlockWarningDismissButton" = "Zachovat aktuální nastavení";
+
+/* A title for a popup that tells the user we recommend turning shields off for this site. */
+"AntiAdBlockWarningTitle" = "Upravte nastavení blokování reklam pro tuto webovou stránku";
+
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "Automatické smazání";
+
+/* The option the user can select to do aggressive ad and tracker blocking */
+"BlockAdsAndTrackingAggressive" = "Agresivní";
+
+/* A description for a shield options that allows you to switch between different blocking levels for trackers and ads blocking. Options include disabled, standard and aggressive. */
+"BlockAdsAndTrackingDescription" = "Zabraňuje načítání reklam, vyskakovacích oken a trackerů.";
+
+/* The option the user can select to disable ad and tracker blocking */
+"BlockAdsAndTrackingDisabled" = "Zakázáno";
+
+/* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
+"BlockAdsAndTrackingStandard" = "Standardně";
+
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "Oznámení bloku „Přepnout na aplikaci";
+
+/* Title for the brave player feature */
+"BravePlayer" = "Přehrávač Brave";
+
+/* A label for a toggle that enables automatic launching of brave player for certain sites */
+"BravePlayerAlwaysOpenYouTubeLinks" = "Vždy otevírejte videa z této webové stránky pomocí přehrávače Brave";
+
+/* A button that confirms to use the brave player. */
+"BravePlayerConfirmButton" = "Vyzkoušejte to";
+
+/* A button that ignores the brave player */
+"BravePlayerDismissButton" = "Teď ne";
+
+/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
+"BravePlayerInfoMessage" = "Přehrávač Brave vám umožňuje sledovat videa bez přerušení.";
+
+/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
+"BravePlayerInfoTitle" = "Místo toho sledujte v přehrávači Brave";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "Filtrování obsahu";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "Aktivujte vlastní filtry blokující regionální a jazykově specifické sledovací prvky a nepříjemnosti";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "Vlastní seznam filtrů";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "Adresa URL vlastního seznamu filtrů";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "Vlastní filtry";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "Zde přidejte vlastní filtry. Nezapomeňte použít syntaxi filtru Adblock.";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "Neplatné pravidlo „%1$@` na řádku %2$i";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "Sem přidejte vlastní filtry, a to po jednom na řádek.";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "Vlastní filtry nelze přidat na více než %i řádků.";
+
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "Výchozí seznamy filtrů";
+
+/* Text for a button in a blocked page info screen that takes you back where you came from */
+"DomainBlockedGoBackAction" = "Přejít zpět";
+
+/* A description in the warning page that appears when a page was blocked */
+"DomainBlockedPageDescription" = "Jelikož jste požádali o agresivní blokování sledovačů a reklam, Brave tuto stránku před prvním připojením k síti blokuje. ";
+
+/* A message in the warning page that appears when a page was blocked */
+"DomainBlockedPageMessage" = "Prohlížeč Brave zabránil načtení následujícího webu:";
+
+/* A title in the warning page that appears when a page was blocked */
+"DomainBlockedPageTitle" = "Tato webová stránka se vás může pokusit sledovat i na jiných webových stránkách";
+
+/* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
+"DomainBlockedProceedAction" = "Pokračovat";
+
+/* A tab title for the warning page that appears when a page was blocked */
+"DomainBlockedTitle" = "Doména je blokovaná";
+
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "Požádejte weby, aby neprodávaly ani nesdílely vaše údaje. [Zjistit více](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "Povolit globální kontrolu soukromí";
+
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "Seznamy externích filtrů";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "Zadaná adresa URL je neplatná";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "Pro vlastní seznamy filtrů jsou povoleny pouze zabezpečené adresy URL (https)";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "Přidat";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "Další oblíbené komunitní seznamy. Zapnutí příliš mnoha filtrů sníží rychlost procházení.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "Stažení se nezdařilo";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "Čeká na stažení";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "Edit";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "Zadejte odkaz na seznam filtrů";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "Naposledy aktualizováno %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "Zde zadejte adresu URL seznamu filtrů ";
+
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "Vymaže soubory cookie a další data webu při zavření webové stránky";
+
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "Zapomenout na mě, až zavřu tuto stránku";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "Přísné";
+
+/* This is a label on a button that updates filter lists which signifies that lists have been updated */
+"ListsUpdated" = "Seznamy aktualizovány";
+
+/* A label displayed above a value indicating if the site is in aggressive mode in Blocked Requests view. */
+"shields.aggressiveLabel" = "Agresivní";
+
+/* A label displayed above the location a request was blocked in Blocked Requests view. */
+"shields.blockedByLabel" = "Blokuje";
+
+/* The title displayed in the navigation bar of Blocked Requests view. */
+"shields.blockedRequestsTitle" = "Blokované žádosti";
+
+/* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
+"shields.contentBlocker" = "Blokování obsahu";
+
+/* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
+"shields.requestBlocking" = "Vyžádat blokování";
+
+/* A label displayed above the request url that was blocked in Blocked Requests view. */
+"shields.requestURLLabel" = "Adresa URL žádosti";
+
+/* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
+"shields.resourceTypeLabel" = "Typ zdroje";
+
+/* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowDescription" = "Pokud by měl Shred odstraňovat položky historie.";
+
+/* A title beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowTitle" = "Shred odstraňuje historii";
+
+/* A row description that appears in the Shields & Privacy settings. */
+"shields.shredRowDescription" = "Aktualizujte Auto Shred a upravte, jaká data budou smazána.";
+
+/* A row title that appears in the Shields & Privacy settings. */
+"shields.shredRowTitle" = "Smazat";
+
+/* A title for the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredSettingsViewTitle" = "Smazat";
+
+/* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
+"shields.sourceURLLabel" = "Zdrojová adresa URL";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "Smazat data";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "Nikdy";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "Zavřít aplikaci";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "Záložky stránky zavřené";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "Smazání zavře všechny záložky a odstraní veškerá data stránky. Toto nelze vzít zpět.";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "Smazat data stránky";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "Smazání zavře všechny záložky otevřené na této stránce a odstraní veškerá data stránky. Toto nelze vzít zpět.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "Smazat data stránky?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "Smazat data stránky nyní";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "Smazání zavře vybrané záložky a odstraní veškerá data stránky. Toto nelze vzít zpět.";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "Stránka není bezpečná.";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "Připojení k %@ není bezpečné";
+
+/* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
+"TrackersAndAdsBlocking" = "Trackery a blokování reklam";
+
+/* This is a label for a button which when pressed updates all the filter lists */
+"UpdateLists" = "Aktualizovat seznamy";
+
+/* This is a label on a button that updates filter lists which signifies that lista are being updated */
+"UpdatingLists" = "Aktualizace seznamů";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "Upgradujte připojení na HTTPS";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "Tohle varování se vám zobrazuje, protože tento web nepodporuje HTTPS.";
+

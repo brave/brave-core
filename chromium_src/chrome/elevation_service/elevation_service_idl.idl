@@ -1,0 +1,292 @@
+// Copyright 2018 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+typedef enum ProtectionLevel {
+  // No validation: This never validates anything.
+  PROTECTION_NONE = 0,
+  // This is the old path validation that used NT paths. Unsupported.
+  PROTECTION_PATH_VALIDATION_OLD = 1,
+  // Path validation: This will validate that the data is being decrypted by an
+  // executable whose NT path matches the executable that originally encrypted
+  // it. This should only be used for executables in trusted paths e.g.
+  // C:\Program Files, otherwise anyone could pretend to be your executable.
+  PROTECTION_PATH_VALIDATION = 2,
+  // Keep at the end.
+  PROTECTION_MAX = 3,
+} ProtectionLevel;
+
+[
+  object,
+  oleautomation,
+  uuid(5A9A9462-2FA1-4FEB-B7F2-DF3D19134463),
+  helpstring("IElevator Interface"),
+  pointer_default(unique)
+]
+interface IElevator : IUnknown
+{
+  // Elevators are exposed as methods on IElevator, and provide High Integrity
+  // actions. Any changes to add or change a method in IElevator will require a
+  // security review.
+  //
+  // Runs the Chrome Recovery CRX elevated.
+  //
+  // @param crx_path Path for the recovery CRX.
+  // @param browser_appid Omaha AppID for the version of Chrome being recovered.
+  // @param browser_version Version of Chrome for the recovery CRX.
+  // @param session_id Omaha Session Id.
+  // @param caller_proc_id The process id of the calling process.
+  // @param proc_handle The process handle valid in the calling process context.
+  HRESULT RunRecoveryCRXElevated([in, string] const WCHAR* crx_path,
+                                 [in, string] const WCHAR* browser_appid,
+                                 [in, string] const WCHAR* browser_version,
+                                 [in, string] const WCHAR* session_id,
+                                 [in] DWORD caller_proc_id,
+                                 [out] ULONG_PTR* proc_handle);
+
+  // Encrypts data with both caller and SYSTEM context DPAPI.
+  //
+  // @param protection_level the protection level to encrypt data at.
+  // @param plaintext The plaintext data to encrypt.
+  // @param ciphertext The ciphertext of the encrypted data. It is the
+  //                   responsibility of the caller to free this memory using
+  //                   SysFreeString.
+  // @param last_error The result of calling GetLastError if the operation
+  //                   failed.
+  // @return S_OK on success. Any other value on failure.
+  HRESULT EncryptData([in] ProtectionLevel protection_level,
+                      [in] const BSTR plaintext,
+                      [out] BSTR* ciphertext,
+                      [out] DWORD* last_error);
+
+  // Decrypts data with both caller and SYSTEM context DPAPI.
+  //
+  // This will only decrypt data that was encrypted via a paired EncryptData
+  // call from same application, with identity determined by the protection
+  // level of the original encrypt call.
+  //
+  // @param ciphertext The ciphertext data to decrypt.
+  // @param plaintext The plaintext of the decrypted data. It is the
+  //                  responsibility of the caller to free this memory using
+  //                  SysFreeString.
+  // @param last_error The result of calling GetLastError if the operation
+  //                   failed.
+  // @return S_OK on success. Any other value on failure.
+  HRESULT DecryptData([in] const BSTR ciphertext,
+                      [out] BSTR* plaintext,
+                      [out] DWORD* last_error);
+
+
+
+  // Install the services used for Brave VPN
+  //
+  // These will only get installed when a customer purchases the product
+  // from account.brave.com and they have credentials.
+  //
+  // There are two services provided:
+  // - DNS protection: forcing routing through VPN adapter to bypass Smart
+  //        Multi-homed Name Resolution (which can leak the DNS query).
+  // - WireGuard support: more robust VPN support than the built-in to Windows
+  //        VPN. The built in one with IKEv2 is secure but things like
+  //        reconnect after waking up don't work well with the system VPN.
+  // @return S_OK on success.
+  HRESULT InstallVPNServices();
+};
+
+[
+  object,
+  oleautomation,
+  uuid(8F7B6792-784D-4047-845D-1782EFBEF205),
+  helpstring("IElevator2 Interface"),
+  pointer_default(unique)
+]
+interface IElevator2 : IElevator
+{
+  // Executes isolated Chrome for the current user.
+  //
+  // @param flags The desired behavior for the isolated Chrome.
+  // @param command_line The command line for the isolated Chrome. This might be
+  //                     filtered by the elevated service and only a limited
+  //                     number of switches are guaranteed to function correctly
+  //                     in isolated Chrome.
+  // @param log A string containing any logs of the operation which may be
+  //            supplied by the elevated service.
+  // @param proc_handle The process handle of the isolated Chrome.
+  // @param last_error The result of calling GetLastError if the operation
+  //                   failed.
+  //
+  // @return Returns an HRESULT which will indicate a success or failure. Use
+  //         FAILED or SUCCEEDED macros to determine failure or success.
+  HRESULT RunIsolatedChrome([in] DWORD flags,
+                            [in, string] const WCHAR* command_line,
+                            [out] BSTR* log,
+                            [out] ULONG_PTR* proc_handle,
+                            [out] DWORD* last_error);
+
+  // Takes a mojo invitation on `server_name` containing a single message pipe.
+  // The service will then wait for a PendingReceiver to arrive on that message
+  // pipe. Mojo connection will then be established on its arrival.
+  // `server_name` must name the server endpoint of a named channel of the
+  // client.
+  //
+  // @param server_name The server name created on the client to connect to.
+  //
+  // @return S_OK on success. Any other value on failure.
+  HRESULT AcceptInvitation([in, string] const WCHAR* server_name);
+};
+
+// The interfaces below are all IElevator with unique IIDs. IElevator is
+// registered with unique IIDs for the various flavors of Chrome and Chromium.
+// This allows the different flavors of Chrome/Chromium to co-exist without side
+// effects.
+[
+  object,
+  oleautomation,
+  uuid(3218DA17-49C2-479A-8290-311DBFB86490),
+  helpstring("IElevatorChromium Interface"),
+  pointer_default(unique)
+]
+interface IElevatorChromium : IElevator
+{
+};
+
+[
+  object,
+  oleautomation,
+  uuid(F396861E-0C8E-4C71-8256-2FAE6D759CE9),
+  helpstring("IElevatorChrome Interface"),
+  pointer_default(unique)
+]
+interface IElevatorChrome : IElevator
+{
+};
+
+[
+  object,
+  oleautomation,
+  uuid(9EBAD7AC-6E1E-4A1C-AA85-1A70CADA8D82),
+  helpstring("IElevatorChromeBeta Interface"),
+  pointer_default(unique)
+]
+interface IElevatorChromeBeta : IElevator
+{
+};
+
+[
+  object,
+  oleautomation,
+  uuid(1E43C77B-48E6-4A4C-9DB2-C2971706C255),
+  helpstring("IElevatorChromeDev Interface"),
+  pointer_default(unique)
+]
+interface IElevatorChromeDev : IElevator
+{
+};
+
+[
+  object,
+  oleautomation,
+  uuid(1DB2116F-71B7-49F0-8970-33B1DACFB072),
+  helpstring("IElevatorChromeCanary Interface"),
+  pointer_default(unique)
+]
+interface IElevatorChromeCanary : IElevator
+{
+};
+
+[
+  object,
+  oleautomation,
+  uuid(17239BF1-A1DC-4642-846C-1BAC85F96A10),
+  helpstring("IElevatorDevelopment Interface"),
+  pointer_default(unique)
+]
+interface IElevatorDevelopment : IElevator
+{
+};
+
+
+// The interfaces below are all IElevator2 with unique IIDs. IElevator2 is
+// registered with unique IIDs for the various flavors of Chrome and Chromium.
+// This allows the different flavors of Chrome/Chromium to co-exist without side
+// effects.
+[
+  object,
+  oleautomation,
+  uuid(BB19A0E5-00C6-4966-94B2-5AFEC6FED93A),
+  helpstring("IElevator2Chromium Interface"),
+  pointer_default(unique)
+]
+interface IElevator2Chromium : IElevator2
+{
+};
+
+[
+  object,
+  oleautomation,
+  uuid(1BF5208B-295F-4992-B5F4-3A9BB6494838),
+  helpstring("IElevator2Chrome Interface"),
+  pointer_default(unique)
+]
+interface IElevator2Chrome : IElevator2
+{
+};
+
+[
+  object,
+  oleautomation,
+  uuid(B96A14B8-D0B0-44D8-BA68-2385B2A03254),
+  helpstring("IElevator2ChromeBeta Interface"),
+  pointer_default(unique)
+]
+interface IElevator2ChromeBeta : IElevator2
+{
+};
+
+[
+  object,
+  oleautomation,
+  uuid(3FEFA48E-C8BF-461F-AED6-63F658CC850A),
+  helpstring("IElevator2ChromeDev Interface"),
+  pointer_default(unique)
+]
+interface IElevator2ChromeDev : IElevator2
+{
+};
+
+[
+  object,
+  oleautomation,
+  uuid(FF672E9F-0994-4322-81E5-3A5A9746140A),
+  helpstring("IElevator2ChromeCanary Interface"),
+  pointer_default(unique)
+]
+interface IElevator2ChromeCanary : IElevator2
+{
+};
+
+[
+  uuid(C3B01C4D-FBD4-4E65-88AD-0972D75808C2),
+  version(1.0),
+  helpstring("Elevator 1.0 Type Library")
+]
+library ElevatorLib {
+  importlib("stdole2.tlb");
+
+  interface IElevator;
+  interface IElevatorChromium;
+  interface IElevatorChrome;
+  interface IElevatorChromeBeta;
+  interface IElevatorChromeDev;
+  interface IElevatorChromeCanary;
+  interface IElevatorDevelopment;
+  interface IElevator2;
+  interface IElevator2Chromium;
+  interface IElevator2Chrome;
+  interface IElevator2ChromeBeta;
+  interface IElevator2ChromeDev;
+  interface IElevator2ChromeCanary;
+};

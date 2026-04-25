@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2023 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="4dp"
+    android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/item_fragment_two_line_icon_container"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="16dp"
+        android:elevation="12dp"
+        android:translationZ="1dp"
+        android:visibility="gone"
+        app:cardCornerRadius="8dp"
+        app:layout_constraintEnd_toStartOf="@id/item_fragment_two_line_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/brave_white"
+        app:strokeWidth="1dp">
+
+        <ImageView
+            android:id="@+id/item_fragment_two_line_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="@null" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/item_fragment_two_line_title"
+        style="@style/BraveWalletTextView"
+        android:layout_width="0dp"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/item_fragment_two_line_icon_container"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Demo" />
+
+    <TextView
+        android:id="@+id/item_fragment_two_line_sub_title"
+        style="@style/BraveWalletTextViewSubTitle"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/item_fragment_two_line_title"
+        app:layout_constraintTop_toBottomOf="@id/item_fragment_two_line_title"
+        tools:text="Sign" />
+</androidx.constraintlayout.widget.ConstraintLayout>

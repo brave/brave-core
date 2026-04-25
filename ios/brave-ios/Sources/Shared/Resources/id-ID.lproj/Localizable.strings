@@ -1,0 +1,132 @@
+/* Toast displayed to user after copy url pressed. */
+"AppMenuCopyURLConfirmMessage" = "URL Disalin ke Clipboard";
+
+/* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
+"AppMenuViewDesktopSiteTitleString" = "Meminta Situs Desktop";
+
+/* Label for the button, displayed in the menu, used to request the mobile version of the current website. */
+"AppMenuViewMobileSiteTitleString" = "Meminta Situs Seluler";
+
+/* General settings bookmarks last visited folder toggle title */
+"BookmarksLastVisitedFolderTitle" = "Tampilkan Markah yang Terakhir Dikunjungi";
+
+/* Button confirming the cancellation of the download. */
+"CancelDownloadDialogCancel" = "Batalkan";
+
+/* Alert dialog body when the user taps the cancel download icon. */
+"CancelDownloadDialogMessage" = "Anda yakin ingin membatalkan pengunduhan ini?";
+
+/* Button declining the cancellation of the download. */
+"CancelDownloadDialogResume" = "Lanjutkan";
+
+/* Alert dialog title when the user taps the cancel download icon. */
+"CancelDownloadDialogTitle" = "Batakan pengunduhan";
+
+/* Cancel button */
+"CancelString" = "Batalkan";
+
+/* The button text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedButtonText" = "Alihkan";
+
+/* The label text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedLabelText" = "Tab baru dibuka";
+
+/* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
+"DownloadCancelledToastLabelText" = "Pengunduhan Dibatalkan";
+
+/* The label text in the Download Failed toast for showing confirmation that the download has failed. */
+"DownloadFailedToastLabelText" = "Pengunduhan Gagal";
+
+/* The description text in the Download progress toast for showing the number of files (1$) and download progress (2$). This string only consists of two placeholders for purposes of displaying two other strings side-by-side where 1$ is Downloads.Toast.MultipleFiles.DescriptionText and 2$ is Downloads.Toast.Progress.DescriptionText. This string should only consist of the two placeholders side-by-side separated by a single space and 1$ should come before 2$ everywhere except for right-to-left locales. */
+"DownloadMultipleFilesAndProgressToastDescriptionText" = "%1$@ %2$@";
+
+/* The description text in the Download progress toast for showing the number of files when multiple files are downloading. */
+"DownloadMultipleFilesToastDescriptionText" = "1 dari %d berkas";
+
+/* The description text in the Download progress toast for showing the downloaded file size (1$) out of the total expected file size (2$). */
+"DownloadProgressToastDescriptionText" = "%1$@/%2$@";
+
+/* The button to open a new tab with the Downloads home panel */
+"DownloadsButtonTitle" = "Unduhan";
+
+/* Question shown to user when tapping a link that opens the App Store app */
+"ExternalLinkAppStoreConfirmationTitle" = "Buka tautan ini di aplikasi App Store?";
+
+/* The button to open a new tab with the copied link */
+"GoButtonTittle" = "Kunjungi";
+
+/* Button to not save the user's password */
+"LoginsHelperDontSaveButtonTitle" = "Jangan Simpan";
+
+/* Button to not update the user's password */
+"LoginsHelperDontUpdateButtonTitle" = "Jangan Perbarui";
+
+/* Button to save the user's password */
+"LoginsHelperSaveLoginButtonTitle" = "Simpan Info Masuk";
+
+/* Button to update the user's password */
+"LoginsHelperUpdateButtonTitle" = "Perbarui";
+
+/* OK button */
+"OKString" = "OK";
+
+/* Accessibility message e.g. spoken by VoiceOver when Reader Mode becomes available. */
+"ReaderModeAvailableVoiceOverAnnouncement" = "Mode Baca tersedia";
+
+/* Accessibility label for button resetting font size in display settings of reader mode */
+"ReaderModeResetFontSizeAccessibilityLabel" = "Atur ulang ukuran teks";
+
+/* Prompt for saving a password with no username. The parameter is the hostname of the site. */
+"SaveLoginPrompt" = "Simpan sandi untuk %@?";
+
+/* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
+"SaveLoginUsernamePrompt" = "Simpan info masuk %1$@ untuk %2$@?";
+
+/* OK button to dismiss the error prompt. */
+"ScanQRCodeErrorOKButton" = "OK";
+
+/* Text for the instructions label, displayed in the QR scanner view */
+"ScanQRCodeInstructionsLabel" = "Sejajarkan kode QR dalam bingkai untuk dipindai";
+
+/* Text of the prompt that is shown to the user when the data is invalid */
+"ScanQRCodeInvalidDataErrorMessage" = "Data tidak valid";
+
+/* Text of the prompt user to setup the camera authorization. */
+"ScanQRCodePermissionErrorMessage" = "Izinkan Brave untuk mengakses kamera perangkat Anda dalam ‘Pengaturan’ -> ‘Privasi’ -> ‘Kamera’.";
+
+/* Title for the QR code scanner view. */
+"ScanQRCodeViewTitle" = "Pindai Kode QR";
+
+/* General settings section title */
+"SettingsGeneralSectionTitle" = "Umum";
+
+/* Button displayed at the top of the search settings. */
+"SettingsSearchDoneButton" = "Selesai";
+
+/* The button to undo the delete all tabs */
+"TabsDeleteAllUndoAction" = "Urungkan";
+
+/* The label indicating that all the tabs were closed */
+"TabsDeleteAllUndoTitle" = "%d tab ditutup";
+
+/* Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorDismiss" = "OK";
+
+/* Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorMessage" = "Terjadi kesalahan saat menambahkan sandi ke Dompet. Coba lagi nanti.";
+
+/* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorTitle" = "Gagal Menambahkan Sandi";
+
+/* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
+"UnableToOpenURLError" = "Brave tidak dapat membuka laman karena alamatnya tidak valid.";
+
+/* Title of the message shown when the user attempts to navigate to an invalid link. */
+"UnableToOpenURLErrorTitle" = "Tidak Dapat Membuka Laman";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginPrompt" = "Perbarui info masuk %1$@ untuk %2$@?";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginUsernamePrompt" = "Perbarui info masuk %1$@ untuk %2$@?";
+

@@ -1,0 +1,12 @@
+diff --git a/tracing/tracing_project.py b/tracing/tracing_project.py
+index 6d2d7327d7f041ca6725787d469710c80b40f0c5..b079c9ecf9d907af6ab0b00504901e779470bbd6 100644
+--- a/tracing/tracing_project.py
++++ b/tracing/tracing_project.py
+@@ -126,6 +126,7 @@ class TracingProject(object):
+     self.source_paths.append(self.chai_path)
+     self.source_paths.append(self.mocha_path)
+     self.source_paths.append(self.oboe_path)
++    self.source_paths.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir, os.path.pardir,  os.path.pardir))) # Add /src
+ 
+   def CreateVulcanizer(self):
+     from py_vulcanize import project as project_module # pylint: disable=import-outside-toplevel

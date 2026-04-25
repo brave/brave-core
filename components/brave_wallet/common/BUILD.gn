@@ -1,0 +1,210 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//build/buildflag_header.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+import("//testing/test.gni")
+import("//tools/grit/preprocess_if_expr.gni")
+import("//tools/json_schema_compiler/json_schema_api.gni")
+
+assert(enable_brave_wallet)
+
+preprocess_folder = "preprocessed"
+preprocess_mojo_manifest = "preprocessed_mojo_manifest.json"
+
+static_library("common") {
+  include_dirs = [ "//brave/third_party/ethash/src/include" ]
+
+  sources = [
+    "bech32.cc",
+    "bech32.h",
+    "bitcoin_utils.cc",
+    "bitcoin_utils.h",
+    "brave_wallet_response_helpers.cc",
+    "brave_wallet_response_helpers.h",
+    "brave_wallet_types.cc",
+    "brave_wallet_types.h",
+    "btc_like_serializer_stream.cc",
+    "btc_like_serializer_stream.h",
+    "cardano_address.cc",
+    "cardano_address.h",
+    "common_utils.cc",
+    "common_utils.h",
+    "encoding_utils.cc",
+    "encoding_utils.h",
+    "eth_abi_utils.cc",
+    "eth_abi_utils.h",
+    "eth_address.cc",
+    "eth_address.h",
+    "eth_request_helper.cc",
+    "eth_request_helper.h",
+    "eth_sign_typed_data_helper.cc",
+    "eth_sign_typed_data_helper.h",
+    "f4_jumble.cc",
+    "f4_jumble.h",
+    "features.cc",
+    "features.h",
+    "fil_address.cc",
+    "fil_address.h",
+    "hash_utils.cc",
+    "hash_utils.h",
+    "hex_utils.cc",
+    "hex_utils.h",
+    "solana_address.cc",
+    "solana_address.h",
+    "solana_utils.cc",
+    "solana_utils.h",
+    "string_utils.cc",
+    "string_utils.h",
+    "switches.h",
+    "value_conversion_utils.cc",
+    "value_conversion_utils.h",
+    "zcash_utils.cc",
+    "zcash_utils.h",
+  ]
+  deps = [
+    ":common_constants",
+    ":generated_eth_requests",
+    ":generated_json_rpc_requests",
+    ":rust_lib",
+    "//brave/components/brave_wallet/common/buildflags",
+    "//brave/net/base:utils",
+    "//brave/third_party/argon2",
+    "//brave/third_party/bitcoin-core",
+    "//brave/third_party/ethash",
+    "//components/base32",
+    "//components/prefs",
+    "//net",
+    "//url",
+  ]
+
+  public_deps = [
+    ":mojom",
+    "//base",
+  ]
+}
+
+source_set("common_constants") {
+  sources = [
+    "brave_wallet_constants.h",
+    "web3_provider_constants.h",
+  ]
+  deps = [ ":mojom" ]
+}
+
+generated_types("generated_json_rpc_requests") {
+  sources = [ "json_rpc_requests.idl" ]
+  root_namespace = "brave_wallet::%(namespace)s"
+  deps = [ "//base" ]
+  visibility = [ ":common" ]
+}
+
+generated_types("generated_eth_requests") {
+  sources = [ "eth_requests.idl" ]
+  root_namespace = "brave_wallet::%(namespace)s"
+  deps = [ "//base" ]
+  visibility = [
+    ":common",
+    ":unit_tests",
+  ]
+}
+
+preprocess_if_expr("preprocess_mojo") {
+  deps = [ "//brave/components/brave_wallet/common:mojom_js" ]
+  in_folder = "$target_gen_dir"
+  out_folder = "$target_gen_dir/$preprocess_folder"
+  out_manifest = "$target_gen_dir/$preprocess_mojo_manifest"
+  in_files = [ "brave_wallet.mojom-lite.js" ]
+}
+
+mojom("mojom") {
+  generate_java = true
+  sources = [
+    "brave_wallet.mojom",
+    "meld_integration.mojom",
+  ]
+  public_deps = [
+    "//mojo/public/mojom/base",
+    "//url/mojom:url_mojom_gurl",
+    "//url/mojom:url_mojom_origin",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "bech32_unittest.cc",
+    "bitcoin_utils_unittest.cc",
+    "brave_wallet_types_unittest.cc",
+    "btc_like_serializer_stream_unittest.cc",
+    "cardano_address_unittest.cc",
+    "common_utils_unittest.cc",
+    "encoding_utils_unittest.cc",
+    "eth_abi_utils_unittest.cc",
+    "eth_address_unittest.cc",
+    "eth_request_helper_unittest.cc",
+    "eth_sign_typed_data_helper_unittest.cc",
+    "f4_jumble_unittest.cc",
+    "fil_address_unittest.cc",
+    "hash_utils_unittest.cc",
+    "hex_utils_unittest.cc",
+    "solana_address_unittest.cc",
+    "solana_utils_unittest.cc",
+    "string_utils_unittest.cc",
+    "value_conversion_utils_unittest.cc",
+    "zcash_utils_unittest.cc",
+  ]
+
+  deps = [
+    ":common",
+    ":common_constants",
+    ":mojom",
+    ":test_support",
+    "//base/test:test_support",
+    "//testing/gtest",
+    "//url",
+  ]
+}  # source_set("unit_tests")
+
+source_set("test_support") {
+  testonly = true
+  sources = [
+    "test_utils.cc",
+    "test_utils.h",
+  ]
+
+  deps = [
+    ":common",
+    "//testing/gmock",
+  ]
+
+  public_deps = [ ":mojom" ]
+}  # source_set("test_support")
+
+rust_static_library("rust_lib") {
+  visibility = [
+    "//brave/browser/brave_wallet:unit_tests",
+    "//brave/components/brave_wallet/browser:hd_keyring",
+    "//brave/components/brave_wallet/browser:transaction",
+    "//brave/components/brave_wallet/browser:unit_tests",
+    "//brave/components/brave_wallet/browser/zcash/rust:*",
+    "//brave/components/brave_wallet/common",
+  ]
+  crate_name = "brave_wallet"
+  crate_root = "lib.rs"
+  allow_unsafe = true
+  sources = [ "lib.rs" ]
+  cxx_bindings = [ "lib.rs" ]
+
+  deps = [
+    "//brave/third_party/rust/bech32/v0_9:lib",
+    "//brave/third_party/rust/bls_signatures/v0_15:lib",
+    "//brave/third_party/rust/ciborium/v0_2:lib",
+    "//brave/third_party/rust/curve25519_dalek/v4:lib",
+    "//third_party/rust/crc32fast/v1:lib",
+  ]
+}

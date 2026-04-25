@@ -1,0 +1,36 @@
+diff --git a/crypto/unexportable_key_metrics.cc b/crypto/unexportable_key_metrics.cc
+index 078fcfee33a467c3928803f60a3b5988f5a8e991..a7055c1ec8c2c74d0e70493d1b0b74dd685a9cd6 100644
+--- a/crypto/unexportable_key_metrics.cc
++++ b/crypto/unexportable_key_metrics.cc
+@@ -23,6 +23,7 @@ enum class KeyType {
+ };
+ 
+ const SignatureVerifier::SignatureAlgorithm kAllAlgorithms[] = {
++    BRAVE_ALL_ALGORITHMS
+     SignatureVerifier::SignatureAlgorithm::ECDSA_SHA256,
+     SignatureVerifier::SignatureAlgorithm::RSA_PKCS1_SHA256,
+ };
+@@ -116,6 +117,7 @@ internal::TPMSupport MeasureVirtualTpmOperations() {
+   if (algo) {
+     switch (*algo) {
+       case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA256:
++      BRAVE_MEASURE_VIRTUAL_TMP_OPERATIONS
+         supported_virtual_algo = internal::TPMSupport::kECDSA;
+         break;
+       case SignatureVerifier::SignatureAlgorithm::RSA_PKCS1_SHA256:
+@@ -196,6 +198,7 @@ void MeasureTpmOperationsInternal(UnexportableKeyProvider::Config config) {
+   if (algo) {
+     switch (*algo) {
+       case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA256:
++      BRAVE_MEASURE_TMP_OPERATIONS_INTERNAL
+         supported_algo = internal::TPMSupport::kECDSA;
+         break;
+       case SignatureVerifier::SignatureAlgorithm::RSA_PKCS1_SHA256:
+@@ -306,6 +309,7 @@ std::string AlgorithmToString(SignatureVerifier::SignatureAlgorithm algorithm) {
+     case SignatureVerifier::SignatureAlgorithm::RSA_PSS_SHA256:
+       return "RSA";
+     case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA256:
++    BRAVE_UNEXPORTED_KEY_METRICS_ALGORITHM_TO_STRING
+       return "ECDSA";
+   }
+ }

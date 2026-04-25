@@ -1,0 +1,3 @@
+skus_public_headers =
+    [ "$root_gen_dir/brave/ios/browser/api/skus/skus_sdk.mojom.objc.h" ]
+skus_public_deps = [ "//brave/ios/browser/api/skus:skus_mojom_wrappers" ]

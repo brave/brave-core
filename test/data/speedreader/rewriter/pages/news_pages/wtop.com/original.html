@@ -1,0 +1,1411 @@
+<!doctype html>
+<!--[if lt IE 7]>
+<html lang="en" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html lang="en" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html lang="en" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en" class="no-js"> <!--<![endif]-->
+    <head> <script type="text/javascript">if(!gform){document.addEventListener("gform_main_scripts_loaded",function(){gform.scriptsLoaded=!0}),window.addEventListener("DOMContentLoaded",function(){gform.domLoaded=!0});var gform={domLoaded:!1,scriptsLoaded:!1,initializeOnLoaded:function(o){gform.domLoaded&&gform.scriptsLoaded?o():!gform.domLoaded&&gform.scriptsLoaded?window.addEventListener("DOMContentLoaded",o):document.addEventListener("gform_main_scripts_loaded",o)},hooks:{action:{},filter:{}},addAction:function(o,n,r,t){gform.addHook("action",o,n,r,t)},addFilter:function(o,n,r,t){gform.addHook("filter",o,n,r,t)},doAction:function(o){gform.doHook("action",o,arguments)},applyFilters:function(o){return gform.doHook("filter",o,arguments)},removeAction:function(o,n){gform.removeHook("action",o,n)},removeFilter:function(o,n,r){gform.removeHook("filter",o,n,r)},addHook:function(o,n,r,t,i){null==gform.hooks[o][n]&&(gform.hooks[o][n]=[]);var e=gform.hooks[o][n];null==i&&(i=n+"_"+e.length),null==t&&(t=10),gform.hooks[o][n].push({tag:i,callable:r,priority:t})},doHook:function(o,n,r){if(r=Array.prototype.slice.call(r,1),null!=gform.hooks[o][n]){var t,i=gform.hooks[o][n];i.sort(function(o,n){return o.priority-n.priority});for(var e=0;e<i.length;e++)"function"!=typeof(t=i[e].callable)&&(t=window[t]),"action"==o?t.apply(null,r):r[0]=t.apply(null,r)}if("filter"==o)return r[0]},removeHook:function(o,n,r,t){if(null!=gform.hooks[o][n])for(var i=gform.hooks[o][n],e=i.length-1;0<=e;e--)null!=t&&t!=i[e].tag||null!=r&&r!=i[e].priority||i.splice(e,1)}}}</script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><script type="text/javascript">(window.NREUM||(NREUM={})).init={privacy:{cookies_enabled:true},ajax:{deny_list:["bam.nr-data.net"]}};(window.NREUM||(NREUM={})).loader_config={xpid:"UwMEV1FXGwoCUllSAwMP",licenseKey:"1d8c2aa18a",applicationID:"92680428"};window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var i=e[n]={exports:{}};t[n][0].call(i.exports,function(e){var i=t[n][1][e];return r(i||e)},i,i.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var i=0;i<n.length;i++)r(n[i]);return r}({1:[function(t,e,n){function r(t){try{s.console&&console.log(t)}catch(e){}}var i,o=t("ee"),a=t(27),s={};try{i=localStorage.getItem("__nr_flags").split(","),console&&"function"==typeof console.log&&(s.console=!0,i.indexOf("dev")!==-1&&(s.dev=!0),i.indexOf("nr_dev")!==-1&&(s.nrDev=!0))}catch(c){}s.nrDev&&o.on("internal-error",function(t){r(t.stack)}),s.dev&&o.on("fn-err",function(t,e,n){r(n.stack)}),s.dev&&(r("NR AGENT IN DEVELOPMENT MODE"),r("flags: "+a(s,function(t,e){return t}).join(", ")))},{}],2:[function(t,e,n){function r(t,e,n,r,s){try{p?p-=1:i(s||new UncaughtException(t,e,n),!0)}catch(f){try{o("ierr",[f,c.now(),!0])}catch(d){}}return"function"==typeof u&&u.apply(this,a(arguments))}function UncaughtException(t,e,n){this.message=t||"Uncaught error with no additional information",this.sourceURL=e,this.line=n}function i(t,e){var n=e?null:c.now();o("err",[t,n])}var o=t("handle"),a=t(28),s=t("ee"),c=t("loader"),f=t("gos"),u=window.onerror,d=!1,l="nr@seenError";if(!c.disabled){var p=0;c.features.err=!0,t(1),window.onerror=r;try{throw new Error}catch(h){"stack"in h&&(t(10),t(9),"addEventListener"in window&&t(6),c.xhrWrappable&&t(11),d=!0)}s.on("fn-start",function(t,e,n){d&&(p+=1)}),s.on("fn-err",function(t,e,n){d&&!n[l]&&(f(n,l,function(){return!0}),this.thrown=!0,i(n))}),s.on("fn-end",function(){d&&!this.thrown&&p>0&&(p-=1)}),s.on("internal-error",function(t){o("ierr",[t,c.now(),!0])})}},{}],3:[function(t,e,n){var r=t("loader");r.disabled||(r.features.ins=!0)},{}],4:[function(t,e,n){function r(){var t=new PerformanceObserver(function(t,e){var n=t.getEntries();s(v,[n])});try{t.observe({entryTypes:["resource"]})}catch(e){}}function i(t){if(s(v,[window.performance.getEntriesByType(w)]),window.performance["c"+l])try{window.performance[h](m,i,!1)}catch(t){}else try{window.performance[h]("webkit"+m,i,!1)}catch(t){}}function o(t){}if(window.performance&&window.performance.timing&&window.performance.getEntriesByType){var a=t("ee"),s=t("handle"),c=t(10),f=t(9),u=t(5),d=t(19),l="learResourceTimings",p="addEventListener",h="removeEventListener",m="resourcetimingbufferfull",v="bstResource",w="resource",g="-start",y="-end",x="fn"+g,b="fn"+y,E="bstTimer",R="pushState",S=t("loader");if(!S.disabled){S.features.stn=!0,t(8),"addEventListener"in window&&t(6);var O=NREUM.o.EV;a.on(x,function(t,e){var n=t[0];n instanceof O&&(this.bstStart=S.now())}),a.on(b,function(t,e){var n=t[0];n instanceof O&&s("bst",[n,e,this.bstStart,S.now()])}),c.on(x,function(t,e,n){this.bstStart=S.now(),this.bstType=n}),c.on(b,function(t,e){s(E,[e,this.bstStart,S.now(),this.bstType])}),f.on(x,function(){this.bstStart=S.now()}),f.on(b,function(t,e){s(E,[e,this.bstStart,S.now(),"requestAnimationFrame"])}),a.on(R+g,function(t){this.time=S.now(),this.startPath=location.pathname+location.hash}),a.on(R+y,function(t){s("bstHist",[location.pathname+location.hash,this.startPath,this.time])}),u()?(s(v,[window.performance.getEntriesByType("resource")]),r()):p in window.performance&&(window.performance["c"+l]?window.performance[p](m,i,d(!1)):window.performance[p]("webkit"+m,i,d(!1))),document[p]("scroll",o,d(!1)),document[p]("keypress",o,d(!1)),document[p]("click",o,d(!1))}}},{}],5:[function(t,e,n){e.exports=function(){return"PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver}},{}],6:[function(t,e,n){function r(t){for(var e=t;e&&!e.hasOwnProperty(u);)e=Object.getPrototypeOf(e);e&&i(e)}function i(t){s.inPlace(t,[u,d],"-",o)}function o(t,e){return t[1]}var a=t("ee").get("events"),s=t("wrap-function")(a,!0),c=t("gos"),f=XMLHttpRequest,u="addEventListener",d="removeEventListener";e.exports=a,"getPrototypeOf"in Object?(r(document),r(window),r(f.prototype)):f.prototype.hasOwnProperty(u)&&(i(window),i(f.prototype)),a.on(u+"-start",function(t,e){var n=t[1];if(null!==n&&("function"==typeof n||"object"==typeof n)){var r=c(n,"nr@wrapped",function(){function t(){if("function"==typeof n.handleEvent)return n.handleEvent.apply(n,arguments)}var e={object:t,"function":n}[typeof n];return e?s(e,"fn-",null,e.name||"anonymous"):n});this.wrapped=t[1]=r}}),a.on(d+"-start",function(t){t[1]=this.wrapped||t[1]})},{}],7:[function(t,e,n){function r(t,e,n){var r=t[e];"function"==typeof r&&(t[e]=function(){var t=o(arguments),e={};i.emit(n+"before-start",[t],e);var a;e[m]&&e[m].dt&&(a=e[m].dt);var s=r.apply(this,t);return i.emit(n+"start",[t,a],s),s.then(function(t){return i.emit(n+"end",[null,t],s),t},function(t){throw i.emit(n+"end",[t],s),t})})}var i=t("ee").get("fetch"),o=t(28),a=t(27);e.exports=i;var s=window,c="fetch-",f=c+"body-",u=["arrayBuffer","blob","json","text","formData"],d=s.Request,l=s.Response,p=s.fetch,h="prototype",m="nr@context";d&&l&&p&&(a(u,function(t,e){r(d[h],e,f),r(l[h],e,f)}),r(s,"fetch",c),i.on(c+"end",function(t,e){var n=this;if(e){var r=e.headers.get("content-length");null!==r&&(n.rxSize=r),i.emit(c+"done",[null,e],n)}else i.emit(c+"done",[t],n)}))},{}],8:[function(t,e,n){var r=t("ee").get("history"),i=t("wrap-function")(r);e.exports=r;var o=window.history&&window.history.constructor&&window.history.constructor.prototype,a=window.history;o&&o.pushState&&o.replaceState&&(a=o),i.inPlace(a,["pushState","replaceState"],"-")},{}],9:[function(t,e,n){var r=t("ee").get("raf"),i=t("wrap-function")(r),o="equestAnimationFrame";e.exports=r,i.inPlace(window,["r"+o,"mozR"+o,"webkitR"+o,"msR"+o],"raf-"),r.on("raf-start",function(t){t[0]=i(t[0],"fn-")})},{}],10:[function(t,e,n){function r(t,e,n){t[0]=a(t[0],"fn-",null,n)}function i(t,e,n){this.method=n,this.timerDuration=isNaN(t[1])?0:+t[1],t[0]=a(t[0],"fn-",this,n)}var o=t("ee").get("timer"),a=t("wrap-function")(o),s="setTimeout",c="setInterval",f="clearTimeout",u="-start",d="-";e.exports=o,a.inPlace(window,[s,"setImmediate"],s+d),a.inPlace(window,[c],c+d),a.inPlace(window,[f,"clearImmediate"],f+d),o.on(c+u,r),o.on(s+u,i)},{}],11:[function(t,e,n){function r(t,e){d.inPlace(e,["onreadystatechange"],"fn-",s)}function i(){var t=this,e=u.context(t);t.readyState>3&&!e.resolved&&(e.resolved=!0,u.emit("xhr-resolved",[],t)),d.inPlace(t,y,"fn-",s)}function o(t){x.push(t),m&&(E?E.then(a):w?w(a):(R=-R,S.data=R))}function a(){for(var t=0;t<x.length;t++)r([],x[t]);x.length&&(x=[])}function s(t,e){return e}function c(t,e){for(var n in t)e[n]=t[n];return e}t(6);var f=t("ee"),u=f.get("xhr"),d=t("wrap-function")(u),l=t(19),p=NREUM.o,h=p.XHR,m=p.MO,v=p.PR,w=p.SI,g="readystatechange",y=["onload","onerror","onabort","onloadstart","onloadend","onprogress","ontimeout"],x=[];e.exports=u;var b=window.XMLHttpRequest=function(t){var e=new h(t);try{u.emit("new-xhr",[e],e),e.addEventListener(g,i,l(!1))}catch(n){try{u.emit("internal-error",[n])}catch(r){}}return e};if(c(h,b),b.prototype=h.prototype,d.inPlace(b.prototype,["open","send"],"-xhr-",s),u.on("send-xhr-start",function(t,e){r(t,e),o(e)}),u.on("open-xhr-start",r),m){var E=v&&v.resolve();if(!w&&!v){var R=1,S=document.createTextNode(R);new m(a).observe(S,{characterData:!0})}}else f.on("fn-end",function(t){t[0]&&t[0].type===g||a()})},{}],12:[function(t,e,n){function r(t){if(!s(t))return null;var e=window.NREUM;if(!e.loader_config)return null;var n=(e.loader_config.accountID||"").toString()||null,r=(e.loader_config.agentID||"").toString()||null,f=(e.loader_config.trustKey||"").toString()||null;if(!n||!r)return null;var h=p.generateSpanId(),m=p.generateTraceId(),v=Date.now(),w={spanId:h,traceId:m,timestamp:v};return(t.sameOrigin||c(t)&&l())&&(w.traceContextParentHeader=i(h,m),w.traceContextStateHeader=o(h,v,n,r,f)),(t.sameOrigin&&!u()||!t.sameOrigin&&c(t)&&d())&&(w.newrelicHeader=a(h,m,v,n,r,f)),w}function i(t,e){return"00-"+e+"-"+t+"-01"}function o(t,e,n,r,i){var o=0,a="",s=1,c="",f="";return i+"@nr="+o+"-"+s+"-"+n+"-"+r+"-"+t+"-"+a+"-"+c+"-"+f+"-"+e}function a(t,e,n,r,i,o){var a="btoa"in window&&"function"==typeof window.btoa;if(!a)return null;var s={v:[0,1],d:{ty:"Browser",ac:r,ap:i,id:t,tr:e,ti:n}};return o&&r!==o&&(s.d.tk=o),btoa(JSON.stringify(s))}function s(t){return f()&&c(t)}function c(t){var e=!1,n={};if("init"in NREUM&&"distributed_tracing"in NREUM.init&&(n=NREUM.init.distributed_tracing),t.sameOrigin)e=!0;else if(n.allowed_origins instanceof Array)for(var r=0;r<n.allowed_origins.length;r++){var i=h(n.allowed_origins[r]);if(t.hostname===i.hostname&&t.protocol===i.protocol&&t.port===i.port){e=!0;break}}return e}function f(){return"init"in NREUM&&"distributed_tracing"in NREUM.init&&!!NREUM.init.distributed_tracing.enabled}function u(){return"init"in NREUM&&"distributed_tracing"in NREUM.init&&!!NREUM.init.distributed_tracing.exclude_newrelic_header}function d(){return"init"in NREUM&&"distributed_tracing"in NREUM.init&&NREUM.init.distributed_tracing.cors_use_newrelic_header!==!1}function l(){return"init"in NREUM&&"distributed_tracing"in NREUM.init&&!!NREUM.init.distributed_tracing.cors_use_tracecontext_headers}var p=t(24),h=t(14);e.exports={generateTracePayload:r,shouldGenerateTrace:s}},{}],13:[function(t,e,n){function r(t){var e=this.params,n=this.metrics;if(!this.ended){this.ended=!0;for(var r=0;r<l;r++)t.removeEventListener(d[r],this.listener,!1);return e.protocol&&"data"===e.protocol?void g("Ajax/DataUrl/Excluded"):void(e.aborted||(n.duration=a.now()-this.startTime,this.loadCaptureCalled||4!==t.readyState?null==e.status&&(e.status=0):o(this,t),n.cbTime=this.cbTime,s("xhr",[e,n,this.startTime,this.endTime,"xhr"],this)))}}function i(t,e){var n=c(e),r=t.params;r.hostname=n.hostname,r.port=n.port,r.protocol=n.protocol,r.host=n.hostname+":"+n.port,r.pathname=n.pathname,t.parsedOrigin=n,t.sameOrigin=n.sameOrigin}function o(t,e){t.params.status=e.status;var n=v(e,t.lastSize);if(n&&(t.metrics.rxSize=n),t.sameOrigin){var r=e.getResponseHeader("X-NewRelic-App-Data");r&&(t.params.cat=r.split(", ").pop())}t.loadCaptureCalled=!0}var a=t("loader");if(a.xhrWrappable&&!a.disabled){var s=t("handle"),c=t(14),f=t(12).generateTracePayload,u=t("ee"),d=["load","error","abort","timeout"],l=d.length,p=t("id"),h=t(20),m=t(18),v=t(15),w=t(19),g=t(21).recordSupportability,y=NREUM.o.REQ,x=window.XMLHttpRequest;a.features.xhr=!0,t(11),t(7),u.on("new-xhr",function(t){var e=this;e.totalCbs=0,e.called=0,e.cbTime=0,e.end=r,e.ended=!1,e.xhrGuids={},e.lastSize=null,e.loadCaptureCalled=!1,e.params=this.params||{},e.metrics=this.metrics||{},t.addEventListener("load",function(n){o(e,t)},w(!1)),h&&(h>34||h<10)||t.addEventListener("progress",function(t){e.lastSize=t.loaded},w(!1))}),u.on("open-xhr-start",function(t){this.params={method:t[0]},i(this,t[1]),this.metrics={}}),u.on("open-xhr-end",function(t,e){"loader_config"in NREUM&&"xpid"in NREUM.loader_config&&this.sameOrigin&&e.setRequestHeader("X-NewRelic-ID",NREUM.loader_config.xpid);var n=f(this.parsedOrigin);if(n){var r=!1;n.newrelicHeader&&(e.setRequestHeader("newrelic",n.newrelicHeader),r=!0),n.traceContextParentHeader&&(e.setRequestHeader("traceparent",n.traceContextParentHeader),n.traceContextStateHeader&&e.setRequestHeader("tracestate",n.traceContextStateHeader),r=!0),r&&(this.dt=n)}}),u.on("send-xhr-start",function(t,e){var n=this.metrics,r=t[0],i=this;if(n&&r){var o=m(r);o&&(n.txSize=o)}this.startTime=a.now(),this.listener=function(t){try{"abort"!==t.type||i.loadCaptureCalled||(i.params.aborted=!0),("load"!==t.type||i.called===i.totalCbs&&(i.onloadCalled||"function"!=typeof e.onload))&&i.end(e)}catch(n){try{u.emit("internal-error",[n])}catch(r){}}};for(var s=0;s<l;s++)e.addEventListener(d[s],this.listener,w(!1))}),u.on("xhr-cb-time",function(t,e,n){this.cbTime+=t,e?this.onloadCalled=!0:this.called+=1,this.called!==this.totalCbs||!this.onloadCalled&&"function"==typeof n.onload||this.end(n)}),u.on("xhr-load-added",function(t,e){var n=""+p(t)+!!e;this.xhrGuids&&!this.xhrGuids[n]&&(this.xhrGuids[n]=!0,this.totalCbs+=1)}),u.on("xhr-load-removed",function(t,e){var n=""+p(t)+!!e;this.xhrGuids&&this.xhrGuids[n]&&(delete this.xhrGuids[n],this.totalCbs-=1)}),u.on("xhr-resolved",function(){this.endTime=a.now()}),u.on("addEventListener-end",function(t,e){e instanceof x&&"load"===t[0]&&u.emit("xhr-load-added",[t[1],t[2]],e)}),u.on("removeEventListener-end",function(t,e){e instanceof x&&"load"===t[0]&&u.emit("xhr-load-removed",[t[1],t[2]],e)}),u.on("fn-start",function(t,e,n){e instanceof x&&("onload"===n&&(this.onload=!0),("load"===(t[0]&&t[0].type)||this.onload)&&(this.xhrCbStart=a.now()))}),u.on("fn-end",function(t,e){this.xhrCbStart&&u.emit("xhr-cb-time",[a.now()-this.xhrCbStart,this.onload,e],e)}),u.on("fetch-before-start",function(t){function e(t,e){var n=!1;return e.newrelicHeader&&(t.set("newrelic",e.newrelicHeader),n=!0),e.traceContextParentHeader&&(t.set("traceparent",e.traceContextParentHeader),e.traceContextStateHeader&&t.set("tracestate",e.traceContextStateHeader),n=!0),n}var n,r=t[1]||{};"string"==typeof t[0]?n=t[0]:t[0]&&t[0].url?n=t[0].url:window.URL&&t[0]&&t[0]instanceof URL&&(n=t[0].href),n&&(this.parsedOrigin=c(n),this.sameOrigin=this.parsedOrigin.sameOrigin);var i=f(this.parsedOrigin);if(i&&(i.newrelicHeader||i.traceContextParentHeader))if("string"==typeof t[0]||window.URL&&t[0]&&t[0]instanceof URL){var o={};for(var a in r)o[a]=r[a];o.headers=new Headers(r.headers||{}),e(o.headers,i)&&(this.dt=i),t.length>1?t[1]=o:t.push(o)}else t[0]&&t[0].headers&&e(t[0].headers,i)&&(this.dt=i)}),u.on("fetch-start",function(t,e){this.params={},this.metrics={},this.startTime=a.now(),this.dt=e,t.length>=1&&(this.target=t[0]),t.length>=2&&(this.opts=t[1]);var n,r=this.opts||{},o=this.target;if("string"==typeof o?n=o:"object"==typeof o&&o instanceof y?n=o.url:window.URL&&"object"==typeof o&&o instanceof URL&&(n=o.href),i(this,n),"data"!==this.params.protocol){var s=(""+(o&&o instanceof y&&o.method||r.method||"GET")).toUpperCase();this.params.method=s,this.txSize=m(r.body)||0}}),u.on("fetch-done",function(t,e){if(this.endTime=a.now(),this.params||(this.params={}),"data"===this.params.protocol)return void g("Ajax/DataUrl/Excluded");this.params.status=e?e.status:0;var n;"string"==typeof this.rxSize&&this.rxSize.length>0&&(n=+this.rxSize);var r={txSize:this.txSize,rxSize:n,duration:a.now()-this.startTime};s("xhr",[this.params,r,this.startTime,this.endTime,"fetch"],this)})}},{}],14:[function(t,e,n){var r={};e.exports=function(t){if(t in r)return r[t];if(0===(t||"").indexOf("data:"))return{protocol:"data"};var e=document.createElement("a"),n=window.location,i={};e.href=t,i.port=e.port;var o=e.href.split("://");!i.port&&o[1]&&(i.port=o[1].split("/")[0].split("@").pop().split(":")[1]),i.port&&"0"!==i.port||(i.port="https"===o[0]?"443":"80"),i.hostname=e.hostname||n.hostname,i.pathname=e.pathname,i.protocol=o[0],"/"!==i.pathname.charAt(0)&&(i.pathname="/"+i.pathname);var a=!e.protocol||":"===e.protocol||e.protocol===n.protocol,s=e.hostname===document.domain&&e.port===n.port;return i.sameOrigin=a&&(!e.hostname||s),"/"===i.pathname&&(r[t]=i),i}},{}],15:[function(t,e,n){function r(t,e){var n=t.responseType;return"json"===n&&null!==e?e:"arraybuffer"===n||"blob"===n||"json"===n?i(t.response):"text"===n||""===n||void 0===n?i(t.responseText):void 0}var i=t(18);e.exports=r},{}],16:[function(t,e,n){function r(){}function i(t,e,n,r){return function(){return u.recordSupportability("API/"+e+"/called"),o(t+e,[f.now()].concat(s(arguments)),n?null:this,r),n?void 0:this}}var o=t("handle"),a=t(27),s=t(28),c=t("ee").get("tracer"),f=t("loader"),u=t(21),d=NREUM;"undefined"==typeof window.newrelic&&(newrelic=d);var l=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],p="api-",h=p+"ixn-";a(l,function(t,e){d[e]=i(p,e,!0,"api")}),d.addPageAction=i(p,"addPageAction",!0),d.setCurrentRouteName=i(p,"routeName",!0),e.exports=newrelic,d.interaction=function(){return(new r).get()};var m=r.prototype={createTracer:function(t,e){var n={},r=this,i="function"==typeof e;return o(h+"tracer",[f.now(),t,n],r),function(){if(c.emit((i?"":"no-")+"fn-start",[f.now(),r,i],n),i)try{return e.apply(this,arguments)}catch(t){throw c.emit("fn-err",[arguments,this,t],n),t}finally{c.emit("fn-end",[f.now()],n)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(t,e){m[e]=i(h,e)}),newrelic.noticeError=function(t,e){"string"==typeof t&&(t=new Error(t)),u.recordSupportability("API/noticeError/called"),o("err",[t,f.now(),!1,e])}},{}],17:[function(t,e,n){function r(t){if(NREUM.init){for(var e=NREUM.init,n=t.split("."),r=0;r<n.length-1;r++)if(e=e[n[r]],"object"!=typeof e)return;return e=e[n[n.length-1]]}}e.exports={getConfiguration:r}},{}],18:[function(t,e,n){e.exports=function(t){if("string"==typeof t&&t.length)return t.length;if("object"==typeof t){if("undefined"!=typeof ArrayBuffer&&t instanceof ArrayBuffer&&t.byteLength)return t.byteLength;if("undefined"!=typeof Blob&&t instanceof Blob&&t.size)return t.size;if(!("undefined"!=typeof FormData&&t instanceof FormData))try{return JSON.stringify(t).length}catch(e){return}}}},{}],19:[function(t,e,n){var r=!1;try{var i=Object.defineProperty({},"passive",{get:function(){r=!0}});window.addEventListener("testPassive",null,i),window.removeEventListener("testPassive",null,i)}catch(o){}e.exports=function(t){return r?{passive:!0,capture:!!t}:!!t}},{}],20:[function(t,e,n){var r=0,i=navigator.userAgent.match(/Firefox[\/\s](\d+\.\d+)/);i&&(r=+i[1]),e.exports=r},{}],21:[function(t,e,n){function r(t,e){var n=[a,t,{name:t},e];return o("storeMetric",n,null,"api"),n}function i(t,e){var n=[s,t,{name:t},e];return o("storeEventMetrics",n,null,"api"),n}var o=t("handle"),a="sm",s="cm";e.exports={constants:{SUPPORTABILITY_METRIC:a,CUSTOM_METRIC:s},recordSupportability:r,recordCustom:i}},{}],22:[function(t,e,n){function r(){return s.exists&&performance.now?Math.round(performance.now()):(o=Math.max((new Date).getTime(),o))-a}function i(){return o}var o=(new Date).getTime(),a=o,s=t(29);e.exports=r,e.exports.offset=a,e.exports.getLastTimestamp=i},{}],23:[function(t,e,n){function r(t,e){var n=t.getEntries();n.forEach(function(t){"first-paint"===t.name?p("timing",["fp",Math.floor(t.startTime)]):"first-contentful-paint"===t.name&&p("timing",["fcp",Math.floor(t.startTime)])})}function i(t,e){var n=t.getEntries();if(n.length>0){var r=n[n.length-1];if(f&&f<r.startTime)return;var i=[r],o=a({});o&&i.push(o),p("lcp",i)}}function o(t){t.getEntries().forEach(function(t){t.hadRecentInput||p("cls",[t])})}function a(t){var e=navigator.connection||navigator.mozConnection||navigator.webkitConnection;if(e)return e.type&&(t["net-type"]=e.type),e.effectiveType&&(t["net-etype"]=e.effectiveType),e.rtt&&(t["net-rtt"]=e.rtt),e.downlink&&(t["net-dlink"]=e.downlink),t}function s(t){if(t instanceof w&&!y){var e=Math.round(t.timeStamp),n={type:t.type};a(n),e<=h.now()?n.fid=h.now()-e:e>h.offset&&e<=Date.now()?(e-=h.offset,n.fid=h.now()-e):e=h.now(),y=!0,p("timing",["fi",e,n])}}function c(t){"hidden"===t&&(f=h.now(),p("pageHide",[f]))}if(!("init"in NREUM&&"page_view_timing"in NREUM.init&&"enabled"in NREUM.init.page_view_timing&&NREUM.init.page_view_timing.enabled===!1)){var f,u,d,l,p=t("handle"),h=t("loader"),m=t(26),v=t(19),w=NREUM.o.EV;if("PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){u=new PerformanceObserver(r);try{u.observe({entryTypes:["paint"]})}catch(g){}d=new PerformanceObserver(i);try{d.observe({entryTypes:["largest-contentful-paint"]})}catch(g){}l=new PerformanceObserver(o);try{l.observe({type:"layout-shift",buffered:!0})}catch(g){}}if("addEventListener"in document){var y=!1,x=["click","keydown","mousedown","pointerdown","touchstart"];x.forEach(function(t){document.addEventListener(t,s,v(!1))})}m(c)}},{}],24:[function(t,e,n){function r(){function t(){return e?15&e[n++]:16*Math.random()|0}var e=null,n=0,r=window.crypto||window.msCrypto;r&&r.getRandomValues&&(e=r.getRandomValues(new Uint8Array(31)));for(var i,o="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx",a="",s=0;s<o.length;s++)i=o[s],"x"===i?a+=t().toString(16):"y"===i?(i=3&t()|8,a+=i.toString(16)):a+=i;return a}function i(){return a(16)}function o(){return a(32)}function a(t){function e(){return n?15&n[r++]:16*Math.random()|0}var n=null,r=0,i=window.crypto||window.msCrypto;i&&i.getRandomValues&&Uint8Array&&(n=i.getRandomValues(new Uint8Array(t)));for(var o=[],a=0;a<t;a++)o.push(e().toString(16));return o.join("")}e.exports={generateUuid:r,generateSpanId:i,generateTraceId:o}},{}],25:[function(t,e,n){function r(t,e){if(!i)return!1;if(t!==i)return!1;if(!e)return!0;if(!o)return!1;for(var n=o.split("."),r=e.split("."),a=0;a<r.length;a++)if(r[a]!==n[a])return!1;return!0}var i=null,o=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var s=navigator.userAgent,c=s.match(a);c&&s.indexOf("Chrome")===-1&&s.indexOf("Chromium")===-1&&(i="Safari",o=c[1])}e.exports={agent:i,version:o,match:r}},{}],26:[function(t,e,n){function r(t){function e(){t(s&&document[s]?document[s]:document[o]?"hidden":"visible")}"addEventListener"in document&&a&&document.addEventListener(a,e,i(!1))}var i=t(19);e.exports=r;var o,a,s;"undefined"!=typeof document.hidden?(o="hidden",a="visibilitychange",s="visibilityState"):"undefined"!=typeof document.msHidden?(o="msHidden",a="msvisibilitychange"):"undefined"!=typeof document.webkitHidden&&(o="webkitHidden",a="webkitvisibilitychange",s="webkitVisibilityState")},{}],27:[function(t,e,n){function r(t,e){var n=[],r="",o=0;for(r in t)i.call(t,r)&&(n[o]=e(r,t[r]),o+=1);return n}var i=Object.prototype.hasOwnProperty;e.exports=r},{}],28:[function(t,e,n){function r(t,e,n){e||(e=0),"undefined"==typeof n&&(n=t?t.length:0);for(var r=-1,i=n-e||0,o=Array(i<0?0:i);++r<i;)o[r]=t[e+r];return o}e.exports=r},{}],29:[function(t,e,n){e.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(t,e,n){function r(){}function i(t){function e(t){return t&&t instanceof r?t:t?f(t,c,a):a()}function n(n,r,i,o,a){if(a!==!1&&(a=!0),!p.aborted||o){t&&a&&t(n,r,i);for(var s=e(i),c=m(n),f=c.length,u=0;u<f;u++)c[u].apply(s,r);var l=d[y[n]];return l&&l.push([x,n,r,s]),s}}function o(t,e){g[t]=m(t).concat(e)}function h(t,e){var n=g[t];if(n)for(var r=0;r<n.length;r++)n[r]===e&&n.splice(r,1)}function m(t){return g[t]||[]}function v(t){return l[t]=l[t]||i(n)}function w(t,e){p.aborted||u(t,function(t,n){e=e||"feature",y[n]=e,e in d||(d[e]=[])})}var g={},y={},x={on:o,addEventListener:o,removeEventListener:h,emit:n,get:v,listeners:m,context:e,buffer:w,abort:s,aborted:!1};return x}function o(t){return f(t,c,a)}function a(){return new r}function s(){(d.api||d.feature)&&(p.aborted=!0,d=p.backlog={})}var c="nr@context",f=t("gos"),u=t(27),d={},l={},p=e.exports=i();e.exports.getOrSetContext=o,p.backlog=d},{}],gos:[function(t,e,n){function r(t,e,n){if(i.call(t,e))return t[e];var r=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,e,{value:r,writable:!0,enumerable:!1}),r}catch(o){}return t[e]=r,r}var i=Object.prototype.hasOwnProperty;e.exports=r},{}],handle:[function(t,e,n){function r(t,e,n,r){i.buffer([t],r),i.emit(t,e,n)}var i=t("ee").get("handle");e.exports=r,r.ee=i},{}],id:[function(t,e,n){function r(t){var e=typeof t;return!t||"object"!==e&&"function"!==e?-1:t===window?0:a(t,o,function(){return i++})}var i=1,o="nr@id",a=t("gos");e.exports=r},{}],loader:[function(t,e,n){function r(){if(!O++){var t=S.info=NREUM.info,e=m.getElementsByTagName("script")[0];if(setTimeout(f.abort,3e4),!(t&&t.licenseKey&&t.applicationID&&e))return f.abort();c(E,function(e,n){t[e]||(t[e]=n)});var n=a();s("mark",["onload",n+S.offset],null,"api"),s("timing",["load",n]);var r=m.createElement("script");0===t.agent.indexOf("http://")||0===t.agent.indexOf("https://")?r.src=t.agent:r.src=p+"://"+t.agent,e.parentNode.insertBefore(r,e)}}function i(){"complete"===m.readyState&&o()}function o(){s("mark",["domContent",a()+S.offset],null,"api")}var a=t(22),s=t("handle"),c=t(27),f=t("ee"),u=t(25),d=t(17),l=t(19),p=d.getConfiguration("ssl")===!1?"http":"https",h=window,m=h.document,v="addEventListener",w="attachEvent",g=h.XMLHttpRequest,y=g&&g.prototype,x=!1;NREUM.o={ST:setTimeout,SI:h.setImmediate,CT:clearTimeout,XHR:g,REQ:h.Request,EV:h.Event,PR:h.Promise,MO:h.MutationObserver};var b=""+location,E={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1216.min.js"},R=g&&y&&y[v]&&!/CriOS/.test(navigator.userAgent),S=e.exports={offset:a.getLastTimestamp(),now:a,origin:b,features:{},xhrWrappable:R,userAgent:u,disabled:x};if(!x){t(16),t(23),m[v]?(m[v]("DOMContentLoaded",o,l(!1)),h[v]("load",r,l(!1))):(m[w]("onreadystatechange",i),h[w]("onload",r)),s("mark",["firstbyte",a.getLastTimestamp()],null,"api");var O=0}},{}],"wrap-function":[function(t,e,n){function r(t,e){function n(e,n,r,c,f){function nrWrapper(){var o,a,u,l;try{a=this,o=d(arguments),u="function"==typeof r?r(o,a):r||{}}catch(p){i([p,"",[o,a,c],u],t)}s(n+"start",[o,a,c],u,f);try{return l=e.apply(a,o)}catch(h){throw s(n+"err",[o,a,h],u,f),h}finally{s(n+"end",[o,a,l],u,f)}}return a(e)?e:(n||(n=""),nrWrapper[l]=e,o(e,nrWrapper,t),nrWrapper)}function r(t,e,r,i,o){r||(r="");var s,c,f,u="-"===r.charAt(0);for(f=0;f<e.length;f++)c=e[f],s=t[c],a(s)||(t[c]=n(s,u?c+r:r,i,c,o))}function s(n,r,o,a){if(!h||e){var s=h;h=!0;try{t.emit(n,r,o,e,a)}catch(c){i([c,n,r,o],t)}h=s}}return t||(t=u),n.inPlace=r,n.flag=l,n}function i(t,e){e||(e=u);try{e.emit("internal-error",t)}catch(n){}}function o(t,e,n){if(Object.defineProperty&&Object.keys)try{var r=Object.keys(t);return r.forEach(function(n){Object.defineProperty(e,n,{get:function(){return t[n]},set:function(e){return t[n]=e,e}})}),e}catch(o){i([o],n)}for(var a in t)p.call(t,a)&&(e[a]=t[a]);return e}function a(t){return!(t&&t instanceof Function&&t.apply&&!t[l])}function s(t,e){var n=e(t);return n[l]=t,o(t,n,u),n}function c(t,e,n){var r=t[e];t[e]=s(r,n)}function f(){for(var t=arguments.length,e=new Array(t),n=0;n<t;++n)e[n]=arguments[n];return e}var u=t("ee"),d=t(28),l="nr@original",p=Object.prototype.hasOwnProperty,h=!1;e.exports=r,e.exports.wrapFunction=s,e.exports.wrapInPlace=c,e.exports.argsToArray=f},{}]},{},["loader",2,13,4,3]);</script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+     
+        
+    <title>Commanders narrow down mascot to four themes; fans to vote on options &#x2d; WTOP News</title>
+<meta name='robots' content='max-image-preview:large' />
+<!--AdThrive Head Tag -->
+<script>
+(function(w, d) {
+    w.adthrive = w.adthrive || {};
+    w.adthrive.cmd = w.adthrive.cmd || [];
+    w.adthrive.plugin = 'adthrive-ads-1.0.39';
+    w.adthrive.host = 'ads.adthrive.com';
+	w.adthrive.threshold = Math.floor(Math.random() * 100 + 1);
+
+    var s = d.createElement('script');
+    s.async = true;
+    s.referrerpolicy = 'no-referrer-when-downgrade';
+    s.src = 'https://' + w.adthrive.host + '/sites/5f6a7a1192608a0e85035661/ads.min.js?referrer=' + w.encodeURIComponent(w.location.href) + '&threshold='+w.adthrive.threshold;
+    var n = d.getElementsByTagName('script')[0];
+    n.parentNode.insertBefore(s, n);
+})(window, document);
+
+function cam_getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value);
+}
+function cam_unique_array(a) {
+    var seen = {};
+    return a.filter(function(item) {
+        return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+    });
+}
+window.adthrive.cmd.push(function() {
+    cam_targeting_values = [];
+	cam_unique_targeting=[];
+    var cam_hubb_location = encodeURIComponent(window.location.pathname.split('/')[1]).toLowerCase();
+    if (cam_hubb_location.length == 0) {
+        cam_targeting_values.push('hubb_home');
+    } else if (cam_hubb_location.length <= 35) {
+        cam_targeting_values.push('hubb_' + cam_hubb_location);
+    } else {
+        cam_targeting_values.push('hubb_' + cam_hubb_location.substring(0, 35));
+    }
+    try {
+        if (catid) {
+            cam_tv_catid = cam_getKeyByValue(SEOSlugArray, parseInt(catid));
+            cam_tv_vd = cam_getKeyByValue(virtualDirectoryArray, parseInt(catid));
+			cam_adunitarray = adUnitArray[catid].replace('/6585/','').split('/');
+			if(adUnitArray[catid].replace('/6585/','').split('/')[2]){
+				cam_targeting_values.push('hubb_' + adUnitArray[catid].replace('/6585/','').split('/')[2].substring(0, 35));
+			}
+			if(adUnitArray[catid].replace('/6585/','').split('/')[3]){
+				cam_targeting_values.push('hubb_' + adUnitArray[catid].replace('/6585/','').split('/')[3].substring(0, 35));
+			}
+            cam_targeting_values.push('hubb_' + cam_tv_catid.substring(0, 35));
+            cam_targeting_values.push('hubb_' + cam_tv_vd.substring(0, 35));
+        }
+    } catch (err) {}
+    try {
+        if (window.DFP_custom_targeting.slug) {
+            cam_slug = DFP_custom_targeting.slug;
+            console.log(cam_slug.substring(0, 35));
+            cam_targeting_values.push('hubb_' + cam_slug.substring(0, 35));
+        }
+    } catch (err) {}
+	try {
+		cam_corr = Math.floor((Math.random() * 12) + 1);
+		if (cam_corr <= 3) {
+			cam_2spon = 'A';
+			cam_3spon = 'A';
+			cam_4spon = 'A';
+		} else if (cam_corr == 4) {
+			cam_2spon = 'A';
+			cam_3spon = 'A';
+			cam_4spon = 'B';
+		} else if (cam_corr <= 6) {
+			cam_2spon = 'A';
+			cam_3spon = 'B';
+			cam_4spon = 'B';
+		} else if (cam_corr <= 8) {
+			cam_2spon = 'B';
+			cam_3spon = 'B';
+			cam_4spon = 'C';
+		} else if (cam_corr == 9) {
+			cam_2spon = 'B';
+			cam_3spon = 'C';
+			cam_4spon = 'C';
+		} else {
+			cam_2spon = 'B';
+			cam_3spon = 'C';
+			cam_4spon = 'D';
+		}
+		cam_targeting_values.push('hubb_corr_' + cam_corr);
+		cam_targeting_values.push('hubb_corr_2sponsors_spon' + cam_2spon);
+		cam_targeting_values.push('hubb_corr_3sponsors_spon' + cam_3spon);
+		cam_targeting_values.push('hubb_corr_4sponsors_spon' + cam_4spon);
+	} catch (err) {}
+	try {
+        if (window.DFP_custom_targeting.is_article) {
+            cam_is_article = DFP_custom_targeting.is_article;
+            console.log(cam_is_article.substring(0, 24));
+            cam_targeting_values.push('hubb_is_article_' + cam_is_article.substring(0, 24));
+        }
+    } catch (err) {}
+	try {
+        if (window.DFP_custom_targeting.sponsor) {
+            cam_sponsor = DFP_custom_targeting.sponsor;
+            console.log(cam_sponsor.substring(0, 35));
+            cam_targeting_values.push('hubb_' + cam_sponsor.substring(0, 35));
+        }
+    } catch (err) {}
+    try {
+        if (window.DFP_custom_targeting.category && Array.isArray(window.DFP_custom_targeting.category)) {
+            for (i = 0; i <= window.DFP_custom_targeting.category.length - 1; i++) {
+                cam_cat = window.DFP_custom_targeting.category[i];
+                cam_targeting_values.push('hubb_' + cam_cat.substring(0, 35));
+                console.log(window.DFP_custom_targeting.category[i]);
+            }
+        }
+		else if(window.DFP_custom_targeting.category){
+			cam_cat=window.DFP_custom_targeting.category;
+			cam_targeting_values.push('hubb_' + cam_cat.substring(0, 35));
+			console.log(window.DFP_custom_targeting.category);
+		}
+    } catch (err) {}
+
+    if (cam_targeting_values.length > 0) {
+		cam_unique_targeting=cam_unique_array(cam_targeting_values);
+        window.adthrive.siteAds.targeting.push({
+            key: 'at_custom_1',
+            value: cam_unique_targeting,
+        });
+    }
+    setTimeout(function() {
+        window.adthrive.advertiser_ids = [];
+        window.adthrive.slots._slots.forEach((values, key) => {
+            if (values.googleTagSlot.getResponseInformation()) {
+                if (values.googleTagSlot.getResponseInformation().advertiserId == 4927324502) {
+                    console.log('CAM - disabling refresh on : ' + key);
+                    window.adthrive.slotManager.updateRefreshTimeout(key, 0);
+                }
+            }
+        });
+    }, 10000);
+});
+</script>
+<script>
+window.adthrive.cmd.push(function() {
+    googletag.cmd.push(function() {
+        googletag.defineOutOfPageSlot('/18190176,6585/Hubbard_Interstitial/5f6a7a1192608a0e85035661', 'div-gpt-ad-1605720620965-0').addService(googletag.pubads())
+        var interstitial_executed = false;
+        function addInterstitialTargeting() {
+            if (interstitial_executed == false) {
+                interstitial_executed = true;
+                googletag.pubads().setTargeting(adthrive.getTargetingMap());
+                googletag.pubads().getSlots().filter(slot => slot.getAdUnitPath().includes("Hubbard_Interstitial")).forEach(adSlot => googletag.pubads().refresh([adSlot]));
+            }
+        }
+        googletag.pubads().addEventListener('slotRenderEnded', addInterstitialTargeting);
+    });
+});
+</script> 
+<script>!function(n){if(!window.cnxps){window.cnxps={},window.cnxps.cmd=[];var t=n.createElement('iframe');t.display='none',t.onload=function(){var n=t.contentWindow.document,c=n.createElement('script');c.src='//cd.connatix.com/connatix.playspace.js?cid=c2ffed0c-3624-46c0-b10f-97c976d290a3',c.setAttribute('async','1'),c.setAttribute('type','text/javascript'),n.body.appendChild(c)},n.head.appendChild(t)}}(document);</script>			<!-- Begin IndexExchange  -->
+			<script async src="//js-sec.indexww.com/ht/p/186967-76288346428612.js"></script>
+			<!-- End IndexExchange -->
+					<!-- SailThru -->
+			<meta name="sailthru.canonical" content="https://wtop.com/washington-commanders/2022/08/commanders-narrow-down-mascot-to-four-themes-fans-to-vote-on-options/" />
+			<meta name="sailthru.date" content="2022-08-15 05:28:00" />
+			
+					<meta name="sailthru.tags" content="command the mascot,commanders rebranding,NFL News,Sports,Washington Commanders,Washington, DC Sports" />
+			
+				
+								<meta name="sailthru.image.full" content="https://wtop.com/wp-content/uploads/2022/08/commanders20mascot.jpg" />
+			<meta name="sailthru.image.thumb" content="https://wtop.com/wp-content/uploads/2022/08/commanders20mascot-150x150.jpg" />
+				<!-- /SailThru -->
+		<!-- SailThru --><meta name="sailthru.canonical" content="https://wtop.com/washington-commanders/2022/08/commanders-narrow-down-mascot-to-four-themes-fans-to-vote-on-options/" /><meta name="sailthru.date" content="2022-08-15 05:28:00" /><meta name="sailthru.image.full" content="https://wtop.com/wp-content/uploads/2022/08/commanders20mascot.jpg" /><meta name="sailthru.image.thumb" content="https://wtop.com/wp-content/uploads/2022/08/commanders20mascot-150x150.jpg" /><meta name='sailthru.tags' content='command the mascot,commanders rebranding,NFL News,Sports,Washington Commanders,Washington, DC Sports'/><!-- /SailThru -->
+<!-- The SEO Framework by Sybre Waaijer -->
+<meta name="description" content="Using the &#8216;Command the mascot&#8217; initiative, the Washington Commanders are allowing the fans to pick the &#8216;theme&#8217; of the team&#8217;s new mascot." />
+<meta property="og:image" content="https://wtop.com/wp-content/uploads/2022/08/commanders20mascot.jpg" />
+<meta property="og:image:width" content="1920" />
+<meta property="og:image:height" content="1080" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Commanders narrow down mascot to four themes; fans to vote on options &#x2d; WTOP News" />
+<meta property="og:description" content="Using the &#8216;Command the mascot&#8217; initiative, the Washington Commanders are allowing the fans to pick the &#8216;theme&#8217; of the team&#8217;s new mascot." />
+<meta property="og:url" content="https://wtop.com/washington-commanders/2022/08/commanders-narrow-down-mascot-to-four-themes-fans-to-vote-on-options/" />
+<meta property="og:site_name" content="WTOP News" />
+<meta property="article:published_time" content="2022-08-15T21:28+00:00" />
+<meta property="article:modified_time" content="2022-08-15T23:31+00:00" />
+<meta property="og:updated_time" content="2022-08-15T23:31+00:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Commanders narrow down mascot to four themes; fans to vote on options &#x2d; WTOP News" />
+<meta name="twitter:description" content="Using the &#8216;Command the mascot&#8217; initiative, the Washington Commanders are allowing the fans to pick the &#8216;theme&#8217; of the team&#8217;s new mascot." />
+<meta name="twitter:image" content="https://wtop.com/wp-content/uploads/2022/08/commanders20mascot.jpg" />
+<meta name="twitter:image:width" content="1920" />
+<meta name="twitter:image:height" content="1080" />
+<link rel="canonical" href="https://www.nbcsports.com/washington/commanders/commanders-narrow-down-mascot-four-themes-fans-vote-options?cid=Yahoo&partner=ya4nbcs" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https://wtop.com/","name":"WTOP | Washington\u2019s Top News | DC, MD &#038; VA News, Traffic &#038; Weather"}},{"@type":"ListItem","position":2,"item":{"@id":"https://wtop.com/sports/","name":"Sports News"}},{"@type":"ListItem","position":3,"item":{"@id":"https://wtop.com/washington-commanders/2022/08/commanders-narrow-down-mascot-to-four-themes-fans-to-vote-on-options/","name":"Commanders narrow down mascot to four themes; fans to vote on options"}}]}</script>
+<!-- / The SEO Framework by Sybre Waaijer | 0.39ms meta | 0.32ms boot -->
+
+<link rel='dns-prefetch' href='//ajax.googleapis.com' />
+<link rel='dns-prefetch' href='//www.google.com' />
+<link rel='dns-prefetch' href='//secure-drm.imrworldwide.com' />
+<link rel='dns-prefetch' href='//code.jquery.com' />
+<link rel='dns-prefetch' href='//use.fontawesome.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.1.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.1.0\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/wtop.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.8.1"}};
+			!function(e,a,t){var n,r,o,i=a.createElement("canvas"),p=i.getContext&&i.getContext("2d");function s(e,t){var a=String.fromCharCode;p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,e),0,0);e=i.toDataURL();return p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,t),0,0),e===i.toDataURL()}function c(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(o=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},r=0;r<o.length;r++)t.supports[o[r]]=function(e){if(!p||!p.fillText)return!1;switch(p.textBaseline="top",p.font="600 32px Arial",e){case"flag":return s([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])?!1:!s([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!s([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]);case"emoji":return!s([10084,65039,8205,55357,56613],[10084,65039,8203,55357,56613])}return!1}(o[r]),t.supports.everything=t.supports.everything&&t.supports[o[r]],"flag"!==o[r]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[o[r]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(n=t.source||{}).concatemoji?c(n.concatemoji):n.wpemoji&&n.twemoji&&(c(n.twemoji),c(n.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel='stylesheet' id='wp-block-library-css'  href='https://wtop.com/wp-includes/css/dist/block-library/style.min.css?ver=5.8.1' type='text/css' media='all' />
+<link rel='stylesheet' id='SailThru-css'  href='https://wtop.com/wp-content/plugins/sailthru-custom/assets/css/sailthru.css?ver=220806-155950' type='text/css' media='all' />
+<link rel='stylesheet' id='Sailthru_Newsletters_Custom-css'  href='https://wtop.com/wp-content/plugins/sailthru-newsletters-custom/assets/css/sailthru.css?ver=0.1' type='text/css' media='all' />
+<link rel='stylesheet' id='sailthru-newsletter-signup-css-css'  href='https://wtop.com/wp-content/plugins/sailthru-newsletters-custom/assets/css/sailthru-newsletter-signup.min.css?ver=1659801590' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-parsely-style-css'  href='https://wtop.com/wp-content/plugins/wp-parsely/wp-parsely.css?ver=1659801591' type='text/css' media='all' />
+<link rel='stylesheet' id='font-awesome-css-css'  href='https://use.fontawesome.com/releases/v5.8.2/css/all.css?ver=5.8.2' type='text/css' media='' />
+<link rel='stylesheet' id='wtop-theme-stylesheet-css'  href='https://wtop.com/wp-content/themes/wtop-new/style.css?ver=1659801591' type='text/css' media='all' />
+<link rel='stylesheet' id='blog_styles-css'  href='https://wtop.com/wp-content/themes/wtop-new/blog-styles.css?ver=1659801591' type='text/css' media='' />
+		<!-- Google Tag Manager -->
+		<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-TZGJTC"
+		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+		<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+		'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-TZGJTC');</script>
+		<!-- End Google Tag Manager -->
+                            
+		 <!-- Google Analytics  -->
+		<!-- Old GA code - running concurrently with new GA4 -->
+                <script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+			ga('create', 'UA-23103174-10', 'auto', {'allowLinker': true });
+ 
+  			ga('require', 'linker');
+  			ga('linker:autoLink', ['wtop.com','wtop.collegehoops.upickem.net']);
+					ga('set', 'dimension1', '');
+					ga('set', 'dimension2', '');
+					ga('send', 'pageview');
+		</script>
+                
+                <!-- Global site tag (gtag.js) - Google Analytics -->
+                <!-- This is GA4 -->
+                <script async src="https://www.googletagmanager.com/gtag/js?id=G-7DGXB37KZH"></script>
+                <script>
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+
+                    gtag('config', 'G-7DGXB37KZH');
+
+                    // Maps 'dimension2' to 'age'.
+                    gtag('config', 'GA_MEASUREMENT_ID', {
+                      'custom_map': {
+                          'dimension1': 'primary_category',
+                          'dimension2': 'author'
+                      }
+                    });
+                    // Sends an event that passes 'age' as a parameter.
+                    gtag('event', 'author_dimension', {'author': 'Tyler Byrum'});
+                    gtag('event', 'category_dimension', {'primary_category': 'Washington Commanders'})
+                </script>            
+                
+
+                
+		<!-- // Google Analytics -->
+		<script src="/advertisement.js" defer></script>
+
+		        <script>
+            window.Site = window.Site || {};
+            window.Site.icons = window.Site.icons || {};
+            window.Site.icons['arrow-down'] = "<svg class=\"Svg\" data-name=\"arrow-down\" version=\"1.1\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\" xmlns:xlink=\"http:\/\/www.w3.org\/1999\/xlink\" x=\"0px\" y=\"0px\" width=\"11px\" height=\"7px\" viewBox=\"0 0 11 7\" enable-background=\"new 0 0 11 7\" xml:space=\"preserve\">\t<image src=\"https:\/\/wtop.com\/wp-content\/themes\/wtop-new\/assets\/img\/icons\/arrow-down.png\" \/><path d=\"M9.786,0c-0.32,0-0.623,0.127-0.857,0.365l-3.43,3.601L2.143,0.444C1.911,0.162,1.573,0,1.214,0\n\tC0.545,0,0,0.561,0,1.25c0,0.296,0.101,0.58,0.285,0.805C0.3,2.076,0.316,2.097,0.335,2.116l4.279,4.493\n\tC4.843,6.857,5.165,7,5.497,7H5.5c0.333,0,0.654-0.143,0.876-0.385l4.291-4.506C10.882,1.876,11,1.571,11,1.25\n\tC11,0.561,10.455,0,9.786,0z\"\/><\/svg>";
+            window.Site.icons['image-arrow-circle-blue'] = "https:\/\/wtop.com\/wp-content\/themes\/wtop-new\/assets\/img\/icons\/arrow-circle-blue.png";
+            window.Site.icons['image-arrow-right-black'] = "https:\/\/wtop.com\/wp-content\/themes\/wtop-new\/assets\/img\/icons\/arrow-right-black.png";
+            window.Site.icons['image-arrow-left-black'] = "https:\/\/wtop.com\/wp-content\/themes\/wtop-new\/assets\/img\/icons\/arrow-left-black.png";
+        </script>
+        <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js?ver=2.1.0' id='jquery-js'></script>
+
+        <script>
+        // Fallback to loading jQuery from a local path if the CDN is unavailable
+        (window.jQuery || append_jquery_fallback() );
+            function append_jquery_fallback(){
+                var script = document.createElement('script');
+                script.setAttribute('type', 'text/javascript');
+                script.setAttribute('src', 'https://wtop.com/wp-content/themes/wtop-new/assets/vendor/jquery/dist/jquery.min.js');
+                document.write(script.outerHTML);
+            }
+        </script><script type='text/javascript' src='//secure-drm.imrworldwide.com/novms/js/2/ggcmb400.js?ver=5.8.1' id='nielsensdk-js'></script>
+<script type='text/javascript' id='ggcom-js-extra'>
+/* <![CDATA[ */
+var _nolggGlobalParams = {"sfcode":"drm","apid":"P161F34E0-CC10-4E18-B59B-CDAA8FC2516B","apn":"WTOP"};
+var _nolggGlobalParamsMeta = {"provider":"HubbardRadio","stationType":"1","assetid":"WTOP-FM"};
+var _nolggSettings = {"debug":""};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://wtop.com/wp-content/themes/wtop-new/js/ggCom_embed.js?ver=5.8.1' id='ggcom-js'></script>
+<script type='text/javascript' id='DFPLIGHT-js-extra'>
+/* <![CDATA[ */
+var DFP_ad_slots = "[{\"name\":\"wtop_desktop_top\",\"sizes\":\"[[970, 250], [970, 90], [728, 90]]\",\"id\":\"DFP_slot_wtop_desktop_top_1\",\"sizeMapping\":{\"[1025, 900]\":\"[[1, 1],[970, 250], [970, 90], [728, 90]]\",\"[1025, 450]\":\"[[970, 90], [728, 90]]\",\"[0, 0]\":\"[]\"},\"extra\":false,\"outofpage\":false,\"companion\":false,\"expandedSize\":false,\"transition\":false,\"avoidRender\":false},{\"name\":\"wtop_desktop_interstitial\",\"sizes\":\"[640, 480]\",\"id\":\"DFP_slot_wtop_desktop_interstitial_1\",\"sizeMapping\":{\"[1025, 200]\":\"[640, 480]\",\"[0, 0]\":\"[]\"},\"extra\":false,\"outofpage\":true,\"companion\":false,\"expandedSize\":false,\"transition\":false,\"avoidRender\":false},{\"name\":\"wtop_mobile_adhesion_1\",\"sizes\":\"[[320, 50],[1,1]]\",\"id\":\"DFP_slot_wtop_mobile_adhesion_1_1\",\"sizeMapping\":{\"[750, 200]\":\"[]\",\"[0, 0]\":\"[[320, 50],[1,1]]\"},\"extra\":false,\"outofpage\":false,\"companion\":false,\"expandedSize\":false,\"transition\":false,\"avoidRender\":false},{\"name\":\"wtop_article_300x600_1\",\"sizes\":\"[[300, 600]]\",\"id\":\"DFP_slot_wtop_article_300x600_1_1\",\"sizeMapping\":{\"[1025, 900]\":\"[[1, 1],[300, 600]]\",\"[1025, 450]\":\"[[1, 1],[300, 250]]\",\"[0, 0]\":\"[]\"},\"extra\":false,\"outofpage\":false,\"companion\":false,\"expandedSize\":false,\"transition\":false,\"avoidRender\":false},{\"name\":\"wtop_in-article_desktop_1\",\"sizes\":\"[[620,250], [300, 250]]\",\"id\":\"DFP_slot_wtop_in-article_desktop_1_1\",\"sizeMapping\":{\"[1025, 200]\":\"[[620,250], [300, 250]]\",\"[0, 0]\":\"[[300, 250]]\"},\"extra\":false,\"outofpage\":false,\"companion\":false,\"expandedSize\":false,\"transition\":false,\"avoidRender\":false},{\"name\":\"wtop_in-article_desktop_2\",\"sizes\":\"[[620,250], [300, 250]]\",\"id\":\"DFP_slot_wtop_in-article_desktop_2_1\",\"sizeMapping\":{\"[1025, 200]\":\"[[620,250], [300, 250]]\",\"[0, 0]\":\"[[300, 250]]\"},\"extra\":false,\"outofpage\":false,\"companion\":false,\"expandedSize\":false,\"transition\":false,\"avoidRender\":false},{\"name\":\"wtop_in-article_desktop_3\",\"sizes\":\"[[620,250], [300, 250]]\",\"id\":\"DFP_slot_wtop_in-article_desktop_3_1\",\"sizeMapping\":{\"[1025, 200]\":\"[[620,250], [300, 250]]\",\"[0, 0]\":\"[[300, 250]]\"},\"extra\":false,\"outofpage\":false,\"companion\":false,\"expandedSize\":false,\"transition\":false,\"avoidRender\":false},{\"name\":\"wtop_in-article_desktop_4\",\"sizes\":\"[[620,250], [300, 250]]\",\"id\":\"DFP_slot_wtop_in-article_desktop_4_1\",\"sizeMapping\":{\"[1025, 200]\":\"[[620,250], [300, 250]]\",\"[0, 0]\":\"[[300, 250]]\"},\"extra\":false,\"outofpage\":false,\"companion\":false,\"expandedSize\":false,\"transition\":false,\"avoidRender\":false},{\"name\":\"wtop_in-article_desktop_5\",\"sizes\":\"[[620,250], [300, 250]]\",\"id\":\"DFP_slot_wtop_in-article_desktop_5_1\",\"sizeMapping\":{\"[1025, 200]\":\"[[620,250], [300, 250]]\",\"[0, 0]\":\"[[300, 250]]\"},\"extra\":false,\"outofpage\":false,\"companion\":false,\"expandedSize\":false,\"transition\":false,\"avoidRender\":false},{\"name\":\"wtop_in-article_desktop_6\",\"sizes\":\"[[620,250], [300, 250]]\",\"id\":\"DFP_slot_wtop_in-article_desktop_6_1\",\"sizeMapping\":{\"[1025, 200]\":\"[[620,250], [300, 250]]\",\"[0, 0]\":\"[[300, 250]]\"},\"extra\":false,\"outofpage\":false,\"companion\":false,\"expandedSize\":false,\"transition\":false,\"avoidRender\":false},{\"name\":\"wtop_in-article_desktop_7\",\"sizes\":\"[[620,250], [300, 250]]\",\"id\":\"DFP_slot_wtop_in-article_desktop_7_1\",\"sizeMapping\":{\"[1025, 200]\":\"[[620,250], [300, 250]]\",\"[0, 0]\":\"[[300, 250]]\"},\"extra\":false,\"outofpage\":false,\"companion\":false,\"expandedSize\":false,\"transition\":false,\"avoidRender\":false},{\"name\":\"wtop_in-article_desktop_8\",\"sizes\":\"[[620,250], [300, 250]]\",\"id\":\"DFP_slot_wtop_in-article_desktop_8_1\",\"sizeMapping\":{\"[1025, 200]\":\"[[620,250], [300, 250]]\",\"[0, 0]\":\"[[300, 250]]\"},\"extra\":false,\"outofpage\":false,\"companion\":false,\"expandedSize\":false,\"transition\":false,\"avoidRender\":false},{\"name\":\"wtop_article_mobile_300x250\",\"sizes\":\"[[300, 250]]\",\"id\":\"DFP_slot_wtop_article_mobile_300x250_1\",\"sizeMapping\":{\"[1024, 200]\":\"[]\",\"[0, 0]\":\"[300, 250]\"},\"extra\":false,\"outofpage\":false,\"companion\":false,\"expandedSize\":false,\"transition\":false,\"avoidRender\":false},{\"name\":\"wtop_in-article_mobile_1\",\"sizes\":\"[[300, 250]]\",\"id\":\"DFP_slot_wtop_in-article_mobile_1_1\",\"sizeMapping\":{\"[1025, 0]\":\"[]\",\"[0, 0]\":\"[[300, 250]]\"},\"extra\":false,\"outofpage\":false,\"companion\":false,\"expandedSize\":false,\"transition\":false,\"avoidRender\":false},{\"name\":\"wtop_in-article_mobile_2\",\"sizes\":\"[[300, 250]]\",\"id\":\"DFP_slot_wtop_in-article_mobile_2_1\",\"sizeMapping\":{\"[1025, 0]\":\"[]\",\"[0, 0]\":\"[[300, 250]]\"},\"extra\":false,\"outofpage\":false,\"companion\":false,\"expandedSize\":false,\"transition\":false,\"avoidRender\":false},{\"name\":\"wtop_in-article_mobile_3\",\"sizes\":\"[[300, 250]]\",\"id\":\"DFP_slot_wtop_in-article_mobile_3_1\",\"sizeMapping\":{\"[1025, 0]\":\"[]\",\"[0, 0]\":\"[[300, 250]]\"},\"extra\":false,\"outofpage\":false,\"companion\":false,\"expandedSize\":false,\"transition\":false,\"avoidRender\":false},{\"name\":\"wtop_in-article_mobile_4\",\"sizes\":\"[[300, 250]]\",\"id\":\"DFP_slot_wtop_in-article_mobile_4_1\",\"sizeMapping\":{\"[1025, 0]\":\"[]\",\"[0, 0]\":\"[[300, 250]]\"},\"extra\":false,\"outofpage\":false,\"companion\":false,\"expandedSize\":false,\"transition\":false,\"avoidRender\":false},{\"name\":\"wtop_in-article_mobile_5\",\"sizes\":\"[[300, 250]]\",\"id\":\"DFP_slot_wtop_in-article_mobile_5_1\",\"sizeMapping\":{\"[1025, 0]\":\"[]\",\"[0, 0]\":\"[[300, 250]]\"},\"extra\":false,\"outofpage\":false,\"companion\":false,\"expandedSize\":false,\"transition\":false,\"avoidRender\":false},{\"name\":\"wtop_in-article_mobile_6\",\"sizes\":\"[[300, 250]]\",\"id\":\"DFP_slot_wtop_in-article_mobile_6_1\",\"sizeMapping\":{\"[1025, 0]\":\"[]\",\"[0, 0]\":\"[[300, 250]]\"},\"extra\":false,\"outofpage\":false,\"companion\":false,\"expandedSize\":false,\"transition\":false,\"avoidRender\":false},{\"name\":\"wtop_in-article_mobile_7\",\"sizes\":\"[[300, 250]]\",\"id\":\"DFP_slot_wtop_in-article_mobile_7_1\",\"sizeMapping\":{\"[1025, 0]\":\"[]\",\"[0, 0]\":\"[[300, 250]]\"},\"extra\":false,\"outofpage\":false,\"companion\":false,\"expandedSize\":false,\"transition\":false,\"avoidRender\":false},{\"name\":\"wtop_in-article_mobile_8\",\"sizes\":\"[[300, 250]]\",\"id\":\"DFP_slot_wtop_in-article_mobile_8_1\",\"sizeMapping\":{\"[1025, 0]\":\"[]\",\"[0, 0]\":\"[[300, 250]]\"},\"extra\":false,\"outofpage\":false,\"companion\":false,\"expandedSize\":false,\"transition\":false,\"avoidRender\":false}]";
+var DFP_custom_targeting = {"is_front":"false","is_archive":"false","is_article":"true","is_gallery":"false","is_page":"false","is_traffic":"false","is_weather":"false","is_headlines":"false","is_search":"false","is_author":"false","is_dev":"false","slug":"commanders-narrow-down-mascot-to-four-th","category":["nfl","sports","washington-commanders","local-sports"],"section":["nfl","sports","washington-commanders","local-sports"],"traffic":["nfl","sports","washington-commanders","local-sports"],"weather":["nfl","sports","washington-commanders","local-sports"],"region":["nfl","sports","washington-commanders","local-sports"],"tag":["command-the-mascot","commanders-rebranding"],"author":["NBC Sports Washington"]};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://wtop.com/wp-content/plugins/dfp-custom-light/assets/js/dist/dfp-custom-light.min.js?ver=1.0.0' id='DFPLIGHT-js'></script>
+<link rel="https://api.w.org/" href="https://wtop.com/wp-json/" /><link rel="alternate" type="application/json" href="https://wtop.com/wp-json/wp/v2/posts/23922035" /><link rel="alternate" type="application/json+oembed" href="https://wtop.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwtop.com%2Fwashington-commanders%2F2022%2F08%2Fcommanders-narrow-down-mascot-to-four-themes-fans-to-vote-on-options%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://wtop.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwtop.com%2Fwashington-commanders%2F2022%2F08%2Fcommanders-narrow-down-mascot-to-four-themes-fans-to-vote-on-options%2F&#038;format=xml" />
+<script type='text/javascript'>window.webinar_h='%';window.webinar_w='%';</script>        <style>
+            body{
+                padding : 0px !important;
+            }
+            html.wp-toolbar{padding-top: 0px !important;}
+        </style>
+        
+<!-- BEGIN wp-parsely Plugin Version 1.13.0 -->
+<meta name="wp-parsely_version" id="wp-parsely_version" content="1.13.0"/>
+	<script type="application/ld+json">
+	{"@context":"http:\/\/schema.org","@type":"NewsArticle","mainEntityOfPage":{"@type":"WebPage","@id":"http:\/\/wtop.com\/washington-commanders\/2022\/08\/commanders-narrow-down-mascot-to-four-themes-fans-to-vote-on-options\/"},"headline":"Commanders narrow down mascot to four themes; fans to vote on options","url":"http:\/\/wtop.com\/washington-commanders\/2022\/08\/commanders-narrow-down-mascot-to-four-themes-fans-to-vote-on-options\/","thumbnailUrl":"https:\/\/wtop.com\/wp-content\/uploads\/2022\/08\/commanders20mascot-150x150.jpg","image":{"@type":"ImageObject","url":"https:\/\/wtop.com\/wp-content\/uploads\/2022\/08\/commanders20mascot.jpg","width":1920,"height":1080},"dateCreated":"2022-08-15T21:28:00Z","datePublished":"2022-08-15T21:28:00Z","dateModified":"2022-08-15T21:28:00Z","articleSection":"Washington Commanders","author":[{"@type":"Person","name":"NBC Sports Washington"}],"creator":["NBC Sports Washington"],"keywords":["command the mascot","commanders rebranding"],"publisher":{"@type":"Organization","name":"WTOP News","logo":{"@type":"ImageObject","url":"https:\/\/wtop.com\/wp-content\/uploads\/2021\/05\/WtopNewsLogo_500x500.png"}},"speakable":{"@type":"SpeakableSpecification","cssSelector":[".schema-title",".schema-summary"]}}
+	</script>
+
+	<!-- END wp-parsely Plugin Version 1.13.0 -->
+        <!--ZOOMINFO HEADER SCRIPT-->
+        <script>
+            (function () {
+                var zi = document.createElement('script');
+                zi.type = 'text/javascript';
+                zi.async = true;
+                zi.referrerPolicy = 'unsafe-url';
+                zi.src = 'https://ws.zoominfo.com/pixel/6245e68be2bbe6001aaa141b';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(zi, s);
+            })();</script>
+        <!--ZOOMINFO HEADER SCRIPT END-->
+                    <meta property="source" content="nbc-sports-washington" />
+            <meta property="partner" content="true" />
+            <link rel="amphtml" href="https://wtop.com/washington-commanders/2022/08/commanders-narrow-down-mascot-to-four-themes-fans-to-vote-on-options/amp/"><link rel="alternate" type="application/rss+xml" title="WTOP News &raquo; Feed" href="https://wtop.com/feed/" />
+        <link rel="apple-touch-icon" sizes="57x57" href="https://wtop.com/wp-content/themes/wtop-new/assets/img/favicons/apple-touch-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="https://wtop.com/wp-content/themes/wtop-new/assets/img/favicons/apple-touch-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="https://wtop.com/wp-content/themes/wtop-new/assets/img/favicons/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="https://wtop.com/wp-content/themes/wtop-new/assets/img/favicons/apple-touch-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="https://wtop.com/wp-content/themes/wtop-new/assets/img/favicons/apple-touch-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="https://wtop.com/wp-content/themes/wtop-new/assets/img/favicons/apple-touch-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="https://wtop.com/wp-content/themes/wtop-new/assets/img/favicons/apple-touch-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="https://wtop.com/wp-content/themes/wtop-new/assets/img/favicons/apple-touch-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="https://wtop.com/wp-content/themes/wtop-new/assets/img/favicons/apple-touch-icon-180x180.png">
+        <link rel="icon" type="image/png" href="https://wtop.com/wp-content/themes/wtop-new/assets/img/favicons/favicon-192x192.png" sizes="192x192">
+        <link rel="icon" type="image/png" href="https://wtop.com/wp-content/themes/wtop-new/assets/img/favicons/favicon-160x160.png" sizes="160x160">
+        <link rel="icon" type="image/png" href="https://wtop.com/wp-content/themes/wtop-new/assets/img/favicons/favicon-96x96.png" sizes="96x96">
+        <link rel="icon" type="image/png" href="https://wtop.com/wp-content/themes/wtop-new/assets/img/favicons/favicon-16x16.png" sizes="16x16">
+        <link rel="icon" type="image/png" href="https://wtop.com/wp-content/themes/wtop-new/assets/img/favicons/favicon-32x32.png" sizes="32x32">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-TileImage" content="https://wtop.com/wp-content/themes/wtop-new/assets/img/favicons/mstile-144x144.png">
+        <meta name="msapplication-config" content="https://wtop.com/wp-content/themes/wtop-new/assets/img/favicons/browserconfig.xml">
+                <!-- Start SmartBanner configuration -->
+        <meta name="smartbanner:title" content="WTOP News">
+        <meta name="smartbanner:author" content="News Traffic Weather">
+        <meta name="smartbanner:price" content="FREE">
+        <meta name="smartbanner:price-suffix-google" content=" - In Google Play">
+        <meta name="smartbanner:icon-google" content="https://wtop.com/wp-content/themes/wtop-new/assets/img/app/Google-Play-Icon.png">
+        <meta name="smartbanner:button" content="VIEW">
+        <meta name="smartbanner:button-url-google" content="https://play.google.com/store/apps/details?id=com.audionowdigital.player.wtopradio">
+        <meta name="smartbanner:enabled-platforms" content="android">
+        <!-- End SmartBanner configuration -->
+        <link rel="icon" href="https://wtop.com/wp-content/uploads/2021/05/WtopNewsLogo_500x500-150x150.png" sizes="32x32" />
+<link rel="icon" href="https://wtop.com/wp-content/uploads/2021/05/WtopNewsLogo_500x500-240x240.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://wtop.com/wp-content/uploads/2021/05/WtopNewsLogo_500x500-240x240.png" />
+<meta name="msapplication-TileImage" content="https://wtop.com/wp-content/uploads/2021/05/WtopNewsLogo_500x500-300x300.png" />
+		<style type="text/css" id="wp-custom-css">
+			.instagram-media{margin:0 auto !important;}
+		</style>
+		</head>
+    <script>adthrive.cmd.push(function() {  });</script><body class="post-template-default single single-post postid-23922035 single-format-standard ">
+<!-- /18190176/Hubbard_Interstitial -->
+<div id='div-gpt-ad-1605720620965-0'>
+  <script>
+    window.adthrive.cmd.push(function() {googletag.cmd.push(function() { googletag.display('div-gpt-ad-1605720620965-0'); });});
+  </script>
+</div>
+
+<header data-class="header" class="header header--has-primary-ad">
+    <div class="container">
+        <div class="header__mobile">
+            <div>
+
+            </div>
+            <div class="logo-container">
+                <a href="https://wtop.com/">
+                    <img class="logo" src="https://wtop.com/wp-content/themes/wtop-new/images/wtop-news-logo-horizontal.png" alt="WTOP News" width="406" height="91" loading="lazy">
+                </a>
+            </div>
+        </div>
+        <div class="container__inner">
+            <div class="header__wrapper">
+                <div class="header__outer">
+                    <div class="header__inner">
+                        <button class="nav__toggle" data-class="nav__toggle" type="button">
+                            <span class="accessible-text">Click to toggle navigation menu.</span>
+                            <span class="menuBar__container">
+                                        <span class="menuBar"></span>
+                                        <span class="menuBar"></span>
+                                        <span class="menuBar"></span>
+                                    </span>
+                        </button>
+                        <nav class="hamburgerNav__container" data-class="nav">
+                            <ul id="menu-hamburger-menu-v2" class="header_nav--hamburger"><li id="menu-item-19764403" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="/headlines/">Headlines</a></li>
+<li id="menu-item-20927955" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/lifestyle/health-fitness/coronavirus/">Coronavirus Updates</a></li>
+<li id="menu-item-19764404" class=" menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children" ><a href="/local/">Local News</a><button class="mobileToggle"><span class="accessible-text">Click to expand menu.</span><i class="fas fa-chevron-right"></i></button>
+<ul class="sub-menu">
+<li id="menu-item-19764405" class=" menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children" ><a href="/local/virginia/">Virginia</a><button class="mobileToggle"><span class="accessible-text">Click to expand menu.</span><i class="fas fa-chevron-right"></i></button>
+	<ul class="sub-menu">
+<li id="menu-item-19918798" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/local/virginia/alexandria/">Alexandria</a></li>
+<li id="menu-item-19918802" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/local/virginia/arlington/">Arlington</a></li>
+<li id="menu-item-19918806" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/local/virginia/fairfax-county/">Fairfax County</a></li>
+<li id="menu-item-19918793" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/local/virginia/loudoun-county/">Loudoun County</a></li>
+<li id="menu-item-19918804" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/local/virginia/prince-william-county/">Prince William County</a></li>
+<li id="menu-item-19918808" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/local/virginia/stafford-county/">Stafford County</a></li>
+	</ul>
+</li>
+<li id="menu-item-19764407" class=" menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children" ><a href="/local/maryland/">Maryland</a><button class="mobileToggle"><span class="accessible-text">Click to expand menu.</span><i class="fas fa-chevron-right"></i></button>
+	<ul class="sub-menu">
+<li id="menu-item-19918811" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/local/maryland/anne-arundel-county/">Anne Arundel County</a></li>
+<li id="menu-item-19918812" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/local/maryland/baltimore/">Baltimore</a></li>
+<li id="menu-item-19918815" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/local/maryland/calvert-county/">Calvert County</a></li>
+<li id="menu-item-19918818" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/local/maryland/charles-county/">Charles County</a></li>
+<li id="menu-item-19918820" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/local/maryland/frederick-county/">Frederick County</a></li>
+<li id="menu-item-19918822" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/local/maryland/howard-county/">Howard County</a></li>
+<li id="menu-item-19918825" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/local/maryland/montgomery-county/">Montgomery County</a></li>
+<li id="menu-item-19918829" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/local/maryland/prince-georges-county/">Prince George's County</a></li>
+	</ul>
+</li>
+<li id="menu-item-19764409" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="/local/dc/">DC</a></li>
+<li id="menu-item-20247102" class=" menu-item menu-item-type-taxonomy menu-item-object-category" ><a href="https://wtop.com/local/crime/">Crime News</a></li>
+<li id="menu-item-19764410" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="/weather-news/">Weather News</a></li>
+<li id="menu-item-19764412" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="/dc-transit/">Transportation News</a></li>
+</ul>
+</li>
+<li id="menu-item-19764414" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="/national/">National</a></li>
+<li id="menu-item-19764415" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="/world/">World</a></li>
+<li id="menu-item-19764416" class=" menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children" ><a href="/business-finance/">Business & Finance</a><button class="mobileToggle"><span class="accessible-text">Click to expand menu.</span><i class="fas fa-chevron-right"></i></button>
+<ul class="sub-menu">
+<li id="menu-item-19918860" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/business-finance/consumer-news/">Consumer</a></li>
+<li id="menu-item-19918862" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/business-finance/real-estate/">Real Estate</a></li>
+<li id="menu-item-19918863" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/business-finance/recalls/">Recalls</a></li>
+</ul>
+</li>
+<li id="menu-item-19764417" class=" menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children" ><a href="/government/">Government</a><button class="mobileToggle"><span class="accessible-text">Click to expand menu.</span><i class="fas fa-chevron-right"></i></button>
+<ul class="sub-menu">
+<li id="menu-item-19764423" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="/government/congress/">Congress</a></li>
+<li id="menu-item-19918834" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/government/supreme-court/">Supreme Court</a></li>
+<li id="menu-item-19918835" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/government/white-house/">White House</a></li>
+<li id="menu-item-20045642" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/government/elections/">Election News</a></li>
+<li id="menu-item-19918840" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://www.podcastone.com/the-week-on-the-hill">The Week on the Hill</a></li>
+</ul>
+</li>
+<li id="menu-item-19764422" class=" menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children" ><a href="/lifestyle/">Lifestyle</a><button class="mobileToggle"><span class="accessible-text">Click to expand menu.</span><i class="fas fa-chevron-right"></i></button>
+<ul class="sub-menu">
+<li id="menu-item-19918907" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/living/animals-pets/">Animals & Pets</a></li>
+<li id="menu-item-19918866" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/living/food-restaurant/">Food & Restaurants</a></li>
+<li id="menu-item-19918867" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/living/health-fitness/">Health & Fitness</a></li>
+<li id="menu-item-19918868" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/living/life-style/">Life & Style</a></li>
+<li id="menu-item-19918879" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/living/parenting/">Parenting</a></li>
+<li id="menu-item-19918891" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/living/travel/">Travel</a></li>
+</ul>
+</li>
+<li id="menu-item-19764425" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="/entertainment/">Entertainment</a></li>
+<li id="menu-item-19764426" class=" menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children" ><a href="/sports/">Sports</a><button class="mobileToggle"><span class="accessible-text">Click to expand menu.</span><i class="fas fa-chevron-right"></i></button>
+<ul class="sub-menu">
+<li id="menu-item-19918914" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/sports/local-sports/baltimore-orioles/">Baltimore Orioles</a></li>
+<li id="menu-item-19918915" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/sports/local-sports/baltimore-ravens/">Baltimore Ravens</a></li>
+<li id="menu-item-19918916" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/sports/local-sports/dc-united/">DC United</a></li>
+<li id="menu-item-19918920" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/sports/local-sports/washington-capitals/">Washington Capitals</a></li>
+<li id="menu-item-19918943" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/sports/local-sports/washington-mystics/">Washington Mystics</a></li>
+<li id="menu-item-19918945" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/sports/local-sports/washington-nationals/">Washington Nationals</a></li>
+<li id="menu-item-19918946" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/sports/local-sports/washington-commanders/">Washington Commanders</a></li>
+<li id="menu-item-19918948" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/sports/local-sports/washington-wizards/">Washington Wizards</a></li>
+</ul>
+</li>
+<li id="menu-item-19923037" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/gallery/?gallery-type=slideshow">Photo Galleries</a></li>
+<li id="menu-item-21139783" class=" menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/noticias/">WTOP Noticias</a></li>
+<li id="menu-item-19764428" class="highlight-menu-item menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://federalnewsnetwork.com/">Federal News Network</a></li>
+<li id="menu-item-19910565" class="highlight-menu-item menu-item menu-item-type-custom menu-item-object-custom" ><a href="http://games.wtop.com/">Fun & Games</a></li>
+<li id="menu-item-19913837" class="highlight-menu-item menu-item menu-item-type-custom menu-item-object-custom" ><a href="https://wtop.com/insights/">WTOP Insights</a></li>
+</ul>                        </nav>
+                        <button class="nav__close--overlay" data-class="nav__toggle" type="button">
+                            <span class="accessible-text">Click to collapse navigation menu.</span>
+                        </button>
+                    </div>
+                    <nav class="primaryNav__container" align="center" data-class="nav">
+                        <ul id="menu-main-top-v2" class="header_nav--primary"><li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19811294"><a href="https://wtop.com/headlines" class="Nav-link">News</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-19811295"><a href="https://wtop.com/traffic/" class="Nav-link">Traffic</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-19811296"><a href="https://wtop.com/weather/" class="Nav-link">Weather</a></li>
+<li class="listen-live-menu menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-19811299"><a href="https://live.wtop.com/listen/" class="Nav-link">Listen</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19907963"><a href="https://live.wtop.com/listen/" class="Nav-link">Listen Live</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-19811304"><a href="https://wtop.com/podcasts/" class="Nav-link">Podcasts</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19811306"><a href="https://wtop.com/wtop-live-audio-events/" class="Nav-link">Live Events</a></li>
+</ul>
+</li>
+</ul>                    </nav>
+                    <section class="header__account left">
+                        <div class="header__account--details">
+                            <div class="header__account--detail header__account--login wtop_live_login">
+                                <div class="welcome">
+                                                                            <a href="#" id="wtop_live_login"><span class="header__account--detail-login"><i class="fas fa-user"></i> <span class="header__account--detail-login-text">Login</span></span></a>
+                                                                    </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div class="logo-container">
+                <a href="https://wtop.com/">
+                    <img class="logo" src="https://wtop.com/wp-content/themes/wtop-new/images/wtop-news-logo-horizontal.png"
+                         alt="WTOP News" loading="lazy">
+                </a>
+            </div>
+             
+            <div id="listen-live-container">
+    <!-- <a href="https://live.wtop.com/?autoplay=1" target="_blank"><!--
+    --><div class="play-button listen-live-element">
+            <a href="https://live.wtop.com/?autoplay=1" target="_blank"><img src="/wp-content/themes/wtop-new/assets/img/play_button_homepage.png" loading="lazy" /><a/>
+        </div><!--
+        <div class="onair-feed listen-live-element"><span class="onair-label">ON AIR:&nbsp;</span><span class="onair-data" id="onair-data-container">News</span></div>
+    --><div class="onair-feed listen-live-element"><nav class="primaryNav__container" align="center" data-class="nav"><ul id="menu-listen" class="header_nav--primary"><li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-13659806"><a href="https://live.wtop.com/listen/" class="Nav-link">Listen</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-20760075"><a href="https://live.wtop.com/listen/" class="Nav-link">Listen Live</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-23438675"><a href="https://wtop.com/shows/" class="Nav-link">Podcasts</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-20760085"><a href="https://wtop.com/wtop-live-audio-events/" class="Nav-link">Live Events</a></li>
+</ul>
+</li>
+</ul></nav></div><!--
+    --><div class="vu-meter-container listen-live-element"><a href="https://live.wtop.com/?autoplay=1" target="_blank"><div class="vu-meter"><b></b><b></b><b></b><b></b><b></b></div></a></div><!--
+    --><!-- </a><!-- -->
+</div>
+            <section class="header__account right">
+                <div class="header__account--details">
+                    <div class="header__account--detail">
+                        <a href="https://wtop.com/weather/" class="header__account--detail-link">
+                            <span class="header__account--detail-location" id="header-weather-city"></span>
+                            <span class="header__account--detail-weather">
+                                <span class="header__account--detail-weather-temp" id="header-weather-current-temp"></span>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="header__account--detail header__account--detail-search">
+                        <div class="search" data-class="search">
+                            <button class="search__icon" data-class="search-toggle">
+                                <span class="accessible-text">Click to search.</span>
+                            </button>
+                            <form role="search" method="get" class="search-form" id="wtop-new-search"
+                                  action="https://wtop.com/search/">
+                                <label for="st-search-input" class="accessible-text">site search query</label>
+                                <input type="search" id="st-search-input" class="search-field st-default-search-input"
+                                       data-class="search-input" placeholder="Search..."
+                                       value="" name="s" autocomplete="off" />
+                            </form>
+                        </div>
+                    </div>
+                    <div id="header-search-results"></div>
+                    <div id="ajax-search-nonce" style="display:none">e7209e63a5</div>
+                </div>
+            </section>
+        </div>
+    </div>
+</header>
+    <style type="text/css">
+
+</style>
+<div class="trending-submenu trending-submenu-hide">
+    <span class="trending-submenu_main"><a href="https://wtop.com/world/russia-ukraine-war-news/">WAR IN UKRAINE</a>:</span>
+                    <span class="trending-submenu_subhead"><a href="https://wtop.com/russia-ukraine-war-news/2022/08/2-injured-in-fire-at-ammunition-storage-site-on-crimea/">Explosions refocus war on Crimea</a></span>
+                 |     
+                    <span class="trending-submenu_subhead"><a href="https://wtop.com/russia-ukraine-war-news/2022/08/putin-blasts-us-hegemony-predicts-end-to-unipolar-world/">Putin blasts US 'hegemony'</a></span>
+                 |     
+                    <span class="trending-submenu_subhead"><a href="https://wtop.com/russia-ukraine-war-news/2022/08/ukraines-black-sea-deal-also-helps-russian-farmers-economy/">Ukraine's Black Sea deal also helps Russian farmers, economy</a></span>
+                 |     
+                    <span class="trending-submenu_subhead"><a href="https://wtop.com/russia-ukraine-war-news/2022/08/russian-shells-slam-into-eastern-ukraine-killing-3-people/">Ukrainian military says it repelled more than dozen attacks</a></span>
+                    
+    </div>
+    <div id="site-alerts" style="display:none"></div>
+<template id="site-alerts-template">
+    <section class="alert" data-class="alert">
+        <div class="container">
+            <p>{{headline}}</p>
+            <button class="alert__close">
+                <span class="accessible-text">Close alert.</span>
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </section>
+</template>
+<main class="page__single container">
+
+<div class="page__container">
+    <section class="page__main" >
+  <section class="page__single--header">
+    <div class="breadcrumbs breadcrumbs-header" data-swiftype-index="false"> <span><span><a href="https://wtop.com" >Home</a> &raquo; <span ><span><a href="https://wtop.com/sports/local-sports/washington-commanders/" ><strong>Washington Commanders</strong></a> &raquo; <span ><span><span class="breadcrumb_last" >Commanders narrow down mascot&hellip;</span></span></span></span></span></span></span> </div><div class='wtop-article-age ribbon' id='wtop-article-age-identifier' data-display='1' data-postdate='2022-08-15'></div>      <h1 class="page__single--title schema-title">Commanders narrow down mascot to four themes; fans to vote on options</h1>
+    
+    
+      <div class="Entry-info">
+                    <div class="page__single--header-inner">
+              <div class="post__info">
+                  <div class="post__info--inner">
+                      <p class="post__author">
+                          <a href='https://wtop.com/author/nbc-sports-washington/'>Tyler Byrum</a>                                                                          </p>
+                                                <p class="article-post__date">August 15, 2022, 5:28 PM</p>
+                                        </div>
+              </div>
+          </div>
+      </div>
+
+
+  </section> 
+
+      <div class="share-bar">
+        <div class="share-bar__inner">
+          <ul class="share-bar__list">
+            <li class="share-bar__title">
+              Share This:
+            </li>
+            <li>
+              <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwtop.com%2Fwashington-commanders%2F2022%2F08%2Fcommanders-narrow-down-mascot-to-four-themes-fans-to-vote-on-options%2F" target="_blank" rel="noreferrer nooppener">
+                <span class="accessible-text">share on facebook</span>
+                <i class="fab fa-facebook-square"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://twitter.com/intent/tweet?text=Using+the+%27Command+the+mascot%27+initiative%2C+the+Washington+Commanders+are+allowing+the+fans+to+pick+the+%27theme%27+of+the+team%27s+new+mascot. https%3A%2F%2Fwtop.com%2Fwashington-commanders%2F2022%2F08%2Fcommanders-narrow-down-mascot-to-four-themes-fans-to-vote-on-options%2F" target="_blank" rel="noreferrer nooppener">
+                <span class="accessible-text">share on twitter</span>
+                <i class="fab fa-twitter" aria-hidden="true"></i>
+              </a>
+            </li>
+            <li class="share-bar__separator">
+              <a href="mailto:?subject=Commanders narrow down mascot to four themes; fans to vote on options&body=https%3A%2F%2Fwtop.com%2Fwashington-commanders%2F2022%2F08%2Fcommanders-narrow-down-mascot-to-four-themes-fans-to-vote-on-options%2F" target="_blank" rel="noreferrer nooppener">
+                <span class="accessible-text">share via email</span>
+                <i class="fa fa-paper-plane" aria-hidden="true"></i>
+              </a>
+            </li>
+            <li>
+              <a href="javascript:window.print();" rel="noreferrer nooppener">
+                <span class="accessible-text">print</span>
+                <i class="fa fa-print" aria-hidden="true"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="schema-summary" style="display:none">Using the 'Command the mascot' initiative, the Washington Commanders are allowing the fans to pick the 'theme' of the team's new mascot.</div>
+        <div class="listen-promo">
+            <a href="https://live.wtop.com/" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+              <path fill="#fff" d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 21.75c-5.385 0-9.75-4.365-9.75-9.75S6.615 2.25 12 2.25s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75zm-3-15L18 12l-9 5.25z"></path>
+          </svg>
+          <span class="listen-promo-main-text">
+              Listen now to WTOP News
+          </span>
+          <span class="listen-promo-sub-text">
+              WTOP.com | Alexa | Google Home | WTOP App | 103.5 FM
+          </span>
+            </a>
+
+        </div>
+        <div id="Entry-content"
+             class="entry-content Entry-content "
+             >
+                                    
+            <p><div class='flex-video'><iframe src='https://www.nbcsports.com/vplayer/p/BxmELC/midatlantic_embed/select/media/M5H6yb3DxHe6?form=html&amp;autoPlay=true&amp;ssid=rsn_midatlantic_wtop' width='624' height='351' frameborder='0' allowfullscreen></iframe></div></p>
+<p><em><a href="https://www.nbcsports.com/washington/commanders/commanders-narrow-down-mascot-four-themes-fans-vote-options?cid=Yahoo&amp;partner=ya4nbcs" target="_blank" rel="noopener">Commanders narrow down mascot to four themes; fans to vote on options</a> originally appeared on <a href="https://www.nbcsports.com/washington?cid=MSN" target="_blank" rel="noopener">NBC Sports Washington</a></p>
+<p></em></p>
+<p>Entering the first season known as the <a href="https://www.nbcsports.com/washington/commanders" target="_blank" rel="noopener">Washington Commanders</a>, the franchise is looking to start a new era of football in the nation&#8217;s capital. As a part of that process, the team is planning to bring a mascot into the fold as a part of its identity.&nbsp;</p>
+<p>Using the &#8216;Command the mascot&#8217; initiative, the Commanders are allowing the fans to pick the &#8216;theme&#8217; of the team&#8217;s new mascot. Much like how the new moniker was chosen, it&#8217;s a way for fans to let their voices be heard and be a part of the team&#8217;s future.</p>
+<p>The four categories to vote on are: Dog, Historical Figure, Hog or Superhero.</p>
+<p>Fans can cast their votes on the <a href="https://www.commanders.com/fans/fight-song" target="_blank" rel="noopener">team&#8217;s website</a> where they will be prompted to enter an email address. Fans can vote as many times as they&#8217;d like through Aug. 21.</p>
+<p>&ldquo;We are excited to unveil both our revamped Fight Song and new team mascot during the 2022 season, our inaugural season under a new name and brand identity,&rdquo; team president Jason Wright said in a release earlier this summer. &ldquo;Our first season as the Commanders is all about connecting our past and present and we are excited to work closely with fans to help bring back these traditions under a new banner and combine them with new traditions fans will help to create.&rdquo;</p>
+<p>The highest voted options will then be designed and shared as renderings in-game during the Sept. 25 contest against the Philadelphia Eagles. Fans at the game will get the chance to vote on their favorite design and also vote online up to Sept. 27.</p>
+<p>Already, fans have voted on the <a href="https://www.nbcsports.com/washington/commanders/revamped-fight-our-commanders-fight-song-unveiled-preseason-opener" target="_blank" rel="noopener">new fight song that was unveiled</a> at the team&#8217;s preseason opener. The new mascot will be revealed at the Fan Appreciation home game on New Year&#8217;s Day.</p>
+            
+            
+            <div class="After-content">
+                            </div>
+
+
+
+        </div>
+                    <script id='25112bd21bb348d29940d4d87d226713'>(new Image()).src = 'https://capi.connatix.com/tr/si?token=8b130dac-b91d-43c8-bfb1-8360082023a0&cid=c2ffed0c-3624-46c0-b10f-97c976d290a3';  cnxps.cmd.push(function () {cnxps({ playerId: '8b130dac-b91d-43c8-bfb1-8360082023a0', storyId: 'db1c3c74-e4aa-4ba7-b5fa-c2a0dc5a18fb'}).render('25112bd21bb348d29940d4d87d226713');  });</script>                                      <div class="page__single--more">
+                              <div class="page__single--more-inner">
+                  <h2 class="page__single--more-title">Related News</h2>
+                  
+                                    <article class="post__template--wide "  >
+                            <div class="post__template--wide-img-div">
+                                            <a href="https://wtop.com/washington-commanders/2022/08/jason-wright-believes-commanders-can-still-hit-our-timeline-for-new-stadium/">
+                            <img src="https://wtop.com/wp-content/uploads/2021/05/fedex20field20general-480x320.jpg" width="" height="" srcset="" sizes="(max-width: 768px) 33.3vw, (max-width: 1080px) 15vw, 137px" alt="Jason Wright believes Commanders can still hit &#8216;our timeline&#8217; for new stadium" loading="lazy">
+                        </a>
+                                                        </div>
+                        <div class="post__template--wide-content-div">
+                <h3 class="post__template--wide-title">
+                                        <a href="https://wtop.com/washington-commanders/2022/08/jason-wright-believes-commanders-can-still-hit-our-timeline-for-new-stadium/" class="post__template--wide-title-link">
+                        Jason Wright believes Commanders can still hit &#8216;our timeline&#8217; for new stadium                    </a>
+                                    </h3>
+                            </div>
+        </article>
+                    <article class="post__template--wide "  >
+                            <div class="post__template--wide-img-div">
+                                            <a href="https://wtop.com/washington-commanders/2022/08/camp-observations-8-15-it-sure-looks-like-carson-wentz-is-settling-in/">
+                            <img src="https://wtop.com/wp-content/uploads/2022/08/carsonn-480x320.jpg" width="" height="" srcset="" sizes="(max-width: 768px) 33.3vw, (max-width: 1080px) 15vw, 137px" alt="Camp observations, 8/15: It sure looks like Carson Wentz is settling in" loading="lazy">
+                        </a>
+                                                        </div>
+                        <div class="post__template--wide-content-div">
+                <h3 class="post__template--wide-title">
+                                        <a href="https://wtop.com/washington-commanders/2022/08/camp-observations-8-15-it-sure-looks-like-carson-wentz-is-settling-in/" class="post__template--wide-title-link">
+                        Camp observations, 8/15: It sure looks like Carson Wentz is settling in                    </a>
+                                    </h3>
+                            </div>
+        </article>
+                    <article class="post__template--wide "  >
+                            <div class="post__template--wide-img-div">
+                                            <a href="https://wtop.com/washington-commanders/2022/08/carson-wentz-ron-rivera-pleased-with-qbs-debut-but-plenty-of-room-to-grow/">
+                            <img src="https://wtop.com/wp-content/uploads/2022/08/wentz-c-cosmi-s-usatsi_18864668-480x320.jpg" width="" height="" srcset="" sizes="(max-width: 768px) 33.3vw, (max-width: 1080px) 15vw, 137px" alt="Carson Wentz, Ron Rivera pleased with QB&#8217;s debut, but plenty of room to grow" loading="lazy">
+                        </a>
+                                                        </div>
+                        <div class="post__template--wide-content-div">
+                <h3 class="post__template--wide-title">
+                                        <a href="https://wtop.com/washington-commanders/2022/08/carson-wentz-ron-rivera-pleased-with-qbs-debut-but-plenty-of-room-to-grow/" class="post__template--wide-title-link">
+                        Carson Wentz, Ron Rivera pleased with QB&#8217;s debut, but plenty of room to grow                    </a>
+                                    </h3>
+                            </div>
+        </article>
+    
+              </div>
+                                      <div class="page__single--more-inner">
+                <h2 class="page__single--more-title">Recommended</h2>
+                
+                                  <article class="post__template--wide "  >
+                            <div class="post__template--wide-img-div">
+                                            <a href="https://wtop.com/maryland/2022/08/md-board-of-elections-petitions-court-to-allow-pre-election-day-ballot-canvassing/">
+                            <img src="https://wtop.com/wp-content/uploads/2022/07/hypatia-h_33206cbb7ebe2bae5dd90dc5549d204f-h_baa8229e6f70b23168971e3b0a0a92f1-300-480x320.jpg" width="480" height="320" srcset="" sizes="(max-width: 768px) 33.3vw, (max-width: 1080px) 15vw, 137px" alt="Md. Board of Elections petitions court to allow pre-Election Day ballot canvassing" loading="lazy">
+                        </a>
+                                                        </div>
+                        <div class="post__template--wide-content-div">
+                <h3 class="post__template--wide-title">
+                                        <a href="https://wtop.com/maryland/2022/08/md-board-of-elections-petitions-court-to-allow-pre-election-day-ballot-canvassing/" class="post__template--wide-title-link">
+                        Md. Board of Elections petitions court to allow pre-Election Day ballot canvassing                    </a>
+                                    </h3>
+                            </div>
+        </article>
+                    <article class="post__template--wide "  >
+                            <div class="post__template--wide-img-div">
+                                            <a href="https://wtop.com/education/2022/08/northern-virginia-parents-biggest-back-to-school-concern-for-kids-is-stress/">
+                            <img src="https://wtop.com/wp-content/uploads/2022/07/deskfile-480x320.jpg" width="480" height="320" srcset="" sizes="(max-width: 768px) 33.3vw, (max-width: 1080px) 15vw, 137px" alt="What Northern Virginia parents are most concerned about as kids go back to school" loading="lazy">
+                        </a>
+                                                        </div>
+                        <div class="post__template--wide-content-div">
+                <h3 class="post__template--wide-title">
+                                        <a href="https://wtop.com/education/2022/08/northern-virginia-parents-biggest-back-to-school-concern-for-kids-is-stress/" class="post__template--wide-title-link">
+                        What Northern Virginia parents are most concerned about as kids go back to school                    </a>
+                                    </h3>
+                            </div>
+        </article>
+                    <article class="post__template--wide "  >
+                            <div class="post__template--wide-img-div">
+                                            <a href="https://wtop.com/crime/2022/08/vandals-have-targeted-dc-catholic-school-twice-in-less-than-a-week/">
+                            <img src="https://wtop.com/wp-content/uploads/2022/08/Image-from-iOS-7-2-480x320.jpg" width="480" height="320" srcset="" sizes="(max-width: 768px) 33.3vw, (max-width: 1080px) 15vw, 137px" alt="Vandals have targeted DC Catholic school twice in less than a week" loading="lazy">
+                        </a>
+                                                        </div>
+                        <div class="post__template--wide-content-div">
+                <h3 class="post__template--wide-title">
+                                        <a href="https://wtop.com/crime/2022/08/vandals-have-targeted-dc-catholic-school-twice-in-less-than-a-week/" class="post__template--wide-title-link">
+                        Vandals have targeted DC Catholic school twice in less than a week                    </a>
+                                    </h3>
+                            </div>
+        </article>
+    
+            </div>
+                    </div>
+        <div class="article-signature">
+                        <div class="page__single--categories-tags">
+                                <div>
+                    <h3 class="page__single--tags-title">Related Categories: </h3>
+                                            <a href="https://wtop.com/sports/nfl/"
+                           class="page__single--category">NFL News</a>
+                           |                                            <a href="https://wtop.com/sports/"
+                           class="page__single--category">Sports</a>
+                           |                                            <a href="https://wtop.com/sports/local-sports/washington-commanders/"
+                           class="page__single--category">Washington Commanders</a>
+                           |                                            <a href="https://wtop.com/sports/local-sports/"
+                           class="page__single--category">Washington, DC Sports</a>
+                                                               </div>
+                                 
+                                <div>
+                    <h3 class="page__single--tags-title">Tags: </h3>
+                                            <a href="https://wtop.com/tag/command-the-mascot/"
+                            class="page__single--tag page__single--tag-secondary">command the mascot</a>
+                            |                                            <a href="https://wtop.com/tag/commanders-rebranding/"
+                            class="page__single--tag page__single--tag-secondary">commanders rebranding</a>
+                                                	
+                </div>
+                             </div>
+        <p><em><strong>This article was written by WTOP’s news partner, <a href="https://www.nbcsports.com/washington/" target="_blank" rel="noopener">NBC Sports Washington</a>. Sign up for NBC Sports Washington’s <a href="https://www.nbcsports.com/washington/newsletters" target="_blank" rel="noopener">free email subscription</a> today.</strong></em></p>
+        </div>
+
+
+      
+              <div id="below-single-article"></div>
+
+      
+                    <div class="RevContent">
+        <!-- RevContent -->
+        <div id="rc-widget-beea07" data-rc-widget data-widget-host="habitat" data-endpoint="//trends.revcontent.com" data-widget-id="145002"></div>
+        <script type="text/javascript" src="https://assets.revcontent.com/master/delivery.js" defer="defer"></script>
+        <!-- // RevContent -->
+        </div>
+              <div class="fnn-stories-widget">
+      <!-- FNN Stories Widget -->
+      
+<div style="margin-top: 20px;padding-top:20px;border-top:2px solid #eee;" >
+    <img src="https://wtop.com/wp-content/themes/wtop-new/images/fnn-logo.svg" style="max-width:250px;"></img>
+    <div class="row">
+                    <div class="small-6 large-3 columns" style="margin-bottom: 20px">
+                    <figure class="post__template--media-container">
+                        <a href="https://federalnewsnetwork.com/veterans-affairs/2022/08/va-set-to-grow-its-health-care-workforce-with-new-pay-incentives-after-biden-signs-pact-act/" class="post__template--media-img-link" target="_blank">
+                            <img src="https://federalnewsnetwork.com/wp-content/uploads/2022/08/AP22222554916041-300x200.jpg"></img>
+                        </a> 
+                    </figure>
+                    <h3 style="padding:6px">
+                        <a href="https://federalnewsnetwork.com/veterans-affairs/2022/08/va-set-to-grow-its-health-care-workforce-with-new-pay-incentives-after-biden-signs-pact-act/" class="post__template--media-link" target="_blank">VA set to grow its health care workforce with new pay incentives after Biden signs PACT Act</a>
+                    </h3>
+            </div>
+                    <div class="small-6 large-3 columns" style="margin-bottom: 20px">
+                    <figure class="post__template--media-container">
+                        <a href="https://federalnewsnetwork.com/cybersecurity/2022/08/dhs-marks-expansion-of-bug-bounty-efforts-with-impending-contract-awards/" class="post__template--media-img-link" target="_blank">
+                            <img src="https://federalnewsnetwork.com/wp-content/uploads/2022/08/Copy-of-Untitled-13-300x200.jpg"></img>
+                        </a> 
+                    </figure>
+                    <h3 style="padding:6px">
+                        <a href="https://federalnewsnetwork.com/cybersecurity/2022/08/dhs-marks-expansion-of-bug-bounty-efforts-with-impending-contract-awards/" class="post__template--media-link" target="_blank">DHS marks expansion of bug bounty efforts with impending contract awards</a>
+                    </h3>
+            </div>
+                    <div class="small-6 large-3 columns" style="margin-bottom: 20px">
+                    <figure class="post__template--media-container">
+                        <a href="https://federalnewsnetwork.com/cybersecurity/2022/08/micro-segmentation-three-keys-for-implementation/" class="post__template--media-img-link" target="_blank">
+                            <img src="https://federalnewsnetwork.com/wp-content/uploads/2021/10/GettyImages-1296090038-300x200.jpg"></img>
+                        </a> 
+                    </figure>
+                    <h3 style="padding:6px">
+                        <a href="https://federalnewsnetwork.com/cybersecurity/2022/08/micro-segmentation-three-keys-for-implementation/" class="post__template--media-link" target="_blank">Micro-segmentation: Three keys for implementation</a>
+                    </h3>
+            </div>
+                    <div class="small-6 large-3 columns" style="margin-bottom: 20px">
+                    <figure class="post__template--media-container">
+                        <a href="https://federalnewsnetwork.com/reporters-notebook-jason-miller/2022/08/three-reasons-why-organizational-conflict-of-interest-is-back-in-the-spotlight/" class="post__template--media-img-link" target="_blank">
+                            <img src="https://federalnewsnetwork.com/wp-content/uploads/2020/05/3-2-1-300x200.png"></img>
+                        </a> 
+                    </figure>
+                    <h3 style="padding:6px">
+                        <a href="https://federalnewsnetwork.com/reporters-notebook-jason-miller/2022/08/three-reasons-why-organizational-conflict-of-interest-is-back-in-the-spotlight/" class="post__template--media-link" target="_blank">Three reasons why organizational conflict of interest is back in the spotlight</a>
+                    </h3>
+            </div>
+            </div>
+</div>
+
+      <!-- End of FNN Stories Widget -->
+      </div>
+      <section class="playerEmbed__container" id="distro-scale-below-article-embed">
+    <h2 class="playerEmbed__heading">More from WTOP</h2>
+    <article class="playerEmbed">
+        <div class="playerEmbed__player">
+
+        </div>
+        <div class="playerEmbed__content">
+
+        </div>
+    </article>
+</section>
+    </section>
+        <aside class="page__sidebar page__sidebar--single-article">
+        
+            
+      <style type="text/css">
+.ad.ad__sticky.ad__sticky-distroscale {
+    display: block !important;
+    position: sticky;
+    top: 4em;    
+</style>
+<section class="ad ad__sticky ad__sticky-distroscale">
+    <span class="ad-distroscale"></span>
+</section>
+      
+    </aside>
+      </div>
+</main>
+<footer class="footer" id='wtop-footer'>
+    <div class="container">
+        <div class="footer__outer">
+            <div class="footer__inner">
+                <nav class="footerNav__primary">
+                    <ul id="menu-footer-primary-v2" class="footerNav__primary--list"><li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19907781"><a href="https://wtop.com/about-wtop-news/" class="Nav-link">About Us</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-23092485"><a href="https://wtop.com/wtop-our-news-philosophy/" class="Nav-link">News Philosophy</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-19907782"><a href="https://wtop.com/news-team/" class="Nav-link">News Team</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19907784"><a target="_blank" rel="noopener" href="https://hubbardbroadcasting.com/" class="Nav-link">Careers</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-19907785"><a href="https://wtop.com/advertise/" class="Nav-link">Advertise</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-19907787"><a href="https://wtop.com/contests/" class="Nav-link">Contests</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19907795"><a href="https://wtop.com/contact-us/" class="Nav-link">Contacts</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-19907797"><a href="https://wtop.com/submit-news-tip/" class="Nav-link">News Tips</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19907799"><a href="https://wtop.com/wtop-charity-partners/" class="Nav-link">Charities</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-19907802"><a href="https://wtop.com/wtop-community-events/" class="Nav-link">Events</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-20982396"><a href="https://wtop.com/wtop-press-releases/" class="Nav-link">Press</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-19907807"><a href="https://wtop.com/podcasts/" class="Nav-link">Podcasts</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19907808"><a target="_blank" rel="noopener" href="https://federalnewsnetwork.com/" class="Nav-link">FNN</a></li>
+</ul>                </nav>
+                <nav class="footerNav__util">
+                    <ul id="menu-footer-utility-v2" class="footerNav__util--list"><li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-19907825"><a href="https://wtop.com/feedback/" class="Nav-link">Feedback</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19907826"><a target="_blank" rel="noopener" href="http://corporate.hubbardradio.com/privacy-policy/" class="Nav-link">Privacy Policy</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19907827"><a target="_blank" rel="noopener" href="http://corporate.hubbardradio.com/terms-of-use/" class="Nav-link">Terms of Use</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-19907829"><a href="https://wtop.com/copyright/" class="Nav-link">Copyright</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19907830"><a target="_blank" rel="noopener" href="http://corporate.hubbardradio.com/" class="Nav-link">Hubbard Radio</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19907831"><a target="_blank" rel="noopener" href="http://corporate.hubbardradio.com/dmca-notice/" class="Nav-link">DMCA Notice</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19907833"><a target="_blank" rel="noopener" href="https://wtop.com/wp-content/uploads/2022/05/FCC-EEO-Public-File-Report-Hubbard-Radio-DC-6_1_2022.pdf" class="Nav-link">EEO</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-19907835"><a href="https://wtop.com/wtop-103-5-fm-wwwt-107-7-fm-wtlp-103-9-fm-wwfd-820-am-online-fcc-public-inspection-files/" class="Nav-link">FCC Public Inspection Files</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-21672983"><a href="https://wtop.com/fcc-applications/" class="Nav-link">FCC Applications</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-20591652"><a href="https://corporate.hubbardradio.com/data-request?site=wtopfm" class="Nav-link">Do Not Sell My Info &#8211; CA Resident Only</a></li>
+</ul>                </nav>
+            </div>
+            <div class="socialMedia footer__aside">
+                <h2 class="socialMedia__title"><em>Connect</em> with WTOP</h2>
+                <div class="socialMedia--outer">
+                    <a href="https://www.facebook.com/wtopnews/" target="_blank"
+                       class="socialMedia__link socialMedia__link--facebook">
+                        <span class="accessible-text">Facebook</span>
+                    </a>
+                    <a href="https://twitter.com/WTOP" target="_blank"
+                       class="socialMedia__link socialMedia__link--twitter">
+                        <span class="accessible-text">Twitter</span>
+                    </a>
+                    <a href="https://www.instagram.com/wtopnews/" target="_blank"
+                       class="socialMedia__link socialMedia__link--instagram">
+                        <span class="accessible-text">Instagram</span>
+                    </a>
+                    <a href="mailto:info@wtop.com" class="socialMedia__link socialMedia__link--email">
+                        <span class="accessible-text">Email Us</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer__outer">
+            <div class="footer__inner">
+                <p class="copyright">Need help accessing the FCC Public File due to a disability? Please contact <a href="mailto:publicfiledc@hubbardradio.com" style="color:#fff !important;">Susan Rushkowski</a> at <a href="mailto:publicfiledc@hubbardradio.com" style="color:#fff !important;">publicfiledc@hubbardradio.com</a> or (202) 895-5027.</p>
+                <p class="copyright">Copyright &copy; 2022 by WTOP. All rights reserved. This
+                    website is not intended for users located within the European Economic Area.</p>
+                <p>
+                    <button class="accessible-style-toggle" data-class="styleToggle" aria-label="change contrast to accessible">High Contrast</button>
+                </p>
+            </div>
+            <div class="footer__aside">
+                                <div class="footer__subscribe" data-class="subscribe">
+                    <form class="footer__subscribe--form sailthru-form-content visible" name="emailsignupform_footer" id="sailthru-form-content-footer"  data-class="subscribe-form" action="https://wtop.com/newsletters-signup/" method="post">
+                        <div class="footer__subscribe--stepOne" data-class="subscribe-step-one">
+                            <h2 class="footer__subscribe--title">Sign up for or manage your WTOP email subscriptions</h2>
+                            <div class="footer__subscribe--email-container">
+                                <label for="footer-email" class="accessible-text">Email</label>
+                                <div class="footer__subscribe--input-container">
+                                    <input type="email" class="footer__subscribe--input" name="email"  required id="footer-email"
+                                           placeholder="Enter Email">
+                                </div>
+                                <div class="footer__subscribe--submit-container">
+                                    <button class="footer__subscribe--submit" data-class="subscribe-advance-step-one">
+                                        Go
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="subscribe__stepTwo" id="confirmation-message-sailthru-form-content-footer" aria-live="polite"><div class="image"><img src="https://wtop.com/wp-content/themes/wtop-new/assets/img/loading.gif" loading="lazy" /> </div></div>
+                         
+                    
+                    
+                </div>
+            </div>
+        </div>
+        <div class="MobileStaticAd u-mobileFill">
+                </div>
+        <div class="dfp_mobile_adhesion_spacer"></div>
+    </div>
+</footer>
+
+
+<!-- START Parse.ly Include: Standard -->
+	<script data-cfasync="false">
+
+		function uuidProfileCall() {
+			var rootUrl = 'https://api.parsely.com/v2/profile?apikey=wtop.com';
+			var uuid = '&uuid=' + PARSELY.config.parsely_site_uuid;
+			var requestUrl = rootUrl + uuid + '&url=' + window.location.href;
+			jQuery.ajax({
+				url: requestUrl,
+				dataType: "jsonp"
+			});
+		}
+
+		if (typeof PARSELY == 'object') {
+			var oldonload = PARSELY.onload;
+			if (typeof PARSELY.onload != 'function') {
+				PARSELY.onload = uuidProfileCall
+			}
+			else {
+				PARSELY.onload = function () {
+					if (oldonload) {
+						oldonload();
+					}
+					uuidProfileCall();
+				};
+			}
+		}
+
+		else {
+			PARSELY = {
+				onload: uuidProfileCall
+			}
+		}
+	</script>
+
+<div id="parsely-root" style="display: none">
+	<div id="parsely-cfg" data-parsely-site="wtop.com"></div>
+</div>
+<script data-cfasync="false">
+	(function (s, p, d) {
+		var h = d.location.protocol, i = p + "-" + s,
+			e = d.getElementById(i), r = d.getElementById(p + "-root"),
+			u = h === "https:" ? "d1z2jf7jlzjs58.cloudfront.net"
+				: "static." + p + ".com";
+		if (e) return;
+		e = d.createElement(s);
+		e.id = i;
+		e.async = true;
+		e.setAttribute('data-cfasync', 'false');
+		e.src = h + "//" + u + "/p.js";
+		r.appendChild(e);
+	})("script", "parsely", document);
+</script>
+
+<!-- END Parse.ly Include: Standard -->
+        <!--ZOOMINFO FOOTER HTML-->
+        <noscript><img src="https://ws.zoominfo.com/pixel/6245e68be2bbe6001aaa141b"
+            width="1" height="1" style="display: none;" />
+        </noscript>
+        <!--ZOOMINFO FOOTER HTML ENDS-->
+        <script type='text/javascript' id='sailthru-newsletter-signup-js-js-extra'>
+/* <![CDATA[ */
+var sailthru_newsletter_data = {"ajaxurl":"https:\/\/wtop.com\/wp-admin\/admin-ajax.php","signup_error":"There seems to be an issue with the system, please try again later.","user_confirmation_message":"You have already signed up for newsletters, please check your email for a link to manage your account settings."};
+var sailthru_newsletter_plugin_data = {"user_confirmation_message":"You have already signed up for newsletters, please check your email for a link to manage your account settings.","form_action":"https:\/\/wtop.com\/newsletters-signup\/","themepath":"https:\/\/wtop.com\/wp-content\/themes\/wtop-new","ispost":"1","popup_setting":{"layout":null,"ispopup":null,"days":0}};
+var ajax_object = {"ajaxurl":"https:\/\/wtop.com\/wp-admin\/admin-ajax.php"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://wtop.com/wp-content/plugins/sailthru-newsletters-custom/assets/js/sailthru-newsletter-signup.min.js?ver=1659801590' id='sailthru-newsletter-signup-js-js'></script>
+<script type='text/javascript' id='google-invisible-recaptcha-js-before'>
+var renderInvisibleReCaptcha = function() {
+
+    for (var i = 0; i < document.forms.length; ++i) {
+        var form = document.forms[i];
+        var holder = form.querySelector('.inv-recaptcha-holder');
+
+        if (null === holder) continue;
+		holder.innerHTML = '';
+
+         (function(frm){
+			var cf7SubmitElm = frm.querySelector('.wpcf7-submit');
+            var holderId = grecaptcha.render(holder,{
+                'sitekey': '6LcbxrMUAAAAAAeoG7YSHf3BcMLOUgTw90RkVS--', 'size': 'invisible', 'badge' : 'bottomright',
+                'callback' : function (recaptchaToken) {
+					if((null !== cf7SubmitElm) && (typeof jQuery != 'undefined')){jQuery(frm).submit();grecaptcha.reset(holderId);return;}
+					 HTMLFormElement.prototype.submit.call(frm);
+                },
+                'expired-callback' : function(){grecaptcha.reset(holderId);}
+            });
+
+			if(null !== cf7SubmitElm && (typeof jQuery != 'undefined') ){
+				jQuery(cf7SubmitElm).off('click').on('click', function(clickEvt){
+					clickEvt.preventDefault();
+					grecaptcha.execute(holderId);
+				});
+			}
+			else
+			{
+				frm.onsubmit = function (evt){evt.preventDefault();grecaptcha.execute(holderId);};
+			}
+
+
+        })(form);
+    }
+};
+</script>
+<script type='text/javascript' async defer src='https://www.google.com/recaptcha/api.js?onload=renderInvisibleReCaptcha&#038;render=explicit' id='google-invisible-recaptcha-js'></script>
+<script type='text/javascript' id='wtop-scripts-js-extra'>
+/* <![CDATA[ */
+var localized = {"ajaxurl":"https:\/\/wtop.com\/wp-admin\/admin-ajax.php","siteurl":"https:\/\/wtop.com"};
+var wtop_live_data = {"cookie_domain":"wtop.com"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://wtop.com/wp-content/themes/wtop-new/js/scripts.min.js?ver=1659801591' id='wtop-scripts-js'></script>
+<script type='text/javascript' src='https://wtop.com/wp-content/themes/wtop-new/js/video-tracking-jwplayer.js' id='jwplayer-parsely-js'></script>
+<script type='text/javascript' src='https://wtop.com/wp-content/themes/wtop-new/js/video-tracking-youtube.js' id='youtube-parsely-js'></script>
+<script type='text/javascript' src='https://wtop.com/wp-includes/js/wp-embed.min.js?ver=5.8.1' id='wp-embed-js'></script>
+<script type='text/javascript' id='SailThru-js-extra'>
+/* <![CDATA[ */
+var Sailthru_config = {"domain":"horizon.wtop.com"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://wtop.com/wp-content/plugins/sailthru-custom/assets/js/sailthru.js?ver=220806-155950' id='SailThru-js'></script>
+<script type='text/javascript' id='Sailthru_Newsletters_Custom-js-extra'>
+/* <![CDATA[ */
+var Sailthru_config = {"domain":"horizon.wtop.com"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://wtop.com/wp-content/plugins/sailthru-newsletters-custom/assets/js/sailthru.js?ver=0.1' id='Sailthru_Newsletters_Custom-js'></script>
+		<!-- ComScore -->
+		<script defer >
+		    var _comscore = _comscore || [];
+		    _comscore.push({ c1: "2", c2: "16067480" });
+                    function downloadComScoreAtOnload() {
+                        var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;
+                        s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
+                        el.parentNode.insertBefore(s, el);
+                    }
+                    if (window.addEventListener)
+                        window.addEventListener("load", downloadComScoreAtOnload, false);
+                    else if (window.attachEvent)
+                        window.attachEvent("onload", downloadComScoreAtOnload);
+                    else window.onload = downloadComScoreAtOnload; 
+		</script>
+		<noscript>
+		  <img src="//b.scorecardresearch.com/p?c1=2&c2=16067480&cv=2.0&cj=1" />
+		</noscript>
+		<!-- /ComScore -->
+				<!-- Parsely Conversions -->
+		<script type="text/javascript" defer >
+                    /** Parse.ly Conversions Standard (v0.1.1) Start **/
+                    (function () {
+                        'use strict';
+
+                        var conversionConfigs = {
+                            "customer": {
+                                "apikey": "wtop.com"
+                            },
+                            "conversions": [
+                                {
+                                    "type":
+                                        "Newsletter Signup",
+                                    "selector": "form#sailthru-form-content-homepage",
+                                    "event":
+                                        "submit",
+                                },
+                                {
+                                    "type":
+                                        "Subscription",
+                                    "selector": "form#sailthru-form-content-widget",
+                                    "event":
+                                        "submit",
+                                },
+                            ]
+                        };
+
+                        var conversionEventQueue = [];
+                        var conversionMethodsAvailable = function () {
+                            if (!window.PARSELY.loaded) {
+                                return false;
+                            } else if (!Object.prototype.hasOwnProperty.call(window.PARSELY, "conversions")) {
+                                return false;
+                            } else {
+                                return true;
+                            }
+                        };
+                        var captureParselyConversion = function (methodName) {
+                            if (conversionMethodsAvailable()) {
+                                window.PARSELY.conversions[methodName]();
+                            } else {
+                                conversionEventQueue.push(methodName);
+                            }
+                        };
+                        var initQueueHandler = function (q) {
+                            var existingOnload = window.PARSELY.onload;
+                            var flushQueue = function (q) {
+                                for (var i = 0; i < q.length; i++) {
+                                    window.PARSELY.conversions[q[i]]();
+                                }
+                            };
+                            if (existingOnload === undefined) {
+                                window.PARSELY._onload = function() { flushQueue(q); };
+                                Object.defineProperty(window.PARSELY, "onload", {
+                                    get: function() { return this._onload },
+                                    set: function(x) {
+                                        var existing = this._onload;
+                                        this._onload = function() {
+                                            existing();
+                                            x();
+                                        };
+                                        return this._onload;
+                                    }
+                                });
+                            } else {
+                                window.PARSELY.onload = function () {
+                                    existingOnload();
+                                    flushQueue(q);
+                                };
+                            }
+                        };
+                        var conversionFnMap = {
+                            "Lead Capture": function () { captureParselyConversion("trackLeadCapture"); },
+                            "Subscription": function () { captureParselyConversion("trackSubscription"); },
+                            "Newsletter Signup": function () { captureParselyConversion("trackNewsletterSignup"); }
+                        };
+                        var currentUrlIsAllowed = function (conversion) {
+                            if (Object.prototype.hasOwnProperty.call(conversion, "allowedUrls")) {
+                                var loc = window.location;
+                                for (var i = 0; i < conversion.allowedUrls.length; i++) {
+                                    if (locMatchesUrl(loc, conversion.allowedUrls[i])) {
+                                        return true;
+                                    }
+                                }
+                                return false;
+                            }
+                            return true;
+                        };
+                        var locMatchesUrl = function (loc, urlToCheck)  {
+                            var locUrl = loc.host + loc.pathname + loc.search;
+                            var urlToCheckSplit = urlToCheck.split('//');
+                            var urlToCheckPathName = urlToCheckSplit[urlToCheckSplit.length - 1];
+                            if (locUrl.indexOf(urlToCheckPathName) !== -1) {
+                                return true;
+                            }
+                        };
+
+                        var retryInterval = 100;
+                        var maxRetries = 100;
+                        var initParselyConversions = function (configs) {
+                            var results = [];
+                            if (!conversionMethodsAvailable()) {
+                                initQueueHandler(conversionEventQueue);
+                            }
+                            for (var i = 0; i < configs.conversions.length; i++) {
+                                results.push(processConversionConfig(configs.conversions[i]));
+                            }
+                            return results;
+                        };
+                        var processConversionConfig = function (conversion) {
+                            if (!currentUrlIsAllowed(conversion)) {
+                                return;
+                            }
+                            if (conversion.event === "piano") {
+                                return addPianoListeners(conversion);
+                            } else if (conversion.event === "load") {
+                                conversionFnMap[conversion.type]();
+                                return ["onload"];
+                            } else {
+                                return addStandardListeners(conversion);
+                            }
+                        };
+                        var addStandardListeners = function (conversion) {
+                            var callback = conversionFnMap[conversion.type];
+                            var elements = document.querySelectorAll(conversion.selector);
+                            if (elements.length === 0 && conversion.poll === true) {
+                                setTimeout(addStandardListeners, retryInterval, conversion);
+                            }
+                            for (var j = 0; j < elements.length; j++) {
+                                elements[j].addEventListener(conversion.event, function(){callback();});
+                            }
+                            return elements
+                        };
+                        var addPianoListeners = function (conversion) {
+                            var callback = conversionFnMap[conversion.type];
+                            if (window.tp === undefined) {
+                                setTimeout(addPianoListeners, retryInterval, conversion);
+                            }
+                            else {
+                                window.tp.push(["addHandler", conversion.selector || "checkoutComplete", function(){
+                                    callback();
+                                }]);
+                                return conversion.type;
+                            }
+                        };
+
+                        function main () {
+                            var retries = 0;
+                            var parselyInterval = setInterval(function(){
+                                retries++;
+                                if (window.PARSELY) {
+                                    clearInterval(parselyInterval);
+                                    return initParselyConversions(conversionConfigs);
+                                } else if (retries >= maxRetries) {
+                                    console.warn("Parse.ly Conversions Standard snippet couldn't load because the Parse.ly tracker never loaded.");
+                                    clearInterval(parselyInterval);
+                                }
+                            }, retryInterval);
+                        }
+
+                        return main();
+
+                    }());
+
+                    /** Parse.ly Conversions Standard End **/
+		</script>
+		<!-- /Parsely Conversions -->
+				<!-- Quantcast -->
+		<script type="text/javascript" defer >
+                    var _qevents = _qevents || [];
+
+                    function downloadQuantcastAtOnload() {
+                        var elem = document.createElement('script');
+                        elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";
+                        elem.async = true;
+                        elem.type = "text/javascript";
+                        var scpt = document.getElementsByTagName('script')[0];
+                        scpt.parentNode.insertBefore(elem, scpt);
+                    }
+
+                    _qevents.push({
+                            qacct:"p-sgZGQjSAzUNrD"
+                    });
+                    if (window.addEventListener)
+                        window.addEventListener("load", downloadQuantcastAtOnload, false);
+                    else if (window.attachEvent)
+                        window.attachEvent("onload", downloadQuantcastAtOnload);
+                    else window.onload = downloadQuantcastAtOnload; 
+		</script>
+		<noscript>
+			<div style="display:none;">
+				<img src="//pixel.quantserve.com/pixel/p-sgZGQjSAzUNrD.gif" border="0" height="1" width="1" alt="Quantcast"/>
+			</div>
+		</noscript>
+		<!-- /Quantcast -->
+		<div id="modalWtopLiveLogin">	
+    <div class="form">				
+        <div class="error-message text-left"></div>
+        <div>
+            Log in to your WTOP account for notifications and alerts customized for you.
+        </div>
+        <form>
+            <div class="group_field email_input_group">
+                <i class="fas fa-at"></i>
+                <input type="email" name="email" placeholder="Email" autocomplete="off">                                    
+            </div>
+            <div class=" group_field password_input_group" >
+                <i class="fas fa-key"></i>
+                <input type="password" name="password" placeholder="Password" >                                    
+            </div>                                
+            <input type="submit" class="btn" value="LOGIN">
+            <br />
+            <a href="https://live.wtop.com/listen/register" target="_blank">Sign up</a>
+        </form>
+    </div>
+</div>
+<div id="modalLogoutOptions">
+    <div class="row">
+        <div class="small-6 large-6 columns text-center">
+            <button class="logout show-as-link">
+                <i class="fas fa-sign-out-alt"></i> <span class="small-text">LOGOUT</span>
+            </button>
+        </div>
+        <div class="small-6 large-6 columns text-center">
+            <button class="view-profile show-as-link">            
+                <i class="fas fa-user"></i> <span class="small-text">VIEW PROFILE</span>
+            </button>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    jQuery( document ).ready( function( $ ) {
+        $( 'a' ).each(function() {
+            // 'href' attribute shoult not be empty, so it doesn't interfere with other javascript functionalities
+            if( $(this).attr( 'href' ) ){
+                var a = new RegExp( window.location.host + '|javascript:', 'i' );
+                if( ! a.test( this.href ) )  {
+                    $( this ).click( function( event ) {
+                        event.preventDefault( );
+                        event.stopPropagation( );
+                        window.open( this.href, '_blank' );
+                    });
+                }
+            }
+        });
+    });
+</script>
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"1d8c2aa18a","applicationID":"92680428","transactionName":"M11bYEVXW0UDBUILWQoXeFdDX1pYTRVfDFEIXQ==","queueTime":0,"applicationTime":409,"atts":"HxpYFg1NSEs=","errorBeacon":"bam.nr-data.net","agent":""}</script></body>
+</html>

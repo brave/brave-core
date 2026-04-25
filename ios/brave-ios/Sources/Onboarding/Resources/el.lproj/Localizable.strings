@@ -1,0 +1,66 @@
+/* A button title shown below language introducing the Brave Playlist feature. i.e. 'Discover how to use use this feature' */
+"advanceInitialOnboardingButtonTitle" = "Ανακαλύψτε πώς";
+
+/* A button title that when tapped will advance the onboarding to guide a user to add some content to Playlist */
+"advanceStep2OnboardingButtonTitle" = "Δοκιμάστε το!";
+
+/* A button that allows the user to disable the brave translate feature. When pressed, the page will not be automatically translated to the user's language. */
+"BraveTranslateOnboarding.disableTranslateButtonTitle" = "Απενεργοποίηση αυτής της λειτουργίας";
+
+/* A text element that describes the translation feature and explains that hte user might have to download or configure languages on their device. */
+"BraveTranslateOnboarding.translateDescription" = "Οι σελίδες μπορούν να μεταφραστούν σε γλώσσες που υποστηρίζονται από την iOS συσκευή σας. Ενδέχεται να σας ζητηθεί να ρυθμίσετε τις γλώσσες, αν χρησιμοποιείτε για πρώτη φορά αυτή τη λειτουργία.";
+
+/* A text element that explains we're translating pages. */
+"BraveTranslateOnboarding.translateTitle" = "Μεταφράσεις σελίδας";
+
+/* A button title that when tapped opens Brave Playlist */
+"confirmationActionButtonTitle" = "Μετάβαση στη λίστα αναπαραγωγής μου";
+
+/* Shown above a button that will let the user open the playlist feature */
+"confirmationPrompt" = "Τώρα, ας δούμε τη λίστα αναπαραγωγής σας.";
+
+/* Shown below a title that confirms the user completed the task of adding something to playlist. %@ will be replaced with the folder the content was added to. i.e. 'Content added to Play Later' */
+"confirmationSubtitle" = "Το περιεχόμενο προστέθηκε στον φάκελο %@";
+
+/* Guides the user to tap on an icon where the onboarding is pointing to. '%@' will be replaced with said icon. */
+"confirmationTitle" = "Μπράβο";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissOnboardingButtonTitle" = "Παράβλεψη";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep2OnboardingButtonTitle" = "Ίσως αργότερα";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep4OnboardingButtonTitle" = "Κλείσιμο";
+
+/* A title shown on the first 2 steps of onboarding for Brave Playlist. Brave Playlist is a product name */
+"introducingBravePlaylist" = "Παρουσιάζουμε τη Λίστα αναπαραγωγής Brave";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleOne" = "Δημιουργήστε λίστες αναπαραγωγής με το αγαπημένο σας περιεχόμενο. Αποθηκεύστε δεδομένα κινητής. Και κάντε αναπαραγωγή χωρίς διαφημίσεις.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleThree" = "Εικόνα εντός εικόνας. Αναπαραγωγή στο παρασκήνιο. Έλεγχος από την οθόνη κλειδώματος. Και πολλά άλλα…";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleTwo" = "Μείνετε ενημερωμένοι: Προσθέστε βίντεο κατά την περιήγηση και παρακολουθήστε τα αργότερα.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleOne" = "Προσθέστε βίντεο στη Λίστα αναπαραγωγής Brave. Κάντε αναπαραγωγή ανά πάσα στιγμή. Ακόμα και εκτός σύνδεσης";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleThree" = "Η αναπαραγωγή είναι καλύτερη με τις λίστες αναπαραγωγής";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleTwo" = "Απλώς πατήστε το κουμπί για να προσθέσετε βίντεο σε λίστα αναπαραγωγής";
+
+/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
+"playlistOnboardingDescription" = "Δημιουργήστε λίστες αναπαραγωγής με περιεχόμενο που αγαπάτε. Προσθέστε μέσα από οποιαδήποτε σελίδα.\nΚάντε αναπαραγωγή ανά πάσα στιγμή. Ακόμα και εκτός σύνδεσης!";
+
+/* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
+"userActionPrompt" = "Πατήστε %@ για να προσθέσετε το πρώτο σας στοιχείο";
+
+/* Will be shown next to an icon inside of some other text. i.e. "Tap 'Add to Playlist' to add your first item" */
+"userActionPromptFill" = "Προσθήκη στη Λίστα αναπαραγωγής";
+

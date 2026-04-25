@@ -1,0 +1,164 @@
+[
+  {
+    "include": [
+      "http://simple.a.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://base64.a.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "base64,redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://double.a.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://double.b.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://quad.a.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://quad.b.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://quad.c.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://quad.d.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://*.c.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://*.d.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "unknown-redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://*.e.com/?url=*"
+    ],
+    "exclude": [
+      "http://excluded.e.com/*"
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://*.f.com/?url2=*"
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://*.g.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url",
+    "source": "this field is unused but its presence should be tolerated"
+  },
+  {
+    "include": [
+      "http://*.h.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://tracker.a.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://tracker.z.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://*.blogspot.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
+  },
+  {
+    "include": [
+      "http://blocked.com/?url=*"
+    ],
+    "exclude": [
+    ],
+    "action": "redirect",
+    "param": "url"
+  }
+]

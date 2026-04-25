@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit base_dir="./" latest_public_release="0" current_release="1">
+  <outputs>
+    <output filename="grit/brave_extension.h" type="rc_header">
+      <emit emit_type='prepend'></emit>
+    </output>
+    <output filename="brave_extension_static.pak" type="data_package" />
+    <output filename="grit/brave_extension_resources_map.cc" type="resource_file_map_source" />
+    <output filename="grit/brave_extension_resources_map.h" type="resource_map_header" />
+  </outputs>
+  <release seq="1">
+    <includes>
+      <include name="IDR_BRAVE_EXTENSION" file="brave_extension/manifest.json" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSION_ICON_16" file="brave_extension/assets/img/icon-16.png" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSION_ICON_32" file="brave_extension/assets/img/icon-32.png" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSION_ICON_48" file="brave_extension/assets/img/icon-48.png" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSION_ICON_64" file="brave_extension/assets/img/icon-64.png" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSION_ICON_128" file="brave_extension/assets/img/icon-128.png" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSION_ICON_256" file="brave_extension/assets/img/icon-256.png" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSION_EN_US_MESSAGES_JSON" file="brave_extension/_locales/en_US/messages.json" type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSION_WEB_DISCOVERY_CONTENT_SCRIPT_BUNDLE"
+               resource_path="brave_extension/bundles/web-discovery-content-script.bundle.js"
+               file="${root_gen_dir}/brave/web-discovery-project/core/content-script.bundle.js"
+               use_base_dir="false"
+               type="BINDATA" />
+      <!-- WDP extension expects these file paths relative to the extension root -->
+      <include name="IDR_BRAVE_EXTENSION_WEB_DISCOVERY_ASMJS_BUNDLE"
+               resource_path="brave_extension/modules/hpnv2/worker.asmjs.bundle.js"
+               file="${root_gen_dir}/brave/web-discovery-project/hpnv2/worker.asmjs.bundle.js"
+               use_base_dir="false"
+               type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSION_WEB_DISCOVERY_WASM_BUNDLE"
+               resource_path="brave_extension/modules/hpnv2/worker.wasm.bundle.js"
+               file="${root_gen_dir}/brave/web-discovery-project/hpnv2/worker.wasm.bundle.js"
+               use_base_dir="false"
+               type="BINDATA" />
+      <include name="IDR_BRAVE_EXTENSION_WEB_DISCOVERY_STAR_WASM"
+               resource_path="brave_extension/star.wasm"
+               file="${root_gen_dir}/brave/web-discovery-project/star.wasm"
+               use_base_dir="false"
+               type="BINDATA" />
+    </includes>
+  </release>
+</grit>

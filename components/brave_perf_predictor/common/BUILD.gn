@@ -1,0 +1,3 @@
+source_set("common") {
+  sources = [ "pref_names.h" ]
+}

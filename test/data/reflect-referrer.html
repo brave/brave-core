@@ -1,0 +1,21 @@
+<html>
+<body>
+<p>Referrer (JS): <code id="referrer"></code></p>
+<p>AncestorOrigins (JS): <code id="ancestors"></code></p>
+<script>
+
+function getAncestors() {
+  let a = "";
+  for (origin of document.location.ancestorOrigins) {
+    a += '[' + origin + ']';
+  }
+  return a;
+}
+
+var referrer = document.getElementById("referrer");
+referrer.innerText = document.referrer;
+var ancestors = document.getElementById("ancestors");
+ancestors.innerText = getAncestors();
+</script>
+</body>
+</html>

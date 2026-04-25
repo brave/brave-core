@@ -1,0 +1,78 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
+}
+
+.toolUse {
+  margin-top: var(--leo-spacing-m);
+  position: relative;
+  animation: var(--reveal-animation);
+
+  .toolLabel {
+    all: unset;
+    font: var(--leo-font-small-regular);
+    color: var(--leo-color-text-secondary);
+
+    &.isExpandable {
+      cursor: pointer;
+      &:focus-visible {
+        outline: 1px solid var(--leo-color-schemes-outline);
+      }
+    }
+  }
+
+  &.isExecuting .toolLabel {
+    background: linear-gradient(
+      90deg,
+      #434fcf 0%,
+      #7686ec 45%,
+      #7686ec 55%,
+      #434fcf 100%
+    );
+    background-size: 200% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 2s infinite linear;
+  }
+}
+
+.expandedContent {
+  margin-top: var(--leo-spacing-xs);
+  font: var(--leo-font-x-small-regular);
+  font-style: italic;
+  color: var(--leo-color-text-tertiary);
+}
+
+.choice {
+  margin-bottom: var(--leo-spacing-s);
+
+  &.isDisabled {
+    opacity: 0.5;
+  }
+}
+
+.completedChoiceIcon {
+  --leo-icon-color: var(--leo-color-systemfeedback-success-icon);
+}
+
+.choiceNumber {
+  border-radius: 50%;
+  font-size: 12px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--leo-color-schemes-on-tertiary);
+  background: var(--leo-color-text-interactive);
+}

@@ -1,0 +1,12 @@
+##
+## Upstream tests to disable
+##
+## When adding a new filter to this list, please include a short description of
+## why the filter is required and create an associated tracking issue.
+##
+
+# Looks like there's an upstream bug here. The test expects UKM values to be -1,
+# but the values are stored using HumanReadableUkmMetrics =
+# std::map<std::string, int64_t>, which on x86 doesn't wrap around and just ends
+# up being 4294967295 (2^32 - 1) instead of -1
+-ComposeTextUsageLoggerTest.SensitiveFieldEntry

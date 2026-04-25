@@ -1,0 +1,198 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_rewards/content/rewards_protocol_navigation_throttle.h"
+
+#include <algorithm>
+#include <map>
+#include <string>
+#include <string_view>
+#include <vector>
+
+#include "base/check.h"
+#include "base/logging.h"
+#include "base/strings/escape.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
+#include "brave/brave_domains/urls.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
+#include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
+#include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/navigation_throttle.h"
+#include "content/public/browser/page_navigator.h"
+#include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_contents_observer.h"
+#include "content/public/common/referrer.h"
+#include "ui/base/page_transition_types.h"
+#include "url/gurl.h"
+#include "url/origin.h"
+
+using content::NavigationHandle;
+using content::NavigationThrottle;
+using content::WebContents;
+
+namespace brave_rewards {
+
+// static
+void RewardsProtocolNavigationThrottle::MaybeCreateAndAdd(
+    content::NavigationThrottleRegistry& registry) {
+  auto* pref_service = user_prefs::UserPrefs::Get(
+      registry.GetNavigationHandle().GetWebContents()->GetBrowserContext());
+  if (!pref_service->GetBoolean(brave_rewards::prefs::kEnabled)) {
+    return;
+  }
+
+  registry.AddThrottle(
+      std::make_unique<RewardsProtocolNavigationThrottle>(registry));
+}
+
+RewardsProtocolNavigationThrottle::RewardsProtocolNavigationThrottle(
+    content::NavigationThrottleRegistry& registry)
+    : NavigationThrottle(registry) {}
+
+RewardsProtocolNavigationThrottle::~RewardsProtocolNavigationThrottle() =
+    default;
+
+NavigationThrottle::ThrottleCheckResult
+RewardsProtocolNavigationThrottle::WillStartRequest() {
+  return MaybeRedirect();
+}
+
+NavigationThrottle::ThrottleCheckResult
+RewardsProtocolNavigationThrottle::WillRedirectRequest() {
+  return MaybeRedirect();
+}
+
+bool IsValidWalletProviderRedirect(
+    const GURL& referrer_url,
+    const GURL& redirect_url,
+    const std::map<std::string, std::vector<GURL>>& allowed_referrer_urls) {
+  if (!referrer_url.is_valid() || !referrer_url.SchemeIs(url::kHttpsScheme) ||
+      !redirect_url.is_valid()) {
+    LOG(ERROR) << "Input validation failed!";
+    return false;
+  }
+
+  std::string wallet_provider;
+  const auto redirect_path_segments =
+      base::SplitStringPiece(redirect_url.path(), "/", base::TRIM_WHITESPACE,
+                             base::SPLIT_WANT_NONEMPTY);
+  if (!redirect_path_segments.empty()) {
+    wallet_provider = redirect_path_segments[0];
+  }
+
+  if (std::ranges::none_of(
+          allowed_referrer_urls.contains(wallet_provider)
+              ? allowed_referrer_urls.at(wallet_provider)
+              : std::vector<GURL>{},
+          [&](std::string_view host_piece) {
+            return referrer_url.DomainIs(host_piece);
+          },
+          &GURL::host)) {
+    LOG(ERROR) << referrer_url.host() << " was trying to redirect to "
+               << redirect_url.scheme() << "://" << redirect_url.host()
+               << redirect_url.path() << ", but it's not allowed.";
+    return false;
+  }
+
+  return true;
+}
+
+GURL TransformUrl(const GURL& url) {
+  DCHECK(url.is_valid());
+
+  return GURL(base::StrCat(
+      {"chrome", url::kStandardSchemeSeparator, "rewards/", url.host(), "/",
+       base::TrimString(url.path(), "/", base::TrimPositions::TRIM_LEADING),
+       url.has_query() ? "?" + base::EscapeExternalHandlerValue(url.query())
+                       : ""}));
+}
+
+void MaybeLoadRewardsURL(const GURL& redirect_url, WebContents* web_contents) {
+  if (!web_contents) {
+    return;
+  }
+
+  // TODO(https://github.com/brave/brave-browser/issues/48713): This is a case
+  // of `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
+  // added in the meantime to fix the build error. Remove this attribute and
+  // provide a proper fix.
+  [[clang::no_destroy]] static const auto kAllowedReferrerUrls{[] {
+    const GURL gate3_url = brave_domains::GetGate3URL();
+    std::map<std::string, std::vector<GURL>> allowed_urls{
+        {"bitflyer",
+         {
+             GURL(BUILDFLAG(BITFLYER_PRODUCTION_URL)),
+             GURL(BUILDFLAG(BITFLYER_SANDBOX_URL)),
+             gate3_url,
+         }},
+        {"uphold",
+         {
+             GURL(BUILDFLAG(UPHOLD_PRODUCTION_OAUTH_URL)),
+             GURL(BUILDFLAG(UPHOLD_SANDBOX_OAUTH_URL)),
+             gate3_url,
+         }},
+        {"zebpay",
+         {
+             GURL(BUILDFLAG(ZEBPAY_PRODUCTION_OAUTH_URL)),
+             GURL(BUILDFLAG(ZEBPAY_SANDBOX_OAUTH_URL)),
+             gate3_url,
+         }}};
+
+    for (const auto& [wallet_provider, urls] : allowed_urls) {
+      DCHECK(std::ranges::none_of(
+          urls,
+          [](const GURL& url) { return !url.is_valid() || !url.has_host(); }))
+          << wallet_provider << " has malformed referrer URL(s)!";
+    }
+
+    return allowed_urls;
+  }()};
+
+  if (const auto transformed_url = TransformUrl(redirect_url);
+      IsValidWalletProviderRedirect(web_contents->GetURL(), transformed_url,
+                                    kAllowedReferrerUrls)) {
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(
+                       [](base::WeakPtr<WebContents> web_contents,
+                          const GURL& transformed_url) {
+                         if (!web_contents) {
+                           return;
+                         }
+                         web_contents->GetController().LoadURL(
+                             transformed_url, content::Referrer(),
+                             ui::PAGE_TRANSITION_AUTO_TOPLEVEL, "");
+                       },
+                       web_contents->GetWeakPtr(), transformed_url));
+  }
+}
+
+NavigationThrottle::ThrottleCheckResult
+RewardsProtocolNavigationThrottle::MaybeRedirect() {
+  WebContents* web_contents = navigation_handle()->GetWebContents();
+  if (!web_contents || !navigation_handle()->IsInPrimaryMainFrame()) {
+    return NavigationThrottle::PROCEED;
+  }
+
+  GURL original_url = navigation_handle()->GetURL();
+  if (original_url.SchemeIs("rewards")) {
+    MaybeLoadRewardsURL(original_url, web_contents);
+    return NavigationThrottle::CANCEL;
+  }
+
+  return NavigationThrottle::PROCEED;
+}
+
+const char* RewardsProtocolNavigationThrottle::GetNameForLogging() {
+  return "RewardsProtocolNavigationThrottle";
+}
+
+}  // namespace brave_rewards

@@ -1,0 +1,28 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+brave_browser_cosmetic_filters_sources = [
+  "//brave/browser/cosmetic_filters/cosmetic_filters_tab_helper.cc",
+  "//brave/browser/cosmetic_filters/cosmetic_filters_tab_helper.h",
+]
+
+brave_browser_cosmetic_filters_deps = [
+  "//base",
+  "//brave/components/cosmetic_filters/common:mojom",
+  "//chrome/browser/ui",
+  "//third_party/blink/public/common",
+]
+
+if (is_android) {
+  brave_browser_cosmetic_filters_sources += [
+    "//brave/browser/android/cosmetic_filters/cosmetic_filters_utils.cc",
+    "//brave/browser/android/cosmetic_filters/cosmetic_filters_utils.h",
+  ]
+
+  brave_browser_cosmetic_filters_deps += [ "//brave/build/android:jni_headers" ]
+} else {
+  brave_browser_cosmetic_filters_deps +=
+      [ "//chrome/browser/ui/browser_window" ]
+}

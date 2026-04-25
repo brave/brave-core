@@ -1,0 +1,29 @@
+diff --git a/chrome/browser/resources/settings/route.ts b/chrome/browser/resources/settings/route.ts
+index 687bc78abc1c780c262fb8193fbf034bb87147a4..847c7eb5f878a67ac30d077ed4e5c005513fdcce 100644
+--- a/chrome/browser/resources/settings/route.ts
++++ b/chrome/browser/resources/settings/route.ts
+@@ -9,6 +9,7 @@ import {pageVisibility} from './page_visibility.js';
+ import type {SettingsRoutes} from './router.js';
+ import {Route, Router} from './router.js';
+ 
++import addBraveRoutes from './brave_routes.js'
+ /**
+  * Add all of the child routes that originate from the privacy route,
+  * regardless of whether the privacy section under basic or advanced.
+@@ -321,6 +322,7 @@ function createRoutes(): SettingsRoutes {
+         loadTimeData.getString('performancePageTitle'));
+   }
+ 
++  addBraveRoutes(r);
+   return r as unknown as SettingsRoutes;
+ }
+ 
+@@ -354,7 +356,7 @@ export let routes: SettingsRoutes = Router.getInstance().getRoutes();
+ // Returns the "effective" route when at chrome://settings/.
+ export function getTopLevelRoute(): Route {
+   if (!loadTimeData.getBoolean('isGuest')) {
+-    return routes.PEOPLE;
++    return routes.GET_STARTED;
+   }
+ 
+   let guestTopLevelRoute = routes.SEARCH;

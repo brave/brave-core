@@ -1,0 +1,525 @@
+/* The description for the error message when the user's session has expired */
+"aichat.accountSessionExpiredDescription" = "Sesi akaun Brave anda telah tamat tempoh. Sila lawati halaman akaun anda untuk memuatkan semula, kemudian kembali untuk menggunakan ciri premium.";
+
+/* The title for button that submits feedback */
+"aichat.addFeedbackActionTitle" = "Tambah Maklum Balas";
+
+/* The description for the settings to show search suggestions from Leo in url-address bar */
+"aichat.advancedSettingsAutocompleteDescription" = "Hidupkan untuk menunjukkan pintasan bagi melancarkan Leo daripada bar alamat.";
+
+/* The title for the settings to change default model for conversations */
+"aichat.advancedSettingsDefaultModelTitle" = "Model Lalai";
+
+/* The title for the header for adjusting leo ai settings */
+"aichat.advancedSettingsHeaderTitle" = "Leo ialah pembantu pintar dikuasakan AI, dibina terus dalam pelayar.";
+
+/* The subtitle for the button which links purchase to Brave Account */
+"aichat.advancedSettingsLinkPurchaseActionSubTitle" = "Pautkan pembelian App Store anda pada akaun Brave anda untuk menggunakan Leo pada peranti lain.";
+
+/* The title for the button which links purchase to Brave Account */
+"aichat.advancedSettingsLinkPurchaseActionTitle" = "Pautkan pembelian ke akaun Brave anda";
+
+/* The description for the settings to show Leo in Quick Search Engines Bar. */
+"aichat.advancedSettingsShowInQSEBarDescription" = "Bolehkan jalan pintas untuk lancarkan Leo dari ruang enjin carian pantas.";
+
+/* The title for the settings to show Leo in Quick Search Engines Bar. */
+"aichat.advancedSettingsShowInQSEBarTitle" = "Tunjuk Dalam Bar Enjin Carian Pantas";
+
+/* The title for the label showing the date which subscription expires */
+"aichat.advancedSettingsSubscriptionExpiresTitle" = "Tamat tempoh";
+
+/* The title for the header for subscription details */
+"aichat.advancedSettingsSubscriptionHeaderTitle" = "Langganan";
+
+/* The title for the label showing status if the subscription */
+"aichat.advancedSettingsSubscriptionStatusTitle" = "Status";
+
+/* The title for the button that allows the user to view the App Store Receipt */
+"aichat.advancedSettingsViewReceiptTitle" = "Paparkan Resit App Store";
+
+/* The subtitle for the error showing there is an error from App Store */
+"aichat.appStoreErrorSubTitle" = "Tidak dapat bersambung dengan App Store, sila cuba lagi kemudian.";
+
+/* The title for the error showing there is an error from App Store */
+"aichat.appStoreErrorTitle" = "Ralat App Store";
+
+/* The title of the search bar suggestion when prompting to Ask Leo */
+"aichat.askLeoSearchSuggestionTitle" = "Tanya Leo";
+
+/* The title for view that shows when leo is too busy (active disconnected) and the user is premium */
+"aichat.busyErrorDescription" = "Leo terlalu sibuk sekarang. Sila cuba lagi dalam beberapa minit.";
+
+/* The button title for adding a new custom model */
+"aichat.byomAddNewModelButtonTitle" = "Tambah Model Baharu";
+
+/* The description shown when no custom models have been added, prompting the user to add one */
+"aichat.byomEmptyStateDescription" = "Mulakan dengan mengetik \"Tambah model baharu\"";
+
+/* The title shown when no custom models have been added yet */
+"aichat.byomEmptyStateTitle" = "Anda belum menyambungkan model";
+
+/* The section header description explaining the Bring Your Own Model feature with a link to learn more. The text inside square brackets should be translated. */
+"aichat.byomSectionHeaderDescription" = "Sambungkan LLM yang dihos sendiri atau dihos pihak ketiga ke Leo dan gunakannya dalam penyemak imbas. Gunakan sebarang rangka kerja yang serasi dengan Protokol Sembang OpenAI seperti Ollama. [Ketahui lebih lanjut](https://support.brave.app/hc/en-us/articles/34070140231821-How-do-I-use-the-Bring-Your-Own-Model-BYOM-with-Brave-Leo)";
+
+/* The section header title for the Bring Your Own Model feature */
+"aichat.byomSectionHeaderTitle" = "Bawa Model Anda Sendiri";
+
+/* The subtitle for intro view which triggers just chat */
+"aichat.chatIntroJustTalkSubTitle" = "Tanya apa-apa sahaja! Kita boleh bercakap tentang sebarang topik yang anda mahukan. Saya sentiasa belajar dan menambah baik untuk memberikan jawapan yang lebih baik.";
+
+/* The title for intro view which triggers just chat */
+"aichat.chatIntroJustTalkTitle" = "Hanya mahu bersembang?";
+
+/* The subtitle for intro view */
+"aichat.chatIntroSubTitle" = "Pembantu pintar dikuasakan AI, dibina terus dalam Brave.";
+
+/* The title for intro view */
+"aichat.chatIntroTitle" = "Hai, saya Leo!";
+
+/* The subtitle for intro view which triggers website help for article */
+"aichat.chatIntroWebsiteHelpSubtitleArticleSummarize" = "Saya boleh membantu anda meringkaskan artikel, mengembangkan kandungan laman dan pelbagai lagi.";
+
+/* The subtitle for intro view which triggers website help for summary */
+"aichat.chatIntroWebsiteHelpSubtitlePageSummarize" = "Saya boleh membantu anda meringkaskan artikel, mengembangkan kandungan tapak dan pelbagai lagi. Tidak pasti dari mana hendak bermula? Cuba langkah ini:";
+
+/* The title for intro view which triggers website help */
+"aichat.chatIntroWebsiteHelpTitle" = "Perlukan bantuan berkenaan dengan laman web?";
+
+/* The title for the chat section in the menu */
+"aichat.chatMenuSectionTitle" = "Sembang";
+
+/* The title shown on limit reached error view, which is suggesting user to change default model */
+"aichat.contextLimitErrorTitle" = "Perbualan ini terlalu panjang dan tidak boleh diteruskan.\nMungkin terdapat model lain tersedia untuk digunakan yang mampu Leo kekalkan ketepatan untuk perbualan yang lebih panjang.";
+
+/* The title of the section where custom models are displayed as a list. */
+"aichat.customModelChatSectionTitle" = "Model Tersuai";
+
+/* The navigation bar title when adding a new custom model */
+"aichat.customModelFormAddModelNavigationTitle" = "Tambah Model";
+
+/* The footer text explaining when and how API keys are used */
+"aichat.customModelFormApiKeyFieldFooter" = "Sesetengah rangkai kerja pelayan mungkin mengehendaki bukti kelayakan pengesahan, seperti kunci API atau token akses. Keperluan ini akan ditambahkan pada pengepala permintaan.";
+
+/* The label for the API key field */
+"aichat.customModelFormApiKeyFieldTitle" = "Kunci API";
+
+/* The footer text explaining what context size means for AI models */
+"aichat.customModelFormContextSizeFieldFooter" = "Jumlah maksimum token yang boleh diproses oleh model dalam satu interaksi. Saiz konteks yang lebih besar membolehkan model mengendalikan perbualan yang lebih panjang. Setiap model mempunyai had saiz konteks yang berbeza.";
+
+/* The label for the context size field */
+"aichat.customModelFormContextSizeFieldTitle" = "Saiz konteks";
+
+/* The placeholder text for generic detail input fields */
+"aichat.customModelFormDetailsFieldPlaceholder" = "Masukkan butiran";
+
+/* The button title for dismissing the keyboard */
+"aichat.customModelFormDoneButtonTitle" = "Selesai";
+
+/* The navigation bar title when editing an existing custom model */
+"aichat.customModelFormEditModelNavigationTitle" = "Edit Model";
+
+/* The alert title shown when saving a custom model fails */
+"aichat.customModelFormFailedToSaveAlertTitle" = "Gagal Menyimpan Model";
+
+/* The error message shown when the context size is invalid */
+"aichat.customModelFormInvalidContextSizeErrorMessage" = "Saiz konteks tidak sah";
+
+/* The error message shown when the server endpoint URL is invalid */
+"aichat.customModelFormInvalidUrlErrorMessage" = "URL tidak sah";
+
+/* The footer text explaining the purpose of the label field */
+"aichat.customModelFormLabelFieldFooter" = "Nama model untuk digunakan dalam pemilih model Leo.";
+
+/* The placeholder text for the custom model name field */
+"aichat.customModelFormLabelFieldPlaceholder" = "Masukkan label untuk model ini";
+
+/* The label for the custom model name field in the custom model form */
+"aichat.customModelFormLabelFieldTitle" = "Label";
+
+/* The error message shown when trying to use a private network address, explaining why it's blocked and how to enable it */
+"aichat.customModelFormPrivateEndpointErrorMessage" = "Alamat yang anda masukkan kelihatan berasal dari rangkaian persendirian—seperti penolak anda atau pelayan tempatan. Brave menyekat ini secara automatik untuk menjaga keselamatan anda, tetapi anda boleh mengaktifkannya jika anda yakin ia selamat.\n\nUntuk meneruskan, lawati brave://flags/, cari \"brave-ai-chat-allow-private-ips,\" dan aktifkan ciri ini. Setelah diaktifkan, anda boleh menggunakan alamat rangkaian persendirian dalam tetapan Leo.";
+
+/* The footer text explaining what the model request name is used for and providing an example */
+"aichat.customModelFormRequestNameFieldFooter" = "Nama model sebagaimana yang sepatutnya dipaparkan dalam permintaan kepada rangka kerja penyediaan, contohnya, phi-3 (harap maklum bahawa jika nama ini tidak betul-betul sepadan dengan nama yang dijangkakan oleh rangka kerja penyediaan, penyepaduan tidak akan berfungsi).";
+
+/* The placeholder text for the model request name field */
+"aichat.customModelFormRequestNameFieldPlaceholder" = "Masukkan nama permintaan model";
+
+/* The label for the model request name field */
+"aichat.customModelFormRequestNameFieldTitle" = "Nama permintaan model";
+
+/* The indicator text shown next to required fields in forms */
+"aichat.customModelFormRequiredFieldIndicator" = "Diperlukan";
+
+/* The button title for saving a custom model */
+"aichat.customModelFormSaveButtonTitle" = "Simpan";
+
+/* The footer text explaining what the server endpoint is and providing an example URL for Ollama */
+"aichat.customModelFormServerEndpointFieldFooter" = "URL di mana rangka kerja pelayan anda mendengar permintaan. Jika anda tidak pasti, semak dokumentasi rangka kerja pelayan. Contohnya, untuk Ollama, ia adalah `http://localhost:11434/v1/chat/completions`. Brave tidak menggunakan proksi permintaan ini, sila baca syarat privasi pembekal yang dipilih.";
+
+/* The label for the server endpoint URL field */
+"aichat.customModelFormServerEndpointFieldTitle" = "Titik akhir pelayan";
+
+/* The footer text explaining what a system prompt is and noting the %datetime% placeholder */
+"aichat.customModelFormSystemPromptFieldFooter" = "Arahan tersuai dan/atau konteks yang diberikan kepada model untuk membimbing tindak balasnya. Gunakan %datetime% di mana anda ingin tarikh dan masa semasa dimasukkan.";
+
+/* The label for the system prompt field */
+"aichat.customModelFormSystemPromptFieldTitle" = "Arahan sistem";
+
+/* Warning message shown when user enters an HTTP (not HTTPS) endpoint */
+"aichat.customModelFormUnsafeEndpointWarning" = "Titik akhir ini berpotensi tidak selamat.";
+
+/* The description text explaining what vision support means with an example */
+"aichat.customModelFormVisionSupportFieldDescription" = "Jika model ini mengambil imej sebagai input, contohnya llama 3.2b vision";
+
+/* The label for the vision support toggle */
+"aichat.customModelFormVisionSupportFieldTitle" = "Sokongan penglihatan";
+
+/* The title for the custom models section in the menu */
+"aichat.customModelsMenuSectionTitle" = "Model Tersuai";
+
+/* The title of the section where chat models are displayed as a list. */
+"aichat.defaultModelChatSectionTitle" = "Sembang";
+
+/* The title of the section where language models are displayed as a list. */
+"aichat.defaultModelLanguageSectionTitle" = "MODEL BAHASA";
+
+/* The title of the menu where user can change the default model */
+"aichat.defaultModelViewTitle" = "Model Lalai";
+
+/* The checkbox title for the privacy alert warning that will make it not warn the user again */
+"aichat.dontShowAgainTitle" = "Jangan tunjuk lagi";
+
+/* The text displayed under an edited user prompt/message beside a timestamp. */
+"aichat.editedMessageCaption" = "Diedit";
+
+/* The title for view which user type feedback */
+"aichat.feedbackInputViewTitle" = "Berikan maklum balas di sini";
+
+/* The title for view which listsfeedback option list */
+"aichat.feedbackOptionsViewTitle" = "Apakah perihal maklum balas anda?";
+
+/* The title for incorrect feedback option */
+"aichat.feedbackOptionTitleIncorrect" = "Salah";
+
+/* The title for helpful feedback option */
+"aichat.feedbackOptionTitleNotHelpful" = "Tidak membantu";
+
+/* The title for other feedback option */
+"aichat.feedbackOptionTitleOther" = "Lain";
+
+/* The title for unsafe/harmful feedback option */
+"aichat.feedbackOptionTitleUnsafeHarmful" = "Tidak selamat/ berbahaya";
+
+/* The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
+"aichat.feedbackPremiumAdTitle" = "Leo Premium menyediakan akses kepada set model bahasa yang luas untuk nuansa jawapan yang lebih hebat. [Ketahui lebih lanjut](https://brave.com/) - [Ketepikan](braveai://dismiss)";
+
+/* The title for the button that submits feedback */
+"aichat.feedbackSubmitActionTitle" = "Serah";
+
+/* The title for feedback view when it fails to submit feedback */
+"aichat.feedbackSubmittedErrorTitle" = "Ada kesilapan berlaku. Sila cuba lagi.";
+
+/* The title for feedback view when it is submitted */
+"aichat.feedbackSubmittedTitle" = "Maklum balas berjaya dihantar";
+
+/* The title for feedback view when response is sucessfull but disliked */
+"aichat.feedbackSuccessAnswerDisLikedTitle" = "Jawapan tidak disukai";
+
+/* The title for feedback view when response is sucessfull also liked */
+"aichat.feedbackSuccessAnswerLikedTitle" = "Jawapan Disukai";
+
+/* The title for view which user type feedback */
+"aichat.feedbackViewMainTitle" = "Sediakan Maklum Balas Brave AI";
+
+/* The button title for opening paywall screen */
+"aichat.goPremiumButtonTitle" = "Sertai Premium";
+
+/* Description about answers are changing with page context */
+"aichat.infoAboutPageContext" = "Bentukkan jawapan berdasarkan kandungan halaman";
+
+/* The title for view that shows an internal error screen. Suggests to try again later. */
+"aichat.internalErrorViewTitle" = "Kesilapan telah berlaku semasa memproses permintaan anda. Sila cuba lagi kemudian.";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeHaikuMessageDescription" = "Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Claude Haiku, model ciptaan Anthropic untuk menjalankan tugasan perbualan dan pemprosesan teks. Claude Haiku dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageClaudeHaikuModelPurposeDescription" = "Sembang sepantas kilat";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeInstantMessageDescription" = "Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Claude Instant, model ciptaan Anthropic untuk menjalankan tugasan perbualan dan pemprosesan teks. Claude Instant dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageClaudeSonnetMessageDescription" = "Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Claude Sonnet, model ciptaan Anthropic untuk menjalankan tugasan perbualan dan pemprosesan teks. Claude Sonnet dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageClaudeSonnetModelPurposeDescription" = "Kepantasan dan kecerdasan yang seimbang";
+
+/* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
+"aichat.introMessageGenericMessageDescription" = "Hai, saya Leo. Saya ialah pembantu AI oleh Brave. Saya dikuasakan oleh %@. Tanya apa sahaja, dan saya akan cuba sedaya upaya untuk menjawabnya.";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageLlamaMessageDescription" = "Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Llama 3.1 8B, model ciptaan Meta yang berprestasi tinggi dan sesuai untuk pelbagai kegunaan. Llama dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageLlamaModelPurposeDescription" = "Sembang tujuan umum";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageQwenMessageDescription" = "Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Qwen VL 30B, model ciptaan Alibaba Cloud yang berprestasi tinggi dan sesuai untuk pelbagai kegunaan. Qwen dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageQwenModelPurposeDescription" = "Sembang tujuan umum, pengekodan dan banyak lagi";
+
+/* The title for intro message */
+"aichat.introMessageTitle" = "Sembang";
+
+/* The title for view that shows an invalid API key error screen. Suggests to try again later. */
+"aichat.invalidApiKeyErrorViewTitle" = "Kunci API yang dikonfigurasi untuk model ini tidak sah. Sila semak konfigurasi anda dan cuba lagi.";
+
+/* The title for view that shows an invalid endpoint error screen. Suggests to try again later. */
+"aichat.invalidEndpointErrorViewTitle" = "Model ini mempunyai titik akhir yang tidak sah. Sila semak konfigurasi anda dan cuba lagi.";
+
+/* The name of the AI-Assistant that's responsing to the user */
+"aichat.leoAssistantNameTitle" = "Leo";
+
+/* The default title displayed above a code block when the language of the code is not known. */
+"aichat.leoCodeExampleDefaultTitle" = "Contoh kod";
+
+/* The message that shows in an alert, to let the user know the 'Leo' feature is disabled, and explains how to re-enable the feature. */
+"aichat.leoDisabledMessageDescription" = "Leo is currently disabled via feature flags. To re-enable Leo, please visit brave://flags and enable it.";
+
+/* The title that shows in an alert when the Leo/AI-Chat feature is disabled. */
+"aichat.leoDisabledMessageTitle" = "Leo Disabled";
+
+/* The message that shows in an alert, to let the user know the 'Leo' feature is disabled in private browsing mode. */
+"aichat.leoDisabledPrivateBrowsingMessageDescription" = "Leo tidak tersedia dalam Mod Pelayaran Peribadi buat masa ini. Untuk menggunakan Leo, sila keluar dari Mod Pelayaran Peribadi dan cuba semula.";
+
+/* The title that shows in an alert when the Leo/AI-Chat is disabled due to the user being in private browsing mode. */
+"aichat.leoDisabledPrivateBrowsingMessageTitle" = "Leo Tidak Tersedia";
+
+/* The text that's read aloud to the user when accessibility is enabled for the Document Picker button */
+"aichat.leoDocumentPickerButtonAccessibilityTitle" = "Muat Naik Imej";
+
+/* The text displayed on the loading screen when searching for a user query */
+"aichat.leoImprovedAnswerBraveSearch" = "Pencarian jawapan yang ditingkatkan untuk";
+
+/* The text displayed on the loading screen when searching for a user query */
+"aichat.leoImprovingAnswerBraveSearch" = "Meningkatkan jawapan dengan Carian Brave…";
+
+/* The title of the advanced settings view */
+"aichat.leoNavigationTitle" = "AI Leo";
+
+/* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
+"aichat.leoPageContextInfoDescriptionTitle" = "Togol untuk bertanya tentang halaman ini. Kandungannya akan dihantar kepada Brave Leo bersama-sama dengan mesej anda.";
+
+/* The accessibility text to read out loud when the user taps on the info icon on the page context view */
+"aichat.leoPageContextInfoIconAccessibilityTitle" = "Maklumat Konteks Halaman";
+
+/* The text that's read aloud to the user when accessibility is enabled for the Slash Tools button */
+"aichat.leoSlashToolsButtonAccessibilityTitle" = "Alat Slash";
+
+/* The text that's displayed when the user selects an invalid slash tools option */
+"aichat.leoSlashToolsOptionNull" = "Tiada";
+
+/* The text that's displayed when the user selects an invalid slash tools option */
+"aichat.leoSlashToolsOptionUnknown" = "Tidak diketahui";
+
+/* The title to display when the duration of the subscription is unknown */
+"aichat.leoSubscriptionUnknownDateTitle" = "T/B";
+
+/* The button title for managing subscriptions */
+"aichat.manageSubscriptionsButtonTitle" = "Urus Langganan";
+
+/* The description for alert needed to have microphone permission */
+"aichat.microphonePermissionAlertDescription" = "Sila benarkan akses mikrofon dalam tetapan sistem iOS untuk Brave bagi menggunakan masukan suara tanpa nama.";
+
+/* The description for alert needed to have microphone permission */
+"aichat.microphonePermissionAlertTitle" = "Akses Mikrofon Diperlukan";
+
+/* Title showing monthly subscription */
+"aichat.monthlySubscriptionTitle" = "Langganan Setiap bulan";
+
+/* The title for view that shows network - connection error and suggesting to try again */
+"aichat.networkErrorViewTitle" = "Terdapat masalah rangkaian untuk bersambung dengan Leo, periksa sambungan anda dan cuba lagi.";
+
+/* The title for button that starts a new chat */
+"aichat.newChatActionTitle" = "Sembang Baharu";
+
+/* The text which will be used to indicate period of payments like 10 / month */
+"aichat.paywallMonthlyPriceDividend" = "bulan";
+
+/* Title indicating monthly subscription */
+"aichat.paywallMontlySubscriptionTitle" = "Bulanan";
+
+/* The title for dismiss button when premium upsell when paywall is triggered */
+"aichat.paywallPremiumUpsellDismissAction" = "Mungkin Kemudian";
+
+/* The title for button when premium upsell when paywall is triggered */
+"aichat.paywallPremiumUpsellPrimaryAction" = "Naik taraf";
+
+/* The title for premium upsell when paywall is triggered */
+"aichat.paywallPremiumUpsellTitle" = "Gunakan Kuasa Penuh Leo Dengan Premium:";
+
+/* The title of the button for action triggering purchase */
+"aichat.paywallPurchaseActionIntroOfferTitle" = "Cuba gunakan selama 7 Hari secara Percuma";
+
+/* The title of the button for action triggering purchase */
+"aichat.paywallPurchaseActionTitle" = "Naik Taraf Sekarang";
+
+/* The text displayed on the bottom of paywall screen which indicates subscriptions are auto renewable. */
+"aichat.paywallPurchaseDeepNote" = "Semua langganan dibaharui secara automatik tetapi boleh dibatalkan pada bila-bila masa sebelum dibaharui.";
+
+/* The error description when in app purcahse is erroneous. */
+"aichat.paywallPurchaseErrorDescription" = "Tidak dapat menghabiskan pembelian. Sila cuba lagi, atau periksa maklumat pembayaran anda di Apple dan cuba lagi.";
+
+/* The subtitle for premium upseel when rate limit is shown after sending a message */
+"aichat.paywallRateLimitSubTitle" = "Buka kunci kadar tindak balas yang lebih tinggi dengan melanggan Premium, atau cuba lagi kemudian.";
+
+/* The title for premium upseel when rate limit is shown after sending a message */
+"aichat.paywallRateLimitTitle" = "Had Kadar Tindak Balas Dicapai";
+
+/* The subtitle accuracy entry in paywall upsell screen */
+"aichat.paywallUpsellAccuracyTopicSubTitle" = "Dapatkan jawapan yang lebih tepat untuk memperoleh perbualan yang bagus.";
+
+/* The title accuracy entry in paywall upsell screen */
+"aichat.paywallUpsellAccuracyTopicTitle" = "Ikuti topik";
+
+/* The subtitle chat length entry in paywall upsell screen */
+"aichat.paywallUpsellChatLengthTopicSubTitle" = "Dapatkan had kadar yang lebih tinggi untuk perbualan lebih lama.";
+
+/* The title chat length entry in paywall upsell screen */
+"aichat.paywallUpsellChatLengthTopicTitle" = "Sembang lebih lama";
+
+/* The subtitle creativity entry in paywall upsell screen */
+"aichat.paywallUpsellCreativityTopicSubTitle" = "Akses model yang lebih sesuai untuk tugasan kreatif dan penghasilan kandungan.";
+
+/* The title creativity entry in paywall upsell screen */
+"aichat.paywallUpsellCreativityTopicTitle" = "Temukan daya kreatif anda";
+
+/* The subtitle model type entry in paywall upsell screen */
+"aichat.paywallUpsellModelTypeTopicSubTitle" = "Akses diutamakan kepada model berkuasa dengan kemahiran berbeza.";
+
+/* The title model type entry in paywall upsell screen */
+"aichat.paywallUpsellModelTypeTopicTitle" = "Terokai model AI yang lain";
+
+/* The title for paywall view */
+"aichat.paywallViewTitle" = "Leo Premium";
+
+/* The text which will be used to indicate period of payments like 150 / year */
+"aichat.paywallYearlyPriceDividend" = "tahun";
+
+/* The description indicating how valuable the yearly subscription is, compared to purchasing monthly */
+"aichat.paywallYearlySubscriptionDescription" = "NILAI TERBAIK";
+
+/* Title indicating yearly subscription */
+"aichat.paywallYearlySubscriptionTitle" = "Satu Tahun";
+
+/* The title of the badge where a model which can be used limited */
+"aichat.premiumModelStatusTitle" = "Premium";
+
+/* Title shown next to Leo in navigation bar when user has premium subcription */
+"aichat.premiumNavigationBarBadgeTitle" = "Premium";
+
+/* Title showing premium subscription - not determined monthly por yearly */
+"aichat.premiumSubscriptionTitle" = "Langganan Premium";
+
+/* The text for placeholder on textfield for entering questions for AI, after the user has asked initial question */
+"aichat.promptFollowUpPlaceHolderDescription" = "Tanya soalan susulan";
+
+/* The text for placeholder on textfield for entering questions for AI */
+"aichat.promptPlaceHolderDescription" = "Bagaimana saya boleh membantu anda hari ini?";
+
+/* The title of action for quick menu which displaying advanced settings */
+"aichat.quickMenuAdvancedSettingsActionTitle" = "Tetapan Lanjutan";
+
+/* The title of action for quick menu which presents payment screen for premium */
+"aichat.quickMenuGoPremiumActionTitle" = "Sertai Premium";
+
+/* The title of action for quick menu which display subscription management view */
+"aichat.quickMenuManageSubscriptionActionTitle" = "Urus Langganan";
+
+/* The title for error when rating a response is not success */
+"aichat.rateAnswerActionErrorText" = "Ralat Menilai Jawapan";
+
+/* The message for privacy warning alert when rating a response */
+"aichat.rateAnswerFeedbackPrivacyWarningMessage" = "Menyukai atau tidak menyukai jawapan akan menghantar penilaian, perbualan, model, bahasa, versi, dan status premium kepada Brave untuk menambah baik Leo. [Ketahui Lebih Lanjut](%@)";
+
+/* The title for privacy warning alert when rating a response */
+"aichat.rateAnswerFeedbackPrivacyWarningTitle" = "Maklum Balas Respons";
+
+/* The title for button that refreshes user credentials */
+"aichat.refreshCredentialsActionTitle" = "Segar semula";
+
+/* The title for the button where it triggers reset leo data */
+"aichat.resetLeoDataActionTitle" = "Tetapkan Semula Dan Kosongkan Data Leo";
+
+/* The title of a button that will reset data for leo */
+"aichat.resetLeoDataAlertButtonTitle" = "Tetap semula";
+
+/* The description for the error whre leo data reset */
+"aichat.resetLeoDataErrorDescription" = "Betulkah anda mahu menetapkan semula dan mengosongkan Data Leo?";
+
+/* The title for the error whre leo data reset */
+"aichat.resetLeoDataErrorTitle" = "Tetapkan Semula Data Leo";
+
+/* The title for copying response to clipboard action */
+"aichat.responseContextMenuCopyTitle" = "Salin";
+
+/* The title for disliking response to clipboard action */
+"aichat.responseContextMenuDislikeAnswerTitle" = "Nyahsuka Jawapan";
+
+/* The title for editing AI response action from context menu */
+"aichat.responseContextMenuEditAnswerTitle" = "Edit Jawapan";
+
+/* The title for editing user prompt action from context menu */
+"aichat.responseContextMenuEditPromptTitle" = "Edit Gesaan";
+
+/* The title for liking response to clipboard action */
+"aichat.responseContextMenuLikeAnswerTitle" = "Sukai Jawapan";
+
+/* The title for regenerating response action from context menu */
+"aichat.responseContextMenuRegenerateTitle" = "Jana semula";
+
+/* The button title for restoring ai-app purchse for Leo. */
+"aichat.restorePaywallButtonTitle" = "Menyimpan semula";
+
+/* The title for button for re-try */
+"aichat.retryActionTitle" = "Cuba semula";
+
+/* The title for view that shows a service overloaded error screen. Suggests to try again later. */
+"aichat.serviceOverloadedErrorViewTitle" = "Titik akhir sedang mengalami beban tinggi. Sila cuba lagi nanti.";
+
+/* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
+"aichat.speechRecognizerDisclaimer" = "Brave tidak menyimpan atau mengongsikan carian suara anda.";
+
+/* Title showing the user has no subscription. */
+"aichat.subscriptionNoneTitle" = "Tiada";
+
+/* The title for the button to generate suggestions */
+"aichat.suggestionsGenerationButtonTitle" = "Cadangkan soalan...";
+
+/* The title for button that start summarizing page */
+"aichat.summarizePageActionTitle" = "Ringkaskan halaman ini";
+
+/* The title for expressing acknowledgement for the terms and conditions of Brave AI */
+"aichat.termsConditionsApproveActionTitle" = "Saya Faham";
+
+/* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
+"aichat.termsConditionsDescription" = "Brave Leo ialah pembantu pintar AI peribadi yang menambah baik pengalaman anda menggunakan web. Leo boleh digunakan secara percuma dengan akses terhad. Brave Leo Premium menawarkan lebih banyak model, had yang lebih tinggi serta akses awal kepada ciri baharu untuk pelanggan. Model lalai akan berubah dari semasa ke semasa. Lihat **[Pusat Bantuan](%1$@) Brave untuk maklumat lanjut.\n\nSecara lalai, apabila anda bertanya kepada Leo tentang laman atau halaman yang sedang dilihat, kandungan, teks yang diserlahkan dan pertanyaan carian anda akan dihantar ke pelayan Brave untuk menghasilkan jawapan. Dalam sesetengah kes, Leo juga akan menghantar pertanyaan ke Brave Search dan menggunakan hasil carian bagi menjawab dengan lebih baik. Brave tidak menjamin ketepatan jawapan. Ia mungkin mengandungi maklumat yang tidak tepat, mengelirukan atau palsu. Jangan serahkan maklumat sensitif atau peribadi kepada Brave Leo, dan berhati-hati dengan jawapan berkaitan kesihatan, kewangan atau keselamatan. Anda boleh ubah pilihan Leo pada bila-bila masa di Tetapan > Leo.\n\nLeo tidak mengumpul pengecam seperti alamat IP yang boleh dikaitkan dengan anda. Kami tidak melatih model berdasarkan data anda, termasuk pertanyaan carian atau jawapan Brave Leo. Tiada data peribadi disimpan pada pelayan kami atau disimpan oleh Brave. Lihat **[dasar privasi](%2$@)** untuk maklumat lanjut.";
+
+/* The title terms and conditions for AI chat usage */
+"aichat.termsConditionsTitle" = "Bersembang secara Tertutup dengan Brave Leo";
+
+/* The title of the badge where a model which can be used unlimited */
+"aichat.unlimitedModelStatusTitle" = "Tanpa had";
+
+/* The accessibility description when pressing the microphone button to access voice entry. */
+"aichat.voiceInputButtonTitle" = "Input Suara";
+
+/* Title showing yearly subscription - annual */
+"aichat.yearlySubscriptionTitle" = "Langganan Tahunan";
+
+/* The word 'You' as in 'Me', 'Myself', 'I' (the user). */
+"aichat.youMessageTitle" = "Anda";
+

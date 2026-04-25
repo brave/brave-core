@@ -1,0 +1,244 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//build/config/android/rules.gni")
+import("//third_party/jni_zero/jni_zero.gni")
+import("//tools/grit/grit_rule.gni")
+
+_apksigner = "$android_sdk_build_tools/apksigner"
+_jarsigner = "//third_party/jdk/current/bin/jarsigner"
+_zipalign = "$android_sdk_build_tools/zipalign"
+
+action("sign_app_convert_aab_to_apk") {
+  script = "//brave/build/android/aab_to_apk.py"
+
+  deps = [ ":sign_app" ]
+
+  target_aab_path = "$root_out_dir/apks/ChromePublic.aab"
+  output_apk_path = "$root_out_dir/apks/Bravearm64Universal.apk"
+  output_path = "$root_out_dir/apks/"
+  bundletool =
+      "//third_party/android_build_tools/bundletool/cipd/bundletool.jar"
+
+  outputs = [ output_apk_path ]
+
+  args = [
+    "--bundletool=" + rebase_path(bundletool, root_out_dir),
+    "--target-aab-path=" + rebase_path(target_aab_path, root_out_dir),
+    "--output-apk-path=" + rebase_path(output_apk_path, root_out_dir),
+    "--output-path=" + rebase_path(output_path, root_out_dir),
+    "--key-path=" + rebase_path("$brave_android_keystore_path", root_out_dir),
+    "--key-passwd=$brave_android_keystore_password",
+    "--prvt-key-passwd=$brave_android_key_password",
+    "--key-name=$brave_android_keystore_name",
+    "--zipalign-path=" + rebase_path(_zipalign, root_out_dir),
+    "--apksigner-path=" + rebase_path(_apksigner, root_out_dir),
+    "--jarsigner-path=" + rebase_path(_jarsigner, root_out_dir),
+  ]
+}
+
+action("sign_app") {
+  script = "//brave/build/android/sign_apk.py"
+
+  deps = [
+    # Make sure we have a copy prior to signing.
+    ":brave",
+    "//brave:create_symbols_dist",
+  ]
+
+  if (target_android_output_format == "aab") {
+    target_sign_app_path = "$root_out_dir/apks/ChromePublic.aab"
+  } else {
+    target_sign_app_path = "$root_out_dir/apks/ChromePublic.apk"
+  }
+
+  outputs = [ "$brave_android_output-sign-result" ]
+  args = [
+    "--zipalign-path=" + rebase_path(_zipalign, root_out_dir),
+    "--apksigner-path=" + rebase_path(_apksigner, root_out_dir),
+    "--jarsigner-path=" + rebase_path(_jarsigner, root_out_dir),
+    "--unsigned-apk-paths",
+    rebase_path(target_sign_app_path, root_out_dir),
+
+    # Sign the final output file as well as there is no garantee that copy will happen after the sign.
+    # Ideally we should combine `brave`, `sign_app` and `sign_app_convert_aab_to_apk` into one action and do what we need in the script depending on the flags.
+    rebase_path(brave_android_output, root_out_dir),
+    "--key-path=$brave_android_keystore_path",
+    "--key-passwd=$brave_android_keystore_password",
+    "--prvt-key-passwd=$brave_android_key_password",
+    "--key-name=$brave_android_keystore_name",
+  ]
+
+  # Add PKCS11 arguments if both provider and alias are defined
+  if (brave_android_pkcs11_provider != "" && brave_android_pkcs11_alias != "") {
+    args += [
+      "--pkcs11-provider=" + brave_android_pkcs11_provider,
+      "--pkcs11-alias=" + brave_android_pkcs11_alias,
+    ]
+  }
+}
+
+# Some configurations need mapping file name adjustment to match
+# previous filename on CI.
+needs_mapping_rename =
+    enable_proguard_obfuscation && !is_java_debug && !is_debug
+
+if (needs_mapping_rename) {
+  copy("brave_mappings") {
+    visibility = [ ":*" ]
+    deps = []
+    sources = []
+    outputs = []
+
+    dep_suffix = ""
+    if (enable_r8_tracerefs) {
+      dep_suffix = "__r8"
+    }
+
+    if (target_android_output_format == "aab") {
+      deps += [ "//chrome/android:chrome_public_bundle__dex${dep_suffix}" ]
+      if (target_cpu == "arm64" || target_cpu == "x64") {
+        sources += [ "$root_out_dir/apks/ChromePublic.aab.mapping" ]
+        outputs += [ "$root_out_dir/apks/MonochromePublic64.aab.mapping" ]
+      } else {
+        sources += [ "$root_out_dir/apks/ChromePublic.aab.mapping" ]
+        outputs += [ "$root_out_dir/apks/MonochromePublic.aab.mapping" ]
+      }
+    } else {
+      deps += [ "//chrome/android:chrome_public_apk__final_dex${dep_suffix}" ]
+      sources += [ "$root_out_dir/apks/ChromePublic.apk.mapping" ]
+      outputs += [ "$root_out_dir/apks/MonochromePublic.apk.mapping" ]
+    }
+  }
+}
+
+copy("brave") {
+  visibility = [ "*" ]
+  deps = []
+  sources = []
+
+  if (needs_mapping_rename) {
+    deps += [ ":brave_mappings" ]
+  }
+
+  if (target_android_output_format == "aab") {
+    deps += [ "//chrome/android:chrome_public_bundle" ]
+    sources += [ "$root_out_dir/apks/ChromePublic.aab" ]
+  } else {
+    deps += [ "//chrome/android:chrome_public_apk" ]
+    sources += [ "$root_out_dir/apks/ChromePublic.apk" ]
+  }
+
+  outputs = [ brave_android_output ]
+}
+
+java_strings_grd("android_brave_strings_grd") {
+  grd_file = "//brave/browser/ui/android/strings/android_brave_strings.grd"
+  outputs = [
+    "values/android_brave_strings.xml",
+    "values-af/android_brave_strings.xml",
+    "values-am/android_brave_strings.xml",
+    "values-ar/android_brave_strings.xml",
+    "values-as/android_brave_strings.xml",
+    "values-az/android_brave_strings.xml",
+    "values-be/android_brave_strings.xml",
+    "values-bg/android_brave_strings.xml",
+    "values-bn/android_brave_strings.xml",
+    "values-bs/android_brave_strings.xml",
+    "values-ca/android_brave_strings.xml",
+    "values-cs/android_brave_strings.xml",
+    "values-da/android_brave_strings.xml",
+    "values-de/android_brave_strings.xml",
+    "values-el/android_brave_strings.xml",
+    "values-en-rGB/android_brave_strings.xml",
+    "values-es/android_brave_strings.xml",
+    "values-es-rUS/android_brave_strings.xml",
+    "values-et/android_brave_strings.xml",
+    "values-eu/android_brave_strings.xml",
+    "values-fa/android_brave_strings.xml",
+    "values-fi/android_brave_strings.xml",
+    "values-fr/android_brave_strings.xml",
+    "values-fr-rCA/android_brave_strings.xml",
+    "values-gl/android_brave_strings.xml",
+    "values-gu/android_brave_strings.xml",
+    "values-hi/android_brave_strings.xml",
+    "values-hr/android_brave_strings.xml",
+    "values-hu/android_brave_strings.xml",
+    "values-hy/android_brave_strings.xml",
+    "values-in/android_brave_strings.xml",
+    "values-is/android_brave_strings.xml",
+    "values-it/android_brave_strings.xml",
+    "values-iw/android_brave_strings.xml",
+    "values-ja/android_brave_strings.xml",
+    "values-ka/android_brave_strings.xml",
+    "values-kk/android_brave_strings.xml",
+    "values-km/android_brave_strings.xml",
+    "values-kn/android_brave_strings.xml",
+    "values-ko/android_brave_strings.xml",
+    "values-ky/android_brave_strings.xml",
+    "values-lo/android_brave_strings.xml",
+    "values-lt/android_brave_strings.xml",
+    "values-lv/android_brave_strings.xml",
+    "values-mk/android_brave_strings.xml",
+    "values-ml/android_brave_strings.xml",
+    "values-mn/android_brave_strings.xml",
+    "values-mr/android_brave_strings.xml",
+    "values-ms/android_brave_strings.xml",
+    "values-my/android_brave_strings.xml",
+    "values-nb/android_brave_strings.xml",
+    "values-ne/android_brave_strings.xml",
+    "values-nl/android_brave_strings.xml",
+    "values-or/android_brave_strings.xml",
+    "values-pa/android_brave_strings.xml",
+    "values-pl/android_brave_strings.xml",
+    "values-pt-rBR/android_brave_strings.xml",
+    "values-pt-rPT/android_brave_strings.xml",
+    "values-ro/android_brave_strings.xml",
+    "values-ru/android_brave_strings.xml",
+    "values-si/android_brave_strings.xml",
+    "values-sk/android_brave_strings.xml",
+    "values-sl/android_brave_strings.xml",
+    "values-sq/android_brave_strings.xml",
+    "values-sr/android_brave_strings.xml",
+    "values-sv/android_brave_strings.xml",
+    "values-sw/android_brave_strings.xml",
+    "values-ta/android_brave_strings.xml",
+    "values-te/android_brave_strings.xml",
+    "values-th/android_brave_strings.xml",
+    "values-tl/android_brave_strings.xml",
+    "values-tr/android_brave_strings.xml",
+    "values-uk/android_brave_strings.xml",
+    "values-ur/android_brave_strings.xml",
+    "values-uz/android_brave_strings.xml",
+    "values-vi/android_brave_strings.xml",
+    "values-zh-rCN/android_brave_strings.xml",
+    "values-zh-rHK/android_brave_strings.xml",
+    "values-zh-rTW/android_brave_strings.xml",
+    "values-zu/android_brave_strings.xml",
+  ]
+}
+
+generate_jni("jni_headers") {
+  sources = [
+    "//brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoSettingsLauncherHelper.java",
+    "//brave/android/java/org/chromium/chrome/browser/day_zero/DayZeroHelper.java",
+    "//brave/android/java/org/chromium/chrome/browser/informers/BraveSyncAccountDeletedInformer.java",
+    "//brave/android/java/org/chromium/chrome/browser/notifications/channels/BraveSiteChannelsManagerBridge.java",
+    "//brave/android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java",
+    "//brave/android/java/org/chromium/chrome/browser/signin/BraveSigninManager.java",
+    "//brave/android/java/org/chromium/chrome/browser/util/TabUtils.java",
+  ]
+
+  if (enable_brave_wallet) {
+    sources += [ "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/WalletDataFilesInstallerUtil.java" ]
+  }
+
+  public_deps = [
+    "//brave/android/java/org/chromium/chrome/browser/search_engines:jni_headers",
+    "//chrome/android:chrome_jni_headers",
+  ]
+}

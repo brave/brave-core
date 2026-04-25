@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12px" height="12px" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>minus</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M7,10.3740003 L3.7119827,12.1952135 C3.42038476,12.3567278 3.0625,12.145841 3.0625,11.8125 L3.0625,2.1875 C3.0625,1.94587542 3.25837542,1.75 3.5,1.75 L10.5,1.75 C10.7416246,1.75 10.9375,1.94587542 10.9375,2.1875 L10.9375,11.8125 C10.9375,12.145841 10.5796152,12.3567278 10.2880173,12.1952135 L7,10.3740003 Z" id="path-1"></path>
+    </defs>
+    <g id="minus" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="essentials/bookmark" stroke="#979797" stroke-width="0.75" transform="translate(-1.000000, -1.000000)">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="Mask" stroke="none" fill="#373843" fill-rule="evenodd" xlink:href="#path-1"></use>
+        </g>
+    </g>
+</svg>

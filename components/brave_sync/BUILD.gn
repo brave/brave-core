@@ -1,0 +1,161 @@
+# Copyright (c) 2018 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/common/typescript.gni")
+import("//build/buildflag_header.gni")
+import("//build/config/features.gni")
+import("//tools/grit/grit_rule.gni")
+import("//tools/grit/repack.gni")
+
+declare_args() {
+  brave_sync_endpoint = "https://sync-v2.brave.com/v2"
+}
+
+if (is_official_build) {
+  assert(brave_sync_endpoint != "")
+}
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [ "BRAVE_SYNC_ENDPOINT=\"$brave_sync_endpoint\"" ]
+}
+
+static_library("crypto") {
+  sources = [
+    "crypto/crypto.cc",
+    "crypto/crypto.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/third_party/bip39wally-core-native:bip39wally-core",
+    "//brave/vendor/bat-native-tweetnacl:tweetnacl",
+    "//crypto",
+    "//third_party/boringssl",
+  ]
+
+  if (is_android) {
+    deps += [ "//third_party/cpu_features:ndk_compat" ]
+  }
+}
+
+source_set("features") {
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+
+  deps = [ "//base" ]
+}
+
+static_library("network_time_helper") {
+  sources = [
+    "network_time_helper.cc",
+    "network_time_helper.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/network_time",
+  ]
+}
+
+source_set("p3a") {
+  sources = [
+    "brave_sync_p3a.cc",
+    "brave_sync_p3a.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/p3a_utils",
+    "//components/sync/base",
+  ]
+}
+
+source_set("prefs") {
+  sources = [
+    "brave_sync_prefs.cc",
+    "brave_sync_prefs.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/os_crypt/sync",
+    "//components/prefs",
+  ]
+}
+
+source_set("time_limited_codes") {
+  sources = [
+    "qr_code_data.cc",
+    "qr_code_data.h",
+    "qr_code_validator.cc",
+    "qr_code_validator.h",
+    "time_limited_words.cc",
+    "time_limited_words.h",
+  ]
+
+  deps = [
+    ":crypto",
+    "//base",
+  ]
+}
+
+static_library("sync_service_impl_helper") {
+  sources = [
+    "sync_service_impl_helper.cc",
+    "sync_service_impl_helper.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/sync/service",
+    "//components/sync_device_info",
+  ]
+}
+
+group("brave_sync") {
+  deps = [
+    ":crypto",
+    ":features",
+    ":network_time_helper",
+    ":prefs",
+    ":time_limited_codes",
+    "//base",
+  ]
+  public_deps = [ ":p3a" ]
+}
+
+group("constants") {
+  public_deps = [ ":buildflags" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "//brave/components/brave_sync/brave_sync_p3a_unittest.cc",
+    "//brave/components/brave_sync/brave_sync_prefs_unittest.cc",
+    "//brave/components/brave_sync/crypto/crypto_unittest.cc",
+    "//brave/components/brave_sync/qr_code_data_unittest.cc",
+    "//brave/components/brave_sync/qr_code_validator_unittest.cc",
+    "//brave/components/brave_sync/time_limited_words_unittest.cc",
+  ]
+
+  deps = [
+    ":crypto",
+    ":p3a",
+    ":prefs",
+    ":time_limited_codes",
+    "//base/test:test_support",
+    "//components/os_crypt/sync:test_support",
+    "//components/prefs:test_support",
+    "//components/sync/base",
+    "//components/sync/service",
+    "//crypto",
+    "//testing/gtest",
+  ]
+}

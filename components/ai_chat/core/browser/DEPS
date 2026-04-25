@@ -1,0 +1,44 @@
+include_rules = [
+  "+brave/net/base",
+  "+cc/port",
+  "+cc/task/core",
+  "+cc/task/text",
+  "+components/bookmarks",
+  "+components/grit/brave_components_resources.h",
+  "+components/grit/brave_components_strings.h",
+  "+components/history/core/browser",
+  "+components/history/core/test",
+  "+components/keyed_service",
+  "+components/os_crypt/async",
+  "+components/os_crypt/sync",
+  "+components/prefs",
+  "+components/sync_preferences/testing_pref_service_syncable.h",
+  "+crypto",
+  "+services/network/public",
+  "+services/network/test",
+  "+sql",
+  "+tensorflow_lite_support/cc/task/core/proto",
+  "+tensorflow_lite_support/cc/task/processor/proto",
+  "+tensorflow_lite_support/cc/task/text/proto",
+  "+third_party/re2/src/re2",
+  "+third_party/skia/include",
+  "+ui/base",
+  "+ui/gfx/image",
+]
+
+specific_include_rules = {
+  "ai_chat_metrics_unittest\.cc": [
+    # don't use content deps in core
+    "!content/public/test/browser_task_environment.h"
+  ],
+  "ai_chat_credential_manager_unittest\.cc": [
+    # don't use content deps in core
+    "!content/public/test/browser_task_environment.h",
+  ],
+  "ai_chat_feedback_api\.cc": [
+    "!brave/components/l10n/common/locale_util.h",
+  ],
+  "utils\.cc": [
+    "!brave/components/l10n/common/locale_util.h",
+  ],
+}

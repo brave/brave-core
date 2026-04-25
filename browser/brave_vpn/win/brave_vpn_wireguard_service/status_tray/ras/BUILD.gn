@@ -1,0 +1,17 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("ras") {
+  sources = [
+    "ras_utils.cc",
+    "ras_utils.h",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/brave_vpn/browser/connection/ikev2/win:ras_utils",
+    "//brave/components/brave_vpn/common",
+    "//chrome/common:channel_info",
+  ]
+}

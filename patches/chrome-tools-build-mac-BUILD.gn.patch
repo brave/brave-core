@@ -1,0 +1,12 @@
+diff --git a/chrome/tools/build/mac/BUILD.gn b/chrome/tools/build/mac/BUILD.gn
+index 94007792858a92b49b6ef76e21f2f48b72636033..278bb8cbae362bc0970843bb6cd906374b829043 100644
+--- a/chrome/tools/build/mac/BUILD.gn
++++ b/chrome/tools/build/mac/BUILD.gn
+@@ -17,6 +17,7 @@ if (current_toolchain != default_toolchain) {
+ 
+ executable("infoplist_strings_util") {
+   configs += [ "//build/config/compiler:wexit_time_destructors" ]
++  configs += [ "//brave/common:constants_configs($default_toolchain)" ]
+ 
+   sources = [ "infoplist_strings_util.cc" ]
+ 

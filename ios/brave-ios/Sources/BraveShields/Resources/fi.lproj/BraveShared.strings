@@ -1,0 +1,252 @@
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "Lisää muita luottamasi yhteisön luomia ja ylläpitämiä luetteloita.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**Liity vain luottamiesi tahojen listoille.** Selaimesi tarkistaa säännöllisesti listan päivitykset antamastasi URL-osoitteesta.";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "Lisää suodatin URL-osoitteella";
+
+/* A discription of the Brave Player. */
+"AntiAdBlockWarningBravePlayerDescription" = "**Brave-mediasoitin** takaa videokokemuksen ilman mainoksia ja keskeytyksiä.";
+
+/* A button that disables ad-blocking and uses brave player. */
+"AntiAdBlockWarningConfirmationButton" = "Säädä suojausta";
+
+/* A descriptive message explaining this site's ad-blocking crackdown. */
+"AntiAdBlockWarningDescription" = "Tämä sivusto on alkanut estää joitain mainosten estokeinoja, mikä tarkoittaa, että kyseinen sivusto ei välttämättä toimi odotetulla tavalla.";
+
+/* A descriptive message explaining to disable shields on this site. */
+"AntiAdBlockWarningDescription2" = "Tämän ongelman ratkaisemiseksi Brave voi säätää suojasi asetuksia puolestasi. Säätämisen jälkeen voit yrittää katsoa tätä sisältöä Brave-mediasoittimessa.";
+
+/* A button that dismisses the warning and does nothing. */
+"AntiAdBlockWarningDismissButton" = "Säilytä nykyiset asetukset";
+
+/* A title for a popup that tells the user we recommend turning shields off for this site. */
+"AntiAdBlockWarningTitle" = "Säädä tämän sivuston mainosestoasetuksia";
+
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "Automaattinen silppuaminen";
+
+/* The option the user can select to do aggressive ad and tracker blocking */
+"BlockAdsAndTrackingAggressive" = "Aggressiivinen";
+
+/* A description for a shield options that allows you to switch between different blocking levels for trackers and ads blocking. Options include disabled, standard and aggressive. */
+"BlockAdsAndTrackingDescription" = "Estää mainosten, ponnahdusikkunoiden ja seurantaohjelmien lataamisen.";
+
+/* The option the user can select to disable ad and tracker blocking */
+"BlockAdsAndTrackingDisabled" = "Estetty";
+
+/* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
+"BlockAdsAndTrackingStandard" = "Vakio";
+
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "Estä 'Vaihda sovellukseen' -ilmoitukset";
+
+/* Title for the brave player feature */
+"BravePlayer" = "Brave Player";
+
+/* A label for a toggle that enables automatic launching of brave player for certain sites */
+"BravePlayerAlwaysOpenYouTubeLinks" = "Avaa aina tämän sivuston videot Brave-mediasoittimella";
+
+/* A button that confirms to use the brave player. */
+"BravePlayerConfirmButton" = "Kokeile";
+
+/* A button that ignores the brave player */
+"BravePlayerDismissButton" = "Ei nyt";
+
+/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
+"BravePlayerInfoMessage" = "Brave-mediasoittimella voit katsella videoita ilman keskeytyksiä.";
+
+/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
+"BravePlayerInfoTitle" = "Katso sen sijaan Brave-mediasoittimessa";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "Sisällön suodatus";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "Ota käyttöön mukautetut suodattimet, jotka estävät alueelliset ja kielikohtaiset seuraimet ja häiriötekijät";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "Mukautettu suodatinluettelo";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "Mukautetun suodatinluettelon URL";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "Mukautetut suodattimet";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "Lisää tässä mukautetut suodattimet. Muista käyttää Adblock-suodatinsyntaksia.";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "Virheellinen sääntö ”%1$@” rivillä %2$i";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "Lisää tässä mukautetut suodattimesi, yksi kullekin riville.";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "Mukautetut suodattimet tukevat korkeintaan %i riviä";
+
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "Oletusarvoiset suodatinluettelot";
+
+/* Text for a button in a blocked page info screen that takes you back where you came from */
+"DomainBlockedGoBackAction" = "Palaa takaisin";
+
+/* A description in the warning page that appears when a page was blocked */
+"DomainBlockedPageDescription" = "Koska pyysit aggressiivisesti estämään seuraimet ja mainokset, Brave estää tämän sivuston ennen ensimmäistä verkkoyhteyttä.";
+
+/* A message in the warning page that appears when a page was blocked */
+"DomainBlockedPageMessage" = "Brave on estänyt seuraavaa sivustoa latautumasta:";
+
+/* A title in the warning page that appears when a page was blocked */
+"DomainBlockedPageTitle" = "Tämä sivusto voi yrittää seurata sinua muilla sivustoilla";
+
+/* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
+"DomainBlockedProceedAction" = "Jatka";
+
+/* A tab title for the warning page that appears when a page was blocked */
+"DomainBlockedTitle" = "Verkkotunnus estetty";
+
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "Pyydä verkkosivustoja olemaan myymättä tai jakamatta tietojasi. [Lue lisää](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "Ota Global Privacy Control käyttöön";
+
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "Ulkoiset suodatinluettelot";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "Annettu URL-osoite on virheellinen";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "Vain suojatut (https) URL-osoitteet sallitaan mukautetuissa suodatinluetteloissa";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "Lisää";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "Muita suosittuja yhteisön luetteloita. Huomaa, että liian monen suodattinen ottaminen käyttöön hidastaa selausnopeutta.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "Lataus epäonnistui.";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "Odottaa latausta";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "Muokkaa";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "Anna suodatinluettelon URL";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "Viimeksi päivitetty %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "Kirjoita suodatinluettelon URL-osoite tähän";
+
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "Tyhjentää evästeet ja muut sivuston tiedot, kun suljet sivuston";
+
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "Unohda minut, kun suljen tämän sivuston";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "Tiukka";
+
+/* This is a label on a button that updates filter lists which signifies that lists have been updated */
+"ListsUpdated" = "Luettelot päivitetty";
+
+/* A label displayed above a value indicating if the site is in aggressive mode in Blocked Requests view. */
+"shields.aggressiveLabel" = "Aggressiivinen";
+
+/* A label displayed above the location a request was blocked in Blocked Requests view. */
+"shields.blockedByLabel" = "Estänyt";
+
+/* The title displayed in the navigation bar of Blocked Requests view. */
+"shields.blockedRequestsTitle" = "Estetyt pyynnöt";
+
+/* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
+"shields.contentBlocker" = "Sisällön esto";
+
+/* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
+"shields.requestBlocking" = "Pyydä estoa";
+
+/* A label displayed above the request url that was blocked in Blocked Requests view. */
+"shields.requestURLLabel" = "Pyydä URL";
+
+/* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
+"shields.resourceTypeLabel" = "Resurssityyppi";
+
+/* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowDescription" = "Jos Shred poistaa historiatietoja.";
+
+/* A title beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredHistoryRowTitle" = "Shred poistaa historian";
+
+/* A row description that appears in the Shields & Privacy settings. */
+"shields.shredRowDescription" = "Päivitä Auto Shred ja säädä, mitä tietoja poistetaan.";
+
+/* A row title that appears in the Shields & Privacy settings. */
+"shields.shredRowTitle" = "Silppua";
+
+/* A title for the Shred settings screen, within Shields & Privacy settings. */
+"shields.shredSettingsViewTitle" = "Silppua";
+
+/* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
+"shields.sourceURLLabel" = "Lähteen URL";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "Silppua tiedot";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "Ei koskaan";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "Sovellus suljettu";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "Sivuston välilehdet suljettu";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "Silppuaminen sulkee kaikki välilehdet ja poistaa kaikki sivuston tiedot. Tätä ei voi kumota.";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "Silppua sivuston tiedot";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "Silppuaminen sulkee kaikki tämän sivuston avoimet välilehdet ja poistaa kaikki sivuston tiedot. Tätä ei voi kumota.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "Silppua sivuston tiedot?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "Silppua sivuston tiedot nyt";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
+"shredSiteSelectedTabsConfirmationMessage" = "Silppuaminen sulkee valitut välilehdet ja poistaa kaikki sivuston tiedot. Tätä ei voi kumota.";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "Sivustoa ei ole suojattu";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "Yhteyttä sivustoon %@ ei ole suojattu";
+
+/* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
+"TrackersAndAdsBlocking" = "Seurantaohjelmat ja mainostenesto";
+
+/* This is a label for a button which when pressed updates all the filter lists */
+"UpdateLists" = "Päivitä luettelot";
+
+/* This is a label on a button that updates filter lists which signifies that lista are being updated */
+"UpdatingLists" = "Luetteloita päivitetään";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "Nosta yhteystasoksi HTTPS";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "Tämä varoitus näytetään, koska sivusto ei tue HTTPS-protokollaa.";
+

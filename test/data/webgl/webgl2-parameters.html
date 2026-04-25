@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebGL2 getParameter() test</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <canvas id="test" width="8" height="8"></canvas>
+    <script>
+      var canvas = document.getElementById("test");
+      var gl = canvas.getContext("webgl2");
+      params = ["MAX_VERTEX_UNIFORM_COMPONENTS",
+                "MAX_VERTEX_UNIFORM_BLOCKS",
+                "MAX_VERTEX_OUTPUT_COMPONENTS",
+                "MAX_VARYING_COMPONENTS",
+                "MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS",
+                "MAX_FRAGMENT_UNIFORM_COMPONENTS",
+                "MAX_FRAGMENT_UNIFORM_BLOCKS",
+                "MAX_FRAGMENT_INPUT_COMPONENTS",
+                "MAX_UNIFORM_BUFFER_BINDINGS",
+                "MAX_COMBINED_UNIFORM_BLOCKS",
+                "MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS",
+                "MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS"];
+      var result = [];
+      for (i in params) {
+        result.push(gl.getParameter(gl[params[i]]));
+      }
+      document.title = result.join(" ");
+    </script>
+  </body>
+</html>

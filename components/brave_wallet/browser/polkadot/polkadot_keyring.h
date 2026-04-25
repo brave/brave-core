@@ -1,0 +1,110 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_KEYRING_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_KEYRING_H_
+
+#include "base/containers/flat_map.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key_sr25519.h"
+#include "brave/components/brave_wallet/browser/scrypt_utils.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+
+namespace brave_wallet {
+
+inline constexpr size_t kPolkadotSeedSize = 32u;
+
+class PolkadotKeyring {
+ public:
+  // Construct the keyring for Polkadot using the provided seed, derived from
+  // the bip39::MnemonicToEntropyToSeed() method.
+  PolkadotKeyring(
+      base::span<const uint8_t, kPolkadotSeedSize> seed,
+      mojom::KeyringId keyring_id,
+      base::RepeatingCallback<bool(const std::string&)> is_address_allowed);
+  ~PolkadotKeyring();
+
+  // Get the address of the account denoted by `//<network>//<account_index>`,
+  // which is the SS58-encoded public key for this particular derivation. Many
+  // parachains use their own ss58 prefix, which the caller can supply.
+  // Unified addressing uses 0 as the default prefix.
+  // Returns nullopt if account_index has not been added via AddNewHDAccount().
+  std::optional<std::string> GetAddress(uint32_t account_index,
+                                        uint16_t prefix);
+
+  // Get the public key associated with the account denoted by
+  // `//<network>//<account_index>`.
+  // Returns nullopt if account_index has not been added via AddNewHDAccount().
+  std::optional<std::array<uint8_t, kSr25519PublicKeySize>> GetPublicKey(
+      uint32_t account_index);
+
+  // Use the derived account `account_index` to sign the provided message.
+  // Returns nullopt if account_index has not been added via AddNewHDAccount().
+  std::optional<std::array<uint8_t, kSr25519SignatureSize>> SignMessage(
+      base::span<const uint8_t> message,
+      uint32_t account_index);
+
+  // Verify that the provided signature is associated with the given message,
+  // for the account denoted by `account_index`.
+  // Returns false if account_index has not been added via AddNewHDAccount().
+  [[nodiscard]] bool VerifyMessage(
+      base::span<const uint8_t, kSr25519SignatureSize> signature,
+      base::span<const uint8_t> message,
+      uint32_t account_index);
+
+  // Helper that tells us if this keyring is intended for the `//polkadot`
+  // mainnet or the `//westend` testnet.
+  bool IsTestnet() const;
+
+  mojom::KeyringId keyring_id() const { return keyring_id_; }
+
+  std::optional<std::string> AddNewHDAccount(uint32_t account_index);
+
+  // Encodes the private key for export in JSON format.
+  // Returns a JSON string with encoded key, encoding metadata, and address.
+  // The seed is encrypted using xsalsa20-poly1305 with a password-derived key.
+  // Returns nullopt if account_index has not been added via AddNewHDAccount().
+  std::optional<std::string> EncodePrivateKeyForExport(
+      uint32_t account_index,
+      std::string_view password);
+
+  // Encodes the provided Polkadot sr25519 keypair in Polkadot.js JSON export
+  // format using the Substrate address prefix.
+  static std::optional<std::string> EncodePrivateKeyForExport(
+      const HDKeySr25519& keypair,
+      std::string_view password,
+      const std::optional<std::array<uint8_t, kScryptSaltSize>>&
+          salt_for_testing = std::nullopt,
+      const std::optional<std::array<uint8_t, kSecretboxNonceSize>>&
+          nonce_for_testing = std::nullopt);
+
+  // Sets random bytes for testing for private key export.
+  void SetRandBytesForTesting(
+      const std::array<uint8_t, kScryptSaltSize>& seed_bytes,
+      const std::array<uint8_t, kSecretboxNonceSize>& nonce_bytes);
+
+  std::array<uint8_t, kSr25519Pkcs8Size> GetPkcs8KeyForTesting(
+      uint32_t account_index);
+
+  // Set the RNG used by the underlying Schnorr signing routines to be
+  // deterministic for the sake of testing.
+  void SetSignatureRngForTesting();
+
+ private:
+  HDKeySr25519* GetKeypair(uint32_t account_index);
+
+  HDKeySr25519 root_account_key_;
+  mojom::KeyringId keyring_id_;
+  base::flat_map<uint32_t, HDKeySr25519> secondary_keys_;
+
+  base::RepeatingCallback<bool(const std::string&)> is_address_allowed_;
+
+  std::optional<std::array<uint8_t, kScryptSaltSize>>
+      rand_salt_bytes_for_testing_;
+  std::optional<std::array<uint8_t, kSecretboxNonceSize>>
+      rand_nonce_bytes_for_testing_;
+};
+}  // namespace brave_wallet
+
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_KEYRING_H_

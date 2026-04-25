@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2019 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/onboarding_black">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/bg_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="onboarding_rewards.json"
+        app:lottie_loop="false"
+        android:layout_marginBottom="100dp"
+        android:contentDescription="@string/brave_rewards_onboarding_title"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:background="@color/onboarding_bg_color"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/section_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="16dp"
+                android:text="@string/brave_rewards_onboarding_title"
+                android:textColor="@color/onboarding_text_color"
+                android:textSize="@dimen/onboarding_text_size"
+                android:fontFamily="sans-serif-medium"
+                android:lineSpacingMultiplier="1.2" />
+
+            <TextView
+                android:id="@+id/section_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars = "vertical"
+                android:fadeScrollbars="false"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"
+                android:lineSpacingMultiplier="1.2"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/onboarding_text_color"
+                android:textSize="@dimen/onboarding_text_size" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/agree_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop = "8dp"
+            android:layout_marginBottom = "8dp"
+            android:layout_marginStart = "16dp"
+            android:layout_marginEnd = "16dp"
+            android:gravity="center"
+            android:textColor="@color/onboarding_text_color"
+            android:textSize="14sp" />
+
+        <FrameLayout
+            android:id="@+id/action_layout"
+            android:layout_width="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content">
+
+            <android.widget.Button
+                android:id="@+id/btn_skip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="16dp"
+                android:background="@android:color/transparent"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="@string/skip"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/onboarding_gray" />
+
+            <android.widget.Button
+                android:id="@+id/btn_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                android:background="@android:color/transparent"
+                android:clickable="true"
+                android:drawableEnd="@drawable/chevron_right"
+                android:drawablePadding="4dp"
+                android:focusable="true"
+                android:textColor="@color/onboarding_orange" />
+        </FrameLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

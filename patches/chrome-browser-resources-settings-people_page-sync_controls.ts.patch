@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/resources/settings/people_page/sync_controls.ts b/chrome/browser/resources/settings/people_page/sync_controls.ts
+index f3074049c1f3a37b679f2571b74f827cb796c1bc..e110dae96b16ccfef52f6953dd59581b65e7d389 100644
+--- a/chrome/browser/resources/settings/people_page/sync_controls.ts
++++ b/chrome/browser/resources/settings/people_page/sync_controls.ts
+@@ -176,7 +176,7 @@ export class SettingsSyncControlsElement extends
+ 
+     const router = Router.getInstance();
+     const currentRoute = router.getCurrentRoute();
+-    if (currentRoute === routes.SYNC_ADVANCED) {
++    if (currentRoute === routes.BRAVE_SYNC_SETUP) {
+       this.syncBrowserProxy_.didNavigateToSyncPage();
+     }
+     // <if expr="not is_chromeos">
+@@ -371,6 +371,7 @@ export class SettingsSyncControlsElement extends
+   private disableTypeCheckBox_(
+       syncStatus: SyncStatus, syncAllDataTypes: boolean,
+       dataTypeManaged: boolean): boolean {
++    if (dataTypeManaged) { return true; } if (!syncStatus || !this.syncPrefs) { return syncAllDataTypes }
+     if (!syncStatus) {
+       return true;
+     }

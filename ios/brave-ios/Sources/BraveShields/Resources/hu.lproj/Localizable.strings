@@ -1,0 +1,27 @@
+/* Shields Ads Stat */
+"AdsAndTrackersrBlocked" = "Trackerek& hirdetések letiltva";
+
+/* Shields Ads Stat */
+"AdsrBlocked" = "Blokkolt\nhirdetések";
+
+/* Data Saved Shield Stat */
+"DataSavedStat" = "Becsült megtak.\nadatforg.";
+
+/* Shields Time Saved Stat */
+"EstTimerSaved" = "Becsült megtak.\nidő";
+
+/* Time Saved Days */
+"ShieldsTimeStatsDays" = "n";
+
+/* Time Saved Hours */
+"ShieldsTimeStatsHour" = "ó";
+
+/* Time Saved Minutes */
+"ShieldsTimeStatsMinutes" = "perc";
+
+/* Time Saved Seconds */
+"ShieldsTimeStatsSeconds" = "mp";
+
+/* Shields Trackers Stat */
+"TrackersrBlocked" = "Blokkolt\nnyomkövetők";
+

@@ -1,0 +1,18 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+
+template("brave_mini_installer_archive_action") {
+  assert(target_name == "mini_installer_archive")
+  action(target_name) {
+    forward_variables_from(invoker, "*", TESTONLY_AND_VISIBILITY)
+    forward_variables_from(invoker, TESTONLY_AND_VISIBILITY)
+    deps += [ "//brave:mini_installer_dependencies" ]
+    if (skip_signing) {
+      args += [ "--skip_signing" ]
+    }
+  }
+}

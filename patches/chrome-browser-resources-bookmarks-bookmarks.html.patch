@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/bookmarks/bookmarks.html b/chrome/browser/resources/bookmarks/bookmarks.html
+index d28056ba63641513b631df9990784870ae71cd13..b1cd9f314bad81b924c99d4e91bd75f8855a0e2f 100644
+--- a/chrome/browser/resources/bookmarks/bookmarks.html
++++ b/chrome/browser/resources/bookmarks/bookmarks.html
+@@ -25,6 +25,7 @@
+       }
+     }
+   </style>
++  <link rel="stylesheet" href="chrome://resources/brave/page_specific/bookmarks/bookmarks_loading_shim.css">
+ </head>
+ <body>
+   <bookmarks-app></bookmarks-app>

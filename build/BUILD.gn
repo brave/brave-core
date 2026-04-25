@@ -1,0 +1,61 @@
+# Copyright (c) 2018 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//brave/build/redirect_cc.gni")
+import("//build/config/compiler/compiler.gni")
+
+config("brave_chromium_src_support") {
+  # Add "//brave/chromium_src" to the quoted include search path using -iquote.
+  # This allows all source files to point to Brave overrides via #include "...",
+  # while the overrides themselves can reference original Chromium files with
+  # #include <...>.
+  iquote_flags = []
+  if (is_win) {
+    # Clang-cl doesn't know -iquote. Prepend -Xclang to make it work.
+    iquote_flags += [ "-Xclang" ]
+  }
+  iquote_flags +=
+      [ "-iquote" + rebase_path("//brave/chromium_src", root_build_dir) ]
+
+  cflags = iquote_flags
+
+  # Pass iquote_flags to asmflags only if llvm-ml is enabled.
+  if (!disable_llvm_ml) {
+    # If llvm-ml is disabled, MASM is used instead. MASM doesn't work via
+    # redirect_cc, which means we should not pass the iquote_flags to asmflags.
+    # An invalid option warning is generated in this case.
+    asmflags = iquote_flags
+  }
+}
+
+# Config to support //base build without redirect_cc to build redirect_cc itself.
+if (is_redirect_cc_build) {
+  config("base_build_without_redirect_cc") {
+    defines = [
+      "BRAVE_GET_TARGET_FOR_DEFAULT_APP_SETTINGS=",
+      "BRAVE_HISTOGRAM_FUNCTIONS_UMA_HISTOGRAM_ENUMERATION=",
+      "BRAVE_SCOPED_ALLOW_BASE_SYNC_PRIMITIVES_H=",
+      "BRAVE_INTERNAL_TRACE_LIST_BUILTIN_CATEGORIES=",
+    ]
+  }
+}
+
+config("compiler") {
+  cflags = [
+    "-Xclang",
+    "-fexperimental-max-bitint-width=256",
+  ]
+  configs = [ ":brave_chromium_src_support" ]
+  if (is_redirect_cc_build) {
+    configs -= [ ":brave_chromium_src_support" ]
+    configs += [ ":base_build_without_redirect_cc" ]
+  }
+}
+
+# do not expose this as a public config anywhere
+config("version") {
+  defines = [ "BRAVE_CHROMIUM_VERSION=\"$chrome_version_string\"" ]
+}

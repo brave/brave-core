@@ -1,0 +1,518 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>One fleet hits 5 million miles mostly on propane. Experts say it's a start toward greener fuels.</title><meta charset="iso-8859-1"/><body id="article"><h1 class="title metadata">One fleet hits 5 million miles mostly on propane. Experts say it's a start toward greener fuels.</h1><p class="subhead metadata">As a Chicago company notches more than 5 million miles on its fleet of propane delivery trucks, environmentalists note that while propane is not a perfectly clean fuel source, it can be a good "bridge" allowing companies to have an impact on reducing pollution while still waiting for other alternative sources to mature.</p><div class=""><p class="metadata">By BY JENNY WHIDDEN</p><p class="metadata date">Updated Aug. 16, 2022 03:49 AM</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+																<p data-block="1">Chicago-based Alpha Baking Co., which delivers bakery items to restaurants and grocery stores throughout Illinois and other Midwest states, is celebrating 5 million miles driven in its fleet of alternative-fuel trucks -- primarily propane vehicles.</p>
+									<p data-block="2">Though propane isn't perfect from an emissions standpoint, its proponents say the fuel is economically and environmentally sustainable compared to gasoline and diesel, making it a viable steppingstone on the way to more climate-friendly options such as going electric.</p>
+
+									<p class="p402_premiumInside">Alpha Baking, which deploys 28 propane trucks and three all-electric trucks, has been searching for an alternative fuel for two decades, first looking into biofuels. The company was looking to be less dependent on diesel and reduce its fleet's impact on the environment at the same time, Director of Logistics Robert McGuire said.</p>
+									<p class="p402_premiumInside">After running into some bumps in the road with its first foray into alternative fuel -- including finding chicken bones in the waste vegetable oil they were trying out -- McGuire said the company "took a leap of faith" and partnered with Ford and automobile engineering company Roush CleanTech to put 23 all-propane vehicles on the road.</p>
+									<p class="p402_premiumInside">It was 2013, and the models driven by Alpha Baking were the first of their kind. McGuire said the company wasn't 100% sure what it was getting into at the time, but it has paid off on multiple fronts.</p>
+									<p class="p402_premiumInside">"We wanted to do something right for the right reason, and that was something that addresses clean energy. From an operational standpoint, (propane is) cost-efficient, cost-effective and cleaner," he said. "And when fuel hits $5 or $6 a gallon, it's a much better decision."</p>
+
+									<p class="p402_premiumInside">Todd Mouw, the executive vice president of Roush, said that though propane has been around for a long time, it takes people "willing to force change upon their organization" to get the propane vehicles up and running at the outset.</p>
+									<p class="p402_premiumInside">"Once we get through that, we're going to see significant reductions in costs and harmful emissions and do a better job of operating in the communities we operate in and support," Mouw said. "I think that's a credit to those companies like Alpha Baking."</p>
+									<p class="p402_premiumInside">Businesses can count on the financial benefits of propane vehicles, Mouw said. That's because they are relatively seamless to convert from existing diesel vehicles, there's a reliable availability of domestic fuel, and companies don't have to compromise on the range its trucks can go, he said.</p>
+									<p class="p402_premiumInside">From an emissions standpoint, the benefits are complicated, said Andrew Burnham, the principal environmental scientist at Argonne National Laboratory in DuPage County.</p>
+	
+									<p class="p402_premiumInside">Propane vehicles release significantly less nitrogen oxides and particulate matter into the atmosphere than either diesel or gasoline vehicles, reducing the trucks' contributions to ground-level ozone pollution -- commonly known as smog.</p>
+									<p class="p402_premiumInside">While propane vehicles release less greenhouse gases than gasoline vehicles, Burnham said they are neck and neck with diesel vehicles.</p>
+									<p class="p402_premiumInside">Because of its carbon footprint limitations, Mouw said propane is a good, financially viable option for fleets while other technologies such as electric- and hydrogen-powered vehicles mature and become more affordable.</p>
+									<p class="p402_premiumInside">"Propane is a great bridge to get to what's next," Mouw said. "That bridge could be 10 years, it could be 20 or 30 or 40 years, but at least it gives a fleet like (Alpha Baking's) and other fleets that are running it a chance to make an impact in the environment, in the communities they operate in, and also do so in a financially responsible method."</p>
+									<p class="p402_premiumInside">Looking ahead, McGuire said Alpha Baking is interested in growing its number of electric trucks -- especially as the nationwide push to go electric continues developing with opportunities such as state and federal rebates to purchase the vehicles.</p>
+									<p class="p402_premiumInside">• Jenny Whidden is a Report For America corps member covering climate change and environment for the Daily Herald. <a href="https://www.reportforamerica.org/newsrooms/daily-herald-4/" target="_blank">To help support her work with a tax-deductible donation, </a>see https://www.reportforamerica.org/newsrooms/daily-herald-4/.</p>
+	
+	
+	
+							</body>

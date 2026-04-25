@@ -1,0 +1,15 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+module brave_rewards.mojom;
+
+import "brave/components/brave_rewards/core/mojom/rewards.mojom";
+import "brave/components/brave_rewards/core/mojom/rewards_engine.mojom";
+
+interface RewardsEngineFactory {
+  CreateRewardsEngine(
+      pending_associated_receiver<RewardsEngine> engine_receiver,
+      pending_associated_remote<RewardsEngineClient> client_remote,
+      RewardsEngineOptions options) => ();
+};

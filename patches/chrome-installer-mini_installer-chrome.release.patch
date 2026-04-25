@@ -1,0 +1,41 @@
+diff --git a/chrome/installer/mini_installer/chrome.release b/chrome/installer/mini_installer/chrome.release
+index 0f331c3e0f2a39813af0a33a162cefaff9324524..56f286a033a7958b3be1e3bb790a6b9c191d9ff3 100644
+--- a/chrome/installer/mini_installer/chrome.release
++++ b/chrome/installer/mini_installer/chrome.release
+@@ -6,7 +6,7 @@
+ #
+ # Chrome Application dir entries, sorted alphabetically.
+ #
+-chrome.exe: %(ChromeDir)s\
++brave.exe: %(ChromeDir)s\
+ chrome_proxy.exe: %(ChromeDir)s\
+ #
+ # Chrome version dir assembly manifest.
+@@ -18,9 +18,19 @@ chrome_proxy.exe: %(ChromeDir)s\
+ #
+ # Chrome version dir entries, sorted alphabetically.
+ #
++brave.exe.sig: %(VersionDir)s\
++brave_vpn_helper.exe: %(VersionDir)s\
++brave_vpn_wireguard_service.exe: %(VersionDir)s\BraveVpnWireguardService\
++tunnel.dll: %(VersionDir)s\BraveVpnWireguardService\
++wireguard.dll: %(VersionDir)s\BraveVpnWireguardService\
++elevation_service.exe: %(VersionDir)s\
+ chrome.dll: %(VersionDir)s\
++chrome.dll.sig: %(VersionDir)s\
++brave_resources.pak: %(VersionDir)s\
++brave_100_percent.pak: %(VersionDir)s\
+ chrome_100_percent.pak: %(VersionDir)s\
+ chrome_child.dll: %(VersionDir)s\
++chrome_child.dll.sig: %(VersionDir)s\
+ chrome_elf.dll: %(VersionDir)s\
+ chrome_pwa_launcher.exe: %(VersionDir)s\
+ chrome_wer.dll: %(VersionDir)s\
+@@ -71,6 +81,7 @@ IwaKeyDistribution\manifest.json: %(VersionDir)s\IwaKeyDistribution\
+ 
+ [HIDPI]
+ chrome_200_percent.pak: %(VersionDir)s\
++brave_200_percent.pak: %(VersionDir)s\
+ 
+ [FFMPEG]
+ ffmpeg.dll: %(VersionDir)s\

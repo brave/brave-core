@@ -1,0 +1,56 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+.requestotr a {
+  color: rgb(107, 112, 132);
+  text-decoration: none;
+}
+
+.requestotr #main-message {
+  font-weight: 400;
+}
+
+.requestotr #main-message > h1 {
+  font-weight: 500;
+}
+
+.requestotr #main-message > p {
+  display: block;
+}
+
+.requestotr #main-message > p#primary-paragraph {
+  font-weight: 500;
+}
+
+.requestotr .icon {
+  background-image: url(shield-star.svg);
+  height: 84px;
+}
+
+.requestotr #dont-warn-again {
+  padding-top: 1em;
+}
+
+.requestotr #dont-warn-again > p {
+  margin-top: 0;
+  padding-inline-start: 1.8em;
+}
+
+.requestotr input#dont-warn-again-checkbox {
+  opacity: 1;
+}
+
+.requestotr label {
+  font-size: 110%;
+}
+.requestotr button#primary-button {
+  background-color: rgb(66, 62, 238);
+  border-radius: 1000px;
+  color: white;
+}
+
+.requestotr button {
+    border-radius: 28px;
+}

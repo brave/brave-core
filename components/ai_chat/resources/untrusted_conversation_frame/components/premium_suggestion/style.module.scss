@@ -1,0 +1,145 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+.boxPremium {
+  width: 100%;
+  background: var(--leo-color-primary-10);
+  border-radius: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.header {
+  padding: 24px;
+
+  h4 {
+    font: var(--leo-font-heading-h4);
+    margin: 0;
+  }
+
+  p {
+    font: var(--leo-font-default-regular);
+    margin: 0;
+  }
+}
+
+.features {
+  padding: 0 8px 8px 8px;
+
+  ul {
+    --leo-icon-size: 20px;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    border: 1px solid var(--leo-color-primary-20);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  li {
+    font: var(--leo-font-default-semibold);
+    list-style-type: none;
+    padding: var(--leo-spacing-l);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--leo-color-primary-20);
+
+    &:last-child {
+      border: 0;
+    }
+
+    p {
+      margin: 0;
+      font: var(--leo-font-small-regular);
+      color: var(--leo-color-text-secondary);
+    }
+  }
+}
+
+.priceListWrapper {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--leo-color-primary-20);
+  padding: 16px;
+}
+
+.priceList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+}
+
+.price {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-primary-50);
+  display: inline-flex;
+  align-items: center;
+
+  data {
+    font: var(--leo-font-heading-h2);
+    color: var(--leo-color-text-primary);
+    margin: 0 5px;
+  }
+}
+
+.icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--leo-radius-m);
+  background: var(--leo-color-primary-20);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+
+  leo-icon {
+    color: var(--leo-color-primary-60);
+  }
+}
+
+.priceButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  border: 2px solid var(--leo-color-divider-interactive);
+  border-radius: 12px;
+  padding: var(--leo-spacing-xl);
+  background: var(--leo-color-blurple-5);
+}
+
+.priceButtonMonthly {
+  background: var(--leo-color-primary-10);
+}
+
+.priceButtonLabel {
+  font: var(--leo-font-heading-h4);
+  color: var(--leo-color-text-primary);
+}
+
+.subscriptionPolicy {
+  color: var(--leo-color-text-secondary);
+  font: var(--leo-font-small-regular);
+  padding: var(--leo-spacing-l) 0 0 0;
+  text-align: center;
+}
+
+.actions {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  padding: 24px 16px 16px 16px;
+}
+
+.bestValueColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--leo-spacing-s);
+}

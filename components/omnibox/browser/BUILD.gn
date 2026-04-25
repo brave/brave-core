@@ -1,0 +1,88 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/commander/common/buildflags/buildflags.gni")
+import("//brave/components/omnibox/buildflags/buildflags.gni")
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "//brave/components/omnibox/browser/brave_bookmark_provider_unittest.cc",
+    "//brave/components/omnibox/browser/brave_fake_autocomplete_provider_client.cc",
+    "//brave/components/omnibox/browser/brave_fake_autocomplete_provider_client.h",
+    "//brave/components/omnibox/browser/brave_featured_search_provider_unittest.cc",
+    "//brave/components/omnibox/browser/brave_history_quick_provider_unittest.cc",
+    "//brave/components/omnibox/browser/brave_history_url_provider_unittest.cc",
+    "//brave/components/omnibox/browser/brave_local_history_zero_suggest_provider_unittest.cc",
+    "//brave/components/omnibox/browser/brave_search_provider_unittest.cc",
+    "//brave/components/omnibox/browser/brave_shortcuts_provider_unittest.cc",
+    "//brave/components/omnibox/browser/omnibox_autocomplete_unittest.cc",
+    "//brave/components/omnibox/browser/on_device_head_provider_unittest.cc",
+    "brave_autocomplete_result_unittest.cc",
+    "brave_on_device_head_provider_unittest.cc",
+    "brave_search_suggestion_parser_unittest.cc",
+    "promotion_unittest.cc",
+  ]
+
+  if (enable_ai_chat) {
+    sources += [ "//brave/components/omnibox/browser/leo_provider_unittest.cc" ]
+  }
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/brave_origin/buildflags",
+    "//brave/components/brave_search_conversion",
+    "//brave/components/constants",
+    "//brave/components/l10n/common:test_support",
+    "//brave/components/omnibox/buildflags",
+    "//brave/components/search_engines",
+    "//chrome/browser/history",
+    "//components/bookmarks/browser",
+    "//components/bookmarks/test",
+    "//components/omnibox/browser",
+    "//components/omnibox/browser:test_support",
+    "//components/prefs",
+    "//components/prefs:test_support",
+    "//components/search_engines",
+    "//components/sync_preferences:test_support",
+    "//components/variations:test_support",
+    "//services/network:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/core/common" ]
+  }
+
+  if (!is_ios) {
+    deps += [
+      "//chrome/browser/search_engines",
+      "//chrome/test:test_support",
+      "//content/test:test_support",
+      "//ui/base/clipboard:clipboard_test_support",
+    ]
+  }
+
+  if (enable_strict_query_check_for_search_suggestions) {
+    deps += [ "//brave/components/omnibox/browser/search_suggestions" ]
+  }
+
+  if (enable_commander) {
+    sources +=
+        [ "//brave/components/omnibox/browser/commander_provider_unittest.cc" ]
+
+    deps += [
+      "//brave/components/commander/browser",
+      "//brave/components/vector_icons",
+    ]
+  }
+
+  data = [ "//components/test/data/omnibox" ]
+}

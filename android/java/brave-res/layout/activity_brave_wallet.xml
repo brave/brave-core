@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2021 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/crypto_onboarding_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/wallet_bg">
+
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/crypto_wallet_onboarding_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/onboarding_back_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|top"
+                android:contentDescription="@null"
+                android:padding="16dp"
+                app:tint="@color/brave_wallet_onboarding_item_background_color"
+                app:srcCompat="@drawable/ic_baseline_arrow_back_24"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/onboarding_close_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|top"
+                android:contentDescription="@null"
+                android:padding="16dp"
+                app:tint="@color/brave_wallet_onboarding_item_background_color"
+                app:srcCompat="@drawable/ic_baseline_close_24"
+                android:visibility="gone"/>
+    </FrameLayout>

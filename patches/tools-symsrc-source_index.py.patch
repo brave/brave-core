@@ -1,0 +1,11 @@
+diff --git a/tools/symsrc/source_index.py b/tools/symsrc/source_index.py
+index d23e2f22d3379eb03314a909c4e16194a53c8626..92b79a7d1a6ec8623b28bc1f30a360810666d9a8 100755
+--- a/tools/symsrc/source_index.py
++++ b/tools/symsrc/source_index.py
+@@ -600,5 +600,6 @@ def main():
+   return 0
+ 
+ 
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
+ if __name__ == '__main__':
+   sys.exit(main())

@@ -1,0 +1,111 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+.turn {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: var(--leo-spacing-xl);
+  font: var(--leo-font-large-regular);
+  color: var(--leo-color-text-primary);
+  padding-top: var(--leo-spacing-2xl);
+}
+
+.turnAI {
+  background-color: transparent;
+  align-items: flex-start;
+}
+
+.hasGenerated .entryPair:last-child {
+  min-height: calc(100vh - var(--suggested-questions-height) * 2);
+}
+
+.message {
+  margin: 0;
+  width: 100%;
+}
+
+.humanMessage {
+  display: flex;
+  margin: 0;
+  width: 100%;
+  justify-content: flex-end;
+  gap: var(--leo-spacing-m);
+}
+
+.selectedTextContext {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--leo-spacing-m);
+  margin-right: auto;
+}
+
+.humanMessageBubble {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  padding: var(--leo-spacing-xl);
+  border-radius: var(--leo-spacing-xl) var(--leo-spacing-xl)
+    var(--leo-spacing-s) var(--leo-spacing-xl);
+  background-color: var(--leo-color-neutral-10);
+  max-width: min(520px, 100%);
+  gap: var(--leo-spacing-m);
+  word-break: break-word;
+}
+
+.humanTextRow {
+  display: flex;
+  align-items: center;
+  white-space: pre-wrap;
+  gap: var(--leo-spacing-m);
+}
+
+.editLabel {
+  display: flex;
+  height: 20px;
+  padding: 0px var(--leo-spacing-s);
+  align-items: center;
+  gap: var(--leo-spacing-xs);
+  border-radius: var(--leo-radius-s);
+  background: var(--leo-color-container-background);
+  white-space: nowrap;
+}
+
+.editLabelText {
+  color: var(---leo-color-neutral-60);
+  text-transform: uppercase;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 10px;
+}
+
+.attachmentsContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: 240px;
+  overflow-y: auto;
+  gap: var(--leo-spacing-s);
+}
+
+.loading {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  // Added padding to the top to avoid layout shift between this
+  // loading spinner and the "Improving answer with Brave Search…"
+  // loading spinner.
+  padding-top: 10px;
+  --leo-progressring-color: var(--leo-color-icon-interactive);
+  --leo-progressring-size: 15px;
+  --leo-icon-size: 20px;
+}
+
+.skillLabel {
+  --leo-label-font-text: var(--leo-font-large-regular);
+  --leo-label-padding: var(--leo-spacing-xs) var(--leo-spacing-s);
+}

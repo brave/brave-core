@@ -1,0 +1,35 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+source_set("browser_tests") {
+  testonly = true
+
+  if (!is_android) {
+    sources = [
+      "//brave/browser/browsing_data/brave_browsing_data_remover_browsertest.cc",
+      "//brave/browser/browsing_data/brave_clear_browsing_data_browsertest.cc",
+    ]
+
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+    deps = [
+      "//base",
+      "//base/test:test_support",
+      "//chrome/app:command_ids",
+      "//chrome/browser",
+      "//chrome/browser/browsing_data:constants",
+      "//chrome/browser/search_engines",
+      "//chrome/browser/ui",
+      "//chrome/common:constants",
+      "//chrome/test:test_support",
+      "//chrome/test:test_support_ui",
+      "//components/browsing_data/core",
+      "//components/prefs",
+      "//content/public/browser",
+      "//content/public/common",
+      "//content/test:test_support",
+    ]
+  }
+}

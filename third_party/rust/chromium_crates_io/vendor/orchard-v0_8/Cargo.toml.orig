@@ -1,0 +1,94 @@
+[package]
+name = "orchard"
+version = "0.8.0"
+authors = [
+    "Sean Bowe <sean@electriccoin.co>",
+    "Jack Grigg <jack@electriccoin.co>",
+    "Daira-Emma Hopwood <daira@jacaranda.org>",
+    "Ying Tong Lai",
+    "Kris Nuttycombe <kris@electriccoin.co>",
+]
+edition = "2021"
+rust-version = "1.65"
+description = "The Orchard shielded transaction protocol"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/zcash/orchard"
+documentation = "https://docs.rs/orchard"
+readme = "README.md"
+categories = ["cryptography::cryptocurrencies"]
+keywords = ["zcash"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs", "--html-in-header", "katex-header.html"]
+
+[dependencies]
+aes = "0.8"
+bitvec = "1"
+blake2b_simd = "1"
+ff = "0.13"
+fpe = "0.6"
+group = { version = "0.13", features = ["wnaf-memuse"] }
+halo2_gadgets = "0.3"
+halo2_proofs = { version = "0.3", default-features = false, features = ["batch", "floor-planner-v1-legacy-pdqsort"] }
+hex = "0.4"
+lazy_static = "1"
+memuse = { version = "0.2.1", features = ["nonempty"] }
+pasta_curves = "0.5"
+proptest = { version = "1.0.0", optional = true }
+rand = "0.8"
+reddsa = "0.5"
+nonempty = "0.7"
+serde = { version = "1.0", features = ["derive"] }
+subtle = "2.3"
+zcash_note_encryption = "0.4"
+incrementalmerkletree = "0.5"
+zcash_spec = "0.1"
+zip32 = "0.1"
+
+# Logging
+tracing = "0.1"
+
+# Developer tooling dependencies
+image = { version = "0.24", optional = true }
+plotters = { version = "0.3.0", optional = true }
+
+[dev-dependencies]
+bridgetree = "0.4"
+criterion = "0.4" # 0.5 depends on clap 4 which has MSRV 1.70
+halo2_gadgets = { version = "0.3", features = ["test-dependencies"] }
+hex = "0.4"
+proptest = "1.0.0"
+zcash_note_encryption = { version = "0.4", features = ["pre-zip-212"] }
+incrementalmerkletree = { version = "0.5", features = ["test-dependencies"] }
+
+[target.'cfg(unix)'.dev-dependencies]
+inferno = { version = "0.11", default-features = false, features = ["multithreaded", "nameattr"] }
+pprof = { version = "0.11", features = ["criterion", "flamegraph"] }
+
+[lib]
+bench = false
+
+[features]
+default = ["multicore"]
+multicore = ["halo2_proofs/multicore"]
+dev-graph = ["halo2_proofs/dev-graph", "image", "plotters"]
+test-dependencies = ["proptest"]
+
+[[bench]]
+name = "note_decryption"
+harness = false
+
+[[bench]]
+name = "small"
+harness = false
+
+[[bench]]
+name = "circuit"
+harness = false
+
+[profile.release]
+debug = true
+
+[profile.bench]
+debug = true

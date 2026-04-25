@@ -1,0 +1,6 @@
+# It would be nice to have file mac/.gitignore with entries `BraveUpdater.app/`
+# and `.url`. But the `DownloadAndUnpack` function we are using deletes the
+# destination directory, `mac/`, and thus also `mac/.gitignore`. We therefore
+# maintain the .gitignore entries here:
+mac/BraveUpdater.app/
+mac/.url

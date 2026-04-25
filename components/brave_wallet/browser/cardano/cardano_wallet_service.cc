@@ -1,0 +1,429 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_wallet/browser/cardano/cardano_wallet_service.h"
+
+#include <stdint.h>
+
+#include <memory>
+#include <optional>
+#include <utility>
+#include <vector>
+
+#include "base/check.h"
+#include "base/check_is_test.h"
+#include "base/containers/map_util.h"
+#include "base/notreached.h"
+#include "base/strings/string_number_conversions.h"
+#include "base/types/expected.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_create_transaction_task.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_get_utxos_task.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_transaction_serializer.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/cardano_address.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
+
+namespace brave_wallet {
+
+namespace {
+
+mojom::CardanoBalancePtr BalanceFromUtxos(
+    const cardano_rpc::UnspentOutputs& utxos,
+    const std::optional<cardano_rpc::TokenId>& token_id) {
+  base::CheckedNumeric<uint64_t> total_balance = 0;
+  for (const auto& utxo : utxos) {
+    if (token_id) {
+      if (auto* token_balance = base::FindOrNull(utxo.tokens, token_id)) {
+        total_balance += *token_balance;
+      }
+    } else {
+      total_balance += utxo.lovelace_amount;
+    }
+  }
+
+  auto result = mojom::CardanoBalance::New();
+  if (!total_balance.AssignIfValid(&result->total_balance)) {
+    return nullptr;
+  }
+
+  return result;
+}
+
+}  // namespace
+
+CardanoWalletService::CardanoWalletService(
+    KeyringService& keyring_service,
+    NetworkManager& network_manager,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    : keyring_service_(keyring_service),
+      network_manager_(network_manager),
+      cardano_mainnet_rpc_(mojom::kCardanoMainnet,
+                           network_manager,
+                           url_loader_factory),
+      cardano_testnet_rpc_(mojom::kCardanoTestnet,
+                           network_manager,
+                           url_loader_factory) {}
+
+CardanoWalletService::~CardanoWalletService() = default;
+
+void CardanoWalletService::Bind(
+    mojo::PendingReceiver<mojom::CardanoWalletService> receiver) {
+  receivers_.Add(this, std::move(receiver));
+}
+
+void CardanoWalletService::Reset() {
+  weak_ptr_factory_.InvalidateWeakPtrs();
+}
+
+void CardanoWalletService::GetBalance(
+    mojom::AccountIdPtr account_id,
+    const std::optional<std::string>& token_id_hex,
+    GetBalanceCallback callback) {
+  std::optional<cardano_rpc::TokenId> token_id;
+  if (token_id_hex) {
+    token_id.emplace();
+    if (!base::HexStringToBytes(*token_id_hex, &token_id.value())) {
+      std::move(callback).Run(nullptr, WalletInternalErrorMessage());
+      return;
+    }
+  }
+
+  GetUtxos(account_id.Clone(),
+           base::BindOnce(&CardanoWalletService::OnGetUtxosForGetBalance,
+                          weak_ptr_factory_.GetWeakPtr(), std::move(token_id),
+                          std::move(callback)));
+}
+
+void CardanoWalletService::OnGetUtxosForGetBalance(
+    const std::optional<cardano_rpc::TokenId>& token_id,
+    GetBalanceCallback callback,
+    base::expected<cardano_rpc::UnspentOutputs, std::string> utxos) {
+  if (!utxos.has_value()) {
+    std::move(callback).Run(nullptr, utxos.error());
+    return;
+  }
+  auto balance = BalanceFromUtxos(utxos.value(), token_id);
+  if (!balance) {
+    std::move(callback).Run(nullptr, WalletInternalErrorMessage());
+    return;
+  }
+  std::move(callback).Run(std::move(balance), std::nullopt);
+}
+
+void CardanoWalletService::DiscoverNextUnusedAddress(
+    const mojom::AccountIdPtr& account_id,
+    mojom::CardanoKeyRole role,
+    DiscoverNextUnusedAddressCallback callback) {
+  CHECK(IsCardanoAccount(account_id));
+
+  // TODO(https://github.com/brave/brave-browser/issues/46092): this always
+  // returns first address.
+  auto address = keyring_service().GetCardanoAddress(
+      account_id, mojom::CardanoKeyId::New(role, 0));
+  if (!address) {
+    std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
+    return;
+  }
+
+  std::move(callback).Run(std::move(address));
+}
+
+void CardanoWalletService::GetUtxos(mojom::AccountIdPtr account_id,
+                                    GetUtxosCallback callback) {
+  auto addresses = keyring_service().GetCardanoAddresses(account_id);
+  if (!addresses) {
+    std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
+    return;
+  }
+
+  std::vector<CardanoAddress> cardano_addresses;
+  for (const auto& address : *addresses) {
+    if (auto cardano_address =
+            CardanoAddress::FromString(address->address_string)) {
+      cardano_addresses.push_back(std::move(*cardano_address));
+    }
+  }
+
+  auto [task_it, inserted] =
+      get_cardano_utxo_tasks_.insert(std::make_unique<GetCardanoUtxosTask>(
+          *this, GetNetworkForCardanoAccount(account_id),
+          std::move(cardano_addresses)));
+  CHECK(inserted);
+  auto* task_ptr = task_it->get();
+
+  task_ptr->Start(base::BindOnce(&CardanoWalletService::OnGetUtxosTaskDone,
+                                 weak_ptr_factory_.GetWeakPtr(), task_ptr,
+                                 std::move(callback)));
+}
+
+void CardanoWalletService::OnGetUtxosTaskDone(
+    GetCardanoUtxosTask* task,
+    GetUtxosCallback callback,
+    base::expected<cardano_rpc::UnspentOutputs, std::string> result) {
+  if (result.has_value()) {
+    DiscoverNewTokens(task->chain_id(), result.value());
+  }
+
+  std::move(callback).Run(std::move(result));
+
+  get_cardano_utxo_tasks_.erase(task);
+}
+
+void CardanoWalletService::CreateCardanoTransaction(
+    mojom::AccountIdPtr account_id,
+    const CardanoAddress& address_to,
+    uint64_t amount,
+    bool sending_max_amount,
+    std::optional<cardano_rpc::TokenId> token_to_send,
+    CardanoCreateTransactionTaskCallback callback) {
+  CHECK(IsCardanoAccount(account_id));
+  if (sending_max_amount) {
+    CHECK_EQ(amount, 0u);
+  } else {
+    CHECK_GT(amount, 0u);
+  }
+
+  auto [task_it, inserted] = create_transaction_tasks_.insert(
+      std::make_unique<CardanoCreateTransactionTask>(
+          *this, account_id, address_to, amount, sending_max_amount,
+          token_to_send));
+  CHECK(inserted);
+  auto* task_ptr = task_it->get();
+
+  task_ptr->Start(base::BindOnce(
+      &CardanoWalletService::OnCreateCardanoTransactionTaskDone,
+      weak_ptr_factory_.GetWeakPtr(), task_ptr, std::move(callback)));
+}
+
+void CardanoWalletService::OnCreateCardanoTransactionTaskDone(
+    CardanoCreateTransactionTask* task,
+    CardanoCreateTransactionTaskCallback callback,
+    base::expected<CardanoTransaction, std::string> result) {
+  create_transaction_tasks_.erase(task);
+
+  std::move(callback).Run(std::move(result));
+}
+
+void CardanoWalletService::SignAndPostTransaction(
+    const mojom::AccountIdPtr& account_id,
+    CardanoTransaction cardano_transaction,
+    SignAndPostTransactionCallback callback) {
+  CHECK(IsCardanoAccount(account_id));
+
+  if (!SignTransactionInternal(cardano_transaction, account_id)) {
+    std::move(callback).Run("", std::move(cardano_transaction),
+                            WalletInternalErrorMessage());
+    return;
+  }
+
+  auto serialized_transaction =
+      CardanoTransactionSerializer::SerializeTransaction(cardano_transaction);
+  if (!serialized_transaction) {
+    std::move(callback).Run("", std::move(cardano_transaction),
+                            WalletInternalErrorMessage());
+    return;
+  }
+
+  GetCardanoRpc(GetNetworkForCardanoAccount(account_id))
+      ->PostTransaction(
+          *serialized_transaction,
+          base::BindOnce(&CardanoWalletService::OnPostTransaction,
+                         weak_ptr_factory_.GetWeakPtr(),
+                         std::move(cardano_transaction), std::move(callback)));
+}
+
+bool CardanoWalletService::SignTransactionInternal(
+    CardanoTransaction& tx,
+    const mojom::AccountIdPtr& account_id) {
+  auto addresses = keyring_service_->GetCardanoAddresses(account_id);
+  if (!addresses) {
+    return false;
+  }
+  auto address_map = GetCardanoAddressesWithKeyIds(*addresses);
+  if (!address_map) {
+    return false;
+  }
+
+  auto hash = CardanoTransactionSerializer::GetTxHash(tx);
+  if (!hash) {
+    return false;
+  }
+
+  std::vector<CardanoTransaction::TxWitness> witnesses;
+  for (const auto& input_address : tx.GetInputAddresses()) {
+    if (!address_map->contains(input_address)) {
+      return false;
+    }
+    auto& key_id = address_map->at(input_address);
+
+    auto signature_pair = keyring_service().SignMessageByCardanoKeyring(
+        account_id, key_id, *hash);
+    if (!signature_pair) {
+      return false;
+    }
+    witnesses.emplace_back(signature_pair->pubkey, signature_pair->signature);
+  }
+
+  tx.SetWitnesses(std::move(witnesses));
+
+  return true;
+}
+
+void CardanoWalletService::OnPostTransaction(
+    CardanoTransaction cardano_transaction,
+    SignAndPostTransactionCallback callback,
+    base::expected<std::string, std::string> txid) {
+  if (!txid.has_value()) {
+    std::move(callback).Run("", std::move(cardano_transaction), txid.error());
+    return;
+  }
+
+  std::move(callback).Run(txid.value(), std::move(cardano_transaction), "");
+}
+
+void CardanoWalletService::GetTransactionStatus(
+    const std::string& chain_id,
+    const std::string& txid,
+    GetTransactionStatusCallback callback) {
+  CHECK(IsCardanoNetwork(chain_id));
+  GetCardanoRpc(chain_id)->GetTransaction(
+      txid, base::BindOnce(&CardanoWalletService::OnGetTransactionStatus,
+                           weak_ptr_factory_.GetWeakPtr(), txid,
+                           std::move(callback)));
+}
+
+void CardanoWalletService::OnGetTransactionStatus(
+    const std::string& txid,
+    GetTransactionStatusCallback callback,
+    base::expected<std::optional<cardano_rpc::Transaction>, std::string>
+        transaction) {
+  if (!transaction.has_value()) {
+    std::move(callback).Run(base::unexpected(transaction.error()));
+    return;
+  }
+
+  if (!transaction.value().has_value()) {
+    std::move(callback).Run(base::ok(false));
+    return;
+  }
+
+  if (base::HexEncodeLower(transaction.value()->tx_hash) != txid) {
+    std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
+    return;
+  }
+
+  std::move(callback).Run(base::ok(true));
+}
+
+std::vector<mojom::CardanoAddressPtr> CardanoWalletService::GetUsedAddresses(
+    const mojom::AccountIdPtr& account_id) {
+  CHECK(IsCardanoAccount(account_id));
+
+  // We always have one address for a cardano account.
+  auto address = keyring_service().GetCardanoAddress(
+      account_id,
+      mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0));
+  if (!address) {
+    return {};
+  }
+
+  std::vector<mojom::CardanoAddressPtr> result;
+  result.push_back(std::move(address));
+  return result;
+}
+
+std::vector<mojom::CardanoAddressPtr> CardanoWalletService::GetUnusedAddresses(
+    const mojom::AccountIdPtr& account_id) {
+  CHECK(IsCardanoAccount(account_id));
+
+  // We always have one address for a cardano account. So don't have unused
+  // addresses.
+  return {};
+}
+
+mojom::CardanoAddressPtr CardanoWalletService::GetChangeAddress(
+    const mojom::AccountIdPtr& account_id) {
+  CHECK(IsCardanoAccount(account_id));
+
+  // We always have one address for a cardano account which is a change address
+  // also.
+  return keyring_service().GetCardanoAddress(
+      account_id,
+      mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0));
+}
+
+void CardanoWalletService::DiscoverNewTokens(
+    const std::string& chain_id,
+    const cardano_rpc::UnspentOutputs& outputs) {
+  if (!new_token_discovered_callback_) {
+    CHECK_IS_TEST();
+    return;
+  }
+
+  for (auto& output : outputs) {
+    for (auto& token : output.tokens) {
+      if (discovered_tokens_.contains({chain_id, token.first})) {
+        continue;
+      }
+
+      discovered_tokens_.insert(std::make_pair(chain_id, token.first));
+
+      GetCardanoRpc(chain_id)->GetAssetInfo(
+          token.first,
+          base::BindOnce(
+              &CardanoWalletService::OnGetAssetInfoForTokensDiscovery,
+              weak_ptr_factory_.GetWeakPtr(), chain_id));
+    }
+  }
+}
+
+void CardanoWalletService::OnGetAssetInfoForTokensDiscovery(
+    const std::string& chain_id,
+    base::expected<cardano_rpc::AssetInfo, std::string> asset_info) {
+  if (!asset_info.has_value() || !new_token_discovered_callback_) {
+    return;
+  }
+
+  mojom::BlockchainTokenPtr token = mojom::BlockchainToken::New();
+  token->coin = mojom::CoinType::ADA;
+  token->chain_id = chain_id;
+  token->contract_address = asset_info.value().asset;
+  token->name = asset_info.value().name;
+  token->symbol = asset_info.value().ticker;
+  token->decimals = asset_info.value().decimals;
+  token->visible = true;
+
+  new_token_discovered_callback_.Run(std::move(token));
+}
+
+void CardanoWalletService::SetNewTokenDiscoveredCallback(
+    base::RepeatingCallback<void(mojom::BlockchainTokenPtr)> callback) {
+  new_token_discovered_callback_ = std::move(callback);
+}
+
+cardano_rpc::CardanoRpc* CardanoWalletService::GetCardanoRpc(
+    const std::string& chain_id) {
+  if (chain_id == mojom::kCardanoMainnet) {
+    return &cardano_mainnet_rpc_;
+  }
+  if (chain_id == mojom::kCardanoTestnet) {
+    return &cardano_testnet_rpc_;
+  }
+  NOTREACHED() << chain_id;
+}
+
+void CardanoWalletService::SetUrlLoaderFactoryForTesting(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
+  cardano_mainnet_rpc_.SetUrlLoaderFactoryForTesting(  // IN-TEST
+      url_loader_factory);
+  cardano_testnet_rpc_.SetUrlLoaderFactoryForTesting(  // IN-TEST
+      url_loader_factory);
+}
+
+}  // namespace brave_wallet

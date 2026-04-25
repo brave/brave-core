@@ -1,0 +1,27 @@
+/* Shields Ads Stat */
+"AdsAndTrackersrBlocked" = "ट्रैकर्स & ऐड्स ब्लॉक किए गए";
+
+/* Shields Ads Stat */
+"AdsrBlocked" = "ऐड्स \nब्लॉक किए गए";
+
+/* Data Saved Shield Stat */
+"DataSavedStat" = "सेव करने की \nअनुमानित तारीख";
+
+/* Shields Time Saved Stat */
+"EstTimerSaved" = "सेव करने का \nअनुमानित समय";
+
+/* Time Saved Days */
+"ShieldsTimeStatsDays" = "दि.";
+
+/* Time Saved Hours */
+"ShieldsTimeStatsHour" = "घं.";
+
+/* Time Saved Minutes */
+"ShieldsTimeStatsMinutes" = "मि.";
+
+/* Time Saved Seconds */
+"ShieldsTimeStatsSeconds" = "से.";
+
+/* Shields Trackers Stat */
+"TrackersrBlocked" = "ट्रैकर्स \nको ब्लॉक किया गया";
+

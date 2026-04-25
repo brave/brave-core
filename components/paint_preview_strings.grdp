@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
+<grit-part>
+  <message name="IDS_PAINT_PREVIEW_COMPOSITOR_SERVICE_DISPLAY_NAME" desc="The display name (in the system task manager, etc) of the service process used for compositing Paint Previews.">
+    Paint Preview Compositor Service
+  </message>
+</grit-part>

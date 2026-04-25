@@ -1,0 +1,13 @@
+diff --git a/extensions/browser/extension_creator.cc b/extensions/browser/extension_creator.cc
+index d299ee0e33ad4c93c8a488e0d8f4ff7faf31319c..2e4d51faf6b705cc18f49b273cce77009dbb69d2 100644
+--- a/extensions/browser/extension_creator.cc
++++ b/extensions/browser/extension_creator.cc
+@@ -218,7 +218,7 @@ bool ExtensionCreator::CreateCrx(
+     result = crx_file::CreateCrxWithVerifiedContentsInHeader(
+         crx_path, zip_path, private_key, compressed_verified_contents.value());
+   } else {
+-    result = crx_file::Create(crx_path, zip_path, private_key);
++    BRAVE_CREATE_CRX(crx_path, zip_path, private_key);
+   }
+   switch (result) {
+     case crx_file::CreatorResult::OK:

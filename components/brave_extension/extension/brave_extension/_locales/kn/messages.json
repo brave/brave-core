@@ -1,0 +1,226 @@
+{
+  "appName": {
+    "message": "Brave ವಿಸ್ತರಣೆ",
+    "description": "The name of the extension."
+  },
+  "shields": {
+    "message": "ಶೀಲ್ಡ್‌ಗಳು",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "ಮೇಲಕ್ಕೆ",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "ಕೆಳಗೆ",
+    "description": "Message for when shields is disabled"
+  },
+  "forThisSite": {
+    "message": "ಈ ಸೈಟ್‌ಗಾಗಿ",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "ಸೈಟ್‌ಗೆ ಹಾನಿಯಾಗಿದೆ ಎಂದಾದರೆ, ಸಮಸ್ಯೆಯನ್ನು ಬಗೆಹರಿಸಲು ಪ್ರಯತ್ನಿಸಿ",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "Brave ನ ಗೌಪ್ಯತೆ ಮತ್ತು ಸುರಕ್ಷತಾ ರಕ್ಷಣೆಗಳಿಲ್ಲದೆ ನೀವು ಈ ಸೈಟ್‌ ಅನ್ನು ಬ್ರೌಸ್ ಮಾಡುತ್ತಿದ್ದೀರಿ. ಇದು ಶಿಲ್ಡ್ಸ್ಅಪ್ ಜೊತೆಗೆ ಸರಿಯಾಗಿ ಕಾರ್ಯನಿರ್ವಹಿಸುವುದಿಲ್ಲವೇ?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "ಬ್ರೋಕನ್ ಸೈಟ್ ಅನ್ನು ವರದಿ ಮಾಡಿ",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
+  },
+  "itemsBlocked": {
+    "message": "ಐಟಂಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
+  },
+  "itemBlocked": {
+    "message": "ಐಟಂ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
+  },
+  "and": {
+    "message": "ಮತ್ತು",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
+  },
+  "connectionsUpgraded": {
+    "message": "ಸಂಪರ್ಕಗಳನ್ನು ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಲಾಗಿದೆ",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
+  },
+  "connectionUpgraded": {
+    "message": "ಸಂಪರ್ಕ ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಲಾಗಿದೆ",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
+  },
+  "thirdPartyTrackersBlocked": {
+    "message": "ಕ್ರಾಸ್‌-ಸೈಟ್ ಟ್ರ್ಯಾಕರ್‌‌ಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
+    "description": "Message for the scripts blocked row label"
+  },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "ಟ್ರ್ಯಾಕರ್‌ಗಳು ಮತ್ತು ಜಾಹೀರಾತುಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "ಟ್ರ್ಯಾಕರ್‌ಗಳು & ಜಾಹೀರಾತುಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ (ಪ್ರತಿಕೂಲ)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "ಟ್ರ್ಯಾಕರ್‌ಗಳು & ಜಾಹೀರಾತುಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ (ಪ್ರಮಾಣಿತ)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "ಎಲ್ಲಾ ಟ್ರ್ಯಾಕರ್‌ಗಳು & ಜಾಹೀರಾತುಗಳನ್ನು ಅನುಮತಿಸಿ",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
+  "connectionsUpgradedHTTPS": {
+    "message": "ಎಚ್‌ಟಿಟಿಪಿಎಸ್‌ಗೆ ಸಂಪರ್ಕ ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಲಾಗಿದೆ",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
+  },
+  "connectionUpgradedHTTPS": {
+    "message": "ಎಚ್‌ಟಿಟಿಪಿಎಸ್‌ಗೆ ಸಂಪರ್ಕ ಅಪ್‌ಗ್ರೇಡ್‌ ಮಾಡಲಾಗಿದೆ",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
+  },
+  "scriptsBlocked": {
+    "message": "ಲಿಪಿಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
+    "description": "Message for the scripts blocked row label"
+  },
+  "thirdPartyCookiesBlocked": {
+    "message": "ಕ್ರಾಸ್‌-ಸೈಟ್ ಕುಕೀಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "ಕುಕೀಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "ಎಲ್ಲಾ ಕುಕೀಗಳನ್ನು ಅನುಮತಿಸಲಾಗಿದೆ",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "ಫಿಂಗರ್‌ಪ್ರಿಂಟ್ ಅನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
+    "description": "Message for the option in the fingerprinting field in read only view"
+  },
+  "standardFingerprinting": {
+    "message": "ಫಿಂಗರ್‌ಪ್ರಿಂಟಿಂಗ್ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ (ಪ್ರಮಾಣಿತ)",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
+  },
+  "strictFingerprinting": {
+    "message": "ಫಿಂಗರ್‌ಪ್ರಿಂಟಿಂಗ್ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ (ಕಟ್ಟುನಿಟ್ಟಾದ, ಸೈಟ್‌ಗಳನ್ನು ವಿಂಗಡಿಸಬಹುದು)",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
+  },
+  "allowAllFingerprinting": {
+    "message": "ಎಲ್ಲಾ ಫಿಂಗರ್‌ಪ್ರಿಂಟಿಂಗ್‌ ಅನುಮತಿಸಿ",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "ಫಿಂಗರ್‌ಪ್ರಿಂಟ್ ಮಾಡುವ ಪ್ರಯತ್ನಗಳು",
+    "description": "Message for the fingerprinting attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "ಸೈಟ್‌ನಲ್ಲಿರುವ ಲಿಪಿಗಳು",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "ನಿರ್ಬಂಧಿತ ಲಿಪಿಗಳು",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "ಅನುಮತಿಸಿದ ಲಿಪಿಗಳು",
+    "description": "Message for the script resources allowed"
+  },
+  "blockAll": {
+    "message": "ಎಲ್ಲಾ ನಿರ್ಬಂಧಿಸಿ",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "ಎಲ್ಲಾ ಅನುಮತಿಸಿ",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "block": {
+    "message": "ನಿರ್ಬಂಧಿಸಿ",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "allow": {
+    "message": "ಅನುಮತಿಸಿ",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "blockedOnce": {
+    "message": "ಒಮ್ಮೆ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
+    "description": "Message for the resources blocked *blocked once* option"
+  },
+  "allowedOnce": {
+    "message": "ಒಮ್ಮೆ ಅನುಮತಿಸಲಾಗಿದೆ",
+    "description": "Message for the resources blocked *allowed once* option"
+  },
+  "allowScriptsOnce": {
+    "message": "ಒಮ್ಮೆ ಲಿಪಿಗಳನ್ನು ಅನುಮತಿಸಿ",
+    "description": "Message for the shortcut in the main interface to allow all scripts once"
+  },
+  "cancel": {
+    "message": "ರದ್ದುಗೊಳಿಸಿ",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "ಹಿಂತಿರುಗಿ",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "ಒಮ್ಮೆ ಅನ್ವಯಿಸಿ",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "ಜಾಗತಿಕ ಶೀಲ್ಡ್ ಡೀಫಾಲ್ಟ್‌ಗಳನ್ನು ಬದಲಿಸಿ",
+    "description": "Message for the button action linking to the settings page"
+  },
+  "manageCustomFilters": {
+    "message": "ಕಸ್ಟಮ್ ಫಿಲ್ಟರ್‌ಗಳನ್ನು ನಿರ್ವಹಿಸಿ",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
+  "elementPickerMode": {
+    "message": "ಘಟಕವನ್ನು ನಿರ್ಬಂಧಿಸಿ",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
+  },
+  "advancedView": {
+    "message": "ಸುಧಾರಿತ ವೀಕ್ಷಣೆ",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "ಸರಳ ವೀಕ್ಷಣೆ",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "ಸೈಟ್‌ಗಳು ಆಗಾಗ್ಗೆ ಕುಕೀಗಳು ಮತ್ತು ಸ್ಕ್ರಿಪ್ಟ್‌ಗಳನ್ನು ಒಳಗೊಂಡಿರುತ್ತವೆ ಮತ್ತು ಅವುಗಳು ನಿಮ್ಮನ್ನು ಮತ್ತು ನಿಮ್ಮ ಸಾಧನವನ್ನು (ಆಗಾಗ್ಗೆ ಜಾಹೀರಾತುಗಳಾಗಿ ಎಂಬೆಡ್ ಮಾಡಲಾಗಿರುವುದು) ಗುರುತಿಸಲು ಪ್ರಯತ್ನಿಸುತ್ತವೆ. ನೀವು ಯಾರೆಂದು ಪತ್ತೆಹಚ್ಚಲು ಅವುಗಳು ಬಯಸುತ್ತವೆ ಮತ್ತು ವೆಬ್‌ನಾದ್ಯಂತ ನಿಮ್ಮನ್ನು ಅನುಸರಣೆ ಮಾಡುತ್ತವೆ — ಈ ಮೂಲಕ ಪ್ರತಿ ಸೈಟ್‌ನಲ್ಲಿ ನೀವು ಏನನ್ನು ಮಾಡುತ್ತೀರೆಂದು ಟ್ರ್ಯಾಕ್ ಮಾಡುತ್ತವೆ. ಈ ಸಂಗತಿಗಳನ್ನು Brave ನಿರ್ಬಂಧಿಸುತ್ತದೆ ಮತ್ತು ಈ ಮೂಲಕ ನೀವು ಅನುಸರಣೆ ಮಾಡಲ್ಪಡದೇ ಬ್ರೌಸ್ ಮಾಡಬಹುದು.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "ಕ್ರಾಸ್-ಸೈಟ್ ಟ್ರ್ಯಾಕರ್‌ಗಳು ಇತರೆ ಅಹಿತಕರ ಸಂಗತಿಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "ಈ ವೀಕ್ಷಣೆಯಲ್ಲಿ ಶೀಲ್ಡ್ ಸೆಟ್ಟಿಂಗ್‌‌ಗಳನ್ನು ಬದಲಾಯಿಸುವುದರಿಂದ ಈ ಸೈಟ್‌ನಲ್ಲಿ ವೆಬ್ ಹೊಂದಾಣಿಕೆಗೆ ಪರಿಣಾಮ ಬೀರಬಹುದು.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "ಅರ್ಥವಾಯಿತು",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ",
+    "description": "Message inviting the user to learn more about Shields"
+  },
+  "addToBrave": {
+    "message": "Brave ಗೆ ಸೇರಿಸಿ",
+    "description": "Message for adding an extension to Brave"
+  },
+  "removeFromBrave": {
+    "message": "Brave ನಿಂದ ತೆಗೆದುಹಾಕು",
+    "description": "Message for removing an extension from Brave"
+  },
+  "addToChrome": {
+    "message": "Add to Chrome",
+    "description": "Message for adding an extension to Chrome"
+  },
+  "removeFromChrome": {
+    "message": "Remove from Chrome",
+    "description": "Message for removing an extension from Chrome"
+  }
+}

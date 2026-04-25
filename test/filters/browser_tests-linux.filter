@@ -1,0 +1,197 @@
+##
+## Upstream tests to disable
+##
+## When adding a new filter to this list, please include a short description of
+## why the filter is required and create an associated tracking issue.
+##
+
+# FlushForTesting() deadlocks on Linux because Brave background services (AI
+# Chat, etc.) trigger D-Bus thread pool tasks that post replies to the blocked
+# main thread.
+# https://github.com/brave/brave-browser/issues/54038
+-AutofillCounterTest.TimeRanges
+
+# These tests fail because we disable adding Open Search engines by default.
+# See https://github.com/brave/brave-browser/issues/14496
+# We short circuit the SearchEngineTabHelper::PageHasOpenSearchDescriptionDocument
+# via SearchEngineTabHelper::IsFormSubmit in chromium_src override.
+-PersistentBackground/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/0
+-ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/0
+
+# These tests pass locally but fail on CI
+-All/ChromeMultiProfileStartupBrowserTestBase.PostProfileInitInvocation/1
+-All/CookieStoreSameSiteTest.CookieStoreUsesEffectiveSameSiteForUnspecifiedCookies/1
+-AvatarMenuBrowserTest.AddNewProfile
+-DebuggerExtensionApiTest.ParentTargetPermissions
+-GWSAbandonedPageLoadMetricsObserverBrowserTest.SearchTabHidden
+-HeadlessModeProtocolBrowserTest.InputClipboardOps
+-InfoBarUiTest.InvokeUi_bad_flags
+-InfoBarUiTest.InvokeUi_reload_plugin
+-InstanceIDApiTest.GetCreationTimeFormat
+-InterstitialUITest.PinnedCertInterstitial
+-HasBeforeUnloadHandlerTest.NonEmptyBeforeUnloadDetected
+-PageInfoBubbleViewBrowserTest.BlockedAndInvalidCert
+-PageInfoBubbleViewBrowserTest.MalwareAndEvCert
+-PageInfoBubbleViewBrowserTest.VerifyEnterprisePasswordReusePageInfoBubble
+-PermissionElementBrowserTest.DoubleClickDoesNotTriggerTwoRequests
+-WebViewNewWindowTest.UserAgent_NewWindow/InnerWebContents
+
+# This test runs fine when run individually, but times out when run with test
+# launcher.
+-PageDiscardingHelperBrowserTest.DiscardedTabEligibleForSuccessiveDiscards/RetainedWebContents
+
+# This test fails on Linux only due to the UI it shows being off-screen. Have
+# not investigated the cause.
+-Mv2DeprecationDisabledDialogBrowserTest.InvokeUi
+-Mv2DeprecationKeepDialogBrowserTest.InvokeUi
+
+# This test fails because of the following CHECK in identity_test_utils.cc:
+# !primary_account_info.IsEmpty()
+-ManagedUserNoticeUIDialogPixelTest.InvokeUi_default/*
+-ManagedUserNoticeUIWindowPixelTest.InvokeUi_default/*
+
+# These tests fail because in identity_test_utils.cc waiting for
+# identity_manager->AreRefreshTokensLoaded() times out.
+-AvatarToolbarButtonPromoBrowserTest.*
+-AvatarToolbarButtonPromoClickBrowserTest.*
+-AvatarToolbarButtonSignedOutPromoBrowserTest.SignedOutPromoTriggeredOnStartupAfterDelayExpired 
+
+# These tests fail because kPrerender2 feature is disabled.
+-MediaEngagementPreThirdPartyCookieDeprecationBrowserTest.Ignored
+
+# These tests fail because the primary account consent level is null instead of
+# signin::ConsentLevel::kSignin
+-All/AvatarToolbarButtonEnterpriseBadgingWithSyncPromoParamsBrowserTest.*
+
+# This test fails because we override RegionalCapabilitiesServiceClientLinux::
+# FetchCountryId to get locale from device instead of the variations service.
+-RegionalCapabilitiesServiceFactoryBrowserTestForVariationsCountry.GetCountryId/FR
+
+# This test fails because we disable PermissionElement origin trial.
+-All/PermissionElementOriginTrialBrowserTest.WithOriginTrialToken/BaseEnabled_BlinkDisabled
+
+# These tests fail because Brave enables screen farbling
+# (kBraveBlockScreenFingerprinting) by default on desktop, which modifies
+# screen dimension values returned to web content.
+-HeadlessModeProtocolBrowserTest_OzoneScreenSizeOverride.OzoneScreenSizeOverride
+-MultiscreenWindowManagementPermissionContextTest.IsExtendedCrossOriginAllow
+-MultiscreenWindowManagementPermissionContextTest.IsExtendedCrossOriginDeny
+-MultiscreenWindowManagementPermissionContextTest.IsExtendedSameOriginAllow
+-WindowManagementTest.OnCurrentScreenChangeEvent
+-WindowManagementTest.OnScreensChangeEvent
+-WindowManagementTest.ScreenDetailedOnChange
+-WindowManagementTest.ScreenDetailedOnHdrHeadroomChange
+
+# Chromium test: intermittent RunLoop timeout in DevTools paused debugger focus
+# mechanism. The test relies on an async chain (DebuggerPaused event → SourcesPanel
+# module loading → bringToFront IPC) that sometimes doesn't complete before the
+# test timeout. Already disabled upstream on Windows ASAN (crbug.com/337141755).
+# 0.2% upstream flake rate over 30 days per LUCI Analysis. No Brave-specific code
+# affects this path.
+# https://github.com/brave/brave-browser/issues/53358
+-DevToolsProcessPerSiteTest.PausedDebuggerFocus
+
+# Chromium test: Blink's IdlenessDetector requires 500ms of renderer thread quiet
+# time to fire NetworkBecameIdle. Brave's cosmetic filters inject MutationObserver
+# and setInterval(500ms) polling on all pages, generating continuous renderer tasks
+# that prevent the quiet window from completing. 1.1% upstream flake rate over 30
+# days per LUCI Analysis.
+# https://github.com/brave/brave-browser/issues/54021
+-PageStabilityMetricsMinWaitTest.NetworkAndMainThreadIdleDelayed
+# Same root cause as above: Brave's cosmetic filters prevent the IdlenessDetector's
+# 500ms quiet window from completing, causing the 4s page stability timeout to fire
+# before NetworkBecameIdle. 1% upstream flake rate over 30 days per LUCI Analysis.
+# https://github.com/brave/brave-browser/issues/54205
+-PageStabilityMetricsTest.NetworkAndMainThreadIdle
+
+# These tests fail on Linux because kPromptForDownload defaults to true,
+# triggering the GTK file chooser dialog which causes g_malloc leaks
+# detected by LSan on ASAN builds and timeouts.
+# https://github.com/brave/brave-browser/issues/52572
+# https://github.com/brave/brave-browser/issues/52649
+# https://github.com/brave/brave-browser/issues/52569
+-All/PDFPluginDisabledTest.DirectNavigationToPDF/*
+-ChromeMojoProxyResolverFactoryBrowserTest.*
+-PluginResponseInterceptorURLLoaderThrottleBrowserTest.DownloadPdf
+
+# These fail because OsIntegrationTestOverride::GetShortcutPath and
+# OsIntegrationTestOverride::IsRunOnOsLoginEnabled on Linux hard-codes "chrome-"
+# into the shortcut name but our shortcut starts with "brave-".
+-ShortcutSubManagerBrowserTest.CleanUpEphemeralProfileDeletesShortcuts
+
+# Chromium test: fixture sets kGlicActorPageStabilityTimeout to 30s but doesn't
+# set kActorObservationDelayTimeout (defaults to 10s). On slow CI, the 10s
+# overall timeout fires while still in kWaitForPageStability, causing the state
+# to skip kWaitForLoadCompletion and jump directly to kDone. 0.5% upstream flake
+# rate over 30 days per LUCI Analysis. No Brave chromium_src overrides affect
+# the ObservationDelayController code path.
+# https://github.com/brave/brave-browser/issues/54159
+-ObservationDelayControllerTest.UsePageStabilityForSameDocumentNavigation
+
+# Brave's canvas farbling (PerturbPixels) modifies getImageData() results,
+# breaking this test's canvas-based video playback detection. The test only
+# compiles on Linux non-sanitizer builds (#if BUILDFLAG(IS_LINUX)).
+# Upstream stable: 640x480 0.6%, 3840x2160 0.3% flake rate (30-day LUCI).
+# https://github.com/brave/brave-browser/issues/54521
+-All/GetDisplayMediaHiDpiBrowserTest.Capture/640x480
+-All/GetDisplayMediaHiDpiBrowserTest.Capture/3840x2160
+
+# Tests below this point have not been diagnosed or had issues created yet.
+-AccessCodeCastHandlerBrowserTest.*
+-AdsPageLoadMetricsObserverBrowserTest.*
+-BluetoothLowEnergyApiTest.*
+-CaptureHandleBrowserTest.*
+-ConditionalFocusBrowserTest.*
+-ContextMenuIncognitoFilterBrowserTest.*
+-DomainReliabilityPrefetchProxyBrowserTest.*
+-ExtensionApiTestWithSwitch.ExtensionTracing
+-ExtensionDialogTest.*
+-ExtensionStartupTest.*
+-ExternalProtocolHandlerSandboxBrowserTest.*
+-HeadlessModeProtocolBrowserTest.ScreencastBasics
+-HeadlessModeScreenshotCommandBrowserTest.HeadlessScreenshot
+-IndividualNetworkContextsPrefetchProxyBrowserTest.*
+-LayoutInstabilityTest.*
+-LocalNetworkAccessWithFeatureEnabledBrowserTest.SpecialSchemeChromeDistiller
+-NewTabUIBrowserTest.*
+-NewTabUIProcessPerTabTest.*
+-OzonePlatformTest.*
+-ParameterizedFrameNodeImplBrowserTest.ViewportIntersection_OutOfView/*
+-PolicyTestPrefetchProxyBrowserTest.*
+-PolicyTestSetTimeoutWithout1MsClamp.DisablePolicy
+-PPAPINaClPNaClNonSfiTest.*
+-PrefetchProxyBrowserTest.*
+-PrefetchProxyWithDecoyRequestsBrowserTest.*
+-PrefetchProxyWithNSPBrowserTest.*
+-PrefHashBrowserTestAccountValueUntrustedAddition.AccountValueUntrustedAddition
+-PrintBrowserTest.*
+-ProfileMainNetworkContext/NetworkContextConfigurationBrowserTest.Hsts/*
+-ProbingAndNSPEnabledPrefetchProxyBrowserTest.*
+-ProbingEnabled_CanaryOff_HTTPHead_PrefetchProxyBrowserTest.*
+-ProbingEnabled_CanaryOn_BothCanaryGood_PrefetchProxyBrowserTest.*
+-ProbingEnabled_CanaryOn_TLSCanaryBad_DNSCanaryBad_PrefetchProxyBrowserTest.*
+-ProbingEnabled_CanaryOn_TLSCanaryBad_DNSCanaryGood_PrefetchProxyBrowserTest.*
+-ProbingEnabled_CanaryOn_TLSCanaryBadDisabled_DNSCanaryGood_PrefetchProxyBrowserTest.*
+-ProbingEnabled_CanaryOn_TLSCanaryGood_DNSCanaryBad_PrefetchProxyBrowserTest.*
+-ProcessMemoryMetricsEmitterTest.*
+-PushSubscriptionWithExpirationTimeTest.*
+-SingleProcessBrowserTest.*
+-SpeculationNonPrivatePrefetchesPrefetchProxyTest.*
+-SpeculationPrefetchProxyTest.*
+-SpellingOptionsSubMenuObserverTest.*
+-SSLReportingPrefetchProxyBrowserTest.*
+-TabCaptureApiTest.*
+-WebAppIntegrationBrowserTestMacWinLinux.*
+-WebAppOpaqueBrowserFrameViewTest.*
+-WebAppTagWebAppTest.TabNavigatedAwayNotWebAppTask
+-WebAppTagWebAppTest.WebAppTaskCreatedForStandalone
+-WebAppTagWebAppTest.WebAppTaskCreatedForTab
+-WebAuthnCableSecondFactor.*
+-WebRtcBrowserTest.*
+-WebRtcDisableEncryptionFlagBrowserTest.*
+-ZeroCacheTimePrefetchProxyBrowserTest.*
+
+# This Chromium test fails because the Glic WebUI creates its webview
+# asynchronously via JavaScript, and Brave's environment doesn't fully support
+# the Glic WebUI initialization flow. Stable upstream (0.3% flake rate).
+-GuestUtilBrowserTest.OnGuestAdded_Glic

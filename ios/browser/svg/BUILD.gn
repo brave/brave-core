@@ -1,0 +1,66 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//third_party/skia/modules/skottie/skottie.gni")
+import("//third_party/skia/modules/skresources/skresources.gni")
+import("//third_party/skia/modules/sksg/sksg.gni")
+import("//third_party/skia/modules/skshaper/skshaper.gni")
+
+import("//third_party/skia/modules/svg/svg.gni")
+
+source_set("svg") {
+  # //skia:skia does the same thing
+  # There is no other way to include the skia/module files
+  check_includes = false
+
+  cflags_cc = [
+    "-Wno-extra-semi",
+    "-Wno-unreachable-code-aggressive",
+  ]
+
+  sources = [
+    "svg_image.h",
+    "svg_image.mm",
+  ]
+
+  sources += [
+    "//third_party/skia/src/utils/SkOSPath.h",
+    "//third_party/skia/src/utils/SkParsePath.cpp",
+    "//third_party/skia/src/xml/SkDOM.cpp",
+    "//third_party/skia/src/xml/SkDOM.h",
+    "//third_party/skia/src/xml/SkXMLParser.cpp",
+    "//third_party/skia/src/xml/SkXMLParser.h",
+    "//third_party/skia/src/xml/SkXMLWriter.cpp",
+    "//third_party/skia/src/xml/SkXMLWriter.h",
+  ]
+
+  sources += skia_svg_renderer_public
+  sources += skia_svg_renderer_sources
+  sources += skia_skottie_sources
+  sources += skia_skresources_sources
+  sources += skia_sksg_sources
+
+  include_dirs = [
+    "//third_party/skia",
+    "$root_gen_dir/third_party/skia",
+  ]
+
+  sources -=
+      [ "//third_party/skia/modules/svg/src/SkSVGOpenTypeSVGDecoder.cpp" ]
+
+  deps = [
+    "//base",
+    "//skia",
+    "//third_party/expat",
+    "//third_party/libwebp",
+    "//third_party/libwebp:libwebp_webp",
+    "//ui/gfx",
+  ]
+
+  frameworks = [
+    "CoreFoundation.framework",
+    "CoreText.framework",
+  ]
+}

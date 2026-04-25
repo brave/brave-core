@@ -1,0 +1,61 @@
+<!-- Copyright (c) 2025 The Brave Authors. All rights reserved.
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this file,
+You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<style include="settings-shared md-select">
+  .header {
+    padding: var(--leo-spacing-2xl);
+  }
+
+  .main-header {
+    font: var(--leo-font-heading-h4);
+  }
+</style>
+
+<settings-section
+  id="leoPersonalization"
+  page-title="$i18n{braveLeoAssistantPersonalizationLabel}">
+
+<div class="settings-box">
+  <div class="flex cr-padded-text">
+    <div>$i18n{braveLeoAssistantModelSelectionLabel}</div>
+  </div>
+  <leo-model-selector
+    class="cr-padded-text"
+    selected-key="[[defaultModelKeyPrefValue_]]"
+    models="[[models_]]"
+    is-premium-user="[[isPremiumUser_]]"
+    on-model-changed="onModelSelectionChange_">
+  </leo-model-selector>
+</div>
+<template is="dom-if"
+  if="[[isTabOrganizationDropdownVisible_(
+    isTabOrganizationFeatureEnabled_,
+    prefs.brave.ai_chat.tab_organization_enabled.value)]]">
+  <div class="settings-box">
+    <div class="flex cr-padded-text">
+      <div>$i18n{braveLeoAssistantTabOrganizationModelLabel}</div>
+    </div>
+    <leo-model-selector
+      class="cr-padded-text"
+      selected-key="[[prefs.brave.ai_chat.tab_organization_model_key.value]]"
+      models="[[models_]]"
+      is-premium-user="[[isPremiumUser_]]"
+      on-model-changed="onTabOrganizationModelChange_">
+    </leo-model-selector>
+  </div>
+</template>
+<template is="dom-if" if="[[isHistoryFeatureEnabled_]]">
+  <settings-toggle-button class="cr-row hr"
+    pref="{{prefs.brave.ai_chat.storage_enabled}}"
+    label="$i18n{braveLeoAssistantHistoryPreferenceLabel}"
+    on-settings-boolean-control-change="onStorageEnabledChange_">
+  </settings-toggle-button>
+</template>
+<cr-link-row id="manageCustomization" class="cr-row hr"
+  label="$i18n{braveLeoAssistantCustomizationLinkLabel}"
+  on-click="openCustomizationPage_">
+</cr-link-row>
+
+</settings-section>

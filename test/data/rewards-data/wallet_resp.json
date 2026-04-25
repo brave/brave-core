@@ -1,0 +1,9 @@
+{
+  "paymentId": "50e7b589-ea9b-48ac-9f74-d7eb85c9ff51",
+  "walletProvider": {
+    "id": "",
+    "name": "brave"
+  },
+  "altcurrency": "BAT",
+  "publicKey": "d4f76198e614973812bbffa78f0cd887cef3ade8ad8d96dc51f45eac8c09f245"
+}

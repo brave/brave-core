@@ -1,0 +1,102 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/python.gni")
+
+brave_bytecode_jars = [
+  "obj/base/base_cached_flags_java.javac.jar",
+  "obj/base/base_shared_preferences_java.javac.jar",
+  "obj/brave/android/features/tab_ui/java.javac.jar",
+  "obj/brave/browser/autofill/android/java.javac.jar",
+  "obj/brave/android/java/org/chromium/chrome/browser/search_engines/java.javac.jar",
+  "obj/brave/browser/download/android/java.javac.jar",
+  "obj/brave/browser/notifications/java.javac.jar",
+  "obj/brave/browser/ui/android/favicon/java.javac.jar",
+  "obj/brave/browser/ui/android/logo/java.javac.jar",
+  "obj/brave/browser/ui/android/omnibox/java.javac.jar",
+  "obj/brave/browser/ui/android/theme/java.javac.jar",
+  "obj/brave/browser/ui/android/toolbar/java.javac.jar",
+  "obj/brave/components/browser_ui/notifications/android/java.javac.jar",
+  "obj/brave/components/browser_ui/media/android/java.javac.jar",
+  "obj/brave/components/browser_ui/site_settings/android/java.javac.jar",
+  "obj/brave/components/variations/android/java.javac.jar",
+  "obj/chrome/browser/autofill/android/java.javac.jar",
+  "obj/chrome/android/base_module_java.javac.jar",
+  "obj/chrome/android/chrome_java.javac.jar",
+  "obj/chrome/android/features/tab_ui/java.javac.jar",
+  "obj/chrome/browser/bookmarks/android/java.javac.jar",
+  "obj/chrome/browser/download/android/java.javac.jar",
+  "obj/chrome/browser/download/internal/android/java.javac.jar",
+  "obj/chrome/browser/flags/java.javac.jar",
+  "obj/chrome/browser/hub/internal/java.javac.jar",
+  "obj/chrome/browser/hub/factory_java.javac.jar",
+  "obj/chrome/browser/incognito/java.javac.jar",
+  "obj/chrome/browser/locale/delegate_java.javac.jar",
+  "obj/chrome/browser/notifications/java.javac.jar",
+  "obj/chrome/browser/partnercustomizations/java.javac.jar",
+  "obj/chrome/browser/password_manager/android/java.javac.jar",
+  "obj/chrome/browser/preferences/java.javac.jar",
+  "obj/chrome/browser/safe_browsing/android/java.javac.jar",
+  "obj/chrome/browser/safety_hub/android/java.javac.jar",
+  "obj/chrome/browser/search_engines/android/java.javac.jar",
+  "obj/chrome/browser/settings/factory_java.javac.jar",
+  "obj/chrome/browser/settings/internal_java.javac.jar",
+  "obj/chrome/browser/site_settings/android/java.javac.jar",
+  "obj/chrome/browser/tabmodel/java.javac.jar",
+  "obj/chrome/browser/customtabs/java.javac.jar",
+  "obj/chrome/browser/tab_group_sync/java.javac.jar",
+  "obj/chrome/browser/tab_ui/android/java.javac.jar",
+  "obj/chrome/browser/ui/android/appmenu/internal/java.javac.jar",
+  "obj/chrome/browser/ui/android/logo/java.javac.jar",
+  "obj/chrome/browser/ui/android/omnibox/java.javac.jar",
+  "obj/chrome/browser/ui/android/searchactivityutils/java.javac.jar",
+  "obj/chrome/browser/ui/android/theme/java.javac.jar",
+  "obj/chrome/browser/ui/android/toolbar/core_java.javac.jar",
+  "obj/chrome/browser/ui/android/toolbar/java.javac.jar",
+  "obj/chrome/browser/ui/messages/android/java.javac.jar",
+  "obj/components/browser_ui/notifications/android/java.javac.jar",
+  "obj/components/browser_ui/media/android/java.javac.jar",
+  "obj/components/browser_ui/site_settings/android/java.javac.jar",
+  "obj/components/embedder_support/android/content_view_java.javac.jar",
+  "obj/components/external_intents/android/java.javac.jar",
+  "obj/components/minidump_uploader/minidump_uploader_java.javac.jar",
+  "obj/components/permissions/android/java.javac.jar",
+  "obj/components/signin/public/android/java.javac.jar",
+  "obj/components/sync/android/sync_java.javac.jar",
+  "obj/components/variations/android/variations_java.javac.jar",
+  "obj/chrome/browser/language/android/base_module_java.javac.jar",
+]
+
+template("brave_bytecode_rewriter") {
+  _rebased_build_config = rebase_path(invoker.build_config, root_build_dir)
+  _java_bytecode_rewriter_input_jar = invoker._unprocessed_jar_path
+
+  action_with_pydeps(target_name) {
+    script = "//brave/build/android/gyp/bytecode_processor.py"
+    _bytecode_rewriter_script =
+        "$root_build_dir/bin/helper/java_bytecode_rewriter"
+    deps = invoker._unprocessed_jar_deps + [ "//brave/build/android/bytecode:java_bytecode_rewriter($default_toolchain)" ]
+    if (defined(invoker.deps)) {
+      deps += invoker.deps
+    }
+    inputs = [
+      _bytecode_rewriter_script,
+      _java_bytecode_rewriter_input_jar,
+    ]
+    outputs = [ invoker._bytecode_rewriter_output_jar ]
+    args = [
+      "--script",
+      rebase_path(_bytecode_rewriter_script, root_build_dir),
+      "--input-jar",
+      rebase_path(_java_bytecode_rewriter_input_jar, root_build_dir),
+      "--output-jar",
+      rebase_path(invoker._bytecode_rewriter_output_jar, root_build_dir),
+      "--sdk-classpath-jars",
+      "@FileArg($_rebased_build_config:sdk_jars)",
+      "--extra-classpath-jars",
+      "@FileArg($_rebased_build_config:javac_full_classpath)",
+    ]
+  }
+}

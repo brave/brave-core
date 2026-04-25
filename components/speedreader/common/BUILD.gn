@@ -1,0 +1,36 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+
+assert(enable_speedreader)
+
+static_library("common") {
+  sources = [
+    "constants.h",
+    "features.cc",
+    "features.h",
+    "url_readable_hints.cc",
+    "url_readable_hints.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/resources:strings",
+    "//content/public/common",
+  ]
+
+  deps = [ "//third_party/re2" ]
+}
+
+mojom("mojom") {
+  sources = [
+    "speedreader.mojom",
+    "speedreader_toolbar.mojom",
+  ]
+
+  public_deps = [ "//mojo/public/mojom/base" ]
+}

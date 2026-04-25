@@ -1,0 +1,81 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_FAKE_TAB_SLOT_CONTROLLER_H_
+#define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_FAKE_TAB_SLOT_CONTROLLER_H_
+
+#include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
+
+// Add override for
+// ShouldAlwaysHideTabCloseButton()/CanCloseTabViaMiddleButtonClick() and
+// setters to control its return value in tests.
+#define ShouldCompactLeadingEdge()                               \
+  ShouldCompactLeadingEdge() const override;                     \
+                                                                 \
+ private:                                                        \
+  bool should_always_hide_close_button_ = false;                 \
+  bool can_close_tab_via_middle_button_click_ = true;            \
+                                                                 \
+ public:                                                         \
+  void set_should_always_hide_close_button(bool hide) {          \
+    should_always_hide_close_button_ = hide;                     \
+  }                                                              \
+  void set_can_close_tab_via_middle_button_click(bool enabled) { \
+    can_close_tab_via_middle_button_click_ = enabled;            \
+  }                                                              \
+  bool ShouldAlwaysHideCloseButton()
+
+// Add override for IsVerticalTabsFloating() and
+// IsVerticalTabsAnimatingButNotFinalState()
+#define EndDrag(...)                            \
+  EndDrag(__VA_ARGS__) override;                \
+  bool IsVerticalTabsFloating() const override; \
+  bool IsVerticalTabsAnimatingButNotFinalState() const
+
+// Add overrides for TabAccent related methods
+#define CanPaintThrobberToLayer()                                   \
+  ShouldPaintTabAccent(const Tab* tab) const override;              \
+  std::optional<TabAccentColors> GetTabAccentColors(const Tab* tab) \
+      const override;                                               \
+  ui::ImageModel GetTabAccentIcon(const Tab* tab) const override;   \
+  bool CanCloseTabViaMiddleButtonClick() const override;            \
+  bool CanPaintThrobberToLayer()
+
+// Add a method to TabSlotController to get the height of the tree tab node for
+// the given tab.
+#define ShiftGroupRight(...)                                                 \
+  ShiftGroupRight_Unused();                                                  \
+  int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const override;       \
+  const tabs::TreeTabNode* GetTreeTabNode(const tree_tab::TreeTabNodeId& id) \
+      const override;                                                        \
+  void SetTreeTabNodeCollapsed(const tree_tab::TreeTabNodeId& id,            \
+                               bool collapsed) override;                     \
+  bool IsInCollapsedTreeTabNode(const tree_tab::TreeTabNodeId& id)           \
+      const override;                                                        \
+  void ShiftGroupRight(__VA_ARGS__)
+
+// Brave: test-controlled tab minimum width mode (brave_tabs::TabMinWidthMode).
+#define GetStrokeThickness()                                      \
+  GetStrokeThickness() const override;                            \
+                                                                  \
+ private:                                                         \
+  brave_tabs::TabMinWidthMode tab_min_width_mode_ =               \
+      brave_tabs::TabMinWidthMode::kDefault;                      \
+                                                                  \
+ public:                                                          \
+  void set_tab_min_width_mode(brave_tabs::TabMinWidthMode mode) { \
+    tab_min_width_mode_ = mode;                                   \
+  }                                                               \
+  brave_tabs::TabMinWidthMode GetTabMinWidthMode()
+
+#include <chrome/browser/ui/views/tabs/fake_tab_slot_controller.h>  // IWYU pragma: export
+
+#undef GetStrokeThickness
+#undef ShiftGroupRight
+#undef CanPaintThrobberToLayer
+#undef EndDrag
+#undef ShouldCompactLeadingEdge
+
+#endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_FAKE_TAB_SLOT_CONTROLLER_H_

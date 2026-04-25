@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Brave stops ads from following you</title>
+
+  <style>
+    video {
+      width: 90%;
+      height: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Yeah, Brave blocks that</h1>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const video = document.createElement('video');
+      video.src = '/brave_ads/video.mp4';
+      video.autoplay = false;
+      video.controls = true;
+      video.onerror = function (event) {
+        console.error('An error occurred while trying to load the video: ', event);
+      };
+
+      document.body.appendChild(video);
+    });
+</script>
+</body>
+
+</html>

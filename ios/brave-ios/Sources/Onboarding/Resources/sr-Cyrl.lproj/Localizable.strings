@@ -1,0 +1,66 @@
+/* A button title shown below language introducing the Brave Playlist feature. i.e. 'Discover how to use use this feature' */
+"advanceInitialOnboardingButtonTitle" = "Откријте како";
+
+/* A button title that when tapped will advance the onboarding to guide a user to add some content to Playlist */
+"advanceStep2OnboardingButtonTitle" = "Испробајте!";
+
+/* A button that allows the user to disable the brave translate feature. When pressed, the page will not be automatically translated to the user's language. */
+"BraveTranslateOnboarding.disableTranslateButtonTitle" = "Искључи ову функцију";
+
+/* A text element that describes the translation feature and explains that hte user might have to download or configure languages on their device. */
+"BraveTranslateOnboarding.translateDescription" = "Странице се могу превести на језике које подржава ваш iOS уређај. Можда ће бити потребно да конфигуришете језике ако први пут користите ову функцију.";
+
+/* A text element that explains we're translating pages. */
+"BraveTranslateOnboarding.translateTitle" = "Преводи странице";
+
+/* A button title that when tapped opens Brave Playlist */
+"confirmationActionButtonTitle" = "Отвори плејлисту";
+
+/* Shown above a button that will let the user open the playlist feature */
+"confirmationPrompt" = "А сада да видимо вашу плејлисту.";
+
+/* Shown below a title that confirms the user completed the task of adding something to playlist. %@ will be replaced with the folder the content was added to. i.e. 'Content added to Play Later' */
+"confirmationSubtitle" = "Додат је садржај на плејлисту „%@“";
+
+/* Guides the user to tap on an icon where the onboarding is pointing to. '%@' will be replaced with said icon. */
+"confirmationTitle" = "Одлично";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissOnboardingButtonTitle" = "Одбаци";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep2OnboardingButtonTitle" = "Можда касније";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep4OnboardingButtonTitle" = "Затвори";
+
+/* A title shown on the first 2 steps of onboarding for Brave Playlist. Brave Playlist is a product name */
+"introducingBravePlaylist" = "Представљамо Brave плејлисту";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleOne" = "Направите плејлисте вашег омиљеног садржаја. Уштедите мобилни интернет. Пуштајте без огласа.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleThree" = "Слика у слици, пуштање садржаја у позадини, контрола са закључаног екрана и још тога…";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleTwo" = "Будите у току: Додајте видео садржаје док прегледате веб, а гледајте их касније.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleOne" = "Додајте видео садржаје на Brave плејлисту. Гледајте их било кад. Чак и када сте офлајн";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleThree" = "Пуштање је боље у плејлисти";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleTwo" = "Само додирните дугме да бисте додали видео садржаје на плејлисту";
+
+/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
+"playlistOnboardingDescription" = "Направите плејлисте са садржајем који волите. Додајте медије са било које странице.\nПуштајте било када, чак и офлајн!";
+
+/* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
+"userActionPrompt" = "Додирните %@ да додате прву ставку";
+
+/* Will be shown next to an icon inside of some other text. i.e. "Tap 'Add to Playlist' to add your first item" */
+"userActionPromptFill" = "Додај на плејлисту";
+

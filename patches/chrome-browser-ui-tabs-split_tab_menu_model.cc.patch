@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/tabs/split_tab_menu_model.cc b/chrome/browser/ui/tabs/split_tab_menu_model.cc
+index 782da15b492fc4990807057a506473b77abdc6f8..cef41539f8a2b17d18aecac810278d3a405275d7 100644
+--- a/chrome/browser/ui/tabs/split_tab_menu_model.cc
++++ b/chrome/browser/ui/tabs/split_tab_menu_model.cc
+@@ -79,6 +79,7 @@ std::string_view GetMetricsSuffixForCommand(
+       return "ExitSplit";
+     case SplitTabMenuModel::CommandId::kSendFeedback:
+       return "SendFeedback";
++    BRAVE_GET_METRICS_SUFFIX_FOR_COMMAND
+   }
+ }
+ 
+@@ -247,6 +248,7 @@ void SplitTabMenuModel::ExecuteCommand(int command_id, int event_flags) {
+     case CommandId::kSendFeedback:
+       SendFeedback();
+       break;
++    BRAVE_SPLIT_TAB_MENU_MODEL_EXECUTE_COMMAND
+   }
+ 
+   base::UmaHistogramEnumeration(

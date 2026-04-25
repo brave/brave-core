@@ -1,0 +1,25 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/rules.gni")
+
+android_library("java") {
+  sources = [
+    "java/src/org/chromium/chrome/browser/download/BraveDownloadMessageUiControllerImpl.java",
+    "java/src/org/chromium/chrome/browser/download/home/search/BraveSearchBarCoordinator.java",
+  ]
+
+  deps = [
+    "//base:base_java",
+    "//build/android:build_java",
+    "//chrome/browser/download/internal/android:java",
+    "//chrome/browser/download/internal/android:java_resources",
+    "//chrome/browser/flags:java",
+    "//chrome/browser/preferences:java",
+    "//components/offline_items_collection/core:core_java",
+  ]
+
+  resources_package = "org.chromium.chrome.browser.download.internal"
+}

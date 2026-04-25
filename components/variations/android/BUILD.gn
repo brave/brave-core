@@ -1,0 +1,24 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/variations/buildflags.gni")
+import("//build/config/android/rules.gni")
+
+android_library("java") {
+  sources = [ "java/src/org/chromium/components/variations/firstrun/BraveVariationsSeedFetcher.java" ]
+  deps = [
+    "//base:base_java",
+    "//components/variations:variations_java",
+    "//components/variations/android:variations_java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+  ]
+  srcjar_deps = [ ":brave_variations_config_java" ]
+}
+
+java_cpp_template("brave_variations_config_java") {
+  sources = [ "java/src/org/chromium/components/variations/firstrun/BraveVariationsConfig.template" ]
+  defines =
+      [ "BRAVE_ANDROID_VARIATIONS_SERVER_URL=\"$brave_variations_server_url\"" ]
+}

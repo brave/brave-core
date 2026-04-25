@@ -1,0 +1,9 @@
+Name: static_assertions
+URL: https://crates.io/crates/static_assertions
+Version: 1.1.0
+License: Apache-2.0
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: Compile-time assertions to ensure that invariants are met.

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <message name="IDS_GOOGLE_SIGN_IN_PERMISSION_FRAGMENT" desc="Label for Google Sign-In permission prompt.">
+    Allow use of third-party cookies for legacy Google Sign-In
+  </message>
+  <message name="IDS_GOOGLE_SIGN_IN_INFOBAR_TEXT" desc="Label for Google Sign-In permission prompt (Android).">
+    <ph name="URL">$1<ex>https://joinhoney.com</ex></ph> wants to use third-party cookies for legacy Google Sign-In
+  </message>
+</grit-part>

@@ -1,0 +1,46 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
+import("//brave/components/common/typescript.gni")
+import("//brave/resources/brave_grit.gni")
+import("//tools/grit/repack.gni")
+
+assert(enable_brave_rewards)
+
+pack_web_resources("internals_generated_resources") {
+  resource_name = "rewards_internals"
+  output_dir = "$root_gen_dir/brave/components/brave_rewards/resources"
+
+  # need webpack and GRD generation first
+  deps = [ "rewards_internals" ]
+}
+
+brave_grit("static_resources") {
+  source = "brave_rewards_static_resources.grd"
+
+  outputs = [
+    "grit/brave_rewards_resources.h",
+    "brave_rewards_static.pak",
+  ]
+}
+
+repack("resources") {
+  public_deps = [
+    ":internals_generated_resources",
+    ":static_resources",
+    "creator_detection:creator_detection_generated",
+    "rewards_page:rewards_page_generated",
+  ]
+
+  sources = [
+    "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_static.pak",
+    "$root_gen_dir/brave/components/brave_rewards/resources/creator_detection_generated.pak",
+    "$root_gen_dir/brave/components/brave_rewards/resources/rewards_internals_generated.pak",
+    "$root_gen_dir/brave/components/brave_rewards/resources/rewards_page_generated.pak",
+  ]
+
+  output = "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_resources.pak"
+}

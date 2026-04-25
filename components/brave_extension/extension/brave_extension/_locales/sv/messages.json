@@ -1,0 +1,226 @@
+{
+  "appName": {
+    "message": "Brave-tillägget",
+    "description": "The name of the extension."
+  },
+  "shields": {
+    "message": "Shields",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "upp",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "ned",
+    "description": "Message for when shields is disabled"
+  },
+  "forThisSite": {
+    "message": "för den här webbplatsen",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "Om en webbplats verkar trasig, prova inaktivera Shields",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "Du besöker den här webbplatsen utan Braves sekretess- och säkerhetsskydd. Fungerar den inte korrekt med Shields?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "Rapportera en trasig webbplats",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
+  },
+  "itemsBlocked": {
+    "message": "Punkter blockerade",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
+  },
+  "itemBlocked": {
+    "message": "Punkt blockerad",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
+  },
+  "and": {
+    "message": "och",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
+  },
+  "connectionsUpgraded": {
+    "message": "anslutningar uppgraderade",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
+  },
+  "connectionUpgraded": {
+    "message": "anslutning uppgraderad",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
+  },
+  "thirdPartyTrackersBlocked": {
+    "message": "Cross-site-spårare blockerade",
+    "description": "Message for the scripts blocked row label"
+  },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "Trackers och annonser blockeras",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "Spårare och annonser blockerade (aggressivt)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "Spårare och annonser blockerade (standard)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "Tillåt alla spårare och annonser",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
+  "connectionsUpgradedHTTPS": {
+    "message": "Anslutningar uppgraderade till HTTPS",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
+  },
+  "connectionUpgradedHTTPS": {
+    "message": "Anslutning uppgraderad till HTTPS",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
+  },
+  "scriptsBlocked": {
+    "message": "Skript blockerade",
+    "description": "Message for the scripts blocked row label"
+  },
+  "thirdPartyCookiesBlocked": {
+    "message": "Kakor för flera webbplatser blockerade",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "Kakor blockerades",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "Alla kakor tillåts",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "Fingeravtryck blockerat",
+    "description": "Message for the option in the fingerprinting field in read only view"
+  },
+  "standardFingerprinting": {
+    "message": "Fingeravtrycksläsning hindrad (standard)",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
+  },
+  "strictFingerprinting": {
+    "message": "Fingeravtrycksläsning hindrad (strikt, kan bryta sajter)",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
+  },
+  "allowAllFingerprinting": {
+    "message": "Tillåt att alla fingeravtryck tas",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Försök att ta fingeravtryck",
+    "description": "Message for the fingerprinting attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Skript på den här webbplatse",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Blockerade skript",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Tillåtna skript",
+    "description": "Message for the script resources allowed"
+  },
+  "blockAll": {
+    "message": "Blockera alla",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "Tillåt alla",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "block": {
+    "message": "Blockera",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "allow": {
+    "message": "Tillåt",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "blockedOnce": {
+    "message": "Blockerad en gång",
+    "description": "Message for the resources blocked *blocked once* option"
+  },
+  "allowedOnce": {
+    "message": "Tillåten en gång",
+    "description": "Message for the resources blocked *allowed once* option"
+  },
+  "allowScriptsOnce": {
+    "message": "Tillåt skript en gång",
+    "description": "Message for the shortcut in the main interface to allow all scripts once"
+  },
+  "cancel": {
+    "message": "Avbryt",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Tillbaka",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "Tillämpa en gång",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "Ändra globala standardinställningar för Shields",
+    "description": "Message for the button action linking to the settings page"
+  },
+  "manageCustomFilters": {
+    "message": "Hantera anpassade filter",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
+  "elementPickerMode": {
+    "message": "Blockera element",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
+  },
+  "advancedView": {
+    "message": "Avancerad vy",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "Enkel vy",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "Det finns ofta kakor och skript på webbplatser som försöker identifiera dig och din enhet (ofta inbäddade i annonser). De vill ta reda på vem du är och följer och spårar dig på internet och vad du gör på olika webbplatser. Med Brave blockerar du de funktionerna så att du kan surfa i fred.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "Spårningsprogram på flera webbplatser och andra läbbiga grejer har blockerats",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "Om du ändrar skyddsinställningarna i den här vyn kan det påverka webbplatskompatibiliteten.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "Uppfattat",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "Läs mer",
+    "description": "Message inviting the user to learn more about Shields"
+  },
+  "addToBrave": {
+    "message": "Lägg till i Brave",
+    "description": "Message for adding an extension to Brave"
+  },
+  "removeFromBrave": {
+    "message": "Ta bort från Brave",
+    "description": "Message for removing an extension from Brave"
+  },
+  "addToChrome": {
+    "message": "Lägg till",
+    "description": "Message for adding an extension to Chrome"
+  },
+  "removeFromChrome": {
+    "message": "Ta bort från Chrome",
+    "description": "Message for removing an extension from Chrome"
+  }
+}

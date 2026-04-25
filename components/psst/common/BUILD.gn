@@ -1,0 +1,53 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//mojo/public/tools/bindings/mojom.gni")
+import("//tools/json_schema_compiler/json_schema_api.gni")
+
+mojom("mojom") {
+  sources = [ "psst_ui_common.mojom" ]
+
+  public_deps = [ "//mojo/public/mojom/base" ]
+}
+
+static_library("common") {
+  public = [
+    "constants.h",
+    "features.h",
+    "pref_names.h",
+  ]
+
+  sources = [
+    "features.cc",
+    "pref_names.cc",
+  ]
+
+  public_deps = [
+    ":mojom",
+    ":psst_metadata_schema",
+    ":psst_script_responses",
+  ]
+
+  deps = [
+    "//base",
+    "//components/pref_registry",
+    "//components/prefs",
+    "//url",
+  ]
+}
+
+generated_types("psst_script_responses") {
+  sources = [ "psst_script_responses.idl" ]
+  root_namespace = "psst"
+  deps = [ "//base" ]
+  visibility = [ ":common" ]
+}
+
+generated_types("psst_metadata_schema") {
+  sources = [ "psst_metadata_schema.idl" ]
+  root_namespace = "psst"
+  deps = [ "//base" ]
+  visibility = [ ":common" ]
+}

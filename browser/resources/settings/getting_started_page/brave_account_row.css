@@ -1,0 +1,74 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #css_wrapper_metadata_end */
+
+.row-container {
+  display: flex;
+  flex-direction: column;
+
+  .first-row {
+    align-items: center;
+    display: flex;
+    gap: var(--leo-spacing-xl);
+    min-height: 82px;
+    padding: 0 var(--leo-spacing-2xl);
+
+    .circle {
+      align-items: center;
+      background-color: var(--leo-color-container-background);
+      border: 1px solid var(--leo-color-divider-subtle);
+      border-radius: 50%;
+      display: flex;
+      flex: none;
+      height: 38px;
+      justify-content: center;
+      width: 38px;
+    }
+
+    .title-and-description {
+      display: flex;
+      flex: auto;
+      flex-direction: column;
+      min-width: 0;
+      padding: var(--leo-spacing-l) 0;
+
+      .title {
+        color: var(--leo-color-text-primary);
+        font: var(--leo-font-default-semibold);
+      }
+
+      .description {
+        color: var(--leo-color-text-secondary);
+        font: var(--leo-font-small-regular);
+
+        #email {
+          text-wrap-mode: nowrap;
+        }
+
+        localized-link {
+          --cr-link-color: var(--leo-color-text-interactive);
+        }
+      }
+    }
+  }
+
+  .second-row {
+    align-items: flex-start;
+    display: flex;
+    gap: var(--leo-spacing-m);
+    padding: 0 var(--leo-spacing-2xl) var(--leo-spacing-l);
+
+    .cancel-registration-button {
+      --leo-button-color: var(--leo-color-systemfeedback-error-text);
+    }
+  }
+}
+
+leo-button {
+  flex: none;
+}

@@ -1,0 +1,129 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_SPONSORED_IMAGES_DATA_H_
+#define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_SPONSORED_IMAGES_DATA_H_
+
+#include <optional>
+#include <string>
+#include <vector>
+
+#include "base/files/file_path.h"
+#include "base/values.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "ui/gfx/geometry/point.h"
+#include "url/gurl.h"
+
+namespace brave_ads {
+struct NewTabPageAdInfo;
+}  // namespace brave_ads
+
+namespace ntp_background_images {
+
+inline constexpr char kImageWallpaperType[] = "image";
+inline constexpr char kRichMediaWallpaperType[] = "richMedia";
+
+struct Logo {
+  Logo();
+
+  Logo(const Logo&);
+  Logo& operator=(const Logo&);
+
+  Logo(Logo&&) noexcept;
+  Logo& operator=(Logo&&) noexcept;
+
+  ~Logo();
+
+  base::FilePath image_file;
+  std::string image_url;
+  std::string alt_text;
+  std::string destination_url;
+  std::string company_name;
+};
+
+enum class WallpaperType { kImage, kRichMedia };
+
+struct Creative {
+  Creative();
+
+  // For unit test.
+  Creative(WallpaperType wallpaper_type,
+           const base::FilePath& file_path,
+           const gfx::Point& point,
+           const Logo& test_logo,
+           const std::string& creative_instance_id);
+
+  Creative(const Creative&);
+  Creative& operator=(const Creative&);
+
+  Creative(Creative&&) noexcept;
+  Creative& operator=(Creative&&) noexcept;
+
+  ~Creative();
+
+  WallpaperType wallpaper_type;
+  GURL url;
+  base::FilePath file_path;
+  gfx::Point focal_point;
+
+  std::string creative_instance_id;
+  brave_ads::mojom::NewTabPageAdMetricType metric_type =
+      brave_ads::mojom::NewTabPageAdMetricType::kConfirmation;
+
+  Logo logo;
+};
+
+struct Campaign {
+  Campaign();
+
+  Campaign(const Campaign&);
+  Campaign& operator=(const Campaign&);
+
+  Campaign(Campaign&&) noexcept;
+  Campaign& operator=(Campaign&&) noexcept;
+
+  ~Campaign();
+
+  [[nodiscard]] bool IsValid() const;
+
+  std::string campaign_id;
+  std::vector<Creative> creatives;
+};
+
+struct NTPSponsoredImagesData {
+  NTPSponsoredImagesData();
+  NTPSponsoredImagesData(const base::DictValue& dict,
+                         const base::FilePath& installed_dir);
+
+  NTPSponsoredImagesData(const NTPSponsoredImagesData&);
+  NTPSponsoredImagesData& operator=(const NTPSponsoredImagesData&);
+
+  NTPSponsoredImagesData(NTPSponsoredImagesData&&) noexcept;
+  NTPSponsoredImagesData& operator=(NTPSponsoredImagesData&&) noexcept;
+
+  ~NTPSponsoredImagesData();
+
+  [[nodiscard]] bool IsValid() const;
+
+  void ParseCampaigns(const base::ListValue& list,
+                      const base::FilePath& installed_dir);
+
+  std::optional<base::DictValue> MaybeGetBackgroundAt(
+      size_t campaign_index,
+      size_t creative_index) const;
+  std::optional<base::DictValue> MaybeGetBackground(
+      const brave_ads::mojom::NewTabPageAdInfo& ad);
+
+  const Creative* GetCreativeByInstanceId(
+      const std::string& creative_instance_id) const;
+
+  std::string url_prefix;
+
+  std::vector<Campaign> campaigns;
+};
+
+}  // namespace ntp_background_images
+
+#endif  // BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_SPONSORED_IMAGES_DATA_H_

@@ -1,0 +1,47 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module ai_chat.mojom;
+
+import "url/mojom/url.mojom";
+
+enum PageContentType {
+  Text,
+  VideoTranscriptYouTube,
+  VideoTranscriptVTT
+};
+
+// Configuration for YouTube InnerTube API
+struct YoutubeInnerTubeConfig {
+  string api_key;
+  string video_id;
+};
+
+// Items either have content or a url to retrieve content
+union PageContentData {
+  string content;
+  url.mojom.Url content_url;
+  YoutubeInnerTubeConfig youtube_inner_tube_config;
+};
+
+struct PageContent {
+  PageContentData content;
+  PageContentType type;
+};
+
+// Allows the browser process to request extraction events for a particular
+// RenderFrame.
+interface PageContentExtractor {
+  ExtractPageContent() => (PageContent? page_content);
+
+  // Get summarizer-key meta tag from Brave Search SERP if it exists.
+  // This should only be called when the last commited URL is Brave Search SERP.
+  GetSearchSummarizerKey() => (string? key);
+
+  // Get the nonce in the href URL and the nonce attribute value in the
+  // continue-with-leo HTML anchor element (open Leo button). These two
+  // nonces value must be the same, otherwise nullopt will be returned.
+  GetOpenAIChatButtonNonce() => (string? nonce);
+};

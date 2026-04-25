@@ -1,0 +1,12 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# This will allow to show `Move address bar to the bottom` menu on NTP.
+# Its a fix for cr146 regression
+[[substitution]]
+description = 'Remove NTP check from toolbar longpress condition'
+re_pattern = '(private boolean shouldSuppressToolbarLongPress\(\)[\s\S]+?)\|\| \(getNewTabPageForCurrentTab\(\) != null\);'
+replace = '\1;'
+count = 1

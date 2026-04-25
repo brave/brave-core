@@ -1,0 +1,46 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import(
+    "//brave/components/brave_policy/ad_block_only_mode/buildflags/buildflags.gni")
+
+static_library("ad_block_only_mode") {
+  public_deps =
+      [ "//brave/components/brave_policy/ad_block_only_mode/buildflags" ]
+
+  sources = [
+    "ad_block_only_mode_policy_manager.cc",
+    "ad_block_only_mode_policy_manager.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_policy:brave_policy_observer",
+    "//brave/components/brave_shields/core/common",
+    "//components/content_settings/core/common",
+    "//components/policy/core/browser",
+    "//components/policy/core/common",
+    "//components/prefs",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  if (enable_ad_block_only_mode_policies) {
+    sources = [ "ad_block_only_mode_policy_manager_unittest.cc" ]
+
+    deps = [
+      ":ad_block_only_mode",
+      "//base/test:test_support",
+      "//brave/components/brave_policy:brave_policy_observer",
+      "//brave/components/brave_shields/core/common",
+      "//components/prefs",
+      "//components/prefs:test_support",
+      "//testing/gmock",
+      "//testing/gtest",
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+diff --git a/ui/color/BUILD.gn b/ui/color/BUILD.gn
+index 64a92227eaa5f9c59df0060e0251c3eaf29eced6..08d8d373cca7eff08959d697e13d1443c99e1400 100644
+--- a/ui/color/BUILD.gn
++++ b/ui/color/BUILD.gn
+@@ -87,6 +87,7 @@ component("color") {
+     ]
+     frameworks = [ "AppKit.framework" ]
+   }
++  import("//brave/ui/color/sources.gni") sources += brave_ui_color_sources public_deps += brave_ui_color_public_deps
+ }
+ 
+ source_set("test_support") {
+@@ -199,6 +200,7 @@ component("mixers") {
+     ]
+     deps += [ ":accent_color_observer" ]
+   }
++  import("//brave/ui/color/sources.gni") sources += brave_ui_color_mixer_sources public_deps += brave_ui_color_mixer_public_deps
+ }
+ 
+ mojom("mojom") {

@@ -1,0 +1,12 @@
+{%- set name = enum.name %}
+{%- set prefixed_name = "%s%s"|format(class_prefix, name) %}
+typedef NS_ENUM(NSInteger, {{prefixed_name}}) {
+{%- for field in enum.fields %}
+{%-   set field_name = field.name|objc_enum_formatter %}
+{%-   if field.value %}
+  {{prefixed_name}}{{field_name}} = {{field.numeric_value}},
+{%-   else %}
+  {{prefixed_name}}{{field_name}},
+{%-   endif %}
+{%- endfor %}
+} NS_SWIFT_NAME({{class_prefix}}.{{name}});

@@ -1,0 +1,22 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/rust/rust_static_library.gni")
+
+rust_static_library("rust_lib") {
+  visibility = [
+    "//brave/browser/brave_wallet:unit_tests",
+    "//brave/components/brave_wallet/browser:*",
+    "//brave/components/brave_wallet/browser/test:*",
+    "//brave/components/ipfs",
+  ]
+  crate_name = "filecoin_cxx"
+  crate_root = "src/lib.rs"
+  allow_unsafe = true
+  sources = [ "src/lib.rs" ]
+  cxx_bindings = [ "src/lib.rs" ]
+
+  deps = [ "//brave/third_party/rust/cid/v0_11:lib" ]
+}

@@ -1,0 +1,72 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [
+    "brave_tab_strip_model_browsertest.cc",
+    "tree_tabs_browsertest.cc",
+  ]
+
+  deps = [
+    "//brave/components/constants",
+    "//brave/components/tabs",
+    "//chrome/app:command_ids",
+    "//chrome/browser",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/tab_group_sync:factories",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui:browser_navigator_params_headers",
+    "//components/prefs",
+    "//content/test:test_support",
+    "//ui/base",
+  ]
+
+  if (!is_android) {
+    sources += [
+      "shared_pinned_tab_service_browsertest.cc",
+      "shared_pinned_tab_service_browsertest.h",
+    ]
+    deps += [
+      "//brave/browser/ui/tabs:tab_strip",
+      "//chrome/browser/ui:ui_features",
+      "//chrome/browser/ui/browser_window",
+      "//chrome/browser/ui/toasts",
+      "//chrome/test:test_support",
+      "//chrome/test:test_support_ui",
+      "//components/tab_groups",
+    ]
+  }
+
+  if (is_mac) {
+    sources += [ "shared_pinned_tab_service_browsertest_mac.mm" ]
+  }
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = []
+  deps = []
+
+  if (!is_android) {
+    sources += [
+      "tab_style_unittest.cc",
+      "tree_tab_node_tab_collection_unittest.cc",
+    ]
+    deps += [
+      "//brave/browser/ui/tabs:tabs_public",
+      "//brave/components/tabs",
+      "//chrome/browser/ui/tabs:test_support",
+      "//chrome/test:test_support",
+      "//components/tabs:test_support",
+      "//content/test:test_support",
+      "//testing/gmock",
+      "//testing/gtest",
+    ]
+  }
+}

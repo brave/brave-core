@@ -1,0 +1,26 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/commander/common/buildflags/buildflags.gni")
+
+assert(enable_commander)
+
+component("common") {
+  output_name = "commander_common"
+  defines = [ "IS_COMMANDER_COMMON_IMPL" ]
+
+  sources = [
+    "constants.cc",
+    "constants.h",
+    "features.cc",
+    "features.h",
+    "pref_names.cc",
+    "pref_names.h",
+  ]
+
+  deps = [ "//base" ]
+
+  public_deps = [ "//brave/components/commander/common/buildflags" ]
+}

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebGL getSupportedExtensions() test</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <canvas id="test" width="8" height="8"></canvas>
+    <script>
+      var canvas = document.getElementById("test");
+      var gl = canvas.getContext("webgl");
+      var ext_list = gl.getSupportedExtensions();
+      document.title = ext_list.join(",");
+    </script>
+  </body>
+</html>

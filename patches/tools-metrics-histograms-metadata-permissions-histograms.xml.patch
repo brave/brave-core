@@ -1,0 +1,20 @@
+diff --git a/tools/metrics/histograms/metadata/permissions/histograms.xml b/tools/metrics/histograms/metadata/permissions/histograms.xml
+index ea0f1aad03ad4a6cd3112bf849e15f3551dd71fc..ee94fc1d7ab9766bca325d70dd079f799fdf1fa9 100644
+--- a/tools/metrics/histograms/metadata/permissions/histograms.xml
++++ b/tools/metrics/histograms/metadata/permissions/histograms.xml
+@@ -53,6 +53,7 @@ chromium-metrics-reviews@google.com.
+   <variant name="PointerLock"/>
+   <variant name="ProtectedMedia"/>
+   <variant name="Quota"/>
++  <variant name="Widevine"/>
+   <variant name="RegisterProtocolHandler"/>
+   <variant name="SecurityKeyAttestation"/>
+   <variant name="StorageAccess"/>
+@@ -152,6 +153,7 @@ chromium-metrics-reviews@google.com.
+   <variant name=".PointerLock" summary="Pointer lock permission"/>
+   <variant name=".ProtectedMedia" summary="Protected media permission"/>
+   <variant name=".Quota" summary="Quota permission"/>
++  <variant name=".Widevine" summary="Widevine permission"/>
+   <variant name=".RegisterProtocolHandler"
+       summary="registerProtocolHandler permission"/>
+   <variant name=".Sensors" summary="Sensors permission"/>

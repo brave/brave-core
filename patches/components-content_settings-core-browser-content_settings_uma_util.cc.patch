@@ -1,0 +1,12 @@
+diff --git a/components/content_settings/core/browser/content_settings_uma_util.cc b/components/content_settings/core/browser/content_settings_uma_util.cc
+index 1bd6673a666edf8656f3787b429ba94d4ddd1bfc..429b692cde75bcc3ba8815660f82b5154291728c 100644
+--- a/components/content_settings/core/browser/content_settings_uma_util.cc
++++ b/components/content_settings/core/browser/content_settings_uma_util.cc
+@@ -168,6 +168,7 @@ constexpr auto kHistogramValue = base::MakeFixedFlatMap<ContentSettingsType,
+ 
+     // As mentioned at the top, please don't forget to update ContentType in
+     // enums.xml when you add entries here!
++    BRAVE_HISTOGRAM_VALUE_LIST
+ });
+ // LINT.ThenChange(//tools/metrics/histograms/enums.xml:ContentType)
+ 

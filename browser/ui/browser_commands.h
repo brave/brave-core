@@ -1,0 +1,185 @@
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_BROWSER_UI_BROWSER_COMMANDS_H_
+#define BRAVE_BROWSER_UI_BROWSER_COMMANDS_H_
+
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
+#include "brave/components/commander/common/buildflags/buildflags.h"
+#include "brave/components/containers/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
+#include "chrome/browser/ui/tabs/split_tab_metrics.h"
+#include "chrome/browser/ui/tabs/tab_model.h"
+#include "content/public/browser/page_navigator.h"
+#include "content/public/browser/web_contents.h"
+#include "url/gurl.h"
+#include "url/origin.h"
+
+namespace actions {
+class ActionItem;
+}
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/core/mojom/containers.mojom-forward.h"
+#endif
+
+class Browser;
+class Profile;
+
+namespace brave {
+
+bool HasSelectedURL(Browser* browser);
+void CleanAndCopySelectedURL(Browser* browser);
+
+#if BUILDFLAG(ENABLE_TOR)
+void NewOffTheRecordWindowTor(Browser* browser);
+void NewOffTheRecordWindowTor(Profile* profile);
+void NewTorConnectionForSite(Browser*);
+#endif
+
+void ToggleAIChat(Browser* browser);
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+void ShowWalletBubble(Browser* browser);
+void ShowApproveWalletBubble(Browser* browser);
+void CloseWalletBubble(Browser* browser);
+#endif
+
+void MaybeDistillAndShowSpeedreaderBubble(Browser* browser);
+void ShowBraveVPNBubble(Browser* browser);
+void ToggleBraveVPNButton(Browser* browser);
+void ToggleBraveVPNTrayIcon();
+void OpenBraveVPNUrls(Browser* browser, int command_id);
+// Copies an url sanitized by URLSanitizerService.
+void CopySanitizedURL(Browser* browser, const GURL& url);
+// Copies an url cleared through:
+// - Debouncer (potentially debouncing many levels)
+// - Query filter
+// - URLSanitizerService
+void CopyLinkWithStrictCleaning(Browser* browser, const GURL& url);
+
+void ToggleWindowTitleVisibilityForVerticalTabs(Browser* browser);
+void ToggleVerticalTabStrip(Browser* browser);
+void ToggleVerticalTabStripFloatingMode(Browser* browser);
+void ToggleVerticalTabStripExpanded(Browser* browser);
+
+void ToggleActiveTabAudioMute(Browser* browser);
+void ToggleSidebarPosition(Browser* browser);
+void ToggleSidebar(Browser* browser);
+
+void ToggleShieldsEnabled(Browser* browser);
+void ToggleJavascriptEnabled(Browser* browser);
+
+#if BUILDFLAG(ENABLE_COMMANDER)
+void ToggleCommander(Browser* browser);
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+void ShowPlaylistBubble(Browser* browser);
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+void ShowWaybackMachineBubble(Browser* browser);
+#endif
+
+void GroupTabsOnCurrentOrigin(Browser* browser);
+void MoveGroupToNewWindow(Browser* browser);
+
+bool IsInGroup(Browser* browser);
+bool HasUngroupedTabs(Browser* browser);
+
+void GroupUngroupedTabs(Browser* browser);
+void UngroupCurrentGroup(Browser* browser);
+void RemoveTabFromGroup(Browser* browser);
+void NameGroup(Browser* browser);
+void NewTabInGroup(Browser* browser);
+
+bool CanUngroupAllTabs(Browser* browser);
+void UngroupAllTabs(Browser* browser);
+
+void ToggleGroupExpanded(Browser* browser);
+void CloseUngroupedTabs(Browser* browser);
+void CloseTabsNotInCurrentGroup(Browser* browser);
+void CloseGroup(Browser* browser);
+
+bool CanBringAllTabs(Browser* browser);
+void BringAllTabs(Browser* browser);
+
+bool HasDuplicateTabs(Browser* browser);
+void CloseDuplicateTabs(Browser* browser);
+
+bool CanCloseTabsToLeft(Browser* browser);
+void CloseTabsToLeft(Browser* browser);
+
+bool CanCloseUnpinnedTabs(Browser* browser);
+void CloseUnpinnedTabs(Browser* browser);
+
+void AddAllTabsToNewGroup(Browser* browser);
+
+bool CanMuteAllTabs(Browser* browser, bool exclude_active);
+void MuteAllTabs(Browser* browser, bool exclude_active);
+
+bool CanUnmuteAllTabs(Browser* browser);
+void UnmuteAllTabs(Browser* browser);
+
+void ScrollTabToTop(Browser* browser);
+void ScrollTabToBottom(Browser* browser);
+
+void ExportAllBookmarks(Browser* browser);
+void ToggleAllBookmarksButtonVisibility(Browser* browser);
+
+// Split view API with SideBySide.
+// false if active tab is already split tab.
+bool CanOpenNewSplitTabsWithSideBySide(Browser* browser);
+
+// true if two tabs are selected and both are not in split tabs.
+bool CanSplitTabsWithSideBySide(Browser* browser);
+
+// Add to split with selected two tabs.
+void SplitTabsWithSideBySide(Browser* browser,
+                             split_tabs::SplitTabCreatedSource source);
+
+// true if any selected tab is split tabs.
+bool IsSplitTabs(Browser* browser);
+
+// Remove split tabs of selected tabs.
+void RemoveSplitWithSideBySide(Browser* browser);
+
+// Swap tabs in active tab.
+void SwapTabsInSplitWithSideBySide(Browser* browser);
+
+// Force pastes into the active web contents in the browser, if focused.
+void ForcePasteInBrowser(Browser* browser);
+
+// Force pastes into the web contents if focused.
+void ForcePasteInWebContents(content::WebContents* contents);
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+// Creates a new tab with the given tab's URL in the specified container.
+void OpenTabUrlInContainer(BrowserWindowInterface* browser_window,
+                           const tabs::TabHandle& tab,
+                           const containers::mojom::ContainerPtr& container);
+// Creates a new tab with the specified URL in the given container.
+void OpenUrlInContainer(BrowserWindowInterface* browser_window,
+                        const GURL& url,
+                        const containers::mojom::ContainerPtr& container);
+
+// Creates a new tab with the given tab's URL without a container.
+void OpenTabUrlWithoutContainer(BrowserWindowInterface* browser_window,
+                                const tabs::TabHandle& tab);
+void OpenUrlWithoutContainer(BrowserWindowInterface* browser_window,
+                             const GURL& url);
+
+// Opens the container menu on the page action view if the active tab is in a
+// container.
+void OpenContainerMenuOnPageActionView(BrowserWindowInterface* browser,
+                                       ::actions::ActionItem* item);
+#endif
+
+}  // namespace brave
+
+#endif  // BRAVE_BROWSER_UI_BROWSER_COMMANDS_H_

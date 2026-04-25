@@ -1,0 +1,29 @@
+[package]
+name = "pin-project-lite"
+version = "0.2.9"
+edition = "2018"
+rust-version = "1.37"
+license = "Apache-2.0 OR MIT"
+repository = "https://github.com/taiki-e/pin-project-lite"
+keywords = ["pin", "macros"]
+categories = ["no-std", "rust-patterns"]
+exclude = ["/.*", "/tools"]
+description = """
+A lightweight version of pin-project written with declarative macros.
+"""
+
+[package.metadata.docs.rs]
+targets = ["x86_64-unknown-linux-gnu"]
+
+[workspace]
+members = [
+    "tests/doc",
+    "tests/no-core",
+    "tests/no-std",
+]
+
+[dev-dependencies]
+macrotest = { git = "https://github.com/taiki-e/macrotest.git", rev = "779cfa5" } # https://github.com/eupn/macrotest/pull/69
+rustversion = "1"
+static_assertions = "1"
+trybuild = "1.0.49"

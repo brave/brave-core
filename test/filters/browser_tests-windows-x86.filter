@@ -1,0 +1,18 @@
+##
+## Upstream tests to disable
+##
+## When adding a new filter to this list, please include a short description of
+## why the filter is required and create an associated tracking issue.
+##
+
+# These only fail in Static x86 build, but pass in Release. The test crashes a
+# utility process on purpose and is supposed to continue after the crash, but
+# it seems in Static build the crash isn't detected/handled.
+-CDM_10/ECKEncryptedMediaTest.MultipeCdmTypes/0
+-CDM_11/ECKEncryptedMediaTest.MultipeCdmTypes/0
+
+# These tests fail on x86 CI but pass locally
+-MetricIntegrationTest.LargestContentfulPaint_SubframeInput
+-SaveDesktopSnapshotTest.SaveDesktopSnapshot
+
+-PageLoadMetricsBrowserTestTerminatedPage.UkmIsRecordedWhenRenderProcessShutsDown

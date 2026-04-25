@@ -1,0 +1,33 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/config.gni")
+import("//build/config/android/rules.gni")
+import("//chrome/browser/buildflags.gni")
+import("//extensions/buildflags/buildflags.gni")
+import("//third_party/jni_zero/jni_zero.gni")
+
+android_library("java") {
+  sources = [
+    "java/src/org/chromium/chrome/browser/toolbar/BraveToolbarLongPressMenuHandler.java",
+    "java/src/org/chromium/chrome/browser/toolbar/adaptive/BraveAdaptiveToolbarStatePredictor.java",
+    "java/src/org/chromium/chrome/browser/toolbar/adaptive/BraveAdaptiveToolbarStatePredictorDummySuper.java",
+  ]
+
+  deps = [
+    "//base:base_java",
+    "//base:supplier_java",
+    "//chrome/browser/android/lifecycle:java",
+    "//chrome/browser/flags:java",
+    "//chrome/browser/profiles/android:java",
+    "//chrome/browser/ui/android/toolbar:java",
+    "//ui/android:ui_no_recycler_view_java",
+    "//url:url_java",
+  ]
+}
+
+android_resources("java_resources") {
+  sources = [ "java/brave-res/layout/brave_adaptive_preference_buttons.xml" ]
+}

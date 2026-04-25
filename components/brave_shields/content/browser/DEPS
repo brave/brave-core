@@ -1,0 +1,51 @@
+include_rules = [
+  "+brave/components/constants",
+  "+brave/content/public/browser/devtools",
+  "+components/component_updater",
+  "+components/content_settings/core",
+  "+components/download",
+  "+components/grit/brave_components_resources.h",
+  "+components/grit/brave_components_strings.h",
+  "+components/keyed_service",
+  "+components/pref_registry",
+  "+components/prefs",
+  "+components/proxy_config",
+  "+components/security_interstitials",
+  "+components/user_prefs",
+  "+content/public/browser",
+  "+content/public/common",
+  "+crypto",
+  "+services/network/public",
+  "+storage/browser/blob",
+  "+third_party/blink/public/mojom",
+  "+third_party/re2",
+  "+third_party/zlib",
+  "+ui/base",
+]
+
+specific_include_rules = {
+  "brave_farbling_service\.h": [
+    "+third_party/abseil-cpp/absl/random/random.h",
+  ],
+  "ad_block_engine\.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+  "ad_block_filters_provider\.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+  "ad_block_filters_provider_manager\.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+  "ad_block_custom_filters_provider\.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+  "ad_block_localhost_filters_provider\.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+  "ad_block_service\.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+  "ad_block_subscription_filters_provider\.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+}

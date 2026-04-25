@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/pdf/index.html b/chrome/browser/resources/pdf/index.html
+index 649bf977298e80c3000d49488478c6458cfefd0a..220e79bdced405313055b03f32eabfb8b73f13ad 100644
+--- a/chrome/browser/resources/pdf/index.html
++++ b/chrome/browser/resources/pdf/index.html
+@@ -3,6 +3,7 @@
+ <head>
+   <meta charset="utf-8">
+ 
++  <link rel="stylesheet" href="chrome://resources/brave/css/nala.css">
+   <link rel="stylesheet" href="chrome://resources/css/text_defaults_md.css">
+   <link rel="stylesheet" href="index.css">
+   <style>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit latest_public_release="0" current_release="1">
+  <outputs>
+    <output filename="grit/brave_components_resources.h" type="rc_header">
+      <emit emit_type='prepend'></emit>
+    </output>
+    <output filename="brave_components_static.pak" type="data_package" />
+  </outputs>
+  <release seq="1">
+    <includes>
+      <!-- DO NOT PUT RESOURCES FOR SPECIFIC COMPONENTS IN THIS FILE
+           create a new grd file in components/component_name/resources/ -->
+
+      <!-- Common resources -->
+      <!-- TODO: Define only where needed, via webpack generated output, or use common chrome://resources DataSource -->
+      <if expr="not is_android">
+        <include name="IDR_BRAVE_COMMON_TOOLBAR_IMG" file="../img/toolbar/menu_btn.svg" type="BINDATA" />
+      </if>
+
+      <!-- WebUI adblock resources -->
+      <!-- TODO: move to brave_adblock_ui component -->
+      <include name="IDR_BRAVE_ADBLOCK_HTML" file="../brave_adblock_ui/brave_adblock.html" type="BINDATA" />
+      <include name="IDR_BRAVE_ADBLOCK_INTERNALS_HTML" file="../brave_adblock_ui/adblock_internals/brave_adblock_internals.html" type="BINDATA" />
+
+      <!-- WebUI webcompat reporter resources -->
+      <!-- TODO: move to webcompat_reporter_ui component -->
+      <if expr="not is_android">
+        <include name="IDR_WEBCOMPAT_REPORTER_HTML" file="../webcompat_reporter/ui/webcompat_reporter.html" type="BINDATA" />
+      </if>
+
+      <!-- WebUI welcome page resources -->
+      <!-- TODO: move to brave_welcome_ui component -->
+      <if expr="not is_android">
+        <include name="IDR_BRAVE_WELCOME_HTML" file="../brave_welcome_ui/brave_welcome.html" type="BINDATA" />
+        <include name="IDR_BRAVE_WELCOME_PAGE_FAVICON" file="../img/welcome/favicon.ico" type="BINDATA" />
+      </if>
+
+      <!-- WebUI newtab resources -->
+      <!-- TODO: move to brave_new_tab_ui component -->
+      <if expr="not is_android">
+        <include name="IDR_BRAVE_NEW_TAB_HTML" file="../brave_new_tab_ui/brave_new_tab.html" type="BINDATA" />
+        <include name="IDR_BRAVE_NEW_TAB_IMG1" file="../img/newtab/bookmarks_btn.svg" type="BINDATA" />
+        <include name="IDR_BRAVE_NEW_TAB_IMG4" file="../img/newtab/history_btn.svg" type="BINDATA" />
+        <include name="IDR_BRAVE_NEW_TAB_IMG2" file="../img/newtab/settings_prefs_btn.svg" type="BINDATA" />
+      </if>
+
+      <!-- WebUI wallet resources -->
+      <if expr="enable_brave_wallet">
+        <include name="IDR_WALLET_PAGE_HTML" file="${root_gen_dir}/brave/components/brave_wallet_ui/page/preprocessed/wallet_page.html" use_base_dir="false" type="BINDATA" />
+        <include name="IDR_BRAVE_WALLET_NFT_DISPLAY_HTML" file="../brave_wallet_ui/nft/nft.html" type="BINDATA" />
+        <include name="IDR_BRAVE_WALLET_MARKET_DISPLAY_HTML" file="../brave_wallet_ui/market/market.html" type="BINDATA" />
+        <include name="IDR_BRAVE_WALLET_LINE_CHART_DISPLAY_HTML" file="../brave_wallet_ui/line_chart/line_chart.html" type="BINDATA" />
+        <if expr="not is_android and not is_ios">
+          <include name="IDR_WALLET_PANEL_HTML" file="../brave_wallet_ui/panel/wallet_panel.html" type="BINDATA" />
+          <include name="IDR_BRAVE_WALLET_LEDGER_BRIDGE_HTML" file="../brave_wallet_ui/ledger/ledger.html" type="BINDATA" />
+          <include name="IDR_BRAVE_WALLET_TREZOR_BRIDGE_HTML" file="../brave_wallet_ui/trezor/trezor.html" type="BINDATA" />
+        </if>
+
+        <!-- WebUI swap, send, and deposit page resources for Android -->
+        <if expr="is_android">
+          <include name="IDR_BRAVE_WALLET_SWAP_PAGE_HTML" file="../brave_wallet_ui/page/screens/swap/android/swap.html" type="BINDATA" />
+          <include name="IDR_BRAVE_WALLET_SEND_PAGE_HTML" file="../brave_wallet_ui/page/screens/send/android/send.html" type="BINDATA" />
+          <include name="IDR_BRAVE_WALLET_DEPOSIT_PAGE_HTML" file="../brave_wallet_ui/page/screens/fund-wallet/android/deposit-funds.html" type="BINDATA" />
+          <include name="IDR_BRAVE_WALLET_FUND_WALLET_PAGE_HTML" file="../brave_wallet_ui/page/screens/android-buy/android/fund-wallet.html" type="BINDATA" />
+        </if>
+      </if>
+      <!-- WebUI vpn resources -->
+      <if expr="not is_android">
+        <if expr="enable_brave_vpn">
+          <include name="IDR_VPN_PANEL_HTML" file="../brave_vpn/resources/panel/vpn_panel.html" type="BINDATA" />
+        </if>
+      </if>
+
+      <!-- Imagery links -->
+      <if expr="not is_android">
+        <include name="IDR_BRAVE_NEW_TAB_BACKGROUND1" file="../img/newtab/backgrounds/dylan-malval_sea-min.webp" type="BINDATA" />
+      </if>
+
+      <!-- WebUI private new tab resources -->
+      <!-- TODO: move to brave_new_tab_ui component -->
+      <if expr="not is_android">
+        <include name="IDR_BRAVE_PRIVATE_TAB_IMG" file="../img/newtab/private-window.svg" type="BINDATA" />
+        <include name="IDR_BRAVE_PRIVATE_TAB_TOR_IMG" file="../img/newtab/private-window-tor.svg" type="BINDATA" />
+      </if>
+
+      <!-- Email Aliases -->
+      <if expr="enable_email_aliases">
+        <include name="IDR_EMAIL_ALIASES_PANEL_HTML" file="../email_aliases/resources/email_aliases_panel.html" type="BINDATA" />
+      </if>
+
+      <!-- WebUI Local AI resources -->
+      <include name="IDR_LOCAL_AI_HTML" file="../local_ai/resources/local_ai.html" type="BINDATA" />
+
+      <part file="../brave_ads/browser/resources/ads_internals_resources.grdp" />
+      <part file="../brave_perf_predictor/resources/brave_perf_predictor_resources.grdp" />
+      <part file="../playlist/content/browser/resources/playlist_resources.grdp" />
+      <part file="../brave_news/browser/resources/news_resources.grdp" />
+      <part file="../skus/browser/resources/skus_internals_resources.grdp" />
+      <if expr="not is_android">
+        <part file="brave_blank_page_resources.grdp" />
+        <part file="brave_new_tab_page_resources.grdp" />
+        <part file="brave_welcome_page_resources.grdp" />
+      </if>
+      <part file="brave_translate_resources.grdp" />
+      <part file="speedreader_resources.grdp" />
+      <part file="brave_flags_ui_resources.grdp" />
+      <part file="domain_block_resources.grdp" />
+      <part file="request_otr_resources.grdp" />
+      <if expr="not is_ios and enable_brave_wallet">
+        <part file="decentralized_dns_resources.grdp" />
+      </if>
+      <if expr="not is_android">
+        <part file="brave_shields_resources.grdp" />
+        <part file="brave_private_new_tab_resources.grdp" />
+      </if>
+      <if expr="enable_ai_chat">
+        <part file="../ai_chat/resources/ai_chat_ui_resources.grdp" />
+      </if>
+      <if expr="enable_brave_wallet">
+        <part file="brave_wallet_resources.grdp" />
+      </if>
+
+      <if expr="is_android">
+        <part file="../new_tab_takeover/new_tab_takeover_resources.grdp" />
+      </if>
+      <part file="../brave_account/resources/brave_account_resources.grdp" />
+    </includes>
+  </release>
+</grit>

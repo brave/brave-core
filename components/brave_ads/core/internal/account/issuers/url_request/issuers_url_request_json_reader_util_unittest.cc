@@ -1,0 +1,77 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_ads/core/internal/account/issuers/url_request/issuers_url_request_json_reader_util.h"
+
+#include "base/test/values_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/test/issuers_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+
+// npm run test -- brave_unit_tests --filter=BraveAds*
+
+namespace brave_ads {
+class BraveAdsIssuersUrlRequestJsonReaderUtilTest : public test::TestBase {};
+
+TEST_F(BraveAdsIssuersUrlRequestJsonReaderUtilTest, ParsePing) {
+  // Arrange
+  const base::DictValue dict = base::test::ParseJsonDict(R"JSON(
+    {
+      "ping": 7200000
+    })JSON");
+
+  // Act & Assert
+  EXPECT_EQ(7'200'000, json::reader::ParsePing(dict));
+}
+
+TEST_F(BraveAdsIssuersUrlRequestJsonReaderUtilTest, DoNotParseMissingPing) {
+  // Act & Assert
+  EXPECT_FALSE(json::reader::ParsePing({}));
+}
+
+TEST_F(BraveAdsIssuersUrlRequestJsonReaderUtilTest, ParseTokenIssuers) {
+  // Arrange
+  const base::DictValue dict = base::test::ParseJsonDict(R"JSON(
+    {
+      "issuers": [
+        {
+          "name": "confirmations",
+          "publicKeys": [
+            {
+              "publicKey": "OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=",
+              "associatedValue": ""
+            },
+            {
+              "publicKey": "QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=",
+              "associatedValue": ""
+            }
+          ]
+        },
+        {
+          "name": "payments",
+          "publicKeys": [
+            {
+              "publicKey": "JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=",
+              "associatedValue": "0.0"
+            },
+            {
+              "publicKey": "OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=",
+              "associatedValue": "0.1"
+            }
+          ]
+        }
+      ]
+    })JSON");
+
+  // Act & Assert
+  EXPECT_EQ(test::BuildTokenIssuers(), json::reader::ParseTokenIssuers(dict));
+}
+
+TEST_F(BraveAdsIssuersUrlRequestJsonReaderUtilTest,
+       DoNotParseMissingTokenIssuers) {
+  // Act & Assert
+  EXPECT_FALSE(json::reader::ParseTokenIssuers({}));
+}
+
+}  // namespace brave_ads

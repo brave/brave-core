@@ -1,0 +1,248 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+import { BraveWallet } from '../../../constants/types'
+import { LiquiditySource, QuoteOption, RouteTagsType } from './constants/types'
+
+// Constants
+import { LPMetadata } from './constants/metadata'
+
+// Utils
+import Amount from '../../../utils/amount'
+import { getTokenPriceAmountFromRegistry } from '../../../utils/pricing-utils'
+import { makeNetworkAsset } from '../../../utils/asset-utils'
+import { sanitizeImageURL } from '../../../utils/string-utils'
+
+function ensureUnique<T>(array: T[], key: keyof T): T[] {
+  return [...new Set(array.map((a) => a[key]))].map(
+    (k) => array.find((a) => a[key] === k)!,
+  ) as T[]
+}
+
+function getZeroExNetworkFee({
+  quote,
+  fromNetwork,
+}: {
+  quote: BraveWallet.ZeroExQuote
+  fromNetwork: BraveWallet.NetworkInfo
+}): Amount {
+  if (!fromNetwork) {
+    return Amount.empty()
+  }
+
+  return new Amount(quote.gasPrice)
+    .times(quote.gas)
+    .divideByDecimals(fromNetwork.decimals)
+}
+
+export function getZeroExFromAmount({
+  quote,
+  fromToken,
+}: {
+  quote: BraveWallet.ZeroExQuote
+  fromToken: BraveWallet.BlockchainToken
+}): Amount {
+  return new Amount(quote.sellAmount).divideByDecimals(fromToken.decimals)
+}
+
+export function getZeroExToAmount({
+  quote,
+  toToken,
+}: {
+  quote: BraveWallet.ZeroExQuote
+  toToken: BraveWallet.BlockchainToken
+}): Amount {
+  return new Amount(quote.buyAmount).divideByDecimals(toToken.decimals)
+}
+
+export function getZeroExQuoteOptions({
+  quote,
+  fromNetwork,
+  fromToken,
+  toToken,
+  spotPrices,
+  defaultFiatCurrency,
+}: {
+  quote: BraveWallet.ZeroExQuote
+  fromNetwork: BraveWallet.NetworkInfo
+  fromToken: BraveWallet.BlockchainToken
+  toToken: BraveWallet.BlockchainToken
+  spotPrices: BraveWallet.AssetPrice[]
+  defaultFiatCurrency: string
+}): QuoteOption[] {
+  const networkFee = getZeroExNetworkFee({ quote, fromNetwork })
+
+  const fromAmount = new Amount(quote.sellAmount).divideByDecimals(
+    fromToken.decimals,
+  )
+
+  const toAmount = new Amount(quote.buyAmount).divideByDecimals(
+    toToken.decimals,
+  )
+
+  const fromAmountFiat = fromAmount.times(
+    getTokenPriceAmountFromRegistry(spotPrices, fromToken),
+  )
+
+  const toAmountFiat = toAmount.times(
+    getTokenPriceAmountFromRegistry(spotPrices, toToken),
+  )
+
+  const fiatDiff = toAmountFiat.minus(fromAmountFiat)
+  const fiatDiffRatio = fiatDiff.div(fromAmountFiat)
+  const impact = fiatDiffRatio.times(100).toAbsoluteValue()
+
+  return [
+    {
+      fromAmount: new Amount(quote.sellAmount).divideByDecimals(
+        fromToken.decimals,
+      ),
+      toAmount: getZeroExToAmount({ quote, toToken }),
+      minimumToAmount: undefined,
+      fromToken,
+      toToken,
+      rate: new Amount(quote.buyAmount)
+        .divideByDecimals(toToken.decimals)
+        .div(new Amount(quote.sellAmount).divideByDecimals(fromToken.decimals)),
+      impact,
+      steps: [],
+      sources: ensureUnique(quote.route.fills, 'source')
+        .map((fill) => ({
+          name: fill.source,
+          proportion: new Amount(fill.proportionBps).times(0.00001),
+        }))
+        .filter((source) => source.proportion.gt(0)),
+      routing: 'split', // 0x supports split routing only
+      networkFee,
+      networkFeeFiat: networkFee.isUndefined()
+        ? ''
+        : networkFee
+            .times(
+              getTokenPriceAmountFromRegistry(
+                spotPrices,
+                makeNetworkAsset(fromNetwork),
+              ),
+            )
+            .formatAsFiat(defaultFiatCurrency),
+      provider: BraveWallet.SwapProvider.kZeroEx,
+      // There is only 1 quote returned for Ox
+      // making it the Fastest and Cheapest.
+      tags: ['FASTEST', 'CHEAPEST'],
+    },
+  ]
+}
+
+// Gate3
+
+export function getGate3FromAmount({
+  route,
+  fromToken,
+}: {
+  route: BraveWallet.Gate3SwapRoute
+  fromToken: BraveWallet.BlockchainToken
+}): Amount {
+  return new Amount(route.sourceAmount).divideByDecimals(fromToken.decimals)
+}
+
+export function getGate3ToAmount({
+  route,
+  toToken,
+}: {
+  route: BraveWallet.Gate3SwapRoute
+  toToken: BraveWallet.BlockchainToken
+}): Amount {
+  return new Amount(route.destinationAmount).divideByDecimals(toToken.decimals)
+}
+
+export function getGate3QuoteOptions({
+  quote,
+  fromToken,
+  toToken,
+  fromNetwork,
+  spotPrices,
+  defaultFiatCurrency,
+}: {
+  quote: BraveWallet.Gate3SwapQuote
+  fromToken: BraveWallet.BlockchainToken
+  toToken: BraveWallet.BlockchainToken
+  fromNetwork: BraveWallet.NetworkInfo
+  spotPrices: BraveWallet.AssetPrice[]
+  defaultFiatCurrency: string
+}): QuoteOption[] {
+  return quote.routes.map((route) => {
+    const fromAmount = new Amount(route.sourceAmount).divideByDecimals(
+      fromToken.decimals,
+    )
+
+    const toAmount = new Amount(route.destinationAmount).divideByDecimals(
+      toToken.decimals,
+    )
+
+    const minimumToAmount = new Amount(
+      route.destinationAmountMin,
+    ).divideByDecimals(toToken.decimals)
+
+    const fromAmountFiat = fromAmount.times(
+      getTokenPriceAmountFromRegistry(spotPrices, fromToken),
+    )
+
+    const toAmountFiat = toAmount.times(
+      getTokenPriceAmountFromRegistry(spotPrices, toToken),
+    )
+
+    const fiatDiff = toAmountFiat.minus(fromAmountFiat)
+    const fiatDiffRatio = fiatDiff.div(fromAmountFiat)
+    const impact = route.priceImpact
+      ? new Amount(route.priceImpact).toAbsoluteValue()
+      : fiatDiffRatio.times(100).toAbsoluteValue()
+
+    // Use network fee from route if available, otherwise zero
+    // If gasless is true, network fees are sponsored/waived
+    const networkFee =
+      route.gasless || !route.networkFee
+        ? Amount.zero()
+        : new Amount(route.networkFee.amount).divideByDecimals(
+            route.networkFee.decimals,
+          )
+
+    return {
+      fromAmount,
+      toAmount,
+      minimumToAmount,
+      fromToken,
+      toToken,
+      rate: toAmount.div(fromAmount),
+      impact,
+      sources: [],
+      steps: [...route.steps].reverse(),
+      routing: 'flow',
+      networkFee,
+      networkFeeFiat: networkFee.isUndefined()
+        ? ''
+        : networkFee
+            .times(
+              getTokenPriceAmountFromRegistry(
+                spotPrices,
+                makeNetworkAsset(fromNetwork),
+              ),
+            )
+            .formatAsFiat(defaultFiatCurrency),
+      provider: route.provider,
+      executionDuration: route.estimatedTime ?? undefined,
+      tags: ['CHEAPEST', 'FASTEST'] as RouteTagsType[],
+      id: route.id,
+    }
+  })
+}
+
+export const getLPIcon = (source: Pick<LiquiditySource, 'name' | 'logo'>) => {
+  const iconFromMetadata = LPMetadata[source.name]
+  if (iconFromMetadata) {
+    return iconFromMetadata
+  }
+  if (source.logo) {
+    return sanitizeImageURL(source.logo)
+  }
+  return ''
+}

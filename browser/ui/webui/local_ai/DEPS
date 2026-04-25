@@ -1,0 +1,4 @@
+include_rules = [
+  "+brave/components/local_ai/core",
+  "+brave/components/local_ai/resources",
+]

@@ -1,0 +1,495 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Ransom demand made for kidnapped Cape Town boy</title><meta charset="utf-8"/><body id="article"><h1 class="title metadata">Ransom demand made for kidnapped Cape Town boy</h1><p class="subhead metadata">While the search continues for 6-year-old Shahnawaz Asghar, a ransom demand for the boy’s return has been made.</p><div class=""><p class="metadata">By Robin-Lee Francke</p><p class="metadata date">Updated Aug. 18, 2022 09:15 AM</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr><div><p>Cape Town – While the search continues for 6-year-old Shahnawaz Asghar, a ransom demand for the boy’s return has been made.</p><p>Shahnawaz was snatched in front of his 9th Street home in Kensington, Cape Town, before 8am on Wednesday. </p></div><p>Story continues below Advertisement</p><div><p>Speaking to IOL at the time, the family spokesperson, who identified herself as Ms&nbsp;Joubert, said the boy’s mother was traumatised.</p><p>“He was grabbed right outside the house as his mother was leaving to take the three children (daughter, aged 11 and the two boys, aged 9 and 6) to school just around the corner from them,” Joubert said.</p><p>The boy is in Grade&nbsp;R at the Hidayatul Islam Primary School.</p></div><div class="sc-kkGfuU fJvDsk"><div class="sc-kkGfuU eyYtsI" display="flex"><h5 class="sc-csuQGl cAYchA">More on this</h5></div><ul class="sc-hZSUBg jUaLbo"><li class="sc-cJSrbW cdAOto"><article class="sc-ifAKCX cFlEyZ"><h6 class="sc-Rmtcm hVuwhy"><a class="Link__StyledLink-sc-1pz26op-0 xHQYC" href="/news/crime-and-courts/police-hunt-for-six-suspects-after-boy-6-is-kidnapped-in-cape-town-d6aa892f-274b-4dd2-b750-f01e1ff13869">BREAKING: Police hunt for six suspects after boy, 6, is kidnapped in Cape Town</a></h6></article></li><li class="sc-cJSrbW cdAOto"><article class="sc-ifAKCX cFlEyZ"><h6 class="sc-Rmtcm hVuwhy"><a class="Link__StyledLink-sc-1pz26op-0 xHQYC" href="/news/south-africa/gauteng/four-due-in-court-after-police-rescue-kidnapped-chinese-national-in-boksburg-5f9ec6ac-eb79-480b-8d3d-75cea2eb8fca">Four due in court after police rescue kidnapped Chinese national in Boksburg</a></h6></article></li><li class="sc-cJSrbW cdAOto"><article class="sc-ifAKCX cFlEyZ"><h6 class="sc-Rmtcm hVuwhy"><a class="Link__StyledLink-sc-1pz26op-0 xHQYC" href="/news/crime-and-courts/father-and-two-sons-arrested-as-cops-rescue-hijacked-and-kidnapped-women-in-gauteng-e7d180ed-f110-478a-bf07-c3ec3d4efd64">Father and two sons arrested as cops rescue hijacked and kidnapped women in Gauteng</a></h6></article></li><li class="sc-cJSrbW cdAOto"><article class="sc-ifAKCX cFlEyZ"><h6 class="sc-Rmtcm hVuwhy"><a class="Link__StyledLink-sc-1pz26op-0 xHQYC" href="/capeargus/news/cigarette-truck-driver-and-assistant-robbed-kidnapped-by-six-gunmen-in-brooklyn-3f2b6071-6e3d-4215-9cc7-304aec893638">Cigarette truck driver and assistant robbed, kidnapped by six gunmen in Brooklyn</a></h6></article></li></ul></div><div><p>A search by police, residents and community organisations is under way.</p><p>Shahnawaz is Pakistani, with black hair and brown eyes. He is approximately 1&nbsp;metre tall and weighs about 40kg.</p><p>He was last seen wearing his blue school tracksuit with a grey-and-white camouflage puffer jacket and black school shoes.</p></div><p>Story continues below Advertisement</p><div><p>He is believed to have been taken away in a vehicle with cloned licence plates.</p><p>Police confirmed they were searching for six suspects who were seen fleeing with the child but remained tight-lipped on the incident.</p><p>However, a source has disclosed to IOL a ransom demand was made.</p></div><p>Story continues below Advertisement</p><div><p>“They called the family and set a ransom demand,” the source said.</p><p>However, Kensington Community Policing Forum (CPF) chairman, Cheslyn Steenberg has rubbished claims of a ransom demand.</p><p>“I see posts about a ransom being asked for -  that type of reporting is irresponsible as it places the life of Shanawaz at risk. Let us remain prayerful for his safe return,” he said.</p></div><p>Story continues below Advertisement</p><div><p>Steenberg confirmed progress has been made in this investigation.</p><p>“The Kensington CPF herewith informs the community that progress has been made in this matter, and some noteworthy developments have been made.</p><p>“I would like to urge the public to only share verified information -  misinformation can lead to secondary trauma to the family of Shanawaz,” Steenberg added.</p></div><div><p>Western Cape Community Safety and Police Oversight MEC Reagen Allen said the number of kidnapping incidents in the province was alarming.</p><p>He said crime statistics for the fourth quarter of the 2021/22 financial year showed kidnappings had increased by 8.3%, or 16 cases, compared to the previous year.</p><p>Allen said Mitchells Plain and Gugulethu had an increase in kidnappings of 122% and 100% respectively.</p></div><div><p>“Criminals are using innocent children as pawns in their schemes,” he said.</p><p>“The parents and loved ones (of Shahnawaz) should know that they are in our thoughts and prayers as they endure this very difficult period.</p><p>“I’d like to encourage anyone with information to urgently contact SAPS, so that this young child can be found unharmed and returned to his family,” Allen said.</p></div></body>

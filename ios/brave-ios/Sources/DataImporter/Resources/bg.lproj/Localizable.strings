@@ -1,0 +1,111 @@
+/* Error message shown when importing bookmarks failed */
+"failedToImportBookmarks" = "Възникна грешка при импортирането на отметките.";
+
+/* Error message shown when importing history failed */
+"failedToImportHistory" = "Възникна грешка при импортирането на историята.";
+
+/* Error message shown when importing passwords failed due to a password already existing (a conflict) */
+"failedToImportPasswordsDueToConflictError" = "Възникна грешка при импортирането на пароли.\nНякои пароли не могат да се импортират поради конфликти.";
+
+/* Error message shown when importing passwords failed */
+"failedToImportPasswordsError" = "Възникна грешка при импортирането на паролите.";
+
+/* Error message shown when unzipping a zip file failed */
+"failedToUnzipError" = "Възникна грешка при разархивирането на файла.";
+
+/* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
+"importDataFileSelectorButtonTitle" = "Избор на файл...";
+
+/* The message of a Text on screen that explains to the user what type of data can be imported. */
+"importDataFileSelectorMessage" = "Пренеси отметките, историята и други данни от браузъра си в Brave.";
+
+/* The title of the main screen that lets the user import data. The title is shown in the navigation bar. */
+"importDataFileSelectorNavigationTitle" = "Импортиране на данни за сърфиране";
+
+/* The title of a Text on screen that explains to the user what type of data can be imported. */
+"importDataFileSelectorTitle" = "Импортирай отметки и други";
+
+/* The title of the button on the file selector screen that lets the user view the tutorial screen on how to import data. */
+"importDataViewTutorialButtonTitle" = "Как се експортира от Safari";
+
+/* The message shown on the import data screen when importing the data from the browser profile failed. */
+"importStateFailureMessage" = "Нещо се обърка при импортирането на данните ти.\nМоля, опитай отново.\nАко проблемът продължава, свържи се с поддръжката.";
+
+/* The title shown on the import data screen when importing the data from the browser profile failed. */
+"importStateFailureTitle" = "Импортирането е неуспешно";
+
+/* The title of the button on the import error screen when there is a conflict, that lets the user keep your existing Brave passwords. */
+"importStatePasswordConflictKeepExistingPasswordsTitle" = "Запазване на паролите от Brave";
+
+/* The title of the button on the import error screen when there is a conflict, that lets the user use the passwords that were imported, overwriting your existing passwords. */
+"importStatePasswordConflictKeepImportedPasswordsTitle" = "Използване на паролите от Safari";
+
+/* The message shown on the import data screen when importing the data from has conflicting passwords (when two passwords exist for the same account, but are different, they are conflicting). %d is a placeholder for the number of conflicting passwords. */
+"importStatePasswordConflictMessage" = "Открити са %d конфликта на пароли.\nИзбери какво да импортираш.";
+
+/* The title shown on the import data screen when importing the data from has conflicting passwords (when two passwords exist for the same account, but are different, they are conflicting). */
+"importStatePasswordConflictTitle" = "Конфликти на пароли";
+
+/* The title of the button on the import success screen to let the user continue using the app as before. */
+"importStateSuccessContinueTitle" = "Продължи";
+
+/* The message shown on the import data screen when importing the data from the browser profile succeeded. */
+"importStateSuccessMessage" = "Данните ти бяха импортирани успешно.\nГотов си да започнеш да сърфираш с Brave.";
+
+/* The title shown on the import data screen when importing the data from the browser profile succeeded. */
+"importStateSuccessTitle" = "Успешно!";
+
+/* The title of the button on the import error screen that lets the user try to import the data again */
+"importStateTryAgainTitle" = "Опитай отново";
+
+/* The message on the tutorial page explaining the detailed process to export your data from other browsers. */
+"importTutorialDetailedProcessMessage" = "Отвори на страницата за помощ на Safari";
+
+/* The title on the tutorial page explaining the detailed process to export your data from other browsers. */
+"importTutorialDetailedProcessTitle" = "Искаш ли подробен процес на експортиране?";
+
+/* The title of the tutorial page that shows in the Navigation Bar. */
+"importTutorialScreenTitle" = "Как се експортира от Safari";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepFiveTitle" = "Запази файла във **Файлове**, като избереш място, което после ще можеш да намериш лесно.";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepFourTitle" = "**Избери** данните, които искаш да експортираш (отметки, история, кредитни карти, пароли).";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepOneTitle" = "Отвори **Настройки**, превърти надолу и докосни **Приложения**.";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepThreeTitle" = "Превърти надолу и докосни **Експортиране**.";
+
+/* The title on each card indicating the tutorial step that has been completed. Step 1, Step 2, Step 3, etc... %d is a placeholder for the step number. */
+"importTutorialStepTitle" = "Стъпка %d";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepTwoTitle" = "В списъка с приложения (подредени по азбучен ред) намери и докосни **Safari**.";
+
+/* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
+"invalidZipFileDataError" = "Zip файлът не съдържа данни за импортиране.";
+
+/* The message shown on the import data screen when the data is being loaded or imported. */
+"loadingMessage" = "Моля, изчакай, докато прехвърлим данните ти по сигурен начин.\nТова може да отнеме няколко секунди.";
+
+/* The title shown on the import data screen when the data is being loaded or imported. */
+"loadingTitle" = "Данните ти се импортират...";
+
+/* The message shown on the import data screen when there are multiple profiles such as Personal, Work, School, etc. */
+"multipleProfilesMessage" = "Избери профила, от който искаш да импортираш данни";
+
+/* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
+"multipleProfilesTitle" = "Открити са няколко профила";
+
+/* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
+"personalImportTitle" = "Лични";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "Импортирани отметки";
+
+/* An unknown error occurred during data importing. */
+"unknownError" = "Zip файлът не съдържа данни за импортиране.";
+

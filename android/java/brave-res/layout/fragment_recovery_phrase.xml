@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/recover_wallet_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical"
+    android:fadeScrollbars="false"
+    android:fillViewport="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/recovery_phrase_title"
+            style="@style/HeadingH3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:gravity="center_horizontal"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="18dp"
+            android:text="@string/recovery_phrase_title"
+            android:textColor="@color/wallet_text_color" />
+
+        <TextView
+            style="@style/DefaultRegular"
+            android:id="@+id/recovery_phrase_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_below="@+id/recovery_phrase_title"
+            android:layout_alignParentStart="true"
+            android:text="@string/recovery_phrase_content"
+            android:textColor="@color/text_secondary" />
+
+        <TextView
+            style="@style/DefaultRegular"
+            android:id="@+id/recovery_phrase_warning_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="40dp"
+            android:layout_below="@+id/recovery_phrase_content"
+            android:layout_alignParentStart="true"
+            android:text="@string/your_recovery_phrase_warning_text"
+            android:textColor="@color/text_secondary" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recovery_phrase_recycler_view"
+            android:overScrollMode="never"
+            android:layout_below="@+id/recovery_phrase_warning_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="24dp"/>
+
+        <TextView
+            android:id="@+id/copy"
+            style="@style/DefaultBold"
+            android:layout_below="@+id/recovery_phrase_recycler_view"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="40dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="16dp"
+            android:text="@string/brave_wallet_click_to_copy"
+            android:textSize="16sp"
+            android:textColor="@color/text_interactive" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            style="@style/BraveWalletOnboardingButton"
+            android:id="@+id/button_recovery_phrase_continue"
+            android:layout_above="@+id/skip"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:text="@string/view_recovery_phrase"
+            android:layout_margin="16dp" />
+
+        <TextView
+            android:id="@+id/skip"
+            style="@style/DefaultBold"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="40dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="16dp"
+            android:text="@string/skip"
+            android:textSize="16sp"
+            android:textColor="@color/text_secondary" />
+
+    </RelativeLayout>
+
+</androidx.core.widget.NestedScrollView>

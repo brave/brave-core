@@ -1,0 +1,145 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import BraveCore
+import Data
+import FaviconModels
+import Foundation
+import OSLog
+import Shared
+import UIKit
+import Web
+
+extension TabState {
+  var displayTitle: String {
+    if let url = self.visibleURL, url.isNewTabURL {
+      return Strings.Hotkey.newTabTitle
+    }
+
+    if let displayTabTitle = fetchDisplayTitle(using: visibleURL, title: title) {
+      return displayTabTitle
+    }
+
+    if let url = self.visibleURL, !InternalURL.isValid(url: url),
+      let shownUrl = url.displayURL?.absoluteString, isWebViewCreated
+    {
+      return shownUrl
+    }
+
+    guard let lastTitle = data.browserData?.lastTitle, !lastTitle.isEmpty else {
+      // FF uses url?.displayURL?.absoluteString ??  ""
+      if let title = visibleURL?.absoluteString {
+        return title
+      } else if let tab = SessionTab.from(tabId: id) {
+        if tab.title.isEmpty {
+          return Strings.Hotkey.newTabTitle
+        }
+        return tab.title
+      }
+
+      return ""
+    }
+
+    return lastTitle
+  }
+
+  /// This property is for fetching the actual URL for the Tab
+  /// In private browsing the URL is in memory but this is not the case for normal mode
+  /// For Normal  Mode Tab information is fetched using Tab ID from
+  var fetchedURL: URL? {
+    if isPrivate {
+      if let url = visibleURL, url.isWebPage() {
+        return url
+      }
+    } else {
+      if let tabUrl = visibleURL, tabUrl.isWebPage() {
+        return tabUrl
+      } else if let fetchedTab = SessionTab.from(tabId: id), fetchedTab.url?.isWebPage() == true {
+        return visibleURL
+      }
+    }
+
+    return nil
+  }
+
+  func fetchDisplayTitle(using url: URL?, title: String?) -> String? {
+    if let tabTitle = title, !tabTitle.isEmpty {
+      var displayTitle = tabTitle
+
+      // Checking host is "localhost" || host == "127.0.0.1"
+      // or hostless URL (iOS forwards hostless URLs (e.g., http://:6571) to localhost.)
+      // DisplayURL will retrieve original URL even it is redirected to Error Page
+      if let isLocal = url?.displayURL?.isLocal, isLocal {
+        displayTitle = ""
+      }
+
+      return displayTitle
+    }
+
+    return nil
+  }
+
+  func hideContent(_ animated: Bool = false) {
+    view.isUserInteractionEnabled = false
+    if animated {
+      UIView.animate(
+        withDuration: 0.25,
+        animations: { () -> Void in
+          self.view.alpha = 0.0
+        }
+      )
+    } else {
+      view.alpha = 0.0
+    }
+  }
+
+  func showContent(_ animated: Bool = false) {
+    view.isUserInteractionEnabled = true
+    if animated {
+      UIView.animate(
+        withDuration: 0.25,
+        animations: { () -> Void in
+          self.view.alpha = 1.0
+        }
+      )
+    } else {
+      view.alpha = 1.0
+    }
+  }
+
+  func stopMediaPlayback() {
+    data.browserData?.miscDelegate?.stopMediaPlayback(self)
+  }
+
+  var containsWebPage: Bool {
+    if let url = visibleURL {
+      return url.isWebPage()
+    }
+
+    return false
+  }
+}
+
+// MARK: - Brave SKU
+extension TabState {
+  func injectLocalStorageItem(key: String, value: String) {
+    self.evaluateJavaScript(
+      functionName: "localStorage.setItem",
+      args: [key, value],
+      contentWorld: BraveSkusScriptHandler.scriptSandbox
+    )
+  }
+}
+
+extension SecureContentState {
+  public var shouldDisplayWarning: Bool {
+    switch self {
+    case .unknown, .invalidCertificate, .missingSSL, .mixedContent:
+      return true
+    case .localhost, .secure:
+      return false
+    }
+  }
+}

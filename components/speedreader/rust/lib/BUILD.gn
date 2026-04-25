@@ -1,0 +1,32 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/rust/rust_static_library.gni")
+
+rust_static_library("lib") {
+  visibility = [ "//brave/components/speedreader/rust/ffi:*" ]
+  crate_name = "speedreader"
+  crate_root = "src/lib.rs"
+  edition = "2018"
+  sources = [
+    "src/lib.rs",
+    "src/speedreader.rs",
+    "src/speedreader_readability.rs",
+  ]
+
+  deps = [
+    "src/readability:lib",
+    "//brave/third_party/rust/html5ever/v0_29:lib",
+    "//brave/third_party/rust/kuchikiki/v0_8:lib",
+    "//brave/third_party/rust/lifeguard/v0_6:lib",
+    "//brave/third_party/rust/lol_html/v2:lib",
+    "//brave/third_party/rust/markup5ever/v0_14:lib",
+    "//brave/third_party/rust/regex/v1:lib",
+    "//brave/third_party/rust/serde_json/v1:lib",
+    "//brave/third_party/rust/thiserror/v1:lib",
+    "//brave/third_party/rust/url/v2:lib",
+    "//third_party/rust/lazy_static/v1:lib",
+  ]
+}

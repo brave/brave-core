@@ -1,0 +1,10 @@
+Name: bech32
+URL: https://crates.io/crates/bech32
+Version: 0.9.1
+Revision: d12513f1e3768a7f2a2e1b4d650139eb92a4ae9b
+License: MIT
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: Encodes and decodes the Bech32 format

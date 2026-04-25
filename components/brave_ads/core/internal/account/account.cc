@@ -1,0 +1,276 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_ads/core/internal/account/account.h"
+
+#include <utility>
+
+#include "base/check.h"
+#include "base/check_op.h"
+#include "base/functional/bind.h"
+#include "brave/components/brave_ads/core/internal/account/account_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/confirmations.h"
+#include "brave/components/brave_ads/core/internal/account/deposits/deposit_interface.h"
+#include "brave/components/brave_ads/core/internal/account/deposits/deposits_factory.h"
+#include "brave/components/brave_ads/core/internal/account/statement/statement.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/transactions.h"
+#include "brave/components/brave_ads/core/internal/account/user_rewards/user_rewards.h"
+#include "brave/components/brave_ads/core/internal/account/wallet/wallet_util.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_path_util.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
+
+namespace brave_ads {
+
+Account::Account() {
+  ads_client_observation_.Observe(&GetAdsClient());
+
+  InitializeConfirmations();
+}
+
+Account::~Account() = default;
+
+void Account::AddObserver(AccountObserver* const observer) {
+  CHECK(observer);
+
+  observers_.AddObserver(observer);
+}
+
+void Account::RemoveObserver(AccountObserver* const observer) {
+  CHECK(observer);
+
+  observers_.RemoveObserver(observer);
+}
+
+void Account::SetWallet(std::optional<WalletInfo> wallet) {
+  wallet_ = std::move(wallet);
+
+  if (wallet_) {
+    BLOG(1, "Successfully initialized wallet");
+    NotifyDidInitializeWallet(*wallet_);
+  }
+}
+
+void Account::GetStatement(GetStatementOfAccountsCallback callback) {
+  if (!UserHasJoinedBraveRewards()) {
+    // No-op if the user has not joined Brave Rewards.
+    return std::move(callback).Run(/*statement=*/nullptr);
+  }
+
+  return BuildStatement(std::move(callback));
+}
+
+void Account::DepositWithUserData(
+    const std::string& creative_instance_id,
+    const std::string& segment,
+    mojom::AdType mojom_ad_type,
+    mojom::ConfirmationType mojom_confirmation_type,
+    base::DictValue user_data) {
+  CHECK(!creative_instance_id.empty());
+  CHECK_NE(mojom::AdType::kUndefined, mojom_ad_type);
+  CHECK_NE(mojom::ConfirmationType::kUndefined, mojom_confirmation_type);
+
+  if (!IsAllowedToDeposit(creative_instance_id, mojom_ad_type,
+                          mojom_confirmation_type)) {
+    return;
+  }
+
+  if (const std::unique_ptr<DepositInterface> deposit =
+          DepositsFactory::Build(mojom_confirmation_type)) {
+    deposit->GetValue(
+        creative_instance_id,
+        base::BindOnce(&Account::DepositCallback, weak_factory_.GetWeakPtr(),
+                       creative_instance_id, segment, mojom_ad_type,
+                       mojom_confirmation_type, std::move(user_data)));
+  }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+void Account::DepositCallback(const std::string& creative_instance_id,
+                              const std::string& segment,
+                              mojom::AdType mojom_ad_type,
+                              mojom::ConfirmationType mojom_confirmation_type,
+                              base::DictValue user_data,
+                              bool success,
+                              double value) {
+  if (!success) {
+    return FailedToProcessDeposit(creative_instance_id, mojom_ad_type,
+                                  mojom_confirmation_type);
+  }
+
+  ProcessDeposit(creative_instance_id, segment, value, mojom_ad_type,
+                 mojom_confirmation_type, std::move(user_data));
+}
+
+void Account::ProcessDeposit(const std::string& creative_instance_id,
+                             const std::string& segment,
+                             double value,
+                             mojom::AdType mojom_ad_type,
+                             mojom::ConfirmationType mojom_confirmation_type,
+                             base::DictValue user_data) {
+  if (!UserHasJoinedBraveRewards()) {
+    // If the user has not joined Brave Rewards, there's no need to record
+    // transactions.
+    return SuccessfullyProcessedDeposit(
+        BuildTransaction(creative_instance_id, segment, value, mojom_ad_type,
+                         mojom_confirmation_type),
+        std::move(user_data));
+  }
+
+  AddTransaction(creative_instance_id, segment, value, mojom_ad_type,
+                 mojom_confirmation_type,
+                 base::BindOnce(&Account::ProcessDepositCallback,
+                                weak_factory_.GetWeakPtr(),
+                                creative_instance_id, mojom_ad_type,
+                                mojom_confirmation_type, std::move(user_data)));
+}
+
+void Account::ProcessDepositCallback(
+    const std::string& creative_instance_id,
+    mojom::AdType mojom_ad_type,
+    mojom::ConfirmationType mojom_confirmation_type,
+    base::DictValue user_data,
+    bool success,
+    const TransactionInfo& transaction) {
+  if (!success) {
+    return FailedToProcessDeposit(creative_instance_id, mojom_ad_type,
+                                  mojom_confirmation_type);
+  }
+
+  SuccessfullyProcessedDeposit(transaction, std::move(user_data));
+}
+
+void Account::SuccessfullyProcessedDeposit(const TransactionInfo& transaction,
+                                           base::DictValue user_data) {
+  BLOG(3, "Successfully processed deposit for "
+              << transaction.ad_type << " with creative instance id "
+              << transaction.creative_instance_id << " and "
+              << transaction.confirmation_type << " valued at "
+              << transaction.value);
+
+  confirmations_->Confirm(transaction, std::move(user_data));
+
+  NotifyDidProcessDeposit(transaction);
+
+  AdsNotifierManager::GetInstance().NotifyAdRewardsDidChange();
+}
+
+void Account::FailedToProcessDeposit(
+    const std::string& creative_instance_id,
+    mojom::AdType mojom_ad_type,
+    mojom::ConfirmationType mojom_confirmation_type) {
+  BLOG(0, "Failed to process deposit for "
+              << mojom_ad_type << " with creative instance id "
+              << creative_instance_id << " and " << mojom_confirmation_type);
+
+  NotifyFailedToProcessDeposit(creative_instance_id, mojom_ad_type,
+                               mojom_confirmation_type);
+}
+
+void Account::Initialize() {
+  MaybeInitializeUserRewards();
+
+  AdsNotifierManager::GetInstance().NotifyAdRewardsDidChange();
+}
+
+void Account::InitializeConfirmations() {
+  BLOG(1, "Initialize confirmations");
+
+  confirmations_ = std::make_unique<Confirmations>();
+  confirmations_->SetDelegate(this);
+}
+
+void Account::MaybeInitializeUserRewards() {
+  if (user_rewards_) {
+    // Already initialized.
+    return;
+  }
+
+  if (!UserHasJoinedBraveRewardsAndConnectedWallet()) {
+    // No-op if the user has not joined Brave Rewards and connected a wallet,
+    // as rewards can only be earned when connected.
+    return;
+  }
+
+  if (!wallet_) {
+    return;
+  }
+
+  BLOG(1, "Initialize user rewards");
+
+  user_rewards_ = std::make_unique<UserRewards>(*wallet_);
+  user_rewards_->FetchIssuers();
+  user_rewards_->MaybeRedeemPaymentTokens();
+}
+
+void Account::MaybeRefillConfirmationTokens() {
+  if (user_rewards_) {
+    user_rewards_->MaybeRefillConfirmationTokens();
+  }
+}
+
+void Account::NotifyDidInitializeWallet(const WalletInfo& wallet) {
+  observers_.Notify(&AccountObserver::OnDidInitializeWallet, wallet);
+}
+
+void Account::NotifyFailedToInitializeWallet() {
+  observers_.Notify(&AccountObserver::OnFailedToInitializeWallet);
+}
+
+void Account::NotifyDidProcessDeposit(const TransactionInfo& transaction) {
+  observers_.Notify(&AccountObserver::OnDidProcessDeposit, transaction);
+}
+
+void Account::NotifyFailedToProcessDeposit(
+    const std::string& creative_instance_id,
+    mojom::AdType mojom_ad_type,
+    mojom::ConfirmationType mojom_confirmation_type) {
+  observers_.Notify(&AccountObserver::OnFailedToProcessDeposit,
+                    creative_instance_id, mojom_ad_type,
+                    mojom_confirmation_type);
+}
+
+void Account::OnNotifyDidInitializeAds() {
+  Initialize();
+}
+
+void Account::OnNotifyPrefDidChange(const std::string& path) {
+  if (DoesMatchUserHasJoinedBraveRewardsPrefPath(path)) {
+    // No need to destroy `user_rewards_`; disabling Brave Rewards resets Ads.
+    Initialize();
+  }
+}
+
+void Account::OnNotifyRewardsWalletDidUpdate(
+    const std::string& payment_id,
+    const std::string& recovery_seed_base64) {
+  std::optional<WalletInfo> wallet =
+      CreateWalletFromRecoverySeed(payment_id, recovery_seed_base64);
+  if (!wallet) {
+    BLOG(0, "Failed to initialize wallet");
+    return NotifyFailedToInitializeWallet();
+  }
+
+  SetWallet(std::move(wallet));
+
+  Initialize();
+}
+
+void Account::OnDidConfirm(const ConfirmationInfo& /*confirmation*/) {
+  MaybeRefillConfirmationTokens();
+}
+
+void Account::OnFailedToConfirm(const ConfirmationInfo& /*confirmation*/) {
+  MaybeRefillConfirmationTokens();
+}
+
+}  // namespace brave_ads

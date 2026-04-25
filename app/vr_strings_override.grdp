@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- VR specific strings (included from generated_resources.grd). -->
+<!-- TODO(ddorwin): Use consistent naming schemes for VR strings. -->
+<grit-part>
+  <if expr="is_android">
+    <then>
+      </then>
+    <else>
+      </else>
+  </if>
+
+  <if expr="not is_android">
+    </if>
+
+  <if expr="is_android">
+    <then>
+      </then>
+    <else>
+      </else>
+  </if>
+  <message name="IDS_VR_MENU_NEW_INCOGNITO_TAB" desc="Menu item for opening a new Private tab that facilitates pseudononymous browsing. [CHAR_LIMIT=27]">
+    New Private tab
+  </message>
+  <message name="IDS_VR_MENU_CLOSE_INCOGNITO_TABS" desc="Menu item for closing all open Private tabs. [CHAR_LIMIT=27]">
+    Close Private tabs
+  </message>
+  <message name="IDS_VR_TABS_BUTTON_INCOGNITO" desc="Text on button for selecting Private tabs">
+    Private
+  </message>
+</grit-part>

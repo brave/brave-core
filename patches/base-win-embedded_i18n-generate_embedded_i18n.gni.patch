@@ -1,0 +1,15 @@
+diff --git a/base/win/embedded_i18n/generate_embedded_i18n.gni b/base/win/embedded_i18n/generate_embedded_i18n.gni
+index 4f4205e56a74d1a18cdd9565f87883fbba7f7d12..611e280a856666c41d51938824bd546f8b23069c 100644
+--- a/base/win/embedded_i18n/generate_embedded_i18n.gni
++++ b/base/win/embedded_i18n/generate_embedded_i18n.gni
+@@ -97,6 +97,10 @@ template("generate_embedded_i18n") {
+       output_rc,
+     ]
+ 
++    if (defined(invoker.sources)) {
++      sources = invoker.sources
++    }
++
+     args = [
+       "--header-file",
+       "$output_dir/$output_file_name_base.h",

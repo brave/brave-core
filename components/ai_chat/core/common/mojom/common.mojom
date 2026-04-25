@@ -1,0 +1,702 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module ai_chat.mojom;
+
+import "mojo/public/mojom/base/time.mojom";
+import "url/mojom/url.mojom";
+
+enum PremiumStatus {
+  Unknown,
+  Inactive,
+  Active,
+  ActiveDisconnected,
+};
+
+struct PremiumInfo {
+  // How many credentials in the current batch are remaining
+  uint32 remaining_credential_count;
+
+  // When their next batch of credentials is active. If null, there is no
+  // next batch.
+  mojo_base.mojom.Time? next_active_at;
+};
+
+// Common types shared between ai_chat.mojom and untrusted_frame.mojom.
+// This file exists to break circular import dependencies between those files.
+
+enum APIError {
+  None,
+  InternalError,
+  ConnectionIssue,
+  RateLimitReached,
+  ContextLimitReached,
+  InvalidEndpointURL,
+  InvalidAPIKey,
+  ServiceOverloaded
+};
+
+enum SuggestionGenerationStatus {
+  None,
+  CanGenerate,
+  IsGenerating,
+  HasGenerated,
+};
+
+enum CharacterType {
+  HUMAN,
+  ASSISTANT
+};
+
+enum ConversationCapability {
+  CHAT,
+  CONTENT_AGENT,
+  DEEP_RESEARCH
+};
+
+// Which action the user was taking for the entry. This can be used
+// to provide better prompts (via the server) and for metrics.
+// Keep all items even if they're unused (they can be renamed as such) and only
+// add new items to the end, as this is serialized to the database as an int.
+enum ActionType {
+  UNSPECIFIED,
+  RESPONSE,
+  SUMMARIZE_PAGE,
+  SUMMARIZE_VIDEO,
+  SUMMARIZE_SELECTED_TEXT,
+  QUERY,
+  EXPLAIN,
+  CREATE_TAGLINE,
+  CREATE_SOCIAL_MEDIA_COMMENT_SHORT,
+  CREATE_SOCIAL_MEDIA_COMMENT_LONG,
+  // Rewrite
+  PARAPHRASE,
+  IMPROVE,
+  // Change tone
+  ACADEMICIZE,
+  PROFESSIONALIZE,
+  PERSUASIVE_TONE,
+  CASUALIZE,
+  FUNNY_TONE,
+  // Change length
+  SHORTEN,
+  EXPAND,
+  CONVERSATION_STARTER,
+  SUGGESTION,
+};
+
+// When adding or modifying category names, associated UI strings must also
+// be provided via ai_chat_ui_strings.grdp and ai_chat/core/constants.cc
+enum ModelCategory {
+  CHAT,
+  SUMMARY,
+};
+
+enum ModelAccess {
+  // The model only has a single basic tier, accessible by any level
+  BASIC,
+  // The model has a basic tier and a more capable premium tier (a.k.a freemium)
+  BASIC_AND_PREMIUM,
+  // The model only has a premium tier
+  PREMIUM,
+};
+
+// Type of content that is extracted
+enum ContentType {
+  PageContent,
+  VideoTranscript,
+};
+
+enum UploadedFileType {
+  kImage = 0,
+  kScreenshot,
+  kPdf,
+  kText,
+};
+
+// This does not cover more specific data that the Service owns, such as the
+// conversation list, but does cover status of preferences and notices.
+struct ServiceState {
+  bool has_accepted_agreement;
+  bool is_storage_pref_enabled;
+  bool is_storage_notice_dismissed;
+  bool can_show_premium_prompt;
+};
+
+// Represents the content that is associated with a conversation.
+struct AssociatedContent {
+  string uuid;
+
+  ContentType content_type;
+  string title;
+
+  // This is the ID of the content currently loaded in the tab.
+  // It is not persisted.
+  int32 content_id;
+
+  url.mojom.Url url;
+
+  // Percentage of the text content that has been utilized by remote LLM (0-100)
+  int32 content_used_percentage;
+
+  // If set, the conversation turn that this content is associated with.
+  // If |nullopt| this indicates that the user has staged the content but it
+  // hasn't been submitted yet (i.e. its in the input box).
+  string? conversation_turn_uuid;
+};
+
+struct UploadedFile {
+  string filename;
+  uint32 filesize;
+  array<uint8> data;
+  UploadedFileType type;
+  // Text extracted from PDF or text files via a background renderer. Null when
+  // extraction failed/timed out or not applicable. When present, the engine
+  // layer sends this text instead of raw file bytes.
+  string? extracted_text;
+};
+
+// An entry of an executed skill to be stored inside conversation entry
+// and persisted in database.
+struct SkillEntry {
+  string shortcut;
+  string prompt;
+};
+
+struct FileContentBlock {
+  // base64 encoded data uri
+  url.mojom.Url file_data;
+  string filename;
+};
+
+struct ImageContentBlock {
+  // Only base64 encoded data uri is supported
+  url.mojom.Url image_url;
+};
+
+struct TextContentBlock {
+  string text;
+};
+
+struct PageExcerptContentBlock {
+  string text;
+};
+
+struct PageTextContentBlock {
+  string text;
+};
+
+struct VideoTranscriptContentBlock {
+  string text;
+};
+
+struct RequestTitleContentBlock {
+  string text;
+};
+
+struct ChangeToneContentBlock {
+  string text;
+  string tone;
+};
+
+union MemoryValue {
+  string string_value;
+  array<string> list_value;
+};
+
+struct MemoryContentBlock {
+  map<string, MemoryValue> memory;
+};
+
+struct FilterTabsContentBlock {
+  string text;  // tabs
+  string topic;
+};
+
+struct SuggestFocusTopicsContentBlock {
+  string text;  // tabs
+};
+
+struct SuggestFocusTopicsWithEmojiContentBlock {
+  string text;  // tabs
+};
+
+struct ReduceFocusTopicsContentBlock {
+  string text;  // topics
+};
+
+struct WebSource {
+  string title;
+  url.mojom.Url url;
+  url.mojom.Url favicon_url;
+
+  // Extra context to be optionally provided by server-side search tools.
+  // Currently these are only used in WebSourcesContentBlock and would not be
+  // populated in WebSourcesEvent, which we plan to retire and just utilize
+  // WebSourcesContentBlock from tool outputs directly in frontend.
+  string? page_content;
+  array<string>? extra_snippets;
+};
+
+// Content block for parsed web sources from search tool results.
+struct WebSourcesContentBlock {
+  array<WebSource> sources;
+  array<string> queries;
+
+  // Note: These are expected to be JSON strings in the format of
+  // https://api-dashboard.search.brave.com/app/documentation/rich-search/responses#RichResult
+  // We don't type anything explicitly here because the schema changes often and
+  // the expectation is that this data is simply passed through to a renderer
+  // that does understand the data format and is updated more frequently than
+  // the browser.
+  array<string> rich_results;
+};
+
+enum SimpleRequestType {
+  kParaphrase,
+  kImprove,
+  kShorten,
+  kExpand,
+  kRequestSummary,
+  kRequestQuestions,
+
+  // For validation use only, should always stay at the end of this enum.
+  kCount,
+};
+
+// Used for content blocks which only needs type information without any data
+// payloads to signal a specific type of requests to the server. Do not add
+// fields into this unless it is needed for every request types in
+// SimpleRequestType, instead, define a new type of content block struct and
+// add it into ContentBlock union.
+struct SimpleRequestContentBlock {
+  SimpleRequestType type;
+};
+
+// Artifact generated from tool call
+struct ToolArtifact {
+  string? id;
+  string type;
+  string content_json;
+};
+
+union ContentBlock {
+  // Standard OpenAI content blocks
+  ImageContentBlock image_content_block;
+  TextContentBlock text_content_block;
+  FileContentBlock file_content_block;
+
+  // Brave customized content blocks
+  PageExcerptContentBlock page_excerpt_content_block;
+  PageTextContentBlock page_text_content_block;
+  VideoTranscriptContentBlock video_transcript_content_block;
+  RequestTitleContentBlock request_title_content_block;
+  ChangeToneContentBlock change_tone_content_block;
+  MemoryContentBlock memory_content_block;
+
+  // Brave customized content blocks for tab focus
+  FilterTabsContentBlock filter_tabs_content_block;
+  SuggestFocusTopicsContentBlock suggest_focus_topics_content_block;
+  SuggestFocusTopicsWithEmojiContentBlock
+    suggest_focus_topics_with_emoji_content_block;
+  ReduceFocusTopicsContentBlock reduce_focus_topics_content_block;
+
+  // Brave customized content blocks for parsed web sources from server-side
+  // search tool results
+  WebSourcesContentBlock web_sources_content_block;
+
+  // Brave customized content blocks which does not have any data payloads.
+  SimpleRequestContentBlock simple_request_content_block;
+};
+
+// Permission challenge that blocks tool execution until user approves
+// The existence of this struct means permission is needed. When granted,
+// the permission_challenge should be set to null.
+struct PermissionChallenge {
+  // Server alignment reasoning (when server blocks the tool)
+  string? assessment;
+  // Tool's explanation for why it needs permission
+  string? plan;
+};
+
+struct ToolUseEvent {
+  // Name of the tool, used to identify which
+  // tool to run in order to produce the output
+  // from the given arguments.
+  string tool_name;
+
+  // ID of the tool use request
+  string id;
+
+  // Arguments for the Tool. The LLM may hallucinate and generate
+  // incorrect arguments or even invalid JSON, so this should be
+  // interpreted defensively. This can also be provided in chunks,
+  // not being complete until the request is completed.
+  string arguments_json;
+
+  // Output from the Tool. When null, the Tool
+  // has not yet run or completed.
+  array<ContentBlock>? output;
+
+  // Artifacts generated from the Tool.
+  array<ToolArtifact>? artifacts;
+
+  // Permission challenge that blocks execution until user approves.
+  // Can be set by server (alignment check) or client tool.
+  PermissionChallenge? permission_challenge;
+
+  // True if the output was provided by the server (server-side tool execution).
+  bool is_server_result = false;
+};
+
+struct SearchQueriesEvent {
+  array<string> search_queries;
+};
+
+struct SearchStatusEvent {
+  bool is_searching = true;
+};
+
+struct WebSourcesEvent {
+  array<WebSource> sources;
+
+  // Note: These are expected to be JSON strings in the format of
+  // https://api-dashboard.search.brave.com/app/documentation/rich-search/responses#RichResult
+  // We don't type anything explicitly here because the schema changes often and the expectation is
+  // that this data is simply passed through to a renderer that does understand the data
+  // format and is updated more frequently than the browser.
+  array<string> rich_results;
+};
+
+// Inline search results which can be displayed as part of the response
+struct InlineSearchEvent {
+  // The query that was used for the results.
+  string query;
+
+  // The results of the search - stored as a JSON string so we can pass
+  // them around transparently.
+  string results_json;
+};
+
+struct CompletionEvent {
+  // TODO(petemill): Use ContentBlock or even array<ContentBlock>
+  // and rely less on multiple events.
+  string completion;
+};
+
+struct ContentReceiptEvent {
+  uint64 total_tokens;
+  uint64 trimmed_tokens;
+};
+
+struct ConversationTitleEvent {
+  string title;
+};
+
+// Deep Research Events
+struct DeepResearchQueriesEvent {
+  array<string> queries;
+};
+
+struct DeepResearchAnalyzingEvent {
+  string query = "";
+  uint32 url_count = 0;
+  uint32 new_url_count = 0;
+};
+
+struct DeepResearchUrlInfo {
+  url.mojom.Url url;
+  url.mojom.Url favicon;
+};
+
+struct DeepResearchThinkingEvent {
+  string query = "";
+  uint32 chunks_analyzed = 0;
+  uint32 chunks_selected = 0;
+  uint32 urls_analyzed = 0;
+  array<url.mojom.Url> urls_selected;
+  array<DeepResearchUrlInfo> urls_info;
+};
+
+struct DeepResearchProgressEvent {
+  double elapsed_seconds = 0.0;
+  uint32 iteration_count = 0;
+  uint32 queries_count = 0;
+  uint32 urls_analyzed = 0;
+  uint32 snippets_analyzed = 0;
+};
+
+struct DeepResearchBlindspotsEvent {
+  array<string> blindspots;
+};
+
+struct DeepResearchCompleteEvent {
+  string reason = "";
+};
+
+struct DeepResearchErrorEvent {
+  string error = "";
+};
+
+// Granular progress events for UX improvement
+enum DeepResearchSearchStatus {
+  kStarted,
+  kCompleted,
+};
+
+enum DeepResearchAnalysisStatus {
+  kStarted,
+  kProgress,
+};
+
+struct DeepResearchSearchStatusEvent {
+  DeepResearchSearchStatus status = kStarted;
+  string query = "";
+  uint32 query_index = 0;
+  uint32 total_queries = 0;
+  uint32 urls_found = 0;  // only for completed
+  uint32 elapsed_ms = 0;  // only for completed
+};
+
+struct DeepResearchFetchStatusEvent {
+  string query = "";
+  uint32 urls_total = 0;
+  uint32 urls_fetched = 0;
+};
+
+struct DeepResearchAnalysisStatusEvent {
+  DeepResearchAnalysisStatus status = kStarted;
+  string query = "";
+  uint32 chunks_analyzed = 0;
+  uint32 chunks_total = 0;
+};
+
+struct DeepResearchIterationCompleteEvent {
+  uint32 iteration = 0;
+  uint32 total_iterations = 0;
+  uint32 queries_this_iteration = 0;
+  uint32 urls_analyzed = 0;
+  uint32 blindspots_identified = 0;
+};
+
+// All deep research event types consolidated into a single union
+union DeepResearchEvent {
+  DeepResearchQueriesEvent queries_event;
+  DeepResearchAnalyzingEvent analyzing_event;
+  DeepResearchThinkingEvent thinking_event;
+  DeepResearchProgressEvent progress_event;
+  DeepResearchBlindspotsEvent blindspots_event;
+  DeepResearchCompleteEvent complete_event;
+  DeepResearchErrorEvent error_event;
+  DeepResearchSearchStatusEvent search_status_event;
+  DeepResearchFetchStatusEvent fetch_status_event;
+  DeepResearchAnalysisStatusEvent analysis_status_event;
+  DeepResearchIterationCompleteEvent iteration_complete_event;
+};
+
+// Events that occur during a conversation turn (only assistant for now)
+union ConversationEntryEvent {
+  CompletionEvent completion_event;
+  SearchQueriesEvent search_queries_event;
+  SearchStatusEvent search_status_event;
+  WebSourcesEvent sources_event;
+  ToolUseEvent tool_use_event;
+  InlineSearchEvent inline_search_event;
+  DeepResearchEvent deep_research_event;
+
+  // These events don't normally get added to the conversation entry
+  // but are used in engine responses.
+  ContentReceiptEvent content_receipt_event;
+  ConversationTitleEvent conversation_title_event;
+};
+
+// Contains the verification status of the NEAR AI TEE attestation.
+struct NEARVerificationStatus {
+  bool verified;
+};
+
+// Represents a single turn in a conversation.
+// The character type defines which party initiated the turn in the
+// conversation.
+// The text attribute contains the actual content of the turn, which can be a
+// message, statement, or question, among others.
+// The selected_text attribute contains what user selects in the page when
+// calling from the context menu.
+struct ConversationTurn {
+  // Populated if owned by a conversation
+  string? uuid;
+
+  CharacterType character_type;
+  ActionType action_type;
+
+  // The text that is displayed to the user. This might be different than
+  // the text sent to the AI engine to represent this turn, which might be more
+  // verbose.
+  string text;
+
+  // Optional actual prompt used instead of |text| for the entry
+  string? prompt;
+
+  string? selected_text;
+  // Ordered list of events that occurred during this turn
+  // TODO(petemill): ConversationTurn's |text| and |selected_text| might move
+  // to be an event - as the events become richer, the order around text could
+  // be important.
+  array<ConversationEntryEvent>? events;
+
+  mojo_base.mojom.Time created_time;
+
+  // Edits to this turn, sorted by time of creation, with the most recent edit
+  // at the end of the array. When this appears, the value of |text| field is
+  // the original text of the turn, the last entry of this array should be used
+  // instead of the original turn text when submitting the turn to the AI
+  // engine or displaying the most recent text to users.
+  array<ConversationTurn>? edits;
+
+  // User uploaded files, currently including image and screenshot
+  array<UploadedFile>? uploaded_files;
+
+  SkillEntry? skill;
+
+  // Whether the turn was generated from Brave Search SERP.
+  bool from_brave_search_SERP = false;
+
+  // Null in BYOM conversations.
+  // In assistant turns, it indicates which model generated this turn.
+  // In human turns, it indicates which model to be used for regenerating
+  // answers.
+  // TODO(petemill): It should always store which model was used so that
+  // if the user changed the conversation model mid-conversation then we
+  // can see which answers were generated by which model.
+  string? model_key;
+
+  // NEAR attestation verification status associated with this turn.
+  NEARVerificationStatus? near_verification_status;
+};
+
+// State of the tool loop task execution. A Task represents a loop of tool
+// execution, sending the results and receiving further tool use requests.
+enum TaskState {
+  // No active task, or task has been reset
+  kNone,
+  // Task is actively running its loop of executing tools, sending the results
+  // receiving more tool use requests, and repeating until there are no more
+  // tool use requests.
+  kRunning,
+  // Task has been paused by user or tool provider and will not execute
+  // any tool use requests or send the results until it is resumed or a new task
+  // is started.
+  kPaused,
+  // Task has been stopped and should not resume until reset via a new task
+  // starting.
+  kStopped,
+};
+
+// Represents an AI engine model choice, usually for the user to choose for a
+// Conversation. Display Name and Description should be provided by
+// localization.
+// We use a key in case there are minor changes to model name for a purpose and
+// we want to respect the user's intent (e.g. claude increases version or llama2
+// default model changes parameter size).
+struct LeoModelOptions {
+  // exact name to provide to API
+  string name;
+  // maker, for users
+  string display_maker;
+  // description, for users
+  string description = "";
+  // user-facing category
+  ModelCategory category;
+  // Which access level grants permission to use the model
+  ModelAccess access;
+  // max limit to truncate page contents (measured in chars, not tokens)
+  uint32 max_associated_content_length;
+  // max limit for overall conversation (measured in chars, not tokens)
+  uint32 long_conversation_warning_character_limit;
+};
+
+struct CustomModelOptions {
+  string model_request_name;
+  // number of tokens supported by the given model
+  uint32 context_size;
+  // max limit to truncate page contents (measured in chars, not tokens)
+  uint32 max_associated_content_length;
+  // max limit for overall conversation (measured in chars, not tokens)
+  uint32 long_conversation_warning_character_limit;
+  // a user-specified prompt to be used with the model
+  string? model_system_prompt;
+  // the endpoint could be a local network address or a remote server
+  url.mojom.Url endpoint;
+  string api_key;
+};
+
+union ModelOptions {
+  LeoModelOptions leo_model_options;
+  CustomModelOptions custom_model_options;
+};
+
+struct Model {
+  ModelOptions options;
+  // unique key across all models
+  string key;
+  // display name, for users
+  string display_name;
+  // whether accept image as input
+  bool vision_support;
+  // Model supports tool use
+  bool supports_tools = false;
+  // whether accept audio as input
+  bool audio_support = false;
+  // whether accept video as input
+  bool video_support = false;
+  // Conversation capabilities this model supports. Used to filter which models
+  // are available for different conversation types (e.g. basic chat, content
+  // agent, deep research).
+  // All models that can participate in regular conversations should include
+  // CHAT. Models approved for agentic contexts (content agent, agent profile)
+  // should include CONTENT_AGENT, which should be approved by security team.
+  array<ConversationCapability> supported_capabilities;
+  // Is a suggested model
+  bool is_suggested_model;
+  // Is a Near model
+  bool is_near_model;
+};
+
+// State required to show the conversations entries UI block
+struct ConversationEntriesState {
+  // Whether an answer generation is in progress
+  bool is_generating;
+  // Whether the most recent tool use request is being executed
+  bool is_tool_executing;
+  // State of any active tool loop task
+  TaskState tool_use_task_state;
+  // Whether the current model is a built-in Leo model
+  bool is_leo_model;
+  array<Model> all_models;
+  string current_model_key;
+  // How much of the content has been used by the AI engine, percentage,or null
+  // if no content is associated.
+  uint32? content_used_percentage;
+  // Percentage of the visual content that has been utilized by remote LLM
+  // (0-100)
+  // This tracks image/screenshot truncation due to MAX_IMAGES limits
+  uint32? visual_content_used_percentage;
+  // Whether the UI should represent that the user cannot submit new messages
+  // or edits to the conversation.
+  bool can_submit_user_entries;
+  // Indicates the total number of tokens for the conversation
+  uint64 total_tokens;
+  // Indicates the number of tokens that were trimmed from the conversation
+  uint64 trimmed_tokens;
+  array<ConversationCapability> conversation_capabilities;
+  // Suggested questions for the conversation
+  array<string> suggested_questions;
+  // Status of suggestion generation
+  SuggestionGenerationStatus suggestion_status;
+  // Current API error state
+  APIError current_error;
+  // Whether this is a temporary (non-persisted) conversation
+  bool is_temporary = false;
+};

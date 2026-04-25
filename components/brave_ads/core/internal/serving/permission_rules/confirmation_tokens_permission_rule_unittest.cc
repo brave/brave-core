@@ -1,0 +1,51 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_ads/core/internal/serving/permission_rules/confirmation_tokens_permission_rule.h"
+
+#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/test/confirmation_tokens_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/settings/test/settings_test_util.h"
+
+// npm run test -- brave_unit_tests --filter=BraveAds*
+
+namespace brave_ads {
+
+class BraveAdsConfirmationTokensPermissionRuleTest : public test::TestBase {};
+
+TEST_F(BraveAdsConfirmationTokensPermissionRuleTest,
+       ShouldAllowIfDoesNotExceedCap) {
+  // Arrange
+  test::RefillConfirmationTokens(/*count=*/10);
+
+  // Act & Assert
+  EXPECT_TRUE(HasConfirmationTokensPermission());
+}
+
+TEST_F(BraveAdsConfirmationTokensPermissionRuleTest,
+       ShouldAllowIfUserHasNotJoinedBraveRewards) {
+  // Arrange
+  test::DisableBraveRewards();
+
+  // Act & Assert
+  EXPECT_TRUE(HasConfirmationTokensPermission());
+}
+
+TEST_F(BraveAdsConfirmationTokensPermissionRuleTest,
+       ShouldNotAllowIfNoConfirmationTokens) {
+  // Act & Assert
+  EXPECT_FALSE(HasConfirmationTokensPermission());
+}
+
+TEST_F(BraveAdsConfirmationTokensPermissionRuleTest,
+       ShouldNotAllowIfExceedsCap) {
+  // Arrange
+  test::RefillConfirmationTokens(/*count=*/9);
+
+  // Act & Assert
+  EXPECT_FALSE(HasConfirmationTokensPermission());
+}
+
+}  // namespace brave_ads

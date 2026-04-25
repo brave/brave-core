@@ -1,0 +1,667 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+package org.chromium.chrome.browser.brave_origin;
+
+import android.app.Activity;
+import android.util.Base64;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import org.chromium.base.BraveFeatureList;
+import org.chromium.base.BravePreferenceKeys;
+import org.chromium.base.Callback;
+import org.chromium.base.ContextUtils;
+import org.chromium.base.Log;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
+import org.chromium.brave.browser.brave_origin.BraveOriginServiceFactory;
+import org.chromium.brave.browser.skus.SkusServiceFactory;
+import org.chromium.brave.browser.util.BraveDomainsUtils;
+import org.chromium.brave.browser.util.ServicesEnvironment;
+import org.chromium.brave_origin.mojom.BraveOriginSettingsHandler;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
+import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
+import org.chromium.chrome.browser.billing.PurchaseModel;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.policy.BravePolicyConstants;
+import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.settings.BraveOriginPreferences;
+import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
+import org.chromium.chrome.browser.util.LiveDataUtil;
+import org.chromium.components.prefs.PrefService;
+import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.skus.mojom.SkusResult;
+import org.chromium.skus.mojom.SkusResultCode;
+import org.chromium.skus.mojom.SkusService;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+
+/** Utility class for managing Brave Origin subscription preferences. */
+@NullMarked
+public class BraveOriginSubscriptionPrefs {
+    private static final String TAG = "BraveOriginSubsPrefs";
+    private static final String ORIGIN_SKU_HOSTNAME_PART = "origin";
+
+    // JSON field names for credential summary response
+    private static final String JSON_FIELD_ACTIVE = "active";
+    private static final String JSON_FIELD_REMAINING_CREDENTIAL_COUNT =
+            "remaining_credential_count";
+
+    // JSON field names for order creation request
+    private static final String JSON_FIELD_TYPE = "type";
+    private static final String JSON_FIELD_RAW_RECEIPT = "raw_receipt";
+    private static final String JSON_FIELD_PACKAGE = "package";
+    private static final String JSON_FIELD_SUBSCRIPTION_ID = "subscription_id";
+    private static final String JSON_VALUE_ANDROID = "android";
+
+    /**
+     * Callback that fires when fetchOrderCredentials completes. Called with {@code true} on
+     * success, {@code false} on failure. Only one observer at a time (the currently-open
+     * BraveOriginPreferences).
+     */
+    @Nullable private static Callback<Boolean> sCredentialsFetchedCallback;
+
+    /**
+     * Registers a one-shot callback that will be invoked on the UI thread when
+     * fetchOrderCredentials finishes. Any previously registered callback is replaced.
+     *
+     * @param callback Called with true on success, false on failure.
+     * @param profile Used to re-check fetch state and guard against a race where the fetch
+     *     completed between the caller's isFetchingCredentials() check and this call.
+     */
+    public static void setCredentialsFetchedCallback(
+            @Nullable Callback<Boolean> callback, @Nullable Profile profile) {
+        sCredentialsFetchedCallback = callback;
+        // If the fetch completed between the caller's isFetchingCredentials() check and this
+        // call, notifyCredentialsFetched() ran with no listener and the result was lost.
+        // The only way isFetchingCredentials() flips to false is a successful fetch (failure
+        // paths leave the order ID empty), so synthesize success.
+        if (callback != null && !isFetchingCredentials(profile)) {
+            notifyCredentialsFetched(true);
+        }
+    }
+
+    /**
+     * Returns true when a purchase has been made (subscription active) but fetchOrderCredentials
+     * has not yet completed (order ID is still empty).
+     */
+    public static boolean isFetchingCredentials(@Nullable Profile profile) {
+        if (profile == null) {
+            return false;
+        }
+        PrefService prefService = UserPrefs.get(profile);
+        return prefService.getBoolean(BravePref.BRAVE_ORIGIN_SUBSCRIPTION_ACTIVE_ANDROID)
+                && prefService.getString(BravePref.BRAVE_ORIGIN_ORDER_ID_ANDROID).isEmpty()
+                && !prefService.getString(BravePref.BRAVE_ORIGIN_PURCHASE_TOKEN_ANDROID).isEmpty();
+    }
+
+    /**
+     * Fires the one-shot credentials-fetched callback, if registered.
+     *
+     * @param success Whether the credential fetch succeeded.
+     */
+    private static void notifyCredentialsFetched(boolean success) {
+        Callback<Boolean> callback = sCredentialsFetchedCallback;
+        sCredentialsFetchedCallback = null;
+        if (callback != null) {
+            PostTask.postTask(TaskTraits.UI_DEFAULT, () -> callback.onResult(success));
+        }
+    }
+
+    /**
+     * Queries Google Play for an existing Origin purchase and restores it if found. This handles
+     * the case where a user changes devices - the purchase exists in their Google account but the
+     * local prefs are empty.
+     *
+     * @param profile The profile to use for preference storage
+     */
+    public static void verifyPurchase(@Nullable Profile profile) {
+        MutableLiveData<PurchaseModel> _activePurchases = new MutableLiveData<>();
+        LiveData<PurchaseModel> activePurchases = _activePurchases;
+        InAppPurchaseWrapper inAppPurchaseWrapper = InAppPurchaseWrapper.getInstance();
+        // Suppress toasts during startup query so devices without Google Play
+        // don't show "Billing service is not available" on every launch.
+        inAppPurchaseWrapper.setSuppressToasts(true);
+        inAppPurchaseWrapper.queryPurchases(
+                _activePurchases, InAppPurchaseWrapper.SubscriptionProduct.ORIGIN);
+        LiveDataUtil.observeOnce(
+                activePurchases,
+                activePurchaseModel -> {
+                    boolean purchaseFound = activePurchaseModel != null;
+                    setIsSubscriptionActive(profile, purchaseFound);
+                    if (purchaseFound) {
+                        setOriginPackageName(profile);
+                        setOriginProductId(profile, activePurchaseModel.getProductId());
+                        setOriginPurchaseToken(profile, activePurchaseModel.getPurchaseToken());
+                    } else {
+                        setOriginProductId(profile, "");
+                        setOriginPurchaseToken(profile, "");
+                    }
+                });
+    }
+
+    /**
+     * Sets the Origin subscription active status for the given profile.
+     *
+     * @param profile The profile to use for preference storage
+     * @param value The subscription active status
+     */
+    public static void setIsSubscriptionActive(@Nullable Profile profile, boolean value) {
+        if (profile == null) {
+            Log.e(TAG, "setIsSubscriptionActive profile is null");
+            return;
+        }
+        UserPrefs.get(profile)
+                .setBoolean(BravePref.BRAVE_ORIGIN_SUBSCRIPTION_ACTIVE_ANDROID, value);
+    }
+
+    /**
+     * Gets the Play Store Origin subscription active status for the given profile.
+     *
+     * <p>Note: this only reflects Play Store purchases recorded in {@code
+     * BRAVE_ORIGIN_SUBSCRIPTION_ACTIVE_ANDROID} by the in-app billing callback. Users whose Origin
+     * subscription was purchased on desktop and linked via their Brave account will read as
+     * inactive here. For an any-source sync check suitable for UI gating, call {@link
+     * #getIsCredentialSummaryActiveCached}. For the authoritative fresh value, call {@link
+     * #requestCredentialSummary} (async, via the Skus mojo service).
+     *
+     * @param profile The profile to use for preference retrieval
+     * @return The Play Store subscription active status, or false if profile is null
+     */
+    public static boolean getIsSubscriptionActive(@Nullable Profile profile) {
+        if (profile == null) {
+            Log.e(TAG, "getIsSubscriptionActive profile is null");
+            return false;
+        }
+        return UserPrefs.get(profile)
+                .getBoolean(BravePref.BRAVE_ORIGIN_SUBSCRIPTION_ACTIVE_ANDROID);
+    }
+
+    /**
+     * Sets the Origin subscription purchase token for the given profile.
+     *
+     * @param profile The profile to use for preference storage
+     * @param token The purchase token
+     */
+    public static void setOriginPurchaseToken(@Nullable Profile profile, String token) {
+        if (profile == null) {
+            Log.e(TAG, "setOriginPurchaseToken profile is null");
+            return;
+        }
+        PrefService prefService = UserPrefs.get(profile);
+        if (prefService.getString(BravePref.BRAVE_ORIGIN_PURCHASE_TOKEN_ANDROID).equals(token)
+                && !prefService.getString(BravePref.BRAVE_ORIGIN_ORDER_ID_ANDROID).isEmpty()) {
+            return;
+        }
+        // It means we don't have a Play Store subscription anymore or
+        // we have a new one.
+        resetSubscriptionLinkedStatus(profile);
+        prefService.setString(BravePref.BRAVE_ORIGIN_ORDER_ID_ANDROID, "");
+        prefService.setString(BravePref.BRAVE_ORIGIN_PURCHASE_TOKEN_ANDROID, token);
+        if (!token.isEmpty()) {
+            createFetchOrder(profile, token);
+        }
+    }
+
+    /**
+     * Sets the Origin subscription package name for the given profile.
+     *
+     * @param profile The profile to use for preference storage
+     */
+    public static void setOriginPackageName(@Nullable Profile profile) {
+        if (profile == null) {
+            Log.e(TAG, "setOriginPackageName profile is null");
+            return;
+        }
+        UserPrefs.get(profile)
+                .setString(
+                        BravePref.BRAVE_ORIGIN_PACKAGE_NAME_ANDROID,
+                        ContextUtils.getApplicationContext().getPackageName());
+    }
+
+    /**
+     * Sets the Origin subscription product ID for the given profile.
+     *
+     * @param profile The profile to use for preference storage
+     * @param productId The product ID
+     */
+    public static void setOriginProductId(@Nullable Profile profile, String productId) {
+        if (profile == null) {
+            Log.e(TAG, "setOriginProductId profile is null");
+            return;
+        }
+        UserPrefs.get(profile).setString(BravePref.BRAVE_ORIGIN_PRODUCT_ID_ANDROID, productId);
+    }
+
+    /**
+     * Checks if the Origin subscription is linked for the given profile.
+     *
+     * @param profile The profile to use for preference retrieval
+     * @return True if subscription is linked, false otherwise
+     */
+    public static boolean isSubscriptionLinked(@Nullable Profile profile) {
+        if (profile == null) {
+            Log.e(TAG, "isSubscriptionLinked profile is null");
+            return false;
+        }
+
+        return UserPrefs.get(profile)
+                        .getInteger(BravePref.BRAVE_ORIGIN_SUBSCRIPTION_LINK_STATUS_ANDROID)
+                != 0;
+    }
+
+    /**
+     * Resets the subscription linked status for the given profile.
+     *
+     * @param profile The profile to use for preference storage
+     */
+    private static void resetSubscriptionLinkedStatus(@Nullable Profile profile) {
+        if (profile == null) {
+            Log.e(TAG, "resetSubscriptionLinkedStatus profile is null");
+            return;
+        }
+        UserPrefs.get(profile)
+                .setInteger(BravePref.BRAVE_ORIGIN_SUBSCRIPTION_LINK_STATUS_ANDROID, 0);
+    }
+
+    /**
+     * Creates an order for the Origin subscription.
+     *
+     * @param profile The profile to use for the operation
+     * @param purchaseToken The purchase token to use for the operation
+     */
+    private static void createFetchOrder(Profile profile, String purchaseToken) {
+        PrefService prefService = UserPrefs.get(profile);
+        String packageName = prefService.getString(BravePref.BRAVE_ORIGIN_PACKAGE_NAME_ANDROID);
+        String productId = prefService.getString(BravePref.BRAVE_ORIGIN_PRODUCT_ID_ANDROID);
+
+        // Perform JSON generation and Base64 encoding on background thread
+        PostTask.postTask(
+                TaskTraits.BEST_EFFORT_MAY_BLOCK,
+                () -> {
+                    String encodedRequestJson;
+                    try {
+                        // Create JSON request
+                        JSONObject request = new JSONObject();
+                        request.put(JSON_FIELD_TYPE, JSON_VALUE_ANDROID);
+                        request.put(JSON_FIELD_RAW_RECEIPT, purchaseToken);
+                        request.put(JSON_FIELD_PACKAGE, packageName);
+                        request.put(JSON_FIELD_SUBSCRIPTION_ID, productId);
+
+                        String requestJson = request.toString();
+                        encodedRequestJson =
+                                Base64.encodeToString(
+                                        requestJson.getBytes(StandardCharsets.UTF_8),
+                                        Base64.NO_WRAP);
+                    } catch (JSONException e) {
+                        Log.e(TAG, "Failed to create JSON request", e);
+                        notifyCredentialsFetched(false);
+                        return;
+                    }
+
+                    // Switch back to UI thread for the service call
+                    PostTask.postTask(
+                            TaskTraits.UI_DEFAULT,
+                            () -> {
+                                SkusService skusService =
+                                        SkusServiceFactory.getInstance()
+                                                .getSkusService(profile, null);
+                                if (skusService == null) {
+                                    Log.e(TAG, "SkusService is null, cannot create order");
+                                    notifyCredentialsFetched(false);
+                                    return;
+                                }
+                                String domain =
+                                        BraveDomainsUtils.getServicesDomain(
+                                                ORIGIN_SKU_HOSTNAME_PART,
+                                                ServicesEnvironment.STAGING);
+                                skusService.createOrderFromReceipt(
+                                        domain,
+                                        encodedRequestJson,
+                                        (result) -> {
+                                            if (result == null
+                                                    || result.code != SkusResultCode.OK
+                                                    || result.message == null
+                                                    || result.message.isEmpty()) {
+                                                Log.e(
+                                                        TAG,
+                                                        "Failed to create order: "
+                                                                + (result != null
+                                                                        ? result.message
+                                                                        : "null result"));
+                                                skusService.close();
+                                                notifyCredentialsFetched(false);
+                                                return;
+                                            }
+                                            // Fetch order credentials using the same service
+                                            fetchOrderCredentials(
+                                                    profile, result.message, skusService, domain);
+                                        });
+                            });
+                });
+    }
+
+    /**
+     * Fetches order credentials for the Origin subscription using the provided order ID and
+     * SkusService.
+     *
+     * @param profile The profile to use for the operation
+     * @param orderId The order ID to fetch credentials for
+     * @param skusService The SkusService instance to use for the operation
+     * @param domain The SKU service domain
+     */
+    private static void fetchOrderCredentials(
+            Profile profile, @Nullable String orderId, SkusService skusService, String domain) {
+        if (orderId == null || orderId.isEmpty()) {
+            skusService.close();
+            notifyCredentialsFetched(false);
+            return;
+        }
+
+        skusService.fetchOrderCredentials(
+                domain,
+                orderId,
+                (result) -> {
+                    boolean success = false;
+                    try {
+                        if (result == null || result.code != SkusResultCode.OK) {
+                            Log.e(
+                                    TAG,
+                                    "Failed to fetch order credentials for order ID: "
+                                            + orderId
+                                            + " "
+                                            + (result != null ? result.message : "null result"));
+                            return;
+                        }
+                        // Store the order ID
+                        UserPrefs.get(profile)
+                                .setString(BravePref.BRAVE_ORIGIN_ORDER_ID_ANDROID, orderId);
+                        // A successful Play Store order fetch is an authoritative "Origin is
+                        // active" signal; prime the sync cache immediately so promo gates honor
+                        // it without waiting for the next credential summary refresh.
+                        setIsCredentialSummaryActiveCached(true);
+                        success = true;
+                    } finally {
+                        skusService.close();
+                        notifyCredentialsFetched(success);
+                    }
+                });
+    }
+
+    /**
+     * Requests credential summary for the Origin subscription.
+     *
+     * @param profile The profile to use for the operation
+     * @param callback Callback to handle the credential summary result - true if active, false if
+     *     not
+     */
+    public static void requestCredentialSummary(
+            @Nullable Profile profile, @Nullable Callback<Boolean> callback) {
+        if (profile == null) {
+            Log.e(TAG, "requestCredentialSummary profile is null");
+            if (callback != null) {
+                callback.onResult(false);
+            }
+            return;
+        }
+
+        SkusService skusService = SkusServiceFactory.getInstance().getSkusService(profile, null);
+        if (skusService == null) {
+            Log.e(TAG, "SkusService is null, cannot request credential summary");
+            if (callback != null) {
+                callback.onResult(false);
+            }
+            return;
+        }
+
+        String domain =
+                BraveDomainsUtils.getServicesDomain(
+                        ORIGIN_SKU_HOSTNAME_PART, ServicesEnvironment.STAGING);
+        skusService.credentialSummary(
+                domain,
+                (result) -> {
+                    try {
+                        // Move JSON parsing to background thread to avoid potential UI blocking
+                        PostTask.postTask(
+                                TaskTraits.BEST_EFFORT,
+                                () -> {
+                                    boolean isActive = parseCredentialSummary(result);
+                                    // Switch back to UI thread for callback
+                                    PostTask.postTask(
+                                            TaskTraits.UI_DEFAULT,
+                                            () -> {
+                                                setIsCredentialSummaryActiveCached(isActive);
+                                                if (callback != null) {
+                                                    callback.onResult(isActive);
+                                                }
+                                            });
+                                });
+                    } finally {
+                        skusService.close();
+                    }
+                });
+    }
+
+    /**
+     * Caches the authoritative any-source Origin active status returned by the most recent {@link
+     * #requestCredentialSummary} callback. Unlike the Play-Store-only {@link
+     * #getIsSubscriptionActive}, the Skus credential summary covers both Play Store purchases and
+     * desktop-linked subscriptions, so this cache is the correct source for sync "is Origin active"
+     * gating on Android.
+     */
+    private static void setIsCredentialSummaryActiveCached(boolean value) {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_ORIGIN_CREDENTIAL_SUMMARY_CACHED, value);
+    }
+
+    /**
+     * Synchronous "is Origin effectively active" check for UI-thread gating of promo surfaces.
+     * Returns the value written by the most recent {@link #requestCredentialSummary} callback, or
+     * false if no refresh has run yet. Callers that need the authoritative fresh value should call
+     * {@link #requestCredentialSummary} directly; this getter is intended for hot paths that need a
+     * cheap sync answer and tolerate state as of the last refresh.
+     */
+    public static boolean getIsCredentialSummaryActiveCached() {
+        return ChromeSharedPreferences.getInstance()
+                .readBoolean(BravePreferenceKeys.BRAVE_ORIGIN_CREDENTIAL_SUMMARY_CACHED, false);
+    }
+
+    /**
+     * Parses the credential summary result on a background thread. This avoids potential UI
+     * blocking for JSON parsing operations.
+     *
+     * @param summary The credential summary result
+     * @return true if subscription is active, false otherwise
+     */
+    private static boolean parseCredentialSummary(@Nullable SkusResult summary) {
+        if (summary == null || summary.code != SkusResultCode.OK) {
+            return false;
+        }
+
+        String summaryMessage = summary.message != null ? summary.message.trim() : "";
+        if (summaryMessage.isEmpty()) {
+            return false;
+        }
+
+        try {
+            // Parse JSON response
+            JSONObject records = new JSONObject(summaryMessage);
+            // Empty dict - clean user
+            if (records.length() == 0) {
+                return false;
+            }
+
+            // Check if credential is valid (has active status and remaining credentials)
+            boolean active = records.optBoolean(JSON_FIELD_ACTIVE, false);
+            int remainingCredentialCount = records.optInt(JSON_FIELD_REMAINING_CREDENTIAL_COUNT, 0);
+
+            return active && remainingCredentialCount > 0;
+        } catch (JSONException e) {
+            Log.e(TAG, "Failed to parse credential summary JSON", e);
+            return false;
+        }
+    }
+
+    /**
+     * Clears all Origin subscription preferences for the given profile.
+     *
+     * @param profile The profile to use for preference clearing
+     */
+    public static void clearOriginSubscriptionPrefs(@Nullable Profile profile) {
+        if (profile == null) {
+            Log.e(TAG, "clearOriginSubscriptionPrefs profile is null");
+            return;
+        }
+
+        PrefService prefService = UserPrefs.get(profile);
+        prefService.setBoolean(BravePref.BRAVE_ORIGIN_SUBSCRIPTION_ACTIVE_ANDROID, false);
+        prefService.setString(BravePref.BRAVE_ORIGIN_PURCHASE_TOKEN_ANDROID, "");
+        prefService.setString(BravePref.BRAVE_ORIGIN_PRODUCT_ID_ANDROID, "");
+        prefService.setString(BravePref.BRAVE_ORIGIN_ORDER_ID_ANDROID, "");
+        prefService.setString(BravePref.BRAVE_ORIGIN_PACKAGE_NAME_ANDROID, "");
+        resetSubscriptionLinkedStatus(profile);
+    }
+
+    /**
+     * Opens the Brave Origin preferences settings screen.
+     *
+     * @param activity The activity to use for launching the settings
+     */
+    public static void openOriginPreferences(Activity activity) {
+        if (activity.isFinishing()) {
+            Log.e(TAG, "openOriginPreferences activity is finishing");
+            return;
+        }
+        SettingsNavigationFactory.createSettingsNavigation()
+                .startSettings(activity, BraveOriginPreferences.class);
+    }
+
+    /**
+     * Checks if a policy value should be inverted when mapping to/from UI state. DISABLED policies
+     * need inversion (true = disabled = unchecked in UI). ENABLED policies don't need inversion
+     * (true = enabled = checked in UI).
+     *
+     * @param policyKey The policy key to check
+     * @return true if the policy value should be inverted, false otherwise
+     */
+    public static boolean isPolicyInverted(@Nullable String policyKey) {
+        if (policyKey == null) {
+            return false;
+        }
+        switch (policyKey) {
+            case BravePolicyConstants.BRAVE_REWARDS_DISABLED:
+            case BravePolicyConstants.BRAVE_NEWS_DISABLED:
+            case BravePolicyConstants.BRAVE_VPN_DISABLED:
+            case BravePolicyConstants.BRAVE_WALLET_DISABLED:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * Convenience method to check a single policy. Delegates to {@link #checkPoliciesAsync}.
+     *
+     * @param profile The profile to use for the operation
+     * @param policyKey The policy key to check (e.g., BravePolicyConstants.BRAVE_REWARDS_DISABLED)
+     * @param callback Called with the policy value (true if disabled, false if not disabled)
+     */
+    public static void checkPolicyAsync(
+            @Nullable Profile profile, String policyKey, @Nullable Callback<Boolean> callback) {
+        if (callback == null) {
+            return;
+        }
+        checkPoliciesAsync(profile, Map.of(policyKey, callback));
+    }
+
+    /**
+     * Checks multiple policies asynchronously with a single subscription check. This is more
+     * efficient than calling checkPolicyAsync multiple times, as it only checks subscription status
+     * once.
+     *
+     * @param profile The profile to use for the operation
+     * @param policyCallbacks Map of policy keys to their callbacks. Each callback will be called
+     *     with true if the feature is disabled by policy, false otherwise.
+     */
+    public static void checkPoliciesAsync(
+            @Nullable Profile profile, Map<String, Callback<Boolean>> policyCallbacks) {
+        if (policyCallbacks == null || policyCallbacks.isEmpty()) {
+            return;
+        }
+
+        // If Brave Origin feature is not enabled or profile is null, policies are not applicable
+        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ORIGIN) || profile == null) {
+            for (Callback<Boolean> callback : policyCallbacks.values()) {
+                if (callback != null) {
+                    callback.onResult(false);
+                }
+            }
+            return;
+        }
+
+        // Check subscription status once for all policies
+        requestCredentialSummary(
+                profile,
+                (isSubscriptionActive) -> {
+                    // If subscription is not active, all features are enabled (not disabled)
+                    if (!isSubscriptionActive) {
+                        for (Callback<Boolean> callback : policyCallbacks.values()) {
+                            if (callback != null) {
+                                callback.onResult(false);
+                            }
+                        }
+                        return;
+                    }
+
+                    // Subscription is active, check each policy
+                    BraveOriginServiceFactory factory = BraveOriginServiceFactory.getInstance();
+                    BraveOriginSettingsHandler handler =
+                            factory.getBraveOriginSettingsHandler(profile, null);
+                    if (handler == null) {
+                        for (Callback<Boolean> callback : policyCallbacks.values()) {
+                            if (callback != null) {
+                                callback.onResult(false);
+                            }
+                        }
+                        return;
+                    }
+
+                    // Track remaining callbacks to know when to close handler
+                    final AtomicInteger remaining = new AtomicInteger(policyCallbacks.size());
+
+                    for (Map.Entry<String, Callback<Boolean>> entry : policyCallbacks.entrySet()) {
+                        String policyKey = entry.getKey();
+                        Callback<Boolean> callback = entry.getValue();
+
+                        handler.getPolicyValue(
+                                policyKey,
+                                (value) -> {
+                                    if (callback != null) {
+                                        boolean isDisabled =
+                                                isPolicyInverted(policyKey)
+                                                        ? (value != null && value)
+                                                        : (value == null || !value);
+                                        callback.onResult(isDisabled);
+                                    }
+
+                                    // Close handler when all callbacks are done
+                                    if (remaining.decrementAndGet() == 0) {
+                                        handler.close();
+                                    }
+                                });
+                    }
+                });
+    }
+}

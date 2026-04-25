@@ -1,0 +1,43 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+
+assert(enable_brave_vpn)
+assert(!is_android)
+
+source_set("wireguard") {
+  sources = [
+    "wireguard_connection_api_impl_base.cc",
+    "wireguard_connection_api_impl_base.h",
+  ]
+  deps = [
+    "credentials",
+    "//base",
+    "//brave/components/brave_vpn/browser/api",
+    "//brave/components/brave_vpn/browser/connection:api",
+    "//brave/components/brave_vpn/browser/connection:common",
+    "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/common/mojom",
+    "//brave/components/brave_vpn/common/wireguard",
+    "//components/prefs",
+    "//services/network/public/cpp",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "brave_vpn_wireguard_connection_api_unittest.cc" ]
+
+  deps = [
+    ":wireguard",
+    "//brave/components/brave_vpn/browser/connection:api",
+    "//brave/components/brave_vpn/common",
+    "//components/sync_preferences:test_support",
+    "//content/test:test_support",
+    "//services/network:test_support",
+    "//testing/gtest",
+  ]
+}

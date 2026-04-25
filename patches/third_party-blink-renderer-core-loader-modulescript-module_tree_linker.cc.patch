@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.cc b/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.cc
+index f83efcaf5eca73b5f79305976a2c3fd8a0247d7b..1091a5e7ed4596478b454d62628d3dca9d41f944 100644
+--- a/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.cc
++++ b/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.cc
+@@ -455,6 +455,7 @@ void ModuleTreeLinker::FetchDescendants(const ModuleScript* module_script) {
+         module_script->FetchOptions().GetReferrerPolicy(),
+         mojom::blink::FetchPriorityHint::kAuto,
+         RenderBlockingBehavior::kNonBlocking);
++    BRAVE_MODULE_TREE_LINKER_FETCH_DESCENDANTS
+     // <spec step="8">... perform the internal module script graph fetching
+     // procedure given moduleRequest, fetch client settings object, destination,
+     // options, module script's settings object, visited set, and module

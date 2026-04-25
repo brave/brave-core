@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@drawable/notification_rationale_dialog_background"
+    android:padding="24dp">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:importantForAccessibility="no"
+        android:outlineProvider="bounds"
+        android:src="@drawable/brave_notification_permission_rationale_dialog_header"
+        app:layout_constraintBottom_toTopOf="@+id/notification_permission_rationale_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/brave_notification_permission_rationale_dialog_header" />
+
+    <TextView
+        android:id="@+id/notification_permission_rationale_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/brave_notification_permission_rationale_dialog_title"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/set_default_text_color"
+        app:layout_constraintBottom_toTopOf="@+id/notification_permission_rationale_message"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+    <TextView
+        android:id="@+id/notification_permission_rationale_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/brave_notification_permission_rationale_dialog_message"
+        android:textSize="16sp"
+        android:textColor="@color/wallet_secondary_layout_text_color"
+        app:layout_constraintBottom_toTopOf="@+id/notification_continue_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notification_permission_rationale_title" />
+
+    <Button
+        android:id="@+id/notification_not_now_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:text="@string/not_now"
+        android:textAllCaps="false"
+        android:textColor="@color/notification_button_color"
+        android:textSize="13sp"
+        style="?android:attr/borderlessButtonStyle"
+        app:layout_constraintEnd_toStartOf="@+id/notification_continue_button"
+        app:layout_constraintTop_toTopOf="@+id/notification_continue_button" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/notification_continue_button"
+        android:layout_width="96dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/notification_button_rounded_bg"
+        android:text="@string/continue_text"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notification_permission_rationale_message" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

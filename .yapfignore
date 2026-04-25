@@ -1,0 +1,3 @@
+third_party/rust/*
+tools/crates/vendor/**
+third_party/wasm/vendor/**

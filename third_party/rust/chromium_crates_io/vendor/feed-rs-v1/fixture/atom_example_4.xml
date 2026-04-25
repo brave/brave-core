@@ -1,0 +1,19 @@
+
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <author>
+        <name>ebm-papst</name>
+    </author>
+    <link rel="self" type="application/atom+xml" href="http://www.ebmpapst.com/en/ebmpapst_productnews_atom_feed.xml"/>
+    <title>ebm-papst product news</title>
+    <id>tag:ebmpapst.com,2011-06-30:1309426729931</id>
+    <updated>2019-07-29T09:41:09Z</updated>
+    <entry>
+        <title><![CDATA[ Connection with future]]></title>
+        <link href="https://idt.ebmpapst.com/de/en/idt/campaign/simatic-micro-drive.html"/>
+        <id>tag:ebmpapst.com,2019-07-17:0310161724098</id>
+        <updated>2019-07-17T03:10:16Z</updated>
+        <summary type="html"><![CDATA[ <a href="https://idt.ebmpapst.com/de/en/idt/campaign/simatic-micro-drive.html"><img src="http://www.ebmpapst.com//media/content/homepage/currenttopic/ads_cd2013/FF_ep_keyvisual_100px.jpg" border="0" align="right"></a> Working in perfect harmony: the ebm-papst drive solutions for SIMATIC MICRO-DRIVE drive regulators from Siemens. ]]></summary>
+        <category>ebmpapst</category>
+    </entry>
+</feed>

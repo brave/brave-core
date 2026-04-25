@@ -1,0 +1,129 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_EXTRINSIC_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_EXTRINSIC_H_
+
+#include <stdint.h>
+
+#include <array>
+#include <string>
+#include <string_view>
+
+#include "base/containers/span.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_chain_metadata.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
+
+namespace brave_wallet {
+
+class PolkadotExtrinsicMetadata {
+ public:
+  PolkadotExtrinsicMetadata();
+  ~PolkadotExtrinsicMetadata();
+
+  PolkadotExtrinsicMetadata(const PolkadotExtrinsicMetadata&);
+  PolkadotExtrinsicMetadata& operator=(const PolkadotExtrinsicMetadata&);
+
+  PolkadotExtrinsicMetadata(PolkadotExtrinsicMetadata&&);
+  PolkadotExtrinsicMetadata& operator=(PolkadotExtrinsicMetadata&&);
+
+  base::DictValue ToValue() const;
+  static std::optional<PolkadotExtrinsicMetadata> FromValue(
+      const base::DictValue& value);
+
+  auto block_hash() const { return block_hash_; }
+  void set_block_hash(std::array<uint8_t, kPolkadotBlockHashSize> block_hash) {
+    block_hash_ = block_hash;
+  }
+
+  const std::vector<uint8_t>& extrinsic() const { return extrinsic_; }
+  void set_extrinsic(std::vector<uint8_t> extrinsic) {
+    extrinsic_ = std::move(extrinsic);
+  }
+
+  uint32_t block_num() const { return block_num_; }
+  void set_block_num(uint32_t block_num) { block_num_ = block_num; }
+
+  uint32_t mortality_period() const { return mortality_period_; }
+  void set_mortality_period(uint32_t mortality_period) {
+    mortality_period_ = mortality_period;
+  }
+
+ private:
+  std::array<uint8_t, kPolkadotBlockHashSize> block_hash_ = {};
+  std::vector<uint8_t> extrinsic_;
+  uint32_t block_num_ = 0;
+
+  // Right now we don't necessarily need to store the mortality period used for
+  // the extrinsic. But in the future, we could wind up with extrinsics with
+  // individual mortality periods so it's best to build the scaffolding for this
+  // now.
+  uint32_t mortality_period_ = 64;
+};
+
+// The unsigned extrinsic base class meant to be a type-erasing view of a
+// concrete, specific extrinsic. All extrinsics support being encoded as binary
+// and decoded from binary.
+struct PolkadotUnsignedExtrinsic {
+  virtual ~PolkadotUnsignedExtrinsic();
+
+  // Transform the current extrinsic into a string containing the hex-encoding
+  // of its binary serialization.
+  virtual std::string Encode(
+      const PolkadotChainMetadata& chain_metadata) const = 0;
+
+  // Decode is a static member function template intended to provide clarity at
+  // the call-site and also enforce the conceptual requirements of concrete
+  // extrinsics. Users specify the concrete extrinsic they wish to parse from
+  // the hex-encoded form.
+  template <class Extrinsic>
+  static std::optional<Extrinsic> Decode(
+      const PolkadotChainMetadata& chain_metadata,
+      std::string_view input) {
+    return Extrinsic::Decode(chain_metadata, input);
+  }
+};
+
+// An unsigned extrinsic that represents the "transfer_allow_death" call from
+// the Balances pallet. Note, the hosted Westend nodes uses the same runtime
+// metadata as the Kusama chains which have the Balances pallet living at
+// index 4.
+// For more information on the structure of extrinsics and their nature, see the
+// following documentation: https://spec.polkadot.network/id-extrinsics
+class PolkadotUnsignedTransfer : public PolkadotUnsignedExtrinsic {
+ public:
+  PolkadotUnsignedTransfer(
+      base::span<uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
+      uint128_t send_amount);
+
+  // Encode is the analog of the polkadot-js api's toHex() implementation which
+  // creates a hex string encoded with the SCALE-encoded length of the string
+  // along with the extrinsic version, the pallet index, call index, and the
+  // account address type.
+  std::string Encode(
+      const PolkadotChainMetadata& chain_metadata) const override;
+
+  // Decode recreates the unsigned transfer extrinsic from the provided
+  // hex string. This method is the dual of Encode().
+  static std::optional<PolkadotUnsignedTransfer> Decode(
+      const PolkadotChainMetadata& chain_metadata,
+      std::string_view input);
+
+  // Get the send amount associated with this extrinsic.
+  uint128_t send_amount() const { return send_amount_; }
+
+  // Get a view of the public key of the intended recipient for this
+  // transaction.
+  base::span<const uint8_t> recipient() const { return recipient_; }
+
+ private:
+  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> recipient_ = {};
+  uint128_t send_amount_ = 0;
+};
+
+}  // namespace brave_wallet
+
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_EXTRINSIC_H_

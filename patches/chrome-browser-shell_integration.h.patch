@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/shell_integration.h b/chrome/browser/shell_integration.h
+index 437f335e8a2048f1238344eb7b6e754570cbdb61..8884d0bd5188433e1f382f065a8e8762f6fa1d13 100644
+--- a/chrome/browser/shell_integration.h
++++ b/chrome/browser/shell_integration.h
+@@ -296,6 +296,7 @@ class DefaultBrowserWorker : public DefaultWebClientWorker {
+ 
+   static void DisableSetAsDefaultForTesting();
+ 
++  BRAVE_DEFAULT_BROWSER_WORKER_H
+  protected:
+   ~DefaultBrowserWorker() override;
+ 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2021 The Brave Authors. All rights reserved.
+     Use of this source code is governed by a BSD-style license that can be
+     found in the LICENSE file. -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <path
+      android:pathData="M22.1538,21.2308C22.1538,21.7394 21.7403,22.1538 21.2308,22.1538H11.0769C10.5674,22.1538 10.1538,21.7394 10.1538,21.2308V18.4615H12.9231C14.4498,18.4615 15.6923,17.2191 15.6923,15.6923V7.3846H21.2308C21.7403,7.3846 22.1538,7.7991 22.1538,8.3077V21.2308ZM1.8462,15.6923V2.7692C1.8462,2.2606 2.2597,1.8462 2.7692,1.8462H12.9231C13.4326,1.8462 13.8462,2.2606 13.8462,2.7692V15.6923C13.8462,16.2009 13.4326,16.6154 12.9231,16.6154H2.7692C2.2597,16.6154 1.8462,16.2009 1.8462,15.6923ZM21.2308,5.5385H15.6923V2.7692C15.6923,1.2425 14.4498,0 12.9231,0H2.7692C1.2425,0 0,1.2425 0,2.7692V15.6923C0,17.2191 1.2425,18.4615 2.7692,18.4615H8.3077V21.2308C8.3077,22.7575 9.5501,24 11.0769,24H21.2308C22.7575,24 24,22.7575 24,21.2308V8.3077C24,6.7809 22.7575,5.5385 21.2308,5.5385Z"
+      android:fillColor="#495057"
+      android:fillType="evenOdd"/>
+</vector>

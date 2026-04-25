@@ -1,0 +1,37 @@
+include_rules = [
+  "+brave/components/constants",
+  "+brave/components/version_info",
+  "+brave/net/base",
+  "+components/cbor",
+  "+components/component_updater",
+  "+components/content_settings",
+  "+components/country_codes",
+  "+components/grit/brave_components_strings.h",
+  "+components/keyed_service",
+  "+components/permissions",
+  "+components/pref_registry",
+  "+components/prefs",
+  "+components/regional_capabilities",
+  "+components/sync_preferences/testing_pref_service_syncable.h",
+  "+components/update_client",
+  "+components/value_store",
+  "+crypto",
+  "+services/network/public/cpp",
+  "+services/network/public/mojom",
+  "+services/network/test",
+  "+third_party/blink/public/common",
+  "+third_party/boringssl",
+  "+third_party/re2",
+  "+tools/json_schema_compiler",
+  "+ui/base",
+]
+
+specific_include_rules = {
+  "bip39\.cc": [
+    "+brave/third_party/bip39wally-core-native/include",
+  ],
+  "scrypt_utils\.cc": [
+    "+brave/vendor/bat-native-tweetnacl/tweetnacl.h",
+  ],
+}
+

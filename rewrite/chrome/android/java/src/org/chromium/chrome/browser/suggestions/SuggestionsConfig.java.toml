@@ -1,0 +1,10 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# We want to see 11 most visited tiles on NTP as it was on cr147 and before
+[[substitution]]
+description = 'Expand MAX_TILE_COUNT to 11 which was pre cr146'
+re_pattern = '(MAX_TILE_COUNT\s+=\s+)8'
+replace = '\g<1>11'

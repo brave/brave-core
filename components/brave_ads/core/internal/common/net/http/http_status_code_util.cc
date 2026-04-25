@@ -1,0 +1,82 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_ads/core/internal/common/net/http/http_status_code_util.h"
+
+#include "base/containers/fixed_flat_set.h"
+#include "base/strings/string_number_conversions.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
+
+namespace brave_ads {
+
+namespace {
+
+constexpr auto kAllowedHttpStatusCodes = base::MakeFixedFlatSet<int>({
+    400,  // Bad Request.
+    401,  // Unauthorized.
+    403,  // Forbidden.
+    404,  // Not Found.
+    407,  // Proxy Authentication Required.
+    408,  // Request Timeout.
+    429,  // Too Many Requests.
+    451,  // Unavailable For Legal Reasons.
+    500,  // Internal Server Error.
+    502,  // Bad Gateway.
+    503,  // Service Unavailable.
+    504   // Gateway Timeout.
+});
+
+std::optional<std::string> HttpStatusCodeClassToString(
+    HttpStatusCodeClassType http_status_code_class) {
+  if (http_status_code_class == HttpStatusCodeClassType::kNonsensical) {
+    return std::nullopt;
+  }
+
+  return absl::StrFormat("%dxx", http_status_code_class);
+}
+
+}  // namespace
+
+HttpStatusCodeClassType HttpStatusCodeClass(int http_status_code) {
+  switch (http_status_code / 100) {
+    case 1:
+      return HttpStatusCodeClassType::kInformationalResponse;
+    case 2:
+      return HttpStatusCodeClassType::kSuccess;
+    case 3:
+      return HttpStatusCodeClassType::kRedirection;
+    case 4:
+      return HttpStatusCodeClassType::kClientError;
+    case 5:
+      return HttpStatusCodeClassType::kServerError;
+    default:
+      return HttpStatusCodeClassType::kNonsensical;
+  }
+}
+
+bool IsSuccessfulHttpStatusCode(int http_status_code) {
+  return HttpStatusCodeClass(http_status_code) ==
+             HttpStatusCodeClassType::kSuccess ||
+         HttpStatusCodeClass(http_status_code) ==
+             HttpStatusCodeClassType::kRedirection;
+}
+
+std::optional<std::string> HttpStatusCodeToString(int http_status_code) {
+  const HttpStatusCodeClassType http_status_code_class =
+      HttpStatusCodeClass(http_status_code);
+
+  // Check if the HTTP status code is in the allowed list of codes.
+  if (const auto iter = kAllowedHttpStatusCodes.find(http_status_code);
+      iter != kAllowedHttpStatusCodes.cend()) {
+    // If the HTTP status code is allowed, return it as a string.
+    return base::NumberToString(http_status_code);
+  }
+
+  // Return a data minimization status code corresponding to the class of the
+  // original HTTP status code if the original code is not allowed.
+  return HttpStatusCodeClassToString(http_status_code_class);
+}
+
+}  // namespace brave_ads

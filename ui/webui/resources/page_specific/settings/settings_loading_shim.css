@@ -1,0 +1,4 @@
+html.loading::before {
+  background-image: var(--brave-toolbar-gradient);
+  height: 0 !important;
+}

@@ -1,0 +1,10 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = 'Prefix virtual URL when writing SerializedNavigationEntry to Pickle'
+re_pattern = '(WriteStringToPickle\([\s\S]*,\s*)(?:virtual_url_\.spec\(\))'
+re_flags = ['MULTILINE']
+replace = '\1maybe_prefixed_virtual_url_spec()'

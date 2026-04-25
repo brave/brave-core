@@ -1,0 +1,70 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/build/ios/mojom/mojom_wrappers.gni")
+import("//build/config/ios/rules.gni")
+
+config("external_config") {
+  visibility = [ ":*" ]
+  include_dirs = [ "$target_gen_dir" ]
+}
+
+source_set("ads") {
+  configs += [ ":external_config" ]
+
+  sources = [
+    "ads_client_bridge.h",
+    "ads_client_ios.h",
+    "ads_client_ios.mm",
+    "brave_ads.h",
+    "brave_ads.mm",
+    "new_tab_page_ad_ios.h",
+    "new_tab_page_ad_ios.mm",
+    "notification_ad_ios.h",
+    "notification_ad_ios.mm",
+  ]
+
+  deps = [
+    ":brave_ads_mojom_wrappers",
+    "//base",
+    "//brave/components/brave_ads/core",
+    "//brave/components/brave_news/common",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/l10n/common",
+    "//brave/components/ntp_background_images/browser",
+    "//brave/components/ntp_background_images/common",
+    "//brave/ios/browser/api/common",
+    "//brave/ios/browser/brave_ads",
+    "//components/prefs",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/profile",
+    "//net",
+    "//services/network/public/cpp",
+    "//services/network/public/mojom",
+  ]
+
+  frameworks = [
+    "Foundation.framework",
+    "UIKit.framework",
+    "Network.framework",
+  ]
+}
+
+ios_objc_mojom_wrappers("brave_ads_mojom_wrappers") {
+  mojom_target = "//brave/components/brave_ads/core/mojom"
+  sources = [ "//brave/components/brave_ads/core/mojom/brave_ads.mojom" ]
+  exclude_types = [
+    "DBActionInfo",
+    "DBBindColumnInfo",
+    "DBTransactionResultInfo",
+    "DBRowsUnion",
+    "DBRowInfo",
+    "DBTransactionInfo",
+    "DBColumnValueUnion",
+  ]
+
+  # The module name is `BraveAds` now which matches the class we already have
+  generate_namespace = false
+}

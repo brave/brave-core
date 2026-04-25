@@ -1,0 +1,103 @@
+[package]
+name = "tame-index"
+version = "0.24.1"
+edition = "2024"
+rust-version = "1.85.0"
+description = "Provides access to local and remote cargo registry indices"
+license = "Apache-2.0 OR MIT"
+documentation = "https://docs.rs/tame-index"
+homepage = "https://github.com/EmbarkStudios/tame-index"
+repository = "https://github.com/EmbarkStudios/tame-index"
+
+[features]
+default = ["reqwest?/rustls-tls-webpki-roots"]
+# Enables the built-in support for fetching and reading a git registry index
+git = ["gix-reqwest"]
+# The default is reqwest since that doesn't pull in (a ton of) C code
+gix-reqwest = ["gix/blocking-http-transport-reqwest", "dep:reqwest", "__git"]
+# Unfortunately need to support curl as well, though we don't test or care about it, in addition
+# to having 2 HTTP client implementations if sparse is also enabled
+gix-curl = ["gix/blocking-http-transport-curl", "__git"]
+# "private" feature flag which is the one actually used in code
+__git = []
+# Enables the built-in support for requesting index entries from a HTTP sparse registry index
+sparse = ["dep:reqwest", "dep:tokio", "dep:rayon", "dep:crossbeam-channel"]
+# Enables local registry support
+local = ["dep:sha2", "dep:bytes"]
+# Enables helpers for building a local registry
+local-builder = ["local", "dep:reqwest"]
+# Enables the use of OS native certificate store.
+# Should be used with `default-features = false` to also disable webpki-roots, which is activated by default.
+native-certs = ["reqwest?/rustls-tls-native-roots"]
+# We can't use all-features because of gix-curl, so this is just an alias for my sanity
+__internal_all = ["git", "sparse", "local-builder"]
+
+[dependencies]
+bytes = { version = "1.10", optional = true }
+# All paths are assumed to be utf-8 for ease of use and implementation
+camino = "1.1"
+# Better channels, already a dep if rayon is pulled in
+crossbeam-channel = { version = "0.5", optional = true }
+# Used to find the location of the local `CARGO_HOME`
+home = "0.5"
+# Allows calling crates to provide their own HTTP implementation, keep aligned with reqwest/hyper
+http = "1.3"
+# Nicer scanning through bytes
+memchr = "2.5"
+rayon = { version = "1.7", optional = true }
+# Contains hasher used by cargo 1.85.0+
+rustc-stable-hash = "0.1"
+# Nicer versions for users
+semver = { version = "1.0", features = ["serde"] }
+# Serialization
+serde = { version = "1.0", features = ["derive", "rc"] }
+serde_json = "1.0"
+sha2 = { version = "0.10", optional = true, default-features = false, features = [
+    "std",
+] }
+# Smaller fixed size strings with heap fallback
+smol_str = { version = "0.3", features = ["serde"] }
+# Laziness
+thiserror = "2.0"
+tokio = { version = "1.44", default-features = false, features = [
+    "rt-multi-thread",
+    "time",
+], optional = true }
+# cargo config parsing
+toml-span = "0.6"
+# Faster hashing
+twox-hash = { version = "2.1", default-features = false, features = ["xxhash64"] }
+
+[dependencies.gix]
+optional = true
+version = "0.74.1"
+default-features = false
+features = []
+
+# Keep version aligned with gix-transport
+[dependencies.reqwest]
+optional = true
+version = "0.12"
+default-features = false
+features = ["blocking", "gzip", "http2"]
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"
+
+[dev-dependencies]
+cargo_metadata = "0.23"
+rayon = "1.7"
+tempfile = "3.15"
+tiny-bench = "0.4"
+
+[package.metadata.docs.rs]
+features = ["__internal_all"]
+rustdoc-args = ["--cfg", "docsrs"]
+
+[profile.dev.package.sha2]
+opt-level = 3
+
+[[bench]]
+name = "sparse"
+harness = false
+required-features = ["sparse"]

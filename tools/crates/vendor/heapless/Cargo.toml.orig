@@ -1,0 +1,57 @@
+[package]
+authors = [
+  "Jorge Aparicio <jorge@japaric.io>",
+  "Per Lindgren <per.lindgren@ltu.se>",
+  "Emil Fresk <emil.fresk@gmail.com>",
+]
+categories = ["data-structures", "no-std"]
+description = "`static` friendly data structures that don't require dynamic memory allocation"
+documentation = "https://docs.rs/heapless"
+edition = "2021"
+keywords = ["static", "no-heap"]
+license = "MIT OR Apache-2.0"
+name = "heapless"
+repository = "https://github.com/rust-embedded/heapless"
+version = "0.8.0"
+
+[features]
+# Enable polyfilling of atomics via `portable-atomic`.
+# `portable-atomic` polyfills some functionality by default, but to get full atomics you must
+# enable one of its features to tell it how to do it. See `portable-atomic` documentation for details.
+portable-atomic = ["dep:portable-atomic"]
+
+# Enable polyfilling of atomics via portable-atomic, using critical section for locking
+portable-atomic-critical-section = ["dep:portable-atomic", "portable-atomic", "portable-atomic?/critical-section"]
+
+# Enable polyfilling of atomics via portable-atomic, using disabling interrupts for locking.
+# WARNING: this is only sound for single-core bare-metal privileged-mode targets!
+portable-atomic-unsafe-assume-single-core = ["dep:portable-atomic", "portable-atomic", "portable-atomic?/unsafe-assume-single-core"]
+
+# implement serde traits.
+serde = ["dep:serde"]
+
+# implement ufmt traits.
+ufmt = ["dep:ufmt-write"]
+
+# Implement defmt::Format from defmt v0.3
+defmt-03 = ["dep:defmt"]
+
+# Enable larger MPMC sizes.
+mpmc_large = []
+
+[dependencies]
+portable-atomic = { version = "1.0", optional = true }
+hash32 = "0.3.0"
+serde = { version = "1", optional = true, default-features = false }
+stable_deref_trait = { version = "1", default-features = false }
+ufmt-write = { version = "0.1", optional = true }
+defmt = { version = ">=0.2.0,<0.4", optional = true }
+
+[dev-dependencies]
+ufmt = "0.2"
+
+[package.metadata.docs.rs]
+features = ["ufmt", "serde", "defmt-03", "mpmc_large", "portable-atomic-critical-section"]
+# for the pool module
+targets = ["i686-unknown-linux-gnu"]
+rustdoc-args = ["--cfg", "docsrs"]

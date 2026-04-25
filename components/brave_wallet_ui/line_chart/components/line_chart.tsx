@@ -1,0 +1,276 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import * as React from 'react'
+import { CSSProperties } from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
+import { AreaChart, Area, XAxis, YAxis, Tooltip } from 'recharts'
+
+// Types
+import type { TokenPriceHistory } from '../../constants/types'
+
+// Utils
+import { mojoTimeDeltaToJSDate } from '../../../common/mojomUtils'
+import {
+  deserializeTimeDelta,
+  makeSerializableTimeDelta,
+} from '../../utils/model-serialization-utils'
+
+// Components
+import { CustomTooltip } from './custom_tooltip'
+import { CustomReferenceDot } from './custom_reference_dot'
+
+// Styled Components
+import {
+  StyledWrapper,
+  LoadingOverlay,
+  LoadIcon,
+  AreaWrapper,
+} from './line_chart.styles'
+
+interface Props {
+  priceData: TokenPriceHistory[] | undefined
+  isLoading: boolean
+  isDisabled: boolean
+  customStyle?: CSSProperties
+  showTooltip?: boolean
+  defaultFiatCurrency: string
+  hidePortfolioBalances: boolean
+}
+
+const EmptyChartData = [
+  {
+    date: makeSerializableTimeDelta({
+      microseconds: 1,
+    }),
+    close: 1,
+  },
+  {
+    date: makeSerializableTimeDelta({
+      microseconds: 2,
+    }),
+    close: 1,
+  },
+  {
+    date: makeSerializableTimeDelta({
+      microseconds: 3,
+    }),
+    close: 1,
+  },
+]
+
+export function LineChart({
+  priceData,
+  isLoading,
+  isDisabled,
+  customStyle,
+  showTooltip = true,
+  defaultFiatCurrency,
+  hidePortfolioBalances,
+}: Props) {
+  // refs
+  const containerRef = React.useRef<HTMLDivElement>(null)
+
+  // state
+  const [activeXPosition, setActiveXPosition] = React.useState<number>(0)
+  const [activeYPosition, setActiveYPosition] = React.useState<number>(0)
+  const [viewBoxWidth, setViewBoxWidth] = React.useState<number>(0)
+  const [viewBoxHeight, setViewBoxHeight] = React.useState<number>(0)
+
+  // effects
+  React.useEffect(() => {
+    const container = containerRef.current
+    if (!container) {
+      return
+    }
+
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setViewBoxWidth(Math.trunc(entry.contentRect.width))
+        setViewBoxHeight(Math.trunc(entry.contentRect.height))
+      }
+    })
+
+    observer.observe(container)
+    return () => observer.disconnect()
+  }, [])
+
+  // memos / computed
+  const chartData = React.useMemo(() => {
+    const priceHistory =
+      !priceData || priceData.length <= 0 || isDisabled
+        ? EmptyChartData
+        : priceData
+
+    return priceHistory.map((price) => ({
+      date: mojoTimeDeltaToJSDate(deserializeTimeDelta(price.date)),
+      close: price.close,
+    }))
+  }, [priceData, isDisabled])
+
+  const viewBoxHeightHalf = viewBoxHeight / 2
+  const toolTipYPosition =
+    activeYPosition < viewBoxHeightHalf ? activeYPosition : activeYPosition - 58
+
+  const showAreaChart = viewBoxWidth > 0 && viewBoxHeight > 0
+  const showLoadingOverlay = !showAreaChart || isLoading
+  const showAreaFill = !!priceData && priceData.length > 0 && !isDisabled
+
+  // render
+  return (
+    <StyledWrapper style={customStyle}>
+      <AreaWrapper ref={containerRef}>
+        {showAreaChart && (
+          <AreaChart
+            width={viewBoxWidth}
+            height={viewBoxHeight}
+            data={chartData}
+            margin={{ top: 5, left: 0, right: 0, bottom: 0 }}
+          >
+            <defs>
+              <linearGradient
+                id='portfolioGradient'
+                x1='0'
+                y1='0'
+                x2='0'
+                y2='1'
+              >
+                <stop
+                  offset='0%'
+                  stopColor={leo.color.icon.interactive}
+                  stopOpacity={0.2}
+                />
+                <stop
+                  offset='110%'
+                  stopColor={leo.color.icon.interactive}
+                  stopOpacity={0}
+                />
+              </linearGradient>
+              <linearGradient
+                id='portfolioDotFadeGradient'
+                gradientUnits='objectBoundingBox'
+                x1='0'
+                y1='0'
+                x2='0'
+                y2='1'
+              >
+                <stop
+                  offset='0%'
+                  stopColor='white'
+                  stopOpacity={1}
+                />
+                <stop
+                  offset='100%'
+                  stopColor='white'
+                  stopOpacity={0}
+                />
+              </linearGradient>
+              <mask
+                id='portfolioDotFadeMask'
+                maskUnits='objectBoundingBox'
+                maskContentUnits='objectBoundingBox'
+              >
+                <rect
+                  width='1'
+                  height='1'
+                  fill='url(#portfolioDotFadeGradient)'
+                />
+              </mask>
+              <pattern
+                id='portfolioDotPattern'
+                width='4'
+                height='4'
+                patternUnits='userSpaceOnUse'
+              >
+                <circle
+                  cx='2'
+                  cy='2'
+                  r='1'
+                  fill={leo.color.text.interactive}
+                  fillOpacity={0.5}
+                />
+              </pattern>
+            </defs>
+            <YAxis
+              hide={true}
+              domain={['auto', 'auto']}
+            />
+            <XAxis
+              hide={true}
+              dataKey='date'
+            />
+            {priceData
+              && priceData.length > 0
+              && !isDisabled
+              && showTooltip && (
+                <Tooltip
+                  isAnimationActive={false}
+                  position={{
+                    x: activeXPosition,
+                    y: toolTipYPosition,
+                  }}
+                  cursor={{
+                    stroke: leo.color.icon.interactive,
+                    strokeWidth: 2,
+                  }}
+                  content={(props) => (
+                    <CustomTooltip
+                      active={props.active}
+                      coordinate={props.coordinate}
+                      label={props.label}
+                      payload={props.payload}
+                      viewBoxWidth={viewBoxWidth}
+                      defaultFiatCurrency={defaultFiatCurrency}
+                      hidePortfolioBalances={hidePortfolioBalances}
+                    />
+                  )}
+                />
+              )}
+            <Area
+              isAnimationActive={false}
+              type='monotone'
+              dataKey='close'
+              stroke='none'
+              fill={showAreaFill ? 'url(#portfolioGradient)' : 'none'}
+              activeDot={false}
+              zIndex={10}
+            />
+            <Area
+              isAnimationActive={false}
+              type='monotone'
+              dataKey='close'
+              stroke='none'
+              fill={showAreaFill ? 'url(#portfolioDotPattern)' : 'none'}
+              mask={showAreaFill ? 'url(#portfolioDotFadeMask)' : undefined}
+              activeDot={false}
+              zIndex={11}
+            />
+            <Area
+              isAnimationActive={false}
+              type='monotone'
+              dataKey='close'
+              strokeWidth={2}
+              stroke={leo.color.icon.interactive}
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              shapeRendering='geometricPrecision'
+              fill='none'
+              activeDot={
+                <CustomReferenceDot
+                  onUpdateYPosition={setActiveYPosition}
+                  onUpdateXPosition={setActiveXPosition}
+                />
+              }
+              zIndex={12}
+            />
+          </AreaChart>
+        )}
+      </AreaWrapper>
+      <LoadingOverlay isLoading={showLoadingOverlay}>
+        <LoadIcon />
+      </LoadingOverlay>
+    </StyledWrapper>
+  )
+}

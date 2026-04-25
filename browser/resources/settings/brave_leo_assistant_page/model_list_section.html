@@ -1,0 +1,161 @@
+<style include="cr-shared-style settings-shared">
+  .ollama-toggle {
+    margin-bottom: var(--leo-spacing-xl);
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border: 1px solid var(--leo-color-divider-subtle);
+    border-radius: var(--leo-radius-m);
+  }
+
+  .model {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+    border-bottom: 1px solid var(--leo-color-divider-subtle);
+  }
+
+  .model:last-of-type {
+    border-bottom: none;
+  }
+
+  .list-container {
+    padding: 0 var(--leo-spacing-xl) var(--leo-spacing-xl) var(--leo-spacing-xl);
+  }
+
+  .action-box {
+    padding: var(--leo-spacing-xl);
+  }
+
+  .label-secondary {
+    font: var(--leo-font-default-regular);
+    color: var(--leo-color-text-secondary);
+  }
+
+  .header {
+    padding: var(--leo-spacing-2xl);
+  }
+
+  .main-header {
+    font: var(--leo-font-heading-h4);
+  }
+
+  cr-icon-button.size-20 {
+    --iron-icon-width: 20px;
+  }
+</style>
+
+<settings-section
+  id="leoModels"
+  page-title="$i18n{braveLeoAssistantByomLabel}">
+
+<div class="settings-box header">
+  <div class="flex">
+    <div class="main-header">$i18n{braveLeoAssistantYourModelsTitle}</div>
+    <div class="label secondary">
+      <p>$i18n{braveLeoAssistantYourModelsDesc1}</p>
+      <p>$i18nRaw{braveLeoAssistantYourModelsDesc2}</p>
+    </div>
+  </div>
+</div>
+
+<!-- Provider Sync Section -->
+<template
+  is="dom-if"
+  if="[[isOllamaConnected_]]"
+>
+  <settings-toggle-button
+    class="cr-row ollama-toggle"
+    label="$i18n{braveLeoAssistantOllamaSyncLabel}"
+    icon="ollama"
+    pref="{{prefs.brave.ai_chat.ollama_fetch_enabled}}">
+  </settings-toggle-button>
+</template>
+
+<div class="list-container">
+  <template
+    is="dom-if"
+    if="[[!hasCustomModels_(customModelsList_)]]"
+  >
+    <div class="alert-container">
+      <leo-alert
+        type="info"
+        has-actions="false"
+      >
+        $i18n{braveLeoAssistantModelListEmptyLabel}
+      </leo-alert>
+    </div>
+  </template>
+
+  <template
+    is="dom-if"
+    if="[[hasCustomModels_(customModelsList_)]]"
+  >
+    <div class="list">
+      <template
+        is="dom-repeat"
+        items="[[customModelsList_]]"
+      >
+        <div class="model">
+          <div class="model-info">
+            <div class="label">[[item.displayName]]</div>
+            <div class="label-secondary">
+              [[item.options.customModelOptions.modelRequestName]]
+            </div>
+          </div>
+          <div class="model-actions">
+            <template is="dom-if" if="[[isOllamaManagedModel_(item, prefs.brave.ai_chat.ollama_fetch_enabled.value, isOllamaConnected_)]]">
+              <span class="label-secondary" style="font-size: 12px; padding: 8px;">
+                $i18n{braveLeoAssistantOllamaManagedLabel}
+              </span>
+            </template>
+            <cr-icon-button
+              on-click="handleEdit_"
+              class="size-20"
+              iron-icon="edit-pencil"
+            ></cr-icon-button>
+            <template is="dom-if" if="[[!isOllamaManagedModel_(item, prefs.brave.ai_chat.ollama_fetch_enabled.value, isOllamaConnected_)]]">
+              <cr-icon-button
+                on-click="handleDelete_"
+                class="size-20"
+                iron-icon="trash"
+              ></cr-icon-button>
+            </template>
+          </div>
+        </div>
+      </template>
+    </div>
+  </template>
+</div>
+
+<div class="action-box">
+  <template
+    is="dom-if"
+    if="[[!showModelConfig_]]"
+  >
+    <leo-button
+      on-click="handleAddNewModel_"
+      class="action-button"
+      >$i18n{braveLeoAssistantAddNewModelButtonLabel}</leo-button
+    >
+  </template>
+</div>
+
+<template
+  is="dom-if"
+  if="[[showModelConfig_]]"
+  restamp
+>
+  <model-config-ui
+    id="model-config-ui"
+    model-item="[[getEditingModel_(isEditingModelIndex_, customModelsList_)]]"
+    on-save="onModelConfigSave_"
+    on-close="onModelConfigClose_"
+  ></model-config-ui>
+</template>
+
+</settings-section>

@@ -1,0 +1,381 @@
+/* (No Comment) */
+"0W40Cl" = "Nova guia";
+
+/* (No Comment) */
+"5ixvGX-tYwiRd" = "Há ${count} opções que correspondem a \"Economia de tempo estimada\".";
+
+/* (No Comment) */
+"5ixvGX-vjA5pZ" = "Há ${count} opções que correspondem a \"Economia de dados estimada\".";
+
+/* (No Comment) */
+"5ixvGX-xcI3h9" = "Há ${count} opções que correspondem a \"Anúncios bloqueados\".";
+
+/* (No Comment) */
+"7Ds8rk" = "Configuração de favoritos no ecrã bloqueado";
+
+/* (No Comment) */
+"7JYzOv" = "Tipo";
+
+/* (No Comment) */
+"7MuqiB" = "Atalho";
+
+/* (No Comment) */
+"8pcZ6L" = "Widget de favoritos no ecrã bloqueado";
+
+/* (No Comment) */
+"8vyYRy" = "nº 3";
+
+/* (No Comment) */
+"9E2oRR" = "nº 1";
+
+/* (No Comment) */
+"AGMpus" = "Configuração de atalhos";
+
+/* (No Comment) */
+"bUXzTx" = "Tipo de estatística";
+
+/* (No Comment) */
+"crhbMy" = "Favoritos";
+
+/* (No Comment) */
+"D5r3nt" = "URL";
+
+/* (No Comment) */
+"e13lS3-0W40Cl" = "Só para confirmar: você queria a opção \"Nova guia\"?";
+
+/* (No Comment) */
+"e13lS3-crhbMy" = "Só para confirmar: você queria a opção \"Favoritos\"?";
+
+/* (No Comment) */
+"e13lS3-FGO5qW" = "Só para confirmar: queria a opção \"Playlist do Brave\"?";
+
+/* (No Comment) */
+"e13lS3-jXiFQY" = "Só para confirmar: queria a opção \"Carteira Brave\"?";
+
+/* (No Comment) */
+"e13lS3-nthxSL" = "Só para confirmar: você queria a opção \"Downloads\"?";
+
+/* (No Comment) */
+"e13lS3-qKrzyX" = "Só para confirmar: queria a opção \"Ler código QR\"?";
+
+/* (No Comment) */
+"e13lS3-U0eRbw" = "Só para confirmar: você queria a opção \"Leo AI\"?";
+
+/* (No Comment) */
+"e13lS3-VBH4G6" = "Só para confirmar: você queria a opção \"Histórico\"?";
+
+/* (No Comment) */
+"e13lS3-vs094F" = "Só para confirmar: você queria a opção \"Nova guia privada\"?";
+
+/* (No Comment) */
+"e13lS3-XCyA8c" = "Só para confirmar: queria a opção \"Notícias Brave\"?";
+
+/* (No Comment) */
+"e13lS3-Y7TWy8" = "Só para confirmar: queria a opção \"Pesquisa\"?";
+
+/* (No Comment) */
+"EUS9FL" = "Atalho de widget";
+
+/* (No Comment) */
+"EvESs0-0W40Cl" = "Só para confirmar: você queria a opção \"Nova guia\"?";
+
+/* (No Comment) */
+"EvESs0-crhbMy" = "Só para confirmar: você queria a opção \"Favoritos\"?";
+
+/* (No Comment) */
+"EvESs0-FGO5qW" = "Só para confirmar: queria a opção \"Playlist do Brave\"?";
+
+/* (No Comment) */
+"EvESs0-jXiFQY" = "Só para confirmar: queria a opção \"Carteira Brave\"?";
+
+/* (No Comment) */
+"EvESs0-nthxSL" = "Só para confirmar: você queria a opção \"Downloads\"?";
+
+/* (No Comment) */
+"EvESs0-qKrzyX" = "Só para confirmar: queria a opção \"Ler código QR\"?";
+
+/* (No Comment) */
+"EvESs0-U0eRbw" = "Só para confirmar: você queria a opção \"Leo AI\"?";
+
+/* (No Comment) */
+"EvESs0-VBH4G6" = "Só para confirmar: você queria a opção \"Histórico\"?";
+
+/* (No Comment) */
+"EvESs0-vs094F" = "Só para confirmar: você queria a opção \"Nova guia privada\"?";
+
+/* (No Comment) */
+"EvESs0-XCyA8c" = "Só para confirmar: queria a opção \"Notícias Brave\"?";
+
+/* (No Comment) */
+"EvESs0-Y7TWy8" = "Só para confirmar: queria a opção \"Pesquisa\"?";
+
+/* (No Comment) */
+"FGO5qW" = "Playlist do Brave";
+
+/* (No Comment) */
+"gpCwrM" = "Configuração de estatísticas";
+
+/* (No Comment) */
+"hssb67" = "Configuração do widget de atalhos";
+
+/* (No Comment) */
+"iB2TOM" = "Guardar entrada nos favoritos";
+
+/* (No Comment) */
+"joEZJM" = "nº 2";
+
+/* (No Comment) */
+"jXiFQY" = "Carteira Brave";
+
+/* (No Comment) */
+"L1fziM-0W40Cl" = "Há ${count} opções que correspondem a \"Nova guia\".";
+
+/* (No Comment) */
+"L1fziM-crhbMy" = "Há ${count} opções que correspondem a \"Favoritos\".";
+
+/* (No Comment) */
+"L1fziM-FGO5qW" = "Há ${count} opções que correspondem a \"Playlist do Brave\".";
+
+/* (No Comment) */
+"L1fziM-jXiFQY" = "Há ${count} opções que correspondem a \"Carteira Brave\".";
+
+/* (No Comment) */
+"L1fziM-nthxSL" = "Há ${count} opções que correspondem a \"Downloads\".";
+
+/* (No Comment) */
+"L1fziM-qKrzyX" = "Há ${count} opções que correspondem a \"Ler código QR\".";
+
+/* (No Comment) */
+"L1fziM-U0eRbw" = "Existem ${count} opções que correspondem a ‘Leo AI’.";
+
+/* (No Comment) */
+"L1fziM-VBH4G6" = "Há ${count} opções que correspondem a \"Histórico\".";
+
+/* (No Comment) */
+"L1fziM-vs094F" = "Há ${count} opções que correspondem a \"Nova guia privada\".";
+
+/* (No Comment) */
+"L1fziM-XCyA8c" = "Existem ${count} opções que correspondem a \"Notícias Brave\".";
+
+/* (No Comment) */
+"L1fziM-Y7TWy8" = "Há ${count} opções que correspondem a \"Pesquisa\".";
+
+/* (No Comment) */
+"M2Y1rg" = "Nº 4";
+
+/* (No Comment) */
+"nthxSL" = "Downloads";
+
+/* (No Comment) */
+"nXONef" = "Guardar nos favoritos";
+
+/* (No Comment) */
+"qKrzyX" = "Ler código QR";
+
+/* (No Comment) */
+"r2EI05-0W40Cl" = "Só para confirmar: você queria a opção \"Nova guia\"?";
+
+/* (No Comment) */
+"r2EI05-crhbMy" = "Só para confirmar: você queria a opção \"Favoritos\"?";
+
+/* (No Comment) */
+"r2EI05-FGO5qW" = "Só para confirmar: queria a opção \"Playlist do Brave\"?";
+
+/* (No Comment) */
+"r2EI05-jXiFQY" = "Só para confirmar: queria a opção \"Carteira Brave\"?";
+
+/* (No Comment) */
+"r2EI05-nthxSL" = "Só para confirmar: você queria a opção \"Downloads\"?";
+
+/* (No Comment) */
+"r2EI05-qKrzyX" = "Só para confirmar: queria a opção \"Ler código QR\"?";
+
+/* (No Comment) */
+"r2EI05-U0eRbw" = "Só para confirmar: você queria a opção \"Leo AI\"?";
+
+/* (No Comment) */
+"r2EI05-VBH4G6" = "Só para confirmar: você queria a opção \"Histórico\"?";
+
+/* (No Comment) */
+"r2EI05-vs094F" = "Só para confirmar: você queria a opção \"Nova guia privada\"?";
+
+/* (No Comment) */
+"r2EI05-XCyA8c" = "Só para confirmar: queria a opção \"Notícias Brave\"?";
+
+/* (No Comment) */
+"r2EI05-Y7TWy8" = "Só para confirmar: queria a opção \"Pesquisa\"?";
+
+/* (No Comment) */
+"sdOBtj-tYwiRd" = "Só para confirmar: você queria a opção \"Economia de tempo estimada\"?";
+
+/* (No Comment) */
+"sdOBtj-vjA5pZ" = "Só para confirmar: você queria a opção \"Economia de dados estimada\"?";
+
+/* (No Comment) */
+"sdOBtj-xcI3h9" = "Só para confirmar: você queria a opção \"Anúncios bloqueados\"?";
+
+/* (No Comment) */
+"tNCrcE-0W40Cl" = "Há ${count} opções que correspondem a \"Nova guia\".";
+
+/* (No Comment) */
+"tNCrcE-crhbMy" = "Há ${count} opções que correspondem a \"Favoritos\".";
+
+/* (No Comment) */
+"tNCrcE-FGO5qW" = "Há ${count} opções que correspondem a \"Playlist do Brave\".";
+
+/* (No Comment) */
+"tNCrcE-jXiFQY" = "Há ${count} opções que correspondem a \"Carteira Brave\".";
+
+/* (No Comment) */
+"tNCrcE-nthxSL" = "Há ${count} opções que correspondem a \"Downloads\".";
+
+/* (No Comment) */
+"tNCrcE-qKrzyX" = "Há ${count} opções que correspondem a \"Ler código QR\".";
+
+/* (No Comment) */
+"tNCrcE-U0eRbw" = "Há ${count} opções que correspondem a \"Leo AI\".";
+
+/* (No Comment) */
+"tNCrcE-VBH4G6" = "Há ${count} opções que correspondem a \"Histórico\".";
+
+/* (No Comment) */
+"tNCrcE-vs094F" = "Há ${count} opções que correspondem a \"Nova guia privada\".";
+
+/* (No Comment) */
+"tNCrcE-XCyA8c" = "Existem ${count} opções que correspondem a \"Notícias Brave\".";
+
+/* (No Comment) */
+"tNCrcE-Y7TWy8" = "Há ${count} opções que correspondem a \"Pesquisa\".";
+
+/* (No Comment) */
+"tVvJ9c" = "Widget de configuração de estatísticas";
+
+/* (No Comment) */
+"TxuMja-0W40Cl" = "Há ${count} opções que correspondem a \"Nova guia\".";
+
+/* (No Comment) */
+"TxuMja-crhbMy" = "Há ${count} opções que correspondem a \"Favoritos\".";
+
+/* (No Comment) */
+"TxuMja-FGO5qW" = "Há ${count} opções que correspondem a \"Playlist do Brave\".";
+
+/* (No Comment) */
+"TxuMja-jXiFQY" = "Há ${count} opções que correspondem a \"Carteira Brave\".";
+
+/* (No Comment) */
+"TxuMja-nthxSL" = "Há ${count} opções que correspondem a \"Downloads\".";
+
+/* (No Comment) */
+"TxuMja-qKrzyX" = "Há ${count} opções que correspondem a \"Ler código QR\".";
+
+/* (No Comment) */
+"TxuMja-U0eRbw" = "Há ${count} opções que correspondem a \"Leo AI\".";
+
+/* (No Comment) */
+"TxuMja-VBH4G6" = "Há ${count} opções que correspondem a \"Histórico\".";
+
+/* (No Comment) */
+"TxuMja-vs094F" = "Há ${count} opções que correspondem a \"Nova guia privada\".";
+
+/* (No Comment) */
+"TxuMja-XCyA8c" = "Existem ${count} opções que correspondem a \"Notícias Brave\".";
+
+/* (No Comment) */
+"TxuMja-Y7TWy8" = "Há ${count} opções que correspondem a \"Pesquisa\".";
+
+/* (No Comment) */
+"tYwiRd" = "Economia de tempo estimada";
+
+/* (No Comment) */
+"U0eRbw" = "Leo AI";
+
+/* (No Comment) */
+"VBH4G6" = "Histórico";
+
+/* (No Comment) */
+"vjA5pZ" = "Economia de dados estimada";
+
+/* (No Comment) */
+"vs094F" = "Nova guia privada";
+
+/* (No Comment) */
+"xcI3h9" = "Anúncios bloqueados";
+
+/* (No Comment) */
+"XCyA8c" = "Brave News";
+
+/* (No Comment) */
+"XkwBGY" = "Configuração de atalhos no ecrã bloqueado";
+
+/* (No Comment) */
+"Y7TWy8" = "Pesquisa";
+
+/* (No Comment) */
+"YQiQuz-0W40Cl" = "Só para confirmar: você queria a opção \"Nova guia\"?";
+
+/* (No Comment) */
+"YQiQuz-crhbMy" = "Só para confirmar: você queria a opção \"Favoritos\"?";
+
+/* (No Comment) */
+"YQiQuz-FGO5qW" = "Só para confirmar: queria a opção \"Playlist do Brave\"?";
+
+/* (No Comment) */
+"YQiQuz-jXiFQY" = "Só para confirmar: queria a opção \"Carteira Brave\"?";
+
+/* (No Comment) */
+"YQiQuz-nthxSL" = "Só para confirmar: você queria a opção \"Downloads\"?";
+
+/* (No Comment) */
+"YQiQuz-qKrzyX" = "Só para confirmar: queria a opção \"Ler código QR\"?";
+
+/* (No Comment) */
+"YQiQuz-U0eRbw" = "Só para confirmar: você queria a opção \"Leo AI\"?";
+
+/* (No Comment) */
+"YQiQuz-VBH4G6" = "Só para confirmar: você queria a opção \"Histórico\"?";
+
+/* (No Comment) */
+"YQiQuz-vs094F" = "Só para confirmar: você queria a opção \"Nova guia privada\"?";
+
+/* (No Comment) */
+"YQiQuz-XCyA8c" = "Só para confirmar: queria a opção \"Notícias Brave\"?";
+
+/* (No Comment) */
+"YQiQuz-Y7TWy8" = "Só para confirmar: queria a opção \"Pesquisa\"?";
+
+/* (No Comment) */
+"z517nu-0W40Cl" = "Há ${count} opções que correspondem a \"Nova guia\".";
+
+/* (No Comment) */
+"z517nu-crhbMy" = "Há ${count} opções que correspondem a \"Favoritos\".";
+
+/* (No Comment) */
+"z517nu-FGO5qW" = "Há ${count} opções que correspondem a \"Playlist do Brave\".";
+
+/* (No Comment) */
+"z517nu-jXiFQY" = "Há ${count} opções que correspondem a \"Carteira Brave\".";
+
+/* (No Comment) */
+"z517nu-nthxSL" = "Há ${count} opções que correspondem a \"Downloads\".";
+
+/* (No Comment) */
+"z517nu-qKrzyX" = "Há ${count} opções que correspondem a \"Ler código QR\".";
+
+/* (No Comment) */
+"z517nu-U0eRbw" = "Há ${count} opções que correspondem a \"Leo AI\".";
+
+/* (No Comment) */
+"z517nu-VBH4G6" = "Há ${count} opções que correspondem a \"Histórico\".";
+
+/* (No Comment) */
+"z517nu-vs094F" = "Há ${count} opções que correspondem a \"Nova guia privada\".";
+
+/* (No Comment) */
+"z517nu-XCyA8c" = "Existem ${count} opções que correspondem a \"Notícias Brave\".";
+
+/* (No Comment) */
+"z517nu-Y7TWy8" = "Há ${count} opções que correspondem a \"Pesquisa\".";
+
+/* (No Comment) */
+"ziTvSZ" = "Configuração do widget de atalhos";
+

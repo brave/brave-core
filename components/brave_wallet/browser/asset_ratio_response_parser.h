@@ -1,0 +1,35 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ASSET_RATIO_RESPONSE_PARSER_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ASSET_RATIO_RESPONSE_PARSER_H_
+
+#include <optional>
+#include <string>
+#include <utility>
+#include <vector>
+
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+
+namespace base {
+class Value;
+}  // namespace base
+
+namespace brave_wallet {
+
+// New API v1 response parser for /api/pricing/v1/getPrices
+std::vector<mojom::AssetPricePtr> ParseAssetPrices(
+    const base::Value& json_value);
+
+bool ParseAssetPriceHistory(const base::Value& json_value,
+                            std::vector<mojom::AssetTimePricePtr>* values);
+std::optional<std::vector<mojom::CoinMarketPtr>> ParseCoinMarkets(
+    const base::Value& json_value);
+
+std::optional<std::string> ParseStripeBuyURL(const base::Value& json_value);
+
+}  // namespace brave_wallet
+
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ASSET_RATIO_RESPONSE_PARSER_H_

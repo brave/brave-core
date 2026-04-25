@@ -1,0 +1,27 @@
+// Copyright (c) 2020 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import config from './config.ts'
+import util from './util.js'
+
+const gnCheck = (buildConfig = config.defaultBuildConfig, options = {}) => {
+  config.buildConfig = buildConfig
+  config.update(options)
+  if (!options.checkdeps_only) {
+    util.run('gn', ['check', config.outputDir], config.defaultOptions)
+  }
+  util.run(
+    'python3',
+    [
+      'buildtools/checkdeps/checkdeps.py',
+      'brave',
+      '--extra-repos=brave',
+      '--no-resolve-dotdot',
+    ],
+    config.defaultOptions,
+  )
+}
+
+export default gnCheck

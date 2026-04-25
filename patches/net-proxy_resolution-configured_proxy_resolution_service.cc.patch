@@ -1,0 +1,12 @@
+diff --git a/net/proxy_resolution/configured_proxy_resolution_service.cc b/net/proxy_resolution/configured_proxy_resolution_service.cc
+index d79c6b342d6badf36fc820bd66b6c2d54e906b14..20ee310689c876cf6907d6c6c3f523e4ebbd5dbe 100644
+--- a/net/proxy_resolution/configured_proxy_resolution_service.cc
++++ b/net/proxy_resolution/configured_proxy_resolution_service.cc
+@@ -1004,6 +1004,7 @@ int ConfiguredProxyResolutionService::ResolveProxy(
+   // using a direct connection for example).
+   int rv = TryToCompleteSynchronously(url, /*bypass_override_rules=*/false,
+                                       net_log, result);
++  BRAVE_CONFIGURED_PROXY_RESOLUTION_SERVICE_RESOLVE_PROXY
+   if (rv != ERR_IO_PENDING) {
+     rv = DidFinishResolvingProxy(url, network_anonymization_key, method, result,
+                                  rv, net_log);

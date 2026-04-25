@@ -1,0 +1,75 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("frame") {
+  sources = [
+    "brave_contents_view_util.cc",
+    "brave_contents_view_util.h",
+    "layout/brave_browser_view_layout_delegate_impl.cc",
+    "layout/brave_browser_view_layout_delegate_impl.h",
+    "layout/brave_browser_view_tabbed_layout_impl.cc",
+    "layout/brave_browser_view_tabbed_layout_impl.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser/ui:brave_tab_prefs",
+    "//brave/browser/ui/views/frame/vertical_tabs",
+    "//brave/browser/ui/views/sidebar",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/exclusive_access",
+    "//chrome/browser/ui/tabs:tab_strip",
+    "//chrome/browser/ui/views/infobars",
+    "//chrome/common:constants",
+    "//components/prefs",
+    "//components/split_tabs",
+    "//components/tabs:public",
+    "//ui/compositor",
+    "//ui/views",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "layout/brave_browser_view_tabbed_layout_impl_unittest.cc" ]
+  deps = [
+    ":frame",
+    "//base",
+    "//base/test:test_support",
+    "//chrome/browser/ui",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources =
+      [ "//brave/browser/ui/views/frame/brave_browser_view_browsertest.cc" ]
+
+  deps = [
+    ":frame",
+    "//base",
+    "//brave/browser/ui/views/frame/vertical_tabs",
+    "//brave/browser/ui/views/sidebar",
+    "//brave/components/brave_origin/buildflags",
+    "//brave/components/constants",
+    "//chrome/browser",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui:ui_features",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/exclusive_access",
+    "//chrome/browser/ui/side_panel:side_panel_views_dependent",
+    "//chrome/browser/ui/views/infobars",
+    "//chrome/test:test_support",
+    "//chrome/test:test_support_ui",
+    "//content/test:test_support",
+    "//ui/views",
+  ]
+}

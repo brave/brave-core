@@ -1,0 +1,65 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_VIRTUAL_PREF_VIRTUAL_PREF_PROVIDER_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_VIRTUAL_PREF_VIRTUAL_PREF_PROVIDER_H_
+
+#include <memory>
+#include <string>
+#include <string_view>
+
+#include "base/memory/raw_ref.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
+
+class PrefService;
+
+namespace base {
+class DictValue;
+}  // namespace base
+
+// Provides a stable set of virtual pref paths for condition matching, exposing
+// values that have no registered pref at all, and decoupling ads from
+// registered pref paths so that targeting continues to work correctly even if
+// those paths change in a future browser version, all evaluated locally with
+// nothing leaving the device.
+
+namespace brave_ads {
+
+class VirtualPrefProvider final {
+ public:
+  class Delegate {
+   public:
+    virtual ~Delegate() = default;
+
+    virtual std::string_view GetChannel() const = 0;
+
+    virtual std::string GetDefaultSearchEngineName() const = 0;
+
+    virtual base::DictValue GetSerpMetrics() const = 0;
+  };
+
+  VirtualPrefProvider(PrefService& prefs,
+                      PrefService& local_state,
+                      std::unique_ptr<Delegate> delegate);
+
+  VirtualPrefProvider(const VirtualPrefProvider&) = delete;
+  VirtualPrefProvider& operator=(const VirtualPrefProvider&) = delete;
+
+  ~VirtualPrefProvider();
+
+  base::DictValue GetPrefs() const;
+
+ private:
+  const raw_ref<PrefService> prefs_;
+  const raw_ref<PrefService> local_state_;
+
+  const std::unique_ptr<Delegate> delegate_;
+};
+
+}  // namespace brave_ads
+
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_VIRTUAL_PREF_VIRTUAL_PREF_PROVIDER_H_

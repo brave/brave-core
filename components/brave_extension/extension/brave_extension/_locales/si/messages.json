@@ -1,0 +1,226 @@
+{
+  "appName": {
+    "message": "Brave දිගුව",
+    "description": "The name of the extension."
+  },
+  "shields": {
+    "message": "පලිහ",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "සක්‍රියයි",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "අක්‍රියයි",
+    "description": "Message for when shields is disabled"
+  },
+  "forThisSite": {
+    "message": "මෙම අඩවියට",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "අඩවියක් කැඩී ඇත්නම්, පලිහ අක්‍රිය කර බලන්න",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "ඔබ මෙම අඩවිය Brave පෞද්ගලිකත්වය සහ ආරක්‍ෂාව නැතිව පිරික්සයි. පලිහ සක්‍රිය විට අඩවිය නිවැරදිව ක්‍රීයා නොකරයිද?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "කැඩුණු අඩවියක් වාර්තා කරන්න",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
+  },
+  "itemsBlocked": {
+    "message": "අථක අවහිරයි",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
+  },
+  "itemBlocked": {
+    "message": "අථකය අවහිරයි",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
+  },
+  "and": {
+    "message": "සහ",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
+  },
+  "connectionsUpgraded": {
+    "message": "සම්බන්ධතා උත්ශ්‍රේණි විය",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
+  },
+  "connectionUpgraded": {
+    "message": "සම්බන්ධතාව උත්ශ්‍රේණි විය",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
+  },
+  "thirdPartyTrackersBlocked": {
+    "message": "හරස්-අඩවි ලුහුබැඳීම් අවහිරයි",
+    "description": "Message for the scripts blocked row label"
+  },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "ලුහුබැඳීම් හා දැන්වීම් අවහිරයි",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "ලුහුබැඳීම් හා දැන්වීම් අවහිරයි (ආක්‍රමණශ්‍රීලී)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "ලුහුබැඳීම් හා දැන්වීම් අවහිරයි (සම්මත)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "සියලු ලුහුබැඳීම් හා දැන්වීම් වලට ඉඩදෙන්න",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
+  "connectionsUpgradedHTTPS": {
+    "message": "HTTPS වෙත සම්බන්ධතා උත්ශ්‍රේණි විය",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
+  },
+  "connectionUpgradedHTTPS": {
+    "message": "HTTPS වෙත සම්බන්ධතාව උත්ශ්‍රේණි විය",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
+  },
+  "scriptsBlocked": {
+    "message": "අත්පත් අවහිරයි",
+    "description": "Message for the scripts blocked row label"
+  },
+  "thirdPartyCookiesBlocked": {
+    "message": "හරස්-අඩවි දත්තකඩ අවහිරයි",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "දත්තකඩ අවහිරයි",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "සියලු දත්තකඩ සඳහා ඉඩ දී ඇත",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "ඇඟිලි සටහන් අවහිරයි",
+    "description": "Message for the option in the fingerprinting field in read only view"
+  },
+  "standardFingerprinting": {
+    "message": "ඇඟිලි සටහන් අවහිරයි (සම්මත)",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
+  },
+  "strictFingerprinting": {
+    "message": "ඇඟිලි සටහන් අවහිරයි (දැඩි, අඩවි කැඩී යා හැකිය)",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
+  },
+  "allowAllFingerprinting": {
+    "message": "සියලු ඇඟිලි සටහන් වලට ඉඩදෙන්න",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "ඇඟිලි සටහන් උත්සාහයන්",
+    "description": "Message for the fingerprinting attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "මෙම අඩවියේ අත්පත්",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "අවහිර කළ අත්පත්",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "ඉඩ දුන් අත්පත්",
+    "description": "Message for the script resources allowed"
+  },
+  "blockAll": {
+    "message": "සියල්ල අවහිර කරන්න",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "සියල්ලට ඉඩදෙන්න",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "block": {
+    "message": "අවහිර",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "allow": {
+    "message": "ඉඩදෙන්න",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "blockedOnce": {
+    "message": "වරක් අවහිර කර ඇත",
+    "description": "Message for the resources blocked *blocked once* option"
+  },
+  "allowedOnce": {
+    "message": "වරක් ඉඩ දී ඇත",
+    "description": "Message for the resources blocked *allowed once* option"
+  },
+  "allowScriptsOnce": {
+    "message": "වරක් අත්පත් වලට ඉඩදෙන්න",
+    "description": "Message for the shortcut in the main interface to allow all scripts once"
+  },
+  "cancel": {
+    "message": "අවලංගු",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "ආපසු යන්න",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "වරක් යොදන්න",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "පෙරනිමි ගෝලීය පලිහ වෙනස් කරන්න",
+    "description": "Message for the button action linking to the settings page"
+  },
+  "manageCustomFilters": {
+    "message": "අභිරුචි පෙරහන් කළමනාකරණය",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
+  "elementPickerMode": {
+    "message": "අංගය අවහිර කරන්න",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
+  },
+  "advancedView": {
+    "message": "සංකීර්ණ දැක්ම",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "සරල දැක්ම",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "ඔබ සහ ඔබගේ උපාංගය හඳුනා ගැනීමට උත්සාහ කරන දත්තකඩ සහ අත්පත් අඩවි වලට නිතර ඇතුළත් කරයි (බොහෝ විට දැන්වීම් තුළට කාවද්දා ඇත). ඔවුන්ට වුවමනා වන්නේ ඔබ කවුරුන්ද සොයා බැලීම සහ වියමන පුරා ඔබව ලුහුබැඳීමයි — සෑම අඩවියකම ඔබ කරන දෑ නිරීක්ෂණය කරයි. Brave මෙම දේවල් අවහිර කරයි එවිට ලුහුබැඳීම් මගහැර පිරික්සීමට හැකිය.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "හරස්-අඩවි ලුහුබැඳීම් හා වෙනත් භයානක දෑ අවහිරයි",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "මෙම දැක්මෙහි පලිහ සැකසුම් සංශෝධනයෙන් මෙම අඩවියේ වියමන අනුකූලතාව කෙරෙහි බලපෑ හැකිය.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "තේරුණා",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "තව දැනගන්න",
+    "description": "Message inviting the user to learn more about Shields"
+  },
+  "addToBrave": {
+    "message": "Brave වෙත එක් කරන්න",
+    "description": "Message for adding an extension to Brave"
+  },
+  "removeFromBrave": {
+    "message": "Brave වෙතින් ඉවත් කරන්න",
+    "description": "Message for removing an extension from Brave"
+  },
+  "addToChrome": {
+    "message": "Add to Chrome",
+    "description": "Message for adding an extension to Chrome"
+  },
+  "removeFromChrome": {
+    "message": "Remove from Chrome",
+    "description": "Message for removing an extension from Chrome"
+  }
+}

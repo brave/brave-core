@@ -1,0 +1,14 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["local>brave/renovate-config"],
+  "addLabels": ["CI/skip", "dependencies", "renovate"],
+  "draftPR": true,
+  "ignorePaths": [
+    "components/**",
+    "ios/**",
+    "test/**",
+    "third_party/**",
+    "tools/crates/vendor/**",
+    "third_party/wasm/**"
+  ]
+}

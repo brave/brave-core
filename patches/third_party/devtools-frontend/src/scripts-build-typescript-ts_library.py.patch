@@ -1,0 +1,11 @@
+diff --git a/scripts/build/typescript/ts_library.py b/scripts/build/typescript/ts_library.py
+index 680b6f49f517f4b7081b09fca854937b36a57c53..1c88d00c2be2eba7078e90ad5736b32f6e2d1a43 100644
+--- a/scripts/build/typescript/ts_library.py
++++ b/scripts/build/typescript/ts_library.py
+@@ -351,5 +351,6 @@ def main():
+     return 0
+ 
+ 
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
+ if __name__ == '__main__':
+     sys.exit(main())

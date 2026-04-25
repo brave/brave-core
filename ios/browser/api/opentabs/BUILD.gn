@@ -1,0 +1,55 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+
+source_set("opentabs") {
+  sources = [
+    "brave_opentabs_api+private.h",
+    "brave_opentabs_api.h",
+    "brave_opentabs_api.mm",
+    "brave_opentabs_observer.h",
+    "brave_sendtab_api+private.h",
+    "brave_sendtab_api.h",
+    "brave_sendtab_api.mm",
+    "brave_sendtab_observer.h",
+    "brave_tabgenerator_api+private.h",
+    "brave_tabgenerator_api.h",
+    "brave_tabgenerator_api.mm",
+    "opentabs_session_listener_ios.h",
+    "opentabs_session_listener_ios.mm",
+    "sendtab_model_listener_ios.h",
+    "sendtab_model_listener_ios.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/ios/browser/api/web/web_state",
+    "//components/keyed_service/ios",
+    "//components/send_tab_to_self",
+    "//components/sync/service",
+    "//components/sync_sessions",
+    "//ios/chrome/browser/sessions/model",
+    "//ios/chrome/browser/shared/model/browser",
+    "//ios/chrome/browser/shared/model/web_state_list",
+    "//ios/chrome/browser/sync/model",
+    "//ios/chrome/browser/synced_sessions/model",
+    "//ios/chrome/browser/tabs/model",
+    "//ios/web/common:user_agent",
+    "//ios/web/public/session",
+    "//ios/web/public/thread",
+    "//ios/web/web_state",
+    "//ios/web/web_state:web_state_impl_header",
+    "//ios/web/web_state/ui:crw_web_view_navigation_proxy",
+    "//ui/base",
+    "//url",
+  ]
+
+  frameworks = [
+    "Foundation.framework",
+    "WebKit.framework",
+  ]
+}

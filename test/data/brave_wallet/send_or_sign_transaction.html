@@ -1,0 +1,119 @@
+<html>
+
+<script>
+  var permissionGranted = false
+
+  function ethereumEnable() {
+    window.ethereum.enable().then(accounts => {
+      permissionGranted = true
+    }).catch(error => {
+      permissionGranted = false
+    })
+  }
+
+  function getPermissionGranted() {
+    return permissionGranted;
+  }
+
+  var sendOrSignTransactionResult, sendOrSignTransactionError
+  function sendOrSignTransaction(signOnly, is1559, method, from, to, value, data) {
+    const params = [{
+      from,
+      to,
+      value,
+      nonce: '0x12345'
+    }]
+
+    // Explicit check here so that undefined is also posible for neither gas fields
+    if (is1559 === true) {
+      params[0].maxPriorityFeePerGas = '0x00F38E9E00'
+      params[0].maxFeePerGas = '0x25F38E9E00'
+    } else if (is1559 === false) {
+      params[0].gasPrice = '0x25F38E9E00'
+    }
+
+    if (data) {
+      params[0].data = data
+    }
+
+    if (method == 'request') {
+      window.ethereum.request({
+        method: signOnly ? 'eth_signTransaction' : 'eth_sendTransaction',
+        params
+      }).then(result => {
+        sendOrSignTransactionResult = result
+        window.domAutomationController.send('result ready')
+      }).catch(error => {
+        sendOrSignTransactionError = error.message
+        window.domAutomationController.send('result ready')
+      })
+    } else if (method == 'send1') {
+      window.ethereum.send({
+        id: 'hello',
+        method: signOnly ? 'eth_signTransaction' : 'eth_sendTransaction',
+        params
+      }, (err, result) => {
+        sendOrSignTransactionError = err && err.error ? err.error.message : undefined
+        sendOrSignTransactionResult = result ? result.result : undefined
+        window.domAutomationController.send('result ready')
+      })
+    } else if (method == 'send2') {
+      window.ethereum.send(signOnly ? 'eth_signTransaction' : 'eth_sendTransaction', params)
+        .then(result => {
+          sendOrSignTransactionResult = result.result
+          window.domAutomationController.send('result ready')
+        }).catch(error => {
+          sendOrSignTransactionError = error.error.message
+          window.domAutomationController.send('result ready')
+        })
+    } else if (method == 'sendAsync') {
+      window.ethereum.sendAsync({
+        id: 'hello',
+        method: signOnly ? 'eth_signTransaction' : 'eth_sendTransaction',
+        params
+      }, (err, result) => {
+        sendOrSignTransactionError = err && err.error ? err.error.message : undefined
+        sendOrSignTransactionResult = result ? result.result : undefined
+        window.domAutomationController.send('result ready')
+      })
+    }
+  }
+
+  function getSendOrSignTransactionResult() {
+    return sendOrSignTransactionResult;
+  }
+  function getSendOrSignTransactionError() {
+    return sendOrSignTransactionError;
+  }
+  // window.ethereum.selectedAddress and not necessarily the selected account
+  function getSelectedAddress() {
+    return String(window.ethereum.selectedAddress);
+  }
+  function getChainId() {
+    return window.ethereum.chainId;
+  }
+  function getNetworkVersion() {
+    return String(window.ethereum.networkVersion);
+  }
+  function getIsUnlocked() {
+    return new Promise(resolve => {
+      window.ethereum._metamask.isUnlocked().then(result => resolve(result));
+    });
+  }
+  function getIsConnected() {
+    return window.ethereum.isConnected();
+  }
+  function getIsConnectedViaProxy() {
+    proxy = new Proxy(window.ethereum, {})
+    return proxy.isConnected();
+  }
+  function getIsBraveWalletViaProxy() {
+    proxy = new Proxy(window.ethereum, {})
+    return proxy.isBraveWallet;
+  }
+</script>
+
+<body>
+</body>
+</html>
+

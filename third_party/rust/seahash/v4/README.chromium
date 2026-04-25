@@ -1,0 +1,10 @@
+Name: seahash
+URL: https://crates.io/crates/seahash
+Version: 4.1.0
+Revision: 94b632aeac099031c373599313d5b5f0acbbaec0
+License: MIT
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: A blazingly fast, portable hash function with proven statistical guarantees.

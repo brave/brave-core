@@ -1,0 +1,43 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+
+assert(enable_brave_wallet)
+
+source_set("renderer") {
+  sources = [
+    "js_cardano_provider.cc",
+    "js_cardano_provider.h",
+    "js_cardano_wallet_api.cc",
+    "js_cardano_wallet_api.h",
+    "js_ethereum_provider.cc",
+    "js_ethereum_provider.h",
+    "js_solana_provider.cc",
+    "js_solana_provider.h",
+    "resource_helper.cc",
+    "resource_helper.h",
+    "v8_helper.cc",
+    "v8_helper.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:common_constants",
+    "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
+    "//brave/components/resources:static_resources_grit",
+    "//brave/components/resources:strings_grit",
+    "//brave/components/safe_builtins/renderer",
+    "//content/public/common",
+    "//content/public/renderer",
+    "//gin",
+    "//mojo/public/cpp/bindings",
+    "//third_party/blink/public:blink",
+    "//third_party/blink/public/common",
+    "//v8",
+  ]
+}

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ntp_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/stats_bottomsheet_background"
+    android:maxWidth="400dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_gravity="center"
+            android:text="@string/brave_stats"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/brave_stats_text_color"/>
+
+        <include
+            android:id="@+id/brave_stats_notification_permission"
+            android:visibility="gone"
+            layout="@layout/brave_stats_notification_permission"/>
+
+        <RadioGroup
+            android:id="@+id/duration_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/brave_stats_radio_group_bg"
+            android:padding="2dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/week_radio"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@drawable/brave_stats_radio_button_selector"
+                android:gravity="center"
+                android:textColor="@color/brave_stats_text_color"
+                android:button="@null"
+                android:checked="true"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="@string/week" />
+
+            <RadioButton
+                android:id="@+id/month_radio"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:button="@null"
+                android:layout_height="wrap_content"
+                android:background="@drawable/brave_stats_radio_button_selector"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:textColor="@color/brave_stats_text_color"
+                android:text="@string/month" />
+
+            <RadioButton
+                android:id="@+id/months_radio"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:button="@null"
+                android:layout_height="wrap_content"
+                android:background="@drawable/brave_stats_radio_button_selector"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:textColor="@color/brave_stats_text_color"
+                android:text="@string/months_3" />
+
+            </RadioGroup>
+
+            <LinearLayout
+                android:id="@+id/brave_stats_empty_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="8dp"
+                android:padding="24dp"
+                android:visibility="gone"
+                android:background="@drawable/brave_stats_ui_empty_bg"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@null"
+                    app:srcCompat="@drawable/ic_clock"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif" 
+                    android:text="@string/start_browsing_to_see"
+                    android:textColor="@color/brave_stats_empty_text_color"/>
+
+            </LinearLayout>
+
+            <include layout="@layout/brave_stats_pager_layout"/>
+
+    </LinearLayout>
+
+    <ImageView
+            android:id="@+id/brave_stats_bottom_sheet_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:layout_gravity="end|top"
+            app:tint="@color/onboarding_text_color"
+            android:padding="16dp"
+            android:src="@drawable/btn_close"/>
+
+</FrameLayout>

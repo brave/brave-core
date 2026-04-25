@@ -1,0 +1,51 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+brave_chrome_common_sources = [
+  "//brave/common/brave_channel_info.cc",
+  "//brave/common/brave_channel_info.h",
+  "//brave/common/pref_names.h",
+  "//brave/common/resource_bundle_helper.cc",
+  "//brave/common/resource_bundle_helper.h",
+]
+
+brave_chrome_common_deps = [
+  "//base",
+  "//brave/common:mojo_bindings",
+  "//brave/components/brave_origin/buildflags",
+  "//components/version_info:channel",
+  "//extensions/buildflags",
+  "//services/service_manager",
+  "//ui/base",
+]
+
+brave_chrome_common_public_deps = [ "//brave/components/constants" ]
+
+brave_chrome_constants_deps = [ "//brave/components/brave_origin/buildflags" ]
+
+if (is_android) {
+  brave_chrome_common_deps += [ "//components/user_data_importer/common" ]
+}
+
+if (!is_android && !is_ios) {
+  brave_chrome_common_deps += [ "//brave/common/importer" ]
+}
+
+if (!is_ios) {
+  brave_chrome_common_sources += [
+    "//brave/common/brave_content_client.cc",
+    "//brave/common/brave_content_client.h",
+  ]
+
+  brave_chrome_common_deps += [
+    "//brave/components/resources",
+    "//brave/components/resources:static_resources_grit",
+    "//chrome/common:channel_info",
+    "//chrome/common:constants",
+    "//components/resources",
+    "//content/public/common",
+    "//third_party/widevine/cdm:buildflags",
+  ]
+}

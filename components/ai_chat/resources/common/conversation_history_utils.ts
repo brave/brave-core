@@ -1,0 +1,276 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import { getLocale } from '$web-common/locale'
+import * as Mojom from './mojom'
+
+/**
+ * Replaces citation numbers [1], [2], etc. with actual URLs from allowedLinks.
+ * Adds a space before the URL if there isn't already whitespace before the
+ * citation.
+ *
+ * @param text - The text containing citations to replace
+ * @param allowedLinks - URLs for each citation (index 0 = [1], index 1 = [2])
+ * @returns Text with citations replaced by URLs
+ */
+export function replaceCitationsWithUrls(
+  text: string,
+  allowedLinks: string[],
+): string {
+  if (allowedLinks.length === 0) {
+    return text
+  }
+
+  return text.replace(/\[(\d+)\]/g, (match, citationNumber, offset) => {
+    const index = parseInt(citationNumber) - 1
+    if (index >= 0 && index < allowedLinks.length) {
+      const url = allowedLinks[index]
+      // Add space before URL if citation had no preceding whitespace
+      const charBefore = offset > 0 ? text[offset - 1] : ''
+      const needsSpace = charBefore && !/\s/.test(charBefore)
+      return needsSpace ? ` ${url}` : url
+    }
+    return match
+  })
+}
+
+/**
+ * Extracts allowedLinks from sourcesEvent in a turn's events.
+ *
+ * @param events - The events from a conversation turn
+ * @returns Array of URLs from sourcesEvent
+ */
+export function extractAllowedLinksFromTurn(
+  events?: Mojom.ConversationEntryEvent[],
+): string[] {
+  return (
+    events?.flatMap(
+      (event) =>
+        event.sourcesEvent?.sources?.map((source) => source.url.url) || [],
+    ) || []
+  )
+}
+
+/**
+ * Formats a conversation history into a string suitable for clipboard copy.
+ * Each turn is labeled with a localized "You" for human messages and "Leo AI"
+ * (product name) for assistant messages, separated by double newlines.
+ *
+ * @param conversationHistory - The conversation history to format
+ * @returns Formatted string representation of the conversation
+ */
+export function formatConversationForClipboard(
+  conversationHistory: Mojom.ConversationTurn[],
+): string {
+  return conversationHistory
+    .map((turn) => {
+      const label =
+        turn.characterType === Mojom.CharacterType.HUMAN
+          ? getLocale(S.CHAT_UI_COPY_LABEL_YOU)
+          : 'Leo AI'
+      let text = turn.text
+
+      // For assistant entries, get the completion text from events if available
+      if (turn.characterType === Mojom.CharacterType.ASSISTANT) {
+        const completionEvent = turn.events?.find(
+          (event) => event.completionEvent,
+        )
+        if (completionEvent?.completionEvent?.completion) {
+          text = completionEvent.completionEvent.completion
+        }
+
+        // Extract allowedLinks and replace citations with URLs
+        const allowedLinks = extractAllowedLinksFromTurn(turn.events)
+        text = replaceCitationsWithUrls(text, allowedLinks)
+      }
+
+      return `${label}: ${text}`
+    })
+    .join('\n\n')
+}
+
+/**
+ * Checks if a file is a full page screenshot
+ * @param file - The uploaded file to check
+ * @returns True if the file is a full page screenshot
+ */
+export const isFullPageScreenshot = (file: Mojom.UploadedFile): boolean => {
+  return (
+    file.type === Mojom.UploadedFileType.kScreenshot
+    && file.filename.startsWith(Mojom.FULL_PAGE_SCREENSHOT_PREFIX)
+  )
+}
+
+/**
+ * Updates the conversation history by either merging a new entry with an
+ * existing one or appending it if it doesn't exist.
+ *
+ * @param currentHistory - The current conversation history
+ * @param newEntry - The new entry to be merged or appended
+ * @returns Updated conversation history
+ */
+export function updateConversationHistory(
+  currentHistory: Mojom.ConversationTurn[],
+  newEntry: Mojom.ConversationTurn,
+): Mojom.ConversationTurn[] {
+  // Check if an entry with the same UUID already exists
+  const existingEntryIndex = currentHistory.findIndex(
+    (existingEntry) => existingEntry.uuid === newEntry.uuid,
+  )
+
+  if (existingEntryIndex !== -1) {
+    // If entry exists, merge it with the existing one
+    const updatedHistory = [...currentHistory]
+    updatedHistory[existingEntryIndex] = {
+      ...updatedHistory[existingEntryIndex],
+      ...newEntry,
+    }
+    return updatedHistory
+  } else {
+    // If entry doesn't exist, append it
+    return [...currentHistory, newEntry]
+  }
+}
+
+/**
+ * Filters uploaded files to only include images and screenshots
+ *
+ * @param files - The array of uploaded files to filter
+ * @returns Filtered array containing only image and screenshot files
+ */
+export function getImageFiles(
+  files?: readonly Mojom.UploadedFile[],
+): Mojom.UploadedFile[] | undefined {
+  return files?.filter(
+    (file) =>
+      file.type === Mojom.UploadedFileType.kImage
+      || file.type === Mojom.UploadedFileType.kScreenshot,
+  )
+}
+
+/**
+ * Filters uploaded files to only include PDFs without extracted text.
+ * These are PDFs that will be sent as raw file bytes and are subject
+ * to MAX_DOCUMENTS and MAX_DOCUMENT_SIZE_BYTES limits.
+ *
+ * @param files - The array of uploaded files to filter
+ * @returns Filtered array containing only raw PDFs (without extracted
+ *   text), or undefined if input is undefined
+ */
+export function getRawDocumentFiles(
+  files?: readonly Mojom.UploadedFile[],
+): Mojom.UploadedFile[] | undefined {
+  return files?.filter(
+    (file) => file.type === Mojom.UploadedFileType.kPdf && !file.extractedText,
+  )
+}
+
+/**
+ * Determines if the attachment button should be disabled based on current file limits
+ *
+ * @param conversationHistory - The conversation history to check uploaded files
+ * @returns true if attachment button should be disabled, false otherwise
+ */
+export function shouldDisableAttachmentsButton(
+  conversationHistory: Mojom.ConversationTurn[],
+): boolean {
+  const totalUploadedImages = conversationHistory.reduce(
+    (total, turn) => total + (getImageFiles(turn.uploadedFiles)?.length || 0),
+    0,
+  )
+
+  // Only count PDFs without extracted text toward the document limit,
+  // since PDFs with extracted text are sent as text and bypass the
+  // raw file upload limits.
+  const totalUploadedRawDocuments = conversationHistory.reduce(
+    (total, turn) =>
+      total + (getRawDocumentFiles(turn.uploadedFiles)?.length || 0),
+    0,
+  )
+
+  return (
+    totalUploadedImages >= Mojom.MAX_IMAGES
+    || totalUploadedRawDocuments >= Mojom.MAX_DOCUMENTS
+  )
+}
+
+/**
+ * Process uploaded files with limits to different types
+ *
+ * @param files - The uploaded file to be processed
+ * @param conversationHistory - The current conversation history
+ * @param currentPendingFiles - The current files in the staging area
+ * @returns The files the user can upload after checking limits
+ */
+export const processUploadedFilesWithLimits = (
+  files: readonly Mojom.UploadedFile[],
+  conversationHistory: readonly Mojom.ConversationTurn[],
+  currentPendingFiles: readonly Mojom.UploadedFile[],
+): Mojom.UploadedFile[] => {
+  // Calculate total uploaded files from conversation history
+  const totalUploadedImages = conversationHistory.reduce(
+    (total, turn) => total + (getImageFiles(turn.uploadedFiles)?.length || 0),
+    0,
+  )
+  // Only count PDFs without extracted text toward the document limit,
+  // since PDFs with extracted text are sent as text and bypass the
+  // raw file upload limits.
+  const totalUploadedRawDocuments = conversationHistory.reduce(
+    (total, turn) =>
+      total + (getRawDocumentFiles(turn.uploadedFiles)?.length || 0),
+    0,
+  )
+
+  // Calculate current pending files by type
+  const currentPendingImages = getImageFiles(currentPendingFiles)?.length || 0
+  const currentPendingRawDocuments =
+    getRawDocumentFiles(currentPendingFiles)?.length || 0
+
+  // Track current counts for each type
+  let currentImages = 0
+  let currentRawDocuments = 0
+  // Process files in original order while respecting limits
+  const newFiles: Mojom.UploadedFile[] = []
+  for (const file of files) {
+    const isImage =
+      file.type === Mojom.UploadedFileType.kImage
+      || file.type === Mojom.UploadedFileType.kScreenshot
+    const isPdf = file.type === Mojom.UploadedFileType.kPdf
+    const isText = file.type === Mojom.UploadedFileType.kText
+    if (isImage) {
+      const maxNewImages =
+        Mojom.MAX_IMAGES - totalUploadedImages - currentPendingImages
+      if (currentImages < maxNewImages) {
+        newFiles.push(file)
+        currentImages++
+      }
+    } else if (isPdf) {
+      const hasExtractedText = !!file.extractedText
+      if (hasExtractedText) {
+        // PDFs with extracted text bypass raw file limits
+        newFiles.push(file)
+      } else {
+        // Raw PDFs are subject to count and size limits
+        const maxNewRawDocuments =
+          Mojom.MAX_DOCUMENTS
+          - totalUploadedRawDocuments
+          - currentPendingRawDocuments
+        const fileSize = Number(file.filesize)
+        if (
+          currentRawDocuments < maxNewRawDocuments
+          && fileSize <= Mojom.MAX_DOCUMENT_SIZE_BYTES
+        ) {
+          newFiles.push(file)
+          currentRawDocuments++
+        }
+      }
+    } else if (isText) {
+      // Text files are not subject to document count/size limits
+      newFiles.push(file)
+    }
+  }
+
+  return newFiles
+}

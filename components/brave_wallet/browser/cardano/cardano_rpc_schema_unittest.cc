@@ -1,0 +1,260 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
+
+#include <array>
+#include <vector>
+
+#include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_rpc_blockfrost_api.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_test_utils.h"
+#include "brave/components/brave_wallet/common/cardano_address.h"
+#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gtest/include/gtest/gtest.h"
+
+using testing::Truly;
+
+namespace brave_wallet::cardano_rpc {
+
+namespace {
+const constexpr char* kInvalidUint32Values[] = {"", "1.1", "-1", "a",
+                                                "5000000000"};
+const constexpr char* kInvalidUint64Values[] = {"", "1.1", "-1", "a"};
+}  // namespace
+
+TEST(CardanoRpcSchema, TokenIdFromHex) {
+  EXPECT_EQ(GetMockTokenId("brave"),
+            TokenIdFromHex(base::HexEncodeLower(GetMockTokenId("brave"))));
+
+  EXPECT_FALSE(TokenIdFromHex(""));
+  EXPECT_FALSE(
+      TokenIdFromHex("1f7a58a1aa1e6b047a42109ade331ce26c9c2cce027d043f"
+                     "f264fb1f"));
+  EXPECT_EQ(29u,
+            TokenIdFromHex("1f7a58a1aa1e6b047a42109ade331ce26c9c2cce027d043f"
+                           "f264fb1f42")
+                ->size());
+  EXPECT_EQ(34u,
+            TokenIdFromHex("1f7a58a1aa1e6b047a42109ade331ce26c9c2cce027d043f"
+                           "f264fb1f425249434b53")
+                ->size());
+  EXPECT_EQ(60u,
+            TokenIdFromHex("1f7a58a1aa1e6b047a42109ade331ce26c9c2cce027d043f"
+                           "f264fb1fAABBCCDDEEFFAABBCCDDEEFFAABBCCDDEEFFAABB"
+                           "CCDDEEFFAABBCCDDEEFFAABB")
+                ->size());
+  EXPECT_FALSE(
+      TokenIdFromHex("1f7a58a1aa1e6b047a42109ade331ce26c9c2cce027d043"
+                     "ff264fb1fAABBCCDDEEFFAABBCCDDEEFFAABBCCDDEEFFAA"
+                     "BBCCDDEEFFAABBCCDDEEFFAABB00"));
+
+  EXPECT_FALSE(TokenIdFromHex("not hex"));
+}
+
+TEST(CardanoRpcSchema, EpochParameters) {
+  EXPECT_FALSE(EpochParameters::FromBlockfrostApiValue(std::nullopt));
+
+  blockfrost_api::EpochParameters valid;
+  valid.min_fee_a = "10";
+  valid.min_fee_b = "20";
+  valid.coins_per_utxo_size = "30";
+
+  EXPECT_EQ(*EpochParameters::FromBlockfrostApiValue(valid.Clone()),
+            EpochParameters({.min_fee_coefficient = 10,
+                             .min_fee_constant = 20,
+                             .coins_per_utxo_size = 30}));
+
+  for (auto* value : kInvalidUint64Values) {
+    auto invalid = valid.Clone();
+    invalid.min_fee_a = value;
+    EXPECT_FALSE(EpochParameters::FromBlockfrostApiValue(invalid.Clone()));
+  }
+
+  for (auto* value : kInvalidUint64Values) {
+    auto invalid = valid.Clone();
+    invalid.min_fee_b = value;
+    EXPECT_FALSE(EpochParameters::FromBlockfrostApiValue(invalid.Clone()));
+  }
+}
+
+TEST(CardanoRpcSchema, Block) {
+  EXPECT_FALSE(Block::FromBlockfrostApiValue(std::nullopt));
+
+  blockfrost_api::Block valid;
+  valid.height = "10";
+  valid.slot = "20";
+  valid.epoch = "30";
+
+  EXPECT_EQ(*Block::FromBlockfrostApiValue(valid.Clone()),
+            Block({.height = 10, .slot = 20, .epoch = 30}));
+
+  for (auto* value : kInvalidUint32Values) {
+    auto invalid = valid.Clone();
+    invalid.height = value;
+    EXPECT_FALSE(Block::FromBlockfrostApiValue(invalid.Clone()));
+  }
+
+  for (auto* value : kInvalidUint64Values) {
+    auto invalid = valid.Clone();
+    invalid.slot = value;
+    EXPECT_FALSE(Block::FromBlockfrostApiValue(invalid.Clone()));
+  }
+
+  for (auto* value : kInvalidUint32Values) {
+    auto invalid = valid.Clone();
+    invalid.epoch = value;
+    EXPECT_FALSE(Block::FromBlockfrostApiValue(invalid.Clone()));
+  }
+}
+
+TEST(CardanoRpcSchema, UnspentOutput) {
+  CardanoAddress addr = *CardanoAddress::FromString(kMockCardanoAddress1);
+  EXPECT_FALSE(UnspentOutput::FromBlockfrostApiValue(addr, std::nullopt));
+
+  blockfrost_api::UnspentOutput valid;
+  valid.tx_hash =
+      "000102030405060708090a0b0c0d0f0e000102030405060708090a0b0c0d0f0e";
+  valid.output_index = "123";
+  valid.amount.emplace_back();
+  valid.amount.back().quantity = "555";
+  valid.amount.back().unit = "lovelace";
+
+  auto converted = UnspentOutput::FromBlockfrostApiValue(addr, valid.Clone());
+  EXPECT_EQ(base::HexEncode(converted->tx_hash),
+            "000102030405060708090A0B0C0D0F0E000102030405060708090A0B0C0D0F0E");
+  EXPECT_EQ(converted->output_index, 123u);
+  EXPECT_EQ(converted->lovelace_amount, 555u);
+  EXPECT_EQ(converted->address_to, addr);
+
+  valid.amount.emplace_back();
+  valid.amount.back().quantity = "10000";
+  valid.amount.back().unit = "lovelace";
+  converted = UnspentOutput::FromBlockfrostApiValue(addr, valid.Clone());
+  // Lovelace entry appears twice, parsing fails.
+  EXPECT_FALSE(converted);
+  valid.amount.pop_back();
+
+  valid.amount.clear();
+  valid.amount.emplace_back();
+  valid.amount.back().quantity = "1000";
+  valid.amount.back().unit = "lovelace";
+
+  auto foo_token = GetMockTokenId("foo");
+  auto bar_token = GetMockTokenId("bar");
+  auto baz_token = GetMockTokenId("baz");
+
+  valid.amount.emplace_back();
+  valid.amount.back().quantity = "555";
+  valid.amount.back().unit = base::HexEncode(foo_token);
+  converted = UnspentOutput::FromBlockfrostApiValue(addr, valid.Clone());
+  EXPECT_EQ(converted->tokens[foo_token], 555u);
+  EXPECT_EQ(converted->lovelace_amount, 1000u);
+
+  valid.amount.emplace_back();
+  valid.amount.back().quantity = "1";
+  valid.amount.back().unit = base::HexEncode(bar_token);
+  converted = UnspentOutput::FromBlockfrostApiValue(addr, valid.Clone());
+  EXPECT_EQ(converted->tokens[foo_token], 555u);
+  EXPECT_EQ(converted->tokens[bar_token], 1u);
+  EXPECT_EQ(converted->lovelace_amount, 1000u);
+
+  // bar and baz have the same policy id, still parsed ok.
+  ASSERT_EQ(base::span(bar_token).first(28u), base::span(baz_token).first(28u));
+  valid.amount.emplace_back();
+  valid.amount.back().quantity = "100000000000";
+  valid.amount.back().unit = base::HexEncode(baz_token);
+  converted = UnspentOutput::FromBlockfrostApiValue(addr, valid.Clone());
+  EXPECT_EQ(converted->tokens[foo_token], 555u);
+  EXPECT_EQ(converted->tokens[bar_token], 1u);
+  EXPECT_EQ(converted->tokens[baz_token], 100000000000u);
+  EXPECT_EQ(converted->lovelace_amount, 1000u);
+
+  // Empty name after policy id fails.
+  valid.amount.emplace_back();
+  valid.amount.back().quantity = "100000000000";
+  valid.amount.back().unit = base::HexEncode(base::span(baz_token).first(28u));
+  EXPECT_FALSE(UnspentOutput::FromBlockfrostApiValue(addr, valid.Clone()));
+
+  // Short policy id fails.
+  valid.amount.back().quantity = "100000000000";
+  valid.amount.back().unit = base::HexEncode(std::vector<uint8_t>(27u, 0));
+  EXPECT_FALSE(UnspentOutput::FromBlockfrostApiValue(addr, valid.Clone()));
+
+  for (auto* value :
+       {"", "xx0102030405060708090a0b0c0d0f0e000102030405060708090a0b0c0d0f0e",
+        "5000102030405060708090a0b0c0d0f0e000102030405060708090a0b0c0d0f0e"}) {
+    auto invalid = valid.Clone();
+    invalid.output_index = value;
+    EXPECT_FALSE(UnspentOutput::FromBlockfrostApiValue(addr, invalid.Clone()))
+        << value;
+  }
+
+  for (auto* value : kInvalidUint32Values) {
+    auto invalid = valid.Clone();
+    invalid.output_index = value;
+    EXPECT_FALSE(UnspentOutput::FromBlockfrostApiValue(addr, invalid.Clone()))
+        << value;
+  }
+
+  for (auto* value : kInvalidUint64Values) {
+    auto invalid = valid.Clone();
+    invalid.amount.front().quantity = value;
+    EXPECT_FALSE(UnspentOutput::FromBlockfrostApiValue(addr, invalid.Clone()))
+        << value;
+  }
+
+  for (auto* value : {"", "some_token"}) {
+    auto invalid = valid.Clone();
+    invalid.amount.front().unit = value;
+    EXPECT_FALSE(UnspentOutput::FromBlockfrostApiValue(addr, invalid.Clone()))
+        << value;
+  }
+}
+
+TEST(CardanoRpcSchema, Transaction) {
+  EXPECT_FALSE(Transaction::FromBlockfrostApiValue(std::nullopt));
+
+  blockfrost_api::Transaction valid;
+  valid.hash =
+      "000102030405060708090a0b0c0d0e0f000102030405060708090a0b0c0d0e0f";
+
+  EXPECT_EQ(
+      *Transaction::FromBlockfrostApiValue(valid.Clone()),
+      Transaction({.tx_hash = std::to_array<uint8_t>({
+                       0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+                       0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+                   })}));
+
+  valid.hash = "";
+  EXPECT_FALSE(Transaction::FromBlockfrostApiValue(valid.Clone()));
+
+  valid.hash =
+      "xx0102030405060708090a0b0c0d0f0e000102030405060708090a0b0c0d0f0e";
+  EXPECT_FALSE(Transaction::FromBlockfrostApiValue(valid.Clone()));
+
+  valid.hash = "0102030405060708090a0b0c0d0f0e000102030405060708090a0b0c0d0f0e";
+  EXPECT_FALSE(Transaction::FromBlockfrostApiValue(valid.Clone()));
+}
+
+TEST(CardanoRpcSchema, AssetInfo) {
+  EXPECT_FALSE(AssetInfo::FromBlockfrostApiValue(std::nullopt));
+
+  blockfrost_api::Asset valid;
+  valid.asset = base::HexEncodeLower(GetMockTokenId("foo"));
+  valid.metadata.decimals = 6;
+  valid.metadata.name = "Foo token";
+  valid.metadata.ticker = "foo";
+
+  AssetInfo expected_asset;
+  expected_asset.asset = base::HexEncodeLower(GetMockTokenId("foo"));
+  expected_asset.decimals = 6;
+  expected_asset.name = "Foo token";
+  expected_asset.ticker = "foo";
+
+  EXPECT_EQ(*AssetInfo::FromBlockfrostApiValue(valid.Clone()), expected_asset);
+}
+
+}  // namespace brave_wallet::cardano_rpc

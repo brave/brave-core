@@ -1,0 +1,27 @@
+<html>
+<head>
+    <title>OK</title>
+    <script>
+    // Backup the original `replace` method.
+    const originalReplace = String.prototype.replace;
+
+    // Add a counter to track the number of times `replace` is called.
+    let replaceCallCount = 0;
+
+    // Override `String.prototype.replace`.
+    String.prototype.replace = function (...args) {
+      // Increment the counter.
+      replaceCallCount++;
+
+      // Call the original `replace` method and return the result.
+      return originalReplace.apply(this, args);
+    };
+
+    // Function to get the current replace call count.
+    window.getReplaceCallCount = function () {
+      return replaceCallCount;
+    };
+    </script>
+</head>
+<body></body>
+</html>

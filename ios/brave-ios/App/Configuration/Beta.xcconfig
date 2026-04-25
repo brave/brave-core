@@ -1,0 +1,24 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+// This is for EXTERNAL beta testing
+
+#include "Base.xcconfig"
+
+MOZ_BUNDLE_DISPLAY_NAME = BraveBeta
+
+BRAVE_URL_SCHEME = brave-beta
+
+// Bundle Identifier
+MOZ_BUNDLE_ID = $(BASE_BUNDLE_ID).browser.beta
+BRAVE_GROUP_ID = group.$(MOZ_BUNDLE_ID)
+
+// Flag to indicate if we want to include the debug settings bundle or not
+INCLUDE_SETTINGS_BUNDLE = NO
+
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = BRAVE_CHANNEL_BETA $(brave_swift_active_compliation_conditions)
+
+// Manual Code-Signing
+CODE_SIGN_IDENTITY = Apple Distribution: Brave Software, Inc.
+CODE_SIGN_STYLE = Manual

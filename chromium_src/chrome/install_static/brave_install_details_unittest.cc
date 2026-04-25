@@ -1,0 +1,106 @@
+/* Copyright (c) 2018 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "chrome/install_static/install_details.h"
+
+#include <string>
+
+#include "chrome/install_static/install_modes.h"
+#include "components/version_info/version_info_values.h"
+#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gtest/include/gtest/gtest.h"
+
+using ::testing::StrEq;
+
+namespace install_static {
+
+class FakeInstallDetails : public InstallDetails {
+ public:
+  FakeInstallDetails(const FakeInstallDetails&) = delete;
+  FakeInstallDetails& operator=(const FakeInstallDetails&) = delete;
+
+  FakeInstallDetails() : InstallDetails(&payload) {
+    constants.size = sizeof(constants);
+    constants.install_suffix = L"";
+    constants.default_channel_name = L"";
+#if defined(OFFICIAL_BUILD)
+      constants.app_guid = L"testguid";
+      constants.channel_strategy = ChannelStrategy::FIXED;
+#else
+      constants.app_guid = L"";
+      constants.channel_strategy = ChannelStrategy::UNSUPPORTED;
+#endif
+    payload.size = sizeof(payload);
+    payload.product_version = product_version.c_str();
+    payload.mode = &constants;
+    payload.channel = channel.c_str();
+    payload.channel_length = channel.length();
+  }
+
+  void set_product_version(const char* version) {
+    product_version.assign(version);
+    payload.product_version = product_version.c_str();
+  }
+
+  void set_payload_size(size_t size) { payload.size = size; }
+
+  void set_mode_size(size_t size) { constants.size = size; }
+
+  InstallConstants constants = InstallConstants();
+  std::wstring channel = std::wstring(L"testchannel");
+  std::string product_version = std::string(PRODUCT_VERSION);
+  Payload payload = Payload();
+};
+
+TEST(InstallDetailsTest, GetClientStateKeyPath) {
+  FakeInstallDetails details;
+#if defined(OFFICIAL_BUILD)
+  EXPECT_THAT(details.GetClientStateKeyPath(),
+              StrEq(L"Software\\BraveSoftware\\Update\\ClientState\\testguid"));
+#else
+    EXPECT_THAT(details.GetClientStateKeyPath(),
+                StrEq(std::wstring(L"Software\\").append(kProductPathName)));
+#endif
+}
+
+TEST(InstallDetailsTest, GetClientStateMediumKeyPath) {
+  FakeInstallDetails details;
+#if defined(OFFICIAL_BUILD)
+    EXPECT_THAT(
+        details.GetClientStateMediumKeyPath(),
+        StrEq(L"Software\\BraveSoftware\\Update\\ClientStateMedium\\testguid"));
+#else
+    EXPECT_THAT(details.GetClientStateKeyPath(),
+                StrEq(std::wstring(L"Software\\").append(kProductPathName)));
+#endif
+}
+
+TEST(InstallDetailsTest, VersionMismatch) {
+  // All is well to begin with.
+  EXPECT_FALSE(FakeInstallDetails().VersionMismatch());
+
+  // Bad product version.
+  {
+    FakeInstallDetails details;
+    details.set_product_version("0.1.2.3");
+    EXPECT_TRUE(details.VersionMismatch());
+  }
+
+  // Bad Payload size.
+  {
+    FakeInstallDetails details;
+    details.set_payload_size(sizeof(InstallDetails::Payload) + 1);
+    EXPECT_TRUE(details.VersionMismatch());
+  }
+
+  // Bad InstallConstants size.
+  {
+    FakeInstallDetails details;
+    details.set_mode_size(sizeof(InstallConstants) + 1);
+    EXPECT_TRUE(details.VersionMismatch());
+  }
+}
+
+}  // namespace install_static

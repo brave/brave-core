@@ -1,0 +1,105 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+package org.chromium.chrome.browser.search_engines.settings;
+
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+
+import org.chromium.brave.browser.custom_search_engines.CustomSearchEnginesManager;
+import org.chromium.build.annotations.Nullable;
+import org.chromium.components.search_engines.TemplateUrl;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+
+public class BraveBaseSearchEngineAdapter extends BaseAdapter {
+    private static final String JAPAN_COUNTRY_CODE = "JP";
+
+    public BraveBaseSearchEngineAdapter() {}
+
+    // BaseAdapter:
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+    	return convertView;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public Object getItem(int pos) {
+        return null;
+    }
+
+    @Override
+    public int getCount() {
+        return 0;
+    }
+
+    public static void sortAndFilterUnnecessaryTemplateUrl(
+            List<TemplateUrl> templateUrls,
+            TemplateUrl defaultSearchEngine,
+            boolean isEeaChoiceCountry) {
+        int recentEngineNum = 0;
+        long displayTime =
+                System.currentTimeMillis() - SearchEngineAdapter.MAX_DISPLAY_TIME_SPAN_MS;
+        Set<String> templateUrlSet = new HashSet<String>();
+        Iterator<TemplateUrl> iterator = templateUrls.iterator();
+        while (iterator.hasNext()) {
+            TemplateUrl templateUrl = iterator.next();
+            if (!templateUrlSet.contains(templateUrl.getShortName())) {
+                templateUrlSet.add(templateUrl.getShortName());
+            } else {
+                iterator.remove();
+                continue;
+            }
+            if (getSearchEngineSourceType(templateUrl, defaultSearchEngine)
+                    != SearchEngineAdapter.TemplateUrlSourceType.RECENT) {
+                continue;
+            }
+            if (recentEngineNum < SearchEngineAdapter.MAX_RECENT_ENGINE_NUM
+                    && templateUrl.getLastVisitedTime() > displayTime) {
+                recentEngineNum++;
+            } else {
+                iterator.remove();
+            }
+        }
+
+        applyChangesForYahooJp(templateUrls);
+    }
+
+    private static void applyChangesForYahooJp(List<TemplateUrl> templateUrls) {
+        String countryCode = Locale.getDefault().getCountry();
+        if (countryCode.equals(JAPAN_COUNTRY_CODE)) {
+            for (TemplateUrl templateUrl : templateUrls) {
+                if (templateUrl.getKeyword().equals("yahoo.co.jp")) {
+                    templateUrls.remove(templateUrl);
+                    templateUrls.add(0, templateUrl);
+                    break;
+                }
+            }
+        }
+    }
+
+    public static @SearchEngineAdapter.TemplateUrlSourceType int getSearchEngineSourceType(
+            TemplateUrl templateUrl, @Nullable TemplateUrl defaultSearchEngine) {
+        // Custom search engines that are not the default are shown in the prepopulated list.
+        if (CustomSearchEnginesManager.getInstance().isCustomSearchEngine(templateUrl.getKeyword())
+                && (defaultSearchEngine == null
+                        || templateUrl.getNativePtr() != defaultSearchEngine.getNativePtr())) {
+            return SearchEngineAdapter.TemplateUrlSourceType.PREPOPULATED;
+        }
+        // This call redirects to the upstream's SearchEngineAdapter via bytecode modification.
+        return BraveSearchEngineAdapterDummySuper.getSearchEngineSourceType(
+                templateUrl, defaultSearchEngine);
+    }
+}

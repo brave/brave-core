@@ -1,0 +1,11 @@
+Name: memchr
+URL: https://crates.io/crates/memchr
+Version: 2.8.0
+License: MIT
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: Provides extremely fast (uses SIMD on x86_64, aarch64 and wasm32) routines for
+1, 2 or 3 byte search and single substring search.
+

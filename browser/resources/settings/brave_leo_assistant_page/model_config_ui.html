@@ -1,0 +1,361 @@
+<style include="cr-shared-style settings-shared">
+  .primary-title {
+    font: var(--leo-font-heading-h3);
+    color: var(--leo-color-text-primary);
+    margin-bottom: var(--leo-spacing-2xl);
+  }
+
+  .container {
+    width: 100%;
+    padding: 16px 0;
+  }
+
+  .input-container {
+    margin-bottom: var(--leo-spacing-l);
+  }
+
+  .custom-label {
+    font: var(--leo-font-small-semibold);
+    color: var(--leo-color-text-primary);
+    margin-bottom: var(--leo-spacing-s);
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+  }
+
+  .label-text {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+
+  .required::after {
+    content: '*';
+    margin: 0 2px;
+    color: var(--leo-color-systemfeedback-error-icon);
+  }
+
+  .tooltip-content {
+    width: 340px;
+  }
+
+  .note {
+    color: var(--leo-color-text-tertiary);
+    font: var(--leo-font-small-regular);
+    margin-bottom: 5px;
+  }
+
+  .inline-note {
+    color: var(--leo-color-text-tertiary);
+    font: var(--leo-font-small-regular);
+  }
+
+  .actions-container leo-button:first-of-type {
+    margin-right: 5px;
+  }
+  
+  .unsafe-endpoint-label {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--leo-spacing-s);
+  }
+</style>
+
+<!-- warning message against potentially unsafe endpoints -->
+<template is="dom-if" if="[[shouldShowUnsafeEndpointModal]]">
+  <cr-dialog show-close-button show-on-attach>
+    <div slot="title">
+      <span class="dialog-title">
+        $i18n{braveLeoAssistantEndpointValidAsPrivateIp_Title}
+      </span>
+    </div>
+    <div slot="body">
+      <p>$i18n{braveLeoAssistantEndpointValidAsPrivateIp_Body}</p>
+      <p>$i18n{braveLeoAssistantEndpointValidAsPrivateIp_Instructions}</p>
+    </div>
+  </cr-dialog>
+</template>
+
+<div class="settings-box">
+  <div class="container">
+    <div>
+      <template
+        is="dom-if"
+        if="[[!isEditing_]]"
+      >
+        <div class="primary-title">$i18n{braveLeoAssistantAddModelLabel}</div>
+      </template>
+      <template
+        is="dom-if"
+        if="[[isEditing_]]"
+      >
+        <div class="primary-title">$i18n{braveLeoAssistantEditModelLabel}</div>
+      </template>
+    </div>
+    <div class="input-container">
+      <div class="custom-label">
+        <div class="label-text">
+          <span class="required">$i18n{braveLeoAssistantInputModelLabel}</span>
+          <leo-tooltip mode="default">
+            <div
+              slot="content"
+              class="tooltip-content"
+            >
+              $i18n{braveLeoAssistantInputModelLabelTooltipInfo}
+            </div>
+            <leo-button
+              size="small"
+              kind="plain-faint"
+              fab
+            >
+              <leo-icon name="info-outline"></leo-icon>
+            </leo-button>
+          </leo-tooltip>
+        </div>
+      </div>
+      <leo-input
+        required
+        auto-validate
+        type="text"
+        value="[[label]]"
+        on-change="onModelLabelChange_"
+      ></leo-input>
+    </div>
+    <div class="input-container">
+      <div class="custom-label">
+        <div class="label-text">
+          <span class="required"
+            >$i18n{braveLeoAssistantInputModelRequestName}</span
+          >
+          <leo-tooltip mode="default">
+            <div
+              slot="content"
+              class="tooltip-content"
+            >
+              $i18n{braveLeoAssistantInputModelRequestNameTooltipInfo}
+            </div>
+            <leo-button
+              size="small"
+              kind="plain-faint"
+              fab
+            >
+              <leo-icon name="info-outline"></leo-icon>
+            </leo-button>
+          </leo-tooltip>
+        </div>
+      </div>
+      <leo-input
+        required
+        auto-validate
+        type="text"
+        value="[[modelRequestName]]"
+        on-change="onModelRequestNameChange_"
+      ></leo-input>
+    </div>
+    <div class="input-container">
+      <div class="custom-label">
+        <div class="label-text">
+          <span class="required"
+            >$i18n{braveLeoAssistantInputModelServerEndpoint}</span
+          >
+          <leo-tooltip mode="default">
+            <div
+              slot="content"
+              class="tooltip-content"
+            >
+              $i18n{braveLeoAssistantInputModelServerEndpointTooltipInfo}
+            </div>
+            <leo-button
+              size="small"
+              kind="plain-faint"
+              fab
+            >
+              <leo-icon name="info-outline"></leo-icon>
+            </leo-button>
+          </leo-tooltip>
+        </div>
+      </div>
+      <leo-input
+        id="endpointInput"
+        required
+        type="url"
+        value="[[endpointUrl]]"
+        on-change="onModelServerEndpointChange_"
+        show-errors="[[isUrlInvalid]]"
+      >
+        <div slot="errors">[[invalidUrlErrorMessage]]</div>  
+        <div slot="extra" class="inline-note">
+          $i18n{braveLeoAssistantProxyNote}
+        </div>
+      </leo-input>
+      <template is="dom-if" if="[[shouldShowUnsafeEndpointLabel]]">
+        <div class="unsafe-endpoint-label">
+          <leo-label mode="loud" color="red">
+            <leo-icon name="lock-open" slot="icon-before"></leo-icon> 
+            $i18n{braveLeoAssistantEndpointPotentiallyUnsafeError}
+          </leo-label>
+        </div>
+      </template>
+    </div>
+
+    <div class="input-container">
+      <div class="custom-label">
+        <div class="label-text">
+          <span>$i18n{braveLeoAssistantInputContextSizeLabel}</span>
+          <leo-tooltip mode="default">
+            <div
+              slot="content"
+              class="tooltip-content"
+            >
+              $i18n{braveLeoAssistantInputContextSizeTooltipInfo}
+            </div>
+            <leo-button
+              size="small"
+              kind="plain-faint"
+              fab
+            >
+              <leo-icon name="info-outline"></leo-icon>
+            </leo-button>
+          </leo-tooltip>
+        </div>
+      </div>
+      <leo-input
+        auto-validate
+        type="number"
+        value="[[contextSize]]"
+        placeholder="$i18n{braveLeoAssistantInputDefaultContextSize}"
+        on-change="onContextSizeChange_"
+      ></leo-input>
+    </div>
+    <div class="input-container">
+      <div class="custom-label">
+        <div class="label-text">
+          <span>$i18n{braveLeoAssistantInputModelApiKey}</span>
+          <leo-tooltip mode="default">
+            <div
+              slot="content"
+              class="tooltip-content"
+            >
+              $i18n{braveLeoAssistantInputModelApiKeyTooltipInfo}
+            </div>
+            <leo-button
+              size="small"
+              kind="plain-faint"
+              fab
+            >
+              <leo-icon name="info-outline"></leo-icon>
+            </leo-button>
+          </leo-tooltip>
+        </div>
+      </div>
+      <leo-input
+        auto-validate
+        type="text"
+        value="[[apiKey]]"
+        on-change="onModelApiKeyChange_"
+      >
+      </leo-input>
+    </div>
+
+    <div class="input-container">
+      <div class="custom-label">
+        <div class="label-text">
+          <span>$i18n{braveLeoAssistantModelSystemPromptTitle}</span>
+          <leo-tooltip mode="default">
+            <div
+              slot="content"
+              class="tooltip-content"
+            >
+              $i18n{braveLeoAssistantModelSystemPromptDesc}
+            </div>
+            <leo-button
+              size="small"
+              kind="plain-faint"
+              fab
+            >
+              <leo-icon name="info-outline"></leo-icon>
+            </leo-button>
+          </leo-tooltip>
+        </div>
+      </div>
+      <leo-textarea
+        value="[[modelSystemPrompt]]"
+        rows="4"
+        placeholder="$i18n{braveLeoAssistantModelSystemPromptPlaceholder}"
+        on-change="onModelSystemPromptChange_"
+        on-input="constructTokenEstimateString_"
+      >
+        <div slot="extra" class="inline-note">
+          [[promptTokensEstimateString]]
+        </div>
+      </leo-textarea>
+    </div>
+    <div class="input-container">
+      <div class="custom-label">
+        <div class="label-text">
+          <span>$i18n{braveLeoAssistantInputModelVisionSupport}</span>
+          <leo-tooltip mode="default">
+            <div
+              slot="content"
+              class="tooltip-content"
+            >
+              $i18n{braveLeoAssistantInputModelVisionSupportTooltipInfo}
+            </div>
+            <leo-button
+              size="small"
+              kind="plain-faint"
+              fab
+            >
+              <leo-icon name="info-outline"></leo-icon>
+            </leo-button>
+          </leo-tooltip>
+        </div>
+      </div>
+      <leo-toggle
+          checked="{{hasVisionSupport}}"
+          on-change="onVisionSupportChanged_">
+      </leo-toggle>
+    </div>
+    <div class="input-container">
+      <div class="custom-label">
+        <div class="label-text">
+          <span>$i18n{braveLeoAssistantInputModelToolSupport}</span>
+          <leo-tooltip mode="default">
+            <div
+              slot="content"
+              class="tooltip-content"
+            >
+              $i18n{braveLeoAssistantInputModelToolSupportTooltipInfo}
+            </div>
+            <leo-button
+              size="small"
+              kind="plain-faint"
+              fab
+            >
+              <leo-icon name="info-outline"></leo-icon>
+            </leo-button>
+          </leo-tooltip>
+        </div>
+      </div>
+      <leo-toggle
+          checked="{{supportsTools}}"
+          on-change="onSupportsToolsChanged_">
+      </leo-toggle>
+    </div>
+
+    <div class="actions-container">
+      <leo-button
+        disabled="[[!saveEnabled_(label, modelRequestName, endpointUrl)]]"
+        on-click="handleClick_"
+      >
+        [[buttonLabel_]]
+      </leo-button>
+      <leo-button
+        kind="plain-faint"
+        on-click="handleCloseClick_"
+      >
+        $i18n{braveLeoAssistantCloseButtonLabel}
+      </leo-button>
+    </div>
+  </div>
+</div>

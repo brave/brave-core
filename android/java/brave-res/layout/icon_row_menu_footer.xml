@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2018 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+<org.chromium.chrome.browser.app.appmenu.AppMenuIconRowFooter
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:orientation="horizontal"
+        android:baselineAligned="false"
+        android:padding="?attr/appMenuIconRowPadding"
+        android:id="@+id/menu_items" >
+
+        <!-- The icons will be set in onFinishInflate. -->
+        <!-- Using weight = 1, evenly distribute the buttons along the width of the space. -->
+        <FrameLayout
+            android:id="@+id/button_wrapper_forward"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/forward_menu_id"
+                android:layout_width="?attr/minInteractTargetSize"
+                android:layout_height="?attr/minInteractTargetSize"
+                android:layout_gravity="center"
+                style="?attr/overflowMenuButtonStyle"
+                android:contentDescription="@string/accessibility_menu_forward" />
+        </FrameLayout>
+        
+        <FrameLayout
+            android:id="@+id/button_wrapper_share"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/share_menu_id"
+                android:layout_width="?attr/minInteractTargetSize"
+                android:layout_height="?attr/minInteractTargetSize"
+                android:layout_gravity="center"
+                style="?attr/overflowMenuButtonStyle"
+                android:contentDescription="@string/share" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/button_wrapper_home"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/home_menu_id"
+                android:layout_width="?attr/minInteractTargetSize"
+                android:layout_height="?attr/minInteractTargetSize"
+                android:layout_gravity="center"
+                style="?attr/overflowMenuButtonStyle"
+                android:contentDescription="@string/accessibility_toolbar_btn_home" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/button_wrapper_bookmark"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bookmark_this_page_id"
+                android:layout_width="?attr/minInteractTargetSize"
+                android:layout_height="?attr/minInteractTargetSize"
+                android:layout_gravity="center"
+                style="?attr/overflowMenuButtonStyle"
+                android:contentDescription="@string/accessibility_menu_bookmark" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/button_wrapper_download"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/offline_page_id"
+                android:layout_width="?attr/minInteractTargetSize"
+                android:layout_height="?attr/minInteractTargetSize"
+                android:layout_gravity="center"
+                style="?attr/overflowMenuButtonStyle"
+                android:contentDescription="@string/download_page" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/button_wrapper_reload"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/reload_menu_id"
+                android:layout_width="?attr/minInteractTargetSize"
+                android:layout_height="?attr/minInteractTargetSize"
+                android:layout_gravity="center"
+                style="?attr/overflowMenuButtonStyle"
+                android:contentDescription="@string/accessibility_btn_refresh" />
+        </FrameLayout>
+    </LinearLayout>
+</org.chromium.chrome.browser.app.appmenu.AppMenuIconRowFooter>

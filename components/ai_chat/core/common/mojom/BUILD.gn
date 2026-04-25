@@ -1,0 +1,40 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+
+mojom_component("mojom") {
+  output_prefix = "ai_chat_mojom"
+  macro_prefix = "AI_CHAT_MOJOM"
+
+  generate_java = true
+  generate_legacy_js_bindings = true
+  webui_module_path = "/"
+
+  sources = [
+    "ai_chat.mojom",
+    "bookmarks.mojom",
+    "common.mojom",
+    "customization_settings.mojom",
+    "history.mojom",
+    "ollama.mojom",
+    "page_content_extractor.mojom",
+    "settings_helper.mojom",
+    "tab_tracker.mojom",
+    "untrusted_frame.mojom",
+  ]
+
+  enabled_features = []
+
+  if (enable_ai_chat_tab_management_tool) {
+    enabled_features += [ "enable_ai_chat_tab_management_tool" ]
+  }
+
+  deps = [
+    "//mojo/public/mojom/base",
+    "//url/mojom:url_mojom_gurl",
+  ]
+}

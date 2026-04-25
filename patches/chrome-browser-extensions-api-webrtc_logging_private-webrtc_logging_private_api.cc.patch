@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/extensions/api/webrtc_logging_private/webrtc_logging_private_api.cc b/chrome/browser/extensions/api/webrtc_logging_private/webrtc_logging_private_api.cc
+index 79a87e4879bb2706f6e97fbafe443c67ba41c536..52ea21a8dcc84afd88f6876a052398dde9c471dd 100644
+--- a/chrome/browser/extensions/api/webrtc_logging_private/webrtc_logging_private_api.cc
++++ b/chrome/browser/extensions/api/webrtc_logging_private/webrtc_logging_private_api.cc
+@@ -91,6 +91,7 @@ content::RenderProcessHost* WebrtcLoggingPrivateFunction::RphFromRequest(
+     const api::webrtc_logging_private::RequestInfo& request,
+     const std::string& security_origin,
+     std::string* error) {
++  BRAVE_DISABLE_RPH_FROM_REQUEST //feature disabled in Brave
+   // There are 2 ways these API functions can get called.
+   //
+   //  1. From an allowlisted component extension on behalf of a page with the

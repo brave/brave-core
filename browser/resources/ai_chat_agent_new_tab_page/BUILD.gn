@@ -1,0 +1,69 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/common/typescript.gni")
+import("//brave/resources/brave_grit.gni")
+import("//tools/grit/repack.gni")
+import("//ui/webui/resources/tools/generate_grd.gni")
+
+assert(enable_brave_ai_chat_agent_profile)
+
+resource_name = "ai_chat_agent_new_tab_page"
+
+# js resources
+transpile_web_ui("js_resources") {
+  entry_points = [ [
+        "ai_chat_agent_new_tab_page",
+        rebase_path("ai_chat_agent_new_tab_page.tsx"),
+      ] ]
+
+  imports_from = [ "//brave/browser/resources/ai_chat_agent_new_tab_page/" ]
+
+  resource_name = resource_name
+
+  deps = [ "//brave/components/resources:strings" ]
+}
+
+pack_web_resources("pack_js_resources") {
+  resource_name = resource_name
+  output_dir = target_gen_dir
+  deps = [ ":js_resources" ]
+}
+
+# static resources
+static_grd_path = "$target_gen_dir/${resource_name}_static_resources.grd"
+
+generate_grd("static_resources_grd") {
+  grd_prefix = resource_name + "_static"
+  out_grd = static_grd_path
+  input_files = [ "ai_chat_agent_new_tab_page.html" ]
+  input_files_base_dir = rebase_path(".", "//")
+}
+
+brave_grit("pack_static_resources") {
+  source = static_grd_path
+  outputs = [
+    "grit/${resource_name}_static_resources.h",
+    "grit/${resource_name}_static_resources_map.cc",
+    "grit/${resource_name}_static_resources_map.h",
+    "${resource_name}_static_resources.pak",
+  ]
+
+  deps = [ ":static_resources_grd" ]
+}
+
+# combine static and js
+repack("ai_chat_agent_new_tab_page") {
+  sources = [
+    "$target_gen_dir/${resource_name}_generated.pak",
+    "$target_gen_dir/${resource_name}_static_resources.pak",
+  ]
+  output = "$root_gen_dir/brave/browser/resources/ai_chat_agent_new_tab_page/${resource_name}_all.pak"
+  deps = [
+    ":pack_js_resources",
+    ":pack_static_resources",
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "batRate": 1.43,
+  "autocontribute": {
+    "defaultChoice": 20,
+    "choices": [
+      5, 10, 15, 20, 25, 50, 100
+    ]
+  },
+  "tips": {
+    "defaultTipChoices": [
+      1, 5, 50
+    ],
+    "defaultMonthlyChoices": [
+      1, 10, 100
+    ]
+  },
+  "payoutStatus": {
+    "bitflyer": "off",
+    "gemini": "off",
+    "uphold": "off",
+    "unverified": "off"
+  },
+  "custodianRegions": {
+    "bitflyer": {
+      "allow": ["JP"],
+      "block": []
+    },
+    "gemini": {
+      "allow": ["AU", "AT", "BE", "CA", "CO", "DK", "FI", "HK", "IE", "IT", "NL", "NO", "PT", "SG", "ES", "SE", "GB", "US"],
+      "block": []
+    },
+    "uphold": {
+      "allow": ["AU", "AT", "BE", "CO", "DK", "FI", "HK", "IE", "IT", "NL", "NO", "PT", "SG", "ES", "SE", "GB", "US"],
+      "block": []
+    }
+  },
+  "vbatDeadline": "2022-12-24T15:04:45.352584Z",
+  "vbatExpired": false,
+  "tosVersion": 1
+}

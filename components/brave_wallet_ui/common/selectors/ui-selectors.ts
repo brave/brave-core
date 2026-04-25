@@ -1,0 +1,25 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import { createSelector } from '@reduxjs/toolkit'
+
+import { UIState } from '../../constants/types'
+
+type State = { ui: UIState }
+
+const selectUIState = (state: State) => state.ui
+
+// safe
+export const selectedPendingTransactionId = ({ ui }: State) =>
+  ui.selectedPendingTransactionId
+export const isPanel = ({ ui }: State) => ui.isPanel
+export const isMobile = ({ ui }: State) => ui.isMobile
+export const isIOS = ({ ui }: State) => ui.isIOS
+
+// memoized selectors (safe for objects and arrays)
+export const transactionProviderErrorRegistry = createSelector(
+  [selectUIState],
+  (ui) => ui.transactionProviderErrorRegistry,
+)

@@ -1,0 +1,5 @@
+TOML parse error at line 1, column 18
+  |
+1 | us-after-hex = 0x_1
+  |                  ^
+invalid hexadecimal integer

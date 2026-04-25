@@ -1,0 +1,68 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_GET_UTXOS_TASK_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_GET_UTXOS_TASK_H_
+
+#include <string>
+#include <utility>
+#include <vector>
+
+#include "base/functional/callback.h"
+#include "base/memory/weak_ptr.h"
+#include "base/types/expected.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
+#include "brave/components/brave_wallet/common/cardano_address.h"
+
+namespace brave_wallet {
+class CardanoWalletService;
+
+namespace cardano_rpc {
+class CardanoRpc;
+}
+
+// This class implements `CardanoWalletService::GetUtxos` logic of fetching all
+// utxos associated with `addresses`.
+class GetCardanoUtxosTask {
+ public:
+  using Callback = base::OnceCallback<void(
+      base::expected<cardano_rpc::UnspentOutputs, std::string>)>;
+
+  GetCardanoUtxosTask(CardanoWalletService& cardano_wallet_service,
+                      const std::string& chain_id,
+                      std::vector<CardanoAddress> addresses);
+  ~GetCardanoUtxosTask();
+
+  const std::string& chain_id() const { return chain_id_; }
+
+  void Start(Callback callback);
+
+ private:
+  void StopWithError(std::string error_string);
+  void StopWithResult(cardano_rpc::UnspentOutputs result);
+
+  cardano_rpc::CardanoRpc* GetCardanoRpc();
+
+  void FetchAllRequiredData();
+  bool IsAllRequiredDataFetched();
+  void OnMaybeAllRequiredDataFetched();
+
+  void OnGetUtxoList(
+      CardanoAddress address,
+      base::expected<cardano_rpc::UnspentOutputs, std::string> utxos);
+
+  const raw_ref<CardanoWalletService> cardano_wallet_service_;
+  std::string chain_id_;
+  std::vector<CardanoAddress> pending_addresses_;
+
+  cardano_rpc::UnspentOutputs utxos_;
+
+  Callback callback_;
+  base::WeakPtrFactory<GetCardanoUtxosTask> weak_ptr_factory_{this};
+};
+
+}  // namespace brave_wallet
+
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_GET_UTXOS_TASK_H_

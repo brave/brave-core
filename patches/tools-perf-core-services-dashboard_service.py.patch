@@ -1,0 +1,13 @@
+diff --git a/tools/perf/core/services/dashboard_service.py b/tools/perf/core/services/dashboard_service.py
+index bde5630a6ea555b265a47991d21bc4c140bd0cba..34ddb9736b2a0fb5a85acfd92b0fd756954ddd5a 100644
+--- a/tools/perf/core/services/dashboard_service.py
++++ b/tools/perf/core/services/dashboard_service.py
+@@ -12,7 +12,7 @@ import six.moves.urllib.parse  # pylint: disable=import-error
+ 
+ from core.services import request
+ 
+-SERVICE_URL = 'https://chromeperf.appspot.com'
++SERVICE_URL = 'https://brave-perf-dashboard.appspot.com'
+ 
+ 
+ def Request(endpoint, **kwargs):

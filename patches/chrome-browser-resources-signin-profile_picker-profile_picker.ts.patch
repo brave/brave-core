@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/signin/profile_picker/profile_picker.ts b/chrome/browser/resources/signin/profile_picker/profile_picker.ts
+index 2639e910d0c5d00389f993fc3f66f7c77f2ba99a..cb5fa5595345b57a0730f18e6ac0782ab2c86a0b 100644
+--- a/chrome/browser/resources/signin/profile_picker/profile_picker.ts
++++ b/chrome/browser/resources/signin/profile_picker/profile_picker.ts
+@@ -2,6 +2,7 @@
+ // Use of this source code is governed by a BSD-style license that can be
+ // found in the LICENSE file.
+ 
++import 'chrome://resources/brave/polymer_overriding.js'
+ export {loadTimeData} from 'chrome://resources/js/load_time_data.js';
+ export {ensureLazyLoaded} from './ensure_lazy_loaded.js';
+ export {ManageProfilesBrowserProxyImpl} from './manage_profiles_browser_proxy.js';

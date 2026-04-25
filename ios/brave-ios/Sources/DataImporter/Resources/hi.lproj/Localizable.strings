@@ -1,0 +1,111 @@
+/* Error message shown when importing bookmarks failed */
+"failedToImportBookmarks" = "बुकमार्क्स इंपोर्ट करते समय कोई गड़बड़ी हुई।";
+
+/* Error message shown when importing history failed */
+"failedToImportHistory" = "हिस्ट्री इंपोर्ट करते समय कोई गड़बड़ी हुई।";
+
+/* Error message shown when importing passwords failed due to a password already existing (a conflict) */
+"failedToImportPasswordsDueToConflictError" = "पासवर्ड इंपोर्ट करते समय कोई गड़बड़ी हुई।\nविवादों के कारण कुछ पासवर्ड्स को इंपोर्ट नहीं किया जा सका।";
+
+/* Error message shown when importing passwords failed */
+"failedToImportPasswordsError" = "पासवर्ड इंपोर्ट करते समय कोई गड़बड़ी हुई।";
+
+/* Error message shown when unzipping a zip file failed */
+"failedToUnzipError" = "फ़ाइल को अनज़िप करने में गड़बड़ी हुई।";
+
+/* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
+"importDataFileSelectorButtonTitle" = "फ़ाइल चुनें...";
+
+/* The message of a Text on screen that explains to the user what type of data can be imported. */
+"importDataFileSelectorMessage" = "अपने बुकमार्क्स, हिस्ट्री और दूसरे ब्राउज़र डेटा को Brave में लाएँ।";
+
+/* The title of the main screen that lets the user import data. The title is shown in the navigation bar. */
+"importDataFileSelectorNavigationTitle" = "ब्राउज़िंग डेटा इंपोर्ट करें";
+
+/* The title of a Text on screen that explains to the user what type of data can be imported. */
+"importDataFileSelectorTitle" = "बुकमार्क और दूसरी चीज़ें इंपोर्ट करें";
+
+/* The title of the button on the file selector screen that lets the user view the tutorial screen on how to import data. */
+"importDataViewTutorialButtonTitle" = "Safari से एक्सपोर्ट करने का तरीका";
+
+/* The message shown on the import data screen when importing the data from the browser profile failed. */
+"importStateFailureMessage" = "आपका डेटा इंपोर्ट करने में कुछ गड़बड़ी हुई।\nकृपया फिर से कोशिश करें।\nअगर समस्या बनी रहती है, तो सपोर्ट से संपर्क करें।";
+
+/* The title shown on the import data screen when importing the data from the browser profile failed. */
+"importStateFailureTitle" = "इंपोर्ट नहीं हो पाया";
+
+/* The title of the button on the import error screen when there is a conflict, that lets the user keep your existing Brave passwords. */
+"importStatePasswordConflictKeepExistingPasswordsTitle" = "Brave से पासवर्ड रखें";
+
+/* The title of the button on the import error screen when there is a conflict, that lets the user use the passwords that were imported, overwriting your existing passwords. */
+"importStatePasswordConflictKeepImportedPasswordsTitle" = "Safari से पासवर्ड इस्तेमाल करें";
+
+/* The message shown on the import data screen when importing the data from has conflicting passwords (when two passwords exist for the same account, but are different, they are conflicting). %d is a placeholder for the number of conflicting passwords. */
+"importStatePasswordConflictMessage" = "एक अकाउंट के %d पासवर्ड मिले।\nचुनें कि क्या इंपोर्ट करना है।";
+
+/* The title shown on the import data screen when importing the data from has conflicting passwords (when two passwords exist for the same account, but are different, they are conflicting). */
+"importStatePasswordConflictTitle" = "एक अकाउंट के एक से ज़्यादा पासवर्ड";
+
+/* The title of the button on the import success screen to let the user continue using the app as before. */
+"importStateSuccessContinueTitle" = "जारी रखें";
+
+/* The message shown on the import data screen when importing the data from the browser profile succeeded. */
+"importStateSuccessMessage" = "आपका डेटा इंपोर्ट हो गया है।\nआप Brave के साथ ब्राउज़ करना शुरू करने के लिए तैयार हैं।";
+
+/* The title shown on the import data screen when importing the data from the browser profile succeeded. */
+"importStateSuccessTitle" = "सफल रहा!";
+
+/* The title of the button on the import error screen that lets the user try to import the data again */
+"importStateTryAgainTitle" = "फिर से कोशिश करें";
+
+/* The message on the tutorial page explaining the detailed process to export your data from other browsers. */
+"importTutorialDetailedProcessMessage" = "Safari का सहायता पेज खोलें";
+
+/* The title on the tutorial page explaining the detailed process to export your data from other browsers. */
+"importTutorialDetailedProcessTitle" = "एक्सपोर्ट की विस्तार वाली प्रोसेस चाहिए?";
+
+/* The title of the tutorial page that shows in the Navigation Bar. */
+"importTutorialScreenTitle" = "Safari से एक्सपोर्ट करने का तरीका";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepFiveTitle" = "ऐसी लोकेशन चुनकर \"फ़ाइलें\" में फ़ाइल सेव करें जो आपको बाद में आसानी से मिल सकती है।";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepFourTitle" = "आप जो डेटा एक्सपोर्ट करना चाहते हैं उसे **चुनें** (बुकमार्क्स, हिस्ट्री, क्रेडिट कार्ड, पासवर्ड)।";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepOneTitle" = "**सेटिंग** खोलें, नीचे की ओर स्क्रोल करें, और **ऐप्स** पर टैप करें।";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepThreeTitle" = "नीचे की ओर स्क्रोल करके **एक्सपोर्ट करें** पर टैप करें।";
+
+/* The title on each card indicating the tutorial step that has been completed. Step 1, Step 2, Step 3, etc... %d is a placeholder for the step number. */
+"importTutorialStepTitle" = "स्टेप %d";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepTwoTitle" = "ऐप्स की लिस्ट से (अंग्रेज़ी के अक्षरों के क्रम में सॉर्ट किए गए), *Safari* को ढूँढकर उस पर टैप करें।";
+
+/* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
+"invalidZipFileDataError" = "ज़िप फ़ाइल में इंपोर्ट डेटा नहीं है।";
+
+/* The message shown on the import data screen when the data is being loaded or imported. */
+"loadingMessage" = "कृपया इंतज़ार करें, हम आपका डेटा सुरक्षित रूप से ट्रांसफ़र कर रहे हैं।\nइसमें कुछ पल लग सकते हैं।";
+
+/* The title shown on the import data screen when the data is being loaded or imported. */
+"loadingTitle" = "आपका डेटा इंपोर्ट किया जा रहा है...";
+
+/* The message shown on the import data screen when there are multiple profiles such as Personal, Work, School, etc. */
+"multipleProfilesMessage" = "आप जिस प्रोफ़ाइल से डेटा इंपोर्ट करना चाहते हैं उसे चुनें";
+
+/* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
+"multipleProfilesTitle" = "एक से ज़्यादा प्रोफ़ाइलों का पता लगा";
+
+/* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
+"personalImportTitle" = "व्यक्तिगत";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "इंपोर्ट किए गए बुकमार्क्स";
+
+/* An unknown error occurred during data importing. */
+"unknownError" = "ज़िप फ़ाइल में इंपोर्ट डेटा नहीं है।";
+

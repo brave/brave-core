@@ -1,0 +1,83 @@
+---
+  InheritParentConfig: true
+  Checks:           readability-function-cognitive-complexity,
+                    readability-identifier-naming,
+  CheckOptions:
+    - key:          readability-function-cognitive-complexity.IgnoreMacros
+      value:        1
+    - key:          readability-identifier-naming.ClassCase
+      value:        CamelCase
+    # Allow class names with underscores for MAYBE_ tests and other rare cases.
+    - key:          readability-identifier-naming.ClassIgnoredRegexp
+      value:        ^.*_.*$
+    - key:          readability-identifier-naming.ClassConstantCase
+      value:        CamelCase
+    - key:          readability-identifier-naming.ClassConstantPrefix
+      value:        k
+    - key:          readability-identifier-naming.ClassMemberCase
+      value:        lower_case
+    - key:          readability-identifier-naming.ClassMemberSuffix
+      value:        _
+    - key:          readability-identifier-naming.ConstexprVariableCase
+      value:        CamelCase
+    - key:          readability-identifier-naming.ConstexprVariablePrefix
+      value:        k
+    - key:          readability-identifier-naming.EnumCase
+      value:        CamelCase
+    - key:          readability-identifier-naming.FunctionCase
+      value:        CamelCase
+    - key:          readability-identifier-naming.GlobalConstantCase
+      value:        CamelCase
+    - key:          readability-identifier-naming.GlobalConstantPrefix
+      value:        k
+    - key:          readability-identifier-naming.GlobalVariableCase
+      value:        lower_case
+    - key:          readability-identifier-naming.GlobalVariablePrefix
+      value:        g_
+    - key:          readability-identifier-naming.LocalVariableCase
+      value:        lower_case
+    - key:          readability-identifier-naming.MethodCase
+      value:        CamelCase
+    # Allow lower_case for inline method names.
+    - key:          readability-identifier-naming.MethodIgnoredRegexp
+      value:        ^[a-z\d_]*$
+    - key:          readability-identifier-naming.NamespaceCase
+      value:        lower_case
+    # Allow unusual namespaces like WTF, IPC and other non-lower_case ones.
+    - key:          readability-identifier-naming.NamespaceIgnoredRegexp
+      value:        ^[A-Z][a-zA-Z\d]*$
+    - key:          readability-identifier-naming.ParameterCase
+      value:        lower_case
+    - key:          readability-identifier-naming.PrivateMemberCase
+      value:        lower_case
+    - key:          readability-identifier-naming.PrivateMemberSuffix
+      value:        _
+    - key:          readability-identifier-naming.ProtectedMemberCase
+      value:        lower_case
+    - key:          readability-identifier-naming.ProtectedMemberSuffix
+      value:        _
+    - key:          readability-identifier-naming.PublicMemberCase
+      value:        lower_case
+    - key:          readability-identifier-naming.TypeAliasCase
+      value:        CamelCase
+    # Allow lower_case for names like iterator, size_type, ...
+    - key:          readability-identifier-naming.TypeAliasIgnoredRegexp
+      value:        ^[a-z\d_]*$
+    - key:          readability-identifier-naming.TypedefCase
+      value:        CamelCase
+    # Allow lower_case for names like iterator, size_type, ...
+    - key:          readability-identifier-naming.TypedefIgnoredRegexp
+      value:        ^[a-z\d_]*$
+    - key:          readability-identifier-naming.ScopedEnumConstantCase
+      value:        CamelCase
+    - key:          readability-identifier-naming.ScopedEnumConstantPrefix
+      value:        k
+    - key:          readability-identifier-naming.StaticConstantCase
+      value:        CamelCase
+    - key:          readability-identifier-naming.StaticConstantPrefix
+      value:        k
+    - key:          readability-identifier-naming.StaticVariableCase
+      value:        lower_case
+    - key:          readability-identifier-naming.UnionCase
+      value:        CamelCase
+...

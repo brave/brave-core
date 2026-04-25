@@ -1,0 +1,14 @@
+diff --git a/ios/chrome/app/BUILD.gn b/ios/chrome/app/BUILD.gn
+index 9b6febe5678c88d1d896189fb12220cea63e4d96..3f2ab3abaa6586769f29cfc8c94b4189fbbd6cf4 100644
+--- a/ios/chrome/app/BUILD.gn
++++ b/ios/chrome/app/BUILD.gn
+@@ -917,8 +917,7 @@ chrome_app("chrome") {
+   # (see https://crbug.com/1394553 for details of the build failure). This
+   # is a stop-gap solution.
+   if (target_environment == "catalyst" ||
+-      ios_provider_target !=
+-      "//ios/chrome/browser/providers:chromium_providers") {
++      !ios_chrome_links_with_lottie_framework) {
+     assert_no_deps += [
+       "//ios/third_party/lottie:lottie+bundle",
+       "//ios/third_party/lottie:lottie+link",

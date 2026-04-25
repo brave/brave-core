@@ -1,0 +1,186 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+package org.chromium.chrome.browser.rate;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.play.core.review.ReviewInfo;
+import com.google.android.play.core.review.ReviewManager;
+import com.google.android.play.core.review.ReviewManagerFactory;
+
+import org.chromium.base.Log;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
+import org.chromium.chrome.R;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+
+public class BraveAskPlayStoreRatingDialog extends BottomSheetDialogFragment {
+    public static final String TAG_FRAGMENT = "brave_ask_play_store_rating_dialog_tag";
+    private static final String TAG = "AskPlayStoreRating";
+    private static final int DIALOG_DISMISS_DELAY_MS = 500;
+    private ReviewManager mReviewManager;
+    private boolean mIsFromSettings;
+    private Context mContext;
+
+    public static BraveAskPlayStoreRatingDialog newInstance(boolean isFromSettings) {
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(RateUtils.FROM_SETTINGS, isFromSettings);
+        BraveAskPlayStoreRatingDialog fragment = new BraveAskPlayStoreRatingDialog();
+        fragment.setArguments(bundle);
+
+        return fragment;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
+        if (getArguments() != null) {
+            mIsFromSettings = getArguments().getBoolean(RateUtils.FROM_SETTINGS);
+        }
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(STYLE_NORMAL, R.style.AppBottomSheetDialogTheme);
+    }
+
+    @Override
+    public void show(@NonNull FragmentManager manager, @Nullable String tag) {
+        try {
+            BraveAskPlayStoreRatingDialog fragment =
+                    (BraveAskPlayStoreRatingDialog) manager.findFragmentByTag(
+                            BraveAskPlayStoreRatingDialog.TAG_FRAGMENT);
+            FragmentTransaction transaction = manager.beginTransaction();
+            if (fragment != null) {
+                transaction.remove(fragment);
+            }
+            transaction.add(this, tag);
+            transaction.commitAllowingStateLoss();
+        } catch (IllegalStateException e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
+
+    @SuppressLint("RestrictedApi")
+    @Override
+    public void setupDialog(@NonNull Dialog dialog, int style) {
+        super.setupDialog(dialog, style);
+        if (mReviewManager == null) {
+            mReviewManager = ReviewManagerFactory.create(mContext);
+        }
+
+        final View view = LayoutInflater.from(getContext())
+                                  .inflate(R.layout.brave_ask_play_store_rating_dialog, null);
+        clickRateNowButton(view);
+        clickNotNowButton(view);
+        dialog.setContentView(view);
+    }
+
+    /**
+     * Sets the ReviewManager for testing purposes. This allows injecting FakeReviewManager in
+     * tests.
+     *
+     * @param reviewManager The ReviewManager instance to use (can be FakeReviewManager for tests)
+     */
+    @VisibleForTesting
+    void setReviewManagerForTesting(ReviewManager reviewManager) {
+        mReviewManager = reviewManager;
+    }
+
+    private void clickRateNowButton(View view) {
+        Button rateNowButton = view.findViewById(R.id.rate_now_button);
+        rateNowButton.setOnClickListener(
+                (v) -> {
+                    try {
+                        if (mIsFromSettings
+                                && !ChromeSharedPreferences.getInstance()
+                                        .readBoolean("qa_force_in_app_review", false)) {
+                            RateUtils.getInstance().openPlaystore(mContext);
+                        } else {
+                            launchReviewFlow();
+                        }
+                    } catch (NullPointerException e) {
+                        Log.e(TAG, "In-App launch Review exception");
+                    }
+                    // The delay gives time for the Play Store/review flow to launch
+                    // before dismissing the dialog and prevents visual glitches where
+                    // dialog disappears before external app launches.
+                    PostTask.postDelayedTask(
+                            TaskTraits.UI_DEFAULT, this::dismiss, DIALOG_DISMISS_DELAY_MS);
+                });
+    }
+
+    private void clickNotNowButton(View view) {
+        Button rateNotNowButton = view.findViewById(R.id.rate_not_now_button);
+        rateNotNowButton.setOnClickListener((v) -> dismiss());
+    }
+
+    private void launchReviewFlow() {
+        if (mReviewManager == null || !(mContext instanceof Activity)) {
+            RateUtils.getInstance().openPlaystore(mContext);
+            return;
+        }
+
+        // Request a fresh ReviewInfo right before launching. According to Google's official
+        // documentation (https://developer.android.com/guide/playcore/in-app-review),
+        // ReviewInfo objects are valid for a limited time and should be requested shortly
+        // before launching the review flow to ensure validity.
+        Task<ReviewInfo> request = mReviewManager.requestReviewFlow();
+        request.addOnCompleteListener(
+                task -> {
+                    if (!task.isSuccessful()) {
+                        // If requestReviewFlow fails, fall back to opening Play Store directly
+                        Log.e(TAG, "Failed to request review flow: " + task.getException());
+                        RateUtils.getInstance().openPlaystore(mContext);
+                        return;
+                    }
+                    ReviewInfo reviewInfo = task.getResult();
+                    if (reviewInfo == null) {
+                        Log.e(TAG, "ReviewInfo is null, falling back to Play Store");
+                        RateUtils.getInstance().openPlaystore(mContext);
+                        return;
+                    }
+
+                    // Launch review flow with fresh ReviewInfo
+                    Task<Void> flow =
+                            mReviewManager.launchReviewFlow((Activity) mContext, reviewInfo);
+                    flow.addOnCompleteListener(
+                            task1 -> {
+                                if (!task1.isSuccessful() && task1.getException() != null) {
+                                    // Handle failures reported back through the Task API.
+                                    // Note: This won't catch crashes in Play Store's activity
+                                    // (like BadParcelableException), but will catch other failures.
+                                    Exception exception = task1.getException();
+                                    Log.e(
+                                            TAG,
+                                            "Review flow failed: " + exception.getMessage(),
+                                            exception);
+                                    RateUtils.getInstance().openPlaystore(mContext);
+                                }
+                                // The flow has finished. The API does not indicate whether the user
+                                // reviewed or not, or even whether the review dialog was shown.
+                                // Thus, no matter the result, we continue our app flow.
+                            });
+                });
+    }
+}

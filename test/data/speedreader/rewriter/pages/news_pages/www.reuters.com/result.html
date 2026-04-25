@@ -1,0 +1,495 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Exclusive: China regulator probes banks' property loan exposure</title><body id="article"><h1 class="title metadata">Exclusive: China regulator probes banks' property loan exposure</h1><p class="subhead metadata">China's banking regulator is scrutinising property sector loan portfolios of some local and foreign lenders to assess systemic risks, sources with knowledge of the matter said, as the real estate sector's debt crisis worsens.</p><div class=""><p class="metadata date">Updated Aug. 18, 2022 09:35 AM</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr><p class="text__text__1FZLe text__dark-grey__3Ml43 text__regular__2N1Xr text__large__nEccO body__base__22dCE body__large_body__FV5_X article-body__element__2p5pI" data-testid="paragraph-0">SHANGHAI/BEIJING, Aug 18 (Reuters) - China's banking regulator is scrutinising property sector loan portfolios of some local and foreign lenders to assess systemic risks, sources with knowledge of the matter said, as the real estate sector's debt crisis worsens.</p><p class="text__text__1FZLe text__dark-grey__3Ml43 text__regular__2N1Xr text__large__nEccO body__base__22dCE body__large_body__FV5_X article-body__element__2p5pI" data-testid="paragraph-1">As part of their assessment, the China Banking and Insurance Regulatory Commission (CBIRC) is looking at banks' loan book exposure to developers to find out if those credit decisions were made according to the rules, one of the sources said.</p><p class="text__text__1FZLe text__dark-grey__3Ml43 text__regular__2N1Xr text__large__nEccO body__base__22dCE body__large_body__FV5_X article-body__element__2p5pI" data-testid="paragraph-2">The aim of the latest regulatory probe is to measure risks to the financial system from the ongoing property sector turmoil in the world's second-largest economy, two of the sources said. It was not immediately clear what action the regulator might take after the investigation.</p><div class="registration-prompt__container__2jf5K registration-prompt__inline__2WDU- article-body__element__2p5pI article-body__inline-registration-prompt__1-N9W"><div class="registration-prompt__text-content__o0YET"><h5 class="text__text__1FZLe text__white__3r45t text__medium__1kbOh text__heading_5__2krbj heading__base__2T28j heading__heading_5__2A2g- registration-prompt__heading__3fq-h" data-testid="Heading">Register now for FREE unlimited access to Reuters.com</h5></div></div><p class="text__text__1FZLe text__dark-grey__3Ml43 text__regular__2N1Xr text__large__nEccO body__base__22dCE body__large_body__FV5_X article-body__element__2p5pI" data-testid="paragraph-3">The CBIRC did not respond to Reuters requests for comment.</p><p class="text__text__1FZLe text__dark-grey__3Ml43 text__regular__2N1Xr text__large__nEccO body__base__22dCE body__large_body__FV5_X article-body__element__2p5pI" data-testid="paragraph-4">All the sources declined to be named due to the sensitivity of the matter.</p><p class="text__text__1FZLe text__dark-grey__3Ml43 text__regular__2N1Xr text__large__nEccO body__base__22dCE body__large_body__FV5_X article-body__element__2p5pI" data-testid="paragraph-5">The move comes as policymakers have been trying to stabilise the property sector that accounts for a quarter of the economy after a string of defaults among developers on their bond repayments and a slump in home sales.</p><p class="text__text__1FZLe text__dark-grey__3Ml43 text__regular__2N1Xr text__large__nEccO body__base__22dCE body__large_body__FV5_X article-body__element__2p5pI" data-testid="paragraph-6">The investigation underscores the challenges for Beijing in its efforts to encourage banks to extend fresh loans to embattled real estate developers, while managing lending risks.</p><p class="text__text__1FZLe text__dark-grey__3Ml43 text__regular__2N1Xr text__large__nEccO body__base__22dCE body__large_body__FV5_X article-body__element__2p5pI" data-testid="paragraph-7">Property loans accounted for 25.7% of total banking sector credit in China as of end-June, Chinese central bank data showed. The banking sector's total outstanding loans was 206 trillion yuan ($30.3 trillion) at the end of the first half.</p><p class="text__text__1FZLe text__dark-grey__3Ml43 text__regular__2N1Xr text__large__nEccO body__base__22dCE body__large_body__FV5_X article-body__element__2p5pI" data-testid="paragraph-8">While Chinese banks have the biggest exposure to local developers and homebuyers, foreign lenders including HSBC Holdings <a class="text__text__1FZLe text__dark-grey__3Ml43 text__medium__1kbOh text__large__nEccO link__underline_default__2prE_" data-testid="Link" href="https://www.reuters.com/companies/HSBA.L" target="_blank">(HSBA.L)</a> and Standard Chartered <a class="text__text__1FZLe text__dark-grey__3Ml43 text__medium__1kbOh text__large__nEccO link__underline_default__2prE_" data-testid="Link" href="https://www.reuters.com/companies/STAN.L" target="_blank">(STAN.L)</a> lend to property firms.</p><p class="text__text__1FZLe text__dark-grey__3Ml43 text__regular__2N1Xr text__large__nEccO body__base__22dCE body__large_body__FV5_X article-body__element__2p5pI" data-testid="paragraph-9">HSBC and StanChart spokespeople did not respond to requests for comment.</p><p class="text__text__1FZLe text__dark-grey__3Ml43 text__regular__2N1Xr text__large__nEccO body__base__22dCE body__large_body__FV5_X article-body__element__2p5pI" data-testid="paragraph-10">The debt crisis in China's property sector worsened in recent weeks after a large number of homebuyers threatened to stop making their mortgage payments for stalled property projects, aggravating a crisis that has already hit the economy and could lead to social instability. <a class="text__text__1FZLe text__dark-grey__3Ml43 text__medium__1kbOh text__large__nEccO link__underline_default__2prE_" data-testid="Link" href="/world/china/chinas-mortgage-boycott-spurs-shakeout-among-strapped-developers-2022-07-20/"> read more </a></p><p class="text__text__1FZLe text__dark-grey__3Ml43 text__regular__2N1Xr text__large__nEccO body__base__22dCE body__large_body__FV5_X article-body__element__2p5pI" data-testid="paragraph-11">The CBIRC is also asking some developers for details of their cash positions and the source of money for debt repayments, a third banking source said. The probe is different to the routine self-reporting the regulator requires from banks.</p><p class="text__text__1FZLe text__dark-grey__3Ml43 text__regular__2N1Xr text__large__nEccO body__base__22dCE body__large_body__FV5_X article-body__element__2p5pI" data-testid="paragraph-12">Beijing's launch of tough leverage rules for developers in recent years has led to cashflow issues for many, leaving some scrambling from one month to the next to pay upcoming debt and sometimes failing.</p><p class="text__text__1FZLe text__dark-grey__3Ml43 text__regular__2N1Xr text__large__nEccO body__base__22dCE body__large_body__FV5_X article-body__element__2p5pI" data-testid="paragraph-13">"The regulator wants to know how to tailor policy and assess risk," said one banker at a foreign lender, who has been asked for property sector-related lending documents over the last couple of weeks.</p><p class="text__text__1FZLe text__dark-grey__3Ml43 text__regular__2N1Xr text__large__nEccO body__base__22dCE body__large_body__FV5_X article-body__element__2p5pI" data-testid="paragraph-14">The investigation is very detailed and loan officers are being approached multiple times, sometimes over many weeks for additional documents on lending to specific developers, two of the sources said.</p><p class="text__text__1FZLe text__dark-grey__3Ml43 text__regular__2N1Xr text__large__nEccO body__base__22dCE body__large_body__FV5_X article-body__element__2p5pI" data-testid="paragraph-15">The rise in mortgage defaults raises risks for banks and developers.</p><p class="text__text__1FZLe text__dark-grey__3Ml43 text__regular__2N1Xr text__large__nEccO body__base__22dCE body__large_body__FV5_X article-body__element__2p5pI" data-testid="paragraph-16">"The risk of new NPLs (non-performing loans) will remain a threat to banks' asset quality," said rating agency Moody's in a June note.</p><p class="text__text__1FZLe text__dark-grey__3Ml43 text__regular__2N1Xr text__large__nEccO body__base__22dCE body__large_body__FV5_X article-body__element__2p5pI" data-testid="paragraph-17">Commercial banks' non-performing loan ratio stood at 1.67% at the end of June, down from 1.73% at the beginning of this year, according to CBIRC data.</p><p class="text__text__1FZLe text__dark-grey__3Ml43 text__regular__2N1Xr text__large__nEccO body__base__22dCE body__large_body__FV5_X article-body__element__2p5pI" data-testid="paragraph-18">New bank lending in China tumbled more than expected in July while broad credit growth slowed, as fresh COVID-19 flare-ups, worries about jobs and the property crisis made companies and consumers wary of taking on more debt. <a class="text__text__1FZLe text__dark-grey__3Ml43 text__medium__1kbOh text__large__nEccO link__underline_default__2prE_" data-testid="Link" href="/markets/rates-bonds/china-new-bank-loans-tumble-more-than-expected-credit-growth-slows-2022-08-12/"> read more </a></p><p class="text__text__1FZLe text__dark-grey__3Ml43 text__regular__2N1Xr text__large__nEccO body__base__22dCE body__large_body__FV5_X article-body__element__2p5pI" data-testid="paragraph-19">The property sector credit trouble is at risk of seeping into secondary industries such as asset management companies, privately-owned construction firms and small steelmakers, said Fitch Ratings in an August note.</p><p class="text__text__1FZLe text__dark-grey__3Ml43 text__regular__2N1Xr text__large__nEccO body__base__22dCE body__large_body__FV5_X article-body__element__2p5pI" data-testid="paragraph-20">($1 = 6.7890 Chinese yuan)</p><div class="registration-prompt__container__2jf5K registration-prompt__inline__2WDU- article-body__element__2p5pI"><div class="registration-prompt__text-content__o0YET"><h5 class="text__text__1FZLe text__white__3r45t text__medium__1kbOh text__heading_5__2krbj heading__base__2T28j heading__heading_5__2A2g- registration-prompt__heading__3fq-h" data-testid="Heading">Register now for FREE unlimited access to Reuters.com</h5></div></div><p><span class="text__text__1FZLe text__dark-grey__3Ml43 text__regular__2N1Xr text__default__UPMUu sign-off__text__PU3Aj" data-testid="Text">Editing by Sumeet Chatterjee and Jacqueline Wong</span></p><p class="text__text__1FZLe text__dark-grey__3Ml43 text__regular__2N1Xr text__large__nEccO body__base__22dCE body__large_body__FV5_X article-body__element__2p5pI" data-testid="Body">Our Standards: <a class="text__text__1FZLe text__dark-grey__3Ml43 text__medium__1kbOh text__large__nEccO link__underline_default__2prE_" data-testid="Link" href="https://www.thomsonreuters.com/en/about-us/trust-principles.html" target="_blank">The Thomson Reuters Trust Principles.</a></p><div class="article-body__side-rail__Ycpe0"><p class="text__text__1FZLe text__medium-grey__3A_RT text__regular__2N1Xr text__small__1kGq2 body__base__22dCE body__caption__3L8vY article-body__primary-image-caption__WHVnb" data-testid="primary-image-caption" id="primary-image-caption">A man works at a construction site of apartment buildings in Beijing, China, July 15, 2022. REUTERS/Thomas Peter</p><div class="registration-prompt__container__2jf5K column article-body__aside-registration-prompt__2ivER"><div class="registration-prompt__text-content__o0YET"><h6 class="text__text__1FZLe text__white__3r45t text__medium__1kbOh text__heading_6__1qUJ5 heading__base__2T28j heading__heading_6__RtD9P registration-prompt__heading__3fq-h" data-testid="Heading">Register now for FREE unlimited access to Reuters.com</h6></div></div></div></body>

@@ -1,0 +1,156 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_UTILS_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_UTILS_H_
+
+#include <memory>
+#include <optional>
+#include <string>
+#include <vector>
+
+#include "base/containers/span.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
+class PrefService;
+class GURL;
+
+namespace brave_wallet {
+
+class CardanoAddress;
+
+// Returns true if Brave Wallet is allowed (not disabled by policy).
+bool IsAllowed(PrefService* prefs);
+
+bool EncodeString(std::string_view input, std::string* output);
+bool EncodeStringArray(base::span<const std::string> input,
+                       std::string* output);
+bool EncodeStringArray(base::span<const std::string_view> input,
+                       std::string* output);
+
+bool DecodeString(size_t offset, std::string_view input, std::string* output);
+
+// Updates preferences for when the wallet is unlocked.
+// This is done in a utils function instead of in the KeyringService
+// because we call it both from the old extension and the new wallet when
+// it unlocks.
+void UpdateLastUnlockPref(PrefService* prefs);
+
+// Use kBraveWalletLastUnlockTime pref to determine if any wallets has been
+// created before, regardless of still existed or not.
+bool HasCreatedWallets(PrefService* prefs);
+
+base::DictValue TransactionReceiptToValue(const TransactionReceipt& tx_receipt);
+std::optional<TransactionReceipt> ValueToTransactionReceipt(
+    const base::DictValue& value);
+
+base::DictValue SwapInfoToValue(const mojom::SwapInfoPtr& swap_info);
+mojom::SwapInfoPtr ValueToSwapInfo(const base::DictValue& value);
+
+bool IsEndpointUsingBraveWalletProxy(const GURL& url);
+base::flat_map<std::string, std::string> MakeBraveServicesKeyHeaders();
+
+void SetDefaultEthereumWallet(PrefService* prefs,
+                              mojom::DefaultWallet default_wallet);
+void SetDefaultSolanaWallet(PrefService* prefs,
+                            mojom::DefaultWallet default_wallet);
+void SetDefaultCardanoWallet(PrefService* prefs,
+                             mojom::DefaultWallet default_wallet);
+mojom::DefaultWallet GetDefaultEthereumWallet(PrefService* prefs);
+mojom::DefaultWallet GetDefaultSolanaWallet(PrefService* prefs);
+mojom::DefaultWallet GetDefaultCardanoWallet(PrefService* prefs);
+void SetDefaultBaseCurrency(PrefService* prefs, std::string_view currency);
+std::string GetDefaultBaseCurrency(PrefService* prefs);
+void SetDefaultBaseCryptocurrency(PrefService* prefs,
+                                  std::string_view cryptocurrency);
+std::string GetDefaultBaseCryptocurrency(PrefService* prefs);
+
+std::string GetEnsRegistryContractAddress(std::string_view chain_id);
+
+mojom::BlockchainTokenPtr GetUserAsset(PrefService* prefs,
+                                       mojom::CoinType coin,
+                                       std::string_view chain_id,
+                                       std::string_view address,
+                                       std::string_view token_id,
+                                       bool is_erc721,
+                                       bool is_erc1155,
+                                       bool is_shielded);
+
+std::vector<mojom::BlockchainTokenPtr> GetAllUserAssets(PrefService* prefs);
+mojom::BlockchainTokenPtr AddUserAsset(PrefService* prefs,
+                                       mojom::BlockchainTokenPtr token);
+void EnsureNativeTokenForNetwork(PrefService* prefs,
+                                 const mojom::NetworkInfo& network_info);
+bool RemoveUserAsset(PrefService* prefs,
+                     const mojom::BlockchainTokenPtr& token);
+bool SetUserAssetVisible(PrefService* prefs,
+                         const mojom::BlockchainTokenPtr& token,
+                         bool visible);
+bool SetAssetSpamStatus(PrefService* prefs,
+                        const mojom::BlockchainTokenPtr& token,
+                        bool is_spam);
+bool SetAssetSPLTokenProgram(PrefService* prefs,
+                             const mojom::BlockchainTokenPtr& token,
+                             mojom::SPLTokenProgram program);
+bool SetAssetCompressed(PrefService* prefs,
+                        const mojom::BlockchainTokenPtr& token);
+
+base::ListValue GetDefaultUserAssets();
+
+std::string GetPrefKeyForCoinType(mojom::CoinType coin);
+
+// Returns a string used for web3_clientVersion in the form of
+// BraveWallet/v[chromium-version]. Note that we expose only the Chromium
+// version and not the Brave version because that way no extra entropy
+// is leaked from what the user agent provides for fingerprinting.
+std::string GetWeb3ClientVersion();
+
+// Given an url, return eTLD + 1 for that Origin
+std::string eTLDPlusOne(const url::Origin& origin);
+
+mojom::OriginInfoPtr MakeOriginInfo(const url::Origin& origin);
+
+// Hex string of random 32 bytes.
+std::string GenerateRandomHexString();
+
+std::string WalletInternalErrorMessage();
+std::string WalletParsingErrorMessage();
+std::string WalletInsufficientBalanceErrorMessage();
+std::string WalletUserRejectedRequestErrorMessage();
+std::string WalletAmountTooSmallErrorMessage();
+
+mojom::BlockchainTokenPtr GetBitcoinNativeToken(std::string_view chain_id);
+mojom::BlockchainTokenPtr GetZcashNativeToken(std::string_view chain_id);
+mojom::BlockchainTokenPtr GetZcashNativeShieldedToken(
+    std::string_view chain_id);
+mojom::BlockchainTokenPtr GetCardanoNativeToken(std::string_view chain_id);
+mojom::BlockchainTokenPtr GetPolkadotNativeToken(std::string_view chain_id);
+
+mojom::BlowfishOptInStatus GetTransactionSimulationOptInStatus(
+    PrefService* prefs);
+
+void SetTransactionSimulationOptInStatus(
+    PrefService* prefs,
+    const mojom::BlowfishOptInStatus& status);
+
+bool IsRetriableStatus(mojom::TransactionStatus status);
+
+std::string SPLTokenProgramToProgramID(mojom::SPLTokenProgram program);
+
+std::string GetAccountPermissionIdentifier(
+    const mojom::AccountIdPtr& account_id);
+
+bool IsBraveWalletOrigin(const url::Origin& origin);
+
+std::optional<std::map<CardanoAddress, mojom::CardanoKeyIdPtr>>
+GetCardanoAddressesWithKeyIds(
+    const std::vector<mojom::CardanoAddressPtr>& addresses);
+
+}  // namespace brave_wallet
+
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_UTILS_H_

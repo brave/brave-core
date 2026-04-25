@@ -1,0 +1,64 @@
+#!/bin/bash
+# This postinstall script is run on macOS pkg installers
+
+# Extract a referral / promo code from the installer path of the format /dir/path/Setup-Brave-Anything-xxx001.pkg
+# where the promo code would be xxx001
+installerPath=$1
+installationPath=$2
+
+promoCode=""
+
+# Detect if installer contained a referral promotion code within the filename
+standardPromoCodeRegex='[a-zA-Z0-9]{3}[0-9]{3}'
+installerPathPromoCodeRegex=".+-((${standardPromoCodeRegex})|([a-zA-Z]{1,}-[a-zA-Z]{1,}))([[:blank:]]?\([0-9]+\))?\.pkg$"
+if [[ $installerPath =~ $installerPathPromoCodeRegex ]]; then
+  n=${#BASH_REMATCH[*]}
+  rematch=${BASH_REMATCH[1]}
+  if [[ $n -ge 1 && ! ${rematch} =~ ^Browser-.*$ ]]; then
+    promoCode=${rematch}
+    if [[ $promoCode =~ $standardPromoCodeRegex ]]; then
+      promoCode=$(tr a-z A-Z <<< $promoCode)
+    fi
+    echo "Got promo code: $promoCode"
+  fi
+fi
+
+# Get a channel-safe version of the application name (based on the
+# .pkg file name)
+if [ "$promoCode" == "" ]; then
+  appName=$(basename "$1" | sed "s/.pkg//" | sed "s/ /\-/g")
+else
+  appName=$(basename "$1" | sed "s/.pkg//" | sed "s/ /\-/g" | perl -ple "s/-${promoCode}//i")
+fi
+
+appNameNoDash=$(echo $appName | sed "s/-/ /g")
+installationAppPath="$installationPath/${appNameNoDash}.app"
+userDataDir="$HOME/Library/Application Support/BraveSoftware"
+appDataDir="$userDataDir/${appName}"
+promoCodePath="$appDataDir/promoCode"
+
+# pkg runs this script as root so we need to get current username
+userName="$USER"
+
+echo "Installer path is: $installerPath"
+echo "Username is: $userName"
+echo "Installation app path is: $installationAppPath"
+
+# Fix the permissions on installed .app so that updater has permissions to write new contents.
+# By default pkg will install the .app with root:wheel owner and 'drwxr-xr-x' permission.
+# We'll allow all admin users of the machine permissions to update the app, as well as the installing-user
+# (who may not be an admin).
+sudo chmod -R 775 "$installationAppPath"
+sudo chown -R $userName "$installationAppPath"
+sudo chgrp -R admin "$installationAppPath"
+
+# handle promoCode specific logic (if promoCode was found)
+if [ "$promoCode" != "" ]; then
+  echo "Writing to user data directory at: $promoCodePath"
+  mkdir -p "$appDataDir"
+  echo "$promoCode" > "$promoCodePath"
+  # fix permissions
+  sudo chown -R "$userName" "$userDataDir"
+fi
+
+exit 0

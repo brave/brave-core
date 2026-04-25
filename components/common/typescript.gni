@@ -1,0 +1,296 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/resources/brave_grit.gni")
+import("rust_to_wasm.gni")
+
+# JS / TS imports via `require` or `import` will be added to a list and
+# provided to GN so it knows which projects to re-build when you modify a file
+# that is used by your build.
+# This variable contains additional files that will cause a re-build of all
+# WebUI projects if they are modified:
+brave_common_web_compile_inputs = [
+  # Global Definitions
+  # Only add actual globally-available type definitions to this directory,
+  # see ../definitions/README.md.
+  rebase_path("../definitions/adBlock.d.ts"),
+  rebase_path("../definitions/ipfs.d.ts"),
+  rebase_path("../definitions/webcompatReporter.d.ts"),
+  rebase_path("../definitions/chromel.d.ts"),
+  rebase_path("../definitions/global.d.ts"),
+  rebase_path("../definitions/newTab.d.ts"),
+  rebase_path("../definitions/non-js-loaders.d.ts"),
+  rebase_path("../definitions/prettier-bytes.d.ts"),
+  rebase_path("../definitions/throttleit.d.ts"),
+  rebase_path("../definitions/torInternals.d.ts"),
+  rebase_path("../definitions/welcome.d.ts"),
+
+  # webpack config changes warrant a re-build of all webpack builds
+  rebase_path("../webpack/webpack.config.js"),
+  rebase_path("../webpack/gen-webpack-grd.js"),
+  rebase_path("../webpack/path-map.js"),
+  rebase_path("../webpack/webpack-plugin-depfile.js"),
+  rebase_path("../webpack/xhr-compile-async-wasm-plugin.js"),
+  rebase_path("../webpack/plugins/ifdef-loader.ts"),
+
+  # typescript config changes warrant a re-build of all typescript builds
+  "//brave/tsconfig.json",
+  "//brave/tsconfig-webpack.json",
+
+  # modifying npm dependencies or scripts warrants a re-build of all webpack
+  # and typescript builds
+  "$root_gen_dir/brave/components/common/package.json",
+]
+
+# Runs a frontend compiler for the specified entry point(s) and outputs a GRD file
+# which includes all the generated files.
+#
+# Argument:
+#   entry_points
+#     The root of the dependency tree to start the webpack compilation.
+#     Format is an array of 2-member string arrays containing the bundle's
+#     output name and the input file, e.g.
+#     entry_points = [
+#       ["build_output": "pages/myWebPage.js"]
+#     ]
+#   resource_name
+#     Unique name for output which is used for:
+#       - output directory part
+#       - grd name, e.g. resourcename.grd
+#       - intended pak name, e.g. resourcename_generated.pak
+#       - generated resource map, e.g. resourcename_generated_map.h
+#       - resource ID (e.g. `IDR_RESOURCENAME_MYFILE_JS`)
+#   output_dir
+#     Optional custom path for compiled output
+#   generate_grdp
+#     Optionally generate a Grit Part file instead of a grit file.
+#   resource_path_prefix
+#     Sometimes, as with extensions, it is desirable to specify a prefix which
+#     is used to import files. For example, the path prefix brave/foo means that
+#     to import subfolder/myFile.js you would write
+#       import('brave/foo/subfolder/myFile.js')
+#   public_asset_path
+#     Support a different URL path to access generated resources at.
+#     The default is '/' and we'll want to keep that most of the time,
+#     but if we're specifying resource_path_prefix then normally a portion of
+#     that will need to be involved in the public_asset_path.
+#     For extensions, this is the relative path from where the manifest is to
+#     where the resource_path_prefix ends.
+#   webpack_aliases
+#     Support for web pack aliases that directly passed to webpack config.
+#   output_module
+#     If true, the resulting bundle will be a JS module that can import other
+#     modules using `import` syntax. This implies |no_iife=true|.
+#     Defaults to true.
+#   rust_packages
+#     An optional list of Cargo.toml files that identify the Rust packages
+#     to be compiled to WASM.
+#   sync_wasm
+#     Synchronous WASM loading (experiments.syncWebAssembly - deprecated).
+#     If not used, we default to asynchronous WASM loading (experiments.asyncWebAssembly).
+#   no_iife
+#     If true, the resulting bundle will not be wrapped in an IIFE.
+template("transpile_web_ui") {
+  if (defined(invoker.rust_packages)) {
+    rust_to_wasm("build_rust_packages_${invoker.resource_name}") {
+      forward_variables_from(invoker, [ "inputs" ])
+      rust_packages = invoker.rust_packages
+    }
+  }
+
+  action(target_name) {
+    script = "//brave/script/transpile-web-ui.py"
+
+    # make sure rebuilds when common files change
+    inputs = brave_common_web_compile_inputs
+    inputs += [ "$root_gen_dir/tsconfig-webpack.json" ]
+    if (defined(invoker.inputs)) {
+      inputs += invoker.inputs
+    }
+
+    deps = [
+      "//brave/components/common:preprocess_package_json",
+
+      # Ensure chrome://resources/js file and typescript definitions are
+      # generated
+      "//brave/components/webpack:generate_tsconfig",
+    ]
+
+    if (defined(invoker.deps)) {
+      # If there are any mojo js bindings deps make sure to build mojo js
+      # bindings first
+      has_mojo_js_deps = filter_include(invoker.deps, [ "*:mojom_js" ])
+      if (has_mojo_js_deps != []) {
+        deps += [ "//mojo/public/js:bindings_module" ]
+      }
+      deps += invoker.deps
+    }
+
+    if (defined(invoker.rust_packages)) {
+      deps += [ ":build_rust_packages_${invoker.resource_name}" ]
+    }
+
+    # This depfile will be generated by the build script.
+    # We keep it outside the output_dir since we don't want
+    # it to be included in the packaged output.
+    # The file format is described at:
+    # https://ninja-build.org/manual.html#_depfile
+    # https://gn.googlesource.com/gn/+/master/docs/reference.md#var_depfile
+    # https://chromium.googlesource.com/chromium/src/build/+/HEAD/docs/writing_gn_templates.md#inputs-and-depfiles
+    depfile = "${target_gen_dir}/${target_name}.d"
+
+    # This file contains the webpack import paths which describe the folders and files (indirectly) imported by the entry point
+    # This is important to ensure gn knows about webpacks implicit dependencies.
+    # We write those to json and cross reference them in a later stage to ensure the list is complete
+    import_paths_file = "${target_gen_dir}/${target_name}.data_paths.json"
+
+    resource_name = invoker.resource_name
+
+    # Allow target to define custom path
+    # (may not be root_gen_dir relative)
+    if (defined(invoker.output_dir)) {
+      gen_output_dir = invoker.output_dir
+    } else {
+      gen_output_dir = "$root_gen_dir/brave/web-ui-$resource_name"
+    }
+
+    # Output is a GRD that includes all the resources, and a bundle for each
+    # entry point or a GRDP file that includes all the resources.
+    grd_name = "$resource_name.grd"
+    if (defined(invoker.generate_grdp) && invoker.generate_grdp) {
+      grd_name = "$resource_name.grdp"
+    }
+
+    outputs = [ "$gen_output_dir/$grd_name" ]
+
+    # Base script arguments:
+    #  - resource (compiled) output destination
+    #  - GRD summary of output files destination
+    #  - unique name to stamp in GRD file
+    #  - depfile summary of input files destination
+    args = [
+      # output_path arg must be relative to root_build_dir so that
+      # depfile header format is correct (see docs above).
+      "--output_path=" + rebase_path(gen_output_dir, root_build_dir),
+      "--root_gen_dir=" + rebase_path(root_gen_dir),
+      "--import_paths_file=" + rebase_path(import_paths_file),
+      "--grd_name=$grd_name",
+      "--resource_name=$resource_name",
+      "--depfile_path=" + rebase_path(depfile),
+    ]
+
+    if (defined(invoker.webpack_aliases)) {
+      # support multiple web pack aliases
+      foreach(alias, invoker.webpack_aliases) {
+        args += [ "--webpack_alias=" + alias ]
+      }
+    } else {
+      # For explanation of "chromeapp", see:
+      # https://github.com/brave/brave-browser/issues/5587
+      args += [ "--webpack_alias=chromeapp" ]
+    }
+
+    # support multiple entry points and named bundle JS filename
+    foreach(entry_point, invoker.entry_points) {
+      args += [ "--entry=" + entry_point[0] + "=" + entry_point[1] ]
+      inputs += [ entry_point[1] ]
+    }
+
+    if (defined(invoker.extra_modules)) {
+      # support multiple web pack aliases
+      foreach(alias, invoker.extra_modules) {
+        args += [ "--extra_modules=" + alias ]
+      }
+    }
+
+    if (defined(invoker.public_asset_path)) {
+      args += [ "--public_asset_path=" + invoker.public_asset_path ]
+    }
+
+    if (defined(invoker.resource_path_prefix)) {
+      args += [ "--resource_path_prefix=" + invoker.resource_path_prefix ]
+    }
+
+    # Default to output_module=true if not specified
+    if (!defined(invoker.output_module) || invoker.output_module) {
+      args += [ "--output_module" ]
+    }
+
+    if (is_official_build) {
+      args += [ "--production" ]
+    }
+
+    if (defined(invoker.sync_wasm) && invoker.sync_wasm) {
+      args += [ "--sync_wasm" ]
+    }
+
+    if (defined(invoker.no_iife) && invoker.no_iife) {
+      args += [ "--no_iife" ]
+    }
+
+    forward_variables_from(invoker,
+                           [
+                             "public_deps",
+                             "testonly",
+                             "visibility",
+                           ])
+
+    import_paths = [ "//brave/components/common/" ]
+    if (defined(invoker.imports_from)) {
+      import_paths += invoker.imports_from
+    }
+
+    write_file(import_paths_file, import_paths, "json")
+    inputs += [ import_paths_file ]
+    data = import_paths
+  }
+}
+
+# Runs grit for a specified GRD file generated from
+# a `:transpile_web_ui` target
+#
+# Argument
+#   resource_name
+#     Unique name for output which is used for:
+#       - grd name, e.g. resourcename.grd
+#       - intended pak name, e.g. resourcename_generated.pak
+#       - generated resource map, e.g. resourcename_generated_map.h
+#       - resource ID (e.g. `IDR_RESOURCENAME_MYFILE_JS`)
+#   output_dir
+#     Directory in which to place the output .pak file
+#   generated_dir
+#     Optional custom path for compiled output
+#
+template("pack_web_resources") {
+  brave_grit(target_name) {
+    resource_name = invoker.resource_name
+
+    if (defined(invoker.generated_dir)) {
+      generated_dir = invoker.generated_dir
+    } else {
+      generated_dir = "$root_gen_dir/brave/web-ui-$resource_name"
+    }
+    source = "$generated_dir/$resource_name.grd"
+
+    outputs = [
+      "grit/$resource_name" + "_generated.h",
+      "grit/$resource_name" + "_generated_map.cc",
+      "grit/$resource_name" + "_generated_map.h",
+      resource_name + "_generated.pak",
+    ]
+
+    output_dir = invoker.output_dir
+
+    forward_variables_from(invoker,
+                           [
+                             "deps",
+                             "public_deps",
+                             "data",
+                             "data_deps",
+                             "testonly",
+                             "visibility",
+                           ])
+  }
+}

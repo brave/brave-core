@@ -1,0 +1,2 @@
+[unstable]
+features = ["host_dep"]

@@ -1,0 +1,758 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+import { assertNotReached } from 'chrome://resources/js/assert.js'
+import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
+
+// redux
+import { useAppDispatch } from './use-redux'
+
+// actions
+import { UIActions } from '../slices/ui.slice'
+import { PanelActions } from '../../panel/actions'
+
+// utils
+import Amount from '../../utils/amount'
+import { getPriceRequestsForTokens } from '../../utils/pricing-utils'
+import { isHardwareAccount } from '../../utils/account-utils'
+import { getLocale } from '../../../common/locale'
+import { getCoinFromTxDataUnion } from '../../utils/network-utils'
+import { UISelectors } from '../selectors'
+import {
+  accountHasInsufficientFundsForGas,
+  accountHasInsufficientFundsForTransaction,
+  getTransactionGasFee,
+  parseTransactionWithPrices,
+  findTransactionToken,
+  isEthereumTransaction,
+  isZCashTransaction,
+  isBitcoinTransaction,
+  isEIP1559Transaction,
+  isCardanoTransaction,
+} from '../../utils/tx-utils'
+import { makeNetworkAsset } from '../../utils/asset-utils'
+
+// Custom Hooks
+import useGetTokenInfo from './use-get-token-info'
+import { useAccountOrb, useAddressOrb } from './use-orb'
+import { useSafeUISelector } from './use-safe-selector'
+import {
+  useApproveTransactionMutation,
+  useGetAccountInfosRegistryQuery,
+  useGetAccountTokenCurrentBalanceQuery,
+  useGetDefaultFiatCurrencyQuery,
+  useGetERC20AllowanceQuery,
+  useGetGasEstimation1559Query,
+  useGetNetworkQuery,
+  useGetSolanaEstimatedFeeQuery,
+  useGetTokenSpotPricesQuery,
+  useGetZCashTransactionTypeQuery,
+  useRejectTransactionsMutation,
+  walletApi,
+} from '../slices/api.slice'
+import {
+  usePendingTransactionsQuery,
+  useGetCombinedTokensListQuery,
+  useAccountQuery,
+  useAccountFromAddressQuery,
+} from '../slices/api.slice.extra'
+import { useSwapTransactionParser } from './use-swap-tx-parser'
+import {
+  defaultQuerySubscriptionOptions,
+  querySubscriptionOptions60s,
+} from '../slices/constants'
+import { useIsAccountSyncing } from './use_is_account_syncing'
+
+// Constants
+import {
+  BraveWallet,
+  emptyProviderErrorCodeUnion,
+  MaxPriorityFeeOptionType,
+} from '../../constants/types'
+import {
+  UpdateUnapprovedTransactionGasFieldsType,
+  UpdateUnapprovedTransactionNonceType,
+} from '../constants/action_types'
+import { MAX_UINT256 } from '../constants/magics'
+
+export const useSelectedPendingTransaction = () => {
+  // redux
+  const selectedPendingTransactionId = useSafeUISelector(
+    UISelectors.selectedPendingTransactionId,
+  )
+
+  // queries
+  const { pendingTransactions, isLoading: isLoadingPendingTransactions } =
+    usePendingTransactionsQuery({
+      accountId: null,
+      chainId: null,
+      coinType: null,
+    })
+
+  // computed
+  const selectedPendingTransaction = !pendingTransactions.length
+    ? undefined
+    : (pendingTransactions.find((tx) => tx.id === selectedPendingTransactionId)
+      ?? pendingTransactions[0])
+
+  // render
+  return { selectedPendingTransaction, isLoading: isLoadingPendingTransactions }
+}
+
+export const usePendingTransactions = () => {
+  // redux
+  const dispatch = useAppDispatch()
+  const selectedPendingTransactionId = useSafeUISelector(
+    UISelectors.selectedPendingTransactionId,
+  )
+
+  // mutations
+  const [rejectTransactions] = useRejectTransactionsMutation()
+  const [approveTransaction] = useApproveTransactionMutation()
+
+  // queries
+  const { data: defaultFiat } = useGetDefaultFiatCurrencyQuery()
+  const { data: combinedTokensList } = useGetCombinedTokensListQuery()
+  const { pendingTransactions } = usePendingTransactionsQuery({
+    accountId: null,
+    chainId: null,
+    coinType: null,
+  })
+  const { data: accounts } = useGetAccountInfosRegistryQuery()
+
+  const transactionInfo = React.useMemo(() => {
+    if (!pendingTransactions.length) {
+      return undefined
+    }
+    return (
+      pendingTransactions.find((tx) => tx.id === selectedPendingTransactionId)
+      ?? pendingTransactions[0]
+    )
+  }, [pendingTransactions, selectedPendingTransactionId])
+
+  const txCoinType = transactionInfo
+    ? getCoinFromTxDataUnion(transactionInfo.txDataUnion)
+    : undefined
+
+  const { data: transactionsNetwork } = useGetNetworkQuery(
+    transactionInfo && txCoinType !== undefined
+      ? {
+          chainId: transactionInfo.chainId,
+          coin: txCoinType,
+        }
+      : skipToken,
+  )
+
+  const networkAsset = React.useMemo(() => {
+    return makeNetworkAsset(transactionsNetwork)
+  }, [transactionsNetwork])
+
+  const txToken = findTransactionToken(transactionInfo, combinedTokensList)
+
+  const tokenPriceRequests = React.useMemo(
+    () => getPriceRequestsForTokens([txToken, networkAsset]),
+    [txToken, networkAsset],
+  )
+
+  const { data: spotPrices } = useGetTokenSpotPricesQuery(
+    tokenPriceRequests.length > 0 && defaultFiat
+      ? { requests: tokenPriceRequests, vsCurrency: defaultFiat }
+      : skipToken,
+    querySubscriptionOptions60s,
+  )
+
+  const {
+    data: solFeeEstimate,
+    isLoading: isLoadingSolFeeEstimates = txCoinType
+      === BraveWallet.CoinType.SOL,
+    isError: hasSolFeeEstimatesError,
+  } = useGetSolanaEstimatedFeeQuery(
+    txCoinType === BraveWallet.CoinType.SOL
+      && transactionInfo?.chainId
+      && transactionInfo?.id
+      ? {
+          chainId: transactionInfo.chainId,
+          txId: transactionInfo.id,
+        }
+      : skipToken,
+    defaultQuerySubscriptionOptions,
+  )
+
+  const { account: txAccount } = useAccountQuery(transactionInfo?.fromAccountId)
+
+  const isAccountSyncing = useIsAccountSyncing(txAccount?.accountId)
+
+  const {
+    data: gasEstimates,
+    isLoading: isLoadingGasEstimates,
+    isError: hasEvmFeeEstimatesError,
+  } = useGetGasEstimation1559Query(
+    transactionsNetwork
+      && transactionsNetwork.coin === BraveWallet.CoinType.ETH
+      && transactionInfo
+      && isEIP1559Transaction(transactionInfo)
+      ? transactionsNetwork.chainId
+      : skipToken,
+    defaultQuerySubscriptionOptions,
+  )
+
+  // tx detail & gas memos
+  const gasFee = React.useMemo(() => {
+    if (!transactionInfo) {
+      return ''
+    }
+
+    return txCoinType === BraveWallet.CoinType.SOL
+      ? (solFeeEstimate ?? '')
+      : getTransactionGasFee(transactionInfo)
+  }, [transactionInfo, txCoinType, solFeeEstimate])
+
+  const transactionDetails = React.useMemo(() => {
+    if (
+      !transactionInfo
+      || !spotPrices
+      || !txAccount
+      || !transactionsNetwork
+      || !accounts
+    ) {
+      return undefined
+    }
+
+    return parseTransactionWithPrices({
+      tx: transactionInfo,
+      accounts,
+      gasFee,
+      spotPrices,
+      tokensList: combinedTokensList,
+      transactionAccount: txAccount,
+      transactionNetwork: transactionsNetwork,
+    })
+  }, [
+    transactionInfo,
+    accounts,
+    spotPrices,
+    txAccount,
+    transactionsNetwork,
+    gasFee,
+    combinedTokensList,
+  ])
+
+  // token approval queries
+  const { data: erc20AllowanceResult } = useGetERC20AllowanceQuery(
+    txAccount && transactionDetails?.approvalTarget
+      ? {
+          contractAddress: transactionDetails.recipient,
+          ownerAddress: txAccount.address,
+          spenderAddress: transactionDetails.approvalTarget,
+          chainId: transactionDetails.chainId,
+        }
+      : skipToken,
+    defaultQuerySubscriptionOptions,
+  )
+
+  // balance queries
+  const { data: nativeBalance } = useGetAccountTokenCurrentBalanceQuery(
+    txAccount && transactionsNetwork
+      ? {
+          accountId: txAccount.accountId,
+          token: {
+            coin: transactionsNetwork.coin,
+            chainId: transactionsNetwork.chainId,
+            contractAddress: '',
+            isErc721: false,
+            isNft: false,
+            tokenId: '',
+            isShielded: transactionDetails?.token?.isShielded || false,
+          },
+        }
+      : skipToken,
+  )
+
+  const { data: transferTokenBalance } = useGetAccountTokenCurrentBalanceQuery(
+    txAccount && transactionDetails?.token
+      ? {
+          accountId: txAccount.accountId,
+          token: {
+            coin: transactionDetails.token.coin,
+            chainId: transactionDetails.token.chainId,
+            contractAddress: transactionDetails.token.contractAddress,
+            isErc721: transactionDetails.token.isErc721,
+            isNft: transactionDetails.token.isNft,
+            tokenId: transactionDetails.token.tokenId,
+            isShielded: transactionDetails.token.isShielded,
+          },
+        }
+      : skipToken,
+  )
+
+  const { sourceToken, sourceAmount } =
+    useSwapTransactionParser(transactionInfo)
+
+  const { data: sourceTokenBalance } = useGetAccountTokenCurrentBalanceQuery(
+    txAccount && sourceToken
+      ? {
+          accountId: txAccount.accountId,
+          token: {
+            coin: sourceToken.coin,
+            chainId: sourceToken.chainId,
+            contractAddress: sourceToken.contractAddress,
+            isErc721: sourceToken.isErc721,
+            isNft: sourceToken.isNft,
+            tokenId: sourceToken.tokenId,
+            isShielded: sourceToken.isShielded,
+          },
+        }
+      : skipToken,
+  )
+
+  const insufficientFundsError = React.useMemo(() => {
+    return transactionInfo && txAccount
+      ? accountHasInsufficientFundsForTransaction({
+          accountNativeBalance: nativeBalance || '',
+          accountTokenBalance: transferTokenBalance || '',
+          gasFee,
+          sourceAmount,
+          sourceTokenBalance: sourceTokenBalance || '',
+          tx: transactionInfo,
+          txAccount,
+        })
+      : false
+  }, [
+    gasFee,
+    nativeBalance,
+    sourceTokenBalance,
+    sourceAmount,
+    transactionInfo,
+    txAccount,
+    transferTokenBalance,
+  ])
+
+  const insufficientFundsForGasError = React.useMemo(() => {
+    return accountHasInsufficientFundsForGas({
+      accountNativeBalance: nativeBalance || '',
+      gasFee,
+    })
+  }, [nativeBalance, gasFee])
+
+  const {
+    suggestedMaxPriorityFeeOptions,
+    suggestedMaxPriorityFeeChoices,
+    baseFeePerGas,
+  } = React.useMemo(
+    () => ({
+      suggestedMaxPriorityFeeOptions: [
+        {
+          id: 'slow',
+          fee: gasEstimates?.slowMaxPriorityFeePerGas || '0',
+          duration: '',
+        },
+        {
+          id: 'average',
+          fee: gasEstimates?.avgMaxPriorityFeePerGas || '0',
+          duration: '',
+        },
+        {
+          id: 'fast',
+          fee: gasEstimates?.fastMaxPriorityFeePerGas || '0',
+          duration: '',
+        },
+      ] as MaxPriorityFeeOptionType[],
+      suggestedMaxPriorityFeeChoices: [
+        gasEstimates?.slowMaxPriorityFeePerGas || '0',
+        gasEstimates?.avgMaxPriorityFeePerGas || '0',
+        gasEstimates?.fastMaxPriorityFeePerGas || '0',
+      ],
+      baseFeePerGas: gasEstimates?.baseFeePerGas || '0',
+    }),
+    [gasEstimates],
+  )
+
+  const transactionQueueNumber =
+    pendingTransactions.findIndex((tx) => tx.id === transactionInfo?.id) + 1
+  const transactionsQueueLength = pendingTransactions.length
+
+  const isERC20Approve =
+    transactionInfo?.txType === BraveWallet.TransactionType.ERC20Approve
+  const isERC721SafeTransferFrom =
+    transactionInfo?.txType
+    === BraveWallet.TransactionType.ERC721SafeTransferFrom
+  const isERC721TransferFrom =
+    transactionInfo?.txType === BraveWallet.TransactionType.ERC721TransferFrom
+
+  const isSolanaDappTransaction = transactionInfo?.txType
+    ? [
+        BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
+        BraveWallet.TransactionType.SolanaDappSignTransaction,
+      ].includes(transactionInfo.txType)
+    : false
+
+  // methods
+  const onEditAllowanceSave = React.useCallback(
+    (allowance: string) => {
+      if (transactionInfo?.id && transactionDetails) {
+        dispatch(
+          walletApi.endpoints.updateUnapprovedTransactionSpendAllowance //
+            .initiate({
+              chainId: transactionInfo.chainId,
+              txMetaId: transactionInfo.id,
+              spenderAddress: transactionDetails.approvalTarget || '',
+              allowance: new Amount(allowance)
+                .multiplyByDecimals(transactionDetails.decimals)
+                .toHex(),
+            }),
+        )
+      }
+    },
+    [transactionInfo, transactionDetails, dispatch],
+  )
+
+  const updateUnapprovedTransactionNonce = React.useCallback(
+    (args: UpdateUnapprovedTransactionNonceType) => {
+      dispatch(
+        walletApi.endpoints.updateUnapprovedTransactionNonce.initiate(args),
+      )
+    },
+    [dispatch],
+  )
+
+  const queueNextTransaction = React.useCallback(() => {
+    // if id hasn't been set, start at beginning of tx list
+    const currentIndex = selectedPendingTransactionId
+      ? pendingTransactions.findIndex(
+          (tx) => tx.id === selectedPendingTransactionId,
+        )
+      : 0
+
+    const nextIndex = currentIndex + 1
+
+    const newSelectedPendingTransactionId =
+      nextIndex === pendingTransactions.length // at end of list?
+        ? pendingTransactions[0]?.id // go to first item in list
+        : pendingTransactions[nextIndex]?.id // go to next item in list
+
+    dispatch(UIActions.setPendingTransactionId(newSelectedPendingTransactionId))
+  }, [selectedPendingTransactionId, pendingTransactions, dispatch])
+
+  const queuePreviousTransaction = React.useCallback(() => {
+    // if id hasn't been set, start at beginning of tx list
+    const currentIndex = selectedPendingTransactionId
+      ? pendingTransactions.findIndex(
+          (tx) => tx.id === selectedPendingTransactionId,
+        )
+      : 0
+
+    const previousIndex = currentIndex - 1
+
+    const newSelectedPendingTransactionId =
+      previousIndex < 0 // at end of list?
+        ? // go to last item in list
+          pendingTransactions[pendingTransactions.length - 1]?.id
+        : pendingTransactions[previousIndex]?.id // go to next item in list
+
+    dispatch(UIActions.setPendingTransactionId(newSelectedPendingTransactionId))
+  }, [selectedPendingTransactionId, pendingTransactions, dispatch])
+
+  const rejectAllTransactions = React.useCallback(async () => {
+    await rejectTransactions(
+      pendingTransactions.map((tx) => ({
+        id: tx.id,
+        chainId: tx.chainId,
+        coinType: getCoinFromTxDataUnion(tx.txDataUnion),
+      })),
+    ).unwrap()
+  }, [pendingTransactions, rejectTransactions])
+
+  const updateUnapprovedTransactionGasFields = React.useCallback(
+    (payload: UpdateUnapprovedTransactionGasFieldsType) => {
+      dispatch(
+        walletApi.endpoints.updateUnapprovedTransactionGasFields.initiate(
+          payload,
+        ),
+      )
+    },
+    [dispatch],
+  )
+
+  const onReject = React.useCallback(() => {
+    if (!transactionInfo) {
+      return
+    }
+
+    rejectTransactions([
+      {
+        chainId: transactionInfo.chainId,
+        coinType: getCoinFromTxDataUnion(transactionInfo.txDataUnion),
+        id: transactionInfo.id,
+      },
+    ])
+  }, [transactionInfo, rejectTransactions])
+
+  const onConfirm = React.useCallback(async () => {
+    if (!transactionInfo) {
+      return
+    }
+
+    if (isHardwareAccount(transactionInfo.fromAccountId)) {
+      dispatch(
+        walletApi.endpoints.approveHardwareTransaction.initiate({
+          chainId: transactionInfo.chainId,
+          fromAccountId: transactionInfo.fromAccountId,
+          id: transactionInfo.id,
+          txDataUnion: transactionInfo.txDataUnion,
+          txType: transactionInfo.txType,
+        }),
+      )
+      return
+    }
+
+    // Keep panel on pending transaction view until we navigate to
+    // transactionStatus (e.g. ZCash submission can take several seconds)
+    dispatch(PanelActions.setSubmittingTransaction(transactionInfo))
+
+    try {
+      const result = await approveTransaction({
+        chainId: transactionInfo.chainId,
+        id: transactionInfo.id,
+        coinType: getCoinFromTxDataUnion(transactionInfo.txDataUnion),
+        txType: transactionInfo.txType,
+      }).unwrap()
+      if (!result.success) {
+        dispatch(
+          UIActions.setTransactionProviderError({
+            providerError: {
+              code: result.errorUnion,
+              message: result.errorMessage,
+            },
+            transactionId: transactionInfo.id,
+          }),
+        )
+      }
+    } catch (error) {
+      dispatch(
+        UIActions.setTransactionProviderError({
+          providerError: {
+            code: {
+              ...emptyProviderErrorCodeUnion,
+              providerError: BraveWallet.ProviderError.kUnknown,
+            },
+            message: error.toString(),
+          },
+          transactionId: transactionInfo.id,
+        }),
+      )
+    } finally {
+      dispatch(
+        PanelActions.setSelectedTransactionId({
+          chainId: transactionInfo.chainId,
+          coin: getCoinFromTxDataUnion(transactionInfo.txDataUnion),
+          id: transactionInfo.id,
+        }),
+      )
+      dispatch(PanelActions.navigateTo('transactionStatus'))
+      dispatch(PanelActions.setSubmittingTransaction(undefined))
+    }
+  }, [approveTransaction, dispatch, transactionInfo])
+
+  const {
+    data: getZCashTransactionTypeResult = { txType: null, error: null },
+  } = useGetZCashTransactionTypeQuery(
+    transactionsNetwork?.coin === BraveWallet.CoinType.ZEC
+      && txToken
+      && txAccount
+      && transactionDetails?.recipient
+      ? {
+          chainId: transactionsNetwork.chainId,
+          accountId: txAccount.accountId,
+          useShieldedPool: txToken.isShielded,
+          address: transactionDetails.recipient,
+        }
+      : skipToken,
+  )
+
+  // memos
+  const fromOrb = useAccountOrb(txAccount)
+  const toOrb = useAddressOrb(transactionDetails?.recipient, { scale: 10 })
+  const isShieldingFunds =
+    getZCashTransactionTypeResult.txType === BraveWallet.ZCashTxType.kShielding
+  const isUnshieldingFunds =
+    getZCashTransactionTypeResult.txType
+    === BraveWallet.ZCashTxType.kUnshielding
+
+  const transactionTitle = React.useMemo(
+    (): string =>
+      isShieldingFunds
+        ? getLocale('braveWalletShielding')
+        : isSolanaDappTransaction
+          ? getLocale('braveWalletApproveTransaction')
+          : transactionDetails?.isSwap
+            ? getLocale('braveWalletSwap')
+            : getLocale('braveWalletSend'),
+    [isShieldingFunds, isSolanaDappTransaction, transactionDetails?.isSwap],
+  )
+
+  const isLoadingGasFee = React.useMemo(() => {
+    if (txCoinType === undefined) {
+      return false
+    }
+
+    // BTC, ZEC and ADA provide fee by txDataUnion
+    if (
+      txCoinType === BraveWallet.CoinType.BTC
+      || txCoinType === BraveWallet.CoinType.ZEC
+      || txCoinType === BraveWallet.CoinType.ADA
+      || txCoinType === BraveWallet.CoinType.DOT
+    ) {
+      return false
+    }
+
+    // SOL
+    if (txCoinType === BraveWallet.CoinType.SOL) {
+      return isLoadingSolFeeEstimates
+    }
+
+    // FIL has gas info provided by txDataUnion
+    if (txCoinType === BraveWallet.CoinType.FIL) {
+      return gasFee === ''
+    }
+
+    // EVM
+    if (txCoinType === BraveWallet.CoinType.ETH) {
+      return isLoadingGasEstimates
+    }
+
+    assertNotReached(`Unknown coin ${txCoinType}`)
+  }, [txCoinType, isLoadingSolFeeEstimates, gasFee, isLoadingGasEstimates])
+
+  const hasFeeEstimatesError =
+    txCoinType === BraveWallet.CoinType.SOL
+      ? hasSolFeeEstimatesError
+      : hasEvmFeeEstimatesError
+
+  const isConfirmButtonDisabled = React.useMemo(() => {
+    if (isAccountSyncing) {
+      return true
+    }
+
+    if (hasFeeEstimatesError || isLoadingGasFee) {
+      return true
+    }
+
+    if (!transactionDetails) {
+      return true
+    }
+
+    return Boolean(
+      transactionDetails?.sameAddressError
+        || transactionDetails?.contractAddressError
+        || insufficientFundsForGasError
+        || insufficientFundsError
+        || transactionDetails?.missingGasLimitError,
+    )
+  }, [
+    transactionDetails,
+    hasFeeEstimatesError,
+    isLoadingGasFee,
+    insufficientFundsError,
+    insufficientFundsForGasError,
+    isAccountSyncing,
+  ])
+
+  const { currentTokenAllowance, isCurrentAllowanceUnlimited } =
+    React.useMemo(() => {
+      if (!transactionDetails || erc20AllowanceResult === undefined) {
+        return {
+          currentTokenAllowance: undefined,
+          isCurrentAllowanceUnlimited: false,
+        }
+      }
+
+      const currentTokenAllowance = new Amount(erc20AllowanceResult)
+        .divideByDecimals(transactionDetails.decimals)
+        .format()
+
+      const isCurrentAllowanceUnlimited = erc20AllowanceResult === MAX_UINT256
+
+      return {
+        currentTokenAllowance,
+        isCurrentAllowanceUnlimited,
+      }
+    }, [erc20AllowanceResult, transactionDetails])
+
+  const { tokenInfo: erc20ApproveTokenInfo } = useGetTokenInfo(
+    transactionDetails?.recipient
+      && txCoinType
+      && transactionInfo?.txType === BraveWallet.TransactionType.ERC20Approve
+      ? {
+          contractAddress: transactionDetails.recipient,
+          network: {
+            chainId: transactionDetails.chainId,
+            coin: txCoinType,
+          },
+        }
+      : skipToken,
+  )
+
+  const { account: toAccount } = useAccountFromAddressQuery(
+    transactionDetails?.recipient,
+  )
+
+  const canEditNetworkFee = React.useMemo(() => {
+    return (
+      isEthereumTransaction(transactionInfo)
+      || transactionDetails?.isFilecoinTransaction
+    )
+  }, [transactionInfo, transactionDetails?.isFilecoinTransaction])
+
+  return {
+    baseFeePerGas,
+    currentTokenAllowance,
+    isCurrentAllowanceUnlimited,
+    erc20ApproveTokenInfo,
+    fromAccount: txAccount,
+    toAccount,
+    fromOrb,
+    isConfirmButtonDisabled,
+    isEthereumTransaction: isEthereumTransaction(transactionInfo),
+    isERC20Approve,
+    isERC721SafeTransferFrom,
+    isERC721TransferFrom,
+    isSolanaDappTransaction,
+    isSolanaTransaction: transactionDetails?.isSolanaTransaction || false,
+    isAssociatedTokenAccountCreation:
+      transactionDetails?.isAssociatedTokenAccountCreation || false,
+    isFilecoinTransaction: transactionDetails?.isFilecoinTransaction || false,
+    onEditAllowanceSave,
+    queueNextTransaction,
+    rejectAllTransactions,
+    queuePreviousTransaction,
+    suggestedMaxPriorityFeeOptions,
+    suggestedMaxPriorityFeeChoices,
+    toOrb,
+    transactionDetails,
+    transactionQueueNumber,
+    transactionsNetwork,
+    transactionsQueueLength,
+    transactionTitle,
+    solanaSendOptions: transactionInfo?.txDataUnion.solanaTxData?.sendOptions,
+    updateUnapprovedTransactionGasFields,
+    updateUnapprovedTransactionNonce,
+    hasFeeEstimatesError,
+    selectedPendingTransaction: transactionInfo,
+    isLoadingGasFee,
+    gasFee,
+    onConfirm,
+    onReject,
+    insufficientFundsError,
+    insufficientFundsForGasError,
+    isZCashTransaction: isZCashTransaction(transactionInfo),
+    isBitcoinTransaction: isBitcoinTransaction(transactionInfo),
+    isCardanoTransaction: isCardanoTransaction(transactionInfo),
+    isAccountSyncing,
+    isShieldingFunds,
+    isUnshieldingFunds,
+    canEditNetworkFee,
+  }
+}

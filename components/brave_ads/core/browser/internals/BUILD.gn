@@ -1,0 +1,45 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
+
+assert(enable_brave_ads)
+
+source_set("internals") {
+  sources = [
+    "ads_internals_handler.cc",
+    "ads_internals_handler.h",
+  ]
+
+  deps = [ "//brave/components/brave_ads/core/browser/service" ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/brave_ads/buildflags",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/services/bat_ads/public/interfaces",
+    "//components/prefs",
+    "//mojo/public/cpp/bindings",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "ads_internals_handler_unittest.cc" ]
+
+  deps = [
+    ":internals",
+    "//base/test:test_support",
+    "//brave/components/brave_ads/core/browser/service:test_support",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/services/bat_ads/public/interfaces",
+    "//components/prefs",
+    "//components/prefs:test_support",
+    "//mojo/public/cpp/bindings",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}

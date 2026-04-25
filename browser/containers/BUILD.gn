@@ -1,0 +1,69 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import("//brave/components/containers/buildflags/buildflags.gni")
+
+assert(enable_containers)
+
+source_set("containers") {
+  sources = [
+    "container_tab_tracker.cc",
+    "container_tab_tracker.h",
+    "containers_service_delegate.cc",
+    "containers_service_delegate.h",
+    "containers_service_factory.cc",
+    "containers_service_factory.h",
+  ]
+
+  deps = [
+    "//brave/components/containers/content/browser",
+    "//brave/components/containers/core/browser",
+    "//brave/components/containers/core/common",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/tab_contents",
+    "//chrome/browser/ui/tabs",
+    "//chrome/common:buildflags",
+    "//components/sessions",
+    "//content/public/browser",
+    "//crypto",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+
+  sources = [ "containers_browsertest.cc" ]
+
+  deps = [
+    ":containers",
+    "//brave/components/containers/content/browser",
+    "//brave/components/containers/core/browser",
+    "//brave/components/containers/core/common:features",
+    "//brave/components/containers/core/mojom",
+    "//chrome/browser",
+    "//chrome/test:test_support",
+  ]
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "containers_service_delegate_unittest.cc" ]
+
+  deps = [
+    ":containers",
+    "//brave/components/containers/content/browser",
+    "//brave/components/containers/core/browser",
+    "//brave/components/containers/core/common:features",
+    "//brave/components/containers/core/mojom",
+    "//chrome/browser",
+    "//chrome/test:test_support",
+    "//components/sessions:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}

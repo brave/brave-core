@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/content_settings/BUILD.gn b/chrome/browser/content_settings/BUILD.gn
+index cec67ed273312856031056f6765ce9c196e22ebe..be2cc6c8c66427f06b4518e8000a7c69dabb5dcb 100644
+--- a/chrome/browser/content_settings/BUILD.gn
++++ b/chrome/browser/content_settings/BUILD.gn
+@@ -131,6 +131,7 @@ source_set("impl") {
+   if (enable_pdf) {
+     deps += [ "//chrome/browser/pdf" ]
+   }
++  import("//brave/browser/content_settings/sources.gni") deps += brave_browser_content_settings_deps
+ }
+ 
+ # Fixes circular deps with different components. For example -

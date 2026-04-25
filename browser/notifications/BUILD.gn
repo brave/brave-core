@@ -1,0 +1,38 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
+
+assert(enable_brave_ads)
+
+static_library("notifications") {
+  sources = [
+    "ads_notification_handler.cc",
+    "ads_notification_handler.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser/brave_ads",
+    "//brave/components/brave_ads/buildflags",
+    "//brave/components/brave_ads/core/browser/service",
+    "//chrome/browser/notifications",
+    "//third_party/abseil-cpp:absl",
+    "//url",
+  ]
+
+  if (is_android) {
+    sources += [
+      "brave_notification_platform_bridge_helper_android.cc",
+      "brave_notification_platform_bridge_helper_android.h",
+    ]
+
+    deps += [
+      "//brave/android:brave_android_java_enums_srcjar",
+      "//chrome/browser:browser_process",
+      "//chrome/browser:browser_public_dependencies",
+    ]
+  }
+}

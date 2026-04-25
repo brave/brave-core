@@ -1,0 +1,66 @@
+/* A button title shown below language introducing the Brave Playlist feature. i.e. 'Discover how to use use this feature' */
+"advanceInitialOnboardingButtonTitle" = "Descoperă cum";
+
+/* A button title that when tapped will advance the onboarding to guide a user to add some content to Playlist */
+"advanceStep2OnboardingButtonTitle" = "Încearcă!";
+
+/* A button that allows the user to disable the brave translate feature. When pressed, the page will not be automatically translated to the user's language. */
+"BraveTranslateOnboarding.disableTranslateButtonTitle" = "Dezactivează această caracteristică";
+
+/* A text element that describes the translation feature and explains that hte user might have to download or configure languages on their device. */
+"BraveTranslateOnboarding.translateDescription" = "Paginile pot fi traduse în limbile acceptate de dispozitivul dvs. iOS. Este posibil să ți se solicite să configurezi limbile dacă este prima dată când utilizezi această funcție.";
+
+/* A text element that explains we're translating pages. */
+"BraveTranslateOnboarding.translateTitle" = "Traduceri pagină";
+
+/* A button title that when tapped opens Brave Playlist */
+"confirmationActionButtonTitle" = "Du-mă la Playlist-ul meu";
+
+/* Shown above a button that will let the user open the playlist feature */
+"confirmationPrompt" = "Bun, să aruncăm o privire la Playlist-ul tău.";
+
+/* Shown below a title that confirms the user completed the task of adding something to playlist. %@ will be replaced with the folder the content was added to. i.e. 'Content added to Play Later' */
+"confirmationSubtitle" = "Conținut adăugat la %@";
+
+/* Guides the user to tap on an icon where the onboarding is pointing to. '%@' will be replaced with said icon. */
+"confirmationTitle" = "Bravo";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissOnboardingButtonTitle" = "Închide";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep2OnboardingButtonTitle" = "Poate mai târziu";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep4OnboardingButtonTitle" = "Închide";
+
+/* A title shown on the first 2 steps of onboarding for Brave Playlist. Brave Playlist is a product name */
+"introducingBravePlaylist" = "Îți prezentăm Brave Playlist";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleOne" = "Alcătuiește Playlist-uri cu conținutul tău preferat. Economisește date mobile. Redă conținutul fără reclame.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleThree" = "Imagine în imagine. Redare în fundal. Control de pe ecranul de blocare plus multe altele...";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleTwo" = "Nu rata nimic: Adaugă videoclipuri în timp ce navighezi și urmărește-le mai târziu.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleOne" = "Adaugă videoclipuri în Brave Playlist . Redă oricând, inclusiv offline";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleThree" = "Redarea de conținut este mai bună cu Brave Playlist";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleTwo" = "Apasă butonul pentru a adăuga videoclipuri într-un Playlist";
+
+/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
+"playlistOnboardingDescription" = "Creează playlist-uri cu conținutul pe care îl iubești. Adaugă media de pe orice pagină. Redă oricând, inclusiv offline!";
+
+/* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
+"userActionPrompt" = "Apasă %@ pentru a adăuga primul element";
+
+/* Will be shown next to an icon inside of some other text. i.e. "Tap 'Add to Playlist' to add your first item" */
+"userActionPromptFill" = "Adaugă la Playlist";
+

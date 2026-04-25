@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/storage_access_api/storage_access_grant_permission_context.cc b/chrome/browser/storage_access_api/storage_access_grant_permission_context.cc
+index db1734d92f89712ca74d388a7778a15ef66f9d19..371ceafd5dfaa78ebab36fc75e16514c0386de53 100644
+--- a/chrome/browser/storage_access_api/storage_access_grant_permission_context.cc
++++ b/chrome/browser/storage_access_api/storage_access_grant_permission_context.cc
+@@ -477,6 +477,7 @@ void StorageAccessGrantPermissionContext::CheckForAutoGrantOrAutoDenial(
+         break;
+     }
+   }
++  BRAVE_STORAGE_ACCESS_GRANT_PERMISSION_CONTEXT_CHECK_FOR_AUTO_GRANT_OR_AUTO_DENIAL  // NOLINT
+ 
+   // Get all of our implicit grants and see which ones apply to our
+   // |requesting_origin|.

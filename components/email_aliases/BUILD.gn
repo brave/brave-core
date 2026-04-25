@@ -1,0 +1,113 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/buildflag_header_with_env_config.gni")
+import("//brave/components/email_aliases/buildflags/buildflags.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+import("//tools/json_schema_compiler/json_schema_api.gni")
+
+assert(enable_email_aliases)
+
+mojom_component("mojom") {
+  output_prefix = "email_aliases_mojom"
+  macro_prefix = "EMAIL_ALIASES_MOJOM"
+
+  generate_legacy_js_bindings = true
+  webui_module_path = "/"
+
+  sources = [ "email_aliases.mojom" ]
+
+  public_deps = [ "//mojo/public/mojom/base" ]
+}
+
+generated_types("email_aliases_api_types") {
+  sources = [ "email_aliases_api.idl" ]
+  root_namespace = "email_aliases"
+}
+
+static_library("features") {
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+
+  public_deps = [ "//base" ]
+}
+
+static_library("service") {
+  sources = [
+    "email_aliases_auth.cc",
+    "email_aliases_auth.h",
+    "email_aliases_endpoints.h",
+    "email_aliases_notes.cc",
+    "email_aliases_notes.h",
+    "email_aliases_service.cc",
+    "email_aliases_service.h",
+    "pref_names.h",
+  ]
+  deps = [
+    ":email_aliases_api_types",
+    ":mojom",
+    "//base",
+    "//brave/brave_domains",
+    "//brave/components/brave_account",
+    "//brave/components/brave_account/endpoint_client",
+    "//brave/components/brave_account/mojom",
+    "//brave/components/constants",
+    "//brave/components/email_aliases:features",
+    "//brave/components/resources:strings_grit",
+    "//components/keyed_service/core",
+    "//components/pref_registry",
+    "//components/prefs",
+    "//mojo/public/cpp/bindings",
+    "//net",
+    "//services/network/public/cpp",
+    "//ui/base",
+  ]
+}
+
+source_set("test_utils") {
+  testonly = true
+
+  sources = [
+    "test_utils.cc",
+    "test_utils.h",
+  ]
+
+  deps = [
+    ":email_aliases_api_types",
+    ":service",
+    "//base/test:test_support",
+    "//brave/components/brave_account/endpoint_client",
+    "//brave/components/email_aliases:mojom",
+    "//mojo/public/cpp/bindings",
+    "//testing/gtest",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "email_aliases_notes_unittest.cc",
+    "email_aliases_service_unittest.cc",
+  ]
+  deps = [
+    ":features",
+    ":service",
+    ":test_utils",
+    "//base/test:test_support",
+    "//brave/components/brave_account",
+    "//brave/components/brave_account:features",
+    "//brave/components/brave_account:test_support",
+    "//brave/components/constants",
+    "//brave/components/resources:strings_grit",
+    "//components/os_crypt/async/browser:test_support",
+    "//components/prefs:test_support",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
+    "//ui/base",
+  ]
+}

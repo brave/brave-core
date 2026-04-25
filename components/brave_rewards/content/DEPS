@@ -1,0 +1,36 @@
+include_rules = [
+  "+brave/components/api_request_helper",
+  "+brave/components/brave_wallet/browser",
+  "+brave/grit/brave_generated_resources.h",
+  "+components/country_codes",
+  "+components/favicon",
+  "+components/grit/brave_components_strings.h",
+  "+components/keyed_service",
+  "+components/os_crypt/sync",
+  "+components/prefs",
+  "+components/regional_capabilities",
+  "+components/sync_preferences/testing_pref_service_syncable.h",
+  "+components/user_prefs",
+  "+content/public/browser",
+  "+content/public/common",
+  "+content/public/test",
+  "+extensions/buildflags",
+  "+extensions/common",
+  "+services/network/public",
+  "+third_party/skia/include/core",
+  "+ui/base",
+  "+ui/gfx",
+]
+
+specific_include_rules = {
+  "test_util\.cc": [
+    "+components/sync_preferences/pref_service_mock_factory.h",
+    # component unit tests should not have chrome or brave / browser deps
+    "!brave/browser/brave_rewards/rewards_service_factory.h",
+    "!chrome/test/base/testing_browser_process.h",
+    "!chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h",
+    "!chrome/browser/prefs/browser_prefs.h",
+    "!chrome/test/base/testing_profile.h",
+    "!chrome/test/base/testing_profile_manager.h",
+  ],
+}

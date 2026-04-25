@@ -1,0 +1,27 @@
+/* No comment provided by engineer. */
+"1Password Fill Browser Action" = "Действие на 1Password за попълване в браузъра";
+
+/* Privacy - NFC Scan Usage Description */
+"NFCReaderUsageDescription" = "Приложението има нужда от достъп до NFC четене, за да си общува с твоя Yubikey.";
+
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "Това ти позволява да правиш и качваш снимки.";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "Това удостоверява достъпа ти до Brave";
+
+/* Privacy - Location When In Use Usage Description */
+"NSLocationWhenInUseUsageDescription" = "Уебсайтовете, които посещаваш, може да поискат местоположението ти.";
+
+/* Privacy - Microphone Usage Description */
+"NSMicrophoneUsageDescription" = "Това позволява на Brave да подава заявки за търсене с помощта на гласа ти.";
+
+/* Privacy - Photo Library Additions Usage Description */
+"NSPhotoLibraryAddUsageDescription" = "Това ти позволява да запазваш снимки.";
+
+/* Privacy - Speech Recognition Usage Description */
+"NSSpeechRecognitionUsageDescription" = "Това разрешение се използва за активиране на функцията Apple Advanced Speech Recognition. Ако не е разрешено, ще се използва разпознаване „на устройството“ и търсенията ще бъдат напълно поверителни. Brave не съхранява и не споделя гласовите ти търсения.";
+
+/* No comment provided by engineer. */
+"OPML File" = "OPML файл";
+

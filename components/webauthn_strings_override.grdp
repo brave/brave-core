@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<grit-part>
+    <message name="IDS_WEBAUTHN_INCOGNITO_CONFIRMATION_TITLE" desc="The title of a bottomsheet that appears before the user saves passkey in Private mode. (See the glossary for translations of the word 'passkey'. Do not translate as 'password'.)" formatter_data="android_java">
+      Save passkey outside Private?
+    </message>
+    </grit-part>

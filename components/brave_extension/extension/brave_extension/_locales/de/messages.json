@@ -1,0 +1,226 @@
+{
+  "appName": {
+    "message": "Die Brave Erweiterung",
+    "description": "The name of the extension."
+  },
+  "shields": {
+    "message": "Shields",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "aktiviert",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "deaktiviert",
+    "description": "Message for when shields is disabled"
+  },
+  "forThisSite": {
+    "message": "für diese Seite",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "Wird die Seite falsch dargestellt? Deaktiviere Shhields und versuche es erneut.",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "Du surfst auf dieser Website ohne den Privatsphären- und Sicherheitsschutz von Brave. Funktioniert es nicht richtig mit Shields?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "Melde eine fehlerhafte Website",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
+  },
+  "itemsBlocked": {
+    "message": "Elemente blockiert",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
+  },
+  "itemBlocked": {
+    "message": "Element blockiert",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
+  },
+  "and": {
+    "message": "und",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
+  },
+  "connectionsUpgraded": {
+    "message": "Verbindungen aktualisiert",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
+  },
+  "connectionUpgraded": {
+    "message": "Verbindung aktualisiert",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
+  },
+  "thirdPartyTrackersBlocked": {
+    "message": "Websiteübergreifende Tracker blockiert",
+    "description": "Message for the scripts blocked row label"
+  },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "Tracker & Werbeanzeigen blockiert",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "Tracker & Werbung blockiert (aggressiv)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "Tracker & Werbung blockiert (Standard)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "Alle Tracker & Werbung zulassen",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
+  "connectionsUpgradedHTTPS": {
+    "message": "Verbindungen auf HTTPS aktualisiert",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
+  },
+  "connectionUpgradedHTTPS": {
+    "message": "Verbindungen auf HTTPS aktualisiert",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
+  },
+  "scriptsBlocked": {
+    "message": "Skripte blockiert",
+    "description": "Message for the scripts blocked row label"
+  },
+  "thirdPartyCookiesBlocked": {
+    "message": "Websiteübergreifende Cookies deaktiviert",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "Cookies blockiert",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "Alle Cookies erlaubt",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "Fingerprinting blockiert",
+    "description": "Message for the option in the fingerprinting field in read only view"
+  },
+  "standardFingerprinting": {
+    "message": "Fingerabdruck blockiert (Standard)",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
+  },
+  "strictFingerprinting": {
+    "message": "Fingerabdruck blockiert (streng, könnte Websites zerstören)",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
+  },
+  "allowAllFingerprinting": {
+    "message": "Sämtliches Fingerprinting zulassen",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Fingerprinting-Versuche",
+    "description": "Message for the fingerprinting attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Skripte auf dieser Seite",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Blockierte Skripte",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Erlaubte Skripte",
+    "description": "Message for the script resources allowed"
+  },
+  "blockAll": {
+    "message": "Alle blockieren",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "Alle erlauben",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "block": {
+    "message": "Blockieren",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "allow": {
+    "message": "Erlauben",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "blockedOnce": {
+    "message": "Einmal blockiert",
+    "description": "Message for the resources blocked *blocked once* option"
+  },
+  "allowedOnce": {
+    "message": "Einmal zugelassen",
+    "description": "Message for the resources blocked *allowed once* option"
+  },
+  "allowScriptsOnce": {
+    "message": "Skripte einmal zulassen",
+    "description": "Message for the shortcut in the main interface to allow all scripts once"
+  },
+  "cancel": {
+    "message": "Abbrechen",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Zurück",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "Einmal anwenden",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "Globale Einstellungen ändern",
+    "description": "Message for the button action linking to the settings page"
+  },
+  "manageCustomFilters": {
+    "message": "Benutzerdefinierte Filter verwalten",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
+  "elementPickerMode": {
+    "message": "Element blockieren",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
+  },
+  "advancedView": {
+    "message": "Erweiterte Ansicht",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "Einfache Ansicht",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "Websites enthalten oft Cookies und Skripte, die versuchen, dich und dein Gerät zu identifizieren (oft in Anzeigen eingebettet). Diese wollen herausfinden, wer du bist, und verfolgen, was du auf jeder Website tust. Brave blockiert diese Dinge, damit du surfen kannst, ohne getrackt zu werden.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "Cross-Site-Tracker und andere unangenehme Dinge werden blockiert.",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "Die Einstellungen zum Schutz in dieser Ansicht zu ändern, könnte auf dieser Seite einen Einfluss auf die Web-Kompatibilität haben.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "Alles klar",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "Mehr erfahren",
+    "description": "Message inviting the user to learn more about Shields"
+  },
+  "addToBrave": {
+    "message": "Zu Brave hinzufügen",
+    "description": "Message for adding an extension to Brave"
+  },
+  "removeFromBrave": {
+    "message": "Aus Brave entfernen",
+    "description": "Message for removing an extension from Brave"
+  },
+  "addToChrome": {
+    "message": "Hinzufügen zu Chrome",
+    "description": "Message for adding an extension to Chrome"
+  },
+  "removeFromChrome": {
+    "message": "Aus Chrome entfernen",
+    "description": "Message for removing an extension from Chrome"
+  }
+}

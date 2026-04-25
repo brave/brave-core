@@ -1,0 +1,12 @@
+diff --git a/components/neterror/resources/neterror.html b/components/neterror/resources/neterror.html
+index ead5b8a13dad593ffd79b4df233e56c36ff8ab15..46faaefef71e5e7e1b7d7e7fabc0d8d80e0665db 100644
+--- a/components/neterror/resources/neterror.html
++++ b/components/neterror/resources/neterror.html
+@@ -9,6 +9,7 @@
+   <title>$i18n{title}</title>
+   <link rel="stylesheet" href="../../../components/security_interstitials/core/common/resources/interstitial_core.css">
+   <link rel="stylesheet" href="../../../components/security_interstitials/core/common/resources/interstitial_common.css">
++  <link rel="stylesheet" href="../../../brave/components/security_interstitials/core/common/resources/interstitial_common.css">
+   <link rel="stylesheet" href="neterror.css">
+ <if expr="not optimize_webui">
+   <script src="%ROOT_GEN_DIR%/components/neterror/resources/bundled/neterror.rollup.js"></script>

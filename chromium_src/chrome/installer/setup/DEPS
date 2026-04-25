@@ -1,0 +1,5 @@
+# Upstream used to have zucchini in include_rules until it moved the delta
+# update logic from the browser installer into the updater. We need to keep it
+# here until we are on Omaha 4 on Windows. See
+# github.com/brave/brave-core/pull/31937
+include_rules = [ "+components/zucchini" ]

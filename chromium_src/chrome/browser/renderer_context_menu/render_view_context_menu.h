@@ -1,0 +1,129 @@
+/* Copyright (c) 2018 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_RENDERER_CONTEXT_MENU_RENDER_VIEW_CONTEXT_MENU_H_
+#define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_RENDERER_CONTEXT_MENU_RENDER_VIEW_CONTEXT_MENU_H_
+
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/containers/buildflags/buildflags.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
+#include "brave/components/text_recognition/common/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/ui/containers/containers_menu_model.h"
+#include "brave/components/containers/core/mojom/containers.mojom-forward.h"
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+class RenderViewContextMenu;
+using RenderViewContextMenu_BraveImpl = RenderViewContextMenu;
+
+#define BRAVE_RENDER_VIEW_CONTEXT_MENU_H_ \
+ private:                                 \
+  friend RenderViewContextMenu_BraveImpl; \
+                                          \
+ public:
+// define BRAVE_RENDER_VIEW_CONTEXT_MENU_H_
+
+// Get the Chromium declaration.
+#define RenderViewContextMenu RenderViewContextMenu_Chromium
+
+#define RegisterMenuShownCallbackForTesting                           \
+  RegisterMenuShownCallbackForTesting(                                \
+      base::OnceCallback<void(RenderViewContextMenu_BraveImpl*)> cb); \
+  static void RegisterMenuShownCallbackForTesting_unused
+#define AppendReadAnythingItem virtual AppendReadAnythingItem
+#define AppendDeveloperItems virtual AppendDeveloperItems
+#include <chrome/browser/renderer_context_menu/render_view_context_menu.h>  // IWYU pragma: export
+#undef AppendDeveloperItems
+#undef AppendReadAnythingItem
+#undef RegisterMenuShownCallbackForTesting
+#undef RenderViewContextMenu
+#undef BRAVE_RENDER_VIEW_CONTEXT_MENU_H_
+
+// Declare our own subclass with overridden methods.
+class RenderViewContextMenu : public RenderViewContextMenu_Chromium
+#if BUILDFLAG(ENABLE_CONTAINERS)
+    ,
+                              public containers::ContainersMenuModel::Delegate
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+{
+ public:
+  // Non-const reference passed in the parent class upstream
+  // NOLINTNEXTLINE(runtime/references)
+  RenderViewContextMenu(content::RenderFrameHost& render_frame_host,
+                        const content::ContextMenuParams& params,
+                        bool is_paste_enabled);
+  ~RenderViewContextMenu() override;
+  // RenderViewContextMenuBase:
+  bool IsCommandIdEnabled(int command_id) const override;
+  void ExecuteCommand(int id, int event_flags) override;
+  void AddSpellCheckServiceItem(bool is_checked) override;
+  // Hide base class implementation.
+  static void AddSpellCheckServiceItem(ui::SimpleMenuModel* menu,
+                                       bool is_checked);
+  void AddAccessibilityLabelsServiceItem(bool is_checked) override;
+  // Do nothing as we have our own speed reader
+  void AppendReadAnythingItem() override {}
+
+  void AppendDeveloperItems() override;
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  // ContainersMenuModelDelegate:
+  void OnContainerSelected(
+      const containers::mojom::ContainerPtr& container) override;
+  void OnNoContainerSelected() override;
+  base::flat_set<std::string> GetCurrentContainerIds() override;
+  Browser* GetBrowserToOpenSettings() override;
+  float GetScaleFactor() override;
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  void SetAIEngineForTesting(
+      std::unique_ptr<ai_chat::EngineConsumer> ai_engine);
+  ai_chat::EngineConsumer* GetAIEngineForTesting() { return ai_engine_.get(); }
+#endif
+
+ private:
+  friend class RenderViewContextMenuTest;
+  // RenderViewContextMenuBase:
+  void InitMenu() override;
+  void NotifyMenuShown() override;
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+  void BuildEmailAliasesMenu();
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  bool IsAIChatEnabled() const;
+  void ExecuteAIChatCommand(int command);
+  void BuildAIChatMenu();
+#endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  void BuildContainersMenu();
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+#if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
+  void CopyTextFromImage();
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  std::unique_ptr<ai_chat::EngineConsumer> ai_engine_;
+  ui::SimpleMenuModel ai_chat_submenu_model_;
+  ui::SimpleMenuModel ai_chat_change_tone_submenu_model_;
+  ui::SimpleMenuModel ai_chat_change_length_submenu_model_;
+  ui::SimpleMenuModel ai_chat_social_media_post_submenu_model_;
+#endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  std::unique_ptr<containers::ContainersMenuModel> containers_submenu_model_;
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+};
+
+#endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_RENDERER_CONTEXT_MENU_RENDER_VIEW_CONTEXT_MENU_H_

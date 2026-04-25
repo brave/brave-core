@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2019 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/view_sync_done"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:fadeScrollbars="false"
+    android:scrollbars="vertical">
+
+    <LinearLayout android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:paddingStart="2dip"
+        android:paddingTop="2dip"
+        android:paddingEnd="2dip" >
+
+        <TextView android:id="@+id/brave_sync_settings_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/brave_sync_settings_title"
+            android:textColor="@color/baseline_neutral_50"
+            android:paddingStart="15dip"
+            android:paddingTop="30dip"
+            android:visibility="gone" />
+
+        <!-- <include layout="@layout/menu_separator"/> -->
+
+        <TextView android:id="@+id/brave_sync_settings_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/brave_sync_settings_description"
+            android:paddingStart="15dip"
+            android:textColor="@color/baseline_neutral_50"
+            android:visibility="gone" />
+
+        <TextView android:id="@+id/brave_sync_devices_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/brave_sync_devices_title"
+            android:paddingStart="15dip"
+            android:paddingTop="30dip"
+            android:textColor="@color/baseline_neutral_50" />
+
+        <LinearLayout android:id="@+id/brave_sync_devices"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"/>
+
+        <TextView android:id="@+id/brave_sync_fake"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:visibility="invisible" />
+
+        <android.widget.Button android:id="@+id/brave_sync_btn_add_device"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/brave_sync_add_device_text"
+            style="@style/BraveSyncButton" />
+
+        <android.widget.Button android:id="@+id/brave_sync_btn_show_categories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/brave_sync_categories_text"
+            style="@style/BraveSyncButton"
+            android:background="@android:color/transparent"
+            android:textColor="@color/baseline_neutral_40" />
+
+        <android.widget.Button android:id="@+id/brave_sync_btn_delete_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/brave_sync_delete_account_text"
+            style="@style/BraveSyncButton"
+            android:background="@android:color/transparent"
+            android:textColor="@color/baseline_neutral_40" />
+    </LinearLayout>
+</ScrollView>

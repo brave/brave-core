@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/browser_window/BUILD.gn b/chrome/browser/ui/browser_window/BUILD.gn
+index 0494a03994362ed28e7591cfdb7f95a021aab6e6..d304a39e9077a5695d06c9c3368f2afccc2e8419 100644
+--- a/chrome/browser/ui/browser_window/BUILD.gn
++++ b/chrome/browser/ui/browser_window/BUILD.gn
+@@ -34,6 +34,7 @@ source_set("browser_window") {
+       "//ui/base:types",
+     ]
+   }
++  deps += [ "//brave/browser/ui/browser_window" ]
+ }
+ 
+ source_set("create_browser_window") {

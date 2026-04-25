@@ -1,0 +1,301 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#include "brave/browser/ui/webui/brave_new_tab_page_refresh/new_tab_page_initializer.h"
+
+#include <memory>
+#include <utility>
+
+#include "base/check.h"
+#include "base/feature_list.h"
+#include "base/strings/strcat.h"
+#include "brave/browser/new_tab/new_tab_shows_options.h"
+#include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
+#include "brave/browser/resources/brave_new_tab_page_refresh/grit/brave_new_tab_page_refresh_generated_map.h"
+#include "brave/browser/ui/brave_ui_features.h"
+#include "brave/browser/ui/webui/brave_sanitized_image_source.h"
+#include "brave/browser/ui/webui/brave_webui_source.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "brave/components/brave_search_conversion/pref_names.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/constants/pref_names.h"
+#include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
+#include "chrome/browser/themes/theme_syncable_service.h"
+#include "chrome/browser/ui/webui/favicon_source.h"
+#include "chrome/browser/ui/webui/plural_string_handler.h"
+#include "chrome/browser/ui/webui/theme_source.h"
+#include "chrome/common/pref_names.h"
+#include "chrome/common/webui_url_constants.h"
+#include "components/favicon_base/favicon_url_parser.h"
+#include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_strings.h"
+#include "components/grit/brave_components_webui_strings.h"
+#include "components/ntp_tiles/constants.h"
+#include "components/prefs/pref_service.h"
+#include "components/regional_capabilities/regional_capabilities_country_id.h"
+#include "components/regional_capabilities/regional_capabilities_service.h"
+#include "components/strings/grit/components_strings.h"
+#include "content/public/browser/web_ui.h"
+#include "content/public/browser/web_ui_data_source.h"
+#include "services/network/public/mojom/content_security_policy.mojom.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "ui/base/webui/web_ui_util.h"
+#include "ui/webui/webui_util.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_news/common/features.h"
+#include "brave/components/brave_news/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_util.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+#include "brave/components/brave_talk/pref_names.h"
+#endif
+
+namespace brave_new_tab_page_refresh {
+
+namespace {
+
+using regional_capabilities::RegionalCapabilitiesServiceFactory;
+
+constexpr char kBraveSearchHost[] = "search.brave.com";
+constexpr char kYahooSearchHost[] = "search.yahoo.co.jp";
+
+}  // namespace
+
+std::string_view GetSearchDefaultHost(
+    regional_capabilities::RegionalCapabilitiesService* regional_capabilities) {
+  CHECK(regional_capabilities);
+  regional_capabilities::CountryIdHolder country_id =
+      regional_capabilities->GetCountryId();
+  regional_capabilities::CountryIdHolder japan_country_id(
+      country_codes::CountryId("JP"));
+  if (country_id == japan_country_id) {
+    return kYahooSearchHost;
+  }
+
+  return kBraveSearchHost;
+}
+
+NewTabPageInitializer::NewTabPageInitializer(content::WebUI& web_ui)
+    : web_ui_(web_ui) {}
+
+NewTabPageInitializer::~NewTabPageInitializer() = default;
+
+void NewTabPageInitializer::Initialize() {
+  source_ = content::WebUIDataSource::CreateAndAdd(GetProfile(),
+                                                   chrome::kChromeUINewTabHost);
+
+  if (brave::ShouldNewTabShowBlankpage(GetProfile())) {
+    source_->SetDefaultResource(IDR_BRAVE_BLANK_NEW_TAB_HTML);
+  } else {
+    webui::SetupWebUIDataSource(source_, kBraveNewTabPageRefreshGenerated,
+                                IDR_BRAVE_NEW_TAB_PAGE_HTML);
+  }
+
+  AddBackgroundColorToSource(source_, web_ui_->GetWebContents());
+  AddCSPOverrides();
+  AddLoadTimeValues();
+  AddStrings();
+  AddPluralStrings();
+  AddResourcePaths();
+
+  AddFaviconDataSource();
+  AddCustomImageDataSource();
+  AddSanitizedImageDataSource();
+
+  web_ui_->AddRequestableScheme(content::kChromeUIUntrustedScheme);
+  web_ui_->OverrideTitle(l10n_util::GetStringUTF16(IDS_NEW_TAB_TITLE));
+
+  content::URLDataSource::Add(GetProfile(),
+                              std::make_unique<ThemeSource>(GetProfile()));
+}
+
+// static
+void NewTabPageInitializer::MigrateProfilePrefs(PrefService* prefs) {
+  // Added 2026-03: Migrate "hide all widgets" into individual widget prefs.
+  if (prefs->GetBoolean(kNewTabPageHideAllWidgets)) {
+    prefs->SetBoolean(kNewTabPageHideAllWidgets, false);
+    prefs->SetBoolean(kNewTabPageShowRewards, false);
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+    prefs->SetBoolean(brave_talk::prefs::kNewTabPageShowBraveTalk, false);
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+    prefs->SetBoolean(kNewTabPageShowBraveVPN, false);
+#endif
+  }
+  prefs->ClearPref(kNewTabPageHideAllWidgets);
+
+  // Added 2026-04: Set chat input visibility to hidden if the user has
+  // explicitly hidden the search input.
+  using brave_search_conversion::prefs::kMigratedNTPChatInputFromSearch;
+  using brave_search_conversion::prefs::kShowNTPChatInput;
+  using brave_search_conversion::prefs::kShowNTPSearchBox;
+  if (!prefs->GetBoolean(kMigratedNTPChatInputFromSearch)) {
+    prefs->SetBoolean(kMigratedNTPChatInputFromSearch, true);
+    if (auto* user_value = prefs->GetUserPrefValue(kShowNTPSearchBox);
+        user_value && !user_value->GetBool()) {
+      prefs->SetBoolean(kShowNTPChatInput, false);
+    }
+  }
+}
+
+Profile* NewTabPageInitializer::GetProfile() {
+  return Profile::FromWebUI(&web_ui_.get());
+}
+
+void NewTabPageInitializer::AddCSPOverrides() {
+  source_->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ImgSrc,
+      "img-src chrome://brave-image chrome://resources chrome://theme "
+      "chrome://background-wallpaper chrome://custom-wallpaper "
+      "chrome://branded-wallpaper chrome://favicon2 blob: data: 'self';");
+
+  source_->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::FrameSrc,
+      base::StrCat({"frame-src ", kNTPNewTabTakeoverRichMediaUrl, ";"}));
+}
+
+void NewTabPageInitializer::AddLoadTimeValues() {
+  auto* profile = GetProfile();
+  auto* prefs = profile->GetPrefs();
+
+  source_->AddBoolean(
+      "customBackgroundFeatureEnabled",
+      !prefs->IsManagedPreference(prefs::kNtpCustomBackgroundDict));
+
+  source_->AddString("sponsoredRichMediaBaseUrl",
+                     kNTPNewTabTakeoverRichMediaUrl);
+
+  source_->AddBoolean(
+      "ntpSearchFeatureEnabled",
+      base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget));
+
+  source_->AddString(
+      "ntpSearchDefaultHost",
+      GetSearchDefaultHost(
+          RegionalCapabilitiesServiceFactory::GetForProfile(profile)));
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  source_->AddBoolean("rewardsFeatureEnabled",
+                      brave_rewards::IsSupportedForProfile(profile));
+#else
+  source_->AddBoolean("rewardsFeatureEnabled", false);
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  bool vpn_feature_enabled = brave_vpn::IsBraveVPNEnabled(prefs);
+#else
+  bool vpn_feature_enabled = false;
+#endif
+  source_->AddBoolean("vpnFeatureEnabled", vpn_feature_enabled);
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  bool news_feed_update_enabled =
+      base::FeatureList::IsEnabled(brave_news::features::kBraveNewsFeedUpdate);
+  source_->AddBoolean("featureFlagBraveNewsFeedV2Enabled",
+                      news_feed_update_enabled);
+  source_->AddBoolean(
+      "newsFeatureEnabled",
+      news_feed_update_enabled &&
+          !prefs->GetBoolean(brave_news::prefs::kBraveNewsDisabledByPolicy));
+#else
+  source_->AddBoolean("featureFlagBraveNewsFeedV2Enabled", false);
+  source_->AddBoolean("newsFeatureEnabled", false);
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
+
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+  source_->AddBoolean("talkFeatureEnabled",
+                      !prefs->GetBoolean(brave_talk::prefs::kDisabledByPolicy));
+#else
+  source_->AddBoolean("talkFeatureEnabled", false);
+#endif  // BUILDFLAG(ENABLE_BRAVE_TALK)
+
+  source_->AddInteger("maxCustomTopSites", ntp_tiles::kMaxNumCustomLinks);
+
+  bool ai_chat_input_enabled = false;
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  ai_chat_input_enabled =
+      ai_chat::IsAIChatEnabled(profile->GetPrefs()) &&
+      ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled();
+
+  // Required by Brave AI Chat UI.
+  source_->AddBoolean("isMobile", false);
+  source_->AddBoolean("isHistoryEnabled", false);
+  source_->AddBoolean("isAIChatAgentProfileFeatureEnabled",
+                      ai_chat::features::IsAIChatAgentProfileEnabled());
+  source_->AddBoolean("isAIChatAgentProfile", profile->IsAIChatAgent());
+#endif
+
+  source_->AddBoolean("aiChatInputEnabled", ai_chat_input_enabled);
+}
+
+void NewTabPageInitializer::AddStrings() {
+  source_->AddLocalizedStrings(webui::kBraveNewTabPageStrings);
+  source_->AddLocalizedStrings(webui::kBraveNewsStrings);
+  source_->AddLocalizedStrings(webui::kBraveRewardsStrings);
+  source_->AddLocalizedStrings(webui::kBraveOmniboxStrings);
+  source_->AddLocalizedStrings(webui::kAiChatStrings);
+}
+
+void NewTabPageInitializer::AddPluralStrings() {
+  auto handler = std::make_unique<PluralStringHandler>();
+  handler->AddLocalizedString("BRAVE_NEWS_SOURCE_COUNT",
+                              IDS_BRAVE_NEWS_SOURCE_COUNT);
+  handler->AddLocalizedString("REWARDS_CONNECTED_ADS_VIEWED_TEXT",
+                              IDS_REWARDS_CONNECTED_ADS_VIEWED_TEXT);
+  web_ui_->AddMessageHandler(std::move(handler));
+}
+
+void NewTabPageInitializer::AddResourcePaths() {
+  source_->AddResourcePaths(
+      {{"dylan-malval_sea-min.webp", IDR_BRAVE_NEW_TAB_BACKGROUND1}});
+}
+
+void NewTabPageInitializer::AddFaviconDataSource() {
+  auto* profile = GetProfile();
+  content::URLDataSource::Add(
+      profile, std::make_unique<FaviconSource>(
+                   profile, chrome::FaviconUrlFormat::kFavicon2));
+}
+
+void NewTabPageInitializer::AddCustomImageDataSource() {
+  auto* profile = GetProfile();
+  auto* custom_background_service =
+      BraveNTPCustomBackgroundServiceFactory::GetForContext(profile);
+  if (!custom_background_service) {
+    return;
+  }
+  auto source = std::make_unique<ntp_background_images::NTPCustomImagesSource>(
+      custom_background_service);
+  content::URLDataSource::Add(profile, std::move(source));
+}
+
+void NewTabPageInitializer::AddSanitizedImageDataSource() {
+  auto* profile = GetProfile();
+  content::URLDataSource::Add(
+      profile, std::make_unique<BraveSanitizedImageSource>(profile));
+}
+
+}  // namespace brave_new_tab_page_refresh

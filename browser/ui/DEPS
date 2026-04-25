@@ -1,0 +1,17 @@
+from brave_chromium_utils import inline_file
+inline_file('//chrome/browser/ui/DEPS', globals(), locals())
+
+include_rules += [
+  "+brave/browser/brave_origin",
+  "+chrome/browser/ui",
+  "+brave/components/vector_icons",
+  "+brave/components/query_filter",
+  "+brave/components/tabs",
+  "+brave/components/text_recognition/common/buildflags",
+]
+
+specific_include_rules = {
+  "brave_file_select_utils_unittest\.cc": [
+    "+brave/components/l10n/common/test/scoped_default_locale.h",
+  ],
+}

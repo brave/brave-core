@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2023 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="24dp"
+    android:orientation="vertical"
+    android:background="@drawable/rating_bottomsheet_background">
+
+
+    <TextView
+        android:id="@+id/liking_brave_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/liking_brave"
+        android:textColor="@color/brave_rating_title_color"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/rating_emoji_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/in_one_emoji_experience_with_brave"
+        android:textColor="@color/brave_rating_sub_title_color"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/sadImageView"
+            android:layout_width="132dp"
+            android:layout_height="76dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/brave_rating_emoji_bg"
+            android:scaleType="center"
+            android:contentDescription="@string/sad"
+            app:srcCompat="@drawable/ic_brave_smiley_sad" />
+
+         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/happyImageView"
+            android:layout_width="132dp"
+            android:layout_height="76dp"
+            android:background="@drawable/brave_rating_emoji_bg"
+            android:scaleType="center"
+            android:contentDescription="@string/happy"
+            app:srcCompat="@drawable/ic_brave_smiley_happy" />
+
+    </LinearLayout>
+     
+</LinearLayout>

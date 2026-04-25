@@ -1,0 +1,14 @@
+[package]
+name = "display-error-chain"
+version = "0.2.2"
+authors = ["mexus <null@mexus.xyz>"]
+edition = "2021"
+description = "Formats a standard error and its sources"
+repository = "https://github.com/mexus/display-error-chain.git"
+documentation = "https://docs.rs/display-error-chain"
+license = "Apache-2.0/MIT"
+keywords = ["error", "format-error"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]

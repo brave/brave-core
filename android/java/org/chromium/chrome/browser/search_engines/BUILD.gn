@@ -1,0 +1,51 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/rules.gni")
+import("//third_party/jni_zero/jni_zero.gni")
+
+android_library("java") {
+  srcjar_deps = [ ":jni_headers" ]
+  sources = [
+    "settings/BraveBaseSearchEngineAdapter.java",
+    "settings/BravePrivateSearchEnginePreference.java",
+    "settings/BraveSearchEngineAdapter.java",
+    "settings/BraveSearchEngineAdapterDummySuper.java",
+    "settings/BraveSearchEnginePrefHelper.java",
+    "settings/BraveSearchEnginePreference.java",
+    "settings/BraveStandardSearchEnginePreference.java",
+  ]
+  deps = [
+    ":java_resources",
+    "//base:base_java",
+    "//base:base_shared_preferences_java",
+    "//brave/browser/custom_search_engines/android:java",
+    "//build/android:build_java",
+    "//chrome/browser/preferences:java",
+    "//chrome/browser/profiles/android:java",
+    "//chrome/browser/search_engines/android:java",
+    "//chrome/browser/settings:factory_java",
+    "//components/browser_ui/settings/android:java",
+    "//components/cached_flags:java",
+    "//components/omnibox/common:features_java",
+    "//components/search_engines/android:java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+    "//third_party/androidx:androidx_fragment_fragment_java",
+    "//third_party/jni_zero:jni_zero_java",
+  ]
+
+  resources_package = "org.chromium.chrome.browser.search_engines"
+}
+
+generate_jni("jni_headers") {
+  sources = [ "settings/BraveSearchEnginePrefHelper.java" ]
+}
+
+android_resources("java_resources") {
+  deps = [
+    "//brave/build/android:android_brave_strings_grd",
+    "//chrome/browser/search_engines/android:java_resources",
+  ]
+}

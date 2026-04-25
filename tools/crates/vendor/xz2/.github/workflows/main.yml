@@ -1,0 +1,115 @@
+name: CI
+on: [push, pull_request]
+
+jobs:
+  test:
+    name: Test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        build:
+        - stable
+        - stable-static
+        - beta
+        - nightly
+        - macos
+        - macos-static
+        - win32
+        - win64
+        - win64-static
+        - win64-crt-static
+        - win32-gnu
+        - win64-gnu
+        include:
+          - build: stable
+            os: ubuntu-latest
+            rust: stable
+          - build: stable-static
+            os: ubuntu-latest
+            rust: stable
+            static: yes
+          - build: beta
+            os: ubuntu-latest
+            rust: beta
+          - build: nightly
+            os: ubuntu-latest
+            rust: nightly
+          - build: macos
+            os: macos-latest
+            rust: stable
+          - build: macos-static
+            os: macos-latest
+            rust: stable
+            static: yes
+          - build: win32
+            os: windows-latest
+            rust: stable-i686-msvc
+          - build: win64
+            os: windows-latest
+            rust: stable-x86_64-msvc
+          - build: win64-static
+            os: windows-latest
+            rust: stable-x86_64-msvc
+            static: yes
+          - build: win64-crt-static
+            os: windows-latest
+            rust: stable-x86_64-msvc
+            static: yes
+            crt_static: yes
+          - build: win32-gnu
+            os: windows-latest
+            rust: stable-i686-gnu
+          - build: win64-gnu
+            os: windows-latest
+            rust: stable-x86_64-gnu
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        submodules: true
+    - name: Install Rust (rustup)
+      run: rustup update ${{ matrix.rust }} --no-self-update && rustup default ${{ matrix.rust }}
+      shell: bash
+    - name: Set crt-static
+      if: matrix.crt_static == 'yes'
+      run: echo RUSTFLAGS=-Ctarget-feature=+crt-static >> $GITHUB_ENV
+      shell: bash
+    - name: Set static
+      if: matrix.static == 'yes'
+      run: echo LZMA_API_STATIC=1 >> $GITHUB_ENV
+      shell: bash
+    - run: cargo test
+    - run: cargo test --features tokio
+    - run: cargo run --manifest-path systest/Cargo.toml
+      if: matrix.static == 'yes'
+
+
+  rustfmt:
+    name: Rustfmt
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        submodules: true
+    - name: Install Rust
+      run: rustup update stable && rustup default stable && rustup component add rustfmt
+    - run: cargo fmt -- --check
+
+  publish_docs:
+    name: Publish Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: true
+      - name: Install Rust
+        run: rustup update stable && rustup default stable
+      - run: cargo doc --no-deps --all-features
+      - run: cargo doc --no-deps --all-features --manifest-path lzma-sys/Cargo.toml
+      - name: Publish documentation
+        run: |
+          cd target/doc
+          git init
+          git add .
+          git -c user.name='ci' -c user.email='ci' commit -m init
+          git push -f -q https://git:${{ secrets.github_token }}@github.com/${{ github.repository }} HEAD:gh-pages
+        if: github.event_name == 'push' && github.event.ref == 'refs/heads/master'

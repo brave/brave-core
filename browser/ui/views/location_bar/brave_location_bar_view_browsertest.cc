@@ -1,0 +1,249 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
+
+#include <memory>
+
+#include "base/run_loop.h"
+#include "base/scoped_observation.h"
+#include "base/test/bind.h"
+#include "base/test/scoped_feature_list.h"
+#include "brave/browser/ui/views/location_bar/brave_search_conversion/promotion_button_controller.h"
+#include "brave/browser/ui/views/location_bar/brave_search_conversion/promotion_button_view.h"
+#include "brave/components/brave_search_conversion/features.h"
+#include "brave/components/brave_search_conversion/pref_names.h"
+#include "brave/components/search_engines/brave_prepopulated_engines.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/search_engines/template_url_service_factory.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/omnibox/omnibox_controller.h"
+#include "chrome/browser/ui/omnibox/omnibox_edit_model.h"
+#include "chrome/browser/ui/omnibox/omnibox_view.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/view_ids.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
+#include "chrome/browser/ui/views/toolbar/toolbar_view.h"
+#include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/interactive_test_utils.h"
+#include "chrome/test/base/search_test_utils.h"
+#include "components/search_engines/template_url.h"
+#include "components/search_engines/template_url_data_util.h"
+#include "components/search_engines/template_url_service.h"
+#include "content/public/browser/web_contents.h"
+#include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
+#include "testing/gtest/include/gtest/gtest.h"
+#include "ui/views/view_observer.h"
+
+class BraveLocationBarViewBrowserTest : public InProcessBrowserTest {
+ public:
+  BraveLocationBarViewBrowserTest() {
+    // Disabled by default.
+    EXPECT_FALSE(base::FeatureList::IsEnabled(
+        brave_search_conversion::features::kOmniboxPromotionButton));
+
+    features_.InitAndEnableFeature(
+        brave_search_conversion::features::kOmniboxPromotionButton);
+  }
+
+  BraveToolbarView* toolbar() {
+    auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+    return static_cast<BraveToolbarView*>(browser_view->toolbar());
+  }
+
+  BraveLocationBarView* location_bar() {
+    auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+    return static_cast<BraveLocationBarView*>(
+        browser_view->toolbar()->location_bar());
+  }
+
+  OmniboxViewViews* omnibox_view() { return location_bar()->omnibox_view(); }
+
+  OmniboxController* controller() {
+    return location_bar()->GetOmniboxController();
+  }
+
+  OmniboxEditModel* edit_model() {
+    return location_bar()->GetOmniboxController()->edit_model();
+  }
+
+  views::View* promotion_button_view() {
+    return location_bar()->GetSearchPromotionButton();
+  }
+
+  TemplateURLService* GetTemplateURLService() {
+    return TemplateURLServiceFactory::GetForProfile(browser()->profile());
+  }
+
+  content::WebContents* web_contents() {
+    return browser()->tab_strip_model()->GetActiveWebContents();
+  }
+
+  void WaitUntil(base::RepeatingCallback<bool()> condition) {
+    if (condition.Run()) {
+      return;
+    }
+
+    base::RepeatingTimer scheduler;
+    scheduler.Start(FROM_HERE, base::Milliseconds(100),
+                    base::BindLambdaForTesting([this, &condition] {
+                      if (condition.Run()) {
+                        run_loop_->Quit();
+                      }
+                    }));
+    Run();
+  }
+
+  void Run() {
+    run_loop_ = std::make_unique<base::RunLoop>();
+    run_loop_->Run();
+  }
+
+  base::test::ScopedFeatureList features_;
+  std::unique_ptr<base::RunLoop> run_loop_;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveLocationBarViewBrowserTest,
+                       SearchConversionButtonTest) {
+  search_test_utils::WaitForTemplateURLServiceToLoad(GetTemplateURLService());
+
+  auto bing_search_data = TemplateURLDataFromPrepopulatedEngine(
+      TemplateURLPrepopulateData::brave_bing);
+  TemplateURL bing_template_url(*bing_search_data);
+
+  auto brave_search_data = TemplateURLDataFromPrepopulatedEngine(
+      TemplateURLPrepopulateData::brave_search);
+  TemplateURL brave_template_url(*brave_search_data);
+
+  // Set non brave search as a default provider and type any input.
+  // Check promotion button is launched.
+  GetTemplateURLService()->SetUserSelectedDefaultSearchProvider(
+      &bing_template_url);
+  location_bar()->FocusLocation(/*is_user_initiated=*/true,
+                                /*clear_focus_if_failed=*/false);
+  omnibox_view()->SetUserText(u"a");
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return controller()->IsPopupOpen(); }));
+  EXPECT_TRUE(promotion_button_view()->GetVisible());
+
+  // Unfocus from the omnibox.
+  // Omnibox popup is hidden and promotion button will be gone also.
+  web_contents()->Focus();
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !controller()->IsPopupOpen(); }));
+  EXPECT_FALSE(promotion_button_view()->GetVisible());
+
+  // Set brave search as a default provider and type any input.
+  GetTemplateURLService()->SetUserSelectedDefaultSearchProvider(
+      &brave_template_url);
+
+  // Check button is not shown with brave search.
+  location_bar()->FocusLocation(/*is_user_initiated=*/true,
+                                /*clear_focus_if_failed=*/false);
+  omnibox_view()->SetUserText(u"a");
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return controller()->IsPopupOpen(); }));
+  EXPECT_FALSE(promotion_button_view()->GetVisible());
+
+  location_bar()->Revert();
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !controller()->IsPopupOpen(); }));
+  EXPECT_FALSE(promotion_button_view()->GetVisible());
+
+  GetTemplateURLService()->SetUserSelectedDefaultSearchProvider(
+      &bing_template_url);
+
+  // Set dismissed and check button is not shown anymore.
+  browser()->profile()->GetPrefs()->SetBoolean(
+      brave_search_conversion::prefs::kDismissed, true);
+  omnibox_view()->SetUserText(u"a");
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return controller()->IsPopupOpen(); }));
+  EXPECT_FALSE(promotion_button_view()->GetVisible());
+
+  location_bar()->Revert();
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !controller()->IsPopupOpen(); }));
+  EXPECT_FALSE(promotion_button_view()->GetVisible());
+
+  constexpr std::u16string search_term = u"a";
+
+  // Unset dismissed and simulate promotion button click.
+  browser()->profile()->GetPrefs()->SetBoolean(
+      brave_search_conversion::prefs::kDismissed, false);
+  location_bar()->FocusLocation(/*is_user_initiated=*/true,
+                                /*clear_focus_if_failed=*/false);
+  omnibox_view()->SetUserText(search_term);
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return controller()->IsPopupOpen(); }));
+  EXPECT_TRUE(promotion_button_view()->GetVisible());
+
+  // Check brave search is set as default provider and brave search is loaded in
+  // active tab.
+  location_bar()
+      ->promotion_controller_->SetDefaultAndLoadBraveSearchWithCurrentInput();
+  const TemplateURL* default_provider =
+      GetTemplateURLService()->GetDefaultSearchProvider();
+  const auto target_search_url = brave_template_url.GenerateSearchURL(
+      GetTemplateURLService()->search_terms_data(), search_term);
+  EXPECT_EQ(brave_template_url.prepopulate_id(),
+            default_provider->prepopulate_id());
+  content::WaitForLoadStop(web_contents());
+  EXPECT_EQ(target_search_url, web_contents()->GetVisibleURL());
+
+  // Check dismissed bit is set after user clicks button.
+  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
+      brave_search_conversion::prefs::kDismissed));
+}
+
+// After resizing the toolbar to a narrower width, every visible child of the
+// location bar must remain within the location bar's horizontal bounds.
+// This exercises the InvalidateLayout() fix in ResetLocationBarBounds() and
+// the additive GetMinimumSize() formula.
+IN_PROC_BROWSER_TEST_F(BraveLocationBarViewBrowserTest,
+                       ChildViewsStayWithinBoundsOnNarrowResize) {
+  auto toolbar_bounds = toolbar()->bounds();
+  toolbar_bounds.Inset(gfx::Insets::VH(0, toolbar_bounds.width() / 3));
+  toolbar()->SetBoundsRect(toolbar_bounds);
+
+  for (views::View* child : location_bar()->children()) {
+    // The FocusRing intentionally overflows its parent by 1px to draw the ring.
+    if (!child->GetVisible() || (child->GetClassName() == "FocusRing")) {
+      continue;
+    }
+    EXPECT_GE(child->bounds().x(), 0)
+        << child->GetClassName() << " overflows left edge";
+    EXPECT_LE(child->bounds().right(), location_bar()->width())
+        << child->GetClassName() << " overflows right edge";
+  }
+}
+
+class OmniboxViewObserver : public views::ViewObserver {
+ public:
+  OmniboxViewObserver() = default;
+  ~OmniboxViewObserver() override = default;
+
+  void OnViewBoundsChanged(views::View* observed_view) override {
+    bounds_changed_count_++;
+  }
+
+  int bounds_changed_count_ = 0;
+};
+
+// Check location bar's layout is called only once when toolbar's size changed.
+IN_PROC_BROWSER_TEST_F(BraveLocationBarViewBrowserTest,
+                       OmniboxViewBoundsChangedTest) {
+  OmniboxViewObserver observer;
+  base::ScopedObservation<OmniboxViewViews, views::ViewObserver> observation(
+      &observer);
+  observation.Observe(omnibox_view());
+  auto toolbar_bounds = toolbar()->bounds();
+  toolbar_bounds.Inset(gfx::Insets::VH(0, 10));
+  toolbar()->SetBoundsRect(toolbar_bounds);
+
+  EXPECT_EQ(1, observer.bounds_changed_count_);
+}

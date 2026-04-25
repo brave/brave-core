@@ -1,0 +1,16 @@
+<script>
+  var result = false;
+  try {
+    navigator.getBattery().then(function(battery) {
+    result = (battery.charging == true && 
+      battery.chargingTime == 0 && 
+      battery.dischargingTime == Infinity &&
+      battery.level == 1);
+    });
+  } catch (err) {
+      result = false;
+  }
+  function getBatteryBlocked() {
+    return result;
+  }
+</script>

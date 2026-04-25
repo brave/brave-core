@@ -1,0 +1,10 @@
+Name: brave-miracl
+URL: https://crates.io/crates/brave-miracl
+Version: 0.2.2
+Revision: 0e8b1825cef577afbc2b7de36ed664997b5b8631
+License: Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/brave-miracl-v0_2/LICENSE
+Shipped: yes
+Security Critical: yes
+
+Description: Subset of the MIRACL Core library that includes the bn254 elliptic curve

@@ -1,0 +1,12 @@
+diff --git a/components/web_app_resources/web_app_error_page.html b/components/web_app_resources/web_app_error_page.html
+index 070d8c7ee702fe6abf02922e67223288c24022c1..668473041cab98de25da8f58f5ee17d21c9478e5 100644
+--- a/components/web_app_resources/web_app_error_page.html
++++ b/components/web_app_resources/web_app_error_page.html
+@@ -6,6 +6,7 @@
+   <title>$i18n{app_short_name}</title>
+   <link rel="stylesheet" href="../security_interstitials/core/common/resources/interstitial_core.css">
+   <link rel="stylesheet" href="../security_interstitials/core/common/resources/interstitial_common.css">
++  <link rel="stylesheet" href="../../brave/components/security_interstitials/core/common/resources/interstitial_common.css">
+   <link rel="stylesheet" href="web_app_error_page.css">
+ </head>
+   <body style="font-family: $i18n{fontfamily};font-size:$i18n{fontsize};">

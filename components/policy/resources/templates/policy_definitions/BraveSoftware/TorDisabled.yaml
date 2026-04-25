@@ -1,0 +1,39 @@
+caption: Disable Tor Connectivity
+default: null
+desc: |-
+  Disable Tor connectivity in Brave.
+
+  Using Tor connectivity in Private Windows makes it more difficult for sites to see a user's true IP address and for network observers to see what sites they visit. This may be used for enhanced confidentiality and censorship resistance in Private Windows.
+
+            If this policy is set to true, Tor connectivity will always be disabled.
+
+            If this policy is set to false, Tor connectivity will be enabled if the user opens a Private Window with Tor.
+
+            If you set this policy, users cannot change or override it.
+
+            If this policy is left unset, Tor connectivity will be enabled if the user opens a Private Window with Tor.
+example_value: true
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: false
+  per_profile: false
+items:
+- caption: Enable Tor functionality
+  value: false
+- caption: Disable Tor functionality
+  value: true
+- caption: Allow the user to decide
+  value: null
+owners:
+- clifton@brave.com
+- fmarier@brave.com
+- anthony@brave.com
+schema:
+  type: boolean
+supported_on:
+- chrome.win:78-
+- chrome.mac:93-
+- chrome.linux:93-
+tags: []
+type: main

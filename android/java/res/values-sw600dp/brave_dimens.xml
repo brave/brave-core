@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2020 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
+<resources>
+    <dimen name="onboarding_2_title_size">24sp</dimen>
+    <dimen name="onboarding_2_text_size">20sp</dimen>
+    <dimen name="onboarding_2_layout_height">400dp</dimen>
+    <dimen name="onboarding_2_animation_height">300dp</dimen>
+    <dimen name="onboarding_2_animation_width">500dp</dimen>
+
+    <dimen name="new_tab_page_incognito_title_text_size">40sp</dimen>
+    <dimen name="new_tab_page_incognito_logo_size">56sp</dimen>
+    <dimen name="new_tab_page_incognito_icon_size">48sp</dimen>
+
+    <!-- Match this value with the upstream for Accessibility -->
+    <dimen name="omnibox_search_engine_logo_composed_size">24dp</dimen>
+</resources>

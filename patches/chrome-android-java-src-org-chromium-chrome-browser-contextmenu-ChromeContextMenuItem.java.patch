@@ -1,0 +1,37 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
+index 5d50e5277b48c6cf2d03b67bc230e5e2cdf26d53..12f865ab1a3e5e719790576a4fbb7fa9653e5cf1 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
+@@ -78,6 +78,7 @@ class ChromeContextMenuItem {
+         Item.PRINT_PAGE,
+         Item.VIEW_PAGE_SOURCE,
+         Item.INSPECT_ELEMENT,
++        Item.COPY_CLEAN_LINK,
+     })
+     @Retention(RetentionPolicy.SOURCE)
+     public @interface Item {
+@@ -136,7 +137,7 @@ class ChromeContextMenuItem {
+         int VIEW_PAGE_SOURCE = 41;
+         int INSPECT_ELEMENT = 42;
+         // ALWAYS UPDATE!
+-        int NUM_ENTRIES = 43;
++        int COPY_CLEAN_LINK = 43;int NUM_ENTRIES = 44;
+     }
+ 
+     /** Mapping from {@link Item} to the ID found in the ids.xml. */
+@@ -184,6 +185,7 @@ class ChromeContextMenuItem {
+         R.id.contextmenu_print_page, // Item.PRINT_PAGE
+         R.id.contextmenu_view_page_source, // Item.VIEW_PAGE_SOURCE
+         R.id.contextmenu_inspect_element, // Item.INSPECT_ELEMENT
++        R.id.contextmenu_copy_clean_link, // Item.COPY_CLEAN_LINK
+     };
+ 
+     /** Mapping from {@link Item} to the ID of the string that describes the action of the item. */
+@@ -231,6 +233,7 @@ class ChromeContextMenuItem {
+         R.string.contextmenu_print_page, // Item.PRINT_PAGE
+         R.string.contextmenu_view_page_source, // Item.VIEW_PAGE_SOURCE
+         R.string.contextmenu_inspect_element, // Item.INSPECT_ELEMENT
++        R.string.contextmenu_copy_clean_link, // Item.COPY_CLEAN_LINK
+     };
+ 
+     /**

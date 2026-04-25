@@ -1,0 +1,76 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_talk/buildflags/buildflags.gni")
+
+config("config") {
+  # For our own public headers to be able to import the official public headers
+  include_dirs = [
+    "//ios/web_view/public",
+    "//brave/ios/web_view/public",
+  ]
+}
+
+source_set("web_view") {
+  sources = [
+    "brave_web_view.h",
+    "brave_web_view.mm",
+    "brave_web_view_configuration.h",
+    "brave_web_view_configuration.mm",
+    "brave_web_view_configuration_provider.h",
+    "brave_web_view_configuration_provider.mm",
+    "brave_web_view_download_manager.h",
+    "brave_web_view_download_manager.mm",
+    "brave_web_view_internal.h",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/ios/browser",
+    "//brave/components/brave_talk/buildflags",
+    "//brave/ios/browser/ai_chat",
+    "//brave/ios/browser/api/profile",
+    "//brave/ios/browser/api/web_view/autofill",
+    "//brave/ios/browser/api/web_view/passwords",
+    "//brave/ios/browser/brave_ads",
+    "//brave/ios/browser/brave_search",
+    "//brave/ios/browser/favicon",
+    "//brave/ios/browser/ui/web_view:features",
+    "//brave/ios/browser/ui/webui/brave_wallet",
+    "//brave/ios/browser/web/document_fetch",
+    "//brave/ios/browser/web/force_paste",
+    "//brave/ios/browser/web/logins",
+    "//brave/ios/browser/web/page_metadata",
+    "//brave/ios/browser/web/reader_mode",
+    "//brave/ios/browser/youtube",
+    "//brave/ios/web_view",
+    "//components/favicon/core",
+    "//ios/chrome/browser/affiliations/model",
+    "//ios/chrome/browser/autofill/model",
+    "//ios/chrome/browser/favicon/model",
+    "//ios/chrome/browser/language/model",
+    "//ios/chrome/browser/passwords/model",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/chrome/browser/signin/model",
+    "//ios/chrome/browser/sync/model",
+    "//ios/chrome/browser/tabs/model",
+    "//ios/chrome/browser/translate/model",
+    "//ios/chrome/browser/web/model/print",
+    "//ios/web/common",
+    "//ios/web/web_state",
+    "//ios/web/web_state/ui:wk_web_view_configuration_provider_header",
+    "//ios/web_view/framework:web_view_sources",
+    "//net",
+  ]
+  if (enable_brave_talk) {
+    deps += [ "//brave/ios/browser/brave_talk" ]
+  }
+  frameworks = [
+    "Foundation.framework",
+    "UIKit.framework",
+    "WebKit.framework",
+  ]
+  public_configs = [ ":config" ]
+}

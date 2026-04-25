@@ -1,0 +1,71 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//build/config/ui.gni")
+import("//components/vector_icons/vector_icons.gni")
+
+aggregate_vector_icons("brave_vector_icons") {
+  icon_directory = "."
+
+  # Note: Before adding another icon here, check if the icon is available in Leo
+  # https://leo.bravesoftware.com/?path=/story/icon--all-icons
+  sources = [
+    "bat.icon",
+    "brave_ads_close_button.icon",
+    "brave_ads_dark_mode_info_button.icon",
+    "brave_ads_light_mode_info_button.icon",
+    "brave_sad.icon",
+    "brave_tooltips_stopwatch.icon",
+    "download_unlock.icon",
+    "sidebar_toolbar_button.icon",
+    "sidebar_toolbar_button_right.icon",
+    "user_menu_guest.icon",
+    "web_discovery_infobar_close_button.icon",
+  ]
+
+  if (toolkit_views) {
+    sources += [
+      "sidebar_edit.icon",
+      "sidebar_item_added_check.icon",
+      "sidebar_items_down_arrow.icon",
+      "sidebar_items_up_arrow.icon",
+      "sidebar_trash.icon",
+      "vertical_tab_strip_toggle_collapsed.icon",
+    ]
+    sources += rebase_path([ "leo_window_tabs_vertical_expanded.icon" ],
+                           ".",
+                           "//brave/node_modules/@brave/leo/icons-skia")
+  }
+
+  if (enable_brave_vpn_panel) {
+    sources += [
+      "vpn_indicator_error.icon",
+      "vpn_indicator_off.icon",
+      "vpn_indicator_on.icon",
+    ]
+  }
+
+  if (enable_speedreader) {
+    sources += [
+      "brave_speedreader_graphic_book1.icon",
+      "brave_speedreader_graphic_book2.icon",
+      "brave_speedreader_graphic_book3.icon",
+      "brave_speedreader_graphic_lines.icon",
+    ]
+  }
+}
+
+source_set("vector_icons") {
+  sources = get_target_outputs(":brave_vector_icons")
+
+  deps = [
+    ":brave_vector_icons",
+    "//base",
+    "//skia",
+    "//ui/gfx",
+  ]
+}

@@ -1,0 +1,12 @@
+diff --git a/extensions/browser/api/web_request/extension_web_request_event_router.cc b/extensions/browser/api/web_request/extension_web_request_event_router.cc
+index e0298d214ea21bab003b74c857f3354c268ca465..7cb97a9a057f9ad70296e4cd6de90e0b7e90283e 100644
+--- a/extensions/browser/api/web_request/extension_web_request_event_router.cc
++++ b/extensions/browser/api/web_request/extension_web_request_event_router.cc
+@@ -1468,6 +1468,7 @@ WebRequestEventRouter::OnAuthRequired(content::BrowserContext* browser_context,
+                                          *request)) {
+     return AuthRequiredResponse::AUTH_REQUIRED_RESPONSE_NO_ACTION;
+   }
++  BRAVE_EXTENSION_WEB_REQUEST_EVENT_ROUTER_ON_AUTH_REQUIRED
+ 
+   int extra_info_spec = 0;
+   RawListeners listeners = GetMatchingListeners(

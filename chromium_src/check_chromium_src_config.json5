@@ -1,0 +1,52 @@
+{
+  // Files matching these regular expressions will be excluded.
+  // Please, keep in alphabetical order.
+  're_excludes': [
+    '.*\\.cfg',
+    '.*\\.clangd',
+    '.*\\.gn',
+    '.*\\.gni',
+    '.*\\.in',
+    '.*\\.info',
+    '.*\\.pyc',
+    '.*\\.xml',
+    '(.*/)?DEPS',
+    'chrome/installer/setup/resources/setup_resources_.*\\.xtb',
+  ],
+
+  // Files matching these exact paths will be excluded.
+  // Please, keep in alphabetical order.
+  'path_excludes': [
+    'base/feature_override.h',
+    'check_chromium_src_config.json5',
+    'chrome/browser/devtools/url_constants_unittest.cc',
+    'chrome/browser/notifications/notification_handler_impl.h',
+    'chrome/browser/safe_browsing/download_protection/check_client_download_request_base_browsertest.cc',
+    'chrome/browser/shell_integration_unittest_mac.cc',
+    'chrome/browser/signin/account_consistency_disabled_unittest.cc',
+    'chrome/browser/ui/views/tabs/tab_hover_card_bubble_view_browsertest.cc',
+    'chrome/browser/ui/webui/help/version_updater_mac.h',
+    'chrome/common/chrome_constants_unittest_mac.cc',
+    'chrome/installer/mini_installer/brave_mini_installer_unittest.cc',
+    'chrome/installer/setup/brave_behaviors.cc',
+    'chrome/installer/setup/brave_origin_behaviors.cc',
+    'chrome/installer/setup/resources/setup_resources.grd',
+    'chrome/installer/setup/test/install_worker_vpn_unittest.cc',
+    'chrome/install_static/brave_install_details_unittest.cc',
+    'chrome/install_static/brave_install_modes_unittest.cc',
+    'chrome/install_static/brave_install_util_unittest.cc',
+    'chrome/install_static/brave_product_install_details_unittest.cc',
+    'chrome/install_static/brave_restore_google_update_integration.h',
+    'chrome/install_static/brave_stash_google_update_integration.h',
+    'chrome/install_static/brave_user_data_dir_win_unittest.cc',
+    'components/privacy_sandbox/privacy_sandbox_settings_unittest.cc',
+    'components/search_engines/brave_template_url_prepopulate_data_unittest.cc',
+    'components/search_engines/brave_template_url_service_util_unittest.cc',
+    'components/variations/service/field_trial_unittest.cc',
+    'net/base/brave_proxy_string_util_unittest.cc',
+    'net/cookies/brave_canonical_cookie_unittest.cc',
+    'third_party/blink/common/features_generated.cc',
+    'third_party/rust/serde_json_lenient/v0_2/wrapper/large_integers.rs',
+    'v8/include/DO NOT PUT FILES HERE',
+  ],
+}

@@ -1,0 +1,26 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+brave_flags_deps = [
+  "//base",
+  "//brave/components/ai_chat/core/common",
+  "//brave/components/brave_ads/core",
+  "//brave/components/brave_component_updater/browser:public",
+  "//brave/components/brave_origin:features",
+  "//brave/components/brave_rewards/core",
+  "//brave/components/brave_rewards/core/buildflags",
+  "//brave/components/brave_shields/core/common",
+  "//brave/components/brave_sync:features",
+  "//brave/components/brave_user_agent/common",
+  "//brave/components/brave_wallet/common",
+  "//brave/components/de_amp/common",
+  "//brave/components/debounce/core/common",
+  "//brave/components/skus/common",
+  "//brave/ios/browser/brave_wallet",
+  "//brave/ios/browser/ui/quick_view:features",
+  "//brave/ios/browser/ui/web_view:features",
+  "//components/webui/flags",
+  "//net",
+]

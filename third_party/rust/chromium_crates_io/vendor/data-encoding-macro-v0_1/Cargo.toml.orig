@@ -1,0 +1,18 @@
+[package]
+name = "data-encoding-macro"
+version = "0.1.15"
+authors = ["Julien Cretin <cretin@google.com>"]
+license = "MIT"
+edition = "2018"
+rust-version = "1.48"
+keywords = ["no_std", "base64", "base32", "hex", "macro"]
+categories = ["encoding", "no-std"]
+readme = "README.md"
+repository = "https://github.com/ia0/data-encoding"
+documentation = "https://docs.rs/data-encoding-macro"
+description = "Macros for data-encoding"
+include = ["Cargo.toml", "LICENSE", "README.md", "src/lib.rs"]
+
+[dependencies]
+data-encoding = { version = "2.6.0", path = "..", default-features = false }
+data-encoding-macro-internal = { version = "0.1.13", path = "internal" }

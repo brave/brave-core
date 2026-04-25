@@ -1,0 +1,52 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//testing/test.gni")
+
+static_library("api_request_helper") {
+  sources = [
+    "api_request_helper.cc",
+    "api_request_helper.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//net/traffic_annotation",
+    "//services/data_decoder/public/cpp",
+    "//services/network/public/cpp",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources =
+      [ "//brave/components/api_request_helper/api_request_helper_unittest.cc" ]
+  deps = [
+    ":api_request_helper",
+    "//base/test:test_support",
+    "//net/traffic_annotation:test_support",
+    "//services/network:test_support",
+    "//testing/gtest",
+  ]
+}
+
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "mock_api_request_helper.cc",
+    "mock_api_request_helper.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/api_request_helper",
+    "//net/traffic_annotation",
+    "//services/network/public/cpp",
+    "//testing/gmock",
+  ]
+}

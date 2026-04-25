@@ -1,0 +1,284 @@
+// Copyright (c) 2019 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+#include "brave/browser/profiles/brave_profile_manager.h"
+
+#include <string>
+#include <utility>
+#include <vector>
+
+#include "base/check.h"
+#include "base/path_service.h"
+#include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
+#include "brave/browser/perf/brave_perf_features_processor.h"
+#include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/request_otr/request_otr_service_factory.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/constants/brave_constants.h"
+#include "brave/components/constants/pref_names.h"
+#include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
+#include "brave/components/ntp_background_images/browser/ntp_p3a_util.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
+#include "brave/components/request_otr/common/buildflags/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/profiles/profile_attributes_entry.h"
+#include "chrome/browser/profiles/profile_attributes_storage.h"
+#include "chrome/browser/profiles/profiles_state.h"
+#include "chrome/common/chrome_paths.h"
+#include "chrome/common/pref_names.h"
+#include "components/bookmarks/common/bookmark_pref_names.h"
+#include "components/gcm_driver/gcm_buildflags.h"
+#include "components/prefs/pref_service.h"
+#include "components/signin/public/base/signin_pref_names.h"
+#include "content/public/browser/browser_thread.h"
+#include "net/base/features.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/common/features.h"
+#endif
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/user_education/brave_user_education_utils.h"
+#include "chrome/browser/user_education/user_education_service_factory.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/ads_service_factory.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#endif
+
+#if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
+#include "brave/browser/gcm_driver/brave_gcm_channel_status.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/components/tor/tor_constants.h"
+#endif
+
+using brave_shields::ControlType;
+using content::BrowserThread;
+using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
+using ntp_background_images::prefs::
+    kNewTabPageShowSponsoredImagesBackgroundImage;  // NOLINT
+
+namespace {
+
+// Checks if the user previously had HTTPS-Only Mode enabled. If so,
+// set the HttpsUpgrade default setting to strict.
+void MigrateHttpsUpgradeSettings(Profile* profile) {
+  // If user flips the HTTPS by Default feature flag
+  auto* prefs = profile->GetPrefs();
+  // The HostContentSettingsMap might be null for some irregular profiles, e.g.
+  // the System Profile.
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
+  if (!map) {
+    return;
+  }
+  if (base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault)) {
+    // Migrate forwards from HTTPS-Only Mode to HTTPS Upgrade Strict setting.
+    if (prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled)) {
+      brave_shields::SetHttpsUpgradeControlType(map, ControlType::BLOCK,
+                                                GURL());
+      prefs->SetBoolean(prefs::kHttpsOnlyModeEnabled, false);
+    }
+  } else {
+    // Migrate backwards from HTTPS Upgrade Strict setting to HTTPS-Only Mode.
+    if (brave_shields::GetHttpsUpgradeControlType(map, GURL()) ==
+        ControlType::BLOCK) {
+      prefs->SetBoolean(prefs::kHttpsOnlyModeEnabled, true);
+      brave_shields::SetHttpsUpgradeControlType(
+          map, ControlType::BLOCK_THIRD_PARTY, GURL());
+    }
+  }
+}
+
+void RecordInitialP3AValues(Profile* profile) {
+  // Preference is unregistered for some reason in profile_manager_unittest
+  // TODO(bsclifton): create a proper testing profile
+  if (!profile->GetPrefs()->FindPreference(kNewTabPageShowBackgroundImage) ||
+      !profile->GetPrefs()->FindPreference(
+          kNewTabPageShowSponsoredImagesBackgroundImage)) {
+    return;
+  }
+  ntp_background_images::RecordSponsoredImagesEnabledP3A(profile->GetPrefs());
+  if (profile->IsRegularProfile()) {
+    auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
+    MaybeRecordInitialShieldsSettings(
+        profile->GetPrefs(), map,
+        brave_shields::GetCosmeticFilteringControlType(map, GURL()),
+        brave_shields::GetFingerprintingControlType(map, GURL()));
+  }
+}
+
+}  // namespace
+
+BraveProfileManager::BraveProfileManager(const base::FilePath& user_data_dir)
+    : ProfileManager(user_data_dir) {}
+
+size_t BraveProfileManager::GetNumberOfProfiles() {
+  size_t count = ProfileManager::GetNumberOfProfiles();
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+  if (ai_chat::features::IsAIChatAgentProfileEnabled()) {
+    // Don't include AI Chat agent profile in the count
+    base::FilePath ai_chat_agent_profile_path =
+        user_data_dir_.Append(brave::kAIChatAgentProfileDir);
+    if (count > 0 && GetProfileAttributesStorage().GetProfileAttributesWithPath(
+                         ai_chat_agent_profile_path)) {
+      count--;
+    }
+  }
+#endif
+
+  return count;
+}
+
+void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
+  // migrate obsolete plugin prefs to temporary migration pref because otherwise
+  // they get deleteed by PrefProvider before we can migrate them in
+  // BravePrefProvider
+  content_settings::BravePrefProvider::CopyPluginSettingsForMigration(
+      profile->GetPrefs());
+
+// Chromecast is enabled by default on Android.
+#if !BUILDFLAG(IS_ANDROID)
+  auto* pref_service = profile->GetPrefs();
+  // At start, the value of kEnableMediaRouterOnRestart is updated to match
+  // kEnableMediaRouter so users don't lose their current setting
+  if (pref_service->FindPreference(kEnableMediaRouterOnRestart)
+          ->IsDefaultValue()) {
+    auto enabled = pref_service->GetBoolean(::prefs::kEnableMediaRouter);
+    pref_service->SetBoolean(kEnableMediaRouterOnRestart, enabled);
+  } else {
+    // For Desktop, kEnableMediaRouterOnRestart is used to track the current
+    // state of the media router switch in brave://settings/extensions. The
+    // value of kEnableMediaRouter is only updated to match
+    // kEnableMediaRouterOnRestart on restart
+    auto enabled = pref_service->GetBoolean(kEnableMediaRouterOnRestart);
+    pref_service->SetBoolean(::prefs::kEnableMediaRouter, enabled);
+  }
+#endif
+
+  ProfileManager::InitProfileUserPrefs(profile);
+
+  brave::SetDefaultSearchVersion(profile, profile->IsNewProfile());
+  brave::SetDefaultThirdPartyCookieBlockValue(profile);
+  perf::MaybeEnableBraveFeaturesPrefsForPerfTesting(profile);
+}
+
+void BraveProfileManager::DoFinalInitForServices(Profile* profile,
+                                                 bool go_off_the_record) {
+  // Moved RecordInitialP3AValues/MigrateHttpsUpgradeSettings calls here from
+  // BraveProfileManager::InitProfileUserPrefs to pass over
+  // CHECK(!IdentityManagerFactory::GetForProfileIfExists(this)) during
+  // Android tests
+  // TODO(https://github.com/brave/brave-browser/issues/50822)
+  // Move RecordInitialP3AValues from here
+  RecordInitialP3AValues(profile);
+  // TODO(https://github.com/brave/brave-browser/issues/50823)
+  // Move MigrateHttpsUpgradeSettings from here as well
+  MigrateHttpsUpgradeSettings(profile);
+
+  ProfileManager::DoFinalInitForServices(profile, go_off_the_record);
+  if (!do_final_services_init_) {
+    return;
+  }
+
+#if !BUILDFLAG(IS_ANDROID)
+  // Suppress user education elements (New badges and IPH promos) for features
+  // that Brave doesn't want to promote.
+  brave::SuppressUserEducation(
+      UserEducationServiceFactory::GetForBrowserContext(profile));
+#endif
+
+  perf::MaybeEnableBraveFeaturesServicesAndComponentsForPerfTesting(profile);
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  brave_ads::AdsServiceFactory::GetForProfile(profile);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  brave_rewards::RewardsServiceFactory::GetForProfile(profile);
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile);
+#endif
+#if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
+  gcm::BraveGCMChannelStatus* status =
+      gcm::BraveGCMChannelStatus::GetForProfile(profile);
+  DCHECK(status);
+  status->UpdateGCMDriverStatus();
+#endif
+  misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(profile);
+#if BUILDFLAG(ENABLE_REQUEST_OTR)
+  request_otr::RequestOTRServiceFactory::GetForBrowserContext(profile);
+#endif
+}
+
+bool BraveProfileManager::IsAllowedProfilePath(
+    const base::FilePath& path) const {
+  // Chromium only allows profiles to be created in the user_data_dir, but we
+  // want to also be able to create profile in subfolders of user_data_dir.
+  return ProfileManager::IsAllowedProfilePath(path) ||
+         user_data_dir().IsParent(path.DirName());
+}
+
+bool BraveProfileManager::LoadProfileByPath(const base::FilePath& profile_path,
+                                            bool incognito,
+                                            ProfileLoadedCallback callback) {
+#if BUILDFLAG(ENABLE_TOR)
+  // Prevent legacy tor session profile to be loaded so we won't hit
+  // DCHECK(!GetProfileAttributesWithPath(...)). Workaround for legacy tor guest
+  // profile won't work because when AddProfile to storage we will hit
+  // DCHECK(user_data_dir_ == profile_path.DirName()), legacy tor session
+  // profile was not under user_data_dir like legacy tor guest profile did.
+  if (profile_path.BaseName().value() == tor::kTorProfileDir) {
+    return false;
+  }
+#endif
+  return ProfileManager::LoadProfileByPath(profile_path, incognito,
+                                           std::move(callback));
+}
+
+void BraveProfileManager::SetProfileAsLastUsed(Profile* last_active) {
+  // Prevent AI Chat agent profile from having an active time so that
+  // `ProfilePicker::GetStartupModeReason` doesn't consider it as a
+  // recently-active profile. This change causes it not to be considered
+  // for showing the profile picker on startup.
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+  if (last_active->IsAIChatAgent()) {
+    return;
+  }
+#endif
+  ProfileManager::SetProfileAsLastUsed(last_active);
+}
+
+// This overridden method doesn't clear |kDefaultSearchProviderDataPrefName|.
+// W/o this, prefs set by TorWindowSearchEngineProviderService is cleared
+// during the initialization.
+void BraveProfileManager::SetNonPersonalProfilePrefs(Profile* profile) {
+  PrefService* prefs = profile->GetPrefs();
+  prefs->SetBoolean(prefs::kSigninAllowed, false);
+  prefs->SetBoolean(bookmarks::prefs::kEditBookmarksEnabled, false);
+  prefs->SetBoolean(bookmarks::prefs::kShowBookmarkBar, false);
+}
+
+BraveProfileManagerWithoutInit::BraveProfileManagerWithoutInit(
+    const base::FilePath& user_data_dir)
+    : BraveProfileManager(user_data_dir) {
+  set_do_final_services_init(false);
+}

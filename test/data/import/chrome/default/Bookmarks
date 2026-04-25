@@ -1,0 +1,62 @@
+{
+   "checksum": "eed5605fe3e10f5406610457f49d304d",
+   "roots": {
+      "bookmark_bar": {
+         "children": [ {
+            "children": [ {
+               "date_added": "13165370632450724",
+               "id": "7",
+               "meta_info": {
+                  "last_visited_desktop": "13165370632451792"
+               },
+               "name": "The New York Times - Breaking News, World News & Multimedia",
+               "type": "url",
+               "url": "https://www.nytimes.com/"
+            } ],
+            "date_added": "13165370598929169",
+            "date_modified": "13165370642550583",
+            "id": "5",
+            "name": "News",
+            "type": "folder"
+         }, {
+            "children": [  ],
+            "date_added": "13165370604467215",
+            "date_modified": "13165370604467215",
+            "id": "6",
+            "name": "Empty",
+            "type": "folder"
+         } ],
+         "date_added": "13165370572482791",
+         "date_modified": "13165370632450724",
+         "id": "1",
+         "name": "Bookmarks Bar",
+         "type": "folder"
+      },
+      "other": {
+         "children": [ {
+            "date_added": "13165370642550583",
+            "id": "8",
+            "meta_info": {
+               "last_visited_desktop": "13165370642550877"
+            },
+            "name": "Secure, Fast & Private Web Browser with Adblocker | Brave Browser",
+            "type": "url",
+            "url": "https://brave.com/"
+         } ],
+         "date_added": "13165370572482823",
+         "date_modified": "13165370646548383",
+         "id": "2",
+         "name": "Other Bookmarks",
+         "type": "folder"
+      },
+      "synced": {
+         "children": [  ],
+         "date_added": "13165370572482823",
+         "date_modified": "0",
+         "id": "3",
+         "name": "Mobile Bookmarks",
+         "type": "folder"
+      }
+   },
+   "version": 1
+}

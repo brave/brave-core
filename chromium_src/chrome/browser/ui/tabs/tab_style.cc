@@ -1,0 +1,88 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "chrome/browser/ui/tabs/tab_style.h"
+
+#include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/tabs/features.h"
+
+namespace {
+
+// A subclass of TabStyle used to customize tab layout and visuals to support
+// Brave specifics including horizontal tabs.
+// Note that this class will be used instead of new TabStyle() in
+// TabStyle::Get() using plaster patch. See
+// rewrite/chrome/browser/ui/tabs/tab_style.cc.toml
+class BraveTabStyle : public TabStyle {
+ public:
+  int GetTabOverlap() const override {
+    if (!tabs::HorizontalTabsUpdateEnabled()) {
+      return TabStyle::GetTabOverlap();
+    }
+    return tabs::kHorizontalTabOverlap;
+  }
+
+  int GetTopCornerRadius() const override {
+    if (!tabs::HorizontalTabsUpdateEnabled()) {
+      return TabStyle::GetTopCornerRadius();
+    }
+    return tabs::kTabBorderRadius;
+  }
+
+  int GetBottomCornerRadius() const override {
+    if (!tabs::HorizontalTabsUpdateEnabled()) {
+      return TabStyle::GetBottomCornerRadius();
+    }
+    return tabs::kTabBorderRadius;
+  }
+
+  gfx::Insets GetContentsInsets() const override {
+    if (!tabs::HorizontalTabsUpdateEnabled()) {
+      return TabStyle::GetContentsInsets();
+    }
+    return gfx::Insets::VH(
+        0, tabs::GetHorizontalTabPadding() + tabs::kHorizontalTabInset);
+  }
+
+  int GetPinnedWidth(const bool is_split) const override {
+    // We can ignore |is_split| because we're always using same width.
+    return tabs::GetHorizontalTabHeight() + tabs::kHorizontalTabInset * 2;
+  }
+
+  int GetDragHandleExtension(int height) const override {
+    if (!tabs::HorizontalTabsUpdateEnabled()) {
+      return TabStyle::GetDragHandleExtension(height);
+    }
+    // The "drag handle extension" is the amount of space in DIP at the top of
+    // inactive tabs where mouse clicks are treated as clicks in the "caption"
+    // area, i.e. the draggable part of the window frame.
+    return 4;
+  }
+
+  gfx::Size GetSeparatorSize() const override {
+    return gfx::Size(1, GetLayoutConstant(LayoutConstant::kTabSeparatorHeight));
+  }
+
+  gfx::Insets GetSeparatorMargins() const override {
+    return gfx::Insets::TLBR(0, GetSeparatorSize().width() * -1, 0,
+                             GetSeparatorSize().width() * -1);
+  }
+
+  int GetSeparatorCornerRadius() const override { return 0; }
+
+  int GetMinimumActiveWidth(const bool is_split) const override {
+    // We don't use different width for split tab.
+    return TabStyle::GetMinimumActiveWidth(false);
+  }
+
+  int GetStandardWidth(const bool is_split) const override {
+    // We don't use different width for split tab.
+    return TabStyle::GetStandardWidth(false);
+  }
+};
+
+}  // namespace
+
+#include <chrome/browser/ui/tabs/tab_style.cc>

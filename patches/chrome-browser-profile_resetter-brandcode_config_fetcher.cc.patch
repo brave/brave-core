@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/profile_resetter/brandcode_config_fetcher.cc b/chrome/browser/profile_resetter/brandcode_config_fetcher.cc
+index 5d95f452c17cad249d0105dc92de4e6969c41b7a..51bcbb54a86e0f71fbb011704a43d0d902b7d4c1 100644
+--- a/chrome/browser/profile_resetter/brandcode_config_fetcher.cc
++++ b/chrome/browser/profile_resetter/brandcode_config_fetcher.cc
+@@ -57,6 +57,7 @@ BrandcodeConfigFetcher::BrandcodeConfigFetcher(
+     const GURL& url,
+     const std::string& brandcode)
+     : fetch_callback_(std::move(callback)), weak_ptr_factory_(this) {
++  BRAVE_BRANDCODE_CONFIG_FETCHER
+   DCHECK(!brandcode.empty());
+   net::NetworkTrafficAnnotationTag traffic_annotation =
+       net::DefineNetworkTrafficAnnotation("brandcode_config", R"(

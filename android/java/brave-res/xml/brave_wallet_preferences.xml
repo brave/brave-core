@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <org.chromium.chrome.browser.settings.BraveDialogPreference
+        android:key="default_ethereum_wallet"
+        android:title="@string/settings_default_ethereum_wallet_label"
+        app:dialog_entries="@array/settingsDefaultWalletTexts"
+        app:dialog_default_index="1"/>
+
+    <org.chromium.chrome.browser.settings.BraveDialogPreference
+        android:key="default_solana_wallet"
+        android:title="@string/settings_default_solana_wallet_label"
+        app:dialog_entries="@array/settingsDefaultWalletTexts"
+        app:dialog_default_index="1"/>
+
+    <org.chromium.chrome.browser.settings.BraveWalletAutoLockPreferences
+        android:key="pref_brave_wallet_autolock"
+        android:title="@string/brave_wallet_settings_autolock_option"
+        android:positiveButtonText="@string/brave_wallet_confirm_text"
+        android:negativeButtonText="@string/cancel"  />
+
+    <Preference
+        android:fragment="org.chromium.chrome.browser.settings.BraveWalletNetworksPreferenceFragment"
+        android:key="pref_brave_wallet_networks"
+        android:title="@string/brave_wallet_networks_title"
+        android:summary="@string/brave_wallet_networks_summary" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="web3_notifications_switch"
+        android:title="@string/brave_wallet_show_web3_notifications"
+        android:summaryOn="@string/text_on"
+        android:summaryOff="@string/text_off" />
+
+    <org.chromium.chrome.browser.settings.BraveWalletResetTxHistoryAndNoncePreference
+        android:key="pref_brave_wallet_tx_history_and_nonce_reset"
+        android:title="@string/brave_wallet_clear_tx_and_nonce_setting_title"
+        android:summary="@string/brave_wallet_clear_tx_and_nonce_setting_desc"/>
+
+    <org.chromium.chrome.browser.settings.BraveWalletResetPreference
+        android:key="pref_brave_wallet_reset"
+        android:title="@string/brave_wallet_reset_settings_option" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="nft_auto_discovery_switch"
+        android:title="@string/settings_enable_nft_discovery_label"
+        android:summaryOn="@string/text_on"
+        android:summaryOff="@string/text_off"
+        app:allowDividerBelow="false"/>
+
+    <!-- A description with hyperlink to explain more about NFT discovery settings. -->
+    <org.chromium.components.browser_ui.settings.TextMessagePreference
+        app:icon="@drawable/ic_info_outline"
+        android:key="nft_auto_discovery_learn_more" />
+</PreferenceScreen>

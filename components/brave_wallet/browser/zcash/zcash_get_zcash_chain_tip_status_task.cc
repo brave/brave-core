@@ -1,0 +1,118 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#include "brave/components/brave_wallet/browser/zcash/zcash_get_zcash_chain_tip_status_task.h"
+
+#include <utility>
+#include <variant>
+
+#include "base/check.h"
+
+namespace brave_wallet {
+
+ZCashGetZCashChainTipStatusTask::ZCashGetZCashChainTipStatusTask(
+    std::variant<base::PassKey<ZCashWalletService>,
+                 base::PassKey<class ZCashGetChainTipStatusTaskTest>> pass_key,
+    ZCashWalletService& zcash_wallet_service,
+    ZCashActionContext context)
+    : zcash_wallet_service_(zcash_wallet_service),
+      context_(std::move(context)) {}
+
+ZCashGetZCashChainTipStatusTask::~ZCashGetZCashChainTipStatusTask() = default;
+
+void ZCashGetZCashChainTipStatusTask::Start(
+    ZCashGetZCashChainTipStatusTaskCallback callback) {
+  DCHECK(!callback_);
+  callback_ = std::move(callback);
+  ScheduleWorkOnTask();
+}
+
+void ZCashGetZCashChainTipStatusTask::WorkOnTask() {
+  if (error_) {
+    std::move(callback_).Run(base::unexpected(error_.value()));
+    return;
+  }
+
+  if (!account_meta_) {
+    GetAccountMeta();
+    return;
+  }
+
+  if (!chain_tip_height_) {
+    GetChainTipHeight();
+    return;
+  }
+
+  uint32_t latest_scanned_block =
+      account_meta_->latest_scanned_block_id
+          ? account_meta_->latest_scanned_block_id.value()
+          : account_meta_->account_birthday;
+
+  std::move(callback_).Run(base::ok(mojom::ZCashChainTipStatus::New(
+      latest_scanned_block, chain_tip_height_.value())));
+}
+
+void ZCashGetZCashChainTipStatusTask::GetAccountMeta() {
+  context_.sync_state->AsyncCall(&OrchardSyncState::GetAccountMeta)
+      .WithArgs(context_.account_id.Clone())
+      .Then(base::BindOnce(&ZCashGetZCashChainTipStatusTask::OnGetAccountMeta,
+                           weak_ptr_factory_.GetWeakPtr()));
+}
+
+void ZCashGetZCashChainTipStatusTask::GetChainTipHeight() {
+  context_.zcash_rpc->GetLatestBlock(
+      context_.chain_id,
+      base::BindOnce(
+          &ZCashGetZCashChainTipStatusTask::OnGetChainTipHeightResult,
+          weak_ptr_factory_.GetWeakPtr()));
+}
+
+void ZCashGetZCashChainTipStatusTask::OnGetChainTipHeightResult(
+    base::expected<zcash::mojom::BlockIDPtr, std::string> result) {
+  if (!result.has_value()) {
+    error_ = "Failed to resolve chain tip";
+    ScheduleWorkOnTask();
+    return;
+  }
+
+  chain_tip_height_ = (*result)->height;
+  ScheduleWorkOnTask();
+}
+
+void ZCashGetZCashChainTipStatusTask::OnGetAccountMeta(
+    base::expected<std::optional<OrchardStorage::AccountMeta>,
+                   OrchardStorage::Error> result) {
+  if (!result.has_value()) {
+    error_ = "Failed to resolve account's meta";
+    ScheduleWorkOnTask();
+    return;
+  }
+
+  if (result.value()) {
+    account_meta_ = **result;
+    ScheduleWorkOnTask();
+    return;
+  }
+
+  OrchardStorage::AccountMeta account_meta;
+  auto birthday =
+      zcash_wallet_service_->GetAccountShieldBirthday(context_.account_id);
+  if (!birthday) {
+    error_ = "Account not shielded";
+    ScheduleWorkOnTask();
+    return;
+  }
+  account_meta.account_birthday = birthday->value;
+  account_meta_ = account_meta;
+  ScheduleWorkOnTask();
+}
+
+void ZCashGetZCashChainTipStatusTask::ScheduleWorkOnTask() {
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(&ZCashGetZCashChainTipStatusTask::WorkOnTask,
+                                weak_ptr_factory_.GetWeakPtr()));
+}
+
+}  // namespace brave_wallet

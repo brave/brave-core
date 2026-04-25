@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<catalog xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <book id="bk101">
+        <author>Gambardella, Matthew</author>
+        <title>XML Developer's Guide</title>
+    </book>
+    <content:encoded><![CDATA[<p>10 km, 21.9072&deg; East, 37.102&deg; North. </p>]]></content:encoded>
+</catalog>

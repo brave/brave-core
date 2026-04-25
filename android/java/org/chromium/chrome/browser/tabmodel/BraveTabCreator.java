@@ -1,0 +1,80 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+package org.chromium.chrome.browser.tabmodel;
+
+import android.app.Activity;
+import android.os.Build;
+
+import org.chromium.base.BraveReflectionUtil;
+import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.chrome.browser.ChromeTabbedActivity;
+import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.compositor.CompositorViewHolder;
+import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
+import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.profiles.ProfileManager;
+import org.chromium.chrome.browser.profiles.ProfileProvider;
+import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tab.TabDelegateFactory;
+import org.chromium.chrome.browser.tab.TabLaunchType;
+import org.chromium.components.embedder_support.util.UrlConstants;
+import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.ui.base.WindowAndroid;
+
+import java.util.function.Supplier;
+
+public class BraveTabCreator extends ChromeTabCreator {
+    public BraveTabCreator(
+            Activity activity,
+            WindowAndroid nativeWindow,
+            Supplier<TabDelegateFactory> tabDelegateFactory,
+            OneshotSupplier<ProfileProvider> profileProviderSupplier,
+            boolean incognito,
+            AsyncTabParamsManager asyncTabParamsManager,
+            Supplier<TabModelSelector> tabModelSelectorSupplier,
+            Supplier<CompositorViewHolder> compositorViewHolderSupplier) {
+        super(
+                activity,
+                nativeWindow,
+                tabDelegateFactory,
+                profileProviderSupplier,
+                incognito,
+                asyncTabParamsManager,
+                tabModelSelectorSupplier,
+                compositorViewHolderSupplier);
+    }
+
+    @Override
+    public Tab launchUrl(String url, @TabLaunchType int type) {
+        if (url.equals(UrlConstants.NTP_URL)
+                && (type == TabLaunchType.FROM_CHROME_UI
+                        || type == TabLaunchType.FROM_STARTUP
+                        || type == TabLaunchType.FROM_TAB_SWITCHER_UI)) {
+            ChromeTabbedActivity chromeTabbedActivity = BraveActivity.getChromeTabbedActivity();
+            if (chromeTabbedActivity != null && Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
+                TabModel tabModel = chromeTabbedActivity.getCurrentTabModel();
+                if (tabModel.getCount() >= SponsoredImageUtil.MAX_TABS
+                        && UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                                .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
+                    Tab tab =
+                            BraveActivity.class
+                                    .cast(chromeTabbedActivity)
+                                    .selectExistingTab(UrlConstants.NTP_URL);
+                    if (tab != null) {
+                        BraveReflectionUtil.invokeMethod(
+                                ChromeTabbedActivity.class,
+                                chromeTabbedActivity,
+                                "hideOverview",
+                                boolean.class,
+                                false);
+                        return tab;
+                    }
+                }
+            }
+        }
+        return super.launchUrl(url, type);
+    }
+}

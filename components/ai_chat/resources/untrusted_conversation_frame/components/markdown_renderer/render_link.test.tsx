@@ -1,0 +1,94 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import * as React from 'react'
+import '@testing-library/jest-dom'
+import { render, screen } from '@testing-library/react'
+import MockContext from '../../mock_untrusted_conversation_context'
+import { RenderLink } from '.'
+
+test('RenderLink component with allowed links.', async () => {
+  render(
+    <MockContext>
+      <RenderLink
+        a={{ href: 'https://example.com', children: 'Test Link' }}
+        allowedLinks={['https://example.com']}
+      />
+    </MockContext>,
+  )
+  expect(screen.getByText('Test Link')).toBeInTheDocument()
+  expect(screen.getByText('Test Link').tagName).toBe('A')
+  expect(screen.getByText('Test Link').className).toBe('conversationLink')
+})
+
+test('RenderLink component with disallowed links.', async () => {
+  render(
+    <MockContext>
+      <RenderLink
+        a={{ href: 'https://example.com', children: 'Test Link' }}
+        allowedLinks={['https://brave.com']}
+      />
+    </MockContext>,
+  )
+  expect(screen.getByText('Test Link')).toBeInTheDocument()
+  expect(screen.getByText('Test Link').tagName).toBe('SPAN')
+  expect(screen.getByText('Test Link').className).toBe('')
+})
+
+test('RenderLink component with citations.', async () => {
+  render(
+    <MockContext>
+      <RenderLink
+        a={{ href: 'https://brave.com', children: '1' }}
+        allowedLinks={['https://brave.com']}
+      />
+    </MockContext>,
+  )
+
+  // Make sure the label is visible
+  const label = document.querySelector<HTMLDivElement>('leo-label')
+  expect(label).toBeInTheDocument()
+  expect(label).toBeVisible()
+  expect(label).toHaveTextContent('1')
+
+  // Make sure the citation is visible
+  const citation = document.querySelector<HTMLButtonElement>('.citation')
+  expect(citation).toBeInTheDocument()
+  expect(citation).toBeVisible()
+  expect(citation).toHaveTextContent('1')
+  expect(citation?.tagName).toBe('BUTTON')
+  expect(citation?.className).toBe('citation')
+})
+
+test('RenderLink component with disableLinkRestrictions.', async () => {
+  render(
+    <MockContext>
+      <RenderLink
+        a={{ href: 'https://example.com', children: 'Test Link' }}
+        allowedLinks={[]}
+        disableLinkRestrictions={true}
+      />
+    </MockContext>,
+  )
+  expect(screen.getByText('Test Link')).toBeInTheDocument()
+  expect(screen.getByText('Test Link').tagName).toBe('A')
+  expect(screen.getByText('Test Link').className).toBe('conversationLink')
+})
+
+// HTTP links should never be allowed
+test('RenderLink component with http links.', async () => {
+  render(
+    <MockContext>
+      <RenderLink
+        a={{ href: 'http://example.com', children: 'Test Link' }}
+        allowedLinks={['http://example.com']}
+        disableLinkRestrictions={true}
+      />
+    </MockContext>,
+  )
+  expect(screen.getByText('Test Link')).toBeInTheDocument()
+  expect(screen.getByText('Test Link').tagName).toBe('SPAN')
+  expect(screen.getByText('Test Link').className).toBe('')
+})

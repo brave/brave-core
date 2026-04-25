@@ -1,0 +1,1337 @@
+// Copyright 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import Foundation
+@_exported import Strings
+
+extension Strings {
+  public struct AIChat {
+    public static let contextLimitErrorTitle = NSLocalizedString(
+      "aichat.contextLimitErrorTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "This conversation is too long and cannot continue.\nThere may be other models available with which Leo is capable of maintaining accuracy for longer conversations.",
+      comment:
+        "The title shown on limit reached error view, which is suggesting user to change default model"
+    )
+    public static let accountSessionExpiredDescription = NSLocalizedString(
+      "aichat.accountSessionExpiredDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Your Brave account session has expired. Please visit your account page to refresh, then come back to use premium features.",
+      comment:
+        "The description for the error message when the user's session has expired"
+    )
+    public static let newChatActionTitle = NSLocalizedString(
+      "aichat.newChatActionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "New Chat",
+      comment: "The title for button that starts a new chat"
+    )
+    public static let refreshCredentialsActionTitle = NSLocalizedString(
+      "aichat.refreshCredentialsActionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Refresh",
+      comment: "The title for button that refreshes user credentials"
+    )
+    public static let networkErrorViewTitle = NSLocalizedString(
+      "aichat.networkErrorViewTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "There was a network issue connecting to Leo, check your connection and try again.",
+      comment:
+        "The title for view that shows network - connection error and suggesting to try again"
+    )
+    public static let internalErrorViewTitle = NSLocalizedString(
+      "aichat.internalErrorViewTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Something went wrong while processing your request. Please try again later.",
+      comment:
+        "The title for view that shows an internal error screen. Suggests to try again later."
+    )
+    public static let invalidApiKeyErrorViewTitle = NSLocalizedString(
+      "aichat.invalidApiKeyErrorViewTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "The API key configured for this model is invalid. Please check your configuration and try again.",
+      comment:
+        "The title for view that shows an invalid API key error screen. Suggests to try again later."
+    )
+    public static let invalidEndpointErrorViewTitle = NSLocalizedString(
+      "aichat.invalidEndpointErrorViewTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "This model has an invalid endpoint. Please check your configuration and try again.",
+      comment:
+        "The title for view that shows an invalid endpoint error screen. Suggests to try again later."
+    )
+    public static let serviceOverloadedErrorViewTitle = NSLocalizedString(
+      "aichat.serviceOverloadedErrorViewTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "The endpoint is currently overloaded. Please try again later.",
+      comment:
+        "The title for view that shows a service overloaded error screen. Suggests to try again later."
+    )
+    public static let retryActionTitle = NSLocalizedString(
+      "aichat.retryActionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Retry",
+      comment: "The title for button for re-try"
+    )
+    public static let busyErrorDescription = NSLocalizedString(
+      "aichat.busyErrorDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Leo is too busy right now. Please try again in a few minutes.",
+      comment:
+        "The title for view that shows when leo is too busy (active disconnected) and the user is premium"
+    )
+    public static let feedbackSuccessAnswerLikedTitle = NSLocalizedString(
+      "aichat.feedbackSuccessAnswerLikedTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Answer Liked",
+      comment: "The title for feedback view when response is sucessfull also liked"
+    )
+    public static let feedbackSuccessAnswerDisLikedTitle = NSLocalizedString(
+      "aichat.feedbackSuccessAnswerDisLikedTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Answer Disliked",
+      comment: "The title for feedback view when response is sucessfull but disliked"
+    )
+    public static let feedbackSubmittedTitle = NSLocalizedString(
+      "aichat.feedbackSubmittedTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Feedback sent successfully",
+      comment: "The title for feedback view when it is submitted"
+    )
+    public static let feedbackSubmittedErrorTitle = NSLocalizedString(
+      "aichat.feedbackSubmittedErrorTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Something went wrong. Please try again.",
+      comment: "The title for feedback view when it fails to submit feedback"
+    )
+    public static let addFeedbackActionTitle = NSLocalizedString(
+      "aichat.addFeedbackActionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Add Feedback",
+      comment: "The title for button that submits feedback"
+    )
+    public static let feedbackOptionTitleNotHelpful = NSLocalizedString(
+      "aichat.feedbackOptionTitleNotHelpful",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Not helpful",
+      comment: "The title for helpful feedback option"
+    )
+    public static let feedbackOptionTitleIncorrect = NSLocalizedString(
+      "aichat.feedbackOptionTitleIncorrect",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Incorrect",
+      comment: "The title for incorrect feedback option"
+    )
+    public static let feedbackOptionTitleUnsafeHarmful = NSLocalizedString(
+      "aichat.feedbackOptionTitleUnsafeHarmful",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Unsafe/harmful",
+      comment: "The title for unsafe/harmful feedback option"
+    )
+    public static let feedbackOptionTitleOther = NSLocalizedString(
+      "aichat.feedbackOptionTitleOther",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Other",
+      comment: "The title for other feedback option"
+    )
+    public static let feedbackOptionsViewTitle = NSLocalizedString(
+      "aichat.feedbackOptionsViewTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "What's your feedback about?",
+      comment: "The title for view which listsfeedback option list"
+    )
+    public static let feedbackInputViewTitle = NSLocalizedString(
+      "aichat.feedbackInputViewTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Provide feedback here",
+      comment: "The title for view which user type feedback"
+    )
+    public static let feedbackViewMainTitle = NSLocalizedString(
+      "aichat.feedbackViewMainTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Provide Brave AI Feedback",
+      comment: "The title for view which user type feedback"
+    )
+    public static let feedbackSubmitActionTitle = NSLocalizedString(
+      "aichat.feedbackSubmitActionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Submit",
+      comment: "The title for the button that submits feedback"
+    )
+    public static let summarizePageActionTitle = NSLocalizedString(
+      "aichat.summarizePageActionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Summarize this page",
+      comment: "The title for button that start summarizing page"
+    )
+    public static let chatIntroTitle = NSLocalizedString(
+      "aichat.chatIntroTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Hi, I'm Leo!",
+      comment: "The title for intro view"
+    )
+    public static let chatIntroSubTitle = NSLocalizedString(
+      "aichat.chatIntroSubTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "An AI-powered intelligent assistant, built right into Brave.",
+      comment: "The subtitle for intro view"
+    )
+    public static let chatIntroWebsiteHelpTitle = NSLocalizedString(
+      "aichat.chatIntroWebsiteHelpTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Need help with a website?",
+      comment: "The title for intro view which triggers website help"
+    )
+    public static let chatIntroWebsiteHelpSubtitlePageSummarize = NSLocalizedString(
+      "aichat.chatIntroWebsiteHelpSubtitlePageSummarize",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "I can help you summarizing articles, expanding on a site's content and much more. Not sure where to start? Try this:",
+      comment: "The subtitle for intro view which triggers website help for summary"
+    )
+    public static let chatIntroWebsiteHelpSubtitleArticleSummarize = NSLocalizedString(
+      "aichat.chatIntroWebsiteHelpSubtitleArticleSummarize",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "I can help you summarizing articles, expanding on a site's content and much more.",
+      comment: "The subtitle for intro view which triggers website help for article"
+    )
+    public static let chatIntroJustTalkTitle = NSLocalizedString(
+      "aichat.chatIntroJustTalkTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Just want to chat?",
+      comment: "The title for intro view which triggers just chat"
+    )
+    public static let chatIntroJustTalkSubTitle = NSLocalizedString(
+      "aichat.chatIntroJustTalkSubTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Ask me anything! We can talk about any topic you want. I'm always learning and improving to provide better answers.",
+      comment: "The subtitle for intro view which triggers just chat"
+    )
+    public static let introMessageTitle = NSLocalizedString(
+      "aichat.introMessageTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Chat",
+      comment: "The title for intro message"
+    )
+    public static let introMessageLlamaModelPurposeDescription = NSLocalizedString(
+      "aichat.introMessageLlamaModelPurposeDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "General purpose chat",
+      comment:
+        "The model's purpose - Describes what it can do best"
+    )
+    public static let introMessageQwenModelPurposeDescription = NSLocalizedString(
+      "aichat.introMessageQwenModelPurposeDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "General purpose chat, coding, and more",
+      comment:
+        "The model's purpose - Describes what it can do best"
+    )
+    public static let introMessageClaudeHaikuModelPurposeDescription = NSLocalizedString(
+      "aichat.introMessageClaudeHaikuModelPurposeDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Lightning fast chat",
+      comment:
+        "The model's purpose - Describes what it can do best"
+    )
+    public static let introMessageClaudeSonnetModelPurposeDescription = NSLocalizedString(
+      "aichat.introMessageClaudeSonnetModelPurposeDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Balanced speed and intelligence",
+      comment:
+        "The model's purpose - Describes what it can do best"
+    )
+    public static let introMessageLlamaMessageDescription = NSLocalizedString(
+      "aichat.introMessageLlamaMessageDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Llama 3.1 8B, a model created by Meta to be performant and applicable to many use cases. Llama is Brave-hosted through our own secure infrastructure.",
+      comment: "The model intro message when you first enter the chat assistant"
+    )
+    public static let introMessageQwenMessageDescription = NSLocalizedString(
+      "aichat.introMessageQwenMessageDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Qwen VL 30B, a model created by Alibaba Cloud to be performant and applicable to many use cases. Qwen is Brave-hosted through our own secure infrastructure.",
+      comment: "The model intro message when you first enter the chat assistant"
+    )
+    public static let introMessageClaudeInstantMessageDescription = NSLocalizedString(
+      "aichat.introMessageClaudeInstantMessageDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks. Claude Instant is Brave-hosted through our own secure infrastructure.",
+      comment: "The model intro message when you first enter the chat assistant"
+    )
+    public static let introMessageClaudeHaikuMessageDescription = NSLocalizedString(
+      "aichat.introMessageClaudeHaikuMessageDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Claude Haiku, a model created by Anthropic to power conversational and text processing tasks. Claude Haiku is Brave-hosted through our own secure infrastructure.",
+      comment: "The model intro message when you first enter the chat assistant"
+    )
+    public static let introMessageClaudeSonnetMessageDescription = NSLocalizedString(
+      "aichat.introMessageClaudeSonnetMessageDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Claude Sonnet, a model created by Anthropic to power conversational and text processing tasks. Claude Sonnet is Brave-hosted through our own secure infrastructure.",
+      comment: "The model intro message when you first enter the chat assistant"
+    )
+    public static let introMessageGenericMessageDescription = NSLocalizedString(
+      "aichat.introMessageGenericMessageDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by %@. Ask me anything, and I'll do my best to answer.",
+      comment:
+        "The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name"
+    )
+    public static let paywallViewTitle = NSLocalizedString(
+      "aichat.paywallViewTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Leo Premium",
+      comment: "The title for paywall view"
+    )
+    public static let restorePaywallButtonTitle = NSLocalizedString(
+      "aichat.restorePaywallButtonTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Restore",
+      comment: "The button title for restoring ai-app purchse for Leo."
+    )
+    public static let paywallPurchaseErrorDescription = NSLocalizedString(
+      "aichat.paywallPurchaseErrorDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Unable to complete purchase. Please try again, or check your payment details on Apple and try again.",
+      comment: "The error description when in app purcahse is erroneous."
+    )
+    public static let paywallYearlySubscriptionTitle = NSLocalizedString(
+      "aichat.paywallYearlySubscriptionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "One Year",
+      comment: "Title indicating yearly subscription"
+    )
+    public static let paywallYearlySubscriptionDescription = NSLocalizedString(
+      "aichat.paywallYearlySubscriptionDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "BEST VALUE",
+      comment:
+        "The description indicating how valuable the yearly subscription is, compared to purchasing monthly"
+    )
+    public static let paywallYearlyPriceDividend = NSLocalizedString(
+      "aichat.paywallYearlyPriceDividend",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "year",
+      comment: "The text which will be used to indicate period of payments like 150 / year"
+    )
+    public static let paywallMontlySubscriptionTitle = NSLocalizedString(
+      "aichat.paywallMontlySubscriptionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Monthly",
+      comment: "Title indicating monthly subscription"
+    )
+    public static let paywallMonthlyPriceDividend = NSLocalizedString(
+      "aichat.paywallMonthlyPriceDividend",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "month",
+      comment: "The text which will be used to indicate period of payments like 10 / month"
+    )
+    public static let paywallPurchaseDeepNote = NSLocalizedString(
+      "aichat.paywallPurchaseDeepNote",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "All subscriptions are auto-renewed but can be cancelled at any time before renewal.",
+      comment:
+        "The text displayed on the bottom of paywall screen which indicates subscriptions are auto renewable."
+    )
+    public static let paywallPurchaseActionTitle = NSLocalizedString(
+      "aichat.paywallPurchaseActionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Upgrade Now",
+      comment: "The title of the button for action triggering purchase"
+    )
+    public static let paywallPurchaseActionIntroOfferTitle = NSLocalizedString(
+      "aichat.paywallPurchaseActionIntroOfferTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Try 7 Days Free",
+      comment: "The title of the button for action triggering purchase"
+    )
+    public static let paywallPremiumUpsellTitle = NSLocalizedString(
+      "aichat.paywallPremiumUpsellTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Unleash Leo's Full Powers With Premium:",
+      comment: "The title for premium upsell when paywall is triggered"
+    )
+    public static let paywallRateLimitTitle = NSLocalizedString(
+      "aichat.paywallRateLimitTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Response Rate Limit Reached",
+      comment: "The title for premium upseel when rate limit is shown after sending a message"
+    )
+    public static let paywallRateLimitSubTitle = NSLocalizedString(
+      "aichat.paywallRateLimitSubTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Unlock a higher response rate by subscribing to Premium, or try again later.",
+      comment: "The subtitle for premium upseel when rate limit is shown after sending a message"
+    )
+    public static let paywallPremiumUpsellPrimaryAction = NSLocalizedString(
+      "aichat.paywallPremiumUpsellPrimaryAction",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Upgrade",
+      comment: "The title for button when premium upsell when paywall is triggered"
+    )
+    public static let paywallPremiumUpsellDismissAction = NSLocalizedString(
+      "aichat.paywallPremiumUpsellDismissAction",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Maybe Later",
+      comment: "The title for dismiss button when premium upsell when paywall is triggered"
+    )
+    public static let paywallUpsellModelTypeTopicTitle = NSLocalizedString(
+      "aichat.paywallUpsellModelTypeTopicTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Explore different AI models",
+      comment: "The title model type entry in paywall upsell screen"
+    )
+    public static let paywallUpsellCreativityTopicTitle = NSLocalizedString(
+      "aichat.paywallUpsellCreativityTopicTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Unlock your creativity",
+      comment: "The title creativity entry in paywall upsell screen"
+    )
+    public static let paywallUpsellAccuracyTopicTitle = NSLocalizedString(
+      "aichat.paywallUpsellAccuracyTopicTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Stay on topic",
+      comment: "The title accuracy entry in paywall upsell screen"
+    )
+    public static let paywallUpsellChatLengthTopicTitle = NSLocalizedString(
+      "aichat.paywallUpsellChatLengthTopicTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Chat for longer",
+      comment: "The title chat length entry in paywall upsell screen"
+    )
+    public static let paywallUpsellModelTypeTopicSubTitle = NSLocalizedString(
+      "aichat.paywallUpsellModelTypeTopicSubTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Priority access to powerful models with different skills.",
+      comment: "The subtitle model type entry in paywall upsell screen"
+    )
+    public static let paywallUpsellCreativityTopicSubTitle = NSLocalizedString(
+      "aichat.paywallUpsellCreativityTopicSubTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Access models better suited for creative tasks and content generation.",
+      comment: "The subtitle creativity entry in paywall upsell screen"
+    )
+    public static let paywallUpsellAccuracyTopicSubTitle = NSLocalizedString(
+      "aichat.paywallUpsellAccuracyTopicSubTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Get more accurate answers for more nuanced conversations.",
+      comment: "The subtitle accuracy entry in paywall upsell screen"
+    )
+    public static let paywallUpsellChatLengthTopicSubTitle = NSLocalizedString(
+      "aichat.paywallUpsellChatLengthTopicSubTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Get higher rate limits for longer conversations.",
+      comment: "The subtitle chat length entry in paywall upsell screen"
+    )
+    public static let leoNavigationTitle = NSLocalizedString(
+      "aichat.leoNavigationTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Leo AI",
+      comment: "The title of the advanced settings view"
+    )
+    public static let manageSubscriptionsButtonTitle = NSLocalizedString(
+      "aichat.manageSubscriptionsButtonTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Manage Subscriptions",
+      comment: "The button title for managing subscriptions"
+    )
+    public static let goPremiumButtonTitle = NSLocalizedString(
+      "aichat.goPremiumButtonTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Go Premium",
+      comment: "The button title for opening paywall screen"
+    )
+    public static let monthlySubscriptionTitle = NSLocalizedString(
+      "aichat.monthlySubscriptionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Monthly Subscription",
+      comment: "Title showing monthly subscription"
+    )
+    public static let yearlySubscriptionTitle = NSLocalizedString(
+      "aichat.yearlySubscriptionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Yearly Subscription",
+      comment: "Title showing yearly subscription - annual"
+    )
+    public static let premiumSubscriptionTitle = NSLocalizedString(
+      "aichat.premiumSubscriptionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Premium Subscription",
+      comment: "Title showing premium subscription - not determined monthly por yearly"
+    )
+    public static let subscriptionNoneTitle = NSLocalizedString(
+      "aichat.subscriptionNoneTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "None",
+      comment: "Title showing the user has no subscription."
+    )
+    public static let advancedSettingsAutocompleteDescription = NSLocalizedString(
+      "aichat.advancedSettingsAutocompleteDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Turn on to show a shortcut to launch Leo from the address bar.",
+      comment:
+        "The description for the settings to show search suggestions from Leo in url-address bar"
+    )
+    public static let advancedSettingsShowInQSEBarTitle = NSLocalizedString(
+      "aichat.advancedSettingsShowInQSEBarTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Show In Quick Search Engines Bar",
+      comment: "The title for the settings to show Leo in Quick Search Engines Bar."
+    )
+    public static let advancedSettingsShowInQSEBarDescription = NSLocalizedString(
+      "aichat.advancedSettingsShowInQSEBarDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Enables a shortcut to launch Leo from the quick search engines bar.",
+      comment:
+        "The description for the settings to show Leo in Quick Search Engines Bar."
+    )
+    public static let advancedSettingsDefaultModelTitle = NSLocalizedString(
+      "aichat.advancedSettingsDefaultModelTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Default Model",
+      comment: "The title for the settings to change default model for conversations"
+    )
+    public static let advancedSettingsHeaderTitle = NSLocalizedString(
+      "aichat.advancedSettingsHeaderTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Leo is an AI-powered smart assistant, built right into the browser.",
+      comment: "The title for the header for adjusting leo ai settings"
+    )
+    public static let advancedSettingsSubscriptionStatusTitle = NSLocalizedString(
+      "aichat.advancedSettingsSubscriptionStatusTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Status",
+      comment: "The title for the label showing status if the subscription"
+    )
+    public static let advancedSettingsSubscriptionExpiresTitle = NSLocalizedString(
+      "aichat.advancedSettingsSubscriptionExpiresTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Expires",
+      comment: "The title for the label showing the date which subscription expires"
+    )
+    public static let advancedSettingsLinkPurchaseActionTitle = NSLocalizedString(
+      "aichat.advancedSettingsLinkPurchaseActionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Link purchase to your Brave account",
+      comment: "The title for the button which links purchase to Brave Account"
+    )
+    public static let advancedSettingsLinkPurchaseActionSubTitle = NSLocalizedString(
+      "aichat.advancedSettingsLinkPurchaseActionSubTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Link your App Store purchase to your Brave account to use Leo on other devices.",
+      comment: "The subtitle for the button which links purchase to Brave Account"
+    )
+    public static let advancedSettingsSubscriptionHeaderTitle = NSLocalizedString(
+      "aichat.advancedSettingsSubscriptionHeaderTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Subscription",
+      comment: "The title for the header for subscription details"
+    )
+    public static let advancedSettingsViewReceiptTitle = NSLocalizedString(
+      "aichat.advancedSettingsViewReceiptTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "View App Store Receipt",
+      comment: "The title for the button that allows the user to view the App Store Receipt"
+    )
+    public static let appStoreErrorTitle = NSLocalizedString(
+      "aichat.appStoreErrorTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "App Store Error",
+      comment: "The title for the error showing there is an error from App Store"
+    )
+    public static let appStoreErrorSubTitle = NSLocalizedString(
+      "aichat.appStoreErrorSubTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Could not connect to App Store, please try again later.",
+      comment: "The subtitle for the error showing there is an error from App Store"
+    )
+    public static let resetLeoDataActionTitle = NSLocalizedString(
+      "aichat.resetLeoDataActionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Reset And Clear Leo Data",
+      comment: "The title for the button where it triggers reset leo data"
+    )
+    public static let resetLeoDataErrorTitle = NSLocalizedString(
+      "aichat.resetLeoDataErrorTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Reset Leo Data",
+      comment: "The title for the error whre leo data reset"
+    )
+    public static let resetLeoDataErrorDescription = NSLocalizedString(
+      "aichat.resetLeoDataErrorDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Are you sure you want to reset and clear Leo Data?",
+      comment: "The description for the error whre leo data reset"
+    )
+    public static let resetLeoDataAlertButtonTitle = NSLocalizedString(
+      "aichat.resetLeoDataAlertButtonTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Reset",
+      comment: "The title of a button that will reset data for leo"
+    )
+    public static let defaultModelViewTitle = NSLocalizedString(
+      "aichat.defaultModelViewTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Default Model",
+      comment: "The title of the menu where user can change the default model"
+    )
+    public static let defaultModelChatSectionTitle = NSLocalizedString(
+      "aichat.defaultModelChatSectionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Chat",
+      comment: "The title of the section where chat models are displayed as a list."
+    )
+    public static let customModelChatSectionTitle = NSLocalizedString(
+      "aichat.customModelChatSectionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Custom Models",
+      comment: "The title of the section where custom models are displayed as a list."
+    )
+    public static let unlimitedModelStatusTitle = NSLocalizedString(
+      "aichat.unlimitedModelStatusTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Unlimited",
+      comment: "The title of the badge where a model which can be used unlimited"
+    )
+    public static let premiumModelStatusTitle = NSLocalizedString(
+      "aichat.premiumModelStatusTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Premium",
+      comment: "The title of the badge where a model which can be used limited"
+    )
+    public static let defaultModelLanguageSectionTitle = NSLocalizedString(
+      "aichat.defaultModelLanguageSectionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "LANGUAGE MODELS",
+      comment: "The title of the section where language models are displayed as a list."
+    )
+    public static let quickMenuGoPremiumActionTitle = NSLocalizedString(
+      "aichat.quickMenuGoPremiumActionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Go Premium",
+      comment: "The title of action for quick menu which presents payment screen for premium"
+    )
+    public static let quickMenuManageSubscriptionActionTitle = NSLocalizedString(
+      "aichat.quickMenuManageSubscriptionActionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Manage Subscriptions",
+      comment: "The title of action for quick menu which display subscription management view"
+    )
+    public static let quickMenuAdvancedSettingsActionTitle = NSLocalizedString(
+      "aichat.quickMenuAdvancedSettingsActionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Advanced Settings",
+      comment: "The title of action for quick menu which displaying advanced settings"
+    )
+    public static let premiumNavigationBarBadgeTitle = NSLocalizedString(
+      "aichat.premiumNavigationBarBadgeTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Premium",
+      comment: "Title shown next to Leo in navigation bar when user has premium subcription"
+    )
+    public static let infoAboutPageContext = NSLocalizedString(
+      "aichat.infoAboutPageContext",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Shape answers based on the page's contents",
+      comment: "Description about answers are changing with page context"
+    )
+    public static let promptPlaceHolderDescription = NSLocalizedString(
+      "aichat.promptPlaceHolderDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "How can I help you today?",
+      comment: "The text for placeholder on textfield for entering questions for AI"
+    )
+    public static let promptFollowUpPlaceHolderDescription = NSLocalizedString(
+      "aichat.promptFollowUpPlaceHolderDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Ask follow-up",
+      comment:
+        "The text for placeholder on textfield for entering questions for AI, after the user has asked initial question"
+    )
+    public static let termsConditionsTitle = NSLocalizedString(
+      "aichat.termsConditionsTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Chat Privately with Brave Leo",
+      comment: "The title terms and conditions for AI chat usage"
+    )
+    public static let termsConditionsDescription = NSLocalizedString(
+      "aichat.termsConditionsDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Brave Leo is a private AI smart assistant that enhances your use of the web. Leo is free to use with limited access. Brave Leo Premium offers more models, higher limits and gives subscribers early access to new features. The default model will change from time to time. See the Brave **[Help Center](%@)** for more details.\n\nBy default, when you ask Leo a question about a website or page you are viewing, the content of the webpage you are viewing or any text you highlight on a page, as well as your search query will be sent to Brave servers in order for Leo to provide a response. In some cases, Leo will send queries derived from your input to Brave Search and use the search results to better answer your question. Brave does not guarantee the accuracy of responses, and responses may include inaccurate, misleading, or false information. Don't submit sensitive or private information to Brave Leo, and use caution with any answers related to health, finance, personal safety, or similar. You can adjust Leo’s options in Settings any time. Go to Settings > Leo.\n\nLeo does not collect identifiers such as your IP address that can be linked to you. We do not train our models based on your data, including your search queries or Brave Leo’s responses. No personal data is stored on our servers, or retained by Brave. See the **[privacy policy](%@)** for more information.",
+      comment:
+        "The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls"
+    )
+    public static let termsConditionsApprovalActionTitle = NSLocalizedString(
+      "aichat.termsConditionsApproveActionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "I Understand",
+      comment: "The title for expressing acknowledgement for the terms and conditions of Brave AI"
+    )
+    public static let feedbackPremiumAdTitle = NSLocalizedString(
+      "aichat.feedbackPremiumAdTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Leo Premium provides access to an expanded set of language models for even greater answer nuance. [Learn more](https://brave.com/) - [Dismiss](braveai://dismiss)",
+      comment:
+        "The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated"
+    )
+    public static let speechRecognizerDisclaimer = NSLocalizedString(
+      "aichat.speechRecognizerDisclaimer",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Brave does not store or share your voice inputs.",
+      comment:
+        "The description indicating voice inputs from user is not store or shared and these inpurs are totally private."
+    )
+    public static let microphonePermissionAlertTitle = NSLocalizedString(
+      "aichat.microphonePermissionAlertTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Microphone Access Required",
+      comment: "The description for alert needed to have microphone permission"
+    )
+    public static let microphonePermissionAlertDescription = NSLocalizedString(
+      "aichat.microphonePermissionAlertDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Please allow microphone access in iOS system settings for Brave to use anonymous voice entry.",
+      comment: "The description for alert needed to have microphone permission"
+    )
+    public static let voiceInputButtonTitle = NSLocalizedString(
+      "aichat.voiceInputButtonTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Voice Input",
+      comment:
+        "The accessibility description when pressing the microphone button to access voice entry."
+    )
+    public static let responseContextMenuEditPromptTitle = NSLocalizedString(
+      "aichat.responseContextMenuEditPromptTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Edit Prompt",
+      comment: "The title for editing user prompt action from context menu"
+    )
+    public static let responseContextMenuEditAnswerTitle = NSLocalizedString(
+      "aichat.responseContextMenuEditAnswerTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Edit Answer",
+      comment: "The title for editing AI response action from context menu"
+    )
+    public static let responseContextMenuRegenerateTitle = NSLocalizedString(
+      "aichat.responseContextMenuRegenerateTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Regenerate",
+      comment: "The title for regenerating response action from context menu"
+    )
+    public static let responseContextMenuCopyTitle = NSLocalizedString(
+      "aichat.responseContextMenuCopyTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Copy",
+      comment: "The title for copying response to clipboard action "
+    )
+    public static let responseContextMenuLikeAnswerTitle = NSLocalizedString(
+      "aichat.responseContextMenuLikeAnswerTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Like Answer",
+      comment: "The title for liking response to clipboard action"
+    )
+    public static let responseContextMenuDislikeAnswerTitle = NSLocalizedString(
+      "aichat.responseContextMenuDislikeAnswerTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Dislike Answer",
+      comment: "The title for disliking response to clipboard action"
+    )
+    public static let rateAnswerActionErrorText = NSLocalizedString(
+      "aichat.rateAnswerActionErrorText",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Error Rating Answer",
+      comment: "The title for error when rating a response is not success"
+    )
+    public static let rateAnswerFeedbackPrivacyWarningTitle = NSLocalizedString(
+      "aichat.rateAnswerFeedbackPrivacyWarningTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Response Feedback",
+      comment: "The title for privacy warning alert when rating a response"
+    )
+    public static let rateAnswerFeedbackPrivacyWarningMessage = NSLocalizedString(
+      "aichat.rateAnswerFeedbackPrivacyWarningMessage",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Liking or disliking an answer will send rating, conversation, model, language, version, and premium status to Brave in order to improve Leo. [Learn More](%@)",
+      comment: "The message for privacy warning alert when rating a response"
+    )
+    public static let dontShowAgainTitle = NSLocalizedString(
+      "aichat.dontShowAgainTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Don't show again",
+      comment:
+        "The checkbox title for the privacy alert warning that will make it not warn the user again"
+    )
+    public static let suggestionsGenerationButtonTitle = NSLocalizedString(
+      "aichat.suggestionsGenerationButtonTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Suggest questions...",
+      comment: "The title for the button to generate suggestions"
+    )
+    public static let chatMenuSectionTitle = NSLocalizedString(
+      "aichat.chatMenuSectionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Chat",
+      comment: "The title for the chat section in the menu"
+    )
+    public static let customModelsMenuSectionTitle = NSLocalizedString(
+      "aichat.customModelsMenuSectionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Custom Models",
+      comment: "The title for the custom models section in the menu"
+    )
+    public static let askLeoSearchSuggestionTitle = NSLocalizedString(
+      "aichat.askLeoSearchSuggestionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Ask Leo",
+      comment: "The title of the search bar suggestion when prompting to Ask Leo"
+    )
+    public static let leoSubscriptionUnknownDateTitle = NSLocalizedString(
+      "aichat.leoSubscriptionUnknownDateTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "N/A",
+      comment: "The title to display when the duration of the subscription is unknown"
+    )
+    public static let leoPageContextInfoIconAccessibilityTitle = NSLocalizedString(
+      "aichat.leoPageContextInfoIconAccessibilityTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Page Context Information",
+      comment:
+        "The accessibility text to read out loud when the user taps on the info icon on the page context view"
+    )
+    public static let leoPageContextInfoDescriptionTitle = NSLocalizedString(
+      "aichat.leoPageContextInfoDescriptionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Toggle on to ask about this page. Its content will be sent to Brave Leo along with your messages.",
+      comment:
+        "The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated."
+    )
+    public static let leoDocumentPickerButtonAccessibilityTitle = NSLocalizedString(
+      "aichat.leoDocumentPickerButtonAccessibilityTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Upload Image",
+      comment:
+        "The text that's read aloud to the user when accessibility is enabled for the Document Picker button"
+    )
+    public static let leoSlashToolsButtonAccessibilityTitle = NSLocalizedString(
+      "aichat.leoSlashToolsButtonAccessibilityTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Slash Tools",
+      comment:
+        "The text that's read aloud to the user when accessibility is enabled for the Slash Tools button"
+    )
+    public static let leoSlashToolsOptionNull = NSLocalizedString(
+      "aichat.leoSlashToolsOptionNull",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "None",
+      comment:
+        "The text that's displayed when the user selects an invalid slash tools option"
+    )
+    public static let leoSlashToolsOptionUnknown = NSLocalizedString(
+      "aichat.leoSlashToolsOptionUnknown",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Unknown",
+      comment:
+        "The text that's displayed when the user selects an invalid slash tools option"
+    )
+    public static let leoImprovingAnswerBraveSearch = NSLocalizedString(
+      "aichat.leoImprovingAnswerBraveSearch",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Improving answer with Brave Search...",
+      comment:
+        "The text displayed on the loading screen when searching for a user query"
+    )
+    public static let leoImprovedAnswerBraveSearch = NSLocalizedString(
+      "aichat.leoImprovedAnswerBraveSearch",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Improved answer searching for",
+      comment:
+        "The text displayed on the loading screen when searching for a user query"
+    )
+    public static let youMessageTitle = NSLocalizedString(
+      "aichat.youMessageTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "You",
+      comment:
+        "The word 'You' as in 'Me', 'Myself', 'I' (the user)."
+    )
+    public static let leoAssistantNameTitle = NSLocalizedString(
+      "aichat.leoAssistantNameTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Leo",
+      comment:
+        "The name of the AI-Assistant that's responsing to the user"
+    )
+    public static let editedMessageCaption = NSLocalizedString(
+      "aichat.editedMessageCaption",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Edited",
+      comment: "The text displayed under an edited user prompt/message beside a timestamp."
+    )
+    public static let leoCodeExampleDefaultTitle = NSLocalizedString(
+      "aichat.leoCodeExampleDefaultTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Code example",
+      comment:
+        "The default title displayed above a code block when the language of the code is not known."
+    )
+    public static let leoDisabledMessageTitle = NSLocalizedString(
+      "aichat.leoDisabledMessageTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Leo Disabled",
+      comment:
+        "The title that shows in an alert when the Leo/AI-Chat feature is disabled."
+    )
+    public static let leoDisabledMessageDescription = NSLocalizedString(
+      "aichat.leoDisabledMessageDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Leo is currently disabled via feature flags. To re-enable Leo, please visit brave://flags and enable it.",
+      comment:
+        "The message that shows in an alert, to let the user know the 'Leo' feature is disabled, and explains how to re-enable the feature."
+    )
+    public static let leoDisabledPrivateBrowsingMessageTitle = NSLocalizedString(
+      "aichat.leoDisabledPrivateBrowsingMessageTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Leo Not Available",
+      comment:
+        "The title that shows in an alert when the Leo/AI-Chat is disabled due to the user being in private browsing mode."
+    )
+    public static let leoDisabledPrivateBrowsingMessageDescription = NSLocalizedString(
+      "aichat.leoDisabledPrivateBrowsingMessageDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Leo is currently not available in Private Browsing Mode. To use Leo, please exit Private Browsing Mode and try again.",
+      comment:
+        "The message that shows in an alert, to let the user know the 'Leo' feature is disabled in private browsing mode."
+    )
+    public static let customModelFormLabelFieldTitle = NSLocalizedString(
+      "aichat.customModelFormLabelFieldTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Label",
+      comment: "The label for the custom model name field in the custom model form"
+    )
+    public static let customModelFormLabelFieldPlaceholder = NSLocalizedString(
+      "aichat.customModelFormLabelFieldPlaceholder",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Enter a label for this model",
+      comment: "The placeholder text for the custom model name field"
+    )
+    public static let customModelFormRequiredFieldIndicator = NSLocalizedString(
+      "aichat.customModelFormRequiredFieldIndicator",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Required",
+      comment: "The indicator text shown next to required fields in forms"
+    )
+    public static let customModelFormLabelFieldFooter = NSLocalizedString(
+      "aichat.customModelFormLabelFieldFooter",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Model name to use in Leo's model selector.",
+      comment: "The footer text explaining the purpose of the label field"
+    )
+    public static let customModelFormRequestNameFieldTitle = NSLocalizedString(
+      "aichat.customModelFormRequestNameFieldTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Model request name",
+      comment: "The label for the model request name field"
+    )
+    public static let customModelFormRequestNameFieldPlaceholder = NSLocalizedString(
+      "aichat.customModelFormRequestNameFieldPlaceholder",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Enter model request name",
+      comment: "The placeholder text for the model request name field"
+    )
+    public static let customModelFormRequestNameFieldFooter = NSLocalizedString(
+      "aichat.customModelFormRequestNameFieldFooter",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "The name of the model as it should appear in the request to the serving framework, e.g. phi-3 (note that if this name doesn't match exactly what is expected by the serving framework the integration won't work).",
+      comment:
+        "The footer text explaining what the model request name is used for and providing an example"
+    )
+    public static let customModelFormServerEndpointFieldTitle = NSLocalizedString(
+      "aichat.customModelFormServerEndpointFieldTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Server endpoint",
+      comment: "The label for the server endpoint URL field"
+    )
+    public static let customModelFormDetailsFieldPlaceholder = NSLocalizedString(
+      "aichat.customModelFormDetailsFieldPlaceholder",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Enter details",
+      comment: "The placeholder text for generic detail input fields"
+    )
+    public static let customModelFormServerEndpointFieldFooter = NSLocalizedString(
+      "aichat.customModelFormServerEndpointFieldFooter",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "The URL where your serving framework is listening for requests. If you're not sure, check the serving framework documentation. E.g. for Ollama, it is always `http://localhost:11434/v1/chat/completions`. Brave doesn't proxy these requests, please read privacy terms of the chosen provider.",
+      comment:
+        "The footer text explaining what the server endpoint is and providing an example URL for Ollama"
+    )
+    public static let customModelFormUnsafeEndpointWarning = NSLocalizedString(
+      "aichat.customModelFormUnsafeEndpointWarning",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "This endpoint is potentially unsafe.",
+      comment: "Warning message shown when user enters an HTTP (not HTTPS) endpoint"
+    )
+    public static let customModelFormContextSizeFieldTitle = NSLocalizedString(
+      "aichat.customModelFormContextSizeFieldTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Context size",
+      comment: "The label for the context size field"
+    )
+    public static let customModelFormContextSizeFieldFooter = NSLocalizedString(
+      "aichat.customModelFormContextSizeFieldFooter",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "The maximum number of tokens the model can process in a single interaction. A larger context size allows the model to handle longer conversations. Different models support different maximum context sizes.",
+      comment: "The footer text explaining what context size means for AI models"
+    )
+    public static let customModelFormApiKeyFieldTitle = NSLocalizedString(
+      "aichat.customModelFormApiKeyFieldTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "API Key",
+      comment: "The label for the API key field"
+    )
+    public static let customModelFormApiKeyFieldFooter = NSLocalizedString(
+      "aichat.customModelFormApiKeyFieldFooter",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Some serving frameworks may require authentication credentials, such as an API key or an access token. These will be added to the request header.",
+      comment: "The footer text explaining when and how API keys are used"
+    )
+    public static let customModelFormVisionSupportFieldTitle = NSLocalizedString(
+      "aichat.customModelFormVisionSupportFieldTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Vision support",
+      comment: "The label for the vision support toggle"
+    )
+    public static let customModelFormVisionSupportFieldDescription = NSLocalizedString(
+      "aichat.customModelFormVisionSupportFieldDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "If this model takes image as input, e.g. llama 3.2b vision",
+      comment: "The description text explaining what vision support means with an example"
+    )
+    public static let customModelFormSupportsToolsFieldTitle = NSLocalizedString(
+      "aichat.customModelFormToolsSupportFieldTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Tools support",
+      comment: "The label for the tools support toggle"
+    )
+    public static let customModelFormSupportsToolsFieldDescription = NSLocalizedString(
+      "aichat.customModelFormToolsSupportFieldDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "If this model supports function calling/tool use",
+      comment: "The description text explaining what tools supports means"
+    )
+    public static let customModelFormSystemPromptFieldTitle = NSLocalizedString(
+      "aichat.customModelFormSystemPromptFieldTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "System prompt",
+      comment: "The label for the system prompt field"
+    )
+    public static let customModelFormSystemPromptFieldFooter = NSLocalizedString(
+      "aichat.customModelFormSystemPromptFieldFooter",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Custom instructions and/or context given to the model to guide its responses. Use %datetime% where you would like the current date and time to be inserted.",
+      comment:
+        "The footer text explaining what a system prompt is and noting the %datetime% placeholder"
+    )
+    public static let customModelFormAddModelNavigationTitle = NSLocalizedString(
+      "aichat.customModelFormAddModelNavigationTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Add Model",
+      comment: "The navigation bar title when adding a new custom model"
+    )
+    public static let customModelFormEditModelNavigationTitle = NSLocalizedString(
+      "aichat.customModelFormEditModelNavigationTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Edit Model",
+      comment: "The navigation bar title when editing an existing custom model"
+    )
+    public static let customModelFormSaveButtonTitle = NSLocalizedString(
+      "aichat.customModelFormSaveButtonTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Save",
+      comment: "The button title for saving a custom model"
+    )
+    public static let customModelFormDoneButtonTitle = NSLocalizedString(
+      "aichat.customModelFormDoneButtonTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Done",
+      comment: "The button title for dismissing the keyboard"
+    )
+    public static let customModelFormFailedToSaveAlertTitle = NSLocalizedString(
+      "aichat.customModelFormFailedToSaveAlertTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Failed to Save Model",
+      comment: "The alert title shown when saving a custom model fails"
+    )
+    public static let customModelFormInvalidUrlErrorMessage = NSLocalizedString(
+      "aichat.customModelFormInvalidUrlErrorMessage",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Invalid URL",
+      comment: "The error message shown when the server endpoint URL is invalid"
+    )
+    public static let customModelFormInvalidContextSizeErrorMessage = NSLocalizedString(
+      "aichat.customModelFormInvalidContextSizeErrorMessage",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Invalid context size",
+      comment: "The error message shown when the context size is invalid"
+    )
+    public static let customModelFormPrivateEndpointErrorMessage = NSLocalizedString(
+      "aichat.customModelFormPrivateEndpointErrorMessage",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: """
+        The address you entered appears to be from a private network—like your router or a local server. Brave blocks these automatically to keep you safe, but you can enable them if you're confident it's secure.
+
+        To proceed, visit brave://flags/, search for "brave-ai-chat-allow-private-ips," and enable the feature. Once enabled, you can use private network addresses in Leo settings.
+        """,
+      comment:
+        "The error message shown when trying to use a private network address, explaining why it's blocked and how to enable it"
+    )
+    public static let byomSectionHeaderTitle = NSLocalizedString(
+      "aichat.byomSectionHeaderTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Bring Your Own Model",
+      comment: "The section header title for the Bring Your Own Model feature"
+    )
+    public static let byomSectionHeaderDescription = NSLocalizedString(
+      "aichat.byomSectionHeaderDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: """
+        Connect your self-hosted or third-party hosted LLM to Leo and use them within the browser. Use any OpenAI Chat Protocol compatible framework such as Ollama. [Learn more](https://support.brave.app/hc/en-us/articles/34070140231821-How-do-I-use-the-Bring-Your-Own-Model-BYOM-with-Brave-Leo)
+        """,
+      comment:
+        "The section header description explaining the Bring Your Own Model feature with a link to learn more. The text inside square brackets should be translated."
+    )
+    public static let byomEmptyStateTitle = NSLocalizedString(
+      "aichat.byomEmptyStateTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "You haven't connected a model yet",
+      comment: "The title shown when no custom models have been added yet"
+    )
+    public static let byomEmptyStateDescription = NSLocalizedString(
+      "aichat.byomEmptyStateDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Start by tapping \"Add new model\"",
+      comment:
+        "The description shown when no custom models have been added, prompting the user to add one"
+    )
+    public static let byomAddNewModelButtonTitle = NSLocalizedString(
+      "aichat.byomAddNewModelButtonTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Add New Model",
+      comment: "The button title for adding a new custom model"
+    )
+  }
+}

@@ -1,0 +1,202 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "components/permissions/permission_util.h"
+
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "components/permissions/permission_uma_util.h"
+#include "third_party/blink/public/common/permissions/permission_utils.h"
+
+#define PermissionUtil PermissionUtil_ChromiumImpl
+
+// CHROMIUM_SRC_INTERNAL_USE
+#define BRAVE_WALLET_UMA_CASES      \
+  case RequestType::kBraveEthereum: \
+  case RequestType::kBraveSolana:   \
+  case RequestType::kBraveCardano:
+
+// Since we don't do UMA just reuse an existing UMA type instead of adding one.
+#define BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE      \
+  case RequestType::kWidevine:                    \
+    BRAVE_WALLET_UMA_CASES                        \
+  case RequestType::kBraveGoogleSignInPermission: \
+  case RequestType::kBraveOpenAIChat:             \
+    return RequestTypeForUma::PERMISSION_VR;
+
+// These requests may be batched together, so we must handle them explicitly as
+// GetUmaValueForRequests expects only a few specific request types to be
+// batched
+#define BRAVE_GET_UMA_VALUE_FOR_REQUESTS             \
+  if (request_type >= RequestType::kBraveMinValue && \
+      request_type <= RequestType::kBraveMaxValue) { \
+    return GetUmaValueForRequestType(request_type);  \
+  }
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+// CHROMIUM_SRC_INTERNAL_USE
+#define BRAVE_WALLET_PERMISSION_TYPE_CASES      \
+  case PermissionType::BRAVE_ETHEREUM:          \
+    return ContentSettingsType::BRAVE_ETHEREUM; \
+  case PermissionType::BRAVE_SOLANA:            \
+    return ContentSettingsType::BRAVE_SOLANA;   \
+  case PermissionType::BRAVE_CARDANO:           \
+    return ContentSettingsType::BRAVE_CARDANO;
+#else
+// CHROMIUM_SRC_INTERNAL_USE
+#define BRAVE_WALLET_PERMISSION_TYPE_CASES \
+  case PermissionType::BRAVE_ETHEREUM:     \
+  case PermissionType::BRAVE_SOLANA:       \
+  case PermissionType::BRAVE_CARDANO:      \
+    break;
+#endif
+
+#define PERMISSION_UTIL_PERMISSION_TYPE_TO_CONTENT_SETTINGS_TYPE \
+  case PermissionType::BRAVE_ADS:                                \
+    return ContentSettingsType::BRAVE_ADS;                       \
+  case PermissionType::BRAVE_TRACKERS:                           \
+    return ContentSettingsType::BRAVE_TRACKERS;                  \
+  case PermissionType::BRAVE_HTTP_UPGRADABLE_RESOURCES:          \
+    return ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES; \
+  case PermissionType::BRAVE_FINGERPRINTING_V2:                  \
+    return ContentSettingsType::BRAVE_FINGERPRINTING_V2;         \
+  case PermissionType::BRAVE_SHIELDS:                            \
+    return ContentSettingsType::BRAVE_SHIELDS;                   \
+  case PermissionType::BRAVE_REFERRERS:                          \
+    return ContentSettingsType::BRAVE_REFERRERS;                 \
+  case PermissionType::BRAVE_COOKIES:                            \
+    return ContentSettingsType::BRAVE_COOKIES;                   \
+  case PermissionType::BRAVE_SPEEDREADER:                        \
+    return ContentSettingsType::BRAVE_SPEEDREADER;               \
+  case PermissionType::BRAVE_GOOGLE_SIGN_IN:                     \
+    return ContentSettingsType::BRAVE_GOOGLE_SIGN_IN;            \
+  case PermissionType::BRAVE_OPEN_AI_CHAT:                       \
+    return ContentSettingsType::BRAVE_OPEN_AI_CHAT;              \
+    BRAVE_WALLET_PERMISSION_TYPE_CASES
+
+#include <components/permissions/permission_util.cc>
+#undef PermissionUtil
+#undef BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE
+#undef BRAVE_WALLET_UMA_CASES
+#undef BRAVE_GET_UMA_VALUE_FOR_REQUESTS
+#undef PERMISSION_UTIL_PERMISSION_TYPE_TO_CONTENT_SETTINGS_TYPE
+#undef BRAVE_WALLET_PERMISSION_TYPE_CASES
+
+namespace permissions {
+
+// static
+std::string PermissionUtil::GetPermissionString(
+    ContentSettingsType content_type) {
+  switch (content_type) {
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+    case ContentSettingsType::BRAVE_ETHEREUM:
+      return "BraveEthereum";
+    case ContentSettingsType::BRAVE_SOLANA:
+      return "BraveSolana";
+    case ContentSettingsType::BRAVE_CARDANO:
+      return "BraveCardano";
+#endif
+    case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
+      return "BraveGoogleSignInPermission";
+    case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
+      return "BraveOpenAIChatPermission";
+    default:
+      return PermissionUtil_ChromiumImpl::GetPermissionString(content_type);
+  }
+}
+
+// static
+bool PermissionUtil::GetPermissionType(ContentSettingsType type,
+                                       blink::PermissionType* out) {
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  if (type == ContentSettingsType::BRAVE_ETHEREUM ||
+      type == ContentSettingsType::BRAVE_SOLANA ||
+      type == ContentSettingsType::BRAVE_CARDANO) {
+    *out = PermissionType::WINDOW_MANAGEMENT;
+    return true;
+  }
+#endif
+  if (type == ContentSettingsType::BRAVE_GOOGLE_SIGN_IN) {
+    *out = PermissionType::BRAVE_GOOGLE_SIGN_IN;
+    return true;
+  }
+  if (type == ContentSettingsType::BRAVE_OPEN_AI_CHAT) {
+    *out = PermissionType::BRAVE_OPEN_AI_CHAT;
+    return true;
+  }
+
+  return PermissionUtil_ChromiumImpl::GetPermissionType(type, out);
+}
+
+// static
+bool PermissionUtil::IsPermission(ContentSettingsType type) {
+  switch (type) {
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+    case ContentSettingsType::BRAVE_ETHEREUM:
+    case ContentSettingsType::BRAVE_SOLANA:
+    case ContentSettingsType::BRAVE_CARDANO:
+      return true;
+#endif
+    case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
+    case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
+      return true;
+    default:
+      return PermissionUtil_ChromiumImpl::IsPermission(type);
+  }
+}
+
+PermissionType PermissionUtil::ContentSettingsTypeToPermissionType(
+    ContentSettingsType permission) {
+  switch (permission) {
+    case ContentSettingsType::BRAVE_ADS:
+      return PermissionType::BRAVE_ADS;
+    case ContentSettingsType::BRAVE_TRACKERS:
+      return PermissionType::BRAVE_TRACKERS;
+    case ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES:
+      return PermissionType::BRAVE_HTTP_UPGRADABLE_RESOURCES;
+    case ContentSettingsType::BRAVE_FINGERPRINTING_V2:
+      return PermissionType::BRAVE_FINGERPRINTING_V2;
+    case ContentSettingsType::BRAVE_SHIELDS:
+      return PermissionType::BRAVE_SHIELDS;
+    case ContentSettingsType::BRAVE_REFERRERS:
+      return PermissionType::BRAVE_REFERRERS;
+    case ContentSettingsType::BRAVE_COOKIES:
+      return PermissionType::BRAVE_COOKIES;
+    case ContentSettingsType::BRAVE_SPEEDREADER:
+      return PermissionType::BRAVE_SPEEDREADER;
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+    case ContentSettingsType::BRAVE_ETHEREUM:
+      return PermissionType::BRAVE_ETHEREUM;
+    case ContentSettingsType::BRAVE_SOLANA:
+      return PermissionType::BRAVE_SOLANA;
+    case ContentSettingsType::BRAVE_CARDANO:
+      return PermissionType::BRAVE_CARDANO;
+#endif
+    case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
+      return PermissionType::BRAVE_GOOGLE_SIGN_IN;
+    case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
+      return PermissionType::BRAVE_OPEN_AI_CHAT;
+    default:
+      return PermissionUtil_ChromiumImpl::ContentSettingsTypeToPermissionType(
+          permission);
+  }
+}
+
+GURL PermissionUtil::GetCanonicalOrigin(ContentSettingsType permission,
+                                        const GURL& requesting_origin,
+                                        const GURL& embedding_origin) {
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  // Use requesting_origin which will have ethereum or solana address info.
+  if (permission == ContentSettingsType::BRAVE_ETHEREUM ||
+      permission == ContentSettingsType::BRAVE_SOLANA ||
+      permission == ContentSettingsType::BRAVE_CARDANO) {
+    return requesting_origin;
+  }
+#endif
+
+  return PermissionUtil_ChromiumImpl::GetCanonicalOrigin(
+      permission, requesting_origin, embedding_origin);
+}
+
+}  // namespace permissions

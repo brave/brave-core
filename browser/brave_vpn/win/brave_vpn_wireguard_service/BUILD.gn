@@ -1,0 +1,101 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import(
+    "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service/allowlist.gni")
+import("//brave/build/config.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//build/toolchain/gcc_toolchain.gni")
+import("//build/util/process_version.gni")
+import("//chrome/process_version_rc_template.gni")
+import("//tools/resources/generate_resource_allowlist.gni")
+
+assert(is_win && enable_brave_vpn)
+
+copy("brave_vpn_wireguard_binaries") {
+  sources = [
+    "//brave/third_party/brave-vpn-wireguard-nt-dlls/${target_cpu}/wireguard.dll",
+    "//brave/third_party/brave-vpn-wireguard-tunnel-dlls/${target_cpu}/tunnel.dll",
+  ]
+  outputs = [ "$root_out_dir/{{source_file_part}}" ]
+}
+
+group("wireguard_service") {
+  deps = [ ":brave_vpn_wireguard_service" ]
+  if (enable_resource_allowlist_generation) {
+    deps += [ ":wireguard_resource_allowlist" ]
+  }
+}
+
+generate_resource_allowlist("wireguard_resource_allowlist") {
+  deps = [ ":brave_vpn_wireguard_service" ]
+  inputs = [ "$root_out_dir/brave_vpn_wireguard_service.exe.pdb" ]
+  output = wireguard_resource_allowlist_file
+}
+
+executable("brave_vpn_wireguard_service") {
+  visibility = [ ":*" ]
+  sources = [
+    "brave_vpn_wireguard_service.rc",
+    "brave_wireguard_service_crash_reporter_client.cc",
+    "brave_wireguard_service_crash_reporter_client.h",
+    "main.cc",
+  ]
+
+  deps = [
+    ":brave_vpn_wireguard_binaries",
+    ":version_resources",
+    "notifications",
+    "resources",
+    "service",
+    "status_tray",
+    "//base",
+    "//base:base_static",
+    "//brave/browser/brave_vpn/win:wireguard_utils",
+    "//brave/components/resources:strings_grit",
+    "//build/win:default_exe_manifest",
+    "//chrome/common:channel_info",
+    "//chrome/install_static:install_static_util",
+    "//components/crash/core/app",
+    "//components/crash/core/app:crash_export_thunks",
+    "//components/crash/core/app:run_as_crashpad_handler",
+    "//components/version_info:channel",
+  ]
+
+  public_configs = [ "//build/config/win:windowed" ]
+}
+
+process_version_rc_template("version_resources") {
+  sources = [ "brave_vpn_wireguard_service.ver" ]
+
+  output = "$target_gen_dir/brave_vpn_wireguard_service.rc"
+}
+
+source_set("install_utils") {
+  sources = [
+    "install_utils.cc",
+    "install_utils.h",
+  ]
+  public_deps = [ "//brave/components/brave_vpn/common/wireguard/win:brave_wireguard_manager_idl" ]
+  deps = [
+    "//base",
+    "//brave/browser/brave_vpn/win:wireguard_utils",
+    "//brave/browser/brave_vpn/win/brave_vpn_helper:common",
+    "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service/service",
+    "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray",
+    "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_icon:utils",
+    "//brave/components/brave_vpn/common/win",
+    "//chrome/common:channel_info",
+    "//chrome/installer/util:work_item",
+  ]
+}
+
+group("unit_tests") {
+  testonly = true
+  deps = [
+    "resources:unit_tests",
+    "status_tray:unit_tests",
+  ]
+}

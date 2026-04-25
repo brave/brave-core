@@ -1,0 +1,361 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/ai_chat/tools/code_execution_tool.h"
+
+#include <memory>
+#include <optional>
+#include <string>
+#include <string_view>
+#include <vector>
+
+#include "base/json/json_writer.h"
+#include "base/run_loop.h"
+#include "base/strings/strcat.h"
+#include "base/test/bind.h"
+#include "base/test/scoped_feature_list.h"
+#include "base/test/values_test_util.h"
+#include "base/values.h"
+#include "brave/components/ai_chat/core/browser/tools/code_plugin.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/test/base/in_process_browser_test.h"
+#include "content/public/test/browser_test.h"
+#include "net/test/embedded_test_server/embedded_test_server.h"
+#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gtest/include/gtest/gtest.h"
+
+using testing::HasSubstr;
+
+namespace ai_chat {
+
+namespace {
+
+// A minimal CodePlugin that exposes a global `mockPlugin` object with a
+// `getValue()` method and handles "mock" artifacts.
+class MockCodePlugin : public CodePlugin {
+ public:
+  // Allow tests to override ValidateArtifact behavior.
+  void SetValidationError(std::optional<std::string> error) {
+    validation_error_ = std::move(error);
+  }
+
+  std::string_view Description() const override {
+    return "Mock plugin for testing.";
+  }
+
+  std::string_view InclusionKeyword() const override { return "mockPlugin"; }
+
+  std::string_view SetupScript() override {
+    return "const mockPlugin = { getValue: () => 'mock_value' };";
+  }
+
+  std::optional<std::string_view> ArtifactType() const override {
+    return "mock";
+  }
+
+  std::optional<std::string> ValidateArtifact(
+      const base::Value& artifact_value) const override {
+    return validation_error_;
+  }
+
+ private:
+  std::optional<std::string> validation_error_;
+};
+
+}  // namespace
+
+class AIChatCodeExecutionToolBrowserTest : public InProcessBrowserTest {
+ public:
+  AIChatCodeExecutionToolBrowserTest() {
+    scoped_feature_list_.InitAndEnableFeatureWithParameters(
+        features::kCodeExecutionTool, {{"charts", "true"}});
+  }
+  ~AIChatCodeExecutionToolBrowserTest() override = default;
+
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    http_server_.RegisterRequestHandler(base::BindRepeating(
+        &AIChatCodeExecutionToolBrowserTest::HandleTestRequest,
+        base::Unretained(this)));
+    ASSERT_TRUE(http_server_.Start());
+    tool_ = std::make_unique<CodeExecutionTool>(browser()->profile());
+    tool_->SetExecutionTimeLimitForTesting(base::Seconds(30));
+  }
+
+  void TearDownOnMainThread() override {
+    tool_.reset();
+    InProcessBrowserTest::TearDownOnMainThread();
+  }
+
+  std::string test_server_url() const {
+    return http_server_.GetURL("/test").spec();
+  }
+
+  void ExecuteCodeRaw(
+      const std::string& input_json,
+      std::string* output,
+      std::vector<mojom::ToolArtifactPtr>* artifacts = nullptr) {
+    base::RunLoop run_loop;
+    tool_->UseTool(
+        input_json,
+        base::BindLambdaForTesting(
+            [&run_loop, output, artifacts](
+                std::vector<mojom::ContentBlockPtr> result,
+                std::vector<mojom::ToolArtifactPtr> result_artifacts) {
+              ASSERT_FALSE(result.empty());
+              ASSERT_TRUE(result[0]->is_text_content_block());
+              *output = result[0]->get_text_content_block()->text;
+
+              if (artifacts) {
+                *artifacts = std::move(result_artifacts);
+              }
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+  }
+
+  void ExecuteCode(const std::string& script,
+                   std::string* output,
+                   std::vector<mojom::ToolArtifactPtr>* artifacts = nullptr) {
+    base::DictValue input;
+    input.Set("script", script);
+    std::string input_json;
+    base::JSONWriter::Write(input, &input_json);
+    ExecuteCodeRaw(input_json, output, artifacts);
+  }
+
+ protected:
+  std::unique_ptr<CodeExecutionTool> tool_;
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+  std::unique_ptr<net::test_server::HttpResponse> HandleTestRequest(
+      const net::test_server::HttpRequest& request) {
+    if (request.relative_url == "/test") {
+      ADD_FAILURE() << "Request should have been blocked";
+      auto response = std::make_unique<net::test_server::BasicHttpResponse>();
+      response->set_code(net::HTTP_OK);
+      response->set_content("test response");
+      return response;
+    }
+    return nullptr;
+  }
+
+  net::EmbeddedTestServer http_server_;
+};
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, HelloWorld) {
+  std::string script = R"(
+    console.log('hello world');
+    console.log('goodbye cruel world');
+  )";
+  std::string output;
+  ExecuteCode(script, &output);
+  EXPECT_EQ(output, "hello world\ngoodbye cruel world");
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, SimpleFibonacci) {
+  std::string script = R"(
+    function fibonacci(n) {
+      if (n <= 1) return n;
+      return fibonacci(n - 1) + fibonacci(n - 2);
+    }
+    console.log('Fibonacci(10) = ' + fibonacci(10));
+  )";
+
+  std::string output;
+  ExecuteCode(script, &output);
+  EXPECT_EQ(output, "Fibonacci(10) = 55");
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
+                       AccessLocalStateBlocked) {
+  std::string script = "console.log(localStorage.getItem('sensitive_data'))";
+
+  std::string output;
+  ExecuteCode(script, &output);
+  EXPECT_THAT(
+      output,
+      HasSubstr("SecurityError: Failed to read the 'localStorage' property"));
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
+                       BlocksNetworkRequest) {
+  std::string script = base::StrCat({
+      R"(
+        const response = await fetch(')",
+      test_server_url(),
+      R"(');
+        const text = await response.text();
+        console.log('Request succeeded: ' + text);
+      )"});
+
+  std::string output;
+  ExecuteCode(script, &output);
+  EXPECT_THAT(output, HasSubstr("Failed to fetch"));
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, ExecutionTimeout) {
+  tool_->SetExecutionTimeLimitForTesting(base::Seconds(2));
+
+  std::string script = R"(
+    await new Promise(resolve => setTimeout(resolve, 5000));
+    console.log('Should not reach here');
+  )";
+
+  std::string output;
+  ExecuteCode(script, &output);
+  EXPECT_EQ(output, "Error: Time limit exceeded");
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, SyntaxError) {
+  std::string script = R"(
+    let x = 'unclosed string;
+    console.log(x);
+  )";
+
+  std::string output;
+  ExecuteCode(script, &output);
+  EXPECT_EQ(output, "Error: Syntax error");
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, BadToolInput) {
+  std::string output;
+  ExecuteCodeRaw("not valid json", &output);
+  EXPECT_THAT(output, HasSubstr("Error: Invalid JSON input"));
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, MissingScriptField) {
+  std::string output;
+  ExecuteCodeRaw(R"({"other_field": "value"})", &output);
+  EXPECT_THAT(output, HasSubstr("Error: Missing or empty 'script' field"));
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, EmptyScriptField) {
+  std::string output;
+  ExecuteCodeRaw(R"({"script": ""})", &output);
+  EXPECT_THAT(output, HasSubstr("Error: Missing or empty 'script' field"));
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
+                       WindowLocationBlocked) {
+  std::string script = base::StrCat({
+      R"(
+        window.location.href = ')",
+      test_server_url(),
+      R"(';
+        await new Promise(resolve => setTimeout(resolve, 2500));
+        console.log('Complete');
+      )"});
+
+  std::string output;
+  ExecuteCode(script, &output);
+  // HandleTestRequest will report a failure if the request was made
+  EXPECT_THAT(output, HasSubstr("Error"));
+  EXPECT_FALSE(output.empty());
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
+                       BigNumberCalculation) {
+  std::string output;
+  ExecuteCode("console.log(new BigNumber(0.1).plus(0.2).toString())", &output);
+  EXPECT_EQ(output, "0.3");
+}
+
+// Plugin setup script is injected when the keyword is present, the artifact is
+// returned, and console output is captured correctly.
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, PluginReturnsValue) {
+  tool_->AddCodePluginForTesting(std::make_unique<MockCodePlugin>());
+
+  std::string output;
+  std::vector<mojom::ToolArtifactPtr> artifacts;
+  ExecuteCode(
+      R"(
+        codeExecArtifacts.push({ type: 'mock', content: mockPlugin.getValue() });
+        console.log('done');
+      )",
+      &output, &artifacts);
+
+  EXPECT_EQ(output, "done");
+  ASSERT_EQ(artifacts.size(), 1u);
+  ASSERT_TRUE(artifacts[0]->id.has_value());
+  EXPECT_FALSE(artifacts[0]->id->empty());
+  EXPECT_EQ(artifacts[0]->type, "mock");
+  EXPECT_EQ(artifacts[0]->content_json, "\"mock_value\"");
+}
+
+// A failed ValidateArtifact call surfaces as an error in the output.
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
+                       PluginArtifactValidationError) {
+  auto plugin = std::make_unique<MockCodePlugin>();
+  plugin->SetValidationError("content must be a number");
+  tool_->AddCodePluginForTesting(std::move(plugin));
+
+  std::string output;
+  std::vector<mojom::ToolArtifactPtr> artifacts;
+  ExecuteCode(
+      R"(
+        codeExecArtifacts.push({ type: 'mock', content: mockPlugin.getValue() });
+        console.log('done');
+      )",
+      &output, &artifacts);
+
+  EXPECT_THAT(output, HasSubstr("Error: content must be a number"));
+  EXPECT_TRUE(artifacts.empty());
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, CreateLineChart) {
+  std::string script = R"(
+    const data = [
+      {x: 'Jan', sales: 100, profit: 30},
+      {x: 'Feb', sales: 150, profit: 45},
+      {x: 'Mar', sales: 120, profit: 35}
+    ];
+    const labels = {sales: 'Sales ($)', profit: 'Profit ($)'};
+    chartUtil.createLineChart(data, labels);
+  )";
+
+  std::string output;
+  std::vector<mojom::ToolArtifactPtr> artifacts;
+  ExecuteCode(script, &output, &artifacts);
+
+  ASSERT_EQ(artifacts.size(), 1u);
+
+  const auto& artifact = artifacts[0];
+  ASSERT_TRUE(artifact->id.has_value());
+  EXPECT_THAT(output, HasSubstr("Chart created with ID: " + *artifact->id));
+  EXPECT_EQ(artifact->type, mojom::kLineChartArtifactType);
+  EXPECT_THAT(artifact->content_json, base::test::IsJson(R"json({
+                "data": [
+                  {"x": "Jan", "sales": 100, "profit": 30},
+                  {"x": "Feb", "sales": 150, "profit": 45},
+                  {"x": "Mar", "sales": 120, "profit": 35}
+                ],
+                "labels": {"sales": "Sales ($)", "profit": "Profit ($)"}
+              })json"));
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
+                       UnsupportedArtifactType) {
+  std::string script = R"(
+    codeExecArtifacts.push({
+      type: 'unsupported_type',
+      content: {data: 'some data'}
+    });
+    console.log('Artifact created');
+  )";
+
+  std::string output;
+  std::vector<mojom::ToolArtifactPtr> artifacts;
+  ExecuteCode(script, &output, &artifacts);
+
+  EXPECT_EQ(output, "Error: Artifact type 'unsupported_type' is not supported");
+  EXPECT_TRUE(artifacts.empty());
+}
+
+}  // namespace ai_chat

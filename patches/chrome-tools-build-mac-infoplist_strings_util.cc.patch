@@ -1,0 +1,12 @@
+diff --git a/chrome/tools/build/mac/infoplist_strings_util.cc b/chrome/tools/build/mac/infoplist_strings_util.cc
+index 94297f412e885b56ef69658847f0663529f044f7..a79106241abdbd7e15d4bcfff309c20b61afe355 100644
+--- a/chrome/tools/build/mac/infoplist_strings_util.cc
++++ b/chrome/tools/build/mac/infoplist_strings_util.cc
+@@ -155,6 +155,7 @@ int main(int argc, char* const argv[]) {
+     // Fetch the strings.
+     std::string name = LoadStringFromDataPack(branded_data_pack.get(), cur_lang,
+                                               name_id, name_id_str);
++    name = BRAVE_PRODUCT_STRING;
+     std::string copyright_format = LoadStringFromDataPack(
+         branded_data_pack.get(), cur_lang, IDS_ABOUT_VERSION_COPYRIGHT,
+         "IDS_ABOUT_VERSION_COPYRIGHT");

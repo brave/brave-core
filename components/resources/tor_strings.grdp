@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <if expr="enable_tor">
+    <message name="IDS_UTILITY_PROCESS_TOR_LAUNCHER_NAME" desc="The utility process which launch Tor">
+      Tor Launcher
+    </message>
+      <!-- Tor Internals resources -->
+    <message name="IDS_TOR_INTERNALS_TAB_GENERAL_INFO" desc="">General Info</message>
+    <message name="IDS_TOR_INTERNALS_TAB_LOGS" desc="">Logs</message>
+    <message name="IDS_TOR_INTERNALS_TOR_CONTROL_EVENTS" desc="">Tor Control Events</message>
+    <message name="IDS_TOR_INTERNALS_TOR_VERSION" desc="">Tor Version</message>
+    <message name="IDS_TOR_INTERNALS_TOR_PID" desc="">Tor Process Id</message>
+    <message name="IDS_TOR_INTERNALS_TOR_PROXY_URI" desc="">Tor Proxy URI</message>
+    <message name="IDS_TOR_INTERNALS_TOR_CONNECTION_STATUS" desc="">Tor Connection Status</message>
+    <message name="IDS_TOR_INTERNALS_TOR_INIT_PROGRESS" desc="">Tor Initialization Progress</message>
+  </if>
+</grit-part>

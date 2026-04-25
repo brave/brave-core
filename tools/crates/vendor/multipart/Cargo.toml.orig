@@ -1,0 +1,90 @@
+[package]
+name = "multipart"
+
+version = "0.18.0"
+
+authors = ["Austin Bonander <austin.bonander@gmail.com>"]
+
+description = "A backend-agnostic extension for HTTP libraries that provides support for POST multipart/form-data requests on both client and server."
+
+keywords = ["form-data", "hyper", "iron", "http", "upload"]
+
+repository = "http://github.com/abonander/multipart"
+
+documentation = "http://docs.rs/multipart/"
+
+license = "MIT OR Apache-2.0"
+
+readme = "README.md"
+
+[dependencies]
+lazy_static = { version = "1.2.0", optional = true }
+log = "0.4"
+mime = "0.3.14"
+mime_guess = "2.0.1"
+rand = "0.8"
+safemem = { version = "0.3", optional = true }
+tempfile = "3"
+clippy = { version = ">=0.0, <0.1", optional = true}
+
+#Server Dependencies
+buf_redux = { version = "0.8", optional = true, default-features = false }
+httparse = { version = "1.2", optional = true }
+twoway = { version = "0.1", optional = true }
+quick-error = { version = "1.2", optional = true }
+
+# Optional Integrations
+hyper = { version = ">=0.9, <0.11", optional = true, default-features = false }
+iron = { version = ">=0.4,<0.7", optional = true }
+tiny_http = { version = "0.6", optional = true }
+nickel = { version = ">=0.10.1", optional = true }
+
+# Only for Rocket example but dev-dependencies can't be optional
+rocket = { version = "0.4", optional = true }
+
+[dev-dependencies]
+env_logger = "0.5"
+
+[features]
+client = []
+default = ["client", "hyper", "iron", "mock", "nickel", "server", "tiny_http"]
+server = ["buf_redux", "httparse", "quick-error", "safemem", "twoway"]
+mock = []
+nightly = []
+bench = []
+
+[[example]]
+name = "hyper_client"
+required-features = ["client", "mock", "hyper"]
+
+[[example]]
+name = "hyper_reqbuilder"
+required-features = ["client", "mock", "hyper"]
+
+[[example]]
+name = "hyper_server"
+required-features = ["mock", "hyper", "server"]
+
+[[example]]
+name = "iron"
+required-features = ["mock", "iron", "server"]
+
+[[example]]
+name = "iron_intercept"
+required-features = ["mock", "iron", "server"]
+
+[[example]]
+name = "nickel"
+required-features = ["mock", "nickel", "server"]
+
+[[example]]
+name = "tiny_http"
+required-features = ["mock", "tiny_http", "server"]
+
+[[example]]
+name = "rocket"
+required-features = ["mock", "rocket", "server"]
+
+[[bin]]
+name = "form_test"
+required-features = ["mock", "hyper", "server"]

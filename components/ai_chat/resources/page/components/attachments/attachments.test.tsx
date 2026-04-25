@@ -1,0 +1,733 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import '$test-utils/disable_custom_elements'
+
+import * as React from 'react'
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
+import { MockContext } from '../../state/mock_context'
+import { clearAllDataForTesting } from '$web-common/api'
+import Attachments from './index'
+import {
+  AssociatedContent,
+  ContentType,
+} from 'gen/brave/components/ai_chat/core/common/mojom/common.mojom.m.js'
+import {
+  Bookmark,
+  HistoryEntry,
+} from 'components/ai_chat/resources/common/mojom'
+
+// Render and flush async state updates from usePromise hooks.
+async function renderAttachments(
+  ...args: Parameters<typeof render>
+): Promise<ReturnType<typeof render>> {
+  let result: ReturnType<typeof render>
+  await act(async () => {
+    result = render(...args)
+  })
+  return result!
+}
+
+const mockTabs = [
+  {
+    contentId: 1,
+    title: 'Google Search',
+    url: { url: 'https://google.com' },
+    id: 1,
+  },
+  {
+    contentId: 2,
+    title: 'GitHub - Brave Browser',
+    url: { url: 'https://github.com/brave/brave-browser' },
+    id: 2,
+  },
+  {
+    contentId: 3,
+    title: 'Stack Overflow',
+    url: { url: 'https://stackoverflow.com' },
+    id: 3,
+  },
+]
+
+const mockAssociatedContent: AssociatedContent[] = [
+  {
+    conversationTurnUuid: undefined,
+    contentId: 1,
+    title: 'Google Search',
+    url: { url: 'https://google.com' },
+    contentType: ContentType.PageContent,
+    contentUsedPercentage: 0.5,
+    uuid: 'uuid-1',
+  },
+]
+
+describe('Attachments Component', () => {
+  const mockSetAttachmentsDialog = jest.fn()
+  const mockAssociateTab = jest.fn()
+  const mockDisassociateContent = jest.fn()
+
+  beforeEach(() => {
+    clearAllDataForTesting()
+    jest.clearAllMocks()
+  })
+
+  it('renders the attachments dialog with correct title', async () => {
+    await renderAttachments(
+      <MockContext
+        initialState={{
+          tabs: mockTabs,
+        }}
+        conversationOverrides={{
+          attachmentsDialog: 'tabs',
+          setAttachmentsDialog: mockSetAttachmentsDialog,
+        }}
+      >
+        <Attachments />
+      </MockContext>,
+    )
+
+    // The title will be the raw locale key in tests
+    expect(
+      screen.getByText('CHAT_UI_ATTACHMENTS_TABS_TITLE'),
+    ).toBeInTheDocument()
+  })
+
+  it('renders the close button', async () => {
+    const { container } = await renderAttachments(
+      <MockContext
+        initialState={{
+          tabs: mockTabs,
+        }}
+        conversationOverrides={{
+          attachmentsDialog: 'tabs',
+          setAttachmentsDialog: mockSetAttachmentsDialog,
+        }}
+      >
+        <Attachments />
+      </MockContext>,
+    )
+
+    const closeButton = container.querySelector('leo-button')
+    expect(closeButton).toBeInTheDocument()
+  })
+
+  it('calls setAttachmentsDialog(null) when close button is clicked', async () => {
+    const { container } = await renderAttachments(
+      <MockContext
+        initialState={{
+          tabs: mockTabs,
+        }}
+        conversationOverrides={{
+          setAttachmentsDialog: mockSetAttachmentsDialog,
+        }}
+      >
+        <Attachments />
+      </MockContext>,
+    )
+
+    const closeButton = container.querySelector('leo-button')!
+    fireEvent.click(closeButton)
+
+    expect(mockSetAttachmentsDialog).toHaveBeenCalledWith(null)
+  })
+
+  it('displays all unassociated tabs', async () => {
+    await renderAttachments(
+      <MockContext
+        initialState={{
+          tabs: mockTabs,
+        }}
+        conversationOverrides={{
+          attachmentsDialog: 'tabs',
+          setAttachmentsDialog: mockSetAttachmentsDialog,
+        }}
+      >
+        <Attachments />
+      </MockContext>,
+    )
+
+    await waitFor(() => {
+      expect(screen.getByText('Google Search')).toBeInTheDocument()
+      expect(screen.getByText('GitHub - Brave Browser')).toBeInTheDocument()
+      expect(screen.getByText('Stack Overflow')).toBeInTheDocument()
+    })
+  })
+
+  it('displays tab URLs', async () => {
+    await renderAttachments(
+      <MockContext
+        initialState={{
+          tabs: mockTabs,
+        }}
+        conversationOverrides={{
+          attachmentsDialog: 'tabs',
+          setAttachmentsDialog: mockSetAttachmentsDialog,
+        }}
+      >
+        <Attachments />
+      </MockContext>,
+    )
+
+    await waitFor(() => {
+      expect(screen.getByText('https://google.com')).toBeInTheDocument()
+      expect(
+        screen.getByText('https://github.com/brave/brave-browser'),
+      ).toBeInTheDocument()
+      expect(screen.getByText('https://stackoverflow.com')).toBeInTheDocument()
+    })
+  })
+
+  it('displays favicons for each tab', async () => {
+    const { container } = await renderAttachments(
+      <MockContext
+        initialState={{
+          tabs: mockTabs,
+        }}
+        conversationOverrides={{
+          attachmentsDialog: 'tabs',
+          setAttachmentsDialog: mockSetAttachmentsDialog,
+        }}
+      >
+        <Attachments />
+      </MockContext>,
+    )
+
+    await waitFor(() => {
+      const favicons = container.querySelectorAll('img.icon')
+      expect(favicons).toHaveLength(3)
+
+      expect(favicons[0]).toHaveAttribute(
+        'src',
+        expect.stringContaining('google.com'),
+      )
+      expect(favicons[1]).toHaveAttribute(
+        'src',
+        expect.stringContaining('github.com'),
+      )
+      expect(favicons[2]).toHaveAttribute(
+        'src',
+        expect.stringContaining('stackoverflow.com'),
+      )
+    })
+  })
+
+  it('shows checkboxes in unchecked state for unassociated tabs', async () => {
+    const { container } = await renderAttachments(
+      <MockContext
+        initialState={{
+          tabs: mockTabs,
+          conversationState: {
+            associatedContent: [],
+          },
+        }}
+        conversationOverrides={{
+          attachmentsDialog: 'tabs',
+          setAttachmentsDialog: mockSetAttachmentsDialog,
+        }}
+      >
+        <Attachments />
+      </MockContext>,
+    )
+
+    await waitFor(() => {
+      const checkboxes = container.querySelectorAll('leo-checkbox')
+      expect(checkboxes).toHaveLength(3)
+
+      checkboxes.forEach((checkbox) => {
+        expect(checkbox).toHaveProperty('checked', false)
+      })
+    })
+  })
+
+  it('shows checkboxes in checked state for associated tabs', async () => {
+    const { container } = await renderAttachments(
+      <MockContext
+        initialState={{
+          tabs: mockTabs,
+          conversationState: {
+            associatedContent: mockAssociatedContent,
+          },
+        }}
+        conversationOverrides={{
+          attachmentsDialog: 'tabs',
+          setAttachmentsDialog: mockSetAttachmentsDialog,
+        }}
+      >
+        <Attachments />
+      </MockContext>,
+    )
+
+    await waitFor(() => {
+      const checkboxes = container.querySelectorAll('leo-checkbox')
+      expect(checkboxes).toHaveLength(3)
+
+      // First tab should be checked (associated), others unchecked
+      expect(checkboxes[0]).toHaveProperty('checked', true)
+      expect(checkboxes[1]).toHaveProperty('checked', false)
+      expect(checkboxes[2]).toHaveProperty('checked', false)
+    })
+  })
+
+  it('has proper checkbox structure for association', async () => {
+    const { container } = await renderAttachments(
+      <MockContext
+        initialState={{
+          tabs: mockTabs,
+          conversationState: {
+            associatedContent: [],
+            conversationUuid: 'test-conversation',
+          },
+        }}
+        uiHandler={{
+          associateTab: mockAssociateTab,
+        }}
+        conversationOverrides={{
+          attachmentsDialog: 'tabs',
+          setAttachmentsDialog: mockSetAttachmentsDialog,
+        }}
+      >
+        <Attachments />
+      </MockContext>,
+    )
+
+    await waitFor(() => {
+      const checkboxes = container.querySelectorAll('leo-checkbox')
+      expect(checkboxes).toHaveLength(3)
+
+      // Verify that each checkbox has the expected content structure
+      const firstCheckbox = checkboxes[0]
+      expect(firstCheckbox).toContainHTML('Google Search')
+      expect(firstCheckbox).toContainHTML('https://google.com')
+    })
+  })
+
+  it('properly renders associated content info', async () => {
+    const { container } = await renderAttachments(
+      <MockContext
+        initialState={{
+          tabs: mockTabs,
+          conversationState: {
+            associatedContent: mockAssociatedContent,
+            conversationUuid: 'test-conversation',
+          },
+        }}
+        uiHandler={{
+          disassociateContent: mockDisassociateContent,
+        }}
+        conversationOverrides={{
+          attachmentsDialog: 'tabs',
+          setAttachmentsDialog: mockSetAttachmentsDialog,
+        }}
+      >
+        <Attachments />
+      </MockContext>,
+    )
+
+    await waitFor(() => {
+      // First tab should be in the associated content
+      const firstCheckbox = container.querySelectorAll('leo-checkbox')[0]
+      expect(firstCheckbox).toContainHTML('Google Search')
+      expect(firstCheckbox).toHaveProperty('checked', true)
+    })
+  })
+
+  describe('Search functionality', () => {
+    it('renders search input', async () => {
+      const { container } = await renderAttachments(
+        <MockContext
+          initialState={{
+            tabs: mockTabs,
+          }}
+          conversationOverrides={{
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
+        >
+          <Attachments />
+        </MockContext>,
+      )
+
+      const searchInput = container.querySelector('leo-input')
+      expect(searchInput).toBeInTheDocument()
+    })
+
+    it('renders all tabs when no search filter is applied', async () => {
+      await renderAttachments(
+        <MockContext
+          initialState={{
+            tabs: mockTabs,
+          }}
+          conversationOverrides={{
+            attachmentsDialog: 'tabs',
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
+        >
+          <Attachments />
+        </MockContext>,
+      )
+
+      await waitFor(() => {
+        // All tabs should be visible when no search is active
+        expect(screen.getByText('Google Search')).toBeInTheDocument()
+        expect(screen.getByText('GitHub - Brave Browser')).toBeInTheDocument()
+        expect(screen.getByText('Stack Overflow')).toBeInTheDocument()
+      })
+    })
+
+    it('shows search input with correct styling', async () => {
+      const { container } = await renderAttachments(
+        <MockContext
+          initialState={{
+            tabs: mockTabs,
+          }}
+          conversationOverrides={{
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
+        >
+          <Attachments />
+        </MockContext>,
+      )
+
+      const searchInput = container.querySelector('leo-input')!
+      expect(searchInput).toHaveClass('searchBox')
+    })
+
+    it('shows search icon in input', async () => {
+      const { container } = await renderAttachments(
+        <MockContext
+          initialState={{
+            tabs: mockTabs,
+          }}
+          conversationOverrides={{
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
+        >
+          <Attachments />
+        </MockContext>,
+      )
+
+      const searchIcon = container.querySelector(
+        'leo-input leo-icon[slot="left-icon"]',
+      )
+      expect(searchIcon).toBeInTheDocument()
+    })
+  })
+
+  describe('Empty states', () => {
+    it('shows no results message when there are no unassociated tabs', async () => {
+      await renderAttachments(
+        <MockContext
+          initialState={{
+            tabs: [],
+          }}
+          conversationOverrides={{
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
+        >
+          <Attachments />
+        </MockContext>,
+      )
+
+      expect(
+        screen.getByText('CHAT_UI_ATTACHMENTS_SEARCH_NO_RESULTS'),
+      ).toBeInTheDocument()
+      // Should not show suggestion text when there are no tabs at all
+      expect(
+        screen.queryByText('CHAT_UI_ATTACHMENTS_SEARCH_NO_RESULTS_SUGGESTION'),
+      ).not.toBeInTheDocument()
+    })
+
+    it('renders properly with empty tabs list', async () => {
+      const { container } = await renderAttachments(
+        <MockContext
+          initialState={{
+            tabs: [],
+          }}
+          conversationOverrides={{
+            attachmentsDialog: 'tabs',
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
+        >
+          <Attachments />
+        </MockContext>,
+      )
+
+      // Should still render the basic structure
+      expect(
+        screen.getByText('CHAT_UI_ATTACHMENTS_TABS_TITLE', { exact: false }),
+      ).toBeInTheDocument()
+      expect(container.querySelector('leo-input')).toBeInTheDocument()
+
+      // But no tab items should be present
+      expect(container.querySelectorAll('leo-checkbox')).toHaveLength(0)
+    })
+  })
+
+  describe('Bookmarks display', () => {
+    const mockBookmarks: Bookmark[] = [
+      {
+        id: BigInt(1),
+        title: 'Brave Browser',
+        url: { url: 'https://brave.com' },
+      },
+      {
+        id: BigInt(2),
+        title: 'MDN Web Docs',
+        url: { url: 'https://developer.mozilla.org' },
+      },
+    ]
+
+    it('displays bookmarks when attachmentsDialog is set to bookmarks', async () => {
+      await renderAttachments(
+        <MockContext
+          bookmarksService={{
+            getBookmarks: () => Promise.resolve({ bookmarks: mockBookmarks }),
+          }}
+          conversationOverrides={{
+            attachmentsDialog: 'bookmarks',
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
+        >
+          <Attachments />
+        </MockContext>,
+      )
+
+      // Check bookmarks are rendered using UrlContentItem
+      await waitFor(() => {
+        expect(screen.getByText('Brave Browser')).toBeInTheDocument()
+        expect(screen.getByText('MDN Web Docs')).toBeInTheDocument()
+        expect(screen.getByText('https://brave.com')).toBeInTheDocument()
+        expect(
+          screen.getByText('https://developer.mozilla.org'),
+        ).toBeInTheDocument()
+      })
+    })
+
+    it('displays correct title for bookmarks dialog', async () => {
+      await renderAttachments(
+        <MockContext
+          bookmarksService={{
+            getBookmarks: () => Promise.resolve({ bookmarks: mockBookmarks }),
+          }}
+          conversationOverrides={{
+            attachmentsDialog: 'bookmarks',
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
+        >
+          <Attachments />
+        </MockContext>,
+      )
+
+      expect(
+        screen.getByText('CHAT_UI_ATTACHMENTS_BOOKMARKS_TITLE'),
+      ).toBeInTheDocument()
+    })
+
+    it('displays correct description for bookmarks dialog', async () => {
+      const { container } = await renderAttachments(
+        <MockContext
+          bookmarksService={{
+            getBookmarks: () => Promise.resolve({ bookmarks: mockBookmarks }),
+          }}
+          conversationOverrides={{
+            attachmentsDialog: 'bookmarks',
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
+        >
+          <Attachments />
+        </MockContext>,
+      )
+
+      expect(container.querySelector('.description')?.textContent).toContain(
+        'CHAT_UI_ATTACHMENTS_BOOKMARKS_DESCRIPTION',
+      )
+    })
+
+    it('displays favicons for bookmarks', async () => {
+      const { container } = await renderAttachments(
+        <MockContext
+          bookmarksService={{
+            getBookmarks: () => Promise.resolve({ bookmarks: mockBookmarks }),
+          }}
+          conversationOverrides={{
+            attachmentsDialog: 'bookmarks',
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
+        >
+          <Attachments />
+        </MockContext>,
+      )
+
+      await waitFor(() => {
+        const favicons = container.querySelectorAll('img')
+        expect(favicons).toHaveLength(2)
+
+        expect(favicons[0]).toHaveAttribute(
+          'src',
+          expect.stringContaining('brave.com'),
+        )
+        expect(favicons[1]).toHaveAttribute(
+          'src',
+          expect.stringContaining('developer.mozilla.org'),
+        )
+      })
+    })
+  })
+
+  describe('Tabs display', () => {
+    it('displays tabs when attachmentsDialog is set to tabs', async () => {
+      await renderAttachments(
+        <MockContext
+          initialState={{
+            tabs: mockTabs,
+          }}
+          conversationOverrides={{
+            attachmentsDialog: 'tabs',
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
+        >
+          <Attachments />
+        </MockContext>,
+      )
+
+      // Check tabs are rendered using TabItem
+      expect(screen.getByText('Google Search')).toBeInTheDocument()
+      expect(screen.getByText('GitHub - Brave Browser')).toBeInTheDocument()
+      expect(screen.getByText('https://google.com')).toBeInTheDocument()
+    })
+
+    it('displays correct title for tabs dialog', async () => {
+      await renderAttachments(
+        <MockContext
+          initialState={{
+            tabs: mockTabs,
+          }}
+          conversationOverrides={{
+            attachmentsDialog: 'tabs',
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
+        >
+          <Attachments />
+        </MockContext>,
+      )
+
+      expect(
+        screen.getByText('CHAT_UI_ATTACHMENTS_TABS_TITLE'),
+      ).toBeInTheDocument()
+    })
+  })
+
+  describe('History display', () => {
+    const mockHistory: HistoryEntry[] = [
+      {
+        id: BigInt(1),
+        title: 'Brave Privacy Browser',
+        url: { url: 'https://brave.com/privacy' },
+      },
+      {
+        id: BigInt(2),
+        title: 'Web3 Standards',
+        url: { url: 'https://w3c.org/standards' },
+      },
+    ]
+
+    it('displays history when attachmentsDialog is set to history', async () => {
+      await renderAttachments(
+        <MockContext
+          historyService={{
+            getHistory: () => Promise.resolve({ history: mockHistory }),
+          }}
+          conversationOverrides={{
+            attachmentsDialog: 'history',
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
+        >
+          <Attachments />
+        </MockContext>,
+      )
+
+      // Check history items are rendered using UrlContentItem
+      await waitFor(() => {
+        expect(screen.getByText('Brave Privacy Browser')).toBeInTheDocument()
+        expect(screen.getByText('Web3 Standards')).toBeInTheDocument()
+        expect(
+          screen.getByText('https://brave.com/privacy'),
+        ).toBeInTheDocument()
+        expect(
+          screen.getByText('https://w3c.org/standards'),
+        ).toBeInTheDocument()
+      })
+    })
+
+    it('displays correct title for history dialog', async () => {
+      await renderAttachments(
+        <MockContext
+          historyService={{
+            getHistory: () => Promise.resolve({ history: mockHistory }),
+          }}
+          conversationOverrides={{
+            attachmentsDialog: 'history',
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
+        >
+          <Attachments />
+        </MockContext>,
+      )
+
+      expect(
+        screen.getByText('CHAT_UI_ATTACHMENTS_HISTORY_TITLE'),
+      ).toBeInTheDocument()
+    })
+
+    it('displays correct description for history dialog', async () => {
+      const { container } = await renderAttachments(
+        <MockContext
+          historyService={{
+            getHistory: () => Promise.resolve({ history: mockHistory }),
+          }}
+          conversationOverrides={{
+            attachmentsDialog: 'history',
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
+        >
+          <Attachments />
+        </MockContext>,
+      )
+
+      expect(container.querySelector('.description')?.textContent).toContain(
+        'CHAT_UI_ATTACHMENTS_HISTORY_DESCRIPTION',
+      )
+    })
+
+    it('displays favicons for history items', async () => {
+      const { container } = await renderAttachments(
+        <MockContext
+          historyService={{
+            getHistory: () => Promise.resolve({ history: mockHistory }),
+          }}
+          conversationOverrides={{
+            attachmentsDialog: 'history',
+            setAttachmentsDialog: mockSetAttachmentsDialog,
+          }}
+        >
+          <Attachments />
+        </MockContext>,
+      )
+
+      await waitFor(() => {
+        const favicons = container.querySelectorAll('img')
+        expect(favicons).toHaveLength(2)
+
+        expect(favicons[0]).toHaveAttribute(
+          'src',
+          expect.stringContaining('brave.com'),
+        )
+        expect(favicons[1]).toHaveAttribute(
+          'src',
+          expect.stringContaining('w3c.org'),
+        )
+      })
+    })
+  })
+})

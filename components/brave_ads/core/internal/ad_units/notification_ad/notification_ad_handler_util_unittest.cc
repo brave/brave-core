@@ -1,0 +1,60 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_handler_util.h"
+
+#include "brave/components/brave_ads/core/internal/common/operating_system/operating_system.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/settings/test/settings_test_util.h"
+
+// npm run test -- brave_unit_tests --filter=BraveAds*
+
+namespace brave_ads {
+
+class BraveAdsNotificationAdUtilTest : public test::TestBase {};
+
+TEST_F(BraveAdsNotificationAdUtilTest, CanServeIfUserIsActive) {
+  // Act & Assert
+  EXPECT_TRUE(CanServeIfUserIsActive());
+}
+
+TEST_F(BraveAdsNotificationAdUtilTest, CannotServeIfUserIsActive) {
+  // Arrange
+  fake_operating_system_.SetType(OperatingSystemType::kAndroid);
+  OperatingSystem::SetForTesting(&fake_operating_system_);
+
+  // Act & Assert
+  EXPECT_FALSE(CanServeIfUserIsActive());
+}
+
+TEST_F(BraveAdsNotificationAdUtilTest, ShouldServe) {
+  // Act & Assert
+  EXPECT_TRUE(ShouldServe());
+}
+
+TEST_F(BraveAdsNotificationAdUtilTest,
+       ShouldNotServeIfOptedOutOfNotificationAds) {
+  // Arrange
+  test::OptOutOfNotificationAds();
+
+  // Act & Assert
+  EXPECT_FALSE(ShouldServe());
+}
+
+TEST_F(BraveAdsNotificationAdUtilTest, CanServeAtRegularIntervals) {
+  // Arrange
+  fake_operating_system_.SetType(OperatingSystemType::kAndroid);
+  OperatingSystem::SetForTesting(&fake_operating_system_);
+
+  // Act & Assert
+  EXPECT_TRUE(CanServeAtRegularIntervals());
+}
+
+TEST_F(BraveAdsNotificationAdUtilTest, CannotServeAtRegularIntervals) {
+  // Act & Assert
+  EXPECT_FALSE(CanServeAtRegularIntervals());
+}
+
+}  // namespace brave_ads

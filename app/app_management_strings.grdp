@@ -1,0 +1,161 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
+<grit-part>
+  <message name="IDS_APP_MANAGEMENT_CAMERA" desc="Label for the camera permission toggle.">
+    Camera
+  </message>
+  <message name="IDS_APP_MANAGEMENT_LOCATION" desc="Label for the location permission toggle." meaning="Geolocation">
+    Location
+  </message>
+  <message name="IDS_APP_MANAGEMENT_MICROPHONE" desc="Label for the microphone permission toggle.">
+    Microphone
+  </message>
+  <message name="IDS_APP_MANAGEMENT_NOTIFICATIONS" desc="Label for notifications section in the app settings page.">
+    Notifications
+  </message>
+  <if expr="is_macosx">
+    <message name="IDS_APP_MANAGEMENT_NOTIFICATIONS_DESCRIPTION" desc="Description for notifications section in the app settings page on macOS with a link to macOS's System Settings.">
+      Enable notifications in the Notification Center. Open <ph name="BEGIN_LINK">&lt;a href="#"&gt;</ph>System Settings<ph name="END_LINK">&lt;/a&gt;</ph>.
+    </message>
+  </if>
+  <message name="IDS_APP_MANAGEMENT_PERMISSIONS" desc="Label for permissions section in the app settings page.">
+    Permissions
+  </message>
+  <message name="IDS_APP_MANAGEMENT_PERMISSIONS_WITH_ORIGIN" desc="Label for permissions section in the app settings page. Shows URL of the app where permissions are applied.">
+    Permissions (<ph name="FORMATTED_ORIGIN">$1<ex>foo.com</ex></ph>)
+  </message>
+  <message name="IDS_APP_MANAGEMENT_MORE_SETTINGS" desc="Label for a link to more settings and permissions for an app.">
+    More settings and permissions
+  </message>
+  <message name="IDS_APP_MANAGEMENT_WINDOW" desc="Label for changing window mode.">
+    Open as window
+  </message>
+  <message name="IDS_APP_MANAGEMENT_UNINSTALL_APP" desc="Label for the uninstall button in the app settings page.">
+    Uninstall
+  </message>
+  <message name="IDS_APP_MANAGEMENT_RUN_ON_OS_LOGIN" desc="Label for toggling running on OS Login mode.">
+    Start app when you sign in
+  </message>
+  <message name="IDS_APP_MANAGEMENT_POLICY_APP_POLICY_STRING" desc="Tooltip label explaining that an app cannot be uninstalled as it has been installed by an adminstrator.">
+    This app has been installed by your administrator.
+  </message>
+  <message name="IDS_APP_MANAGEMENT_INTENT_SETTINGS_TITLE" desc="Title for the intent sharing settings section.">
+    Opening <ph name="BEGIN_LINK">&lt;a href="#"&gt;</ph>supported links<ph name="END_LINK">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_APP_MANAGEMENT_INTENT_SHARING_APP_OPEN" desc="Label for the intent sharing option to open in a specified app.">
+    Open in <ph name="APP_NAME">$1<ex>Brave browser</ex></ph>
+  </message>
+  <message name="IDS_APP_MANAGEMENT_INTENT_SHARING_BROWSER_OPEN" desc="Label for the intent sharing option to open in the browser.">
+    Open in Brave browser
+  </message>
+  <message name="IDS_APP_MANAGEMENT_INTENT_SHARING_TAB_EXPLANATION" desc="Label for the intent sharing description for when the app is set to open in tab mode.">
+    <ph name="APP_NAME">$1<ex>Gmail</ex></ph> is set to open in a new browser tab, supported links will also open in the browser. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a href="https://support.google.com/chromebook?p=app_intent" target="_blank"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_APP_MANAGEMENT_INTENT_SETTINGS_DIALOG_TITLE" desc="Title for the dialog which shows a list of supported links for a specified app.">
+    Supported links
+  </message>
+  <message name="IDS_APP_MANAGEMENT_INTENT_OVERLAP_CHANGE_BUTTON" desc="The text of a button that the user clicks to confrim a change in settings.">
+    Change
+  </message>
+  <message name="IDS_APP_MANAGEMENT_INTENT_OVERLAP_DIALOG_TITLE" desc="The title of the dialog that asks the user for confirmation about overwritting preferred app settings.">
+    Change default app for supported links?
+  </message>
+  <message name="IDS_APP_MANAGEMENT_INTENT_OVERLAP_DIALOG_TEXT_1_APP" desc="Text to explain to the user that an preferred app will be replaced, and the text states which app will be replaced.">
+    An app is set to open the same links as <ph name="APP_NAME">$1<ex>Gmail</ex></ph>. This will disable <ph name="APP_NAME_2">$2<ex>EmailReader</ex></ph> from opening supported links.
+  </message>
+  <message name="IDS_APP_MANAGEMENT_INTENT_OVERLAP_DIALOG_TEXT_2_APPS" desc="Text to explain to the user that 2 preferred apps will be replaced, and the text states which apps will be replaced.">
+    Other apps are set to open the same links as <ph name="APP_NAME">$1<ex>Gmail</ex></ph>. This will disable <ph name="APP_NAME_2">$2<ex>EmailReader</ex></ph> and <ph name="APP_NAME_3">$3<ex>PDFViewer</ex></ph> from opening supported links.
+  </message>
+  <message name="IDS_APP_MANAGEMENT_INTENT_OVERLAP_DIALOG_TEXT_3_APPS" desc="Text to explain to the user that 3 preferred apps will be replaced, and the text states which apps will be replaced.">
+    Other apps are set to open the same links as <ph name="APP_NAME">$1<ex>Gmail</ex></ph>. This will disable <ph name="APP_NAME_2">$2<ex>EmailReader</ex></ph>, <ph name="APP_NAME_3">$3<ex>PDFViewer</ex></ph> and <ph name="APP_NAME_4">$4<ex>Photos</ex></ph> from opening supported links.
+  </message>
+  <message name="IDS_APP_MANAGEMENT_INTENT_OVERLAP_DIALOG_TEXT_4_APPS" desc="Text to explain to the user that 4 preferred apps will be replaced, and the text states the first 3 apps that will be replaced.">
+    Other apps are set to open the same links as <ph name="APP_NAME">$1<ex>Gmail</ex></ph>. This will disable <ph name="APP_NAME_2">$2<ex>EmailReader</ex></ph>, <ph name="APP_NAME_3">$3<ex>PDFViewer</ex></ph>, <ph name="APP_NAME_4">$4<ex>Photos</ex></ph> and 1 other app from opening supported links.
+  </message>
+  <message name="IDS_APP_MANAGEMENT_INTENT_OVERLAP_DIALOG_TEXT_5_OR_MORE_APPS" desc="Text to explain to the user that 5 or more preferred apps will be replaced, and the text states the first 3 apps that will be replaced.">
+    Other apps are set to open the same links as <ph name="APP_NAME">$1<ex>Gmail</ex></ph>. This will disable <ph name="APP_NAME_2">$2<ex>EmailReader</ex></ph>, <ph name="APP_NAME_3">$3<ex>PDFViewer</ex></ph>, <ph name="APP_NAME_4">$4<ex>Photos</ex></ph> and <ph name="NUMBER_OF_OTHER_APPS">$5<ex>2</ex></ph> other apps from opening supported links.
+  </message>
+  <message name="IDS_APP_MANAGEMENT_INTENT_OVERLAP_WARNING_TEXT_1_APP" desc="Text to explain to the user that an overlapping app will still open some supported links, and the text states which app will open links.">
+    Some supported links will still open in <ph name="APP_NAME">$1<ex>Gmail</ex></ph>.
+  </message>
+  <message name="IDS_APP_MANAGEMENT_INTENT_OVERLAP_WARNING_TEXT_2_APPS" desc="Text to explain to the user that 2 overlapping apps will still open some supported links, and the text states which apps will open links.">
+    Some supported links will still open in <ph name="APP_NAME">$1<ex>Gmail</ex></ph> or  <ph name="APP_NAME_2">$2<ex>EmailReader</ex></ph>.
+  </message>
+  <message name="IDS_APP_MANAGEMENT_INTENT_OVERLAP_WARNING_TEXT_3_APPS" desc="Text to explain to the user that 3 overlapping apps will still open some supported links, and the text states which apps will open links.">
+    Some supported links will still open in <ph name="APP_NAME">$1<ex>Gmail</ex></ph>, <ph name="APP_NAME_2">$2<ex>EmailReader</ex></ph> or <ph name="APP_NAME_3">$3<ex>PDFViewer</ex></ph>.
+  </message>
+  <message name="IDS_APP_MANAGEMENT_INTENT_OVERLAP_WARNING_TEXT_4_APPS" desc="Text to explain to the user that 4 overlapping apps will still open some supported links, and the text states the first 3 apps that will open links.">
+    Some supported links will still open in <ph name="APP_NAME">$1<ex>Gmail</ex></ph>, <ph name="APP_NAME_2">$2<ex>EmailReader</ex></ph>, <ph name="APP_NAME_3">$3<ex>PDFViewer</ex></ph> and 1 other app.
+  </message>
+  <message name="IDS_APP_MANAGEMENT_INTENT_OVERLAP_WARNING_TEXT_5_OR_MORE_APPS" desc="Text to explain to the user that 5 or more overlapping apps will still open some supported links, and the text states the first 3 apps that will open links.">
+    Some supported links will still open in <ph name="APP_NAME">$1<ex>Gmail</ex></ph>, <ph name="APP_NAME_2">$2<ex>EmailReader</ex></ph>, <ph name="APP_NAME_3">$3<ex>PDFViewer</ex></ph> and <ph name="NUMBER_OF_OTHER_APPS">$4<ex>2</ex></ph> other apps.
+  </message>
+  <message name="IDS_APP_MANAGEMENT_APP_VERSION_TITLE" desc="Text for application version section">
+    Version
+  </message>
+  <message name="IDS_APP_MANAGEMENT_APP_SIZE_TITLE" desc="Text for application size section">
+    Size
+  </message>
+  <message name="IDS_APP_MANAGEMENT_APP_DATA_SIZE_TITLE" desc="Text for application data section">
+    Data stored in app
+  </message>
+
+  <!-- File Handling -->
+  <message name="IDS_APP_MANAGEMENT_FILE_HANDLING_HEADER" desc="Main text for toggling a web app's ability to use the File Handling API. This controls whether the app can appear in an 'Open With' list in a file's context menu.">
+    Include this app as an option when opening files
+  </message>
+
+  <message name="IDS_APP_MANAGEMENT_FILE_HANDLING_OVERFLOW_DIALOG_TITLE" desc="Title for a dialog that shows all the supported file types (file extensions) that are handled by an app. Only shown when there are 5 or more file types.">
+    Supported file types
+  </message>
+
+  <if expr="is_win">
+    <message name="IDS_APP_MANAGEMENT_FILE_HANDLING_SET_DEFAULTS_LINK" desc="Further explanation of the File Handling API, including text describing the purpose of the toggle (referencing the Windows File Explorer) and a link to change Windows' default filetype associations.">
+      You can open and edit supported files with this app from the File Explorer or other apps. To control which files open in this app by default, go to <ph name="BEGIN_LINK">&lt;a href="#"&gt;</ph>Windows settings<ph name="END_LINK">&lt;/a&gt;</ph>.
+    </message>
+  </if>
+  <if expr="is_chromeos">
+    <message name="IDS_APP_MANAGEMENT_FILE_HANDLING_SET_DEFAULTS_LINK" desc="Further explanation of the File Handling API, including text describing the purpose of the toggle (referencing the ChromeOS Files app) and a link to a learn more link for default filetype associations.">
+      You can open and edit supported files with this app from the Files app or other apps. To control which files open this app by default, <ph name="BEGIN_LINK">&lt;a href="#"&gt;</ph>learn how to set default apps on your device<ph name="END_LINK">&lt;/a&gt;</ph>.
+    </message>
+  </if>
+  <if expr="is_macosx">
+    <message name="IDS_APP_MANAGEMENT_FILE_HANDLING_SET_DEFAULTS_LINK" desc="Further explanation of the File Handling API, including text describing the purpose of the toggle (referencing the Mac OS Finder app) and a link to a learn more link for default filetype associations.">
+      You can open and edit supported files with this app from Finder or other apps. To control which files open this app by default, <ph name="BEGIN_LINK">&lt;a href="#"&gt;</ph>learn how to set default apps on your device<ph name="END_LINK">&lt;/a&gt;</ph>.
+    </message>
+  </if>
+  <if expr="is_linux">
+    <message name="IDS_APP_MANAGEMENT_FILE_HANDLING_SET_DEFAULTS_LINK" desc="Further explanation of the File Handling API, including text describing the purpose of the toggle (referencing a generic Linux file browser app) and a link to a learn more link for default filetype associations.">
+      You can open and edit supported files with this app from your file browser or other apps. To control which files open this app by default, <ph name="BEGIN_LINK">&lt;a href="#"&gt;</ph>learn how to set default apps on your device<ph name="END_LINK">&lt;/a&gt;</ph>.
+    </message>
+  </if>
+
+  <message name="IDS_APP_MANAGEMENT_FILE_HANDLING_TYPES" desc="A label describing the file types (extensions) that an app has advertised the ability to open. If there are 1-4 file types, all will be shown. If there are more than 4, the extras will be truncated and a link will be added which, when clicked, shows the elided extensions. [ICU_Syntax]">
+    {FILE_TYPE_COUNT, plural,
+      =1 {Supported file type: <ph name="FILE_TYPE1">{FILE_TYPE1}<ex>TXT</ex></ph>}
+      =2 {Supported file types: <ph name="FILE_TYPE1">{FILE_TYPE1}<ex>TXT</ex></ph>, <ph name="FILE_TYPE2">{FILE_TYPE2}<ex>CSV</ex></ph>}
+      =3 {Supported file types: <ph name="FILE_TYPE1">{FILE_TYPE1}<ex>TXT</ex></ph>, <ph name="FILE_TYPE2">{FILE_TYPE2}<ex>CSV</ex></ph>, <ph name="FILE_TYPE3">{FILE_TYPE3}<ex>DOC</ex></ph>}
+      =4 {Supported file types: <ph name="FILE_TYPE1">{FILE_TYPE1}<ex>TXT</ex></ph>, <ph name="FILE_TYPE2">{FILE_TYPE2}<ex>CSV</ex></ph>, <ph name="FILE_TYPE3">{FILE_TYPE3}<ex>DOC</ex></ph>, <ph name="FILE_TYPE4">{FILE_TYPE4}<ex>DOCX</ex></ph>}
+      other {Supported file types: <ph name="FILE_TYPE1">{FILE_TYPE1}<ex>TXT</ex></ph>, <ph name="FILE_TYPE2">{FILE_TYPE2}<ex>CSV</ex></ph>, <ph name="FILE_TYPE3">{FILE_TYPE3}<ex>DOC</ex></ph>, <ph name="FILE_TYPE4">{FILE_TYPE4}<ex>DOCX</ex></ph> (<ph name="LINK">&lt;a href="{LINK}"&gt;</ph>and {OVERFLOW_COUNT} more<ph name="END_LINK">&lt;/a&gt;</ph>)}
+    }
+  </message>
+
+  <!-- App Content, Scope Extensions -->
+  <message name="IDS_APP_MANAGEMENT_APP_CONTENT_TITLE" desc="Label for App content section in the app settings page.">
+    App Content
+  </message>
+  <message name="IDS_APP_MANAGEMENT_APP_CONTENT_SUBTITLE" desc="Sub-label for App content section in the app settings page.">
+    This app contains web content from other sites
+  </message>
+   <message name="IDS_APP_MANAGEMENT_APP_CONTENT_DIALOG_SUBTITLE" desc="Sub-label for App content dialog in the app settings page.">
+    This app contains web content from
+  </message>
+
+  <!-- Sub-Apps API -->
+  <message name="IDS_APP_MANAGEMENT_IS_SUB_APP_PERMISSION_EXPLANATION" desc="Explanation text that appears above permissions on various dialogs and in app info. Any changes the user makes to this app's permissions also apply to the parent app and its other sub apps.">
+    Permissions you allow for <ph name="APP_NAME">$1<ex>Calculator App</ex></ph> will also be allowed for <ph name="PARENT_APP_NAME">$2<ex>Parent app</ex></ph> and its installed apps.
+  </message>
+  <message name="IDS_APP_MANAGEMENT_HAS_SUB_APPS_PERMISSION_EXPLANATION" desc="Explanation text that appears underneath the Permission header on an app's settings page. Any changes the user makes to the app's parent app's permissions also apply to this app. The 'Manage' link takes the user to the parent app's settings page where they can change the permissions.">
+    Permissions you allow for <ph name="APP_NAME">$1<ex>Parent app</ex></ph> will also be allowed for its installed apps.
+  </message>
+</grit-part>

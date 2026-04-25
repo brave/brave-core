@@ -1,0 +1,34 @@
+import("//brave/components/common/typescript.gni")
+import("//brave/resources/brave_grit.gni")
+import("//tools/grit/repack.gni")
+
+pack_web_resources("internals_generated_resources") {
+  resource_name = "tor_internals"
+  output_dir = "$root_gen_dir/brave/components/tor/resources"
+
+  # need webpack and GRD generation first
+  deps = [ "internals" ]
+}
+
+brave_grit("static_resources") {
+  source = "tor_static_resources.grd"
+
+  outputs = [
+    "grit/tor_resources.h",
+    "tor_static.pak",
+  ]
+}
+
+repack("resources") {
+  public_deps = [
+    ":internals_generated_resources",
+    ":static_resources",
+  ]
+
+  sources = [
+    "$root_gen_dir/brave/components/tor/resources/tor_internals_generated.pak",
+    "$root_gen_dir/brave/components/tor/resources/tor_static.pak",
+  ]
+
+  output = "$root_gen_dir/brave/components/tor/resources/tor_resources.pak"
+}

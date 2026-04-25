@@ -1,0 +1,6 @@
+TOML parse error at line 2, column 9
+  |
+2 |   foo \ \n
+  |         ^
+invalid escape sequence
+expected `b`, `f`, `n`, `r`, `t`, `u`, `U`, `\`, `"`

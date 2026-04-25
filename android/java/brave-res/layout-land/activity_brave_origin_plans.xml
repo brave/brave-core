@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2025 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primitive_blurple_10"
+    android:orientation="vertical"
+    tools:context=".BraveOriginPlansActivity">
+
+    <!-- Toolbar with Origin title and close button -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/BraveOriginToolbar" />
+
+    <!-- Main scrollable content area -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <!-- Left column: Feature benefits list -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:orientation="vertical">
+
+                <!-- Feature benefit #1 -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/DefaultRegular"
+                    android:textAlignment="textStart"
+                    android:gravity="center_vertical"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@android:color/white"
+                    android:drawablePadding="8dp"
+                    android:text="@string/origin_paywall_text_1"
+                    app:drawableStartCompat="@drawable/ic_checkmark_gradient" />
+
+                <!-- Feature benefit #2 -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/DefaultRegular"
+                    android:textAlignment="textStart"
+                    android:gravity="center_vertical"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@android:color/white"
+                    android:drawablePadding="8dp"
+                    android:text="@string/origin_paywall_text_2"
+                    app:drawableStartCompat="@drawable/ic_checkmark_gradient" />
+
+                <!-- Feature benefit #3 -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/DefaultRegular"
+                    android:textAlignment="textStart"
+                    android:gravity="center_vertical"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@android:color/white"
+                    android:drawablePadding="8dp"
+                    android:text="@string/origin_paywall_text_3"
+                    app:drawableStartCompat="@drawable/ic_checkmark_gradient" />
+
+                <!-- Feature benefit #4 -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/DefaultRegular"
+                    android:textAlignment="textStart"
+                    android:gravity="center_vertical"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginBottom="16dp"
+                    android:textColor="@android:color/white"
+                    android:drawablePadding="8dp"
+                    android:text="@string/origin_paywall_text_4"
+                    app:drawableStartCompat="@drawable/ic_checkmark_gradient" />
+
+            </LinearLayout>
+
+            <!-- Right column: Purchase plan, description, and actions -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:orientation="vertical">
+
+                <!-- One Time Purchase plan selector -->
+                <LinearLayout
+                    android:id="@+id/purchase_selector_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="12dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:padding="16dp"
+                    android:background="@drawable/origin_plan_active_bg"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        style="@style/LargeSemibold"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/origin_one_time_purchase"
+                        android:textColor="@android:color/white"
+                        android:textAlignment="textStart"/>
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <ProgressBar
+                            android:id="@+id/purchase_plan_progress"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:visibility="gone"
+                            android:layout_gravity="center"
+                            android:indeterminate="true"/>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/purchase_currency_text"
+                                style="@style/SmallRegular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="4dp"
+                                android:textColor="@android:color/white"/>
+
+                            <TextView
+                                android:id="@+id/purchase_amount_text"
+                                style="@style/LargeSemibold"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@android:color/white"/>
+
+                        </LinearLayout>
+
+                    </FrameLayout>
+
+                </LinearLayout>
+
+                <!-- Description heading -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/DefaultSemibold"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginBottom="12dp"
+                    android:textColor="@android:color/white"
+                    android:text="@string/origin_description_title"
+                    android:textAlignment="textStart"/>
+
+                <!-- Description body -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/SmallRegular"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginBottom="24dp"
+                    android:textColor="@android:color/white"
+                    android:text="@string/origin_description_body"
+                    android:textAlignment="textStart"/>
+
+                <!-- "Already purchased on brave.com?" section -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/DefaultSemibold"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/already_purchased"
+                    android:textColor="@color/primitive_blurple_98"
+                    android:textAlignment="center"/>
+
+                <!-- Get a login code button -->
+                <TextView
+                    android:id="@+id/get_login_code_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/ComponentsButtonDefault"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginBottom="16dp"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="12dp"
+                    android:textColor="@color/semantic_text_interactive"
+                    android:background="@drawable/refresh_credentials_origin_bg"
+                    android:text="@string/origin_get_login_code"
+                    android:textAlignment="center"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom action area with Buy now button -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical">
+
+        <!-- Separator line above button -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/primitive_blurple_25" />
+
+        <!-- Buy now button -->
+        <TextView
+            android:id="@+id/tv_buy_now"
+            style="@style/ComponentsButtonDefault"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/origin_plan_upgrade_now_bg"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="@string/origin_buy_now"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,111 @@
+/* Error message shown when importing bookmarks failed */
+"failedToImportBookmarks" = "Det oppsto en feil under importeringen av bokmerkene.";
+
+/* Error message shown when importing history failed */
+"failedToImportHistory" = "Det oppsto en feil under importeringen av loggen.";
+
+/* Error message shown when importing passwords failed due to a password already existing (a conflict) */
+"failedToImportPasswordsDueToConflictError" = "Det oppsto en feil under importeringen av passordene.\nEnkelte passord kunne ikke importeres på grunn av problemer.";
+
+/* Error message shown when importing passwords failed */
+"failedToImportPasswordsError" = "Det oppsto en feil under importeringen av passordene.";
+
+/* Error message shown when unzipping a zip file failed */
+"failedToUnzipError" = "Det oppsto en feil under utpakkingen av filen.";
+
+/* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
+"importDataFileSelectorButtonTitle" = "Velg en fil ...";
+
+/* The message of a Text on screen that explains to the user what type of data can be imported. */
+"importDataFileSelectorMessage" = "Ta med alle bokmerker, logger og andre nettleserdata over til Brave.";
+
+/* The title of the main screen that lets the user import data. The title is shown in the navigation bar. */
+"importDataFileSelectorNavigationTitle" = "Importer nettleserdata";
+
+/* The title of a Text on screen that explains to the user what type of data can be imported. */
+"importDataFileSelectorTitle" = "Importer bokmerker med mer";
+
+/* The title of the button on the file selector screen that lets the user view the tutorial screen on how to import data. */
+"importDataViewTutorialButtonTitle" = "Slik eksporterer du fra Safari";
+
+/* The message shown on the import data screen when importing the data from the browser profile failed. */
+"importStateFailureMessage" = "Noe gikk galt under importeringen av dataene dine.\nPrøv på nytt.\nKontakt brukerstøtte dersom problemet vedvarer.";
+
+/* The title shown on the import data screen when importing the data from the browser profile failed. */
+"importStateFailureTitle" = "Importeringen mislyktes";
+
+/* The title of the button on the import error screen when there is a conflict, that lets the user keep your existing Brave passwords. */
+"importStatePasswordConflictKeepExistingPasswordsTitle" = "Behold passordene fra Brave";
+
+/* The title of the button on the import error screen when there is a conflict, that lets the user use the passwords that were imported, overwriting your existing passwords. */
+"importStatePasswordConflictKeepImportedPasswordsTitle" = "Bruk passordene fra Safari";
+
+/* The message shown on the import data screen when importing the data from has conflicting passwords (when two passwords exist for the same account, but are different, they are conflicting). %d is a placeholder for the number of conflicting passwords. */
+"importStatePasswordConflictMessage" = "%d passordproblemer ble oppdaget.\nVelg hva du ønsker å importere.";
+
+/* The title shown on the import data screen when importing the data from has conflicting passwords (when two passwords exist for the same account, but are different, they are conflicting). */
+"importStatePasswordConflictTitle" = "Passordproblemer";
+
+/* The title of the button on the import success screen to let the user continue using the app as before. */
+"importStateSuccessContinueTitle" = "Fortsett";
+
+/* The message shown on the import data screen when importing the data from the browser profile succeeded. */
+"importStateSuccessMessage" = "Dataene dine ble importert.\nDu er klar for å starte å surfe på Brave.";
+
+/* The title shown on the import data screen when importing the data from the browser profile succeeded. */
+"importStateSuccessTitle" = "Vellykket!";
+
+/* The title of the button on the import error screen that lets the user try to import the data again */
+"importStateTryAgainTitle" = "Prøv igjen";
+
+/* The message on the tutorial page explaining the detailed process to export your data from other browsers. */
+"importTutorialDetailedProcessMessage" = "Åpne hjelpesiden for Safari";
+
+/* The title on the tutorial page explaining the detailed process to export your data from other browsers. */
+"importTutorialDetailedProcessTitle" = "Vil du ha en detaljert eksporteringsprosess?";
+
+/* The title of the tutorial page that shows in the Navigation Bar. */
+"importTutorialScreenTitle" = "Slik eksporterer du fra Safari";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepFiveTitle" = "Lagre filen i **Filer** og velg en mappe som det er lett å finne tilbake til.";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepFourTitle" = "**Velg** hvilke data du ønsker å eksportere (bokmerker, logg, kortopplysninger, passord).";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepOneTitle" = "Åpne **Innstillinger** og rull ned til *Apper**.";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepThreeTitle" = "Scroll ned og trykk på **Eksporter**";
+
+/* The title on each card indicating the tutorial step that has been completed. Step 1, Step 2, Step 3, etc... %d is a placeholder for the step number. */
+"importTutorialStepTitle" = "Trinn %d";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepTwoTitle" = "Gå til listen over apper (i alfabetisk rekkefølge) og finn **Safari**.";
+
+/* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
+"invalidZipFileDataError" = "ZIP-filen inneholder ingen importdata.";
+
+/* The message shown on the import data screen when the data is being loaded or imported. */
+"loadingMessage" = "Vent litt mens vi overfører dataene dine.\nDette kan ta en liten stund.";
+
+/* The title shown on the import data screen when the data is being loaded or imported. */
+"loadingTitle" = "Importerer dataene dine ...";
+
+/* The message shown on the import data screen when there are multiple profiles such as Personal, Work, School, etc. */
+"multipleProfilesMessage" = "Velg hvilken profil du vil importere data fra";
+
+/* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
+"multipleProfilesTitle" = "Flere profiler funnet";
+
+/* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
+"personalImportTitle" = "Privat";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "Importerte bokmerker";
+
+/* An unknown error occurred during data importing. */
+"unknownError" = "ZIP-filen inneholder ingen importdata.";
+

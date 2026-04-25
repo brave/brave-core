@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Create a preprocessed package.json as a stable rebuild input for WebUI. This
+# is to avoid expensive rebuilds only when the version field is changed.
+action("preprocess_package_json") {
+  script = "preprocess_package_json.py"
+  inputs = [ "//brave/package.json" ]
+  outputs = [ "$root_gen_dir/brave/components/common/package.json" ]
+  args = [
+    "--input",
+    rebase_path("//brave/package.json", root_build_dir),
+    "--output",
+    rebase_path("$root_gen_dir/brave/components/common/package.json",
+                root_build_dir),
+  ]
+}

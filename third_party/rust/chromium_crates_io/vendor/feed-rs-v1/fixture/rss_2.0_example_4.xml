@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+     xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+
+     xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+>
+
+    <channel>
+        <title>Earthquakes today</title>
+        <atom:link href="http://www.earthquakenewstoday.com/feed/" rel="self" type="application/rss+xml"/>
+        <link>http://www.earthquakenewstoday.com</link>
+        <description>Current and latest world earthquakes breaking news, activity and articles today</description>
+        <lastBuildDate>
+            Tue, 06 Aug 2019 05:01:15 +0000
+        </lastBuildDate>
+        <language>en-US</language>
+        <sy:updatePeriod>
+            hourly
+        </sy:updatePeriod>
+        <sy:updateFrequency>
+            1
+        </sy:updateFrequency>
+        <generator>https://wordpress.org/?v=5.1.1</generator>
+        <site xmlns="com-wordpress:feed-additions:1">76661723</site>
+        <item>
+            <title>Minor earthquake, 3.5 mag was detected near Aris in Greece</title>
+            <link>
+                http://www.earthquakenewstoday.com/2019/08/06/minor-earthquake-3-5-mag-was-detected-near-aris-in-greece/
+            </link>
+            <comments>
+                http://www.earthquakenewstoday.com/2019/08/06/minor-earthquake-3-5-mag-was-detected-near-aris-in-greece/#respond
+            </comments>
+            <pubDate>Tue, 06 Aug 2019 05:01:15 +0000</pubDate>
+            <dc:creator><![CDATA[admin]]></dc:creator>
+            <category><![CDATA[Earthquake breaking news]]></category>
+            <category><![CDATA[Minor World Earthquakes Magnitude -3.9]]></category>
+            <category><![CDATA[Spárti]]></category>
+
+            <guid isPermaLink="false">
+                http://www.earthquakenewstoday.com/2019/08/06/minor-earthquake-3-5-mag-was-detected-near-aris-in-greece/
+            </guid>
+            <description>
+                <![CDATA[A minor earthquake magnitude 3.5 (ml/mb) strikes near Kalamáta, Trípoli, Pýrgos, Spárti, Filiatrá, Messíni, Greece on Tuesday.]]></description>
+            <content:encoded><![CDATA[<p><img class='size-full alignleft' title='Earthquake location 37.102S, 21.9072W' alt='Earthquake location 37.102S, 21.9072W' src='http://www.earthquakenewstoday.com/wp-content/uploads/35_20.jpg' width='146' height='146' />A minor earthquake with magnitude 3.5 (ml/mb) was detected on Tuesday, 8 kilometers (5 miles) from Aris in Greece.Exact location of event, depth 10 km, 21.9072&deg; East, 37.102&deg; North. </p>]]></content:encoded>
+            <wfw:commentRss>
+                http://www.earthquakenewstoday.com/2019/08/06/minor-earthquake-3-5-mag-was-detected-near-aris-in-greece/feed/
+            </wfw:commentRss>
+            <slash:comments>0</slash:comments>
+            <post-id xmlns="com-wordpress:feed-additions:1">149732</post-id>
+        </item>
+    </channel>
+</rss>

@@ -1,0 +1,11 @@
+{
+  "extends": "../../../../tsconfig",
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.d.ts",
+    "../definitions/*.d.ts",
+    "**/*.svg",
+    "*/*.svg"
+  ]
+}

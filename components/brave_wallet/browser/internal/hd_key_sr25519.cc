@@ -1,0 +1,102 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#include "brave/components/brave_wallet/browser/internal/hd_key_sr25519.h"
+
+#include <utility>
+
+#include "base/check_is_test.h"
+#include "base/containers/span_rust.h"
+#include "base/threading/thread_restrictions.h"
+#include "brave/components/brave_wallet/browser/internal/sr25519.rs.h"
+#include "crypto/process_bound_string.h"
+
+namespace brave_wallet {
+
+namespace {
+bool IsBoxNonNull(rust::Box<CxxSchnorrkelKeyPair> const& keypair) {
+  return keypair.operator->();
+}
+}  // namespace
+
+HDKeySr25519::HDKeySr25519(rust::Box<CxxSchnorrkelKeyPair> keypair)
+    : keypair_(std::move(keypair)) {}
+
+HDKeySr25519::HDKeySr25519(HDKeySr25519&&) noexcept = default;
+HDKeySr25519& HDKeySr25519::operator=(HDKeySr25519&& rhs) noexcept {
+  if (this != &rhs) {
+    keypair_ = std::move(rhs.keypair_);
+  }
+  return *this;
+}
+
+HDKeySr25519::~HDKeySr25519() = default;
+
+// static
+HDKeySr25519 HDKeySr25519::GenerateFromSeed(
+    base::span<const uint8_t, kSr25519SeedSize> seed) {
+  auto bytes = base::SpanToRustSlice(seed);
+  auto mk = generate_sr25519_keypair_from_seed(bytes);
+  return HDKeySr25519(std::move(mk));
+}
+
+// static
+std::optional<HDKeySr25519> HDKeySr25519::CreateFromPkcs8(
+    base::span<const uint8_t, kSr25519Pkcs8Size> pkcs8_key) {
+  std::array<uint8_t, kSr25519Pkcs8Size> pkcs8_array;
+  base::span(pkcs8_array).copy_from_nonoverlapping(pkcs8_key);
+  auto result = create_sr25519_keypair_from_pkcs8(pkcs8_array);
+  crypto::internal::SecureZeroBuffer(pkcs8_array);
+  if (!result->is_ok()) {
+    return std::nullopt;
+  }
+  auto mk = result->unwrap();
+  return HDKeySr25519(std::move(mk));
+}
+
+std::array<uint8_t, kSr25519PublicKeySize> HDKeySr25519::GetPublicKey() const {
+  CHECK(IsBoxNonNull(keypair_));
+  return keypair_->get_public_key();
+}
+
+std::array<uint8_t, kSr25519SecretKeySize> HDKeySr25519::GetSecretKey() const {
+  CHECK(IsBoxNonNull(keypair_));
+  return keypair_->get_secret_key();
+}
+
+std::array<uint8_t, kSr25519Pkcs8Size> HDKeySr25519::GetExportKeyPkcs8() const {
+  CHECK(IsBoxNonNull(keypair_));
+  return keypair_->get_export_key_pkcs8();
+}
+
+std::array<uint8_t, kSr25519SignatureSize> HDKeySr25519::SignMessage(
+    base::span<const uint8_t> msg) const {
+  CHECK(IsBoxNonNull(keypair_));
+  auto bytes = base::SpanToRustSlice(msg);
+  return keypair_->sign_message(bytes);
+}
+
+bool HDKeySr25519::VerifyMessage(
+    base::span<uint8_t const, kSr25519SignatureSize> signature,
+    base::span<const uint8_t> message) const {
+  CHECK(IsBoxNonNull(keypair_));
+  auto sig_bytes = base::SpanToRustSlice(signature);
+  auto bytes = base::SpanToRustSlice(message);
+  return keypair_->verify_message(sig_bytes, bytes);
+}
+
+HDKeySr25519 HDKeySr25519::DeriveHard(
+    base::span<const uint8_t> derive_junction) const {
+  CHECK(IsBoxNonNull(keypair_));
+  return HDKeySr25519(
+      keypair_->derive_hard(base::SpanToRustSlice(derive_junction)));
+}
+
+void HDKeySr25519::UseMockRngForTesting() {
+  CHECK_IS_TEST();
+  keypair_->use_mock_rng_for_testing();  // IN-TEST
+}
+
+}  // namespace brave_wallet

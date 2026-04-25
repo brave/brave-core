@@ -1,0 +1,17 @@
+<html>
+<head>
+    <title>iframe test</title>
+    <script>
+        let show_ad = true
+        window.onmessage = function(m) {
+            if (m.data == 'AD') {
+                show_ad = true
+            } else if (m.data == 'no ads') {
+                show_ad = false
+            }
+        }
+    </script>
+</head>
+<body>
+<iframe src="/send_success_message.html" id="test"></iframe>
+</body></html>

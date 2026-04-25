@@ -1,0 +1,39 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+source_set("favicon") {
+  sources = [
+    "favicon_driver.h",
+    "favicon_driver.mm",
+    "favicon_loader.h",
+    "favicon_loader.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/ios/browser/api/web/web_state",
+    "//brave/ios/browser/favicon",
+    "//components/favicon/core",
+    "//components/favicon_base",
+    "//components/keyed_service/core",
+    "//ios/chrome/browser/favicon/model",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/chrome/common/ui/favicon",
+    "//ios/chrome/common/ui/favicon:favicon_constants",
+    "//ios/web/favicon",
+    "//ios/web/js_messaging",
+    "//ios/web/js_messaging:web_view_js_utils",
+    "//ios/web/navigation:core",
+    "//ios/web/public/js_messaging",
+    "//ios/web/web_state:web_state_impl_header",
+    "//net",
+  ]
+
+  frameworks = [
+    "Foundation.framework",
+    "UIKit.framework",
+  ]
+}

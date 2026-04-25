@@ -1,0 +1,226 @@
+{
+  "appName": {
+    "message": "Rozšíranie Brave",
+    "description": "The name of the extension."
+  },
+  "shields": {
+    "message": "Ochrana",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "hore",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "dole",
+    "description": "Message for when shields is disabled"
+  },
+  "forThisSite": {
+    "message": "pre túto stránku",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "Ak sa stránka zdá byť poškodená, skúste deaktivovať ochranu",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "Prehľadávate túto stránku bez ochrany súkromia a zabezpečenia od Brave. Nefunguje to správne, keď sú Štíty hore?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "Nahlásiť nefunkčnú stránku",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
+  },
+  "itemsBlocked": {
+    "message": "Položky zablokované",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
+  },
+  "itemBlocked": {
+    "message": "Položka zablokovaná",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
+  },
+  "and": {
+    "message": "a",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
+  },
+  "connectionsUpgraded": {
+    "message": "pripojenia aktualizované",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
+  },
+  "connectionUpgraded": {
+    "message": "spojenie aktualizované",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
+  },
+  "thirdPartyTrackersBlocked": {
+    "message": "Cross-site trackery zablokované",
+    "description": "Message for the scripts blocked row label"
+  },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "Zablokované sledovače & reklamy",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "Sledovače a reklamy sú zablokované (agresívne)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "Sledovače a reklamy zablokované (štandardné)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "Povoliť všetky sledovače a reklamy",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
+  "connectionsUpgradedHTTPS": {
+    "message": "Pripojenia aktualizované na HTTPS",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
+  },
+  "connectionUpgradedHTTPS": {
+    "message": "Pripojenie aktualizované na HTTPS",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
+  },
+  "scriptsBlocked": {
+    "message": "Zablokované skripty",
+    "description": "Message for the scripts blocked row label"
+  },
+  "thirdPartyCookiesBlocked": {
+    "message": "Cross-site súbory cookie zablokované",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "Súbory cookies blokované",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "Všetky cookies povolené",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "Odobratie odltačkov prsta blokované",
+    "description": "Message for the option in the fingerprinting field in read only view"
+  },
+  "standardFingerprinting": {
+    "message": "Používanie odtlačkov prstov blokované (Štandardne)",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
+  },
+  "strictFingerprinting": {
+    "message": "Používanie odtlačkov prstov zablokované (striktne, môže prerušiť činnosť stránok)",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
+  },
+  "allowAllFingerprinting": {
+    "message": "Povoliť všetky odtlačky prstov",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Pokusy s odtlačkami prstov",
+    "description": "Message for the fingerprinting attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Skripty na tejto stránke",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Blokované skripty",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Povolené skrypty",
+    "description": "Message for the script resources allowed"
+  },
+  "blockAll": {
+    "message": "Zablokovať všetko",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "Povoliť všetky",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "block": {
+    "message": "Blokovať",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "allow": {
+    "message": "Povoliť",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "blockedOnce": {
+    "message": "Blokované raz",
+    "description": "Message for the resources blocked *blocked once* option"
+  },
+  "allowedOnce": {
+    "message": "Povolené raz",
+    "description": "Message for the resources blocked *allowed once* option"
+  },
+  "allowScriptsOnce": {
+    "message": "Povoliť skripty raz",
+    "description": "Message for the shortcut in the main interface to allow all scripts once"
+  },
+  "cancel": {
+    "message": "Zrušiť",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Vrátiť sa späť",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "Použiť raz",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "Zmeniť globálne predvolené nastavenia štítu",
+    "description": "Message for the button action linking to the settings page"
+  },
+  "manageCustomFilters": {
+    "message": "Spravovať vlastné filtre",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
+  "elementPickerMode": {
+    "message": "Blokovať prvok",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
+  },
+  "advancedView": {
+    "message": "Rozšírené zobrazenie",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "Jednoduché zobrazenie",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "Stránky často obsahujú súbory cookie a programy, ktoré sa vás a vaše zariadenie snažia identifikovať (často sú súčasťou reklám). Snažia sa zistiť, kto ste a sledovať vás na webe a pozorovať vaše aktivity na každej stránke. Brave tieto nastavenia blokuje a umožňuje vám prehliadať sieť bez toho, aby ste boli sledovaní.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "Blokujeme pokusy špehovať vás na stránkach a iné nechutné praktiky",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "Zmena tohoto zobrazenia v nastaveniach Shield môže mať dopad na kompatibilitu stránky.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "Dobre",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "Dozvedieť sa viac",
+    "description": "Message inviting the user to learn more about Shields"
+  },
+  "addToBrave": {
+    "message": "Pridať do prehliadača Brave",
+    "description": "Message for adding an extension to Brave"
+  },
+  "removeFromBrave": {
+    "message": "Odstrániť z Chromu",
+    "description": "Message for removing an extension from Brave"
+  },
+  "addToChrome": {
+    "message": "Pridať do Chromu",
+    "description": "Message for adding an extension to Chrome"
+  },
+  "removeFromChrome": {
+    "message": "Odstrániť z prehliadača Chrome",
+    "description": "Message for removing an extension from Chrome"
+  }
+}

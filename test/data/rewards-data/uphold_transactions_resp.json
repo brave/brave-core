@@ -1,0 +1,76 @@
+{
+  "createdAt": "2019-07-16T12:29:59.390Z",
+  "denomination": {
+    "amount": "0.95",
+    "currency": "BAT",
+    "pair": "BATBAT",
+    "rate": "1.00"
+  },
+  "fees": [],
+  "id": "558a52c1-60a4-463b-bb6c-42213964c906",
+  "network": "uphold",
+  "normalized": [
+    {
+      "amount": "0.22",
+      "commission": "0.00",
+      "currency": "USD",
+      "fee": "0.00",
+      "rate": "0.23184",
+      "target": "origin"
+    }
+  ],
+  "params": {
+    "currency": "BAT",
+    "margin": "0.00",
+    "pair": "BATBAT",
+    "rate": "1.00",
+    "ttl": 3599990,
+    "type": "transfer"
+  },
+  "priority": "normal",
+  "status": "pending",
+  "type": "transfer",
+  "origin": {
+    "amount": "0.95",
+    "base": "0.95",
+    "CardId": "c5fd7219-6586-4fe1-b947-0cbd25040ca8",
+    "commission": "0.00",
+    "currency": "BAT",
+    "description": "Brave Software International",
+    "fee": "0.00",
+    "isMember": true,
+    "node": {
+      "id": "c5fd7219-6586-4fe1-b947-0cbd25040ca8",
+      "type": "card",
+      "user": {
+        "id": "f5e37294-68f1-49ae-89e2-b24b64aedd37",
+        "username": "braveintl"
+      }
+    },
+    "rate": "1",
+    "sources": [],
+    "type": "card",
+    "username": "braveintl"
+  },
+  "destination": {
+    "amount": "0.95",
+    "base": "0.95",
+    "CardId": "26430608-eb7a-4d0a-a524-7029f2bc97ed",
+    "commission": "0.00",
+    "currency": "BAT",
+    "description": "Brave Software International",
+    "fee": "0.00",
+    "isMember": true,
+    "node": {
+      "id": "26430608-eb7a-4d0a-a524-7029f2bc97ed",
+      "type": "card",
+      "user": {
+        "id": "f5e37294-68f1-49ae-89e2-b24b64aedd37",
+        "username": "braveintl"
+      }
+    },
+    "rate": "1",
+    "type": "card",
+    "username": "braveintl"
+  }
+}

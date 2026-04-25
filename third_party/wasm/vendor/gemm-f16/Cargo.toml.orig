@@ -1,0 +1,30 @@
+[package]
+name = "gemm-f16"
+version = "0.18.2"
+edition = "2021"
+authors = ["sarah <>"]
+description = "Playground for matrix multiplication algorithms"
+readme = "../README.md"
+repository = "https://github.com/sarah-ek/gemm/"
+license = "MIT"
+keywords = ["linear-algebra"]
+
+[dependencies]
+raw-cpuid = { workspace = true }
+seq-macro = { workspace = true }
+dyn-stack = { workspace = true, default-features = false }
+num-traits = { workspace = true, default-features = false }
+num-complex = { workspace = true, default-features = false }
+paste = { workspace = true }
+rayon = { workspace =true, optional = true }
+
+gemm-common = { version = "0.18.2", default-features = false, path = "../gemm-common", features = ["f16"] }
+gemm-f32 = { version = "0.18.2", default-features = false, path = "../gemm-f32" }
+half = { workspace = true, default-features = false }
+
+[features]
+default = ["std", "rayon"]
+std = ["dyn-stack/std", "gemm-common/std", "gemm-f32/std"]
+experimental-apple-amx = ["std", "gemm-common/experimental-apple-amx", "gemm-f32/experimental-apple-amx"]
+nightly = ["gemm-common/nightly", "gemm-f32/nightly"]
+rayon = ["dep:rayon", "std", "gemm-common/rayon", "gemm-f32/rayon"]

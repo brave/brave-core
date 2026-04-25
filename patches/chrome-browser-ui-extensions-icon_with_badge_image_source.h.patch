@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/extensions/icon_with_badge_image_source.h b/chrome/browser/ui/extensions/icon_with_badge_image_source.h
+index e9cb1be92f1f08c376c4b94ca9b98569319587a8..84450c167d75b3319f299b8ccdf6c482804cecb1 100644
+--- a/chrome/browser/ui/extensions/icon_with_badge_image_source.h
++++ b/chrome/browser/ui/extensions/icon_with_badge_image_source.h
+@@ -62,6 +62,7 @@ class IconWithBadgeImageSource : public gfx::CanvasImageSource {
+   bool paint_blocked_actions_decoration() const {
+     return paint_blocked_actions_decoration_;
+   }
++  BRAVE_ICON_WITH_BADGE_IMAGE_SOURCE_H_
+ 
+  private:
+   // gfx::CanvasImageSource:

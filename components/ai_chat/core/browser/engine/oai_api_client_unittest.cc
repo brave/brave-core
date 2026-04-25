@@ -1,0 +1,862 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/ai_chat/core/browser/engine/oai_api_client.h"
+
+#include <list>
+#include <optional>
+#include <string>
+#include <string_view>
+#include <type_traits>
+#include <vector>
+
+#include "base/containers/flat_map.h"
+#include "base/functional/bind.h"
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
+#include "base/memory/scoped_refptr.h"
+#include "base/run_loop.h"
+#include "base/strings/utf_string_conversions.h"
+#include "base/test/task_environment.h"
+#include "base/test/values_test_util.h"
+#include "base/types/expected.h"
+#include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/api_request_helper/mock_api_request_helper.h"
+#include "components/grit/brave_components_strings.h"
+#include "mojo/public/cpp/bindings/struct_ptr.h"
+#include "net/base/net_errors.h"
+#include "net/http/http_request_headers.h"
+#include "net/traffic_annotation/network_traffic_annotation.h"
+#include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "url/gurl.h"
+
+using ConversationHistory = std::vector<ai_chat::mojom::ConversationTurn>;
+using ::testing::_;
+using ::testing::Sequence;
+using DataReceivedCallback =
+    api_request_helper::APIRequestHelper::DataReceivedCallback;
+using ResultCallback = api_request_helper::APIRequestHelper::ResultCallback;
+using Ticket = api_request_helper::APIRequestHelper::Ticket;
+using GenerationResult = ai_chat::OAIAPIClient::GenerationResult;
+using api_request_helper::MockAPIRequestHelper;
+
+namespace ai_chat {
+
+namespace {
+
+constexpr char kTestContent[] = "test content";
+constexpr char kTestImageUrl[] = "data:image/png;base64,xyz";
+
+// A helper method which parses a string_view and returns the JSON or a
+// base::Value object if the JSON is invalid.
+base::Value ParseOrStringValue(const std::string& json) {
+  auto maybe_json =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
+  if (!maybe_json.has_value()) {
+    return base::Value(json);
+  }
+  return std::move(maybe_json.value());
+}
+
+struct LocalizedText {
+  int message_id = 0;
+  std::optional<std::string> format_arg;
+  std::optional<std::string> format_arg2;
+};
+
+struct ContentBlockSerializationTestParam {
+  std::string name;
+  base::RepeatingCallback<mojom::ContentBlockPtr()> content_factory;
+  std::string expected_type;
+  std::optional<LocalizedText> localized_text;
+  std::optional<std::string> literal_text;
+  // For file content block
+  std::optional<std::string> expected_filename;
+  std::optional<std::string> expected_file_data;
+};
+
+class MockCallbacks {
+ public:
+  MOCK_METHOD(void, OnDataReceived, (EngineConsumer::GenerationResultData));
+  MOCK_METHOD(void, OnCompleted, (GenerationResult));
+};
+
+class TestOAIAPIClient : public OAIAPIClient {
+ public:
+  TestOAIAPIClient() : OAIAPIClient(nullptr) {
+    auto mock_helper =
+        std::make_unique<testing::NiceMock<MockAPIRequestHelper>>(
+            net::NetworkTrafficAnnotationTag(TRAFFIC_ANNOTATION_FOR_TESTS),
+            nullptr);
+    SetAPIRequestHelperForTesting(std::move(mock_helper));
+  }
+  ~TestOAIAPIClient() override = default;
+
+  MockAPIRequestHelper* GetMockAPIRequestHelper() {
+    return static_cast<MockAPIRequestHelper*>(GetAPIRequestHelperForTesting());
+  }
+};
+
+}  // namespace
+
+class OAIAPIUnitTest : public testing::Test {
+ public:
+  OAIAPIUnitTest() = default;
+  ~OAIAPIUnitTest() override = default;
+
+  void SetUp() override { client_ = std::make_unique<TestOAIAPIClient>(); }
+
+  void TearDown() override { client_.reset(); }
+
+  std::string GetMessagesJson(std::string_view body_json) {
+    auto dict = base::test::ParseJsonDict(body_json);
+    base::ListValue* events = dict.FindList("messages");
+    EXPECT_TRUE(events);
+    std::string events_json;
+    base::JSONWriter::WriteWithOptions(
+        *events, base::JSONWriter::OPTIONS_PRETTY_PRINT, &events_json);
+    return events_json;
+  }
+
+  std::string FormatComparableEventsJson(std::string_view formatted_json) {
+    auto messages = base::test::ParseJson(formatted_json);
+    std::string json;
+    base::JSONWriter::WriteWithOptions(
+        messages, base::JSONWriter::OPTIONS_PRETTY_PRINT, &json);
+    return json;
+  }
+
+ protected:
+  base::test::TaskEnvironment task_environment_;
+  std::unique_ptr<TestOAIAPIClient> client_;
+};
+
+TEST_F(OAIAPIUnitTest, PerformRequest) {
+  mojom::CustomModelOptionsPtr model_options = mojom::CustomModelOptions::New(
+      "test_api_key", 0, 0, 0, "test_system_prompt", GURL("https://test.com"),
+      "test_model");
+
+  std::string server_chunk =
+      R"({"id":"chatcmpl-123","object":"chat.completion.chunk","created":1694268190,"model":"gpt-3.5-turbo-0125", "system_fingerprint": "fp_44709d6fcb", "choices":[{"index":0,"delta":{"role":"assistant","content":"It was played in Arlington, Texas."},"logprobs":null,"finish_reason":null}]})";
+  std::string server_completion =
+      R"({"id":"chatcmpl-123","object":"chat.completion","created":1677652288,"model":"gpt-3.5-turbo-0125","system_fingerprint":"fp_44709d6fcb","choices":[{"index":0,"message":{"role":"assistant","content":"\n\nCan I assist you further?"},"logprobs":null,"finish_reason":"stop"}],"usage":{"prompt_tokens":9,"completion_tokens":12,"total_tokens":21}})";
+
+  std::string expected_chunk_response = "It was played in Arlington, Texas.";
+  std::string expected_completion_response = "\n\nCan I assist you further?";
+  std::string expected_conversation_body = R"([
+    {"role": "user", "content": [{"type": "text", "text": "Where was it?"}]}
+  ])";
+
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  // Intercept API Request Helper call and verify the request is as expected
+  GURL expected_url = model_options->endpoint;
+  EXPECT_CALL(*mock_request_helper, RequestSSE(_, _, _, _, _, _, _, _))
+      .WillOnce([&, expected_url](
+                    const std::string& method, const GURL& url,
+                    const std::string& body, const std::string& content_type,
+                    DataReceivedCallback data_received_callback,
+                    ResultCallback result_callback,
+                    const base::flat_map<std::string, std::string>& headers,
+                    const api_request_helper::APIRequestOptions& options) {
+        EXPECT_TRUE(url.is_valid());
+        EXPECT_EQ(url, expected_url);
+        EXPECT_EQ(headers.contains("Authorization"), true);
+        EXPECT_EQ(method, net::HttpRequestHeaders::kPostMethod);
+        EXPECT_EQ(GetMessagesJson(body),
+                  FormatComparableEventsJson(expected_conversation_body));
+
+        auto chunk = base::test::ParseJson(server_chunk);
+        data_received_callback.Run(base::ok(std::move(chunk)));
+
+        auto completed = base::test::ParseJson(server_completion);
+        std::move(result_callback)
+            .Run(api_request_helper::APIRequestResult(200, std::move(completed),
+                                                      {}, net::OK, GURL()));
+
+        run_loop.Quit();
+        return Ticket();
+      });
+
+  EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+      .WillOnce([&](EngineConsumer::GenerationResultData result) {
+        ASSERT_TRUE(result.event);
+        ASSERT_TRUE(result.event->is_completion_event());
+        EXPECT_EQ(result.event->get_completion_event()->completion,
+                  expected_chunk_response);
+        EXPECT_FALSE(result.model_key.has_value());
+      });
+
+  EXPECT_CALL(mock_callbacks, OnCompleted(_))
+      .WillOnce([&](GenerationResult result) {
+        ASSERT_TRUE(result.has_value());
+        ASSERT_TRUE(result->event);
+        ASSERT_TRUE(result->event->is_completion_event());
+        EXPECT_EQ(result->event->get_completion_event()->completion,
+                  expected_completion_response);
+        EXPECT_FALSE(result->model_key.has_value());
+      });
+
+  // Begin request
+  std::vector<OAIMessage> messages;
+  OAIMessage user_msg;
+  user_msg.role = "user";
+  user_msg.content.push_back(mojom::ContentBlock::NewTextContentBlock(
+      mojom::TextContentBlock::New("Where was it?")));
+  messages.push_back(std::move(user_msg));
+
+  client_->PerformRequest(
+      *model_options, std::move(messages), std::nullopt,
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)));
+
+  run_loop.Run();
+
+  testing::Mock::VerifyAndClearExpectations(mock_request_helper);
+  testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+}
+
+TEST_F(OAIAPIUnitTest, PerformRequest_WithStopSequences) {
+  mojom::CustomModelOptionsPtr model_options = mojom::CustomModelOptions::New(
+      "test_api_key", 0, 0, 0, "test_system_prompt", GURL("https://test.com"),
+      "test_model");
+
+  std::vector<std::string> stop_sequences = {"/title", "END"};
+
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  EXPECT_CALL(*mock_request_helper, RequestSSE(_, _, _, _, _, _, _, _))
+      .WillOnce([&](const std::string& method, const GURL& url,
+                    const std::string& body, const std::string& content_type,
+                    DataReceivedCallback data_received_callback,
+                    ResultCallback result_callback,
+                    const base::flat_map<std::string, std::string>& headers,
+                    const api_request_helper::APIRequestOptions& options) {
+        auto dict = base::test::ParseJsonDict(body);
+        base::ListValue* stop_list = dict.FindList("stop");
+        EXPECT_TRUE(stop_list);
+        EXPECT_EQ(stop_list->size(), 2u);
+        EXPECT_EQ((*stop_list)[0].GetString(), "/title");
+        EXPECT_EQ((*stop_list)[1].GetString(), "END");
+
+        std::move(result_callback)
+            .Run(api_request_helper::APIRequestResult(200, base::Value(), {},
+                                                      net::OK, GURL()));
+        run_loop.Quit();
+        return Ticket();
+      });
+
+  EXPECT_CALL(mock_callbacks, OnCompleted(_)).WillOnce([](auto) {});
+
+  std::vector<OAIMessage> messages;
+  OAIMessage user_msg;
+  user_msg.role = "user";
+  user_msg.content.push_back(mojom::ContentBlock::NewTextContentBlock(
+      mojom::TextContentBlock::New("Test message")));
+  messages.push_back(std::move(user_msg));
+
+  client_->PerformRequest(
+      *model_options, std::move(messages), std::nullopt,
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)),
+      stop_sequences);
+
+  run_loop.Run();
+}
+
+TEST_F(OAIAPIUnitTest, PerformRequest_WithEmptyStopSequences) {
+  mojom::CustomModelOptionsPtr model_options = mojom::CustomModelOptions::New(
+      "test_api_key", 0, 0, 0, "test_system_prompt", GURL("https://test.com"),
+      "test_model");
+
+  std::vector<std::string> empty_stop_sequences = {};
+
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  EXPECT_CALL(*mock_request_helper, RequestSSE(_, _, _, _, _, _, _, _))
+      .WillOnce([&](const std::string& method, const GURL& url,
+                    const std::string& body, const std::string& content_type,
+                    DataReceivedCallback data_received_callback,
+                    ResultCallback result_callback,
+                    const base::flat_map<std::string, std::string>& headers,
+                    const api_request_helper::APIRequestOptions& options) {
+        auto dict = base::test::ParseJsonDict(body);
+        base::Value* stop_field = dict.Find("stop");
+        EXPECT_FALSE(stop_field);
+
+        std::move(result_callback)
+            .Run(api_request_helper::APIRequestResult(200, base::Value(), {},
+                                                      net::OK, GURL()));
+        run_loop.Quit();
+        return Ticket();
+      });
+
+  EXPECT_CALL(mock_callbacks, OnCompleted(_)).WillOnce([](auto) {});
+
+  std::vector<OAIMessage> messages;
+  OAIMessage user_msg;
+  user_msg.role = "user";
+  user_msg.content.push_back(mojom::ContentBlock::NewTextContentBlock(
+      mojom::TextContentBlock::New("Test message")));
+  messages.push_back(std::move(user_msg));
+
+  client_->PerformRequest(
+      *model_options, std::move(messages), std::nullopt,
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)),
+      empty_stop_sequences);
+
+  run_loop.Run();
+}
+
+TEST_F(OAIAPIUnitTest, SerializeOAIMessages) {
+  // A general test which covers the serialization of multiple messages with
+  // multiple content blocks, but does not cover all possible types of content
+  // block. Each block type's serialization should be tested in
+  // ContentBlockSerializationTest below.
+  std::vector<OAIMessage> messages;
+
+  // First message: user with multiple block types
+  OAIMessage user_msg1;
+  user_msg1.role = "user";
+  user_msg1.content.push_back(mojom::ContentBlock::NewTextContentBlock(
+      mojom::TextContentBlock::New("Here's an image:")));
+  user_msg1.content.push_back(mojom::ContentBlock::NewImageContentBlock(
+      mojom::ImageContentBlock::New(GURL(kTestImageUrl))));
+  user_msg1.content.push_back(mojom::ContentBlock::NewPageExcerptContentBlock(
+      mojom::PageExcerptContentBlock::New("Page excerpt content")));
+  messages.push_back(std::move(user_msg1));
+
+  // Second message: assistant response
+  OAIMessage assistant_msg;
+  assistant_msg.role = "assistant";
+  assistant_msg.content.push_back(mojom::ContentBlock::NewTextContentBlock(
+      mojom::TextContentBlock::New("I see the image")));
+  messages.push_back(std::move(assistant_msg));
+
+  // Third message: user follow-up
+  OAIMessage user_msg2;
+  user_msg2.role = "user";
+  user_msg2.content.push_back(mojom::ContentBlock::NewTextContentBlock(
+      mojom::TextContentBlock::New("Can you improve this?")));
+  messages.push_back(std::move(user_msg2));
+
+  auto serialized = OAIAPIClient::SerializeOAIMessages(std::move(messages));
+  ASSERT_EQ(serialized.size(), 3u);
+
+  std::string page_excerpt = l10n_util::GetStringFUTF8(
+      IDS_AI_CHAT_LLAMA2_SELECTED_TEXT_PROMPT_SEGMENT,
+      base::UTF8ToUTF16(std::string("Page excerpt content")));
+
+  // First message
+  const base::DictValue* msg0 = serialized[0].GetIfDict();
+  ASSERT_TRUE(msg0);
+  std::string expected_msg1_json = absl::StrFormat(R"({
+    "role": "user",
+    "content": [
+      {"type": "text", "text": "Here's an image:"},
+      {"type": "image_url", "image_url": {"url": "%s"}},
+      {"type": "text", "text": "%s"}
+    ]
+  })",
+                                                   kTestImageUrl, page_excerpt);
+  base::DictValue expected_msg1 = base::test::ParseJsonDict(expected_msg1_json);
+  EXPECT_EQ(*msg0, expected_msg1);
+
+  // Second message
+  const base::DictValue* msg1 = serialized[1].GetIfDict();
+  ASSERT_TRUE(msg1);
+  base::DictValue expected_msg2 = base::test::ParseJsonDict(R"({
+    "role": "assistant",
+    "content": [
+      {"type": "text", "text": "I see the image"}
+    ]
+  })");
+  EXPECT_EQ(*msg1, expected_msg2);
+
+  // Third message
+  const base::DictValue* msg2 = serialized[2].GetIfDict();
+  ASSERT_TRUE(msg2);
+  base::DictValue expected_msg3 = base::test::ParseJsonDict(R"({
+    "role": "user",
+    "content": [
+      {"type": "text", "text": "Can you improve this?"}
+    ]
+  })");
+  EXPECT_EQ(*msg2, expected_msg3);
+}
+
+// Tests to cover serialization of all content block types.
+class ContentBlockSerializationTest
+    : public OAIAPIUnitTest,
+      public testing::WithParamInterface<ContentBlockSerializationTestParam> {};
+
+TEST_P(ContentBlockSerializationTest, SerializesAsOAIMessage) {
+  ContentBlockSerializationTestParam params = GetParam();
+
+  // Compute expected text at runtime
+  std::string expected_text;
+  if (params.localized_text) {
+    if (params.localized_text->format_arg2) {
+      expected_text = l10n_util::GetStringFUTF8(
+          params.localized_text->message_id,
+          base::UTF8ToUTF16(*params.localized_text->format_arg),
+          base::UTF8ToUTF16(*params.localized_text->format_arg2));
+    } else {
+      expected_text =
+          params.localized_text->format_arg
+              ? l10n_util::GetStringFUTF8(
+                    params.localized_text->message_id,
+                    base::UTF8ToUTF16(*params.localized_text->format_arg))
+              : l10n_util::GetStringUTF8(params.localized_text->message_id);
+    }
+  } else if (params.literal_text) {
+    expected_text = *params.literal_text;
+  }
+
+  auto content_block = params.content_factory.Run();
+  base::DictValue expected_msg = base::DictValue().Set("role", "user");
+  base::DictValue expected_content_block =
+      base::DictValue().Set("type", params.expected_type);
+
+  if (content_block->which() == mojom::ContentBlock::Tag::kImageContentBlock) {
+    const auto& img = content_block->get_image_content_block();
+
+    base::DictValue image_url_dict;
+    image_url_dict.Set("url", img->image_url.spec());
+
+    expected_content_block.Set("image_url", std::move(image_url_dict));
+  } else if (content_block->which() ==
+             mojom::ContentBlock::Tag::kFileContentBlock) {
+    base::DictValue file_dict;
+    file_dict.Set("filename", *params.expected_filename);
+    file_dict.Set("file_data", *params.expected_file_data);
+    expected_content_block.Set("file", std::move(file_dict));
+  } else {
+    expected_content_block.Set("text", expected_text);
+  }
+  expected_msg.Set("content",
+                   base::ListValue().Append(std::move(expected_content_block)));
+
+  std::vector<OAIMessage> messages;
+  OAIMessage message;
+  message.role = "user";
+  message.content.push_back(std::move(content_block));
+  messages.push_back(std::move(message));
+
+  auto serialized = OAIAPIClient::SerializeOAIMessages(std::move(messages));
+
+  ASSERT_EQ(serialized.size(), 1u);
+  const base::DictValue* message_dict = serialized[0].GetIfDict();
+  ASSERT_TRUE(message_dict);
+  EXPECT_EQ(*message_dict, expected_msg);
+}
+
+// Adding any new types into mojom::ContentBlock union should update this test.
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    ContentBlockSerializationTest,
+    testing::Values(
+        ContentBlockSerializationTestParam{
+            "Text", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewTextContentBlock(
+                  mojom::TextContentBlock::New(kTestContent));
+            }),
+            "text", std::nullopt, kTestContent},
+        ContentBlockSerializationTestParam{
+            "Image", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewImageContentBlock(
+                  mojom::ImageContentBlock::New(GURL(kTestImageUrl)));
+            }),
+            "image_url", std::nullopt, std::nullopt},
+        ContentBlockSerializationTestParam{
+            "PageExcerpt", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewPageExcerptContentBlock(
+                  mojom::PageExcerptContentBlock::New(kTestContent));
+            }),
+            "text",
+            LocalizedText{IDS_AI_CHAT_LLAMA2_SELECTED_TEXT_PROMPT_SEGMENT,
+                          kTestContent},
+            std::nullopt},
+        ContentBlockSerializationTestParam{
+            "PageText", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewPageTextContentBlock(
+                  mojom::PageTextContentBlock::New(kTestContent));
+            }),
+            "text",
+            LocalizedText{IDS_AI_CHAT_LLAMA2_ARTICLE_PROMPT_SEGMENT,
+                          kTestContent},
+            std::nullopt},
+        ContentBlockSerializationTestParam{
+            "VideoTranscript", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewVideoTranscriptContentBlock(
+                  mojom::VideoTranscriptContentBlock::New(kTestContent));
+            }),
+            "text",
+            LocalizedText{IDS_AI_CHAT_LLAMA2_VIDEO_PROMPT_SEGMENT,
+                          kTestContent},
+            std::nullopt},
+        ContentBlockSerializationTestParam{
+            "ChangeTone", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewChangeToneContentBlock(
+                  mojom::ChangeToneContentBlock::New("", "casual"));
+            }),
+            "text",
+            LocalizedText{IDS_AI_CHAT_QUESTION_CHANGE_TONE_TEMPLATE, "casual"},
+            std::nullopt},
+        ContentBlockSerializationTestParam{
+            "SimpleRequest_Paraphrase", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSimpleRequestContentBlock(
+                  mojom::SimpleRequestContentBlock::New(
+                      mojom::SimpleRequestType::kParaphrase));
+            }),
+            "text", LocalizedText{IDS_AI_CHAT_QUESTION_PARAPHRASE},
+            std::nullopt},
+        ContentBlockSerializationTestParam{
+            "SimpleRequest_Improve", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSimpleRequestContentBlock(
+                  mojom::SimpleRequestContentBlock::New(
+                      mojom::SimpleRequestType::kImprove));
+            }),
+            "text", LocalizedText{IDS_AI_CHAT_QUESTION_IMPROVE}, std::nullopt},
+        ContentBlockSerializationTestParam{
+            "SimpleRequest_Shorten", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSimpleRequestContentBlock(
+                  mojom::SimpleRequestContentBlock::New(
+                      mojom::SimpleRequestType::kShorten));
+            }),
+            "text", LocalizedText{IDS_AI_CHAT_QUESTION_SHORTEN}, std::nullopt},
+        ContentBlockSerializationTestParam{
+            "SimpleRequest_Expand", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSimpleRequestContentBlock(
+                  mojom::SimpleRequestContentBlock::New(
+                      mojom::SimpleRequestType::kExpand));
+            }),
+            "text", LocalizedText{IDS_AI_CHAT_QUESTION_EXPAND}, std::nullopt},
+        ContentBlockSerializationTestParam{
+            "SimpleRequest_RequestQuestions", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSimpleRequestContentBlock(
+                  mojom::SimpleRequestContentBlock::New(
+                      mojom::SimpleRequestType::kRequestQuestions));
+            }),
+            "text", LocalizedText{IDS_AI_CHAT_SUGGEST_QUESTIONS_PROMPT},
+            std::nullopt},
+        ContentBlockSerializationTestParam{
+            "RequestTitle", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewRequestTitleContentBlock(
+                  mojom::RequestTitleContentBlock::New(kTestContent));
+            }),
+            "text",
+            LocalizedText{IDS_AI_CHAT_GENERATE_CONVERSATION_TITLE_PROMPT,
+                          kTestContent},
+            std::nullopt},
+        ContentBlockSerializationTestParam{
+            "SimpleRequest_RequestSummary", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSimpleRequestContentBlock(
+                  mojom::SimpleRequestContentBlock::New(
+                      mojom::SimpleRequestType::kRequestSummary));
+            }),
+            "text", LocalizedText{IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE},
+            std::nullopt},
+        ContentBlockSerializationTestParam{
+            "Memory", base::BindRepeating([]() {
+              base::flat_map<std::string, mojom::MemoryValuePtr> memory;
+              memory["name"] = mojom::MemoryValue::NewStringValue("John Doe");
+              std::vector<std::string> prefs = {"coding", "reading"};
+              memory["preferences"] =
+                  mojom::MemoryValue::NewListValue(std::move(prefs));
+              return mojom::ContentBlock::NewMemoryContentBlock(
+                  mojom::MemoryContentBlock::New(std::move(memory)));
+            }),
+            "text",
+            LocalizedText{
+                IDS_AI_CHAT_CUSTOM_MODEL_USER_MEMORY_PROMPT_SEGMENT,
+                R"({"name":"John Doe","preferences":["coding","reading"]})"},
+            std::nullopt},
+        ContentBlockSerializationTestParam{
+            "File", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewFileContentBlock(
+                  mojom::FileContentBlock::New(
+                      GURL("data:application/pdf;base64,abc123"),
+                      "document.pdf"));
+            }),
+            "file", std::nullopt, std::nullopt, "document.pdf",
+            "data:application/pdf;base64,abc123"},
+        ContentBlockSerializationTestParam{
+            "SuggestFocusTopics", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewSuggestFocusTopicsContentBlock(
+                  mojom::SuggestFocusTopicsContentBlock::New(kTestContent));
+            }),
+            "text",
+            LocalizedText{IDS_AI_CHAT_TAB_FOCUS_SUGGEST_TOPICS, kTestContent},
+            std::nullopt},
+        ContentBlockSerializationTestParam{
+            "SuggestFocusTopicsWithEmoji", base::BindRepeating([]() {
+              return mojom::ContentBlock::
+                  NewSuggestFocusTopicsWithEmojiContentBlock(
+                      mojom::SuggestFocusTopicsWithEmojiContentBlock::New(
+                          kTestContent));
+            }),
+            "text",
+            LocalizedText{IDS_AI_CHAT_TAB_FOCUS_SUGGEST_TOPICS_WITH_EMOJI,
+                          kTestContent},
+            std::nullopt},
+        ContentBlockSerializationTestParam{
+            "FilterTabs", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewFilterTabsContentBlock(
+                  mojom::FilterTabsContentBlock::New(kTestContent,
+                                                     "test_topic"));
+            }),
+            "text",
+            LocalizedText{IDS_AI_CHAT_TAB_FOCUS_FILTER_TABS, kTestContent,
+                          "test_topic"},
+            std::nullopt},
+        ContentBlockSerializationTestParam{
+            "ReduceFocusTopics", base::BindRepeating([]() {
+              return mojom::ContentBlock::NewReduceFocusTopicsContentBlock(
+                  mojom::ReduceFocusTopicsContentBlock::New(kTestContent));
+            }),
+            "text",
+            LocalizedText{IDS_AI_CHAT_TAB_FOCUS_REDUCE_TOPICS, kTestContent},
+            std::nullopt}),
+    [](const testing::TestParamInfo<ContentBlockSerializationTestParam>& info) {
+      return info.param.name;
+    });
+
+class OAIAPIInvalidResponseTest
+    : public OAIAPIUnitTest,
+      public ::testing::WithParamInterface<std::string> {};
+
+TEST_P(OAIAPIInvalidResponseTest,
+       InvalidResponse_NoCallbacksTriggeredOrEmptyCompletion) {
+  mojom::CustomModelOptionsPtr model_options = mojom::CustomModelOptions::New(
+      "test_api_key", 0, 0, 0, "test_system_prompt", GURL("https://test.com"),
+      "test_model");
+
+  const std::string invalid_server_response = GetParam();
+
+  base::RunLoop run_loop;
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+
+  EXPECT_CALL(*mock_request_helper, RequestSSE(_, _, _, _, _, _, _, _))
+      .WillOnce([&](auto, auto, auto, auto,
+                    DataReceivedCallback data_received_callback,
+                    ResultCallback result_callback, auto, auto) {
+        // Simulate data chunk received
+        base::Value maybe_val = ParseOrStringValue(invalid_server_response);
+        data_received_callback.Run(base::ok(std::move(maybe_val)));
+
+        // Simulate final callback
+        base::Value maybe_val_final =
+            ParseOrStringValue(invalid_server_response);
+        std::move(result_callback)
+            .Run(api_request_helper::APIRequestResult(
+                200, std::move(maybe_val_final), {}, net::OK, GURL()));
+
+        run_loop.Quit();
+        return Ticket();
+      });
+
+  // For invalid payloads, we expect no callbacks from OnDataReceived
+  EXPECT_CALL(mock_callbacks, OnDataReceived(_)).Times(0);
+
+  // For invalid 200 OK payloads, we expect an empty completion from OnCompleted
+  EXPECT_CALL(mock_callbacks, OnCompleted(_))
+      .WillOnce([](GenerationResult result) {
+        ASSERT_TRUE(result.has_value());
+        ASSERT_TRUE(result->event);
+        ASSERT_TRUE(result->event->is_completion_event());
+        EXPECT_EQ(result->event->get_completion_event()->completion, "");
+      });
+
+  // Begin request
+  client_->PerformRequest(
+      *model_options, std::vector<OAIMessage>(), std::nullopt,
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)));
+
+  run_loop.Run();
+
+  testing::Mock::VerifyAndClearExpectations(mock_request_helper);
+  testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+}
+
+TEST_F(OAIAPIUnitTest, PerformRequest_WithToolUseResponse) {
+  // Tests that tool definitions are included in the request body and that
+  // tool call responses are parsed and forwarded. For more variants
+  // see tests for `ParseToolCallsFromOAIResponse`.
+  mojom::CustomModelOptionsPtr model_options = mojom::CustomModelOptions::New(
+      "test_api_key", 0, 0, 0, "test_system_prompt", GURL("https://test.com"),
+      "test_model");
+
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  // Build tool definitions
+  base::ListValue tool_defs;
+  base::DictValue tool_def;
+  tool_def.Set("type", "function");
+  base::DictValue function_def;
+  function_def.Set("name", "get_weather");
+  function_def.Set("description", "Get weather for a location");
+  tool_def.Set("function", std::move(function_def));
+  tool_defs.Append(std::move(tool_def));
+
+  EXPECT_CALL(*mock_request_helper, RequestSSE(_, _, _, _, _, _, _, _))
+      .WillOnce([&](const std::string& method, const GURL& url,
+                    const std::string& body, const std::string& content_type,
+                    DataReceivedCallback data_received_callback,
+                    ResultCallback result_callback,
+                    const base::flat_map<std::string, std::string>& headers,
+                    const api_request_helper::APIRequestOptions& options) {
+        // Verify tools are included in the request body
+        auto dict = base::test::ParseJsonDict(body);
+        base::ListValue* tools = dict.FindList("tools");
+        EXPECT_TRUE(tools);
+        EXPECT_EQ(tools->size(), 1u);
+        const base::DictValue* tool = (*tools)[0].GetIfDict();
+        EXPECT_TRUE(tool);
+        EXPECT_EQ(*tool->FindString("type"), "function");
+        const base::DictValue* func = tool->FindDict("function");
+        EXPECT_TRUE(func);
+        EXPECT_EQ(*func->FindString("name"), "get_weather");
+
+        // Send a tool call response chunk
+        auto chunk = base::test::ParseJson(R"({
+          "id": "chatcmpl-456",
+          "object": "chat.completion.chunk",
+          "choices": [{
+            "index": 0,
+            "delta": {
+              "content": "Let me check the weather.",
+              "tool_calls": [
+                {
+                  "id": "call_abc",
+                  "type": "function",
+                  "function": {
+                    "name": "get_weather",
+                    "arguments": "{\"location\":\"New York\"}"
+                  }
+                }
+              ]
+            }
+          }]
+        })");
+        data_received_callback.Run(base::ok(std::move(chunk)));
+
+        // Complete the request
+        std::move(result_callback)
+            .Run(api_request_helper::APIRequestResult(200, {}, {}, net::OK,
+                                                      GURL()));
+        run_loop.Quit();
+        return Ticket();
+      });
+
+  Sequence seq;
+  EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+      .InSequence(seq)
+      .WillOnce([&](EngineConsumer::GenerationResultData result) {
+        ASSERT_TRUE(result.event);
+        ASSERT_TRUE(result.event->is_completion_event());
+        EXPECT_EQ(result.event->get_completion_event()->completion,
+                  "Let me check the weather.");
+      });
+
+  EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+      .InSequence(seq)
+      .WillOnce([&](EngineConsumer::GenerationResultData result) {
+        ASSERT_TRUE(result.event);
+        ASSERT_TRUE(result.event->is_tool_use_event());
+        auto& tool_event = result.event->get_tool_use_event();
+        EXPECT_EQ(tool_event->tool_name, "get_weather");
+        EXPECT_EQ(tool_event->id, "call_abc");
+        EXPECT_EQ(tool_event->arguments_json, R"({"location":"New York"})");
+        EXPECT_FALSE(tool_event->is_server_result);
+      });
+
+  EXPECT_CALL(mock_callbacks, OnCompleted(_))
+      .WillOnce([&](GenerationResult result) {
+        ASSERT_TRUE(result.has_value());
+        ASSERT_TRUE(result->event);
+        ASSERT_TRUE(result->event->is_completion_event());
+        EXPECT_EQ(result->event->get_completion_event()->completion, "");
+      });
+
+  std::vector<OAIMessage> messages;
+  OAIMessage user_msg;
+  user_msg.role = "user";
+  user_msg.content.push_back(mojom::ContentBlock::NewTextContentBlock(
+      mojom::TextContentBlock::New("What's the weather in New York?")));
+  messages.push_back(std::move(user_msg));
+
+  client_->PerformRequest(
+      *model_options, std::move(messages), std::move(tool_defs),
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)));
+
+  run_loop.Run();
+
+  testing::Mock::VerifyAndClearExpectations(mock_request_helper);
+  testing::Mock::VerifyAndClearExpectations(&mock_callbacks);
+}
+
+// A set of invalid responses that should not trigger any callbacks
+INSTANTIATE_TEST_SUITE_P(
+    OAIAPIInvalidResponseScenarios,
+    OAIAPIInvalidResponseTest,
+    ::testing::Values(
+        // aaaaaaaaaaaaaaa
+        "aaaaaaaaaaaaaaaaa",
+        // {"invalid": "json"}
+        R"({"invalid": "json"})",
+        // {choices: []}
+        R"({"choices": []})",
+        // {"choices": [{"message": {"content": []}]}
+        R"({"choices": [{"message": {"content": []}}]})",
+        // Empty JSON object
+        R"({})",
+        // Malformed JSON
+        R"({"choices": [)",
+        // Unexpected data types
+        R"({"choices": "unexpected_string"})",
+        // Nested invalid JSON
+        R"({"choices": [{"message": {"content": {"nested": "invalid"}}}]})",
+        // Valid JSON with missing fields
+        R"({"choices": [{"index": 0}]})"));
+
+}  // namespace ai_chat

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<grit latest_public_release="0" current_release="1">
+  <outputs>
+    <output filename="grit/brave_theme_resources.h" type="rc_header" context="default_100_percent">
+      <emit emit_type='prepend'></emit>
+    </output>
+    <output filename="grit/brave_theme_resources_map.cc" type="resource_map_source" context="default_100_percent" />
+    <output filename="grit/brave_theme_resources_map.h" type="resource_map_header" context="default_100_percent" />
+    <output filename="brave_theme_resources_100_percent.pak" type="data_package" context="default_100_percent" />
+    <output filename="brave_theme_resources_200_percent.pak" type="data_package" context="default_200_percent" />
+    <output filename="brave_theme_resources_300_percent.pak" type="data_package" context="default_300_percent" />
+  </outputs>
+  <release seq="1">
+    <structures fallback_to_low_resolution="true">
+      <!-- KEEP THESE IN ALPHABETICAL ORDER!  DO NOT ADD TO RANDOM PLACES JUST
+           BECAUSE YOUR RESOURCES ARE FUNCTIONALLY RELATED OR FALL UNDER THE
+           SAME CONDITIONALS. -->
+
+      <structure type="chrome_scaled_image" name="IDR_LEO_FAVICON" file="brave/product_brave_leo.png" />
+
+      <if expr="enable_playlist_webui">
+        <structure type="chrome_scaled_image" name="IDR_PLAYLIST_DEFAULT_THUMBNAIL" file="brave/playlist_default_thumbnail.png" />
+      </if>
+
+      <if expr="not is_linux and not is_android and not is_brave_origin_branded">
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_BETA" file="brave/product_logo_32_beta.png" />
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_CANARY" file="brave/product_logo_32_nightly.png" />
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_DEV" file="brave/product_logo_32_dev.png" />
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_DEVELOPMENT" file="brave/product_logo_32_development.png" />
+      </if>
+      <if expr="not is_linux and not is_android and is_brave_origin_branded">
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_BETA" file="brave_origin/product_logo_32_beta.png" />
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_CANARY" file="brave_origin/product_logo_32_nightly.png" />
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_DEV" file="brave_origin/product_logo_32_dev.png" />
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_DEVELOPMENT" file="brave_origin/product_logo_32_development.png" />
+      </if>
+      <if expr="is_linux and not is_brave_origin_branded">
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_BETA" file="brave/linux/product_logo_32_beta.png" />
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_CANARY" file="brave/linux/product_logo_32_nightly.png" />
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_DEV" file="brave/linux/product_logo_32_dev.png" />
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_DEVELOPMENT" file="brave/linux/product_logo_32_development.png" />
+      </if>
+      <if expr="is_linux and is_brave_origin_branded">
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_BETA" file="brave_origin/linux/product_logo_32_beta.png" />
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_CANARY" file="brave_origin/linux/product_logo_32_nightly.png" />
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_DEV" file="brave_origin/linux/product_logo_32_dev.png" />
+        <structure type="chrome_scaled_image" name="IDR_PRODUCT_LOGO_32_DEVELOPMENT" file="brave_origin/linux/product_logo_32_development.png" />
+      </if>
+
+      <if expr="toolkit_views">
+        <structure type="chrome_scaled_image" name="IDR_SIDEBAR_ITEM_HIGHLIGHT" file="brave/sidebar_item_highlight.png" />
+        <structure type="chrome_scaled_image" name="IDR_SIDEBAR_ITEM_HIGHLIGHT_RIGHT" file="brave/sidebar_item_highlight_right.png" />
+      </if>
+
+      <if expr="not is_android">
+        <structure type="chrome_scaled_image" name="IDR_TOR_WINDOW_FRAME_GRAPHIC" file="brave/tor_window_frame_graphic.png" />
+        <!-- Avatar icons -->
+        <!-- Generated via zsh :
+          > declare -i a=56
+          > for file in $(cat < avatarlist); do echo "<structure type=\"chrome_scaled_image\" name=\"IDR_PROFILE_AVATAR_$a\" file=\"common/avatars/$file\" />"; a=a+1 done | pbcopy
+        -->
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_56" file="common/avatars/avatar_edgy_brave.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_57" file="common/avatars/avatar_edgy_ocean.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_58" file="common/avatars/avatar_edgy_grass.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_59" file="common/avatars/avatar_edgy_corn.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_60" file="common/avatars/avatar_edgy_royal.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_61" file="common/avatars/avatar_edgy_ninja.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_62" file="common/avatars/avatar_paladin_rewards.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_63" file="common/avatars/avatar_paladin_brave.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_64" file="common/avatars/avatar_paladin_ocean.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_65" file="common/avatars/avatar_paladin_grass.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_66" file="common/avatars/avatar_paladin_corn.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_67" file="common/avatars/avatar_paladin_royal.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_68" file="common/avatars/avatar_paladin_ninja.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_69" file="common/avatars/avatar_gleam_rewards.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_70" file="common/avatars/avatar_gleam_brave.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_71" file="common/avatars/avatar_gleam_ocean.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_72" file="common/avatars/avatar_gleam_grass.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_73" file="common/avatars/avatar_gleam_corn.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_74" file="common/avatars/avatar_gleam_royal.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_75" file="common/avatars/avatar_gleam_ninja.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_76" file="common/avatars/avatar_oval_rewards.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_77" file="common/avatars/avatar_oval_brave.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_78" file="common/avatars/avatar_oval_ocean.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_79" file="common/avatars/avatar_oval_grass.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_80" file="common/avatars/avatar_oval_corn.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_81" file="common/avatars/avatar_oval_royal.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_82" file="common/avatars/avatar_oval_ninja.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_83" file="common/avatars/avatar_bonbon_rewards.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_84" file="common/avatars/avatar_bonbon_brave.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_85" file="common/avatars/avatar_bonbon_ocean.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_86" file="common/avatars/avatar_bonbon_grass.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_87" file="common/avatars/avatar_bonbon_corn.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_88" file="common/avatars/avatar_bonbon_royal.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_89" file="common/avatars/avatar_bonbon_ninja.png" />
+
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_WEB_DISCOVERY_INFOBAR_BG_GRAPHIC" file="brave/brave_web_discovery_infobar_bg_graphic.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_WEB_DISCOVERY_INFOBAR_BG_GRAPHIC_DARK" file="brave/brave_web_discovery_infobar_bg_graphic_dark.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_WEB_DISCOVERY_INFOBAR_ICON" file="brave/brave_web_discovery_infobar_icon.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC" file="brave/brave_search_conversion_banner_graphic.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DARK" file="brave/brave_search_conversion_banner_graphic_dark.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DDG" file="brave/brave_search_conversion_banner_graphic_ddg.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DDG_DARK" file="brave/brave_search_conversion_banner_graphic_ddg_dark.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_CONVERSION_BUTTON_BRAVE_SEARCH_ICON" file="brave/brave_search_conversion_button_brave_search_icon.png" />
+        <structure type="chrome_scaled_image" name="IDR_BRAVE_SEARCH_LOGO_IN_SEARCH_PROMOTION" file="brave/brave_search_logo_in_search_promotion.png" />
+      </if>
+    </structures>
+  </release>
+</grit>

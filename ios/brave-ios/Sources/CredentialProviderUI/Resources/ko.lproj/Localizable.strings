@@ -1,0 +1,69 @@
+/* A message shown when a user tries to access their passwords and are presented with a Touch ID or passcode prompt. */
+"CredentialProvider.authenticationReason" = "비밀번호 액세스 승인";
+
+/* A title for a button shown to a user to authenticate themselves to display their passwords */
+"CredentialProvider.authenticationUnlockButtonTitle" = "잠금 해제";
+
+/* A button that cancels the autofill request and dismisses the screen */
+"CredentialProvider.cancelButtonTitle" = "취소하기";
+
+/* A title for a button that when tapped copies the content highlighted into the users clipboard */
+"CredentialProvider.copyMenuItemTitle" = "복사";
+
+/* The title shown at the top of a list of credentials. 'Brave' in this case is the company name */
+"CredentialProvider.credentialListTitle" = "Brave 비밀번호";
+
+/* The password field in the details form. Shows the password (if revealed) or a mask of the users password for the website next to it */
+"CredentialProvider.detailsFormPasswordField" = "비밀번호";
+
+/* The URL field in the details form. Shows a website URL next to it */
+"CredentialProvider.detailsFormURLField" = "URL";
+
+/* The username field in the details form. Shows the username for the website next to it */
+"CredentialProvider.detailsFormUsernameField" = "사용자 이름";
+
+/* Some text shown when there are no suggested logins for the website the user is trying to autofill on */
+"CredentialProvider.emptySuggestions" = "추천 없음";
+
+/* A title for a button that when tapped hides a password that was previously revealed */
+"CredentialProvider.hidePasswordMenuItemTitle" = "비밀번호 숨기기";
+
+/* A header label shown above a list of logins (username/password combinations) for a particular website. '%@' is replaced by a website host for example: 'Logins for apple.com' */
+"CredentialProvider.loginsForWebsite" = "%@ 로그인 정보";
+
+/* The title on a button that dismisses the onboarding view */
+"CredentialProvider.onboardingViewContinueCTA" = "계속";
+
+/* A footnote shown on a screen shown when the user turns on Brave as a password autofill provider. 'iCloud Keychain' is an Apple product. */
+"CredentialProvider.onboardingViewFootnote" = "비밀번호를 더 빠르게 가져오려면 iCloud Keychain을 선택 해제하세요.";
+
+/* The subtitle on a screen shown when the user turns on Brave as a password autofill provider */
+"CredentialProvider.onboardingViewSubtitle" = "저장된 비밀번호를 디바이스의 다른 앱에서 사용할 수 있습니다.";
+
+/* The title on a screen shown when the user turns on Brave as a password autofill provider */
+"CredentialProvider.onboardingViewTitle" = "자동완성 켜짐";
+
+/* A header label shown above a list of website logins (username/password combinations) */
+"CredentialProvider.otherLogins" = "기타 로그인 정보";
+
+/* A title for a button that when tapped reveals a users password that is currently masked */
+"CredentialProvider.revealPasswordMenuItemTitle" = "비밀번호 보이기";
+
+/* The placeholder/prompt that is shown in the search bar */
+"CredentialProvider.searchBarPrompt" = "로그인 정보 검색";
+
+/* A label shown when the users search has no results */
+"CredentialProvider.searchEmptyResults" = "\"%@\"에 대한 결과 없음";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"CredentialProvider.setPasscodeAlertMessage" = "비밀번호에 액세스하려면 먼저 디바이스에 패스코드를 설정해야 합니다.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"CredentialProvider.setPasscodeAlertTitle" = "패스코드 설정";
+
+/* A title for a button shown as a confirmation action on a login's detail screen. Tapping it uses the password when autofilling into the website */
+"CredentialProvider.useButtonTitle" = "사용";
+
+/* An accessibility label read out when a user activates VoiceOver on a button that when taps drills down into a credentials details */
+"CredentialProvider.viewCredentialDetails" = "세부 내용 보기";
+

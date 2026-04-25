@@ -1,0 +1,417 @@
+<html>
+<head>
+<script>
+
+function addElementsDynamically() {
+  let root = document.documentElement;
+  for (let i = 0; i < 10; i++) {
+    const e = document.createElement('img')
+    e.src = 'https://example.com/logo.png'
+    e.className = 'blockme'
+    root.appendChild(e);
+  }
+
+  for (let i = 0; i < 10; i++) {
+    const e = document.createElement('div')
+    e.className = 'dontblockme'
+    root.appendChild(e);
+  }
+
+  for (let i = 0; i < 10; i++) {
+    const e = document.createElement('div');
+    e.innerHTML = '<div class="hide-innerhtml"></div>';
+    root.appendChild(e);
+  }
+}
+
+function addElementWithChildDynamically() {
+  let root = document.documentElement;
+  const rootElement = document.createElement('div');
+  rootElement.setAttribute('class', 'procedural-filter-root-node-class');
+
+  const childNode = document.createElement('div');
+  childNode.setAttribute('class', 'procedural-filter-child-node-class');
+  rootElement.appendChild(childNode);
+  const p = document.createElement('p');
+  p.textContent = 'View in App';
+  childNode.appendChild(p);
+
+  const childNode2 = document.createElement('div');
+  childNode2.setAttribute('class', 'procedural-filter-child-node-class');
+  rootElement.appendChild(childNode2);
+  const span = document.createElement('span');
+  span.textContent = 'View in App';
+  childNode2.appendChild(span);
+
+  root.appendChild(rootElement);
+}
+
+let didWait = false;
+
+function check(selector, predicate) {
+  const checkSelectorInner = () => {
+    let elements = [].slice.call(document.querySelectorAll(selector));
+    return predicate(elements);
+  };
+
+  // The first selector check must occur after the page has had time to load,
+  // but subsequent checks can be done instantly.
+  if (didWait) {
+    return checkSelectorInner();
+  } else {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        didWait = true;
+        resolve(checkSelectorInner())
+      }, 3000)
+    })
+  }
+}
+
+async function wait(selector, predicate) {
+  if (await check(selector, predicate)) {
+    return true;
+  } else {
+    console.log('still waiting for css selector ' + selector);
+    return new Promise(resolve => {
+      setTimeout(function () {
+        resolve(wait(selector, predicate));
+      }, 200);
+    });
+  }
+}
+
+// true if matches and the CSS style of every matched element has the expected value for the property
+const cssSelector = (property, expected) =>
+  (elements) => {
+    if (elements.length === 0)
+      return false
+    let result = elements.every(e => {
+      let style = window.getComputedStyle(e);
+      return style[property] === expected;
+    })
+    return result;
+  };
+
+function checkSelector(selector, property, expected) {
+  return check(selector, cssSelector(property, expected));
+}
+
+const waitCSSSelector = async (selector, property, expected) => wait(selector, cssSelector(property, expected));
+
+// true if the selector matches some elements or no elements
+const existence = (expectedToHaveElements) =>
+  (elements) => {
+    return !!elements.length === expectedToHaveElements;
+  };
+
+// true if matched and every matched element has exactly the specified named attributes
+const attributes = (expectedAttributes) =>
+  (elements) => {
+    if (elements.length === 0)
+      return false;
+    return elements.every(e => {
+      return e.attributes.length === expectedAttributes.length && expectedAttributes.every(a => e.hasAttribute(a));
+    });
+  };
+
+// true if matches and every matched element has exactly the specified classes
+const classes = (expectedClasses) =>
+  (elements) => {
+    if (elements.length === 0)
+      return false;
+    return elements.every(e => {
+      return e.classList.length === expectedClasses.length && expectedClasses.every(c => e.classList.contains(c));
+    });
+  };
+
+</script>
+</head>
+<body>
+    <div id="ad-banner"><img src="https://example.com/logo.png" alt=""></div>
+    <div class="ad-banner">
+        <div class="ad abc def" style="background: url(https://example.com)"><img src="https://example.com/logo.png" alt=""></div>
+    </div>
+    <div class="ad ghi jkl" style="background: url(https://example.com)"><img src="https://example.com/logo.png" alt=""></div>
+    <div class="ad mno pqr" style="background: url(https://example.com)"><img src="https://example.com/logo.png" alt=""></div>
+    <iframe id="iframe" src="about:blank"></iframe>
+
+    <!-- Assume that the document host is test.lion.appspot.com (see AdBlockServiceTest.*) -->
+    <div id="relative-url-div" class="fpsponsored">
+      Sponsored
+      <img src="/sponsored/640x820.png">
+    </div>
+    <div id="same-origin-div" class="fpsponsored1">
+      Sponsored
+      <img src="http://test.lion.appspot.com/sponsored/640x820.png">
+    </div>
+    <div id="subdomain-div" class="fpsponsored2">
+      Sponsored
+      <img src="http://sub.test.lion.appspot.com/sponsored/640x820.png">
+    </div>
+    <div id="same-etld" class="fpsponsored3">
+      Sponsored
+      <img src="http://another.lion.appspot.com/sponsored/640x820.png">
+    </div>
+    <div id="another-etld" class="fpsponsored4">
+      Advertisement
+      <img src="http://chrome.appspot.com/sponsored/640x820.png">
+    </div>
+    <div id="another-etld-significant-text" class="fpsponsored5">
+      A text of 30 chars and 5 words is needed here to consider element significant.
+      <img src="http://chrome.appspot.com/sponsored/640x820.png">
+    </div>
+    <div id="inline-block-important" style="display: block !important"></div>
+
+    <!-- `:has` pseudoclass -->
+    <div class="container">
+      <div id="promotion"></div>
+    </div>
+    <div class="container">
+      <div id="real-user-content"></div>
+    </div>
+
+    <section id="procedural-filter-has-text">
+      <div class="string-cases">
+        <h2>String cases for <code>:has-text</code></h2>
+        <div data-expect="hidden">
+          <p>Please hide me.</p>
+        </div>
+        <div>
+          <p data-expect="visible">Fake out hide.</p>
+        </div>
+        <div>
+          <p data-expect="visible">And do not hide this element.</p>
+        </div>
+      </div>
+      <div class="regex-cases">
+        <h2>RegEx cases for <code>:has-text</code></h2>
+        <div data-expect="hidden">
+          <p>This should be hidden.</p>
+        </div>
+        <div>
+          <p data-expect="visible">This should be hidden (but not really).</p>
+        </div>
+        <div>
+          <p data-expect="visible">This should not be hidden.</p>
+        </div>
+      </div>
+      <p class="items" data-expect="visible">
+        This should be visible bc the word "S p o n s o r e d" does not appear
+      </p>
+      <p class="items" data-expect="hidden">
+        This should be hidden because of the word "Sponsored"
+      </p>
+      <p data-expect="visible">
+        This should be visible bc it doesn't have the class "items" despite
+        saying "Sponsored"
+      </p>
+      <p data-expect="visible">
+        This should be visible bc it doesn't have the class "items" nor
+        the text sponsored
+      </p>
+      <div class="items2" style="display: none">Sponsored</div>
+      <div class="container" data-expect="hidden">This should be hidden bc of the text "Ad"</div>
+
+      <div class="items2" style="display: none">Sponsored</div>
+      <div class="container" data-expect="visible">This should NOT hidden bc of there is no text "A d"</div>
+
+      <div class="items2" style="display: none"></div>
+      <div class="container" data-expect="visible">This should NOT hidden bc the previous sibling does not say "Sponsored", even though this says "Ad"</div>
+    </section>
+
+    <section id="procedural-filter-matches-attr">
+      <div>
+        <h2>String cases for <code>:matches-attr</code></h2>
+        <div test-attr="test-value" data-expect="hidden">
+          This should be hidden.
+        </div>
+        <div diff-attr="test-value" data-expect="visible">
+          This should not be hidden.
+        </div>
+        <div test-attr="diff-value" data-expect="visible">
+          This should not be hidden.
+        </div>
+        <div diff-attr="diff-value" data-expect="visible">
+          This should not be hidden.
+        </div>
+        <div test-attr-2="test-value" data-expect="visible">
+          This should not be hidden.
+        </div>
+        <div test-attr="test-value-2" data-expect="visible">
+          This should not be hidden.
+        </div>
+        <div testing="anything" data-expect="hidden">
+          This should be hidden.
+        </div>
+      </div>
+
+      <div>
+        <h2>Regex cases for <code>:matches-attr</code></h2>
+        <div test-yes-attr="test-yes-value" data-expect="hidden">
+          This should be hidden.
+        </div>
+        <div test-yes-attr="test-no-value" data-expect="visible">
+          This should not be hidden.
+        </div>
+        <div test-no-attr="test-yes-value" data-expect="visible">
+          This should not be hidden.
+        </div>
+        <div test-no-attr="test-no-value" data-expect="visible">
+          This should not be hidden.
+        </div>
+      </div>
+    </section>
+
+    <section id="procedural-filter-matches-css">
+      <style>
+        .needle {
+          opacity: 0.9;
+        }
+        .other-needle::before {
+          display: inline-block;
+        }
+        .quoted-value-case p.target::before {
+          content: "advertisement"
+        }
+      </style>
+      <div>
+        <h2><code>:matches-css</code></h2>
+        <div>
+          <p data-expect="visible">This should not be hidden</p>
+          <p class="needle" data-expect="hidden">This should be hidden</p>
+        </div>
+        <p data-expect="visible">This should not be hidden</p>
+        <p class="needle" expect="hidden">This should be hidden</p>
+        <p style="clear: left" expect="hidden">This should be hidden</p>
+        <p style="clear: right" expect="hidden">This should be hidden</p>
+        <p style="clear: both" expect="visible">This should not be hidden</p>
+      </div>
+
+      <div>
+        <h2><code>:matches-css-before</code></h2>
+        <div>
+          <p class="other-needle" data-expect="hidden">This should be hidden</p>
+        </div>
+        <div>
+          <div class="other-needle"></div>
+          <div data-expect="visible">This should not be hidden</div>
+        </div>
+      </div>
+
+      <div class="quoted-value-case">
+        <h2><code>:matches-css-before</code>, quoted CSS attribute case</h2>
+        <p data-expect="visible">This should not be hidden</p>
+        <p class="target" data-expect="hidden">This should be hidden</p>
+        <p data-expect="visible">This should not be hidden</p>
+      </div>
+    </section>
+
+    <section id="procedural-filter-matches-path">
+      <div class="positive-string-case">
+        <h2><code>:matches-path</code> positive string case</h2>
+        <p class="odd" data-expect="hidden">Should be hidden</p>
+        <p class="even" data-expect="visible">Should not be hidden</p>
+        <p data-expect="visible">Should not be hidden</p>
+      </div>
+
+      <div class="positive-regex-case">
+        <h2><code>:matches-path</code> positive regex case</h2>
+        <p class="odd" data-expect="hidden">Should be hidden</p>
+        <p class="even" data-expect="visible">Should not be hidden</p>
+        <p data-expect="visible">Should not be hidden</p>
+      </div>
+
+      <div class="positive-unicode-case">
+        <h2><code>:matches-path</code>: positive unicode case</h2>
+        <p class="odd" data-expect="hidden">Should be hidden</p>
+        <p class="even" data-expect="visible">Should not be hidden</p>
+        <p data-expect="visible">Should not be hidden</p>
+      </div>
+
+      <div class="negative-case">
+        <h2><code>:matches-path</code>: negative case</h2>
+        <p class="odd" data-expect="visible">Should not be hidden</p>
+        <p class="even" data-expect="visible">Should not be hidden</p>
+        <p data-expect="visible">Should not be hidden</p>
+      </div>
+    </section>
+
+    <section id="procedural-filter-min-text-length">
+      <p data-expect="hidden">
+        This should be hidden bc it contains 50 characters
+      </p>
+      <p data-expect="visible">
+        This should not hidden, 37 characters
+      </p>
+    </section>
+
+    <section id="procedural-filter-upward">
+      <div class="string-tests">
+        <h2>String cases for <code>:upward</code></h2>
+        <div class="needle" data-expect="hidden">
+          This should be hidden
+          <div>
+            <em class="target"></em>
+          </div>
+        </div>
+        <section class="needle" data-expect="visible">
+          This should not be hidden.
+          <div>
+            <em class="target"></em>
+          </div>
+        </section>
+        <div data-expect="visible">
+          This should not be hidden.
+          <div>
+            <em class="target"></em>
+          </div>
+        </div>
+      </div>
+
+      <div class="int-tests">
+        <h2>Integer cases for <code>:upward</code></h2>
+        <div test-needle="true" data-expect="hidden">
+          This should be hidden
+          <div>
+            <em class="target"></em>
+          </div>
+        </div>
+        <section class="needle" data-expect="visible">
+          This should not be hidden.
+          <div>
+            <em class="target"></em>
+          </div>
+        </section>
+        <div data-expect="visible">
+          This should not be hidden.
+          <div>
+            <em class="target"></em>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="procedural-filter-xpath">
+      <div class="no-subject-case">
+        <h2><code>:xpath</code> no subject case</h2>
+        <p class="odd" data-expect="hidden">Should be hidden</p>
+        <p class="even" data-expect="visible">Should not be hidden</p>
+        <p data-expect="visible">Should not be hidden</p>
+        <p class="even" data-expect="visible">Should not be hidden</p>
+      </div>
+
+      <div class="with-subject-case">
+        <h2><code>:xpath</code>: with subject case</h2>
+        <p class="odd" data-expect="visible">Should not be hidden</p>
+        <p class="even" data-expect="hidden">Should be hidden</p>
+        <p class="odd" data-expect="visible">Should not be hidden</p>
+        <p data-expect="visible">Should not be hidden</p>
+      </div>
+    </section>
+
+    <!-- Test that invalid UTF symbols don't break cosmetic filters -->
+    <div class="\udc75"></div>
+    <div id="\udc75"></div>
+</body>
+</html>

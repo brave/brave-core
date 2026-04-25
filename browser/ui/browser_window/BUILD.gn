@@ -1,0 +1,19 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Don't include this target. Use //chrome/browser/ui/browser_window
+# instead as it includes our additions.
+source_set("browser_window") {
+  visibility = [ "//chrome/browser/ui/browser_window" ]
+
+  sources = [ "public/browser_window_features.h" ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/playlist/core/common/buildflags",
+  ]
+
+  deps = [ "//brave/components/email_aliases/buildflags" ]
+}

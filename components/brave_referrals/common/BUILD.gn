@@ -1,0 +1,5 @@
+assert(!is_ios)
+
+source_set("common") {
+  sources = [ "pref_names.h" ]
+}

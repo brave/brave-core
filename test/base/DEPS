@@ -1,0 +1,8 @@
+include_rules = [
+  "+brave/components",
+  "+content/public/browser",
+  "+chrome/install_static",
+  "+components/gcm_driver",
+  "+components/prefs",
+  "+mojo/core",
+]

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Test</title>
+  </head>
+
+  <body>
+    <h1>Test Ads</h1>
+    
+    <div>
+      <div id="test-ad-aggressive">
+        <img src="http://1st_party.localhost/image.gif">
+        This element should be hidden (standard or aggressive mode) even though it's a 1st party ad.
+        This is because it comes back as part of the aggressive selectors list.
+        The aggressive selectors list are ones that come from 
+        non-default and non-regional filter lists such as the cookie consent blocking list
+        and are ignored when unhiding 1st party content on standard mode.
+      </div>
+      
+      <div id="test-ad-1st-party">
+        <img src="http://1st_party.localhost/image.gif">
+        This element should be unhidden (after the pump) only on standard mode because it is a 1st party ad.
+        Standard selectors are ones that come from the the default filter list or any regional filter lists.
+        These can be unhidden on standard mode if they are 1st party ads.
+      </div>
+      
+      <div id="test-ad-3rd-party">
+        <img src="http://3rd_party.localhost/image.gif">
+      </div>
+
+      <div id="test-ad-3rd-party-sig-text">
+        <img src="http://3rd_party.localhost/image.gif">
+        This element should be not be hidden in standard mode because it contains significant amount of text.
+        It should still be hidden in aggressive mode.
+      </div>
+      
+      <div id="test-ad-simple">
+        Hide b/c little txt
+      </div>
+    </div>
+
+    <div>
+      <div class="test-ads-primary-standard">
+        The elements below all belong to the ".test-ads-primary-standard div" selector.
+        This selector is returned as part of the standard selector list 
+        which is given to the CF script during its initialization.
+        Because they all share the same selector, 
+        one unhidden means all are unhidden regardless of 1st or 3rd party.
+        And as the first element is a 1st party ad, all are unhidden.
+        Finally, because this selector is fed into the script right away,
+        the unhiding doesn't need to wait for the pump.
+
+        <div id="test-ad-primary-standard-1st-party">
+          <img src="http://1st_party.localhost/image.gif">
+          This element should be unhidden on standard mode because it is a 1st party ad.
+          Because of this element. All of its div siblings will be unhidden because they all belong to the 
+          .test-ads-primary-standard div selector.
+        </div>
+
+        <div id="test-ad-primary-standard-3rd-party">
+          <img src="http://3rd_party.localhost/image.gif">
+          Even though it's a 3rd party ad, this element should be unhidden on standard mode.
+          This is because it belongs to the .test-ads-primary-standard div selector which is unhidden 
+          due to the 1st party element above
+        </div>
+      </div>
+
+      <div class="test-ads-primary-aggressive">
+        These div children below should be hidden because they belong to an aggressive selector
+        regardless of mode or 1st/3rd party status.
+        Because this selector is fed into the script right away, 
+        the unhiding doesn't need to wait for the pump.
+        
+        <div id="test-ad-primary-aggressive-1st-party">
+          <img src="http://1st_party.localhost/image.gif">
+          This element should be hidden always regardless of aggressive or standard mode 
+          because it is a div child of the .test-ads-primary-aggressive class
+        </div>
+
+        <div id="test-ad-primary-aggressive-3rd-party">
+          <img src="http://3rd_party.localhost/image.gif">
+          This element should be hidden always regardless of aggressive or standard mode 
+          because it is a div child of the .test-ads-primary-aggressive class
+        </div>
+      </div>
+    </div>
+    
+    <h1>Test Procedural Actions</h1>
+    <div>
+      <div id="test-remove-element"></div>
+      <div id="test-remove-class" class="test"></div>
+      <div id="test-remove-attribute" test></div>
+      <div id="test-style-element">Styled text</div>
+      <div id="test-upward-int">
+        <div>
+          <div id="test-upward-int-target"></div>
+        </div>
+      </div>
+      <div id="test-upward-selector">
+        <div>
+          <div>
+            <div id="test-upward-selector-target"></div>
+          </div>
+        </div>
+      </div>
+      <test-has-text id="test-has-text">Please hide me.</test-has-text>
+      <test-has id="test-has">
+        <a class="banner-link">link</a>
+      </test-has>
+    </div>
+    
+    <h1>Test Local Frames</h1>
+    <script>
+    const displaySvalInBody = () => {
+      const div = document.createElement('div');
+      div.id = "scriptlet-main-div";
+      div.textContent = `First party body: ${window.sval}`;
+      document.body.appendChild(div);
+    }
+
+    const displaySvalInLocalFrame = () => {
+      const localFrame = document.getElementById('local-iframe')
+      const div = localFrame.contentDocument.createElement('div');
+      div.id = "scriptlet-local-frame-div";
+      div.textContent = `First local frame body: ${window.sval}`;
+      localFrame.contentDocument.body.appendChild(div);
+    }
+
+    const addElementForProceduralFilter = (id) => {
+      const div = document.createElement('div');
+      div.id = id;
+      div.innerText = 'Please hide me';
+      document.body.appendChild(div);
+    }
+
+    const addElementWithChildDynamically = () => {
+      let root = document.documentElement;
+      const rootElement = document.createElement('div');
+      rootElement.setAttribute('class', 'procedural-filter-root-node-class');
+
+      const childNode = document.createElement('div');
+      childNode.setAttribute('class', 'procedural-filter-child-node-class');
+      rootElement.appendChild(childNode);
+      const p = document.createElement('p');
+      p.textContent = 'View in App';
+      childNode.appendChild(p);
+
+      const childNode2 = document.createElement('div');
+      childNode2.setAttribute('class', 'procedural-filter-child-node-class');
+      rootElement.appendChild(childNode2);
+      const span = document.createElement('span');
+      span.textContent = 'View in App';
+      childNode2.appendChild(span);
+
+      root.appendChild(rootElement);
+    }
+    
+    // Create an element with inflated mutation score to at least `switchToSelectorsPollingThreshold`
+    // value to so mutationScore triggers alternative mutation strategy (polling) in `content_cosmetic_ios`
+    const triggerAltMutationObservationStrategy = () => {
+      const div = document.createElement('div')
+      for (let i = 0; i < 2000; i++) {
+        const span = document.createElement('span');
+        span.setAttribute('id', 'span-id-' + i);
+        div.appendChild(span)
+      }
+      document.body.appendChild(div);
+    }
+
+    const onload = () => {
+      const localFrame = document.createElement('iframe');
+      localFrame.id = 'local-iframe';
+      localFrame.src = 'about:blank';
+      localFrame.width = 400;
+      localFrame.height = 400;
+      document.body.appendChild(localFrame);
+
+      const localFrameAd = document.createElement('test-local-frame-ad');
+      localFrameAd.id = "test-local-frame-ad";
+      localFrameAd.innerText = 'This should be hidden';
+      localFrame.contentDocument.body.appendChild(localFrameAd);
+      
+      setTimeout(displaySvalInBody, 100);
+      setTimeout(displaySvalInLocalFrame, 200);
+    };
+    window.onload = onload;
+    </script>
+  </body>
+</html>

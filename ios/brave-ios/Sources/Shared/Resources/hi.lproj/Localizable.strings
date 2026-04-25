@@ -1,0 +1,132 @@
+/* Toast displayed to user after copy url pressed. */
+"AppMenuCopyURLConfirmMessage" = "URL को क्लिपबोर्ड पर कॉपी किया गया";
+
+/* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
+"AppMenuViewDesktopSiteTitleString" = "डेस्कटॉप साइट का अनुरोध करें";
+
+/* Label for the button, displayed in the menu, used to request the mobile version of the current website. */
+"AppMenuViewMobileSiteTitleString" = "मोबाइल साइट का अनुरोध करें";
+
+/* General settings bookmarks last visited folder toggle title */
+"BookmarksLastVisitedFolderTitle" = "पिछली बार विज़िट किए गए बुकमार्क्स दिखाएँ";
+
+/* Button confirming the cancellation of the download. */
+"CancelDownloadDialogCancel" = "रद्द करना";
+
+/* Alert dialog body when the user taps the cancel download icon. */
+"CancelDownloadDialogMessage" = "क्या आप वाकई इस डाउनलोड को रद्द करना चाहते हैं?";
+
+/* Button declining the cancellation of the download. */
+"CancelDownloadDialogResume" = "फिर से शुरू करें";
+
+/* Alert dialog title when the user taps the cancel download icon. */
+"CancelDownloadDialogTitle" = "डाउनलोड रद्द करें";
+
+/* Cancel button */
+"CancelString" = "रद्द करना";
+
+/* The button text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedButtonText" = "स्विच";
+
+/* The label text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedLabelText" = "नया टैब खोला गया";
+
+/* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
+"DownloadCancelledToastLabelText" = "डाउनलोड रद्द किया गया";
+
+/* The label text in the Download Failed toast for showing confirmation that the download has failed. */
+"DownloadFailedToastLabelText" = "डाउनलोड नहीं हो सका";
+
+/* The description text in the Download progress toast for showing the number of files (1$) and download progress (2$). This string only consists of two placeholders for purposes of displaying two other strings side-by-side where 1$ is Downloads.Toast.MultipleFiles.DescriptionText and 2$ is Downloads.Toast.Progress.DescriptionText. This string should only consist of the two placeholders side-by-side separated by a single space and 1$ should come before 2$ everywhere except for right-to-left locales. */
+"DownloadMultipleFilesAndProgressToastDescriptionText" = "%1$@ %2$@";
+
+/* The description text in the Download progress toast for showing the number of files when multiple files are downloading. */
+"DownloadMultipleFilesToastDescriptionText" = "%d फ़ाइलों में से 1";
+
+/* The description text in the Download progress toast for showing the downloaded file size (1$) out of the total expected file size (2$). */
+"DownloadProgressToastDescriptionText" = "%1$@/%2$@";
+
+/* The button to open a new tab with the Downloads home panel */
+"DownloadsButtonTitle" = "डाउनलोड";
+
+/* Question shown to user when tapping a link that opens the App Store app */
+"ExternalLinkAppStoreConfirmationTitle" = "इस लिंक को App Store ऐप में खोलें?";
+
+/* The button to open a new tab with the copied link */
+"GoButtonTittle" = "जाएँ";
+
+/* Button to not save the user's password */
+"LoginsHelperDontSaveButtonTitle" = "सेव न करें";
+
+/* Button to not update the user's password */
+"LoginsHelperDontUpdateButtonTitle" = "अपडेट न करें";
+
+/* Button to save the user's password */
+"LoginsHelperSaveLoginButtonTitle" = "लॉगिन सेव करें";
+
+/* Button to update the user's password */
+"LoginsHelperUpdateButtonTitle" = "अपडेट करें";
+
+/* OK button */
+"OKString" = "ठीक है";
+
+/* Accessibility message e.g. spoken by VoiceOver when Reader Mode becomes available. */
+"ReaderModeAvailableVoiceOverAnnouncement" = "रीडर मोड उपलब्ध है";
+
+/* Accessibility label for button resetting font size in display settings of reader mode */
+"ReaderModeResetFontSizeAccessibilityLabel" = "टेक्स्ट का आकार रीसेट करें";
+
+/* Prompt for saving a password with no username. The parameter is the hostname of the site. */
+"SaveLoginPrompt" = "%@ के लिए पासवर्ड रीसेट करें?";
+
+/* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
+"SaveLoginUsernamePrompt" = "%2$@ के लिए लॉगिन %1$@ सेव करें?";
+
+/* OK button to dismiss the error prompt. */
+"ScanQRCodeErrorOKButton" = "ठीक है";
+
+/* Text for the instructions label, displayed in the QR scanner view */
+"ScanQRCodeInstructionsLabel" = "स्कैन करने के लिए QR कोड को फ़ेम में रखें";
+
+/* Text of the prompt that is shown to the user when the data is invalid */
+"ScanQRCodeInvalidDataErrorMessage" = "डेटा अमान्य है";
+
+/* Text of the prompt user to setup the camera authorization. */
+"ScanQRCodePermissionErrorMessage" = "कृपया ‘सेटिंग’ -> ‘प्राइवेसी’ -> ‘कैमरा’ में जाकर Brave को अपने डिवाइस का कैमरा ऐक्सेस करने की अनुमति दें।";
+
+/* Title for the QR code scanner view. */
+"ScanQRCodeViewTitle" = "QR कोड स्कैन करें";
+
+/* General settings section title */
+"SettingsGeneralSectionTitle" = "सामान्य";
+
+/* Button displayed at the top of the search settings. */
+"SettingsSearchDoneButton" = "पूर्ण";
+
+/* The button to undo the delete all tabs */
+"TabsDeleteAllUndoAction" = "अनकिया करें";
+
+/* The label indicating that all the tabs were closed */
+"TabsDeleteAllUndoTitle" = "%d टैब बंद किया गया (किए गए)";
+
+/* Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorDismiss" = "ठीक है";
+
+/* Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorMessage" = "वॉलेट में पास जोड़ते समय कोई गड़बड़ी हुई। कृपया बाद में कोशिश करें।";
+
+/* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorTitle" = "पास नहीं जोड़ा जा सका";
+
+/* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
+"UnableToOpenURLError" = "Brave पेज को नहीं खोल सकता, क्योंकि इसका ऐड्रेस अमान्य है।";
+
+/* Title of the message shown when the user attempts to navigate to an invalid link. */
+"UnableToOpenURLErrorTitle" = "पेज नहीं खोला जा सकता";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginPrompt" = "%2$@ के लिए लॉगिन %1$@ अपडेट करें?";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginUsernamePrompt" = "%2$@ के लिए लॉगिन %1$@ अपडेट करें?";
+

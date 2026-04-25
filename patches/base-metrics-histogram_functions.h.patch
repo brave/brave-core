@@ -1,0 +1,12 @@
+diff --git a/base/metrics/histogram_functions.h b/base/metrics/histogram_functions.h
+index 16e9aeaea73d3ddcad45ec59c5fd374a9b54fd20..529d0df5fcbf0b581a5703fdc2552a85046a40d9 100644
+--- a/base/metrics/histogram_functions.h
++++ b/base/metrics/histogram_functions.h
+@@ -86,6 +86,7 @@ void UmaHistogramEnumeration(const StringType& name, T sample) {
+                 "Enumeration's kMaxValue is out of range of "
+                 "LinearHistogram::kBucketCount_MAX. Use a sparse histogram "
+                 "instead.");
++  BRAVE_HISTOGRAM_FUNCTIONS_UMA_HISTOGRAM_ENUMERATION
+   DCHECK_LE(static_cast<uintmax_t>(sample),
+             static_cast<uintmax_t>(T::kMaxValue));
+   return UmaHistogramExactLinear(name, static_cast<int>(sample), kBucketCount);

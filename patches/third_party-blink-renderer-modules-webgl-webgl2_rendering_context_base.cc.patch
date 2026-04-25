@@ -1,0 +1,28 @@
+diff --git a/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc b/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc
+index 18aaa25ad71c65f717ca58a936bd1c78a6a537ec..da4fb0927d0852ef80627a3ff4671f35e8d73122 100644
+--- a/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc
++++ b/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc
+@@ -4774,6 +4774,7 @@ ScriptValue WebGL2RenderingContextBase::getParameter(ScriptState* script_state,
+                                                      GLenum pname) {
+   if (isContextLost())
+     return ScriptValue::CreateNull(script_state->GetIsolate());
++  BRAVE_WEBGL2_RENDERING_CONTEXT_BASE_GETPARAMETER
+   switch (pname) {
+     case GL_SHADING_LANGUAGE_VERSION: {
+       return WebGLAny(
+@@ -5384,6 +5385,7 @@ ScriptValue WebGL2RenderingContextBase::getFramebufferAttachmentParameter(
+   if (isContextLost() || !ValidateGetFramebufferAttachmentParameterFunc(
+                              kFunctionName, target, attachment))
+     return ScriptValue::CreateNull(script_state->GetIsolate());
++  BRAVE_WEBGL2_RENDERING_CONTEXT_BASE
+ 
+   WebGLFramebuffer* framebuffer_binding = GetFramebufferBinding(target);
+   DCHECK(!framebuffer_binding || framebuffer_binding->Object());
+@@ -5602,6 +5604,7 @@ ScriptValue WebGL2RenderingContextBase::getTexParameter(
+     GLenum pname) {
+   if (isContextLost() || !ValidateTextureBinding("getTexParameter", target))
+     return ScriptValue::CreateNull(script_state->GetIsolate());
++  BRAVE_WEBGL2_RENDERING_CONTEXT_BASE
+ 
+   switch (pname) {
+     case GL_TEXTURE_WRAP_R:

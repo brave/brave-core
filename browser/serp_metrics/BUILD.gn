@@ -1,0 +1,143 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("serp_metrics") {
+  public = [
+    "profile_attributes_time_period_store.h",
+    "profile_attributes_time_period_store_factory.h",
+    "serp_metrics_all_profiles_aggregator.h",
+    "serp_metrics_migration.h",
+    "serp_metrics_service_factory.h",
+    "serp_metrics_tab_helper.h",
+  ]
+
+  sources = [
+    "profile_attributes_time_period_store.cc",
+    "profile_attributes_time_period_store_factory.cc",
+    "serp_metrics_all_profiles_aggregator.cc",
+    "serp_metrics_migration.cc",
+    "serp_metrics_tab_helper.cc",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/serp_metrics",
+    "//brave/components/serp_metrics/time_period_storage",
+    "//chrome/browser/profiles:profile",
+    "//components/search_engines",
+    "//content/public/browser",
+  ]
+
+  deps = [
+    "//brave/browser:browser_process",
+    "//brave/components/constants",
+    "//brave/components/serp_metrics:features",
+    "//brave/components/serp_metrics:prefs",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/profiles:profile_util",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//ui/base",
+    "//url",
+  ]
+}
+
+static_library("impl") {
+  sources = [ "serp_metrics_service_factory.cc" ]
+
+  deps = [
+    ":serp_metrics",
+    "//base",
+    "//chrome/browser:browser_process",
+    "//chrome/browser:browser_public_dependencies",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/profiles:profile_util",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//content/public/browser",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+
+  sources = [ "serp_metrics_tab_helper_browsertest.cc" ]
+
+  deps = [
+    ":serp_metrics",
+    "//base",
+    "//base/test:test_support",
+    "//brave/browser/serp_metrics",
+    "//brave/components/constants",
+    "//brave/components/serp_metrics",
+    "//brave/components/serp_metrics:features",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/profiles/keep_alive",
+    "//chrome/browser/search_engines",
+    "//chrome/browser/sessions",
+    "//chrome/browser/ui",
+    "//chrome/test:test_support",
+    "//components/prefs",
+    "//components/prefs:test_support",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//net",
+    "//net:test_support",
+    "//testing/gtest",
+    "//third_party/abseil-cpp:absl",
+  ]
+
+  if (!is_android) {
+    deps += [ "//components/keep_alive_registry" ]
+  }
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "profile_attributes_time_period_store_unittest.cc",
+    "serp_metrics_all_profiles_aggregator_unittest.cc",
+    "serp_metrics_migration_unittest.cc",
+  ]
+
+  deps = [
+    ":serp_metrics",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/constants",
+    "//brave/components/serp_metrics",
+    "//brave/components/serp_metrics:prefs",
+    "//brave/components/serp_metrics/time_period_storage",
+    "//chrome/browser/profiles:profile_util",
+    "//components/prefs",
+    "//components/prefs:test_support",
+    "//content/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}
+
+source_set("test_support") {
+  testonly = true
+
+  public = [ "serp_metrics_all_profiles_aggregator_mock.h" ]
+
+  sources = [ "serp_metrics_all_profiles_aggregator_mock.cc" ]
+
+  public_deps = [
+    ":serp_metrics",
+    "//brave/components/serp_metrics",
+    "//testing/gmock",
+  ]
+
+  deps = [
+    "//chrome/browser/profiles:profile_util",
+    "//components/prefs",
+  ]
+}

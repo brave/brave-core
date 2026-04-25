@@ -1,0 +1,76 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_ads/core/internal/common/net/http/http_status_code_util.h"
+
+#include "base/containers/fixed_flat_set.h"
+#include "base/strings/string_number_conversions.h"
+#include "net/http/http_status_code.h"
+#include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
+
+// npm run test -- brave_unit_tests --filter=BraveAds*
+
+namespace brave_ads {
+
+TEST(BraveAdsHttpStatusCodeUtilTest, HttpStatusCodeClass) {
+  // Act & Assert
+  EXPECT_EQ(HttpStatusCodeClassType::kInformationalResponse,
+            HttpStatusCodeClass(100));
+  EXPECT_EQ(HttpStatusCodeClassType::kSuccess,
+            HttpStatusCodeClass(/*200*/ net::HTTP_OK));
+  EXPECT_EQ(HttpStatusCodeClassType::kRedirection,
+            HttpStatusCodeClass(/*304*/ net::HTTP_NOT_MODIFIED));
+  EXPECT_EQ(HttpStatusCodeClassType::kClientError,
+            HttpStatusCodeClass(/*404*/ net::HTTP_NOT_FOUND));
+  EXPECT_EQ(HttpStatusCodeClassType::kServerError,
+            HttpStatusCodeClass(/*500*/ net::HTTP_INTERNAL_SERVER_ERROR));
+  EXPECT_EQ(HttpStatusCodeClassType::kNonsensical, HttpStatusCodeClass(600));
+  EXPECT_EQ(HttpStatusCodeClassType::kNonsensical, HttpStatusCodeClass(99));
+  EXPECT_EQ(HttpStatusCodeClassType::kNonsensical, HttpStatusCodeClass(-1));
+}
+
+TEST(BraveAdsHttpStatusCodeUtilTest, IsSuccessfulHttpStatusCode) {
+  // Act & Assert
+  for (int i = /*200*/ net::HTTP_OK; i < net::HTTP_STATUS_CODE_MAX; ++i) {
+    EXPECT_EQ(IsSuccessfulHttpStatusCode(i), i < /*400*/ net::HTTP_BAD_REQUEST);
+  }
+}
+
+TEST(BraveAdsHttpStatusCodeUtilTest, HttpStatusCodeToString) {
+  // Arrange
+  static constexpr auto kAllowedHttpStatusCodes = base::MakeFixedFlatSet<int>({
+      400,  // Bad Request.
+      401,  // Unauthorized.
+      403,  // Forbidden.
+      404,  // Not Found.
+      407,  // Proxy Authentication Required.
+      408,  // Request Timeout.
+      429,  // Too Many Requests.
+      451,  // Unavailable For Legal Reasons.
+      500,  // Internal Server Error.
+      502,  // Bad Gateway.
+      503,  // Service Unavailable.
+      504   // Gateway Timeout.
+  });
+
+  // Act & Assert
+  for (int i = 0; i <= net::HTTP_STATUS_CODE_MAX; ++i) {
+    std::optional<std::string> http_status_code = HttpStatusCodeToString(i);
+    if (!http_status_code) {
+      // Nonsensical HTTP status code.
+      continue;
+    }
+
+    if (kAllowedHttpStatusCodes.contains(i)) {
+      EXPECT_EQ(base::NumberToString(i), http_status_code);
+    } else {
+      EXPECT_EQ(absl::StrFormat("%dxx", /*http_status_code_class*/ i / 100),
+                http_status_code);
+    }
+  }
+}
+
+}  // namespace brave_ads

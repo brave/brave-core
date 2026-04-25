@@ -1,0 +1,10 @@
+Name: phf_codegen
+URL: https://crates.io/crates/phf_codegen
+Version: 0.8.0
+Revision: 81c7cc5b48649108428671d3b8ad151f6fbdb359
+License: MIT
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: Codegen library for PHF types

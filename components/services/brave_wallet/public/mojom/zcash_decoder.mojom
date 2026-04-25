@@ -1,0 +1,103 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_wallet.zcash.mojom;
+
+struct ZCashUtxo {
+  string address;
+  array<uint8> tx_id;
+  int32 index;
+  array<uint8> script;
+  int64 value_zat;
+  uint32 height;
+};
+
+struct GetAddressUtxosResponse {
+  array<ZCashUtxo> address_utxos;
+};
+
+struct BlockID {
+  uint32 height;
+  array<uint8> hash;
+};
+
+struct SendResponse {
+  int32 error_code;
+  string error_message;
+};
+
+struct RawTransaction {
+  array<uint8> data;
+  uint64 height;
+};
+
+struct TreeState {
+  string network;
+  uint32 height;
+  string hash;
+  uint32 time;
+  string saplingTree;
+  string orchardTree;
+};
+
+struct CompactOrchardAction {
+  array<uint8, 32> nullifier;
+  array<uint8, 32> cmx;
+  array<uint8, 32> ephemeral_key;
+  array<uint8, 52> ciphertext;
+};
+
+struct ChainMetadata {
+  uint32 orchard_commitment_tree_size;
+};
+
+struct CompactTx {
+  uint64 index;
+  array<uint8> hash;
+  uint32 fee;
+  array<CompactOrchardAction> orchard_actions;
+};
+
+struct CompactBlock {
+  uint32 proto_version;
+  uint32 height;
+  array<uint8> hash;
+  array<uint8> prev_hash;
+  uint32 time;
+  array<uint8> header;
+  array<CompactTx> vtx;
+  ChainMetadata chain_metadata;
+};
+
+struct SubtreeRoot {
+  array<uint8> root_hash;
+  array<uint8> complete_block_hash;
+  uint32 complete_block_height;
+};
+
+struct LightdInfo {
+  string consensusBranchId;
+
+  // Other fields mentioned in
+  // https://github.com/zcash/lightwalletd/blob/1e63bee7614d8fd2be79c0ee13008f0f4aaaebbd/walletrpc/service.proto#L75C1-L93C1
+  // are skipped for now.
+};
+
+interface ZCashDecoder {
+  ParseBlockID(string data) => (BlockID? value);
+
+  ParseGetAddressUtxos(string data) => (GetAddressUtxosResponse? value);
+
+  ParseSendResponse(string data) => (SendResponse? value);
+
+  ParseRawTransaction(string data) => (RawTransaction? tx);
+
+  ParseTreeState(string data) => (TreeState? tree_state);
+
+  ParseCompactBlocks(array<string> data)
+      => (array<CompactBlock>? compact_blocks);
+
+  ParseLightdInfo(string data) => (LightdInfo? lightd_info);
+};

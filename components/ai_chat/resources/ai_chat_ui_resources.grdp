@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <include name="IDR_AI_CHAT_UI_HTML" file="${root_gen_dir}/brave/components/ai_chat/resources/preprocessed/page/ai_chat_ui.html"
+    use_base_dir="false"
+    type="BINDATA" />
+  <include name="IDR_AI_CHAT_UI_CSS" file="../ai_chat/resources/page/styles.css" type="BINDATA" />
+  <include name="IDR_AI_CHAT_UNTRUSTED_CONVERSATION_UI_HTML"
+    file="${root_gen_dir}/brave/components/ai_chat/resources/preprocessed/untrusted_conversation_frame/untrusted_conversation_frame.html"
+    use_base_dir="false"
+    type="BINDATA" />
+  <include name="IDR_AI_CHAT_UI_MANIFEST" file="../ai_chat/resources/page/manifest.webmanifest" type="BINDATA" />
+  <include name="IDR_AI_CHAT_UI_PWA_ICON" file="../ai_chat/resources/page/pwa_icon.svg" type="BINDATA" />
+  <include name="IDR_AI_CHAT_CODE_SANDBOX_HTML" file="${root_gen_dir}/brave/components/ai_chat/resources/preprocessed/code_sandbox/code_sandbox.html"
+    use_base_dir="false"
+    type="BINDATA" />
+  <include name="IDR_AI_CHAT_CHART_DISPLAY_HTML" file="${root_gen_dir}/brave/components/ai_chat/resources/preprocessed/chart_display/chart_display.html"
+    use_base_dir="false"
+    type="BINDATA" />
+  <include name="IDR_AI_CHAT_BIGNUMBER_JS" file="../../node_modules/bignumber.js/bignumber.js"
+    type="BINDATA" />
+</grit-part>

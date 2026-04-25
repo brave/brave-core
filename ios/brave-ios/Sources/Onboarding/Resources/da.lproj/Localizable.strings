@@ -1,0 +1,66 @@
+/* A button title shown below language introducing the Brave Playlist feature. i.e. 'Discover how to use use this feature' */
+"advanceInitialOnboardingButtonTitle" = "Find ud af hvordan";
+
+/* A button title that when tapped will advance the onboarding to guide a user to add some content to Playlist */
+"advanceStep2OnboardingButtonTitle" = "Prøv det!";
+
+/* A button that allows the user to disable the brave translate feature. When pressed, the page will not be automatically translated to the user's language. */
+"BraveTranslateOnboarding.disableTranslateButtonTitle" = "Deaktiver denne funktion";
+
+/* A text element that describes the translation feature and explains that hte user might have to download or configure languages on their device. */
+"BraveTranslateOnboarding.translateDescription" = "Sider kan oversættes til sprog, der understøttes af din iOS-enhed. Du skal muligvis konfigurere sprog, hvis det er første gang, du bruger denne funktion.";
+
+/* A text element that explains we're translating pages. */
+"BraveTranslateOnboarding.translateTitle" = "Oversættelse af sider";
+
+/* A button title that when tapped opens Brave Playlist */
+"confirmationActionButtonTitle" = "Tag mig til min Playlist";
+
+/* Shown above a button that will let the user open the playlist feature */
+"confirmationPrompt" = "Lad os nu se på din Playlist.";
+
+/* Shown below a title that confirms the user completed the task of adding something to playlist. %@ will be replaced with the folder the content was added to. i.e. 'Content added to Play Later' */
+"confirmationSubtitle" = "Indhold føjet til %@";
+
+/* Guides the user to tap on an icon where the onboarding is pointing to. '%@' will be replaced with said icon. */
+"confirmationTitle" = "Godt klaret";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissOnboardingButtonTitle" = "Luk";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep2OnboardingButtonTitle" = "Måske senere ";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep4OnboardingButtonTitle" = "Luk";
+
+/* A title shown on the first 2 steps of onboarding for Brave Playlist. Brave Playlist is a product name */
+"introducingBravePlaylist" = "Vi introducerer Brave Playlist";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleOne" = "Skab spillelister med dit yndlingsindhold. Spar mobildata. Og afspil reklamefrit.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleThree" = "Billede-i-billede. Baggrundsafspilning. Styr fra låseskærmen. Og mere…";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleTwo" = "Behold dit fokus: Tilføj videoer, mens you browser, og se dem senere.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleOne" = "Føj videoer til Brave Playlist. Afspilning når som helst. Selv offline";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleThree" = "Afspilning er bedre i en spilleliste";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleTwo" = "Tryk på knappen for at tilføje videoer til en spilleliste";
+
+/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
+"playlistOnboardingDescription" = "Opret afspilningslister med indhold, du elsker. Tilføj medier fra enhver side.\nSpil når som helst. Selv offline!";
+
+/* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
+"userActionPrompt" = "Tryk på %@ for at tilføje dit første element";
+
+/* Will be shown next to an icon inside of some other text. i.e. "Tap 'Add to Playlist' to add your first item" */
+"userActionPromptFill" = "Tilføj til spilleliste";
+

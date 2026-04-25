@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2022 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. */ -->
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+      android:orientation="vertical"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="?android:attr/activatedBackgroundIndicator">
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/network_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+          android:layout_weight="1"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/add_network"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/brave_wallet_add_network"
+        android:layout_margin="16dp"
+        style="@style/BraveWalletOnboardingButton"/>
+
+    </LinearLayout>

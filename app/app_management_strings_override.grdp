@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<grit-part>
+  <if expr="is_macosx">
+    </if>
+  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_INSTALL_SOURCE_WEB_STORE" desc="Text for Web Store installation source">
+    Web Store
+  </message>
+  <if expr="is_win">
+    </if>
+  <if expr="is_chromeos">
+    </if>
+  <if expr="is_macosx">
+    </if>
+  <if expr="is_fuchsia or is_linux">
+    </if>
+
+  </grit-part>

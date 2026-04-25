@@ -1,0 +1,77 @@
+import("//brave/components/common/typescript.gni")
+import("//brave/resources/brave_grit.gni")
+import("//build/config/features.gni")
+import("//extensions/buildflags/buildflags.gni")
+import("//tools/grit/repack.gni")
+
+assert(enable_extensions)
+
+pack_web_resources("generated_resources") {
+  resource_name = "brave_extension"
+  output_dir = "$root_gen_dir/brave/components/brave_extension"
+
+  # need wepack and GRD generation first
+  deps = [ "extension/brave_extension" ]
+}
+
+action("web_discovery_project_resources") {
+  script = "//brave/script/web_discovery_project.py"
+
+  gen_build_dir = "$root_gen_dir/brave/web-discovery-project"
+
+  args = [
+    "--build",
+    "--output_path",
+    rebase_path(gen_build_dir),
+  ]
+
+  inputs = [
+    # If you are making manual changes to WDP scripts in-place
+    # then you'll have to touch any of these files to cause a rebuild.
+    # TODO(petemill): Have WDP use webpack (or another way) to spit out
+    # a depfile which automatically lists all the input files used to generate
+    # the WDP build.
+    "//brave/vendor/web-discovery-project/.git/HEAD",
+    "//brave/vendor/web-discovery-project/package.json",
+  ]
+
+  outputs = [
+    # There are more outputs than this, and they are catered to as inputs
+    # by the extension JS webpack build which generates a depfile. These
+    # are the outputs needed to be included by the GRD.
+    "$gen_build_dir/core/content-script.bundle.js",
+    "$gen_build_dir/hpnv2/worker.asmjs.bundle.js",
+    "$gen_build_dir/hpnv2/worker.wasm.bundle.js",
+    "$gen_build_dir/star.wasm",
+  ]
+}
+
+brave_grit("static_resources") {
+  source = "extension/resources.grd"
+
+  outputs = [
+    "grit/brave_extension.h",
+    "grit/brave_extension_resources_map.cc",
+    "grit/brave_extension_resources_map.h",
+    "brave_extension_static.pak",
+  ]
+
+  deps = [
+    ":web_discovery_project_resources",
+    "extension/brave_extension",
+  ]
+}
+
+repack("resources") {
+  deps = [
+    ":generated_resources",
+    ":static_resources",
+  ]
+
+  sources = [
+    "$root_gen_dir/brave/components/brave_extension/brave_extension_generated.pak",
+    "$root_gen_dir/brave/components/brave_extension/brave_extension_static.pak",
+  ]
+
+  output = "$root_gen_dir/brave/components/brave_extension/brave_extension_resources.pak"
+}

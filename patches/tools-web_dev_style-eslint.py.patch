@@ -1,0 +1,12 @@
+diff --git a/tools/web_dev_style/eslint.py b/tools/web_dev_style/eslint.py
+index 7b2eb6695cb4086c22529ec2d17ec6c0d49d3d88..3ddf70460f1588c0023ebc850c72d017247a8d00 100755
+--- a/tools/web_dev_style/eslint.py
++++ b/tools/web_dev_style/eslint.py
+@@ -33,6 +33,7 @@ def Run(os_path=None, args=None):
+   ] + args)
+ 
+ 
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
+ if __name__ == '__main__':
+   import os
+   import sys

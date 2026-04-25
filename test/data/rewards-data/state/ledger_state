@@ -1,0 +1,47 @@
+{
+  "walletInfo": {
+    "paymentId": "eea767c4-cd27-4411-afd4-78a9c6b54dbc",
+    "addressCARD_ID": "cf5b388c-eea2-4c98-bec2-f8daf39881a4",
+    "keyInfoSeed": "PgFfhazUJuf8dX+8ckTjrtK1KMLyrfXmKJFDiS1Ad3I="
+  },
+  "bootStamp": 1590484778,
+  "reconcileStamp": 2593076778,
+  "personaId": "1078dde5-4677-40fc-b2f0-2ac339d8a466",
+  "userId": "1078dde546770fcb2f02ac339d8a466",
+  "registrarVK": "==========ANONLOGIN_VK_BEG==========\n8yhzQlvYiPhQJ5hKtQ8kdFjU/1P+B8TYQRsxjNYdFIJ 2k55DDw1jpjKjYALyrDJc7OgAoZzDDCQ1bcOzSbaXBg 1\nAJMNZAr7IwBUIdcr1IFRkuXiEv4YzUWVv6++wS7ZDYQ 2o+C8U6rBSR6O/nIvZR8OrQKIO9msoQRVQ2E4Uf4M6j 1\n37YhTifFC9YgdRYAGT1W94rrTTElz447mu6V7c5NL+a 5kXmy4Na5/blHuHsrWQwv900f0f6eH9lcYl+EvabeyW 1\n880jET7j+7yzSOat6/isXrqFsGzlLOKeSIx4Yij4Qur EHYJB3wCbg9ahXPO8ZqOvD5AVofw2ylBfLxIcJJBuY 1\n8a2t0BeYYG5vQfJBXc1rFTCn+DlnrjTcAcq3IvO349z 2WZgZMaQ02WQSQbWXwoS4oAk7qsGY0S780cNuFrlGLR Al6i0Yh+cKJFEgUbFnUIRMADSA0ai/m+vY7b3ftpfAd 11XTYea4Tn6yozB8M8zxcVYcZ6wysLJOTPyCHfAhypb 1 0\n===========ANONLOGIN_VK_END==========",
+  "preFlight": "==========ANONLOGIN_CRED_BEG==========\n1078dde546770fcb2f02ac339d8a466\nAY4p9OJ39vP52/GKmaNqEU8j279/6J6alsp4NY6BqLd\n0 0 0\n0\nF93p+zzOqx9F/agr2SKaReEV7lddaw79mUZGZGd3Mi0\n===========ANONLOGIN_CRED_END==========",
+  "fee_amount": 20.0,
+  "user_changed_fee": true,
+  "rewards_enabled": true,
+  "auto_contribute": true,
+  "walletProperties": {
+    "parameters": {
+      "adFree": {
+        "fee": {
+          "BAT": 10.0
+        },
+        "choices": {
+          "BAT": [
+            5.0,
+            10.0,
+            15.0,
+            20.0,
+            25.0,
+            50.0,
+            100.0
+          ]
+        }
+      },
+      "defaultTipChoices": [
+        "1.000000",
+        "10.000000",
+        "50.000000"
+      ],
+      "defaultMonthlyChoices": [
+        "1.000000",
+        "10.000000",
+        "50.000000"
+      ]
+    }
+  }
+}

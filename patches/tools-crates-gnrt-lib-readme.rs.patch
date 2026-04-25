@@ -1,0 +1,34 @@
+diff --git a/tools/crates/gnrt/lib/readme.rs b/tools/crates/gnrt/lib/readme.rs
+index 79db36d566af19db4483e9c2bf7ef28063a90ff2..40393decf58218b18bf3302e751b134c19236372 100644
+--- a/tools/crates/gnrt/lib/readme.rs
++++ b/tools/crates/gnrt/lib/readme.rs
+@@ -120,6 +120,7 @@ fn readme_file_from_package<'a>(
+     });
+     let license_files = if let Some(config_license_files) = config_license_files {
+         for path in config_license_files.iter() {
++          if true { continue; }
+             ensure!(
+                 does_license_file_exist(path)?,
+                 "`gnrt_config.toml` for `{crate_name}` crate listed \
+@@ -139,7 +140,7 @@ fn readme_file_from_package<'a>(
+         Vec::new()
+     };
+ 
+-    if license_files.is_empty() {
++    if license_files.is_empty() && false {
+         bail!(
+             r#"License file not found for crate `{name}-{version}`.
+ 
+@@ -246,6 +247,12 @@ enum LicenseKind {
+     /// https://spdx.org/licenses/BSL-1.0.html
+     #[strum(serialize = "BSL-1.0")]
+     BSL,
++
++    #[strum(serialize = "Unicode-DFS-2016")]
++    UnicodeDfs2016,
++
++    #[strum(serialize = "BSD-2-Clause")]
++    BSD2,
+ }
+ 
+ impl<'a> TryFrom<&'a spdx::LicenseReq> for LicenseKind {

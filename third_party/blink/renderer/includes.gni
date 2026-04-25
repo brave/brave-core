@@ -1,0 +1,73 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# common includes which can help minimize patches for
+# src/third_party/blink/renderer/core/BUILD.gn
+
+import("//brave/third_party/blink/renderer/core/brave_page_graph/sources.gni")
+
+brave_blink_renderer_platform_visibility = []
+
+brave_blink_renderer_platform_public_deps = []
+
+brave_blink_renderer_platform_sources = [
+  "//brave/third_party/blink/renderer/platform/brave_audio_farbling_helper.cc",
+  "//brave/third_party/blink/renderer/platform/brave_audio_farbling_helper.h",
+]
+
+brave_blink_renderer_platform_deps = []
+
+brave_blink_renderer_core_visibility =
+    [ "//brave/third_party/blink/renderer/*" ]
+
+brave_blink_renderer_core_public_deps = [
+  "//brave/components/brave_page_graph/common:buildflags",
+  "//brave/third_party/blink/renderer",
+]
+
+brave_blink_renderer_core_sources = [
+  "//brave/third_party/blink/renderer/core/farbling/brave_session_cache.cc",
+  "//brave/third_party/blink/renderer/core/farbling/brave_session_cache.h",
+  "//brave/third_party/blink/renderer/core/resource_pool_limiter/resource_pool_limiter.cc",
+  "//brave/third_party/blink/renderer/core/resource_pool_limiter/resource_pool_limiter.h",
+]
+
+brave_blink_renderer_core_deps =
+    [ "//brave/components/brave_shields/core/common/" ]
+
+if (!is_android && !is_ios) {
+  brave_blink_renderer_core_deps += [ "//brave/components/brave_geolocation_permission/common:brave_geolocation_permission_blink" ]
+}
+
+brave_blink_renderer_core_public_deps += brave_page_graph_core_public_deps
+brave_blink_renderer_core_sources += brave_page_graph_core_sources
+brave_blink_renderer_core_deps += brave_page_graph_core_deps
+
+# common includes which can help minimize patches for
+# src/third_party/blink/renderer/modules/BUILD.gn
+brave_blink_renderer_modules_visibility =
+    [ "//brave/third_party/blink/renderer/*" ]
+
+brave_blink_sub_modules = [
+  "//brave/third_party/blink/renderer/modules/brave",
+  "//brave/third_party/blink/renderer/modules/global_privacy_control",
+]
+
+# common includes which can help minimize patches for
+# third_party/blink/renderer/bindings/idl_in_modules.gni
+brave_static_idl_files_in_modules = [
+  "//brave/third_party/blink/renderer/modules/brave/brave.idl",
+  "//brave/third_party/blink/renderer/modules/brave/navigator_brave.idl",
+  "//brave/third_party/blink/renderer/modules/brave/worker_navigator_brave.idl",
+  "//brave/third_party/blink/renderer/modules/global_privacy_control/navigator_global_privacy_control.idl",
+  "//brave/third_party/blink/renderer/modules/global_privacy_control/worker_navigator_global_privacy_control.idl",
+]
+
+# common includes which can help minimize patches for
+# third_party/blink/renderer/bindings/generated_in_modules.gni
+brave_generated_interface_sources_in_modules = [
+  "$root_gen_dir/third_party/blink/renderer/bindings/modules/v8/v8_brave.h",
+  "$root_gen_dir/third_party/blink/renderer/bindings/modules/v8/v8_brave.cc",
+]

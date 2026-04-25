@@ -1,0 +1,12 @@
+diff --git a/components/crx_file/BUILD.gn b/components/crx_file/BUILD.gn
+index 27d93175c2eaa99d35ffd0a99e9609a9f894a29b..9cb6c528dee93e639caf1b0c94c9009cb95035e8 100644
+--- a/components/crx_file/BUILD.gn
++++ b/components/crx_file/BUILD.gn
+@@ -77,7 +77,6 @@ proto_library("crx3_proto") {
+ 
+ if (host_toolchain == current_toolchain) {
+   executable("crx3_build_action") {
+-    testonly = true
+ 
+     sources = [ "crx_build_action_main.cc" ]
+ 

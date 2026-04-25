@@ -1,0 +1,27 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* This override adds a CSS custom property for chip padding to allow
+   customization of the internal padding around label and icon.
+
+   The 'revert' fallback ensures that when the custom property is not set,
+   the padding reverts to Chromium's original value (currently 'padding: 0 8px').
+   Using 'revert' instead of a hardcoded value makes this override future-proof,
+   automatically adapting if Chromium changes their default padding. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #import=./cr_chip-chromium.css.js
+ * #scheme=relative
+ * #include=cr-chip-chromium
+ * #css_wrapper_metadata_end */
+
+button {
+  padding-inline: var(--cr-chip-padding-inline, revert);
+}
+
+button[selected] {
+  padding-inline: var(--cr-chip-padding-inline, revert);
+}

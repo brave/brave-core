@@ -1,0 +1,21 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# TODO(sszaloki): https://github.com/brave/brave-browser/issues/46286
+# Try to componentize zxcvbn_data_component_installer.{h,cc}, and upstream the change.
+source_set("zxcvbn_data_component_installer") {
+  sources = [
+    "//chrome/browser/component_updater/zxcvbn_data_component_installer.cc",
+    "//chrome/browser/component_updater/zxcvbn_data_component_installer.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/component_updater",
+    "//components/password_manager/core/common:features",
+    "//components/update_client",
+    "//third_party/zxcvbn-cpp",
+  ]
+}

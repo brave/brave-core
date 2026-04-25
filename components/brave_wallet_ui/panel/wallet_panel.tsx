@@ -1,0 +1,51 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+import * as React from 'react'
+import { createRoot } from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import { initLocale } from 'brave-ui'
+import { setIconBasePath } from '@brave/leo/react/icon'
+
+import { loadTimeData } from '../../common/loadTimeData'
+import walletDarkTheme from '../theme/wallet-dark'
+import walletLightTheme from '../theme/wallet-light'
+import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
+import store from './store'
+import * as WalletActions from '../common/actions/wallet_actions'
+import Container from './container'
+import {
+  runLocalStorageMigrations, //
+} from '../common/constants/local-storage-keys'
+setIconBasePath('chrome://resources/brave-icons')
+
+function App() {
+  React.useEffect(() => {
+    runLocalStorageMigrations()
+  }, [])
+
+  return (
+    <Provider store={store}>
+      <BraveCoreThemeProvider
+        dark={walletDarkTheme}
+        light={walletLightTheme}
+      >
+        <BrowserRouter>
+          <Container />
+        </BrowserRouter>
+      </BraveCoreThemeProvider>
+    </Provider>
+  )
+}
+
+function initialize() {
+  initLocale(loadTimeData.data_)
+  const root = createRoot(document.getElementById('mountPoint')!)
+  root.render(<App />)
+  store.dispatch(WalletActions.initialize())
+}
+
+document.addEventListener('DOMContentLoaded', initialize)

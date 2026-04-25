@@ -1,0 +1,121 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+import("//brave/browser/brave_stats/buildflags.gni")
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//build/buildflag_header.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [ "BRAVE_USAGE_SERVER=\"$brave_stats_updater_url\"" ]
+}
+
+source_set("brave_stats") {
+  sources = [
+    "//brave/browser/brave_stats/brave_stats_updater.cc",
+    "//brave/browser/brave_stats/brave_stats_updater.h",
+    "//brave/browser/brave_stats/brave_stats_updater_params.cc",
+    "//brave/browser/brave_stats/brave_stats_updater_params.h",
+    "//brave/browser/brave_stats/features.cc",
+    "//brave/browser/brave_stats/features.h",
+    "//brave/browser/brave_stats/first_run_util.cc",
+    "//brave/browser/brave_stats/first_run_util.h",
+    "//brave/browser/brave_stats/switches.h",
+  ]
+
+  public_deps = [ "//brave/components/brave_stats/browser" ]
+
+  deps = [
+    "//base",
+    "//brave/browser:browser_process",
+    "//brave/browser/brave_stats:buildflags",
+    "//brave/browser/misc_metrics",
+    "//brave/browser/serp_metrics",
+    "//brave/common",
+    "//brave/components/brave_ads/buildflags",
+    "//brave/components/brave_referrals/common",
+    "//brave/components/brave_wallet/common/buildflags",
+    "//brave/components/constants",
+    "//brave/components/misc_metrics",
+    "//brave/components/serp_metrics",
+    "//brave/components/serp_metrics:features",
+    "//brave/components/version_info",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/headless",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/profiles:profile_util",
+    "//chrome/browser/ui",
+    "//chrome/common",
+    "//components/prefs",
+    "//net",
+    "//services/network/public/cpp",
+  ]
+
+  if (enable_brave_ads) {
+    deps += [ "//brave/components/brave_ads/core" ]
+  }
+
+  if (enable_brave_wallet) {
+    deps += [
+      "//brave/components/brave_wallet/browser",
+      "//brave/components/brave_wallet/browser:pref_names",
+    ]
+  }
+}
+
+source_set("browser_tests") {
+  testonly = true
+
+  sources = [ "//brave/browser/brave_stats/brave_stats_updater_browsertest.cc" ]
+
+  deps = [
+    "//brave/browser/brave_stats",
+    "//brave/components/brave_referrals/browser",
+    "//chrome/browser",
+    "//chrome/test:test_support",
+  ]
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "//brave/browser/brave_stats/brave_stats_updater_unittest.cc",
+    "//brave/browser/brave_stats/first_run_util_unittest.cc",
+  ]
+
+  deps = [
+    "//brave/browser/brave_stats",
+    "//brave/browser/serp_metrics",
+    "//brave/browser/serp_metrics:test_support",
+    "//brave/components/brave_ads/buildflags",
+    "//brave/components/brave_referrals/browser",
+    "//brave/components/brave_stats/browser",
+    "//brave/components/brave_wallet/common/buildflags",
+    "//brave/components/misc_metrics",
+    "//chrome/browser",
+    "//chrome/browser/prefs",
+    "//chrome/browser/profiles:profile_util",
+    "//chrome/test:test_support",
+    "//components/prefs",
+  ]
+
+  if (enable_brave_ads) {
+    deps += [
+      "//brave/browser/brave_ads",
+      "//brave/components/brave_ads/core",
+    ]
+  }
+
+  if (enable_brave_wallet) {
+    deps += [
+      "//brave/components/brave_wallet/browser",
+      "//brave/components/brave_wallet/browser:pref_names",
+    ]
+  }
+}

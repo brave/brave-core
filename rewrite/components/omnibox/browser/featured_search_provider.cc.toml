@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Swap the upstream omnibox history embeddings disclaimer IDS to
+# Brave-owned strings. The disclaimer text is replaced with the
+# on-device-only wording; the trailing link text is replaced with
+# IDS_BRAVE_EMPTY_STRING so the "Learn more" link renders at zero width.
+# The IDS_BRAVE_* definitions are pulled in by the chromium_src override
+# at brave/chromium_src/components/omnibox/browser/featured_search_provider.cc.
+
+[[substitution]]
+description = 'Swap IDS_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH_LINK_TEXT to an empty string so the "Learn more" link view renders at zero width.'
+re_pattern = '\bIDS_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH_LINK_TEXT\b'
+replace = 'IDS_BRAVE_EMPTY_STRING'
+
+[[substitution]]
+description = 'Swap IDS_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH to the Brave-owned string.'
+re_pattern = '\bIDS_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH\b'
+replace = 'IDS_BRAVE_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH'

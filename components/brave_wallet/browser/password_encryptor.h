@@ -1,0 +1,72 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PASSWORD_ENCRYPTOR_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PASSWORD_ENCRYPTOR_H_
+
+#include <memory>
+#include <optional>
+#include <string>
+#include <vector>
+
+#include "base/containers/span.h"
+#include "base/functional/callback.h"
+#include "base/gtest_prod_util.h"
+#include "base/types/pass_key.h"
+#include "base/values.h"
+#include "crypto/process_bound_string.h"
+
+namespace brave_wallet {
+
+inline constexpr size_t kEncryptorNonceSize = 12;
+inline constexpr size_t kEncryptorSaltSize = 32;
+inline constexpr uint32_t kPbkdf2Iterations = 310000;
+inline constexpr int kPbkdf2KeySize = 32;
+
+// Use password derived key to encrypt/decrypt using AES-256-GCM
+class PasswordEncryptor {
+ public:
+  using PassKey = base::PassKey<PasswordEncryptor>;
+
+  PasswordEncryptor(PassKey, base::span<uint8_t> key);
+  ~PasswordEncryptor();
+  PasswordEncryptor(const PasswordEncryptor&) = delete;
+  PasswordEncryptor& operator=(const PasswordEncryptor&) = delete;
+
+  static std::unique_ptr<PasswordEncryptor> CreateEncryptor(
+      const std::string& password,
+      base::span<const uint8_t> salt);
+
+  static std::unique_ptr<PasswordEncryptor> DeriveKeyFromPasswordUsingPbkdf2(
+      const std::string& password,
+      base::span<const uint8_t> salt,
+      uint32_t iterations);
+
+  std::vector<uint8_t> Encrypt(base::span<const uint8_t> plaintext,
+                               base::span<const uint8_t> nonce);
+  base::DictValue EncryptToDict(base::span<const uint8_t> plaintext,
+                                base::span<const uint8_t> nonce);
+
+  std::optional<std::vector<uint8_t>> Decrypt(
+      base::span<const uint8_t> ciphertext,
+      base::span<const uint8_t> nonce);
+  std::optional<std::vector<uint8_t>> DecryptFromDict(
+      const base::DictValue& encrypted_value);
+
+  // This can only be used by wallet importer
+  std::optional<std::vector<uint8_t>> DecryptForImporter(
+      base::span<const uint8_t> ciphertext,
+      base::span<const uint8_t> nonce);
+
+ private:
+  FRIEND_TEST_ALL_PREFIXES(PasswordEncryptorUnitTest, DecryptForImporter);
+
+  // symmetric key used to encrypt and decrypt
+  std::vector<uint8_t, crypto::SecureAllocator<uint8_t>> key_;
+};
+
+}  // namespace brave_wallet
+
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PASSWORD_ENCRYPTOR_H_

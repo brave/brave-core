@@ -1,0 +1,170 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_helper.h"
+
+#include <algorithm>
+#include <optional>
+#include <utility>
+
+#include "base/base64.h"
+#include "base/check.h"
+#include "base/json/values_util.h"
+#include "base/time/time.h"
+#include "base/values.h"
+#include "brave/components/brave_vpn/common/brave_vpn_constants.h"
+#include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
+#include "brave/components/brave_vpn/common/pref_names.h"
+#include "brave/components/skus/browser/skus_utils.h"
+#include "components/prefs/pref_service.h"
+#include "third_party/icu/source/i18n/unicode/timezone.h"
+
+namespace brave_vpn {
+mojom::RegionPtr GetRegionPtrWithNameFromRegionList(
+    const std::string& name,
+    const std::vector<mojom::RegionPtr>& region_list) {
+  for (const auto& region : region_list) {
+    // Return if it's country precision.
+    if (region->name == name) {
+      return region.Clone();
+    } else {
+      for (const auto& city : region->cities) {
+        // Try to find from cities if |name| is country precision in |region|.
+        if (city->name == name) {
+          return city.Clone();
+        }
+      }
+    }
+  }
+
+  // We should not reach here but if service(guardian) api give wrong list,
+  // it could be crashed if we return null.
+  // Instead, return first region in the list for safe.
+  CHECK(!region_list.empty());
+  return region_list[0].Clone();
+}
+
+base::DictValue GetValueFromRegionWithoutCity(const mojom::RegionPtr& region) {
+  base::DictValue region_dict;
+  region_dict.Set(kRegionNameKey, region->name);
+  region_dict.Set(kRegionNamePrettyKey, region->name_pretty);
+  region_dict.Set(kRegionCountryKey, region->country);
+  region_dict.Set(kRegionContinentKey, region->continent);
+  region_dict.Set(kRegionCountryIsoCodeKey, region->country_iso_code);
+  region_dict.Set(kRegionPrecisionKey, region->region_precision);
+  region_dict.Set(kRegionLatitudeKey, region->latitude);
+  region_dict.Set(kRegionLongitudeKey, region->longitude);
+  region_dict.Set(kRegionServerCountKey, region->server_count);
+  region_dict.Set(kRegionSmartRoutingProxyStateKey,
+                  region->smart_routing_proxy_state);
+  return region_dict;
+}
+
+base::DictValue GetValueFromRegion(const mojom::RegionPtr& region) {
+  base::DictValue region_dict = GetValueFromRegionWithoutCity(region);
+  if (!region->cities.empty()) {
+    base::ListValue cities;
+    for (const auto& city : region->cities) {
+      cities.Append(GetValueFromRegionWithoutCity(city));
+    }
+    region_dict.Set(kRegionCitiesKey, std::move(cities));
+  }
+  return region_dict;
+}
+
+bool IsValidRegionValue(const base::DictValue& value) {
+  if (!value.FindString(kRegionNameKey) ||
+      !value.FindString(kRegionNamePrettyKey) ||
+      !value.FindString(kRegionCountryKey) ||
+      !value.FindString(kRegionContinentKey) ||
+      !value.FindString(kRegionCountryIsoCodeKey) ||
+      !value.FindString(kRegionPrecisionKey) ||
+      !value.FindList(kRegionCitiesKey) ||
+      !value.FindDouble(kRegionLatitudeKey) ||
+      !value.FindDouble(kRegionLongitudeKey) ||
+      !value.FindInt(kRegionServerCountKey) ||
+      !value.FindString(kRegionSmartRoutingProxyStateKey)) {
+    return false;
+  }
+
+  return true;
+}
+
+mojom::RegionPtr GetRegionFromValueWithoutCity(const base::DictValue& value) {
+  mojom::RegionPtr region = mojom::Region::New();
+  if (auto* name = value.FindString(brave_vpn::kRegionNameKey)) {
+    region->name = *name;
+  }
+  if (auto* name_pretty = value.FindString(brave_vpn::kRegionNamePrettyKey)) {
+    region->name_pretty = *name_pretty;
+  }
+  if (auto* country = value.FindString(brave_vpn::kRegionCountryKey)) {
+    region->country = *country;
+  }
+  if (auto* continent = value.FindString(brave_vpn::kRegionContinentKey)) {
+    region->continent = *continent;
+  }
+  if (auto* country_iso_code =
+          value.FindString(brave_vpn::kRegionCountryIsoCodeKey)) {
+    region->country_iso_code = *country_iso_code;
+  }
+  if (auto* region_precision =
+          value.FindString(brave_vpn::kRegionPrecisionKey)) {
+    region->region_precision = *region_precision;
+  }
+  if (auto latitude = value.FindDouble(brave_vpn::kRegionLatitudeKey)) {
+    region->latitude = *latitude;
+  }
+  if (auto longitude = value.FindDouble(brave_vpn::kRegionLongitudeKey)) {
+    region->longitude = *longitude;
+  }
+  if (auto server_count = value.FindInt(brave_vpn::kRegionServerCountKey)) {
+    region->server_count = *server_count;
+  }
+
+  if (auto* smart_routing_proxy_state =
+          value.FindString(brave_vpn::kRegionSmartRoutingProxyStateKey)) {
+    region->smart_routing_proxy_state = *smart_routing_proxy_state;
+  }
+
+  // |is_automatic| is calculated in runtime.
+  region->is_automatic = false;
+
+  return region;
+}
+
+mojom::RegionPtr GetRegionFromValue(const base::DictValue& value) {
+  mojom::RegionPtr region = GetRegionFromValueWithoutCity(value);
+  if (value.FindList(kRegionCitiesKey)) {
+    const auto* cities = value.FindList(kRegionCitiesKey);
+    for (const auto& city : *cities) {
+      region->cities.push_back(GetRegionFromValueWithoutCity(city.GetDict()));
+    }
+  }
+
+  return region;
+}
+
+std::vector<mojom::RegionPtr> ParseRegionList(
+    const base::ListValue& region_list) {
+  std::vector<mojom::RegionPtr> regions;
+  for (const auto& value : region_list) {
+    DCHECK(value.is_dict());
+    if (!value.is_dict()) {
+      continue;
+    }
+
+    regions.push_back(GetRegionFromValue(value.GetDict()).Clone());
+  }
+
+  // Sort region list alphabetically
+  std::sort(regions.begin(), regions.end(),
+            [](mojom::RegionPtr& a, mojom::RegionPtr& b) {
+              return (a->name_pretty < b->name_pretty);
+            });
+  return regions;
+}
+
+}  // namespace brave_vpn

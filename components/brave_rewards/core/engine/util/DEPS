@@ -1,0 +1,5 @@
+specific_include_rules = {
+  "time_util\.cc": [
+    "+brave/vendor/brave_base/random.h",
+  ]
+}

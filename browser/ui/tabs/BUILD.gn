@@ -1,0 +1,169 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/containers/buildflags/buildflags.gni")
+
+assert(is_win || is_mac || is_linux || is_chromeos || is_android)
+
+# Note: Target names in this file should match those upstream where possible.
+
+source_set("tabs_public") {
+  sources = [ "public/brave_tab_features.h" ]
+
+  public_deps = [
+    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/psst/buildflags",
+    "//chrome/browser/ui/tabs:tabs_public",
+  ]
+
+  deps = [
+    "//brave/browser/ui/views/page_action",
+    "//brave/components/containers/buildflags",
+  ]
+}
+
+if (!is_android) {
+  source_set("impl") {
+    visibility = [ "//chrome/browser" ]
+
+    sources = [ "brave_tab_features.cc" ]
+
+    deps = [
+      ":tabs_public",
+      "//brave/browser/psst",
+      "//brave/browser/ui/side_panel",
+      "//brave/browser/ui/views/page_action",
+      "//brave/components/psst/browser/content",
+      "//brave/components/psst/common",
+      "//chrome/browser/content_settings:content_settings_factory",
+      "//chrome/browser/profiles",
+      "//chrome/browser/ui/tabs:impl",
+    ]
+
+    if (enable_ai_chat) {
+      deps += [ "//brave/browser/ai_chat" ]
+    }
+
+    if (enable_containers) {
+      deps += [
+        "//brave/browser/containers",
+        "//brave/components/containers/core/browser",
+        "//brave/components/containers/core/common:features",
+      ]
+    }
+  }
+
+  # This source set is counterpart to the upstream `tab_strip` source set.
+  source_set("tab_strip") {
+    sources = [
+      "brave_tab_strip_model.cc",
+      "brave_tab_strip_model.h",
+    ]
+
+    deps = [
+      "//brave/components/tabs",
+      "//chrome/browser/ui/tabs:features",
+      "//chrome/browser/ui/tabs:tab_strip",
+    ]
+
+    public_deps = [
+      ":tree_tab",
+      "//chrome/browser:browser_public_dependencies",
+    ]
+  }
+
+  source_set("tab_menu") {
+    sources = [
+      "brave_browser_tab_menu_model_delegate.cc",
+      "brave_browser_tab_menu_model_delegate.h",
+      "brave_tab_menu_model_factory.cc",
+      "brave_tab_menu_model_factory.h",
+      "tab_menu_model_delegate.cc",
+    ]
+
+    deps = [
+      "//base",
+      "//brave/components/containers/buildflags",
+      "//chrome/browser/ui/browser_window",
+      "//chrome/browser/ui/tabs:tab_menu",
+      "//ui/compositor",
+      "//ui/views",
+    ]
+
+    if (enable_containers) {
+      sources += [
+        "containers_tab_menu_model_delegate.cc",
+        "containers_tab_menu_model_delegate.h",
+      ]
+      deps += [
+        "//brave/browser/ui/containers",
+        "//brave/components/containers/content/browser",
+        "//brave/components/containers/core/browser",
+        "//brave/components/containers/core/common",
+        "//components/tabs:public",
+      ]
+    }
+  }
+
+  source_set("tab_model") {
+    sources = [
+      "brave_split_tab_menu_model.cc",
+      "brave_split_tab_menu_model.h",
+    ]
+
+    deps = [
+      "//base",
+      "//brave/browser/ui/split_view",
+      "//brave/components/resources:strings_grit",
+      "//brave/components/vector_icons",
+      "//chrome/browser/ui/tabs",
+      "//chrome/browser/ui/tabs:tab_model",
+      "//chrome/browser/ui/tabs:tab_strip",
+      "//ui/base",
+    ]
+  }
+
+  source_set("tree_tab") {
+    sources = [
+      "brave_tree_tab_strip_collection_delegate.cc",
+      "brave_tree_tab_strip_collection_delegate.h",
+      "tree_tab_model.cc",
+      "tree_tab_model.h",
+    ]
+
+    deps = [
+      "//base",
+      "//brave/components/tabs",
+      "//components/tabs:public",
+    ]
+  }
+}
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "brave_tab_menu_browsertest.cc" ]
+
+  deps = [
+    ":tab_menu",
+    ":tab_model",
+    "//brave/components/containers/buildflags",
+    "//brave/components/resources:strings_grit",
+    "//chrome/browser/ui",
+    "//chrome/test:test_support",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//ui/base",
+    "//url",
+  ]
+
+  if (enable_containers) {
+    deps += [ "//brave/components/containers/core/common:features" ]
+  }
+}

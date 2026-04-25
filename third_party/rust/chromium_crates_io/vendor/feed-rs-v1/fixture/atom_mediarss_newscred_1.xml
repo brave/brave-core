@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns:media="http://search.yahoo.com/mrss/" xmlns="http://www.w3.org/2005/Atom">
+    <id>example</id>
+    <entry>
+        <id>75ffea6b731bb4534f3138fd6b726791</id>
+        <title>The Day Off: Tampa</title>
+        <updated>2019-04-05T21:04:41+00:00</updated>
+        <author>
+            <name>Some author</name>
+        </author>
+        <content type="html"><![CDATA[Some text]]></content>
+        <link href="http://www.example.com/the-day-off-tampa" rel="alternate"/>
+        <published>2019-04-05T21:04:40+00:00</published>
+        <media:content url="https://www.example.com/Zz1hNjRiMWFjMzdhYWIzNTEwNjk2YjIzYjc5NWQxNWFlMA==/.jpeg" medium="image" width="2048" height="1365" type="image/jpeg">
+            <media:title type="plain">media title</media:title>
+            <media:description type="plain">media description</media:description>
+            <media:text type="plain">media text</media:text>
+            <media:credit>media credit</media:credit>
+        </media:content>
+        <media:thumbnail url="https://www.example.com/Zz1hNjRiMWFjMzdhYWIzNTEwNjk2YjIzYjc5NWQxNWFlMA==?width=75&amp;height=75" width="2048" height="1365"/>
+    </entry>
+</feed>

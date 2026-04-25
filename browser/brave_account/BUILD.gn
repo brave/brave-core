@@ -1,0 +1,47 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("brave_account") {
+  sources = [
+    "brave_account_navigation_throttle.cc",
+    "brave_account_navigation_throttle.h",
+    "brave_account_service_factory.cc",
+    "brave_account_service_factory.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_account",
+    "//brave/components/brave_account:features",
+    "//brave/components/constants",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/profiles:profile",
+    "//content/public/browser",
+    "//content/public/common",
+    "//net",
+    "//ui/base",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "brave_account_navigation_throttle_unittest.cc" ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/browser/brave_account",
+    "//brave/components/brave_account:features",
+    "//chrome/test:test_support",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//net",
+    "//testing/gtest",
+    "//ui/base",
+    "//url",
+  ]
+}

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leo test</title>
+</head>
+<body>
+  <a id="valid" href="https://search.brave.com/leo#5566" data-nonce="5566">Open Leo</a>
+  <a id="invalid" href="https://search.brave.com/leo#1234" data-nonce="5566">Open Leo</a>
+  <div id="not-a-tag"></div>
+  <a id="no-href" data-nonce="5566">Open Leo</a>
+  <a id="no-nonce" href="https://search.brave.com/leo#5566">Open Leo</a>
+  <a id="empty-nonce" href="https://search.brave.com/leo#5566" data-nonce="">Open Leo</a>
+  <a id="empty-nonce2" href="https://search.brave.com/leo#" data-nonce="5566">Open Leo</a>
+  <a id="empty-nonce3" href="https://search.brave.com/leo" data-nonce="5566">Open Leo</a>
+  <a id="empty-nonce4" href="https://search.brave.com/leo#">Open Leo</a>
+  <a id="empty-nonce5" href="https://search.brave.com/leo" data-nonce="">Open Leo</a>
+  <a id="empty-nonce6" href="https://search.brave.com/leo">Open Leo</a>
+  <a id="not-https-url" href="http://search.brave.com/leo#5566" data-nonce="5566">Open Leo</a>
+  <a id="not-search-url" href="https://brave.com/leo#5566" data-nonce="5566">Open Leo</a>
+  <a id="not-open-leo-url" href="https://search.brave.com/test#5566" data-nonce="5566">Open Leo</a>
+</body>
+</html>

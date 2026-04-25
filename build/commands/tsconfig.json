@@ -1,0 +1,46 @@
+{
+  "compilerOptions": {
+    // Don't emit .js output files. Node.js runs .ts natively.
+    "noEmit": true,
+    // Target the latest JavaScript syntax.
+    "target": "esnext",
+    // Follow Node.js actual module resolution rules: .ts/.js are CJS or ESM
+    // based on the nearest package.json "type" field.
+    "module": "nodenext",
+    // Include only Node-relevant ES library types (no DOM).
+    "lib": ["esnext"],
+    // Allow `import './foo.ts'` in source.
+    "rewriteRelativeImportExtensions": true,
+    // Only allow TS syntax that can be erased (no enums, namespaces, param
+    // properties).
+    "erasableSyntaxOnly": true,
+    // Forces `import type` for type-only imports and makes CJS vs ESM explicit
+    // (e.g. CJS files must use `import x = require(...)` not `import x from`).
+    "verbatimModuleSyntax": true,
+    // Allow JavaScript files to be imported.
+    "allowJs": true,
+    // Check JavaScript files for type errors.
+    "checkJs": true,
+    // Don't type-check declaration files from node_modules.
+    "skipLibCheck": true,
+    // Issue an error if a program tries to include a file by a casing different
+    // from the casing on disk.
+    "forceConsistentCasingInFileNames": true,
+    // `obj[key]` returns `T | undefined` instead of `T`.
+    "noUncheckedIndexedAccess": true,
+    // Require explicit `break` or `return` in switch cases.
+    "noFallthroughCasesInSwitch": true,
+    // Issue an error if a function does not return a value.
+    "noImplicitReturns": true,
+    // Issue an error if a value is used as if it were `null` or `undefined`.
+    "strictNullChecks": true,
+    // Issue an error if a local variable is declared and not used.
+    "noUnusedLocals": true,
+    // Issue an error if a value is declared and not used.
+    "noUnusedParameters": true,
+    // Issue an error if a property with an explicit type is not initialized.
+    "strictPropertyInitialization": true,
+    // Apply stricter rules for optional properties.
+    "exactOptionalPropertyTypes": true,
+  },
+}

@@ -1,0 +1,140 @@
+<style include="cr-shared-style settings-shared">
+  :host{
+    --icon-size: var(--search-engine-icon-size, 24px);
+  }
+
+  .subtitle {
+    font-size: 0.75rem;
+    line-height: 22px;
+  }
+
+  .title {
+    margin: 0 0 16px;
+  }
+
+  .dialog-header {
+    padding: 0px 16px 8px 16px;
+  }
+
+  .dialog-body {
+    color: var(--cr-primary-text-color);
+    border-bottom: 1px solid var(--leo-color-divider-subtle);
+    border-top: 1px solid var(--leo-color-divider-subtle);
+  }
+
+  .search-engine {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+  }
+
+  leo-label {
+    --leo-label-font-text: var(--leo-font-small-regular);
+    --leo-label-padding: var(--leo-spacing-s);
+  }
+
+  #name-description {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #description {
+    font: var(--leo-font-x-small-regular);
+  }
+
+  site-favicon {
+    --site-favicon-border-radius: 4px;
+    --site-favicon-height: var(--icon-size);
+    --site-favicon-width: var(--icon-size);
+  }
+
+  #setAsDefaultButton {
+    margin-inline-start: 12px;
+  }
+
+  #saveGuestChoiceCheckbox {
+    margin-right: auto;
+  }
+
+  cr-dialog {
+    --cr-dialog-body-padding-horizontal: 16px;
+    --cr-dialog-button-container-padding-horizontal: 24px;
+    --cr-dialog-button-container-padding-bottom: 24px;
+    --cr-dialog-button-container-padding-top: 24px;
+    --cr-dialog-title-slot-padding-bottom: 16px;
+    --cr-dialog-title-slot-padding-end: 16px;
+    --cr-dialog-title-slot-padding-start: 16px;
+    --cr-dialog-title-slot-padding-top: 16px;
+  }
+
+  cr-dialog::part(body-container) {
+    max-height: 360px;
+  }
+
+  cr-radio-button {
+    --cr-radio-button-size: 20px;
+    margin: 0 16px;
+  }
+</style>
+
+<cr-dialog id="dialog" on-cancel="onCancelClick_" show-on-attach>
+  <div slot="title">
+    <div class="title">$i18n{searchPageTitle}</div>
+    <div class="subtitle">
+      $i18n{searchEnginesSettingsDialogSubtitle}
+    </div>
+  </div>
+  <template is="dom-if" if="[[promotedEngine_]]">
+    <div slot="header" class="dialog-header">
+      <cr-radio-group selected="{{selectedEngineId_}}">
+        <cr-radio-button class="label-first" name="[[promotedEngine_.id]]">
+          <div class="search-engine">
+            <site-favicon favicon-url="[[promotedEngine_.iconURL]]"
+                url="[[promotedEngine_.url]]"
+                icon-path="[[promotedEngine_.iconPath]]">
+            </site-favicon>
+            <div id="name-description">
+              [[promotedEngine_.name]]
+              <div id="description">
+                $i18n{searchEngineListBraveSearchDescription}
+              </div>
+            </div>
+            <leo-label mode="default" color="primary">
+              $i18n{searchEngineListBraveSearchRecommended}
+            </leo-label>
+          </div>
+        </cr-radio-button>
+      </cr-radio-group>
+    </div>
+  </template>
+  <div slot="body" class="dialog-body">
+    <cr-radio-group selected="{{selectedEngineId_}}">
+      <template is="dom-repeat" items="[[searchEngines]]">
+        <cr-radio-button class="label-first" name="[[item.id]]"
+                         hidden="[[isPromotedEngine_(item)]]">
+          <div class="search-engine">
+            <site-favicon favicon-url="[[item.iconURL]]" url="[[item.url]]"
+                 icon-path="[[item.iconPath]]">
+            </site-favicon>
+            [[item.name]]
+          </div>
+        </cr-radio-button>
+      </template>
+    </cr-radio-group>
+  </div>
+  <div slot="button-container">
+    <template is="dom-if" if="[[showSaveGuestChoice_]]" restamp>
+      <cr-checkbox id="saveGuestChoiceCheckbox" checked="{{saveGuestChoice_}}">
+        $i18n{saveGuestChoiceText}
+      </cr-checkbox>
+    </template>
+    <cr-button id="cancelButton" on-click="onCancelClick_">
+      $i18n{searchEnginesCancelButton}
+    </cr-button>
+    <cr-button id="setAsDefaultButton" class="action-button"
+        on-click="onSetAsDefaultClick_" disabled="[[!searchEngines.length]]">
+      $i18n{searchEnginesSetAsDefaultButton}
+    </cr-button>
+  </div>
+</cr-dialog>

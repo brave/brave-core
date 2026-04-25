@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/resources/settings/settings_shared.css b/chrome/browser/resources/settings/settings_shared.css
+index 37ebfb19d55e0e8f37a7b821864e41319def14ea..cfc224f1de6b7ce56e498b5ac90f585e1e604c12 100644
+--- a/chrome/browser/resources/settings/settings_shared.css
++++ b/chrome/browser/resources/settings/settings_shared.css
+@@ -8,7 +8,8 @@
+  * #import=//resources/cr_elements/cr_shared_vars.css.js
+  * #import=//resources/cr_elements/search_highlight_style.css.js
+  * #import=./settings_vars.css.js
+- * #include=cr-shared-style search-highlight-style
++ * #import=//resources/brave/page_specific/settings/br_settings_shared.css.js
++ * #include=cr-shared-style search-highlight-style br-settings-shared
+  * #css_wrapper_metadata_end */
+ 
+ /* Common styles for Material Design settings. */

@@ -1,0 +1,5 @@
+# Copyright 2022 The Brave Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+brave_share_java_sources = [ "//brave/browser/share/android/java/src/org/chromium/chrome/browser/share/send_tab_to_self/BraveManageAccountDevicesLinkView.java" ]

@@ -1,0 +1,16 @@
+<html>
+<head>
+    <title>iframe inner messenger script page</title>
+    <script>
+        setTimeout(() => {
+            const message = JSON.parse('{ "adPlacements": ["AD", "ad"] }')
+            if (message.adPlacements) {
+                window.top.postMessage(message.adPlacements[0], '*')
+            } else {
+                window.top.postMessage('no ads', '*')
+            }
+        }, 1000);
+    </script>
+</head>
+<body></body>
+</html>

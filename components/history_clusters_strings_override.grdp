@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Strings for the chrome://history/journeys page -->
+<grit-part>
+  <if expr="use_titlecase">
+  </if>
+  <if expr="not use_titlecase">
+  </if>
+  <message name="IDS_HISTORY_CLUSTERS_OPEN_INCOGNITO" desc="Label of the item in drop-down menu that allows the user to open a link in a private window.">
+    Open Link in Private Window
+  </message>
+  </grit-part>

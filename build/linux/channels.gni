@@ -1,0 +1,32 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+
+assert(is_linux)
+
+brave_linux_channel_stable = ""
+brave_linux_channel_dev = "dev"
+brave_linux_channel_nightly = "nightly"
+linux_channel_stable = "stable"
+linux_channel_beta = "beta"
+linux_channel_dev = "unstable"
+
+# Our channel name and upstream linux channel name is different.
+if (is_release_channel) {
+  linux_channel = linux_channel_stable
+} else if (brave_channel == "beta") {
+  linux_channel = linux_channel_beta
+} else if (brave_channel == "dev") {
+  linux_channel = linux_channel_dev
+} else if (brave_channel == "nightly") {
+  linux_channel = brave_linux_channel_nightly
+} else if (brave_channel == "development") {
+  # To avoid gn error, just fills with stable.
+  # This doesn't have meaning in debug build.
+  linux_channel = linux_channel_stable
+} else {
+  assert(false, "Not supported channel name: $brave_channel")
+}

@@ -1,0 +1,542 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Liz Cheney took on Trump. Can she survive a Trump-backed challenger in Wyoming?</title><meta charset="UTF-8"/><body id="article"><h1 class="title metadata">Liz Cheney took on Trump. Can she survive a Trump-backed challenger in Wyoming?</h1><p class="subhead metadata">Trump-backed challenger Harriet Hageman has led by nearly 30 points in recent polling on the primary.</p><div class=""><p class="metadata">By Aaron Navarro</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+
+    
+
+<p>All indications so far suggest that on Tuesday, Republican Rep. Liz Cheney will lose her primary in Wyoming and her seat in Congress. <a href="https://trib.com/news/state-and-regional/govt-and-politics/the-poll-results-are-in-hageman-holds-commanding-lead-over-cheney/article_1f33dfe0-02f1-11ed-8202-7befc0111031.html" rel="nofollow noopener" target="_blank">Polls</a> <a href="https://wysac.uwyo.edu/wysac/reports/View/7723" rel="nofollow noopener" target="_blank">show</a>&nbsp;and strategists and political science professors who have been watching this race expect trial attorney Harriet Hageman, former President Donald Trump's pick, to beat her.</p><p>Trump has been heavily involved in the effort against Cheney since she voted to impeach him after the Jan. 6 attack on the U.S. Capitol. Since the attack, her high-profile rebuke of Trump and his allies — and her leadership role on the House Jan. 6 select committee — has only strengthened that animosity.&nbsp;</p><p>"Liz Cheney has helped the radical Democrat party weaponize the national security state and law enforcement against MAGA and MAGA supporters, who are hard working and incredible people," Trump said at a rally in Casper, Wyo., in May. "The phony narrative that Liz Cheney is pushing has been the radical left's pretext for their all-out war on free speech. The persecution of the Jan. 6 political prisoners."</p>    
+  <p>Hageman is a Wyoming native and longtime attorney who prides herself on her cases fighting against environmental regulations.&nbsp;</p><p>In the past, Hageman made anti-Trump comments and supported Sen. Ted Cruz of Texas for president in the 2016 Republican primary. She placed third in the GOP primary for governor in 2018, and has <a href="https://twitter.com/KFILE/status/1443712018452779013?s=20&amp;t=UD0YzW6datTeXZakwLiG5Q" rel="nofollow noopener" target="_blank">previously supported</a> Cheney and called her a friend. But she feels that Cheney "betrayed Wyoming" through her impeachment vote.</p>
+
+    
+
+<p>Hageman's anti-Trump comments in 2016 didn't stop her from getting Trump's endorsement on Sep. 9, 2021.&nbsp;</p><p>His presence in the primary has driven a hard shift against Cheney from the Wyoming Republican Party, which has censured and <span class="link"><a data-invalid-url-rewritten-http="" href="https://www.cbsnews.com/news/liz-cheney-wyoming-republican-party-recognize/">disavowed</a></span> Cheney, a symbolic measure. On a national level, the Republican National Committee <span class="link"><a data-invalid-url-rewritten-http="" href="https://www.cbsnews.com/news/liz-cheney-adam-kinzinger-republican-national-committee-censure/">took a similar action</a></span> against Cheney and Rep. Adam Kinzinger of Illinois, who also voted to impeach Trump and joined the House Jan. 6 committee.</p><p>Seven of the House Republicans who voted for Trump's impeachment will not be returning to Congress. Four have retired: Kinzinger, Anthony Gonzalez of Ohio, John Katko of New York and Fred Upton of Michigan, and three lost their primaries: Tom Rice of South Carolina, Peter Meijer of Michigan and Jamie Herrera-Beutler of Washington.</p><p>Two advanced to the November general election: David Valadao of California and Dan Newhouse of Washington.&nbsp;</p>
+
+    
+    
+
+<p>The former president's antipathy toward Cheney also turned House Republican leadership and rank and file House Republicans against her. House Minority Leader Kevin McCarthy, who <span class="link"><a data-invalid-url-rewritten-http="" href="https://www.cbsnews.com/news/liz-cheney-house-leadership-vote-wednesday-kevin-mccarthy/">helped lead the effort to oust Cheney</a></span>&nbsp;from her role in House GOP leadership. The House Republican conference usually supports incumbents but took the unusual step of declining to support Cheney, instead <span class="link"><a data-invalid-url-rewritten-http="" href="https://www.cbsnews.com/news/liz-cheney-kevin-mccarthy-backs-harriet-hagerman-wyoming/">backing Hageman</a></span> and even <span class="link"><a data-invalid-url-rewritten-http="" href="https://www.cbsnews.com/news/liz-cheney-challenger-harriet-hageman-fundraiser/">held a fundraiser</a></span> for her this spring with over 50 House Republicans in attendance.&nbsp;</p><p>Longtime Wyoming GOP activist April Poley, who worked with another primary candidate, state Sen. Anthony Bouchard, said that she wishes Trump "would have kept his nose out of Wyoming's race." &nbsp;</p><p>"We didn't need him to come in here and tell everybody how to vote. To make it to where if you don't vote like he tells you to then you somehow feel disloyal to him," Poley said.&nbsp;</p><p>While Hageman has acknowledged the support from Trump and McCarthy, her <a href="https://adm0.page.link/cEsn" rel="nofollow noopener" target="_blank">closing campaign ad argued</a> the race is not all about them – nor is it about Cheney alone.&nbsp;</p><p>"Our current representative is neither from Wyoming and is not represented in our interests. And I am here because I want to be accountable to you to address the issues that are important to you," Hageman said at a Natrona County Republican Women event on Aug. 3. She said <a href="https://www.facebook.com/NCRWomen/videos/762196891662520" rel="nofollow noopener" target="_blank">at that same event</a> that she believed the 2020 election <a href="https://trib.com/news/state-and-regional/hageman-says-2020-election-was-rigged/article_01a1e786-13f1-11ed-b6fc-d32f25c31359.html#tracking-source=in-article" rel="nofollow noopener" target="_blank">was "rigged."</a></p><p>A <a href="https://wysac.uwyo.edu/wysac/reports/View/7723" rel="nofollow noopener" target="_blank">poll</a> by the Wyoming Survey &amp; Analysis Center at the University of Wyoming found that 48.6% of likely GOP primary voters believe there was "solid evidence" of widespread voter fraud in the 2020 election.&nbsp;</p><p>In 2020, Cheney and Trump both received just under 70% of the vote. Multiple lawsuits challenging the results of the 2020 election have failed in court, and <span class="link"><a data-invalid-url-rewritten-http="" href="https://www.cbsnews.com/news/presidential-election-2020-conspiracy-theories-debunked/">there has been no credible evidence</a></span> of widespread fraud that changed the election results.&nbsp;</p>
+
+    
+    
+
+<p>Cheney has not shied away from her role on the committee or her fight against Trump's baseless claims that the 2020 election was stolen in her campaign ads. In <span class="link"><a data-invalid-url-rewritten-http="" href="https://www.cbsnews.com/news/liz-cheney-campaign-ad-harriet-hageman-opponents-2020-election-claims/">one</a></span> ad, she focused on her primary opponents showing doubt about the legitimacy of the 2020 presidential election during a debate.&nbsp;</p><p>In <a href="https://adm0.page.link/MXBc" rel="nofollow noopener" target="_blank">another</a>, her father, former Vice President Dick Cheney, who represented the state for 10 years in Congress, addressed the camera directly and said Trump is a "threat" to the country. He said Trump "tried to steal the last election using lies and violence to keep himself in power after the voters rejected him."</p><p>In her closing message, Liz Cheney made it clear that her focus remains squarely on Trump: "The lie that the 2020 presidential election was stolen is insidious. It preys on those who love their country. It is a door Donald Trump opened to manipulate Americans to abandon their principles, to sacrifice their freedom, to justify violence, to ignore the rulings of our courts and the rule of law."</p><p>"I don't think she's ever changed. I think the perception of her changed," said Poley, who added that she's never voted for Cheney.&nbsp;</p><p>Cheney has held the fundraising advantage over Hageman, with <a href="https://docquery.fec.gov/cgi-bin/forms/C00607556/1621521/" rel="nofollow noopener" target="_blank">over $15.1 million</a> raised this cycle compared to <a href="https://docquery.fec.gov/cgi-bin/forms/C00788943/1621547/" rel="nofollow noopener" target="_blank">Hageman's $4.1 million</a>. But, with spending from pro-Hageman groups like the Wyoming Values PAC and Club for Growth Action, she has kept pace with Cheney's spending on advertisements, according to data from AdImpact.&nbsp;</p><p>Still, while <a href="https://wysac.uwyo.edu/wysac/reports/View/7723" rel="nofollow noopener" target="_blank">independent</a> and internal polls have shown Hageman with a close to 30-point lead on Cheney, some say the result could be tighter than expected.</p><p>"I would expect she's maybe going to get 30% of the vote, maybe that's an understatement, but I wouldn't be surprised," said Poley.</p>
+
+    
+    
+
+<p>Cheney got <a href="https://ballotpedia.org/Liz_Cheney" rel="nofollow noopener" target="_blank">almost 40% in her initial primary</a> for the seat in 2016 when there were nine other Republicans on the ballot. There are five other candidates on the ballot this election, though Cheney and Hageman have been the only ones to consistently poll over double digits.&nbsp;</p><p>University of Wyoming professor Andrew Garner warned that the polls in the state show an unpredictable race, in part due to that Wyoming law that allows voters to switch their party on the day of a primary election.&nbsp;</p><p>Garner and others say that quirk in the state law hasn't drastically impacted Wyoming primary results in the past, but was still a law Trump and other Wyoming Republicans <a href="https://trib.com/news/state-and-regional/govt-and-politics/trump-called-gordon-multiple-times-about-crossover-voting/article_f7e22ce0-0f60-11ed-94b0-57fb9469ecdb.html" rel="nofollow noopener" target="_blank">unsuccessfully pushed</a> to change.</p><p>"Statewide contests are already difficult to poll accurately.&nbsp; Primary elections in small states are even more difficult," Garner said. " A lot depends heavily on how many Democrats cross over to vote for Cheney.&nbsp; If only a few show up, Hageman likely wins by a huge margin.&nbsp; If more Democrats than expected show up, the margins would be closer."</p><p>Cheney's campaign and other organizations <a href="https://www.nytimes.com/2022/06/23/us/politics/liz-cheney-wyoming-democrats.html" rel="nofollow noopener" target="_blank">have signaled</a> that opportunity for Democrats and other non-Republican registered voters to switch parties and vote for her.</p><p>And it seems to be working. According to the Jan. and Aug. Wyoming voter registration numbers, there has been an increase in registered Republicans by 11,495 voters, and a decrease in registered Democrats by about 6,000 voters. This is at a significantly higher clip of changes compared to other midterm elections, according to the <a href="https://trib.com/news/state-and-regional/recent-data-illustrates-increased-wyoming-democratic-exodus/article_de1fbb1a-12a8-11ed-8c81-cb7a6bccee6c.html" rel="nofollow noopener" target="_blank">Casper-Star Tribune</a>.&nbsp;</p><p>The number of voters registered as "unaffiliated" decreased by about 1,575, while the total number of registered voters increased by about 4,000.&nbsp;</p>
+
+    
+    
+
+<p>Cheney, who has had to have security with her after several death threats, has been holding several small, intimate campaign events at house parties in the closing weeks of the race.&nbsp;</p><p>Natrona County Republican Committeeman Joseph McGinley, a Cheney supporter, said the congresswoman didn't really mention Trump or the Jan. 6 committee during an event she held in Casper in July.&nbsp;</p><p>"If people ask, she'll talk about Trump. And she'll talk about the committee but she doesn't sort of bury that into her speech," McGinley said.&nbsp;</p><p>McGinley said while he doesn't believe in the polls that show Hageman up big, and that he believes the state's more populous and moderate areas will turnout for Cheney, he acknowledged it's a tough race for the three-term congresswoman.&nbsp;</p><p>"Her challenger's endorsed by Trump, [she] is getting a ton of support from the extremists within our state. [Hageman] has a solid campaign here," he said. "But again– looking at the number of crossover votes, this is different than prior elections."</p><p>Cheney, whose national profile has risen throughout her crusade against the former president, has <a href="https://twitter.com/CNN/status/1551202276391403525?s=20&amp;t=_f5hQ_a-GGmdNjegqoVdUQ" rel="nofollow noopener" target="_blank">not shut the door</a> on a presidential run in 2024. While some anti-Trump Republicans have acknowledged there is an open lane for a Republican like Cheney in 2024, she only polled at 2% in a recent <a href="https://morningconsult.com/2022/08/11/fbi-raid-increases-trumps-2024-primary-support/" rel="nofollow noopener" target="_blank">Morning Consult poll</a> on the 2024 primary.</p><p>"I think that it is way too early to know how the 2024 primary is going to play out," Garner said. "That may sound like a cop out, but think about how much the political environment has changed in just the past two months. Two years from now?&nbsp; It could be completely different in ways that nobody can anticipate."&nbsp; &nbsp;</p>
+                
+      
+        
+    
+
+    <ul class="content__tags">In:
+          <li><a href="/tag/donald-trump/">Donald Trump</a></li>
+          <li><a href="/tag/wyoming/">Wyoming</a></li>
+          <li><a href="/tag/liz-cheney/">Liz Cheney</a></li>
+      </ul><div class="content-author">
+    <p><a class="content-author__name" data-invalid-url-rewritten-http="" href="https://www.cbsnews.com/search/author/aaron-navarro/">Aaron Navarro</a></p><div class="content-author__bio">
+        <div class="content-author__full-information">
+        <p class="content-author__text">Aaron Navarro is an associate producer for the political unit at CBS News, focusing on House and gubernatorial campaigns as well as the census and redistricting.</p>
+                
+            </div>
+    </div>
+</div>
+  </body>

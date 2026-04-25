@@ -1,0 +1,226 @@
+{
+  "appName": {
+    "message": "Brave Extension",
+    "description": "The name of the extension."
+  },
+  "shields": {
+    "message": "シールドはこのサイトに対して",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "有効",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "無効",
+    "description": "Message for when shields is disabled"
+  },
+  "forThisSite": {
+    "message": "になっています",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "ウェブサイトが正常に動作していないように見える場合は、シールドを無効にしてみてください。",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "Braveのプライバシーおよびセキュリティー保護が無効のまま、このサイトを閲覧しています。シールドを有効にすると、正しく機能しませんか？",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "サイト表示の不具合を報告",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
+  },
+  "itemsBlocked": {
+    "message": "アイテムがブロックされました",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
+  },
+  "itemBlocked": {
+    "message": "アイテムがブロックされました",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
+  },
+  "and": {
+    "message": "および",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
+  },
+  "connectionsUpgraded": {
+    "message": "接続がアップグレードされました",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
+  },
+  "connectionUpgraded": {
+    "message": "接続がアップグレードされました",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
+  },
+  "thirdPartyTrackersBlocked": {
+    "message": "クロスサイトトラッキングをブロック",
+    "description": "Message for the scripts blocked row label"
+  },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "トラッカーと広告がブロックされました",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "トラッカーと広告がブロックされました（強化モード）",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "トラッカーと広告がブロックされました（標準）",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "すべてのトラッカーと広告を許可",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
+  "connectionsUpgradedHTTPS": {
+    "message": "接続がHTTPSにアップグレードされました",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
+  },
+  "connectionUpgradedHTTPS": {
+    "message": "接続がHTTPSにアップグレードされました",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
+  },
+  "scriptsBlocked": {
+    "message": "ブロックされたスクリプト",
+    "description": "Message for the scripts blocked row label"
+  },
+  "thirdPartyCookiesBlocked": {
+    "message": "クロスサイトクッキーをブロック",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "クッキーをブロック",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "すべてのクッキーを許可",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "フィンガープリントがブロックされました",
+    "description": "Message for the option in the fingerprinting field in read only view"
+  },
+  "standardFingerprinting": {
+    "message": "フィンガープリントがブロックされました（標準）",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
+  },
+  "strictFingerprinting": {
+    "message": "フィンガープリントがブロックされました（強化モード、サイトの表示が崩れる可能性）",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
+  },
+  "allowAllFingerprinting": {
+    "message": "すべてのフィンガープリントを許可する",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "フィンガープリント試行",
+    "description": "Message for the fingerprinting attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "このサイトのスクリプト",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "ブロックされたスクリプト",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "スクリプトを許可する",
+    "description": "Message for the script resources allowed"
+  },
+  "blockAll": {
+    "message": "すべてブロックする",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "すべて許可する",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "block": {
+    "message": "ブロック",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "allow": {
+    "message": "許可",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "blockedOnce": {
+    "message": "一時的にブロック",
+    "description": "Message for the resources blocked *blocked once* option"
+  },
+  "allowedOnce": {
+    "message": "一時的に許可",
+    "description": "Message for the resources blocked *allowed once* option"
+  },
+  "allowScriptsOnce": {
+    "message": "スクリプトを一時的に許可",
+    "description": "Message for the shortcut in the main interface to allow all scripts once"
+  },
+  "cancel": {
+    "message": "キャンセル",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "戻る",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "一時的に適用する",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "シールドのデフォルト設定を変更する",
+    "description": "Message for the button action linking to the settings page"
+  },
+  "manageCustomFilters": {
+    "message": "カスタムフィルターの管理",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
+  "elementPickerMode": {
+    "message": "要素を指定してブロック",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
+  },
+  "advancedView": {
+    "message": "詳細表示",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "簡略表示",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "通常、ウェブサイトはユーザーとデバイスの識別のためにクッキーとスクリプト（広告に組み込まれることがほとんどです）を使用します。ユーザーが誰なのかを把握し、ウェブ全体、あらゆるサイトでの行動を追跡しようとします。Brave はこれらのクッキーやスクリプトをブロックするため、ユーザーは行動を追跡されることなくインターネットを閲覧することが可能です。",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "クロスサイトトラッカーおよびその他の不審な通信をブロックしました",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "この表示でシールドの設定を変更すると、サイトのウェブ互換性に影響を与える可能性があります。",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "閉じる",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "詳細情報",
+    "description": "Message inviting the user to learn more about Shields"
+  },
+  "addToBrave": {
+    "message": "Brave に追加",
+    "description": "Message for adding an extension to Brave"
+  },
+  "removeFromBrave": {
+    "message": "Brave から削除",
+    "description": "Message for removing an extension from Brave"
+  },
+  "addToChrome": {
+    "message": "Chrome に追加",
+    "description": "Message for adding an extension to Chrome"
+  },
+  "removeFromChrome": {
+    "message": "Chrome から削除します",
+    "description": "Message for removing an extension from Chrome"
+  }
+}

@@ -1,0 +1,12 @@
+diff --git a/front_end/panels/network/NetworkDataGridNode.ts b/front_end/panels/network/NetworkDataGridNode.ts
+index 0a97de431b1f93f2722dbf56c0884820c15ee4a9..b957489b137d1cbcf02811545b5a1ddcece1c781 100644
+--- a/front_end/panels/network/NetworkDataGridNode.ts
++++ b/front_end/panels/network/NetworkDataGridNode.ts
+@@ -1634,6 +1634,7 @@ export class NetworkRequestNode extends NetworkNode {
+   }
+ }
+ 
++import { PatchNetworkRequestNode } from './NetworkDataGridNode.patch.js'; (NetworkRequestNode as any) = PatchNetworkRequestNode(NetworkRequestNode);
+ export class NetworkGroupNode extends NetworkNode {
+   override createCells(element: Element): void {
+     super.createCells(element);

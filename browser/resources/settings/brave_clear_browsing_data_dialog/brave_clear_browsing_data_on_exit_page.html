@@ -1,0 +1,71 @@
+<style include="settings-shared">
+  settings-checkbox {
+    --cr-section-two-line-min-height: 48px;
+    --settings-checkbox-label: {
+      line-height: 1.25rem;
+    }
+  }
+</style>
+<div id="checkboxes">
+  <settings-checkbox id="browsingCheckboxOnExit"
+                      pref="{{prefs.browser.clear_data.browsing_history_on_exit}}"
+                      label="$i18n{clearBrowsingHistory}"
+                      sub-label="[[counters.browsing_history]]"
+                      hidden="[[isChildAccount_]]"
+                      no-set-pref>
+  </settings-checkbox>
+  <settings-checkbox id="downloadCheckboxOnExit"
+                      pref="{{prefs.browser.clear_data.download_history_on_exit}}"
+                      label="$i18n{clearDownloadHistory}"
+                      sub-label="[[counters.download_history]]"
+                      hidden="[[isChildAccount_]]"
+                      no-set-pref>
+  </settings-checkbox>
+  <settings-checkbox id="cookiesCheckboxOnExit"
+                      class="cookies-checkbox"
+                      pref="{{prefs.browser.clear_data.cookies_on_exit}}"
+                      label="$i18n{clearCookies}"
+                      sub-label="[[counters.cookies]]"
+                      no-set-pref>
+  </settings-checkbox>
+<if expr="enable_ai_chat">
+  <settings-checkbox id="leoResetOnExitCheckbox"
+                      pref="{{prefs.browser.clear_data.brave_leo_on_exit}}"
+                      label="$i18n{aiChatClearHistoryData}"
+                      sub-label="$i18n{aiChatClearHistoryDataSubLabel}"
+                      hidden="[[!isLeoAssistantAndHistoryAllowed_]]"
+                      no-set-pref>
+  </settings-checkbox>
+</if>
+  <settings-checkbox id="cacheCheckboxOnExit"
+                      class="cache-checkbox"
+                      pref="{{prefs.browser.clear_data.cache_on_exit}}"
+                      label="$i18n{clearCache}"
+                      sub-label="[[counters.cache]]"
+                      no-set-pref>
+  </settings-checkbox>
+  <settings-checkbox id="passwordsCheckboxOnExit"
+                      pref="{{prefs.browser.clear_data.passwords_on_exit}}"
+                      label="$i18n{clearPasswords}"
+                      sub-label="[[counters.passwords]]"
+                      no-set-pref>
+  </settings-checkbox>
+  <settings-checkbox id="formDataCheckboxOnExit"
+                      pref="{{prefs.browser.clear_data.form_data_on_exit}}"
+                      label="$i18n{clearFormData}"
+                      sub-label="[[counters.form_data]]"
+                      no-set-pref>
+  </settings-checkbox>
+  <settings-checkbox id="siteSettingsCheckboxOnExit"
+                      pref="{{prefs.browser.clear_data.site_settings_on_exit}}"
+                      label="$i18nPolymer{siteSettings}"
+                      sub-label="[[counters.site_settings]]"
+                      no-set-pref>
+  </settings-checkbox>
+  <settings-checkbox id="hostedAppDataCheckboxOnExit"
+                      pref="{{prefs.browser.clear_data.hosted_apps_data_on_exit}}"
+                      label="$i18n{clearHostedAppData}"
+                      sub-label="[[counters.hosted_apps_data]]"
+                      no-set-pref>
+  </settings-checkbox>
+</div>

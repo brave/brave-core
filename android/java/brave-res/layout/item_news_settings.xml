@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2022 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+<androidx.constraintlayout.widget.ConstraintLayout
+     xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:paddingVertical="12dp"
+     android:paddingHorizontal="16dp"
+     android:orientation="horizontal">
+
+     <ImageView
+          android:id="@+id/iv_publisher"
+          android:layout_width="64dp"
+          android:layout_height="32dp"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintBottom_toBottomOf="parent"
+          android:contentDescription="@null"
+          android:background="@drawable/brave_news_settings_publisher_bg"
+          android:visibility="gone"/>
+
+     <ImageView
+          android:id="@+id/iv_channel"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          app:layout_constraintStart_toEndOf="@id/iv_publisher"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintBottom_toBottomOf="parent"
+          android:padding="8dp"
+          android:background="@drawable/ic_circle_news_settings"
+          android:contentDescription="@null"
+          android:visibility="gone"/>
+
+     <TextView
+          android:id="@+id/tv_name"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintBottom_toTopOf="@id/tv_subtitle"
+          app:layout_constraintStart_toEndOf="@id/iv_channel"
+          app:layout_constraintEnd_toStartOf="@id/btn_follow"
+          android:layout_marginStart="8dp"
+          android:textSize="14sp"
+          android:textColor="@color/news_settings_title_color"/>
+
+     <TextView
+          android:id="@+id/tv_subtitle"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          app:layout_constraintTop_toBottomOf="@id/tv_name"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintStart_toEndOf="@id/iv_channel"
+          app:layout_constraintEnd_toStartOf="@id/btn_follow"
+          android:layout_marginStart="8dp"
+          android:textSize="12sp"
+          android:textColor="@color/news_settings_subtitle_color"
+          android:visibility="gone"/>
+
+
+     <LinearLayout
+          android:id="@+id/btn_follow"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          android:paddingVertical="4dp"
+          android:paddingHorizontal="12dp"
+          android:orientation="horizontal">
+
+          <ProgressBar
+               android:id="@+id/btn_loading"
+               style="?android:progressBarStyleLarge"
+               android:layout_width="20dp"
+               android:layout_height="20dp"
+               android:layout_marginEnd="5dp"
+               android:indeterminateTint="@color/news_settings_subtitle_color"
+               android:visibility="gone"
+               android:layout_gravity="center_vertical" />
+
+          <TextView
+               android:id="@+id/btn_text"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textAlignment="center"
+               android:textColor="@color/news_text_color"
+               android:layout_gravity="center_vertical"
+               android:textAllCaps="false"
+               android:lines="1"
+               android:textSize="12sp"
+               android:textStyle="bold"
+               android:gravity="center" />
+
+     </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,17 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+
+brave_elevation_service_lib_deps =
+    [ "//brave/components/brave_vpn/common/buildflags" ]
+
+if (is_win && enable_brave_vpn) {
+  brave_elevation_service_lib_deps += [
+    "//brave/browser/brave_vpn/win:wireguard_utils",
+    "//brave/browser/brave_vpn/win/brave_vpn_helper:common",
+    "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service:install_utils",
+  ]
+}

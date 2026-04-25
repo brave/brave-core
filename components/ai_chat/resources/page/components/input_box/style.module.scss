@@ -1,0 +1,225 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+.form {
+  --editable-padding-top: 12px;
+  --editable-padding-x: var(--leo-spacing-xl);
+  --editable-padding-bottom: 8px;
+  --editable-max-height: 300px;
+
+  border-radius: var(--leo-radius-xl);
+  border: 1px solid var(--leo-color-divider-subtle);
+  width: 100%;
+  font: var(--leo-font-large-regular);
+  color: var(--leo-color-text-primary);
+  position: relative;
+  transition: all 0.2s ease-in-out;
+}
+
+.form:hover,
+.form:focus-visible {
+  box-shadow: var(--leo-effect-elevation-01);
+}
+
+.buttonAgree {
+  background-color: var(--leo-color-button-background);
+  color: white;
+  border-radius: 30px;
+  border: none;
+  width: 100%;
+  padding: 10px 0;
+  margin-bottom: 10px;
+  font-size: 13px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.alert {
+  width: 100%;
+  padding: 16px;
+  color: var(--leo-color-text-primary);
+  background-color: var(--leo-color-systemfeedback-info-background);
+  margin-bottom: 12px;
+  border-radius: 8px;
+}
+
+.counterText {
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-systemfeedback-warning-icon);
+  padding: 3px 16px;
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    visibility 0.2s linear,
+    opacity 0.2s linear;
+}
+
+.counterTextVisible {
+  visibility: visible;
+  opacity: 1;
+}
+
+.counterTextError {
+  color: var(--leo-color-systemfeedback-error-icon);
+}
+
+.toolsContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 var(--leo-spacing-m) var(--leo-spacing-m) var(--leo-spacing-xl);
+}
+
+.tools {
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-xl);
+}
+
+.actionsLabelContainer {
+  padding: 10px var(--leo-spacing-xl) 0 var(--leo-spacing-xl);
+}
+
+.slashIconActive {
+  --leo-icon-color: var(--leo-color-icon-interactive);
+}
+
+.taskStateActions {
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+  margin: var(--leo-spacing-m);
+  margin-bottom: 0;
+  gap: var(--leo-spacing-m);
+}
+
+.taskStateActionButtonStop {
+  --leo-button-color: var(--leo-color-systemfeedback-error-text);
+  color: var(--leo-color-systemfeedback-error-text);
+}
+
+.attachmentWrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: 100%;
+  padding: var(--leo-spacing-m) var(--leo-spacing-m) 0 var(--leo-spacing-m);
+  gap: var(--leo-spacing-m);
+  box-sizing: border-box;
+}
+
+.attachmentWrapperScroll {
+  scrollbar-width: thin;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: var(--leo-spacing-s);
+}
+
+.attachmentChipSingle {
+  flex: 0 1 auto;
+}
+
+.attachmentChipHalf {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.attachmentChipThird {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.attachmentChipScrollPanel {
+  flex: 0 0 40%;
+  min-width: 0;
+}
+
+.attachmentChipScrollFullPage {
+  flex: 0 0 30%;
+  min-width: 0;
+}
+
+.button {
+  --leo-button-radius: var(--leo-radius-full);
+  --leo-button-padding: var(--leo-spacing-m);
+}
+
+.sendButtonDisabled {
+  --leo-button-color: var(--leo-color-button-disabled);
+}
+
+.sendIconDisabled {
+  // Not able to use --leo-icon-color in .sendButtonDisabled class
+  // because it gets overridden by the button component's default styles.
+  --leo-icon-color: var(--leo-color-icon-disabled);
+}
+
+.contentAgentButtonEnabled {
+  --leo-icon-size: 20px;
+  --leo-icon-color: var(--leo-color-icon-interactive);
+}
+
+.streamingButton {
+  --leo-button-color: color-mix(
+    in srgb,
+    var(--leo-color-button-background) 5%,
+    transparent
+  );
+}
+
+.streamingIcon {
+  // Same is applied to the icon in the .streamingButton class.
+  --leo-icon-color: var(--leo-color-icon-interactive);
+}
+
+.modelSelectorAndSendButton {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--leo-spacing-m);
+  box-sizing: border-box;
+  overflow: hidden;
+  margin: 0 0 0 var(--leo-spacing-m);
+}
+
+.contentAgentWarning {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--leo-spacing-m);
+  gap: var(--leo-spacing-m);
+  margin: var(--leo-spacing-m) var(--leo-spacing-m) 0 var(--leo-spacing-m);
+  border-radius: var(--leo-radius-m);
+  border: 1px solid rgba(250, 114, 80, 0.3);
+  background: linear-gradient(
+    314deg,
+    rgba(250, 114, 80, 0.08) 8.49%,
+    rgba(255, 24, 147, 0.08) 43.72%,
+    rgba(167, 138, 255, 0.08) 99.51%
+  );
+}
+
+.contentAgentWarningText {
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-secondary);
+  padding: var(--leo-spacing-s) 0;
+}
+
+.contentAgentWarningIcon {
+  --leo-icon-size: 20px;
+  --leo-icon-color: var(--leo-gradient-icons-active);
+  padding: 6px;
+  border-radius: var(--leo-radius-m);
+  background-color: var(--leo-color-container-background);
+  box-shadow: var(--leo-effect-elevation-01);
+}
+
+.learnMoreLink {
+  color: inherit;
+  &:hover {
+    color: var(--leo-color-text-interactive);
+  }
+}

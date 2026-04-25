@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = "Add import for UrlConstants."
+pattern = 'import org.chromium.chrome.R;'
+replace = """
+import org.chromium.chrome.R;
+import org.chromium.components.embedder_support.util.UrlConstants;"""
+
+[[substitution]]
+description = """
+Make it possible to add chrome://leo-ai to the Home Screen on Android.
+This patch updates the `shouldShowHomescreenMenuItem` function to whitelist
+chrome://leo-ai.
+"""
+re_pattern = '(isAddToHomeIntentSupported\(\)\s+)&& (!isNativePage)$'
+re_flags = ["MULTILINE"]
+replace = '\1&& (\2 || (url != null && UrlConstants.CHROME_SCHEME.equals(url.getScheme()) && url.getHost().equals("leo-ai")))'

@@ -1,0 +1,19 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("common") {
+  sources = [
+    "infobar_constants.h",
+    "pref_names.h",
+    "url_constants.h",
+    "view_counter_pref_names.h",
+    "view_counter_pref_registry.cc",
+    "view_counter_pref_registry.h",
+  ]
+  deps = [
+    "//components/pref_registry",
+    "//components/prefs",
+  ]
+}

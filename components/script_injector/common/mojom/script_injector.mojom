@@ -1,0 +1,23 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module script_injector.mojom;
+
+import "mojo/public/mojom/base/values.mojom";
+import "mojo/public/mojom/base/string16.mojom";
+import "third_party/blink/public/mojom/script/script_evaluation_params.mojom";
+
+// Interface used by code in browser to inject script into renderer process.
+// See ScriptInjectorRenderFrameObserver for implementation.
+interface ScriptInjector {
+  // Executes script in a specified world in the renderer with various options.
+  // See WebLocalFrame::RequestExecuteScript.
+  RequestAsyncExecuteScript(
+    int32 world_id,
+    mojo_base.mojom.BigString16 script,
+    blink.mojom.UserActivationOption user_activation,
+    blink.mojom.PromiseResultOption await_promise
+  ) => (mojo_base.mojom.Value result);
+};

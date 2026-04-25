@@ -1,0 +1,207 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import * as React from 'react'
+import Icon from '@brave/leo/react/icon'
+import Button from '@brave/leo/react/button'
+import Label from '@brave/leo/react/label'
+import { Conversation } from '../../../common/mojom'
+import useCanStartNewConversation from '../../hooks/useCanStartNewConversation'
+import FeatureButtonMenu, {
+  Props as FeatureButtonMenuProps,
+} from '../feature_button_menu'
+import styles from './style.module.scss'
+import { useAIChat, useIsSmall } from '../../state/ai_chat_context'
+import { useConversation } from '../../state/conversation_context'
+import { getLocale } from '$web-common/locale'
+import {
+  tabAssociatedChatId,
+  useActiveChat,
+} from '../../state/active_chat_context'
+
+const Logo = ({ isPremium }: { isPremium: boolean }) => (
+  <div className={styles.logo}>
+    <div className={styles.logoTitle}>Leo AI</div>
+    {isPremium && (
+      <Label
+        mode='default'
+        color='blue'
+        className={styles.badgePremium}
+      >
+        Premium
+      </Label>
+    )}
+  </div>
+)
+
+const getTitle = (activeConversation?: Conversation) =>
+  activeConversation?.title || getLocale(S.AI_CHAT_CONVERSATION_LIST_UNTITLED)
+
+const newChatButtonLabel = getLocale(S.CHAT_UI_NEW_CONVERSATION_BUTTON_LABEL)
+const closeButtonLabel = getLocale(S.CHAT_UI_LABEL_CLOSE)
+const openFullPageButtonLabel = getLocale(S.CHAT_UI_OPEN_LABEL)
+
+export const ConversationHeader = React.forwardRef(function (
+  props: FeatureButtonMenuProps,
+  ref: React.Ref<HTMLDivElement>,
+) {
+  const aiChatContext = useAIChat()
+  const conversationContext = useConversation()
+  const {
+    createNewConversation,
+    isTabAssociated,
+    updateSelectedConversationId,
+  } = useActiveChat()
+  const isMobile = useIsSmall() && aiChatContext.isMobile
+
+  const canStartNewConversation = useCanStartNewConversation()
+
+  const shouldDisplayEraseAction =
+    (!aiChatContext.isStandalone || isMobile) && canStartNewConversation
+
+  const activeConversation = aiChatContext.conversations.find(
+    (c: Conversation) => c.uuid === conversationContext.conversationUuid,
+  )
+  const showTitle =
+    (!isTabAssociated || aiChatContext.isStandalone) && !isMobile
+  const canShowFullScreenButton =
+    aiChatContext.isHistoryFeatureEnabled
+    && !isMobile
+    && !aiChatContext.isStandalone
+    && conversationContext.conversationUuid
+
+  return (
+    <div
+      className={styles.header}
+      ref={ref}
+    >
+      {showTitle ? (
+        <div className={styles.conversationTitle}>
+          {!isTabAssociated && !aiChatContext.isStandalone && (
+            <Button
+              kind='plain-faint'
+              fab
+              onClick={() => updateSelectedConversationId(tabAssociatedChatId)}
+              title={getLocale(S.AI_CHAT_GO_BACK_TO_ACTIVE_CONVERSATION_BUTTON)}
+            >
+              <Icon name='arrow-left' />
+            </Button>
+          )}
+          <div
+            className={styles.conversationTitleText}
+            title={getTitle(activeConversation)}
+          >
+            {getTitle(activeConversation)}
+          </div>
+        </div>
+      ) : isMobile && aiChatContext.isStandalone ? (
+        <>
+          <Button
+            fab
+            kind='plain-faint'
+            onClick={aiChatContext.toggleSidebar}
+          >
+            <Icon name='hamburger-menu' />
+          </Button>
+          <div className={styles.logoBody}>
+            <div className={styles.divider} />
+            <Logo isPremium={aiChatContext.isPremiumUser} />
+          </div>
+        </>
+      ) : (
+        <Logo isPremium={aiChatContext.isPremiumUser} />
+      )}
+      <div className={styles.actions}>
+        {aiChatContext.hasAcceptedAgreement && (
+          <>
+            {shouldDisplayEraseAction && (
+              <Button
+                fab
+                kind='plain-faint'
+                aria-label={newChatButtonLabel}
+                title={newChatButtonLabel}
+                onClick={createNewConversation}
+              >
+                <Icon
+                  name={
+                    aiChatContext.isHistoryFeatureEnabled ? 'edit-box' : 'erase'
+                  }
+                />
+              </Button>
+            )}
+            {canShowFullScreenButton && (
+              <Button
+                fab
+                kind='plain-faint'
+                aria-label={openFullPageButtonLabel}
+                title={openFullPageButtonLabel}
+                onClick={() =>
+                  aiChatContext.api.uiHandler.openConversationFullPage(
+                    conversationContext.conversationUuid!,
+                  )
+                }
+              >
+                <Icon name='expand' />
+              </Button>
+            )}
+            <FeatureButtonMenu {...props} />
+            {!aiChatContext.isStandalone && (
+              <Button
+                fab
+                kind='plain-faint'
+                aria-label={closeButtonLabel}
+                title={closeButtonLabel}
+                className={styles.closeButton}
+                onClick={() => aiChatContext.api.uiHandler.closeUI()}
+              >
+                <Icon name='close' />
+              </Button>
+            )}
+          </>
+        )}
+      </div>
+    </div>
+  )
+})
+
+export function NavigationHeader() {
+  const aiChatContext = useAIChat()
+  const { createNewConversation } = useActiveChat()
+
+  const canStartNewConversation = useCanStartNewConversation()
+  const isMobile = useIsSmall() && aiChatContext.isMobile
+
+  return (
+    <div className={styles.header}>
+      {isMobile && (
+        <Button
+          fab
+          kind='plain-faint'
+          onClick={aiChatContext.toggleSidebar}
+        >
+          <Icon name='hamburger-menu' />
+        </Button>
+      )}
+      <div className={styles.logoBody}>
+        <div className={styles.divider} />
+        <Logo isPremium={aiChatContext.isPremiumUser} />
+      </div>
+      <div className={styles.actions}>
+        {canStartNewConversation && (
+          <Button
+            fab
+            kind='plain-faint'
+            aria-label={newChatButtonLabel}
+            title={newChatButtonLabel}
+            onClick={createNewConversation}
+            data-testid='new-chat-button'
+          >
+            <Icon name='edit-box' />
+          </Button>
+        )}
+      </div>
+    </div>
+  )
+}

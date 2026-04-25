@@ -1,0 +1,80 @@
+<link rel="import" href="chrome://resources/cr_elements/md_select.css.html">
+<style include="settings-shared md-select">
+  .settings-box {
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+<div class="settings-box">
+  <div class="start" id="labelWrapper">
+    <div class="label">$i18n{webRTCPolicyLabel}</div>
+    <a id="learnMore" href="$i18n{webRTCLearnMoreURL}" target="_blank">
+      $i18n{webRTCPolicySubLabel}
+    </a>
+  </div>
+  <settings-dropdown-menu label="$i18n{webRTCLearnMoreURL}"
+      pref="{{prefs.webrtc.ip_handling_policy}}"
+      menu-options="[[webRTCPolicies_]]">
+  </settings-dropdown-menu>
+</div>
+<settings-toggle-button id="pushMessagingEnabled"
+    class="cr-row"
+    pref="{{prefs.brave.gcm.channel_status}}"
+    label="$i18n{pushMessagingLabel}">
+    <template is="dom-if" if="[[shouldShowRestart_(
+      prefs.brave.gcm.channel_status.value)]]">
+    <cr-button on-click="restartBrowser_" slot="more-actions">
+      $i18n{restart}
+    </cr-button>
+  </template>
+</settings-toggle-button>
+<settings-toggle-button
+  class="cr-row"
+  pref="{{prefs.brave.de_amp.enabled}}"
+  label="$i18n{deAmpSettingLabel}"
+  sub-label="$i18n{deAmpSettingSubLabel}"
+  learn-more-url="$i18n{deAmpLearnMoreURL}">
+</settings-toggle-button>
+<template is="dom-if" if="[[isDebounceFeatureEnabled_]]">
+  <settings-toggle-button
+    class="cr-row"
+    pref="{{prefs.brave.debounce.enabled}}"
+    label="$i18n{debounceSettingLabel}"
+    sub-label="$i18n{debounceSettingSubLabel}"
+    learn-more-url="$i18n{debounceLearnMoreURL}">
+  </settings-toggle-button>
+</template>
+<settings-toggle-button
+  class="cr-row"
+  pref="{{prefs.brave.reduce_language}}"
+  label="$i18n{reduceLanguageControlLabel}"
+  sub-label="$i18n{reduceLanguageDesc}">
+</settings-toggle-button>
+<div hidden="[[!isRequestOTRFeatureEnabled_]]" class="settings-box">
+    <div class="start" id="labelWrapper">
+        <div class="label">$i18n{requestOTRLabel}</div>
+    </div>
+    <settings-dropdown-menu id="defaultRequestOTR"
+                            pref="{{prefs.brave.request_otr.request_otr_action_option}}"
+                            menu-options="[[requestOTRActions_]]">
+    </settings-dropdown-menu>
+</div>
+<!-- <if expr="is_win"> -->
+  <template is="dom-if" if="[[isWindowsRecallAvailable_]]">
+    <settings-toggle-button id="windowsRecallDisabled"
+        class="cr-row"
+        pref="[[windowsRecallDisabledPref_]]"
+        on-settings-boolean-control-change="windowsRecallDisabledChange_"
+        label="$i18n{windowsRecallDisabledLabel}"
+        sub-label="$i18n{windowsRecallDisabledSubLabel}">
+        <template is="dom-if"
+                  if="[[shouldShowRestartWindowsRecall_(windowsRecallDisabledPref_.value)]]">
+            <cr-button on-click="restartBrowser_" slot="more-actions">
+              $i18n{restart}
+            </cr-button>
+        </template>
+    </settings-toggle-button>
+  </template>
+<!-- </if> -->
+<settings-do-not-track-toggle id="doNotTrack" prefs="{{prefs}}">
+</settings-do-not-track-toggle>

@@ -1,0 +1,28 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_account/prefs.h"
+
+#include <string>
+
+#include "base/values.h"
+#include "brave/components/brave_account/features.h"
+#include "brave/components/brave_account/pref_names.h"
+#include "components/prefs/pref_registry_simple.h"
+
+namespace brave_account::prefs {
+
+void RegisterPrefs(PrefRegistrySimple* registry) {
+  if (features::IsBraveAccountEnabled()) {
+    registry->RegisterStringPref(kBraveAccountVerificationToken, std::string());
+    registry->RegisterStringPref(kBraveAccountAuthenticationToken,
+                                 std::string());
+    registry->RegisterStringPref(kBraveAccountEmailAddress, std::string());
+    registry->RegisterDictionaryPref(kBraveAccountServiceTokens,
+                                     base::DictValue());
+  }
+}
+
+}  // namespace brave_account::prefs

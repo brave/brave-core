@@ -1,0 +1,81 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+module email_aliases.mojom;
+
+import "mojo/public/mojom/base/empty.mojom";
+
+const uint8 kMaxAliases = 5;
+
+enum AuthenticationStatus {
+  kStartup,
+  kUnauthenticated,
+  kAuthenticated,
+};
+
+struct AuthState {
+  AuthenticationStatus status;
+  // The authentication email address for this current account
+  string email;
+};
+
+struct Alias {
+  // The alias email address for this alias
+  string email;
+  // Note attached by user
+  string? note;
+  // Domains where email is used
+  array<string>? domains;
+};
+
+struct AliasUpdateData {
+  // Change the alias's status: active/inactive
+  bool? active;
+  // Change the alias's note
+  string? note;
+  // Change domains list where aliases is used
+  array<string>? domains;
+};
+
+// Observer for change in email aliases state
+interface EmailAliasesServiceObserver {
+
+  // Called when the user's authentication state changes.
+  OnAuthStateChanged(AuthState state);
+
+  // Called when aliases have been updated for the currently authenticated
+  // account.
+  OnAliasesUpdated(array<Alias> aliases);
+};
+
+// Interface for managing email aliases
+interface EmailAliasesService {
+  // Generate a proposed email alias.
+  GenerateAlias() => result<string, string>;
+
+  // Create or Update an existing email alias.
+  UpdateAlias(string alias_email, AliasUpdateData update_data) =>
+    result<mojo_base.mojom.Empty, string>;
+
+  // Delete an email alias.
+  DeleteAlias(string alias_email) => result<mojo_base.mojom.Empty, string>;
+
+  // Add an email aliases observer.
+  AddObserver(pending_remote<EmailAliasesServiceObserver> observer);
+};
+
+// Interface for handling `Generate new alias` dialog actions
+// on the browser side.
+interface EmailAliasesPanelHandler {
+  // Notify alias creation complete (the bubble can close). Fire and forget.
+  OnAliasCreated(string email);
+
+  // Invoke manage aliases (show settings page)
+  OnManageAliases();
+
+  // Dialog closed without action.
+  OnCancelAliasCreation();
+};
+

@@ -1,0 +1,214 @@
+// Copyright (c) 2020 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#include "brave/common/importer/chrome_importer_utils.h"
+
+#include <string>
+
+#include "base/files/file_path.h"
+#include "base/files/file_util.h"
+#include "base/files/scoped_temp_dir.h"
+#include "base/path_service.h"
+#include "base/test/values_test_util.h"
+#include "brave/common/importer/importer_constants.h"
+#include "brave/components/constants/brave_paths.h"
+#include "components/user_data_importer/common/importer_data_types.h"
+#include "testing/gtest/include/gtest/gtest.h"
+
+class BraveChromeImporterUtilsTest : public testing::Test {
+ public:
+  BraveChromeImporterUtilsTest() {}
+
+  void SetUp() override {
+    EXPECT_TRUE(brave_profile_dir_.CreateUniqueTempDir());
+    base::CreateDirectory(GetTestProfilePath());
+  }
+  base::FilePath GetTestProfilePath() {
+    return brave_profile_dir_.GetPath().AppendASCII("Chrome").AppendASCII(
+        "Default");
+  }
+  void CopyTestFileToProfile(const std::string& source,
+                             const std::string& target) {
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    base::CopyFile(test_data_dir.AppendASCII("import")
+                       .AppendASCII("chrome")
+                       .AppendASCII("default")
+                       .AppendASCII(source),
+                   GetTestProfilePath().AppendASCII(target));
+  }
+
+ private:
+  base::ScopedTempDir brave_profile_dir_;
+};
+
+TEST_F(BraveChromeImporterUtilsTest, GetChromeExtensionsListPreferences) {
+  CopyTestFileToProfile(kChromePreferencesFile, kChromePreferencesFile);
+  auto extensions_list =
+      GetImportableChromeExtensionsList(GetTestProfilePath());
+  EXPECT_TRUE(extensions_list);
+  EXPECT_EQ(extensions_list->size(), 2u);
+  EXPECT_EQ(extensions_list.value(),
+            std::vector<std::string>({"jldhpllghnbhlbpcmnajkpdmadaolakh",
+                                      "mefhakmgclhhfbdadeojlkbllmecialg"}));
+}
+
+TEST_F(BraveChromeImporterUtilsTest, GetChromeExtensionsListSecurePreferences) {
+  CopyTestFileToProfile("Secure_Preferences_for_extension_import",
+                        kChromeSecurePreferencesFile);
+  auto extensions_list =
+      GetImportableChromeExtensionsList(GetTestProfilePath());
+  EXPECT_TRUE(extensions_list);
+  EXPECT_EQ(extensions_list->size(), 1u);
+  EXPECT_EQ(extensions_list.value(),
+            std::vector<std::string>({"aeblfdkhhhdcdjpifhhbdiojplfjncoa"}));
+}
+
+TEST_F(BraveChromeImporterUtilsTest, ExtensionImportTest) {
+  CopyTestFileToProfile("Secure_Preferences_for_extension_import",
+                        kChromeSecurePreferencesFile);
+  CopyTestFileToProfile("Preferences", "Preferences");
+  auto extensions_list =
+      GetImportableChromeExtensionsList(GetTestProfilePath());
+  EXPECT_TRUE(extensions_list);
+  // Only 3 extension installed from webstore is importing target extension.
+  // We don't import theme, pre-installed extensions, disabled extensions and
+  // installed by default (1 from Secure Preferences, 1 from Preferences)
+  EXPECT_EQ(3u, extensions_list->size());
+  EXPECT_EQ(extensions_list.value(),
+            std::vector<std::string>({"aeblfdkhhhdcdjpifhhbdiojplfjncoa",
+                                      "jldhpllghnbhlbpcmnajkpdmadaolakh",
+                                      "mefhakmgclhhfbdadeojlkbllmecialg"}));
+}
+
+TEST_F(BraveChromeImporterUtilsTest, GetChromeUserDataFolder) {
+  CopyTestFileToProfile("Local State", "Local State");
+
+  EXPECT_EQ(GetChromeSourceProfiles(base::FilePath(FILE_PATH_LITERAL("fake"))),
+            base::test::ParseJsonList(R"([{"id": "", "name": "Default" }])"));
+
+  EXPECT_EQ(GetChromeSourceProfiles(GetTestProfilePath().Append(
+                base::FilePath::StringType(FILE_PATH_LITERAL("Local State")))),
+            base::test::ParseJsonList(R"([
+        {"id": "Default", "name": "Profile 1"},
+        {"id": "Profile 2", "name": "Profile 2"}
+      ])"));
+  CopyTestFileToProfile("No Profile Local State", "No Profile Local State");
+  EXPECT_EQ(GetChromeSourceProfiles(
+                GetTestProfilePath().Append(base::FilePath::StringType(
+                    FILE_PATH_LITERAL("No Profile Local State")))),
+            base::test::ParseJsonList(R"([{"id": "", "name": "Default" }])"));
+
+  CopyTestFileToProfile("Local State With Avatar", "Local State With Avatar");
+  EXPECT_EQ(GetChromeSourceProfiles(
+                GetTestProfilePath().Append(base::FilePath::StringType(
+                    FILE_PATH_LITERAL("Local State With Avatar")))),
+            base::test::ParseJsonList(R"([
+        {
+          "id": "Default",
+          "name": "Profile 1",
+          "last_active": true,
+          "avatar_icon": "chrome://theme/IDR_PROFILE_AVATAR_26",
+          "active_time": 1663746595.898419
+        },
+        {
+          "id": "Profile 2",
+          "name": "Profile 2",
+          "last_active": false
+        }
+      ])"));
+}
+
+TEST_F(BraveChromeImporterUtilsTest, ChromeImporterCanImport) {
+  CopyTestFileToProfile("Secure_Preferences_for_extension_import",
+                        kChromeSecurePreferencesFile);
+  CopyTestFileToProfile(kChromePreferencesFile, kChromePreferencesFile);
+  uint16_t services_supported = user_data_importer::NONE;
+  EXPECT_TRUE(ChromeImporterCanImport(GetTestProfilePath(),
+                                      user_data_importer::TYPE_CHROME,
+                                      &services_supported));
+  EXPECT_EQ(services_supported, user_data_importer::EXTENSIONS);
+}
+
+// Verify that TYPE_BRAVE uses the same import logic as other Chromium-based
+// browsers and that passwords are importable (unlike TYPE_CHROME which blocks
+// password import due to app-bound encryption).
+TEST_F(BraveChromeImporterUtilsTest, BraveImporterCanImport) {
+  CopyTestFileToProfile("Secure_Preferences_for_extension_import",
+                        kChromeSecurePreferencesFile);
+  CopyTestFileToProfile(kChromePreferencesFile, kChromePreferencesFile);
+  uint16_t services_supported = user_data_importer::NONE;
+  EXPECT_TRUE(ChromeImporterCanImport(GetTestProfilePath(),
+                                      user_data_importer::TYPE_BRAVE,
+                                      &services_supported));
+  EXPECT_EQ(services_supported, user_data_importer::EXTENSIONS);
+}
+
+TEST_F(BraveChromeImporterUtilsTest, BraveImporterCanImportPasswords) {
+  // Create a Login Data file so password import is detected.
+  base::WriteFile(GetTestProfilePath().AppendASCII("Login Data"), "dummy");
+  uint16_t services_supported = user_data_importer::NONE;
+
+  // TYPE_BRAVE should support password import.
+  EXPECT_TRUE(ChromeImporterCanImport(GetTestProfilePath(),
+                                      user_data_importer::TYPE_BRAVE,
+                                      &services_supported));
+  EXPECT_TRUE(services_supported & user_data_importer::PASSWORDS);
+
+  // TYPE_CHROME should NOT support password import (app-bound encryption).
+  // With only Login Data present and no other importable data,
+  // ChromeImporterCanImport returns false.
+  services_supported = user_data_importer::NONE;
+  EXPECT_FALSE(ChromeImporterCanImport(GetTestProfilePath(),
+                                       user_data_importer::TYPE_CHROME,
+                                       &services_supported));
+  EXPECT_FALSE(services_supported & user_data_importer::PASSWORDS);
+}
+
+TEST_F(BraveChromeImporterUtilsTest, BraveImporterCanImportAllDataTypes) {
+  CopyTestFileToProfile("Secure_Preferences_for_extension_import",
+                        kChromeSecurePreferencesFile);
+  CopyTestFileToProfile(kChromePreferencesFile, kChromePreferencesFile);
+  CopyTestFileToProfile("Bookmarks", "Bookmarks");
+  CopyTestFileToProfile("History", "History");
+  base::WriteFile(GetTestProfilePath().AppendASCII("Login Data"), "dummy");
+
+  uint16_t services_supported = user_data_importer::NONE;
+  EXPECT_TRUE(ChromeImporterCanImport(GetTestProfilePath(),
+                                      user_data_importer::TYPE_BRAVE,
+                                      &services_supported));
+  EXPECT_TRUE(services_supported & user_data_importer::FAVORITES);
+  EXPECT_TRUE(services_supported & user_data_importer::HISTORY);
+  EXPECT_TRUE(services_supported & user_data_importer::PASSWORDS);
+  EXPECT_TRUE(services_supported & user_data_importer::EXTENSIONS);
+}
+
+TEST(BraveImporterUserDataFolderTest, GetBraveUserDataFolderIsNotEmpty) {
+  // GetBraveUserDataFolder() should always return a non-empty path, even if the
+  // folder doesn't exist on disk yet.
+  base::FilePath brave_path = GetBraveUserDataFolder();
+  EXPECT_FALSE(brave_path.empty());
+  // The path should contain a Brave-specific directory name.
+  EXPECT_NE(brave_path.MaybeAsASCII().find("Brave"), std::string::npos);
+}
+
+TEST_F(BraveChromeImporterUtilsTest, BadFiles) {
+  CopyTestFileToProfile("non_json_preferences", kChromeSecurePreferencesFile);
+  CopyTestFileToProfile("non_json_preferences", kChromePreferencesFile);
+  uint16_t services_supported = user_data_importer::NONE;
+  EXPECT_FALSE(ChromeImporterCanImport(GetTestProfilePath(),
+                                       user_data_importer::TYPE_CHROME,
+                                       &services_supported));
+  EXPECT_EQ(services_supported, user_data_importer::NONE);
+
+  CopyTestFileToProfile("non_dict_extension", kChromeSecurePreferencesFile);
+  CopyTestFileToProfile("non_dict_extension", kChromePreferencesFile);
+  services_supported = user_data_importer::NONE;
+  // Empty list is anyway considered as something to import.
+  EXPECT_TRUE(ChromeImporterCanImport(GetTestProfilePath(),
+                                      user_data_importer::TYPE_CHROME,
+                                      &services_supported));
+  EXPECT_EQ(services_supported, user_data_importer::EXTENSIONS);
+}

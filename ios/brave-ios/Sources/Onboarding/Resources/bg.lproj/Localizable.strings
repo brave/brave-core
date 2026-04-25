@@ -1,0 +1,66 @@
+/* A button title shown below language introducing the Brave Playlist feature. i.e. 'Discover how to use use this feature' */
+"advanceInitialOnboardingButtonTitle" = "Открий как";
+
+/* A button title that when tapped will advance the onboarding to guide a user to add some content to Playlist */
+"advanceStep2OnboardingButtonTitle" = "Изпробвай го!";
+
+/* A button that allows the user to disable the brave translate feature. When pressed, the page will not be automatically translated to the user's language. */
+"BraveTranslateOnboarding.disableTranslateButtonTitle" = "Деактивирай тази функция";
+
+/* A text element that describes the translation feature and explains that hte user might have to download or configure languages on their device. */
+"BraveTranslateOnboarding.translateDescription" = "Страниците могат да се превеждат на езици, поддържани от твоето iOS устройство. Ако използваш тази функция за първи път, може да се наложи да настроиш езиците.";
+
+/* A text element that explains we're translating pages. */
+"BraveTranslateOnboarding.translateTitle" = "Превод на страници";
+
+/* A button title that when tapped opens Brave Playlist */
+"confirmationActionButtonTitle" = "Покажи ми плейлистата ми";
+
+/* Shown above a button that will let the user open the playlist feature */
+"confirmationPrompt" = "А сега да видим плейлистата ти.";
+
+/* Shown below a title that confirms the user completed the task of adding something to playlist. %@ will be replaced with the folder the content was added to. i.e. 'Content added to Play Later' */
+"confirmationSubtitle" = "Съдържанието е добавено към %@";
+
+/* Guides the user to tap on an icon where the onboarding is pointing to. '%@' will be replaced with said icon. */
+"confirmationTitle" = "Браво";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissOnboardingButtonTitle" = "Отхвърляне";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep2OnboardingButtonTitle" = "Може би по-късно";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep4OnboardingButtonTitle" = "Затваряне";
+
+/* A title shown on the first 2 steps of onboarding for Brave Playlist. Brave Playlist is a product name */
+"introducingBravePlaylist" = "Представяме ти Brave Плейлиста";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleOne" = "Създавайте плейлисти с любимото ви съдържание. Спестете мобилни данни. И възпроизвеждайте без реклами.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleThree" = "Картина в картината. Възпроизвеждане на заден план. Управление от заключения екран. И още…";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleTwo" = "Останете в ритъм: Добавяйте видеоклипове, докато сърфирате, за да ги гледате по-късно.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleOne" = "Добавяйте видеоклипове към Brave Playlist. Възпроизвеждайте по всяко време. Дори офлайн";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleThree" = "Възпроизвеждането е по-добро в Playlist";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleTwo" = "Само докоснете бутона, за да добавите видеоклипове в даден плейлист";
+
+/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
+"playlistOnboardingDescription" = "Създавай плейлисти с любимото си съдържание. Добавяй мултимедия от която и да е страница.\nПускай ги по всяко време. Дори когато си офлайн!";
+
+/* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
+"userActionPrompt" = "Докосни %@, за да добавиш първия си елемент";
+
+/* Will be shown next to an icon inside of some other text. i.e. "Tap 'Add to Playlist' to add your first item" */
+"userActionPromptFill" = "Добавяне към плейлист";
+

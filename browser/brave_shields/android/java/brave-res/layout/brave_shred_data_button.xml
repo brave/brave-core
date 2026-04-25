@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2025 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/shred_data_button"
+        android:layout_width="@dimen/hub_toolbar_action_button_size"
+        android:layout_height="@dimen/hub_toolbar_action_button_size"
+        android:contentDescription="@string/brave_menu_shred_text"
+        app:icon="@drawable/ic_brave_shred"
+        android:layout_gravity="center_vertical"
+        android:visibility="visible"
+        style="@style/Widget.Material3Expressive.Button.IconButton.Standard"
+         />
+
+</merge>

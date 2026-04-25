@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/res/xml/homepage_preferences.xml b/chrome/android/java/res/xml/homepage_preferences.xml
+index 5cdf4518fa7a9b0a7bde2d0c1681a1c0444a16f3..fc22913a53b9554543f76699a5afbd652aa87315 100644
+--- a/chrome/android/java/res/xml/homepage_preferences.xml
++++ b/chrome/android/java/res/xml/homepage_preferences.xml
+@@ -14,7 +14,7 @@ found in the LICENSE file.
+         android:summaryOn="@string/text_on"
+         android:summaryOff="@string/text_off" />
+ 
+-    <org.chromium.chrome.browser.homepage.settings.RadioButtonGroupHomepagePreference
++    <org.chromium.chrome.browser.homepage.settings.BraveRadioButtonGroupHomepagePreference
+         android:key="homepage_radio_group"
+         android:selectable="false"
+         app:allowDividerAbove="true"

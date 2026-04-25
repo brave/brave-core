@@ -1,0 +1,155 @@
+<html>
+<head>
+<script>
+let expectedImgLoaded = 0
+let expectedImgBlocked = 0
+let expectedXHRLoaded = 0
+let expectedXHRBlocked = 0
+let numXHRLoaded = 0
+let numXHRBlocked = 0
+let numImgLoaded = 0
+let numImgBlocked = 0
+
+// Performs an XHR for the specified src
+function xhr(src) {
+  return new Promise(resolve => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', src, true);
+    xhr.onload = function(e) {
+      numXHRLoaded++
+      resolve(onLoad())
+    }
+    xhr.onerror = function(e) {
+      numXHRBlocked++
+      resolve(onLoad())
+    }
+    xhr.send();
+  });
+}
+
+// Performs an XHR for the specified src and reports successful,
+// only if the content matches expected_content.
+function xhr_expect_content(src, expected_content) {
+  return new Promise(resolve => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', src, true);
+    xhr.onload = function(e) {
+      if (xhr.response === expected_content) {
+        numXHRLoaded++
+      }
+      resolve(onLoad())
+    }
+    xhr.onerror = function(e) {
+      console.log(e)
+      numXHRBlocked++
+      resolve(onLoad())
+    }
+    xhr.send();
+  });
+}
+
+// Adds an image to the DOM with the specified src
+function addImage(src) {
+  return new Promise(resolve => {
+    const img = document.createElement('img')
+    img.src = src
+    img.className = 'adImage'
+
+    img.addEventListener('load', () => {
+      numImgLoaded++
+      resolve(onLoad())
+    })
+    img.addEventListener('error', () => {
+      numImgBlocked++
+      resolve(onLoad())
+    })
+    document.body.appendChild(img)
+  });
+}
+
+// Adds an iframe to the DOM with the specified src
+function addFrame(src) {
+  return new Promise(resolve => {
+    const frame = document.createElement('iframe')
+    frame.src = src
+    frame.className = 'adFrame'
+
+    frame.addEventListener('load', () => {
+      resolve(onLoad())
+    })
+    frame.addEventListener('error', () => {
+      resolve(onLoad())
+    })
+    document.body.appendChild(frame)
+  });
+}
+
+function installBlockingServiceWorker() {
+  return new Promise(resolve => {
+    navigator.serviceWorker.addEventListener('message', msg => {
+      if (msg.data.includes('LOADED')) {
+        numXHRLoaded++
+        resolve(onLoad())
+      } else if (msg.data.includes('FAILED')) {
+        numXHRBlocked++
+        resolve(onLoad())
+      }
+    });
+    navigator.serviceWorker.register('./serviceworker.js')
+      .then(registration => {
+        if (registration.active) {
+          registration.active.postMessage('fetch');
+        } else if (registration.installing) {
+          registration.installing.addEventListener('statechange', () => {
+            if (registration.active) {
+              registration.active.postMessage('fetch');
+            }
+          });
+        }
+      })
+  });
+}
+
+// Sets the expectation for the number of images and XHR loaded and blocked
+function setExpectations(numImgLoaded, numImgBlocked, numXHRLoaded, numXHRBlocked) {
+  expectedImgLoaded = numImgLoaded
+  expectedImgBlocked = numImgBlocked
+  expectedXHRLoaded = numXHRLoaded
+  expectedXHRBlocked = numXHRBlocked
+}
+
+function onLoad() {
+  if (numImgLoaded + numImgBlocked !== expectedImgLoaded + expectedImgBlocked ||
+      numXHRLoaded + numXHRBlocked !== expectedXHRLoaded + expectedXHRBlocked) {
+    return;
+  }
+  const result = numImgLoaded == expectedImgLoaded &&
+      expectedImgBlocked == numImgBlocked &&
+      numXHRLoaded === expectedXHRLoaded &&
+      numXHRBlocked === expectedXHRBlocked
+  // For debugging:
+  // console.log('sending: ' + JSON.stringify({result, expectedImgLoaded, expectedImgBlocked, numImgBlocked,
+  //   numXHRLoaded, expectedXHRLoaded, numXHRBlocked, expectedXHRBlocked}))
+  return result;
+}
+
+function checkWebsocketConnection(url) {
+  return new Promise((resolve, reject) => {
+    /*const protocol = location.protocol.replace('http', 'ws');
+    const url = protocol + '//' + location.host + '/echo-with-no-extension';*/
+    console.log(url);
+    const ws = new WebSocket(url);
+
+    ws.onopen = resolve;
+    ws.onclose = reject;
+  }).then(() => {
+    return true;
+  }, () => {
+    return false;
+  });
+}
+</script>
+</head>
+<body>
+</body>
+</html>

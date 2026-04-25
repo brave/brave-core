@@ -1,0 +1,34 @@
+caption: Control debouncing feature to protect against bounce tracking.
+default: null
+desc: |-
+  Debouncing protects users against bounce tracking by recognizing when the user is about to visit a known tracking domain, skipping the tracking site altogether, and instead directly navigating the user to their intended destination. This prevents trackers from circumventing third-party storage restrictions by injecting intermediate tracking sites between the user and their intended destination.
+
+  If this policy is set to true, debouncing will be enabled to protect users from bounce tracking by redirecting them directly to their intended destinations.
+
+  If this policy is set to false, debouncing will be disabled and users may be subject to bounce tracking techniques.
+
+  If this policy is left unset, debouncing will be controlled by the user setting (enabled by default).
+
+example_value: true
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: true
+  per_profile: true
+items:
+- caption: Disable debouncing feature
+  value: false
+- caption: Enable debouncing feature
+  value: true
+- caption: Allow the user to decide (enabled by default)
+  value: null
+owners:
+- bbondy@brave.com
+- clifton@brave.com
+schema:
+  type: boolean
+supported_on:
+- chrome.*:140-
+- android:140-
+tags: []
+type: main

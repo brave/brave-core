@@ -1,0 +1,45 @@
+[package]
+authors = ["Alexandre Bury <alexandre.bury@gmail.com>"]
+name = "zstd-safe"
+build = "build.rs"
+version = "7.2.4"
+description = "Safe low-level bindings for the zstd compression library."
+keywords = ["zstd", "zstandard", "compression"]
+categories = ["api-bindings", "compression"]
+repository = "https://github.com/gyscos/zstd-rs"
+license = "MIT OR Apache-2.0"
+readme = "Readme.md"
+edition = "2018"
+rust-version = "1.64"
+exclude = ["update_consts.sh"]
+
+[package.metadata.docs.rs]
+features = ["experimental", "arrays", "std", "zdict_builder", "doc-cfg"]
+
+[dependencies]
+zstd-sys = { path = "zstd-sys", version = "2.0.15", default-features = false }
+
+[features]
+default = ["legacy", "arrays", "zdict_builder"]
+
+bindgen = ["zstd-sys/bindgen"]
+debug = ["zstd-sys/debug"]
+experimental = ["zstd-sys/experimental"]
+legacy = ["zstd-sys/legacy"]
+pkg-config = ["zstd-sys/pkg-config"]
+std = ["zstd-sys/std"] # Implements WriteBuf for std types like Cursor and Vec.
+zstdmt = ["zstd-sys/zstdmt"]
+thin = ["zstd-sys/thin"]
+arrays = []
+no_asm = ["zstd-sys/no_asm"]
+doc-cfg = []
+zdict_builder = ["zstd-sys/zdict_builder"]
+seekable = ["zstd-sys/seekable"]
+
+# These two are for cross-language LTO.
+# Will only work if `clang` is used to build the C library.
+fat-lto = ["zstd-sys/fat-lto"]
+thin-lto = ["zstd-sys/thin-lto"]
+
+[lints.rust]
+non_upper_case_globals = "allow"

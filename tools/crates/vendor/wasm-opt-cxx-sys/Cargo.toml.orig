@@ -1,0 +1,18 @@
+[package]
+name = "wasm-opt-cxx-sys"
+version = "0.116.0"
+description = "wasm-opt bindings via cxx"
+license = "MIT / Apache-2.0"
+edition = "2018"
+documentation = "https://docs.rs/wasm-opt-cxx-sys"
+repository = "https://github.com/brson/wasm-opt-rs"
+readme = "README.md"
+
+[dependencies]
+anyhow = "1.0.58"
+cxx = "1.0.79"
+wasm-opt-sys = { path = "../wasm-opt-sys", version = "0.116.0", default-features = false }
+
+[build-dependencies]
+anyhow = "1.0.58"
+cxx-build = { version = "1.0.79", features = ["parallel"] }

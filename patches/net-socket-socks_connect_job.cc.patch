@@ -1,0 +1,19 @@
+diff --git a/net/socket/socks_connect_job.cc b/net/socket/socks_connect_job.cc
+index a7af8f25be2ec7814c8d2f2f279b916813fe3f8c..7009a1f4d822a3ada8e0f9ab60cbe07d75b65b1a 100644
+--- a/net/socket/socks_connect_job.cc
++++ b/net/socket/socks_connect_job.cc
+@@ -176,9 +176,11 @@ int SOCKSConnectJob::DoSOCKSConnect() {
+ 
+   // Add a SOCKS connection on top of the tcp socket.
+   if (socks_params_->is_socks_v5()) {
+-    socket_ = std::make_unique<SOCKS5ClientSocket>(
+-        transport_connect_job_->PassSocket(), socks_params_->destination(),
+-        socks_params_->traffic_annotation());
++    socket_ = std::make_unique<SOCKS5ClientSocketAuth>(
++        transport_connect_job_->PassSocket(),
++        socks_params_->destination(),
++        socks_params_->traffic_annotation(),
++        socks_params_->transport_params()->destination());
+   } else {
+     auto socks_socket = std::make_unique<SOCKSClientSocket>(
+         transport_connect_job_->PassSocket(), socks_params_->destination(),

@@ -1,0 +1,402 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+// Dummy comments to make the linter happy.
+[modernised_enums]
+namespace simulation_responses {
+
+  enum WarningSeverity {
+    CRITICAL,
+    WARNING
+  };
+
+  enum EVMRawInfoKind {
+    ERC20_TRANSFER,
+    ERC20_APPROVAL,
+    NATIVE_ASSET_TRANSFER,
+    ERC721_TRANSFER,
+    ERC721_APPROVAL,
+    ERC721_APPROVAL_FOR_ALL,
+    ERC1155_TRANSFER,
+    ERC1155_APPROVAL_FOR_ALL,
+    ANY_NFT_FROM_COLLECTION_TRANSFER
+  };
+
+  enum SolanaRawInfoKind {
+    SOL_TRANSFER,
+    SPL_TRANSFER,
+    SPL_APPROVAL,
+    SOL_STAKE_AUTHORITY_CHANGE,
+    USER_ACCOUNT_OWNER_CHANGE
+  };
+
+  enum MetaplexTokenStandardKind {
+    non_fungible,
+    fungible_asset,
+    fungible,
+    non_fungible_edition,
+    unknown
+  };
+
+  enum DiffSign {
+    PLUS,
+    MINUS
+  };
+
+  enum EVMAddressKind {
+    ACCOUNT
+  };
+
+  enum AssetPriceSource {
+    Simplehash,
+    Defillama,
+    Coingecko
+  };
+
+  enum EVMErrorKind {
+    TRANSACTION_REVERTED,
+    TRANSACTION_ERROR,
+    SIMULATION_FAILED,
+    UNKNOWN_ERROR
+  };
+
+  enum SuggestedColor {
+    CREDIT,
+    DEBIT,
+    INFO
+  };
+
+  dictionary Price {
+    AssetPriceSource source;
+    DOMString updatedAt;
+    DOMString dollarValuePerToken;
+  };
+
+  dictionary Warning {
+    WarningSeverity severity;
+    DOMString kind;
+    DOMString message;
+  };
+
+  dictionary EVMError {
+    EVMErrorKind kind;
+    DOMString humanReadableError;
+  };
+
+  dictionary EVMCounterparty {
+    EVMAddressKind kind;
+    DOMString address;
+  };
+
+  dictionary EVMAmount {
+    DOMString after;
+    DOMString before;
+  };
+
+  dictionary EVMAsset {
+    DOMString address;
+    any? symbol;
+    any? name;
+    any? collection;
+    DOMString? decimals;
+    boolean? verified;
+
+    // This field is not be present in case of a native asset.
+    DOMString[]? lists;
+
+    // nullable field of type DOMString
+    any? imageUrl;
+
+    // nullable field of type Price
+    any price;
+  };
+
+  dictionary NFTMetadata {
+    DOMString rawImageUrl;
+  };
+
+  dictionary ERC20TransferData {
+    // nullable field of type EVMCounterparty
+    any counterparty;
+
+    EVMAmount amount;
+    EVMAsset asset;
+  };
+
+  dictionary ERC20ApprovalData {
+    EVMCounterparty owner;
+    EVMCounterparty spender;
+    EVMAmount amount;
+    EVMAsset asset;
+  };
+
+  dictionary NativeAssetTransferData {
+    EVMAmount amount;
+    EVMAsset asset;
+
+    // nullable field of type EVMCounterparty
+    any counterparty;
+  };
+
+  dictionary ERC721TransferData {
+    EVMAmount amount;
+
+    // nullable field of type EVMCounterparty
+    any counterparty;
+
+    NFTMetadata metadata;
+
+    // nullable field of type DOMString
+    any tokenId;
+
+    EVMAsset asset;
+  };
+
+  dictionary ERC721ApprovalData {
+    EVMAmount amount;
+    NFTMetadata metadata;
+    EVMCounterparty owner;
+    EVMCounterparty spender;
+
+    // nullable field of type DOMString
+    any tokenId;
+
+    EVMAsset asset;
+  };
+
+  dictionary ERC721ApprovalForAllData {
+    EVMAmount amount;
+    EVMCounterparty owner;
+    EVMCounterparty spender;
+    EVMAsset asset;
+  };
+
+  dictionary ERC1155TransferData {
+    EVMAmount amount;
+    NFTMetadata metadata;
+
+    // nullable field of type DOMString
+    any tokenId;
+
+    // nullable field of type EVMCounterparty
+    any counterparty;
+
+    EVMAsset asset;
+  };
+
+  dictionary ERC1155ApprovalForAllData {
+    EVMAmount amount;
+    EVMCounterparty owner;
+    EVMCounterparty spender;
+    EVMAsset asset;
+  };
+
+  dictionary EVMStateChangeRawInfo {
+    EVMRawInfoKind kind;
+
+    // data is a non-nullable union of the following types:
+    //   - ERC20TransferData
+    //   - ERC20ApprovalData
+    //   - NativeAssetTransferData
+    //   - ERC721TransferData
+    //   - ERC721ApprovalData
+    //   - ERC721ApprovalForAllData
+    //   - ERC1155TransferData
+    //   - ERC1155ApprovalForAllData
+    any data;
+  };
+
+  dictionary EVMStateChange {
+    DOMString humanReadableDiff;
+    EVMStateChangeRawInfo rawInfo;
+  };
+
+  dictionary EVMAggregatedSimulationResults {
+    // object with key being the account address and value being of type
+    // EVMStateChange[].
+    any expectedStateChanges;
+
+    // nullable field of type EVMError
+    any error;
+  };
+
+  dictionary EVMSimulationResults {
+    EVMAggregatedSimulationResults aggregated;
+  };
+
+  dictionary EVMSimulationResponse {
+    DOMString action; // BLOCK | WARN | NONE
+    Warning[] warnings;
+    EVMSimulationResults simulationResults;
+  };
+
+  dictionary SolanaDiff {
+    DiffSign sign;
+    DOMString digits;
+  };
+
+  dictionary SolanaStakeAuthorities {
+    DOMString staker;
+    DOMString withdrawer;
+  };
+
+  dictionary SolanaError {
+    // ACCOUNT_DOES_NOT_HAVE_ENOUGH_SOL_TO_PERFORM_THE_OPERATION
+    // ACCOUNT_DOES_NOT_SUPPORT_SPECIFIED_AUTHORITY_TYPE
+    // ACCOUNT_IN_USE
+    // ACCOUNT_IS_FROZEN
+    // ACCOUNT_LOADED_TWICE
+    // ACCOUNT_NOT_ASSOCIATED_WITH_THIS_MINT
+    // ADVANCING_STORED_NONCE_REQUIRES_A_POPULATED_RECENTBLOCKHASHES_SYSVAR
+    // ALREADY_IN_USE
+    // AN_ACCOUNT_WITH_THE_SAME_ADDRESS_ALREADY_EXISTS
+    // ATTEMPT_TO_DEBIT_AN_ACCOUNT_BUT_FOUND_NO_RECORD_OF_A_PRIOR_CREDIT
+    // ATTEMPT_TO_LOAD_A_PROGRAM_THAT_DOES_NOT_EXIST
+    // BAD_REQUEST
+    // BLOCKHASH_NOT_FOUND
+    // CANNOT_ALLOCATE_ACCOUNT_DATA_OF_THIS_LENGTH
+    // CANNOT_ASSIGN_ACCOUNT_TO_THIS_PROGRAM_ID
+    // ERROR_PROCESSING_INSTRUCTION_{0}:_{1}
+    // FIXED_SUPPLY
+    // INSTRUCTION_DOES_NOT_SUPPORT_NATIVE_TOKENS
+    // INSTRUCTION_DOES_NOT_SUPPORT_NON-NATIVE_TOKENS
+    // INSUFFICIENT_FUNDS
+    // INSUFFICIENT_FUNDS_FOR_FEE
+    // INVALID_INSTRUCTION
+    // INVALID_MINT
+    // INVALID_NUMBER_OF_PROVIDED_SIGNERS
+    // INVALID_NUMBER_OF_REQUIRED_SIGNERS
+    // LAMPORT_BALANCE_BELOW_RENT-EXEMPT_THRESHOLD
+    // LENGTH_OF_REQUESTED_SEED_IS_TOO_LONG
+    // LOADER_CALL_CHAIN_IS_TOO_DEEP
+    // NON-NATIVE_ACCOUNT_CAN_ONLY_BE_CLOSED_IF_ITS_BALANCE_IS_ZERO
+    // OPERATION_OVERFLOWED
+    // OWNER_DOES_NOT_MATCH
+    // PROVIDED_ADDRESS_DOES_NOT_MATCH_ADDRESSED_DERIVED_FROM_SEED
+    // SIMULATION_FAILED
+    // SIMULATION_TIMED_OUT
+    // SPECIFIED_NONCE_DOES_NOT_MATCH_STORED_NONCE
+    // STATE_IS_INVALID_FOR_REQUESTED_OPERATION
+    // STATE_IS_UNINITIALIZED
+    // STORED_NONCE_IS_STILL_IN_RECENT_BLOCKHASHES
+    // THE_PROVIDED_DECIMALS_VALUE_DIFFERENT_FROM_THE_MINT_DECIMALS
+    // THIS_ACCOUNT_MAY_NOT_BE_USED_TO_PAY_TRANSACTION_FEES
+    // THIS_PROGRAM_MAY_NOT_BE_USED_FOR_EXECUTING_INSTRUCTIONS
+    // THIS_TOKEN_MINT_CANNOT_FREEZE_ACCOUNTS
+    // THIS_TRANSACTION_HAS_ALREADY_BEEN_PROCESSED
+    // TOO_MANY_TRANSACTIONS
+    // TRANSACTION_ADDRESS_TABLE_LOOKUP_USES_AN_INVALID_INDEX
+    // TRANSACTION_CONTAINS_A_DUPLICATE_INSTRUCTION_({0})_THAT_IS_NOT_ALLOWED
+    // TRANSACTION_CONTAINS_AN_INVALID_ACCOUNT_REFERENCE
+    // TRANSACTION_DID_NOT_PASS_SIGNATURE_VERIFICATION
+    // TRANSACTION_FAILED_TO_SANITIZE_ACCOUNTS_OFFSETS_CORRECTLY
+    // TRANSACTION_LEAVES_AN_ACCOUNT_WITH_A_LOWER_BALANCE_THAN_RENT-EXEMPT_MINIMUM
+    // TRANSACTION_LOADS_A_WRITABLE_ACCOUNT_THAT_CANNOT_BE_WRITTEN
+    // TRANSACTION_LOADS_AN_ADDRESS_TABLE_ACCOUNT_THAT_DOESN'T_EXIST
+    // TRANSACTION_LOADS_AN_ADDRESS_TABLE_ACCOUNT_WITH_AN_INVALID_OWNER
+    // TRANSACTION_LOADS_AN_ADDRESS_TABLE_ACCOUNT_WITH_INVALID_DATA
+    // TRANSACTION_LOCKED_TOO_MANY_ACCOUNTS
+    // TRANSACTION_PROCESSING_LEFT_AN_ACCOUNT_WITH_AN_OUTSTANDING_BORROWED_REFERENCE
+    // TRANSACTION_REQUIRES_A_FEE_BUT_HAS_NO_SIGNATURE_PRESENT
+    // TRANSACTION_VERSION_IS_UNSUPPORTED
+    // TRANSACTION_WOULD_EXCEED_ACCOUNT_DATA_LIMIT_WITHIN_THE_BLOCK
+    // TRANSACTION_WOULD_EXCEED_MAX_ACCOUNT_LIMIT_WITHIN_THE_BLOCK
+    // TRANSACTION_WOULD_EXCEED_MAX_BLOCK_COST_LIMIT
+    // TRANSACTION_WOULD_EXCEED_MAX_VOTE_COST_LIMIT
+    // TRANSACTION_WOULD_EXCEED_TOTAL_ACCOUNT_DATA_LIMIT
+    // TRANSACTIONS_ARE_CURRENTLY_DISABLED_DUE_TO_CLUSTER_MAINTENANCE
+    // UNKNOWN_ERROR
+    DOMString kind;
+    DOMString humanReadableError;
+  };
+
+  dictionary SolanaAsset {
+    DOMString symbol;
+    DOMString name;
+    DOMString? mint;
+    DOMString decimals;
+    any? imageUrl;
+    any price;
+
+    // Optional field of type MetaplexTokenStandardKind. We set the type to any
+    // because optional enums are not yet supported by the IDL compiler.
+    any? metaplexTokenStandard;
+  };
+
+  dictionary SOLTransferData {
+    SolanaAsset asset;
+    SolanaDiff diff;
+  };
+
+  dictionary SPLTransferData {
+    SolanaAsset asset;
+    SolanaDiff diff;
+
+    // nullable field of type DOMString
+    any counterparty;
+  };
+
+  dictionary SPLApprovalData {
+    DOMString delegate;
+    SolanaDiff diff;
+    SolanaAsset asset;
+  };
+
+  dictionary SOLStakeAuthorityChangeData {
+    DOMString stakeAccount;
+    SolanaStakeAuthorities currentAuthorities;
+    SolanaStakeAuthorities futureAuthorities;
+    SolanaAsset asset;
+    DOMString solStaked;
+  };
+
+  dictionary SolanaUserAccountOwnerChangeData {
+    DOMString account;
+    DOMString currentOwner;
+    DOMString futureOwner;
+  };
+
+  dictionary SolanaStateChangeRawInfo {
+    SolanaRawInfoKind kind;
+
+    // data is a non-nullable union of the following types:
+    //   - SOLTransferData
+    //   - SPLTransferData
+    //   - SPLApprovalData
+    //   - SOLStakeAuthorityChangeData
+    //   - SolanaUserAccountOwnerChangeData
+    //   - TODO(onyb): add BFPLoaderAuthorityChangeData
+    //   - TODO(onyb): add CompressedNFTTransferData
+    //   - TODO(onyb): add SOLStakeAccountDeposit
+    //   - TODO(onyb): add SOLStakeAccountWithdrawal
+    any data;
+  };
+
+  dictionary SolanaStateChange {
+    DOMString humanReadableDiff;
+    SuggestedColor suggestedColor;
+    SolanaStateChangeRawInfo rawInfo;
+  };
+
+  dictionary SolanaAggregatedSimulationResults {
+    DOMString action; // BLOCK | WARN | NONE
+    Warning[] warnings;
+
+    // object with key being the account address and value being of type
+    // SolanaStateChange[].
+    any expectedStateChanges;
+
+    // nullable field of type SolanaError
+    any error;
+  };
+
+  dictionary SolanaSimulationResponse {
+    SolanaAggregatedSimulationResults aggregated;
+  };
+
+  dictionary HTTPError {
+    DOMString error;
+  };
+};

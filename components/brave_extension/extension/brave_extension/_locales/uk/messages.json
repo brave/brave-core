@@ -1,0 +1,226 @@
+{
+  "appName": {
+    "message": "Розширення Brave",
+    "description": "The name of the extension."
+  },
+  "shields": {
+    "message": "Щити",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "увімкнено",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "вимкнено",
+    "description": "Message for when shields is disabled"
+  },
+  "forThisSite": {
+    "message": "для цього сайту",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "Якщо сайт виглядає пошкодженим, спробуйте вимкнути щити",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "Ви переглядаєте цей сайт без захисту приватності та безпеки Brave. Він не працює належним чином з увімкненими щитами?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "Повідомити про пошкоджений сайт",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
+  },
+  "itemsBlocked": {
+    "message": "Елементів заблоковано",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
+  },
+  "itemBlocked": {
+    "message": "Елемент заблоковано",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
+  },
+  "and": {
+    "message": "та",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
+  },
+  "connectionsUpgraded": {
+    "message": "з’єднань оновлено",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
+  },
+  "connectionUpgraded": {
+    "message": "з’єднання оновлено",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
+  },
+  "thirdPartyTrackersBlocked": {
+    "message": "Стеження між сайтами заблоковано",
+    "description": "Message for the scripts blocked row label"
+  },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "Стеження та реклама блокуються",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "Стеження та реклама блокуються (агресивно)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "Стеження та реклама блокуються (стандартно)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "Дозволити стеження та рекламу",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
+  "connectionsUpgradedHTTPS": {
+    "message": "З’єднання оновлені до HTTPS",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
+  },
+  "connectionUpgradedHTTPS": {
+    "message": "З’єднання оновлено до HTTPS",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
+  },
+  "scriptsBlocked": {
+    "message": "Скрипти заблоковано",
+    "description": "Message for the scripts blocked row label"
+  },
+  "thirdPartyCookiesBlocked": {
+    "message": "Сторонні файли cookie блокуються",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "Файли cookie блокуються",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "Всі файли cookie дозволено",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "Зчитування цифрового відбитка блокується",
+    "description": "Message for the option in the fingerprinting field in read only view"
+  },
+  "standardFingerprinting": {
+    "message": "Зчитування цифрового відбитка блокується (стандартно)",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
+  },
+  "strictFingerprinting": {
+    "message": "Зчитування цифрового відбитка блокується (посилено, може пошкодити сайти)",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
+  },
+  "allowAllFingerprinting": {
+    "message": "Дозволити зчитування цифрового відбитка",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Спроби зчитування цифрового відбитка",
+    "description": "Message for the fingerprinting attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Скрипти на цьому сайті",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Заблоковані скрипти",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Дозволені скрипти",
+    "description": "Message for the script resources allowed"
+  },
+  "blockAll": {
+    "message": "Блокувати все",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "Дозволити все",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "block": {
+    "message": "Блокувати",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "allow": {
+    "message": "Дозволити",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "blockedOnce": {
+    "message": "Заблоковано один раз",
+    "description": "Message for the resources blocked *blocked once* option"
+  },
+  "allowedOnce": {
+    "message": "Дозволено один раз",
+    "description": "Message for the resources blocked *allowed once* option"
+  },
+  "allowScriptsOnce": {
+    "message": "Дозволити скрипти один раз",
+    "description": "Message for the shortcut in the main interface to allow all scripts once"
+  },
+  "cancel": {
+    "message": "Скасувати",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Назад",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "Застосувати один раз",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "Змінити глобальні налаштування щитів",
+    "description": "Message for the button action linking to the settings page"
+  },
+  "manageCustomFilters": {
+    "message": "Керувати користувацькими фільтрами",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
+  "elementPickerMode": {
+    "message": "Блокувати елемент",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
+  },
+  "advancedView": {
+    "message": "Розширене подання",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "Просте подання",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "Сайти часто містять файли cookie та скрипти, які намагаються ідентифікувати вас і ваш пристрій (часто вбудовані в рекламу). Вони хочуть сформувати ваш профіль і потім переслідувати вас в інтернеті, збираючи дані про вашу діяльність на кожному сайті. Brave блокує такі елементи, щоб ви могли переглядати сайти без стеження.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "Стеження між сайтами й інші елементи заблоковано",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "Зміна налаштувань щитів у цьому поданні може вплинути на вебсумісність цього сайту.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "Зрозуміло",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "Докладніше",
+    "description": "Message inviting the user to learn more about Shields"
+  },
+  "addToBrave": {
+    "message": "Додати в Brave",
+    "description": "Message for adding an extension to Brave"
+  },
+  "removeFromBrave": {
+    "message": "Видалити з Brave",
+    "description": "Message for removing an extension from Brave"
+  },
+  "addToChrome": {
+    "message": "Додати в Chrome",
+    "description": "Message for adding an extension to Chrome"
+  },
+  "removeFromChrome": {
+    "message": "Видалити з Chrome",
+    "description": "Message for removing an extension from Chrome"
+  }
+}

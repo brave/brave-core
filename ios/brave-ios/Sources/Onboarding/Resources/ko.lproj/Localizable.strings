@@ -1,0 +1,66 @@
+/* A button title shown below language introducing the Brave Playlist feature. i.e. 'Discover how to use use this feature' */
+"advanceInitialOnboardingButtonTitle" = "방법 알아보기";
+
+/* A button title that when tapped will advance the onboarding to guide a user to add some content to Playlist */
+"advanceStep2OnboardingButtonTitle" = "사용해보기!";
+
+/* A button that allows the user to disable the brave translate feature. When pressed, the page will not be automatically translated to the user's language. */
+"BraveTranslateOnboarding.disableTranslateButtonTitle" = "이 기능 비활성화";
+
+/* A text element that describes the translation feature and explains that hte user might have to download or configure languages on their device. */
+"BraveTranslateOnboarding.translateDescription" = "iOS 기기에서 지원하는 언어로 페이지를 번역할 수 있습니다. 이 기능을 처음 사용하는 경우 언어를 구성해야 할 수 있습니다.";
+
+/* A text element that explains we're translating pages. */
+"BraveTranslateOnboarding.translateTitle" = "페이지 번역";
+
+/* A button title that when tapped opens Brave Playlist */
+"confirmationActionButtonTitle" = "내 재생목록으로 이동";
+
+/* Shown above a button that will let the user open the playlist feature */
+"confirmationPrompt" = "이제 재생목록을 살펴보겠습니다.";
+
+/* Shown below a title that confirms the user completed the task of adding something to playlist. %@ will be replaced with the folder the content was added to. i.e. 'Content added to Play Later' */
+"confirmationSubtitle" = "%@에 콘텐츠 추가됨";
+
+/* Guides the user to tap on an icon where the onboarding is pointing to. '%@' will be replaced with said icon. */
+"confirmationTitle" = "잘하셨습니다";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissOnboardingButtonTitle" = "숨기기";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep2OnboardingButtonTitle" = "나중에";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep4OnboardingButtonTitle" = "닫기";
+
+/* A title shown on the first 2 steps of onboarding for Brave Playlist. Brave Playlist is a product name */
+"introducingBravePlaylist" = "Brave 재생목록 소개";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleOne" = "마음에 드는 콘텐츠 재생 목록을 만들고 모바일 데이터를 아끼며 광고 없이 재생하세요.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleThree" = "PIP(Picture-in-picture), 백그라운드 재생, 잠금 화면에서 제어 등이 가능합니다.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleTwo" = "흐름이 끊기지 않도록: 브라우징하며 동영상을 추가해 나중에 볼 수 있습니다.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleOne" = "Brave 재생목록에 비디오를 추가하여 나중에 오프라인에서도 시청하세요";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleThree" = "더 나은 재생 경험, 재생 목록";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleTwo" = "버튼을 탭하면 재생목록에 동영상이 추가됩니다.";
+
+/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
+"playlistOnboardingDescription" = "마음에 드는 콘텐츠로 재생목록을 만들고 어느 페이지에서든 미디어를 추가하세요.\n언제든 오프라인에서도 재생하세요!";
+
+/* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
+"userActionPrompt" = "첫 항목을 추가하려면 %@ 탭";
+
+/* Will be shown next to an icon inside of some other text. i.e. "Tap 'Add to Playlist' to add your first item" */
+"userActionPromptFill" = "재생목록에 추가";
+

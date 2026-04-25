@@ -1,0 +1,43 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_json_reader_util.h"
+
+#include <string_view>
+
+#include "base/json/json_reader.h"
+#include "base/strings/string_util.h"
+#include "base/values.h"
+
+namespace brave_ads::json::reader {
+
+namespace {
+
+constexpr std::string_view kCountryKey = "country";
+constexpr std::string_view kRegionKey = "region";
+
+}  // namespace
+
+std::optional<std::string> ParseSubdivision(const std::string& json) {
+  std::optional<base::DictValue> dict =
+      base::JSONReader::ReadDict(json, base::JSON_PARSE_RFC);
+  if (!dict) {
+    return std::nullopt;
+  }
+
+  const std::string* const country = dict->FindString(kCountryKey);
+  if (!country || country->empty()) {
+    return std::nullopt;
+  }
+
+  const std::string* const region = dict->FindString(kRegionKey);
+  if (!region || region->empty()) {
+    return std::nullopt;
+  }
+
+  return base::ReplaceStringPlaceholders("$1-$2", {*country, *region}, nullptr);
+}
+
+}  // namespace brave_ads::json::reader

@@ -1,0 +1,12 @@
+diff --git a/components/download/public/background_service/clients.h b/components/download/public/background_service/clients.h
+index 6bf051c9a76face5153cd342782059f37c41d7ca..992f17a3407acecac4c8977715c89ea1446e7c5b 100644
+--- a/components/download/public/background_service/clients.h
++++ b/components/download/public/background_service/clients.h
+@@ -49,6 +49,7 @@ enum class DownloadClient {
+ 
+   // New clients should be added above here.
+   BOUNDARY = 8,
++  BRAVE_DOWNLOAD_CLIENT
+ };
+ 
+ // Get a string that represents a particular client. Used in histograms and

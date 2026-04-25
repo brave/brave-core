@@ -1,0 +1,64 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//build/linux/extract_symbols.gni")
+
+if (should_generate_symbols) {
+  action("generate_breakpad_symbols") {
+    # host_toolchain must be used for cross-compilation case.
+    # See chrome/updater/mac:syms
+    dump_syms =
+        "//third_party/breakpad:dump_syms($host_system_allocator_toolchain)"
+    symbols_dir = "$brave_dist_dir/$brave_product_name.breakpad.syms"
+    outputs = [ symbols_dir ]
+
+    start = [ brave_product_name ]
+
+    script = "//brave/tools/posix/generate_breakpad_symbols.py"
+    args = [
+      "--symbols-dir=" + rebase_path(symbols_dir),
+      "--jobs=16",
+      "--build-dir=" + rebase_path(root_out_dir),
+      "--binary=$start",
+      "--libchromiumcontent-dir=" + rebase_path("//"),
+      "--dump-syms-bin=" +
+          rebase_path(get_label_info(dump_syms, "root_out_dir") + "/" +
+                      get_label_info(dump_syms, "name")),
+      "--clear",
+    ]
+
+    deps = [
+      "//chrome",  # To be sure brave executable is ready now
+      dump_syms,
+    ]
+  }
+} else {
+  group("generate_breakpad_symbols") {
+  }
+}
+
+group("symbol_dist_resources") {
+  public_deps = [
+    ":brave_symbols",
+    ":generate_breakpad_symbols",
+  ]
+}
+
+group("dist_resources") {
+}
+
+extract_symbols("brave_symbols") {
+  binary = "$brave_dist_dir/brave"
+
+  if (current_cpu == "x86") {
+    # Use "ia32" instead of "x86" for GYP compat.
+    symbol_file = "$root_out_dir/brave.breakpad.ia32"
+  } else {
+    symbol_file = "$root_out_dir/brave.breakpad.$current_cpu"
+  }
+
+  deps = [ "//brave:brave_dist_resources" ]
+}

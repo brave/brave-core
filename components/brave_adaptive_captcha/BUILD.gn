@@ -1,0 +1,36 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
+
+source_set("brave_adaptive_captcha") {
+  sources = [
+    "brave_adaptive_captcha_delegate.h",
+    "brave_adaptive_captcha_service.cc",
+    "brave_adaptive_captcha_service.h",
+    "get_adaptive_captcha_challenge.cc",
+    "get_adaptive_captcha_challenge.h",
+    "pref_names.h",
+    "prefs_util.cc",
+    "prefs_util.h",
+    "server_util.cc",
+    "server_util.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/api_request_helper",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/brave_rewards/core/buildflags",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//net",
+    "//services/network/public/cpp",
+  ]
+
+  if (enable_brave_rewards) {
+    deps += [ "//brave/components/brave_rewards/content" ]
+  }
+}

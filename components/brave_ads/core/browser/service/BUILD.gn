@@ -1,0 +1,41 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
+
+# The target provides the AdsService interface and related types without
+# depending on Brave Ads implementation targets, allowing it to be used even
+# when Brave Ads is disabled by build flag.
+source_set("service") {
+  sources = [
+    "ads_service.cc",
+    "ads_service.h",
+    "ads_service_callback.h",
+    "ads_service_observer.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/brave_ads/core/mojom",
+    "//brave/components/services/bat_ads/public/interfaces",
+    "//components/keyed_service/core",
+    "//mojo/public/cpp/bindings",
+  ]
+}
+
+source_set("test_support") {
+  testonly = true
+
+  public_deps = [
+    ":service",
+    "//brave/components/brave_ads/core/mojom",
+    "//testing/gmock",
+  ]
+
+  sources = [
+    "test/ads_service_mock.cc",
+    "test/ads_service_mock.h",
+  ]
+}

@@ -1,0 +1,58 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "brave_passage_embeddings_service_unittest.cc" ]
+
+  deps = [
+    ":history_embeddings",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/local_ai/core",
+    "//brave/components/local_ai/core:mojom",
+    "//components/history_embeddings/core",
+    "//mojo/public/cpp/bindings",
+    "//services/passage_embeddings/public/mojom",
+    "//testing/gtest",
+  ]
+}
+
+source_set("history_embeddings") {
+  sources = [
+    "brave_history_embeddings_service.cc",
+    "brave_history_embeddings_service.h",
+    "brave_passage_embeddings_service.cc",
+    "brave_passage_embeddings_service.h",
+    "brave_passage_embeddings_service_controller.cc",
+    "brave_passage_embeddings_service_controller.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/local_ai/core:mojom",
+    "//chrome/browser/history_embeddings",
+    "//chrome/browser/passage_embeddings",
+    "//components/history_embeddings/content",
+    "//components/page_content_annotations/core",
+    "//components/passage_embeddings/core",
+    "//mojo/public/cpp/bindings",
+    "//services/passage_embeddings/public/mojom",
+  ]
+
+  deps = [
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/components/history_embeddings",
+    "//brave/components/local_ai/content",
+    "//brave/components/local_ai/core",
+    "//chrome/browser:browser_process",
+    "//chrome/browser:browser_public_dependencies",
+    "//chrome/browser/profiles",
+    "//chrome/browser/task_manager",
+    "//components/history_embeddings/core",
+    "//content/public/browser",
+    "//ui/base",
+  ]
+}

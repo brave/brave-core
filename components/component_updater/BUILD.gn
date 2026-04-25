@@ -1,0 +1,16 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "configurator_impl_unittest.cc" ]
+  deps = [
+    "//base",
+    "//brave/components/update_client:test_util",
+    "//components/component_updater",
+    "//components/update_client",
+    "//testing/gtest",
+  ]
+}

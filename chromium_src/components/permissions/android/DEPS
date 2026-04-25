@@ -1,0 +1,6 @@
+include_rules = [
+  "+brave/components/permissions/android/jni_headers",
+  "+components/grit",
+  "+components/permissions",
+  "+components/strings",
+]

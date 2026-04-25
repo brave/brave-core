@@ -1,0 +1,495 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Rudy Giuliani informed he's a target of probe into Trump's alleged election interference in Georgia</title><meta charset="utf-8"/><body id="article"><h1 class="title metadata">Rudy Giuliani informed he's a target of probe into Trump's alleged election interference in Georgia</h1><p class="subhead metadata">Giuliani, Trump's former personal attorney, was ordered last week to testify in the Georgia investigation in person on Wednesday.</p><div class=""><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr><p class="">WASHINGTON — Rudy Giuliani is a "target" of the criminal investigation into&nbsp;<a href="https://www.nbcnews.com/politics/donald-trump/georgia-da-asks-special-grand-jury-trump-election-probe-n1287773" target="_blank">possible 2020 election interference</a>&nbsp;in Georgia by former&nbsp;<a href="https://www.nbcnews.com/politics/donald-trump/trump-s-2020-fixation-putting-him-odds-some-his-biggest-n1286602" target="_blank">President Donald Trump</a>&nbsp;and others, his attorney told NBC News.</p><p class="">The lawyer, Robert Costello, said that as part of their efforts to compel Giuliani’s testimony, Georgia prosecutors initially told New York courts that Giuliani was a material witness. Then, Costello said, Giuliani's lawyers were informed Monday that he is a "target" of the probe.</p><p class="">Giuliani, Trump's former personal attorney and the former mayor of New York City, was ordered last week to testify in person Wednesday before a grand jury handling the case.</p><p class="">The grand jury, called by Fulton County District Attorney Fani Willis, <a href="https://www.nbcnews.com/politics/donald-trump/rudy-giuliani-lindsey-graham-subpoenaed-grand-jury-trump-election-prob-rcna36749" target="_blank">subpoenaed</a>&nbsp;Giuliani last month as a material witness as part of its investigation into "<a href="https://www.nbcnews.com/politics/donald-trump/georgia-prosecutor-granted-special-grand-jury-trump-election-interference-probe-n1287946" target="_blank">coordinated attempts</a>&nbsp;to unlawfully alter the outcome of the 2020 elections." The subpoena said Giuliani made statements at legislative hearings in Georgia falsely claiming that there had been "widespread voter fraud" in the state.</p><p class="">A judge <a href="https://www.nbcnews.com/politics/donald-trump/judge-orders-rudy-giuliani-testify-grand-jury-trump-election-probe-rcna39119" target="_blank">ordered Giuliani to testify</a> after he failed to appear at a July 13 hearing to challenge the subpoena. Costello said Monday that Giuliani still intends to testify this week. <a href="https://www.nytimes.com/2022/08/15/us/graham-georgia-investigation-trump.html" target="_blank">The New York Times </a>was first to report that Giuliani had been informed he was a target of the probe.</p><p class="">Meanwhile, a federal judge on Monday denied Sen. Lindsey Graham's effort to quash <a href="https://www.nbcnews.com/politics/donald-trump/rudy-giuliani-lindsey-graham-subpoenaed-grand-jury-trump-election-prob-rcna36749" target="_blank">a subpoena seeking his testimony</a> in the Georgia investigation. </p><p class="">In a 22-page order, U.S. District Judge Leigh Martin May in Atlanta rejected <a href="https://www.nbcnews.com/politics/donald-trump/sen-lindsey-graham-says-challenge-subpoena-georgia-trump-probe-rcna36897" target="_blank">arguments by Graham</a>, R-S.C., against having to testify, including his contention that the speech and debate clause of the Constitution shields him from testifying.</p><p class="">Graham's lawyers had argued that a post-election phone call Graham made to Georgia Secretary of State Brad Raffensperger in November 2020 had a legislative purpose and therefore was covered by the clause. </p><p class="">The judge also rejected Graham's argument that sovereign immunity protects him from having to testify because he is a sitting U.S. senator. </p><p class="">"If the court were to accept Senator Graham’s sovereign immunity argument, it would mean that U.S. senators would not be required to testify before state grand juries no matter the circumstances," May wrote. "The law would give them complete immunity based solely on their status as federal officials." </p><p class="">Last, the judge said Graham's reasoning for being exempt from testifying because he's a high-ranking official also doesn't carry weight. Willis has shown that "extraordinary circumstances" necessitated the testimony of Graham, who has "unique personal knowledge about the substance and circumstances of the phone calls with Georgia election officials, as well as the logistics of setting them up and his actions afterward," May said.</p><p class="">"Senator Graham’s potential testimony on these issues — in addition to his knowledge about topics outside of the calls such as his alleged coordination with the Trump campaign before and after the calls are unique to Senator Graham, and Senator Graham has not suggested that anyone else from his office can speak to these issues or has unique personal knowledge of them," the order said. </p><p class="">Graham's office released a statement saying he will appeal the judge's decision.</p><p class="">"The Constitution’s speech or debate clause prevents a local official from questioning a senator about how that senator did his job," the statement said.&nbsp;"Here, Senator Graham was doing his due diligence before the Electoral Count Act certification vote — where he voted to certify the election.&nbsp;Although the district court acknowledged that speech or debate may protect some of Senator Graham’s activities, she nevertheless ignored the constitutional text and binding Supreme Court precedent, so Senator Graham plans to appeal to the 11th&nbsp;Circuit."</p><p class="">Willis is looking into Graham’s call to Raffensperger in the days after the November 2020 election. Raffensperger has said<a href="https://www.nbcnews.com/politics/2020-election/georgia-secretary-state-raffensperger-says-sen-graham-asked-him-about-n1247968"> Graham pressed him </a>about whether he had the power to reject certain absentee ballots, which Raffensperger said he interpreted as a suggestion to toss out legally cast votes.</p><p class="endmark">The subpoena seeking Graham's testimony said he "made at least two telephone calls" to Raffensperger and his staff. "During the telephone calls, [Graham] questioned Secretary Raffensperger and his staff about reexamining certain absentee ballots cast in Georgia in order to explore the possibility of a more favorable outcome for former President Donald Trump. [Graham] also made reference to allegations of widespread voter fraud in the November 2020 election in Georgia, consistent with public statements made by known affiliates of the Trump Campaign," the subpoena said.</p><div class="expanded-byline-contributors articleBylineContainer mt8"><div class="expanded-byline article-expanded-byline"><p class="byline-bio expanded-byline__bio mt3 mt0-m ml9-m">Rebecca Shabad is a politics reporter for NBC News based in Washington.</p></div><div class="expanded-byline article-expanded-byline"><p class="byline-bio expanded-byline__bio mt3 mt0-m ml9-m">Tom Winter is a New York-based correspondent covering crime, courts, terrorism and financial fraud on the East Coast for the NBC News Investigative Unit.</p></div><div class="expanded-contributors pv5"><p>Frank Thorp V</p> <p>contributed</p><p>.</p></div></div></body>

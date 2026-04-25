@@ -1,0 +1,267 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
+import("//tools/json_schema_compiler/json_schema_api.gni")
+
+assert(enable_ai_chat)
+
+static_library("browser") {
+  sources = [
+    "ai_chat_credential_manager.cc",
+    "ai_chat_credential_manager.h",
+    "ai_chat_database.cc",
+    "ai_chat_database.h",
+    "ai_chat_feedback_api.cc",
+    "ai_chat_feedback_api.h",
+    "ai_chat_metrics.cc",
+    "ai_chat_metrics.h",
+    "ai_chat_service.cc",
+    "ai_chat_service.h",
+    "ai_chat_tab_focus_metrics.cc",
+    "ai_chat_tab_focus_metrics.h",
+    "associated_archive_content.cc",
+    "associated_archive_content.h",
+    "associated_content_delegate.cc",
+    "associated_content_delegate.h",
+    "associated_content_driver.cc",
+    "associated_content_driver.h",
+    "associated_content_manager.cc",
+    "associated_content_manager.h",
+    "bookmarks_page_handler.cc",
+    "bookmarks_page_handler.h",
+    "constants.cc",
+    "constants.h",
+    "conversation_handler.cc",
+    "conversation_handler.h",
+    "conversation_tools.cc",
+    "conversation_tools.h",
+    "customization_settings_handler.cc",
+    "customization_settings_handler.h",
+    "engine/conversation_api_client.cc",
+    "engine/conversation_api_client.h",
+    "engine/conversation_api_parsing.cc",
+    "engine/conversation_api_parsing.h",
+    "engine/conversation_api_v2_client.cc",
+    "engine/conversation_api_v2_client.h",
+    "engine/deep_research_parsing.cc",
+    "engine/deep_research_parsing.h",
+    "engine/engine_consumer.cc",
+    "engine/engine_consumer.h",
+    "engine/engine_consumer_conversation_api.cc",
+    "engine/engine_consumer_conversation_api.h",
+    "engine/engine_consumer_conversation_api_v2.cc",
+    "engine/engine_consumer_conversation_api_v2.h",
+    "engine/engine_consumer_oai.cc",
+    "engine/engine_consumer_oai.h",
+    "engine/oai_api_client.cc",
+    "engine/oai_api_client.h",
+    "engine/oai_message_utils.cc",
+    "engine/oai_message_utils.h",
+    "engine/oai_parsing.cc",
+    "engine/oai_parsing.h",
+    "engine/oai_serialization_utils.cc",
+    "engine/oai_serialization_utils.h",
+    "history_ui_handler.cc",
+    "history_ui_handler.h",
+    "model_service.cc",
+    "model_service.h",
+    "model_validator.cc",
+    "model_validator.h",
+    "skills_metrics.cc",
+    "skills_metrics.h",
+    "tab_tracker_service.cc",
+    "tab_tracker_service.h",
+    "tools/bignumber_code_plugin.cc",
+    "tools/bignumber_code_plugin.h",
+    "tools/chart_code_plugin.cc",
+    "tools/chart_code_plugin.h",
+    "tools/code_plugin.cc",
+    "tools/code_plugin.h",
+    "tools/memory_storage_tool.cc",
+    "tools/memory_storage_tool.h",
+    "tools/tool.cc",
+    "tools/tool.h",
+    "tools/tool_input_properties.cc",
+    "tools/tool_input_properties.h",
+    "tools/tool_provider.cc",
+    "tools/tool_provider.h",
+    "tools/tool_provider_factory.h",
+    "tools/tool_utils.cc",
+    "tools/tool_utils.h",
+    "types.h",
+    "utils.cc",
+    "utils.h",
+  ]
+
+  if (is_android) {
+    sources += [
+      "android/ai_chat_iap_subscription_android.cc",
+      "android/ai_chat_iap_subscription_android.h",
+    ]
+  }
+
+  public_deps = [ "//base" ]
+
+  deps = [
+    ":generated_brave_search_responses",
+    "//brave/brave_domains",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/ai_chat/core/common/mojom",
+    "//brave/components/ai_chat/core/proto",
+    "//brave/components/api_request_helper",
+    "//brave/components/brave_service_keys",
+    "//brave/components/brave_stats/browser",
+    "//brave/components/constants",
+    "//brave/components/l10n/common",
+    "//brave/components/p3a_utils",
+    "//brave/components/resources:static_resources_grit",
+    "//brave/components/resources:strings_grit",
+    "//brave/components/sidebar/common",
+    "//brave/components/skus/common:mojom",
+    "//brave/components/text_recognition/common/buildflags",
+    "//brave/components/time_period_storage",
+    "//brave/net/base:utils",
+    "//components/bookmarks/browser",
+    "//components/history/core/browser",
+    "//components/keyed_service/core",
+    "//components/os_crypt/async/browser",
+    "//components/os_crypt/async/common",
+    "//components/os_crypt/sync",
+    "//components/prefs",
+    "//components/update_client",
+    "//components/user_prefs",
+    "//net/traffic_annotation",
+    "//services/data_decoder/public/cpp",
+    "//services/network/public/cpp",
+    "//services/service_manager/public/cpp",
+    "//sql",
+    "//third_party/abseil-cpp:absl",
+    "//third_party/re2",
+    "//ui/base",
+    "//url",
+  ]
+
+  if (enable_text_recognition) {
+    deps += [ "//brave/components/text_recognition/browser" ]
+  }
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "ai_chat_credential_manager_unittest.cc",
+    "ai_chat_metrics_unittest.cc",
+    "ai_chat_service_unittest.cc",
+    "ai_chat_tab_focus_metrics_unittest.cc",
+    "associated_content_delegate_unittest.cc",
+    "associated_content_driver_unittest.cc",
+    "associated_content_manager_unittest.cc",
+    "bookmarks_page_handler_unittest.cc",
+    "conversation_handler_unittest.cc",
+    "customization_settings_handler_unittest.cc",
+    "engine/conversation_api_client_unittest.cc",
+    "engine/conversation_api_parsing_unittest.cc",
+    "engine/conversation_api_v2_client_unittest.cc",
+    "engine/deep_research_parsing_unittest.cc",
+    "engine/engine_consumer_conversation_api_unittest.cc",
+    "engine/engine_consumer_conversation_api_v2_unittest.cc",
+    "engine/engine_consumer_oai_unittest.cc",
+    "engine/engine_consumer_unittest.cc",
+    "engine/oai_api_client_unittest.cc",
+    "engine/oai_message_utils_unittest.cc",
+    "engine/oai_parsing_unittest.cc",
+    "engine/oai_serialization_utils_unittest.cc",
+    "engine/test_utils.cc",
+    "engine/test_utils.h",
+    "history_ui_handler_unittest.cc",
+    "model_service_unittest.cc",
+    "model_validator_unittest.cc",
+    "skills_metrics_unittest.cc",
+    "tab_tracker_service_unittest.cc",
+    "tools/chart_code_plugin_unittest.cc",
+    "tools/memory_storage_tool_unittest.cc",
+    "tools/tool_input_properties_unittest.cc",
+    "utils_unittest.cc",
+  ]
+
+  if (!is_ios) {
+    # TODO(https://github.com/brave/brave-browser/issues/47827)
+    # to initialize the database
+    sources += [ "ai_chat_database_unittest.cc" ]
+  }
+
+  data = [ "//brave/components/test/data/ai_chat" ]
+
+  deps = [
+    ":test_support",
+    "//base/test:test_support",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common:test_support",
+    "//brave/components/ai_chat/core/common/mojom",
+    "//brave/components/api_request_helper",
+    "//brave/components/api_request_helper:test_support",
+    "//brave/components/constants",
+    "//brave/components/l10n/common:test_support",
+    "//brave/components/resources:strings_grit",
+    "//brave/components/skus/browser",
+    "//brave/components/skus/common",
+    "//brave/components/skus/common:mojom",
+    "//components/bookmarks/browser",
+    "//components/bookmarks/browser:test_support",
+    "//components/bookmarks/test",
+    "//components/history/core/browser",
+    "//components/history/core/test",
+    "//components/os_crypt/async/browser:test_support",
+    "//components/os_crypt/sync:test_support",
+    "//components/prefs:test_support",
+    "//components/sync_preferences:test_support",
+    "//net/traffic_annotation:test_support",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
+    "//sql:test_support",
+    "//testing/gtest",
+    "//ui/base",
+    "//ui/gfx:test_support",
+  ]
+}
+
+source_set("test_support") {
+  testonly = true
+  sources = [
+    "engine/mock_engine_consumer.cc",
+    "engine/mock_engine_consumer.h",
+    "mock_conversation_handler_observer.cc",
+    "mock_conversation_handler_observer.h",
+    "mock_untrusted_conversation_handler_client.cc",
+    "mock_untrusted_conversation_handler_client.h",
+    "test/mock_associated_content.cc",
+    "test/mock_associated_content.h",
+    "test_utils.cc",
+    "test_utils.h",
+    "tools/mock_tool.cc",
+    "tools/mock_tool.h",
+  ]
+
+  deps = [
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common:test_support",
+    "//brave/components/ai_chat/core/common/mojom",
+    "//services/network/public/cpp",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//ui/base",
+  ]
+}
+
+generated_types("generated_brave_search_responses") {
+  sources = [ "brave_search_responses.idl" ]
+  deps = [ "//base" ]
+  root_namespace = "ai_chat::%(namespace)s"
+  visibility = [ ":browser" ]
+}

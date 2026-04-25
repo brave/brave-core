@@ -1,0 +1,29 @@
+diff --git a/chrome/installer/linux/rpm/build.py b/chrome/installer/linux/rpm/build.py
+index 8c414ab85907239e4b00483b8511a504aed6ea44..ccb1041cddd164452b78e7ee6156476865cd687d 100755
+--- a/chrome/installer/linux/rpm/build.py
++++ b/chrome/installer/linux/rpm/build.py
+@@ -28,6 +28,7 @@ def gen_spec(config: installer.InstallerConfig,
+         spec_file.unlink()
+ 
+     config.rpm_package_filename = f"{config.package_orig}-{config.channel}"
++    if config.channel == "stable": config.rpm_package_filename = config.package_orig
+ 
+     script_dir = pathlib.Path(__file__).parent.absolute()
+     installer.process_template(
+@@ -69,6 +70,7 @@ def main() -> None:
+     script_dir = pathlib.Path(__file__).parent.absolute()
+     output_dir = pathlib.Path(args.output_dir).absolute()
+     channel = args.channel
++    if channel in ("unstable", "dev", "alpha"): channel = "dev"
+ 
+     staging_dir = output_dir / f"rpm-staging-{channel}"
+     tmp_file_dir = output_dir / f"rpm-tmp-{channel}"
+@@ -111,6 +113,8 @@ def main() -> None:
+         with rpm_common_deps_file.open("r") as f:
+             depends = f.read().replace("\n", ",")
+         config.rpm_depends = depends
++        # Ensure that our signing key is up-to-date (brave/brave-browser#4205).
++        config.rpm_depends = f"brave-keyring >= 1.11-1, {depends}"
+ 
+         if config.info_vars["PACKAGE"] != config.usr_bin_symlink_name:
+             symlink = config.usr_bin_symlink_name

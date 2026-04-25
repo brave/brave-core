@@ -1,0 +1,45 @@
+// Copyright (c) 2017 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// To change upstream features use //brave/chromium_src/... counterpart.
+
+// Command to get allowlist ID:
+// Brave Shields       A321D47A2B4CA86898167A55CA8B2E02385EA7CD: echo -n mnojpmjdmbbfmejpflffifhffcmidifd | openssl sha1 | tr '[:lower:]' '[:upper:]'
+// WebTorrent          3D9518A72EB02667A773B69DBA9E72E0F4A37423: echo -n lgjmpdmojkpocjcopdikifhejkkjglho | openssl sha1 | tr '[:lower:]' '[:upper:]'
+
+{
+  "braveTheme": [{
+    "channel": "stable",
+    "component_extensions_auto_granted": false,
+    "contexts": ["privileged_extension"],
+    "allowlist": [
+      "A321D47A2B4CA86898167A55CA8B2E02385EA7CD",  // braveShields
+      "46E9817CBF915C0D1F6BCCF916C42CC666FF1D64"  // braveRewards
+    ]
+  }, {
+    "channel": "stable",
+    "contexts": ["webui"],
+    "matches": [
+      "chrome://welcome/*",
+      "chrome://settings/*",
+      "chrome://newtab/*",
+      "chrome://webcompat/*",
+      "chrome://wallet/*",
+      "chrome://wallet-panel.top-chrome/*",
+      "chrome://brave-shields.top-chrome/*",
+      "chrome://rewards-panel.top-chrome/*",
+      "chrome://playlist/*"
+    ]
+  }],
+  "webDiscovery": {
+    "channel": "stable",
+    "component_extensions_auto_granted": false,
+    "contexts": ["privileged_extension"],
+    "allowlist": [
+      "A321D47A2B4CA86898167A55CA8B2E02385EA7CD",  // Web Discovery / Brave Extension
+      "1C66772675E903A8ABF502F539095C4F778A3D31"   // Web Discovery - Dev Mode/Hot Reload
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+include_rules = [
+  "+brave/browser",
+  "+brave/common",
+  "+brave/renderer",
+  "+brave/app",
+  "+brave/utility",
+  "+brave/components/brave_shields/content/browser",
+  "+brave/test/base",
+]

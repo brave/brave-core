@@ -1,0 +1,131 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+import("//build/config/features.gni")
+import("//build/rust/rust_static_library.gni")
+
+assert(enable_brave_news)
+
+static_library("browser") {
+  sources = [
+    "background_history_querier.cc",
+    "background_history_querier.h",
+    "brave_news_controller.cc",
+    "brave_news_controller.h",
+    "brave_news_engine.cc",
+    "brave_news_engine.h",
+    "brave_news_p3a.cc",
+    "brave_news_p3a.h",
+    "brave_news_pref_manager.cc",
+    "brave_news_pref_manager.h",
+    "channel_migrator.cc",
+    "channel_migrator.h",
+    "channels_controller.cc",
+    "channels_controller.h",
+    "combined_feed_parsing.cc",
+    "combined_feed_parsing.h",
+    "direct_feed_controller.cc",
+    "direct_feed_controller.h",
+    "direct_feed_fetcher.cc",
+    "direct_feed_fetcher.h",
+    "feed_building.cc",
+    "feed_building.h",
+    "feed_controller.cc",
+    "feed_controller.h",
+    "feed_fetcher.cc",
+    "feed_fetcher.h",
+    "feed_generation_info.cc",
+    "feed_generation_info.h",
+    "feed_sampling.cc",
+    "feed_sampling.h",
+    "feed_v2_builder.cc",
+    "feed_v2_builder.h",
+    "html_parsing.cc",
+    "html_parsing.h",
+    "initialization_promise.cc",
+    "initialization_promise.h",
+    "network.cc",
+    "network.h",
+    "peeking_card.cc",
+    "peeking_card.h",
+    "publishers_controller.cc",
+    "publishers_controller.h",
+    "publishers_parsing.cc",
+    "publishers_parsing.h",
+    "signal_calculator.cc",
+    "signal_calculator.h",
+    "suggestions_controller.cc",
+    "suggestions_controller.h",
+    "topics_fetcher.cc",
+    "topics_fetcher.h",
+    "urls.cc",
+    "urls.h",
+  ]
+
+  public_deps = [ "//brave/components/brave_news/common/buildflags" ]
+
+  deps = [
+    ":rust_lib",
+    "//base",
+    "//brave/brave_domains",
+    "//brave/components/api_request_helper",
+    "//brave/components/brave_news/api",
+    "//brave/components/brave_private_cdn",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/l10n/common",
+    "//brave/components/p3a_utils",
+    "//brave/components/time_period_storage",
+    "//components/favicon/core",
+    "//components/favicon_base",
+    "//components/history/core/browser",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//content/public/browser",
+    "//net",
+    "//net/traffic_annotation",
+    "//services/network/public/cpp",
+    "//third_party/abseil-cpp:absl",
+    "//third_party/re2",
+    "//ui/base",
+    "//url",
+  ]
+
+  public_deps += [
+    "//brave/components/brave_news/common",
+    "//brave/components/brave_news/common:mojom",
+  ]
+}
+
+rust_static_library("rust_lib") {
+  visibility = [
+    ":*",
+    "test:*",
+  ]
+  crate_name = "brave_news_cxx"
+  crate_root = "lib.rs"
+  allow_unsafe = true
+  sources = [ "lib.rs" ]
+  cxx_bindings = [ "lib.rs" ]
+
+  deps = [
+    "//brave/third_party/rust/feed_rs/v1:lib",
+    "//brave/third_party/rust/regex/v1:lib",
+    "//third_party/rust/lazy_static/v1:lib",
+    "//third_party/rust/log/v0_4:lib",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "rust_strip_html_unittest.cc" ]
+
+  deps = [
+    ":rust_lib",
+    "//testing/gtest",
+  ]
+}

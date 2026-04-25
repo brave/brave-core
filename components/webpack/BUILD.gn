@@ -1,0 +1,52 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_origin/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//brave/components/email_aliases/buildflags/buildflags.gni")
+
+# Generate a JSON config file with build flags
+generated_file("build_flags_json") {
+  outputs = [ "$root_gen_dir/brave/build_flags.json" ]
+
+  contents = {
+    enable_ai_chat = enable_ai_chat
+    enable_ai_chat_tab_management_tool = enable_ai_chat_tab_management_tool
+    enable_brave_wallet = enable_brave_wallet
+    enable_email_aliases = enable_email_aliases
+    is_brave_origin_branded = is_brave_origin_branded
+    is_ios = is_ios
+    is_android = is_android
+    is_linux = is_linux
+    is_mac = is_mac
+    is_win = is_win
+    is_desktop = is_linux || is_mac || is_win
+    is_storybook = false
+  }
+
+  output_conversion = "json"
+}
+
+action("generate_tsconfig") {
+  script = "//brave/script/generate-tsconfig.py"
+  deps = [
+    ":build_flags_json",
+    "//brave/components/common:preprocess_package_json",
+
+    # Ensure chrome://resources/js file and typescript definitions are
+    # generated
+    "//ui/webui/resources/js:build_ts",
+  ]
+  inputs = [
+    "$root_gen_dir/brave/components/common/package.json",
+    "//brave/build/commands/lib/config.ts",
+    "//brave/build/commands/lib/genTsConfig.js",
+    "//brave/build/commands/scripts/genTsConfig.js",
+    "path-map.js",
+  ]
+  outputs = [ "$root_gen_dir/tsconfig-webpack.json" ]
+  args = [ "--root_gen_dir=" + rebase_path(root_gen_dir) ]
+}

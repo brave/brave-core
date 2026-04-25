@@ -1,0 +1,77 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/env_config.gni")
+import("//build/buildflag_header.gni")
+
+# Similar to buildflag_header(), but supports flags defined in a .env file.
+#
+# For example, `sample_secret_key=iamsecret` in the .env file can be generated
+# as a buildflag_header() flag `SAMPLE_SECRET_KEY=\"iamsecret\"` using the
+# following format:
+#
+#     env_config_flags = [ "SAMPLE_SECRET_KEY" ]
+#
+# If the flag is not found, it will default to an empty string. A custom default
+# value can be provided using the following format:
+#
+#     env_config_flags = [ "SAMPLE_SECRET_KEY=\"iamdefault\"" ]
+#     env_config_flags = [ "SAMPLE_BOOLEAN_KEY=false" ]
+#     env_config_flags = [ "SAMPLE_INTEGER_KEY=0" ]
+#
+# Values parsed from the .env file are stringified as JSON, meaning strings will
+# be quoted and have all unusual symbols escaped. Numbers and booleans will not
+# be escaped, allowing these values to be used in the header as is. This enables
+# the correct definition of multiline strings, booleans, and integers in the
+# generated header.
+
+# Prevent unset .env flags in official builds, but allow this to be configurable
+# for development.
+if (defined(env_config.allow_unset_env_config_flags)) {
+  allow_unset_env_config_flags = env_config.allow_unset_env_config_flags
+} else {
+  allow_unset_env_config_flags = !is_official_build
+}
+
+template("buildflag_header_with_env_config") {
+  buildflag_header(target_name) {
+    forward_variables_from(invoker, "*", [ "env_config_flags" ])
+
+    if (defined(invoker.env_config_flags)) {
+      if (!defined(flags)) {
+        flags = []
+      }
+
+      foreach(_env_config_flag, invoker.env_config_flags) {
+        _name_and_default_value = []
+        _name_and_default_value = string_split(_env_config_flag, "=")
+        if (_name_and_default_value[0] == _env_config_flag) {
+          # Default to empty string.
+          _env_config_flag_name = _env_config_flag
+          _env_config_flag_value = "\"\""
+        } else {
+          # Default to the provided value.
+          _env_config_flag_name = _name_and_default_value[0]
+          _env_config_flag_value = _name_and_default_value[1]
+        }
+
+        # Lookup the escaped flag in the env_config and use its value if it
+        # exists.
+        _escaped_env_config_flag_name = _env_config_flag_name + "_escaped"
+        if (defined(env_config[_escaped_env_config_flag_name])) {
+          _env_config_flag_value = env_config[_escaped_env_config_flag_name]
+        } else {
+          # If the flag is not found in .env, make sure this is allowed in the
+          # current configuration.
+          assert(allow_unset_env_config_flags,
+                 _env_config_flag_name +
+                     " (or its lowercase variant) is not found in: " +
+                     string_join(" or ", env_config_files))
+        }
+        flags += [ "$_env_config_flag_name=$_env_config_flag_value" ]
+      }
+    }
+  }
+}

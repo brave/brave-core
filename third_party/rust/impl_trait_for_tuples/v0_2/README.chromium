@@ -1,0 +1,11 @@
+Name: impl-trait-for-tuples
+URL: https://crates.io/crates/impl-trait-for-tuples
+Version: 0.2.3
+Revision: 457d40c9993b7a6607f213bdf84d856c3871e88c
+License: Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/impl-trait-for-tuples-v0_2/../../../../../common/licenses/Apache-2.0
+Shipped: yes
+Security Critical: yes
+
+Description: Attribute macro to implement a trait for tuples
+

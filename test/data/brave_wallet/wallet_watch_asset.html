@@ -1,0 +1,76 @@
+<html>
+
+<script>
+  var walletWatchAssetResult, walletWatchAssetError
+  function wallet_watchAsset(method, type, address, symbol, decimals) {
+    const params = {
+      options: {
+        address,
+        symbol,
+        decimals
+      },
+      type
+    }
+
+    if (method == 'request') {
+      return new Promise(resolve => {
+        window.ethereum.request({
+          method: 'wallet_watchAsset',
+          params
+        }).then(result => {
+          walletWatchAssetResult = result
+          resolve('result ready')
+        }).catch(error => {
+          walletWatchAssetError = error.message
+          resolve(walletWatchAssetError)
+        })
+      })
+    } else if (method == 'send1') {
+      return new Promise(resolve => {
+        window.ethereum.send({
+          id: 'hello',
+          method: 'wallet_watchAsset',
+          params
+        }, (err, result) => {
+          walletWatchAssetError = err && err.error ? err.error.message : undefined
+          walletWatchAssetResult = result ? result.result : undefined
+          if (walletWatchAssetError)
+            resolve(walletWatchAssetError)
+          else
+            resolve('result ready')
+        })
+      })
+    } else if (method == 'send2') {
+      return new Promise(resolve => {
+        window.ethereum.send('wallet_watchAsset', [params])
+          .then(result => {
+            walletWatchAssetResult = result.result
+            resolve('result ready')
+          }).catch(error => {
+            walletWatchAssetError = error.error.message
+            resolve(walletWatchAssetError)
+          })
+      })
+    } else if (method == 'sendAsync') {
+      return new Promise(resolve => {
+        window.ethereum.sendAsync({
+          id: 'hello',
+          method: 'wallet_watchAsset',
+          params
+        }, (err, result) => {
+          walletWatchAssetError = err && err.error ? err.error.message : undefined
+          walletWatchAssetResult = result ? result.result : undefined
+          if (walletWatchAssetError)
+            resolve(walletWatchAssetError)
+          else
+            resolve('result ready')
+        })
+      })
+    }
+  }
+</script>
+
+<body>
+</body>
+</html>
+

@@ -1,0 +1,4 @@
+include_rules = [
+  "+brave/components/history_embeddings",
+  "+services/passage_embeddings/public/mojom",
+]

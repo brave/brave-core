@@ -1,0 +1,50 @@
+<style include="settings-shared cr-shared-style">
+  :host {
+    display: block;
+    padding-bottom: var(--leo-spacing-2xl);
+  }
+
+  .label.primary-title {
+    font: var(--leo-font-large-regular);
+    padding-top: var(--leo-spacing-xl);
+  }
+
+  .label.secondary-title {
+    padding-bottom: var(--leo-spacing-m);
+  }
+
+  #learnMoreLink,
+  #proceedFreeButton {
+    margin-inline-start: var(--leo-spacing-xl);
+  }
+
+  #learnMoreLink {
+    color: var(--cr-link-color);
+    cursor: pointer;
+    font: var(--cr-button-font);
+  }
+</style>
+
+<settings-section page-title="$i18n{braveOriginOnboardingTitle}">
+  <div class="settings-box first">
+    <div class="flex">
+      <div class="label primary-title">$i18n{braveOriginOnboardingHeadingTitle}</div>
+      <div class="label secondary secondary-title">
+        <p>$i18n{braveOriginOnboardingDescription}</p>
+      </div>
+    </div>
+  </div>
+  <div class="cr-row">
+    <cr-button class="action-button" on-click="onBuyNowClick_">
+      $i18n{braveOriginOnboardingBuyNow}
+    </cr-button>
+    <if expr="is_linux">
+      <cr-button id="proceedFreeButton" on-click="onProceedFreeClick_">
+        $i18n{braveOriginOnboardingProceedFree}
+      </cr-button>
+    </if>
+    <a id="learnMoreLink" on-click="onLearnMoreClick_">
+      $i18n{braveOriginOnboardingLearnMore}
+    </a>
+  </div>
+</settings-section>

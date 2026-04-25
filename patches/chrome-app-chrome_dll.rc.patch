@@ -1,0 +1,28 @@
+diff --git a/chrome/app/chrome_dll.rc b/chrome/app/chrome_dll.rc
+index 857c1c6fd173939870d55d5f76ab1e3bc8f2e837..06ddb3b7892412af8d06f97f4fc26c8b7eb91035 100644
+--- a/chrome/app/chrome_dll.rc
++++ b/chrome/app/chrome_dll.rc
+@@ -166,6 +166,15 @@ END
+ // the icon from the current module). We can perhaps work around this in the
+ // future to get the icon from the .exe, which would save a copy.
+ 
++#if defined(OFFICIAL_BUILD)
++IDR_MAINFRAME       ICON                        "theme\brave\win\brave.ico"
++IDR_SXS             ICON                        "theme\brave\win\brave_canary.ico"
++IDR_X004_DEV        ICON                        "theme\brave\win\brave_dev.ico"
++IDR_X005_BETA       ICON                        "theme\brave\win\brave_beta.ico"
++#else
++IDR_MAINFRAME       ICON                        "theme\brave\win\brave_development.ico"
++#endif
++#if 0
+ #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
+ IDR_MAINFRAME       ICON                        "theme\google_chrome\win\chrome.ico"
+ IDR_SXS             ICON                        "theme\google_chrome\win\chrome_sxs.ico"
+@@ -176,6 +185,7 @@ IDR_MAINFRAME       ICON                        "theme\google_chrome\google_chro
+ #else
+ IDR_MAINFRAME       ICON                        "theme\chromium\win\chromium.ico"
+ #endif
++#endif
+ 
+ // We include these resources because all ICON types need to be in the
+ // same .rc file.  See:

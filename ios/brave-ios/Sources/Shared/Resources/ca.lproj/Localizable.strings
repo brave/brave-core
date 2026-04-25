@@ -1,0 +1,132 @@
+/* Toast displayed to user after copy url pressed. */
+"AppMenuCopyURLConfirmMessage" = "URL copiada al porta-retalls";
+
+/* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
+"AppMenuViewDesktopSiteTitleString" = "Sol·licita el lloc d'escriptori";
+
+/* Label for the button, displayed in the menu, used to request the mobile version of the current website. */
+"AppMenuViewMobileSiteTitleString" = "Sol·licita el lloc mòbil";
+
+/* General settings bookmarks last visited folder toggle title */
+"BookmarksLastVisitedFolderTitle" = "Mostra les últimes adreces d'interès visitades";
+
+/* Button confirming the cancellation of the download. */
+"CancelDownloadDialogCancel" = "Cancel·la";
+
+/* Alert dialog body when the user taps the cancel download icon. */
+"CancelDownloadDialogMessage" = "Estàs segur que vols cancel·lar aquesta descàrrega?";
+
+/* Button declining the cancellation of the download. */
+"CancelDownloadDialogResume" = "Reprèn";
+
+/* Alert dialog title when the user taps the cancel download icon. */
+"CancelDownloadDialogTitle" = "Cancel·la la descàrrega";
+
+/* Cancel button */
+"CancelString" = "Cancel·la";
+
+/* The button text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedButtonText" = "Canvia";
+
+/* The label text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedLabelText" = "Nova pestanya oberta";
+
+/* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
+"DownloadCancelledToastLabelText" = "Descàrrega cancel·lada";
+
+/* The label text in the Download Failed toast for showing confirmation that the download has failed. */
+"DownloadFailedToastLabelText" = "Error de descàrrega";
+
+/* The description text in the Download progress toast for showing the number of files (1$) and download progress (2$). This string only consists of two placeholders for purposes of displaying two other strings side-by-side where 1$ is Downloads.Toast.MultipleFiles.DescriptionText and 2$ is Downloads.Toast.Progress.DescriptionText. This string should only consist of the two placeholders side-by-side separated by a single space and 1$ should come before 2$ everywhere except for right-to-left locales. */
+"DownloadMultipleFilesAndProgressToastDescriptionText" = "%1$@ %2$@";
+
+/* The description text in the Download progress toast for showing the number of files when multiple files are downloading. */
+"DownloadMultipleFilesToastDescriptionText" = "1 de %d fitxers";
+
+/* The description text in the Download progress toast for showing the downloaded file size (1$) out of the total expected file size (2$). */
+"DownloadProgressToastDescriptionText" = "%1$@/%2$@";
+
+/* The button to open a new tab with the Downloads home panel */
+"DownloadsButtonTitle" = "Descàrregues";
+
+/* Question shown to user when tapping a link that opens the App Store app */
+"ExternalLinkAppStoreConfirmationTitle" = "Vols obrir aquest enllaç a l'aplicació App Store?";
+
+/* The button to open a new tab with the copied link */
+"GoButtonTittle" = "Ves";
+
+/* Button to not save the user's password */
+"LoginsHelperDontSaveButtonTitle" = "No desis";
+
+/* Button to not update the user's password */
+"LoginsHelperDontUpdateButtonTitle" = "No actualitzis";
+
+/* Button to save the user's password */
+"LoginsHelperSaveLoginButtonTitle" = "Desa registres";
+
+/* Button to update the user's password */
+"LoginsHelperUpdateButtonTitle" = "Actualitza";
+
+/* OK button */
+"OKString" = "D'acord";
+
+/* Accessibility message e.g. spoken by VoiceOver when Reader Mode becomes available. */
+"ReaderModeAvailableVoiceOverAnnouncement" = "Mode lector disponible";
+
+/* Accessibility label for button resetting font size in display settings of reader mode */
+"ReaderModeResetFontSizeAccessibilityLabel" = "Restableix la mida del text";
+
+/* Prompt for saving a password with no username. The parameter is the hostname of the site. */
+"SaveLoginPrompt" = "Vols desar la contrasenya per %@?";
+
+/* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
+"SaveLoginUsernamePrompt" = "Vols desar l'inici de sessió %1$@ per a %2$@?";
+
+/* OK button to dismiss the error prompt. */
+"ScanQRCodeErrorOKButton" = "D'acord";
+
+/* Text for the instructions label, displayed in the QR scanner view */
+"ScanQRCodeInstructionsLabel" = "Alinea el codi QR dins del marc per escanejar";
+
+/* Text of the prompt that is shown to the user when the data is invalid */
+"ScanQRCodeInvalidDataErrorMessage" = "La data és invàlida";
+
+/* Text of the prompt user to setup the camera authorization. */
+"ScanQRCodePermissionErrorMessage" = "Permet que Brave accedeixi a la càmera del teu dispositiu a 'Configuració' -> 'Privacitat' -> 'Càmera'.";
+
+/* Title for the QR code scanner view. */
+"ScanQRCodeViewTitle" = "Escaneja el codi QR";
+
+/* General settings section title */
+"SettingsGeneralSectionTitle" = "General";
+
+/* Button displayed at the top of the search settings. */
+"SettingsSearchDoneButton" = "Fet";
+
+/* The button to undo the delete all tabs */
+"TabsDeleteAllUndoAction" = "Desfés";
+
+/* The label indicating that all the tabs were closed */
+"TabsDeleteAllUndoTitle" = "%d pestanya/es tancada/es";
+
+/* Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorDismiss" = "D'acord";
+
+/* Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorMessage" = "S'ha produït un error en afegir el passi a la cartera. Siusplau, intenta-ho més tard.";
+
+/* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorTitle" = "No s'ha pogut afegir el passi";
+
+/* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
+"UnableToOpenURLError" = "Brave no pot obrir la pàgina perquè té una adreça invàlida.";
+
+/* Title of the message shown when the user attempts to navigate to an invalid link. */
+"UnableToOpenURLErrorTitle" = "No es pot obrir la pàgina";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginPrompt" = "Vols actualitzar l'inici de sessió %1$@ per a %2$@?";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginUsernamePrompt" = "Vols actualitzar l'inici de sessió %1$@ per a %2$@?";
+

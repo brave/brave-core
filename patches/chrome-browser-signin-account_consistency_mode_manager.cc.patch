@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/signin/account_consistency_mode_manager.cc b/chrome/browser/signin/account_consistency_mode_manager.cc
+index f11db47c92ff8bc14da47d494f6a14cd64832d41..4b936fdaaa876f7747761a856da4e8806f41646a 100644
+--- a/chrome/browser/signin/account_consistency_mode_manager.cc
++++ b/chrome/browser/signin/account_consistency_mode_manager.cc
+@@ -86,6 +86,7 @@ signin::AccountConsistencyMethod ComputeAccountConsistencyMethod(
+     Profile* profile) {
+   DCHECK(AccountConsistencyModeManager::ShouldBuildServiceForProfile(profile));
+ 
++  BRAVE_COMPUTE_ACCOUNT_CONSISTENCY_METHOD
+ #if BUILDFLAG(IS_CHROMEOS)
+   if (!ash::IsAccountManagerAvailable(profile)) {
+     return AccountConsistencyMethod::kDisabled;

@@ -1,0 +1,29 @@
+# This is the official list of people have contributed code to the
+# fiat-crypto repository.
+#
+# The AUTHORS file lists the copyright holders; this file
+# lists people.  For example, Google employees are listed here
+# but not in AUTHORS, because Google holds the copyright.
+#
+# When adding J Random Contributor's name to this file,
+# either J's name or J's organization's name should be
+# added to the AUTHORS file, depending on who holds the copyright.
+#
+# Names should be added to this file like so:
+#     Individual's name <submission email address>
+#     Individual's name <submission email address> <email2> <emailN>
+#
+# An entry with multiple email addresses specifies that the
+# first address should be used in the submit logs and
+# that the other addresses should be recognized as the
+# same person.
+
+# Please keep the list sorted.
+
+Adam Chlipala <adamc@csail.mit.edu> <adam@chlipala.net>
+Andres Erbsen <andreser@mit.edu>
+Daniel Ziegler <dmz@mit.edu>
+David Benjamin <davidben@google.com>
+Jade Philipoom <jadep@mit.edu> <jade.philipoom@gmail.com>
+Jason Gross <jgross@mit.edu> <jagro@google.com> <jasongross9@gmail.com>
+Robert Sloan <rsloan@mit.edu> <varomodt@gmail.com> <rsloan@sumologic.com>

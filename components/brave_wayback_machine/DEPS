@@ -1,0 +1,16 @@
+include_rules = [
+  "+components/prefs",
+  "+components/user_prefs",
+  "+content/public/browser",
+  "+content/public/common",
+  "+content/public/test",
+  "+services/network/public",
+  "+services/network/test",
+  "+ui/gfx/native_ui_types.h",
+]
+
+specific_include_rules = {
+  "brave_wayback_machine_policy_unittest.cc": [
+    "+components/sync_preferences",
+  ],
+}

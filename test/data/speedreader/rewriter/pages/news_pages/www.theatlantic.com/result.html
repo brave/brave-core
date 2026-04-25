@@ -1,0 +1,495 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>John Donne’s Unlovable, Irresistible Poetry</title><meta charset="utf-8"/><body id="article"><h1 class="title metadata">John Donne’s Unlovable, Irresistible Poetry</h1><p class="subhead metadata">The Elizabethan poet and divine was a mystic in bed and a mystic in the pulpit.</p><div class=""><p class="metadata">By James Parker</p><p class="metadata date">Updated Aug. 16, 2022 10:00 AM</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr><p class="ArticleParagraph_root__wy3UI ArticleParagraph_dropcap__Xra23">I<span class="smallcaps">f you were</span> a gentleman in Elizabethan London, a gentleman of more or less regular means and habits, your typical day went something like this: You rose at 4 a.m., you wrote 14 letters and a 30-page treatise on the nonexistence of purgatory, you fought a duel, you composed a sonnet, you went to watch a Jesuit get publicly disemboweled, you invented a scientific instrument, you composed another sonnet, you attended the premiere of <i>As You Like It</i>, you romanced someone else’s wife, and then you caught the bubonic plague and died.</p><p class="ArticleParagraph_root__wy3UI">They packed a lot in, the Elizabethans, is my point. Maybe posterity, considering our own age, will judge that we are packing a lot in, with the fascism and the COVID and the melting glaciers. Maybe. But there was a peculiar paradoxical ugly-beautiful density to life as the Elizabethans lived it. The Reformation was just behind them; the civil war was coming; Elizabeth, the virgin queen, may have been semi-celestial, but <a href="https://www.theguardian.com/books/2013/sep/20/shakespeare-hamlet-dangerous-critchley-webster">her subjects lived in a police state</a>. They had a passion for virtue and a genius for cruelty. They had wonderful manners and barbaric inclinations, lovely clothes and terrible diseases. They oscillated madly between the abstract and the corporeal. And among his contemporaries, nobody oscillated more madly than John Donne.</p><p class="ArticleParagraph_root__wy3UI">Donne was made of contradiction, or of transformation. Born an outsider, a Catholic at a time when <a href="https://www.huntington.org/verso/2019/11/notes-elizabethan-catholic-underground">being Catholic in England was illegal</a>—his uncle and then his brother went to prison for their faith, and his brother would die there—Donne worked his way in, into the inside, shifting and shedding as he went.</p><p class="ArticleParagraph_root__wy3UI">He was a bookish lover-poet who went to sea with the doomed and dashing Earl of Essex and caught a vision of hell when he watched Spanish sailors being burned alive in the harbor at Cádiz. (His Rutger Hauer–in–<i>Blade Runner </i>moment: “I’ve seen things you people wouldn’t believe. Attack ships on fire off the shoulder of Orion.”) He was a splenetic satirist, all-observing, all-condemning, who was also a world-class flatterer/ingratiator. He had a slicing, dicing, predatory mind that he applied with equal force to sex, to politics, and finally to a religious vocation. Young Donne had an inflamed libido, old Donne an inflamed conscience. The man who wrote “<a href="https://www.poetryfoundation.org/poems/50340/to-his-mistress-going-to-bed">License my roving hands, and let them go / Before, behind, between, above, below</a>” would become, as the dean of St. Paul’s Cathedral, the grave divine who warned his congregants that “<a href="https://www.biblestudytools.com/classics/the-works-of-john-donne-vol-4/sermon-lxxxv.html">a man may be an adulterer in his wife’s bosom, though he seek not strange women</a>.”</p><p class="ArticleParagraph_root__wy3UI">As for his poetry, it’s unlovable and it’s irresistible. English verse is not the same after Donne. Harmony and gentility—the music of Spenser—go out the window, and in comes a ferocious, sometimes grating intellectual energy and an intense superiority. You can read pages of Donne and register only the oppressive proximity of his pulsing brain. But then he’ll snag you. “Busy old fool, unruly sun,” grumbles the lover as daylight pushes in at the bedroom window. “<a href="https://www.lieder.net/lieder/get_text.html?TextId=40533">Saucy pedantic wretch, go chide / Late school boys</a>.” Encrusted as his vocabulary could be, he had a shocking talent for immediate, everyday speech. One moment his verse is alien, twisted, full of fussy wiring and strange mechanical conceits (Dr. Johnson: “Who but Donne would have thought that a good man is a telescope?”); the next he writes “<a href="https://www.poetryfoundation.org/poems/44097/the-canonization">For God’s sake hold your tongue, and let me love</a>,” or “<a href="https://www.poetryfoundation.org/poems/44113/holy-sonnets-thou-hast-made-me-and-shall-thy-work-decay">I run to death, and death meets me as fast</a>,” and we hear him speaking to us across four centuries in ringing monosyllables.</p><p class="ArticleParagraph_root__wy3UI"><a href="https://bookshop.org/a/12476/9780374607401"><i>Super-Infinite</i></a> is the title of Katherine Rundell’s new biographical study of Donne. It sounds like an album by Monster Magnet. And indeed, Rundell responds to Donne in something of a heavy-metal, hyperbolizing register. Read the first stanza of “Love’s Growth,” she promises us, and “all the oxygen in a five-mile radius rushes to greet you.” Another poem, “The Comparison,” in which Donne contrasts the charms of his mistress with those of another woman, takes the tradition of poets praising female beauty “and knifes it in a dark alley.” And so on.</p><p class="ArticleRelatedContentLink_root__v6EBD" data-view-action="view link - injected link - item 1" id="injected-recirculation-link-0"><a href="https://www.theatlantic.com/culture/archive/2017/04/favorite-poems-john-donne-holy-sonnet-14/622455/">Read: Passion and paradox in John Donne’s ‘Batter My Heart, Three-Person’d God’</a></p><p class="ArticleParagraph_root__wy3UI">But overpraise, or praise with reverb, is very Elizabethan and very, very John Donne, as Rundell shows us. “Compliments,” she writes, “were core currency,” and Donne was loaded. He flung out admirations; he strewed encomia. “Your going away,” he assured one Lady Kingsmill in a letter, “hath made London a dead carcass.” Rundell calls this Donne’s “pleasure in extravagance.” When Elizabeth, the young daughter of Sir Robert Drury, died, Drury (the sort of grandee to whom Donne was always sucking up) commissioned an elegy. And although Donne had never met Elizabeth Drury, he went at it with a vengeance: In two long, slightly bonkers poems, “<a href="https://www.bartleby.com/357/169.html">The First Anniversary</a>” and “<a href="https://www.bartleby.com/357/172.html">The Second Anniversary</a>,” he unfurled the full howling panorama of human existence and almost beatified the deceased girl. “She, she is dead; she’s dead; when thou knowest this / Thou knowest how dry a cinder this world is.” It was heavenly hackwork. “If he had written it of the Virgin Mary,” opined Ben Jonson, “it had been something.”</p><p class="ArticleParagraph_root__wy3UI">Donne’s love poetry is extreme: Bodies melt, souls commingle, genders elide, death is an atom away. For sheer piercing morbidity, what image can match the “bracelet of bright hair about the bone” that he summons in “The Relic,” his fantasy of being exhumed while still wearing the tokens of his love? His religious poetry is equally extreme: “Spit in my face you Jews, and pierce my side,” runs one of his Holy Sonnets (more of those hammering monosyllables), in which he prays to take on the sufferings of Christ. “Buffet, and scoff, scourge, and crucify me, / For I have sinned, and sinned.” On a good day, Donne saw the world as an organic biological-spiritual unity, the famous whole where “no man is an island.” On a bad one, it became a slaughterhouse, a Boschian mill: “Th’ earth’s race is but thy table; there are set / Plants, cattle, men, dishes for Death to eat. / In a rude hunger now he millions draws / Into his bloody, or plaguey, or starved jaws” (“Elegy on Mistress Bulstrode”).</p><p class="ArticleParagraph_root__wy3UI">An extremity of perception, in the end, is where the two Donnes meet: He was a mystic in bed, and a mystic in the pulpit. The almost Tantric lover, seeking an essence beyond the body, was also the yearning-for-eternity preacher: “As soon as my soul enters heaven, I shall be able to say to the angels, I am of the same stuff as you.”</p><p class="ArticleParagraph_root__wy3UI">He managed his exit like David Bowie, stripping naked in the weeks before he died and wrapping himself in his winding-sheet so that an artist could make sketches for the posthumous carving of a marble monument. As a preacher, Rundell tells us, Donne’s “speciality” was his gift for riffing on infinity. One imagines his congregants at St. Paul’s creaking and shuffling in their pews as he laid the vision upon them: “There shall be no cloud nor sun, no darkness nor dazzling, but one equal light; no noise nor silence, but one equal music.” And there it is, the final resolving power chord: the radiant wave in which all the contradictions—of the age, and of the man—would be consumed.</p><hr class="ArticleLegacyHtml_root__oTAAd ArticleLegacyHtml_standard__Qfi5x"><p class="ArticleParagraph_root__wy3UI"><small><i>This article appears in the </i><a href="https://www.theatlantic.com/magazine/toc/2022/09/"><i>September 2022</i></a><i> print edition with the headline “Heavenly Hackwork.” </i></small></p></body>

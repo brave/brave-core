@@ -1,0 +1,11 @@
+[package]
+name = "rustc-stable-hash"
+version = "0.1.2"
+description = "A stable hashing algorithm used by rustc"
+license = "Apache-2.0 OR MIT"
+readme = "README.md"
+repository = "https://github.com/rust-lang/rustc-stable-hash"
+edition = "2021"
+
+[features]
+nightly = [] # for feature(hasher_prefixfree_extras)

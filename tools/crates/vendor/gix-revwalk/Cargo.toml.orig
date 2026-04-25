@@ -1,0 +1,28 @@
+lints.workspace = true
+
+[package]
+name = "gix-revwalk"
+version = "0.22.0"
+repository = "https://github.com/GitoxideLabs/gitoxide"
+license = "MIT OR Apache-2.0"
+description = "A crate providing utilities for walking the revision graph"
+authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
+edition = "2021"
+include = ["src/**/*", "LICENSE-*"]
+rust-version = "1.82"
+
+[lib]
+doctest = false
+
+[dependencies]
+gix-hash = { version = "^0.20.0", path = "../gix-hash" }
+gix-object = { version = "^0.51.0", path = "../gix-object" }
+gix-date = { version = "^0.10.6", path = "../gix-date" }
+gix-hashtable = { version = "^0.10.0", path = "../gix-hashtable" }
+gix-commitgraph = { version = "^0.30.0", path = "../gix-commitgraph" }
+
+thiserror = "2.0.17"
+smallvec = "1.15.1"
+
+[dev-dependencies]
+gix-testtools = { path = "../tests/tools" }

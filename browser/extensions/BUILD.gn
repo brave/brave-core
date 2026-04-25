@@ -1,0 +1,248 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+import("//brave/components/brave_talk/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
+import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
+import("//brave/components/web_discovery/buildflags/buildflags.gni")
+import("//build/config/features.gni")
+import("//build/config/ui.gni")
+import("//components/gcm_driver/config.gni")
+
+assert(toolkit_views)
+
+source_set("component_loader") {
+  sources = [
+    "brave_component_loader.cc",
+    "brave_component_loader.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_extension:static_resources",
+    "//chrome/browser/extensions",
+    "//chrome/browser/profiles:profile",
+    "//components/prefs",
+    "//extensions/browser",
+    "//extensions/common",
+    "//ui/base",
+  ]
+
+  if (enable_web_discovery_native) {
+    deps += [ "//brave/components/web_discovery/common" ]
+  }
+}
+
+# This is split out from extensions and the rest of brave_prefs_util because it
+# has circular dependencies on //chrome/browser.
+# https://github.com/brave/brave-browser/issues/41418
+source_set("brave_prefs_util_impl") {
+  visibility = [
+    ":*",
+    "//chrome/browser",
+  ]
+  sources = [ "api/settings_private/brave_prefs_util_impl.cc" ]
+
+  deps = [
+    "//brave/components/brave_shields/core/browser",
+    "//chrome/browser:browser_public_dependencies",
+    "//chrome/browser/content_settings:content_settings_factory",
+    "//chrome/browser/profiles:profile",
+    "//chrome/common/extensions/api",
+    "//components/content_settings/core/browser:cookie_settings",
+    "//components/content_settings/core/common",
+    "//content/public/browser",
+    "//url",
+  ]
+}
+
+source_set("extensions") {
+  sources = [
+    "api/brave_extensions_api_client.cc",
+    "api/brave_extensions_api_client.h",
+    "api/brave_theme_api.cc",
+    "api/brave_theme_api.h",
+    "api/identity/brave_web_auth_flow.cc",
+    "api/identity/brave_web_auth_flow.h",
+    "api/settings_private/brave_prefs_util.cc",
+    "api/settings_private/brave_prefs_util.h",
+    "brave_extension_management.cc",
+    "brave_extension_management.h",
+    "brave_extension_provider.cc",
+    "brave_extension_provider.h",
+    "brave_extensions_browser_api_provider.cc",
+    "brave_extensions_browser_api_provider.h",
+    "brave_extensions_browser_client_impl.cc",
+    "brave_extensions_browser_client_impl.h",
+    "updater/brave_update_client_config.cc",
+    "updater/brave_update_client_config.h",
+    "updater/features.cc",
+    "updater/features.h",
+  ]
+
+  deps = [
+    ":brave_prefs_util_impl",
+    ":resources",
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/browser:browser_process",
+    "//brave/browser/brave_search",
+    "//brave/browser/component_updater",
+    "//brave/browser/extensions/api:generated_api_registration",
+    "//brave/browser/ui:brave_tab_prefs",
+    "//brave/common",
+    "//brave/common/extensions/api",
+    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/brave_extension:static_resources",
+    "//brave/components/brave_news/common/buildflags",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/brave_search/browser",
+    "//brave/components/brave_shields/core/common",
+    "//brave/components/brave_talk/buildflags",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_wallet/common/buildflags",
+    "//brave/components/brave_wayback_machine/buildflags",
+    "//brave/components/constants",
+    "//brave/components/de_amp/common",
+    "//brave/components/debounce/core/common",
+    "//brave/components/ntp_background_images/common",
+    "//brave/components/request_otr/common",
+    "//brave/components/sidebar/browser",
+    "//brave/components/speedreader/common/buildflags",
+    "//brave/components/tor/buildflags",
+    "//brave/components/web_discovery/buildflags",
+    "//brave/components/webcompat_reporter/common",
+    "//chrome/browser:browser_process",
+    "//chrome/browser:browser_public_dependencies",
+    "//chrome/browser/extensions",
+    "//chrome/browser/extensions:chrome_extensions_browser_client",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/common",
+    "//components/browsing_data/core",
+    "//components/gcm_driver:gcm_buildflags",
+    "//components/prefs",
+    "//components/update_client:network_impl",
+    "//components/user_prefs",
+    "//content/public/browser",
+  ]
+
+  public_deps = [
+    ":component_loader",
+    "//base",
+    "//extensions/browser",
+  ]
+
+  if (use_gcm_from_platform) {
+    deps += [ "//components/gcm_driver" ]
+  }
+
+  if (enable_brave_wayback_machine) {
+    deps += [ "//brave/components/brave_wayback_machine" ]
+  }
+
+  if (enable_speedreader) {
+    deps += [ "//brave/components/speedreader" ]
+  }
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/core/common" ]
+  }
+
+  if (enable_brave_news) {
+    deps += [ "//brave/components/brave_news/common" ]
+  }
+
+  if (enable_brave_vpn) {
+    deps += [ "//brave/components/brave_vpn/common" ]
+  }
+
+  if (enable_tor) {
+    deps += [
+      "//brave/browser/tor",
+      "//brave/components/tor",
+      "//brave/components/tor:pref_names",
+    ]
+  }
+
+  if (enable_web_discovery) {
+    sources += [
+      "api/web_discovery_api.cc",
+      "api/web_discovery_api.h",
+    ]
+  }
+
+  if (enable_web_discovery_native) {
+    deps += [ "//brave/components/web_discovery/common" ]
+  }
+
+  if (is_win) {
+    deps += [ "//brave/components/windows_recall" ]
+  }
+
+  if (enable_brave_wallet) {
+    deps += [
+      "//brave/components/brave_wallet/browser",
+      "//brave/components/brave_wallet/browser:pref_names",
+      "//brave/components/brave_wallet/browser:utils",
+      "//brave/components/brave_wallet/common",
+      "//brave/components/decentralized_dns/core",
+    ]
+  }
+
+  if (enable_brave_talk) {
+    sources += [
+      "api/brave_talk_api.cc",
+      "api/brave_talk_api.h",
+    ]
+    deps += [ "//brave/components/brave_talk" ]
+  }
+
+  if (enable_playlist) {
+    deps += [ "//brave/components/playlist/core/common" ]
+  }
+
+  allow_circular_includes_from = [ ":brave_prefs_util_impl" ]
+}
+
+group("resources") {
+  deps = [
+    "//brave/components/brave_extension:generated_resources",
+    "//brave/components/brave_extension:static_resources",
+  ]
+}
+
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "brave_base_local_data_files_browsertest.cc",
+    "brave_base_local_data_files_browsertest.h",
+    "brave_extension_functional_test.cc",
+    "brave_extension_functional_test.h",
+  ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/browser",
+    "//brave/components/brave_component_updater/browser",
+    "//brave/components/constants",
+    "//chrome/browser/extensions",
+    "//chrome/test:test_support",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//extensions/browser:crx_installer",
+    "//net",
+    "//net:test_support",
+  ]
+}

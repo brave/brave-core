@@ -1,0 +1,537 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>James Ponsoldt’s ‘Summering’ Stumbles Over a Corpse in the Woods</title><meta charset="utf-8"/><body id="article"><h1 class="title metadata">James Ponsoldt’s ‘Summering’ Stumbles Over a Corpse in the Woods</h1><p class="subhead metadata">A dead body can’t compete with these girls’ middle school anxieties.</p><div class=""><p class="metadata">By R.C. Baker</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+      <div class="c-figure__container">
+    <figure class="c-featured__figure">
+        <p><img alt="" class=" c-featuredImage  c-contentImage attachment-vv-large size-vv-large wp-post-image" height="768" sizes="(max-width: 1366px) 100vw, 1366px" src="https://www.villagevoice.com/wp-content/uploads/2022/08/1_FI_MA-1366x768.jpg" srcset="https://www.villagevoice.com/wp-content/uploads/2022/08/1_FI_MA-1366x768.jpg 1366w, https://www.villagevoice.com/wp-content/uploads/2022/08/1_FI_MA-300x169.jpg 300w, https://www.villagevoice.com/wp-content/uploads/2022/08/1_FI_MA-1024x576.jpg 1024w, https://www.villagevoice.com/wp-content/uploads/2022/08/1_FI_MA-768x432.jpg 768w, https://www.villagevoice.com/wp-content/uploads/2022/08/1_FI_MA-1536x864.jpg 1536w, https://www.villagevoice.com/wp-content/uploads/2022/08/1_FI_MA-2048x1152.jpg 2048w, https://www.villagevoice.com/wp-content/uploads/2022/08/1_FI_MA-600x337.jpg 600w, https://www.villagevoice.com/wp-content/uploads/2022/08/1_FI_MA-400x225.jpg 400w, https://www.villagevoice.com/wp-content/uploads/2022/08/1_FI_MA-200x112.jpg 200w" width="1366"></p>
+        <figcaption class="c-caption">
+            
+            <span class="c-credit">Courtesy of Bleecker Street</span>
+        </figcaption>
+    </figure>
+</div>
+		<p><span>A fervent effort to craft a </span><i><span>Stand By M</span></i><span>e for tween girls—or maybe for Millennials nostalgic for their sixth-grade girlhoods—director James Ponsoldt’s </span><i><span>Summering</span></i><span> even begins with a slo-mo gallop through a lawn-sprinkler rainbow. Its honorable-yet-mushy intentions couldn’t be clearer, its retrospective emotional palate of semi-preadolescent freedom and friend-bonding already limited. Films roaming through this domain start from a sweet spot we all remember—ah, to be 11 again—and then become, as they say in showbiz, execution-dependent. You need the chops, you need the writing, and you need a barely pubescent cast who can muster a lived-in vibe better than </span><i><span>The Babysitter’s Club</span></i><span>.</span></p>
+<p><span>It would help, you might also think, to have once been a girl. </span><i><span>Summering</span></i><span>, written and directed by two middle-aged white dudes, never quite convinces you that the four heroines are real people, that their kinda stiff, non-overlapping conversations are spontaneous, and that the sun-dappled last-weekend-of-summer isn’t a little forced. You can feel the earnestness, but you also sense that Ponsoldt and co-writer Benjamin Percy trip on their own hyperbole when the indexing of </span><i><span>Stand By Me</span></i><span> lands front and center—as in, the four kids are not ’50s castoffs hiking to go see a rumored dead body but contemporary girls (with only one iPhone between them, oddly) who almost immediately stumble upon a corpse in the woods. What do they do? After some bickering, they decide to not call the police or tell their moms. “It’s the last weekend before middle school!” Why create a fuss by reporting it—after all, “It’s our body,” one of them reasons. We’ve all been there.</span></p>
+
+<blockquote>
+<h2><strong>Once the girls find out where the dead man lives, the upshot has enormously disquieting implications that belong more in a Raymond Carver story than a film about 11-year-olds.</strong></h2>
+</blockquote>
+
+<p><span>The weekend that follows is taken up by the girls’ amateur-sleuth efforts to find out about this blue-suited man facedown in the dirt, taking time out for fun and banter, and Ponsoldt seems to agree with his characters that the preservation of their one-for-all weekend and their anxieties about starting school on Monday are in fact more important than the dead guy. It’d be difficult to dig yourself out of that storytelling hole; Ponsoldt has a knack for this, never quite understanding that 2013’s </span><i><span>The Spectacular Now</span></i><span> was actually about the hero’s blackout alcoholism, not a fraught teen romance.</span></p>
+<div class="c-figure__container">
+    <figure class="c-featured__figure">
+        <p><img alt="" class=" c-featuredImage  c-contentImage align size-vv-large wp-image-745576" height="572" src="https://www.villagevoice.com/wp-content/uploads/2022/08/2_MA-1366x572.jpg" width="1366"></p>
+        <figcaption class="c-caption">
+            <span class="c-caption__text">Sanai Victoria, Madalen Mills, Lia Barnett, and Eden Grace Redfield in ‘Summering.’</span>
+            <span class="c-credit">Courtesy of Bleecker Street</span>
+        </figcaption>
+    </figure>
+</div>
+<p><span>The actresses, two white and two Black, do their best. Lia Barnett’s Daisy is the speech-impediment narrator, bruised by her absent father and her disconnected cop mom (Lake Bell); Eden Grace Redfield’s diminutive Mari is the one who suspects they’re in over their heads. Sanai Victoria’s Lola is heavy into New Age occultism (late in the film, she decides on a secret seance, even though they know their moms are searching for them), while Madalen Mills’s Dina, almost the alpha of the group, is an overthinker from an overachieving household. Each has their moments, and none are newbies, but you shouldn’t feel the effort it took to get them to converse like sixth-graders do when no adults are around. And when there’s a body gathering flies in the woods.</span></p>
+<p><span>It’s a tough haul, certainly tougher than too many indie filmmakers think. The moms (Bell, Ashley Madekwe, Sarah Cooper, Megan Mullally) fare better, gathering together in the film’s last third (with wine) as their kids go missing. (Mullally, with only a few scenes as Mari’s chatterbox single mom, walks off with the movie like a boss.) Ponsoldt and Percy let some prize stuff slip through their fingers—once the girls find out where the dead man lives, the upshot has enormously disquieting implications that belong more in a Raymond Carver story than a film about 11-year-olds. But quickly the conversation turns to the girls’ own worries, and the impact of the painful scenario dissipates.</span></p>
+
+<p><i><span>Summering</span></i><span> tries for verisimilitude, but its plotting and dialogue keep suggesting a movie that takes place on a parallel planet—until the iPhone appears, you’re never sure what decade we’re in, and glimpses of addresses feature the mythical state abbreviation “MW.” When the girls decide to literally pick up and move the body, wearing rubber gloves, the why-on-earth is erased by their almost </span><i><span>River’s Edge</span></i><span>-y nonchalance. And why did Daisy take her mother’s gun? Never mind. Think sprinkler rainbow. ❖</span></p>
+<p><i>Michael Atkinson has been writing for the&nbsp;</i>Village Voice<i>&nbsp;since 1994. His latest book is the new edition of his BFI tract on David Lynch’s&nbsp;</i>Blue Velvet<i>.</i></p>
+
+
+<p><strong>– • –</strong></p>
+
+
+<p><strong>NOTE: The advertising disclaimer below does not apply to this article, nor any originating from the&nbsp;<em>Village Voice</em>&nbsp;editorial department, which does not accept paid links.</strong></p>
+<p class="ad-disclosure">Advertising disclosure: We may receive compensation for some of the links in our stories. Thank you for supporting the Village Voice and our advertisers.</p>
+    
+    
+
+</body>

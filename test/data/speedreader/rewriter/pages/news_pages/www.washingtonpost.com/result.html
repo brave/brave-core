@@ -1,0 +1,497 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Trump is rushing to hire seasoned lawyers — but he keeps hearing ‘No’</title><meta charset="utf-8"/><body id="article"><h1 class="title metadata">Trump is rushing to hire seasoned lawyers — but he keeps hearing ‘No’</h1><p class="subhead metadata">The former president’s current legal team includes a Florida insurance lawyer who’s never had a federal case, a past general counsel for a parking garage company and a former host at far-right One America News.</p><div class=""><p class="metadata">By Isaac Arnsdorf, Josh Dawsey, Carol D. Leonnig, Jacqueline Alemany, Rosalind S. Helderman</p><p class="metadata date">Updated Aug. 17, 2022 02:57 AM</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr><div class="teaser-content grid-center"><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">Former president Donald Trump and close aides have spent the eight days since the FBI <a href="https://www.washingtonpost.com/national-security/2022/08/12/trump-warrant-release/?itid=lk_inline_manual_2" target="_blank">searched his Florida home</a> rushing to assemble a team of respected defense lawyers. But the answer they keep hearing is “no.”</p><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">The struggle to find expert legal advice puts Trump in a bind as he faces potential criminal exposure from a records dispute with the National Archives that <a href="https://www.washingtonpost.com/national-security/2022/08/13/trump-mar-a-lago-search/?itid=lk_inline_manual_4" target="_blank">escalated</a> into a federal investigation into possible violations of the Espionage Act and other statutes.</p></div><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">“Everyone is saying no,” said a prominent Republican lawyer, who<b> </b>like some others spoke on the condition of anonymity to discuss confidential conversations.</p><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">Trump is no stranger to legal proceedings, and his scramble to hire lawyers in the face of an ominous federal probe recalls his predicament in the summer of 2017, when he was under scrutiny from special counsel Robert S. Mueller III in the Russia probe. Once again, Trump is struggling to find a veteran criminal defense lawyer with a strong track record of dealing with the Justice Department in a sprawling, multipronged investigation.</p><div class="article-body" data-qa="article-body"><div class="" data-qa="article-video"><div><div data-testid="video-wrapper"><figure class="pt-xs mb-md mr-auto-ns ml-auto-ns hide-for-print
+    ml-neg-gutter mr-neg-gutter"><figcaption><figcaption class="mt-xs mr-auto-ns ml-auto-ns left gray-dark font--subhead font-xxxs ml-gutter mr-gutter" data-qa="video-caption">A list of items seized in the FBI’s search of former president Donald Trump’s Mar-A-Lago home was unsealed on Aug. 12. (Video: Blair  Guild/The Washington Post)</figcaption></figcaption></figure></div></div></div></div><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">Longtime confidants and advisers of Trump have grown extremely worried about Trump’s current stable of lawyers, noting that most of them have little to no experience in cases of this type, according to two people familiar with the internal discussions.</p><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">Taylor  Budowich, a Trump spokesman, defended the quality of the former president’s legal team in a statement Tuesday night, pointing to former federal prosecutors Evan Corcoran and James Trusty.</p><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">“The President’s lead counsel in relation to the raid of his home, Jim Trusty and Evan Corcoran, have decades of prosecutorial experience and have litigated some of the most complex cases in American history,"  Budowich said. “President Trump is represented by some of the strongest attorneys in the country, and any suggestion otherwise is only driven by envy.”</p><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">Jon Sale, a prominent Florida defense attorney who worked on the Watergate prosecution team and said he turned down representing Trump last week because he did not have enough time to devote to the case, said “the Trump team needs a first-rate, highly experienced federal criminal practitioner.”</p><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">“You have to evaluate whether you want to take it,” Sale said. “It’s not like a DUI. It’s representing the former president of the United States — and maybe the next one — in what’s one of the highest-visibility cases ever.”</p><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">Ordinarily, the prestige and publicity of representing a former president, as well as the new and complex legal issues at stake in this case, would attract high-powered attorneys. But Trump’s search is being hampered by his divisiveness, as well as his reputation for stiffing vendors and ignoring advice.</p><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">“In olden days, he would tell firms representing him was a benefit because they could advertise off it. Today it’s not the same,” said Michael Cohen, a former lawyer for Trump who was convicted of tax evasion, false statements, campaign finance violations and lying to Congress in 2018. “He’s also a very difficult client in that he’s always pushing the envelope, he rarely listens to sound legal advice, and he wants you to do things that are not appropriate, ethically or legally.”</p><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">One lawyer told a story from early in Trump’s presidency of his legal team urging him against tweeting about the Mueller probe, only to find he’d tweeted about it before they got to the end of the West Wing driveway. Several people said Trump was nearly impossible to represent and that it would be unclear if they would ever get paid.</p><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">People familiar with the search for legal help said the effort includes Susie Wiles, a close adviser to Trump, and attorney Christina Bobb, who was present at Mar-a-Lago during the search and signed for the list of documents taken. Former campaign adviser Boris Epshteyn is taking a prominent role, and former White House aide Kash Patel is advising informally. Patel is raising money for a “legal offense” fund by selling merchandise such as tank tops and beanies emblazoned with the logo “K$H.”</p><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">“You get these guys who just live to be around him, and mistakes get made,” a lawyer who isn’t part of the team said. “These guys just want to make him happy.”</p><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">Bobb was previously a host on the far-right, pro-Trump television network One America News. At OAN, Bobb covered the Arizona Republican Party’s review of 2020 ballots — which ultimately confirmed Joe Biden’s win in the state — while also raising money for the effort and conferring with Trump advisers, The Washington Post has <a href="https://www.washingtonpost.com/politics/trump-2020-election-audits/2021/06/02/95fd3004-c2ec-11eb-8c34-f8095f2dc445_story.html?itid=lk_inline_manual_26" target="_blank">reported</a>.</p><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">Bobb’s prior legal experience at the federal level consists mainly of a handful of trademark infringement cases on behalf of CrossFit during a stint at a San Diego law firm. She did not respond to requests for comment.</p><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">Trump’s other lawyer currently based in Florida is Lindsey Halligan, whose practice, according to a professional biography, focuses on insurance claims at residential and commercial properties. She was admitted to the Florida bar in 2014. A search of federal court records found no filings under her name. She did not respond to requests for comment.</p><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">Trump is also being represented in the records dispute by Alina Habba, who leads a three-attorney firm with an office near Trump’s golf club in Bedminster, N.J. Her professional experience includes serving as general counsel to a parking garage company. Last year, Habba <a href="https://www.washingtonpost.com/politics/trump-lawsuit-new-york-times-alina-habba/2021/09/22/8acaf1c2-1bce-11ec-a99a-5fea2b2da34b_story.html?itid=lk_inline_manual_31" target="_blank">started representing</a> Trump in several cases including defending him from a defamation claim by the writer E. Jean Carroll, who <a href="https://www.washingtonpost.com/politics/magazine-columnist-accuses-trump-of-sexual-assault-more-than-two-decades-ago-an-allegation-he-denies/2019/06/21/2afc6f12-945a-11e9-b58a-a6a9afaa0e3e_story.html?itid=lk_inline_manual_31" target="_blank">accused him of a decades-old sexual assault</a>; <a href="https://www.washingtonpost.com/politics/2021/09/21/trump-taxes-mary-times-lawsuit/?itid=lk_inline_manual_31" target="_blank">suing</a> the New York Times and Trump’s niece, Mary L. Trump; and suing 2016 opponent Hillary Clinton, the Democratic National Committee and other perceived enemies, alleging a conspiracy to harm Donald Trump through the Russia scandal. Habba did not respond to requests for comment.</p><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">Others on the team have relatively more experience with federal criminal probes. Trusty formerly served in the Justice Department’s criminal division and headed the organized crime and gang section. He has recently represented clients accused of financial fraud, defrauding the U.S. Department of Agriculture and trading in counterfeit military uniforms. He referred questions to Trump’s spokesman.</p><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">Corcoran is a former federal prosecutor viewed by Trump aides as a serious and experienced attorney. His recent clients include a former Capitol Police officer <a href="https://www.washingtonpost.com/local/legal-issues/capitol-police-officer-charged-obstruction-riley/2021/10/15/da34a198-2dd2-11ec-985d-3150f7e106b2_story.html?itid=lk_inline_manual_33" target="_blank">accused</a> of obstructing the Jan. 6 investigation by telling a riot suspect to remove Facebook posts, and a Pennsylvania man who <a href="https://www.justice.gov/usao-dc/case-multi-defendant/file/1431446/download" target="_blank">pleaded guilty</a> to participating in the riot and was sentenced to 60 days in prison. Corcoran also represented former Trump adviser Stephen K. Bannon in his contempt trial for defying a House subpoena in the Jan. 6 probe. Bannon was <a href="https://www.washingtonpost.com/national-security/2022/07/22/bannon-january-6-trial-friday/?itid=lk_inline_manual_33" target="_blank">convicted</a> in July.</p><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">Some of Trump’s interactions with the Justice Department have also been handled by John Rowley, another former federal prosecutor now at his own firm, Politico has <a href="https://www.politico.com/news/2022/08/08/trump-rowley-doj-jan-6-00050408" target="_blank">reported</a>. Rowley didn’t respond to requests for comment.</p><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">In another potential complication, any lawyer who made assurances to the FBI on Trump’s behalf could have their own legal exposure or become a witness in the case. One letter signed by a lawyer on Trump’s team was sent to the Justice Department in June suggesting that all classified material had been turned over, according to a person with direct knowledge of the matter. The existence of the letter was first reported by the New York Times.</p><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">“Either the attorney acted in good faith on what turned out to be false factual representations made by Mr. Trump or someone else communicating on his behalf, in which case Mr. Trump or his proxy would have criminal jeopardy for false statements or obstruction of justice, or the attorney knowingly gave false assurances to the government,” said David Laufman, the former Justice Department chief of the counterintelligence division, which is now investigating the classified records kept at Trump’s home. “And it’s hard to believe that a lawyer knowingly would have lied to the government about the continued presence of classified documents.”</p><div class="article-body" data-qa="article-body"><div class="" data-qa="article-video"><div><div data-testid="video-wrapper"><figure class="pt-xs mb-md mr-auto-ns ml-auto-ns hide-for-print
+    ml-neg-gutter mr-neg-gutter"><figcaption><figcaption class="mt-xs mr-auto-ns ml-auto-ns left gray-dark font--subhead font-xxxs ml-gutter mr-gutter" data-qa="video-caption">Attorney General Merrick Garland spoke Aug. 11 about a search warrant executed at former president Donald Trump’s Mar-A-Lago residence. (Video: The Washington Post)</figcaption></figcaption></figure></div></div></div></div><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">The universe of experienced federal practitioners is not actually that extensive, and the case would likely monopolize their time to the exclusion of all other clients. Possible candidates and their firms may be further deterred by the controversy that would attach to defending Trump.</p><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">“Good lawyers should have been working on this case for months,” said Alan Dershowitz, the former Harvard Law School professor who has advised Trump in the past and said he hasn’t been asked to get involved now. “He needs a big and good and very experienced defense team with experience trying cases.”</p><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">Dershowitz said he recommended Harvard colleague Ronald S. Sullivan Jr., the faculty director of the Harvard Criminal Justice Institute and the Harvard Trial Advocacy Workshop. Sullivan said he hasn’t heard from Trump’s team.</p><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">“They clearly need someone with federal trial experience, and someone familiar with high-profile cases who can stay on task and not be distracted by the media glare,” Sullivan said. “The case itself presents a range of issues that would be of interest to a lot of good lawyers. Some lawyers may reasonably feel as though the public will conflate Mr. Trump’s policy aims and positions with the lawyer’s. In that way, many lawyers may be disinclined to expose themselves to the public opprobrium that would follow that sort of representation.”</p><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">Trump has long been a notoriously high-maintenance client. When he was trying to make his mark in Manhattan real estate as a young man, Trump had an especially demanding cadence with his lawyer, the late Roy Cohn. “Donald calls me 15 to 20 times a day. He is always asking, ‘What is the status of this ... and that?’” Cohn was quoted as saying in<a href="https://www.vanityfair.com/news/2017/06/donald-trump-roy-cohn-relationship" target="_blank"> a Vanity Fair story</a> about their attorney-client relationship.</p><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">Many of the president’s former lawyers, such as Pat Cipollone, Pat Philbin and Justin Clark are not expected to be involved in the investigation’s defense, people familiar with the matter said. Cipollone has been interviewed already, one of these people said, a detail <a href="https://www.nytimes.com/2022/08/16/us/politics/trump-cipollone-philbin-interviews-fbi.html" target="_blank">first reported by the New York Times</a>.</p><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">Two longtime Trump top legal advisers during the Mueller investigation, Jay Sekulow and Jane Raskin, are still close to the former president but not involved in his current legal team. Among other alumni of the defense to the Mueller investigation, Ty Cobb has become publicly critical of Trump, and former White House counsel Donald McGahn is no longer close with the former president. McGahn represented Sen. Lindsey O. Graham (R-S.C.), who is fighting a subpoena in a separate investigation into Trump and his allies in Georgia. Another former Trump lawyer, Emmet Flood, is now representing Marc Short, adviser to former vice president Mike Pence.</p><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter">“This is not good,” one Trump confidant said of the president’s lack of a high-profile white-collar defense lawyer. “Something big is going to pop. Somebody needs to be in charge.”</p><p class="font-copy font--article-body gray-darkest ma-0 pb-md" data-el="text" data-qa="drop-cap-letter"><i>Ellen Nakashima contributed to this report.</i></p><div class="article-body" data-qa="article-body"><div class="mb-md pt-md pb-md pl-md pr-lg bg-offwhite brad-4 font--subhead" data-qa="correction-disclaimer"><p>correction</p><p class="gray-dark font-xxs" data-qa="disclaimer-description">An earlier version of this article misstated the name of a spokesman for former president Donald Trump. He is Taylor Budowich, not Taylor Budovich. This article has been corrected.</p></div></div></body>

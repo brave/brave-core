@@ -1,0 +1,48 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+
+# These files needs access to some files in chrome/browser target.
+brave_browser_misc_metrics_sources = [
+  "//brave/browser/misc_metrics/profile_misc_metrics_service.cc",
+  "//brave/browser/misc_metrics/profile_misc_metrics_service_factory.cc",
+  "//brave/browser/misc_metrics/uptime_monitor_impl.cc",
+]
+
+brave_browser_misc_metrics_deps = [
+  "//brave/browser:browser_process",
+  "//brave/browser/profiles:util",
+  "//brave/components/ai_chat/core/common/buildflags",
+  "//brave/components/misc_metrics",
+  "//brave/components/ntp_background_images/browser",
+  "//brave/components/ntp_background_images/common",
+  "//chrome/browser:browser_process",
+  "//chrome/browser/profiles",
+  "//chrome/browser/profiles:profile_util",
+  "//components/keyed_service/content",
+  "//components/keyed_service/core",
+  "//content/public/browser",
+]
+
+if (enable_ai_chat) {
+  brave_browser_misc_metrics_deps +=
+      [ "//brave/components/ai_chat/core/browser" ]
+}
+
+if (!is_android) {
+  brave_browser_misc_metrics_sources += [
+    "//brave/browser/misc_metrics/profile_new_tab_metrics.cc",
+    "//brave/browser/misc_metrics/profile_new_tab_metrics.h",
+  ]
+
+  brave_browser_misc_metrics_deps +=
+      [ "//brave/browser/misc_metrics:usage_clock" ]
+}
+
+brave_browser_misc_metrics_android_sources = [
+  "//brave/browser/misc_metrics/misc_android_metrics.cc",
+  "//brave/browser/misc_metrics/misc_android_metrics_factory_android.cc",
+]

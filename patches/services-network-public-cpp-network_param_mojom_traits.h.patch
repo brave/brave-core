@@ -1,0 +1,12 @@
+diff --git a/services/network/public/cpp/network_param_mojom_traits.h b/services/network/public/cpp/network_param_mojom_traits.h
+index 5f2c42fee1ec3906f40710158b1f6e1f8e55971a..19b6207397258ce6a94dab78b7d7d80c556e27fc 100644
+--- a/services/network/public/cpp/network_param_mojom_traits.h
++++ b/services/network/public/cpp/network_param_mojom_traits.h
+@@ -99,6 +99,7 @@ class COMPONENT_EXPORT(NETWORK_CPP_NETWORK_PARAM)
+     return host_port_pair.port();
+   }
+ 
++  BRAVE_STRUCT_TRAITS_HOST_PORT_PAIR
+   static bool Read(network::mojom::HostPortPairDataView data,
+                    net::HostPortPair* out);
+ };

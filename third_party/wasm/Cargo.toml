@@ -1,0 +1,6 @@
+[workspace]
+resolver = "2"
+members = [
+  "../../components/brave_account/resources/opaque_ke",
+  "../../components/local_ai/resources/candle_embedding_gemma",
+]

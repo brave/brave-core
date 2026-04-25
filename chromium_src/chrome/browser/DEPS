@@ -1,0 +1,27 @@
+from brave_chromium_utils import inline_file
+inline_file("//chrome/browser/DEPS", globals(), locals())
+
+include_rules += [
+  "+brave/app",
+  "+brave/browser",
+  "+brave/common",
+  "+brave/build/android/jni_headers",
+  "+brave/grit",
+  "+brave/components/brave_origin/buildflags",
+  "+brave/components/constants",
+  "+brave/components/history_embeddings",
+  "+brave/components/local_ai/core",
+  "+brave/components/playlist/core/common/buildflags",
+  "+brave/components/version_info",
+  # Make sure renderer directories are not included for components with
+  # incorrect directory structures
+  "-brave/components/tor/renderer",
+  "-brave/components/speedreader/renderer",
+  "+chrome/browser",
+]
+
+specific_include_rules = {
+  '.*test\.cc': [
+    "+brave/test/base",
+  ],
+}

@@ -1,0 +1,35 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
+import("//build/buildflag_header.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [
+    "ENABLE_BRAVE_REWARDS=$enable_brave_rewards",
+
+    "BITFLYER_PRODUCTION_FEE_ADDRESS=\"$bitflyer_production_fee_address\"",
+    "BITFLYER_PRODUCTION_URL=\"$bitflyer_production_url\"",
+    "BITFLYER_SANDBOX_FEE_ADDRESS=\"$bitflyer_sandbox_fee_address\"",
+    "BITFLYER_SANDBOX_URL=\"$bitflyer_sandbox_url\"",
+
+    "REWARDS_GRANT_DEV_ENDPOINT=\"$rewards_grant_dev_endpoint\"",
+    "REWARDS_GRANT_STAGING_ENDPOINT=\"$rewards_grant_staging_endpoint\"",
+    "REWARDS_GRANT_PROD_ENDPOINT=\"$rewards_grant_prod_endpoint\"",
+
+    "UPHOLD_PRODUCTION_API_URL=\"$uphold_production_api_url\"",
+    "UPHOLD_PRODUCTION_FEE_ADDRESS=\"$uphold_production_fee_address\"",
+    "UPHOLD_PRODUCTION_OAUTH_URL=\"$uphold_production_oauth_url\"",
+    "UPHOLD_SANDBOX_API_URL=\"$uphold_sandbox_api_url\"",
+    "UPHOLD_SANDBOX_FEE_ADDRESS=\"$uphold_sandbox_fee_address\"",
+    "UPHOLD_SANDBOX_OAUTH_URL=\"$uphold_sandbox_oauth_url\"",
+
+    "ZEBPAY_PRODUCTION_API_URL=\"$zebpay_production_api_url\"",
+    "ZEBPAY_PRODUCTION_OAUTH_URL=\"$zebpay_production_oauth_url\"",
+    "ZEBPAY_SANDBOX_API_URL=\"$zebpay_sandbox_api_url\"",
+    "ZEBPAY_SANDBOX_OAUTH_URL=\"$zebpay_sandbox_oauth_url\"",
+  ]
+}

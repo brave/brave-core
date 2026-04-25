@@ -1,0 +1,10 @@
+//brave/chromium_src/v8/include overrides don't work because all public v8
+headers use local paths to reference nearby headers. Local headers will always
+be preferred over any -I<path> flag.
+
+To add something into v8 public interface use these options:
+ 1. Add new file into //brave/v8/include, create new functions that receive
+    Isolate/Context/other class as a parameter, implement new API in
+    //brave/chromium_src/v8/src/api.cc.
+ 2. Directly patch v8 file if this is really necessary (a struct extension or
+    a function signature change).

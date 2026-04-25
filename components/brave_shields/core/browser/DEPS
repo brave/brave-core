@@ -1,0 +1,18 @@
+include_rules = [
+  "+components/component_updater",
+  "+components/content_settings/core",
+  "+components/keyed_service/core/keyed_service.h",
+  "+components/prefs",
+  "+components/value_store",
+  "+components/sync_preferences",
+  "+crypto",
+]
+
+specific_include_rules = {
+  "ad_block_filters_provider\.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ],
+  "ad_block_filters_provider_manager\.h": [
+    "+third_party/rust/cxx/v1/cxx.h",
+  ]
+}

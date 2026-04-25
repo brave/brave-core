@@ -1,0 +1,8 @@
+include_rules = [
+  "+brave/components/brave_shields/core/common",
+  "+brave/components/webcompat",
+  "+brave/third_party/blink/renderer",
+  "+ui/display",
+  "+ui/gfx/geometry",
+  "+ui/gfx/skia_span_util.h",
+]

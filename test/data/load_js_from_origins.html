@@ -1,0 +1,12 @@
+<html><head><title>load js from origins</title></head>
+<body>
+<!--
+  Below only works if the CrossSiteRedirector is running on the embedded test
+  server, and the host_resolver is set up to handle those hosts.
+  See comments here <https://cs.chromium.org/chromium/src/content/public/test/browser_test_utils.h?l=434>
+  for more details on how CrossSiteRedirector works.
+-->
+<script src="data:application/javascript;base64,dmFyIGZyYW1lID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgnaWZyYW1lJyk7CmRvY3VtZW50LmJvZHkuYXBwZW5kQ2hpbGQoZnJhbWUpOw=="></script>
+<script src="/cross-site/a.test/create_iframe.js"></script>
+<script src="/cross-site/b.test/create_iframe.js"></script>
+</body></html>

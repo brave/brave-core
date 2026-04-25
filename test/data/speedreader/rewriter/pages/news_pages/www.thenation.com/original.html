@@ -1,0 +1,3343 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge"><script type="daf5c5e0ef7afec5f4f49f73-text/javascript">(window.NREUM||(NREUM={})).init={ajax:{deny_list:["bam.nr-data.net"]}};(window.NREUM||(NREUM={})).loader_config={xpid:"XAEGVF5RGwYEV1dRAgI=",licenseKey:"442438c9d9",applicationID:"5436353"};window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var i=e[n]={exports:{}};t[n][0].call(i.exports,function(e){var i=t[n][1][e];return r(i||e)},i,i.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var i=0;i<n.length;i++)r(n[i]);return r}({1:[function(t,e,n){function r(t){try{s.console&&console.log(t)}catch(e){}}var i,o=t("ee"),a=t(27),s={};try{i=localStorage.getItem("__nr_flags").split(","),console&&"function"==typeof console.log&&(s.console=!0,i.indexOf("dev")!==-1&&(s.dev=!0),i.indexOf("nr_dev")!==-1&&(s.nrDev=!0))}catch(c){}s.nrDev&&o.on("internal-error",function(t){r(t.stack)}),s.dev&&o.on("fn-err",function(t,e,n){r(n.stack)}),s.dev&&(r("NR AGENT IN DEVELOPMENT MODE"),r("flags: "+a(s,function(t,e){return t}).join(", ")))},{}],2:[function(t,e,n){function r(t,e,n,r,s){try{p?p-=1:i(s||new UncaughtException(t,e,n),!0)}catch(f){try{o("ierr",[f,c.now(),!0])}catch(d){}}return"function"==typeof u&&u.apply(this,a(arguments))}function UncaughtException(t,e,n){this.message=t||"Uncaught error with no additional information",this.sourceURL=e,this.line=n}function i(t,e){var n=e?null:c.now();o("err",[t,n])}var o=t("handle"),a=t(28),s=t("ee"),c=t("loader"),f=t("gos"),u=window.onerror,d=!1,l="nr@seenError";if(!c.disabled){var p=0;c.features.err=!0,t(1),window.onerror=r;try{throw new Error}catch(h){"stack"in h&&(t(10),t(9),"addEventListener"in window&&t(6),c.xhrWrappable&&t(11),d=!0)}s.on("fn-start",function(t,e,n){d&&(p+=1)}),s.on("fn-err",function(t,e,n){d&&!n[l]&&(f(n,l,function(){return!0}),this.thrown=!0,i(n))}),s.on("fn-end",function(){d&&!this.thrown&&p>0&&(p-=1)}),s.on("internal-error",function(t){o("ierr",[t,c.now(),!0])})}},{}],3:[function(t,e,n){var r=t("loader");r.disabled||(r.features.ins=!0)},{}],4:[function(t,e,n){function r(){var t=new PerformanceObserver(function(t,e){var n=t.getEntries();s(v,[n])});try{t.observe({entryTypes:["resource"]})}catch(e){}}function i(t){if(s(v,[window.performance.getEntriesByType(w)]),window.performance["c"+l])try{window.performance[h](m,i,!1)}catch(t){}else try{window.performance[h]("webkit"+m,i,!1)}catch(t){}}function o(t){}if(window.performance&&window.performance.timing&&window.performance.getEntriesByType){var a=t("ee"),s=t("handle"),c=t(10),f=t(9),u=t(5),d=t(19),l="learResourceTimings",p="addEventListener",h="removeEventListener",m="resourcetimingbufferfull",v="bstResource",w="resource",g="-start",y="-end",x="fn"+g,b="fn"+y,E="bstTimer",R="pushState",S=t("loader");if(!S.disabled){S.features.stn=!0,t(8),"addEventListener"in window&&t(6);var O=NREUM.o.EV;a.on(x,function(t,e){var n=t[0];n instanceof O&&(this.bstStart=S.now())}),a.on(b,function(t,e){var n=t[0];n instanceof O&&s("bst",[n,e,this.bstStart,S.now()])}),c.on(x,function(t,e,n){this.bstStart=S.now(),this.bstType=n}),c.on(b,function(t,e){s(E,[e,this.bstStart,S.now(),this.bstType])}),f.on(x,function(){this.bstStart=S.now()}),f.on(b,function(t,e){s(E,[e,this.bstStart,S.now(),"requestAnimationFrame"])}),a.on(R+g,function(t){this.time=S.now(),this.startPath=location.pathname+location.hash}),a.on(R+y,function(t){s("bstHist",[location.pathname+location.hash,this.startPath,this.time])}),u()?(s(v,[window.performance.getEntriesByType("resource")]),r()):p in window.performance&&(window.performance["c"+l]?window.performance[p](m,i,d(!1)):window.performance[p]("webkit"+m,i,d(!1))),document[p]("scroll",o,d(!1)),document[p]("keypress",o,d(!1)),document[p]("click",o,d(!1))}}},{}],5:[function(t,e,n){e.exports=function(){return"PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver}},{}],6:[function(t,e,n){function r(t){for(var e=t;e&&!e.hasOwnProperty(u);)e=Object.getPrototypeOf(e);e&&i(e)}function i(t){s.inPlace(t,[u,d],"-",o)}function o(t,e){return t[1]}var a=t("ee").get("events"),s=t("wrap-function")(a,!0),c=t("gos"),f=XMLHttpRequest,u="addEventListener",d="removeEventListener";e.exports=a,"getPrototypeOf"in Object?(r(document),r(window),r(f.prototype)):f.prototype.hasOwnProperty(u)&&(i(window),i(f.prototype)),a.on(u+"-start",function(t,e){var n=t[1];if(null!==n&&("function"==typeof n||"object"==typeof n)){var r=c(n,"nr@wrapped",function(){function t(){if("function"==typeof n.handleEvent)return n.handleEvent.apply(n,arguments)}var e={object:t,"function":n}[typeof n];return e?s(e,"fn-",null,e.name||"anonymous"):n});this.wrapped=t[1]=r}}),a.on(d+"-start",function(t){t[1]=this.wrapped||t[1]})},{}],7:[function(t,e,n){function r(t,e,n){var r=t[e];"function"==typeof r&&(t[e]=function(){var t=o(arguments),e={};i.emit(n+"before-start",[t],e);var a;e[m]&&e[m].dt&&(a=e[m].dt);var s=r.apply(this,t);return i.emit(n+"start",[t,a],s),s.then(function(t){return i.emit(n+"end",[null,t],s),t},function(t){throw i.emit(n+"end",[t],s),t})})}var i=t("ee").get("fetch"),o=t(28),a=t(27);e.exports=i;var s=window,c="fetch-",f=c+"body-",u=["arrayBuffer","blob","json","text","formData"],d=s.Request,l=s.Response,p=s.fetch,h="prototype",m="nr@context";d&&l&&p&&(a(u,function(t,e){r(d[h],e,f),r(l[h],e,f)}),r(s,"fetch",c),i.on(c+"end",function(t,e){var n=this;if(e){var r=e.headers.get("content-length");null!==r&&(n.rxSize=r),i.emit(c+"done",[null,e],n)}else i.emit(c+"done",[t],n)}))},{}],8:[function(t,e,n){var r=t("ee").get("history"),i=t("wrap-function")(r);e.exports=r;var o=window.history&&window.history.constructor&&window.history.constructor.prototype,a=window.history;o&&o.pushState&&o.replaceState&&(a=o),i.inPlace(a,["pushState","replaceState"],"-")},{}],9:[function(t,e,n){var r=t("ee").get("raf"),i=t("wrap-function")(r),o="equestAnimationFrame";e.exports=r,i.inPlace(window,["r"+o,"mozR"+o,"webkitR"+o,"msR"+o],"raf-"),r.on("raf-start",function(t){t[0]=i(t[0],"fn-")})},{}],10:[function(t,e,n){function r(t,e,n){t[0]=a(t[0],"fn-",null,n)}function i(t,e,n){this.method=n,this.timerDuration=isNaN(t[1])?0:+t[1],t[0]=a(t[0],"fn-",this,n)}var o=t("ee").get("timer"),a=t("wrap-function")(o),s="setTimeout",c="setInterval",f="clearTimeout",u="-start",d="-";e.exports=o,a.inPlace(window,[s,"setImmediate"],s+d),a.inPlace(window,[c],c+d),a.inPlace(window,[f,"clearImmediate"],f+d),o.on(c+u,r),o.on(s+u,i)},{}],11:[function(t,e,n){function r(t,e){d.inPlace(e,["onreadystatechange"],"fn-",s)}function i(){var t=this,e=u.context(t);t.readyState>3&&!e.resolved&&(e.resolved=!0,u.emit("xhr-resolved",[],t)),d.inPlace(t,y,"fn-",s)}function o(t){x.push(t),m&&(E?E.then(a):w?w(a):(R=-R,S.data=R))}function a(){for(var t=0;t<x.length;t++)r([],x[t]);x.length&&(x=[])}function s(t,e){return e}function c(t,e){for(var n in t)e[n]=t[n];return e}t(6);var f=t("ee"),u=f.get("xhr"),d=t("wrap-function")(u),l=t(19),p=NREUM.o,h=p.XHR,m=p.MO,v=p.PR,w=p.SI,g="readystatechange",y=["onload","onerror","onabort","onloadstart","onloadend","onprogress","ontimeout"],x=[];e.exports=u;var b=window.XMLHttpRequest=function(t){var e=new h(t);try{u.emit("new-xhr",[e],e),e.addEventListener(g,i,l(!1))}catch(n){try{u.emit("internal-error",[n])}catch(r){}}return e};if(c(h,b),b.prototype=h.prototype,d.inPlace(b.prototype,["open","send"],"-xhr-",s),u.on("send-xhr-start",function(t,e){r(t,e),o(e)}),u.on("open-xhr-start",r),m){var E=v&&v.resolve();if(!w&&!v){var R=1,S=document.createTextNode(R);new m(a).observe(S,{characterData:!0})}}else f.on("fn-end",function(t){t[0]&&t[0].type===g||a()})},{}],12:[function(t,e,n){function r(t){if(!s(t))return null;var e=window.NREUM;if(!e.loader_config)return null;var n=(e.loader_config.accountID||"").toString()||null,r=(e.loader_config.agentID||"").toString()||null,f=(e.loader_config.trustKey||"").toString()||null;if(!n||!r)return null;var h=p.generateSpanId(),m=p.generateTraceId(),v=Date.now(),w={spanId:h,traceId:m,timestamp:v};return(t.sameOrigin||c(t)&&l())&&(w.traceContextParentHeader=i(h,m),w.traceContextStateHeader=o(h,v,n,r,f)),(t.sameOrigin&&!u()||!t.sameOrigin&&c(t)&&d())&&(w.newrelicHeader=a(h,m,v,n,r,f)),w}function i(t,e){return"00-"+e+"-"+t+"-01"}function o(t,e,n,r,i){var o=0,a="",s=1,c="",f="";return i+"@nr="+o+"-"+s+"-"+n+"-"+r+"-"+t+"-"+a+"-"+c+"-"+f+"-"+e}function a(t,e,n,r,i,o){var a="btoa"in window&&"function"==typeof window.btoa;if(!a)return null;var s={v:[0,1],d:{ty:"Browser",ac:r,ap:i,id:t,tr:e,ti:n}};return o&&r!==o&&(s.d.tk=o),btoa(JSON.stringify(s))}function s(t){return f()&&c(t)}function c(t){var e=!1,n={};if("init"in NREUM&&"distributed_tracing"in NREUM.init&&(n=NREUM.init.distributed_tracing),t.sameOrigin)e=!0;else if(n.allowed_origins instanceof Array)for(var r=0;r<n.allowed_origins.length;r++){var i=h(n.allowed_origins[r]);if(t.hostname===i.hostname&&t.protocol===i.protocol&&t.port===i.port){e=!0;break}}return e}function f(){return"init"in NREUM&&"distributed_tracing"in NREUM.init&&!!NREUM.init.distributed_tracing.enabled}function u(){return"init"in NREUM&&"distributed_tracing"in NREUM.init&&!!NREUM.init.distributed_tracing.exclude_newrelic_header}function d(){return"init"in NREUM&&"distributed_tracing"in NREUM.init&&NREUM.init.distributed_tracing.cors_use_newrelic_header!==!1}function l(){return"init"in NREUM&&"distributed_tracing"in NREUM.init&&!!NREUM.init.distributed_tracing.cors_use_tracecontext_headers}var p=t(24),h=t(14);e.exports={generateTracePayload:r,shouldGenerateTrace:s}},{}],13:[function(t,e,n){function r(t){var e=this.params,n=this.metrics;if(!this.ended){this.ended=!0;for(var r=0;r<l;r++)t.removeEventListener(d[r],this.listener,!1);return e.protocol&&"data"===e.protocol?void g("Ajax/DataUrl/Excluded"):void(e.aborted||(n.duration=a.now()-this.startTime,this.loadCaptureCalled||4!==t.readyState?null==e.status&&(e.status=0):o(this,t),n.cbTime=this.cbTime,s("xhr",[e,n,this.startTime,this.endTime,"xhr"],this)))}}function i(t,e){var n=c(e),r=t.params;r.hostname=n.hostname,r.port=n.port,r.protocol=n.protocol,r.host=n.hostname+":"+n.port,r.pathname=n.pathname,t.parsedOrigin=n,t.sameOrigin=n.sameOrigin}function o(t,e){t.params.status=e.status;var n=v(e,t.lastSize);if(n&&(t.metrics.rxSize=n),t.sameOrigin){var r=e.getResponseHeader("X-NewRelic-App-Data");r&&(t.params.cat=r.split(", ").pop())}t.loadCaptureCalled=!0}var a=t("loader");if(a.xhrWrappable&&!a.disabled){var s=t("handle"),c=t(14),f=t(12).generateTracePayload,u=t("ee"),d=["load","error","abort","timeout"],l=d.length,p=t("id"),h=t(20),m=t(18),v=t(15),w=t(19),g=t(21).recordSupportability,y=NREUM.o.REQ,x=window.XMLHttpRequest;a.features.xhr=!0,t(11),t(7),u.on("new-xhr",function(t){var e=this;e.totalCbs=0,e.called=0,e.cbTime=0,e.end=r,e.ended=!1,e.xhrGuids={},e.lastSize=null,e.loadCaptureCalled=!1,e.params=this.params||{},e.metrics=this.metrics||{},t.addEventListener("load",function(n){o(e,t)},w(!1)),h&&(h>34||h<10)||t.addEventListener("progress",function(t){e.lastSize=t.loaded},w(!1))}),u.on("open-xhr-start",function(t){this.params={method:t[0]},i(this,t[1]),this.metrics={}}),u.on("open-xhr-end",function(t,e){"loader_config"in NREUM&&"xpid"in NREUM.loader_config&&this.sameOrigin&&e.setRequestHeader("X-NewRelic-ID",NREUM.loader_config.xpid);var n=f(this.parsedOrigin);if(n){var r=!1;n.newrelicHeader&&(e.setRequestHeader("newrelic",n.newrelicHeader),r=!0),n.traceContextParentHeader&&(e.setRequestHeader("traceparent",n.traceContextParentHeader),n.traceContextStateHeader&&e.setRequestHeader("tracestate",n.traceContextStateHeader),r=!0),r&&(this.dt=n)}}),u.on("send-xhr-start",function(t,e){var n=this.metrics,r=t[0],i=this;if(n&&r){var o=m(r);o&&(n.txSize=o)}this.startTime=a.now(),this.listener=function(t){try{"abort"!==t.type||i.loadCaptureCalled||(i.params.aborted=!0),("load"!==t.type||i.called===i.totalCbs&&(i.onloadCalled||"function"!=typeof e.onload))&&i.end(e)}catch(n){try{u.emit("internal-error",[n])}catch(r){}}};for(var s=0;s<l;s++)e.addEventListener(d[s],this.listener,w(!1))}),u.on("xhr-cb-time",function(t,e,n){this.cbTime+=t,e?this.onloadCalled=!0:this.called+=1,this.called!==this.totalCbs||!this.onloadCalled&&"function"==typeof n.onload||this.end(n)}),u.on("xhr-load-added",function(t,e){var n=""+p(t)+!!e;this.xhrGuids&&!this.xhrGuids[n]&&(this.xhrGuids[n]=!0,this.totalCbs+=1)}),u.on("xhr-load-removed",function(t,e){var n=""+p(t)+!!e;this.xhrGuids&&this.xhrGuids[n]&&(delete this.xhrGuids[n],this.totalCbs-=1)}),u.on("xhr-resolved",function(){this.endTime=a.now()}),u.on("addEventListener-end",function(t,e){e instanceof x&&"load"===t[0]&&u.emit("xhr-load-added",[t[1],t[2]],e)}),u.on("removeEventListener-end",function(t,e){e instanceof x&&"load"===t[0]&&u.emit("xhr-load-removed",[t[1],t[2]],e)}),u.on("fn-start",function(t,e,n){e instanceof x&&("onload"===n&&(this.onload=!0),("load"===(t[0]&&t[0].type)||this.onload)&&(this.xhrCbStart=a.now()))}),u.on("fn-end",function(t,e){this.xhrCbStart&&u.emit("xhr-cb-time",[a.now()-this.xhrCbStart,this.onload,e],e)}),u.on("fetch-before-start",function(t){function e(t,e){var n=!1;return e.newrelicHeader&&(t.set("newrelic",e.newrelicHeader),n=!0),e.traceContextParentHeader&&(t.set("traceparent",e.traceContextParentHeader),e.traceContextStateHeader&&t.set("tracestate",e.traceContextStateHeader),n=!0),n}var n,r=t[1]||{};"string"==typeof t[0]?n=t[0]:t[0]&&t[0].url?n=t[0].url:window.URL&&t[0]&&t[0]instanceof URL&&(n=t[0].href),n&&(this.parsedOrigin=c(n),this.sameOrigin=this.parsedOrigin.sameOrigin);var i=f(this.parsedOrigin);if(i&&(i.newrelicHeader||i.traceContextParentHeader))if("string"==typeof t[0]||window.URL&&t[0]&&t[0]instanceof URL){var o={};for(var a in r)o[a]=r[a];o.headers=new Headers(r.headers||{}),e(o.headers,i)&&(this.dt=i),t.length>1?t[1]=o:t.push(o)}else t[0]&&t[0].headers&&e(t[0].headers,i)&&(this.dt=i)}),u.on("fetch-start",function(t,e){this.params={},this.metrics={},this.startTime=a.now(),this.dt=e,t.length>=1&&(this.target=t[0]),t.length>=2&&(this.opts=t[1]);var n,r=this.opts||{},o=this.target;if("string"==typeof o?n=o:"object"==typeof o&&o instanceof y?n=o.url:window.URL&&"object"==typeof o&&o instanceof URL&&(n=o.href),i(this,n),"data"!==this.params.protocol){var s=(""+(o&&o instanceof y&&o.method||r.method||"GET")).toUpperCase();this.params.method=s,this.txSize=m(r.body)||0}}),u.on("fetch-done",function(t,e){if(this.endTime=a.now(),this.params||(this.params={}),"data"===this.params.protocol)return void g("Ajax/DataUrl/Excluded");this.params.status=e?e.status:0;var n;"string"==typeof this.rxSize&&this.rxSize.length>0&&(n=+this.rxSize);var r={txSize:this.txSize,rxSize:n,duration:a.now()-this.startTime};s("xhr",[this.params,r,this.startTime,this.endTime,"fetch"],this)})}},{}],14:[function(t,e,n){var r={};e.exports=function(t){if(t in r)return r[t];if(0===(t||"").indexOf("data:"))return{protocol:"data"};var e=document.createElement("a"),n=window.location,i={};e.href=t,i.port=e.port;var o=e.href.split("://");!i.port&&o[1]&&(i.port=o[1].split("/")[0].split("@").pop().split(":")[1]),i.port&&"0"!==i.port||(i.port="https"===o[0]?"443":"80"),i.hostname=e.hostname||n.hostname,i.pathname=e.pathname,i.protocol=o[0],"/"!==i.pathname.charAt(0)&&(i.pathname="/"+i.pathname);var a=!e.protocol||":"===e.protocol||e.protocol===n.protocol,s=e.hostname===document.domain&&e.port===n.port;return i.sameOrigin=a&&(!e.hostname||s),"/"===i.pathname&&(r[t]=i),i}},{}],15:[function(t,e,n){function r(t,e){var n=t.responseType;return"json"===n&&null!==e?e:"arraybuffer"===n||"blob"===n||"json"===n?i(t.response):"text"===n||""===n||void 0===n?i(t.responseText):void 0}var i=t(18);e.exports=r},{}],16:[function(t,e,n){function r(){}function i(t,e,n,r){return function(){return u.recordSupportability("API/"+e+"/called"),o(t+e,[f.now()].concat(s(arguments)),n?null:this,r),n?void 0:this}}var o=t("handle"),a=t(27),s=t(28),c=t("ee").get("tracer"),f=t("loader"),u=t(21),d=NREUM;"undefined"==typeof window.newrelic&&(newrelic=d);var l=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],p="api-",h=p+"ixn-";a(l,function(t,e){d[e]=i(p,e,!0,"api")}),d.addPageAction=i(p,"addPageAction",!0),d.setCurrentRouteName=i(p,"routeName",!0),e.exports=newrelic,d.interaction=function(){return(new r).get()};var m=r.prototype={createTracer:function(t,e){var n={},r=this,i="function"==typeof e;return o(h+"tracer",[f.now(),t,n],r),function(){if(c.emit((i?"":"no-")+"fn-start",[f.now(),r,i],n),i)try{return e.apply(this,arguments)}catch(t){throw c.emit("fn-err",[arguments,this,t],n),t}finally{c.emit("fn-end",[f.now()],n)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(t,e){m[e]=i(h,e)}),newrelic.noticeError=function(t,e){"string"==typeof t&&(t=new Error(t)),u.recordSupportability("API/noticeError/called"),o("err",[t,f.now(),!1,e])}},{}],17:[function(t,e,n){function r(t){if(NREUM.init){for(var e=NREUM.init,n=t.split("."),r=0;r<n.length-1;r++)if(e=e[n[r]],"object"!=typeof e)return;return e=e[n[n.length-1]]}}e.exports={getConfiguration:r}},{}],18:[function(t,e,n){e.exports=function(t){if("string"==typeof t&&t.length)return t.length;if("object"==typeof t){if("undefined"!=typeof ArrayBuffer&&t instanceof ArrayBuffer&&t.byteLength)return t.byteLength;if("undefined"!=typeof Blob&&t instanceof Blob&&t.size)return t.size;if(!("undefined"!=typeof FormData&&t instanceof FormData))try{return JSON.stringify(t).length}catch(e){return}}}},{}],19:[function(t,e,n){var r=!1;try{var i=Object.defineProperty({},"passive",{get:function(){r=!0}});window.addEventListener("testPassive",null,i),window.removeEventListener("testPassive",null,i)}catch(o){}e.exports=function(t){return r?{passive:!0,capture:!!t}:!!t}},{}],20:[function(t,e,n){var r=0,i=navigator.userAgent.match(/Firefox[\/\s](\d+\.\d+)/);i&&(r=+i[1]),e.exports=r},{}],21:[function(t,e,n){function r(t,e){var n=[a,t,{name:t},e];return o("storeMetric",n,null,"api"),n}function i(t,e){var n=[s,t,{name:t},e];return o("storeEventMetrics",n,null,"api"),n}var o=t("handle"),a="sm",s="cm";e.exports={constants:{SUPPORTABILITY_METRIC:a,CUSTOM_METRIC:s},recordSupportability:r,recordCustom:i}},{}],22:[function(t,e,n){function r(){return s.exists&&performance.now?Math.round(performance.now()):(o=Math.max((new Date).getTime(),o))-a}function i(){return o}var o=(new Date).getTime(),a=o,s=t(29);e.exports=r,e.exports.offset=a,e.exports.getLastTimestamp=i},{}],23:[function(t,e,n){function r(t,e){var n=t.getEntries();n.forEach(function(t){"first-paint"===t.name?p("timing",["fp",Math.floor(t.startTime)]):"first-contentful-paint"===t.name&&p("timing",["fcp",Math.floor(t.startTime)])})}function i(t,e){var n=t.getEntries();if(n.length>0){var r=n[n.length-1];if(f&&f<r.startTime)return;var i=[r],o=a({});o&&i.push(o),p("lcp",i)}}function o(t){t.getEntries().forEach(function(t){t.hadRecentInput||p("cls",[t])})}function a(t){var e=navigator.connection||navigator.mozConnection||navigator.webkitConnection;if(e)return e.type&&(t["net-type"]=e.type),e.effectiveType&&(t["net-etype"]=e.effectiveType),e.rtt&&(t["net-rtt"]=e.rtt),e.downlink&&(t["net-dlink"]=e.downlink),t}function s(t){if(t instanceof w&&!y){var e=Math.round(t.timeStamp),n={type:t.type};a(n),e<=h.now()?n.fid=h.now()-e:e>h.offset&&e<=Date.now()?(e-=h.offset,n.fid=h.now()-e):e=h.now(),y=!0,p("timing",["fi",e,n])}}function c(t){"hidden"===t&&(f=h.now(),p("pageHide",[f]))}if(!("init"in NREUM&&"page_view_timing"in NREUM.init&&"enabled"in NREUM.init.page_view_timing&&NREUM.init.page_view_timing.enabled===!1)){var f,u,d,l,p=t("handle"),h=t("loader"),m=t(26),v=t(19),w=NREUM.o.EV;if("PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){u=new PerformanceObserver(r);try{u.observe({entryTypes:["paint"]})}catch(g){}d=new PerformanceObserver(i);try{d.observe({entryTypes:["largest-contentful-paint"]})}catch(g){}l=new PerformanceObserver(o);try{l.observe({type:"layout-shift",buffered:!0})}catch(g){}}if("addEventListener"in document){var y=!1,x=["click","keydown","mousedown","pointerdown","touchstart"];x.forEach(function(t){document.addEventListener(t,s,v(!1))})}m(c)}},{}],24:[function(t,e,n){function r(){function t(){return e?15&e[n++]:16*Math.random()|0}var e=null,n=0,r=window.crypto||window.msCrypto;r&&r.getRandomValues&&(e=r.getRandomValues(new Uint8Array(31)));for(var i,o="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx",a="",s=0;s<o.length;s++)i=o[s],"x"===i?a+=t().toString(16):"y"===i?(i=3&t()|8,a+=i.toString(16)):a+=i;return a}function i(){return a(16)}function o(){return a(32)}function a(t){function e(){return n?15&n[r++]:16*Math.random()|0}var n=null,r=0,i=window.crypto||window.msCrypto;i&&i.getRandomValues&&Uint8Array&&(n=i.getRandomValues(new Uint8Array(t)));for(var o=[],a=0;a<t;a++)o.push(e().toString(16));return o.join("")}e.exports={generateUuid:r,generateSpanId:i,generateTraceId:o}},{}],25:[function(t,e,n){function r(t,e){if(!i)return!1;if(t!==i)return!1;if(!e)return!0;if(!o)return!1;for(var n=o.split("."),r=e.split("."),a=0;a<r.length;a++)if(r[a]!==n[a])return!1;return!0}var i=null,o=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var s=navigator.userAgent,c=s.match(a);c&&s.indexOf("Chrome")===-1&&s.indexOf("Chromium")===-1&&(i="Safari",o=c[1])}e.exports={agent:i,version:o,match:r}},{}],26:[function(t,e,n){function r(t){function e(){t(s&&document[s]?document[s]:document[o]?"hidden":"visible")}"addEventListener"in document&&a&&document.addEventListener(a,e,i(!1))}var i=t(19);e.exports=r;var o,a,s;"undefined"!=typeof document.hidden?(o="hidden",a="visibilitychange",s="visibilityState"):"undefined"!=typeof document.msHidden?(o="msHidden",a="msvisibilitychange"):"undefined"!=typeof document.webkitHidden&&(o="webkitHidden",a="webkitvisibilitychange",s="webkitVisibilityState")},{}],27:[function(t,e,n){function r(t,e){var n=[],r="",o=0;for(r in t)i.call(t,r)&&(n[o]=e(r,t[r]),o+=1);return n}var i=Object.prototype.hasOwnProperty;e.exports=r},{}],28:[function(t,e,n){function r(t,e,n){e||(e=0),"undefined"==typeof n&&(n=t?t.length:0);for(var r=-1,i=n-e||0,o=Array(i<0?0:i);++r<i;)o[r]=t[e+r];return o}e.exports=r},{}],29:[function(t,e,n){e.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(t,e,n){function r(){}function i(t){function e(t){return t&&t instanceof r?t:t?f(t,c,a):a()}function n(n,r,i,o,a){if(a!==!1&&(a=!0),!p.aborted||o){t&&a&&t(n,r,i);for(var s=e(i),c=m(n),f=c.length,u=0;u<f;u++)c[u].apply(s,r);var l=d[y[n]];return l&&l.push([x,n,r,s]),s}}function o(t,e){g[t]=m(t).concat(e)}function h(t,e){var n=g[t];if(n)for(var r=0;r<n.length;r++)n[r]===e&&n.splice(r,1)}function m(t){return g[t]||[]}function v(t){return l[t]=l[t]||i(n)}function w(t,e){p.aborted||u(t,function(t,n){e=e||"feature",y[n]=e,e in d||(d[e]=[])})}var g={},y={},x={on:o,addEventListener:o,removeEventListener:h,emit:n,get:v,listeners:m,context:e,buffer:w,abort:s,aborted:!1};return x}function o(t){return f(t,c,a)}function a(){return new r}function s(){(d.api||d.feature)&&(p.aborted=!0,d=p.backlog={})}var c="nr@context",f=t("gos"),u=t(27),d={},l={},p=e.exports=i();e.exports.getOrSetContext=o,p.backlog=d},{}],gos:[function(t,e,n){function r(t,e,n){if(i.call(t,e))return t[e];var r=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,e,{value:r,writable:!0,enumerable:!1}),r}catch(o){}return t[e]=r,r}var i=Object.prototype.hasOwnProperty;e.exports=r},{}],handle:[function(t,e,n){function r(t,e,n,r){i.buffer([t],r),i.emit(t,e,n)}var i=t("ee").get("handle");e.exports=r,r.ee=i},{}],id:[function(t,e,n){function r(t){var e=typeof t;return!t||"object"!==e&&"function"!==e?-1:t===window?0:a(t,o,function(){return i++})}var i=1,o="nr@id",a=t("gos");e.exports=r},{}],loader:[function(t,e,n){function r(){if(!O++){var t=S.info=NREUM.info,e=m.getElementsByTagName("script")[0];if(setTimeout(f.abort,3e4),!(t&&t.licenseKey&&t.applicationID&&e))return f.abort();c(E,function(e,n){t[e]||(t[e]=n)});var n=a();s("mark",["onload",n+S.offset],null,"api"),s("timing",["load",n]);var r=m.createElement("script");0===t.agent.indexOf("http://")||0===t.agent.indexOf("https://")?r.src=t.agent:r.src=p+"://"+t.agent,e.parentNode.insertBefore(r,e)}}function i(){"complete"===m.readyState&&o()}function o(){s("mark",["domContent",a()+S.offset],null,"api")}var a=t(22),s=t("handle"),c=t(27),f=t("ee"),u=t(25),d=t(17),l=t(19),p=d.getConfiguration("ssl")===!1?"http":"https",h=window,m=h.document,v="addEventListener",w="attachEvent",g=h.XMLHttpRequest,y=g&&g.prototype,x=!1;NREUM.o={ST:setTimeout,SI:h.setImmediate,CT:clearTimeout,XHR:g,REQ:h.Request,EV:h.Event,PR:h.Promise,MO:h.MutationObserver};var b=""+location,E={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1216.min.js"},R=g&&y&&y[v]&&!/CriOS/.test(navigator.userAgent),S=e.exports={offset:a.getLastTimestamp(),now:a,origin:b,features:{},xhrWrappable:R,userAgent:u,disabled:x};if(!x){t(16),t(23),m[v]?(m[v]("DOMContentLoaded",o,l(!1)),h[v]("load",r,l(!1))):(m[w]("onreadystatechange",i),h[w]("onload",r)),s("mark",["firstbyte",a.getLastTimestamp()],null,"api");var O=0}},{}],"wrap-function":[function(t,e,n){function r(t,e){function n(e,n,r,c,f){function nrWrapper(){var o,a,u,l;try{a=this,o=d(arguments),u="function"==typeof r?r(o,a):r||{}}catch(p){i([p,"",[o,a,c],u],t)}s(n+"start",[o,a,c],u,f);try{return l=e.apply(a,o)}catch(h){throw s(n+"err",[o,a,h],u,f),h}finally{s(n+"end",[o,a,l],u,f)}}return a(e)?e:(n||(n=""),nrWrapper[l]=e,o(e,nrWrapper,t),nrWrapper)}function r(t,e,r,i,o){r||(r="");var s,c,f,u="-"===r.charAt(0);for(f=0;f<e.length;f++)c=e[f],s=t[c],a(s)||(t[c]=n(s,u?c+r:r,i,c,o))}function s(n,r,o,a){if(!h||e){var s=h;h=!0;try{t.emit(n,r,o,e,a)}catch(c){i([c,n,r,o],t)}h=s}}return t||(t=u),n.inPlace=r,n.flag=l,n}function i(t,e){e||(e=u);try{e.emit("internal-error",t)}catch(n){}}function o(t,e,n){if(Object.defineProperty&&Object.keys)try{var r=Object.keys(t);return r.forEach(function(n){Object.defineProperty(e,n,{get:function(){return t[n]},set:function(e){return t[n]=e,e}})}),e}catch(o){i([o],n)}for(var a in t)p.call(t,a)&&(e[a]=t[a]);return e}function a(t){return!(t&&t instanceof Function&&t.apply&&!t[l])}function s(t,e){var n=e(t);return n[l]=t,o(t,n,u),n}function c(t,e,n){var r=t[e];t[e]=s(r,n)}function f(){for(var t=arguments.length,e=new Array(t),n=0;n<t;++n)e[n]=arguments[n];return e}var u=t("ee"),d=t(28),l="nr@original",p=Object.prototype.hasOwnProperty,h=!1;e.exports=r,e.exports.wrapFunction=s,e.exports.wrapInPlace=c,e.exports.argsToArray=f},{}]},{},["loader",2,13,4,3]);</script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recent Migrant Deaths Highlight the Danger of Deterrence | The Nation</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="pingback" href="https://www.thenation.com/xmlrpc.php">
+
+
+<link rel="shortcut icon" type="image/ico" href="https://www.thenation.com/images/favicon.ico?ver=2.0.2" />
+<link rel="apple-touch-icon" href="https://www.thenation.com/images/touch-icon-32x32.png?ver=2.0.2" />
+<link rel="apple-touch-icon" sizes="76x76" href="https://www.thenation.com/images/touch-icon-76x76.png?ver=2.0.2">
+<link rel="apple-touch-icon" sizes="120x120" href="https://www.thenation.com/images/touch-icon-120x120.png?ver=2.0.2">
+<link rel="apple-touch-icon" sizes="152x152" href="https://www.thenation.com/images/touch-icon-152x152.png?ver=2.0.2">
+
+<meta property="fb:pages" content="7629206115" />
+<meta property="fb:app_id" content="711914725636301" />
+<meta name="sailthru.title" content="Recent Migrant Deaths Highlight the Danger of Deterrence" />
+<meta name="sailthru.date" content="August 17th, 2022" />
+<meta name="sailthru.content_id" content="421937" />
+<meta name="sailthru.description" content="Deterrence is a failed strategy for reducing migration—while driving up the number of migrants who die trying to come to the United States." />
+<meta name="sailthru.image.full" content="https://www.thenation.com/wp-content/uploads/2022/08/haiti-migrants-gt-img-680x430.jpg" />
+<meta name="sailthru.image.thumb" content="https://www.thenation.com/wp-content/uploads/2022/08/haiti-migrants-gt-img-275x173.jpg" />
+<meta name="sailthru.tags" content="Congress,Immigration Policy,Law,Politics,Society," />
+<meta name="keywords" content="Border security,Immigration,Refugees" />
+<meta name="sailthru.author" content="Gaby Del Valle" />
+<meta property="article:content_tier" content="free" />
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript">		
+		var articlereadbyUser  = 0;
+		var pageCounterPaywall = 0; 
+		var checknc 		   = getCookie('SESSchecknc');
+		var currentUrl 		   = document.URL;
+		
+		function getCookie(name){
+			var re = new RegExp(name + "=([^;]+)");
+			var value = re.exec(document.cookie);
+			return (value != null) ? unescape(value[1]) : null;
+		}		
+		
+		
+		var Base64={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",encode:function(e){var t="";var n,r,i,s,o,u,a;var f=0;e=Base64._utf8_encode(e);while(f<e.length){n=e.charCodeAt(f++);r=e.charCodeAt(f++);i=e.charCodeAt(f++);s=n>>2;o=(n&3)<<4|r>>4;u=(r&15)<<2|i>>6;a=i&63;if(isNaN(r)){u=a=64}else if(isNaN(i)){a=64}t=t+this._keyStr.charAt(s)+this._keyStr.charAt(o)+this._keyStr.charAt(u)+this._keyStr.charAt(a)}return t},decode:function(e){var t="";var n,r,i;var s,o,u,a;var f=0;e=e.replace(/[^A-Za-z0-9+/=]/g,"");while(f<e.length){s=this._keyStr.indexOf(e.charAt(f++));o=this._keyStr.indexOf(e.charAt(f++));u=this._keyStr.indexOf(e.charAt(f++));a=this._keyStr.indexOf(e.charAt(f++));n=s<<2|o>>4;r=(o&15)<<4|u>>2;i=(u&3)<<6|a;t=t+String.fromCharCode(n);if(u!=64){t=t+String.fromCharCode(r)}if(a!=64){t=t+String.fromCharCode(i)}}t=Base64._utf8_decode(t);return t},_utf8_encode:function(e){e=e.replace(/rn/g,"n");var t="";for(var n=0;n<e.length;n++){var r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r)}else if(r>127&&r<2048){t+=String.fromCharCode(r>>6|192);t+=String.fromCharCode(r&63|128)}else{t+=String.fromCharCode(r>>12|224);t+=String.fromCharCode(r>>6&63|128);t+=String.fromCharCode(r&63|128)}}return t},_utf8_decode:function(e){var t="";var n=0;var r=c1=c2=0;while(n<e.length){r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r);n++}else if(r>191&&r<224){c2=e.charCodeAt(n+1);t+=String.fromCharCode((r&31)<<6|c2&63);n+=2}else{c2=e.charCodeAt(n+1);c3=e.charCodeAt(n+2);t+=String.fromCharCode((r&15)<<12|(c2&63)<<6|c3&63);n+=3}}return t}};
+		var global_vars = {site_url:'https://www.thenation.com',login_text:'Log In',login_url:'https://www.thenation.com/login/',admin_link:'https://www.thenation.com/wp-admin/', dash_link: 'https://www.thenation.com/dashboard'}; 
+		var user_name_cookie = getCookie('SESSname');
+		var admin_name_cookie = getCookie('SESSadminname');
+		var is_admin_cookie = getCookie('is_admin');
+	
+		if (is_admin_cookie == "true") {
+			var check_user_logged_in = 1;
+		} else {
+			var check_user_logged_in = user_name_cookie;
+		}
+
+		
+				
+		//Piano	
+		tp = window["tp"] || [];
+		//Reengagement Days left custom variable send to Piano `daysRemaining`
+		var re5days = getCookie("re5days"); 
+		if(re5days != null){
+			var date = new Date(re5days+"");
+			var now = new Date();
+			const diffTime = Math.abs(date - now);
+			const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+			console.log("diff days = "+diffDays);
+			tp.push(['setCustomVariable', 'daysRemaining',diffDays]);
+		}	
+			
+		// Execute when the page is first loaded
+		if(check_user_logged_in != null){
+			
+			var check_user_info = getCookie('SESSuserinfo');
+			
+			if (check_user_info != null) {
+				check_user_info = Base64.decode(check_user_info);	
+				check_user_info = JSON.parse(check_user_info);
+				var user_roles = check_user_info.roles;
+				
+				if (user_roles.includes('subscriber') && null == getCookie('SESSsus_user')) {
+					tp.push(["setCustomVariable", "userType", "Subscriber"]);	
+					tp.push(['setCustomVariable', 'omeda_eid', check_user_info.enc_custno]);
+				}
+				if (user_roles.includes('subscriber') && null != getCookie('SESSsus_user')) {
+					tp.push(["setCustomVariable", "userType", "suspended_user"]);
+					tp.push(['setCustomVariable', 'userLogin', check_user_info.user_login]);
+					tp.push(['setCustomVariable', 'userZip', check_user_info.zip]);	
+					// console.log("zip"+check_user_info.zip);
+					// console.log("login"+check_user_info.user_login);
+					// console.log("suspended_user var pushed");
+				}
+				if (user_roles.includes('nation_user') && null == getCookie('SESSexpireduser')) {
+					tp.push(["setCustomVariable", "userType", "nation_user"]);
+				}	
+
+				if (user_roles.includes('nation_user') && null != getCookie('SESSexpireduser')) {
+					tp.push(["setCustomVariable", "userType", "expired_user"]);
+					tp.push(['setCustomVariable', 'omeda_eid', check_user_info.enc_custno]);
+				}	
+				
+				if (user_roles.includes('nation_user') && null != getCookie('SESSfree_user')) {
+					tp.push(["setCustomVariable", "userType", "free_user"]);
+				}
+				if (user_roles.includes('staff_subscriber') && null != getCookie('SESSstaff_sub_user')) {
+					tp.push(["setCustomVariable", "userType", "staff_subscriber"]);
+				}
+				
+				if (user_roles.includes('premium_subscriber')) {
+					tp.push(["setCustomVariable", "userType", "premium_subscriber"]);
+				}
+			} else {
+				tp.push(["setCustomVariable", "userType", "cms_user"]);
+			}	
+		}else{
+			tp.push(["setCustomVariable", "userType", "Anonymous"]);
+		}
+		
+		/* Pass If Request From Maz or from cxensebot from piano*/
+		if (navigator.userAgent.indexOf("MAZBot") > -1  || navigator.userAgent.toLowerCase().indexOf('cxensebot') > -1) {
+			tp.push(["setCustomVariable", "mazbot", "true"]);
+		}
+		/* Pass If Request From Maz or from cxensebot from piano*/
+		/* Piano cust variable true/false for book_and_arts article */		
+				
+		tp.push(["setContentSection", "article"]);
+				
+		if(check_user_logged_in != null){						
+			if(currentUrl.indexOf("/login/") > -1 && currentUrl.indexOf("reader_id=") == -1){		
+				window.location = document.location.origin;				
+			}
+		}
+			
+		if( check_user_logged_in==null ){
+			if(currentUrl.indexOf("/author-taxonomy/nation-voice/") > -1){			
+				window.location = document.location.origin;			
+			} 
+		}
+		  
+		if(checknc!=null){		
+			if(currentUrl.indexOf("?nc=1") == -1){	
+				if(currentUrl.indexOf("?") == -1){		
+					window.location.href = currentUrl+"?nc=1";		
+				}else{		
+					if(currentUrl.indexOf("&nc=1") == -1){			
+						window.location.href = currentUrl+"&nc=1";			
+					}		
+				}
+			}
+		}		  
+	</script>
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+			})(window,document,'script','dataLayer','GTM-54LKCF3');</script>
+
+
+
+
+<script data-cfasync="false" type="text/javascript">
+	  var freestar = freestar || {};
+	  freestar.hitTime = Date.now();
+	  freestar.queue = freestar.queue || [];
+	  freestar.config = freestar.config || {};
+	  
+	   freestar.config.channel = "tn_article"; 	  
+	  freestar.debug = window.location.search.indexOf('fsdebug') === -1 ? false : true;
+	  freestar.config.enabled_slots = [];
+	  	  !function(a,b){var c=b.getElementsByTagName("script")[0],d=b.createElement("script"),e="https://a.pub.network/thenation-com";e+=freestar.debug?"/qa/pubfig.min.js":"/pubfig.min.js",d.async=!0,d.src=e,c.parentNode.insertBefore(d,c)}(window,document);
+	  freestar.initCallback = function () { (freestar.config.enabled_slots.length === 0) ? freestar.initCallbackCalled = false : freestar.newAdSlots(freestar.config.enabled_slots) }
+	  	</script>
+
+
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript">
+		!function(f,b,e,v,n,t,s)
+		{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+		n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+		if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+		n.queue=[];t=b.createElement(e);t.async=!0;
+		t.src=v;s=b.getElementsByTagName(e)[0];
+		s.parentNode.insertBefore(t,s)}(window,document,'script', 'https://connect.facebook.net/en_US/fbevents.js');
+		fbq('init', '233793277040432');
+		fbq('track', 'PageView');
+				</script>
+<noscript>
+		<img height="1" width="1" src="https://www.facebook.com/tr?id=233793277040432&ev=PageView&noscript=1"/>
+		</noscript>
+
+
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript">!function(n){if(!window.cnxps){window.cnxps={},window.cnxps.cmd=[];var t=n.createElement('iframe');t.display='none',t.onload=function(){var n=t.contentWindow.document,c=n.createElement('script');c.src='//cd.connatix.com/connatix.playspace.js',c.setAttribute('async','1'),c.setAttribute('type','text/javascript'),n.body.appendChild(c)},n.head.appendChild(t)}}(document);	</script><script id="ff883bc1f60748089a4d57e27b61a663" type="daf5c5e0ef7afec5f4f49f73-text/javascript"> cnxps.cmd.push(function(){cnxps({playerId: 'a7a6ddc7-2a62-4477-a2d8-4c48d3572c90'}).render('ff883bc1f60748089a4d57e27b61a663');});</script>
+
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript">!function(n){if(!window.cnx){window.cnx={},window.cnx.cmd=[];var t=n.createElement('iframe');t.display='none',t.onload=function(){var n=t.contentWindow.document,c=n.createElement('script');c.src='//cd.connatix.com/connatix.player.js',c.setAttribute('async','1'),c.setAttribute('type','text/javascript'),n.body.appendChild(c)},n.head.appendChild(t)}}(document);</script>
+<link rel="stylesheet" href="https://a.pub.network/core/pubfig/cls.css">
+
+
+<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async="" type="daf5c5e0ef7afec5f4f49f73-text/javascript"></script>
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript">var OneSignal=window.OneSignal || [];OneSignal.push(function() {OneSignal.init({appId: "b4af9095-5e41-43f2-a459-8ff89f335115",autoResubscribe: true,notifyButton: {enable: false,},welcomeNotification: {"title": "Welcome to The Nation!","message": "Follow us on Twitter @thenation.","url": ""}});OneSignal.showNativePrompt();});</script>
+
+<meta name="pocket-site-verification" content="2d34058c2bfe851f973948e31f4362" />
+<script src="https://ak.sail-horizon.com/spm/spm.v1.min.js" type="daf5c5e0ef7afec5f4f49f73-text/javascript"></script>
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript">LUX=(function(){var a=("undefined"!==typeof(LUX)&&"undefined"!==typeof(LUX.gaMarks)?LUX.gaMarks:[]);var d=("undefined"!==typeof(LUX)&&"undefined"!==typeof(LUX.gaMeasures)?LUX.gaMeasures:[]);var j="LUX_start";var k=window.performance;var l=("undefined"!==typeof(LUX)&&LUX.ns?LUX.ns:(Date.now?Date.now():+(new Date())));if(k&&k.timing&&k.timing.navigationStart){l=k.timing.navigationStart}function f(){if(k&&k.now){return k.now()}var o=Date.now?Date.now():+(new Date());return o-l}function b(n){if(k){if(k.mark){return k.mark(n)}else{if(k.webkitMark){return k.webkitMark(n)}}}a.push({name:n,entryType:"mark",startTime:f(),duration:0});return}function m(p,t,n){if("undefined"===typeof(t)&&h(j)){t=j}if(k){if(k.measure){if(t){if(n){return k.measure(p,t,n)}else{return k.measure(p,t)}}else{return k.measure(p)}}else{if(k.webkitMeasure){return k.webkitMeasure(p,t,n)}}}var r=0,o=f();if(t){var s=h(t);if(s){r=s.startTime}else{if(k&&k.timing&&k.timing[t]){r=k.timing[t]-k.timing.navigationStart}else{return}}}if(n){var q=h(n);if(q){o=q.startTime}else{if(k&&k.timing&&k.timing[n]){o=k.timing[n]-k.timing.navigationStart}else{return}}}d.push({name:p,entryType:"measure",startTime:r,duration:(o-r)});return}function h(n){return c(n,g())}function c(p,o){for(i=o.length-1;i>=0;i--){var n=o[i];if(p===n.name){return n}}return undefined}function g(){if(k){if(k.getEntriesByType){return k.getEntriesByType("mark")}else{if(k.webkitGetEntriesByType){return k.webkitGetEntriesByType("mark")}}}return a}return{mark:b,measure:m,gaMarks:a,gaMeasures:d}})();LUX.ns=(Date.now?Date.now():+(new Date()));LUX.ac=[];LUX.cmd=function(a){LUX.ac.push(a)};LUX.init=function(){LUX.cmd(["init"])};LUX.send=function(){LUX.cmd(["send"])};LUX.addData=function(a,b){LUX.cmd(["addData",a,b])};LUX_ae=[];window.addEventListener("error",function(a){LUX_ae.push(a)});LUX_al=[];if("function"===typeof(PerformanceObserver)&&"function"===typeof(PerformanceLongTaskTiming)){var LongTaskObserver=new PerformanceObserver(function(c){var b=c.getEntries();for(var a=0;a<b.length;a++){var d=b[a];LUX_al.push(d)}});try{LongTaskObserver.observe({type:["longtask"]})}catch(e){}};</script><script src="https://cdn.speedcurve.com/js/lux.js?id=598658429" async defer crossorigin="anonymous" type="daf5c5e0ef7afec5f4f49f73-text/javascript"></script>
+<style>div.home-wrap .tn-customfull{margin-top:-2rem !important}body #ae_app #ae_launcher.ae-active{display:none !important;}.tn-customfull div#news-letters{margin:0;}div#st-1{margin: 30px 0;}
+div#expand-reduce-grad .tp-container-inner > iframe{width: 100% !important}.tn-poetry-banner-wrapper {max-width: 80rem;margin: 0 auto;padding: 0 15px;}@media only screen and (max-width: 767px) {.tn-poetry-banner-wrapper {padding: 0;}}:focus-visible{outline:2px solid #cc0e0e!important;outline-offset:8px}</style><style type="text/css">
+.ui-menu .ui-menu-item { font-size: 14px; background: #FFFFFF; color: #333333; font-weight: normal; text-shadow: 0; border: 0; -moz-border-radius: 0; -webkit-border-radius: 0; border-radius: 0; white-space: nowrap; }
+.ui-menu .ui-menu-item.ui-state-focus, .ui-menu .ui-menu-item.ui-state-hover, .ui-menu .ui-menu-item.ui-state-active { font-size: 14px; background: #EFEFEF; color: #333333; margin: 0; text-shadow: 0; border: 0; }
+.acs_suggesting { background: url(https://www.thenation.com/wp-content/plugins/cloud-search/images/loading.gif) no-repeat 98% 50% !important; }
+#desktop .header-bar.search form input.acs_suggesting{background: url(https://www.thenation.com/wp-content/plugins/cloud-search/images/loading.gif) no-repeat 98% 50% !important;-webkit-transition: unset;transition: unset;}
+</style>
+<meta name='robots' content='max-image-preview:large' />
+
+<meta name="description" content="Deterrence is a failed strategy for reducing migration—while driving up the number of migrants who die trying to come to the United States." />
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+<link rel="canonical" href="https://www.thenation.com/?post_type=article&#038;p=421937" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Recent Migrant Deaths Highlight the Danger of Deterrence" />
+<meta property="og:description" content="Deterrence is a failed strategy for reducing migration—while driving up the number of migrants who die trying to come to the United States." />
+<meta property="og:url" content="https://www.thenation.com/?post_type=article&amp;p=421937" />
+<meta property="og:site_name" content="The Nation" />
+<meta property="article:publisher" content="https://www.facebook.com/TheNationMagazine" />
+<meta property="article:author" content="https://www.thenation.com/authors" />
+<meta property="article:published_time" content="2022-08-17T09:00:13+00:00" />
+<meta property="article:modified_time" content="2022-08-16T22:14:00+00:00" />
+<meta property="og:image" content="https://www.thenation.com/wp-content/uploads/2022/08/haiti-migrants-gt-img.jpg" />
+<meta property="og:image:width" content="1440" />
+<meta property="og:image:height" content="907" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:description" content="Deterrence is a failed strategy for reducing migration—while driving up the number of migrants who die trying to come to the United States." />
+<meta name="twitter:site" content="@TheNation" />
+<meta name="twitter:label1" content="Est. reading time">
+<meta name="twitter:data1" content="8 minutes">
+<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.thenation.com/#website","url":"https://www.thenation.com/","name":"The Nation","description":"The Nation Magazine","potentialAction":[{"@type":"SearchAction","target":"https://www.thenation.com/?s={search_term_string}","query-input":"required name=search_term_string"}],"inLanguage":"en-US"},{"@type":"ImageObject","@id":"https://www.thenation.com/?post_type=article&p=421937#primaryimage","inLanguage":"en-US","url":"https://www.thenation.com/wp-content/uploads/2022/08/haiti-migrants-gt-img.jpg","width":1440,"height":907,"caption":"Haitian immigrants traveling by boat to Panama, en route to the United States."},{"@type":"WebPage","@id":"https://www.thenation.com/?post_type=article&p=421937#webpage","url":"https://www.thenation.com/?post_type=article&p=421937","name":"Recent Migrant Deaths Highlight the Danger of Deterrence | The Nation","isPartOf":{"@id":"https://www.thenation.com/#website"},"primaryImageOfPage":{"@id":"https://www.thenation.com/?post_type=article&p=421937#primaryimage"},"datePublished":"2022-08-17T09:00:13+00:00","dateModified":"2022-08-16T22:14:00+00:00","breadcrumb":{"@id":"https://www.thenation.com/?post_type=article&p=421937#breadcrumb"},"inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":["https://www.thenation.com/?post_type=article&p=421937"]}],"isAccessibleForFree":"false","hasPart":{"@type":"WebPageElement","isAccessibleForFree":"false","cssSelector":".tnpaywallcontent"}},{"@type":"BreadcrumbList","@id":"https://www.thenation.com/?post_type=article&p=421937#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"item":{"@type":"WebPage","@id":"https://www.thenation.com/","url":"https://www.thenation.com/","name":"Home"}},{"@type":"ListItem","position":2,"item":{"@type":"WebPage","@id":"https://www.thenation.com/article/","url":"https://www.thenation.com/article/","name":"Article"}},{"@type":"ListItem","position":3,"item":{"@type":"WebPage","@id":"https://www.thenation.com/?post_type=article&p=421937","url":"https://www.thenation.com/?post_type=article&p=421937","name":"Recent Migrant Deaths Highlight the Danger of Deterrence"}}]}]}</script>
+
+<link rel='dns-prefetch' href='//www.thenation.com' />
+<link rel='dns-prefetch' href='//www.google.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel="alternate" type="application/rss+xml" title="The Nation &raquo; Feed" href="https://www.thenation.com/feed/" />
+<link rel="alternate" type="application/rss+xml" title="The Nation &raquo; Comments Feed" href="https://www.thenation.com/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="The Nation &raquo; Recent Migrant Deaths Highlight the Danger of Deterrence Comments Feed" href="https://www.thenation.com/article/society/migrant-deaths-deterrence/feed/" />
+<link rel='stylesheet' id='defaultbasic-css' href='https://www.thenation.com/wp-content/themes/thenation/style.css?ver=2.5.9' media='all' />
+<link rel='stylesheet' id='thenation-stylesheet-all-css' href='https://www.thenation.com/wp-content/themes/thenation/stylesheets/all.css?ver=1.2.18' media='all' />
+<link rel='stylesheet' id='basicfonts-css' href='https://www.thenation.com/wp-content/themes/thenation/stylesheets/fonts.css?ver=1' media='all' />
+<link rel='stylesheet' id='bxslider-css' href='https://www.thenation.com/wp-content/themes/thenation/stylesheets/jquery.bxslider.css?ver=1' media='all' />
+<link rel='stylesheet' id='wp-block-library-css' href='https://www.thenation.com/wp-includes/css/dist/block-library/style.min.css?ver=6.0' media='all' />
+<style id='global-styles-inline-css' type='text/css'>
+body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--duotone--dark-grayscale: url('#wp-duotone-dark-grayscale');--wp--preset--duotone--grayscale: url('#wp-duotone-grayscale');--wp--preset--duotone--purple-yellow: url('#wp-duotone-purple-yellow');--wp--preset--duotone--blue-red: url('#wp-duotone-blue-red');--wp--preset--duotone--midnight: url('#wp-duotone-midnight');--wp--preset--duotone--magenta-yellow: url('#wp-duotone-magenta-yellow');--wp--preset--duotone--purple-green: url('#wp-duotone-purple-green');--wp--preset--duotone--blue-orange: url('#wp-duotone-blue-orange');--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+</style>
+<link rel='stylesheet' id='paranum-style-css' href='https://www.thenation.com/wp-content/plugins/paranum/paranum.css?ver=6.0' media='all' />
+<link rel='stylesheet' id='acs_style_suggest-css' href='https://www.thenation.com/wp-content/plugins/cloud-search/css/dist/cloud-search-suggest.min.css?ver=1.0.0' media='all' />
+<script src='https://www.thenation.com/wp-includes/js/jquery/jquery.min.js?ver=3.6.0' id='jquery-core-js' type="daf5c5e0ef7afec5f4f49f73-text/javascript"></script>
+<script src='https://www.thenation.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2' id='jquery-migrate-js' type="daf5c5e0ef7afec5f4f49f73-text/javascript"></script>
+<script src='https://www.thenation.com/wp-content/plugins/tn-customeditor//tinymce-dropcap.js?ver=6.0' id='tn_tinymce_script-js' type="daf5c5e0ef7afec5f4f49f73-text/javascript"></script>
+<script src='https://www.thenation.com/wp-content/themes/thenation/js/prebid4.5.0.js' id='thenation-prebid-js' type="daf5c5e0ef7afec5f4f49f73-text/javascript"></script>
+<script src='https://www.thenation.com/wp-content/themes/thenation/js/history.js?ver=6.0' id='history-js-js' type="daf5c5e0ef7afec5f4f49f73-text/javascript"></script>
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript" id='srcmnt-ajax-request-js-extra'>
+/* <![CDATA[ */
+var SafeCommentsAjax = {"ajaxurl":"https:\/\/www.thenation.com\/wp-admin\/admin-ajax.php"};
+/* ]]> */
+</script>
+<script src='https://www.thenation.com/wp-content/plugins/safe-report-comments/js/ajax.js?ver=6.0' id='srcmnt-ajax-request-js' type="daf5c5e0ef7afec5f4f49f73-text/javascript"></script>
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://www.thenation.com/wp-includes/wlwmanifest.xml" />
+<meta name="generator" content="WordPress 6.0" />
+<link rel='shortlink' href='https://www.thenation.com/?p=421937' />
+<link rel="alternate" type="application/json+oembed" href="https://www.thenation.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.thenation.com%2Farticle%2Fsociety%2Fmigrant-deaths-deterrence%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://www.thenation.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.thenation.com%2Farticle%2Fsociety%2Fmigrant-deaths-deterrence%2F&#038;format=xml" />
+<meta property="fb:pages" content="7629206115" />
+<meta property="ia:markup_url" content="https://www.thenation.com/article/society/migrant-deaths-deterrence/?ia_markup=1" />
+<style>
+		
+		.drop_c{margin-top:34px !important}
+			.wpsdc-drop-cap {
+				float : left;
+				font-family: "Knockout 49 A", "Knockout 49 B";
+				font-weight: bold;
+				font-style: normal;
+				padding-right : 8px;				
+				font-size : 60px;
+				line-height : 60px;}
+		</style><link rel="amphtml" href="https://www.thenation.com/article/society/migrant-deaths-deterrence/tnamp/" /><link rel="icon" href="https://www.thenation.com/wp-content/uploads/2020/09/n-logo.png" sizes="32x32" />
+<link rel="icon" href="https://www.thenation.com/wp-content/uploads/2020/09/n-logo.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://www.thenation.com/wp-content/uploads/2020/09/n-logo.png" />
+<meta name="msapplication-TileImage" content="https://www.thenation.com/wp-content/uploads/2020/09/n-logo.png" />
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript">
+	jQuery(document).ready(function(){
+		jQuery('#search').submit(function(event){
+			if (jQuery('#search input:text').eq(0).val().length<1){
+				return false;
+			}
+		});
+		jQuery('#searchbox').submit(function(event){
+			if (jQuery('#searchbox input:text').eq(0).val().length<1){
+				return false;
+			}
+		});
+		
+		if (check_user_logged_in == null) {
+			jQuery('.subscribe').css('display', 'block');
+		}
+	});
+	</script>
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript" src='https://platform-api.sharethis.com/js/sharethis.js#property=609d932fedbfd500110012be&product=undefined' async='async'></script>
+</head>
+<body class="body-side-rail">
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-54LKCF3"
+			height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript">
+			
+			var _sf_async_config   = _sf_async_config || {};
+			var _sf_async_config   = { uid: 7841, domain: 'thenation.com', useCanonical: true };
+			_sf_async_config.title = "Recent Migrant Deaths Highlight the Danger of Deterrence";
+			
+			 
+					_sf_async_config.sections = "Congress,Immigration Policy,Law,Politics,Society";
+					_sf_async_config.authors  = "Gaby Del Valle";
+					  
+			var _cbq = window._cbq = (window._cbq || []);		
+                				
+			if(check_user_logged_in != null){
+				_cbq.push(['_acct', 'paid']);   
+			}else{
+				_cbq.push(['_acct', 'anon']);    
+			}		
+			
+			(function() {
+				function loadChartbeat() {
+					var e = document.createElement('script');
+					var n = document.getElementsByTagName('script')[0];
+					e.type = 'text/javascript';
+					e.async = true;
+					e.src = '//static.chartbeat.com/js/chartbeat.js';
+					n.parentNode.insertBefore(e, n);
+				}
+				loadChartbeat();
+			 })();
+		</script>
+
+
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript">
+								dataLayer.push({
+						'event': 'gaPageViewEvent',
+						'gaEventCategory': 'article',
+						'gaEventAction': 'Recent Migrant Deaths Highlight the Danger of Deterrence',
+						'gaEventLabel': '421937',
+					});
+							</script>
+
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript">
+			var pageCounterPaywall ;
+			var isMobile = {
+			Android: function() {
+				return navigator.userAgent.match(/Android/i);
+			},
+			BlackBerry: function() {
+				return navigator.userAgent.match(/BlackBerry/i);
+			},
+			iOS: function() {
+				return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+			},
+			Opera: function() {
+				return navigator.userAgent.match(/Opera Mini/i);
+			},
+			Windows: function() {
+				return navigator.userAgent.match(/IEMobile/i);
+			},
+			any: function() {
+				return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+			}
+		};
+		</script>
+
+<a href="http://www.thenation.com/advertising-policy" class="top-ad-policy">Ad Policy</a>
+<div id="page" class="hfeed site">
+<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+<header id="desktop">
+<div class="header-bar utility">
+<div class="row">
+<div class="small-12 columns">
+<ul class="actions">
+<li>
+<a class="social-link fb" href="https://www.facebook.com/TheNationMagazine" target="_blank">
+<span>Facebook</span>
+</a>
+</li>
+<li>
+<a class="social-link tw" href="https://twitter.com/thenation" target="_blank">
+<span>Twitter</span>
+</a>
+</li>
+<li>
+<a class="social-link tn_ins" href="https://www.instagram.com/nationmag/" target="_blank">
+<span>Instagram</span>
+</a>
+</li>
+<li>
+<a href="https://www.thenation.com/donate-website/?sourceid=1020082" class="btn btn-yellow donate">
+Donate </a>
+</li>
+<li id="login_status">
+<a href="https://www.thenation.com/login/" class="btn btn-yellow login">Log In</a> </li>
+</ul>
+
+<nav class="trending">
+<div class="menu-keyword-menu-container"><ul id="menu-keyword-menu" class="menu"><li id="menu-item-235579" class="menu-item menu-item-type-taxonomy menu-item-object-admin-taxonomy menu-item-235579"><a href="https://www.thenation.com/content/podcasts/">Podcasts</a></li>
+<li id="menu-item-412213" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-412213"><a href="https://www.thenation.com/content/books-and-the-arts/">Books &#038; The Arts</a></li>
+<li id="menu-item-413926" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-413926"><a href="https://www.thenation.com/climate-change/">Climate Justice</a></li>
+<li id="menu-item-417494" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-417494"><a href="https://www.thenation.com/abortion-rights/">Abortion Rights</a></li>
+<li id="menu-item-418194" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-418194"><a href="https://www.thenation.com/poetry/">Poetry</a></li>
+</ul></div> </nav>
+</div>
+</div>
+
+</div>
+
+<div class="header-bar main " id="'navbar'">
+<div class="row">
+<nav class="primary small-12 columns">
+<ul>
+<li class="home">
+<span class="logo">
+<a href="https://www.thenation.com">
+<img src="https://www.thenation.com/wp-content/themes/thenation/images/thenation_new-logo-big.svg" alt="The Nation" class="non-sticky">
+<img src="https://www.thenation.com/wp-content/themes/thenation/images/n-logo.png" alt="The Nation" class="sticky" />
+</a>
+</span>
+</li>
+<li class="news-links">
+<ul id="menu-subject-menu" class="menu"><li id="menu-item-382292" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-382292"><a href="https://www.thenation.com/politics/">Politics</a></li>
+<li id="menu-item-382329" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-382329"><a href="https://www.thenation.com/world/">World</a></li>
+<li id="menu-item-116709" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-116709"><a href="https://www.thenation.com/culture/">Culture</a></li>
+<li id="menu-item-367243" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-367243"><a href="https://www.thenation.com/events">Events</a></li>
+<li id="menu-item-298573" class="shop-header menu-item menu-item-type-custom menu-item-object-custom menu-item-298573"><a href="https://shop.thenation.com/">Shop</a></li>
+</ul> </li>
+<li class="article-meta">
+<h3 class="tophead_subject">
+<a href="https://www.thenation.com/subject/politics/">
+Politics </a>
+</h3>
+<h2>Recent Migrant Deaths Highlight the Danger of Deterrence</h2>
+</li>
+<li class="quick-links">
+<ul>
+<li class="current-issue">
+<a href="https://www.thenation.com/issue/august-22-29-2022-issue/">Current Issue</a>
+</li>
+<li class="current-issue"><a href="https://link.thenation.com/join/12x/newslettersignupverify">Newsletters</a></li>
+<li class="subscribe" style="display: none;">
+<a href="https://subscriptions.thenation.com/Nation_index?pk=G2A1TB9" class="header_subscribe">Subscribe</a> </li>
+<li class="search-toggle"><a href="#">Search</a></li>
+</ul>
+</li>
+<li class="article-social">
+<ul>
+<li><a href="javascript:void(0)" class="social-article social-share fb"><span>Facebook</span></a></li>
+<li><a href="javascript:void(0)" class="social-article social-share tw"><span>Twitter</span></a></li>
+<li><a href="javascript:void(0)" class="social-article social-share email"><span>Email</span></a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+
+</div>
+
+<div class="header-bar search searchbardrop ">
+<div class="row">
+<form action="https://www.thenation.com/" role="search" method="get" id="search" name="search">
+<input type="text" placeholder="Search" name="s">
+<input type="hidden" name="post_type" value="article" />
+<span id="closeSearch"></span>
+</form>
+</div>
+</div>
+</header>
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript">
+				jQuery( document ).ready(function($) {
+					$(".landing ul>li.news-links, .landing ul>li.quick-links").attr('style','display:inline !important');
+					$("#closeSearch").click(function(){						
+						$("#desktop .header-bar.search").slideToggle();						
+					});	
+				});
+			</script>
+
+<header id="mobile" class="push">
+<div class="header-bar">
+<a href="#mobile-menu" class="nav-toggle">
+<span>Toggle Menu</span>
+</a>
+<span class="logo">
+<a href="https://www.thenation.com">
+<img src="https://www.thenation.com/wp-content/themes/thenation/images/n-logo.png" alt="The Nation" />
+</a>
+</span>
+<a href="javascript:void(0)" class="social-sharing social-share-icon">
+<span>Share</span>
+</a>
+<div class="share-icons">
+<ul>
+<li>
+<a href="javascript:void(0)" class="social-share fb" data-article-title="Recent Migrant Deaths Highlight the Danger of Deterrence">
+<span>fb</span>
+</a>
+</li>
+<li>
+<a href="javascript:void(0)" class="social-share tw" data-article-title="Recent Migrant Deaths Highlight the Danger of Deterrence">
+<span>tw</span>
+</a>
+</li>
+<li>
+<a href="javascript:void(0)" class="social-share mail email" data-article-title="Recent Migrant Deaths Highlight the Danger of Deterrence">
+<span>mail</span>
+</a>
+</li>
+<li>
+<a href="javascript:void(0)" class="social-share msg" data-article-title="Recent Migrant Deaths Highlight the Danger of Deterrence">
+<span>msg</span>
+</a>
+</li>
+<li>
+<a href="javascript:void(0)" class="social-share wa" data-article-title="Recent Migrant Deaths Highlight the Danger of Deterrence">
+<span>wa</span>
+</a>
+</li>
+<li>
+<a href="javascript:void(0)" class="social-share sms" data-article-title="Recent Migrant Deaths Highlight the Danger of Deterrence">
+<span>sms</span>
+</a>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="mobile-menu">
+<div class="mobile-scroll">
+<nav class="primary">
+<ul id="menu-mobile-subject-menu" class="menu"><li id="menu-item-368175" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-368175"><a href="https://www.thenation.com/events/">Events</a></li>
+<li id="menu-item-368172" class="menu-item menu-item-type-taxonomy menu-item-object-subject current-article-ancestor current-menu-parent current-article-parent menu-item-368172"><a href="https://www.thenation.com/subject/politics/">Politics</a></li>
+<li id="menu-item-368173" class="menu-item menu-item-type-taxonomy menu-item-object-subject menu-item-368173"><a href="https://www.thenation.com/subject/world/">World</a></li>
+<li id="menu-item-368256" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-368256"><a href="https://www.thenation.com/climate-change/">Climate</a></li>
+<li id="menu-item-368257" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-368257"><a href="https://www.thenation.com/subject/activism/">Activism</a></li>
+<li id="menu-item-368174" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-368174"><a href="https://www.thenation.com/culture/">Culture</a></li>
+<li id="menu-item-368258" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-368258"><a href="https://www.thenation.com/content/podcasts/">Podcasts</a></li>
+<li id="menu-item-368176" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-368176"><a href="https://shop.thenation.com/">Shop</a></li>
+</ul> </nav>
+<nav class="utility">
+<ul>
+<li class="subscribe" style="display: none;">
+<a class="alert header_subscribe" href="https://subscriptions.thenation.com/Nation_index?pk=G2A1TB9">Subscribe</a> </li>
+<li class="current-issue"><a href="https://www.thenation.com/issue/august-22-29-2022-issue/">Current Issue</a></li>
+<li class="current-issue"><a href="https://link.thenation.com/join/12x/newslettersignupverify">Newsletters</a></li> <li class="subscribe">
+</li>
+<li>
+<a href="https://www.thenation.com/donate-website/?sourceid=1020082">Donate</a>
+</li>
+
+<li id="login_mob_status">
+<a href="https://www.thenation.com/login/" class="login">Log In</a> </li>
+</ul>
+</nav>
+<div class="social">
+<a class="social-icon icon-fb" target="_blank" href="https://www.facebook.com/TheNationMagazine">
+<span>Facebook</span>
+</a>
+<a class="social-icon icon-tw" target="_blank" href="https://twitter.com/thenation">
+<span>Twitter</span>
+</a>
+<a class="social-icon icon-ins" href="https://www.instagram.com/nationmag/" target="_blank">
+<span>Instagram</span>
+</a>
+</div>
+<div class="search">
+<form id="mobile-search" action="https://www.thenation.com/" role="search" method="get" name="search">
+
+<input required type="text" id="q" class="clearable" name="s" placeholder="Search">
+<input type="hidden" name="post_type" value="article" />
+<input type="submit" name="submit" class="search_sub">
+</form>
+</div>
+</div>
+</div>
+
+</header>
+<div id="cookies-policy"></div>
+<div id="ad-leaderboard" class="push ad full-width leaderboard new-article-leaderboard">
+<div align="center" id="thenation_728x90_ATF" data-freestar-ad="__320x100 __970x250">
+<script data-cfasync="false" type="text/javascript">
+							freestar.config.enabled_slots.push({ 
+								placementName: "thenation_728x90_ATF", 
+								slotId: "thenation_728x90_ATF",
+								targeting: {
+									tn_pos: 'leaderboard_1',
+									tn_loc:'atf',	
+									  
+										tn_ptype: 'article'
+											
+								}
+							});
+						  </script>
+</div>
+</div>
+<div id="login-content-id-pcd_login" style="display:none;">
+
+<div class="lightbox-form">
+
+<div class="lightbox-inner login_popup">
+<div class="listing__hero row">
+<div class="listing_form small-12 columns">
+
+
+<h1>Log In</h1>
+
+<div class="row primaryError" id="primaryError" style="display: none">
+<div class="field form-field text-field small-12 columns error">
+<p class="errormsg"></p>
+</div>
+</div>
+
+
+<form action="index.html" class="search__form" onsubmit="if (!window.__cfRLUnblockHandlers) return false; return trigClick();" name="lightboxform" id="lightboxform" data-cf-modified-daf5c5e0ef7afec5f4f49f73-="">
+<div class="row">
+<div class="field form-field e_mail_field_con text-field small-12 columns valid">
+<input type="text" tabindex="1" name="e_mail" class="pcd_email" value="" id="e_mail" placeholder="">
+<label for="e_mail">Email *</label>
+</div>
+</div>
+<div class="row">
+<div class="field form-field text-field pwd_field_con small-12 columns error">
+<input type="password" tabindex="2" name="pwd" class="pcd_pwd" value="" id="pwd" placeholder="" minlength="2">
+<label for="pwd">Password *</label>
+</div>
+</div>
+<div class="row checkbox-row">
+
+<div class="field form-field checkbox-field small-7 partsec columns">
+<div class="checkbox">
+<input type="checkbox" checked="checked" tabindex="4" value="None" id="checkbox3" class="check_input" name="checkbox3">
+<label for="checkbox3"></label>
+</div>
+<label for="checkbox3">Remember Me</label>
+</div>
+
+
+<div class="field form-field checkbox-field small-5 partsec columns pull-right">
+<a tabindex="5" href="https://subscriptions.thenation.com/Nation_ForgotPass" style="padding: 0px !Important;">
+Forgot Your Password?
+</a>
+</div>
+
+
+<input type="hidden" id="login-recaptcha-verify">
+
+</div>
+<div class="row">
+<div class="field form-field small-12 medium-6 partsec columns">
+
+<div class="form-button" id="form-loading">
+<button class="primary-button pcdLoginButton" tabindex="3" type="button" id="loginBut">Log In</button>
+<img class="loaderImg" src='https://www.thenation.com/wp-content/themes/thenation/images/loader_40x40.GIF' style="display: none" id="loader" alt="loader">
+</div>
+
+</div>
+</div>
+<div class="row">
+<div class="field form-field small-12 medium-12 columns Subscriber_btn">
+New to <em>The Nation</em>? <a href="https://subscriptions.thenation.com/Nation_index?pk=G2A1TB9" target="_blank">Subscribe</a><br />Print subscriber? <a href="https://subscriptions.thenation.com/loading.do?omedasite=nation_index" target="_blank">Activate</a> your online access
+</div>
+</div>
+</form>
+
+</div>
+</div>
+</div>
+
+</div>
+ </div>
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript">
+						if(check_user_logged_in != null){
+							/* Header cache issue fix 25/03/2022*/
+							/* username = Base64.decode(check_user_logged_in);  */
+							if(check_user_logged_in === 1){
+								username = Base64.decode(admin_name_cookie);  
+								username_link = global_vars.admin_link; 
+							}
+							else{
+								username = Base64.decode(check_user_logged_in);  
+								username_link = global_vars.dash_link; 
+							}  
+							/* Header cache issue fix 25/03/2022*/
+							if(!isMobile.any()){			
+								var html = '';
+								html += '<a class="header_subscribe" href="'+username_link+'">'+username;
+								html += '</a>';		
+								html += '<a href="https://www.thenation.com/logout.php" class="logout_status">Logout';
+								html += '</a>';				
+								document.getElementById("login_status").innerHTML = html;		
+							}else{					
+								jQuery('#login_mob_status').next().remove();		
+								var html = '';						
+								html += '<a class="header_subscribe" href="'+username_link+'">'+username;
+									html += '</a>';
+								html += '</li>';		
+								html += '<li>';
+									html += '<a href="https://www.thenation.com/logout.php" class="logout_status">Logout';
+								html += '</a>';		
+								document.getElementById("login_mob_status").innerHTML = html;		
+							}  
+							jQuery(".my-profile").attr("href", username_link);
+						}
+						  
+						jQuery( document ).ready(function($) { 
+							$(document).on("click",".logout_status",function(e){		  
+							  document.cookie = "SESSname=;expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/";		  
+							});
+						});	  
+					</script>
+<div class="container push"><div role="feed" class="article-wrap article-page " id="wrap">
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript">
+		var paragraph_module = [];
+		
+				
+	</script>
+<div class="postid-421937 scrolltrace textContainer_Truncate" articlelisttitle="Recent Migrant Deaths Highlight the Danger of Deterrence" articlelistlinks="https://www.thenation.com/article/society/migrant-deaths-deterrence/" article-post-id="421937" article-keyword="'border-sec', 'immigratio', 'refugees'" article-subject="'congress', 'immigratio', 'law', 'politics', 'society'" article-authors="'gaby-d'" aria-posinset="1" aria-setsize="-1">
+<article id="url-title">
+<header class="article-header">
+<div class="article-header-content">
+<ul class="article-info"><li class="category"><a href="https://www.thenation.com/subject/politics/" class="anchor_subject" subjectlink="https://www.thenation.com/subject/politics/">Politics</a></li><li class="category"><a href="https://www.thenation.com/subject/immigration-policy/" class="anchor_subject" subjectlink="https://www.thenation.com/subject/immigration-policy/">Immigration Policy</a></li><li class="subcategory"><a href="https://www.thenation.com/keyword/refugees/">Refugees</a></li></ul><h1 class="article_title hide">Recent Migrant Deaths Highlight the Danger of Deterrence</h1><h1 class="title">Recent Migrant Deaths Highlight the Danger of Deterrence</h1><h2 class='subtitle'>Deterrence is a failed strategy for reducing migration—while driving up the number of migrants who die trying to come to the United States.</h2>
+<div class="byline" data-nosnippet>
+<h2 class="author_name">By <a class="author" href="https://www.thenation.com/authors/gaby-del-valle/">Gaby Del Valle</a></h2>
+<h4 class="time is_date article_pub_time">
+Yesterday 5:00 am
+</h4>
+</div>
+
+<ul class="article-share" data-nosnippet style="display: none;">
+<li><a href="javascript:void(0)" class="social-share fb"><span>fb</span></a></li>
+<li><a href="javascript:void(0)" class="social-share tw"><span>tw</span></a></li>
+<li><a href="javascript:void(0)" class="social-share mail email"><span>mail</span></a></li>
+<li><a href="javascript:void(0)" class="social-share tn_print" onclick="if (!window.__cfRLUnblockHandlers) return false; tn_print_fn()" data-cf-modified-daf5c5e0ef7afec5f4f49f73-=""><span>Print</span></a></li>
+<li><a href="javascript:void(0)" class="social-share msg"><span>msg</span></a></li>
+<li><a href="javascript:void(0)" class="social-share wa"><span>wa</span></a></li>
+<li><a href="javascript:void(0)" class="social-share sms"><span>sms</span></a></li>
+<li><a href="javascript:void(0)" class="social-share bookmark tn-sfg-add-to-list hide" onclick="if (!window.__cfRLUnblockHandlers) return false; tnAddToReadingList(this, 421937)" data-cf-modified-daf5c5e0ef7afec5f4f49f73-=""><span>Bookmark</span></a></li>
+</ul>
+<div class="sharethis-inline-share-buttons" style="display: flex;" id="inline-share-button-421937" style="margin : 15px 0;"></div>
+</div>
+</header>
+<section class="tnpaywallcontent article-body  abody-421937  ">
+<time class="tn_publish_date hide">August 17, 2022</time>
+<div class="article-body-inner">
+<aside class="left full-width-mobile image wide indent">
+<a class="gallery imgHover" href="https://www.thenation.com/wp-content/uploads/2022/08/haiti-migrants-gt-img.jpg" title="Haitian immigrants traveling by boat to Panama, en route to the United States. (Raul Arboleda / AFP via Getty Images)"><img src="https://www.thenation.com/cdn-cgi/image/width=896,quality=80,format=auto/wp-content/uploads/2022/08/haiti-migrants-gt-img.jpg" alt="Haitian migrants reaching out of a boat"></a>
+<p class="caption">Haitian immigrants traveling by boat to Panama, en route to the United States. <span class="credits">(Raul Arboleda / AFP via Getty Images)</span></p>
+</aside>
+<div style="clear:both"></div> <aside aria-hidden="true" class="left indent indents email-signup-module para-one-2" style="display: none;" data-section="0" data-nosnippet>
+<div class="emailetext-blocks">
+<h4>Subscribe to <em>The Nation</em></h4>
+Subscribe now for as little as $2 a month!
+<div class="cta">
+<a href="https://subscribe.thenation.com/flex/NA/key/CEM/">
+<input type="button" class="btn btn_5000b2 para_one_button" name="submit_sailthru" value="Subscribe" style="
+											background-color:#dd3333;color:#ffffff;">
+</a>
+ </div>
+</div>
+</aside>
+<aside aria-hidden="true" class="left indent indents email-signup-module para-one-3" style="display: none;" data-section="1" data-nosnippet>
+<div class="emailetext-blocks">
+<h4>Get&nbsp;<em>The Nation</em>’s Weekly Newsletter</h4>
+<em>Fridays</em>. The best of the week. <input type="email" name="email" placeholder="Enter Email" class="email-signup-input" id="para-one-email-input-1">
+<input type="hidden" name="email-sailthru-list" value="optin_flow_list_add,weekly-2,weekly_p1m_signup" class="email-sailthru-list" id="para-one-sailthru-list-1">
+<div class="cta">
+<input type="button" class="btn btn_5000b2 para_one_button_email" name="submit_sailthru" value="Sign Up" style="
+									background-color:#5000b2;color:#ffffff;">
+<p class="Message errormsg footer_email_error"></p>
+<p><p style="font-size: 0.9rem; color: #85827e;"><span>By signing up, you confirm that you are over the age of 16 and&nbsp;</span><span>agree to receive occasional promotional offers for programs that support <em>The Nation</em>’s journalism. </span>You can read our <a style="font-style: normal; text-decoration: underline !important; font-size: inherit;" href="https://www.thenation.com/privacy-policy/" target="_blank" rel="noopener"><strong>Privacy Policy</strong></a> here.</p></p> </div>
+</div>
+</aside>
+<aside aria-hidden="true" class="left indent indents email-signup-module thanks para-one-thankyou" style="display: none;" id="para-one-thankyou-421937" data-nosnippet>
+<div class="emailetext-blocks thanks">
+Thank you for signing up for&nbsp;<em>The Nation</em>’s weekly newsletter.
+</div>
+</aside>
+<aside aria-hidden="true" class="left indent indents email-signup-module para-one-4" style="display: none;" data-section="2" data-nosnippet>
+<div class="emailetext-blocks">
+<h4>Repro Nation</h4>
+<span>A monthly newsletter on the global fight for reproductive freedom.</span> <input type="email" name="email" placeholder="Enter Email" class="email-signup-input" id="para-one-email-input-2">
+<input type="hidden" name="email-sailthru-list" value="optin_flow_list_add,repro_nation,repro_nation_p1m_signup" class="email-sailthru-list" id="para-one-sailthru-list-2">
+<div class="cta">
+<input type="button" class="btn btn_5000b2 para_one_button_email" name="submit_sailthru" value="SIGN UP" style="
+									background-color:#5000b2;color:#ffffff;">
+<p class="Message errormsg footer_email_error"></p>
+<p><p style="font-size: 0.9rem; color: #85827e;"><span>By signing up, you confirm that you are over the age of 16 and&nbsp;</span><span>agree to receive occasional promotional offers for programs that support <em>The Nation</em>’s journalism. </span>You can read our <a style="font-style: normal; text-decoration: underline !important; font-size: inherit;" href="https://www.thenation.com/privacy-policy/" target="_blank" rel="noopener"><strong>Privacy Policy</strong></a> here.</p></p> </div>
+</div>
+</aside>
+<aside aria-hidden="true" class="left indent indents email-signup-module thanks para-one-thankyou" style="display: none;" id="para-one-thankyou-421937" data-nosnippet>
+<div class="emailetext-blocks thanks">
+Thank you for signing up. For more from <em>The Nation</em>, check out our <a class="textred-highlighted" href="https://www.thenation.com/issue">latest issue</a>.
+</div>
+</aside>
+<aside aria-hidden="true" class="left indent indents email-signup-module para-one-1" style="display: none;" data-section="3" data-nosnippet>
+<div class="emailetext-blocks">
+<h4>Subscribe to <em>The Nation</em></h4>
+Subscribe now for as little as $2 a month!
+<div class="cta">
+<a href="https://subscribe.thenation.com/flex/NA/key/CEM/">
+<input type="button" class="btn btn_5000b2 para_one_button" name="submit_sailthru" value="SUBSCRIBE" style="
+											background-color:#dd3333;color:#ffffff;">
+</a>
+</div>
+</div>
+</aside>
+<aside aria-hidden="true" class="left indent indents email-signup-module para-one-5" style="display: none;" data-section="4" data-nosnippet>
+<div class="emailetext-blocks">
+<h4>Support Progressive Journalism</h4>
+<em>The Nation</em> is reader supported: Chip in $10 or more to help us continue to write about the issues that matter.
+<div class="cta">
+<a href="https://www.thenation.com/donate-website/?sourceid=1020085">
+<input type="button" class="btn btn_5000b2 para_one_button" name="submit_sailthru" value="Donate" style="
+											background-color:#dd9933;color:#ffffff;">
+</a>
+</div>
+</div>
+</aside>
+<aside aria-hidden="true" class="left indent indents email-signup-module para-one-6" style="display: none;" data-section="5" data-nosnippet>
+<div class="emailetext-blocks">
+<h4>Sign up for our Wine Club today.</h4>
+<span data-sheets-value="{" data-sheets-userformat="{">Did you know you can support <em>The Nation</em> by drinking wine? </span>
+<div class="cta">
+<a href="https://www.thenationwineclub.com">
+<input type="button" class="btn btn_5000b2 para_one_button" name="submit_sailthru" value="LEARN MORE" style="
+											background-color:#dd3333;color:#ffffff;">
+</a>
+</div>
+</div>
+</aside>
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript">paragraph_module[421937] = [{"order":"2","event_name":"paragraph-1-subscribeA","user_logged_in":"1"},{"order":"3","event_name":"paragraph-1-weekly","user_logged_in":""},{"order":"4","event_name":"paragraph-1-repronation-signup","user_logged_in":""},{"order":"1","event_name":"paragraph-1-subscribeB","user_logged_in":"1"},{"order":"5","event_name":"paragraph-1-donateA","user_logged_in":""},{"order":"6","event_name":"paragraph-1-wineclub","user_logged_in":""}];</script> <p>Earlier this month, 15 Haitian migrants boarded a small boat in hopes of making it to the United States. Only half of them are known to have survived the journey. The boat, described by the Coast Guard as a “rustic vessel,” <a href="https://www.theguardian.com/us-news/2022/aug/07/migrant-boat-capsizes-florida-keys">capsized off the coast</a> of the Florida Keys. Two of the passengers drowned; five others are still missing. Two days later, a boat carrying more than 300 people <a href="https://www.wfla.com/news/florida/smuggling-boat-carrying-over-300-haitian-migrants-makes-landfall-in-florida-keys/">made landfall</a> at a resort in Key Largo. Just over 100 passengers were taken into Border Patrol custody, while the rest were sent back to Haiti. Two days after that, a boat carrying 123 people <a href="https://www.miamiherald.com/news/local/community/florida-keys/article264312026.html">landed elsewhere in the Keys</a>. <aside class="ad right most-popular-plus-ad grey_back">
+<div align="center" id="thenation_right_rail_421937" data-freestar-ad="__300x600">
+<script data-cfasync="false" type="text/javascript">
+						freestar.config.enabled_slots.push({ 
+							placementName: "thenation_right_rail", 
+							slotId: "thenation_right_rail_421937",
+							targeting:{
+								tn_author: ['gaby-d'],
+								tn_articleid: [421937],
+								tn_ptype: 'article',
+								tn_keyword: ['border-sec', 'immigratio', 'refugees'],
+								tn_subject: ['congress', 'immigratio', 'law', 'politics', 'society'],
+								tn_pos: 'rectangle_1',
+								tn_loc:'atf'
+							}	
+						});
+					  </script>
+</div>
+</aside>
+<p>“All of the events involved makeshift, overloaded vessels,” Walter Slosar, chief of Border Patrol’s Miami Sector, told reporters. “We urge migrants to avoid these dangerous voyages that can potentially result in loss of life.”
+<p>But warnings of the dangers and reports of past deaths haven’t stopped people from coming. All three boats set sail just a few weeks after a boat <a href="https://www.npr.org/2022/07/24/1113275090/bahamas-boat-capsizes">carrying between 50 and 60 people</a> capsized off the coast of the Bahamas. At least 17 people on board died; the youngest was just 4 or 5 years old. The migrants who embark on these journeys know there are risks involved. Their decisions are the result of a tragic risk calculus that putting their life in danger is worth a shot at a better future elsewhere. The poet Warsan Shire <a href="https://www.globalcitizen.org/en/content/no-one-puts-their-children-in-a-boat-unless-the-wa/">put it best</a>: No one puts their child in a boat unless the water is safer than the land.<div id="ConnatixPlaceholder"></div>
+<p>Each year, hundreds of people <a href="https://www.cnn.com/2021/12/09/politics/migrants-dying-crossing-us-mexico-border/index.html">die trying to cross the US-Mexico border</a>. Migrant fatalities in the desert are so common that they make headlines only under <a href="https://www.texastribune.org/2022/07/02/mexico-texas-honduras-migrants-san-antonio/">the most gruesome of circumstances</a>. Deaths at sea are more rare—but the number of people attempting to reach the United States by boat is on the rise. The Coast Guard has <a href="https://ht.usembassy.gov/u-s-coast-guard-repatriates-98-people-to-haiti/">reportedly interdicted</a> at more than 6,100 migrants during this fiscal year, compared to 1,527 the year prior. These aren’t inevitable tragedies. These deaths—and the difficult journeys survivors have to endure—are the result of a decades-long deterrence regime that persists despite its ineffectiveness.
+<p>This deterrence strategy was first pursued against Haitian migrants. The Coast Guard, the Department of Justice, and the National Security Council started <a href="https://www.ucpress.edu/book/9780520287976/boats-borders-and-bases">working on a policy</a> that would grant the United States the “legal authority to interdict Haitian refugee boats outside US waters for the purpose of returning the passengers to Haiti” in 1980. The Reagan administration started interdicting Haitian vessels the following year. Though there were technically exceptions for refugees, after migrants were intercepted immigration officials conducted cursory interviews at best, if they did so at all. Of the 24,600 Haitians intercepted at sea between 1981 and 1991, just 28 were allowed to enter the country to apply for asylum, according to David FitzGerald’s <a href="https://global.oup.com/academic/product/refuge-beyond-reach-9780190874155?cc=us&amp;lang=en&amp;"><em>Refuge Beyond Reach</em></a>.<aside class="right hidden-on-mobile most-popular-plus-ad"><div class="most-popular hover_b_remove thenation-single-article-most-popular"></div></aside>
+<p>The Border Patrol rolled out a similar strategy in the desert a few years later. In 1993, the Border Patrol’s El Paso sector started stationing agents in urban crossing areas. The expectation was that the presence of law enforcement would stop migrants from crossing the border altogether. It was called Operation Blockade. Instead of reducing crossings, Operation Blockade just shifted them elsewhere. Still, by 1994, the policy was in place in each Border Patrol sector—the agency called it prevention through deterrence. “The prediction is that with traditional entry and smuggling routes disrupted, illegal traffic will be deterred, or forced over more hostile terrain,” the Border Patrol’s <a href="https://www.hsdl.org/?abstract&amp;did=721845">1994 strategic plan</a> read.<div class="inline-counter"></div>
+<p>If we analyze deterrence strategies as tools for reducing migration, it’s clear that they’ve failed. The Border Patrol logged 1,263,490 apprehensions during the 1993 fiscal year. Ten years later, Customs and Border Protection <a href="https://www.cbp.gov/newsroom/stats/southwest-border-unaccompanied-children/fy-2016">apprehended just over 400,000 people</a>; in <a href="https://www.cbp.gov/newsroom/stats/cbp-enforcement-statistics">fiscal year 2019</a>, the agency arrested more than 1.1 million people. Under previous administrations, CBP has admitted that “border security alone cannot overcome the powerful push factors of poverty and violence” that drive people out of their countries, and “walls alone cannot prevent illegal migration.” But year after year, Congress has primarily funded deterrence policies that only succeed in two respects: encouraging migrants to hire smugglers to get them to the United States, and contributing to a significant rise in deaths. <aside aria-hidden="true" class="left indent indents current-issue" data-nosnippet>
+<h4>Current Issue</h4><div class="current-blocks">
+<a href="https://www.thenation.com/issue/august-22-29-2022-issue/" class="no-target-blank">
+<img src="https://www.thenation.com/wp-content/uploads/2022/08/cover0822.jpg" alt="" />
+</a>
+</div> <div class="current-blocks">
+<a href="https://www.thenation.com/issue/august-22-29-2022-issue/" class="textred-highlighted">View our current issue</a>
+<div class="magazine_text" id="magazine_text_421937"></div>
+<div class="cta magazine_button" id="magazine_button_421937"></div>
+</div>
+</aside>
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript">
+			
+			var magazine_text_421937            = '';
+			var magazine_button_text_421937     = '';
+			var magazine_button_url_421937      = '';
+			var magazine_button_bg_color_421937 = '';
+			
+			var is_user_logged_in = getCookie('SESSname');				if( is_user_logged_in != null ){
+					
+						
+						magazine_text_421937 = '<p><span id=\\\"\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"socialHighlighted\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\"\\\"><span id=\\\"\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"tweetButton\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\"\\\" class=\\\"\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"socialButtonHighlight\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\"\\\"><span class=\\\"\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"clickheresocial\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\"\\\"></span></span> <span id=\\\"\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"emailButton\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\"\\\" class=\\\"\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"socialButtonHighlight\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\"\\\"><span class=\\\"\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"clickheresocial\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\"\\\"></span></span></span>If you like this article, please give today to help fund <em>The Nation</em>’s work.</p>';	
+												magazine_button_text_421937 = '<a href="javascript:void(0)"><input type="button" class="btn btn_ffcf0d" name="submit_sailthru" value="Donate"></a>';	
+												magazine_button_url_421937 = 'https://www.thenation.com/email-signup-module-donate/';
+												magazine_button_bg_color_421937 = '#ffcf0d';
+								
+					
+				}else{
+					
+						
+						magazine_text_421937 = '<p>Subscribe today and Save up to $129.</p>';	
+												magazine_button_text_421937 = '<a href="javascript:void(0)"><input type="button" class="btn btn_d41d00" name="submit_sailthru" value="Subscribe"></a>';				
+												magazine_button_url_421937 = 'https://subscriptions.thenation.com/Nation_index?pk=G2A1CLT';
+												magazine_button_bg_color_421937 = '#dd3333';
+								
+					
+				}
+			
+						
+			if( magazine_text_421937 !='' ){				
+				jQuery("#magazine_text_421937").html(magazine_text_421937);				
+			}
+			
+			if( magazine_button_text_421937 !='' ){				
+				jQuery("#magazine_button_421937").html(magazine_button_text_421937);				
+			}
+			
+			if( magazine_button_url_421937 !='' ){				
+				jQuery("#magazine_button_421937 a").attr("href",magazine_button_url_421937);				
+			}
+			
+			if( magazine_button_bg_color_421937 !='' ){			
+				jQuery("#magazine_button_421937 a input").css("background",magazine_button_bg_color_421937);				
+			}
+			
+		</script>
+<p>An estimated <a href="https://www.latimes.com/archives/la-xpm-1997-aug-12-mn-21800-story.html">1,185 people</a> died crossing the US-Mexico border between 1993 and 1996; at least 728 migrants died along both sides of the border last year alone, according to <a href="https://missingmigrants.iom.int/sites/g/files/tmzbdl601/files/publication/file/MMP%20annual%20regional%20overview%202021%20LAC_Executive%20Summary-ENG_0.pdf">a recent report</a> by the United Nations’ International Organization for Migration. Studies have shown that deterrence policies <a href="https://www.propublica.org/article/why-do-border-deaths-persist-when-the-number-of-border-crossings-is-falling">have contributed to a steady increase</a> in deaths, even in years where the number of people crossing the border has decreased. Maritime fatalities are also on the rise. The Coast Guard received <a href="https://www.unhcr.org/en-us/news/briefing/2022/5/629090844/unhcr-urges-caribbean-governments-protect-refugees-amid-surge-risky-sea.html">at least 175 reports</a> of missing or dead Haitian migrants between October and May. In 2021, there were 132 reported deaths or disappearances of migrants on routes from the Caribbean to the mainland US and Puerto Rico.
+<p>People aren’t just dying at the border—they’re dying on the way there as well. More than 50 people died last year while <a href="https://www.aljazeera.com/news/2021/10/7/more-than-50-migrants-have-died-this-year-in-panamas-darien-gap">trying to cross the Darién Gap</a>, a dangerous stretch of rain forest in Panama that has become a key route for US-bound migrants. Those who can afford to avoid trekking through the desert may opt to sail to Panama via Colombia’s Pacific coast. That journey, while faster, is often dangerous as well: In 2019, a boat carrying 27 migrants <a href="https://thebogotapost.com/boat-carrying-migrants-sinks-in-golfo-de-uraba/34738/">capsized in the Gulf of Urabá</a>, killing 17 people.
+<p><span class="wpsdc-drop-cap">T</span>hese are journeys of necessity, not desire. People will always choose the safest option available to them. Middle-class Venezuelans, for example, were largely <a href="https://www.wsj.com/articles/middle-class-migrants-fly-to-mexico-and-then-cross-u-s-border-illegally-11634117401">flying to Mexico</a> in order to cross the US border until relatively recently. It wasn’t until Mexico <a href="https://www.reuters.com/world/americas/exclusive-mexico-considers-tighter-entry-rules-venezuelans-after-us-requests-2021-11-12/">implemented new visa requirements for Venezuelan travelers</a>—at the behest of the Biden administration—that Venezuelans began <a href="https://www.hrw.org/news/2022/07/05/mexico/central-america-new-visa-restrictions-harm-venezuelans">crossing the Darién Gap</a> and <a href="https://www.nytimes.com/2022/06/11/world/americas/mexico-migrant-caravan-photos.html">joining migrant caravans</a> in large numbers. Mexico also started requiring visas from Brazilian and Ecuadorian travelers after an unprecedented number of migrants from both countries started arriving at the southern US border.
+<p>In 2020, I <a href="https://www.theverge.com/21408606/ice-immigrant-detention-centers-video-chats-deportation-refugees-asylum">interviewed a Cameroonian asylum seeker</a> who traveled through a dozen countries to get to the United States. He flew to Brazil, one of the only countries in the Americas he could get to without a visa. From Brazil he went to Peru, then to Ecuador, then Colombia and Panama, where he crossed the Darién Gap before traveling all the way up Central America. It would have been safer and cheaper for him to fly to the US or Mexico directly; if he had the option, he would have taken it. <aside aria-hidden="true" id="inline_cta_1_module_421937" class="inline-cta-1" data-nosnippet>
+<div class="inline-cta-blocks" id="inline_cta_421937"></div>
+<div class="cta" id="inline_cta_btn_421937"></div>
+</aside>
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript">
+			
+			var inline_cta_text_421937            = '';
+			var inline_cta_button_text_421937     = '';
+			var inline_cta_url_421937             = '';
+			var inline_cta_bg_color_421937        = '';
+			var inline_cta_font_color_421937      = '';
+			var cta_1_check_421937  = false;  
+			var is_user_logged_in = getCookie('SESSname');				
+				if( is_user_logged_in != null ){
+					
+											
+						inline_cta_text_421937 = '<h4><strong>Donate Now to Power <em>The Nation</em>.</strong></h4><p>Readers like you make our independent journalism possible.</p>';
+													inline_cta_font_color_421937 = '#000000';
+													
+						inline_cta_button_text_421937 = '<a href="javascript:void(0)"><input type="button" class="btn btn_ffcf0d" name="submit_sailthru" value="Donate"></a>';
+												
+						inline_cta_url_421937 = 'https://www.thenation.com/donate-website?utm_medium=website&utm_source=Website&utm_campaign=june-appeal&sourceid=1066666&ms=post-inline&utm_content=post-inline';
+												
+						inline_cta_bg_color_421937 = '#ffcf0d';
+											
+				}else{
+					
+											
+						inline_cta_text_421937 = '<h4><strong>Donate Now to Power <em>The Nation</em>.</strong></h4><p>Readers like you make our independent journalism possible.</p>';
+													inline_cta_font_color_421937 = '#000000';
+													
+						inline_cta_button_text_421937 = '<a href="javascript:void(0)"><input type="button" class="btn" name="submit_sailthru" value="Donate"></a>';
+												
+						inline_cta_url_421937 = 'https://www.thenation.com/donate-website?utm_medium=website&utm_source=Website&utm_campaign=june-appeal&sourceid=1066666&ms=post-inline&utm_content=post-inline';
+												
+						inline_cta_bg_color_421937 = '#ffcf0d';
+										}
+				
+							
+			if( inline_cta_text_421937 !='' ){
+				jQuery("#inline_cta_421937").html(inline_cta_text_421937);
+				cta_1_check_421937 = true;
+			}
+			
+			if( inline_cta_button_text_421937 !='' ){
+				jQuery("#inline_cta_btn_421937").html(inline_cta_button_text_421937);
+				cta_1_check_421937 = true;
+			}
+			
+			if( inline_cta_url_421937 !='' ){
+				jQuery("#inline_cta_btn_421937 a").attr("href",inline_cta_url_421937);
+				cta_1_check_421937 = true;
+			}
+			
+			if( inline_cta_bg_color_421937 !='' ){
+				jQuery("#inline_cta_btn_421937 a input").css("background",inline_cta_bg_color_421937);
+				cta_1_check_421937 = true;
+			}
+			
+			if( inline_cta_font_color_421937 !='' ){
+				jQuery("#inline_cta_btn_421937 a input").css("color",inline_cta_font_color_421937);
+				cta_1_check_421937 = true;
+			}
+
+			if( cta_1_check_421937 ){
+				jQuery("#inline_cta_1_module_421937").addClass("tn-inline-cta-module");
+			}	
+			
+		</script>
+<p>FitzGerald calls this hidden regime of visa requirements “remote controls.” It’s a way of affecting migration that extends far beyond national borders. The goal isn’t to stop migration—it’s to stop people from arriving in a place where they can seek asylum. “The catch-22 for refugees,” FitzGerald writes, “is that rich democracies are essentially telling them, ‘We will not kick you out if you come here. But we will not let you come here.’” When she visited Guatemala last year, Vice President Kamala Harris had a succinct message for prospective migrants: “Do not come,” she said, repeating herself a second time for emphasis. “The United States will continue to enforce our laws and secure our border.”
+<p>Over the past 10 years, the US has also encouraged Mexico to militarize its own borders to catch northbound migrants as quickly as possible. In <a href="https://wikileaks.org/plusd/cables/10MEXICO69_a.html">a classified State Department memo</a> from 2010, officials referred to Mexico’s “porous border” with Guatemala as its “vulnerable underbelly.” Under Obama, the US helped train Mexican immigration agents and funded technology for Mexican migration controls as part of Programa Frontera Sur—the southern border program. During Trump’s final years in office, Mexico agreed to <a href="https://mexiconewsdaily.com/news/mexico-pledged-to-send-6000-troops/">send its own National Guard troops</a> to the Guatemalan border to help curb migration.
+<p>The first major wave of Haitian migration to the United States occurred in the 1950s; they were primarily wealthy professionals, followed by middle-class people in the 1960s. In 1972, the number of visas issued to Haitian travelers decreased. It was only then that people started taking to the sea en masse.
+<p><span class="wpsdc-drop-cap">I</span>t doesn’t have to be this way. For nearly 50 years, all Cuban migrants who set foot on American soil were put on a path to US citizenship. (Those whose boats were intercepted at sea, however, were turned back.) After the Vietnam War, Congress passed the Indochina Migration and Refugee Assistance Act, which allowed <a href="https://slate.com/news-and-politics/2021/08/afghanistan-refugees-siv-vietnam.html">hundreds of thousands</a> of Vietnamese, Cambodian, and Laotian refugees to resettle in the US. Given Republicans’ constant fearmongering over immigration, similar legislation designed to help Haitian or Central American asylum seekers is unlikely to pass, but there are other options. The United States <a href="https://www.cbsnews.com/news/us-admits-100000-ukrainians-in-5-months-fulfilling-biden-pledge/">took in more than 100,000 Ukrainian refugees</a> during a five-month period this year, about one-third of whom arrived through a private sponsorship program. No such process exists for refugees from other countries. And unlike people who go through the traditional refugee resettlement process, asylum seekers have to be in the US before they can apply for protection.
+<p>There are plenty of people who would gladly sponsor refugees if given the chance—but immigration authorities are often hostile to attempts to do so. Members of humanitarian aid groups in Arizona <a href="https://www.nytimes.com/2020/02/05/us/tucson-border-activists-conviction-reversed.html">have been arrested</a> for leaving gallons of water on migrant trails. Instead of criminalizing aid workers’ efforts to keep migrants alive, the government could avoid these deaths altogether by letting people sponsor Haitian and Central American refugees. People will try to come to the United States regardless; they’ll always take the safest option available to them. Right now, for many, that option comes with significant risk.
+</div>
+</section>
+<section class="aside-wrap"></section><div id="tp-meter" class="meerkat"></div>
+<footer class="article-footer narrow new-article-footer" id="article-footer-421937" data-nosnippet>
+<div class="footer-module narrow author-bio">
+<p><span><a href="https://www.thenation.com/authors/gaby-del-valle/"> Gaby Del Valle</a></span>Gaby Del Valle is a freelance immigration reporter and the co-founder of BORDER/LINES, a weekly newsletter about immigration policy.</p><br />
+</div>
+<div class="footer-module narrow contact-us">
+<p>
+To submit a correction for our consideration, click <a target="_blank" href="/corrections?title=Recent+Migrant+Deaths+Highlight+the+Danger+of+Deterrence&url=https%3A%2F%2Fwww.thenation.com%2Farticle%2Fsociety%2Fmigrant-deaths-deterrence%2F">here.</a> </p>
+<p>For Reprints and Permissions, click <a target="_blank" href="http://www.thenationreprints.com/services/reprints/">here.</a></p>
+</div>
+<div class="footer-module comments">
+<a class="click_comment" href="" article-post-id="421937">
+<abbr class="open">&nbsp;</abbr>
+<abbr class="title">Comments (2)</abbr>
+</a>
+</div>
+<div id="comments_421937" class="commentContainer" style="display:none">
+<div id="comments" class="comments-area">
+<div id="respond" class="comment-respond">
+<h3 id="reply-title" class="comment-reply-title">
+Leave a Comment </h3>
+<p class="must-log-in" style="display:none;">
+In order to comment, you must be logged in as a paid subscriber.&nbsp;<a href="#TB_inlinepcd_login?width=600&height=550&inlineId=login-content-id-pcd_login" class="thickbox comment_login_link">Click here to log in</a>&nbsp;or subscribe. </p>
+<form action="https://www.thenation.com/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate="" style="display:none;">
+<div class="comment-status"></div>
+<p class="logged-in-as">
+Logged in as&nbsp;
+<a href="https://subscribe.thenation.com/flex/NA/key/G0ENCB9/" class="login_user">
+</a>&nbsp;
+<a href="https://www.thenation.com/logout.php" title="Log out of this account" class="logout_status">Log out?</a>
+</p>
+<p class="comment-form-comment">
+<label for="comment">Comment</label>
+<textarea id="comment" name="comment" cols="45" rows="8" aria-describedby="form-allowed-tags" aria-required="true" required="required"></textarea>
+</p>
+<p class="form-submit">
+<input name="submit" type="submit" id="submit" class="submit" value="Post Comment">
+<input type="hidden" name="comment_post_ID" value="421937" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p>
+</form>
+</div>
+<div class="post_comment_list"></div>
+<div class="post_comment_list_loader">
+<img src="https://www.thenation.com/wp-content/themes/thenation/images/new_infi_loader.gif" />
+</div>
+</div>
+</div>
+<input type="hidden" name="tpContentAuthor" value="Gaby Del Valle" />
+<input type="hidden" name="tpTags" value="congress,immigration-policy,law,politics,society,border-security,immigration,refugees" />
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript">	
+		function pushDataPianoOnInfinite_421937() {
+			// The content published date
+			tp.push(["setContentCreated", "2022-08-17T05:00:13-04:00"]);
+								// The content author
+					tp.push(["setContentAuthor", "Gaby Del Valle" ]);
+								// The content section
+			tp.push(["setContentSection", "article"]);
+			// The content tags
+			tp.push(["setTags", ["congress","immigration-policy","law","politics","society","border-security","immigration","refugees","gaby-del-valle"] ]);					
+			// Add custom variables as any key-value pair. The first parameter is the key; second is the value		
+		}	
+	</script> <div class="connatix-player-footer" aria-hidden="true">
+<script id="connatix-421937" type="daf5c5e0ef7afec5f4f49f73-text/javascript">
+				cnx.cmd.push(function() { cnx({ playerId: "d506be1d-baa7-4947-aa55-de5b83abbddd" }).render("connatix-421937"); });
+			</script>
+</div>
+</footer>
+</article>
+<div class="expand-reduce tn-first-expand" id="expand-reduce-421937">
+<div class="article-wrap">
+<span class="overlap-div"></span>
+</div>
+<a href="#" article-id="421937" class="expand-reduce-keep">Keep Reading</a>
+<div id="expand-reduce-grad" class="hide"></div>
+</div>
+<div class="expand-reduce-casual"></div>
+<div aria-hidden="true" align="center" id="thenation_between_articles_421937" data-freestar-ad="__336x280 __970x250">
+<script data-cfasync="false" type="text/javascript">
+					  freestar.config.enabled_slots.push({ 
+						placementName: "thenation_between_articles", 
+						slotId: "thenation_between_articles_421937",
+						targeting:{
+							tn_author: ['gaby-d'],
+							tn_articleid: [421937],
+							tn_ptype: 'article',
+							tn_keyword: ['border-sec', 'immigratio', 'refugees'],
+							tn_subject: ['congress', 'immigratio', 'law', 'politics', 'society'],
+							tn_pos: 'leaderboard_2',
+							tn_loc:'atf'
+						}	
+					  });
+				  </script>
+</div>
+<a href="http://www.thenation.com/advertising-policy" class="top-ad-policy">Ad Policy</a>
+<a class="inifiniteLoader"><img src="https://www.thenation.com/wp-content/themes/thenation/images/new_infi_loader.gif" alt="" /></a>
+</div>
+</div>
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript">
+	
+	var nextSlotId     = 1;
+	var nextSlotIdSide = 1;
+	var check_comment  = false;
+	
+	/*Call Piano Data Push*/	
+	pushDataPianoOnInfinite_421937();
+	var user_name_cookie = getCookie('SESSname');
+	var is_admin_cookie = getCookie('is_admin');
+
+	if (is_admin_cookie == "true") {
+		var is_user_logged_in = 1;
+	} else {
+		var is_user_logged_in = user_name_cookie;
+	}
+	
+	
+	/**
+	 * Event for Subscriber Only Article
+	 */
+		
+	/*
+	 * @function Body content image in  gallery
+	 */
+	 
+	function runSlider(ele){   
+		ele.bxSlider({
+			adaptiveHeight: true,
+			adaptiveHeightSpeed: 500,
+			infiniteLoop: false,
+			hideControlOnEnd: false,
+			pager: false
+		});
+		return false;
+	}
+	
+	/*
+	 * Print Article
+	 */
+		function tn_print_article_v2(postClass){
+				var divToPrint=jQuery('.postid-'+postClass+' article').clone();
+		divToPrint.find('section.article-body .left.indent.indents').remove();
+		divToPrint.find('section.article-body .ad-300').remove();
+		divToPrint.find('section.article-body .tn-inline-cta-module').remove();
+		divToPrint.find('.tabola-block').remove();
+		divToPrint.find('section.aside-wrap').remove();
+		divToPrint.find('section.article-body').css({'padding-left':'0','padding-right':'0'});
+		divToPrint.find('header.article-header').css({'max-width':'1170px','padding-right':'0'});
+		divToPrint.find('header.article-header .article-header-content .article-info').remove();
+		divToPrint.find('header.article-header .article-header-content .article_title.hide').remove();
+		divToPrint.find('script').remove();
+		divToPrint.find('.sharethis-inline-share-buttons').remove();
+		divToPrint.find('.cnx-main-container').remove();
+		divToPrint.find('#full-width-ad-div-'+postClass).remove();
+		newWin= window.open("");
+		var NewDocumentWrite = '<html><head>';
+		NewDocumentWrite += '<link rel="stylesheet" href="https://www.thenation.com/wp-content/themes/thenation/style.css?ver=3.4.9" media="all">';
+		NewDocumentWrite += '<link rel="stylesheet" href="https://www.thenation.com/wp-content/themes/thenation/stylesheets/all.css?ver=1.1.24" media="all">';
+		NewDocumentWrite += '</head><body class="article-wrap" onload="window.print()">'+divToPrint.html()+'</body></html>';
+		newWin.document.write(NewDocumentWrite);
+		// newWin.addEventListener('load',function(){
+			// });
+		newWin.print();
+		newWin.close();
+	}
+
+	/*
+	 * @function for print article
+	 */
+	 
+	function tn_print_fn(){
+		
+		var tn_current_url=window.location.href;
+		if(check_comment == true){
+		   window.open(tn_current_url+'?print=1&comment=1','_blank');
+		}else{
+		   window.open(tn_current_url+'?print=1','_blank');
+		}		
+		return false;
+	}
+	
+	/*
+	 * @function sailthru action tout
+	 */
+		
+	function add_action_tout_sailthru(post_id){
+		
+		var ajaxurl=ajax_object.ajax_url;
+		var sailthru_email_take_action = document.getElementById('take_action_sailthru_email_'+post_id).value;
+		if(sailthru_email_take_action!=''){
+			var take_action_sailthru_list_final = document.getElementById('take_action_sailthru_list_final_'+post_id).value;
+			var action_tout_sailthru='action_tout_sailthru';
+			jQuery.ajax({
+				url  :ajaxurl,
+				type :"POST",
+				data :"sailthru_email_take_action="+sailthru_email_take_action+"&take_action_sailthru_list_final="+take_action_sailthru_list_final+"&action="+action_tout_sailthru,
+				success : function(data){				
+					document.getElementById('action_tout_response_'+post_id).innerHTML=data;
+					document.getElementById('take_action_sailthru_email_'+post_id).value='';
+				}
+			});
+		}else{
+			var error_msg='<span style="color:#cc0e0e">Please Enter Email</span>';
+			document.getElementById('action_tout_response_'+post_id).innerHTML=error_msg;
+		}
+	}
+	
+	/*
+	 * Check for logged in user 
+	 */
+	function getParaOneNextStep( articlePostId, step ){		
+		if( typeof articlePostId !== typeof undefined && is_user_logged_in!=null && typeof paragraph_module!=typeof undefined && paragraph_module[articlePostId][step].user_logged_in==1 ){			
+			step = parseInt(step)+1;	
+			step = ( step > 5 )? 0 : step;
+			step = getParaOneNextStep( articlePostId, step );
+		}
+		return step;
+	}
+	
+	/*
+	 * @function Email Sign Up Logic
+	 */
+	function email_signup_module( articlePostId ){
+		
+		/*
+		 * Check For Email Sign Up Cookie
+		 */
+		if( typeof paragraph_module[articlePostId] !== typeof undefined ){	 			
+			
+			/* Hide All */
+			$(".abody-"+articlePostId+" .email-signup-module").hide();
+			/* Hide All */
+			
+			var TNstep = getCookie('TNstep');
+			if( TNstep!=null ){	
+
+				var step = getParaOneNextStep(articlePostId, TNstep);			
+				$(".abody-"+articlePostId+" .email-signup-module.para-one-"+paragraph_module[articlePostId][step].order+"").show();
+				
+				/* show event tracking */
+				paragraphOneShowEvent(articlePostId, step);
+				/* show event tracking */	
+			}else{
+				var TNlifetime = getCookie('TNlifetime');
+				if( TNlifetime!=null ){
+					nextTNstep = parseInt(TNlifetime)+1;				
+					nextTNstep = ( nextTNstep > 5 )? 0 : nextTNstep;
+					
+					var step = getParaOneNextStep(articlePostId, nextTNstep);				
+					var cookieDateTNstep = new Date();
+					cookieDateTNstep.setTime(cookieDateTNstep.getTime() + (30*24*60*60*1000));
+					document.cookie = "TNstep="+step+";expires="+cookieDateTNstep.toUTCString()+";path=/";
+					
+					var cookieDateTNlifetime = new Date();
+					cookieDateTNlifetime.setTime(cookieDateTNlifetime.getTime() + (10*365*24*60*60*1000));
+					document.cookie = "TNlifetime="+step+";expires="+cookieDateTNlifetime.toUTCString()+";path=/";
+					
+					$(".abody-"+articlePostId+" .email-signup-module.para-one-"+paragraph_module[articlePostId][step].order+"").show();	
+
+					/* show event tracking */
+					paragraphOneShowEvent(articlePostId,step);
+					/* show event tracking */	
+				}else{				
+					var step = getParaOneNextStep(articlePostId, 0);				
+					var cookieDateTNstep = new Date();
+					cookieDateTNstep.setTime(cookieDateTNstep.getTime() + (30*24*60*60*1000));
+					document.cookie = "TNstep="+step+";expires="+cookieDateTNstep.toUTCString()+";path=/";
+					
+					var cookieDateTNlifetime = new Date();
+					cookieDateTNlifetime.setTime(cookieDateTNlifetime.getTime() + (10*365*24*60*60*1000));
+					document.cookie = "TNlifetime="+step+";expires="+cookieDateTNlifetime.toUTCString()+";path=/";
+					
+					$(".abody-"+articlePostId+" .email-signup-module.para-one-"+paragraph_module[articlePostId][step].order+"").show();	
+						
+					/* show event tracking */
+					paragraphOneShowEvent(articlePostId, step);
+					/* show event tracking */	
+				}
+			}
+		}
+	} 
+	
+	/*
+	 * Event Tracking Functions
+	 */
+	 
+	/* Paragraph One Show Event Trigger */ 
+	function paragraphOneShowEvent( articlePostId, step ){
+		
+		if( typeof articlePostId !== typeof undefined && typeof step !== typeof undefined && (typeof paragraph_module[articlePostId] !== typeof undefined) && (paragraph_module[articlePostId][step].event_name!="") ){			
+			/*
+			 * Track Views paragraph one module GTM
+			 */
+			dataLayer.push({
+				'event': 'gaParagraphOneShowEvent',
+				'gaEventCategory': ''+ paragraph_module[articlePostId][step].event_name +'',
+				'gaEventAction': ''+ paragraph_module[articlePostId][step].event_name +'-show',
+				'gaEventLabel': document.URL,
+			});
+		}		
+	}
+	
+	/* Paragraph One Click Event Trigger */
+	function paragraphOneClickEvent( articlePostId, step ){
+	
+		if( typeof articlePostId !== typeof undefined && typeof step !== typeof undefined && (typeof paragraph_module[articlePostId] !== typeof undefined) && (paragraph_module[articlePostId][step].event_name!="") ){
+			dataLayer.push({
+				'event': 'gaParagraphOneEvent',
+				'gaEventCategory': ''+ paragraph_module[articlePostId][step].event_name +'',
+				'gaEventAction': ''+ paragraph_module[articlePostId][step].event_name +'-click',
+				'gaEventLabel': document.URL,
+			});	
+		}
+	}
+		
+	/*
+	 * Event Tracking Functions
+	 */
+	 
+	/* Related Single Article */ 
+	function relatedSingleArticle( articlePostId ){
+		
+		if( jQuery(".postid-"+articlePostId+" .expand-reduce").length ==0 || jQuery(".postid-"+articlePostId+" .expand-close").length !=0 ){
+			
+			if( jQuery(".postid-"+articlePostId+" aside.related-oneup").length > 0 ){
+				
+				var count = jQuery(".postid-"+articlePostId+" aside.related-oneup").length;
+				for( i=0; i < count; i++ ){
+					/*
+					 * Track Views Related Single Article GTM
+					 */
+					dataLayer.push({
+						'event': 'gaRelatedSingleArticleShowEvent',
+						'gaEventCategory': 'related-single-article',
+						'gaEventAction': 'related-single-article-show',
+						'gaEventLabel': document.URL,
+					});
+				}
+			}				
+		}		
+	} 
+	
+	/* Related Multi Article */ 
+	function relatedMultiArticle( articlePostId ){
+		
+		if( jQuery(".postid-"+articlePostId+" .expand-reduce").length ==0 || jQuery(".postid-"+articlePostId+" .expand-close").length !=0 ){
+			
+			if( jQuery(".postid-"+articlePostId+" aside.related-multi").length > 0 ){
+				
+				var count = jQuery(".postid-"+articlePostId+" aside.related-multi").length;
+				for( i=0; i < count; i++ ){
+					/*
+					 * Track Views Related Single Article GTM
+					 */
+					dataLayer.push({
+						'event': 'gaRelatedMultiArticleShowEvent',
+						'gaEventCategory': 'related-multi-article',
+						'gaEventAction': 'related-multi-article-show',
+						'gaEventLabel': document.URL,
+					});
+				}
+			}				
+		}		
+	} 
+	
+	/* Current Issue Module */ 
+	function currentIssueModule( articlePostId ){
+		
+		if( jQuery(".postid-"+articlePostId+" .expand-reduce").length ==0 || jQuery(".postid-"+articlePostId+" .expand-close").length !=0 ){
+			
+			if( jQuery(".postid-"+articlePostId+" aside.current-issue").length > 0 ){
+				/*
+				 * Track Views Current Issue Module GTM
+				 */
+				dataLayer.push({
+					'event': 'gaCurrentIssueModuleShowEvent',
+					'gaEventCategory': 'current-issue-module',
+					'gaEventAction': 'current-issue-module-show',
+					'gaEventLabel': document.URL,
+				});
+			}				
+		}		
+	}	
+	
+	/* Inline CTA 1 Views */ 
+	function inlineCtaOne( articlePostId ){
+		
+		if( jQuery(".postid-"+articlePostId+" .expand-reduce").length ==0 || jQuery(".postid-"+articlePostId+" .expand-close").length !=0 ){
+			
+			if( jQuery(".postid-"+articlePostId+" aside.inline-cta-1").length > 0 ){
+				/*
+				 * Track Views Current Issue Module GTM
+				 */
+				dataLayer.push({
+					'event': 'gaInlineCtaOneShowEvent',
+					'gaEventCategory': 'inline-cta-1',
+					'gaEventAction': 'inline-cta-1-show',
+					'gaEventLabel': document.URL,
+				});
+			}				
+		}		
+	}
+	
+	/* Inline CTA 2 Views */ 
+	function inlineCtaTwo( articlePostId ){
+		
+		if( jQuery(".postid-"+articlePostId+" .expand-reduce").length ==0 || jQuery(".postid-"+articlePostId+" .expand-close").length !=0 ){
+			
+			if( jQuery(".postid-"+articlePostId+" aside.inline-cta-2").length > 0 ){
+				/*
+				 * Track Views Current Issue Module GTM
+				 */
+				dataLayer.push({
+					'event': 'gaInlineCtaTwoShowEvent',
+					'gaEventCategory': 'inline-cta-2',
+					'gaEventAction': 'inline-cta-2-show',
+					'gaEventLabel': document.URL,
+				});
+			}				
+		}		
+	}
+	function inlineCtaSignup( articlePostId ){
+			
+			if( jQuery(".postid-"+articlePostId+" .expand-reduce").length ==0 || jQuery(".postid-"+articlePostId+" .expand-close").length !=0 ){
+				
+				if( jQuery(".postid-"+articlePostId+" aside.inline-cta_form").length > 0 ){
+					/*
+					 * Track Views Current Issue Module GTM
+					 */
+					dataLayer.push({
+						'event': 'gaInlineCtaSignupShowEvent',
+						'gaEventCategory': 'inline-cta-signup',
+						'gaEventAction': 'inline-cta-signup-show',
+						'gaEventLabel': document.URL,
+					});
+				}				
+			}		
+		}
+	/* Author Highlight Views */ 
+	function authorHighlight( articlePostId ){
+		
+		if( jQuery(".postid-"+articlePostId+" .expand-reduce").length ==0 || jQuery(".postid-"+articlePostId+" .expand-close").length !=0 ){
+			
+			if( jQuery(".postid-"+articlePostId+" aside.author-modules").length > 0 ){
+				/*
+				 * Track Views Author Highlight GTM
+				 */
+				dataLayer.push({
+					'event': 'gaAuthorHighlightShowEvent',
+					'gaEventCategory': 'author-Highlight',
+					'gaEventAction': 'author-Highlight-show',
+					'gaEventLabel': document.URL,
+				});
+			}				
+		}		
+	}
+	
+	/* Series Module Views */ 
+	function seriesModule( articlePostId ){
+		
+		if( jQuery(".postid-"+articlePostId+" .expand-reduce").length ==0 || jQuery(".postid-"+articlePostId+" .expand-close").length !=0 ){
+			
+			if( jQuery(".postid-"+articlePostId+" aside.series-modules").length > 0 ){
+				/*
+				 * Track Views Series Module GTM
+				 */
+				dataLayer.push({
+					'event': 'gaSeriesModuleShowEvent',
+					'gaEventCategory': 'series-module',
+					'gaEventAction': 'series-module-show',
+					'gaEventLabel': document.URL,
+				});
+			}				
+		}		
+	}
+	
+	/* Comment Module Views */ 
+	function commentModule( articlePostId ){
+		
+		if( jQuery(".postid-"+articlePostId+" .expand-reduce").length ==0 || jQuery(".postid-"+articlePostId+" .expand-close").length !=0 ){
+			
+			if( jQuery(".postid-"+articlePostId+" aside.comment-module").length > 0 ){
+				/*
+				 * Track Views Comment Module GTM
+				 */
+				dataLayer.push({
+					'event': 'gaCommentsModuleShowEvent',
+					'gaEventCategory': 'comments-module',
+					'gaEventAction': 'comments-module-show',
+					'gaEventLabel': document.URL,
+				});
+			}				
+		}		
+	}
+	
+	/* Books Salad Views */ 
+	function booksSalad( articlePostId ){
+		
+		if( jQuery(".postid-"+articlePostId+" .expand-reduce").length ==0 || jQuery(".postid-"+articlePostId+" .expand-close").length !=0 ){
+			
+			if( jQuery(".postid-"+articlePostId+" aside.book-module").length > 0 ){
+				/*
+				 * Track Views Books Salad GTM
+				 */
+				dataLayer.push({
+					'event': 'gaBooksSaladShowEvent',
+					'gaEventCategory': 'books-salad',
+					'gaEventAction': 'books-salad-show',
+					'gaEventLabel': document.URL,
+				});
+			}				
+		}		
+	}
+	
+	/* Action Tout Module Views */ 
+	function actionToutModule( articlePostId ){
+		
+		if( jQuery(".postid-"+articlePostId+" .expand-reduce").length ==0 || jQuery(".postid-"+articlePostId+" .expand-close").length !=0 ){
+			
+			if( jQuery(".postid-"+articlePostId+" aside.takeaction").length > 0 ){
+				/*
+				 * Track Views Action Tout Module GTM
+				 */
+				dataLayer.push({
+					'event': 'gaActionToutModuleShowEvent',
+					'gaEventCategory': 'action-tout-module',
+					'gaEventAction': 'action-tout-module-show',
+					'gaEventLabel': document.URL,
+				});
+			}				
+		}		
+	}
+	
+	/* Sidebar Community Module Views */ 
+	function sidebarCommunityModule( articlePostId ){
+		
+		if( jQuery(".postid-"+articlePostId+" .expand-reduce").length ==0 || jQuery(".postid-"+articlePostId+" .expand-close").length !=0 ){
+			
+			if( jQuery(".postid-"+articlePostId+" aside.n-community").length > 0 ){
+				/*
+				 * Track Views Sidebar Community Module GTM
+				 */
+				dataLayer.push({
+					'event': 'gaSidebarShowEvent',
+					'gaEventCategory': 'sidebar-community',
+					'gaEventAction': 'sidebar-community-show',
+					'gaEventLabel': document.URL,
+				});
+			}				
+		}		
+	}
+	
+	/* Taxnonomy and Author GA Event on single article page */
+	function gaTaxonomyAuthor( gaEventCategory, gaEventAction, gaEventLabel ){
+		dataLayer.push({
+			"event": 			"gaglobaltaxonomyauthor", 
+			"gaEventCategory": 	gaEventCategory, 
+			"gaEventAction":	gaEventAction,
+			"gaEventLabel":		gaEventLabel
+		});
+	}
+	
+	jQuery( document ).ready(function($) {
+		
+		/*============== Variables ==================*/
+		
+		var preventLoad_article = false;		
+		var flag              = false;
+		var $e                = $('.article-body').children().last();   
+		var $t                = $e.prop("tagName");
+		var tagsArray         = ['FORM','ASIDE'];
+		var anothertagsArray  = {'UL':'li','OL':'li','BLOCKQUOTE':'p'};
+		var url_id            = window.location.hash.substr(1);
+		var pageChange        = 1;
+		var articlePostId     = 421937;
+		var count             = 1;
+		var article_divider   = 1;
+		var loagAgn           = false;
+		var scroll_art_recric = true;
+		var list;				
+		
+		/*============== Variables ==================*/	
+		
+		/* Taxnonomy and Author GA Event on single article page */
+		var allSubject 			= $('.postid-'+articlePostId+' input[name="tpTags"]').val();							
+		var allAuthor  			= $('.postid-'+articlePostId+' input[name="tpContentAuthor"]').val();
+		var first_article_title = $('.postid-'+articlePostId).attr('articlelisttitle');
+		var first_article_path 	= $('.postid-'+articlePostId).attr('articlelistlinks');
+				
+		var allSubject = allSubject.split(',');
+		$.each( allSubject, function( i, allsubval ) {
+			gaTaxonomyAuthor( allsubval, first_article_title, first_article_path );
+		});
+		
+		var allAuthor = allAuthor.split(',');
+		$.each( allAuthor, function( i, allautval ) {
+			gaTaxonomyAuthor( allautval, first_article_title, first_article_path );
+		});
+		
+		
+		/*
+		 * Body content image in  gallery
+		 */
+		
+		$('section.article-body img').each(function() {			
+			if($(this).parent("a").parent("figure").hasClass('bx-item')){
+				flag = true;
+			}else{				
+				var href_val = $(this).parent("a").attr('href');
+				var img_src  = $(this).attr('src');
+				
+				if( href_val === img_src && !$(this).parents().hasClass("email-signup-module") ){
+					$(this).parent("a").addClass("gallery");
+				}else{
+					if( !$(this).parent("a").hasClass("no-target-blank") ){
+						$(this).parent("a").attr('target','_blank');	
+					}					
+				}
+			}
+		});
+		
+		/*
+		 * Run image slider
+		 */
+		
+		if(flag){
+			runSlider(jQuery('.gallery-2'));
+		}
+		
+		/*
+		 * Email Sign Up
+         */	
+		if(!flag){	
+			email_signup_module( 421937 );
+		}
+		
+		/*
+		 * Article N logo
+		 */
+		articleNLogo( 421937 ); 
+		 
+		/*
+		 * Related Single Article Track
+		 */
+		relatedSingleArticle( 421937 );
+		
+		/*
+		 * Related Multiple Article Track
+		 */
+		relatedMultiArticle( 421937 ); 
+		
+		/*
+		 * Current Issue Module Track
+		 */
+		currentIssueModule( 421937 );
+		 
+		/*
+         * Inline CTA One Track
+		 */
+		inlineCtaOne( 421937 ); 
+		
+		/*
+         * Inline CTA Two Track
+		 */
+		inlineCtaTwo( 421937 );
+		
+		/*
+         * Inline CTA Signup Track
+		 */
+		inlineCtaSignup( 421937 );
+		/*
+         * Author Highlight Track
+		 */
+		authorHighlight( 421937 ); 
+		
+		/*
+         * Series Module Track
+		 */
+		seriesModule( 421937 );
+		
+		/*
+         * Comment Module Track
+		 */
+		commentModule( 421937 );
+		
+		/*
+         * Books Salad Track
+		 */
+		booksSalad( 421937 );
+		
+		/*
+         *  Action Tout Module Track
+		 */
+		actionToutModule( 421937 );
+		
+		/*
+         *  Sidebar Community Module Track
+		 */
+		sidebarCommunityModule( 421937 );
+		 		
+		/*
+		 * @function for print article
+		 */
+				
+		/*
+		 * Check for video
+		 */
+		
+				
+		/*
+		 * Red dot after article content
+		 */
+		
+		if(jQuery.inArray($t, tagsArray )!='-1'){			
+		}else{    
+			if($t in anothertagsArray){
+				$('.article-body > p:last-of-type').toggleClass('changed');
+				$e.find(anothertagsArray[$t]+':last').addClass('redotclass');         
+			}	    
+		}
+		
+		/*
+		 * this wrapped in jQuery will give us the current .letter-q div
+		 */
+		
+		$('figure').each(function(){			
+			if( $(this).hasClass('alignright')||$(this).hasClass('alignleft') || $(this).hasClass('aligncenter') ){ 
+				$(this).after('<div class="clear"></div>');
+			}
+		});	
+
+		/*
+		 * Scroll IF # id exist in URL
+		 */
+		if(url_id!=''){
+			var s = url_id;
+			var n = s.indexOf('/');
+			if(n!=''&& typeof n!= 'undefined'){
+				var id_var = s.substring(0, n != -1 ? n : s.length);
+				$('html, body').animate({
+					scrollTop: $('#'+id_var).offset().top
+				},2000);
+				return false;				
+			}
+		}
+		
+		/*
+		 * Check for audio
+		 */
+		
+				
+		/*
+		 * script to handle Back Button Event
+		 */
+		
+		if(window.attachEvent){
+			window.attachEvent('onpopstate', datHash);
+		}	
+		
+		function datHash(event){
+			var str = $('#goback').val();
+			if(str==''){
+				window.history.go(-Math.abs(pageChange));
+			}else{
+				window.history.go(-Math.abs(pageChange));
+			}
+			return false;
+		}
+		
+		/*
+		 *
+		 */
+		$('.post-edit-link').attr('href', function( _, action){
+			return action.replace('https', 'http');
+		}); 
+		
+		/*
+		 * @function for load article in infinite scroll
+		 */
+		 
+		$('a.inifiniteLoader').hide(); 
+		 
+		function loadArticle(pageNumber){			
+			
+			$('a.inifiniteLoader').show('fast');
+			
+			$.ajax({
+				
+				url      : "https://www.thenation.com/wp-admin/admin-ajax.php",
+				type     : 'POST',
+				cache    : false,
+				dataType : 'json',
+				data     : {action:'infinite_scroll',page_no: pageNumber,loop_file: 'articleload',slug:'congress,immigration-policy,law,politics,society',curr_post_id:'421937'},							
+				success  : function(receivedHTML){	
+				
+					if ( typeof receivedHTML == 'object' && receivedHTML!=null ){
+						if(typeof receivedHTML.html!=='undefined' && receivedHTML.html!=''){
+							html = receivedHTML.html;
+						}
+					}else{
+						$('a.inifiniteLoader').hide();
+						$("#single_article_footer").show();
+					}
+				
+					$('a.inifiniteLoader').hide('1000');
+					
+					
+					if ( typeof receivedHTML == 'object' && receivedHTML!=null ){
+						
+						$("#wrap").append(html);    // This will be the div where our content will be loaded
+						
+											
+						var postID = $($.parseHTML(html)).filter(".scrolltrace").attr('article-post-id');
+						var postLink = $($.parseHTML(html)).filter(".scrolltrace").attr('articlelistlinks');
+						var postTitle = $($.parseHTML(html)).filter(".scrolltrace").attr('articlelisttitle');
+
+					
+						$('.abody-'+postID+' .article-body-inner').children('p:first-of-type').html(function (i, html) {
+							if ( $('.abody-'+postID).children('img').length == "0" ){
+								var text = $('.abody-'+postID+' .article-body-inner').children('p:first-of-type').html();
+								$('.abody-'+postID+' .article-body-inner').children('p:first-of-type').html(text.replace(/^(<.?>)?([A-Za-z0-9])/g,'$1<span class="dropcap">$2</span>'));
+							}
+						});   
+						
+						if( !$('.abody-' + postID +'').parent().parent().hasClass('textContainer_Truncate') ){
+							$('<section class="aside-wrap"></section>').insertAfter('.abody-' + postID);	
+						}		
+
+						if($('.abody-'+postID).parent().parent()){
+							$('.abody-'+postID).parent().parent().attr("aria-posinset", pageNumber);
+							$('.abody-'+postID).parent().parent().attr("aria-setsize", "-1");
+						}
+
+						/*
+						 * Article Divider Count
+						 */
+						article_divider = article_divider+1; 
+						$('.abody-'+postID+'').attr("article-number",article_divider);	
+						
+						/*for hiding meterpaywall popups when pixel ads call starts here*/
+						var hidePixelBool = false;
+						var meetkatstep1 = jQuery('#paywall .step.one');
+						var meetkatstep2 = jQuery('#paywall .step.two');
+						var meetkatstep3 = jQuery('#paywall .step.three');
+						var meetkatstep4 = jQuery('#paywall .step.four');
+						if( typeof meetkatstep1!='undefined' && meetkatstep1.is(':visible') ){
+							hidePixelBool = true;
+						}
+						if ( typeof meetkatstep2!='undefined' && meetkatstep2.is(':visible') ){
+							hidePixelBool = true;
+						}
+						if( typeof meetkatstep3!='undefined' && meetkatstep3.is(':visible') ){
+							hidePixelBool = true;
+						}
+						if( typeof meetkatstep4!='undefined' && meetkatstep4.is(':visible') ){
+							hidePixelBool = true;
+						}
+						if( hidePixelBool===false ){		  
+							/*for hiding meterpaywall popups when pixel ads call ends here*/
+							/****Alternate Popup code start*********/
+							var enable_alterpopup_check;
+							enable_alterpopup_check ='';
+							if( typeof(enable_alterpopup_check) != "undefined" && enable_alterpopup_check == 1 ){ 
+								var alternate_article_no;
+								alternate_article_no = '';
+								if( pageCounterPaywall % alternate_article_no == 0 && pageCounterPaywall!=0 ){
+									show_lightbox('','');
+								}
+							}
+							/******Alternate Popup code End********/
+						}
+						
+						pageCounterPaywall++;
+						ajaxCarousel(postID);
+						ajaxGallery(postID);
+						articleNLogo(postID);
+						
+						
+						
+						
+						/** Slider Content **/
+						flag = false;
+						$('section.article-body:last img').each(function(){
+							if($(this).parent("a").parent("figure").hasClass('bx-item')){ 
+								flag = true;
+							}else{
+								$(this).parent("a").addClass("gallery");
+							}
+						});
+
+						if(flag){
+							var k = $('section.article-body:last').find('.gallery-2').bxSlider({
+										adaptiveHeight: true,
+										adaptiveHeightSpeed: 500,
+										infiniteLoop: false,
+										hideControlOnEnd: false,
+										pager: false
+									});
+							k.reloadSlider();
+						}
+						/* Slider Content End */
+					 
+					 
+						var usera = navigator.userAgent.toLowerCase(); 
+						if ( $('.article-page').length ) { 
+							var slickWidth = $('.article-list.slick-slide').width(); 
+						
+							if ($('.ie9').length){ 
+								slickWidth = $('.recirc-carousel.slick-initialized.slick-slider').width(); 
+							} 
+							$('.slick-list.draggable').css({'width' : slickWidth}); 
+							if( !/android|webos|iphone|ipad|ipod|blackberry/i.test(usera) ){ 
+								$('.article-list.slick-slide').children('li').css({'width' : slickWidth}); 
+								$('.slick-list').css({'width' : slickWidth}); 
+							} 
+						} 
+						
+						var $newArticles = $(html);
+						var imagesLoading = [];
+
+						$newArticles.find('img').each(function() {
+							
+							// For each image, create a new deferred object that resolves when the
+							// image has loaded and add that to an array of deferred objects.
+							
+							var loadingImage = $.Deferred();
+							imagesLoading.push(loadingImage);
+
+							// "this" is the image element here and should have a complete property.
+							// See http://stackoverflow.com/a/24201249
+							
+							if (this.complete){
+								loadingImage.resolve();
+							}else{
+								var adTimeout = window.setTimeout(function() {
+									loadingImage.resolve();
+								}, 3000);
+							
+								this.addEventListener('load', function() {
+									loadingImage.resolve();
+									window.clearTimeout(adTimeout);								
+								});
+								
+								this.addEventListener('error', function() {
+									// We really don't care if the image never loads, but we still need
+									// to resolve the promise so that we can reset the waypoints.
+									loadingImage.resolve();
+									window.clearTimeout(adTimeout);								
+								});	
+
+								// Clean up event listeners
+								this.removeEventListener('load', function() {
+									loadingImage.resolve();
+									window.clearTimeout(adTimeout);								
+								});
+								this.removeEventListener('error', function() {
+									loadingImage.resolve();
+									window.clearTimeout(adTimeout);								
+								});	
+							}
+						});
+						$.when.apply(this, imagesLoading).then(function() {          
+							fixedAds($('.postid-' + postID).children('article'));
+						}, function() {
+							
+						});	
+						/**Inifnite Scroll Share This */
+						var newSharePostID = window.__sharethis__.config['inline-share-buttons'];
+						newSharePostID.id="inline-share-button-"+postID;
+						newSharePostID.url= postLink;
+						newSharePostID.title= postTitle;
+						var shareLoadPromise = new Promise(function(resolutionFunc,rejectionFunc){resolutionFunc()});
+						shareLoadPromise.then(function(){
+							window.__sharethis__.load('inline-share-buttons', newSharePostID);
+						})
+						.then(function(){
+							$("#inline-share-button-"+postID+" > .st-last ").removeClass("st-last");
+							$("#inline-share-button-"+postID).append('<ul style="margin: 0 !important"class="article-share"><li><a href="javascript:void(0)" class="tn_print" onclick="tn_print_article_v2('+postID+')"><span>Print</span></a></li><li><a style="background: #ccc6be;padding: 8px;height:48px;width:48px;" href="javascript:void(0)" class="social-share bookmark tn-sfg-add-to-list hide" onclick="tnAddToReadingList(this,'+postID+')"><span>Bookmark</span></a></li></ul>');
+						});
+
+						if (getCookie('SESSuserinfo') != false) {								
+							var tn_sfg_local = localStorage.getItem("tn_sfg_local");
+							if (null != tn_sfg_local && undefined != tn_sfg_local && '' != tn_sfg_local) {
+								tn_sfg_local = JSON.parse(tn_sfg_local);
+								if (tn_sfg_local.includes(parseInt(postID))) {		
+									$('.currentScr').find('.tn-sfg-add-to-list').addClass('selected');
+									$('.currentScr').find('.tn-sfg-add-to-list').removeClass('hide');
+								}else {
+									$('.currentScr').find('.tn-sfg-add-to-list').removeClass('hide');
+								}
+							} else {
+								$('.currentScr').find('.tn-sfg-add-to-list').removeClass('hide');
+							}	
+						}
+						
+					}	
+				}
+			});
+			return false;
+		}		
+		
+		/*
+		 * Load second article on scroll
+		 */
+		
+		$(window).bind('scroll', function(){			
+			
+			$('.scrolltrace').each(function(){
+				
+				var post = $(this);
+				var topp = post.position().top;
+				var bott = post.position().top + post.height();
+				var pos  = $(window).scrollTop();				
+			   
+				if ( pos>=topp && pos<=bott ){
+					
+				   $(this).removeClass('currentScr');
+			       $(this).addClass('currentScr');
+				   
+				    var cisCurrentArticleUrl = window.location.href;
+				    cisCurrentArticleUrl = cisCurrentArticleUrl.split("?")[0];
+					if($('.currentScr').attr("articlelistlinks")!=cisCurrentArticleUrl){
+					   
+						var ua   = window.navigator.userAgent;
+						var msie = ua.indexOf("MSIE");
+
+						if (msie > 0){ 
+							
+						}else{
+							window.history.pushState({}, "", $('.currentScr').attr('articlelistlinks'));
+							
+							articlePostId = $('.currentScr').attr("article-post-id");		
+
+							/*New non subscriber For Infinite Scroll*/								
+							if (null != is_user_logged_in) {								
+								var tn_sfg_local = localStorage.getItem("tn_sfg_local");
+								if (null != tn_sfg_local && undefined != tn_sfg_local && '' != tn_sfg_local) {
+									tn_sfg_local = JSON.parse(tn_sfg_local);
+									if (tn_sfg_local.includes(parseInt(articlePostId))) {		
+										$('.currentScr').find('.tn-sfg-add-to-list').addClass('selected');
+										$('.currentScr').find('.tn-sfg-add-to-list').removeClass('hide');
+									}else {
+										$('.currentScr').find('.tn-sfg-add-to-list').removeClass('hide');
+									}
+								} else {
+									$('.currentScr').find('.tn-sfg-add-to-list').removeClass('hide');
+								}	
+							}
+							/*New non subscriber For Infinite Scroll*/
+							<!--- Update Chartbeat info--->
+						
+							var allSubject 		= $('.postid-'+articlePostId+'.currentScr input[name="tpTags"]').val();							
+							var allAuthor  		= $('.postid-'+articlePostId+'.currentScr input[name="tpContentAuthor"]').val();		
+							
+																	
+									var username = getCookie('SESSname');
+									if(username != null){
+										_cbq.push(['_acct', 'paid']);   
+									}else{
+										_cbq.push(['_acct', 'anon']);    
+									}
+									
+							
+							pSUPERFLY.virtualPage({
+								sections: allSubject,
+								authors	: allAuthor,
+								path	: window.location.pathname,
+								title	: $('.currentScr').attr('articlelisttitle')
+							});
+						}
+						
+						/* Taxonomy and Author Trigger in GA Event Start */
+						var allSubject = allSubject.split(',');
+						$.each( allSubject, function( i, allsubval ) {
+							gaTaxonomyAuthor( allsubval, $('.currentScr').attr('articlelisttitle'), $('.currentScr').attr('articlelistlinks') ); 
+						});
+						
+						var allAuthor = allAuthor.split(',');
+						$.each( allAuthor, function( i, allautval ) {
+							gaTaxonomyAuthor( allautval, $('.currentScr').attr('articlelisttitle'), $('.currentScr').attr('articlelistlinks') );
+						});
+						/* Taxonomy and Author Trigger in GA Event End */
+						
+						/*
+						 * Call Email Signup for infinite scroll 
+						 */
+						if( !$('.postid-'+articlePostId+' .article-body img').parent("a").parent("figure").hasClass('bx-item') ){
+							
+							if( !$(".abody-"+articlePostId+"").hasClass("email-signup-visited") ){
+								email_signup_module( articlePostId );	
+							}							
+						}						 
+						
+						/* Content Page View Event */
+						dataLayer.push({
+							'event': 'gaPageViewEvent',
+							'gaEventCategory': 'article',
+							'gaEventAction': $('.currentScr').attr('articlelisttitle'),
+							'gaEventLabel': articlePostId,
+						});
+						/* Content Page View Event */
+						
+						/*
+						 * Article Divider Scrolled Over Total Count
+						 */
+						dataLayer.push({
+							'event': 'gaRecirculationEvent',
+							'gaEventCategory': 'recirculation',
+							'gaEventAction': 'article-divider-scrolled-over',
+							'gaEventLabel': $('.currentScr').attr('articlelistlinks'),
+						});
+						
+						/*
+						 * Article Divider Scrolled Over Individual Count
+						 */
+						article_number = $('.abody-'+articlePostId+'').attr("article-number");
+						if (typeof article_number !== typeof undefined && article_number !== false) {
+							dataLayer.push({
+								'event': 'gaRecirculationEvent',
+								'gaEventCategory': 'recirculation',
+								'gaEventAction': 'article-divider-scrolled-over-'+article_number+'',
+								'gaEventLabel': $('.currentScr').attr('articlelistlinks'),
+							});
+						}	
+						
+						// Google Analytics  for Infinite Scroll
+					    /*ga('send', 'pageview', {
+							'page': $('.currentScr').attr('articlelistlinks'),
+							'title': $('.currentScr').attr('articlelisttitle')
+						});*/
+						
+						ga('set', 'dimension1', $('.currentScr').find('.tn_publish_date').text());												
+						ga('send', 'pageview', {
+							'page': window.location.pathname,
+							'title': $('.currentScr').attr('articlelisttitle')
+						});						
+
+						<!--- Page View Hit --->
+							
+						dataLayer.push({
+							'event':'InfiniteScrollPageView',
+							'virtualPageURL': window.location.pathname,
+							'virtualPageTitle' : $('.currentScr').attr('articlelisttitle')
+						});	
+							
+						<!--- Page View Hit --->
+						
+						$("nav.primary ul li.article-meta h2").html($('.currentScr').attr('articlelisttitle').substring(0,100));
+						$("title").html($('.currentScr').attr('articlelisttitle'));
+												 
+						var linktext = $('.currentScr').find(".anchor_subject").html();
+						if ( linktext!='' ){
+							
+							var linkredirectval =$('.currentScr').find(".anchor_subject").attr('subjectlink');
+							
+							if(typeof linkredirectval!='undefined'){
+								var subject_head_link = "<a href='"+linkredirectval+"'>"+linktext+"</a>";
+								$('.tophead_subject').html(subject_head_link);
+							}else{
+								var subject_head_link = "";
+								$('.tophead_subject').html(subject_head_link);
+							}
+							
+						}
+			       
+						pageChange = parseInt(pageChange) + 1;
+					}
+				  
+				}else{
+			       $(this).removeClass('currentScr');
+				}
+		    });
+			
+			$current_article = $('.scrolltrace.currentScr');
+			// Load next leaderboard ad on reach to bottom action tout 			
+			if($current_article.hasClass('currentScr')){
+				
+				articlePostId = $('.currentScr').attr("article-post-id");
+											
+				var windowTop = $(window).scrollTop();				
+				
+				if( $current_article.find('.expand-reduce').length != 0 ){								
+						
+					if( !$('#expand-reduce-'+articlePostId+'').hasClass('expand-close') && !$('#expand-reduce-'+articlePostId+'').hasClass('tn-first-expand')){
+						
+						if( $('.abody-'+articlePostId+'').hasClass('keep-reading') ){
+
+							/* Overflow Hidden Parent Div */
+							$('.abody-'+articlePostId+'').parent().addClass("keep-reading-parent");
+						
+							/* Hide Article Footer */
+							$('#article-footer-'+articlePostId+'').hide();
+							
+							/* Hide Rev Content Block */
+							$('#tabola-block-'+articlePostId+'').hide();
+							
+							/* Hide aside wrap modules */
+							$('.scrolltrace.currentScr .aside-wrap .ad-wrap').not(':eq(0)').hide();	
+							
+							/* Show expand Reduce */
+							$('#expand-reduce-'+articlePostId+'').show();		
+						}else{
+							<!--- Piano --->												
+							// Execute when the page loaded
+							eval("pushDataPianoOnInfinite_"+articlePostId+"()");	
+							tp.experience.execute();
+							<!--- Piano --->
+						}							
+					}
+				}											
+			}
+			
+			var loadPoint = $('.article-body:last').offset().top - 68;
+			
+			if  (loadPoint!=false && $(window).scrollTop() >= loadPoint){ 
+				if( $('.scrolltrace').length==count ){ 
+				
+					loagAgn = true;
+				
+					if(loagAgn){
+						count++;
+						
+						if(count < 6){
+							
+							if(preventLoad_article==false){
+								
+															
+								loadArticle(count);//code
+								
+							
+							}		
+						}
+						
+						if (count==6) {
+							$('a.inifiniteLoader').hide();
+							$("#article-footer-last").show();
+							$("#single_article_footer").show();
+							
+							/*
+							 * Track views of article footer last 
+							 */
+							 
+							/* 
+							 * Latest form the nation
+							 */			 
+							dataLayer.push({
+								'event': 'gaInfiniteScrollfooterShowEvent',
+								'gaEventCategory': 'infinite-scroll-footer-latest-articles',
+								'gaEventAction': 'infinite-scroll-footer-latest-articles-show',
+								'gaEventLabel': document.URL,
+							});
+							
+							/* 
+							 * Editor Picks
+							 */			 
+							dataLayer.push({
+								'event': 'gaInfiniteScrollfooterShowEvent',
+								'gaEventCategory': 'infinite-scroll-footer-editor-picks',
+								'gaEventAction': 'infinite-scroll-footer-editor-picks-show',
+								'gaEventLabel': document.URL,
+							});
+						}
+						
+						loagAgn = false;
+					}
+				}
+			}				
+			
+			$(".wpsdc-drop-cap").parent("p").addClass("drop_c");
+		});
+		
+		/*
+		 * Change Height & Text Expand Reduce 
+		 */
+		$(document).on('click', '.expand-reduce .expand-reduce-full, .expand-reduce .expand-reduce-keep', function(event){
+			
+			event.preventDefault();
+			
+			/**
+ 			 * Most Popular	
+			 */			
+			if ( undefined !== thenationmp ) {
+				let thenation_infinite_article_most_popular = jQuery(".thenation-single-article-most-popular");
+				if ( null !== thenation_infinite_article_most_popular ) {
+					thenation_infinite_article_most_popular.each(function(){
+						thenationmp.getSingleArticleMostPopular( jQuery(this) );
+					});	
+				}				
+			} 
+			
+			$(this).parents('.expand-reduce').toggleClass('expand-close');
+			
+			var $article_id = $(this).attr('article-id');
+			setTimeout(function (){
+				<!--- Piano --->				
+				eval("pushDataPianoOnInfinite_"+$article_id+"()");	
+				// Execute when the page loaded			
+				tp.experience.execute();
+				<!--- Piano --->
+
+				/*
+				 * Related Single Article Track
+				 */
+				relatedSingleArticle( $article_id );
+				
+				/*
+				 * Related Multiple Article Track
+				 */
+				relatedMultiArticle( $article_id );
+				
+				/*
+				 * Current Issue Module Track
+				 */
+				currentIssueModule( $article_id );
+				 
+				/*
+				 * Inline CTA One Track
+				 */
+				inlineCtaOne( $article_id ); 
+				
+				/*
+				 * Inline CTA Two Track
+				 */
+				inlineCtaTwo( $article_id ); 
+
+				/*
+				 * Inline CTA Two Track
+				 */
+				inlineCtaSignup( $article_id ); 
+				
+				/*
+				 * Author Highlight Track
+				 */
+				authorHighlight( $article_id ); 
+				
+				/*
+				 * Series Module Track
+				 */
+				seriesModule( $article_id );
+				
+				/*
+				 * Comment Module Track
+				 */
+				commentModule( $article_id );
+				
+				/*
+				 * Books Salad Track
+				 */
+				booksSalad( $article_id );
+				
+				/*
+				 * Action Tout Module Track
+				 */
+				actionToutModule( $article_id );
+				
+				/*
+				 *  Sidebar Community Module Track
+				 */
+				sidebarCommunityModule( $article_id );
+			}, 2000);
+			tp.push(["setCustomVariable", "book_and_arts_article", "false"]);
+				
+						$('.abody-'+$article_id+'').removeClass('keep-reading');			
+
+			$('.abody-'+$article_id+'').removeClass('no-reading');	
+
+			/* Overflow Visible Parent */
+			$('.abody-'+$article_id+'').parent().removeClass("keep-reading-parent");
+
+			/* Show Article Footer */
+			$('#article-footer-'+$article_id+'').show();
+
+			/* Show Rev Content Block */
+			$('#tabola-block-'+$article_id+'').show();
+
+			/* Show aside wrap modules */
+			$('.postid-'+$article_id+' .aside-wrap .ad-wrap').not(':eq(0)').show();	
+
+			/* Hide expand Reduce */
+			$('#expand-reduce-'+$article_id+'').hide();	
+			if (sharethis_infinite.includes($article_id) === false && 0 < $("#inline-share-button-"+$article_id ).length) {
+				var x = $("#inline-share-button-"+$article_id).children();
+				for(var i = 0 ; i< x.length;i++){
+					var e = x[i].getAttribute("data-network");
+					if(e!=null){
+						dataLayer.push({
+							event: "gaShareThisShow",
+							gaEventCategory: "sharethis-article-share-show",
+							gaEventAction: "sharethis-article-share-show-" + e ,
+							gaEventLabel: document.URL
+						});
+						
+					}
+				}
+				sharethis_infinite.push($article_id);
+			}
+			
+		}); 
+		
+		$('body').on('click','.click_comment',function(event){
+			
+			event.preventDefault();
+			
+			/* Basic Data */
+			var article_id 			= $(this).attr("article-post-id");
+			var comment_container   = $(this).closest('.article-footer').find('.commentContainer');
+			var post_comment_list 	= comment_container.find('.post_comment_list');
+			var _loader				= comment_container.find('.post_comment_list_loader');		
+			var _count				= $(this).find('.title');	
+			
+			/* Check if user logged_in */
+			$is_user_logged_in = false;
+			$admin = getCookie('is_admin');
+			$username = getCookie('SESSname');
+			var cookieSessInfore = getCookie('SESSuserinfo');
+			if( $username != null ){
+				$is_user_logged_in = true;
+				$username = Base64.decode($username);
+				comment_container.find('.logged-in-as').find('.login_user').html($username);
+				cookieSessInfore = Base64.decode(cookieSessInfore);
+				cookieSessInfore = JSON.parse(cookieSessInfore);
+				cookieSessInfore = cookieSessInfore.user_id;
+			}
+			
+			if( $username !== null || $admin == "true" ){
+				$is_user_logged_in = true;
+			}
+			
+			if( $is_user_logged_in ){
+				comment_container.find('form').show();
+			}else{
+				comment_container.find('.must-log-in').show();
+			}
+			/* Check if user logged_in */			
+			
+			/* Open commnet section */
+			comment_container.slideToggle('slow');		
+
+			/* Add close class */	
+			$(this).find('.open').toggleClass('close');
+						
+			/* Check for ajax call */			
+			if( post_comment_list.html().length == 0){	
+
+				/* Change Focus */
+				try{
+					comment_container.find('textarea').focus();
+				}catch(e){}
+
+				/* post_comment_list_loader */
+				_loader.show();
+				
+				$.ajax({
+					url :ajax_object.ajax_url,
+					data:{
+						'action' 	 : 'article_comment_list',
+						'article_id' : 	article_id,
+						"user_id"	 : 	cookieSessInfore
+					},
+					type:'POST',
+					success:function( response ){						
+						if( typeof response == 'string' ){
+							response = JSON.parse( response );
+							if( response.status == 'success' ){
+								_loader.hide();
+								post_comment_list.before(response.sorting);
+								post_comment_list.append(response.comment_list);
+								_count.html('Comments ('+response.count+')');
+							}else if( response.status == 'fail' ){
+								_loader.hide();
+							}
+						}
+					}
+				});
+			}		
+		});
+		
+		jQuery( ".action_tout_remove_gallery a" ).removeClass( "gallery imgHover" ).delay( 1000 );
+		
+		$(document).on('click','.nation_convsersation',function(event){
+			
+			event.preventDefault();
+			
+			/* Basic Data */
+			var article_id 			= $(this).attr("article-id");
+			var _click_comment      = $('.postid-'+article_id+' .click_comment');			
+			var comment_container   = _click_comment.closest('.article-footer').find('.commentContainer');
+			var post_comment_list 	= comment_container.find('.post_comment_list');
+			var _loader				= comment_container.find('.post_comment_list_loader');		
+			var _count				= _click_comment.find('.title');	
+			
+			/* Check if user logged_in */
+			$is_user_logged_in = false;
+			$admin = getCookie('is_admin');
+			$username = getCookie('SESSname');
+			var cookieSessInfore = getCookie('SESSuserinfo');
+			if( $username != null ){
+				$is_user_logged_in = true;
+				$username = Base64.decode($username);
+				comment_container.find('.logged-in-as').find('.login_user').html($username);
+				cookieSessInfore = Base64.decode(cookieSessInfore);
+				cookieSessInfore = JSON.parse(cookieSessInfore);
+				cookieSessInfore = cookieSessInfore.user_id;
+			}
+			if( $username !== null || $admin == "true" ){
+				$is_user_logged_in = true;
+			}
+			if( $is_user_logged_in ){
+				comment_container.find('form').show();
+			}else{
+				comment_container.find('.must-log-in').show();
+			}
+			/* Check if user logged_in */			
+			
+			/* Open commnet section */
+			comment_container.slideToggle('slow');		
+
+			/* Add close class */
+			$('html, body').animate({scrollTop: _click_comment.offset().top},2000);	
+			_click_comment.find('.open').toggleClass('close');
+						
+			/* Check for ajax call */			
+			if( post_comment_list.html().length == 0){	
+
+				/* Change Focus */
+				try{
+					comment_container.find('textarea').focus();
+				}catch(e){}
+
+				/* post_comment_list_loader */
+				_loader.show();
+				
+				$.ajax({
+					url :ajax_object.ajax_url,
+					data:{
+						'action' 	 : 'article_comment_list',
+						'article_id' : 	article_id,
+						'user_id'    : cookieSessInfore
+					},
+					type:'POST',
+					success:function( response ){						
+						if( typeof response == 'string' ){
+							response = JSON.parse( response );
+							if( response.status == 'success' ){
+								_loader.hide();
+								post_comment_list.before(response.sorting);
+								post_comment_list.append(response.comment_list);
+								_count.html('Comments ('+response.count+')');
+							}else if( response.status == 'fail' ){
+								_loader.hide();
+							}
+						}
+					}
+				});
+			}	
+			
+		});
+		
+		$(".social-share-icon").click(function(){
+			$(".nav-toggle, .logo").toggleClass("hidden");
+			$(".share-icons").toggleClass("slide-share");
+			$(".header-bar a.social-sharing").toggleClass("share-icons-close");            
+		});
+		
+		/* 
+		 * Click Event Tracking for Related Single Article
+		 */
+		 
+		$(document).on('click', '.related-oneup-click',function(){
+			/* 
+			 * Click Event
+			 */			 
+			dataLayer.push({
+				'event': 'gaRelatedSingleArticleEvent',
+				'gaEventCategory': 'related-single-article',
+				'gaEventAction': 'related-single-article-click',
+				'gaEventLabel': $(this).attr('href'),
+			});
+		}); 
+		
+		/* 
+		 * Click Event Tracking for Related Multi Article
+		 */
+		 
+		$(document).on('click', '.related-multi-click',function(){
+			/* 
+			 * Click Event
+			 */			 
+			dataLayer.push({
+				'event': 'gaRelatedMultiArticleEvent',
+				'gaEventCategory': 'related-multi-article',
+				'gaEventAction': 'related-multi-article-click',
+				'gaEventLabel': $(this).attr('href'),
+			});
+		}); 
+		
+		/* 
+		 * Click Event Tracking for Current Issue
+		 */
+		 
+		$(document).on('click', '.magazine_button a',function(){
+			/* 
+			 * Click Event
+			 */			 
+			dataLayer.push({
+				'event': 'gaCurrentIssueModuleEvent',
+				'gaEventCategory': 'current-issue-module',
+				'gaEventAction': 'current-issue-module-click',
+				'gaEventLabel': $(this).find('input').val(),
+			});
+		}); 
+		
+		/* 
+		 * Click Event Tracking for In-line CTA 1
+		 */
+		 
+		$(document).on('click', '.inline-cta-1 .cta a',function(){
+			/* 
+			 * Click Event
+			 */			 
+			dataLayer.push({
+				'event': 'gaInlineCtaOneEvent',
+				'gaEventCategory': 'inline-cta-1',
+				'gaEventAction': 'inline-cta-1-click',
+				'gaEventLabel': $(this).find('input').val(),
+			});
+		}); 
+		
+		/* 
+		 * Click Event Tracking for In-line CTA 2
+		 */
+		 
+		$(document).on('click', '.inline-cta-2 .cta a',function(){
+			/* 
+			 * Click Event
+			 */			 
+			dataLayer.push({
+				'event': 'gaInlineCtaTwoEvent',
+				'gaEventCategory': 'inline-cta-2',
+				'gaEventAction': 'inline-cta-2-click',
+				'gaEventLabel': $(this).find('input').val(),
+			});
+		});
+		/* 
+		 * Click Event Tracking for In-line CTA Signup 
+		 */
+		 
+		$(document).on('click', '.inline-cta_form .cta a',function(){
+			/* 
+			 * Click Event
+			 */			 
+			dataLayer.push({
+				'event': 'gaInlineCtaSignupEvent',
+				'gaEventCategory': 'inline-cta-signup',
+				'gaEventAction': 'inline-cta-signup-click',
+				'gaEventLabel': $(this).find('input').val(),
+			});
+		});
+		
+		/* 
+		 * Click Event Tracking for Footer Last Latest From NAtion 
+		 */
+		 
+		$(document).on('click', '#article-footer-last .latest-from h3 a',function(){
+			/* 
+			 * Click Event
+			 */			 
+			dataLayer.push({
+				'event': 'gaInfiniteScrollfooterEvent',
+				'gaEventCategory': 'infinite-scroll-footer-latest-articles',
+				'gaEventAction': 'infinite-scroll-footer-latest-articles-click',
+				'gaEventLabel': $(this).attr('href'),
+			});
+		});
+		
+		/* 
+		 * Click Event Tracking for Footer Last Editor Picks
+		 */
+		 
+		$(document).on('click', '#article-footer-last .editors-picks h3 a, #article-footer-last .editors-picks .story a',function(){
+			/* 
+			 * Click Event
+			 */			 
+			dataLayer.push({
+				'event': 'gaInfiniteScrollfooterEvent',
+				'gaEventCategory': 'infinite-scroll-footer-editor-picks',
+				'gaEventAction': 'infinite-scroll-footer-editor-picks-click',
+				'gaEventLabel': $(this).attr('href'),
+			});
+		});
+		
+		/* 
+		 * Click Event Tracking for Author Highlight
+		 */
+		 
+		$(document).on('click', '.author-modules .newrelated-blocks > a',function(){
+			/* 
+			 * Click Event
+			 */			 
+			dataLayer.push({
+				'event': 'gaAuthorHighlight',
+				'gaEventCategory': 'author-Highlight',
+				'gaEventAction': 'author-Highlight-click',
+				'gaEventLabel': $(this).attr('href'),
+			});
+		});
+		
+		/* 
+		 * Click Event Tracking for Series Module
+		 */
+		 
+		$(document).on('click', '.series-modules .series-modules-blocks .series-blocks > a',function(){
+			/* 
+			 * Click Event
+			 */			 
+			dataLayer.push({
+				'event': 'gaSeriesModule',
+				'gaEventCategory': 'series-module',
+				'gaEventAction': 'series-module-click',
+				'gaEventLabel': $(this).attr('href'),
+			});
+		});
+		
+		/* 
+		 * Click Event Tracking for Comment Module
+		 */
+		 
+		$(document).on('click', '.comment-module .comment-blocks .cta input',function(){
+			/* 
+			 * Click Event
+			 */			 
+			dataLayer.push({
+				'event': 'gaCommentsModule',
+				'gaEventCategory': 'comments-module',
+				'gaEventAction': 'comments-module-click',
+				'gaEventLabel': $(this).val(),
+			});
+		});
+		
+		/* 
+		 * Click Event Tracking for Books Salad
+		 */
+		 
+		$(document).on('click', '.book-module .newrelated-blocks a',function(){
+			/* 
+			 * Click Event
+			 */			 
+			dataLayer.push({
+				'event': 'gaBooksSalad',
+				'gaEventCategory': 'books-salad',
+				'gaEventAction': 'books-salad-click',
+				'gaEventLabel': $(this).parent().parent().find('h5').text(),
+			});
+			
+		});
+		
+		/* 
+		 * Click Event Tracking for Action Tout Module
+		 */
+		 
+		$(document).on('click', 'aside.takeaction .cta input',function(){
+			/* 
+			 * Click Event
+			 */			 
+			dataLayer.push({
+				'event': 'gaActionToutModule',
+				'gaEventCategory': 'action-tout-module',
+				'gaEventAction': 'action-tout-module-click',
+				'gaEventLabel': document.URL,
+			});
+		});
+		
+		/* 
+		 * Click Event Tracking for Keep Reading 2/3/4/5
+		 */
+		 
+		$(document).on('click', '.expand-reduce a',function(){
+			
+			var article_number = $(this).parents('.scrolltrace').find('.article-body').attr('article-number');
+			
+			if (typeof article_number !== typeof undefined && article_number !== false) {
+				/* 
+				 * Click Event
+				 */			
+				dataLayer.push({
+					'event': 'gaKeepReading',
+					'gaEventCategory': 'keep-reading',
+					'gaEventAction': 'keep-reading-'+article_number+'-click',
+					'gaEventLabel': document.URL,
+				});	
+			}			
+		});		
+		
+		/*
+		 * Article Email Sign Up 
+		 */
+
+		$(document).on('click','.para_one_button_email',function(){
+			/*
+			 * Track Click On Sign Up Button GTM
+			 */		
+			var current_email_signup = $(this).parents(".email-signup-module");  
+			var current_step = current_email_signup.attr("data-section");	
+			var article_id   =  $(this).parents("#url-title").parent().attr("article-post-id");	
+			paragraphOneClickEvent(article_id, current_step);
+			
+			var email = current_email_signup.find("#para-one-email-input-"+current_step+"").val();			
+			var sailthru_list = current_email_signup.find("#para-one-sailthru-list-"+current_step+"").val();
+			var current_parent = $(this).parent();
+			
+			if( email!='' && typeof email!==typeof undefined){
+				jQuery.ajax({
+					url  :ajax_object.ajax_url,
+					type :"POST",
+					data :"sailthru_email_take_action="+email+"&take_action_sailthru_list_final="+sailthru_list+"&action=action_tout_sailthru",
+					success : function(data){
+						if( data.indexOf('errormsg') > 0 ){
+							current_parent.find('.footer_email_error').html(data);
+						}else{
+							/*
+							 * Track Successful Sign Up GTM
+							 */	
+
+							if( typeof article_id !== typeof undefined && typeof current_step !== typeof undefined && (typeof paragraph_module !== typeof undefined) && (paragraph_module[article_id][current_step].event_name!="") ){
+								dataLayer.push({
+									'event': 'gaParagraphOneEvent',
+									'gaEventCategory': ''+ paragraph_module[article_id][current_step].event_name +'',
+									'gaEventAction': ''+ paragraph_module[article_id][current_step].event_name +'-list',
+									'gaEventLabel': email,
+								});	
+							}
+							
+							var nextTNstep = parseInt(current_step)+1;	
+							nextTNstep = ( nextTNstep > 5 )? 0 : nextTNstep;
+							var step = getParaOneNextStep(article_id, nextTNstep);
+							
+							var cookieDateTNstep = new Date();
+							cookieDateTNstep.setTime(cookieDateTNstep.getTime() + (30*24*60*60*1000));
+							document.cookie = "TNstep="+step+";expires="+cookieDateTNstep.toUTCString()+";path=/";
+							
+							var cookieDateTNlifetime = new Date();
+							cookieDateTNlifetime.setTime(cookieDateTNlifetime.getTime() + (10*365*24*60*60*1000));
+							document.cookie = "TNlifetime="+step+";expires="+cookieDateTNlifetime.toUTCString()+";path=/";
+							
+							$(".abody-"+article_id+" .email-signup-module").hide();
+							current_email_signup.next("#para-one-thankyou-"+article_id+"").show();
+						}
+					}
+				});
+			}else{
+				current_parent.find('.footer_email_error').html('Please Enter Email');
+			}
+		});
+		
+		/*
+		 * Paragraph one other module
+		 */
+
+		$(document).on('click','.para_one_button',function(){
+			/*
+			 * Track Click On Sign Up Button GTM
+			 */		
+			var current_step = $(this).parents(".email-signup-module").attr("data-section");
+			var article_id   =  $(this).parents("#url-title").parent().attr("article-post-id");	
+			var nextTNstep = parseInt(current_step)+1;
+			
+			nextTNstep = ( nextTNstep > 5 )? 0 : nextTNstep;			
+			var step = getParaOneNextStep(article_id, nextTNstep);	
+				
+			var cookieDateTNstep = new Date();
+			cookieDateTNstep.setTime(cookieDateTNstep.getTime() + (30*24*60*60*1000));
+			document.cookie = "TNstep="+step+";expires="+cookieDateTNstep.toUTCString()+";path=/";
+			
+			var cookieDateTNlifetime = new Date();
+			cookieDateTNlifetime.setTime(cookieDateTNlifetime.getTime() + (10*365*24*60*60*1000));
+			document.cookie = "TNlifetime="+step+";expires="+cookieDateTNlifetime.toUTCString()+";path=/";
+			
+			paragraphOneClickEvent(article_id, current_step);
+		});	
+		
+		
+		$(document).on('click','.inline_cta_signup',function(){				
+			
+			var current_email_signup = $(this).parents(".inline-cta-form-module");  	
+			var article_id   =  $(this).parents("#url-title").parent().attr("article-post-id");	
+			$(".inline_cta__form_error_"+article_id).html("");
+			$(".inline_cta__form_toperror_"+article_id).html("");
+			var email = $("#inline_cta__email_"+article_id).val();			
+			var sailthru_list = $("#inline_cta__sail_list_"+article_id).val();
+			var current_parent = $(this).parent();
+			
+			if( email!='' && typeof email!==typeof undefined){
+				if(!isValidEmailAddress(email)){
+					$(".inline_cta__form_error_"+article_id).html('<p class="Message errormsg footer_email_error">Please Enter Correct Email Address</p>');
+				}
+				else{
+					jQuery.ajax({
+						url  :ajax_object.ajax_url,
+						type :"POST",
+						data :"article_id="+article_id+"&email="+email+"&list="+sailthru_list+"&action=inlinecta-signup",
+						success : function(data){
+							if( data.indexOf('errormsg') > 0 ){								
+								$(".inline_cta__form_error_"+article_id).html(data);
+							}else{								
+								$(".inline_cta__signup_module_"+article_id).hide();
+								if (data.indexOf('verify_email') > 0) {
+									$("#inline_cta__form_thanks"+article_id).html(data);	
+								}								
+								$("#inline_cta__form_thanks"+article_id).show();
+							}
+						}
+					});
+				}
+			}else{
+				$(".inline_cta__form_error_"+article_id).html('<p class="Message errormsg footer_email_error">Please Enter Email</p>');
+			}
+		});
+		
+	});	
+	function isJSON(string){
+		try {
+			JSON.parse(string);
+		} catch (e) {
+			return false;
+		}
+		return true;
+	}	
+</script>
+<div id="show_light_box"></div>
+
+<div class="tn-show-sfg-subs-popup hide">
+<div class="tn-sfg-subs-popup">
+<a href="javascript:void(0)" class="tn-sfg-subs-close">x</a>
+<iframe style="width:100%;height: 100%;" id="sfgIframe" src="" allowfullscreen></iframe>
+</div>
+<div class="tn-sfg-subs-overlay"></div>
+</div>
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript">
+				jQuery(document).ready(function(){
+					jQuery(document).on('click', '.tn-iframe-subscribe a', function(e){	
+						e.preventDefault();
+						if (typeof thenation_globals != typeof undefined && thenation_globals.tn_paywall_sfgiframe != '') {
+							if (jQuery("#sfgIframe").attr("src") ==  '') {
+								jQuery("#sfgIframe").attr("src", thenation_globals.tn_paywall_sfgiframe);		
+							}							
+							jQuery(".tn-show-sfg-subs-popup").toggleClass("hide");
+							jQuery("body").css({"overflow":"hidden"});
+						}						
+					});
+					
+					jQuery(document).on('click', '.tn-sfg-subs-close', function(e){
+						e.preventDefault();
+						jQuery(".tn-show-sfg-subs-popup").toggleClass("hide");
+						jQuery("body").css({"overflow":"unset"});
+					});
+				});
+			</script>
+
+<section class="stories custom article-stories" id="article-footer-last" data-nosnippet>
+<div class="row even-split" data-equalizer="">
+<div class="most-popular latest-from small-12 medium-6 columns" data-equalizer-watch="" style="height: 794px;">
+<h2 class="section-title">
+<span>Latest from the nation</span>
+</h2>
+<div class="story">
+<span class="date">Yesterday 3:40 pm</span><h3>
+<a href="https://www.thenation.com/article/politics/cheney-no-lincoln/">Liz Cheney Is No Abraham Lincoln</a>
+</h3><h2 class="author_name"> <a class="author" href="https://www.thenation.com/authors/john-nichols/">John Nichols</a></h2>
+</div>
+<div class="story">
+<span class="date">Yesterday 1:16 pm</span><h3>
+<a href="https://www.thenation.com/article/environment/thank-green-new-deal-inflation-reduction-act/">We Can Thank Green New Dealers for the Inflation Reduction Act</a>
+</h3><h2 class="author_name"> <a class="author" href="https://www.thenation.com/authors/matthew-miles-goodrich/">Matthew Miles Goodrich</a></h2>
+</div>
+<div class="story">
+<span class="date">Yesterday 1:11 pm</span><h3>
+<a href="https://www.thenation.com/article/politics/yuh-line-niou-democrats/">Can Yuh-Line Niou Unite Fractured Progressives to Win a New York Congressional Seat?</a>
+</h3><h2 class="author_name"> <a class="author" href="https://www.thenation.com/authors/joan-walsh/">Joan Walsh</a><a class="author-twitter" href="https://twitter.com/@joanwalsh" target="_blank"><span>Twitter</span></a></h2>
+</div>
+<div class="story">
+<span class="date">Yesterday 10:46 am</span><h3>
+<a href="https://www.thenation.com/article/politics/trump-crime-investigations/">Trump Is a Criminal—Will Any of These 4 Investigations Snare Him?</a>
+</h3><h2 class="author_name"> <a class="author" href="https://www.thenation.com/authors/elie-mystal/">Elie Mystal</a><a class="author-twitter" href="https://twitter.com/@ElieNYC" target="_blank"><span>Twitter</span></a></h2>
+</div>
+<div class="story">
+<span class="date">Yesterday 10:25 am</span><h3>
+<a href="https://www.thenation.com/article/world/military-recruitment-crisis/">What the Military’s Recruitment Crisis Means for America</a>
+</h3><h2 class="author_name"> <a class="author" href="https://www.thenation.com/authors/andrea-mazzarino/">Andrea Mazzarino</a></h2>
+</div>
+</div>
+<div class="editors-picks small-12 medium-6 columns" data-equalizer-watch="" style="height: 794px;">
+<h2 class="section-title">
+<span>editor's picks</span>
+</h2>
+<div class="story">
+<a href="https://www.thenation.com/article/archive/video-people-in-denmark-are-a-lot-happier-than-people-in-the-united-states-heres-why/">
+<img src="https://www.thenation.com/cdn-cgi/image/width=340,quality=80,format=auto/wp-content/uploads/2017/07/denmark-sg-img.jpg" alt="">
+</a><h3>
+<a href="https://www.thenation.com/article/archive/video-people-in-denmark-are-a-lot-happier-than-people-in-the-united-states-heres-why/">VIDEO: People in Denmark Are a Lot Happier Than People in the United States. Here’s Why.</a>
+</h3><h2 class="author_name"> <a class="author" href="https://www.thenation.com/authors/the-nation/">The Nation</a><a class="author-twitter" href="https://twitter.com/@thenation" target="_blank"><span>Twitter</span></a></h2>
+</div>
+<div class="story">
+<a href="https://www.thenation.com/article/archive/historical-amnesia-about-slavery-is-a-tool-of-white-supremacy/">
+<img src="https://www.thenation.com/cdn-cgi/image/width=340,quality=80,format=auto/wp-content/uploads/2017/08/charlottesville-torches-rtr-img.jpg" alt="">
+</a><h3>
+<a href="https://www.thenation.com/article/archive/historical-amnesia-about-slavery-is-a-tool-of-white-supremacy/">Historical Amnesia About Slavery Is a Tool of White Supremacy</a>
+</h3><h2 class="author_name"> <a class="author" href="https://www.thenation.com/authors/mychal-denzel-smith/">Mychal Denzel Smith</a><a class="author-twitter" href="https://twitter.com/@mychalsmith" target="_blank"><span>Twitter</span></a></h2>
+</div>
+</div>
+</div>
+</section>
+</div>
+
+</div>
+
+<div id="single_article_footer" style="display: none">
+
+<footer class="push">
+<div class="row">
+<div class="sitemap small-12 columns">
+
+<div class="block home">
+<span class="logo">
+<a href="https://www.thenation.com"><img src="https://www.thenation.com/wp-content/themes/thenation/images/thenation_new-logo-big.svg" alt="The Nation"></a>
+</span>
+</div>
+
+
+<div class="block social">
+<h2>Follow The Nation</h2>
+<ul>
+<li><a class="fb" href="https://www.facebook.com/TheNationMagazine" target="_blank"></a></li>
+<li><a class="tw" href="https://twitter.com/thenation" target="_blank"></a></li>
+<li><a class="instagram" href="https://www.instagram.com/nationmag/" target="_blank"></a></li>
+<li><a class="rs" href="http://www.thenation.com/feed/?post_type=article" target="_blank"></a></li>
+</ul>
+<h2>Get Email Updates</h2>
+<p>
+Sign up for our free daily newsletter, along with occasional offers for programs that support our journalism. By signing up to receive emails, you agree to receive occasional promotional offers for programs that support <em>The Nation</em>'s journalism. You may unsubscribe or adjust your preferences at any time. You can read our <a href="https://www.thenation.com/privacy-policy" style="font-style: normal;text-decoration: underline !important;font-size: inherit;" target="_blank"><strong>Privacy Policy</strong></a> here.
+</p>
+
+<div class="newsletter-signup">
+<input type="email" class="newsletter-signup__email" id="newsletter_email" name="newsletter_email" required="required" placeholder="Email address">
+<input type="hidden" id="footer-recaptcha-verify">
+<input type="button" id="newsletter_footer" value="submit" class="newsletter-signup__submit" />
+</div>
+<div id="subscribe_newsletter"></div>
+
+
+</div>
+
+
+<div class="">
+<aside id="nav_menu-5" class="widget widget_nav_menu block nation nav"><h2 class="expander"><a href="#">Sections</a></h2><div class="menu-footer-sections-container"><ul id="menu-footer-sections" class="menu"><li id="menu-item-119851" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-119851"><a href="https://www.thenation.com/politics/">Politics</a></li>
+<li id="menu-item-342760" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-342760"><a href="https://www.thenation.com/subject/world/">World</a></li>
+<li id="menu-item-342759" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-342759"><a href="https://www.thenation.com/subject/economy/">Economy</a></li>
+<li id="menu-item-349020" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-349020"><a href="https://www.thenation.com/climate-change/">Climate Change</a></li>
+<li id="menu-item-119850" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-119850"><a href="https://www.thenation.com/culture/">Culture</a></li>
+<li id="menu-item-115792" class="menu-item menu-item-type-taxonomy menu-item-object-subject current-article-ancestor current-menu-parent current-article-parent menu-item-115792"><a href="https://www.thenation.com/subject/society/">Society</a></li>
+<li id="menu-item-298725" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-298725"><a href="https://www.thenation.com/content/oppart/">OppArt</a></li>
+</ul></div></aside>
+</div>
+
+
+<div class="">
+<aside id="nav_menu-4" class="widget widget_nav_menu block nation nav"><h2 class="expander"><a href="#">The Nation</a></h2><div class="menu-footer-the-nation-container"><ul id="menu-footer-the-nation" class="menu"><li id="menu-item-116578" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-116578"><a href="https://www.thenation.com/about-us-and-contact/">About</a></li>
+<li id="menu-item-281007" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-281007"><a href="https://www.thenation.com/privacy-policy/">Privacy Policy</a></li>
+<li id="menu-item-404910" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-404910"><a href="https://www.thenation.com/termsofuse/">Terms of Use</a></li>
+<li id="menu-item-178918" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-178918"><a href="https://www.thenation.com/advertise/">Advertise</a></li>
+<li id="menu-item-116581" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-116581"><a href="https://www.thenation.com/community-guidelines/">Comments Policy</a></li>
+<li id="menu-item-131108" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-131108"><a href="https://www.thenation.com/contact-us/">Contact Us</a></li>
+<li id="menu-item-116583" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-116583"><a href="https://www.thenation.com/help/">Help</a></li>
+<li id="menu-item-178899" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-178899"><a href="https://www.thenation.com/jobs/">Jobs and Internships</a></li>
+<li id="menu-item-284517" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-284517"><a href="https://www.thenation.com/donation">Support The Nation</a></li>
+<li id="menu-item-347795" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-347795"><a href="https://www.thenation.com/events">Nation Events</a></li>
+<li id="menu-item-290196" class="shop-footer menu-item menu-item-type-custom menu-item-object-custom menu-item-290196"><a href="https://shop.thenation.com">Nation Shop</a></li>
+<li id="menu-item-179840" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-179840"><a href="https://www.thenation.com/travels">Nation Travels</a></li>
+<li id="menu-item-272170" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-272170"><a href="https://www.thenationwineclub.com">Nation Wine Club</a></li>
+<li id="menu-item-384910" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-384910"><a href="https://thenationfund.org/">The Nation Fund</a></li>
+</ul></div></aside>
+</div>
+
+
+<div class="">
+<aside id="nav_menu-3" class="widget widget_nav_menu block nation nav"><h2 class="expander"><a href="#">Magazine</a></h2><div class="menu-footer-magazine-container"><ul id="menu-footer-magazine" class="menu"><li id="menu-item-134664" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-134664"><a href="https://www.thenation.com/issue/">Current Issue</a></li>
+<li id="menu-item-134728" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-134728"><a href="https://www.thenation.com/masthead/">Masthead</a></li>
+<li id="menu-item-116587" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-116587"><a href="https://www.thenation.com/archive/">Archive</a></li>
+<li id="menu-item-134847" class="tn-subscribe-click menu-item menu-item-type-custom menu-item-object-custom menu-item-134847"><a href="https://subscriptions.thenation.com/Nation_index?pk=G1A1FDF">Subscribe</a></li>
+<li id="menu-item-380175" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-380175"><a href="https://subscriptions.thenation.com/loading.do?omedasite=Nation_CustServ&#038;version=1&#038;page=1">Renew</a></li>
+<li id="menu-item-327168" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-327168"><a href="https://subscriptions.thenation.com/loading.do?omedasite=Nation_Gift">Gift Subscriptions</a></li>
+<li id="menu-item-321842" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-321842"><a href="https://subscriptions.thenation.com/loading.do?omedasite=Nation_digitalacademic">Academic Rate</a></li>
+<li id="menu-item-134727" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-134727"><a href="https://www.thenation.com/subscription-services/">Subscription Service</a></li>
+<li id="menu-item-179839" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-179839"><a href="http://www.thenationreprints.com/">Reprints</a></li>
+<li id="menu-item-384855" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-384855"><a title="Do Not Rent of Sell My Data" href="https://www.thenation.com/privacy-contact-form/">Do Not Rent or Sell My Data</a></li>
+</ul></div></aside>
+</div>
+
+</div>
+
+<div class="copyright">
+<div class="small-12 columns">
+<p>Copyright (c) 2022 The Nation Company LLC</p>
+</div>
+</div>
+
+</div>
+</footer>
+
+
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript">
+		
+		jQuery(document).ready(function(){
+			
+						
+			/*
+			 * Initailize Piano
+			 */
+			
+			tp.push(["init", function() {
+				tp.enableGACrossDomainLinking();
+				tp.experience.init();
+			}]);
+			
+									
+			var currentUrl = document.URL;
+			if(currentUrl.indexOf("?nc=1") > -1){
+				currentUrl = currentUrl.replace("?nc=1","");
+				window.history.pushState({}, null, currentUrl);
+				
+			}
+			
+			if(currentUrl.indexOf("&nc=1") > -1){
+				currentUrl = currentUrl.replace("&nc=1","");
+				window.history.pushState({}, null, currentUrl);
+				
+			}
+			
+			jQuery(".wpsdc-drop-cap").parent("p").addClass("drop_c");	
+		});		
+	</script>
+
+</div><link rel='stylesheet' id='dashicons-css' href='https://www.thenation.com/wp-includes/css/dashicons.min.css?ver=6.0' media='all' />
+<link rel='stylesheet' id='thickbox-css' href='https://www.thenation.com/wp-includes/js/thickbox/thickbox.css?ver=6.0' media='all' />
+<script src='https://www.thenation.com/wp-includes/js/underscore.min.js?ver=1.13.3' id='underscore-js' type="daf5c5e0ef7afec5f4f49f73-text/javascript"></script>
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript" id='wp-util-js-extra'>
+/* <![CDATA[ */
+var _wpUtilSettings = {"ajax":{"url":"\/wp-admin\/admin-ajax.php"}};
+/* ]]> */
+</script>
+<script src='https://www.thenation.com/wp-includes/js/wp-util.min.js?ver=6.0' id='wp-util-js' type="daf5c5e0ef7afec5f4f49f73-text/javascript"></script>
+<script src='https://www.thenation.com/wp-content/plugins/ajax-password-protected-master/ajax-password-protected.js?ver=0.0.1' id='ajax-password-protected-js' type="daf5c5e0ef7afec5f4f49f73-text/javascript"></script>
+<script src='https://www.thenation.com/wp-content/themes/thenation/js/javascripts/jquery-ui.min.js' id='tn-jquery-ui-js' type="daf5c5e0ef7afec5f4f49f73-text/javascript"></script>
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript" id='acs_script_suggest-js-extra'>
+/* <![CDATA[ */
+var acs_config_suggest = {"ajax_url":"https:\/\/www.thenation.com\/wp-json\/cloud-search\/v1\/suggest","acs_suggest_selector":"input[name='s']","acs_suggest_trigger":"3","acs_suggest_results":"20","acs_suggest_click":"goto"};
+/* ]]> */
+</script>
+<script src='https://www.thenation.com/wp-content/themes/thenation/inc/aws-cloudsearch/js/min/aws-cloud-search-local.min.js?ver=1.1.7' id='acs_script_suggest-js' type="daf5c5e0ef7afec5f4f49f73-text/javascript"></script>
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript" id='thenation-magzine_ajax-js-extra'>
+/* <![CDATA[ */
+var ajax_object = {"ajax_url":"https:\/\/www.thenation.com\/wp-admin\/admin-ajax.php"};
+/* ]]> */
+</script>
+<script src='https://www.thenation.com/wp-content/themes/thenation/js/Magzine_issue_ajax.js?ver=1.0.7' id='thenation-magzine_ajax-js' type="daf5c5e0ef7afec5f4f49f73-text/javascript"></script>
+<script src='https://www.thenation.com/wp-content/themes/thenation/js/light_box.js' id='thenation-lightbox-js' type="daf5c5e0ef7afec5f4f49f73-text/javascript"></script>
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript" id='thenation-recaptcha-js-extra'>
+/* <![CDATA[ */
+var tn_recaptcha_details = {"site_key":"6LeP9_UZAAAAALS1EHTemzatNIX2xPAvIDXJS7ki"};
+/* ]]> */
+</script>
+<script src='https://www.google.com/recaptcha/api.js?render=6LeP9_UZAAAAALS1EHTemzatNIX2xPAvIDXJS7ki&#038;onload=tnOnloadCallback&#038;render=explicit' id='thenation-recaptcha-js' type="daf5c5e0ef7afec5f4f49f73-text/javascript"></script>
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript" id='thenation-all-js-js-extra'>
+/* <![CDATA[ */
+var thenation_globals = {"tn_paywall_sfgiframe":"https:\/\/subscribe.thenation.com\/flex\/na\/key\/G0A1TSA\/","tn_incognito_sub":"https:\/\/subscribe.thenation.com\/flex\/NA\/key\/G0EWCPM\/"};
+/* ]]> */
+</script>
+<script src='https://www.thenation.com/wp-content/themes/thenation/js/javascripts/all.js?ver=2.2.35' id='thenation-all-js-js' type="daf5c5e0ef7afec5f4f49f73-text/javascript"></script>
+<script src='https://www.thenation.com/wp-content/themes/thenation/js/min/modernizr.min.js' id='thenation-modernizr1-js' type="daf5c5e0ef7afec5f4f49f73-text/javascript"></script>
+<script src='https://www.thenation.com/wp-content/themes/thenation/js/jquery.bxslider.js' id='bxslider-js-js' type="daf5c5e0ef7afec5f4f49f73-text/javascript"></script>
+<script src='https://www.thenation.com/wp-content/themes/thenation/js/comments_js.js?ver=1.0.3' id='custom-comment-reply-js' type="daf5c5e0ef7afec5f4f49f73-text/javascript"></script>
+<script src='https://www.thenation.com/wp-content/themes/thenation/js/tn-ing-detect.js?ver=1.0.7' id='thenation-ing-detect-js' type="daf5c5e0ef7afec5f4f49f73-text/javascript"></script>
+<script src='https://www.thenation.com/wp-content/themes/thenation/js/min/tn-piano.min.js?ver=3.2.23' id='tn-piano-js' type="daf5c5e0ef7afec5f4f49f73-text/javascript"></script>
+<script src='https://www.thenation.com/wp-content/themes/thenation/js/min/thenation-mostpopular.min.js?ver=1.1.3' id='thenation-mostpopular-js' type="daf5c5e0ef7afec5f4f49f73-text/javascript"></script>
+<script src='https://www.thenation.com/wp-content/themes/thenation/js/thenation-latest-from-the-nation.js?ver=1.1.2' id='thenation-latest_from_the_nation-js' type="daf5c5e0ef7afec5f4f49f73-text/javascript"></script>
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript" id='sfg-js-js-extra'>
+/* <![CDATA[ */
+var sfg_options = {"enable_dash_options":"1"};
+var sfg_options = {"enable_dash_options":"1"};
+/* ]]> */
+</script>
+<script src='https://www.thenation.com/wp-content/themes/thenation/inc/sfg-subscription/assets/sfg.min.js?ver=3.1.11' id='sfg-js-js' type="daf5c5e0ef7afec5f4f49f73-text/javascript"></script>
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript" id='thickbox-js-extra'>
+/* <![CDATA[ */
+var thickboxL10n = {"next":"Next >","prev":"< Prev","image":"Image","of":"of","close":"Close","noiframes":"This feature requires inline frames. You have iframes disabled or your browser does not support them.","loadingAnimation":"https:\/\/www.thenation.com\/wp-includes\/js\/thickbox\/loadingAnimation.gif"};
+/* ]]> */
+</script>
+<script src='https://www.thenation.com/wp-includes/js/thickbox/thickbox.js?ver=3.1-20121105' id='thickbox-js' type="daf5c5e0ef7afec5f4f49f73-text/javascript"></script>
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript">
+	
+		/*subscribe sailthru function start*/
+	
+		function susbcribe_sailthru(form_value){
+			
+			var newsletterArray = new Array();
+
+			var firstname ='';
+
+			var lastname ='';
+
+			var zippostal ='';
+
+			var user_email ='';
+		   
+			jQuery(form_value).closest("form").find("input[name^='sft_variables']").each(function() {
+			   
+				if (jQuery(this).attr("id")=="first_name") {
+				  
+					firstname = jQuery(this).val();
+				 
+				}
+				
+				if (jQuery(this).attr("id")=="last_name") {
+				
+					lastname = jQuery(this).val();
+				
+				}
+				
+				if (jQuery(this).attr("id")=="zip_postal-code") {
+				
+					zippostal = jQuery(this).val();
+				
+				}
+				
+				if (jQuery(this).attr("id")=="email") {
+				
+					user_email = jQuery(this).val();
+				
+				}
+				
+		    });
+		   
+			jQuery(form_value).closest("form").find("input[name^='sft_newssletter_variables']").each(function() {
+			   
+				newsletterArray.push(jQuery(this).attr("id"));         
+			  
+			});  
+			
+			var newsletter_variable=newsletterArray.join(",");
+			
+			var origin_host=document.location.origin;
+			
+			/*call popCenter*/
+			
+			PopupCenter(origin_host+"/submit.php?form_value_fname_val="+firstname+"&form_value_lname_val="+lastname+"&form_value_zip_val="+zippostal+"&form_value_email_val="+user_email+"&email_newsletter="+newsletter_variable,'xtf','300','300');			
+		   
+			jQuery(form_value).closest("form").find("input[name^='sft_variables']").each(function() {
+				
+				if (jQuery(this).attr("id")=="first_name") {
+				
+					jQuery(this).val('');
+				
+				}
+				
+				if (jQuery(this).attr("id")=="last_name") {
+					
+					jQuery(this).val('');
+					
+				}
+				
+				if (jQuery(this).attr("id")=="zip_postal-code") {
+					
+					jQuery(this).val('');
+					
+				}
+				
+				if (jQuery(this).attr("id")=="email") {
+				
+					jQuery(this).val('');
+				
+				}
+				
+			});
+			
+		}  
+		
+		/*subscribe sailthru function end*/
+
+		/*pop up function start*/
+		
+		function PopupCenter(url, title, w, h) {
+			
+			/* Fixes dual-screen position                         Most browsers      Firefox    */
+
+			var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
+
+			var dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top;
+
+			var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+
+			var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+			var left = ((width / 2) - (w / 2)) + dualScreenLeft;
+
+			var top = ((height / 2) - (h / 2)) + dualScreenTop;
+			
+			var newWindow = window.open(url, title, 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+			
+			/* Puts focus on the newWindow */
+
+			if (window.focus) {
+
+				newWindow.focus();
+
+			}
+
+			setTimeout(function () { newWindow.close();}, 5000);
+
+		}
+		
+		/*pop up function end*/		
+	</script>
+
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript">		
+		(function(src) {
+			var a = document.createElement("script");
+			a.type = "text/javascript";
+			a.async = true;
+			a.src = src;
+			var b = document.getElementsByTagName("script")[0];
+			b.parentNode.insertBefore(a, b)
+		})("//experience.tinypass.com/xbuilder/experience/load?aid=NmGa4IzWHL");
+	</script>
+<script src="https://www.thenation.com/wp-content/themes/thenation/js/jquery.bxslider.js" type="daf5c5e0ef7afec5f4f49f73-text/javascript"></script>
+
+<div id="tn-donation-footer"></div>
+
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript">
+		window.freestar.queue.push(function(){
+			window.freestar.newStickyFooter("thenation_adhesion");
+		});
+	</script>
+<script type="daf5c5e0ef7afec5f4f49f73-text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"442438c9d9","applicationID":"5436353","transactionName":"Z1JSYkYACEsAV0cKXV4YcVVACAlWTkdaDVVcUh1XRhUPWw1R","queueTime":0,"applicationTime":264,"atts":"SxVRFA4aG0U=","errorBeacon":"bam.nr-data.net","agent":""}</script><script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="daf5c5e0ef7afec5f4f49f73-|49" defer=""></script></body>
+
+</html>

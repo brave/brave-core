@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebGL getParameter() test</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <canvas id="test" width="8" height="8"></canvas>
+    <script>
+      var canvas = document.getElementById("test");
+      var gl = canvas.getContext("webgl");
+      var debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+      var vendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
+      var renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+      document.title = vendor + "," + renderer;
+    </script>
+  </body>
+</html>

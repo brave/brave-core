@@ -1,0 +1,36 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+
+assert(enable_speedreader)
+
+source_set("speedreader") {
+  sources = [
+    "speedreader_bubble_view.h",
+    "speedreader_tab_helper.cc",
+    "speedreader_tab_helper.h",
+  ]
+
+  public_deps = [
+    "//brave/browser/speedreader",
+    "//components/dom_distiller/content/browser",
+  ]
+
+  deps = [
+    "//brave/browser:browser_process",
+    "//brave/components/resources:static_resources_grit",
+    "//chrome/common",
+  ]
+
+  if (is_android) {
+    sources += [ "android/speedreader_utils.cc" ]
+
+    deps += [
+      "//chrome/android:chrome_jni_headers",
+      "//ui/android",
+    ]
+  }
+}

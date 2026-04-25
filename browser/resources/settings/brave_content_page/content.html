@@ -1,0 +1,60 @@
+<style include="cr-shared-style settings-shared md-select"></style>
+
+<settings-section
+  id="content"
+  page-title="$i18n{contentSettingsContentSection}">
+
+<div class="cr-row">
+    <div class="flex cr-padded-text" aria-hidden="true">
+        $i18n{fontSize}
+    </div>
+    <settings-dropdown-menu id="defaultFontSize" label="$i18n{fontSize}"
+        pref="{{prefs.webkit.webprefs.default_font_size}}"
+        menu-options="[[fontSizeOptions_]]">
+    </settings-dropdown-menu>
+</div>
+<cr-link-row class="hr" id="customize-fonts-subpage-trigger"
+    label="$i18n{customizeFonts}" on-click="onCustomizeFontsClick_"
+    role-description="$i18n{subpageArrowRoleDescription}">
+</cr-link-row>
+<div class="cr-row" hidden="[[!pageVisibility.pageZoom]]">
+    <div id="pageZoom" class="flex cr-padded-text" aria-hidden="true">
+        $i18n{pageZoom}
+    </div>
+    <select id="zoomLevel" class="md-select" aria-labelledby="pageZoom"
+        on-change="onZoomLevelChange_">
+        <template is="dom-repeat" items="[[pageZoomLevels_]]">
+            <option value="[[item]]"
+                selected="[[zoomValuesEqual_(item, defaultZoom_)]]">
+                [[formatZoom_(item)]]%
+            </option>
+        </template>
+    </select>
+</div>
+<settings-toggle-button
+    class="hr"
+    id="mru-cycling"
+    pref="{{prefs.brave.mru_cycling_enabled}}"
+    label="$i18n{mruCyclingSettingLabel}">
+</settings-toggle-button>
+<if expr="is_macosx">
+    <settings-toggle-button class="hr"
+        pref="{{prefs.webkit.webprefs.tabs_to_links}}"
+        label="$i18n{tabsToLinks}">
+    </settings-toggle-button>
+</if>
+<settings-toggle-button class="hr" id="splitViewDragAndDrop"
+    hidden="[[!showSplitViewDragAndDropSetting_]]"
+    pref="{{prefs.browser.split_view_drag_and_drop_enabled}}"
+    label="$i18n{allowSplitViewDragAndDrop}">
+</settings-toggle-button>
+<if expr="enable_brave_wayback_machine">
+  <settings-toggle-button
+    class="cr-row"
+    pref="{{prefs.brave.wayback_machine_enabled}}"
+    label="$i18n{braveWaybackMachineLabel}"
+    hidden="[[isWaybackMachineManaged_(prefs.brave.wayback_machine_enabled)]]">
+  </settings-toggle-button>
+</if>
+
+</settings-section>

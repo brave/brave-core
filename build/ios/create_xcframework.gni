@@ -1,0 +1,44 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Creates a xcframework from a framework bundle and its associated dSYM.
+#
+# Note that this does not accept multiple architectures and is only to be used
+# when tooling cannot use the framework directly such as Swift Package Manager
+template("ios_create_xcframework") {
+  assert(defined(invoker.framework_dir) && invoker.framework_dir != "",
+         "framework_dir must be defined for $target_name")
+  _framework_name = get_path_info(invoker.framework_dir, "name")
+  _root_dir = get_path_info(invoker.framework_dir, "dir")
+  _ios_create_xcframework_input = invoker.framework_dir
+  _ios_create_xcframework_output =
+      "$_root_dir/" + _framework_name + ".xcframework"
+  _extra_args = []
+  if (defined(invoker.remove_asset_catalogs) && invoker.remove_asset_catalogs) {
+    _extra_args += [ "--remove_asset_catalogs" ]
+  }
+  if (defined(invoker.fix_info_plist_versions) &&
+      invoker.fix_info_plist_versions) {
+    _extra_args += [ "--fix_info_plist_versions" ]
+  }
+
+  action(target_name) {
+    forward_variables_from(invoker,
+                           [
+                             "deps",
+                             "public_deps",
+                           ])
+    script = "//brave/build/ios/create_xcframework.py"
+    args = [
+      "--framework_dir",
+      rebase_path(_ios_create_xcframework_input),
+      "--xcframework_dir",
+      rebase_path(_ios_create_xcframework_output),
+    ]
+    args += _extra_args
+    inputs = [ _ios_create_xcframework_input ]
+    outputs = [ _ios_create_xcframework_output ]
+  }
+}

@@ -1,0 +1,732 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query'
+import ProgressRingReact from '@brave/leo/react/progressRing'
+import Input, { InputEventDetail } from '@brave/leo/react/input'
+import SegmentedControlItem from '@brave/leo/react/segmentedControlItem'
+import Button from '@brave/leo/react/button'
+
+// redux
+import { useDispatch, useSelector } from 'react-redux'
+
+// actions
+import {
+  AccountsTabState,
+  AccountsTabActions,
+} from '../../../../page/reducers/accounts-tab-reducer'
+
+// selectors
+import { useSafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../../common/selectors'
+
+// utils
+import { getLocale, formatLocale } from '$web-common/locale'
+import getAPIProxy from '../../../../common/async/bridge'
+
+// constants
+import { FILECOIN_FORMAT_DESCRIPTION_URL } from '../../../../common/constants/urls'
+
+// options
+import { AccountButtonOptions } from '../../../../options/account-list-button-options'
+
+// types
+import {
+  BraveWallet,
+  zcashAddressOptionType,
+} from '../../../../constants/types'
+
+// components
+import { CopyTooltip } from '../../../shared/copy-tooltip/copy-tooltip'
+import PopupModal from '../index'
+import PasswordInput from '../../../shared/password-input/index'
+import {
+  CreateAccountIcon, //
+} from '../../../shared/create-account-icon/create-account-icon'
+
+// hooks
+import { useIsMounted } from '../../../../common/hooks/useIsMounted'
+import { usePasswordAttempts } from '../../../../common/hooks/use-password-attempts'
+import { usePasswordStrength } from '../../../../common/hooks/use-password-strength'
+import {
+  useGetPolkadotAddressForNetworkQuery,
+  useGetPolkadotCompatibleNetworksQuery,
+  useGetQrCodeImageQuery,
+  useGetZCashAccountInfoQuery,
+  useUpdateAccountNameMutation, //
+} from '../../../../common/slices/api.slice'
+import {
+  useReceiveAddressQuery, //
+} from '../../../../common/slices/api.slice.extra'
+import { NetworksDropdown } from '../../../shared/dropdowns/networks_dropdown'
+
+// style
+import {
+  StyledWrapper,
+  QRCodeWrapper,
+  AddressButton,
+  ButtonRow,
+  CopyIcon,
+  PrivateKeyWrapper,
+  PrivateKeyBubble,
+  ButtonWrapper,
+  ErrorText,
+  Line,
+  QRCodeImage,
+  EditWrapper,
+  Alert,
+  ControlsWrapper,
+  SegmentedControl,
+} from './account-settings-modal.style'
+import { Column, Row, Text, VerticalSpacer } from '../../../shared/style'
+import { Skeleton } from '../../../shared/loading-skeleton/styles'
+
+const zcashAddressOptions: zcashAddressOptionType[] = [
+  {
+    addressType: 'unified',
+    label: 'braveWalletUnified',
+  },
+  {
+    addressType: 'shielded',
+    label: 'braveWalletShielded',
+  },
+  {
+    addressType: 'transparent',
+    label: 'braveWalletTransparent',
+  },
+]
+interface DepositModalProps {
+  selectedAccount: BraveWallet.AccountInfo
+}
+
+const filPrivateKeyFormatDescription = formatLocale(
+  'braveWalletFilExportPrivateKeyFormatDescription',
+  {
+    $1: (content) => (
+      <a
+        target='_blank'
+        href={FILECOIN_FORMAT_DESCRIPTION_URL}
+        rel='noopener noreferrer'
+      >
+        {content}
+      </a>
+    ),
+  },
+)
+
+export const DepositModal = ({ selectedAccount }: DepositModalProps) => {
+  // state
+  const [selectedZCashAddressOption, setSelectedZCashAddressOption] =
+    React.useState<string>('unified')
+  const [selectedPolkadotNetwork, setSelectedPolkadotNetwork] = React.useState<
+    BraveWallet.NetworkInfo | undefined
+  >(undefined)
+
+  // redux
+  const isZCashShieldedTransactionsEnabled = useSafeWalletSelector(
+    WalletSelectors.isZCashShieldedTransactionsEnabled,
+  )
+  const isPolkadotAccount =
+    selectedAccount.accountId.coin === BraveWallet.CoinType.DOT
+
+  // queries and memos
+  const { receiveAddress, isFetchingAddress } = useReceiveAddressQuery(
+    isPolkadotAccount ? undefined : selectedAccount.accountId,
+  )
+  const { data: polkadotCompatibleNetworksResponse } =
+    useGetPolkadotCompatibleNetworksQuery(
+      isPolkadotAccount ? selectedAccount.accountId : skipToken,
+    )
+  const polkadotCompatibleNetworks = polkadotCompatibleNetworksResponse ?? []
+  const { data: polkadotAddress, isLoading: isLoadingPolkadotAddress } =
+    useGetPolkadotAddressForNetworkQuery(
+      isPolkadotAccount && selectedPolkadotNetwork
+        ? {
+            accountId: selectedAccount.accountId,
+            chainId: selectedPolkadotNetwork.chainId,
+          }
+        : skipToken,
+    )
+  const { data: zcashAccountInfo } = useGetZCashAccountInfoQuery(
+    isZCashShieldedTransactionsEnabled
+      && selectedAccount.accountId.coin === BraveWallet.CoinType.ZEC
+      ? selectedAccount.accountId
+      : skipToken,
+  )
+  const isLoadingAddress = isPolkadotAccount
+    ? isLoadingPolkadotAddress
+    : isFetchingAddress
+
+  React.useEffect(() => {
+    if (!isPolkadotAccount) {
+      setSelectedPolkadotNetwork(undefined)
+      return
+    }
+    setSelectedPolkadotNetwork((current) => {
+      if (
+        current
+        && polkadotCompatibleNetworks.some(
+          (network) =>
+            network.chainId === current.chainId
+            && network.coin === current.coin,
+        )
+      ) {
+        return current
+      }
+      return polkadotCompatibleNetworks[0]
+    })
+  }, [isPolkadotAccount, polkadotCompatibleNetworks])
+
+  const displayAddress = React.useMemo(() => {
+    if (isPolkadotAccount) {
+      return polkadotAddress || ''
+    }
+    if (
+      isZCashShieldedTransactionsEnabled
+      && selectedAccount.accountId.coin === BraveWallet.CoinType.ZEC
+      && zcashAccountInfo?.accountShieldBirthday
+    ) {
+      return selectedZCashAddressOption === 'unified'
+        ? zcashAccountInfo.unifiedAddress
+        : selectedZCashAddressOption === 'shielded'
+          ? zcashAccountInfo.orchardAddress
+          : zcashAccountInfo.nextTransparentReceiveAddress.addressString
+    }
+    return receiveAddress
+  }, [
+    isPolkadotAccount,
+    polkadotAddress,
+    isZCashShieldedTransactionsEnabled,
+    selectedAccount,
+    receiveAddress,
+    zcashAccountInfo,
+    selectedZCashAddressOption,
+  ])
+
+  const { data: qrCode, isFetching: isLoadingQrCode } = useGetQrCodeImageQuery(
+    displayAddress || skipToken,
+  )
+
+  // render
+  return (
+    <Column padding='0px 16px'>
+      <Column
+        gap='8px'
+        margin='0px 0px 24px 0px'
+      >
+        <CreateAccountIcon
+          account={selectedAccount}
+          size='huge'
+        />
+        <Text
+          textSize='14px'
+          textColor='primary'
+        >
+          {selectedAccount.name}
+        </Text>
+      </Column>
+
+      {zcashAccountInfo && zcashAccountInfo.accountShieldBirthday && (
+        <ControlsWrapper width='unset'>
+          <SegmentedControl
+            value={selectedZCashAddressOption}
+            onChange={({ value }) => {
+              if (value) {
+                setSelectedZCashAddressOption(value)
+              }
+            }}
+          >
+            {zcashAddressOptions.map((option) => (
+              <SegmentedControlItem
+                key={option.addressType}
+                value={option.addressType}
+              >
+                {getLocale(option.label)}
+              </SegmentedControlItem>
+            ))}
+          </SegmentedControl>
+        </ControlsWrapper>
+      )}
+
+      <QRCodeWrapper>
+        {isLoadingQrCode || !displayAddress || isLoadingAddress ? (
+          <ProgressRingReact mode='indeterminate' />
+        ) : (
+          <QRCodeImage src={qrCode} />
+        )}
+      </QRCodeWrapper>
+
+      {isPolkadotAccount
+        && selectedPolkadotNetwork
+        && polkadotCompatibleNetworks.length > 0 && (
+          <ControlsWrapper width='unset'>
+            <NetworksDropdown
+              networks={polkadotCompatibleNetworks}
+              selectedNetwork={selectedPolkadotNetwork}
+              onSelectNetwork={setSelectedPolkadotNetwork}
+              placeholder={getLocale('braveWalletSelectNetwork')}
+              label={getLocale('braveWalletSelectNetwork')}
+            />
+          </ControlsWrapper>
+        )}
+
+      {displayAddress ? (
+        <CopyTooltip text={displayAddress}>
+          <AddressButton>
+            {displayAddress}
+            <CopyIcon />
+          </AddressButton>
+        </CopyTooltip>
+      ) : (
+        <Skeleton
+          height={'20px'}
+          width={'300px'}
+        />
+      )}
+      <VerticalSpacer space={20} />
+    </Column>
+  )
+}
+
+export const AccountSettingsModal = () => {
+  // custom hooks
+  const isMounted = useIsMounted()
+
+  // redux
+  const dispatch = useDispatch()
+
+  // accounts tab state
+  const selectedAccount = useSelector(
+    ({ accountsTab }: { accountsTab: AccountsTabState }) =>
+      accountsTab.selectedAccount,
+  )
+  const accountModalType = useSelector(
+    ({ accountsTab }: { accountsTab: AccountsTabState }) =>
+      accountsTab.accountModalType,
+  )
+
+  // state
+  const [fullLengthAccountName, setFullLengthAccountName] =
+    React.useState<string>(selectedAccount?.name ?? '')
+  const accountName = fullLengthAccountName.substring(0, 30)
+  const [updateError, setUpdateError] = React.useState<boolean>(false)
+  const [password, setPassword] = React.useState<string>('')
+  const [privateKey, setPrivateKey] = React.useState<string>('')
+  const [isCorrectPassword, setIsCorrectPassword] =
+    React.useState<boolean>(true)
+  const [showEncryptionPassword, setShowEncryptionPassword] =
+    React.useState<boolean>(false)
+
+  // mutations
+  const [updateAccountName] = useUpdateAccountNameMutation()
+
+  // custom hooks
+  const { attemptPasswordEntry } = usePasswordAttempts()
+  const {
+    hasConfirmedPasswordError,
+    hasPasswordError,
+    password: encryptionPassword,
+    confirmedPassword: encryptionPasswordConfirm,
+    onPasswordChanged: handleEncryptionPasswordChanged,
+    setConfirmedPassword: handleEncryptionPasswordConfirmChanged,
+    isValid: isEncryptionPasswordValid,
+  } = usePasswordStrength()
+
+  // Helper function to download JSON file
+  const downloadJsonFile = React.useCallback(
+    (jsonContent: string, filename: string) => {
+      const blob = new Blob([jsonContent], { type: 'application/json' })
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = filename
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(url)
+    },
+    [],
+  )
+
+  // Handler for confirming encryption password and showing key
+  const onConfirmEncryptionPassword = React.useCallback(async () => {
+    if (!isEncryptionPasswordValid || !selectedAccount) {
+      return
+    }
+
+    // Get the encrypted key with the provided password
+    const { privateKey: encryptedKey } =
+      await getAPIProxy().keyringService.encodePolkadotKeyForExport(
+        selectedAccount.accountId,
+        password,
+        encryptionPassword,
+      )
+
+    if (encryptedKey && isMounted) {
+      // Show the key
+      setPrivateKey(encryptedKey)
+      // Reset encryption password state
+      setShowEncryptionPassword(false)
+      handleEncryptionPasswordChanged('')
+      handleEncryptionPasswordConfirmChanged('')
+      setPassword('')
+    }
+  }, [
+    isEncryptionPasswordValid,
+    selectedAccount,
+    password,
+    encryptionPassword,
+    isMounted,
+    handleEncryptionPasswordChanged,
+    handleEncryptionPasswordConfirmChanged,
+  ])
+
+  // Handler for downloading the already-encrypted key
+  const onDownloadPolkadotKey = React.useCallback(() => {
+    if (!privateKey || !selectedAccount) {
+      return
+    }
+    const accountName = selectedAccount.name || 'account'
+    const sanitizedAccountName = accountName.replace(/[^a-z0-9]/gi, '_')
+    const filename = `${sanitizedAccountName}_export.json`
+    downloadJsonFile(privateKey, filename)
+  }, [privateKey, selectedAccount, downloadJsonFile])
+
+  const onCancelEncryptionPassword = React.useCallback(() => {
+    setShowEncryptionPassword(false)
+    handleEncryptionPasswordChanged('')
+    handleEncryptionPasswordConfirmChanged('')
+    // Also clear the wallet password state
+    setPassword('')
+    setIsCorrectPassword(true)
+  }, [handleEncryptionPasswordChanged, handleEncryptionPasswordConfirmChanged])
+
+  // methods
+  const onViewPrivateKey = React.useCallback(
+    async (accountId: BraveWallet.AccountId) => {
+      const { privateKey } =
+        await getAPIProxy().keyringService.encodePrivateKeyForExport(
+          accountId,
+          password,
+        )
+      if (isMounted) {
+        return setPrivateKey(privateKey || '')
+      }
+    },
+    [password, isMounted],
+  )
+
+  const handleAccountNameChanged = (detail: InputEventDetail) => {
+    setFullLengthAccountName(detail.value)
+    setUpdateError(false)
+  }
+
+  const onClose = React.useCallback(() => {
+    dispatch(AccountsTabActions.setShowAccountModal(false))
+    dispatch(AccountsTabActions.setAccountModalType('deposit'))
+  }, [dispatch])
+
+  const onSubmitUpdateName = React.useCallback(async () => {
+    if (!selectedAccount || !accountName) {
+      return
+    }
+
+    try {
+      await updateAccountName({
+        accountId: selectedAccount.accountId,
+        name: accountName,
+      }).unwrap()
+      onClose()
+    } catch (error) {
+      setUpdateError(true)
+    }
+  }, [selectedAccount, accountName, updateAccountName, onClose])
+
+  const onShowPrivateKey = async () => {
+    if (!password || !selectedAccount) {
+      // require password to view key
+      return
+    }
+
+    // entered password must be correct
+    const isPasswordValid = await attemptPasswordEntry(password)
+
+    if (!isPasswordValid) {
+      setIsCorrectPassword(isPasswordValid) // set or clear error
+      return // need valid password to continue
+    }
+
+    // For Polkadot accounts, ask for encryption password first
+    if (selectedAccount.accountId.coin === BraveWallet.CoinType.DOT) {
+      // Clear any existing private key first
+      setPrivateKey('')
+      setIsCorrectPassword(true)
+      // Show encryption password input
+      setShowEncryptionPassword(true)
+      handleEncryptionPasswordChanged('')
+      handleEncryptionPasswordConfirmChanged('')
+      return
+    }
+
+    // clear entered password & error
+    setPassword('')
+    setIsCorrectPassword(true)
+
+    onViewPrivateKey(selectedAccount.accountId)
+  }
+
+  const onHidePrivateKey = React.useCallback(() => {
+    setPrivateKey('')
+    setShowEncryptionPassword(false)
+    handleEncryptionPasswordChanged('')
+    handleEncryptionPasswordConfirmChanged('')
+  }, [handleEncryptionPasswordChanged, handleEncryptionPasswordConfirmChanged])
+
+  const onClickClose = () => {
+    onHidePrivateKey()
+    setUpdateError(false)
+    onClose()
+  }
+
+  const handleKeyDown = (detail: InputEventDetail) => {
+    if ((detail.innerEvent as unknown as KeyboardEvent).key === 'Enter') {
+      onSubmitUpdateName()
+    }
+  }
+
+  const onPasswordChange = (value: string): void => {
+    setIsCorrectPassword(true) // clear error
+    setPassword(value)
+  }
+
+  const onEncryptionPasswordChange = React.useCallback(
+    (value: string) => {
+      handleEncryptionPasswordChanged(value)
+    },
+    [handleEncryptionPasswordChanged],
+  )
+
+  const onEncryptionPasswordConfirmChange = React.useCallback(
+    (value: string) => {
+      handleEncryptionPasswordConfirmChanged(value)
+    },
+    [handleEncryptionPasswordConfirmChanged],
+  )
+
+  const handlePasswordKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+  ) => {
+    if (event.key === 'Enter') {
+      onShowPrivateKey()
+    }
+  }
+
+  // memos
+  const modalTitle = React.useMemo((): string => {
+    if (accountModalType) {
+      return (
+        AccountButtonOptions.find((option) => option.id === accountModalType)
+          ?.name ?? ''
+      )
+    }
+    return ''
+  }, [accountModalType])
+
+  // computed
+  const showNameInputErrors = accountName === ''
+
+  // render
+  return (
+    <PopupModal
+      title={getLocale(modalTitle)}
+      onClose={onClickClose}
+    >
+      <Line />
+      <StyledWrapper>
+        {selectedAccount && accountModalType === 'deposit' && (
+          <DepositModal selectedAccount={selectedAccount} />
+        )}
+        {accountModalType === 'edit' && (
+          <EditWrapper>
+            <Input
+              value={accountName}
+              placeholder={getLocale('braveWalletAddAccountPlaceholder')}
+              onInput={handleAccountNameChanged}
+              onKeyDown={handleKeyDown}
+              showErrors={showNameInputErrors}
+              size='large'
+              maxlength={BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH}
+            >
+              {
+                // Label
+                getLocale('braveWalletAddAccountPlaceholder')
+              }
+            </Input>
+
+            {updateError && (
+              <ErrorText>
+                {getLocale('braveWalletAccountSettingsUpdateError')}
+              </ErrorText>
+            )}
+
+            <ButtonRow>
+              <Button
+                onClick={onSubmitUpdateName}
+                isDisabled={showNameInputErrors}
+                kind='filled'
+              >
+                {getLocale('braveWalletAccountSettingsSave')}
+              </Button>
+            </ButtonRow>
+          </EditWrapper>
+        )}
+        {accountModalType === 'privateKey' && (
+          <PrivateKeyWrapper
+            width='100%'
+            height='100%'
+            justifyContent='flex-start'
+            padding='0px 16px'
+          >
+            <Alert type='warning'>
+              {getLocale('braveWalletAccountSettingsDisclaimer')}
+            </Alert>
+            {selectedAccount
+            && selectedAccount.accountId.coin === BraveWallet.CoinType.DOT
+            && showEncryptionPassword
+            && !privateKey ? (
+              // Show encryption password input for Polkadot
+              <>
+                <Alert type='info'>
+                  {getLocale(
+                    'braveWalletAccountSettingsEnterPasswordToEncrypt',
+                  )}
+                </Alert>
+                <PasswordInput
+                  placeholder={getLocale(
+                    'braveWalletAccountSettingsEncryptionPassword',
+                  )}
+                  onChange={onEncryptionPasswordChange}
+                  hasError={hasPasswordError}
+                  error={
+                    hasPasswordError
+                      ? getLocale(
+                          'braveWalletAccountSettingsEncryptionPasswordTooShort',
+                        )
+                      : ''
+                  }
+                  autoFocus={true}
+                  value={encryptionPassword}
+                />
+                <VerticalSpacer space={16} />
+                <PasswordInput
+                  placeholder={getLocale(
+                    'braveWalletAccountSettingsConfirmEncryptionPassword',
+                  )}
+                  onChange={onEncryptionPasswordConfirmChange}
+                  hasError={hasConfirmedPasswordError}
+                  error={
+                    hasConfirmedPasswordError
+                      ? getLocale(
+                          'braveWalletAccountSettingsPasswordsDoNotMatch',
+                        )
+                      : ''
+                  }
+                  autoFocus={false}
+                  value={encryptionPasswordConfirm}
+                  onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
+                    if (event.key === 'Enter' && isEncryptionPasswordValid) {
+                      onConfirmEncryptionPassword()
+                    }
+                  }}
+                />
+              </>
+            ) : privateKey ? (
+              // Show the key
+              <>
+                {selectedAccount?.accountId.coin
+                  === BraveWallet.CoinType.FIL && (
+                  <Alert type='warning'>{filPrivateKeyFormatDescription}</Alert>
+                )}
+                <CopyTooltip
+                  text={privateKey}
+                  isConfidential={true}
+                >
+                  <PrivateKeyBubble>{privateKey}</PrivateKeyBubble>
+                </CopyTooltip>
+              </>
+            ) : (
+              // Show wallet password input
+              <PasswordInput
+                placeholder={getLocale(
+                  'braveWalletEnterYourBraveWalletPassword',
+                )}
+                onChange={onPasswordChange}
+                hasError={!!password && !isCorrectPassword}
+                error={getLocale('braveWalletLockScreenError')}
+                autoFocus={false}
+                value={password}
+                onKeyDown={handlePasswordKeyDown}
+              />
+            )}
+            <ButtonWrapper>
+              {selectedAccount
+              && selectedAccount.accountId.coin === BraveWallet.CoinType.DOT
+              && showEncryptionPassword
+              && !privateKey ? (
+                // Show Cancel and Confirm buttons for encryption password
+                <Row gap='8px'>
+                  <Button
+                    onClick={onCancelEncryptionPassword}
+                    kind='outline'
+                  >
+                    {getLocale('braveWalletButtonCancel')}
+                  </Button>
+                  <Button
+                    onClick={onConfirmEncryptionPassword}
+                    kind='filled'
+                    isDisabled={!isEncryptionPasswordValid}
+                  >
+                    {getLocale('braveWalletAccountSettingsShowKey')}
+                  </Button>
+                </Row>
+              ) : privateKey ? (
+                // Show Download and Hide buttons when key is visible
+                <Row gap='8px'>
+                  {selectedAccount?.accountId.coin
+                    === BraveWallet.CoinType.DOT && (
+                    <Button
+                      onClick={onDownloadPolkadotKey}
+                      kind='outline'
+                    >
+                      {getLocale('braveWalletAccountSettingsDownloadKey')}
+                    </Button>
+                  )}
+                  <Button
+                    onClick={onHidePrivateKey}
+                    kind='filled'
+                  >
+                    {getLocale('braveWalletAccountSettingsHideKey')}
+                  </Button>
+                </Row>
+              ) : (
+                // Show "Show Key" button when no key is visible
+                <Button
+                  onClick={onShowPrivateKey}
+                  kind='filled'
+                  isDisabled={password ? !isCorrectPassword : true}
+                >
+                  {getLocale('braveWalletAccountSettingsShowKey')}
+                </Button>
+              )}
+            </ButtonWrapper>
+          </PrivateKeyWrapper>
+        )}
+      </StyledWrapper>
+    </PopupModal>
+  )
+}
+
+export default AccountSettingsModal

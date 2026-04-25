@@ -1,0 +1,60 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_BROWSER_MISC_METRICS_PAGE_METRICS_TAB_HELPER_H_
+#define BRAVE_BROWSER_MISC_METRICS_PAGE_METRICS_TAB_HELPER_H_
+
+#include "base/memory/raw_ptr.h"
+#include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_contents_observer.h"
+#include "content/public/browser/web_contents_user_data.h"
+#include "ui/base/page_transition_types.h"
+
+namespace content {
+class BrowserContext;
+class MediaSession;
+class NavigationHandle;
+}  // namespace content
+
+namespace misc_metrics {
+
+class MediaSessionMetrics;
+class PageMetrics;
+
+class PageMetricsTabHelper
+    : public content::WebContentsObserver,
+      public content::WebContentsUserData<PageMetricsTabHelper> {
+ public:
+  explicit PageMetricsTabHelper(content::WebContents* web_contents);
+  ~PageMetricsTabHelper() override;
+
+  PageMetricsTabHelper(const PageMetricsTabHelper&) = delete;
+  PageMetricsTabHelper& operator=(const PageMetricsTabHelper&) = delete;
+
+ private:
+  friend class content::WebContentsUserData<PageMetricsTabHelper>;
+
+  // content::WebContentsObserver:
+  void DidFinishNavigation(
+      content::NavigationHandle* navigation_handle) override;
+  void MediaSessionCreated(content::MediaSession* media_session) override;
+  void WebContentsDestroyed() override;
+
+  bool IsRelevantNavigationEvent(content::NavigationHandle* navigation_handle);
+  bool IsPrivateWindowEvent();
+  void MaybeRecordNavigationSource(ui::PageTransition transition,
+                                   bool is_reload);
+
+  raw_ptr<content::BrowserContext> browser_context_;
+  raw_ptr<PageMetrics> page_metrics_ = nullptr;
+  raw_ptr<MediaSessionMetrics> media_session_metrics_ = nullptr;
+  raw_ptr<content::MediaSession> media_session_ = nullptr;
+
+  WEB_CONTENTS_USER_DATA_KEY_DECL();
+};
+
+}  // namespace misc_metrics
+
+#endif  // BRAVE_BROWSER_MISC_METRICS_PAGE_METRICS_TAB_HELPER_H_

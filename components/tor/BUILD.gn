@@ -1,0 +1,128 @@
+import("//brave/components/tor/buildflags/buildflags.gni")
+import("//chrome/common/features.gni")
+
+assert(enable_tor)
+
+source_set("constants") {
+  sources = [
+    "constants.cc",
+    "constants.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/component_updater:component_updater_paths",
+  ]
+}
+
+static_library("tor") {
+  public_deps = [
+    ":common",
+    "//brave/components/tor/buildflags",
+  ]
+
+  sources = [ "tor_launcher_observer.h" ]
+
+  deps = [
+    ":pref_names",
+    "//base",
+  ]
+
+  sources += [
+    "brave_tor_client_updater.cc",
+    "brave_tor_client_updater.h",
+    "brave_tor_pluggable_transport_updater.cc",
+    "brave_tor_pluggable_transport_updater.h",
+    "onion_location_navigation_throttle.cc",
+    "onion_location_navigation_throttle.h",
+    "onion_location_tab_helper.cc",
+    "onion_location_tab_helper.h",
+    "tor_control.cc",
+    "tor_control.h",
+    "tor_control_event.cc",
+    "tor_control_event.h",
+    "tor_control_event_list.h",
+    "tor_file_watcher.cc",
+    "tor_file_watcher.h",
+    "tor_launcher_factory.cc",
+    "tor_launcher_factory.h",
+    "tor_navigation_throttle.cc",
+    "tor_navigation_throttle.h",
+    "tor_profile_service.cc",
+    "tor_profile_service.h",
+    "tor_profile_service_impl.cc",
+    "tor_profile_service_impl.h",
+    "tor_tab_helper.cc",
+    "tor_tab_helper.h",
+  ]
+
+  deps += [
+    ":constants",
+    "//brave/components/brave_component_updater/browser",
+    "//brave/components/resources:strings",
+    "//brave/components/services/tor/public/interfaces",
+    "//components/pref_registry",
+    "//components/prefs",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//net",
+    "//services/data_decoder/public/cpp",
+    "//services/service_manager",
+    "//third_party/re2",
+    "//url",
+  ]
+
+  if (enable_extensions) {
+    deps += [ "//extensions/common:common_constants" ]
+  }
+}
+
+source_set("common") {
+  sources = [
+    "tor_constants.h",
+    "tor_switches.h",
+    "tor_utils.cc",
+    "tor_utils.h",
+  ]
+
+  deps = [
+    "//base",
+    "//chrome/common:constants",
+    "//components/prefs",
+  ]
+}
+
+source_set("pref_names") {
+  sources = [ "pref_names.h" ]
+}
+
+source_set("tor_unit_tests") {
+  testonly = true
+
+  sources = [
+    "tor_control_unittest.cc",
+    "tor_file_watcher_unittest.cc",
+  ]
+
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/tor",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
+}
+
+source_set("test_support") {
+  testonly = true
+  sources = [
+    "mock_tor_launcher_factory.cc",
+    "mock_tor_launcher_factory.h",
+  ]
+
+  deps = [
+    ":tor",
+    "//base",
+    "//testing/gmock",
+  ]
+}

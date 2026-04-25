@@ -1,0 +1,21 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/tools/gritsettings/filter_resource_ids.gni")
+
+action("filter_resource_ids") {
+  script = "//brave/tools/gritsettings/filter_resource_ids.py"
+  inputs = [ "//tools/gritsettings/resource_ids.spec" ]
+  outputs = [ filtered_resource_id_file ]
+  deps = [ "//tools/grit:grit_sources" ]
+  args = [
+    "--output",
+    filtered_resource_id_file_path,
+    "--input",
+    rebase_path(inputs[0], root_build_dir),
+    "--srcdir",
+    rebase_path("//", filtered_resource_id_file_dir),
+  ]
+}

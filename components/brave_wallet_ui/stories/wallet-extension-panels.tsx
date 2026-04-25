@@ -1,0 +1,365 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+import * as React from 'react'
+import { Provider } from 'react-redux'
+
+import './locale'
+import {
+  BraveWallet,
+  SerializableTransactionInfo,
+  UIState,
+} from '../constants/types'
+
+// Components
+import {
+  ConfirmTransactionPanel, //
+} from '../components/extension/confirm-transaction-panel/confirm-transaction-panel'
+import { WelcomePanel } from '../components/extension/welcome-panel/index'
+
+import { StyledExtensionWrapperLonger, StyledWelcomPanel } from './style'
+
+// mocks
+import { mockTransactionInfo } from './mock-data/mock-transaction-info'
+import { mockOriginInfo } from './mock-data/mock-origin-info'
+import { createMockStore } from '../utils/test-utils'
+import { deserializeTransaction } from '../utils/model-serialization-utils'
+import { WalletApiDataOverrides } from '../constants/testing_types'
+
+export default {
+  title: 'Wallet/Panel/Panels',
+  parameters: {
+    layout: 'centered',
+  },
+  argTypes: {
+    locked: { control: { type: 'boolean', lock: false } },
+  },
+}
+
+const mockEthAccountId = (
+  address: string,
+): { fromAddress: string; fromAccountId: BraveWallet.AccountId } => {
+  return {
+    fromAddress: address,
+    fromAccountId: {
+      coin: BraveWallet.CoinType.ETH,
+      keyringId: BraveWallet.KeyringId.kDefault,
+      kind: BraveWallet.AccountKind.kDerived,
+      address: address,
+      accountIndex: 0,
+      uniqueKey: `${address}_id`,
+    },
+  }
+}
+
+const transactionDummyData: SerializableTransactionInfo[][] = [
+  [
+    {
+      chainId: '',
+      ...mockEthAccountId('0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf5AAAA'),
+      id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+      txDataUnion: {
+        ethTxData1559: {
+          baseData: {
+            chainId: '0x1',
+            data: Array.from(new Uint8Array(24)),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: 'ETHEREUM ACCOUNT 2',
+            value: '0xb1a2bc2ec50000',
+          },
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: '',
+        },
+        ethTxData: undefined,
+        solanaTxData: undefined,
+        filTxData: undefined,
+      },
+      txHash:
+        '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+      txStatus: 3,
+      txArgs: [],
+      txParams: [],
+      txType: 0,
+      createdTime: { microseconds: Date.now() * 1000 - 1000 * 60 * 5 * 1000 },
+      submittedTime: { microseconds: Date.now() * 1000 - 1000 * 60 * 5 },
+      confirmedTime: { microseconds: Date.now() * 1000 - 1000 * 60 * 5 },
+      originInfo: mockOriginInfo,
+      effectiveRecipient: '',
+      isRetriable: false,
+      swapInfo: undefined,
+      swapInfoDeprecated: undefined,
+    },
+    {
+      chainId: '',
+      ...mockEthAccountId('0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14'),
+      id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+      txDataUnion: {
+        ethTxData1559: {
+          baseData: {
+            chainId: '0x1',
+            data: Array.from(new Uint8Array(24)),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+            value: '0xb1a2bc2ec50000',
+          },
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: '',
+        },
+        ethTxData: undefined,
+        solanaTxData: undefined,
+        filTxData: undefined,
+      },
+      txHash:
+        '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+      txStatus: 3,
+      txArgs: [],
+      txParams: [],
+      txType: 0,
+      createdTime: { microseconds: 0 },
+      submittedTime: { microseconds: 0 },
+      confirmedTime: { microseconds: 0 },
+      originInfo: mockOriginInfo,
+      effectiveRecipient: '',
+      isRetriable: false,
+      swapInfo: undefined,
+      swapInfoDeprecated: undefined,
+    },
+    {
+      chainId: '',
+      ...mockEthAccountId('0x7843981e0b96135073b26043ea24c950d4ec385b'),
+      id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+      txDataUnion: {
+        ethTxData1559: {
+          baseData: {
+            chainId: '0x1',
+            data: Array.from(new Uint8Array(24)),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
+            value: '0xb1a2bc2ec90000',
+          },
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: '',
+        },
+        ethTxData: undefined,
+        solanaTxData: undefined,
+        filTxData: undefined,
+      },
+      txHash:
+        '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+      txStatus: 4,
+      txArgs: [],
+      txParams: [],
+      txType: 0,
+      createdTime: { microseconds: 0 },
+      submittedTime: { microseconds: 0 },
+      confirmedTime: { microseconds: 0 },
+      originInfo: mockOriginInfo,
+      effectiveRecipient: '',
+      isRetriable: false,
+      swapInfo: undefined,
+      swapInfoDeprecated: undefined,
+    },
+    {
+      chainId: '',
+      ...mockEthAccountId('0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14'),
+      id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+      txDataUnion: {
+        ethTxData1559: {
+          baseData: {
+            chainId: '0x1',
+            data: Array.from(new Uint8Array(24)),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+            value: '0xb1a2bc2ec90000',
+          },
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: '',
+        },
+        ethTxData: undefined,
+        solanaTxData: undefined,
+        filTxData: undefined,
+      },
+      txHash:
+        '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+      txStatus: 2,
+      txArgs: [],
+      txParams: [],
+      txType: 0,
+      createdTime: { microseconds: 0 },
+      submittedTime: { microseconds: 0 },
+      confirmedTime: { microseconds: 0 },
+      originInfo: mockOriginInfo,
+      effectiveRecipient: '',
+      isRetriable: false,
+      swapInfo: undefined,
+      swapInfoDeprecated: undefined,
+    },
+    {
+      chainId: '',
+      ...mockEthAccountId('0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14'),
+      id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+      txDataUnion: {
+        ethTxData1559: {
+          baseData: {
+            chainId: '0x1',
+            data: Array.from(new Uint8Array(24)),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+            value: '0xb1a2bc2ec90000',
+          },
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: '',
+        },
+        ethTxData: undefined,
+        solanaTxData: undefined,
+        filTxData: undefined,
+      },
+      txHash:
+        '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+      txStatus: 1,
+      txArgs: [],
+      txParams: [],
+      txType: 0,
+      createdTime: { microseconds: 0 },
+      submittedTime: { microseconds: 0 },
+      confirmedTime: { microseconds: 0 },
+      originInfo: mockOriginInfo,
+      effectiveRecipient: '',
+      isRetriable: false,
+      swapInfo: undefined,
+      swapInfoDeprecated: undefined,
+    },
+  ],
+  [
+    {
+      chainId: '',
+      ...mockEthAccountId('0x73A29A1da97149722eB09c526E4eAd698895bDCf'),
+      id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+      txDataUnion: {
+        ethTxData1559: {
+          baseData: {
+            chainId: '0x1',
+            data: Array.from(new Uint8Array(24)),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+            value: '0xb1a2bc2ec90000',
+          },
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: '',
+        },
+        ethTxData: undefined,
+        solanaTxData: undefined,
+        filTxData: undefined,
+      },
+      txHash:
+        '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+      txStatus: 0,
+      txArgs: [],
+      txParams: [],
+      txType: 0,
+      createdTime: { microseconds: 0 },
+      submittedTime: { microseconds: 0 },
+      confirmedTime: { microseconds: 0 },
+      originInfo: mockOriginInfo,
+      effectiveRecipient: '',
+      isRetriable: false,
+      swapInfo: undefined,
+      swapInfoDeprecated: undefined,
+    },
+    {
+      chainId: '',
+      ...mockEthAccountId('0x73A29A1da97149722eB09c526E4eAd698895bDCf'),
+      id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
+      txDataUnion: {
+        ethTxData1559: {
+          baseData: {
+            chainId: '0x1',
+            data: Array.from(new Uint8Array(24)),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+            value: '0xb1a2bc2ec90000',
+          },
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: '',
+        },
+        ethTxData: undefined,
+        solanaTxData: undefined,
+        filTxData: undefined,
+      },
+      txHash:
+        '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
+      txStatus: 5,
+      txArgs: [],
+      txParams: [],
+      txType: 0,
+      createdTime: { microseconds: 0 },
+      submittedTime: { microseconds: 0 },
+      confirmedTime: { microseconds: 0 },
+      originInfo: mockOriginInfo,
+      effectiveRecipient: '',
+      isRetriable: false,
+      swapInfo: undefined,
+      swapInfoDeprecated: undefined,
+    },
+  ],
+]
+
+const transactionList = [
+  mockTransactionInfo,
+  ...transactionDummyData[0],
+  ...transactionDummyData[1],
+]
+
+const mockCustomUiState: Partial<UIState> = {
+  selectedPendingTransactionId: mockTransactionInfo.id,
+  transactionProviderErrorRegistry: {},
+}
+
+const mockApiData: WalletApiDataOverrides = {
+  transactionInfos: transactionList.map(deserializeTransaction),
+}
+
+export const _ConfirmTransaction = {
+  render: () => {
+    return (
+      <Provider
+        store={createMockStore(
+          {
+            uiStateOverride: mockCustomUiState,
+          },
+          mockApiData,
+        )}
+      >
+        <StyledExtensionWrapperLonger>
+          <ConfirmTransactionPanel />
+        </StyledExtensionWrapperLonger>
+      </Provider>
+    )
+  },
+}
+
+export const _SetupWallet = {
+  render: () => {
+    return (
+      <StyledWelcomPanel>
+        <WelcomePanel />
+      </StyledWelcomPanel>
+    )
+  },
+}

@@ -1,0 +1,51 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//extensions/buildflags/buildflags.gni")
+
+brave_browser_importer_sources = []
+brave_browser_importer_public_deps = []
+brave_browser_importer_impl_sources = []
+brave_browser_importer_impl_deps = []
+
+if (!is_android) {
+  brave_browser_importer_sources +=
+      [ "//brave/browser/importer/brave_external_process_importer_host.h" ]
+  brave_browser_importer_public_deps += [
+    "//base",
+    "//chrome/common/extensions",
+    "//extensions/buildflags",
+  ]
+  brave_browser_importer_impl_sources += [
+    "//brave/browser/importer/brave_external_process_importer_client.cc",
+    "//brave/browser/importer/brave_external_process_importer_client.h",
+    "//brave/browser/importer/brave_external_process_importer_host.cc",
+    "//brave/browser/importer/brave_in_process_importer_bridge.cc",
+    "//brave/browser/importer/brave_in_process_importer_bridge.h",
+  ]
+  if (enable_extensions) {
+    brave_browser_importer_impl_sources += [
+      "//brave/browser/importer/extensions_import_helpers.cc",
+      "//brave/browser/importer/extensions_import_helpers.h",
+    ]
+    brave_browser_importer_impl_deps += [
+      "//brave/common/importer",
+      "//chrome/browser/extensions",
+      "//components/value_store",
+      "//extensions/browser",
+      "//extensions/common:common_constants",
+    ]
+  }
+  brave_browser_importer_impl_deps += [
+    "//base",
+    "//brave/app:brave_generated_resources_grit_grit",
+    "//brave/browser/importer",
+    "//brave/common/importer:interfaces",
+    "//brave/components/brave_origin/buildflags",
+    "//content/public/browser",
+    "//extensions/buildflags",
+    "//mojo/public/cpp/bindings",
+  ]
+}

@@ -1,0 +1,168 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
+
+#include <string_view>
+
+#include "base/check.h"
+#include "base/test/values_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/reward/test/reward_confirmation_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/confirmation_user_data_builder.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/test/confirmation_user_data_builder_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/test/confirmation_tokens_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/test/token_generator_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/test/transaction_test_constants.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/test/transactions_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
+#include "brave/components/brave_ads/core/internal/account/user_data/user_data_info.h"
+#include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
+#include "brave/components/brave_ads/core/internal/settings/test/settings_test_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+
+// npm run test -- brave_unit_tests --filter=BraveAds*
+
+namespace brave_ads {
+
+class BraveAdsRewardConfirmationUtilTest : public test::TestBase {
+ protected:
+  void SetUp() override {
+    test::TestBase::SetUp();
+
+    test::MockConfirmationUserData();
+
+    AdvanceClockTo(test::TimeFromUTCString("Mon, 8 Jul 1996 09:25"));
+  }
+};
+
+TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardCredential) {
+  // Arrange
+  test::MockTokenGenerator(/*count=*/1);
+  test::RefillConfirmationTokens(/*count=*/1);
+
+  std::optional<ConfirmationInfo> confirmation =
+      test::BuildRewardConfirmation(/*use_random_uuids=*/false);
+  ASSERT_TRUE(confirmation);
+
+  // Act
+  std::optional<std::string> reward_credential =
+      BuildRewardCredential(*confirmation);
+  ASSERT_TRUE(reward_credential);
+
+  // Assert
+  EXPECT_EQ(
+      R"(eyJzaWduYXR1cmUiOiJDeUhBQlQ5SnI5cVl3U2tsMUMwSUIwQnFEcytUU0FEaEpNcHlVdFNWNktTaWpGdjFvcGVpU1pQbVdyTEROSmlEaHZKUlBaSmFzelpTd01IVkgvalpIZz09IiwidCI6Ii9tZlRBQWpIcldtQWxMaUVrdGJxTlMvZHhvTVZkbnoxZXNvVnBsUVVzN3lHL2FwQXEySzZPZVNUNmxCVEtGSm1PcTdyVjhRYlkvREYySEZSTWN6L0pRPT0ifQ==)",
+      reward_credential);
+}
+
+TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
+  // Arrange
+  test::MockTokenGenerator(/*count=*/1);
+  test::RefillConfirmationTokens(/*count=*/1);
+
+  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
+      /*use_random_uuids=*/false);
+
+  // Act
+  std::optional<ConfirmationInfo> confirmation =
+      BuildRewardConfirmation(transaction, /*user_data=*/{});
+  ASSERT_TRUE(confirmation);
+
+  // Assert
+  const RewardInfo expected_reward = test::BuildReward(*confirmation);
+
+  UserDataInfo expected_user_data;
+  expected_user_data.dynamic = base::test::ParseJsonDict(
+      R"JSON(
+          {
+            "diagnosticId": "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2",
+            "systemTimestamp": "1996-07-08T09:00:00.000Z"
+          })JSON");
+  expected_user_data.fixed = base::test::ParseJsonDict(
+      R"JSON(
+          {
+            "buildChannel": "release",
+            "catalog": [
+              {
+                "id": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
+              }
+            ],
+            "countryCode": "US",
+            "createdAtTimestamp": "1996-07-08T09:00:00.000Z",
+            "platform": "windows",
+            "rotatingHash": "jBdiJH7Hu3wj31WWNLjKV5nVxFxWSDWkYh5zXCS3rXY=",
+            "segment": "untargeted",
+            "studies": [],
+            "versionNumber": "1.2.0.0"
+          })JSON");
+
+  EXPECT_THAT(
+      *confirmation,
+      ::testing::FieldsAre(test::kTransactionId, test::kCreativeInstanceId,
+                           mojom::ConfirmationType::kViewedImpression,
+                           mojom::AdType::kNotificationAd,
+                           /*created_at*/ test::Now(), expected_reward,
+                           expected_user_data));
+}
+
+TEST_F(BraveAdsRewardConfirmationUtilTest,
+       DoNotBuildRewardConfirmationIfNoConfirmationTokens) {
+  // Arrange
+  test::MockTokenGenerator(/*count=*/1);
+
+  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
+      /*use_random_uuids=*/false);
+
+  // Act
+  std::optional<ConfirmationInfo> confirmation =
+      BuildRewardConfirmation(transaction, /*user_data=*/{});
+
+  // Assert
+  EXPECT_FALSE(confirmation);
+}
+
+TEST_F(BraveAdsRewardConfirmationUtilTest,
+       DoNotBuildRewardConfirmationWithInvalidTransaction) {
+  // Act & Assert
+#if CHECK_WILL_STREAM()
+  constexpr std::string_view kFailureLog = "Check failed: transaction.IsValid*";
+#else
+  constexpr std::string_view kFailureLog = ".*";
+#endif
+  EXPECT_DEATH_IF_SUPPORTED(BuildRewardConfirmation(/*transaction=*/{},
+                                                    /*user_data=*/{}),
+                            kFailureLog);
+}
+
+TEST_F(BraveAdsRewardConfirmationUtilTest,
+       DoNotBuildRewardConfirmationForNonRewardsUser) {
+  // Arrange
+  test::DisableBraveRewards();
+
+  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
+      /*value=*/0.01, mojom::AdType::kNotificationAd,
+      mojom::ConfirmationType::kViewedImpression,
+      /*use_random_uuids=*/false);
+
+  // Act & Assert
+#if CHECK_WILL_STREAM()
+  constexpr std::string_view kFailureLog =
+      "Check failed: UserHasJoinedBraveRewards*";
+#else
+  constexpr std::string_view kFailureLog = ".*";
+#endif
+  EXPECT_DEATH_IF_SUPPORTED(BuildRewardConfirmation(transaction,
+                                                    /*user_data=*/{}),
+                            kFailureLog);
+}
+
+}  // namespace brave_ads

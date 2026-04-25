@@ -1,0 +1,71 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#ifndef BRAVE_IOS_BROWSER_AI_CHAT_AI_CHAT_SETTINGS_HELPER_H_
+#define BRAVE_IOS_BROWSER_AI_CHAT_AI_CHAT_SETTINGS_HELPER_H_
+
+#import <Foundation/Foundation.h>
+
+#ifdef __cplusplus
+#include "brave/components/ai_chat/core/common/mojom/ios/ai_chat.mojom.objc.h"
+#include "brave/components/ai_chat/core/common/mojom/ios/settings_helper.mojom.objc.h"
+#else
+#include "ai_chat.mojom.objc.h"          // NOLINT
+#include "settings_helper.mojom.objc.h"  // NOLINT
+#endif
+
+@protocol ProfileBridge;
+
+NS_ASSUME_NONNULL_BEGIN
+
+/// The default context size to display to the user when they are adding a
+/// custom model
+OBJC_EXPORT NSInteger const AIChatDefaultCustomModelContextSize;
+
+@protocol AIChatSettingsHelperDelegate
+- (void)defaultModelChangedFromOldKey:(NSString*)oldKey toKey:(NSString*)toKey;
+- (void)modelListUpdated;
+@end
+
+/// A helper which wraps access to methods that are used in the settings UI
+@protocol AIChatSettingsHelper
+/// A delegate to watch for updates to the models
+@property(nonatomic, weak, nullable) id<AIChatSettingsHelperDelegate> delegate;
+/// The set of available models
+@property(readonly) NSArray<AiChatModelWithSubtitle*>* modelsWithSubtitles;
+/// The current default model key being used
+@property(nonatomic) NSString* defaultModelKey;
+/// Fetch the premium status of the user
+- (void)fetchPremiumStatus:(void (^)(AiChatPremiumStatus status,
+                                     AiChatPremiumInfo* _Nullable info))handler;
+/// Deletes user preferences & data related to Leo
+- (void)resetLeoData;
+/// A list of custom models the user has added
+@property(readonly) NSArray<AiChatModel*>* customModels;
+/// Adds a custom model to the custom models list if it passes validation
+- (void)addCustomModel:(AiChatModel*)model
+     completionHandler:(void (^)(AiChatOperationResult result))handler;
+/// Updates a custom model found at a given index it passes validation
+- (void)updateCustomModelAtIndex:(NSInteger)index
+                           model:(AiChatModel*)model
+               completionHandler:
+                   (void (^)(AiChatOperationResult result))handler;
+/// Deletes a custom model found at a given index
+- (void)deleteCustomModelAtIndex:(NSInteger)index;
+/// The default custom model system prompt
+@property(readonly) NSString* defaultCustomModelSystemPrompt;
+@end
+
+/// A concrete implementation of the AIChatSettingsHelper
+OBJC_EXPORT
+@interface AIChatSettingsHelperImpl : NSObject <AIChatSettingsHelper>
+- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithProfile:(id<ProfileBridge>)profile
+    NS_DESIGNATED_INITIALIZER;
+@end
+
+NS_ASSUME_NONNULL_END
+
+#endif  // BRAVE_IOS_BROWSER_AI_CHAT_AI_CHAT_SETTINGS_HELPER_H_

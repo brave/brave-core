@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/loader/modulescript/module_script_loader.cc b/third_party/blink/renderer/core/loader/modulescript/module_script_loader.cc
+index 682bae10ed624fb10ebb546cd51fc5512b499ce8..80a3f1e7ef41d5a745a9eee2d7085dfed245e89d 100644
+--- a/third_party/blink/renderer/core/loader/modulescript/module_script_loader.cc
++++ b/third_party/blink/renderer/core/loader/modulescript/module_script_loader.cc
+@@ -187,6 +187,7 @@ void ModuleScriptLoader::FetchInternal(
+     options.initiator_info.referrer = module_request.ReferrerString();
+     options.initiator_info.position = module_request.GetReferrerPosition();
+   }
++  BRAVE_MODULE_SCRIPT_LOADER_FETCH_INTERNAL
+ 
+   // Note: |options| should not be modified after here.
+   FetchParameters fetch_params(std::move(resource_request), options);

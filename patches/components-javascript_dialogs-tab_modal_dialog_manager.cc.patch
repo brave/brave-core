@@ -1,0 +1,12 @@
+diff --git a/components/javascript_dialogs/tab_modal_dialog_manager.cc b/components/javascript_dialogs/tab_modal_dialog_manager.cc
+index 03a1d6e6d2313058596b74be702c794084dbe5f0..bf4732a9e4ca8926138ce567f8b9c8915df2ef6d 100644
+--- a/components/javascript_dialogs/tab_modal_dialog_manager.cc
++++ b/components/javascript_dialogs/tab_modal_dialog_manager.cc
+@@ -254,6 +254,7 @@ void TabModalDialogManager::CancelDialogs(content::WebContents* web_contents,
+ 
+ void TabModalDialogManager::OnVisibilityChanged(
+     content::Visibility visibility) {
++  BRAVE_TAB_MODAL_DIALOG_MANAGER_ON_VISIBILITY_CHANGED
+   if (visibility == content::Visibility::HIDDEN) {
+     HandleTabSwitchAway(DismissalCause::kTabHidden);
+   } else if (pending_dialog_) {

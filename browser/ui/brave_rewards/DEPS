@@ -1,0 +1,5 @@
+specific_include_rules = {
+  "rewards_panel_coordinator_unittest\.cc": [
+    "+brave/components/l10n/common/test/scoped_default_locale.h",
+  ],
+}

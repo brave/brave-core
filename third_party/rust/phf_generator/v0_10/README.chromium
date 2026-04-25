@@ -1,0 +1,10 @@
+Name: phf_generator
+URL: https://crates.io/crates/phf_generator
+Version: 0.10.0
+Revision: 3ea14b2166553ad6e7b9afe7244144f5d661b6c6
+License: MIT
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: PHF generation logic

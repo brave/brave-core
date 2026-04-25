@@ -1,0 +1,20 @@
+diff --git a/components/content_settings/core/common/cookie_settings_base.cc b/components/content_settings/core/common/cookie_settings_base.cc
+index 4ef261f97e3cf3dc5d4b4046ccb958eafa3c028b..2dc99b912d33ec4e846b36e6bf6f442025844ba6 100644
+--- a/components/content_settings/core/common/cookie_settings_base.cc
++++ b/components/content_settings/core/common/cookie_settings_base.cc
+@@ -587,6 +587,7 @@ CookieSettingsBase::DecideAccess(const GURL& url,
+     return BlockAllCookies{};
+   }
+ 
++  BRAVE_COOKIE_SETTINGS_BASE_DECIDE_ACCESS
+   if (!is_third_party_request) {
+     return AllowAllCookies{ThirdPartyCookieAllowMechanism::kNone};
+   }
+@@ -738,6 +739,7 @@ CookieSettingsBase::GetCookieSettingInternal(
+   if (std::holds_alternative<AllowPartitionedCookies>(choice)) {
+     CHECK(is_third_party_request);
+     CHECK(block_third_party_cookies);
++    BRAVE_COOKIE_SETTINGS_BASE_GET_COOKIES_SETTINGS_INTERNAL_IS_EXPLICIT_SETTING
+     CHECK(!is_explicit_setting);
+ 
+     FireStorageAccessHistogram(StorageAccessResult::ACCESS_BLOCKED);

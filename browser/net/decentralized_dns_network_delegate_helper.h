@@ -1,0 +1,60 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_BROWSER_NET_DECENTRALIZED_DNS_NETWORK_DELEGATE_HELPER_H_
+#define BRAVE_BROWSER_NET_DECENTRALIZED_DNS_NETWORK_DELEGATE_HELPER_H_
+
+#include <memory>
+#include <optional>
+#include <string>
+#include <vector>
+
+#include "brave/browser/net/url_context.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "net/base/completion_once_callback.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+
+namespace decentralized_dns {
+
+// Issue eth_call requests via Ethereum provider such as Infura to query
+// decentralized DNS records, and redirect URL requests based on them.
+template <template <typename> class T>
+int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
+    const brave::ResponseCallback& next_callback,
+    T<brave::BraveRequestInfo> ctx);
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+template <template <typename> class T>
+void OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
+    const brave::ResponseCallback& next_callback,
+    T<brave::BraveRequestInfo> ctx,
+    const std::optional<GURL>& url,
+    brave_wallet::mojom::ProviderError error,
+    const std::string& error_message);
+
+template <template <typename> class T>
+void OnBeforeURLRequest_EnsRedirectWork(
+    const brave::ResponseCallback& next_callback,
+    T<brave::BraveRequestInfo> ctx,
+    const std::vector<uint8_t>& content_hash,
+    bool require_offchain_consent,
+    brave_wallet::mojom::ProviderError error,
+    const std::string& error_message);
+
+template <template <typename> class T>
+void OnBeforeURLRequest_SnsRedirectWork(
+    const brave::ResponseCallback& next_callback,
+    T<brave::BraveRequestInfo> ctx,
+    const std::optional<GURL>& url,
+    brave_wallet::mojom::SolanaProviderError error,
+    const std::string& error_message);
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+
+}  // namespace decentralized_dns
+
+#endif  // BRAVE_BROWSER_NET_DECENTRALIZED_DNS_NETWORK_DELEGATE_HELPER_H_

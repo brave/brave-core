@@ -1,0 +1,12 @@
+diff --git a/ui/webui/resources/js/ios/mojo_api.js b/ui/webui/resources/js/ios/mojo_api.js
+index 2f575559d3e679074050a74a5ea781c34f6082e7..10d42acff1bdc9421576972c89082a3ccac64e4d 100644
+--- a/ui/webui/resources/js/ios/mojo_api.js
++++ b/ui/webui/resources/js/ios/mojo_api.js
+@@ -228,6 +228,7 @@ Mojo.internal = Mojo.internal || {};
+  * @return {Object=} Response from Mojo backend.
+  */
+ Mojo.internal.sendMessage = function(message) {
++  message.args.frameId = __gCrWeb.frameId;
+   const response = window.prompt(JSON.stringify(message));
+   return response ? JSON.parse(response) : undefined;
+ };

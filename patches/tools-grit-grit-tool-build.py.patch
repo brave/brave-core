@@ -1,0 +1,9 @@
+diff --git a/tools/grit/grit/tool/build.py b/tools/grit/grit/tool/build.py
+index 06346a66be9ba66cbbd6a6aeeb342d117f2327b7..6783903d7d85eefa0a6aa575b5dac967e085acfd 100644
+--- a/tools/grit/grit/tool/build.py
++++ b/tools/grit/grit/tool/build.py
+@@ -673,3 +673,4 @@ Duplicate actual output files:
+     dir = os.path.split(file)[0]
+     if not os.path.exists(dir):
+       os.makedirs(dir, exist_ok=True)
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())

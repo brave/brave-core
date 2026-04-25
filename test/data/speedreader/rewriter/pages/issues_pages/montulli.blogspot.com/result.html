@@ -1,0 +1,675 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>The reasoning behind Web Cookies</title><meta charset="UTF-8"/><body id="article"><h1 class="title metadata">The reasoning behind Web Cookies</h1><p class="subhead metadata">I get a&nbsp; fair number of questions about cookies from individuals and  the press.&nbsp;&nbsp;&nbsp; I thought I would try and explain some of the motivati...</p><div class=""><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+<p><a href="//4.bp.blogspot.com/-ptrSzxtvKfA/UZLUSbZjJ1I/AAAAAAABQaM/CM39K3Np4eU/s1600/someCookies.JPG" imageanchor="1"></a></p><p>
+I get a&nbsp; fair number of questions about cookies from individuals and 
+the press.&nbsp;&nbsp;&nbsp; I thought I would try and explain some of the motivation 
+and history behind Web cookies as well as some of the design behind 
+them.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Feel free to post more questions and I will try and expand 
+this article with more details.
+
+<a href="http://www.montulli-blog.com/2013/05/why-blocking-3rd-party-cookies-could-be.html">See my recent post on 3rd party cookies as well!</a>
+
+
+<b>Motivation</b><br>
+<a href="http://en.wikipedia.org/wiki/Http">HTTP</a> is the 
+networking language behind your browser.&nbsp;&nbsp;&nbsp; HTTP, or Hyper Text 
+Transport Protocol, was designed and introduced as part of the <a href="http://en.wikipedia.org/wiki/Www">WWW</a> 
+project that started with <a href="http://en.wikipedia.org/wiki/Tim_Berners-Lee">Tim Berners-Lee</a> at <a href="http://en.wikipedia.org/wiki/Cern">CERN</a> and was expanded upon 
+by several universities, corporations and private individuals.&nbsp;&nbsp;&nbsp; The 
+WWW and HTTP are open standards which are published and given into the 
+public trust in order to foster interoperability and to create products 
+that can become ubiquitous.<br>
+<br>
+One of the problems faced 
+in the early years of the web was how to create websites that had 
+"memory" for individual users.&nbsp;&nbsp;&nbsp; The uses of "memory" on a website are 
+many: shopping carts for shopping, personalized content, logging in, and
+ many other interactive features require memory.&nbsp;&nbsp;&nbsp; The problem in 1994 
+was a lack of mechanisms to identify a user individually. &nbsp; HTTP was 
+designed to be fast and efficient and part of its design was to connect
+ to a website, grab a document and then disconnect. &nbsp; This freed up the 
+website to serve other customers, but it also meant that there was no 
+concept of a session. &nbsp; &nbsp; Without a session, each time a user clicked to
+ move to a different page they would become just another random user 
+with no way to associate them with an action they had done just moments 
+ago.&nbsp;&nbsp;&nbsp;&nbsp; This is a bit like talking to someone with Alzheimer 
+disease.&nbsp;&nbsp;&nbsp; Each interaction would result in having to introduce yourself again, and again, and again.
+
+<b>History</b><br>
+By the summer 1994 the idea of adding some form of "memory" to HTTP had
+ been kicking around the WWW design groups for a while.&nbsp;&nbsp; I'm not sure 
+exactly how long but I would guess for 1 or 2 years.&nbsp;&nbsp;&nbsp; There were some 
+interesting proposals, but one of the popular ones that kept coming up 
+was to add a unique identifier to every web browser so that a web site could individually identify 
+each user use that to build a session.&nbsp;&nbsp;&nbsp; I was very much against this 
+concept because the unique identifier could be used to track a user at 
+every website.&nbsp;&nbsp;&nbsp;&nbsp; Without another proposal the idea of adding sessions or memory remained dormant.<br>
+&nbsp; <br>
+Sometime around July of 1994 I went to a meeting to talk about a 
+shopping server that another group at <a href="http://en.wikipedia.org/wiki/Netscape">Netscape</a> was working on.&nbsp;&nbsp;&nbsp;&nbsp; They 
+needed to build shopping cart functionality into the server, but they 
+didn't have a good way to make it work with the existing technology.&nbsp;&nbsp;&nbsp; 
+They explained what they wanted to do and I had to shake my head and 
+agree with them and tell them that they could not do it in any 
+reasonable way with what existed.&nbsp;&nbsp;&nbsp;&nbsp; I promised to think about the 
+problem and get back to them.&nbsp;&nbsp;&nbsp; At some point during the next week the 
+general concept of <a href="http://en.wikipedia.org/wiki/Web_cookie">Web Cookies</a> formed in my head.&nbsp;&nbsp;&nbsp; The idea of 
+allowing a single web site to send a session identifier to the browser 
+that would get sent back only to the server appealed to me and prevented
+ cross site tracking.&nbsp;&nbsp;&nbsp; I wanted to create something that had more 
+utility so that we could do a lot more than just shopping carts, so I 
+extended the concept of the session identifier into a general payload 
+that would get sent back to the server.&nbsp;&nbsp;&nbsp; 
+
+<b>Design</b><br>
+With a rough sketch in my head I worked on the general design of 
+cookies.&nbsp;&nbsp;&nbsp; The goal was to create a session identifier and general 
+"memory" mechanism for websites that didn't allow for cross site 
+tracking.&nbsp;&nbsp;&nbsp; I discussed the design with other members of the 
+engineering team and got useful feedback, especially with regard to 
+denial of service attracts and other security concerns.&nbsp;&nbsp; John 
+Giannandrea was especially helpful with the design.&nbsp;&nbsp; The end result was
+ the cookie specification that still defines 95% of what cookies do 
+today.&nbsp;&nbsp;&nbsp;&nbsp; A Web server can return information to the browser that the 
+browser should give back to the server each time it contacts the server 
+in the future.&nbsp;&nbsp;&nbsp;&nbsp; Within the Web Cookie, a server can embed a random 
+session identifier, a username, a shopping cart, or anything it wants as
+ long as it doesn't try to send something too big or set too many 
+cookies.&nbsp;&nbsp;&nbsp; There are also restrictions on how cookies can be 
+transferred, either over secure connections or not and if the cookie 
+should be erased when the user closes the browser or reboots their 
+computer.&nbsp;&nbsp; 
+
+
+<b>The name</b><br>
+<br>
+I had heard the term "magic cookie" from an operating systems course from college.&nbsp;&nbsp;&nbsp;&nbsp; The term has a somewhat similar meaning to the way Web Cookies worked and I liked the term "cookies" for aesthetic reasons.&nbsp;&nbsp;&nbsp;&nbsp; Cookies was the first thing I came up with and the name stuck.&nbsp;&nbsp;&nbsp; 
+
+
+<b>Usefulness</b><br>
+<br>
+We released the Netscape browser in the fall of 1994 and within a 
+year it was the most popular browser in the world.&nbsp;&nbsp;&nbsp;&nbsp; We also released 
+the Cookie specification so that other browsers could implement it and 
+so that web sites would know how to use it.&nbsp;&nbsp;&nbsp; With most of the world 
+using a browser that supported Web Cookies, web sites started using 
+cookies for many different things and in ways that we could not have 
+predicted.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Most of those uses were fantastic, some of them were 
+concerning.<br>
+<br>
+By 1996 and 1997 the web had grown dramatically and was a big 
+business.&nbsp;&nbsp;&nbsp; Most websites offered their content for free and were 
+advertising supported.&nbsp;&nbsp;&nbsp;&nbsp; Advertisers were looking for ways to increase
+ the effectiveness of their ads and they looked to Web Cookies to help them with that.&nbsp;&nbsp;&nbsp;&nbsp; 
+
+
+<b>An Unforeseen Problem</b><br>
+A problem that I missed during the Cookie design phase was an 
+interaction between cookies and embedded content within a webpage.&nbsp;&nbsp;&nbsp; 
+Webpages start as a single HTML document on one server.&nbsp;&nbsp; That one HTML 
+document contains references to other resources that are loaded to 
+display the site that the user sees.&nbsp;&nbsp;&nbsp; Images, videos, more text, and 
+plug-ins are all references within an HTML document and any of those 
+resources can be loaded from anywhere in the world.&nbsp;&nbsp;&nbsp;&nbsp; This referencing
+ technique is one of the things that make the Web so amazingly 
+powerful.&nbsp;&nbsp;&nbsp;&nbsp; When Web Cookies are combined with embedded references that point to other websites they are called "3rd party cookies" and they represent a new way in which users can be tracked across multiple web sites.
+
+<b>Advertising uses</b><br>
+Big ad companies, in particular <a href="http://en.wikipedia.org/wiki/Doubleclick">DoubleClick</a>, started using 3rd party 
+cookies to track a browser uniquely across all of the sites that used 
+DoubleClick to serve ads.&nbsp;&nbsp;&nbsp;&nbsp; The use of the tracking wasn't to 
+actually identify the name of a user, but to make sure they didn't see 
+the same ad every time or to track the number of unique users that saw a
+ particular ad.&nbsp;&nbsp;&nbsp;&nbsp; Eventually the ads were customized to reflect the 
+browsing habits of the unique identifiers.&nbsp;&nbsp;&nbsp; If a browser had looked at
+ kayaks and racquetball racquets in the past then they were given ads 
+for sporting goods and kayaks and racquets.&nbsp;&nbsp;&nbsp;&nbsp; <br>
+<br>
+Around 1996 ad tracking via Cookies became a hot topic.&nbsp;&nbsp;&nbsp; Users were
+ upset with the practice and asking for change.&nbsp;&nbsp;&nbsp;&nbsp; Tracking across 
+websites was certainly not what cookies were designed to do, they were 
+designed with the opposite intention, but what could be done at that point to fix the problem? &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ One of the solutions we came up with was to add controls to give
+ each user control over what cookies to accept and from whom.&nbsp;&nbsp;&nbsp; The big
+ question at the time was whether or not to disable 3rd party cookies completely or not.&nbsp;&nbsp;&nbsp;&nbsp; The decision had wide ranging effects since advertising was paying for most of the web and disabling 3rd party cookies would also disable many legitimate uses for cookies on embedded resources.&nbsp;&nbsp;&nbsp;&nbsp; 
+
+<b>An uncomfortable decision</b><br>
+In the end the decision to disable 3rd party cookies or keep them on was
+ left to me.&nbsp;&nbsp;&nbsp;&nbsp; I agonized about the decision for weeks and in the end I
+ chose to keep them.&nbsp;&nbsp; My logic was two fold: 
+
+</p><blockquote>
+Any company that had the ability to track users across a 
+large section of the web would need to be a large publicly visible 
+company.&nbsp;&nbsp; Cookies could be seen by users so a tracking company can't 
+hide from the public.&nbsp;&nbsp;&nbsp; In this way the public has a natural feedback 
+mechanism to constrain those that would seek to track them.<p>
+If 3rd party cookies were disabled ad companies would use another 
+mechanism to accomplish the same thing, and that mechanism would not 
+have the same level of visibility and control as cookies.&nbsp;&nbsp; We would be 
+trading out one problem for another.</p></blockquote><p>
+Today, I still believe that it was the correct decision.&nbsp;&nbsp;&nbsp;&nbsp; Governments
+ have an ability to regulate the collection of data by large visible 
+companies and has shown a willingness to do so.&nbsp;&nbsp;&nbsp; The public has a 
+responsibility to keep pressure on both the companies that have the 
+ability to track users and governments to enact reasonable privacy 
+regulations and enforce them.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Most importantly, there are other 
+mechanisms that can replace Web cookies for tracking if they are 
+universally disabled, and those mechanisms would be much harder to 
+observe and disable.
+
+<b>Durability</b><br>
+The design of Cookies have remained fairly unchanged for the last 19 
+years.&nbsp;&nbsp; The biggest changes have been to how users can view and control
+ their cookies.&nbsp;&nbsp;&nbsp;&nbsp; Many people have proposed alternatives, but none 
+have caught on.&nbsp;&nbsp;&nbsp;&nbsp; Cookies are not perfect, but they have certainly 
+proved good enough and much of the functionality of the web depends on 
+them.&nbsp;&nbsp;&nbsp; 
+
+<b>Summary</b><br>
+Web Cookies find themselves in the midst of a very controversial area, 
+and have gained a level of notoriety because of it.&nbsp;&nbsp;&nbsp; Even though they 
+were designed to protect privacy they have been used in ways that are 
+sometimes infringing upon it.&nbsp;&nbsp;&nbsp; Many efforts have been taken to protect
+ the privacy of Web users and Cookie controls have been put into the hands of every 
+user.&nbsp; &nbsp; The future of Cookies and user privacy is surely to continue as
+ an interesting news item for a very long time and rightfully so. &nbsp;&nbsp; The nature of the advertising business is to collect as much information as it possibly can, so the public needs to push back when it goes too far.&nbsp; 
+
+
+
+
+</p>
+</body>

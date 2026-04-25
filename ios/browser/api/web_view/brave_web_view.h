@@ -1,0 +1,230 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#ifndef BRAVE_IOS_BROWSER_API_WEB_VIEW_BRAVE_WEB_VIEW_H_
+#define BRAVE_IOS_BROWSER_API_WEB_VIEW_BRAVE_WEB_VIEW_H_
+
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import <WebKit/WebKit.h>
+
+#import "cwv_export.h"               // NOLINT
+#import "cwv_navigation_action.h"    // NOLINT
+#import "cwv_navigation_delegate.h"  // NOLINT
+#import "cwv_ui_delegate.h"          // NOLINT
+#import "cwv_web_view.h"             // NOLINT
+#import "cwv_web_view_extras.h"      // NOLINT
+
+NS_ASSUME_NONNULL_BEGIN
+
+@protocol AIChatUIHandlerBridge;
+@protocol WalletPageHandlerBridge;
+@protocol AIChatAssociatedContentPageFetcher;
+@protocol ProfileBridge;
+@protocol LoginsTabHelperBridge;
+@protocol BraveTalkTabHelperBridge;
+@protocol PrintHandler;
+
+typedef void (^ResetConfigurationCallback)(id<ProfileBridge>,
+                                           WKWebViewConfiguration*);
+
+CWV_EXPORT
+@interface BraveNavigationAction : CWVNavigationAction
+/// YES if the navigation target frame is the main frame.
+@property(nonatomic, readonly, getter=isTargetFrameMain) BOOL targetFrameIsMain;
+/// YES if the navigation target frame is cross-origin with respect to the the
+/// navigation source frame.
+@property(nonatomic, readonly, getter=isTargetFrameCrossOrigin)
+    BOOL targetFrameIsCrossOrigin;
+/// YES if the navigation target frame is in another window and is cross-origin
+/// with respect to the the navigation source frame.
+@property(nonatomic, readonly, getter=isTargetWindowCrossOrigin)
+    BOOL targetWindowIsCrossOrigin;
+/// YES if there was a recent user interaction with the web view (not
+/// necessarily on the page).
+@property(nonatomic, readonly) BOOL hasTappedRecently;
+@end
+
+/// Additional navigation delegate methods that extend functionality of
+/// CWVWebView
+CWV_EXPORT
+@protocol BraveWebViewNavigationDelegate <CWVNavigationDelegate>
+@optional
+/// Decides whether or not universal links should be blocked for a given request
+- (BOOL)webView:(CWVWebView*)webView
+    shouldBlockUniversalLinksForRequest:(NSURLRequest*)request;
+/// Decides whether or not JavaScript should be blocked on the resulting page
+- (BOOL)webView:(CWVWebView*)webView
+    shouldBlockJavaScriptForRequest:(NSURLRequest*)request;
+/// Asks the delegate for a custom user agent to set for a given request
+- (nullable NSString*)webView:(CWVWebView*)webView
+    userAgentForUserAgentType:(CWVUserAgentType)userAgentType
+                      request:(NSURLRequest*)request;
+/// Notifies the delegate that basic authentication is required to access the
+/// requested resource
+- (void)webView:(CWVWebView*)webView
+    didRequestHTTPAuthForProtectionSpace:(NSURLProtectionSpace*)protectionSpace
+                      proposedCredential:(NSURLCredential*)proposedCredential
+                       completionHandler:
+                           (void (^)(NSString* _Nullable username,
+                                     NSString* _Nullable password))handler;
+/// Notifies the delegate that a server redirect occured. At the point when this
+/// is called, the url will already be updated.
+- (void)webViewDidRedirectNavigation:(CWVWebView*)webView;
+// An alternative to -[id<CWVNavigationDelegate>
+// webView:decidePolicyForNavigationAction:decisionHandler:] which provides
+// additional request info found in WebPolicyDecider
+- (void)webView:(CWVWebView*)webView
+    decidePolicyForBraveNavigationAction:
+        (BraveNavigationAction*)navigationAction
+                         decisionHandler:(void (^)(CWVNavigationActionPolicy))
+                                             decisionHandler;
+/// Noifies the delegate that a navigation did commit on the same document
+/// (reference fragment navigations, pushState/replaceState, same document
+/// history navigation)
+- (void)webViewDidCommitSameDocumentNavigation:(CWVWebView*)webView;
+
+@end
+
+CWV_EXPORT
+@protocol BraveWebViewUIDelegate <CWVUIDelegate>
+@optional
+/// Notifies the delegate that the underlying web view has been created
+///
+/// This will be called if you create a `BraveWebView` without providing it a
+/// `WKWebViewConfiguration` since `CWVWebView` will rely on `WebState` to
+/// handle creating the web view if the config is not provided up front. This
+/// is a typical flow for when handling window.open since the underlying
+/// web view must be created with the configuration provided by Apple.
+- (void)webViewDidCreateNewWebView:(CWVWebView*)webView;
+/// Build the edit menu that will be displayed when long pressing static content
+/// on the page.
+- (void)webView:(CWVWebView*)webView
+    buildEditMenuWithBuilder:(id<UIMenuBuilder>)builder;
+/// Called when the favicon driver updates the web views favicon status
+- (void)webView:(CWVWebView*)webView
+    didUpdateFaviconStatus:(nullable CWVFaviconStatus*)faviconStatus;
+@end
+
+/// A CWVWebView with Chrome tab helpers attached and the ability to handle
+/// some Brave specific features
+CWV_EXPORT
+@interface BraveWebView : CWVWebView
+
+@property(nonatomic, class, nullable)
+    ResetConfigurationCallback didResetConfiguration;
+
+// This web view's navigation delegate.
+@property(nonatomic, weak, nullable) id<BraveWebViewNavigationDelegate>
+    navigationDelegate;
+
+// This web view's UI delegate.
+@property(nonatomic, weak, nullable) id<BraveWebViewUIDelegate> UIDelegate;
+
+/// Allows customizing the underlying WKWebView input views (see UIResponder),
+/// alongside `inputAccessoryView` which is already exposed by CWVWebView
+@property(nonatomic, nullable) UIView* inputView;
+@property(nonatomic, nullable) UIInputViewController* inputViewController;
+@property(nonatomic, nullable)
+    UIInputViewController* inputAccessoryViewController;
+
+@end
+
+// Temporary methods for notifying that media started/stopped until
+// AdsReportingScript is converted to a Chromium JavaScriptFeature
+CWV_EXPORT
+@interface BraveWebView (AdsNotifier)
+- (void)notifyTabDidStartPlayingMedia;
+- (void)notifyTabDidStopPlayingMedia;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (AIChatWebUI)
+/// A bridge for handling Leo AI WebUI page actions
+@property(nonatomic, weak, nullable)
+    id<AIChatUIHandlerBridge, AIChatAssociatedContentPageFetcher>
+        aiChatUIHandler;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (AIChatDistiller)
+// Fetches the main article text content from the current page and returns it
+// via completionHandler. Returns an empty string if no article content could
+// be extracted.
+- (void)fetchMainArticle:(void (^)(NSString* text))completionHandler;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (WalletWebUI)
+/// A bridge for handling Brave Wallet WebUI page actions
+@property(nonatomic, weak, nullable) id<WalletPageHandlerBridge>
+    walletPageHandler;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (ForcePaste)
+// Force pastes the contents into the active element in the web view
+- (void)forcePasteContents:(NSString*)contents;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (PageMetadata)
+// Fetches the page metadata (OpenSearch & RSS feeds from the page) and returns
+// a JSON string with the results
+- (void)fetchMetadata:(void (^)(NSString* _Nullable json))completionHandler;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (Logins)
+/// A bridge for handling Logins script messages
+- (void)setLoginsHelper:(id<LoginsTabHelperBridge>)loginsHelper;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (DocumentFetch)
+/// Downloads the resource at `url` using an XHR in the page context and
+/// delivers the result to `completionHandler`. On success `data` contains the
+/// response body and `statusCode` is the HTTP status code. On failure (no main
+/// frame, network error, etc.) `statusCode` is 0 and `data` is nil.
+- (void)downloadDocumentAtURL:(NSURL*)url
+            completionHandler:
+                (void (^)(NSInteger statusCode,
+                          NSData* _Nullable data))completionHandler;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (ReaderMode)
+/// Checks whether the current page is readable and returns the parsed result
+/// as a JSON string, or nil if the page is not readable or the call times out.
+- (void)checkReadability:(void (^)(NSString* _Nullable json))completionHandler;
+/// Updates the reader mode display style on the current page.
+- (void)setReaderModeTheme:(NSString*)theme
+                  fontType:(NSString*)fontType
+                  fontSize:(NSInteger)fontSize;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (BraveSearchAdResults)
+// Fetches search result ad creatives from the current page and returns them
+// as a JSON string, or nil if none could be retrieved.
+- (void)fetchSearchAdCreatives:
+    (void (^)(NSString* _Nullable json))completionHandler;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (BraveTalk)
+/// A bridge for handling Brave Talk tab features
+- (void)setBraveTalkHelper:(id<BraveTalkTabHelperBridge>)braveTalkHelper;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (Print)
+/// A bridge for handling window.print script messages
+- (void)setPrintHandler:(id<PrintHandler>)printHandler;
+@end
+
+NS_ASSUME_NONNULL_END
+
+#endif  // BRAVE_IOS_BROWSER_API_WEB_VIEW_BRAVE_WEB_VIEW_H_

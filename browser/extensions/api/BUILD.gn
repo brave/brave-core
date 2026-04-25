@@ -1,0 +1,32 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/common/extensions/api/api_sources.gni")
+import("//tools/json_schema_compiler/json_schema_api.gni")
+
+function_registration("generated_api_registration") {
+  sources = brave_extensions_api_schema_sources
+  impl_dir = "//brave/browser/extensions/api/"
+  bundle_name = "Brave"
+  root_namespace = brave_extensions_api_root_namespace
+
+  deps = [
+    "//extensions/browser",
+    "//extensions/common",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "brave_theme_api_unittest.cc" ]
+
+  deps = [
+    "//brave/browser/extensions",
+    "//chrome/browser/themes",
+    "//chrome/test:test_support",
+    "//testing/gtest",
+  ]
+}

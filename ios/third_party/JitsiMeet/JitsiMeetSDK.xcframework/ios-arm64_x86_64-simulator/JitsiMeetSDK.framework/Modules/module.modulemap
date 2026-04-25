@@ -1,0 +1,11 @@
+framework module JitsiMeetSDK {
+  umbrella header "JitsiMeetSDK.h"
+  export *
+
+  module * { export * }
+}
+
+module JitsiMeetSDK.Swift {
+  header "JitsiMeetSDK-Swift.h"
+  requires objc
+}

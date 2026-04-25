@@ -1,0 +1,38 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+source_set("brave_wallet") {
+  sources = [
+    "blockchain_images_source.h",
+    "blockchain_images_source.mm",
+    "brave_wallet_factory_wrappers.h",
+    "brave_wallet_factory_wrappers.mm",
+    "brave_wallet_service_factory.h",
+    "brave_wallet_service_factory.mm",
+    "features.h",
+    "features.mm",
+    "wallet_data_files_installer_delegate_impl.h",
+    "wallet_data_files_installer_delegate_impl.mm",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/browser:constants",
+    "//brave/components/brave_wallet/browser:pref_names",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:mojom",
+    "//brave/ios/browser/api/brave_wallet:wallet_mojom_wrappers",
+    "//brave/ios/browser/keyed_service",
+    "//components/keyed_service/core",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/chrome/browser/shared/model/profile:profile_keyed_service_factory",
+    "//ios/web/public",
+    "//ios/web/public/thread",
+    "//ios/web/public/webui",
+    "//mojo/public/cpp/bindings",
+    "//services/network/public/cpp",
+  ]
+}

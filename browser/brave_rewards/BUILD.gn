@@ -1,0 +1,74 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//testing/test.gni")
+
+assert(enable_brave_rewards)
+
+source_set("brave_rewards") {
+  sources = [
+    "creator_detection_script_injector.h",
+    "rewards_service_factory.h",
+    "rewards_tab_helper.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_rewards/content",
+    "//brave/components/script_injector/common/mojom",
+    "//chrome/browser/profiles",
+    "//components/keyed_service/content",
+    "//components/sessions",
+    "//content/public/browser",
+  ]
+}
+
+source_set("brave_rewards_impl") {
+  sources = [
+    "creator_detection_script_injector.cc",
+    "rewards_prefs_util.cc",
+    "rewards_prefs_util.h",
+    "rewards_service_factory.cc",
+    "rewards_tab_helper.cc",
+  ]
+
+  public_deps = [ ":brave_rewards" ]
+
+  deps = [
+    ":util",
+    "//base",
+    "//brave/components/brave_rewards/content",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/brave_rewards/core:features",
+    "//brave/components/brave_rewards/resources/creator_detection:creator_detection_generated_grit",
+    "//brave/components/brave_wallet/common/buildflags",
+    "//chrome/browser/bitmap_fetcher",
+    "//chrome/browser/favicon",
+    "//chrome/browser/profiles",
+    "//chrome/browser/ui",
+    "//components/keyed_service/content",
+    "//components/prefs",
+    "//components/sessions",
+  ]
+
+  if (enable_brave_wallet) {
+    deps += [ "//brave/browser/brave_wallet" ]
+  }
+}
+
+source_set("util") {
+  sources = [
+    "rewards_util.cc",
+    "rewards_util.h",
+  ]
+
+  deps = [
+    "//brave/components/brave_rewards/core",
+    "//chrome/browser/profiles:profile",
+    "//components/prefs",
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "name": "Brave",
+  "manifest_version": 2,
+  "description": "API test for something that is not braveShields",
+  "web_accessible_resources": [
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs4TIQXRCftLpGmQZxmm6AU8pqGKLoDyi537HGQyRKcK7j/CSXCf3vwJr7xkV72p7bayutuzyNZ3740QxBPiesfBOp8bBb8d2VgTHP3b+SuNmK/rsSRsMRhT05x8AAr/7ab6U3rW0Gsalm2653xnnQS8vt0s62xQTmC+UMXowaSLUZ0Be/TOu6lHZhOeo0NBMKc6PkOu0R1EEfP7dJR6SM/v4dBUBZ1HXcuziVbCXVyU51opZCMjlxyUlQR9pTGk+Zh5sDn1Vw1MwLnWiEfQ4EGL1V7GeI4vgLoOLgq7tmhEratHGCfC1IHm9luMACRr/ybMI6DQJOvgBvecb292FxQIDAQAB",
+  "permissions": [ "contentSettings", "tabs", "storage", "webNavigation" ]
+}

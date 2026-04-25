@@ -1,0 +1,36 @@
+diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
+index ad6b592b4740392044d151801c80bbf92e7c0f55..290199413b5517fdd3aadea92de10bf1f42f82d5 100644
+--- a/chrome/browser/prefs/browser_prefs.cc
++++ b/chrome/browser/prefs/browser_prefs.cc
+@@ -1723,6 +1723,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+       false);
+ 
+   // This is intentionally last.
++  brave::RegisterLocalStatePrefs(registry);
+   RegisterLocalStatePrefsForMigration(registry);
+ }
+ 
+@@ -2220,6 +2221,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+ #endif  // BUILDFLAG(IS_ANDROID)
+ 
+   registry->RegisterBooleanPref(prefs::kStaticStorageQuotaEnabled, false);
++  brave::RegisterProfilePrefs(registry);
+ }
+ 
+ void RegisterUserProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -2642,6 +2644,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
+   profile_prefs->ClearPref(kObsoletePasswordsUseUPMLocalAndSeparateStores);
+   profile_prefs->ClearPref(kObsoleteEmptyProfileStoreLoginDatabase);
+   profile_prefs->ClearPref(kObsoleteUpmAutoExportCsvNeedsDeletion);
++#if 0
+   base::DeleteFile(profile_path.Append(FILE_PATH_LITERAL("Login Data")));
+   base::DeleteFile(
+       profile_path.Append(FILE_PATH_LITERAL("Login Data For Account")));
+@@ -2649,6 +2652,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
+       profile_path.Append(FILE_PATH_LITERAL("Login Data-journal")));
+   base::DeleteFile(
+       profile_path.Append(FILE_PATH_LITERAL("Login Data For Account-journal")));
++#endif
+ #endif  // BUILDFLAG(IS_ANDROID)
+ 
+   // Added 09/2025.

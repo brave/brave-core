@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <message name="IDS_APP_META_KEY" desc="The name of the Windows/Command/Meta key on Linux">
+    Meta
+  </message>
+  <!--
+    Please reuse existing strings as much as possible rather than adding new
+    strings here.
+
+    If the command is only available on a platform we don't support (i.e.
+    ChromeOS) prefer to not add the command.
+  -->
+  <message name="IDS_IDC_BACK">
+    Back
+  </message>
+  <message name="IDS_IDC_FORWARD">
+    Forward
+  </message>
+  <message name="IDS_IDC_HOME">
+    Home
+  </message>
+  <message name="IDS_IDC_STOP">
+    Stop
+  </message>
+  <message name="IDS_IDC_RELOAD_BYPASSING_CACHE">
+    Reload bypassing cache
+  </message>
+  <message name="IDS_IDC_RELOAD_CLEARING_CACHE">
+    Reload clearing cache
+  </message>
+  <message name="IDS_IDC_CLOSE_WINDOW">
+    Close window
+  </message>
+  <message name="IDS_IDC_CLOSE_TAB">
+    Close tab
+  </message>
+  <message name="IDS_IDC_SELECT_NEXT_TAB">
+    Next tab
+  </message>
+  <message name="IDS_IDC_SELECT_PREVIOUS_TAB">
+    Previous tab
+  </message>
+  <message name="IDS_IDC_SELECT_TAB_0">
+    Select tab 0
+  </message>
+  <message name="IDS_IDC_SELECT_TAB_1">
+    Select tab 1
+  </message>
+  <message name="IDS_IDC_SELECT_TAB_2">
+    Select tab 2
+  </message>
+  <message name="IDS_IDC_SELECT_TAB_3">
+    Select tab 3
+  </message>
+  <message name="IDS_IDC_SELECT_TAB_4">
+    Select tab 4
+  </message>
+  <message name="IDS_IDC_SELECT_TAB_5">
+    Select tab 5
+  </message>
+  <message name="IDS_IDC_SELECT_TAB_6">
+    Select tab 6
+  </message>
+  <message name="IDS_IDC_SELECT_TAB_7">
+    Select tab 7
+  </message>
+  <message name="IDS_IDC_SELECT_LAST_TAB">
+    Select last tab
+  </message>
+  <message name="IDS_IDC_DUPLICATE_TAB">
+    Duplicate tab
+  </message>
+  <message name="IDS_IDC_MOVE_TAB_NEXT">
+    Move tab next
+  </message>
+  <message name="IDS_IDC_MOVE_TAB_PREVIOUS">
+    Move tab previous
+  </message>
+  <message name="IDS_IDC_SEARCH">
+    Search
+  </message>
+  <message name="IDS_IDC_WINDOW_MENU">
+    Window menu
+  </message>
+  <message name="IDS_IDC_MINIMIZE_WINDOW">
+    Minimize window
+  </message>
+  <message name="IDS_IDC_MAXIMIZE_WINDOW">
+    Maximize window
+  </message>
+  <message name="IDS_IDC_ALL_WINDOWS_FRONT">
+    Show all windows
+  </message>
+  <message name="IDS_IDC_OPEN_IN_PWA_WINDOW">
+    Open in PWA window
+  </message>
+  <message name="IDS_IDC_WEB_APP_SETTINGS">
+    Web app settings
+  </message>
+  <message name="IDS_IDC_WEB_APP_MENU_APP_INFO">
+    Web app info
+  </message>
+  <message name="IDS_IDC_EMAIL_PAGE_LOCATION">
+    Email page URL
+  </message>
+  <message name="IDS_IDC_BASIC_PRINT">
+    Basic print
+  </message>
+  <message name="IDS_IDC_ROUTE_MEDIA">
+    Route media
+  </message>
+  <message name="IDS_IDC_WINDOW_MUTE_SITE">
+    Mute site
+  </message>
+  <message name="IDS_IDC_WINDOW_MUTE_ALL_TABS">
+    Mute all tabs
+  </message>
+  <message name="IDS_IDC_WINDOW_MUTE_OTHER_TABS">
+    Mute other tabs
+  </message>
+  <message name="IDS_IDC_WINDOW_UNMUTE_ALL_TABS">
+    Unmute all tabs
+  </message>
+  <message name="IDS_IDC_WINDOW_PIN_TAB">
+    Pin tab
+  </message>
+  <message name="IDS_IDC_WINDOW_CLOSE_UNPINNED_TABS">
+    Close unpinned tabs
+  </message>
+  <message name="IDS_IDC_WINDOW_GROUP_TAB">
+    Group tab
+  </message>
+  <message name="IDS_IDC_WINDOW_TOGGLE_GROUP_EXPANDED">
+    Toggle group expanded
+  </message>
+  <message name="IDS_IDC_WINDOW_REMOVE_TAB_FROM_GROUP">
+    Remove tab from current group
+  </message>
+  <message name="IDS_IDC_WINDOW_UNGROUP_GROUP">
+    Ungroup current tab group
+  </message>
+  <message name="IDS_IDC_WINDOW_UNGROUP_ALL_TABS">
+    Ungroup all tabs
+  </message>
+  <message name="IDS_IDC_WINDOW_CLOSE_UNGROUPED_TABS">
+    Close ungrouped tabs
+  </message>
+  <message name="IDS_IDC_WINDOW_CLOSE_TABS_NOT_IN_CURRENT_GROUP">
+    Close tabs not in current group
+  </message>
+  <message name="IDS_IDC_WINDOW_GROUP_UNGROUPED_TABS">
+    Group ungrouped tabs
+  </message>
+  <message name="IDS_IDC_SCROLL_TAB_TO_TOP">
+    Scroll tab to top
+  </message>
+  <message name="IDS_IDC_SCROLL_TAB_TO_BOTTOM">
+    Scroll tab to bottom
+  </message>
+  <message name="IDS_IDC_QRCODE_GENERATOR">
+    QR code generator
+  </message>
+  <message name="IDS_IDC_OFFERS_AND_REWARDS_FOR_PAGE">
+    Offers and rewards for page
+  </message>
+  <message name="IDS_IDC_SHARING_HUB">
+    Sharing hub
+  </message>
+  <message name="IDS_IDC_SHARING_HUB_MENU">
+    Sharing hub menu
+  </message>
+  <message name="IDS_IDC_SHARING_HUB_SCREENSHOT">
+    Sharing hub screenshot
+  </message>
+  <message name="IDS_IDC_SHOW_PASSWORD_MANAGER">
+    Show password manager
+  </message>
+  <message name="IDS_IDC_SHOW_PAYMENT_METHODS">
+    Show payment methods
+  </message>
+  <message name="IDS_IDC_SHOW_ADDRESSES">
+    Show addresses
+  </message>
+  <message name="IDS_IDC_FIND_NEXT">
+    Find next
+  </message>
+  <message name="IDS_IDC_FIND_PREVIOUS">
+    Find previous
+  </message>
+  <message name="IDS_IDC_CLOSE_FIND_OR_STOP">
+    Close find or stop
+  </message>
+  <message name="IDS_IDC_ZOOM_PLUS">
+    Zoom in
+  </message>
+  <message name="IDS_IDC_ZOOM_NORMAL">
+    Reset zoom
+  </message>
+  <message name="IDS_IDC_ZOOM_MINUS">
+    Zoom out
+  </message>
+  <message name="IDS_IDC_ZOOM_PERCENT_DISPLAY">
+    Show current zoom
+  </message>
+  <message name="IDS_IDC_FOCUS_TOOLBAR">
+    Focus toolbar
+  </message>
+  <message name="IDS_IDC_FOCUS_LOCATION">
+    Focus location
+  </message>
+  <message name="IDS_IDC_FOCUS_SEARCH">
+    Focus search
+  </message>
+  <message name="IDS_IDC_FOCUS_MENU_BAR">
+    Focus menu bar
+  </message>
+  <message name="IDS_IDC_FOCUS_NEXT_PANE">
+    Focus next pane
+  </message>
+  <message name="IDS_IDC_FOCUS_PREVIOUS_PANE">
+    Focus previous pane
+  </message>
+  <message name="IDS_IDC_FOCUS_BOOKMARKS">
+    Focus bookmarks
+  </message>
+  <message name="IDS_IDC_FOCUS_INACTIVE_POPUP_FOR_ACCESSIBILITY">
+    Focus inactive popup for accessibility
+  </message>
+  <message name="IDS_IDC_FOCUS_WEB_CONTENTS_PANE">
+    Focus web contents pane
+  </message>
+  <message name="IDS_IDC_SHOW_HISTORY">
+    Show history
+  </message>
+  <message name="IDS_IDC_SHOW_BOOKMARK_MANAGER">
+    Show bookmark manager
+  </message>
+  <message name="IDS_IDC_IMPORT_SETTINGS">
+    Import settings
+  </message>
+  <message name="IDS_IDC_OPEN_FULL_PAGE_CHAT">
+    Open AI Chat
+  </message>
+  <message name="IDS_IDC_EDIT_SEARCH_ENGINES">
+    Edit search engines
+  </message>
+  <message name="IDS_IDC_HELP_PAGE_VIA_KEYBOARD">
+    Show help
+  </message>
+  <message name="IDS_IDC_SHOW_APP_MENU">
+    Show app menu
+  </message>
+  <message name="IDS_IDC_DEV_TOOLS_INSPECT">
+    Dev tools inspect
+  </message>
+  <message name="IDS_IDC_UPGRADE_DIALOG">
+    Upgrade Brave
+  </message>
+  <message name="IDS_IDC_SHOW_AVATAR_MENU">
+    Show avatar menu
+  </message>
+  <message name="IDS_IDC_DEV_TOOLS_TOGGLE">
+    Dev tools toggle
+  </message>
+  <message name="IDS_IDC_TOGGLE_FULLSCREEN_TOOLBAR">
+    Toggle fullscreen toolbar
+  </message>
+  <message name="IDS_IDC_CUSTOMIZE_TOUCH_BAR">
+    Customize touch bar
+  </message>
+  <message name="IDS_IDC_TOGGLE_JAVASCRIPT_APPLE_EVENTS">
+    Toggle JavaScript Apple Events
+  </message>
+  <message name="IDS_IDC_INSTALL_PWA">
+    Install PWA
+  </message>
+  <message name="IDS_IDC_SHOW_MANAGEMENT_PAGE">
+    Show management page
+  </message>
+  <message name="IDS_IDC_SHOW_FULL_URLS">
+    Show full URLs
+  </message>
+  <message name="IDS_IDC_CARET_BROWSING_TOGGLE">
+    Caret browsing toggle
+  </message>
+  <message name="IDS_IDC_PERFORMANCE">
+    Show performance settings
+  </message>
+  <message name="IDS_IDC_SHOW_BOOKMARK_SIDE_PANEL">
+    Show bookmark side panel
+  </message>
+  <message name="IDS_IDC_BOOKMARK_BAR_OPEN_ALL_NEW_WINDOW">
+    Bookmark bar open all in new window
+  </message>
+  <message name="IDS_IDC_BOOKMARK_BAR_OPEN_ALL_INCOGNITO">
+    Bookmark bar open all in private window
+  </message>
+  <message name="IDS_IDC_BOOKMARK_BAR_OPEN_ALL_NEW_TAB_GROUP">
+    Bookmark bar open all new tab group
+  </message>
+  <message name="IDS_IDC_BOOKMARK_BAR_RENAME_FOLDER">
+    Bookmark bar rename folder
+  </message>
+  <message name="IDS_IDC_BOOKMARK_BAR_EDIT">
+    Bookmark bar edit
+  </message>
+  <message name="IDS_IDC_BOOKMARK_BAR_REMOVE">
+    Bookmark bar remove
+  </message>
+  <message name="IDS_IDC_BOOKMARK_BAR_UNDO">
+    Bookmark bar undo
+  </message>
+  <message name="IDS_IDC_BOOKMARK_BAR_REDO">
+    Bookmark bar redo
+  </message>
+  <message name="IDS_IDC_BOOKMARK_BAR_ADD_NEW_BOOKMARK">
+    Bookmark bar add new bookmark
+  </message>
+  <message name="IDS_IDC_BOOKMARK_BAR_NEW_FOLDER">
+    Bookmark bar new folder
+  </message>
+  <message name="IDS_IDC_BOOKMARK_BAR_ALWAYS_SHOW">
+    Bookmark bar always show
+  </message>
+  <message name="IDS_IDC_BOOKMARK_BAR_SHOW_MANAGED_BOOKMARKS">
+    Bookmark bar show managed bookmarks
+  </message>
+  <message name="IDS_IDC_BOOKMARK_BAR_ADD_TO_BOOKMARKS_BAR">
+    Bookmark bar add to bookmarks bar
+  </message>
+  <message name="IDS_IDC_BOOKMARK_BAR_REMOVE_FROM_BOOKMARKS_BAR">
+    Bookmark bar remove from bookmarks bar
+  </message>
+  <message name="IDS_IDC_TAB_SEARCH">
+    Tab search
+  </message>
+  <message name="IDS_IDC_TAB_SEARCH_CLOSE">
+    Tab search close
+  </message>
+  <message name="IDS_IDC_DEBUG_TOGGLE_TABLET_MODE">
+    Debug toggle tablet mode
+  </message>
+  <message name="IDS_IDC_DEBUG_PRINT_VIEW_TREE">
+    Debug print view tree
+  </message>
+  <message name="IDS_IDC_LIVE_CAPTION">
+    Toggle live captions
+  </message>
+  <message name="IDS_IDC_TOGGLE_AI_CHAT">
+    Toggle Leo AI
+  </message>
+  <message name="IDS_IDC_SHOW_BRAVE_WALLET_PANEL">
+    Show Brave Wallet panel
+  </message>
+  <message name="IDS_IDC_CLOSE_BRAVE_WALLET_PANEL">
+    Close Brave Wallet panel
+  </message>
+  <message name="IDS_IDC_SHOW_BRAVE_VPN_PANEL">
+    Show Brave VPN panel
+  </message>
+  <message name="IDS_IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON">
+    Toggle Brave VPN toolbar button
+  </message>
+  <message name="IDS_IDC_TOGGLE_BRAVE_VPN_TRAY_ICON">
+    Toggle Brave VPN tray icon
+  </message>
+  <message name="IDS_IDC_SEND_BRAVE_VPN_FEEDBACK">
+    Send Brave VPN feedback
+  </message>
+  <message name="IDS_IDC_ABOUT_BRAVE_VPN">
+    About Brave VPN
+  </message>
+  <message name="IDS_IDC_MANAGE_BRAVE_VPN_PLAN">
+    Manage Brave VPN plan
+  </message>
+  <message name="IDS_IDC_TOGGLE_BRAVE_VPN">
+    Toggle Brave VPN
+  </message>
+  <message name="IDS_IDC_TOGGLE_TAB_MUTE">
+    Toggle tab mute
+  </message>
+  <message name="IDS_IDC_SIDEBAR_TOGGLE_POSITION">
+    Toggle sidebar position
+  </message>
+  <message name="IDS_IDC_TOGGLE_SIDEBAR">
+    Toggle sidebar
+  </message>
+  <message name="IDS_IDC_TOGGLE_VERTICAL_TABS">
+    Toggle vertical tabs
+  </message>
+  <message name="IDS_IDC_TOGGLE_VERTICAL_TABS_WINDOW_TITLE">
+    Toggle vertical tabs window title
+  </message>
+  <message name="IDS_IDC_CONFIGURE_BRAVE_NEWS">
+    Configure Brave News
+  </message>
+  <message name="IDS_IDC_CONFIGURE_SHORTCUTS">
+    Configure shortcuts
+  </message>
+  <message name="IDS_IDC_SHOW_BRAVE_TALK">
+    Show Brave Talk
+  </message>
+  <message name="IDS_IDC_BRAVE_BOOKMARK_BAR_ALWAYS">
+    Always show bookmark bar
+  </message>
+  <message name="IDS_IDC_BRAVE_BOOKMARK_BAR_NTP">
+    Show bookmark bar on NTP
+  </message>
+  <message name="IDS_IDC_BRAVE_BOOKMARK_BAR_NEVER">
+    Hide bookmark bar
+  </message>
+  <message name="IDS_IDC_EXPORT_ALL_BOOKMARKS">
+    Export all bookmarks
+  </message>
+  <message name="IDS_IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY">
+    Toggle All bookmarks button visibility
+  </message>
+  <message name="IDS_IDC_TOGGLE_SHIELDS">
+    Toggle shields
+  </message>
+  <message name="IDS_IDC_TOGGLE_JAVASCRIPT">
+    Toggle JavaScript
+  </message>
+  <message name="IDS_IDC_SHOW_PLAYLIST_BUBBLE">
+    Show playlist bubble
+  </message>
+  <message name="IDS_IDC_GROUP_TABS_ON_CURRENT_ORIGIN">
+    Group tabs on current origin
+  </message>
+  <message name="IDS_IDC_MOVE_GROUP_TO_NEW_WINDOW">
+    Move group to new window
+  </message>
+  <message name="IDS_IDC_TOGGLE_VERTICAL_TABS_EXPANDED">
+    Toggle vertical tabs expanded
+  </message>
+  <message name="IDS_IDC_WINDOW_ADD_ALL_TABS_TO_NEW_GROUP">
+    Add all tabs to new group
+  </message>
+  <message name="IDS_IDC_BRAVE_SEND_TAB_TO_SELF">
+    Send tab to self
+  </message>
+  <message name="IDS_IDC_SHOW_WAYBACK_MACHINE_BUBBLE">
+    Show Wayback Machine bubble
+  </message>
+  <message name="IDS_IDC_CLOSE_TAB_GROUP">
+    Close tab group
+  </message>
+  <message name="IDS_IDC_CREATE_NEW_TAB_GROUP">
+    Create new tab group
+  </message>
+  <message name="IDS_IDC_FOCUS_NEXT_TAB_GROUP">
+    Focus next tab group
+  </message>
+  <message name="IDS_IDC_FOCUS_PREV_TAB_GROUP">
+    Focus previous tab group
+  </message>
+  <message name="IDS_IDC_ADD_NEW_TAB_TO_GROUP">
+    Add new tab to group
+  </message>
+  <message name="IDS_IDC_SPLIT_VIEW_LINK" desc="Text for menu item to link tabs in split tab view">
+    Link
+  </message>
+  <message name="IDS_IDC_SPLIT_VIEW_UNLINK" desc="Text for menu item to unlink tabs in split tab view">
+    Unlink
+  </message>
+
+  <!-- Commander composite commands -->
+  <message name="IDS_COMMANDER_OPEN_BOOKMARK" desc="Text for the command to begin opening a bookmark">
+    Open bookmark...
+  </message>
+  <message name="IDS_COMMANDER_SWITCH_TO_WINDOW" desc="Text for the command to begin switching to another window">
+    Switch to window...
+  </message>
+  <message name="IDS_COMMANDER_MERGE_WINDOW_INTO" desc="Text for the command to begin merging the current window into another window">
+    Merge current window into...
+  </message>
+  <message name="IDS_COMMANDER_MOVE_TABS_TO_WINDOW" desc="Text for the command to begin moving selected tabs to a new window">
+    Move tabs to window...
+  </message>
+  <message name="IDS_COMMANDER_ADD_TABS_TO_EXISTING_GROUP" desc="Text for the command to begin adding tabs to an existing group">
+    Add tab to existing group...
+  </message>
+  <message name="IDS_COMMANDER_PIN_TAB" desc="Text for the command to select a tab to pin">
+    Pin tab...
+  </message>
+  <message name="IDS_COMMANDER_UNPIN_TAB" desc="Text for the command to select a tab to unpin">
+    Unpin tab...
+  </message>
+
+  <!-- Shortcuts Page UI Strings -->
+  <message name="IDS_SHORTCUTS_PAGE_SEARCH_PLACEHOLDER" desc="Placeholder text in the search box" formatter_data="webui=Shortcuts">
+    Search for a command or shortcut
+  </message>
+  <message name="IDS_SHORTCUTS_PAGE_RESET_ALL" desc="Text for the button which resets all shortcuts to their defaults" formatter_data="webui=Shortcuts">
+    Reset all to defaults
+  </message>
+  <message name="IDS_SHORTCUTS_PAGE_RESET_COMMAND" desc="Text for the button which resets the shortcuts for a command to their defaults" formatter_data="webui=Shortcuts">
+    Reset
+  </message>
+  <message name="IDS_SHORTCUTS_PAGE_SHORTCUT_HINT" desc="Hint text for prompting a user to enter a shortcut" formatter_data="webui=Shortcuts">
+    Create a new shortcut. Press the desired keys to create a new binding
+  </message>
+  <message name="IDS_SHORTCUTS_PAGE_SHORTCUT_IN_USE" desc="Message explaining that a shortcut is already in use by another command" formatter_data="webui=Shortcuts">
+    This combination is being used for <ph name="COMMAND">$1<ex>"New window"</ex></ph>. Saving will override that shortcut.
+  </message>
+  <if expr="not is_macosx">
+    <message name="IDS_SHORTCUTS_PAGE_SHORTCUT_UNMODIFIABLE" desc="Message explaining that a shortcut cannot be used because the command it is already being used for cannot be modified" formatter_data="webui=Shortcuts">
+      This combination is being used for <ph name="COMMAND">$1<ex>"New window"</ex></ph> and cannot be modified.
+    </message>
+  </if>
+  <if expr="is_macosx">
+    <message name="IDS_SHORTCUTS_PAGE_SHORTCUT_UNMODIFIABLE" desc="Message explaining that a shortcut cannot be used because the command it is already being used for cannot be modified" formatter_data="webui=Shortcuts">
+      This combination is being used for <ph name="COMMAND">$1<ex>"New window"</ex></ph> and cannot be modified. Try modifying it through the `App Shortcuts` in System Settings.
+    </message>
+  </if>
+  <message name="IDS_SHORTCUTS_PAGE_CANCEL_ADD_SHORTCUT" desc="Text for the button to cancel adding a new shortcut" formatter_data="webui=Shortcuts">
+    Cancel
+  </message>
+  <message name="IDS_SHORTCUTS_PAGE_SAVE_ADD_SHORTCUT" desc="Text for the button to save a new shortcut" formatter_data="webui=Shortcuts">
+    Save
+  </message>
+  <message name="IDS_SHORTCUTS_PAGE_ADD_SHORTCUT" desc="Text for the button to add a new shortcut" formatter_data="webui=Shortcuts">
+    Add
+  </message>
+
+  <if expr="use_titlecase">
+    <message name="IDS_IDC_COMMANDER">
+      Quick Commands
+    </message>
+    <message name="IDS_IDC_NEW_SPLIT_VIEW" desc="The label of the 'New Split View' tab context menu item">
+      New Split View
+    </message>
+    <message name="IDS_IDC_TILE_TABS" desc="The label of the 'Open in Split View' tab context menu item">
+      Open in Split View
+    </message>
+    <message name="IDS_IDC_BREAK_TILE" desc="The label of the 'Unsplit tabs' tab context menu item. This item exits split view and restore bounded tabs to separate state.">
+      Unsplit Tabs
+    </message>
+    <message name="IDS_IDC_SWAP_SPLIT_VIEW" desc="The label of the 'Swap split view' tab context menu item">
+      Swap Tab Positions
+    </message>
+    <message name="IDS_IDC_SHOW_APPS_PAGE" desc="The label of the 'Show Apps' menu item">
+      Show Apps
+    </message>
+  </if>
+  <if expr="not use_titlecase">
+    <message name="IDS_IDC_COMMANDER">
+      Quick commands
+    </message>
+    <message name="IDS_IDC_NEW_SPLIT_VIEW" desc="The label of the 'New Split View' tab context menu item">
+      New split view
+    </message>
+    <message name="IDS_IDC_TILE_TABS" desc="The label of the 'Open in split view' tab context menu item">
+      Open in split view
+    </message>
+    <message name="IDS_IDC_BREAK_TILE" desc="The label of the 'Unsplit tabs' tab context menu item. This item exits split view and restore bounded tabs to separate state.">
+      Unsplit tabs
+    </message>
+    <message name="IDS_IDC_SWAP_SPLIT_VIEW" desc="The label of the 'Swap split view' tab context menu item">
+      Swap tab positions
+    </message>
+    <message name="IDS_IDC_SHOW_APPS_PAGE" desc="The label of the 'Show Apps' menu item">
+      Show apps
+    </message>
+  </if>
+  <!-- Email aliases context menu -->
+  <message name="IDS_IDC_NEW_EMAIL_ALIAS" desc="Message for context menu that enables the Email Alias generator UI for the page">
+    New Email Alias
+  </message>
+</grit-part>

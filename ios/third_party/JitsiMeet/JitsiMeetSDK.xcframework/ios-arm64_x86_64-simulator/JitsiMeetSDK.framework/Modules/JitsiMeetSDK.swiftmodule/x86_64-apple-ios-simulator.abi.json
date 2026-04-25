@@ -1,0 +1,1098 @@
+{
+  "ABIRoot": {
+    "kind": "Root",
+    "name": "JitsiMeetSDK",
+    "printedName": "JitsiMeetSDK",
+    "children": [
+      {
+        "kind": "Import",
+        "name": "UIKit",
+        "printedName": "UIKit",
+        "declKind": "Import",
+        "moduleName": "JitsiMeetSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "PiPViewCoordinatorDelegate",
+        "printedName": "PiPViewCoordinatorDelegate",
+        "children": [
+          {
+            "kind": "Function",
+            "name": "exitPictureInPicture",
+            "printedName": "exitPictureInPicture()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:12JitsiMeetSDK26PiPViewCoordinatorDelegateP013exitPictureInI0yyF",
+            "mangledName": "$s12JitsiMeetSDK26PiPViewCoordinatorDelegateP013exitPictureInI0yyF",
+            "moduleName": "JitsiMeetSDK",
+            "genericSig": "<τ_0_0 where τ_0_0 : JitsiMeetSDK.PiPViewCoordinatorDelegate>",
+            "sugared_genericSig": "<Self where Self : JitsiMeetSDK.PiPViewCoordinatorDelegate>",
+            "protocolReq": true,
+            "reqNewWitnessTableEntry": true,
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Protocol",
+        "usr": "s:12JitsiMeetSDK26PiPViewCoordinatorDelegateP",
+        "mangledName": "$s12JitsiMeetSDK26PiPViewCoordinatorDelegateP",
+        "moduleName": "JitsiMeetSDK",
+        "genericSig": "<τ_0_0 : AnyObject>",
+        "sugared_genericSig": "<Self : AnyObject>",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "PiPViewCoordinator",
+        "printedName": "PiPViewCoordinator",
+        "children": [
+          {
+            "kind": "TypeDecl",
+            "name": "Position",
+            "printedName": "Position",
+            "children": [
+              {
+                "kind": "Var",
+                "name": "lowerRightCorner",
+                "printedName": "lowerRightCorner",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(JitsiMeetSDK.PiPViewCoordinator.Position.Type) -> JitsiMeetSDK.PiPViewCoordinator.Position",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Position",
+                        "printedName": "JitsiMeetSDK.PiPViewCoordinator.Position",
+                        "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC8PositionO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "JitsiMeetSDK.PiPViewCoordinator.Position.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Position",
+                            "printedName": "JitsiMeetSDK.PiPViewCoordinator.Position",
+                            "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC8PositionO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC8PositionO16lowerRightCorneryA2EmF",
+                "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC8PositionO16lowerRightCorneryA2EmF",
+                "moduleName": "JitsiMeetSDK"
+              },
+              {
+                "kind": "Var",
+                "name": "upperRightCorner",
+                "printedName": "upperRightCorner",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(JitsiMeetSDK.PiPViewCoordinator.Position.Type) -> JitsiMeetSDK.PiPViewCoordinator.Position",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Position",
+                        "printedName": "JitsiMeetSDK.PiPViewCoordinator.Position",
+                        "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC8PositionO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "JitsiMeetSDK.PiPViewCoordinator.Position.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Position",
+                            "printedName": "JitsiMeetSDK.PiPViewCoordinator.Position",
+                            "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC8PositionO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC8PositionO16upperRightCorneryA2EmF",
+                "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC8PositionO16upperRightCorneryA2EmF",
+                "moduleName": "JitsiMeetSDK"
+              },
+              {
+                "kind": "Var",
+                "name": "lowerLeftCorner",
+                "printedName": "lowerLeftCorner",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(JitsiMeetSDK.PiPViewCoordinator.Position.Type) -> JitsiMeetSDK.PiPViewCoordinator.Position",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Position",
+                        "printedName": "JitsiMeetSDK.PiPViewCoordinator.Position",
+                        "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC8PositionO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "JitsiMeetSDK.PiPViewCoordinator.Position.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Position",
+                            "printedName": "JitsiMeetSDK.PiPViewCoordinator.Position",
+                            "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC8PositionO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC8PositionO15lowerLeftCorneryA2EmF",
+                "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC8PositionO15lowerLeftCorneryA2EmF",
+                "moduleName": "JitsiMeetSDK"
+              },
+              {
+                "kind": "Var",
+                "name": "upperLeftCorner",
+                "printedName": "upperLeftCorner",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(JitsiMeetSDK.PiPViewCoordinator.Position.Type) -> JitsiMeetSDK.PiPViewCoordinator.Position",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Position",
+                        "printedName": "JitsiMeetSDK.PiPViewCoordinator.Position",
+                        "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC8PositionO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Metatype",
+                        "printedName": "JitsiMeetSDK.PiPViewCoordinator.Position.Type",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Position",
+                            "printedName": "JitsiMeetSDK.PiPViewCoordinator.Position",
+                            "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC8PositionO"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "EnumElement",
+                "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC8PositionO15upperLeftCorneryA2EmF",
+                "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC8PositionO15upperLeftCorneryA2EmF",
+                "moduleName": "JitsiMeetSDK"
+              },
+              {
+                "kind": "Function",
+                "name": "==",
+                "printedName": "==(_:_:)",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Bool",
+                    "printedName": "Swift.Bool",
+                    "usr": "s:Sb"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Position",
+                    "printedName": "JitsiMeetSDK.PiPViewCoordinator.Position",
+                    "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC8PositionO"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Position",
+                    "printedName": "JitsiMeetSDK.PiPViewCoordinator.Position",
+                    "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC8PositionO"
+                  }
+                ],
+                "declKind": "Func",
+                "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC8PositionO2eeoiySbAE_AEtFZ",
+                "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC8PositionO2eeoiySbAE_AEtFZ",
+                "moduleName": "JitsiMeetSDK",
+                "static": true,
+                "implicit": true,
+                "funcSelfKind": "NonMutating"
+              },
+              {
+                "kind": "Var",
+                "name": "hashValue",
+                "printedName": "hashValue",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ],
+                "declKind": "Var",
+                "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC8PositionO9hashValueSivp",
+                "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC8PositionO9hashValueSivp",
+                "moduleName": "JitsiMeetSDK",
+                "implicit": true,
+                "accessors": [
+                  {
+                    "kind": "Accessor",
+                    "name": "Get",
+                    "printedName": "Get()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Int",
+                        "printedName": "Swift.Int",
+                        "usr": "s:Si"
+                      }
+                    ],
+                    "declKind": "Accessor",
+                    "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC8PositionO9hashValueSivg",
+                    "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC8PositionO9hashValueSivg",
+                    "moduleName": "JitsiMeetSDK",
+                    "implicit": true,
+                    "accessorKind": "get"
+                  }
+                ]
+              },
+              {
+                "kind": "Function",
+                "name": "hash",
+                "printedName": "hash(into:)",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Hasher",
+                    "printedName": "Swift.Hasher",
+                    "paramValueOwnership": "InOut",
+                    "usr": "s:s6HasherV"
+                  }
+                ],
+                "declKind": "Func",
+                "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC8PositionO4hash4intoys6HasherVz_tF",
+                "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC8PositionO4hash4intoys6HasherVz_tF",
+                "moduleName": "JitsiMeetSDK",
+                "implicit": true,
+                "funcSelfKind": "NonMutating"
+              }
+            ],
+            "declKind": "Enum",
+            "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC8PositionO",
+            "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC8PositionO",
+            "moduleName": "JitsiMeetSDK",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "conformances": [
+              {
+                "kind": "Conformance",
+                "name": "Copyable",
+                "printedName": "Copyable",
+                "usr": "s:s8CopyableP",
+                "mangledName": "$ss8CopyableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Escapable",
+                "printedName": "Escapable",
+                "usr": "s:s9EscapableP",
+                "mangledName": "$ss9EscapableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Equatable",
+                "printedName": "Equatable",
+                "usr": "s:SQ",
+                "mangledName": "$sSQ"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Hashable",
+                "printedName": "Hashable",
+                "usr": "s:SH",
+                "mangledName": "$sSH"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "dragBoundInsets",
+            "printedName": "dragBoundInsets",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "UIEdgeInsets",
+                "printedName": "UIKit.UIEdgeInsets",
+                "usr": "c:@S@UIEdgeInsets"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC15dragBoundInsetsSo06UIEdgeI0Vvp",
+            "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC15dragBoundInsetsSo06UIEdgeI0Vvp",
+            "moduleName": "JitsiMeetSDK",
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "UIEdgeInsets",
+                    "printedName": "UIKit.UIEdgeInsets",
+                    "usr": "c:@S@UIEdgeInsets"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC15dragBoundInsetsSo06UIEdgeI0Vvg",
+                "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC15dragBoundInsetsSo06UIEdgeI0Vvg",
+                "moduleName": "JitsiMeetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "UIEdgeInsets",
+                    "printedName": "UIKit.UIEdgeInsets",
+                    "usr": "c:@S@UIEdgeInsets"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC15dragBoundInsetsSo06UIEdgeI0Vvs",
+                "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC15dragBoundInsetsSo06UIEdgeI0Vvs",
+                "moduleName": "JitsiMeetSDK",
+                "implicit": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC15dragBoundInsetsSo06UIEdgeI0VvM",
+                "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC15dragBoundInsetsSo06UIEdgeI0VvM",
+                "moduleName": "JitsiMeetSDK",
+                "implicit": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "initialPositionInSuperView",
+            "printedName": "initialPositionInSuperView",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Position",
+                "printedName": "JitsiMeetSDK.PiPViewCoordinator.Position",
+                "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC8PositionO"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC26initialPositionInSuperViewAC0H0Ovp",
+            "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC26initialPositionInSuperViewAC0H0Ovp",
+            "moduleName": "JitsiMeetSDK",
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Position",
+                    "printedName": "JitsiMeetSDK.PiPViewCoordinator.Position",
+                    "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC8PositionO"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC26initialPositionInSuperViewAC0H0Ovg",
+                "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC26initialPositionInSuperViewAC0H0Ovg",
+                "moduleName": "JitsiMeetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Position",
+                    "printedName": "JitsiMeetSDK.PiPViewCoordinator.Position",
+                    "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC8PositionO"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC26initialPositionInSuperViewAC0H0Ovs",
+                "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC26initialPositionInSuperViewAC0H0Ovs",
+                "moduleName": "JitsiMeetSDK",
+                "implicit": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC26initialPositionInSuperViewAC0H0OvM",
+                "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC26initialPositionInSuperViewAC0H0OvM",
+                "moduleName": "JitsiMeetSDK",
+                "implicit": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "c",
+            "printedName": "c",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "CGFloat",
+                "printedName": "CoreGraphics.CGFloat",
+                "usr": "s:14CoreFoundation7CGFloatV"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC1c14CoreFoundation7CGFloatVvp",
+            "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC1c12CoreGraphics7CGFloatVvp",
+            "moduleName": "JitsiMeetSDK",
+            "deprecated": true,
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl",
+              "Available",
+              "RawDocComment"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "CGFloat",
+                    "printedName": "CoreGraphics.CGFloat",
+                    "usr": "s:14CoreFoundation7CGFloatV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC1c14CoreFoundation7CGFloatVvg",
+                "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC1c12CoreGraphics7CGFloatVvg",
+                "moduleName": "JitsiMeetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "CGFloat",
+                    "printedName": "CoreGraphics.CGFloat",
+                    "usr": "s:14CoreFoundation7CGFloatV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC1c14CoreFoundation7CGFloatVvs",
+                "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC1c12CoreGraphics7CGFloatVvs",
+                "moduleName": "JitsiMeetSDK",
+                "implicit": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC1c14CoreFoundation7CGFloatVvM",
+                "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC1c12CoreGraphics7CGFloatVvM",
+                "moduleName": "JitsiMeetSDK",
+                "deprecated": true,
+                "implicit": true,
+                "declAttributes": [
+                  "Available"
+                ],
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "delegate",
+            "printedName": "delegate",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "WeakStorage",
+                "printedName": "(any JitsiMeetSDK.PiPViewCoordinatorDelegate)?"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC8delegateAA0deF8Delegate_pSgvp",
+            "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC8delegateAA0deF8Delegate_pSgvp",
+            "moduleName": "JitsiMeetSDK",
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "ReferenceOwnership",
+              "AccessControl"
+            ],
+            "ownership": 1,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "(any JitsiMeetSDK.PiPViewCoordinatorDelegate)?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "PiPViewCoordinatorDelegate",
+                        "printedName": "any JitsiMeetSDK.PiPViewCoordinatorDelegate",
+                        "usr": "s:12JitsiMeetSDK26PiPViewCoordinatorDelegateP"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC8delegateAA0deF8Delegate_pSgvg",
+                "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC8delegateAA0deF8Delegate_pSgvg",
+                "moduleName": "JitsiMeetSDK",
+                "implicit": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "(any JitsiMeetSDK.PiPViewCoordinatorDelegate)?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "PiPViewCoordinatorDelegate",
+                        "printedName": "any JitsiMeetSDK.PiPViewCoordinatorDelegate",
+                        "usr": "s:12JitsiMeetSDK26PiPViewCoordinatorDelegateP"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC8delegateAA0deF8Delegate_pSgvs",
+                "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC8delegateAA0deF8Delegate_pSgvs",
+                "moduleName": "JitsiMeetSDK",
+                "implicit": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC8delegateAA0deF8Delegate_pSgvM",
+                "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC8delegateAA0deF8Delegate_pSgvM",
+                "moduleName": "JitsiMeetSDK",
+                "implicit": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(withView:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "PiPViewCoordinator",
+                "printedName": "JitsiMeetSDK.PiPViewCoordinator",
+                "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "UIView",
+                "printedName": "UIKit.UIView",
+                "usr": "c:objc(cs)UIView"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC8withViewACSo6UIViewC_tcfc",
+            "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC8withViewACSo6UIViewC_tcfc",
+            "moduleName": "JitsiMeetSDK",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Function",
+            "name": "configureAsStickyView",
+            "printedName": "configureAsStickyView(withParentView:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "UIKit.UIView?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "UIView",
+                    "printedName": "UIKit.UIView",
+                    "usr": "c:objc(cs)UIView"
+                  }
+                ],
+                "hasDefaultArg": true,
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC21configureAsStickyView010withParentJ0ySo6UIViewCSg_tF",
+            "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC21configureAsStickyView010withParentJ0ySo6UIViewCSg_tF",
+            "moduleName": "JitsiMeetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "show",
+            "printedName": "show(completion:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "((Swift.Bool) -> ())?",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(Swift.Bool) -> ()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Bool",
+                        "printedName": "Swift.Bool",
+                        "usr": "s:Sb"
+                      }
+                    ]
+                  }
+                ],
+                "hasDefaultArg": true,
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC4show10completionyySbcSg_tF",
+            "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC4show10completionyySbcSg_tF",
+            "moduleName": "JitsiMeetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "hide",
+            "printedName": "hide(completion:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "((Swift.Bool) -> ())?",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(Swift.Bool) -> ()",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Void",
+                        "printedName": "()"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Bool",
+                        "printedName": "Swift.Bool",
+                        "usr": "s:Sb"
+                      }
+                    ]
+                  }
+                ],
+                "hasDefaultArg": true,
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC4hide10completionyySbcSg_tF",
+            "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC4hide10completionyySbcSg_tF",
+            "moduleName": "JitsiMeetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "enterPictureInPicture",
+            "printedName": "enterPictureInPicture()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC014enterPictureInH0yyF",
+            "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC014enterPictureInH0yyF",
+            "moduleName": "JitsiMeetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "exitPictureInPicture",
+            "printedName": "exitPictureInPicture()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC013exitPictureInH0yyF",
+            "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC013exitPictureInH0yyF",
+            "moduleName": "JitsiMeetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "ObjC",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "resetBounds",
+            "printedName": "resetBounds(bounds:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "CGRect",
+                "printedName": "CoreFoundation.CGRect",
+                "usr": "c:@S@CGRect"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC11resetBounds6boundsySo6CGRectV_tF",
+            "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC11resetBounds6boundsySo6CGRectV_tF",
+            "moduleName": "JitsiMeetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "stopDragGesture",
+            "printedName": "stopDragGesture()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC15stopDragGestureyyF",
+            "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC15stopDragGestureyyF",
+            "moduleName": "JitsiMeetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "configureExitPiPButton",
+            "printedName": "configureExitPiPButton(target:action:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "UIButton",
+                "printedName": "UIKit.UIButton",
+                "usr": "c:objc(cs)UIButton"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "ProtocolComposition",
+                "printedName": "Any"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Selector",
+                "printedName": "ObjectiveC.Selector",
+                "usr": "s:10ObjectiveC8SelectorV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC013configureExitD7PButton6target6actionSo8UIButtonCyp_10ObjectiveC8SelectorVtF",
+            "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC013configureExitD7PButton6target6actionSo8UIButtonCyp_10ObjectiveC8SelectorVtF",
+            "moduleName": "JitsiMeetSDK",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "s:12JitsiMeetSDK18PiPViewCoordinatorC",
+        "mangledName": "$s12JitsiMeetSDK18PiPViewCoordinatorC",
+        "moduleName": "JitsiMeetSDK",
+        "declAttributes": [
+          "AccessControl",
+          "RawDocComment"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "UIKit",
+        "printedName": "UIKit",
+        "declKind": "Import",
+        "moduleName": "JitsiMeetSDK",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      }
+    ],
+    "json_format_version": 8
+  },
+  "ConstValues": [
+    {
+      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/PiPViewCoordinator.swift",
+      "kind": "IntegerLiteral",
+      "offset": 1354,
+      "length": 2,
+      "value": "25"
+    },
+    {
+      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/PiPViewCoordinator.swift",
+      "kind": "IntegerLiteral",
+      "offset": 1424,
+      "length": 1,
+      "value": "5"
+    },
+    {
+      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/PiPViewCoordinator.swift",
+      "kind": "IntegerLiteral",
+      "offset": 1495,
+      "length": 1,
+      "value": "5"
+    },
+    {
+      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/PiPViewCoordinator.swift",
+      "kind": "IntegerLiteral",
+      "offset": 1565,
+      "length": 1,
+      "value": "5"
+    },
+    {
+      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/PiPViewCoordinator.swift",
+      "kind": "FloatLiteral",
+      "offset": 1891,
+      "length": 3,
+      "value": "0.0"
+    },
+    {
+      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/PiPViewCoordinator.swift",
+      "kind": "BooleanLiteral",
+      "offset": 1992,
+      "length": 5,
+      "value": "false"
+    }
+  ]
+}

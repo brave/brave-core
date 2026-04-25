@@ -1,0 +1,66 @@
+/* A button title shown below language introducing the Brave Playlist feature. i.e. 'Discover how to use use this feature' */
+"advanceInitialOnboardingButtonTitle" = "Fedezze fel, hogyan";
+
+/* A button title that when tapped will advance the onboarding to guide a user to add some content to Playlist */
+"advanceStep2OnboardingButtonTitle" = "Próbálja ki!";
+
+/* A button that allows the user to disable the brave translate feature. When pressed, the page will not be automatically translated to the user's language. */
+"BraveTranslateOnboarding.disableTranslateButtonTitle" = "Ennek a funkciónak a kikapcsolása";
+
+/* A text element that describes the translation feature and explains that hte user might have to download or configure languages on their device. */
+"BraveTranslateOnboarding.translateDescription" = "Az oldalak lefordíthatók az iOS-eszköz által támogatott nyelvekre. Előfordulhat, hogy be kell állítania a nyelveket, ha először használja ezt a funkciót.";
+
+/* A text element that explains we're translating pages. */
+"BraveTranslateOnboarding.translateTitle" = "Oldal lefordítása";
+
+/* A button title that when tapped opens Brave Playlist */
+"confirmationActionButtonTitle" = "Ugrás a Lejátszási listámhoz";
+
+/* Shown above a button that will let the user open the playlist feature */
+"confirmationPrompt" = "Most vessünk egy pillantást a Lejátszási listára.";
+
+/* Shown below a title that confirms the user completed the task of adding something to playlist. %@ will be replaced with the folder the content was added to. i.e. 'Content added to Play Later' */
+"confirmationSubtitle" = "Tartalom hozzáadva ide: %@";
+
+/* Guides the user to tap on an icon where the onboarding is pointing to. '%@' will be replaced with said icon. */
+"confirmationTitle" = "Szép munka";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissOnboardingButtonTitle" = "Elvetés";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep2OnboardingButtonTitle" = "Talán később";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep4OnboardingButtonTitle" = "Bezárás";
+
+/* A title shown on the first 2 steps of onboarding for Brave Playlist. Brave Playlist is a product name */
+"introducingBravePlaylist" = "Bemutatjuk a Brave lejátszási listát";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleOne" = "Készítsen lejátszási listákat kedvenc tartalmaiból. Spóroljon a mobilinternet-használaton, és játssza vissza a videós tartalmakat hirdetések nélkül.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleThree" = "Kép a képben. Lejátszás a háttérben. Vezérlés zárolt képernyőről. És továbbiak…";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleTwo" = "Maradjon lendületben: adja hozzá a videókat a listához böngészés közben, nézze meg őket később.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleOne" = "Videók hozzáadása a Brave lejátszási listához. Lejátszás bármikor, akár offline is.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleThree" = "A videók visszajátszása még jobb a lejátszási listával";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleTwo" = "A gombra koppintva egyszerűen adhat hozzá videókat a lejátszási listához";
+
+/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
+"playlistOnboardingDescription" = "Hozzon létre lejátszási listákat kedvenc tartalmaival. Bármely weboldalról hozzáadhat médiát.\nBármikori lejátszás, akár offline is!";
+
+/* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
+"userActionPrompt" = "Koppintson a %@ lehetőségre az első elem hozzáadásához";
+
+/* Will be shown next to an icon inside of some other text. i.e. "Tap 'Add to Playlist' to add your first item" */
+"userActionPromptFill" = "Hozzáadás lejátszási listához";
+

@@ -1,0 +1,9 @@
+include_rules = [
+  "+brave/components/ai_chat/core/browser",
+  "+brave/components/ai_chat/core/common",
+  "+brave/components/brave_search_conversion",
+  "+brave/components/commander",
+  "+brave/components/omnibox/browser",
+  "+brave/components/vector_icons",
+  "+content/public/common",
+]

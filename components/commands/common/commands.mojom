@@ -1,0 +1,52 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module commands.mojom;
+
+struct Command {
+  string name;
+  int32 id;
+
+  // Indicates if the accelerators for the command have been changed.
+  bool modified;
+
+  array<Accelerator> accelerators;
+};
+
+struct Accelerator {
+  // The keyboard codes - independent of the keyboard layout.
+  // i.e. "Control+KeyC"
+  string codes;
+
+  // The key which is printed when the key is pressed. This is displayed to the
+  // user but internally we should always use |codes|.
+  // i.e. "Control+c"
+  string keys;
+
+  // Indicates whether this shortcut can be changed.
+  bool unmodifiable;
+};
+
+interface CommandsService {
+  AssignAcceleratorToCommand(int32 command_id, string accelerator);
+  UnassignAcceleratorFromCommand(int32 command_id, string accelerator);
+  ResetAcceleratorsForCommand(int32 command_id);
+
+  ResetAccelerators();
+
+  AddCommandsListener(pending_remote<CommandsListener> listener);
+
+  GetKeyFromCode(string code) => (string key);
+};
+
+struct CommandsEvent {
+  map<int32, Command> addedOrUpdated;
+  array<string> removed;
+};
+
+interface CommandsListener {
+  // Fired when the commands had changed.
+  Changed(CommandsEvent event);
+};

@@ -1,0 +1,69 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
+
+#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
+
+namespace brave_ads {
+
+namespace {
+
+bool HasConnectedWallet() {
+  return !GetProfileStringPref(brave_rewards::prefs::kExternalWalletType)
+              .empty();
+}
+
+}  // namespace
+
+bool UserHasJoinedBraveRewards() {
+  return GetProfileBooleanPref(brave_rewards::prefs::kEnabled);
+}
+
+bool UserHasJoinedBraveRewardsAndNotConnectedWallet() {
+  return UserHasJoinedBraveRewards() && !HasConnectedWallet();
+}
+
+bool UserHasJoinedBraveRewardsAndConnectedWallet() {
+  return UserHasJoinedBraveRewards() && HasConnectedWallet();
+}
+
+bool UserHasOptedInToNewTabPageAds() {
+  return GetProfileBooleanPref(
+             ntp_background_images::prefs::kNewTabPageShowBackgroundImage) &&
+         GetProfileBooleanPref(
+             ntp_background_images::prefs::
+                 kNewTabPageShowSponsoredImagesBackgroundImage);
+}
+
+bool UserHasOptedInToNotificationAds() {
+  return UserHasJoinedBraveRewards() &&
+         GetProfileBooleanPref(prefs::kOptedInToNotificationAds);
+}
+
+int GetMaximumNotificationAdsPerHour() {
+  const int ads_per_hour = static_cast<int>(
+      GetProfileInt64Pref(prefs::kMaximumNotificationAdsPerHour));
+
+  return ads_per_hour > 0 ? ads_per_hour : kDefaultNotificationAdsPerHour.Get();
+}
+
+bool UserHasOptedInToSearchResultAds() {
+  return GetProfileBooleanPref(prefs::kOptedInToSearchResultAds);
+}
+
+bool UserHasOptedInToSurveyPanelist() {
+  if (GetProfileBooleanPref(brave_rewards::prefs::kDisabledByPolicy)) {
+    return false;
+  }
+  return GetProfileBooleanPref(
+      ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist);
+}
+
+}  // namespace brave_ads

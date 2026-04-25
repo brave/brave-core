@@ -1,0 +1,24 @@
+[package]
+
+name = "unicode-normalization-alignments"
+version = "0.1.12"
+authors = ["Anthony MOI <m.anthony.moi@gmail.com>"]
+
+homepage = "https://github.com/n1t0/unicode-normalization"
+repository = "https://github.com/n1t0/unicode-normalization"
+documentation = "https://docs.rs/unicode-normalization-alignments/"
+
+license = "MIT/Apache-2.0"
+keywords = ["text", "unicode", "normalization", "decomposition", "recomposition"]
+readme = "README.md"
+description = """
+This crate provides functions for normalization of
+Unicode strings, including Canonical and Compatible
+Decomposition and Recomposition, as described in
+Unicode Standard Annex #15.
+"""
+
+exclude = [ "target/*", "Cargo.lock", "scripts/tmp", "*.txt", "tests/*" ]
+
+[dependencies]
+smallvec = "1.0"

@@ -1,0 +1,11 @@
+diff --git a/tools/grit/preprocess_if_expr.gni b/tools/grit/preprocess_if_expr.gni
+index 850bff9aa94b453b1959e4c96cc63cafd6c58a77..9278d24be8f10da457baa819dd0cd24b572b4362 100644
+--- a/tools/grit/preprocess_if_expr.gni
++++ b/tools/grit/preprocess_if_expr.gni
+@@ -76,5 +76,6 @@ template("preprocess_if_expr") {
+         invoker.enable_removal_comments) {
+       args += [ "--enable_removal_comments" ]
+     }
++    import("//brave/tools/chromium_src/lit_mangler/sources.gni") inputs += brave_lit_mangler_preprocess_if_expr_inputs
+   }
+ }

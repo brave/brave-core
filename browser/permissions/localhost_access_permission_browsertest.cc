@@ -1,0 +1,567 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#include <memory>
+
+#include "base/containers/fixed_flat_set.h"
+#include "base/containers/flat_set.h"
+#include "base/memory/raw_ptr.h"
+#include "base/path_service.h"
+#include "base/strings/strcat.h"
+#include "base/test/thread_test_helper.h"
+#include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_shields/ad_block_browser_test_helper.h"
+#include "brave/components/brave_component_updater/browser/local_data_files_service.h"
+#include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/content/test/test_filters_provider.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+#include "brave/components/constants/brave_paths.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/profiles/profile_test_util.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings.h"
+#include "components/permissions/permission_request_manager.h"
+#include "components/permissions/request_type.h"
+#include "components/permissions/test/mock_permission_prompt_factory.h"
+#include "components/prefs/pref_service.h"
+#include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/web_contents.h"
+#include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
+#include "content/public/test/content_mock_cert_verifier.h"
+#include "content/public/test/test_navigation_observer.h"
+#include "net/dns/mock_host_resolver.h"
+#include "net/test/embedded_test_server/embedded_test_server.h"
+#include "net/test/embedded_test_server/install_default_websocket_handlers.h"
+#include "services/network/public/cpp/features.h"
+#include "services/network/public/cpp/ip_address_space_overrides_test_utils.h"
+#include "services/network/public/cpp/network_switches.h"
+#include "url/gurl.h"
+
+using net::test_server::EmbeddedTestServer;
+
+namespace {
+
+constexpr char kTestEmbeddingDomain[] = "a.com";
+constexpr char kTestTargetPath[] = "/logo.png";
+constexpr char kSimplePage[] = "/simple.html";
+
+}  // namespace
+
+class LocalhostAccessBrowserTest
+    : public InProcessBrowserTest,
+      public testing::WithParamInterface<network::mojom::IPAddressSpace> {
+ public:
+  LocalhostAccessBrowserTest() {
+    feature_list_.InitWithFeaturesAndParameters(
+        {{network::features::kLocalNetworkAccessChecksWebSockets, {}},
+         {network::features::kLocalNetworkAccessChecks,
+          {{"LocalNetworkAccessChecksWarn", "false"}}}},
+        {});
+    // Embedding website server
+    https_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
+    content::SetupCrossSiteRedirector(https_server_.get());
+    CHECK(https_server_->InitializeAndListen());
+    // Localhost server
+    localhost_server_ = std::make_unique<net::EmbeddedTestServer>(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS);
+    net::test_server::InstallDefaultWebSocketHandlers(localhost_server_.get());
+    content::SetupCrossSiteRedirector(localhost_server_.get());
+    CHECK(localhost_server_->InitializeAndListen());
+  }
+
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
+    host_resolver()->AddRule("*", "127.0.0.1");
+    current_browser_ = InProcessBrowserTest::browser();
+
+    https_server_->ServeFilesFromDirectory(
+        base::PathService::CheckedGet(brave::DIR_TEST_DATA));
+    localhost_server_->ServeFilesFromDirectory(
+        base::PathService::CheckedGet(brave::DIR_TEST_DATA));
+
+    https_server_->StartAcceptingConnections();
+    localhost_server_->StartAcceptingConnections();
+
+    permissions::PermissionRequestManager* manager =
+        GetPermissionRequestManager();
+    prompt_factory_ =
+        std::make_unique<permissions::MockPermissionPromptFactory>(manager);
+  }
+
+  HostContentSettingsMap* content_settings() {
+    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+  }
+
+  permissions::PermissionRequestManager* GetPermissionRequestManager() {
+    return permissions::PermissionRequestManager::FromWebContents(
+        browser()->tab_strip_model()->GetActiveWebContents());
+  }
+
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    mock_cert_verifier_.SetUpCommandLine(command_line);
+    network::AddIpAddressSpaceOverridesToCommandLine(
+        {network::GenerateIpAddressSpaceOverride(*https_server_),
+         network::GenerateIpAddressSpaceOverride(*localhost_server_,
+                                                 GetParam())},
+        *command_line);
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
+    current_browser_ = InProcessBrowserTest::browser();
+    ad_block_test_helper_ =
+        std::make_unique<brave_shields::AdBlockBrowserTestHelper>();
+  }
+
+  void TearDownInProcessBrowserTestFixture() override {
+    mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
+  }
+
+  void TearDownOnMainThread() override {
+    ad_block_test_helper_.reset();
+    prompt_factory_.reset();
+    InProcessBrowserTest::TearDownOnMainThread();
+  }
+
+  permissions::MockPermissionPromptFactory* prompt_factory() {
+    return prompt_factory_.get();
+  }
+
+  Browser* browser() { return current_browser_; }
+
+  void SetBrowser(Browser* browser) { current_browser_ = browser; }
+
+  void SetPromptFactory(permissions::PermissionRequestManager* manager) {
+    prompt_factory_ =
+        std::make_unique<permissions::MockPermissionPromptFactory>(manager);
+  }
+
+  content::WebContents* contents() {
+    return browser()->tab_strip_model()->GetActiveWebContents();
+  }
+
+  void AddAdblockRule(const std::string& rule) {
+    source_provider_ =
+        std::make_unique<brave_shields::TestFiltersProvider>(rule);
+
+    brave_shields::AdBlockService* ad_block_service =
+        g_brave_browser_process->ad_block_service();
+    source_provider_->RegisterAsSourceProvider(ad_block_service);
+    ASSERT_TRUE(brave_shields::WaitForAdBlockServiceThreads());
+  }
+
+  void InsertImage(const std::string& src, const bool expected) {
+    std::string insert_image = content::JsReplace(
+        R"(
+        (async () => {
+          console.log("Entered insert image script");
+          const img = document.createElement('img');
+          return await new Promise((resolve) => {
+            img.addEventListener("load", () => {
+              resolve(true);
+            }, {once: true});
+            img.addEventListener("error", () => {
+              resolve(false);
+            }, {once: true});
+            img.src = $1;
+            document.body.appendChild(img);
+          });
+        })();
+        )",
+        src);
+    ASSERT_EQ(expected, EvalJs(contents(), insert_image));
+  }
+
+  ContentSettingsType GetContentSettingsType() {
+    return GetParam() == network::mojom::IPAddressSpace::kLocal
+               ? ContentSettingsType::LOCAL_NETWORK
+               : ContentSettingsType::LOOPBACK_NETWORK;
+  }
+
+  permissions::RequestType GetRequestType() {
+    return GetParam() == network::mojom::IPAddressSpace::kLocal
+               ? permissions::RequestType::kLocalNetwork
+               : permissions::RequestType::kLoopbackNetwork;
+  }
+
+  void CheckCurrentStatusIs(ContentSetting content_setting) {
+    EXPECT_EQ(content_settings()->GetContentSetting(
+                  embedding_url_, embedding_url_, GetContentSettingsType()),
+              content_setting);
+  }
+
+  void SetCurrentStatus(ContentSetting content_setting) {
+    content_settings()->SetContentSettingDefaultScope(
+        embedding_url_, embedding_url_, GetContentSettingsType(),
+        content_setting);
+  }
+
+  void CheckAskAndAcceptFlow(GURL localhost_url) {
+    // Reset counters so we don't have to keep track of previous prompts.
+    prompt_factory()->ResetCounts();
+    EXPECT_EQ(0, prompt_factory()->show_count());
+    // Check that the relevant content settings are set to ASK.
+    CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ASK);
+    // Navigate to the page.
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
+    // Accept prompts.
+    prompt_factory()->set_response_type(
+        permissions::PermissionRequestManager::ACCEPT_ALL);
+    // Load subresource - this should result in prompts showing.
+    InsertImage(localhost_url.spec(), true);
+    // Make sure prompt came up.
+    EXPECT_EQ(1, prompt_factory()->show_count());
+    EXPECT_TRUE(prompt_factory()->RequestTypeSeen(GetRequestType()));
+    // Check that the relevant content settings are now ALLOWed.
+    CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ALLOW);
+    // Access to localhost resources should be allowed.
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
+    InsertImage(localhost_url.spec(), true);
+    // Not another prompt.
+    EXPECT_EQ(1, prompt_factory()->show_count());
+  }
+
+  void CheckAskAndDenyFlow(GURL localhost_url) {
+    // Reset counters so we don't have to keep track of previous prompts.
+    prompt_factory()->ResetCounts();
+    EXPECT_EQ(0, prompt_factory()->show_count());
+    // Check that the relevant content settings are set to ASK.
+    CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ASK);
+    // Navigate to the page.
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
+    // Deny prompts.
+    prompt_factory()->set_response_type(
+        permissions::PermissionRequestManager::DENY_ALL);
+    // Load subresource - this should result in prompts showing.
+    InsertImage(localhost_url.spec(), false);
+    // Make sure prompt came up.
+    EXPECT_EQ(1, prompt_factory()->show_count());
+    EXPECT_TRUE(prompt_factory()->RequestTypeSeen(GetRequestType()));
+    // Check that the relevant content settings are now DENY.
+    CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_BLOCK);
+    // Access to localhost resources should be denied.
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
+    InsertImage(localhost_url.spec(), false);
+    // Not another prompt.
+    EXPECT_EQ(1, prompt_factory()->show_count());
+  }
+
+  void CheckAskAndDismissFlow(GURL localhost_url) {
+    // Reset counters so we don't have to keep track of previous prompts.
+    prompt_factory()->ResetCounts();
+    EXPECT_EQ(0, prompt_factory()->show_count());
+    // Check that the relevant content settings are set to ASK.
+    CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ASK);
+    // Navigate to the page.
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
+    // Dismiss prompts.
+    prompt_factory()->set_response_type(
+        permissions::PermissionRequestManager::DISMISS);
+    // Load subresource - this should result in prompts showing.
+    InsertImage(localhost_url.spec(), false);
+    // Make sure prompts came up (when dismissed there are 2 prompts of the same
+    // type).
+    EXPECT_EQ(2, prompt_factory()->show_count());
+    EXPECT_TRUE(prompt_factory()->RequestTypeSeen(GetRequestType()));
+    // Check that the relevant content settings are still ASK.
+    CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ASK);
+    // Access to localhost resources should be prompted again.
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
+    InsertImage(localhost_url.spec(), false);
+    // Still ask for prompt (on the second try, there's only 1 prompt).
+    EXPECT_EQ(3, prompt_factory()->show_count());
+  }
+
+  void CheckNoPromptFlow(const bool expected, GURL localhost_url) {
+    CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ASK);
+    EXPECT_EQ(0, prompt_factory()->show_count());
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
+    // Load subresource
+    InsertImage(localhost_url.spec(), expected);
+    // No prompt.
+    prompt_factory()->set_response_type(
+        permissions::PermissionRequestManager::ACCEPT_ALL);
+    // Make sure prompt did not come up.
+    EXPECT_EQ(0, prompt_factory()->show_count());
+    // Check content setting is still ASK.
+    CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ASK);
+  }
+
+  void PostRunTestOnMainThread() override {
+    source_provider_.reset();
+    InProcessBrowserTest::PostRunTestOnMainThread();
+  }
+
+ protected:
+  GURL embedding_url_;
+  content::ContentMockCertVerifier mock_cert_verifier_;
+  std::unique_ptr<net::EmbeddedTestServer> https_server_;
+  std::unique_ptr<net::EmbeddedTestServer> localhost_server_;
+  base::test::ScopedFeatureList feature_list_;
+  raw_ptr<Browser, DanglingUntriaged> current_browser_;
+  std::unique_ptr<brave_shields::TestFiltersProvider> source_provider_;
+
+ private:
+  std::unique_ptr<brave_shields::AdBlockBrowserTestHelper>
+      ad_block_test_helper_;
+  std::unique_ptr<permissions::MockPermissionPromptFactory> prompt_factory_;
+};
+
+IN_PROC_BROWSER_TEST_P(LocalhostAccessBrowserTest, Localhost) {
+  std::string test_domain = "localhost";
+  embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
+  CheckAskAndAcceptFlow(target_url);
+  // Reset content setting.
+  SetCurrentStatus(ContentSetting::CONTENT_SETTING_ASK);
+  CheckAskAndDenyFlow(target_url);
+  // Reset content setting.
+  SetCurrentStatus(ContentSetting::CONTENT_SETTING_ASK);
+  CheckAskAndDismissFlow(target_url);
+}
+
+IN_PROC_BROWSER_TEST_P(LocalhostAccessBrowserTest, DotLocalhost) {
+  std::string test_domain = "test.localhost";
+  embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
+  CheckAskAndAcceptFlow(target_url);
+  // Reset content setting.
+  SetCurrentStatus(ContentSetting::CONTENT_SETTING_ASK);
+  CheckAskAndDenyFlow(target_url);
+  // Reset content setting.
+  SetCurrentStatus(ContentSetting::CONTENT_SETTING_ASK);
+  CheckAskAndDismissFlow(target_url);
+}
+
+IN_PROC_BROWSER_TEST_P(LocalhostAccessBrowserTest, OneTwoSeven) {
+  std::string test_domain = "127.0.0.1";
+  embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
+  CheckAskAndAcceptFlow(target_url);
+  // Reset content setting
+  SetCurrentStatus(ContentSetting::CONTENT_SETTING_ASK);
+  CheckAskAndDenyFlow(target_url);
+  // Reset content setting.
+  SetCurrentStatus(ContentSetting::CONTENT_SETTING_ASK);
+  CheckAskAndDismissFlow(target_url);
+}
+
+IN_PROC_BROWSER_TEST_P(LocalhostAccessBrowserTest, IncognitoModeInheritAllow) {
+  // Allowed permission for a website is ASK in incognito.
+  std::string test_domain = "localhost";
+  embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
+  CheckAskAndAcceptFlow(target_url);
+  // Check incognito mode.
+  Profile* profile = browser()->profile();
+  Browser* incognito_browser = CreateIncognitoBrowser(profile);
+  SetBrowser(incognito_browser);
+  CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ASK);
+}
+
+IN_PROC_BROWSER_TEST_P(LocalhostAccessBrowserTest, IncognitoModeInheritBlock) {
+  // Blocked permission for a website is ASK in incognito.
+  std::string test_domain = "localhost";
+  embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
+  CheckAskAndDenyFlow(target_url);
+  // Check Incognito mode.
+  Profile* profile = browser()->profile();
+  Browser* incognito_browser = CreateIncognitoBrowser(profile);
+  SetBrowser(incognito_browser);
+  CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ASK);
+}
+
+IN_PROC_BROWSER_TEST_P(LocalhostAccessBrowserTest, IncognitoModeDoesNotLeak) {
+  // Permission set in Incognito does not leak back to normal mode.
+  Browser* original_browser = browser();
+  Browser* incognito_browser = CreateIncognitoBrowser();
+  SetBrowser(incognito_browser);
+  SetPromptFactory(GetPermissionRequestManager());
+  std::string test_domain = "localhost";
+  embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
+  CheckAskAndAcceptFlow(target_url);
+  // Check permission did not leak.
+  SetBrowser(original_browser);
+  SetPromptFactory(GetPermissionRequestManager());
+  CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ASK);
+}
+
+IN_PROC_BROWSER_TEST_P(LocalhostAccessBrowserTest, NoPermissionPrompt) {
+  // No permission prompt is shown when we request non-localhost domain.
+  std::string test_domain = "b.com";
+  embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
+  const auto& target_url = https_server_->GetURL(test_domain, kTestTargetPath);
+  CheckNoPromptFlow(true, target_url);
+}
+
+// Test that WebSocket connections to localhost are blocked/allowed.
+IN_PROC_BROWSER_TEST_P(LocalhostAccessBrowserTest, WebSocket) {
+  // Start a WebSocket server.
+  auto ws_url = net::test_server::GetWebSocketURL(
+      *localhost_server_, "localhost", "/echo-with-no-extension");
+  // Script to connect to ws server.
+  std::string ws_open_script_template = R"(
+    new Promise(resolve => {
+      let socket = new WebSocket($1);
+      socket.addEventListener('open', () => resolve('open'));
+      socket.addEventListener('error', () => resolve('error'));
+    });
+  )";
+  // Go to any simple page.
+  embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
+  prompt_factory()->set_response_type(
+      permissions::PermissionRequestManager::DISMISS);
+  // Run script to open WebSocket, it should error out.
+  const std::string& ws_open_script =
+      content::JsReplace(ws_open_script_template, ws_url);
+  ASSERT_EQ("error", EvalJs(contents(), ws_open_script));
+  EXPECT_EQ(1, prompt_factory()->show_count());
+  CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ASK);
+
+  prompt_factory()->set_response_type(
+      permissions::PermissionRequestManager::ACCEPT_ALL);
+  contents()->GetController().Reload(content::ReloadType::NORMAL, false);
+  // Wait for tab to reload after permission grant.
+  WaitForLoadStop(contents());
+  ASSERT_EQ("open", EvalJs(contents(), ws_open_script));
+  CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ALLOW);
+}
+
+// Test that service worker connections are blocked/allowed correctly.
+// Service workers making requests to localhost subresources should be allowed
+// if the page has the ALLOW content setting, and blocked otherwise.
+IN_PROC_BROWSER_TEST_P(LocalhostAccessBrowserTest, ServiceWorker) {
+  std::string test_domain = "localhost";
+  embedding_url_ =
+      https_server_->GetURL(kTestEmbeddingDomain, "/navigator/simple.html");
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
+  EXPECT_EQ(0, prompt_factory()->show_count());
+  // Go to page.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
+  CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ASK);
+  // Register service worker that will capture all fetches.
+  std::string sw_register_script = R"(
+    registerServiceWorker('./service-workers-localhost-permission.js')
+  )";
+  ASSERT_EQ(true, EvalJs(contents(), sw_register_script));
+  // Load subresource - it should fail without prompt
+  // because the request goes through the SW.
+  InsertImage(target_url.spec(), false);
+  EXPECT_EQ(0, prompt_factory()->show_count());
+  // Now set the content setting to ALLOW.
+  SetCurrentStatus(ContentSetting::CONTENT_SETTING_ALLOW);
+  // Load subresource, should succeed.
+  InsertImage(target_url.spec(), true);
+  // Still no prompt though.
+  EXPECT_EQ(0, prompt_factory()->show_count());
+}
+
+// Test that localhost connections blocked by adblock are still blocked
+// without permission prompt.
+IN_PROC_BROWSER_TEST_P(LocalhostAccessBrowserTest, AdblockRule) {
+  // Add adblock rule to block localhost.
+  std::string test_domain = "localhost";
+  embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
+  auto rule = base::StrCat({"||", test_domain, "^"});
+  AddAdblockRule(rule);
+  // The image won't show up because of adblock rule.
+  CheckNoPromptFlow(false, target_url);
+}
+
+// Test that badfiltering a localhost adblock rule makes permission come up.
+IN_PROC_BROWSER_TEST_P(LocalhostAccessBrowserTest, AdblockRuleBadfilter) {
+  std::string test_domain = "localhost";
+  embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
+
+  auto adblock_rule = base::StrCat({"||", test_domain, "^"});
+  auto badfilter_rule = base::StrCat({"\n", adblock_rule, "$badfilter"});
+  auto rules = adblock_rule + badfilter_rule;
+  AddAdblockRule(rules);
+  CheckAskAndAcceptFlow(target_url);
+}
+
+// Test that different hosts under the same eTLD+1 can prompt.
+IN_PROC_BROWSER_TEST_P(LocalhostAccessBrowserTest, WebsitePartOfETLDP1) {
+  std::string test_domain = "localhost";
+  embedding_url_ = https_server_->GetURL(
+      base::StrCat({"test1.", kTestEmbeddingDomain}), kSimplePage);
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
+  CheckAskAndAcceptFlow(target_url);
+  embedding_url_ = https_server_->GetURL(
+      base::StrCat({"test2.", kTestEmbeddingDomain}), kSimplePage);
+  CheckAskAndAcceptFlow(target_url);
+}
+
+// Test that localhost connections blocked by adblock are still blocked
+// without permission prompt, and exceptioned domains cause permission prompt.
+IN_PROC_BROWSER_TEST_P(LocalhostAccessBrowserTest, AdblockRuleException) {
+  // Add adblock rule to block localhost.
+  std::string test_domain = "localhost";
+  embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
+  auto original_rule = base::StrCat({"||", test_domain, "^", "\n"});
+  auto exception_rule = base::StrCat({"@@||", test_domain, "^"});
+  auto rules = original_rule + exception_rule;
+  AddAdblockRule(rules);
+  CheckAskAndAcceptFlow(target_url);
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    LocalhostAccessBrowserTest,
+    testing::Values(network::mojom::IPAddressSpace::kLocal,
+                    network::mojom::IPAddressSpace::kLoopback));
+
+class LocalhostAccessBrowserTestFeatureDisabled
+    : public LocalhostAccessBrowserTest {
+ public:
+  LocalhostAccessBrowserTestFeatureDisabled() {
+    feature_list_.Reset();
+    feature_list_.InitAndEnableFeatureWithParameters(
+        network::features::kLocalNetworkAccessChecks,
+        {{"LocalNetworkAccessChecksWarn", "true"}});
+  }
+};
+
+IN_PROC_BROWSER_TEST_P(LocalhostAccessBrowserTestFeatureDisabled,
+                       NoPermissionPrompt) {
+  std::string test_domain = "localhost";
+  embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
+  const auto& target_url = https_server_->GetURL(test_domain, kTestTargetPath);
+  CheckNoPromptFlow(true, target_url);
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    LocalhostAccessBrowserTestFeatureDisabled,
+    testing::Values(network::mojom::IPAddressSpace::kLocal,
+                    network::mojom::IPAddressSpace::kLoopback));

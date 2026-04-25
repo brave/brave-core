@@ -1,0 +1,1542 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
+
+#include <string>
+#include <vector>
+
+#include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
+#include "base/test/scoped_feature_list.h"
+#include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
+#include "brave/components/ai_chat/core/browser/associated_content_manager.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/browser/engine/test_utils.h"
+#include "brave/components/ai_chat/core/browser/test_utils.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/ai_chat/core/common/prefs.h"
+#include "brave/components/ai_chat/core/common/test_utils.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
+
+namespace ai_chat {
+
+namespace {
+
+constexpr char kTestText[] = "This is test text for rewriting.";
+constexpr char kSeedText[] = "Here is the rewritten version:";
+
+struct RewriteActionTestParam {
+  mojom::ActionType action_type;
+  std::optional<mojom::ContentBlock::Tag> expected_content_type;
+  std::string expected_payload;  // non-empty for change tones
+  std::optional<mojom::SimpleRequestType> expected_simple_request_type;
+};
+
+// Creates a WebSourcesContentBlock. If any |page_content_sizes| element has
+// a value, the source includes page_content, extra_snippets, and rich_results
+// are populated; otherwise those fields are nullopt/empty (stripped).
+mojom::WebSourcesContentBlockPtr CreateWebSourcesContentBlock(
+    std::vector<std::optional<size_t>> page_content_sizes,
+    std::vector<std::string> queries,
+    bool include_rich_results = true) {
+  std::vector<mojom::WebSourcePtr> sources;
+  for (size_t i = 0; i < page_content_sizes.size(); ++i) {
+    std::optional<std::string> page_content;
+    std::optional<std::vector<std::string>> extra_snippets;
+    if (page_content_sizes[i].has_value()) {
+      page_content = std::string(*page_content_sizes[i], 'x');
+      extra_snippets = std::vector<std::string>{"snippet0"};
+    }
+    sources.push_back(mojom::WebSource::New(
+        "Title " + base::NumberToString(i),
+        GURL("https://example.com/" + base::NumberToString(i)),
+        GURL("https://example.com/favicon" + base::NumberToString(i)),
+        std::move(page_content), std::move(extra_snippets)));
+  }
+  return mojom::WebSourcesContentBlock::New(
+      std::move(sources), std::move(queries),
+      include_rich_results
+          ? std::vector<std::string>{"{\"type\":\"rich_result\"}"}
+          : std::vector<std::string>{});
+}
+
+mojom::WebSourcesContentBlockPtr CreateWebSourcesContentBlock(
+    std::optional<size_t> page_content_size,
+    std::vector<std::string> queries,
+    bool include_rich_results = true) {
+  return CreateWebSourcesContentBlock(
+      std::vector<std::optional<size_t>>{page_content_size}, std::move(queries),
+      include_rich_results);
+}
+
+// Creates a tool use entry event with a single output content block.
+mojom::ConversationEntryEventPtr CreateToolUseEvent(
+    const std::string& tool_name,
+    const std::string& id,
+    mojom::ContentBlockPtr output) {
+  auto tool = mojom::ToolUseEvent::New();
+  tool->tool_name = tool_name;
+  tool->id = id;
+  tool->arguments_json = "{}";
+  tool->output = std::vector<mojom::ContentBlockPtr>();
+  tool->output->push_back(std::move(output));
+  return mojom::ConversationEntryEvent::NewToolUseEvent(std::move(tool));
+}
+
+}  // namespace
+
+class OAIMessageUtilsTest : public testing::Test {
+ public:
+  OAIMessageUtilsTest() = default;
+  ~OAIMessageUtilsTest() override = default;
+
+  void SetUp() override { prefs::RegisterProfilePrefs(prefs_.registry()); }
+
+ protected:
+  void TestNoMemoryInMessages(const base::Location& location,
+                              PrefService* prefs,
+                              bool exclude_memory) {
+    SCOPED_TRACE(testing::Message() << location.ToString());
+
+    // Create simple 1 human turn history (no selected text, no page content)
+    auto history = CreateSampleChatHistory(1);
+    history.pop_back();  // Remove assistant turn
+
+    // Call BuildOAIMessages
+    std::vector<OAIMessage> messages =
+        BuildOAIMessages(PageContentsMap(), history, prefs, exclude_memory,
+                         10000, [](std::string&) {});
+
+    // Verify: Should have 1 human message with NO memory block
+    ASSERT_EQ(messages.size(), 1u);
+    EXPECT_EQ(messages[0].role, "user");
+    ASSERT_EQ(messages[0].content.size(), 1u);
+    VerifyTextBlock(FROM_HERE, messages[0].content[0], "query0");
+  }
+
+  sync_preferences::TestingPrefServiceSyncable prefs_;
+};
+
+class BuildOAIRewriteSuggestionMessagesTest
+    : public OAIMessageUtilsTest,
+      public testing::WithParamInterface<RewriteActionTestParam> {};
+
+TEST_P(BuildOAIRewriteSuggestionMessagesTest,
+       BuildsCorrectMessageForActionType) {
+  RewriteActionTestParam param = GetParam();
+
+  auto messages =
+      BuildOAIRewriteSuggestionMessages(kTestText, param.action_type);
+  // Verify invalid action types would return nullopt.
+  if (!param.expected_content_type) {
+    EXPECT_FALSE(messages);
+    return;
+  }
+
+  ASSERT_TRUE(messages);
+  // Verify we get exactly one message
+  ASSERT_EQ(messages->size(), 1u);
+
+  const auto& message = messages->at(0);
+  EXPECT_EQ(message.role, "user");
+
+  // Verify message has two content blocks
+  ASSERT_EQ(message.content.size(), 2u);
+
+  // First block should be page excerpt with the text
+  VerifyPageExcerptBlock(FROM_HERE, message.content[0], kTestText);
+
+  // Second block should be the action-specific content
+  ASSERT_EQ(message.content[1]->which(), param.expected_content_type);
+
+  switch (param.expected_content_type.value()) {
+    case mojom::ContentBlock::Tag::kChangeToneContentBlock:
+      VerifyChangeToneBlock(FROM_HERE, message.content[1], "",
+                            param.expected_payload);
+      break;
+    case mojom::ContentBlock::Tag::kSimpleRequestContentBlock: {
+      ASSERT_TRUE(param.expected_simple_request_type.has_value());
+      VerifySimpleRequestBlock(FROM_HERE, message.content[1],
+                               param.expected_simple_request_type.value());
+      break;
+    }
+    default:
+      FAIL() << "Unexpected content block type";
+  }
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    BuildOAIRewriteSuggestionMessagesTest,
+    testing::Values(
+        RewriteActionTestParam{
+            mojom::ActionType::PARAPHRASE,
+            mojom::ContentBlock::Tag::kSimpleRequestContentBlock, "",
+            mojom::SimpleRequestType::kParaphrase},
+        RewriteActionTestParam{
+            mojom::ActionType::IMPROVE,
+            mojom::ContentBlock::Tag::kSimpleRequestContentBlock, "",
+            mojom::SimpleRequestType::kImprove},
+        RewriteActionTestParam{
+            mojom::ActionType::ACADEMICIZE,
+            mojom::ContentBlock::Tag::kChangeToneContentBlock, "academic"},
+        RewriteActionTestParam{
+            mojom::ActionType::PROFESSIONALIZE,
+            mojom::ContentBlock::Tag::kChangeToneContentBlock, "professional"},
+        RewriteActionTestParam{
+            mojom::ActionType::PERSUASIVE_TONE,
+            mojom::ContentBlock::Tag::kChangeToneContentBlock, "persuasive"},
+        RewriteActionTestParam{
+            mojom::ActionType::CASUALIZE,
+            mojom::ContentBlock::Tag::kChangeToneContentBlock, "casual"},
+        RewriteActionTestParam{
+            mojom::ActionType::FUNNY_TONE,
+            mojom::ContentBlock::Tag::kChangeToneContentBlock, "funny"},
+        RewriteActionTestParam{
+            mojom::ActionType::SHORTEN,
+            mojom::ContentBlock::Tag::kSimpleRequestContentBlock, "",
+            mojom::SimpleRequestType::kShorten},
+        RewriteActionTestParam{
+            mojom::ActionType::EXPAND,
+            mojom::ContentBlock::Tag::kSimpleRequestContentBlock, "",
+            mojom::SimpleRequestType::kExpand},
+        RewriteActionTestParam{mojom::ActionType::CREATE_TAGLINE, std::nullopt,
+                               ""}));
+
+TEST_F(OAIMessageUtilsTest, BuildOAISeedMessage) {
+  OAIMessage message = BuildOAISeedMessage(kSeedText);
+
+  EXPECT_EQ(message.role, "assistant");
+  ASSERT_EQ(message.content.size(), 1u);
+  VerifyTextBlock(FROM_HERE, message.content[0], kSeedText);
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages) {
+  // Create page contents for different turns
+  PageContent page_content1("Page content 1", false);
+  PageContent video_content1("Video transcript 1", true);
+  PageContent page_content3("Page content 3", false);
+  PageContent page_content4("Page content 4", false);
+
+  // Build page contents map (turn2 is assistant, no page contents)
+  PageContentsMap page_contents_map;
+  page_contents_map["turn1"] = {std::cref(page_content1),
+                                std::cref(video_content1)};
+  page_contents_map["turn3"] = {std::cref(page_content3)};
+  page_contents_map["turn4"] = {std::cref(page_content4)};
+
+  // Build conversation history with 4 turns
+  EngineConsumer::ConversationHistory history;
+
+  // Turn 1: Human with page + video + selected_text + regular action
+  auto turn1 = mojom::ConversationTurn::New();
+  turn1->uuid = "turn1";
+  turn1->character_type = mojom::CharacterType::HUMAN;
+  turn1->action_type = mojom::ActionType::QUERY;
+  turn1->text = "What is this?";
+  turn1->selected_text = "Selected excerpt";
+  history.push_back(std::move(turn1));
+
+  // Turn 2: Assistant with no page contents
+  auto turn2 = mojom::ConversationTurn::New();
+  turn2->uuid = "turn2";
+  turn2->character_type = mojom::CharacterType::ASSISTANT;
+  turn2->text = "This is the answer.";
+  history.push_back(std::move(turn2));
+
+  // Turn 3: Human with page content + SUMMARIZE_PAGE action
+  auto turn3 = mojom::ConversationTurn::New();
+  turn3->uuid = "turn3";
+  turn3->character_type = mojom::CharacterType::HUMAN;
+  turn3->action_type = mojom::ActionType::SUMMARIZE_PAGE;
+  turn3->text = "Summarize";
+  history.push_back(std::move(turn3));
+
+  // Turn 4: Human with page content + no selected_text
+  auto turn4 = mojom::ConversationTurn::New();
+  turn4->uuid = "turn4";
+  turn4->character_type = mojom::CharacterType::HUMAN;
+  turn4->action_type = mojom::ActionType::QUERY;
+  turn4->text = "Another question";
+  history.push_back(std::move(turn4));
+
+  bool sanitize_input_called = false;
+  std::vector<OAIMessage> messages = BuildOAIMessages(
+      std::move(page_contents_map), history, nullptr, true, 10000,
+      [&sanitize_input_called](std::string&) { sanitize_input_called = true; });
+
+  EXPECT_TRUE(sanitize_input_called);
+
+  // Should have 4 messages
+  ASSERT_EQ(messages.size(), 4u);
+
+  // Message 1: Human turn with all content types
+  EXPECT_EQ(messages[0].role, "user");
+  ASSERT_EQ(messages[0].content.size(), 4u);
+  VerifyVideoTranscriptBlock(FROM_HERE, messages[0].content[0],
+                             "Video transcript 1");
+
+  VerifyPageTextBlock(FROM_HERE, messages[0].content[1], "Page content 1");
+
+  VerifyPageExcerptBlock(FROM_HERE, messages[0].content[2], "Selected excerpt");
+
+  VerifyTextBlock(FROM_HERE, messages[0].content[3], "What is this?");
+
+  // Message 2: Assistant turn with no page contents
+  EXPECT_EQ(messages[1].role, "assistant");
+  ASSERT_EQ(messages[1].content.size(), 1u);
+  VerifyTextBlock(FROM_HERE, messages[1].content[0], "This is the answer.");
+
+  // Message 3: Human turn with SUMMARIZE_PAGE action
+  EXPECT_EQ(messages[2].role, "user");
+  ASSERT_EQ(messages[2].content.size(), 2u);
+  VerifyPageTextBlock(FROM_HERE, messages[2].content[0], "Page content 3");
+
+  VerifySimpleRequestBlock(FROM_HERE, messages[2].content[1],
+                           mojom::SimpleRequestType::kRequestSummary);
+
+  // Message 4: Human turn with page content, no selected_text
+  EXPECT_EQ(messages[3].role, "user");
+  ASSERT_EQ(messages[3].content.size(), 2u);
+  VerifyPageTextBlock(FROM_HERE, messages[3].content[0], "Page content 4");
+
+  VerifyTextBlock(FROM_HERE, messages[3].content[1], "Another question");
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_ContentTruncation) {
+  // Create page contents - older content is longer
+  PageContent old_content("Old content that will be dropped", false);
+  PageContent new_content("New content", false);
+
+  // Build page contents map
+  PageContentsMap page_contents_map;
+  page_contents_map["turn1"] = {std::cref(old_content)};
+  page_contents_map["turn2"] = {std::cref(new_content)};
+
+  // Build conversation history with 2 turns
+  EngineConsumer::ConversationHistory history;
+
+  // Turn 1: Older turn with content
+  auto turn1 = mojom::ConversationTurn::New();
+  turn1->uuid = "turn1";
+  turn1->character_type = mojom::CharacterType::HUMAN;
+  turn1->action_type = mojom::ActionType::QUERY;
+  turn1->text = "First question";
+  history.push_back(std::move(turn1));
+
+  // Turn 2: Newer turn with content
+  auto turn2 = mojom::ConversationTurn::New();
+  turn2->uuid = "turn2";
+  turn2->character_type = mojom::CharacterType::HUMAN;
+  turn2->action_type = mojom::ActionType::QUERY;
+  turn2->text = "Second question";
+  history.push_back(std::move(turn2));
+
+  // Set max_length to fit newer content but not both
+  std::vector<OAIMessage> messages =
+      BuildOAIMessages(std::move(page_contents_map), history, nullptr, true, 11,
+                       [](std::string&) {});
+
+  // Should have 2 messages
+  ASSERT_EQ(messages.size(), 2u);
+
+  // Message 1: Older turn - should have NO page content (dropped)
+  EXPECT_EQ(messages[0].role, "user");
+  ASSERT_EQ(messages[0].content.size(), 1u);
+  VerifyTextBlock(FROM_HERE, messages[0].content[0], "First question");
+
+  // Message 2: Newer turn - should have full page content
+  EXPECT_EQ(messages[1].role, "user");
+  ASSERT_EQ(messages[1].content.size(), 2u);
+  VerifyPageTextBlock(FROM_HERE, messages[1].content[0], "New content");
+
+  VerifyTextBlock(FROM_HERE, messages[1].content[1], "Second question");
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_UploadedFiles) {
+  // Build a conversation history:
+  // [0] User message 1: 2 images, no page content or selected text
+  // [1] Assistant message 1
+  // [2] User message 2: 2 screenshots, with page content, without selected text
+  // [3] Assistant message 2
+  // [4] User message 3: 2 pdfs, without page content, with selected text
+  // [5] Assistant message 3
+  // [6] User message 4: 2 images, 2 screenshots, 2 pdfs, without page contents
+  // or selected text
+  // [7] Assistant message 4
+  // [8] User message 5: 2 images, 2 screenshots, 2 pdfs, with page contents and
+  // selected text
+  // [9] Assistant message 5
+  auto history = CreateSampleChatHistory(5);
+
+  // Create uploaded files
+  auto images = CreateSampleUploadedFiles(2, mojom::UploadedFileType::kImage);
+  auto screenshots =
+      CreateSampleUploadedFiles(2, mojom::UploadedFileType::kScreenshot);
+  auto pdfs = CreateSampleUploadedFiles(2, mojom::UploadedFileType::kPdf);
+  // Clear filename from second PDF to test the default filename behavior
+  pdfs[1]->filename.clear();
+
+  auto image_url1 = GURL(EngineConsumer::GetImageDataURL(images[0]->data));
+  auto image_url2 = GURL(EngineConsumer::GetImageDataURL(images[1]->data));
+  auto screenshot_url1 =
+      GURL(EngineConsumer::GetImageDataURL(screenshots[0]->data));
+  auto screenshot_url2 =
+      GURL(EngineConsumer::GetImageDataURL(screenshots[1]->data));
+  auto pdf_url1 = GURL(EngineConsumer::GetPdfDataURL(pdfs[0]->data));
+  auto pdf_url2 = GURL(EngineConsumer::GetPdfDataURL(pdfs[1]->data));
+  auto pdf_filename1 = pdfs[0]->filename;
+  // pdfs[1]->filename was cleared, so it will use default "uploaded.pdf"
+
+  // Build all_files by cloning and combining all file types
+  auto images_clone = Clone(images);
+  auto screenshots_clone = Clone(screenshots);
+  auto pdfs_clone = Clone(pdfs);
+
+  std::vector<mojom::UploadedFilePtr> all_files;
+  all_files.insert(all_files.end(),
+                   std::make_move_iterator(images_clone.begin()),
+                   std::make_move_iterator(images_clone.end()));
+  all_files.insert(all_files.end(),
+                   std::make_move_iterator(screenshots_clone.begin()),
+                   std::make_move_iterator(screenshots_clone.end()));
+  all_files.insert(all_files.end(), std::make_move_iterator(pdfs_clone.begin()),
+                   std::make_move_iterator(pdfs_clone.end()));
+
+  // Create page contents
+  PageContent page_content1("Page content 1", false);
+  PageContent page_content2("Page content 2", false);
+
+  PageContentsMap page_contents_map;
+  // User message 1: 2 images, no page content or selected text
+  history[0]->uploaded_files = Clone(images);
+  // User message 2: 2 screenshots, with page content, without selected text
+  history[2]->uploaded_files = Clone(screenshots);
+  page_contents_map[*history[2]->uuid] = {std::cref(page_content1)};
+  // User message 3: 2 pdfs, without page content, with selected text
+  history[4]->uploaded_files = Clone(pdfs);
+  history[4]->selected_text = "selected_text";
+  // User message 4: 2 images, 2 screenshots, 2 pdfs, without page contents or
+  // selected text
+  history[6]->uploaded_files = Clone(all_files);
+  // User message 5: 2 images, 2 screenshots, 2 pdfs, with page contents and
+  // selected text
+  history[8]->uploaded_files = Clone(all_files);
+  history[8]->selected_text = "selected_text";
+  page_contents_map[*history[8]->uuid] = {std::cref(page_content2)};
+
+  // Update assistant turn texts for testing
+  history[1]->text = "response0";
+  history[3]->text = "response1";
+  history[5]->text = "response2";
+  history[7]->text = "response3";
+  history[9]->text = "response4";
+
+  // Build OAI messages
+  std::vector<OAIMessage> messages =
+      BuildOAIMessages(std::move(page_contents_map), history, nullptr, true,
+                       10000, [](std::string&) {});
+
+  // Should have 10 messages (5 human, 5 assistant)
+  ASSERT_EQ(messages.size(), 10u);
+
+  // Message 1: Human turn with 2 images
+  EXPECT_EQ(messages[0].role, "user");
+  // Content: images intro text + 2 images + prompt = 4 blocks
+  ASSERT_EQ(messages[0].content.size(), 4u);
+  VerifyTextBlock(FROM_HERE, messages[0].content[0],
+                  "These images are uploaded by the user");
+  VerifyImageBlock(FROM_HERE, messages[0].content[1], image_url1);
+  VerifyImageBlock(FROM_HERE, messages[0].content[2], image_url2);
+  VerifyTextBlock(FROM_HERE, messages[0].content[3], "query0");
+
+  // Message 2: Assistant turn
+  EXPECT_EQ(messages[1].role, "assistant");
+  ASSERT_EQ(messages[1].content.size(), 1u);
+  VerifyTextBlock(FROM_HERE, messages[1].content[0], "response0");
+
+  // Message 3: Human turn with 2 screenshots, page content
+  EXPECT_EQ(messages[2].role, "user");
+  // Content: page + screenshots intro + 2 screenshots + prompt = 5 blocks
+  ASSERT_EQ(messages[2].content.size(), 5u);
+  VerifyPageTextBlock(FROM_HERE, messages[2].content[0], "Page content 1");
+  VerifyTextBlock(FROM_HERE, messages[2].content[1],
+                  "These images are screenshots");
+  VerifyImageBlock(FROM_HERE, messages[2].content[2], screenshot_url1);
+  VerifyImageBlock(FROM_HERE, messages[2].content[3], screenshot_url2);
+  VerifyTextBlock(FROM_HERE, messages[2].content[4], "query1");
+
+  // Message 4: Assistant turn
+  EXPECT_EQ(messages[3].role, "assistant");
+  ASSERT_EQ(messages[3].content.size(), 1u);
+  VerifyTextBlock(FROM_HERE, messages[3].content[0], "response1");
+
+  // Message 5: Human turn with 2 PDFs and selected text
+  EXPECT_EQ(messages[4].role, "user");
+  // Content: PDFs intro text + 2 PDFs + selected text + prompt = 5 blocks
+  ASSERT_EQ(messages[4].content.size(), 5u);
+  VerifyTextBlock(FROM_HERE, messages[4].content[0],
+                  "These PDFs are uploaded by the user");
+  VerifyFileBlock(FROM_HERE, messages[4].content[1], pdf_url1, pdf_filename1);
+  // Second PDF should have default filename since we cleared it
+  VerifyFileBlock(FROM_HERE, messages[4].content[2], pdf_url2, "uploaded.pdf");
+  VerifyPageExcerptBlock(FROM_HERE, messages[4].content[3], "selected_text");
+  VerifyTextBlock(FROM_HERE, messages[4].content[4], "query2");
+
+  // Message 6: Assistant turn
+  EXPECT_EQ(messages[5].role, "assistant");
+  ASSERT_EQ(messages[5].content.size(), 1u);
+  VerifyTextBlock(FROM_HERE, messages[5].content[0], "response2");
+
+  // Message 7: Human turn with all file types, without page content, without
+  // selected text
+  EXPECT_EQ(messages[6].role, "user");
+  // Content: images intro + 2 images + screenshots intro + 2 screenshots +
+  // PDFs intro + 2 PDFs + prompt = 10 blocks
+  ASSERT_EQ(messages[6].content.size(), 10u);
+  VerifyTextBlock(FROM_HERE, messages[6].content[0],
+                  "These images are uploaded by the user");
+  VerifyImageBlock(FROM_HERE, messages[6].content[1], image_url1);
+  VerifyImageBlock(FROM_HERE, messages[6].content[2], image_url2);
+  VerifyTextBlock(FROM_HERE, messages[6].content[3],
+                  "These images are screenshots");
+  VerifyImageBlock(FROM_HERE, messages[6].content[4], screenshot_url1);
+  VerifyImageBlock(FROM_HERE, messages[6].content[5], screenshot_url2);
+  VerifyTextBlock(FROM_HERE, messages[6].content[6],
+                  "These PDFs are uploaded by the user");
+  VerifyFileBlock(FROM_HERE, messages[6].content[7], pdf_url1, pdf_filename1);
+  VerifyFileBlock(FROM_HERE, messages[6].content[8], pdf_url2, "uploaded.pdf");
+  VerifyTextBlock(FROM_HERE, messages[6].content[9], "query3");
+
+  // Message 8: Assistant turn
+  EXPECT_EQ(messages[7].role, "assistant");
+  ASSERT_EQ(messages[7].content.size(), 1u);
+  VerifyTextBlock(FROM_HERE, messages[7].content[0], "response3");
+
+  // Message 9: Human turn with all file types, page content, selected text
+  EXPECT_EQ(messages[8].role, "user");
+  // Content: page + images intro + 2 images + screenshots intro +
+  // 2 screenshots + PDFs intro + 2 PDFs + selected text + prompt = 12 blocks
+  ASSERT_EQ(messages[8].content.size(), 12u);
+  VerifyPageTextBlock(FROM_HERE, messages[8].content[0], "Page content 2");
+  VerifyTextBlock(FROM_HERE, messages[8].content[1],
+                  "These images are uploaded by the user");
+  VerifyImageBlock(FROM_HERE, messages[8].content[2], image_url1);
+  VerifyImageBlock(FROM_HERE, messages[8].content[3], image_url2);
+  VerifyTextBlock(FROM_HERE, messages[8].content[4],
+                  "These images are screenshots");
+  VerifyImageBlock(FROM_HERE, messages[8].content[5], screenshot_url1);
+  VerifyImageBlock(FROM_HERE, messages[8].content[6], screenshot_url2);
+  VerifyTextBlock(FROM_HERE, messages[8].content[7],
+                  "These PDFs are uploaded by the user");
+  VerifyFileBlock(FROM_HERE, messages[8].content[8], pdf_url1, pdf_filename1);
+  VerifyFileBlock(FROM_HERE, messages[8].content[9], pdf_url2, "uploaded.pdf");
+  VerifyPageExcerptBlock(FROM_HERE, messages[8].content[10], "selected_text");
+  VerifyTextBlock(FROM_HERE, messages[8].content[11], "query4");
+
+  // Message 10: Assistant turn
+  EXPECT_EQ(messages[9].role, "assistant");
+  ASSERT_EQ(messages[9].content.size(), 1u);
+  VerifyTextBlock(FROM_HERE, messages[9].content[0], "response4");
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_PdfExtractedTextPreferred) {
+  // Test that PDFs with extracted_text produce TextContentBlock instead of
+  // FileContentBlock, and PDFs without extracted_text still produce
+  // FileContentBlock.
+  auto history = CreateSampleChatHistory(1);
+
+  auto pdfs = CreateSampleUploadedFiles(2, mojom::UploadedFileType::kPdf);
+  // First PDF has extracted text — should produce TextContentBlock
+  pdfs[0]->extracted_text = "This is the extracted PDF content.";
+  pdfs[0]->filename = "extracted.pdf";
+  // Second PDF has no extracted text — should produce FileContentBlock
+  pdfs[1]->filename = "raw.pdf";
+
+  auto pdf_url2 = GURL(EngineConsumer::GetPdfDataURL(pdfs[1]->data));
+
+  history[0]->uploaded_files = std::move(pdfs);
+
+  PageContentsMap page_contents_map;
+  std::vector<OAIMessage> messages =
+      BuildOAIMessages(std::move(page_contents_map), history, nullptr, true,
+                       10000, [](std::string&) {});
+
+  ASSERT_EQ(messages.size(), 2u);
+  EXPECT_EQ(messages[0].role, "user");
+  // Content: PDFs intro + extracted text (TextContentBlock) +
+  // raw PDF (FileContentBlock) + prompt = 4 blocks
+  ASSERT_EQ(messages[0].content.size(), 4u);
+  VerifyTextBlock(FROM_HERE, messages[0].content[0],
+                  "These PDFs are uploaded by the user");
+  // Extracted PDF becomes a TextContentBlock with [PDF: filename] prefix
+  VerifyTextBlock(FROM_HERE, messages[0].content[1],
+                  "[PDF: extracted.pdf]\nThis is the extracted PDF content.");
+  // Raw PDF still uses FileContentBlock
+  VerifyFileBlock(FROM_HERE, messages[0].content[2], pdf_url2, "raw.pdf");
+  VerifyTextBlock(FROM_HERE, messages[0].content[3], "query0");
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_TextFileExtractedText) {
+  // Test that text files with extracted_text produce TextContentBlock with
+  // [File: filename] prefix, and text files without extracted_text are skipped.
+  auto history = CreateSampleChatHistory(1);
+
+  auto text_files =
+      CreateSampleUploadedFiles(2, mojom::UploadedFileType::kText);
+  // First text file has extracted text — should produce TextContentBlock
+  text_files[0]->extracted_text = "config_key=config_value";
+  text_files[0]->filename = "app.conf";
+  // Second text file has no extracted text — should be skipped
+  text_files[1]->filename = "failed.txt";
+
+  history[0]->uploaded_files = std::move(text_files);
+
+  PageContentsMap page_contents_map;
+  std::vector<OAIMessage> messages =
+      BuildOAIMessages(std::move(page_contents_map), history, nullptr, true,
+                       10000, [](std::string&) {});
+
+  ASSERT_EQ(messages.size(), 2u);
+  EXPECT_EQ(messages[0].role, "user");
+  // Content: text files intro + extracted text + prompt = 3 blocks
+  // (second file with no extracted_text is skipped)
+  ASSERT_EQ(messages[0].content.size(), 3u);
+  VerifyTextBlock(FROM_HERE, messages[0].content[0],
+                  "These text files are uploaded by the user");
+  VerifyTextBlock(FROM_HERE, messages[0].content[1],
+                  "[File: app.conf]\nconfig_key=config_value");
+  VerifyTextBlock(FROM_HERE, messages[0].content[2], "query0");
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_TextFileDefaultFilename) {
+  // Test that text files with empty filename get default "uploaded.txt"
+  auto history = CreateSampleChatHistory(1);
+
+  auto text_files =
+      CreateSampleUploadedFiles(1, mojom::UploadedFileType::kText);
+  text_files[0]->extracted_text = "some content";
+  text_files[0]->filename.clear();
+
+  history[0]->uploaded_files = std::move(text_files);
+
+  PageContentsMap page_contents_map;
+  std::vector<OAIMessage> messages =
+      BuildOAIMessages(std::move(page_contents_map), history, nullptr, true,
+                       10000, [](std::string&) {});
+
+  ASSERT_EQ(messages.size(), 2u);
+  ASSERT_EQ(messages[0].content.size(), 3u);
+  VerifyTextBlock(FROM_HERE, messages[0].content[1],
+                  "[File: uploaded.txt]\nsome content");
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory_Excluded) {
+  // Enable customization and set data
+  prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);
+  base::DictValue customizations_dict;
+  customizations_dict.Set("name", "John Doe");
+  customizations_dict.Set("job", "Software Engineer");
+  prefs_.SetDict(prefs::kBraveAIChatUserCustomizations,
+                 std::move(customizations_dict));
+
+  // Enable memory and set data
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
+  base::ListValue memories;
+  memories.Append("I prefer concise explanations");
+  prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(memories));
+
+  // Verify no memory when exclude memory is true
+  TestNoMemoryInMessages(FROM_HERE, &prefs_, true);
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory_NullPrefs) {
+  TestNoMemoryInMessages(FROM_HERE, nullptr, false);
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory_Disabled) {
+  // Disable both customization and memory prefs
+  prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, false);
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
+
+  TestNoMemoryInMessages(FROM_HERE, &prefs_, false);
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory) {
+  // Enable customization and set data
+  prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);
+  base::DictValue customizations_dict;
+  customizations_dict.Set("name", "John Doe");
+  customizations_dict.Set("job", "Software Engineer");
+  prefs_.SetDict(prefs::kBraveAIChatUserCustomizations,
+                 std::move(customizations_dict));
+
+  // Enable memory and set data
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
+  base::ListValue memories;
+  memories.Append("I prefer concise explanations");
+  prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(memories));
+
+  // Create history with 2 human turns and 1 assistant turns
+  auto history = CreateSampleChatHistory(2);
+  history.pop_back();
+
+  // Set up page content and selected text for last human turn only
+  PageContent page_content("Page content for last turn", false);
+  PageContentsMap page_contents_map;
+  page_contents_map[*history[2]->uuid] = {std::cref(page_content)};
+  history[2]->selected_text = "Selected excerpt";
+
+  // Call BuildOAIMessages
+  std::vector<OAIMessage> messages =
+      BuildOAIMessages(std::move(page_contents_map), history, &prefs_, false,
+                       10000, [](std::string&) {});
+
+  // Should have 3 messages
+  ASSERT_EQ(messages.size(), 3u);
+
+  // Message 0: First human turn - NO memory (not the last human turn)
+  EXPECT_EQ(messages[0].role, "user");
+  ASSERT_EQ(messages[0].content.size(), 1u);
+  VerifyTextBlock(FROM_HERE, messages[0].content[0], "query0");
+
+  // Message 1: First assistant turn
+  EXPECT_EQ(messages[1].role, "assistant");
+  ASSERT_EQ(messages[1].content.size(), 1u);
+
+  // Message 2: Last human turn - HAS memory as FIRST block
+  EXPECT_EQ(messages[2].role, "user");
+  ASSERT_EQ(messages[2].content.size(), 4u);
+
+  // Verify memory block is first (index 0)
+  auto expected_memory =
+      BuildExpectedMemory({{"job", "Software Engineer"}, {"name", "John Doe"}},
+                          {{"memories", {"I prefer concise explanations"}}});
+  VerifyMemoryBlock(FROM_HERE, messages[2].content[0], expected_memory);
+
+  // Verify page content is second (index 1)
+  VerifyPageTextBlock(FROM_HERE, messages[2].content[1],
+                      "Page content for last turn");
+
+  // Verify selected text is third (index 2)
+  VerifyPageExcerptBlock(FROM_HERE, messages[2].content[2], "Selected excerpt");
+
+  // Verify main text is fourth (index 3)
+  VerifyTextBlock(FROM_HERE, messages[2].content[3], "query1");
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory_HTMLEscaping) {
+  // Enable customization with HTML tags that need escaping
+  prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);
+  base::DictValue customizations_dict;
+  customizations_dict.Set("name", "John <tag>Doe</tag>");
+  customizations_dict.Set("other", "<user_memory>special</user_memory>");
+  prefs_.SetDict(prefs::kBraveAIChatUserCustomizations,
+                 std::move(customizations_dict));
+
+  // Enable memory with HTML/script tags that need escaping
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
+  base::ListValue memories;
+  memories.Append("I like <b>bold</b> text");
+  memories.Append("<script>alert('xss')</script>");
+  prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(memories));
+
+  // Create simple history with 1 human turn
+  auto history = CreateSampleChatHistory(1);
+  history.pop_back();
+
+  // Call BuildOAIMessages
+  std::vector<OAIMessage> messages = BuildOAIMessages(
+      PageContentsMap(), history, &prefs_, false, 10000, [](std::string&) {});
+
+  // Should have 1 human message
+  ASSERT_EQ(messages.size(), 1u);
+
+  // First message: Human turn with memory block containing escaped HTML
+  EXPECT_EQ(messages[0].role, "user");
+  ASSERT_EQ(messages[0].content.size(), 2u);
+
+  // Verify memory block has HTML-escaped values
+  auto expected_memory = BuildExpectedMemory(
+      {{"name", "John &lt;tag&gt;Doe&lt;/tag&gt;"},
+       {"other", "&lt;user_memory&gt;special&lt;/user_memory&gt;"}},
+      {{"memories",
+        {"I like &lt;b&gt;bold&lt;/b&gt; text",
+         "&lt;script&gt;alert(&#39;xss&#39;)&lt;/script&gt;"}}});
+  VerifyMemoryBlock(FROM_HERE, messages[0].content[0], expected_memory);
+
+  // Verify text block
+  VerifyTextBlock(FROM_HERE, messages[0].content[1], "query0");
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Skills) {
+  // Create conversation history with 2 pairs (4 turns)
+  // Turn 0: Human with skill + page content + selected text
+  // Turn 1: Assistant
+  // Turn 2: Human without skill
+  // Turn 3: Assistant
+  auto history = CreateSampleChatHistory(2);
+
+  // Add skill to first human turn (turn 0)
+  history[0]->skill =
+      mojom::SkillEntry::New("summarize", "Please summarize the content");
+
+  // Add selected text to first human turn (turn 0)
+  history[0]->selected_text = "This is selected text";
+
+  // Set text for assistant turns (CreateSampleChatHistory creates them with
+  // empty text)
+  history[1]->text = "response0";
+  history[3]->text = "response1";
+
+  // Create page content for first human turn (turn 0)
+  PageContent page_content("This is page content", false);
+  PageContentsMap page_contents_map;
+  page_contents_map[*history[0]->uuid] = {std::cref(page_content)};
+
+  // Call BuildOAIMessages
+  std::vector<OAIMessage> messages =
+      BuildOAIMessages(std::move(page_contents_map), history, nullptr, false,
+                       10000, [](std::string&) {});
+
+  // Should have 4 OAI messages (2 human + 2 assistant)
+  ASSERT_EQ(messages.size(), 4u);
+
+  // Message 0 (turn 0 - human with skill): 4 content blocks
+  EXPECT_EQ(messages[0].role, "user");
+  ASSERT_EQ(messages[0].content.size(), 4u);
+  VerifyPageTextBlock(FROM_HERE, messages[0].content[0],
+                      "This is page content");
+  VerifyPageExcerptBlock(FROM_HERE, messages[0].content[1],
+                         "This is selected text");
+  VerifyTextBlock(FROM_HERE, messages[0].content[2],
+                  "When handling the request, interpret '/summarize' as "
+                  "'Please summarize the content'");
+  VerifyTextBlock(FROM_HERE, messages[0].content[3], "query0");
+
+  // Message 1 (turn 1 - assistant): 1 content block
+  EXPECT_EQ(messages[1].role, "assistant");
+  ASSERT_EQ(messages[1].content.size(), 1u);
+  VerifyTextBlock(FROM_HERE, messages[1].content[0], "response0");
+
+  // Message 2 (turn 2 - human without skill): 1 content block
+  EXPECT_EQ(messages[2].role, "user");
+  ASSERT_EQ(messages[2].content.size(), 1u);
+  VerifyTextBlock(FROM_HERE, messages[2].content[0], "query1");
+
+  // Message 3 (turn 3 - assistant): 1 content block
+  EXPECT_EQ(messages[3].role, "assistant");
+  ASSERT_EQ(messages[3].content.size(), 1u);
+  VerifyTextBlock(FROM_HERE, messages[3].content[0], "response1");
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIQuestionSuggestionsMessages) {
+  PageContent text_content1(
+      "This is a very long first text content that will be truncated", false);
+  PageContent video_content("Short video", true);
+  PageContent text_content2("Short text", false);
+  PageContents page_contents = {std::cref(text_content1),
+                                std::cref(video_content),
+                                std::cref(text_content2)};
+
+  bool sanitize_input_called = false;
+  std::vector<OAIMessage> messages = BuildOAIQuestionSuggestionsMessages(
+      page_contents,
+      // Set max length to fit last two blocks fully and truncate the first
+      text_content2.content.size() + video_content.content.size() + 2,
+      [&sanitize_input_called](std::string&) { sanitize_input_called = true; });
+
+  EXPECT_TRUE(sanitize_input_called);
+
+  // Should return exactly one message
+  ASSERT_EQ(messages.size(), 1u);
+
+  const auto& message = messages[0];
+  EXPECT_EQ(message.role, "user");
+
+  // Should have 4 blocks: 3 page contents + request questions
+  ASSERT_EQ(message.content.size(), 4u);
+
+  // Content is processed in reverse order, so third content comes first
+  // Third content (text) should be included in full
+  VerifyPageTextBlock(FROM_HERE, message.content[0], "Short text");
+
+  // Second content (video) should be included in full
+  VerifyVideoTranscriptBlock(FROM_HERE, message.content[1], "Short video");
+
+  // First content (text) should be truncated due to max_length
+  VerifyPageTextBlock(FROM_HERE, message.content[2], "Th");
+
+  // Last block is request questions
+  VerifySimpleRequestBlock(FROM_HERE, message.content[3],
+                           mojom::SimpleRequestType::kRequestQuestions);
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIGenerateConversationTitleMessages_Basic) {
+  // Create a conversation history with 1 human turn and 1 assistant turn
+  // without page contents or selected text.
+  // Tests one message with only 1 kRequestTitle block with text set to human
+  // turn's text is returned.
+  auto history = CreateSampleChatHistory(1);
+
+  auto messages = BuildOAIGenerateConversationTitleMessages(
+      PageContentsMap(), history, 10000, [](std::string&) {});
+
+  ASSERT_TRUE(messages);
+  ASSERT_EQ(messages->size(), 1u);
+
+  const auto& message = messages->at(0);
+  EXPECT_EQ(message.role, "user");
+
+  ASSERT_EQ(message.content.size(), 1u);
+
+  // Should only have a request title block with first turn's text.
+  VerifyRequestTitleBlock(FROM_HERE, message.content[0], history[0]->text);
+}
+
+TEST_F(OAIMessageUtilsTest,
+       BuildOAIGenerateConversationTitleMessages_WithExtraContext) {
+  // Create a conversation history with 1 human turn with 1 page content and
+  // selected text, and 1 assistant turn.
+  // Tests one message with 1 page content block, one page excerpt block, and
+  // one kRequestTitle block with text set to human turn's text is returned.
+  PageContent page_content("Test page content", false);
+
+  auto history = CreateSampleChatHistory(1);
+  history[0]->selected_text = "Selected text excerpt";
+
+  PageContentsMap page_contents_map;
+  page_contents_map[*history[0]->uuid] = {std::cref(page_content)};
+
+  auto messages = BuildOAIGenerateConversationTitleMessages(
+      std::move(page_contents_map), history, 10000, [](std::string&) {});
+
+  ASSERT_TRUE(messages);
+  ASSERT_EQ(messages->size(), 1u);
+
+  const auto& message = messages->at(0);
+  EXPECT_EQ(message.role, "user");
+
+  ASSERT_EQ(message.content.size(), 3u);
+
+  // First block should be a page text block with page content text.
+  VerifyPageTextBlock(FROM_HERE, message.content[0], "Test page content");
+
+  // Second block should be a page excerpt block with selected text.
+  VerifyPageExcerptBlock(FROM_HERE, message.content[1],
+                         "Selected text excerpt");
+
+  // Third block should be a request title block with first turn's text.
+  VerifyRequestTitleBlock(FROM_HERE, message.content[2], history[0]->text);
+}
+
+TEST_F(OAIMessageUtilsTest,
+       BuildOAIGenerateConversationTitleMessages_UploadFiles) {
+  // Create a conversation history with 1 human turn including upload_files,
+  // and 1 assistant turn.
+  // Tests one message with 1 kRequestTitle block with text set to assistant
+  // turn's text is returned.
+  PageContentsMap page_contents_map;
+
+  auto history = CreateSampleChatHistory(1);
+
+  auto uploaded_file = mojom::UploadedFile::New();
+  uploaded_file->filename = "test.png";
+  uploaded_file->filesize = 1024;
+  uploaded_file->type = mojom::UploadedFileType::kImage;
+  history[0]->uploaded_files.emplace();
+  history[0]->uploaded_files->push_back(std::move(uploaded_file));
+
+  auto messages = BuildOAIGenerateConversationTitleMessages(
+      std::move(page_contents_map), history, 10000, [](std::string&) {});
+
+  ASSERT_TRUE(messages);
+  ASSERT_EQ(messages->size(), 1u);
+
+  const auto& message = messages->at(0);
+  EXPECT_EQ(message.role, "user");
+
+  ASSERT_EQ(message.content.size(), 1u);
+
+  // Request title block should use assistant response as the text when there
+  // are upload files.
+  VerifyRequestTitleBlock(FROM_HERE, message.content[0], history[1]->text);
+}
+
+TEST_F(OAIMessageUtilsTest,
+       BuildOAIGenerateConversationTitleMessages_ContentTruncation) {
+  // Create a converation history with 1 human turn with 4 page content blocks
+  // (1 normal, 1 truncated due to max_per_content limit, 1 truncated due to max
+  // associated content length, 1 dropped due to max associated content length)
+  // and 1 assistant turn.
+  // Tests one message with 3 page content blocks and one kRequestTitle block
+  // with text set to human turn's text is returned.
+  PageContent content1(std::string(1000, 'a'), false);
+  PageContent content2(std::string(1000, 'b'), false);
+  PageContent content3(std::string(1500, 'c'), false);
+  PageContent content4(std::string(500, 'd'), false);
+
+  auto history = CreateSampleChatHistory(1);
+
+  PageContentsMap page_contents_map;
+  page_contents_map[*history[0]->uuid] = {
+      std::cref(content1), std::cref(content2), std::cref(content3),
+      std::cref(content4)};
+
+  auto messages = BuildOAIGenerateConversationTitleMessages(
+      std::move(page_contents_map), history, 1800, [](std::string&) {});
+
+  ASSERT_TRUE(messages);
+  ASSERT_EQ(messages->size(), 1u);
+
+  const auto& message = messages->at(0);
+  EXPECT_EQ(message.role, "user");
+
+  ASSERT_EQ(message.content.size(), 4u);
+
+  // Content 4 (newest): normal, included fully
+  VerifyPageTextBlock(FROM_HERE, message.content[0], std::string(500, 'd'));
+
+  // Content 3: truncated to 1200 due to max_per_content limit
+  VerifyPageTextBlock(FROM_HERE, message.content[1], std::string(1200, 'c'));
+
+  // Content 2: truncated to 100 due to remaining_length
+  VerifyPageTextBlock(FROM_HERE, message.content[2], std::string(100, 'b'));
+
+  // Content 1 is dropped (not included)
+
+  // kRequestTitle block
+  VerifyRequestTitleBlock(FROM_HERE, message.content[3], history[0]->text);
+}
+
+TEST_F(OAIMessageUtilsTest,
+       BuildOAIGenerateConversationTitleMessages_UnexpectedConversations) {
+  // Tests std::nullopt should be returned if the conversation isn't exactly 1
+  // human turn and 1 assistant turn.
+
+  // Case 1: Only 1 turn
+  {
+    auto history = CreateSampleChatHistory(1);
+    history.pop_back();  // Remove assistant turn
+
+    auto messages = BuildOAIGenerateConversationTitleMessages(
+        PageContentsMap(), history, 10000, [](std::string&) {});
+
+    EXPECT_FALSE(messages);
+  }
+
+  // Case 2: 3 turns (1 human + 1 assistant + 1 human)
+  {
+    auto history = CreateSampleChatHistory(1);
+
+    auto turn3 = mojom::ConversationTurn::New();
+    turn3->uuid = "turn3";
+    turn3->character_type = mojom::CharacterType::HUMAN;
+    turn3->action_type = mojom::ActionType::QUERY;
+    turn3->text = "Second question";
+    history.push_back(std::move(turn3));
+
+    auto messages = BuildOAIGenerateConversationTitleMessages(
+        PageContentsMap(), history, 10000, [](std::string&) {});
+
+    EXPECT_FALSE(messages);
+  }
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIPageContentBlocks_UTF8Truncation) {
+  // Tests that content truncation correctly handles UTF-8 character boundaries
+  // and that remaining length is calculated using actual truncated size.
+  //
+  // Note: BuildOAIPageContentBlocks processes contents in REVERSE order
+  // (newer content first).
+  //
+  // Scenario:
+  // - max_associated_content_length = kMaxContextCharsForTitleGeneration
+  // - Content 1 (older): Will get remaining bytes after content 2
+  // - Content 2 (newer): (kMaxContextCharsForTitleGeneration - 2) 'a' + emoji
+  //   → Processed first, UTF-8 safe truncation stops before emoji
+  //   → Returns (kMaxContextCharsForTitleGeneration - 2) bytes
+  //   → Content 1 gets remaining 2 bytes
+
+  std::string content1_str = std::string(100, 'b');
+
+  // Content 2 (newer): 4-byte emoji at truncation boundary
+  std::string content2_str =
+      std::string(kMaxContextCharsForTitleGeneration - 2, 'a') +
+      "\xF0\x9F\x98\x80";
+  ASSERT_TRUE(base::IsStringUTF8AllowingNoncharacters(content2_str));
+
+  PageContent content1(content1_str, false);
+  PageContent content2(content2_str, false);
+  PageContents page_contents = {std::cref(content1), std::cref(content2)};
+
+  uint32_t remaining_length = kMaxContextCharsForTitleGeneration;
+  auto blocks = BuildOAIPageContentBlocks(page_contents, remaining_length,
+                                          [](std::string&) {});
+
+  ASSERT_EQ(blocks.size(), 2u);
+
+  // blocks[0] = Content 2 (processed first): Truncated before emoji
+  ASSERT_TRUE(blocks[0]->is_page_text_content_block());
+  const std::string& truncated2 =
+      blocks[0]->get_page_text_content_block()->text;
+  EXPECT_EQ(truncated2,
+            std::string(kMaxContextCharsForTitleGeneration - 2, 'a'));
+  EXPECT_TRUE(base::IsStringUTF8AllowingNoncharacters(truncated2));
+
+  // blocks[1] = Content 1 (processed second): Gets remaining 2 bytes
+  ASSERT_TRUE(blocks[1]->is_page_text_content_block());
+  const std::string& truncated1 =
+      blocks[1]->get_page_text_content_block()->text;
+  EXPECT_EQ(truncated1, "bb");
+  EXPECT_TRUE(base::IsStringUTF8AllowingNoncharacters(truncated1));
+
+  // Remaining length should be 0
+  EXPECT_EQ(remaining_length, 0u);
+}
+
+TEST_F(OAIMessageUtilsTest,
+       BuildOAIPageContentBlocks_UTF8Truncation_FitsExactly) {
+  // Tests that when a multi-byte UTF-8 character (emoji) fits exactly at the
+  // truncation boundary, it is kept (not dropped).
+  //
+  // Content: (kMaxContextCharsForTitleGeneration - 4) 'a' + 4-byte emoji
+  // Total: exactly kMaxContextCharsForTitleGeneration bytes
+  // Result: All content should be kept, including the emoji
+
+  std::string content_str =
+      std::string(kMaxContextCharsForTitleGeneration - 4, 'a') +
+      "\xF0\x9F\x98\x80";
+  ASSERT_EQ(content_str.size(), kMaxContextCharsForTitleGeneration);
+  ASSERT_TRUE(base::IsStringUTF8AllowingNoncharacters(content_str));
+
+  PageContent content(content_str, false);
+  PageContents page_contents = {std::cref(content)};
+
+  uint32_t remaining_length = kMaxContextCharsForTitleGeneration;
+  auto blocks = BuildOAIPageContentBlocks(page_contents, remaining_length,
+                                          [](std::string&) {});
+
+  ASSERT_EQ(blocks.size(), 1u);
+
+  // Content should be kept in full, including the emoji
+  ASSERT_TRUE(blocks[0]->is_page_text_content_block());
+  const std::string& truncated = blocks[0]->get_page_text_content_block()->text;
+  EXPECT_EQ(truncated, content_str);
+  EXPECT_TRUE(base::IsStringUTF8AllowingNoncharacters(truncated));
+
+  // All remaining length consumed
+  EXPECT_EQ(remaining_length, 0u);
+}
+
+TEST_F(OAIMessageUtilsTest, BuildOAIDedupeTopicsMessages) {
+  // Create test topics
+  std::vector<std::string> topics = {"Shopping", "News", "Entertainment",
+                                     "Technology"};
+
+  // Build messages
+  auto messages = BuildOAIDedupeTopicsMessages(topics);
+
+  // Verify structure
+  ASSERT_EQ(messages.size(), 1u);
+  EXPECT_EQ(messages[0].role, "user");
+  ASSERT_EQ(messages[0].content.size(), 1u);
+
+  // Verify topics JSON
+  VerifyReduceFocusTopicsBlock(
+      FROM_HERE, messages[0].content[0],
+      "[\"Shopping\",\"News\",\"Entertainment\",\"Technology\"]");
+}
+
+TEST_F(OAIMessageUtilsTest,
+       BuildChunkedTabFocusMessages_SuggestTopics_SingleChunk) {
+  auto [tabs, expected_chunked_tabs_json] =
+      GetMockTabsAndExpectedTabsJsonString(kTabListChunkSize, false);
+  ASSERT_EQ(expected_chunked_tabs_json.size(), 1u);
+
+  auto chunked_messages = BuildChunkedTabFocusMessages(tabs);
+
+  // Should have 1 chunk with emoji variant
+  ASSERT_EQ(chunked_messages.size(), 1u);
+  ASSERT_EQ(chunked_messages[0].size(), 1u);
+  EXPECT_EQ(chunked_messages[0][0].role, "user");
+  ASSERT_EQ(chunked_messages[0][0].content.size(), 1u);
+  VerifySuggestFocusTopicsWithEmojiBlock(FROM_HERE,
+                                         chunked_messages[0][0].content[0],
+                                         expected_chunked_tabs_json[0]);
+}
+
+TEST_F(OAIMessageUtilsTest,
+       BuildChunkedTabFocusMessages_SuggestTopics_MultipleChunks) {
+  auto [tabs, expected_chunked_tabs_json] =
+      GetMockTabsAndExpectedTabsJsonString(kTabListChunkSize * 2, false);
+  ASSERT_EQ(expected_chunked_tabs_json.size(), 2u);
+
+  auto chunked_messages = BuildChunkedTabFocusMessages(tabs);
+
+  // Should have 2 chunks without emoji
+  ASSERT_EQ(chunked_messages.size(), 2u);
+
+  // Verify both chunks use SuggestFocusTopicsBlock (no emoji variant)
+  for (size_t i = 0; i < chunked_messages.size(); ++i) {
+    ASSERT_EQ(chunked_messages[i].size(), 1u);
+    EXPECT_EQ(chunked_messages[i][0].role, "user");
+    ASSERT_EQ(chunked_messages[i][0].content.size(), 1u);
+    VerifySuggestFocusTopicsBlock(FROM_HERE, chunked_messages[i][0].content[0],
+                                  expected_chunked_tabs_json[i]);
+  }
+}
+
+TEST_F(OAIMessageUtilsTest, BuildChunkedTabFocusMessages_WithTopic) {
+  std::string topic = "Shopping";
+  auto [tabs, expected_chunked_tabs_json] =
+      GetMockTabsAndExpectedTabsJsonString(kTabListChunkSize * 2 - 5, false);
+  ASSERT_EQ(expected_chunked_tabs_json.size(), 2u);
+
+  // Test GetFocusTabs (non-empty topic)
+  auto chunked_messages = BuildChunkedTabFocusMessages(tabs, topic);
+
+  // Should have 2 chunks
+  ASSERT_EQ(chunked_messages.size(), 2u);
+
+  // Verify both chunks use FilterTabsContentBlock with correct topic and tabs
+  for (size_t i = 0; i < chunked_messages.size(); ++i) {
+    ASSERT_EQ(chunked_messages[i].size(), 1u);
+    EXPECT_EQ(chunked_messages[i][0].role, "user");
+    ASSERT_EQ(chunked_messages[i][0].content.size(), 1u);
+    VerifyFilterTabsBlock(FROM_HERE, chunked_messages[i][0].content[0],
+                          expected_chunked_tabs_json[i], topic);
+  }
+}
+
+// Tests that only the N most recent web sources tool outputs are kept with
+// full content; older ones are stripped to metadata only. Also verifies that
+// all sources within a multi-source stripped output are stripped.
+//
+// max_full=2, backward counting (newest output first):
+//   Output 3: ws_output_count=1 → kept
+//   Output 2: (two sources), ws_output_count=2 → kept
+//   Output 1: (two sources), ws_output_count=3 → STRIPPED
+//   Output 0: ws_output_count=4 → STRIPPED
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_StripWebSourcesOutputs) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kAIChat, {{"max_full_web_sources_tool_outputs", "2"}});
+
+  auto history = CreateSampleChatHistory(1);
+  {
+    std::vector<mojom::ConversationEntryEventPtr> events;
+    events.push_back(
+        CreateToolUseEvent("search", "t0",
+                           mojom::ContentBlock::NewWebSourcesContentBlock(
+                               CreateWebSourcesContentBlock(100, {"q0"}))));
+    // Two sources — verifies all sources in a stripped event are stripped.
+    events.push_back(CreateToolUseEvent(
+        "search", "t1",
+        mojom::ContentBlock::NewWebSourcesContentBlock(
+            CreateWebSourcesContentBlock({100, 100}, {"q1"}))));
+    // Two sources — verifies all sources in a kept output are kept.
+    events.push_back(CreateToolUseEvent(
+        "search", "t2",
+        mojom::ContentBlock::NewWebSourcesContentBlock(
+            CreateWebSourcesContentBlock({100, 100}, {"q2"}))));
+    events.push_back(
+        CreateToolUseEvent("search", "t3",
+                           mojom::ContentBlock::NewWebSourcesContentBlock(
+                               CreateWebSourcesContentBlock(100, {"q3"}))));
+    events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New("done")));
+    history[1]->events = std::move(events);
+  }
+
+  std::vector<OAIMessage> messages = BuildOAIMessages(
+      PageContentsMap(), history, nullptr, true, 100000, [](std::string&) {});
+
+  std::vector<const OAIMessage*> tool_msgs;
+  for (const auto& m : messages) {
+    if (m.role == "tool") {
+      tool_msgs.push_back(&m);
+    }
+  }
+  ASSERT_EQ(tool_msgs.size(), 4u);
+
+  // Newest 2 kept with full content.
+  ASSERT_EQ(tool_msgs[3]->content.size(), 1u);
+  EXPECT_MOJOM_EQ(tool_msgs[3]->content[0],
+                  mojom::ContentBlock::NewWebSourcesContentBlock(
+                      CreateWebSourcesContentBlock(100, {"q3"})));
+  ASSERT_EQ(tool_msgs[2]->content.size(), 1u);
+  EXPECT_MOJOM_EQ(tool_msgs[2]->content[0],
+                  mojom::ContentBlock::NewWebSourcesContentBlock(
+                      CreateWebSourcesContentBlock({100, 100}, {"q2"})));
+
+  // Older ones stripped to metadata only.
+  ASSERT_EQ(tool_msgs[1]->content.size(), 1u);
+  EXPECT_MOJOM_EQ(
+      tool_msgs[1]->content[0],
+      mojom::ContentBlock::NewWebSourcesContentBlock(
+          CreateWebSourcesContentBlock({std::nullopt, std::nullopt}, {"q1"},
+                                       /*include_rich_results=*/false)));
+  ASSERT_EQ(tool_msgs[0]->content.size(), 1u);
+  EXPECT_MOJOM_EQ(
+      tool_msgs[0]->content[0],
+      mojom::ContentBlock::NewWebSourcesContentBlock(
+          CreateWebSourcesContentBlock(std::nullopt, {"q0"},
+                                       /*include_rich_results=*/false)));
+}
+
+// Tests that large text/image tool results are dropped when they exceed the
+// max count, while small results are preserved.
+//
+// Params: large_content_size = kLargeToolContentSize, max_count = 1.
+// Backward counting (newest event first):
+//   Event 4: small text (5),     not large    → kept
+//   Event 3: image (always large), tool_count=1 → kept (within max_count)
+//   Event 2: text at threshold,  tool_count=2 → DROPPED
+//   Event 1: small text (5),     not large    → kept
+//   Event 0: image (always large), tool_count=3 → DROPPED
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_DropLargeToolResults) {
+  constexpr size_t kLargeToolContentSize = 100;
+  constexpr size_t kMaxLargeToolCount = 1;
+
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kAIChat, {{"content_size_large_tool_use_events",
+                           base::NumberToString(kLargeToolContentSize)},
+                          {"max_count_large_tool_use_events",
+                           base::NumberToString(kMaxLargeToolCount)}});
+
+  auto history = CreateSampleChatHistory(1);
+  {
+    std::vector<mojom::ConversationEntryEventPtr> events;
+    // Event 0: image (always large).
+    events.push_back(CreateToolUseEvent(
+        "image_tool", "t0",
+        mojom::ContentBlock::NewImageContentBlock(
+            mojom::ImageContentBlock::New(GURL("data:image/png;base64,abc")))));
+    // Event 1: small text, not large.
+    events.push_back(CreateToolUseEvent(
+        "text_tool", "t1",
+        mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New(std::string(5, 't')))));
+    // Event 2: text exactly at threshold.
+    events.push_back(CreateToolUseEvent(
+        "text_tool", "t2",
+        mojom::ContentBlock::NewTextContentBlock(mojom::TextContentBlock::New(
+            std::string(kLargeToolContentSize, 't')))));
+    // Event 3: image (always large).
+    events.push_back(CreateToolUseEvent(
+        "image_tool", "t3",
+        mojom::ContentBlock::NewImageContentBlock(
+            mojom::ImageContentBlock::New(GURL("data:image/png;base64,def")))));
+    // Event 4: small text, not large.
+    events.push_back(CreateToolUseEvent(
+        "text_tool", "t4",
+        mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New(std::string(5, 't')))));
+    events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New("done")));
+    history[1]->events = std::move(events);
+  }
+
+  std::vector<OAIMessage> messages = BuildOAIMessages(
+      PageContentsMap(), history, nullptr, true, 100000, [](std::string&) {});
+
+  std::vector<const OAIMessage*> tool_msgs;
+  for (const auto& m : messages) {
+    if (m.role == "tool") {
+      tool_msgs.push_back(&m);
+    }
+  }
+  ASSERT_EQ(tool_msgs.size(), 5u);
+
+  // Verify in backward order (newest first) to match the counting logic.
+
+  // Tool 4 (Event 4): small text, not large → kept.
+  {
+    SCOPED_TRACE("tool 4: small text kept");
+    ASSERT_EQ(tool_msgs[4]->content.size(), 1u);
+    VerifyTextBlock(FROM_HERE, tool_msgs[4]->content[0], std::string(5, 't'));
+  }
+
+  // Tool 3 (Event 3): image, tool_count=1 → kept (within max_count).
+  {
+    SCOPED_TRACE("tool 3: image kept");
+    ASSERT_EQ(tool_msgs[3]->content.size(), 1u);
+    ASSERT_TRUE(tool_msgs[3]->content[0]->is_image_content_block());
+  }
+
+  // Tool 2 (Event 2): text at threshold, tool_count=2 > 1 → DROPPED.
+  {
+    SCOPED_TRACE("tool 2: large text dropped");
+    ASSERT_EQ(tool_msgs[2]->content.size(), 1u);
+    VerifyTextBlock(
+        FROM_HERE, tool_msgs[2]->content[0],
+        "[Large result removed to save space for subsequent results]");
+  }
+
+  // Tool 1 (Event 1): small text, not large → kept.
+  {
+    SCOPED_TRACE("tool 1: small text kept");
+    ASSERT_EQ(tool_msgs[1]->content.size(), 1u);
+    VerifyTextBlock(FROM_HERE, tool_msgs[1]->content[0], std::string(5, 't'));
+  }
+
+  // Tool 0 (Event 0): image, tool_count=3 > 1 → DROPPED.
+  {
+    SCOPED_TRACE("tool 0: image dropped");
+    ASSERT_EQ(tool_msgs[0]->content.size(), 1u);
+    VerifyTextBlock(
+        FROM_HERE, tool_msgs[0]->content[0],
+        "[Large result removed to save space for subsequent results]");
+  }
+}
+
+// Tests that web sources stripping and large tool result dropping use
+// independent counters across multiple assistant turns.
+//
+// max_full_ws=2, max_large_tools=2, large_tool_size=1000.
+// Backward counting (newest turn first, newest output within turn first):
+//   A1/image:    tool_count=1   → kept
+//   A1/text:     tool_count=2   → kept
+//   A1/ws:       ws_output_count=1 → kept
+//   A1/ws:       ws_output_count=2 → kept
+//   A0/text(10): not large      → kept
+//   A0/text:     tool_count=3   → DROPPED
+//   A0/ws:       ws_output_count=3 → STRIPPED
+//   A0/ws:       ws_output_count=4 → STRIPPED
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_MixedLargeToolOutputs) {
+  constexpr size_t kMaxFullWebSources = 2;
+  constexpr size_t kLargeToolSize = 1000;
+  constexpr size_t kMaxLargeTools = 2;
+  constexpr size_t kSmallTextSize = 10;
+  constexpr size_t kWsPageContentSize = 100;
+
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kAIChat, {{"max_full_web_sources_tool_outputs",
+                           base::NumberToString(kMaxFullWebSources)},
+                          {"content_size_large_tool_use_events",
+                           base::NumberToString(kLargeToolSize)},
+                          {"max_count_large_tool_use_events",
+                           base::NumberToString(kMaxLargeTools)}});
+
+  // 2 human/assistant pairs.
+  auto history = CreateSampleChatHistory(2);
+
+  // Assistant 0 (idx 1): ws, ws, large text, small text
+  {
+    std::vector<mojom::ConversationEntryEventPtr> events;
+    events.push_back(CreateToolUseEvent(
+        "search", "a0_0",
+        mojom::ContentBlock::NewWebSourcesContentBlock(
+            CreateWebSourcesContentBlock(kWsPageContentSize, {"q0"}))));
+    events.push_back(CreateToolUseEvent(
+        "search", "a0_1",
+        mojom::ContentBlock::NewWebSourcesContentBlock(
+            CreateWebSourcesContentBlock(kWsPageContentSize, {"q1"}))));
+    events.push_back(CreateToolUseEvent(
+        "text_tool", "a0_2",
+        mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New(std::string(kLargeToolSize, 't')))));
+    events.push_back(CreateToolUseEvent(
+        "text_tool", "a0_3",
+        mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New(std::string(kSmallTextSize, 't')))));
+    events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New("done")));
+    history[1]->events = std::move(events);
+  }
+
+  // Assistant 1 (idx 3): ws, ws, large text, image
+  {
+    std::vector<mojom::ConversationEntryEventPtr> events;
+    events.push_back(CreateToolUseEvent(
+        "search", "a1_0",
+        mojom::ContentBlock::NewWebSourcesContentBlock(
+            CreateWebSourcesContentBlock(kWsPageContentSize, {"q2"}))));
+    events.push_back(CreateToolUseEvent(
+        "search", "a1_1",
+        mojom::ContentBlock::NewWebSourcesContentBlock(
+            CreateWebSourcesContentBlock(kWsPageContentSize, {"q3"}))));
+    events.push_back(CreateToolUseEvent(
+        "text_tool", "a1_2",
+        mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New(std::string(kLargeToolSize, 't')))));
+    events.push_back(CreateToolUseEvent(
+        "image_tool", "a1_3",
+        mojom::ContentBlock::NewImageContentBlock(
+            mojom::ImageContentBlock::New(GURL("data:image/png;base64,abc")))));
+    events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New("done")));
+    history[3]->events = std::move(events);
+  }
+
+  std::vector<OAIMessage> messages = BuildOAIMessages(
+      PageContentsMap(), history, nullptr, true, 100000, [](std::string&) {});
+
+  // Collect tool-role messages.
+  std::vector<const OAIMessage*> tool_msgs;
+  for (const auto& m : messages) {
+    if (m.role == "tool") {
+      tool_msgs.push_back(&m);
+    }
+  }
+  ASSERT_EQ(tool_msgs.size(), 8u);
+
+  // --- A1 (newest turn) ---
+  // image: kept (tool_count=1)
+  ASSERT_EQ(tool_msgs[7]->content.size(), 1u);
+  ASSERT_TRUE(tool_msgs[7]->content[0]->is_image_content_block());
+  // large text: kept (tool_count=2)
+  ASSERT_EQ(tool_msgs[6]->content.size(), 1u);
+  VerifyTextBlock(FROM_HERE, tool_msgs[6]->content[0],
+                  std::string(kLargeToolSize, 't'));
+  // ws: kept full (ws_output_count=1)
+  ASSERT_EQ(tool_msgs[5]->content.size(), 1u);
+  EXPECT_MOJOM_EQ(
+      tool_msgs[5]->content[0],
+      mojom::ContentBlock::NewWebSourcesContentBlock(
+          CreateWebSourcesContentBlock(kWsPageContentSize, {"q3"})));
+  // ws: kept full (ws_output_count=2)
+  ASSERT_EQ(tool_msgs[4]->content.size(), 1u);
+  EXPECT_MOJOM_EQ(
+      tool_msgs[4]->content[0],
+      mojom::ContentBlock::NewWebSourcesContentBlock(
+          CreateWebSourcesContentBlock(kWsPageContentSize, {"q2"})));
+
+  // --- A0 (oldest turn) ---
+  // small text: kept (not large)
+  ASSERT_EQ(tool_msgs[3]->content.size(), 1u);
+  VerifyTextBlock(FROM_HERE, tool_msgs[3]->content[0],
+                  std::string(kSmallTextSize, 't'));
+  // large text: DROPPED (tool_count=3 > 2)
+  ASSERT_EQ(tool_msgs[2]->content.size(), 1u);
+  VerifyTextBlock(
+      FROM_HERE, tool_msgs[2]->content[0],
+      "[Large result removed to save space for subsequent results]");
+  // ws: STRIPPED (ws_output_count=3 > 2)
+  ASSERT_EQ(tool_msgs[1]->content.size(), 1u);
+  EXPECT_MOJOM_EQ(
+      tool_msgs[1]->content[0],
+      mojom::ContentBlock::NewWebSourcesContentBlock(
+          CreateWebSourcesContentBlock(std::nullopt, {"q1"},
+                                       /*include_rich_results=*/false)));
+  // ws: STRIPPED (ws_output_count=4 > 2)
+  ASSERT_EQ(tool_msgs[0]->content.size(), 1u);
+  EXPECT_MOJOM_EQ(
+      tool_msgs[0]->content[0],
+      mojom::ContentBlock::NewWebSourcesContentBlock(
+          CreateWebSourcesContentBlock(std::nullopt, {"q0"},
+                                       /*include_rich_results=*/false)));
+}
+
+}  // namespace ai_chat

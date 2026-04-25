@@ -1,0 +1,61 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#ifndef BRAVE_BROWSER_PSST_PSST_UI_DELEGATE_IMPL_H_
+#define BRAVE_BROWSER_PSST_PSST_UI_DELEGATE_IMPL_H_
+
+#include <cstddef>
+#include <optional>
+
+#include "brave/browser/psst/psst_ui_presenter.h"
+#include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
+#include "brave/components/psst/browser/core/psst_settings_service.h"
+#include "brave/components/psst/common/psst_script_responses.h"
+#include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
+
+class PrefService;
+
+namespace psst {
+
+class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
+ public:
+  explicit PsstUiDelegateImpl(PsstSettingsService* psst_settings_service,
+                              PrefService* prefs,
+                              std::unique_ptr<PsstUiPresenter> ui_presenter);
+  ~PsstUiDelegateImpl() override;
+
+  PsstUiDelegateImpl(const PsstUiDelegateImpl&) = delete;
+  PsstUiDelegateImpl& operator=(const PsstUiDelegateImpl&) = delete;
+
+  void Show(const url::Origin& origin,
+            PsstWebsiteSettings dialog_data,
+            PsstTabWebContentsObserver::ConsentCallback apply_changes_callback)
+      override;
+
+  // PsstUiDelegate overrides
+  void UpdateTasks(long progress,
+                   const std::vector<PolicyTask>& applied_tasks,
+                   const mojom::PsstStatus status) override;
+
+  std::optional<PsstWebsiteSettings> GetPsstWebsiteSettings(
+      const url::Origin& origin,
+      const std::string& user_id) override;
+
+ private:
+  void OnUserAcceptedPsstSettings(const url::Origin& origin);
+  void OnUserAcceptedInfobar(const url::Origin& origin, const bool is_accepted);
+
+  std::unique_ptr<PsstUiPresenter> ui_presenter_;
+  std::optional<PsstWebsiteSettings> dialog_data_;
+  PsstTabWebContentsObserver::ConsentCallback apply_changes_callback_;
+  raw_ptr<PsstSettingsService> psst_settings_service_ = nullptr;
+  raw_ptr<PrefService> prefs_ = nullptr;  // not owned
+  base::WeakPtrFactory<PsstUiDelegateImpl> weak_ptr_factory_{this};
+};
+
+}  // namespace psst
+
+#endif  // BRAVE_BROWSER_PSST_PSST_UI_DELEGATE_IMPL_H_

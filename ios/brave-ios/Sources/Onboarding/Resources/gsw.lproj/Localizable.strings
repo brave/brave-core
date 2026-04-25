@@ -1,0 +1,66 @@
+/* A button title shown below language introducing the Brave Playlist feature. i.e. 'Discover how to use use this feature' */
+"advanceInitialOnboardingButtonTitle" = "Entdecken wie";
+
+/* A button title that when tapped will advance the onboarding to guide a user to add some content to Playlist */
+"advanceStep2OnboardingButtonTitle" = "Probiere es aus!";
+
+/* A button that allows the user to disable the brave translate feature. When pressed, the page will not be automatically translated to the user's language. */
+"BraveTranslateOnboarding.disableTranslateButtonTitle" = "Diese Funktion deaktivieren";
+
+/* A text element that describes the translation feature and explains that hte user might have to download or configure languages on their device. */
+"BraveTranslateOnboarding.translateDescription" = "Seiten können in Sprachen übersetzt werden, die von deinem iOS-Gerät unterstützt werden. Wenn du diese Funktion zum ersten Mal verwendest, musst du möglicherweise Sprachen konfigurieren.";
+
+/* A text element that explains we're translating pages. */
+"BraveTranslateOnboarding.translateTitle" = "Seitenübersetzungen";
+
+/* A button title that when tapped opens Brave Playlist */
+"confirmationActionButtonTitle" = "Bringe mich zu meiner Playlist";
+
+/* Shown above a button that will let the user open the playlist feature */
+"confirmationPrompt" = "Werfen wir nun einen Blick auf deine Playlist.";
+
+/* Shown below a title that confirms the user completed the task of adding something to playlist. %@ will be replaced with the folder the content was added to. i.e. 'Content added to Play Later' */
+"confirmationSubtitle" = "Inhalt zu %@ hinzugefügt";
+
+/* Guides the user to tap on an icon where the onboarding is pointing to. '%@' will be replaced with said icon. */
+"confirmationTitle" = "Gut gemacht";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissOnboardingButtonTitle" = "Schließen";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep2OnboardingButtonTitle" = "Vielleicht später";
+
+/* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
+"dismissStep4OnboardingButtonTitle" = "Schließen";
+
+/* A title shown on the first 2 steps of onboarding for Brave Playlist. Brave Playlist is a product name */
+"introducingBravePlaylist" = "Wir stellen vor: die Brave Playlist";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleOne" = "Mache Playlists zu deinen Lieblingsinhalten. Speichere mobile Daten. Und gebe diese ohne Werbung wieder.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleThree" = "Bild im Bild. Wiedergabe im Hintergrund. Steuerung über den Sperrbildschirm. Und mehr …";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointSubtitleTwo" = "Bleibe im Fluss: Füge Videos hinzu, während du surfst, und sieh sie dir später an.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleOne" = "Füge Videos zur Playlist hinzu. Gebe sie jederzeit wieder, auch offline.";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleThree" = "Die Wiedergabe in einer Playlist ist besser";
+
+/* A list of features in Playlist */
+"playlistInfoFeaturePointTitleTwo" = "Tippe einfach auf die Schaltfläche, um Videos zu einer Playlist hinzuzufügen";
+
+/* A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist' */
+"playlistOnboardingDescription" = "Erstelle Playlists mit Inhalten, die du liebst. Füge Medien von jeder Seite hinzu.\nDu kannst die jederzeit wiedergeben. Sogar offline!";
+
+/* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
+"userActionPrompt" = "Tippe auf %@, um dein erstes Element hinzuzufügen";
+
+/* Will be shown next to an icon inside of some other text. i.e. "Tap 'Add to Playlist' to add your first item" */
+"userActionPromptFill" = "Zur Playlist hinzufügen";
+

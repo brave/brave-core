@@ -1,0 +1,47 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
+import("//build/config/ui.gni")
+
+brave_browser_ui_color_mixers_sources = []
+brave_browser_ui_color_mixers_deps = []
+
+if (!is_android) {
+  brave_browser_ui_color_mixers_sources += [
+    "//brave/browser/ui/color/brave_color_id.h",
+    "//brave/browser/ui/color/brave_color_mixer.cc",
+    "//brave/browser/ui/color/brave_color_mixer.h",
+    "//brave/browser/ui/color/brave_material_side_panel_color_mixer.cc",
+    "//brave/browser/ui/color/brave_material_side_panel_color_mixer.h",
+    "//brave/browser/ui/color/color_palette.h",
+    "//brave/browser/ui/color/material_brave_color_mixer.cc",
+    "//brave/browser/ui/color/material_brave_color_mixer.h",
+  ]
+
+  brave_browser_ui_color_mixers_deps += [
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_wayback_machine/buildflags",
+    "//brave/components/playlist/core/common/buildflags",
+    "//brave/components/speedreader/common/buildflags",
+    "//skia",
+    "//ui/color",
+    "//ui/gfx",
+    "//ui/native_theme",
+  ]
+
+  if (enable_playlist) {
+    brave_browser_ui_color_mixers_sources += [
+      "//brave/browser/ui/color/playlist/playlist_color_mixer.cc",
+      "//brave/browser/ui/color/playlist/playlist_color_mixer.h",
+    ]
+    brave_browser_ui_color_mixers_deps +=
+        [ "//brave/components/playlist/core/common" ]
+  }
+}
+
+if (toolkit_views) {
+  brave_browser_ui_color_mixers_deps += [ "//brave/browser/ui/darker_theme" ]
+}

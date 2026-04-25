@@ -1,0 +1,496 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Expats are moving to Portugal, taking gentrification with them</title><meta charset="UTF-8"/><body id="article"><h1 class="title metadata">Expats are moving to Portugal, taking gentrification with them</h1><p class="subhead metadata">Portugal, with its warm climate, plentiful sun and cheap cost of living, has become a destination for Californians.</p><div class=""><p class="metadata">By Jaweed Kaleem</p><p class="metadata date">Updated Jul. 24, 2022 08:28 AM</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr><p><span class="dateline">CASCAIS, Portugal&nbsp;—&nbsp;</span></p><p>Jamie Dixon landed in this hilly seaside town nine months ago, ditching her luxury trailer in Malibu for a two-floor rooftop apartment that’s twice the size for a fraction of the rent.</p><p>Her escape from her native California came amid growing <a class="link" href="https://www.latimes.com/california/story/2022-03-07/los-angeles-cost-of-living-debt-rural-california">costs</a> of living, <a class="link" href="https://www.latimes.com/projects/la-me-malibu-wildfire-history/" target="_blank">encroaching wildfires</a> and a waning sense of safety after the burglary of a neighbor’s home. The fitness-trainer-turned-startup-worker decided it was time to reinvent herself in a foreign land, but like many American expats she didn’t want to feel too far from home. </p><p>In this wealthy enclave about 15 miles from the Portuguese capital, Lisbon, she found her slice of California on the west coast of Europe: ocean breezes, mountain views, hot spring days on palm-tree-lined promenades, and the glow of sunsets that seep into the night. </p><div class="enhancement" data-align-center="" data-click="enhancement"><div class="video-enhancement" data-video-disable-history="">       <p class="video-enhancement-title">An expatriate family in their home</p>  </div></div><p>“Things were just becoming too much back home, but I didn’t want to leave everything about L.A. behind,” said Dixon, 37. Dressed in yoga pants and cross-trainers, she sipped white wine at an organic cafe that overlooked waves crashing into Big Sur-like cliffs a short walk from the rental she shares with her actor husband and 7-year-old daughter.</p><p>“With Portugal,” she said, “we could keep the parts we liked and leave the rest.”</p><div class="enhancement" data-align-center="" data-click="enhancement"><figure class="figure"> <picture>    <source data-lazy-load="true" data-sizes="100vw" data-srcset="https://ca-times.brightspotcdn.com/dims4/default/5e48627/2147483647/strip/true/crop/4200x5631+0+0/resize/320x429!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff3%2F28%2F8b8cbc8b4d919ae22d2a6b72b111%2Fjsm-lisbon-latimes-031b.png 320w,https://ca-times.brightspotcdn.com/dims4/default/330751d/2147483647/strip/true/crop/4200x5631+0+0/resize/568x761!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff3%2F28%2F8b8cbc8b4d919ae22d2a6b72b111%2Fjsm-lisbon-latimes-031b.png 568w,https://ca-times.brightspotcdn.com/dims4/default/65a1202/2147483647/strip/true/crop/4200x5631+0+0/resize/768x1030!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff3%2F28%2F8b8cbc8b4d919ae22d2a6b72b111%2Fjsm-lisbon-latimes-031b.png 768w,https://ca-times.brightspotcdn.com/dims4/default/59f7e80/2147483647/strip/true/crop/4200x5631+0+0/resize/1080x1448!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff3%2F28%2F8b8cbc8b4d919ae22d2a6b72b111%2Fjsm-lisbon-latimes-031b.png 1080w,https://ca-times.brightspotcdn.com/dims4/default/44f0438/2147483647/strip/true/crop/4200x5631+0+0/resize/1240x1662!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff3%2F28%2F8b8cbc8b4d919ae22d2a6b72b111%2Fjsm-lisbon-latimes-031b.png 1240w,https://ca-times.brightspotcdn.com/dims4/default/a4b6272/2147483647/strip/true/crop/4200x5631+0+0/resize/1440x1930!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff3%2F28%2F8b8cbc8b4d919ae22d2a6b72b111%2Fjsm-lisbon-latimes-031b.png 1440w,https://ca-times.brightspotcdn.com/dims4/default/8a89ee1/2147483647/strip/true/crop/4200x5631+0+0/resize/2160x2895!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff3%2F28%2F8b8cbc8b4d919ae22d2a6b72b111%2Fjsm-lisbon-latimes-031b.png 2160w" srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" type="image/webp">     <img alt="In top photo, two women carry surfboards at a beach. In the bottom photo, swimmers dive into the blue waters.  " class="image" data-lazy-load="true" data-sizes="100vw" data-src="https://ca-times.brightspotcdn.com/dims4/default/9596bc3/2147483647/strip/true/crop/4200x5631+0+0/resize/2000x2681!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff3%2F28%2F8b8cbc8b4d919ae22d2a6b72b111%2Fjsm-lisbon-latimes-031b.png" data-srcset="https://ca-times.brightspotcdn.com/dims4/default/c96ef14/2147483647/strip/true/crop/4200x5631+0+0/resize/320x429!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff3%2F28%2F8b8cbc8b4d919ae22d2a6b72b111%2Fjsm-lisbon-latimes-031b.png 320w,https://ca-times.brightspotcdn.com/dims4/default/e2ea361/2147483647/strip/true/crop/4200x5631+0+0/resize/568x761!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff3%2F28%2F8b8cbc8b4d919ae22d2a6b72b111%2Fjsm-lisbon-latimes-031b.png 568w,https://ca-times.brightspotcdn.com/dims4/default/3dc0667/2147483647/strip/true/crop/4200x5631+0+0/resize/768x1030!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff3%2F28%2F8b8cbc8b4d919ae22d2a6b72b111%2Fjsm-lisbon-latimes-031b.png 768w,https://ca-times.brightspotcdn.com/dims4/default/2a01cb8/2147483647/strip/true/crop/4200x5631+0+0/resize/1080x1448!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff3%2F28%2F8b8cbc8b4d919ae22d2a6b72b111%2Fjsm-lisbon-latimes-031b.png 1080w,https://ca-times.brightspotcdn.com/dims4/default/cd0b84d/2147483647/strip/true/crop/4200x5631+0+0/resize/1240x1662!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff3%2F28%2F8b8cbc8b4d919ae22d2a6b72b111%2Fjsm-lisbon-latimes-031b.png 1240w,https://ca-times.brightspotcdn.com/dims4/default/f784957/2147483647/strip/true/crop/4200x5631+0+0/resize/1440x1930!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff3%2F28%2F8b8cbc8b4d919ae22d2a6b72b111%2Fjsm-lisbon-latimes-031b.png 1440w,https://ca-times.brightspotcdn.com/dims4/default/ff02c9f/2147483647/strip/true/crop/4200x5631+0+0/resize/2160x2895!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff3%2F28%2F8b8cbc8b4d919ae22d2a6b72b111%2Fjsm-lisbon-latimes-031b.png 2160w" height="2681" src="https://ca-times.brightspotcdn.com/dims4/default/9596bc3/2147483647/strip/true/crop/4200x5631+0+0/resize/2000x2681!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff3%2F28%2F8b8cbc8b4d919ae22d2a6b72b111%2Fjsm-lisbon-latimes-031b.png" srcset="https://ca-times.brightspotcdn.com/dims4/default/c96ef14/2147483647/strip/true/crop/4200x5631+0+0/resize/320x429!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff3%2F28%2F8b8cbc8b4d919ae22d2a6b72b111%2Fjsm-lisbon-latimes-031b.png 320w,https://ca-times.brightspotcdn.com/dims4/default/e2ea361/2147483647/strip/true/crop/4200x5631+0+0/resize/568x761!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff3%2F28%2F8b8cbc8b4d919ae22d2a6b72b111%2Fjsm-lisbon-latimes-031b.png 568w,https://ca-times.brightspotcdn.com/dims4/default/3dc0667/2147483647/strip/true/crop/4200x5631+0+0/resize/768x1030!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff3%2F28%2F8b8cbc8b4d919ae22d2a6b72b111%2Fjsm-lisbon-latimes-031b.png 768w,https://ca-times.brightspotcdn.com/dims4/default/2a01cb8/2147483647/strip/true/crop/4200x5631+0+0/resize/1080x1448!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff3%2F28%2F8b8cbc8b4d919ae22d2a6b72b111%2Fjsm-lisbon-latimes-031b.png 1080w,https://ca-times.brightspotcdn.com/dims4/default/cd0b84d/2147483647/strip/true/crop/4200x5631+0+0/resize/1240x1662!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff3%2F28%2F8b8cbc8b4d919ae22d2a6b72b111%2Fjsm-lisbon-latimes-031b.png 1240w,https://ca-times.brightspotcdn.com/dims4/default/f784957/2147483647/strip/true/crop/4200x5631+0+0/resize/1440x1930!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff3%2F28%2F8b8cbc8b4d919ae22d2a6b72b111%2Fjsm-lisbon-latimes-031b.png 1440w,https://ca-times.brightspotcdn.com/dims4/default/ff02c9f/2147483647/strip/true/crop/4200x5631+0+0/resize/2160x2895!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Ff3%2F28%2F8b8cbc8b4d919ae22d2a6b72b111%2Fjsm-lisbon-latimes-031b.png 2160w" width="2000">  </picture>   <div class="figure-content"> <p>Cascais, a wealthy seaside enclave in Portugal, reminds California expatriates of home.</p><p>(Jose Sarmento Matos / For The Times)</p> </div>  </figure></div><p>Dixon has plenty of company in a country that has become an international destination for tourism and residency alike. </p><p>This once seafaring empire known for Port wine and Fado music can feel a lot like California. Except it’s much more affordable on a U.S. budget. That’s one reason the slender nation on the Atlantic has attracted — and even advertised to — Americans who are packing up.</p><p>In the last decade, the overall population in Portugal has declined even as the number of foreigners has grown by 40%. The ranks of American citizens living in this land of 10 million shot up by 45% last year. Within the mix of retirees, digital nomads and young families fed up with issues including the costs of housing and healthcare, Trumpian politics and <a class="link" href="https://www.latimes.com/california/story/2022-01-24/anti-vaccination-forces-fight-california-vaccine-legislation">pandemic policies</a>, Californians are making themselves known in a country once considered the forgotten sibling of Spain.</p><div class="enhancement" data-align-center-expanded="" data-click="enhancement"><figure class="figure"> <picture>    <source data-lazy-load="true" data-sizes="100vw" data-srcset="https://ca-times.brightspotcdn.com/dims4/default/f96645a/2147483647/strip/true/crop/4200x2800+0+0/resize/320x213!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fb1%2Fc5%2F2d041c13452eb220ceb5d4524325%2Fjsm-lisbon-latimes-021.jpg 320w,https://ca-times.brightspotcdn.com/dims4/default/2eda4e5/2147483647/strip/true/crop/4200x2800+0+0/resize/568x379!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fb1%2Fc5%2F2d041c13452eb220ceb5d4524325%2Fjsm-lisbon-latimes-021.jpg 568w,https://ca-times.brightspotcdn.com/dims4/default/b887417/2147483647/strip/true/crop/4200x2800+0+0/resize/768x512!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fb1%2Fc5%2F2d041c13452eb220ceb5d4524325%2Fjsm-lisbon-latimes-021.jpg 768w,https://ca-times.brightspotcdn.com/dims4/default/f03dbeb/2147483647/strip/true/crop/4200x2800+0+0/resize/1080x720!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fb1%2Fc5%2F2d041c13452eb220ceb5d4524325%2Fjsm-lisbon-latimes-021.jpg 1080w,https://ca-times.brightspotcdn.com/dims4/default/4d3e6f6/2147483647/strip/true/crop/4200x2800+0+0/resize/1240x826!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fb1%2Fc5%2F2d041c13452eb220ceb5d4524325%2Fjsm-lisbon-latimes-021.jpg 1240w,https://ca-times.brightspotcdn.com/dims4/default/f19f2ae/2147483647/strip/true/crop/4200x2800+0+0/resize/1440x960!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fb1%2Fc5%2F2d041c13452eb220ceb5d4524325%2Fjsm-lisbon-latimes-021.jpg 1440w,https://ca-times.brightspotcdn.com/dims4/default/b034a0f/2147483647/strip/true/crop/4200x2800+0+0/resize/2160x1440!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fb1%2Fc5%2F2d041c13452eb220ceb5d4524325%2Fjsm-lisbon-latimes-021.jpg 2160w" srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" type="image/webp">     <img alt="People congregate at dusk by a river, with views of a bridge " class="image" data-lazy-load="true" data-sizes="100vw" data-src="https://ca-times.brightspotcdn.com/dims4/default/0edb753/2147483647/strip/true/crop/4200x2800+0+0/resize/2000x1333!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fb1%2Fc5%2F2d041c13452eb220ceb5d4524325%2Fjsm-lisbon-latimes-021.jpg" data-srcset="https://ca-times.brightspotcdn.com/dims4/default/36298ed/2147483647/strip/true/crop/4200x2800+0+0/resize/320x213!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fb1%2Fc5%2F2d041c13452eb220ceb5d4524325%2Fjsm-lisbon-latimes-021.jpg 320w,https://ca-times.brightspotcdn.com/dims4/default/786075d/2147483647/strip/true/crop/4200x2800+0+0/resize/568x379!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fb1%2Fc5%2F2d041c13452eb220ceb5d4524325%2Fjsm-lisbon-latimes-021.jpg 568w,https://ca-times.brightspotcdn.com/dims4/default/3386a40/2147483647/strip/true/crop/4200x2800+0+0/resize/768x512!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fb1%2Fc5%2F2d041c13452eb220ceb5d4524325%2Fjsm-lisbon-latimes-021.jpg 768w,https://ca-times.brightspotcdn.com/dims4/default/a5682b0/2147483647/strip/true/crop/4200x2800+0+0/resize/1080x720!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fb1%2Fc5%2F2d041c13452eb220ceb5d4524325%2Fjsm-lisbon-latimes-021.jpg 1080w,https://ca-times.brightspotcdn.com/dims4/default/e744bc3/2147483647/strip/true/crop/4200x2800+0+0/resize/1240x826!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fb1%2Fc5%2F2d041c13452eb220ceb5d4524325%2Fjsm-lisbon-latimes-021.jpg 1240w,https://ca-times.brightspotcdn.com/dims4/default/142747f/2147483647/strip/true/crop/4200x2800+0+0/resize/1440x960!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fb1%2Fc5%2F2d041c13452eb220ceb5d4524325%2Fjsm-lisbon-latimes-021.jpg 1440w,https://ca-times.brightspotcdn.com/dims4/default/da29cb8/2147483647/strip/true/crop/4200x2800+0+0/resize/2160x1440!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fb1%2Fc5%2F2d041c13452eb220ceb5d4524325%2Fjsm-lisbon-latimes-021.jpg 2160w" height="1333" src="https://ca-times.brightspotcdn.com/dims4/default/0edb753/2147483647/strip/true/crop/4200x2800+0+0/resize/2000x1333!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fb1%2Fc5%2F2d041c13452eb220ceb5d4524325%2Fjsm-lisbon-latimes-021.jpg" srcset="https://ca-times.brightspotcdn.com/dims4/default/36298ed/2147483647/strip/true/crop/4200x2800+0+0/resize/320x213!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fb1%2Fc5%2F2d041c13452eb220ceb5d4524325%2Fjsm-lisbon-latimes-021.jpg 320w,https://ca-times.brightspotcdn.com/dims4/default/786075d/2147483647/strip/true/crop/4200x2800+0+0/resize/568x379!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fb1%2Fc5%2F2d041c13452eb220ceb5d4524325%2Fjsm-lisbon-latimes-021.jpg 568w,https://ca-times.brightspotcdn.com/dims4/default/3386a40/2147483647/strip/true/crop/4200x2800+0+0/resize/768x512!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fb1%2Fc5%2F2d041c13452eb220ceb5d4524325%2Fjsm-lisbon-latimes-021.jpg 768w,https://ca-times.brightspotcdn.com/dims4/default/a5682b0/2147483647/strip/true/crop/4200x2800+0+0/resize/1080x720!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fb1%2Fc5%2F2d041c13452eb220ceb5d4524325%2Fjsm-lisbon-latimes-021.jpg 1080w,https://ca-times.brightspotcdn.com/dims4/default/e744bc3/2147483647/strip/true/crop/4200x2800+0+0/resize/1240x826!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fb1%2Fc5%2F2d041c13452eb220ceb5d4524325%2Fjsm-lisbon-latimes-021.jpg 1240w,https://ca-times.brightspotcdn.com/dims4/default/142747f/2147483647/strip/true/crop/4200x2800+0+0/resize/1440x960!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fb1%2Fc5%2F2d041c13452eb220ceb5d4524325%2Fjsm-lisbon-latimes-021.jpg 1440w,https://ca-times.brightspotcdn.com/dims4/default/da29cb8/2147483647/strip/true/crop/4200x2800+0+0/resize/2160x1440!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fb1%2Fc5%2F2d041c13452eb220ceb5d4524325%2Fjsm-lisbon-latimes-021.jpg 2160w" width="2000">  </picture>   <div class="figure-content"> <p>The boardwalk at the Tagus River is a favorite of locals and newcomers alike. In the background is the 25th of April Bridge. </p><p>(Jose Sarmento Matos / For The Times)</p> </div>  </figure></div><p>“I’d say 95% of my clients are now Americans,” said André Fernandes, a 38-year-old Porto-based real estate broker who, upon seeing the surge in interest in his homeland, moved back from New Jersey three years ago and switched from installing fire sprinklers to selling housing. “In the last week, I’ve called<b> </b>or emailed with people from California, Arizona and New Mexico.” One recent client, he said, was a Netflix writer.</p><p>Portugal emerged from the financial crisis of the mid-2000s as one of the European Union’s <a class="link" href="https://www.latimes.com/world/la-xpm-2011-apr-08-la-fg-portugal-debt-20110408-story.html">poorest nations</a>.<b> </b>With the economy in shambles, Lisbon lawmakers drafted immigration laws to aggressively court foreign professionals, from the wealthy, who could essentially buy residency by purchasing land, to <a class="link" href="https://www.latimes.com/world/europe/la-fg-britain-expats-snap-story.html">remote workers</a>, who could secure a path to citizenship by earning money abroad but spending it here. More recently, the nation, which for the last seven years has hosted the Web Summit tech conference, has fashioned itself as a tax haven for cryptocurrency investors.</p><p>The government estimates that foreigners have invested more than $6 billion in Portugal since 2012 through property purchases alone. The closely related tourist and rental industries brought in more than $10 billion last year and, before the pandemic, represented 15% of the nation’s GDP. (During the same time in the U.S., tourism accounted for less than 3% of the economy.)</p><p>For Dixon, a fourth-generation Californian, the visa process was textbook. She and her husband, Joey Dixon, had to open a Portuguese bank account with savings equal to about $21,000 — about twice the minimum wage — and lock into a yearlong lease.</p><p>Joey Dixon, who has appeared in “Yellowstone” and “S.W.A.T.,” is starting an acting school for other Hollywood transplants. His wife, who at first went through bouts of loneliness, now comes home to plastic containers of homemade soup at her door from the neighbor below, an older Portuguese woman, and has befriended a nearby couple and their child who moved from New York and started a <a class="link" href="https://www.renovatinglife.com/" target="_blank">relocation company</a>.</p><div class="enhancement" data-align-center-expanded="" data-click="enhancement"><figure class="figure"> <picture>    <source data-lazy-load="true" data-sizes="100vw" data-srcset="https://ca-times.brightspotcdn.com/dims4/default/b36842d/2147483647/strip/true/crop/4200x2803+0+0/resize/320x214!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F49%2Fa9%2F8cf8279845dc88d5ea9a4969e57d%2Fjsm-lisbon-latimes-037.jpg 320w,https://ca-times.brightspotcdn.com/dims4/default/88d0376/2147483647/strip/true/crop/4200x2803+0+0/resize/568x379!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F49%2Fa9%2F8cf8279845dc88d5ea9a4969e57d%2Fjsm-lisbon-latimes-037.jpg 568w,https://ca-times.brightspotcdn.com/dims4/default/4229eb8/2147483647/strip/true/crop/4200x2803+0+0/resize/768x513!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F49%2Fa9%2F8cf8279845dc88d5ea9a4969e57d%2Fjsm-lisbon-latimes-037.jpg 768w,https://ca-times.brightspotcdn.com/dims4/default/e6f93d3/2147483647/strip/true/crop/4200x2803+0+0/resize/1080x721!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F49%2Fa9%2F8cf8279845dc88d5ea9a4969e57d%2Fjsm-lisbon-latimes-037.jpg 1080w,https://ca-times.brightspotcdn.com/dims4/default/a9c02a1/2147483647/strip/true/crop/4200x2803+0+0/resize/1240x828!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F49%2Fa9%2F8cf8279845dc88d5ea9a4969e57d%2Fjsm-lisbon-latimes-037.jpg 1240w,https://ca-times.brightspotcdn.com/dims4/default/f835868/2147483647/strip/true/crop/4200x2803+0+0/resize/1440x961!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F49%2Fa9%2F8cf8279845dc88d5ea9a4969e57d%2Fjsm-lisbon-latimes-037.jpg 1440w,https://ca-times.brightspotcdn.com/dims4/default/d9fa403/2147483647/strip/true/crop/4200x2803+0+0/resize/2160x1442!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F49%2Fa9%2F8cf8279845dc88d5ea9a4969e57d%2Fjsm-lisbon-latimes-037.jpg 2160w" srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" type="image/webp">     <img alt="A woman hugs a young girl in a pink dress as a man and another woman holding a boy look on " class="image" data-lazy-load="true" data-sizes="100vw" data-src="https://ca-times.brightspotcdn.com/dims4/default/7c8b1a2/2147483647/strip/true/crop/4200x2803+0+0/resize/2000x1335!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F49%2Fa9%2F8cf8279845dc88d5ea9a4969e57d%2Fjsm-lisbon-latimes-037.jpg" data-srcset="https://ca-times.brightspotcdn.com/dims4/default/9021940/2147483647/strip/true/crop/4200x2803+0+0/resize/320x214!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F49%2Fa9%2F8cf8279845dc88d5ea9a4969e57d%2Fjsm-lisbon-latimes-037.jpg 320w,https://ca-times.brightspotcdn.com/dims4/default/23226d0/2147483647/strip/true/crop/4200x2803+0+0/resize/568x379!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F49%2Fa9%2F8cf8279845dc88d5ea9a4969e57d%2Fjsm-lisbon-latimes-037.jpg 568w,https://ca-times.brightspotcdn.com/dims4/default/5fb41d0/2147483647/strip/true/crop/4200x2803+0+0/resize/768x513!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F49%2Fa9%2F8cf8279845dc88d5ea9a4969e57d%2Fjsm-lisbon-latimes-037.jpg 768w,https://ca-times.brightspotcdn.com/dims4/default/b17df9e/2147483647/strip/true/crop/4200x2803+0+0/resize/1080x721!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F49%2Fa9%2F8cf8279845dc88d5ea9a4969e57d%2Fjsm-lisbon-latimes-037.jpg 1080w,https://ca-times.brightspotcdn.com/dims4/default/5082b9c/2147483647/strip/true/crop/4200x2803+0+0/resize/1240x828!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F49%2Fa9%2F8cf8279845dc88d5ea9a4969e57d%2Fjsm-lisbon-latimes-037.jpg 1240w,https://ca-times.brightspotcdn.com/dims4/default/6bcb70d/2147483647/strip/true/crop/4200x2803+0+0/resize/1440x961!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F49%2Fa9%2F8cf8279845dc88d5ea9a4969e57d%2Fjsm-lisbon-latimes-037.jpg 1440w,https://ca-times.brightspotcdn.com/dims4/default/6ff6474/2147483647/strip/true/crop/4200x2803+0+0/resize/2160x1442!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F49%2Fa9%2F8cf8279845dc88d5ea9a4969e57d%2Fjsm-lisbon-latimes-037.jpg 2160w" height="1335" src="https://ca-times.brightspotcdn.com/dims4/default/7c8b1a2/2147483647/strip/true/crop/4200x2803+0+0/resize/2000x1335!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F49%2Fa9%2F8cf8279845dc88d5ea9a4969e57d%2Fjsm-lisbon-latimes-037.jpg" srcset="https://ca-times.brightspotcdn.com/dims4/default/9021940/2147483647/strip/true/crop/4200x2803+0+0/resize/320x214!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F49%2Fa9%2F8cf8279845dc88d5ea9a4969e57d%2Fjsm-lisbon-latimes-037.jpg 320w,https://ca-times.brightspotcdn.com/dims4/default/23226d0/2147483647/strip/true/crop/4200x2803+0+0/resize/568x379!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F49%2Fa9%2F8cf8279845dc88d5ea9a4969e57d%2Fjsm-lisbon-latimes-037.jpg 568w,https://ca-times.brightspotcdn.com/dims4/default/5fb41d0/2147483647/strip/true/crop/4200x2803+0+0/resize/768x513!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F49%2Fa9%2F8cf8279845dc88d5ea9a4969e57d%2Fjsm-lisbon-latimes-037.jpg 768w,https://ca-times.brightspotcdn.com/dims4/default/b17df9e/2147483647/strip/true/crop/4200x2803+0+0/resize/1080x721!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F49%2Fa9%2F8cf8279845dc88d5ea9a4969e57d%2Fjsm-lisbon-latimes-037.jpg 1080w,https://ca-times.brightspotcdn.com/dims4/default/5082b9c/2147483647/strip/true/crop/4200x2803+0+0/resize/1240x828!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F49%2Fa9%2F8cf8279845dc88d5ea9a4969e57d%2Fjsm-lisbon-latimes-037.jpg 1240w,https://ca-times.brightspotcdn.com/dims4/default/6bcb70d/2147483647/strip/true/crop/4200x2803+0+0/resize/1440x961!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F49%2Fa9%2F8cf8279845dc88d5ea9a4969e57d%2Fjsm-lisbon-latimes-037.jpg 1440w,https://ca-times.brightspotcdn.com/dims4/default/6ff6474/2147483647/strip/true/crop/4200x2803+0+0/resize/2160x1442!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F49%2Fa9%2F8cf8279845dc88d5ea9a4969e57d%2Fjsm-lisbon-latimes-037.jpg 2160w" width="2000">  </picture>   <div class="figure-content"> <p>Jamie Dixon picks up her daughter from school in Cascais, Portugal.</p><p>(Jose Sarmento Matos / For The Times)</p> </div>  </figure></div><p>A few blocks down the street, the Dixons have met a California couple — one of them works for Adobe — who recently made the move. A family from Seattle is expected to arrive this month and will occupy the first floor of the Dixons’ three-story gated apartment building. Seeing an influx of Americans, their daughter’s school recently hired an English teacher and now has bilingual instruction.</p><div class="enhancement" data-align-right="" data-click="enhancement"> <div class="infobox" data-click="infoBox" data-module-id="00000181-4919-de0a-a1bf-691df3a3000a">  <p><span class="link"><picture>    <source data-lazy-load="true" data-sizes="100vw" data-srcset="https://ca-times.brightspotcdn.com/dims4/default/9ba799a/2147483647/strip/true/crop/1200x379+0+126/resize/320x101!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc3%2Fe6%2F5ed5126d48ccbccb9abd52e3ae7d%2Fglobalcalifornia.jpg 320w,https://ca-times.brightspotcdn.com/dims4/default/469d0ef/2147483647/strip/true/crop/1200x379+0+126/resize/510x161!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc3%2Fe6%2F5ed5126d48ccbccb9abd52e3ae7d%2Fglobalcalifornia.jpg 510w" srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" type="image/webp">     <img alt="Global California" class="image" data-lazy-load="true" data-sizes="100vw" data-src="https://ca-times.brightspotcdn.com/dims4/default/0ae8087/2147483647/strip/true/crop/1200x379+0+126/resize/510x161!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc3%2Fe6%2F5ed5126d48ccbccb9abd52e3ae7d%2Fglobalcalifornia.jpg" data-srcset="https://ca-times.brightspotcdn.com/dims4/default/269ebe0/2147483647/strip/true/crop/1200x379+0+126/resize/320x101!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc3%2Fe6%2F5ed5126d48ccbccb9abd52e3ae7d%2Fglobalcalifornia.jpg 320w,https://ca-times.brightspotcdn.com/dims4/default/0ae8087/2147483647/strip/true/crop/1200x379+0+126/resize/510x161!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc3%2Fe6%2F5ed5126d48ccbccb9abd52e3ae7d%2Fglobalcalifornia.jpg 510w" height="161" src="https://ca-times.brightspotcdn.com/dims4/default/0ae8087/2147483647/strip/true/crop/1200x379+0+126/resize/510x161!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc3%2Fe6%2F5ed5126d48ccbccb9abd52e3ae7d%2Fglobalcalifornia.jpg" srcset="https://ca-times.brightspotcdn.com/dims4/default/269ebe0/2147483647/strip/true/crop/1200x379+0+126/resize/320x101!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc3%2Fe6%2F5ed5126d48ccbccb9abd52e3ae7d%2Fglobalcalifornia.jpg 320w,https://ca-times.brightspotcdn.com/dims4/default/0ae8087/2147483647/strip/true/crop/1200x379+0+126/resize/510x161!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc3%2Fe6%2F5ed5126d48ccbccb9abd52e3ae7d%2Fglobalcalifornia.jpg 510w" width="510">  </picture></span></p>    <p class="infobox-title">This story is part of our Global California project </p>   <p class="infobox-description">Our correspondents are traveling the globe, sharing stories that examine the complex relationship between the West Coast and the rest of the world.<b><a class="link" href="https://www.latimes.com/world-nation/global-california">Explore more Global California stories. </a></b></p>    </div> </div><p>“My Portuguese is still bad,” said Jamie Dixon, who has taken classes but uses her favorite phrase to describe her attitude toward the slow journey of integration: <i>não faz mal</i> (“no big deal”). She hopes to speak enough in five years to pass the citizenship test, which would gain the family European Union passports. With them comes the freedom to move and work throughout much of the continent.</p><p>“You just don’t know where America is headed these days. Are we going to be fighting with each other forever? Are we in the Cold War again with Russia?” Dixon said. “Getting that second passport would be a relief.”</p><p>But resentment of newcomers is growing. Angelenos can’t always escape — and sometimes are at the root of — questions over gentrification, income disparities and immigration. The phrase “expat” itself has become loaded in Lisbon, a city that attracts tens of thousands of working-class immigrants from Brazil, Ukraine, Romania and India. In Facebook groups and cafe meetups, well-to-do Westerners debate over how to define themselves. On the streets, Portuguese activists have protested against evictions and skyrocketing rents caused in part by foreigners with banks that count in dollars and pounds.</p><p>“There’s no doubt that the foreign investment has greatly helped Portugal’s economy and made the cities more beautiful,” said Isabel da Bandeira, an activist who co-founded the Lisbon housing rights group Aqui Mora Gente (People Live Here). “But this process has also hurt the long-term residents who don’t recognize parts of their communities anymore or can’t afford to live in them.”</p><p>Across Lisbon, the country’s largest urban center with 550,000 people, it’s hard to miss the Californians. The city, where tourism has boomed over the years to the point that entire streets in its historic core are made up exclusively of hotels and Airbnbs, has attracted monied newcomers from across the world, including the United Kingdom, Cape Verde, South Africa and Russia. But more Americans are buying expensive property than any other foreigners, surpassing the Chinese.</p><div class="enhancement" data-align-center-expanded="" data-click="enhancement"><figure class="figure"> <picture>    <source data-lazy-load="true" data-sizes="100vw" data-srcset="https://ca-times.brightspotcdn.com/dims4/default/d2097c8/2147483647/strip/true/crop/4200x2803+0+0/resize/320x214!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F62%2Fa0%2Fd8f0d5464dd6a854a25ed93a7971%2Fjsm-lisbon-latimes-002.jpg 320w,https://ca-times.brightspotcdn.com/dims4/default/47639c7/2147483647/strip/true/crop/4200x2803+0+0/resize/568x379!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F62%2Fa0%2Fd8f0d5464dd6a854a25ed93a7971%2Fjsm-lisbon-latimes-002.jpg 568w,https://ca-times.brightspotcdn.com/dims4/default/ebad59e/2147483647/strip/true/crop/4200x2803+0+0/resize/768x513!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F62%2Fa0%2Fd8f0d5464dd6a854a25ed93a7971%2Fjsm-lisbon-latimes-002.jpg 768w,https://ca-times.brightspotcdn.com/dims4/default/14a768c/2147483647/strip/true/crop/4200x2803+0+0/resize/1080x721!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F62%2Fa0%2Fd8f0d5464dd6a854a25ed93a7971%2Fjsm-lisbon-latimes-002.jpg 1080w,https://ca-times.brightspotcdn.com/dims4/default/3d2f6cb/2147483647/strip/true/crop/4200x2803+0+0/resize/1240x828!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F62%2Fa0%2Fd8f0d5464dd6a854a25ed93a7971%2Fjsm-lisbon-latimes-002.jpg 1240w,https://ca-times.brightspotcdn.com/dims4/default/126fab6/2147483647/strip/true/crop/4200x2803+0+0/resize/1440x961!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F62%2Fa0%2Fd8f0d5464dd6a854a25ed93a7971%2Fjsm-lisbon-latimes-002.jpg 1440w,https://ca-times.brightspotcdn.com/dims4/default/185f8d2/2147483647/strip/true/crop/4200x2803+0+0/resize/2160x1442!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F62%2Fa0%2Fd8f0d5464dd6a854a25ed93a7971%2Fjsm-lisbon-latimes-002.jpg 2160w" srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" type="image/webp">     <img alt="A blue, white and yellow tram next to a building and pedestrians" class="image" data-lazy-load="true" data-sizes="100vw" data-src="https://ca-times.brightspotcdn.com/dims4/default/b8fd91b/2147483647/strip/true/crop/4200x2803+0+0/resize/2000x1335!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F62%2Fa0%2Fd8f0d5464dd6a854a25ed93a7971%2Fjsm-lisbon-latimes-002.jpg" data-srcset="https://ca-times.brightspotcdn.com/dims4/default/d64e8d3/2147483647/strip/true/crop/4200x2803+0+0/resize/320x214!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F62%2Fa0%2Fd8f0d5464dd6a854a25ed93a7971%2Fjsm-lisbon-latimes-002.jpg 320w,https://ca-times.brightspotcdn.com/dims4/default/2611c2e/2147483647/strip/true/crop/4200x2803+0+0/resize/568x379!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F62%2Fa0%2Fd8f0d5464dd6a854a25ed93a7971%2Fjsm-lisbon-latimes-002.jpg 568w,https://ca-times.brightspotcdn.com/dims4/default/ae30528/2147483647/strip/true/crop/4200x2803+0+0/resize/768x513!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F62%2Fa0%2Fd8f0d5464dd6a854a25ed93a7971%2Fjsm-lisbon-latimes-002.jpg 768w,https://ca-times.brightspotcdn.com/dims4/default/277949f/2147483647/strip/true/crop/4200x2803+0+0/resize/1080x721!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F62%2Fa0%2Fd8f0d5464dd6a854a25ed93a7971%2Fjsm-lisbon-latimes-002.jpg 1080w,https://ca-times.brightspotcdn.com/dims4/default/086dc81/2147483647/strip/true/crop/4200x2803+0+0/resize/1240x828!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F62%2Fa0%2Fd8f0d5464dd6a854a25ed93a7971%2Fjsm-lisbon-latimes-002.jpg 1240w,https://ca-times.brightspotcdn.com/dims4/default/5634ea0/2147483647/strip/true/crop/4200x2803+0+0/resize/1440x961!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F62%2Fa0%2Fd8f0d5464dd6a854a25ed93a7971%2Fjsm-lisbon-latimes-002.jpg 1440w,https://ca-times.brightspotcdn.com/dims4/default/7a2be35/2147483647/strip/true/crop/4200x2803+0+0/resize/2160x1442!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F62%2Fa0%2Fd8f0d5464dd6a854a25ed93a7971%2Fjsm-lisbon-latimes-002.jpg 2160w" height="1335" src="https://ca-times.brightspotcdn.com/dims4/default/b8fd91b/2147483647/strip/true/crop/4200x2803+0+0/resize/2000x1335!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F62%2Fa0%2Fd8f0d5464dd6a854a25ed93a7971%2Fjsm-lisbon-latimes-002.jpg" srcset="https://ca-times.brightspotcdn.com/dims4/default/d64e8d3/2147483647/strip/true/crop/4200x2803+0+0/resize/320x214!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F62%2Fa0%2Fd8f0d5464dd6a854a25ed93a7971%2Fjsm-lisbon-latimes-002.jpg 320w,https://ca-times.brightspotcdn.com/dims4/default/2611c2e/2147483647/strip/true/crop/4200x2803+0+0/resize/568x379!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F62%2Fa0%2Fd8f0d5464dd6a854a25ed93a7971%2Fjsm-lisbon-latimes-002.jpg 568w,https://ca-times.brightspotcdn.com/dims4/default/ae30528/2147483647/strip/true/crop/4200x2803+0+0/resize/768x513!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F62%2Fa0%2Fd8f0d5464dd6a854a25ed93a7971%2Fjsm-lisbon-latimes-002.jpg 768w,https://ca-times.brightspotcdn.com/dims4/default/277949f/2147483647/strip/true/crop/4200x2803+0+0/resize/1080x721!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F62%2Fa0%2Fd8f0d5464dd6a854a25ed93a7971%2Fjsm-lisbon-latimes-002.jpg 1080w,https://ca-times.brightspotcdn.com/dims4/default/086dc81/2147483647/strip/true/crop/4200x2803+0+0/resize/1240x828!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F62%2Fa0%2Fd8f0d5464dd6a854a25ed93a7971%2Fjsm-lisbon-latimes-002.jpg 1240w,https://ca-times.brightspotcdn.com/dims4/default/5634ea0/2147483647/strip/true/crop/4200x2803+0+0/resize/1440x961!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F62%2Fa0%2Fd8f0d5464dd6a854a25ed93a7971%2Fjsm-lisbon-latimes-002.jpg 1440w,https://ca-times.brightspotcdn.com/dims4/default/7a2be35/2147483647/strip/true/crop/4200x2803+0+0/resize/2160x1442!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F62%2Fa0%2Fd8f0d5464dd6a854a25ed93a7971%2Fjsm-lisbon-latimes-002.jpg 2160w" width="2000">  </picture>   <div class="figure-content"> <p>A tram goes up a hill in the historic Alfama neighborhood in Lisbon, Portugal.</p><p>(Jose Sarmento Matos / For The Times)</p> </div>  </figure></div><p>An article last year in the Lisbon-based newspaper Diário de Notícias extolled the ties between California and Portugal. “It’s fundamental to put Portugal on the map for Californians,” Pedro Pinto, the Portuguese consul general in San Francisco, said in the piece, as he suggested a direct flight from Los Angeles to Lisbon “would have high demand” (there’s already one from San Francisco).</p><p>California has long drawn the Portuguese. Spain and Portugal claim 16th century colonial explorer Juan Rodríguez Cabrillo, who was the first European to land on California’s shores, as one of their own. In the mid-19th century, droves of farmers from the Azores made their way to Central California. In San Jose, the Little Portugal neighborhood pays homage to the region’s immigrant history. But today, the transplants go the other way and are of a different variety: upper middle class or wealthier with online jobs or well-managed retirement accounts.</p><p>After years of divisive politics, failed wars, worsening wealth gaps and fights over national identity, Americans are perhaps more flexible in their patriotism and willing to make a home beyond their borders. For residents of California, where the best and worst of America appear to constantly collide, the shores of Portugal have offered a respite.</p><p>From the retiree villages of Mexico and Central America to the red-white-and-blue enclaves scattered throughout Asia and Europe, Americans have long had a curious and at times contentious relationship with the world and its cultures. They are often viewed as wanting to cast other nations in their image, a criticism cleverly distilled in Graham Greene’s novel “The Quiet American.” They want the exotic so long as there’s a scent of the familiar. </p><p>In Portugal, some recent California expats have taken it upon themselves to make the pitch for how to conjure a bit of their home state while living abroad.</p><p>Jen Wittman, who moved with her husband and 13-year-old son to Lisbon in March last year, runs a Facebook group called Californians Moving To/Living In Portugal. In a community of migrants where dozens of Facebook pages function as a how-to library on moving, Wittman said she created hers a year ago after seeing Californians “getting mocked in other groups for very California questions, like where to get good avocados and Mexican food.”</p><div class="enhancement" data-align-center-expanded="" data-click="enhancement"><figure class="figure"> <picture>    <source data-lazy-load="true" data-sizes="100vw" data-srcset="https://ca-times.brightspotcdn.com/dims4/default/e83229d/2147483647/strip/true/crop/4200x2803+0+0/resize/320x214!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc6%2Ff7%2F9fd445244ad2aca1326a748318d2%2Fjsm-lisbon-latimes-011.jpg 320w,https://ca-times.brightspotcdn.com/dims4/default/831fdb8/2147483647/strip/true/crop/4200x2803+0+0/resize/568x379!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc6%2Ff7%2F9fd445244ad2aca1326a748318d2%2Fjsm-lisbon-latimes-011.jpg 568w,https://ca-times.brightspotcdn.com/dims4/default/32aa6f9/2147483647/strip/true/crop/4200x2803+0+0/resize/768x513!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc6%2Ff7%2F9fd445244ad2aca1326a748318d2%2Fjsm-lisbon-latimes-011.jpg 768w,https://ca-times.brightspotcdn.com/dims4/default/bb11eac/2147483647/strip/true/crop/4200x2803+0+0/resize/1080x721!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc6%2Ff7%2F9fd445244ad2aca1326a748318d2%2Fjsm-lisbon-latimes-011.jpg 1080w,https://ca-times.brightspotcdn.com/dims4/default/84d2ffa/2147483647/strip/true/crop/4200x2803+0+0/resize/1240x828!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc6%2Ff7%2F9fd445244ad2aca1326a748318d2%2Fjsm-lisbon-latimes-011.jpg 1240w,https://ca-times.brightspotcdn.com/dims4/default/d861a24/2147483647/strip/true/crop/4200x2803+0+0/resize/1440x961!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc6%2Ff7%2F9fd445244ad2aca1326a748318d2%2Fjsm-lisbon-latimes-011.jpg 1440w,https://ca-times.brightspotcdn.com/dims4/default/89161da/2147483647/strip/true/crop/4200x2803+0+0/resize/2160x1442!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc6%2Ff7%2F9fd445244ad2aca1326a748318d2%2Fjsm-lisbon-latimes-011.jpg 2160w" srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" type="image/webp">     <img alt="A woman, a man and a boy eat ice cream at a table outside a store" class="image" data-lazy-load="true" data-sizes="100vw" data-src="https://ca-times.brightspotcdn.com/dims4/default/3ebd0b2/2147483647/strip/true/crop/4200x2803+0+0/resize/2000x1335!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc6%2Ff7%2F9fd445244ad2aca1326a748318d2%2Fjsm-lisbon-latimes-011.jpg" data-srcset="https://ca-times.brightspotcdn.com/dims4/default/1c00411/2147483647/strip/true/crop/4200x2803+0+0/resize/320x214!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc6%2Ff7%2F9fd445244ad2aca1326a748318d2%2Fjsm-lisbon-latimes-011.jpg 320w,https://ca-times.brightspotcdn.com/dims4/default/36b32a5/2147483647/strip/true/crop/4200x2803+0+0/resize/568x379!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc6%2Ff7%2F9fd445244ad2aca1326a748318d2%2Fjsm-lisbon-latimes-011.jpg 568w,https://ca-times.brightspotcdn.com/dims4/default/c946928/2147483647/strip/true/crop/4200x2803+0+0/resize/768x513!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc6%2Ff7%2F9fd445244ad2aca1326a748318d2%2Fjsm-lisbon-latimes-011.jpg 768w,https://ca-times.brightspotcdn.com/dims4/default/a37a110/2147483647/strip/true/crop/4200x2803+0+0/resize/1080x721!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc6%2Ff7%2F9fd445244ad2aca1326a748318d2%2Fjsm-lisbon-latimes-011.jpg 1080w,https://ca-times.brightspotcdn.com/dims4/default/edc4a7f/2147483647/strip/true/crop/4200x2803+0+0/resize/1240x828!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc6%2Ff7%2F9fd445244ad2aca1326a748318d2%2Fjsm-lisbon-latimes-011.jpg 1240w,https://ca-times.brightspotcdn.com/dims4/default/c5e366e/2147483647/strip/true/crop/4200x2803+0+0/resize/1440x961!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc6%2Ff7%2F9fd445244ad2aca1326a748318d2%2Fjsm-lisbon-latimes-011.jpg 1440w,https://ca-times.brightspotcdn.com/dims4/default/be2fc9e/2147483647/strip/true/crop/4200x2803+0+0/resize/2160x1442!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc6%2Ff7%2F9fd445244ad2aca1326a748318d2%2Fjsm-lisbon-latimes-011.jpg 2160w" height="1335" src="https://ca-times.brightspotcdn.com/dims4/default/3ebd0b2/2147483647/strip/true/crop/4200x2803+0+0/resize/2000x1335!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc6%2Ff7%2F9fd445244ad2aca1326a748318d2%2Fjsm-lisbon-latimes-011.jpg" srcset="https://ca-times.brightspotcdn.com/dims4/default/1c00411/2147483647/strip/true/crop/4200x2803+0+0/resize/320x214!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc6%2Ff7%2F9fd445244ad2aca1326a748318d2%2Fjsm-lisbon-latimes-011.jpg 320w,https://ca-times.brightspotcdn.com/dims4/default/36b32a5/2147483647/strip/true/crop/4200x2803+0+0/resize/568x379!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc6%2Ff7%2F9fd445244ad2aca1326a748318d2%2Fjsm-lisbon-latimes-011.jpg 568w,https://ca-times.brightspotcdn.com/dims4/default/c946928/2147483647/strip/true/crop/4200x2803+0+0/resize/768x513!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc6%2Ff7%2F9fd445244ad2aca1326a748318d2%2Fjsm-lisbon-latimes-011.jpg 768w,https://ca-times.brightspotcdn.com/dims4/default/a37a110/2147483647/strip/true/crop/4200x2803+0+0/resize/1080x721!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc6%2Ff7%2F9fd445244ad2aca1326a748318d2%2Fjsm-lisbon-latimes-011.jpg 1080w,https://ca-times.brightspotcdn.com/dims4/default/edc4a7f/2147483647/strip/true/crop/4200x2803+0+0/resize/1240x828!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc6%2Ff7%2F9fd445244ad2aca1326a748318d2%2Fjsm-lisbon-latimes-011.jpg 1240w,https://ca-times.brightspotcdn.com/dims4/default/c5e366e/2147483647/strip/true/crop/4200x2803+0+0/resize/1440x961!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc6%2Ff7%2F9fd445244ad2aca1326a748318d2%2Fjsm-lisbon-latimes-011.jpg 1440w,https://ca-times.brightspotcdn.com/dims4/default/be2fc9e/2147483647/strip/true/crop/4200x2803+0+0/resize/2160x1442!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fc6%2Ff7%2F9fd445244ad2aca1326a748318d2%2Fjsm-lisbon-latimes-011.jpg 2160w" width="2000">  </picture>   <div class="figure-content"> <p>Jen Wittman enjoys ice cream with husband Doug Sanders and their son, Bodhi.</p><p>(Jose Sarmento Matos / For The Times)</p> </div>  </figure></div><p>The avocados have been easy to come by. The Mexican food, not so much, though there is a San Diego couple who have a homemade tamale and Mexican import business.</p><p>“I feel like we as Californians have more particular things we want. We want the sun, the water, the amenities, the fresh and organic food,” said Wittman, 47, a former chef who runs an online consulting company for small businesses with her husband. “We also tend to have higher incomes than other Americans so people get annoyed when we ask our budgeting questions in other expat groups.”</p><p>A resident of Playa del Rey for 20 years, she left for Lisbon after a stint in Sonoma County. For  Wittman, it was her mother’s death and a desire to rethink the future that spurred the move. She also wanted her son to have free college tuition in EU nations once the family gains citizenship. In Portugal, she said, she feels safer, has more affordable healthcare, and has gained distance from the political division of America.</p><div class="enhancement" data-align-center-expanded="" data-click="enhancement"><figure class="figure"> <picture>    <source data-lazy-load="true" data-sizes="100vw" data-srcset="https://ca-times.brightspotcdn.com/dims4/default/1decab6/2147483647/strip/true/crop/8432x2803+0+0/resize/320x106!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F04%2F06%2Fe3687e404afa922363d05865d674%2Fjsm-lisbon-latimes-004a.jpg 320w,https://ca-times.brightspotcdn.com/dims4/default/2132910/2147483647/strip/true/crop/8432x2803+0+0/resize/568x189!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F04%2F06%2Fe3687e404afa922363d05865d674%2Fjsm-lisbon-latimes-004a.jpg 568w,https://ca-times.brightspotcdn.com/dims4/default/a630869/2147483647/strip/true/crop/8432x2803+0+0/resize/768x255!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F04%2F06%2Fe3687e404afa922363d05865d674%2Fjsm-lisbon-latimes-004a.jpg 768w,https://ca-times.brightspotcdn.com/dims4/default/da73f85/2147483647/strip/true/crop/8432x2803+0+0/resize/1080x359!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F04%2F06%2Fe3687e404afa922363d05865d674%2Fjsm-lisbon-latimes-004a.jpg 1080w,https://ca-times.brightspotcdn.com/dims4/default/fb56ace/2147483647/strip/true/crop/8432x2803+0+0/resize/1240x412!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F04%2F06%2Fe3687e404afa922363d05865d674%2Fjsm-lisbon-latimes-004a.jpg 1240w,https://ca-times.brightspotcdn.com/dims4/default/13a69ff/2147483647/strip/true/crop/8432x2803+0+0/resize/1440x479!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F04%2F06%2Fe3687e404afa922363d05865d674%2Fjsm-lisbon-latimes-004a.jpg 1440w,https://ca-times.brightspotcdn.com/dims4/default/a2fe9a0/2147483647/strip/true/crop/8432x2803+0+0/resize/2160x718!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F04%2F06%2Fe3687e404afa922363d05865d674%2Fjsm-lisbon-latimes-004a.jpg 2160w" srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" type="image/webp">     <img alt="A woman with a scooter on a street, left. On the right, people sit along a low stone wall. " class="image" data-lazy-load="true" data-sizes="100vw" data-src="https://ca-times.brightspotcdn.com/dims4/default/687bee4/2147483647/strip/true/crop/8432x2803+0+0/resize/2000x665!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F04%2F06%2Fe3687e404afa922363d05865d674%2Fjsm-lisbon-latimes-004a.jpg" data-srcset="https://ca-times.brightspotcdn.com/dims4/default/4580fa6/2147483647/strip/true/crop/8432x2803+0+0/resize/320x106!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F04%2F06%2Fe3687e404afa922363d05865d674%2Fjsm-lisbon-latimes-004a.jpg 320w,https://ca-times.brightspotcdn.com/dims4/default/c3bec71/2147483647/strip/true/crop/8432x2803+0+0/resize/568x189!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F04%2F06%2Fe3687e404afa922363d05865d674%2Fjsm-lisbon-latimes-004a.jpg 568w,https://ca-times.brightspotcdn.com/dims4/default/1013d34/2147483647/strip/true/crop/8432x2803+0+0/resize/768x255!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F04%2F06%2Fe3687e404afa922363d05865d674%2Fjsm-lisbon-latimes-004a.jpg 768w,https://ca-times.brightspotcdn.com/dims4/default/ff2e4d7/2147483647/strip/true/crop/8432x2803+0+0/resize/1080x359!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F04%2F06%2Fe3687e404afa922363d05865d674%2Fjsm-lisbon-latimes-004a.jpg 1080w,https://ca-times.brightspotcdn.com/dims4/default/7b00133/2147483647/strip/true/crop/8432x2803+0+0/resize/1240x412!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F04%2F06%2Fe3687e404afa922363d05865d674%2Fjsm-lisbon-latimes-004a.jpg 1240w,https://ca-times.brightspotcdn.com/dims4/default/4d64cc6/2147483647/strip/true/crop/8432x2803+0+0/resize/1440x479!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F04%2F06%2Fe3687e404afa922363d05865d674%2Fjsm-lisbon-latimes-004a.jpg 1440w,https://ca-times.brightspotcdn.com/dims4/default/d03c27b/2147483647/strip/true/crop/8432x2803+0+0/resize/2160x718!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F04%2F06%2Fe3687e404afa922363d05865d674%2Fjsm-lisbon-latimes-004a.jpg 2160w" height="665" src="https://ca-times.brightspotcdn.com/dims4/default/687bee4/2147483647/strip/true/crop/8432x2803+0+0/resize/2000x665!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F04%2F06%2Fe3687e404afa922363d05865d674%2Fjsm-lisbon-latimes-004a.jpg" srcset="https://ca-times.brightspotcdn.com/dims4/default/4580fa6/2147483647/strip/true/crop/8432x2803+0+0/resize/320x106!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F04%2F06%2Fe3687e404afa922363d05865d674%2Fjsm-lisbon-latimes-004a.jpg 320w,https://ca-times.brightspotcdn.com/dims4/default/c3bec71/2147483647/strip/true/crop/8432x2803+0+0/resize/568x189!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F04%2F06%2Fe3687e404afa922363d05865d674%2Fjsm-lisbon-latimes-004a.jpg 568w,https://ca-times.brightspotcdn.com/dims4/default/1013d34/2147483647/strip/true/crop/8432x2803+0+0/resize/768x255!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F04%2F06%2Fe3687e404afa922363d05865d674%2Fjsm-lisbon-latimes-004a.jpg 768w,https://ca-times.brightspotcdn.com/dims4/default/ff2e4d7/2147483647/strip/true/crop/8432x2803+0+0/resize/1080x359!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F04%2F06%2Fe3687e404afa922363d05865d674%2Fjsm-lisbon-latimes-004a.jpg 1080w,https://ca-times.brightspotcdn.com/dims4/default/7b00133/2147483647/strip/true/crop/8432x2803+0+0/resize/1240x412!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F04%2F06%2Fe3687e404afa922363d05865d674%2Fjsm-lisbon-latimes-004a.jpg 1240w,https://ca-times.brightspotcdn.com/dims4/default/4d64cc6/2147483647/strip/true/crop/8432x2803+0+0/resize/1440x479!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F04%2F06%2Fe3687e404afa922363d05865d674%2Fjsm-lisbon-latimes-004a.jpg 1440w,https://ca-times.brightspotcdn.com/dims4/default/d03c27b/2147483647/strip/true/crop/8432x2803+0+0/resize/2160x718!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F04%2F06%2Fe3687e404afa922363d05865d674%2Fjsm-lisbon-latimes-004a.jpg 2160w" width="2000">  </picture>   <div class="figure-content"> <p>A tourist, left, walks up one of Lisbon’s many hills in the Alfama neighborhood. Right, a streetscape in the Chiado neighborhood, where the growth of tourism and new international residents have caused strains over affordable housing.</p><p>(Jose Sarmento Matos / For The Times)</p> </div>  </figure></div><p>The rent on the family’s furnished three-bedroom apartment, tucked away on a cobblestone street next to a 13th century stone cathedral in the Alfama district, is 2,100 euros — less than $2,200. With its elevator access, renovated kitchen and a view of cruise ships on the Tagus River, it’s a steal on their budget. Wittman, accustomed to quick workday meals back home, now has leisurely hours-long lunches at her favorite Portuguese restaurant, where a plate of salad, chicken legs and potatoes is served with wine, espresso and mango custard for 10 euros, or about $11.</p><p>Her neighborhood, one of Lisbon’s oldest where every other apartment is now housing for internationals,<b> </b>has been the center of protests over evictions and gentrification. Wittman, who mostly mingles with foreigners, said she’s received no hostility from locals. Instead, she too has felt the crunch of Portugal’s growing popularity.</p><p>“We were able to get a deal because of COVID and few people visiting the city,” said Wittman, who still maintains bits of her Midwestern accent from her Indiana upbringing. That was before a lease extension offer came in at 3,650 euros. “Now that our time is coming up, we can’t even find anything affordable in the city.”</p><div class="enhancement" data-align-center-expanded="" data-click="enhancement"><figure class="figure"> <picture>    <source data-lazy-load="true" data-sizes="100vw" data-srcset="https://ca-times.brightspotcdn.com/dims4/default/4d3962f/2147483647/strip/true/crop/4200x2803+0+0/resize/320x214!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Feb%2Fa6%2F5466bdd54677b035a941e861905e%2Fjsm-lisbon-latimes-003.jpg 320w,https://ca-times.brightspotcdn.com/dims4/default/2897ef5/2147483647/strip/true/crop/4200x2803+0+0/resize/568x379!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Feb%2Fa6%2F5466bdd54677b035a941e861905e%2Fjsm-lisbon-latimes-003.jpg 568w,https://ca-times.brightspotcdn.com/dims4/default/0094712/2147483647/strip/true/crop/4200x2803+0+0/resize/768x513!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Feb%2Fa6%2F5466bdd54677b035a941e861905e%2Fjsm-lisbon-latimes-003.jpg 768w,https://ca-times.brightspotcdn.com/dims4/default/e4d5ad7/2147483647/strip/true/crop/4200x2803+0+0/resize/1080x721!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Feb%2Fa6%2F5466bdd54677b035a941e861905e%2Fjsm-lisbon-latimes-003.jpg 1080w,https://ca-times.brightspotcdn.com/dims4/default/6e6f4d0/2147483647/strip/true/crop/4200x2803+0+0/resize/1240x828!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Feb%2Fa6%2F5466bdd54677b035a941e861905e%2Fjsm-lisbon-latimes-003.jpg 1240w,https://ca-times.brightspotcdn.com/dims4/default/709d362/2147483647/strip/true/crop/4200x2803+0+0/resize/1440x961!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Feb%2Fa6%2F5466bdd54677b035a941e861905e%2Fjsm-lisbon-latimes-003.jpg 1440w,https://ca-times.brightspotcdn.com/dims4/default/1a16462/2147483647/strip/true/crop/4200x2803+0+0/resize/2160x1442!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Feb%2Fa6%2F5466bdd54677b035a941e861905e%2Fjsm-lisbon-latimes-003.jpg 2160w" srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" type="image/webp">     <img alt="People on a balcony look out at rooftops and a cruise ship " class="image" data-lazy-load="true" data-sizes="100vw" data-src="https://ca-times.brightspotcdn.com/dims4/default/9a351a0/2147483647/strip/true/crop/4200x2803+0+0/resize/2000x1335!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Feb%2Fa6%2F5466bdd54677b035a941e861905e%2Fjsm-lisbon-latimes-003.jpg" data-srcset="https://ca-times.brightspotcdn.com/dims4/default/60322ab/2147483647/strip/true/crop/4200x2803+0+0/resize/320x214!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Feb%2Fa6%2F5466bdd54677b035a941e861905e%2Fjsm-lisbon-latimes-003.jpg 320w,https://ca-times.brightspotcdn.com/dims4/default/6c722d6/2147483647/strip/true/crop/4200x2803+0+0/resize/568x379!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Feb%2Fa6%2F5466bdd54677b035a941e861905e%2Fjsm-lisbon-latimes-003.jpg 568w,https://ca-times.brightspotcdn.com/dims4/default/0dd4d34/2147483647/strip/true/crop/4200x2803+0+0/resize/768x513!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Feb%2Fa6%2F5466bdd54677b035a941e861905e%2Fjsm-lisbon-latimes-003.jpg 768w,https://ca-times.brightspotcdn.com/dims4/default/a9f7924/2147483647/strip/true/crop/4200x2803+0+0/resize/1080x721!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Feb%2Fa6%2F5466bdd54677b035a941e861905e%2Fjsm-lisbon-latimes-003.jpg 1080w,https://ca-times.brightspotcdn.com/dims4/default/a0cb5f5/2147483647/strip/true/crop/4200x2803+0+0/resize/1240x828!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Feb%2Fa6%2F5466bdd54677b035a941e861905e%2Fjsm-lisbon-latimes-003.jpg 1240w,https://ca-times.brightspotcdn.com/dims4/default/772f90b/2147483647/strip/true/crop/4200x2803+0+0/resize/1440x961!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Feb%2Fa6%2F5466bdd54677b035a941e861905e%2Fjsm-lisbon-latimes-003.jpg 1440w,https://ca-times.brightspotcdn.com/dims4/default/0deeaad/2147483647/strip/true/crop/4200x2803+0+0/resize/2160x1442!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Feb%2Fa6%2F5466bdd54677b035a941e861905e%2Fjsm-lisbon-latimes-003.jpg 2160w" height="1335" src="https://ca-times.brightspotcdn.com/dims4/default/9a351a0/2147483647/strip/true/crop/4200x2803+0+0/resize/2000x1335!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Feb%2Fa6%2F5466bdd54677b035a941e861905e%2Fjsm-lisbon-latimes-003.jpg" srcset="https://ca-times.brightspotcdn.com/dims4/default/60322ab/2147483647/strip/true/crop/4200x2803+0+0/resize/320x214!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Feb%2Fa6%2F5466bdd54677b035a941e861905e%2Fjsm-lisbon-latimes-003.jpg 320w,https://ca-times.brightspotcdn.com/dims4/default/6c722d6/2147483647/strip/true/crop/4200x2803+0+0/resize/568x379!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Feb%2Fa6%2F5466bdd54677b035a941e861905e%2Fjsm-lisbon-latimes-003.jpg 568w,https://ca-times.brightspotcdn.com/dims4/default/0dd4d34/2147483647/strip/true/crop/4200x2803+0+0/resize/768x513!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Feb%2Fa6%2F5466bdd54677b035a941e861905e%2Fjsm-lisbon-latimes-003.jpg 768w,https://ca-times.brightspotcdn.com/dims4/default/a9f7924/2147483647/strip/true/crop/4200x2803+0+0/resize/1080x721!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Feb%2Fa6%2F5466bdd54677b035a941e861905e%2Fjsm-lisbon-latimes-003.jpg 1080w,https://ca-times.brightspotcdn.com/dims4/default/a0cb5f5/2147483647/strip/true/crop/4200x2803+0+0/resize/1240x828!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Feb%2Fa6%2F5466bdd54677b035a941e861905e%2Fjsm-lisbon-latimes-003.jpg 1240w,https://ca-times.brightspotcdn.com/dims4/default/772f90b/2147483647/strip/true/crop/4200x2803+0+0/resize/1440x961!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Feb%2Fa6%2F5466bdd54677b035a941e861905e%2Fjsm-lisbon-latimes-003.jpg 1440w,https://ca-times.brightspotcdn.com/dims4/default/0deeaad/2147483647/strip/true/crop/4200x2803+0+0/resize/2160x1442!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Feb%2Fa6%2F5466bdd54677b035a941e861905e%2Fjsm-lisbon-latimes-003.jpg 2160w" width="2000">  </picture>   <div class="figure-content"> <p>Tourists enjoy one of Lisbon’s lookouts.</p><p>(Jose Sarmento Matos / For The Times)</p> </div>  </figure></div><p>This month, the family is moving to the suburbs across the river, 40 minutes away.</p><p>Luis Mendes, a geographer at the University of Lisbon, said the effect of Americans and foreigners in Portugal is mixed.</p><p>“You cannot deny that places like Lisbon have become much more appealing for young, creative people with money to spend. The effect on the economy and the way the buildings look — no longer empty — is astronomical,” said Mendes. “But the average Portuguese person can no longer afford to live in the center of Lisbon. Rents have gone up five times over a few years. Even the basic things, such as buying groceries, take longer trips outside the city center than they used to.”</p><p>The trend has hit not “only lifelong, lower-class residents but also gentrifiers who see a 1,000-euros-per-month rented flat transformed into a 120-euro-per-night Airbnb,” said Jordi Mateo, a professor at NOVA University of Lisbon.</p><div class="enhancement" data-align-right="" data-click="enhancement"> <div class="infobox" data-click="infoBox" data-module-id="00000180-b599-d00e-a1b0-fdbd5574000c">  <div class="infobox-image">    <a aria-label="Postcards from Portugal" class="link" href="https://www.latimes.com/world-nation/story/2022-05-12/these-californians-relocated-to-portugal-they-share-their-stories"><picture>    <source data-lazy-load="true" data-sizes="100vw" data-srcset="https://ca-times.brightspotcdn.com/dims4/default/7a981aa/2147483647/strip/true/crop/1921x606+0+80/resize/320x101!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fd6%2F1d%2F213fab624d8b821738670c3ab143%2F220512-portugalexpats-lisbon-stamp-break.png 320w,https://ca-times.brightspotcdn.com/dims4/default/7f2953e/2147483647/strip/true/crop/1921x606+0+80/resize/510x161!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fd6%2F1d%2F213fab624d8b821738670c3ab143%2F220512-portugalexpats-lisbon-stamp-break.png 510w" srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" type="image/webp">     <img alt="postage stamp for Lisbon, Portugal, illustrated with yellow buildings" class="image" data-lazy-load="true" data-sizes="100vw" data-src="https://ca-times.brightspotcdn.com/dims4/default/64cb29e/2147483647/strip/true/crop/1921x606+0+80/resize/510x161!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fd6%2F1d%2F213fab624d8b821738670c3ab143%2F220512-portugalexpats-lisbon-stamp-break.png" data-srcset="https://ca-times.brightspotcdn.com/dims4/default/32b2a79/2147483647/strip/true/crop/1921x606+0+80/resize/320x101!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fd6%2F1d%2F213fab624d8b821738670c3ab143%2F220512-portugalexpats-lisbon-stamp-break.png 320w,https://ca-times.brightspotcdn.com/dims4/default/64cb29e/2147483647/strip/true/crop/1921x606+0+80/resize/510x161!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fd6%2F1d%2F213fab624d8b821738670c3ab143%2F220512-portugalexpats-lisbon-stamp-break.png 510w" height="161" src="https://ca-times.brightspotcdn.com/dims4/default/64cb29e/2147483647/strip/true/crop/1921x606+0+80/resize/510x161!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fd6%2F1d%2F213fab624d8b821738670c3ab143%2F220512-portugalexpats-lisbon-stamp-break.png" srcset="https://ca-times.brightspotcdn.com/dims4/default/32b2a79/2147483647/strip/true/crop/1921x606+0+80/resize/320x101!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fd6%2F1d%2F213fab624d8b821738670c3ab143%2F220512-portugalexpats-lisbon-stamp-break.png 320w,https://ca-times.brightspotcdn.com/dims4/default/64cb29e/2147483647/strip/true/crop/1921x606+0+80/resize/510x161!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fd6%2F1d%2F213fab624d8b821738670c3ab143%2F220512-portugalexpats-lisbon-stamp-break.png 510w" width="510">  </picture></a>    </div>    <p class="infobox-title">Postcards from Portugal</p>   <p class="infobox-description">These Californians relocated to Portugal. They share their stories.</p>      </div> </div><p>The government has recognized the crisis. As of this year, the nation’s popular “golden visa” program, which offers residency to foreigners who buy homes priced at 500,000 euros or more — Americans dominate the program — is no longer taking applications in the biggest cities. That includes Lisbon, Porto and the Algarve, the southern coastal region long popular with retirees and lovers of surf culture.</p><p>In just a few years, evictions have more than doubled in Lisbon. The city’s former mayor, Fernando Medina, had launched an initiative to rent out hundreds of Airbnbs to use as housing for local workers only to <a class="link" href="https://www.bloomberg.com/graphics/2020-airbnb-short-let-reforms-lisbon/" target="_blank">see his ambitions fizzle</a> because owners could make more on the private market. “Lisbon, don’t be French,” said a recent comment on the Facebook page of the activist group Stop Despejos (Stop Evictions), a reference to the exorbitant costs of <a class="link" href="https://www.latimes.com/world/europe/la-fg-britain-expats-snap-story.html">expat-heavy destinations in France</a>.</p><p>While the nation’s popularity has grown fast during the pandemic with prices for locals and newcomers alike doing the same, those who arrived earlier have in some ways fared better.</p><p>Therese Mascardo, a 39-year-old therapist from Santa Monica, flew to Lisbon in 2019 after experimenting with online sessions to cut down on her four-hour daily round-trip commute to Orange County. Frustrated with the Trump presidency, mass shootings and a car-bound lifestyle, she said she sought out “the antiquity and charm” of an old European city that was walkable. Mascardo was attracted to the fact that right-wing parties have not made the same inroads in the nation as they have elsewhere in Europe.</p><p>Today, she can afford to work just two days a week — on a California schedule — while building out an online social media <a class="link" href="https://www.instagram.com/exploring.therapy/?hl=en" target="_blank">therapy content brand</a> in her free time. She has money to spare after paying her monthly 1,000-euro rent. One Sunday a month, she leads a rotating museum tour for digital nomads on stopovers in the city.</p><div class="enhancement" data-align-center-expanded="" data-click="enhancement"><figure class="figure"> <picture>    <source data-lazy-load="true" data-sizes="100vw" data-srcset="https://ca-times.brightspotcdn.com/dims4/default/5f4a71f/2147483647/strip/true/crop/4200x2800+0+0/resize/320x213!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F3c%2Fd1%2F6c93819b4a1e870aa2bcc1b66c70%2Fjsm-lisbon-latimes-026.jpg 320w,https://ca-times.brightspotcdn.com/dims4/default/994c176/2147483647/strip/true/crop/4200x2800+0+0/resize/568x379!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F3c%2Fd1%2F6c93819b4a1e870aa2bcc1b66c70%2Fjsm-lisbon-latimes-026.jpg 568w,https://ca-times.brightspotcdn.com/dims4/default/ecd518f/2147483647/strip/true/crop/4200x2800+0+0/resize/768x512!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F3c%2Fd1%2F6c93819b4a1e870aa2bcc1b66c70%2Fjsm-lisbon-latimes-026.jpg 768w,https://ca-times.brightspotcdn.com/dims4/default/6269c3f/2147483647/strip/true/crop/4200x2800+0+0/resize/1080x720!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F3c%2Fd1%2F6c93819b4a1e870aa2bcc1b66c70%2Fjsm-lisbon-latimes-026.jpg 1080w,https://ca-times.brightspotcdn.com/dims4/default/5c8f246/2147483647/strip/true/crop/4200x2800+0+0/resize/1240x826!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F3c%2Fd1%2F6c93819b4a1e870aa2bcc1b66c70%2Fjsm-lisbon-latimes-026.jpg 1240w,https://ca-times.brightspotcdn.com/dims4/default/4ac7994/2147483647/strip/true/crop/4200x2800+0+0/resize/1440x960!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F3c%2Fd1%2F6c93819b4a1e870aa2bcc1b66c70%2Fjsm-lisbon-latimes-026.jpg 1440w,https://ca-times.brightspotcdn.com/dims4/default/7c2db41/2147483647/strip/true/crop/4200x2800+0+0/resize/2160x1440!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F3c%2Fd1%2F6c93819b4a1e870aa2bcc1b66c70%2Fjsm-lisbon-latimes-026.jpg 2160w" srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" type="image/webp">     <img alt="A woman in a green jacket looks out the window at other buildings " class="image" data-lazy-load="true" data-sizes="100vw" data-src="https://ca-times.brightspotcdn.com/dims4/default/7a5f3f4/2147483647/strip/true/crop/4200x2800+0+0/resize/2000x1333!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F3c%2Fd1%2F6c93819b4a1e870aa2bcc1b66c70%2Fjsm-lisbon-latimes-026.jpg" data-srcset="https://ca-times.brightspotcdn.com/dims4/default/19dd0b5/2147483647/strip/true/crop/4200x2800+0+0/resize/320x213!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F3c%2Fd1%2F6c93819b4a1e870aa2bcc1b66c70%2Fjsm-lisbon-latimes-026.jpg 320w,https://ca-times.brightspotcdn.com/dims4/default/3e548df/2147483647/strip/true/crop/4200x2800+0+0/resize/568x379!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F3c%2Fd1%2F6c93819b4a1e870aa2bcc1b66c70%2Fjsm-lisbon-latimes-026.jpg 568w,https://ca-times.brightspotcdn.com/dims4/default/65e5ab0/2147483647/strip/true/crop/4200x2800+0+0/resize/768x512!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F3c%2Fd1%2F6c93819b4a1e870aa2bcc1b66c70%2Fjsm-lisbon-latimes-026.jpg 768w,https://ca-times.brightspotcdn.com/dims4/default/2f1d5ef/2147483647/strip/true/crop/4200x2800+0+0/resize/1080x720!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F3c%2Fd1%2F6c93819b4a1e870aa2bcc1b66c70%2Fjsm-lisbon-latimes-026.jpg 1080w,https://ca-times.brightspotcdn.com/dims4/default/fae1727/2147483647/strip/true/crop/4200x2800+0+0/resize/1240x826!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F3c%2Fd1%2F6c93819b4a1e870aa2bcc1b66c70%2Fjsm-lisbon-latimes-026.jpg 1240w,https://ca-times.brightspotcdn.com/dims4/default/dc6e2d3/2147483647/strip/true/crop/4200x2800+0+0/resize/1440x960!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F3c%2Fd1%2F6c93819b4a1e870aa2bcc1b66c70%2Fjsm-lisbon-latimes-026.jpg 1440w,https://ca-times.brightspotcdn.com/dims4/default/a3dcb1e/2147483647/strip/true/crop/4200x2800+0+0/resize/2160x1440!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F3c%2Fd1%2F6c93819b4a1e870aa2bcc1b66c70%2Fjsm-lisbon-latimes-026.jpg 2160w" height="1333" src="https://ca-times.brightspotcdn.com/dims4/default/7a5f3f4/2147483647/strip/true/crop/4200x2800+0+0/resize/2000x1333!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F3c%2Fd1%2F6c93819b4a1e870aa2bcc1b66c70%2Fjsm-lisbon-latimes-026.jpg" srcset="https://ca-times.brightspotcdn.com/dims4/default/19dd0b5/2147483647/strip/true/crop/4200x2800+0+0/resize/320x213!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F3c%2Fd1%2F6c93819b4a1e870aa2bcc1b66c70%2Fjsm-lisbon-latimes-026.jpg 320w,https://ca-times.brightspotcdn.com/dims4/default/3e548df/2147483647/strip/true/crop/4200x2800+0+0/resize/568x379!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F3c%2Fd1%2F6c93819b4a1e870aa2bcc1b66c70%2Fjsm-lisbon-latimes-026.jpg 568w,https://ca-times.brightspotcdn.com/dims4/default/65e5ab0/2147483647/strip/true/crop/4200x2800+0+0/resize/768x512!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F3c%2Fd1%2F6c93819b4a1e870aa2bcc1b66c70%2Fjsm-lisbon-latimes-026.jpg 768w,https://ca-times.brightspotcdn.com/dims4/default/2f1d5ef/2147483647/strip/true/crop/4200x2800+0+0/resize/1080x720!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F3c%2Fd1%2F6c93819b4a1e870aa2bcc1b66c70%2Fjsm-lisbon-latimes-026.jpg 1080w,https://ca-times.brightspotcdn.com/dims4/default/fae1727/2147483647/strip/true/crop/4200x2800+0+0/resize/1240x826!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F3c%2Fd1%2F6c93819b4a1e870aa2bcc1b66c70%2Fjsm-lisbon-latimes-026.jpg 1240w,https://ca-times.brightspotcdn.com/dims4/default/dc6e2d3/2147483647/strip/true/crop/4200x2800+0+0/resize/1440x960!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F3c%2Fd1%2F6c93819b4a1e870aa2bcc1b66c70%2Fjsm-lisbon-latimes-026.jpg 1440w,https://ca-times.brightspotcdn.com/dims4/default/a3dcb1e/2147483647/strip/true/crop/4200x2800+0+0/resize/2160x1440!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F3c%2Fd1%2F6c93819b4a1e870aa2bcc1b66c70%2Fjsm-lisbon-latimes-026.jpg 2160w" width="2000">  </picture>   <div class="figure-content"> <p>Therese Mascardo at her apartment in a Lisbon neighborhood.</p><p>(Jose Sarmento Matos / For The Times)</p> </div>  </figure></div><p>From the streets outside her three-bedroom apartment that straddles the Estrela and Lapa neighborhoods, Mascardo, who grew up in Orange and studied at UC Berkeley, can look downhill and spot the the 25th of April Bridge. Modeled after the Bay Bridge, it is painted in the same red as the Golden Gate and reminds her of home.</p><p>But despite twice-yearly trips to Los Angeles, where she lugs in cheap Vinho Verde and stocks up on Anthropologie candles and Trader Joe’s pea chips for the return, she has no plans to leave.</p><p>“I love my weekly stroll to the farmers market and being within a 15-minute walk of most of my friends,” Mascardo said. “I love the kindness and hospitality of the Portuguese people, especially when they graciously endure my nascent Portuguese language skills and gently offer corrections and tips. I love that people eat bread here and aren’t always talking about the restrictive diet they are on. I love that dressing down is the standard way of existence here. I feel happier and not just trying hard to be happy.”</p><p>Jamie Dixon feels the same way.</p><p>Walking recently along the Avenida da República, the cliffside road near her new home that’s lined with cafes overlooking the ocean, she was for moments convinced she was back in Malibu at a sort of Point Dume on the Atlantic. But as she crossed the road and glimpsed the Portuguese street signs, she was reminded that it takes time and patience to build a new life in a distant land.</p><div class="enhancement" data-align-center-expanded="" data-click="enhancement"><figure class="figure"> <picture>    <source data-lazy-load="true" data-sizes="100vw" data-srcset="https://ca-times.brightspotcdn.com/dims4/default/a8ebc19/2147483647/strip/true/crop/4200x2800+0+0/resize/320x213!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fa1%2Fd9%2F4b3b099f4e8bb4e7cdf6d3dc330f%2Fjsm-lisbon-latimes-033.jpg 320w,https://ca-times.brightspotcdn.com/dims4/default/1b7fd10/2147483647/strip/true/crop/4200x2800+0+0/resize/568x379!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fa1%2Fd9%2F4b3b099f4e8bb4e7cdf6d3dc330f%2Fjsm-lisbon-latimes-033.jpg 568w,https://ca-times.brightspotcdn.com/dims4/default/d006935/2147483647/strip/true/crop/4200x2800+0+0/resize/768x512!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fa1%2Fd9%2F4b3b099f4e8bb4e7cdf6d3dc330f%2Fjsm-lisbon-latimes-033.jpg 768w,https://ca-times.brightspotcdn.com/dims4/default/ed0df2f/2147483647/strip/true/crop/4200x2800+0+0/resize/1080x720!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fa1%2Fd9%2F4b3b099f4e8bb4e7cdf6d3dc330f%2Fjsm-lisbon-latimes-033.jpg 1080w,https://ca-times.brightspotcdn.com/dims4/default/cce1a4c/2147483647/strip/true/crop/4200x2800+0+0/resize/1240x826!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fa1%2Fd9%2F4b3b099f4e8bb4e7cdf6d3dc330f%2Fjsm-lisbon-latimes-033.jpg 1240w,https://ca-times.brightspotcdn.com/dims4/default/505ebf1/2147483647/strip/true/crop/4200x2800+0+0/resize/1440x960!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fa1%2Fd9%2F4b3b099f4e8bb4e7cdf6d3dc330f%2Fjsm-lisbon-latimes-033.jpg 1440w,https://ca-times.brightspotcdn.com/dims4/default/40b3f9e/2147483647/strip/true/crop/4200x2800+0+0/resize/2160x1440!/format/webp/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fa1%2Fd9%2F4b3b099f4e8bb4e7cdf6d3dc330f%2Fjsm-lisbon-latimes-033.jpg 2160w" srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" type="image/webp">     <img alt="A group of men gather near a yellow-and-black ball on a beach with buildings in the background
+" class="image" data-lazy-load="true" data-sizes="100vw" data-src="https://ca-times.brightspotcdn.com/dims4/default/e7b209b/2147483647/strip/true/crop/4200x2800+0+0/resize/2000x1333!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fa1%2Fd9%2F4b3b099f4e8bb4e7cdf6d3dc330f%2Fjsm-lisbon-latimes-033.jpg" data-srcset="https://ca-times.brightspotcdn.com/dims4/default/187280a/2147483647/strip/true/crop/4200x2800+0+0/resize/320x213!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fa1%2Fd9%2F4b3b099f4e8bb4e7cdf6d3dc330f%2Fjsm-lisbon-latimes-033.jpg 320w,https://ca-times.brightspotcdn.com/dims4/default/87427fc/2147483647/strip/true/crop/4200x2800+0+0/resize/568x379!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fa1%2Fd9%2F4b3b099f4e8bb4e7cdf6d3dc330f%2Fjsm-lisbon-latimes-033.jpg 568w,https://ca-times.brightspotcdn.com/dims4/default/81361d7/2147483647/strip/true/crop/4200x2800+0+0/resize/768x512!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fa1%2Fd9%2F4b3b099f4e8bb4e7cdf6d3dc330f%2Fjsm-lisbon-latimes-033.jpg 768w,https://ca-times.brightspotcdn.com/dims4/default/272d7cf/2147483647/strip/true/crop/4200x2800+0+0/resize/1080x720!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fa1%2Fd9%2F4b3b099f4e8bb4e7cdf6d3dc330f%2Fjsm-lisbon-latimes-033.jpg 1080w,https://ca-times.brightspotcdn.com/dims4/default/3dd6e10/2147483647/strip/true/crop/4200x2800+0+0/resize/1240x826!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fa1%2Fd9%2F4b3b099f4e8bb4e7cdf6d3dc330f%2Fjsm-lisbon-latimes-033.jpg 1240w,https://ca-times.brightspotcdn.com/dims4/default/f83a58b/2147483647/strip/true/crop/4200x2800+0+0/resize/1440x960!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fa1%2Fd9%2F4b3b099f4e8bb4e7cdf6d3dc330f%2Fjsm-lisbon-latimes-033.jpg 1440w,https://ca-times.brightspotcdn.com/dims4/default/91e65e0/2147483647/strip/true/crop/4200x2800+0+0/resize/2160x1440!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fa1%2Fd9%2F4b3b099f4e8bb4e7cdf6d3dc330f%2Fjsm-lisbon-latimes-033.jpg 2160w" height="1333" src="https://ca-times.brightspotcdn.com/dims4/default/e7b209b/2147483647/strip/true/crop/4200x2800+0+0/resize/2000x1333!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fa1%2Fd9%2F4b3b099f4e8bb4e7cdf6d3dc330f%2Fjsm-lisbon-latimes-033.jpg" srcset="https://ca-times.brightspotcdn.com/dims4/default/187280a/2147483647/strip/true/crop/4200x2800+0+0/resize/320x213!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fa1%2Fd9%2F4b3b099f4e8bb4e7cdf6d3dc330f%2Fjsm-lisbon-latimes-033.jpg 320w,https://ca-times.brightspotcdn.com/dims4/default/87427fc/2147483647/strip/true/crop/4200x2800+0+0/resize/568x379!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fa1%2Fd9%2F4b3b099f4e8bb4e7cdf6d3dc330f%2Fjsm-lisbon-latimes-033.jpg 568w,https://ca-times.brightspotcdn.com/dims4/default/81361d7/2147483647/strip/true/crop/4200x2800+0+0/resize/768x512!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fa1%2Fd9%2F4b3b099f4e8bb4e7cdf6d3dc330f%2Fjsm-lisbon-latimes-033.jpg 768w,https://ca-times.brightspotcdn.com/dims4/default/272d7cf/2147483647/strip/true/crop/4200x2800+0+0/resize/1080x720!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fa1%2Fd9%2F4b3b099f4e8bb4e7cdf6d3dc330f%2Fjsm-lisbon-latimes-033.jpg 1080w,https://ca-times.brightspotcdn.com/dims4/default/3dd6e10/2147483647/strip/true/crop/4200x2800+0+0/resize/1240x826!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fa1%2Fd9%2F4b3b099f4e8bb4e7cdf6d3dc330f%2Fjsm-lisbon-latimes-033.jpg 1240w,https://ca-times.brightspotcdn.com/dims4/default/f83a58b/2147483647/strip/true/crop/4200x2800+0+0/resize/1440x960!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fa1%2Fd9%2F4b3b099f4e8bb4e7cdf6d3dc330f%2Fjsm-lisbon-latimes-033.jpg 1440w,https://ca-times.brightspotcdn.com/dims4/default/91e65e0/2147483647/strip/true/crop/4200x2800+0+0/resize/2160x1440!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fa1%2Fd9%2F4b3b099f4e8bb4e7cdf6d3dc330f%2Fjsm-lisbon-latimes-033.jpg 2160w" width="2000">  </picture>   <div class="figure-content"> <p>A volleyball game on a Cascais beach in Portugal.</p><p>(Jose Sarmento Matos / For The Times)</p> </div>  </figure></div><p>“I miss knowing people when I go out to a restaurant or bar. I miss frolicking in the desert. I miss Palm Springs. I miss how easy it is to pay bills or renew my license. I miss being fluent,” Dixon said. “It’s taken months to just feel like we are barely settling in. But I feel safer here going out alone. I’m excited my daughter will speak other languages.”</p><p>She was on her way home to pack for a family trip to Mallorca, something that would have required a week of time off and thousands of dollars when she was back in the U.S. From here, it would be a quick weekend jaunt on the cheap.</p><p>“I thought L.A. was the end-all, be-all and the only place out there,” she said. “But, sometimes, you have to take a leap and realize America isn’t home forever.”</p><p><i>Times staff writer Rachel Schnalzer contributed to this report.</i></p></body>

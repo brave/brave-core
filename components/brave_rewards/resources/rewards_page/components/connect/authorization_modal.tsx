@@ -1,0 +1,270 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import * as React from 'react'
+import Icon from '@brave/leo/react/icon'
+import ProgressRing from '@brave/leo/react/progressRing'
+
+import { RouterContext } from '../../lib/router'
+import { ConnectExternalWalletResult } from '../../lib/app_store'
+import { formatString } from '$web-common/formatString'
+import { useAppActions } from '../../lib/app_context'
+import { NewTabLink } from '../../../shared/components/new_tab_link'
+import { Modal } from '../common/modal'
+import * as routes from '../../lib/app_routes'
+import * as urls from '../../../shared/lib/rewards_urls'
+
+import {
+  externalWalletProviderFromString,
+  getExternalWalletProviderName,
+} from '../../../shared/lib/external_wallet'
+
+import { style } from './authorization_modal.style'
+
+export function AuthorizationModal() {
+  const router = React.useContext(RouterContext)
+  const actions = useAppActions()
+  const { getString } = actions
+
+  const [result, setResult] =
+    React.useState<ConnectExternalWalletResult | null>(null)
+
+  function getProvider() {
+    // After OAuth login, the browser will be redirected to
+    // "//rewards/<provider>/authorization"; the provider name is the first
+    // path component.
+    const [, providerString] = location.pathname.split(/\//g)
+    return externalWalletProviderFromString(providerString)
+  }
+
+  function onClose() {
+    router.replaceRoute(routes.home)
+  }
+
+  React.useEffect(() => {
+    const provider = getProvider()
+    if (!provider) {
+      console.error('Missing provider name in path')
+      setResult('unexpected-error')
+      return
+    }
+
+    const params = new URLSearchParams(location.search)
+    const args = Object.fromEntries(params.entries())
+
+    actions.connectExternalWallet(provider, args).then((result) => {
+      if (result === 'success') {
+        onClose()
+      } else {
+        setResult(result)
+      }
+    })
+  }, [actions])
+
+  function errorTitle() {
+    switch (result) {
+      case null:
+      case 'success':
+        return ''
+      case 'device-limit-reached':
+        return getString('authorizeDeviceLimitReachedTitle')
+      case 'flagged-wallet':
+        return getString('authorizeFlaggedWalletTitle')
+      case 'kyc-required':
+        return getString('authorizeKycRequiredTitle')
+      case 'mismatched-countries':
+        return getString('authorizeMismatchedCountriesTitle')
+      case 'mismatched-provider-accounts':
+        return getString('authorizeMismatchedProviderAccountsTitle')
+      case 'provider-unavailable':
+        return getString('authorizeProviderUnavailableTitle')
+      case 'region-not-supported':
+        return getString('authorizeRegionNotSupportedTitle')
+      case 'request-signature-verification-error':
+      case 'uphold-transaction-verification-failure':
+        return getString('authorizeSignatureVerificationErrorTitle')
+      case 'uphold-bat-not-allowed':
+        return getString('authorizeUpholdBatNotAllowedTitle')
+      case 'uphold-insufficient-capabilities':
+        return getString('authorizeUpholdInsufficientCapabilitiesTitle')
+      case 'unexpected-error':
+        return getString('authorizeUnexpectedErrorTitle')
+    }
+  }
+
+  function errorText(): React.ReactNode {
+    const provider = getProvider()
+    const providerName = provider ? getExternalWalletProviderName(provider) : ''
+
+    switch (result) {
+      case null:
+      case 'success':
+        return ''
+      case 'device-limit-reached':
+        return (
+          <span>
+            {formatString(getString('authorizeDeviceLimitReachedText'), [
+              providerName,
+            ])}{' '}
+            <NewTabLink href={urls.deviceLimitLearnMoreURL}>
+              {getString('learnMoreLink')}
+            </NewTabLink>
+          </span>
+        )
+      case 'flagged-wallet':
+        return (
+          <>
+            <p>
+              {getString('authorizeFlaggedWalletText1')}
+              {getString('authorizeFlaggedWalletText2')}
+            </p>
+            <p>{getString('authorizeFlaggedWalletText3')}</p>
+            <p>
+              <NewTabLink href={urls.flaggedWalletURL}>
+                {getString('authorizeFlaggedWalletText4')}
+              </NewTabLink>
+            </p>
+          </>
+        )
+      case 'kyc-required':
+        return formatString(getString('authorizeKycRequiredText'), [
+          providerName,
+        ])
+      case 'mismatched-countries':
+        return (
+          <>
+            <p>
+              {formatString(getString('authorizeMismatchedCountriesText'), [
+                providerName,
+              ])}
+            </p>
+            <p>
+              <NewTabLink href={urls.mismatchedCountriesURL}>
+                {getString('learnMoreLink')}
+              </NewTabLink>
+            </p>
+          </>
+        )
+      case 'mismatched-provider-accounts':
+        return (
+          <>
+            <p>
+              {formatString(
+                getString('authorizeMismatchedProviderAccountsText'),
+                [providerName],
+              )}
+            </p>
+            <p>
+              <NewTabLink href={urls.mismatchedProviderAccountsURL}>
+                {getString('learnMoreLink')}
+              </NewTabLink>
+            </p>
+          </>
+        )
+      case 'provider-unavailable':
+        return (
+          <>
+            <p>
+              {formatString(getString('authorizeProviderUnavailableText1'), [
+                providerName,
+              ])}
+            </p>
+            <p>
+              {formatString(getString('authorizeProviderUnavailableText2'), {
+                $1: (content) => (
+                  <NewTabLink href={urls.braveStatusURL}>{content}</NewTabLink>
+                ),
+              })}
+            </p>
+          </>
+        )
+      case 'region-not-supported':
+        return (
+          <>
+            <p>
+              {formatString(getString('authorizeRegionNotSupportedText1'), [
+                providerName,
+              ])}
+            </p>
+            <p>
+              {formatString(getString('authorizeRegionNotSupportedText2'), {
+                $1: (content) => (
+                  <NewTabLink href={urls.supportedWalletRegionsURL}>
+                    {content}
+                  </NewTabLink>
+                ),
+              })}
+            </p>
+          </>
+        )
+      case 'request-signature-verification-error':
+      case 'uphold-transaction-verification-failure':
+        return (
+          <p>
+            {formatString(
+              getString('authorizeSignatureVerificationErrorText'),
+              {
+                $1: providerName,
+                $2: (content) => (
+                  <NewTabLink href={urls.contactSupportURL}>
+                    {content}
+                  </NewTabLink>
+                ),
+              },
+            )}
+          </p>
+        )
+      case 'uphold-bat-not-allowed':
+        return getString('authorizeUpholdBatNotAllowedText')
+      case 'uphold-insufficient-capabilities':
+        return getString('authorizeUpholdInsufficientCapabilitiesText')
+      case 'unexpected-error':
+        return (
+          <p>
+            {formatString(getString('authorizeUnexpectedErrorText'), {
+              $1: (content) => (
+                <NewTabLink href={urls.contactSupportURL}>{content}</NewTabLink>
+              ),
+            })}
+          </p>
+        )
+    }
+  }
+
+  if (!result) {
+    return (
+      <Modal>
+        <div data-css-scope={style.scope}>
+          <div className='processing'>
+            <ProgressRing />
+            {getString('authorizeProcessingText')}
+          </div>
+        </div>
+      </Modal>
+    )
+  }
+
+  return (
+    <Modal
+      className='authorization-modal'
+      onEscape={onClose}
+    >
+      <Modal.Header
+        title={getString('authorizeErrorTitle')}
+        onClose={onClose}
+      />
+      <div data-css-scope={style.scope}>
+        <div className='status-icon'>
+          <Icon name='warning-triangle-filled' />
+        </div>
+        <h3>{errorTitle()}</h3>
+        <div className='error-text'>{errorText()}</div>
+      </div>
+      <Modal.Actions
+        actions={[{ text: getString('closeButtonLabel'), onClick: onClose }]}
+      />
+    </Modal>
+  )
+}

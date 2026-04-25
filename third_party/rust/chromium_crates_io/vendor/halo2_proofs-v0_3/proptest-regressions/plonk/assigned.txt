@@ -1,0 +1,7 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc 9ec8b547e21d3ed71ee4f99316edb8ff7d0c4d42751bb2479a2864a661860326 # shrinks to (values, operations) = ([Rational(0x0000000000000000000000000000000000000000000000000000000000000000, 0x0000000000000000000000000000000000000000000000000000000000000000), Trivial(0x0000000000000000000000000000000000000000000000000000000000000001)], [Add])

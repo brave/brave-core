@@ -1,0 +1,421 @@
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/ui/webui/brave_settings_ui.h"
+
+#include <memory>
+#include <string>
+#include <utility>
+
+#include "base/check_deref.h"
+#include "base/compiler_specific.h"
+#include "base/feature_list.h"
+#include "base/strings/strcat.h"
+#include "brave/brave_domains/service_domains.h"
+#include "brave/browser/brave_account/brave_account_service_factory.h"
+#include "brave/browser/brave_origin/brave_origin_service_factory.h"
+#include "brave/browser/resources/settings/grit/brave_settings_resources.h"
+#include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
+#include "brave/browser/shell_integrations/buildflags/buildflags.h"
+#include "brave/browser/ui/commands/accelerator_service_factory.h"
+#include "brave/browser/ui/page_info/features.h"
+#include "brave/browser/ui/webui/settings/brave_account/brave_account_row_handler.h"
+#include "brave/browser/ui/webui/settings/brave_adblock_handler.h"
+#include "brave/browser/ui/webui/settings/brave_appearance_handler.h"
+#include "brave/browser/ui/webui/settings/brave_default_extensions_handler.h"
+#include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
+#include "brave/browser/ui/webui/settings/brave_sync_handler.h"
+#include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_account/brave_account_service.h"
+#include "brave/components/brave_account/features.h"
+#include "brave/components/brave_origin/brave_origin_service.h"
+#include "brave/components/brave_origin/brave_origin_settings_handler_impl.h"
+#include "brave/components/brave_origin/brave_origin_utils.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/features.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
+#include "brave/components/commander/common/features.h"
+#include "brave/components/commands/common/commands.mojom.h"
+#include "brave/components/commands/common/features.h"
+#include "brave/components/email_aliases/buildflags/buildflags.h"
+#include "brave/components/ntp_background_images/browser/features.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
+#include "brave/components/search_engines/brave_prepopulated_engines.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/version_info/version_info.h"
+#include "brave/ui/webui/brave_color_change_listener/brave_color_change_handler.h"
+#include "build/build_config.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
+#include "chrome/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
+#include "components/regional_capabilities/regional_capabilities_country_id.h"
+#include "components/regional_capabilities/regional_capabilities_service.h"
+#include "components/sync/base/command_line_switches.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_ui_data_source.h"
+#include "content/public/common/content_features.h"
+#include "extensions/buildflags/buildflags.h"
+#include "net/base/features.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ai_chat/ai_chat_settings_helper.h"
+#include "brave/browser/ai_chat/ollama/ollama_service_factory.h"
+#include "brave/browser/ui/webui/settings/brave_settings_leo_assistant_handler.h"
+#include "brave/components/ai_chat/core/browser/customization_settings_handler.h"
+#include "brave/components/ai_chat/core/browser/ollama/ollama_service.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_util.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PIN_SHORTCUT)
+#include "brave/browser/ui/webui/settings/pin_shortcut_handler.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/components/speedreader/common/features.h"
+#include "brave/components/speedreader/speedreader_pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
+#include "brave/browser/brave_vpn/vpn_utils.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_service.h"
+#if BUILDFLAG(IS_WIN)
+#include "brave/browser/ui/webui/settings/brave_vpn/brave_vpn_handler.h"
+#endif
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+#include "brave/components/brave_wayback_machine/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/ui/webui/settings/brave_tor_handler.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "brave/browser/extensions/manifest_v2/features.h"
+#include "brave/browser/ui/webui/settings/brave_extensions_manifest_v2_handler.h"
+#include "brave/browser/ui/webui/settings/brave_tor_snowflake_extension_handler.h"
+#endif
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/core/browser/containers_settings_handler.h"
+#include "brave/components/containers/core/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/browser/ui/webui/settings/brave_wallet_handler.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/browser/email_aliases/email_aliases_service_factory.h"
+#include "brave/components/email_aliases/email_aliases.mojom.h"
+#include "brave/components/email_aliases/features.h"
+#endif
+
+namespace {
+
+bool IsLocaleJapan(Profile* profile) {
+  if (auto* regional_capabilities = regional_capabilities::
+          RegionalCapabilitiesServiceFactory::GetForProfile(profile)) {
+    return regional_capabilities->GetCountryId() ==
+           regional_capabilities::CountryIdHolder(
+               country_codes::CountryId("JP"));
+  }
+  return false;
+}
+
+}  // namespace
+
+BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui) : SettingsUI(web_ui) {
+  web_ui->AddMessageHandler(
+      std::make_unique<settings::MetricsReportingHandler>());
+  web_ui->AddMessageHandler(std::make_unique<BravePrivacyHandler>());
+  web_ui->AddMessageHandler(std::make_unique<DefaultBraveShieldsHandler>());
+  web_ui->AddMessageHandler(std::make_unique<BraveDefaultExtensionsHandler>());
+  web_ui->AddMessageHandler(std::make_unique<BraveAppearanceHandler>());
+  web_ui->AddMessageHandler(std::make_unique<BraveSyncHandler>());
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  web_ui->AddMessageHandler(std::make_unique<BraveWalletHandler>());
+#endif
+  web_ui->AddMessageHandler(std::make_unique<BraveAdBlockHandler>());
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  web_ui->AddMessageHandler(
+      std::make_unique<settings::BraveLeoAssistantHandler>());
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+  web_ui->AddMessageHandler(std::make_unique<BraveTorHandler>());
+#endif
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  web_ui->AddMessageHandler(
+      std::make_unique<BraveTorSnowflakeExtensionHandler>());
+  if (base::FeatureList::IsEnabled(
+          extensions_mv2::features::kExtensionsManifestV2)) {
+    web_ui->AddMessageHandler(
+        std::make_unique<BraveExtensionsManifestV2Handler>());
+  }
+#endif
+#if BUILDFLAG(ENABLE_PIN_SHORTCUT)
+  web_ui->AddMessageHandler(std::make_unique<PinShortcutHandler>());
+#endif
+#if BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)
+  if (brave_vpn::IsBraveVPNEnabled(Profile::FromWebUI(web_ui))) {
+    web_ui->AddMessageHandler(
+        std::make_unique<BraveVpnHandler>(Profile::FromWebUI(web_ui)));
+  }
+#endif
+}
+
+BraveSettingsUI::~BraveSettingsUI() = default;
+
+// static
+void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
+                                   Profile* profile) {
+  html_source->AddResourcePaths(kBraveSettingsResources);
+
+  html_source->AddBoolean("isSyncDisabled", !syncer::IsSyncAllowedByFlag());
+  html_source->AddString(
+      "braveProductVersion",
+      version_info::GetBraveVersionWithoutChromiumMajorVersion());
+  html_source->AddBoolean(
+      "isIdleDetectionFeatureEnabled",
+      base::FeatureList::IsEnabled(features::kIdleDetection));
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  html_source->AddBoolean("isBraveVPNEnabled",
+                          brave_vpn::IsBraveVPNEnabled(profile));
+#if BUILDFLAG(IS_MAC) && BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
+  html_source->AddBoolean(
+      "isBraveVPNWireguardEnabledOnMac",
+      base::FeatureList::IsEnabled(
+          brave_vpn::features::kBraveVPNEnableWireguardForOSX));
+#endif  // BUILDFLAG(IS_MAC) && BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  html_source->AddBoolean(
+      "isSpeedreaderAllowed",
+      base::FeatureList::IsEnabled(
+          speedreader::features::kSpeedreaderFeature) &&
+          (profile->GetPrefs()->GetBoolean(speedreader::kSpeedreaderEnabled) ||
+           !profile->GetPrefs()->IsManagedPreference(
+               speedreader::kSpeedreaderEnabled)));
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  html_source->AddBoolean("isCardanoDappSupportFeatureEnabled",
+                          brave_wallet::IsCardanoDAppSupportEnabled());
+  html_source->AddBoolean("isBraveWalletAllowed",
+                          brave_wallet::IsAllowedForContext(profile));
+#endif
+  html_source->AddBoolean("isForgetFirstPartyStorageFeatureEnabled",
+                          base::FeatureList::IsEnabled(
+                              net::features::kBraveForgetFirstPartyStorage));
+  html_source->AddBoolean(
+      "isBlockElementFeatureEnabled",
+      base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveShieldsElementPicker));
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  html_source->AddBoolean("isBraveRewardsSupported",
+                          brave_rewards::IsSupportedForProfile(profile));
+#else
+  html_source->AddBoolean("isBraveRewardsSupported", false);
+#endif
+  html_source->AddBoolean(
+      "areShortcutsSupported",
+      base::FeatureList::IsEnabled(commands::features::kBraveCommands));
+
+  html_source->AddBoolean("shouldExposeElementsForTesting",
+                          ShouldExposeElementsForTesting());
+
+  html_source->AddBoolean("enable_extensions", BUILDFLAG(ENABLE_EXTENSIONS));
+
+  html_source->AddBoolean("extensionsManifestV2Feature",
+                          base::FeatureList::IsEnabled(
+                              extensions_mv2::features::kExtensionsManifestV2));
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  html_source->AddBoolean("isLeoAssistantAllowed",
+                          ai_chat::IsAIChatEnabled(profile->GetPrefs()));
+  html_source->AddBoolean("isLeoAssistantHistoryAllowed",
+                          ai_chat::features::IsAIChatHistoryEnabled());
+#endif
+
+  html_source->AddBoolean("isSurveyPanelistAllowed",
+                          base::FeatureList::IsEnabled(
+                              ntp_background_images::features::
+                                  kBraveNTPBrandedWallpaperSurveyPanelist) &&
+                              !profile->GetPrefs()->GetBoolean(
+                                  brave_rewards::prefs::kDisabledByPolicy));
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  html_source->AddBoolean(
+      "isPlaylistAllowed",
+      base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
+          profile->GetPrefs()->GetBoolean(playlist::kPlaylistEnabledPref));
+#else
+  html_source->AddBoolean("isPlaylistAllowed", false);
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
+
+  html_source->AddBoolean(
+      "showCommandsInOmnibox",
+      base::FeatureList::IsEnabled(features::kBraveCommandsInOmnibox));
+  html_source->AddBoolean(
+      "isSharedPinnedTabsEnabled",
+      base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs));
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+  html_source->AddBoolean("isEmailAliasesEnabled",
+                          email_aliases::features::IsEmailAliasesEnabled());
+#endif
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  html_source->AddBoolean(
+      "isContainersEnabled",
+      base::FeatureList::IsEnabled(containers::features::kContainers));
+#endif
+  html_source->AddBoolean("isBraveAccountEnabled",
+                          brave_account::features::IsBraveAccountEnabled());
+  html_source->AddBoolean("isBraveOriginBrandedBuild",
+                          BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED));
+  html_source->AddBoolean("isBraveOriginPurchased",
+                          brave_origin::IsBraveOriginPurchased());
+  html_source->AddBoolean("isBraveOriginFeatureEnabled",
+                          brave_origin::IsBraveOriginFeatureEnabled());
+  // STAGING for unofficial builds; official builds always resolve to prod.
+  html_source->AddString(
+      "braveOriginBuyUrl",
+      base::StrCat(
+          {"https://",
+           brave_domains::GetServicesDomain(
+               "account", brave_domains::ServicesEnvironment::STAGING),
+           "/?intent=checkout&product=origin&mtm_campaign=browser-settings"}));
+  html_source->AddBoolean("isTreeTabsFlagEnabled",
+                          base::FeatureList::IsEnabled(tabs::kBraveTreeTab));
+  html_source->AddBoolean(
+      "isScrollableHorizontalTabStripEnabled",
+      base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip));
+  html_source->AddString("braveSearchEngineName",
+                         TemplateURLPrepopulateData::brave_search.name);
+  html_source->AddBoolean("isLocaleJapan", IsLocaleJapan(profile));
+  html_source->AddBoolean(
+      "isHideVerticalTabCompletelyFlagEnabled",
+      base::FeatureList::IsEnabled(tabs::kBraveVerticalTabHideCompletely));
+  html_source->AddBoolean(
+      "isShowBraveShieldsInPageInfoEnabled",
+      page_info::features::IsShowBraveShieldsInPageInfoEnabled());
+}
+
+// static
+bool& BraveSettingsUI::ShouldExposeElementsForTesting() {
+  static bool expose_elements = false;
+  return expose_elements;
+}
+
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<commands::mojom::CommandsService> pending_receiver) {
+  commands::AcceleratorServiceFactory::GetForContext(
+      web_ui()->GetWebContents()->GetBrowserContext())
+      ->BindInterface(std::move(pending_receiver));
+}
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::AIChatSettingsHelper>
+        pending_receiver) {
+  auto helper = std::make_unique<ai_chat::AIChatSettingsHelper>(
+      web_ui()->GetWebContents()->GetBrowserContext());
+  MakeOwnedReceiver(std::move(helper), std::move(pending_receiver));
+}
+
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::CustomizationSettingsHandler>
+        pending_receiver) {
+  auto handler = std::make_unique<ai_chat::CustomizationSettingsHandler>(
+      user_prefs::UserPrefs::Get(
+          web_ui()->GetWebContents()->GetBrowserContext()));
+  MakeOwnedReceiver(std::move(handler), std::move(pending_receiver));
+}
+
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::OllamaService> pending_receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  auto* ollama_service = ai_chat::OllamaServiceFactory::GetForProfile(profile);
+  if (ollama_service) {
+    ollama_service->BindReceiver(std::move(pending_receiver));
+  }
+}
+#endif
+
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<brave_account::mojom::Authentication>
+        pending_receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  auto* brave_account_service =
+      brave_account::BraveAccountServiceFactory::GetFor(profile);
+  CHECK_DEREF(brave_account_service).BindInterface(std::move(pending_receiver));
+}
+
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<brave_account::mojom::RowHandler> pending_receiver) {
+  MakeOwnedReceiver(
+      std::make_unique<brave_account::BraveAccountRowHandler>(web_ui()),
+      std::move(pending_receiver));
+}
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<containers::mojom::ContainersSettingsHandler>
+        pending_receiver) {
+  if (!base::FeatureList::IsEnabled(containers::features::kContainers)) {
+    return;
+  }
+  auto handler = std::make_unique<containers::ContainersSettingsHandler>(
+      user_prefs::UserPrefs::Get(
+          web_ui()->GetWebContents()->GetBrowserContext()));
+  MakeOwnedReceiver(std::move(handler), std::move(pending_receiver));
+}
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<email_aliases::mojom::EmailAliasesService> receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  email_aliases::EmailAliasesServiceFactory::BindForProfile(
+      profile, std::move(receiver));
+}
+#endif  // BUILDFLAG(ENABLE_EMAIL_ALIASES)
+
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<brave_origin::mojom::BraveOriginSettingsHandler>
+        receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  auto* brave_origin_service =
+      brave_origin::BraveOriginServiceFactory::GetForProfile(profile);
+  // Service may be null for Guest profiles
+  if (brave_origin_service) {
+    auto handler =
+        std::make_unique<brave_origin::BraveOriginSettingsHandlerImpl>(
+            brave_origin_service);
+    MakeOwnedReceiver(std::move(handler), std::move(receiver));
+  }
+}

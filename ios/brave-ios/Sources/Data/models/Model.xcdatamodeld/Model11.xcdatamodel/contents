@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20D80" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Bookmark" representedClassName=".Favorite" syncable="YES">
+        <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="customTitle" optional="YES" attributeType="String"/>
+        <attribute name="isFavorite" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isFolder" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="lastVisited" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="order" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="syncDisplayUUID" optional="YES" attributeType="String"/>
+        <attribute name="syncOrder" optional="YES" attributeType="String"/>
+        <attribute name="syncParentDisplayUUID" optional="YES" attributeType="String"/>
+        <attribute name="tags" optional="YES" attributeType="Transformable"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="url" optional="YES" attributeType="String"/>
+        <attribute name="visits" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="children" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Bookmark" inverseName="parentFolder" inverseEntity="Bookmark"/>
+        <relationship name="domain" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Domain" inverseName="bookmarks" inverseEntity="Domain"/>
+        <relationship name="parentFolder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Bookmark" inverseName="children" inverseEntity="Bookmark"/>
+        <fetchIndex name="byLastVisitedIndex">
+            <fetchIndexElement property="lastVisited" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byUrlIndex">
+            <fetchIndexElement property="url" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byVisitsIndex">
+            <fetchIndexElement property="visits" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="Device" representedClassName=".Device" syncable="YES">
+        <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="deviceDisplayId" optional="YES" attributeType="String"/>
+        <attribute name="isCurrentDevice" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isSynced" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="syncDisplayUUID" optional="YES" attributeType="String"/>
+        <relationship name="tabs" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TabMO" inverseName="device" inverseEntity="TabMO"/>
+    </entity>
+    <entity name="Domain" representedClassName=".Domain" syncable="YES">
+        <attribute name="blockedFromTopSites" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="shield_adblockAndTp" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="shield_allOff" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="shield_fpProtection" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="shield_httpse" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="shield_noScript" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="shield_safeBrowsing" optional="YES" attributeType="Boolean" usesScalarValueType="NO"/>
+        <attribute name="topsite" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="url" optional="YES" attributeType="String"/>
+        <attribute name="visits" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="bookmarks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Bookmark" inverseName="domain" inverseEntity="Bookmark"/>
+        <relationship name="favicon" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Favicon" inverseName="domain" inverseEntity="Favicon"/>
+        <relationship name="historyItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="History" inverseName="domain" inverseEntity="History"/>
+        <fetchIndex name="byBlockedFromTopSitesIndex">
+            <fetchIndexElement property="blockedFromTopSites" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byUrlIndex">
+            <fetchIndexElement property="url" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <fetchIndex name="byVisitsIndex">
+            <fetchIndexElement property="visits" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="Favicon" representedClassName=".FaviconMO" syncable="YES">
+        <attribute name="height" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="url" optional="YES" attributeType="String"/>
+        <attribute name="width" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="domain" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Domain" inverseName="favicon" inverseEntity="Domain"/>
+    </entity>
+    <entity name="FeedSourceOverride" representedClassName=".FeedSourceOverride" syncable="YES">
+        <attribute name="enabled" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="publisherID" attributeType="String"/>
+        <fetchIndex name="byPublisherID">
+            <fetchIndexElement property="publisherID" type="Binary" order="ascending"/>
+        </fetchIndex>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="publisherID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="History" representedClassName=".History" syncable="YES">
+        <attribute name="sectionIdentifier" optional="YES" transient="YES" attributeType="String"/>
+        <attribute name="syncUUID" optional="YES" attributeType="Transformable"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="url" optional="YES" attributeType="String"/>
+        <attribute name="visitedOn" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="domain" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Domain" inverseName="historyItems" inverseEntity="Domain"/>
+    </entity>
+    <entity name="PlaylistItem" representedClassName=".PlaylistItem" syncable="YES">
+        <attribute name="cachedData" optional="YES" attributeType="Binary"/>
+        <attribute name="dateAdded" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="duration" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="mediaSrc" attributeType="String"/>
+        <attribute name="mimeType" attributeType="String"/>
+        <attribute name="name" attributeType="String"/>
+        <attribute name="order" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="pageSrc" attributeType="String"/>
+        <attribute name="pageTitle" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="RSSFeedSource" representedClassName=".RSSFeedSource" syncable="YES">
+        <attribute name="feedUrl" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="feedUrl"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="TabMO" representedClassName=".TabMO" syncable="YES">
+        <attribute name="color" optional="YES" attributeType="String"/>
+        <attribute name="isPrivate" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isSelected" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="order" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="screenshot" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
+        <attribute name="screenshotUUID" optional="YES" attributeType="String"/>
+        <attribute name="syncUUID" optional="YES" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="url" optional="YES" attributeType="String"/>
+        <attribute name="urlHistoryCurrentIndex" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="urlHistorySnapshot" optional="YES" attributeType="Transformable"/>
+        <relationship name="device" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Device" inverseName="tabs" inverseEntity="Device"/>
+    </entity>
+    <elements>
+        <element name="Bookmark" positionX="0" positionY="-450" width="155" height="285"/>
+        <element name="Device" positionX="-252" positionY="-207" width="128" height="150"/>
+        <element name="Domain" positionX="225" positionY="-321" width="128" height="240"/>
+        <element name="Favicon" positionX="439" positionY="-414" width="128" height="104"/>
+        <element name="FeedSourceOverride" positionX="-279" positionY="-297" width="128" height="28"/>
+        <element name="History" positionX="493" positionY="-150" width="128" height="135"/>
+        <element name="PlaylistItem" positionX="-279" positionY="-297" width="128" height="178"/>
+        <element name="RSSFeedSource" positionX="-270" positionY="-288" width="128" height="73"/>
+        <element name="TabMO" positionX="-488" positionY="-229" width="128" height="210"/>
+    </elements>
+</model>

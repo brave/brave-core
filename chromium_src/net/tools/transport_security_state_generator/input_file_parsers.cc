@@ -1,0 +1,1293 @@
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include <string_view>
+
+#define ParseJSON ParseJSON_ChromiumImpl
+#define ParseCertificatesFile ParseCertificatesFile_ChromiumImpl
+#include <net/tools/transport_security_state_generator/input_file_parsers.cc>
+#undef ParseCertificatesFile
+#undef ParseJSON
+
+namespace {
+// NOTE: Do not add any host which has TLS terminated by Cloudflare.
+// Hosts backed by Universal SSL do not have stable CAs.
+constexpr std::string_view kBravePinsJson = R"brave_pins_json({
+  "pinsets": [
+    {
+      "name": "brave",
+      "static_spki_hashes": [
+        "AmazonRootCA1",
+        "AmazonRootCA2",
+        "AmazonRootCA3",
+        "AmazonRootCA4",
+        "StarfieldG2",
+        "AmazonRSA2048RootEUM1",
+        "AmazonECDSA256RootEUM1",
+        "AmazonECDSA384RootEUM1",
+        "GlobalSignRootCA_R1",
+        "GlobalSignRootCA_R3",
+        "GlobalSignRootCA_R6",
+        "GlobalSignRootCA_R46",
+        "GlobalSignRootCA_R5",
+        "GlobalSignRootCA_E46",
+        "ISRGRootCA_X1",
+        "ISRGRootCA_X2",
+        "Root_YE",
+        "Root_YR",
+        "E7",
+        "E8",
+        "R12",
+        "R13",
+        "YE1",
+        "YE2",
+        "YR1",
+        "YR2",
+        "E9",
+        "R14",
+        "YE3",
+        "YR3"
+      ]
+    }
+  ],
+  "entries": [
+    // Brave
+    { "name": "adblock-data.s3.brave.com", "pins": "brave"},
+    { "name": "ai-chat.bsg.brave.com", "pins": "brave"},
+    { "name": "brave-core-ext.s3.brave.com", "pins": "brave"},
+    { "name": "brave-today-cdn.brave.com", "pins": "brave"},
+    { "name": "clients4.brave.com", "pins": "brave"},
+    { "name": "componentupdater.brave.com", "pins": "brave"},
+    { "name": "crxdownload.brave.com", "pins": "brave"},
+    { "name": "devtools.brave.com", "pins": "brave"},
+    { "name": "dict.brave.com", "pins": "brave"},
+    { "name": "extensionupdater.brave.com", "pins": "brave"},
+    { "name": "feedback.brave.com", "pins": "brave"},
+    { "name": "gaia.brave.com", "pins": "brave"},
+    { "name": "go-updater.brave.com", "pins": "brave"},
+    { "name": "pcdn.brave.com", "pins": "brave"},
+    { "name": "redirector.brave.com", "pins": "brave"},
+    { "name": "safebrowsing.brave.com", "pins": "brave"},
+    { "name": "safebrowsing2.brave.com", "pins": "brave"},
+    { "name": "sb-ssl.brave.com", "pins": "brave"},
+    { "name": "static.brave.com", "pins": "brave"},
+    { "name": "static1.brave.com", "pins": "brave"},
+    { "name": "sync-v2.brave.com", "pins": "brave"},
+    { "name": "sync-v2.brave.software", "pins": "brave"},
+    { "name": "sync-v2.bravesoftware.com", "pins": "brave"},
+    { "name": "tor.bravesoftware.com", "pins": "brave"},
+    { "name": "translate.brave.com", "pins": "brave"},
+    { "name": "translate-static.brave.com", "pins": "brave"},
+    { "name": "variations.brave.com", "pins": "brave"},
+
+    // P2A/P3A
+    { "name": "collector.bsg.brave.com", "pins": "brave"},
+    { "name": "star-randsrv.bsg.brave.com", "pins": "brave"},
+
+    // Creators
+    { "name": "creators.basicattentiontoken.org", "pins": "brave"},
+    { "name": "creators.brave.com", "pins": "brave"},
+    { "name": "publishers.basicattentiontoken.org", "pins": "brave"},
+    { "name": "publishers.brave.com", "pins": "brave"},
+
+    // Wallet
+    { "name": "wallet.brave.com", "include_subdomains": true, "pins": "brave"},
+    { "name": "api.gate3.brave.com", "pins": "brave"},
+    { "name": "goerli-infura.brave.com", "pins": "brave"},
+    { "name": "sepolia-infura.brave.com", "pins": "brave"},
+    { "name": "mainnet-infura.brave.com", "pins": "brave"},
+    { "name": "mainnet-beta-solana.brave.com", "pins": "brave"},
+    { "name": "mainnet-polygon.brave.com", "pins": "brave"},
+
+    // Rewards
+    { "name": "api.rewards.brave.com", "pins": "brave"},
+    { "name": "api.rewards.bravesoftware.com", "pins": "brave"},
+    { "name": "api.rewards.brave.software", "pins": "brave"},
+    { "name": "grant.rewards.brave.com", "pins": "brave"},
+    { "name": "grant.rewards.bravesoftware.com", "pins": "brave"},
+    { "name": "grant.rewards.brave.software", "pins": "brave"},
+    { "name": "mywallet.ads.brave.com", "pins": "brave"},
+    { "name": "mywallet.ads.bravesoftware.com", "pins": "brave"},
+    { "name": "payment.rewards.brave.com", "pins": "brave"},
+    { "name": "payment.rewards.bravesoftware.com", "pins": "brave"},
+    { "name": "payment.rewards.brave.software", "pins": "brave"},
+    { "name": "rewards.brave.com", "pins": "brave"},
+
+    // Ads
+    { "name": "anonymous.ads.brave.com", "pins": "brave"},
+    { "name": "anonymous.ads.bravesoftware.com", "pins": "brave"},
+    { "name": "geo.ads.brave.com", "pins": "brave"},
+    { "name": "geo.ads.bravesoftware.com", "pins": "brave"},
+    { "name": "ohttp.ads.brave.com", "pins": "brave"},
+    { "name": "ohttp.ads.bravesoftware.com", "pins": "brave"},
+    { "name": "search.anonymous.brave.com", "pins": "brave"},
+    { "name": "search.anonymous.bravesoftware.com", "pins": "brave"},
+    { "name": "static.ads.brave.com", "pins": "brave"},
+    { "name": "static.ads.bravesoftware.com", "pins": "brave"},
+
+    // Search
+    { "name": "search.brave.com", "pins": "brave"},
+    { "name": "cdn.search.brave.com", "pins": "brave"},
+    { "name": "fg.search.brave.com", "pins": "brave"},
+    { "name": "imgs.search.brave.com", "pins": "brave"},
+    { "name": "tiles.search.brave.com", "pins": "brave"},
+    { "name": "collector.wdp.brave.com", "pins": "brave"},
+    { "name": "patterns.wdp.brave.com", "pins": "brave"},
+    { "name": "quorum.wdp.brave.com", "pins": "brave"},
+    { "name": "star.wdp.brave.com", "pins": "brave"},
+
+    // Premium
+    { "name": "account.brave.com", "pins": "brave"},
+    { "name": "account.bravesoftware.com", "pins": "brave"},
+    { "name": "account.brave.software", "pins": "brave"},
+
+    // Test page using a CA outside of the pinset (expected to be blocked)
+    { "name": "ssl-pinning.someblog.org", "pins" : "brave"}
+ ]})brave_pins_json";
+
+constexpr std::string_view kBraveHstsJson = R"brave_hsts_json({
+  "entries": [
+    // Critical endpoints that should remain unpinned so that they
+    // always work.
+    {
+      "name": "updates.bravesoftware.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "updates-cdn.bravesoftware.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "usage-ping.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+
+    // Brave
+    {
+      "name": "adblock-data.s3.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "ai-chat.bsg.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "brave-core-ext.s3.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "brave-today-cdn.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "clients4.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "componentupdater.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "crxdownload.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "devtools.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "dict.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "extensionupdater.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "feedback.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "gaia.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "go-updater.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "pcdn.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "redirector.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "safebrowsing.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "safebrowsing2.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "sb-ssl.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "static.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "static1.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "sync-v2.brave.com",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "sync-v2.brave.software",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "sync-v2.bravesoftware.com",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "tor.bravesoftware.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "translate.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "translate-static.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "variations.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+
+    // Creators
+    {
+      "name": "creators.basicattentiontoken.org",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "creators.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "publishers.basicattentiontoken.org",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "publishers.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+
+    // Wallet
+    {
+      "name": "wallet.brave.com",
+      "include_subdomains": true,
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "api.gate3.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "goerli-infura.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "sepolia-infura.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "mainnet-infura.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "mainnet-beta-solana.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "mainnet-polygon.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+
+    // Rewards
+    {
+      "name": "api.rewards.brave.com",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "api.rewards.bravesoftware.com",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "api.rewards.brave.software",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "grant.rewards.brave.com",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "grant.rewards.bravesoftware.com",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "grant.rewards.brave.software",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "mywallet.ads.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "mywallet.ads.bravesoftware.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "payment.rewards.brave.com",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "payment.rewards.bravesoftware.com",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "payment.rewards.brave.software",
+      "policy": "custom",
+      "mode": "force-https"
+    },
+    {
+      "name": "rewards.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+
+    // Ads
+    {
+      "name": "anonymous.ads.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "anonymous.ads.bravesoftware.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "geo.ads.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "geo.ads.bravesoftware.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "ohttp.ads.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "ohttp.ads.bravesoftware.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "search.anonymous.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "search.anonymous.bravesoftware.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "static.ads.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "static.ads.bravesoftware.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+
+    // Search
+    {
+      "name": "search.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "cdn.search.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "fg.search.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "imgs.search.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "tiles.search.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "collector.wdp.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "patterns.wdp.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "quorum.wdp.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "star.wdp.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+
+    // Premium
+    {
+      "name": "account.brave.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "account.bravesoftware.com",
+      "mode": "force-https",
+      "policy": "custom"
+    },
+    {
+      "name": "account.brave.software",
+      "mode": "force-https",
+      "policy": "custom"
+    }
+ ]})brave_hsts_json";
+}  // namespace
+
+namespace net::transport_security_state {
+
+bool ParseCertificatesFile(std::string_view certs_input,
+                           Pinsets* pinsets,
+                           base::Time* timestamp) {
+  constexpr std::string_view brave_certs = R"brave_certs(
+# Last updated: Wed Apr 22 15:12:53 2026
+PinsListTimestamp
+1776885173
+
+# =====BEGIN BRAVE ROOTS ASC=====
+#From https://www.amazontrust.com/repository/
+AmazonRootCA1
+-----BEGIN CERTIFICATE-----
+MIIDQTCCAimgAwIBAgITBmyfz5m/jAo54vB4ikPmljZbyjANBgkqhkiG9w0BAQsF
+ADA5MQswCQYDVQQGEwJVUzEPMA0GA1UEChMGQW1hem9uMRkwFwYDVQQDExBBbWF6
+b24gUm9vdCBDQSAxMB4XDTE1MDUyNjAwMDAwMFoXDTM4MDExNzAwMDAwMFowOTEL
+MAkGA1UEBhMCVVMxDzANBgNVBAoTBkFtYXpvbjEZMBcGA1UEAxMQQW1hem9uIFJv
+b3QgQ0EgMTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALJ4gHHKeNXj
+ca9HgFB0fW7Y14h29Jlo91ghYPl0hAEvrAIthtOgQ3pOsqTQNroBvo3bSMgHFzZM
+9O6II8c+6zf1tRn4SWiw3te5djgdYZ6k/oI2peVKVuRF4fn9tBb6dNqcmzU5L/qw
+IFAGbHrQgLKm+a/sRxmPUDgH3KKHOVj4utWp+UhnMJbulHheb4mjUcAwhmahRWa6
+VOujw5H5SNz/0egwLX0tdHA114gk957EWW67c4cX8jJGKLhD+rcdqsq08p8kDi1L
+93FcXmn/6pUCyziKrlA4b9v7LWIbxcceVOF34GfID5yHI9Y/QCB/IIDEgEw+OyQm
+jgSubJrIqg0CAwEAAaNCMEAwDwYDVR0TAQH/BAUwAwEB/zAOBgNVHQ8BAf8EBAMC
+AYYwHQYDVR0OBBYEFIQYzIU07LwMlJQuCFmcx7IQTgoIMA0GCSqGSIb3DQEBCwUA
+A4IBAQCY8jdaQZChGsV2USggNiMOruYou6r4lK5IpDB/G/wkjUu0yKGX9rbxenDI
+U5PMCCjjmCXPI6T53iHTfIUJrU6adTrCC2qJeHZERxhlbI1Bjjt/msv0tadQ1wUs
+N+gDS63pYaACbvXy8MWy7Vu33PqUXHeeE6V/Uq2V8viTO96LXFvKWlJbYK8U90vv
+o/ufQJVtMVT8QtPHRh8jrdkPSHCa2XV4cdFyQzR1bldZwgJcJmApzyMZFo6IQ6XU
+5MsI+yMRQ+hDKXJioaldXgjUkK642M4UwtBV8ob2xJNDd2ZhwLnoQdeXeGADbkpy
+rqXRfboQnoZsG4q5WTP468SQvvG5
+-----END CERTIFICATE-----
+
+AmazonRootCA2
+-----BEGIN CERTIFICATE-----
+MIIFQTCCAymgAwIBAgITBmyf0pY1hp8KD+WGePhbJruKNzANBgkqhkiG9w0BAQwF
+ADA5MQswCQYDVQQGEwJVUzEPMA0GA1UEChMGQW1hem9uMRkwFwYDVQQDExBBbWF6
+b24gUm9vdCBDQSAyMB4XDTE1MDUyNjAwMDAwMFoXDTQwMDUyNjAwMDAwMFowOTEL
+MAkGA1UEBhMCVVMxDzANBgNVBAoTBkFtYXpvbjEZMBcGA1UEAxMQQW1hem9uIFJv
+b3QgQ0EgMjCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAK2Wny2cSkxK
+gXlRmeyKy2tgURO8TW0G/LAIjd0ZEGrHJgw12MBvIITplLGbhQPDW9tK6Mj4kHbZ
+W0/jTOgGNk3Mmqw9DJArktQGGWCsN0R5hYGCrVo34A3MnaZMUnbqQ523BNFQ9lXg
+1dKmSYXpN+nKfq5clU1Imj+uIFptiJXZNLhSGkOQsL9sBbm2eLfq0OQ6PBJTYv9K
+8nu+NQWpEjTj82R0Yiw9AElaKP4yRLuH3WUnAnE72kr3H9rN9yFVkE8P7K6C4Z9r
+2UXTu/Bfh+08LDmG2j/e7HJV63mjrdvdfLC6HM783k81ds8P+HgfajZRRidhW+me
+z/CiVX18JYpvL7TFz4QuK/0NURBs+18bvBt+xa47mAExkv8LV/SasrlX6avvDXbR
+8O70zoan4G7ptGmh32n2M8ZpLpcTnqWHsFcQgTfJU7O7f/aS0ZzQGPSSbtqDT6Zj
+mUyl+17vIWR6IF9sZIUVyzfpYgwLKhbcAS4y2j5L9Z469hdAlO+ekQiG+r5jqFoz
+7Mt0Q5X5bGlSNscpb/xVA1wf+5+9R+vnSUeVC06JIglJ4PVhHvG/LopyboBZ/1c6
++XUyo05f7O0oYtlNc/LMgRdg7c3r3NunysV+Ar3yVAhU/bQtCSwXVEqY0VThUWcI
+0u1ufm8/0i2BWSlmy5A5lREedCf+3euvAgMBAAGjQjBAMA8GA1UdEwEB/wQFMAMB
+Af8wDgYDVR0PAQH/BAQDAgGGMB0GA1UdDgQWBBSwDPBMMPQFWAJI/TPlUq9LhONm
+UjANBgkqhkiG9w0BAQwFAAOCAgEAqqiAjw54o+Ci1M3m9Zh6O+oAA7CXDpO8Wqj2
+LIxyh6mx/H9z/WNxeKWHWc8w4Q0QshNabYL1auaAn6AFC2jkR2vHat+2/XcycuUY
++gn0oJMsXdKMdYV2ZZAMA3m3MSNjrXiDCYZohMr/+c8mmpJ5581LxedhpxfL86kS
+k5Nrp+gvU5LEYFiwzAJRGFuFjWJZY7attN6a+yb3ACfAXVU3dJnJUH/jWS5E4ywl
+7uxMMne0nxrpS10gxdr9HIcWxkPo1LsmmkVwXqkLN1PiRnsn/eBG8om3zEK2yygm
+btmlyTrIQRNg91CMFa6ybRoVGld45pIq2WWQgj9sAq+uEjonljYE1x2igGOpm/Hl
+urR8FLBOybEfdF849lHqm/osohHUqS0nGkWxr7JOcQ3AWEbWaQbLU8uz/mtBzUF+
+fUwPfHJ5elnNXkoOrJupmHN5fLT0zLm4BwyydFy4x2+IoZCn9Kr5v2c69BoVYh63
+n749sSmvZ6ES8lgQGVMDMBu4Gon2nL2XA46jCfMdiyHxtN/kHNGfZQIG6lzWE7OE
+76KlXIx3KadowGuuQNKotOrN8I1LOJwZmhsoVLiJkO/KdYE+HvJkJMcYr07/R54H
+9jVlpNMKVv/1F2Rs76giJUmTtt8AF9pYfl3uxRuw0dFfIRDH+fO6AgonB8Xx1sfT
+4PsJYGw=
+-----END CERTIFICATE-----
+
+AmazonRootCA3
+-----BEGIN CERTIFICATE-----
+MIIBtjCCAVugAwIBAgITBmyf1XSXNmY/Owua2eiedgPySjAKBggqhkjOPQQDAjA5
+MQswCQYDVQQGEwJVUzEPMA0GA1UEChMGQW1hem9uMRkwFwYDVQQDExBBbWF6b24g
+Um9vdCBDQSAzMB4XDTE1MDUyNjAwMDAwMFoXDTQwMDUyNjAwMDAwMFowOTELMAkG
+A1UEBhMCVVMxDzANBgNVBAoTBkFtYXpvbjEZMBcGA1UEAxMQQW1hem9uIFJvb3Qg
+Q0EgMzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABCmXp8ZBf8ANm+gBG1bG8lKl
+ui2yEujSLtf6ycXYqm0fc4E7O5hrOXwzpcVOho6AF2hiRVd9RFgdszflZwjrZt6j
+QjBAMA8GA1UdEwEB/wQFMAMBAf8wDgYDVR0PAQH/BAQDAgGGMB0GA1UdDgQWBBSr
+ttvXBp43rDCGB5Fwx5zEGbF4wDAKBggqhkjOPQQDAgNJADBGAiEA4IWSoxe3jfkr
+BqWTrBqYaGFy+uGh0PsceGCmQ5nFuMQCIQCcAu/xlJyzlvnrxir4tiz+OpAUFteM
+YyRIHN8wfdVoOw==
+-----END CERTIFICATE-----
+
+AmazonRootCA4
+-----BEGIN CERTIFICATE-----
+MIIB8jCCAXigAwIBAgITBmyf18G7EEwpQ+Vxe3ssyBrBDjAKBggqhkjOPQQDAzA5
+MQswCQYDVQQGEwJVUzEPMA0GA1UEChMGQW1hem9uMRkwFwYDVQQDExBBbWF6b24g
+Um9vdCBDQSA0MB4XDTE1MDUyNjAwMDAwMFoXDTQwMDUyNjAwMDAwMFowOTELMAkG
+A1UEBhMCVVMxDzANBgNVBAoTBkFtYXpvbjEZMBcGA1UEAxMQQW1hem9uIFJvb3Qg
+Q0EgNDB2MBAGByqGSM49AgEGBSuBBAAiA2IABNKrijdPo1MN/sGKe0uoe0ZLY7Bi
+9i0b2whxIdIA6GO9mif78DluXeo9pcmBqqNbIJhFXRbb/egQbeOc4OO9X4Ri83Bk
+M6DLJC9wuoihKqB1+IGuYgbEgds5bimwHvouXKNCMEAwDwYDVR0TAQH/BAUwAwEB
+/zAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0OBBYEFNPsxzplbszh2naaVvuc84ZtV+WB
+MAoGCCqGSM49BAMDA2gAMGUCMDqLIfG9fhGt0O9Yli/W651+kI0rz2ZVwyzjKKlw
+CkcO8DdZEv8tmZQoTipPNU0zWgIxAOp1AE47xDqUEpHJWEadIRNyp4iciuRMStuW
+1KyLa2tJElMzrdfkviT8tQp21KW8EA==
+-----END CERTIFICATE-----
+
+StarfieldG2
+-----BEGIN CERTIFICATE-----
+MIID7zCCAtegAwIBAgIBADANBgkqhkiG9w0BAQsFADCBmDELMAkGA1UEBhMCVVMx
+EDAOBgNVBAgTB0FyaXpvbmExEzARBgNVBAcTClNjb3R0c2RhbGUxJTAjBgNVBAoT
+HFN0YXJmaWVsZCBUZWNobm9sb2dpZXMsIEluYy4xOzA5BgNVBAMTMlN0YXJmaWVs
+ZCBTZXJ2aWNlcyBSb290IENlcnRpZmljYXRlIEF1dGhvcml0eSAtIEcyMB4XDTA5
+MDkwMTAwMDAwMFoXDTM3MTIzMTIzNTk1OVowgZgxCzAJBgNVBAYTAlVTMRAwDgYD
+VQQIEwdBcml6b25hMRMwEQYDVQQHEwpTY290dHNkYWxlMSUwIwYDVQQKExxTdGFy
+ZmllbGQgVGVjaG5vbG9naWVzLCBJbmMuMTswOQYDVQQDEzJTdGFyZmllbGQgU2Vy
+dmljZXMgUm9vdCBDZXJ0aWZpY2F0ZSBBdXRob3JpdHkgLSBHMjCCASIwDQYJKoZI
+hvcNAQEBBQADggEPADCCAQoCggEBANUMOsQq+U7i9b4Zl1+OiFOxHz/Lz58gE20p
+OsgPfTz3a3Y4Y9k2YKibXlwAgLIvWX/2h/klQ4bnaRtSmpDhcePYLQ1Ob/bISdm2
+8xpWriu2dBTrz/sm4xq6HZYuajtYlIlHVv8loJNwU4PahHQUw2eeBGg6345AWh1K
+Ts9DkTvnVtYAcMtS7nt9rjrnvDH5RfbCYM8TWQIrgMw0R9+53pBlbQLPLJGmpufe
+hRhJfGZOozptqbXuNC66DQO4M99H67FrjSXZm86B0UVGMpZwh94CDklDhbZsc7tk
+6mFBrMnUVN+HL8cisibMn1lUaJ/8viovxFUcdUBgF4UCVTmLfwUCAwEAAaNCMEAw
+DwYDVR0TAQH/BAUwAwEB/zAOBgNVHQ8BAf8EBAMCAQYwHQYDVR0OBBYEFJxfAN+q
+AdcwKziIorhtSpzyEZGDMA0GCSqGSIb3DQEBCwUAA4IBAQBLNqaEd2ndOxmfZyMI
+bw5hyf2E3F/YNoHN2BtBLZ9g3ccaaNnRbobhiCPPE95Dz+I0swSdHynVv/heyNXB
+ve6SbzJ08pGCL72CQnqtKrcgfU28elUSwhXqvfdqlS5sdJ/PHLTyxQGjhdByPq1z
+qwubdQxtRbeOlKyWN7Wg0I8VRw7j6IPdj/3vQQF3zCepYoUz8jcI73HPdwbeyBkd
+iEDPfUYd/x7H4c7/I9vG+o1VTqkC50cRRj70/b17KSa7qWFiNyi2LSr2EIZkyXCn
+0q23KXB56jzaYyWf/Wi3MOxw+3WKt21gZ7IeyLnp2KhvAotnDU0mV3HaIPzBSlCN
+sSi6
+-----END CERTIFICATE-----
+
+AmazonRSA2048RootEUM1
+-----BEGIN CERTIFICATE-----
+MIIDdjCCAl6gAwIBAgITB8DNiWzD6dTSpWDMBwt9vSz3ITANBgkqhkiG9w0BAQsF
+ADBDMQswCQYDVQQGEwJERTEPMA0GA1UEChMGQW1hem9uMSMwIQYDVQQDExpBbWF6
+b24gUlNBIDIwNDggUm9vdCBFVSBNMTAeFw0yNDExMTQxMjQ1MTVaFw00MjExMTQx
+MjQ1MTVaMEMxCzAJBgNVBAYTAkRFMQ8wDQYDVQQKEwZBbWF6b24xIzAhBgNVBAMT
+GkFtYXpvbiBSU0EgMjA0OCBSb290IEVVIE0xMIIBIjANBgkqhkiG9w0BAQEFAAOC
+AQ8AMIIBCgKCAQEAyqWevL+t2Qt//qcP1eZf784Xi97YiH21/QMAtqPztRY7zKwH
+VQ2dbrB2lZauFYySi8Y3+oPL0NPwZvpLug8XnN07vgzjKK0QJzi6+YpW9wqFsQmk
+4MulInM76r7XORlpKkxfC8RKsY59ElXeTYMT47dC+N/LDEFrtjtZS+yGAPxESz8e
+KjEMSirscUbqzAtjUb4jiotN/PwuSYtIBwPBudZDHJSOwGcMlCOoYNM21vYMDfpo
+30SqDVwOIABwcMijRHEgIBuYDPdieQxpotPmfgvuFETqQEcnAkS6qgOREz799A1E
+vvNmOU5Y4JB6mJ2UghyYI4w+Zm6bG/Xa4GT1gwIDAQABo2MwYTAPBgNVHRMBAf8E
+BTADAQH/MA4GA1UdDwEB/wQEAwIBhjAdBgNVHQ4EFgQUKDEErEh8SehQI0Q9f8zV
+NQJzCokwHwYDVR0jBBgwFoAUKDEErEh8SehQI0Q9f8zVNQJzCokwDQYJKoZIhvcN
+AQELBQADggEBAG8BhxronlKn6HTfpmb8MGm/cok1JWM6MltubAHzVeWsV4VrMdEm
+RZN5qCPUrErCSepz0kRw17YSIUsG0Cizba2ZAkfmOpunxWorS32BvyZUC3umaNRj
+bLSGwxXHk34z0jbgKQv0iZVJdefzp0TxdDmMrS1a/9fYqMc+JdJLr/aTt1eXLsh3
+SkTtbQFylroXmRDniKgqxkC9+oRlKVP8VZf6HWYkcqVWlVN37e4bbT7KiBpERYjZ
+iWOz6cWi9dFydUekImDvH8Jlr4E+pCnVkKz3P6NVooo6py1Bo+jpU/wF4zR0pacx
+hVYv9OdhWV2qo4lww/p8FFtgSIzYVnP8O/U=
+-----END CERTIFICATE-----
+
+AmazonECDSA256RootEUM1
+-----BEGIN CERTIFICATE-----
+MIIB6zCCAZKgAwIBAgITB8DNiWzLnBYEbBghpkxseyndPzAKBggqhkjOPQQDAjBE
+MQswCQYDVQQGEwJERTEPMA0GA1UEChMGQW1hem9uMSQwIgYDVQQDExtBbWF6b24g
+RUNEU0EgMjU2IFJvb3QgRVUgTTEwHhcNMjQxMTE0MTI0NTUxWhcNNDIxMTE0MTI0
+NTUxWjBEMQswCQYDVQQGEwJERTEPMA0GA1UEChMGQW1hem9uMSQwIgYDVQQDExtB
+bWF6b24gRUNEU0EgMjU2IFJvb3QgRVUgTTEwWTATBgcqhkjOPQIBBggqhkjOPQMB
+BwNCAARmbxff3h/YNyAeVXPAGoZhLNYsm62QAp8CTvIe4oVUWR8Yp6QvaKMG7epW
+J6x3NeQeqnYYfv6xiDy9nBfRkfWXo2MwYTAPBgNVHRMBAf8EBTADAQH/MA4GA1Ud
+DwEB/wQEAwIBhjAdBgNVHQ4EFgQUcdF/ctm4GS3wEaXNtYZPbh/d5aIwHwYDVR0j
+BBgwFoAUcdF/ctm4GS3wEaXNtYZPbh/d5aIwCgYIKoZIzj0EAwIDRwAwRAIgJTtJ
+A4US1mx9ZUncHr8Nh6LWLI55Z8hHlbGBErijvmMCIBHZnyKPmCfaHzy751ykNFdi
+g3REnz9NPIRxUcunDvcv
+-----END CERTIFICATE-----
+
+AmazonECDSA384RootEUM1
+-----BEGIN CERTIFICATE-----
+MIICKTCCAa+gAwIBAgITB8DNiWzOI+zVc71kmJZiqyXf6TAKBggqhkjOPQQDAzBE
+MQswCQYDVQQGEwJERTEPMA0GA1UEChMGQW1hem9uMSQwIgYDVQQDExtBbWF6b24g
+RUNEU0EgMzg0IFJvb3QgRVUgTTEwHhcNMjQxMTE0MTI0NjEyWhcNNDIxMTE0MTI0
+NjEyWjBEMQswCQYDVQQGEwJERTEPMA0GA1UEChMGQW1hem9uMSQwIgYDVQQDExtB
+bWF6b24gRUNEU0EgMzg0IFJvb3QgRVUgTTEwdjAQBgcqhkjOPQIBBgUrgQQAIgNi
+AASQN/AUc5jQgHZKAxfez9Gx2hsvYvFhDd7u7t0IWbIvDEyHEJrKsiYZTmSNuA4r
+/fBjvZ4ur2kB0e2VRaF8QJEj4AZAI9gk3r1Zt2LXL12uiguufVxejU6hLaZnFoH8
+YNGjYzBhMA8GA1UdEwEB/wQFMAMBAf8wDgYDVR0PAQH/BAQDAgGGMB0GA1UdDgQW
+BBSxu0cgOZp9gBcdpgVcGGcMG1SiqDAfBgNVHSMEGDAWgBSxu0cgOZp9gBcdpgVc
+GGcMG1SiqDAKBggqhkjOPQQDAwNoADBlAjEAhEoG01WC6wCPwXwhi/Uy0qks4y7h
+KKYiU7Azwj/RrqnpmA1J0jCx9j7HE/+FMUTQAjARcz2J+U5MGG+3ZXls3TEucsY+
+PmWvTfUa/E3SrdOED/vFzSW4BfWyXiffQfXMhFQ=
+-----END CERTIFICATE-----
+
+# From https://support.globalsign.com/ca-certificates/root-certificates/globalsign-root-certificates
+GlobalSignRootCA_R1
+-----BEGIN CERTIFICATE-----
+MIIDdTCCAl2gAwIBAgILBAAAAAABFUtaw5QwDQYJKoZIhvcNAQEFBQAwVzELMAkG
+A1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExEDAOBgNVBAsTB1Jv
+b3QgQ0ExGzAZBgNVBAMTEkdsb2JhbFNpZ24gUm9vdCBDQTAeFw05ODA5MDExMjAw
+MDBaFw0yODAxMjgxMjAwMDBaMFcxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9i
+YWxTaWduIG52LXNhMRAwDgYDVQQLEwdSb290IENBMRswGQYDVQQDExJHbG9iYWxT
+aWduIFJvb3QgQ0EwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDaDuaZ
+jc6j40+Kfvvxi4Mla+pIH/EqsLmVEQS98GPR4mdmzxzdzxtIK+6NiY6arymAZavp
+xy0Sy6scTHAHoT0KMM0VjU/43dSMUBUc71DuxC73/OlS8pF94G3VNTCOXkNz8kHp
+1Wrjsok6Vjk4bwY8iGlbKk3Fp1S4bInMm/k8yuX9ifUSPJJ4ltbcdG6TRGHRjcdG
+snUOhugZitVtbNV4FpWi6cgKOOvyJBNPc1STE4U6G7weNLWLBYy5d4ux2x8gkasJ
+U26Qzns3dLlwR5EiUWMWea6xrkEmCMgZK9FGqkjWZCrXgzT/LCrBbBlDSgeF59N8
+9iFo7+ryUp9/k5DPAgMBAAGjQjBAMA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMBAf8E
+BTADAQH/MB0GA1UdDgQWBBRge2YaRQ2XyolQL30EzTSo//z9SzANBgkqhkiG9w0B
+AQUFAAOCAQEA1nPnfE920I2/7LqivjTFKDK1fPxsnCwrvQmeU79rXqoRSLblCKOz
+yj1hTdNGCbM+w6DjY1Ub8rrvrTnhQ7k4o+YviiY776BQVvnGCv04zcQLcFGUl5gE
+38NflNUVyRRBnMRddWQVDf9VMOyGj/8N7yy5Y0b2qvzfvGn9LhJIZJrglfCm7ymP
+AbEVtQwdpf5pLGkkeB6zpxxxYu7KyJesF12KwvhHhm4qxFYxldBniYUr+WymXUad
+DKqC5JlR3XC321Y9YeRq4VzW9v493kHMB65jUr9TU/Qr6cf9tveCX4XSQRjbgbME
+HMUfpIBvFSDJ3gyICh3WZlXi/EjJKSZp4A==
+-----END CERTIFICATE-----
+
+GlobalSignRootCA_R3
+-----BEGIN CERTIFICATE-----
+MIIDXzCCAkegAwIBAgILBAAAAAABIVhTCKIwDQYJKoZIhvcNAQELBQAwTDEgMB4
+GA1UECxMXR2xvYmFsU2lnbiBSb290IENBIC0gUjMxEzARBgNVBAoTCkdsb2JhbF
+NpZ24xEzARBgNVBAMTCkdsb2JhbFNpZ24wHhcNMDkwMzE4MTAwMDAwWhcNMjkwM
+zE4MTAwMDAwWjBMMSAwHgYDVQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSMzET
+MBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UEAxMKR2xvYmFsU2lnbjCCASIwDQY
+JKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMwldpB5BngiFvXAg7aEyiie/QV2Ec
+WtiHL8RgJDx7KKnQRfJMsuS+FggkbhUqsMgUdwbN1k0ev1LKMPgj0MK66X17YUh
+hB5uzsTgHeMCOFJ0mpiLx9e+pZo34knlTifBtc+ycsmWQ1z3rDI6SYOgxXG71uL
+0gRgykmmKPZpO/bLyCiR5Z2KYVc3rHQU3HTgOu5yLy6c+9C7v/U9AOEGM+iCK65
+TpjoWc4zdQQ4gOsC0p6Hpsk+QLjJg6VfLuQSSaGjlOCZgdbKfd/+RFO+uIEn8rU
+AVSNECMWEZXriX7613t2Saer9fwRPvm2L7DWzgVGkWqQPabumDk3F2xmmFghcCA
+wEAAaNCMEAwDgYDVR0PAQH/BAQDAgEGMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0O
+BBYEFI/wS3+oLkUkrk1Q+mOai97i3Ru8MA0GCSqGSIb3DQEBCwUAA4IBAQBLQNv
+AUKr+yAzv95ZURUm7lgAJQayzE4aGKAczymvmdLm6AC2upArT9fHxD4q/c2dKg8
+dEe3jgr25sbwMpjjM5RcOO5LlXbKr8EpbsU8Yt5CRsuZRj+9xTaGdWPoO4zzUhw
+8lo/s7awlOqzJCK6fBdRoyV3XpYKBovHd7NADdBj+1EbddTKJd+82cEHhXXipa0
+095MJ6RMG3NzdvQXmcIfeg7jLQitChws/zyrVQ4PkX4268NXSb7hLi18YIvDQVE
+TI53O9zJrlAGomecsMx86OyXShkDOOyyGeMlhLxS67ttVb9+E7gUJTb0o2HLO02
+JQZR7rkpeDMdmztcpHWD9f
+-----END CERTIFICATE-----
+
+GlobalSignRootCA_R6
+-----BEGIN CERTIFICATE-----
+MIIFgzCCA2ugAwIBAgIORea7A4Mzw4VlSOb/RVEwDQYJKoZIhvcNAQEMBQAwTDE
+gMB4GA1UECxMXR2xvYmFsU2lnbiBSb290IENBIC0gUjYxEzARBgNVBAoTCkdsb2
+JhbFNpZ24xEzARBgNVBAMTCkdsb2JhbFNpZ24wHhcNMTQxMjEwMDAwMDAwWhcNM
+zQxMjEwMDAwMDAwWjBMMSAwHgYDVQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBS
+NjETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UEAxMKR2xvYmFsU2lnbjCCAiI
+wDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAJUH6HPKZvnsFMp7PPcNCPG0RQ
+ssgrRIxutbPK6DuEGSMxSkb3/pKszGsIhrxbaJ0cay/xTOURQh7ErdG1rG1ofuT
+ToVBu1kZguSgMpE3nOUTvOniX9PeGMIyBJQbUJmL025eShNUhqKGoC3GYEOfsSK
+vGRMIRxDaNc9PIrFsmbVkJq3MQbFvuJtMgamHvm566qjuL++gmNQ0PAYid/kD3n
+16qIfKtJwLnvnvJO7bVPiSHyMEAc4/2ayd2F+4OqMPKq0pPbzlUoSB239jLKJz9
+CgYXfIWHSw1CM69106yqLbnQneXUQtkPGBzVeS+n68UARjNN9rkxi+azayOeSsJ
+Da38O+2HBNXk7besvjihbdzorg1qkXy4J02oW9UivFyVm4uiMVRQkQVlO6jxTiW
+m05OWgtH8wY2SXcwvHE35absIQh1/OZhFj931dmRl4QKbNQCTXTAFO39OfuD8l4
+UoQSwC+n+7o/hbguyCLNhZglqsQY6ZZZZwPA1/cnaKI0aEYdwgQqomnUdnjqGBQ
+Ce24DWJfncBZ4nWUx2OVvq+aWh2IMP0f/fMBH5hc8zSPXKbWQULHpYT9NLCEnFl
+WQaYw55PfWzjMpYrZxCRXluDocZXFSxZba/jJvcE+kNb7gu3GduyYsRtYQUigAZ
+cIN5kZeR1BonvzceMgfYFGM8KEyvAgMBAAGjYzBhMA4GA1UdDwEB/wQEAwIBBjA
+PBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBSubAWjkxPioufi1xzWx/B/yGdToD
+AfBgNVHSMEGDAWgBSubAWjkxPioufi1xzWx/B/yGdToDANBgkqhkiG9w0BAQwFA
+AOCAgEAgyXt6NH9lVLNnsAEoJFp5lzQhN7craJP6Ed41mWYqVuoPId8AorRbrcW
+c+ZfwFSY1XS+wc3iEZGtIxg93eFyRJa0lV7Ae46ZeBZDE1ZXs6KzO7V33EByrKP
+rmzU+sQghoefEQzd5Mr6155wsTLxDKZmOMNOsIeDjHfrYBzN2VAAiKrlNIC5waN
+rlU/yDXNOd8v9EDERm8tLjvUYAGm0CuiVdjaExUd1URhxN25mW7xocBFymFe944
+Hn+Xds+qkxV/ZoVqW/hpvvfcDDpw+5CRu3CkwWJ+n1jez/QcYF8AOiYrg54NMMl
++68KnyBr3TsTjxKM4kEaSHpzoHdpx7Zcf4LIHv5YGygrqGytXm3ABdJ7t+uA/iU
+3/gKbaKxCXcPu9czc8FB10jZpnOZ7BN9uBmm23goJSFmH63sUYHpkqmlD75HHTO
+wY3WzvUy2MmeFe8nI+z1TIvWfspA9MRf/TuTAjB0yPEL+GltmZWrSZVxykzLsVi
+VO6LAUP5MSeGbEYNNVMnbrt9x+vJJUEeKgDu+6B5dpffItKoZB0JaezPkvILFa9
+x8jvOOJckvB595yEunQtYQEgfn7R8k8HWV+LLUNS60YMlOH1Zkd5d9VUWx+tJDf
+LRVpOoERIyNiwmcUVhAn21klJwGW45hpxbqCo8YLoRT5s1gLXCmeDBVrJpBA=
+-----END CERTIFICATE-----
+
+GlobalSignRootCA_R46
+-----BEGIN CERTIFICATE-----
+MIIFWjCCA0KgAwIBAgISEdK7udcjGJ5AXwqdLdDfJWfRMA0GCSqGSIb3DQEBDAU
+AMEYxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMRwwGg
+YDVQQDExNHbG9iYWxTaWduIFJvb3QgUjQ2MB4XDTE5MDMyMDAwMDAwMFoXDTQ2M
+DMyMDAwMDAwMFowRjELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24g
+bnYtc2ExHDAaBgNVBAMTE0dsb2JhbFNpZ24gUm9vdCBSNDYwggIiMA0GCSqGSIb
+3DQEBAQUAA4ICDwAwggIKAoICAQCsrHQy6LNl5brtQyYdpokNRbopiLKkHWPd08
+EsCVeJOaFV6Wc0dwxu5FUdUiXSE2te4R2pt32JMl8Nnp8semNgQB+msLZ4j5lUl
+ghYruQGvGIFAha/r6gjA7aUD7xubMLL1aa7DOn2wQL7Id5m3RerdELv8HQvJfTq
+a1VbkNud316HCkD7rRlr+/fKYIje2sGP1q7Vf9Q8g+7XFkyDRTNrJ9CG0Bwta/O
+rffGFqfUo0q3v84RLHIf8E6M6cqJaESvWJ3En7YEtbWaBkoe0G1h6zD8K+kZPT
+Xhc+CtI4wSEy132tGqzZfxCnlEmIyDLPRT5ge1lFgBPGmSXZgjPjHvjK8Cd+RTy
+G/FWaha/LIWFzXg4mutCagI0GIMXTpRW+LaCtfOW3T3zvn8gdz57GSNrLNRyc0N
+XfeD412lPFzYE+cCQYDdF3uYM2HSNrpyibXRdQr4G9dlkbgIQrImwTDsHTUB+JM
+WKmIJ5jqSngiCNI/onccnfxkF0oE32kRbcRoxfKWMxWXEM2G/CtjJ9++ZdU6Z+F
+fy7dXxd7Pj2Fxzsx2sZy/N78CsHpdlseVR2bJ0cpm4O6XkMqCNqo98bMDGfsVR7
+/mrLZqrcZdCinkqaByFrgY/bxFn63iLABJzjqls2k+g9vXqhnQt2sQvHnf3PmKg
+Gwvgqo6GDoLclcqUC4wIDAQABo0IwQDAOBgNVHQ8BAf8EBAMCAYYwDwYDVR0TAQ
+H/BAUwAwEB/zAdBgNVHQ4EFgQUA1yrc4GHqMywptWU4jaWSf8FmSwwDQYJKoZIh
+vcNAQEMBQADggIBAHx47PYCLLtbfpIrXTncvtgdokIzTfnvpCo7RGkerNlFo048
+p9gkUbJUHJNOxO97k4VgJuoJSOD1u8fpaNK7ajFxzHmuEajwmf3lH7wvqMxX63b
+EIaZHU1VNaL8FpO7XJqti2kM3S+LGteWygxk6x9PbTZ4IevPuzz5i+6zoYMzRx6
+Fcg0XERczzF2sUyQQCPtIkpnnpHs6i58FZFZ8d4kuaPp92CC1r2LpXFNqD6v6MV
+enQTqnMdzGxRBF6XLE+0xRFFRhiJBPSy03OXIPBNvIQtQ6IbbjhVp+J3pZmOUdk
+LG5NrmJ7v2B0GbhWrJKsFjLtrWhV/pi60zTe9Mlhww6G9kuEYO4Ne7UyWHmRVSy
+BQ7N0H3qqJZ4d16GLuc1CLgSkZoNNiTW2bKg2SnkheCLQQrzRQDGQob4Ez8pn7f
+XwgNNgyYMqIgXQBztSvwyeqiv5u+YfjyW6hY0XHgL+XVAEV8/+LbzvXMAaq7afJ
+Mbfc2hIkCwU9D9SGuTSyxTDYWnP4vkYxboznxSjBF25cfe1lNj2M8FawTSLfJvd
+kzrnE6JwYZ+vj+vYxXX4M2bUdGc6N3ec592kD3ZDZopD8p/7DEJ4Y9HiD2971KE
+9dJeFt0g5QdYg/NA6s/rob8SKunE3vouXsXgxT7PntgMTzlSdriVZzH81Xwj3QE
+UxeCp6
+-----END CERTIFICATE-----
+
+GlobalSignRootCA_R5
+-----BEGIN CERTIFICATE-----
+MIICHjCCAaSgAwIBAgIRYFlJ4CYuu1X5CneKcflK2GwwCgYIKoZIzj0EAwMwUDE
+kMCIGA1UECxMbR2xvYmFsU2lnbiBFQ0MgUm9vdCBDQSAtIFI1MRMwEQYDVQQKEw
+pHbG9iYWxTaWduMRMwEQYDVQQDEwpHbG9iYWxTaWduMB4XDTEyMTExMzAwMDAwM
+FoXDTM4MDExOTAzMTQwN1owUDEkMCIGA1UECxMbR2xvYmFsU2lnbiBFQ0MgUm9v
+dCBDQSAtIFI1MRMwEQYDVQQKEwpHbG9iYWxTaWduMRMwEQYDVQQDEwpHbG9iYWx
+TaWduMHYwEAYHKoZIzj0CAQYFK4EEACIDYgAER0UOlvt9Xb/pOdEh+J8LttV7Hp
+I6SFkc8GIxLcB6KP4ap1yztsyX50XUWPrRd21DosCHZTQKH3rd6zwzocWdTaRvQ
+ZU4f8kehOvRnkmSh5SHDDqFSmafnVmTTZdhBoZKo0IwQDAOBgNVHQ8BAf8EBAMC
+AQYwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUPeYpSJvqB8ohREom3m7e0oP
+Qn1kwCgYIKoZIzj0EAwMDaAAwZQIxAOVpEslu28YxuglB4Zf4+/2a4n0Sye18ZN
+PLBSWLVtmg515dTguDnFt2KaAJJiFqYgIwcdK1j1zqO+F4CYWodZI7yFz9SO8Nd
+CKoCOJuxUnOxwy8p2Fp8fc74SrL+SvzZpA3
+-----END CERTIFICATE-----
+
+GlobalSignRootCA_E46
+-----BEGIN CERTIFICATE-----
+MIICCzCCAZGgAwIBAgISEdK7ujNu1LzmJGjFDYQdmOhDMAoGCCqGSM49BAMDME
+YxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMRwwGgYD
+VQQDExNHbG9iYWxTaWduIFJvb3QgRTQ2MB4XDTE5MDMyMDAwMDAwMFoXDTQ2MD
+MyMDAwMDAwMFowRjELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24g
+bnYtc2ExHDAaBgNVBAMTE0dsb2JhbFNpZ24gUm9vdCBFNDYwdjAQBgcqhkjOPQ
+IBBgUrgQQAIgNiAAScDrHPt+ieUnd1NPqlRqetMhkytAepJ8qUuwzSChDH2omw
+lwxwEwkBjtjqR+q+soArzfwoDdusvKSGN+1wCAB16pMLey5SnCNoIwZD7JIvU4
+Tb+0cUB+hflGddyXqBPCCjQjBAMA4GA1UdDwEB/wQEAwIBhjAPBgNVHRMBAf8E
+BTADAQH/MB0GA1UdDgQWBBQxCpCPtsad0kRLgLWi5h+xEk8blTAKBggqhkjOPQ
+QDAwNoADBlAjEA31SQ7Zvvi5QCkxeCmb6zniz2C5GMn0oUsfZkvLtoURMMA/cV
+i4RguYv/Uo7njLwcAjA8+RHUjE7AwWHCFUyqqx0LMV87HOIAl0Qx5v5zli/alt
+P+CAezNIm8BZ/3Hobui3A=
+-----END CERTIFICATE-----
+
+# From https://letsencrypt.org/certificates/#root-cas
+ISRGRootCA_X1
+-----BEGIN CERTIFICATE-----
+MIIFazCCA1OgAwIBAgIRAIIQz7DSQONZRGPgu2OCiwAwDQYJKoZIhvcNAQELBQAw
+TzELMAkGA1UEBhMCVVMxKTAnBgNVBAoTIEludGVybmV0IFNlY3VyaXR5IFJlc2Vh
+cmNoIEdyb3VwMRUwEwYDVQQDEwxJU1JHIFJvb3QgWDEwHhcNMTUwNjA0MTEwNDM4
+WhcNMzUwNjA0MTEwNDM4WjBPMQswCQYDVQQGEwJVUzEpMCcGA1UEChMgSW50ZXJu
+ZXQgU2VjdXJpdHkgUmVzZWFyY2ggR3JvdXAxFTATBgNVBAMTDElTUkcgUm9vdCBY
+MTCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAK3oJHP0FDfzm54rVygc
+h77ct984kIxuPOZXoHj3dcKi/vVqbvYATyjb3miGbESTtrFj/RQSa78f0uoxmyF+
+0TM8ukj13Xnfs7j/EvEhmkvBioZxaUpmZmyPfjxwv60pIgbz5MDmgK7iS4+3mX6U
+A5/TR5d8mUgjU+g4rk8Kb4Mu0UlXjIB0ttov0DiNewNwIRt18jA8+o+u3dpjq+sW
+T8KOEUt+zwvo/7V3LvSye0rgTBIlDHCNAymg4VMk7BPZ7hm/ELNKjD+Jo2FR3qyH
+B5T0Y3HsLuJvW5iB4YlcNHlsdu87kGJ55tukmi8mxdAQ4Q7e2RCOFvu396j3x+UC
+B5iPNgiV5+I3lg02dZ77DnKxHZu8A/lJBdiB3QW0KtZB6awBdpUKD9jf1b0SHzUv
+KBds0pjBqAlkd25HN7rOrFleaJ1/ctaJxQZBKT5ZPt0m9STJEadao0xAH0ahmbWn
+OlFuhjuefXKnEgV4We0+UXgVCwOPjdAvBbI+e0ocS3MFEvzG6uBQE3xDk3SzynTn
+jh8BCNAw1FtxNrQHusEwMFxIt4I7mKZ9YIqioymCzLq9gwQbooMDQaHWBfEbwrbw
+qHyGO0aoSCqI3Haadr8faqU9GY/rOPNk3sgrDQoo//fb4hVC1CLQJ13hef4Y53CI
+rU7m2Ys6xt0nUW7/vGT1M0NPAgMBAAGjQjBAMA4GA1UdDwEB/wQEAwIBBjAPBgNV
+HRMBAf8EBTADAQH/MB0GA1UdDgQWBBR5tFnme7bl5AFzgAiIyBpY9umbbjANBgkq
+hkiG9w0BAQsFAAOCAgEAVR9YqbyyqFDQDLHYGmkgJykIrGF1XIpu+ILlaS/V9lZL
+ubhzEFnTIZd+50xx+7LSYK05qAvqFyFWhfFQDlnrzuBZ6brJFe+GnY+EgPbk6ZGQ
+3BebYhtF8GaV0nxvwuo77x/Py9auJ/GpsMiu/X1+mvoiBOv/2X/qkSsisRcOj/KK
+NFtY2PwByVS5uCbMiogziUwthDyC3+6WVwW6LLv3xLfHTjuCvjHIInNzktHCgKQ5
+ORAzI4JMPJ+GslWYHb4phowim57iaztXOoJwTdwJx4nLCgdNbOhdjsnvzqvHu7Ur
+TkXWStAmzOVyyghqpZXjFaH3pO3JLF+l+/+sKAIuvtd7u+Nxe5AW0wdeRlN8NwdC
+jNPElpzVmbUq4JUagEiuTDkHzsxHpFKVK7q4+63SM1N95R1NbdWhscdCb+ZAJzVc
+oyi3B43njTOQ5yOf+1CceWxG1bQVs5ZufpsMljq4Ui0/1lvh+wjChP4kqKOJ2qxq
+4RgqsahDYVvTH9w7jXbyLeiNdd8XM2w9U/t7y0Ff/9yi0GE44Za4rF2LN9d11TPA
+mRGunUHBcnWEvgJBQl9nJEiU0Zsnvgc/ubhPgXRR4Xq37Z0j4r7g1SgEEzwxA57d
+emyPxgcYxn/eR44/KJ4EBs+lVDR3veyJm+kXQ99b21/+jh5Xos1AnX5iItreGCc=
+-----END CERTIFICATE-----
+
+ISRGRootCA_X2
+-----BEGIN CERTIFICATE-----
+MIICGzCCAaGgAwIBAgIQQdKd0XLq7qeAwSxs6S+HUjAKBggqhkjOPQQDAzBPMQsw
+CQYDVQQGEwJVUzEpMCcGA1UEChMgSW50ZXJuZXQgU2VjdXJpdHkgUmVzZWFyY2gg
+R3JvdXAxFTATBgNVBAMTDElTUkcgUm9vdCBYMjAeFw0yMDA5MDQwMDAwMDBaFw00
+MDA5MTcxNjAwMDBaME8xCzAJBgNVBAYTAlVTMSkwJwYDVQQKEyBJbnRlcm5ldCBT
+ZWN1cml0eSBSZXNlYXJjaCBHcm91cDEVMBMGA1UEAxMMSVNSRyBSb290IFgyMHYw
+EAYHKoZIzj0CAQYFK4EEACIDYgAEzZvVn4CDCuwJSvMWSj5cz3es3mcFDR0HttwW
++1qLFNvicWDEukWVEYmO6gbf9yoWHKS5xcUy4APgHoIYOIvXRdgKam7mAHf7AlF9
+ItgKbppbd9/w+kHsOdx1ymgHDB/qo0IwQDAOBgNVHQ8BAf8EBAMCAQYwDwYDVR0T
+AQH/BAUwAwEB/zAdBgNVHQ4EFgQUfEKWrt5LSDv6kviejM9ti6lyN5UwCgYIKoZI
+zj0EAwMDaAAwZQIwe3lORlCEwkSHRhtFcP9Ymd70/aTSVaYgLXTWNLxBo1BfASdW
+tL4ndQavEi51mI38AjEAi/V3bNTIZargCyzuFJ0nN6T5U6VR5CmD1/iQMVtCnwr1
+/q4AaOeMSQ+2b1tbFfLn
+-----END CERTIFICATE-----
+
+Root_YE
+-----BEGIN CERTIFICATE-----
+MIIB2TCCAWCgAwIBAgIRAKQCa6LvbHwg1AR+XmWmk4AwCgYIKoZIzj0EAwMwLjEL
+MAkGA1UEBhMCVVMxDTALBgNVBAoTBElTUkcxEDAOBgNVBAMTB1Jvb3QgWUUwHhcN
+MjUwOTAzMDAwMDAwWhcNNDUwOTAyMjM1OTU5WjAuMQswCQYDVQQGEwJVUzENMAsG
+A1UEChMESVNSRzEQMA4GA1UEAxMHUm9vdCBZRTB2MBAGByqGSM49AgEGBSuBBAAi
+A2IABDwS/6vhrcVqcbBo+wgdI3fwn9x7DNJJOY/lTOti0vkwuRN87RhEhTH17E7X
+yFjWsPYhIPt/wzOqxTd2b+4ZJNy9ID04YywF9U5zasDVyGSNErVNtz8uSGh5izW8
+7j77GaNCMEAwDgYDVR0PAQH/BAQDAgEGMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0O
+BBYEFKPIJlqOoUzQNWP8myPIOq5W809WMAoGCCqGSM49BAMDA2cAMGQCMHhMr8N9
+LdL1VQKs9BdV81r76eXRB6mtjuNjzk6/lBsPNToWLTDzGYgtQKO1jl63uAIwGV7m
+onyF377c+MM1oqVNs17sgu7F9YKZwgLmVbeOMDbKAXHtKMDLbiGllCcs8f47
+-----END CERTIFICATE-----
+
+Root_YR
+-----BEGIN CERTIFICATE-----
+MIIFKTCCAxGgAwIBAgIRAOxGNJNgz0sP+KmC2Tqpyj0wDQYJKoZIhvcNAQELBQAw
+LjELMAkGA1UEBhMCVVMxDTALBgNVBAoTBElTUkcxEDAOBgNVBAMTB1Jvb3QgWVIw
+HhcNMjUwOTAzMDAwMDAwWhcNNDUwOTAyMjM1OTU5WjAuMQswCQYDVQQGEwJVUzEN
+MAsGA1UEChMESVNSRzEQMA4GA1UEAxMHUm9vdCBZUjCCAiIwDQYJKoZIhvcNAQEB
+BQADggIPADCCAgoCggIBANvGJnN78CTJdWL3+eGfsLN5TrNBJs+VH9hRXqRbwxu9
+sGNiB0BD1fcOxbSUQCJIM1xE13Db+5Cw1w0s0EBYsvuIP/6joF0w8cuImbgR1OGg
+YbSQ4OpzI+DG8SGuTlcE873OCS+kh3srlo6vl43M5OJg4Aeo1sfHp6kTJDoIiFBN
+JAY+OKfX/FUvYKuhjT+no49lmqmupSBI5PkBQiqrEGtWU5uxU/cQWHGu8jSjFBzn
+ZqvbNPLMXMLFxCb3WTfrJBXXjqvWG+v4bjzxjjeAtOlU7qarRDvNOyAuQYLln904
+M+faKx8hnLCpJ15ZqaEgcNlY+9MMWcC5yvL2A2j3l9+2buggZX+dOE91zYmIdawT
+vSZuVvlbRrAlLxIB6pwMBjneXCjYQ8+3BCCjssbSNpZU3hTcBDdhfAlEDlYr6pEa
+tnMdmDT5BqnKC92bd0EhM1fbLHioLccLCuievT8ZkPhZrq7Mii7gNXAcUEAR8+lz
+Yal+9zTg7C5DALyVOeG/CqfRAMn1KSHCR0NSA6P8tn/mGRlnCct5rtVCLnVySVpU
+6H1qGg3DgTOuskf8eahTMiYbI5ezPJmO5ertalskQ1utp74+eDy92PI4ftHKTbq9
+IWhH4YZKh3WnJEIt+oQvlYZbY8tpEroKrFB6PFGzrJIDRyts4HqvuH52RFj2zv/B
+AgMBAAGjQjBAMA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMBAf8EBTADAQH/MB0GA1Ud
+DgQWBBTe51tg0CJtQCh9Pw0B/qS1UrRRlDANBgkqhkiG9w0BAQsFAAOCAgEAWHnf
+713Bdkq7t5yN2dNIgQakUb94X9WuyhMEHHkgx4oDpSUlnG0w4g94MoqaEUE31ZjR
+LU7L5LD1g9ujFHTQu8AD215AHMVQFbm6j8hQxdXHAzDajFNQnOlDJrLjzIx176oy
+AjvUtejZx2NNmdb5fd0WGVGsCdoAJ3N8ozo7ajE8t6vfxStZb4BQ9WYJGHUDrv2N
+i5tJF6CNiPnlzs3BUfECRbE4JSk+jvy8+VoGiFE8qsH/j78x2fjgQhAQFV7P7Zxy
+dBTZ1wEkNpZNW2qnaK1SKBLa+xf6E06YRIq5uaI+HWH8SY1y5VbRgzq40EKg3yxP
+06fz+uYAUIFJoLNfhwRCc3Q6pQVuMX3yAjHAes4gk4moGcLQ5p7HAh39yeylZc1J
+41sx/jKwLIkPE6Rr1Nf4pxdsxf9SA4yOEiAkDgq04DVxn8hgYFdUtBCuiuVC2heA
+EiqVEa+8QZjuw8Gj0EbHXcRd1nInvGqRS1o9Is7YBdQN57X1AYveGBNNqjICSb7c
+awuw1EawTDrs13VUlJVEsbQ0/O/1aaV73mCdOQ8azqL2KTv1Ewu1xbquE2S+kdQU
+To9TUwat3wUA6cwXh1EfpS/3fJ0aGah5hdpRyoCLDlsSn8tkrjMfFFX0viC+GxHc
+sI1ANRYvqSFC2X1VRZfDg+wD6E21BccmifG4yWc=
+-----END CERTIFICATE-----
+
+# From https://letsencrypt.org/certificates/#subordinate-intermediate-cas
+E7
+-----BEGIN CERTIFICATE-----
+MIICtzCCAjygAwIBAgIRAMWKhaLGI0XgqMRSU4efWTowCgYIKoZIzj0EAwMwTzEL
+MAkGA1UEBhMCVVMxKTAnBgNVBAoTIEludGVybmV0IFNlY3VyaXR5IFJlc2VhcmNo
+IEdyb3VwMRUwEwYDVQQDEwxJU1JHIFJvb3QgWDIwHhcNMjQwMzEzMDAwMDAwWhcN
+MjcwMzEyMjM1OTU5WjAyMQswCQYDVQQGEwJVUzEWMBQGA1UEChMNTGV0J3MgRW5j
+cnlwdDELMAkGA1UEAxMCRTcwdjAQBgcqhkjOPQIBBgUrgQQAIgNiAARB6ASTCFh/
+vjcwDMCgQer+VtqEkz7JANurZxLP+U9TCeioL6sp5Z8VRvRbYk4P1INBmbefQHJF
+HCxcSjKmwtvGBWpl/9ra8HW0QDsUaJW2qOJqceJ0ZVFT3hbUHifBM/2jgfgwgfUw
+DgYDVR0PAQH/BAQDAgGGMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATAS
+BgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdDgQWBBSuSJ7chx1EoG/aouVgdAR4wpwA
+gDAfBgNVHSMEGDAWgBR8Qpau3ktIO/qS+J6Mz22LqXI3lTAyBggrBgEFBQcBAQQm
+MCQwIgYIKwYBBQUHMAKGFmh0dHA6Ly94Mi5pLmxlbmNyLm9yZy8wEwYDVR0gBAww
+CjAIBgZngQwBAgEwJwYDVR0fBCAwHjAcoBqgGIYWaHR0cDovL3gyLmMubGVuY3Iu
+b3JnLzAKBggqhkjOPQQDAwNpADBmAjEA/e5N+wjAk945cpaFxGaeMC13fyvdbNzX
+lRg9HNdElxi5mXdI4az2CykNU07iFwqEAjEAihPCDkw4b1BvfLg8VNLLuaMpn1Rb
+Z1682chR6zNRCseyie4SjyTCdkvsAa+omQSf
+-----END CERTIFICATE-----
+
+E8
+-----BEGIN CERTIFICATE-----
+MIICtTCCAjugAwIBAgIQfo8UX4exWTMtf9QIK4JraTAKBggqhkjOPQQDAzBPMQsw
+CQYDVQQGEwJVUzEpMCcGA1UEChMgSW50ZXJuZXQgU2VjdXJpdHkgUmVzZWFyY2gg
+R3JvdXAxFTATBgNVBAMTDElTUkcgUm9vdCBYMjAeFw0yNDAzMTMwMDAwMDBaFw0y
+NzAzMTIyMzU5NTlaMDIxCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1MZXQncyBFbmNy
+eXB0MQswCQYDVQQDEwJFODB2MBAGByqGSM49AgEGBSuBBAAiA2IABNFl8l7cS7QM
+ApzSsvru6WyrOq44ofTUOTIzxULUzDMMNMchIJBwXOhiLxxxs0LXeb5GDcHbR6ET
+oMffgSZjO9SNHfY9gjMy9vQr5/WWOrQTZxh7az6NSNnq3u2ubT6HTKOB+DCB9TAO
+BgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMBIG
+A1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFI8NE6L2Ln7RUGwzGDhdWY4jcpHK
+MB8GA1UdIwQYMBaAFHxClq7eS0g7+pL4nozPbYupcjeVMDIGCCsGAQUFBwEBBCYw
+JDAiBggrBgEFBQcwAoYWaHR0cDovL3gyLmkubGVuY3Iub3JnLzATBgNVHSAEDDAK
+MAgGBmeBDAECATAnBgNVHR8EIDAeMBygGqAYhhZodHRwOi8veDIuYy5sZW5jci5v
+cmcvMAoGCCqGSM49BAMDA2gAMGUCMQClsUNJdX36GE+o2yDf7L02m3P3ElVWRLls
+5ZyLYPjcNamBxRB9gZYoj24mGZtP3GkCMASZcALg6kpScomqIIjVHXRUQ500cdl4
+4n7fhxwokLo/lVlO8YyHwAi7ejTHtvw9Vg==
+-----END CERTIFICATE-----
+
+R12
+-----BEGIN CERTIFICATE-----
+MIIFBjCCAu6gAwIBAgIRAMISMktwqbSRcdxA9+KFJjwwDQYJKoZIhvcNAQELBQAw
+TzELMAkGA1UEBhMCVVMxKTAnBgNVBAoTIEludGVybmV0IFNlY3VyaXR5IFJlc2Vh
+cmNoIEdyb3VwMRUwEwYDVQQDEwxJU1JHIFJvb3QgWDEwHhcNMjQwMzEzMDAwMDAw
+WhcNMjcwMzEyMjM1OTU5WjAzMQswCQYDVQQGEwJVUzEWMBQGA1UEChMNTGV0J3Mg
+RW5jcnlwdDEMMAoGA1UEAxMDUjEyMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB
+CgKCAQEA2pgodK2+lP474B7i5Ut1qywSf+2nAzJ+Npfs6DGPpRONC5kuHs0BUT1M
+5ShuCVUxqqUiXXL0LQfCTUA83wEjuXg39RplMjTmhnGdBO+ECFu9AhqZ66YBAJpz
+kG2Pogeg0JfT2kVhgTU9FPnEwF9q3AuWGrCf4yrqvSrWmMebcas7dA8827JgvlpL
+Thjp2ypzXIlhZZ7+7Tymy05v5J75AEaz/xlNKmOzjmbGGIVwx1Blbzt05UiDDwhY
+XS0jnV6j/ujbAKHS9OMZTfLuevYnnuXNnC2i8n+cF63vEzc50bTILEHWhsDp7CH4
+WRt/uTp8n1wBnWIEwii9Cq08yhDsGwIDAQABo4H4MIH1MA4GA1UdDwEB/wQEAwIB
+hjAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEwEgYDVR0TAQH/BAgwBgEB
+/wIBADAdBgNVHQ4EFgQUALUp8i2ObzHom0yteD763OkM0dIwHwYDVR0jBBgwFoAU
+ebRZ5nu25eQBc4AIiMgaWPbpm24wMgYIKwYBBQUHAQEEJjAkMCIGCCsGAQUFBzAC
+hhZodHRwOi8veDEuaS5sZW5jci5vcmcvMBMGA1UdIAQMMAowCAYGZ4EMAQIBMCcG
+A1UdHwQgMB4wHKAaoBiGFmh0dHA6Ly94MS5jLmxlbmNyLm9yZy8wDQYJKoZIhvcN
+AQELBQADggIBAI910AnPanZIZTKS3rVEyIV29BWEjAK/duuz8eL5boSoVpHhkkv3
+4eoAeEiPdZLj5EZ7G2ArIK+gzhTlRQ1q4FKGpPPaFBSpqV/xbUb5UlAXQOnkHn3m
+FVj+qYv87/WeY+Bm4sN3Ox8BhyaU7UAQ3LeZ7N1X01xxQe4wIAAE3JVLUCiHmZL+
+qoCUtgYIFPgcg350QMUIWgxPXNGEncT921ne7nluI02V8pLUmClqXOsCwULw+PVO
+ZCB7qOMxxMBoCUeL2Ll4oMpOSr5pJCpLN3tRA2s6P1KLs9TSrVhOk+7LX28NMUlI
+usQ/nxLJID0RhAeFtPjyOCOscQBA53+NRjSCak7P4A5jX7ppmkcJECL+S0i3kXVU
+y5Me5BbrU8973jZNv/ax6+ZK6TM8jWmimL6of6OrX7ZU6E2WqazzsFrLG3o2kySb
+zlhSgJ81Cl4tv3SbYiYXnJExKQvzf83DYotox3f0fwv7xln1A2ZLplCb0O+l/AK0
+YE0DS2FPxSAHi0iwMfW2nNHJrXcY3LLHD77gRgje4Eveubi2xxa+Nmk/hmhLdIET
+iVDFanoCrMVIpQ59XWHkzdFmoHXHBV7oibVjGSO7ULSQ7MJ1Nz51phuDJSgAIU7A
+0zrLnOrAj/dfrlEWRhCvAgbuwLZX1A2sjNjXoPOHbsPiy+lO1KF8/XY7
+-----END CERTIFICATE-----
+
+R13
+-----BEGIN CERTIFICATE-----
+MIIFBTCCAu2gAwIBAgIQWgDyEtjUtIDzkkFX6imDBTANBgkqhkiG9w0BAQsFADBP
+MQswCQYDVQQGEwJVUzEpMCcGA1UEChMgSW50ZXJuZXQgU2VjdXJpdHkgUmVzZWFy
+Y2ggR3JvdXAxFTATBgNVBAMTDElTUkcgUm9vdCBYMTAeFw0yNDAzMTMwMDAwMDBa
+Fw0yNzAzMTIyMzU5NTlaMDMxCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1MZXQncyBF
+bmNyeXB0MQwwCgYDVQQDEwNSMTMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEK
+AoIBAQClZ3CN0FaBZBUXYc25BtStGZCMJlA3mBZjklTb2cyEBZPs0+wIG6BgUUNI
+fSvHSJaetC3ancgnO1ehn6vw1g7UDjDKb5ux0daknTI+WE41b0VYaHEX/D7YXYKg
+L7JRbLAaXbhZzjVlyIuhrxA3/+OcXcJJFzT/jCuLjfC8cSyTDB0FxLrHzarJXnzR
+yQH3nAP2/Apd9Np75tt2QnDr9E0i2gB3b9bJXxf92nUupVcM9upctuBzpWjPoXTi
+dYJ+EJ/B9aLrAek4sQpEzNPCifVJNYIKNLMc6YjCR06CDgo28EdPivEpBHXazeGa
+XP9enZiVuppD0EqiFwUBBDDTMrOPAgMBAAGjgfgwgfUwDgYDVR0PAQH/BAQDAgGG
+MB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBTnq58PLDOgU9NeT3jIsoQOO9aSMzAfBgNVHSMEGDAWgBR5
+tFnme7bl5AFzgAiIyBpY9umbbjAyBggrBgEFBQcBAQQmMCQwIgYIKwYBBQUHMAKG
+Fmh0dHA6Ly94MS5pLmxlbmNyLm9yZy8wEwYDVR0gBAwwCjAIBgZngQwBAgEwJwYD
+VR0fBCAwHjAcoBqgGIYWaHR0cDovL3gxLmMubGVuY3Iub3JnLzANBgkqhkiG9w0B
+AQsFAAOCAgEAUTdYUqEimzW7TbrOypLqCfL7VOwYf/Q79OH5cHLCZeggfQhDconl
+k7Kgh8b0vi+/XuWu7CN8n/UPeg1vo3G+taXirrytthQinAHGwc/UdbOygJa9zuBc
+VyqoH3CXTXDInT+8a+c3aEVMJ2St+pSn4ed+WkDp8ijsijvEyFwE47hulW0Ltzjg
+9fOV5Pmrg/zxWbRuL+k0DBDHEJennCsAen7c35Pmx7jpmJ/HtgRhcnz0yjSBvyIw
+6L1QIupkCv2SBODT/xDD3gfQQyKv6roV4G2EhfEyAsWpmojxjCUCGiyg97FvDtm/
+NK2LSc9lybKxB73I2+P2G3CaWpvvpAiHCVu30jW8GCxKdfhsXtnIy2imskQqVZ2m
+0Pmxobb28Tucr7xBK7CtwvPrb79os7u2XP3O5f9b/H66GNyRrglRXlrYjI1oGYL/
+f4I1n/Sgusda6WvA6C190kxjU15Y12mHU4+BxyR9cx2hhGS9fAjMZKJss28qxvz6
+Axu4CaDmRNZpK/pQrXF17yXCXkmEWgvSOEZy6Z9pcbLIVEGckV/iVeq0AOo2pkg9
+p4QRIy0tK2diRENLSF2KysFwbY6B26BFeFs3v1sYVRhFW9nLkOrQVporCS0KyZmf
+wVD89qSTlnctLcZnIavjKsKUu1nA1iU0yYMdYepKR7lWbnwhdx3ewok=
+-----END CERTIFICATE-----
+
+YE1
+-----BEGIN CERTIFICATE-----
+MIICizCCAhGgAwIBAgIQXd1w3TH4AchcGGp6BLgK/jAKBggqhkjOPQQDAzAuMQsw
+CQYDVQQGEwJVUzENMAsGA1UEChMESVNSRzEQMA4GA1UEAxMHUm9vdCBZRTAeFw0y
+NTA5MDMwMDAwMDBaFw0yODA5MDIyMzU5NTlaMDMxCzAJBgNVBAYTAlVTMRYwFAYD
+VQQKEw1MZXQncyBFbmNyeXB0MQwwCgYDVQQDEwNZRTEwdjAQBgcqhkjOPQIBBgUr
+gQQAIgNiAAQHZVB1/mimla2hfSurylScjPMZaOJXLz/NnAc2sylm8WDyhU9Ccp+z
+ASQi5vSwGGJjSGklkD9fdPR8GpyDIOIjCEfrnbt/v+ZSEPLLEGbaM6EccDbN7p9x
+teIm2Avf+ryjge4wgeswDgYDVR0PAQH/BAQDAgGGMBMGA1UdJQQMMAoGCCsGAQUF
+BwMBMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFLsgykcL/tflnPmPCSqj
+jDdFsbzYMB8GA1UdIwQYMBaAFKPIJlqOoUzQNWP8myPIOq5W809WMDIGCCsGAQUF
+BwEBBCYwJDAiBggrBgEFBQcwAoYWaHR0cDovL3llLmkubGVuY3Iub3JnLzATBgNV
+HSAEDDAKMAgGBmeBDAECATAnBgNVHR8EIDAeMBygGqAYhhZodHRwOi8veWUuYy5s
+ZW5jci5vcmcvMAoGCCqGSM49BAMDA2gAMGUCMQDgjUEahFT/h3DRakqiPZpLvPgf
+Zwkt6K2EOMmh1nvEzl83eMLYcod4GCl3b0J1Nn0CMBNYmEQJb4CEG5WoOe7aRn/L
+VKu6saHmHEynI7ysIPd8zQsK1HdmhlHKlw9Z5GpGvA==
+-----END CERTIFICATE-----
+
+YE2
+-----BEGIN CERTIFICATE-----
+MIICjDCCAhGgAwIBAgIQTfOxXdbAeExQfNN7WObxFTAKBggqhkjOPQQDAzAuMQsw
+CQYDVQQGEwJVUzENMAsGA1UEChMESVNSRzEQMA4GA1UEAxMHUm9vdCBZRTAeFw0y
+NTA5MDMwMDAwMDBaFw0yODA5MDIyMzU5NTlaMDMxCzAJBgNVBAYTAlVTMRYwFAYD
+VQQKEw1MZXQncyBFbmNyeXB0MQwwCgYDVQQDEwNZRTIwdjAQBgcqhkjOPQIBBgUr
+gQQAIgNiAARxmrQzkdbEEL3MqXt3dJQttYc47axkdDTHud5TPqM2z5uSD5cmk0Wr
+HlWXvnlvqBLqiB34kluxIbmMyAiq3/YD6e80/vV259K8XQIdjFXloYOa0mIU71f7
+HQ09PvYDlw+jge4wgeswDgYDVR0PAQH/BAQDAgGGMBMGA1UdJQQMMAoGCCsGAQUF
+BwMBMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFLlZ8o7PIvCG0zdI/3YU
+GLqC2FWHMB8GA1UdIwQYMBaAFKPIJlqOoUzQNWP8myPIOq5W809WMDIGCCsGAQUF
+BwEBBCYwJDAiBggrBgEFBQcwAoYWaHR0cDovL3llLmkubGVuY3Iub3JnLzATBgNV
+HSAEDDAKMAgGBmeBDAECATAnBgNVHR8EIDAeMBygGqAYhhZodHRwOi8veWUuYy5s
+ZW5jci5vcmcvMAoGCCqGSM49BAMDA2kAMGYCMQDIcnw5dcZLN9ffynXnnkLD/itS
+JEycJPb3sRkzeqBowup7vOsAwaqoCnNn/jh9wycCMQCJM6CPlaOC4pQYYbJtVPYb
+DKrIb2EKk5NpOpE6/XttQYZV/3gilB9l+Cc/DOVwmyg=
+-----END CERTIFICATE-----
+
+YR1
+-----BEGIN CERTIFICATE-----
+MIIE2zCCAsOgAwIBAgIRAKICU/FfJpHAXcHOE7m8yk4wDQYJKoZIhvcNAQELBQAw
+LjELMAkGA1UEBhMCVVMxDTALBgNVBAoTBElTUkcxEDAOBgNVBAMTB1Jvb3QgWVIw
+HhcNMjUwOTAzMDAwMDAwWhcNMjgwOTAyMjM1OTU5WjAzMQswCQYDVQQGEwJVUzEW
+MBQGA1UEChMNTGV0J3MgRW5jcnlwdDEMMAoGA1UEAxMDWVIxMIIBIjANBgkqhkiG
+9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoVi8X2xCYgMXvJxNPKp/oF13UMgmPABB07VC
+LNDtoXmt9luEZNJSBV10VyT1Pz6LD8Zq1d2gc43WNl1AdRrj4sEnazbOiz0nPpmG
+Bp2hui49oZtDIY6wdKeZAi5BbNU20CH6RSBBMLSQ9cXrH8dxdv4PAJ45ssGML68U
+SE3BsjC2a6cAN9L5CgXVIQi5tfNiTPoFZZ3S0OlXqLmmtdV95udWAb5b6e/F49Di
+CsH0Y00Ag72BVIb1hzynmKe+X0mERBTtsb3BwmpV9ipeBjMLoR/D9cHxHQCWoi5l
+TmXwY015J5rGelz1nZjJuxc2kioaX29XJBnhMkP531rSdG5uMwIDAQABo4HuMIHr
+MA4GA1UdDwEB/wQEAwIBhjATBgNVHSUEDDAKBggrBgEFBQcDATASBgNVHRMBAf8E
+CDAGAQH/AgEAMB0GA1UdDgQWBBQfLzW+RhSCzUCxrnksVXj699Ro+zAfBgNVHSME
+GDAWgBTe51tg0CJtQCh9Pw0B/qS1UrRRlDAyBggrBgEFBQcBAQQmMCQwIgYIKwYB
+BQUHMAKGFmh0dHA6Ly95ci5pLmxlbmNyLm9yZy8wEwYDVR0gBAwwCjAIBgZngQwB
+AgEwJwYDVR0fBCAwHjAcoBqgGIYWaHR0cDovL3lyLmMubGVuY3Iub3JnLzANBgkq
+hkiG9w0BAQsFAAOCAgEA0+zvMq3kHig1ddTmmm+RibTr9/RpX7k4buanMMRqbV/y
+IvP82zAHN3mvaw+cASuVsdpd0ikjhr4hnhJQLQOzOp2ccKrsdGOAgo0vddeISFAq
+EWEV4lmUM3vFF796up+bSgmJ1u6RupDCMxDgF8M3eLvGuj6L0lu3zkQ0KuQLnKxL
+tB0oQqn1Idg5CuuGpMvQzk29Pa3D/qHurc0EIM9SxukQuJqq63lxsYyRQFU8yMBO
+hq1w5LbfaWNRrz1uklOfI/pYkAb2E2MTZrAMQkBIE2S8Jt1F8gRc96o/xOsrgvSk
+a84AisX6xq1lz1Z7jGvrnXc4TMcjxZTjiTaihcYI1JIXZiLtEMSCa5l3cu8YWd6z
+dLRQlqRdclVjuQfNHawRJ6GWlkK0QJosivTKwdBw3KxEtzGo8yMHERbsy57gP1UX
+HOMcmZYQC0gtyR3SxfenIM/MxC3Ia2Ypab/kQ/CTnlIn2KQ5JUC6NYrGCbhFN9bp
+5lKJStEwCUnLpntcrXk5XVDCNv/5RyWpRThkGOV7GetKkQ0qAY8hCzWK6oqnAhDZ
+cjlYVdWfqOw3DIOX6EDNBgAqHarRVxyF9QZdOaXSyPJ0ueD2BYJEBgaCGQ8rAaU/
+Qc123V5LTXDZW4CcsPBDyhy4v+c8hClAyw/IkJlfBqxB9D+/wvIMHgECZ4ptP6o=
+-----END CERTIFICATE-----
+
+YR2
+-----BEGIN CERTIFICATE-----
+MIIE2jCCAsKgAwIBAgIQTr0klH4k05SALYSlL9WzGTANBgkqhkiG9w0BAQsFADAu
+MQswCQYDVQQGEwJVUzENMAsGA1UEChMESVNSRzEQMA4GA1UEAxMHUm9vdCBZUjAe
+Fw0yNTA5MDMwMDAwMDBaFw0yODA5MDIyMzU5NTlaMDMxCzAJBgNVBAYTAlVTMRYw
+FAYDVQQKEw1MZXQncyBFbmNyeXB0MQwwCgYDVQQDEwNZUjIwggEiMA0GCSqGSIb3
+DQEBAQUAA4IBDwAwggEKAoIBAQDZ0LxwBppqh84luqMerV/eeL/fXQ7mLQQv1Lnp
+WKZbyvGpx6wh6AfnslAnF6ewTkcHA+gSOoBvm3Dfm06AuGiF+KRut4fAcowqnAQQ
+CW98+QPP/eOv/wug7Iyk4NkOxf2I6g2f55T6nJoOTLFcukeRq80JGQEYan+dPFr9
+OGUgQK2hGKgNkW87pappsOAuUJcroYhRt5uUis4qaZireiseu32gzDJNBAiKtsvd
+6HX4v25bpkRNcS/B/Gtc9kVbUpD+2PLPxdei3Tim55k4tfAEXwD2qyiPTxrTNq6l
+N+AMr5g2c1dNqkOTwjxeV6L5lpP1rGiYvLnRaPlOqyZRPW+5AgMBAAGjge4wgesw
+DgYDVR0PAQH/BAQDAgGGMBMGA1UdJQQMMAoGCCsGAQUFBwMBMBIGA1UdEwEB/wQI
+MAYBAf8CAQAwHQYDVR0OBBYEFEAVLSZ57TIgnt+ach3WMh+BDIEMMB8GA1UdIwQY
+MBaAFN7nW2DQIm1AKH0/DQH+pLVStFGUMDIGCCsGAQUFBwEBBCYwJDAiBggrBgEF
+BQcwAoYWaHR0cDovL3lyLmkubGVuY3Iub3JnLzATBgNVHSAEDDAKMAgGBmeBDAEC
+ATAnBgNVHR8EIDAeMBygGqAYhhZodHRwOi8veXIuYy5sZW5jci5vcmcvMA0GCSqG
+SIb3DQEBCwUAA4ICAQB0ZUQWZ9/Yn9COEpo+JfecMnB0h0vwDm/M66IqXqw3LoaL
+mx9lZvRTeDIS67PUeI3yCA2W6PKRD0/FE/G57lOmS+Xy5AaaL00ICGOqjNcCaMWW
+8o8nevHOd4i4lqgtznE/28QwlcdJyF8yBiWHpnyjhEpmNWJURgOCOg2xpwRMBCsj
+MScqYPtOhBeuYQvSwAEeTML2Ukh6uGuX4E14q65Ja8cdjF5bAldnP1eE4FBaAwsZ
+G2fOqqrKV03Y85Nw2btedP1AtliQuJZs/Jo/gXxXdc7LrH3McgnpnbTiAncX7yES
+hP6kzQejllqMCIt52HOjxDGWafS7Xw+DKwqmH+Eqy8dcbOuag/1AYlQoKNVK3F5q
+Hh6tEDiMqQcLIibGKteE6iHo4A/bIScbzrhXUYuism42ZYzmc48FMVIH3qy4L84E
+TdAH2gtxw0PAhvRVXp8HP7wfngpzsN/8xOTpeRSbM4+Qbc56G6+Bifmv6sk1ieQb
+NA3wJdl4DDUuQSV8hBgx6zoI1ZSGORprDFux7c6rhc77QZMSRrEgomBeklervEve
+86ylWmZ3WWHV6RLMi8xNvjd71r4EPIGgY7BZU/VPBkq+uA7Gb6mbJnFgV43uh3xy
+LRFgxIAphIukwTGSMZZR+AI+Qnp0BYTWovHXozOf3H8r6hozEoT02JHn0AeTfA==
+-----END CERTIFICATE-----
+
+E9
+-----BEGIN CERTIFICATE-----
+MIICtDCCAjugAwIBAgIQL0w31L50/EIziMaoQErAIjAKBggqhkjOPQQDAzBPMQsw
+CQYDVQQGEwJVUzEpMCcGA1UEChMgSW50ZXJuZXQgU2VjdXJpdHkgUmVzZWFyY2gg
+R3JvdXAxFTATBgNVBAMTDElTUkcgUm9vdCBYMjAeFw0yNDAzMTMwMDAwMDBaFw0y
+NzAzMTIyMzU5NTlaMDIxCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1MZXQncyBFbmNy
+eXB0MQswCQYDVQQDEwJFOTB2MBAGByqGSM49AgEGBSuBBAAiA2IABKBc3EWfO6zm
+AqlYSV0MFToiAnzppo1ZSJfbXGjprjBkydFbYBekcgrlJEmt5787R4P1grbPtgd3
+oUBlfoMzWHihpjXWkojvlceMmUYqvVbQc39pCD3RiYjDCr7WpuIqc6OB+DCB9TAO
+BgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMBIG
+A1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFF130U2sTSJ4WbKGWY5DHLdkWRNB
+MB8GA1UdIwQYMBaAFHxClq7eS0g7+pL4nozPbYupcjeVMDIGCCsGAQUFBwEBBCYw
+JDAiBggrBgEFBQcwAoYWaHR0cDovL3gyLmkubGVuY3Iub3JnLzATBgNVHSAEDDAK
+MAgGBmeBDAECATAnBgNVHR8EIDAeMBygGqAYhhZodHRwOi8veDIuYy5sZW5jci5v
+cmcvMAoGCCqGSM49BAMDA2cAMGQCMBWsD3obNCbyyK+wmA5pegl6G4VEIEAzL7wM
+bza6kx4K7CvBzaHQxKl+roFwORB8fgIwS34uE6gGijIy0C2Xn+vjeCqn8xZikhq2
+Xf1xSYDuYqpW9YVJ1Ou2vqm5YZFCIX+n
+-----END CERTIFICATE-----
+
+R14
+-----BEGIN CERTIFICATE-----
+MIIFBjCCAu6gAwIBAgIRAL7zc3iocCqewKR6uSGlBqswDQYJKoZIhvcNAQELBQAw
+TzELMAkGA1UEBhMCVVMxKTAnBgNVBAoTIEludGVybmV0IFNlY3VyaXR5IFJlc2Vh
+cmNoIEdyb3VwMRUwEwYDVQQDEwxJU1JHIFJvb3QgWDEwHhcNMjQwMzEzMDAwMDAw
+WhcNMjcwMzEyMjM1OTU5WjAzMQswCQYDVQQGEwJVUzEWMBQGA1UEChMNTGV0J3Mg
+RW5jcnlwdDEMMAoGA1UEAxMDUjE0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB
+CgKCAQEAzWhUbJkv1MTfFF7ihLylp5jaitXVng6yEeruE71/c0TLq/bZ438PLiPN
+r3I1qp66HaqOANbQ6ETg0SjuBbWng7VLHG4M1vQnx40EyXb4MnqeiwIucbyfEras
+GfTsS7E0ulC7uJ3G80OeAGQl76Rvq/qOYOR8n9VofZfbSKiQkHjUE4yP18YKub7E
+y8L0i7+WibZd7OYLtcGDxZwgr56r5iSYSVFl6c4ihop2I81g2BkBGPYLygDSktVW
+Vz1/cnjHH+u7ubt5hhlw/GwsOaJfIjrFhw3KafQJyvJxanpfCSSTShzR9whLTSKV
+lH2A1761dHaceWkBRqcV3HkuFIGIlQIDAQABo4H4MIH1MA4GA1UdDwEB/wQEAwIB
+hjAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwEwEgYDVR0TAQH/BAgwBgEB
+/wIBADAdBgNVHQ4EFgQU5RCV2LYMUdencjVjClRobgZT+PswHwYDVR0jBBgwFoAU
+ebRZ5nu25eQBc4AIiMgaWPbpm24wMgYIKwYBBQUHAQEEJjAkMCIGCCsGAQUFBzAC
+hhZodHRwOi8veDEuaS5sZW5jci5vcmcvMBMGA1UdIAQMMAowCAYGZ4EMAQIBMCcG
+A1UdHwQgMB4wHKAaoBiGFmh0dHA6Ly94MS5jLmxlbmNyLm9yZy8wDQYJKoZIhvcN
+AQELBQADggIBACA3LtFXH8eQXLovPGzp7c2XE0/jmEp7tokiecuSdHfIUoMMYLjI
+TpCNbi92Czp+qraLmp0eLy6QEE5wnvMe5f9fgE24yk8EpsLw0JEr9L8tqWUXC1Kp
+jsT3ydhbWR70i4gElBvXnjGJc6HnU80veqABHEOU8TuAVwerBqH479ZLZSX+ezAf
+n9QcYiU9r8kVMbeSoSiQY39L6QK/3w4lmMZ9XoGM+9YhJldIbpBNgikoNgcOp3ya
+QxsfsE6ixjBZ/G6OSdi7KY41a/QdzeIiSy4dDV8R4pYF9FEhogpU/T/fD9tE7gEO
+81vGLOyhUSlI2EzsJeH0lAt9NIN5CPtcooj9ZV3gkuYwhQMdhiBM/giI1CX+3JUh
+w6zKwXr3EjiY4Emw12U6ACaMSJxFxakt1zjmBn/DNgx0rP4WyeSJrewrQsYjW9Us
+bpO7GGrbADy72exibqrULU3Hp/PWHdXn+j3dKweU5ZL5li67ckqf1ixqQtoQuyjb
+F4+flbcU7AdHYnNHNUHMz5TWXYKWP6fFk9PSggS8DmYtYozN3npRSCHTC56Rxa81
+ApdD9Ab0dF7fOvlnmniGxfqCRSh/RMGGEaTxdAfhp/m/yaR4xtm8VTAn8d65h/3D
+fKOGZ34UnvZmJ/bHqnU4zkLWc51iC1i9OIQWzoePK6qNPUq7k+oKUMSj
+-----END CERTIFICATE-----
+
+YE3
+-----BEGIN CERTIFICATE-----
+MIICizCCAhGgAwIBAgIQLTM7c3DEJq+3k6hXVBAwZzAKBggqhkjOPQQDAzAuMQsw
+CQYDVQQGEwJVUzENMAsGA1UEChMESVNSRzEQMA4GA1UEAxMHUm9vdCBZRTAeFw0y
+NTA5MDMwMDAwMDBaFw0yODA5MDIyMzU5NTlaMDMxCzAJBgNVBAYTAlVTMRYwFAYD
+VQQKEw1MZXQncyBFbmNyeXB0MQwwCgYDVQQDEwNZRTMwdjAQBgcqhkjOPQIBBgUr
+gQQAIgNiAAS7HaCvDM9Y3aYPW+iH6uUTK2KFUYx0vye5xK1KNTWZUgloiW2budqz
+vCQaarmJTNujiV+ZrWrOpox+N4kTsiCec6yfw7VGmErLC5ZSq2X4d2vJc1g8VIU3
+fb7CuzJ/bDOjge4wgeswDgYDVR0PAQH/BAQDAgGGMBMGA1UdJQQMMAoGCCsGAQUF
+BwMBMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFPaiftZeI2/d3UVGYR6C
+FXXN8eaOMB8GA1UdIwQYMBaAFKPIJlqOoUzQNWP8myPIOq5W809WMDIGCCsGAQUF
+BwEBBCYwJDAiBggrBgEFBQcwAoYWaHR0cDovL3llLmkubGVuY3Iub3JnLzATBgNV
+HSAEDDAKMAgGBmeBDAECATAnBgNVHR8EIDAeMBygGqAYhhZodHRwOi8veWUuYy5s
+ZW5jci5vcmcvMAoGCCqGSM49BAMDA2gAMGUCMHD5+4lU6i9k7inE4Opkebs+IFjY
+jlD9BNaPyQe9/hBSjOOTaF5UZzlNy64JID6VUwIxANr7lTvWWzlGU1PpCR7lfDVX
+tmGgr3dPHkigUXaTWbbLrx84pOAdd3FEGJM2Kf5etA==
+-----END CERTIFICATE-----
+
+YR3
+-----BEGIN CERTIFICATE-----
+MIIE2jCCAsKgAwIBAgIQdv2+nJw5pmI1PsQaDsOT/jANBgkqhkiG9w0BAQsFADAu
+MQswCQYDVQQGEwJVUzENMAsGA1UEChMESVNSRzEQMA4GA1UEAxMHUm9vdCBZUjAe
+Fw0yNTA5MDMwMDAwMDBaFw0yODA5MDIyMzU5NTlaMDMxCzAJBgNVBAYTAlVTMRYw
+FAYDVQQKEw1MZXQncyBFbmNyeXB0MQwwCgYDVQQDEwNZUjMwggEiMA0GCSqGSIb3
+DQEBAQUAA4IBDwAwggEKAoIBAQDJS0+QyfrZm8U0nXugJKg+3nraHoxKN9NOsGvH
+T9NtcdgThWuj6gizDMqn9VQilyPJ+qKK7rjgBM/XK3ogx61EPbgQY8LiVNn4nsmR
+1UFUdalb/cL/mYtXo3lu3qop7k6Ol+pOLzvlBINhl+Mq7l9VxUCM717UpYumNKxG
+NRjALGg5H16C93UQlW8KgRpW58fY5Be3cLqv24bbKRFisb7S/HPA967pW6rAO/DF
+FKbi35NfHKEG0jIGqxtsbYbK+/0qe2147p9oUO/SNcuaT9poLFWKmcY90UR0hXKy
++qiR6Kv7/e5gCK/BGkjLXM1AfX1CRDwOiIPPsK+RJOIj00ilAgMBAAGjge4wgesw
+DgYDVR0PAQH/BAQDAgGGMBMGA1UdJQQMMAoGCCsGAQUFBwMBMBIGA1UdEwEB/wQI
+MAYBAf8CAQAwHQYDVR0OBBYEFGllKfkz+Am2QtXh87W1nR9feiJ8MB8GA1UdIwQY
+MBaAFN7nW2DQIm1AKH0/DQH+pLVStFGUMDIGCCsGAQUFBwEBBCYwJDAiBggrBgEF
+BQcwAoYWaHR0cDovL3lyLmkubGVuY3Iub3JnLzATBgNVHSAEDDAKMAgGBmeBDAEC
+ATAnBgNVHR8EIDAeMBygGqAYhhZodHRwOi8veXIuYy5sZW5jci5vcmcvMA0GCSqG
+SIb3DQEBCwUAA4ICAQCNj5bxci8knkGgfw3qSv0KbbjZpmKUgZzgYYW6EpiFj4Bx
+8CTQ79RCEuitFdGFOvG9xfQdWArQlaO/bsmNcsz0D9wiuwxc9RCo6JC4BKRMcmKE
+fRiLzHWwHZfUj0sCAY0yBryOGL80J3sD2C3mjAFwV2mVIeuVKOhQeTcstVceW97+
+38AC+juHSq+xu/HuCbX0LgTzMzh8RYy8OtO80IFE2v8qAEDIK2PYoQp27nwftAIC
+AtOoGzqHDJqPWeiSTQgt1ndRgGAmV7H0HssX66i8naQFlsiidol4goFYEVMVJArp
+g2X5NyumCCX/aSnXKgp8leQ6XoVQz0VI6+k1a0goPUJB7xp67BkCxkwJamDOMpQL
+xpdTPI2Z1TO2BuEyzBd8DC/yfm1+rvMCRG3AX44f0ra2ueiM7cdRvzcE+b3c2fun
+1n/4xzigiimm8Rzs6Cc0A59mt3XhruOe+zGIXtJgn0wf9XfJhKdKcdEH5VNhFapn
+Gc9Tm+fd4n5Qojd7W2CwdBUBgwYIt4Cqxqr2OEf7/k1Xm8eplMQlhwySs/hM0dY6
+csOPNIXeJm1YsnJyxUGvKRWjOn+vC9k1SXilnnwhcIs9Pp9e5bckYAnB79VJXN/L
+8X8xt/9Qm2xmKKe/xzKA+oRvWKofeFGKU7hcnFbyUwlCu0d+JkgWxQu4x4drcQ==
+-----END CERTIFICATE-----
+
+# =====END BRAVE ROOTS ASC=====
+)brave_certs";
+
+  return ParseCertificatesFile_ChromiumImpl(brave_certs, pinsets, timestamp);
+}
+
+bool ParseJSON(std::string_view hsts_json,
+               std::string_view pins_json,
+               TransportSecurityStateEntries* entries,
+               Pinsets* pinsets) {
+  Pinsets chromium_pinsets;
+  TransportSecurityStateEntries chromium_entries;
+  if (!ParseJSON_ChromiumImpl(hsts_json, pins_json, &chromium_entries,
+                              &chromium_pinsets)) {
+    return false;
+  }
+
+  for (auto& entry : chromium_entries) {
+    // Google has asked us not to include the pins that ship with Chrome,
+    // but we do want the preloaded HSTS entries.
+    entry->pinset = "";
+    if (!entry->force_https) {
+      continue;
+    }
+
+    entries->push_back(std::move(entry));
+  }
+
+  return ParseJSON_ChromiumImpl(kBraveHstsJson, kBravePinsJson, entries,
+                                pinsets);
+}
+
+}  // namespace net::transport_security_state

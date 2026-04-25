@@ -1,0 +1,109 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("default_browser_monitor") {
+  sources = [
+    "default_browser_monitor.cc",
+    "default_browser_monitor.h",
+  ]
+  deps = [ "//base" ]
+}
+
+static_library("misc_metrics") {
+  sources = [
+    "autofill_metrics.cc",
+    "autofill_metrics.h",
+    "brave_search_metrics.cc",
+    "brave_search_metrics.h",
+    "general_browser_usage.cc",
+    "general_browser_usage.h",
+    "language_metrics.cc",
+    "language_metrics.h",
+    "menu_metrics.cc",
+    "menu_metrics.h",
+    "navigation_source_metrics.cc",
+    "navigation_source_metrics.h",
+    "new_tab_metrics.cc",
+    "new_tab_metrics.h",
+    "page_metrics.cc",
+    "page_metrics.h",
+    "page_percentage_metrics.cc",
+    "page_percentage_metrics.h",
+    "pref_names.h",
+    "privacy_hub_metrics.cc",
+    "privacy_hub_metrics.h",
+    "split_view_metrics.cc",
+    "split_view_metrics.h",
+    "tab_metrics.cc",
+    "tab_metrics.h",
+    "uptime_monitor.h",
+  ]
+
+  if (is_android) {
+    sources += [
+      "quick_search_metrics.cc",
+      "quick_search_metrics.h",
+    ]
+  }
+
+  deps = [
+    "//base",
+    "//brave/components/brave_new_tab_ui:mojom",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/brave_shields/core/browser",
+    "//brave/components/p3a_utils",
+    "//brave/components/time_period_storage",
+    "//components/autofill/core/browser",
+    "//components/bookmarks/browser",
+    "//components/browsing_data/core",
+    "//components/content_settings/core/browser",
+    "//components/history/core/browser",
+    "//components/keyed_service/core",
+    "//components/language/core/browser",
+    "//components/language/core/common",
+    "//components/prefs",
+    "//components/search_engines",
+    "//url",
+  ]
+
+  public_deps = [
+    ":default_browser_monitor",
+    "//brave/components/misc_metrics/common:mojom",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "brave_search_metrics_unittest.cc",
+    "default_browser_monitor_unittest.cc",
+    "general_browser_usage_unittest.cc",
+    "language_metrics_unittest.cc",
+    "menu_metrics_unittest.cc",
+    "navigation_source_metrics_unittest.cc",
+    "new_tab_metrics_unittest.cc",
+    "privacy_hub_metrics_unittest.cc",
+    "split_view_metrics_unittest.cc",
+    "tab_metrics_unittest.cc",
+  ]
+
+  if (is_android) {
+    sources += [ "quick_search_metrics_unittest.cc" ]
+  }
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/misc_metrics",
+    "//brave/components/search_engines",
+    "//components/language/core/browser",
+    "//components/prefs:test_support",
+    "//components/search_engines",
+    "//components/search_engines:test_support",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
+}

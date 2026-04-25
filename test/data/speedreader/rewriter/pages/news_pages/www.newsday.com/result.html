@@ -1,0 +1,505 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Long Island home prices aren't dropping as the real estate market slows. Here's why.</title><meta charset="utf-8"/><body id="article"><h1 class="title metadata">Long Island home&nbsp;prices aren't dropping as the real estate market slows. Here's why.</h1><p class="subhead metadata">The housing market has showed signs of slowing, as the spring marked the end of an era of historically low mortgage rates. But so far prices haven't budged.</p><div class=""><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr><div class="TrinityAudio_trinity-text__7718q" id="trinity_text_ODI4OTMxMTktMDBhYy00"><p> The Long Island housing market has showed signs of slowing, as the spring marked the end of an era of historically low mortgage rates. But so far prices haven’t budged. </p><p> The culprit, real estate experts say, is a shortage of homes for sale on the Island that won’t be resolved quickly. </p><p> Higher mortgage rates have diminished the number of buyers who can afford a home and the amount of money they can offer. The average 30-year fixed mortgage rate was 5.52% in June, up from 3.1% in December, according to mortgage giant Freddie Mac. This week the average was 5.22%&nbsp;<strong></strong>&nbsp; </p><p> The rate increase has affected the number of transactions but prices continued to rise. Closed sales fell by about 23% in July&nbsp;compared with the same month a year ago&nbsp;on Long Island&nbsp;while median prices remained at&nbsp;records in both counties, according to monthly data from OneKey MLS.&nbsp;<strong>&nbsp;</strong> </p><p> Fewer sales helped the supply of available homes grow but also showed the extreme depth of the Island's shortfall, which has contributed to the appreciation of home prices. The number of single-family houses and condominiums for sale increased&nbsp;to 6,407&nbsp;by the end of June, according to&nbsp;data from real estate brokerage Douglas Elliman and appraisal firm Miller Samuel. That inventory figure was up&nbsp;nearly 48%&nbsp;compared with&nbsp;the end of March, more than three times the usual seasonal increase of 14% in the past decade.&nbsp;Still, it was&nbsp;the fourth-lowest it has been at the end of a quarter in the past 20 years. The Miller Samuel&nbsp;data excludes homes in the Hamptons and on the North Fork, which the firm reports separately.&nbsp;&nbsp; </p><p> The data show how Long Islanders are simultaneously seeing more&nbsp;options for buying than&nbsp;in the winter but are still faced with a seller's market. </p><p> The median sale price of a home in Nassau County in July matched the&nbsp;record of $720,000 set in the previous month. It was 7.5%&nbsp;higher than the median in the same month a year ago. In Suffolk County, the median rose 9.5% to a record $575,000, according to OneKey MLS.&nbsp;<strong>&nbsp;</strong> </p><p> To understand why prices haven’t dropped to reflect the <a href="https://www.newsday.com/business/long-island-homes-for-sale-mortgage-rates-wj7ch4gr">smaller pool of buyers that can afford homes</a>, it’s worth looking at housing supply data from before the pandemic-era real estate frenzy. There are still fewer than half as many houses on the market as there were in June 2019, when 14,051 homes were for sale. </p><p> “During this pandemic boom, inventory wasn’t just burned off, it was obliterated,” said Jonathan Miller, CEO of Miller Samuel. “We’ve not seen lows like anywhere near what we’ve experienced during this boom, and it will take a little while for supply to rise.” </p><p> Given the current debate about whether the U.S. economy is in a recession, real estate observers are closely watching the market for signs of weakness. But the Island’s housing supply is in a far different place than it was after the real estate bubble popped. During the Great Recession, in 2008 and 2009, there were more than three times as many houses on the market as there are now, with a peak above 26,000. </p><p> “Because the bidding wars that we had seen a few months ago have settled down, it looks like a bit of a calmer market compared to the frenzied activity that we saw a year ago,” said Jessica Lautz, vice president of demographics and behavioral insights at the National Association of Realtors. “It’s all a matter of perspective, and if we look over a longer time frame, we still have a very limited housing inventory.” </p><p> Lautz also expressed confidence that today’s buyers are on more solid financial footing than those who borrowed to buy a house in the years leading up to the Great Recession. </p><p> Sixty-five percent of borrowers taking out new mortgages had credit scores above 760 in the second quarter of the year, <a href="https://www.newyorkfed.org/medialibrary/interactives/householdcredit/data/pdf/HHDC_2022Q2" target="_blank">according to the Federal Reserve Bank of New York and Equifax</a>. That compared with 38% from 2003 to 2006. </p><p> “We do know that homebuyers have had higher credit scores than what we have seen historically,” Lautz said. “Lending is still quite tight for homebuyers, and there’s none of the goofy loan products out there,” such as mortgages that require limited documentation to verify income or large balloon payments at the end of the loan term. </p><p> Rising home prices have also been a boon for homeowners’ equity. Across the United States, 48.1% of homeowners had at least 50% equity in their homes&nbsp;in the second quarter, compared with 34.4% a year ago, according to real estate data company Attom. </p><p> &nbsp;At the national level, NAR expects the median price of existing homes sold across all 12 months of 2022 to be 11.5% higher than it was in 2021. Next year, it is projecting price growth of just 2.1%, according to its <a href="https://cdn.nar.realtor/sites/default/files/documents/forecast-q3-2022-us-economic-outlook-07-27-2022.pdf" target="_blank">latest forecast published this month</a>. That would represent “home price gains more to what is traditionally the historical norm as opposed to these double-digit gains that we have been seeing,” Lautz said. </p><p> &nbsp;Miller said he expects slower price appreciation on Long Island as well as in the Hamptons and North Fork in the short term. </p><p> "I don't think&nbsp;we're going to be using words like correction," Miller said. "It's going to be modest&nbsp;decline, or stability in prices, barring the economy doesn't go into a deep, dark, significant recession."&nbsp; </p><p> Jonathan Chandler, a real estate agent with Compass in Rockville Centre, said the local market feels as if it has eased up since the spring, when waiting in lines for open houses with his clients and dozens of others often felt like a day at Six Flags Great Adventure. </p><p> “You’re starting to see less competition with the increase in rates,” Chandler said, “but I’m still not seeing the inventory needed to help with the&nbsp;buyers who are ready and willing to purchase. You’re still in bidding wars. It just may not be as crazy.” </p><p> Chandler, who works in Nassau, Suffolk and&nbsp;Brooklyn, said the market hasn’t shifted to the point that buyers can ask homeowners to make seller concessions, such as covering a portion of closing costs, and still expect to have their offers accepted. </p><p> “Seller concessions right now, to me, is out of the question in this market,” he said, noting that if a house has been sitting on the market for a month or two, a buyer could see if there is an opportunity to get a discount from the asking price. But those opportunities are “far and few,” he said. “It’s not an across-the-board situation right now.” </p><p> Months of supply on Long Island, which measures the time it would take for all the houses on the market to be sold given the current pace of homes going into contract, was 2.9&nbsp;in July, according to data from OneKey MLS. That still indicates a fast-paced market that favors sellers. Five to six months of supply is typically needed to put buyers and sellers on even footing in negotiations. The last time that happened was in May 2020, when New York was facing the first stage of the pandemic.&nbsp;<strong>&nbsp;</strong> </p><p> Deirdre O'Connell, CEO of Daniel Gale Sotheby's International Realty, said her agents have seen less foot traffic at open houses, which isn't unusual during the hottest weeks of August. She views the change in the market as positive for first-time buyers, who are less likely to be forced to waive contract contingencies that would protect them if they couldn't secure a mortgage or an inspection revealed needed repairs.&nbsp; </p><p> "The pace for the past two years has boxed out a lot of buyers, particularly first-time homebuyers, who couldn't keep up with it or were maybe forced to pay over market value to even get a home," she said.&nbsp; </p><p> For sellers, a changing market increases the importance of marketing a home with proper staging and high-quality photography, O'Connell said.&nbsp; </p><p> "The people that have to adjust a little bit of expectations are some of our sellers," O'Connell said. "If they think they're going to make a large percentage more than their neighbor got for their house six to 12 months ago, that's probably the wrong expectation." </p><p> Another factor contributing to the supply shortage nationally is that the pace of home-building&nbsp;has failed to keep up with the rate of household formation as younger millennials reach peak homebuying age, said George Ratiu, senior economist and manager of economic research at Realtor.com. He cited a report published by Realtor.com in February that found a <a href="https://www.realtor.com/research/us-housing-supply-gap-expands/" target="_blank">growing gap</a> between U.S. household formation and the number of single-family homes that were built </p><p> The cities with the&nbsp;most U.S. building permits per capita last year were concentrated in the South and West&nbsp;and were led by the metro areas of Austin, Texas;&nbsp;Nashville, Tennessee;&nbsp;Jacksonville, Florida;&nbsp;and Raleigh, North Carolina;&nbsp;<a href="https://www.realtor.com/research/us-housing-supply-gap-expands/" target="_blank">according to Realtor.com</a>.&nbsp; </p><p> “We remain in a tremendously underbuilt housing market,” Ratiu said. “New homes have mostly been built at the upper end, premium and luxury segment of the market, which left only the existing-home market for first-time buyers, and that’s precisely where we’ve seen so much activity.” </p><p> Building hasn’t kept up with population growth in the New York metro area, according to <a href="https://rpa.org/latest/lab/ny-zoning-reforms-housing-opportunity">an analysis published in February</a> by the Regional Plan Association. The report found the population in the tristate area increased by nearly 6% from 2010 to 2020, while housing stock increased by 3.5%, according to U.S. census data. </p><p> Nassau and Suffolk issued the fewest housing permits per capita from 2010 to 2020 among 31 counties RPA analyzed in New York, New Jersey and Connecticut. Suffolk issued 7.4 per 1,000 people and Nassau issued 7.8 per 1,000. Hudson County, N.J. led the region at 64.7 housing permits per 1,000 people. Permits include those for apartment buildings and houses.&nbsp; </p><p> Strong employment numbers, such as those that were <a href="https://www.newsday.com/business/unemployment-numbers-july-2022-pvof518w" target="_blank">reported last week</a>, with 528,000 more jobs added to the U.S. economy in July, &nbsp;should keep&nbsp;homebuying demand strong, Ratiu said. </p><p> “It’s likely we’ll still have buyers who will feel safe in their jobs, have enough down payment and will still be continuing to look at homes,” he&nbsp;said. “That means price declines might not be on the menu.” </p><p> On the other hand, Ratiu said,&nbsp;if companies are&nbsp;concerned the economy could slip into a recession, they might begin laying off workers, which “could trigger a much steeper turn in the housing market.” </p><p> One measure Ratiu is watching is consumer sentiment. The University of Michigan’s <a href="http://www.sca.isr.umich.edu/" target="_blank">index of consumer sentiment</a> hit an all-time low in June&nbsp;and improved slightly above that level in August. <strong>&nbsp;</strong> </p><p> “The big question is, ‘Are companies likely to overreact over the next half of the year?’ Because so much of it boils down to consumer confidence,” Ratiu said. </p><p> Ratiu said Long Island has several things going for it that could keep homebuying demand robust. Its <a href="https://www.newsday.com/business/unemployment-hiring-labor-jobless-rate-rbku9mo5" target="_blank">unemployment rate</a> in June, 2.9%, was better than the national rate that month of&nbsp;3.6%. Its home prices also didn’t spike as much as other markets. For example, <a href="https://www.nar.realtor/newsroom/two-thirds-of-metros-reached-double-digit-price-appreciation-in-fourth-quarter-of-2021" target="_blank">home prices</a> in some parts of Arizona, Florida and Texas, increased by more than 25% last year compared with 2020. </p><p> Price growth in New York and the surrounding metro area was more moderate, Ratiu said. “It tells you that the market hasn’t been as overheated,” Ratiu said. </p><p> Slower growth in prices would put the housing market on a more sustainable path, and be a welcome development for buyers, he said. </p><p> “To see the market move more toward that direction is a really positive sign,” Ratiu said. “At some point more buyers will actually get a chance to find properties that match their budget." </p></div><p><b class="dropCap">T</b>he Long Island housing market has showed signs of slowing, as the spring marked the end of an era of historically low mortgage rates. But so far prices haven’t budged.</p><p> The culprit, real estate experts say, is a shortage of homes for sale on the Island that won’t be resolved quickly. </p><p> Higher mortgage rates have diminished the number of buyers who can afford a home and the amount of money they can offer. The average 30-year fixed mortgage rate was 5.52% in June, up from 3.1% in December, according to mortgage giant Freddie Mac. This week the average was 5.22%&nbsp;<strong></strong>&nbsp; </p><p> The rate increase has affected the number of transactions but prices continued to rise. Closed sales fell by about 23% in July&nbsp;compared with the same month a year ago&nbsp;on Long Island&nbsp;while median prices remained at&nbsp;records in both counties, according to monthly data from OneKey MLS.&nbsp;<strong>&nbsp;</strong> </p><p> Fewer sales helped the supply of available homes grow but also showed the extreme depth of the Island's shortfall, which has contributed to the appreciation of home prices. The number of single-family houses and condominiums for sale increased&nbsp;to 6,407&nbsp;by the end of June, according to&nbsp;data from real estate brokerage Douglas Elliman and appraisal firm Miller Samuel. That inventory figure was up&nbsp;nearly 48%&nbsp;compared with&nbsp;the end of March, more than three times the usual seasonal increase of 14% in the past decade.&nbsp;Still, it was&nbsp;the fourth-lowest it has been at the end of a quarter in the past 20 years. The Miller Samuel&nbsp;data excludes homes in the Hamptons and on the North Fork, which the firm reports separately.&nbsp;&nbsp; </p><p> The data show how Long Islanders are simultaneously seeing more&nbsp;options for buying than&nbsp;in the winter but are still faced with a seller's market. </p><p> The median sale price of a home in Nassau County in July matched the&nbsp;record of $720,000 set in the previous month. It was 7.5%&nbsp;higher than the median in the same month a year ago. In Suffolk County, the median rose 9.5% to a record $575,000, according to OneKey MLS.&nbsp;<strong>&nbsp;</strong> </p><p> To understand why prices haven’t dropped to reflect the <a href="https://www.newsday.com/business/long-island-homes-for-sale-mortgage-rates-wj7ch4gr">smaller pool of buyers that can afford homes</a>, it’s worth looking at housing supply data from before the pandemic-era real estate frenzy. There are still fewer than half as many houses on the market as there were in June 2019, when 14,051 homes were for sale. </p><div class="StoryWidget_profile-card__9Qd2E"><figure class="Image_img__4B696 mugshot  lazy"></figure><div><p><big><strong>'During this pandemic boom inventory wasn’t just burned off, it was obliterated.'</strong></big></p><p><strong>-Jonathan Miller, CEO of Miller Samuel</strong></p><p>
+	Credit: Courtesy of Miller Samuel Inc.
+</p></div></div><p> “During this pandemic boom, inventory wasn’t just burned off, it was obliterated,” said Jonathan Miller, CEO of Miller Samuel. “We’ve not seen lows like anywhere near what we’ve experienced during this boom, and it will take a little while for supply to rise.” </p><p> Given the current debate about whether the U.S. economy is in a recession, real estate observers are closely watching the market for signs of weakness. But the Island’s housing supply is in a far different place than it was after the real estate bubble popped. During the Great Recession, in 2008 and 2009, there were more than three times as many houses on the market as there are now, with a peak above 26,000. </p><p> “Because the bidding wars that we had seen a few months ago have settled down, it looks like a bit of a calmer market compared to the frenzied activity that we saw a year ago,” said Jessica Lautz, vice president of demographics and behavioral insights at the National Association of Realtors. “It’s all a matter of perspective, and if we look over a longer time frame, we still have a very limited housing inventory.” </p><div class="StoryWidget_profile-card__9Qd2E"><figure class="Image_img__4B696 mugshot  lazy"></figure><div><p><strong><big>'It looks like a bit of a calmer market compared to the frenzied activity that we saw a year ago.'&nbsp;</big></strong></p><p><strong>-Jessica Lautz, vice president of demographics and behavioral insights at the National Association of Realtors</strong></p><p>
+	Credit: Courtesy of National Association of Realtors
+</p></div></div><p> Lautz also expressed confidence that today’s buyers are on more solid financial footing than those who borrowed to buy a house in the years leading up to the Great Recession. </p><p> Sixty-five percent of borrowers taking out new mortgages had credit scores above 760 in the second quarter of the year, <a href="https://www.newyorkfed.org/medialibrary/interactives/householdcredit/data/pdf/HHDC_2022Q2" target="_blank">according to the Federal Reserve Bank of New York and Equifax</a>. That compared with 38% from 2003 to 2006. </p><p> “We do know that homebuyers have had higher credit scores than what we have seen historically,” Lautz said. “Lending is still quite tight for homebuyers, and there’s none of the goofy loan products out there,” such as mortgages that require limited documentation to verify income or large balloon payments at the end of the loan term. </p><p> Rising home prices have also been a boon for homeowners’ equity. Across the United States, 48.1% of homeowners had at least 50% equity in their homes&nbsp;in the second quarter, compared with 34.4% a year ago, according to real estate data company Attom. </p><p> &nbsp;At the national level, NAR expects the median price of existing homes sold across all 12 months of 2022 to be 11.5% higher than it was in 2021. Next year, it is projecting price growth of just 2.1%, according to its <a href="https://cdn.nar.realtor/sites/default/files/documents/forecast-q3-2022-us-economic-outlook-07-27-2022.pdf" target="_blank">latest forecast published this month</a>. That would represent “home price gains more to what is traditionally the historical norm as opposed to these double-digit gains that we have been seeing,” Lautz said. </p><p> &nbsp;Miller said he expects slower price appreciation on Long Island as well as in the Hamptons and North Fork in the short term. </p><p> "I don't think&nbsp;we're going to be using words like correction," Miller said. "It's going to be modest&nbsp;decline, or stability in prices, barring the economy doesn't go into a deep, dark, significant recession."&nbsp; </p><h3> Market easing up </h3><p> Jonathan Chandler, a real estate agent with Compass in Rockville Centre, said the local market feels as if it has eased up since the spring, when waiting in lines for open houses with his clients and dozens of others often felt like a day at Six Flags Great Adventure. </p><div class="StoryWidget_profile-card__9Qd2E"><figure class="Image_img__4B696 mugshot  lazy"></figure><div><p><strong><big>'You’re still in bidding wars. It just may not be as crazy.'</big></strong></p><p><strong>-Jonathan Chandler, a real estate agent with Compass in Rockville Centre</strong></p><p>
+	Credit: Moving Pictures
+</p></div></div><p> “You’re starting to see less competition with the increase in rates,” Chandler said, “but I’m still not seeing the inventory needed to help with the&nbsp;buyers who are ready and willing to purchase. You’re still in bidding wars. It just may not be as crazy.” </p><p> Chandler, who works in Nassau, Suffolk and&nbsp;Brooklyn, said the market hasn’t shifted to the point that buyers can ask homeowners to make seller concessions, such as covering a portion of closing costs, and still expect to have their offers accepted. </p><p> “Seller concessions right now, to me, is out of the question in this market,” he said, noting that if a house has been sitting on the market for a month or two, a buyer could see if there is an opportunity to get a discount from the asking price. But those opportunities are “far and few,” he said. “It’s not an across-the-board situation right now.” </p><p> Months of supply on Long Island, which measures the time it would take for all the houses on the market to be sold given the current pace of homes going into contract, was 2.9&nbsp;in July, according to data from OneKey MLS. That still indicates a fast-paced market that favors sellers. Five to six months of supply is typically needed to put buyers and sellers on even footing in negotiations. The last time that happened was in May 2020, when New York was facing the first stage of the pandemic.&nbsp;<strong>&nbsp;</strong> </p><p> Deirdre O'Connell, CEO of Daniel Gale Sotheby's International Realty, said her agents have seen less foot traffic at open houses, which isn't unusual during the hottest weeks of August. She views the change in the market as positive for first-time buyers, who are less likely to be forced to waive contract contingencies that would protect them if they couldn't secure a mortgage or an inspection revealed needed repairs.&nbsp; </p><p> "The pace for the past two years has boxed out a lot of buyers, particularly first-time homebuyers, who couldn't keep up with it or were maybe forced to pay over market value to even get a home," she said.&nbsp; </p><p> For sellers, a changing market increases the importance of marketing a home with proper staging and high-quality photography, O'Connell said.&nbsp; </p><div class="StoryWidget_profile-card__9Qd2E"><figure class="Image_img__4B696 mugshot  lazy"></figure><div><p><big><strong>'The people that have to adjust a little bit of expectations are some of our sellers.'</strong></big></p><p><strong>-&nbsp;Deirdre O'Connell, CEO of Daniel Gale Sotheby's International Realty</strong></p><p>
+	Credit: Courtesy of Daniel Gale Sotheby’s International Realty
+</p></div></div><p> "The people that have to adjust a little bit of expectations are some of our sellers," O'Connell said. "If they think they're going to make a large percentage more than their neighbor got for their house six to 12 months ago, that's probably the wrong expectation." </p><h3> Building hasn’t kept pace </h3><p> Another factor contributing to the supply shortage nationally is that the pace of home-building&nbsp;has failed to keep up with the rate of household formation as younger millennials reach peak homebuying age, said George Ratiu, senior economist and manager of economic research at Realtor.com. He cited a report published by Realtor.com in February that found a <a href="https://www.realtor.com/research/us-housing-supply-gap-expands/" target="_blank">growing gap</a> between U.S. household formation and the number of single-family homes that were built </p><p> The cities with the&nbsp;most U.S. building permits per capita last year were concentrated in the South and West&nbsp;and were led by the metro areas of Austin, Texas;&nbsp;Nashville, Tennessee;&nbsp;Jacksonville, Florida;&nbsp;and Raleigh, North Carolina;&nbsp;<a href="https://www.realtor.com/research/us-housing-supply-gap-expands/" target="_blank">according to Realtor.com</a>.&nbsp; </p><p> “We remain in a tremendously underbuilt housing market,” Ratiu said. “New homes have mostly been built at the upper end, premium and luxury segment of the market, which left only the existing-home market for first-time buyers, and that’s precisely where we’ve seen so much activity.” </p><p> Building hasn’t kept up with population growth in the New York metro area, according to <a href="https://rpa.org/latest/lab/ny-zoning-reforms-housing-opportunity">an analysis published in February</a> by the Regional Plan Association. The report found the population in the tristate area increased by nearly 6% from 2010 to 2020, while housing stock increased by 3.5%, according to U.S. census data. </p><p> Nassau and Suffolk issued the fewest housing permits per capita from 2010 to 2020 among 31 counties RPA analyzed in New York, New Jersey and Connecticut. Suffolk issued 7.4 per 1,000 people and Nassau issued 7.8 per 1,000. Hudson County, N.J. led the region at 64.7 housing permits per 1,000 people. Permits include those for apartment buildings and houses.&nbsp; </p><p> Strong employment numbers, such as those that were <a href="https://www.newsday.com/business/unemployment-numbers-july-2022-pvof518w" target="_blank">reported last week</a>, with 528,000 more jobs added to the U.S. economy in July, &nbsp;should keep&nbsp;homebuying demand strong, Ratiu said. </p><p> “It’s likely we’ll still have buyers who will feel safe in their jobs, have enough down payment and will still be continuing to look at homes,” he&nbsp;said. “That means price declines might not be on the menu.” </p><p> On the other hand, Ratiu said,&nbsp;if companies are&nbsp;concerned the economy could slip into a recession, they might begin laying off workers, which “could trigger a much steeper turn in the housing market.” </p><p> One measure Ratiu is watching is consumer sentiment. The University of Michigan’s <a href="http://www.sca.isr.umich.edu/" target="_blank">index of consumer sentiment</a> hit an all-time low in June&nbsp;and improved slightly above that level in August. <strong>&nbsp;</strong> </p><p> “The big question is, ‘Are companies likely to overreact over the next half of the year?’ Because so much of it boils down to consumer confidence,” Ratiu said. </p><p> Ratiu said Long Island has several things going for it that could keep homebuying demand robust. Its <a href="https://www.newsday.com/business/unemployment-hiring-labor-jobless-rate-rbku9mo5" target="_blank">unemployment rate</a> in June, 2.9%, was better than the national rate that month of&nbsp;3.6%. Its home prices also didn’t spike as much as other markets. For example, <a href="https://www.nar.realtor/newsroom/two-thirds-of-metros-reached-double-digit-price-appreciation-in-fourth-quarter-of-2021" target="_blank">home prices</a> in some parts of Arizona, Florida and Texas, increased by more than 25% last year compared with 2020. </p><p> Price growth in New York and the surrounding metro area was more moderate, Ratiu said. “It tells you that the market hasn’t been as overheated,” Ratiu said. </p><p> Slower growth in prices would put the housing market on a more sustainable path, and be a welcome development for buyers, he said. </p><p> “To see the market move more toward that direction is a really positive sign,” Ratiu said. “At some point more buyers will actually get a chance to find properties that match their budget." </p><div class="Byline_byline__6oRUO Byline_bot__tLUVu"><p>
+	Jonathan LaMantia covers residential real estate and other business news on Long Island. He previously covered the business of health care for Crain's New York Business.
+</p></div></body>

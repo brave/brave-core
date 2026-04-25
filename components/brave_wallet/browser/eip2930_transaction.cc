@@ -1,0 +1,194 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_wallet/browser/eip2930_transaction.h"
+
+#include <optional>
+#include <utility>
+
+#include "base/check.h"
+#include "base/containers/extend.h"
+#include "base/values.h"
+#include "brave/components/brave_wallet/browser/rlp_encode.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
+
+namespace brave_wallet {
+
+namespace {
+constexpr uint256_t kAccessListStorageKeyCost = 1900;
+constexpr uint256_t kAccessListAddressCost = 2400;
+}  // namespace
+
+Eip2930Transaction::AccessListItem::AccessListItem() = default;
+Eip2930Transaction::AccessListItem::~AccessListItem() = default;
+Eip2930Transaction::AccessListItem::AccessListItem(const AccessListItem&) =
+    default;
+
+Eip2930Transaction::Eip2930Transaction(const Eip2930Transaction&) = default;
+Eip2930Transaction::Eip2930Transaction(
+    uint256_t chain_id,
+    std::optional<uint256_t> nonce,
+    uint256_t gas_price,
+    uint256_t gas_limit,
+    std::variant<EthAddress, EthContractCreationAddress> to,
+    uint256_t value,
+    const std::vector<uint8_t>& data)
+    : EthTransaction(chain_id,
+                     nonce,
+                     gas_price,
+                     gas_limit,
+                     std::move(to),
+                     value,
+                     data) {
+  type_ = EthTransactionType::kEip2930;
+}
+Eip2930Transaction::Eip2930Transaction() {
+  type_ = EthTransactionType::kEip2930;
+}
+Eip2930Transaction::~Eip2930Transaction() = default;
+
+// static
+std::optional<Eip2930Transaction> Eip2930Transaction::FromTxData(
+    const mojom::TxDataPtr& tx_data,
+    bool strict) {
+  std::optional<EthTransaction> legacy_tx =
+      EthTransaction::FromTxData(tx_data, strict);
+  if (!legacy_tx) {
+    return std::nullopt;
+  }
+  return Eip2930Transaction(legacy_tx->chain_id(), legacy_tx->nonce(),
+                            legacy_tx->gas_price(), legacy_tx->gas_limit(),
+                            legacy_tx->to(), legacy_tx->value(),
+                            legacy_tx->data());
+}
+
+// static
+std::optional<Eip2930Transaction> Eip2930Transaction::FromValue(
+    const base::DictValue& value) {
+  std::optional<EthTransaction> legacy_tx = EthTransaction::FromValue(value);
+  if (!legacy_tx) {
+    return std::nullopt;
+  }
+
+  Eip2930Transaction tx(legacy_tx->chain_id(), legacy_tx->nonce(),
+                        legacy_tx->gas_price(), legacy_tx->gas_limit(),
+                        legacy_tx->to(), legacy_tx->value(), legacy_tx->data());
+  tx.v_ = legacy_tx->v();
+  tx.r_ = legacy_tx->r();
+  tx.s_ = legacy_tx->s();
+
+  const base::ListValue* access_list = value.FindList("access_list");
+  if (!access_list) {
+    return std::nullopt;
+  }
+  std::optional<AccessList> access_list_from_value =
+      ValueToAccessList(*access_list);
+  if (!access_list_from_value) {
+    return std::nullopt;
+  }
+  tx.access_list_ = *access_list_from_value;
+
+  return tx;
+}
+
+// static
+base::ListValue Eip2930Transaction::AccessListToValue(const AccessList& list) {
+  base::ListValue access_list;
+  for (const AccessListItem& item : list) {
+    base::ListValue access_list_item;
+    access_list_item.Append(base::Value(item.address));
+    base::ListValue storage_keys;
+    for (const AccessedStorageKey& key : item.storage_keys) {
+      storage_keys.Append(base::Value(key));
+    }
+    access_list_item.Append(std::move(storage_keys));
+
+    access_list.Append(std::move(access_list_item));
+  }
+  return access_list;
+}
+
+// static
+std::optional<Eip2930Transaction::AccessList>
+Eip2930Transaction::ValueToAccessList(const base::ListValue& value) {
+  AccessList access_list;
+  for (const auto& item_value : value) {
+    AccessListItem item;
+    std::vector<uint8_t> address = item_value.GetList()[0].GetBlob();
+    std::move(address.begin(), address.end(), item.address.begin());
+    for (const auto& storage_key_value : item_value.GetList()[1].GetList()) {
+      std::vector<uint8_t> storage_key_vec = storage_key_value.GetBlob();
+      AccessedStorageKey storage_key;
+      std::move(storage_key_vec.begin(), storage_key_vec.end(),
+                storage_key.begin());
+      item.storage_keys.push_back(storage_key);
+    }
+    access_list.push_back(item);
+  }
+  return access_list;
+}
+
+std::vector<uint8_t> Eip2930Transaction::GetMessageToSignImpl() const {
+  DCHECK(nonce_);
+  DCHECK(chain_id_);
+
+  base::ListValue list;
+  list.Append(RLPUint256ToBlob(chain_id_));
+  list.Append(RLPUint256ToBlob(nonce_.value()));
+  list.Append(RLPUint256ToBlob(gas_price_));
+  list.Append(RLPUint256ToBlob(gas_limit_));
+  list.Append(base::Value::BlobStorage(GetToBytes()));
+  list.Append(RLPUint256ToBlob(value_));
+  list.Append(base::Value(data_));
+  list.Append(base::Value(AccessListToValue(access_list_)));
+
+  std::vector<uint8_t> result;
+  result.push_back(static_cast<uint8_t>(type_));
+  base::Extend(result, RLPEncode(list));
+  return result;
+}
+
+base::DictValue Eip2930Transaction::ToValueImpl() const {
+  base::DictValue tx = EthTransaction::ToValueImpl();
+  tx.Set("access_list", base::Value(AccessListToValue(access_list_)));
+
+  return tx;
+}
+
+uint256_t Eip2930Transaction::GetDataFee() const {
+  uint256_t fee = EthTransaction::GetDataFee();
+
+  for (const AccessListItem& item : access_list_) {
+    fee += kAccessListAddressCost;
+    fee += uint256_t(item.storage_keys.size()) * kAccessListStorageKeyCost;
+  }
+  return fee;
+}
+
+std::vector<uint8_t> Eip2930Transaction::Serialize() const {
+  DCHECK(chain_id_);
+
+  base::ListValue list;
+  list.Append(RLPUint256ToBlob(chain_id_));
+  list.Append(RLPUint256ToBlob(nonce_.value()));
+  list.Append(RLPUint256ToBlob(gas_price_));
+  list.Append(RLPUint256ToBlob(gas_limit_));
+  list.Append(base::Value::BlobStorage(GetToBytes()));
+  list.Append(RLPUint256ToBlob(value_));
+  list.Append(base::Value(data_));
+  list.Append(base::Value(AccessListToValue(access_list_)));
+  list.Append(RLPUint256ToBlob(v_));
+  list.Append(base::Value(r_));
+  list.Append(base::Value(s_));
+
+  std::vector<uint8_t> result;
+  result.push_back(static_cast<uint8_t>(type_));
+
+  base::Extend(result, RLPEncode(list));
+
+  return result;
+}
+
+}  // namespace brave_wallet

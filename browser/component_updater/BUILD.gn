@@ -1,0 +1,51 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+source_set("component_updater") {
+  sources = [
+    "brave_component_updater_configurator.cc",
+    "brave_component_updater_configurator.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/constants",
+    "//brave/components/local_ai/core",
+    "//chrome/common",
+    "//components/component_updater",
+    "//components/prefs",
+    "//components/services/patch/content",
+    "//components/services/unzip/content",
+    "//components/update_client",
+    "//components/update_client:network_impl",
+    "//components/update_client:patch_impl",
+    "//components/update_client:unzip_impl",
+    "//content/public/browser",
+    "//services/network/public/cpp",
+  ]
+
+  if (is_win) {
+    deps += [ "//chrome/installer/util:with_no_strings" ]
+  }
+
+  if (is_android) {
+    public_deps = [ ":zxcvbn_data_component_installer" ]
+  }
+}
+
+source_set("zxcvbn_data_component_installer") {
+  sources = [
+    "//chrome/browser/component_updater/zxcvbn_data_component_installer.cc",
+    "//chrome/browser/component_updater/zxcvbn_data_component_installer.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/component_updater",
+    "//components/password_manager/core/common:features",
+    "//components/update_client",
+    "//third_party/zxcvbn-cpp",
+  ]
+}

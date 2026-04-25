@@ -1,0 +1,71 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_shields.mojom;
+
+import "mojo/public/mojom/base/token.mojom";
+
+enum FarblingLevel {
+  OFF,
+  BALANCED,
+  MAXIMUM,
+};
+
+// Maps to content_settings::SettingSource
+enum ContentSettingSource {
+  kNone = 0,
+  kPolicy,
+  kExtension,
+  kUser,
+  kAllowList,
+  kRemoteList,
+  kSupervised,
+  kInstalledWebApp,
+  kTpcdGrant,
+  kOsJavascriptOptimizer,
+  kTest,
+};
+
+struct ShieldsSettings {
+  FarblingLevel farbling_level;
+  mojo_base.mojom.Token farbling_token;
+  array<string> origins_to_allow_scripts;
+  bool reduce_language;
+  bool enforced_script_blocking;
+};
+
+enum AdBlockMode {
+  AGGRESSIVE,
+  STANDARD,
+  ALLOW
+};
+
+enum FingerprintMode {
+  // STRICT clashes with Windows SDK
+  STRICT_MODE,
+  STANDARD_MODE,
+  ALLOW_MODE
+};
+
+enum CookieBlockMode {
+  CROSS_SITE_BLOCKED,
+  BLOCKED,
+  ALLOW
+};
+
+enum HttpsUpgradeMode {
+  // STRICT clashes with Windows SDK
+  STRICT_MODE,
+  STANDARD_MODE,
+  DISABLED_MODE
+};
+
+// Do not change order of this enum. The order is relied upon for
+// it's accompanying shield setting.
+enum AutoShredMode {
+  NEVER = 0,
+  LAST_TAB_CLOSED,
+  APP_EXIT,
+};

@@ -1,0 +1,46 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import * as React from 'react'
+
+import { UICardItem } from '../../lib/app_store'
+import { useAppActions } from '../../lib/app_context'
+import { NewTabLink } from '../../../shared/components/new_tab_link'
+import {
+  sanitizeURL,
+  faviconURL,
+  externalImageURL,
+} from '../../lib/external_url'
+
+interface Props {
+  item: UICardItem
+}
+
+export function CardItemView(props: Props) {
+  const { item } = props
+  const actions = useAppActions()
+  const thumbnail = externalImageURL(item.thumbnail)
+  return (
+    <NewTabLink
+      href={sanitizeURL(item.url)}
+      onClick={() => actions.recordOfferClick()}
+    >
+      <span className='thumbnail'>
+        {thumbnail ? (
+          <img src={thumbnail} />
+        ) : (
+          <img
+            className='favicon'
+            src={faviconURL(item.url)}
+          />
+        )}
+      </span>
+      <span className='item-info'>
+        <span className='title'>{item.title}</span>
+        <span className='description'>{item.description}</span>
+      </span>
+    </NewTabLink>
+  )
+}

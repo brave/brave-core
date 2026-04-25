@@ -1,0 +1,344 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+import * as React from 'react'
+import { useHistory, useLocation } from 'react-router'
+
+// types
+import {
+  BraveWallet,
+  SerializableTransactionInfo,
+} from '../../../constants/types'
+
+// options
+import { AllNetworksOption } from '../../../options/network-filter-options'
+
+// utils
+import { getLocale } from 'brave-ui'
+import { accountInfoEntityAdaptorInitialState } from '../../../common/slices/entities/account-info.entity'
+import { useAccountFromAddressQuery } from '../../../common/slices/api.slice.extra'
+import {
+  selectAllUserAssetsFromQueryResult,
+  selectAllBlockchainTokensFromQueryResult,
+} from '../../../common/slices/entities/blockchain-token.entity'
+import {
+  networkEntityAdapter, //
+} from '../../../common/slices/entities/network.entity'
+import {
+  filterTransactionsBySearchValue,
+  makeSearchableTransaction,
+} from '../../../utils/search-utils'
+
+// hooks
+import {
+  useGetAccountInfosRegistryQuery,
+  useGetNetworksRegistryQuery,
+  useGetUserTokensRegistryQuery,
+  useGetTokensRegistryQuery,
+  useGetTransactionsQuery,
+} from '../../../common/slices/api.slice'
+import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../common/selectors'
+
+// components
+import {
+  WalletPageWrapper, //
+} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+import {
+  ActivityPageHeader, //
+} from '../../../components/desktop/card-headers/activity_page_header'
+import { SearchBar } from '../../../components/shared/search-bar'
+import {
+  TransactionDetailsModal, //
+} from '../../../components/desktop/popup-modals/transaction_details_modal/transaction_details_modal'
+import {
+  VirtualizedTransactionList, //
+} from '../../../components/desktop/virtualized_transaction_list/virtualized_transaction_list'
+
+// styles
+import { Column, Text, VerticalSpacer } from '../../../components/shared/style'
+import {
+  LoadingSkeletonStyleProps,
+  Skeleton,
+} from '../../../components/shared/loading-skeleton/styles'
+import { EmptyTransactionsIcon } from './transaction-screen.styles'
+
+const txListItemSkeletonProps: LoadingSkeletonStyleProps = {
+  width: '100%',
+  height: '60px',
+  enableAnimation: true,
+}
+
+interface Props {
+  isPortfolio?: boolean
+}
+
+export const TransactionsScreen = (props: Props) => {
+  const { isPortfolio } = props
+
+  // routing
+  const history = useHistory()
+  const { hash: selectedTransactionIdHash } = useLocation()
+  const selectedTransactionId = selectedTransactionIdHash.replace('#', '')
+
+  // UI Selectors (safe)
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
+
+  // state
+  const [searchValue, setSearchValue] = React.useState<string>('')
+
+  // route params
+  const { address, chainId, chainCoinType } = React.useMemo(() => {
+    const searchParams = new URLSearchParams(history.location.search)
+    return {
+      address: searchParams.get('address'),
+      chainId: searchParams.get('chainId'),
+      chainCoinType:
+        Number(searchParams.get('chainCoinType')) || BraveWallet.CoinType.ETH,
+    }
+  }, [history.location.search])
+
+  // queries
+  const {
+    data: accountInfosRegistry = accountInfoEntityAdaptorInitialState,
+    isLoading: isLoadingAccounts,
+  } = useGetAccountInfosRegistryQuery(undefined)
+
+  const { account: foundAccountFromParam } = useAccountFromAddressQuery(
+    address ?? undefined,
+  )
+
+  const { data: knownTokensList } = useGetTokensRegistryQuery(undefined, {
+    selectFromResult: (res) => ({
+      isLoading: res.isLoading,
+      data: selectAllBlockchainTokensFromQueryResult(res),
+    }),
+  })
+
+  const { data: userTokensList } = useGetUserTokensRegistryQuery(undefined, {
+    selectFromResult: (res) => ({
+      isLoading: res.isLoading,
+      data: selectAllUserAssetsFromQueryResult(res),
+    }),
+  })
+
+  const { data: networksRegistry } = useGetNetworksRegistryQuery()
+
+  const specificNetworkFromParam =
+    chainId
+    && chainId !== AllNetworksOption.chainId
+    && chainCoinType !== undefined
+    && networksRegistry
+      ? networksRegistry.entities[
+          networkEntityAdapter.selectId({
+            chainId,
+            coin: chainCoinType,
+          })
+        ]
+      : undefined
+
+  const foundNetworkFromParam = chainId
+    ? chainId === AllNetworksOption.chainId
+      ? AllNetworksOption
+      : specificNetworkFromParam
+    : undefined
+
+  const { data: txsForSelectedChain = [], isLoading: isLoadingTxsList } =
+    useGetTransactionsQuery(
+      foundAccountFromParam
+        ? {
+            accountId: foundAccountFromParam.accountId,
+            coinType: foundAccountFromParam.accountId.coin,
+            chainId: chainId !== AllNetworksOption.chainId ? chainId : null,
+          }
+        : {
+            accountId: null,
+            chainId:
+              foundNetworkFromParam?.chainId === AllNetworksOption.chainId
+                ? null
+                : foundNetworkFromParam?.chainId || null,
+            coinType:
+              foundNetworkFromParam?.chainId !== AllNetworksOption.chainId
+                ? foundNetworkFromParam?.coin || null
+                : null,
+          },
+    )
+
+  const selectedTransaction = txsForSelectedChain.find(
+    (tx) => tx.id === selectedTransactionId,
+  )
+
+  // Methods
+  const onClickTransaction = React.useCallback(
+    (
+      tx: Pick<BraveWallet.TransactionInfo | SerializableTransactionInfo, 'id'>,
+    ): void => {
+      history.push(
+        window.location.pathname + window.location.search + '#' + tx.id,
+      )
+    },
+    [history],
+  )
+
+  // Memos
+  const combinedTokensList = React.useMemo(() => {
+    return userTokensList.concat(knownTokensList)
+  }, [userTokensList, knownTokensList])
+
+  const searchableTransactions = React.useMemo(() => {
+    return txsForSelectedChain.map((tx) => {
+      return makeSearchableTransaction(
+        tx,
+        combinedTokensList,
+        networksRegistry,
+        accountInfosRegistry,
+      )
+    })
+  }, [
+    txsForSelectedChain,
+    combinedTokensList,
+    networksRegistry,
+    accountInfosRegistry,
+  ])
+
+  const filteredTransactions = React.useMemo(() => {
+    if (searchValue.trim() === '') {
+      return searchableTransactions
+    }
+
+    return filterTransactionsBySearchValue(
+      searchableTransactions,
+      searchValue.toLowerCase(),
+    )
+  }, [searchValue, searchableTransactions])
+
+  const transactionsView = React.useMemo(() => {
+    return (
+      <>
+        {isPortfolio && (
+          <Column
+            flex={1}
+            style={{ minWidth: '100%' }}
+          >
+            <SearchBar
+              placeholder={getLocale('braveWalletSearchText')}
+              action={(e) => setSearchValue(e.target.value)}
+              value={searchValue}
+              isV2={true}
+            />
+            <VerticalSpacer space={24} />
+          </Column>
+        )}
+        {isLoadingAccounts || isLoadingTxsList ? (
+          <Column
+            fullHeight
+            fullWidth
+          >
+            <VerticalSpacer space={8} />
+            <Skeleton {...txListItemSkeletonProps} />
+            <VerticalSpacer space={8} />
+            <Skeleton {...txListItemSkeletonProps} />
+            <VerticalSpacer space={8} />
+            <Skeleton {...txListItemSkeletonProps} />
+            <VerticalSpacer space={8} />
+          </Column>
+        ) : (
+          <>
+            {txsForSelectedChain?.length === 0 && (
+              <Column
+                fullHeight
+                gap={'24px'}
+                padding={isPanel ? '0px 0px 32px 0px' : '0px'}
+              >
+                <EmptyTransactionsIcon />
+                <Text
+                  textSize='18px'
+                  isBold
+                >
+                  {getLocale('braveWalletNoTransactionsYet')}
+                </Text>
+                <Text textSize='14px'>
+                  {getLocale('braveWalletNoTransactionsYetDescription')}
+                </Text>
+              </Column>
+            )}
+
+            {filteredTransactions.length !== 0 && (
+              <VirtualizedTransactionList
+                transactionList={filteredTransactions}
+                onSelectTransaction={onClickTransaction}
+              />
+            )}
+
+            {txsForSelectedChain
+              && txsForSelectedChain.length !== 0
+              && filteredTransactions.length === 0 && (
+                <Column
+                  fullHeight
+                  padding={isPanel ? '32px 0px 64px 0px' : '0px'}
+                >
+                  <Text textSize='14px'>
+                    {getLocale('braveWalletConnectHardwareSearchNothingFound')}
+                  </Text>
+                </Column>
+              )}
+          </>
+        )}
+      </>
+    )
+  }, [
+    filteredTransactions,
+    isLoadingTxsList,
+    isPanel,
+    isPortfolio,
+    onClickTransaction,
+    searchValue,
+    txsForSelectedChain,
+    isLoadingAccounts,
+  ])
+
+  // render
+  if (isPortfolio) {
+    return (
+      <>
+        {transactionsView}
+        {selectedTransaction && (
+          <TransactionDetailsModal
+            onClose={() => {
+              // remove the transaction id from the URL hash
+              history.push(window.location.pathname + window.location.search)
+            }}
+            transaction={selectedTransaction}
+          />
+        )}
+      </>
+    )
+  }
+
+  return (
+    <WalletPageWrapper
+      wrapContentInBox={true}
+      cardHeader={
+        <ActivityPageHeader
+          searchValue={searchValue}
+          onSearchValueChange={(e) => setSearchValue(e.target.value)}
+        />
+      }
+    >
+      {transactionsView}
+      {selectedTransaction && (
+        <TransactionDetailsModal
+          onClose={() => {
+            // remove the transaction id from the URL hash
+            history.push(window.location.pathname + window.location.search)
+          }}
+          transaction={selectedTransaction}
+        />
+      )}
+    </WalletPageWrapper>
+  )
+}
+
+export default TransactionsScreen

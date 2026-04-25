@@ -1,0 +1,207 @@
+/* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
+"AddCustomFilterListDescription" = "Tambahkan daftar tambahan yang dibuat dan dikelola oleh komunitas tepercaya Anda.";
+
+/* Warning text found in the footer of the add custom filter list url screen. */
+"AddCustomFilterListWarning" = "**Berlanggananlah hanya untuk daftar dari entitas yang Anda percayai**. Peramban Anda akan diperiksa secara berkala untuk pembaruan daftar dari URL yang Anda masukkan.";
+
+/* A title within a cell where a user can navigate to an add screen. */
+"AddFilterByURL" = "Tambahkan Filter Berdasarkan URL";
+
+/* A discription of the Brave Player. */
+"AntiAdBlockWarningBravePlayerDescription" = "**Pemutar Brave** adalah tiket Anda ke pengalaman menonton video yang bebas iklan dan tanpa interupsi.";
+
+/* A button that disables ad-blocking and uses brave player. */
+"AntiAdBlockWarningConfirmationButton" = "Sesuaikan Perisai Untuk Saya";
+
+/* A descriptive message explaining this site's ad-blocking crackdown. */
+"AntiAdBlockWarningDescription" = "Situs ini telah mulai memblokir sejumlah pemblokir iklan, yang artinya situs mereka mungkin tidak berfungsi sebagaimana diharapkan.";
+
+/* A descriptive message explaining to disable shields on this site. */
+"AntiAdBlockWarningDescription2" = "Guna mengatasi masalah ini, Brave dapat menyesuaikan pengaturan perisai bagi Anda. Setelah disesuaikan, Anda dapat mencoba menonton konten ini di Pemutar Brave sebagai gantinya.";
+
+/* A button that dismisses the warning and does nothing. */
+"AntiAdBlockWarningDismissButton" = "Tetap Gunakan Pengaturan Saat Ini";
+
+/* A title for a popup that tells the user we recommend turning shields off for this site. */
+"AntiAdBlockWarningTitle" = "Sesuaikan Pengaturan Pemblokiran Iklan Untuk Situs Ini";
+
+/* A picker title for selecting a automatic shred setting option */
+"AutoShred" = "Musnahkan Otomatis";
+
+/* The option the user can select to do aggressive ad and tracker blocking */
+"BlockAdsAndTrackingAggressive" = "Agresif";
+
+/* A description for a shield options that allows you to switch between different blocking levels for trackers and ads blocking. Options include disabled, standard and aggressive. */
+"BlockAdsAndTrackingDescription" = "Mencegah dimuatnya iklan, popup, dan pelacak.";
+
+/* The option the user can select to disable ad and tracker blocking */
+"BlockAdsAndTrackingDisabled" = "Dinonaktifkan";
+
+/* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
+"BlockAdsAndTrackingStandard" = "Standar";
+
+/* A title for setting which blocks 'switch to app' popups */
+"blockMobileAnnoyances" = "Pemberitahuan Blokir 'Beralih ke Aplikasi'";
+
+/* Title for the brave player feature */
+"BravePlayer" = "Pemutar Brave";
+
+/* A label for a toggle that enables automatic launching of brave player for certain sites */
+"BravePlayerAlwaysOpenYouTubeLinks" = "Selalu buka video dari situs ini dengan Pemutar Brave";
+
+/* A button that confirms to use the brave player. */
+"BravePlayerConfirmButton" = "Coba Pemutar";
+
+/* A button that ignores the brave player */
+"BravePlayerDismissButton" = "Jangan Sekarang";
+
+/* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
+"BravePlayerInfoMessage" = "Pemutar Brave memungkinkan Anda untuk menonton video tanpa interupsi.";
+
+/* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
+"BravePlayerInfoTitle" = "Tonton Di Pemutar Brave Sebagai Gantinya";
+
+/* A title to the content filtering page under global shield settings and the title on the Content filtering page */
+"ContentFiltering" = "Penyaringan Konten";
+
+/* A description of the content filtering page. */
+"ContentFilteringDescription" = "Mengaktifkan filter khusus yang memblokir pelacak serta Gangguan regional dan berbahasa tertentu";
+
+/* Title for the custom filter list add screen found in the navigation bar. */
+"CustomFilterList" = "Daftar Filter Khusus";
+
+/* A section heading above a cell that allows you to enter a filter list URL. */
+"CustomFilterListsURL" = "URL Daftar Filter Khusus";
+
+/* A title for a section that allows a user to insert custom filter list text */
+"CustomFilters" = "Filter Ubahsuai";
+
+/* A description of the custom filters section */
+"CustomFiltersDescription" = "Tambahkan filter khusus di sini. Pastikan untuk menggunakan sintaks filter Adblock.";
+
+/* An error message telling the user that a rule is invalid */
+"CustomFiltersInvalidRuleError" = "Aturan `%1$@` yang tidak valid pada baris %2$i";
+
+/* A placeholder when custom filter lists are empty */
+"CustomFiltersPlaceholder" = "Tambahkan filter khusus Anda di sini, satu per baris.";
+
+/* An error message telling the user that they crossed the line limit */
+"CustomFiltersTooManyLinesError" = "Filter khusus tidak mendukung lebih dari %i baris";
+
+/* A section title that contains default (predefined) filter lists a user can enable/diable. */
+"DefaultFilterLists" = "Daftar Filter Bawaan";
+
+/* Text for a button in a blocked page info screen that takes you back where you came from */
+"DomainBlockedGoBackAction" = "Kembali";
+
+/* A description in the warning page that appears when a page was blocked */
+"DomainBlockedPageDescription" = "Karena Anda meminta untuk memblokir pelacak dan iklan secara agresif, Brave memblokir situs ini sebelum koneksi jaringan pertama.";
+
+/* A message in the warning page that appears when a page was blocked */
+"DomainBlockedPageMessage" = "Brave telah mencegah pemuatan situs berikut:";
+
+/* A title in the warning page that appears when a page was blocked */
+"DomainBlockedPageTitle" = "Situs Ini Mungkin Akan Mencoba Untuk Melacak Anda ke Seluruh Situs Lainnya.";
+
+/* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
+"DomainBlockedProceedAction" = "Lanjutkan";
+
+/* A tab title for the warning page that appears when a page was blocked */
+"DomainBlockedTitle" = "Domain Diblokir";
+
+/* A description of what the Enable GPC toggle does */
+"EnableGPCDescription" = "Mengaktifkan JS API Kontrol Privasi Global";
+
+/* A label of the GPC toggle */
+"EnableGPCLabel" = "Mengaktifkan Kontrol Privasi Global";
+
+/* A title for a section that contains all external filter lists */
+"ExternalFilterLists" = "Daftar Filter Eksternal";
+
+/* This is an error message when a user tries to enter an invalid URL into the custom filter list URL text field. */
+"FilterListAddInvalidURLError" = "URL yang dimasukkan tidak valid";
+
+/* This is an error message when a user tries to enter a non-https scheme URL into the 'add custom filter list URL' input field */
+"FilterListAddOnlyHTTPSAllowedError" = "Hanya URL aman (https) yang diizinkan untuk daftar filter khusus";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsAdd" = "Tambahkan";
+
+/* A description on the content filtering screen for the filter lists section. */
+"FilterListsDescription" = "Daftar komunitas populer tambahan. Perhatikanlah bahwa mengaktifkan terlalu banyak filter akan menurunkan kecepatan perambanan.";
+
+/* This is a generic error message when downloading a filter list fails. */
+"FilterListsDownloadFailed" = "Download gagal";
+
+/* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
+"FilterListsDownloadPending" = "Pengunduhan tertunda";
+
+/* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
+"FilterListsEdit" = "Edit";
+
+/* This is a placeholder for an input field that takes a custom filter list URL. */
+"FilterListsEnterFilterListURL" = "Masukkan URL daftar filter";
+
+/* A label that shows when the filter list was last updated. Do not translate the '%@' placeholder. The %@ will be replaced with a relative date. For example, '5 minutes ago' or '1 hour ago'. So the full string will read something like 'Last updated 5 minutes ago'. */
+"FilterListsLastUpdatedLabel" = "Terakhir diperbarui %@";
+
+/* This is a placeholder for the custom filter list url text field where a user may enter a custom filter list URL */
+"FilterListURLTextFieldPlaceholder" = "Masukkan URL daftar filter di sini";
+
+/* A description of what the forget me toggle does */
+"ForgetMeDescription" = "Hapus kuki dan data situs lainnya ketika Anda menutup situs";
+
+/* A toggle option that deletes website content when the site is closed */
+"ForgetMeLabel" = "Lupakan Saya Ketika Saya Menutup Situs Ini";
+
+/* The option the user can select to do strict https upgrading */
+"HttpsUpgradeLevelStrict" = "Ketat";
+
+/* This is a label on a button that updates filter lists which signifies that lists have been updated */
+"ListsUpdated" = "Daftar Diperbarui";
+
+/* A button title when confirming to shred website data */
+"ShredDataButtonTitle" = "Musnahkan Data";
+
+/* An option setting for never automatically shreding site data */
+"ShredNever" = "Jangan pernah";
+
+/* An option setting for automatically shredding only when the app is closed */
+"ShredOnAppClose" = "Penutupan Aplikasi";
+
+/* An option setting for automatically shredding when the site is closed */
+"ShredOnSiteTabsClosed" = "Tab Situs Tertutup";
+
+/* A list row label for accessing the shred settings screen */
+"ShredSiteData" = "Musnahkan Data Situs";
+
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+"ShredSiteDataConfirmationMessage" = "Pemusnahan data akan menutup semua tab yang terbuka untuk situs ini, dan menghapus semua data situs. Tindakan ini tidak dapat dibatalkan.";
+
+/* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
+"ShredSiteDataConfirmationTitle" = "Musnahkan Data Situs?";
+
+/* A button title that shreds site data immediately */
+"ShredSiteDataNow" = "Musnahkan Data Situs Sekarang";
+
+/* A page title for the warning page that appears when http was blocked */
+"SiteIsNotSecure" = "Situs tidak aman";
+
+/* A page title for the warning page that appears when http was blocked */
+"TheConnectionIsNotSecure" = "Sambungan ke %@ tidak aman";
+
+/* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
+"TrackersAndAdsBlocking" = "Pemblokiran Pelacak & Iklan";
+
+/* This is a label for a button which when pressed updates all the filter lists */
+"UpdateLists" = "Perbarui Daftar";
+
+/* This is a label on a button that updates filter lists which signifies that lista are being updated */
+"UpdatingLists" = "Memperbarui Daftar";
+
+/* The option the user can select for the type of https upgrading */
+"UpgradeConnectionsToHTTPS" = "Tingkatkan Koneksi ke HTTPS";
+
+/* A description shown an a page where the http page was blocked */
+"YourConnectionIsNotPrivate" = "Anda melihat peringatan ini karena situs tidak mendukung HTTPS.";
+

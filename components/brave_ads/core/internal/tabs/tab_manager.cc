@@ -1,0 +1,248 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
+
+#include "base/check.h"
+#include "base/containers/span.h"
+#include "base/hash/hash.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
+#include "url/gurl.h"
+
+namespace brave_ads {
+
+TabManager::TabManager() {
+  ads_client_observation_.Observe(&GetAdsClient());
+}
+
+TabManager::~TabManager() = default;
+
+// static
+TabManager& TabManager::GetInstance() {
+  return GlobalState::GetInstance()->GetTabManager();
+}
+
+void TabManager::AddObserver(TabManagerObserver* const observer) {
+  CHECK(observer);
+
+  observers_.AddObserver(observer);
+}
+
+void TabManager::RemoveObserver(TabManagerObserver* const observer) {
+  CHECK(observer);
+
+  observers_.RemoveObserver(observer);
+}
+
+std::optional<TabInfo> TabManager::MaybeGetVisible() const {
+  if (!visible_tab_id_) {
+    // `OnNotifyTabDidChange` was not invoked for a tab that is currently
+    // visible in the browsing session.
+    return std::nullopt;
+  }
+
+  return MaybeGetForId(*visible_tab_id_);
+}
+
+std::optional<TabInfo> TabManager::MaybeGetForId(int32_t tab_id) const {
+  if (!DoesExistForId(tab_id)) {
+    return std::nullopt;
+  }
+
+  return tabs_.at(tab_id);
+}
+
+bool TabManager::IsPlayingMedia(int32_t tab_id) const {
+  if (std::optional<TabInfo> tab = MaybeGetForId(tab_id)) {
+    return tab->is_playing_media;
+  }
+
+  return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+bool TabManager::DoesExistForId(int32_t tab_id) const {
+  return tabs_.contains(tab_id);
+}
+
+TabInfo& TabManager::GetOrCreateForId(int32_t tab_id) {
+  if (!DoesExistForId(tab_id)) {
+    // Create a new tab.
+    TabInfo tab;
+    tab.id = tab_id;
+    tabs_[tab_id] = tab;
+  }
+
+  return tabs_[tab_id];
+}
+
+void TabManager::RemoveForId(int32_t tab_id) {
+  tabs_.erase(tab_id);
+
+  if (tabs_.empty()) {
+    BLOG(2, "There are no tabs");
+
+    // If there are no tabs left, clear the visible tab id.
+    visible_tab_id_.reset();
+    return;
+  }
+
+  if (visible_tab_id_ == tab_id) {
+    // If the removed tab was the visible one, clear the visible tab id.
+    visible_tab_id_.reset();
+  }
+}
+
+void TabManager::NotifyDidOpenNewTab(const TabInfo& tab) {
+  observers_.Notify(&TabManagerObserver::OnDidOpenNewTab, tab);
+}
+
+void TabManager::NotifyTabDidLoad(const TabInfo& tab, int http_status_code) {
+  observers_.Notify(&TabManagerObserver::OnTabDidLoad, tab, http_status_code);
+}
+
+void TabManager::NotifyTabDidChangeFocus(int32_t tab_id) {
+  observers_.Notify(&TabManagerObserver::OnTabDidChangeFocus, tab_id);
+}
+
+void TabManager::NotifyTabDidChange(const TabInfo& tab) {
+  observers_.Notify(&TabManagerObserver::OnTabDidChange, tab);
+}
+
+void TabManager::NotifyTextContentDidChange(
+    int32_t tab_id,
+    base::span<const GURL> redirect_chain,
+    const std::string& text) {
+  observers_.Notify(&TabManagerObserver::OnTextContentDidChange, tab_id,
+                    redirect_chain, text);
+}
+
+void TabManager::NotifyDidCloseTab(int32_t tab_id) {
+  observers_.Notify(&TabManagerObserver::OnDidCloseTab, tab_id);
+}
+
+void TabManager::NotifyTabDidStartPlayingMedia(int32_t tab_id) {
+  observers_.Notify(&TabManagerObserver::OnTabDidStartPlayingMedia, tab_id);
+}
+
+void TabManager::NotifyTabDidStopPlayingMedia(int32_t tab_id) {
+  observers_.Notify(&TabManagerObserver::OnTabDidStopPlayingMedia, tab_id);
+}
+
+void TabManager::OnNotifyTabTextContentDidChange(
+    int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    const std::string& text) {
+  CHECK(!redirect_chain.empty());
+
+  const uint32_t hash = base::FastHash(text);
+  if (hash == last_text_content_hash_) {
+    // No change.
+    return;
+  }
+  last_text_content_hash_ = hash;
+
+  BLOG(2, "Tab id " << tab_id << " text content changed");
+  NotifyTextContentDidChange(tab_id, redirect_chain, text);
+}
+
+void TabManager::OnNotifyTabDidStartPlayingMedia(int32_t tab_id) {
+  TabInfo& tab = GetOrCreateForId(tab_id);
+  if (tab.is_playing_media) {
+    // Already playing media.
+    return;
+  }
+  tab.is_playing_media = true;
+
+  BLOG(2, "Tab id " << tab_id << " started playing media");
+  NotifyTabDidStartPlayingMedia(tab_id);
+}
+
+void TabManager::OnNotifyTabDidStopPlayingMedia(int32_t tab_id) {
+  TabInfo& tab = GetOrCreateForId(tab_id);
+  if (!tab.is_playing_media) {
+    // Not playing media.
+    return;
+  }
+  tab.is_playing_media = false;
+
+  BLOG(2, "Tab id " << tab_id << " stopped playing media");
+  NotifyTabDidStopPlayingMedia(tab_id);
+}
+
+void TabManager::OnNotifyTabDidChange(int32_t tab_id,
+                                      const std::vector<GURL>& redirect_chain,
+                                      bool is_new_navigation,
+                                      bool is_restoring,
+                                      bool is_visible) {
+  CHECK(!redirect_chain.empty());
+
+  const bool does_exist = DoesExistForId(tab_id);
+
+  TabInfo& tab = GetOrCreateForId(tab_id);
+
+  // Check if the tab changed.
+  const bool did_change =
+      does_exist && is_new_navigation && tab.redirect_chain != redirect_chain;
+
+  // Check if the tab changed focus.
+  const bool did_change_focus = !does_exist || tab.is_visible != is_visible;
+
+  // Update the tab.
+  tab.is_visible = is_visible;
+  tab.redirect_chain = redirect_chain;
+
+  if (is_visible) {
+    // Update the visible tab id.
+    visible_tab_id_ = tab_id;
+  } else {
+    if (visible_tab_id_ == tab_id) {
+      // The visible tab id has become occluded.
+      visible_tab_id_.reset();
+    }
+  }
+
+  if (is_restoring) {
+    return BLOG(2, "Restored " << (is_visible ? "focused" : "occluded")
+                               << " tab with id " << tab_id);
+  }
+
+  // Notify observers.
+  if (!does_exist) {
+    BLOG(2, "Created tab with id " << tab_id);
+    NotifyDidOpenNewTab(tab);
+  }
+
+  if (did_change) {
+    BLOG(2, "Tab id " << tab_id << " did change");
+    NotifyTabDidChange(tab);
+  }
+
+  if (did_change_focus) {
+    BLOG(2, "Tab id " << tab_id << " did become "
+                      << (is_visible ? "focused" : "occluded"));
+    NotifyTabDidChangeFocus(tab_id);
+  }
+}
+
+void TabManager::OnNotifyTabDidLoad(int32_t tab_id, int http_status_code) {
+  if (std::optional<TabInfo> tab = MaybeGetForId(tab_id)) {
+    NotifyTabDidLoad(*tab, http_status_code);
+  }
+}
+
+void TabManager::OnNotifyDidCloseTab(int32_t tab_id) {
+  BLOG(2, "Tab id " << tab_id << " was closed");
+
+  RemoveForId(tab_id);
+
+  NotifyDidCloseTab(tab_id);
+}
+
+}  // namespace brave_ads

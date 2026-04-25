@@ -1,0 +1,111 @@
+/* Error message shown when importing bookmarks failed */
+"failedToImportBookmarks" = "Παρουσιάστηκε σφάλμα κατά την εισαγωγή σελιδοδεικτών.";
+
+/* Error message shown when importing history failed */
+"failedToImportHistory" = "Παρουσιάστηκε σφάλμα κατά την εισαγωγή του ιστορικού.";
+
+/* Error message shown when importing passwords failed due to a password already existing (a conflict) */
+"failedToImportPasswordsDueToConflictError" = "Παρουσιάστηκε σφάλμα κατά την εισαγωγή κωδικών πρόσβασης. Ορισμένοι κωδικοί πρόσβασης δεν μπόρεσαν να εισαχθούν λόγω συγκρουόμενων κωδικών.";
+
+/* Error message shown when importing passwords failed */
+"failedToImportPasswordsError" = "Παρουσιάστηκε σφάλμα κατά την εισαγωγή κωδικών πρόσβασης.";
+
+/* Error message shown when unzipping a zip file failed */
+"failedToUnzipError" = "Παρουσιάστηκε σφάλμα κατά την αποσυμπίεση του αρχείου.";
+
+/* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
+"importDataFileSelectorButtonTitle" = "Επιλογή αρχείου...";
+
+/* The message of a Text on screen that explains to the user what type of data can be imported. */
+"importDataFileSelectorMessage" = "Προσθέστε τους σελιδοδείκτες, το ιστορικό και άλλα δεδομένα του προγράμματος περιήγησης στο Brave.";
+
+/* The title of the main screen that lets the user import data. The title is shown in the navigation bar. */
+"importDataFileSelectorNavigationTitle" = "Εισαγωγή δεδομένων περιήγησης";
+
+/* The title of a Text on screen that explains to the user what type of data can be imported. */
+"importDataFileSelectorTitle" = "Εισαγωγή σελιδοδεικτών και άλλα";
+
+/* The title of the button on the file selector screen that lets the user view the tutorial screen on how to import data. */
+"importDataViewTutorialButtonTitle" = "Πώς να κάνετε εξαγωγή από το Safari";
+
+/* The message shown on the import data screen when importing the data from the browser profile failed. */
+"importStateFailureMessage" = "Κάτι πήγε στραβά κατά την εισαγωγή των δεδομένων σας. Δοκιμάστε ξανά.\nΕάν το πρόβλημα παραμένει, επικοινωνήστε με την υποστήριξη.";
+
+/* The title shown on the import data screen when importing the data from the browser profile failed. */
+"importStateFailureTitle" = "Η εισαγωγή απέτυχε";
+
+/* The title of the button on the import error screen when there is a conflict, that lets the user keep your existing Brave passwords. */
+"importStatePasswordConflictKeepExistingPasswordsTitle" = "Διατήρηση κωδικών πρόσβασης από το Brave";
+
+/* The title of the button on the import error screen when there is a conflict, that lets the user use the passwords that were imported, overwriting your existing passwords. */
+"importStatePasswordConflictKeepImportedPasswordsTitle" = "Χρήση κωδικών πρόσβασης από το Safari";
+
+/* The message shown on the import data screen when importing the data from has conflicting passwords (when two passwords exist for the same account, but are different, they are conflicting). %d is a placeholder for the number of conflicting passwords. */
+"importStatePasswordConflictMessage" = "Βρέθηκαν %d συγκρουόμενοι κωδικοί πρόσβασης. Επιλέξτε τι θα εισαχθεί.";
+
+/* The title shown on the import data screen when importing the data from has conflicting passwords (when two passwords exist for the same account, but are different, they are conflicting). */
+"importStatePasswordConflictTitle" = "Συγκρουόμενοι κωδικοί πρόσβασης";
+
+/* The title of the button on the import success screen to let the user continue using the app as before. */
+"importStateSuccessContinueTitle" = "Συνέχεια";
+
+/* The message shown on the import data screen when importing the data from the browser profile succeeded. */
+"importStateSuccessMessage" = "Τα δεδομένα σας έχουν εισαχθεί με επιτυχία.\nΕίστε έτοιμοι να ξεκινήσετε την περιήγηση με το Brave.";
+
+/* The title shown on the import data screen when importing the data from the browser profile succeeded. */
+"importStateSuccessTitle" = "Επιτυχής!";
+
+/* The title of the button on the import error screen that lets the user try to import the data again */
+"importStateTryAgainTitle" = "Δοκιμάστε ξανά";
+
+/* The message on the tutorial page explaining the detailed process to export your data from other browsers. */
+"importTutorialDetailedProcessMessage" = "Άνοιγμα της σελίδας βοήθειας Safari";
+
+/* The title on the tutorial page explaining the detailed process to export your data from other browsers. */
+"importTutorialDetailedProcessTitle" = "Θέλετε μια λεπτομερή διαδικασία εξαγωγής;";
+
+/* The title of the tutorial page that shows in the Navigation Bar. */
+"importTutorialScreenTitle" = "Πώς να κάνετε εξαγωγή από το Safari";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepFiveTitle" = "Αποθηκεύστε το αρχείο στα **Αρχεία**, επιλέγοντας μια τοποθεσία που θα μπορείτε να βρείτε εύκολα αργότερα.";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepFourTitle" = "**Επιλέξτε** τα δεδομένα που θέλετε να εξαγάγετε (Σελιδοδείκτες, Ιστορικό, Πιστωτικές κάρτες, Κωδικοί πρόσβασης).";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepOneTitle" = "Ανοίξτε τις **Ρυθμίσεις**, μετακινηθείτε προς τα κάτω και πατήστε **Εφαρμογές**.";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepThreeTitle" = "Μετακινηθείτε προς τα κάτω και πατήστε **Εξαγωγή**.";
+
+/* The title on each card indicating the tutorial step that has been completed. Step 1, Step 2, Step 3, etc... %d is a placeholder for the step number. */
+"importTutorialStepTitle" = "Βήμα %d";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepTwoTitle" = "Από τη λίστα εφαρμογών (αλφαβητική ταξινόμηση), βρείτε και πατήστε **Safari**.";
+
+/* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
+"invalidZipFileDataError" = "Το αρχείο zip δεν περιέχει δεδομένα εισαγωγής.";
+
+/* The message shown on the import data screen when the data is being loaded or imported. */
+"loadingMessage" = "Περιμένετε ενώ μεταφέρουμε με ασφάλεια τα δεδομένα σας. Αυτό μπορεί να διαρκέσει λίγα λεπτά.";
+
+/* The title shown on the import data screen when the data is being loaded or imported. */
+"loadingTitle" = "Εισαγωγή των δεδομένων σας...";
+
+/* The message shown on the import data screen when there are multiple profiles such as Personal, Work, School, etc. */
+"multipleProfilesMessage" = "Επιλέξτε το προφίλ από το οποίο θέλετε να εισαγάγετε δεδομένα";
+
+/* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
+"multipleProfilesTitle" = "Εντοπίστηκαν πολλαπλά προφίλ";
+
+/* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
+"personalImportTitle" = "Προσωπικό";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "Εισαγόμενοι σελιδοδείκτες";
+
+/* An unknown error occurred during data importing. */
+"unknownError" = "Το αρχείο zip δεν περιέχει δεδομένα εισαγωγής.";
+

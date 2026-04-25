@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc b/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc
+index 28fc394196f05c30123953130966c0b4ca1be063..02ac09603f8045f4151163168ba6d2b540a4196a 100644
+--- a/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc
++++ b/chrome/browser/safe_browsing/download_protection/check_client_download_request_base.cc
+@@ -338,6 +338,7 @@ void CheckClientDownloadRequestBase::OnRequestBuilt(
+   client_download_request_ = std::move(request);
+   request_creation_details_ = details;
+   SanitizeRequest();
++  BRAVE_ON_REQUEST_BUILT_FILTER
+ 
+   // If it's an archive with no archives or executables, finish early.
+   if ((client_download_request_->download_type() ==

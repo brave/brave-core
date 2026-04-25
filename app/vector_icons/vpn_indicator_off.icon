@@ -1,0 +1,16 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+CANVAS_DIMENSIONS, 10,
+MOVE_TO, 5, 10,
+ARC_TO, 5, 5, 0, 1, 0, 5, 0,
+R_ARC_TO, 5, 5, 0, 0, 0, 0, 10,
+CLOSE,
+MOVE_TO, 2.71f, 4.38f,
+R_ARC_TO, 0.63f, 0.63f, 0, 0, 0, 0, 1.25f,
+R_H_LINE_TO, 4.58f,
+R_ARC_TO, 0.63f, 0.63f, 0, 0, 0, 0, -1.25f,
+H_LINE_TO, 2.71f,
+CLOSE

@@ -1,0 +1,28 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Extra GRDPs to give //ui/webui/resources:build_grd
+# (which generates //ui/webui/resources/webui_generated_resources.grd)
+
+brave_resources_extra_grdps_path = "$root_gen_dir/brave/ui/webui/resources"
+
+brave_resources_extra_grdps = [
+  "$brave_resources_extra_grdps_path/brave_fonts_resources.grdp",
+  "$brave_resources_extra_grdps_path/brave_icons_resources.grdp",
+  "$brave_resources_extra_grdps_path/brave_static_resources.grdp",
+  "$root_gen_dir/brave/web-ui-leo/leo.grdp",
+  "$root_gen_dir/brave/web-ui-opaque_ke/opaque_ke.grdp",
+]
+
+brave_resources_extra_grdps_deps = [ "//brave/ui/webui/resources:grdp" ]
+
+# At the moment, all non-static resources are only required for polymer WebUI.
+# This could change and, when it does, the `include_polymer` conditional can be removed
+# here and the one in //brave/ui/webui/resources/BUILD.gn be relied on to only add
+# polymer-related files when appropriate.
+if (!is_android && !is_ios) {
+  brave_resources_extra_grdps +=
+      [ "$brave_resources_extra_grdps_path/resources.grdp" ]
+}

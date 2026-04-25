@@ -1,0 +1,114 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #css_wrapper_metadata_end */
+
+:host {
+  --logo-height: 36px;
+}
+
+@media (min-width: 500px) {
+  :host {
+    --logo-height: 40px;
+  }
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 var(--logo-height);
+}
+
+.navigation-buttons {
+  display: flex;
+  justify-content: flex-end;
+  min-height: var(--logo-height);
+  width: 100%;
+}
+
+:host([show-back-button]) .navigation-buttons {
+  justify-content: space-between;
+}
+
+leo-button[size='tiny'] {
+  --leo-button-padding: 0;
+  flex: none;
+  margin: var(--leo-spacing-l) var(--leo-spacing-l) 0 var(--leo-spacing-l);
+}
+
+leo-icon {
+  --leo-icon-size: var(--leo-icon-m);
+}
+
+.logo {
+  background-image: url('full_brave_brand.svg');
+  background-size: cover;
+  height: var(--logo-height);
+  width: calc(var(--logo-height) * 129 / 40);
+}
+
+@media (prefers-color-scheme: dark) {
+  .logo {
+    background-image: url('full_brave_brand_dark.svg');
+  }
+}
+
+.body {
+  padding: 0 var(--leo-spacing-2xl) var(--leo-spacing-2xl)
+    var(--leo-spacing-2xl);
+}
+
+@media (min-width: 500px) {
+  .body {
+    box-sizing: border-box;
+    margin: 0 auto;
+    width: 500px;
+  }
+}
+
+.title-and-description {
+  color: var(--leo-color-text-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+  margin: 0 0 var(--leo-spacing-3xl);
+}
+
+.title {
+  font: var(--leo-font-heading-h4);
+}
+
+.description {
+  font: var(--leo-font-default-regular);
+}
+
+:host ::slotted([slot='inputs']) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-2xl);
+  margin: 0 0 var(--leo-spacing-2xl);
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+}
+
+.divider {
+  background-color: var(--leo-color-divider-subtle);
+  height: 1px;
+}
+
+@media (min-width: 500px) {
+  :host ::slotted([slot='footer']) {
+    box-sizing: border-box;
+    margin: 0 auto;
+    width: 500px;
+  }
+}

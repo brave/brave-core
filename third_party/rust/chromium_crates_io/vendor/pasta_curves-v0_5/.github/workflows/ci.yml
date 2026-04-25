@@ -1,0 +1,109 @@
+name: CI checks
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    name: Test on ${{ matrix.os }} with ${{ matrix.features }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+        features: [--all-features, --no-default-features]
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run tests
+        run: cargo test --verbose --release ${{ matrix.features }}
+
+  test-32-bit:
+    name: Test on i686-unknown-linux-gnu with ${{ matrix.features }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        features: [--all-features, --no-default-features]
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install cross-platform support dependencies
+        run: sudo apt install gcc-multilib
+      - run: rustup target add i686-unknown-linux-gnu
+      - name: Run tests
+        run: >
+          cargo test
+          --verbose
+          --target i686-unknown-linux-gnu
+          ${{ matrix.features }}
+
+  no-std:
+    name: Check no-std target ${{ matrix.target }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+          - thumbv6m-none-eabi
+          - wasm32-unknown-unknown
+          - wasm32-wasi
+
+    steps:
+      - uses: actions/checkout@v3
+      - run: rustup target add ${{ matrix.target }}
+      - name: Build
+        run: >
+          cargo build
+          --verbose
+          --target ${{ matrix.target }}
+          --no-default-features
+
+  bitrot:
+    name: Bitrot check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      # Build benchmarks to prevent bitrot
+      - name: Build benchmarks
+        run: cargo build --benches --all-features
+
+  book:
+    name: Book tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: cargo build
+      - name: Setup mdBook
+        uses: peaceiris/actions-mdbook@v1
+        with:
+          mdbook-version: '0.4.5'
+      - name: Test Pasta book
+        run: mdbook test -L target/debug/deps book/
+
+  codecov:
+    name: Code coverage
+    runs-on: ubuntu-latest
+    container:
+      image: xd009642/tarpaulin:develop-nightly
+      options: --security-opt seccomp=unconfined
+    steps:
+      - uses: actions/checkout@v3
+      - name: Generate coverage report
+        run: cargo tarpaulin --engine llvm --all-features --timeout 600 --out Xml
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3.1.1
+
+  doc-links:
+    name: Intra-doc links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: cargo fetch
+      # Requires #![deny(rustdoc::broken_intra_doc_links)] in crates.
+      - name: Check intra-doc links
+        run: cargo doc --document-private-items
+
+  fmt:
+    name: Rustfmt
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: cargo fmt -- --check

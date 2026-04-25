@@ -1,0 +1,49 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_style_views.cc b/chrome/browser/ui/views/tabs/tab_style_views.cc
+index 06cb552168bd568a1702107e512f127ea217d553..891396cfe221b541ee96f24534da8f0e5a19d931 100644
+--- a/chrome/browser/ui/views/tabs/tab_style_views.cc
++++ b/chrome/browser/ui/views/tabs/tab_style_views.cc
+@@ -123,6 +123,7 @@ class TabStyleViewsImpl : public TabStyleViews {
+   TabStyle::TabSelectionState GetSelectionState() const;
+ 
+  private:
++  BRAVE_GM2_TAB_STYLE_H
+   // Gets the bounds for the leading and trailing separators for a tab.
+   TabStyle::SeparatorBounds GetSeparatorBounds(float scale) const;
+ 
+@@ -132,6 +133,7 @@ class TabStyleViewsImpl : public TabStyleViews {
+   TabStyle::SeparatorOpacities GetSeparatorOpacities(bool for_layout) const;
+ 
+   // Returns whether the mouse is currently hovering this tab.
++  virtual
+   bool IsHovering() const;
+ 
+   // Returns whether the hover animation is being shown.
+@@ -364,6 +366,7 @@ SkPath TabStyleViewsImpl::GetPath(TabStyle::PathType path_type,
+     extension_corner_radius -= 0.5f * stroke_adjustment;
+   }
+   const bool compact_left_to_bottom = ShouldCompactLeadingEdge(path_type);
++  extension_corner_radius = 0;
+ 
+   float left_extension_corner_radius = extension_corner_radius;
+   if (compact_left_to_bottom) {
+@@ -1041,14 +1044,18 @@ void TabStyleViewsImpl::PaintSeparators(gfx::Canvas* canvas) const {
+                                                    SK_AlphaOPAQUE));
+   };
+ 
++  // Even if |separator_radius| becomes 1 native pixel the 'roundedness'
++  // will be approximated with color, although extremely subtle and
++  // likely only on screens >= 2x (i.e. separator width is 2+px)!
++  const int separator_radius =  separator_bounds.leading.width() / 2;
+   cc::PaintFlags flags;
+   flags.setAntiAlias(true);
+   flags.setColor(separator_color(separator_opacities.left));
+   canvas->DrawRoundRect(separator_bounds.leading,
+-                        tab_style()->GetSeparatorCornerRadius() * scale, flags);
++                        separator_radius, flags);
+   flags.setColor(separator_color(separator_opacities.right));
+   canvas->DrawRoundRect(separator_bounds.trailing,
+-                        tab_style()->GetSeparatorCornerRadius() * scale, flags);
++                        separator_radius, flags);
+ }
+ 
+ bool TabStyleViewsImpl::IsLeftSplitTab(const Tab* tab) const {

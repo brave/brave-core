@@ -1,0 +1,69 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//build/config/features.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+
+source_set("webui") {
+  sources = [
+    "brave_url_data_source_ios.h",
+    "brave_url_data_source_ios.mm",
+    "brave_web_ui_ios_data_source.h",
+    "brave_web_ui_ios_data_source.mm",
+    "brave_webui_utils.h",
+    "brave_webui_utils.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/constants",
+    "//brave/components/webui",
+    "//components/resources:components_resources_grit",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/chrome/browser/shared/model/url:constants",
+    "//ios/components/webui:url_constants",
+    "//ios/web/public",
+    "//ios/web/public/webui",
+    "//ios/web/webui",
+    "//services/network/public/mojom:mojom_content_security_policy",
+    "//ui/base",
+  ]
+}
+
+source_set("ios_web_webui_unittests") {
+  testonly = true
+  sources = [ "mojo_facade_unittest.mm" ]
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//ios/web/public/test",
+    "//ios/web/public/test:test_fixture",
+    "//ios/web/public/test/fakes",
+    "//ios/web/test:mojo_bindings",
+    "//ios/web/web_state:web_state_impl_header",
+    "//ios/web/webui",
+    "//testing/gtest",
+  ]
+}
+
+source_set("ios_web_webui_inttests") {
+  testonly = true
+  sources = [ "web_ui_inttest.mm" ]
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/ios/web/test:resources",
+    "//brave/ios/web/webui",
+    "//ios/web/public/test",
+    "//ios/web/public/test:test_fixture",
+    "//ios/web/public/test:util",
+    "//ios/web/public/test/fakes",
+    "//ios/web/public/webui",
+    "//ios/web/test:test_constants",
+    "//ios/web/web_state:web_state_impl_header",
+    "//url",
+  ]
+}

@@ -1,0 +1,100 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//extensions/buildflags/buildflags.gni")
+
+source_set("public") {
+  sources = [
+    "brave_on_demand_updater.h",
+    "dat_file_util.h",
+    "features.h",
+    "switches.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//components/component_updater",
+  ]
+}
+
+component("browser") {
+  defines = [ "IS_BRAVE_COMPONENT_UPDATER_IMPL" ]
+
+  # DO NOT ADD NEW TARGETS TO THIS LIST
+  # All components should have their own InstallerPolicy and be
+  # registered in RegisterComponentsForUpdate
+  visibility = [
+    "//brave/browser/ephemeral_storage:browser_tests",
+    "//brave/browser/extensions:component_loader",
+    "//brave/browser/extensions:test_support",
+    "//brave/browser/farbling:browser_tests",
+    "//brave/browser/net:unit_tests",
+    "//brave/browser/permissions:browser_tests",
+    "//brave/browser/tor/test:browser_tests",
+    "//brave/components/brave_ads/browser",
+    "//brave/components/brave_ads/browser:unit_tests",
+    "//brave/components/brave_component_updater/browser:test_support",
+    "//brave/components/brave_shields/content/browser",
+    "//brave/components/brave_shields/content/test:test_support",
+    "//brave/components/brave_shields/core/browser",
+    "//brave/components/debounce/core/browser",
+    "//brave/components/https_upgrade_exceptions/browser",
+    "//brave/components/request_otr/browser",
+    "//brave/components/tor",
+    "//brave/components/url_sanitizer/core/browser",
+    "//brave/components/webcompat/content/browser",
+    "//brave/ios/app",
+    "//brave/ios/browser/application_context",
+    "//brave/test:*",
+    "//chrome/browser",
+  ]
+
+  sources = [
+    "brave_component.cc",
+    "brave_component.h",
+    "brave_component_installer.cc",
+    "brave_component_installer.h",
+    "brave_component_updater_delegate.cc",
+    "brave_component_updater_delegate.h",
+    "brave_on_demand_updater.cc",
+    "brave_on_demand_updater.h",
+    "dat_file_util.cc",
+    "dat_file_util.h",
+    "features.cc",
+    "features.h",
+    "local_data_files_observer.cc",
+    "local_data_files_observer.h",
+    "local_data_files_service.cc",
+    "local_data_files_service.h",
+    "switches.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/component_updater",
+    "//components/crx_file",
+    "//components/prefs",
+    "//components/update_client",
+    "//crypto",
+  ]
+
+  configs += [ "//build/config/compiler:wexit_time_destructors" ]
+}
+
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "mock_on_demand_updater.cc",
+    "mock_on_demand_updater.h",
+  ]
+
+  deps = [
+    ":browser",
+    "//base",
+    "//components/component_updater",
+    "//testing/gmock",
+  ]
+}

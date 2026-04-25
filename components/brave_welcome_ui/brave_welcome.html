@@ -1,0 +1,32 @@
+﻿<!doctype html>
+<if expr="is_brave_origin">
+<html data-theme="dark">
+</if>
+<if expr="not is_brave_origin">
+<html>
+</if>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>$i18n{headerText}</title>
+<link rel="stylesheet" href="chrome://resources/brave/css/reset.css">
+<link rel="stylesheet" href="chrome://resources/css/text_defaults_md.css">
+<link rel="stylesheet" href="chrome://resources/brave/css/nala.css">
+<script src="chrome://resources/js/load_time_data_deprecated.js"></script>
+<script src="/strings.js"></script>
+<style>
+  #root { height: 100%; width: 100%; }
+
+  body {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background: $i18n{backgroundColor};
+  }
+</style>
+</head>
+<body>
+<script src="/brave_welcome.bundle.js"></script>
+<div id="root" />
+</body>
+</html>

@@ -1,0 +1,73 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/config.gni")
+import("//build/config/android/rules.gni")
+import("//chrome/browser/buildflags.gni")
+
+android_library("java") {
+  sources = [
+    "java/src/org/chromium/chrome/browser/omnibox/BraveAutocompleteEditText.java",
+    "java/src/org/chromium/chrome/browser/omnibox/OmniboxPrefManager.java",
+    "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteCoordinator.java",
+    "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListBuilder.java",
+    "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListManager.java",
+    "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveLeoAutocompleteDelegate.java",
+    "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveOmniboxSuggestionUiType.java",
+    "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveSuggestionHost.java",
+    "java/src/org/chromium/chrome/browser/omnibox/suggestions/brave_leo/BraveLeoSuggestionProcessor.java",
+    "java/src/org/chromium/chrome/browser/omnibox/suggestions/brave_leo/BraveLeoSuggestionViewBinder.java",
+    "java/src/org/chromium/chrome/browser/omnibox/suggestions/brave_search/BraveSearchBannerProcessor.java",
+    "java/src/org/chromium/chrome/browser/omnibox/suggestions/brave_search/BraveSearchBannerProperties.java",
+    "java/src/org/chromium/chrome/browser/omnibox/suggestions/brave_search/BraveSearchBannerViewBinder.java",
+    "java/src/org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessor.java",
+    "java/src/org/chromium/chrome/browser/omnibox/suggestions/editurl/BraveEditUrlSuggestionProcessorBase.java",
+  ]
+
+  deps = [
+    ":java_resources",
+    "//base:base_java",
+    "//base:base_shared_preferences_java",
+    "//brave/android/java/org/chromium/chrome/browser/search_engines:java",
+    "//brave/build/android:android_brave_strings_grd",
+    "//chrome/browser/browser_controls/android:java",
+    "//chrome/browser/commerce/merchant_viewer/android:java",
+    "//chrome/browser/flags:java",
+    "//chrome/browser/preferences:java",
+    "//chrome/browser/profiles/android:java",
+    "//chrome/browser/share:java",
+    "//chrome/browser/tab:java",
+    "//chrome/browser/tabmodel:java",
+    "//chrome/browser/ui/android/omnibox:java",
+    "//chrome/browser/ui/android/omnibox:java_resources",
+    "//components/favicon/android:java",
+    "//components/omnibox/browser:browser_java",
+    "//components/omnibox/common:features_java",
+    "//components/permissions/android:java",
+    "//components/prefs/android:java",
+    "//components/search_engines/android:java",
+    "//components/user_prefs/android:java",
+    "//content/public/android:content_full_java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+    "//third_party/androidx:androidx_recyclerview_recyclerview_java",
+    "//ui/android:ui_no_recycler_view_java",
+    "//url:gurl_java",
+  ]
+
+  resources_package = "org.chromium.chrome.browser.omnibox.brave"
+}
+
+android_resources("java_resources") {
+  sources = [
+    "java/res/drawable-night/ic_search_omnibox_promo.xml",
+    "java/res/drawable/bg_brave_search_banner.xml",
+    "java/res/drawable/ic_brave_ai_color.xml",
+    "java/res/drawable/ic_search_omnibox_promo.xml",
+    "java/res/layout/omnibox_brave_search_banner.xml",
+    "java/res/values-night/colors.xml",
+    "java/res/values/colors.xml",
+    "java/res/values/dimens.xml",
+  ]
+}

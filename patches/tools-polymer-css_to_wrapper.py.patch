@@ -1,0 +1,20 @@
+diff --git a/tools/polymer/css_to_wrapper.py b/tools/polymer/css_to_wrapper.py
+index 20705c0c6d44b6b50e28bbedef3f3877cec0cd6a..03d923178b1508e8bd4eabeca996196c2ec538ba 100644
+--- a/tools/polymer/css_to_wrapper.py
++++ b/tools/polymer/css_to_wrapper.py
+@@ -268,7 +268,7 @@ def main(argv):
+ 
+     content = ''
+ 
+-    lit_in_file = in_file.replace('.css', _LIT_SUFFIX)
++    lit_in_file = in_file.replace('.css', _LIT_SUFFIX).replace('-chromium_lit.css', '_lit-chromium.css')
+     if metadata['type'] == 'style' and lit_in_file in args.in_files:
+       # When a Polymer file has an equivalent "_lit.css" file, use the latter to
+       # extract the CSS content from, to facilitate migration without having to
+@@ -342,5 +342,6 @@ def main(argv):
+   return
+ 
+ 
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
+ if __name__ == '__main__':
+   main(sys.argv[1:])

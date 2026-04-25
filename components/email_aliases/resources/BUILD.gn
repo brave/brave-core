@@ -1,0 +1,37 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/common/typescript.gni")
+import("//brave/components/email_aliases/buildflags/buildflags.gni")
+
+assert(enable_email_aliases)
+
+transpile_web_ui("email_aliases_ui") {
+  generate_grdp = true
+
+  entry_points = [
+    [
+      "email_aliases",
+      rebase_path("email_aliases.tsx"),
+    ],
+    [
+      "email_aliases_panel",
+      rebase_path("email_aliases_panel.tsx"),
+    ],
+  ]
+
+  imports_from = [
+    "//brave/browser/resources/settings/email_aliases_page/",
+    "//brave/components/email_aliases/resources/",
+  ]
+
+  resource_name = "email_aliases"
+
+  deps = [
+    "//brave/components/brave_account/mojom:mojom_ts__generator",
+    "//brave/components/email_aliases:mojom_js",
+    "//brave/components/resources:strings",
+  ]
+}

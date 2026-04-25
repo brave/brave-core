@@ -1,0 +1,22 @@
+diff --git a/components/system_media_controls/linux/system_media_controls_linux.cc b/components/system_media_controls/linux/system_media_controls_linux.cc
+index 36267e255d28817944f94cda754d7051ddfecb75..8a94eb2e407bd52553156ec99932d6c30760b89a 100644
+--- a/components/system_media_controls/linux/system_media_controls_linux.cc
++++ b/components/system_media_controls/linux/system_media_controls_linux.cc
+@@ -64,7 +64,7 @@ constexpr base::TimeDelta kUpdatePositionInterval = base::Milliseconds(100);
+ const char kMprisAPINoTrackPath[] = "/org/mpris/MediaPlayer2/TrackList/NoTrack";
+ 
+ const char kMprisAPICurrentTrackPathFormatString[] =
+-    "/org/chromium/MediaPlayer2/TrackList/Track%s";
++    "/com/brave/MediaPlayer2/TrackList/Track%s";
+ 
+ // Writes `bitmap` to a new temporary PNG file and returns a a pair of the file
+ // path and a managed base::ScopedTempFile bound to this sequence.  This should
+@@ -104,7 +104,7 @@ WriteBitmapToTmpFile(const SkBitmap& bitmap) {
+ }  // namespace
+ 
+ const char kMprisAPIServiceNameFormatString[] =
+-    "org.mpris.MediaPlayer2.chromium.instance%i";
++    "org.mpris.MediaPlayer2.brave.instance%i";
+ const char kMprisAPIObjectPath[] = "/org/mpris/MediaPlayer2";
+ const char kMprisAPIInterfaceName[] = "org.mpris.MediaPlayer2";
+ const char kMprisAPIPlayerInterfaceName[] = "org.mpris.MediaPlayer2.Player";

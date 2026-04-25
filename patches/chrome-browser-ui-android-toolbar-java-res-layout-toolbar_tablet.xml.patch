@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
+index 7ffcd089ce8b3292c67a64811d22601ad4e0feed..86cca63f44af183f30b5efc07cff9d93dacbebac 100644
+--- a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
++++ b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_tablet.xml
+@@ -79,6 +79,7 @@ found in the LICENSE file.
+             android:background="@drawable/modern_toolbar_tablet_text_box_background"
+             android:paddingEnd="@dimen/location_bar_end_padding"
+             android:clipToPadding="false" />
++        <include layout="@layout/brave_toolbar" android:layout_height="wrap_content" android:layout_width="wrap_content" />
+ 
+         <!-- TODO(crbug.com/433976037): Reset horizontal margins when optional button expands to action chip. -->
+         <ViewStub

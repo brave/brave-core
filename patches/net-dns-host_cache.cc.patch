@@ -1,0 +1,12 @@
+diff --git a/net/dns/host_cache.cc b/net/dns/host_cache.cc
+index db5a8351aa1a814978965d154d01e06cfdf18820..24c70f4df59a4d1cc4ca66c66097afa6ad4bc443 100644
+--- a/net/dns/host_cache.cc
++++ b/net/dns/host_cache.cc
+@@ -502,6 +502,7 @@ HostCache::Entry HostCache::Entry::CopyWithDefaultPort(uint16_t port) const {
+       hostname.set_port(port);
+     }
+   }
++  BRAVE_COPY_WITH_DEFAULT_PORT
+ 
+   return copy;
+ }

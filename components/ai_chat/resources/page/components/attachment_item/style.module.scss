@@ -1,0 +1,139 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+.itemWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--leo-spacing-l);
+  width: 100%;
+  padding: var(--leo-spacing-m) var(--leo-spacing-l) var(--leo-spacing-m)
+    var(--leo-spacing-m);
+  border-radius: var(--leo-radius-m);
+  border: 1px solid var(--leo-color-divider-subtle);
+  background-color: var(--leo-color-container-background);
+  box-sizing: border-box;
+}
+
+.image {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  border-radius: var(--leo-radius-s);
+  flex-shrink: 0;
+}
+
+.favicon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--leo-radius-s);
+  background-color: var(--leo-color-container-highlight);
+
+  padding: 10px;
+
+  flex-shrink: 0;
+
+  & img {
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.loadingContainer {
+  --leo-progressring-color: var(--leo-color-icon-default);
+  --leo-progressring-size: 20px;
+  display: flex;
+  width: 40px;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--leo-radius-s);
+  background-color: var(--leo-color-container-highlight);
+}
+
+.leftSide {
+  display: flex;
+  flex: 1 1 auto;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--leo-spacing-l);
+  min-width: 0;
+
+  overflow: hidden;
+}
+
+.info {
+  display: flex;
+  flex: 1 1 auto;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.forEllipsis {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+}
+
+.title {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.uploadingText {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
+}
+
+.subtitle {
+  --leo-icon-size: 16px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--leo-spacing-s);
+
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-tertiary);
+
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.subtitleText {
+  overflow: hidden;
+
+  & div:first-child {
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+    overflow: hidden;
+  }
+}
+
+.tooltipContent {
+  max-width: 95cqi;
+  word-break: break-word;
+  text-overflow: wrap;
+}
+
+.removeButton {
+  --leo-icon-size: 20px;
+  --leo-icon-color: var(--leo-color-icon-secondary);
+  --leo-button-padding: 0;
+  margin-inline-start: auto;
+  flex-shrink: 0;
+}
