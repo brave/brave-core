@@ -311,6 +311,8 @@ static_library("internal") {
     "application_state/browser_manager_observer.h",
     "application_state/browser_util.cc",
     "application_state/browser_util.h",
+    "application_state/browser_version.cc",
+    "application_state/browser_version.h",
     "catalog/campaign/catalog_campaign_info.cc",
     "catalog/campaign/catalog_campaign_info.h",
     "catalog/campaign/catalog_daypart_info.h",

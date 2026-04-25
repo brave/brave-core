@@ -12,14 +12,12 @@ namespace brave_ads {
 
 std::string GetBrowserVersionNumber();
 
-class ScopedBrowserVersionNumberForTesting final {
- public:
-  ScopedBrowserVersionNumberForTesting();
-
-  ~ScopedBrowserVersionNumberForTesting();
-};
-
 bool WasBrowserUpgraded();
+
+// Clears the cached WasBrowserUpgraded result so the next call re-evaluates
+// against the current BrowserVersion. Called by BrowserVersion::SetForTesting
+// whenever a fake is installed or removed.
+void ResetBrowserUpgradeCacheForTesting();  // IN-TEST
 
 }  // namespace brave_ads
 

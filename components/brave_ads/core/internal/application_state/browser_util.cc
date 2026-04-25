@@ -8,45 +8,23 @@
 #include <optional>
 
 #include "base/check_is_test.h"
+#include "brave/components/brave_ads/core/internal/application_state/browser_version.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/version_info/version_info.h"
 
 namespace brave_ads {
 
 namespace {
-
-bool g_browser_version_number_for_testing = false;
-
-constexpr char kBrowserVersionNumberForTesting[] = "1.2.3.4";
-
+std::optional<bool> g_was_browser_upgraded;
 }  // namespace
 
 std::string GetBrowserVersionNumber() {
-  if (g_browser_version_number_for_testing) {
-    CHECK_IS_TEST();
-
-    return kBrowserVersionNumberForTesting;
-  }
-
-  return version_info::GetBraveChromiumVersionNumber();
-}
-
-ScopedBrowserVersionNumberForTesting::ScopedBrowserVersionNumberForTesting() {
-  CHECK_IS_TEST();
-
-  g_browser_version_number_for_testing = true;
-}
-
-ScopedBrowserVersionNumberForTesting::~ScopedBrowserVersionNumberForTesting() {
-  g_browser_version_number_for_testing = false;
+  return BrowserVersion::GetInstance().GetNumber();
 }
 
 bool WasBrowserUpgraded() {
-  static std::optional<bool> was_upgraded;
-
-  if (was_upgraded) {
-    return *was_upgraded;
+  if (g_was_browser_upgraded) {
+    return *g_was_browser_upgraded;
   }
 
   const std::string browser_version_number = GetBrowserVersionNumber();
@@ -54,13 +32,20 @@ bool WasBrowserUpgraded() {
   const std::string last_browser_version_number =
       GetProfileStringPref(prefs::kBrowserVersionNumber);
 
-  was_upgraded = browser_version_number != last_browser_version_number;
+  g_was_browser_upgraded =
+      browser_version_number != last_browser_version_number;
 
-  if (was_upgraded) {
+  if (*g_was_browser_upgraded) {
     SetProfileStringPref(prefs::kBrowserVersionNumber, browser_version_number);
   }
 
-  return *was_upgraded;
+  return *g_was_browser_upgraded;
+}
+
+void ResetBrowserUpgradeCacheForTesting() {  // IN-TEST
+  CHECK_IS_TEST();
+
+  g_was_browser_upgraded.reset();
 }
 
 }  // namespace brave_ads

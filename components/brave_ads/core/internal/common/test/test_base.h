@@ -17,7 +17,7 @@
 #include "base/test/scoped_command_line.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_ads/core/internal/ads_client/test/ads_client_mock.h"
-#include "brave/components/brave_ads/core/internal/application_state/browser_util.h"
+#include "brave/components/brave_ads/core/internal/application_state/test/fake_browser_version.h"
 #include "brave/components/brave_ads/core/internal/common/locale/test/fake_locale.h"
 #include "brave/components/brave_ads/core/internal/common/operating_system/test/fake_operating_system.h"
 #include "brave/components/brave_ads/core/internal/common/test/tab_test_helper.h"
@@ -140,6 +140,7 @@ class TestBase : public ::testing::Test {
 
   base::test::TaskEnvironment task_environment_;
 
+  FakeBrowserVersion fake_browser_version_;
   FakeLocale fake_locale_;
   FakeOperatingSystem fake_operating_system_;
 
@@ -175,8 +176,6 @@ class TestBase : public ::testing::Test {
 
   bool setup_called_ = false;
   bool teardown_called_ = false;
-
-  ScopedBrowserVersionNumberForTesting scoped_browser_version_number_;
 
   bool is_integration_test_ = false;  // Defaults to unit test.
 
