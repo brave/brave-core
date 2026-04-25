@@ -30,7 +30,9 @@ class BravePsstDialogHandler : public psst::mojom::PsstConsentHelper,
       TabStripModel* tab_strip_model,
       BravePsstDialogUI* dialog_ui,
       mojo::PendingReceiver<psst::mojom::PsstConsentHelper> pending_receiver,
-      mojo::PendingRemote<psst::mojom::PsstConsentDialog> client_page);
+      mojo::PendingRemote<psst::mojom::PsstConsentDialog> client_page,
+      psst::mojom::PsstConsentFactory::CreatePsstConsentHandlerCallback
+          callback);
 
   BravePsstDialogHandler() = delete;
   BravePsstDialogHandler(const BravePsstDialogHandler&) = delete;
@@ -40,16 +42,13 @@ class BravePsstDialogHandler : public psst::mojom::PsstConsentHelper,
 
  private:
   friend class PsstTabWebContentsObserverBrowserTest;
-  void ApplyChanges(
-      const std::string& site_name,
-      const std::vector<std::string>& selected_settings_list) override;
+  void PerformPrivacyTuning(
+      const std::vector<std::string>& perform_for_uids) override;
+  void ReportFailedContent() override;
   void CloseDialog() override;
 
-  void OnSetRequestDone(const std::string& url,
-                        const std::optional<std::string>& error) override;
-  void OnSetCompleted(
-      const std::optional<std::vector<std::string>>& applied_checks,
-      const std::optional<std::vector<std::string>>& errors) override;
+  void OnSetRequestStatus(const std::string& uid,
+                          const std::optional<std::string>& error) override;
 
   // TabStripModelObserver
   void OnTabStripModelChanged(

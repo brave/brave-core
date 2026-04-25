@@ -41,29 +41,23 @@ void PsstUiDelegateImpl::Show(
 
 void PsstUiDelegateImpl::UpdateTasks(
     long progress,
-    const std::vector<PolicyTask>& applied_tasks,
+    const std::vector<PolicyTask>& performed_tasks,
     const mojom::PsstStatus status) {
-  // Implementation for setting the current progress.
-  for (Observer& obs : observer_list_) {
-    std::ranges::for_each(applied_tasks, [&obs](const PolicyTask& task) {
-      obs.OnSetRequestDone(task.url, task.error_description);
-    });
-  }
-
-  if (status != mojom::PsstStatus::kCompleted) {
+  if (!ui_presenter_->IsDialogShown()) {
     return;
   }
 
-  std::vector<std::string> applied_list;
-  std::vector<std::string> failed_list;
-  std::ranges::for_each(
-      applied_tasks, [&applied_list, &failed_list](const PolicyTask& task) {
-        (!task.error_description.has_value() || task.error_description->empty())
-            ? applied_list.emplace_back(task.url)
-            : failed_list.emplace_back(task.url);
-      });
+  // Implementation for setting the current progress.
   for (Observer& obs : observer_list_) {
-    obs.OnSetCompleted(applied_list, failed_list);
+    if (performed_tasks.empty() && progress == 100) {
+      // Update common dialog status
+      obs.OnSetRequestStatus("", "");
+    } else {
+      // Update individual task statuses.
+      for (const PolicyTask& task : performed_tasks) {
+        obs.OnSetRequestStatus(task.uid, task.error_description);
+      }
+    }
   }
 }
 
@@ -96,7 +90,7 @@ psst::mojom::SettingCardDataPtr PsstUiDelegateImpl::GetShowDialogData() {
   std::vector<mojom::SettingCardDataItemPtr> items;
   for (const auto& task : user_script_result_->tasks) {
     items.push_back(
-        psst::mojom::SettingCardDataItem::New(task.description, task.url));
+        psst::mojom::SettingCardDataItem::New(task.description, task.uid));
   }
 
   return psst::mojom::SettingCardData::New(origin_->GetURL().spec(),
@@ -104,19 +98,20 @@ psst::mojom::SettingCardDataPtr PsstUiDelegateImpl::GetShowDialogData() {
 }
 
 void PsstUiDelegateImpl::OnUserAcceptedPsstSettings(
-    const url::Origin& origin,
-    const std::vector<std::string>& urls_to_skip) {
-  base::ListValue urls_to_skip_list;
-  for (const auto& item : urls_to_skip) {
-    urls_to_skip_list.Append(item);
+    const std::vector<std::string>& perform_for_uids) {
+  CHECK(origin_);
+  CHECK(dialog_data_);
+  base::ListValue perform_for_uids_list;
+  for (const auto& item : perform_for_uids) {
+    perform_for_uids_list.Append(item);
   }
   // Save the PSST settings when user accepts the dialog
   psst_settings_service_->SetPsstWebsiteSettings(
-      origin, ConsentStatus::kAllow, dialog_data_->script_version,
-      dialog_data_->user_id, std::move(urls_to_skip_list));
+      origin_.value(), ConsentStatus::kAllow, dialog_data_->script_version,
+      dialog_data_->user_id, std::move(perform_for_uids_list));
 
   if (apply_changes_callback_) {
-    std::move(apply_changes_callback_).Run(urls_to_skip);
+    std::move(apply_changes_callback_).Run(perform_for_uids);
   }
 }
 

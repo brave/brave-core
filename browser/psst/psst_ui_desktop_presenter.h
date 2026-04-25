@@ -37,9 +37,13 @@ class PsstUiDesktopPresenter : public PsstUiPresenter {
     // ui::WebDialogDelegate:
     void OnDialogClosed(const std::string& json_retval) override;
 
+    base::WeakPtr<PsstUiDesktopDelegate> GetWeakPtr();
+    bool IsDialogShown() const;
+
    private:
     base::WeakPtr<content::WebContents> initiator_web_contents_;  // unowned
     base::WeakPtr<content::WebContents> dialog_web_contents_;     // unowned
+    base::WeakPtrFactory<PsstUiDesktopDelegate> weak_ptr_factory_{this};
   };
 
   explicit PsstUiDesktopPresenter(
@@ -50,9 +54,12 @@ class PsstUiDesktopPresenter : public PsstUiPresenter {
 
   void ShowConsentDialog() override;
 
+  bool IsDialogShown() const override;
+
  private:
   base::WeakPtr<content::WebContents> web_contents_;
-  base::WeakPtrFactory<PsstUiDesktopPresenter> weak_ptr_factory_{this};
+  base::WeakPtr<psst::PsstUiDesktopPresenter::PsstUiDesktopDelegate>
+      dialog_delegate_;
 };
 
 }  // namespace psst

@@ -26,11 +26,8 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
  public:
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnSetRequestDone(const std::string& url,
-                                  const std::optional<std::string>& error) {}
-    virtual void OnSetCompleted(
-        const std::optional<std::vector<std::string>>& applied_checks,
-        const std::optional<std::vector<std::string>>& errors) {}
+    virtual void OnSetRequestStatus(const std::string& uid,
+                                    const std::optional<std::string>& error) {}
   };
 
   explicit PsstUiDelegateImpl(PsstSettingsService* psst_settings_service,
@@ -49,7 +46,7 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
 
   // PsstUiDelegate overrides
   void UpdateTasks(long progress,
-                   const std::vector<PolicyTask>& applied_tasks,
+                   const std::vector<PolicyTask>& performed_tasks,
                    const mojom::PsstStatus status) override;
 
   std::optional<PsstWebsiteSettings> GetPsstWebsiteSettings(
@@ -63,8 +60,8 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
   base::WeakPtr<PsstUiDelegateImpl> AsWeakPtr();
 
   psst::mojom::SettingCardDataPtr GetShowDialogData();
-  void OnUserAcceptedPsstSettings(const url::Origin& origin,
-                                  const std::vector<std::string>& urls_to_skip);
+  void OnUserAcceptedPsstSettings(
+      const std::vector<std::string>& perform_for_uids);
 
  private:
   void OnUserAcceptedInfobar(const bool is_accepted);

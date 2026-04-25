@@ -45,7 +45,9 @@ void BravePsstDialogUI::BindInterface(
 
 void BravePsstDialogUI::CreatePsstConsentHandler(
     ::mojo::PendingReceiver<psst::mojom::PsstConsentHelper> psst_consent_helper,
-    ::mojo::PendingRemote<psst::mojom::PsstConsentDialog> psst_consent_dialog) {
+    ::mojo::PendingRemote<psst::mojom::PsstConsentDialog> psst_consent_dialog,
+    psst::mojom::PsstConsentFactory::CreatePsstConsentHandlerCallback
+        callback) {
   auto* delegate =
       PsstUiDesktopPresenter::PsstUiDesktopDelegate::GetDelegateFromWebContents(
           web_ui()->GetWebContents());
@@ -63,7 +65,7 @@ void BravePsstDialogUI::CreatePsstConsentHandler(
 
   psst_consent_handler_ = std::make_unique<BravePsstDialogHandler>(
       tab_strip_model, this, std::move(psst_consent_helper),
-      std::move(psst_consent_dialog));
+      std::move(psst_consent_dialog), std::move(callback));
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(BravePsstDialogUI)

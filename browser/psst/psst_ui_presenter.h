@@ -20,6 +20,7 @@ class PsstUiPresenter {
 
   virtual void ShowInfoBar(InfoBarCallback on_accept_callback) = 0;
   virtual void ShowConsentDialog() = 0;
+  virtual bool IsDialogShown() const = 0;
 };
 
 }  // namespace psst

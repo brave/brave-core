@@ -118,10 +118,7 @@ template("brave_extra_paks") {
     }
 
     if (enable_psst) {
-      sources += [
-        "$root_gen_dir/brave/components/psst/resources/brave_psst_dialog_generated.pak",
-        "$root_gen_dir/brave/components/psst/resources/brave_psst_resources.pak",
-      ]
+      sources += [ "$root_gen_dir/brave/components/psst/resources/brave_psst_resources.pak" ]
       deps += [ "//brave/components/psst/resources" ]
     }
 

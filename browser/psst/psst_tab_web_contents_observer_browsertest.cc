@@ -91,10 +91,12 @@ constexpr char kPsstCrxUserScriptTemplate[] = R"(
     site_name: 'a.test',
     tasks: [
       {
+        uid: '1',
         url: 'https://a.test:$1/a_test_1.html',
         description: 'a_test_1.html'
       },
       {
+        uid: '2',
         url: 'https://a.test:$1/a_test_2.html',
         description: 'a_test_2.html'
       }
@@ -243,10 +245,12 @@ const moveCurrentTask = (psstObj, errorMessage) => {
   }
 
   const completedTask = errorMessage ? {
+    uid: psstObj.current_task.uid,
     url: psstObj.current_task.url,
     description: psstObj.current_task.description,
     error_description: errorMessage
   } : {
+    uid: psstObj.current_task.uid,
     url: psstObj.current_task.url,
     description: psstObj.current_task.description
   };
@@ -541,7 +545,7 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
 
   bool AcceptModalDialog(content::WebContents* dialog_wc,
                          const std::string& site_name,
-                         const std::vector<std::string>& skip_settings_urls) {
+                         const std::vector<std::string>& perform_for_uids) {
     auto* dialog_ui =
         dialog_wc->GetWebUI()->GetController()->GetAs<BravePsstDialogUI>();
     if (!dialog_ui) {
@@ -566,8 +570,8 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
                   if (dialog_ui->psst_consent_handler_) {
                     timer.Stop();
                     run_loop.Quit();
-                    dialog_ui->psst_consent_handler_->ApplyChanges(
-                        site_name, skip_settings_urls);
+                    dialog_ui->psst_consent_handler_->PerformPrivacyTuning(
+                        perform_for_uids);
                     is_found = true;
                     return;
                   }

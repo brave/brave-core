@@ -620,6 +620,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
           .Set("site_name", "example")
           .Set("tasks",
                base::ListValue().Append(base::DictValue()
+                                            .Set("uid", "1")
                                             .Set("url", "https://example1.com")
                                             .Set("description", "settings"))));
 
@@ -632,6 +633,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
                            .Set("applied_tasks",
                                 base::ListValue().Append(
                                     base::DictValue()
+                                        .Set("uid", "1")
                                         .Set("url", "https://example1.com")
                                         .Set("description", "settings"))))
           .Set("result", true));
@@ -751,6 +753,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
           .Set("user_id", user_id)
           .Set("tasks",
                base::ListValue().Append(base::DictValue()
+                                            .Set("uid", "1")
                                             .Set("url", "https://example1.com")
                                             .Set("description", "settings")))
           .Set("site_name", "example")
@@ -835,6 +838,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
           .Set("user_id", user_id)
           .Set("tasks",
                base::ListValue().Append(base::DictValue()
+                                            .Set("uid", "1")
                                             .Set("url", "https://example1.com")
                                             .Set("description", "settings")))
           .Set("site_name", "example"));
@@ -848,6 +852,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
                            .Set("applied_tasks",
                                 base::ListValue().Append(
                                     base::DictValue()
+                                        .Set("uid", "1")
                                         .Set("url", url.spec())
                                         .Set("description", task_description))))
           .Set("result", true));

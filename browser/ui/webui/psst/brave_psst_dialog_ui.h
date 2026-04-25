@@ -49,8 +49,9 @@ class BravePsstDialogUI : public ui::MojoWebDialogUI,
   void CreatePsstConsentHandler(
       ::mojo::PendingReceiver<psst::mojom::PsstConsentHelper>
           psst_consent_helper,
-      ::mojo::PendingRemote<psst::mojom::PsstConsentDialog> psst_consent_dialog)
-      override;
+      ::mojo::PendingRemote<psst::mojom::PsstConsentDialog> psst_consent_dialog,
+      psst::mojom::PsstConsentFactory::CreatePsstConsentHandlerCallback
+          callback) override;
 
   std::unique_ptr<BravePsstDialogHandler> psst_consent_handler_;
   mojo::Receiver<psst::mojom::PsstConsentFactory>

@@ -37,7 +37,7 @@ constexpr base::TimeDelta kScriptTimeout = base::Seconds(15);
 const char kShouldProcessKey[] = "should_process_key";
 
 const char kUserScriptResultTasksPropName[] = "tasks";
-const char kUserScriptResultTaskItemUrlPropName[] = "url";
+const char kUserScriptResultTaskItemUidPropName[] = "uid";
 const char kUserScriptResultInitialExecutionPropName[] = "initial_execution";
 
 struct PsstNavigationData : public base::SupportsUserData::Data {
@@ -77,16 +77,16 @@ std::string MaybeAddParamsToScript(std::unique_ptr<MatchedRule> rule,
 void PrepareParametersForPolicyExecution(
     int navigation_id,
     base::DictValue& user_script_result,
-    const std::vector<std::string>& urls_to_skip,
+    const std::vector<std::string>& perform_for_uids,
     const bool is_initial) {
   if (auto* tasks =
           user_script_result.FindList(kUserScriptResultTasksPropName)) {
     tasks->EraseIf([&](const base::Value& v) {
       const auto& item_dict = v.GetDict();
-      const auto* url =
-          item_dict.FindString(kUserScriptResultTaskItemUrlPropName);
-      return url && std::find(urls_to_skip.begin(), urls_to_skip.end(), *url) !=
-                        urls_to_skip.end();
+      const auto* uid =
+          item_dict.FindString(kUserScriptResultTaskItemUidPropName);
+      return uid && std::find(perform_for_uids.begin(), perform_for_uids.end(),
+                              *uid) == perform_for_uids.end();
     });
   }
 
@@ -276,7 +276,7 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
     // show the dialog again.
     OnUserAcceptedPsstSettings(id, false, std::move(rule),
                                user_script_result.Clone(),
-                               psst_settings->urls_to_skip);
+                               psst_settings->uids_to_perform);
     return;
   }
 
@@ -302,14 +302,14 @@ void PsstTabWebContentsObserver::OnUserAcceptedPsstSettings(
     bool is_initial,
     std::unique_ptr<MatchedRule> rule,
     base::Value user_script_result,
-    const std::vector<std::string>& urls_to_skip) {
+    const std::vector<std::string>& perform_for_uids) {
   if (!ShouldInsertScriptForPage(id)) {
     return;
   }
 
   auto user_script_result_dict = std::move(user_script_result).TakeDict();
   PrepareParametersForPolicyExecution(id, user_script_result_dict,
-                                      std::move(urls_to_skip), is_initial);
+                                      std::move(perform_for_uids), is_initial);
   RunWithTimeout(
       id,
       MaybeAddParamsToScript(std::move(rule),

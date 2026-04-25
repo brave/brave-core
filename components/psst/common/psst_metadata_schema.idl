@@ -21,6 +21,6 @@ namespace psst {
         // Signed user identifier
         DOMString user_id;
         // List of URLs where the user decided not to apply privacy settings
-        DOMString[] urls_to_skip;
+        DOMString[] uids_to_perform;
     };
 };

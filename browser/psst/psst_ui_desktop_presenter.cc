@@ -37,7 +37,8 @@ class UiDesktopDelegateUserData : public base::SupportsUserData::Data {
       delegate_;  // unowned
 };
 
-void OpenPsstDialog(content::WebContents* initiator) {
+base::WeakPtr<psst::PsstUiDesktopPresenter::PsstUiDesktopDelegate>
+OpenPsstDialog(content::WebContents* initiator) {
   const gfx::Size min_size(kDialogWidth, kDialogMinHeight);
   const gfx::Size max_size(kDialogWidth, kDialogMaxHeight);
   auto ui_desktop_delegate =
@@ -52,7 +53,9 @@ void OpenPsstDialog(content::WebContents* initiator) {
 
   ui_desktop_delegate_ptr->SetDelegateToWebContents(
       delegate->GetWebContents()->GetWeakPtr());
+  return ui_desktop_delegate_ptr->GetWeakPtr();
 }
+
 }  // namespace
 
 namespace psst {
@@ -105,6 +108,15 @@ void PsstUiDesktopPresenter::PsstUiDesktopDelegate::OnDialogClosed(
   initiator_web_contents_ = nullptr;
 }
 
+base::WeakPtr<PsstUiDesktopPresenter::PsstUiDesktopDelegate>
+PsstUiDesktopPresenter::PsstUiDesktopDelegate::GetWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
+}
+
+bool PsstUiDesktopPresenter::PsstUiDesktopDelegate::IsDialogShown() const {
+  return dialog_web_contents_ != nullptr;
+}
+
 PsstUiDesktopPresenter::PsstUiDesktopPresenter(
     base::WeakPtr<content::WebContents> web_contents)
     : web_contents_(std::move(web_contents)) {}
@@ -129,7 +141,15 @@ void PsstUiDesktopPresenter::ShowConsentDialog() {
     return;
   }
 
-  OpenPsstDialog(web_contents_.get());
+  dialog_delegate_ = OpenPsstDialog(web_contents_.get());
+}
+
+bool PsstUiDesktopPresenter::IsDialogShown() const {
+  if (!dialog_delegate_) {
+    return false;
+  }
+
+  return dialog_delegate_->IsDialogShown();
 }
 
 }  // namespace psst

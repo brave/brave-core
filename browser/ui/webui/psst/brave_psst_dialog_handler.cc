@@ -90,7 +90,8 @@ BravePsstDialogHandler::BravePsstDialogHandler(
     TabStripModel* tab_strip_model,
     BravePsstDialogUI* dialog_ui,
     mojo::PendingReceiver<psst::mojom::PsstConsentHelper> pending_receiver,
-    mojo::PendingRemote<psst::mojom::PsstConsentDialog> client_page)
+    mojo::PendingRemote<psst::mojom::PsstConsentDialog> client_page,
+    psst::mojom::PsstConsentFactory::CreatePsstConsentHandlerCallback callback)
     : dialog_ui_(dialog_ui),
       receiver_(this, std::move(pending_receiver)),
       client_page_(std::move(client_page)) {
@@ -116,29 +117,19 @@ BravePsstDialogHandler::BravePsstDialogHandler(
   auto setting_card_data = psst_dialog_delegate_->GetShowDialogData();
   CHECK(setting_card_data);
   // Set initial dialog data
-  client_page_->SetSettingsCardData(std::move(setting_card_data));
+  std::move(callback).Run(std::move(setting_card_data));
 }
 
 BravePsstDialogHandler::~BravePsstDialogHandler() = default;
 
-void BravePsstDialogHandler::OnSetRequestDone(
-    const std::string& url,
+void BravePsstDialogHandler::OnSetRequestStatus(
+    const std::string& uid,
     const std::optional<std::string>& error) {
   if (!client_page_ || !client_page_.is_bound() ||
       !client_page_.is_connected()) {
     return;
   }
-  client_page_->OnSetRequestDone(url, error);
-}
-
-void BravePsstDialogHandler::OnSetCompleted(
-    const std::optional<std::vector<std::string>>& applied_checks,
-    const std::optional<std::vector<std::string>>& errors) {
-  if (!client_page_ || !client_page_.is_bound() ||
-      !client_page_.is_connected()) {
-    return;
-  }
-  client_page_->OnSetCompleted(applied_checks, errors);
+  client_page_->OnSetRequestStatus(uid, error);
 }
 
 void BravePsstDialogHandler::OnTabStripModelChanged(
@@ -164,15 +155,21 @@ void BravePsstDialogHandler::OnTabStripModelChanged(
   }
 }
 
-void BravePsstDialogHandler::ApplyChanges(
-    const std::string& site_name,
-    const std::vector<std::string>& selected_settings_list) {
+void BravePsstDialogHandler::PerformPrivacyTuning(
+    const std::vector<std::string>& perform_for_uids) {
   if (!psst_dialog_delegate_) {
     return;
   }
 
-  psst_dialog_delegate_->OnUserAcceptedPsstSettings(
-      url::Origin::Create(GURL(site_name)), selected_settings_list);
+  psst_dialog_delegate_->OnUserAcceptedPsstSettings(perform_for_uids);
+}
+
+void BravePsstDialogHandler::ReportFailedContent() {
+  if (!psst_dialog_delegate_) {
+    return;
+  }
+
+  // psst_dialog_delegate_->OnUserRejectedPsstSettings();
 }
 
 void BravePsstDialogHandler::CloseDialog() {
