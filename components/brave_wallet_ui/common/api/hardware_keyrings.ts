@@ -10,6 +10,11 @@ import * as HWInterfaces from '../hardware/interfaces'
 import EthereumLedgerBridgeKeyring from '../../common/hardware/ledgerjs/eth_ledger_bridge_keyring'
 import SolanaLedgerBridgeKeyring from '../../common/hardware/ledgerjs/sol_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../../common/hardware/trezor/trezor_bridge_keyring'
+import {
+  createTrezorBridge,
+  TrezorBridgeTransport,
+} from '../../common/hardware/trezor/trezor-bridge-transport'
+import { kTrezorBridgeUrl } from '../../common/hardware/trezor/trezor-messages'
 import FilecoinLedgerBridgeKeyring from '../../common/hardware/ledgerjs/fil_ledger_bridge_keyring'
 import BitcoinLedgerBridgeKeyring from '../hardware/ledgerjs/btc_ledger_bridge_keyring'
 
@@ -87,7 +92,12 @@ export function getLedgerBitcoinHardwareKeyring(
 
 export function getTrezorHardwareKeyring(): TrezorBridgeKeyring {
   if (!trezorHardwareKeyring) {
-    trezorHardwareKeyring = new TrezorBridgeKeyring()
+    trezorHardwareKeyring = new TrezorBridgeKeyring(
+      new TrezorBridgeTransport(
+        kTrezorBridgeUrl,
+        createTrezorBridge(kTrezorBridgeUrl),
+      ),
+    )
   }
   return trezorHardwareKeyring
 }
