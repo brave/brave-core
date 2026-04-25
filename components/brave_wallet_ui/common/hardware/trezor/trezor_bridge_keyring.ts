@@ -26,7 +26,10 @@ import {
   SignTypedMessageResponsePayload,
   GetDeviceNameResponsePayload,
 } from './trezor-messages'
-import { sendTrezorCommand, closeTrezorBridge } from './trezor-bridge-transport'
+import {
+  TrezorBridgeTransport,
+  closeTrezorBridge,
+} from './trezor-bridge-transport'
 import {
   AccountFromDevice,
   HardwareImportScheme,
@@ -45,6 +48,11 @@ import { TrezorKeyring } from '../interfaces'
 
 export default class TrezorBridgeKeyring implements TrezorKeyring {
   private unlocked: boolean = false
+  private readonly transport: TrezorBridgeTransport
+
+  constructor(transport: TrezorBridgeTransport) {
+    this.transport = transport
+  }
 
   getDeviceName = async (): Promise<HardwareOperationResultDeviceName> => {
     const data = await this.sendTrezorCommand<GetDeviceNameResponsePayload>({
@@ -76,7 +84,7 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
   }
 
   cancelOperation = async () => {
-    closeTrezorBridge()
+    closeTrezorBridge(this.transport)
   }
 
   unlock = async (): Promise<HardwareOperationResult> => {
@@ -283,7 +291,7 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
   private async sendTrezorCommand<T>(
     command: TrezorFrameCommand,
   ): Promise<T | TrezorErrorsCodes> {
-    return sendTrezorCommand<T>(command)
+    return this.transport.sendCommandToTrezorFrame<T>(command)
   }
 
   private prepareTransactionPayload = (
