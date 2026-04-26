@@ -6,4 +6,7 @@
 brave_exec_script_allowlist = [
   # //brave/.env parser.
   "//brave/build/env_config.gni",
+
+  # Resource IDs generation with compute_inputs_for_analyze.
+  "//brave/resources/BUILD.gn",
 ]
