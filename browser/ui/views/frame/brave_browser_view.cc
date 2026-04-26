@@ -968,7 +968,10 @@ void BraveBrowserView::UpdateContentsShadowVisibility() {
 
   // Toggle shadow.
   if (show_contents_shadow && !contents_shadow_) {
-    contents_shadow_ = BraveContentsViewUtil::CreateShadow(contents_container_);
+    contents_shadow_ = BraveContentsViewUtil::CreateShadow(
+        contents_container_,
+        BraveContentsViewUtil::GetRoundedCornersForContentsView(browser_,
+                                                                nullptr));
     return;
   }
 
@@ -1272,6 +1275,10 @@ void BraveBrowserView::UpdateWebViewRoundedCorners() {
   // contents and devtools.
   if (contents_container_->layer()) {
     contents_container_->layer()->SetRoundedCornerRadius(corners);
+  }
+
+  if (contents_shadow_) {
+    contents_shadow_->SetCornerRadii(corners);
   }
 
   if (multi_contents_view_) {

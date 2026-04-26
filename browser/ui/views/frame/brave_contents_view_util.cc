@@ -36,14 +36,11 @@ constexpr ViewShadow::ShadowParameters kShadow{
 }  // namespace
 
 std::unique_ptr<ViewShadow> BraveContentsViewUtil::CreateShadow(
-    views::View* view) {
+    views::View* view,
+    const gfx::RoundedCornersF& corner_radii) {
   DCHECK(view);
-  auto* layout_provider = views::LayoutProvider::Get();
-  auto shadow = std::make_unique<ViewShadow>(
-      view, layout_provider->GetCornerRadiusMetric(kRoundedCornersBorderRadius),
-      kShadow);
-  view->layer()->SetRoundedCornerRadius(gfx::RoundedCornersF(
-      layout_provider->GetCornerRadiusMetric(kRoundedCornersBorderRadius)));
+  auto shadow = std::make_unique<ViewShadow>(view, corner_radii, kShadow);
+  view->layer()->SetRoundedCornerRadius(corner_radii);
   view->layer()->SetIsFastRoundedCorner(true);
   return shadow;
 }

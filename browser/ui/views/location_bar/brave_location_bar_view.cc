@@ -43,6 +43,7 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/compositor/layer.h"
+#include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/image/image_skia.h"
@@ -438,7 +439,8 @@ void BraveLocationBarView::SetupShadow() {
       .blur_radius = radius,
       .shadow_color = color_provider->GetColor(kColorLocationBarHoveredShadow)};
 
-  shadow_ = std::make_unique<ViewShadow>(this, radius, shadow);
+  shadow_ =
+      std::make_unique<ViewShadow>(this, gfx::RoundedCornersF(radius), shadow);
 }
 
 int BraveLocationBarView::GetBorderRadius() const {

@@ -12,10 +12,6 @@ class BraveLayoutProviderMac : public BraveLayoutProvider {
  public:
   using BraveLayoutProvider::BraveLayoutProvider;
   ~BraveLayoutProviderMac() override;
-
-  // BraveLayoutProvider
-  int GetCornerRadiusMetric(
-      views::ShapeContextTokensOverride token) const override;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_LAYOUT_PROVIDER_MAC_H_

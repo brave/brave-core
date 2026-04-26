@@ -6,21 +6,3 @@
 #include "brave/browser/ui/views/brave_layout_provider_mac.h"
 
 BraveLayoutProviderMac::~BraveLayoutProviderMac() = default;
-
-int BraveLayoutProviderMac::GetCornerRadiusMetric(
-    views::ShapeContextTokensOverride token) const {
-  switch (token) {
-    case views::ShapeContextTokensOverride::kRoundedCornersBorderRadius:
-      return 6;
-    case views::ShapeContextTokensOverride::
-        kRoundedCornersBorderRadiusAtWindowCorner:
-      if (@available(macOS 26, *)) {
-        return 16;
-      }
-      return 6;
-    default:
-      break;
-  }
-
-  return LayoutProvider::GetCornerRadiusMetric(token);
-}

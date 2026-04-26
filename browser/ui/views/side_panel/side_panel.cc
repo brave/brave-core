@@ -32,9 +32,13 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider.h"
 #include "ui/compositor/layer.h"
+#include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
+#include "ui/views/layout/layout_provider.h"
 #include "ui/views/view_class_properties.h"
+
+using views::ShapeContextTokensOverride::kRoundedCornersBorderRadius;
 
 namespace {
 
@@ -147,7 +151,10 @@ void SidePanel::UpdateBorder() {
     // side panel implementation.
     SetBorder(views::CreateEmptyBorder(gfx::Insets::TLBR(-1, 0, 0, 0)));
 
-    shadow_ = BraveContentsViewUtil::CreateShadow(this);
+    const int r = views::LayoutProvider::Get()->GetCornerRadiusMetric(
+        kRoundedCornersBorderRadius);
+    shadow_ =
+        BraveContentsViewUtil::CreateShadow(this, gfx::RoundedCornersF(r));
     SetBackground(views::CreateSolidBackground(nala::kColorPageBackground));
 
     return;
