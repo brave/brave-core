@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <grit latest_public_release="0" current_release="1">
   <outputs>
     <output filename="grit/brave_psst_resources.h" type="rc_header">

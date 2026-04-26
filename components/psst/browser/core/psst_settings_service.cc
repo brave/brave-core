@@ -14,7 +14,7 @@ namespace {
 constexpr char kUserIdSettingsKey[] = "user_id";
 constexpr char kConsentStatusSettingsKey[] = "consent_status";
 constexpr char kScriptVersionSettingsKey[] = "script_version";
-constexpr char kUrlsToSkipSettingsKey[] = "urls_to_skip";
+constexpr char kUidsToPerformSettingsKey[] = "uids_to_perform";
 
 base::ListValue VectorToList(std::vector<std::string> values) {
   base::ListValue list;
@@ -30,8 +30,8 @@ base::DictValue CreatePsstSettingsObject(PsstWebsiteSettings psst_metadata) {
   object.Set(kUserIdSettingsKey, psst_metadata.user_id);
   object.Set(kConsentStatusSettingsKey, ToString(psst_metadata.consent_status));
   object.Set(kScriptVersionSettingsKey, psst_metadata.script_version);
-  object.Set(kUrlsToSkipSettingsKey,
-             VectorToList(std::move(psst_metadata.urls_to_skip)));
+  object.Set(kUidsToPerformSettingsKey,
+             VectorToList(std::move(psst_metadata.uids_to_perform)));
   return object;
 }
 
@@ -61,17 +61,18 @@ std::optional<PsstWebsiteSettings> PsstSettingsService::GetPsstWebsiteSettings(
   return PsstWebsiteSettings::FromValue(*user_id_metadata_dict);
 }
 
-void PsstSettingsService::SetPsstWebsiteSettings(const url::Origin& origin,
-                                                 ConsentStatus consent_status,
-                                                 int script_version,
-                                                 std::string_view user_id,
-                                                 base::ListValue urls_to_skip) {
+void PsstSettingsService::SetPsstWebsiteSettings(
+    const url::Origin& origin,
+    ConsentStatus consent_status,
+    int script_version,
+    std::string_view user_id,
+    base::ListValue uids_to_perform) {
   auto psst_metadata = PsstWebsiteSettings::FromValue(
       base::DictValue()
           .Set(kUserIdSettingsKey, user_id)
           .Set(kConsentStatusSettingsKey, ToString(consent_status))
           .Set(kScriptVersionSettingsKey, script_version)
-          .Set(kUrlsToSkipSettingsKey, std::move(urls_to_skip)));
+          .Set(kUidsToPerformSettingsKey, std::move(uids_to_perform)));
   if (!psst_metadata) {
     return;
   }

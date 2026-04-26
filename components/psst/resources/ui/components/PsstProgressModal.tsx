@@ -62,7 +62,8 @@ export const PsstProgressModal = () => {
 
     const allDone = optionsStatuses.every(
       (option) =>
-        option.settingState === SettingState.Failed
+        !option.checked
+        || option.settingState === SettingState.Failed
         || option.settingState === SettingState.Completed,
     )
 
@@ -99,10 +100,28 @@ export const PsstProgressModal = () => {
 
   // Handle request status updates
   api.useOnSetRequestStatus((requestUid, requestError) => {
-    if (!requestUid) return
-
     updateAllMatchingOptionsStatuses((prevOptionsStatuses) => {
       if (!prevOptionsStatuses) return prevOptionsStatuses
+
+      // Set common dialog status
+      if (!requestUid || requestUid.length === 0) {
+        return prevOptionsStatuses.map((option) => {
+          // Skip updating if already Failed or Completed
+          if (
+            !option.checked
+            || option.settingState === SettingState.Failed
+            || option.settingState === SettingState.Completed
+          ) {
+            return option
+          }
+
+          return {
+            ...option,
+            settingState: SettingState.Failed,
+            error: getLocale(S.PSST_COMPLETE_CONSENT_DIALOG_FAILED),
+          }
+        })
+      }
 
       const index = prevOptionsStatuses.findIndex(
         (status) => status.uid === requestUid,

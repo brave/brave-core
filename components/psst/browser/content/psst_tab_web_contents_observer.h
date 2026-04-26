@@ -16,7 +16,9 @@
 #include "brave/components/psst/common/psst_metadata_schema.h"
 #include "brave/components/psst/common/psst_script_responses.h"
 #include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
+#include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "content/public/browser/web_contents_observer.h"
+#include "mojo/public/cpp/bindings/associated_remote.h"
 
 class PrefService;
 
@@ -33,7 +35,12 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   using InjectScriptCallback = base::RepeatingCallback<void(
       const std::string&,
       PsstTabWebContentsObserver::InsertScriptInPageCallback)>;
-  using ConsentCallback = base::OnceCallback<void()>;
+  using InjectScriptAsyncCallback = base::RepeatingCallback<void(
+      mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>&,
+      const std::string&,
+      PsstTabWebContentsObserver::InsertScriptInPageCallback)>;
+  using ConsentCallback =
+      base::OnceCallback<void(const std::vector<std::string>&)>;
 
   // Delegate interface for UI-related actions. This class is responsible for
   // facilitating communication with the consent dialog, ensuring that the UI
@@ -42,8 +49,9 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
    public:
     virtual ~PsstUiDelegate() = default;
     // Show the consent dialog to the user with the provided data.
-    virtual void Show(const url::Origin& origin,
+    virtual void Show(url::Origin origin,
                       PsstWebsiteSettings dialog_data,
+                      std::optional<UserScriptResult> user_script_result,
                       ConsentCallback apply_changes_callback) = 0;
     // Update the UI state based on the applied tasks and progress.
     virtual void UpdateTasks(long progress,
@@ -67,14 +75,19 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   PsstTabWebContentsObserver& operator=(const PsstTabWebContentsObserver&) =
       delete;
 
+  PsstUiDelegate* GetPsstUiDelegate() const;
+  base::WeakPtr<PsstTabWebContentsObserver> AsWeakPtr();
+
  private:
   friend class PsstTabWebContentsObserverUnitTestBase;
 
-  PsstTabWebContentsObserver(content::WebContents* web_contents,
-                             PsstRuleRegistry* registry,
-                             PrefService* prefs,
-                             std::unique_ptr<PsstUiDelegate> ui_delegate,
-                             InjectScriptCallback inject_script_callback);
+  PsstTabWebContentsObserver(
+      content::WebContents* web_contents,
+      PsstRuleRegistry* registry,
+      PrefService* prefs,
+      std::unique_ptr<PsstUiDelegate> ui_delegate,
+      InjectScriptCallback inject_script_callback,
+      InjectScriptAsyncCallback inject_async_script_callback);
 
   bool ShouldInsertScriptForPage(int id);
   void InsertUserScript(int id, std::unique_ptr<MatchedRule> rule);
@@ -83,10 +96,14 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
                           std::unique_ptr<MatchedRule> rule,
                           base::Value script_result);
   void OnUserAcceptedPsstSettings(int id,
-                                  const std::string& policy_script_with_params);
+                                  bool is_initial,
+                                  std::unique_ptr<MatchedRule> rule,
+                                  base::Value user_script_result,
+                                  const std::vector<std::string>& urls_to_skip);
   void OnPolicyScriptResult(int nav_entry_id, base::Value script_result);
   void RunWithTimeout(const int last_committed_entry_id,
                       const std::string& script,
+                      bool is_async,
                       InsertScriptInPageCallback callback);
   void OnScriptTimeout(int id);
 
@@ -97,6 +114,9 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   const raw_ptr<PsstRuleRegistry> registry_;
   const raw_ptr<PrefService> prefs_;
   InjectScriptCallback inject_script_callback_;
+  mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
+      script_injector_remote_;
+  InjectScriptAsyncCallback inject_async_script_callback_;
   std::unique_ptr<PsstUiDelegate> ui_delegate_;
   base::OneShotTimer timeout_timer_;
   base::WeakPtrFactory<PsstTabWebContentsObserver> weak_factory_{this};

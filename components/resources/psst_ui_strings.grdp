@@ -18,4 +18,7 @@
     <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_CANCEL" formatter_data="webui=Psst" desc="Cancel button's Text for PSST consent dialog, allows user to decline the applying recommended privacy settings">
         Cancel
     </message>
+    <message name="IDS_PSST_COMPLETE_CONSENT_DIALOG_FAILED" formatter_data="webui=Psst" desc="Common failed state text for PSST consent dialog tasks, displayed when the whole operation broken and could not be completed">
+        Task completion failed
+    </message>
 </grit-part>
