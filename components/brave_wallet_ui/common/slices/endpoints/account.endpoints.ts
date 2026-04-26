@@ -47,6 +47,27 @@ export const accountEndpoints = ({
           : [{ type: 'AccountInfos', id: ACCOUNT_TAG_IDS.REGISTRY }],
     }),
 
+    getHiddenAccounts: query<BraveWallet.AccountInfo[], void>({
+      queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
+        try {
+          const {
+            data: { keyringService },
+          } = baseQuery(undefined)
+          const { accounts } = await keyringService.getHiddenAccounts()
+          return {
+            data: accounts,
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Unable to fetch hidden accounts',
+            error,
+          )
+        }
+      },
+      providesTags: ['HiddenAccounts'],
+    }),
+
     invalidateAccountInfos: mutation<boolean, void>({
       queryFn: (arg, api, extraOptions, baseQuery) => {
         baseQuery(undefined).cache.clearAccountsRegistry()
@@ -599,6 +620,91 @@ export const accountEndpoints = ({
         }
       },
       invalidatesTags: ['AccountInfos', 'Network'],
+    }),
+
+    addHiddenAccount: mutation<
+      true,
+      {
+        accountId: BraveWallet.AccountId
+      }
+    >({
+      queryFn: async ({ accountId }, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { cache, data: api } = baseQuery(undefined)
+          const result = await api.keyringService.addHiddenAccount(accountId)
+          if (!result.success) {
+            throw new Error('Failed to hide account')
+          }
+          cache.clearAccountsRegistry()
+          return {
+            data: true,
+          }
+        } catch (error) {
+          return handleEndpointError(endpoint, 'Failed to hide account', error)
+        }
+      },
+      invalidatesTags: ['AccountInfos', 'HiddenAccounts'],
+    }),
+
+    canHideAccount: query<
+      boolean,
+      {
+        accountId: BraveWallet.AccountId
+      }
+    >({
+      queryFn: async ({ accountId }, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          const keyringServiceWithCanHide =
+            api.keyringService as BraveWallet.KeyringServiceRemote & {
+              canHideAccount: (
+                accountId: BraveWallet.AccountId,
+              ) => Promise<{ canHide: boolean }>
+            }
+          const result =
+            await keyringServiceWithCanHide.canHideAccount(accountId)
+          return {
+            data: result.canHide,
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to determine if account can be hidden',
+            error,
+          )
+        }
+      },
+      providesTags: ['AccountInfos'],
+    }),
+
+    removeHiddenAccounts: mutation<true, BraveWallet.AccountId[]>({
+      queryFn: async (accountIds, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { cache, data: api } = baseQuery(undefined)
+          const keyringServiceWithBatchRemove =
+            api.keyringService as BraveWallet.KeyringServiceRemote & {
+              removeHiddenAccounts: (
+                accountIds: BraveWallet.AccountId[],
+              ) => Promise<{ success: boolean }>
+            }
+          const result =
+            await keyringServiceWithBatchRemove.removeHiddenAccounts(accountIds)
+          if (!result.success) {
+            throw new Error('Failed to restore account')
+          }
+          cache.clearAccountsRegistry()
+          return {
+            data: true,
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to restore account',
+            error,
+          )
+        }
+      },
+      invalidatesTags: ['AccountInfos', 'HiddenAccounts'],
     }),
   }
 }
