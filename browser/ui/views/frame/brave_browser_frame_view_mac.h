@@ -8,11 +8,14 @@
 
 #include <memory>
 
+#include "base/scoped_observation.h"
+#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view_mac.h"
 
 class BraveWindowFrameGraphic;
 
-class BraveBrowserFrameViewMac : public BrowserFrameViewMac {
+class BraveBrowserFrameViewMac : public BrowserFrameViewMac,
+                                 public FocusModeController::Observer {
  public:
   BraveBrowserFrameViewMac(BrowserWidget* browser_widget,
                            BrowserView* browser_view);
@@ -21,6 +24,9 @@ class BraveBrowserFrameViewMac : public BrowserFrameViewMac {
   BraveBrowserFrameViewMac(const BraveBrowserFrameViewMac&) = delete;
   BraveBrowserFrameViewMac& operator=(const BraveBrowserFrameViewMac&) = delete;
   gfx::Size GetMinimumSize() const override;
+
+  // FocusModeController::Observer:
+  void OnFocusModeToggled(bool enabled) override;
 
  private:
   bool ShouldShowWindowTitleForVerticalTabs() const;
@@ -40,6 +46,9 @@ class BraveBrowserFrameViewMac : public BrowserFrameViewMac {
 
   BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember show_title_bar_on_vertical_tabs_;
+
+  base::ScopedObservation<FocusModeController, FocusModeController::Observer>
+      focus_mode_observation_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_VIEW_MAC_H_

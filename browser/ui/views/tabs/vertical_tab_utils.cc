@@ -8,6 +8,7 @@
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/command_line.h"
+#include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/switches.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -77,6 +78,10 @@ bool ShouldShowWindowTitleForVerticalTabs(
     return false;
   }
 
+  if (IsFocusModeEnabled(browser)) {
+    return false;
+  }
+
   return browser->GetProfile()->GetPrefs()->GetBoolean(
       brave_tabs::kVerticalTabsShowTitleOnWindow);
 }
@@ -84,6 +89,10 @@ bool ShouldShowWindowTitleForVerticalTabs(
 bool IsFloatingVerticalTabsEnabled(const BrowserWindowInterface* browser) {
   if (!ShouldShowBraveVerticalTabs(browser)) {
     return false;
+  }
+
+  if (IsFocusModeEnabled(browser)) {
+    return true;
   }
 
   if (ShouldHideVerticalTabsCompletelyWhenCollapsed(browser)) {

@@ -23,6 +23,7 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
+#include "brave/browser/ui/focus_mode/focus_mode_features.h"
 #include "brave/browser/ui/page_info/features.h"
 #include "brave/browser/ui/sidebar/buildflags/buildflags.h"
 #include "brave/browser/ui/sidebar/features.h"
@@ -35,8 +36,10 @@
 #include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_host_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
+#include "brave/browser/ui/views/frame/focus_mode_title_bar_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
+#include "brave/browser/ui/views/frame/top_container_background.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
@@ -116,6 +119,10 @@
 
 #if BUILDFLAG(ENABLE_SPARKLE)
 #include "brave/browser/ui/views/update_recommended_message_box_mac.h"
+#endif
+
+#if BUILDFLAG(IS_MAC)
+#include "brave/browser/ui/views/frame/brave_browser_view_mac.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -268,10 +275,21 @@ BraveBrowserView* BraveBrowserView::From(BrowserView* view) {
   return static_cast<BraveBrowserView*>(view);
 }
 
+// static
+const BraveBrowserView* BraveBrowserView::From(const BrowserView* view) {
+  return static_cast<const BraveBrowserView*>(view);
+}
+
 bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
     const Browser* browser) {
   if (!browser->is_type_normal()) {
     return false;
+  }
+
+  if (auto* controller = browser->GetFeatures().focus_mode_controller()) {
+    if (controller->IsEnabled()) {
+      return true;
+    }
   }
 
   if (browser->profile()->GetPrefs()->GetBoolean(kWebViewRoundedCorners)) {
@@ -747,11 +765,58 @@ void BraveBrowserView::AddedToWidget() {
 
   UpdateWebViewRoundedCorners();
 
+  std::optional<int> vertical_tabs_insertion_index;
+
+  if (auto* controller = browser()->GetFeatures().focus_mode_controller()) {
+    focus_mode_observation_.Observe(controller);
+
+    if (base::FeatureList::IsEnabled(features::kBraveFocusModeTitleBar)) {
+      focus_mode_title_bar_view_ =
+          AddChildView(std::make_unique<FocusModeTitleBarView>());
+      focus_mode_title_bar_view_->SetVisible(false);
+      GetBrowserViewLayout()->set_focus_mode_title_bar(
+          focus_mode_title_bar_view_);
+    }
+
+    top_container_background_view_ =
+        AddChildView(std::make_unique<TopContainerBackground>());
+
+    GetBrowserViewLayout()->set_top_container_background(
+        top_container_background_view_);
+
+    UpdateTopContainerBackgroundColor();
+
+    // Move revealable top views after the top background view so that they
+    // paint on top of the contents view, the top container background, and all
+    // other views.
+    ReorderChildView(horizontal_tab_strip_region_view_, -1);
+    ReorderChildView(top_container(), -1);
+    EnsureFindBarHostViewIsLastChild();
+
+    // The vertical tab region view should be placed before the top container
+    // background.
+    vertical_tabs_insertion_index = GetIndexOf(top_container_background_view_);
+
+    top_reveal_controller_ = std::make_unique<EdgeRevealController>(
+        EdgeRevealController::Edge::kTop, *GetWidget());
+    top_reveal_controller_->AddRevealableView(top_container(),
+                                              {.paint_to_layer = true});
+    // TODO: Vertical tabs moves this view into the vertical tab region view.
+    // When that occurs, it should no longer be registered as a revealable top
+    // view.
+    top_reveal_controller_->AddRevealableView(horizontal_tab_strip_region_view_,
+                                              {.paint_to_layer = true});
+    top_reveal_controller_->AddObserver(this);
+
+    UpdateFocusModeEffectiveState();
+  }
+
   if (vertical_tab_strip_host_view_) {
     if (base::FeatureList::IsEnabled(tabs::kBraveVerticalTabStripEmbedded)) {
-      vertical_tab_strip_widget_delegate_view_ = AddChildView(
+      vertical_tab_strip_widget_delegate_view_ = AddChildViewAt(
           VerticalTabStripWidgetDelegateView::CreateEmbeddedInBrowserView(
-              this, vertical_tab_strip_host_view_));
+              this, vertical_tab_strip_host_view_),
+          vertical_tabs_insertion_index.value_or(children().size()));
       EnsureFindBarHostViewIsLastChild();
     } else {
       vertical_tab_strip_widget_ = VerticalTabStripWidgetDelegateView::Create(
@@ -796,6 +861,65 @@ bool BraveBrowserView::ShowBraveHelpBubbleView(const std::string& text) {
   brave_help_bubble_host_view_->set_text(text);
   brave_help_bubble_host_view_->set_tracked_element(shields_action_view);
   return brave_help_bubble_host_view_->Show();
+}
+
+void BraveBrowserView::OnFocusModeToggled(bool enabled) {
+  UpdateFocusModeEffectiveState();
+  UpdateRoundedCornersUI();
+#if BUILDFLAG(IS_MAC)
+  // When focus mode turns off, restore traffic lights to fully visible.
+  if (!enabled) {
+    brave::SetTrafficLightsAlpha(GetWidget()->GetNativeWindow(), 1.0);
+  }
+#endif
+}
+
+void BraveBrowserView::FullscreenStateChanged() {
+  BrowserView::FullscreenStateChanged();
+  UpdateFocusModeEffectiveState();
+}
+
+void BraveBrowserView::UpdateFocusModeEffectiveState() {
+  auto* controller = browser()->GetFeatures().focus_mode_controller();
+  const bool active = controller && controller->IsEnabled() && !IsFullscreen();
+  if (top_reveal_controller_) {
+    top_reveal_controller_->SetEnabled(active);
+  }
+  if (focus_mode_title_bar_view_) {
+    focus_mode_title_bar_view_->SetVisible(active);
+    focus_mode_title_bar_view_->SetWebContents(
+        active ? browser()->tab_strip_model()->GetActiveWebContents()
+               : nullptr);
+  }
+}
+
+void BraveBrowserView::OnEdgeRevealFractionChanged(double fraction) {
+  DeprecatedLayoutImmediately();
+  if (auto* frame_view = GetFrameView()) {
+    frame_view->DeprecatedLayoutImmediately();
+  }
+#if BUILDFLAG(IS_MAC)
+  // Delay the traffic-light fade-in until the slide is nearly complete so the
+  // buttons don't appear to float ahead of the top container.
+  constexpr double kTrafficLightFadeThreshold = 0.7;
+  const double alpha = std::clamp((fraction - kTrafficLightFadeThreshold) /
+                                      (1 - kTrafficLightFadeThreshold),
+                                  0.0, 1.0);
+  brave::SetTrafficLightsAlpha(GetWidget()->GetNativeWindow(), alpha);
+#endif
+}
+
+int BraveBrowserView::GetTopRevealOffset() const {
+  if (!top_reveal_controller_) {
+    return 0;
+  }
+  const double fraction = top_reveal_controller_->GetRevealFraction();
+  int top_height = top_container_ ? top_container_->height() : 0;
+  if (horizontal_tab_strip_region_view_ &&
+      horizontal_tab_strip_region_view_->parent() == this) {
+    top_height += horizontal_tab_strip_region_view_->height();
+  }
+  return -static_cast<int>((1.0 - fraction) * top_height);
 }
 
 void BraveBrowserView::LoadAccelerators() {
@@ -937,6 +1061,8 @@ void BraveBrowserView::OnWidgetActivationChanged(views::Widget* widget,
   if (sidebar_container_view_) {
     sidebar_container_view_->UpdateSidebarItemsState();
   }
+
+  UpdateTopContainerBackgroundColor();
 }
 
 void BraveBrowserView::OnWidgetWindowModalVisibilityChanged(
@@ -947,13 +1073,9 @@ void BraveBrowserView::OnWidgetWindowModalVisibilityChanged(
   // parent class to make the scrim view visible
 }
 
-bool BraveBrowserView::IsBraveWebViewRoundedCornersEnabled() {
-  return browser_->profile()->GetPrefs()->GetBoolean(kWebViewRoundedCorners) &&
-         browser_->is_type_normal();
-}
-
 void BraveBrowserView::UpdateContentsShadowVisibility() {
-  bool show_contents_shadow = IsBraveWebViewRoundedCornersEnabled();
+  bool show_contents_shadow =
+      ShouldUseBraveWebViewRoundedCornersForContents(browser_.get());
 
   // With SideBySide, we use chromium's mini toolbar.
   // Unfortunately, it's not rendered well with contents shadow.
@@ -1048,6 +1170,22 @@ bool BraveBrowserView::ShouldShowWindowTitle() const {
   return false;
 }
 
+void BraveBrowserView::OnThemeChanged() {
+  BrowserView::OnThemeChanged();
+  // TODO: Move this into top_container_background.
+  UpdateTopContainerBackgroundColor();
+}
+
+void BraveBrowserView::UpdateTopContainerBackgroundColor() {
+  if (!top_container_background_view_) {
+    return;
+  }
+  if (auto* frame_view = GetFrameView()) {
+    top_container_background_view_->SetBackground(views::CreateSolidBackground(
+        frame_view->GetFrameColor(BrowserFrameActiveState::kUseCurrent)));
+  }
+}
+
 void BraveBrowserView::UpdateRoundedCornersUI() {
   // Update various UI that can be affected by rounded corners.
   UpdateContentsShadowVisibility();
@@ -1081,7 +1219,20 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
                                           content::WebContents* new_contents,
                                           int index,
                                           int reason) {
+  const bool tab_change_in_split_view =
+      IsTabChangeInSplitView(old_contents, new_contents);
+
   BrowserView::OnActiveTabChanged(old_contents, new_contents, index, reason);
+
+  if (top_reveal_controller_ && !tab_change_in_split_view) {
+    // TODO: In vertical tabs, we probably either want the top revealed or the
+    // vertical tab region revealed, but not both at the same time.
+    top_reveal_controller_->RevealTemporarily(base::Seconds(2));
+  }
+
+  if (focus_mode_title_bar_view_ && focus_mode_title_bar_view_->GetVisible()) {
+    focus_mode_title_bar_view_->SetWebContents(new_contents);
+  }
 
   // Update UI after active tab changing is handled because
   // ShouldUseBraveWebViewRoundedCornersForContents() check split view UI for

@@ -7,11 +7,13 @@
 
 #include "base/check.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/brave_window_frame_graphic.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/views/frame/browser_caption_button_container_win.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/win/titlebar_config.h"
@@ -20,6 +22,7 @@
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/scoped_canvas.h"
+#include "ui/views/window/non_client_view.h"
 
 BraveBrowserFrameViewWin::BraveBrowserFrameViewWin(
     BrowserWidget* browser_widget,
@@ -38,6 +41,11 @@ BraveBrowserFrameViewWin::BraveBrowserFrameViewWin(
       brave_tabs::kVerticalTabsShowTitleOnWindow, prefs,
       base::BindRepeating(&BraveBrowserFrameViewWin::OnVerticalTabsPrefsChanged,
                           base::Unretained(this)));
+
+  if (auto* focus_mode =
+          browser_view->browser()->GetFeatures().focus_mode_controller()) {
+    focus_mode_observation_.Observe(focus_mode);
+  }
 }
 
 BraveBrowserFrameViewWin::~BraveBrowserFrameViewWin() = default;
@@ -52,6 +60,13 @@ void BraveBrowserFrameViewWin::OnVerticalTabsPrefsChanged() {
   caption_button_container_->UpdateButtons();
   caption_button_container_->InvalidateLayout();
   LayoutCaptionButtons();
+}
+
+void BraveBrowserFrameViewWin::OnFocusModeToggled(bool /*enabled*/) {
+  OnVerticalTabsPrefsChanged();
+  if (auto* non_client_view = browser_widget()->non_client_view()) {
+    non_client_view->InvalidateLayout();
+  }
 }
 
 void BraveBrowserFrameViewWin::OnPaint(gfx::Canvas* canvas) {
@@ -154,5 +169,13 @@ void BraveBrowserFrameViewWin::LayoutCaptionButtons() {
         CaptionButtonsOnLeadingEdge()
             ? 0
             : width() - caption_button_container_->width());
+  }
+
+  if (caption_button_container_) {
+    if (int offset =
+            BraveBrowserView::From(GetBrowserView())->GetTopRevealOffset();
+        offset != 0) {
+      caption_button_container_->SetY(caption_button_container_->y() + offset);
+    }
   }
 }

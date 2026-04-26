@@ -78,6 +78,9 @@ class FakeBrowserViewLayoutDelegate : public BrowserViewLayoutDelegate {
   bool IsFullscreenForBrowser() const override { return false; }
   bool IsFullscreenForTab() const override { return false; }
   bool IsFullscreen() const override { return false; }
+  std::optional<double> GetTopOverlayRevealFraction() const override {
+    return std::nullopt;
+  }
 };
 
 // Only the two visibility hooks matter for GetTopSeparatorType(); gmock makes

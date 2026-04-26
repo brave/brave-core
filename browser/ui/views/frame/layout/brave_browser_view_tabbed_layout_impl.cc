@@ -7,10 +7,12 @@
 
 #include <algorithm>
 #include <limits>
+#include <optional>
 #include <utility>
 
 #include "base/check.h"
 #include "base/check_is_test.h"
+#include "base/logging.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
@@ -152,6 +154,11 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
     contents_layout->bounds.Inset(
         gfx::Insets().set_bottom(-views().webui_tab_strip->size().height()));
   }
+
+  // Apply the top-overlay reveal adjustments BEFORE laying out the sidebar so
+  // the sidebar picks up the expanded contents bounds when top views are
+  // hidden/revealed.
+  AdjustLayoutForTopReveal(layout);
 
   // Handle sidebar and adjust contents container bounds. This should be done
   // BEFORE calling `InsetContentsContainerBounds()` so that the contents
@@ -318,6 +325,16 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateBraveVerticalTabStripLayout(
   // Compute the top edge based on the proposed bounds of bookmark/infobar/top
   // container, not the current view bounds.
   auto get_vertical_tabs_top = [&]() -> int {
+    // In focus mode the top chrome slides over the contents area rather than
+    // pushing it down. Anchor the vertical tab strip to the top of the
+    // contents bounds (already adjusted by `AdjustLayoutForTopReveal`) so it
+    // stays full-height and the revealed top views overlay it.
+    if (delegate().GetTopOverlayRevealFraction()) {
+      auto* contents_layout = layout.GetLayoutFor(views().contents_container);
+      CHECK(contents_layout);
+      return contents_layout->bounds.y();
+    }
+
     if (ShouldPushBookmarkBarForVerticalTabs()) {
       CHECK(views().bookmark_bar);
       auto* bookmark_layout = layout.GetLayoutFor(views().bookmark_bar);
@@ -454,6 +471,82 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
   // This is a Brave-specific view; upstream must not have populated it.
   CHECK(views().sidebar_container);
   layout.AddChild(views().sidebar_container, sidebar_bounds);
+}
+
+void BraveBrowserViewTabbedLayoutImpl::AdjustLayoutForTopReveal(
+    ProposedLayout& layout) const {
+  auto reveal_fraction = delegate().GetTopOverlayRevealFraction();
+  if (!reveal_fraction) {
+    if (views().top_container_background) {
+      layout.AddChild(views().top_container_background, gfx::Rect(), false);
+    }
+    if (views().focus_mode_title_bar) {
+      layout.AddChild(views().focus_mode_title_bar, gfx::Rect());
+    }
+    return;
+  }
+
+  auto* contents_layout = layout.GetLayoutFor(views().contents_container);
+  CHECK(contents_layout);
+
+  auto* top_layout = layout.GetLayoutFor(views().top_container);
+  auto* tab_layout =
+      layout.GetLayoutFor(views().horizontal_tab_strip_region_view);
+
+  int top_height = 0;
+  if (top_layout) {
+    top_height += top_layout->bounds.height();
+  }
+  if (tab_layout) {
+    top_height += tab_layout->bounds.height();
+  }
+
+  int offset = -static_cast<int>((1 - *reveal_fraction) * top_height);
+  if (top_layout) {
+    top_layout->bounds.Offset(0, offset);
+  }
+  if (tab_layout) {
+    tab_layout->bounds.Offset(0, offset);
+  }
+
+  auto* title_bar = views().focus_mode_title_bar.get();
+  const bool title_bar_visible = title_bar && title_bar->GetVisible();
+  int content_top = title_bar_visible ? title_bar->GetPreferredSize().height()
+                                      : BraveContentsViewUtil::kMarginThickness;
+  if (title_bar) {
+    const gfx::Rect browser_bounds = views().browser_view->GetLocalBounds();
+    layout.AddChild(title_bar,
+                    title_bar_visible
+                        ? gfx::Rect(0, 0, browser_bounds.width(), content_top)
+                        : gfx::Rect());
+  }
+  if (delegate().IsInfobarVisible()) {
+    auto* infobar_layout = layout.GetLayoutFor(views().infobar_container);
+    CHECK(infobar_layout);
+    infobar_layout->bounds.set_y(content_top);
+    content_top += infobar_layout->bounds.height();
+  }
+  contents_layout->bounds.Outset(
+      gfx::Outsets::TLBR(contents_layout->bounds.y() - content_top, 0, 0, 0));
+  if (auto* background_layout =
+          layout.GetLayoutFor(views().contents_background)) {
+    background_layout->bounds.Outset(
+        gfx::Outsets::TLBR(background_layout->bounds.y(), 0, 0, 0));
+  }
+
+  if (views().top_container_background) {
+    gfx::Rect top_bounds;
+    if (reveal_fraction.value_or(0) > 0) {
+      if (top_layout) {
+        top_bounds.Union(top_layout->bounds);
+      }
+      if (tab_layout) {
+        top_bounds.Union(tab_layout->bounds);
+      }
+    }
+    layout.AddChild(views().top_container_background, top_bounds,
+                    !top_bounds.IsEmpty());
+  }
 }
 
 void BraveBrowserViewTabbedLayoutImpl::InsetContentsContainerBounds(

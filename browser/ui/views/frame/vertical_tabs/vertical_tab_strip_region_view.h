@@ -15,6 +15,7 @@
 #include "base/scoped_observation.h"
 #include "base/timer/timer.h"
 #include "base/types/pass_key.h"
+#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_observer.h"
 #include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
 #include "components/prefs/pref_member.h"
@@ -41,6 +42,7 @@ class BraveVerticalTabStripRegionView : public views::View,
                                         public views::AnimationDelegateViews,
                                         public views::WidgetObserver,
                                         public FullscreenObserver,
+                                        public FocusModeController::Observer,
                                         public views::ContextMenuController {
   METADATA_HEADER(BraveVerticalTabStripRegionView, views::View)
  public:
@@ -96,6 +98,8 @@ class BraveVerticalTabStripRegionView : public views::View,
   void ResetExpandedWidth();
   bool IsMenuShowing() const;
 
+  bool ShouldHideCompletelyWhenCollapsed() const;
+
   void ListenFullscreenChanges();
   void StopListeningFullscreenChanges();
 
@@ -126,6 +130,9 @@ class BraveVerticalTabStripRegionView : public views::View,
 
   // FullscreenObserver:
   void OnFullscreenStateChanged() override;
+
+  // FocusModeController::Observer:
+  void OnFocusModeToggled(bool enabled) override;
 
   // views::ContextMenuController:
   void ShowContextMenuForViewImpl(
@@ -167,6 +174,8 @@ class BraveVerticalTabStripRegionView : public views::View,
 
   bool IsFloatingVerticalTabsEnabled() const;
   bool IsFloatingEnabledForBrowserFullscreen() const;
+  bool IsCollapsedStateForced() const;
+
   void ScheduleFloatingModeTimer();
   void ScheduleCollapseTimer();
   void OnMouseEntered();
@@ -244,6 +253,8 @@ class BraveVerticalTabStripRegionView : public views::View,
 
   base::ScopedObservation<FullscreenController, FullscreenObserver>
       fullscreen_observation_{this};
+  base::ScopedObservation<FocusModeController, FocusModeController::Observer>
+      focus_mode_observation_{this};
 
   BooleanPrefMember vertical_tab_on_right_;
 

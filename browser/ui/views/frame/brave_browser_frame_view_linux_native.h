@@ -30,6 +30,9 @@ class BraveBrowserFrameViewLinuxNative : public BrowserFrameViewLinuxNative {
   void MaybeUpdateCachedFrameButtonImages() override;
   void Layout(PassKey) override;
 
+  // FocusModeController::Observer:
+  void OnFocusModeToggled(bool enabled) override;
+
  private:
   views::Button* FrameButtonToButton(views::FrameButton frame_button);
 

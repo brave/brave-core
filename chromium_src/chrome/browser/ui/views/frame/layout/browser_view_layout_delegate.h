@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_LAYOUT_BROWSER_VIEW_LAYOUT_DELEGATE_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_LAYOUT_BROWSER_VIEW_LAYOUT_DELEGATE_H_
 
+#include <optional>
+
 // Add methods for BraveBrowserViewLayout to BrowserViewLayoutDelegate.
 #define GetExtraInfobarOffset()                                            \
   GetExtraInfobarOffset() const = 0;                                       \
@@ -17,7 +19,8 @@
   virtual bool IsContentTypeSidePanelVisible() const = 0;                  \
   virtual bool IsFullscreenForBrowser() const = 0;                         \
   virtual bool IsFullscreenForTab() const = 0;                             \
-  virtual bool IsFullscreen()
+  virtual bool IsFullscreen() const = 0;                                   \
+  virtual std::optional<double> GetTopOverlayRevealFraction()
 
 #include <chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h>  // IWYU pragma: export
 

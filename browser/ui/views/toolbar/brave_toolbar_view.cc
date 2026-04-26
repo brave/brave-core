@@ -32,6 +32,7 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bubble_view.h"
@@ -287,6 +288,10 @@ void BraveToolbarView::Init() {
         base::BindRepeating(&BraveToolbarView::UpdateHorizontalPadding,
                             base::Unretained(this)));
 #endif  // BUILDFLAG(IS_LINUX)
+
+    if (auto* focus_mode = browser_->GetFeatures().focus_mode_controller()) {
+      focus_mode_observation_.Observe(focus_mode);
+    }
   }
 
   const auto callback = [](Browser* browser, int command,
@@ -481,6 +486,10 @@ void BraveToolbarView::UpdateBookmarkVisibility() {
   bookmark_->SetVisible(browser_defaults::bookmarks_enabled &&
                         edit_bookmarks_enabled_.GetValue() &&
                         show_bookmarks_button_.GetValue());
+}
+
+void BraveToolbarView::OnFocusModeToggled(bool /*enabled*/) {
+  UpdateHorizontalPadding();
 }
 
 void BraveToolbarView::UpdateHorizontalPadding() {
