@@ -5,6 +5,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <vector>
 
 #include "base/check_deref.h"
 #include "base/functional/callback_helpers.h"
@@ -33,6 +34,7 @@
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_view_host.h"
@@ -45,6 +47,7 @@
 #include "content/public/test/test_navigation_observer.h"
 #include "services/network/public/cpp/network_switches.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace email_aliases {
 

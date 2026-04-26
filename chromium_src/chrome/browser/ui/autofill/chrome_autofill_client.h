@@ -29,4 +29,11 @@
 #undef IsAutofillEnabled
 #undef GetAutofillOptimizationGuideDecider
 
+namespace autofill {
+
+std::unique_ptr<ChromeAutofillClient> CreateBraveChromeAutofillClientForTesting(
+    content::WebContents* contents);
+
+}
+
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_AUTOFILL_CHROME_AUTOFILL_CLIENT_H_
