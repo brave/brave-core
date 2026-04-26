@@ -28,6 +28,7 @@ namespace decentralized_dns {
 // static
 void DecentralizedDnsNavigationThrottle::MaybeCreateAndAdd(
     content::NavigationThrottleRegistry& registry,
+    brave_wallet::BraveWalletService* brave_wallet_service,
     PrefService* user_prefs,
     PrefService* local_state,
     const std::string& locale) {
@@ -38,12 +39,13 @@ void DecentralizedDnsNavigationThrottle::MaybeCreateAndAdd(
     return;
   }
 
-  if (!navigation_handle.IsInMainFrame()) {
+  // Don't create the throttle if Brave Wallet is not available for this
+  // context.
+  if (!brave_wallet_service) {
     return;
   }
 
-  // Don't create the throttle if Brave Wallet is disabled by policy
-  if (!brave_wallet::IsAllowed(user_prefs)) {
+  if (!navigation_handle.IsInMainFrame()) {
     return;
   }
 

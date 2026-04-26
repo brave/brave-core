@@ -13,6 +13,10 @@
 
 class PrefService;
 
+namespace brave_wallet {
+class BraveWalletService;
+}
+
 namespace decentralized_dns {
 
 class DecentralizedDnsNavigationThrottle : public content::NavigationThrottle {
@@ -29,10 +33,12 @@ class DecentralizedDnsNavigationThrottle : public content::NavigationThrottle {
   DecentralizedDnsNavigationThrottle& operator=(
       const DecentralizedDnsNavigationThrottle&) = delete;
 
-  static void MaybeCreateAndAdd(content::NavigationThrottleRegistry& registry,
-                                PrefService* user_prefs,
-                                PrefService* local_state,
-                                const std::string& locale);
+  static void MaybeCreateAndAdd(
+      content::NavigationThrottleRegistry& registry,
+      brave_wallet::BraveWalletService* brave_wallet_service,
+      PrefService* user_prefs,
+      PrefService* local_state,
+      const std::string& locale);
 
   // content::NavigationThrottle implementation:
   ThrottleCheckResult WillStartRequest() override;
