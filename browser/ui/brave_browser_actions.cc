@@ -33,7 +33,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/browser/utils.h"
 #endif
 
 namespace {
@@ -88,7 +88,7 @@ void BraveBrowserActions::InitializeBrowserActions() {
   BrowserWindowInterface* const bwi = base::to_address(bwi_);
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+  if (playlist::IsPlaylistAllowed(profile_->GetPrefs())) {
     root_action_item_->AddChild(
         SidePanelAction(
             SidePanelEntryId::kPlaylist, IDS_SIDEBAR_PLAYLIST_ITEM_TITLE,

@@ -18,7 +18,7 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/browser/utils.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -46,17 +46,16 @@ PageActionIconParams& ModifyIconParamsForBrave(PageActionIconParams& params) {
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
-    // Browser could be null if the location bar was created for
-    // PresentationReceiverWindowView.
-    if (params.browser && params.browser->is_type_normal() &&
-        !params.browser->profile()->IsOffTheRecord()) {
-      // Insert Playlist action before sharing hub or at the end of the vector.
-      params.types_enabled.insert(
-          std::ranges::find(params.types_enabled,
-                            PageActionIconType::kSharingHub),
-          brave::kPlaylistPageActionIconType);
-    }
+  // Browser could be null if the location bar was created for
+  // PresentationReceiverWindowView.
+  if (params.browser && params.browser->is_type_normal() &&
+      !params.browser->profile()->IsOffTheRecord() &&
+      playlist::IsPlaylistAllowed(params.browser->profile()->GetPrefs())) {
+    // Insert Playlist action before sharing hub or at the end of the vector.
+    params.types_enabled.insert(
+        std::ranges::find(params.types_enabled,
+                          PageActionIconType::kSharingHub),
+        brave::kPlaylistPageActionIconType);
   }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
 

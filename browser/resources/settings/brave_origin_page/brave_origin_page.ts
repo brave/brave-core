@@ -61,11 +61,16 @@ export class SettingsBraveOriginPageElement
         type: Boolean,
         value: false,
       },
+      isPlaylistFeatureEnabled_: {
+        type: Boolean,
+        value: () => loadTimeData.getBoolean('isPlaylistFeatureEnabled'),
+      },
     }
   }
 
   declare private isPurchased_: boolean
   declare private showRestartToast_: boolean
+  declare private isPlaylistFeatureEnabled_: boolean
   private braveOriginHandler_: BraveOriginMojom.BraveOriginSettingsHandlerRemote
   private boundOnVisibilityChange_: (() => void) | null = null
   private boundOnPolicyValueChanged_: (() => void) | null = null

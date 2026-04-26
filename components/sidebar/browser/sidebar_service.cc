@@ -53,7 +53,8 @@
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/browser/utils.h"
+#include "brave/components/playlist/core/common/pref_names.h"
 #endif
 
 namespace sidebar {
@@ -139,7 +140,7 @@ SidebarService::SidebarService(
 
   // Watch for policy pref changes that affect built-in item visibility.
 #if BUILDFLAG(ENABLE_AI_CHAT) || BUILDFLAG(ENABLE_BRAVE_TALK) || \
-    BUILDFLAG(ENABLE_BRAVE_WALLET)
+    BUILDFLAG(ENABLE_BRAVE_WALLET) || BUILDFLAG(ENABLE_PLAYLIST)
   auto cb = base::BindRepeating(&SidebarService::OnBuiltInItemPolicyChanged,
                                 base::Unretained(this));
 #endif
@@ -151,6 +152,9 @@ SidebarService::SidebarService(
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   pref_change_registrar_.Add(brave_wallet::kBraveWalletDisabledByPolicy, cb);
+#endif
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  pref_change_registrar_.Add(playlist::kPlaylistEnabledPref, cb);
 #endif
 }
 
@@ -704,7 +708,7 @@ SidebarItem SidebarService::GetBuiltInItemForType(
     }
 #if BUILDFLAG(ENABLE_PLAYLIST)
     case SidebarItem::BuiltInItemType::kPlaylist: {
-      if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+      if (playlist::IsPlaylistAllowed(prefs_)) {
         return SidebarItem::Create(
             GURL(kPlaylistURL),
             l10n_util::GetStringUTF16(IDS_SIDEBAR_PLAYLIST_ITEM_TITLE),

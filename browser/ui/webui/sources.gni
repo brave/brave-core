@@ -23,8 +23,10 @@ brave_browser_ui_webui_configs_deps = [
 ]
 
 if (enable_playlist_webui) {
-  brave_browser_ui_webui_configs_deps +=
-      [ "//brave/components/playlist/core/common" ]
+  brave_browser_ui_webui_configs_deps += [
+    "//brave/components/playlist/core/browser",
+    "//brave/components/playlist/core/common",
+  ]
 }
 
 if (enable_brave_vpn) {

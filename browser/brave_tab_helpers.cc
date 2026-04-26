@@ -63,7 +63,7 @@
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/playlist/content/browser/playlist_tab_helper.h"
-#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/browser/utils.h"
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
@@ -251,7 +251,8 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+  if (playlist::IsPlaylistAllowed(
+          user_prefs::UserPrefs::Get(web_contents->GetBrowserContext()))) {
     if (auto* playlist_service =
             playlist::PlaylistServiceFactory::GetForBrowserContext(
                 web_contents->GetBrowserContext())) {

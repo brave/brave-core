@@ -271,11 +271,16 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                                   brave_rewards::prefs::kDisabledByPolicy));
 #if BUILDFLAG(ENABLE_PLAYLIST)
   html_source->AddBoolean(
-      "isPlaylistAllowed",
-      base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
-          profile->GetPrefs()->GetBoolean(playlist::kPlaylistEnabledPref));
+      "isPlaylistFeatureEnabled",
+      base::FeatureList::IsEnabled(playlist::features::kPlaylist));
+  html_source->AddBoolean(
+      "isPlaylistDisabledByPolicy",
+      profile->GetPrefs()->IsManagedPreference(
+          playlist::kPlaylistEnabledPref) &&
+          !profile->GetPrefs()->GetBoolean(playlist::kPlaylistEnabledPref));
 #else
-  html_source->AddBoolean("isPlaylistAllowed", false);
+  html_source->AddBoolean("isPlaylistFeatureEnabled", false);
+  html_source->AddBoolean("isPlaylistDisabledByPolicy", false);
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
   html_source->AddBoolean(

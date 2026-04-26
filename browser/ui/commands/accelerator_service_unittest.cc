@@ -19,6 +19,7 @@
 #include "brave/components/commands/common/accelerator_parsing.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/tor/pref_names.h"
@@ -37,6 +38,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/components/brave_wayback_machine/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/core/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -403,6 +408,15 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
   profile().GetPrefs()->SetBoolean(kBraveWaybackMachineEnabled, true);
   EXPECT_FALSE(
       service.IsCommandDisabledByPolicy(IDC_SHOW_WAYBACK_MACHINE_BUBBLE));
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  // Test Playlist
+  EXPECT_FALSE(service.IsCommandDisabledByPolicy(IDC_SHOW_PLAYLIST_BUBBLE));
+  profile().GetPrefs()->SetBoolean(playlist::kPlaylistEnabledPref, false);
+  EXPECT_TRUE(service.IsCommandDisabledByPolicy(IDC_SHOW_PLAYLIST_BUBBLE));
+  profile().GetPrefs()->SetBoolean(playlist::kPlaylistEnabledPref, true);
+  EXPECT_FALSE(service.IsCommandDisabledByPolicy(IDC_SHOW_PLAYLIST_BUBBLE));
 #endif
 
   // Test unknown commands (should not be disabled by policy)

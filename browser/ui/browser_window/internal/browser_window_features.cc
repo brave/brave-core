@@ -49,7 +49,7 @@ class BraveVPNController {};
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
-#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/browser/utils.h"
 #endif
 
 BrowserWindowFeatures::BrowserWindowFeatures() = default;
@@ -101,7 +101,7 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
     sidebar_controller_ = std::make_unique<sidebar::SidebarController>(
         browser_view->browser(), browser_view->GetProfile());
 #if BUILDFLAG(ENABLE_PLAYLIST)
-    if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+    if (playlist::IsPlaylistAllowed(browser_view->GetProfile()->GetPrefs())) {
       playlist_side_panel_coordinator_ =
           std::make_unique<PlaylistSidePanelCoordinator>(
               browser_view->browser(), sidebar_controller_.get(),
