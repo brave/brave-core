@@ -33,6 +33,5 @@ namespace psst {
     dictionary PolicyScriptResult {
         DOMString? next_url;
         PsstData psst;
-        boolean result;
     };
 };

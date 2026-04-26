@@ -13,6 +13,7 @@
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
@@ -306,7 +307,6 @@ void PsstTabWebContentsObserver::OnUserAcceptedPsstSettings(
   if (!ShouldInsertScriptForPage(id)) {
     return;
   }
-
   auto user_script_result_dict = std::move(user_script_result).TakeDict();
   PrepareParametersForPolicyExecution(id, user_script_result_dict,
                                       std::move(perform_for_uids), is_initial);
@@ -327,7 +327,6 @@ void PsstTabWebContentsObserver::OnPolicyScriptResult(
   }
 
   timeout_timer_.Stop();
-
   const auto script_result_parsed =
       PolicyScriptResult::FromValue(script_result);
   if (!script_result_parsed) {
@@ -335,14 +334,15 @@ void PsstTabWebContentsObserver::OnPolicyScriptResult(
     return;
   }
 
+  const auto status = script_result_parsed->psst.progress == 100
+                          ? mojom::PsstStatus::kCompleted
+                          : mojom::PsstStatus::kInProgress;
   ui_delegate_->UpdateTasks(script_result_parsed->psst.progress,
-                            script_result_parsed->psst.applied_tasks,
-                            script_result_parsed->psst.progress == 100
-                                ? mojom::PsstStatus::kCompleted
-                                : mojom::PsstStatus::kInProgress);
+                            script_result_parsed->psst.applied_tasks, status);
 
   auto next_url =
-      (script_result_parsed->next_url.has_value() &&
+      (status != mojom::PsstStatus::kCompleted &&
+       script_result_parsed->next_url.has_value() &&
        !script_result_parsed->next_url->empty())
           ? std::optional<GURL>(GURL(*script_result_parsed->next_url))
           : std::nullopt;

@@ -53,15 +53,16 @@ MATCHER_P4(PsstWebsiteSettingsEq,
            consent_status,
            script_version,
            user_id,
-           urls_to_skip,
+           uids_to_perform,
            "PsstWebsiteSettings with consent_status=" +
                ::testing::PrintToString(consent_status) +
                ", script_version=" + ::testing::PrintToString(script_version) +
                ", user_id=" + ::testing::PrintToString(user_id) +
-               ", urls_to_skip=" + ::testing::PrintToString(urls_to_skip)) {
+               ", uids_to_perform=" +
+               ::testing::PrintToString(uids_to_perform)) {
   return arg.consent_status == consent_status &&
          arg.script_version == script_version && arg.user_id == user_id &&
-         arg.urls_to_skip == urls_to_skip;
+         arg.uids_to_perform == uids_to_perform;
 }
 
 }  // namespace
@@ -650,13 +651,14 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            script_params.Clone()));
 
+  const std::vector<std::string> expected_uids_to_perform = {"1"};
   EXPECT_CALL(ui_delegate(),
               Show(url::Origin::Create(url),
                    PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id,
                                          std::vector<std::string>()),
                    _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
-                             std::vector<std::string>()));
+                             expected_uids_to_perform));
 
   const auto script_with_parameters = base::StrCat(
       {"const params = ",
@@ -770,13 +772,14 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            script_params.Clone()));
 
+  const std::vector<std::string> expected_uids_to_perform = {"1"};
   EXPECT_CALL(ui_delegate(),
               Show(url::Origin::Create(url),
                    PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id,
                                          std::vector<std::string>()),
                    _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
-                             std::vector<std::string>()));
+                             expected_uids_to_perform));
 
   // Policy script executed, parameters not added
   EXPECT_CALL(inject_async_script_callback(), Run(_, policy_script, _))
@@ -861,13 +864,14 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            script_params.Clone()));
 
+  const std::vector<std::string> expected_uids_to_perform = {"1"};
   EXPECT_CALL(ui_delegate(),
               Show(url::Origin::Create(url),
                    PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id,
                                          std::vector<std::string>()),
                    _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
-                             std::vector<std::string>()));
+                             expected_uids_to_perform));
 
   const auto policy_script_with_parameters = base::StrCat(
       {"const params = ",
