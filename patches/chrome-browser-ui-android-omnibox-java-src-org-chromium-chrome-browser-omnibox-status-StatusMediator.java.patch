@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/status/StatusMediator.java b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/status/StatusMediator.java
+index b9dda43ad8dd53d12c9d747e2e91ea607523f68f..de1905962d5268c4d3938aa85e0573effddacd8b 100644
+--- a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/status/StatusMediator.java
++++ b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/status/StatusMediator.java
+@@ -535,6 +535,9 @@ public class StatusMediator
+             }
+         } else if (mPermissionStatusHandler.isClapperQuietIconShowing()) {
+             return;
++        } else if ("chrome".equals(mLocationBarDataProvider.getCurrentGurl().getScheme())
++                && "leo-ai".equals(mLocationBarDataProvider.getCurrentGurl().getHost())) {
++            icon = R.drawable.ic_social_leo_favicon_fullheight_color;
+         } else if (mSecurityIconRes != 0) {
+             mIsSecurityViewShown = true;
+             icon = mSecurityIconRes;
