@@ -1,0 +1,13 @@
+diff --git a/components/sync/base/user_selectable_type.h b/components/sync/base/user_selectable_type.h
+index c42bdf12fa2659c61c128b10bc125fbc926f4126..5f38feffbef9cf0dcef17e0680fd6b03128c390b 100644
+--- a/components/sync/base/user_selectable_type.h
++++ b/components/sync/base/user_selectable_type.h
+@@ -34,7 +34,7 @@ enum class UserSelectableType {
+   kPayments,
+   kProductComparison,
+   kCookies,
+-  kLastType = kCookies
++  kAIChat, kLastType = kAIChat
+ };
+ // LINT.ThenChange(/chrome/browser/resources/settings_shared/people_page/sync_browser_proxy.ts:UserSelectableType)
+ 

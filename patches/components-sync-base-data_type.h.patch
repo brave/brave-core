@@ -1,0 +1,31 @@
+diff --git a/components/sync/base/data_type.h b/components/sync/base/data_type.h
+index cae8d08c20943bad4a507c19d3a1251ec97528a8..9924ec2d9a2eb273afb68f2614196bc630017bcc 100644
+--- a/components/sync/base/data_type.h
++++ b/components/sync/base/data_type.h
+@@ -200,7 +200,7 @@ enum DataType {
+   // An accessibility annotation.
+   ACCESSIBILITY_ANNOTATION,
+ 
+-  LAST_USER_DATA_TYPE = ACCESSIBILITY_ANNOTATION,
++  AI_CHAT_CONVERSATION, LAST_USER_DATA_TYPE = AI_CHAT_CONVERSATION,
+ 
+   // ---- Control Types ----
+   // An object representing a set of Nigori keys.
+@@ -309,7 +309,7 @@ enum class DataTypeForHistograms {
+   kGeminiThread = 77,
+   kThemesIos = 78,
+   kAccessibilityAnnotation = 79,
+-  kMaxValue = kAccessibilityAnnotation,
++  kAIChatConversation = 80, kMaxValue = kAIChatConversation,
+ };
+ // LINT.ThenChange(/tools/metrics/histograms/metadata/sync/enums.xml:SyncDataTypes)
+ 
+@@ -437,7 +437,7 @@ constexpr DataTypeSet SharedTypes() {
+ // any pending account data or abort, depending on the platform.
+ constexpr DataTypeSet TypesRequiringUnsyncedDataCheckOnSignout() {
+   static_assert(
+-      63 == GetNumDataTypes(),
++      64 == GetNumDataTypes(),
+       "Add new types to `TypesRequiringUnsyncedDataCheckOnSignout()` if there "
+       "should be a warning when the user signs out and the types have unsynced "
+       "data. The warning offers the user to either proceed with sign-out "

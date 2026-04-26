@@ -1,0 +1,12 @@
+diff --git a/components/sync/base/pref_names.h b/components/sync/base/pref_names.h
+index 343d61863e8787db1edf3bc3c311bf31e0dcf598..458def6df0c05459c198b88790e3b517e7425cb0 100644
+--- a/components/sync/base/pref_names.h
++++ b/components/sync/base/pref_names.h
+@@ -89,6 +89,7 @@ inline constexpr char kSyncReadingList[] = "sync.reading_list";
+ inline constexpr char kSyncSavedTabGroups[] = "sync.saved_tab_groups";
+ inline constexpr char kSyncTabs[] = "sync.tabs";
+ inline constexpr char kSyncThemes[] = "sync.themes";
++inline constexpr char kSyncAIChat[] = "sync.ai_chat";
+ 
+ // Boolean used by enterprise configuration management in order to lock down
+ // sync.

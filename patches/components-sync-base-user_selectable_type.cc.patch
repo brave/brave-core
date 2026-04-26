@@ -1,0 +1,29 @@
+diff --git a/components/sync/base/user_selectable_type.cc b/components/sync/base/user_selectable_type.cc
+index 943389c0c3b26202f34bb98bb7003d201a3a3377..f38e84f138f51881bb83401274db754399718849 100644
+--- a/components/sync/base/user_selectable_type.cc
++++ b/components/sync/base/user_selectable_type.cc
+@@ -57,7 +57,7 @@ UserSelectableTypeInfo GetUserSelectableTypeInfo(
+   // TODO(crbug.com/476335087): In CL #3, map GEMINI_THREAD to an existing
+   // selectable type or to a new one. The first option should be trivial, the
+   // second requires touching UI code across platforms.
+-  static_assert(63 == syncer::GetNumDataTypes(),
++  static_assert(64 == syncer::GetNumDataTypes(),
+                 "Almost always when adding a new Data, you must tie it to "
+                 "a UserSelectableType below (new or existing) so the user can "
+                 "disable syncing of that data. Today you must also update the "
+@@ -154,6 +154,7 @@ UserSelectableTypeInfo GetUserSelectableTypeInfo(
+           kProductComparisonTypeName, PRODUCT_COMPARISON, {PRODUCT_COMPARISON}};
+     case UserSelectableType::kCookies:
+       return {kCookiesTypeName, COOKIES, {COOKIES}};
++      BRAVE_GET_USER_SELECTABLE_TYPE_INFO
+   }
+   NOTREACHED();
+ }
+@@ -209,6 +210,7 @@ std::optional<UserSelectableType> GetUserSelectableTypeFromString(
+           {kSavedTabGroupsTypeName, UserSelectableType::kSavedTabGroups},
+           {kProductComparisonTypeName, UserSelectableType::kProductComparison},
+           {kCookiesTypeName, UserSelectableType::kCookies},
++          BRAVE_GET_USER_SELECTABLE_TYPE_FROM_STRING
+       });
+   if (auto it = kTypeMap.find(type); it != kTypeMap.end()) {
+     return it->second;
