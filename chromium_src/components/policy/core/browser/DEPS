@@ -2,5 +2,6 @@ from brave_chromium_utils import inline_file
 inline_file("//components/policy/core/browser/DEPS", globals(), locals())
 
 include_rules = [
+  "+brave/components/brave_policy/policy_pref_interceptor.h",
   "+components/grit/brave_components_strings.h",
 ]

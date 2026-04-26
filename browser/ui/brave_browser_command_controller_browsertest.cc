@@ -17,6 +17,7 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/features.h"
+#include "brave/components/brave_policy/policy_pref_interceptor.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
@@ -94,6 +95,7 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   void BlockAIChatByPolicy(bool value) {
+    brave_policy::PolicyPrefInterceptor::DisableCachingForTesting();
     policy::PolicyMap policies;
     policies.Set(policy::key::kBraveAIChatEnabled,
                  policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_MACHINE,
@@ -106,6 +108,7 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   void BlockVPNByPolicy(bool value) {
+    brave_policy::PolicyPrefInterceptor::DisableCachingForTesting();
     policy::PolicyMap policies;
     policies.Set(policy::key::kBraveVPNDisabled, policy::POLICY_LEVEL_MANDATORY,
                  policy::POLICY_SCOPE_MACHINE, policy::POLICY_SOURCE_PLATFORM,
