@@ -39,6 +39,14 @@ source_set("browser_process") {
     "//chrome/browser:browser_process",
     "//extensions/buildflags",
   ]
+
+  # Make sure boringtun keeps getting built even if we don't use
+  # and don't distribute it (for now). Keep it as browser level
+  # dependency, so we also build for Linux (where Brave VPN is not
+  # yet enabled).
+  if (is_mac || is_win || is_linux) {
+    deps += [ "//brave/third_party/boringtun" ]
+  }
 }
 
 source_set("brave_global_features") {

@@ -1,0 +1,14 @@
+Name: untrusted
+Short Name: untrusted
+URL: https://github.com/briansmith/untrusted
+Version: 0.9.0
+License: ISC
+License File: LICENSE.txt
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/untrusted.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

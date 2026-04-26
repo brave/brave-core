@@ -1,0 +1,84 @@
+# Cargo configuration for the BoringTun vendored build.
+#
+# CARGO_HOME and CARGO_TARGET_DIR are set by build.py to isolated,
+# Brave-specific locations -- this build never reads or writes Chromium's
+# shared Rust caches.
+
+# -----------------------------------------------------------------------------
+# Per-target rustflags
+# -----------------------------------------------------------------------------
+# Disable AVX and wider SIMD to ensure compatibility with the widest
+# possible range of hardware. "x86-64" is the baseline x86_64 feature set
+# (SSE2 only). For ARM, "generic" avoids any microarch-specific tuning.
+
+[target.i686-pc-windows-msvc]
+rustflags = [
+  "-C", "prefer-dynamic=false",
+  "-C", "target-feature=+crt-static",
+  "-C", "target-cpu=pentium4",
+  "-C", "target-feature=-avx,-avx2,-avx512f"
+]
+
+[target.x86_64-pc-windows-msvc]
+rustflags = [
+  "-C", "prefer-dynamic=false",
+  "-C", "target-feature=+crt-static",
+  "-C", "target-cpu=x86-64",
+  "-C", "target-feature=-avx,-avx2,-avx512f"
+]
+ 
+[target.aarch64-pc-windows-msvc]
+rustflags = [
+  "-C", "prefer-dynamic=false",
+  "-C", "target-feature=+crt-static",
+  "-C", "target-cpu=generic"
+]
+
+[target.x86_64-unknown-linux-gnu]
+rustflags = [
+  "-C", "prefer-dynamic=false",
+  "-C", "target-cpu=x86-64",
+  "-C", "target-feature=-avx,-avx2,-avx512f",
+  "-C", "link-arg=-Wl,--no-undefined",
+  "-C", "link-arg=--target=x86_64-unknown-linux-gnu"
+]
+
+[target.aarch64-unknown-linux-gnu]
+rustflags = [
+  "-C", "prefer-dynamic=false",
+  "-C", "target-cpu=generic",
+  "-C", "link-arg=-Wl,--no-undefined",
+  "-C", "link-arg=--target=aarch64-unknown-linux-gnu"
+]
+
+[target.x86_64-apple-darwin]
+rustflags = [
+  "-C", "prefer-dynamic=false",
+  "-C", "target-cpu=x86-64",
+  "-C", "target-feature=-avx,-avx2,-avx512f",
+  "-C", "link-arg=-fuse-ld=lld",
+  "-C", "link-arg=-Wl,-undefined,error",
+  "-C", "link-arg=-Wl,-install_name,@rpath/libboringtun.dylib",
+  "-C", "link-arg=--target=x86_64-apple-darwin"
+]
+
+[target.aarch64-apple-darwin]
+rustflags = [
+  "-C", "prefer-dynamic=false",
+  "-C", "target-cpu=apple-m1",
+  "-C", "link-arg=-fuse-ld=lld",
+  "-C", "link-arg=-Wl,-undefined,error",
+  "-C", "link-arg=-Wl,-install_name,@rpath/libboringtun.dylib",
+  "-C", "link-arg=--target=aarch64-apple-darwin"
+]
+
+[source.crates-io]
+replace-with = "vendored-sources"
+
+[source."git+https://github.com/cloudflare/boringtun.git?rev=cdf3b24558441ff4dc62bf5992484c5457a36760"]
+git = "https://github.com/cloudflare/boringtun.git"
+rev = "cdf3b24558441ff4dc62bf5992484c5457a36760"
+replace-with = "vendored-sources"
+
+[source.vendored-sources]
+directory = "vendor/"

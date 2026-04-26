@@ -1,0 +1,14 @@
+Name: subtle
+Short Name: subtle
+URL: https://github.com/dalek-cryptography/subtle
+Version: 2.6.1
+License: BSD-3-Clause
+License File: LICENSE
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/subtle.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.
