@@ -36,7 +36,6 @@
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
-#include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
 
 namespace brave_ads::test {
 
@@ -53,9 +52,7 @@ constexpr std::string_view kYouCantTravelBackInTime =
 
 TestBase::TestBase()
     : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-      tab_helper_(ads_client_notifier_),
-      scoped_current_language_code_(kDefaultLanguageCode),
-      scoped_current_country_code_(kDefaultCountryCode) {
+      tab_helper_(ads_client_notifier_) {
   SimulateProfile();
 }
 

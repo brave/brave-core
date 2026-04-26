@@ -156,6 +156,8 @@ You can add one or more responses per request. These will be returned in the giv
 | setting  | type  | default  | example  |
 |---|---|---|---|
 | Device identifier  | string  | `21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e`  | `test::SetUpDeviceId();`  |
+| Language code  | string (ISO 639-1)  | `en`  | `fake_locale_.SetLanguageCode("fr");`  |
+| Country code  | string (ISO 3166-1)  | `US`  | `fake_locale_.SetCountryCode("FR");`  |
 | Operating system  | `kWindows`, `kMacOS`, `kLinux`, `kAndroid` or `kIOS`  | `kWindows`  | `fake_operating_system_.SetType(OperatingSystemType::kMacOS);`  |
 | Build channel  | `kRelease`, `kBeta` or `kNightly`  | `kRelease`  | `test::SetUpBuildChannel(test::BuildChannelType::kNightly);`  |
 | JavaScript content setting  | boolean  | `true`  | `test::SetUpAllowJavaScript(false);`  |

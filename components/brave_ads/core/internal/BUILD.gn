@@ -415,6 +415,8 @@ static_library("internal") {
     "common/database/database_transaction_util.h",
     "common/functional/once_closure_task_queue.cc",
     "common/locale/language_code.h",
+    "common/locale/locale.cc",
+    "common/locale/locale.h",
     "common/locale/locale_util.cc",
     "common/logging_util.h",
     "common/logging_util_internal.cc",
@@ -1165,4 +1167,21 @@ static_library("internal") {
     "//brave/components/brave_ads/core/mojom",
     "//brave/components/brave_ads/core/public:headers",
   ]
+}
+
+source_set("test_support") {
+  testonly = true
+
+  visibility = [
+    ":*",
+    "//brave/components/brave_ads/core/browser/virtual_pref:*",
+    "//brave/components/brave_ads/core/test:*",
+  ]
+
+  sources = [
+    "common/locale/test/fake_locale.cc",
+    "common/locale/test/fake_locale.h",
+  ]
+
+  public_deps = [ ":internal" ]
 }

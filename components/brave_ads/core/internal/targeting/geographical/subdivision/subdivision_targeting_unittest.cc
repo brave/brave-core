@@ -198,7 +198,7 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
 TEST_F(BraveAdsSubdivisionTargetingTest,
        ShouldNotAllowIfLocaleIsUnsupportedAndSubdivisionCodeIsEmpty) {
   // Arrange
-  const test::ScopedCurrentCountryCode scoped_default_language_code("XX");
+  fake_locale_.SetCountryCode("XX");
 
   // Act
   ads_client_notifier_.NotifyDidInitializeAds();

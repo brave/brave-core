@@ -54,11 +54,3 @@ source_set("headers") {
     "//ui/base",
   ]
 }
-
-source_set("test_support") {
-  testonly = true
-
-  sources = [ "common/locale/scoped_locale_for_testing.h" ]
-
-  deps = [ "//brave/components/brave_ads/buildflags" ]
-}
