@@ -11,7 +11,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/resources/test/country_components_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
-#include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
+#include "brave/components/brave_ads/core/internal/segments/segment_types.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/intent/intent_user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/test/targeting_test_helper.h"

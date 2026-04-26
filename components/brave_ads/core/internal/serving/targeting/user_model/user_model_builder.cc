@@ -11,7 +11,7 @@
 #include "base/barrier_closure.h"
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
+#include "brave/components/brave_ads/core/internal/segments/segment_types.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/intent/intent_segments.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/intent/intent_user_model_info.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/interest/interest_segments.h"
