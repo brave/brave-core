@@ -1317,6 +1317,7 @@ test("brave_browser_tests") {
     ]
     deps += [
       "//brave/browser/ui/darker_theme:browser_tests",
+      "//brave/browser/ui/focus_mode",
       "//brave/browser/ui/sidebar:browser_tests",
       "//brave/browser/ui/tabs:browser_tests",
       "//brave/browser/ui/tabs:tab_model",
