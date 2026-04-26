@@ -25,6 +25,7 @@ using SHA256HashArray = std::array<uint8_t, crypto::hash::kSha256Size>;
 using Ripemd160HashArray = std::array<uint8_t, kRipemd160HashLength>;
 
 KeccakHashArray KeccakHash(base::span<const uint8_t> input);
+KeccakHashArray KeccakHashForEthSign(base::span<const uint8_t> message);
 
 // Returns the hex encoding of the first 4 bytes of the hash.
 // For example: keccak('balanceOf(address)')

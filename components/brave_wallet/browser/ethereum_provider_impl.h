@@ -253,7 +253,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
                                          const std::string& error_message);
   void SignMessageInternal(const mojom::AccountIdPtr& account_id,
                            mojom::SignDataUnionPtr sign_data,
-                           std::vector<uint8_t> message_to_sign,
+                           KeccakHashArray hashed_message,
                            RequestCallback callback,
                            base::Value id);
   bool CheckAccountAllowed(const mojom::AccountIdPtr& account_id,
@@ -281,8 +281,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   void OnSignMessageRequestProcessed(RequestCallback callback,
                                      base::Value id,
                                      const mojom::AccountIdPtr& account_id,
-                                     std::vector<uint8_t> message,
-                                     bool is_eip712,
+                                     KeccakHashArray hashed_message,
                                      bool approved,
                                      mojom::EthereumSignatureBytesPtr signature,
                                      const std::optional<std::string>& error);

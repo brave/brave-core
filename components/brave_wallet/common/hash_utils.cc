@@ -10,6 +10,7 @@
 
 #include "base/check_op.h"
 #include "base/containers/adapters.h"
+#include "base/containers/extend.h"
 #include "base/containers/span.h"
 #include "base/strings/string_split.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
@@ -39,6 +40,14 @@ KeccakHashArray KeccakHash(base::span<const uint8_t> input) {
   static_assert(sizeof(result) == sizeof(hash.bytes));
   std::ranges::copy(hash.bytes, result.begin());
   return result;
+}
+
+KeccakHashArray KeccakHashForEthSign(base::span<const uint8_t> message) {
+  std::string prefix = base::StrCat({"\x19", "Ethereum Signed Message:\n",
+                                     base::NumberToString(message.size())});
+  std::vector<uint8_t> hash_input(prefix.begin(), prefix.end());
+  base::Extend(hash_input, message);
+  return KeccakHash(hash_input);
 }
 
 std::string GetFunctionHash(std::string_view input) {

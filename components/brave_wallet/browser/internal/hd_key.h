@@ -28,8 +28,6 @@ inline constexpr size_t kSecp256k1FingerprintSize = 4;
 inline constexpr size_t kSecp256k1SignMsgSize = 32;
 
 using Secp256k1SignMsgSpan = base::span<const uint8_t, kSecp256k1SignMsgSize>;
-using CompactSignatureSpan =
-    base::span<const uint8_t, kSecp256k1CompactSignatureSize>;
 
 enum class ExtendedKeyVersion : uint32_t {
   // https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#serialization-format
@@ -106,7 +104,8 @@ class HDKey {
   // Verify the ECDSA signature using public key. The msg has to be exactly 32
   // bytes and the sig has to be 64 bytes.
   // Return true when successfully verified, false otherwise.
-  bool VerifyForTesting(Secp256k1SignMsgSpan msg, CompactSignatureSpan sig);
+  bool VerifyForTesting(Secp256k1SignMsgSpan msg,
+                        const Secp256k1Signature& sig);
 
   // Recover public key from signature and message. The msg has to be exactly 32
   // bytes and the sig has to be 64 bytes.
