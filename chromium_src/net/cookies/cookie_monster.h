@@ -6,15 +6,11 @@
 #ifndef BRAVE_CHROMIUM_SRC_NET_COOKIES_COOKIE_MONSTER_H_
 #define BRAVE_CHROMIUM_SRC_NET_COOKIES_COOKIE_MONSTER_H_
 
-#define CookieMonster ChromiumCookieMonster
 #include <net/cookies/cookie_monster.h>  // IWYU pragma: export
-
-#include <optional>
-#undef CookieMonster
 
 namespace net {
 
-class NET_EXPORT CookieMonster : public ChromiumCookieMonster {
+class NET_EXPORT CookieMonster : public chromium_impl::CookieMonster {
  public:
   // These constructors and destructors must be kept in sync with those in
   // Chromium's CookieMonster.
@@ -57,9 +53,9 @@ class NET_EXPORT CookieMonster : public ChromiumCookieMonster {
 
  private:
   NetLogWithSource net_log_;
-  std::map<std::string, std::unique_ptr<ChromiumCookieMonster>>
+  std::map<std::string, std::unique_ptr<chromium_impl::CookieMonster>>
       ephemeral_cookie_stores_;
-  ChromiumCookieMonster* GetOrCreateEphemeralCookieStoreForTopFrameURL(
+  chromium_impl::CookieMonster* GetOrCreateEphemeralCookieStoreForTopFrameURL(
       const GURL& top_frame_url);
 };
 
