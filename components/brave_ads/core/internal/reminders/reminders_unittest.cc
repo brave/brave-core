@@ -46,7 +46,7 @@ class BraveAdsRemindersTest : public test::TestBase {
   void SetUp() override {
     test::TestBase::SetUp();
 
-    ads_observer_mock_ = test::MockAdsObserver();
+    ads_observer_mock_ = test::SetUpAdsObserverMock();
   }
 
   raw_ptr<AdsObserverMock> ads_observer_mock_ = nullptr;  // Not owned.

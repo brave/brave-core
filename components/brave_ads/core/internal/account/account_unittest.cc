@@ -45,7 +45,7 @@ class BraveAdsAccountTest : public test::TestBase {
   void SetUp() override {
     test::TestBase::SetUp();
 
-    ads_observer_mock_ = test::MockAdsObserver();
+    ads_observer_mock_ = test::SetUpAdsObserverMock();
 
     account_observation_.Observe(&GetAccount());
   }
