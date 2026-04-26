@@ -365,6 +365,25 @@ if (enable_email_aliases) {
 }
 
 if (!is_android) {
+  # BraveHidDelegate inherits from ChromeHidDelegate, and referenced by
+  # BraveContentBrowserClient, so we put into the same source_set.
+  brave_chrome_browser_sources += [
+    "//brave/browser/hid/brave_hid_delegate.cc",
+    "//brave/browser/hid/brave_hid_delegate.h",
+  ]
+  brave_chrome_browser_deps += [
+    "//brave/components/brave_wallet/common/buildflags",
+    "//chrome/browser/hid",
+    "//chrome/browser/ui/hid",
+    "//services/device/public/cpp/hid",
+  ]
+  if (enable_brave_wallet) {
+    brave_chrome_browser_deps +=
+        [ "//brave/browser/brave_wallet:brave_wallet_hid_chooser" ]
+  }
+}
+
+if (!is_android) {
   # Already included on android by upstream
 
   # Including v2 back into brave build as we make use of `feed::FetchRssLinks` in `brave_news_tab_helper.cc`.
