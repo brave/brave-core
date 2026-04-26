@@ -13,13 +13,16 @@ import { shouldDisableAttachmentsButton } from '../../../common/conversation_his
 
 // Utils
 import { getLocale } from '$web-common/locale'
+import { pickFiles } from '$web-common/uploadFile'
 
 // Styles
 import styles from './style.module.scss'
 
+import { processFiles } from '../../utils/file_utils'
+
 type Props = Pick<
   ConversationContext,
-  | 'uploadFile'
+  | 'attachFiles'
   | 'getScreenshots'
   | 'conversationHistory'
   | 'associatedContentInfo'
@@ -61,7 +64,16 @@ export default function AttachmentButtonMenu(props: Props) {
             <Icon name='attachment' />
           </Button>
         </div>
-        <leo-menu-item onClick={() => props.uploadFile([false])}>
+        <leo-menu-item
+          onClick={async () => {
+            const files = await pickFiles({
+              multiple: true,
+            })
+            if (files.length > 0) {
+              processFiles(files, props.attachFiles)
+            }
+          }}
+        >
           <div className={styles.buttonContent}>
             <Icon
               className={styles.buttonIcon}
@@ -85,7 +97,16 @@ export default function AttachmentButtonMenu(props: Props) {
           </leo-menu-item>
         )}
         {props.isMobile && (
-          <leo-menu-item onClick={() => props.uploadFile([true])}>
+          <leo-menu-item
+            onClick={async () => {
+              const files = await pickFiles({
+                capture: 'camera',
+              })
+              if (files.length > 0) {
+                processFiles(files, props.attachFiles)
+              }
+            }}
+          >
             <div className={styles.buttonContent}>
               <Icon
                 className={styles.buttonIcon}

@@ -205,10 +205,6 @@ interface AIChatUIHandler {
   ManagePremium();
   HandleVoiceRecognition(string conversation_uuid);
   ShowSoftKeyboard();
-  // use_media_capture is used on Android only currently. It could
-  // be used on desktop as well in the future when a camera support is added.
-  UploadFile(bool use_media_capture)
-      => (array<UploadedFile>? uploaded_files);
 
   // Process image files using backend processing (resizing and sanitization)
   ProcessImageFile(array<uint8> file_data, string filename)
@@ -263,9 +259,6 @@ interface ChatUI {
   // if any.
   OnNewDefaultConversation(int32? content_id);
   OnChildFrameBound(pending_receiver<ParentUIFrame> receiver);
-  // Notifies that files are selected between AIChatUIHandler::UploadFile() is
-  // called and return of uploaded files after processed.
-  OnUploadFilesSelected();
 };
 
 struct ConversationState {

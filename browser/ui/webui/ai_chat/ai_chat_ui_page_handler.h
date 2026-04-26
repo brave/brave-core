@@ -15,7 +15,6 @@
 #include "base/scoped_observation.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "brave/browser/ai_chat/file_text_extractor_base.h"
-#include "brave/browser/ai_chat/upload_file_helper.h"
 #include "build/build_config.h"
 #include "pdf/buildflags.h"
 
@@ -58,8 +57,7 @@ class FaviconService;
 
 namespace ai_chat {
 class AIChatUIPageHandler : public mojom::AIChatUIHandler,
-                            public AssociatedContentDelegate::Observer,
-                            public UploadFileHelper::Observer
+                            public AssociatedContentDelegate::Observer
 #if !BUILDFLAG(IS_ANDROID)
     ,
                             public TabStripModelObserver
@@ -95,7 +93,6 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void ManagePremium() override;
   void HandleVoiceRecognition(const std::string& conversation_uuid) override;
   void ShowSoftKeyboard() override;
-  void UploadFile(bool use_media_capture, UploadFileCallback callback) override;
   void ProcessImageFile(const std::vector<uint8_t>& file_data,
                         const std::string& filename,
                         ProcessImageFileCallback callback) override;
@@ -131,19 +128,6 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
       mojo::PendingReceiver<mojom::ParentUIFrame> receiver);
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(AIChatUIPageHandlerBrowserTest,
-                           OnFilesUploaded_WithPdf);
-#if !BUILDFLAG(IS_ANDROID)
-  FRIEND_TEST_ALL_PREFIXES(AIChatUIPageHandlerBrowserTest,
-                           OnFilesUploaded_WithText);
-#endif
-  FRIEND_TEST_ALL_PREFIXES(AIChatUIPageHandlerTest,
-                           FinishUpload_StripsPathToBasename);
-  FRIEND_TEST_ALL_PREFIXES(AIChatUIPageHandlerTest,
-                           OnFilesUploaded_NonPdfGoesToFinish);
-  FRIEND_TEST_ALL_PREFIXES(AIChatUIPageHandlerTest,
-                           OnAllFilesExtracted_AppliesResults);
-
   class ChatContextObserver : public content::WebContentsObserver {
    public:
     explicit ChatContextObserver(content::WebContents* web_contents,
@@ -162,9 +146,6 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void OnRequestArchive(AssociatedContentDelegate* delegate) override;
   void OnNewPage(AssociatedContentDelegate* delegate) override;
 
-  // UploadFileHelper::Observer
-  void OnFilesSelected() override;
-
 #if !BUILDFLAG(IS_ANDROID)
   // TabStripModelObserver:
   void OnTabStripModelChanged(
@@ -174,25 +155,6 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
 #endif
 
   void NotifyNewDefaultConversation();
-
-  void OnFilesUploaded(
-      UploadFileCallback callback,
-      std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files);
-  // Collects barrier results and applies extracted text to uploaded files.
-  void OnAllFilesExtracted(
-      UploadFileCallback callback,
-      std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files,
-      std::vector<std::pair<size_t, std::optional<std::string>>> results);
-  // Per-file barrier callback — removes the finished extractor and forwards.
-  void OnSingleFileExtracted(
-      FileTextExtractorBase* extractor_ptr,
-      size_t file_index,
-      base::OnceCallback<void(std::pair<size_t, std::optional<std::string>>)>
-          barrier_cb,
-      std::optional<std::string> extracted_text);
-  void FinishUpload(
-      UploadFileCallback callback,
-      std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files);
 
   // Shared helper for ProcessTextFile / ProcessPdfFile.
   void ExtractAndProcessFile(
@@ -219,10 +181,6 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
                           AssociatedContentDelegate::Observer>
       associated_content_delegate_observation_{this};
   std::unique_ptr<ChatContextObserver> chat_context_observer_;
-
-  std::unique_ptr<UploadFileHelper> upload_file_helper_;
-  base::ScopedObservation<UploadFileHelper, UploadFileHelper::Observer>
-      upload_file_helper_observation_{this};
 
   // DataDecoder instance for processing image data
   data_decoder::DataDecoder data_decoder_;

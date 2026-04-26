@@ -17,6 +17,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/task/thread_pool.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/brave_tab_helpers.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
@@ -25,6 +26,7 @@
 #include "brave/components/ai_chat/content/browser/associated_url_content.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -46,8 +48,13 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/common/url_constants.h"
+#include "services/data_decoder/public/cpp/decode_image.h"
+#include "services/data_decoder/public/mojom/image_decoder.mojom.h"
+#include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/page_transition_types.h"
+#include "ui/gfx/codec/png_codec.h"
+#include "ui/gfx/geometry/size.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "base/notimplemented.h"
@@ -146,6 +153,34 @@ content::WebContents* GetWebContentsFromTabId(int32_t tab_id) {
   return contents;
 }
 
+void OnImageDecoded(
+    base::OnceCallback<void(std::optional<std::vector<uint8_t>>)> callback,
+    const SkBitmap& decoded_bitmap) {
+  if (decoded_bitmap.drawsNothing()) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+  auto encode_image = base::BindOnce(
+      [](const SkBitmap& decoded_bitmap) {
+        return gfx::PNGCodec::EncodeBGRASkBitmap(
+            ScaleDownBitmap(decoded_bitmap), false);
+      },
+      decoded_bitmap);
+  base::ThreadPool::PostTaskAndReplyWithResult(FROM_HERE, {base::MayBlock()},
+                                               std::move(encode_image),
+                                               std::move(callback));
+}
+
+void ProcessImageData(
+    data_decoder::DataDecoder* data_decoder,
+    const std::vector<uint8_t>& image_data,
+    base::OnceCallback<void(std::optional<std::vector<uint8_t>>)> callback) {
+  data_decoder::DecodeImage(
+      data_decoder, image_data, data_decoder::mojom::ImageCodec::kDefault, true,
+      data_decoder::kDefaultMaxSizeInBytes, gfx::Size(),
+      base::BindOnce(&OnImageDecoded, std::move(callback)));
+}
+
 }  // namespace
 
 using mojom::CharacterType;
@@ -220,133 +255,11 @@ void AIChatUIPageHandler::ShowSoftKeyboard() {
 #endif
 }
 
-void AIChatUIPageHandler::UploadFile(bool use_media_capture,
-                                     UploadFileCallback callback) {
-  if (!upload_file_helper_) {
-    upload_file_helper_ =
-        std::make_unique<UploadFileHelper>(owner_web_contents_, profile_);
-    upload_file_helper_observation_.Observe(upload_file_helper_.get());
-  }
-  upload_file_helper_->UploadFile(
-      std::make_unique<ChromeSelectFilePolicy>(owner_web_contents_),
-#if BUILDFLAG(IS_ANDROID)
-      use_media_capture,
-#endif
-      base::BindOnce(&AIChatUIPageHandler::OnFilesUploaded,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
-}
-
-void AIChatUIPageHandler::OnFilesUploaded(
-    UploadFileCallback callback,
-    std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files) {
-  if (uploaded_files) {
-    // Collect all files needing text extraction in one pass.
-    // Store type alongside index/path so we can create the right extractor
-    // after uploaded_files is moved into the barrier callback.
-    struct ExtractionInfo {
-      size_t index;
-      base::FilePath path;
-      mojom::UploadedFileType type;
-    };
-    std::vector<ExtractionInfo> extractions;
-    for (size_t i = 0; i < uploaded_files->size(); ++i) {
-      auto& file = (*uploaded_files)[i];
-      if (file->extracted_text.has_value() || file->data.empty()) {
-        continue;
-      }
-      bool needs_extraction = false;
-#if BUILDFLAG(ENABLE_PDF)
-      needs_extraction |= file->type == mojom::UploadedFileType::kPdf;
-#endif
-#if !BUILDFLAG(IS_ANDROID)
-      needs_extraction |= file->type == mojom::UploadedFileType::kText;
-#endif
-      if (needs_extraction) {
-        extractions.push_back(
-            {i, base::FilePath::FromUTF8Unsafe(file->filename), file->type});
-      }
-    }
-
-    if (!extractions.empty()) {
-      auto barrier =
-          base::BarrierCallback<std::pair<size_t, std::optional<std::string>>>(
-              extractions.size(),
-              base::BindOnce(&AIChatUIPageHandler::OnAllFilesExtracted,
-                             weak_ptr_factory_.GetWeakPtr(),
-                             std::move(callback), std::move(uploaded_files)));
-
-      for (const auto& info : extractions) {
-        std::unique_ptr<FileTextExtractorBase> extractor;
-#if BUILDFLAG(ENABLE_PDF)
-        if (info.type == mojom::UploadedFileType::kPdf) {
-          extractor = std::make_unique<PdfTextExtractor>();
-        }
-#endif
-#if !BUILDFLAG(IS_ANDROID)
-        if (info.type == mojom::UploadedFileType::kText) {
-          extractor = std::make_unique<TextFileExtractor>();
-        }
-#endif
-        CHECK(extractor);
-        auto* extractor_ptr = extractor.get();
-        extractors_.push_back(std::move(extractor));
-        extractor_ptr->ExtractText(
-            profile_, info.path,
-            base::BindOnce(&AIChatUIPageHandler::OnSingleFileExtracted,
-                           weak_ptr_factory_.GetWeakPtr(), extractor_ptr,
-                           info.index, barrier));
-      }
-      return;
-    }
-  }
-  FinishUpload(std::move(callback), std::move(uploaded_files));
-}
-
-void AIChatUIPageHandler::OnAllFilesExtracted(
-    UploadFileCallback callback,
-    std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files,
-    std::vector<std::pair<size_t, std::optional<std::string>>> results) {
-  if (uploaded_files) {
-    for (auto& [idx, text] : results) {
-      if (idx < uploaded_files->size()) {
-        (*uploaded_files)[idx]->extracted_text = std::move(text);
-      }
-    }
-  }
-  FinishUpload(std::move(callback), std::move(uploaded_files));
-}
-
-void AIChatUIPageHandler::OnSingleFileExtracted(
-    FileTextExtractorBase* extractor_ptr,
-    size_t file_index,
-    base::OnceCallback<void(std::pair<size_t, std::optional<std::string>>)>
-        barrier_cb,
-    std::optional<std::string> extracted_text) {
-  std::erase_if(extractors_, [extractor_ptr](const auto& e) {
-    return e.get() == extractor_ptr;
-  });
-  std::move(barrier_cb).Run({file_index, std::move(extracted_text)});
-}
-
-void AIChatUIPageHandler::FinishUpload(
-    UploadFileCallback callback,
-    std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files) {
-  // Strip full paths to basenames before passing to WebUI/DB.
-  if (uploaded_files) {
-    for (auto& file : *uploaded_files) {
-      file->filename = base::FilePath::FromUTF8Unsafe(file->filename)
-                           .BaseName()
-                           .AsUTF8Unsafe();
-    }
-  }
-  std::move(callback).Run(std::move(uploaded_files));
-}
-
 void AIChatUIPageHandler::ProcessImageFile(
     const std::vector<uint8_t>& file_data,
     const std::string& filename,
     ProcessImageFileCallback callback) {
-  UploadFileHelper::ProcessImageData(
+  ProcessImageData(
       &data_decoder_, file_data,
       base::BindOnce(
           [](const std::string& filename, ProcessImageFileCallback callback,
@@ -612,13 +525,6 @@ void AIChatUIPageHandler::OnRequestArchive(
     return;
   }
   NotifyNewDefaultConversation();
-}
-
-void AIChatUIPageHandler::OnFilesSelected() {
-  if (!chat_ui_.is_bound()) {
-    return;
-  }
-  chat_ui_->OnUploadFilesSelected();
 }
 
 void AIChatUIPageHandler::CloseUI() {

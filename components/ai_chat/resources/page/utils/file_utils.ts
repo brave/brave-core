@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as Mojom from '../../common/mojom'
-import type { AIChatContext } from '../state/ai_chat_context'
+import { ConversationContext } from '../state/conversation_context'
 
 // Custom error types for better error handling
 export class FileReadError extends Error {
@@ -27,78 +27,34 @@ export class ImageProcessingError extends Error {
   }
 }
 
-// Utility function to convert File objects to UploadedFile format
-export const convertFileToUploadedFile = async (
-  file: File,
-  processImageFile: AIChatContext['processImageFile'],
-  processPdfFile?: AIChatContext['processPdfFile'],
-  processTextFile?: AIChatContext['processTextFile'],
-): Promise<Mojom.UploadedFile | null> => {
-  const reader = new FileReader()
-  const arrayBuffer = await new Promise<ArrayBuffer>((resolve, reject) => {
-    reader.onload = (e) => {
-      const result = e.target?.result as ArrayBuffer
-      if (!result) {
-        reject(new FileReadError('Failed to read file: No data received'))
-        return
-      }
-      resolve(result)
-    }
-    reader.onerror = () =>
-      reject(new FileReadError(`Failed to read file: ${file.name}`))
-    reader.readAsArrayBuffer(file)
-  })
-
-  const uint8Array = new Uint8Array(arrayBuffer)
-
-  // Check file type and handle accordingly
+const fileTypeToUploadedFileType = (file: File): Mojom.UploadedFileType => {
   const mimeType = file.type.toLowerCase()
   if (mimeType === 'application/pdf') {
-    if (processPdfFile) {
-      const processedFile = await processPdfFile([
-        Array.from(uint8Array),
-        file.name,
-      ])
-      if (processedFile) {
-        return processedFile
-      }
-    }
-    // Fallback: return raw PDF data without extracted text
-    return {
-      filename: file.name,
-      filesize: file.size,
-      data: Array.from(uint8Array),
-      type: Mojom.UploadedFileType.kPdf,
-      extractedText: undefined,
-    }
+    return Mojom.UploadedFileType.kPdf
   } else if (mimeType.startsWith('image/')) {
-    // Use backend processing for images via mojo call
-    const processedFile = await processImageFile([
-      Array.from(uint8Array),
-      file.name,
-    ])
-
-    if (!processedFile) {
-      throw new ImageProcessingError(
-        'Failed to process image file: Backend returned no result',
-      )
-    }
-
-    return processedFile
+    return Mojom.UploadedFileType.kImage
   } else {
-    // Everything else is treated as a text file. The renderer handles
-    // MIME sniffing and will render the file as text if possible.
-    // If extraction fails (e.g. binary file), null is returned and
-    // the file is not attached.
-    if (processTextFile) {
-      const processedFile = await processTextFile([
-        Array.from(uint8Array),
-        file.name,
-      ])
-      if (processedFile) {
-        return processedFile
-      }
-    }
-    return null
+    return Mojom.UploadedFileType.kText
   }
+}
+
+const toUploadedFile = async (file: File) => {
+  const type = fileTypeToUploadedFileType(file)
+  return {
+    filename: file.name,
+    filesize: file.size,
+    data: Array.from(new Uint8Array(await file.arrayBuffer())),
+    type,
+    extractedText:
+      type === Mojom.UploadedFileType.kText ? await file.text() : undefined,
+  } as Mojom.UploadedFile
+}
+
+// Utility function to convert File objects to UploadedFile format
+export const processFiles = async (
+  files: File[],
+  attachFiles: ConversationContext['attachFiles'],
+) => {
+  const uploadedFiles = await Promise.all(files.map(toUploadedFile))
+  await attachFiles(uploadedFiles)
 }
