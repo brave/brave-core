@@ -47,6 +47,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
+#include "brave/components/ai_chat/core/common/utils.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
@@ -558,10 +559,7 @@ void ConversationHandler::SubmitHumanConversationEntry(
   VLOG(1) << __func__;
   DVLOG(4) << __func__ << ": " << turn->text;
 
-  // If there's edits, use the last one as the latest turn.
-  bool has_edits = turn->edits && !turn->edits->empty();
-  mojom::ConversationTurnPtr& latest_turn =
-      has_edits ? turn->edits->back() : turn;
+  mojom::ConversationTurnPtr& latest_turn = GetLatestTurn(turn);
   // Decide if this entry needs to wait for one of:
   // - user to be opted-in
   // - is request in progress (should only be possible if regular entry is
@@ -608,8 +606,9 @@ void ConversationHandler::SubmitHumanConversationEntry(
   tool_use_task_state_ = mojom::TaskState::kNone;
   OnToolUseTaskStateChanged();
 
-  // Directly modify Entry's text to remove engine-breaking substrings
-  if (!has_edits) {  // Edits are already sanitized.
+  // Directly modify Entry's text to remove engine-breaking substrings.
+  // Edits are already sanitized, so only sanitize if there are none.
+  if (!turn->edits || turn->edits->empty()) {
     engine_->SanitizeInput(latest_turn->text);
   }
   if (latest_turn->selected_text) {
@@ -741,12 +740,13 @@ void ConversationHandler::ModifyConversation(const std::string& entry_uuid,
   // anything after this turn_index and resubmit.
   std::string sanitized_input = new_text;
   engine_->SanitizeInput(sanitized_input);
-  const auto& current_text = turn->edits && !turn->edits->empty()
-                                 ? turn->edits->back()->text
-                                 : turn->text;
+  const auto& current_text = GetLatestTurn(turn)->text;
   if (sanitized_input.empty() || sanitized_input == current_text) {
     return;
   }
+
+  // Capture the source UUID before adding a new edit to the list.
+  const std::string source_turn_uuid = GetLatestTurn(turn)->uuid.value();
 
   // turn->selected_text and turn->events are actually std::nullopt for
   // editable human turns in our current implementation, just use std::nullopt
@@ -758,6 +758,7 @@ void ConversationHandler::ModifyConversation(const std::string& entry_uuid,
       base::Time::Now(), std::nullopt /* edits */, std::nullopt,
       nullptr /* skill */, false, turn->model_key,
       nullptr /* near_verification_status */);
+  const std::string edit_uuid = edited_turn->uuid.value();
   if (!turn->edits) {
     turn->edits.emplace();
   }
@@ -769,6 +770,11 @@ void ConversationHandler::ModifyConversation(const std::string& entry_uuid,
       std::back_inserter(erased_turn_ids),
       [](mojom::ConversationTurnPtr& turn) { return turn->uuid; });
   turn->edits->emplace_back(std::move(edited_turn));
+  // Clone content from the previous version of this turn to the new edit so
+  // the edit carries forward the same associated content while preserving the
+  // original association for potential revert.
+  associated_content_manager_->CloneContentForTurnEdit(source_turn_uuid,
+                                                       edit_uuid);
   auto new_turn = std::move(chat_history_.at(turn_index));
   chat_history_.erase(chat_history_.begin() + turn_index, chat_history_.end());
 

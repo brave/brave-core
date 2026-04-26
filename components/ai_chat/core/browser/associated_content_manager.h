@@ -76,8 +76,16 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   void ClearContent();
 
   // Associates all content which hasn't been associated with a turn with
-  // |turn|. Note: |turn| must have a non-empty |uuid| field.
+  // |turn|. Note: |turn| must have a non-empty |uuid| field. If |turn| has
+  // edits, associates with the most recent edit's UUID instead.
   void AssociateUnsentContentWithTurn(const mojom::ConversationTurnPtr& turn);
+
+  // Clones all content associated with |source_turn_uuid| and associates the
+  // clones with |target_turn_uuid|. Called when creating a human turn edit so
+  // the previous version retains its content (for potential revert) while the
+  // new edit carries forward its own copy.
+  void CloneContentForTurnEdit(const std::string& source_turn_uuid,
+                               const std::string& target_turn_uuid);
 
   // Checks if the content has changed from what is stored in the cache.
   void HasContentUpdated(base::OnceCallback<void(bool)> callback);
