@@ -7,8 +7,6 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Label from '@brave/leo/react/label'
 import ProgressRing from '@brave/leo/react/progressRing'
-import Tabs from '@brave/leo/react/tabs'
-import TabItem from '@brave/leo/react/tabItem'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
@@ -18,6 +16,7 @@ import AssistantResponse from '../assistant_response'
 import ToolEvent, { ToolEventThinking } from '../assistant_response/tool_event'
 import styles from './assistant_task.module.scss'
 import useExtractTaskData, { TaskData } from './use_extract_task_data'
+import { useProgressBubbleContext } from '../progress_bubble'
 
 interface Props {
   // Entries that make up the task loop
@@ -60,7 +59,7 @@ interface TabProps {
  * The Steps tab displays everything in timeline order.
  */
 export default function AssistantTask(props: Props) {
-  const [showSteps, setShowSteps] = React.useState(false)
+  const { isExpanded: showSteps } = useProgressBubbleContext()
   const [taskThumbnail, setTaskThumbnail] = React.useState<string>()
   const conversationContext = useUntrustedConversationContext()
 
@@ -119,26 +118,15 @@ export default function AssistantTask(props: Props) {
     isGenerating: conversationContext.isGenerating,
     isToolExecuting: conversationContext.isToolExecuting,
     toolUseTaskState: conversationContext.toolUseTaskState,
-    isThinking: isThinking,
-    taskData: taskData,
-    toolArtifacts: toolArtifacts,
+    isThinking,
+    taskData,
+    toolArtifacts,
   }
 
   return (
     <div
-      className={styles.task}
       data-testid='assistant-task'
     >
-      <Tabs
-        onChange={() => setShowSteps(!showSteps)}
-        value={showSteps ? 'steps' : 'progress'}
-        size='medium'
-      >
-        <TabItem value='progress'>
-          {getLocale(S.AI_CHAT_TASK_PROGRESS_LABEL)}
-        </TabItem>
-        <TabItem value='steps'>{getLocale(S.AI_CHAT_TASK_STEPS_LABEL)}</TabItem>
-      </Tabs>
       <div className={styles.taskContent}>
         <div className={styles.taskData}>
           {showSteps && (
@@ -196,7 +184,6 @@ export default function AssistantTask(props: Props) {
 
 function Progress(props: Props & TabProps) {
   // The Progress tab should show:
-  // - Any last active complete "important" tool (TODO, navigate)
   // - the most recent completion event
   // - any tool use events from the most recent entry in the group (the active
   // events)
@@ -212,12 +199,9 @@ function Progress(props: Props & TabProps) {
     ? lastTaskItem[0]
     : undefined
 
-  // Include any current tool use events that are not already included in the
-  // "important" section.
   const currentToolUseEvents = lastTaskItem.filter(
     (event) =>
       event.toolUseEvent
-      && !props.taskData.importantToolUseEvents.includes(event.toolUseEvent),
   )
 
   // We need to include inline search events so the AssistantResponse knows
@@ -234,14 +218,6 @@ function Progress(props: Props & TabProps) {
 
   return (
     <div className={styles.progress}>
-      {props.taskData.importantToolUseEvents.map((event, index) => (
-        <ToolEvent
-          key={index}
-          toolUseEvent={event}
-          isEntryActive={false}
-          isExecuting={false}
-        />
-      ))}
       {currentCompletionEvent && (
         <div className={styles.progressText}>
           <AssistantResponse

@@ -68,6 +68,8 @@ export function getToolLabel(toolName: string, toolInput: any) {
     // </if>
     case Mojom.DEEP_RESEARCH_TOOL_NAME:
       return getLocale(S.CHAT_UI_TOOL_LABEL_DEEP_RESEARCH)
+    case Mojom.USER_CHOICE_TOOL_NAME:
+      return 'Waiting for user input'
     case Mojom.BRAVE_NEWS_SEARCH_TOOL_NAME:
     case Mojom.BRAVE_WEB_SEARCH_TOOL_NAME:
     case Mojom.BRAVE_FAQS_SEARCH_TOOL_NAME:

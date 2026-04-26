@@ -1,0 +1,84 @@
+$stickyMargin: var(--leo-spacing-m);
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
+}
+
+.bubble {
+  --sticky-margin: #{$stickyMargin};
+  z-index: 99;
+  position: sticky;
+  top: var(--sticky-margin);
+  bottom: calc(var(--sticky-margin) + calc(-1 * var(--conversation-content-bottom-padding)));
+  border-radius: var(--leo-radius-xxl);
+  border: solid 1px transparent;
+  background: var(--leo-color-container-background);
+  padding: var(--leo-spacing-l);
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  font: var(--leo-font-small-regular);
+
+  transition: border-color .12s ease-in-out, box-shadow .12s ease-in-out;
+
+  &.isStuck {
+    border-color: var(--leo-color-divider-subtle);
+    box-shadow: var(--leo-effect-elevation-02);
+  }
+
+  &.isExpandable {
+    cursor: pointer;
+  }
+}
+
+.icon {
+  --leo-progressring-size: var(--leo-icon-s);
+  --leo-progressring-color: #434fcf;
+  --leo-icon-size: var(--leo-icon-s);
+  --leo-icon-color: var(--leo-color-systemfeedback-success-text);
+}
+
+.description {
+  color: var(--leo-color-systemfeedback-success-text);
+
+  .isActive > & {
+    background: linear-gradient(
+      90deg,
+      #434fcf 0%,
+      #7686ec 45%,
+      #7686ec 55%,
+      #434fcf 100%
+    );
+    background-size: 200% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 2s infinite linear;
+  }
+}
+
+.expander {
+  --leo-icon-size: var(--leo-icon-s);
+  --leo-icon-color: var(--leo-color-icon-secondary);
+}
+
+.sentinel {
+  --sticky-margin: #{$stickyMargin};
+  visibility: hidden;
+  pointer-events: none;
+  background: pink;
+  height: 1px;
+
+  &.top {
+    transform: translateY(calc(-1 * var(--sticky-margin)));
+  }
+  &.bottom {
+    transform: translateY(var(--sticky-margin));
+  }
+}
