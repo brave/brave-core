@@ -160,9 +160,21 @@ BraveFarblingLevel GetBraveFarblingLevelFor(
 
 bool AllowFingerprinting(ExecutionContext* context,
                          ContentSettingsType webcompat_settings_type) {
-  return (GetBraveFarblingLevelFor(context, webcompat_settings_type,
-                                   BraveFarblingLevel::OFF) !=
-          BraveFarblingLevel::MAXIMUM);
+  auto level = GetBraveFarblingLevelFor(context, webcompat_settings_type,
+                                        BraveFarblingLevel::OFF);
+  if (level == BraveFarblingLevel::OFF) {
+    return true;
+  }
+
+  if (level == BraveFarblingLevel::MAXIMUM) {
+    return false;
+  }
+
+  CHECK(level == BraveFarblingLevel::BALANCED);
+  // We allow the fingerprinting for WebGL if the protection feature flag is
+  // disabled.
+  return !base::FeatureList::IsEnabled(
+      blink::features::kBraveWebGLFingerprintingProtection);
 }
 
 bool AllowFontFamily(ExecutionContext* context,
