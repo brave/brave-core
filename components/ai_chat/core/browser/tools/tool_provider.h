@@ -14,6 +14,7 @@
 
 namespace ai_chat {
 
+class ConversationHandler;
 class Tool;
 
 // Interface for providing tools to a conversation.
@@ -37,6 +38,11 @@ class ToolProvider {
 
   ToolProvider(const ToolProvider&) = delete;
   ToolProvider& operator=(const ToolProvider&) = delete;
+
+  // Called once after the ToolProvider is bound to a fully-initialized
+  // ConversationHandler. Subclasses that need conversation context (e.g. to
+  // look up the UUID when attaching content) should override this.
+  virtual void OnBoundToConversationHandler(ConversationHandler* handler) {}
 
   // Marks that a new message has been added to the conversation and therefore
   // a new generation loop has started which may result in tool calls.

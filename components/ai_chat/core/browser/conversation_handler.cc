@@ -150,9 +150,10 @@ ConversationHandler::ConversationHandler(
       url_loader_factory_(url_loader_factory) {
   BuildCapabilitiesSet();
 
-  // Observe tool providers
+  // Observe tool providers and give them conversation context.
   for (const auto& tool_provider : tool_providers_) {
     tool_provider->AddObserver(this);
+    tool_provider->OnBoundToConversationHandler(this);
   }
 
   // When a client disconnects, let observers know
