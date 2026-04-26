@@ -120,7 +120,7 @@ class ZCashTransaction {
   ZCashTransaction& operator=(const ZCashTransaction& other);
   ZCashTransaction(ZCashTransaction&& other);
   ZCashTransaction& operator=(ZCashTransaction&& other);
-  bool operator==(const ZCashTransaction& other) const;
+  bool operator==(const ZCashTransaction& other) const = default;
 
   base::DictValue ToValue() const;
   static std::optional<ZCashTransaction> FromValue(
