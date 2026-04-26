@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "base/numerics/checked_math.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
@@ -127,7 +128,7 @@ class ZCashTransaction {
       const base::DictValue& value);
 
   bool IsTransparentPartSigned() const;
-  uint64_t TotalInputsAmount() const;
+  base::CheckedNumeric<uint64_t> TotalInputsAmount() const;
 
   uint8_t sighash_type() const;
 
