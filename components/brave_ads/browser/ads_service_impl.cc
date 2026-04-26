@@ -898,6 +898,10 @@ void AdsServiceImpl::NotificationAdTimedOut(const std::string& placement_id) {
 }
 
 void AdsServiceImpl::CloseAllNotificationAds() {
+  if (!UserHasOptedInToNotificationAds()) {
+    return;
+  }
+
   const auto& list = prefs_->GetList(prefs::kNotificationAds);
 
   const base::circular_deque<NotificationAdInfo> ads =
