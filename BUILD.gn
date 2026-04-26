@@ -173,6 +173,12 @@ if (!is_ios) {
   group("storybook") {
     deps = [ "//brave/.storybook:storybook" ]
   }
+
+  group("ai_chat_app_lib") {
+    deps = [
+      "//brave/components/ai_chat/resources/app:lib",
+    ]
+  }
 }
 
 if (is_win) {
