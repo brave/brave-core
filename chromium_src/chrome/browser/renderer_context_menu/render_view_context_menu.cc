@@ -16,6 +16,7 @@
 #include "base/notimplemented.h"
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/app/brave_command_ids.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
@@ -31,9 +32,13 @@
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/translate/core/common/brave_translate_features.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/translate/chrome_translate_client.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/common/channel_info.h"
@@ -42,6 +47,7 @@
 #include "components/omnibox/browser/autocomplete_classifier.h"
 #include "components/omnibox/browser/autocomplete_controller.h"
 #include "components/omnibox/browser/autocomplete_match_type.h"
+#include "components/translate/core/browser/translate_manager.h"
 #include "content/public/browser/security_principal.h"
 #include "content/public/browser/web_contents.h"
 #include "net/base/filename_util.h"
@@ -390,6 +396,8 @@ bool RenderViewContextMenu::IsCommandIdEnabled(int id) const {
       return true;
     case IDC_OPEN_IN_CONTAINER:
       return true;
+    case IDC_CONTENT_CONTEXT_BRAVE_TRANSLATE_SELECTION:
+      return IsBraveTranslateSelectionEnabled();
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
     case IDC_NEW_EMAIL_ALIAS:
       return !!GetEmailAliasesController(GetBrowser());
@@ -449,6 +457,9 @@ void RenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
     case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS:
       cosmetic_filters::CosmeticFiltersTabHelper::LaunchContentPicker(
           source_web_contents_);
+      break;
+    case IDC_CONTENT_CONTEXT_BRAVE_TRANSLATE_SELECTION:
+      ExecBraveTranslateSelection();
       break;
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
     case IDC_NEW_EMAIL_ALIAS:
@@ -872,6 +883,7 @@ void RenderViewContextMenu::InitMenu() {
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   BuildEmailAliasesMenu();
 #endif
+  BuildBraveTranslateSelectionItem();
 }
 
 void RenderViewContextMenu::NotifyMenuShown() {
@@ -919,3 +931,66 @@ void RenderViewContextMenu::BuildEmailAliasesMenu() {
   }
 }
 #endif  // BUILDFLAG(ENABLE_EMAIL_ALIASES)
+
+bool RenderViewContextMenu::IsBraveTranslateSelectionEnabled() const {
+  if (params_.selection_text.empty()) {
+    return false;
+  }
+  if (!translate::IsBraveTranslateGoAvailable()) {
+    return false;
+  }
+  if (GetProfile()->IsOffTheRecord()) {
+    return false;
+  }
+  const Browser* browser = GetBrowser();
+  if (browser && browser->is_type_app()) {
+    return false;
+  }
+  return true;
+}
+
+void RenderViewContextMenu::BuildBraveTranslateSelectionItem() {
+  if (!IsBraveTranslateSelectionEnabled()) {
+    return;
+  }
+
+  std::optional<size_t> google_index =
+      menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_PARTIAL_TRANSLATE);
+  if (google_index.has_value()) {
+    menu_model_.RemoveItemAt(*google_index);
+    menu_model_.InsertItemWithStringIdAt(
+        *google_index, IDC_CONTENT_CONTEXT_BRAVE_TRANSLATE_SELECTION,
+        IDS_CONTENT_CONTEXT_BRAVE_TRANSLATE_SELECTION);
+    return;
+  }
+
+  std::optional<size_t> print_index =
+      menu_model_.GetIndexOfCommandId(IDC_PRINT);
+  if (print_index.has_value()) {
+    menu_model_.InsertItemWithStringIdAt(
+        *print_index, IDC_CONTENT_CONTEXT_BRAVE_TRANSLATE_SELECTION,
+        IDS_CONTENT_CONTEXT_BRAVE_TRANSLATE_SELECTION);
+  } else {
+    menu_model_.AddItemWithStringId(
+        IDC_CONTENT_CONTEXT_BRAVE_TRANSLATE_SELECTION,
+        IDS_CONTENT_CONTEXT_BRAVE_TRANSLATE_SELECTION);
+  }
+}
+
+void RenderViewContextMenu::ExecBraveTranslateSelection() {
+  ChromeTranslateClient* chrome_translate_client =
+      ChromeTranslateClient::FromWebContents(source_web_contents_);
+
+  if (!chrome_translate_client) {
+    return;
+  }
+
+  translate::TranslateManager* manager =
+      chrome_translate_client->GetTranslateManager();
+
+  if (!manager) {
+    return;
+  }
+
+  manager->ShowTranslateUI(true, true);
+}
