@@ -1876,6 +1876,48 @@ IN_PROC_BROWSER_TEST_P(VerticalTabStripBrowserTest,
             TabSlotView::ViewType::kTabGroupHeader);
 }
 
+IN_PROC_BROWSER_TEST_P(VerticalTabStripBrowserTest,
+                       ToggleGroupExpandedCommandUpdatesLayout) {
+  ToggleVerticalTabStrip();
+
+  auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
+      views::AsViewClass<BraveTabStrip>(
+          browser_view()->horizontal_tab_strip_for_testing())
+          ->GetTabContainerForTesting());
+  ASSERT_TRUE(brave_tab_container);
+
+  // Deflake the test by setting TabGroupSyncService initialized.
+  tab_groups::TabGroupSyncService* service =
+      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
+          browser()->profile());
+  service->SetIsInitializedForTesting(true);
+
+  auto* model = browser()->tab_strip_model();
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
+
+  while (brave_tab_container->GetMaxScrollOffset() <=
+         5 * tabs::kVerticalTabHeight) {
+    AppendTab(browser());
+    browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
+    InvalidateAndRunLayoutForVerticalTabStrip();
+  }
+
+  tab_groups::TabGroupId group1 =
+      AddTabToNewGroup(browser(), model->count() - 1);
+  model->ActivateTabAt(model->count() - 1);
+  const int expanded_scroll_offset = brave_tab_container->GetMaxScrollOffset();
+
+  brave::ToggleGroupExpanded(browser());
+
+  ASSERT_TRUE(browser_view()
+                  ->horizontal_tab_strip_for_testing()
+                  ->controller()
+                  ->IsGroupCollapsed(group1));
+  EXPECT_EQ(brave_tab_container->GetMaxScrollOffset(),
+            expanded_scroll_offset - tabs::kVerticalTabHeight -
+                tabs::kVerticalTabsSpacing);
+}
+
 // * Non-type argument of 'float' or 'double' for template is unsupported
 // * Passing template as argument of IN_PROC_BROWSER_TEST_F is not working
 // > thus, use macro instead.

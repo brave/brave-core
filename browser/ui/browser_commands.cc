@@ -718,9 +718,16 @@ void ToggleGroupExpanded(Browser* browser) {
 
   auto* group = tsm->group_model()->GetTabGroup(*group_id);
   auto* vd = group->visual_data();
+  const bool collapsed = !vd->is_collapsed();
   tab_groups::TabGroupVisualData vd_update(vd->title(), vd->color(),
-                                           !vd->is_collapsed());
+                                           collapsed);
   group->SetVisualData(vd_update);
+
+  auto* brave_tsm = static_cast<BraveTabStripModel*>(tsm);
+  if (const auto* tree_node_id = brave_tsm->GetTreeTabNodeIdForGroup(*group_id);
+      tree_node_id) {
+    brave_tsm->SetTreeTabNodeCollapsed(*tree_node_id, collapsed);
+  }
 }
 
 void CloseUngroupedTabs(Browser* browser) {
