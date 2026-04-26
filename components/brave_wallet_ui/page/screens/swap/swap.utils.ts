@@ -11,7 +11,7 @@ import { LPMetadata } from './constants/metadata'
 // Utils
 import Amount from '../../../utils/amount'
 import { getTokenPriceAmountFromRegistry } from '../../../utils/pricing-utils'
-import { makeNetworkAsset } from '../../../options/asset-options'
+import { makeNetworkAsset } from '../../../utils/asset-utils'
 import { sanitizeImageURL } from '../../../utils/string-utils'
 
 function ensureUnique<T>(array: T[], key: keyof T): T[] {

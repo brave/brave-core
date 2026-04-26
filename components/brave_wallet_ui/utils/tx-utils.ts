@@ -40,7 +40,7 @@ import {
   computeFiatAmount,
   getTokenPriceAmountFromRegistry,
 } from './pricing-utils'
-import { makeNetworkAsset } from '../options/asset-options'
+import { makeNetworkAsset } from './asset-utils'
 import { getAccountLabel, getAddressLabel } from './account-utils'
 import { makeSerializableTimeDelta } from './model-serialization-utils'
 import {

@@ -19,7 +19,7 @@ import { Panel } from '../panel/index'
 // Utils
 import Amount from '../../../utils/amount'
 import { parseTransactionFeesWithoutPrices } from '../../../utils/tx-utils'
-import { makeNetworkAsset } from '../../../options/asset-options'
+import { makeNetworkAsset } from '../../../utils/asset-utils'
 import {
   getTokenPriceAmountFromRegistry,
   getPriceRequestsForTokens,

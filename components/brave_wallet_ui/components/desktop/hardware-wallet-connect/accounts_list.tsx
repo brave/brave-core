@@ -22,7 +22,7 @@ import { getLocale } from '../../../../common/locale'
 import {
   useGetNetworksRegistryQuery, //
 } from '../../../common/slices/api.slice'
-import { makeNetworkAsset } from '../../../options/asset-options'
+import { makeNetworkAsset } from '../../../utils/asset-utils'
 import {
   networkEntityAdapter, //
   selectAllNetworksFromQueryResult,

@@ -30,7 +30,7 @@ import { getLocale } from '../../../../../common/locale'
 import {
   parseTransactionFeesWithoutPrices, //
 } from '../../../../utils/tx-utils'
-import { makeNetworkAsset } from '../../../../options/asset-options'
+import { makeNetworkAsset } from '../../../../utils/asset-utils'
 import {
   getPriceRequestsForTokens,
   getTokenPriceAmountFromRegistry,

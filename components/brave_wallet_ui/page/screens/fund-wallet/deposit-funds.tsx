@@ -21,7 +21,7 @@ import {
 
 // utils
 import { getLocale } from '../../../../common/locale'
-import { makeNetworkAsset } from '../../../options/asset-options'
+import { makeNetworkAsset } from '../../../utils/asset-utils'
 import {
   getAssetIdKey,
   sortNativeAndAndBatAssetsToTop,

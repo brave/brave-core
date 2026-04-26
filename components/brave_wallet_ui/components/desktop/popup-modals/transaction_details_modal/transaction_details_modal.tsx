@@ -70,7 +70,7 @@ import {
   getAddressLabel,
   getAccountLabel,
 } from '../../../../utils/account-utils'
-import { makeNetworkAsset } from '../../../../options/asset-options'
+import { makeNetworkAsset } from '../../../../utils/asset-utils'
 import { openTab } from '../../../../utils/routes-utils'
 import {
   errorTxTypes,

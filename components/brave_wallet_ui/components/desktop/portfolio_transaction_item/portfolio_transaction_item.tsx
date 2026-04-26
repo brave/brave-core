@@ -38,7 +38,7 @@ import {
 import {
   accountInfoEntityAdaptorInitialState, //
 } from '../../../common/slices/entities/account-info.entity'
-import { makeNetworkAsset } from '../../../options/asset-options'
+import { makeNetworkAsset } from '../../../utils/asset-utils'
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
 import { getAddressLabel, getAccountLabel } from '../../../utils/account-utils'
 import {

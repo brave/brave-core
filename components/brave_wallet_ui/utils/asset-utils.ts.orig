@@ -9,14 +9,10 @@ import {
   BraveWallet,
   SupportedBridgeCoinTypes,
   SupportedSwapCoinTypes,
-  SupportedTestNetworks,
 } from '../constants/types'
 import {
   TokenBalancesRegistry, //
 } from '../common/slices/entities/token-balance.entity'
-
-// magics
-import { SKIP_PRICE_LOOKUP_COINGECKO_ID } from '../common/constants/magics'
 
 // utils
 import Amount from './amount'

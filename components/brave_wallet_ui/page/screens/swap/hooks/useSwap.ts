@@ -33,9 +33,7 @@ import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 // Utils
 import { getLocale } from '$web-common/locale'
 import Amount from '../../../../utils/amount'
-// FIXME(onyb): move makeNetworkAsset to utils/assets-utils
-import { isNativeAsset } from '../../../../utils/asset-utils'
-import { makeNetworkAsset } from '../../../../options/asset-options'
+import { isNativeAsset, makeNetworkAsset } from '../../../../utils/asset-utils'
 import {
   getPriceRequestsForTokens,
   getTokenPriceAmountFromRegistry,

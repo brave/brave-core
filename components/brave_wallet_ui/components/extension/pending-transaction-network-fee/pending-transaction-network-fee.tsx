@@ -19,7 +19,7 @@ import {
   getPriceRequestsForTokens,
   getTokenPriceFromRegistry,
 } from '../../../utils/pricing-utils'
-import { makeNetworkAsset } from '../../../options/asset-options'
+import { makeNetworkAsset } from '../../../utils/asset-utils'
 
 // components
 import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
