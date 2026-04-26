@@ -23,6 +23,7 @@ export class TrezorBridgeTransport extends MessagingTransport {
   private readonly frameId: string
   private readonly bridgeFrameUrl: string
   private bridge?: HTMLIFrameElement
+  private pendingBridge?: Promise<HTMLIFrameElement>
 
   closeBridge = () => {
     if (!this.bridge || !this.hasBridgeCreated()) {
@@ -40,8 +41,14 @@ export class TrezorBridgeTransport extends MessagingTransport {
     command: TrezorFrameCommand,
   ): Promise<T | TrezorErrorsCodes> => {
     return new Promise<T | TrezorErrorsCodes>(async (resolve) => {
-      if (!this.bridge && !this.hasBridgeCreated()) {
-        this.bridge = await this.createBridge()
+      if (!this.bridge) {
+        if (this.pendingBridge) {
+          this.bridge = await this.pendingBridge
+        } else if (!this.hasBridgeCreated()) {
+          this.pendingBridge = this.createBridge()
+          this.bridge = await this.pendingBridge
+          this.pendingBridge = undefined
+        }
       }
       if (!this.bridge || !this.bridge.contentWindow) {
         resolve(TrezorErrorsCodes.BridgeNotReady)

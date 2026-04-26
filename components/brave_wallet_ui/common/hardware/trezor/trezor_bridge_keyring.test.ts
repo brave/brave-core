@@ -270,26 +270,70 @@ test('Bridge not ready', () => {
     kTrezorBridgeUrl,
     new TrezorBridgeTransport(kTrezorBridgeUrl),
   )
-  // Mock createBridge to add a DOM element (so hasBridgeCreated returns true)
-  // without using a real iframe. Real iframes in jsdom can fire onload
-  // asynchronously, causing the pending createBridge promise to resolve during
-  // a later test and interfere with its execution.
+  // Pre-create a DOM element so hasBridgeCreated() returns true, simulating a
+  // stale bridge element without an active connection (e.g. a previous failed
+  // initialization left the element behind).
   const frameId = (hardwareTransport as any).frameId
-  hardwareTransport.createBridge = () => {
-    const el = document.createElement('div')
-    el.id = frameId
-    document.body.appendChild(el)
-    return new Promise(() => {}) // never resolves
-  }
+  const el = document.createElement('div')
+  el.id = frameId
+  document.body.appendChild(el)
+
   hardwareKeyring.sendTrezorCommand = (
     command: TrezorFrameCommand,
     listener: Function,
   ) => {
     return hardwareTransport.sendCommandToTrezorFrame(command, listener)
   }
-  hardwareKeyring.sendTrezorCommand('command1', () => {}).then()
   const result = hardwareKeyring.sendTrezorCommand('command1', () => {})
+  el.remove()
   return expect(result).resolves.toStrictEqual(TrezorErrorsCodes.BridgeNotReady)
+})
+
+test('Concurrent sendCommandToTrezorFrame calls create only one bridge', async () => {
+  const hardwareTransport = createTransport(
+    kTrezorBridgeUrl,
+    new TrezorBridgeTransport(kTrezorBridgeUrl),
+  )
+
+  let createBridgeCallCount = 0
+  let resolveBridge: (value: any) => void
+
+  hardwareTransport.contentWindow = {
+    postMessage: (message: any, targetOrigin: any) => {
+      expect(targetOrigin).toStrictEqual(kTrezorBridgeUrl)
+      hardwareTransport.postResponse({
+        id: message.id,
+        command: message.command,
+        payload: { success: true },
+      })
+    },
+  }
+
+  hardwareTransport.createBridge = () => {
+    createBridgeCallCount++
+    return new Promise((resolve) => {
+      resolveBridge = resolve
+    })
+  }
+
+  const call1 = hardwareTransport.sendCommandToTrezorFrame({
+    id: 'concurrent-1',
+    command: TrezorCommand.Unlock,
+    origin: kTrezorBridgeUrl,
+  })
+  const call2 = hardwareTransport.sendCommandToTrezorFrame({
+    id: 'concurrent-2',
+    command: TrezorCommand.Unlock,
+    origin: kTrezorBridgeUrl,
+  })
+
+  resolveBridge!(hardwareTransport)
+
+  const [result1, result2] = await Promise.all([call1, call2])
+
+  expect(createBridgeCallCount).toBe(1)
+  expect(result1).toHaveProperty('payload', { success: true })
+  expect(result2).toHaveProperty('payload', { success: true })
 })
 
 test('Device is busy', () => {
