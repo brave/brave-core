@@ -4374,7 +4374,7 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, RestoreWalletTwice) {
   TestFuture<bool> restore_future;
   brave_wallet_service.RestoreWallet(saved_mnemonic(), "brave1", false,
                                      restore_future.GetCallback());
-  EXPECT_TRUE(restore_future.Get());
+  ASSERT_TRUE(restore_future.Get());
   observer.WaitAndVerify();
 
   std::vector<mojom::AccountInfoPtr> account_infos =
