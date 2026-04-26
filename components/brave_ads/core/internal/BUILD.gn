@@ -499,6 +499,7 @@ static_library("internal") {
     "common/url/request_builder/url_request_builder_interface.h",
     "common/url/url_request_string_util.cc",
     "common/url/url_request_string_util.h",
+    "common/url/url_response_result.h",
     "common/url/url_response_string_util.cc",
     "common/url/url_response_string_util.h",
     "common/url/url_util.cc",

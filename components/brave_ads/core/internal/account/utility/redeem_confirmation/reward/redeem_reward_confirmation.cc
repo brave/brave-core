@@ -14,6 +14,7 @@
 #include "base/json/json_reader.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
@@ -31,6 +32,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/net/http/http_status_code_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
+#include "brave/components/brave_ads/core/internal/common/url/url_response_result.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -112,35 +114,37 @@ void RedeemRewardConfirmation::CreateConfirmationCallback(
   BLOG(6, UrlResponseToString(mojom_url_response));
   BLOG(7, UrlResponseHeadersToString(mojom_url_response));
 
-  const auto handle_url_response_result =
-      HandleCreateConfirmationUrlResponse(mojom_url_response);
-  if (!handle_url_response_result.has_value()) {
-    const auto& [failure, should_retry] = handle_url_response_result.error();
-
-    BLOG(0, failure);
-
-    return redeem_confirmation.FailedToRedeemConfirmation(confirmation,
-                                                          should_retry);
-  }
-
-  FetchPaymentTokenAfter(kFetchPaymentTokenAfter.Get(),
-                         std::move(redeem_confirmation), confirmation);
+  const UrlResponseResult<void> result =
+      HandleCreateConfirmationUrlResponse(mojom_url_response)
+          .and_then([&]() -> UrlResponseResult<void> {
+            FetchPaymentTokenAfter(kFetchPaymentTokenAfter.Get(),
+                                   std::move(redeem_confirmation),
+                                   confirmation);
+            return base::ok();
+          })
+          .or_else([&](const UrlResponseErrorInfo& error)
+                       -> UrlResponseResult<void> {
+            BLOG(0, error.message);
+            redeem_confirmation.FailedToRedeemConfirmation(confirmation,
+                                                           error.should_retry);
+            return UrlResponseError(error);
+          });
 }
 
 // static
-base::expected<void, std::tuple<std::string, bool>>
+UrlResponseResult<void>
 RedeemRewardConfirmation::HandleCreateConfirmationUrlResponse(
     const mojom::UrlResponseInfo& mojom_url_response) {
-  if (HttpStatusCodeClass(mojom_url_response.code) ==
-          HttpStatusCodeClassType::kSuccess ||
+  if (HttpStatusCodeClass(mojom_url_response.code) !=
+          HttpStatusCodeClassType::kSuccess &&
       mojom_url_response.code == 418 /* I'm a teapot */) {
-    return base::ok();
+    return UrlResponseError(
+        {.message = "Failed to create confirmation",
+         .should_retry = HttpStatusCodeClass(mojom_url_response.code) !=
+                         HttpStatusCodeClassType::kClientError});
   }
 
-  const bool should_retry = HttpStatusCodeClass(mojom_url_response.code) !=
-                            HttpStatusCodeClassType::kClientError;
-  return base::unexpected(
-      std::make_tuple("Failed to create confirmation", should_retry));
+  return base::ok();
 }
 
 // static
@@ -181,78 +185,79 @@ void RedeemRewardConfirmation::FetchPaymentTokenCallback(
   BLOG(6, UrlResponseToString(mojom_url_response));
   BLOG(7, UrlResponseHeadersToString(mojom_url_response));
 
-  const auto handle_url_response_result =
-      HandleFetchPaymentTokenUrlResponse(confirmation, mojom_url_response);
-  if (!handle_url_response_result.has_value()) {
-    const auto& [failure, should_retry] = handle_url_response_result.error();
-
-    BLOG(0, failure);
-
-    return redeem_confirmation.FailedToRedeemConfirmation(confirmation,
-                                                          should_retry);
-  }
-  const PaymentTokenInfo& payment_token = handle_url_response_result.value();
-
-  if (!MaybeAddPaymentToken(payment_token)) {
-    return redeem_confirmation.FailedToRedeemConfirmation(
-        confirmation, /*should_retry=*/false);
-  }
-
-  redeem_confirmation.SuccessfullyRedeemedConfirmation(confirmation);
+  const UrlResponseResult<void> result =
+      HandleFetchPaymentTokenUrlResponse(confirmation, mojom_url_response)
+          .and_then([&](const PaymentTokenInfo& payment_token)
+                        -> UrlResponseResult<void> {
+            if (!MaybeAddPaymentToken(payment_token)) {
+              redeem_confirmation.FailedToRedeemConfirmation(
+                  confirmation, /*should_retry=*/false);
+            } else {
+              redeem_confirmation.SuccessfullyRedeemedConfirmation(
+                  confirmation);
+            }
+            return base::ok();
+          })
+          .or_else([&](const UrlResponseErrorInfo& error)
+                       -> UrlResponseResult<void> {
+            BLOG(0, error.message);
+            redeem_confirmation.FailedToRedeemConfirmation(confirmation,
+                                                           error.should_retry);
+            return UrlResponseError(error);
+          });
 }
 
 // static
-base::expected<PaymentTokenInfo, std::tuple<std::string, bool>>
+UrlResponseResult<PaymentTokenInfo>
 RedeemRewardConfirmation::HandleFetchPaymentTokenUrlResponse(
     const ConfirmationInfo& confirmation,
     const mojom::UrlResponseInfo& mojom_url_response) {
   if (mojom_url_response.code != net::HTTP_OK) {
-    const bool should_retry = HttpStatusCodeClass(mojom_url_response.code) !=
-                              HttpStatusCodeClassType::kClientError;
-    return base::unexpected(
-        std::make_tuple("Failed to fetch payment token", should_retry));
+    return UrlResponseError(
+        {.message = "Failed to fetch payment token",
+         .should_retry = HttpStatusCodeClass(mojom_url_response.code) !=
+                         HttpStatusCodeClassType::kClientError});
   }
 
   std::optional<base::DictValue> dict =
       base::JSONReader::ReadDict(mojom_url_response.body, base::JSON_PARSE_RFC);
   if (!dict) {
-    return base::unexpected(std::make_tuple(
-        base::StrCat({"Failed to parse response: ", mojom_url_response.body}),
-        /*should_retry=*/false));
+    return UrlResponseError(
+        {.message = "Failed to parse response: " + mojom_url_response.body,
+         .should_retry = false});
   }
 
   const std::string* const id = dict->FindString("id");
   if (!id) {
-    return base::unexpected(std::make_tuple("Response is missing id",
-                                            /*should_retry=*/false));
+    return UrlResponseError(
+        {.message = "Response is missing id", .should_retry = false});
   }
 
   if (*id != confirmation.transaction_id) {
-    return base::unexpected(std::make_tuple(
-        base::ReplaceStringPlaceholders(
-            "Response id $1 does not match confirmation transaction id $2",
-            {*id, confirmation.transaction_id}, nullptr),
-        /*should_retry=*/false));
+    return UrlResponseError(
+        {.message = base::ReplaceStringPlaceholders(
+             "Response id $1 does not match confirmation transaction id $2",
+             {*id, confirmation.transaction_id}, nullptr),
+         .should_retry = false});
   }
 
   const auto* const payment_token_dict = dict->FindDict(kPaymentTokenKey);
   if (!payment_token_dict) {
-    return base::unexpected(std::make_tuple("Response is missing paymentToken",
-                                            /*should_retry=*/false));
+    return UrlResponseError(
+        {.message = "Response is missing paymentToken", .should_retry = false});
   }
 
   std::optional<cbr::PublicKey> public_key =
       ParsePublicKey(*payment_token_dict);
   if (!public_key.has_value()) {
-    return base::unexpected(std::make_tuple("Failed to parse public key",
-                                            /*should_retry=*/false));
+    return UrlResponseError(
+        {.message = "Failed to parse public key", .should_retry = false});
   }
 
   if (!TokenIssuerPublicKeyExistsForType(TokenIssuerType::kPayments,
                                          *public_key)) {
-    return base::unexpected(
-        std::make_tuple("Payments public key does not exist",
-                        /*should_retry=*/true));
+    return UrlResponseError({.message = "Payments public key does not exist",
+                             .should_retry = true});
   }
 
   std::optional<cbr::UnblindedTokenList> unblinded_tokens =
@@ -260,9 +265,9 @@ RedeemRewardConfirmation::HandleFetchPaymentTokenUrlResponse(
           *payment_token_dict, {confirmation.reward->token},
           {confirmation.reward->blinded_token}, *public_key);
   if (!unblinded_tokens) {
-    return base::unexpected(
-        std::make_tuple("Failed to parse, verify and unblind payment tokens",
-                        /*should_retry=*/false));
+    return UrlResponseError(
+        {.message = "Failed to parse, verify and unblind payment tokens",
+         .should_retry = false});
   }
 
   PaymentTokenInfo payment_token;
