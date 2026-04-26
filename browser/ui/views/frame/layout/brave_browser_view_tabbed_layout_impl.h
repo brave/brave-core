@@ -73,6 +73,7 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   void UpdateMarginsForSideBar();
 
   gfx::Insets GetContentsMargins() const;
+  bool ShouldUseOneLinerTabs() const;
   bool ShouldPushBookmarkBarForVerticalTabs() const;
   gfx::Insets GetInsetsConsideringVerticalTabHost() const;
 

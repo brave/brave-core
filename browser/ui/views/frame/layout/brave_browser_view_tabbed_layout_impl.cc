@@ -11,6 +11,7 @@
 
 #include "base/check.h"
 #include "base/check_is_test.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
@@ -23,9 +24,11 @@
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bar_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h"
 #include "chrome/browser/ui/views/infobars/infobar_container_view.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
+#include "components/prefs/pref_service.h"
 #include "ui/views/border.h"
 #include "ui/views/view_class_properties.h"
 
@@ -219,6 +222,71 @@ gfx::Rect BraveBrowserViewTabbedLayoutImpl::CalculateTopContainerLayout(
   // Get base layout from parent
   gfx::Rect bounds = BrowserViewTabbedLayoutImpl::CalculateTopContainerLayout(
       layout, params, needs_exclusion);
+
+  if (ShouldUseOneLinerTabs() && views().horizontal_tab_strip_region_view) {
+    auto* tabstrip_layout =
+        layout.GetLayoutFor(views().horizontal_tab_strip_region_view);
+    auto* toolbar_layout = layout.GetLayoutFor(views().toolbar);
+    if (tabstrip_layout && toolbar_layout &&
+        tabstrip_layout->visibility.value_or(true) &&
+        toolbar_layout->visibility.value_or(true) &&
+        !tabstrip_layout->bounds.IsEmpty() &&
+        !toolbar_layout->bounds.IsEmpty()) {
+      constexpr int kOneLinerTopChromeHeight = 60;
+      constexpr int kMinOneLinerTabStripWidth = 240;
+      const int row_x = tabstrip_layout->bounds.x();
+      const int available_width = tabstrip_layout->bounds.width();
+      const int preferred_toolbar_width =
+          std::max(views().toolbar->GetMinimumSize().width(),
+                   (available_width * 2) / 5);
+      const int toolbar_width =
+          std::min(preferred_toolbar_width,
+                   available_width - kMinOneLinerTabStripWidth);
+
+      // If the window is too narrow, keep Chromium's stacked layout instead of
+      // letting the toolbar and tabs overlap.
+      if (toolbar_width >= views().toolbar->GetMinimumSize().width()) {
+        const int row_y =
+            std::min(tabstrip_layout->bounds.y(), toolbar_layout->bounds.y());
+        const int row_height =
+            std::max(kOneLinerTopChromeHeight,
+                     std::max(tabstrip_layout->bounds.height(),
+                              toolbar_layout->bounds.height()));
+        const int tabstrip_y =
+            row_y + (row_height - tabstrip_layout->bounds.height()) / 2;
+        const int toolbar_y =
+            row_y + (row_height - toolbar_layout->bounds.height()) / 2;
+        const int old_stacked_bottom =
+            std::max(tabstrip_layout->bounds.bottom(),
+                     toolbar_layout->bounds.bottom());
+        const int vertical_reduction =
+            old_stacked_bottom - (row_y + row_height);
+
+        toolbar_layout->bounds =
+            gfx::Rect(row_x, toolbar_y, toolbar_width,
+                      toolbar_layout->bounds.height());
+        tabstrip_layout->bounds =
+            gfx::Rect(toolbar_layout->bounds.right(), tabstrip_y,
+                      available_width - toolbar_width,
+                      tabstrip_layout->bounds.height());
+
+        if (vertical_reduction > 0) {
+          for (auto& [child, child_layout] : layout.children) {
+            if (child == views().toolbar ||
+                child == views().horizontal_tab_strip_region_view) {
+              continue;
+            }
+            if (!child_layout.bounds.IsEmpty() &&
+                child_layout.bounds.y() >= old_stacked_bottom) {
+              child_layout.bounds.Offset(0, -vertical_reduction);
+            }
+          }
+          bounds.set_height(std::max(row_height,
+                                     bounds.height() - vertical_reduction));
+        }
+      }
+    }
+  }
 
   if (!delegate().ShouldShowVerticalTabs()) {
     return bounds;
@@ -612,6 +680,18 @@ gfx::Insets BraveBrowserViewTabbedLayoutImpl::GetContentsMargins() const {
   }
 
   return margins;
+}
+
+bool BraveBrowserViewTabbedLayoutImpl::ShouldUseOneLinerTabs() const {
+  const auto* const browser = this->browser();
+  if (!browser || !browser->profile()) {
+    return false;
+  }
+
+  return browser->profile()->GetPrefs()->GetBoolean(
+             brave_tabs::kOneLinerTabsEnabled) &&
+         delegate().ShouldDrawTabStrip() && delegate().IsToolbarVisible() &&
+         !delegate().ShouldShowVerticalTabs();
 }
 
 bool BraveBrowserViewTabbedLayoutImpl::ShouldPushBookmarkBarForVerticalTabs()

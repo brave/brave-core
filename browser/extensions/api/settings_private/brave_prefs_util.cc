@@ -159,6 +159,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kNumber;
   (*s_brave_allowlist)[brave_tabs::kTabMinWidthMode] =
       settings_api::PrefType::kNumber;
+  (*s_brave_allowlist)[brave_tabs::kOneLinerTabsEnabled] =
+      settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kTabMuteIndicatorNotClickable] =
       settings_api::PrefType::kBoolean;
 #if BUILDFLAG(IS_MAC)
