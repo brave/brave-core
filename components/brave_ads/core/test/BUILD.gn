@@ -370,6 +370,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/creatives/conversions/test/creative_set_conversion_test_util.h",
     "//brave/components/brave_ads/core/internal/creatives/creative_ads_database_table_unittest.cc",
     "//brave/components/brave_ads/core/internal/creatives/creative_ads_database_table_util_unittest.cc",
+    "//brave/components/brave_ads/core/internal/creatives/creatives_builder_unittest.cc",
     "//brave/components/brave_ads/core/internal/creatives/dayparts_database_table_unittest.cc",
     "//brave/components/brave_ads/core/internal/creatives/geo_targets_database_table_unittest.cc",
     "//brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type_util_unittest.cc",
