@@ -33,6 +33,8 @@
 #include "content/public/browser/browser_context.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/skus/skus_service_factory.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
@@ -65,8 +67,16 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
                             base::Unretained(this)));
 #if BUILDFLAG(ENABLE_AI_CHAT)
     if (local_state) {
-      ai_chat_metrics_ =
-          std::make_unique<ai_chat::AIChatMetrics>(local_state, profile_prefs_);
+      auto skus_service_getter = base::BindRepeating(
+          [](content::BrowserContext* context) {
+            return skus::SkusServiceFactory::GetForContext(context);
+          },
+          context);
+      auto credential_manager =
+          std::make_unique<ai_chat::AIChatCredentialManager>(
+              std::move(skus_service_getter), local_state);
+      ai_chat_metrics_ = std::make_unique<ai_chat::AIChatMetrics>(
+          local_state, profile_prefs_, std::move(credential_manager));
     }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
   }

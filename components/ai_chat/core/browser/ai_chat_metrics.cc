@@ -22,6 +22,7 @@
 #include "base/metrics/histogram_functions_internal_overloads.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/time/time.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
@@ -184,8 +185,10 @@ constexpr auto kUsageDailyHistogramNames =
 
 }  // namespace
 
-AIChatMetrics::AIChatMetrics(PrefService* local_state,
-                             PrefService* profile_prefs)
+AIChatMetrics::AIChatMetrics(
+    PrefService* local_state,
+    PrefService* profile_prefs,
+    std::unique_ptr<AIChatCredentialManager> credential_manager)
     : is_premium_(
           local_state->GetBoolean(prefs::kBraveChatP3ALastPremiumStatus)),
       chat_count_storage_(local_state,
@@ -212,7 +215,9 @@ AIChatMetrics::AIChatMetrics(PrefService* local_state,
                                 prefs::kBraveChatP3AFullPageSwitches),
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
       local_state_(local_state),
-      profile_prefs_(profile_prefs) {
+      profile_prefs_(profile_prefs),
+      credential_manager_(std::move(credential_manager)) {
+  CHECK(credential_manager_);
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   for (int i = 0; i <= static_cast<int>(ContextMenuAction::kMaxValue); i++) {
     ContextMenuAction action = static_cast<ContextMenuAction>(i);
@@ -275,10 +280,25 @@ void AIChatMetrics::Bind(mojo::PendingReceiver<mojom::Metrics> receiver) {
   receivers_.Add(this, std::move(receiver));
 }
 
-void AIChatMetrics::RecordEnabled(
-    bool is_enabled,
-    bool is_new_user,
-    RetrievePremiumStatusCallback retrieve_premium_status_callback) {
+bool AIChatMetrics::MaybeUpdatePremiumStatus(std::optional<bool> is_new_user) {
+  base::Time last_premium_check =
+      local_state_->GetTime(prefs::kBraveChatP3ALastPremiumCheck);
+  if (!last_premium_check.is_null() &&
+      (base::Time::Now() - last_premium_check) < kPremiumCheckInterval) {
+    return false;
+  }
+  if (!premium_check_in_progress_) {
+    premium_check_in_progress_ = true;
+    credential_manager_->GetPremiumStatus(
+        base::BindOnce(&AIChatMetrics::OnPremiumStatusUpdated,
+                       weak_ptr_factory_.GetWeakPtr(), is_new_user));
+  }
+  return true;
+}
+
+void AIChatMetrics::RecordEnabled(bool is_new_user) {
+  bool is_enabled = HasUserOptedIn(profile_prefs_);
+
   if (is_enabled && !is_new_user &&
       local_state_->GetTime(prefs::kBraveChatP3AFirstUsageTime).is_null()) {
     // If the user already had AI chat enabled, and we did not record the first
@@ -294,20 +314,8 @@ void AIChatMetrics::RecordEnabled(
     return;
   }
 
-  if (retrieve_premium_status_callback) {
-    base::Time last_premium_check =
-        local_state_->GetTime(prefs::kBraveChatP3ALastPremiumCheck);
-    if (last_premium_check.is_null() ||
-        (base::Time::Now() - last_premium_check) >= kPremiumCheckInterval) {
-      if (!premium_check_in_progress_) {
-        premium_check_in_progress_ = true;
-        std::move(retrieve_premium_status_callback)
-            .Run(base::BindOnce(&AIChatMetrics::OnPremiumStatusUpdated,
-                                weak_ptr_factory_.GetWeakPtr(), is_enabled,
-                                is_new_user));
-      }
-      return;
-    }
+  if (MaybeUpdatePremiumStatus(is_new_user)) {
+    return;
   }
 
   is_enabled_ = true;
@@ -330,8 +338,7 @@ void AIChatMetrics::RecordReset() {
                              static_cast<int>(EntryPoint::kMaxValue) + 1);
 }
 
-void AIChatMetrics::OnPremiumStatusUpdated(bool is_enabled,
-                                           bool is_new_user,
+void AIChatMetrics::OnPremiumStatusUpdated(std::optional<bool> is_new_user,
                                            mojom::PremiumStatus premium_status,
                                            mojom::PremiumInfoPtr) {
   is_premium_ = premium_status == mojom::PremiumStatus::Active ||
@@ -340,7 +347,9 @@ void AIChatMetrics::OnPremiumStatusUpdated(bool is_enabled,
   local_state_->SetTime(prefs::kBraveChatP3ALastPremiumCheck,
                         base::Time::Now());
   premium_check_in_progress_ = false;
-  RecordEnabled(is_enabled, is_new_user, {});
+  if (is_new_user.has_value()) {
+    RecordEnabled(*is_new_user);
+  }
 }
 
 void AIChatMetrics::RecordNewPrompt(ConversationHandlerForMetrics* handler,
@@ -529,6 +538,7 @@ void AIChatMetrics::ReportAllMetrics() {
   periodic_report_timer_.Start(
       FROM_HERE, base::Time::Now() + kReportInterval,
       base::BindOnce(&AIChatMetrics::ReportAllMetrics, base::Unretained(this)));
+  MaybeUpdatePremiumStatus(std::nullopt);
   ReportChatCounts();
   ReportFeatureUsageMetrics();
   ReportContextSource();
