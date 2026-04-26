@@ -4371,7 +4371,10 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, RestoreWalletTwice) {
   NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
 
   EXPECT_CALL(observer, AccountsChanged()).Times(2);  // Accounts 3 and 10.
-  EXPECT_TRUE(RestoreWallet(&service, saved_mnemonic(), "brave1", false));
+  TestFuture<bool> restore_future;
+  brave_wallet_service.RestoreWallet(saved_mnemonic(), "brave1", false,
+                                     restore_future.GetCallback());
+  EXPECT_TRUE(restore_future.Get());
   observer.WaitAndVerify();
 
   std::vector<mojom::AccountInfoPtr> account_infos =
@@ -4382,6 +4385,82 @@ TEST_F(KeyringServiceAccountDiscoveryUnitTest, RestoreWalletTwice) {
     EXPECT_EQ(account_infos[i]->name, "Account " + base::NumberToString(i + 1));
   }
   // Second restore: 20 attempts more after Account 10 is added.
+  EXPECT_THAT(requested_addresses, ElementsAreArray(&saved_addresses()[1], 30));
+}
+
+TEST_F(KeyringServiceAccountDiscoveryUnitTest,
+       ImportFromExternalWalletDuringDiscovery) {
+  PrepareAccounts(mojom::CoinType::ETH, mojom::KeyringId::kDefault);
+
+  class ImportDelegate : public TestBraveWalletServiceDelegate {
+   public:
+    explicit ImportDelegate(const std::string& mnemonic)
+        : mnemonic_(mnemonic) {}
+    void GetImportInfoFromExternalWallet(
+        mojom::ExternalWalletType type,
+        const std::string& password,
+        GetImportInfoCallback callback) override {
+      std::move(callback).Run(base::ok(ImportInfo({mnemonic_, false, 1})));
+    }
+
+   private:
+    std::string mnemonic_;
+  };
+
+  BraveWalletService brave_wallet_service(
+      shared_url_loader_factory(),
+      std::make_unique<ImportDelegate>(saved_mnemonic()), GetPrefs(),
+      GetLocalState());
+  KeyringService& service = *brave_wallet_service.keyring_service();
+  ASSERT_TRUE(brave_wallet_service.GetBitcoinWalletService());
+  BitcoinTestRpcServer bitcoin_test_rpc_server(
+      *brave_wallet_service.GetBitcoinWalletService());
+
+  std::vector<std::string> requested_addresses;
+  bool first_restore = true;
+  base::RunLoop run_loop;
+  set_eth_transaction_count_callback(base::BindLambdaForTesting(
+      [&, this](const std::string& address) -> std::string {
+        requested_addresses.push_back(address);
+
+        if (first_restore && address == saved_addresses()[5]) {
+          run_loop.Quit();
+        }
+
+        if (address == saved_addresses()[3] ||
+            address == saved_addresses()[10]) {
+          return R"({"jsonrpc":"2.0","id":"1","result":"0x1"})";
+        } else {
+          return R"({"jsonrpc":"2.0","id":"1","result":"0x0"})";
+        }
+      }));
+
+  ASSERT_TRUE(RestoreWallet(&service, saved_mnemonic(), "brave1", false));
+  run_loop.Run();
+  EXPECT_THAT(requested_addresses, ElementsAreArray(&saved_addresses()[1], 5));
+  requested_addresses.clear();
+
+  first_restore = false;
+  service.Reset();
+
+  NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
+
+  EXPECT_CALL(observer, AccountsChanged()).Times(2);
+  TestFuture<bool, std::optional<std::string>> import_future;
+  brave_wallet_service.ImportFromExternalWallet(
+      mojom::ExternalWalletType::MetaMask, "brave1", "brave1",
+      import_future.GetCallback<bool, const std::optional<std::string>&>());
+  EXPECT_TRUE(import_future.Get<0>());
+  EXPECT_FALSE(import_future.Get<1>().has_value());
+  observer.WaitAndVerify();
+
+  std::vector<mojom::AccountInfoPtr> account_infos =
+      service.GetAccountInfosForKeyring(mojom::KeyringId::kDefault);
+  EXPECT_EQ(account_infos.size(), 11u);
+  for (size_t i = 0; i < account_infos.size(); ++i) {
+    EXPECT_EQ(account_infos[i]->address, saved_addresses()[i]);
+    EXPECT_EQ(account_infos[i]->name, "Account " + base::NumberToString(i + 1));
+  }
   EXPECT_THAT(requested_addresses, ElementsAreArray(&saved_addresses()[1], 30));
 }
 

@@ -131,6 +131,10 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
                                 coingecko_ids_map_json));
   }
 
+  BraveWalletService* brave_wallet_service() {
+    return brave_wallet_service_.get();
+  }
+
   KeyringService* keyring_service() {
     return brave_wallet_service_->keyring_service();
   }
@@ -150,7 +154,7 @@ class WalletDataFilesInstallerUnitTest : public testing::Test {
 
   void RestoreWallet() {
     base::RunLoop run_loop;
-    keyring_service()->RestoreWallet(
+    brave_wallet_service()->RestoreWallet(
         kMnemonicDivideCruise, kTestWalletPassword, false,
         base::BindLambdaForTesting([&](bool success) {
           ASSERT_TRUE(success);
@@ -354,8 +358,8 @@ TEST_F(WalletDataFilesInstallerUnitTest,
 
   base::test::TestFuture<bool> future;
 
-  keyring_service()->RestoreWallet(kMnemonicDivideCruise, kTestWalletPassword,
-                                   false, future.GetCallback());
+  brave_wallet_service()->RestoreWallet(
+      kMnemonicDivideCruise, kTestWalletPassword, false, future.GetCallback());
 
   // We treat restricted addresses as an invalid mnemonic.
   auto success = future.Take();

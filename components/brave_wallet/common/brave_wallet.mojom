@@ -1181,14 +1181,6 @@ interface KeyringService {
   // Obtains the mnemonic code words for an already existing wallet
   GetWalletMnemonic(string password) => (string? mnemonic);
 
-  // Restores a wallet with the specified mnemonic and encrypts it with the
-  // new password provided. `is_legacy_eth_seed_format` can be used to restore
-  // the
-  // wallet using Brave's legacy derivation paths.
-  RestoreWallet(
-      string mnemonic, string password, bool is_legacy_eth_seed_format)
-      => (bool is_valid_mnemonic);
-
   // Locks the keyring.
   Lock();
 
@@ -2950,6 +2942,13 @@ interface BraveWalletService {
   AddObserver(pending_remote<BraveWalletServiceObserver> observer);
 
   AddTokenObserver(pending_remote<BraveWalletServiceTokenObserver> observer);
+
+  // Restores a wallet with the specified mnemonic and encrypts it with the
+  // new password provided. `is_legacy_eth_seed_format` can be used to restore
+  // the wallet using Brave's legacy derivation paths.
+  RestoreWallet(
+      string mnemonic, string password, bool is_legacy_eth_seed_format)
+      => (bool is_valid_mnemonic);
 
   // Obtains all the user assets.
   GetAllUserAssets() => (array<BlockchainToken> tokens);

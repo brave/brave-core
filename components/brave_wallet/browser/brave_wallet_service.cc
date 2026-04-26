@@ -623,6 +623,18 @@ void BraveWalletService::IsExternalWalletInitialized(
   delegate_->IsExternalWalletInitialized(type, std::move(callback));
 }
 
+void BraveWalletService::RestoreWallet(const std::string& mnemonic,
+                                       const std::string& password,
+                                       bool is_legacy_eth_seed_format,
+                                       RestoreWalletCallback callback) {
+  account_discovery_manager_.reset();
+  WalletDataFilesInstaller::GetInstance()
+      .MaybeRegisterWalletDataFilesComponentOnDemand(base::BindOnce(
+          &BraveWalletService::OnRestoreWalletRegisterComponentUpdater,
+          weak_ptr_factory_.GetWeakPtr(), mnemonic, password,
+          is_legacy_eth_seed_format, std::move(callback)));
+}
+
 void BraveWalletService::ImportFromExternalWallet(
     mojom::ExternalWalletType type,
     const std::string& password,
@@ -1420,6 +1432,15 @@ void BraveWalletService::OnDiscoverAssetsCompleted(
   }
 }
 
+void BraveWalletService::OnRestoreWalletRegisterComponentUpdater(
+    const std::string& mnemonic,
+    const std::string& password,
+    bool is_legacy_eth_seed_format,
+    RestoreWalletCallback callback) {
+  std::move(callback).Run(keyring_service_->RestoreWalletSync(
+      mnemonic, password, is_legacy_eth_seed_format));
+}
+
 void BraveWalletService::OnGetImportInfo(
     const std::string& new_password,
     base::OnceCallback<void(bool, const std::optional<std::string>&)> callback,
@@ -1444,6 +1465,7 @@ void BraveWalletService::OnGetImportInfo(
     return;
   }
 
+  account_discovery_manager_.reset();
   bool is_valid_mnemonic = keyring_service_->RestoreWalletSync(
       info->mnemonic, new_password, info->is_legacy_crypto_wallets);
   if (!is_valid_mnemonic) {

@@ -86,10 +86,6 @@ class KeyringService : public mojom::KeyringService {
   bool IsWalletCreatedSync();
   void CreateWallet(const std::string& password,
                     CreateWalletCallback callback) override;
-  void RestoreWallet(const std::string& mnemonic,
-                     const std::string& password,
-                     bool is_legacy_eth_seed_format,
-                     RestoreWalletCallback callback) override;
   bool RestoreWalletSync(const std::string& mnemonic,
                          const std::string& password,
                          bool is_legacy_eth_seed_format);
@@ -365,6 +361,8 @@ class KeyringService : public mojom::KeyringService {
                            ManuallyAddAccount);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceAccountDiscoveryUnitTest,
                            RestoreWalletTwice);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceAccountDiscoveryUnitTest,
+                           ImportFromExternalWalletDuringDiscovery);
   FRIEND_TEST_ALL_PREFIXES(AssetDiscoveryManagerUnitTest,
                            KeyringServiceObserver);
   FRIEND_TEST_ALL_PREFIXES(SolanaProviderImplUnitTest,
@@ -457,11 +455,6 @@ class KeyringService : public mojom::KeyringService {
   void OnCreateWalletRegisterComponentUpdater(const std::string& mnemonic,
                                               const std::string& password,
                                               CreateWalletCallback callback);
-  void OnRestoreWalletRegisterComponentUpdater(const std::string& mnemonic,
-                                               const std::string& password,
-                                               bool is_legacy_eth_seed_format,
-                                               RestoreWalletCallback callback);
-
   std::unique_ptr<std::vector<mojom::AccountInfoPtr>> account_info_cache_;
   std::unique_ptr<base::OneShotTimer> auto_lock_timer_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;

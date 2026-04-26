@@ -200,9 +200,9 @@ export const walletEndpoints = ({
       ) => {
         try {
           const { data: api, cache } = baseQuery(undefined)
-          const { keyringService } = api
+          const { keyringService, braveWalletService } = api
 
-          const result = await keyringService.restoreWallet(
+          const result = await braveWalletService.restoreWallet(
             arg.mnemonic,
             arg.password,
             arg.isLegacy,
