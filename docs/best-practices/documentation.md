@@ -135,3 +135,54 @@ Brave-specific: also register in `brave/browser/about_flags.cc`.
 - Don't write docs you won't maintain
 - Remove sections that nobody reads or updates
 - Focus on the docs that save the most developer time
+
+---
+
+<a id="DOC-012"></a>
+
+## ✅ Write Descriptive Commit and PR Messages
+
+**Commit messages are permanent documentation of a change. Write them to explain what changed and why, not just what the code does.**
+
+Follow the standard format (from [Chromium contributing guidelines](https://chromium.googlesource.com/chromium/src/+/HEAD/docs/contributing.md#Uploading-a-change-for-review)):
+
+```
+[tag] Short one-line summary of the change
+
+Longer description addressing: why the change is made, context if part
+of a larger effort, description of previous behavior and differences.
+Wrap lines at 72 columns.
+
+Resolves https://github.com/brave/brave-browser/issues/1234
+```
+
+**Prefix the subject line with one or more `[tag]` labels** identifying the
+project, or component, as tagged can be `grep`ped  (e.g `[ads]`, `toolchain`).
+
+**Link an issue, and be aware of special labels**. Use `Resolves <url>` when
+this PR fully closes the issue — GitHub automatically closes the linked issue
+when the PR merges. Use `Bug: <url>` instead when the issue tracks ongoing work
+that spans multiple PRs and should stay open after this one lands.
+
+**Brave uses squash-merge on GitHub, so the first commit message becomes the final commit message for the PR.** Write the PR description and first commit message to match — do not put context only in the PR body:
+
+```
+# ❌ WRONG — vague subject, context siloed in the PR body
+fix rewards sync
+
+# ✅ CORRECT — descriptive subject with full context in the body
+[rewards] Fix wallet state not syncing after profile restore
+
+The wallet service read its enabled state once at startup and cached it
+for the session. When a profile restore re-initialized the wallet
+component, the cached state was stale and sync would silently fail.
+
+Now the service observes the profile-keyed wallet prefs and invalidates
+the cached state on each restore.
+
+Resolves https://github.com/brave/brave-browser/issues/12345
+```
+
+The issue reference is a useful pointer, but is not sufficient on its own. Issue description are written for the general public, while commit messages are meant to provide context to other engineers. Summarize **what** and **why** in the description. Include design docs, testing instructions, or relevant discussion links when applicable.
+
+See also: [Chromium: Provide Context](https://chromium.googlesource.com/chromium/src/+/HEAD/docs/cl_respect.md#provide-context) | [Chromium: Uploading a Change for Review](https://chromium.googlesource.com/chromium/src/+/HEAD/docs/contributing.md#Uploading-a-change-for-review)
