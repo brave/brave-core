@@ -235,7 +235,6 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, FindExtrinsicSucceeds) {
       R"(0b080000000e000000000001000000000007d41643ad0b997002000000020000000408d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516dc8df1b50300000000000000000000000000020000000402d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa95168eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48a866140000000000000000000000000000000200000004076d6f646c6461702f7361746c0000000000000000000000000000000000000000dc8df1b50300000000000000000000000000020000001a00d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516dc8df1b5030000000000000000000000000000000000000000000000000000000000020000000000823798916da8000000)");
 
   polkadot_mock_rpc->AddGetFinalizedBlockHash();
-  polkadot_mock_rpc->AddGetFinalizedBlockHeader();
   polkadot_mock_rpc->FinalizeSetup();
 
   task->Start(future.GetCallback());
@@ -287,7 +286,6 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, FindExtrinsicFailed) {
       R"(0b080000000e000000000001000000000007d41643ad0b997002000000020000000408d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516dc8df1b50300000000000000000000000000020000000402d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa95168eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48a866140000000000000000000000000000000200000004076d6f646c6461702f7361746c0000000000000000000000000000000000000000dc8df1b50300000000000000000000000000020000001a00d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516dc8df1b5030000000000000000000000000000000000000000000000000000000000020000000001823798916da8000000)");
 
   polkadot_mock_rpc->AddGetFinalizedBlockHash();
-  polkadot_mock_rpc->AddGetFinalizedBlockHeader();
   polkadot_mock_rpc->FinalizeSetup();
 
   task->Start(future.GetCallback());
@@ -339,7 +337,6 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, InconsistentFees) {
       R"(0b080000000e000000000001000000000007d41643ad0b997002000000020000000408d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516dc8df1b50300000000000000000000000000020000000402d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa95168eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48a866140000000000000000000000000000000200000004076d6f646c6461702f7361746c0000000000000000000000000000000000000000dc8df1b50300000000000000000000000000020000001a00d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516dc8df1b5130000000000000000000000000000000000000000000000000000000000020000000000823798916da8000000)");
 
   polkadot_mock_rpc->AddGetFinalizedBlockHash();
-  polkadot_mock_rpc->AddGetFinalizedBlockHeader();
   polkadot_mock_rpc->FinalizeSetup();
 
   task->Start(future.GetCallback());
@@ -389,7 +386,6 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, ExtrinsicNotInMortalityWindow) {
   RegisterDefaultBlocks(polkadot_mock_rpc.get());
 
   polkadot_mock_rpc->AddGetFinalizedBlockHash();
-  polkadot_mock_rpc->AddGetFinalizedBlockHeader();
   polkadot_mock_rpc->FinalizeSetup();
 
   task->Start(future.GetCallback());
@@ -481,7 +477,6 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest,
   }
 
   polkadot_mock_rpc->AddGetFinalizedBlockHash();
-  polkadot_mock_rpc->AddGetFinalizedBlockHeader();
   polkadot_mock_rpc->FinalizeSetup();
 
   task->Start(future.GetCallback());
@@ -573,7 +568,6 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, OutpacedFinalizedHead) {
   }
 
   polkadot_mock_rpc->AddGetFinalizedBlockHash();
-  polkadot_mock_rpc->AddGetFinalizedBlockHeader();
   polkadot_mock_rpc->FinalizeSetup();
 
   task->Start(future.GetCallback());
@@ -688,7 +682,6 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest,
       "result":"0xcat!"
     }
   )");
-  polkadot_mock_rpc->AddGetFinalizedBlockHeader();
 
   polkadot_mock_rpc->AddGetFinalizedBlockHash();
   polkadot_mock_rpc->FinalizeSetup();
@@ -760,7 +753,6 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, NetworkFailure_NoBlockHash) {
   }
 
   polkadot_mock_rpc->AddGetFinalizedBlockHash();
-  polkadot_mock_rpc->AddGetFinalizedBlockHeader();
   polkadot_mock_rpc->FinalizeSetup();
 
   std::vector<uint8_t> extrinsic;
@@ -834,7 +826,6 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, NetworkFailure_NoBlock) {
   }
 
   polkadot_mock_rpc->AddGetFinalizedBlockHash();
-  polkadot_mock_rpc->AddGetFinalizedBlockHeader();
   polkadot_mock_rpc->FinalizeSetup();
 
   std::vector<uint8_t> extrinsic;
@@ -898,7 +889,6 @@ TEST_F(PolkadotTransactionStatusTaskUnitTest, NetworkFailure_NoEvents) {
   RegisterCustomEventsForDefaultBlock(polkadot_mock_rpc.get(), R"(0xcat!!!!)");
 
   polkadot_mock_rpc->AddGetFinalizedBlockHash();
-  polkadot_mock_rpc->AddGetFinalizedBlockHeader();
   polkadot_mock_rpc->FinalizeSetup();
 
   task->Start(future.GetCallback());

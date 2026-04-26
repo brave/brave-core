@@ -64,7 +64,6 @@ struct PolkadotMockRpc {
   void AddGetInitialChainHeader();
   void AddGetParentBlockHeader();
   void AddGetFinalizedBlockHash();
-  void AddGetFinalizedBlockHeader();
   void AddGetSigningBlockHash();
   void AddGetRuntimeInfo();
   void AddGetGenesisBlockHash();
@@ -85,6 +84,9 @@ struct PolkadotMockRpc {
   bool HandleGetAccountInfoRequest(const network::ResourceRequest& req,
                                    const base::DictValue& req_body);
 
+  bool HandleGetFinalizedBlockHeader(const network::ResourceRequest& res,
+                                     const base::DictValue& req_body);
+
   bool HandleAuthorSubmitExtrinsic(const network::ResourceRequest& req,
                                    const base::DictValue& req_body);
 
@@ -103,10 +105,11 @@ struct PolkadotMockRpc {
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> sender_pubkey_ = {};
   raw_ptr<network::TestURLLoaderFactory> url_loader_factory_ = nullptr;
   raw_ptr<NetworkManager> network_manager_ = nullptr;
-  base::flat_map<base::DictValue, std::string_view> req_res_pairs_;
+  base::flat_map<base::DictValue, std::string> req_res_pairs_;
   std::string testnet_url_;
   std::string mainnet_url_;
   std::optional<std::string> expected_extrinsic_;
+  std::string finalized_block_hash_;  // Hex-encoded, no leading 0x.
   std::string finalized_block_header_json_;
   base::flat_map<uint32_t, std::string> block_hash_map_;
   base::flat_map<std::string, PolkadotBlock> block_map_;
