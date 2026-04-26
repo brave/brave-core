@@ -8,6 +8,8 @@
 
 #include <memory>
 
+#include "brave/components/brave_ads/core/internal/ml/transformation/ml_types.h"
+
 namespace brave_ads::ml {
 
 class Data;
