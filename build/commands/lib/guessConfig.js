@@ -34,16 +34,19 @@ let outputPath = config.outputDir
 function getBuildOutputPathList() {
   if (os.platform() === 'win32') {
     return buildConfigs.flatMap((config) => [
-      path.win32.resolve(__dirname, `..\\..\\..\\..\\out\\${config}`),
+      path.win32.resolve(import.meta.dirname, `..\\..\\..\\..\\out\\${config}`),
       ...extraArchitectures.map((arch) =>
-        path.win32.resolve(__dirname, `..\\..\\..\\..\\out\\${config}_${arch}`),
+        path.win32.resolve(
+          import.meta.dirname,
+          `..\\..\\..\\..\\out\\${config}_${arch}`,
+        ),
       ),
     ])
   } else {
     return buildConfigs.flatMap((config) => [
-      path.resolve(__dirname, `../../../../out/${config}`),
+      path.resolve(import.meta.dirname, `../../../../out/${config}`),
       ...extraArchitectures.map((arch) =>
-        path.resolve(__dirname, `../../../../out/${config}_${arch}`),
+        path.resolve(import.meta.dirname, `../../../../out/${config}_${arch}`),
       ),
     ])
   }
