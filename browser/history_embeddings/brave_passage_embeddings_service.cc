@@ -7,15 +7,14 @@
 
 #include <utility>
 
-#include "base/barrier_closure.h"
 #include "base/check.h"
 #include "base/containers/flat_map.h"
 #include "base/feature_list.h"
 #include "base/files/file.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/no_destructor.h"
-#include "base/numerics/safe_math.h"
 #include "base/task/thread_pool.h"
 #include "components/history_embeddings/core/history_embeddings_features.h"
 #include "content/public/browser/web_contents.h"
@@ -93,163 +92,6 @@ local_ai::mojom::ModelFilesPtr LoadLocalModelFilesFromDisk(
 
 }  // namespace
 
-////////////////////////////////////////////////////////////////////////////////
-// BraveBatchPassageEmbedder
-
-BraveBatchPassageEmbedder::Batch::Batch() = default;
-BraveBatchPassageEmbedder::Batch::~Batch() = default;
-BraveBatchPassageEmbedder::Batch::Batch(Batch&&) noexcept = default;
-BraveBatchPassageEmbedder::Batch& BraveBatchPassageEmbedder::Batch::operator=(
-    Batch&&) noexcept = default;
-
-BraveBatchPassageEmbedder::BraveBatchPassageEmbedder(
-    mojo::PendingReceiver<mojom::PassageEmbedder> receiver,
-    mojo::PendingRemote<local_ai::mojom::PassageEmbedder> renderer_embedder,
-    base::OnceClosure on_disconnect)
-    : receiver_(this, std::move(receiver)),
-      renderer_embedder_(std::move(renderer_embedder)),
-      on_disconnect_(std::move(on_disconnect)) {
-  receiver_.set_disconnect_handler(
-      base::BindOnce(&BraveBatchPassageEmbedder::OnDisconnected,
-                     weak_ptr_factory_.GetWeakPtr()));
-  renderer_embedder_.set_disconnect_handler(
-      base::BindOnce(&BraveBatchPassageEmbedder::OnDisconnected,
-                     weak_ptr_factory_.GetWeakPtr()));
-}
-
-BraveBatchPassageEmbedder::~BraveBatchPassageEmbedder() = default;
-
-void BraveBatchPassageEmbedder::GenerateEmbeddings(
-    const std::vector<std::string>& passages,
-    mojom::PassagePriority priority,
-    GenerateEmbeddingsCallback callback) {
-  if (passages.empty()) {
-    std::move(callback).Run({});
-    return;
-  }
-  DVLOG(3) << "GenerateEmbeddings: queued batch of " << passages.size()
-           << " passage(s), priority=" << static_cast<int>(priority);
-  Batch batch;
-  batch.passages = passages;
-  batch.callback = std::move(callback);
-  pending_batches_.push_back(std::move(batch));
-  if (!current_batch_) {
-    ProcessNext();
-  }
-}
-
-void BraveBatchPassageEmbedder::ProcessNext() {
-  CHECK(!current_batch_);
-  if (pending_batches_.empty()) {
-    return;
-  }
-  current_batch_.emplace(std::move(pending_batches_.front()));
-  pending_batches_.pop_front();
-
-  if (!renderer_embedder_.is_bound()) {
-    DVLOG(1) << "Renderer embedder not bound; failing batch of "
-             << current_batch_->passages.size() << " passage(s)";
-    FailCurrentBatch();
-    return;
-  }
-  DVLOG(3) << "ProcessNext: dispatching passage "
-           << current_batch_->next_index + 1 << "/"
-           << current_batch_->passages.size();
-  const std::string& text =
-      current_batch_->passages[current_batch_->next_index];
-  renderer_embedder_->GenerateEmbeddings(
-      text, base::BindOnce(&BraveBatchPassageEmbedder::OnOneEmbedding,
-                           weak_ptr_factory_.GetWeakPtr()));
-}
-
-void BraveBatchPassageEmbedder::OnOneEmbedding(
-    const std::vector<double>& embedding) {
-  if (!current_batch_) {
-    return;
-  }
-  if (embedding.empty()) {
-    DVLOG(1) << "Renderer returned empty embedding for passage "
-             << current_batch_->next_index + 1 << "/"
-             << current_batch_->passages.size() << "; failing batch";
-    FailCurrentBatch();
-    return;
-  }
-  auto floats = ToFloatEmbedding(embedding);
-  if (!floats) {
-    DVLOG(1) << "Embedding value out of float range for passage "
-             << current_batch_->next_index + 1 << "/"
-             << current_batch_->passages.size() << "; failing batch";
-    FailCurrentBatch();
-    return;
-  }
-  auto result = mojom::PassageEmbeddingsResult::New();
-  result->embeddings = std::move(*floats);
-  current_batch_->results.push_back(std::move(result));
-  current_batch_->next_index++;
-
-  if (current_batch_->next_index == current_batch_->passages.size()) {
-    DVLOG(3) << "Batch complete: " << current_batch_->results.size()
-             << " embedding(s) returned to caller";
-    Batch done = std::move(*current_batch_);
-    current_batch_.reset();
-    std::move(done.callback).Run(std::move(done.results));
-    ProcessNext();
-    return;
-  }
-  const std::string& text =
-      current_batch_->passages[current_batch_->next_index];
-  renderer_embedder_->GenerateEmbeddings(
-      text, base::BindOnce(&BraveBatchPassageEmbedder::OnOneEmbedding,
-                           weak_ptr_factory_.GetWeakPtr()));
-}
-
-void BraveBatchPassageEmbedder::FailCurrentBatch() {
-  if (!current_batch_) {
-    return;
-  }
-  Batch failed = std::move(*current_batch_);
-  current_batch_.reset();
-  std::move(failed.callback).Run({});
-  ProcessNext();
-}
-
-void BraveBatchPassageEmbedder::OnDisconnected() {
-  std::deque<Batch> to_fail = std::move(pending_batches_);
-  if (current_batch_) {
-    to_fail.push_front(std::move(*current_batch_));
-    current_batch_.reset();
-  }
-  DVLOG_IF(1, !to_fail.empty())
-      << "BatchEmbedder pipe disconnected with " << to_fail.size()
-      << " in-flight/queued batch(es); failing all";
-  for (auto& batch : to_fail) {
-    if (batch.callback) {
-      std::move(batch.callback).Run({});
-    }
-  }
-  if (on_disconnect_) {
-    std::move(on_disconnect_).Run();
-  }
-}
-
-// static
-std::optional<std::vector<float>> BraveBatchPassageEmbedder::ToFloatEmbedding(
-    const std::vector<double>& embedding) {
-  std::vector<float> result;
-  result.reserve(embedding.size());
-  for (double val : embedding) {
-    float f;
-    if (!base::CheckedNumeric<float>(val).AssignIfValid(&f)) {
-      return std::nullopt;
-    }
-    result.push_back(f);
-  }
-  return result;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// BravePassageEmbeddingsService
-
 BravePassageEmbeddingsService::PendingLoad::PendingLoad() = default;
 BravePassageEmbeddingsService::PendingLoad::~PendingLoad() = default;
 BravePassageEmbeddingsService::PendingLoad::PendingLoad(
@@ -266,10 +108,9 @@ BravePassageEmbeddingsService::BravePassageEmbeddingsService(
       updater_state_(updater_state) {
   CHECK(base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings));
   CHECK(updater_state_);
-  // Arm the barrier FIRST so CountComponentReadyOnce can route through
-  // it. AddObserver's immediate-notify (when install_dir is already
-  // set) will invoke OnLocalModelsReady synchronously; the flag guard
-  // inside CountComponentReadyOnce keeps that from counting twice.
+  // Arm the events FIRST so AddObserver's immediate-notify (when
+  // install_dir is already set) has a live component_ready_event_ to
+  // signal.
   MaybeWaitForLocalModelFilesReady();
   updater_state_->AddObserver(this);
 }
@@ -316,16 +157,25 @@ BravePassageEmbeddingsService::GetWeakPtr() {
 void BravePassageEmbeddingsService::BindPassageEmbedder(
     mojo::PendingReceiver<mojom::PassageEmbedder> receiver,
     base::OnceCallback<void(bool)> callback) {
+  // Upstream's controller binds one embedder at a time — the base
+  // class gates on `!embedder_remote_`. If we see a second Bind while
+  // a load is in flight or an embedder is already active, fail the
+  // extra request defensively.
+  if (pending_load_ || batch_embedder_) {
+    DVLOG(1) << "BindPassageEmbedder called while a load is already in flight "
+                "or a BatchEmbedder is already bound; failing";
+    std::move(callback).Run(false);
+    return;
+  }
+
   MaybeCreateBackgroundContents();
 
   PendingLoad load;
   load.receiver = std::move(receiver);
   load.callback = std::move(callback);
-  pending_loads_.push_back(std::move(load));
+  pending_load_ = std::move(load);
 
-  if (model_ready_ && factory_.is_bound()) {
-    FulfillPendingLoads();
-  }
+  MaybeStartLoad();
 }
 
 void BravePassageEmbeddingsService::LoadModels(
@@ -348,16 +198,20 @@ void BravePassageEmbeddingsService::RegisterPassageEmbedderFactory(
   }
   factory_.Bind(std::move(factory));
   factory_.set_disconnect_handler(
-      base::BindOnce(&BravePassageEmbeddingsService::OnFactoryDisconnected,
+      base::BindOnce(&BravePassageEmbeddingsService::OnEarlyFactoryDisconnected,
                      weak_ptr_factory_.GetWeakPtr()));
-  if (model_load_barrier_) {
-    model_load_barrier_.Run();
+  if (factory_registered_event_ && !factory_registered_event_->is_signaled()) {
+    factory_registered_event_->Signal();
   }
+  MaybeStartLoad();
 }
 
 void BravePassageEmbeddingsService::OnLocalModelsReady(
     const base::FilePath& install_dir) {
-  CountComponentReadyOnce();
+  if (component_ready_event_ && !component_ready_event_->is_signaled()) {
+    component_ready_event_->Signal();
+  }
+  MaybeStartLoad();
 }
 
 void BravePassageEmbeddingsService::OnBackgroundContentsDestroyed(
@@ -368,9 +222,10 @@ void BravePassageEmbeddingsService::OnBackgroundContentsDestroyed(
 }
 
 void BravePassageEmbeddingsService::MaybeCreateBackgroundContents() {
-  if (background_web_contents_) {
+  if (background_web_contents_ || background_web_contents_creating_) {
     return;
   }
+  background_web_contents_creating_ = true;
   background_web_contents_factory_.Run(
       this, base::BindOnce(
                 &BravePassageEmbeddingsService::OnBackgroundContentsCreated,
@@ -379,6 +234,7 @@ void BravePassageEmbeddingsService::MaybeCreateBackgroundContents() {
 
 void BravePassageEmbeddingsService::OnBackgroundContentsCreated(
     std::unique_ptr<local_ai::BackgroundWebContents> contents) {
+  background_web_contents_creating_ = false;
   if (background_web_contents_ || !contents) {
     return;
   }
@@ -386,32 +242,40 @@ void BravePassageEmbeddingsService::OnBackgroundContentsCreated(
 }
 
 void BravePassageEmbeddingsService::CloseBackgroundContents() {
-  DVLOG(3) << "CloseBackgroundContents (pending_loads=" << pending_loads_.size()
+  DVLOG(3) << "CloseBackgroundContents (pending_load="
+           << (pending_load_ ? "set" : "null")
            << " batch_embedder=" << (batch_embedder_ ? "set" : "null")
            << " factory_bound=" << factory_.is_bound()
-           << " model_ready=" << model_ready_
            << " bg_contents=" << (background_web_contents_ ? "set" : "null")
            << ")";
   ResetEmbedderState();
   background_web_contents_.reset();
+  background_web_contents_creating_ = false;
 }
 
 void BravePassageEmbeddingsService::MaybeWaitForLocalModelFilesReady() {
-  component_ready_counted_ = false;
-  model_load_barrier_ = base::BarrierClosure(
-      2, base::BindOnce(&BravePassageEmbeddingsService::LoadLocalModelFiles,
-                        weak_ptr_factory_.GetWeakPtr()));
+  component_ready_event_ = std::make_unique<base::OneShotEvent>();
+  factory_registered_event_ = std::make_unique<base::OneShotEvent>();
   if (!updater_state_->GetInstallDir().empty()) {
-    CountComponentReadyOnce();
+    component_ready_event_->Signal();
   }
 }
 
-void BravePassageEmbeddingsService::CountComponentReadyOnce() {
-  if (component_ready_counted_ || !model_load_barrier_) {
+void BravePassageEmbeddingsService::MaybeStartLoad() {
+  if (!pending_load_ || batch_embedder_) {
     return;
   }
-  component_ready_counted_ = true;
-  model_load_barrier_.Run();
+  if (!component_ready_event_ || !component_ready_event_->is_signaled()) {
+    return;
+  }
+  if (!factory_registered_event_ || !factory_registered_event_->is_signaled()) {
+    return;
+  }
+  // The factory_ disconnect handler is owned by the service until the
+  // BatchEmbedder takes the remote over; InvalidateWeakPtrs below
+  // covers the in-flight ThreadPool reply if ResetEmbedderState races
+  // in between.
+  LoadLocalModelFiles();
 }
 
 void BravePassageEmbeddingsService::LoadLocalModelFiles() {
@@ -424,7 +288,7 @@ void BravePassageEmbeddingsService::LoadLocalModelFiles() {
   base::FilePath config_path = updater_state_->GetEmbeddingGemmaConfig();
 
   if (updater_state_->GetEmbeddingGemmaModelDir().empty()) {
-    OnFactoryInitDone(false);
+    ResetEmbedderState();
     return;
   }
 
@@ -436,99 +300,70 @@ void BravePassageEmbeddingsService::LoadLocalModelFiles() {
                      weights_dense1_path, weights_dense2_path, tokenizer_path,
                      config_path),
       base::BindOnce(&BravePassageEmbeddingsService::OnLocalModelFilesLoaded,
-                     weak_ptr_factory_.GetWeakPtr()));
+                     load_weak_factory_.GetWeakPtr()));
 }
 
 void BravePassageEmbeddingsService::OnLocalModelFilesLoaded(
     local_ai::mojom::ModelFilesPtr model_files) {
-  if (!model_files || !factory_.is_bound()) {
-    OnFactoryInitDone(false);
-    return;
-  }
-  factory_->Init(
-      std::move(model_files),
-      base::BindOnce(&BravePassageEmbeddingsService::OnFactoryInitDone,
+  // Any early exit below fails the pending load and re-arms events;
+  // ScopedClosureRunner keeps that cleanup in one place.
+  base::ScopedClosureRunner reset_on_fail(
+      base::BindOnce(&BravePassageEmbeddingsService::ResetEmbedderState,
                      weak_ptr_factory_.GetWeakPtr()));
-}
 
-void BravePassageEmbeddingsService::OnFactoryInitDone(bool success) {
-  if (!success) {
-    DVLOG(1) << "Factory Init failed, failing " << pending_loads_.size()
-             << " pending load(s)";
-    // CloseBackgroundContents runs FailPendingLoads internally and
-    // tears down the rest of the state, matching LocalAIService's
-    // old OnPassageEmbedderReady(false) behavior.
-    CloseBackgroundContents();
+  if (!model_files) {
+    DVLOG(1) << "Model files load failed";
     return;
   }
-  DVLOG(3) << "Factory Init succeeded, fulfilling " << pending_loads_.size()
-           << " pending load(s)";
-  model_ready_ = true;
-  FulfillPendingLoads();
-}
-
-void BravePassageEmbeddingsService::FulfillPendingLoads() {
-  if (!model_ready_ || !factory_.is_bound() || pending_loads_.empty()) {
+  if (!factory_.is_bound()) {
+    DVLOG(1) << "Factory disconnected while files were loading";
+    return;
+  }
+  if (!pending_load_) {
+    DVLOG(1) << "No pending load by the time files loaded";
     return;
   }
 
-  if (!batch_embedder_) {
-    // Bind a renderer-side single-passage PassageEmbedder via the
-    // factory, then wrap it in a BraveBatchPassageEmbedder that serves
-    // the upstream batch receiver.
-    mojo::PendingRemote<local_ai::mojom::PassageEmbedder> renderer_remote;
-    factory_->Bind(renderer_remote.InitWithNewPipeAndPassReceiver());
+  // Success path — hand everything to the BatchEmbedder.
+  std::ignore = reset_on_fail.Release();
 
-    // The first pending load owns the batch receiver; subsequent loads
-    // are unexpected since upstream's controller binds one embedder at
-    // a time, but handle them defensively below.
-    PendingLoad first = std::move(pending_loads_.front());
-    pending_loads_.erase(pending_loads_.begin());
-    batch_embedder_ = std::make_unique<BraveBatchPassageEmbedder>(
-        std::move(first.receiver), std::move(renderer_remote),
-        base::BindOnce(
-            &BravePassageEmbeddingsService::OnBatchEmbedderDisconnected,
-            weak_ptr_factory_.GetWeakPtr()));
-    std::move(first.callback).Run(true);
-  }
-
-  // Any additional pending loads fail: upstream expects one active
-  // embedder remote at a time. The controller gates BindPassageEmbedder
-  // behind `!embedder_remote_`, so this branch should only fire if
-  // something else races a second binding in.
-  DVLOG_IF(1, !pending_loads_.empty())
-      << "BraveBatchPassageEmbedder already bound; failing "
-      << pending_loads_.size() << " extra pending load(s)";
-  for (auto& load : pending_loads_) {
-    std::move(load.callback).Run(false);
-  }
-  pending_loads_.clear();
+  PendingLoad load = std::move(*pending_load_);
+  pending_load_.reset();
+  batch_embedder_ = std::make_unique<BraveBatchPassageEmbedder>(
+      std::move(load.receiver), std::move(factory_), std::move(model_files),
+      std::move(load.callback),
+      base::BindOnce(
+          &BravePassageEmbeddingsService::OnBatchEmbedderDisconnected,
+          weak_ptr_factory_.GetWeakPtr()));
+  DVLOG(3) << "BatchEmbedder created; load flow complete";
 }
 
-void BravePassageEmbeddingsService::FailPendingLoads() {
-  for (auto& load : pending_loads_) {
-    std::move(load.callback).Run(false);
-  }
-  pending_loads_.clear();
+void BravePassageEmbeddingsService::OnBatchEmbedderDisconnected() {
+  DVLOG(3) << "BraveBatchPassageEmbedder disconnected; tearing down";
+  // Match the pre-refactor behavior where an Init failure (or any
+  // post-init renderer disconnect, e.g. WASM worker crash) tore the
+  // background contents down. CloseBackgroundContents handles the
+  // ResetEmbedderState work too.
+  CloseBackgroundContents();
+}
+
+void BravePassageEmbeddingsService::OnEarlyFactoryDisconnected() {
+  DVLOG(1) << "Renderer factory pipe disconnected before BatchEmbedder owned "
+              "it; resetting";
+  ResetEmbedderState();
 }
 
 void BravePassageEmbeddingsService::ResetEmbedderState() {
   batch_embedder_.reset();
   factory_.reset();
-  FailPendingLoads();
-  model_ready_ = false;
+  if (pending_load_) {
+    std::move(pending_load_->callback).Run(false);
+    pending_load_.reset();
+  }
+  // Cancel any in-flight file load reply so it doesn't land after we
+  // re-armed the events for the next cycle.
+  load_weak_factory_.InvalidateWeakPtrs();
   MaybeWaitForLocalModelFilesReady();
-}
-
-void BravePassageEmbeddingsService::OnFactoryDisconnected() {
-  DVLOG(1) << "Renderer factory pipe disconnected; embeddings unavailable "
-              "until the background WebContents reloads";
-  ResetEmbedderState();
-}
-
-void BravePassageEmbeddingsService::OnBatchEmbedderDisconnected() {
-  DVLOG(3) << "BraveBatchPassageEmbedder disconnected; resetting";
-  batch_embedder_.reset();
 }
 
 }  // namespace passage_embeddings
