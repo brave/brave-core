@@ -158,6 +158,44 @@ TEST(BraveAdsCryptoUtilTest, EncryptAndDecrypt) {
                          key_pair.secret_key));
 }
 
+TEST(BraveAdsCryptoUtilTest, SecureZeroBuffer) {
+  // Arrange
+  std::vector<uint8_t> buffer = {1, 2, 3, 4};
+
+  // Act
+  SecureZero(buffer);
+
+  // Assert
+  EXPECT_THAT(buffer, ::testing::Each(uint8_t{0}));
+}
+
+TEST(BraveAdsCryptoUtilTest, SecureZeroEmptyBuffer) {
+  // Arrange
+  std::vector<uint8_t> buffer;
+
+  // Act & Assert
+  EXPECT_NO_FATAL_FAILURE(SecureZero(buffer));
+}
+
+TEST(BraveAdsCryptoUtilTest, SecureZeroString) {
+  // Arrange
+  std::string string = "sensitive";
+
+  // Act
+  SecureZero(string);
+
+  // Assert
+  EXPECT_THAT(string, ::testing::Each('\0'));
+}
+
+TEST(BraveAdsCryptoUtilTest, SecureZeroEmptyString) {
+  // Arrange
+  std::string string;
+
+  // Act & Assert
+  EXPECT_NO_FATAL_FAILURE(SecureZero(string));
+}
+
 TEST(BraveAdsCryptoUtilTest, DoesNotDecryptWithWrongKey) {
   // Arrange
   const KeyPairInfo key_pair = GenerateBoxKeyPair();
