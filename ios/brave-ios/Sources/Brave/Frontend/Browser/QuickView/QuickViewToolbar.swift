@@ -8,6 +8,7 @@ import DesignSystem
 import Strings
 import SwiftUI
 import UIKit
+import Web
 
 enum QuickViewActionButton {
   case shield
@@ -30,7 +31,7 @@ class QuickViewToolbarModel {
   var isBackDisabled: Bool = true
   var isForwardDisabled: Bool = true
   var isLoading: Bool = true
-  var loadingProgress: Double = 0.2
+  var loadingProgress: Double = 0.0
   var onActionButton: ((QuickViewActionButton) -> Void)?
 
   init(
@@ -41,6 +42,18 @@ class QuickViewToolbarModel {
     self.url = url
     self.secondaryTopButton = secondaryTopButton
     self.onActionButton = onActionButton
+  }
+
+  func updateBackForwardActionStatus(for tab: some TabState) {
+    if let forwardListItem = tab.backForwardList?.forwardList.first,
+      forwardListItem.url.isInternalURL(for: .readermode)
+    {
+      isForwardDisabled = true
+    } else {
+      isForwardDisabled = !tab.canGoForward
+    }
+
+    isBackDisabled = !tab.canGoBack
   }
 }
 
