@@ -45,7 +45,11 @@ bool TxStateManager::ValueToBaseTxMeta(const base::DictValue& value,
   if (!status) {
     return false;
   }
-  meta->set_status(static_cast<mojom::TransactionStatus>(*status));
+  const auto tx_status = static_cast<mojom::TransactionStatus>(*status);
+  if (!mojom::IsKnownEnumValue(tx_status)) {
+    return false;
+  }
+  meta->set_status(tx_status);
   const std::string* from_account_id = value.FindString("from_account_id");
   const std::string* from_address = value.FindString("from");
   auto account_id = account_resolver_delegate_->ResolveAccountId(
