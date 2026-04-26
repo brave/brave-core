@@ -15,6 +15,7 @@
 
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/location.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
@@ -23,6 +24,7 @@
 #include "base/observer_list_types.h"
 #include "base/sequence_checker.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/threading/sequence_bound.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_download_manager.h"
@@ -48,7 +50,6 @@ struct RegexManagerDiscardPolicy;
 }  // namespace adblock
 namespace brave_shields {
 
-class AdBlockEngine;
 class AdBlockComponentFiltersProvider;
 class AdBlockDefaultResourceProvider;
 class AdBlockComponentServiceManager;
@@ -151,23 +152,27 @@ class AdBlockService {
   // Call a callback on the task runner with the engine wrapper
   void AsyncCall(base::OnceCallback<void(AdBlockEngineWrapper* wrapper)> task) {
     DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-    task_runner_->PostTask(
-        FROM_HERE, base::BindOnce(std::move(task),
-                                  base::Unretained(engine_wrapper_.get())));
+    engine_wrapper_.PostTaskWithThisObject(std::move(task));
   }
 
   // Call a callback on the task runner with the engine wrapper and post the
-  // result to the original sequence.
+  // result back to the calling sequence (current default task runner).
   template <typename T>
   void AsyncCallAndReplyWithResult(
       base::OnceCallback<T(AdBlockEngineWrapper* wrapper)> task,
       base::OnceCallback<void(T)> reply) {
     DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-    task_runner_->PostTaskAndReplyWithResult(
-        FROM_HERE,
-        base::BindOnce(std::move(task),
-                       base::Unretained(engine_wrapper_.get())),
-        std::move(reply));
+    engine_wrapper_.PostTaskWithThisObject(base::BindOnce(
+        [](base::OnceCallback<T(AdBlockEngineWrapper * wrapper)> task,
+           base::OnceCallback<void(T)> reply,
+           scoped_refptr<base::SequencedTaskRunner> task_runner,
+           AdBlockEngineWrapper* wrapper) {
+          auto result = std::move(task).Run(wrapper);
+          task_runner->PostTask(
+              FROM_HERE, base::BindOnce(std::move(reply), std::move(result)));
+        },
+        std::move(task), std::move(reply),
+        base::SequencedTaskRunner::GetCurrentDefault()));
   }
 
   void AddObserver(Observer* observer);
@@ -186,8 +191,6 @@ class AdBlockService {
   void SetupDiscardPolicy(const adblock::RegexManagerDiscardPolicy& policy);
 
   // Test accessors
-  AdBlockEngine& GetDefaultEngineForTesting();
-  AdBlockEngine& GetAdditionalFiltersEngineForTesting();
   AdBlockFiltersProviderManager* GetFiltersProviderManagerForTesting();
   AdBlockDefaultResourceProvider* GetDefaultResourceProviderForTesting();
   base::SequencedTaskRunner* GetTaskRunnerForTesting();
@@ -236,12 +239,10 @@ class AdBlockService {
 
   // The AdBlockEngineWrapper should be deleted last to ensure that any code
   // that posts to the task runner will run before the deletion.
-  //
-  // base::Unretained() usage is safe because the wrapper is deleted
-  // on the same sequence. See docs/threading_and_tasks_testing.md for
-  // explanations.
-  const std::unique_ptr<AdBlockEngineWrapper, base::OnTaskRunnerDeleter>
-      engine_wrapper_ GUARDED_BY_CONTEXT(sequence_checker_);
+
+  // Lives on `task_runner_`; constructed and destroyed there via SequenceBound.
+  base::SequenceBound<AdBlockEngineWrapper> engine_wrapper_
+      GUARDED_BY_CONTEXT(sequence_checker_);
 
   std::unique_ptr<AdBlockFiltersProviderManager> filters_provider_manager_
       GUARDED_BY_CONTEXT(sequence_checker_);

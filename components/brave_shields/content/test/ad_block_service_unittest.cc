@@ -15,6 +15,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
@@ -30,13 +31,42 @@
 #include "brave/components/brave_shields/core/browser/ad_block_resource_provider.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/core/common/features.h"
-#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
 
 namespace brave_shields {
+
+namespace {
+
+enum class EngineType {
+  kDefault,
+  kAdditional,
+};
+
+// Runs ShouldStartRequest on the adblock task runner and returns the result.
+adblock::BlockerResult ShouldStartRequest(AdBlockService* service,
+                                          EngineType engine_type,
+                                          std::string_view url) {
+  adblock::BlockerResult out;
+  base::RunLoop run_loop;
+  service->AsyncCall(
+      base::BindLambdaForTesting([&](AdBlockEngineWrapper* wrapper) {
+        AdBlockEngine& block_engine =
+            engine_type == EngineType::kDefault
+                ? wrapper->default_engine_for_testing()
+                : wrapper->additional_filters_engine_for_testing();
+        out = block_engine.ShouldStartRequest(
+            GURL(url), blink::mojom::ResourceType::kScript, "test.com", false,
+            false, false);
+        run_loop.Quit();
+      }));
+  run_loop.Run();
+  return out;
+}
+
+}  // namespace
 
 class FilterListObserver : public AdBlockService::Observer {
  public:
@@ -216,35 +246,22 @@ TEST_F(AdBlockServiceTest, LoadsCachedDATFilesOnCreation) {
       }));
   service->AddObserver(&filter_list_observer);
 
-  // Verify nothing is blocked before DAT files are loaded
-  auto result = service->GetDefaultEngineForTesting().ShouldStartRequest(
-      GURL("https://blocked-by-default.com/script.js"),
-      blink::mojom::ResourceType::kScript, "test.com", false, false, false);
-  EXPECT_FALSE(result.matched);
-  result = service->GetAdditionalFiltersEngineForTesting().ShouldStartRequest(
-      GURL("https://blocked-by-additional.com/script.js"),
-      blink::mojom::ResourceType::kScript, "test.com", false, false, false);
-  EXPECT_FALSE(result.matched);
-
   ASSERT_TRUE(
       base::test::RunUntil([&]() { return dat_observer.BothLoaded(); }));
 
   // Verify default engine rules are loaded (from cached DAT)
-  result = service->GetDefaultEngineForTesting().ShouldStartRequest(
-      GURL("https://blocked-by-default.com/script.js"),
-      blink::mojom::ResourceType::kScript, "test.com", false, false, false);
+  auto result = ShouldStartRequest(service.get(), EngineType::kDefault,
+                                   "https://blocked-by-default.com/script.js");
   EXPECT_TRUE(result.matched);
 
   // Verify additional engine rules are loaded
-  result = service->GetAdditionalFiltersEngineForTesting().ShouldStartRequest(
-      GURL("https://blocked-by-additional.com/script.js"),
-      blink::mojom::ResourceType::kScript, "test.com", false, false, false);
+  result = ShouldStartRequest(service.get(), EngineType::kAdditional,
+                              "https://blocked-by-additional.com/script.js");
   EXPECT_TRUE(result.matched);
 
   // Verify non-blocked URLs are not blocked
-  result = service->GetDefaultEngineForTesting().ShouldStartRequest(
-      GURL("https://allowed.com/script.js"),
-      blink::mojom::ResourceType::kScript, "test.com", false, false, false);
+  result = ShouldStartRequest(service.get(), EngineType::kDefault,
+                              "https://allowed.com/script.js");
   EXPECT_FALSE(result.matched);
 }
 
@@ -254,12 +271,6 @@ TEST_F(AdBlockServiceTest, LoadsOnlyDefaultCachedDATFile) {
 
   auto service = CreateService();
 
-  // Verify nothing is blocked before DAT files are loaded
-  auto result = service->GetDefaultEngineForTesting().ShouldStartRequest(
-      GURL("https://blocked-by-default.com/script.js"),
-      blink::mojom::ResourceType::kScript, "test.com", false, false, false);
-  EXPECT_FALSE(result.matched);
-
   DATLoadObserver observer;
   service->AddObserver(&observer);
   ASSERT_TRUE(base::test::RunUntil([&]() { return observer.BothLoaded(); }));
@@ -268,15 +279,13 @@ TEST_F(AdBlockServiceTest, LoadsOnlyDefaultCachedDATFile) {
   EXPECT_FALSE(observer.additional_success());
 
   // Default engine rules should be active
-  result = service->GetDefaultEngineForTesting().ShouldStartRequest(
-      GURL("https://blocked-by-default.com/script.js"),
-      blink::mojom::ResourceType::kScript, "test.com", false, false, false);
+  auto result = ShouldStartRequest(service.get(), EngineType::kDefault,
+                                   "https://blocked-by-default.com/script.js");
   EXPECT_TRUE(result.matched);
 
   // Additional engine should have no rules
-  result = service->GetAdditionalFiltersEngineForTesting().ShouldStartRequest(
-      GURL("https://blocked-by-default.com/script.js"),
-      blink::mojom::ResourceType::kScript, "test.com", false, false, false);
+  result = ShouldStartRequest(service.get(), EngineType::kAdditional,
+                              "https://blocked-by-default.com/script.js");
   EXPECT_FALSE(result.matched);
 }
 
@@ -286,13 +295,6 @@ TEST_F(AdBlockServiceTest, LoadsOnlyAdditionalCachedDATFile) {
 
   auto service = CreateService();
 
-  // Verify nothing is blocked before DAT files are loaded
-  auto result =
-      service->GetAdditionalFiltersEngineForTesting().ShouldStartRequest(
-          GURL("https://blocked-by-additional.com/script.js"),
-          blink::mojom::ResourceType::kScript, "test.com", false, false, false);
-  EXPECT_FALSE(result.matched);
-
   DATLoadObserver observer;
   service->AddObserver(&observer);
   ASSERT_TRUE(base::test::RunUntil([&]() { return observer.BothLoaded(); }));
@@ -301,15 +303,14 @@ TEST_F(AdBlockServiceTest, LoadsOnlyAdditionalCachedDATFile) {
   EXPECT_TRUE(observer.additional_success());
 
   // Additional engine rules should be active
-  result = service->GetAdditionalFiltersEngineForTesting().ShouldStartRequest(
-      GURL("https://blocked-by-additional.com/script.js"),
-      blink::mojom::ResourceType::kScript, "test.com", false, false, false);
+  auto result =
+      ShouldStartRequest(service.get(), EngineType::kAdditional,
+                         "https://blocked-by-additional.com/script.js");
   EXPECT_TRUE(result.matched);
 
   // Default engine should have no rules
-  result = service->GetDefaultEngineForTesting().ShouldStartRequest(
-      GURL("https://blocked-by-additional.com/script.js"),
-      blink::mojom::ResourceType::kScript, "test.com", false, false, false);
+  result = ShouldStartRequest(service.get(), EngineType::kDefault,
+                              "https://blocked-by-additional.com/script.js");
   EXPECT_FALSE(result.matched);
 }
 
@@ -319,9 +320,8 @@ TEST_F(AdBlockServiceTest, WorksWithoutCachedDATFiles) {
 
   // Without a cached DAT, no DAT load event fires. Just verify the service
   // doesn't crash and doesn't block anything.
-  auto result = service->GetDefaultEngineForTesting().ShouldStartRequest(
-      GURL("https://example.com/script.js"),
-      blink::mojom::ResourceType::kScript, "test.com", false, false, false);
+  auto result = ShouldStartRequest(service.get(), EngineType::kDefault,
+                                   "https://example.com/script.js");
   EXPECT_FALSE(result.matched);
 }
 
@@ -349,9 +349,8 @@ TEST_F(AdBlockServiceTest, ProviderChangeLoadsNewFilterRules) {
   })) << "Timeout: provider change should have triggered filter set load";
 
   // The filter set rules should be active.
-  auto result = service->GetDefaultEngineForTesting().ShouldStartRequest(
-      GURL("https://new-filter-rule.com/script.js"),
-      blink::mojom::ResourceType::kScript, "test.com", false, false, false);
+  auto result = ShouldStartRequest(service.get(), EngineType::kDefault,
+                                   "https://new-filter-rule.com/script.js");
   EXPECT_TRUE(result.matched);
 }
 
@@ -378,9 +377,8 @@ TEST_F(AdBlockServiceTest, EmptyFilterSetDoesNotCrash) {
       << "Timeout: empty filter set should still complete loading";
 
   // Should not block anything.
-  auto result = service->GetDefaultEngineForTesting().ShouldStartRequest(
-      GURL("https://example.com/script.js"),
-      blink::mojom::ResourceType::kScript, "test.com", false, false, false);
+  auto result = ShouldStartRequest(service.get(), EngineType::kDefault,
+                                   "https://example.com/script.js");
   EXPECT_FALSE(result.matched);
 
   // Check whether a DAT file was written. Even with an empty ruleset,
@@ -419,9 +417,8 @@ TEST_F(AdBlockServiceTest, CachedDATLoadedThenProviderUpdates) {
   ASSERT_TRUE(dat_observer.default_success()) << "Default DAT failed to load";
 
   // The cached DAT rules should be active.
-  auto result = service->GetDefaultEngineForTesting().ShouldStartRequest(
-      GURL("https://from-cache.com/script.js"),
-      blink::mojom::ResourceType::kScript, "test.com", false, false, false);
+  auto result = ShouldStartRequest(service.get(), EngineType::kDefault,
+                                   "https://from-cache.com/script.js");
   EXPECT_TRUE(result.matched);
   ASSERT_FALSE(default_filter_list_loaded);
 
@@ -436,9 +433,8 @@ TEST_F(AdBlockServiceTest, CachedDATLoadedThenProviderUpdates) {
   })) << "Timeout: provider change should have triggered filter set load";
 
   // The provider's filter rules should now be active.
-  result = service->GetDefaultEngineForTesting().ShouldStartRequest(
-      GURL("https://from-filter-set.com/script.js"),
-      blink::mojom::ResourceType::kScript, "test.com", false, false, false);
+  result = ShouldStartRequest(service.get(), EngineType::kDefault,
+                              "https://from-filter-set.com/script.js");
   EXPECT_TRUE(result.matched);
 }
 
@@ -496,9 +492,8 @@ TEST_F(AdBlockServiceTest, DATFailureFallbackWithUninitializedProvider) {
   })) << "Timeout: filter list should load after late provider initializes";
 
   // The late provider's rules should be active.
-  auto result = service->GetDefaultEngineForTesting().ShouldStartRequest(
-      GURL("https://late-provider.com/script.js"),
-      blink::mojom::ResourceType::kScript, "test.com", false, false, false);
+  auto result = ShouldStartRequest(service.get(), EngineType::kDefault,
+                                   "https://late-provider.com/script.js");
   EXPECT_TRUE(result.matched);
 }
 
@@ -528,15 +523,13 @@ TEST_F(AdBlockServiceDATCacheDisabledTest, CachedDATIgnoredWhenFlagDisabled) {
   })) << "Filter set should load even when cache timestamp is set";
 
   // The filter set rules should be active, not the cached DAT rules.
-  auto result = service->GetDefaultEngineForTesting().ShouldStartRequest(
-      GURL("https://from-filter-set.com/script.js"),
-      blink::mojom::ResourceType::kScript, "test.com", false, false, false);
+  auto result = ShouldStartRequest(service.get(), EngineType::kDefault,
+                                   "https://from-filter-set.com/script.js");
   EXPECT_TRUE(result.matched);
 
   // The cached DAT rules should NOT be loaded.
-  result = service->GetDefaultEngineForTesting().ShouldStartRequest(
-      GURL("https://from-cache.com/script.js"),
-      blink::mojom::ResourceType::kScript, "test.com", false, false, false);
+  result = ShouldStartRequest(service.get(), EngineType::kDefault,
+                              "https://from-cache.com/script.js");
   EXPECT_FALSE(result.matched);
 }
 
@@ -561,9 +554,8 @@ TEST_F(AdBlockServiceDATCacheDisabledTest,
     return default_filter_list_loaded;
   })) << "Filter set should load when DAT cache flag is disabled";
 
-  auto result = service->GetDefaultEngineForTesting().ShouldStartRequest(
-      GURL("https://should-still-load.com/script.js"),
-      blink::mojom::ResourceType::kScript, "test.com", false, false, false);
+  auto result = ShouldStartRequest(service.get(), EngineType::kDefault,
+                                   "https://should-still-load.com/script.js");
   EXPECT_TRUE(result.matched);
 }
 

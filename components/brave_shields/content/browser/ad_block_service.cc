@@ -11,7 +11,6 @@
 
 #include "base/check.h"
 #include "base/check_is_test.h"
-#include "base/debug/leak_annotations.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
@@ -167,8 +166,9 @@ AdBlockService::AdBlockService(
       component_update_service_(cus),
       task_runner_(task_runner),
       list_p3a_(local_state),
-      engine_wrapper_(AdBlockEngineWrapper::Create().release(),
-                      base::OnTaskRunnerDeleter(task_runner_.get())) {
+      engine_wrapper_(task_runner_,
+                      std::make_unique<AdBlockEngine>(true),
+                      std::make_unique<AdBlockEngine>(false)) {
   TRACE_EVENT("brave.adblock", "AdBlockService");
   // Initializes adblock-rust's domain resolution implementation
   adblock::set_domain_resolver();
@@ -240,11 +240,7 @@ AdBlockService::AdBlockService(
           filters_provider_manager_.get(), false, task_runner_);
 }
 
-AdBlockService::~AdBlockService() {
-  // The engines are deleted on the task runner with SKIP_ON_SHUTDOWN trait,
-  // therefore they leak during shutdown.
-  ANNOTATE_LEAKING_OBJECT_PTR(engine_wrapper_.get());
-}
+AdBlockService::~AdBlockService() = default;
 
 void AdBlockService::OnResourcesLoaded(
     bool is_default_engine,
@@ -255,22 +251,25 @@ void AdBlockService::OnResourcesLoaded(
 
   if (dat.has_value()) {
     CHECK(base::FeatureList::IsEnabled(features::kAdblockDATCache));
-    task_runner_->PostTaskAndReplyWithResult(
-        FROM_HERE,
-        base::BindOnce(&AdBlockEngineWrapper::LoadDAT,
-                       base::Unretained(engine_wrapper_.get()),
-                       is_default_engine, std::move(*dat), std::move(storage)),
+    AsyncCallAndReplyWithResult(
+        base::BindOnce(
+            [](bool is_default, std::optional<DATFileDataBuffer> dat,
+               AdblockResourceStorageBox storage,
+               AdBlockEngineWrapper* wrapper) {
+              return wrapper->LoadDAT(is_default, std::move(*dat),
+                                      std::move(storage));
+            },
+            is_default_engine, std::move(*dat), std::move(storage)),
         base::BindOnce(&AdBlockService::OnDATLoaded, weak_factory_.GetWeakPtr(),
                        is_default_engine));
   } else {
     bool should_cache =
         base::FeatureList::IsEnabled(features::kAdblockDATCache);
-    task_runner_->PostTaskAndReplyWithResult(
-        FROM_HERE,
+    AsyncCallAndReplyWithResult(
         base::BindOnce(
-            [](AdBlockEngineWrapper* wrapper, bool is_default, bool cache,
+            [](bool is_default, bool cache,
                std::unique_ptr<rust::Box<adblock::FilterSet>> fs,
-               AdblockResourceStorageBox s)
+               AdblockResourceStorageBox s, AdBlockEngineWrapper* wrapper)
                 -> std::pair<FilterListLoadResult,
                              std::optional<DATFileDataBuffer>> {
               bool resources_only = !fs;
@@ -286,8 +285,8 @@ void AdBlockService::OnResourcesLoaded(
               return {FilterListLoadResult::kLoaded,
                       wrapper->Serialize(is_default)};
             },
-            base::Unretained(engine_wrapper_.get()), is_default_engine,
-            should_cache, std::move(filter_set), std::move(storage)),
+            is_default_engine, should_cache, std::move(filter_set),
+            std::move(storage)),
         base::BindOnce(&AdBlockService::OnEngineLoaded,
                        weak_factory_.GetWeakPtr(), is_default_engine));
   }
@@ -367,10 +366,8 @@ void AdBlockService::RemoveObserver(Observer* observer) {
 void AdBlockService::EnableTag(const std::string& tag, bool enabled) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   // Tags only need to be modified for the default engine.
-  task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(&AdBlockEngineWrapper::EnableTag,
-                     base::Unretained(engine_wrapper_.get()), tag, enabled));
+  engine_wrapper_.AsyncCall(&AdBlockEngineWrapper::EnableTag)
+      .WithArgs(tag, enabled);
 }
 
 void AdBlockService::AddUserCosmeticFilter(const std::string& filter) {
@@ -390,28 +387,21 @@ void AdBlockService::ResetCosmeticFilter(std::string_view host) {
 
 void AdBlockService::GetDebugInfoAsync(GetDebugInfoCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  task_runner_->PostTaskAndReplyWithResult(
-      FROM_HERE,
-      base::BindOnce(&AdBlockEngineWrapper::GetDebugInfo,
-                     base::Unretained(engine_wrapper_.get())),
-      std::move(callback));
+  engine_wrapper_.AsyncCall(&AdBlockEngineWrapper::GetDebugInfo)
+      .Then(std::move(callback));
 }
 
 void AdBlockService::DiscardRegex(uint64_t regex_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(&AdBlockEngineWrapper::DiscardRegex,
-                     base::Unretained(engine_wrapper_.get()), regex_id));
+  engine_wrapper_.AsyncCall(&AdBlockEngineWrapper::DiscardRegex)
+      .WithArgs(regex_id);
 }
 
 void AdBlockService::SetupDiscardPolicy(
     const adblock::RegexManagerDiscardPolicy& policy) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  task_runner_->PostTask(
-      FROM_HERE,
-      base::BindOnce(&AdBlockEngineWrapper::SetupDiscardPolicy,
-                     base::Unretained(engine_wrapper_.get()), policy));
+  engine_wrapper_.AsyncCall(&AdBlockEngineWrapper::SetupDiscardPolicy)
+      .WithArgs(policy);
 }
 
 void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
@@ -440,18 +430,6 @@ void MigrateObsoletePrefsForAdBlockService(PrefService* local_state) {
 AdBlockDefaultResourceProvider* AdBlockService::default_resource_provider() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return default_resource_provider_.get();
-}
-
-AdBlockEngine& AdBlockService::GetDefaultEngineForTesting() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  CHECK_IS_TEST();
-  return engine_wrapper_->default_engine_for_testing();  // IN-TEST
-}
-
-AdBlockEngine& AdBlockService::GetAdditionalFiltersEngineForTesting() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  CHECK_IS_TEST();
-  return engine_wrapper_->additional_filters_engine_for_testing();  // IN-TEST
 }
 
 AdBlockFiltersProviderManager*
