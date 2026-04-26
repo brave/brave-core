@@ -92,9 +92,12 @@ function ActiveChatProvider({
         // Otherwise, navigate to "/"
         updateSelectedConversation('')
       },
-      isTabAssociated: selectedConversationId === tabAssociatedChatId,
+      // In global panel mode the conversation follows the active tab just like
+      // the normal sidebar, so treat it as tab-associated for UI purposes.
+      isTabAssociated:
+        selectedConversationId === tabAssociatedChatId || !!aiChat.isGlobalPanel,
     }),
-    [selectedConversationId, updateSelectedConversationId, conversationAPI],
+    [selectedConversationId, updateSelectedConversationId, conversationAPI, aiChat.isGlobalPanel],
   )
 
   // Handle child frame requests we switch to new conversation
@@ -102,17 +105,16 @@ function ActiveChatProvider({
     details.createNewConversation()
   }, [aiChat.api])
 
-  // Only update conversation if we're on the tab associated conversation
-  // and the event fires
+  // Only rebind the conversation when a new default is signalled in normal
+  // sidebar mode. In global panel mode the conversation persists across tab
+  // switches; the conversation_context effects handle content updates instead.
   aiChat.api.useOnNewDefaultConversation(() => {
-    if (selectedConversationId === tabAssociatedChatId) {
-      // If the selected conversation is the tab associated one, we need to
-      // bind to the new default conversation.
+    if (selectedConversationId === tabAssociatedChatId && !aiChat.isGlobalPanel) {
       setConversationAPI(
         BindConversation.bindConversation(aiChat.api, undefined),
       )
     }
-  }, [selectedConversationId, aiChat.api])
+  }, [selectedConversationId, aiChat.api, aiChat.isGlobalPanel])
 
   // If the conversation ID changes explicitly to an ID or to blank,
   // we need to re-bind.
@@ -196,6 +198,7 @@ function ActiveChatProvider({
 }
 
 function URLUpdater(props: SelectedChatDetails) {
+  const aiChat = useAIChat()
   const conversationState = props.api.useGetStateData()
 
   // Update the location when the conversation has been started and we aren't
@@ -212,6 +215,10 @@ function URLUpdater(props: SelectedChatDetails) {
     // Stay on the tab-associated conversation so that we know to change
     // conversation automatically when the target tab navigates.
     if (props.selectedConversationId === tabAssociatedChatId) return
+
+    // In global panel mode the conversation follows the active tab; don't
+    // update the URL to a UUID or the UI would look like a history conversation.
+    if (aiChat.isGlobalPanel) return
 
     // Don't need to do anything, the URL already represents the conversation
     if (conversationState.conversationUuid === props.selectedConversationId) {
