@@ -8,7 +8,9 @@
 
 #include <string>
 
+#include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/condition_matcher_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace brave_ads::database::table {
 
@@ -16,6 +18,8 @@ std::string ConditionMatchersToString(
     const ConditionMatcherMap& condition_matchers);
 
 ConditionMatcherMap StringToConditionMatchers(const std::string& value);
+
+CreativeAdInfo CreativeAdFromMojomRow(const mojom::DBRowInfoPtr& mojom_db_row);
 
 }  // namespace brave_ads::database::table
 

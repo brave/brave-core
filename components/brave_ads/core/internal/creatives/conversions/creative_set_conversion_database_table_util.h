@@ -7,14 +7,13 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CONVERSIONS_CREATIVE_SET_CONVERSION_DATABASE_TABLE_UTIL_H_
 
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
-namespace brave_ads::database {
+namespace brave_ads::database::table {
 
-void PurgeExpiredCreativeSetConversions();
+CreativeSetConversionInfo CreativeSetConversionFromMojomRow(
+    const mojom::DBRowInfoPtr& mojom_db_row);
 
-void SaveCreativeSetConversions(
-    const CreativeSetConversionList& creative_set_conversions);
-
-}  // namespace brave_ads::database
+}  // namespace brave_ads::database::table
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CONVERSIONS_CREATIVE_SET_CONVERSION_DATABASE_TABLE_UTIL_H_
