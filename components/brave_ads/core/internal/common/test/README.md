@@ -155,6 +155,7 @@ You can add one or more responses per request. These will be returned in the giv
 
 | setting  | type  | default  | example  |
 |---|---|---|---|
+| Browser version number  | string  | `1.2.3.4`  | See [`scoped_browser_version_number_for_testing.h`](../application_state/test/scoped_browser_version_number_for_testing.h)  |
 | Device identifier  | string  | `21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e`  | `test::SetUpDeviceId();`  |
 | Operating system  | `kWindows`, `kMacOS`, `kLinux`, `kAndroid` or `kIOS`  | `kWindows`  | `fake_operating_system_.SetType(OperatingSystemType::kMacOS);`  |
 | Build channel  | `kRelease`, `kBeta` or `kNightly`  | `kRelease`  | `test::SetUpBuildChannel(test::BuildChannelType::kNightly);`  |
