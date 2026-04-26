@@ -13,6 +13,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT NSString* const kBraveAdsFirstRunAtPrefName;
+OBJC_EXPORT NSString* const BraveAdsDisabledByPolicyPrefName;
 
 @class NotificationAdIOS, NewTabPageAdIOS;
 

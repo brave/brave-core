@@ -21,6 +21,9 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* const registry) {
 }
 
 void RegisterProfilePrefs(PrefRegistrySimple* const registry) {
+  // Policy prefs.
+  registry->RegisterBooleanPref(prefs::kDisabledByPolicy, false);
+
   // Ads prefs.
   registry->RegisterTimeDeltaPref(prefs::kGracePeriod, base::Days(3));
 

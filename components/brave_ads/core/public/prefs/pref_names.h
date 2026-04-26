@@ -12,6 +12,10 @@ static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
 
 namespace brave_ads::prefs {
 
+// Policy prefs. Not prefixed with `brave.brave_ads` so they are not cleared
+// when the user resets ads data.
+inline constexpr char kDisabledByPolicy[] = "brave.ads.disabled_by_policy";
+
 // IMPORTANT: Prefs that need clearing should be prefixed with
 // `brave.brave_ads`.
 

@@ -175,6 +175,7 @@ class AdsServiceImpl : public AdsService,
 
   void InitializeLocalStatePrefChangeRegistrar();
   void InitializePrefChangeRegistrar();
+  void InitializePolicyPrefChangeRegistrar();
   void InitializeBraveRewardsPrefChangeRegistrar();
   void InitializeSubdivisionTargetingPrefChangeRegistrar();
   void InitializeNewTabPageAdsPrefChangeRegistrar();

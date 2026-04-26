@@ -6,6 +6,7 @@
 # Public list of Brave policy YAML files
 brave_policies = [
   "BraveSoftware/.group.details.yaml",
+  "BraveSoftware/BraveAdsDisabled.yaml",
   "BraveSoftware/BraveAIChatEnabled.yaml",
   "BraveSoftware/BraveDeAmpEnabled.yaml",
   "BraveSoftware/BraveDebouncingEnabled.yaml",

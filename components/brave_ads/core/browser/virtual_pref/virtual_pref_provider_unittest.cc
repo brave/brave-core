@@ -14,7 +14,7 @@
 #include "base/version_info/version_info.h"
 #include "brave/components/brave_ads/core/browser/virtual_pref/test/virtual_pref_provider_delegate_mock.h"
 #include "brave/components/brave_ads/core/public/common/locale/scoped_locale_for_testing.h"
-#include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -32,8 +32,7 @@ class BraveAdsVirtualPrefProviderTest : public ::testing::Test {
     prefs_.registry()->RegisterBooleanPref(
         ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist,
         true);
-    prefs_.registry()->RegisterBooleanPref(
-        brave_rewards::prefs::kDisabledByPolicy, false);
+    prefs_.registry()->RegisterBooleanPref(prefs::kDisabledByPolicy, false);
     local_state_.registry()->RegisterDictionaryPref(skus::prefs::kSkusState);
 
     auto delegate = std::make_unique<VirtualPrefProviderDelegateMock>();
