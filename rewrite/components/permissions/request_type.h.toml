@@ -1,0 +1,17 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = 'Add Brave-specific entries to `RequestType`'
+re_pattern = '(\bkStorageAccess\b,)'
+replace = '''\1
+  kWidevine,
+  kBraveEthereum,
+  kBraveSolana,
+  kBraveOpenAIChat,
+  kBraveGoogleSignInPermission,
+  kBraveCardano,
+  kBraveMinValue = kWidevine,
+  kBraveMaxValue = kBraveCardano,'''
