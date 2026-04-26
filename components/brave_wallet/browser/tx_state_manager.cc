@@ -16,12 +16,9 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/components/brave_wallet/browser/scoped_txs_update.h"
 #include "brave/components/brave_wallet/browser/solana_message.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
-#include "brave/components/brave_wallet/browser/tx_storage_delegate.h"
-#include "components/prefs/pref_service.h"
-#include "components/prefs/scoped_user_pref_update.h"
+#include "brave/components/brave_wallet/browser/tx_storage.h"
 #include "url/origin.h"
 
 namespace brave_wallet {
@@ -131,9 +128,9 @@ bool TxStateManager::ValueToBaseTxMeta(const base::DictValue& value,
 }
 
 TxStateManager::TxStateManager(
-    TxStorageDelegate& delegate,
+    TxStorage& tx_storage,
     AccountResolverDelegate& account_resolver_delegate)
-    : delegate_(delegate),
+    : tx_storage_(tx_storage),
       account_resolver_delegate_(account_resolver_delegate),
       weak_factory_(this) {}
 
@@ -143,12 +140,12 @@ bool TxStateManager::AddOrUpdateTx(const TxMeta& meta) {
   DCHECK(meta.from());
   DCHECK_EQ(GetCoinType(), meta.GetCoinType());
 
-  if (!delegate_->IsInitialized()) {
+  if (!tx_storage_->IsInitialized()) {
     return false;
   }
   bool is_add = false;
   {
-    ScopedTxsUpdate update(*delegate_);
+    auto update = tx_storage_->CreateScopedTxsUpdate();
     is_add = update->Find(meta.id()) == nullptr;
     update->Set(meta.id(), meta.ToValue());
   }
@@ -171,10 +168,10 @@ bool TxStateManager::AddOrUpdateTx(const TxMeta& meta) {
 }
 
 std::unique_ptr<TxMeta> TxStateManager::GetTx(const std::string& meta_id) {
-  if (!delegate_->IsInitialized()) {
+  if (!tx_storage_->IsInitialized()) {
     return nullptr;
   }
-  const auto& txs = delegate_->GetTxs();
+  const auto& txs = tx_storage_->GetTxs();
   const base::DictValue* value = txs.FindDict(meta_id);
   if (!value) {
     return nullptr;
@@ -184,11 +181,11 @@ std::unique_ptr<TxMeta> TxStateManager::GetTx(const std::string& meta_id) {
 }
 
 bool TxStateManager::DeleteTx(const std::string& meta_id) {
-  if (!delegate_->IsInitialized()) {
+  if (!tx_storage_->IsInitialized()) {
     return false;
   }
   {
-    ScopedTxsUpdate update(*delegate_);
+    auto update = tx_storage_->CreateScopedTxsUpdate();
     update->Remove(meta_id);
   }
   return true;
@@ -208,10 +205,10 @@ std::vector<std::unique_ptr<TxMeta>> TxStateManager::GetTransactionsByStatus(
     const std::optional<mojom::TransactionStatus>& status,
     const std::optional<mojom::AccountIdPtr>& from) {
   std::vector<std::unique_ptr<TxMeta>> result;
-  if (!delegate_->IsInitialized()) {
+  if (!tx_storage_->IsInitialized()) {
     return result;
   }
-  const auto& txs = delegate_->GetTxs();
+  const auto& txs = tx_storage_->GetTxs();
 
   for (const auto it : txs) {
     auto* meta_dict = it.second.GetIfDict();

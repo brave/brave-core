@@ -20,7 +20,7 @@
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
-#include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
+#include "brave/components/brave_wallet/browser/tx_storage.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "components/prefs/pref_service.h"
@@ -40,21 +40,20 @@ class EthTxStateManagerUnitTest : public testing::Test {
   void SetUp() override {
     RegisterProfilePrefs(prefs_.registry());
     RegisterProfilePrefsForMigration(prefs_.registry());
-    factory_ = GetTestValueStoreFactory(temp_dir_);
-    delegate_ = GetTxStorageDelegateForTest(GetPrefs(), factory_);
+    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+    tx_storage_ = CreateTxStorageForTest(temp_dir_.GetPath());
     account_resolver_delegate_ =
         std::make_unique<AccountResolverDelegateForTest>();
     eth_tx_state_manager_ = std::make_unique<EthTxStateManager>(
-        *delegate_, *account_resolver_delegate_);
+        *tx_storage_, *account_resolver_delegate_);
   }
 
   PrefService* GetPrefs() { return &prefs_; }
 
   base::test::TaskEnvironment task_environment_;
   base::ScopedTempDir temp_dir_;
-  scoped_refptr<value_store::TestValueStoreFactory> factory_;
   std::unique_ptr<value_store::ValueStoreFrontend> storage_;
-  std::unique_ptr<TxStorageDelegateImpl> delegate_;
+  std::unique_ptr<TxStorage> tx_storage_;
   std::unique_ptr<AccountResolverDelegateForTest> account_resolver_delegate_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   std::unique_ptr<EthTxStateManager> eth_tx_state_manager_;

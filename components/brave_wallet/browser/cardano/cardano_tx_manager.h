@@ -35,7 +35,7 @@ class CardanoTxManager : public TxManager,
   CardanoTxManager(TxService& tx_service,
                    CardanoWalletService& cardano_wallet_service,
                    KeyringService& keyring_service,
-                   TxStorageDelegate& delegate,
+                   TxStorage& tx_storage,
                    AccountResolverDelegate& account_resolver_delegate);
   ~CardanoTxManager() override;
   CardanoTxManager(const CardanoTxManager&) = delete;

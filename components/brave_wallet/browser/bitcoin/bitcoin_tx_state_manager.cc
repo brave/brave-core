@@ -17,9 +17,9 @@
 namespace brave_wallet {
 
 BitcoinTxStateManager::BitcoinTxStateManager(
-    TxStorageDelegate& delegate,
+    TxStorage& tx_storage,
     AccountResolverDelegate& account_resolver_delegate)
-    : TxStateManager(delegate, account_resolver_delegate) {}
+    : TxStateManager(tx_storage, account_resolver_delegate) {}
 
 BitcoinTxStateManager::~BitcoinTxStateManager() = default;
 

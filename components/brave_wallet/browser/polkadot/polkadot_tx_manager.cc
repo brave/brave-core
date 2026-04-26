@@ -31,10 +31,10 @@ PolkadotTxManager::PolkadotTxManager(
     TxService& tx_service,
     PolkadotWalletService& polkadot_wallet_service,
     KeyringService& keyring_service,
-    TxStorageDelegate& delegate,
+    TxStorage& tx_storage,
     AccountResolverDelegate& account_resolver_delegate)
     : TxManager(
-          std::make_unique<PolkadotTxStateManager>(delegate,
+          std::make_unique<PolkadotTxStateManager>(tx_storage,
                                                    account_resolver_delegate),
           std::make_unique<PolkadotBlockTracker>(),
           tx_service,

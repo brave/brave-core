@@ -26,7 +26,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
-#include "brave/components/brave_wallet/browser/tx_storage_delegate.h"
+#include "brave/components/brave_wallet/browser/tx_storage.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "components/grit/brave_components_strings.h"
@@ -68,19 +68,15 @@ class PolkadotTxManagerUnitTest : public testing::Test {
         *keyring_service_, *network_manager_, profile_prefs_,
         url_loader_factory_.GetSafeWeakWrapper());
 
+    auto tx_storage = CreateTxStorageForTest(temp_dir_.GetPath());
+    tx_storage_ptr_ = tx_storage.get();
     tx_service_ = std::make_unique<TxService>(
         json_rpc_service_.get(), nullptr, nullptr, nullptr,
         polkadot_wallet_service_.get(), *keyring_service_, &profile_prefs_,
-        temp_dir_.GetPath(), base::SequencedTaskRunner::GetCurrentDefault());
-
-    WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
+        std::move(tx_storage));
 
     account_resolver_delegate_ =
         std::make_unique<AccountResolverDelegateImpl>(*keyring_service_);
-
-    polkadot_tx_manager_ = std::make_unique<PolkadotTxManager>(
-        *tx_service_, *polkadot_wallet_service_, *keyring_service_,
-        *tx_service_->GetDelegateForTesting(), *account_resolver_delegate_);
 
     GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
 
@@ -93,6 +89,8 @@ class PolkadotTxManagerUnitTest : public testing::Test {
 
     UnlockWallet();
   }
+
+  void TearDown() override { tx_storage_ptr_ = nullptr; }
 
   PolkadotTxManager* GetPolkadotTxManager() {
     return tx_service_->GetPolkadotTxManager();
@@ -135,11 +133,11 @@ class PolkadotTxManagerUnitTest : public testing::Test {
   std::unique_ptr<PolkadotWalletService> polkadot_wallet_service_;
   std::unique_ptr<TxService> tx_service_;
   std::unique_ptr<AccountResolverDelegateImpl> account_resolver_delegate_;
-  std::unique_ptr<PolkadotTxManager> polkadot_tx_manager_;
+  raw_ptr<TxStorage> tx_storage_ptr_ = nullptr;
 };
 
 TEST_F(PolkadotTxManagerUnitTest, GetCoinType) {
-  EXPECT_EQ(polkadot_tx_manager_->GetCoinType(), mojom::CoinType::DOT);
+  EXPECT_EQ(GetPolkadotTxManager()->GetCoinType(), mojom::CoinType::DOT);
 }
 
 namespace {
@@ -173,42 +171,37 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
         chain_id, polkadot_mainnet_account_->account_id->Clone(), kBob,
         mojom::uint128::New(0, 1234), false, nullptr);
 
-    polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
-        std::move(transaction_params),
-        base::BindOnce(
-            [](base::RepeatingClosure quit_closure, TxService* tx_service,
-               bool success, const std::string& tx_meta_id,
-               const std::string& err_str) {
-              EXPECT_TRUE(success);
-              EXPECT_FALSE(tx_meta_id.empty());
-              EXPECT_EQ(err_str, "");
+    base::test::TestFuture<bool, const std::string&, const std::string&>
+        unapproved_future;
+    GetPolkadotTxManager()->AddUnapprovedPolkadotTransaction(
+        std::move(transaction_params), unapproved_future.GetCallback());
+    auto [success, tx_meta_id, err_str] = unapproved_future.Take();
 
-              const auto& txs = tx_service->GetDelegateForTesting()->GetTxs();
-              const auto* tx = txs.FindDict(tx_meta_id);
-              EXPECT_TRUE(tx);
+    EXPECT_TRUE(success);
+    EXPECT_FALSE(tx_meta_id.empty());
+    EXPECT_EQ(err_str, "");
 
-              const auto* polkadot_tx = tx->FindDict("tx");
+    const auto& txs = tx_storage_ptr_->GetTxs();
+    const auto* tx = txs.FindDict(tx_meta_id);
+    EXPECT_TRUE(tx);
 
-              EXPECT_EQ(
-                  *polkadot_tx->FindString("recipient"),
-                  R"(8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48)");
-              EXPECT_EQ(*polkadot_tx->FindString("amount"),
-                        "d2040000000000000000000000000000");
-              EXPECT_EQ(*polkadot_tx->FindString("fee"),
-                        "dc8df1b5030000000000000000000000");
-              EXPECT_EQ(*polkadot_tx->FindBool("transfer_all"), false);
-              EXPECT_EQ(polkadot_tx->FindInt("ss58_prefix"), std::nullopt);
+    const auto* polkadot_tx = tx->FindDict("tx");
 
-              uint128_t fee = 0;
-              EXPECT_TRUE(base::HexStringToSpan(*polkadot_tx->FindString("fee"),
-                                                base::byte_span_from_ref(fee)));
+    EXPECT_EQ(
+        *polkadot_tx->FindString("recipient"),
+        R"(8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48)");
+    EXPECT_EQ(*polkadot_tx->FindString("amount"),
+              "d2040000000000000000000000000000");
+    EXPECT_EQ(*polkadot_tx->FindString("fee"),
+              "dc8df1b5030000000000000000000000");
+    EXPECT_EQ(*polkadot_tx->FindBool("transfer_all"), false);
+    EXPECT_EQ(polkadot_tx->FindInt("ss58_prefix"), std::nullopt);
 
-              EXPECT_EQ(fee, 15937408476ull);
-              quit_closure.Run();
-            },
-            task_environment_.QuitClosure(), tx_service_.get()));
+    uint128_t fee = 0;
+    EXPECT_TRUE(base::HexStringToSpan(*polkadot_tx->FindString("fee"),
+                                      base::byte_span_from_ref(fee)));
 
-    task_environment_.RunUntilQuit();
+    EXPECT_EQ(fee, 15937408476ull);
   }
 
   {
@@ -221,43 +214,37 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
         mojom::uint128::New(0xffffffffffffffff, 0xffffffffffffffff), false,
         nullptr);
 
-    polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
-        std::move(transaction_params),
-        base::BindOnce(
-            [](base::RepeatingClosure quit_closure, TxService* tx_service,
-               bool success, const std::string& tx_meta_id,
-               const std::string& err_str) {
-              EXPECT_TRUE(success);
-              EXPECT_FALSE(tx_meta_id.empty());
-              EXPECT_EQ(err_str, "");
+    base::test::TestFuture<bool, const std::string&, const std::string&>
+        unapproved_future;
+    GetPolkadotTxManager()->AddUnapprovedPolkadotTransaction(
+        std::move(transaction_params), unapproved_future.GetCallback());
+    auto [success, tx_meta_id, err_str] = unapproved_future.Take();
 
-              const auto& txs = tx_service->GetDelegateForTesting()->GetTxs();
-              const auto* tx = txs.FindDict(tx_meta_id);
-              EXPECT_TRUE(tx);
+    EXPECT_TRUE(success);
+    EXPECT_FALSE(tx_meta_id.empty());
+    EXPECT_EQ(err_str, "");
 
-              const auto* polkadot_tx = tx->FindDict("tx");
+    const auto& txs = tx_storage_ptr_->GetTxs();
+    const auto* tx = txs.FindDict(tx_meta_id);
+    EXPECT_TRUE(tx);
 
-              EXPECT_EQ(
-                  *polkadot_tx->FindString("recipient"),
-                  R"(8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48)");
-              EXPECT_EQ(*polkadot_tx->FindString("amount"),
-                        "ffffffffffffffffffffffffffffffff");
-              EXPECT_EQ(*polkadot_tx->FindString("fee"),
-                        "dc8df1b5030000000000000000000000");
-              EXPECT_EQ(*polkadot_tx->FindBool("transfer_all"), false);
-              EXPECT_EQ(*polkadot_tx->FindInt("ss58_prefix"), 0);
+    const auto* polkadot_tx = tx->FindDict("tx");
 
-              uint128_t fee = 0;
-              EXPECT_TRUE(base::HexStringToSpan(*polkadot_tx->FindString("fee"),
-                                                base::byte_span_from_ref(fee)));
+    EXPECT_EQ(
+        *polkadot_tx->FindString("recipient"),
+        R"(8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48)");
+    EXPECT_EQ(*polkadot_tx->FindString("amount"),
+              "ffffffffffffffffffffffffffffffff");
+    EXPECT_EQ(*polkadot_tx->FindString("fee"),
+              "dc8df1b5030000000000000000000000");
+    EXPECT_EQ(*polkadot_tx->FindBool("transfer_all"), false);
+    EXPECT_EQ(*polkadot_tx->FindInt("ss58_prefix"), 0);
 
-              EXPECT_EQ(fee, 15937408476ull);
+    uint128_t fee = 0;
+    EXPECT_TRUE(base::HexStringToSpan(*polkadot_tx->FindString("fee"),
+                                      base::byte_span_from_ref(fee)));
 
-              quit_closure.Run();
-            },
-            task_environment_.QuitClosure(), tx_service_.get()));
-
-    task_environment_.RunUntilQuit();
+    EXPECT_EQ(fee, 15937408476ull);
   }
 
   {
@@ -269,20 +256,15 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
         chain_id, polkadot_mainnet_account_->account_id->Clone(), "0x1234",
         mojom::uint128::New(0, 1234), false, nullptr);
 
-    polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
-        std::move(transaction_params),
-        base::BindOnce(
-            [](base::RepeatingClosure quit_closure, bool success,
-               const std::string& tx_meta_id, const std::string& err_str) {
-              EXPECT_FALSE(success);
-              EXPECT_TRUE(tx_meta_id.empty());
-              EXPECT_EQ(err_str, WalletInternalErrorMessage());
+    base::test::TestFuture<bool, const std::string&, const std::string&>
+        unapproved_future;
+    GetPolkadotTxManager()->AddUnapprovedPolkadotTransaction(
+        std::move(transaction_params), unapproved_future.GetCallback());
+    auto [success, tx_meta_id, err_str] = unapproved_future.Take();
 
-              quit_closure.Run();
-            },
-            task_environment_.QuitClosure()));
-
-    task_environment_.RunUntilQuit();
+    EXPECT_FALSE(success);
+    EXPECT_TRUE(tx_meta_id.empty());
+    EXPECT_EQ(err_str, WalletInternalErrorMessage());
   }
 
   {
@@ -295,20 +277,15 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
         "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty",
         mojom::uint128::New(0, 1234), false, nullptr);
 
-    polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
-        std::move(transaction_params),
-        base::BindOnce(
-            [](base::RepeatingClosure quit_closure, bool success,
-               const std::string& tx_meta_id, const std::string& err_str) {
-              EXPECT_FALSE(success);
-              EXPECT_TRUE(tx_meta_id.empty());
-              EXPECT_EQ(err_str, WalletInternalErrorMessage());
+    base::test::TestFuture<bool, const std::string&, const std::string&>
+        unapproved_future;
+    GetPolkadotTxManager()->AddUnapprovedPolkadotTransaction(
+        std::move(transaction_params), unapproved_future.GetCallback());
+    auto [success, tx_meta_id, err_str] = unapproved_future.Take();
 
-              quit_closure.Run();
-            },
-            task_environment_.QuitClosure()));
-
-    task_environment_.RunUntilQuit();
+    EXPECT_FALSE(success);
+    EXPECT_TRUE(tx_meta_id.empty());
+    EXPECT_EQ(err_str, WalletInternalErrorMessage());
   }
 
   {
@@ -320,20 +297,15 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
         chain_id, polkadot_mainnet_account_->account_id->Clone(), kBob,
         mojom::uint128::New(0, 1234), false, nullptr);
 
-    polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
-        std::move(transaction_params),
-        base::BindOnce(
-            [](base::RepeatingClosure quit_closure, bool success,
-               const std::string& tx_meta_id, const std::string& err_str) {
-              EXPECT_FALSE(success);
-              EXPECT_TRUE(tx_meta_id.empty());
-              EXPECT_EQ(err_str, WalletInternalErrorMessage());
+    base::test::TestFuture<bool, const std::string&, const std::string&>
+        unapproved_future;
+    GetPolkadotTxManager()->AddUnapprovedPolkadotTransaction(
+        std::move(transaction_params), unapproved_future.GetCallback());
+    auto [success, tx_meta_id, err_str] = unapproved_future.Take();
 
-              quit_closure.Run();
-            },
-            task_environment_.QuitClosure()));
-
-    task_environment_.RunUntilQuit();
+    EXPECT_FALSE(success);
+    EXPECT_TRUE(tx_meta_id.empty());
+    EXPECT_EQ(err_str, WalletInternalErrorMessage());
   }
 
   {
@@ -348,21 +320,16 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
         chain_id, std::move(account_id), kBob, mojom::uint128::New(0, 1234),
         false, nullptr);
 
+    base::test::TestFuture<bool, const std::string&, const std::string&>
+        unapproved_future;
     tx_service_->AddUnapprovedPolkadotTransaction(
-        std::move(transaction_params),
-        base::BindOnce(
-            [](base::RepeatingClosure quit_closure, bool success,
-               const std::string& tx_meta_id, const std::string& err_str) {
-              EXPECT_FALSE(success);
-              EXPECT_TRUE(tx_meta_id.empty());
-              EXPECT_EQ(err_str, l10n_util::GetStringUTF8(
-                                     IDS_WALLET_SEND_TRANSACTION_FROM_EMPTY));
+        std::move(transaction_params), unapproved_future.GetCallback());
+    auto [success, tx_meta_id, err_str] = unapproved_future.Take();
 
-              quit_closure.Run();
-            },
-            task_environment_.QuitClosure()));
-
-    task_environment_.RunUntilQuit();
+    EXPECT_FALSE(success);
+    EXPECT_TRUE(tx_meta_id.empty());
+    EXPECT_EQ(err_str,
+              l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_FROM_EMPTY));
   }
 }
 
@@ -381,20 +348,15 @@ TEST_F(PolkadotTxManagerUnitTest,
       chain_id, polkadot_mainnet_account_->account_id.Clone(), kBob,
       mojom::uint128::New(0, 1234), false, nullptr);
 
-  polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
-      std::move(transaction_params),
-      base::BindOnce(
-          [](base::RepeatingClosure quit_closure, bool success,
-             const std::string& tx_meta_id, const std::string& err_str) {
-            EXPECT_FALSE(success);
-            EXPECT_TRUE(tx_meta_id.empty());
-            EXPECT_NE(err_str, "");
+  base::test::TestFuture<bool, const std::string&, const std::string&>
+      unapproved_future;
+  GetPolkadotTxManager()->AddUnapprovedPolkadotTransaction(
+      std::move(transaction_params), unapproved_future.GetCallback());
+  auto [success, tx_meta_id, err_str] = unapproved_future.Take();
 
-            quit_closure.Run();
-          },
-          task_environment_.QuitClosure()));
-
-  task_environment_.RunUntilQuit();
+  EXPECT_FALSE(success);
+  EXPECT_TRUE(tx_meta_id.empty());
+  EXPECT_EQ(err_str, WalletInternalErrorMessage());
 }
 
 TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction) {
@@ -419,7 +381,7 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction) {
   base::test::TestFuture<bool, const std::string&, const std::string&>
       unapproved_future;
 
-  polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
+  GetPolkadotTxManager()->AddUnapprovedPolkadotTransaction(
       std::move(transaction_params), unapproved_future.GetCallback());
 
   auto [success, tx_meta_id, err_str] = unapproved_future.Take();
@@ -430,13 +392,13 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction) {
   base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
       approved_future;
 
-  polkadot_tx_manager_->ApproveTransaction(tx_meta_id,
-                                           approved_future.GetCallback());
+  GetPolkadotTxManager()->ApproveTransaction(tx_meta_id,
+                                             approved_future.GetCallback());
 
   auto [success2, error, msg] = approved_future.Take();
   EXPECT_TRUE(success2);
 
-  const auto& txs = tx_service_->GetDelegateForTesting()->GetTxs();
+  const auto& txs = tx_storage_ptr_->GetTxs();
   const auto* tx = txs.FindDict(tx_meta_id);
   ASSERT_TRUE(tx);
 
@@ -475,7 +437,7 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_TransferAll) {
   base::test::TestFuture<bool, const std::string&, const std::string&>
       unapproved_future;
 
-  polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
+  GetPolkadotTxManager()->AddUnapprovedPolkadotTransaction(
       std::move(transaction_params), unapproved_future.GetCallback());
 
   auto [success, tx_meta_id, err_str] = unapproved_future.Take();
@@ -486,13 +448,13 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_TransferAll) {
   base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
       approved_future;
 
-  polkadot_tx_manager_->ApproveTransaction(tx_meta_id,
-                                           approved_future.GetCallback());
+  GetPolkadotTxManager()->ApproveTransaction(tx_meta_id,
+                                             approved_future.GetCallback());
 
   auto [success2, error, msg] = approved_future.Take();
   EXPECT_TRUE(success2);
 
-  const auto& txs = tx_service_->GetDelegateForTesting()->GetTxs();
+  const auto& txs = tx_storage_ptr_->GetTxs();
   const auto* tx = txs.FindDict(tx_meta_id);
   ASSERT_TRUE(tx);
 
@@ -530,7 +492,7 @@ TEST_F(PolkadotTxManagerUnitTest, TransferAll_InsufficientAmount) {
   base::test::TestFuture<bool, const std::string&, const std::string&>
       unapproved_future;
 
-  polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
+  GetPolkadotTxManager()->AddUnapprovedPolkadotTransaction(
       std::move(transaction_params), unapproved_future.GetCallback());
 
   auto [success, tx_meta_id, err_str] = unapproved_future.Take();
@@ -548,8 +510,8 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_NoTransaction) {
   base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
       approved_future;
 
-  polkadot_tx_manager_->ApproveTransaction(tx_meta_id,
-                                           approved_future.GetCallback());
+  GetPolkadotTxManager()->ApproveTransaction(tx_meta_id,
+                                             approved_future.GetCallback());
 
   auto [success, error, str] = approved_future.Take();
   EXPECT_FALSE(success);
@@ -581,7 +543,7 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_RejectedExtrinsic) {
   base::test::TestFuture<bool, const std::string&, const std::string&>
       unapproved_future;
 
-  polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
+  GetPolkadotTxManager()->AddUnapprovedPolkadotTransaction(
       std::move(transaction_params), unapproved_future.GetCallback());
 
   auto [success, tx_meta_id, err_str] = unapproved_future.Take();
@@ -592,13 +554,13 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_RejectedExtrinsic) {
   base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
       approved_future;
 
-  polkadot_tx_manager_->ApproveTransaction(tx_meta_id,
-                                           approved_future.GetCallback());
+  GetPolkadotTxManager()->ApproveTransaction(tx_meta_id,
+                                             approved_future.GetCallback());
 
   auto [success2, error, msg] = approved_future.Take();
   EXPECT_FALSE(success2);
 
-  const auto& txs = tx_service_->GetDelegateForTesting()->GetTxs();
+  const auto& txs = tx_storage_ptr_->GetTxs();
   const auto* tx = txs.FindDict(tx_meta_id);
   ASSERT_TRUE(tx);
 
@@ -635,7 +597,7 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_NetworkFailure) {
   base::test::TestFuture<bool, const std::string&, const std::string&>
       unapproved_future;
 
-  polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
+  GetPolkadotTxManager()->AddUnapprovedPolkadotTransaction(
       std::move(transaction_params), unapproved_future.GetCallback());
 
   auto [success, tx_meta_id, err_str] = unapproved_future.Take();
@@ -648,13 +610,13 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_NetworkFailure) {
   base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
       approved_future;
 
-  polkadot_tx_manager_->ApproveTransaction(tx_meta_id,
-                                           approved_future.GetCallback());
+  GetPolkadotTxManager()->ApproveTransaction(tx_meta_id,
+                                             approved_future.GetCallback());
 
   auto [success2, error, msg] = approved_future.Take();
   EXPECT_FALSE(success2);
 
-  const auto& txs = tx_service_->GetDelegateForTesting()->GetTxs();
+  const auto& txs = tx_storage_ptr_->GetTxs();
   const auto* tx = txs.FindDict(tx_meta_id);
   ASSERT_TRUE(tx);
 
@@ -669,7 +631,7 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_NetworkFailure) {
 }
 
 TEST_F(PolkadotTxManagerUnitTest, SpeedupOrCancelTransaction) {
-  polkadot_tx_manager_->SpeedupOrCancelTransaction(
+  GetPolkadotTxManager()->SpeedupOrCancelTransaction(
       "test_tx_id", false,  // false = speedup, true = cancel
       base::BindOnce([](bool success, const std::string& tx_meta_id,
                         const std::string& error_message) {
@@ -680,7 +642,7 @@ TEST_F(PolkadotTxManagerUnitTest, SpeedupOrCancelTransaction) {
 }
 
 TEST_F(PolkadotTxManagerUnitTest, RetryTransaction) {
-  polkadot_tx_manager_->RetryTransaction(
+  GetPolkadotTxManager()->RetryTransaction(
       "test_tx_id",
       base::BindOnce([](bool success, const std::string& tx_meta_id,
                         const std::string& error_message) {

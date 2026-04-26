@@ -12,6 +12,7 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/files/file_path.h"
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -32,6 +33,7 @@
 #include "brave/components/brave_wallet/browser/simulation_service.h"
 #include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/browser/tx_storage.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
@@ -149,6 +151,11 @@ mojom::NetworkInfoPtr GetFixedSelectedNetworkForAccount(
   NOTREACHED();
 }
 
+std::unique_ptr<TxStorage> CreateTxStorage(
+    BraveWalletServiceDelegate& wallet_delegate) {
+  return TxStorage::MakeWithDbStorage(wallet_delegate.GetWalletBaseDirectory());
+}
+
 }  // namespace
 
 struct PendingDecryptRequest {
@@ -249,8 +256,7 @@ BraveWalletService::BraveWalletService(
   tx_service_ = std::make_unique<TxService>(
       json_rpc_service(), GetBitcoinWalletService(), GetZcashWalletService(),
       GetCardanoWalletService(), GetPolkadotWalletService(), *keyring_service(),
-      profile_prefs, delegate_->GetWalletBaseDirectory(),
-      base::SequencedTaskRunner::GetCurrentDefault());
+      profile_prefs, CreateTxStorage(*delegate_));
 
   brave_wallet_p3a_ = std::make_unique<BraveWalletP3A>(
       this, keyring_service(), tx_service(), profile_prefs, local_state),

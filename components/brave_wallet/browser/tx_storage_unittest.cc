@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/browser/tx_storage_delegate_impl.h"
+#include "brave/components/brave_wallet/browser/tx_storage.h"
 
 #include <optional>
 #include <utility>
@@ -16,7 +16,6 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
-#include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -25,21 +24,21 @@ using base::test::ParseJsonDict;
 
 namespace brave_wallet {
 
-class TxStorageDelegateImplUnitTest : public testing::Test {
+class TxStorageUnitTest : public testing::Test {
  public:
-  TxStorageDelegateImplUnitTest() {}
+  TxStorageUnitTest() = default;
 
  protected:
   void SetUp() override {
     RegisterProfilePrefs(prefs_.registry());
     RegisterProfilePrefsForMigration(prefs_.registry());
-    factory_ = GetTestValueStoreFactory(temp_dir_);
+    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
   }
 
-  std::optional<base::Value> GetTxsFromDB(TxStorageDelegateImpl* delegate) {
+  std::optional<base::Value> GetTxsFromDB(TxStorage* tx_storage) {
     base::RunLoop run_loop;
     std::optional<base::Value> value_out;
-    delegate->store_->Get(
+    tx_storage->store_->Get(
         "transactions",
         base::BindLambdaForTesting([&](std::optional<base::Value> value) {
           value_out = std::move(value);
@@ -52,38 +51,60 @@ class TxStorageDelegateImplUnitTest : public testing::Test {
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   base::ScopedTempDir temp_dir_;
-  scoped_refptr<value_store::TestValueStoreFactory> factory_;
 };
 
-TEST_F(TxStorageDelegateImplUnitTest, ReadWriteAndClear) {
-  auto delegate = GetTxStorageDelegateForTest(&prefs_, factory_);
+TEST_F(TxStorageUnitTest, ReadWriteAndClear) {
+  auto tx_storage = CreateTxStorageForTest(temp_dir_.GetPath());
   // OnTxRead with empty txs
-  auto& txs = delegate->GetTxs();
+  auto& txs = tx_storage->txs_;
   EXPECT_TRUE(txs.empty());
   txs.Set("key1", 123);
   txs.Set("key2", base::DictValue().Set("nest", "brave"));
-  delegate->ScheduleWrite();
-  auto txs_from_db = GetTxsFromDB(delegate.get());
+  tx_storage->ScheduleWrite();
+  auto txs_from_db = GetTxsFromDB(tx_storage.get());
   ASSERT_TRUE(txs_from_db);
-  const auto& txs_from_cache = delegate->GetTxs();
+  const auto& txs_from_cache = tx_storage->GetTxs();
   EXPECT_EQ(txs_from_cache, txs_from_db);
   EXPECT_EQ(txs, txs_from_db);
 
   // simulate reading from existing database (with same
   // value_store::ValueStoreFrontend)
-  delegate->initialized_ = false;
-  delegate->txs_.clear();
-  ASSERT_FALSE(delegate->IsInitialized());
-  delegate->Initialize();
-  WaitForTxStorageDelegateInitialized(delegate.get());
-  ASSERT_TRUE(delegate->IsInitialized());
-  EXPECT_EQ(delegate->GetTxs(), txs);
+  tx_storage->initialized_ = false;
+  tx_storage->txs_.clear();
+  ASSERT_FALSE(tx_storage->IsInitialized());
+  tx_storage->Initialize();
+  WaitForTxStorageInitialized(tx_storage.get());
+  ASSERT_TRUE(tx_storage->IsInitialized());
+  EXPECT_EQ(tx_storage->GetTxs(), txs);
 
   // clear
-  delegate->Clear();
-  EXPECT_TRUE(delegate->IsInitialized());
-  EXPECT_TRUE(delegate->GetTxs().empty());
-  EXPECT_FALSE(GetTxsFromDB(delegate.get()));
+  tx_storage->Clear();
+  EXPECT_TRUE(tx_storage->IsInitialized());
+  EXPECT_TRUE(tx_storage->GetTxs().empty());
+  EXPECT_FALSE(GetTxsFromDB(tx_storage.get()));
+}
+
+TEST_F(TxStorageUnitTest, ReadWriteAndClearInMemory) {
+  auto tx_storage = TxStorage::MakeWithMemoryOnlyStorage();
+  ASSERT_EQ(tx_storage->store_, nullptr);
+  ASSERT_FALSE(tx_storage->IsInitialized());
+
+  WaitForTxStorageInitialized(tx_storage.get());
+  ASSERT_TRUE(tx_storage->IsInitialized());
+
+  // Start with empty txs
+  auto& txs = tx_storage->txs_;
+  EXPECT_TRUE(txs.empty());
+  txs.Set("key1", 123);
+  txs.Set("key2", base::DictValue().Set("nest", "brave"));
+
+  const auto& txs_from_cache = tx_storage->GetTxs();
+  EXPECT_EQ(txs, txs_from_cache);
+
+  // clear
+  tx_storage->Clear();
+  EXPECT_TRUE(tx_storage->IsInitialized());
+  EXPECT_TRUE(tx_storage->GetTxs().empty());
 }
 
 }  // namespace brave_wallet

@@ -7,11 +7,14 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
-#include "base/test/bind.h"
 #include "base/test/mock_callback.h"
+#include "base/test/test_future.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_observer_base.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
+#include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
@@ -24,6 +27,8 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "net/dns/mock_host_resolver.h"
 #include "url/origin.h"
+
+using base::test::TestFuture;
 
 namespace brave_wallet {
 
@@ -79,6 +84,11 @@ class BraveWalletServiceTest : public InProcessBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
   }
 
+  void TearDownOnMainThread() override {
+    InProcessBrowserTest::TearDownOnMainThread();
+    incognito_browser_ = nullptr;
+  }
+
   void TestIsPrivateWindow(BraveWalletService* wallet_service,
                            bool expected_result) {
     base::MockCallback<base::OnceCallback<void(bool)>> callback;
@@ -93,13 +103,21 @@ class BraveWalletServiceTest : public InProcessBrowserTest {
   }
 
   BraveWalletService* incognito_wallet_service() {
+    if (!incognito_browser_) {
+      incognito_browser_ = CreateIncognitoBrowser(browser()->profile());
+    }
     return brave_wallet::BraveWalletServiceFactory::GetInstance()
-        ->GetServiceForContext(
-            CreateIncognitoBrowser(browser()->profile())->profile());
+        ->GetServiceForContext(incognito_browser_->profile());
   }
+
+  void CloseIncognitoBrowser() {
+    CloseBrowserSynchronously(incognito_browser_.ExtractAsDangling());
+  }
+
   const net::EmbeddedTestServer* https_server() const { return &https_server_; }
 
  private:
+  raw_ptr<Browser> incognito_browser_ = nullptr;
   net::EmbeddedTestServer https_server_;
 };
 
@@ -158,6 +176,82 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, IsPrivateWindow) {
   wallet_service()->SetPrivateWindowsEnabled(true);
   TestIsPrivateWindow(incognito_wallet_service(), true);
   TestIsPrivateWindow(wallet_service(), false);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest,
+                       IsolateTransactionInPrivateWindow) {
+  AccountUtils account_utils(wallet_service()->keyring_service());
+  account_utils.CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
+
+  // No transactions in regular profile.
+  EXPECT_EQ(0u,
+            wallet_service()->tx_service()->GetPendingTransactionsCountSync());
+
+  // Add 1 transaction in regular profile.
+  wallet_service()->json_rpc_service()->SetGasPriceForTesting("0x123");
+  TestFuture<bool, const std::string&, const std::string&> tx_add_future;
+  wallet_service()->tx_service()->AddUnapprovedEvmTransaction(
+      mojom::NewEvmTransactionParams::New(
+          mojom::kBnbSmartChainMainnetChainId,
+          account_utils.EnsureEthAccount(0)->account_id.Clone(),
+          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000",
+          "0x0974", std::vector<uint8_t>(), nullptr),
+      tx_add_future.GetCallback());
+  auto [success, tx_meta_id, error_message] = tx_add_future.Take();
+  EXPECT_TRUE(success);
+
+  // 1 transaction in regular profile.
+  EXPECT_EQ(1u,
+            wallet_service()->tx_service()->GetPendingTransactionsCountSync());
+
+  // No transactions in incognito profile.
+  wallet_service()->SetPrivateWindowsEnabled(true);
+  WaitForTxStorageInitialized(
+      incognito_wallet_service()->tx_service()->GetTxStorageForTesting());
+  EXPECT_EQ(0u, incognito_wallet_service()
+                    ->tx_service()
+                    ->GetPendingTransactionsCountSync());
+
+  // Add 2 transactions in incognito profile.
+  incognito_wallet_service()->json_rpc_service()->SetGasPriceForTesting(
+      "0x123");
+  incognito_wallet_service()->tx_service()->AddUnapprovedEvmTransaction(
+      mojom::NewEvmTransactionParams::New(
+          mojom::kBnbSmartChainMainnetChainId,
+          account_utils.EnsureEthAccount(0)->account_id.Clone(),
+          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000",
+          "0x0974", std::vector<uint8_t>(), nullptr),
+      tx_add_future.GetCallback());
+  std::tie(success, tx_meta_id, error_message) = tx_add_future.Take();
+  EXPECT_TRUE(success);
+  incognito_wallet_service()->tx_service()->AddUnapprovedEvmTransaction(
+      mojom::NewEvmTransactionParams::New(
+          mojom::kBnbSmartChainMainnetChainId,
+          account_utils.EnsureEthAccount(0)->account_id.Clone(),
+          "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000",
+          "0x0974", std::vector<uint8_t>(), nullptr),
+      tx_add_future.GetCallback());
+  std::tie(success, tx_meta_id, error_message) = tx_add_future.Take();
+  EXPECT_TRUE(success);
+
+  // 2 transactions in incognito profile.
+  EXPECT_EQ(2u, incognito_wallet_service()
+                    ->tx_service()
+                    ->GetPendingTransactionsCountSync());
+  // Still 1 transaction in regular profile.
+  EXPECT_EQ(1u,
+            wallet_service()->tx_service()->GetPendingTransactionsCountSync());
+
+  CloseIncognitoBrowser();
+
+  // Still 1 transaction in regular profile after incognito closed.
+  EXPECT_EQ(1u,
+            wallet_service()->tx_service()->GetPendingTransactionsCountSync());
+
+  // No transactions for new incognito browser.
+  EXPECT_EQ(0u, incognito_wallet_service()
+                    ->tx_service()
+                    ->GetPendingTransactionsCountSync());
 }
 
 }  // namespace brave_wallet
