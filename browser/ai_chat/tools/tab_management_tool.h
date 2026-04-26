@@ -9,14 +9,15 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
+
+class Profile;
 
 namespace ai_chat {
 
 class TabManagementTool : public Tool {
  public:
-  TabManagementTool();
+  explicit TabManagementTool(Profile* profile);
   ~TabManagementTool() override;
 
   TabManagementTool(const TabManagementTool&) = delete;
@@ -36,8 +37,18 @@ class TabManagementTool : public Tool {
                UseToolCallback callback) override;
 
  private:
+  // Action handlers
+  void HandleListTabs(UseToolCallback callback);
+
+  // Helper to generate tab list that can be reused by all handlers
+  base::Value::Dict GenerateTabList() const;
+
   // Conversation-level permission state
   bool user_has_granted_permission_ = false;
+
+  // Profile with which to restrict all window and tab operations. Usually
+  // owns us via AIChatService as ProfileKeyedService.
+  raw_ptr<Profile> profile_ = nullptr;
 };
 
 }  // namespace ai_chat
