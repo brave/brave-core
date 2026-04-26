@@ -11,6 +11,7 @@
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
+#include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
@@ -94,12 +95,16 @@ constexpr char kPsstCrxUserScriptTemplate[] = R"(
       {
         uid: '1',
         url: 'https://a.test:$1/a_test_1.html',
-        description: 'a_test_1.html'
+        description: 'a_test_1.html',
+        selector: '#test1Checkbox',
+        turn_off: false,
       },
       {
         uid: '2',
         url: 'https://a.test:$1/a_test_2.html',
-        description: 'a_test_2.html'
+        description: 'a_test_2.html',
+        selector: '#test2Checkbox',
+        turn_off: false,
       }
     ]
   }
@@ -191,30 +196,13 @@ const calculateProgress = (psstObj) => {
   return total === 0 ? 0 : (processed / total) * 100;
 };
 
-const getResult = (result, psst, nextUrl) => {
+const getResult = (psst, nextUrl) => {
   const result_value = {
-    result: result,
     psst: psst,
     next_url: nextUrl
   };
   console.log("[PSST POLICY SCRIPT] Result:", JSON.stringify(result_value));
   return result_value;
-};
-
-const clearPolicyResults = () => {
-  const prefix = "psst_settings_status";
-  const storage = globalThis.parent.localStorage;
-
-  Object.keys(storage)
-    .filter(k => k.startsWith(prefix))
-    .forEach(k => storage.removeItem(k));
-};
-
-const saveSettingsStatus = (result) => {
-  globalThis.parent.localStorage.setItem(
-    `psst_settings_status_${PSST_CHECK_SETTINGS_LOADED}`,
-    JSON.stringify(result)
-  );
 };
 
 const createInitData = () => {
@@ -266,11 +254,11 @@ const moveCurrentTask = (psstObj, errorMessage) => {
   if (!psstObj || PSST_INITIAL_EXECUTION_FLAG) {
     const [psstObj, nextUrl] = createInitData()
     savePsstData(psstObj)
-    return getResult(false, psstObj, nextUrl)
+    return getResult(psstObj, nextUrl)
   }
 
   if (psstObj.state === psstState.COMPLETED) {
-    return getResult(true, psstObj, null)
+    return getResult(psstObj, null)
   }
 
   try {
@@ -295,7 +283,7 @@ const moveCurrentTask = (psstObj, errorMessage) => {
   psstObj.progress = calculateProgress(psstObj)
 
   savePsstData(psstObj)
-  return getResult(false, psstObj, nextUrl)
+  return getResult(psstObj, nextUrl)
 })();
 )";
 
@@ -675,10 +663,29 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
 
   infobars::ContentInfoBarManager* manager =
       infobars::ContentInfoBarManager::FromWebContents(web_contents());
-
   InfobarObserver infobar_observer(
       manager, infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
   content::CreateAndLoadWebContentsObserver new_web_contents_observer;
+
+  std::vector<std::u16string> user_script_messages;
+  std::vector<std::u16string> policy_script_messages;
+  PsstWebContentsConsoleObserver console_observer(
+      web_contents(),
+      {base::StrCat({kUserScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "/a_test_0.html")}),
+       base::StrCat({kUserScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "/a_test_1.html")}),
+       base::StrCat({kUserScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "/a_test_2.html")})},
+      {base::StrCat({kPolicyScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "/a_test_0.html")}),
+       base::StrCat({kPolicyScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "/a_test_1.html")}),
+       base::StrCat({kPolicyScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "/a_test_2.html")})});
+
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+  infobar_observer.WaitForInfobarAdded();
 
   auto infobar =
       std::ranges::find_if(manager->infobars(), [](infobars::InfoBar* infobar) {
@@ -702,9 +709,19 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   ASSERT_TRUE(AcceptModalDialog(
       dialog_wc, url::Origin::Create(url).GetURL().spec(), perform_uids));
 
-  EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+  // Wait for the console messages to make sure that both scripts are executed
+  // for each loaded page
+  ASSERT_TRUE(console_observer.Wait());
+  EXPECT_TRUE(console_observer.CheckMessages());
+
+  // Check PSST settings are applied
+  auto psst_website_settings = GetPsstSettingsService()->GetPsstWebsiteSettings(
+      url::Origin::Create(url), kASiteSignedInUserId);
+  ASSERT_TRUE(psst_website_settings);
+  EXPECT_EQ(psst_website_settings->consent_status, ConsentStatus::kAllow);
+  EXPECT_EQ(psst_website_settings->user_id, kASiteSignedInUserId);
+  EXPECT_EQ(psst_website_settings->uids_to_perform, perform_uids);
   ASSERT_TRUE(CloseModalDialog(dialog_wc));
-  EXPECT_TRUE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
 }
 
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
@@ -749,6 +766,19 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   infobars::ContentInfoBarManager* manager =
       infobars::ContentInfoBarManager::FromWebContents(web_contents());
 
+  std::vector<std::u16string> user_script_messages;
+  std::vector<std::u16string> policy_script_messages;
+  PsstWebContentsConsoleObserver console_observer(
+      web_contents(),
+      {base::StrCat({kUserScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "/a_test_0.html")}),
+       base::StrCat({kUserScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "/a_test_1.html")})},
+      {base::StrCat({kPolicyScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "/a_test_0.html")}),
+       base::StrCat({kPolicyScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "/a_test_1.html")})});
+
   InfobarObserver infobar_observer(
       manager, infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
@@ -777,24 +807,11 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
 
   DialogCloseObserver dialog_close_observer(dialog_wc);
 
-  std::vector<std::u16string> user_script_messages;
-  std::vector<std::u16string> policy_script_messages;
-  PsstWebContentsConsoleObserver console_observer(
-      web_contents(),
-      {base::StrCat({kUserScriptLogPrefix,
-                     CreateTestUtf16URL(https_server_, "/a_test_0.html")}),
-       base::StrCat({kUserScriptLogPrefix,
-                     CreateTestUtf16URL(https_server_, "/a_test_2.html")})},
-      {base::StrCat({kPolicyScriptLogPrefix,
-                     CreateTestUtf16URL(https_server_, "/a_test_0.html")}),
-       base::StrCat({kPolicyScriptLogPrefix,
-                     CreateTestUtf16URL(https_server_, "/a_test_2.html")})});
-
-  const auto kUrlToSkip = CreateTestURL(https_server_, "/a_test_1.html");
+  const std::vector<std::string> perform_uids = {"1"};
 
   // Accept dialog and mark one item as unchecked
   ASSERT_TRUE(AcceptModalDialog(
-      dialog_wc, url::Origin::Create(url).GetURL().spec(), {kUrlToSkip}));
+      dialog_wc, url::Origin::Create(url).GetURL().spec(), perform_uids));
   ASSERT_TRUE(console_observer.Wait());
 
   ASSERT_TRUE(CloseModalDialog(dialog_wc));
@@ -806,8 +823,7 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   ASSERT_TRUE(psst_website_settings);
   EXPECT_EQ(psst_website_settings->consent_status, ConsentStatus::kAllow);
   EXPECT_EQ(psst_website_settings->user_id, kASiteSignedInUserId);
-  EXPECT_EQ(psst_website_settings->urls_to_skip.size(), 1u);
-  EXPECT_EQ(psst_website_settings->urls_to_skip[0], kUrlToSkip);
+  EXPECT_EQ(psst_website_settings->uids_to_perform, perform_uids);
 }
 
 }  // namespace psst

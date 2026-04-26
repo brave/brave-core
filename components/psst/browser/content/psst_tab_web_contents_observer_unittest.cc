@@ -663,13 +663,14 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            script_params.Clone()));
 
+  const std::vector<std::string> expected_uids_to_perform = {"1"};
   EXPECT_CALL(ui_delegate(),
               Show(url::Origin::Create(url),
                    PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id,
                                          std::vector<std::string>()),
                    _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
-                             std::vector<std::string>()));
+                             expected_uids_to_perform));
 
   const auto script_with_parameters = base::StrCat(
       {"const params = ",
@@ -783,13 +784,14 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            script_params.Clone()));
 
+  const std::vector<std::string> expected_uids_to_perform = {"1"};
   EXPECT_CALL(ui_delegate(),
               Show(url::Origin::Create(url),
                    PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id,
                                          std::vector<std::string>()),
                    _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
-                             std::vector<std::string>()));
+                             expected_uids_to_perform));
 
   // Policy script executed, parameters not added
   EXPECT_CALL(inject_async_script_callback(), Run(_, policy_script, _))
@@ -874,13 +876,14 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            script_params.Clone()));
 
+  const std::vector<std::string> expected_uids_to_perform = {"1"};
   EXPECT_CALL(ui_delegate(),
               Show(url::Origin::Create(url),
                    PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id,
                                          std::vector<std::string>()),
                    _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
-                             std::vector<std::string>()));
+                             expected_uids_to_perform));
 
   const auto policy_script_with_parameters = base::StrCat(
       {"const params = ",
