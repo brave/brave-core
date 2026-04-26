@@ -62,7 +62,7 @@ public class CarPlayController {
       guard let self else { return }
       Task { @MainActor in
         self.updateFoldersList()
-        self.updateItemList()
+        await self.updateItemList()
       }
     }
     setUpPlayerBindings()
@@ -72,15 +72,16 @@ public class CarPlayController {
   private var currentItemListTemplate: CPListTemplate?
   private var selectedFolderID: PlaylistFolder.ID?
   private var isErrorPresented: Bool = false
+  private var downloadStates: [String: PlaylistDownloadManager.DownloadState] = [:]
 
   @MainActor private func updateFoldersList() {
     let folderListTemplate = self.folderListTemplate
     currentFolderListTemplate?.updateSections(folderListTemplate.sections)
   }
 
-  @MainActor private func updateItemList() {
+  @MainActor private func updateItemList() async {
     guard let selectedFolderID else { return }
-    let itemListTemplate = self.itemListTemplate(for: selectedFolderID)
+    let itemListTemplate = await self.itemListTemplate(for: selectedFolderID)
     currentItemListTemplate?.updateSections(itemListTemplate.sections)
   }
 
@@ -141,8 +142,8 @@ public class CarPlayController {
     player.objectWillChange
       .receive(on: RunLoop.main)
       .sink { [weak self] in
-        MainActor.assumeIsolated {
-          self?.updateItemList()
+        Task { @MainActor in
+          await self?.updateItemList()
           self?.handlePlayerError()
         }
       }
@@ -151,8 +152,8 @@ public class CarPlayController {
     PlaylistManager.shared.downloadStateChanged
       .receive(on: RunLoop.main)
       .sink { [weak self] _ in
-        MainActor.assumeIsolated {
-          self?.updateItemList()
+        Task { @MainActor in
+          await self?.updateItemList()
         }
       }
       .store(in: &cancellables)
@@ -189,16 +190,21 @@ public class CarPlayController {
 
   // MARK: - Template Generation
 
-  @MainActor private func itemListTemplate(for folderID: PlaylistFolder.ID) -> CPListTemplate {
+  @MainActor private func itemListTemplate(for folderID: PlaylistFolder.ID) async -> CPListTemplate
+  {
     guard let folder = PlaylistFolder.getFolder(uuid: folderID) else {
       return CPListTemplate(title: nil, sections: [])
     }
-    let items: [CPListItem] = PlaylistItem.getItems(parentFolder: folder)
+
+    let playlistItems = PlaylistItem.getItems(parentFolder: folder)
+    await refreshDownloadStates(for: playlistItems)
+    let items: [CPListItem] =
+      playlistItems
       .compactMap { item in
         guard let itemUUID = item.uuid else { return nil }
         let listItem = item.listItem
         listItem.accessoryType =
-          PlaylistManager.shared.state(for: itemUUID) != .downloaded ? .cloud : .none
+          downloadStates[itemUUID] != .downloaded ? .cloud : .none
         listItem.isPlaying = player.isPlaying && player.selectedItemID == item.id
         listItem.playingIndicatorLocation = .trailing
         listItem.userInfo = ["id": item.id, "uuid": itemUUID]
@@ -223,12 +229,17 @@ public class CarPlayController {
     for folder in folders {
       let listItem = folder.listItem
       listItem.handler = { [weak self, id = folder.id] _, completion in
-        guard let self else { return }
-        let template = itemListTemplate(for: id)
-        currentItemListTemplate = template
-        selectedFolderID = id
-        interface.pushTemplate(template, animated: true, completion: nil)
-        completion()
+        guard let self else {
+          completion()
+          return
+        }
+        Task { @MainActor in
+          let template = await self.itemListTemplate(for: id)
+          self.currentItemListTemplate = template
+          self.selectedFolderID = id
+          self.interface.pushTemplate(template, animated: true, completion: nil)
+          completion()
+        }
       }
       items.append(listItem)
     }
@@ -275,6 +286,18 @@ public class CarPlayController {
     )
     template.tabImage = UIImage(braveSystemNamed: "leo.settings")
     return template
+  }
+
+  @MainActor private func refreshDownloadStates(for items: [PlaylistItem]) async {
+    var itemIDs = Set<String>()
+    for item in items {
+      guard let uuid = item.uuid else { continue }
+      itemIDs.insert(uuid)
+      downloadStates[uuid] = await PlaylistManager.shared.downloadState(for: uuid)
+    }
+
+    let danglingStateKeys = downloadStates.keys.filter { !itemIDs.contains($0) }
+    danglingStateKeys.forEach { downloadStates.removeValue(forKey: $0) }
   }
 }
 
