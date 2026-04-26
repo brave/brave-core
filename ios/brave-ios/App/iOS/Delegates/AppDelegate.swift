@@ -108,8 +108,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       Preferences.BraveNews.isShowingOptIn.value = languageShouldShowOptIn
     }
 
-    // Clean Logger for Secure content state
+    // Clean Logger for Secure content state & user agent
     DebugLogger.cleanLogger(for: .secureState)
+    DebugLogger.cleanLogger(for: .userAgent)
 
     // Clean Logger for URP (no longer used)
     DebugLogger.cleanUrpLogs()
