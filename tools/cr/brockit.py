@@ -40,17 +40,18 @@ tools/cr/brockit.py lift --to=135.0.7037.1 --from-ref=origin/master
 ```
 
 When using `--from-ref`, any valid git reference can be used, such as a branch,
-or even hashes. Additionally there are special tags that can be passed to this
-flag.
+or even hashes. Additionally there are special labels that can be passed to
+this flag.
 
  * `--from-ref=@upstream`: This will use the upstream branch as the base for
-    the lift. This requires the user to set an upstream branch.
+    the lift. This requires the user to set an upstream branch. This value is
+    the default when none is provided.
  * `--from-ref=@previous`: This tag means the previous version since the last
     upgrade in the current branch. This is useful when telling brockit that you
     are doing a minor version bump.
- * `--from-ref=@previous-major`: This tag means the reference the parent commit
-    for the current major. This is useful when doing rebases, and wanting to
-    select from the version change.
+ * `--from-ref=@previous-major`: This label means the reference the parent
+    commit for the current major. This is useful when doing rebases, and
+    wanting to select from the version change.
 
 Using upstream:
 
@@ -59,12 +60,18 @@ git branch --set-upstream-to=origin/master
 tools/cr/brockit.py lift --to=135.0.7037.1
 ```
 
-The `--to` flag also provides special flags:
- * `--to=@latest-canary`: This will use the latest canary version as per
-    Chromium Dash. For this particular flag, both the *Canary*, and the
-    *Canary (DCHECK)* channels will be queried for the latest.
- * `--to=@latest-dev`, and `--to=@latest-beta`: Same as the falg above, but
-    to these respective channels.
+The `--to` flag also accepts special labels:
+ * `--to=@latest-tag`: Uses the latest tag from the Chromium repository.
+ * `--to=@latest-m{MAJOR}`: Uses the latest tag for the given major version
+    (e.g. `--to=@latest-m135`).
+ * `--to=@latest-for-branch`: Infers the major version from the current branch
+    name, which must follow the `cr{MAJOR}` convention (e.g. `cr135`), and
+    uses the latest tag for that major.
+ * `--to=@latest-canary`: Uses the latest canary version from Chromium Dash.
+    Both the *Canary* and the *Canary (DCHECK)* channels are queried and the
+    highest version is used.
+ * `--to=@latest-dev`, `--to=@latest-beta`, `--to=@latest-stable`: Same as
+    the flag above, but for the respective channel.
 
 The following steps will take place:
 
@@ -1146,9 +1153,9 @@ class Upgrade(Versioned):
                 'their own changes:\n%s' % '\n'.join(status.untracked))
         if status.has_staged_files():
             raise InvalidInputException(
-                'Staged files detected after running update_patches. Please make '
-                'sure to commit or unstage any changes, to avoid committing '
-                'changes unintentionally.\n'
+                'Staged files detected after running update_patches. Please '
+                'make sure to commit or unstage any changes, to avoid '
+                'committing changes unintentionally.\n'
                 'Staged files:\n%s' % '\n'.join(status.staged))
 
         # The resulting updated patches should not be doing anything beyond
@@ -1182,8 +1189,9 @@ class Upgrade(Versioned):
                 for patch, b, a in patches_with_hunk_changes
             ])
             raise InvalidInputException(
-                'The following modified patches have changes in the number of hunks, '
-                'and are expected to be submitted separately as fixes with Chromium culprits:\n'
+                'The following modified patches have changes in the number of '
+                'hunks, and are expected to be submitted separately as fixes '
+                'with Chromium culprits:\n'
                 f'{list_str}')
 
     def look_for_diffs(self, *files) -> str:
@@ -1530,6 +1538,17 @@ class Upgrade(Versioned):
             'Changes since base version: %s' %
             self.target_version.get_googlesource_diff_link(self.base_version))
 
+        if self.target_version.major > self.base_version.major:
+            # When doing a major lift, the branch name should indicate that
+            # (e.g. `cr149`).
+            expected_branch = f'cr{self.target_version.major}'
+            current_branch = repository.brave.current_branch()
+            if current_branch != expected_branch:
+                raise InvalidInputException(
+                    f'Major version upgrades must be done on a branch named '
+                    f'"{expected_branch}", but the current branch is '
+                    f'"{current_branch}".')
+
         if not ack_advisory and not self._prerun_checks():
             raise ActionNeededException(
                 '👋 (Address advisories and then rerun with '
@@ -1653,24 +1672,33 @@ class Upgrade(Versioned):
         self._save_gnrt_rerun()
 
 
-def solve_git_ref(from_ref: str) -> str:
+def _solve_brave_ref(from_ref: Optional[str]) -> str:
     """Solves the git reference.
 
     This function is used to resolve the git reference provided by the user.
     This reference can be either a branch name, a commit hash, or a special
-    tag used by brockit to find specific changes.
+    label used by brockit to find specific changes.
 
     Args:
         from_ref:
-            The git reference to resolve.
+            The git reference to resolve. If not provided, it defaults
+            `@upstream`.
 
     Returns:
         The resolved git reference, if the reference is valid, or the
-        reference for the solved special tag:
-        @upstream: The upstream branch of the current branch.
-        @previous: The commit just before the last version bump.
-        @previous-major: The commit just before the last major version bump.
+        reference for the solved special label:
+
+        +-----------------+--------------------------------------------------+
+        | Label           | Description                                      |
+        +-----------------+--------------------------------------------------+
+        | @upstream       | Upstream branch of the current branch            |
+        | @previous       | Commit just before the last version bump         |
+        | @previous-major | Commit just before the last major version bump   |
+        +-----------------+--------------------------------------------------+
     """
+    if not from_ref:
+        from_ref = '@upstream'
+
     if from_ref and from_ref[0] != '@':
         # No special handling needed
         if not repository.brave.is_valid_git_reference(from_ref):
@@ -1946,23 +1974,20 @@ class Rebase(Task):
     Returns:
         True if the rebase was successful, and False otherwise.
         """
-        if to_ref is None:
-            to_ref = '@upstream'
-
-        to_ref = solve_git_ref(to_ref)
+        to_ref = _solve_brave_ref(to_ref)
 
         if from_ref is None:
             if Version.from_git(to_ref).major != Version.from_git(
                     'HEAD').major:
                 # If the major version is different, we default to the
                 # previous major version.
-                from_ref = solve_git_ref(from_ref or '@previous-major')
+                from_ref = _solve_brave_ref(from_ref or '@previous-major')
             else:
                 # If the major version is the same, we default to the
                 # previous version.
-                from_ref = solve_git_ref(from_ref or '@previous')
+                from_ref = _solve_brave_ref(from_ref or '@previous')
 
-        from_ref = solve_git_ref(from_ref)
+        from_ref = _solve_brave_ref(from_ref)
 
         current_branch = repository.brave.current_branch()
         terminal.log_task(
@@ -2015,7 +2040,7 @@ class Reassign(Task):
     reassigned to a different author. This class is responsible for creating an
     empty commit whose author is the person calling this command. This commit is
     similar to a `fixup!` commit, being called `reassign!`, followed by the
-    short hash for the change being reassinged. This change is then picked up
+    short hash for the change being reassigned. This change is then picked up
     by the brockit's `rebase` command, and squashed as the base commit for the
     original change, resulting in a change of authorship.
     """
@@ -2053,28 +2078,87 @@ def fetch_chromium_dash_version(channel: str, target_platform: str) -> Version:
     return Version(response.json()[0].get('version'))
 
 
-def fetch_lastest_canary_version(channel) -> Version:
-    """Fetches the latest canary version from the Chromium Dash.
-    """
-    if channel == 'canary':
-        # The canary branch has two versions, the regular and the ASAN version,
-        # and we want the highest of the two.
-        canary_version = fetch_chromium_dash_version('canary',
-                                                     target_platform='Windows')
-        canary_asan_version = fetch_chromium_dash_version(
-            'canary_asan', target_platform='Windows')
-        linux_version = fetch_chromium_dash_version(channel='canary',
-                                                    target_platform='Linux')
-        adroid_version = fetch_chromium_dash_version(channel='canary',
-                                                     target_platform='Android')
-        mac_version = fetch_chromium_dash_version(channel='canary',
-                                                  target_platform='Mac')
-        ios_verion = fetch_chromium_dash_version(channel='canary',
-                                                 target_platform='ios')
-        return max(canary_version, canary_asan_version, linux_version,
-                   adroid_version, ios_verion, mac_version)
+def _fetch_chromium_tag(to: str) -> Version:
+    """Resolves the --to flag value to a Version.
 
-    return fetch_chromium_dash_version(channel, target_platform='Windows')
+    +---------------------------+---------------------------------------------+
+    | Labels                    | Description                                 |
+    +---------------------------+---------------------------------------------+
+    | @latest-tag               | Latest tag in the Chromium repo             |
+    | @latest-m{MAJOR}          | Latest tag for the given major version      |
+    | @latest-for-branch        | Latest tag for the major inferred from the  |
+    |                           | current branch name ( format cr{MAJOR})     |
+    | @latest-canary            | Latest canary release from ChromiumDash     |
+    | @latest-beta              | Latest beta release from ChromiumDash       |
+    | @latest-dev               | Latest dev release from ChromiumDash        |
+    | @latest-stable            | Latest stable release from ChromiumDash     |
+    +---------------------------+---------------------------------------------+
+    """
+
+    # If not a label, then this value is expected to be a valid Chromium
+    # version.
+    if not to.startswith('@'):
+        return Version(to)
+
+    if to == '@latest-for-branch':
+        branch = repository.brave.current_branch()
+        match = re.fullmatch(r'cr(\d+)', branch)
+        if not match:
+            raise InvalidInputException(
+                '@latest-for-branch requires the current branch to be named '
+                f'cr{{MAJOR}} (e.g. cr135), but the current branch is '
+                f'"{branch}".')
+        return _fetch_chromium_tag(f'@latest-m{match.group(1)}')
+
+    if to == '@latest-tag':
+        version = Version.get_latest_googlesource_tag_version()
+        if version is None:
+            raise InvalidInputException(
+                'Could not fetch latest Googlesource tag.')
+        return version
+    if to.startswith('@latest-m'):
+        major_str = to[len('@latest-m'):]
+        if not major_str.isdigit():
+            raise InvalidInputException(
+                f'Invalid major version in "{to}": '
+                f'"{major_str}" is not a valid integer.')
+        version = Version.get_latest_googlesource_tag_version(
+            major=int(major_str))
+        if version is None:
+            raise InvalidInputException(
+                'Could not find a Googlesource tag for major version '
+                f'{major_str}.')
+        return version
+    if to.startswith('@latest-'):
+        [_, channel] = to.split('-', 1)
+        if channel not in ('canary', 'beta', 'dev', 'stable'):
+            raise InvalidInputException(
+                f'Invalid @latest channel: "{channel}". '
+                'Valid options: canary, beta, dev, stable.')
+
+        if channel == 'canary':
+            # The canary branch has two versions, the regular and the ASAN
+            # version, and we want the highest of the two.
+            canary_version = fetch_chromium_dash_version(
+                'canary', target_platform='Windows')
+            canary_asan_version = fetch_chromium_dash_version(
+                'canary_asan', target_platform='Windows')
+            linux_version = fetch_chromium_dash_version(
+                channel='canary', target_platform='Linux')
+            adroid_version = fetch_chromium_dash_version(
+                channel='canary', target_platform='Android')
+            mac_version = fetch_chromium_dash_version(channel='canary',
+                                                      target_platform='Mac')
+            ios_verion = fetch_chromium_dash_version(channel='canary',
+                                                     target_platform='ios')
+            return max(canary_version, canary_asan_version, linux_version,
+                       adroid_version, ios_verion, mac_version)
+        return fetch_chromium_dash_version(channel, target_platform='Windows')
+
+    raise InvalidInputException(
+        f'Unknown label: "{to}". '
+        'Valid labels: @latest-tag, @latest-m{MAJOR}, @latest-for-branch, '
+        '@latest-canary, @latest-beta, @latest-dev, @latest-stable.')
 
 
 def show(args: argparse.Namespace):
@@ -2087,19 +2171,19 @@ def show(args: argparse.Namespace):
         console.print(f'upstream version: {Version.from_git("HEAD")}')
 
     if args.from_ref_value is not None:
-        from_ref_value = Version.from_git(solve_git_ref(args.from_ref_value))
+        from_ref_value = Version.from_git(_solve_brave_ref(
+            args.from_ref_value))
         if from_ref_value is not None:
             console.print(f'base version: {from_ref_value}')
 
     if args.log_link:
         console.print('googlesource link: %s' %
                       Version.from_git('HEAD').get_googlesource_diff_link(
-                          Version.from_git(solve_git_ref('@previous'))))
+                          Version.from_git(_solve_brave_ref('@previous'))))
 
-    if args.latest_chromiumdash_version is not None:
-        console.print(
-            'latest canary version: %s' %
-            fetch_lastest_canary_version(args.latest_chromiumdash_version))
+    if args.chromium_version_label is not None:
+        console.print('version: %s' %
+                      _fetch_chromium_tag(args.chromium_version_label))
 
 def main():
     # This is a global parser with arguments that apply to every function.
@@ -2118,14 +2202,16 @@ def main():
         dest='infra_mode')
 
     # The `--from-ref` parse is used by multiple operations.
-    base_version_parser = argparse.ArgumentParser(add_help=False)
+    base_version_parser = argparse.ArgumentParser(
+        add_help=False, formatter_class=argparse.RawTextHelpFormatter)
     base_version_parser.add_argument(
         '--from-ref',
         help=
-        'A reference to the version that the upgrade is coming from. This is '
-        'a git branch, hash, tag, etc, or one of the special values: @upstream'
-        ' (upstream branch), @previous (the previous version from HEAD). '
-        'Defaults to @upstream.',
+        ('A brave-core git reference for the Chromium version to upgrade\n'
+         'from (branch, commit hash, tag, etc.), or one of these labels:\n'
+         '  @upstream        Upstream branch of the current branch (default)\n'
+         '  @previous        Commit just before the last version bump\n'
+         '  @previous-major  Commit just before the last major version bump'),
         default=None)
 
     parser = argparse.ArgumentParser()
@@ -2134,11 +2220,28 @@ def main():
     lift_parser = subparsers.add_parser(
         'lift',
         parents=[global_parser, base_version_parser],
+        formatter_class=argparse.RawTextHelpFormatter,
         help='Upgrade the chromium base version. Special tags: '
-        '@latest-[beta|dev|canary] pulls the version from chromium dash.')
-    lift_parser.add_argument('--to',
-                             required=True,
-                             help='The branch used as the base version.')
+        '@latest-[beta|dev|canary] pulls the version from chromium dash; '
+        '@latest-tag pulls the latest tag from Googlesource.')
+    lift_parser.add_argument(
+        '--to',
+        required=True,
+        help=(
+            'The Chromium version to upgrade to (e.g. 147.0.7727.117),\n'
+            'or one of the following labels:\n'
+            '  @latest-tag         Latest tag from the Chromium Googlesource'
+            ' repo\n'
+            '  @latest-m{MAJOR}    Latest Googlesource tag for the given major'
+            ' version\n'
+            '  @latest-for-branch  Latest tag for the major inferred from the\n'
+            '                      current branch name (must be named'
+            ' cr{MAJOR})\n'
+            '  @latest-canary      Latest canary release from ChromiumDash\n'
+            '  @latest-beta        Latest beta release from ChromiumDash\n'
+            '  @latest-dev         Latest dev release from ChromiumDash\n'
+            '  @latest-stable      Latest stable release from ChromiumDash'),
+    )
     lift_parser.add_argument(
         '--continue',
         action='store_true',
@@ -2226,9 +2329,9 @@ def main():
                              action='store_true',
                              help='Prints the git log links to googlesource.')
     show_parser.add_argument(
-        '--latest-chromiumdash-version',
+        '--chromium-version-label',
         default=None,
-        help='Prints the latest version available for the channel provided.')
+        help='Prints the version for the given label (e.g. @latest-canary).')
 
     reassign_parser = subparsers.add_parser(
         'reassign',
@@ -2261,9 +2364,8 @@ def main():
                 parser.error(
                     'Switch --from-ref not supported with --continue.')
 
-    def resolve_from_ref_flag_version() -> Version:
-        return Version.from_git(
-            solve_git_ref(args.from_ref if args.from_ref else '@upstream'))
+    def resolve_version_with_from_ref_arg() -> Version:
+        return Version.from_git(_solve_brave_ref(args.from_ref))
 
     if args.command == 'lift' and args.no_conflict and not args.is_continuation:
         parser.error('--no-conflict-change can only be used with --continue')
@@ -2271,30 +2373,18 @@ def main():
         parser.error('--restart does not support --continue')
     if args.command == 'lift' and args.ack_advisory and args.is_continuation:
         parser.error('--ack-advisory does not support --continue')
-    if args.command == 'lift' and args.to.startswith('@latest-'):
-        [_, channel] = args.to.split('-')
-        if channel not in ['canary', 'beta', 'dev']:
-            parser.error('Invalid channel for --to.')
-
-    def resolve_to_flag() -> Version:
-        if args.to.startswith('@latest-'):
-            [_, channel] = args.to.split('-')
-            if channel not in ['canary', 'beta', 'dev']:
-                parser.error('Invalid channel for --to.')
-            return fetch_lastest_canary_version(channel)
-        return Version(args.to)
-
     try:
         if args.command == 'lift':
-            target = resolve_to_flag()
+            target = _fetch_chromium_tag(args.to)
             if args.restart:
                 ReUpgrade(target).run()
 
             if not args.is_continuation:
                 upgrade = Upgrade(target, args.is_continuation,
-                                  resolve_from_ref_flag_version())
+                                  resolve_version_with_from_ref_arg())
             else:
-                upgrade = Upgrade(resolve_to_flag(), args.is_continuation)
+                upgrade = Upgrade(_fetch_chromium_tag(args.to),
+                                  args.is_continuation)
 
             upgrade.run(no_conflict_continuation=args.no_conflict,
                         launch_vscode=args.vscode,
@@ -2307,9 +2397,10 @@ def main():
                          discard_regen_changes=args.discard_regen_changes,
                          squash_minor_bumps=args.squash_minor_bumps)
         if args.command == 'regen':
-            Regen(resolve_from_ref_flag_version()).run(dry_run=args.dry_run)
+            Regen(
+                resolve_version_with_from_ref_arg()).run(dry_run=args.dry_run)
         if args.command == 'update-version-issue':
-            GitHubIssue(resolve_from_ref_flag_version()).run()
+            GitHubIssue(resolve_version_with_from_ref_arg()).run()
         if args.command == 'reassign':
             Reassign().run(change=args.change)
         if args.command == 'reference':
