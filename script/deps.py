@@ -57,7 +57,7 @@ def DownloadUrl(url, output_file):
             sys.stdout.write('\n')
             print(e)
             if num_retries == 0 or isinstance(
-                    e, HTTPError) and e.code in [403, 404]:  # pylint: disable=no-member,line-too-long
+                    e, HTTPError) and e.code in [403, 404]:  # pylint: disable=line-too-long,no-member
                 raise e
             num_retries -= 1
             print("Retrying in {} s ...".format(retry_wait_s))
@@ -97,3 +97,19 @@ def DownloadAndUnpack(url, output_dir, path_prefix=None):
                     t.extractall(path=output_dir, members=members)
         finally:
             os.unlink(tmp_file.name)
+
+
+def DownloadIfChanged(url, dest_dir, download_fn):
+    """Run download_fn() only if dest_dir isn't already recorded as
+    containing a download from url. On success, records url in a
+    '.url' file inside dest_dir so subsequent calls can skip."""
+    url_file = os.path.join(dest_dir, '.url')
+    try:
+        with open(url_file) as f:
+            if f.read() == url:
+                return
+    except FileNotFoundError:
+        pass
+    download_fn()
+    with open(url_file, 'w') as f:
+        f.write(url)
