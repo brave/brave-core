@@ -24,12 +24,12 @@ namespace serp_metrics {
 class SerpMetricsTimePeriodStorage;
 class SerpMetricsTimePeriodStoreFactory;
 
-// SerpMetrics records and aggregates search engine usage counts.
+// `SerpMetrics` records and aggregates search engine usage counts.
 //
 // Counts are exposed for two reporting windows, based on the timestamp of the
 // last successful usage ping (i.e., only searches not yet reported):
 //  - Yesterday: searches from the most recent completed calendar day
-//    (00:00:00 to 23:59:59 in the reporting timezone).
+//    (00:00:00 to 23:59:59 UTC).
 //  - Stale period: searches older than yesterday (but still within the
 //    `TimePeriodStorage` retention window).
 
@@ -57,12 +57,13 @@ class SerpMetrics final {
   size_t GetSearchCountForTesting(SerpMetricType type) const;
 
  private:
-  // Returns the start of the stale period in local time, based on the last day
-  // a usage ping was sent. Searches recorded on `kLastCheckYMD` have not yet
-  // been reported, so the stale period begins at local midnight of that day. If
+  // Returns the start of the stale period in UTC, based on the last day
+  // a usage ping was sent. Searches recorded since the last check have not yet
+  // been reported, so the stale period begins at UTC midnight of that day. If
   // the last check date is unavailable or invalid, an empty time is returned to
   // indicate that the full retention period should be considered stale.
   base::Time GetStartOfStalePeriod() const;
+  base::Time GetStartOfStalePeriodFromDailyPingLastCheckDate() const;
 
   const raw_ref<PrefService> local_state_;
 
