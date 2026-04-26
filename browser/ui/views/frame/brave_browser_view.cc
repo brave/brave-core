@@ -78,6 +78,7 @@
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
 #include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "chrome/browser/ui/views/interaction/browser_elements_views.h"
+#include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
@@ -107,6 +108,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+#include "brave/browser/ui/views/side_panel/brave_side_panel_resize_area.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -356,6 +361,11 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
       sidebar_container_view_ =
           AddChildView(std::make_unique<SidebarContainerView>(
               browser_, SidePanelCoordinator::From(browser_), nullptr));
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+      contents_height_side_panel_->SetResizeArea(
+          std::make_unique<views::BraveSidePanelResizeArea>(
+              contents_height_side_panel_));
+#endif
     } else {
       // V1: wrap chromium's side panel inside SidebarContainerView.
       auto original_side_panel =
@@ -1066,7 +1076,12 @@ void BraveBrowserView::UpdateVerticalTabStripBorder() {
 }
 
 void BraveBrowserView::UpdateSidebarBorder() {
-#if !BUILDFLAG(ENABLE_SIDEBAR_V2)
+#if BUILDFLAG(ENABLE_SIDEBAR_V2)
+  if (contents_height_side_panel_) {
+    contents_height_side_panel_->SetBorderEnabled(
+        ShouldUseBraveWebViewRoundedCornersForContents(browser_));
+  }
+#else
   if (contents_height_side_panel_) {
     contents_height_side_panel_->UpdateBorder();
   }
