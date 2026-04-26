@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/run_loop.h"
 #include "content/public/test/navigation_simulator.h"
 #include "content/public/test/test_renderer_host.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -61,14 +62,19 @@ TEST_F(BackgroundWebContentsImplTest,
 TEST_F(BackgroundWebContentsImplTest, UnexpectedUrlCallsDestroyed) {
   CreateContents();
 
-  EXPECT_CALL(delegate_,
-              OnBackgroundContentsDestroyed(
-                  BackgroundWebContents::DestroyReason::kInvalidUrl));
+  base::RunLoop run_loop;
+  EXPECT_CALL(delegate_, OnBackgroundContentsDestroyed(
+                             BackgroundWebContents::DestroyReason::kInvalidUrl))
+      .WillOnce([&run_loop](auto) { run_loop.Quit(); });
 
   // Navigate to a different URL than expected.
   auto* wc = background_contents_->web_contents();
   content::NavigationSimulator::NavigateAndCommitFromBrowser(
       wc, GURL("chrome-untrusted://wrong/"));
+
+  // NotifyDestroyed is posted asynchronously to avoid destroying
+  // WebContents during observer notification.
+  run_loop.Run();
 }
 
 TEST_F(BackgroundWebContentsImplTest, DestructorDoesNotFireDelegateCallbacks) {
