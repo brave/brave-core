@@ -97,16 +97,4 @@ export const ActionBox = styled.div`
   display: flex;
   grid-gap: 10px;
   margin-bottom: 40px;
-
-  button {
-    color: white;
-  }
-
-  button:nth-child(2) {
-    &[disabled] {
-      background: rgba(255, 255, 255, 0.14);
-      backdrop-filter: blur(8px);
-      color: rgba(255, 255, 255, 0.32);
-    }
-  }
 `
