@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <memory>
 #include <numeric>
+#include <set>
 #include <stack>
 #include <string>
 #include <utility>
@@ -24,6 +25,7 @@
 #include "base/notreached.h"
 #include "base/path_service.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/task/thread_pool.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
@@ -36,6 +38,9 @@
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
+#include "brave/browser/workspace/brave_workspace.h"
+#include "brave/browser/workspace/brave_workspace_service.h"
+#include "brave/browser/workspace/brave_workspace_service_factory.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/containers/buildflags/buildflags.h"
@@ -55,8 +60,11 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
+#include "chrome/browser/ui/browser_tabrestore.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/profiles/profile_picker.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -72,6 +80,8 @@
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/sessions/content/content_serialized_navigation_builder.h"
+#include "components/sessions/core/session_service_commands.h"
 #include "components/split_tabs/split_tab_visual_data.h"
 #include "components/tab_groups/tab_group_visual_data.h"
 #include "components/tabs/public/tab_group.h"
@@ -88,6 +98,8 @@
 
 #if defined(TOOLKIT_VIEWS)
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/workspace/open_workspace_dialog.h"
+#include "brave/browser/ui/views/workspace/save_workspace_dialog.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_enums.h"
@@ -157,6 +169,180 @@ std::vector<int> GetSelectedIndices(Browser* browser) {
   CHECK(!indices.empty())
       << "Returning empty indices could case infinite recursion";
   return indices;
+}
+
+// Used for saving a workspace.
+// Appends session commands for a single browser window to |commands| and
+// updates |active_window_id| if |browser| is the calling browser.
+// Returns the number of tabs which were serialized.
+int AppendBrowserSessionCommands(
+    Browser* browser,
+    Browser* calling_browser,
+    std::vector<std::unique_ptr<sessions::SessionCommand>>& commands,
+    SessionID& active_window_id) {
+  auto* tsm = browser->tab_strip_model();
+  if (tsm->count() == 0) {
+    return 0;
+  }
+
+  SessionID window_id = SessionID::NewUnique();
+  commands.push_back(sessions::CreateSetWindowTypeCommand(
+      window_id, sessions::SessionWindow::TYPE_NORMAL));
+  commands.push_back(sessions::CreateSetWindowBoundsCommand(
+      window_id, browser->window()->GetRestoredBounds(),
+      browser->window()->GetRestoredState()));
+
+  // Mark the calling browser's window as the active one.
+  if (browser == calling_browser ||
+      active_window_id == SessionID::InvalidValue()) {
+    active_window_id = window_id;
+  }
+
+  // Emit group metadata for every tab group in this window.
+  if (tsm->group_model()) {
+    for (const tab_groups::TabGroupId& group_id :
+         tsm->group_model()->ListTabGroups()) {
+      auto* group = tsm->group_model()->GetTabGroup(group_id);
+      if (!group || !group->visual_data()) {
+        continue;
+      }
+      commands.push_back(sessions::CreateTabGroupMetadataUpdateCommand(
+          group_id, group->visual_data()));
+    }
+  }
+
+  int tab_count = 0;
+  for (int i = 0; i < tsm->count(); ++i) {
+    content::WebContents* contents = tsm->GetWebContentsAt(i);
+    if (!contents) {
+      continue;
+    }
+
+    SessionID tab_id = SessionID::NewUnique();
+
+    commands.push_back(sessions::CreateSetTabWindowCommand(window_id, tab_id));
+    commands.push_back(sessions::CreateSetTabIndexInWindowCommand(tab_id, i));
+
+    if (tsm->IsTabPinned(i)) {
+      commands.push_back(sessions::CreatePinnedStateCommand(tab_id, true));
+    }
+
+    std::optional<tab_groups::TabGroupId> group_id = tsm->GetTabGroupForTab(i);
+    if (group_id.has_value()) {
+      commands.push_back(sessions::CreateTabGroupCommand(tab_id, group_id));
+    }
+
+    // Serialize the full navigation history for this tab.
+    auto& controller = contents->GetController();
+    int nav_count = controller.GetEntryCount();
+    int current_entry = controller.GetCurrentEntryIndex();
+    for (int j = 0; j < nav_count; ++j) {
+      content::NavigationEntry* entry = controller.GetEntryAtIndex(j);
+      if (!entry) {
+        continue;
+      }
+      auto serialized =
+          sessions::ContentSerializedNavigationBuilder::FromNavigationEntry(
+              j, entry);
+      commands.push_back(
+          sessions::CreateUpdateTabNavigationCommand(tab_id, serialized));
+    }
+
+    commands.push_back(sessions::CreateSetSelectedNavigationIndexCommand(
+        tab_id, current_entry));
+    tab_count++;
+  }
+
+  commands.push_back(sessions::CreateSetSelectedTabInWindowCommand(
+      window_id, tsm->active_index()));
+  return tab_count;
+}
+
+void DoRestoreWorkspace(
+    Profile* profile,
+    std::vector<std::unique_ptr<sessions::SessionCommand>> commands) {
+  if (commands.empty()) {
+    LOG(ERROR) << "Could not load workspace";
+    return;
+  }
+
+  // RestoreSessionFromCommands constructs SessionTab/SessionWindow objects
+  // whose constructors call SessionID::NewUnique(), which is sequence-checked
+  // to the UI thread.  It must therefore be called here (UI thread), not in
+  // the background I/O task.
+  std::vector<std::unique_ptr<sessions::SessionWindow>> windows;
+  SessionID active_window_id = SessionID::InvalidValue();
+  std::string platform_session_id;
+  std::set<SessionID> discarded_window_ids;
+  sessions::RestoreSessionFromCommands(commands, &windows, &active_window_id,
+                                       &platform_session_id,
+                                       &discarded_window_ids);
+  if (windows.empty()) {
+    return;
+  }
+
+  // We restore tabs ourselves rather than using RestoreForeignSessionWindows
+  // because that API creates an empty new_group_ids map and never calls
+  // RestoreTabGroupMetadata, so tab group names/colors are silently dropped.
+  // By passing the original TabGroupId directly to AddRestoredTab, we avoid
+  // any ID remapping and can apply visual data with the same IDs afterwards.
+  for (const auto& window : windows) {
+    if (window->tabs.empty()) {
+      continue;
+    }
+
+    if (Browser::GetCreationStatusForProfile(profile) !=
+        Browser::CreationStatus::kOk) {
+      continue;
+    }
+    Browser::CreateParams params(Browser::TYPE_NORMAL, profile, false);
+    params.initial_bounds = window->bounds;
+    params.initial_show_state = window->show_state;
+    params.initial_workspace = window->workspace;
+    params.initial_visible_on_all_workspaces_state =
+        window->visible_on_all_workspaces;
+    params.should_trigger_session_restore = false;
+    Browser* browser = Browser::Create(params);
+    if (!browser) {
+      continue;
+    }
+
+    auto* tsm = browser->tab_strip_model();
+    for (int i = 0; i < static_cast<int>(window->tabs.size()); ++i) {
+      const auto& tab = window->tabs[i];
+      if (tab->navigations.empty()) {
+        continue;
+      }
+      chrome::AddRestoredTab(
+          browser, tab->navigations,
+          /*tab_index=*/i, tab->normalized_navigation_index(),
+          tab->extension_app_id,
+          /*group=*/tab->group,
+          /*select=*/false, tab->pinned,
+          /*last_active_time_ticks=*/base::TimeTicks(), tab->last_active_time,
+          /*storage_namespace=*/nullptr, tab->user_agent_override,
+          tab->extra_data,
+          /*from_session_restore=*/true,
+          /*is_active_browser=*/std::nullopt);
+    }
+
+    // Apply group names, colors, and collapsed state.  Since we passed the
+    // original TabGroupIds to AddRestoredTab, no ID remapping is needed.
+    for (const auto& session_group : window->tab_groups) {
+      if (!tsm->group_model() ||
+          !tsm->group_model()->ContainsTabGroup(session_group->id)) {
+        continue;
+      }
+      tsm->ChangeTabGroupVisuals(session_group->id, session_group->visual_data);
+    }
+
+    int active = std::clamp(window->selected_tab_index, 0,
+                            std::max(0, tsm->count() - 1));
+    if (active < tsm->count()) {
+      tsm->ActivateTabAt(active);
+    }
+    browser->window()->Show();
+  }
 }
 
 }  // namespace
@@ -1166,6 +1352,114 @@ void ForcePasteInWebContents(content::WebContents* web_contents) {
             web_contents->Replace(result);
           },
           web_contents->GetWeakPtr()));
+}
+
+void SaveWorkspace(Browser* calling_browser, const std::string& name) {
+  if (name.empty()) {
+    return;
+  }
+
+  auto* service =
+      BraveWorkspaceServiceFactory::GetForProfile(calling_browser->profile());
+  if (!service) {
+    return;
+  }
+
+  // Collect session commands on the UI thread, then write to disk on a
+  // background task (WriteWorkspaceToDisk does blocking file I/O).
+  std::vector<std::unique_ptr<sessions::SessionCommand>> commands;
+
+  SessionID active_window_id = SessionID::InvalidValue();
+  int window_count = 0;
+  int tab_count = 0;
+
+  Profile* profile = calling_browser->profile();
+  GlobalBrowserCollection::GetInstance()->ForEach(
+      [&](BrowserWindowInterface* bwi) {
+        if (bwi->GetProfile() != profile ||
+            bwi->GetType() != BrowserWindowInterface::Type::TYPE_NORMAL) {
+          return true;
+        }
+        window_count++;
+        tab_count += AppendBrowserSessionCommands(
+            bwi->GetBrowserForMigrationOnly(), calling_browser, commands,
+            active_window_id);
+        return true;
+      });
+
+  if (tab_count == 0) {
+    return;
+  }
+
+  if (active_window_id != SessionID::InvalidValue()) {
+    commands.push_back(
+        sessions::CreateSetActiveWindowCommand(active_window_id));
+  }
+
+  base::FilePath workspace_dir = service->GetWorkspaceDirForName(name);
+
+  // CommandStorageBackend must be constructed on the UI thread because its
+  // constructor calls SingleThreadTaskRunner::GetCurrentDefault().  We create
+  // a MayBlock SequencedTaskRunner here and pass it as the backend's owning
+  // runner, then post the actual file I/O to that same runner.
+  auto task_runner = base::ThreadPool::CreateSequencedTaskRunner(
+      {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+       base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
+  auto backend = base::MakeRefCounted<sessions::CommandStorageBackend>(
+      task_runner, workspace_dir, BraveWorkspaceService::kWorkspaceSessionType);
+
+  base::Time save_time = base::Time::Now();
+  task_runner->PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(&BraveWorkspaceService::WriteWorkspaceToDisk,
+                     std::move(commands), std::move(workspace_dir),
+                     std::move(backend)),
+      base::BindOnce(
+          [](BraveWorkspaceService* service, std::string name, int window_count,
+             int tab_count, base::Time modified_at, bool success) {
+            if (success) {
+              service->SaveWorkspaceMetadata(name, window_count, tab_count,
+                                             modified_at);
+            }
+          },
+          base::Unretained(service), name, window_count, tab_count, save_time));
+}
+
+void ShowSaveWorkspaceDialog(Browser* browser) {
+#if defined(TOOLKIT_VIEWS)
+  SaveWorkspaceDialog::Show(browser);
+#endif
+}
+
+void ShowOpenWorkspaceDialog(Browser* browser) {
+#if defined(TOOLKIT_VIEWS)
+  OpenWorkspaceDialog::Show(browser);
+#endif
+}
+
+void RestoreWorkspace(Browser* calling_browser, const std::string& name) {
+  auto* service =
+      BraveWorkspaceServiceFactory::GetForProfile(calling_browser->profile());
+  if (!service) {
+    return;
+  }
+
+  Profile* profile = calling_browser->profile();
+  base::FilePath path = service->GetWorkspaceDirForName(name);
+
+  // Construct the backend on the UI thread (requires SingleThreadTaskRunner
+  // context), then hand it to the background sequenced runner for file I/O.
+  auto task_runner = base::ThreadPool::CreateSequencedTaskRunner(
+      {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
+  auto backend = base::MakeRefCounted<sessions::CommandStorageBackend>(
+      task_runner, path, BraveWorkspaceService::kWorkspaceSessionType);
+
+  task_runner->PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(&BraveWorkspaceService::ReadWorkspaceFromDisk,
+                     std::move(path), std::move(backend)),
+      base::BindOnce(&DoRestoreWorkspace, base::Unretained(profile)));
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
