@@ -8,25 +8,13 @@
 
 #include <string>
 
+#include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_types.h"
+
 namespace brave_ads {
 
-// Use for requests that are not user-specific and do not process personal data.
-std::string GetStaticUrlHost();
-
-// Only used by the /v#/getstate endpoint.
-std::string GetGeoUrlHost();
-
-// Use for requests that include the wallet ID and therefore fully identify the
-// user.
-std::string GetNonAnonymousUrlHost();
-
-// Use for requests that must not include the wallet ID or allow Brave to link
-// the request to a wallet in any other way.
-std::string GetAnonymousUrlHost();
-
-// Use for search requests that must not include the wallet ID or allow Brave to
-// link the request to a wallet in any other way.
-std::string GetAnonymousSearchUrlHost();
+// Returns the URL host for the given `type`. See `UrlHostType` for
+// usage guidance on each value.
+std::string GetUrlHost(UrlHostType type);
 
 }  // namespace brave_ads
 

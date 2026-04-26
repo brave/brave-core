@@ -8,6 +8,7 @@
 #include <string>
 
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
+#include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_types.h"
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "url/gurl.h"
@@ -17,7 +18,8 @@ namespace brave_ads {
 namespace {
 
 GURL BuildUrl() {
-  const std::string spec = GetStaticUrlHost() + BuildCatalogUrlPath();
+  const std::string spec =
+      GetUrlHost(UrlHostType::kStatic) + BuildCatalogUrlPath();
   return GURL(spec);
 }
 

@@ -20,7 +20,7 @@ constexpr bool IsLeapYear(int year) {
   return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
 }
 
-// Returns the day of the week, where Sunday is 0 and Saturday is 6, as in
+// Returns the day of the week, where Sunday is 0 and Saturday is 6, matching
 // `struct tm`.
 int DayOfWeek(base::Time time, bool is_local);
 

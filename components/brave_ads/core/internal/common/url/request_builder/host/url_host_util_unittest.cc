@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
 
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_types.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
@@ -15,47 +16,49 @@ namespace brave_ads {
 
 class BraveAdsUrlHostUtilTest : public test::TestBase {};
 
-TEST_F(BraveAdsUrlHostUtilTest, GetStaticUrlHost) {
+TEST_F(BraveAdsUrlHostUtilTest, GetUrlHostReturnsStaticHost) {
   // Arrange
   ASSERT_TRUE(GlobalState::HasInstance());
   GlobalState::GetInstance()->CommandLineSwitches().environment_type =
       mojom::EnvironmentType::kProduction;
 
   // Act & Assert
-  EXPECT_EQ("https://static.ads.brave.com", GetStaticUrlHost());
+  EXPECT_EQ("https://static.ads.brave.com", GetUrlHost(UrlHostType::kStatic));
 }
 
-TEST_F(BraveAdsUrlHostUtilTest, GetGeoUrlHost) {
+TEST_F(BraveAdsUrlHostUtilTest, GetUrlHostReturnsGeoHost) {
   // Arrange
   ASSERT_TRUE(GlobalState::HasInstance());
   GlobalState::GetInstance()->CommandLineSwitches().environment_type =
       mojom::EnvironmentType::kProduction;
 
   // Act & Assert
-  EXPECT_EQ("https://geo.ads.brave.com", GetGeoUrlHost());
+  EXPECT_EQ("https://geo.ads.brave.com", GetUrlHost(UrlHostType::kGeo));
 }
 
-TEST_F(BraveAdsUrlHostUtilTest, GetNonAnonymousUrlHost) {
+TEST_F(BraveAdsUrlHostUtilTest, GetUrlHostReturnsNonAnonymousHost) {
   // Arrange
   ASSERT_TRUE(GlobalState::HasInstance());
   GlobalState::GetInstance()->CommandLineSwitches().environment_type =
       mojom::EnvironmentType::kProduction;
 
   // Act & Assert
-  EXPECT_EQ("https://mywallet.ads.brave.com", GetNonAnonymousUrlHost());
+  EXPECT_EQ("https://mywallet.ads.brave.com",
+            GetUrlHost(UrlHostType::kNonAnonymous));
 }
 
-TEST_F(BraveAdsUrlHostUtilTest, GetAnonymousUrlHost) {
+TEST_F(BraveAdsUrlHostUtilTest, GetUrlHostReturnsAnonymousHost) {
   // Arrange
   ASSERT_TRUE(GlobalState::HasInstance());
   GlobalState::GetInstance()->CommandLineSwitches().environment_type =
       mojom::EnvironmentType::kProduction;
 
   // Act & Assert
-  EXPECT_EQ("https://anonymous.ads.brave.com", GetAnonymousUrlHost());
+  EXPECT_EQ("https://anonymous.ads.brave.com",
+            GetUrlHost(UrlHostType::kAnonymous));
 }
 
-TEST_F(BraveAdsUrlHostUtilTest, GetAnonymousSearchUrlHost) {
+TEST_F(BraveAdsUrlHostUtilTest, GetUrlHostReturnsAnonymousSearchHost) {
   // Arrange
   ASSERT_TRUE(GlobalState::HasInstance());
   GlobalState::GetInstance()->CommandLineSwitches().environment_type =
@@ -63,7 +66,7 @@ TEST_F(BraveAdsUrlHostUtilTest, GetAnonymousSearchUrlHost) {
 
   // Act & Assert
   EXPECT_EQ("https://search.anonymous.ads.brave.com",
-            GetAnonymousSearchUrlHost());
+            GetUrlHost(UrlHostType::kAnonymousSearch));
 }
 
 }  // namespace brave_ads

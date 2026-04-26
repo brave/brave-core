@@ -9,10 +9,23 @@
 namespace brave_ads {
 
 enum class UrlHostType {
+  // Use for requests that must not include the wallet ID or allow Brave to
+  // link the request to a wallet in any other way.
   kAnonymous = 0,
+
+  // Use for search requests that must not include the wallet ID or allow Brave
+  // to link the request to a wallet in any other way.
   kAnonymousSearch,
+
+  // Only used by the /v#/getstate endpoint.
   kGeo,
+
+  // Use for requests that include the wallet ID and therefore fully identify
+  // the user.
   kNonAnonymous,
+
+  // Use for requests that are not user-specific and do not process personal
+  // data.
   kStatic
 };
 
