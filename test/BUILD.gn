@@ -757,6 +757,7 @@ if (!is_android) {
 
     deps = [
       "//brave:packed_resources",
+      "//brave/browser/ui/views/frame/vertical_tabs:interactive_ui_tests",
       "//chrome:packed_resources",
       "//chrome/browser",
       "//chrome/test:chrome_test_launcher",
