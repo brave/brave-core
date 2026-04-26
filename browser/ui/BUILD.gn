@@ -22,6 +22,7 @@ import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/email_aliases/buildflags/buildflags.gni")
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
+import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
@@ -953,6 +954,16 @@ source_set("ui") {
     "//ui/webui",
     "//url",
   ]
+
+  if (enable_psst) {
+    deps += [
+      "//brave/components/psst/browser/core",
+      "//brave/components/psst/buildflags",
+      "//brave/components/psst/common",
+      "//brave/components/psst/resources",
+      "//brave/components/psst/resources:psst_dialog_generated_resources",
+    ]
+  }
 
   if (enable_brave_vpn) {
     deps += [

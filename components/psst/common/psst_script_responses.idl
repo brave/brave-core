@@ -5,12 +5,20 @@
 
 // Schema for Brave PSST script responses.
 namespace psst {
+    dictionary UserScriptTask {
+        DOMString uid;
+        DOMString url;
+        DOMString description;
+    };
+
     dictionary UserScriptResult {
        DOMString user_id;
        DOMString site_name;
+       UserScriptTask[] tasks;
     };
 
     dictionary PolicyTask {
+        DOMString uid;
         DOMString url;
         DOMString description;
         DOMString? error_description;

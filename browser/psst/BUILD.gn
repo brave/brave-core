@@ -29,10 +29,13 @@ static_library("psst") {
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/infobars",
     "//chrome/browser/profiles",
+    "//chrome/browser/ui/dialogs",
+    "//chrome/browser/ui/webui",
     "//components/content_settings/core/browser",
     "//components/infobars/core",
     "//components/permissions",
     "//components/prefs",
+    "//ui/web_dialogs",
   ]
 }
 

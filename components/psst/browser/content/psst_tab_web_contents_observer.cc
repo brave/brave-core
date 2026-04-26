@@ -120,6 +120,14 @@ PsstTabWebContentsObserver::PsstTabWebContentsObserver(
 
 PsstTabWebContentsObserver::~PsstTabWebContentsObserver() = default;
 
+PsstTabWebContentsObserver::PsstUiDelegate*
+PsstTabWebContentsObserver::GetPsstUiDelegate() const {
+  return ui_delegate_.get();
+}
+base::WeakPtr<PsstTabWebContentsObserver>
+PsstTabWebContentsObserver::AsWeakPtr() {
+  return weak_factory_.GetWeakPtr();
+}
 void PsstTabWebContentsObserver::DidFinishNavigation(
     content::NavigationHandle* handle) {
   if (!handle->IsInPrimaryMainFrame() || !handle->HasCommitted() ||
@@ -187,7 +195,7 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
     return;
   }
 
-  const auto user_script_result_parsed =
+  auto user_script_result_parsed =
       UserScriptResult::FromValue(user_script_result);
   if (!user_script_result_parsed) {
     ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
@@ -219,6 +227,7 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
   auto origin = url::Origin::Create(web_contents()->GetLastCommittedURL());
   ui_delegate_->Show(
       std::move(origin), std::move(*psst_settings),
+      std::move(user_script_result_parsed),
       base::BindOnce(
           &PsstTabWebContentsObserver::OnUserAcceptedPsstSettings,
           weak_factory_.GetWeakPtr(), id,

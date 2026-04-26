@@ -29,12 +29,12 @@ base::DictValue CreatePsstSettingsDict(
     psst::ConsentStatus consent_status,
     int script_version,
     const std::string& user_id,
-    const std::vector<std::string>& urls_to_skip) {
+    const std::vector<std::string>& uids_to_perform) {
   base::DictValue object;
   object.Set("user_id", user_id);
   object.Set("consent_status", ToString(consent_status));
   object.Set("script_version", script_version);
-  object.Set("urls_to_skip", VectorToList(urls_to_skip));
+  object.Set("uids_to_perform", VectorToList(uids_to_perform));
   return object;
 }
 

@@ -12,6 +12,7 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "content/public/browser/webui_config_map.h"
 
@@ -66,6 +67,10 @@
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 #include "brave/browser/ui/webui/email_aliases/email_aliases_panel_ui.h"
 #include "brave/components/email_aliases/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PSST)
+#include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
 #endif
 
 namespace {
@@ -152,5 +157,9 @@ void RegisterChromeWebUIConfigs() {
   if (email_aliases::features::IsEmailAliasesEnabled()) {
     map.AddWebUIConfig(std::make_unique<EmailAliasesPanelUIConfig>());
   }
+#endif
+
+#if BUILDFLAG(ENABLE_PSST)
+  map.AddWebUIConfig(std::make_unique<psst::BravePsstDialogUIConfig>());
 #endif
 }
