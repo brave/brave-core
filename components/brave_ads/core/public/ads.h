@@ -12,8 +12,6 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
-#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_observer.h"
 

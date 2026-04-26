@@ -106,7 +106,7 @@ void AdHistoryManager::GetForUICallback(
     return std::move(callback).Run(/*ad_history=*/std::nullopt);
   }
 
-  std::move(callback).Run(AdHistoryToValue(*ad_history));
+  std::move(callback).Run(AdHistoryToList(*ad_history));
 }
 
 void AdHistoryManager::NotifyDidAddAdHistoryItem(

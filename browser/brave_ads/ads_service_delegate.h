@@ -22,15 +22,14 @@ class BraveAdaptiveCaptchaService;
 
 namespace brave_ads {
 
-// Singleton that owns all AdsService and associates them with Profiles.
+// Browser-layer, platform-specific implementation of AdsService::Delegate.
 class AdsServiceDelegate final : public AdsService::Delegate {
  public:
   // `adaptive_captcha_service` can be `nullptr` in tests.
-  explicit AdsServiceDelegate(
-      Profile& profile,
-      PrefService& local_state,
-      brave_adaptive_captcha::BraveAdaptiveCaptchaService*
-          adaptive_captcha_service);
+  AdsServiceDelegate(Profile& profile,
+                     PrefService& local_state,
+                     brave_adaptive_captcha::BraveAdaptiveCaptchaService*
+                         adaptive_captcha_service);
 
   AdsServiceDelegate(const AdsServiceDelegate&) = delete;
   AdsServiceDelegate& operator=(const AdsServiceDelegate&) = delete;

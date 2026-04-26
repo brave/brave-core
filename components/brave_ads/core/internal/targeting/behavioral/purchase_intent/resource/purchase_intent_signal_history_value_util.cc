@@ -20,7 +20,7 @@ constexpr int kDefaultWeight = 0;
 
 }  // namespace
 
-base::DictValue PurchaseIntentSignalHistoryToValue(
+base::DictValue PurchaseIntentSignalHistoryToDict(
     const PurchaseIntentSignalHistoryInfo& purchase_intent_signal_history) {
   return base::DictValue()
       .Set(kSignaledAtKey, base::TimeToValue(purchase_intent_signal_history.at))

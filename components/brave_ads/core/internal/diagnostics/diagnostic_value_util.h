@@ -11,7 +11,7 @@
 
 namespace brave_ads {
 
-base::ListValue DiagnosticsToValue(const DiagnosticMap& diagnostics);
+base::ListValue DiagnosticsToList(const DiagnosticMap& diagnostics);
 
 }  // namespace brave_ads
 

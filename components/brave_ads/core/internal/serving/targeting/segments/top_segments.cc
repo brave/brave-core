@@ -47,7 +47,6 @@ std::optional<std::string> GetTopSegment(const SegmentList& segments,
   const auto iter = std::ranges::find_if(
       target_segments,
       [](const auto& segment) { return !ShouldFilterSegment(segment); });
-
   if (iter == target_segments.cend()) {
     return std::nullopt;
   }

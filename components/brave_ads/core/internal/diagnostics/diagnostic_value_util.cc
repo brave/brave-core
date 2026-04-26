@@ -18,7 +18,7 @@ constexpr std::string_view kValueKey = "value";
 
 }  // namespace
 
-base::ListValue DiagnosticsToValue(const DiagnosticMap& diagnostics) {
+base::ListValue DiagnosticsToList(const DiagnosticMap& diagnostics) {
   base::ListValue list;
 
   for (const auto& [_, entry] : diagnostics) {

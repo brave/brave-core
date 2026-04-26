@@ -56,21 +56,15 @@ TEST_F(BraveAdsTopUserModelSegmentsUtilTest, GetTopChildSegments) {
 }
 
 TEST_F(BraveAdsTopUserModelSegmentsUtilTest, GetTopChildSegmentsIfEmpty) {
-  // Act
-  const SegmentList top_segments = GetTopSegments(
-      /*user_model=*/{}, kTopSegmentsMaxCount, /*parent_only=*/false);
-
-  // Assert
-  EXPECT_THAT(top_segments, ::testing::IsEmpty());
+  EXPECT_THAT(GetTopSegments(/*user_model=*/{}, kTopSegmentsMaxCount,
+                             /*parent_only=*/false),
+              ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsTopUserModelSegmentsUtilTest, GetTopParentSegmentsIfEmpty) {
-  // Act
-  const SegmentList top_segments = GetTopSegments(
-      /*user_model=*/{}, kTopSegmentsMaxCount, /*parent_only=*/true);
-
-  // Assert
-  EXPECT_THAT(top_segments, ::testing::IsEmpty());
+  EXPECT_THAT(GetTopSegments(/*user_model=*/{}, kTopSegmentsMaxCount,
+                             /*parent_only=*/true),
+              ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsTopUserModelSegmentsUtilTest, GetTopParentSegments) {
