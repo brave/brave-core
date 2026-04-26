@@ -214,8 +214,6 @@ class SettingsViewController: TableViewController {
     super.viewWillAppear(animated)
     // Reset dev options access count
     aboutHeaderTapCount = 0
-    // Hide toolbar in case it was enabled by a child controller
-    navigationController?.setToolbarHidden(true, animated: animated)
   }
 
   private func displayRewardsDebugMenu() {
@@ -1310,17 +1308,33 @@ class SettingsViewController: TableViewController {
         Row(
           text: Strings.Autofill.managePasswordsTitle,
           selection: { [unowned self] in
-
             if FeatureList.kUseChromiumWebViewsAutofill.enabled,
               let autofillDataManager = braveCore.defaultWebViewConfiguration.autofillDataManager
             {
-              let managePasswordsViewController = ManagePasswordsViewController(
-                autofillDataManager: autofillDataManager
+              let viewModel = ManagePasswordsViewModel(autofillDataManager: autofillDataManager)
+              let controller = UIHostingController(
+                rootView:
+                  ManagePasswordsView(viewModel: viewModel)
+                  .environment(
+                    \.openURL,
+                    OpenURLAction { [weak self] url in
+                      self?.settingsDelegate?.settingsOpenURLInNewTab(url)
+                      return .handled
+                    }
+                  )
+                  // Failed privacy-lock auth must exit the entire navigation flow: `dismiss` only pops the
+                  // top SwiftUI screen, so from second order stack i.e detail/group
+                  // we would not return to settings. `popToViewController` unwinds every `NavigationLink`-pushed host;
+                  .environment(
+                    \.autofillPrivacyLockExitOnFailure,
+                    AutofillPrivacyLockExitOnFailureAction { [weak self] in
+                      guard let self, let nav = self.navigationController else { return }
+                      nav.popToViewController(self, animated: true)
+                    }
+                  )
               )
-              self.navigationController?.pushViewController(
-                managePasswordsViewController,
-                animated: true
-              )
+
+              navigationController?.pushViewController(controller, animated: true)
             } else {
               let loginsPasswordsViewController = LoginListViewController(
                 passwordAPI: passwordAPI,

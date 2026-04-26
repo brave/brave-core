@@ -9485,6 +9485,30 @@ extension Strings {
       comment:
         "Label for account when indicating that a domain has multiple accounts"
     )
+    public static let managePasswordDetailInputPasswordPlaceholder =
+      NSLocalizedString(
+        "autofill.managePasswords.passwordDetail.inputPasswordPlaceholder",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Enter Password",
+        comment: "Placeholder for the password field when adding or editing a login"
+      )
+    public static let managePasswordDetailRevealPassword =
+      NSLocalizedString(
+        "autofill.managePasswords.passwordDetail.revealPassword",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Reveal",
+        comment: "Reveal password label"
+      )
+    public static let managePasswordsAuthenticationReason =
+    NSLocalizedString(
+      "autofill.managePasswords.authenticationReason",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Please authenticate to manage your passwords.",
+      comment: "The reason string shown in the biometric/passcode authentication prompt when the user tries to access autofill management."
+    )
   }
 }
 

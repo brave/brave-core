@@ -7,6 +7,7 @@ import BraveCore
 import BraveStrings
 import BraveUI
 import Favicon
+import LocalAuthentication
 import Preferences
 import SwiftUI
 import UIKit
@@ -15,9 +16,12 @@ struct ManagePasswordsView: View {
   private typealias GroupID = ManagePasswordsViewModel.GroupID
   @Bindable var viewModel: ManagePasswordsViewModel
 
+  @Environment(\.dismiss) private var dismiss
+  @Environment(\.autofillPrivacyLockExitOnFailure) private var privacyLockExitOnFailure
   @Environment(\.editMode) private var editMode
+  @Environment(\.redactionReasons) private var redactionReasons
   @ObservedObject private var saveLogins = Preferences.General.saveLogins
-  @State private var isSceneActive = true
+  @State private var privacyLock = AutofillPrivacyLock()
   @State private var selectedGroupIds: Set<GroupID> = []
   @State private var isDeleteSelectionDialogPresented: Bool = false
 
@@ -31,6 +35,10 @@ struct ManagePasswordsView: View {
 
   private var isEditMode: Bool {
     editMode?.wrappedValue == .active
+  }
+
+  private var effectiveRedactionReasons: RedactionReasons {
+    privacyLock.isLocked ? redactionReasons.union(.privacy) : redactionReasons
   }
 
   var body: some View {
@@ -48,28 +56,26 @@ struct ManagePasswordsView: View {
       if !isSearchActive {
         Toggle(Strings.Autofill.managePasswordsOfferToSavePasswords, isOn: $saveLogins.value)
           .tint(Color(braveSystemName: .primary40))
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
 
       if !viewModel.filteredAllowedGroups.isEmpty {
         Section {
-          ForEach(viewModel.filteredAllowedGroups, id: \.domain) { domain, credentials in
-            ManagePasswordListRow(
-              domain: domain,
-              credentials: credentials
-            )
-            .tag(GroupID.saved(domain: domain))
-            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-              Button(role: .destructive) {
-                UIImpactFeedbackGenerator(style: .medium).vibrate()
-                viewModel.deletePasswords(credentials)
-              } label: {
-                Label(
-                  Strings.Autofill.managePasswordsDeleteCredentialButtonTitle,
-                  braveSystemImage: "leo.trash"
-                )
-                .labelStyle(.iconOnly)
+          ForEach(viewModel.filteredAllowedGroups, id: \.domain) { domain, passwords in
+            ManagePasswordListRow(domain: domain, passwords: passwords, viewModel: viewModel)
+              .tag(GroupID.saved(domain: domain))
+              .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                Button(role: .destructive) {
+                  UIImpactFeedbackGenerator(style: .medium).vibrate()
+                  viewModel.deletePasswords(passwords)
+                } label: {
+                  Label(
+                    Strings.Autofill.managePasswordsDeleteCredentialButtonTitle,
+                    braveSystemImage: "leo.trash"
+                  )
+                  .labelStyle(.iconOnly)
+                }
               }
-            }
           }
         } header: {
           Text(Strings.Autofill.managePasswordsSavedListHeaderTitle)
@@ -79,24 +85,21 @@ struct ManagePasswordsView: View {
 
       if !viewModel.filteredBlockedGroups.isEmpty {
         Section {
-          ForEach(viewModel.filteredBlockedGroups, id: \.domain) { domain, credentials in
-            ManagePasswordListRow(
-              domain: domain,
-              credentials: credentials
-            )
-            .tag(GroupID.blocked(domain: domain))
-            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-              Button(role: .destructive) {
-                UIImpactFeedbackGenerator(style: .medium).vibrate()
-                viewModel.deletePasswords(credentials)
-              } label: {
-                Label(
-                  Strings.Autofill.managePasswordsDeleteCredentialButtonTitle,
-                  braveSystemImage: "leo.trash"
-                )
-                .labelStyle(.iconOnly)
+          ForEach(viewModel.filteredBlockedGroups, id: \.domain) { domain, passwords in
+            ManagePasswordListRow(domain: domain, passwords: passwords, viewModel: viewModel)
+              .tag(GroupID.blocked(domain: domain))
+              .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                Button(role: .destructive) {
+                  UIImpactFeedbackGenerator(style: .medium).vibrate()
+                  viewModel.deletePasswords(passwords)
+                } label: {
+                  Label(
+                    Strings.Autofill.managePasswordsDeleteCredentialButtonTitle,
+                    braveSystemImage: "leo.trash"
+                  )
+                  .labelStyle(.iconOnly)
+                }
               }
-            }
           }
         } header: {
           Text(Strings.Autofill.managePasswordsNeverSavedListHeaderTitle)
@@ -113,6 +116,9 @@ struct ManagePasswordsView: View {
         }
       }
     }
+    .scrollContentBackground(.hidden)
+    .background((Color(.braveGroupedBackground)))
+    .accessibilityHidden(privacyLock.isLocked)
     .searchable(
       text: $viewModel.searchText,
       placement: .navigationBarDrawer(displayMode: .always),
@@ -126,22 +132,21 @@ struct ManagePasswordsView: View {
       }
     }
     .overlay {
-      if !isSceneActive {
-        Color(.braveGroupedBackground)
-          .ignoresSafeArea()
-      }
+      if privacyLock.isLocked { Color(.braveGroupedBackground).ignoresSafeArea() }
     }
-    .toolbarBackground(.visible, for: .navigationBar)
+    .environment(\.redactionReasons, effectiveRedactionReasons)
     .navigationTitle(Strings.Autofill.managePasswordsTitle)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
-      ToolbarItem(placement: .topBarTrailing) {
-        Button {
-          //TODO: Present Add Password Form
-        } label: {
-          Label(Strings.addButtonTitle, braveSystemImage: "leo.plus.add")
+      if !privacyLock.isLocked {
+        ToolbarItem(placement: .topBarTrailing) {
+          Button {
+            //TODO: Present Add Password Form
+          } label: {
+            Label(Strings.addButtonTitle, braveSystemImage: "leo.plus.add")
+          }
+          .disabled(isEditMode)
         }
-        .disabled(isEditMode)
       }
 
       if isEditMode {
@@ -150,7 +155,10 @@ struct ManagePasswordsView: View {
             isDeleteSelectionDialogPresented = true
           }
           .foregroundStyle(
-            selectedGroupIds.isEmpty ? Color(braveSystemName: .textSecondary) : .red
+            Color(
+              braveSystemName: selectedGroupIds.isEmpty
+                ? .textDisabled : .systemfeedbackErrorVibrant
+            )
           )
           .disabled(selectedGroupIds.isEmpty)
           .confirmationDialog(
@@ -188,12 +196,20 @@ struct ManagePasswordsView: View {
           .disabled(viewModel.allowedGroups.isEmpty && viewModel.blockedGroups.isEmpty)
       }
     }
-    .toolbar(isContentAvailable || viewModel.isFetching ? .visible : .hidden, for: .bottomBar)
+    .toolbar(
+      (isContentAvailable || viewModel.isFetching) && !privacyLock.isLocked ? .visible : .hidden,
+      for: .bottomBar
+    )
+    .onAppear {
+      Task {
+        await privacyLock.authenticate(onFailure: exitAfterAuthFailure)
+      }
+    }
     .onReceive(NotificationCenter.default.publisher(for: UIScene.willDeactivateNotification)) { _ in
-      isSceneActive = false
+      privacyLock.lock()
     }
     .onReceive(NotificationCenter.default.publisher(for: UIScene.didActivateNotification)) { _ in
-      isSceneActive = true
+      Task { await privacyLock.authenticate(onFailure: exitAfterAuthFailure) }
     }
   }
 
@@ -211,30 +227,54 @@ struct ManagePasswordsView: View {
   private func exitEditMode() {
     editMode?.wrappedValue = .inactive
   }
+
+  private func exitAfterAuthFailure() {
+    // Invalidate first so any synchronous side effect of dismissal cannot start a new
+    // authentication task on a view that the host controller is still retaining.
+    privacyLock.invalidateSession()
+    if let privacyLockExitOnFailure {
+      privacyLockExitOnFailure()
+    } else {
+      dismiss()
+    }
+  }
 }
 
 private struct ManagePasswordListRow: View {
+  @Environment(\.openURL) var openURL
+  @Environment(\.redactionReasons) private var redactionReasons
   let domain: String
-  let credentials: [CWVPassword]
+  let passwords: [CWVPassword]
+  let viewModel: ManagePasswordsViewModel
 
   private var resolvedRealmURL: URL {
-    credentials.first.flatMap { URL(string: $0.site) } ?? URL(string: "about:blank")!
+    passwords.first.flatMap { URL(string: $0.site) } ?? URL(string: "about:blank")!
   }
 
   private var resolvedDomain: String {
     domain.isEmpty ? Strings.Autofill.managePasswordsUnknownDomainText : domain
   }
 
-  @ViewBuilder
   var body: some View {
     NavigationLink {
-      //TODO: Navigation Link to Detail or Group List
+      Group {
+        if passwords.count == 1, let password = passwords.first {
+          ManagePasswordDetailView(viewModel: viewModel, password: password)
+        } else {
+          ManagePasswordGroupView(viewModel: viewModel, domain: domain)
+        }
+      }
+      // NavigationLink destinations pushed onto a UINavigationController stack run in an isolated
+      // hosting context and do not inherit the parent's environment; Thus the parent's environment variables
+      // must be re-injected explicitly into the child view on the isolated stack.
+      .environment(\.openURL, openURL)
+      .environment(\.redactionReasons, redactionReasons)
     } label: {
       Label {
         VStack(alignment: .leading, spacing: 2) {
           Text(resolvedDomain)
-          if credentials.count > 1 {
-            Text("\(credentials.count) \(Strings.Autofill.managePasswordMultipleAccounts)")
+          if passwords.count > 1 {
+            Text("\(passwords.count) \(Strings.Autofill.managePasswordMultipleAccounts)")
               .font(.footnote)
               .foregroundStyle(Color(braveSystemName: .textSecondary))
           }
@@ -245,5 +285,6 @@ private struct ManagePasswordListRow: View {
           .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
       }
     }
+    .listRowBackground(Color(.secondaryBraveGroupedBackground))
   }
 }
