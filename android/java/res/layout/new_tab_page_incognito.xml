@@ -48,7 +48,7 @@
                 android:layout_width="@dimen/new_tab_page_incognito_logo_size"
                 android:layout_height="@dimen/new_tab_page_incognito_logo_size"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_brave_logo"
+                android:src="@drawable/ic_social_brave_release_favicon_fullheight_color"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintTop_toTopOf="@+id/title"
                 app:layout_constraintBottom_toBottomOf="@+id/title"
@@ -58,9 +58,8 @@
 
             <TextView
                 android:id="@+id/title"
-                android:layout_marginTop="48dp"
-                android:textStyle="bold"
-                android:textSize="@dimen/new_tab_page_incognito_title_text_size"
+                style="@style/IncognitoNtpTitle"
+                android:layout_marginTop="96dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/brave_new_tab_private_header"
@@ -90,7 +89,7 @@
 
             <TextView
                 android:id="@+id/tv_first_title"
-                style="@style/DefaultSemibold"
+                style="@style/IncognitoNtpSectionTitle"
                 app:layout_constraintWidth_max="460dp"
                 android:layout_marginBottom="4dp"
                 android:layout_width="0dp"
@@ -105,7 +104,7 @@
 
             <TextView
                 android:id="@+id/tv_first_description"
-                style="@style/DefaultRegular"
+                style="@style/IncognitoNtpSectionDescription"
                 android:layout_marginBottom="32dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -133,7 +132,7 @@
 
             <TextView
                 android:id="@+id/tv_second_title"
-                style="@style/DefaultSemibold"
+                style="@style/IncognitoNtpSectionTitle"
                 app:layout_constraintWidth_max="460dp"
                 android:layout_marginBottom="4dp"
                 android:layout_width="0dp"
@@ -148,7 +147,7 @@
 
             <TextView
                 android:id="@+id/tv_second_description"
-                style="@style/DefaultRegular"
+                style="@style/IncognitoNtpSectionDescription"
                 android:layout_marginBottom="32dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -176,7 +175,7 @@
 
             <TextView
                 android:id="@+id/tv_third_title"
-                style="@style/DefaultSemibold"
+                style="@style/IncognitoNtpSectionTitle"
                 app:layout_constraintWidth_max="460dp"
                 android:layout_marginBottom="4dp"
                 android:layout_width="0dp"
@@ -193,7 +192,7 @@
 
             <TextView
                 android:id="@+id/tv_third_description"
-                style="@style/DefaultRegular"
+                style="@style/IncognitoNtpSectionDescription"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -209,7 +208,7 @@
 
             <TextView
                 android:id="@+id/tv_try_vpn"
-                style="@style/DefaultSemibold"
+                style="@style/IncognitoNtpCta"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="start"

@@ -53,9 +53,9 @@
     <dimen name="small_semibold">12sp</dimen>
     <dimen name="monospace_small">12sp</dimen>
     <dimen name="brave_toolbar_edge_padding_ntp">8dp</dimen>
-    <dimen name="new_tab_page_incognito_title_text_size">28sp</dimen>
-    <dimen name="new_tab_page_incognito_logo_size">42sp</dimen>
-    <dimen name="new_tab_page_incognito_icon_size">32sp</dimen>
+    <dimen name="new_tab_page_incognito_logo_size">42dp</dimen>
+    <dimen name="new_tab_page_incognito_icon_size">32dp</dimen>
+    <dimen name="new_tab_page_incognito_icon_inner_size">20dp</dimen>
 
     <!-- Brave News cards-->
     <dimen name="brave_news_ad_title_textsize">17sp</dimen>
