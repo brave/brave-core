@@ -1,0 +1,10 @@
+Name: x25519-dalek
+URL: https://crates.io/crates/x25519-dalek
+Version: 2.0.1
+Revision: 4ac84dd0668b1d2e51654fcdffe4ae6a687bef00
+License: BSD-3-Clause
+License File: //brave/third_party/rust/chromium_crates_io/vendor/x25519-dalek-v2/LICENSE
+Shipped: yes
+Security Critical: yes
+
+Description: X25519 elliptic curve Diffie-Hellman key exchange in pure-Rust, using curve25519-dalek.

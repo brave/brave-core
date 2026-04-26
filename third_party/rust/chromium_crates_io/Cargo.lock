@@ -89,6 +89,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "ai-chat-e2ee"
+version = "0.1.0"
+dependencies = [
+ "chacha20poly1305",
+ "curve25519-dalek",
+ "cxx",
+ "hkdf",
+ "sha2 0.10.8",
+ "x25519-dalek",
+]
+
+[[package]]
 name = "allocator-api2"
 version = "0.2.21"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -365,6 +377,7 @@ name = "chromium"
 version = "0.1.0"
 dependencies = [
  "adblock-cxx",
+ "ai-chat-e2ee",
  "anonymous-credentials",
  "brave-news-cxx",
  "brave_wallet",
@@ -2565,6 +2578,15 @@ version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "tap",
+]
+
+[[package]]
+name = "x25519-dalek"
+version = "2.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "curve25519-dalek",
+ "rand_core 0.6.4",
 ]
 
 [[package]]
