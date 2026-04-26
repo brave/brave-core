@@ -22,7 +22,6 @@
 #include "brave/components/brave_ads/core/internal/ml/pipeline/test/linear_pipeline_test_util.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/hashed_ngrams_transformation.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/lowercase_transformation.h"
-#include "brave/components/brave_ads/core/public/common/locale/scoped_locale_for_testing.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -300,7 +299,7 @@ TEST_F(BraveAdsTextProcessingTest, NotInitializedFileTest) {
 
 TEST_F(BraveAdsTextProcessingTest, WrongLanguageModelTest) {
   // Arrange
-  const test::ScopedCurrentLanguageCode scoped_default_language_code("es");
+  fake_locale_.SetLanguageCode("es");
 
   const base::FilePath path =
       test::DataPath().AppendASCII(kValidSegmentClassificationPipeline);
