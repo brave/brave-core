@@ -28,15 +28,17 @@
         (std::unique_ptr<ios_web_view::WebViewPasswordManagerClient>)
             passwordManagerClient
        passwordController:(SharedPasswordController*)passwordController {
-  self = [self initWithWebState:webState
-          autofillClientForTest:createAutofillClient.Run(webState, nil)
+  // AutofillClientIOS registers itself on the WebState in its constructor and
+  // CHECKs that only one is registered per WebState. Build the client exactly
+  // once with |self| as the bridge and move it into the designated init as
+  // |autofillClientForTest|, so the init reuses the same pointer instead of
+  // creating a second client (which would trip the CHECK).
+  return [self initWithWebState:webState
+          autofillClientForTest:createAutofillClient.Run(webState, self)
                   autofillAgent:autofillAgent
                 passwordManager:std::move(passwordManager)
           passwordManagerClient:std::move(passwordManagerClient)
              passwordController:passwordController];
-  // Overwrite the autofill client with one that has a valid bridge arg
-  _autofillClient = createAutofillClient.Run(webState, self);
-  return self;
 }
 
 @end

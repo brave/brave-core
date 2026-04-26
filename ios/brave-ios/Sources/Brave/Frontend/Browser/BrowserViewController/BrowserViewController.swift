@@ -38,6 +38,8 @@ public class BrowserViewController: UIViewController {
   let webViewContainer = UIView()
   private(set) lazy var screenshotHelper = ScreenshotHelper(tabManager: tabManager)
 
+  private(set) lazy var autofillManager = AutofillManager()
+
   private(set) lazy var vCardHelper: VCardHelper = {
     let helper = VCardHelper()
     helper.delegate = self
