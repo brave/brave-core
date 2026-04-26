@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_TRANSFORMATION_TRANSFORMATION_H_
 
 #include <memory>
+#include <vector>
 
 namespace brave_ads::ml {
 
@@ -19,6 +20,9 @@ class Transformation {
   virtual std::unique_ptr<Data> Apply(
       const std::unique_ptr<Data>& input_data) const = 0;
 };
+
+using TransformationPtr = std::unique_ptr<Transformation>;
+using TransformationVector = std::vector<TransformationPtr>;
 
 }  // namespace brave_ads::ml
 

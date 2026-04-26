@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_ML_PREDICTION_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_ML_PREDICTION_UTIL_H_
 
-#include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
+#include "brave/components/brave_ads/core/internal/ml/transformation/ml_types.h"
 
 namespace brave_ads::ml {
 

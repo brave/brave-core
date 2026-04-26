@@ -15,7 +15,7 @@
 #include "base/scoped_observation.h"
 #include "base/types/optional_ref.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
-#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/model/text_classification_alias.h"
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_types.h"
 #include "url/gurl.h"
 
 namespace brave_ads {

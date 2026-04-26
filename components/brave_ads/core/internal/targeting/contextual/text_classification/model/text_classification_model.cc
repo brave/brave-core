@@ -11,7 +11,7 @@
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/model/text_classification_alias.h"
+#include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_types.h"
 #include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
 
 namespace brave_ads {
