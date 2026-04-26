@@ -212,39 +212,40 @@ export const CreateAccountModal = () => {
       title={modalTitle}
       onClose={onClickClose}
     >
-      <DividerLine />
       {selectedAccountType && (
-        <CreateAccountStyledWrapper>
-          <Input
-            value={accountName}
-            placeholder={getLocale('braveWalletAddAccountPlaceholder')}
-            onInput={handleAccountNameChanged}
-            onKeyDown={handleKeyDown}
-            showErrors={isDisabled}
-            maxlength={BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH}
-          >
-            {
-              // Label
-              getLocale('braveWalletAddAccountPlaceholder')
-            }
-          </Input>
-
-          <SubmitButtonWrapper>
-            <Button
-              onClick={onClickCreateAccount}
-              isDisabled={isDisabled}
-              kind='filled'
+        <>
+          <DividerLine />
+          <CreateAccountStyledWrapper>
+            <Input
+              value={accountName}
+              placeholder={getLocale('braveWalletAddAccountPlaceholder')}
+              onInput={handleAccountNameChanged}
+              onKeyDown={handleKeyDown}
+              showErrors={isDisabled}
+              maxlength={BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH}
             >
-              {getLocale('braveWalletCreateAccountButton')}
-            </Button>
-          </SubmitButtonWrapper>
-        </CreateAccountStyledWrapper>
+              {
+                // Label
+                getLocale('braveWalletAddAccountPlaceholder')
+              }
+            </Input>
+
+            <SubmitButtonWrapper>
+              <Button
+                onClick={onClickCreateAccount}
+                isDisabled={isDisabled}
+                kind='filled'
+              >
+                {getLocale('braveWalletCreateAccountButton')}
+              </Button>
+            </SubmitButtonWrapper>
+          </CreateAccountStyledWrapper>
+        </>
       )}
 
       {!selectedAccountType && (
         <SelectAccountType
           createAccountOptions={createAccountOptions}
-          buttonText={getLocale('braveWalletAddAccountCreate')}
           onSelectAccountType={pickNewAccountType}
         />
       )}

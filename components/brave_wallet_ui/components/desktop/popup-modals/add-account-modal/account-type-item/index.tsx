@@ -3,44 +3,47 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
-
-import { NavButton } from '../../../../extension/buttons/nav-button/index'
+import Icon from '@brave/leo/react/icon'
 
 // Styled Components
-import {
-  StyledWrapper,
-  InfoColumn,
-  Title,
-  Description,
-  NetworkIcon,
-  LeftSide,
-} from './style'
+import { StyledWrapper, Title, Description, NetworkIcon } from './style'
+import { Row, Column } from '../../../../shared/style'
 
 export interface Props {
   onClickCreate: () => void
   icon: string
   title: string
   description: string
-  buttonText: string
 }
 
 const AccountTypeItem = (props: Props) => {
-  const { title, description, buttonText, icon, onClickCreate } = props
+  const { title, description, icon, onClickCreate } = props
 
   return (
-    <StyledWrapper>
-      <LeftSide>
+    <StyledWrapper
+      justifyContent='space-between'
+      gap='16px'
+      role='button'
+      onClick={onClickCreate}
+    >
+      <Row
+        justifyContent='flex-start'
+        alignItems='center'
+        width='unset'
+        gap='16px'
+      >
         <NetworkIcon src={icon} />
-        <InfoColumn>
-          <Title>{title}</Title>
-          <Description>{description}</Description>
-        </InfoColumn>
-      </LeftSide>
-      <NavButton
-        buttonType='secondary'
-        onSubmit={onClickCreate}
-        text={buttonText}
-      />
+        <Column alignItems='flex-start'>
+          <Title textColor='primary'>{title}</Title>
+          <Description
+            textColor='secondary'
+            textAlign='left'
+          >
+            {description}
+          </Description>
+        </Column>
+      </Row>
+      <Icon name='carat-right' />
     </StyledWrapper>
   )
 }
