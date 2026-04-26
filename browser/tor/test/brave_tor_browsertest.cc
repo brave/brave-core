@@ -274,13 +274,7 @@ class BraveTorWithCustomProfileBrowserTest : public BraveTorBrowserTest {
   }
 };
 
-#if BUILDFLAG(IS_MAC)
-#define MAYBE_PRE_SetupBridges DISABLED_PRE_SetupBridges
-#else
-#define MAYBE_PRE_SetupBridges PRE_SetupBridges
-#endif
-IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest,
-                       MAYBE_PRE_SetupBridges) {
+IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest, PRE_SetupBridges) {
   EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
   DownloadTorClient();
 
@@ -338,13 +332,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest,
       g_brave_browser_process->tor_pluggable_transport_updater());
 }
 
-#if BUILDFLAG(IS_MAC)
-#define MAYBE_SetupBridges DISABLED_SetupBridges
-#else
-#define MAYBE_SetupBridges SetupBridges
-#endif
-IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest,
-                       MAYBE_SetupBridges) {
+IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest, SetupBridges) {
   // Tor is disabled in PRE, check pluggable transports are removed.
   EXPECT_FALSE(CheckComponentExists(tor::kTorPluggableTransportComponentId));
 
@@ -439,12 +427,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest, Autofill) {
   TestAutofillInWindow(web_contents, fake_url, true);
 }
 
-#if BUILDFLAG(IS_MAC)
-#define MAYBE_PRE_ResetBridges DISABLED_PRE_ResetBridges
-#else
-#define MAYBE_PRE_ResetBridges PRE_ResetBridges
-#endif
-IN_PROC_BROWSER_TEST_F(BraveTorBrowserTest, MAYBE_PRE_ResetBridges) {
+IN_PROC_BROWSER_TEST_F(BraveTorBrowserTest, PRE_ResetBridges) {
   EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
   DownloadTorClient();
   DownloadTorPluggableTransports();
@@ -471,12 +454,7 @@ IN_PROC_BROWSER_TEST_F(BraveTorBrowserTest, MAYBE_PRE_ResetBridges) {
       g_brave_browser_process->tor_pluggable_transport_updater());
 }
 
-#if BUILDFLAG(IS_MAC)
-#define MAYBE_ResetBridges DISABLED_ResetBridges
-#else
-#define MAYBE_ResetBridges ResetBridges
-#endif
-IN_PROC_BROWSER_TEST_F(BraveTorBrowserTest, MAYBE_ResetBridges) {
+IN_PROC_BROWSER_TEST_F(BraveTorBrowserTest, ResetBridges) {
   // Tor is enabled and bridges are disabled check pluggable transports are
   // removed.
   EXPECT_TRUE(CheckComponentExists(tor::kTorClientComponentId));
