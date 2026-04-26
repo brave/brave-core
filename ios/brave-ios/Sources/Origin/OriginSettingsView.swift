@@ -53,6 +53,11 @@ public struct OriginSettingsView: View {
         }
         .toggleStyle(.origin)
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        Toggle(isOn: $viewModel.isPlaylistEnabled) {
+          Label(Strings.Origin.playlistLabel, braveSystemImage: "leo.product.playlist")
+        }
+        .toggleStyle(.origin)
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Toggle(isOn: $viewModel.isTalkDisabled.inversed) {
           Label(Strings.Origin.talkLabel, braveSystemImage: "leo.product.brave-talk")
         }
