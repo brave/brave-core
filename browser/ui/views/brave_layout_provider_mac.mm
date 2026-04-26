@@ -15,7 +15,7 @@ int BraveLayoutProviderMac::GetCornerRadiusMetric(
     case views::ShapeContextTokensOverride::
         kRoundedCornersBorderRadiusAtWindowCorner:
       if (@available(macOS 26, *)) {
-        return 17;
+        return 16;
       }
       return 6;
     default:
