@@ -1,0 +1,8 @@
+diff --git a/libavcodec/autorename_libavcodec_bswapdsp.c b/libavcodec/autorename_libavcodec_bswapdsp.c
+new file mode 100644
+index 0000000000..51e396e6f0
+--- /dev/null
++++ b/libavcodec/autorename_libavcodec_bswapdsp.c
+@@ -0,0 +1,2 @@
++// Auto-generated to avoid duplicate object file name with x86/bswapdsp.asm
++#include "bswapdsp.c"

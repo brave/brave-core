@@ -53,6 +53,7 @@ async function applyPatches(printPatchFailuresInJson) {
     'search_engines_data',
     'resources',
   )
+  const ffmpegPatchesPath = path.join(patchesPath, 'third_party', 'ffmpeg')
 
   const chromiumRepoPath = config.srcDir
   const v8RepoPath = path.join(chromiumRepoPath, 'v8')
@@ -73,6 +74,7 @@ async function applyPatches(printPatchFailuresInJson) {
     'search_engines_data',
     'resources',
   )
+  const ffmpegRepoPath = path.join(chromiumRepoPath, 'third_party', 'ffmpeg')
 
   const chromiumPatcher = new GitPatcher(patchesPath, chromiumRepoPath)
   const v8Patcher = new GitPatcher(v8PatchesPath, v8RepoPath)
@@ -85,6 +87,7 @@ async function applyPatches(printPatchFailuresInJson) {
     searchEngineDataPatchesPath,
     searchEngineDataRepoPath,
   )
+  const ffmpegPatcher = new GitPatcher(ffmpegPatchesPath, ffmpegRepoPath)
 
   const chromiumPatchStatus = await chromiumPatcher.applyPatches()
   const v8PatchStatus = await v8Patcher.applyPatches()
@@ -93,6 +96,7 @@ async function applyPatches(printPatchFailuresInJson) {
     await devtoolsFrontendPatcher.applyPatches()
   const searchEngineDataPatchStatus =
     await searchEngineDataPatcher.applyPatches()
+  const ffmpegPatchStatus = await ffmpegPatcher.applyPatches()
 
   // Log status for all patches
   // Differentiate entries for logging
@@ -104,12 +108,16 @@ async function applyPatches(printPatchFailuresInJson) {
     (s) =>
       (s.path = path.join('third_party', 'devtools-frontend', 'src', s.path)),
   )
+  ffmpegPatchStatus.forEach(
+    (s) => (s.path = path.join('third_party', 'ffmpeg', s.path)),
+  )
   const allPatchStatus = [
     ...chromiumPatchStatus,
     ...v8PatchStatus,
     ...catapultPatchStatus,
     ...devtoolsFrontendPatchStatus,
     ...searchEngineDataPatchStatus,
+    ...ffmpegPatchStatus,
   ]
   if (printPatchFailuresInJson) {
     GitPatcherLog.printFailedPatchesInJsonFormat(

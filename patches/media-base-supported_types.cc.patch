@@ -1,0 +1,16 @@
+diff --git a/media/base/supported_types.cc b/media/base/supported_types.cc
+index 117bb7eb6d499e8c43fc83c6d93268929af7eb30..02a319fb062684e365bb03f27392876559d35d05 100644
+--- a/media/base/supported_types.cc
++++ b/media/base/supported_types.cc
+@@ -582,6 +582,11 @@ bool IsDecoderBuiltInVideoCodec(VideoCodec codec) {
+   if (codec == VideoCodec::kH264) {
+     return true;
+   }
++#if BUILDFLAG(IS_LINUX) && BUILDFLAG(ENABLE_PLATFORM_HEVC)
++  if (codec == VideoCodec::kHEVC) {
++    return true;
++  }
++#endif  // BUILDFLAG(IS_LINUX) && BUILDFLAG(ENABLE_PLATFORM_HEVC)
+ #endif  // BUILDFLAG(ENABLE_FFMPEG_VIDEO_DECODERS) &&
+         // BUILDFLAG(USE_PROPRIETARY_CODECS)
+ #if BUILDFLAG(ENABLE_LIBVPX)

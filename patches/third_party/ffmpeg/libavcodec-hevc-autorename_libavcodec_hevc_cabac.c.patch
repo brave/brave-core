@@ -1,0 +1,8 @@
+diff --git a/libavcodec/hevc/autorename_libavcodec_hevc_cabac.c b/libavcodec/hevc/autorename_libavcodec_hevc_cabac.c
+new file mode 100644
+index 0000000000..7858d25005
+--- /dev/null
++++ b/libavcodec/hevc/autorename_libavcodec_hevc_cabac.c
+@@ -0,0 +1,2 @@
++// Auto-generated to avoid duplicate object file names with libavcodec/cabac.c
++#include "cabac.c"
