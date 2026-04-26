@@ -24,7 +24,7 @@ PurchaseIntentResourceInfo::~PurchaseIntentResourceInfo() = default;
 
 // static
 std::optional<PurchaseIntentResourceInfo>
-PurchaseIntentResourceInfo::CreateFromValue(const base::DictValue dict) {
+PurchaseIntentResourceInfo::MaybeFromDict(const base::DictValue dict) {
   std::optional<int> version = ParseVersion(dict);
   if (!version) {
     return std::nullopt;

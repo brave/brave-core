@@ -378,7 +378,7 @@ void AdsImpl::SuccessfullyInitialized(mojom::WalletInfoPtr mojom_wallet,
 
   std::optional<WalletInfo> wallet;
   if (mojom_wallet) {
-    wallet = CreateWalletFromRecoverySeed(mojom_wallet.get());
+    wallet = MaybeBuildWalletFromRecoverySeed(mojom_wallet.get());
     if (!wallet) {
       BLOG(0, "Invalid wallet");
       return FailedToInitialize(std::move(callback));
@@ -415,7 +415,7 @@ void AdsImpl::LoadClientStateCallback(mojom::WalletInfoPtr mojom_wallet,
 
   std::optional<WalletInfo> wallet;
   if (mojom_wallet) {
-    wallet = CreateWalletFromRecoverySeed(mojom_wallet.get());
+    wallet = MaybeBuildWalletFromRecoverySeed(mojom_wallet.get());
     if (!wallet) {
       BLOG(0, "Invalid wallet");
       return FailedToInitialize(std::move(callback));

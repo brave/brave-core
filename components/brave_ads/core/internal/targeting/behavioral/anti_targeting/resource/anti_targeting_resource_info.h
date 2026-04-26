@@ -33,7 +33,7 @@ struct AntiTargetingResourceInfo final {
 
   ~AntiTargetingResourceInfo();
 
-  static std::optional<AntiTargetingResourceInfo> CreateFromValue(
+  static std::optional<AntiTargetingResourceInfo> MaybeFromDict(
       base::DictValue dict);
 
   std::optional<int> version;
