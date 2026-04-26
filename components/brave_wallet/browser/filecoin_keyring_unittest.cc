@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/common/lib.rs.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 
 using testing::ElementsAre;
 
@@ -225,13 +226,14 @@ TEST(FilecoinKeyring, AddNewHDAccount_RestrictedAddress) {
   // Add address to restricted list.
   registry->UpdateRestrictedAddressesList(
       {base::ToLowerASCII(address_to_restrict)});
+  absl::Cleanup clear_restricted = [registry] {
+    registry->UpdateRestrictedAddressesList({});
+  };
 
   // Try to add account again - should fail because it generates the same
   // address.
   auto result = keyring.AddNewHDAccount(0);
   EXPECT_FALSE(result) << "Restricted Filecoin address should be rejected";
-
-  registry->UpdateRestrictedAddressesList({});
 }
 
 TEST(FilecoinKeyring, ImportAccount_SECP256K1_RestrictedAddress) {
@@ -264,14 +266,15 @@ TEST(FilecoinKeyring, ImportAccount_SECP256K1_RestrictedAddress) {
   // Add address to restricted list.
   registry->UpdateRestrictedAddressesList(
       {base::ToLowerASCII(address_to_restrict)});
+  absl::Cleanup clear_restricted = [registry] {
+    registry->UpdateRestrictedAddressesList({});
+  };
 
   // Try to import account again - should fail.
   auto result = keyring.ImportFilecoinAccount(
       private_key, mojom::FilecoinAddressProtocol::SECP256K1);
   EXPECT_FALSE(result)
       << "Restricted Filecoin SECP256K1 address should be rejected";
-
-  registry->UpdateRestrictedAddressesList({});
 }
 
 TEST(FilecoinKeyring, ImportAccount_BLS_RestrictedAddress) {
@@ -306,12 +309,13 @@ TEST(FilecoinKeyring, ImportAccount_BLS_RestrictedAddress) {
   // Add address to restricted list.
   registry->UpdateRestrictedAddressesList(
       {base::ToLowerASCII(address_to_restrict)});
+  absl::Cleanup clear_restricted = [registry] {
+    registry->UpdateRestrictedAddressesList({});
+  };
 
   // Try to import account again - should fail.
   auto result = keyring.ImportFilecoinAccount(private_key, protocol);
   EXPECT_FALSE(result) << "Restricted Filecoin BLS address should be rejected";
-
-  registry->UpdateRestrictedAddressesList({});
 }
 
 }  // namespace brave_wallet

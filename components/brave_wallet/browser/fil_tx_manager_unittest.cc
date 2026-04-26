@@ -34,6 +34,7 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
 
@@ -79,7 +80,7 @@ class FilTxManagerUnitTest : public testing::Test {
     WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
 
     GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
-    GetAccountUtils().EnsureFilTestAccount(0);
+    ASSERT_TRUE(GetAccountUtils().EnsureFilTestAccount(0));
   }
 
   AccountUtils GetAccountUtils() {
@@ -87,7 +88,9 @@ class FilTxManagerUnitTest : public testing::Test {
   }
 
   mojom::AccountIdPtr FilTestAcc(size_t index) {
-    return GetAccountUtils().EnsureFilTestAccount(index)->account_id->Clone();
+    auto account = GetAccountUtils().EnsureFilTestAccount(index);
+    CHECK(account);
+    return account->account_id->Clone();
   }
 
   void SetInterceptor(const GURL& expected_url,
@@ -617,6 +620,9 @@ TEST_F(FilTxManagerUnitTest, RestrictedFromAddress) {
   auto* registry = BlockchainRegistry::GetInstance();
   registry->UpdateRestrictedAddressesList(
       {base::ToLowerASCII(from_account->address)});
+  absl::Cleanup clear_restricted = [registry] {
+    registry->UpdateRestrictedAddressesList({});
+  };
 
   auto fil_tx_data = mojom::FilTxData::New(
       "" /* nonce */, "" /* gas_premium */, "" /* gas_fee_cap */,
@@ -635,8 +641,6 @@ TEST_F(FilTxManagerUnitTest, RestrictedFromAddress) {
   EXPECT_FALSE(success);
   EXPECT_TRUE(tx_meta_id.empty());
   EXPECT_EQ(err_str, WalletInternalErrorMessage());
-
-  registry->UpdateRestrictedAddressesList({});
 }
 
 }  //  namespace brave_wallet
