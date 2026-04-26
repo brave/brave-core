@@ -3,9 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { createStore } from 'redux'
+import { configureStore } from '@reduxjs/toolkit'
 
-// Utils
-import reducers from './reducers'
+import webcompatReporterReducer from './slices/webcompatreporter.slice'
 
-export default createStore(reducers)
+const store = configureStore({
+  reducer: {
+    reporterState: webcompatReporterReducer
+  }
+})
+
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch
+
+export default store

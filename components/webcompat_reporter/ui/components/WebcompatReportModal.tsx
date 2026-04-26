@@ -17,7 +17,8 @@ interface Props {
   isErrorPage: boolean
   components: string[]
   submitted: boolean
-  onSubmitReport: () => void
+  onSubmitReport: (category: string, details: string, contact: string,
+                   attachScreenshot: boolean) => void
   onClose: () => void
 }
 

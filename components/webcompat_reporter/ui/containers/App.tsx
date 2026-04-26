@@ -4,56 +4,48 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { bindActionCreators, Dispatch } from 'redux'
-import { connect } from 'react-redux'
 
-// Components
 import WebcompatReportModal from '../components/WebcompatReportModal'
 
-// Utils
-import * as webcompatReporterActions from '../actions/webcompatreporter_actions'
+import { useAppDispatch, useAppSelector } from '../hooks'
+import { onSubmitReport, onClose } from '../slices/webcompatreporter.slice'
 
-interface Props {
-  actions: any
-  reporterState: WebcompatReporter.State
+function WebcompatReportContainer() {
+  const dispatch = useAppDispatch()
+  const reporterState = useAppSelector((state) => state.reporterState)
+
+  const handleSubmitReport = React.useCallback(
+    (
+      category: string,
+      details: string,
+      contact: string,
+      attachScreenshot: boolean
+    ) => {
+      dispatch(onSubmitReport(category, details, contact, attachScreenshot))
+    },
+    [dispatch]
+  )
+
+  const handleClose = React.useCallback(() => {
+    dispatch(onClose())
+  }, [dispatch])
+
+  if (!reporterState) {
+    return null
+  }
+
+  return (
+    <WebcompatReportModal
+      siteUrl={reporterState.dialogArgs.url}
+      contactInfo={reporterState.dialogArgs.contactInfo}
+      contactInfoSaveFlag={reporterState.dialogArgs.contactInfoSaveFlag}
+      isErrorPage={reporterState.dialogArgs.isErrorPage}
+      submitted={reporterState.submitted}
+      onSubmitReport={handleSubmitReport}
+      onClose={handleClose}
+      components={reporterState.dialogArgs.components}
+    />
+  )
 }
 
-class WebcompatReportContainer extends React.Component<Props, {}> {
-  constructor (props: Props) {
-    super(props)
-  }
-
-  get actions () {
-    return this.props.actions
-  }
-
-  render () {
-    const { actions, reporterState } = this.props
-
-    return (
-      <WebcompatReportModal
-        siteUrl={reporterState.dialogArgs.url}
-        contactInfo={reporterState.dialogArgs.contactInfo}
-        contactInfoSaveFlag={reporterState.dialogArgs.contactInfoSaveFlag}
-        isErrorPage={reporterState.dialogArgs.isErrorPage}
-        submitted={reporterState.submitted}
-        onSubmitReport={actions.onSubmitReport}
-        onClose={actions.onClose}
-        components={reporterState.dialogArgs.components}
-      />
-    )
-  }
-}
-
-const mapStateToProps = (state: WebcompatReporter.ApplicationState) => ({
-  reporterState: state.reporterState
-})
-
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  actions: bindActionCreators(webcompatReporterActions, dispatch)
-})
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(WebcompatReportContainer)
+export default WebcompatReportContainer
