@@ -110,26 +110,26 @@ class RepositoryTest(unittest.TestCase):
             mock_run_git.assert_called_once_with("log", no_trim=False)
 
     def test_unstage_all_changes(self):
-        """Test unstage_all_changes and has_staged_changed."""
+        """Test unstage_all_changes and has_staged_changes."""
         # Create a new file and stage it
         test_file = self.fake_chromium_src.chromium / "test_file.txt"
         test_file.write_text("Test content")
         repository.chromium.run_git("add", str(test_file))
 
-        # Verify the file is staged and has_staged_changed returns True
+        # Verify the file is staged and has_staged_changes returns True
         staged_files = repository.chromium.run_git("diff", "--cached",
                                                    "--name-only")
         self.assertIn("test_file.txt", staged_files)
-        self.assertTrue(repository.chromium.has_staged_changed())
+        self.assertTrue(repository.chromium.has_staged_changes())
 
         # Unstage all changes
         repository.chromium.unstage_all_changes()
 
-        # Verify the file is no longer staged and has_staged_changed is false
+        # Verify the file is no longer staged and has_staged_changes is false
         staged_files_after = repository.chromium.run_git(
             "diff", "--cached", "--name-only")
         self.assertNotIn("test_file.txt", staged_files_after)
-        self.assertFalse(repository.chromium.has_staged_changed())
+        self.assertFalse(repository.chromium.has_staged_changes())
 
     def test_get_commit_short_description(self):
         """Test get_commit_short_description using the chromium repository."""
@@ -188,9 +188,66 @@ class RepositoryTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             repository.chromium.git_commit('Should fail', allows_empty=True)
 
+    def test_git_commit_fixup(self):
+        """Test git_commit_fixup."""
+
+        # Case 1: Fixup commit is created when there are staged changes.
+        target_hash = self.fake_chromium_src.commit_empty(
+            'Target commit', self.fake_chromium_src.chromium)
+
+        test_file = self.fake_chromium_src.chromium / 'fixup_file.txt'
+        test_file.write_text('fixup content')
+        repository.chromium.run_git('add', str(test_file))
+        repository.chromium.git_commit_fixup(target_hash)
+
+        last_subject = repository.chromium.get_commit_short_description()
+        self.assertEqual(last_subject, 'fixup! Target commit')
+
+        # Case 2: No commit is created when nothing is staged.
+        head_before = repository.chromium.run_git('rev-parse', 'HEAD')
+        repository.chromium.git_commit_fixup(target_hash)
+        self.assertEqual(repository.chromium.run_git('rev-parse', 'HEAD'),
+                         head_before)
+
+    def test_git_commit_fixup_allows_empty(self):
+        """Test git_commit_fixup with allows_empty."""
+        target_hash = self.fake_chromium_src.commit_empty(
+            'Target commit', self.fake_chromium_src.chromium)
+
+        # Case 1: Empty fixup commit is created when allows_empty=True and
+        # there are no staged changes.
+        head_before = repository.chromium.run_git('rev-parse', 'HEAD')
+        repository.chromium.git_commit_fixup(target_hash, allows_empty=True)
+
+        self.assertEqual(repository.chromium.get_commit_short_description(),
+                         'fixup! Target commit')
+        self.assertEqual(repository.chromium.run_git('rev-parse', 'HEAD~1'),
+                         head_before)
+
+        # Case 2: allows_empty=True raises when there are staged changes.
+        test_file = self.fake_chromium_src.chromium / 'fixup_file.txt'
+        test_file.write_text('staged content')
+        repository.chromium.run_git('add', str(test_file))
+
+        with self.assertRaises(ValueError):
+            repository.chromium.git_commit_fixup(target_hash,
+                                                 allows_empty=True)
+
+    def test_git_commit_fixup_uses_fixup_flag(self):
+        """Test git_commit_fixup passes --fixup to git commit."""
+        with patch.object(Repository, 'has_staged_changes',
+                          return_value=True), patch.object(
+                              Repository,
+                              'run_git',
+                              return_value='abcd123 msg') as mock_run_git:
+            repository.chromium.git_commit_fixup('deadbeef')
+
+        self.assertIn(unittest.mock.call('commit', '--fixup', 'deadbeef'),
+                      mock_run_git.mock_calls)
+
     def test_git_commit_no_verify(self):
         """Test git_commit passes --no-verify when no_verify=True."""
-        with patch.object(Repository, 'has_staged_changed',
+        with patch.object(Repository, 'has_staged_changes',
                           return_value=True), patch.object(
                               Repository,
                               'run_git',

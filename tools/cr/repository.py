@@ -84,7 +84,7 @@ class Repository:
         """
         self.run_git('reset', 'HEAD')
 
-    def has_staged_changed(self) -> bool:
+    def has_staged_changes(self) -> bool:
         return self.run_git('diff', '--cached', '--stat') != ''
 
     def get_commit_short_description(self, commit: str = 'HEAD') -> str:
@@ -93,6 +93,40 @@ class Repository:
         This is just the actual first line of the commit message.
         """
         return self.run_git('log', '-1', '--pretty=%s', commit)
+
+    def _git_commit_internal(self,
+                             args: list[str],
+                             allows_empty: bool,
+                             no_verify: bool = False):
+        """Shared implementation for git commit operations.
+
+        Args:
+        args:
+            The git commit arguments (everything after 'commit').
+        allows_empty:
+            Whether to allow empty commits.
+        no_verify:
+            Whether to skip pre-commit and commit-msg hooks.
+        """
+        has_staged_changes = self.has_staged_changes()
+        if not allows_empty and not has_staged_changes:
+            # Nothing to commit
+            return
+        if allows_empty and has_staged_changes:
+            # Throwing an error if anything is staged as that could result in
+            # unintentionally committing changes.
+            raise ValueError(
+                'Cannot allow empty commits if there are staged changes.')
+
+        if allows_empty:
+            args.append('--allow-empty')
+        if no_verify:
+            args.append('--no-verify')
+        self.run_git('commit', *args)
+
+        commit = self.run_git('log', '-1', '--pretty=oneline',
+                              '--abbrev-commit')
+        terminal.log_task(f'[bold]✔️ [/] [italic]{escape(commit)}')
 
     def git_commit(self,
                    message: str,
@@ -112,26 +146,22 @@ class Repository:
         no_verify:
             Whether to skip pre-commit and commit-msg hooks.
         """
-        has_staged_changed = self.has_staged_changed()
-        if not allows_empty and not has_staged_changed:
-            # Nothing to commit
-            return
-        if allows_empty and has_staged_changed:
-            # Throwing an error if anything is staged as that could result in
-            # unintentionally committing changes.
-            raise ValueError(
-                'Cannot allow empty commits if there are staged changes.')
+        self._git_commit_internal(['-m', message], allows_empty, no_verify)
 
-        args = ['commit', '-m', message]
-        if allows_empty:
-            args.append('--allow-empty')
-        if no_verify:
-            args.append('--no-verify')
-        self.run_git(*args)
+    def git_commit_fixup(self, commit: str, allows_empty: bool = False):
+        """Commits the current staged changes as a fixup for a given commit.
 
-        commit = self.run_git('log', '-1', '--pretty=oneline',
-                              '--abbrev-commit')
-        terminal.log_task(f'[bold]✔️ [/] [italic]{escape(commit)}')
+    This function calls `git commit --fixup` and prints a user friendly message
+    as a result. No commit will be created if nothing is staged, unless
+    allows_empty is set to True.
+
+        Args:
+        commit:
+            The commit hash to create a fixup for.
+        allows_empty:
+            Whether to allow empty commits.
+        """
+        self._git_commit_internal(['--fixup', commit], allows_empty)
 
     def is_valid_git_reference(self, reference: str) -> bool:
         """Checks if a name is a valid git branch name or hash.

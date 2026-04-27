@@ -345,7 +345,8 @@ class ApplyPatchesRecord:
 
     # A dictionary of all patches with attempted `--3way`, grouped by
     # repository.
-    patch_files: dict[Repository, Patchfile] = field(default_factory=dict)
+    patch_files: dict[Repository,
+                      list[Patchfile]] = field(default_factory=dict)
 
     # A list of patches that cannot be applied due to their source file being
     # deleted.
@@ -357,6 +358,10 @@ class ApplyPatchesRecord:
     # A list of patches that fail entirely when running apply with `--3way`.
     broken_patches: list[Patchfile] = field(default_factory=list)
 
+    def all_conflict_resolved_patches(self) -> list[Patchfile]:
+        """Returns a flattened list of all conflict-resolved candidates."""
+        return [p for patches in self.patch_files.values() for p in patches]
+
     def requires_conflict_resolution(self):
         """Checks if there are any patches that require manual conflict
         resolution.
@@ -367,7 +372,7 @@ class ApplyPatchesRecord:
         return (self.files_with_conflicts or self.patches_to_deleted_files
                 or self.broken_patches)
 
-    def stage_all_patches(self, ignore_deleted_files=False):
+    def stage_all_patches(self):
         """Stages all patches that were applied, so they can be committed as
         conflict-resolved patches.
 
@@ -377,7 +382,7 @@ class ApplyPatchesRecord:
         """
         for _, patches in self.patch_files.items():
             for patch in patches:
-                if (ignore_deleted_files and not Path(patch.path).exists()):
+                if not Path(patch.path).exists():
                     # Skip deleted files.
                     continue
 
@@ -555,6 +560,10 @@ class Versioned(Task):
                 f'Target version {self.target_version} is not higher than base '
                 f'version {self.base_version}.')
 
+    def is_major(self) -> bool:
+        """Returns True if this is a major version upgrade."""
+        return self.target_version.major > self.base_version.major
+
     def _save_updated_patches(self):
         """Creates the updated patches change
 
@@ -656,7 +665,7 @@ class GitHubIssue(Versioned):
         This title is the same used for the push request.
         """
         title = 'Upgrade from Chromium {previous} to Chromium {to}'
-        if self.target_version.major > self.base_version.major:
+        if self.is_major():
             # For major updates, the issue description doesn't have a precise
             # version number.
             title = title.format(previous=str(self.base_version.major),
@@ -731,14 +740,12 @@ class GitHubIssue(Versioned):
         else:
             cmd += ['--assignee', 'mkarolin', '--assignee', 'samartnik']
 
-        is_major = self.target_version.major > self.base_version.major
-
-        if is_major or upstream_branch == 'master':
+        if self.is_major() or upstream_branch == 'master':
             # It is not common for upstream test to be run on uplifts of minor
             # upgrades.
             cmd += ['--label', '"CI/run-upstream-tests"']
 
-        if is_major:
+        if self.is_major():
             cmd += ['--label', '"CI/storybook-url"']
 
             # Always create PR for major version upgrades as draft
@@ -1124,13 +1131,8 @@ class Upgrade(Versioned):
             f'Update from Chromium {self.base_version} '
             f'to Chromium {self.target_version}.')
 
-    def _save_conflict_resolved_patches(self):
-        repository.brave.git_commit(
-            f'Conflict-resolved patches from Chromium {self.base_version} to '
-            f'Chromium {self.target_version}.')
-
-    def _run_update_patches_with_no_deletions(self):
-        """Runs update_patches and returns if any deleted patches are found.
+    def _run_update_patches(self) -> GitStatus:
+        """Runs update_patches and returns the resulting GitStatus.
 
         This function is usually preferred, as it checks if any patches are
         deleted after running update_patches. Deleted patches should be
@@ -1138,7 +1140,7 @@ class Upgrade(Versioned):
         anymore.
 
         return:
-          Returns True if no deleted patches are found, and False otherwise.
+          The GitStatus after running update_patches.
         """
         terminal.run_npm_command('update_patches')
 
@@ -1172,7 +1174,7 @@ class Upgrade(Versioned):
             if path.startswith('patches/') and path.endswith('.patch')
         ]
         if not modified_patches:
-            return
+            return status
 
         def count_hunks(contents: str) -> int:
             return contents.count('\n@@ -')
@@ -1196,6 +1198,8 @@ class Upgrade(Versioned):
                 'hunks, and are expected to be submitted separately as fixes '
                 'with Chromium culprits:\n'
                 f'{list_str}')
+
+        return status
 
     def look_for_diffs(self, *files) -> str:
         """Return the diffs for the files provided for this upgrade.
@@ -1470,25 +1474,71 @@ class Upgrade(Versioned):
             apply_record = (ContinuationFile.load(
                 self.target_version).apply_record)
 
-        self._run_update_patches_with_no_deletions()
+        update_status = self._run_update_patches()
 
-        # There are rare cases where we can end up hitting a continuation where
-        # a patch gets deleted due a cherry-pick finally being made obsolete,
-        # which means no apply records ever occurred, and therefore this value
-        # is None.
+        # `apply_records` is not guaranteed to exist for every continuation. In
+        # some cases `_run_update_patches` is reponsible for pausing the lift
+        # process (e.g. cherry-pick shows up in upstream and causes patch
+        # deletions without 3way apply).
+        conflict_resolved_patches = None
         if apply_record:
-            apply_record.stage_all_patches(ignore_deleted_files=True)
-            has_changes = repository.brave.has_staged_changed()
-        else:
-            has_changes = False
+            # A list of all "Conflict-resolved" candidates still waiting to be
+            # committed.
+            conflict_resolved_patches = {
+                patch.path.as_posix()
+                for patch in apply_record.all_conflict_resolved_patches()
+                if patch.path.as_posix() in update_status.unstaged.modified
+            }
 
-        if not has_changes and not no_conflict_continuation:
+            if (self.is_major()):
+                # When doing incremental lifts in branch, there can be cases
+                # where a patch has been added/changed by a particular fix in
+                # the branch, and therefore at this stage, it is more
+                # appropriate to commit that patch as a fixup to the last
+                # change in the branch that touched it, otherwise it will cause
+                # conflicts when doing `rebase --squash-minor-bumps`, with the
+                # conflict-resolved commit being moved above the last change
+                # for that patch.
+                up_to_git_ref = _solve_brave_ref('@previous-major')
+
+                fixup_groups: dict[str, list[str]] = {}
+                for patch_path in conflict_resolved_patches:
+                    commits = repository.brave.run_git(
+                        'log', '--pretty=%H %s', f'{up_to_git_ref}..HEAD',
+                        '--', patch_path)
+
+                    for line in commits.splitlines():
+                        commit_hash, subject = line.split(' ', 1)
+                        if (not subject.startswith(
+                                'Conflict-resolved patches from Chromium ')
+                                and not subject.startswith(
+                                    'Update patches from Chromium ')):
+                            fixup_groups.setdefault(commit_hash,
+                                                    []).append(patch_path)
+                            break
+
+                # Commit patches grouped by the target commit to avoid multiple
+                # fixups for the same change.
+                fixup_patches: set[str] = set()
+                for fixup_target, patch_paths in fixup_groups.items():
+                    for patch_path in patch_paths:
+                        repository.brave.run_git('add', patch_path)
+                        fixup_patches.add(patch_path)
+                    repository.brave.git_commit_fixup(fixup_target)
+
+                conflict_resolved_patches -= fixup_patches
+
+        if not conflict_resolved_patches and not no_conflict_continuation:
             raise InvalidInputException(
                 'Nothing has been staged to commit conflict-resolved patches. '
                 '(Did you mean to pass [bold cyan]--no-conflict-change[/]?)')
 
-        if has_changes:
-            self._save_conflict_resolved_patches()
+        if conflict_resolved_patches:
+            repository.brave.run_git('add', *conflict_resolved_patches)
+            repository.brave.git_commit(
+                f'Conflict-resolved patches from Chromium {self.base_version} '
+                f'to Chromium {self.target_version}.')
+
 
         self._save_updated_patches()
         # Run init again to make sure nothing is missing after updating
@@ -1508,7 +1558,7 @@ class Upgrade(Versioned):
     This function is responsible for starting the upgrade process. It will
     update the package version, run `npm run init`, and then run
     `npm run update_patches`. If any patches fail to apply, it will run
-    `npm run apply_patches_3way` to allow for manual conflict resolution.
+    `apply_patches_3way` to allow for manual conflict resolution.
 
     For cases where no conflict resolution is required, the process will
     will continue, concluding the whole four steps of the upgrade process.
@@ -1541,7 +1591,7 @@ class Upgrade(Versioned):
             'Changes since base version: %s' %
             self.target_version.get_googlesource_diff_link(self.base_version))
 
-        if self.target_version.major > self.base_version.major:
+        if self.is_major():
             # When doing a major lift, the branch name should indicate that
             # (e.g. `cr149`).
             expected_branch = f'cr{self.target_version.major}'
@@ -1564,7 +1614,7 @@ class Upgrade(Versioned):
 
             # When no conflicts come back, we can proceed with the
             # update_patches.
-            self._run_update_patches_with_no_deletions()
+            self._run_update_patches()
         except subprocess.CalledProcessError as e:
             if ('There were some failures during git reset of specific '
                     'repo paths' in e.stderr):
