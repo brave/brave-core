@@ -479,13 +479,12 @@ BraveLocationBarView::GetContentSettingsImageViewForTesting(size_t idx) {
 }
 
 void BraveLocationBarView::SetTemporaryVisibilityInFullscreen(bool visible) {
-  Browser* browser = GetBrowser();
-  if (!browser || !browser->window() || !browser->window()->IsFullscreen())
+  if (!browser_ || !browser_->window() || !browser_->window()->IsFullscreen())
     return;
 
   is_temporarily_visible_in_fullscreen_ = visible;
 
-  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
   if (!browser_view)
     return;
 
