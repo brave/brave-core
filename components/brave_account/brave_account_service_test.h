@@ -13,8 +13,8 @@
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/functional/callback_helpers.h"
 #include "base/json/json_writer.h"
-#include "base/memory/ptr_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -25,6 +25,7 @@
 #include "brave/components/brave_account/endpoint_client/test_support.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_account/prefs.h"
+#include "components/os_crypt/async/browser/test_utils.h"
 #include "components/prefs/testing_pref_service.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/url_loader_completion_status.h"
@@ -57,13 +58,22 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
  protected:
   void SetUp() override {
     prefs::RegisterPrefs(pref_service_.registry());
-    brave_account_service_ = base::WrapUnique(new BraveAccountService(
-        &pref_service_, test_url_loader_factory_.GetSafeWeakWrapper(),
+    BraveAccountService::SetOSCryptCallbacksForTesting(
         base::BindRepeating(&BraveAccountServiceTest::Encrypt,
                             base::Unretained(this)),
         base::BindRepeating(&BraveAccountServiceTest::Decrypt,
-                            base::Unretained(this))));
+                            base::Unretained(this)));
+    os_crypt_async_ = os_crypt_async::GetTestOSCryptAsyncForTesting(
+        /*is_sync_for_unittests=*/true);
+    brave_account_service_ = std::make_unique<BraveAccountService>(
+        &pref_service_, test_url_loader_factory_.GetSafeWeakWrapper(),
+        os_crypt_async_.get());
     auth_validate_timer_ = &brave_account_service_->auth_validate_timer_;
+  }
+
+  void TearDown() override {
+    BraveAccountService::SetOSCryptCallbacksForTesting(base::NullCallback(),
+                                                       base::NullCallback());
   }
 
   void RunTestCase() {
@@ -124,6 +134,7 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
       features::BraveAccountFeatureForTesting()};
   TestingPrefServiceSimple pref_service_;
   network::TestURLLoaderFactory test_url_loader_factory_;
+  std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_async_;
   std::unique_ptr<BraveAccountService> brave_account_service_;
   raw_ptr<base::OneShotTimer> auth_validate_timer_;
 };

@@ -99,6 +99,7 @@ source_set("unit_tests") {
     "//brave/components/brave_account/endpoint_client:test_support",
     "//brave/components/brave_account/endpoints",
     "//brave/components/brave_account/mojom",
+    "//components/os_crypt/async/browser:test_support",
     "//components/prefs:test_support",
     "//net",
     "//services/network:test_support",
