@@ -889,6 +889,8 @@ class SettingsViewController: TableViewController {
                 rootView: OriginPaywallView(
                   viewModel: .init(store: .init(skusService: skusService)),
                   didPurchase: { [weak self] in
+                    PrivacyReportsManager.cancelNotification()
+                    BrowserViewController.cancelScheduleDefaultBrowserNotification()
                     self?.navigationController?.pushViewController(
                       originSettingsController(),
                       animated: true

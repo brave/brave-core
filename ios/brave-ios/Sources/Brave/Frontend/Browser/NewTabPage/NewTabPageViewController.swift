@@ -204,9 +204,12 @@ class NewTabPageViewController: UIViewController {
             return
           }
 
+          let isOriginPurchased =
+            BraveOriginServiceFactory.get(profile: tab.profile)?.isPurchased() == true
           let host = UIHostingController(
             rootView: PrivacyReportsManager.prepareView(
-              isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
+              isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing,
+              isOriginPurchased: isOriginPurchased
             )
           )
           host.rootView.onDismiss = { [weak self] in

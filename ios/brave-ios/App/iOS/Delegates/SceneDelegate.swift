@@ -38,8 +38,11 @@ struct ProfileState {
   var migrations: BraveProfileMigrations
   var dau: DAU
   var attributionManager: AttributionManager
+  let profile: any Profile
 
   init(profileController: BraveProfileController) {
+    profile = profileController.profile
+
     // Setup DAU
     dau = DAU(braveCoreStats: profileController.braveStats)
 
@@ -453,7 +456,17 @@ extension SceneDelegate {
       object: nil
     )
 
-    PrivacyReportsManager.scheduleNotification(debugMode: !AppConstants.isOfficialBuild)
+    let originService = BraveOriginServiceFactory.get(profile: profileState.profile)
+    Task {
+      // This is early enough in the app lifetime that we need to explicitly call
+      // `checkPurchaseState` rather than simply read `isPurchased` as it wont yet be cached.
+      let isOriginPurchased = await originService?.checkPurchaseState() ?? false
+      if isOriginPurchased {
+        PrivacyReportsManager.cancelNotification()
+      } else {
+        PrivacyReportsManager.scheduleNotification(debugMode: !AppConstants.isOfficialBuild)
+      }
+    }
     PrivacyReportsManager.consolidateData()
     PrivacyReportsManager.scheduleProcessingBlockedRequests(
       isPrivateBrowsing: browserViewController.privateBrowsingManager.isPrivateBrowsing
