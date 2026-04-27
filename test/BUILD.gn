@@ -1338,11 +1338,13 @@ test("brave_browser_tests") {
       "//brave/components/sidebar/browser",
       "//brave/test/views/snapshot",
       "//chrome/browser/ui/views/bubble",
+      "//chrome/browser/ui/web_applications",
       "//ui/base/clipboard:clipboard_test_support",
     ]
 
     if (enable_brave_rewards) {
       sources += [ "//brave/browser/ui/views/brave_actions/brave_actions_container_browsertest.cc" ]
+      deps += [ "//brave/browser/ui/views/brave_actions" ]
     }
 
     if (enable_brave_wallet) {
@@ -1406,6 +1408,12 @@ test("brave_browser_tests") {
       sources += [ "//brave/browser/ui/views/toolbar/wallet_button_notification_source_browsertest.cc" ]
       deps += [ "//brave/components/brave_wallet/browser:test_support" ]
     }
+  }
+
+  if (toolkit_views && enable_extensions) {
+    sources +=
+        [ "//brave/browser/ui/views/brave_actions/pwa_shields_browsertest.cc" ]
+    deps += [ "//brave/browser/ui/views/brave_actions" ]
   }
 
   if (enable_commander) {

@@ -32,6 +32,7 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
+#include "brave/browser/ui/views/brave_actions/brave_shields_toolbar_button.h"
 #include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_host_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
@@ -46,6 +47,7 @@
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/window_closing_confirm_dialog_view.h"
+#include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
@@ -62,6 +64,7 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_element_identifiers.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
@@ -83,6 +86,10 @@
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
+#include "chrome/browser/ui/views/web_apps/frame_toolbar/web_app_frame_toolbar_utils.h"
+#include "chrome/browser/ui/views/web_apps/frame_toolbar/web_app_frame_toolbar_view.h"
+#include "chrome/browser/ui/views/web_apps/frame_toolbar/web_app_toolbar_button_container.h"
+#include "chrome/browser/ui/web_applications/app_browser_controller.h"
 #include "chrome/common/pref_names.h"
 #include "components/javascript_dialogs/tab_modal_dialog_manager.h"
 #include "components/permissions/permission_request_manager.h"
@@ -93,6 +100,7 @@
 #include "third_party/blink/public/common/input/web_mouse_event.h"
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/accelerators/accelerator_manager.h"
+#include "ui/base/hit_test.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/layer.h"
@@ -105,6 +113,10 @@
 #include "ui/views/controls/native/native_view_host.h"
 #include "ui/views/event_monitor.h"
 #include "ui/views/layout/fill_layout.h"
+#include "ui/views/layout/flex_layout.h"
+#include "ui/views/view_class_properties.h"
+#include "ui/views/view_utils.h"
+#include "ui/views/window/hit_test_utils.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
@@ -161,6 +173,31 @@ class ContentsBackground : public views::View {
 };
 BEGIN_METADATA(ContentsBackground)
 END_METADATA
+
+// PWA and omnibox Shields share kShieldsActionIcon; the PWA build uses
+// BraveShieldsToolbarButton with that id.
+BraveShieldsToolbarButton* GetPwaShieldsToolbarButton(BraveBrowserView* view) {
+  if (!view) {
+    return nullptr;
+  }
+  BrowserElementsViews* elements = BrowserElementsViews::From(view->browser());
+  if (!elements) {
+    return nullptr;
+  }
+
+  auto* shield = elements->GetView(BraveShieldsActionView::kShieldsActionIcon,
+                                   /*require_visible=*/true);
+  if (!shield) {
+    return nullptr;
+  }
+
+  if (!views::IsViewClass<BraveShieldsToolbarButton>(shield)) {
+    // This case, BraveShieldsActionView is visible.
+    return nullptr;
+  }
+
+  return views::AsViewClass<BraveShieldsToolbarButton>(shield);
+}
 
 }  // namespace
 
@@ -503,6 +540,19 @@ views::View* BraveBrowserView::GetAnchorViewForBraveVPNPanel() {
 }
 
 gfx::Rect BraveBrowserView::GetShieldsBubbleRect() {
+  if (web_app::AppBrowserController::IsWebApp(browser())) {
+    if (page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
+      // No PWA title-bar Shields anchor; the Page Info surface owns Shields.
+      return gfx::Rect();
+    }
+    if (BraveShieldsToolbarButton* pwa = GetPwaShieldsToolbarButton(this)) {
+      if (views::Widget* bubble = pwa->GetBubbleWidget()) {
+        return bubble->GetClientAreaBoundsInScreen();
+      }
+    }
+    return gfx::Rect();
+  }
+
   auto* brave_location_bar_view =
       static_cast<BraveLocationBarView*>(GetLocationBarView());
   if (!brave_location_bar_view) {
@@ -524,6 +574,65 @@ gfx::Rect BraveBrowserView::GetShieldsBubbleRect() {
   return bubble_widget->GetClientAreaBoundsInScreen();
 }
 
+void BraveBrowserView::MaybeAddPwaShieldsButton() {
+  if (!web_app::AppBrowserController::IsWebApp(browser())) {
+    return;
+  }
+  if (page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
+    // No title-bar Shields control; the Page Info surface covers Shields.
+    return;
+  }
+  if (GetPwaShieldsToolbarButton(this)) {
+    return;
+  }
+  WebAppFrameToolbarView* frame_toolbar = web_app_frame_toolbar();
+  if (!frame_toolbar) {
+    return;
+  }
+  WebAppToolbarButtonContainer* right = nullptr;
+  for (const auto& child : frame_toolbar->children()) {
+    if (auto* r =
+            views::AsViewClass<WebAppToolbarButtonContainer>(child.get())) {
+      right = r;
+      break;
+    }
+  }
+  if (!right) {
+    return;
+  }
+  size_t insert_index = 0;
+  if (right->extensions_container()) {
+    const void* ext = right->extensions_container();
+    for (size_t i = 0; i < right->children().size(); ++i) {
+      if (static_cast<const void*>(right->children()[i].get()) == ext) {
+        insert_index = i;
+        break;
+      }
+    }
+  } else if (right->pinned_toolbar_actions_container()) {
+    const void* pinned = right->pinned_toolbar_actions_container();
+    for (size_t i = 0; i < right->children().size(); ++i) {
+      if (static_cast<const void*>(right->children()[i].get()) == pinned) {
+        insert_index = i;
+        break;
+      }
+    }
+  }
+  auto button = std::make_unique<BraveShieldsToolbarButton>(
+      static_cast<BrowserWindowInterface*>(browser()),
+      base::BindRepeating(&WebUIBubbleManager::Create<ShieldsPanelUI>));
+  ConfigureWebAppToolbarButton(button.get(), frame_toolbar);
+
+  raw_ptr<BraveShieldsToolbarButton> ptr = button.get();
+  right->AddChildViewAt(std::move(button), insert_index);
+  views::SetHitTestComponent(ptr, static_cast<int>(HTCLIENT));
+  ptr->SetProperty(
+      views::kFlexBehaviorKey,
+      views::FlexSpecification(views::LayoutOrientation::kHorizontal,
+                               views::MinimumFlexSizeRule::kPreferredSnapToZero)
+          .WithWeight(0));
+}
+
 bool BraveBrowserView::GetTabStripVisible() const {
   if (tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
     return false;
@@ -542,9 +651,9 @@ void BraveBrowserView::SetStarredState(bool is_starred) {
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 ReaderModeToolbarView* BraveBrowserView::reader_mode_toolbar() {
-    return BraveContentsContainerView::From(
-               GetBraveMultiContentsView()->GetActiveContentsContainerView())
-        ->reader_mode_toolbar();
+  return BraveContentsContainerView::From(
+             GetBraveMultiContentsView()->GetActiveContentsContainerView())
+      ->reader_mode_toolbar();
 }
 
 speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
@@ -585,13 +694,13 @@ void BraveBrowserView::UpdateReaderModeToolbar() {
   reader_mode_toolbar()->SetVisible(
       is_distilled(browser()->tab_strip_model()->GetActiveWebContents()));
 
-    // Need to update inactive split tabs' reader mode toolbar because
-    // it's also visible.
-    auto* contents_container = BraveContentsContainerView::From(
-        GetBraveMultiContentsView()->GetInactiveContentsContainerView());
-    auto* reader_mode_toolbar = contents_container->reader_mode_toolbar();
-    reader_mode_toolbar->SetVisible(
-        is_distilled(contents_container->contents_view()->web_contents()));
+  // Need to update inactive split tabs' reader mode toolbar because
+  // it's also visible.
+  auto* contents_container = BraveContentsContainerView::From(
+      GetBraveMultiContentsView()->GetInactiveContentsContainerView());
+  auto* reader_mode_toolbar = contents_container->reader_mode_toolbar();
+  reader_mode_toolbar->SetVisible(
+      is_distilled(contents_container->contents_view()->web_contents()));
 }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 
@@ -735,6 +844,9 @@ void BraveBrowserView::AddedToWidget() {
   GetBrowserViewLayout()->set_sidebar_container(sidebar_container_view_);
 
   UpdateWebViewRoundedCorners();
+  // PWA Shields attaches to the web app title bar (WebAppFrameToolbarView), not
+  // the tabbed window's ToolbarView; the frame is ready at this point.
+  MaybeAddPwaShieldsButton();
 
   if (vertical_tab_strip_host_view_) {
     if (base::FeatureList::IsEnabled(tabs::kBraveVerticalTabStripEmbedded)) {
@@ -764,14 +876,26 @@ void BraveBrowserView::AddedToWidget() {
 
 bool BraveBrowserView::ShowBraveHelpBubbleView(const std::string& text) {
   if (page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
+    // Shields in Page Info: no anchored toolbar / title-bar help target here.
     return false;
   }
 
-  auto* shields_action_view =
-      static_cast<BraveLocationBarView*>(GetLocationBarView())
-          ->brave_actions_contatiner_view()
-          ->GetShieldsActionView();
-  if (!shields_action_view || !shields_action_view->GetVisible()) {
+  views::View* shield_icon = nullptr;
+  if (web_app::AppBrowserController::IsWebApp(browser())) {
+    shield_icon = GetPwaShieldsToolbarButton(this);
+  } else {
+    auto* brave_location_bar_view =
+        static_cast<BraveLocationBarView*>(GetLocationBarView());
+    if (!brave_location_bar_view) {
+      return false;
+    }
+    auto* c = brave_location_bar_view->brave_actions_contatiner_view();
+    if (!c) {
+      return false;
+    }
+    shield_icon = c->GetShieldsActionView();
+  }
+  if (!shield_icon || !shield_icon->GetVisible()) {
     return false;
   }
 
@@ -783,7 +907,7 @@ bool BraveBrowserView::ShowBraveHelpBubbleView(const std::string& text) {
         AddChildView(std::make_unique<BraveHelpBubbleHostView>());
   }
   brave_help_bubble_host_view_->set_text(text);
-  brave_help_bubble_host_view_->set_tracked_element(shields_action_view);
+  brave_help_bubble_host_view_->set_tracked_element(shield_icon);
   return brave_help_bubble_host_view_->Show();
 }
 

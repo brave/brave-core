@@ -273,8 +273,6 @@ source_set("ui") {
       "brave_browser_window.h",
       "brave_file_select_utils.cc",
       "brave_file_select_utils.h",
-      "brave_icon_with_badge_image_source.cc",
-      "brave_icon_with_badge_image_source.h",
       "brave_pages.cc",
       "brave_pages.h",
       "brave_tab_strip_model_delegate.cc",
@@ -1231,8 +1229,6 @@ source_set("ui") {
     sources += [
       "views/brave_actions/brave_actions_container.cc",
       "views/brave_actions/brave_actions_container.h",
-      "views/brave_actions/brave_shields_action_view.cc",
-      "views/brave_actions/brave_shields_action_view.h",
       "views/brave_help_bubble/brave_help_bubble_delegate_view.cc",
       "views/brave_help_bubble/brave_help_bubble_delegate_view.h",
       "views/brave_help_bubble/brave_help_bubble_host_view.cc",
@@ -1246,6 +1242,8 @@ source_set("ui") {
       "views/toolbar/brave_toolbar_view.cc",
       "views/toolbar/brave_toolbar_view.h",
     ]
+
+    deps += [ "//brave/browser/ui/views/brave_actions" ]
 
     if (enable_brave_rewards) {
       sources += [

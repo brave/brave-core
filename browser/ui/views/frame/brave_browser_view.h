@@ -238,6 +238,7 @@ class BraveBrowserView : public BrowserView,
   void OnWindowClosingConfirmResponse(bool allowed_to_close);
   BraveBrowser* GetBraveBrowser() const;
   void UpdateWebViewRoundedCorners();
+  void MaybeAddPwaShieldsButton();
 
   // FindBarHost is anchored to |find_bar_host_view_|; it must remain the last
   // child of BrowserView for correct z-order. Call when a child is added after

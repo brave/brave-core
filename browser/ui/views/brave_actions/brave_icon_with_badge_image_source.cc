@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/brave_icon_with_badge_image_source.h"
+#include "brave/browser/ui/views/brave_actions/brave_icon_with_badge_image_source.h"
 
 #include <algorithm>
 #include <optional>
@@ -106,8 +106,9 @@ void BraveIconWithBadgeImageSource::PaintBadgeWithText(gfx::Canvas* canvas) {
                                    &text_height, 0, gfx::Canvas::NO_ELLIPSIS);
         // LOG(ERROR) << "reducing to font size - w:" << text_width << " h:" <<
         // text_height;
-        if (text_width <= text_max_width)
+        if (text_width <= text_max_width) {
           break;
+        }
         max_decrement_attempts--;
       }
     }
@@ -122,8 +123,9 @@ void BraveIconWithBadgeImageSource::PaintBadgeWithText(gfx::Canvas* canvas) {
           base_font.Derive(1, 0, gfx::Font::Weight::NORMAL);
       gfx::Canvas::SizeStringInt(utf16_text, bigger_font, &w, &h, 0,
                                  gfx::Canvas::NO_ELLIPSIS);
-      if (h > kTextHeightTarget || w > text_max_width)
+      if (h > kTextHeightTarget || w > text_max_width) {
         break;
+      }
       base_font = bigger_font;
       text_width = w;
       text_height = h;
@@ -146,8 +148,9 @@ void BraveIconWithBadgeImageSource::PaintBadgeWithText(gfx::Canvas* canvas) {
   const gfx::Rect icon_area = GetIconAreaRect();
   // Force the pixel width of badge to be either odd (if the icon width is odd)
   // or even otherwise. If there is a mismatch you get http://crbug.com/26400.
-  if (icon_area.width() != 0 && (badge_width % 2 != icon_area.width() % 2))
+  if (icon_area.width() != 0 && (badge_width % 2 != icon_area.width() % 2)) {
     badge_width += 1;
+  }
 
   auto rect = GetBadgeRect(badge_width);
 
