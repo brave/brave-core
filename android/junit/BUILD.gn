@@ -140,6 +140,12 @@ if (is_android) {
     deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
   }
 
+  robolectric_library("brave_junit_tests_org.chromium.chrome.browser.ui") {
+    sources = [ "src/org/chromium/chrome/browser/ui/system/BraveStatusBarColorControllerUnitTest.java" ]
+
+    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+  }
+
   robolectric_library(
       "brave_junit_tests_org.chromium.chrome.browser.autofill") {
     sources = [
