@@ -26,15 +26,19 @@
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/confirm_infobar_delegate.h"
 #include "components/infobars/core/infobar.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 
 namespace psst {
 
 namespace {
+constexpr char kExpectedSchema[] = "chrome";
+constexpr char kExpectedHost[] = "psst";
 
 class InfobarObserver : public infobars::InfoBarManager::Observer {
  public:
@@ -117,23 +121,6 @@ infobars::InfoBar* GetPsstInfobar(infobars::ContentInfoBarManager* manager) {
   return *infobar;
 }
 
-class DialogCloseObserver : public content::WebContentsObserver {
- public:
-  explicit DialogCloseObserver(content::WebContents* web_contents)
-      : content::WebContentsObserver(web_contents) {}
-
-  void OnVisibilityChanged(content::Visibility visibility) override {
-    if (visibility == content::Visibility::HIDDEN) {
-      run_loop_.Quit();
-    }
-  }
-
-  void Wait() { run_loop_.Run(); }
-
- private:
-  base::RunLoop run_loop_;
-};
-
 }  // namespace
 
 class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
@@ -177,79 +164,39 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     return chrome_test_utils::GetActiveWebContents(this);
   }
 
-  content::WebContents* WaitForAndGetDialogWebContents() {
-    auto start_time = base::TimeTicks::Now();
-    const auto timeout = base::Seconds(10);  // 10 second timeout
-
-    base::RunLoop run_loop;
-    base::RepeatingTimer timer;
-    content::WebContents* result = nullptr;
-    timer.Start(FROM_HERE, base::Milliseconds(100),
-                base::BindLambdaForTesting([&, start_time, timeout]() {
-                  if (base::TimeTicks::Now() - start_time >= timeout) {
-                    timer.Stop();
-                    run_loop.Quit();
-                    return;
-                  }
-
-                  std::vector<content::WebContents*> all_web_contents =
-                      content::GetAllWebContents();
-
-                  for (auto* wc : all_web_contents) {
-                    GURL url = wc->GetLastCommittedURL();
-                    // Look for chrome://psst URL
-                    if (url.SchemeIs("chrome") && url.host() == "psst") {
-                      timer.Stop();
-                      run_loop.Quit();
-                      result = wc;
-                      return;
-                    }
-                  }
-                }));
-
-    // Wait for the timer to find the dialog or timeout
-    run_loop.Run();
-    EXPECT_TRUE(result) << "Timeout waiting for dialog to appear";
-    return result;
+  content::WebContents* WaitForAndGetDialogWebContents(
+      content::CreateAndLoadWebContentsObserver& new_web_contents_observer) {
+    GURL current_url;
+    content::WebContents* dialog_wc = nullptr;
+    do {
+      dialog_wc = new_web_contents_observer.Wait();
+      if (dialog_wc) {
+        current_url = dialog_wc->GetLastCommittedURL();
+      }
+    } while (!current_url.SchemeIs(kExpectedSchema) &&
+             current_url.host() != kExpectedHost);
+    return dialog_wc;
   }
 
   bool AcceptModalDialog(content::WebContents* dialog_wc,
                          const std::string& site_name,
                          const std::vector<std::string>& perform_for_uids) {
+    if (!dialog_wc) {
+      return false;
+    }
+
     auto* dialog_ui =
         dialog_wc->GetWebUI()->GetController()->GetAs<BravePsstDialogUI>();
     if (!dialog_ui) {
       return false;
     }
 
-    auto start_time = base::TimeTicks::Now();
-    const auto timeout = base::Seconds(10);  // 10 second timeout
+    if (dialog_ui->psst_consent_handler_) {
+      dialog_ui->psst_consent_handler_->PerformPrivacyTuning(perform_for_uids);
+      return true;
+    }
 
-    base::RunLoop run_loop;
-    base::RepeatingTimer timer;
-
-    bool is_found = false;
-    timer.Start(FROM_HERE, base::Milliseconds(100),
-                base::BindLambdaForTesting([&, start_time, timeout]() {
-                  if (base::TimeTicks::Now() - start_time >= timeout) {
-                    timer.Stop();
-                    run_loop.Quit();
-                    return;
-                  }
-
-                  if (dialog_ui->psst_consent_handler_) {
-                    timer.Stop();
-                    run_loop.Quit();
-                    dialog_ui->psst_consent_handler_->PerformPrivacyTuning(
-                        perform_for_uids);
-                    is_found = true;
-                    return;
-                  }
-                }));
-
-    // Wait for the timer to find the dialog or timeout
-    run_loop.Run();
-    return is_found;
+    return false;
   }
 
   bool CloseModalDialog(content::WebContents* dialog_wc) {
@@ -281,6 +228,7 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
 
   InfobarObserver infobar_observer(
       manager, infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
+  content::CreateAndLoadWebContentsObserver new_web_contents_observer;
 
   std::u16string expected_title(u"a_user-a_policy");
   content::TitleWatcher watcher(web_contents(), expected_title);
@@ -294,7 +242,7 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
             infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
   confirm_delegate->Accept();
 
-  auto* dialog_wc = WaitForAndGetDialogWebContents();
+  auto* dialog_wc = WaitForAndGetDialogWebContents(new_web_contents_observer);
   ASSERT_TRUE(dialog_wc);
 
   const std::vector<std::string> perform_uids = {"1", "2"};

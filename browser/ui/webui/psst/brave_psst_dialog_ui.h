@@ -7,11 +7,10 @@
 #define BRAVE_BROWSER_UI_WEBUI_PSST_BRAVE_PSST_DIALOG_UI_H_
 
 #include <memory>
-#include <string>
 
 #include "base/memory/raw_ptr.h"
+#include "brave/browser/psst/psst_ui_desktop_presenter.h"
 #include "brave/browser/ui/webui/psst/brave_psst_dialog_handler.h"
-#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/psst/common/constants.h"
 #include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
@@ -19,9 +18,7 @@
 #include "content/public/browser/web_ui_message_handler.h"
 #include "content/public/browser/webui_config.h"
 #include "content/public/common/url_constants.h"
-#include "mojo/public/cpp/bindings/receiver_set.h"
 #include "ui/web_dialogs/web_dialog_ui.h"
-#include "ui/webui/mojo_web_ui_controller.h"
 
 namespace psst {
 
@@ -44,6 +41,8 @@ class BravePsstDialogUI : public ui::MojoWebDialogUI,
   void BindInterface(
       mojo::PendingReceiver<psst::mojom::PsstConsentFactory> receiver);
 
+  void Close();
+
  private:
   friend class PsstTabWebContentsObserverBrowserTest;
   void CreatePsstConsentHandler(
@@ -53,12 +52,15 @@ class BravePsstDialogUI : public ui::MojoWebDialogUI,
       psst::mojom::PsstConsentFactory::CreatePsstConsentHandlerCallback
           callback) override;
 
+  raw_ptr<PsstUiDesktopPresenter::PsstUiDesktopDelegate>
+      desktop_dialog_delegate_;
   std::unique_ptr<BravePsstDialogHandler> psst_consent_handler_;
   mojo::Receiver<psst::mojom::PsstConsentFactory>
       psst_consent_factory_receiver_{this};
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
+
 }  // namespace psst
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_PSST_BRAVE_PSST_DIALOG_UI_H_

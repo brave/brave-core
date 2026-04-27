@@ -51,9 +51,16 @@ OpenPsstDialog(content::WebContents* initiator) {
   CHECK(delegate);
   CHECK(ui_desktop_delegate_ptr);
 
-  ui_desktop_delegate_ptr->SetDelegateToWebContents(
-      delegate->GetWebContents()->GetWeakPtr());
+  ui_desktop_delegate_ptr->SetDelegateToWebContents(delegate);
   return ui_desktop_delegate_ptr->GetWeakPtr();
+}
+
+content::WebContents* GetDialogWebContents(
+    ConstrainedWebDialogDelegate* dialog_delegate) {
+  if (!dialog_delegate) {
+    return nullptr;
+  }
+  return dialog_delegate->GetWebContents();
 }
 
 }  // namespace
@@ -83,14 +90,16 @@ PsstUiDesktopPresenter::PsstUiDesktopDelegate::~PsstUiDesktopDelegate() =
     default;
 
 void PsstUiDesktopPresenter::PsstUiDesktopDelegate::SetDelegateToWebContents(
-    base::WeakPtr<content::WebContents> dialog_web_contents) {
+    ConstrainedWebDialogDelegate* dialog_delegate) {
+  auto* dialog_web_contents = GetDialogWebContents(dialog_delegate);
   if (!dialog_web_contents) {
     return;
   }
+  dialog_delegate_ = dialog_delegate;
+
   dialog_web_contents->SetUserData(
       kUiDesktopDelegateUserDataKey,
       std::make_unique<UiDesktopDelegateUserData>(this));
-  dialog_web_contents_ = std::move(dialog_web_contents);
 }
 
 content::WebContents*
@@ -100,11 +109,11 @@ PsstUiDesktopPresenter::PsstUiDesktopDelegate::GetInitiatorWebContents() const {
 
 void PsstUiDesktopPresenter::PsstUiDesktopDelegate::OnDialogClosed(
     const std::string& /* json_retval */) {
-  if (!dialog_web_contents_) {
+  auto* dialog_web_contents = GetDialogWebContents(dialog_delegate_);
+  if (!dialog_web_contents) {
     return;
   }
-  dialog_web_contents_->RemoveUserData(kUiDesktopDelegateUserDataKey);
-  dialog_web_contents_ = nullptr;
+  dialog_web_contents->RemoveUserData(kUiDesktopDelegateUserDataKey);
   initiator_web_contents_ = nullptr;
 }
 
@@ -114,7 +123,16 @@ PsstUiDesktopPresenter::PsstUiDesktopDelegate::GetWeakPtr() {
 }
 
 bool PsstUiDesktopPresenter::PsstUiDesktopDelegate::IsDialogShown() const {
-  return dialog_web_contents_ != nullptr;
+  return GetDialogWebContents(dialog_delegate_) != nullptr;
+}
+
+void PsstUiDesktopPresenter::PsstUiDesktopDelegate::CloseDialog() {
+  if (!dialog_delegate_) {
+    return;
+  }
+
+  dialog_delegate_->OnDialogCloseFromWebUI();
+  dialog_delegate_->GetWebDialogDelegate()->OnDialogClosed({});
 }
 
 PsstUiDesktopPresenter::PsstUiDesktopPresenter(

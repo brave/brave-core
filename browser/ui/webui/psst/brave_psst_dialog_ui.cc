@@ -1,4 +1,4 @@
-/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "brave/browser/psst/psst_ui_desktop_presenter.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/psst/brave_psst_dialog_handler.h"
 #include "brave/components/psst/resources/grit/brave_psst_dialog_generated_map.h"
@@ -48,11 +47,12 @@ void BravePsstDialogUI::CreatePsstConsentHandler(
     ::mojo::PendingRemote<psst::mojom::PsstConsentDialog> psst_consent_dialog,
     psst::mojom::PsstConsentFactory::CreatePsstConsentHandlerCallback
         callback) {
-  auto* delegate =
+  desktop_dialog_delegate_ =
       PsstUiDesktopPresenter::PsstUiDesktopDelegate::GetDelegateFromWebContents(
           web_ui()->GetWebContents());
-  CHECK(delegate);
-  auto* initiator_contents = delegate->GetInitiatorWebContents();
+  CHECK(desktop_dialog_delegate_);
+  auto* initiator_contents =
+      desktop_dialog_delegate_->GetInitiatorWebContents();
   CHECK(initiator_contents);
 
   auto* tab_interface =
@@ -66,6 +66,13 @@ void BravePsstDialogUI::CreatePsstConsentHandler(
   psst_consent_handler_ = std::make_unique<BravePsstDialogHandler>(
       tab_strip_model, this, std::move(psst_consent_helper),
       std::move(psst_consent_dialog), std::move(callback));
+}
+
+void BravePsstDialogUI::Close() {
+  if (!desktop_dialog_delegate_) {
+    return;
+  }
+  desktop_dialog_delegate_->CloseDialog();
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(BravePsstDialogUI)

@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_PSST_PSST_UI_DESKTOP_PRESENTER_H_
 #define BRAVE_BROWSER_PSST_PSST_UI_DESKTOP_PRESENTER_H_
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/psst/psst_ui_presenter.h"
 #include "chrome/browser/ui/dialogs/browser_dialogs.h"
@@ -14,6 +15,8 @@
 namespace content {
 class WebContents;
 }  // namespace content
+
+class ConstrainedWebDialogDelegate;
 
 namespace psst {
 
@@ -31,7 +34,7 @@ class PsstUiDesktopPresenter : public PsstUiPresenter {
     ~PsstUiDesktopDelegate() override;
 
     void SetDelegateToWebContents(
-        base::WeakPtr<content::WebContents> dialog_web_contents);
+        ConstrainedWebDialogDelegate* dialog_delegate);
     content::WebContents* GetInitiatorWebContents() const;
 
     // ui::WebDialogDelegate:
@@ -40,9 +43,11 @@ class PsstUiDesktopPresenter : public PsstUiPresenter {
     base::WeakPtr<PsstUiDesktopDelegate> GetWeakPtr();
     bool IsDialogShown() const;
 
+    void CloseDialog();
+
    private:
     base::WeakPtr<content::WebContents> initiator_web_contents_;  // unowned
-    base::WeakPtr<content::WebContents> dialog_web_contents_;     // unowned
+    raw_ptr<ConstrainedWebDialogDelegate> dialog_delegate_;       // unowned
     base::WeakPtrFactory<PsstUiDesktopDelegate> weak_ptr_factory_{this};
   };
 

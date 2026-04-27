@@ -959,7 +959,6 @@ test("brave_browser_tests") {
     "//brave/browser/ntp_background",
     "//brave/browser/permissions:browser_tests",
     "//brave/browser/profiles:util",
-    "//brave/browser/psst:browser_tests",
     "//brave/browser/regional_capabilities:browser_tests",
     "//brave/browser/sandbox:browser_tests",
     "//brave/browser/script_injector:browser_tests",
@@ -1472,6 +1471,13 @@ test("brave_browser_tests") {
     deps += android_only_test_deps
     sources -= android_test_exception_sources
     sources += android_only_test_sources
+  }
+
+  if (enable_psst) {
+    if (!is_mac) {
+      # Skip tests on MAC, See crbug.com/363677523
+      deps += [ "//brave/browser/psst:browser_tests" ]
+    }
   }
 }
 

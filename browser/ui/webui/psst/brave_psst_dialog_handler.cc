@@ -11,42 +11,21 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
-#include "base/values.h"
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
 #include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
 #include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
-#include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
-#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "components/constrained_window/constrained_window_views.h"
-#include "components/web_modal/web_contents_modal_dialog_manager.h"
 #include "content/public/browser/web_contents.h"
 
 namespace psst {
 
 namespace {
-
-void CloseDialog(content::WebContents* initiator_contents) {
-  DCHECK(initiator_contents);
-  auto* top_level_web_contents =
-      constrained_window::GetTopLevelWebContents(initiator_contents);
-  if (!top_level_web_contents) {
-    return;
-  }
-
-  auto* manager = web_modal::WebContentsModalDialogManager::FromWebContents(
-      top_level_web_contents);
-  if (!manager) {
-    return;
-  }
-
-  manager->CloseAllDialogs();
-}
 
 base::WeakPtr<psst::PsstTabWebContentsObserver>
 GetActivePsstTabHelperFromContext(content::WebContents* web_contents) {
@@ -95,7 +74,8 @@ BravePsstDialogHandler::BravePsstDialogHandler(
     : dialog_ui_(dialog_ui),
       receiver_(this, std::move(pending_receiver)),
       client_page_(std::move(client_page)) {
-  DCHECK(tab_strip_model);
+  CHECK(dialog_ui_);
+  CHECK(tab_strip_model);
   tab_strip_model->AddObserver(this);
   auto* web_contents = tab_strip_model->GetActiveWebContents();
   if (!web_contents) {
@@ -120,7 +100,11 @@ BravePsstDialogHandler::BravePsstDialogHandler(
   std::move(callback).Run(std::move(setting_card_data));
 }
 
-BravePsstDialogHandler::~BravePsstDialogHandler() = default;
+BravePsstDialogHandler::~BravePsstDialogHandler() {
+  if (psst_dialog_delegate_) {
+    psst_dialog_delegate_->RemoveObserver(this);
+  }
+}
 
 void BravePsstDialogHandler::OnSetRequestStatus(
     const std::string& uid,
@@ -169,15 +153,16 @@ void BravePsstDialogHandler::ReportFailedContent() {
     return;
   }
 
-  // psst_dialog_delegate_->OnUserRejectedPsstSettings();
+  // Report Submission Implementation
 }
 
 void BravePsstDialogHandler::CloseDialog() {
-  CHECK(active_tab_helper_);
-  if (psst_dialog_delegate_) {
-    psst_dialog_delegate_->RemoveObserver(this);
+  if (!psst_dialog_delegate_ || !dialog_ui_) {
+    return;
   }
-  ::psst::CloseDialog(active_tab_helper_->web_contents());
+
+  psst_dialog_delegate_->RemoveObserver(this);
+  dialog_ui_->Close();
 }
 
 }  // namespace psst
