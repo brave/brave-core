@@ -34,6 +34,7 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/tabs/brave_compact_horizontal_tabs_layout.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h"
@@ -495,7 +496,11 @@ void BraveTabContainer::PaintBoundingBoxForSplitTab(
         tabs::kHorizontalTabInset));
   }
 
-  constexpr auto kRadius = 12.f;  // same value with --leo-radius-l
+  const float kRadius =
+      (!is_vertical_tab && tabs::ShouldUseCompactHorizontalTabsForNonTouchUI())
+          ? tabs::compact_horizontal_tabs_layout::
+                kHorizontalSplitViewTileCornerRadiusDip
+          : 12.f;  // default matches --leo-radius-l
 
   auto* cp = GetColorProvider();
   DCHECK(cp);

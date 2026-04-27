@@ -56,6 +56,11 @@ inline constexpr int kTabHorizontalPadding = 4;
 // GetTabGroupTitleHorizontalInset()).
 inline constexpr int kTabGroupTitleHorizontalInset = 6;
 
+// Split-view pair tile on the horizontal tab strip (see
+// BraveTabContainer::PaintBoundingBoxForSplitTab). Smaller than the default
+// 12 DIP (--leo-radius-l) to match compact tab pills.
+inline constexpr float kHorizontalSplitViewTileCornerRadiusDip = 9.f;
+
 // --- Toolbar + URL bar (non-touch, compact) --------------------------------
 // Vertical 0 keeps tab strip + toolbar within ~60 DIP when the tab strip is
 // taller (e.g. kTabVisualHeight 28); row height is driven by
