@@ -47,7 +47,7 @@ class PsstUiDesktopPresenter : public PsstUiPresenter {
 
    private:
     base::WeakPtr<content::WebContents> initiator_web_contents_;  // unowned
-    raw_ptr<ConstrainedWebDialogDelegate> dialog_delegate_;       // unowned
+    raw_ptr<ConstrainedWebDialogDelegate> web_dialog_delegate_;   // unowned
     base::WeakPtrFactory<PsstUiDesktopDelegate> weak_ptr_factory_{this};
   };
 

@@ -95,7 +95,7 @@ void PsstUiDesktopPresenter::PsstUiDesktopDelegate::SetDelegateToWebContents(
   if (!dialog_web_contents) {
     return;
   }
-  dialog_delegate_ = dialog_delegate;
+  web_dialog_delegate_ = dialog_delegate;
 
   dialog_web_contents->SetUserData(
       kUiDesktopDelegateUserDataKey,
@@ -109,7 +109,7 @@ PsstUiDesktopPresenter::PsstUiDesktopDelegate::GetInitiatorWebContents() const {
 
 void PsstUiDesktopPresenter::PsstUiDesktopDelegate::OnDialogClosed(
     const std::string& /* json_retval */) {
-  auto* dialog_web_contents = GetDialogWebContents(dialog_delegate_);
+  auto* dialog_web_contents = GetDialogWebContents(web_dialog_delegate_);
   if (!dialog_web_contents) {
     return;
   }
@@ -123,16 +123,16 @@ PsstUiDesktopPresenter::PsstUiDesktopDelegate::GetWeakPtr() {
 }
 
 bool PsstUiDesktopPresenter::PsstUiDesktopDelegate::IsDialogShown() const {
-  return GetDialogWebContents(dialog_delegate_) != nullptr;
+  return GetDialogWebContents(web_dialog_delegate_) != nullptr;
 }
 
 void PsstUiDesktopPresenter::PsstUiDesktopDelegate::CloseDialog() {
-  if (!dialog_delegate_) {
+  if (!web_dialog_delegate_) {
     return;
   }
 
-  dialog_delegate_->OnDialogCloseFromWebUI();
-  dialog_delegate_->GetWebDialogDelegate()->OnDialogClosed({});
+  web_dialog_delegate_->OnDialogCloseFromWebUI();
+  web_dialog_delegate_->GetWebDialogDelegate()->OnDialogClosed({});
 }
 
 PsstUiDesktopPresenter::PsstUiDesktopPresenter(

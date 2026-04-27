@@ -205,12 +205,9 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     if (!dialog_ui) {
       return false;
     }
-    if (dialog_ui->psst_consent_handler_) {
-      dialog_ui->psst_consent_handler_->CloseDialog();
-      return true;
-    }
 
-    return false;
+    dialog_ui->Close();
+    return true;
   }
 
  protected:
