@@ -64,7 +64,6 @@
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 #include "ui/base/l10n/l10n_util.h"
 
 using base::test::ParseJsonDict;
@@ -2249,9 +2248,6 @@ TEST_F(KeyringServiceUnitTest, AddHardwareAccounts_RestrictedAddress) {
   AccountUtils(&keyring_service)
       .CreateWallet(kMnemonicDivideCruise, kPasswordBrave);
 
-  auto* registry = BlockchainRegistry::GetInstance();
-  CHECK(registry);
-
   const std::string restricted_eth_address =
       "0xb9ef770b6a5e12e45983c5d80545258aa38f3b78";
   const std::string restricted_sol_address =
@@ -2264,15 +2260,12 @@ TEST_F(KeyringServiceUnitTest, AddHardwareAccounts_RestrictedAddress) {
       "0x1111111111111111111111111111111111111111";
 
   // Update restricted list with restricted addresses
-  registry->UpdateRestrictedAddressesList({
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_hw_restricted({
       base::ToLowerASCII(restricted_eth_address),
       base::ToLowerASCII(restricted_sol_address),
       base::ToLowerASCII(restricted_fil_address),
       base::ToLowerASCII(restricted_dot_address),
   });
-  absl::Cleanup clear_hw_restricted = [registry] {
-    registry->UpdateRestrictedAddressesList({});
-  };
 
   // Test: Ethereum restricted address should be rejected
   {
@@ -2352,8 +2345,6 @@ TEST_F(KeyringServiceUnitTest, ImportEthereumAccount_RestrictedAddress) {
                                  GetLocalState());
   ASSERT_TRUE(CreateWallet(&keyring_service, "brave"));
 
-  auto* registry = BlockchainRegistry::GetInstance();
-
   // Use a known private key that generates a known address from existing tests.
   const std::string known_private_key =
       "d118a12a1e3b595d7d9e5599370df4ddc58d246a3ae4a795597e50eb6a32afb5";
@@ -2369,11 +2360,8 @@ TEST_F(KeyringServiceUnitTest, ImportEthereumAccount_RestrictedAddress) {
                             "brave"));
 
   // Update restricted list with the address.
-  registry->UpdateRestrictedAddressesList(
-      {base::ToLowerASCII(address_to_restrict)});
-  absl::Cleanup clear_eth_import_restricted = [registry] {
-    registry->UpdateRestrictedAddressesList({});
-  };
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting
+      scoped_eth_import_restricted({base::ToLowerASCII(address_to_restrict)});
 
   // Test: Import with Restricted address should fail.
   auto result = ImportEthereumAccount(&keyring_service, "Restricted Account",
@@ -2395,8 +2383,6 @@ TEST_F(KeyringServiceUnitTest, ImportSolanaAccount_RestrictedAddress) {
                                  GetLocalState());
   ASSERT_TRUE(CreateWallet(&keyring_service, "brave"));
 
-  auto* registry = BlockchainRegistry::GetInstance();
-
   // Use a known private key from existing tests.
   const std::string known_private_key =
       "sCzwsBKmKtk5Hgb4YUJAduQ5nmJq4GTyzCXhrKonAGaexa83MgSZuTSMS6TSZTndnC"
@@ -2415,11 +2401,8 @@ TEST_F(KeyringServiceUnitTest, ImportSolanaAccount_RestrictedAddress) {
                             "brave"));
 
   // Update restricted list with the address
-  registry->UpdateRestrictedAddressesList(
-      {base::ToLowerASCII(address_to_restrict)});
-  absl::Cleanup clear_sol_import_restricted = [registry] {
-    registry->UpdateRestrictedAddressesList({});
-  };
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting
+      scoped_sol_import_restricted({base::ToLowerASCII(address_to_restrict)});
 
   // Test: Import with Restricted address should fail
   auto result = ImportSolanaAccount(&keyring_service, "Restricted Account",
@@ -2432,7 +2415,6 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccount_RestrictedAddress) {
                                  GetLocalState());
   ASSERT_TRUE(CreateWallet(&keyring_service, "brave"));
 
-  auto* registry = BlockchainRegistry::GetInstance();
   const std::string restricted_address =
       "f1abjxfbp274xpdqcpuaykwkfb43omjotacm2p3za";
 
@@ -2455,11 +2437,8 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccount_RestrictedAddress) {
                             "brave"));
 
   // Update restricted list with the address.
-  registry->UpdateRestrictedAddressesList(
-      {base::ToLowerASCII(address_to_restrict)});
-  absl::Cleanup clear_fil_import_restricted = [registry] {
-    registry->UpdateRestrictedAddressesList({});
-  };
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting
+      scoped_fil_import_restricted({base::ToLowerASCII(address_to_restrict)});
 
   // Test: Import with Restricted address should fail
   auto result =
@@ -2474,8 +2453,6 @@ TEST_F(KeyringServiceUnitTest, ImportPolkadotAccount_RestrictedAddress) {
 
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   ASSERT_TRUE(CreateWallet(&service, "brave"));
-
-  auto* registry = BlockchainRegistry::GetInstance();
 
   auto hd_account =
       AddAccount(&service, mojom::CoinType::DOT,
@@ -2509,11 +2486,8 @@ TEST_F(KeyringServiceUnitTest, ImportPolkadotAccount_RestrictedAddress) {
                             kPasswordBrave));
 
   // Update restricted list with the address.
-  registry->UpdateRestrictedAddressesList(
-      {base::ToLowerASCII(*address_to_restrict)});
-  absl::Cleanup clear_dot_import_restricted = [registry] {
-    registry->UpdateRestrictedAddressesList({});
-  };
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting
+      scoped_dot_import_restricted({base::ToLowerASCII(*address_to_restrict)});
 
   auto result =
       ImportPolkadotAccount(&service, "Imported Polkadot", *json_export,
@@ -2565,15 +2539,11 @@ TEST_F(KeyringServiceUnitTest, CreateDefaultAccountsForSelectedNetworks) {
 TEST_F(KeyringServiceUnitTest, AddHDAccountForKeyring_RestrictedAddress) {
   base::test::ScopedFeatureList feature_list{
       features::kBraveWalletPolkadotFeature};
-  auto* registry = BlockchainRegistry::GetInstance();
-  registry->UpdateRestrictedAddressesList(
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_hd_restricted(
       {base::ToLowerASCII("0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db"),
        base::ToLowerASCII("BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8"),
        base::ToLowerASCII("f1qjidlytseoouzfhsgzczf3ettbhuaezorczeava"),
        base::ToLowerASCII("158HHeYTmEXMiMM1XufQt5bEe2CTia3EcVcfrpYBYcXA6bdb")});
-  absl::Cleanup clear_hd_restricted = [registry] {
-    registry->UpdateRestrictedAddressesList({});
-  };
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   AccountUtils(&service).CreateWallet(kMnemonicDivideCruise, kPasswordBrave);
 
@@ -2592,13 +2562,11 @@ TEST_F(KeyringServiceUnitTest,
   base::test::ScopedFeatureList feature_list{
       features::kBraveWalletPolkadotFeature};
 
-  auto* registry = BlockchainRegistry::GetInstance();
-  registry->UpdateRestrictedAddressesList(
-      {base::ToLowerASCII("f1qjidlytseoouzfhsgzczf3ettbhuaezorczeava"),
-       base::ToLowerASCII("158HHeYTmEXMiMM1XufQt5bEe2CTia3EcVcfrpYBYcXA6bdb")});
-  absl::Cleanup clear_default_restricted = [registry] {
-    registry->UpdateRestrictedAddressesList({});
-  };
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting
+      scoped_default_restricted(
+          {base::ToLowerASCII("f1qjidlytseoouzfhsgzczf3ettbhuaezorczeava"),
+           base::ToLowerASCII(
+               "158HHeYTmEXMiMM1XufQt5bEe2CTia3EcVcfrpYBYcXA6bdb")});
 
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);

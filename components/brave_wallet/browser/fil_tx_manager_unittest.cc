@@ -34,7 +34,6 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
 
@@ -616,12 +615,8 @@ TEST_F(FilTxManagerUnitTest, ProcessHardwareSignatureError) {
 
 TEST_F(FilTxManagerUnitTest, RestrictedFromAddress) {
   const auto from_account = FilTestAcc(0);
-  auto* registry = BlockchainRegistry::GetInstance();
-  registry->UpdateRestrictedAddressesList(
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_restricted(
       {base::ToLowerASCII(from_account->address)});
-  absl::Cleanup clear_restricted = [registry] {
-    registry->UpdateRestrictedAddressesList({});
-  };
 
   auto fil_tx_data = mojom::FilTxData::New(
       "" /* nonce */, "" /* gas_premium */, "" /* gas_fee_cap */,

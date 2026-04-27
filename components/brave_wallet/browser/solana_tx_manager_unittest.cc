@@ -50,7 +50,6 @@
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
 
@@ -991,11 +990,8 @@ TEST_F(SolanaTxManagerUnitTest, RestrictedToAddress) {
   const auto& from = sol_account();
   const std::string restricted_to =
       "FepMPR8vahkJ98Fr22VKbfHU4f4PTAyi18PDZN2NooPb";
-  auto* registry = BlockchainRegistry::GetInstance();
-  registry->UpdateRestrictedAddressesList({base::ToLowerASCII(restricted_to)});
-  absl::Cleanup clear_restricted = [registry] {
-    registry->UpdateRestrictedAddressesList({});
-  };
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_restricted(
+      {base::ToLowerASCII(restricted_to)});
   TestMakeSystemProgramTransferTxData(
       from, restricted_to, 10000000, nullptr,
       mojom::SolanaProviderError::kInvalidParams, WalletInternalErrorMessage(),
@@ -1008,12 +1004,8 @@ TEST_F(SolanaTxManagerUnitTest, RestrictedFromAddress) {
 
   const auto from_account_info = GetAccountUtils().EnsureSolAccount(0);
 
-  auto* registry = BlockchainRegistry::GetInstance();
-  registry->UpdateRestrictedAddressesList(
-      {base::ToLowerASCII(from_account_info->address)});
-  absl::Cleanup clear_from_restricted = [registry] {
-    registry->UpdateRestrictedAddressesList({});
-  };
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting
+      scoped_from_restricted({base::ToLowerASCII(from_account_info->address)});
 
   mojom::SolanaTxDataPtr solana_tx_data = nullptr;
   TestMakeSystemProgramTransferTxData(from, to, 10000000, nullptr,
@@ -1335,11 +1327,8 @@ TEST_P(TokenProgramTest, MakeTokenProgramTransferTxData) {
   // Test sending to restricted address.
   const std::string restricted_to =
       "FepMPR8vahkJ98Fr22VKbfHU4f4PTAyi18PDZN2NooPb";
-  auto* registry = BlockchainRegistry::GetInstance();
-  registry->UpdateRestrictedAddressesList({base::ToLowerASCII(restricted_to)});
-  absl::Cleanup clear_token_restricted = [registry] {
-    registry->UpdateRestrictedAddressesList({});
-  };
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting
+      scoped_token_restricted({base::ToLowerASCII(restricted_to)});
   TestMakeTokenProgramTransferTxData(
       FROM_HERE, mojom::kSolanaMainnet, spl_token_mint_address,
       from_wallet_address, restricted_to, 10000000,

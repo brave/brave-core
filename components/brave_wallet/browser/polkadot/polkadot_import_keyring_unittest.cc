@@ -17,7 +17,6 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 
 namespace brave_wallet {
 
@@ -218,11 +217,8 @@ TEST(PolkadotImportKeyringTest, AddAccount_RestrictedAddress) {
   const auto address_to_restrict = *address;
 
   // Add address to restricted list.
-  registry->UpdateRestrictedAddressesList(
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_restricted(
       {base::ToLowerASCII(address_to_restrict)});
-  absl::Cleanup clear_restricted = [registry] {
-    registry->UpdateRestrictedAddressesList({});
-  };
 
   ASSERT_TRUE(import_keyring.RemoveAccount(0));
 

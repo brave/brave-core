@@ -40,7 +40,6 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
@@ -1046,12 +1045,8 @@ TEST_F(PolkadotTxManagerUnitTest, RetryTransaction) {
 }
 
 TEST_F(PolkadotTxManagerUnitTest, RestrictedFromAddress) {
-  auto* registry = BlockchainRegistry::GetInstance();
-  registry->UpdateRestrictedAddressesList(
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_restricted(
       {base::ToLowerASCII(polkadot_mainnet_account_->address)});
-  absl::Cleanup clear_restricted = [registry] {
-    registry->UpdateRestrictedAddressesList({});
-  };
 
   auto transaction_params = mojom::NewPolkadotTransactionParams::New(
       mojom::kPolkadotMainnet, polkadot_mainnet_account_->account_id->Clone(),

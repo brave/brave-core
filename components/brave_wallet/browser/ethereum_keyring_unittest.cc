@@ -20,7 +20,6 @@
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 
 using testing::ElementsAre;
 
@@ -414,11 +413,8 @@ TEST(EthereumKeyringUnitTest, AddNewHDAccount_RestrictedAddress) {
   EXPECT_TRUE(keyring.RemoveHDAccount(0));
 
   // Add address to restricted list.
-  registry->UpdateRestrictedAddressesList(
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_restricted(
       {base::ToLowerASCII(address_to_restrict)});
-  absl::Cleanup clear_restricted = [registry] {
-    registry->UpdateRestrictedAddressesList({});
-  };
 
   // Try to add account again - should fail because it generates the same
   // address.
@@ -450,11 +446,8 @@ TEST(EthereumKeyringUnitTest, ImportAccount_RestrictedAddress) {
   EXPECT_TRUE(keyring.RemoveImportedAccount(*address));
 
   // Add address to restricted list.
-  registry->UpdateRestrictedAddressesList(
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_restricted(
       {base::ToLowerASCII(address_to_restrict)});
-  absl::Cleanup clear_restricted = [registry] {
-    registry->UpdateRestrictedAddressesList({});
-  };
 
   // Try to import account again - should fail.
   auto result = keyring.ImportAccount(private_key);

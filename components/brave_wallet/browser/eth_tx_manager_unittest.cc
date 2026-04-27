@@ -46,7 +46,6 @@
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
 
@@ -606,12 +605,8 @@ TEST_F(EthTxManagerUnitTest, SomeSiteOrigin) {
 
 TEST_F(EthTxManagerUnitTest, RestrictedFromAddress) {
   const auto from_account = from();
-  auto* registry = BlockchainRegistry::GetInstance();
-  registry->UpdateRestrictedAddressesList(
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_restricted(
       {base::ToLowerASCII(from_account->address)});
-  absl::Cleanup clear_restricted = [registry] {
-    registry->UpdateRestrictedAddressesList({});
-  };
 
   // AddUnapprovedEvmTransaction should fail.
   {
@@ -2322,12 +2317,8 @@ TEST_F(EthTxManagerUnitTest, MakeERC721TransferFromDataTxType) {
   run_loop->Run();
 
   // Address on the restricted list should fail.
-  auto* registry = BlockchainRegistry::GetInstance();
-  registry->UpdateRestrictedAddressesList(
-      {"0xbfb30a082f650c2a15d0632f0e87be4f8e64460a"});
-  absl::Cleanup clear_erc721_restricted = [registry] {
-    registry->UpdateRestrictedAddressesList({});
-  };
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting
+      scoped_erc721_restricted({"0xbfb30a082f650c2a15d0632f0e87be4f8e64460a"});
   run_loop = std::make_unique<base::RunLoop>();
   eth_tx_manager()->MakeERC721TransferFromData(
       "0xBFb30a082f650C2A15D0632f0e87bE4F8e64460f",
@@ -2340,19 +2331,17 @@ TEST_F(EthTxManagerUnitTest, MakeERC721TransferFromDataTxType) {
 
 TEST_F(EthTxManagerUnitTest, MakeERC1155TransferFromData) {
   // Invalid if to_address is on restricted list
-  auto* registry = BlockchainRegistry::GetInstance();
-  registry->UpdateRestrictedAddressesList(
-      {"0xbfb30a082f650c2a15d0632f0e87be4f8e64460a"});
-  absl::Cleanup clear_erc1155_restricted = [registry] {
-    registry->UpdateRestrictedAddressesList({});
-  };
-  TestMakeERC1155TransferFromDataTxType(
-      "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f", "", "0xf", "0x1",
-      "0x0d8775f648430679a709e98d2b0cb6250d2887ef", false,
-      mojom::TransactionType::Other);
+  {
+    BlockchainRegistry::ScopedRestrictedAddressesForTesting
+        scoped_erc1155_restricted(
+            {"0xbfb30a082f650c2a15d0632f0e87be4f8e64460a"});
+    TestMakeERC1155TransferFromDataTxType(
+        "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f", "", "0xf", "0x1",
+        "0x0d8775f648430679a709e98d2b0cb6250d2887ef", false,
+        mojom::TransactionType::Other);
+  }
 
   // Valid
-  registry->UpdateRestrictedAddressesList({});
   TestMakeERC1155TransferFromDataTxType(
       "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f",
       "0xbfb30a082f650c2a15d0632f0e87be4f8e64460a", "0xf", "0x1",
