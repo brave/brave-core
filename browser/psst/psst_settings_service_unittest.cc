@@ -152,8 +152,8 @@ TEST_F(PsstSettingsServiceUnitTest, CreateOrUpdateMetadata) {
   ASSERT_EQ(first_metadata_value.value().script_version,
             first_metadata->script_version);
   ASSERT_EQ(first_metadata_value.value().user_id, first_metadata->user_id);
-  ASSERT_EQ(first_metadata_value.value().urls_to_skip,
-            first_metadata->urls_to_skip);
+  ASSERT_EQ(first_metadata_value.value().uids_to_perform,
+            first_metadata->uids_to_perform);
 
   auto second_metadata_value = settings_service()->GetPsstWebsiteSettings(
       origin, second_metadata->user_id);
@@ -163,8 +163,8 @@ TEST_F(PsstSettingsServiceUnitTest, CreateOrUpdateMetadata) {
   ASSERT_EQ(second_metadata_value.value().script_version,
             second_metadata->script_version);
   ASSERT_EQ(second_metadata_value.value().user_id, second_metadata->user_id);
-  ASSERT_EQ(second_metadata_value.value().urls_to_skip,
-            second_metadata->urls_to_skip);
+  ASSERT_EQ(second_metadata_value.value().uids_to_perform,
+            second_metadata->uids_to_perform);
 
   const auto modified_metadata =
       PsstWebsiteSettings::FromValue(CreatePsstSettingsDict(
@@ -184,8 +184,8 @@ TEST_F(PsstSettingsServiceUnitTest, CreateOrUpdateMetadata) {
             modified_metadata->script_version);
   ASSERT_EQ(modified_metadata_value.value().user_id,
             modified_metadata->user_id);
-  ASSERT_EQ(modified_metadata_value.value().urls_to_skip,
-            modified_metadata->urls_to_skip);
+  ASSERT_EQ(modified_metadata_value.value().uids_to_perform,
+            modified_metadata->uids_to_perform);
 }
 
 }  // namespace psst
