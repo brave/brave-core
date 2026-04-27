@@ -17,6 +17,7 @@
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/contents_capture_border_view.h"
 #include "chrome/browser/ui/views/frame/contents_container_outline.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h"
 #include "chrome/browser/ui/views/frame/scrim_view.h"
@@ -74,18 +75,23 @@ BraveContentsContainerView::BraveContentsContainerView(
   reader_mode_toolbar_->SetDelegate(this);
 #endif
 
-    // To prevent |mini_toolbar_| becomes dangling pointer.
-    {
-      auto old_toolbar = RemoveChildViewT(mini_toolbar_);
-      mini_toolbar_ = nullptr;
-      auto old_outline = RemoveChildViewT(container_outline_);
-      container_outline_ = nullptr;
-    }
-    mini_toolbar_ =
-        AddChildView(std::make_unique<BraveMultiContentsViewMiniToolbar>(
-            browser_view, contents_view_));
-    container_outline_ = AddChildView(
-        std::make_unique<BraveContentsContainerOutline>(mini_toolbar_));
+  // To prevent |mini_toolbar_| becomes dangling pointer.
+  {
+    auto old_toolbar = RemoveChildViewT(mini_toolbar_);
+    mini_toolbar_ = nullptr;
+    auto old_outline = RemoveChildViewT(container_outline_);
+    container_outline_ = nullptr;
+    auto old_capture_contents_border_view =
+        RemoveChildViewT(capture_contents_border_view_);
+    capture_contents_border_view_ = nullptr;
+  }
+  mini_toolbar_ =
+      AddChildView(std::make_unique<BraveMultiContentsViewMiniToolbar>(
+          browser_view, contents_view_));
+  container_outline_ = AddChildView(
+      std::make_unique<BraveContentsContainerOutline>(mini_toolbar_));
+  capture_contents_border_view_ =
+      AddChildView(std::make_unique<ContentsCaptureBorderView>(mini_toolbar_));
 
   if (for_web_panel_) {
     // tool bar's menu button is only valid for split view.
