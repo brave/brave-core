@@ -42,6 +42,14 @@ export const style = scoped.css`
     flex: 0 0 auto;
   }
 
+  .results-container {
+    display: none;
+  }
+
+  &:focus-within .results-container {
+    display: unset;
+  }
+
   .results-container:not(:empty) {
     border-top: solid 1px ${color.divider.subtle};
   }
