@@ -91,7 +91,7 @@ class PolkadotTxManager : public TxManager,
       base::expected<std::pair<std::string, PolkadotExtrinsicMetadata>,
                      std::string> tx_hash_metadata_pair);
 
-  void OnUpdatePendingTransactions(
+  void OnTransactionStatusResolved(
       PolkadotTransactionStatusTask* task,
       std::unique_ptr<PolkadotTxMeta> polkadot_tx,
       base::expected<

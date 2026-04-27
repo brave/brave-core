@@ -314,7 +314,7 @@ void PolkadotTxManager::UpdatePendingTransactions(
     auto* task = task_ptr.get();
     polkadot_transaction_status_tasks_.insert(std::move(task_ptr));
 
-    task->Start(base::BindOnce(&PolkadotTxManager::OnUpdatePendingTransactions,
+    task->Start(base::BindOnce(&PolkadotTxManager::OnTransactionStatusResolved,
                                weak_ptr_factory_.GetWeakPtr(), task,
                                std::move(polkadot_tx)));
   }
@@ -322,7 +322,7 @@ void PolkadotTxManager::UpdatePendingTransactions(
   CheckIfBlockTrackerShouldRun(pending_chain_ids);
 }
 
-void PolkadotTxManager::OnUpdatePendingTransactions(
+void PolkadotTxManager::OnTransactionStatusResolved(
     PolkadotTransactionStatusTask* task,
     std::unique_ptr<PolkadotTxMeta> polkadot_tx,
     base::expected<
