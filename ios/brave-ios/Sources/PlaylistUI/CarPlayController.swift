@@ -289,15 +289,27 @@ public class CarPlayController {
   }
 
   @MainActor private func refreshDownloadStates(for items: [PlaylistItem]) async {
-    var itemIDs = Set<String>()
-    for item in items {
-      guard let uuid = item.uuid else { continue }
-      itemIDs.insert(uuid)
-      downloadStates[uuid] = await PlaylistManager.shared.downloadState(for: uuid)
+    let uuids = items.compactMap(\.uuid)
+
+    // Fetch each item's download state concurrently so list refresh stays O(1) wall-clock
+    // in the number of items.
+    let resolvedStates = await withTaskGroup(
+      of: (String, PlaylistDownloadManager.DownloadState).self
+    ) { group in
+      for uuid in uuids {
+        group.addTask {
+          (uuid, await PlaylistManager.shared.downloadState(for: uuid))
+        }
+      }
+      var result: [String: PlaylistDownloadManager.DownloadState] = [:]
+      for await (uuid, state) in group {
+        result[uuid] = state
+      }
+      return result
     }
 
-    let danglingStateKeys = downloadStates.keys.filter { !itemIDs.contains($0) }
-    danglingStateKeys.forEach { downloadStates.removeValue(forKey: $0) }
+    // Replacing wholesale also drops entries for items that are no longer present.
+    downloadStates = resolvedStates
   }
 }
 

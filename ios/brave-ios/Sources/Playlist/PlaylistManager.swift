@@ -259,11 +259,10 @@ public class PlaylistManager: NSObject {
       return .inProgress
     }
 
-    if let assetUrl = await downloadManager.localAsset(for: itemId)?.url {
-      if await AsyncFileManager.default.fileExists(atPath: assetUrl.path) {
-        return .downloaded
-      }
-      await invalidateCachedState(for: itemId)
+    if let assetUrl = await downloadManager.localAsset(for: itemId)?.url,
+      await AsyncFileManager.default.fileExists(atPath: assetUrl.path)
+    {
+      return .downloaded
     }
 
     return .invalid
@@ -601,41 +600,40 @@ public class PlaylistManager: NSObject {
       return
     }
 
-    let items = PlaylistItem.all().compactMap {
-      item -> (itemId: String, pageSrc: String, cachedData: Data)? in
+    // Snapshot every item's bookmark on the main actor so the resolution work below
+    // can run off the main actor without touching CoreData.
+    let cachedItems: [(itemId: String, cachedData: Data)] = PlaylistItem.all().compactMap { item in
       guard let itemId = item.uuid, let cachedData = item.cachedData, !cachedData.isEmpty else {
         return nil
       }
-      return (itemId: itemId, pageSrc: item.pageSrc, cachedData: cachedData)
+      return (itemId, cachedData)
     }
 
-    let (validCachedPaths, staleCachedItems): (Set<String>, [(itemId: String, pageSrc: String)]) =
+    let (validCachedPaths, staleItemIDs): (Set<String>, [String]) =
       await Task.detached {
         var validCachedPaths = Set<String>()
-        var staleCachedItems = [(itemId: String, pageSrc: String)]()
+        var staleItemIDs = [String]()
 
-        for item in items {
+        for entry in cachedItems {
           var isStale = false
           guard
             let url = try? URL(
-              resolvingBookmarkData: item.cachedData,
+              resolvingBookmarkData: entry.cachedData,
               bookmarkDataIsStale: &isStale
             ),
             !isStale,
             FileManager.default.fileExists(atPath: url.path)
           else {
-            staleCachedItems.append((itemId: item.itemId, pageSrc: item.pageSrc))
+            staleItemIDs.append(entry.itemId)
             continue
           }
           validCachedPaths.insert(url.path)
         }
-        return (validCachedPaths, staleCachedItems)
+        return (validCachedPaths, staleItemIDs)
       }.value
 
-    for item in staleCachedItems {
-      cancelDownload(itemId: item.itemId)
-      PlaylistItem.updateCache(uuid: item.itemId, pageSrc: item.pageSrc, cachedData: nil)
-      onDownloadStateChanged(id: item.itemId, state: .invalid, displayName: nil, error: nil)
+    for itemId in staleItemIDs {
+      invalidateCachedState(for: itemId)
     }
 
     do {
@@ -716,6 +714,11 @@ public class PlaylistManager: NSObject {
     return nil
   }
 
+  /// Clears the persisted `cachedData` bookmark for `itemId` and notifies observers that
+  /// the item is no longer downloaded. Cancels any in-flight download as well so the
+  /// item ends up in a fully invalid state.
+  ///
+  /// No-op if the item is gone or already has no cached bookmark.
   @MainActor private func invalidateCachedState(for itemId: String) {
     guard
       let item = PlaylistItem.getItem(uuid: itemId),
@@ -725,6 +728,7 @@ public class PlaylistManager: NSObject {
       return
     }
 
+    cancelDownload(itemId: itemId)
     PlaylistItem.updateCache(uuid: itemId, pageSrc: item.pageSrc, cachedData: nil)
     onDownloadStateChanged(id: itemId, state: .invalid, displayName: nil, error: nil)
   }
