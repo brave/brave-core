@@ -6,7 +6,7 @@
 // Check environment before doing anything.
 import '../lib/checkEnvironment.js'
 
-import program from 'commander'
+import { program } from 'commander'
 import path from 'node:path'
 import fs from 'fs-extra'
 import config from '../lib/config.ts'
@@ -263,8 +263,9 @@ program
 program
   .command('start')
   .allowUnknownOption(true)
+  .allowExcessArguments(true)
   .option('-C <build_dir>', 'build config (out/Debug, out/Release')
-  .option('--v [log_level]', 'set log level to [log_level]', parseInteger, '0')
+  .option('--v [log_level]', 'set log level to [log_level]', parseInteger, 0)
   .option('--vmodule [modules]', 'verbose log from specific modules')
   .option(
     '--user_data_dir_name [base_name]',
@@ -360,8 +361,9 @@ program
 program
   .command('test <suite>')
   .allowUnknownOption(true)
+  .allowExcessArguments(true)
   .option('-C <build_dir>', 'build config (out/Debug, out/Release')
-  .option('--v [log_level]', 'set log level to [log_level]', parseInteger, '0')
+  .option('--v [log_level]', 'set log level to [log_level]', parseInteger, 0)
   .option('--vmodule [modules]', 'verbose log from specific modules')
   .option('--filter <filter>', 'set test filter')
   .option(
@@ -383,7 +385,7 @@ program
     '--test_launcher_jobs <test_launcher_jobs>',
     'Number of jobs to launch',
     parseInteger,
-    '4',
+    4,
   )
   .option('--target_os <target_os>', 'target OS')
   .option('--target_arch <target_arch>', 'target architecture')
@@ -445,6 +447,7 @@ program
 program
   .command('run_fuzzer <suite>')
   .allowUnknownOption(true)
+  .allowExcessArguments(true)
   .action(runFuzzer.bind(null, parsedArgs.unknown))
 
 program
@@ -452,12 +455,14 @@ program
   .option('--target_os <target_os>', 'target OS')
   .option('--target_arch <target_arch>', 'target architecture')
   .allowUnknownOption(true)
+  .allowExcessArguments(true)
   .description('Call npm run perf_tests -- --more-help for detailed help')
   .action(perfTests.runPerfTests.bind(null, parsedArgs.unknown))
 
 program
   .command('gen_gradle')
   .allowUnknownOption(true)
+  .allowExcessArguments(true)
   .option('-C <build_dir>', 'build config (out/Debug, out/Release)')
   .option('--target_arch <target_arch>', 'target architecture')
   .arguments('[build_config]')

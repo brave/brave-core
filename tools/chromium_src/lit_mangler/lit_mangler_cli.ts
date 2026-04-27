@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import commander from 'commander'
+import { program } from 'commander'
 import { load, write } from './lit_mangler'
 import childProcess from 'child_process'
 import path from 'path'
@@ -61,7 +61,7 @@ const runTypecheck = (genDir: string, files: string[]) => {
   }
 }
 
-commander
+program
   .command('mangle')
   .option(
     '-m, --mangler <file>',
@@ -97,4 +97,4 @@ commander
     },
   )
 
-commander.parse(process.argv)
+program.parse(process.argv)

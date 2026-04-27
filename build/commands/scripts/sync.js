@@ -7,7 +7,7 @@
 import '../lib/checkEnvironment.js'
 
 import fs from 'node:fs'
-import program from 'commander'
+import { program } from 'commander'
 import path from 'node:path'
 import config from '../lib/config.ts'
 import util from '../lib/util.js'
@@ -44,6 +44,8 @@ program
     '--with_issue_44921',
     'Do not pass --revision to gclient to avoid process hanging on jenkins. https://github.com/brave/brave-browser/issues/44921',
   )
+  .action(RunCommand)
+  .parse()
 
 function syncBrave(program) {
   let args = ['sync', '--nohooks']
@@ -67,9 +69,7 @@ function syncBrave(program) {
   )
 }
 
-async function RunCommand() {
-  program.parse(process.argv)
-
+async function RunCommand(program) {
   // Install depot_tools early to make Python available.
   depotTools.installDepotTools()
 
@@ -145,9 +145,3 @@ async function RunCommand() {
 function commaSeparatedToList(value, defaultValue) {
   return value?.split(',').filter(Boolean) || defaultValue
 }
-
-RunCommand().catch((err) => {
-  Log.error('Brave Browser Sync ERROR:')
-  console.error(err)
-  process.exit(1)
-})

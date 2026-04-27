@@ -5,7 +5,7 @@
 
 import path from 'node:path'
 import fs from 'fs-extra'
-import program from 'commander'
+import { program } from 'commander'
 import { spawnSync, type SpawnSyncReturns } from 'node:child_process'
 
 // prettier does not provide a default export in .d.ts file.

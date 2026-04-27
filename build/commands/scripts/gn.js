@@ -6,7 +6,7 @@
 // Check environment before doing anything.
 import '../lib/checkEnvironment.js'
 
-import program from 'commander'
+import { program } from 'commander'
 import config from '../lib/config.ts'
 import util from '../lib/util.js'
 
