@@ -19,6 +19,7 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate_impl.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -192,6 +193,10 @@ class PolkadotTxManagerUnitTest : public testing::Test {
 
   PolkadotTxStateManager* GetPolkadotTxStateManager() {
     return &GetPolkadotTxManager()->GetPolkadotTxStateManager();
+  }
+
+  PolkadotBlockTracker* GetPolkadotBlockTracker() {
+    return &GetPolkadotTxManager()->GetPolkadotBlockTracker();
   }
 
   void UnlockWallet() {
@@ -542,6 +547,10 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_Confirmed) {
                   polkadot_tx->tx()->extrinsic_metadata()->extrinsic()),
               kExpectedExtrinsic);
   }
+
+  ASSERT_TRUE(GetPolkadotBlockTracker()->IsRunning(mojom::kPolkadotTestnet));
+  polkadot_tx_manager_->UpdatePendingTransactions(chain_id);
+  EXPECT_FALSE(GetPolkadotBlockTracker()->IsRunning(mojom::kPolkadotTestnet));
 }
 
 TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_Failed) {
@@ -1041,6 +1050,42 @@ TEST_F(PolkadotTxManagerUnitTest, RestrictedFromAddress) {
   EXPECT_TRUE(tx_meta_id.empty());
   EXPECT_EQ(err_str, WalletInternalErrorMessage());
   registry->UpdateRestrictedAddressesList({});
+}
+
+TEST_F(PolkadotTxManagerUnitTest, UpdatePendingTransactions_BlockTracker) {
+  // Test that calling UpdatePendingTransactions() doesn't remove any previously
+  // registered block trackers.
+
+  SetUpMockRpcForFoundExtrinsic(polkadot_mock_rpc_.get(), true);
+  polkadot_mock_rpc_->AddReqResPairs();
+  polkadot_mock_rpc_->FinalizeSetup();
+
+  auto transaction_params = mojom::NewPolkadotTransactionParams::New(
+      mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id->Clone(),
+      kBob, mojom::uint128::New(0, 1234), false, nullptr);
+
+  base::test::TestFuture<bool, const std::string&, const std::string&>
+      unapproved_future;
+  polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
+      std::move(transaction_params), unapproved_future.GetCallback());
+
+  auto [add_ok, tx_meta_id, add_err] = unapproved_future.Take();
+  ASSERT_TRUE(add_ok);
+
+  base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
+      approved_future;
+  polkadot_tx_manager_->ApproveTransaction(tx_meta_id,
+                                           approved_future.GetCallback());
+
+  auto [approve_ok, error, approve_err] = approved_future.Take();
+  ASSERT_TRUE(approve_ok);
+
+  // Approval calls UpdatePendingTransactions(testnet), which starts the
+  // tracker.
+  ASSERT_TRUE(GetPolkadotBlockTracker()->IsRunning(mojom::kPolkadotTestnet));
+
+  polkadot_tx_manager_->UpdatePendingTransactions(mojom::kPolkadotMainnet);
+  EXPECT_TRUE(GetPolkadotBlockTracker()->IsRunning(mojom::kPolkadotTestnet));
 }
 
 }  // namespace brave_wallet

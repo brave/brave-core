@@ -289,7 +289,16 @@ void PolkadotTxManager::UpdatePendingTransactions(
   auto txs = tx_state_manager().GetTransactionsByStatus(
       chain_id, mojom::TransactionStatus::Submitted, std::nullopt);
 
-  std::set<std::string> pending_chain_ids;
+  // Grab all the current pending chain ids for this transaction manager. If we
+  // were passed a chain_id, we clear it from the current list. This is because
+  // we need to cleanup our timers from the previous runs. So if we probe
+  // transaction set again and we have no more Submitted transactions, we can go
+  // ahead and stop the block tracker.
+  auto new_pending_chain_ids = pending_chain_ids();
+  if (chain_id.has_value()) {
+    new_pending_chain_ids.erase(chain_id.value());
+  }
+
   for (auto& tx : txs) {
     auto polkadot_tx =
         base::WrapUnique(static_cast<PolkadotTxMeta*>(tx.release()));
@@ -303,7 +312,7 @@ void PolkadotTxManager::UpdatePendingTransactions(
       continue;
     }
 
-    pending_chain_ids.insert(polkadot_tx->chain_id());
+    new_pending_chain_ids.insert(polkadot_tx->chain_id());
 
     auto task_ptr = PolkadotTransactionStatusTask::Create(
         *polkadot_wallet_service_, keyring_service(),
@@ -319,7 +328,7 @@ void PolkadotTxManager::UpdatePendingTransactions(
                                std::move(polkadot_tx)));
   }
 
-  CheckIfBlockTrackerShouldRun(pending_chain_ids);
+  CheckIfBlockTrackerShouldRun(new_pending_chain_ids);
 }
 
 void PolkadotTxManager::OnTransactionStatusResolved(
