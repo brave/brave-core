@@ -5,8 +5,6 @@
 
 #include "brave/browser/ui/views/frame/brave_tab_strip_region_view.h"
 
-#include <algorithm>
-
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -29,12 +27,123 @@
 #include "components/prefs/pref_service.h"
 #include "components/vector_icons/vector_icons.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/events/event.h"
+#include "ui/views/controls/button/button.h"
+#include "ui/views/controls/button/button_controller.h"
 #include "ui/views/layout/flex_layout_types.h"
+#include "ui/views/repeat_controller.h"
 #include "ui/views/view_class_properties.h"
 #include "ui/views/view_utils.h"
 
 namespace {
+// Pattern from ui/views/controls/scrollbar/scroll_bar_button.h (scroll bar
+// line/page repeat). Uses kOnPress so the primary action is not fired again on
+// release.
+class BraveTabStripScrollButton : public TabStripControlButton {
+  METADATA_HEADER(BraveTabStripScrollButton, TabStripControlButton)
+
+ public:
+  BraveTabStripScrollButton(BrowserWindowInterface* browser_window_interface,
+                            base::RepeatingClosure scroll_action,
+                            const gfx::VectorIcon& icon);
+
+  BraveTabStripScrollButton(const BraveTabStripScrollButton&) = delete;
+  BraveTabStripScrollButton& operator=(const BraveTabStripScrollButton&) =
+      delete;
+
+  ~BraveTabStripScrollButton() override;
+
+  // views::View
+  bool OnMousePressed(const ui::MouseEvent& event) override;
+  void OnMouseReleased(const ui::MouseEvent& event) override;
+  void OnMouseCaptureLost() override;
+  void OnGestureEvent(ui::GestureEvent* event) override;
+
+ private:
+  void OnRepeaterFired();
+
+  base::RepeatingClosure scroll_action_;
+  views::RepeatController repeater_;
+};
+
+BraveTabStripScrollButton::BraveTabStripScrollButton(
+    BrowserWindowInterface* browser_window_interface,
+    base::RepeatingClosure scroll_action,
+    const gfx::VectorIcon& icon)
+    : TabStripControlButton(browser_window_interface,
+                            views::Button::PressedCallback(scroll_action),
+                            icon,
+                            Edge::kNone,
+                            Edge::kNone),
+      scroll_action_(std::move(scroll_action)),
+      repeater_(base::BindRepeating(&BraveTabStripScrollButton::OnRepeaterFired,
+                                    base::Unretained(this))) {
+  button_controller()->set_notify_action(
+      views::ButtonController::NotifyAction::kOnPress);
+}
+
+BraveTabStripScrollButton::~BraveTabStripScrollButton() {
+  repeater_.Stop();
+}
+
+void BraveTabStripScrollButton::OnRepeaterFired() {
+  scroll_action_.Run();
+}
+
+bool BraveTabStripScrollButton::OnMousePressed(const ui::MouseEvent& event) {
+  const bool result = TabStripControlButton::OnMousePressed(event);
+  if (GetState() != views::Button::STATE_DISABLED &&
+      event.IsOnlyLeftMouseButton()) {
+    repeater_.Start();
+  }
+  return result;
+}
+
+void BraveTabStripScrollButton::OnMouseReleased(const ui::MouseEvent& event) {
+  repeater_.Stop();
+  TabStripControlButton::OnMouseReleased(event);
+}
+
+void BraveTabStripScrollButton::OnMouseCaptureLost() {
+  repeater_.Stop();
+  TabStripControlButton::OnMouseCaptureLost();
+}
+
+void BraveTabStripScrollButton::OnGestureEvent(ui::GestureEvent* event) {
+  if (GetState() == views::Button::STATE_DISABLED) {
+    TabStripControlButton::OnGestureEvent(event);
+    return;
+  }
+
+  if (event->type() == ui::EventType::kGestureTapDown) {
+    TabStripControlButton::OnGestureEvent(event);
+    if (GetState() == views::Button::STATE_PRESSED) {
+      scroll_action_.Run();
+      repeater_.Start();
+    }
+    event->SetHandled();
+    return;
+  }
+
+  if (event->type() == ui::EventType::kGestureLongPress) {
+    return;
+  }
+
+  repeater_.Stop();
+
+  if (event->type() == ui::EventType::kGestureTap) {
+    SetState(views::Button::STATE_HOVERED);
+    event->SetHandled();
+    return;
+  }
+
+  TabStripControlButton::OnGestureEvent(event);
+}
+
+BEGIN_METADATA(BraveTabStripScrollButton)
+END_METADATA
 
 #if BUILDFLAG(IS_LINUX)
 ui::DropTargetEvent ConvertRootLocation(views::View* view,
@@ -69,20 +178,20 @@ void BraveHorizontalTabStripRegionView::CreateScrollButtonsIfNeeded() {
   // Child order for FlexLayout: leading scroll, tab strip, trailing scroll,
   // then (via base layout) new tab button after the strip cluster.
   tab_scroll_next_button_ = AddChildViewAt(
-      std::make_unique<TabStripControlButton>(
+      std::make_unique<BraveTabStripScrollButton>(
           bwi,
           base::BindRepeating(
               &BraveHorizontalTabStripRegionView::OnScrollNextPressed,
               weak_factory_.GetWeakPtr()),
-          vector_icons::kForwardArrowIcon, Edge::kNone, Edge::kNone),
+          vector_icons::kForwardArrowIcon),
       strip_idx.value() + 1);
   tab_scroll_previous_button_ = AddChildViewAt(
-      std::make_unique<TabStripControlButton>(
+      std::make_unique<BraveTabStripScrollButton>(
           bwi,
           base::BindRepeating(
               &BraveHorizontalTabStripRegionView::OnScrollPreviousPressed,
               weak_factory_.GetWeakPtr()),
-          vector_icons::kBackArrowIcon, Edge::kNone, Edge::kNone),
+          vector_icons::kBackArrowIcon),
       strip_idx.value());
 
   tab_scroll_previous_button_->SetProperty(views::kCrossAxisAlignmentKey,

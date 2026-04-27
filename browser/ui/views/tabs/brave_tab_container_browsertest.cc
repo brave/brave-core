@@ -5,6 +5,11 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 
+#include <algorithm>
+
+#include "base/location.h"
+#include "base/run_loop.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -29,7 +34,9 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/events/base_event_utils.h"
 #include "ui/events/event_constants.h"
+#include "ui/events/test/event_generator.h"
 #include "ui/views/view_utils.h"
+#include "ui/views/widget/widget_utils.h"
 #include "url/url_constants.h"
 
 class HorizontalScrollableTabStripBrowserTest : public InProcessBrowserTest {
@@ -75,6 +82,27 @@ class HorizontalScrollableTabStripBrowserTest : public InProcessBrowserTest {
     views::View* tab_strip = browser_view()->horizontal_tab_strip_for_testing();
     return views::AsViewClass<BraveHorizontalTabStripRegionView>(
         tab_strip->parent());
+  }
+
+  // Grows the strip so at least |n| scroll-button steps can apply before
+  // clamping (viewport/4 as step is often greater than the max offset after
+  // the first few overflow tabs).
+  void GrowHorizontalStripUntilMaxOffsetAtLeastNTimesStep(
+      BraveTabContainer* container,
+      int n,
+      base::Location location = base::Location::Current()) {
+    SCOPED_TRACE(location.ToString());
+    for (int i = 0; i < 100; i++) {
+      const int max_offset = container->GetMaxScrollOffsetForTesting();
+      const int step = container->GetHorizontalTabScrollStep();
+      if (step > 0 && max_offset >= n * step) {
+        return;
+      }
+      AppendTab();
+      StopAnimatingAndLayout();
+    }
+    GTEST_FAIL()
+        << "Failed to get enough scroll headroom for repeat/hold test.";
   }
 
   void SetUpOnMainThread() override {
@@ -409,4 +437,114 @@ IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
   ASSERT_TRUE(region);
   ASSERT_TRUE(region->tab_scroll_previous_for_testing());
   EXPECT_FALSE(region->tab_scroll_previous_for_testing()->GetVisible());
+}
+
+IN_PROC_BROWSER_TEST_F(
+    HorizontalScrollableTabStripBrowserTest,
+    HorizontalScrollPreviousButtonSingleClickScrollsByOneStep) {
+  auto* tab_strip = views::AsViewClass<BraveTabStrip>(
+      browser_view()->horizontal_tab_strip_for_testing());
+  BraveTabContainer* container = views::AsViewClass<BraveTabContainer>(
+      tab_strip->GetTabContainerForTesting());
+  ASSERT_TRUE(container);
+
+  browser()->profile()->GetPrefs()->SetBoolean(
+      brave_tabs::kShowHorizontalTabScrollButtons, false);
+  browser()->profile()->GetPrefs()->SetBoolean(
+      brave_tabs::kShowHorizontalTabScrollButtons, true);
+  StopAnimatingAndLayout();
+  GrowHorizontalStripUntilMaxOffsetAtLeastNTimesStep(container, 2);
+
+  BraveHorizontalTabStripRegionView* region = tab_strip_region();
+  ASSERT_TRUE(region);
+  const int max_scroll_offset = container->GetMaxScrollOffsetForTesting();
+  ASSERT_GT(max_scroll_offset, 0);
+  // Exercise the leading (back) control at max scroll. The trailing (forward)
+  // button is disabled at the end; growing many tabs often leaves the last
+  // tab active with the strip scrolled to the end.
+  browser()->tab_strip_model()->ActivateTabAt(
+      std::max(0, browser()->tab_strip_model()->count() - 1));
+  container->SetScrollOffsetForTesting(max_scroll_offset);
+  StopAnimatingAndLayout();
+
+  TabStripControlButton* back = region->tab_scroll_previous_for_testing();
+  ASSERT_TRUE(back);
+  ASSERT_TRUE(back->GetVisible());
+  ASSERT_TRUE(back->GetEnabled());
+
+  const int step = container->GetHorizontalTabScrollStep();
+  ASSERT_GT(step, 0);
+  container->SetScrollOffsetForTesting(max_scroll_offset);
+  StopAnimatingAndLayout();
+
+  const int before = container->GetScrollOffsetForTesting();
+
+  ui::test::EventGenerator event_generator(
+      views::GetRootWindow(browser_view()->GetWidget()),
+      browser_view()->GetNativeWindow());
+  event_generator.MoveMouseTo(back->GetBoundsInScreen().CenterPoint());
+  event_generator.PressLeftButton();
+  event_generator.ReleaseLeftButton();
+  StopAnimatingAndLayout();
+
+  EXPECT_EQ(before - container->GetScrollOffsetForTesting(), step)
+      << "before: " << before
+      << " after: " << container->GetScrollOffsetForTesting()
+      << " One press+release should match one scroll action (not double on "
+         "press, "
+         "repeater should not have fired).";
+}
+
+IN_PROC_BROWSER_TEST_F(
+    HorizontalScrollableTabStripBrowserTest,
+    HorizontalScrollPreviousButtonHoldScrollsByMoreThanOneStep) {
+  auto* tab_strip = views::AsViewClass<BraveTabStrip>(
+      browser_view()->horizontal_tab_strip_for_testing());
+  BraveTabContainer* container = views::AsViewClass<BraveTabContainer>(
+      tab_strip->GetTabContainerForTesting());
+  ASSERT_TRUE(container);
+
+  browser()->profile()->GetPrefs()->SetBoolean(
+      brave_tabs::kShowHorizontalTabScrollButtons, false);
+  browser()->profile()->GetPrefs()->SetBoolean(
+      brave_tabs::kShowHorizontalTabScrollButtons, true);
+  StopAnimatingAndLayout();
+  GrowHorizontalStripUntilMaxOffsetAtLeastNTimesStep(container, 2);
+
+  const int max_scroll_offset = container->GetMaxScrollOffsetForTesting();
+  const int step = container->GetHorizontalTabScrollStep();
+  ASSERT_GT(step, 0);
+  ASSERT_GE(max_scroll_offset, 2 * step);
+
+  BraveHorizontalTabStripRegionView* region = tab_strip_region();
+  ASSERT_TRUE(region);
+  browser()->tab_strip_model()->ActivateTabAt(
+      std::max(0, browser()->tab_strip_model()->count() - 1));
+  container->SetScrollOffsetForTesting(max_scroll_offset);
+  StopAnimatingAndLayout();
+
+  TabStripControlButton* back = region->tab_scroll_previous_for_testing();
+  ASSERT_TRUE(back);
+  ASSERT_TRUE(back->GetVisible());
+  ASSERT_TRUE(back->GetEnabled());
+
+  container->SetScrollOffsetForTesting(max_scroll_offset);
+  StopAnimatingAndLayout();
+  const int before = container->GetScrollOffsetForTesting();
+
+  ui::test::EventGenerator event_generator(
+      views::GetRootWindow(browser_view()->GetWidget()),
+      browser_view()->GetNativeWindow());
+  event_generator.MoveMouseTo(back->GetBoundsInScreen().CenterPoint());
+  event_generator.PressLeftButton();
+  base::RunLoop run_loop;
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+      FROM_HERE, run_loop.QuitClosure(), base::Milliseconds(400));
+  run_loop.Run();
+  event_generator.ReleaseLeftButton();
+  StopAnimatingAndLayout();
+
+  const int after = container->GetScrollOffsetForTesting();
+  EXPECT_GT(before - after, step)
+      << "Holding should run the repeat timer and scroll more than one action.";
 }
