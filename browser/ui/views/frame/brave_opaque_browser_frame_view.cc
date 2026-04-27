@@ -149,7 +149,7 @@ int BraveOpaqueBrowserFrameView::GetTopAreaHeight() const {
   const int top_height = layout_->NonClientTopHeight(false);
   return std::max(frame_height + info.toolbar_minimum_height,
                   top_height + info.tabstrip_preferred_height -
-                      (is_tabbed ? tabs::GetHorizontalTabControlOverlap() : 0));
+                      (is_tabbed ? tabs::GetHorizontalTabControlsDelta() : 0));
 }
 
 bool BraveOpaqueBrowserFrameView::ShouldShowVerticalTabs() const {

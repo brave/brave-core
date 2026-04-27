@@ -24,10 +24,23 @@ namespace compact_horizontal_tabs_layout {
 inline constexpr int kTabVisualHeight = 26;
 inline constexpr int kTabVerticalSpacing = 2;
 inline constexpr int kTabstripToolbarOverlap = 8;
-// Control-specific overlap compensation used by navigation/caption controls.
-// Keep this separate from `kTabstripToolbarOverlap` so tab rendering overlap
-// can be tuned independently from control placement.
-inline constexpr int kTabstripToolbarControlsOverlap = -5;
+
+// Vertical delta (DIP) applied to tab strip control button placement math
+// (see `UpdateButtonBorders()` in horizontal_tab_strip_region_view.cc, which
+// positions the new tab button, combo button, tab search button, etc.).
+//
+// Why this is separate from `kTabstripToolbarOverlap`:
+//   Upstream uses `LayoutConstant::kTabstripToolbarOverlap` for two roles in
+//   compact mode:
+//     1) Tab/toolbar geometry (kTabHeight, kTabStripHeight, tab rendering,
+//        tab group underline, frame view top-area math, etc.) — wants 8.
+//     2) Control button vertical placement inside the tab strip — wants the
+//        smaller delta below so caption/new-tab controls stay centered.
+//   We satisfy (1) centrally via `GetBraveLayoutConstant(kTabstripToolbarOverlap)`
+//   and satisfy (2) by substituting just the two `UpdateButtonBorders()`
+//   callsites with `tabs::GetHorizontalTabControlsDelta()` (see
+//   rewrite/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc.toml).
+inline constexpr int kTabStripControlsHeightDelta = -5;
 
 // `LayoutConstant::kTabStripHeight` (compact, non-touch). Keep in sync with
 // kTabVisualHeight, kTabVerticalSpacing, and kTabstripToolbarOverlap (no
@@ -67,7 +80,7 @@ inline constexpr int kDragHandleExtensionDefault = 4;
 inline constexpr int kTabVisualHeightDefault = 32;
 inline constexpr int kTabVerticalSpacingDefault = kHorizontalTabVerticalSpacing;
 inline constexpr int kTabstripToolbarOverlapDefault = 1;
-inline constexpr int kTabstripToolbarControlsOverlapDefault = -4;
+inline constexpr int kTabStripControlsHeightDeltaDefault = -4;
 inline constexpr int kTabHorizontalPaddingDefault = 8;
 inline constexpr int kTabGroupTitleHorizontalInsetDefault = 10;
 
@@ -78,6 +91,14 @@ inline constexpr int kLocationBarInnerPaddingDefault = 2;
 inline constexpr int kPageInfoIconPaddingVerticalDefault = 6;
 
 }  // namespace compact_horizontal_tabs_layout
+
+// Returns true iff `#brave-compact-horizontal-tabs` is enabled AND touch UI is
+// off, i.e. the gate that selects the compact metrics in
+// `compact_horizontal_tabs_layout` over the defaults. Centralised here so all
+// consumers share a single gating helper instead of re-implementing the
+// `IsEnabled(kBraveCompactHorizontalTabs) && !touch_ui()` check.
+bool ShouldUseCompactHorizontalTabsForNonTouchUI();
+
 }  // namespace tabs
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_BRAVE_COMPACT_HORIZONTAL_TABS_LAYOUT_H_

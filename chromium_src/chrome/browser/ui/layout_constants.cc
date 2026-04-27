@@ -17,15 +17,7 @@
 namespace {
 
 using tabs::HorizontalTabsUpdateEnabled;
-
-bool UseCompactHorizontalTabs() {
-  return base::FeatureList::IsEnabled(tabs::kBraveCompactHorizontalTabs);
-}
-
-bool ShouldUseCompactHorizontalTabsForNonTouchUI() {
-  return UseCompactHorizontalTabs() &&
-         !ui::TouchUiController::Get()->touch_ui();
-}
+using tabs::ShouldUseCompactHorizontalTabsForNonTouchUI;
 
 std::optional<gfx::Insets> GetBraveLayoutInsets(LayoutInset inset) {
   const bool touch_ui = ui::TouchUiController::Get()->touch_ui();
@@ -165,6 +157,11 @@ int GetLayoutConstant(LayoutConstant constant) {
 
 namespace tabs {
 
+bool ShouldUseCompactHorizontalTabsForNonTouchUI() {
+  return base::FeatureList::IsEnabled(tabs::kBraveCompactHorizontalTabs) &&
+         !ui::TouchUiController::Get()->touch_ui();
+}
+
 int GetHorizontalTabHeight() {
   return ShouldUseCompactHorizontalTabsForNonTouchUI()
              ? tabs::compact_horizontal_tabs_layout::kTabVisualHeight
@@ -177,12 +174,12 @@ int GetHorizontalTabVerticalSpacing() {
              : tabs::compact_horizontal_tabs_layout::kTabVerticalSpacingDefault;
 }
 
-int GetHorizontalTabControlOverlap() {
+int GetHorizontalTabControlsDelta() {
   return ShouldUseCompactHorizontalTabsForNonTouchUI()
              ? tabs::compact_horizontal_tabs_layout::
-                   kTabstripToolbarControlsOverlap
+                   kTabStripControlsHeightDelta
              : tabs::compact_horizontal_tabs_layout::
-                   kTabstripToolbarControlsOverlapDefault;
+                   kTabStripControlsHeightDeltaDefault;
 }
 
 int GetHorizontalTabStripHeight() {

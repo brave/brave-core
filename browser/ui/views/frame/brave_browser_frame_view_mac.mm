@@ -103,7 +103,7 @@ BrowserFrameViewMac::BoundsAndMargins
 BraveBrowserFrameViewMac::GetCaptionButtonBounds() const {
   auto bounds_and_margins = BrowserFrameViewMac::GetCaptionButtonBounds();
   bounds_and_margins.bounds.set_y(bounds_and_margins.bounds.y() +
-                                  tabs::GetHorizontalTabControlOverlap());
+                                  tabs::GetHorizontalTabControlsDelta());
   return bounds_and_margins;
 }
 

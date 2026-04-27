@@ -306,9 +306,10 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
     // constants (same family as toolbar spacing). That can overlap the combo's
     // flex slot; we paint NTB above the combo in GetChildrenInZOrder so it
     // stays clickable. Otherwise place after the last tab. Vertical position
-    // uses explicit control overlap (decoupled from tab shape tuning).
+    // uses tabs::GetHorizontalTabControlsDelta() (decoupled from tab shape
+    // tuning).
     if (new_tab_button_) {
-      const int y = tabs::GetHorizontalTabControlOverlap();
+      const int y = tabs::GetHorizontalTabControlsDelta();
       if (tab_scroll_next_button_ && tab_scroll_next_button_->GetVisible()) {
         const gfx::Size button_size = new_tab_button_->GetPreferredSize();
         const int x = tab_scroll_next_button_->bounds().right() +

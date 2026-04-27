@@ -21,9 +21,8 @@ void ExpectDefaultLayoutConstants() {
             GetLayoutConstant(LayoutConstant::kTabStripPadding));
   EXPECT_EQ(compact_horizontal_tabs_layout::kTabstripToolbarOverlapDefault,
             GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap));
-  EXPECT_EQ(
-      compact_horizontal_tabs_layout::kTabstripToolbarControlsOverlapDefault,
-      GetHorizontalTabControlOverlap());
+  EXPECT_EQ(compact_horizontal_tabs_layout::kTabStripControlsHeightDeltaDefault,
+            GetHorizontalTabControlsDelta());
 }
 
 }  // namespace
@@ -53,8 +52,8 @@ TEST_F(BraveCompactHorizontalTabsLayoutTest, SelectsCompactLayoutConstants) {
             GetLayoutConstant(LayoutConstant::kTabStripPadding));
   EXPECT_EQ(compact_horizontal_tabs_layout::kTabstripToolbarOverlap,
             GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap));
-  EXPECT_EQ(compact_horizontal_tabs_layout::kTabstripToolbarControlsOverlap,
-            GetHorizontalTabControlOverlap());
+  EXPECT_EQ(compact_horizontal_tabs_layout::kTabStripControlsHeightDelta,
+            GetHorizontalTabControlsDelta());
 }
 
 // Compact flag off: `GetLayoutConstant` should return the default metrics

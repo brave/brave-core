@@ -9,8 +9,19 @@ pattern = "std::make_unique<TabStrip>"
 replace = "std::make_unique<BraveTabStrip>"
 count = 1
 
+# `LayoutConstant::kTabstripToolbarOverlap` is used by upstream for two
+# distinct roles in compact mode: (a) tab/toolbar geometry (e.g. `kTabHeight`,
+# `kTabStripHeight`, tab/group rendering, frame view top-area math) and (b)
+# control-button placement inside the tab strip (`UpdateButtonBorders()`,
+# which positions the new tab button, combo button, tab search button, etc.).
+# Compact mode requires different values for those two roles, so we override
+# (a) centrally in `GetBraveLayoutConstant(kTabstripToolbarOverlap)` and split
+# off (b) here. The substitution targets only the two `UpdateButtonBorders()`
+# callsites in this translation unit (hence `count = 2`); all other consumers
+# of `kTabstripToolbarOverlap` continue to go through `GetLayoutConstant` and
+# pick up the central override.
 [[substitution]]
-description = "Tab strip button border math uses control overlap (see GetHorizontalTabControlOverlap) instead of tab/toolbar overlap from GetLayoutConstant"
+description = "UpdateButtonBorders() control placement uses GetHorizontalTabControlsDelta() instead of LayoutConstant::kTabstripToolbarOverlap, which is reserved for tab/toolbar geometry"
 pattern = "GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap)"
-replace = "tabs::GetHorizontalTabControlOverlap()"
+replace = "tabs::GetHorizontalTabControlsDelta()"
 count = 2

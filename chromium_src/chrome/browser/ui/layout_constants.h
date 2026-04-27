@@ -37,10 +37,19 @@ int GetHorizontalTabHeight();
 // UI active).
 int GetHorizontalTabVerticalSpacing();
 
-// Control-only overlap compensation in horizontal tabs mode. This is separate
-// from `LayoutConstant::kTabstripToolbarOverlap` so tab shape overlap can be
-// tuned without unintentionally shifting navigation/caption controls.
-int GetHorizontalTabControlOverlap();
+// Vertical delta (DIP) used by tab strip control button placement math (see
+// `UpdateButtonBorders()` in horizontal_tab_strip_region_view.cc). This is
+// intentionally separate from `LayoutConstant::kTabstripToolbarOverlap` so
+// tab/toolbar geometry can be tuned without unintentionally shifting
+// navigation/caption controls. See the comment on
+// `compact_horizontal_tabs_layout::kTabStripControlsHeightDelta` for the
+// rationale behind the split.
+//
+// Returns `compact_horizontal_tabs_layout::kTabStripControlsHeightDelta` (-5)
+// when the `#brave-compact-horizontal-tabs` flag is enabled and touch UI is
+// off. Returns `compact_horizontal_tabs_layout::kTabStripControlsHeightDeltaDefault`
+// (-4) otherwise (flag disabled or touch UI active).
+int GetHorizontalTabControlsDelta();
 
 // The amount of space before the first tab view.
 inline constexpr int kHorizontalTabStripLeftMargin = 3;

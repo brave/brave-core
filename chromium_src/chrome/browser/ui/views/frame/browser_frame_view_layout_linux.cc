@@ -55,5 +55,5 @@ void BrowserFrameViewLayoutLinux::SetBoundsForButton(
         views::kCaptionButtonInkDropDefaultCornerRadius);
   }
 
-  button->SetY(button->y() + tabs::GetHorizontalTabControlOverlap());
+  button->SetY(button->y() + tabs::GetHorizontalTabControlsDelta());
 }

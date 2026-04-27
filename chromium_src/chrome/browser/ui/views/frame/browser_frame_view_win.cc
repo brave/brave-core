@@ -35,7 +35,7 @@ namespace {
 
 int GetLayoutConstantForBraveWindowControls(LayoutConstant constant) {
   if (constant == LayoutConstant::kTabstripToolbarOverlap) {
-    return tabs::GetHorizontalTabControlOverlap();
+    return tabs::GetHorizontalTabControlsDelta();
   }
   return GetLayoutConstant(constant);
 }
