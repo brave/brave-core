@@ -23,14 +23,15 @@
 Python scripts used in the build system should follow these conventions:
 
 - **Use `argparse`** for command-line arguments, not `sys.argv` directly
-- **Use standard `Main()` pattern** to ensure proper error propagation to GN:
+- **Use the standard `main()` pattern with `sys.exit(main())`** so scripts can either return explicit exit codes or rely on uncaught exceptions for non-zero exits:
   ```python
-  def Main():
+  import sys
+
+  def main():
       ...
-      return 0
 
   if __name__ == '__main__':
-      sys.exit(Main())
+      sys.exit(main())
   ```
 
 ---
@@ -171,9 +172,11 @@ deps += [ "//brave/utility" ]
 
 <a id="BS-015"></a>
 
-## ✅ Scripts Go in brave/scripts
+## ✅ Keep Scripts Near Their Use
 
-**Build and utility scripts should go in `brave/scripts/`, not in `build/` or other Chromium directories.**
+**Build and utility scripts should live near the build target or configuration that uses them.** For example, if a script is only used by a GN `action()` in a specific directory, place the script in that directory. If a utility script is referenced from `DEPS`, place it near the related dependency or configuration instead of adding it to a shared `brave/script` directory.
+
+**Avoid adding new build or utility scripts to `brave/script`.** Keep that directory for existing scripts and use a more local location for new script logic.
 
 ---
 
