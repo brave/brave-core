@@ -18,6 +18,7 @@
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/condition_matchers_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ads_database_table_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "url/gurl.h"
@@ -71,25 +72,6 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
   return row_count;
 }
 
-CreativeAdInfo FromMojomRow(const mojom::DBRowInfoPtr& mojom_db_row) {
-  CHECK(mojom_db_row);
-
-  CreativeAdInfo creative_ad;
-
-  creative_ad.creative_instance_id = ColumnString(mojom_db_row, 0);
-  creative_ad.creative_set_id = ColumnString(mojom_db_row, 1);
-  creative_ad.per_day = ColumnInt(mojom_db_row, 2);
-  creative_ad.per_week = ColumnInt(mojom_db_row, 3);
-  creative_ad.per_month = ColumnInt(mojom_db_row, 4);
-  creative_ad.total_max = ColumnInt(mojom_db_row, 5);
-  creative_ad.value = ColumnDouble(mojom_db_row, 6);
-  creative_ad.condition_matchers =
-      StringToConditionMatchers(ColumnString(mojom_db_row, 7));
-  creative_ad.target_url = GURL(ColumnString(mojom_db_row, 8));
-
-  return creative_ad;
-}
-
 CreativeAdList GetCreativeAdsFromResponse(
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
   CHECK(mojom_db_transaction_result);
@@ -99,7 +81,7 @@ CreativeAdList GetCreativeAdsFromResponse(
 
   for (const auto& mojom_db_row :
        mojom_db_transaction_result->rows_union->get_rows()) {
-    CreativeAdInfo creative_ad = FromMojomRow(mojom_db_row);
+    CreativeAdInfo creative_ad = CreativeAdFromMojomRow(mojom_db_row);
 
     std::string uuid = creative_ad.creative_instance_id + creative_ad.segment;
     const auto [iter, inserted] =

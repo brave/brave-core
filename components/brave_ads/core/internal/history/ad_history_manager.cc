@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_builder_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_database_table.h"
-#include "brave/components/brave_ads/core/internal/history/ad_history_database_table_util.h"
+#include "brave/components/brave_ads/core/internal/history/ad_history_database_util.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_value_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"

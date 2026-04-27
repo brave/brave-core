@@ -16,11 +16,11 @@
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_type.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
-#include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -67,20 +67,6 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
   return row_count;
 }
 
-PaymentTokenInfo FromMojomRow(const mojom::DBRowInfoPtr& mojom_db_row) {
-  CHECK(mojom_db_row);
-
-  PaymentTokenInfo payment_token;
-  payment_token.transaction_id = ColumnString(mojom_db_row, 0);
-  payment_token.unblinded_token =
-      cbr::UnblindedToken(ColumnString(mojom_db_row, 1));
-  payment_token.public_key = cbr::PublicKey(ColumnString(mojom_db_row, 2));
-  payment_token.confirmation_type =
-      ToMojomConfirmationType(ColumnString(mojom_db_row, 3));
-  payment_token.ad_type = ToMojomAdType(ColumnString(mojom_db_row, 4));
-  return payment_token;
-}
-
 void GetAllCallback(
     GetPaymentTokensCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
@@ -94,7 +80,8 @@ void GetAllCallback(
   PaymentTokenList payment_tokens;
   for (const auto& mojom_db_row :
        mojom_db_transaction_result->rows_union->get_rows()) {
-    const PaymentTokenInfo payment_token = FromMojomRow(mojom_db_row);
+    const PaymentTokenInfo payment_token =
+        PaymentTokenFromMojomRow(mojom_db_row);
     if (!payment_token.IsValid()) {
       BLOG(0, "Invalid payment token");
       continue;

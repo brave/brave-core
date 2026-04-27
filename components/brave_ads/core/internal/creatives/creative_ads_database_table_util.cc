@@ -5,63 +5,32 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/creative_ads_database_table_util.h"
 
-#include <vector>
-
-#include "base/base64.h"
-#include "base/strings/strcat.h"
-#include "base/strings/string_split.h"
-#include "base/strings/string_util.h"
+#include "base/check.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/condition_matchers_database_table_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "url/gurl.h"
 
 namespace brave_ads::database::table {
 
-std::string ConditionMatchersToString(
-    const ConditionMatcherMap& condition_matchers) {
-  std::vector<std::string> condition_matchers_as_string;
-  condition_matchers_as_string.reserve(condition_matchers.size());
+CreativeAdInfo CreativeAdFromMojomRow(const mojom::DBRowInfoPtr& mojom_db_row) {
+  CHECK(mojom_db_row);
 
-  for (const auto& [pref_name, condition] : condition_matchers) {
-    // We base64 encode the `pref_name` and `condition` to avoid any issues with
-    // pref paths and conditions that contain either `|` or `;`.
+  CreativeAdInfo creative_ad;
 
-    const std::string condition_matcher = base::StrCat(
-        {base::Base64Encode(pref_name), "|", base::Base64Encode(condition)});
-    condition_matchers_as_string.push_back(condition_matcher);
-  }
+  creative_ad.creative_instance_id = ColumnString(mojom_db_row, 0);
+  creative_ad.creative_set_id = ColumnString(mojom_db_row, 1);
+  creative_ad.per_day = ColumnInt(mojom_db_row, 2);
+  creative_ad.per_week = ColumnInt(mojom_db_row, 3);
+  creative_ad.per_month = ColumnInt(mojom_db_row, 4);
+  creative_ad.total_max = ColumnInt(mojom_db_row, 5);
+  creative_ad.value = ColumnDouble(mojom_db_row, 6);
+  creative_ad.condition_matchers =
+      StringToConditionMatchers(ColumnString(mojom_db_row, 7));
+  creative_ad.target_url = GURL(ColumnString(mojom_db_row, 8));
 
-  return base::JoinString(condition_matchers_as_string, ";");
-}
-
-ConditionMatcherMap StringToConditionMatchers(const std::string& value) {
-  const std::vector<std::string> condition_matchers_as_string =
-      base::SplitString(value, ";", base::TRIM_WHITESPACE,
-                        base::SPLIT_WANT_NONEMPTY);
-
-  ConditionMatcherMap condition_matchers;
-  for (const auto& condition_matcher_as_string : condition_matchers_as_string) {
-    const std::vector<std::string> condition_matcher =
-        base::SplitString(condition_matcher_as_string, "|",
-                          base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-    if (condition_matcher.size() != 2) {
-      // Malfomed condition matcher.
-      continue;
-    }
-
-    std::string pref_path;
-    if (!base::Base64Decode(condition_matcher[0], &pref_path)) {
-      // Malfomed condition matcher.
-      continue;
-    }
-
-    std::string condition;
-    if (!base::Base64Decode(condition_matcher[1], &condition)) {
-      // Malfomed condition matcher.
-      continue;
-    }
-
-    condition_matchers.emplace(pref_path, condition);
-  }
-
-  return condition_matchers;
+  return creative_ad;
 }
 
 }  // namespace brave_ads::database::table

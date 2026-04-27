@@ -14,6 +14,7 @@
 #include "base/location.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_info.h"
+#include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
@@ -69,21 +70,6 @@ void BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
   BindColumnTime(mojom_db_action, 2, deposit.expire_at.value_or(base::Time()));
 }
 
-DepositInfo FromMojomRow(const mojom::DBRowInfoPtr& mojom_db_row) {
-  CHECK(mojom_db_row);
-
-  DepositInfo deposit;
-
-  deposit.creative_instance_id = ColumnString(mojom_db_row, 0);
-  deposit.value = ColumnDouble(mojom_db_row, 1);
-  const base::Time expire_at = ColumnTime(mojom_db_row, 2);
-  if (!expire_at.is_null()) {
-    deposit.expire_at = expire_at;
-  }
-
-  return deposit;
-}
-
 void GetForCreativeInstanceIdCallback(
     const std::string& /*creative_instance_id*/,
     GetDepositsCallback callback,
@@ -102,7 +88,7 @@ void GetForCreativeInstanceIdCallback(
 
   const mojom::DBRowInfoPtr mojom_db_row =
       std::move(mojom_db_transaction_result->rows_union->get_rows().front());
-  DepositInfo deposit = FromMojomRow(mojom_db_row);
+  DepositInfo deposit = DepositFromMojomRow(mojom_db_row);
   if (!deposit.IsValid()) {
     BLOG(0, "Invalid deposit");
     return std::move(callback).Run(/*success=*/false, /*deposit=*/std::nullopt);

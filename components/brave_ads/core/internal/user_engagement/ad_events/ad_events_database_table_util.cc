@@ -5,47 +5,38 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table_util.h"
 
-#include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
+#include "base/check.h"
+#include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_type.h"
+#include "brave/components/brave_ads/core/internal/ad_units/ad_type.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "url/gurl.h"
 
-namespace brave_ads::database {
+namespace brave_ads::database::table {
 
-void PurgeAdEventsForType(mojom::AdType ad_type) {
-  const table::AdEvents database_table;
-  database_table.PurgeForAdType(
-      ad_type, base::BindOnce(
-                   [](mojom::AdType ad_type, bool success) {
-                     if (!success) {
-                       return BLOG(
-                           0, "Failed to purge " << ad_type << " ad events");
-                     }
+AdEventInfo AdEventFromMojomRow(const mojom::DBRowInfoPtr& mojom_db_row) {
+  CHECK(mojom_db_row);
 
-                     BLOG(3, "Successfully purged " << ad_type << " ad events");
-                   },
-                   ad_type));
+  AdEventInfo ad_event;
+
+  ad_event.placement_id = ColumnString(mojom_db_row, 0);
+  ad_event.type = ToMojomAdType(ColumnString(mojom_db_row, 1));
+  ad_event.confirmation_type =
+      ToMojomConfirmationType(ColumnString(mojom_db_row, 2));
+  ad_event.campaign_id = ColumnString(mojom_db_row, 3);
+  ad_event.creative_set_id = ColumnString(mojom_db_row, 4);
+  ad_event.creative_instance_id = ColumnString(mojom_db_row, 5);
+  ad_event.advertiser_id = ColumnString(mojom_db_row, 6);
+  ad_event.segment = ColumnString(mojom_db_row, 7);
+  ad_event.target_url = GURL(ColumnString(mojom_db_row, 8));
+  const base::Time created_at = ColumnTime(mojom_db_row, 9);
+  if (!created_at.is_null()) {
+    ad_event.created_at = created_at;
+  }
+
+  return ad_event;
 }
 
-void PurgeExpiredAdEvents() {
-  const table::AdEvents database_table;
-  database_table.PurgeExpired(base::BindOnce([](bool success) {
-    if (!success) {
-      return BLOG(0, "Failed to purge expired ad events");
-    }
-
-    BLOG(3, "Successfully purged expired ad events");
-  }));
-}
-
-void PurgeAllOrphanedAdEvents() {
-  const table::AdEvents database_table;
-  database_table.PurgeAllOrphaned(base::BindOnce([](bool success) {
-    if (!success) {
-      return BLOG(0, "Failed to purge all orphaned ad events");
-    }
-
-    BLOG(3, "Successfully purged all orphaned ad events");
-  }));
-}
-
-}  // namespace brave_ads::database
+}  // namespace brave_ads::database::table

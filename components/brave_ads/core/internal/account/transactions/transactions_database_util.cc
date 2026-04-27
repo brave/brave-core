@@ -1,0 +1,37 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_util.h"
+
+#include "base/functional/bind.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
+
+namespace brave_ads::database {
+
+void PurgeExpiredTransactions() {
+  const table::Transactions database_table;
+  database_table.PurgeExpired(base::BindOnce([](bool success) {
+    if (!success) {
+      return BLOG(0, "Failed to purge expired transactions");
+    }
+
+    BLOG(3, "Successfully purged expired transactions");
+  }));
+}
+
+void SaveTransactions(const TransactionList& transactions) {
+  table::Transactions database_table;
+  database_table.Save(transactions, base::BindOnce([](bool success) {
+                        if (!success) {
+                          return BLOG(0, "Failed to save transactions");
+                        }
+
+                        BLOG(3, "Successfully saved transactions");
+                      }));
+}
+
+}  // namespace brave_ads::database
