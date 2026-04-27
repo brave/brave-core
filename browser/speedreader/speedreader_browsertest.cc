@@ -652,8 +652,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ReloadContent) {
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
   EnableSpeedreaderAllowedForAllSites();
   NavigateToPageSynchronously(kTestPageReadable);
-  // Wait for distillation to complete before interacting with distilled content
-  WaitDistilled();
+  ASSERT_TRUE(WaitDistilled());
   auto* web_contents = ActiveWebContents();
 
   static constexpr char kCheckNoApiInMainWorld[] =

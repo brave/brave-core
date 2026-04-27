@@ -2720,6 +2720,7 @@
 # Chromium test flaky - disabled on Windows upstream (crbug.com/413259587). Race
 # condition between JavaScript cookie set via document.cookie and backend
 # SiteDataCountingHelper query. Brave has no modifications to this code.
+# Upstream flake rate 0.5% (LUCI Analysis, 30-day lookback); amplified by MSAN.
 -All/BrowsingDataRemoverBrowserTestP.BrowserContextDestructionVsCookieRemoval/*
 -All/BrowsingDataRemoverBrowserTestP.CookieIncognitoDeletion/*
 
@@ -3638,6 +3639,12 @@
 # Test times out during PDF extension host loading in SetUpOnMainThread.
 # https://github.com/brave/brave-browser/issues/54219
 -All/SaveToDriveEventDispatcherBrowserTest.GetFileMetadataStringForUploadInProgress/0
+
+# Chromium test: known upstream flake (3.7% flake rate over 30 days,
+# 114k+ verdicts). No Brave modifications in chrome/browser/save_to_drive/.
+# Test times out during QuitBrowsers in PostRunTestOnMainThread teardown.
+# https://github.com/brave/brave-browser/issues/54240
+-All/SaveToDriveEventDispatcherBrowserTest.Notify/0
 
 # Known upstream flake (8.2% flake rate over 30 days). Race condition between
 # autofill form classification and APC extraction: GetAutofillFieldData()
