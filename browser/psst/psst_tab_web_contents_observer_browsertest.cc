@@ -13,6 +13,7 @@
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
+#include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/buildflags/buildflags.h"
@@ -116,6 +117,23 @@ infobars::InfoBar* GetPsstInfobar(infobars::ContentInfoBarManager* manager) {
   return *infobar;
 }
 
+class DialogCloseObserver : public content::WebContentsObserver {
+ public:
+  explicit DialogCloseObserver(content::WebContents* web_contents)
+      : content::WebContentsObserver(web_contents) {}
+
+  void OnVisibilityChanged(content::Visibility visibility) override {
+    if (visibility == content::Visibility::HIDDEN) {
+      run_loop_.Quit();
+    }
+  }
+
+  void Wait() { run_loop_.Run(); }
+
+ private:
+  base::RunLoop run_loop_;
+};
+
 }  // namespace
 
 class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
@@ -159,6 +177,95 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     return chrome_test_utils::GetActiveWebContents(this);
   }
 
+  content::WebContents* WaitForAndGetDialogWebContents() {
+    auto start_time = base::TimeTicks::Now();
+    const auto timeout = base::Seconds(10);  // 10 second timeout
+
+    base::RunLoop run_loop;
+    base::RepeatingTimer timer;
+    content::WebContents* result = nullptr;
+    timer.Start(FROM_HERE, base::Milliseconds(100),
+                base::BindLambdaForTesting([&, start_time, timeout]() {
+                  if (base::TimeTicks::Now() - start_time >= timeout) {
+                    timer.Stop();
+                    run_loop.Quit();
+                    return;
+                  }
+
+                  std::vector<content::WebContents*> all_web_contents =
+                      content::GetAllWebContents();
+
+                  for (auto* wc : all_web_contents) {
+                    GURL url = wc->GetLastCommittedURL();
+                    // Look for chrome://psst URL
+                    if (url.SchemeIs("chrome") && url.host() == "psst") {
+                      timer.Stop();
+                      run_loop.Quit();
+                      result = wc;
+                      return;
+                    }
+                  }
+                }));
+
+    // Wait for the timer to find the dialog or timeout
+    run_loop.Run();
+    EXPECT_TRUE(result) << "Timeout waiting for dialog to appear";
+    return result;
+  }
+
+  bool AcceptModalDialog(content::WebContents* dialog_wc,
+                         const std::string& site_name,
+                         const std::vector<std::string>& perform_for_uids) {
+    auto* dialog_ui =
+        dialog_wc->GetWebUI()->GetController()->GetAs<BravePsstDialogUI>();
+    if (!dialog_ui) {
+      return false;
+    }
+
+    auto start_time = base::TimeTicks::Now();
+    const auto timeout = base::Seconds(10);  // 10 second timeout
+
+    base::RunLoop run_loop;
+    base::RepeatingTimer timer;
+
+    bool is_found = false;
+    timer.Start(FROM_HERE, base::Milliseconds(100),
+                base::BindLambdaForTesting([&, start_time, timeout]() {
+                  if (base::TimeTicks::Now() - start_time >= timeout) {
+                    timer.Stop();
+                    run_loop.Quit();
+                    return;
+                  }
+
+                  if (dialog_ui->psst_consent_handler_) {
+                    timer.Stop();
+                    run_loop.Quit();
+                    dialog_ui->psst_consent_handler_->PerformPrivacyTuning(
+                        perform_for_uids);
+                    is_found = true;
+                    return;
+                  }
+                }));
+
+    // Wait for the timer to find the dialog or timeout
+    run_loop.Run();
+    return is_found;
+  }
+
+  bool CloseModalDialog(content::WebContents* dialog_wc) {
+    auto* dialog_ui =
+        dialog_wc->GetWebUI()->GetController()->GetAs<BravePsstDialogUI>();
+    if (!dialog_ui) {
+      return false;
+    }
+    if (dialog_ui->psst_consent_handler_) {
+      dialog_ui->psst_consent_handler_->CloseDialog();
+      return true;
+    }
+
+    return false;
+  }
+
  protected:
   base::ScopedTempDir component_dir_;
   net::EmbeddedTestServer https_server_;
@@ -187,7 +294,16 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
             infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
   confirm_delegate->Accept();
 
+  auto* dialog_wc = WaitForAndGetDialogWebContents();
+  ASSERT_TRUE(dialog_wc);
+
+  const std::vector<std::string> perform_uids = {"1", "2"};
+  // Accept the consent dialog to continue the flow and apply PSST settings
+  ASSERT_TRUE(AcceptModalDialog(
+      dialog_wc, url::Origin::Create(url).GetURL().spec(), perform_uids));
+
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+  ASSERT_TRUE(CloseModalDialog(dialog_wc));
   EXPECT_TRUE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
 }
 

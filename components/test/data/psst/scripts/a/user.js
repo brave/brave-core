@@ -12,8 +12,8 @@
       "user_id": getUserId(),
       "site_name": "site name",
       "tasks": [
-        {"url": "https://a.test/settings/privacy_setting_1", "description": "privacy setting #1"},
-        {"url": "https://a.test/settings/privacy_setting_2", "description": "privacy setting #2"},
+        {"uid": "1", "url": "https://a.test/settings/privacy_setting_1", "description": "privacy setting #1"},
+        {"uid": "2", "url": "https://a.test/settings/privacy_setting_2", "description": "privacy setting #2"},
       ]
   }
 })();

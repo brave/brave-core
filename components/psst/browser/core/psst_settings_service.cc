@@ -61,11 +61,12 @@ std::optional<PsstWebsiteSettings> PsstSettingsService::GetPsstWebsiteSettings(
   return PsstWebsiteSettings::FromValue(*user_id_metadata_dict);
 }
 
-void PsstSettingsService::SetPsstWebsiteSettings(const url::Origin& origin,
-                                                 ConsentStatus consent_status,
-                                                 int script_version,
-                                                 std::string_view user_id,
-                                                 base::ListValue uids_to_perform) {
+void PsstSettingsService::SetPsstWebsiteSettings(
+    const url::Origin& origin,
+    ConsentStatus consent_status,
+    int script_version,
+    std::string_view user_id,
+    base::ListValue uids_to_perform) {
   auto psst_metadata = PsstWebsiteSettings::FromValue(
       base::DictValue()
           .Set(kUserIdSettingsKey, user_id)

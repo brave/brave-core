@@ -70,6 +70,7 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
 
   PsstUiDelegate* GetPsstUiDelegate() const;
   base::WeakPtr<PsstTabWebContentsObserver> AsWeakPtr();
+
  private:
   friend class PsstTabWebContentsObserverUnitTestBase;
 

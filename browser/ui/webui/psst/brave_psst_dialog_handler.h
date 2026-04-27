@@ -42,7 +42,8 @@ class BravePsstDialogHandler : public psst::mojom::PsstConsentHelper,
 
  private:
   friend class PsstTabWebContentsObserverBrowserTest;
-  void PerformPrivacyTuning(const std::vector<std::string>& perform_for_uids) override;
+  void PerformPrivacyTuning(
+      const std::vector<std::string>& perform_for_uids) override;
   void ReportFailedContent() override;
   void CloseDialog() override;
 
