@@ -33,8 +33,8 @@ class FakeChromiumSrc(FakeChromiumRepo):
         """Set up the fake repo and apply patches."""
         self.brave_patch.start()
         self.chromium_patch.start()
-        self.repository_chromium_patch.start(
-        )  # Start the global patch for chromium
+        # Start the global patch for chromium
+        self.repository_chromium_patch.start()
         self.repository_brave_patch.start()  # Start the global patch for brave
 
         # Re-initialize the global instances in the repository module
@@ -49,8 +49,8 @@ class FakeChromiumSrc(FakeChromiumRepo):
         """Clean up the fake repo, patches, and restore the working directory"""
         self.brave_patch.stop()
         self.chromium_patch.stop()
-        self.repository_chromium_patch.stop(
-        )  # Stop the global patch for chromium
+        # Stop the global patch for chromium
+        self.repository_chromium_patch.stop()
         self.repository_brave_patch.stop()  # Stop the global patch for brave
         if self.original_cwd:
             os.chdir(self.original_cwd)

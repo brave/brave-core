@@ -6,6 +6,7 @@
 from pathlib import Path
 from typing import List, Dict
 import json
+import os
 import shutil
 import subprocess
 import tempfile
@@ -379,4 +380,18 @@ class FakeChromiumRepo:
 
     def cleanup(self) -> None:
         """Cleans up the temporary directory used for the fake repository."""
-        self.temp_dir.cleanup()
+        try:
+            self.temp_dir.cleanup()
+        except OSError:
+            print(f'Failed to clean up temp dir: {self.temp_dir.name}')
+            for dirpath, dirnames, filenames in os.walk(self.temp_dir.name):
+                for name in dirnames + filenames:
+                    full = os.path.join(dirpath, name)
+                    try:
+                        stat = os.stat(full)
+                        writable = os.access(full, os.W_OK)
+                        print(f'  {oct(stat.st_mode)} '
+                              f'{"rw" if writable else "ro"} {full}')
+                    except OSError as stat_err:
+                        print(f'  <stat error: {stat_err}> {full}')
+            raise
