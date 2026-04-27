@@ -83,7 +83,9 @@ export async function createTrezorBridge(
       resolve()
     }
     element.onerror = () => {
-      reject(new Error(`Failed to load Trezor bridge iframe: ${bridgeFrameUrl}`))
+      reject(
+        new Error(`Failed to load Trezor bridge iframe: ${bridgeFrameUrl}`),
+      )
     }
 
     document.body.appendChild(element)
