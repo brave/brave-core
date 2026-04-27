@@ -20,8 +20,7 @@ int LayoutProvider::GetCornerRadiusMetric(ShapeContextTokensOverride id) const {
     case ShapeContextTokensOverride::kOmniboxExpandedRadius:
       return 4;
     case ShapeContextTokensOverride::kRoundedCornersBorderRadius:
-      // Matches Brave Mac window / content inner rounding (see former
-      // BraveLayoutProviderMac values).
+      // Matches Brave Mac window / content inner rounding.
       return 6;
     case ShapeContextTokensOverride::kRoundedCornersBorderRadiusAtWindowCorner:
 #if BUILDFLAG(IS_MAC)

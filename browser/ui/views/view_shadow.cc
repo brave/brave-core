@@ -81,9 +81,7 @@ ViewShadow::~ViewShadow() {
 
 void ViewShadow::SetCornerRadii(const gfx::RoundedCornersF& corner_radii) {
   corner_radii_ = corner_radii;
-  if (shadow_layer()) {
-    shadow_layer()->SchedulePaint(gfx::Rect(shadow_layer()->size()));
-  }
+  shadow_layer()->SchedulePaint(gfx::Rect(shadow_layer()->size()));
 }
 
 void ViewShadow::SetInsets(const gfx::Insets& insets) {
