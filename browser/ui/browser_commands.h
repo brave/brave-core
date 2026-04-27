@@ -180,6 +180,9 @@ void OpenContainerMenuOnPageActionView(BrowserWindowInterface* browser,
                                        ::actions::ActionItem* item);
 #endif
 
+// Fullscreen address bar feature
+void FocusLocationBarInFullscreen(Browser* browser);
+
 }  // namespace brave
 
 #endif  // BRAVE_BROWSER_UI_BROWSER_COMMANDS_H_
