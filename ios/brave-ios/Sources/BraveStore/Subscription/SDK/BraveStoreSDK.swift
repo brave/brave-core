@@ -366,12 +366,14 @@ public class BraveStoreSDK: AppStoreSDK {
   /// - Throws: An exception if purchasing fails for any reason.
   ///           Purchase may be successful with the AppStore, but fail with SkusSDK.
   @MainActor
-  public func purchase(product: BraveStoreProduct) async throws {
+  @discardableResult
+  public func purchase(product: BraveStoreProduct) async throws -> Bool {
     // Handle non-consumable purchases (Origin)
     if product == .originPurchase {
       if let nonConsumableProduct = await nonConsumablePurchase(for: product) {
         if try await super.purchase(nonConsumableProduct) != nil {
           Logger.module.info("[BraveStoreSDK] - Product Purchase Successful")
+          return true
         }
       }
     } else {
@@ -379,9 +381,11 @@ public class BraveStoreSDK: AppStoreSDK {
       if let subscription = await subscription(for: product) {
         if try await super.purchase(subscription) != nil {
           Logger.module.info("[BraveStoreSDK] - Product Purchase Successful")
+          return true
         }
       }
     }
+    return false
   }
 
   /// Retrieves a non-consumable product from the loaded products

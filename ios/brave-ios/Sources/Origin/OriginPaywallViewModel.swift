@@ -34,8 +34,9 @@ public class OriginPaywallViewModel {
     defer { isStoreOperationActive = false }
 
     do {
-      try await store.purchase(product: .originPurchase)
-      return true
+      if try await store.purchase(product: .originPurchase) {
+        return true
+      }
     } catch {
       isErrorPresented = true
     }
