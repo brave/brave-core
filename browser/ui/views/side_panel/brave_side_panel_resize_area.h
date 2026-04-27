@@ -28,7 +28,7 @@ class BraveSidePanelResizeArea : public SidePanelResizeArea {
   // screen (right-aligned LTR or left-aligned RTL), which puts the resize
   // strip at the left edge so it faces the web content.
   gfx::Rect GetNoBorderResizeBounds(bool panel_on_right,
-                                    const gfx::Rect& parent_bounds) const;
+                                    const gfx::Rect& panel_bounds) const;
 
   // views::SidePanelResizeArea:
   void Layout(PassKey) override;

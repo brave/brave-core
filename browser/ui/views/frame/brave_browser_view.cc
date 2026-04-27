@@ -1081,7 +1081,7 @@ void BraveBrowserView::UpdateVerticalTabStripBorder() {
 void BraveBrowserView::UpdateSidebarBorder() {
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
   if (contents_height_side_panel_) {
-    contents_height_side_panel_->SetBorderEnabled(
+    contents_height_side_panel_->SetRoundedBorderEnabled(
         ShouldUseBraveWebViewRoundedCornersForContents(browser_));
   }
 #else

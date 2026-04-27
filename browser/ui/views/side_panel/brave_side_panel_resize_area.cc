@@ -15,23 +15,20 @@ BraveSidePanelResizeArea::~BraveSidePanelResizeArea() = default;
 
 gfx::Rect BraveSidePanelResizeArea::GetNoBorderResizeBounds(
     bool panel_on_right,
-    const gfx::Rect& parent_bounds) const {
+    const gfx::Rect& panel_bounds) const {
   if (panel_on_right) {
     // Panel is on the right → resize strip sits at the left (inner) edge.
-    return gfx::Rect(parent_bounds.x(), parent_bounds.y(),
-                     kNoBorderResizeAreaWidth, parent_bounds.height());
+    return gfx::Rect(panel_bounds.x(), panel_bounds.y(),
+                     kNoBorderResizeAreaWidth, panel_bounds.height());
   }
   // Panel is on the left → resize strip sits at the right (inner) edge.
-  return gfx::Rect(parent_bounds.right() - kNoBorderResizeAreaWidth,
-                   parent_bounds.y(), kNoBorderResizeAreaWidth,
-                   parent_bounds.height());
+  return gfx::Rect(panel_bounds.right() - kNoBorderResizeAreaWidth,
+                   panel_bounds.y(), kNoBorderResizeAreaWidth,
+                   panel_bounds.height());
 }
 
 void BraveSidePanelResizeArea::Layout(PassKey) {
-  gfx::Rect local_bounds = parent()->GetLocalBounds();
-  gfx::Rect contents_bounds = parent()->GetContentsBounds();
-
-  if (local_bounds != contents_bounds) {
+  if (!side_panel_->GetInsets().IsEmpty()) {
     // Parent has a border: resize area sits in the border gap between the
     // panel edge and the content area. Delegate entirely to upstream.
     LayoutSuperclass<SidePanelResizeArea>(this);
@@ -44,7 +41,8 @@ void BraveSidePanelResizeArea::Layout(PassKey) {
   const bool panel_on_right =
       (side_panel_->IsRightAligned() && !base::i18n::IsRTL()) ||
       (!side_panel_->IsRightAligned() && base::i18n::IsRTL());
-  SetBoundsRect(GetNoBorderResizeBounds(panel_on_right, local_bounds));
+  SetBoundsRect(
+      GetNoBorderResizeBounds(panel_on_right, side_panel_->GetLocalBounds()));
 }
 
 BEGIN_METADATA(BraveSidePanelResizeArea)

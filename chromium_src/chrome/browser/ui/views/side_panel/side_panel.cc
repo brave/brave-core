@@ -13,43 +13,28 @@
 // .cc pulls it in.
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 
-// Rename the upstream Open/Close implementation so we can provide a thin
-// wrapper that reapplies border state after UpdateVisibility() runs.
-// UpdateVisibility() unconditionally re-shows border_view_ whenever the panel
-// opens, which would undo SetBorderEnabled(false).
-#define Open Open_ChromiumImpl
-#define Close Close_ChromiumImpl
-
 // Rename the upstream RemoveHeaderView implementation so we can provide
-// a thin wrapper that reapplies the border state after it runs.
-// Upstream RemoveHeaderView() sets Border always but we want to preserve
-// the no-border state if it is set.
-#define RemoveHeaderView RemoveHeaderView_ChromiumImpl
+// our own method. Upstream RemoveHeaderView() resets Border always but we
+// want to preserve the no-border state. As we don't set any header to all
+// panels, making it empty would not add any side-effect.
+#define RemoveHeaderView RemoveHeaderView_UnUsed
 
 #include <chrome/browser/ui/views/side_panel/side_panel.cc>
 
 #undef RemoveHeaderView
-#undef Close
-#undef Open
 
 #endif  // BUILDFLAG(ENABLE_SIDEBAR_V2)
 
 #if BUILDFLAG(ENABLE_SIDEBAR_V2)
 
-void SidePanel::Open(bool animated) {
-  Open_ChromiumImpl(animated);
+void SidePanel::VisibilityChanged(View* starting_from, bool is_visible) {
+  AccessiblePaneView::VisibilityChanged(starting_from, is_visible);
 
-  // UpdateVisibility() unconditionally sets border_view_ visible when opening;
-  // restore desired state.
-  UpdateBorder();
-}
-
-void SidePanel::Close(bool animated) {
-  Close_ChromiumImpl(animated);
-
-  // UpdateVisibility() unconditionally sets border_view_ visible when closing;
-  // restore desired state.
-  UpdateBorder();
+  // Whenever open/closes, upstream resets border style.
+  // Set our border style again.
+  if (GetVisible()) {
+    UpdateBorder();
+  }
 }
 
 void SidePanel::SetResizeArea(std::unique_ptr<views::View> resize_area) {
@@ -62,12 +47,12 @@ void SidePanel::SetResizeArea(std::unique_ptr<views::View> resize_area) {
   resize_area_->InsertBeforeInFocusList(content_parent_view_);
 }
 
-void SidePanel::SetBorderEnabled(bool enabled) {
-  if (border_enabled_ == enabled) {
+void SidePanel::SetRoundedBorderEnabled(bool enabled) {
+  if (rounded_border_enabled_ == enabled) {
     return;
   }
 
-  border_enabled_ = enabled;
+  rounded_border_enabled_ = enabled;
 
   if (GetVisible()) {
     UpdateBorder();
@@ -75,12 +60,11 @@ void SidePanel::SetBorderEnabled(bool enabled) {
 }
 
 void SidePanel::UpdateBorder() {
-  // No border or not initialized yet.
-  if (!border_view_ || !border_view_->layer()) {
+  if (!border_view_) {
     return;
   }
 
-  if (border_enabled_) {
+  if (rounded_border_enabled_) {
     // Upstream GetBorderInsets() has a negative top to overlap the toolbar;
     // Brave doesn't need that overlap.
     SetBorder(views::CreateEmptyBorder(GetBorderInsets().set_top(0)));
@@ -88,11 +72,11 @@ void SidePanel::UpdateBorder() {
     SetBorder(nullptr);
   }
 
-  border_view_->SetVisible(border_enabled_);
+  border_view_->SetVisible(rounded_border_enabled_);
 }
 
 void SidePanel::RemoveHeaderView() {
-  // Do nothing here as we don't set header view.
+  // See above method overring's comment why it's empty.
 }
 
 #endif  // BUILDFLAG(ENABLE_SIDEBAR_V2)

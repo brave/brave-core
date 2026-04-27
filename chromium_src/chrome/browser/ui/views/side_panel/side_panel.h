@@ -18,18 +18,17 @@
 // Need SetResizeArea() to replace resize area to customize its position, and
 // to support toggling the border at runtime (disabling it makes content fill
 // the panel).
-#define GetContentParentView(...)                               \
-  GetContentParentView(__VA_ARGS__);                            \
-  void SetResizeArea(std::unique_ptr<views::View> resize_area); \
-  void SetBorderEnabled(bool enabled);                          \
-  void UpdateBorder();                                          \
-  void Open_ChromiumImpl(bool animated);                        \
-  void Close_ChromiumImpl(bool animated);                       \
-  void RemoveHeaderView_ChromiumImpl()
+#define GetContentParentView(...)                                        \
+  GetContentParentView(__VA_ARGS__);                                     \
+  void SetResizeArea(std::unique_ptr<views::View> resize_area);          \
+  void SetRoundedBorderEnabled(bool enabled);                            \
+  void UpdateBorder();                                                   \
+  void VisibilityChanged(View* starting_from, bool is_visible) override; \
+  void RemoveHeaderView_UnUsed()
 
 #define did_resize_    \
   did_resize_ = false; \
-  bool border_enabled_
+  bool rounded_border_enabled_
 
 #include <chrome/browser/ui/views/side_panel/side_panel.h>  // IWYU pragma: export
 

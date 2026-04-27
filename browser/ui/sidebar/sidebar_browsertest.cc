@@ -2202,7 +2202,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
   // --- Border case (rounded corners ON) ---
   prefs->SetBoolean(kWebViewRoundedCorners, true);
   RunScheduledLayouts();
-  ASSERT_NE(side_panel->GetLocalBounds(), side_panel->GetContentsBounds());
+  EXPECT_FALSE(side_panel->GetInsets().IsEmpty());
 
   // In the bordered case the resize strip sits in the gap between the panel
   // edge and the content, at the left edge (panel is on the right in LTR).
@@ -2216,7 +2216,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
   // --- No-border case (rounded corners OFF) ---
   prefs->SetBoolean(kWebViewRoundedCorners, false);
   RunScheduledLayouts();
-  ASSERT_EQ(side_panel->GetLocalBounds(), side_panel->GetContentsBounds());
+  EXPECT_TRUE(side_panel->GetInsets().IsEmpty());
 
   const gfx::Rect no_border_bounds = resize_area->bounds();
   EXPECT_EQ(no_border_bounds.origin(),
