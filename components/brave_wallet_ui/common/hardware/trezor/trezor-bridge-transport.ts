@@ -71,12 +71,25 @@ export class TrezorBridgeTransport extends MessagingTransport {
   }
 }
 
-export function createTrezorBridge(bridgeFrameUrl: string) {
+export async function createTrezorBridge(
+  bridgeFrameUrl: string,
+): Promise<HTMLIFrameElement> {
   let element = document.createElement('iframe')
   element.id = crypto.randomUUID()
-  element.src = bridgeFrameUrl
   element.style.display = 'none'
-  document.body.appendChild(element)
+
+  await new Promise<void>((resolve, reject) => {
+    element.onload = () => {
+      resolve()
+    }
+    element.onerror = () => {
+      reject(new Error(`Failed to load Trezor bridge iframe: ${bridgeFrameUrl}`))
+    }
+
+    document.body.appendChild(element)
+    element.src = bridgeFrameUrl
+  })
+
   return element
 }
 

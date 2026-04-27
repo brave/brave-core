@@ -59,6 +59,7 @@ import {
   signSolTransactionWithHardwareKeyring,
   signLedgerBitcoinTransaction,
 } from '../../async/hardware'
+import { getTrezorHardwareKeyring } from '../../api/hardware_keyrings'
 import { getLocale } from '../../../../common/locale'
 import { bigIntToUint128 } from '../../../utils/polkadot-utils'
 
@@ -1307,10 +1308,12 @@ export const transactionEndpoints = ({
           } else if (
             hardwareAccount.vendor === BraveWallet.HardwareVendor.kTrezor
           ) {
+            const trezorHardwareKeyring = await getTrezorHardwareKeyring()
             const result = await signTrezorTransaction(
               apiProxy,
               hardwareAccount.path,
               txInfo,
+              trezorHardwareKeyring,
             )
             if (result.success) {
               store.dispatch(
