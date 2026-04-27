@@ -76,7 +76,7 @@ void SidePanel::UpdateBorder() {
 }
 
 void SidePanel::RemoveHeaderView() {
-  // See above method overring's comment why it's empty.
+  // See above method overriding's comment why it's empty.
 }
 
 #endif  // BUILDFLAG(ENABLE_SIDEBAR_V2)
