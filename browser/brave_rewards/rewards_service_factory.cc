@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
@@ -97,10 +98,10 @@ RewardsServiceFactory::BuildServiceInstanceForBrowserContext(
           profile->GetPrefs(), profile->GetPath(),
           FaviconServiceFactory::GetForProfile(
               profile, ServiceAccessType::EXPLICIT_ACCESS),
-          request_image_callback, cancel_request_image_callback,
-          profile->GetDefaultStoragePartition()
+          g_browser_process->os_crypt_async(), request_image_callback,
+          cancel_request_image_callback, profile->GetDefaultStoragePartition()
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-              ,
+                                             ,
           brave_wallet::BraveWalletServiceFactory::GetServiceForContext(context)
 #endif
       );

@@ -15,7 +15,6 @@
 #include "url/gurl.h"
 
 class Browser;
-class Profile;
 
 namespace brave_rewards::test_util {
 
@@ -28,8 +27,6 @@ GURL GetRewardsInternalsUrl();
 GURL GetNewTabUrl();
 
 void StartProcess(RewardsServiceImpl* rewards_service);
-
-void StartProcessWithConnectedUser(Profile* profile);
 
 GURL GetUrl(net::EmbeddedTestServer* https_server,
             const std::string& publisher_key,
@@ -58,8 +55,6 @@ void CreateRewardsWallet(RewardsServiceImpl* rewards_service,
                          const std::string& country = "US");
 
 void SetOnboardingBypassed(Browser* browser, bool bypassed = true);
-
-std::optional<std::string> EncryptPrefString(const std::string& value);
 
 }  // namespace brave_rewards::test_util
 

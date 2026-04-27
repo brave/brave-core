@@ -52,9 +52,14 @@ class SequencedTaskRunner;
 namespace favicon {
 class FaviconService;
 }  // namespace favicon
+
 namespace network {
 class SimpleURLLoader;
 }  // namespace network
+
+namespace os_crypt_async {
+class OSCryptAsync;
+}  // namespace os_crypt_async
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 namespace brave_wallet {
@@ -89,6 +94,7 @@ class RewardsServiceImpl final : public RewardsService,
   RewardsServiceImpl(PrefService* prefs,
                      const base::FilePath& profile_path,
                      favicon::FaviconService* favicon_service,
+                     os_crypt_async::OSCryptAsync* os_crypt,
                      RequestImageCallback request_image_callback,
                      CancelImageRequestCallback cancel_image_request_callback,
                      content::StoragePartition* storage_partition
@@ -450,6 +456,7 @@ class RewardsServiceImpl final : public RewardsService,
 #endif
   raw_ptr<PrefService> prefs_;  // NOT OWNED
   raw_ptr<favicon::FaviconService, DanglingUntriaged> favicon_service_;
+  raw_ptr<os_crypt_async::OSCryptAsync> os_crypt_;
   const RequestImageCallback request_image_callback_;
   const CancelImageRequestCallback cancel_image_request_callback_;
   raw_ptr<content::StoragePartition> storage_partition_;  // NOT OWNED

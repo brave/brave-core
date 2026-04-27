@@ -56,7 +56,7 @@
 #include "components/country_codes/country_codes.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/grit/brave_components_strings.h"
-#include "components/os_crypt/sync/os_crypt.h"
+#include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/prefs/pref_service.h"
 #include "components/regional_capabilities/regional_capabilities_prefs.h"
 #include "content/public/browser/service_process_host.h"
@@ -207,6 +207,7 @@ RewardsServiceImpl::RewardsServiceImpl(
     PrefService* prefs,
     const base::FilePath& profile_path,
     favicon::FaviconService* favicon_service,
+    os_crypt_async::OSCryptAsync* os_crypt,
     RequestImageCallback request_image_callback,
     CancelImageRequestCallback cancel_image_request_callback,
     content::StoragePartition* storage_partition
@@ -217,6 +218,7 @@ RewardsServiceImpl::RewardsServiceImpl(
     )
     : prefs_(prefs),
       favicon_service_(favicon_service),
+      os_crypt_(os_crypt),
       request_image_callback_(request_image_callback),
       cancel_image_request_callback_(cancel_image_request_callback),
       storage_partition_(storage_partition),
@@ -2012,22 +2014,36 @@ void RewardsServiceImpl::GetEventLogs(GetEventLogsCallback callback) {
 
 void RewardsServiceImpl::EncryptString(const std::string& value,
                                        EncryptStringCallback callback) {
-  std::string encrypted;
-  if (OSCrypt::EncryptString(value, &encrypted)) {
-    return std::move(callback).Run(std::move(encrypted));
-  }
+  auto with_encryptor = [](base::WeakPtr<RewardsServiceImpl> self,
+                           std::string value, EncryptStringCallback callback,
+                           os_crypt_async::Encryptor encryptor) {
+    if (!self) {
+      return;
+    }
+    std::optional<std::string> encrypted;
+    if (auto result = encryptor.EncryptString(value)) {
+      encrypted = std::string(base::as_string_view(result.value()));
+    }
+    std::move(callback).Run(std::move(encrypted));
+  };
 
-  std::move(callback).Run(std::nullopt);
+  os_crypt_->GetInstance(
+      base::BindOnce(with_encryptor, AsWeakPtr(), value, std::move(callback)));
 }
 
 void RewardsServiceImpl::DecryptString(const std::string& value,
                                        DecryptStringCallback callback) {
-  std::string decrypted;
-  if (OSCrypt::DecryptString(value, &decrypted)) {
-    return std::move(callback).Run(std::move(decrypted));
-  }
+  auto with_encryptor = [](base::WeakPtr<RewardsServiceImpl> self,
+                           std::string value, DecryptStringCallback callback,
+                           os_crypt_async::Encryptor encryptor) {
+    if (!self) {
+      return;
+    }
+    std::move(callback).Run(encryptor.DecryptData(base::as_byte_span(value)));
+  };
 
-  std::move(callback).Run(std::nullopt);
+  os_crypt_->GetInstance(
+      base::BindOnce(with_encryptor, AsWeakPtr(), value, std::move(callback)));
 }
 
 void RewardsServiceImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {

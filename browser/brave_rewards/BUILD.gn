@@ -46,6 +46,7 @@ source_set("brave_rewards_impl") {
     "//brave/components/brave_rewards/core:features",
     "//brave/components/brave_rewards/resources/creator_detection:creator_detection_generated_grit",
     "//brave/components/brave_wallet/common/buildflags",
+    "//chrome/browser:browser_process",
     "//chrome/browser/bitmap_fetcher",
     "//chrome/browser/favicon",
     "//chrome/browser/profiles",

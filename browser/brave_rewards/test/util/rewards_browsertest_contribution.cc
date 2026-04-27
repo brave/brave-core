@@ -365,25 +365,6 @@ mojom::Result RewardsBrowserTestContribution::GetACStatus() {
   return ac_reconcile_status_;
 }
 
-void RewardsBrowserTestContribution::StartProcessWithBalance(double balance) {
-  external_balance_ = balance;
-
-  test_util::StartProcessWithConnectedUser(browser_->profile());
-
-  {
-    // Verify that the balance is fetched correctly.
-    double user_balance = 0;
-    base::RunLoop run_loop;
-    rewards_service_->FetchBalance(
-        base::BindLambdaForTesting([&](mojom::BalancePtr balance) {
-          user_balance = balance->total;
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    ASSERT_EQ(user_balance, external_balance_);
-  }
-}
-
 double RewardsBrowserTestContribution::GetReconcileTipTotal() {
   return reconciled_tip_total_;
 }
