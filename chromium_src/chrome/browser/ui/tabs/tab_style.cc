@@ -47,6 +47,9 @@ class BraveTabStyle : public TabStyle {
   }
 
   int GetPinnedWidth(const bool is_split) const override {
+    if (!tabs::HorizontalTabsUpdateEnabled()) {
+      return TabStyle::GetPinnedWidth(is_split);
+    }
     // We can ignore |is_split| because we're always using same width.
     return tabs::GetHorizontalTabHeight() + tabs::kHorizontalTabInset * 2;
   }

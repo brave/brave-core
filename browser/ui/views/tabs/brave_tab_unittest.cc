@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
@@ -172,6 +173,48 @@ TEST_F(BraveTabTest, TabStyleTest) {
             tab_style->GetStandardWidth(/*is_split*/ false));
   EXPECT_EQ(tab_style->GetMinimumActiveWidth(/*is_split*/ true),
             tab_style->GetMinimumActiveWidth(/*is_split*/ false));
+}
+
+// Regression test for https://github.com/brave/brave-browser/issues/54972.
+//
+// Before the fix, BraveTabStyle::GetPinnedWidth() returned Brave's compact
+// 38 DIP value regardless of the kBraveHorizontalTabsUpdate flag state.
+// Chromium's classic painting code (TabStyleViewsImpl::GetPath) insets the
+// drawn path by GetBottomCornerRadius() (12 DIP) on each side, so a 38 DIP
+// pinned tab was rendered as a ~14 DIP sliver and visually unreadable when
+// the Updated horizontal tabs design flag was disabled.
+//
+// The fix delegates GetPinnedWidth to the upstream TabStyle implementation
+// when kBraveHorizontalTabsUpdate is disabled, producing a tab wide enough
+// to be paintable by upstream's classic path logic.
+TEST_F(BraveTabTest, PinnedTabWidthDelegatesUpstreamWhenHorizontalUpdateOff) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndDisableFeature(tabs::kBraveHorizontalTabsUpdate);
+
+  const auto* tab_style = TabStyle::Get();
+
+  // When the flag is off, GetContentsInsets() also delegates to upstream, so
+  // the pinned width matches the upstream formula:
+  //   kTabPinnedContentWidth + GetContentsInsets().left() +
+  //                            GetContentsInsets().right()
+  // (see TabStyle::GetPinnedWidth() in chrome/browser/ui/tabs/tab_style.cc).
+  constexpr int kTabPinnedContentWidth = 24;
+  const auto insets = tab_style->GetContentsInsets();
+  const int expected_unsplit =
+      kTabPinnedContentWidth + insets.left() + insets.right();
+  EXPECT_EQ(expected_unsplit, tab_style->GetPinnedWidth(/*is_split=*/false));
+
+  // Split tabs trim half of the tab overlap, also matching upstream.
+  EXPECT_EQ(expected_unsplit - tab_style->GetTabOverlap() / 2,
+            tab_style->GetPinnedWidth(/*is_split=*/true));
+
+  // Sanity check: the painted region must fit a favicon (16 DIP) after the
+  // path is inset by GetBottomCornerRadius() on each side. This is the
+  // property that was broken before the fix.
+  constexpr int kFaviconSize = 16;
+  EXPECT_GE(tab_style->GetPinnedWidth(/*is_split=*/false) -
+                2 * tab_style->GetBottomCornerRadius(),
+            kFaviconSize);
 }
 
 TEST_F(BraveTabTest, ShouldAlwaysHideTabCloseButton) {
