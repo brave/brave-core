@@ -5,6 +5,7 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
+import("//brave/components/psst/buildflags/buildflags.gni")
 
 assert(is_win || is_mac || is_linux || is_chromeos || is_android)
 
@@ -33,11 +34,8 @@ if (!is_android) {
 
     deps = [
       ":tabs_public",
-      "//brave/browser/psst",
       "//brave/browser/ui/side_panel",
       "//brave/browser/ui/views/page_action",
-      "//brave/components/psst/browser/content",
-      "//brave/components/psst/common",
       "//chrome/browser/content_settings:content_settings_factory",
       "//chrome/browser/profiles",
       "//chrome/browser/ui/side_panel:side_panel_views_dependent",
@@ -53,6 +51,14 @@ if (!is_android) {
         "//brave/browser/containers",
         "//brave/components/containers/core/browser",
         "//brave/components/containers/core/common:features",
+      ]
+    }
+
+    if (enable_psst) {
+      deps += [
+        "//brave/browser/psst",
+        "//brave/components/psst/browser/content",
+        "//brave/components/psst/common",
       ]
     }
   }
