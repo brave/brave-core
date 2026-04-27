@@ -7,6 +7,7 @@
 
 #include "base/containers/map_util.h"
 #include "brave/browser/policy/brave_simple_policy_map.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/constants/pref_names.h"
@@ -15,7 +16,12 @@
 #include "chrome/test/base/testing_profile_manager.h"
 #include "components/policy/policy_constants.h"
 #include "content/public/test/browser_task_environment.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/pref_names.h"
@@ -79,6 +85,18 @@ TEST(BraveOriginServiceFactoryTest,
   EXPECT_EQ(rewards_info->user_settable, false);
   EXPECT_EQ(rewards_info->brave_origin_pref_key,
             brave_rewards::prefs::kDisabledByPolicy);
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  // Test that Brave Ads enabled policy is correctly built (profile-level)
+  const auto* brave_ads_origin_policy = base::FindOrNull(
+      profile_policy_definitions, policy::key::kBraveAdsEnabled);
+  ASSERT_TRUE(brave_ads_origin_policy);
+  EXPECT_THAT(*brave_ads_origin_policy,
+              ::testing::FieldsAre(brave_ads::prefs::kEnabledByPolicy,
+                                   /*default_value=*/false,
+                                   /*user_settable=*/false,
+                                   brave_ads::prefs::kEnabledByPolicy));
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
   // Test that browser-level policies are NOT in profile definitions
   EXPECT_FALSE(
