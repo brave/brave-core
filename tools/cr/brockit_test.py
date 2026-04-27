@@ -4,10 +4,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import os
 import unittest
 from pathlib import Path
 import shutil
 from datetime import datetime
+from unittest.mock import MagicMock, patch
 
 import brockit
 from brockit import ApplyPatchesRecord

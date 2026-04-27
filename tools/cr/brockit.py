@@ -86,7 +86,7 @@ The following steps will take place:
    expected to provide separate commits for deleted patches, explaining the
    reason.
 6. Having resolved all conflicts. Restart *🚀Brockit!* with `--continue` and
-   other similar arguments you may want to keep (e.g. `--vscode`).
+   other similar arguments you may want to keep.
 7. *🚀Brockit!* will pick up from where it stopped, possibly running
   `npm run update_patches`, staging all patches, and committing the under
   *Conflict-resolved patches from Chromium [from] to [to].*
@@ -218,6 +218,7 @@ from repository import Repository, CHROMIUM_SRC_PATH
 from terminal import console, terminal
 import versioning
 from versioning import Version
+from vscode import VsCodeIpcConnection
 
 # This file is updated whenever the version number is updated in package.json
 PINSLIST_TIMESTAMP_FILE = (
@@ -939,8 +940,7 @@ class Upgrade(Versioned):
     def status_message(self):
         return "Upgrading Chromium base version"
 
-    def apply_patches_3way(self,
-                           launch_vscode: bool = False) -> ApplyPatchesRecord:
+    def apply_patches_3way(self) -> ApplyPatchesRecord:
         """Applies patches that have failed using the --3way option to allow for
         manual conflict resolution.
 
@@ -949,6 +949,9 @@ class Upgrade(Versioned):
         are waiting for conflict resolution.
 
         A list of the patches applied will be produced as well.
+
+        When running brockit in a vscode terminal, this method will open any
+        files that need attention in the editor session.
         """
         # A dictionary that holds a list for all patch files affected, by
         # repository.
@@ -996,7 +999,7 @@ class Upgrade(Versioned):
                     for patch in patch_list
                 ]))
 
-        vscode_args = ['code']
+        vscode_files = []
         for repo, patches in patch_files.items():
             for patch in patches:
                 apply_result = patch.apply()
@@ -1046,7 +1049,7 @@ class Upgrade(Versioned):
                         console.log(
                             Padding(f'✘ {patch.source()} [red bold](deleted)',
                                     (0, 4)))
-                        vscode_args.append(patch.path)
+                        vscode_files.append(patch.path)
                     elif status.status == 'R':
                         renamed_to = patch.repository.from_brave(
                         ) / status.renamed_to
@@ -1055,7 +1058,7 @@ class Upgrade(Versioned):
                                 f'✘ {patch.source_from_brave()}\n    '
                                 f'([yellow bold]renamed to[/] {renamed_to})',
                                 (0, 4)))
-                        vscode_args += [patch.path, renamed_to]
+                        vscode_files += [patch.path, renamed_to]
 
             # Printing the commmit message for the grouped changes.
             console.log(
@@ -1071,22 +1074,16 @@ class Upgrade(Versioned):
             for patch in broken_patches:
                 source = patch.source_from_brave()
                 console.log(Padding(f'✘ {patch.path} ➜ {source}', (0, 4)))
-                vscode_args += [patch.path, source]
+                vscode_files += [patch.path, source]
 
         if files_with_conflicts:
-            vscode_args += files_with_conflicts
+            vscode_files += files_with_conflicts
             file_list = '\n'.join(f'    ✘ {file}'
                                   for file in files_with_conflicts)
             terminal.log_task(f'[bold]Manually resolve conflicts for '
                               f'{ACTION_NEEDED_DECORATOR}:[/]\n{file_list}')
 
-        if launch_vscode and len(vscode_args) > 1:
-            try:
-                terminal.run(vscode_args)
-            except subprocess.CalledProcessError as e:
-                logging.error(
-                    'Failed to launch VSCode with the following args: %s\n%s',
-                    ' '.join(vscode_args), e.stderr)
+        VsCodeIpcConnection().open_file(vscode_files)
 
         # The continuation file is updated at the end of the process, in case
         # the process has to be continued later.
@@ -1502,7 +1499,7 @@ class Upgrade(Versioned):
         # continuation file around.
         ContinuationFile.clear()
 
-    def _start(self, launch_vscode: bool, ack_advisory: bool):
+    def _start(self, ack_advisory: bool):
         """Starts the upgrade process.
 
     This function is responsible for starting the upgrade process. It will
@@ -1512,11 +1509,6 @@ class Upgrade(Versioned):
 
     For cases where no conflict resolution is required, the process will
     will continue, concluding the whole four steps of the upgrade process.
-
-    Args:
-        launch_vscode:
-            Indicates if the user wants to launch vscode with the patches that
-            require manual conflict resolution.
 
     Return:
         Returns True if the process was successful, and False otherwise.
@@ -1576,8 +1568,7 @@ class Upgrade(Versioned):
             if (e.returncode != 0
                     and 'Exiting as not all patches were successful!'
                     in e.stderr.splitlines()[-1]):
-                apply_record = self.apply_patches_3way(
-                    launch_vscode=launch_vscode)
+                apply_record = self.apply_patches_3way()
                 if apply_record.requires_conflict_resolution():
                     # Manual resolution required.
                     raise ActionNeededException(
@@ -1602,8 +1593,8 @@ class Upgrade(Versioned):
         terminal.run_npm_command('chromium_rebase_l10n')
         self._save_rebased_l10n()
 
-    def execute(self, no_conflict_continuation: bool, launch_vscode: bool,
-                with_github: bool, ack_advisory: bool):
+    def execute(self, no_conflict_continuation: bool, with_github: bool,
+                ack_advisory: bool):
         """Executes the upgrade process.
 
     Keep in this function all code that is common to both start and continue.
@@ -1612,9 +1603,6 @@ class Upgrade(Versioned):
         no_conflict_continuation:
             Indicates that a continuation does not produce a conflict-resolved
             change.
-        launch_vscode:
-            Indicates the user wants to launch vscode with the patches that
-            require manual conflict resolution.
         with_github:
             Indicates the user wants to create or update the github issue for
             the upgrade.
@@ -1665,7 +1653,7 @@ class Upgrade(Versioned):
 
             self._continue(no_conflict_continuation=no_conflict_continuation)
         else:
-            self._start(launch_vscode=launch_vscode, ack_advisory=ack_advisory)
+            self._start(ack_advisory=ack_advisory)
 
         if with_github:
             GitHubIssue(base_version=self.base_version,
@@ -2272,11 +2260,6 @@ def main():
         help='Creates or updates the github for this branch.',
         dest='with_github')
     lift_parser.add_argument(
-        '--vscode',
-        action='store_true',
-        help=
-        'Launches vscode for manual conflict resolution and similar issues.')
-    lift_parser.add_argument(
         '--no-conflict-change',
         action='store_true',
         help='Indicates that a continuation does not have conflict patches to '
@@ -2397,7 +2380,6 @@ def main():
                                   args.is_continuation)
 
             upgrade.run(no_conflict_continuation=args.no_conflict,
-                        launch_vscode=args.vscode,
                         with_github=args.with_github,
                         ack_advisory=args.ack_advisory)
         if args.command == 'rebase':
