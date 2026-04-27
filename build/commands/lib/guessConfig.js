@@ -4,8 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import config from './config.ts'
-import os from 'node:os'
-import path from 'node:path/posix'
+import path from 'node:path'
 import fs from 'node:fs'
 
 const buildConfigs = ['Component', 'Static', 'Debug', 'Release']
@@ -29,35 +28,18 @@ config.update({
   build_config: process.env.BUILD_CONFIG,
 })
 
-let outputPath = config.outputDir
-
 function getBuildOutputPathList() {
-  if (os.platform() === 'win32') {
-    return buildConfigs.flatMap((config) => [
-      path.win32.resolve(import.meta.dirname, `..\\..\\..\\..\\out\\${config}`),
-      ...extraArchitectures.map((arch) =>
-        path.win32.resolve(
-          import.meta.dirname,
-          `..\\..\\..\\..\\out\\${config}_${arch}`,
-        ),
-      ),
-    ])
-  } else {
-    return buildConfigs.flatMap((config) => [
-      path.resolve(import.meta.dirname, `../../../../out/${config}`),
-      ...extraArchitectures.map((arch) =>
-        path.resolve(import.meta.dirname, `../../../../out/${config}_${arch}`),
-      ),
-    ])
-  }
+  return buildConfigs.flatMap((buildConfig) => [
+    path.resolve(config.srcDir, 'out', buildConfig),
+    ...extraArchitectures.map((arch) =>
+      path.resolve(config.srcDir, 'out', `${buildConfig}_${arch}`),
+    ),
+  ])
 }
 
-if (fs.existsSync(outputPath)) {
-  console.log(
-    'Assuming precompiled dependencies can be found at the existing path found from brave-core configuration: '
-      + outputPath,
-  )
-} else {
+export let outputPath = config.outputDir
+
+if (!fs.existsSync(outputPath)) {
   const outDirectories = getBuildOutputPathList()
     .filter((a) => fs.existsSync(a))
     .sort(
@@ -71,5 +53,9 @@ if (fs.existsSync(outputPath)) {
   outputPath = outDirectories[0]
 }
 
-const genPath = path.join(outputPath, 'gen')
-export { outputPath, genPath }
+console.log(
+  'Assuming precompiled dependencies can be found at the path:',
+  outputPath,
+)
+
+export const genPath = path.join(outputPath, 'gen')
