@@ -8,6 +8,7 @@ import("//brave/components/brave_origin/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
+import("//brave/components/psst/buildflags/buildflags.gni")
 
 # This is required for chromium_src overrides.
 brave_browser_ui_webui_configs_deps = [
@@ -48,4 +49,8 @@ if (enable_containers) {
     "//brave/components/containers/core/common",
     "//brave/components/containers/core/mojom",
   ]
+}
+
+if (enable_psst) {
+  brave_browser_ui_webui_configs_deps += [ "//brave/browser/ui/webui/psst" ]
 }
