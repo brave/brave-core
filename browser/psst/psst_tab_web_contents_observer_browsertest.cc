@@ -173,7 +173,7 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
       if (dialog_wc) {
         current_url = dialog_wc->GetLastCommittedURL();
       }
-    } while (!current_url.SchemeIs(kExpectedSchema) &&
+    } while (!current_url.SchemeIs(kExpectedSchema) ||
              current_url.host() != kExpectedHost);
     return dialog_wc;
   }

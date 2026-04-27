@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
+#include "base/notimplemented.h"
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
 #include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
@@ -154,6 +155,7 @@ void BravePsstDialogHandler::ReportFailedContent() {
   }
 
   // Report Submission Implementation
+  NOTIMPLEMENTED();
 }
 
 void BravePsstDialogHandler::CloseDialog() {
