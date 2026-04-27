@@ -331,7 +331,9 @@ extension BraveWallet.CoinType {
       return "bitcoin-asset-icon"
     case .zec:
       return "zcash-asset-icon"
-    case .ada, .dot:
+    case .ada:
+      return "ada-asset-icon"
+    case .dot:
       fallthrough
     @unknown default:
       return ""
@@ -805,6 +807,10 @@ extension String {
       || self.caseInsensitiveCompare(BraveWallet.ZCashTestnet) == .orderedSame
     {
       return AssetImageName.zcash.rawValue
+    } else if self.caseInsensitiveCompare(BraveWallet.CardanoMainnet) == .orderedSame
+      || self.caseInsensitiveCompare(BraveWallet.CardanoTestnet) == .orderedSame
+    {
+      return AssetImageName.ada.rawValue
     } else if self.caseInsensitiveCompare(BraveWallet.PolygonMainnetChainId) == .orderedSame {
       return AssetImageName.polygon.rawValue
     } else if self.caseInsensitiveCompare(BraveWallet.BnbSmartChainMainnetChainId)

@@ -85,6 +85,7 @@ public struct WalletConstants {
     BraveWallet.FilecoinMainnet,
     BraveWallet.BitcoinMainnet,
     BraveWallet.ZCashMainnet,
+    BraveWallet.CardanoMainnet,
   ]
 
   /// Chain ids that are required and cannot be de-selected during onboarding.
