@@ -39,8 +39,8 @@ inline constexpr int kTabstripToolbarOverlap = 8;
 //   We satisfy (1) centrally via
 //   `GetBraveLayoutConstant(kTabstripToolbarOverlap)` and satisfy (2) by
 //   substituting just the two `UpdateButtonBorders()` callsites with
-//   `tabs::GetHorizontalTabControlsDelta()` (see
-//   rewrite/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc.toml).
+//   `tabs::GetHorizontalTabControlsDelta()` (see rewrite/chrome/
+//   browser/ui/views/frame/horizontal_tab_strip_region_view.cc.toml).
 inline constexpr int kTabStripControlsHeightDelta = -5;
 
 // `LayoutConstant::kTabStripHeight` (compact, non-touch). Keep in sync with
