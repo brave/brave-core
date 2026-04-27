@@ -29,8 +29,8 @@ import { isTokenWatchOnly } from '../../../utils/asset-utils'
 
 // queries & mutations
 import {
+  useGetEthNftOwnerQuery,
   useGetNftMetadataQuery,
-  useGetNftOwnerQuery,
   useUpdateUserTokenMutation,
 } from '../../../common/slices/api.slice'
 import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
@@ -104,8 +104,8 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
     skip: !selectedAsset,
   })
 
-  const { data: ownerAddress } = useGetNftOwnerQuery(
-    tokenNetwork
+  const { data: ownerAddress } = useGetEthNftOwnerQuery(
+    tokenNetwork && selectedAsset.coin === BraveWallet.CoinType.ETH
       ? {
           contract: selectedAsset.contractAddress,
           tokenId: selectedAsset.tokenId,
