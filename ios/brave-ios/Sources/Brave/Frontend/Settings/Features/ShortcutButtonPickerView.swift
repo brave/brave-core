@@ -3,9 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveStrings
 import BraveWidgetsModels
 import DesignSystem
+import OrderedCollections
 import Preferences
 import Strings
 import SwiftUI
@@ -14,12 +16,19 @@ struct ShortcutButtonPickerView: View {
   @ObservedObject private var selectedShortcut = Preferences.General.toolbarShortcutButton
   @Environment(\.dismiss) var dismiss
 
+  var prefs: any PrefService
+  var isWalletAvailable: Bool
+
   var body: some View {
+    let eligibleShortcuts = WidgetShortcut.eligibleButtonShortcuts(
+      prefs: prefs,
+      isWalletAvailable: isWalletAvailable
+    )
     Form {
       Picker("", selection: $selectedShortcut.value) {
         Label(Strings.ShortcutButton.hideButtonTitle, braveSystemImage: "leo.eye.off")
           .tag(Int?.none)
-        ForEach(WidgetShortcut.eligibleButtonShortcuts, id: \.self) { shortcut in
+        ForEach(eligibleShortcuts, id: \.self) { shortcut in
           Label(shortcut.displayString, braveSystemImage: shortcut.braveSystemImageName ?? "")
             .tag(Int?.some(shortcut.rawValue))
         }

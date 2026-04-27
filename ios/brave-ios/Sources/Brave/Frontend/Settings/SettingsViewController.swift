@@ -1205,9 +1205,16 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
       Row(
         text: Strings.ShortcutButton.shortcutButtonTitle,
         selection: { [weak self] in
-          let controller = UIHostingController(rootView: ShortcutButtonPickerView())
+          guard let self else { return }
+          let isWalletAvailable = braveCore.braveWalletAPI.isAllowed
+          let controller = UIHostingController(
+            rootView: ShortcutButtonPickerView(
+              prefs: braveCore.profile.prefs,
+              isWalletAvailable: isWalletAvailable
+            )
+          )
           controller.navigationItem.title = Strings.ShortcutButton.shortcutButtonTitle
-          self?.navigationController?.pushViewController(controller, animated: true)
+          navigationController?.pushViewController(controller, animated: true)
         },
         image: UIImage(braveSystemNamed: "leo.launch"),
         accessory: .disclosureIndicator,
