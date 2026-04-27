@@ -1,3 +1,5 @@
+#!/usr/bin/env vpython3
+
 # Copyright (c) 2026 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -14,13 +16,10 @@ in brave://credits.
 from argparse import ArgumentParser
 from brave_chromium_utils import wspath
 from deps_config import DEPS_PACKAGES_URL
-from lib.util import extract_zip
 from os.path import basename, exists, join
 
-import hashlib
 import os
 import shutil
-import tempfile
 
 import deps
 
@@ -39,7 +38,7 @@ service. The signed wintun.dll is shipped unmodified from upstream; only the
 Permitted API (wintun.h) is used at compile time.
 
 Local Modifications:
-No modifications.
+None.
 """
 
 
@@ -47,9 +46,10 @@ def main():
     args = parse_args()
     dep_url = DEPS_PACKAGES_URL + '/' + args.dep_path
     dest_dir = wspath(args.dest_dir)
-    deps.DownloadIfChanged(
-        dep_url, dest_dir,
-        lambda: fetch_and_stage(args.dep_path, args.sha256, dep_url, dest_dir))
+    deps.DownloadIfChanged(dep_url,
+                           dest_dir,
+                           sha256=args.sha256,
+                           download_fn=fetch_and_stage)
 
 
 def parse_args():
@@ -59,15 +59,6 @@ def parse_args():
     parser.add_argument('dest_dir')
     parser.add_argument('sha256')
     return parser.parse_args()
-
-
-def verify_sha256(path, expected, url):
-    with open(path, 'rb') as f:
-        actual = hashlib.file_digest(f, 'sha256').hexdigest()
-    if actual.lower() != expected.lower():
-        raise ValueError(f'SHA-256 mismatch for {url}\n'
-                         f'  expected: {expected.lower()}\n'
-                         f'  actual:   {actual}')
 
 
 def parse_version(filename):
@@ -88,41 +79,21 @@ def write_readme(dest_dir, version, url):
         f.write(README_TEMPLATE.format(version=version, url=url))
 
 
-def fetch_and_stage(dep_path, dep_sha256, dep_url, dest_dir):
-    filename = basename(dep_path)
+def fetch_and_stage(dep_url, dest_dir, sha256):
+    deps.DownloadAndUnpack(dep_url, dest_dir, sha256=sha256)
+    filename = basename(dep_url)
 
-    # Download to a temporary file. delete=False so we can close the
-    # handle (required on Windows) and re-open it for hashing/extraction.
-    with tempfile.NamedTemporaryFile(suffix='.zip', delete=False) as tmp:
-        tmp_path = tmp.name
-        deps.DownloadUrl(dep_url, tmp)
-
-    try:
-        # Verify the archive matches the SHA pinned in DEPS.
-        verify_sha256(tmp_path, dep_sha256, dep_url)
-
-        # Wipe the destination so stale files from a previous version
-        # can never linger.
-        if exists(dest_dir):
-            shutil.rmtree(dest_dir)
-        deps.EnsureDirExists(dest_dir)
-
-        # The archive nests everything under a top-level 'wintun/' folder.
-        # Extract to a scratch dir, then lift the inner contents up so
-        # callers reference '//brave/third_party/wintun/...' directly.
-        with tempfile.TemporaryDirectory() as scratch:
-            extract_zip(tmp_path, scratch)
-            inner = join(scratch, 'wintun')
-            if not exists(inner):
-                raise ValueError(
-                    f'Expected a top-level "wintun/" directory in '
-                    f'{filename}, but it was missing.')
-            for entry in os.listdir(inner):
-                shutil.move(join(inner, entry), join(dest_dir, entry))
-    finally:
-        # Always remove the temp zip, even if verification or extraction
-        # raised.
-        os.unlink(tmp_path)
+    # The archive nests everything under a top-level 'wintun/' folder.
+    # Extract to a scratch dir, then lift the inner contents up so
+    # callers reference '//brave/third_party/wintun/...' directly.
+    inner = join(dest_dir, 'wintun')
+    if not exists(inner):
+        raise ValueError(f'Expected a top-level "wintun/" directory in '
+                         f'{filename}, but it was missing.')
+    for entry in os.listdir(inner):
+        shutil.move(join(inner, entry), join(dest_dir, entry))
+    # The inner directory must be empty by now; rmdir asserts that.
+    os.rmdir(inner)
 
     # Rename amd64 -> x64 so on-disk paths match GN's target_cpu values
     # and BUILD.gn can use sources = [ "bin/$target_cpu/wintun.dll" ].
@@ -139,9 +110,8 @@ def fetch_and_stage(dep_path, dep_sha256, dep_url, dest_dir):
             f'README.chromium references it, so the credits build would '
             f'fail.')
 
-    write_readme(
-        dest_dir, parse_version(filename),
-        'https://www.wintun.net/builds/{filename}'.format(filename=filename))
+    write_readme(dest_dir, parse_version(filename),
+                 f'https://www.wintun.net/builds/{filename}')
 
 
 if __name__ == '__main__':

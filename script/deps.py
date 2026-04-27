@@ -6,6 +6,7 @@
 
 """This script is used to download deps."""
 
+import hashlib
 import os
 import shutil
 import sys
@@ -70,7 +71,16 @@ def EnsureDirExists(path):
         os.makedirs(path)
 
 
-def DownloadAndUnpack(url, output_dir, path_prefix=None):
+def VerifySHA256(path, expected, url):
+    with open(path, 'rb') as f:
+        actual = hashlib.file_digest(f, 'sha256').hexdigest()
+    if actual.lower() != expected.lower():
+        raise ValueError(f'SHA-256 mismatch for {url}\n'
+                         f'  expected: {expected.lower()}\n'
+                         f'  actual:   {actual}')
+
+
+def DownloadAndUnpack(url, output_dir, path_prefix=None, sha256=None):
     """Download an archive from url and extract into output_dir. If path_prefix
        is not None, only extract files whose paths within the archive start
        with path_prefix."""
@@ -78,6 +88,8 @@ def DownloadAndUnpack(url, output_dir, path_prefix=None):
         try:
             DownloadUrl(url, tmp_file)
             tmp_file.close()
+            if sha256:
+                VerifySHA256(tmp_file.name, sha256, url)
             try:
                 os.unlink(output_dir)
             except OSError:
@@ -99,7 +111,11 @@ def DownloadAndUnpack(url, output_dir, path_prefix=None):
             os.unlink(tmp_file.name)
 
 
-def DownloadIfChanged(url, dest_dir, download_fn):
+def DownloadIfChanged(url,
+                      dest_dir,
+                      *args,
+                      download_fn=DownloadAndUnpack,
+                      **kwargs):
     """Run download_fn() only if dest_dir isn't already recorded as
     containing a download from url. On success, records url in a
     '.url' file inside dest_dir so subsequent calls can skip."""
@@ -110,6 +126,6 @@ def DownloadIfChanged(url, dest_dir, download_fn):
                 return
     except FileNotFoundError:
         pass
-    download_fn()
-    with open(url_file, 'w') as f:
+    download_fn(url, dest_dir, *args, **kwargs)
+    with open(url_file, 'w', newline='\n') as f:
         f.write(url)

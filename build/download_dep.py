@@ -17,9 +17,7 @@ def main():
     args = parse_args()
     dep_url = DEPS_PACKAGES_URL + '/' + args.dep_path
     dest_dir = wspath(args.dest_dir)
-    deps.DownloadIfChanged(
-        dep_url, dest_dir,
-        lambda: deps.DownloadAndUnpack(dep_url, dest_dir, args.path_prefix))
+    deps.DownloadIfChanged(dep_url, dest_dir, args.path_prefix)
 
 
 def parse_args():
