@@ -36,9 +36,10 @@ inline constexpr int kTabstripToolbarOverlap = 8;
 //        tab group underline, frame view top-area math, etc.) — wants 8.
 //     2) Control button vertical placement inside the tab strip — wants the
 //        smaller delta below so caption/new-tab controls stay centered.
-//   We satisfy (1) centrally via `GetBraveLayoutConstant(kTabstripToolbarOverlap)`
-//   and satisfy (2) by substituting just the two `UpdateButtonBorders()`
-//   callsites with `tabs::GetHorizontalTabControlsDelta()` (see
+//   We satisfy (1) centrally via
+//   `GetBraveLayoutConstant(kTabstripToolbarOverlap)` and satisfy (2) by
+//   substituting just the two `UpdateButtonBorders()` callsites with
+//   `tabs::GetHorizontalTabControlsDelta()` (see
 //   rewrite/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc.toml).
 inline constexpr int kTabStripControlsHeightDelta = -5;
 

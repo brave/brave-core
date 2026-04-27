@@ -47,7 +47,8 @@ int GetHorizontalTabVerticalSpacing();
 //
 // Returns `compact_horizontal_tabs_layout::kTabStripControlsHeightDelta` (-5)
 // when the `#brave-compact-horizontal-tabs` flag is enabled and touch UI is
-// off. Returns `compact_horizontal_tabs_layout::kTabStripControlsHeightDeltaDefault`
+// off. Returns
+// `compact_horizontal_tabs_layout::kTabStripControlsHeightDeltaDefault`
 // (-4) otherwise (flag disabled or touch UI active).
 int GetHorizontalTabControlsDelta();
 
