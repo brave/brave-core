@@ -13,6 +13,7 @@
 
 #include "base/memory/scoped_refptr.h"
 #include "brave/browser/net/resource_context_data.h"
+#include "build/build_config.h"
 #include "chrome/browser/chrome_content_browser_client.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/content_browser_client.h"
@@ -22,6 +23,7 @@
 
 class BraveBluetoothDelegate;
 class PrefChangeRegistrar;
+class BraveHidDelegate;
 
 namespace content {
 class BrowserContext;
@@ -192,6 +194,9 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   bool AllowSignedExchange(content::BrowserContext* context) override;
 
   content::BluetoothDelegate* GetBluetoothDelegate() override;
+#if !BUILDFLAG(IS_ANDROID)
+  content::HidDelegate* GetHidDelegate() override;
+#endif
 
  private:
   void OnAllowGoogleAuthChanged();
@@ -209,6 +214,10 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>
       pref_change_registrar_;
   std::unique_ptr<BraveBluetoothDelegate> bluetooth_delegate_;
+
+#if !BUILDFLAG(IS_ANDROID)
+  std::unique_ptr<BraveHidDelegate> brave_hid_delegate_;
+#endif
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_CONTENT_BROWSER_CLIENT_H_
