@@ -39,6 +39,8 @@
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
+#include "components/os_crypt/async/browser/os_crypt_async.h"
+#include "components/os_crypt/async/browser/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -106,7 +108,8 @@ class EngineConsumerConversationAPIUnitTest : public testing::Test {
   void SetUp() override {
     prefs::RegisterProfilePrefs(prefs_.registry());
     ModelService::RegisterProfilePrefs(prefs_.registry());
-    model_service_ = std::make_unique<ModelService>(&prefs_);
+    model_service_ =
+        std::make_unique<ModelService>(&prefs_, os_crypt_async_.get());
 
     auto options = mojom::LeoModelOptions::New();
     options->display_maker = "Test Maker";
@@ -153,6 +156,9 @@ class EngineConsumerConversationAPIUnitTest : public testing::Test {
 
  protected:
   base::test::TaskEnvironment task_environment_;
+  std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_async_ =
+      os_crypt_async::GetTestOSCryptAsyncForTesting(
+          /*is_sync_for_unittests=*/true);
   mojom::ModelPtr model_;
   std::unique_ptr<ModelService> model_service_;
   std::unique_ptr<EngineConsumerConversationAPI> engine_;

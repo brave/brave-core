@@ -23,8 +23,6 @@ static_library("browser") {
     "associated_web_contents_content.h",
     "full_screenshotter.cc",
     "full_screenshotter.h",
-    "model_service_factory.cc",
-    "model_service_factory.h",
     "page_content_blocks.cc",
     "page_content_blocks.h",
     "page_content_fetcher.cc",
