@@ -227,28 +227,31 @@ TEST_F(BraveShieldsP3ATest, RecordHTTPSUpgradeGlobalSetting) {
   histogram_tester_->ExpectBucketCount(kUpgradeHTTPSGlobalHistogramName, 1, 2);
 }
 
-TEST_F(BraveShieldsP3ATest, RecordHTTPSUpgradePerSiteStrict) {
+TEST_F(BraveShieldsP3ATest, RecordHTTPSUpgradePerSiteNonDefault) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(GetProfile());
 
-  // No per-site strict settings - should suspend
+  // No per-site settings - should suspend
   RecordHTTPSUpgradeSettingP3A(map);
   histogram_tester_->ExpectBucketCount(kUpgradeHTTPSPerSiteHistogramName,
                                        INT_MAX - 1, 1);
 
-  // Add a per-site strict setting
+  // Add a per-site strict (BLOCK) setting - differs from global, should report
+  // 1
   SetHttpsUpgradeControlType(map, ControlType::BLOCK,
                              GURL("https://brave.com"));
   histogram_tester_->ExpectBucketCount(kUpgradeHTTPSPerSiteHistogramName, 1, 1);
 
-  // Add another per-site strict setting - still reports 1
-  SetHttpsUpgradeControlType(map, ControlType::BLOCK,
-                             GURL("https://example.com"));
-  histogram_tester_->ExpectBucketCount(kUpgradeHTTPSPerSiteHistogramName, 1, 2);
-
-  // Change one to standard - other is still strict, should still report 1
+  // Change to same as global (BLOCK_THIRD_PARTY) - matches global, should
+  // suspend
   SetHttpsUpgradeControlType(map, ControlType::BLOCK_THIRD_PARTY,
                              GURL("https://brave.com"));
-  histogram_tester_->ExpectBucketCount(kUpgradeHTTPSPerSiteHistogramName, 1, 3);
+  histogram_tester_->ExpectBucketCount(kUpgradeHTTPSPerSiteHistogramName,
+                                       INT_MAX - 1, 2);
+
+  // Change to disabled (ALLOW) - differs from global, should report 1
+  SetHttpsUpgradeControlType(map, ControlType::ALLOW,
+                             GURL("https://brave.com"));
+  histogram_tester_->ExpectBucketCount(kUpgradeHTTPSPerSiteHistogramName, 1, 2);
 }
 
 TEST_F(BraveShieldsP3ATest, RecordHTTPSUpgradeDisabledGlobalNoPerSite) {
