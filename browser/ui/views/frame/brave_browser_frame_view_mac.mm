@@ -15,12 +15,14 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/fullscreen_util_mac.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/tabs/brave_compact_horizontal_tabs_layout.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/view_ids.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/immersive_mode_controller.h"
 #include "ui/base/hit_test.h"
 #include "ui/gfx/geometry/insets.h"
+#include "ui/gfx/geometry/outsets_f.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/scoped_canvas.h"
 
@@ -104,6 +106,19 @@ BraveBrowserFrameViewMac::GetCaptionButtonBounds() const {
   auto bounds_and_margins = BrowserFrameViewMac::GetCaptionButtonBounds();
   bounds_and_margins.bounds.set_y(bounds_and_margins.bounds.y() +
                                   tabs::GetHorizontalTabControlsDelta());
+  // In compact horizontal tabs mode the tab pill is ~26 DIP tall, but the
+  // upstream caption button rect carries vertical margins of 11 px (macOS 15-)
+  // / 10 px (macOS 26+) above and below. Those margins flow into
+  // `BrowserFrameView::GetBrowserLayoutParams()` as `leading_exclusion`'s
+  // vertical extent, reserving more vertical band than the tab strip occupies
+  // and biasing where the tab strip lays out next to the traffic lights. Zero
+  // them so the exclusion rect collapses around the buttons themselves and
+  // the tab strip can sit centred against them. Mirrors Helium's
+  // `fix-caption-button-bounds.patch` (imputnet/helium @ b6e5b77e).
+  if (tabs::ShouldUseCompactHorizontalTabsForNonTouchUI() &&
+      !bounds_and_margins.bounds.IsEmpty()) {
+    bounds_and_margins.margins.set_top(0).set_bottom(0);
+  }
   return bounds_and_margins;
 }
 
