@@ -76,6 +76,7 @@ public struct WalletConstants {
     BraveWallet.FilecoinEthereumTestnetChainId,
     BraveWallet.BitcoinTestnet,
     BraveWallet.ZCashTestnet,
+    BraveWallet.CardanoTestnet,
   ]
 
   /// Primary network chain ids
