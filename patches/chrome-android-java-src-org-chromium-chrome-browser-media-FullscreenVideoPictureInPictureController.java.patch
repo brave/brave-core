@@ -1,0 +1,67 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java b/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
+index 83470d3a3b694ec2dab8ba79009828315726b444..9452068bef792a802af97c35b39da39237c55549 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
+@@ -28,11 +28,13 @@ import org.chromium.base.task.TaskTraits;
+ import org.chromium.build.annotations.NullMarked;
+ import org.chromium.build.annotations.Nullable;
+ import org.chromium.chrome.browser.ActivityTabProvider;
++import org.chromium.chrome.browser.app.BraveActivity;
+ import org.chromium.chrome.browser.fullscreen.FullscreenManager;
+ import org.chromium.chrome.browser.infobar.InfoBarContainer;
+ import org.chromium.chrome.browser.notifications.NotificationIntentInterceptor;
+ import org.chromium.chrome.browser.tab.EmptyTabObserver;
+ import org.chromium.chrome.browser.tab.Tab;
++import org.chromium.chrome.browser.youtube_script_injector.BraveYouTubeScriptInjectorNativeHelper;
+ import org.chromium.chrome.browser.util.AndroidTaskUtils;
+ import org.chromium.content_public.browser.MediaSession;
+ import org.chromium.content_public.browser.WebContents;
+@@ -218,6 +220,17 @@ public class FullscreenVideoPictureInPictureController {
+                 .isEmpty();
+     }
+ 
++    private @Nullable BraveActivity getBraveActivityForYouTubePictureInPicture(
++            WebContents webContents) {
++        if (!(mActivity instanceof BraveActivity braveActivity)
++                || !BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(
++                        webContents)) {
++            return null;
++        }
++
++        return braveActivity;
++    }
++
+     /**
+      * Return whether Picture in Picture is okay or not. Considers that "already in PiP mode" is a
+      * reason to say no.
+@@ -242,6 +255,11 @@ public class FullscreenVideoPictureInPictureController {
+ 
+         final WebContents webContents = getWebContents();
+         assert webContents != null;
++        final BraveActivity braveActivity =
++                getBraveActivityForYouTubePictureInPicture(webContents);
++        if (braveActivity != null) {
++            braveActivity.onYouTubePictureInPictureRequested(webContents);
++        }
+ 
+         Rect bounds = getVideoBounds(webContents, mActivity);
+         PictureInPictureParams.Builder builder = new PictureInPictureParams.Builder();
+@@ -253,9 +271,17 @@ public class FullscreenVideoPictureInPictureController {
+         }
+ 
+         try {
+-            if (!mActivity.enterPictureInPictureMode(builder.build())) return;
++            if (!mActivity.enterPictureInPictureMode(builder.build())) {
++                if (braveActivity != null) {
++                    braveActivity.onYouTubePictureInPictureEnterFailed();
++                }
++                return;
++            }
+         } catch (IllegalStateException | IllegalArgumentException e) {
+             Log.e(TAG, "Error entering PiP with bounds %s", bounds, e);
++            if (braveActivity != null) {
++                braveActivity.onYouTubePictureInPictureEnterFailed();
++            }
+             return;
+         }
+     }
