@@ -8,6 +8,7 @@
 
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -70,6 +71,7 @@ class BraveHelpBubbleHostView;
 class BraveMultiContentsView;
 class ContentsLayoutManager;
 class FocusModeTitleBarView;
+class FocusModeTopOverlay;
 class SidebarContainerView;
 class SidePanelEntry;
 class VerticalTabStripWidgetDelegateView;
@@ -131,7 +133,6 @@ class BraveBrowserView : public BrowserView,
 #endif
   bool GetTabStripVisible() const override;
   bool ShouldShowWindowTitle() const override;
-  void OnThemeChanged() override;
   void OnActiveTabChanged(content::WebContents* old_contents,
                           content::WebContents* new_contents,
                           int index,
@@ -266,7 +267,13 @@ class BraveBrowserView : public BrowserView,
   void OnWindowClosingConfirmResponse(bool allowed_to_close);
   BraveBrowser* GetBraveBrowser() const;
   void UpdateWebViewRoundedCorners();
-  void UpdateTopContainerBackgroundColor();
+
+  // Updates the bounds of `focus_mode_overlay_` based on the current reveal
+  // fraction reported by `top_reveal_controller_`. The overlay's y-position is
+  // translated upward by `(1 - fraction) * height` so that the top chrome
+  // appears to slide off-screen. Called both during regular layout and on
+  // every reveal-fraction tick.
+  void UpdateFocusModeOverlayBounds();
 
   // FindBarHost is anchored to |find_bar_host_view_|; it must remain the last
   // child of BrowserView for correct z-order. Call when a child is added after
@@ -299,9 +306,15 @@ class BraveBrowserView : public BrowserView,
   raw_ptr<BraveHelpBubbleHostView> brave_help_bubble_host_view_ = nullptr;
   raw_ptr<SidebarContainerView> sidebar_container_view_ = nullptr;
   raw_ptr<views::View> contents_background_view_ = nullptr;
-  raw_ptr<views::View> top_container_background_view_ = nullptr;
   raw_ptr<views::View> vertical_tab_strip_host_view_ = nullptr;
   raw_ptr<FocusModeTitleBarView> focus_mode_title_bar_view_ = nullptr;
+  raw_ptr<FocusModeTopOverlay> focus_mode_top_overlay_ = nullptr;
+
+  // Indices of `top_container_` and `horizontal_tab_strip_region_view_` within
+  // this view's children at the moment focus mode was last enabled. Used to
+  // restore those views to their original z-order when focus mode is disabled.
+  std::optional<size_t> focus_mode_top_container_saved_index_;
+  std::optional<size_t> focus_mode_tab_strip_saved_index_;
   raw_ptr<VerticalTabStripWidgetDelegateView, DanglingUntriaged>
       vertical_tab_strip_widget_delegate_view_ = nullptr;
 

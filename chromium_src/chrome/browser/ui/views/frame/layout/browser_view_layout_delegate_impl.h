@@ -6,8 +6,6 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_LAYOUT_BROWSER_VIEW_LAYOUT_DELEGATE_IMPL_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_LAYOUT_BROWSER_VIEW_LAYOUT_DELEGATE_IMPL_H_
 
-#include <optional>
-
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h"
 
 #define GetExtraInfobarOffset()                                         \
@@ -21,7 +19,7 @@
   bool IsFullscreenForBrowser() const override;                         \
   bool IsFullscreenForTab() const override;                             \
   bool IsFullscreen() const override;                                   \
-  std::optional<double> GetTopOverlayRevealFraction()
+  bool IsFocusModeEnabled()
 
 #include <chrome/browser/ui/views/frame/layout/browser_view_layout_delegate_impl.h>  // IWYU pragma: export
 

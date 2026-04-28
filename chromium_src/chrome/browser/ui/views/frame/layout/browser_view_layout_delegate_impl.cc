@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout_delegate_impl.h"
 
+#include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/edge_reveal_controller.h"
@@ -95,14 +96,6 @@ bool BrowserViewLayoutDelegateImpl::IsFullscreen() const {
   return browser_view().IsFullscreen();
 }
 
-std::optional<double>
-BrowserViewLayoutDelegateImpl::GetTopOverlayRevealFraction() const {
-  if (auto* view = BraveBrowserView::From(&browser_view())) {
-    if (auto* controller = view->GetTopEdgeRevealController()) {
-      if (controller->IsEnabled()) {
-        return controller->GetRevealFraction();
-      }
-    }
-  }
-  return std::nullopt;
+bool BrowserViewLayoutDelegateImpl::IsFocusModeEnabled() const {
+  return ::IsFocusModeEnabled(browser_view().browser());
 }

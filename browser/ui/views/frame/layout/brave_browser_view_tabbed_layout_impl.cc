@@ -155,10 +155,7 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
         gfx::Insets().set_bottom(-views().webui_tab_strip->size().height()));
   }
 
-  // Apply the top-overlay reveal adjustments BEFORE laying out the sidebar so
-  // the sidebar picks up the expanded contents bounds when top views are
-  // hidden/revealed.
-  AdjustLayoutForTopReveal(layout);
+  AdjustLayoutForFocusMode(layout);
 
   // Handle sidebar and adjust contents container bounds. This should be done
   // BEFORE calling `InsetContentsContainerBounds()` so that the contents
@@ -248,6 +245,21 @@ gfx::Rect BraveBrowserViewTabbedLayoutImpl::CalculateTopContainerLayout(
   return bounds;
 }
 
+void BraveBrowserViewTabbedLayoutImpl::ConfigureTopContainerBackground(
+    const BrowserLayoutParams& params,
+    CustomCornersBackground* background) {
+  BrowserViewTabbedLayoutImpl::ConfigureTopContainerBackground(params,
+                                                               background);
+  // In focus mode, the horizontal tab strip is reparented into the top
+  // container. Since the tab strip does not paint its own background, the top
+  // container background must be set to the frame color instead of the toolbar
+  // background color.
+  if (delegate().IsFocusModeEnabled() &&
+      !delegate().ShouldDrawVerticalTabStrip()) {
+    background->SetPrimaryColor(ui::kColorFrameActive);
+  }
+}
+
 void BraveBrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(
     const BrowserLayoutParams& params) {
   BrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(params);
@@ -327,9 +339,9 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateBraveVerticalTabStripLayout(
   auto get_vertical_tabs_top = [&]() -> int {
     // In focus mode the top chrome slides over the contents area rather than
     // pushing it down. Anchor the vertical tab strip to the top of the
-    // contents bounds (already adjusted by `AdjustLayoutForTopReveal`) so it
-    // stays full-height and the revealed top views overlay it.
-    if (delegate().GetTopOverlayRevealFraction()) {
+    // contents bounds so it stays full-height and the revealed top views
+    // overlay it.
+    if (delegate().IsFocusModeEnabled()) {
       auto* contents_layout = layout.GetLayoutFor(views().contents_container);
       CHECK(contents_layout);
       return contents_layout->bounds.y();
@@ -478,79 +490,48 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
   layout.AddChild(views().sidebar_container, sidebar_bounds);
 }
 
-void BraveBrowserViewTabbedLayoutImpl::AdjustLayoutForTopReveal(
+void BraveBrowserViewTabbedLayoutImpl::AdjustLayoutForFocusMode(
     ProposedLayout& layout) const {
-  auto reveal_fraction = delegate().GetTopOverlayRevealFraction();
-  if (!reveal_fraction) {
-    if (views().top_container_background) {
-      layout.AddChild(views().top_container_background, gfx::Rect(), false);
-    }
+  if (!delegate().IsFocusModeEnabled()) {
     if (views().focus_mode_title_bar) {
       layout.AddChild(views().focus_mode_title_bar, gfx::Rect());
     }
     return;
   }
 
+  // While focus mode is on, the top container and horizontal tab strip have
+  // been reparented into a sibling overlay view managed by `BraveBrowserView`.
+  // The upstream layout's "top container parented elsewhere" branch already
+  // sizes those views in their parent (the overlay), so this method only has
+  // to position the focus-mode title bar, slide the infobar below it, and
+  // expand the contents container to start just below the title bar.
+
+  auto title_bar = views().focus_mode_title_bar;
+  if (!title_bar || !title_bar->GetVisible()) {
+    return;
+  }
+
   auto* contents_layout = layout.GetLayoutFor(views().contents_container);
   CHECK(contents_layout);
 
-  auto* top_layout = layout.GetLayoutFor(views().top_container);
-  auto* tab_layout =
-      layout.GetLayoutFor(views().horizontal_tab_strip_region_view);
+  int content_top = title_bar->GetPreferredSize().height();
+  const gfx::Rect browser_bounds = views().browser_view->GetLocalBounds();
+  layout.AddChild(title_bar,
+                  gfx::Rect(0, 0, browser_bounds.width(), content_top));
 
-  int top_height = 0;
-  if (top_layout) {
-    top_height += top_layout->bounds.height();
-  }
-  if (tab_layout) {
-    top_height += tab_layout->bounds.height();
-  }
-
-  int offset = -static_cast<int>((1 - *reveal_fraction) * top_height);
-  if (top_layout) {
-    top_layout->bounds.Offset(0, offset);
-  }
-  if (tab_layout) {
-    tab_layout->bounds.Offset(0, offset);
-  }
-
-  auto* title_bar = views().focus_mode_title_bar.get();
-  const bool title_bar_visible = title_bar && title_bar->GetVisible();
-  int content_top = title_bar_visible ? title_bar->GetPreferredSize().height()
-                                      : BraveContentsViewUtil::kMarginThickness;
-  if (title_bar) {
-    const gfx::Rect browser_bounds = views().browser_view->GetLocalBounds();
-    layout.AddChild(title_bar,
-                    title_bar_visible
-                        ? gfx::Rect(0, 0, browser_bounds.width(), content_top)
-                        : gfx::Rect());
-  }
   if (delegate().IsInfobarVisible()) {
     auto* infobar_layout = layout.GetLayoutFor(views().infobar_container);
     CHECK(infobar_layout);
     infobar_layout->bounds.set_y(content_top);
     content_top += infobar_layout->bounds.height();
   }
+
   contents_layout->bounds.Outset(
       gfx::Outsets::TLBR(contents_layout->bounds.y() - content_top, 0, 0, 0));
-  if (auto* background_layout =
-          layout.GetLayoutFor(views().contents_background)) {
-    background_layout->bounds.Outset(
-        gfx::Outsets::TLBR(background_layout->bounds.y(), 0, 0, 0));
-  }
 
-  if (views().top_container_background) {
-    gfx::Rect top_bounds;
-    if (reveal_fraction.value_or(0) > 0) {
-      if (top_layout) {
-        top_bounds.Union(top_layout->bounds);
-      }
-      if (tab_layout) {
-        top_bounds.Union(tab_layout->bounds);
-      }
-    }
-    layout.AddChild(views().top_container_background, top_bounds,
-                    !top_bounds.IsEmpty());
+  if (auto* background = layout.GetLayoutFor(views().contents_background)) {
+    background->bounds.Outset(
+        gfx::Outsets::TLBR(background->bounds.y(), 0, 0, 0));
   }
 }
 

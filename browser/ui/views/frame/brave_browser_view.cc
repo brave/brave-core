@@ -24,6 +24,7 @@
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/focus_mode/focus_mode_features.h"
+#include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/page_info/features.h"
 #include "brave/browser/ui/sidebar/buildflags/buildflags.h"
 #include "brave/browser/ui/sidebar/features.h"
@@ -37,9 +38,9 @@
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/focus_mode_title_bar_view.h"
+#include "brave/browser/ui/views/frame/focus_mode_top_overlay.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
-#include "brave/browser/ui/views/frame/top_container_background.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
@@ -291,10 +292,8 @@ bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
     return false;
   }
 
-  if (auto* controller = browser->GetFeatures().focus_mode_controller()) {
-    if (controller->IsEnabled()) {
-      return true;
-    }
+  if (IsFocusModeEnabled(browser)) {
+    return true;
   }
 
   if (browser->profile()->GetPrefs()->GetBoolean(kWebViewRoundedCorners)) {
@@ -754,8 +753,6 @@ void BraveBrowserView::AddedToWidget() {
 
   UpdateWebViewRoundedCorners();
 
-  std::optional<int> vertical_tabs_insertion_index;
-
   if (auto* controller = browser()->GetFeatures().focus_mode_controller()) {
     focus_mode_observation_.Observe(controller);
 
@@ -767,34 +764,13 @@ void BraveBrowserView::AddedToWidget() {
           focus_mode_title_bar_view_);
     }
 
-    top_container_background_view_ =
-        AddChildView(std::make_unique<TopContainerBackground>());
-
-    GetBrowserViewLayout()->set_top_container_background(
-        top_container_background_view_);
-
-    UpdateTopContainerBackgroundColor();
-
-    // Move revealable top views after the top background view so that they
-    // paint on top of the contents view, the top container background, and all
-    // other views.
-    ReorderChildView(horizontal_tab_strip_region_view_, -1);
-    ReorderChildView(top_container(), -1);
-    EnsureFindBarHostViewIsLastChild();
-
-    // The vertical tab region view should be placed before the top container
-    // background.
-    vertical_tabs_insertion_index = GetIndexOf(top_container_background_view_);
+    focus_mode_top_overlay_ =
+        AddChildView(std::make_unique<FocusModeTopOverlay>());
+    focus_mode_top_overlay_->SetVisible(false);
 
     top_reveal_controller_ = std::make_unique<EdgeRevealController>(
         EdgeRevealController::Edge::kTop, *GetWidget());
-    top_reveal_controller_->AddRevealableView(top_container(),
-                                              {.paint_to_layer = true});
-    // TODO: Vertical tabs moves this view into the vertical tab region view.
-    // When that occurs, it should no longer be registered as a revealable top
-    // view.
-    top_reveal_controller_->AddRevealableView(horizontal_tab_strip_region_view_,
-                                              {.paint_to_layer = true});
+    top_reveal_controller_->AddRevealableView(focus_mode_top_overlay_);
     top_reveal_controller_->AddObserver(this);
 
     UpdateFocusModeEffectiveState();
@@ -805,8 +781,7 @@ void BraveBrowserView::AddedToWidget() {
       vertical_tab_strip_widget_delegate_view_ = AddChildViewAt(
           VerticalTabStripWidgetDelegateView::CreateEmbeddedInBrowserView(
               this, vertical_tab_strip_host_view_),
-          vertical_tabs_insertion_index.value_or(children().size()));
-      EnsureFindBarHostViewIsLastChild();
+          GetIndexOf(focus_mode_top_overlay_).value_or(children().size()));
     } else {
       vertical_tab_strip_widget_ = VerticalTabStripWidgetDelegateView::Create(
           this, vertical_tab_strip_host_view_);
@@ -825,6 +800,8 @@ void BraveBrowserView::AddedToWidget() {
     GetBrowserViewLayout()->set_vertical_tab_strip_host(
         vertical_tab_strip_host_view_.get());
   }
+
+  EnsureFindBarHostViewIsLastChild();
 }
 
 bool BraveBrowserView::ShowBraveHelpBubbleView(const std::string& text) {
@@ -871,6 +848,44 @@ void BraveBrowserView::FullscreenStateChanged() {
 void BraveBrowserView::UpdateFocusModeEffectiveState() {
   auto* controller = browser()->GetFeatures().focus_mode_controller();
   const bool active = controller && controller->IsEnabled() && !IsFullscreen();
+  const bool overlay_active =
+      focus_mode_top_overlay_ && focus_mode_top_overlay_->GetVisible();
+
+  if (focus_mode_top_overlay_ && active != overlay_active) {
+    if (active) {
+      // Capture current indices so z-order can be restored when leaving focus
+      // mode. `top_container_` is always a direct child here; the tab strip
+      // may already be inside `top_container_` in some platform-specific
+      // states, in which case there's no need to reparent it.
+      focus_mode_top_container_saved_index_ =
+          GetIndexOf(top_container_.get()).value();
+      if (auto tab_idx = GetIndexOf(horizontal_tab_strip_region_view_.get())) {
+        focus_mode_tab_strip_saved_index_ = *tab_idx;
+        // The upstream tabbed layout only positions the tab strip when it is
+        // a child of either `browser_view` or `top_container`; placing it
+        // inside `top_container` allows the layout to size it correctly
+        // while `top_container` is itself reparented into the overlay.
+        top_container_->AddChildViewAt(horizontal_tab_strip_region_view_.get(),
+                                       0);
+      }
+      focus_mode_top_overlay_->AddChildView(top_container_.get());
+      focus_mode_top_overlay_->SetVisible(true);
+    } else {
+      DCHECK(focus_mode_top_container_saved_index_);
+      AddChildViewAt(top_container_.get(),
+                     *focus_mode_top_container_saved_index_);
+      if (focus_mode_tab_strip_saved_index_) {
+        AddChildViewAt(horizontal_tab_strip_region_view_.get(),
+                       *focus_mode_tab_strip_saved_index_);
+      }
+      focus_mode_top_container_saved_index_.reset();
+      focus_mode_tab_strip_saved_index_.reset();
+      focus_mode_top_overlay_->SetVisible(false);
+      EnsureFindBarHostViewIsLastChild();
+    }
+    InvalidateLayout();
+  }
+
   if (top_reveal_controller_) {
     top_reveal_controller_->SetEnabled(active);
   }
@@ -883,7 +898,7 @@ void BraveBrowserView::UpdateFocusModeEffectiveState() {
 }
 
 void BraveBrowserView::OnEdgeRevealFractionChanged(double fraction) {
-  DeprecatedLayoutImmediately();
+  UpdateFocusModeOverlayBounds();
   if (auto* frame_view = GetFrameView()) {
     frame_view->DeprecatedLayoutImmediately();
   }
@@ -899,16 +914,28 @@ void BraveBrowserView::OnEdgeRevealFractionChanged(double fraction) {
 }
 
 int BraveBrowserView::GetTopRevealOffset() const {
-  if (!top_reveal_controller_) {
-    return 0;
+  return focus_mode_top_overlay_ && focus_mode_top_overlay_->GetVisible()
+             ? focus_mode_top_overlay_->bounds().y()
+             : 0;
+}
+
+void BraveBrowserView::UpdateFocusModeOverlayBounds() {
+  if (!focus_mode_top_overlay_ || !focus_mode_top_overlay_->GetVisible()) {
+    return;
   }
-  const double fraction = top_reveal_controller_->GetRevealFraction();
-  int top_height = top_container_ ? top_container_->height() : 0;
-  if (horizontal_tab_strip_region_view_ &&
-      horizontal_tab_strip_region_view_->parent() == this) {
-    top_height += horizontal_tab_strip_region_view_->height();
-  }
-  return -static_cast<int>((1.0 - fraction) * top_height);
+
+  // `top_container_` was reparented into the overlay when focus mode was
+  // enabled, with the horizontal tab strip placed inside it. Its bottom edge
+  // (set by the upstream layout's "top container parented elsewhere" branch)
+  // gives the overlay's natural full-height.
+  const int height = top_container_ ? top_container_->bounds().bottom() : 0;
+
+  const double fraction = top_reveal_controller_
+                              ? top_reveal_controller_->GetRevealFraction()
+                              : 1.0;
+  const int y_offset = -static_cast<int>((1.0 - fraction) * height);
+  focus_mode_top_overlay_->SetBoundsRect(
+      gfx::Rect(0, y_offset, width(), height));
 }
 
 void BraveBrowserView::LoadAccelerators() {
@@ -1050,8 +1077,6 @@ void BraveBrowserView::OnWidgetActivationChanged(views::Widget* widget,
   if (sidebar_container_view_) {
     sidebar_container_view_->UpdateSidebarItemsState();
   }
-
-  UpdateTopContainerBackgroundColor();
 }
 
 void BraveBrowserView::OnWidgetWindowModalVisibilityChanged(
@@ -1105,7 +1130,8 @@ void BraveBrowserView::HideSplitView() {
 }
 
 void BraveBrowserView::ReparentTopContainerForEndOfImmersive() {
-  if (tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
+  if (tabs::utils::ShouldShowBraveVerticalTabs(browser()) ||
+      IsFocusModeEnabled(browser())) {
     return;
   }
 
@@ -1160,22 +1186,6 @@ bool BraveBrowserView::ShouldShowWindowTitle() const {
   }
 
   return false;
-}
-
-void BraveBrowserView::OnThemeChanged() {
-  BrowserView::OnThemeChanged();
-  // TODO: Move this into top_container_background.
-  UpdateTopContainerBackgroundColor();
-}
-
-void BraveBrowserView::UpdateTopContainerBackgroundColor() {
-  if (!top_container_background_view_) {
-    return;
-  }
-  if (auto* frame_view = GetFrameView()) {
-    top_container_background_view_->SetBackground(views::CreateSolidBackground(
-        frame_view->GetFrameColor(BrowserFrameActiveState::kUseCurrent)));
-  }
 }
 
 void BraveBrowserView::UpdateRoundedCornersUI() {
@@ -1489,6 +1499,7 @@ void BraveBrowserView::UpdateWebViewRoundedCorners() {
 
 void BraveBrowserView::Layout(PassKey) {
   LayoutSuperclass<BrowserView>(this);
+  UpdateFocusModeOverlayBounds();
   UpdateWebViewRoundedCorners();
 }
 

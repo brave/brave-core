@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/frame/top_container_background.h"
+#include "brave/browser/ui/views/frame/focus_mode_top_overlay.h"
 
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -19,14 +19,13 @@ constexpr ViewShadow::ShadowParameters kShadow{
 
 }  // namespace
 
-TopContainerBackground::TopContainerBackground()
+FocusModeTopOverlay::FocusModeTopOverlay()
     : shadow_(this, gfx::RoundedCornersF(0), kShadow) {
   SetPaintToLayer();
   layer()->SetFillsBoundsOpaquely(true);
-  SetCanProcessEventsWithinSubtree(false);
 }
 
-TopContainerBackground::~TopContainerBackground() = default;
+FocusModeTopOverlay::~FocusModeTopOverlay() = default;
 
-BEGIN_METADATA(TopContainerBackground)
+BEGIN_METADATA(FocusModeTopOverlay)
 END_METADATA
