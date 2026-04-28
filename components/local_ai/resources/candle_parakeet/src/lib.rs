@@ -18,6 +18,14 @@ use wasm_bindgen::prelude::*;
 
 use model::{ModelBuilder, Parakeet, ParakeetConfig};
 
+#[wasm_bindgen]
+extern "C" {
+    #[wasm_bindgen(js_namespace = console, js_name = error)]
+    fn log_error(s: &str);
+    #[wasm_bindgen(js_namespace = performance)]
+    fn now() -> f64;
+}
+
 // 16 kHz mono PCM is the only sample rate Parakeet-CTC-110M
 // accepts (baked into the mel filterbank and the encoder config).
 const SAMPLE_RATE: usize = 16_000;
@@ -243,6 +251,8 @@ impl ParakeetTranscriber {
             _ => return Err(JsError::new("model not finalized")),
         };
 
+        let t0 = now();
+
         // Mel preprocessing returns (num_mel_bins, T) row-major.
         // Encoder wants (B, T, num_mel_bins), so reshape + transpose.
         let mel = audio::pcm_to_mel(pcm, &self.mel_filters);
@@ -253,13 +263,38 @@ impl ParakeetTranscriber {
             .and_then(|t| t.contiguous())
             .map_err(|e| JsError::new(&e.to_string()))?;
 
+        let t1 = now();
+
         let logits = model.forward(&mel_tensor).map_err(|e| JsError::new(&e.to_string()))?;
+
+        let t2 = now();
 
         let blank_id = (self.config.vocab_size - 1) as u32;
         let token_ids =
             ctc_greedy_decode(&logits, blank_id).map_err(|e| JsError::new(&e.to_string()))?;
 
-        self.tokenizer.decode(&token_ids, true).map_err(|e| JsError::new(&e.to_string()))
+        let t3 = now();
+
+        let text = self
+            .tokenizer
+            .decode(&token_ids, true)
+            .map_err(|e| JsError::new(&e.to_string()))?;
+
+        let t4 = now();
+
+        log_error(&format!(
+            "[parakeet] timing: mel={:.0}ms forward={:.0}ms ctc={:.0}ms \
+             tokenize={:.0}ms total={:.0}ms audio={:.2}s text=\"{}\"",
+            t1 - t0,
+            t2 - t1,
+            t3 - t2,
+            t4 - t3,
+            t4 - t0,
+            pcm.len() as f32 / SAMPLE_RATE as f32,
+            text,
+        ));
+
+        Ok(text)
     }
 }
 
