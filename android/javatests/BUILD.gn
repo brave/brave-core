@@ -113,12 +113,30 @@ android_library(
   sources = [
     "org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerBaseTest.java",
     "org/chromium/chrome/browser/media/BraveFullscreenVideoPictureInPictureControllerTest.java",
+    "org/chromium/chrome/browser/media/BraveYouTubePictureInPictureControllerTest.java",
   ]
 
   deps = [
     ":brave_test_java_helper",
+    "//content/public/android:content_java",
     "//third_party/android_deps:org_mockito_mockito_core_java",
     "//third_party/mockito:mockito_java",
+  ]
+}
+
+android_library("brave_test_java_org.chromium.components.browser_ui.media") {
+  sources = [
+    "org/chromium/components/browser_ui/media/BraveMediaSessionHelperTest.java",
+  ]
+
+  deps = [
+    ":brave_test_java_helper",
+    "//brave/components/browser_ui/media/android:java",
+    "//content/public/android:content_java",
+    "//third_party/android_deps:org_mockito_mockito_core_java",
+    "//third_party/mockito:mockito_java",
+    "//ui/android:ui_no_recycler_view_java",
+    "//url:gurl_java",
   ]
 }
 

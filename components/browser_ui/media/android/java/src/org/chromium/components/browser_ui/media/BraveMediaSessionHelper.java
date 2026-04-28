@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.CommandLine;
@@ -59,17 +60,25 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
     }
 
     private boolean shouldSuppressMediaPause() {
+        // Compute the YouTube classification once and pass it to the
+        // YT-specific predicates instead of having each one re-parse the URL.
         WebContents webContents =
                 (WebContents)
                         BraveReflectionUtil.getField(
                                 MediaSessionHelper.class, "mWebContents", this);
-
-        return isBraveTalk(webContents)
-                || isBackgroundVideo(webContents)
-                || isYouTubePictureInPicture(webContents);
+        if (isBraveTalk(webContents)) {
+            return true;
+        }
+        final boolean isYouTube = isYouTube(webContents);
+        if (!isYouTube) {
+            return false;
+        }
+        return isBackgroundVideo(webContents, isYouTube)
+                || isYouTubePictureInPicture(webContents, isYouTube);
     }
 
-    private boolean isYouTube(WebContents webContents) {
+    @VisibleForTesting
+    static boolean isYouTube(WebContents webContents) {
         if (webContents == null) return false;
         GURL pageUrl = webContents.getLastCommittedUrl();
         return pageUrl.isValid()
@@ -77,7 +86,8 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
                 && sYouTubeHosts.contains(pageUrl.getHost());
     }
 
-    private boolean isBackgroundVideo(WebContents webContents) {
+    @VisibleForTesting
+    boolean isBackgroundVideo(WebContents webContents, boolean isYouTube) {
         // We check the command line switch rather than reading the preference directly because
         // this class is in the components layer and cannot access Profile or UserPrefs (chrome
         // layer) without causing R8 module boundary violations in the AAB build. The switch is
@@ -85,14 +95,12 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
         // feature and preference are both enabled, and the app restarts whenever the preference
         // changes, so the switch reliably reflects the current preference state.
         // In C++ this switch is defined as switches::kDisableBackgroundMediaSuspend.
-        boolean enabled =
-                CommandLine.getInstance().hasSwitch("disable-background-media-suspend")
-                        && isYouTube(webContents);
-        return enabled;
+        return isYouTube && CommandLine.getInstance().hasSwitch("disable-background-media-suspend");
     }
 
-    private boolean isYouTubePictureInPicture(final WebContents webContents) {
-        if (!isYouTube(webContents)) {
+    @VisibleForTesting
+    boolean isYouTubePictureInPicture(WebContents webContents, boolean isYouTube) {
+        if (!isYouTube) {
             return false;
         }
 

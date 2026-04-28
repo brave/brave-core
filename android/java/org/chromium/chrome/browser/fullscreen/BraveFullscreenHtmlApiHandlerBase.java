@@ -12,7 +12,12 @@ import org.chromium.chrome.browser.app.BraveActivity;
 /**
  * Super class of {@link FullscreenHtmlApiHandlerBase} introduced via bytecode changes. For more
  * info see {@link org.brave.bytecode.BraveFullscreenHtmlApiHandlerBaseClassAdapter}.
+ *
+ * <p>The hooks below are called from upstream FullscreenHtmlApiHandlerBase via Plaster
+ * substitutions; if the names or signatures change, update the corresponding entries in {@code
+ * rewrite/chrome/android/.../FullscreenHtmlApiHandlerBase.java.toml}.
  */
+// LINT.IfChange(brave_fullscreen_html_api_handler_base)
 public abstract class BraveFullscreenHtmlApiHandlerBase {
     /**
      * Field accessed using {@code BraveFullscreenHtmlApiHandlerBase.class.cast(this)}. Used to keep
@@ -42,3 +47,4 @@ public abstract class BraveFullscreenHtmlApiHandlerBase {
                 && braveActivity.isYouTubePictureInPictureActive();
     }
 }
+// LINT.ThenChange(/brave/rewrite/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java.toml)
