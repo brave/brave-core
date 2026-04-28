@@ -355,20 +355,26 @@ void PolkadotTxManager::OnTransactionStatusResolved(
       // If we're using transfer_all, we had to manually adjust the tx amount.
       // Because the actual fee can differ, our new amount can differ as well.
       // Undo our previous operation and apply the new fee, storing the
-      // updated send amount. We can use ValueOrDie() here because these
-      // operations really shouldn't overflow or underflow.
+      // updated send amount. Return true or false if we received a malicious
+      // RPC response that would've caused overflow.
       const uint128_t old_fee = tx->fee();
       base::CheckedNumeric<uint128_t> amount = tx->amount();
       amount += old_fee;
       amount -= fee_paid.value();
+      if (!amount.IsValid()) {
+        return false;
+      }
       tx->set_amount(amount.ValueOrDie());
     }
+    return true;
   };
 
   switch (status) {
     case PolkadotTransactionStatus::kSuccess:
       CHECK(fee_paid.has_value());
-      adjust_transfer_all_amount(polkadot_tx->tx());
+      if (!adjust_transfer_all_amount(polkadot_tx->tx())) {
+        return;
+      }
       polkadot_tx->set_status(mojom::TransactionStatus::Confirmed);
       polkadot_tx->set_confirmed_time(base::Time::Now());
       polkadot_tx->tx()->set_fee(*fee_paid);
@@ -376,7 +382,9 @@ void PolkadotTxManager::OnTransactionStatusResolved(
 
     case PolkadotTransactionStatus::kFailed:
       CHECK(fee_paid.has_value());
-      adjust_transfer_all_amount(polkadot_tx->tx());
+      if (!adjust_transfer_all_amount(polkadot_tx->tx())) {
+        return;
+      }
       polkadot_tx->set_status(mojom::TransactionStatus::Error);
       polkadot_tx->tx()->set_fee(*fee_paid);
       break;
