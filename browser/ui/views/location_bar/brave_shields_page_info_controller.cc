@@ -8,6 +8,7 @@
 #include "base/check_deref.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/browser/ui/views/page_info/brave_page_info_bubble_view.h"
+#include "chrome/browser/ui/browser_element_identifiers.h"
 #include "chrome/browser/ui/user_education/browser_user_education_interface.h"
 #include "chrome/browser/ui/views/location_bar/location_icon_view.h"
 #include "chrome/browser/ui/views/page_info/page_info_bubble_specification.h"
@@ -131,7 +132,7 @@ void BraveShieldsPageInfoController::ShowBubbleForRepeatedReloads() {
 
   auto* page_info_bubble = views::AsViewClass<BravePageInfoBubbleView>(bubble);
   CHECK(page_info_bubble);
-  page_info_bubble->SetHighlightedButton(&location_icon_view_.get());
+  page_info_bubble->SetHighlightedElement(kLocationIconElementId);
   page_info_bubble->GetWidget()->Show();
   page_info_bubble->OpenShieldsPageAfterRepeatedReloads();
 }
