@@ -95,6 +95,12 @@ constexpr char16_t kYoutubePictureInPictureSupport[] =
 }());
 )";
 
+// Keep selector lists in sync so the exit path can target whichever fullscreen
+// button the YouTube player variant rendered on entry.
+//
+// Retry budget: ~6 attempts × 350 ms = ~2.1 s, long enough for the mobile
+// player to mount its controls on a cold load without keeping the script alive
+// past a reasonable wait window for the user.
 constexpr char16_t kYoutubeFullscreen[] =
     uR"(
 (function() {
@@ -106,6 +112,12 @@ constexpr char16_t kYoutubeFullscreen[] =
     const playerContainerSelector = "#player-container-id, ytm-player, #player";
     const maxAttempts = 6;
     const retryDelayMs = 350;
+    let resolved = false;
+    function resolveOnce(value) {
+      if (resolved) return;
+      resolved = true;
+      resolve(value);
+    }
     function isFullscreen(player) {
       player = player || document.querySelector(playerSelector);
       const isPlayerFullscreen = player?.isFullscreen?.();
@@ -124,9 +136,10 @@ constexpr char16_t kYoutubeFullscreen[] =
       }
     }
     function triggerFullscreen(attempt) {
+      if (resolved) return;
       const player = document.querySelector(playerSelector);
       if (isFullscreen(player)) {
-        resolve('already_fullscreen');
+        resolveOnce('already_fullscreen');
         return;
       }
 
@@ -161,40 +174,45 @@ constexpr char16_t kYoutubeFullscreen[] =
       if (videoPlayer.readyState >= 3) {
         videoPlayer.click();
         clickFullscreenButton(fullscreenBtn, attempt);
-      } else {
-        videoPlayer.addEventListener("canplay", () => {
-          videoPlayer.click();
-          clickFullscreenButton(fullscreenBtn, attempt);
-        }, { once: true });
-        scheduleRetry(attempt);
+        return;
       }
+      // The video isn't decodable yet. Wait for `canplay` to retry exactly
+      // once. If `canplay` fires we're done, otherwise the scheduled retry
+      // will pick up where we left off. The resolved flag prevents the two
+      // paths from racing.
+      videoPlayer.addEventListener("canplay", () => {
+        if (resolved) return;
+        videoPlayer.click();
+        clickFullscreenButton(fullscreenBtn, attempt);
+      }, { once: true });
+      scheduleRetry(attempt);
     }
     function clickFullscreenButton(fullscreenBtn, attempt) {
       if (isFullscreen()) {
-        resolve('already_fullscreen');
+        resolveOnce('already_fullscreen');
         return;
       }
       if (fullscreenBtn) {
         fullscreenBtn.click();
-        resolve('fullscreen_triggered');
+        resolveOnce('fullscreen_triggered');
       } else {
         scheduleRetry(attempt);
       }
     }
     function requestYoutubeFullscreen(player, attempt) {
       if (isFullscreen(player)) {
-        resolve('already_fullscreen');
+        resolveOnce('already_fullscreen');
         return true;
       }
       if (!player || !player.toggleFullscreen || hasFullscreenClass(player)) {
         return false;
       }
 
+      // Use YouTube's own toggle and then poll once for the result; do not
+      // also call requestFullscreen() on the same element - the two APIs
+      // race on Android and can leave the player in an inconsistent state.
       try {
         player.toggleFullscreen();
-        if (requestElementFullscreen(player, attempt)) {
-          return true;
-        }
         waitForFullscreen(attempt);
         return true;
       } catch (e) {
@@ -203,8 +221,9 @@ constexpr char16_t kYoutubeFullscreen[] =
     }
     function waitForFullscreen(attempt) {
       setTimeout(() => {
+        if (resolved) return;
         if (isFullscreen()) {
-          resolve('fullscreen_triggered');
+          resolveOnce('fullscreen_triggered');
           return;
         }
         scheduleRetry(attempt);
@@ -212,7 +231,7 @@ constexpr char16_t kYoutubeFullscreen[] =
     }
     function requestElementFullscreen(element, attempt) {
       if (isFullscreen()) {
-        resolve('already_fullscreen');
+        resolveOnce('already_fullscreen');
         return true;
       }
 
@@ -223,10 +242,10 @@ constexpr char16_t kYoutubeFullscreen[] =
       try {
         const result = element.requestFullscreen();
         if (result && result.then) {
-          result.then(() => resolve('fullscreen_triggered'))
+          result.then(() => resolveOnce('fullscreen_triggered'))
               .catch(() => scheduleRetry(attempt));
         } else {
-          resolve('fullscreen_triggered');
+          resolveOnce('fullscreen_triggered');
         }
         return true;
       } catch (e) {
@@ -234,8 +253,9 @@ constexpr char16_t kYoutubeFullscreen[] =
       }
     }
     function scheduleRetry(attempt) {
+      if (resolved) return;
       if (attempt >= maxAttempts) {
-        resolve('no_elements');
+        resolveOnce('no_elements');
         return;
       }
       setTimeout(() => triggerFullscreen(attempt + 1), retryDelayMs);
@@ -255,16 +275,39 @@ constexpr char16_t kYoutubeFullscreen[] =
 constexpr char16_t kYoutubeExitFullscreen[] =
     uR"(
 (function() {
-  if (!document.fullscreenElement || !document.exitFullscreen) {
+  // Mirror the entry-side selectors so we can fall back to whichever
+  // fullscreen button this YouTube variant is rendering.
+  const fullscreenSelector = "button.fullscreen-icon, "
+      + "button.ytp-fullscreen-button, .ytp-fullscreen-button";
+  const playerSelector = "#movie_player, .html5-video-player";
+  const player = document.querySelector(playerSelector);
+  const isPlayerFullscreen = player?.isFullscreen?.() === true;
+
+  if (document.fullscreenElement && document.exitFullscreen) {
+    document.exitFullscreen().catch(() => {
+      const fullscreenBtn = document.querySelector(fullscreenSelector);
+      if (fullscreenBtn && document.fullscreenElement) {
+        fullscreenBtn.click();
+      }
+    });
     return;
   }
 
-  document.exitFullscreen().catch(() => {
-    const fullscreenBtn = document.querySelector("button.fullscreen-icon");
-    if (fullscreenBtn && document.fullscreenElement) {
+  if (isPlayerFullscreen && player?.toggleFullscreen) {
+    try {
+      player.toggleFullscreen();
+      return;
+    } catch (e) {
+      // Fall through to the button-based fallback below.
+    }
+  }
+
+  if (isPlayerFullscreen) {
+    const fullscreenBtn = document.querySelector(fullscreenSelector);
+    if (fullscreenBtn) {
       fullscreenBtn.click();
     }
-  });
+  }
 }());
 )";
 

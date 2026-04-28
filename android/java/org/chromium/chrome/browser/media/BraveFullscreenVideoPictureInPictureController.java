@@ -6,14 +6,16 @@
 package org.chromium.chrome.browser.media;
 
 import android.app.Activity;
-import android.app.KeyguardManager;
-import android.content.Context;
-import android.os.PowerManager;
 
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.chrome.browser.app.BraveActivity;
 
 public class BraveFullscreenVideoPictureInPictureController {
+    // Mirrors the int values of FullscreenVideoPictureInPictureController.MetricsEndReason in
+    // upstream Chromium. Update if upstream renumbers — checked manually since the upstream enum
+    // is package-private and not directly importable.
+    // Source: chrome/android/java/src/org/chromium/chrome/browser/media/
+    //         FullscreenVideoPictureInPictureController.java#MetricsEndReason
     private static final int METRICS_END_REASON_RESUME = 0;
     private static final int METRICS_END_REASON_LEFT_FULLSCREEN = 6;
     private static final int METRICS_END_REASON_WEB_CONTENTS_LEFT_FULLSCREEN = 7;
@@ -58,7 +60,7 @@ public class BraveFullscreenVideoPictureInPictureController {
             return false;
         }
 
-        if (isScreenOffOrLocked(activity)) {
+        if (BraveYouTubePictureInPictureController.isScreenOffOrLocked(activity)) {
             if (activity instanceof final BraveActivity braveActivity) {
                 braveActivity.onYouTubePictureInPictureFullscreenInterrupted();
             }
@@ -72,16 +74,5 @@ public class BraveFullscreenVideoPictureInPictureController {
         return activity.isInPictureInPictureMode()
                 && activity instanceof final BraveActivity braveActivity
                 && braveActivity.isYouTubePictureInPictureActive();
-    }
-
-    private boolean isScreenOffOrLocked(Activity activity) {
-        PowerManager powerManager = (PowerManager) activity.getSystemService(Context.POWER_SERVICE);
-        if (powerManager != null && !powerManager.isInteractive()) {
-            return true;
-        }
-
-        KeyguardManager keyguardManager =
-                (KeyguardManager) activity.getSystemService(Context.KEYGUARD_SERVICE);
-        return keyguardManager != null && keyguardManager.isKeyguardLocked();
     }
 }
