@@ -97,6 +97,9 @@ public class BraveYouTubePictureInPictureController {
                 savedInstanceState.getBoolean(KEY_INTERRUPTED_BY_SCREEN_LOCK, false);
         mResumeMediaSessionOnPipEntry =
                 savedInstanceState.getBoolean(KEY_RESUME_MEDIA_SESSION_ON_PIP_ENTRY, false);
+        if (mActive && mInterruptedByScreenLock) {
+            registerScreenStateReceiver();
+        }
     }
 
     /** Persist state ahead of activity recreation. */
@@ -436,5 +439,10 @@ public class BraveYouTubePictureInPictureController {
     @VisibleForTesting
     public boolean isInterruptedByScreenLockForTesting() {
         return mInterruptedByScreenLock;
+    }
+
+    @VisibleForTesting
+    public boolean hasScreenStateReceiverForTesting() {
+        return mScreenStateReceiver != null;
     }
 }
