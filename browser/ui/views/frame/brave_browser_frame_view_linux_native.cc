@@ -13,7 +13,9 @@
 #include "base/notreached.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "build/build_config.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/views/frame/browser_frame_view_layout_linux_native.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/common/pref_names.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -53,6 +55,34 @@ BraveBrowserFrameViewLinuxNative::BraveBrowserFrameViewLinuxNative(
                                   std::move(nav_button_provider)) {}
 
 BraveBrowserFrameViewLinuxNative::~BraveBrowserFrameViewLinuxNative() = default;
+
+void BraveBrowserFrameViewLinuxNative::PaintRestoredFrameBorder(
+    gfx::Canvas* canvas) const {
+  auto* browser = GetBrowserView()->browser();
+  CHECK(browser);
+
+  if (!tabs::utils::ShouldShowBraveVerticalTabs(browser) ||
+      tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser)) {
+    BrowserFrameViewLinuxNative::PaintRestoredFrameBorder(canvas);
+    return;
+  }
+
+  // For Brave vertical tabs w/o title, GetTopAreaHeight() returns
+  // NonClientTopHeight(false) which equals only the shadow thickness F.
+  // PaintWindowFrame then computes top_area_height_px = ClampCeil(F * scale)
+  // - shadow_px = 0, producing a zero-height headerbar bitmap that crashes in
+  // CairoSurface::CairoSurface().
+  // Add the toolbar height here to avoid crashing from gtk's frame painting.
+  // As we don't need any visible rect above toolbar, maybe we don't need to
+  // call PaintHeaderbar but it crashed with zero-height.
+  int top_area_height = GetTopAreaHeight();
+  if (auto* const toolbar = GetBrowserView()->toolbar()) {
+    top_area_height += toolbar->GetPreferredSize().height();
+  }
+  layout_->GetFrameProvider()->PaintWindowFrame(
+      canvas, GetLocalBounds(), top_area_height, ShouldPaintAsActive(),
+      GetInputInsets());
+}
 
 void BraveBrowserFrameViewLinuxNative::MaybeUpdateCachedFrameButtonImages() {
   auto* browser = GetBrowserView()->browser();

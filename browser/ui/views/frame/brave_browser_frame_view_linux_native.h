@@ -28,6 +28,7 @@ class BraveBrowserFrameViewLinuxNative : public BrowserFrameViewLinuxNative {
 
   // BrowserFrameViewLinuxNative:
   void MaybeUpdateCachedFrameButtonImages() override;
+  void PaintRestoredFrameBorder(gfx::Canvas* canvas) const override;
   void Layout(PassKey) override;
 
  private:
