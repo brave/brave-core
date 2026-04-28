@@ -225,6 +225,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/ai_chat/content/browser/ai_chat_throttle.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/content/browser/devtools/ai_chat_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/bookmarks.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -517,7 +518,12 @@ bool IsJsBlockingEnforced(content::BrowserContext* browser_context,
 
 }  // namespace
 
-BraveContentBrowserClient::BraveContentBrowserClient() = default;
+BraveContentBrowserClient::BraveContentBrowserClient() {
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  brave::devtools::AIChatHandler::SetServiceGetter(
+      &ai_chat::AIChatServiceFactory::GetForBrowserContext);
+#endif
+}
 
 BraveContentBrowserClient::~BraveContentBrowserClient() = default;
 
