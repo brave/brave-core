@@ -107,6 +107,23 @@ public class BraveYouTubePictureInPictureControllerTest {
 
     @Test
     @SmallTest
+    public void onPostCreate_withInterruptedActiveSession_registersScreenStateReceiver() {
+        Bundle savedState = new Bundle();
+        savedState.putBoolean(BraveYouTubePictureInPictureController.KEY_ACTIVE, true);
+        savedState.putBoolean(
+                BraveYouTubePictureInPictureController.KEY_INTERRUPTED_BY_SCREEN_LOCK, true);
+
+        BraveYouTubePictureInPictureController controller =
+                new BraveYouTubePictureInPictureController(mBraveActivity);
+        controller.onPostCreate(savedState);
+
+        assertTrue(controller.isActive());
+        assertTrue(controller.isInterruptedByScreenLockForTesting());
+        assertTrue(controller.hasScreenStateReceiverForTesting());
+    }
+
+    @Test
+    @SmallTest
     public void onPostCreate_withNullBundle_initializesInactive() {
         BraveYouTubePictureInPictureController controller =
                 new BraveYouTubePictureInPictureController(mBraveActivity);
