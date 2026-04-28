@@ -65,6 +65,18 @@ public class PlaylistManager: NSObject {
   >()
   private let onCurrentFolderChanged = PassthroughSubject<(), Never>()
   private let onFolderDeleted = PassthroughSubject<(), Never>()
+  private let onItemResolutionChanged = PassthroughSubject<
+    (id: String, isResolving: Bool), Never
+  >()
+
+  /// In-flight streaming-URL resolution tasks, keyed by item id. Used to dedupe concurrent
+  /// resolutions kicked off from different surfaces (e.g. URL bar add vs. player open).
+  private var inFlightResolutions: [String: Task<PlaylistInfo, Error>] = [:]
+
+  /// Most recent resolution outcome per item, used to short-circuit back-to-back resolutions
+  /// (e.g. URL bar add immediately followed by playlist UI auto-opening the player).
+  private var recentResolutions: [String: (result: Result<PlaylistInfo, Error>, date: Date)] = [:]
+  private static let resolutionCacheLifetime: TimeInterval = 60
 
   private override init() {
     super.init()
@@ -146,6 +158,13 @@ public class PlaylistManager: NSObject {
 
   public var onCurrentFolderDidChange: AnyPublisher<(), Never> {
     onCurrentFolderChanged.eraseToAnyPublisher()
+  }
+
+  /// Emits `(itemId, isResolving)` when a streaming-URL resolution starts (`true`) or finishes
+  /// (`false`). Lets list/CarPlay surfaces show a "Preparing" indicator while a blob item is
+  /// being resolved in the background.
+  public var itemResolutionChanged: AnyPublisher<(id: String, isResolving: Bool), Never> {
+    onItemResolutionChanged.eraseToAnyPublisher()
   }
 
   public var allItems: [PlaylistInfo] {
@@ -266,6 +285,64 @@ public class PlaylistManager: NSObject {
     }
 
     return .invalid
+  }
+
+  /// Concurrently fetches the download state for each of `itemIds`. Refreshing a list of
+  /// `N` items takes the wall-clock time of the slowest single fetch instead of the sum.
+  public func downloadStates(
+    for itemIds: [String]
+  ) async -> [String: PlaylistDownloadManager.DownloadState] {
+    await withTaskGroup(
+      of: (String, PlaylistDownloadManager.DownloadState).self
+    ) { group in
+      for itemId in itemIds {
+        group.addTask { (itemId, await self.downloadState(for: itemId)) }
+      }
+      var states: [String: PlaylistDownloadManager.DownloadState] = [:]
+      for await (id, state) in group {
+        states[id] = state
+      }
+      return states
+    }
+  }
+
+  /// Returns `true` while a streaming-URL resolution is in-flight for `itemId`.
+  @MainActor public func isResolvingStreamingAsset(for itemId: String) -> Bool {
+    inFlightResolutions[itemId] != nil
+  }
+
+  /// Resolves a streaming asset for `itemId` while ensuring at most one resolution runs at a
+  /// time per item. Concurrent callers await the same underlying task.
+  ///
+  /// Surfaces start/stop events on `itemResolutionChanged` so list rows can show a
+  /// "Preparing" indicator. The returned item has been persisted by the resolver.
+  @MainActor public func resolveStreamingAsset(
+    for itemId: String,
+    resolver: @escaping @MainActor () async throws -> PlaylistInfo
+  ) async throws -> PlaylistInfo {
+    if let cached = recentResolutions[itemId],
+      Date().timeIntervalSince(cached.date) < Self.resolutionCacheLifetime
+    {
+      return try cached.result.get()
+    }
+    if let existing = inFlightResolutions[itemId] {
+      return try await existing.value
+    }
+    let task = Task { @MainActor in try await resolver() }
+    inFlightResolutions[itemId] = task
+    onItemResolutionChanged.send((id: itemId, isResolving: true))
+    defer {
+      inFlightResolutions[itemId] = nil
+      onItemResolutionChanged.send((id: itemId, isResolving: false))
+    }
+    do {
+      let info = try await task.value
+      recentResolutions[itemId] = (.success(info), Date())
+      return info
+    } catch {
+      recentResolutions[itemId] = (.failure(error), Date())
+      throw error
+    }
   }
 
   @available(iOS, deprecated)

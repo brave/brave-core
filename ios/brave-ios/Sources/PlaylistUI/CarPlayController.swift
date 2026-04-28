@@ -73,6 +73,7 @@ public class CarPlayController {
   private var selectedFolderID: PlaylistFolder.ID?
   private var isErrorPresented: Bool = false
   private var downloadStates: [String: PlaylistDownloadManager.DownloadState] = [:]
+  private var resolvingItems: Set<String> = []
 
   @MainActor private func updateFoldersList() {
     let folderListTemplate = self.folderListTemplate
@@ -157,6 +158,21 @@ public class CarPlayController {
         }
       }
       .store(in: &cancellables)
+
+    PlaylistManager.shared.itemResolutionChanged
+      .receive(on: RunLoop.main)
+      .sink { [weak self] output in
+        guard let self else { return }
+        if output.isResolving {
+          self.resolvingItems.insert(output.id)
+        } else {
+          self.resolvingItems.remove(output.id)
+        }
+        Task { @MainActor in
+          await self.updateItemList()
+        }
+      }
+      .store(in: &cancellables)
   }
 
   // MARK: -
@@ -205,6 +221,9 @@ public class CarPlayController {
         let listItem = item.listItem
         listItem.accessoryType =
           downloadStates[itemUUID] != .downloaded ? .cloud : .none
+        if resolvingItems.contains(itemUUID) {
+          listItem.setDetailText(Strings.Playlist.itemDownloadStatusPreparing)
+        }
         listItem.isPlaying = player.isPlaying && player.selectedItemID == item.id
         listItem.playingIndicatorLocation = .trailing
         listItem.userInfo = ["id": item.id, "uuid": itemUUID]
@@ -289,27 +308,10 @@ public class CarPlayController {
   }
 
   @MainActor private func refreshDownloadStates(for items: [PlaylistItem]) async {
-    let uuids = items.compactMap(\.uuid)
-
-    // Fetch each item's download state concurrently so list refresh stays O(1) wall-clock
-    // in the number of items.
-    let resolvedStates = await withTaskGroup(
-      of: (String, PlaylistDownloadManager.DownloadState).self
-    ) { group in
-      for uuid in uuids {
-        group.addTask {
-          (uuid, await PlaylistManager.shared.downloadState(for: uuid))
-        }
-      }
-      var result: [String: PlaylistDownloadManager.DownloadState] = [:]
-      for await (uuid, state) in group {
-        result[uuid] = state
-      }
-      return result
-    }
-
     // Replacing wholesale also drops entries for items that are no longer present.
-    downloadStates = resolvedStates
+    downloadStates = await PlaylistManager.shared.downloadStates(
+      for: items.compactMap(\.uuid)
+    )
   }
 }
 

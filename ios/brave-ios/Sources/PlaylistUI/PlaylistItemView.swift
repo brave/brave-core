@@ -8,6 +8,7 @@ import Strings
 import SwiftUI
 
 enum ItemDownloadState {
+  case resolving
   case downloading(percentComplete: Double)
   case completed
 }
@@ -68,6 +69,14 @@ struct PlaylistItemView: View {
           }
           if let downloadState {
             switch downloadState {
+            case .resolving:
+              Label {
+                Text(Strings.Playlist.itemDownloadStatusPreparing)
+              } icon: {
+                ProgressView()
+                  .controlSize(.mini)
+              }
+              .foregroundColor(Color(braveSystemName: .primary50))
             case .downloading(let percentCompleted):
               Label {
                 Text(Strings.Playlist.itemDownloadStatusPreparing)

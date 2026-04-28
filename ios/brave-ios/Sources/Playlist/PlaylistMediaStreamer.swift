@@ -50,6 +50,13 @@ public class PlaylistMediaStreamer {
       return try await streamingFallback(item)
     }
 
+    // `URLSession` cannot speak the `blob:` scheme, so probing it here only produces a
+    // misleading `-1002` error before we fall back. Skip straight to the webview-based
+    // resolution for blob URLs.
+    if url.scheme == "blob" {
+      return try await streamingFallback(item)
+    }
+
     // Try to stream the asset from its url..
     let isStreamable = await canStreamURL(url)
 

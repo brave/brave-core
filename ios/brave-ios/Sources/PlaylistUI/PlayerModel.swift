@@ -621,7 +621,12 @@ public final class PlayerModel: ObservableObject {
       }
       isLoadingStreamingURL = true
       do {
-        let newItem = try await mediaStreamer.loadMediaStreamingAsset(.init(item: item))
+        // Route through PlaylistManager so we re-use any in-flight resolution kicked off
+        // elsewhere (e.g. by the URL-bar add path) instead of racing a second WKWebView.
+        let info = PlaylistInfo(item: item)
+        let newItem = try await PlaylistManager.shared.resolveStreamingAsset(for: info.tagId) {
+          try await mediaStreamer.loadMediaStreamingAsset(info)
+        }
         if let url = URL(string: newItem.src) {
           playerItemToReplace = await Task.detached {
             .init(asset: AVURLAsset(url: url))

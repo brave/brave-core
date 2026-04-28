@@ -22,6 +22,7 @@ struct PlaylistItemList: View {
   private typealias PlaylistItemUUID = String
   @State private var downloadStates: [PlaylistItemUUID: PlaylistDownloadManager.DownloadState] = [:]
   @State private var downloadProgress: [PlaylistItemUUID: Double] = [:]
+  @State private var resolvingItems: Set<PlaylistItemUUID> = []
 
   init(
     items: [PlaylistItem],
@@ -54,20 +55,7 @@ struct PlaylistItemList: View {
             duration: .init(item.duration),
             isSelected: selectedItemID == item.id,
             isPlaying: isPlaying,
-            downloadState: {
-              guard let uuid = item.uuid, let state = downloadStates[uuid] else {
-                return nil
-              }
-              if state == .downloaded {
-                return .completed
-              }
-              if state == .inProgress {
-                // PlaylistDownloadManager reports percent as 0...100 not 0...1
-                let percentCompleted = downloadProgress[uuid, default: 0.0] / 100.0
-                return .downloading(percentComplete: percentCompleted)
-              }
-              return nil
-            }()
+            downloadState: downloadState(for: item)
           )
           .padding(.horizontal, 12)
           .padding(.vertical, 8)
@@ -152,10 +140,11 @@ struct PlaylistItemList: View {
     }
     .frame(maxWidth: .infinity, alignment: .leading)
     .task {
-      for item in items {
-        guard let uuid = item.uuid else { continue }
-        downloadStates[uuid] = await PlaylistManager.shared.downloadState(for: uuid)
-      }
+      let uuids = items.compactMap(\.uuid)
+      downloadStates = await PlaylistManager.shared.downloadStates(for: uuids)
+      resolvingItems = Set(
+        uuids.filter { PlaylistManager.shared.isResolvingStreamingAsset(for: $0) }
+      )
     }
     .onReceive(PlaylistManager.shared.downloadStateChanged) { output in
       downloadStates[output.id] = output.state
@@ -165,6 +154,26 @@ struct PlaylistItemList: View {
     }
     .onReceive(PlaylistManager.shared.downloadProgressUpdated) { output in
       downloadProgress[output.id] = output.percentComplete
+    }
+    .onReceive(PlaylistManager.shared.itemResolutionChanged) { output in
+      if output.isResolving {
+        resolvingItems.insert(output.id)
+      } else {
+        resolvingItems.remove(output.id)
+      }
+    }
+  }
+
+  private func downloadState(for item: PlaylistItem) -> ItemDownloadState? {
+    guard let uuid = item.uuid else { return nil }
+    switch downloadStates[uuid] {
+    case .downloaded:
+      return .completed
+    case .inProgress:
+      // PlaylistDownloadManager reports percent as 0...100 not 0...1
+      return .downloading(percentComplete: downloadProgress[uuid, default: 0.0] / 100.0)
+    case .invalid, nil:
+      return resolvingItems.contains(uuid) ? .resolving : nil
     }
   }
 }

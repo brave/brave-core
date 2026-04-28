@@ -348,18 +348,7 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate {
         guard let self = self else { return }
 
         if let url = URL(string: item.src), url.scheme == "blob" {
-          // Spawn a WebView to load the non-blob asset
-          Task { @MainActor in
-            let mediaStreamer = PlaylistMediaStreamer(
-              playerView: self.view,
-              webLoaderFactory: LivePlaylistWebLoaderFactory(
-                profile: self.profileController.profile
-              )
-            )
-
-            let newItem = try await mediaStreamer.loadMediaStreamingAsset(item)
-            PlaylistManager.shared.autoDownload(item: newItem)
-          }
+          self.resolveBlobItem(item)
         } else {
           PlaylistManager.shared.autoDownload(item: item)
         }
@@ -417,6 +406,32 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate {
 
       AppReviewManager.shared.processSubCriteria(for: .numberOfPlaylistItems)
       addItemToPlaylist(item, folderUUID, completion)
+    }
+  }
+
+  /// Kicks off background resolution of a `blob:` item's streaming URL. The work is registered
+  /// with `PlaylistManager` so a concurrent player open re-uses the same resolution rather
+  /// than racing a second `WKWebView`.
+  @MainActor private func resolveBlobItem(_ item: PlaylistInfo) {
+    let view: UIView = self.view
+    let profile = self.profileController.profile
+    Task { @MainActor in
+      do {
+        let resolved = try await PlaylistManager.shared.resolveStreamingAsset(for: item.tagId) {
+          let streamer = PlaylistMediaStreamer(
+            playerView: view,
+            webLoaderFactory: LivePlaylistWebLoaderFactory(profile: profile)
+          )
+          return try await streamer.loadMediaStreamingAsset(item)
+        }
+        PlaylistManager.shared.autoDownload(item: resolved)
+      } catch {
+        // `String(describing:)` keeps the typed enum case (e.g. `cannotLoadMedia`) instead of
+        // collapsing to Swift's opaque `"PlaybackError error N."` localized description.
+        Logger.module.error(
+          "Failed to resolve playlist streaming asset for \(item.tagId): \(String(describing: error))"
+        )
+      }
     }
   }
 }
