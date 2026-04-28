@@ -60,10 +60,16 @@ public class BraveFullscreenVideoPictureInPictureController {
             return false;
         }
 
+        // Only act when an active YouTube PiP session managed by Brave is in flight. Without
+        // this guard, we would swallow upstream's dismiss for unrelated PiP sessions whenever
+        // the screen happens to be locked.
+        if (!(activity instanceof final BraveActivity braveActivity)
+                || !braveActivity.isYouTubePictureInPictureActive()) {
+            return false;
+        }
+
         if (BraveYouTubePictureInPictureController.isScreenOffOrLocked(activity)) {
-            if (activity instanceof final BraveActivity braveActivity) {
-                braveActivity.onYouTubePictureInPictureFullscreenInterrupted();
-            }
+            braveActivity.onYouTubePictureInPictureFullscreenInterrupted();
             return true;
         }
 
@@ -71,8 +77,6 @@ public class BraveFullscreenVideoPictureInPictureController {
         // waking) can report that YouTube left fullscreen while the task is still pinned. Keep
         // the Brave-managed YouTube PiP window alive; DOM + persistent fullscreen state is
         // preserved across the transition by BraveFullscreenHtmlApiHandlerBase.
-        return activity.isInPictureInPictureMode()
-                && activity instanceof final BraveActivity braveActivity
-                && braveActivity.isYouTubePictureInPictureActive();
+        return activity.isInPictureInPictureMode();
     }
 }

@@ -114,6 +114,15 @@ public class BraveYouTubePictureInPictureController {
     /** Hook from {@code Activity#onDestroy}. */
     public void onDestroy() {
         unregisterScreenStateReceiver();
+        // Reset session state so any delayed callbacks queued by handleSessionExited() return
+        // early via isExitingForSession() instead of touching a destroyed activity. State has
+        // already been written to the saved instance bundle, so the next activity restores from
+        // the bundle rather than from these fields.
+        mActive = false;
+        mExiting = false;
+        mInterruptedByScreenLock = false;
+        mResumeMediaSessionOnPipEntry = false;
+        mWebContents = null;
     }
 
     /**
@@ -331,18 +340,22 @@ public class BraveYouTubePictureInPictureController {
         mInterruptedByScreenLock = false;
         unregisterScreenStateReceiver();
 
-        final MediaSession mediaSession = MediaSession.fromWebContents(webContents);
-        if (mediaSession != null) {
-            mediaSession.resume();
-        }
+        // Defer resuming the media session until Android confirms PiP entry. Mirrors the path
+        // taken by an initial PiP request: onEnterPictureInPictureMode() will consume this flag
+        // from onPictureInPictureModeChanged(true). If PiP entry fails below, we clear the
+        // session without ever resuming, so the user does not get foreground audio after
+        // unlocking.
+        mResumeMediaSessionOnPipEntry = true;
 
         try {
             if (!mActivity.enterPictureInPictureMode(
                     new PictureInPictureParams.Builder().build())) {
+                mResumeMediaSessionOnPipEntry = false;
                 clearSession(mSessionId, webContents);
             }
         } catch (IllegalStateException | IllegalArgumentException e) {
             Log.e(TAG, "Error restoring YouTube picture-in-picture mode.", e);
+            mResumeMediaSessionOnPipEntry = false;
             clearSession(mSessionId, webContents);
         }
     }
