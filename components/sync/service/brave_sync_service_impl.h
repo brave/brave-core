@@ -29,12 +29,14 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
  public:
   explicit BraveSyncServiceImpl(
       InitParams init_params,
-      std::unique_ptr<SyncServiceImplDelegate> sync_service_impl_delegate);
+      std::unique_ptr<SyncServiceImplDelegate> sync_service_impl_delegate, 
+      os_crypt_async::OSCryptAsync* os_crypt_async);
   ~BraveSyncServiceImpl() override;
 
   // SyncServiceImpl implementation
   bool IsSetupInProgress() const override;
   void StopAndClear(ResetEngineReason reset_engine_reason) override;
+  DataTypeSet GetPreferredDataTypes() const override;
 
   // SyncEngineHost override.
   void OnEngineInitialized(bool success,
@@ -46,6 +48,8 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
 
   std::string GetOrCreateSyncCode();
   bool SetSyncCode(const std::string& sync_code);
+
+  
 
   // This should only be called by helper function, brave_sync::ResetSync, or by
   // OnDeviceInfoChange internally
@@ -59,8 +63,9 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
 
   void Initialize(DataTypeController::TypeVector controllers) override;
 
-  const brave_sync::Prefs& prefs() const { return brave_sync_prefs_; }
-  brave_sync::Prefs& prefs() { return brave_sync_prefs_; }
+  bool has_prefs() const { return (bool)brave_sync_prefs_; }
+  const brave_sync::Prefs& prefs() const { return *brave_sync_prefs_; }
+  brave_sync::Prefs& prefs() { return *brave_sync_prefs_; }
 
   void PermanentlyDeleteAccount(
       base::OnceCallback<void(const SyncProtocolError&)> callback);
@@ -90,6 +95,9 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   SyncServiceCrypto* GetCryptoForTests();
 
   void OnBraveSyncPrefsChanged(const std::string& path);
+
+  void OnOsCryptAsyncReady(os_crypt_async::Encryptor encryptor);
+  void OnPrefsReady();
 
   void PermanentlyDeleteAccountImpl(
       const int current_attempt,
@@ -127,7 +135,7 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   void OnPrimaryAccountChanged(
       const signin::PrimaryAccountChangeEvent& event_details) override;
 
-  brave_sync::Prefs brave_sync_prefs_;
+  std::unique_ptr<brave_sync::Prefs> brave_sync_prefs_;
 
   PrefChangeRegistrar brave_sync_prefs_change_registrar_;
 
@@ -155,6 +163,7 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   bool is_initializing_ = false;
 
   std::unique_ptr<SyncServiceImplDelegate> sync_service_impl_delegate_;
+  raw_ptr<os_crypt_async::OSCryptAsync> os_crypt_async_;
   base::OnceCallback<void(bool)> join_chain_result_callback_;
   base::WeakPtrFactory<BraveSyncServiceImpl> weak_ptr_factory_;
 

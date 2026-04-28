@@ -5,7 +5,9 @@
 
 #include "brave/components/brave_sync/network_time_helper.h"
 
+#include "base/base64.h"
 #include "base/functional/callback_helpers.h"
+#include "base/test/bind.h"
 #include "base/test/gtest_util.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "build/build_config.h"
@@ -13,6 +15,9 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "components/os_crypt/async/browser/os_crypt_async.h"
+#include "components/os_crypt/async/common/encryptor.h"
+#include "components/prefs/pref_service.h"
 #include "components/sync/base/command_line_switches.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/test/browser_test.h"
@@ -53,15 +58,23 @@ class BraveSyncNetworkTimeHelperBrowserTest : public PlatformBrowserTest {
 
   void OnWillCreateBrowserContextServices(content::BrowserContext* context) {
     // At this point profile and preferences are created, but sync service is
-    // not yet. Pretend we have a configured sync chain by setting up the sync
-    // code. This along with --sync-deferred-startup-timeout-seconds=0 will
-    // cause SyncServiceImpl::Initialize() immediately post
+    // not yet. Pretend we have a configured sync chain by setting the sync
+    // seed directly in the pref. This along with
+    // --sync-deferred-startup-timeout-seconds=0 will cause
+    // SyncServiceImpl::Initialize() immediately post
     // SyncServiceImpl::TryStartImpl() and this would crash without
-    // brave-core/pull/27499
-
-    brave_sync::Prefs brave_sync_refs(
-        static_cast<Profile*>(context)->GetPrefs());
-    brave_sync_refs.SetSeed(kValidSyncCode);
+    // brave-core/pull/27499.
+    // OSCryptAsync is already initialized by browser startup before profile
+    // creation, so GetInstance fires synchronously here.
+    g_browser_process->os_crypt_async()->GetInstance(
+        base::BindLambdaForTesting([context](os_crypt_async::Encryptor e) {
+          std::string encrypted_seed;
+          if (e.EncryptString(kValidSyncCode, &encrypted_seed)) {
+            static_cast<Profile*>(context)->GetPrefs()->SetString(
+                brave_sync::Prefs::GetSeedPath(),
+                base::Base64Encode(encrypted_seed));
+          }
+        }));
   }
 
  private:

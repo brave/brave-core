@@ -10,6 +10,7 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/functional/callback_helpers.h"
+#include "base/test/bind.h"
 #include "base/memory/raw_ptr.h"
 #include "base/notreached.h"
 #include "base/run_loop.h"
@@ -28,7 +29,7 @@
 #include "brave/components/sync/test/brave_mock_sync_engine.h"
 #include "build/build_config.h"
 #include "components/network_time/network_time_tracker.h"
-#include "components/os_crypt/sync/os_crypt.h"
+#include "components/os_crypt/async/browser/test_utils.h"
 #include "components/os_crypt/sync/os_crypt_mocker.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/signin/public/identity_manager/accounts_in_cookie_jar_info.h"
@@ -112,8 +113,7 @@ class SyncServiceObserverMock : public SyncServiceObserver {
 class BraveSyncServiceImplTest : public testing::Test {
  public:
   BraveSyncServiceImplTest()
-      : brave_sync_prefs_(sync_service_impl_bundle_.pref_service()),
-        sync_prefs_(sync_service_impl_bundle_.pref_service()) {
+      : sync_prefs_(sync_service_impl_bundle_.pref_service()) {
     sync_service_impl_bundle_.identity_test_env()
         ->SetAutomaticIssueOfAccessTokens(true);
     brave_sync::Prefs::RegisterProfilePrefs(
@@ -125,7 +125,6 @@ class BraveSyncServiceImplTest : public testing::Test {
 
   void SetUp() override {
     testing::Test::SetUp();
-    OSCryptMocker::SetUp();
     network_time_tracker_ = std::make_unique<network_time::NetworkTimeTracker>(
         std::unique_ptr<base::Clock>(new base::DefaultClock()),
         std::unique_ptr<base::TickClock>(new base::DefaultTickClock()),
@@ -138,7 +137,6 @@ class BraveSyncServiceImplTest : public testing::Test {
   void TearDown() override {
     brave_sync::NetworkTimeHelper::GetInstance()->Shutdown();
     testing::Test::TearDown();
-    OSCryptMocker::TearDown();
   }
 
   void CreateSyncService(
@@ -154,13 +152,18 @@ class BraveSyncServiceImplTest : public testing::Test {
     auto sync_service_delegate(std::make_unique<SyncServiceImplDelegateMock>());
     sync_service_delegate_ = sync_service_delegate.get();
 
+     os_crypt_async_ = os_crypt_async::GetTestOSCryptAsyncForTesting(
+        /*is_sync_for_unittests=*/true);
+
     sync_service_impl_ = std::make_unique<BraveSyncServiceImpl>(
         sync_service_impl_bundle_.CreateBasicInitParams(std::move(sync_client)),
-        std::move(sync_service_delegate));
+        std::move(sync_service_delegate),
+         os_crypt_async_.get());
     sync_service_impl_->Initialize(std::move(controllers));
   }
 
-  brave_sync::Prefs* brave_sync_prefs() { return &brave_sync_prefs_; }
+  brave_sync::Prefs* brave_sync_prefs() { return &sync_service_impl_->prefs(); }
+
 
   SyncPrefs* sync_prefs() { return &sync_prefs_; }
 
@@ -184,10 +187,10 @@ class BraveSyncServiceImplTest : public testing::Test {
 
  protected:
   content::BrowserTaskEnvironment task_environment_;
+  std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_async_;
 
  private:
   SyncServiceImplBundle sync_service_impl_bundle_;
-  brave_sync::Prefs brave_sync_prefs_;
   SyncPrefs sync_prefs_;
   std::unique_ptr<network_time::NetworkTimeTracker> network_time_tracker_;
   std::unique_ptr<BraveSyncServiceImpl> sync_service_impl_;
@@ -290,9 +293,15 @@ TEST_F(BraveSyncServiceImplDeathTest, MAYBE_EmulateGetOrCreateSyncCodeCHECK) {
   bool set_code_result = brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
   EXPECT_TRUE(set_code_result);
 
+  // Encrypt an invalid passphrase with the same async encryptor the service
+  // uses, so decryption succeeds but IsPassphraseValid() fails — triggering
+  // the CHECK in GetOrCreateSyncCode().
   std::string wrong_seed = "123";
   std::string encrypted_wrong_seed;
-  EXPECT_TRUE(OSCrypt::EncryptString(wrong_seed, &encrypted_wrong_seed));
+  os_crypt_async_->GetInstance(base::BindLambdaForTesting(
+      [&wrong_seed, &encrypted_wrong_seed](os_crypt_async::Encryptor e) {
+        EXPECT_TRUE(e.EncryptString(wrong_seed, &encrypted_wrong_seed));
+      }));
 
   pref_service()->SetString(brave_sync::Prefs::GetSeedPath(),
                             base::Base64Encode(encrypted_wrong_seed));

@@ -13,6 +13,7 @@
 #include "base/memory/raw_ref.h"
 #include "base/values.h"
 #include "build/build_config.h"
+#include "components/os_crypt/async/common/encryptor.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -27,7 +28,7 @@ inline constexpr char kCustomSyncServiceUrl[] = "brave_sync.sync_service_url";
 
 class Prefs {
  public:
-  explicit Prefs(PrefService* pref_service);
+  explicit Prefs(PrefService* pref_service, os_crypt_async::Encryptor encryptor);
   Prefs(const Prefs&) = delete;
   Prefs& operator=(const Prefs&) = delete;
   virtual ~Prefs();
@@ -38,7 +39,8 @@ class Prefs {
 
   static std::string GetSeedPath();
 
-  std::optional<std::string> GetSeed() const;
+  std::optional<std::string> GetSeed(
+      os_crypt_async::Encryptor::DecryptFlags* flags = nullptr) const;
   bool SetSeed(const std::string& seed);
 
   bool IsSyncAccountDeletedNoticePending() const;
@@ -61,6 +63,7 @@ class Prefs {
 
  private:
   const raw_ref<PrefService> pref_service_;
+  os_crypt_async::Encryptor encryptor_;
   AddLeaveChainDetailBehaviour add_leave_chain_detail_behaviour_;
 };
 

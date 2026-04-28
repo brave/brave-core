@@ -13,27 +13,45 @@
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/brave_pages.h"
-#include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "brave/components/sync/service/brave_sync_service_impl.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/sync/sync_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/infobar.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/views/vector_icons.h"
 
+using syncer::BraveSyncServiceImpl;
+
+namespace {
+
+BraveSyncServiceImpl* GetSyncService(Profile* profile) {
+  return SyncServiceFactory::IsSyncAllowed(profile)
+             ? static_cast<BraveSyncServiceImpl*>(
+                   SyncServiceFactory::GetForProfile(profile))
+             : nullptr;
+}
+
+}  // namespace
+
 // static
 void SyncCannotRunInfoBarDelegate::Create(
     infobars::ContentInfoBarManager* infobar_manager,
     Profile* profile,
     Browser* browser) {
-  brave_sync::Prefs brave_sync_prefs(profile->GetPrefs());
-  if (brave_sync_prefs.IsFailedDecryptSeedNoticeDismissed()) {
+  BraveSyncServiceImpl* brave_sync_service = GetSyncService(profile);
+  if (!brave_sync_service || !brave_sync_service->has_prefs()) {
     return;
   }
 
-  if (brave_sync_prefs.GetSeed().has_value()) {
+  if (brave_sync_service->prefs().IsFailedDecryptSeedNoticeDismissed()) {
+    return;
+  }
+
+  if (brave_sync_service->prefs().GetSeed().has_value()) {
     return;
   }
 
@@ -96,7 +114,10 @@ bool SyncCannotRunInfoBarDelegate::Accept() {
 
 bool SyncCannotRunInfoBarDelegate::Cancel() {
   // "Don't show again" button
-  brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
-  brave_sync_prefs.DismissFailedDecryptSeedNotice();
+  BraveSyncServiceImpl* brave_sync_service = GetSyncService(profile_);
+  if (!brave_sync_service) {
+    return true;
+  }
+  brave_sync_service->prefs().DismissFailedDecryptSeedNotice();
   return true;
 }

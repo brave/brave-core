@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/sync/service/brave_sync_service_impl.h"
-#include "components/os_crypt/sync/os_crypt.h"
 
 // IsSetupInProgress isn't accurate in brave sync flow especially for the first
 // time setup, we rely on it to display setup dialog
@@ -17,10 +16,13 @@
     syncer::BraveSyncServiceImpl* brave_sync_service =                       \
         static_cast<syncer::BraveSyncServiceImpl*>(service);                 \
     if (brave_sync_service) {                                                \
-      auto seed = brave_sync_service->prefs().GetSeed();                     \
-      sync_status.Set("hasSyncWordsDecryptionError", !seed.has_value());     \
+      bool prefs_ready = brave_sync_service->has_prefs();                    \
+      sync_status.Set("hasSyncWordsDecryptionError",                         \
+                      prefs_ready &&                                          \
+                          !brave_sync_service->prefs().GetSeed().has_value()); \
       sync_status.Set("isOsEncryptionAvailable",                             \
-                      brave_sync_service->prefs().IsEncryptionAvailable());  \
+                      !prefs_ready ||                                         \
+                          brave_sync_service->prefs().IsEncryptionAvailable()); \
     }                                                                        \
   }
 

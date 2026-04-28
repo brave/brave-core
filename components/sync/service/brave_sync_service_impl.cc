@@ -23,6 +23,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/sync/engine/sync_protocol_error.h"
 #include "components/sync/model/type_entities_count.h"
+#include "components/os_crypt/async/browser/os_crypt_async.h"
 
 namespace syncer {
 
@@ -35,20 +36,15 @@ void BraveSyncServiceImpl::SyncedObjectsCountContext::Reset(
 
 BraveSyncServiceImpl::BraveSyncServiceImpl(
     InitParams init_params,
-    std::unique_ptr<SyncServiceImplDelegate> sync_service_impl_delegate)
+    std::unique_ptr<SyncServiceImplDelegate> sync_service_impl_delegate,
+    os_crypt_async::OSCryptAsync* os_crypt_async)
     : SyncServiceImpl(std::move(init_params)),
-      brave_sync_prefs_(sync_client_->GetPrefService()),
       sync_service_impl_delegate_(std::move(sync_service_impl_delegate)),
+      os_crypt_async_(os_crypt_async),
       weak_ptr_factory_(this) {
-  brave_sync_prefs_change_registrar_.Init(sync_client_->GetPrefService());
-  brave_sync_prefs_change_registrar_.Add(
-      brave_sync::Prefs::GetSeedPath(),
-      base::BindRepeating(&BraveSyncServiceImpl::OnBraveSyncPrefsChanged,
-                          base::Unretained(this)));
-  std::optional<std::string> seed = brave_sync_prefs_.GetSeed();
-  CHECK(seed.has_value());
-  GetBraveSyncAuthManager()->DeriveSigningKeys(*seed);
-
+  os_crypt_async_->GetInstance(base::BindOnce(
+      &BraveSyncServiceImpl::OnOsCryptAsyncReady,
+      weak_ptr_factory_.GetWeakPtr()));
   sync_service_impl_delegate_->set_profile_sync_service(this);
 }
 
@@ -56,16 +52,63 @@ BraveSyncServiceImpl::~BraveSyncServiceImpl() {
   brave_sync_prefs_change_registrar_.RemoveAll();
 }
 
+void BraveSyncServiceImpl::OnOsCryptAsyncReady(os_crypt_async::Encryptor encryptor) {
+  brave_sync_prefs_ = std::make_unique<brave_sync::Prefs>(
+      sync_client_->GetPrefService(), std::move(encryptor));
+
+  brave_sync_prefs_change_registrar_.Init(sync_client_->GetPrefService());
+  brave_sync_prefs_change_registrar_.Add(
+      brave_sync::Prefs::GetSeedPath(),
+      base::BindRepeating(&BraveSyncServiceImpl::OnBraveSyncPrefsChanged,
+                          base::Unretained(this)));
+
+  // DeriveSigningKeys → TryStart → GetInstance would re-enter OSCryptAsync
+  // while is_initializing_ is still true. Post to run after this callback returns.
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE,
+      base::BindOnce(&BraveSyncServiceImpl::OnPrefsReady,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+void BraveSyncServiceImpl::OnPrefsReady() {
+  std::optional<std::string> seed = brave_sync_prefs_->GetSeed();
+  if (!seed.has_value()) {
+    // Seed decryption failed at startup. This can happen when the OS keychain
+    // is locked (e.g. user cancelled the unlock dialog on Linux/GNOME), the key
+    // was rotated, or the data was encrypted on a different machine. We do not
+    // crash here because the failure is often temporary (locked keychain) and
+    // SecretPortalKeyProvider may report kPermanentlyUnavailable even for a
+    // locked keychain when the user cancels, making DecryptFlags unreliable for
+    // distinguishing temporary from permanent failures at startup.
+    // SyncCannotRunInfoBarDelegate will surface the issue to the user.
+    return;
+  }
+  GetBraveSyncAuthManager()->DeriveSigningKeys(*seed);
+}
+
 void BraveSyncServiceImpl::Initialize(
     DataTypeController::TypeVector controllers) {
   base::AutoReset<bool> is_initializing_resetter(&is_initializing_, true);
-
   SyncServiceImpl::Initialize(std::move(controllers));
-
-  // P3A ping for those who have sync disabled
   if (!user_settings_->IsInitialSyncFeatureSetupComplete()) {
     base::UmaHistogramExactLinear("Brave.Sync.Status.2", 0, 3);
   }
+}
+
+DataTypeSet BraveSyncServiceImpl::GetPreferredDataTypes() const {
+  if (!brave_sync_prefs_) {
+    // Prefs not ready yet (OSCrypt async callback hasn't fired).
+    // If a seed pref exists, there's an established sync chain. Return all
+    // types so ClearMetadataWhileStoppedExceptFor() in SyncServiceImpl::
+    // Initialize() doesn't wipe DeviceInfo metadata before DeriveSigningKeys()
+    // has had a chance to establish the correct auth state.
+    const std::string& raw_seed = sync_client_->GetPrefService()->GetString(
+        brave_sync::Prefs::GetSeedPath());
+    if (!raw_seed.empty()) {
+      return DataTypeSet::All();
+    }
+  }
+  return SyncServiceImpl::GetPreferredDataTypes();
 }
 
 bool BraveSyncServiceImpl::IsSetupInProgress() const {
@@ -74,19 +117,28 @@ bool BraveSyncServiceImpl::IsSetupInProgress() const {
 }
 
 void BraveSyncServiceImpl::StopAndClear(ResetEngineReason reset_engine_reason) {
+  if (!brave_sync_prefs_) {
+    // Prefs not ready yet (OSCrypt async callback hasn't fired).
+    // SyncServiceImpl::StopAndClear() unconditionally calls
+    // ClearInitialSyncFeatureSetupComplete() regardless of the reset reason,
+    // which would destroy the sync setup state and wipe the sync chain.
+    // Skip entirely — OnPrefsReady() will call DeriveSigningKeys() which
+    // establishes the correct auth state once the encryptor is available.
+    return;
+  }
   // StopAndClear is invoked during |SyncServiceImpl::Initialize| even if sync
   // is not enabled. This adds lots of useless lines into
   // `brave_sync_v2.diag.leave_chain_details`
   if (!is_initializing_) {
-    brave_sync_prefs_.AddLeaveChainDetail(__FILE__, __LINE__, __func__);
+    brave_sync_prefs_->AddLeaveChainDetail(__FILE__, __LINE__, __func__);
   }
   // Clear prefs before StopAndClear() to make NotifyObservers() be invoked
-  brave_sync_prefs_.Clear();
+  brave_sync_prefs_->Clear();
   SyncServiceImpl::StopAndClear(reset_engine_reason);
 }
 
 std::string BraveSyncServiceImpl::GetOrCreateSyncCode() {
-  std::optional<std::string> sync_code = brave_sync_prefs_.GetSeed();
+  std::optional<std::string> sync_code = brave_sync_prefs_->GetSeed();
   if (!sync_code.has_value()) {
     // Do not try to re-create seed when OSCrypt fails, for example on macOS
     // when the keyring is locked.
@@ -112,7 +164,7 @@ bool BraveSyncServiceImpl::SetSyncCode(const std::string& sync_code) {
   if (!brave_sync::crypto::IsPassphraseValid(sync_code_trimmed)) {
     return false;
   }
-  if (!brave_sync_prefs_.SetSeed(sync_code_trimmed)) {
+  if (!brave_sync_prefs_->SetSeed(sync_code_trimmed)) {
     return false;
   }
 
@@ -126,7 +178,9 @@ bool BraveSyncServiceImpl::SetSyncCode(const std::string& sync_code) {
 }
 
 void BraveSyncServiceImpl::OnSelfDeviceInfoDeleted(base::OnceClosure cb) {
-  brave_sync_prefs_.AddLeaveChainDetail(__FILE__, __LINE__, __func__);
+  if (brave_sync_prefs_) {
+    brave_sync_prefs_->AddLeaveChainDetail(__FILE__, __LINE__, __func__);
+  }
   initiated_self_device_info_deleted_ = true;
   // This function will follow normal reset process and set SyncRequested to
   // false
@@ -157,7 +211,7 @@ BraveSyncAuthManager* BraveSyncServiceImpl::GetBraveSyncAuthManager() {
 void BraveSyncServiceImpl::OnBraveSyncPrefsChanged(const std::string& path) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (path == brave_sync::Prefs::GetSeedPath()) {
-    std::optional<std::string> seed = brave_sync_prefs_.GetSeed();
+    std::optional<std::string> seed = brave_sync_prefs_->GetSeed();
     CHECK(seed.has_value());
 
     if (!seed->empty()) {
@@ -178,10 +232,10 @@ void BraveSyncServiceImpl::OnBraveSyncPrefsChanged(const std::string& path) {
       }
       GetUserSettings()->SetSelectedTypes(false, selected_types);
 
-      brave_sync_prefs_.ClearLeaveChainDetails();
+      brave_sync_prefs_->ClearLeaveChainDetails();
     } else {
       VLOG(1) << "Brave sync seed cleared";
-      brave_sync_prefs_.AddLeaveChainDetail(__FILE__, __LINE__, __func__);
+      brave_sync_prefs_->AddLeaveChainDetail(__FILE__, __LINE__, __func__);
       GetBraveSyncAuthManager()->ResetKeys();
       // Send updated status here, because OnDeviceInfoChange is not triggered
       // when device leaves the chain by `Leave Sync Chain` button
@@ -213,7 +267,7 @@ void BraveSyncServiceImpl::OnEngineInitialized(
     return;
   }
 
-  std::optional<std::string> passphrase = brave_sync_prefs_.GetSeed();
+  std::optional<std::string> passphrase = brave_sync_prefs_->GetSeed();
   CHECK(passphrase.has_value());
   if (passphrase->empty()) {
     return;
@@ -240,7 +294,7 @@ void BraveSyncServiceImpl::OnAccountDeleted(
     const int current_attempt,
     base::OnceCallback<void(const SyncProtocolError&)> callback,
     const SyncProtocolError& sync_protocol_error) {
-  brave_sync_prefs_.AddLeaveChainDetail(__FILE__, __LINE__, __func__);
+  brave_sync_prefs_->AddLeaveChainDetail(__FILE__, __LINE__, __func__);
   if (sync_protocol_error.error_type == SYNC_SUCCESS) {
     std::move(callback).Run(sync_protocol_error);
     // If request succeded - reset and clear all in a forced way
@@ -266,7 +320,7 @@ void BraveSyncServiceImpl::OnAccountDeleted(
 void BraveSyncServiceImpl::PermanentlyDeleteAccountImpl(
     const int current_attempt,
     base::OnceCallback<void(const SyncProtocolError&)> callback) {
-  brave_sync_prefs_.AddLeaveChainDetail(__FILE__, __LINE__, __func__);
+  brave_sync_prefs_->AddLeaveChainDetail(__FILE__, __LINE__, __func__);
   if (!engine_) {
     // We can reach here if two devices almost at the same time will initiate
     // the deletion procedure
@@ -286,7 +340,7 @@ void BraveSyncServiceImpl::PermanentlyDeleteAccountImpl(
 
 void BraveSyncServiceImpl::PermanentlyDeleteAccount(
     base::OnceCallback<void(const SyncProtocolError&)> callback) {
-  brave_sync_prefs_.AddLeaveChainDetail(__FILE__, __LINE__, __func__);
+  brave_sync_prefs_->AddLeaveChainDetail(__FILE__, __LINE__, __func__);
   initiated_delete_account_ = true;
   PermanentlyDeleteAccountImpl(1, std::move(callback));
 }
@@ -305,14 +359,14 @@ std::unique_ptr<SyncEngine> BraveSyncServiceImpl::ResetEngine(
       reset_reason == ResetEngineReason::kDisabledAccount &&
       sync_disabled_by_admin_ && !initiated_delete_account_ &&
       !initiated_join_chain_) {
-    brave_sync_prefs_.AddLeaveChainDetail(__FILE__, __LINE__, __func__);
-    brave_sync_prefs_.SetSyncAccountDeletedNoticePending(true);
+    brave_sync_prefs_->AddLeaveChainDetail(__FILE__, __LINE__, __func__);
+    brave_sync_prefs_->SetSyncAccountDeletedNoticePending(true);
     // Forcing stop and clear, because sync account was deleted
     BraveSyncServiceImpl::StopAndClear(ResetEngineReason::kResetLocalData);
   } else if (shutdown_reason == ShutdownReason::DISABLE_SYNC_AND_CLEAR_DATA &&
              reset_reason == ResetEngineReason::kDisabledAccount &&
              sync_disabled_by_admin_ && initiated_join_chain_) {
-    brave_sync_prefs_.AddLeaveChainDetail(__FILE__, __LINE__, __func__);
+    brave_sync_prefs_->AddLeaveChainDetail(__FILE__, __LINE__, __func__);
     // Forcing stop and clear, because we are trying to join the sync chain, but
     // sync account was deleted
     BraveSyncServiceImpl::StopAndClear(ResetEngineReason::kResetLocalData);

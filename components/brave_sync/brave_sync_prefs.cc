@@ -13,7 +13,6 @@
 #include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "build/build_config.h"
-#include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -69,7 +68,9 @@ constexpr size_t kLeaveChainDetailsMaxLen = 500;
 
 }  // namespace
 
-Prefs::Prefs(PrefService* pref_service) : pref_service_(*pref_service) {
+Prefs::Prefs(PrefService* pref_service, 
+  os_crypt_async::Encryptor encryptor) : 
+  pref_service_(*pref_service), encryptor_(std::move(encryptor)) {
 #if BUILDFLAG(IS_IOS)
   add_leave_chain_detail_behaviour_ = AddLeaveChainDetailBehaviour::kAdd;
 #else
@@ -123,7 +124,8 @@ std::string Prefs::GetSeedPath() {
   return kSyncV2Seed;
 }
 
-std::optional<std::string> Prefs::GetSeed() const {
+std::optional<std::string> Prefs::GetSeed(
+    os_crypt_async::Encryptor::DecryptFlags* flags) const {
   const auto& encoded_seed = pref_service_->GetString(kSyncV2Seed);
   if (encoded_seed.empty()) {
     return std::string();
@@ -136,7 +138,7 @@ std::optional<std::string> Prefs::GetSeed() const {
   }
 
   std::string seed;
-  if (!OSCrypt::DecryptString(encrypted_seed, &seed)) {
+  if (!encryptor_.DecryptString(encrypted_seed, &seed, flags)) {
     LOG(ERROR) << "Decrypt sync seed failure";
     return std::nullopt;
   }
@@ -146,7 +148,7 @@ std::optional<std::string> Prefs::GetSeed() const {
 bool Prefs::SetSeed(const std::string& seed) {
   DCHECK(!seed.empty());
   std::string encrypted_seed;
-  if (!OSCrypt::EncryptString(seed, &encrypted_seed)) {
+  if (!encryptor_.EncryptString(seed, &encrypted_seed)) {
     LOG(ERROR) << "Encrypt sync seed failure";
     return false;
   }
@@ -224,9 +226,7 @@ void Prefs::Clear() {
 }
 
 bool Prefs::IsEncryptionAvailable() const {
-  // This is being added here only temporarily, as the async backend will come
-  // in to replace this OSCrypt use.
-  return OSCrypt::IsEncryptionAvailable();
+  return encryptor_.IsEncryptionAvailable();
 }
 
 void MigrateBraveSyncPrefs(PrefService* prefs) {

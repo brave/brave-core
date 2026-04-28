@@ -7,7 +7,6 @@
 
 #include "base/check_op.h"
 #include "brave/components/sync/service/brave_sync_service_impl.h"
-#include "components/os_crypt/sync/os_crypt.h"
 
 #define ConstructAboutInformation ConstructAboutInformation_ChromiumImpl
 #include <components/sync/service/sync_internals_util.cc>
@@ -24,10 +23,17 @@ base::DictValue ConstructAboutInformation(
 
   Section section_brave_sync("Brave Sync", /*is_sensitive=*/false);
 
+  base::ListValue* details = about_info.FindList(kDetailsKey);
+  DCHECK_NE(details, nullptr);
+
   Stat<bool>* is_passphrase_set =
       section_brave_sync.AddBoolStat("Passphrase is set");
   BraveSyncServiceImpl* brave_sync_service =
       static_cast<BraveSyncServiceImpl*>(service);
+  if (!brave_sync_service->has_prefs()) {
+    details->Append(section_brave_sync.ToValue());
+    return about_info;
+  }
   std::optional<std::string> seed = brave_sync_service->prefs().GetSeed();
   // If the passphrase has been set, either we can see it or we failed to
   // decrypt it
@@ -51,9 +57,6 @@ base::DictValue ConstructAboutInformation(
   Stat<std::string>* leave_chain_details =
       section_brave_sync.AddStringStat("Leave chain details");
   leave_chain_details->Set(brave_sync_service->prefs().GetLeaveChainDetails());
-
-  base::ListValue* details = about_info.FindList(kDetailsKey);
-  DCHECK_NE(details, nullptr);
 
   details->Append(section_brave_sync.ToValue());
   return about_info;
