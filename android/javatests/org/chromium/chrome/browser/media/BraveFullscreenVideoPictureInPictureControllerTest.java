@@ -27,6 +27,7 @@ import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 @RunWith(ChromeJUnit4ClassRunner.class)
 public class BraveFullscreenVideoPictureInPictureControllerTest {
     // Mirrors FullscreenVideoPictureInPictureController.MetricsEndReason values.
+    private static final int METRICS_END_REASON_RESUME = 0;
     private static final int METRICS_END_REASON_LEFT_FULLSCREEN = 6;
     private static final int METRICS_END_REASON_WEB_CONTENTS_LEFT_FULLSCREEN = 7;
 
@@ -36,6 +37,18 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
 
     private final BraveFullscreenVideoPictureInPictureController mController =
             new BraveFullscreenVideoPictureInPictureController();
+
+    @Test
+    @SmallTest
+    public void dismissActivityIfNeeded_activeYouTubePictureInPictureDefersResumeCleanup() {
+        when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(true);
+        mController.mDismissPending = true;
+
+        mController.dismissActivityIfNeeded(mBraveActivity, METRICS_END_REASON_RESUME);
+
+        assertFalse(mController.mDismissPending);
+        verify(mBraveActivity, never()).onYouTubePictureInPictureFullscreenInterrupted();
+    }
 
     @Test
     @SmallTest

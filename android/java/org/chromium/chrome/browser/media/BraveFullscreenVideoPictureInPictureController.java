@@ -26,8 +26,7 @@ public class BraveFullscreenVideoPictureInPictureController {
     protected boolean mDismissPending;
 
     void dismissActivityIfNeeded(Activity activity, /*MetricsEndReason*/ int reason) {
-        if (reason == METRICS_END_REASON_START
-                || reason == METRICS_END_REASON_RESUME
+        if (shouldDeferDismissForYouTubePictureInPicture(activity, reason)
                 || shouldKeepPictureInPictureAlive(activity, reason)) {
             mDismissPending = false;
             return;
@@ -40,6 +39,16 @@ public class BraveFullscreenVideoPictureInPictureController {
                 activity,
                 int.class,
                 reason);
+    }
+
+    private boolean shouldDeferDismissForYouTubePictureInPicture(
+            Activity activity, /*MetricsEndReason*/ int reason) {
+        if (reason != METRICS_END_REASON_START && reason != METRICS_END_REASON_RESUME) {
+            return false;
+        }
+
+        return activity instanceof final BraveActivity braveActivity
+                && braveActivity.isYouTubePictureInPictureActive();
     }
 
     private boolean shouldKeepPictureInPictureAlive(
