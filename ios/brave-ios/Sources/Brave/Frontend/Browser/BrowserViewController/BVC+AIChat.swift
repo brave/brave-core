@@ -197,6 +197,7 @@ extension BrowserViewController {
       var continuation: CheckedContinuation<[PHPickerResult], Never>?
       func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         continuation?.resume(returning: results)
+        continuation = nil
         picker.dismiss(animated: true)
       }
     }
