@@ -115,6 +115,7 @@ void PsstUiDesktopPresenter::PsstUiDesktopDelegate::OnDialogClosed(
   }
   dialog_web_contents->RemoveUserData(kUiDesktopDelegateUserDataKey);
   initiator_web_contents_ = nullptr;
+  web_dialog_delegate_ = nullptr;
 }
 
 base::WeakPtr<PsstUiDesktopPresenter::PsstUiDesktopDelegate>

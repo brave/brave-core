@@ -166,15 +166,19 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
 
   content::WebContents* WaitForAndGetDialogWebContents(
       content::CreateAndLoadWebContentsObserver& new_web_contents_observer) {
+    int iterations_count = 5;
     GURL current_url;
     content::WebContents* dialog_wc = nullptr;
     do {
+      if (--iterations_count <= 0) {
+        break;
+      }
       dialog_wc = new_web_contents_observer.Wait();
       if (dialog_wc) {
         current_url = dialog_wc->GetLastCommittedURL();
       }
-    } while (!current_url.SchemeIs(kExpectedSchema) ||
-             current_url.host() != kExpectedHost);
+    } while (dialog_wc && (!current_url.SchemeIs(kExpectedSchema) ||
+                           current_url.host() != kExpectedHost));
     return dialog_wc;
   }
 

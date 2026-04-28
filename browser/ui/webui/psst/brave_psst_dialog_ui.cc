@@ -72,7 +72,11 @@ void BravePsstDialogUI::Close() {
   if (!desktop_dialog_delegate_) {
     return;
   }
-  desktop_dialog_delegate_->CloseDialog();
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          &PsstUiDesktopPresenter::PsstUiDesktopDelegate::CloseDialog,
+          desktop_dialog_delegate_->GetWeakPtr()));
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(BravePsstDialogUI)

@@ -72,13 +72,14 @@ BravePsstDialogHandler::BravePsstDialogHandler(
     mojo::PendingReceiver<psst::mojom::PsstConsentHelper> pending_receiver,
     mojo::PendingRemote<psst::mojom::PsstConsentDialog> client_page,
     psst::mojom::PsstConsentFactory::CreatePsstConsentHandlerCallback callback)
-    : dialog_ui_(dialog_ui),
+    : tab_strip_model_(tab_strip_model),
+      dialog_ui_(dialog_ui),
       receiver_(this, std::move(pending_receiver)),
       client_page_(std::move(client_page)) {
   CHECK(dialog_ui_);
-  CHECK(tab_strip_model);
-  tab_strip_model->AddObserver(this);
-  auto* web_contents = tab_strip_model->GetActiveWebContents();
+  CHECK(tab_strip_model_);
+  tab_strip_model_->AddObserver(this);
+  auto* web_contents = tab_strip_model_->GetActiveWebContents();
   if (!web_contents) {
     return;
   }
@@ -102,6 +103,9 @@ BravePsstDialogHandler::BravePsstDialogHandler(
 BravePsstDialogHandler::~BravePsstDialogHandler() {
   if (psst_dialog_delegate_) {
     psst_dialog_delegate_->RemoveObserver(this);
+  }
+  if (tab_strip_model_) {
+    tab_strip_model_->RemoveObserver(this);
   }
 }
 

@@ -58,6 +58,7 @@ class BravePsstDialogHandler : public psst::mojom::PsstConsentHelper,
 
   base::WeakPtr<psst::PsstTabWebContentsObserver> active_tab_helper_;
   base::WeakPtr<PsstUiDelegateImpl> psst_dialog_delegate_;
+  raw_ptr<TabStripModel> tab_strip_model_{nullptr};
   raw_ptr<BravePsstDialogUI> const dialog_ui_{nullptr};
   mojo::Receiver<psst::mojom::PsstConsentHelper> receiver_;
   mojo::Remote<psst::mojom::PsstConsentDialog> client_page_;
