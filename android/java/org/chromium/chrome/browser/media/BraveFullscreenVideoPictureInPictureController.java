@@ -7,45 +7,35 @@ package org.chromium.chrome.browser.media;
 
 import android.app.Activity;
 
-import org.chromium.base.BraveReflectionUtil;
 import org.chromium.chrome.browser.app.BraveActivity;
 
 public class BraveFullscreenVideoPictureInPictureController {
-    // Mirrors the int values of FullscreenVideoPictureInPictureController.MetricsEndReason in
-    // upstream Chromium. Update if upstream renumbers — checked manually since the upstream enum
-    // is package-private and not directly importable.
-    // Source: chrome/android/java/src/org/chromium/chrome/browser/media/
-    //         FullscreenVideoPictureInPictureController.java#MetricsEndReason
-    private static final int METRICS_END_REASON_RESUME = 0;
-    private static final int METRICS_END_REASON_LEFT_FULLSCREEN = 6;
-    private static final int METRICS_END_REASON_WEB_CONTENTS_LEFT_FULLSCREEN = 7;
-    private static final int METRICS_END_REASON_START = 8;
-
     /**
      * This variable will be used instead of {@link FullscreenVideoPictureInPictureController}'s
      * variable, that will be deleted in bytecode.
      */
     protected boolean mDismissPending;
 
-    void dismissActivityIfNeeded(Activity activity, /*MetricsEndReason*/ int reason) {
-        if (shouldDeferDismissForYouTubePictureInPicture(activity, reason)
-                || shouldKeepPictureInPictureAlive(activity, reason)) {
+    // LINT.IfChange(brave_fullscreen_video_pip_dismiss_hook)
+    boolean maybeHandleDismissActivityForYouTubePictureInPicture(
+            Activity activity,
+            boolean isStart,
+            boolean isResume,
+            boolean isLeftFullscreen,
+            boolean isWebContentsLeftFullscreen) {
+        if (shouldDeferDismissForYouTubePictureInPicture(activity, isStart, isResume)
+                || shouldKeepPictureInPictureAlive(
+                        activity, isLeftFullscreen, isWebContentsLeftFullscreen)) {
             mDismissPending = false;
-            return;
+            return true;
         }
-        BraveReflectionUtil.invokeMethod(
-                FullscreenVideoPictureInPictureController.class,
-                this,
-                "dismissActivityIfNeeded",
-                Activity.class,
-                activity,
-                int.class,
-                reason);
+        return false;
     }
+    // LINT.ThenChange(/brave/rewrite/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java.toml)
 
     private boolean shouldDeferDismissForYouTubePictureInPicture(
-            Activity activity, /*MetricsEndReason*/ int reason) {
-        if (reason != METRICS_END_REASON_START && reason != METRICS_END_REASON_RESUME) {
+            Activity activity, boolean isStart, boolean isResume) {
+        if (!isStart && !isResume) {
             return false;
         }
 
@@ -54,9 +44,8 @@ public class BraveFullscreenVideoPictureInPictureController {
     }
 
     private boolean shouldKeepPictureInPictureAlive(
-            Activity activity, /*MetricsEndReason*/ int reason) {
-        if (reason != METRICS_END_REASON_LEFT_FULLSCREEN
-                && reason != METRICS_END_REASON_WEB_CONTENTS_LEFT_FULLSCREEN) {
+            Activity activity, boolean isLeftFullscreen, boolean isWebContentsLeftFullscreen) {
+        if (!isLeftFullscreen && !isWebContentsLeftFullscreen) {
             return false;
         }
 

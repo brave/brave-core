@@ -2,6 +2,11 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
+#
+# LINT.IfChange(brave_fullscreen_video_pip_dismiss_hook)
+# Keep this file in sync with the semantic dismiss hook in
+# src/brave/android/java/org/chromium/chrome/browser/media/
+# BraveFullscreenVideoPictureInPictureController.java.
 
 [[substitution]]
 description = 'Import BraveActivity and the YouTube PiP helper'
@@ -15,6 +20,22 @@ description = 'Import the Brave YouTube PiP helper'
 pattern = 'import org.chromium.chrome.browser.tab.Tab;'
 replace = '''import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.youtube_script_injector.BraveYouTubeScriptInjectorNativeHelper;'''
+count = 1
+
+[[substitution]]
+description = 'Let Brave handle YouTube PiP dismiss signals using upstream enum names'
+re_pattern = '''(    private void dismissActivityIfNeeded\(Activity activity, @MetricsEndReason int reason\) \{\n)'''
+replace = '''\1        if (BraveFullscreenVideoPictureInPictureController.class.cast(this)
+                .maybeHandleDismissActivityForYouTubePictureInPicture(
+                        activity,
+                        reason == MetricsEndReason.START,
+                        reason == MetricsEndReason.RESUME,
+                        reason == MetricsEndReason.LEFT_FULLSCREEN,
+                        reason == MetricsEndReason.WEB_CONTENTS_LEFT_FULLSCREEN)) {
+            return;
+        }
+
+'''
 count = 1
 
 [[substitution]]
@@ -61,5 +82,7 @@ replace = '''\1    private @Nullable BraveActivity getBraveActivityForYouTubePic
 
         return braveActivity;
     }
+
 \2'''
 count = 1
+# LINT.ThenChange(/brave/android/java/org/chromium/chrome/browser/media/BraveFullscreenVideoPictureInPictureController.java)
