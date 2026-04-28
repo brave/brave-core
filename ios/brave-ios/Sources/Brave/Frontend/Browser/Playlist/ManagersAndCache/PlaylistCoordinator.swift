@@ -119,12 +119,29 @@ public class PlaylistCoordinator: NSObject {
       player: player,
       delegate: .init(
         openTabURL: { [weak browserController] url, isPrivate in
-          browserController?.dismiss(animated: true)
-          browserController?.openURLInNewTab(
-            url,
-            isPrivate: Preferences.Privacy.privateBrowsingOnly.value ? true : isPrivate,
-            isPrivileged: false
-          )
+          guard let browserController else { return }
+          let isPrivate = Preferences.Privacy.privateBrowsingOnly.value ? true : isPrivate
+          let openTab: () -> Void = {
+            browserController.dismiss(animated: true)
+            browserController.openURLInNewTab(
+              url,
+              isPrivate: isPrivate,
+              isPrivileged: false
+            )
+          }
+
+          if isPrivate,
+            !browserController.privateBrowsingManager.isPrivateBrowsing,
+            Preferences.Privacy.privateBrowsingLock.value
+          {
+            browserController.askForLocalAuthentication { success, _ in
+              if success {
+                openTab()
+              }
+            }
+          } else {
+            openTab()
+          }
         },
         onDismissal: { [weak self, weak player] in
           guard let self else { return }
