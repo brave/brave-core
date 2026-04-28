@@ -34,7 +34,6 @@ replace = '''\1        if (BraveFullscreenVideoPictureInPictureController.class.
                         reason == MetricsEndReason.WEB_CONTENTS_LEFT_FULLSCREEN)) {
             return;
         }
-
 '''
 count = 1
 
@@ -82,7 +81,6 @@ replace = '''\1    private @Nullable BraveActivity getBraveActivityForYouTubePic
 
         return braveActivity;
     }
-
 \2'''
 count = 1
 # LINT.ThenChange(/brave/android/java/org/chromium/chrome/browser/media/BraveFullscreenVideoPictureInPictureController.java)
