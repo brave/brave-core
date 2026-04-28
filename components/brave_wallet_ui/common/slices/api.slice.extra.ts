@@ -103,21 +103,29 @@ export const useGetCombinedTokensRegistryQuery = (
   arg?: undefined | typeof skipToken,
   opts?: { skip?: boolean },
 ) => {
+  const userRegistryQueryActive = !(arg || opts?.skip)
+
   const { isLoadingUserTokens, userTokens } = useGetUserTokensRegistryQuery(
     arg || opts?.skip ? skipToken : undefined,
     {
       selectFromResult: (res) => ({
-        isLoadingUserTokens: res.isLoading,
+        isLoadingUserTokens: Boolean(
+          res.isLoading || (userRegistryQueryActive && res.isUninitialized),
+        ),
         userTokens: res.data,
       }),
     },
   )
 
+  const knownTokensQueryActive = !opts?.skip
+
   const { isLoadingKnownTokens, knownTokens } = useGetTokensRegistryQuery(
     undefined,
     {
       selectFromResult: (res) => ({
-        isLoadingKnownTokens: res.isLoading,
+        isLoadingKnownTokens: Boolean(
+          res.isLoading || (knownTokensQueryActive && res.isUninitialized),
+        ),
         knownTokens: res.data,
       }),
       skip: opts?.skip,
@@ -152,21 +160,29 @@ export const useGetCombinedTokensRegistryQuery = (
 export const useGetCombinedTokensListQuery = (
   arg?: undefined | typeof skipToken,
 ) => {
+  const userRegistryQueryActive = arg !== skipToken
+
   const { isLoadingUserTokens, userTokens } = useGetUserTokensRegistryQuery(
     arg || undefined,
     {
       selectFromResult: (res) => ({
-        isLoadingUserTokens: res.isLoading,
+        isLoadingUserTokens: Boolean(
+          res.isLoading || (userRegistryQueryActive && res.isUninitialized),
+        ),
         userTokens: selectAllUserAssetsFromQueryResult(res),
       }),
     },
   )
 
+  const knownTokensQueryActive = arg !== skipToken
+
   const { isLoadingKnownTokens, knownTokens } = useGetTokensRegistryQuery(
     arg || undefined,
     {
       selectFromResult: (res) => ({
-        isLoadingKnownTokens: res.isLoading,
+        isLoadingKnownTokens: Boolean(
+          res.isLoading || (knownTokensQueryActive && res.isUninitialized),
+        ),
         knownTokens: selectAllBlockchainTokensFromQueryResult(res),
       }),
     },
