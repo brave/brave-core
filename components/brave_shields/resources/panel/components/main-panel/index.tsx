@@ -195,7 +195,7 @@ function MainPanel () {
         <S.FavIconBox>
           <img key={siteBlockInfo?.faviconUrl.url} src={siteBlockInfo?.faviconUrl.url} />
         </S.FavIconBox>
-        <S.SiteTitle>&lrm;{siteBlockInfo?.host}</S.SiteTitle>
+        <S.SiteTitle>{'\u2068'}{siteBlockInfo?.host}{'\u2069'}</S.SiteTitle>
       </S.SiteTitleBox>
       <S.CountBox>
         <S.BlockNote>
