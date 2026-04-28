@@ -22,7 +22,7 @@ class QueryFilterDataTest : public testing::Test {
 
   void TearDown() override { instance()->ResetRulesForTesting(); }
 
-  std::vector<QueryFilterRule> GetQueryFilterRules() const {
+  const std::vector<schema::Rule>& GetQueryFilterRules() const {
     return instance()->rules();
   }
 
@@ -46,9 +46,11 @@ TEST_F(QueryFilterDataTest, TestFeatureFlagEnabled_ReturnsValidInstance) {
 }
 
 TEST_F(QueryFilterDataTest, TestVersion) {
-  base::Version version("1.0.0");
-  instance()->UpdateVersion(version);
+  instance()->UpdateVersion(base::Version("1.0.0"));
   EXPECT_EQ(instance()->GetVersion(), "1.0.0");
+
+  instance()->UpdateVersion(base::Version("2.0.0"));
+  EXPECT_EQ(instance()->GetVersion(), "2.0.0");
 }
 
 TEST_F(QueryFilterDataTest, TestEmptyJsonReturnsEmpty) {
@@ -72,7 +74,8 @@ TEST_F(QueryFilterDataTest, TestInvalidRootTypeReturnsEmpty) {
   EXPECT_TRUE(GetQueryFilterRules().empty());
 }
 
-TEST_F(QueryFilterDataTest, TestNonDictRuleEntryIsIgnored) {
+TEST_F(QueryFilterDataTest, TestOneBadRuleEntryIgnoresThatRule) {
+  // Bad rule entry 42. Should be ignored.
   constexpr char kJson[] = R"json([
     {
       "include": ["*://a/*"],
@@ -82,36 +85,45 @@ TEST_F(QueryFilterDataTest, TestNonDictRuleEntryIsIgnored) {
     42,
     {
       "include": ["*://b/*"],
-      "exclude": [],
+      "exclude": ["foubah"],
       "params": ["y"]
     }
   ])json";
 
   EXPECT_TRUE(instance()->PopulateDataFromComponent(kJson));
-  const std::vector<QueryFilterRule>& rules = instance()->rules();
-  EXPECT_EQ(rules.size(), 2u);
+  const auto& rules = GetQueryFilterRules();
+  EXPECT_EQ(2UL, rules.size());
+
   EXPECT_THAT(rules[0].include, testing::ElementsAre("*://a/*"));
   EXPECT_TRUE(rules[0].exclude.empty());
   EXPECT_THAT(rules[0].params, testing::ElementsAre("x"));
+
   EXPECT_THAT(rules[1].include, testing::ElementsAre("*://b/*"));
-  EXPECT_TRUE(rules[1].exclude.empty());
+  EXPECT_THAT(rules[1].exclude, testing::ElementsAre("foubah"));
   EXPECT_THAT(rules[1].params, testing::ElementsAre("y"));
 }
 
-TEST_F(QueryFilterDataTest, TestNonStringListItemsAreIgnored) {
+TEST_F(QueryFilterDataTest, TestOneBadRuleEntryItemIgnoresThatEntries) {
+  // In 1st entry we have couple of integers which doesn't match the expected
+  // schema and so that rule will be ignored. Only the second will be loaded.
   constexpr char kJson[] = R"json([
   {
     "include": ["*://*/*"],
-    "exclude": ["ignored", 99],
+    "exclude": ["foubah", 99],
     "params": ["gclid", 123, "fbclid", null]
+  },
+  {
+    "include": ["*://*/*"],
+    "exclude": ["foubah"],
+    "params": ["gclid", "fbclid"]
   }
 ])json";
 
   EXPECT_TRUE(instance()->PopulateDataFromComponent(kJson));
-  const std::vector<QueryFilterRule>& rules = instance()->rules();
-  EXPECT_EQ(rules.size(), 1u);
+  const auto& rules = GetQueryFilterRules();
+  EXPECT_EQ(1UL, rules.size());
   EXPECT_THAT(rules[0].include, testing::ElementsAre("*://*/*"));
-  EXPECT_THAT(rules[0].exclude, testing::ElementsAre("ignored"));
+  EXPECT_THAT(rules[0].exclude, testing::ElementsAre("foubah"));
   EXPECT_THAT(rules[0].params, testing::ElementsAre("gclid", "fbclid"));
 }
 
@@ -122,8 +134,9 @@ TEST_F(QueryFilterDataTest, TestOnMissingIncludeField_EntryIgnored) {
       "params": ["x"]
     }
   ])json";
-  EXPECT_TRUE(instance()->PopulateDataFromComponent(kJson));
-  EXPECT_EQ(instance()->rules().size(), 0u);
+
+  EXPECT_FALSE(instance()->PopulateDataFromComponent(kJson));
+  EXPECT_EQ(0UL, instance()->rules().size());
 }
 
 TEST_F(QueryFilterDataTest, TestOnMissingExcludeField_EntryIgnored) {
@@ -133,8 +146,9 @@ TEST_F(QueryFilterDataTest, TestOnMissingExcludeField_EntryIgnored) {
       "params": ["x"]
     }
   ])json";
-  EXPECT_TRUE(instance()->PopulateDataFromComponent(kJson));
-  EXPECT_EQ(instance()->rules().size(), 0u);
+
+  EXPECT_FALSE(instance()->PopulateDataFromComponent(kJson));
+  EXPECT_EQ(0UL, instance()->rules().size());
 }
 
 TEST_F(QueryFilterDataTest, TestOnMissingParamsField_EntryIgnored) {
@@ -144,25 +158,33 @@ TEST_F(QueryFilterDataTest, TestOnMissingParamsField_EntryIgnored) {
       "exclude": []
     }
   ])json";
-  EXPECT_TRUE(instance()->PopulateDataFromComponent(kJson));
-  EXPECT_EQ(instance()->rules().size(), 0u);
+
+  EXPECT_FALSE(instance()->PopulateDataFromComponent(kJson));
+  EXPECT_EQ(0UL, instance()->rules().size());
 }
 
-TEST_F(QueryFilterDataTest, TestOnNonSupportedFields_EntryIgnored) {
-  // Missing "exclude" field. The corresponding dict should be ignored
+// This test ensures we could still add newer attributes to the schema
+// without breaking the older Brave clients. However, include, exclude and
+// params is written on stone.
+TEST_F(QueryFilterDataTest,
+       TestOnNonSupportedFields_OnlyNonSupportedEntryItemIsIgnored) {
   constexpr char kJson[] = R"json([
     {
       "include": ["example.com"],
       "exclude": [],
       "params": ["x"],
-      "some-nonsense": []
+      "non-supported": []
     }
   ])json";
   EXPECT_TRUE(instance()->PopulateDataFromComponent(kJson));
-  EXPECT_EQ(instance()->rules().size(), 0u);
+  const auto& rules = GetQueryFilterRules();
+  EXPECT_EQ(1UL, rules.size());
+  EXPECT_THAT(rules[0].include, testing::ElementsAre("example.com"));
+  EXPECT_TRUE(rules[0].exclude.empty());
+  EXPECT_THAT(rules[0].params, testing::ElementsAre("x"));
 }
 
-TEST_F(QueryFilterDataTest, TestCheckGeneralRulesPopulation) {
+TEST_F(QueryFilterDataTest, TestCheckGeneralRulesPopulation_IsCorrect) {
   constexpr char kJson[] = R"json(
 [
   {
@@ -183,8 +205,8 @@ TEST_F(QueryFilterDataTest, TestCheckGeneralRulesPopulation) {
 )json";
 
   EXPECT_TRUE(instance()->PopulateDataFromComponent(kJson));
-  const std::vector<QueryFilterRule>& rules = instance()->rules();
-  EXPECT_EQ(rules.size(), 2u);
+  const auto& rules = GetQueryFilterRules();
+  EXPECT_EQ(2UL, rules.size());
   EXPECT_THAT(rules[0].include, testing::ElementsAre("*://*/*"));
   EXPECT_TRUE(rules[0].exclude.empty());
   EXPECT_THAT(rules[0].params,
@@ -195,6 +217,86 @@ TEST_F(QueryFilterDataTest, TestCheckGeneralRulesPopulation) {
   EXPECT_THAT(rules[1].exclude,
               testing::ElementsAre("*://excluded.youtube.com/*"));
   EXPECT_THAT(rules[1].params, testing::ElementsAre("si"));
+}
+
+TEST_F(QueryFilterDataTest, TestSequentialRulesUpdate_IsCorrect) {
+  constexpr char kJson1[] = R"json(
+[
+  {
+    "include": ["*://*/*"],
+    "exclude": [],
+    "params": ["__hsfp", "gclid", "fbclid"]
+  }
+]
+)json";
+
+  EXPECT_TRUE(instance()->PopulateDataFromComponent(kJson1));
+  const auto& rules = GetQueryFilterRules();
+  EXPECT_EQ(1UL, rules.size());
+  EXPECT_THAT(rules[0].include, testing::ElementsAre("*://*/*"));
+  EXPECT_TRUE(rules[0].exclude.empty());
+  EXPECT_THAT(rules[0].params,
+              testing::ElementsAre("__hsfp", "gclid", "fbclid"));
+
+  constexpr char kJson2[] = R"json(
+  [
+    {
+      "include": [
+        "*://*.youtube.com/*",
+        "*://youtube.com/*",
+        "*://youtu.be/*"
+      ],
+      "exclude": ["*://excluded.youtube.com/*"],
+      "params": ["si"]
+    }
+  ]
+  )json";
+
+  EXPECT_TRUE(instance()->PopulateDataFromComponent(kJson2));
+  const auto& new_rules = GetQueryFilterRules();
+  EXPECT_EQ(1UL, new_rules.size());
+  EXPECT_THAT(new_rules[0].include,
+              testing::ElementsAre("*://*.youtube.com/*", "*://youtube.com/*",
+                                   "*://youtu.be/*"));
+  EXPECT_THAT(new_rules[0].exclude,
+              testing::ElementsAre("*://excluded.youtube.com/*"));
+  EXPECT_THAT(new_rules[0].params, testing::ElementsAre("si"));
+}
+
+TEST_F(QueryFilterDataTest,
+       TestSequentialRulesUpdate_FirstGood_SecondBad_KeepsFirst) {
+  constexpr char kGoodJson[] = R"json(
+[
+  {
+    "include": ["*://*/*"],
+    "exclude": [],
+    "params": ["__hsfp", "gclid", "fbclid"]
+  }
+]
+)json";
+
+  EXPECT_TRUE(instance()->PopulateDataFromComponent(kGoodJson));
+  const auto& rules = GetQueryFilterRules();
+  EXPECT_EQ(1UL, rules.size());
+  EXPECT_THAT(rules[0].include, testing::ElementsAre("*://*/*"));
+  EXPECT_TRUE(rules[0].exclude.empty());
+  EXPECT_THAT(rules[0].params,
+              testing::ElementsAre("__hsfp", "gclid", "fbclid"));
+
+  constexpr char kBadJson[] = R"json(
+  [
+    {
+    }
+  ]
+  )json";
+
+  EXPECT_FALSE(instance()->PopulateDataFromComponent(kBadJson));
+  const auto& new_rules = GetQueryFilterRules();
+  EXPECT_EQ(1UL, new_rules.size());
+  EXPECT_THAT(new_rules[0].include, testing::ElementsAre("*://*/*"));
+  EXPECT_TRUE(new_rules[0].exclude.empty());
+  EXPECT_THAT(new_rules[0].params,
+              testing::ElementsAre("__hsfp", "gclid", "fbclid"));
 }
 
 }  // namespace query_filter

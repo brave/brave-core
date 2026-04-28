@@ -6,6 +6,8 @@
 #include "brave/components/query_filter/browser/query_filter_component_installer.h"
 
 #include <memory>
+#include <string_view>
+#include <vector>
 
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
@@ -21,6 +23,7 @@
 #include "components/update_client/update_client.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
 namespace {
 // Sample query filter JSON which would be written to a file during setup
 // and then read by the query filter data to prepopulate the default rules.
@@ -54,10 +57,31 @@ class QueryFilterComponentInstallerTest : public testing::Test {
     cus_ = std::make_unique<component_updater::MockComponentUpdateService>();
     feature_list_.InitWithFeatures(
         {query_filter::features::kQueryFilterComponent}, {});
+
+    // Create a temporary directory to write the sample query filter JSON.
+    ASSERT_TRUE(component_install_dir_.CreateUniqueTempDir());
   }
 
   void TearDown() override {
     query_filter::QueryFilterData::GetInstance()->ResetRulesForTesting();
+  }
+
+  const std::vector<query_filter::schema::Rule>& GetQueryFilterRules() const {
+    return query_filter::QueryFilterData::GetInstance()->rules();
+  }
+
+  std::string GetQueryFilterVersion() const {
+    return query_filter::QueryFilterData::GetInstance()->GetVersion();
+  }
+
+  void WriteToTestFile(std::string_view contents) {
+    ASSERT_TRUE(base::WriteFile(component_install_dir_.GetPath().AppendASCII(
+                                    query_filter::kQueryFilterJsonFile),
+                                contents));
+  }
+
+  base::FilePath GetInstallDirectoryPath() const {
+    return component_install_dir_.GetPath();
   }
 
  protected:
@@ -65,6 +89,7 @@ class QueryFilterComponentInstallerTest : public testing::Test {
   brave_component_updater::MockOnDemandUpdater on_demand_updater_;
 
  private:
+  base::ScopedTempDir component_install_dir_;
   base::test::ScopedFeatureList feature_list_;
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::MainThreadType::DEFAULT,
@@ -120,47 +145,62 @@ TEST_F(QueryFilterComponentInstallerTest, NoRegisterWhenCUSIsNull) {
 }
 
 TEST_F(QueryFilterComponentInstallerTest, TestVerifyInstallation) {
-  // Setup: create a temporary directory and write the sample query filter
-  // JSON
-  base::ScopedTempDir component_install_dir_;
-  ASSERT_TRUE(component_install_dir_.CreateUniqueTempDir());
-  ASSERT_TRUE(base::WriteFile(component_install_dir_.GetPath().AppendASCII(
-                                  query_filter::kQueryFilterJsonFile),
-                              kSampleQueryFilterJson));
+  WriteToTestFile(kSampleQueryFilterJson);
 
-  EXPECT_TRUE(component_updater::QueryFilterComponentInstallerPolicy()
-                  .VerifyInstallation(base::DictValue(),
-                                      component_install_dir_.GetPath()));
+  EXPECT_TRUE(
+      component_updater::QueryFilterComponentInstallerPolicy()
+          .VerifyInstallation(base::DictValue(), GetInstallDirectoryPath()));
 }
 
 TEST_F(QueryFilterComponentInstallerTest, TestComponentReady) {
-  // Setup: create a temporary directory and write the sample query filter
-  // JSON
-  base::ScopedTempDir component_install_dir_;
-  ASSERT_TRUE(component_install_dir_.CreateUniqueTempDir());
-  ASSERT_TRUE(base::WriteFile(component_install_dir_.GetPath().AppendASCII(
-                                  query_filter::kQueryFilterJsonFile),
-                              kSampleQueryFilterJson));
-
+  // Test setup
+  WriteToTestFile(kSampleQueryFilterJson);
   ASSERT_NE(nullptr, query_filter::QueryFilterData::GetInstance());
-
   // Target version to populate with
   base::Version version("1.0.0");
   // Verify the version is empty before the component is ready
-  EXPECT_EQ("", query_filter::QueryFilterData::GetInstance()->GetVersion());
+  EXPECT_EQ("", GetQueryFilterVersion());
   // Verify also the rules are empty before the component is ready
-  EXPECT_TRUE(query_filter::QueryFilterData::GetInstance()->rules().empty());
+  const auto& rules = GetQueryFilterRules();
+  EXPECT_TRUE(rules.empty());
 
   // Initiate component ready which would load the json file and populate the
   // query filter data.
   component_updater::QueryFilterComponentInstallerPolicy policy;
-  policy.ComponentReady(version, component_install_dir_.GetPath(),
-                        base::DictValue());
+  policy.ComponentReady(version, GetInstallDirectoryPath(), base::DictValue());
 
   // Verify the version and the rules are updated after the component is ready
-  EXPECT_TRUE(base::test::RunUntil([&]() {
-    return query_filter::QueryFilterData::GetInstance()->GetVersion() ==
-           "1.0.0";
-  }));
-  EXPECT_EQ(2U, query_filter::QueryFilterData::GetInstance()->rules().size());
+  EXPECT_TRUE(base::test::RunUntil(
+      [&]() { return GetQueryFilterVersion() == "1.0.0"; }));
+  const auto& new_rules = GetQueryFilterRules();
+  EXPECT_EQ(2U, new_rules.size());
+}
+
+// TODO(https://github.com/brave/brave-browser/issues/10188): Update this test
+// to pass a callback and remove the RunUntil.
+TEST_F(QueryFilterComponentInstallerTest,
+       TestComponentReady_WithBadJson_DoesNotUpdateVersion) {
+  // Test setup
+  WriteToTestFile("{bad bad json}");
+  ASSERT_NE(nullptr, query_filter::QueryFilterData::GetInstance());
+  // Target version to populate with
+  base::Version version("1.0.0");
+  // Verify the version is empty before the component is ready
+  EXPECT_EQ("", GetQueryFilterVersion());
+  // Verify also the rules are empty before the component is ready
+  const auto& rules = GetQueryFilterRules();
+  EXPECT_TRUE(rules.empty());
+
+  // Initiate component ready which would load the json file and populate the
+  // query filter data.
+  component_updater::QueryFilterComponentInstallerPolicy policy;
+  policy.ComponentReady(version, GetInstallDirectoryPath(), base::DictValue());
+
+  // Verify the version and the rules are not updated after the component is
+  // ready as the parsing failed. This check is weak as the RunUntil may exit
+  // before the ComponentReady finished the async task inside.
+  EXPECT_TRUE(
+      base::test::RunUntil([&]() { return GetQueryFilterVersion() == ""; }));
+  const auto& new_rules = GetQueryFilterRules();
+  EXPECT_TRUE(new_rules.empty());
 }

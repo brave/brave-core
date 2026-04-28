@@ -13,6 +13,7 @@ static_library("browser") {
 
   public_deps = [
     "//base",
+    "//brave/components/query_filter/common:schema",
     "//components/component_updater",
     "//components/update_client",
   ]
