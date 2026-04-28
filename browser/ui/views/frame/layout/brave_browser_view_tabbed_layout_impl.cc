@@ -16,6 +16,7 @@
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -25,6 +26,7 @@
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bar_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/custom_corners_background.h"
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h"
 #include "chrome/browser/ui/views/infobars/infobar_container_view.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
@@ -40,6 +42,24 @@ BraveBrowserViewTabbedLayoutImpl::BraveBrowserViewTabbedLayoutImpl(
                                   std::move(views)) {}
 
 BraveBrowserViewTabbedLayoutImpl::~BraveBrowserViewTabbedLayoutImpl() = default;
+
+void BraveBrowserViewTabbedLayoutImpl::ConfigureTopContainerBackground(
+    const BrowserLayoutParams& params,
+    CustomCornersBackground* background) {
+  BrowserViewTabbedLayoutImpl::ConfigureTopContainerBackground(params,
+                                                               background);
+#if BUILDFLAG(IS_LINUX)
+  // Curve top container corners like window corner as it's top-most UI
+  // in vertical tabs.
+  if (delegate().ShouldShowVerticalTabs() &&
+      !delegate().ShouldShowWindowTitleForVerticalTabs()) {
+    CustomCornersBackground::Corners corners;
+    corners.upper_trailing = background->GetWindowCorner(/*upper=*/true);
+    corners.upper_leading = background->GetWindowCorner(/*upper=*/true);
+    background->SetCorners(corners);
+  }
+#endif  // BUILDFLAG(IS_LINUX)
+}
 
 // static
 gfx::Rect BraveBrowserViewTabbedLayoutImpl::ComputeSidebarBounds(
@@ -256,6 +276,21 @@ void BraveBrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(
   auto* const toolbar_background =
       static_cast<CustomCornersBackground*>(views().toolbar->background());
   CustomCornersBackground::Corners toolbar_corners;
+
+#if BUILDFLAG(IS_LINUX)
+  if (delegate().ShouldShowVerticalTabs() &&
+      !delegate().ShouldShowWindowTitleForVerticalTabs()) {
+    // Curve toolbar corners like window corner as toolbar it's top-most UI in
+    // vertical tabs.
+    toolbar_corners.upper_trailing =
+        toolbar_background->GetWindowCorner(/*upper=*/true);
+    toolbar_corners.upper_leading =
+        toolbar_background->GetWindowCorner(/*upper=*/true);
+    toolbar_background->SetCorners(toolbar_corners);
+    return;
+  }
+#endif  // BUILDFLAG(IS_LINUX)
+
   toolbar_corners.upper_trailing.type =
       CustomCornersBackground::CornerType::kRoundedWithBackground;
   toolbar_corners.upper_leading.type =

@@ -68,6 +68,7 @@ class FakeBrowserViewLayoutDelegate : public BrowserViewLayoutDelegate {
   bool IsProjectsPanelVisible() const override { return false; }
 
   bool ShouldShowVerticalTabs() const override { return false; }
+  bool ShouldShowWindowTitleForVerticalTabs() const override { return false; }
   bool IsVerticalTabOnRight() const override { return false; }
   bool ShouldUseBraveWebViewRoundedCornersForContents() const override {
     return false;
