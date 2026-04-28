@@ -6,12 +6,14 @@
 #include "brave/browser/ui/views/view_shadow.h"
 
 #include <array>
+#include <cmath>
 #include <map>
 #include <memory>
 #include <tuple>
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/feature_list.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "third_party/skia/include/core/SkRRect.h"
 #include "ui/compositor/layer.h"
@@ -25,6 +27,11 @@
 #include "ui/views/view.h"
 
 namespace {
+
+// Debug: `--enable-features=BraveViewShadowUniformCornerRadiiFastPathDebug`
+BASE_FEATURE(kBraveViewShadowUniformCornerRadiiFastPathDebug,
+             "BraveViewShadowUniformCornerRadiiFastPathDebug",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 const gfx::ShadowValues& GetCachedShadowValues(
     const ViewShadow::ShadowParameters& params) {
@@ -47,6 +54,16 @@ const gfx::ShadowValues& GetCachedShadowValues(
 
   auto result = map->emplace(key, gfx::ShadowValues{shadow_value});
   return result.first->second;
+}
+
+bool CornerRadiiAreUniform(const gfx::RoundedCornersF& c) {
+  constexpr float kEpsilon = 1e-3f;
+  const auto near = [](float a, float b) {
+    return std::fabs(a - b) < kEpsilon;
+  };
+  return near(c.upper_left(), c.upper_right()) &&
+         near(c.upper_right(), c.lower_right()) &&
+         near(c.lower_right(), c.lower_left());
 }
 
 }  // namespace
@@ -139,6 +156,14 @@ void ViewShadow::OnPaintLayer(const ui::PaintContext& context) {
   const gfx::Rect scaled_bounds =
       gfx::ScaleToEnclosedRect(shadow_bounds, scale);
   gfx::RectF rect_f(scaled_bounds);
+
+  if (base::FeatureList::IsEnabled(
+          kBraveViewShadowUniformCornerRadiiFastPathDebug) &&
+      CornerRadiiAreUniform(corner_radii_)) {
+    const float r = corner_radii_.upper_left() * scale;
+    canvas->DrawRoundRect(rect_f, r, flags);
+    return;
+  }
 
   const std::array<SkVector, 4> scaled_radii = {
       {{corner_radii_.upper_left() * scale, corner_radii_.upper_left() * scale},

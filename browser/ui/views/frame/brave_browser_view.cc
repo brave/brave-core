@@ -135,6 +135,11 @@
 
 namespace {
 
+// Debug: `--enable-features=BraveDisableContentsDropShadowDebug`
+BASE_FEATURE(kBraveDisableContentsDropShadowDebug,
+             "BraveDisableContentsDropShadowDebug",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 // Exposed for testing.
 constexpr float kBraveMinimumContrastRatioForOutlines = 1.0816f;
 
@@ -943,6 +948,10 @@ bool BraveBrowserView::IsBraveWebViewRoundedCornersEnabled() {
 
 void BraveBrowserView::UpdateContentsShadowVisibility() {
   bool show_contents_shadow = IsBraveWebViewRoundedCornersEnabled();
+
+  if (base::FeatureList::IsEnabled(kBraveDisableContentsDropShadowDebug)) {
+    show_contents_shadow = false;
+  }
 
   // With SideBySide, we use chromium's mini toolbar.
   // Unfortunately, it's not rendered well with contents shadow.

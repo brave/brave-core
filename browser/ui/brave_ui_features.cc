@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/brave_ui_features.h"
 
+#include "build/build_config.h"
+
 namespace features {
 
 BASE_FEATURE(kBraveNtpSearchWidget,

@@ -5,6 +5,20 @@
 
 #include "brave/browser/ui/views/brave_layout_provider.h"
 
+#include "base/feature_list.h"
+#include "build/build_config.h"
+
+namespace {
+
+#if BUILDFLAG(IS_WIN)
+// Debug: `--enable-features=BraveWinLegacyRoundedCornerLayoutMetricsDebug`
+BASE_FEATURE(kBraveWinLegacyRoundedCornerLayoutMetricsDebug,
+             "BraveWinLegacyRoundedCornerLayoutMetricsDebug",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+#endif
+
+}  // namespace
+
 // static
 std::unique_ptr<views::LayoutProvider>
 ChromeLayoutProvider::CreateLayoutProvider() {
@@ -28,6 +42,19 @@ int BraveLayoutProvider::GetCornerRadiusMetric(views::Emphasis emphasis,
 
 int BraveLayoutProvider::GetCornerRadiusMetric(
     views::ShapeContextTokensOverride token) const {
+#if BUILDFLAG(IS_WIN)
+  if (base::FeatureList::IsEnabled(
+          kBraveWinLegacyRoundedCornerLayoutMetricsDebug)) {
+    using views::ShapeContextTokensOverride;
+    switch (token) {
+      case ShapeContextTokensOverride::kRoundedCornersBorderRadius:
+      case ShapeContextTokensOverride::kRoundedCornersBorderRadiusAtWindowCorner:
+        return 4;
+      default:
+        break;
+    }
+  }
+#endif
   return LayoutProvider::GetCornerRadiusMetric(token);
 }
 
