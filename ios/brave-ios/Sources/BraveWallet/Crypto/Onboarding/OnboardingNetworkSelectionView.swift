@@ -22,12 +22,7 @@ struct OnboardingNetworkSelectionView: View {
   /// If we are fetching networks
   @State private var isLoading: Bool = false
   /// If we are showing testnets section
-  @State private var isShowingTestnets: Bool = false {
-    didSet {
-      guard !isShowingTestnets else { return }
-
-    }
-  }
+  @State private var isShowingTestnets: Bool = false
   @State private var isShowingCreateNewWallet: Bool = false
   @State private var isShowingRestoreExistedWallet: Bool = false
   @ScaledMetric private var gridItemWidth: CGFloat = SharedConstants.defaultGridItemWidth

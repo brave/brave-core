@@ -352,13 +352,6 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
       chainId: chainId
     )
     if success {
-      // `GetHiddenChains` will remove selected network for each coin type.
-      // As a workaround, we will force hide the network in Portfolio/NFT filters.
-      if Preferences.Wallet.nonSelectedNetworksFilter.value.contains(chainId) {
-        var updatedFilters = Preferences.Wallet.nonSelectedNetworksFilter.value
-        updatedFilters.append(chainId)
-        Preferences.Wallet.nonSelectedNetworksFilter.value = updatedFilters
-      }
       await updateHiddenChains()
     }
     return success
@@ -373,15 +366,6 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
       chainId: chainId
     )
     if success {
-      // `GetHiddenChains` will remove selected network for each coin type.
-      // As a workaround, we will force show the network in Portfolio/NFT filters.
-      if Preferences.Wallet.nonSelectedNetworksFilter.value.contains(chainId),
-        case var updatedFilters = Preferences.Wallet.nonSelectedNetworksFilter.value,
-        let indexOfNetwork = updatedFilters.firstIndex(of: chainId)
-      {
-        updatedFilters.remove(at: indexOfNetwork)
-        Preferences.Wallet.nonSelectedNetworksFilter.value = updatedFilters
-      }
       await updateHiddenChains()
     }
     return success

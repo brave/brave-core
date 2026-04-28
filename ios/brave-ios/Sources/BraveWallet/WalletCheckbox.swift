@@ -23,7 +23,10 @@ struct WalletCheckbox: View {
     } label: {
       Image(braveSystemName: isChecked ? "leo.checkbox.checked" : "leo.checkbox.unchecked")
         .renderingMode(.template)
-        .foregroundColor(Color(colorOverride ?? (isChecked ? .braveBlurpleTint : .braveDisabled)))
+        .foregroundStyle(
+          colorOverride.map(Color.init)
+            ?? Color(braveSystemName: isChecked ? .buttonBackground : .buttonDisabled)
+        )
     }
   }
 }
