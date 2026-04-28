@@ -27,9 +27,11 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/interactive_test_utils.h"
 #include "chrome/test/base/search_test_utils.h"
+#include "chrome/test/base/ui_test_utils.h"
 #include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_data_util.h"
 #include "components/search_engines/template_url_service.h"
@@ -37,6 +39,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/ui_base_features.h"
 #include "ui/views/view_observer.h"
 
 class BraveLocationBarViewBrowserTest : public InProcessBrowserTest {
@@ -246,4 +249,35 @@ IN_PROC_BROWSER_TEST_F(BraveLocationBarViewBrowserTest,
   toolbar()->SetBoundsRect(toolbar_bounds);
 
   EXPECT_EQ(1, observer.bounds_changed_count_);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveLocationBarViewBrowserTest,
+                       FocusLocationBarInFullscreenTest) {
+  // 1. Enter fullscreen mode.
+  ui_test_utils::ToggleFullscreenModeAndWait(browser());
+  ASSERT_TRUE(browser()->window()->IsFullscreen());
+
+  // In fullscreen, the toolbar should normally be hidden.
+  // (Note: Some platforms/configs might show it, but our feature logic
+  //  is specifically about the temporary visibility flag).
+  EXPECT_FALSE(location_bar()->is_temporarily_visible_in_fullscreen_);
+
+  // 2. Trigger IDC_FOCUS_LOCATION (simulating Ctrl+L).
+  // This should trigger brave::FocusLocationBarInFullscreen.
+  chrome::ExecuteCommand(browser(), IDC_FOCUS_LOCATION);
+
+  // 3. Verify the toolbar is now temporarily visible.
+  EXPECT_TRUE(location_bar()->is_temporarily_visible_in_fullscreen_);
+  EXPECT_TRUE(toolbar()->GetVisible());
+
+  // 4. Verify the omnibox is focused.
+  EXPECT_TRUE(omnibox_view()->HasFocus());
+
+  // 5. Simulate blurring the omnibox by focusing the web contents.
+  web_contents()->Focus();
+
+  // 6. Verify the toolbar is hidden again.
+  EXPECT_FALSE(location_bar()->is_temporarily_visible_in_fullscreen_);
+  // In fullscreen, the toolbar should return to being hidden.
+  EXPECT_FALSE(toolbar()->GetVisible());
 }

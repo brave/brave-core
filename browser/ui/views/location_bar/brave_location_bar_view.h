@@ -139,6 +139,8 @@ class BraveLocationBarView : public LocationBarView {
   FRIEND_TEST_ALL_PREFIXES(policy::BraveRewardsPolicyTest, RewardsIconIsHidden);
   FRIEND_TEST_ALL_PREFIXES(BraveLocationBarViewBrowserTest,
                            SearchConversionButtonTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveLocationBarViewBrowserTest,
+                           FocusLocationBarInFullscreenTest);
   friend class ::BraveActionsContainerTest;
   friend class ::RewardsBrowserTest;
 
