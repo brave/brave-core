@@ -20,6 +20,7 @@ import androidx.preference.PreferenceViewHolder;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.InternetConnection;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
@@ -40,9 +41,16 @@ public class VpnCalloutPreference extends Preference {
 
         boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getContext());
 
-        int width = (int) (getContext().getResources().getDisplayMetrics().widthPixels * 1.00);
-        if (isTablet || ConfigurationUtils.isLandscape(getContext())) {
-            width = (int) dpToPx(getContext(), 390);
+        int width;
+        if (ChromeFeatureList.sAndroidSettingsContainment.isEnabled()) {
+            // With containment the card lives inside a padded rounded container — let it
+            // fill the available width rather than forcing the raw screen pixel width.
+            width = CardView.LayoutParams.MATCH_PARENT;
+        } else {
+            width = (int) (getContext().getResources().getDisplayMetrics().widthPixels * 1.00);
+            if (isTablet || ConfigurationUtils.isLandscape(getContext())) {
+                width = (int) dpToPx(getContext(), 390);
+            }
         }
         int height = CardView.LayoutParams.WRAP_CONTENT;
         ViewGroup.LayoutParams params = mainView.getLayoutParams();
