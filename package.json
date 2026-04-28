@@ -221,7 +221,7 @@
     "async": "3.2.4",
     "bignumber.js": "9.1.2",
     "core-js": "3.33.3",
-    "darkreader": "4.9.119",
+    "darkreader": "4.9.125",
     "date-fns": "2.28.0",
     "jszip": "3.8.0",
     "prettier-bytes": "1.0.4",
