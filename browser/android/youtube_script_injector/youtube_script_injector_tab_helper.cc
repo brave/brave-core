@@ -406,8 +406,11 @@ void YouTubeScriptInjectorTabHelper::MaybeExitFullscreen() {
     return;
   }
 
-  content::RenderFrameHost::AllowInjectingJavaScript();
-  rfh->ExecuteJavaScript(kYoutubeExitFullscreen, base::NullCallback());
+  EnsureBound(rfh);
+  script_injector_remote_->RequestAsyncExecuteScript(
+      ISOLATED_WORLD_ID_BRAVE_INTERNAL, kYoutubeExitFullscreen,
+      blink::mojom::UserActivationOption::kActivate,
+      blink::mojom::PromiseResultOption::kDoNotWait, base::NullCallback());
 }
 
 bool YouTubeScriptInjectorTabHelper::IsYouTubeDomain(bool mobileOnly) const {
