@@ -6,7 +6,7 @@
 // Check environment before doing anything.
 import '../lib/checkEnvironment.js'
 
-import { program } from 'commander'
+import { program, Argument } from 'commander'
 import path from 'node:path'
 import fs from 'fs-extra'
 import config from '../lib/config.ts'
@@ -48,6 +48,18 @@ function parseInteger(string) {
 
 const parsedArgs = program.parseOptions(process.argv)
 
+function createBuildConfigArgument() {
+  // Build config argument that's valid only if it's not an option.
+  return new Argument('[build_config]', 'build configuration').argParser(
+    (value) => {
+      if (value.startsWith('-')) {
+        return undefined
+      }
+      return value
+    },
+  )
+}
+
 // @ts-ignore
 program.version(process.env.npm_package_version)
 
@@ -70,7 +82,7 @@ program
     'target environment (device, catalyst, simulator)',
   )
   .option('--checkdeps_only', 'only run checkdeps')
-  .arguments('[build_config]')
+  .addArgument(createBuildConfigArgument())
   .action(gnCheck)
 
 program
@@ -79,7 +91,7 @@ program
     '--print-patch-failures-in-json',
     'Emits a JSON structure with a list of patch files that failed to apply',
   )
-  .arguments('[build_config]')
+  .addArgument(createBuildConfigArgument())
   .action(applyPatches)
 
 program
@@ -103,7 +115,7 @@ program
     'target environment (device, catalyst, simulator)',
     /^(device|catalyst|simulator)$/i,
   )
-  .arguments('[build_config]')
+  .addArgument(createBuildConfigArgument())
   .action(async (buildConfig = config.defaultBuildConfig, options = {}) => {
     config.buildConfig = buildConfig
     if (options.target_os === 'host_os') {
@@ -231,7 +243,7 @@ program
     'PKCS11 provider configuration file path',
   )
   .option('--pkcs11-alias <alias>', 'PKCS11 key alias')
-  .arguments('[build_config]')
+  .addArgument(createBuildConfigArgument())
   .action(build)
 
 program
@@ -307,7 +319,7 @@ program
     '--output_path [pathname]',
     'use the Brave binary located at [pathname]',
   )
-  .arguments('[build_config]')
+  .addArgument(createBuildConfigArgument())
   .action(start.bind(null, parsedArgs.unknown))
 
 program
@@ -429,7 +441,7 @@ program
     '26.2',
   ) // should match ios_deployment_target
   .option('--offline', 'use offline mode for RBE')
-  .arguments('[build_config]')
+  .addArgument(createBuildConfigArgument())
   .action(test.bind(null, parsedArgs.unknown))
 
 program.command('mass_rename').action(util.massRename)
@@ -465,7 +477,7 @@ program
   .allowExcessArguments(true)
   .option('-C <build_dir>', 'build config (out/Debug, out/Release)')
   .option('--target_arch <target_arch>', 'target architecture')
-  .arguments('[build_config]')
+  .addArgument(createBuildConfigArgument())
   .action(genGradle.bind(null, parsedArgs.unknown))
 
 program.command('docs').action(util.launchDocs)
