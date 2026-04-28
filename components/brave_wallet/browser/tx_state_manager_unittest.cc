@@ -427,7 +427,7 @@ TEST_F(TxStateManagerUnitTest, RetireOldTxMeta) {
 // causes timeouts on ASAN builds.
 #if defined(ADDRESS_SANITIZER)
   tx_state_manager_->SetNoRetireForTesting(true);
-  delegate_->DisableWritesForTesting(true);
+  tx_storage_->DisableWritesForTesting(true);
 #endif  // defined(ADDRESS_SANITIZER)
   for (size_t i = 0; i < 1000; ++i) {
     EthTxMeta meta(eth_account_id_, std::make_unique<EthTransaction>());
@@ -445,7 +445,7 @@ TEST_F(TxStateManagerUnitTest, RetireOldTxMeta) {
   }
 #if defined(ADDRESS_SANITIZER)
   tx_state_manager_->SetNoRetireForTesting(false);
-  delegate_->DisableWritesForTesting(false);
+  tx_storage_->DisableWritesForTesting(false);
 #endif  // defined(ADDRESS_SANITIZER)
 
   EXPECT_TRUE(tx_state_manager_->GetTx("0"));
