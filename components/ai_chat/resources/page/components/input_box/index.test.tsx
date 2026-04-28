@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-/* eslint-disable jest/no-conditional-expect, import/first */
+/* eslint-disable jest/no-conditional-expect */
 
 import * as React from 'react'
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
@@ -11,15 +11,6 @@ import { clearAllDataForTesting } from '$web-common/api'
 import { ContentType, UploadedFileType, TaskState } from '../../../common/mojom'
 import { MockContext } from '../../state/mock_context'
 import InputBox, { InputBoxProps } from '.'
-
-jest.mock('../../utils/file_utils', () => ({
-  processFiles: jest.fn(),
-}))
-
-import { processFiles } from '../../utils/file_utils'
-const mockProcessFiles = processFiles as jest.MockedFunction<
-  typeof processFiles
->
 
 // Mock URL.createObjectURL for tests that include image files
 // This is needed because AttachmentUploadItems calls URL.createObjectURL to create blob URLs for images
@@ -43,7 +34,6 @@ const testContext: InputBoxProps['context'] = {
   conversationHistory: [],
   unassociatedTabs: [],
   setAttachmentsDialog: () => {},
-  uploadFile: jest.fn(),
   getScreenshots: jest.fn(),
   setInputText: () => {},
   submitInputTextToAPI: jest.fn(),
@@ -69,6 +59,7 @@ const testContext: InputBoxProps['context'] = {
   selectedSkill: undefined,
   processImageFile: jest.fn(),
   processPdfFile: jest.fn(),
+  processTextFile: jest.fn(),
   skills: [],
 }
 
@@ -430,37 +421,14 @@ describe('input box', () => {
       return file
     }
 
-    beforeEach(() => {
-      jest.clearAllMocks()
-
-      mockProcessFiles.mockImplementation((files, attachFiles) => {
-        const uploadedFiles = files.map((file) => {
-          const mimeType = file.type.toLowerCase()
-          let type = UploadedFileType.kText
-          if (mimeType.startsWith('image/')) {
-            type = UploadedFileType.kImage
-          } else if (mimeType === 'application/pdf') {
-            type = UploadedFileType.kPdf
-          }
-          return {
-            filename: file.name,
-            filesize: file.size,
-            data: Array.from(new Uint8Array(8)),
-            type,
-          }
-        })
-        return attachFiles(uploadedFiles as any)
-      })
-    })
-
     it('accepts all file types on paste', async () => {
-      const mockAttachImages = jest.fn()
+      const mockAttachFiles = jest.fn()
       const { container } = await renderInputBox(
         <MockContext>
           <InputBox
             context={{
               ...testContext,
-              attachFiles: mockAttachImages,
+              attachFiles: mockAttachFiles,
             }}
             conversationStarted={false}
           />
@@ -489,20 +457,7 @@ describe('input box', () => {
       })
 
       await waitFor(() => {
-        expect(mockAttachImages).toHaveBeenCalledWith([
-          expect.objectContaining({
-            filename: 'test.png',
-            filesize: 1024,
-            data: expect.any(Array),
-            type: UploadedFileType.kImage,
-          }),
-          expect.objectContaining({
-            filename: 'test.txt',
-            filesize: 1024,
-            data: expect.any(Array),
-            type: UploadedFileType.kText,
-          }),
-        ])
+        expect(mockAttachFiles).toHaveBeenCalledWith([imageFile, textFile])
       })
     })
   })

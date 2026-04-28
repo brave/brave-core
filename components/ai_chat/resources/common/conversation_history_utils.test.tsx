@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import {
-  processUploadedFilesWithLimits,
+  attachUploadedFilesWithLimits,
   getImageFiles,
   getRawDocumentFiles,
   shouldDisableAttachmentsButton,
@@ -18,7 +18,7 @@ import {
   getWebSourcesEvent,
 } from './test_data_utils'
 
-describe('processUploadedFilesWithLimits', () => {
+describe('attachUploadedFilesWithLimits', () => {
   const createMockFile = (
     type: Mojom.UploadedFileType,
     filesize: number,
@@ -43,7 +43,7 @@ describe('processUploadedFilesWithLimits', () => {
     const conversationHistory: Mojom.ConversationTurn[] = []
     const currentPendingFiles: Mojom.UploadedFile[] = []
 
-    const result = processUploadedFilesWithLimits(
+    const result = attachUploadedFilesWithLimits(
       files,
       conversationHistory,
       currentPendingFiles,
@@ -66,7 +66,7 @@ describe('processUploadedFilesWithLimits', () => {
     const conversationHistory: Mojom.ConversationTurn[] = []
     const currentPendingFiles: Mojom.UploadedFile[] = []
 
-    const result = processUploadedFilesWithLimits(
+    const result = attachUploadedFilesWithLimits(
       files,
       conversationHistory,
       currentPendingFiles,
@@ -89,7 +89,7 @@ describe('processUploadedFilesWithLimits', () => {
     const conversationHistory: Mojom.ConversationTurn[] = []
     const currentPendingFiles: Mojom.UploadedFile[] = []
 
-    const result = processUploadedFilesWithLimits(
+    const result = attachUploadedFilesWithLimits(
       files,
       conversationHistory,
       currentPendingFiles,
@@ -130,7 +130,7 @@ describe('processUploadedFilesWithLimits', () => {
     const conversationHistory: Mojom.ConversationTurn[] = []
     const currentPendingFiles: Mojom.UploadedFile[] = []
 
-    const result = processUploadedFilesWithLimits(
+    const result = attachUploadedFilesWithLimits(
       files,
       conversationHistory,
       currentPendingFiles,
@@ -174,7 +174,7 @@ describe('processUploadedFilesWithLimits', () => {
     const conversationHistory: Mojom.ConversationTurn[] = []
     const currentPendingFiles: Mojom.UploadedFile[] = []
 
-    const result = processUploadedFilesWithLimits(
+    const result = attachUploadedFilesWithLimits(
       files,
       conversationHistory,
       currentPendingFiles,
@@ -204,7 +204,7 @@ describe('processUploadedFilesWithLimits', () => {
     const conversationHistory: Mojom.ConversationTurn[] = []
     const currentPendingFiles: Mojom.UploadedFile[] = []
 
-    const result = processUploadedFilesWithLimits(
+    const result = attachUploadedFilesWithLimits(
       files,
       conversationHistory,
       currentPendingFiles,
@@ -243,7 +243,7 @@ describe('processUploadedFilesWithLimits', () => {
 
     const conversationHistory: Mojom.ConversationTurn[] = []
 
-    const result = processUploadedFilesWithLimits(
+    const result = attachUploadedFilesWithLimits(
       newFiles,
       conversationHistory,
       currentPendingFiles,
@@ -302,7 +302,7 @@ describe('processUploadedFilesWithLimits', () => {
       createMockFile(Mojom.UploadedFileType.kPdf, 1024, 'new-doc1.pdf'),
     ]
 
-    const result = processUploadedFilesWithLimits(
+    const result = attachUploadedFilesWithLimits(
       newFiles,
       conversationHistory,
       currentPendingFiles,
@@ -362,7 +362,7 @@ describe('processUploadedFilesWithLimits', () => {
       createMockFile(Mojom.UploadedFileType.kPdf, 1024, 'new-doc2.pdf'),
     ]
 
-    const result = processUploadedFilesWithLimits(
+    const result = attachUploadedFilesWithLimits(
       newFiles,
       conversationHistory,
       currentPendingFiles,
@@ -418,7 +418,7 @@ describe('processUploadedFilesWithLimits', () => {
       createMockFile(Mojom.UploadedFileType.kPdf, 1024, 'new-doc2.pdf'),
     ]
 
-    const result = processUploadedFilesWithLimits(
+    const result = attachUploadedFilesWithLimits(
       newFiles,
       conversationHistory,
       currentPendingFiles,
@@ -456,7 +456,7 @@ describe('processUploadedFilesWithLimits', () => {
       ),
     )
 
-    const result = processUploadedFilesWithLimits(files, [], [])
+    const result = attachUploadedFilesWithLimits(files, [], [])
 
     // All PDFs should be accepted since they have extracted text
     expect(result).toHaveLength(Mojom.MAX_DOCUMENTS + 5)
@@ -477,7 +477,7 @@ describe('processUploadedFilesWithLimits', () => {
       ),
     ]
 
-    const result = processUploadedFilesWithLimits(files, [], [])
+    const result = attachUploadedFilesWithLimits(files, [], [])
 
     // Only the PDF with extracted text should be accepted
     expect(result).toHaveLength(1)
@@ -508,7 +508,7 @@ describe('processUploadedFilesWithLimits', () => {
       ),
     ]
 
-    const result = processUploadedFilesWithLimits(
+    const result = attachUploadedFilesWithLimits(
       newFiles,
       conversationHistory,
       [],
@@ -545,7 +545,7 @@ describe('processUploadedFilesWithLimits', () => {
       createMockFile(Mojom.UploadedFileType.kPdf, 1024, 'new-raw.pdf'),
     ]
 
-    const result = processUploadedFilesWithLimits(
+    const result = attachUploadedFilesWithLimits(
       newFiles,
       conversationHistory,
       [],
