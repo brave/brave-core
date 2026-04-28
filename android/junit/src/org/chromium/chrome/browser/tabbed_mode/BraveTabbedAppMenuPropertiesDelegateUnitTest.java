@@ -96,7 +96,6 @@ import org.chromium.components.content_settings.ContentSetting;
 import org.chromium.components.dom_distiller.core.DomDistillerFeatures;
 import org.chromium.components.power_bookmarks.PowerBookmarkMeta;
 import org.chromium.components.prefs.PrefService;
-import org.chromium.components.signin.identitymanager.ConsentLevel;
 import org.chromium.components.signin.identitymanager.IdentityManager;
 import org.chromium.components.sync.SyncService;
 import org.chromium.components.user_prefs.UserPrefs;
@@ -228,7 +227,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         when(mSigninManager.getIdentityManager()).thenReturn(mIdentityManager);
         IdentityServicesProvider.setInstanceForTests(mIdentityService);
         when(mIdentityService.getIdentityManager(any(Profile.class))).thenReturn(mIdentityManager);
-        when(mIdentityManager.hasPrimaryAccount(ConsentLevel.SIGNIN)).thenReturn(true);
+        when(mIdentityManager.hasPrimaryAccount()).thenReturn(true);
 
         PageZoomUtils.setShouldShowMenuItemForTesting(false);
         FeedFeatures.setFakePrefsForTest(mPrefService);
