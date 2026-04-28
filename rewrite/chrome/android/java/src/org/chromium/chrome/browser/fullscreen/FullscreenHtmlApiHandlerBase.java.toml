@@ -12,7 +12,7 @@
 
 [[substitution]]
 description = 'Preserve fullscreen state while Brave-managed YouTube PiP is active when a tab is hidden'
-re_pattern = '''(public void onHidden\(Tab tab, @TabHidingType int reason\)\s+\{\n)([\s\S]*?)(\s+)mFullscreenManagerDelegate\.onExitFullscreen\(null\);'''
+re_pattern = '''(public void onHidden\(Tab tab, @TabHidingType int reason\)\s+\{\n)([\s\S]*?\n)( +)mFullscreenManagerDelegate\.onExitFullscreen\(null\);'''
 replace = '''\1\3BraveFullscreenHtmlApiHandlerBase brave = BraveFullscreenHtmlApiHandlerBase.class.cast(FullscreenHtmlApiHandlerBase.this);
 \3brave.mTabHiddenByChangedTabs = reason == TabHidingType.CHANGED_TABS;
 \3if (brave.shouldPreservePersistentFullscreenForPictureInPicture(mActivity)) {
@@ -23,7 +23,7 @@ count = 1
 
 [[substitution]]
 description = 'Add a PiP-specific persistent fullscreen exit path'
-re_pattern = '''(@Override\n\s+public void exitPersistentFullscreenMode\(\)\s+\{\n)([\s\S]*?)(\s+)returnFromTargetScreenIfNeeded\(\);'''
+re_pattern = '''(@Override\n\s+public void exitPersistentFullscreenMode\(\)\s+\{\n)([\s\S]*?\n)( +)returnFromTargetScreenIfNeeded\(\);'''
 replace = '''\1\3exitPersistentFullscreenMode(true);
     }
 
@@ -61,7 +61,7 @@ count = 1
 
 [[substitution]]
 description = 'Preserve fullscreen state while Brave-managed YouTube PiP is active when the activity stops'
-re_pattern = '''(public void onActivityStateChange\(Activity activity, int newState\)\s+\{\n\s+if\s+\(newState == ActivityState\.STOPPED && mExitFullscreenOnStop\)\s+\{\n)([\s\S]*?)(\s+)mFullscreenManagerDelegate\.onExitFullscreen\(null\);(\s*\n\s+\} else if \(newState == ActivityState\.DESTROYED\))'''
+re_pattern = '''(public void onActivityStateChange\(Activity activity, int newState\)\s+\{\n\s+if\s+\(newState == ActivityState\.STOPPED && mExitFullscreenOnStop\)\s+\{\n)([\s\S]*?\n)( +)mFullscreenManagerDelegate\.onExitFullscreen\(null\);(\n\s+\} else if \(newState == ActivityState\.DESTROYED\))'''
 replace = '''\1\3if (BraveFullscreenHtmlApiHandlerBase.class.cast(FullscreenHtmlApiHandlerBase.this).shouldPreservePersistentFullscreenForPictureInPicture(activity)) {
 \3    return;
 \3}

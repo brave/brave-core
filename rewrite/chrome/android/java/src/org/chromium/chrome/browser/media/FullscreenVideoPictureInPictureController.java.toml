@@ -50,9 +50,8 @@ count = 1
 
 [[substitution]]
 description = 'Add a helper to detect Brave-managed YouTube PiP candidates for manual fullscreen-video PiP'
-re_pattern = '''(    private boolean canStartPipBasedOnRecentTasks\(\) \{\n\s+return AndroidTaskUtils\.getRecentAppTasksMatchingComponentNames\(\n\s+mActivity, NO_PIP_COMPONENT_NAMES\)\n\s+\.isEmpty\(\);\n\s+\}\n)'''
-replace = '''\1
-    private @Nullable BraveActivity getBraveActivityForYouTubePictureInPicture(
+re_pattern = '''(    private boolean canStartPipBasedOnRecentTasks\(\) \{\n\s+return AndroidTaskUtils\.getRecentAppTasksMatchingComponentNames\(\n\s+mActivity, NO_PIP_COMPONENT_NAMES\)\n\s+\.isEmpty\(\);\n\s+\}\n\n)(    /\*\*)'''
+replace = '''\1    private @Nullable BraveActivity getBraveActivityForYouTubePictureInPicture(
             WebContents webContents) {
         if (!(mActivity instanceof BraveActivity braveActivity)
                 || !BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(
@@ -62,5 +61,5 @@ replace = '''\1
 
         return braveActivity;
     }
-'''
+\2'''
 count = 1
