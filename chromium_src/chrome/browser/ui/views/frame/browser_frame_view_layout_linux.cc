@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "chrome/browser/ui/views/frame/browser_frame_view_layout_linux.h"
+
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/check_op.h"
@@ -13,7 +15,24 @@
 #include "ui/views/window/caption_button_layout_constants.h"
 #include "ui/views/window/frame_caption_button.h"
 
+#define NonClientExtraTopThickness NonClientExtraTopThickness_ChromiumImpl
+
 #include <chrome/browser/ui/views/frame/browser_frame_view_layout_linux.cc>
+
+#undef NonClientExtraTopThickness
+
+int BrowserFrameViewLayoutLinux::NonClientExtraTopThickness() const {
+  // Upstream returns kExtraTopBorder (3px) whenever IsTabStripVisible() is
+  // false, intending to add a thin resize border for popup windows. With Brave
+  // vertical tabs, IsTabStripVisible() is also false even though the toolbar is
+  // present, producing a spurious 3px strip at the top. Suppress it when the
+  // toolbar is visible; only popup windows (no tab strip, no toolbar) need it.
+  if (delegate_->IsToolbarVisible()) {
+    return 0;
+  }
+
+  return NonClientExtraTopThickness_ChromiumImpl();
+}
 
 void BrowserFrameViewLayoutLinux::SetBoundsForButton(
     views::FrameButton button_id,
