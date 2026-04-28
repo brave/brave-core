@@ -35,6 +35,7 @@
 #include "ui/events/base_event_utils.h"
 #include "ui/events/event_constants.h"
 #include "ui/events/test/event_generator.h"
+#include "ui/views/repeat_controller.h"
 #include "ui/views/view_utils.h"
 #include "ui/views/widget/widget_utils.h"
 #include "url/url_constants.h"
@@ -449,8 +450,6 @@ IN_PROC_BROWSER_TEST_F(
   ASSERT_TRUE(container);
 
   browser()->profile()->GetPrefs()->SetBoolean(
-      brave_tabs::kShowHorizontalTabScrollButtons, false);
-  browser()->profile()->GetPrefs()->SetBoolean(
       brave_tabs::kShowHorizontalTabScrollButtons, true);
   StopAnimatingAndLayout();
   GrowHorizontalStripUntilMaxOffsetAtLeastNTimesStep(container, 2);
@@ -474,8 +473,6 @@ IN_PROC_BROWSER_TEST_F(
 
   const int step = container->GetHorizontalTabScrollStep();
   ASSERT_GT(step, 0);
-  container->SetScrollOffsetForTesting(max_scroll_offset);
-  StopAnimatingAndLayout();
 
   const int before = container->GetScrollOffsetForTesting();
 
@@ -528,8 +525,6 @@ IN_PROC_BROWSER_TEST_F(
   ASSERT_TRUE(back->GetVisible());
   ASSERT_TRUE(back->GetEnabled());
 
-  container->SetScrollOffsetForTesting(max_scroll_offset);
-  StopAnimatingAndLayout();
   const int before = container->GetScrollOffsetForTesting();
 
   ui::test::EventGenerator event_generator(
@@ -539,7 +534,9 @@ IN_PROC_BROWSER_TEST_F(
   event_generator.PressLeftButton();
   base::RunLoop run_loop;
   base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
-      FROM_HERE, run_loop.QuitClosure(), base::Milliseconds(400));
+      FROM_HERE, run_loop.QuitClosure(),
+      views::RepeatController::GetInitialWaitForTesting() +
+          views::RepeatController::GetRepeatingWaitForTesting() * 2);
   run_loop.Run();
   event_generator.ReleaseLeftButton();
   StopAnimatingAndLayout();
