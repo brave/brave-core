@@ -20,9 +20,5 @@ public class BraveFullscreenVideoPictureInPictureControllerClassAdapter extends 
                 sFullscreenVideoPictureInPictureController,
                 sBraveFullscreenVideoPictureInPictureController);
         deleteField(sFullscreenVideoPictureInPictureController, "mDismissPending");
-        changeMethodOwner(
-                sFullscreenVideoPictureInPictureController,
-                "dismissActivityIfNeeded",
-                sBraveFullscreenVideoPictureInPictureController);
     }
 }

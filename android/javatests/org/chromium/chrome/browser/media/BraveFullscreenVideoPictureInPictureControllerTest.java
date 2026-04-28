@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.media;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -26,12 +27,6 @@ import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 @Batch(Batch.PER_CLASS)
 @RunWith(ChromeJUnit4ClassRunner.class)
 public class BraveFullscreenVideoPictureInPictureControllerTest {
-    // Mirrors FullscreenVideoPictureInPictureController.MetricsEndReason values.
-    private static final int METRICS_END_REASON_RESUME = 0;
-    private static final int METRICS_END_REASON_LEFT_FULLSCREEN = 6;
-    private static final int METRICS_END_REASON_WEB_CONTENTS_LEFT_FULLSCREEN = 7;
-    private static final int METRICS_END_REASON_START = 8;
-
     @Rule public MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     @Mock private BraveActivity mBraveActivity;
@@ -41,75 +36,101 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
 
     @Test
     @SmallTest
-    public void dismissActivityIfNeeded_activeYouTubePictureInPictureDefersResumeCleanup() {
+    public void maybeHandleDismiss_activeYouTubePictureInPictureDefersResumeCleanup() {
         when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(true);
         mController.mDismissPending = true;
 
-        mController.dismissActivityIfNeeded(mBraveActivity, METRICS_END_REASON_RESUME);
+        boolean handled =
+                mController.maybeHandleDismissActivityForYouTubePictureInPicture(
+                        mBraveActivity,
+                        /* isStart= */ false,
+                        /* isResume= */ true,
+                        /* isLeftFullscreen= */ false,
+                        /* isWebContentsLeftFullscreen= */ false);
 
+        assertTrue(handled);
         assertFalse(mController.mDismissPending);
         verify(mBraveActivity, never()).onYouTubePictureInPictureFullscreenInterrupted();
     }
 
     @Test
     @SmallTest
-    public void dismissActivityIfNeeded_activeYouTubePictureInPictureDefersStartCleanup() {
+    public void maybeHandleDismiss_activeYouTubePictureInPictureDefersStartCleanup() {
         when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(true);
         mController.mDismissPending = true;
 
-        mController.dismissActivityIfNeeded(mBraveActivity, METRICS_END_REASON_START);
+        boolean handled =
+                mController.maybeHandleDismissActivityForYouTubePictureInPicture(
+                        mBraveActivity,
+                        /* isStart= */ true,
+                        /* isResume= */ false,
+                        /* isLeftFullscreen= */ false,
+                        /* isWebContentsLeftFullscreen= */ false);
 
+        assertTrue(handled);
         assertFalse(mController.mDismissPending);
         verify(mBraveActivity, never()).onYouTubePictureInPictureFullscreenInterrupted();
     }
 
     @Test
     @SmallTest
-    public void dismissActivityIfNeeded_activePictureInPictureKeepsPictureInPictureAlive() {
+    public void maybeHandleDismiss_activePictureInPictureKeepsPictureInPictureAlive() {
         when(mBraveActivity.isInPictureInPictureMode()).thenReturn(true);
         when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(true);
         mController.mDismissPending = true;
 
-        mController.dismissActivityIfNeeded(mBraveActivity, METRICS_END_REASON_LEFT_FULLSCREEN);
+        boolean handled =
+                mController.maybeHandleDismissActivityForYouTubePictureInPicture(
+                        mBraveActivity,
+                        /* isStart= */ false,
+                        /* isResume= */ false,
+                        /* isLeftFullscreen= */ true,
+                        /* isWebContentsLeftFullscreen= */ false);
 
+        assertTrue(handled);
         assertFalse(mController.mDismissPending);
         verify(mBraveActivity, never()).onYouTubePictureInPictureFullscreenInterrupted();
     }
 
     @Test
     @SmallTest
-    public void dismissActivityIfNeeded_webContentsSignalDuringActivePictureInPicture_keepsAlive() {
+    public void maybeHandleDismiss_webContentsSignalDuringActivePictureInPicture_keepsAlive() {
         when(mBraveActivity.isInPictureInPictureMode()).thenReturn(true);
         when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(true);
         mController.mDismissPending = true;
 
-        mController.dismissActivityIfNeeded(
-                mBraveActivity, METRICS_END_REASON_WEB_CONTENTS_LEFT_FULLSCREEN);
+        boolean handled =
+                mController.maybeHandleDismissActivityForYouTubePictureInPicture(
+                        mBraveActivity,
+                        /* isStart= */ false,
+                        /* isResume= */ false,
+                        /* isLeftFullscreen= */ false,
+                        /* isWebContentsLeftFullscreen= */ true);
 
+        assertTrue(handled);
         assertFalse(mController.mDismissPending);
         verify(mBraveActivity, never()).onYouTubePictureInPictureFullscreenInterrupted();
     }
 
     @Test
     @SmallTest
-    public void dismissActivityIfNeeded_inactiveYouTubeAndNotInPip_doesNotKeepAlive() {
-        // Not a YT PiP session and not in PiP: the helper should fall through to the upstream
-        // dismiss logic (we cannot easily verify the BraveReflectionUtil call, but the local
-        // pre-conditions for the early-return branches must all be false).
+    public void maybeHandleDismiss_inactiveYouTubeAndNotInPip_doesNotKeepAlive() {
+        // Not a YT PiP session and not in PiP: the hook should fall through to the upstream
+        // dismiss logic.
         when(mBraveActivity.isInPictureInPictureMode()).thenReturn(false);
         when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(false);
         mController.mDismissPending = true;
 
-        // Don't assert dismissPending here, the upstream call would mutate it via reflection
-        // which we don't exercise in unit tests.
-        try {
-            mController.dismissActivityIfNeeded(mBraveActivity, METRICS_END_REASON_LEFT_FULLSCREEN);
-        } catch (Throwable ignored) {
-            // The reflection call into upstream FullscreenVideoPictureInPictureController is
-            // expected to fail in the unit-test JVM since the upstream class is not present.
-            // That's fine, we only care that we did not short-circuit before reaching it.
-        }
+        boolean handled =
+                mController.maybeHandleDismissActivityForYouTubePictureInPicture(
+                        mBraveActivity,
+                        /* isStart= */ false,
+                        /* isResume= */ false,
+                        /* isLeftFullscreen= */ true,
+                        /* isWebContentsLeftFullscreen= */ false);
 
+        assertFalse(handled);
+        assertTrue(mController.mDismissPending);
         verify(mBraveActivity, never()).onYouTubePictureInPictureFullscreenInterrupted();
     }
 }
