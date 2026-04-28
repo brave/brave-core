@@ -25,10 +25,7 @@
 #define PrimaryPageChanged                                                    \
   SetWebContentsAddNewContentsDelegate(                                       \
       base::WeakPtr<content::WebContentsDelegate> browser_delegate);          \
-  const std::vector<int32_t>& popup_ids() const {                             \
-    return popup_ids_;                                                        \
-  }                                                                           \
-  void ClearPopupIds();                                                       \
+  void CloseTrackedPopups();                                                  \
   content::WebContents* AddNewContents_ChromiumImpl(                          \
       content::WebContents* source,                                           \
       std::unique_ptr<content::WebContents> new_contents,                     \
@@ -37,9 +34,9 @@
       bool* was_blocked) override;                                            \
   void PrimaryPageChanged
 
-#define webui_resizes_host_        \
-  webui_resizes_host_;             \
-  std::vector<int32_t> popup_ids_; \
+#define webui_resizes_host_                                         \
+  webui_resizes_host_;                                              \
+  std::vector<base::WeakPtr<content::WebContents>> tracked_popups_; \
   base::WeakPtr<content::WebContentsDelegate> browser_delegate_
 #include <chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.h>  // IWYU pragma: export
 #undef webui_resizes_host_

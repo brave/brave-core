@@ -7,7 +7,7 @@
 
 #include <memory>
 
-#include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "chrome/browser/profiles/profile.h"
@@ -19,7 +19,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/network_session_configurator/common/network_switches.h"
 #include "components/permissions/fake_usb_chooser_controller.h"
-#include "components/sessions/content/session_tab_helper.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -36,44 +36,53 @@ base::OnceClosure ShowChooserBubble(
                                          std::move(controller));
 }
 
-void ExecuteScriptToOpenPopup(content::WebContents* web_contents,
-                              const GURL& url) {
-  content::TestNavigationObserver popup_waiter(nullptr, 1);
-  popup_waiter.StartWatchingNewWebContents();
-  ASSERT_EQ(true,
-            content::EvalJs(web_contents,
-                            content::JsReplace("!!window.open($1);", url)));
-  popup_waiter.Wait();
+base::WeakPtr<content::WebContents> ExecuteWindowOpenScript(
+    content::WebContents* web_contents,
+    const GURL& url) {
+  base::test::TestFuture<content::WebContents*> web_contents_future;
+  auto creation_subscription = content::RegisterWebContentsCreationCallback(
+      web_contents_future.GetRepeatingCallback());
+
+  EXPECT_TRUE(content::EvalJs(web_contents,
+                              content::JsReplace("!!window.open($1);", url))
+                  .ExtractBool());
+
+  auto opened_web_contents = web_contents_future.Get();
+  content::WaitForLoadStop(opened_web_contents);
+  return opened_web_contents->GetWeakPtr();
 }
 
-int32_t OpenNonPanelPopup(const GURL& url,
-                          Browser* browser,
-                          content::WebContents* web_contents) {
+base::WeakPtr<content::WebContents> OpenFromRegularPage(
+    const GURL& url,
+    Browser* browser,
+    content::WebContents* web_contents) {
   EXPECT_EQ(1, browser->tab_strip_model()->count());
-  content::TestNavigationObserver popup_waiter(nullptr, 1);
-  popup_waiter.StartWatchingNewWebContents();
-  ExecuteScriptToOpenPopup(web_contents, url);
-  popup_waiter.Wait();
+
+  auto opened_web_contents = ExecuteWindowOpenScript(web_contents, url);
+
   EXPECT_EQ(2, browser->tab_strip_model()->count());
-  content::WebContents* popup =
-      browser->tab_strip_model()->GetActiveWebContents();
-  auto popup_id = sessions::SessionTabHelper::IdForTab(popup).id();
-  auto* child_popup = brave_wallet::GetWebContentsFromTabId(nullptr, popup_id);
-  EXPECT_EQ(child_popup->GetVisibleURL(), url);
-  return popup_id;
+
+  EXPECT_EQ(opened_web_contents.get(),
+            browser->tab_strip_model()->GetActiveWebContents());
+  EXPECT_EQ(opened_web_contents->GetLastCommittedURL(), url);
+
+  return opened_web_contents->GetWeakPtr();
 }
 
-int32_t OpenPanelPopup(const GURL& url,
-                       content::WebContents* panel_contents,
-                       brave_wallet::BraveWalletTabHelper* tab_helper) {
-  auto current_size = tab_helper->GetPopupIdsForTesting().size();
-  ExecuteScriptToOpenPopup(panel_contents, url);
-  auto popup_ids = tab_helper->GetPopupIdsForTesting();
-  EXPECT_EQ(popup_ids.size(), current_size + 1);
-  auto popup_id = popup_ids.back();
-  auto* child_popup = brave_wallet::GetWebContentsFromTabId(nullptr, popup_id);
-  EXPECT_EQ(child_popup->GetVisibleURL(), url);
-  return popup_id;
+base::WeakPtr<content::WebContents> OpenFromPanel(
+    const GURL& url,
+    content::WebContents* panel_contents,
+    brave_wallet::BraveWalletTabHelper* tab_helper) {
+  ui_test_utils::BrowserCreatedObserver browser_created_observer;
+
+  auto opened_web_contents = ExecuteWindowOpenScript(panel_contents, url);
+
+  // New browser window for popup.
+  EXPECT_TRUE(browser_created_observer.Wait());
+
+  EXPECT_EQ(opened_web_contents->GetLastCommittedURL(), url);
+
+  return opened_web_contents;
 }
 
 }  // namespace
@@ -204,40 +213,30 @@ IN_PROC_BROWSER_TEST_F(BraveWalletTabHelperBrowserTest,
   content::WebContents* active_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(active_contents);
-  auto non_panel_popup_id =
-      OpenNonPanelPopup(blank_url, browser(), active_contents);
+  auto non_panel_web_contents =
+      OpenFromRegularPage(blank_url, browser(), active_contents);
   browser()->tab_strip_model()->ActivateTabAt(0);
   auto* tab_helper =
       brave_wallet::BraveWalletTabHelper::FromWebContents(active_contents);
-  ASSERT_TRUE(
-      brave_wallet::GetWebContentsFromTabId(nullptr, non_panel_popup_id));
+  ASSERT_TRUE(non_panel_web_contents);
   tab_helper->ShowApproveWalletBubble();
   EXPECT_TRUE(tab_helper->IsShowingBubble());
   auto* panel_contents = tab_helper->GetBubbleWebContentsForTesting();
   WaitForLoadStop(panel_contents);
-  auto popup1_id =
-      OpenPanelPopup(https_server()->GetURL("a.com", "/popup.html"),
-                     panel_contents, tab_helper);
-  auto popup2_id =
-      OpenPanelPopup(https_server()->GetURL("b.com", "/popup.html"),
-                     panel_contents, tab_helper);
+  auto popup1 = OpenFromPanel(https_server()->GetURL("a.com", "/popup.html"),
+                              panel_contents, tab_helper);
+  auto popup2 = OpenFromPanel(https_server()->GetURL("b.com", "/popup.html"),
+                              panel_contents, tab_helper);
+  EXPECT_TRUE(popup1);
+  EXPECT_TRUE(popup2);
   EXPECT_TRUE(tab_helper->IsShowingBubble());
   chrome::NewTab(browser());
   base::RunLoop().RunUntilIdle();
   ASSERT_FALSE(tab_helper->IsShowingBubble());
-  Browser* target_browser = nullptr;
-  ASSERT_FALSE(
-      brave_wallet::GetWebContentsFromTabId(&target_browser, popup1_id));
-  EXPECT_EQ(target_browser, nullptr);
-  target_browser = nullptr;
-  ASSERT_FALSE(
-      brave_wallet::GetWebContentsFromTabId(&target_browser, popup2_id));
-  EXPECT_EQ(target_browser, nullptr);
-  EXPECT_EQ(tab_helper->GetPopupIdsForTesting().size(), 0u);
-  target_browser = nullptr;
-  ASSERT_TRUE(brave_wallet::GetWebContentsFromTabId(&target_browser,
-                                                    non_panel_popup_id));
-  EXPECT_EQ(target_browser, browser());
+
+  EXPECT_FALSE(popup1);
+  EXPECT_FALSE(popup2);
+  ASSERT_TRUE(non_panel_web_contents);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletTabHelperBrowserTest, ClosePopupsWithBubble) {
@@ -246,32 +245,26 @@ IN_PROC_BROWSER_TEST_F(BraveWalletTabHelperBrowserTest, ClosePopupsWithBubble) {
   content::WebContents* active_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(active_contents);
-  auto non_panel_popup_id =
-      OpenNonPanelPopup(blank_url, browser(), active_contents);
+  auto non_panel_web_contents =
+      OpenFromRegularPage(blank_url, browser(), active_contents);
   browser()->tab_strip_model()->ActivateTabAt(0);
   auto* tab_helper =
       brave_wallet::BraveWalletTabHelper::FromWebContents(active_contents);
-  Browser* target_browser = nullptr;
-  ASSERT_TRUE(brave_wallet::GetWebContentsFromTabId(&target_browser,
-                                                    non_panel_popup_id));
-  EXPECT_EQ(browser(), target_browser);
+  ASSERT_TRUE(non_panel_web_contents);
   tab_helper->ShowApproveWalletBubble();
   EXPECT_TRUE(tab_helper->IsShowingBubble());
   auto* panel_contents = tab_helper->GetBubbleWebContentsForTesting();
   WaitForLoadStop(panel_contents);
-  auto popup1_id =
-      OpenPanelPopup(https_server()->GetURL("a.com", "/popup.html"),
-                     panel_contents, tab_helper);
-  auto popup2_id =
-      OpenPanelPopup(https_server()->GetURL("b.com", "/popup.html"),
-                     panel_contents, tab_helper);
+  auto popup1 = OpenFromPanel(https_server()->GetURL("a.com", "/popup.html"),
+                              panel_contents, tab_helper);
+  auto popup2 = OpenFromPanel(https_server()->GetURL("b.com", "/popup.html"),
+                              panel_contents, tab_helper);
   EXPECT_TRUE(tab_helper->IsShowingBubble());
   tab_helper->CloseBubble();
   base::RunLoop().RunUntilIdle();
+
   ASSERT_FALSE(tab_helper->IsShowingBubble());
-  ASSERT_FALSE(brave_wallet::GetWebContentsFromTabId(nullptr, popup1_id));
-  ASSERT_FALSE(brave_wallet::GetWebContentsFromTabId(nullptr, popup2_id));
-  EXPECT_EQ(tab_helper->GetPopupIdsForTesting().size(), 0u);
-  ASSERT_TRUE(
-      brave_wallet::GetWebContentsFromTabId(nullptr, non_panel_popup_id));
+  ASSERT_FALSE(popup1);
+  ASSERT_FALSE(popup2);
+  ASSERT_TRUE(non_panel_web_contents);
 }

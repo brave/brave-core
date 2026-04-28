@@ -11,9 +11,9 @@
 #include "base/check.h"
 #include "base/command_line.h"
 #include "base/files/file_path.h"
+#include "brave/browser/brave_wallet/blockchain_images_source.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
@@ -23,9 +23,11 @@
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/webui/favicon_source.h"
 #include "chrome/browser/ui/webui/plural_string_handler.h"
 #include "chrome/browser/ui/webui/sanitized_image/sanitized_image_source.h"
 #include "chrome/browser/ui/webui/theme_source.h"
+#include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_contents.h"
@@ -93,10 +95,15 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
   source->AddBoolean("rewardsFeatureEnabled", false);
 #endif
   source->AddBoolean("walletDebug", brave_wallet::IsWalletDebugEnabled());
+
   content::URLDataSource::Add(profile,
                               std::make_unique<SanitizedImageSource>(profile));
   content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
-  brave_wallet::AddBlockchainTokenImageSource(profile);
+  content::URLDataSource::Add(
+      profile, std::make_unique<FaviconSource>(
+                   profile, chrome::FaviconUrlFormat::kFavicon2));
+  content::URLDataSource::Add(
+      profile, std::make_unique<brave_wallet::BlockchainImagesSource>(profile));
 }
 
 WalletPageUI::~WalletPageUI() = default;

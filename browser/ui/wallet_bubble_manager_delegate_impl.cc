@@ -8,14 +8,13 @@
 #include <memory>
 #include <optional>
 #include <utility>
-#include <vector>
 
 #include "base/check.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
-#include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "chrome/browser/file_select_helper.h"
 #include "chrome/browser/profiles/profile.h"
@@ -147,35 +146,11 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
     return bubble_view_;
   }
 
-  void CloseOpenedPopups() {
-    auto* contents_wrapper = cached_contents_wrapper();
-    if (!contents_wrapper) {
-      return;
-    }
-    for (auto tab_id : contents_wrapper->popup_ids()) {
-      Browser* popup_browser = nullptr;
-      content::WebContents* popup_contents =
-          brave_wallet::GetWebContentsFromTabId(&popup_browser, tab_id);
-      if (!popup_contents || !popup_browser) {
-        continue;
-      }
-      base::WeakPtr<content::WebContentsDelegate> delegate =
-          popup_browser->AsWeakPtr();
-      if (!delegate) {
-        continue;
-      }
-      delegate->CloseContents(popup_contents);
-    }
-    contents_wrapper->ClearPopupIds();
-  }
-
-  const std::vector<int32_t>& GetPopupIdsForTesting() {
-    auto* contents_wrapper = cached_contents_wrapper();
-    return contents_wrapper->popup_ids();
-  }
-
   void OnWidgetDestroying(views::Widget* widget) override {
-    CloseOpenedPopups();
+    if (auto* contents_wrapper = cached_contents_wrapper()) {
+      contents_wrapper->CloseTrackedPopups();
+    }
+
     WebUIBubbleManagerImpl::OnWidgetDestroying(widget);
   }
 
@@ -208,7 +183,7 @@ WalletBubbleManagerDelegate::MaybeCreate(content::WebContents* web_contents,
 WalletBubbleManagerDelegateImpl::WalletBubbleManagerDelegateImpl(
     content::WebContents* web_contents,
     const GURL& webui_url)
-    : web_contents_(web_contents), webui_url_(webui_url) {
+    : web_contents_(web_contents) {
   Browser* browser = chrome::FindBrowserWithTab(web_contents_);
   DCHECK(browser);
 
@@ -222,7 +197,7 @@ WalletBubbleManagerDelegateImpl::WalletBubbleManagerDelegateImpl(
 
   DCHECK(anchor_view);
   webui_bubble_manager_ = std::make_unique<WalletWebUIBubbleManager>(
-      anchor_view, browser, webui_url_, IDS_ACCNAME_BRAVE_WALLET_BUTTON,
+      anchor_view, browser, webui_url, IDS_ACCNAME_BRAVE_WALLET_BUTTON,
       /*force_load_on_create=*/false);
 }
 
@@ -231,11 +206,6 @@ WalletBubbleManagerDelegateImpl::~WalletBubbleManagerDelegateImpl() {
 }
 
 void WalletBubbleManagerDelegateImpl::ShowBubble() {
-  // Suppress request if not from active web_contents.
-  if (GetActiveWebContents() != web_contents_) {
-    return;
-  }
-
   webui_bubble_manager_->ShowBubble();
 }
 
@@ -244,10 +214,6 @@ WalletBubbleManagerDelegateImpl::GetWebContentsForTesting() {
   return webui_bubble_manager_->GetWebContentsForTesting();
 }
 
-const std::vector<int32_t>&
-WalletBubbleManagerDelegateImpl::GetPopupIdsForTesting() {
-  return webui_bubble_manager_->GetPopupIdsForTesting();
-}
 void WalletBubbleManagerDelegateImpl::CloseBubble() {
   webui_bubble_manager_->CloseBubble();
 }

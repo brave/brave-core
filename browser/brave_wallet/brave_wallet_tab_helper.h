@@ -9,7 +9,6 @@
 #include <memory>
 #include <string>
 #include <utility>
-#include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
@@ -65,7 +64,6 @@ class BraveWalletTabHelper
   bool IsShowingBubble();
   bool IsBubbleClosedForTesting();
   content::WebContents* GetBubbleWebContentsForTesting();
-  const std::vector<int32_t>& GetPopupIdsForTesting();
   void SetShowBubbleCallbackForTesting(base::OnceClosure callback) {
     show_bubble_callback_for_testing_ = std::move(callback);
   }
@@ -92,6 +90,7 @@ class BraveWalletTabHelper
   base::flat_map<content::GlobalRenderFrameHostId, base::flat_set<std::string>>
       solana_connected_accounts_;
 #if !BUILDFLAG(IS_ANDROID)
+  void ShowBubbleImpl(GURL url);
   GURL GetBubbleURL();
   base::OnceClosure show_bubble_callback_for_testing_;
   bool is_showing_bubble_for_testing_ = false;
