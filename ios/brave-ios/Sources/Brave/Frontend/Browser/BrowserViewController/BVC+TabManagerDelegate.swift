@@ -111,7 +111,7 @@ extension BrowserViewController: TabManagerDelegate {
       }
     }
 
-    tab.braveSearch = .init(tab: tab, rewards: rewards)
+    tab.braveSearch = .init(tab: tab, rewards: rewards, searchEngines: profile.searchEngines)
     tab.braveSearch?.presentSearchResultClickedInfoBar = { [weak self] in
       guard let self else { return }
       let searchResultClickedInfobar = SearchResultAdClickedInfoBar(

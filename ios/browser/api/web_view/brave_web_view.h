@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol ProfileBridge;
 @protocol LoginsTabHelperBridge;
 @protocol BraveTalkTabHelperBridge;
+@protocol BraveSearchMakeDefaultTabHelperBridge;
 @protocol PrintHandler;
 
 typedef void (^ResetConfigurationCallback)(id<ProfileBridge>,
@@ -217,6 +218,13 @@ CWV_EXPORT
 @interface BraveWebView (BraveTalk)
 /// A bridge for handling Brave Talk tab features
 - (void)setBraveTalkHelper:(id<BraveTalkTabHelperBridge>)braveTalkHelper;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (BraveSearchHelper)
+/// A bridge for handling Brave Search helper script messages
+@property(nonatomic, weak, nullable) id<BraveSearchMakeDefaultTabHelperBridge>
+    braveSearchHelper;
 @end
 
 CWV_EXPORT

@@ -26,6 +26,8 @@
 #include "brave/ios/browser/api/web_view/passwords/brave_web_view_password_manager_client.h"
 #include "brave/ios/browser/brave_ads/ads_tab_helper.h"
 #include "brave/ios/browser/brave_search/brave_search_ad_results_javascript_feature.h"
+#include "brave/ios/browser/brave_search/brave_search_make_default_tab_helper.h"
+#include "brave/ios/browser/brave_search/brave_search_make_default_tab_helper_bridge.h"
 #include "brave/ios/browser/brave_talk/brave_talk_tab_helper_bridge.h"
 #include "brave/ios/browser/favicon/brave_ios_web_favicon_driver.h"
 #include "brave/ios/browser/serp_metrics/serp_metrics_tab_helper.h"
@@ -256,6 +258,8 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 @property(nonatomic, weak) id<BraveTalkTabHelperBridge> braveTalkHelper;
 #endif
+@property(nonatomic, weak) id<BraveSearchMakeDefaultTabHelperBridge>
+    braveSearchHelper;
 @property(nonatomic, weak) id<PrintHandler> printHandler;
 @end
 
@@ -368,6 +372,10 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   BraveTalkTabHelper::FromWebState(self.webState)
       ->SetBridge(self.braveTalkHelper);
 #endif
+
+  BraveSearchMakeDefaultTabHelper::CreateForWebState(self.webState);
+  BraveSearchMakeDefaultTabHelper::FromWebState(self.webState)
+      ->SetBridge(self.braveSearchHelper);
 
   LoginsTabHelper::MaybeCreateForWebState(self.webState, _loginsHelper);
 
@@ -719,6 +727,19 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   if (PrintTabHelper* tab_helper =
           PrintTabHelper::FromWebState(self.webState)) {
     tab_helper->set_printer(printHandler);
+  }
+}
+
+@end
+
+@implementation BraveWebView (BraveSearchHelper)
+
+- (void)setBraveSearchHelper:
+    (id<BraveSearchMakeDefaultTabHelperBridge>)braveSearchHelper {
+  _braveSearchHelper = braveSearchHelper;
+  if (BraveSearchMakeDefaultTabHelper* tab_helper =
+          BraveSearchMakeDefaultTabHelper::FromWebState(self.webState)) {
+    tab_helper->SetBridge(braveSearchHelper);
   }
 }
 
