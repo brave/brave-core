@@ -57,7 +57,7 @@ class AIChatSidePanelWebView : public SidePanelWebUIViewT<AIChatUI> {
       base::OnceCallback<void(content::NavigationHandle&)>
           navigation_handle_callback) override;
 
-  // Allow the file chooser to be user from the AI Chat side panel.
+  // Allow the file chooser to be used from the AI Chat side panel.
   void RunFileChooser(content::RenderFrameHost* render_frame_host,
                       scoped_refptr<content::FileSelectListener> listener,
                       const blink::mojom::FileChooserParams& params) override;

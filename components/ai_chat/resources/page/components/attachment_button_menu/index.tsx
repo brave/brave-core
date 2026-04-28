@@ -107,7 +107,7 @@ export default function AttachmentButtonMenu(props: Props) {
           <leo-menu-item
             onClick={async () => {
               const files = await pickFiles({
-                capture: 'camera',
+                capture: 'environment',
                 accept,
               })
               if (files.length > 0) {
