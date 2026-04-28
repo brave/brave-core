@@ -81,6 +81,7 @@ public final class FakeTabState: TabState {
   public var canTakeSnapshot: Bool { false }
   public func takeSnapshot(rect: CGRect, handler: @escaping (UIImage?) -> Void) { handler(nil) }
   public func createFullPagePDF() async throws -> Data? { nil }
+  public var isFindNavigatorVisible: Bool { false }
   public func presentFindInteraction(with text: String) {}
   public func dismissFindInteraction() {}
   public func evaluateJavaScriptUnsafe(_ javascript: String) {}

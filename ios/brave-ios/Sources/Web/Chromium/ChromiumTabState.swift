@@ -439,6 +439,10 @@ class ChromiumTabState: TabState, TabStateImpl {
     return await webView?.createFullPagePDF()
   }
 
+  var isFindNavigatorVisible: Bool {
+    webView?.isFindNavigatorVisible ?? false
+  }
+
   func presentFindInteraction(with text: String) {
     webView?.findInPageController.findString(inPage: text)
   }

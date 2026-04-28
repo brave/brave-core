@@ -1614,7 +1614,8 @@ public class BrowserViewController: UIViewController {
 
     func shouldShowTabBar() -> Bool {
       let isKeyboardActive =
-        tabManager.selectedTab?.webViewProxy?.isKeyboardVisible == true
+        (tabManager.selectedTab?.webViewProxy?.isKeyboardVisible == true
+          || tabManager.selectedTab?.isFindNavigatorVisible == true)
         && keyboardState?.isLocal == true
       if isUsingBottomBar, topToolbar.inOverlayMode || isKeyboardActive {
         return false

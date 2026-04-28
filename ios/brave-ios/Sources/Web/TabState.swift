@@ -210,6 +210,8 @@ public protocol TabState: AnyObject {
   func takeSnapshot(rect: CGRect, handler: @escaping (UIImage?) -> Void)
   /// Creates a full page PDF of the web contents
   func createFullPagePDF() async throws -> Data?
+  /// Whether or not find in page is currently visible
+  var isFindNavigatorVisible: Bool { get }
   /// Presents the find in page interaction using the provided text as an initial search query
   func presentFindInteraction(with text: String)
   /// Dismisses any active find in page interactions
