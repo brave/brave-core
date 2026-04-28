@@ -1210,14 +1210,34 @@ async function fetchNftBalancesForAccount({
   if (nfts.length) {
     const { jsonRpcService } = getAPIProxy()
 
+    // jsonRpcService.getNftBalances rejects the entire batch if any
+    // (chainId, contractAddress, tokenId) triple repeats. Dedupe
+    // case-insensitively to absorb EIP-1191 checksum-casing variants.
+    const seenKeys = new Set<string>()
+    const dedupedNfts = nfts.filter((nft) => {
+      const key =
+        `${nft.chainId}-${nft.contractAddress}-${nft.tokenId}`.toLowerCase()
+      if (seenKeys.has(key)) {
+        return false
+      }
+      seenKeys.add(key)
+      return true
+    })
+
     // batch nfts into batches of 50 or less,
     // then fetch balances for each batch
     // this is to avoid hitting the max request size
     // Can be removed once core implements batching
     // https://github.com/brave/brave-browser/issues/39954
     const nftBatches = []
-    for (let i = 0; i < nfts.length; i += MAX_NFT_BALANCE_CHECK_BATCH_SIZE) {
-      nftBatches.push(nfts.slice(i, i + MAX_NFT_BALANCE_CHECK_BATCH_SIZE))
+    for (
+      let i = 0;
+      i < dedupedNfts.length;
+      i += MAX_NFT_BALANCE_CHECK_BATCH_SIZE
+    ) {
+      nftBatches.push(
+        dedupedNfts.slice(i, i + MAX_NFT_BALANCE_CHECK_BATCH_SIZE),
+      )
     }
 
     // get balances for groups
