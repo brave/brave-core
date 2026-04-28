@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java b/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
-index 83470d3a3b694ec2dab8ba79009828315726b444..7d4e8646d09fdee5dfb2bf98eecdd7960861cf67 100644
+index 83470d3a3b694ec2dab8ba79009828315726b444..01152265d3a6f65b4d5a3e1ab6cb1b0a95a2162d 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
 @@ -28,11 +28,13 @@ import org.chromium.base.task.TaskTraits;
@@ -16,7 +16,7 @@ index 83470d3a3b694ec2dab8ba79009828315726b444..7d4e8646d09fdee5dfb2bf98eecdd796
  import org.chromium.chrome.browser.util.AndroidTaskUtils;
  import org.chromium.content_public.browser.MediaSession;
  import org.chromium.content_public.browser.WebContents;
-@@ -218,6 +220,17 @@ public class FullscreenVideoPictureInPictureController {
+@@ -218,6 +220,16 @@ public class FullscreenVideoPictureInPictureController {
                  .isEmpty();
      }
  
@@ -30,11 +30,10 @@ index 83470d3a3b694ec2dab8ba79009828315726b444..7d4e8646d09fdee5dfb2bf98eecdd796
 +
 +        return braveActivity;
 +    }
-+
      /**
       * Return whether Picture in Picture is okay or not. Considers that "already in PiP mode" is a
       * reason to say no.
-@@ -242,6 +255,11 @@ public class FullscreenVideoPictureInPictureController {
+@@ -242,6 +254,11 @@ public class FullscreenVideoPictureInPictureController {
  
          final WebContents webContents = getWebContents();
          assert webContents != null;
@@ -46,7 +45,7 @@ index 83470d3a3b694ec2dab8ba79009828315726b444..7d4e8646d09fdee5dfb2bf98eecdd796
  
          Rect bounds = getVideoBounds(webContents, mActivity);
          PictureInPictureParams.Builder builder = new PictureInPictureParams.Builder();
-@@ -253,9 +271,17 @@ public class FullscreenVideoPictureInPictureController {
+@@ -253,9 +270,17 @@ public class FullscreenVideoPictureInPictureController {
          }
  
          try {
@@ -65,7 +64,7 @@ index 83470d3a3b694ec2dab8ba79009828315726b444..7d4e8646d09fdee5dfb2bf98eecdd796
              return;
          }
      }
-@@ -563,6 +589,16 @@ public class FullscreenVideoPictureInPictureController {
+@@ -563,6 +588,15 @@ public class FullscreenVideoPictureInPictureController {
       * This will also update our auto-PiP preference with the framework, if it's changed.
       */
      private void dismissActivityIfNeeded(Activity activity, @MetricsEndReason int reason) {
@@ -78,7 +77,6 @@ index 83470d3a3b694ec2dab8ba79009828315726b444..7d4e8646d09fdee5dfb2bf98eecdd796
 +                        reason == MetricsEndReason.WEB_CONTENTS_LEFT_FULLSCREEN)) {
 +            return;
 +        }
-+
          // Something interesting happened -- make sure we've updated our preference for auto-PiP
          // with the framework, if applicable.
          Log.i(TAG, "Dismiss activity with reason " + reason);
