@@ -82,8 +82,10 @@ IN_PROC_BROWSER_TEST_F(AIChatCDPBrowserTest, GetHistoryEmpty) {
   SendCommandSync("BraveAIChat.enable");
 
   const auto* create_result = SendCommandSync("BraveAIChat.createConversation");
+  ASSERT_TRUE(create_result);
   const std::string* conversation_id =
       create_result->FindString("conversationId");
+  ASSERT_TRUE(conversation_id);
 
   base::DictValue params;
   params.Set("conversationId", *conversation_id);

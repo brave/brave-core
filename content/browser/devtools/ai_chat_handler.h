@@ -6,12 +6,13 @@
 #ifndef BRAVE_CONTENT_BROWSER_DEVTOOLS_AI_CHAT_HANDLER_H_
 #define BRAVE_CONTENT_BROWSER_DEVTOOLS_AI_CHAT_HANDLER_H_
 
-#include <map>
 #include <memory>
 #include <optional>
 #include <string>
 
+#include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "content/browser/devtools/protocol/brave_ai_chat.h"
 #include "content/browser/devtools/protocol/devtools_domain_handler.h"
@@ -86,7 +87,8 @@ class AIChatHandler : public content::protocol::DevToolsDomainHandler,
   std::unique_ptr<content::protocol::BraveAIChat::Frontend> frontend_;
   bool enabled_ = false;
 
-  std::map<std::string, raw_ptr<ai_chat::ConversationHandler>> conversations_;
+  base::flat_map<std::string, base::WeakPtr<ai_chat::ConversationHandler>>
+      conversations_;
 };
 
 }  // namespace brave::devtools

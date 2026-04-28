@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/containers/map_util.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -96,9 +97,9 @@ void AIChatHandler::CreateConversation(
     return;
   }
 
-  std::string uuid = handler->get_conversation_uuid();
+  const std::string uuid = handler->get_conversation_uuid();
   handler->AddObserver(this);
-  conversations_[uuid] = handler;
+  conversations_[uuid] = handler->GetWeakPtr();
 
   callback->sendSuccess(uuid);
 }
@@ -113,15 +114,14 @@ void AIChatHandler::SubmitMessage(
     return;
   }
 
-  auto it = conversations_.find(in_conversationId);
-  if (it == conversations_.end()) {
+  const auto* weak_handler = base::FindOrNull(conversations_, in_conversationId);
+  if (!weak_handler || !*weak_handler) {
     callback->sendFailure(DispatchResponse::InvalidParams(
         "Unknown conversation: " + in_conversationId));
     return;
   }
 
-  ai_chat::ConversationHandler* handler = it->second;
-  handler->SubmitHumanConversationEntry(in_message, std::nullopt);
+  (*weak_handler)->SubmitHumanConversationEntry(in_message, std::nullopt);
 
   // Resolve immediately; the response arrives via turnCompleted event.
   callback->sendSuccess();
@@ -136,15 +136,14 @@ void AIChatHandler::GetHistory(
     return;
   }
 
-  auto it = conversations_.find(in_conversationId);
-  if (it == conversations_.end()) {
+  const auto* weak_handler = base::FindOrNull(conversations_, in_conversationId);
+  if (!weak_handler || !*weak_handler) {
     callback->sendFailure(DispatchResponse::InvalidParams(
         "Unknown conversation: " + in_conversationId));
     return;
   }
 
-  ai_chat::ConversationHandler* handler = it->second;
-  const auto& history = handler->GetConversationHistory();
+  const auto& history = (*weak_handler)->GetConversationHistory();
 
   auto entries = std::make_unique<content::protocol::Array<
       content::protocol::BraveAIChat::ConversationEntry>>();
@@ -167,7 +166,7 @@ void AIChatHandler::GetHistory(
       }
     }
 
-    std::string character_type =
+    const std::string character_type =
         turn->character_type == ai_chat::mojom::CharacterType::HUMAN
             ? "human"
             : "assistant";
@@ -189,14 +188,16 @@ void AIChatHandler::GetHistory(
 
 DispatchResponse AIChatHandler::DestroyConversation(
     const String& in_conversationId) {
-  auto it = conversations_.find(in_conversationId);
-  if (it == conversations_.end()) {
+  const auto* weak_handler = base::FindOrNull(conversations_, in_conversationId);
+  if (!weak_handler) {
     return DispatchResponse::InvalidParams("Unknown conversation: " +
                                            in_conversationId);
   }
 
-  it->second->RemoveObserver(this);
-  conversations_.erase(it);
+  if (*weak_handler) {
+    (*weak_handler)->RemoveObserver(this);
+  }
+  conversations_.erase(in_conversationId);
   return DispatchResponse::Success();
 }
 
@@ -209,7 +210,7 @@ void AIChatHandler::OnRequestInProgressChanged(
     return;
   }
 
-  auto conversation_id = FindConversationId(handler);
+  const auto conversation_id = FindConversationId(handler);
   if (!conversation_id) {
     return;
   }
@@ -251,12 +252,12 @@ void AIChatHandler::OnToolUseEventOutput(
     std::string_view entry_uuid,
     size_t event_order,
     ai_chat::mojom::ToolUseEventPtr tool_use) {
-  auto conversation_id = FindConversationId(handler);
+  const auto conversation_id = FindConversationId(handler);
   if (!conversation_id) {
     return;
   }
 
-  std::string progress_type =
+  const std::string progress_type =
       tool_use->output ? "toolCompleted" : "toolStarted";
 
   frontend_->TurnProgress(*conversation_id, progress_type,
@@ -268,8 +269,7 @@ void AIChatHandler::OnToolUseEventOutput(
 void AIChatHandler::OnConversationTitleChanged(
     const std::string& conversation_uuid,
     const std::string& title) {
-  auto it = conversations_.find(conversation_uuid);
-  if (it == conversations_.end()) {
+  if (!base::FindOrNull(conversations_, conversation_uuid)) {
     return;
   }
 
@@ -278,8 +278,8 @@ void AIChatHandler::OnConversationTitleChanged(
 
 std::optional<std::string> AIChatHandler::FindConversationId(
     ai_chat::ConversationHandler* handler) const {
-  for (const auto& [uuid, h] : conversations_) {
-    if (h == handler) {
+  for (const auto& [uuid, weak_h] : conversations_) {
+    if (weak_h.get() == handler) {
       return uuid;
     }
   }
@@ -287,9 +287,9 @@ std::optional<std::string> AIChatHandler::FindConversationId(
 }
 
 void AIChatHandler::StopObservingAll() {
-  for (auto& [uuid, handler] : conversations_) {
-    if (handler) {
-      handler->RemoveObserver(this);
+  for (auto& [uuid, weak_handler] : conversations_) {
+    if (weak_handler) {
+      weak_handler->RemoveObserver(this);
     }
   }
 }
