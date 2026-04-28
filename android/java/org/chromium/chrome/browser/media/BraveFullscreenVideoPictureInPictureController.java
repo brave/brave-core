@@ -31,6 +31,7 @@ public class BraveFullscreenVideoPictureInPictureController {
         }
         return false;
     }
+
     // LINT.ThenChange(/brave/rewrite/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java.toml)
 
     private boolean shouldDeferDismissForYouTubePictureInPicture(

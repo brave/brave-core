@@ -13,6 +13,7 @@ import android.app.Activity;
 
 import androidx.test.filters.SmallTest;
 
+import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,6 +39,7 @@ public class BraveMediaSessionHelperTest {
     @Rule public MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     @Mock private WebContents mWebContents;
+    @Mock private WebContents mOtherWebContents;
     @Mock private WindowAndroid mWindowAndroid;
     @Mock private Activity mActivity;
 
@@ -45,6 +47,11 @@ public class BraveMediaSessionHelperTest {
 
     private void mockUrl(String url) {
         when(mWebContents.getLastCommittedUrl()).thenReturn(new GURL(url));
+    }
+
+    @After
+    public void tearDown() {
+        BraveMediaSessionHelper.setYouTubePictureInPictureWebContents(null);
     }
 
     @Test
@@ -84,28 +91,32 @@ public class BraveMediaSessionHelperTest {
 
     @Test
     @SmallTest
-    public void isYouTubePictureInPicture_returnsFalseWhenNotYouTube() {
-        // The fast-fail path: if the URL isn't YouTube we don't even consult the activity.
-        assertFalse(mHelper.isYouTubePictureInPicture(mWebContents, /* isYouTube= */ false));
-    }
-
-    @Test
-    @SmallTest
     public void isYouTubePictureInPicture_returnsFalseWithoutActivity() {
         when(mWebContents.getTopLevelNativeWindow()).thenReturn(mWindowAndroid);
         when(mWindowAndroid.getActivity()).thenReturn(new WeakReference<>(null));
 
-        assertFalse(mHelper.isYouTubePictureInPicture(mWebContents, /* isYouTube= */ true));
+        assertFalse(mHelper.isYouTubePictureInPicture(mWebContents));
     }
 
     @Test
     @SmallTest
-    public void isYouTubePictureInPicture_returnsTrueWhenActivityInPip() {
+    public void isYouTubePictureInPicture_returnsFalseWhenActivityInPipWithoutBraveSession() {
         when(mWebContents.getTopLevelNativeWindow()).thenReturn(mWindowAndroid);
         when(mWindowAndroid.getActivity()).thenReturn(new WeakReference<>(mActivity));
         when(mActivity.isInPictureInPictureMode()).thenReturn(true);
 
-        assertTrue(mHelper.isYouTubePictureInPicture(mWebContents, /* isYouTube= */ true));
+        assertFalse(mHelper.isYouTubePictureInPicture(mWebContents));
+    }
+
+    @Test
+    @SmallTest
+    public void isYouTubePictureInPicture_returnsTrueForBraveManagedSession() {
+        when(mWebContents.getTopLevelNativeWindow()).thenReturn(mWindowAndroid);
+        when(mWindowAndroid.getActivity()).thenReturn(new WeakReference<>(mActivity));
+        when(mActivity.isInPictureInPictureMode()).thenReturn(true);
+        BraveMediaSessionHelper.setYouTubePictureInPictureWebContents(mWebContents);
+
+        assertTrue(mHelper.isYouTubePictureInPicture(mWebContents));
     }
 
     @Test
@@ -114,7 +125,19 @@ public class BraveMediaSessionHelperTest {
         when(mWebContents.getTopLevelNativeWindow()).thenReturn(mWindowAndroid);
         when(mWindowAndroid.getActivity()).thenReturn(new WeakReference<>(mActivity));
         when(mActivity.isInPictureInPictureMode()).thenReturn(false);
+        BraveMediaSessionHelper.setYouTubePictureInPictureWebContents(mWebContents);
 
-        assertFalse(mHelper.isYouTubePictureInPicture(mWebContents, /* isYouTube= */ true));
+        assertFalse(mHelper.isYouTubePictureInPicture(mWebContents));
+    }
+
+    @Test
+    @SmallTest
+    public void isYouTubePictureInPicture_returnsFalseForDifferentBraveManagedSession() {
+        when(mWebContents.getTopLevelNativeWindow()).thenReturn(mWindowAndroid);
+        when(mWindowAndroid.getActivity()).thenReturn(new WeakReference<>(mActivity));
+        when(mActivity.isInPictureInPictureMode()).thenReturn(true);
+        BraveMediaSessionHelper.setYouTubePictureInPictureWebContents(mOtherWebContents);
+
+        assertFalse(mHelper.isYouTubePictureInPicture(mWebContents));
     }
 }

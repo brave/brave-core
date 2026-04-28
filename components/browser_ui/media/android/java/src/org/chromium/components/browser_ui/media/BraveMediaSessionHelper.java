@@ -41,6 +41,36 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
                     "youtube.com",
                     "open.spotify.com");
 
+    // Tracks the WebContents that the Brave YouTube Picture-in-Picture controller has registered
+    // as its active session, so the suppression logic in this helper can distinguish a real
+    // Brave-managed session from any other YouTube tab whose hosting Activity happens to be in
+    // PiP. A single static slot is sufficient because Android allows at most one PiP window per
+    // device at a time.
+    private static @Nullable WeakReference<WebContents> sYouTubePictureInPictureWebContents;
+
+    public static void setYouTubePictureInPictureWebContents(@Nullable final WebContents webContents) {
+        sYouTubePictureInPictureWebContents =
+                webContents == null ? null : new WeakReference<>(webContents);
+    }
+
+    public static void clearYouTubePictureInPictureWebContents(@Nullable final WebContents webContents) {
+        if (webContents == null) {
+            sYouTubePictureInPictureWebContents = null;
+            return;
+        }
+
+        if (sYouTubePictureInPictureWebContents == null) {
+            return;
+        }
+
+        final WebContents pictureInPictureWebContents = sYouTubePictureInPictureWebContents.get();
+        if (pictureInPictureWebContents == null
+                || pictureInPictureWebContents == webContents
+                || pictureInPictureWebContents.isDestroyed()) {
+            sYouTubePictureInPictureWebContents = null;
+        }
+    }
+
     public static boolean isBraveTalk(WebContents webContents) {
         if (webContents == null) {
             return false;
@@ -78,8 +108,7 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
         if (!isYouTube) {
             return false;
         }
-        return isBackgroundVideo(webContents, isYouTube)
-                || isYouTubePictureInPicture(webContents, isYouTube);
+        return isBackgroundVideo() || isYouTubePictureInPicture(webContents);
     }
 
     @VisibleForTesting
@@ -92,7 +121,7 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
     }
 
     @VisibleForTesting
-    boolean isBackgroundVideo(WebContents webContents, boolean isYouTube) {
+    boolean isBackgroundVideo() {
         // We check the command line switch rather than reading the preference directly because
         // this class is in the components layer and cannot access Profile or UserPrefs (chrome
         // layer) without causing R8 module boundary violations in the AAB build. The switch is
@@ -100,12 +129,12 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
         // feature and preference are both enabled, and the app restarts whenever the preference
         // changes, so the switch reliably reflects the current preference state.
         // In C++ this switch is defined as switches::kDisableBackgroundMediaSuspend.
-        return isYouTube && CommandLine.getInstance().hasSwitch("disable-background-media-suspend");
+        return CommandLine.getInstance().hasSwitch("disable-background-media-suspend");
     }
 
     @VisibleForTesting
-    boolean isYouTubePictureInPicture(WebContents webContents, boolean isYouTube) {
-        if (!isYouTube) {
+    boolean isYouTubePictureInPicture(WebContents webContents) {
+        if (!isYouTubePictureInPictureWebContents(webContents)) {
             return false;
         }
 
@@ -121,6 +150,25 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
 
         final Activity activity = activityRef.get();
         return activity != null && activity.isInPictureInPictureMode();
+    }
+
+    @VisibleForTesting
+    static boolean isYouTubePictureInPictureWebContents(@Nullable WebContents webContents) {
+        if (webContents == null || webContents.isDestroyed()) {
+            return false;
+        }
+
+        if (sYouTubePictureInPictureWebContents == null) {
+            return false;
+        }
+
+        WebContents pictureInPictureWebContents = sYouTubePictureInPictureWebContents.get();
+        if (pictureInPictureWebContents == null || pictureInPictureWebContents.isDestroyed()) {
+            sYouTubePictureInPictureWebContents = null;
+            return false;
+        }
+
+        return pictureInPictureWebContents == webContents;
     }
 
     @Override
@@ -175,9 +223,10 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
             @Override
             public void mediaSessionStateChanged(boolean isControllable, boolean isPaused) {
                 // Keep the Android media controls alive for Brave Talk, background YouTube audio,
-                // and active YouTube PiP sessions when the page transiently reports itself as not
-                // controllable. Preserve the real paused state so SystemUI shows the correct
-                // action and forwards the right command after wake/restore transitions.
+                // and the active Brave-managed YouTube PiP session when the page transiently
+                // reports itself as not controllable. Preserve the real paused state so SystemUI
+                // shows the correct action and forwards the right command after wake/restore
+                // transitions.
                 if (!isControllable && shouldSuppressMediaPause()) {
                     isControllable = true;
                 }

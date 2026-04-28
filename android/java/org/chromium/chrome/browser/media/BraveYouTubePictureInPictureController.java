@@ -28,6 +28,7 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.fullscreen.BraveFullscreenHtmlApiHandlerBase;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.youtube_script_injector.BraveYouTubeScriptInjectorNativeHelper;
+import org.chromium.components.browser_ui.media.BraveMediaSessionHelper;
 import org.chromium.content_public.browser.MediaSession;
 import org.chromium.content_public.browser.WebContents;
 
@@ -117,6 +118,9 @@ public class BraveYouTubePictureInPictureController {
     /** Hook from {@code Activity#onDestroy}. */
     public void onDestroy() {
         unregisterScreenStateReceiver();
+        if (!mActivity.isChangingConfigurations()) {
+            BraveMediaSessionHelper.clearYouTubePictureInPictureWebContents(mWebContents);
+        }
         // Reset session state so any delayed callbacks queued by handleSessionExited() return
         // early via isExitingForSession() instead of touching a destroyed activity. State has
         // already been written to the saved instance bundle, so the next activity restores from
@@ -178,6 +182,7 @@ public class BraveYouTubePictureInPictureController {
     public void onSessionRequested(final WebContents webContents) {
         mResumeMediaSessionOnPipEntry = true;
         mWebContents = webContents;
+        BraveMediaSessionHelper.setYouTubePictureInPictureWebContents(webContents);
         mActive = true;
         mExiting = false;
         mInterruptedByScreenLock = false;
@@ -271,6 +276,7 @@ public class BraveYouTubePictureInPictureController {
                 && BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(
                         currentWebContents)) {
             mWebContents = currentWebContents;
+            BraveMediaSessionHelper.setYouTubePictureInPictureWebContents(currentWebContents);
             return currentWebContents;
         }
         return null;
@@ -427,6 +433,7 @@ public class BraveYouTubePictureInPictureController {
         mActive = false;
         mExiting = false;
         mInterruptedByScreenLock = false;
+        BraveMediaSessionHelper.clearYouTubePictureInPictureWebContents(webContents);
         unregisterScreenStateReceiver();
         mWebContents = null;
     }
