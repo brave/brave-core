@@ -121,3 +121,6 @@
 #undef BRAVE_WEB_DISCOVERY_FLAG
 #undef BRAVE_VPN_FLAG
 #undef EMAIL_ALIASES_FLAG
+
+OVERRIDE_FEATURE_DEFAULT_STATES({{chrome::android::kAndroidSearchInSettings,
+                                  base::FEATURE_ENABLED_BY_DEFAULT}});

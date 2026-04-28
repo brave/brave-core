@@ -261,6 +261,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 
 TEST(FeatureDefaultsTest, EnabledFeatures) {
   const base::Feature* enabled_features[] = {
+#if BUILDFLAG(IS_ANDROID)
+      &chrome::android::kAndroidSearchInSettings,
+#endif
       &omnibox::kAblateSearchProviderWarmup,
       &blink::features::kReducedReferrerGranularity,
       &blink::features::kReduceUserAgentMinorVersion,
