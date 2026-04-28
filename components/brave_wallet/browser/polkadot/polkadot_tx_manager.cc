@@ -320,6 +320,10 @@ void PolkadotTxManager::UpdatePendingTransactions(
         extrinsic_metadata->extrinsic(), extrinsic_metadata->block_num(),
         extrinsic_metadata->mortality_period());
 
+    if (!task_ptr) {
+      continue;
+    }
+
     auto* task = task_ptr.get();
     polkadot_transaction_status_tasks_.insert(std::move(task_ptr));
 

@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/containers/flat_map.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/time/time.h"
@@ -44,13 +45,14 @@ class PolkadotBlockTracker : public BlockTracker {
   void GetLatestBlock(const std::string& chain_id);
   void OnGetFinalizedHead(
       const std::string& chain_id,
-      std::optional<std::array<uint8_t, kPolkadotBlockHashSize>>,
-      std::optional<std::string>);
-  void OnGetFinalizedBlockHeader(const std::string& chain_id,
-                                 std::optional<PolkadotBlockHeader>,
-                                 std::optional<std::string>);
+      std::optional<std::array<uint8_t, kPolkadotBlockHashSize>> block_hash,
+      std::optional<std::string> err_str);
+  void OnGetFinalizedBlockHeader(
+      const std::string& chain_id,
+      std::optional<PolkadotBlockHeader> block_header,
+      std::optional<std::string> err_str);
 
-  std::map<std::string, std::array<uint8_t, kPolkadotBlockHashSize>>
+  base::flat_map<std::string, std::array<uint8_t, kPolkadotBlockHashSize>>
       latest_block_hashes_map_;
   base::ObserverList<Observer> observers_;
   raw_ref<PolkadotSubstrateRpc> polkadot_rpc_;

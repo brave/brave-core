@@ -96,7 +96,7 @@ class PolkadotTxManager : public TxManager,
       std::unique_ptr<PolkadotTxMeta> polkadot_tx,
       base::expected<
           std::pair<PolkadotTransactionStatus, std::optional<uint128_t>>,
-          std::string>);
+          std::string> result);
 
   // PolkadotBlockTracker::Observer
   void OnLatestBlock(const std::string& chain_id, uint32_t block_num) override;

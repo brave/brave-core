@@ -45,6 +45,18 @@ std::string ReadMetadataFixtureJsonImpl(std::string_view file_name) {
   return fixture_contents;
 }
 
+bool IsCommand(const base::DictValue& req_body, std::string_view method) {
+  if (const auto* json_method = req_body.FindString("method");
+      json_method && *json_method == method) {
+    return true;
+  }
+  return false;
+}
+
+const base::ListValue* FindParamsOrNull(const base::DictValue& req_body) {
+  return req_body.FindList("params");
+}
+
 }  // namespace
 
 base::DictValue RequestBodyToJsonDict(const network::ResourceRequest& req) {
@@ -479,18 +491,6 @@ bool PolkadotMockRpc::HandleGetAccountInfoRequest(
     })");
 
   return true;
-}
-
-bool IsCommand(const base::DictValue& req_body, std::string_view method) {
-  if (const auto* json_method = req_body.FindString("method");
-      json_method && *json_method == method) {
-    return true;
-  }
-  return false;
-}
-
-const base::ListValue* FindParamsOrNull(const base::DictValue& req_body) {
-  return req_body.FindList("params");
 }
 
 bool PolkadotMockRpc::HandleGetFinalizedBlockHeader(

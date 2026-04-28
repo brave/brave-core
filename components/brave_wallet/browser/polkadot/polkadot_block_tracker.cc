@@ -71,9 +71,8 @@ void PolkadotBlockTracker::OnGetFinalizedBlockHeader(
     return;
   }
 
-  for (auto& observer : observers_) {
-    observer.OnLatestBlock(chain_id, block_header->block_number);
-  }
+  observers_.Notify(&Observer::OnLatestBlock, chain_id,
+                    block_header->block_number);
 }
 
 }  // namespace brave_wallet
