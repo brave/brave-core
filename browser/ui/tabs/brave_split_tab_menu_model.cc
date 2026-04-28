@@ -28,7 +28,7 @@ bool AreSplitTabLinked(const split_tabs::SplitTabId& split_id,
 
 }  // namespace
 
-std::unique_ptr<ui::SimpleMenuModel> CreateBraveSplitTabMenuModel(
+std::unique_ptr<SplitTabMenuModel> CreateBraveSplitTabMenuModel(
     TabStripModel* tab_strip_model,
     SplitTabMenuModel::MenuSource source) {
   return std::make_unique<BraveSplitTabMenuModel>(tab_strip_model, source);
