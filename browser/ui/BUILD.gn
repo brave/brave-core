@@ -134,16 +134,10 @@ source_set("ui") {
   ]
 
   if (enable_brave_wallet) {
-    sources += [
-      "webui/brave_wallet/line_chart/line_chart_ui.cc",
-      "webui/brave_wallet/line_chart/line_chart_ui.h",
-      "webui/brave_wallet/market/market_ui.cc",
-      "webui/brave_wallet/market/market_ui.h",
-      "webui/brave_wallet/nft/nft_ui.cc",
-      "webui/brave_wallet/nft/nft_ui.h",
-    ]
-
     deps += [
+      "//brave/browser/ui/webui/brave_wallet/line_chart",
+      "//brave/browser/ui/webui/brave_wallet/market",
+      "//brave/browser/ui/webui/brave_wallet/nft",
       "//brave/browser/ui/webui/brave_wallet/wallet_page",
       "//brave/components/brave_wallet/browser",
       "//brave/components/brave_wallet/browser:constants",
@@ -168,14 +162,6 @@ source_set("ui") {
         "views/toolbar/wallet_button_notification_source.h",
         "wallet_bubble_manager_delegate_impl.cc",
         "wallet_bubble_manager_delegate_impl.h",
-        "webui/brave_wallet/ledger/ledger_ui.cc",
-        "webui/brave_wallet/ledger/ledger_ui.h",
-        "webui/brave_wallet/panel_handler/wallet_panel_handler.cc",
-        "webui/brave_wallet/panel_handler/wallet_panel_handler.h",
-        "webui/brave_wallet/trezor/trezor_ui.cc",
-        "webui/brave_wallet/trezor/trezor_ui.h",
-        "webui/brave_wallet/wallet_panel_ui.cc",
-        "webui/brave_wallet/wallet_panel_ui.h",
         "webui/settings/brave_wallet_handler.cc",
         "webui/settings/brave_wallet_handler.h",
       ]
@@ -184,6 +170,9 @@ source_set("ui") {
         "//brave/browser/brave_wallet",
         "//brave/browser/brave_wallet:tab_helper",
         "//brave/browser/ui/brave_wallet",
+        "//brave/browser/ui/webui/brave_wallet/ledger",
+        "//brave/browser/ui/webui/brave_wallet/trezor",
+        "//brave/browser/ui/webui/brave_wallet/wallet_panel",
         "//brave/components/brave_wallet/browser:permission_utils",
         "//brave/components/brave_wallet/browser:wallet_handler",
         "//brave/components/brave_wallet_ui:resources",

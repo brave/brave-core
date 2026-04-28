@@ -3,14 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_WALLET_PANEL_UI_H_
-#define BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_WALLET_PANEL_UI_H_
+#ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_WALLET_PANEL_WALLET_PANEL_UI_H_
+#define BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_WALLET_PANEL_WALLET_PANEL_UI_H_
 
 #include <memory>
 #include <string>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/browser/ui/webui/brave_wallet/panel_handler/wallet_panel_handler.h"
+#include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_handler.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/wallet_handler.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -121,4 +121,4 @@ class WalletPanelUIConfig : public DefaultTopChromeWebUIConfig<WalletPanelUI> {
   bool ShouldAutoResizeHost() override;
 };
 
-#endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_WALLET_PANEL_UI_H_
+#endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_WALLET_WALLET_PANEL_WALLET_PANEL_UI_H_

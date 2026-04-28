@@ -69,7 +69,6 @@ if (enable_brave_wallet) {
     "//brave/browser/brave_wallet/solana_provider_browsertest.cc",
     "//brave/browser/brave_wallet/solana_provider_renderer_browsertest.cc",
     "//brave/browser/brave_wallet/wallet_watch_asset_browsertest.cc",
-    "//brave/browser/ui/webui/brave_wallet/wallet_panel_ui_browsertest.cc",
   ]
 }
 
