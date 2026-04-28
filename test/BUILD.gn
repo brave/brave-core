@@ -1573,6 +1573,7 @@ if (is_android) {
       "//brave/android/javatests:brave_test_java_org.chromium.chrome.browser.site_settings",
       "//brave/android/javatests:brave_test_java_org.chromium.chrome.browser.swiperefresh",
       "//brave/android/javatests:brave_test_java_org.chromium.chrome.browser.widget.quickactionsearchandbookmark",
+      "//brave/android/javatests:brave_test_java_org.chromium.components.browser_ui.media",
       "//brave/components/safe_browsing/android:brave_safe_browsing_java",
       "//cc:cc_java",
       "//chrome/browser/android/browserservices/intents:java",
