@@ -79,7 +79,9 @@ export class BraveAccountSignInDialogElement extends CrLitElement {
         }
       } else {
         console.error('Unexpected error:', e)
-        return
+        error = {
+          clientError: { errorCode: LoginClientErrorCode.kUnexpected },
+        }
       }
 
       showError({ kind: 'login', details: error })

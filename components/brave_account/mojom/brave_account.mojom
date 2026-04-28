@@ -35,11 +35,12 @@ struct RegisterVerifyResult {
 };
 
 enum RegisterClientErrorCode {
-  kOpaqueError                         = -5,
-  kVerificationTokenEncryptionFailed   = -4,
-  kVerificationTokenDecryptionFailed   = -3,
-  kUserNotInTheVerificationState       = -2,
-  kAuthenticationTokenEncryptionFailed = -1,
+  kUnexpected,
+  kOpaqueError,
+  kVerificationTokenEncryptionFailed,
+  kVerificationTokenDecryptionFailed,
+  kUserNotInTheVerificationState,
+  kAuthenticationTokenEncryptionFailed,
 };
 
 struct RegisterClientError {
@@ -101,10 +102,11 @@ struct LoginFinalizeResult {
 };
 
 enum LoginClientErrorCode {
-  kOpaqueError                         = -4,
-  kLoginTokenEncryptionFailed          = -3,
-  kLoginTokenDecryptionFailed          = -2,
-  kAuthenticationTokenEncryptionFailed = -1,
+  kUnexpected,
+  kOpaqueError,
+  kLoginTokenEncryptionFailed,
+  kLoginTokenDecryptionFailed,
+  kAuthenticationTokenEncryptionFailed,
 };
 
 struct LoginClientError {
@@ -155,8 +157,9 @@ struct ResendConfirmationEmailResult {
 };
 
 enum ResendConfirmationEmailClientErrorCode {
-  kUserNotInTheVerificationState     = -2,
-  kVerificationTokenDecryptionFailed = -1,
+  kUnexpected,
+  kUserNotInTheVerificationState,
+  kVerificationTokenDecryptionFailed,
 };
 
 struct ResendConfirmationEmailClientError {
@@ -209,10 +212,11 @@ struct GetServiceTokenResult {
 };
 
 enum GetServiceTokenClientErrorCode {
-  kUserNotLoggedIn                     = -4,
-  kAuthenticationTokenDecryptionFailed = -3,
-  kAuthenticationSessionChanged        = -2,
-  kServiceTokenEncryptionFailed        = -1,
+  kUnexpected,
+  kUserNotLoggedIn,
+  kAuthenticationTokenDecryptionFailed,
+  kAuthenticationSessionChanged,
+  kServiceTokenEncryptionFailed,
 };
 
 struct GetServiceTokenClientError {

@@ -76,7 +76,9 @@ export class BraveAccountCreateDialogElement extends CrLitElement {
         }
       } else {
         console.error('Unexpected error:', e)
-        return
+        error = {
+          clientError: { errorCode: RegisterClientErrorCode.kUnexpected },
+        }
       }
 
       showError({ kind: 'register', details: error })

@@ -13,7 +13,9 @@ import { BraveAccountStrings } from './brave_components_webui_strings.js'
 import { showError, showSuccess } from './brave_account_common.js'
 import { getHtml } from './brave_account_otp_dialog.html.js'
 import {
+  RegisterClientErrorCode,
   RegisterError,
+  ResendConfirmationEmailClientErrorCode,
   ResendConfirmationEmailError,
 } from './brave_account.mojom-webui.js'
 
@@ -44,7 +46,9 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
         error = e as RegisterError
       } else {
         console.error('Unexpected error:', e)
-        return
+        error = {
+          clientError: { errorCode: RegisterClientErrorCode.kUnexpected },
+        }
       }
 
       showError({ kind: 'register', details: error })
@@ -64,10 +68,12 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
         error = e as ResendConfirmationEmailError
       } else {
         console.error('Unexpected error:', e)
-        return
+        error = {
+          clientError: {
+            errorCode: ResendConfirmationEmailClientErrorCode.kUnexpected,
+          },
+        }
       }
-    } finally {
-      this.isResendingConfirmationEmail = false
     }
 
     if (error) {
@@ -81,6 +87,8 @@ export class BraveAccountOtpDialogElement extends CrLitElement {
         BraveAccountStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS_TITLE,
       )
     }
+
+    this.isResendingConfirmationEmail = false
   }
 
   private browserProxy: BraveAccountBrowserProxy =

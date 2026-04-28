@@ -19,6 +19,7 @@ import { BraveAccountSettingsStrings } from '../brave_components_webui_strings.j
 import {
   AccountState,
   AccountStateFieldTags,
+  ResendConfirmationEmailClientErrorCode,
   ResendConfirmationEmailError,
   ResendConfirmationEmailErrorFieldTags,
   ResendConfirmationEmailServerErrorCode,
@@ -107,10 +108,12 @@ export class SettingsBraveAccountRowElement extends I18nMixinLit(CrLitElement) {
         error = e as ResendConfirmationEmailError
       } else {
         console.error('Unexpected error:', e)
-        return
+        error = {
+          clientError: {
+            errorCode: ResendConfirmationEmailClientErrorCode.kUnexpected,
+          },
+        }
       }
-    } finally {
-      this.isResendingConfirmationEmail = false
     }
 
     leoShowAlert({
@@ -126,6 +129,8 @@ export class SettingsBraveAccountRowElement extends I18nMixinLit(CrLitElement) {
               BraveAccountSettingsStrings
                    .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS)
     }, 30000)
+
+    this.isResendingConfirmationEmail = false
   }
 
   protected onCancelRegistrationButtonClicked() {
