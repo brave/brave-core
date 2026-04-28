@@ -49,8 +49,7 @@ public class BraveFullscreenHtmlApiHandlerBaseTest {
     public void shouldPreservePersistentFullscreenForPictureInPicture_inactiveBraveActivity() {
         when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(false);
 
-        assertFalse(
-                mHandler.shouldPreservePersistentFullscreenForPictureInPicture(mBraveActivity));
+        assertFalse(mHandler.shouldPreservePersistentFullscreenForPictureInPicture(mBraveActivity));
     }
 
     @Test
@@ -58,7 +57,6 @@ public class BraveFullscreenHtmlApiHandlerBaseTest {
     public void shouldPreservePersistentFullscreenForPictureInPicture_activeBraveActivity() {
         when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(true);
 
-        assertTrue(
-                mHandler.shouldPreservePersistentFullscreenForPictureInPicture(mBraveActivity));
+        assertTrue(mHandler.shouldPreservePersistentFullscreenForPictureInPicture(mBraveActivity));
     }
 }
