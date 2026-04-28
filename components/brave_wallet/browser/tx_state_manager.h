@@ -66,7 +66,8 @@ class TxStateManager {
   FRIEND_TEST_ALL_PREFIXES(TxStateManagerUnitTest, TxOperations);
   FRIEND_TEST_ALL_PREFIXES(EthTxManagerUnitTest, Reset);
 
-  void RetireTxByStatus(const std::string& chain_id,
+  void RetireTxByStatus(base::DictValue& txs,
+                        const std::string& chain_id,
                         mojom::TransactionStatus status,
                         size_t max_num);
 
