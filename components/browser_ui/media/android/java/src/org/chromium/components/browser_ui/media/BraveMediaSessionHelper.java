@@ -48,12 +48,14 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
     // device at a time.
     private static @Nullable WeakReference<WebContents> sYouTubePictureInPictureWebContents;
 
-    public static void setYouTubePictureInPictureWebContents(@Nullable final WebContents webContents) {
+    public static void setYouTubePictureInPictureWebContents(
+            @Nullable final WebContents webContents) {
         sYouTubePictureInPictureWebContents =
                 webContents == null ? null : new WeakReference<>(webContents);
     }
 
-    public static void clearYouTubePictureInPictureWebContents(@Nullable final WebContents webContents) {
+    public static void clearYouTubePictureInPictureWebContents(
+            @Nullable final WebContents webContents) {
         if (webContents == null) {
             sYouTubePictureInPictureWebContents = null;
             return;
