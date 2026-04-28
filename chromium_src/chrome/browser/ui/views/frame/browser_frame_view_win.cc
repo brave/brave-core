@@ -7,9 +7,8 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/layout_constants.h"
-#include "chrome/browser/ui/views/frame/webui_tab_strip_container_view.h"
 
-// Override invokation of Browser::SupportsWindowFeature() and
+// Override invocation of Browser::SupportsWindowFeature() and
 // WebUITabStripContainerView::SupportsTouchableTabStrip() in the constructor in
 // order to create the `window_title_` label when the browser supports the
 // vertical tab strip. Note that even though we're overriding the method from
@@ -24,14 +23,12 @@
       (feature == Browser::WindowFeature::kFeatureTitleBar && \
        tabs::utils::SupportsBraveVerticalTabs(browser))
 
-#define SupportsTouchableTabStrip(browser)                                  \
-  SupportsTouchableTabStrip(browser);                                       \
-  supports_title =                                                          \
-      supports_title_bar ||                                                 \
-      (WebUITabStripContainerView::SupportsTouchableTabStrip(browser)       \
-           ? WebUITabStripContainerView::SupportsTouchableTabStrip(browser) \
-           : tabs::utils::SupportsBraveVerticalTabs(browser))
-
+// Add titlebar if Brave vertical tabs are used.
+#define BRAVE_BROWSER_FRAME_VIEW_WIN      \
+  }                                       \
+  if (!browser_view->GetIsWebAppType() && \
+      (supports_title_bar ||              \
+       tabs::utils::SupportsBraveVerticalTabs(browser))) {
 namespace {
 
 // Translation-unit-local wrapper around `GetLayoutConstant`. Inside Win caption
@@ -69,5 +66,5 @@ int GetLayoutConstantForBraveWindowControls(LayoutConstant constant) {
 #include <chrome/browser/ui/views/frame/browser_frame_view_win.cc>
 
 #undef GetLayoutConstant
-#undef SupportsTouchableTabStrip
+#undef BRAVE_BROWSER_FRAME_VIEW_WIN
 #undef SupportsWindowFeature

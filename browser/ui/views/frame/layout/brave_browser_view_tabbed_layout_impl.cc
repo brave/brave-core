@@ -168,13 +168,6 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
     contents_layout->bounds.Inset(GetInsetsConsideringVerticalTabHost());
   }
 
-  if (views().webui_tab_strip && views().webui_tab_strip->GetVisible()) {
-    // The WebUI tab strip container should "push" the tab contents down without
-    // resizing it.
-    contents_layout->bounds.Inset(
-        gfx::Insets().set_bottom(-views().webui_tab_strip->size().height()));
-  }
-
   // Handle sidebar and adjust contents container bounds. This should be done
   // BEFORE calling `InsetContentsContainerBounds()` so that the contents
   // container's final bounds is updated considering the sidebar's bounds.
