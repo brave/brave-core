@@ -12,6 +12,7 @@
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/brave_stats/browser/buildflags.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/serp_metrics/pref_names.h"
 #include "brave/components/webcompat_reporter/buildflags/buildflags.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
@@ -72,6 +73,7 @@ NSString* const kWebcompatReportEndpoint =
   _localPrefs->SetString(kLastCheckYMD,
                          brave_stats::GetDateAsYMD(base::Time::FromNSDate(date),
                                                    /*use_utc=*/true));
+  _localPrefs->SetTime(serp_metrics::prefs::kLastReportedAt, base::Time::Now());
 }
 
 @end

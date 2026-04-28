@@ -66,11 +66,14 @@ public class DAU {
 
   private let apiKey: String?
   private let braveCoreStats: BraveStats?
+  private let serpMetrics: (any SerpMetrics)?
 
   public init(
-    braveCoreStats: BraveStats?
+    braveCoreStats: BraveStats?,
+    serpMetrics: (any SerpMetrics)?
   ) {
     self.braveCoreStats = braveCoreStats
+    self.serpMetrics = serpMetrics
     apiKey = kBraveStatsAPIKey
   }
 
@@ -230,6 +233,9 @@ public class DAU {
     if let braveCoreStats = braveCoreStats {
       params += braveCoreParams(for: braveCoreStats)
     }
+    if let serpMetrics = serpMetrics, FeatureList.kSerpMetricsFeature.enabled {
+      params += serpMetricsParams(for: serpMetrics)
+    }
 
     // Installation date for `dtoi` param has a limited lifetime.
     // After that we clear the install date from the app and always send null `dtoi` param.
@@ -281,6 +287,15 @@ public class DAU {
   func braveCoreParams(for braveStats: BraveStats) -> [URLQueryItem] {
     return [
       .init(name: "ads_enabled", value: braveStats.isNotificationAdsEnabled ? "true" : "false")
+    ]
+  }
+
+  func serpMetricsParams(for serpMetrics: any SerpMetrics) -> [URLQueryItem] {
+    return [
+      .init(name: "braveSearch", value: "\(serpMetrics.braveSearchCountForYesterday)"),
+      .init(name: "googleSearch", value: "\(serpMetrics.googleSearchCountForYesterday)"),
+      .init(name: "otherSearch", value: "\(serpMetrics.otherSearchCountForYesterday)"),
+      .init(name: "staleSearch", value: "\(serpMetrics.searchCountForStalePeriod)"),
     ]
   }
 

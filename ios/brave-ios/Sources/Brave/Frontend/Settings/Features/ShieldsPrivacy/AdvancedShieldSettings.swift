@@ -217,7 +217,8 @@ import os
         id: .history,
         clearable: HistoryClearable(
           historyAPI: braveCore.historyAPI,
-          httpsUpgradeService: HttpsUpgradeServiceFactory.get(privateMode: false)
+          httpsUpgradeService: HttpsUpgradeServiceFactory.get(privateMode: false),
+          serpMetrics: SerpMetricsServiceFactory.get(profile: braveCore.profile)
         ),
         isEnabled: true
       ),

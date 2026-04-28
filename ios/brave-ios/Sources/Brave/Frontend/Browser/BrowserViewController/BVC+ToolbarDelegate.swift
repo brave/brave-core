@@ -51,7 +51,8 @@ extension BrowserViewController: TopToolbarDelegate {
         tabManager: self.tabManager,
         toolbarUrlActionsDelegate: self,
         dismiss: { [weak self] in self?.dismiss(animated: true) },
-        askForAuthentication: self.askForLocalAuthentication
+        askForAuthentication: self.askForLocalAuthentication,
+        serpMetrics: SerpMetricsServiceFactory.get(profile: self.profileController.profile)
       ),
       openTabsModel: profileController.openTabsAPI,
       toolbarUrlActionsDelegate: self,

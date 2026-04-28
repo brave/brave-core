@@ -18,6 +18,7 @@ source_set("brave_stats") {
     "//brave/components/brave_stats/browser:buildflags",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/constants",
+    "//brave/components/serp_metrics:prefs",
     "//brave/components/webcompat_reporter/buildflags",
     "//components/prefs",
     "//ios/chrome/browser/shared/model/application_context",

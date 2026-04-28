@@ -56,6 +56,7 @@ class HistoryModel: NSObject, ObservableObject {
   private weak var toolbarUrlActionsDelegate: ToolbarUrlActionsDelegate?
   private var dismiss: () -> Void
   private var askForLocalAuthentication: (AuthViewType, ((Bool, LAError.Code?) -> Void)?) -> Void
+  private let serpMetrics: (any SerpMetrics)?
 
   private var listener: HistoryServiceListener?
   private let maxFetchCount: UInt = 200
@@ -84,13 +85,15 @@ class HistoryModel: NSObject, ObservableObject {
     tabManager: TabManager?,
     toolbarUrlActionsDelegate: ToolbarUrlActionsDelegate?,
     dismiss: @escaping () -> Void,
-    askForAuthentication: @escaping (AuthViewType, ((Bool, LAError.Code?) -> Void)?) -> Void
+    askForAuthentication: @escaping (AuthViewType, ((Bool, LAError.Code?) -> Void)?) -> Void,
+    serpMetrics: (any SerpMetrics)? = nil
   ) {
     self.api = api
     self.tabManager = tabManager
     self.toolbarUrlActionsDelegate = toolbarUrlActionsDelegate
     self.dismiss = dismiss
     self.askForLocalAuthentication = askForAuthentication
+    self.serpMetrics = serpMetrics
     self.isPrivateBrowsing = tabManager?.privateBrowsingManager.isPrivateBrowsing == true
     super.init()
 
@@ -182,6 +185,8 @@ class HistoryModel: NSObject, ObservableObject {
   func deleteAll() {
     api?.deleteAll { [weak self] in
       guard let self = self else { return }
+
+      self.serpMetrics?.clearHistory()
 
       // Clearing Tab History with entire history entry
       self.tabManager?.clearTabHistory { [weak self] in

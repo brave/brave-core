@@ -44,7 +44,11 @@ struct ProfileState {
     profile = profileController.profile
 
     // Setup DAU
-    dau = DAU(braveCoreStats: profileController.braveStats)
+    let serpMetrics = SerpMetricsServiceFactory.get(profile: profileController.profile)
+    dau = DAU(
+      braveCoreStats: profileController.braveStats,
+      serpMetrics: serpMetrics
+    )
 
     // Setup Attribution manager
     attributionManager = AttributionManager(

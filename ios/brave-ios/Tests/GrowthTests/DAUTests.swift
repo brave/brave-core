@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Preferences
 import Shared
 import XCTest
@@ -10,8 +11,29 @@ import XCTest
 
 extension DAU {
   fileprivate convenience init() {
-    self.init(braveCoreStats: nil)
+    self.init(braveCoreStats: nil, serpMetrics: nil)
   }
+}
+
+private class SerpMetricsMock: NSObject, SerpMetrics {
+  let braveSearchCountForYesterday: Int
+  let googleSearchCountForYesterday: Int
+  let otherSearchCountForYesterday: Int
+  let searchCountForStalePeriod: Int
+
+  init(
+    braveSearchCountForYesterday: Int,
+    googleSearchCountForYesterday: Int,
+    otherSearchCountForYesterday: Int,
+    searchCountForStalePeriod: Int
+  ) {
+    self.braveSearchCountForYesterday = braveSearchCountForYesterday
+    self.googleSearchCountForYesterday = googleSearchCountForYesterday
+    self.otherSearchCountForYesterday = otherSearchCountForYesterday
+    self.searchCountForStalePeriod = searchCountForStalePeriod
+  }
+
+  func clearHistory() {}
 }
 
 class DAUTests: XCTestCase {
@@ -466,6 +488,38 @@ class DAUTests: XCTestCase {
       XCTAssertEqual(try XCTUnwrap(Preferences.DAU.weekOfInstallation.value), fixedValue)
       Preferences.DAU.weekOfInstallation.reset()
     }
+  }
+
+  func testSerpMetricsParamValues() {
+    let serpMetrics = SerpMetricsMock(
+      braveSearchCountForYesterday: 1,
+      googleSearchCountForYesterday: 2,
+      otherSearchCountForYesterday: 3,
+      searchCountForStalePeriod: 4
+    )
+    let dau = DAU(braveCoreStats: nil, serpMetrics: serpMetrics)
+    let date = dateFrom(string: "2026-01-02")
+    Preferences.DAU.installationDate.value = date
+
+    let params = dau.paramsAndPrefsSetup(for: date, lastPingDate: nil)!
+
+    XCTAssert(params.queryParams.contains(URLQueryItem(name: "braveSearch", value: "1")))
+    XCTAssert(params.queryParams.contains(URLQueryItem(name: "googleSearch", value: "2")))
+    XCTAssert(params.queryParams.contains(URLQueryItem(name: "otherSearch", value: "3")))
+    XCTAssert(params.queryParams.contains(URLQueryItem(name: "staleSearch", value: "4")))
+  }
+
+  func testSerpMetricsParamsNotIncludedWhenSerpMetricsIsNil() {
+    let dau = DAU(braveCoreStats: nil, serpMetrics: nil)
+    let date = dateFrom(string: "2026-01-02")
+    Preferences.DAU.installationDate.value = date
+
+    let params = dau.paramsAndPrefsSetup(for: date, lastPingDate: nil)!
+
+    XCTAssertFalse(params.queryParams.contains(where: { $0.name == "braveSearch" }))
+    XCTAssertFalse(params.queryParams.contains(where: { $0.name == "googleSearch" }))
+    XCTAssertFalse(params.queryParams.contains(where: { $0.name == "otherSearch" }))
+    XCTAssertFalse(params.queryParams.contains(where: { $0.name == "staleSearch" }))
   }
 
   // No longer valid outside of a hosted app

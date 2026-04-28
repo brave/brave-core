@@ -16,6 +16,7 @@
 #include "brave/components/ai_chat/ios/browser/ai_chat_associated_content_page_fetcher.h"
 #include "brave/components/ai_chat/ios/browser/ai_chat_tab_helper.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
+#include "brave/components/serp_metrics/serp_metrics_feature.h"
 #include "brave/ios/browser/ai_chat/ai_chat_distiller_javascript_feature.h"
 #include "brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge_holder.h"
 #include "brave/ios/browser/ai_chat/tab_data_web_state_observer.h"
@@ -26,6 +27,7 @@
 #include "brave/ios/browser/brave_search/brave_search_ad_results_javascript_feature.h"
 #include "brave/ios/browser/brave_talk/brave_talk_tab_helper_bridge.h"
 #include "brave/ios/browser/favicon/brave_ios_web_favicon_driver.h"
+#include "brave/ios/browser/serp_metrics/serp_metrics_tab_helper.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_handler_bridge_holder.h"
 #include "brave/ios/browser/web/document_fetch/document_fetch_javascript_feature.h"
@@ -357,6 +359,9 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   }
 
   brave_ads::AdsTabHelper::MaybeCreateForWebState(self.webState);
+  if (base::FeatureList::IsEnabled(serp_metrics::kSerpMetricsFeature)) {
+    serp_metrics::SerpMetricsTabHelper::MaybeCreateForWebState(self.webState);
+  }
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
   BraveTalkTabHelper::CreateForWebState(self.webState);
   BraveTalkTabHelper::FromWebState(self.webState)
