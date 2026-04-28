@@ -109,7 +109,8 @@ android_library("brave_test_java_org.chromium.chrome.browser.swiperefresh") {
   ]
 }
 
-android_library("brave_test_java_org.chromium.chrome.browser.picture_in_picture") {
+android_library(
+    "brave_test_java_org.chromium.chrome.browser.picture_in_picture") {
   sources = [
     "org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerBaseTest.java",
     "org/chromium/chrome/browser/media/BraveFullscreenVideoPictureInPictureControllerTest.java",

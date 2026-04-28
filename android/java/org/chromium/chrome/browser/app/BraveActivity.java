@@ -148,8 +148,8 @@ import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
-import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.fullscreen.BraveFullscreenHtmlApiHandlerBase;
+import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthController;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthManager;
@@ -2479,7 +2479,8 @@ public abstract class BraveActivity extends ChromeActivity
         FullscreenManager fullscreenManager = getFullscreenManager();
         assert fullscreenManager instanceof BraveFullscreenHtmlApiHandlerBase;
         if (fullscreenManager.getPersistentFullscreenMode()) {
-            BraveFullscreenHtmlApiHandlerBase braveFullscreen = (BraveFullscreenHtmlApiHandlerBase) fullscreenManager;
+            BraveFullscreenHtmlApiHandlerBase braveFullscreen =
+                    (BraveFullscreenHtmlApiHandlerBase) fullscreenManager;
             braveFullscreen.exitPersistentFullscreenModeForPictureInPicture();
         }
     }
