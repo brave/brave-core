@@ -98,6 +98,13 @@ TEST_F(PolkadotBlockTrackerUnitTest, GetLatestBlock) {
       .Times(1);
   task_environment_.FastForwardBy(base::Seconds(5));
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
+
+  EXPECT_CALL(observer, OnLatestBlock(mojom::kPolkadotTestnet, 0x1c06355))
+      .Times(0);
+  EXPECT_CALL(observer, OnLatestBlock(mojom::kPolkadotMainnet, 0x1c06355))
+      .Times(0);
+  task_environment_.FastForwardBy(base::Seconds(2 * 5));
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 }
 
 TEST_F(PolkadotBlockTrackerUnitTest, GetLatestBlockInvalidResponseJSON) {
