@@ -187,7 +187,7 @@ class PolkadotTxManagerUnitTest : public testing::Test {
   void TearDown() override { tx_storage_ptr_ = nullptr; }
 
   PolkadotTxManager* GetPolkadotTxManager() {
-    return polkadot_tx_manager_.get();
+    return tx_service_->GetPolkadotTxManager();
   }
 
   PolkadotTxStateManager* GetPolkadotTxStateManager() {
@@ -548,7 +548,7 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_Confirmed) {
   }
 
   ASSERT_TRUE(GetPolkadotBlockTracker()->IsRunning(mojom::kPolkadotTestnet));
-  polkadot_tx_manager_->UpdatePendingTransactions(chain_id);
+  GetPolkadotTxManager()->UpdatePendingTransactions(chain_id);
   EXPECT_FALSE(GetPolkadotBlockTracker()->IsRunning(mojom::kPolkadotTestnet));
 }
 
@@ -576,7 +576,7 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_Failed) {
   base::test::TestFuture<bool, const std::string&, const std::string&>
       unapproved_future;
 
-  polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
+  GetPolkadotTxManager()->AddUnapprovedPolkadotTransaction(
       std::move(transaction_params), unapproved_future.GetCallback());
 
   auto [success, tx_meta_id, err_str] = unapproved_future.Take();
@@ -587,13 +587,13 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_Failed) {
   base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
       approved_future;
 
-  polkadot_tx_manager_->ApproveTransaction(tx_meta_id,
-                                           approved_future.GetCallback());
+  GetPolkadotTxManager()->ApproveTransaction(tx_meta_id,
+                                             approved_future.GetCallback());
 
   auto [success2, error, msg] = approved_future.Take();
   EXPECT_TRUE(success2);
 
-  const auto& txs = tx_service_->GetDelegateForTesting()->GetTxs();
+  const auto& txs = tx_storage_ptr_->GetTxs();
   const auto* tx = txs.FindDict(tx_meta_id);
   ASSERT_TRUE(tx);
 
@@ -681,7 +681,7 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_NotFound) {
   base::test::TestFuture<bool, const std::string&, const std::string&>
       unapproved_future;
 
-  polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
+  GetPolkadotTxManager()->AddUnapprovedPolkadotTransaction(
       std::move(transaction_params), unapproved_future.GetCallback());
 
   auto [success, tx_meta_id, err_str] = unapproved_future.Take();
@@ -692,13 +692,13 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_NotFound) {
   base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
       approved_future;
 
-  polkadot_tx_manager_->ApproveTransaction(tx_meta_id,
-                                           approved_future.GetCallback());
+  GetPolkadotTxManager()->ApproveTransaction(tx_meta_id,
+                                             approved_future.GetCallback());
 
   auto [success2, error, msg] = approved_future.Take();
   EXPECT_TRUE(success2);
 
-  const auto& txs = tx_service_->GetDelegateForTesting()->GetTxs();
+  const auto& txs = tx_storage_ptr_->GetTxs();
   const auto* tx = txs.FindDict(tx_meta_id);
   ASSERT_TRUE(tx);
 
@@ -1065,7 +1065,7 @@ TEST_F(PolkadotTxManagerUnitTest, UpdatePendingTransactions_BlockTracker) {
 
   base::test::TestFuture<bool, const std::string&, const std::string&>
       unapproved_future;
-  polkadot_tx_manager_->AddUnapprovedPolkadotTransaction(
+  GetPolkadotTxManager()->AddUnapprovedPolkadotTransaction(
       std::move(transaction_params), unapproved_future.GetCallback());
 
   auto [add_ok, tx_meta_id, add_err] = unapproved_future.Take();
@@ -1073,8 +1073,8 @@ TEST_F(PolkadotTxManagerUnitTest, UpdatePendingTransactions_BlockTracker) {
 
   base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
       approved_future;
-  polkadot_tx_manager_->ApproveTransaction(tx_meta_id,
-                                           approved_future.GetCallback());
+  GetPolkadotTxManager()->ApproveTransaction(tx_meta_id,
+                                             approved_future.GetCallback());
 
   auto [approve_ok, error, approve_err] = approved_future.Take();
   ASSERT_TRUE(approve_ok);
@@ -1083,7 +1083,7 @@ TEST_F(PolkadotTxManagerUnitTest, UpdatePendingTransactions_BlockTracker) {
   // tracker.
   ASSERT_TRUE(GetPolkadotBlockTracker()->IsRunning(mojom::kPolkadotTestnet));
 
-  polkadot_tx_manager_->UpdatePendingTransactions(mojom::kPolkadotMainnet);
+  GetPolkadotTxManager()->UpdatePendingTransactions(mojom::kPolkadotMainnet);
   EXPECT_TRUE(GetPolkadotBlockTracker()->IsRunning(mojom::kPolkadotTestnet));
 }
 
