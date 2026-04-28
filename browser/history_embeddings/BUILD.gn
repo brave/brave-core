@@ -5,7 +5,10 @@
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "brave_passage_embeddings_service_unittest.cc" ]
+  sources = [
+    "brave_batch_passage_embedder_unittest.cc",
+    "brave_passage_embeddings_service_unittest.cc",
+  ]
 
   deps = [
     ":history_embeddings",

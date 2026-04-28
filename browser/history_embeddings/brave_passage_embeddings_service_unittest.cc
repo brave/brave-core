@@ -135,6 +135,7 @@ class BravePassageEmbeddingsServiceTest : public testing::Test {
       local_ai::BackgroundWebContents::Delegate* delegate,
       BravePassageEmbeddingsService::BackgroundWebContentsCreatedCallback
           callback) {
+    ++web_contents_create_count_;
     auto web_contents = std::make_unique<FakeBackgroundWebContents>(
         delegate,
         base::BindOnce(
@@ -142,6 +143,15 @@ class BravePassageEmbeddingsServiceTest : public testing::Test {
             &last_created_web_contents_));
     last_created_web_contents_ = web_contents.get();
     std::move(callback).Run(std::move(web_contents));
+  }
+
+  void RecreateService() {
+    service_.reset();
+    service_ = std::make_unique<BravePassageEmbeddingsService>(
+        base::BindRepeating(
+            &BravePassageEmbeddingsServiceTest::CreateFakeWebContents,
+            base::Unretained(this)),
+        local_ai::LocalModelsUpdaterState::GetInstance());
   }
 
   void RegisterFactory() {
@@ -198,6 +208,7 @@ class BravePassageEmbeddingsServiceTest : public testing::Test {
   FakeRendererEmbedder fake_worker_;
   FakePassageEmbedderFactory fake_factory_{&fake_worker_};
   raw_ptr<FakeBackgroundWebContents> last_created_web_contents_ = nullptr;
+  size_t web_contents_create_count_ = 0;
   base::ScopedTempDir temp_dir_;
 };
 
@@ -265,6 +276,62 @@ TEST_F(BravePassageEmbeddingsServiceTest, BackgroundContentsDestroyedCloses) {
   // A new load should recreate background contents.
   auto load2 = IssueLoad();
   EXPECT_TRUE(last_created_web_contents_);
+}
+
+TEST_F(BravePassageEmbeddingsServiceTest, ConcurrentBindFailsSecondLoad) {
+  // BindPassageEmbedder must reject a second concurrent request while
+  // the first is still pending; otherwise multiple BackgroundWebContents
+  // would race to start. Only the first load creates contents.
+  auto load1 = IssueLoad();
+  auto load2 = IssueLoad();
+
+  ASSERT_TRUE(load2->load_success.IsReady());
+  EXPECT_FALSE(load2->load_success.Get());
+  EXPECT_FALSE(load1->load_success.IsReady());
+  EXPECT_EQ(1u, web_contents_create_count_);
+}
+
+TEST_F(BravePassageEmbeddingsServiceTest,
+       PreInstalledModelDirCompletesLoadOnFactoryRegister) {
+  // Set install_dir before constructing the service. AddObserver
+  // re-fires OnLocalModelsReady synchronously when install_dir is
+  // already set, exercising the OneShotEvent's idempotent Signal()
+  // alongside the explicit signal in MaybeWaitForLocalModelFilesReady.
+  SetUpModelFiles();
+  RecreateService();
+
+  auto load = IssueLoad();
+  RegisterFactory();
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return fake_factory_.init_count() > 0; }));
+  EXPECT_TRUE(load->load_success.Get());
+}
+
+TEST_F(BravePassageEmbeddingsServiceTest, BindAgainAfterEmbedderRemoteReset) {
+  auto load = IssueLoad();
+  SetUpModelFiles();
+  RegisterFactory();
+  ASSERT_TRUE(load->load_success.Get());
+  ASSERT_EQ(1u, web_contents_create_count_);
+
+  // Drop the caller-side embedder remote. The BatchEmbedder's receiver
+  // disconnects, on_disconnect fires up to the service, and
+  // CloseBackgroundContents tears down the contents.
+  load->embedder.reset();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return last_created_web_contents_ == nullptr; }));
+
+  // The factory pipe was reset along with the service state; the fake
+  // still holds a now-disconnected receiver, so reset it before
+  // re-binding for the next cycle.
+  fake_factory_.ResetReceiver();
+
+  auto load2 = IssueLoad();
+  EXPECT_EQ(2u, web_contents_create_count_);
+  RegisterFactory();
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return fake_factory_.init_count() > 1; }));
+  EXPECT_TRUE(load2->load_success.Get());
 }
 
 TEST_F(BravePassageEmbeddingsServiceTest, BindRegistryRoutesToService) {
