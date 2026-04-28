@@ -52,7 +52,7 @@ void ScriptInjectorRenderFrameObserver::RequestAsyncExecuteScript(
     blink::mojom::PromiseResultOption await_promise,
     RequestAsyncExecuteScriptCallback callback) {
   blink::WebScriptSource web_script_source =
-      blink::WebScriptSource(blink::WebString::FromUTF16(script));
+      blink::WebScriptSource(blink::WebString::FromUtf16(script));
 
   auto want_result = CheckIfWantResult(callback);
 

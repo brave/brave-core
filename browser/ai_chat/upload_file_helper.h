@@ -68,8 +68,8 @@ class UploadFileHelper : public ui::SelectFileDialog::Listener {
       const std::vector<ui::SelectedFileInfo>& files) override;
   void FileSelectionCanceled() override;
 
-  void OnFileRead(
-      std::tuple<std::optional<std::vector<uint8_t>>, base::FilePath> result);
+  void OnFileRead(std::optional<std::vector<uint8_t>> data,
+                  base::FilePath path);
   void OnImageEncoded(std::string filename,
                       std::optional<std::vector<uint8_t>> output);
 

@@ -138,8 +138,7 @@ void BraveSyncWorker::MarkFirstSetupComplete() {
 
   // We're done configuring, so notify SyncService that it is OK to start
   // syncing.
-  service->GetUserSettings()->SetInitialSyncFeatureSetupComplete(
-      syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+  service->GetUserSettings()->SetInitialSyncFeatureSetupComplete();
 }
 
 void BraveSyncWorker::FinalizeSyncSetup(JNIEnv* env) {
@@ -334,7 +333,7 @@ JNI_BraveSyncWorker_GetSeedHexFromWords(
   std::vector<uint8_t> bytes;
   if (brave_sync::crypto::PassphraseToBytes32(str_seed_words, &bytes)) {
     DCHECK_EQ(bytes.size(), SEED_BYTES_COUNT);
-    sync_code_hex = base::HexEncode(&bytes.at(0), bytes.size());
+    sync_code_hex = base::HexEncode(bytes);
   } else {
     VLOG(1) << __func__ << " PassphraseToBytes32 failed";
   }

@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
-index 5d50e5277b48c6cf2d03b67bc230e5e2cdf26d53..12f865ab1a3e5e719790576a4fbb7fa9653e5cf1 100644
+index 0e7032634735c6f32404e69e3f302170bd66cb47..1b99751fb6ae7578d43de5dca1f01f561d9264b6 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
 @@ -78,6 +78,7 @@ class ChromeContextMenuItem {

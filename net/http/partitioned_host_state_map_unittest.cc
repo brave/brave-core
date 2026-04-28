@@ -101,46 +101,54 @@ TEST(PartitionedHostStateMapTest, ValidPartitionHash) {
 
 TEST(PartitionedHostStateMapTest, MultiplePartitions) {
   PartitionedMap map;
-  auto auto_reset_partition_hash =
-      map.SetScopedPartitionHash(HashHost("partition1"));
 
-  map[HashHost("key1")] = "11";
-  map[HashHost("key2")] = "12";
-  EXPECT_EQ(map.size(), 2u);
-  EXPECT_EQ(map.find(HashHost("key1"))->second, "11");
-  EXPECT_EQ(map.find(HashHost("key2"))->second, "12");
-  EXPECT_EQ(map.find(HashHost("key3")), map.end());
+  {
+    auto auto_reset_partition_hash =
+        map.SetScopedPartitionHash(HashHost("partition1"));
+    map[HashHost("key1")] = "11";
+    map[HashHost("key2")] = "12";
+    EXPECT_EQ(map.size(), 2u);
+    EXPECT_EQ(map.find(HashHost("key1"))->second, "11");
+    EXPECT_EQ(map.find(HashHost("key2"))->second, "12");
+    EXPECT_EQ(map.find(HashHost("key3")), map.end());
+  }
 
-  auto_reset_partition_hash =
-      map.SetScopedPartitionHash(HashHost("partition2"));
-  map[HashHost("key1")] = "21";
-  map[HashHost("key2")] = "22";
-  EXPECT_EQ(map.size(), 4u);
+  {
+    auto auto_reset_partition_hash =
+        map.SetScopedPartitionHash(HashHost("partition2"));
+    map[HashHost("key1")] = "21";
+    map[HashHost("key2")] = "22";
+    EXPECT_EQ(map.size(), 4u);
 
-  EXPECT_EQ(map.find(HashHost("key1"))->second, "21");
-  EXPECT_EQ(map.find(HashHost("key2"))->second, "22");
-  EXPECT_EQ(map.find(HashHost("key3")), map.end());
+    EXPECT_EQ(map.find(HashHost("key1"))->second, "21");
+    EXPECT_EQ(map.find(HashHost("key2"))->second, "22");
+    EXPECT_EQ(map.find(HashHost("key3")), map.end());
 
-  EXPECT_EQ(map.erase(HashHost("key2")), 1u);
-  EXPECT_EQ(map.size(), 3u);
+    EXPECT_EQ(map.erase(HashHost("key2")), 1u);
+    EXPECT_EQ(map.size(), 3u);
+  }
 
-  auto_reset_partition_hash =
-      map.SetScopedPartitionHash(HashHost("partition3"));
-  EXPECT_EQ(map.find(HashHost("key1")), map.end());
-  EXPECT_EQ(map.find(HashHost("key3")), map.end());
-  EXPECT_EQ(map.find(HashHost("key2")), map.end());
+  {
+    auto auto_reset_partition_hash =
+        map.SetScopedPartitionHash(HashHost("partition3"));
+    EXPECT_EQ(map.find(HashHost("key1")), map.end());
+    EXPECT_EQ(map.find(HashHost("key3")), map.end());
+    EXPECT_EQ(map.find(HashHost("key2")), map.end());
 
-  EXPECT_EQ(map.erase(HashHost("key2")), 0u);
-  EXPECT_EQ(map.size(), 3u);
+    EXPECT_EQ(map.erase(HashHost("key2")), 0u);
+    EXPECT_EQ(map.size(), 3u);
+  }
 
   // Should delete key1 in partition1 and partition2.
   EXPECT_TRUE(map.DeleteDataInAllPartitions(HashHost("key1")));
   EXPECT_EQ(map.size(), 1u);
 
-  auto_reset_partition_hash =
-      map.SetScopedPartitionHash(HashHost("partition1"));
-  EXPECT_EQ(map.find(HashHost("key1")), map.end());
-  EXPECT_EQ(map.find(HashHost("key2"))->second, "12");
+  {
+    auto auto_reset_partition_hash =
+        map.SetScopedPartitionHash(HashHost("partition1"));
+    EXPECT_EQ(map.find(HashHost("key1")), map.end());
+    EXPECT_EQ(map.find(HashHost("key2"))->second, "12");
+  }
 }
 
 }  // namespace net

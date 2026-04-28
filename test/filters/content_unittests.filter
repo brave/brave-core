@@ -8,6 +8,7 @@
 # These tests fail because we disable prerender
 -All/PrerenderHostRegistryLimitGroupTest.*
 -PrerenderHandleImplTest.CallbackCalledOnFailure
+-PrerenderHandleImplTest.GetPrerenderHostId
 -PrerenderHandleImplTest.OnResponseHeadersReceived
 
 # This test fails because we disable attribution reporting by stubbing out

@@ -42,7 +42,8 @@ SharedPinnedTabServiceBrowserTest::~SharedPinnedTabServiceBrowserTest() =
 Browser* SharedPinnedTabServiceBrowserTest::CreateNewBrowser() {
   auto* new_browser =
       chrome::OpenEmptyWindow(browser()->profile(),
-                              /*should_trigger_session_restore= */ false);
+                              /*should_trigger_session_restore= */ false)
+          ->GetBrowserForMigrationOnly();
   browsers_.push_back(new_browser->AsWeakPtr());
   return new_browser;
 }

@@ -53,6 +53,7 @@ import org.chromium.chrome.browser.toolbar.ToolbarIntentMetadata;
 import org.chromium.chrome.browser.ui.BraveAdaptiveToolbarUiCoordinator;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuBlocker;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
+import org.chromium.chrome.browser.ui.bottombar.BottomBarHostManager;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeUtils;
 import org.chromium.chrome.browser.ui.edge_to_edge.TopInsetProvider;
@@ -106,7 +107,6 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             MonotonicObservableSupplier<ModalDialogManager> modalDialogManagerSupplier,
             AppMenuBlocker appMenuBlocker,
             BooleanSupplier supportsAppMenuSupplier,
-            BooleanSupplier supportsFindInPage,
             Supplier<TabCreatorManager> tabCreatorManagerSupplier,
             FullscreenManager fullscreenManager,
             Supplier<CompositorViewHolder> compositorViewHolderSupplier,
@@ -135,7 +135,8 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             EdgeToEdgeManager edgeToEdgeManager,
             MonotonicObservableSupplier<BookmarkManagerOpener> bookmarkManagerOpenerSupplier,
             NonNullObservableSupplier<Boolean> xrSpaceModeObservableSupplier,
-            OneshotSupplier<ChromeInactivityTracker> inactivityTrackerSupplier) {
+            OneshotSupplier<ChromeInactivityTracker> inactivityTrackerSupplier,
+            @Nullable BottomBarHostManager bottomBarHostManager) {
         super(
                 activity,
                 onOmniboxFocusChangedListener,
@@ -161,7 +162,6 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 modalDialogManagerSupplier,
                 appMenuBlocker,
                 supportsAppMenuSupplier,
-                supportsFindInPage,
                 tabCreatorManagerSupplier,
                 fullscreenManager,
                 compositorViewHolderSupplier,
@@ -189,7 +189,8 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 edgeToEdgeManager,
                 bookmarkManagerOpenerSupplier,
                 xrSpaceModeObservableSupplier,
-                inactivityTrackerSupplier);
+                inactivityTrackerSupplier,
+                bottomBarHostManager);
 
         mBraveActivity = activity;
         mHubManagerSupplier = hubManagerSupplier;

@@ -34,6 +34,8 @@ class TorProfileManager : public ProfileObserver {
   // Close all Tor windows for all tor profiles
   void CloseAllTorWindows();
 
+  void Shutdown();
+
  private:
   friend class base::NoDestructor<TorProfileManager>;
   TorProfileManager();

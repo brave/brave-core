@@ -62,7 +62,6 @@
 #include "chrome/browser/ui/side_panel/side_panel_registry.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tabs/features.h"
-#include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
@@ -1891,10 +1890,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestV1AndV2,
   auto* sidebar_container = GetSidebarContainerView();
 
   // Get the tab registry and create a kToolbar type entry
-  auto* registry = browser()
-                       ->GetActiveTabInterface()
-                       ->GetTabFeatures()
-                       ->side_panel_registry();
+  auto* registry = SidePanelRegistry::From(browser()->GetActiveTabInterface());
   ASSERT_TRUE(registry);
 
   // Create a kToolbar type SidePanelEntry

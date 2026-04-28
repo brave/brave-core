@@ -33,10 +33,12 @@ content::OpenURLParams MaybeOverrideURLParams(content::OpenURLParams params,
 // the behavior there too. This seems like the patch of least changes:
 // 1. If this is a keyword search with Brave Search
 // 2. Then replace &source=desktop with &source=new_tab
-#define OpenURL(PARAMS, CALLBACK)                                        \
-  OpenURL(MaybeOverrideURLParams(                                        \
-              PARAMS, GetTemplateURLService()->GetTemplateURLForKeyword( \
-                          match.keyword)),                               \
+#define OpenURL(PARAMS, CALLBACK)                                              \
+  OpenURL(match.keyword.empty()                                                \
+              ? PARAMS                                                         \
+              : MaybeOverrideURLParams(                                        \
+                    PARAMS, GetTemplateURLService()->GetTemplateURLForKeyword( \
+                                match.keyword)),                               \
           CALLBACK)
 
 #include <chrome/browser/ui/webui/cr_components/searchbox/searchbox_omnibox_client.cc>

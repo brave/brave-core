@@ -8,7 +8,7 @@
   <message name="IDS_SKILL_DELETED_TOAST_BODY" desc="Text on the toast action button after a skill is saved">
     Deleted skill
   </message>
-  <message name="IDS_SKILL_UNDO_TOAST_BUTTON" desc="Text on the toast action button after a user undoes a skill deletion" translateable="false">
+  <message name="IDS_SKILL_UNDO_TOAST_BUTTON" desc="Text on the toast action button after a user undoes a skill deletion">
     Undo
   </message>
 
@@ -21,120 +21,120 @@
   </message>
 
   <!-- chrome://skills page -->
-  <message name="IDS_SKILL_PAGE_TITLE" desc="Text for the title of the chrome://skills page." translateable="false">
+  <message name="IDS_SKILL_PAGE_TITLE" desc="Text for the title of the chrome://skills page.">
     Skills
   </message>
-  <message name="IDS_SKILL_PAGE_SEARCH_BAR_PLACEHOLDER_TEXT" desc="Placeholder text for the search bar in the chrome://skills page." translateable="false">
+  <message name="IDS_SKILL_PAGE_SEARCH_BAR_PLACEHOLDER_TEXT" desc="Placeholder text for the search bar in the chrome://skills page.">
     Search skills
   </message>
-  <message name="IDS_SKILL_PAGE_MAIN_MENU" desc="Text for the main menu label in the chrome://skills page when the screen is narrow." translateable="false">
+  <message name="IDS_SKILL_PAGE_MAIN_MENU" desc="Text for the main menu label in the chrome://skills page when the screen is narrow.">
     Main menu
   </message>
-  <message name="IDS_SKILLS_SIDEBAR_FOOTER_TEXT" desc="The text in the sidebar footer explaining the purpose of the chrome://skills page" translateable="false">
+  <message name="IDS_SKILLS_SIDEBAR_FOOTER_TEXT" desc="The text in the sidebar footer explaining the purpose of the chrome://skills page">
     Manage your custom workflows powered by
   </message>
-  <message name="IDS_SKILLS_SIDEBAR_FOOTER_BRANDING" desc="The branding text 'Gemini in Brave' displayed in the sidebar footer" translateable="false">
+  <message name="IDS_SKILLS_SIDEBAR_FOOTER_BRANDING" desc="The branding text 'Gemini in Brave' displayed in the sidebar footer">
     Gemini in Brave
   </message>
 
   <!-- chrome://skills error page -->
-  <message name="IDS_SKILLS_ERROR_PAGE_TITLE" desc="Title of the error page that occurs when chrome://skills is not accessible" translateable="false">
+  <message name="IDS_SKILLS_ERROR_PAGE_TITLE" desc="Title of the error page that occurs when chrome://skills is not accessible">
     Skills isn't available
   </message>
-  <message name="IDS_SKILLS_ERROR_PAGE_DESCRIPTION" desc="Description of the error page that occurs when chrome://skills is not accessible" translateable="false">
+  <message name="IDS_SKILLS_ERROR_PAGE_DESCRIPTION" desc="Description of the error page that occurs when chrome://skills is not accessible">
     To use Skills, sign in to Brave with a Brave account that has Gemini in Brave enabled
   </message>
-  <message name="IDS_SKILLS_NO_SEARCH_RESULT_TITLE" desc="Title of the page that occurs when chrome://skills has no search results" translateable="false">
+  <message name="IDS_SKILLS_NO_SEARCH_RESULT_TITLE" desc="Title of the page that occurs when chrome://skills has no search results">
     No search results
   </message>
-  <message name="IDS_SKILLS_NO_SEARCH_RESULT_DESCRIPTION" desc="Description of the page that occurs when chrome://skills has no search results" translateable="false">
+  <message name="IDS_SKILLS_NO_SEARCH_RESULT_DESCRIPTION" desc="Description of the page that occurs when chrome://skills has no search results">
     It looks like there aren't any search results for your search
   </message>
 
   <!-- chrome://skills/browse-skills page-->
-  <message name="IDS_SKILL_PAGE_BROWSE_SKILLS_TITLE" desc="Text for the title of the chrome://skills/browse-skills page." translateable="false">
+  <message name="IDS_SKILL_PAGE_BROWSE_SKILLS_TITLE" desc="Text for the title of the chrome://skills/browse-skills page.">
     Browse skills
   </message>
-  <message name="IDS_SKILL_PAGE_BROWSE_SKILLS_TOP_PICKS_TITLE" desc="Title for the top skill picks in the chrome://skills/browse-skills page." translateable="false">
+  <message name="IDS_SKILL_PAGE_BROWSE_SKILLS_TOP_PICKS_TITLE" desc="Title for the top skill picks in the chrome://skills/browse-skills page.">
     Our top picks
   </message>
-  <message name="IDS_SKILL_PAGE_FIRST_PARTY_ADD_SKILL_ERROR_TOAST" desc="Text on the toast if a skill no longer exists in the 1p catalog in the chrome://skills/browse-skills page." translateable="false">
+  <message name="IDS_SKILL_PAGE_FIRST_PARTY_ADD_SKILL_ERROR_TOAST" desc="Text on the toast if a skill no longer exists in the 1p catalog in the chrome://skills/browse-skills page.">
     Unable to add skill
   </message>
 
   <!-- chrome://skills/user-skills page-->
-  <message name="IDS_SKILL_PAGE_EMPTY_STATE_TITLE" desc="Text for the zero state title in the chrome://skills page." translateable="false">
+  <message name="IDS_SKILL_PAGE_EMPTY_STATE_TITLE" desc="Text for the zero state title in the chrome://skills page.">
     You’ll find your skills here
   </message>
-  <message name="IDS_SKILL_PAGE_EMPTY_STATE_DESCRIPTION" desc="Text for the zero state description in the chrome://skills page." translateable="false">
+  <message name="IDS_SKILL_PAGE_EMPTY_STATE_DESCRIPTION" desc="Text for the zero state description in the chrome://skills page.">
     Skills can help you summarize web pages, search for great deals, and more
   </message>
-  <message name="IDS_SKILL_PAGE_USER_SKILLS_TITLE" desc="Text for the title of the chrome://skills/user-skills page." translateable="false">
+  <message name="IDS_SKILL_PAGE_USER_SKILLS_TITLE" desc="Text for the title of the chrome://skills/user-skills page.">
     Your skills
   </message>
-  <message name="IDS_SKILL_PAGE_USER_SKILLS_DESCRIPTION" desc="Text for the description of the chrome://skills/user-skills page." translateable="false">
+  <message name="IDS_SKILL_PAGE_USER_SKILLS_DESCRIPTION" desc="Text for the description of the chrome://skills/user-skills page.">
     Skills allow you to easily reuse prompts for repetitive tasks
   </message>
-  <message name="IDS_SKILL_PAGE_USER_SKILLS_DELETE" desc="Text for the description of the delete button in the chrome://skills/user-skills page." translateable="false">
+  <message name="IDS_SKILL_PAGE_USER_SKILLS_DELETE" desc="Text for the description of the delete button in the chrome://skills/user-skills page.">
     Delete
   </message>
-  <message name="IDS_SKILL_PAGE_USER_SKILLS_COPY_INSTRUCTIONS" desc="Text for the description of the copy button in the chrome://skills/user-skills page." translateable="false">
+  <message name="IDS_SKILL_PAGE_USER_SKILLS_COPY_INSTRUCTIONS" desc="Text for the description of the copy button in the chrome://skills/user-skills page.">
     Copy instructions
   </message>
-  <message name="IDS_SKILL_PAGE_INVALID_SKILL_TOAST" desc="Text for the invalid skill toast on the chrome://skills/user-skills page." translateable="false">
+  <message name="IDS_SKILL_PAGE_INVALID_SKILL_TOAST" desc="Text for the invalid skill toast on the chrome://skills/user-skills page.">
     Unable to add skill
   </message>
 
   <!-- chrome://skills/dialog -->
-  <message name="IDS_SKILLS_DIALOG_ADD_SKILL_HEADER" desc="Header for the add skill dialog" translateable="false">
+  <message name="IDS_SKILLS_DIALOG_ADD_SKILL_HEADER" desc="Header for the add skill dialog">
     Add skill
   </message>
-  <message name="IDS_SKILLS_DIALOG_EDIT_SKILL_HEADER" desc="Header for the edit skill dialog" translateable="false">
+  <message name="IDS_SKILLS_DIALOG_EDIT_SKILL_HEADER" desc="Header for the edit skill dialog">
     Edit skill
   </message>
-  <message name="IDS_SKILLS_DIALOG_DESCRIPTION" desc="Description of what a skill is" translateable="false">
+  <message name="IDS_SKILLS_DIALOG_DESCRIPTION" desc="Description of what a skill is">
     Skills allow you to easily reuse prompts for repetitive tasks
   </message>
-  <message name="IDS_SKILLS_DIALOG_NAME_LABEL" desc="Label for the skill name input" translateable="false">
+  <message name="IDS_SKILLS_DIALOG_NAME_LABEL" desc="Label for the skill name input">
     Name
   </message>
-  <message name="IDS_SKILLS_DIALOG_NAME_PLACEHOLDER" desc="A placeholder for the skill name input" translateable="false">
+  <message name="IDS_SKILLS_DIALOG_NAME_PLACEHOLDER" desc="A placeholder for the skill name input">
     Give your skill a name
   </message>
-  <message name="IDS_SKILLS_DIALOG_CHOOSE_ICON_TOOLTIP" desc="Tooltip text to choose an icon for the skill" translateable="false">
+  <message name="IDS_SKILLS_DIALOG_CHOOSE_ICON_TOOLTIP" desc="Tooltip text to choose an icon for the skill">
     Choose icon
   </message>
-  <message name="IDS_SKILLS_DIALOG_INSTRUCTIONS_LABEL" desc="Label for the skill instructions input" translateable="false">
+  <message name="IDS_SKILLS_DIALOG_INSTRUCTIONS_LABEL" desc="Label for the skill instructions input">
     Instructions
   </message>
-  <message name="IDS_SKILLS_DIALOG_INSTRUCTIONS_PLACEHOLDER" desc="A placeholder for the skill instructions input" translateable="false">
+  <message name="IDS_SKILLS_DIALOG_INSTRUCTIONS_PLACEHOLDER" desc="A placeholder for the skill instructions input">
     Example: Simplify this concept for a child who is 8 years old. Use simple language and an analogy they would understand. Keep the total explanation concise, under 150 words.
   </message>
-  <message name="IDS_SKILLS_DIALOG_UNDO_TOOLTIP" desc="Tooltip text to undo skill refinement" translateable="false">
+  <message name="IDS_SKILLS_DIALOG_UNDO_TOOLTIP" desc="Tooltip text to undo skill refinement">
     Undo
   </message>
-  <message name="IDS_SKILLS_DIALOG_REDO_TOOLTIP" desc="Tooltip text to redo skill refinement" translateable="false">
+  <message name="IDS_SKILLS_DIALOG_REDO_TOOLTIP" desc="Tooltip text to redo skill refinement">
     Redo
   </message>
-  <message name="IDS_SKILLS_DIALOG_REFINE_TOOLTIP" desc="Tooltip text to refine a skill" translateable="false">
+  <message name="IDS_SKILLS_DIALOG_REFINE_TOOLTIP" desc="Tooltip text to refine a skill">
     Improve with Gemini
   </message>
-  <message name="IDS_SKILLS_DIALOG_REFINE_ERROR" desc="Error message for skill refinement" translateable="false">
+  <message name="IDS_SKILLS_DIALOG_REFINE_ERROR" desc="Error message for skill refinement">
     Something went wrong
   </message>
-  <message name="IDS_SKILLS_DIALOG_CHAR_LIMIT_ERROR" desc="Error message for exceeding the max character limit on the instructions field" translateable="false">
+  <message name="IDS_SKILLS_DIALOG_CHAR_LIMIT_ERROR" desc="Error message for exceeding the max character limit on the instructions field">
     <ph name="MAX_CHARS">$1<ex>20,000</ex></ph> character limit reached
   </message>
-  <message name="IDS_SKILLS_DIALOG_ACCOUNT_INFO" desc="Text for account info in the skills dialog" translateable="false">
+  <message name="IDS_SKILLS_DIALOG_ACCOUNT_INFO" desc="Text for account info in the skills dialog">
     Your skills get saved to your Brave sync chain,
   </message>
-  <message name="IDS_SKILLS_DIALOG_SAVE_ERROR" desc="Error message for saving a skill" translateable="false">
+  <message name="IDS_SKILLS_DIALOG_SAVE_ERROR" desc="Error message for saving a skill">
     Unable to save. Try again
   </message>
-  <message name="IDS_SKILLS_EMOJI_PICKER_SEARCH_PLACEHOLDER" desc="Placeholder text for the search bar in the emoji picker." translateable="false">
+  <message name="IDS_SKILLS_EMOJI_PICKER_SEARCH_PLACEHOLDER" desc="Placeholder text for the search bar in the emoji picker.">
     Search
   </message>
-  <message name="IDS_SKILLS_EMOJI_PICKER_ARIA_LABEL" desc="Aria label for the emoji picker." translateable="false">
+  <message name="IDS_SKILLS_EMOJI_PICKER_ARIA_LABEL" is_accessibility_with_no_ui="true" desc="Aria label for the emoji picker.">
     Emoji Picker
   </message>
 </grit-part>

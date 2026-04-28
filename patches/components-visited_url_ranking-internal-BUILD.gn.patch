@@ -1,8 +1,8 @@
 diff --git a/components/visited_url_ranking/internal/BUILD.gn b/components/visited_url_ranking/internal/BUILD.gn
-index abe26cb61a9ac333bd37a9ccbe0ba53e5959dbcd..4465b92927397c034868d89f5f2327178d261a4c 100644
+index 542534c5a23d5125c2ca7be315d9e4c6f14f72bc..e9d700aeb3bb2e327ffe3381fc1cf28e2287cde1 100644
 --- a/components/visited_url_ranking/internal/BUILD.gn
 +++ b/components/visited_url_ranking/internal/BUILD.gn
-@@ -121,6 +121,7 @@ source_set("test_support") {
+@@ -120,6 +120,7 @@ source_set("test_support") {
      "//testing/gmock",
      "//testing/gtest",
    ]

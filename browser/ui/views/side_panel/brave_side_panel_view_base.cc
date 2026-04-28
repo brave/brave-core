@@ -6,8 +6,8 @@
 #include "brave/browser/ui/views/side_panel/brave_side_panel_view_base.h"
 
 #include "brave/ui/color/nala/nala_color_id.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_content_proxy.h"
-#include "chrome/browser/ui/views/side_panel/side_panel_util.h"
+#include "chrome/browser/ui/side_panel/side_panel_content_proxy.h"
+#include "chrome/browser/ui/side_panel/side_panel_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/background.h"
 

@@ -274,15 +274,14 @@ public class AppearancePreferences extends AppearanceSettingsFragment
                     .writeBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, (boolean) newValue);
         } else if (PREF_ENABLE_MULTI_WINDOWS.equals(key)) {
             if (!(boolean) newValue) {
-                if (MultiWindowUtils.getInstanceCountWithFallback(PersistedInstanceType.ACTIVE)
-                        > 1) {
+                if (MultiWindowUtils.getInstanceCount(PersistedInstanceType.ACTIVE) > 1) {
                     BraveMultiWindowDialogFragment dialogFragment =
                             BraveMultiWindowDialogFragment.newInstance();
                     BraveMultiWindowDialogFragment.DismissListener dismissListener =
                             new BraveMultiWindowDialogFragment.DismissListener() {
                                 @Override
                                 public void onDismiss() {
-                                    if (MultiWindowUtils.getInstanceCountWithFallback(
+                                    if (MultiWindowUtils.getInstanceCount(
                                                     PersistedInstanceType.ACTIVE)
                                             == 1) {
                                         if (preference instanceof ChromeSwitchPreference) {

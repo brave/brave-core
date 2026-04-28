@@ -80,8 +80,7 @@
 -GoogleChromeSchemeUtilTest.ExtractGoogleChromeSchemeInnerUrl
 -GoogleChromeSchemeUtilTest.StripGoogleChromeScheme
 -SaveCardBubbleControllerImplTestWithCvCStorageAndFilling.UploadCardSaveWithCvcDialogContent
--SearchboxHandlerPecApiTest.GetPlaceholderConfig_EmptySearchboxConfigReturnsAskGoogleOnly
--SearchboxHandlerPecApiTest.GetPlaceholderConfig_WithToolConfigs
+-SearchboxHandlerPecApiTest.GetPlaceholderConfig_*
 -TemplateURLServiceTest.DefaultSearchProviderKeywordConflictReentrancy
 -TemplateURLServiceTest.RepairPrepopulatedSearchEngines
 -TemplateURLServiceTest.RepairStarterPackEngines
@@ -122,8 +121,7 @@
 # which causes OptimizationGuideKeyedServiceFactory::GetForProfile return a
 # nullptr.
 -ActorSitePolicyTest.*
--AILanguageModelHackyPrototypeTest.Basic
--AILanguageModelTest.*
+-AILanguageModel*Test.*
 -AILanguageModelTestWithLanguageParams.PromptWithEnabledLanguages/*
 -AIManagerTest.*
 -AIProofreaderTest.*
@@ -131,6 +129,7 @@
 -AISummarizerTest.*
 -AIWriterTest.*
 -All/AILanguageModelVisionTest.*
+-All/ChangePasswordFormFinderTest.*/*
 -ChangeFormSubmissionVerifierTest.*
 -ChangePasswordFormFinderTest.*
 -ChromeAutofillAiClientTest.GetModelExecutor
@@ -140,6 +139,7 @@
 -ContentAnnotatorServiceFactoryTest.CreatesServiceWithFlagEnabled
 -ContentAnnotatorTabHelperTest.PropagatesLanguageEvent
 -DigitalIdentityLowRiskOriginsTest.*
+-FindsTabHelperTest.TestThresholdMet
 -HistoryEmbeddingsHandlerTest.*
 -IndigoPageActionControllerTest.*
 -LoginStateCheckerTest.*
@@ -257,6 +257,12 @@
 
 # This test is disabled because the Brave NTP doesn't support this feature
 -NewTabPageModulesTest.HasModulesEnabled_SignedInAccount
+-NewTabPageHandlerTest.OnAnimatedDoodleImageClicked
+-NewTabPageHandlerTest.OnAnimatedDoodleImageRendered
+-NewTabPageHandlerTest.OnStaticDoodleImageClicked
+-NewTabPageHandlerTest.OnStaticDoodleImageRendered
+-NewTabPageHandlerTest.OnDoodleImageClicked
+-NewTabPageHandlerTest.OnDoodleImageRendered
 -NewTabPageModulesTest.MakeModuleIdDetails_*
 
 # Isolated Web Apps (IWAs) use web bundles which we don't support.
@@ -310,6 +316,7 @@
 -All/SigninUiUtilTest.GetOrderedAccountsForDisplay/*
 -All/SigninUtilHistorySyncOptinForManagedSettingsTest.*
 -AppMenuModelTest.ProfileSyncOnTest
+-AvatarButtonPromoManagerTest.SigninPromoHasLastExternalEventTimeCheck
 -AvatarButtonPromoManagerTest.SigninPromoSupportIndependantProfileAndAccount*
 -BrowserSigninDetectorServiceTest.LateObservation
 -ChromeAutofillPredictionImprovementsClientTest.EligibilityOfNotSignedInUser
@@ -327,6 +334,7 @@
 -EnclaveAuthenticatorRequestDelegateTest.BrowserProvidedPasskeysAvailable
 -EnclaveAuthenticatorRequestDelegateTest.BrowserProvidedPasskeysAvailableForSignedInUsers
 -EnclaveAuthenticatorRequestDelegateTest.BrowserProvidedPasskeysAvailable_NoAccount
+-EnclaveManagerTest.CookieJarChangeDoesNotDiscardActions
 -EnclaveManagerTest.PrimaryUserChange
 -EnclaveManagerTest.StoringOpportunisticallyRetrievedKeyAfterSignInOfMatchingAccount
 -ExtensionInstalledBubbleModelTransportModeTest.ShowSigninPromo_NonExtensionsExplicitSignin
@@ -343,11 +351,7 @@
 -PeopleHandlerSignoutTest.SignoutWithSyncOn
 -PeopleHandlerTest.*
 -PeopleHandlerWebOnlySigninTest.ChromeSigninUserAvailableOnWebSignin
--ShowPromoTest.ShouldShowSyncPromoSyncEnabled
--ShowPromoTest.ShowExtensionSyncPromoWithoutFeatureFlag
--ShowPromoTest.ShowPromoWithNoAccount
--ShowPromoTest.ShowPromoWithSignedInAccount
--ShowPromoTest.ShowSyncPromoWithSignedInAccount
+-ShowPromoTest.*
 -SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedAllowed
 -SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedNotAllowed/*
 -SignInPromoVersionTest.SignInPromoVersions
@@ -363,7 +367,9 @@
 # These tests fail because we disable safe browsing enhanced protection and
 # patch safe_browsing::IsEnhancedProtectionEnabled to return false
 -All/ClientSideDetectionHostCreditCardFormReferringAppTest.*/*
+-All/ClientSideDetectionHostOnlyESBTest.TestPreClassificationCheckOnlyESBClassification/*
 -All/ClientSideDetectionHostSkipImageClassificationScoringTest.*/*
+-All/ClientSideDetectionServiceOnlyESBTest.TestReceivingImageClassifierUpdatesAfterResubscription/*
 -All/ClientSideDetectionServiceTest.*/*
 -All/LastDownloadFinderTest.AddProfileAfterStarting/1
 -All/LastDownloadFinderTest.NonBinaryOnly/1
@@ -491,6 +497,7 @@
 -All/PageInfoBubbleViewPrivacyAndSiteDataSubpageTitleTest.DisplaysPrivacyAndSiteDataTitle/*
 -All/PageInfoCookiesContentView3pcdTitleAndDescriptionTest.*
 -All/PageInfoCookiesContentView3pcdCookieToggleTest.*
+-All/PageInfoCookiesContentViewA11yNameTest.ThirdPartyCookiesToggleA11yName/*
 -CookieControlsUserBypassTest.*
 -PageInfoCookiesContentViewTest.*
 -PageInfoCookiesContentView3pcdCookieToggleTest.*
@@ -716,12 +723,6 @@
 -HostContentSettingsMapTest.RecordDefaultSensorsSetting
 -HostContentSettingsMapTest.SetOneTimeGeolocationSetting
 
-# These tests fail because we stub features::HasTabSearchToolbarButton() to
-# return true
--TabSearchContainerTest.AnimatesToExpanded
--TabSearchContainerTest.ButtonsHaveFlatEdges
--TabSearchContainerTest.OrdersButtonsCorrectly
-
 # These tests fail because they try to access unregistered prefs that Brave
 # implements for the omnibox. The upstream test would probably need to be
 # patched to include that registration code.
@@ -729,6 +730,8 @@
 -OmniboxEditModelPopupTest.AimPopupEnabledNavigationFallback
 -OmniboxEditModelPopupTest.OnCurrentMatchChangedResetsSelectionBeforeAccessingMatches
 -OmniboxEditModelTest.*
+-WebUIReadOnlyOmniboxTest.GetOmniboxTextLength
+-WebUIReadOnlyOmniboxTest.StateManagement
 
 # These tests fail because we disable uploading these event logs
 # See WebRtcLogUploader::UploadCompressedLog patch.
@@ -763,9 +766,6 @@
 
 # Read anything is disabled
 -All/RenderViewContextMenuReadAnythingTest.AppendPageItems/*
-
-# This test fails because we disable Actor Safety Lists component.
--ActorSafetyListsComponentInstallerPolicyTest.ComponentRegistered
 
 # These tests fail because it's expected that the generated tabs have
 # suggestions like "Ask Google about this tab", whereas our results have
@@ -805,6 +805,9 @@
 
 # This test fails because we disable installing the Captcha Provider component
 -CaptchaProviderComponentInstallerPolicyTest.ComponentRegistered
+
+# These tests fail because we disable `blink::features::kAIRewriterAPI`
+-AIRewriterTest.*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
@@ -875,8 +878,8 @@
 -NewTabPageHandlerTest.OnDoodleImageClicked
 -NewTabPageHandlerTest.OnDoodleImageRendered
 -NoStatePrefetchGWSPrefetchHoldbackOffTest.*
--NoStatePrefetchTest.NoStatePrefetchDuplicate
 -NoStatePrefetchTest.MaxConcurrencyTest
+-NoStatePrefetchTest.NoStatePrefetchDuplicate
 -OfferNotificationBubbleControllerImplTest.*
 -OmniboxViewViewsSteadyStateElisionsTest.*
 -OmniboxViewViewsTest.*

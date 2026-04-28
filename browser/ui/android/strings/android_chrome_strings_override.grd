@@ -132,9 +132,14 @@ CHAR_LIMIT guidelines:
       <message name="IDS_SETTINGS_INCOGNITO_WINDOW_LOCK_SUMMARY_ANDROID_SETTING_ON" desc="Summary for a toggle in Settings that allows users to lock their existing Private windows with a device reauthentication mechanism. This summary is shown to the user when the screen lock setting is on in the device.">
         Use screen lock to see open Private windows
       </message>
+      <if expr="enable_extensions_core">
+        </if>
       <message name="IDS_BOOKMARK_BAR_SETTING" desc="Title for the bookmark bar setting.">
         Show bookmarks
       </message>
+      <if expr="enable_extensions_core">
+        </if>
+
       <message name="IDS_SAFETY_HUB_SAFETY_TIPS_INCOGNITO_TITLE" desc="Title for a entry in the Safety Hub user education section. The entry leads the user to a help center article about Private.">
         Brave Private
       </message>

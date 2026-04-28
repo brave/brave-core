@@ -1,5 +1,5 @@
 diff --git a/front_end/core/protocol_client/InspectorBackend.ts b/front_end/core/protocol_client/InspectorBackend.ts
-index b200b10d8d8c73112c03961f0e5c429077a3c26c..8dfd268abbd662cb9dd39e1c89a32f6075ab29da 100644
+index 8c7691a6e471579ea1b112cf99689707056bbd6d..471a784d279afa290a5049d3efce152cb6e73fea 100644
 --- a/front_end/core/protocol_client/InspectorBackend.ts
 +++ b/front_end/core/protocol_client/InspectorBackend.ts
 @@ -77,6 +77,7 @@ export class InspectorBackend implements InspectorBackendCommands.InspectorBacke

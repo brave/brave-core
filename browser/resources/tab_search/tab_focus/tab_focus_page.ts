@@ -30,11 +30,6 @@ export class TabFocusPageElement extends CrLitElement {
     return getHtml.bind(this)()
   }
 
-  protected topics_: string[] = []
-  protected topic = ''
-  protected undoTopic_ = ''
-  protected showFRE_ = loadTimeData.getBoolean('showTabOrganizationFRE')
-
   private apiProxy_: BraveTabSearchApiProxy =
     TabSearchApiProxyImpl.getInstance() as BraveTabSearchApiProxy
   private listenerIds_: number[] = []
@@ -55,6 +50,13 @@ export class TabFocusPageElement extends CrLitElement {
       showFRE_: { type: Boolean },
     }
   }
+
+  protected accessor topics_: string[] = []
+  protected accessor topic = ''
+  protected accessor undoTopic_ = ''
+  protected accessor showFRE_ = loadTimeData.getBoolean(
+    'showTabOrganizationFRE',
+  )
 
   accessor availableHeight: number = 0
   accessor isLoadingTopics: boolean = false

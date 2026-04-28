@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index ad6b592b4740392044d151801c80bbf92e7c0f55..290199413b5517fdd3aadea92de10bf1f42f82d5 100644
+index 4c7ad0aaa2347e87fd2dcb0027659afe06ab8566..c4695c015ea1ed8331ebcaa08b1086c8c967f458 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1723,6 +1723,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -1664,6 +1664,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
        false);
  
    // This is intentionally last.
@@ -10,7 +10,7 @@ index ad6b592b4740392044d151801c80bbf92e7c0f55..290199413b5517fdd3aadea92de10bf1
    RegisterLocalStatePrefsForMigration(registry);
  }
  
-@@ -2220,6 +2221,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+@@ -2172,6 +2173,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
  #endif  // BUILDFLAG(IS_ANDROID)
  
    registry->RegisterBooleanPref(prefs::kStaticStorageQuotaEnabled, false);
@@ -18,7 +18,7 @@ index ad6b592b4740392044d151801c80bbf92e7c0f55..290199413b5517fdd3aadea92de10bf1
  }
  
  void RegisterUserProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -2642,6 +2644,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
+@@ -2527,6 +2529,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
    profile_prefs->ClearPref(kObsoletePasswordsUseUPMLocalAndSeparateStores);
    profile_prefs->ClearPref(kObsoleteEmptyProfileStoreLoginDatabase);
    profile_prefs->ClearPref(kObsoleteUpmAutoExportCsvNeedsDeletion);
@@ -26,7 +26,7 @@ index ad6b592b4740392044d151801c80bbf92e7c0f55..290199413b5517fdd3aadea92de10bf1
    base::DeleteFile(profile_path.Append(FILE_PATH_LITERAL("Login Data")));
    base::DeleteFile(
        profile_path.Append(FILE_PATH_LITERAL("Login Data For Account")));
-@@ -2649,6 +2652,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
+@@ -2534,6 +2537,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
        profile_path.Append(FILE_PATH_LITERAL("Login Data-journal")));
    base::DeleteFile(
        profile_path.Append(FILE_PATH_LITERAL("Login Data For Account-journal")));

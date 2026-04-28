@@ -71,8 +71,7 @@ void ConnectGeminiWallet::Authorize(ConnectExternalWalletCallback callback) {
 
   const std::string hashed_payment_id =
       crypto::SHA256HashString(rewards_wallet->payment_id);
-  const std::string external_account_id =
-      base::HexEncode(hashed_payment_id.data(), hashed_payment_id.size());
+  const std::string external_account_id = base::HexEncode(hashed_payment_id);
 
   gemini_server_.post_oauth().Request(
       external_account_id, oauth_info_.code,

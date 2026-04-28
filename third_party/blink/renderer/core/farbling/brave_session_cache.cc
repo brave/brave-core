@@ -403,8 +403,9 @@ bool BraveSessionCache::AllowFontFamily(
       return true;
     case BraveFarblingLevel::BALANCED:
     case BraveFarblingLevel::MAXIMUM: {
-      if (AllowFontByFamilyName(family_name,
-                                blink::DefaultLanguage().GetString().Left(2))) {
+      if (AllowFontByFamilyName(
+              family_name,
+              blink::DefaultLanguage().GetString().Substring(0, 2))) {
         return true;
       }
       if (IsFontAllowedForFarbling(family_name)) {

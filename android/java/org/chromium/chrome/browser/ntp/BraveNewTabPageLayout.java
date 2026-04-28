@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.ntp;
 
 import static org.chromium.base.ThreadUtils.runOnUiThread;
 import static org.chromium.build.NullUtil.assertNonNull;
+import static org.chromium.build.NullUtil.assumeNonNull;
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.annotation.SuppressLint;
@@ -57,6 +58,8 @@ import org.chromium.brave_news.mojom.Feed;
 import org.chromium.brave_news.mojom.FeedItem;
 import org.chromium.brave_news.mojom.FeedPage;
 import org.chromium.brave_news.mojom.FeedPageItem;
+import org.chromium.build.annotations.EnsuresNonNull;
+import org.chromium.build.annotations.Initializer;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
@@ -68,8 +71,6 @@ import org.chromium.chrome.browser.brave_news.LinearLayoutManagerWrapper;
 import org.chromium.chrome.browser.brave_news.models.FeedItemCard;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
-import org.chromium.chrome.browser.feed.FeedSurfaceScrollDelegate;
-import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.model.NTPImage;
@@ -88,23 +89,15 @@ import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.settings.BraveNewsPreferencesV2;
 import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
 import org.chromium.chrome.browser.suggestions.tile.BraveMostVisitedTilesLayoutBase;
-import org.chromium.chrome.browser.suggestions.tile.TileGroup.Delegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabAttributes;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
-import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
-import org.chromium.chrome.browser.ui.native_page.TouchEnabledDelegate;
-import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
-import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
-import org.chromium.ui.base.ActivityResultTracker;
 import org.chromium.ui.base.WindowAndroid;
-import org.chromium.ui.modaldialog.ModalDialogManager;
-import org.chromium.url.GURL;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -123,7 +116,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     private static final int MINIMUM_VISIBLE_HEIGHT_THRESHOLD = 50;
     private static final int HOUR_MS = 3_600_000;
 
-    private ViewGroup mMvTilesContainerLayout;
+    private @Nullable ViewGroup mMvTilesContainerLayout;
 
     // Own members.
     private WindowAndroid mWindowAndroid;
@@ -132,7 +125,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     private @Nullable SponsoredRichMediaWebView mSponsoredRichMediaWebView;
     private @Nullable FrameLayout mBackgroundSponsoredRichMediaView;
 
-    // To be removed in bytecode, parent variable will be used instead.
+    // Own members
     private @Nullable Profile mProfile;
 
     private @Nullable SponsoredTab mSponsoredTab;
@@ -210,6 +203,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         }
     }
 
+    @EnsuresNonNull({"mMvTilesContainerLayout"})
     protected void initializeSiteSectionView() {
         mMvTilesContainerLayout =
                 (ViewGroup) ((ViewStub) findViewById(R.id.mv_tiles_layout_stub)).inflate();
@@ -220,6 +214,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                 new Runnable() {
                     @Override
                     public void run() {
+                        assumeNonNull(mMvTilesContainerLayout);
                         mMvTilesContainerLayout.addOnLayoutChangeListener(
                                 (View view,
                                         int left,
@@ -1209,45 +1204,15 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         }
     }
 
-    @Override
+    @Initializer
     public void initialize(
             NewTabPageManager manager,
             Activity activity,
-            Delegate tileGroupDelegate,
-            boolean searchProviderHasLogo,
-            boolean searchProviderIsGoogle,
-            FeedSurfaceScrollDelegate scrollDelegate,
-            TouchEnabledDelegate touchEnabledDelegate,
-            UiConfig uiConfig,
-            ActivityLifecycleDispatcher lifecycleDispatcher,
             Profile profile,
-            WindowAndroid windowAndroid,
-            ActivityResultTracker activityResultTracker,
-            BottomSheetController bottomSheetController,
-            ModalDialogManager modalDialogManager,
-            SnackbarManager snackbarManager,
-            boolean isTablet,
-            Supplier<Integer> tabStripHeightSupplier,
-            Supplier<GURL> composeplateUrlSupplier) {
-        super.initialize(
-                manager,
-                activity,
-                tileGroupDelegate,
-                searchProviderHasLogo,
-                searchProviderIsGoogle,
-                scrollDelegate,
-                touchEnabledDelegate,
-                uiConfig,
-                lifecycleDispatcher,
-                profile,
-                windowAndroid,
-                activityResultTracker,
-                bottomSheetController,
-                modalDialogManager,
-                snackbarManager,
-                isTablet,
-                tabStripHeightSupplier,
-                composeplateUrlSupplier);
+            WindowAndroid windowAndroid) {
+
+        mProfile = profile;
+
         mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
         mWindowAndroid = windowAndroid;
 

@@ -11,7 +11,7 @@
 
 namespace blink {
 
-DOMStringList* Location::ancestorOrigins() const {
+DOMStringList* Location::ancestorOrigins() {
   auto* raw_origins = ancestorOrigins_ChromiumImpl();
   if (!IsAttached() || !raw_origins || raw_origins->IsEmpty()) {
     return raw_origins;

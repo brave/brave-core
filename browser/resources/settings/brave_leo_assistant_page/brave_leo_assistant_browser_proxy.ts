@@ -58,7 +58,7 @@
    }
 
    getLeoIconVisibility() {
-     return sendWithPromise('getLeoIconVisibility')
+     return sendWithPromise<boolean>('getLeoIconVisibility')
    }
 
    toggleLeoIcon() {

@@ -34,7 +34,7 @@ void CleanAndCopySelectedURL(Browser* browser);
 #if BUILDFLAG(ENABLE_TOR)
 void NewOffTheRecordWindowTor(Browser* browser);
 void NewOffTheRecordWindowTor(Profile* profile);
-void NewTorConnectionForSite(Browser*);
+void NewTorConnectionForSite(BrowserWindowInterface*);
 #endif
 
 void ToggleAIChat(Browser* browser);

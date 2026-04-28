@@ -212,7 +212,7 @@ void BraveSyncHandler::HandleGetQRCode(const base::ListValue& args) {
 
   // QR code version 3 can only carry 84 bytes so we hex encode 32 bytes
   // seed then we will have 64 bytes input data
-  const std::string sync_code_hex = base::HexEncode(seed.data(), seed.size());
+  const std::string sync_code_hex = base::HexEncode(seed);
   const std::string qr_code_string =
       brave_sync::QrCodeData::CreateWithActualDate(sync_code_hex)->ToJson();
 
@@ -294,8 +294,7 @@ void BraveSyncHandler::HandleSetSyncCode(const base::ListValue& args) {
   // we will set the result at BraveSyncHandler::OnJoinChainResult.
   // Otherwise we will not let to send request to the server.
 
-  sync_service->GetUserSettings()->SetInitialSyncFeatureSetupComplete(
-      syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+  sync_service->GetUserSettings()->SetInitialSyncFeatureSetupComplete();
 }
 
 void BraveSyncHandler::OnJoinChainResult(base::Value callback_id, bool result) {

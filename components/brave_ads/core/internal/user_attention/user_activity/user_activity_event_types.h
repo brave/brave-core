@@ -13,7 +13,7 @@ namespace brave_ads {
 // WARNING: don't change these numbers. They are provided by the variations
 // service, so will need the same values to match the enums
 
-enum class UserActivityEventType : int8_t {
+enum class UserActivityEventType : uint8_t {
   /*00*/ kInitializedAds = 0,
   /*01*/ kBrowserDidEnterForeground,
   /*02*/ kBrowserDidEnterBackground,

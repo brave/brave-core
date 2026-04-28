@@ -24,6 +24,7 @@ source_set("preferences") {
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/profiles:profile_manager",
     "//chrome/common",
     "//components/content_settings/core/browser",
     "//components/content_settings/core/browser:cookie_settings",

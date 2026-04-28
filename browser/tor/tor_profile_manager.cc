@@ -257,6 +257,10 @@ void TorProfileManager::CloseAllTorWindows() {
   }
 }
 
+void TorProfileManager::Shutdown() {
+  browser_collection_observer_.reset();
+}
+
 void TorProfileManager::OnProfileWillBeDestroyed(Profile* profile) {
   const std::string context_id = profile->UniqueId();
   tor_profiles_.erase(context_id);
