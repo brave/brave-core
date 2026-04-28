@@ -95,10 +95,8 @@ BravePsstDialogHandler::BravePsstDialogHandler(
 
   psst_dialog_delegate_->AddObserver(this);
 
-  auto setting_card_data = psst_dialog_delegate_->GetShowDialogData();
-  CHECK(setting_card_data);
   // Set initial dialog data
-  std::move(callback).Run(std::move(setting_card_data));
+  std::move(callback).Run(psst_dialog_delegate_->GetShowDialogData());
 }
 
 BravePsstDialogHandler::~BravePsstDialogHandler() {

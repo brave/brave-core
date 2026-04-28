@@ -15,12 +15,15 @@ static_library("psst") {
     "brave_psst_dialog_ui.h",
   ]
 
-  deps = [
+  public_deps = [
     "//brave/browser/psst",
-    "//brave/browser/ui/tabs:tabs_public",
     "//brave/components/psst/browser/content",
     "//brave/components/psst/common",
     "//brave/components/psst/common:mojom",
+  ]
+
+  deps = [
+    "//brave/browser/ui/tabs:tabs_public",
     "//brave/components/psst/resources:psst_dialog_generated_resources_grit",
     "//brave/components/psst/resources:static_resources_grit",
     "//brave/components/resources:strings_grit",
