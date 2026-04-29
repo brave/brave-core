@@ -31,7 +31,8 @@ replace = '''\1        if (BraveFullscreenVideoPictureInPictureController.class.
                         reason == MetricsEndReason.START,
                         reason == MetricsEndReason.RESUME,
                         reason == MetricsEndReason.LEFT_FULLSCREEN,
-                        reason == MetricsEndReason.WEB_CONTENTS_LEFT_FULLSCREEN)) {
+                        reason == MetricsEndReason.WEB_CONTENTS_LEFT_FULLSCREEN,
+                        reason == MetricsEndReason.NEW_TAB)) {
             return;
         }
 '''

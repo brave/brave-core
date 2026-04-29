@@ -22,10 +22,12 @@ public class BraveFullscreenVideoPictureInPictureController {
             boolean isStart,
             boolean isResume,
             boolean isLeftFullscreen,
-            boolean isWebContentsLeftFullscreen) {
+            boolean isWebContentsLeftFullscreen,
+            boolean isNewTab) {
         if (shouldDeferDismissForYouTubePictureInPicture(activity, isStart, isResume)
                 || shouldKeepPictureInPictureAlive(
-                        activity, isLeftFullscreen, isWebContentsLeftFullscreen)) {
+                        activity, isLeftFullscreen, isWebContentsLeftFullscreen)
+                || shouldStayInForegroundForNewTab(activity, isNewTab)) {
             mDismissPending = false;
             return true;
         }
@@ -68,5 +70,26 @@ public class BraveFullscreenVideoPictureInPictureController {
         // the Brave-managed YouTube PiP window alive; DOM + persistent fullscreen state is
         // preserved across the transition by BraveFullscreenHtmlApiHandlerBase.
         return activity.isInPictureInPictureMode();
+    }
+
+    private boolean shouldStayInForegroundForNewTab(Activity activity, boolean isNewTab) {
+        if (!isNewTab) {
+            return false;
+        }
+
+        // When a new tab arrives during a Brave-managed YouTube PiP session (commonly via a
+        // launcher shortcut), upstream calls activity.moveTaskToBack(true) and sends the
+        // activity behind the home screen. Returning true here skips the upstream dismiss path
+        // so the new tab becomes visible and PiP exits naturally through
+        // onPictureInPictureModeChanged when Android brings the activity to the foreground for
+        // the new intent. Also drop Brave's persistent fullscreen UI synchronously so the new
+        // tab is not rendered on a residual fullscreen layout.
+        if (!(activity instanceof final BraveActivity braveActivity)
+                || !braveActivity.isYouTubePictureInPictureActive()) {
+            return false;
+        }
+
+        braveActivity.onYouTubePictureInPictureNewTab();
+        return true;
     }
 }

@@ -46,7 +46,8 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
                         /* isStart= */ false,
                         /* isResume= */ true,
                         /* isLeftFullscreen= */ false,
-                        /* isWebContentsLeftFullscreen= */ false);
+                        /* isWebContentsLeftFullscreen= */ false,
+                        /* isNewTab= */ false);
 
         assertTrue(handled);
         assertFalse(mController.mDismissPending);
@@ -65,7 +66,8 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
                         /* isStart= */ true,
                         /* isResume= */ false,
                         /* isLeftFullscreen= */ false,
-                        /* isWebContentsLeftFullscreen= */ false);
+                        /* isWebContentsLeftFullscreen= */ false,
+                        /* isNewTab= */ false);
 
         assertTrue(handled);
         assertFalse(mController.mDismissPending);
@@ -85,7 +87,8 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
                         /* isStart= */ false,
                         /* isResume= */ false,
                         /* isLeftFullscreen= */ true,
-                        /* isWebContentsLeftFullscreen= */ false);
+                        /* isWebContentsLeftFullscreen= */ false,
+                        /* isNewTab= */ false);
 
         assertTrue(handled);
         assertFalse(mController.mDismissPending);
@@ -127,10 +130,57 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
                         /* isStart= */ false,
                         /* isResume= */ false,
                         /* isLeftFullscreen= */ true,
-                        /* isWebContentsLeftFullscreen= */ false);
+                        /* isWebContentsLeftFullscreen= */ false,
+                        /* isNewTab= */ false);
 
         assertFalse(handled);
         assertTrue(mController.mDismissPending);
+        verify(mBraveActivity, never()).onYouTubePictureInPictureFullscreenInterrupted();
+    }
+
+    @Test
+    @SmallTest
+    public void maybeHandleDismiss_newTabDuringActiveYouTubePictureInPicture_keepsForeground() {
+        // A new tab arriving during a Brave-managed YouTube PiP session must skip upstream's
+        // moveTaskToBack(true) so the activity stays in the foreground (e.g. when the user taps
+        // the "New tab" launcher shortcut while PiP is active). The hook also signals the
+        // controller to drop persistent fullscreen so the new tab is rendered correctly.
+        when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(true);
+        mController.mDismissPending = true;
+
+        boolean handled =
+                mController.maybeHandleDismissActivityForYouTubePictureInPicture(
+                        mBraveActivity,
+                        /* isStart= */ false,
+                        /* isResume= */ false,
+                        /* isLeftFullscreen= */ false,
+                        /* isWebContentsLeftFullscreen= */ false,
+                        /* isNewTab= */ true);
+
+        assertTrue(handled);
+        assertFalse(mController.mDismissPending);
+        verify(mBraveActivity).onYouTubePictureInPictureNewTab();
+        verify(mBraveActivity, never()).onYouTubePictureInPictureFullscreenInterrupted();
+    }
+
+    @Test
+    @SmallTest
+    public void maybeHandleDismiss_newTabWithoutActiveYouTubePictureInPicture_doesNotKeepAlive() {
+        when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(false);
+        mController.mDismissPending = true;
+
+        boolean handled =
+                mController.maybeHandleDismissActivityForYouTubePictureInPicture(
+                        mBraveActivity,
+                        /* isStart= */ false,
+                        /* isResume= */ false,
+                        /* isLeftFullscreen= */ false,
+                        /* isWebContentsLeftFullscreen= */ false,
+                        /* isNewTab= */ true);
+
+        assertFalse(handled);
+        assertTrue(mController.mDismissPending);
+        verify(mBraveActivity, never()).onYouTubePictureInPictureNewTab();
         verify(mBraveActivity, never()).onYouTubePictureInPictureFullscreenInterrupted();
     }
 }

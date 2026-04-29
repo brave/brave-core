@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java b/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
-index 83470d3a3b694ec2dab8ba79009828315726b444..01152265d3a6f65b4d5a3e1ab6cb1b0a95a2162d 100644
+index 83470d3a3b694ec2dab8ba79009828315726b444..29feee91eb2879341e5e719d3cb22f8aa1912436 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
 @@ -28,11 +28,13 @@ import org.chromium.base.task.TaskTraits;
@@ -64,7 +64,7 @@ index 83470d3a3b694ec2dab8ba79009828315726b444..01152265d3a6f65b4d5a3e1ab6cb1b0a
              return;
          }
      }
-@@ -563,6 +588,15 @@ public class FullscreenVideoPictureInPictureController {
+@@ -563,6 +588,16 @@ public class FullscreenVideoPictureInPictureController {
       * This will also update our auto-PiP preference with the framework, if it's changed.
       */
      private void dismissActivityIfNeeded(Activity activity, @MetricsEndReason int reason) {
@@ -74,7 +74,8 @@ index 83470d3a3b694ec2dab8ba79009828315726b444..01152265d3a6f65b4d5a3e1ab6cb1b0a
 +                        reason == MetricsEndReason.START,
 +                        reason == MetricsEndReason.RESUME,
 +                        reason == MetricsEndReason.LEFT_FULLSCREEN,
-+                        reason == MetricsEndReason.WEB_CONTENTS_LEFT_FULLSCREEN)) {
++                        reason == MetricsEndReason.WEB_CONTENTS_LEFT_FULLSCREEN,
++                        reason == MetricsEndReason.NEW_TAB)) {
 +            return;
 +        }
          // Something interesting happened -- make sure we've updated our preference for auto-PiP
