@@ -1129,6 +1129,12 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                              IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_DESC,
                              kTabOrganizationLearnMoreURL));
 
+  html_source->AddString(
+      "braveLeoAssistantTabOrganizationModelDesc",
+      l10n_util::GetStringFUTF16(
+          IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_MODEL_DESC,
+          kTabOrganizationLearnMoreURL));
+
   html_source->AddString("braveLeoAssistantTabOrganizationLearnMoreURL",
                          kTabOrganizationLearnMoreURL);
 
