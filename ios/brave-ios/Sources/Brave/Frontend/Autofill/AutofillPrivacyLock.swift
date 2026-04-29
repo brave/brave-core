@@ -7,15 +7,13 @@ import BraveStrings
 import LocalAuthentication
 import SwiftUI
 
-/// Owns the biometric/passcode authentication state for the autofill management hierarchy.
-/// The root ManagePasswordsView creates a single instance and injects it via environment;
-/// child views (ManagePasswordGroupView, ManagePasswordDetailView) inherit it and show the
-/// privacy overlay when locked, without running their own auth challenge on appear.
+/// Biometric/passcode gate for autofill management screens.
+/// `ManagePasswordsView` keeps one `@State` instance and combines `lock()` / `authenticate(onFailure:)`
+/// with scene lifecycle (`didEnterBackground` / `willEnterForeground`). Child screens get privacy styling
+/// via `\.redactionReasons` (and related modifiers), not via this type in the environment.
 ///
-/// Root usage:
 /// ```swift
 /// @State private var lock = AutofillPrivacyLock()
-/// .overlay { if lock.isLocked { Color(.braveGroupedBackground).ignoresSafeArea() } }
 /// .onAppear { Task { await lock.authenticate(onFailure: exit) } }
 /// .onReceive(didEnterBackground) { lock.lock() }
 /// .onReceive(willEnterForeground) { Task { await lock.authenticate(onFailure: exit) } }
@@ -26,7 +24,7 @@ final class AutofillPrivacyLock {
   private(set) var isAuthenticated = false
   private(set) var isAuthenticating = false
 
-  /// True whenever the privacy overlay should be shown.
+  /// True when re-authentication is required (not authenticated or prompt in flight).
   var isLocked: Bool { !isAuthenticated || isAuthenticating }
 
   /// Resets authentication state, causing the overlay to reappear.
