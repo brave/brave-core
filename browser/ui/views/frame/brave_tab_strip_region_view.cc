@@ -8,7 +8,6 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
@@ -17,14 +16,12 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tab_search_feature.h"
-#include "chrome/browser/ui/tabs/brave_compact_horizontal_tabs_layout.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/tabs/shared/tab_strip_combo_button.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
-#include "chrome/browser/ui/views/tabs/tab_strip_action_container.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_control_button.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/prefs/pref_service.h"
@@ -33,7 +30,6 @@
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/events/event.h"
-#include "ui/views/border.h"
 #include "ui/views/controls/button/button.h"
 #include "ui/views/controls/button/button_controller.h"
 #include "ui/views/layout/flex_layout_types.h"
@@ -159,18 +155,6 @@ ui::DropTargetEvent ConvertRootLocation(views::View* view,
   return converted_event;
 }
 #endif
-
-// Mirrors `UpdateBorderInsetsIfNeeded()` in upstream's
-// `horizontal_tab_strip_region_view.cc` (anonymous namespace, not exported).
-// Updates the border of `view` only when the insets actually need to change.
-void UpdateBorderInsetsIfNeeded(views::View* view,
-                                const gfx::Insets& new_border_insets) {
-  CHECK(view);
-  if (!view->GetBorder() ||
-      view->GetBorder()->GetInsets() != new_border_insets) {
-    view->SetBorder(views::CreateEmptyBorder(new_border_insets));
-  }
-}
 
 }  // namespace
 
@@ -345,56 +329,6 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
   // in vertical tabs mode, we make tab strip's height is the same with this
   // view's height to avoid extra gaps.
   tab_strip_->SetBoundsRect(gfx::Rect(0, 0, width(), height()));
-}
-
-void BraveHorizontalTabStripRegionView::UpdateButtonBorders() {
-  // Defer to upstream when compact horizontal tabs is not active. The default
-  // path positions the new tab button, combo button, tab search button and
-  // unfocus button using `LayoutConstant::kTabstripToolbarOverlap`, which is
-  // the right value for the standard tab strip height.
-  if (!tabs::ShouldUseCompactHorizontalTabsForNonTouchUI()) {
-    HorizontalTabStripRegionView::UpdateButtonBorders();
-    return;
-  }
-
-  // Compact mode: `LayoutConstant::kTabstripToolbarOverlap` is the
-  // tab/toolbar geometry value (8 DIP) — using it here would push the tab
-  // strip control buttons (new tab, combo, tab search, unfocus) off-center
-  // because their target row is shorter than the full tab strip body. Use
-  // `tabs::GetHorizontalTabControlsDelta()` instead so controls remain
-  // vertically centered. The math otherwise mirrors upstream's
-  // `HorizontalTabStripRegionView::UpdateButtonBorders()` verbatim.
-  const int extra_vertical_space =
-      GetLayoutConstant(LayoutConstant::kTabStripHeight) -
-      tabs::GetHorizontalTabControlsDelta() -
-      BraveNewTabButton::GetButtonSize().height();
-  const int top_inset = extra_vertical_space / 2;
-  const int bottom_inset =
-      extra_vertical_space - top_inset + tabs::GetHorizontalTabControlsDelta();
-  // The new tab button is placed vertically exactly in the center of the
-  // tabstrip. Extend the border of the button such that it extends to the top
-  // of the tabstrip bounds. This is essential to ensure it is targetable on
-  // the edge of the screen when in fullscreen mode and ensures the button
-  // abides by the correct Fitt's Law behavior (https://crbug.com/1136557).
-  // See the matching comment in upstream's `UpdateButtonBorders()` for the
-  // remaining rationale (left-border = 0 abuts the NTB to the trailing tab,
-  // crbug.com/40727472).
-  const auto border_insets = gfx::Insets::TLBR(top_inset, 0, bottom_inset, 0);
-  if (tab_strip_action_container_) {
-    tab_strip_action_container_->UpdateButtonBorders(border_insets);
-  }
-  if (combo_button_) {
-    UpdateBorderInsetsIfNeeded(combo_button_, border_insets);
-  }
-  if (new_tab_button_) {
-    UpdateBorderInsetsIfNeeded(new_tab_button_, border_insets);
-  }
-  if (unfocus_button_) {
-    UpdateBorderInsetsIfNeeded(unfocus_button_, border_insets);
-  }
-  if (tab_search_button_) {
-    UpdateBorderInsetsIfNeeded(tab_search_button_, border_insets);
-  }
 }
 
 void BraveHorizontalTabStripRegionView::UpdateTabStripMargin() {

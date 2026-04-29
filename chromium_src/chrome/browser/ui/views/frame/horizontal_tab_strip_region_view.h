@@ -22,19 +22,9 @@
   bool IsPositionInWindowCaption
 
 #define UpdateTabStripMargin virtual UpdateTabStripMargin
-// Function-like macro (note the parentheses after the macro name): expands
-// only at the declaration site `void UpdateButtonBorders();` and not at the
-// pointer-to-member reference
-// `&HorizontalTabStripRegionView::UpdateButtonBorders` further down in the
-// upstream header. An object-like
-// `#define UpdateButtonBorders virtual UpdateButtonBorders` would also rewrite
-// the pointer-to-member into `&...::virtual UpdateButtonBorders`, which is a
-// syntax error.
-#define UpdateButtonBorders() virtual UpdateButtonBorders()
 
 #include <chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h>  // IWYU pragma: export
 
-#undef UpdateButtonBorders
 #undef UpdateTabStripMargin
 #undef IsPositionInWindowCaption
 
