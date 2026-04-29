@@ -8,11 +8,15 @@
 
 #include <memory>
 
+#include "base/callback_list.h"
+#include "base/scoped_observation.h"
+#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view_mac.h"
 
 class BraveWindowFrameGraphic;
 
-class BraveBrowserFrameViewMac : public BrowserFrameViewMac {
+class BraveBrowserFrameViewMac : public BrowserFrameViewMac,
+                                 public FocusModeController::Observer {
  public:
   BraveBrowserFrameViewMac(BrowserWidget* browser_widget,
                            BrowserView* browser_view);
@@ -22,11 +26,22 @@ class BraveBrowserFrameViewMac : public BrowserFrameViewMac {
   BraveBrowserFrameViewMac& operator=(const BraveBrowserFrameViewMac&) = delete;
   gfx::Size GetMinimumSize() const override;
 
+  // BrowserFrameView:
+  void OnFullscreenStateChanged() override;
+
+  // FocusModeController::Observer:
+  void OnFocusModeToggled(bool enabled) override;
+
  private:
   bool ShouldShowWindowTitleForVerticalTabs() const;
   void UpdateWindowTitleVisibility();
   void UpdateWindowTitleAndControls();
   void UpdateWindowTitleColor();
+
+  // Sets the alpha value of the macOS traffic-light buttons (close, minimize,
+  // zoom). Used to fade the system caption buttons in and out alongside the
+  // focus-mode top overlay's slide animation.
+  void SetTrafficLightAlpha(double alpha);
 
   // BrowserFrameViewMac overrides:
   gfx::Rect GetBoundsForClientView() const override;
@@ -41,6 +56,10 @@ class BraveBrowserFrameViewMac : public BrowserFrameViewMac {
 
   BooleanPrefMember show_vertical_tabs_;
   BooleanPrefMember show_title_bar_on_vertical_tabs_;
+
+  base::ScopedObservation<FocusModeController, FocusModeController::Observer>
+      focus_mode_observation_{this};
+  base::CallbackListSubscription focus_mode_reveal_subscription_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_VIEW_MAC_H_

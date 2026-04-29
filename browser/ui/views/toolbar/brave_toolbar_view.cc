@@ -14,6 +14,7 @@
 #include "base/functional/bind.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/app/vector_icons/vector_icons.h"
+#include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
@@ -32,6 +33,7 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bubble_view.h"
@@ -225,6 +227,11 @@ void BraveToolbarView::Init() {
     profile_observer_.Observe(
         &g_browser_process->profile_manager()->GetProfileAttributesStorage());
   }
+
+  if (auto* controller = browser_->GetFeatures().focus_mode_controller()) {
+    focus_mode_observation_.Observe(controller);
+  }
+
   // track changes in bookmarks enabled setting
   edit_bookmarks_enabled_.Init(
       bookmarks::prefs::kEditBookmarksEnabled, profile->GetPrefs(),
@@ -443,6 +450,10 @@ void BraveToolbarView::OnProfileWasRemoved(const base::FilePath& profile_path,
   Update(nullptr);
 }
 
+void BraveToolbarView::OnFocusModeToggled(bool enabled) {
+  UpdateHorizontalPadding();
+}
+
 void BraveToolbarView::LoadImages() {
   ToolbarView::LoadImages();
   if (bookmark_) {
@@ -494,7 +505,8 @@ void BraveToolbarView::UpdateHorizontalPadding() {
   views::View* container_view = location_bar_view_->parent();
 
   if (!tabs::utils::ShouldShowBraveVerticalTabs(browser()) ||
-      tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser())) {
+      tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser()) ||
+      IsFocusModeEnabled(browser())) {
     container_view->SetBorder(nullptr);
     return;
   }

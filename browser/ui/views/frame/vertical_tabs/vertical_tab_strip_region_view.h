@@ -33,6 +33,7 @@ class MenuRunner;
 class BraveNewTabButton;
 class BrowserView;
 class FullscreenController;
+class TabStripPlacementCoordinator;
 class TabStyle;
 
 // Wraps TabStripRegion and show it vertically.
@@ -143,6 +144,7 @@ class BraveVerticalTabStripRegionView : public views::View,
                            LayoutAfterFirstTabCreation);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, LayoutSanity);
 
+  TabStripPlacementCoordinator& GetTabStripPlacementCoordinator();
   FullscreenController* GetFullscreenController() const;
   bool IsTabFullscreen() const;
   bool IsBrowserFullscren() const;
@@ -157,7 +159,7 @@ class BraveVerticalTabStripRegionView : public views::View,
   void OnShowVerticalTabsPrefChanged();
   void OnBrowserPanelsMoved();
 
-  void UpdateLayout(bool in_destruction = false);
+  void UpdateLayout();
 
   void OnCollapsedPrefChanged();
   void OnFloatingModePrefChanged();
@@ -190,9 +192,6 @@ class BraveVerticalTabStripRegionView : public views::View,
 
   raw_ptr<BrowserView> browser_view_ = nullptr;
   raw_ptr<Browser> browser_ = nullptr;
-
-  raw_ptr<views::View> original_parent_of_region_view_ = nullptr;
-  std::optional<size_t> tab_strip_region_view_original_index_;
   raw_ptr<HorizontalTabStripRegionView> original_region_view_ = nullptr;
 
   // Reportedly, when we add the TabStripRegionView to

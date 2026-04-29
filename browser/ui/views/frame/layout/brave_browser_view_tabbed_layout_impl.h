@@ -74,6 +74,7 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
                               const BrowserLayoutParams& params) const;
   void InsetContentsContainerBounds(ProposedLayout& layout) const;
 
+  void AdjustLayoutForFocusMode(ProposedLayout& layout) const;
   void UpdateInsetsForVerticalTabStrip();
   void UpdateMarginsForSideBar();
 

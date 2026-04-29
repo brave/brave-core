@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout_delegate_impl.h"
 
+#include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
@@ -99,4 +100,8 @@ bool BrowserViewLayoutDelegateImpl::IsFullscreenForTab() const {
 
 bool BrowserViewLayoutDelegateImpl::IsFullscreen() const {
   return browser_view().IsFullscreen();
+}
+
+bool BrowserViewLayoutDelegateImpl::IsFocusModeEnabled() const {
+  return ::IsFocusModeEnabled(browser_view().browser());
 }

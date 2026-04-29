@@ -79,6 +79,7 @@ class FakeBrowserViewLayoutDelegate : public BrowserViewLayoutDelegate {
   bool IsFullscreenForBrowser() const override { return false; }
   bool IsFullscreenForTab() const override { return false; }
   bool IsFullscreen() const override { return false; }
+  bool IsFocusModeEnabled() const override { return false; }
 };
 
 // Only the two visibility hooks matter for GetTopSeparatorType(); gmock makes

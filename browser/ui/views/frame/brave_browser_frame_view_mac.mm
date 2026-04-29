@@ -5,15 +5,23 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_frame_view_mac.h"
 
+#import <AppKit/AppKit.h>
+
+#include <algorithm>
 #include <memory>
 
+#include "base/functional/bind.h"
+#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/tabs/brave_compact_horizontal_tabs_layout.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/brave_window_frame_graphic.h"
+#include "brave/browser/ui/views/frame/focus_mode_top_overlay.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/fullscreen_util_mac.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -25,6 +33,7 @@
 #include "ui/gfx/geometry/outsets_f.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/scoped_canvas.h"
+#include "ui/views/window/non_client_view.h"
 
 BraveBrowserFrameViewMac::BraveBrowserFrameViewMac(
     BrowserWidget* browser_widget,
@@ -46,6 +55,10 @@ BraveBrowserFrameViewMac::BraveBrowserFrameViewMac(
         base::BindRepeating(
             &BraveBrowserFrameViewMac::UpdateWindowTitleVisibility,
             base::Unretained(this)));
+  }
+
+  if (auto* focus_mode = browser->GetFeatures().focus_mode_controller()) {
+    focus_mode_observation_.Observe(focus_mode);
   }
 }
 
@@ -196,6 +209,60 @@ gfx::Size BraveBrowserFrameViewMac::GetMinimumSize() const {
   }
 
   return BrowserFrameViewMac::GetMinimumSize();
+}
+
+void BraveBrowserFrameViewMac::OnFullscreenStateChanged() {
+  // When entering fullscreen ensure that focus mode is disabled. Focus mode and
+  // immersive fullscreen on MacOS have conflicting presentation requirements.
+  if (GetBrowserView()->IsFullscreen()) {
+    auto* browser = GetBrowserView()->browser();
+    if (auto* controller = browser->GetFeatures().focus_mode_controller()) {
+      controller->SetEnabled(false);
+    }
+  }
+  BrowserFrameViewMac::OnFullscreenStateChanged();
+}
+
+void BraveBrowserFrameViewMac::OnFocusModeToggled(bool enabled) {
+  UpdateWindowTitleAndControls();
+
+  auto* overlay =
+      BraveBrowserView::From(GetBrowserView())->focus_mode_top_overlay();
+
+  if (!overlay || !enabled) {
+    focus_mode_reveal_subscription_ = {};
+    SetTrafficLightAlpha(1.0);
+    return;
+  }
+
+  focus_mode_reveal_subscription_ = overlay->AddRevealFractionChangedCallback(
+      base::BindRepeating(&BraveBrowserFrameViewMac::SetTrafficLightAlpha,
+                          base::Unretained(this)));
+  SetTrafficLightAlpha(overlay->GetRevealFraction());
+}
+
+void BraveBrowserFrameViewMac::SetTrafficLightAlpha(double reveal_fraction) {
+  auto* widget = GetWidget();
+  if (!widget) {
+    return;
+  }
+  NSWindow* window = widget->GetNativeWindow().GetNativeNSWindow();
+  if (!window) {
+    return;
+  }
+
+  // Hold the buttons hidden while the overlay is mostly closed, then fade
+  // them in linearly across the last (1 - kFadeStart) of the reveal so the
+  // lights "pop in" near the end of the slide rather than tracking it
+  // continuously.
+  constexpr double kFadeStart = 0.7;
+  const double alpha =
+      std::clamp((reveal_fraction - kFadeStart) / (1.0 - kFadeStart), 0.0, 1.0);
+
+  for (NSWindowButton kind :
+       {NSWindowCloseButton, NSWindowMiniaturizeButton, NSWindowZoomButton}) {
+    [[window standardWindowButton:kind] setAlphaValue:alpha];
+  }
 }
 
 bool BraveBrowserFrameViewMac::ShouldHideTopUIInFullscreen() const {
