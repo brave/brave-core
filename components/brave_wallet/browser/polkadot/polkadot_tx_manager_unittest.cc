@@ -46,6 +46,14 @@ namespace brave_wallet {
 
 namespace {
 
+// Use the BOB account here:
+// https://westend.subscan.io/account/5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty
+inline constexpr const char kBob[] =
+    "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48";
+
+inline constexpr const char kBobSS58[] =
+    "14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3";
+
 inline constexpr char kExpectedExtrinsic[] =
     R"(35028400d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa951601ccbd8179630a0a68e46a81828600655c09c3564e8406d120c18da4cb4460ee10ba8900001c7eb26ee76cac82401d2afa09ae429fdaa4ead2540164cbc98d888755014400000403008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a484913)";
 
@@ -218,6 +226,49 @@ class PolkadotTxManagerUnitTest : public testing::Test {
     return AccountUtils(keyring_service_.get());
   }
 
+  std::string SetUpUnapprovedTx(const std::string& chain_id) {
+    auto pubkey = base::HexEncodeLower(
+        keyring_service_
+            ->GetPolkadotPubKey(polkadot_testnet_account_->account_id)
+            .value());
+
+    EXPECT_EQ(
+        pubkey,
+        "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
+
+    auto transaction_params = mojom::NewPolkadotTransactionParams::New(
+        chain_id, polkadot_testnet_account_->account_id->Clone(), kBob,
+        mojom::uint128::New(0, 1234), false, nullptr);
+
+    base::test::TestFuture<bool, const std::string&, const std::string&>
+        unapproved_future;
+
+    GetPolkadotTxManager()->AddUnapprovedPolkadotTransaction(
+        std::move(transaction_params), unapproved_future.GetCallback());
+
+    auto [success, tx_meta_id, err_str] = unapproved_future.Take();
+    EXPECT_TRUE(success);
+    EXPECT_FALSE(tx_meta_id.empty());
+    EXPECT_EQ(err_str, "");
+
+    return tx_meta_id;
+  }
+
+  void ExpectSubmittedTxState(const std::string& tx_meta_id) {
+    auto polkadot_tx = GetPolkadotTxManager()->GetPolkadotTx(tx_meta_id);
+    ASSERT_TRUE(polkadot_tx);
+
+    EXPECT_EQ(polkadot_tx->status(), mojom::TransactionStatus::Submitted);
+    EXPECT_EQ(polkadot_tx->tx()->recipient().ToString().value(), kBob);
+    EXPECT_EQ(polkadot_tx->tx()->amount(), uint128_t{1234});
+    EXPECT_EQ(polkadot_tx->tx()->fee(), uint128_t{15937408476ull});
+    EXPECT_EQ(polkadot_tx->tx()->transfer_all(), false);
+    EXPECT_EQ(polkadot_tx->tx()->extrinsic_metadata()->block_num(), 29385557u);
+    EXPECT_EQ(base::HexEncodeLower(
+                  polkadot_tx->tx()->extrinsic_metadata()->extrinsic()),
+              kExpectedExtrinsic);
+  }
+
  protected:
   base::test::TaskEnvironment task_environment_;
 
@@ -244,18 +295,6 @@ class PolkadotTxManagerUnitTest : public testing::Test {
 TEST_F(PolkadotTxManagerUnitTest, GetCoinType) {
   EXPECT_EQ(GetPolkadotTxManager()->GetCoinType(), mojom::CoinType::DOT);
 }
-
-namespace {
-
-// Use the BOB account here:
-// https://westend.subscan.io/account/5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty
-inline constexpr const char kBob[] =
-    "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48";
-
-inline constexpr const char kBobSS58[] =
-    "14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3";
-
-}  // namespace
 
 TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
   auto sender_pubkey =
@@ -474,27 +513,7 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_Confirmed) {
 
   std::string chain_id = mojom::kPolkadotTestnet;
 
-  auto pubkey = base::HexEncodeLower(
-      keyring_service_->GetPolkadotPubKey(polkadot_testnet_account_->account_id)
-          .value());
-
-  EXPECT_EQ(pubkey,
-            "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
-
-  auto transaction_params = mojom::NewPolkadotTransactionParams::New(
-      chain_id, polkadot_testnet_account_->account_id->Clone(), kBob,
-      mojom::uint128::New(0, 1234), false, nullptr);
-
-  base::test::TestFuture<bool, const std::string&, const std::string&>
-      unapproved_future;
-
-  GetPolkadotTxManager()->AddUnapprovedPolkadotTransaction(
-      std::move(transaction_params), unapproved_future.GetCallback());
-
-  auto [success, tx_meta_id, err_str] = unapproved_future.Take();
-  EXPECT_TRUE(success);
-  EXPECT_FALSE(tx_meta_id.empty());
-  EXPECT_EQ(err_str, "");
+  auto tx_meta_id = SetUpUnapprovedTx(chain_id);
 
   base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
       approved_future;
@@ -509,20 +528,7 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_Confirmed) {
   const auto* tx = txs.FindDict(tx_meta_id);
   ASSERT_TRUE(tx);
 
-  {
-    auto polkadot_tx = GetPolkadotTxManager()->GetPolkadotTx(tx_meta_id);
-    ASSERT_TRUE(polkadot_tx);
-
-    EXPECT_EQ(polkadot_tx->status(), mojom::TransactionStatus::Submitted);
-    EXPECT_EQ(polkadot_tx->tx()->recipient().ToString().value(), kBob);
-    EXPECT_EQ(polkadot_tx->tx()->amount(), uint128_t{1234});
-    EXPECT_EQ(polkadot_tx->tx()->fee(), uint128_t{15937408476ull});
-    EXPECT_EQ(polkadot_tx->tx()->transfer_all(), false);
-    EXPECT_EQ(polkadot_tx->tx()->extrinsic_metadata()->block_num(), 29385557u);
-    EXPECT_EQ(base::HexEncodeLower(
-                  polkadot_tx->tx()->extrinsic_metadata()->extrinsic()),
-              kExpectedExtrinsic);
-  }
+  ExpectSubmittedTxState(tx_meta_id);
 
   MockTxStateManagerObserver observer(*GetPolkadotTxStateManager());
   EXPECT_CALL(observer, OnTransactionStatusChanged(testing::_))
@@ -562,27 +568,7 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_Failed) {
 
   std::string chain_id = mojom::kPolkadotTestnet;
 
-  auto pubkey = base::HexEncodeLower(
-      keyring_service_->GetPolkadotPubKey(polkadot_testnet_account_->account_id)
-          .value());
-
-  EXPECT_EQ(pubkey,
-            "d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516");
-
-  auto transaction_params = mojom::NewPolkadotTransactionParams::New(
-      chain_id, polkadot_testnet_account_->account_id->Clone(), kBob,
-      mojom::uint128::New(0, 1234), false, nullptr);
-
-  base::test::TestFuture<bool, const std::string&, const std::string&>
-      unapproved_future;
-
-  GetPolkadotTxManager()->AddUnapprovedPolkadotTransaction(
-      std::move(transaction_params), unapproved_future.GetCallback());
-
-  auto [success, tx_meta_id, err_str] = unapproved_future.Take();
-  EXPECT_TRUE(success);
-  EXPECT_FALSE(tx_meta_id.empty());
-  EXPECT_EQ(err_str, "");
+  auto tx_meta_id = SetUpUnapprovedTx(chain_id);
 
   base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
       approved_future;
@@ -597,20 +583,7 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_Failed) {
   const auto* tx = txs.FindDict(tx_meta_id);
   ASSERT_TRUE(tx);
 
-  {
-    auto polkadot_tx = GetPolkadotTxManager()->GetPolkadotTx(tx_meta_id);
-    ASSERT_TRUE(polkadot_tx);
-
-    EXPECT_EQ(polkadot_tx->status(), mojom::TransactionStatus::Submitted);
-    EXPECT_EQ(polkadot_tx->tx()->recipient().ToString().value(), kBob);
-    EXPECT_EQ(polkadot_tx->tx()->amount(), uint128_t{1234});
-    EXPECT_EQ(polkadot_tx->tx()->fee(), uint128_t{15937408476ull});
-    EXPECT_EQ(polkadot_tx->tx()->transfer_all(), false);
-    EXPECT_EQ(polkadot_tx->tx()->extrinsic_metadata()->block_num(), 29385557u);
-    EXPECT_EQ(base::HexEncodeLower(
-                  polkadot_tx->tx()->extrinsic_metadata()->extrinsic()),
-              kExpectedExtrinsic);
-  }
+  ExpectSubmittedTxState(tx_meta_id);
 
   MockTxStateManagerObserver observer(*GetPolkadotTxStateManager());
   EXPECT_CALL(observer, OnTransactionStatusChanged(testing::_))
