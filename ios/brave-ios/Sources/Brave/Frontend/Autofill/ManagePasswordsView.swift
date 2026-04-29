@@ -205,10 +205,14 @@ struct ManagePasswordsView: View {
         await privacyLock.authenticate(onFailure: exitAfterAuthFailure)
       }
     }
-    .onReceive(NotificationCenter.default.publisher(for: UIScene.willDeactivateNotification)) { _ in
+    // Lock / re-auth use scene background–foreground so Face ID / Touch ID sheets do not flip the
+    // scene active/inactive cycle (they trigger `willDeactivate`/`didActivate` without truly leaving the app).
+    .onReceive(NotificationCenter.default.publisher(for: UIScene.didEnterBackgroundNotification)) {
+      _ in
       privacyLock.lock()
     }
-    .onReceive(NotificationCenter.default.publisher(for: UIScene.didActivateNotification)) { _ in
+    .onReceive(NotificationCenter.default.publisher(for: UIScene.willEnterForegroundNotification)) {
+      _ in
       Task { await privacyLock.authenticate(onFailure: exitAfterAuthFailure) }
     }
   }
@@ -229,9 +233,6 @@ struct ManagePasswordsView: View {
   }
 
   private func exitAfterAuthFailure() {
-    // Invalidate first so any synchronous side effect of dismissal cannot start a new
-    // authentication task on a view that the host controller is still retaining.
-    privacyLock.invalidateSession()
     if let privacyLockExitOnFailure {
       privacyLockExitOnFailure()
     } else {
