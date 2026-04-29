@@ -331,11 +331,9 @@ public class BraveYouTubePictureInPictureController {
         }
 
         final FullscreenManager fullscreenManager = mActivity.getFullscreenManager();
-        assert fullscreenManager instanceof BraveFullscreenHtmlApiHandlerBase;
-        if (fullscreenManager.getPersistentFullscreenMode()) {
-            BraveFullscreenHtmlApiHandlerBase braveFullscreen =
-                    (BraveFullscreenHtmlApiHandlerBase) fullscreenManager;
-            braveFullscreen.exitPersistentFullscreenModeForPictureInPicture();
+        if (fullscreenManager.getPersistentFullscreenMode()
+                && fullscreenManager instanceof final BraveFullscreenHtmlApiHandlerBase brave) {
+            brave.exitPersistentFullscreenModeForPictureInPicture();
         }
     }
 
