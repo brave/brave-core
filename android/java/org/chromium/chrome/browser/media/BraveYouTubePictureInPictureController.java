@@ -310,9 +310,16 @@ public class BraveYouTubePictureInPictureController {
 
     @Nullable
     private WebContents getOrFindWebContents() {
-        if (mWebContents != null && !mWebContents.isDestroyed()) {
-            return mWebContents;
+        if (mWebContents != null) {
+            // The session is bound to a specific WebContents. If it has since been destroyed the
+            // YouTube tab is gone for good, so refuse to rebind to whatever foreground tab is
+            // current — that would silently retarget exit logic at the wrong WebContents.
+            return mWebContents.isDestroyed() ? null : mWebContents;
         }
+
+        // mWebContents was never set on this controller instance (typically after activity
+        // recreation, when mActive is restored from the saved-instance bundle but the WebContents
+        // reference cannot be persisted). Re-discover via the foreground tab.
         WebContents currentWebContents = mActivity.getCurrentWebContents();
         if (currentWebContents != null
                 && !currentWebContents.isDestroyed()
