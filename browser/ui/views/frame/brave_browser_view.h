@@ -8,11 +8,11 @@
 
 #include <map>
 #include <memory>
-#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include "base/callback_list.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
@@ -20,7 +20,6 @@
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
-#include "brave/browser/ui/views/frame/edge_reveal_controller.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
@@ -83,7 +82,6 @@ class WalletButton;
 
 class BraveBrowserView : public BrowserView,
                          public FocusModeController::Observer,
-                         public EdgeRevealController::Observer,
                          public commands::AcceleratorService::Observer {
   METADATA_HEADER(BraveBrowserView, BrowserView)
  public:
@@ -163,13 +161,6 @@ class BraveBrowserView : public BrowserView,
   }
   bool ShowBraveHelpBubbleView(const std::string& text) override;
 
-  EdgeRevealController* GetTopEdgeRevealController() {
-    return top_reveal_controller_.get();
-  }
-  const EdgeRevealController* GetTopEdgeRevealController() const {
-    return top_reveal_controller_.get();
-  }
-
   // Returns the current vertical pixel offset that revealable top views are
   // translated by during focus-mode edge reveal (negative when the top views
   // are partially or fully hidden, zero when fully revealed or focus mode is
@@ -179,9 +170,6 @@ class BraveBrowserView : public BrowserView,
 
   // FocusModeController::Observer:
   void OnFocusModeToggled(bool enabled) override;
-
-  // EdgeRevealController::Observer:
-  void OnEdgeRevealFractionChanged(double fraction) override;
 
   // commands::AcceleratorService:
   void OnAcceleratorsChanged(
@@ -260,6 +248,7 @@ class BraveBrowserView : public BrowserView,
 
   void HandleBrowserWindowMouseEvent(const ui::MouseEvent& event);
   void UpdateFocusModeEffectiveState();
+  void OnFocusModeRevealFractionChanged(double fraction);
   void UpdateContentsShadowVisibility();
   void StopTabCycling();
   void UpdateSearchTabsButtonState();
@@ -267,13 +256,6 @@ class BraveBrowserView : public BrowserView,
   void OnWindowClosingConfirmResponse(bool allowed_to_close);
   BraveBrowser* GetBraveBrowser() const;
   void UpdateWebViewRoundedCorners();
-
-  // Updates the bounds of `focus_mode_overlay_` based on the current reveal
-  // fraction reported by `top_reveal_controller_`. The overlay's y-position is
-  // translated upward by `(1 - fraction) * height` so that the top chrome
-  // appears to slide off-screen. Called both during regular layout and on
-  // every reveal-fraction tick.
-  void UpdateFocusModeOverlayBounds();
 
   // FindBarHost is anchored to |find_bar_host_view_|; it must remain the last
   // child of BrowserView for correct z-order. Call when a child is added after
@@ -309,12 +291,7 @@ class BraveBrowserView : public BrowserView,
   raw_ptr<views::View> vertical_tab_strip_host_view_ = nullptr;
   raw_ptr<FocusModeTitleBarView> focus_mode_title_bar_view_ = nullptr;
   raw_ptr<FocusModeTopOverlay> focus_mode_top_overlay_ = nullptr;
-
-  // Indices of `top_container_` and `horizontal_tab_strip_region_view_` within
-  // this view's children at the moment focus mode was last enabled. Used to
-  // restore those views to their original z-order when focus mode is disabled.
-  std::optional<size_t> focus_mode_top_container_saved_index_;
-  std::optional<size_t> focus_mode_tab_strip_saved_index_;
+  base::CallbackListSubscription reveal_fraction_subscription_;
   raw_ptr<VerticalTabStripWidgetDelegateView, DanglingUntriaged>
       vertical_tab_strip_widget_delegate_view_ = nullptr;
 
@@ -339,7 +316,6 @@ class BraveBrowserView : public BrowserView,
   base::ScopedObservation<commands::AcceleratorService,
                           commands::AcceleratorService::Observer>
       accelerators_observation_{this};
-  std::unique_ptr<EdgeRevealController> top_reveal_controller_;
   base::ScopedObservation<FocusModeController, FocusModeController::Observer>
       focus_mode_observation_{this};
 

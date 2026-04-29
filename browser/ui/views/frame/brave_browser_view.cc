@@ -766,12 +766,11 @@ void BraveBrowserView::AddedToWidget() {
 
     focus_mode_top_overlay_ =
         AddChildView(std::make_unique<FocusModeTopOverlay>());
-    focus_mode_top_overlay_->SetVisible(false);
-
-    top_reveal_controller_ = std::make_unique<EdgeRevealController>(
-        EdgeRevealController::Edge::kTop, *GetWidget());
-    top_reveal_controller_->AddRevealableView(focus_mode_top_overlay_);
-    top_reveal_controller_->AddObserver(this);
+    reveal_fraction_subscription_ =
+        focus_mode_top_overlay_->RegisterRevealFractionChangedCallback(
+            base::BindRepeating(
+                &BraveBrowserView::OnFocusModeRevealFractionChanged,
+                base::Unretained(this)));
 
     UpdateFocusModeEffectiveState();
   }
@@ -849,46 +848,20 @@ void BraveBrowserView::UpdateFocusModeEffectiveState() {
   auto* controller = browser()->GetFeatures().focus_mode_controller();
   const bool active = controller && controller->IsEnabled() && !IsFullscreen();
   const bool overlay_active =
-      focus_mode_top_overlay_ && focus_mode_top_overlay_->GetVisible();
+      focus_mode_top_overlay_ && focus_mode_top_overlay_->IsActive();
 
   if (focus_mode_top_overlay_ && active != overlay_active) {
     if (active) {
-      // Capture current indices so z-order can be restored when leaving focus
-      // mode. `top_container_` is always a direct child here; the tab strip
-      // may already be inside `top_container_` in some platform-specific
-      // states, in which case there's no need to reparent it.
-      focus_mode_top_container_saved_index_ =
-          GetIndexOf(top_container_.get()).value();
-      if (auto tab_idx = GetIndexOf(horizontal_tab_strip_region_view_.get())) {
-        focus_mode_tab_strip_saved_index_ = *tab_idx;
-        // The upstream tabbed layout only positions the tab strip when it is
-        // a child of either `browser_view` or `top_container`; placing it
-        // inside `top_container` allows the layout to size it correctly
-        // while `top_container` is itself reparented into the overlay.
-        top_container_->AddChildViewAt(horizontal_tab_strip_region_view_.get(),
-                                       0);
-      }
-      focus_mode_top_overlay_->AddChildView(top_container_.get());
-      focus_mode_top_overlay_->SetVisible(true);
+      focus_mode_top_overlay_->Activate(
+          {.top_container = top_container_,
+           .horizontal_tab_strip = horizontal_tab_strip_region_view_});
     } else {
-      DCHECK(focus_mode_top_container_saved_index_);
-      AddChildViewAt(top_container_.get(),
-                     *focus_mode_top_container_saved_index_);
-      if (focus_mode_tab_strip_saved_index_) {
-        AddChildViewAt(horizontal_tab_strip_region_view_.get(),
-                       *focus_mode_tab_strip_saved_index_);
-      }
-      focus_mode_top_container_saved_index_.reset();
-      focus_mode_tab_strip_saved_index_.reset();
-      focus_mode_top_overlay_->SetVisible(false);
+      focus_mode_top_overlay_->Deactivate();
       EnsureFindBarHostViewIsLastChild();
     }
     InvalidateLayout();
   }
 
-  if (top_reveal_controller_) {
-    top_reveal_controller_->SetEnabled(active);
-  }
   if (focus_mode_title_bar_view_) {
     focus_mode_title_bar_view_->SetVisible(active);
     focus_mode_title_bar_view_->SetWebContents(
@@ -897,8 +870,7 @@ void BraveBrowserView::UpdateFocusModeEffectiveState() {
   }
 }
 
-void BraveBrowserView::OnEdgeRevealFractionChanged(double fraction) {
-  UpdateFocusModeOverlayBounds();
+void BraveBrowserView::OnFocusModeRevealFractionChanged(double fraction) {
   if (auto* frame_view = GetFrameView()) {
     frame_view->DeprecatedLayoutImmediately();
   }
@@ -914,28 +886,9 @@ void BraveBrowserView::OnEdgeRevealFractionChanged(double fraction) {
 }
 
 int BraveBrowserView::GetTopRevealOffset() const {
-  return focus_mode_top_overlay_ && focus_mode_top_overlay_->GetVisible()
+  return focus_mode_top_overlay_ && focus_mode_top_overlay_->IsActive()
              ? focus_mode_top_overlay_->bounds().y()
              : 0;
-}
-
-void BraveBrowserView::UpdateFocusModeOverlayBounds() {
-  if (!focus_mode_top_overlay_ || !focus_mode_top_overlay_->GetVisible()) {
-    return;
-  }
-
-  // `top_container_` was reparented into the overlay when focus mode was
-  // enabled, with the horizontal tab strip placed inside it. Its bottom edge
-  // (set by the upstream layout's "top container parented elsewhere" branch)
-  // gives the overlay's natural full-height.
-  const int height = top_container_ ? top_container_->bounds().bottom() : 0;
-
-  const double fraction = top_reveal_controller_
-                              ? top_reveal_controller_->GetRevealFraction()
-                              : 1.0;
-  const int y_offset = -static_cast<int>((1.0 - fraction) * height);
-  focus_mode_top_overlay_->SetBoundsRect(
-      gfx::Rect(0, y_offset, width(), height));
 }
 
 void BraveBrowserView::LoadAccelerators() {
@@ -1231,10 +1184,10 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
 
   BrowserView::OnActiveTabChanged(old_contents, new_contents, index, reason);
 
-  if (top_reveal_controller_ && !tab_change_in_split_view) {
+  if (focus_mode_top_overlay_ && !tab_change_in_split_view) {
     // TODO: In vertical tabs, we probably either want the top revealed or the
     // vertical tab region revealed, but not both at the same time.
-    top_reveal_controller_->RevealTemporarily(base::Seconds(2));
+    focus_mode_top_overlay_->RevealTemporarily(base::Seconds(2));
   }
 
   if (focus_mode_title_bar_view_ && focus_mode_title_bar_view_->GetVisible()) {
@@ -1499,7 +1452,6 @@ void BraveBrowserView::UpdateWebViewRoundedCorners() {
 
 void BraveBrowserView::Layout(PassKey) {
   LayoutSuperclass<BrowserView>(this);
-  UpdateFocusModeOverlayBounds();
   UpdateWebViewRoundedCorners();
 }
 

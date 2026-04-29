@@ -5,11 +5,28 @@
 
 #include "brave/browser/ui/views/frame/focus_mode_top_overlay.h"
 
+#include <algorithm>
+#include <utility>
+
+#include "base/check.h"
+#include "base/functional/bind.h"
+#include "base/memory/raw_ptr.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/layer.h"
+#include "ui/display/screen.h"
+#include "ui/events/event.h"
+#include "ui/events/event_observer.h"
+#include "ui/views/bubble/bubble_dialog_delegate_view.h"
+#include "ui/views/event_monitor.h"
+#include "ui/views/widget/widget.h"
 
 namespace {
+
+constexpr int kHotZoneThickness = 16;
+constexpr base::TimeDelta kRevealAnimationDuration = base::Milliseconds(200);
+constexpr base::TimeDelta kMouseEnterDelay = base::Milliseconds(60);
+constexpr base::TimeDelta kMouseExitDelay = base::Milliseconds(300);
 
 constexpr ViewShadow::ShadowParameters kShadow{
     .offset_x = 0,
@@ -17,15 +34,310 @@ constexpr ViewShadow::ShadowParameters kShadow{
     .blur_radius = 8,
     .shadow_color = SkColorSetA(SK_ColorBLACK, 0.15 * 255)};
 
+gfx::Rect GetTopHotZone(const gfx::Rect& window_bounds) {
+  gfx::Rect rect(window_bounds);
+  rect.set_height(kHotZoneThickness);
+  return rect;
+}
+
 }  // namespace
+
+class FocusModeTopOverlay::WindowEventHandler : public ui::EventObserver {
+ public:
+  WindowEventHandler(FocusModeTopOverlay* overlay, gfx::NativeWindow window)
+      : overlay_(overlay) {
+    monitor_ = views::EventMonitor::CreateWindowMonitor(
+        this, window,
+        {ui::EventType::kMouseMoved, ui::EventType::kMouseExited});
+  }
+  WindowEventHandler(const WindowEventHandler&) = delete;
+  WindowEventHandler& operator=(const WindowEventHandler&) = delete;
+  ~WindowEventHandler() override = default;
+
+ private:
+  void OnEvent(const ui::Event& event) override {
+    overlay_->OnWindowEvent(event);
+  }
+
+  raw_ptr<FocusModeTopOverlay> overlay_;
+  std::unique_ptr<views::EventMonitor> monitor_;
+};
 
 FocusModeTopOverlay::FocusModeTopOverlay()
     : shadow_(this, gfx::RoundedCornersF(0), kShadow) {
   SetPaintToLayer();
   layer()->SetFillsBoundsOpaquely(true);
+  animation_.SetSlideDuration(kRevealAnimationDuration);
+  animation_.Reset(1.0);
+  SetVisible(false);
 }
 
-FocusModeTopOverlay::~FocusModeTopOverlay() = default;
+FocusModeTopOverlay::~FocusModeTopOverlay() {
+  if (active_) {
+    StopRevealing();
+  }
+}
+
+void FocusModeTopOverlay::Activate(HostedViews views) {
+  CHECK(!active_);
+  CHECK(views.top_container);
+  CHECK(GetWidget());
+  CHECK(parent());
+
+  active_ = true;
+
+  if (views.horizontal_tab_strip && views.horizontal_tab_strip->parent() &&
+      views.horizontal_tab_strip->parent() != views.top_container) {
+    auto* prev_parent = views.horizontal_tab_strip->parent();
+    auto idx = prev_parent->GetIndexOf(views.horizontal_tab_strip).value();
+    hosted_views_.push_back({views.horizontal_tab_strip, prev_parent, idx});
+    views.top_container->AddChildViewAt(views.horizontal_tab_strip.get(), 0);
+  }
+  {
+    auto* prev_parent = views.top_container->parent();
+    CHECK(prev_parent);
+    auto idx = prev_parent->GetIndexOf(views.top_container).value();
+    hosted_views_.push_back({views.top_container, prev_parent, idx});
+    AddChildView(views.top_container.get());
+  }
+
+  hosted_top_container_ = views.top_container;
+  view_observations_.AddObservation(hosted_top_container_.get());
+
+  window_event_handler_ = std::make_unique<WindowEventHandler>(
+      this, GetWidget()->GetNativeWindow());
+  if (auto* focus_manager = GetWidget()->GetFocusManager()) {
+    focus_manager->AddFocusChangeListener(this);
+  }
+
+  animation_.Reset(1.0);
+  SetVisible(true);
+  UpdateBounds();
+  reveal_fraction_changed_callbacks_.Notify(1.0);
+  UpdateRevealState();
+}
+
+void FocusModeTopOverlay::Deactivate() {
+  if (!active_) {
+    return;
+  }
+  active_ = false;
+  StopRevealing();
+
+  for (auto it = hosted_views_.rbegin(); it != hosted_views_.rend(); ++it) {
+    if (it->view && it->previous_parent) {
+      it->previous_parent->AddChildViewAt(it->view.get(), it->previous_index);
+    }
+  }
+  hosted_views_.clear();
+
+  SetVisible(false);
+  reveal_fraction_changed_callbacks_.Notify(1.0);
+}
+
+void FocusModeTopOverlay::RevealTemporarily(base::TimeDelta duration) {
+  if (!active_) {
+    return;
+  }
+  temporary_reveal_ = true;
+  UpdateRevealState();
+  temporary_reveal_timer_.Start(
+      FROM_HERE, duration,
+      base::BindOnce(&FocusModeTopOverlay::OnTemporaryRevealTimerElapsed,
+                     base::Unretained(this)));
+}
+
+double FocusModeTopOverlay::GetRevealFraction() const {
+  return animation_.GetCurrentValue();
+}
+
+base::CallbackListSubscription
+FocusModeTopOverlay::RegisterRevealFractionChangedCallback(
+    RevealFractionChangedCallback callback) {
+  return reveal_fraction_changed_callbacks_.Add(std::move(callback));
+}
+
+void FocusModeTopOverlay::StopRevealing() {
+  if (auto* widget = GetWidget()) {
+    if (auto* focus_manager = widget->GetFocusManager()) {
+      focus_manager->RemoveFocusChangeListener(this);
+    }
+  }
+  for (auto& bubble_widget : observed_bubble_widgets_) {
+    bubble_widget->RemoveObserver(this);
+  }
+  observed_bubble_widgets_.clear();
+  window_event_handler_.reset();
+  mouse_hover_timer_.Stop();
+  temporary_reveal_timer_.Stop();
+  hovering_ = false;
+  temporary_reveal_ = false;
+  animation_.Reset(1.0);
+  view_observations_.RemoveAllObservations();
+  hosted_top_container_ = nullptr;
+}
+
+bool FocusModeTopOverlay::ShouldReveal() const {
+  return hovering_ || temporary_reveal_ || HasFocusInHostedViews() ||
+         !observed_bubble_widgets_.empty();
+}
+
+bool FocusModeTopOverlay::HasFocusInHostedViews() const {
+  if (auto* widget = GetWidget()) {
+    if (auto* focus_manager = widget->GetFocusManager()) {
+      if (auto* view = focus_manager->GetFocusedView()) {
+        return ContainsView(view);
+      }
+    }
+  }
+  return false;
+}
+
+bool FocusModeTopOverlay::IsPointInHostedViews(gfx::Point point) const {
+  if (animation_.GetCurrentValue() == 0.0) {
+    return false;
+  }
+  for (const auto& hosted : hosted_views_) {
+    if (hosted.view && hosted.view->GetBoundsInScreen().Contains(point)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool FocusModeTopOverlay::ContainsView(const views::View* view) const {
+  if (!view) {
+    return false;
+  }
+  return std::any_of(
+      hosted_views_.begin(), hosted_views_.end(),
+      [view](const HostedView& h) { return h.view && h.view->Contains(view); });
+}
+
+void FocusModeTopOverlay::UpdateRevealState() {
+  if (!active_) {
+    return;
+  }
+  if (ShouldReveal()) {
+    animation_.Show();
+  } else {
+    animation_.Hide();
+  }
+}
+
+void FocusModeTopOverlay::UpdateBounds() {
+  if (!active_ || !parent() || !hosted_top_container_) {
+    return;
+  }
+  const int height = hosted_top_container_->bounds().bottom();
+  const double fraction = animation_.GetCurrentValue();
+  const int y_offset = -static_cast<int>((1.0 - fraction) * height);
+  SetBoundsRect(gfx::Rect(0, y_offset, parent()->width(), height));
+}
+
+void FocusModeTopOverlay::ScanForAnchoredBubbles() {
+  auto* widget = GetWidget();
+  if (!widget) {
+    return;
+  }
+  for (auto& child_widget :
+       views::Widget::GetAllChildWidgets(widget->GetNativeView())) {
+    if (child_widget.get() == widget || !child_widget->IsVisible()) {
+      continue;
+    }
+    if (observed_bubble_widgets_.contains(child_widget)) {
+      continue;
+    }
+    auto* bubble = child_widget->widget_delegate()->AsBubbleDialogDelegate();
+    if (bubble && bubble->GetAnchorView() &&
+        ContainsView(bubble->GetAnchorView())) {
+      child_widget->AddObserver(this);
+      observed_bubble_widgets_.emplace(child_widget.get());
+    }
+  }
+}
+
+void FocusModeTopOverlay::SetHoveringWithDelay(bool hovering) {
+  if (hovering == hovering_) {
+    mouse_hover_timer_.Stop();
+    return;
+  }
+  if (mouse_hover_timer_.IsRunning()) {
+    return;
+  }
+  mouse_hover_timer_.Start(
+      FROM_HERE, hovering ? kMouseEnterDelay : kMouseExitDelay,
+      base::BindOnce(&FocusModeTopOverlay::OnHoverTimerElapsed,
+                     base::Unretained(this), hovering));
+}
+
+void FocusModeTopOverlay::OnHoverTimerElapsed(bool hovering) {
+  hovering_ = hovering;
+  if (!hovering_) {
+    ScanForAnchoredBubbles();
+  }
+  UpdateRevealState();
+}
+
+void FocusModeTopOverlay::OnTemporaryRevealTimerElapsed() {
+  temporary_reveal_ = false;
+  UpdateRevealState();
+}
+
+void FocusModeTopOverlay::OnWindowEvent(const ui::Event& event) {
+  if (!active_) {
+    return;
+  }
+  if (event.type() == ui::EventType::kMouseExited) {
+    SetHoveringWithDelay(false);
+    return;
+  }
+  if (event.type() != ui::EventType::kMouseMoved) {
+    return;
+  }
+  const gfx::Point cursor = display::Screen::Get()->GetCursorScreenPoint();
+  const gfx::Rect hot_zone =
+      GetTopHotZone(GetWidget()->GetWindowBoundsInScreen());
+  bool hovering = hot_zone.Contains(cursor) || IsPointInHostedViews(cursor);
+  SetHoveringWithDelay(hovering);
+}
+
+void FocusModeTopOverlay::OnDidChangeFocus(views::View* before,
+                                           views::View* after) {
+  if (ContainsView(before) != ContainsView(after)) {
+    ScanForAnchoredBubbles();
+    UpdateRevealState();
+  }
+}
+
+void FocusModeTopOverlay::OnViewBoundsChanged(views::View* observed_view) {
+  UpdateBounds();
+}
+
+void FocusModeTopOverlay::OnWidgetVisibilityChanged(views::Widget* widget,
+                                                    bool visible) {
+  if (!visible) {
+    widget->RemoveObserver(this);
+    observed_bubble_widgets_.erase(widget);
+    UpdateRevealState();
+  }
+}
+
+void FocusModeTopOverlay::OnWidgetDestroying(views::Widget* widget) {
+  widget->RemoveObserver(this);
+  observed_bubble_widgets_.erase(widget);
+  UpdateRevealState();
+}
+
+void FocusModeTopOverlay::AnimationProgressed(const gfx::Animation* animation) {
+  UpdateBounds();
+  reveal_fraction_changed_callbacks_.Notify(animation_.GetCurrentValue());
+}
+
+void FocusModeTopOverlay::AnimationEnded(const gfx::Animation* animation) {
+  UpdateBounds();
+  reveal_fraction_changed_callbacks_.Notify(animation_.GetCurrentValue());
+}
 
 BEGIN_METADATA(FocusModeTopOverlay)
 END_METADATA
