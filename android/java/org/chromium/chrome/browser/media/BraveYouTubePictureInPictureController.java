@@ -217,6 +217,13 @@ public class BraveYouTubePictureInPictureController {
             return;
         }
 
+        // Mirror onExitPictureInPictureMode: defer teardown while the device is locked and let
+        // the screen-state receiver pick the session back up on unlock.
+        if (isScreenOffOrLocked(mActivity)) {
+            markInterruptedByScreenLock();
+            return;
+        }
+
         final WebContents webContents = getOrFindWebContents();
         if (webContents != null && !webContents.isDestroyed()) {
             // Nudge YouTube's player out of its own fullscreen state, since YouTube tracks
