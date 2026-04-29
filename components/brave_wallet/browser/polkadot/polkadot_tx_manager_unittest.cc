@@ -646,9 +646,7 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_InvalidResponse) {
 
   // We don't send any updates for this scenario.
   MockTxStateManagerObserver observer(*GetPolkadotTxStateManager());
-  EXPECT_CALL(observer, OnTransactionStatusChanged(testing::_))
-      .Times(0)
-      .WillOnce(base::test::RunOnceClosure(task_environment_.QuitClosure()));
+  EXPECT_CALL(observer, OnTransactionStatusChanged(testing::_)).Times(0);
 
   ExpectSubmittedTxState(tx_meta_id);
   testing::Mock::VerifyAndClearExpectations(&observer);
