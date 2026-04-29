@@ -759,6 +759,7 @@ source_set("ui") {
       sources += [
         "views/frame/brave_browser_frame_view_win.cc",
         "views/frame/brave_browser_frame_view_win.h",
+        "views/frame/brave_win_caption_layout.h",
       ]
 
       deps += [ "//chrome/browser:titlebar_config" ]

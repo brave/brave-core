@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "base/check.h"
+#include "brave/browser/ui/views/frame/brave_win_caption_layout.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -31,6 +33,28 @@
            ? WebUITabStripContainerView::SupportsTouchableTabStrip(browser) \
            : tabs::utils::SupportsBraveVerticalTabs(browser))
 
+namespace brave {
+
+static thread_local int g_win_caption_geometry_tabstrip_overlap_depth = 0;
+
+ScopedWinCaptionLayoutUsesGeometryTabstripOverlap::
+    ScopedWinCaptionLayoutUsesGeometryTabstripOverlap(bool enable)
+    : enabled_(enable) {
+  if (enabled_) {
+    ++g_win_caption_geometry_tabstrip_overlap_depth;
+  }
+}
+
+ScopedWinCaptionLayoutUsesGeometryTabstripOverlap::
+    ~ScopedWinCaptionLayoutUsesGeometryTabstripOverlap() {
+  if (enabled_) {
+    DCHECK_GT(g_win_caption_geometry_tabstrip_overlap_depth, 0);
+    --g_win_caption_geometry_tabstrip_overlap_depth;
+  }
+}
+
+}  // namespace brave
+
 namespace {
 
 // Translation-unit-local wrapper around `GetLayoutConstant`. Inside Win caption
@@ -46,8 +70,16 @@ namespace {
 // avoids patching upstream. See the matching wrapper in
 // `chromium_src/chrome/browser/ui/views/
 // frame/horizontal_tab_strip_region_view.cc`.
+//
+// Standalone web apps with a web-app titlebar (no horizontal tab strip) use
+// the same overlap in WebAppFrameToolbar height; the controls delta would
+// mismatch (see WebAppBrowserFrameViewWinWindowControlsOverlayTest.
+// ContainerHeight).
 int GetLayoutConstantForBraveWindowControls(LayoutConstant constant) {
   if (constant == LayoutConstant::kTabstripToolbarOverlap) {
+    if (brave::g_win_caption_geometry_tabstrip_overlap_depth > 0) {
+      return ::GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap);
+    }
     return tabs::GetHorizontalTabControlsDelta();
   }
   return GetLayoutConstant(constant);
