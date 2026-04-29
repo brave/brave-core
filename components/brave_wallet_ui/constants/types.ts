@@ -1090,6 +1090,7 @@ export const SwapProviderNameMapping = {
   [BraveWallet.SwapProvider.kNearIntents]: 'NEAR Intents',
   [BraveWallet.SwapProvider.kCowSwap]: 'CoW Swap',
   [BraveWallet.SwapProvider.kJupiterLegacy]: 'Jupiter (Legacy)',
+  [BraveWallet.SwapProvider.kZeroExLegacy]: '0x (Legacy)',
 }
 
 export const SupportedSwapProviders = [

@@ -380,7 +380,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       toAmount: buyAmountInWei,
       slippagePercentage: "\(slippagePercentage)",
       routePriority: .cheapest,
-      provider: sellToken.coin == .sol ? .jupiterLegacy : .zeroEx
+      provider: sellToken.coin == .sol ? .jupiterLegacy : .zeroExLegacy
     )
 
     return swapQuoteParams

@@ -11,7 +11,6 @@ import { useHistory, useLocation } from 'react-router'
 import { SwapAndSendOptions } from '../../../../options/swap-and-send-options'
 
 // Hooks
-import { useZeroEx } from './useZeroEx'
 import { useGate3 } from './useGate3'
 import { useDebouncedCallback } from './useDebouncedCallback'
 import {
@@ -43,9 +42,6 @@ import {
 import { getBalance } from '../../../../utils/balance-utils'
 import { networkSupportsAccount } from '../../../../utils/network-utils'
 import {
-  getZeroExQuoteOptions,
-  getZeroExFromAmount,
-  getZeroExToAmount,
   getGate3FromAmount,
   getGate3ToAmount,
   getGate3QuoteOptions,
@@ -407,17 +403,6 @@ export const useSwap = () => {
       return []
     }
 
-    if (quoteUnion.zeroExQuote) {
-      return getZeroExQuoteOptions({
-        quote: quoteUnion.zeroExQuote,
-        fromNetwork,
-        fromToken,
-        toToken,
-        spotPrices,
-        defaultFiatCurrency,
-      })
-    }
-
     if (quoteUnion.gate3Quote) {
       return getGate3QuoteOptions({
         quote: quoteUnion.gate3Quote,
@@ -473,7 +458,6 @@ export const useSwap = () => {
     && fromContractOrSymbolFromParams !== undefined
     && fromChainIdFromParams !== undefined
 
-  const zeroEx = useZeroEx(swapProviderHookParams)
   const gate3 = useGate3(swapProviderHookParams)
   const { approveSpendAllowance, checkAllowance, hasAllowance } =
     useTokenAllowance()
@@ -649,31 +633,6 @@ export const useSwap = () => {
 
       if (quoteResponse?.response) {
         setQuoteUnion(quoteResponse.response)
-
-        if (quoteResponse.response.zeroExQuote) {
-          if (params.editingFromOrToAmount === 'from') {
-            setToAmount(
-              getZeroExToAmount({
-                quote: quoteResponse.response.zeroExQuote,
-                toToken: params.toToken,
-              }).format(6),
-            )
-          } else {
-            setFromAmount(
-              getZeroExFromAmount({
-                quote: quoteResponse.response.zeroExQuote,
-                fromToken: params.fromToken,
-              }).format(6),
-            )
-          }
-
-          await checkAllowance({
-            account: fromAccount,
-            spendAmount: fromAssetBalance.format(),
-            spenderAddress: quoteResponse.response.zeroExQuote.allowanceTarget,
-            token: params.fromToken,
-          })
-        }
 
         if (quoteResponse.response.gate3Quote) {
           const { routes } = quoteResponse.response.gate3Quote
@@ -1057,15 +1016,6 @@ export const useSwap = () => {
         return 'unknownError'
       }
 
-      // 0x specific validations
-      if (quoteErrorUnion?.zeroExError) {
-        if (quoteErrorUnion.zeroExError.isInsufficientLiquidity) {
-          return 'insufficientLiquidity'
-        }
-
-        return 'unknownError'
-      }
-
       // Gate3 specific validations
       if (quoteErrorUnion?.gate3Error) {
         if (
@@ -1128,16 +1078,6 @@ export const useSwap = () => {
         return 'insufficientFundsForGas'
       }
 
-      // EVM specific validations
-      if (
-        quoteUnion?.zeroExQuote
-        && fromToken.coin === BraveWallet.CoinType.ETH
-        && fromToken.contractAddress
-        && !hasAllowance
-      ) {
-        return 'insufficientAllowance'
-      }
-
       // Gate3 EVM allowance check
       if (quoteUnion?.gate3Quote) {
         const route = selectedQuoteOptionId
@@ -1165,7 +1105,6 @@ export const useSwap = () => {
       fromAssetBalance,
       nativeAssetBalance,
       feesWrapped,
-      quoteUnion?.zeroExQuote,
       quoteUnion?.gate3Quote,
       hasAllowance,
       quoteErrorUnion,
@@ -1187,28 +1126,6 @@ export const useSwap = () => {
     }
 
     setIsSubmittingSwap(true)
-
-    if (quoteUnion.zeroExQuote) {
-      if (hasAllowance) {
-        const error = await zeroEx.exchange()
-        if (error) {
-          console.log('zeroEx.exchange error', error.zeroExError)
-          setQuoteErrorUnion(error)
-        } else {
-          setFromAmount('')
-          setToAmount('')
-          reset()
-        }
-      } else {
-        await approveSpendAllowance({
-          account: fromAccount,
-          network: fromNetwork,
-          spenderAddress: quoteUnion.zeroExQuote.allowanceTarget,
-          token: fromToken,
-          spendAmount: fromAssetBalance.format(),
-        })
-      }
-    }
 
     if (quoteUnion.gate3Quote) {
       const route = selectedQuoteOptionId
@@ -1259,7 +1176,6 @@ export const useSwap = () => {
     fromToken,
     fromAssetBalance,
     hasAllowance,
-    zeroEx,
     reset,
     approveSpendAllowance,
     gate3,

@@ -562,11 +562,12 @@ enum SwapProvider {
   kSquid,
   kJupiter,
   kLiFi,
+  kZeroEx,
 
   // Providers not supported by Gate3
-  kZeroEx,
   kCowSwap,
   kJupiterLegacy,  // Direct Jupiter API (legacy, for iOS)
+  kZeroExLegacy,  // Direct 0x API (legacy, for iOS/Android)
 };
 
 struct SwapQuoteParams {

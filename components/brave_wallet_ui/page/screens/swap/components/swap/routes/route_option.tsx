@@ -100,9 +100,23 @@ const getGate3LPIcon = (step: BraveWallet.Gate3SwapRouteStep) => {
 
 const Gate3StepSource = ({
   step,
+  fallbackSourceToken,
+  fallbackDestinationToken,
 }: {
   step: BraveWallet.Gate3SwapRouteStep
+  // Some gate3 providers (e.g. 0x) may omit symbol/logo on the step's tokens.
+  // For boundary steps these match the route's overall from/to tokens, so the
+  // caller passes those as fallbacks.
+  fallbackSourceToken?: BraveWallet.BlockchainToken
+  fallbackDestinationToken?: BraveWallet.BlockchainToken
 }) => {
+  const destinationSymbol =
+    step.destinationToken.symbol || fallbackDestinationToken?.symbol || ''
+  const destinationLogo =
+    step.destinationToken.logo || fallbackDestinationToken?.logo || ''
+  const sourceSymbol =
+    step.sourceToken.symbol || fallbackSourceToken?.symbol || ''
+
   const { data: network } = useGetNetworkQuery(
     step.destinationToken.chainId && step.destinationToken.coin !== undefined
       ? {
@@ -115,9 +129,9 @@ const Gate3StepSource = ({
   const stepAsset = React.useMemo(
     () =>
       ({
-        symbol: step.destinationToken.symbol,
-        name: step.destinationToken.symbol,
-        logo: step.destinationToken.logo,
+        symbol: destinationSymbol,
+        name: destinationSymbol,
+        logo: destinationLogo,
         decimals: 0, // decimals is not essential, so we set it to 0
         coin: step.destinationToken.coin,
         contractAddress: step.destinationToken.contractAddress ?? '',
@@ -126,7 +140,7 @@ const Gate3StepSource = ({
         isErc721: false,
         isShielded: false,
       }) as BraveWallet.BlockchainToken,
-    [step.destinationToken],
+    [step.destinationToken, fallbackDestinationToken],
   )
 
   const lpIcon = getGate3LPIcon(step)
@@ -161,8 +175,8 @@ const Gate3StepSource = ({
             textColor='tertiary'
           >
             {getLocale('braveWalletSwapRouteToFromVia')
-              .replace('$1', step.destinationToken.symbol)
-              .replace('$2', step.sourceToken.symbol)}
+              .replace('$1', destinationSymbol)
+              .replace('$2', sourceSymbol)}
           </Text>
           {lpIcon !== '' ? (
             <LPIcon
@@ -385,6 +399,19 @@ export const RouteOption = (props: Props) => {
               && option.steps.map((step, index) => (
                 <Gate3StepSource
                   step={step}
+                  // option.steps is reversed in getGate3QuoteOptions:
+                  //  - index 0           -> last original step (its destination
+                  //    matches option.toToken)
+                  //  - index length - 1  -> first original step (its source
+                  //    matches option.fromToken)
+                  fallbackDestinationToken={
+                    index === 0 ? option.toToken : undefined
+                  }
+                  fallbackSourceToken={
+                    index === option.steps.length - 1
+                      ? option.fromToken
+                      : undefined
+                  }
                   key={index}
                 />
               ))}

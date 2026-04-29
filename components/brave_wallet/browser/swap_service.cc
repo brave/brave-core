@@ -38,7 +38,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
         trigger:
           "Triggered by uses of the native Brave wallet."
         data:
-          "0x and Jupiter API response bodies."
+          "gate3, 0x, and Jupiter API response bodies."
         destination: WEBSITE
       }
       policy {
@@ -329,48 +329,18 @@ void SwapService::IsSwapSupported(const std::string& chain_id,
 
 // Method to fetch a quote for a swap or a bridge transaction.
 //
-// If the provider is set to kAuto, the method will attempt to fetch a quote
-// based on the following priority:
-//   P1. Jupiter, LiFi
-//   P2. 0x, Near Intents
-//   P3. Squid
+// Legacy direct-API providers (kJupiterLegacy, kZeroExLegacy) bypass gate3 and
+// hit the upstream API directly; everything else (including kAuto) is
+// dispatched to gate3, which validates provider/chain compatibility and
+// returns a Gate3SwapError when the request can't be served.
 void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
                            GetQuoteCallback callback) {
   auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString, "");
 
-  auto has_zero_ex_support = params->from_chain_id == params->to_chain_id &&
-                             IsNetworkSupportedByZeroEx(params->from_chain_id);
-  auto has_jupiter_support = params->from_chain_id == params->to_chain_id &&
-                             IsNetworkSupportedByJupiter(params->from_chain_id);
-  auto has_lifi_support = IsNetworkSupportedByLiFi(params->from_chain_id) &&
-                          IsNetworkSupportedByLiFi(params->to_chain_id) &&
-                          // LiFi does not support ExactOut swaps.
-                          !params->from_amount.empty();
-  auto has_squid_support = IsNetworkSupportedBySquid(params->from_chain_id) &&
-                           IsNetworkSupportedBySquid(params->to_chain_id);
-
-  // Near Intents support criteria:
-  // - From and to chains must be supported
-  // - One of the amounts must be empty but not both
-  auto has_near_intents_support =
-      IsNetworkSupportedByNearIntents(params->from_chain_id) &&
-      IsNetworkSupportedByNearIntents(params->to_chain_id) &&
-      (params->from_amount.empty() != params->to_amount.empty());
-
-  // If the provider is set to Auto, Solana swaps are served via Gate3 Jupiter.
-  if ((params->provider == mojom::SwapProvider::kJupiter ||
-       params->provider == mojom::SwapProvider::kAuto) &&
-      has_jupiter_support) {
-    params->provider = mojom::SwapProvider::kJupiter;
-    HandleGate3Quote(std::move(params), std::move(callback),
-                     std::move(conversion_callback), api_request_helper_,
-                     weak_ptr_factory_.GetWeakPtr());
-    return;
-  }
-
   // Legacy Jupiter API (direct, for iOS/Android).
   if (params->provider == mojom::SwapProvider::kJupiterLegacy &&
-      has_jupiter_support) {
+      params->from_chain_id == params->to_chain_id &&
+      IsNetworkSupportedByJupiter(params->from_chain_id)) {
     auto swap_fee = GetZeroSwapFee();
     auto fee_param = swap_fee->fee_param;
 
@@ -386,21 +356,10 @@ void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
     return;
   }
 
-  // EVM swaps are served via LiFi if the provider is set to kLiFi or kAuto.
-  if ((params->provider == mojom::SwapProvider::kLiFi ||
-       params->provider == mojom::SwapProvider::kAuto) &&
-      has_lifi_support) {
-    params->provider = mojom::SwapProvider::kLiFi;
-    HandleGate3Quote(std::move(params), std::move(callback),
-                     std::move(conversion_callback), api_request_helper_,
-                     weak_ptr_factory_.GetWeakPtr());
-    return;
-  }
-
-  // EVM swaps are served via 0x only if the provider is set to kZeroEx.
-  if ((params->provider == mojom::SwapProvider::kZeroEx ||
-       params->provider == mojom::SwapProvider::kAuto) &&
-      has_zero_ex_support) {
+  // Legacy 0x API (direct, for iOS/Android).
+  if (params->provider == mojom::SwapProvider::kZeroExLegacy &&
+      params->from_chain_id == params->to_chain_id &&
+      IsNetworkSupportedByZeroEx(params->from_chain_id)) {
     auto swap_fee = GetZeroSwapFee();
     auto fee_param = swap_fee->fee_param;
 
@@ -417,29 +376,9 @@ void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
     return;
   }
 
-  if ((params->provider == mojom::SwapProvider::kNearIntents ||
-       params->provider == mojom::SwapProvider::kAuto) &&
-      has_near_intents_support) {
-    params->provider = mojom::SwapProvider::kNearIntents;
-    HandleGate3Quote(std::move(params), std::move(callback),
-                     std::move(conversion_callback), api_request_helper_,
-                     weak_ptr_factory_.GetWeakPtr());
-    return;
-  }
-
-  if ((params->provider == mojom::SwapProvider::kSquid ||
-       params->provider == mojom::SwapProvider::kAuto) &&
-      has_squid_support) {
-    params->provider = mojom::SwapProvider::kSquid;
-    HandleGate3Quote(std::move(params), std::move(callback),
-                     std::move(conversion_callback), api_request_helper_,
-                     weak_ptr_factory_.GetWeakPtr());
-    return;
-  }
-
-  std::move(callback).Run(
-      nullptr, nullptr, nullptr,
-      l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK));
+  HandleGate3Quote(std::move(params), std::move(callback),
+                   std::move(conversion_callback), api_request_helper_,
+                   weak_ptr_factory_.GetWeakPtr());
 }
 
 void SwapService::OnGetZeroExQuote(const std::string& chain_id,
