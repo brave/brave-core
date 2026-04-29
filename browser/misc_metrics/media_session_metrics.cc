@@ -27,7 +27,7 @@ constexpr base::TimeDelta kReportInterval = base::Minutes(20);
 constexpr base::TimeDelta kTickInterval = base::Seconds(30);
 constexpr base::TimeDelta kFrameDuration = base::Days(7);
 
-constexpr int kMediaSessionUsageBuckets[] = {0, 20, 40, 60, 80, 100};
+constexpr int kMediaSessionUsageBuckets[] = {0, 20, 40, 60, 80, 95};
 constexpr int kMediaSessionUsageAttributeThresholds[] = {0, 33, 67};
 constexpr std::array<std::string_view, 4> kMediaSessionUsageAttributeValues = {
     "0", "1-33", "34-67", "68-100"};
