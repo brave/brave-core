@@ -22,4 +22,10 @@ BASE_FEATURE(kBraveWorkaroundNewWindowFlash,
 // https://github.com/brave/brave-browser/issues/40959
 BASE_FEATURE(kForcePopupToBeOpenedAsTab, base::FEATURE_DISABLED_BY_DEFAULT);
 
+BASE_FEATURE(kBraveWorkspace, base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsBraveWorkspaceEnabled() {
+  return base::FeatureList::IsEnabled(kBraveWorkspace);
+}
+
 }  // namespace features
