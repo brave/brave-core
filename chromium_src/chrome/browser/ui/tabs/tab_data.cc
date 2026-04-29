@@ -13,7 +13,6 @@
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/resource_coordinator/tab_load_tracker.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -101,22 +100,6 @@ void ApplyBraveTabDataOverrides(tabs::TabInterface* tab, tabs::TabData& data) {
       }
     } else if (url.host() == kWelcomeHost || url.host() == kRewardsPageHost) {
       data.should_themify_favicon = false;
-    }
-  }
-
-  // Show which tabs are unloaded (e.g., session-restored tabs not yet loaded).
-  // Only apply to tabs that have navigated before — tabs that still have the
-  // initial NavigationEntry (e.g., during browser startup before any real
-  // navigation commits) should not show discard status, as the discard ring
-  // indicator would trigger IPH code before the browser is fully initialized.
-  if (!data.should_show_discard_status) {
-    const auto loading_state =
-        resource_coordinator::TabLoadTracker::Get()->GetLoadingState(contents);
-    auto* const entry = contents->GetController().GetLastCommittedEntry();
-    if (loading_state ==
-            resource_coordinator::TabLoadTracker::LoadingState::UNLOADED &&
-        entry && !entry->IsInitialEntry()) {
-      data.should_show_discard_status = true;
     }
   }
 }
