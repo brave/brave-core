@@ -35,6 +35,11 @@ source_set("frame") {
 source_set("unit_tests") {
   testonly = true
   sources = [ "layout/brave_browser_view_tabbed_layout_impl_unittest.cc" ]
+
+  if (is_linux) {
+    sources += [ "browser_frame_view_layout_linux_unittest.cc" ]
+  }
+
   deps = [
     ":frame",
     "//base",
@@ -51,6 +56,10 @@ source_set("browser_tests") {
 
   sources =
       [ "//brave/browser/ui/views/frame/brave_browser_view_browsertest.cc" ]
+
+  if (is_linux) {
+    sources += [ "//brave/browser/ui/views/frame/brave_browser_frame_view_linux_browsertest.cc" ]
+  }
 
   deps = [
     ":frame",
@@ -72,4 +81,15 @@ source_set("browser_tests") {
     "//content/test:test_support",
     "//ui/views",
   ]
+
+  if (is_linux) {
+    deps += [
+      "//brave/browser/ui:brave_tab_prefs",
+      "//chrome/browser/themes",
+      "//chrome/browser/ui/views/frame",
+      "//components/prefs",
+      "//ui/linux:test_support",
+      "//ui/native_theme",
+    ]
+  }
 }
