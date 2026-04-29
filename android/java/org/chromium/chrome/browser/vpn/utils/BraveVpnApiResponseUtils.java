@@ -39,7 +39,7 @@ public class BraveVpnApiResponseUtils {
     public static void handleOnGetSubscriberCredential(Activity activity, boolean isSuccess) {
         if (isSuccess) {
             if (!BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
-                MutableLiveData<PurchaseModel> _activePurchases = new MutableLiveData();
+                MutableLiveData<PurchaseModel> _activePurchases = new MutableLiveData<>();
                 LiveData<PurchaseModel> activePurchases = _activePurchases;
                 InAppPurchaseWrapper.getInstance()
                         .queryPurchases(

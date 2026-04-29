@@ -152,7 +152,7 @@ class BraveClassVisitor extends ClassVisitor {
     }
 
     protected void deleteMethod(String className, String methodName) {
-        ArrayList methods = mDeleteMethods.get(className);
+        ArrayList<String> methods = mDeleteMethods.get(className);
         if (methods == null) {
             methods = new ArrayList<String>();
             mDeleteMethods.put(className, methods);
@@ -176,7 +176,7 @@ class BraveClassVisitor extends ClassVisitor {
     }
 
     protected void makePublicMethod(String className, String methodName) {
-        ArrayList methods = mMakePublicMethods.get(className);
+        ArrayList<String> methods = mMakePublicMethods.get(className);
         if (methods == null) {
             methods = new ArrayList<String>();
             mMakePublicMethods.put(className, methods);
@@ -199,7 +199,7 @@ class BraveClassVisitor extends ClassVisitor {
     }
 
     protected void makePrivateMethod(String className, String methodName) {
-        ArrayList methods = mMakePrivateMethods.get(className);
+        ArrayList<String> methods = mMakePrivateMethods.get(className);
         if (methods == null) {
             methods = new ArrayList<String>();
             mMakePrivateMethods.put(className, methods);
@@ -232,7 +232,7 @@ class BraveClassVisitor extends ClassVisitor {
     }
 
     protected void changeMethodOwner(String currentOwner, String methodName, String newOwner) {
-        Map methods = mChangeOwnerMethods.get(currentOwner);
+        Map<String, String> methods = mChangeOwnerMethods.get(currentOwner);
         if (methods == null) {
             methods = new HashMap<String, String>();
             mChangeOwnerMethods.put(currentOwner, methods);
@@ -253,7 +253,7 @@ class BraveClassVisitor extends ClassVisitor {
     }
 
     protected void deleteField(String className, String fieldName) {
-        ArrayList fields = mDeleteFields.get(className);
+        ArrayList<String> fields = mDeleteFields.get(className);
         if (fields == null) {
             fields = new ArrayList<String>();
             mDeleteFields.put(className, fields);
@@ -272,7 +272,7 @@ class BraveClassVisitor extends ClassVisitor {
     }
 
     protected void deleteInnerClass(String outerName, String innerName) {
-        ArrayList innerNames = mDeleteInnerClasses.get(outerName);
+        ArrayList<String> innerNames = mDeleteInnerClasses.get(outerName);
         if (innerNames == null) {
             innerNames = new ArrayList<String>();
             mDeleteInnerClasses.put(outerName, innerNames);
@@ -299,7 +299,7 @@ class BraveClassVisitor extends ClassVisitor {
     }
 
     protected void makePublicInnerClass(String outerName, String innerName) {
-        ArrayList innerNames = mMakePublicInnerClasses.get(outerName);
+        ArrayList<String> innerNames = mMakePublicInnerClasses.get(outerName);
         if (innerNames == null) {
             innerNames = new ArrayList<String>();
             mMakePublicInnerClasses.put(outerName, innerNames);
@@ -324,7 +324,7 @@ class BraveClassVisitor extends ClassVisitor {
     }
 
     protected void makeProtectedField(String className, String fieldName) {
-        ArrayList fields = mMakeProtectedFields.get(className);
+        ArrayList<String> fields = mMakeProtectedFields.get(className);
         if (fields == null) {
             fields = new ArrayList<String>();
             mMakeProtectedFields.put(className, fields);

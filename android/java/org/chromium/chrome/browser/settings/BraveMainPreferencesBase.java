@@ -291,6 +291,9 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     }
 
     /** We need to override it to avoid NullPointerException in Chromium's child classes */
+    // mRemovedPreferences stores the erased Preference type, but callers request a typed
+    // subtype via T, so the (T) cast is unverifiable at compile time.
+    @SuppressWarnings("unchecked")
     @Nullable
     @Override
     public <T extends Preference> T findPreference(CharSequence key) {

@@ -107,7 +107,7 @@ public class ContentFilteringFragment extends BravePreferenceFragment
         if (mFilterListAndroidHandler != null) {
             mFilterListAndroidHandler.getSubscriptions(
                     subscriptions -> {
-                        mSubscriptionFilterLists = new ArrayList(Arrays.asList(subscriptions));
+                        mSubscriptionFilterLists = new ArrayList<>(Arrays.asList(subscriptions));
                         mAdapter.setSubscriptionFilterLists(mSubscriptionFilterLists);
                         mIsGetSubscriptionsLoaded = true;
                         if (mIsMenuLoaded) {

@@ -380,6 +380,9 @@ public class BraveToolbarManager extends ToolbarManager
                         mUndoBarThrottle,
                         mTabBookmarkerSupplier,
                         mShareDelegateSupplier);
+        // mTabGroupUiOneshotSupplier is a OneshotSupplier of a concrete subtype, so narrowing
+        // the wildcard to the bound type is safe in practice but not provable to the compiler.
+        @SuppressWarnings("unchecked")
         var bottomControlsContentDelegateSupplier =
                 (OneshotSupplier<BottomControlsContentDelegate>)
                         ((OneshotSupplier<? extends BottomControlsContentDelegate>)

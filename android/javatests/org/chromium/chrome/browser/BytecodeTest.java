@@ -3216,13 +3216,14 @@ public class BytecodeTest {
         return constructorsMatchImpl(class1, class2, parameterTypes);
     }
 
-    private boolean constructorsMatchImpl(Class class1, Class class2, Class<?>... parameterTypes) {
+    private boolean constructorsMatchImpl(
+            Class<?> class1, Class<?> class2, Class<?>... parameterTypes) {
         if (class1 == null || class2 == null) {
             return false;
         }
         try {
-            Constructor ctor1 = class1.getDeclaredConstructor(parameterTypes);
-            Constructor ctor2 = class2.getDeclaredConstructor(parameterTypes);
+            Constructor<?> ctor1 = class1.getDeclaredConstructor(parameterTypes);
+            Constructor<?> ctor2 = class2.getDeclaredConstructor(parameterTypes);
             if (ctor1 != null && ctor2 != null) {
                 return true;
             }
