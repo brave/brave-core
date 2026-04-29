@@ -15,20 +15,16 @@ import SwiftUI
 /// Root usage:
 /// ```swift
 /// @State private var lock = AutofillPrivacyLock()
-/// .environment(\.autofillPrivacyLock, lock)
 /// .overlay { if lock.isLocked { Color(.braveGroupedBackground).ignoresSafeArea() } }
 /// .onAppear { Task { await lock.authenticate(onFailure: exit) } }
-/// .onReceive(willDeactivate) { lock.lock() }
-/// .onReceive(didActivate)    { Task { await lock.authenticate(onFailure: dismiss) } }
+/// .onReceive(didEnterBackground) { lock.lock() }
+/// .onReceive(willEnterForeground) { Task { await lock.authenticate(onFailure: exit) } }
 /// ```
-/// The dismissal path (`exit` above) must call `invalidateSession()` so a host view
-/// controller that recycles the SwiftUI view cannot trigger another auth prompt.
 @MainActor
 @Observable
 final class AutofillPrivacyLock {
   private(set) var isAuthenticated = false
   private(set) var isAuthenticating = false
-  private var isSessionValid = true
 
   /// True whenever the privacy overlay should be shown.
   var isLocked: Bool { !isAuthenticated || isAuthenticating }
@@ -39,7 +35,7 @@ final class AutofillPrivacyLock {
   /// Presents a biometric/passcode prompt if not already authenticated or authenticating.
   /// - Parameter onFailure: Called when the prompt is cancelled or fails; typically `dismiss`.
   func authenticate(onFailure: @escaping () -> Void) async {
-    guard isSessionValid, !isAuthenticated, !isAuthenticating else { return }
+    guard !isAuthenticated, !isAuthenticating else { return }
     isAuthenticating = true
     defer { isAuthenticating = false }
     do {
@@ -55,14 +51,6 @@ final class AutofillPrivacyLock {
     } catch {
       onFailure()
     }
-  }
-
-  /// Permanently disables this lock. After calling, `authenticate(onFailure:)` is a no-op
-  /// and `isLocked` stays true. Use from the dismissal path so a host view controller that
-  /// recycles the SwiftUI view cannot trigger another biometric/passcode prompt.
-  func invalidateSession() {
-    isSessionValid = false
-    lock()
   }
 }
 
