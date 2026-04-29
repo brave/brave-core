@@ -26,6 +26,7 @@
 #include "brave/ios/browser/web/document_fetch/document_fetch_javascript_feature.h"
 #include "brave/ios/browser/web/force_paste/force_paste_javascript_feature.h"
 #include "brave/ios/browser/web/logins/logins_javascript_feature.h"
+#include "brave/ios/browser/web/navigator/brave_navigator_javascript_feature.h"
 #include "brave/ios/browser/web/night_mode/night_mode_javascript_feature.h"
 #include "brave/ios/browser/web/page_metadata/page_metadata_javascript_feature.h"
 #include "brave/ios/browser/web/reader_mode/reader_mode_javascript_feature.h"
@@ -136,6 +137,7 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
     features.push_back(
         brave_ads::AdsMediaReportingJavaScriptFeature::GetInstance());
     features.push_back(AIChatDistillerJavaScriptFeature::GetInstance());
+    features.push_back(BraveNavigatorJavaScriptFeature::GetInstance());
     features.push_back(BraveSearchAdResultsJavaScriptFeature::GetInstance());
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
     features.push_back(BraveTalkLauncherJavaScriptFeature::GetInstance());
