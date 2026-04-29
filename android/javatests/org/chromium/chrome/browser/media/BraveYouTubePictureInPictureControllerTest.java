@@ -22,8 +22,8 @@ import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.MockedStatic;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
@@ -43,10 +43,10 @@ import org.chromium.content_public.browser.WebContents;
 @RunWith(ChromeJUnit4ClassRunner.class)
 public class BraveYouTubePictureInPictureControllerTest {
     /**
-     * The bytecode-injected upstream {@code FullscreenHtmlApiHandlerBase} extends Brave's
-     * abstract handler and implements {@code FullscreenManager}. This stub captures both
-     * relationships so a single Mockito mock can satisfy the controller's {@code
-     * fullscreenManager instanceof BraveFullscreenHtmlApiHandlerBase} check.
+     * The bytecode-injected upstream {@code FullscreenHtmlApiHandlerBase} extends Brave's abstract
+     * handler and implements {@code FullscreenManager}. This stub captures both relationships so a
+     * single Mockito mock can satisfy the controller's {@code fullscreenManager instanceof
+     * BraveFullscreenHtmlApiHandlerBase} check.
      */
     private abstract static class FullscreenHandlerStub extends BraveFullscreenHtmlApiHandlerBase
             implements FullscreenManager {}
