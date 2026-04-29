@@ -44,6 +44,7 @@ class BraveHorizontalTabStripRegionView : public HorizontalTabStripRegionView {
  private:
   // TabStripRegionView:
   void UpdateTabStripMargin() override;
+  void UpdateButtonBorders() override;
   void OnDragEntered(const ui::DropTargetEvent& event) override;
   int OnDragUpdated(const ui::DropTargetEvent& event) override;
 
