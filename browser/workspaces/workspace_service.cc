@@ -25,6 +25,11 @@
 #include "components/sessions/core/session_id.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
+#if defined(TOOLKIT_VIEWS)
+#include "brave/browser/ui/views/workspaces/open_workspace_dialog.h"
+#include "brave/browser/ui/views/workspaces/save_workspace_dialog.h"
+#endif
+
 namespace {
 
 std::string ComputeKey(const std::string& name) {
@@ -111,14 +116,16 @@ void WorkspaceService::RestoreWorkspace(const std::string& name) {
       base::BindOnce(&WorkspaceService::DoRestoreWorkspace, GetWeakPtr()));
 }
 
-void WorkspaceService::ShowSaveWorkspaceDialog() {
-  // TODO(https://github.com/brave/brave-browser/issues/55108)
-  SaveWorkspace("example-workspace");
+void WorkspaceService::ShowSaveWorkspaceDialog(Browser* browser) {
+#if defined(TOOLKIT_VIEWS)
+  SaveWorkspaceDialog::Show(browser);
+#endif
 }
 
-void WorkspaceService::ShowOpenWorkspaceDialog() {
-  // TODO(https://github.com/brave/brave-browser/issues/55108)
-  RestoreWorkspace("example-workspace");
+void WorkspaceService::ShowOpenWorkspaceDialog(Browser* browser) {
+#if defined(TOOLKIT_VIEWS)
+  OpenWorkspaceDialog::Show(browser);
+#endif
 }
 
 void WorkspaceService::DoRestoreWorkspace(

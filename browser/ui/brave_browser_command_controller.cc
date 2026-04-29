@@ -846,13 +846,13 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_SAVE_WORKSPACE:
       if (auto* svc =
               WorkspaceServiceFactory::GetForProfile(browser_->profile())) {
-        svc->ShowSaveWorkspaceDialog();
+        svc->ShowSaveWorkspaceDialog(base::to_address(browser_));
       }
       break;
     case IDC_OPEN_WORKSPACE:
       if (auto* svc =
               WorkspaceServiceFactory::GetForProfile(browser_->profile())) {
-        svc->ShowOpenWorkspaceDialog();
+        svc->ShowOpenWorkspaceDialog(base::to_address(browser_));
       }
       break;
     default:

@@ -20,6 +20,7 @@
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/core/session_command.h"
 
+class Browser;
 class PrefService;
 class Profile;
 
@@ -75,8 +76,8 @@ class WorkspaceService : public KeyedService {
   void RestoreWorkspace(const std::string& name);
 
   // Placeholder entry points for the save/open dialogs.
-  void ShowSaveWorkspaceDialog();
-  void ShowOpenWorkspaceDialog();
+  void ShowSaveWorkspaceDialog(Browser* browser);
+  void ShowOpenWorkspaceDialog(Browser* browser);
 
   base::WeakPtr<WorkspaceService> GetWeakPtr();
 
