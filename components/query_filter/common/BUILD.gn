@@ -15,7 +15,7 @@ source_set("common") {
 }
 
 generated_types("schema") {
-  sources = [ "query_filter_schema.idl" ]
+  sources = [ "schema.idl" ]
   root_namespace = "query_filter::%(namespace)s"
   deps = [ "//base" ]
 }

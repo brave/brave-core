@@ -12,7 +12,7 @@
 
 #include "base/no_destructor.h"
 #include "base/version.h"
-#include "brave/components/query_filter/common/query_filter_schema.h"
+#include "brave/components/query_filter/common/schema.h"
 
 namespace query_filter {
 
