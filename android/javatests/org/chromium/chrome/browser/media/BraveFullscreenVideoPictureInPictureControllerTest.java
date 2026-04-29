@@ -146,6 +146,7 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
         // moveTaskToBack(true) so the activity stays in the foreground (e.g. when the user taps
         // the "New tab" launcher shortcut while PiP is active). The hook also signals the
         // controller to drop persistent fullscreen so the new tab is rendered correctly.
+        when(mBraveActivity.isInPictureInPictureMode()).thenReturn(true);
         when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(true);
         mController.mDismissPending = true;
 
@@ -161,6 +162,28 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
         assertTrue(handled);
         assertFalse(mController.mDismissPending);
         verify(mBraveActivity).onYouTubePictureInPictureNewTab();
+        verify(mBraveActivity, never()).onYouTubePictureInPictureFullscreenInterrupted();
+    }
+
+    @Test
+    @SmallTest
+    public void maybeHandleDismiss_newTabWhenActiveButNotInPictureInPicture_doesNotKeepAlive() {
+        when(mBraveActivity.isInPictureInPictureMode()).thenReturn(false);
+        when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(true);
+        mController.mDismissPending = true;
+
+        boolean handled =
+                mController.maybeHandleDismissActivityForYouTubePictureInPicture(
+                        mBraveActivity,
+                        /* isStart= */ false,
+                        /* isResume= */ false,
+                        /* isLeftFullscreen= */ false,
+                        /* isWebContentsLeftFullscreen= */ false,
+                        /* isNewTab= */ true);
+
+        assertFalse(handled);
+        assertTrue(mController.mDismissPending);
+        verify(mBraveActivity, never()).onYouTubePictureInPictureNewTab();
         verify(mBraveActivity, never()).onYouTubePictureInPictureFullscreenInterrupted();
     }
 

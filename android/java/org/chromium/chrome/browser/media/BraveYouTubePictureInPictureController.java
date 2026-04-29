@@ -319,8 +319,18 @@ public class BraveYouTubePictureInPictureController {
 
         // mWebContents was never set on this controller instance (typically after activity
         // recreation, when mActive is restored from the saved-instance bundle but the WebContents
-        // reference cannot be persisted). Re-discover via the foreground tab.
-        WebContents currentWebContents = mActivity.getCurrentWebContents();
+        // reference cannot be persisted). Prefer the process-wide registry retained across the
+        // configuration change, since the foreground tab may already be the newly opened tab.
+        final WebContents pictureInPictureWebContents =
+                BraveMediaSessionHelper.getYouTubePictureInPictureWebContents();
+        if (pictureInPictureWebContents != null) {
+            mWebContents = pictureInPictureWebContents;
+            return pictureInPictureWebContents;
+        }
+
+        // If the registry is empty, fall back to the foreground tab for restore paths where the
+        // current tab is still the YouTube PiP tab.
+        final WebContents currentWebContents = mActivity.getCurrentWebContents();
         if (currentWebContents != null
                 && !currentWebContents.isDestroyed()
                 && BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(
