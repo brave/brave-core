@@ -130,7 +130,7 @@ std::optional<int> GetBasenameCount(PrefService* profile_prefs,
   }
 
   while (true) {
-    auto count = base::RandInt(0, action_config.limit - 1);
+    auto count = base::RandIntInclusive(0, action_config.limit - 1);
     if (std::ranges::find(*used_counts_list, count, &base::Value::GetInt) !=
         used_counts_list->end()) {
       continue;

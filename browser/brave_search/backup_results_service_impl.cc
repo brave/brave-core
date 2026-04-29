@@ -161,8 +161,8 @@ void BackupResultsServiceImpl::FetchBackupResults(
     auto create_params = content::WebContents::CreateParams(otr_profile);
     web_contents = content::WebContents::Create(create_params);
 
-    int random_width = base::RandInt(800, 1920);
-    int random_height = base::RandInt(600, 1080);
+    int random_width = base::RandIntInclusive(800, 1920);
+    int random_height = base::RandIntInclusive(600, 1080);
 #if BUILDFLAG(IS_ANDROID)
     auto* native_view = web_contents->GetNativeView();
     native_view->OnSizeChanged(random_width, random_height);

@@ -98,7 +98,8 @@ bool ObliviousHttpKeyConfig::HasExpired() const {
 void ObliviousHttpKeyConfig::FetchAfter(base::TimeDelta delay) {
   // Randomized delay to prevent timing correlation.
   const base::TimeDelta randomized_delay =
-      delay + base::Seconds(base::RandInt(0, kMaxFetchJitterInSeconds));
+      delay +
+      base::Seconds(base::RandIntInclusive(0, kMaxFetchJitterInSeconds));
   const base::Time fetch_at = base::Time::Now() + randomized_delay;
   VLOG(6) << "Fetch OHTTP key config at " << fetch_at;
   fetch_timer_.Start(FROM_HERE, fetch_at,
