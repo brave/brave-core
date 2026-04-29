@@ -68,6 +68,20 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
         }
     }
 
+    public static @Nullable WebContents getYouTubePictureInPictureWebContents() {
+        if (sYouTubePictureInPictureWebContents == null) {
+            return null;
+        }
+
+        final WebContents pictureInPictureWebContents = sYouTubePictureInPictureWebContents.get();
+        if (pictureInPictureWebContents == null || pictureInPictureWebContents.isDestroyed()) {
+            sYouTubePictureInPictureWebContents = null;
+            return null;
+        }
+
+        return pictureInPictureWebContents;
+    }
+
     public static boolean isBraveTalk(WebContents webContents) {
         if (webContents == null) {
             return false;
@@ -155,17 +169,7 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
             return false;
         }
 
-        if (sYouTubePictureInPictureWebContents == null) {
-            return false;
-        }
-
-        WebContents pictureInPictureWebContents = sYouTubePictureInPictureWebContents.get();
-        if (pictureInPictureWebContents == null || pictureInPictureWebContents.isDestroyed()) {
-            sYouTubePictureInPictureWebContents = null;
-            return false;
-        }
-
-        return pictureInPictureWebContents == webContents;
+        return getYouTubePictureInPictureWebContents() == webContents;
     }
 
     @Override
