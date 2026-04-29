@@ -766,6 +766,26 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                                 siteSettingsFrag,
                                 BraveSiteSettingsPreferencesBase.SOLANA_CONNECTED_SITES_KEY);
                     }
+                    // Replace the AppearancePreferences entry so that the search result opens
+                    // BraveCustomizeMenuPreferenceFragment directly with the last live bundle
+                    // (cached when the user opened Settings via the app menu). Only replace when
+                    // the bundle is available — avoids overwriting a valid cached entry with null
+                    // on sessions where populateBundle has not yet been called.
+                    @Nullable Bundle searchBundle = CustomizeBraveMenu.getBundleForSearchResults();
+                    if (searchBundle != null) {
+                        indexData.removeEntryForKey(
+                                AppearancePreferences.class.getName(),
+                                AppearancePreferences.PREF_BRAVE_CUSTOMIZE_MENU);
+                        indexData.addEntryForKey(
+                                MainSettings.class.getName(),
+                                AppearancePreferences.PREF_BRAVE_CUSTOMIZE_MENU,
+                                context.getString(R.string.customize_menu_title),
+                                null,
+                                searchBundle,
+                                org.chromium.brave.browser.customize_menu.settings
+                                        .BraveCustomizeMenuPreferenceFragment.class
+                                        .getName());
+                    }
                 }
             };
 }

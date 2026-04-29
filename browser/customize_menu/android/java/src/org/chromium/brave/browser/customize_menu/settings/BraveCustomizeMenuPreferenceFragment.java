@@ -77,7 +77,16 @@ public class BraveCustomizeMenuPreferenceFragment extends ChromeBaseSettingsFrag
         if (menuSection == null) {
             return;
         }
-        final List<MenuItemData> menuItems = bundle.getParcelableArrayList(keyMenuItemList);
+        List<MenuItemData> menuItems = bundle.getParcelableArrayList(keyMenuItemList);
+        if (menuItems == null) {
+            // SettingsIndexData serializes extras to JSON via RecentSearchQueue, which only
+            // supports simple types — Parcelable ArrayLists are stringified and lost. Fall back
+            // to the last live bundle from populateBundle.
+            Bundle fallback = CustomizeBraveMenu.getBundleForSearchResults();
+            if (fallback != null) {
+                menuItems = fallback.getParcelableArrayList(keyMenuItemList);
+            }
+        }
         if (menuItems != null) {
             for (MenuItemData menuItem : menuItems) {
                 ChromeSwitchPreference switchPreference = getSwitchPreference(menuItem);
@@ -136,10 +145,18 @@ public class BraveCustomizeMenuPreferenceFragment extends ChromeBaseSettingsFrag
         return true;
     }
 
-    // All menu item switches are added programmatically from a bundle; there are no static
-    // preferences to index.
+    // All menu item switches are added programmatically; there are no static preferences to index.
+    // This fragment is surfaced in search via BraveMainPreferencesBase.SEARCH_INDEX_DATA_PROVIDER.
+    // getExtras() returns the last live bundle so that if this provider is ever consulted directly,
+    // the correct extras are available.
     public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
             new BaseSearchIndexProvider(
                     BraveCustomizeMenuPreferenceFragment.class.getName(),
-                    BaseSearchIndexProvider.INDEX_OPT_OUT);
+                    BaseSearchIndexProvider.INDEX_OPT_OUT) {
+                @Override
+                public Bundle getExtras() {
+                    Bundle bundle = CustomizeBraveMenu.getBundleForSearchResults();
+                    return bundle != null ? bundle : new Bundle();
+                }
+            };
 }
