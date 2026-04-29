@@ -1128,6 +1128,10 @@ public class CardBuilderFeedCard {
         }
     }
 
+    // Glide's RequestOptions#transform(Transformation<Bitmap>...) is varargs over a generic
+    // type; passing two transformations triggers an unchecked generic-array-creation warning
+    // that is intrinsic to the upstream API and unavoidable from the call site.
+    @SuppressWarnings("unchecked")
     private void setImage(ImageView imageView, String type, int index) {
         List<FeedItemCard> feedItemsCard = mNewsItem.getFeedItems();
         if (feedItemsCard != null) {

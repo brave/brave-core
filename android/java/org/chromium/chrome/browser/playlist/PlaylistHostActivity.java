@@ -339,7 +339,7 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                         Log.d(TAG, "loadPlaylist is null from service");
                         return;
                     }
-                    List<PlaylistItemModel> playlistItems = new ArrayList();
+                    List<PlaylistItemModel> playlistItems = new ArrayList<>();
                     for (PlaylistItem playlistItem : playlist.items) {
                         PlaylistItemModel playlistItemModel =
                                 new PlaylistItemModel(
@@ -373,9 +373,9 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
         }
         mPlaylistService.getAllPlaylists(
                 playlists -> {
-                    List<PlaylistModel> allPlaylists = new ArrayList();
+                    List<PlaylistModel> allPlaylists = new ArrayList<>();
                     for (Playlist playlist : playlists) {
-                        List<PlaylistItemModel> playlistItems = new ArrayList();
+                        List<PlaylistItemModel> playlistItems = new ArrayList<>();
                         for (PlaylistItem playlistItem : playlist.items) {
                             PlaylistItemModel playlistItemModel =
                                     new PlaylistItemModel(

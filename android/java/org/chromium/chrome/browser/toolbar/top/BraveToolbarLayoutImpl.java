@@ -822,7 +822,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     for (PlaylistItem defaultPlaylistItem : defaultPlaylist.items) {
                         pageSources.add(defaultPlaylistItem.pageSource.url);
                     }
-                    List<PlaylistItem> playlistItems = new ArrayList();
+                    List<PlaylistItem> playlistItems = new ArrayList<>();
                     for (PlaylistItem playlistItem : items) {
                         // Check for duplicates in default playlist
                         if (!pageSources.contains(playlistItem.pageSource.url)) {

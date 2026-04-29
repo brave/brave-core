@@ -866,7 +866,7 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     private void verifySubscription() {
-        MutableLiveData<PurchaseModel> _activePurchases = new MutableLiveData();
+        MutableLiveData<PurchaseModel> _activePurchases = new MutableLiveData<>();
         LiveData<PurchaseModel> activePurchases = _activePurchases;
         InAppPurchaseWrapper.getInstance()
                 .queryPurchases(_activePurchases, InAppPurchaseWrapper.SubscriptionProduct.VPN);
