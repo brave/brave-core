@@ -36,6 +36,39 @@ private class SerpMetricsMock: NSObject, SerpMetrics {
   func clearHistory() {}
 }
 
+private class BraveCoreStatsMock: BraveCoreStats {
+  var isStatsReportingEnabled: Bool = true
+  var isNotificationAdsEnabled: Bool = false
+  var lastPingDate: Date? = nil
+}
+
+private class MockURLProtocol: URLProtocol {
+  static var error: Error?
+  static var onComplete: (() -> Void)?
+
+  override func startLoading() {
+    if let error = MockURLProtocol.error {
+      client?.urlProtocol(self, didFailWithError: error)
+    } else {
+      client?.urlProtocol(
+        self,
+        didReceive: HTTPURLResponse(
+          url: request.url!,
+          statusCode: 200,
+          httpVersion: nil,
+          headerFields: nil
+        )!,
+        cacheStoragePolicy: .notAllowed
+      )
+      client?.urlProtocolDidFinishLoading(self)
+    }
+    MockURLProtocol.onComplete?()
+  }
+  override class func canInit(with request: URLRequest) -> Bool { true }
+  override class func canonicalRequest(for request: URLRequest) -> URLRequest { request }
+  override func stopLoading() {}
+}
+
 class DAUTests: XCTestCase {
 
   var lastKnownPingDate: Date? = nil
@@ -46,6 +79,9 @@ class DAUTests: XCTestCase {
     Preferences.DAU.weekOfInstallation.reset()
     Preferences.DAU.firstPingParam.reset()
     Preferences.DAU.installationDate.reset()
+
+    MockURLProtocol.error = nil
+    MockURLProtocol.onComplete = nil
   }
 
   // 7-7-07 at 12noon GMT
@@ -520,6 +556,47 @@ class DAUTests: XCTestCase {
     XCTAssertFalse(params.queryParams.contains(where: { $0.name == "googleSearch" }))
     XCTAssertFalse(params.queryParams.contains(where: { $0.name == "otherSearch" }))
     XCTAssertFalse(params.queryParams.contains(where: { $0.name == "staleSearch" }))
+  }
+
+  func testSuccessfulPingSetsLastPingDateAndFirstPingParam() {
+    URLProtocol.registerClass(MockURLProtocol.self)
+    defer { URLProtocol.unregisterClass(MockURLProtocol.self) }
+
+    let mockStats = BraveCoreStatsMock()
+    Preferences.DAU.installationDate.value = Date()
+    let dau = DAU(braveCoreStats: mockStats, serpMetrics: nil)
+
+    dau.sendPingToServer()
+
+    expectation(
+      for: NSPredicate { _, _ in
+        !Preferences.DAU.firstPingParam.value && mockStats.lastPingDate != nil
+      },
+      evaluatedWith: nil
+    )
+    waitForExpectations(timeout: 2)
+
+    XCTAssertFalse(Preferences.DAU.firstPingParam.value)
+    XCTAssertNotNil(mockStats.lastPingDate)
+  }
+
+  func testFailedPingDoesNotSetLastPingDateOrFirstPingParam() {
+    URLProtocol.registerClass(MockURLProtocol.self)
+    defer { URLProtocol.unregisterClass(MockURLProtocol.self) }
+
+    MockURLProtocol.error = URLError(.notConnectedToInternet)
+    let networkFailed = expectation(description: "network failed")
+    MockURLProtocol.onComplete = { networkFailed.fulfill() }
+
+    let mockStats = BraveCoreStatsMock()
+    Preferences.DAU.installationDate.value = Date()
+    let dau = DAU(braveCoreStats: mockStats, serpMetrics: nil)
+
+    dau.sendPingToServer()
+    waitForExpectations(timeout: 2)
+
+    XCTAssertTrue(Preferences.DAU.firstPingParam.value)
+    XCTAssertNil(mockStats.lastPingDate)
   }
 
   // No longer valid outside of a hosted app
