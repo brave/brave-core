@@ -33,6 +33,18 @@
 
 namespace {
 
+// Translation-unit-local wrapper around `GetLayoutConstant`. Inside Win caption
+// button layout, `kTabstripToolbarOverlap` is used to vertically center the
+// minimize/maximize/close controls. In compact mode that role wants the
+// smaller `tabs::GetHorizontalTabControlsDelta()` value; using the
+// tab/toolbar geometry value (which is what `GetBraveLayoutConstant()`
+// returns centrally for `kTabstripToolbarOverlap`) leaves the caption
+// buttons visibly off-center because their target height is the controls
+// row, not the tab strip body. Routing only this TU's `GetLayoutConstant`
+// calls through the wrapper keeps the central override intact for every
+// other consumer (tab/toolbar geometry, frame view top-area math, etc.) and
+// avoids patching upstream. See the matching wrapper in
+// `chromium_src/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc`.
 int GetLayoutConstantForBraveWindowControls(LayoutConstant constant) {
   if (constant == LayoutConstant::kTabstripToolbarOverlap) {
     return tabs::GetHorizontalTabControlsDelta();

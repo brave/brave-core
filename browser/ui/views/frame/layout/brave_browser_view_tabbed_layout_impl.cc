@@ -330,6 +330,16 @@ int BraveBrowserViewTabbedLayoutImpl::GetHorizontalTabStripLeadingMargin(
   // imputnet/helium @ b6e5b77e (`fix-caption-button-bounds.patch`, the
   // companion to the `GetCaptionButtonBounds()` margin zeroing in
   // `BraveBrowserFrameViewMac::GetCaptionButtonBounds()`).
+  //
+  // No `IS_MAC` guard here: this margin is consumed by upstream's
+  // `GetBoundsWithExclusion()` via
+  // `params.leading_exclusion.ContentWithPaddingAndInsets(leading_margin, …)`,
+  // which has no visible effect when `params.leading_exclusion` is empty
+  // (the typical Windows/Linux case with no leading caption buttons). The
+  // half-radius value therefore only takes effect on platforms that expose
+  // leading caption buttons (Mac traffic lights, and Linux DEs configured
+  // for left-side caption buttons), which is exactly the surface this
+  // adjustment is meant for.
   return TabStyle::Get()->GetBottomCornerRadius() / 2;
 }
 
