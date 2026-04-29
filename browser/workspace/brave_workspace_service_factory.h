@@ -34,6 +34,9 @@ class BraveWorkspaceServiceFactory : public ProfileKeyedServiceFactory {
   void RegisterProfilePrefs(
       user_prefs::PrefRegistrySyncable* registry) override;
   bool ServiceIsCreatedWithBrowserContext() const override;
+
+  // BrowserContextKeyedServiceFactory:
+  bool ServiceIsNULLWhileTesting() const override;
 };
 
 #endif  // BRAVE_BROWSER_WORKSPACE_BRAVE_WORKSPACE_SERVICE_FACTORY_H_

@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/files/file_util.h"
+#include "base/hash/hash.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
@@ -20,6 +21,7 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/sessions/core/session_service_commands.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace {
 
@@ -27,7 +29,7 @@ namespace {
 const char kWorkspaceName[] = "name";
 const char kWorkspaceWindowCount[] = "number-of-windows";
 const char kWorkspaceTabCount[] = "number-of-tabs";
-const char kWorkspaceModifiedAt[] = "modifed-at";
+const char kWorkspaceModifiedAt[] = "modified-at";
 
 }  // namespace
 
@@ -82,23 +84,24 @@ void BraveWorkspaceService::SaveWorkspaceMetadata(const std::string& name,
   entry.Set(kWorkspaceTabCount, tab_count);
   entry.Set(kWorkspaceModifiedAt, modified_at.InSecondsFSinceUnixEpoch());
 
-  updated.Set(SanitizeName(name), std::move(entry));
+  updated.Set(ComputeUniqueKey(name), std::move(entry));
   prefs->SetDict(kWorkspacesMetadataPref, std::move(updated));
 }
 
 void BraveWorkspaceService::RemoveWorkspaceMetadata(const std::string& name) {
   PrefService* prefs = profile_->GetPrefs();
   base::DictValue updated = prefs->GetDict(kWorkspacesMetadataPref).Clone();
-  updated.Remove(SanitizeName(name));
+  updated.Remove(ComputeUniqueKey(name));
   prefs->SetDict(kWorkspacesMetadataPref, std::move(updated));
 }
 
-bool BraveWorkspaceService::DeleteWorkspace(const std::string& name) {
-  base::FilePath dir = WorkspaceDirForName(name);
-  if (!base::PathExists(dir)) {
+// static
+bool BraveWorkspaceService::DeleteWorkspace(
+    const base::FilePath& workspace_dir) {
+  if (!base::PathExists(workspace_dir)) {
     return true;
   }
-  return base::DeletePathRecursively(dir);
+  return base::DeletePathRecursively(workspace_dir);
 }
 
 base::FilePath BraveWorkspaceService::GetWorkspacesDir() const {
@@ -154,6 +157,10 @@ base::WeakPtr<BraveWorkspaceService> BraveWorkspaceService::GetWeakPtr() {
   return weak_ptr_factory_.GetWeakPtr();
 }
 
+void BraveWorkspaceService::Shutdown() {
+  weak_ptr_factory_.InvalidateWeakPtrs();
+}
+
 // static
 std::string BraveWorkspaceService::SanitizeName(const std::string& name) {
   std::string sanitized;
@@ -169,7 +176,10 @@ std::string BraveWorkspaceService::SanitizeName(const std::string& name) {
     }
   }
   if (sanitized.empty()) {
-    sanitized = "workspace";
+    // Use a stable hash of the original so two distinct inputs that both
+    // produce an empty sanitized form (e.g. "" and "!!!") still get different
+    // base keys, preventing silent collisions at a fixed fallback string.
+    return absl::StrFormat("workspace-%08x", base::PersistentHash(name));
   }
   return sanitized;
 }
@@ -178,7 +188,38 @@ base::FilePath BraveWorkspaceService::WorkspacesDir() const {
   return profile_->GetPath().AppendASCII("workspaces");
 }
 
+std::string BraveWorkspaceService::ComputeUniqueKey(
+    const std::string& name) const {
+  const base::DictValue& all =
+      profile_->GetPrefs()->GetDict(kWorkspacesMetadataPref);
+  const std::string base_key = SanitizeName(name);
+
+  // Returns true if |key| is free to use for |name|: either the slot is empty
+  // or it already belongs to this display name (update / re-save case).
+  auto is_available = [&](const std::string& key) {
+    const base::DictValue* entry = all.FindDict(key);
+    if (!entry) {
+      return true;
+    }
+    const std::string* stored = entry->FindString(kWorkspaceName);
+    return stored && *stored == name;
+  };
+
+  if (is_available(base_key)) {
+    return base_key;
+  }
+  // Append a stable hash of the display name so the key is deterministic
+  // without a serial number.  Two names that collide on SanitizeName are
+  // overwhelmingly unlikely to also collide on PersistentHash.
+  return absl::StrFormat("%s-%08x", base_key.c_str(),
+                         base::PersistentHash(name));
+}
+
 base::FilePath BraveWorkspaceService::WorkspaceDirForName(
     const std::string& name) const {
-  return WorkspacesDir().AppendASCII(SanitizeName(name));
+  const std::string key = ComputeUniqueKey(name);
+  // SanitizeName's allow-list ([a-z0-9-_] only) guarantees no path separators
+  // or dot sequences can survive into the key.  Assert as defence-in-depth.
+  DCHECK(!key.empty() && key.find_first_of("/\\.") == std::string::npos);
+  return WorkspacesDir().AppendASCII(key);
 }

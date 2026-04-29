@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-source_set("workspace") {
+static_library("workspace") {
   sources = [
     "brave_workspace.cc",
     "brave_workspace.h",
@@ -11,6 +11,8 @@ source_set("workspace") {
     "brave_workspace_service.h",
     "brave_workspace_service_factory.cc",
     "brave_workspace_service_factory.h",
+    "features.cc",
+    "features.h",
   ]
 
   public_deps = [
@@ -23,5 +25,6 @@ source_set("workspace") {
   deps = [
     "//chrome/browser/profiles:profile",
     "//components/pref_registry",
+    "//third_party/abseil-cpp:absl",
   ]
 }

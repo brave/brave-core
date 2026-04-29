@@ -25,10 +25,6 @@
 
 class Profile;
 
-namespace user_prefs {
-class PrefRegistrySyncable;
-}
-
 // Profile preference key — stores a dict keyed by sanitized workspace name.
 inline constexpr char kWorkspacesMetadataPref[] = "brave.workspaces";
 
@@ -82,9 +78,10 @@ class BraveWorkspaceService : public KeyedService {
   // Removes the workspace metadata entry from the profile preference.
   void RemoveWorkspaceMetadata(const std::string& name);
 
-  // Deletes the workspace directory for |name|.  Returns true on success.
-  // Runs on a background thread.
-  bool DeleteWorkspace(const std::string& name);
+  // Deletes |workspace_dir|.  Returns true on success.  Runs on a background
+  // thread; the caller must resolve the path on the UI thread first via
+  // GetWorkspaceDirForName().
+  static bool DeleteWorkspace(const base::FilePath& workspace_dir);
 
   // Returns the directory that contains all workspace subdirectories.
   base::FilePath GetWorkspacesDir() const;
@@ -118,8 +115,18 @@ class BraveWorkspaceService : public KeyedService {
 
   base::WeakPtr<BraveWorkspaceService> GetWeakPtr();
 
+  // KeyedService:
+  void Shutdown() override;
+
  private:
   static std::string SanitizeName(const std::string& name);
+
+  // Returns the pref key for |name|.  If |name| already has a saved entry,
+  // returns its existing key.  For a new name, returns SanitizeName(name) if
+  // that key is free, or SanitizeName(name) + "-" + PersistentHash(name) if
+  // another display name has claimed the base key.  Must be called on the UI
+  // thread because it reads from the profile preference.
+  std::string ComputeUniqueKey(const std::string& name) const;
 
   base::FilePath WorkspacesDir() const;
   base::FilePath WorkspaceDirForName(const std::string& name) const;

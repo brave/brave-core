@@ -16,10 +16,10 @@ struct WorkspaceInfo {
   WorkspaceInfo();
   ~WorkspaceInfo();
 
-  std::string name;
+  std::string name = "";
   base::Time modified_at;
-  int number_of_windows;
-  int number_of_tabs;
+  int number_of_windows = 0;
+  int number_of_tabs = 0;
 };
 
 #endif  // BRAVE_BROWSER_WORKSPACE_BRAVE_WORKSPACE_H_
