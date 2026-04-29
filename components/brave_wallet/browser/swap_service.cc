@@ -337,7 +337,7 @@ void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
                            GetQuoteCallback callback) {
   auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString, "");
 
-  // Legacy Jupiter API (direct, for iOS/Android).
+  // Legacy Jupiter API (for iOS).
   if (params->provider == mojom::SwapProvider::kJupiterLegacy &&
       params->from_chain_id == params->to_chain_id &&
       IsNetworkSupportedByJupiter(params->from_chain_id)) {
@@ -356,7 +356,7 @@ void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
     return;
   }
 
-  // Legacy 0x API (direct, for iOS/Android).
+  // Legacy 0x API (for iOS).
   if (params->provider == mojom::SwapProvider::kZeroExLegacy &&
       params->from_chain_id == params->to_chain_id &&
       IsNetworkSupportedByZeroEx(params->from_chain_id)) {
