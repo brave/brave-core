@@ -96,7 +96,11 @@ source_set("unit_tests") {
     "//brave/components/ai_chat/core/common/mojom",
     "//chrome/test:test_support",
     "//content/test:test_support",
+    "//pdf:buildflags",
+    "//services/data_decoder/public/cpp:test_support",
     "//testing/gtest",
+    "//ui/gfx:test_support",
+    "//ui/gfx/codec",
   ]
 
   sources = [ "ai_chat_ui_page_handler_unittest.cc" ]

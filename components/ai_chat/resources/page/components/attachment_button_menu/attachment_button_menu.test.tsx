@@ -58,7 +58,7 @@ describe('attachment button menu', () => {
     const { container } = render(
       <AttachmentButtonMenu
         {...defaultProps}
-        isMobile={true}
+        isMobile
       />,
     )
 
@@ -70,7 +70,7 @@ describe('attachment button menu', () => {
     })
 
     expect(mockPickFiles).toHaveBeenCalledWith({
-      capture: 'camera',
+      capture: 'environment',
       accept: expectedAccept,
     })
   })
