@@ -11,11 +11,11 @@
 
 namespace affiliations {
 
-void AffiliationServiceImpl::PrefetchChangePasswordURL(
-    const GURL& urls,
-    base::OnceClosure callback) {
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(FROM_HERE,
-                                                           std::move(callback));
+void AffiliationServiceImpl::FetchChangePasswordURL(
+    const GURL& url,
+    base::OnceCallback<void(GURL)> callback) {
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(std::move(callback), GURL()));
 }
 
 void AffiliationServiceImpl::Prefetch(const FacetURI& facet_uri,
