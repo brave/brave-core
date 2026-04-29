@@ -23,8 +23,9 @@ base::Time GetMigrationStaleBoundaryFromLastCheckYMD(
 
   // `kLastCheckYMD` was written as a local calendar date, so for UTC+N clients
   // who ping before UTC midnight the stale boundary may be one UTC day late.
-  // This is a one-time migration artefact; once `kLastReportedAt` is written
-  // after the first ping under the new scheme this path is never taken again.
+  // This is a one-time migration artefact; once `kLastDailyReportedAt` is
+  // written after the first ping under the new scheme this path is never taken
+  // again.
   base::Time last_checked_at;
   const bool success =
       base::Time::FromUTCString(last_check_ymd.c_str(), &last_checked_at);
