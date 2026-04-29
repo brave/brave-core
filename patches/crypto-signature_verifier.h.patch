@@ -1,0 +1,12 @@
+diff --git a/crypto/signature_verifier.h b/crypto/signature_verifier.h
+index b334ca32067026df180476749a6869ca48e14da0..b710178c7ba99acc8289a7402939df75c1f43940 100644
+--- a/crypto/signature_verifier.h
++++ b/crypto/signature_verifier.h
+@@ -32,6 +32,7 @@ class CRYPTO_EXPORT SignatureVerifier {
+     // This is RSA-PSS with SHA-256 as both signing hash and MGF-1 hash, and the
+     // salt length matching the hash length.
+     RSA_PSS_SHA256,
++    ECDSA_SHA384,
+   };
+ 
+   SignatureVerifier();

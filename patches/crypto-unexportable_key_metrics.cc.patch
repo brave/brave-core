@@ -1,20 +1,20 @@
 diff --git a/crypto/unexportable_key_metrics.cc b/crypto/unexportable_key_metrics.cc
-index 078fcfee33a467c3928803f60a3b5988f5a8e991..a7055c1ec8c2c74d0e70493d1b0b74dd685a9cd6 100644
+index 078fcfee33a467c3928803f60a3b5988f5a8e991..a0c71bd598877aa4adba20236c267e1b7a21da91 100644
 --- a/crypto/unexportable_key_metrics.cc
 +++ b/crypto/unexportable_key_metrics.cc
-@@ -23,6 +23,7 @@ enum class KeyType {
- };
- 
+@@ -25,6 +25,7 @@ enum class KeyType {
  const SignatureVerifier::SignatureAlgorithm kAllAlgorithms[] = {
-+    BRAVE_ALL_ALGORITHMS
      SignatureVerifier::SignatureAlgorithm::ECDSA_SHA256,
      SignatureVerifier::SignatureAlgorithm::RSA_PKCS1_SHA256,
++    SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384,
  };
+ 
+ constexpr char kTestKeyName[] = "ChromeMetricsTestKey";
 @@ -116,6 +117,7 @@ internal::TPMSupport MeasureVirtualTpmOperations() {
    if (algo) {
      switch (*algo) {
        case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA256:
-+      BRAVE_MEASURE_VIRTUAL_TMP_OPERATIONS
++      case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:
          supported_virtual_algo = internal::TPMSupport::kECDSA;
          break;
        case SignatureVerifier::SignatureAlgorithm::RSA_PKCS1_SHA256:
@@ -22,15 +22,16 @@ index 078fcfee33a467c3928803f60a3b5988f5a8e991..a7055c1ec8c2c74d0e70493d1b0b74dd
    if (algo) {
      switch (*algo) {
        case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA256:
-+      BRAVE_MEASURE_TMP_OPERATIONS_INTERNAL
++      case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:
          supported_algo = internal::TPMSupport::kECDSA;
          break;
        case SignatureVerifier::SignatureAlgorithm::RSA_PKCS1_SHA256:
-@@ -306,6 +309,7 @@ std::string AlgorithmToString(SignatureVerifier::SignatureAlgorithm algorithm) {
-     case SignatureVerifier::SignatureAlgorithm::RSA_PSS_SHA256:
+@@ -307,6 +310,8 @@ std::string AlgorithmToString(SignatureVerifier::SignatureAlgorithm algorithm) {
        return "RSA";
      case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA256:
-+    BRAVE_UNEXPORTED_KEY_METRICS_ALGORITHM_TO_STRING
        return "ECDSA";
++    case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:
++      return "ECDSA";
    }
  }
+ 
