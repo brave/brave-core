@@ -1055,6 +1055,7 @@ test("brave_browser_tests") {
     "//chrome/browser/media/router:media_router_feature",
     "//chrome/browser/prefetch",
     "//chrome/browser/preloading:prefs",
+    "//chrome/browser/profiles:misc",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/renderer_context_menu:impl",
     "//chrome/browser/search_engines",
