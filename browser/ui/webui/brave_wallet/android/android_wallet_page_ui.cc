@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "base/command_line.h"
 #include "base/strings/string_util.h"
+#include "brave/browser/brave_wallet/blockchain_images_source.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
@@ -82,7 +83,8 @@ AndroidWalletPageUI::AndroidWalletPageUI(content::WebUI* web_ui,
 
   content::URLDataSource::Add(profile,
                               std::make_unique<SanitizedImageSource>(profile));
-  brave_wallet::AddBlockchainTokenImageSource(profile);
+  content::URLDataSource::Add(
+      profile, std::make_unique<brave_wallet::BlockchainImagesSource>(profile));
 }
 
 AndroidWalletPageUI::~AndroidWalletPageUI() = default;
