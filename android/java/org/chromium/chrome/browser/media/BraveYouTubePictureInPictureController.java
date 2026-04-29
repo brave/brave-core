@@ -210,6 +210,44 @@ public class BraveYouTubePictureInPictureController {
     }
 
     /**
+     * Called when a new tab arrives during an active YouTube PiP session (typically via a launcher
+     * shortcut). Exit persistent fullscreen UI synchronously and release the YouTube WebContents
+     * from fullscreen state so it is in a normal layout when the user switches back.
+     */
+    public void onNewTabDuringPictureInPicture() {
+        if (!mActive) {
+            return;
+        }
+
+        final WebContents webContents = getOrFindWebContents();
+        if (webContents != null && !webContents.isDestroyed()) {
+            // Nudge YouTube's player out of its own fullscreen state, since YouTube tracks
+            // fullscreen independently of the DOM.
+            BraveYouTubeScriptInjectorNativeHelper.exitFullscreen(webContents);
+            // Tell the YouTube WebContents to drop fullscreen directly. We do not rely on
+            // FullscreenManager.exitPersistentFullscreenMode() to forward this: by the
+            // time the tab-change observer has fired and we get here, the manager's internal
+            // mWebContentsInFullscreen pointer can already be stale, and the WebContents-level
+            // exit it would otherwise emit silently no-ops. Calling exitFullscreen() directly on
+            // the tracked YouTube WebContents ensures the renderer leaves fullscreen so the tab
+            // is in a normal layout when the user switches back.
+            webContents.exitFullscreen();
+        }
+
+        final FullscreenManager fullscreenManager = mActivity.getFullscreenManager();
+        if (fullscreenManager.getPersistentFullscreenMode()
+                && fullscreenManager instanceof final BraveFullscreenHtmlApiHandlerBase brave) {
+            // Exit persistent fullscreen UI synchronously so the new tab is rendered in a normal
+            // layout. The picture-in-picture variant deliberately skips
+            // webContents.exitFullscreen() as we already called that ourselves above on the right
+            // WebContents.
+            brave.exitPersistentFullscreenModeForPictureInPicture();
+        }
+
+        clearSession(mSessionId, mWebContents);
+    }
+
+    /**
      * Returns true if the device screen is off or the keyguard is locked. Shared by the controller
      * and {@link BraveFullscreenVideoPictureInPictureController}.
      */
