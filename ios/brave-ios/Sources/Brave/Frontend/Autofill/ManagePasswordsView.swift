@@ -24,6 +24,7 @@ struct ManagePasswordsView: View {
   @State private var privacyLock = AutofillPrivacyLock()
   @State private var selectedGroupIds: Set<GroupID> = []
   @State private var isDeleteSelectionDialogPresented: Bool = false
+  @State private var isSceneInactive = false
 
   private var isSearchActive: Bool {
     !viewModel.searchText.isEmpty
@@ -37,8 +38,14 @@ struct ManagePasswordsView: View {
     editMode?.wrappedValue == .active
   }
 
+  private var isPrivacyOverlayActive: Bool {
+    privacyLock.isLocked || isSceneInactive
+  }
+
   private var effectiveRedactionReasons: RedactionReasons {
-    privacyLock.isLocked ? redactionReasons.union(.privacy) : redactionReasons
+    isPrivacyOverlayActive
+      ? redactionReasons.union(.privacy)
+      : redactionReasons
   }
 
   var body: some View {
@@ -118,7 +125,7 @@ struct ManagePasswordsView: View {
     }
     .scrollContentBackground(.hidden)
     .background((Color(.braveGroupedBackground)))
-    .accessibilityHidden(privacyLock.isLocked)
+    .accessibilityHidden(isPrivacyOverlayActive)
     .searchable(
       text: $viewModel.searchText,
       placement: .navigationBarDrawer(displayMode: .always),
@@ -132,13 +139,13 @@ struct ManagePasswordsView: View {
       }
     }
     .overlay {
-      if privacyLock.isLocked { Color(.braveGroupedBackground).ignoresSafeArea() }
+      if isPrivacyOverlayActive { Color(.braveGroupedBackground).ignoresSafeArea() }
     }
     .environment(\.redactionReasons, effectiveRedactionReasons)
     .navigationTitle(Strings.Autofill.managePasswordsTitle)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
-      if !privacyLock.isLocked {
+      if !isPrivacyOverlayActive {
         ToolbarItem(placement: .topBarTrailing) {
           Button {
             //TODO: Present Add Password Form
@@ -197,7 +204,9 @@ struct ManagePasswordsView: View {
       }
     }
     .toolbar(
-      (isContentAvailable || viewModel.isFetching) && !privacyLock.isLocked ? .visible : .hidden,
+      (isContentAvailable || viewModel.isFetching) && !isPrivacyOverlayActive
+        ? .visible
+        : .hidden,
       for: .bottomBar
     )
     .onAppear {
@@ -205,8 +214,15 @@ struct ManagePasswordsView: View {
         await privacyLock.authenticate(onFailure: exitAfterAuthFailure)
       }
     }
-    // Lock / re-auth use scene background–foreground so Face ID / Touch ID sheets do not flip the
-    // scene active/inactive cycle (they trigger `willDeactivate`/`didActivate` without truly leaving the app).
+    // Obscure list immediately when the scene deactivates (Control Center, Face ID sheet, etc.);
+    // does not invalidate auth — that waits for `didEnterBackground`.
+    .onReceive(NotificationCenter.default.publisher(for: UIScene.willDeactivateNotification)) { _ in
+      isSceneInactive = true
+    }
+    .onReceive(NotificationCenter.default.publisher(for: UIScene.didActivateNotification)) { _ in
+      isSceneInactive = false
+    }
+    // Lock/re-auth only on real background–foreground so LA does not thrash lock/authenticate.
     .onReceive(NotificationCenter.default.publisher(for: UIScene.didEnterBackgroundNotification)) {
       _ in
       privacyLock.lock()
