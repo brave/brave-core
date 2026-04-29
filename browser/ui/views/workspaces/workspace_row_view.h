@@ -1,0 +1,55 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_BROWSER_UI_VIEWS_WORKSPACES_WORKSPACE_ROW_VIEW_H_
+#define BRAVE_BROWSER_UI_VIEWS_WORKSPACES_WORKSPACE_ROW_VIEW_H_
+
+#include <memory>
+
+#include "base/memory/raw_ptr.h"
+#include "brave/browser/workspaces/workspace_metadata.h"
+#include "ui/menus/simple_menu_model.h"
+#include "ui/views/view.h"
+
+namespace views {
+class ImageButton;
+class MenuRunner;
+}  // namespace views
+
+using WorkspaceRowClickedCallback = base::RepeatingCallback<void()>;
+
+// A workspace list row that highlights its background on hover and shows a
+// darker tint when selected.  SetNotifyEnterExitOnChild propagates mouse
+// enter/exit from child buttons up to this view so the whole row responds.
+class WorkspaceRowView : public views::View,
+                         public ui::SimpleMenuModel::Delegate {
+  METADATA_HEADER(WorkspaceRowView, views::View)
+ public:
+  WorkspaceRowView(const WorkspaceMetadata& info,
+                   WorkspaceRowClickedCallback on_workspace_selected,
+                   WorkspaceRowClickedCallback on_delete_clicked);
+  ~WorkspaceRowView() override;
+
+  void SetSelected(bool selected);
+  void OnMouseEntered(const ui::MouseEvent& event) override;
+  void OnMouseExited(const ui::MouseEvent& event) override;
+
+  // ui::SimpleMenuModel::Delegate:
+  void ExecuteCommand(int command_id, int event_flags) override;
+
+ private:
+  void UpdateBackground();
+  void ShowMoreMenu();
+
+  bool hovered_ = false;
+  bool selected_ = false;
+
+  WorkspaceRowClickedCallback on_delete_;
+  raw_ptr<views::ImageButton> more_button_ = nullptr;
+  std::unique_ptr<ui::SimpleMenuModel> menu_model_;
+  std::unique_ptr<views::MenuRunner> menu_runner_;
+};
+
+#endif  // BRAVE_BROWSER_UI_VIEWS_WORKSPACES_WORKSPACE_ROW_VIEW_H_

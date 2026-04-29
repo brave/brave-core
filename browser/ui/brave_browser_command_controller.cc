@@ -20,9 +20,6 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "brave/browser/workspaces/features.h"
-#include "brave/browser/workspaces/workspace_service.h"
-#include "brave/browser/workspaces/workspace_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
@@ -372,17 +369,6 @@ void BraveBrowserCommandController::InitBraveCommandState() {
       ContainersServiceFactory::GetForProfile(browser_->profile()));
 #endif
 
-  // Reload options if person has an update in workspaces
-  if (base::FeatureList::IsEnabled(features::kWorkspaces) &&
-      browser_->is_type_normal()) {
-    UpdateCommandForWorkspace();
-    pref_change_registrar_.Add(
-        kWorkspacesMetadataPref,
-        base::BindRepeating(
-            &BraveBrowserCommandController::UpdateCommandForWorkspace,
-            base::Unretained(this)));
-  }
-
   if (browser_->is_type_normal()) {
     // Delete these when upstream enables by default.
     UpdateCommandEnabled(IDC_READING_LIST_MENU, true);
@@ -557,17 +543,6 @@ void BraveBrowserCommandController::UpdateCommandForSplitView() {
        {IDC_BREAK_TILE, IDC_SWAP_SPLIT_VIEW}) {
     UpdateCommandEnabled(command_enabled_when_tab_is_split, is_split_tabs);
   }
-}
-
-void BraveBrowserCommandController::UpdateCommandForWorkspace() {
-  auto* service = WorkspaceServiceFactory::GetForProfile(browser_->profile());
-
-  if (!service) {
-    return;
-  }
-
-  UpdateCommandEnabled(IDC_SAVE_WORKSPACE, true);
-  UpdateCommandEnabled(IDC_OPEN_WORKSPACE, !service->ListWorkspaces().empty());
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveSync() {
@@ -844,18 +819,6 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     }
     case IDC_TOGGLE_FOCUS_MODE:
       brave::ToggleFocusMode(base::to_address(browser_));
-      break;
-    case IDC_SAVE_WORKSPACE:
-      if (auto* svc =
-              WorkspaceServiceFactory::GetForProfile(browser_->profile())) {
-        svc->ShowSaveWorkspaceDialog();
-      }
-      break;
-    case IDC_OPEN_WORKSPACE:
-      if (auto* svc =
-              WorkspaceServiceFactory::GetForProfile(browser_->profile())) {
-        svc->ShowOpenWorkspaceDialog();
-      }
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;
