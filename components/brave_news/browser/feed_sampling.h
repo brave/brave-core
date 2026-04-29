@@ -122,7 +122,7 @@ template <typename T>
 T PickRandom(const base::span<T>& items) {
   CHECK(!items.empty());
   // Note: RandInt is inclusive, hence the minus 1
-  return items[base::RandInt(0, items.size() - 1)];
+  return items[base::RandIntInclusive(0, items.size() - 1)];
 }
 
 // Sample across subscribed channels (direct and native) and publishers.

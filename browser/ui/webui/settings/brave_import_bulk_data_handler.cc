@@ -86,9 +86,9 @@ void BraveImportBulkDataHandler::PrepareProfile(
             // "profile_2", etc., in sequence of creation.
             DCHECK_LT(profiles::GetModernAvatarIconStartIndex(),
                       profiles::GetDefaultAvatarIconCount());
-            auto avatar_index =
-                base::RandInt(profiles::GetModernAvatarIconStartIndex(),
-                              profiles::GetDefaultAvatarIconCount() - 1);
+            auto avatar_index = base::RandIntInclusive(
+                profiles::GetModernAvatarIconStartIndex(),
+                profiles::GetDefaultAvatarIconCount() - 1);
             ProfileManager::CreateMultiProfileAsync(
                 name, avatar_index, false,
                 base::BindOnce(

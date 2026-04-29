@@ -123,7 +123,7 @@ RewardsNotificationServiceImpl::GetAllNotifications() const {
 RewardsNotificationServiceImpl::RewardsNotificationID
 RewardsNotificationServiceImpl::GenerateRewardsNotificationID() const {
   return base::NumberToString(
-      base::RandInt(0, std::numeric_limits<int32_t>::max()));
+      base::RandIntInclusive(0, std::numeric_limits<int32_t>::max()));
 }
 
 RewardsNotificationServiceImpl::RewardsNotificationTimestamp
