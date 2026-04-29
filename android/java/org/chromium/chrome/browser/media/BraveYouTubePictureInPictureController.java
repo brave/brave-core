@@ -118,18 +118,16 @@ public class BraveYouTubePictureInPictureController {
     /** Hook from {@code Activity#onDestroy}. */
     public void onDestroy() {
         unregisterScreenStateReceiver();
+        // On a configuration change the recreated activity restores the session from the
+        // saved-instance bundle, so leave the registry intact for it to pick up.
         if (!mActivity.isChangingConfigurations()) {
             BraveMediaSessionHelper.clearYouTubePictureInPictureWebContents(mWebContents);
         }
         // Reset session state so any delayed callbacks queued by handleSessionExited() return
         // early via isExitingForSession() instead of touching a destroyed activity. State has
-        // already been written to the saved instance bundle, so the next activity restores from
+        // already been written to the saved-instance bundle, so the next activity restores from
         // the bundle rather than from these fields.
-        mActive = false;
-        mExiting = false;
-        mInterruptedByScreenLock = false;
-        mResumeMediaSessionOnPipEntry = false;
-        mWebContents = null;
+        resetSessionState();
     }
 
     /**
@@ -466,11 +464,21 @@ public class BraveYouTubePictureInPictureController {
             return;
         }
 
+        unregisterScreenStateReceiver();
+        BraveMediaSessionHelper.clearYouTubePictureInPictureWebContents(webContents);
+        resetSessionState();
+    }
+
+    /**
+     * Resets the in-memory session fields. Shared by {@link #clearSession} and {@link #onDestroy};
+     * receiver unregistration and registry clearing stay at the call sites because their gating
+     * differs (session-id match vs. configuration-change).
+     */
+    private void resetSessionState() {
         mActive = false;
         mExiting = false;
         mInterruptedByScreenLock = false;
-        BraveMediaSessionHelper.clearYouTubePictureInPictureWebContents(webContents);
-        unregisterScreenStateReceiver();
+        mResumeMediaSessionOnPipEntry = false;
         mWebContents = null;
     }
 
