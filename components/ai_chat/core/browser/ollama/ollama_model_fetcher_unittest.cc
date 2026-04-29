@@ -17,7 +17,8 @@
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/mojom/ollama.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
-#include "components/os_crypt/sync/os_crypt_mocker.h"
+#include "components/os_crypt/async/browser/os_crypt_async.h"
+#include "components/os_crypt/async/browser/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -49,11 +50,11 @@ class OllamaModelFetcherTest : public testing::Test {
   ~OllamaModelFetcherTest() override = default;
 
   void SetUp() override {
-    OSCryptMocker::SetUp();
     prefs::RegisterProfilePrefs(pref_service_.registry());
     ModelService::RegisterProfilePrefs(pref_service_.registry());
 
-    model_service_ = std::make_unique<ModelService>(&pref_service_);
+    model_service_ =
+        std::make_unique<ModelService>(&pref_service_, os_crypt_async_.get());
 
     // Create mock delegate
     mock_delegate_ = std::make_unique<MockDelegate>();
@@ -62,8 +63,6 @@ class OllamaModelFetcherTest : public testing::Test {
     ollama_model_fetcher_ = std::make_unique<OllamaModelFetcher>(
         *model_service_, &pref_service_, mock_delegate_.get());
   }
-
-  void TearDown() override { OSCryptMocker::TearDown(); }
 
   ModelService* model_service() { return model_service_.get(); }
   OllamaModelFetcher* ollama_model_fetcher() {
@@ -77,6 +76,9 @@ class OllamaModelFetcherTest : public testing::Test {
  private:
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable pref_service_;
+  std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_async_ =
+      os_crypt_async::GetTestOSCryptAsyncForTesting(
+          /*is_sync_for_unittests=*/true);
   std::unique_ptr<ModelService> model_service_;
   std::unique_ptr<MockDelegate> mock_delegate_;
   std::unique_ptr<OllamaModelFetcher> ollama_model_fetcher_;

@@ -10,18 +10,24 @@
 #include <string_view>
 #include <utility>
 
+#include "base/functional/callback.h"
+#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/metrics/field_trial_params.h"
 #include "base/numerics/safe_math.h"
+#include "base/run_loop.h"
 #include "base/scoped_observation.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/task_environment.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
-#include "components/os_crypt/sync/os_crypt_mocker.h"
+#include "components/os_crypt/async/browser/os_crypt_async.h"
+#include "components/os_crypt/async/browser/test_utils.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -54,12 +60,33 @@ class MockModelServiceObserver : public ModelService::Observer {
       models_observer_{this};
 };
 
+// RAII observer that quits its `RunLoop` once `ModelService` finishes loading
+// the model list. Used to wait for the async `OSCryptAsync`-driven encryptor
+// arrival.
+class ScopedModelListReadyObserver : public ModelService::Observer {
+ public:
+  ScopedModelListReadyObserver(ModelService& service, base::OnceClosure quit)
+      : service_(service), quit_(std::move(quit)) {
+    service_->AddObserver(this);
+  }
+  ~ScopedModelListReadyObserver() override { service_->RemoveObserver(this); }
+
+  void OnModelListUpdated() override {
+    if (quit_) {
+      std::move(quit_).Run();
+    }
+  }
+
+ private:
+  const raw_ref<ModelService> service_;
+  base::OnceClosure quit_;
+};
+
 }  // namespace
 
 class ModelServiceTest : public ::testing::Test {
  public:
   void SetUp() override {
-    OSCryptMocker::SetUp();
     prefs::RegisterProfilePrefs(pref_service_.registry());
     prefs::RegisterProfilePrefsForMigration(pref_service_.registry());
     ModelService::RegisterProfilePrefs(pref_service_.registry());
@@ -68,19 +95,20 @@ class ModelServiceTest : public ::testing::Test {
 
   ModelService* GetService() {
     if (!service_) {
-      service_ = std::make_unique<ModelService>(&pref_service_);
+      service_ =
+          std::make_unique<ModelService>(&pref_service_, os_crypt_async_.get());
       observer_->Observe(service_.get());
     }
     return service_.get();
   }
 
-  void TearDown() override {
-    OSCryptMocker::TearDown();
-    observer_.reset();
-  }
+  void TearDown() override { observer_.reset(); }
 
  protected:
   TestingPrefServiceSimple pref_service_;
+  std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_async_ =
+      os_crypt_async::GetTestOSCryptAsyncForTesting(
+          /*is_sync_for_unittests=*/true);
   std::unique_ptr<NiceMock<MockModelServiceObserver>> observer_;
 
  private:
@@ -577,6 +605,103 @@ TEST_F(ModelServiceTest, GetCustomModels) {
 
   // GetModels should return both Leo and custom models
   EXPECT_EQ(GetService()->GetModels().size(), initial_model_count + 1);
+}
+
+// Fixture that exercises `ModelService` against an asynchronous test
+// `OSCryptAsync` (default `is_sync_for_unittests=false`), so the encryptor's
+// arrival is a real posted task observable from tests.
+class ModelServiceAsyncEncryptorTest : public ::testing::Test {
+ public:
+  void SetUp() override {
+    prefs::RegisterProfilePrefs(pref_service_.registry());
+    prefs::RegisterProfilePrefsForMigration(pref_service_.registry());
+    ModelService::RegisterProfilePrefs(pref_service_.registry());
+  }
+
+ protected:
+  // Preloads the `kCustomModelsList` pref with custom models so the test
+  // subject reads them at construction. Uses a temporary `ModelService` on
+  // the same `OSCryptAsync` to write the entries (encryption requires the
+  // encryptor). Each input is `(model_request_name, api_key)`.
+  void PreloadCustomModelsInPrefs(
+      const std::vector<std::pair<std::string, std::string>>& models) {
+    auto service =
+        std::make_unique<ModelService>(&pref_service_, os_crypt_async_.get());
+    // Wait for `OnModelListUpdated()` so the encryptor is ready before we
+    // call `AddCustomModel()` — otherwise `EncryptAPIKey()` would persist
+    // empty strings and the test subject would never see the real keys.
+    base::RunLoop run_loop;
+    ScopedModelListReadyObserver observer(*service, run_loop.QuitClosure());
+    run_loop.Run();
+
+    for (const auto& [request_name, api_key] : models) {
+      auto model = mojom::Model::New();
+      model->display_name = request_name;
+      model->options = mojom::ModelOptions::NewCustomModelOptions(
+          mojom::CustomModelOptions::New(request_name, 0, 0, 0, std::nullopt,
+                                         GURL("https://test.example.com/api"),
+                                         api_key));
+      service->AddCustomModel(std::move(model));
+    }
+  }
+
+  TestingPrefServiceSimple pref_service_;
+  std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_async_ =
+      os_crypt_async::GetTestOSCryptAsyncForTesting(
+          /*is_sync_for_unittests=*/false);
+
+ private:
+  base::test::TaskEnvironment task_environment_;
+};
+
+// Verifies that custom models loaded synchronously at construction have
+// empty `api_key`s until the asynchronous `Encryptor` arrives, after which
+// `RefreshCustomModelApiKeys()` updates every entry in-place and
+// `OnModelListUpdated()` fires. Includes a model with an empty `api_key` to
+// cover the no-op refresh path.
+TEST_F(ModelServiceAsyncEncryptorTest,
+       CustomModelApiKeyRefreshedAfterEncryptor) {
+  PreloadCustomModelsInPrefs({
+      {"model-alpha", "key-alpha"},
+      {"model-beta", std::string()},  // empty key — should remain empty
+      {"model-gamma", "key-gamma"},
+  });
+
+  auto service =
+      std::make_unique<ModelService>(&pref_service_, os_crypt_async_.get());
+
+  // Pre-encryptor: all three are present with empty api_keys.
+  auto before = service->GetCustomModels();
+  ASSERT_EQ(before.size(), 3u);
+  for (const auto& model : before) {
+    ASSERT_TRUE(model->options->is_custom_model_options());
+    EXPECT_EQ(model->options->get_custom_model_options()->api_key,
+              std::string());
+  }
+
+  // Wait for the in-place refresh.
+  base::RunLoop run_loop;
+  ScopedModelListReadyObserver observer(*service, run_loop.QuitClosure());
+  run_loop.Run();
+
+  // Post-encryptor: each model's api_key matches expectation. Order matches
+  // insertion order in both prefs and `models_`.
+  auto after = service->GetCustomModels();
+  ASSERT_EQ(after.size(), 3u);
+  ASSERT_TRUE(after[0]->options->is_custom_model_options());
+  EXPECT_EQ(after[0]->options->get_custom_model_options()->model_request_name,
+            "model-alpha");
+  EXPECT_EQ(after[0]->options->get_custom_model_options()->api_key,
+            "key-alpha");
+  ASSERT_TRUE(after[1]->options->is_custom_model_options());
+  EXPECT_EQ(after[1]->options->get_custom_model_options()->model_request_name,
+            "model-beta");
+  EXPECT_TRUE(after[1]->options->get_custom_model_options()->api_key.empty());
+  ASSERT_TRUE(after[2]->options->is_custom_model_options());
+  EXPECT_EQ(after[2]->options->get_custom_model_options()->model_request_name,
+            "model-gamma");
+  EXPECT_EQ(after[2]->options->get_custom_model_options()->api_key,
+            "key-gamma");
 }
 
 }  // namespace ai_chat

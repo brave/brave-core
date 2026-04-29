@@ -9,6 +9,7 @@
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "components/user_prefs/user_prefs.h"
+#include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 
 namespace ai_chat {
@@ -35,6 +36,8 @@ ModelServiceFactory::~ModelServiceFactory() {}
 
 std::unique_ptr<KeyedService> ModelServiceFactory::BuildServiceInstanceFor(
     ProfileIOS* profile) const {
-  return std::make_unique<ModelService>(user_prefs::UserPrefs::Get(profile));
+  return std::make_unique<ModelService>(
+      user_prefs::UserPrefs::Get(profile),
+      GetApplicationContext()->GetOSCryptAsync());
 }
 }  // namespace ai_chat
