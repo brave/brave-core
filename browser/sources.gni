@@ -165,6 +165,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/ui/webui/brave_account",
   "//brave/browser/ui/webui/local_ai",
   "//brave/browser/updater:buildflags",
+  "//brave/browser/workspace",
   "//brave/common",
   "//brave/common:mojo_bindings",
   "//brave/components/ai_chat/core/common/buildflags",
