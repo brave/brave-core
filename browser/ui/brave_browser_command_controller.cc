@@ -17,9 +17,13 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_pages.h"
+#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/workspace/brave_workspace.h"
+#include "brave/browser/workspace/brave_workspace_service.h"
+#include "brave/browser/workspace/brave_workspace_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
@@ -357,6 +361,27 @@ void BraveBrowserCommandController::InitBraveCommandState() {
           email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
               browser_->profile()));
 #endif
+
+  UpdateCommandEnabled(
+      IDC_SAVE_WORKSPACE,
+      features::IsBraveWorkspaceEnabled() && browser_->is_type_normal() &&
+          BraveWorkspaceServiceFactory::GetForProfile(browser_->profile()) !=
+              nullptr);
+
+  bool workspace_enabled = false;
+  int workspace_count = 0;
+  if (features::IsBraveWorkspaceEnabled() && browser_->is_type_normal()) {
+    auto* service =
+        BraveWorkspaceServiceFactory::GetForProfile(browser_->profile());
+    if (service != nullptr) {
+      workspace_enabled = true;
+      workspace_count = service->ListWorkspaces().size();
+    }
+  }
+  // TODO(bsclifton): this needs to refresh once workspace is saved.
+  // currently only refreshes after you quit/relaunch.
+  UpdateCommandEnabled(IDC_OPEN_WORKSPACE,
+                       workspace_enabled && workspace_count > 0);
 
   if (browser_->is_type_normal()) {
     // Delete these when upstream enables by default.
@@ -800,6 +825,12 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     }
     case IDC_TOGGLE_FOCUS_MODE:
       brave::ToggleFocusMode(base::to_address(browser_));
+      break;
+    case IDC_SAVE_WORKSPACE:
+      brave::ShowSaveWorkspaceDialog(browser_->profile());
+      break;
+    case IDC_OPEN_WORKSPACE:
+      brave::ShowOpenWorkspaceDialog(browser_->profile());
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;

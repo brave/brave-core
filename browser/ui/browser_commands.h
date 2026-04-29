@@ -160,6 +160,11 @@ void ForcePasteInBrowser(Browser* browser);
 // Force pastes into the web contents if focused.
 void ForcePasteInWebContents(content::WebContents* contents);
 
+void ShowSaveWorkspaceDialog(Profile* profile);
+void ShowOpenWorkspaceDialog(Profile* profile);
+void SaveWorkspace(Profile* profile, const std::string& name);
+void RestoreWorkspace(Profile* profile, const std::string& name);
+
 #if BUILDFLAG(ENABLE_CONTAINERS)
 // Creates a new tab with the given tab's URL in the specified container.
 void OpenTabUrlInContainer(BrowserWindowInterface* browser_window,
