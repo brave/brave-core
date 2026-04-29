@@ -6,14 +6,16 @@
 #include "brave/browser/ui/views/workspaces/workspaces_bubble_view.h"
 
 #include <memory>
+#include <vector>
 
-#include "base/strings/utf_string_conversions.h"
+#include "base/functional/bind.h"
+#include "brave/browser/ui/views/workspaces/save_workspace_dialog.h"
+#include "brave/browser/ui/views/workspaces/workspace_row_view.h"
 #include "brave/browser/workspaces/workspace_service.h"
 #include "brave/browser/workspaces/workspace_service_factory.h"
 #include "brave/components/vector_icons/vector_icons.h"
-#include "chrome/browser/profiles/profile.h"
-#include "chrome/grit/generated_resources.h"
-#include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/ui/browser.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/mojom/dialog_button.mojom.h"
@@ -21,83 +23,121 @@
 #include "ui/views/bubble/bubble_border.h"
 #include "ui/views/controls/button/image_button.h"
 #include "ui/views/controls/button/image_button_factory.h"
+#include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/controls/separator.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/view_class_properties.h"
+#include "ui/views/widget/widget.h"
+
+WorkspacesBubbleView::~WorkspacesBubbleView() = default;
 
 // static
-void WorkspacesBubbleView::Show(views::View* anchor_view, Profile* profile) {
+void WorkspacesBubbleView::Show(views::View* anchor_view, Browser* browser) {
   views::Widget* widget = views::BubbleDialogDelegateView::CreateBubble(
-      std::make_unique<WorkspacesBubbleView>(anchor_view, profile));
+      std::make_unique<WorkspacesBubbleView>(anchor_view, browser));
   widget->Show();
 }
 
 WorkspacesBubbleView::WorkspacesBubbleView(views::View* anchor_view,
-                                           Profile* profile)
-    : BubbleDialogDelegateView(anchor_view, views::BubbleBorder::TOP_LEFT) {
+                                           Browser* browser)
+    : BubbleDialogDelegateView(anchor_view, views::BubbleBorder::TOP_LEFT),
+      browser_(browser) {
   SetButtons(static_cast<int>(ui::mojom::DialogButton::kNone));
   SetShowCloseButton(false);
-  set_margins(gfx::Insets::VH(8, 15));
-  set_fixed_width(253);
+  set_margins(gfx::Insets());
+  set_fixed_width(263);
 
   SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical,
       /*inside_border_insets=*/gfx::Insets(),
       /*between_child_spacing=*/0));
 
-  // Header row: "SPACES" label + new workspace button.
-  auto* header_row = AddChildView(std::make_unique<views::View>());
-  auto* row_layout =
-      header_row->SetLayoutManager(std::make_unique<views::BoxLayout>(
-          views::BoxLayout::Orientation::kHorizontal,
-          /*inside_border_insets=*/gfx::Insets(),
-          /*between_child_spacing=*/8));
-  row_layout->set_cross_axis_alignment(
-      views::BoxLayout::CrossAxisAlignment::kCenter);
-
-  auto* spaces_label = header_row->AddChildView(std::make_unique<views::Label>(
-      l10n_util::GetStringUTF16(IDS_WORKSPACES_BUBBLE_TITLE)));
-  spaces_label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
-  row_layout->SetFlexForView(spaces_label, 1);
-
-  auto* add_button =
-      header_row->AddChildView(views::CreateVectorImageButtonWithNativeTheme(
-          views::Button::PressedCallback(), kLeoPlusAddCircleIcon,
-          /*dip_size=*/16));
-  add_button->SetPreferredSize(gfx::Size(19, 19));
-  add_button->SetTooltipText(u"New workspace");
-
-  auto* separator = AddChildView(std::make_unique<views::Separator>());
-  separator->SetProperty(views::kMarginsKey, gfx::Insets::TLBR(8, 0, 4, 0));
-
-  auto* service = WorkspaceServiceFactory::GetForProfile(profile);
+  auto* service = WorkspaceServiceFactory::GetForProfile(browser->profile());
   if (!service) {
     return;
   }
 
-  for (const auto& workspace : service->ListWorkspaces()) {
-    auto* row = AddChildView(std::make_unique<views::View>());
-    row->SetLayoutManager(std::make_unique<views::BoxLayout>(
-        views::BoxLayout::Orientation::kVertical,
-        /*inside_border_insets=*/gfx::Insets::VH(4, 0),
-        /*between_child_spacing=*/2));
+  std::vector<WorkspaceMetadata> workspaces = service->ListWorkspaces();
+  auto* workspaces_container = AddChildView(std::make_unique<views::View>());
+  workspaces_container->SetLayoutManager(std::make_unique<views::BoxLayout>(
+      views::BoxLayout::Orientation::kVertical));
+  workspaces_container->SetProperty(views::kMarginsKey, gfx::Insets(2));
+  if (workspaces.size() == 0) {
+    auto* empty_title =
+        workspaces_container->AddChildView(std::make_unique<views::Label>(
+            l10n_util::GetStringUTF16(IDS_WORKSPACES_BUBBLE_EMPTY_TITLE)));
+    empty_title->SetFontList(
+        empty_title->font_list().DeriveWithSizeDelta(2).DeriveWithWeight(
+            gfx::Font::Weight::BOLD));
+    empty_title->SetHorizontalAlignment(gfx::ALIGN_LEFT);
+    empty_title->SetProperty(views::kMarginsKey, gfx::Insets::TLBR(8, 8, 4, 8));
 
-    auto* name_label = row->AddChildView(
-        std::make_unique<views::Label>(base::UTF8ToUTF16(workspace.name)));
-    name_label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
-    name_label->SetFontList(
-        name_label->font_list().DeriveWithWeight(gfx::Font::Weight::BOLD));
-
-    const std::string subtitle =
-        absl::StrFormat("%d %s - %d %s", workspace.number_of_windows,
-                        workspace.number_of_windows == 1 ? "window" : "windows",
-                        workspace.number_of_tabs,
-                        workspace.number_of_tabs == 1 ? "tab" : "tabs");
-    auto* subtitle_label = row->AddChildView(
-        std::make_unique<views::Label>(base::UTF8ToUTF16(subtitle)));
-    subtitle_label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
+    auto* empty_body =
+        workspaces_container->AddChildView(std::make_unique<views::Label>(
+            l10n_util::GetStringUTF16(IDS_WORKSPACES_BUBBLE_EMPTY_BODY)));
+    empty_body->SetMultiLine(true);
+    empty_body->SetHorizontalAlignment(gfx::ALIGN_LEFT);
+    empty_body->SetProperty(views::kMarginsKey, gfx::Insets::TLBR(0, 8, 8, 8));
+  } else {
+    for (const auto& workspace : workspaces) {
+      workspaces_container->AddChildView(std::make_unique<WorkspaceRowView>(
+          workspace,
+          base::BindRepeating(&WorkspacesBubbleView::OnWorkspaceSelected,
+                              weak_factory_.GetWeakPtr(), workspace.name),
+          base::BindRepeating(&WorkspacesBubbleView::OnDeleteClicked,
+                              weak_factory_.GetWeakPtr(), workspace.name)));
+    }
   }
+
+  AddChildView(std::make_unique<views::Separator>());
+
+  // Bottom action row: Settings + Save.
+  auto* button_row = AddChildView(std::make_unique<views::View>());
+  auto* button_row_layout =
+      button_row->SetLayoutManager(std::make_unique<views::BoxLayout>(
+          views::BoxLayout::Orientation::kHorizontal,
+          /*inside_border_insets=*/gfx::Insets(),
+          /*between_child_spacing=*/0));
+  button_row->SetProperty(views::kMarginsKey, gfx::Insets(8));
+
+  auto* settings_button =
+      button_row->AddChildView(std::make_unique<views::MdTextButton>(
+          views::Button::PressedCallback(),
+          l10n_util::GetStringUTF16(IDS_WORKSPACES_BUBBLE_SETTINGS_BUTTON)));
+  settings_button->SetEnabled(false);
+  settings_button->SetProperty(views::kMarginsKey, gfx::Insets(4));
+  button_row_layout->SetFlexForView(settings_button, 1);
+
+  auto* new_space_button =
+      button_row->AddChildView(std::make_unique<views::MdTextButton>(
+          base::BindRepeating(&WorkspacesBubbleView::OnSaveClicked,
+                              weak_factory_.GetWeakPtr()),
+          l10n_util::GetStringUTF16(IDS_WORKSPACES_BUBBLE_SAVE_BUTTON)));
+  new_space_button->SetStyle(ui::ButtonStyle::kProminent);
+  new_space_button->SetProperty(views::kMarginsKey, gfx::Insets(4));
+  button_row_layout->SetFlexForView(new_space_button, 1);
+}
+
+void WorkspacesBubbleView::OnSaveClicked() {
+  SaveWorkspaceDialog::Show(browser_);
+  GetWidget()->Close();
+}
+
+void WorkspacesBubbleView::OnWorkspaceSelected(const std::string& name) {
+  if (auto* service =
+          WorkspaceServiceFactory::GetForProfile(browser_->profile())) {
+    service->RestoreWorkspace(name);
+  }
+  GetWidget()->Close();
+}
+
+void WorkspacesBubbleView::OnDeleteClicked(const std::string& name) {
+  if (auto* service =
+          WorkspaceServiceFactory::GetForProfile(browser_->profile())) {
+    service->RemoveWorkspaceMetadata(name);
+  }
+  GetWidget()->Close();
 }
 
 BEGIN_METADATA(WorkspacesBubbleView)

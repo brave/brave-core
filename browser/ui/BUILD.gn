@@ -690,8 +690,6 @@ source_set("ui") {
       "views/view_shadow.h",
       "views/window_closing_confirm_dialog_view.cc",
       "views/window_closing_confirm_dialog_view.h",
-      "views/workspaces/workspaces_bubble_view.cc",
-      "views/workspaces/workspaces_bubble_view.h",
     ]
 
     # Brave's SidePanel and its resize widget are only built in V1 mode. When
@@ -715,6 +713,7 @@ source_set("ui") {
       "//brave/browser/ui/views/location_bar",
       "//brave/browser/ui/views/page_action",
       "//brave/browser/ui/views/tabs/accent_color",
+      "//brave/browser/ui/views/workspaces",
       "//chrome/browser:shell_integration",
       "//chrome/browser/devtools",
       "//chrome/browser/enterprise/watermark:watermark_view_lib",

@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("workspaces") {
+  sources = [
+    "save_workspace_dialog.cc",
+    "save_workspace_dialog.h",
+    "workspace_row_view.cc",
+    "workspace_row_view.h",
+    "workspaces_bubble_view.cc",
+    "workspaces_bubble_view.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/browser/workspaces",
+    "//brave/components/vector_icons",
+    "//components/constrained_window",
+    "//ui/menus",
+    "//ui/views",
+  ]
+}

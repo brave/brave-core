@@ -111,16 +111,6 @@ void WorkspaceService::RestoreWorkspace(const std::string& name) {
       base::BindOnce(&WorkspaceService::DoRestoreWorkspace, GetWeakPtr()));
 }
 
-void WorkspaceService::ShowSaveWorkspaceDialog() {
-  // TODO(https://github.com/brave/brave-browser/issues/55108)
-  SaveWorkspace("example-workspace");
-}
-
-void WorkspaceService::ShowOpenWorkspaceDialog() {
-  // TODO(https://github.com/brave/brave-browser/issues/55108)
-  RestoreWorkspace("example-workspace");
-}
-
 void WorkspaceService::DoRestoreWorkspace(
     std::vector<std::unique_ptr<sessions::SessionCommand>> commands) {
   if (commands.empty()) {

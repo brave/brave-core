@@ -1377,7 +1377,7 @@ void BraveVerticalTabStripRegionView::OnMenuClosed() {
 }
 
 void BraveVerticalTabStripRegionView::OnWorkspacesButtonPressed() {
-  WorkspacesBubbleView::Show(workspaces_button_, browser_->profile());
+  WorkspacesBubbleView::Show(workspaces_button_, browser_);
 }
 
 BEGIN_METADATA(BraveVerticalTabStripRegionView)

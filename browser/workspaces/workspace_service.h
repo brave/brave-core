@@ -74,10 +74,6 @@ class WorkspaceService : public KeyedService {
   // Reads the named workspace from disk and opens its windows/tabs.
   void RestoreWorkspace(const std::string& name);
 
-  // Placeholder entry points for the save/open dialogs.
-  void ShowSaveWorkspaceDialog();
-  void ShowOpenWorkspaceDialog();
-
   base::WeakPtr<WorkspaceService> GetWeakPtr();
 
   // KeyedService:
