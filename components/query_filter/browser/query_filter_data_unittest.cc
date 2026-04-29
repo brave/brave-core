@@ -92,7 +92,7 @@ TEST_F(QueryFilterDataTest, TestOneBadRuleEntryIgnoresThatRule) {
 
   EXPECT_TRUE(instance()->PopulateDataFromComponent(kJson));
   const auto& rules = GetQueryFilterRules();
-  EXPECT_EQ(2UL, rules.size());
+  ASSERT_EQ(2UL, rules.size());
 
   EXPECT_THAT(rules[0].include, testing::ElementsAre("*://a/*"));
   EXPECT_TRUE(rules[0].exclude.empty());
@@ -121,7 +121,7 @@ TEST_F(QueryFilterDataTest, TestOneBadRuleEntryItemIgnoresThatEntries) {
 
   EXPECT_TRUE(instance()->PopulateDataFromComponent(kJson));
   const auto& rules = GetQueryFilterRules();
-  EXPECT_EQ(1UL, rules.size());
+  ASSERT_EQ(1UL, rules.size());
   EXPECT_THAT(rules[0].include, testing::ElementsAre("*://*/*"));
   EXPECT_THAT(rules[0].exclude, testing::ElementsAre("foubah"));
   EXPECT_THAT(rules[0].params, testing::ElementsAre("gclid", "fbclid"));
@@ -178,7 +178,7 @@ TEST_F(QueryFilterDataTest,
   ])json";
   EXPECT_TRUE(instance()->PopulateDataFromComponent(kJson));
   const auto& rules = GetQueryFilterRules();
-  EXPECT_EQ(1UL, rules.size());
+  ASSERT_EQ(1UL, rules.size());
   EXPECT_THAT(rules[0].include, testing::ElementsAre("example.com"));
   EXPECT_TRUE(rules[0].exclude.empty());
   EXPECT_THAT(rules[0].params, testing::ElementsAre("x"));
@@ -206,7 +206,7 @@ TEST_F(QueryFilterDataTest, TestCheckGeneralRulesPopulation_IsCorrect) {
 
   EXPECT_TRUE(instance()->PopulateDataFromComponent(kJson));
   const auto& rules = GetQueryFilterRules();
-  EXPECT_EQ(2UL, rules.size());
+  ASSERT_EQ(2UL, rules.size());
   EXPECT_THAT(rules[0].include, testing::ElementsAre("*://*/*"));
   EXPECT_TRUE(rules[0].exclude.empty());
   EXPECT_THAT(rules[0].params,
@@ -232,7 +232,7 @@ TEST_F(QueryFilterDataTest, TestSequentialRulesUpdate_IsCorrect) {
 
   EXPECT_TRUE(instance()->PopulateDataFromComponent(kJson1));
   const auto& rules = GetQueryFilterRules();
-  EXPECT_EQ(1UL, rules.size());
+  ASSERT_EQ(1UL, rules.size());
   EXPECT_THAT(rules[0].include, testing::ElementsAre("*://*/*"));
   EXPECT_TRUE(rules[0].exclude.empty());
   EXPECT_THAT(rules[0].params,
@@ -254,7 +254,7 @@ TEST_F(QueryFilterDataTest, TestSequentialRulesUpdate_IsCorrect) {
 
   EXPECT_TRUE(instance()->PopulateDataFromComponent(kJson2));
   const auto& new_rules = GetQueryFilterRules();
-  EXPECT_EQ(1UL, new_rules.size());
+  ASSERT_EQ(1UL, new_rules.size());
   EXPECT_THAT(new_rules[0].include,
               testing::ElementsAre("*://*.youtube.com/*", "*://youtube.com/*",
                                    "*://youtu.be/*"));
@@ -277,7 +277,7 @@ TEST_F(QueryFilterDataTest,
 
   EXPECT_TRUE(instance()->PopulateDataFromComponent(kGoodJson));
   const auto& rules = GetQueryFilterRules();
-  EXPECT_EQ(1UL, rules.size());
+  ASSERT_EQ(1UL, rules.size());
   EXPECT_THAT(rules[0].include, testing::ElementsAre("*://*/*"));
   EXPECT_TRUE(rules[0].exclude.empty());
   EXPECT_THAT(rules[0].params,
@@ -292,7 +292,7 @@ TEST_F(QueryFilterDataTest,
 
   EXPECT_FALSE(instance()->PopulateDataFromComponent(kBadJson));
   const auto& new_rules = GetQueryFilterRules();
-  EXPECT_EQ(1UL, new_rules.size());
+  ASSERT_EQ(1UL, new_rules.size());
   EXPECT_THAT(new_rules[0].include, testing::ElementsAre("*://*/*"));
   EXPECT_TRUE(new_rules[0].exclude.empty());
   EXPECT_THAT(new_rules[0].params,

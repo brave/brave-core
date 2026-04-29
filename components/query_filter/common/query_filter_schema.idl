@@ -18,10 +18,4 @@ namespace schema {
     // The list of query parameters which are subjected to query filtering.
     DOMString[] params;
   };
-
-  // The main collection of Rule objects to be enforced in the client. 
-  dictionary Ruleset {
-    // An array of Rule objects.
-    Rule[] rules;
-  };
 };
