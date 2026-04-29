@@ -123,7 +123,7 @@ function SidePanel (props: {
 }
 
 function TreeList (props: Props) {
-  const allowedList = props.allowedList ?? [];
+  const allowedList = React.useMemo(() => props.allowedList ?? [], [props.allowedList])
   const allowedScriptsByOrigin = React.useMemo(() =>
     groupByOrigin(allowedList), [allowedList])
 
