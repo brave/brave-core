@@ -73,20 +73,6 @@ void BraveTabGroupHeader::VisualsChanged() {
     title_chip_->SetBackground(nullptr);
   }
 
-  // When the title is empty, upstream (127) ignores the top value returned from
-  // `GetInsetsForHeaderChip`, which throws off the header size. Adjust the
-  // vertical layout to maintain the group header height.
-  if (!title_->GetText().empty()) {
-    const gfx::Insets title_chip_insets =
-        group_style_->GetInsetsForHeaderChip();
-    title_chip_->SetSize(
-        {title_chip_->width(), title_->height() + 2 * title_chip_insets.top()});
-    title_->SetY(title_chip_insets.top());
-    if (ShouldShowHeaderIcon()) {
-      sync_icon_->SetY(title_chip_insets.top());
-    }
-  }
-
   if (ShouldShowVerticalTabs()) {
     LayoutTitleChipForVerticalTabs();
   }
@@ -123,8 +109,10 @@ void BraveTabGroupHeader::LayoutTitleChipForVerticalTabs() {
   title_chip_->SetBoundsRect(title_bounds);
 
   // |title_| is a child view of |title_chip_| and there could be |sync_icon_|
-  // before |title_|. So expand |title_|'s width considering that.
-  title_->SetSize({title_bounds.width() - title_->x(), title_->height()});
+  // before |title_|. Expand |title_|'s width to fill the chip, and set its
+  // height to the chip height so the label centers text vertically.
+  title_->SetBounds(title_->x(), 0, title_bounds.width() - title_->x(),
+                    title_bounds.height());
 }
 
 SkColor BraveTabGroupHeader::GetGroupColor() const {
