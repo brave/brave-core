@@ -118,6 +118,8 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
   content::URLDataSource::Add(
       profile, std::make_unique<brave_wallet::BlockchainImagesSource>(profile));
 
+  // TODO(https://github.com/brave/brave-browser/issues/55074) should be set
+  // externally.
   BrowserWindowInterface* const bwi =
       GetLastActiveBrowserWindowInterfaceWithAnyProfile();
   CHECK(bwi);

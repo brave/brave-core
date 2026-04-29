@@ -57,6 +57,8 @@ class BraveWalletTabHelper
                                 const std::string& account);
   void ClearSolanaConnectedAccounts(const content::GlobalRenderFrameHostId& id);
 
+  // TODO(https://github.com/brave/brave-browser/issues/55073): split this tab
+  // helper.
 #if !BUILDFLAG(IS_ANDROID)
   void ShowBubble();
   void ShowApproveWalletBubble();
@@ -89,6 +91,7 @@ class BraveWalletTabHelper
   // Each RenderFrameHost has its own connection set.
   base::flat_map<content::GlobalRenderFrameHostId, base::flat_set<std::string>>
       solana_connected_accounts_;
+
 #if !BUILDFLAG(IS_ANDROID)
   void ShowBubbleImpl(GURL url);
   GURL GetBubbleURL();
