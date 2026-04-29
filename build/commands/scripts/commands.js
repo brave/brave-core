@@ -6,7 +6,7 @@
 // Check environment before doing anything.
 import '../lib/checkEnvironment.js'
 
-import { program, Argument } from 'commander'
+import { program, Argument, Option } from 'commander'
 import path from 'node:path'
 import fs from 'fs-extra'
 import config from '../lib/config.ts'
@@ -100,24 +100,30 @@ program
     '--symlink_dir <symlink_dir>',
     'symlink that points to the actual build directory',
   )
-  .option(
-    '--target_os <target_os_type>',
-    'target OS type',
-    /^(host_os|ios|android)$/i,
+  .addOption(
+    new Option('--target_os <target_os_type>', 'target OS type').choices([
+      'host_os',
+      'ios',
+      'android',
+    ]),
   )
-  .option(
-    '--target_arch <target_arch>',
-    'target architecture',
-    /^(host_cpu|x64|arm64|x86)$/i,
+  .addOption(
+    new Option('--target_arch <target_arch>', 'target architecture').choices([
+      'host_cpu',
+      'x64',
+      'arm64',
+      'x86',
+    ]),
   )
-  .option(
-    '--target_environment <target_environment>',
-    'target environment (device, catalyst, simulator)',
-    /^(device|catalyst|simulator)$/i,
+  .addOption(
+    new Option(
+      '--target_environment <target_environment>',
+      'target environment',
+    ).choices(['device', 'catalyst', 'simulator']),
   )
   .addArgument(createBuildConfigArgument())
-  .action(async (buildConfig = config.defaultBuildConfig, options = {}) => {
-    config.buildConfig = buildConfig
+  .action(async (buildConfig, options) => {
+    config.buildConfig = buildConfig || config.defaultBuildConfig
     if (options.target_os === 'host_os') {
       delete options.target_os
     }
@@ -130,6 +136,10 @@ program
     // ignore use_no_gn_gen when updating the symlink
     delete config.use_no_gn_gen
     const currentLink = options.symlink_dir
+    if (!currentLink) {
+      console.error('Symlink directory is required')
+      process.exit(1)
+    }
     if (
       !path.isAbsolute(currentLink)
       && !path.relative(currentLink, config.srcDir).startsWith('..')
@@ -159,10 +169,10 @@ program
     '--build_sparkle',
     'Build the Sparkle macOS update framework from source',
   )
-  .option(
-    '--channel <target_channel>',
-    'target channel to build',
-    /^(beta|dev|nightly|release)$/i,
+  .addOption(
+    new Option('--channel <target_channel>', 'target channel to build').choices(
+      ['beta', 'dev', 'nightly', 'release'],
+    ),
   )
   .option('--force_gn_gen', 'always run gn gen')
   .option(
@@ -290,21 +300,21 @@ program
     'disable loading the Brave Rewards extension',
   )
   .option('--disable_pdfjs_extension', 'disable loading the PDFJS extension')
-  .option(
-    '--ui_mode <ui_mode>',
-    'which built-in ui appearance mode to use',
-    /^(dark|light)$/i,
+  .addOption(
+    new Option(
+      '--ui_mode <ui_mode>',
+      'which built-in ui appearance mode to use',
+    ).choices(['dark', 'light']),
   )
   .option(
     '--show_component_extensions',
     'show component extensions in chrome://extensions',
   )
   .option('--enable_brave_update', 'enable brave update')
-  .option(
-    '--channel <target_channel>',
-    'target channel to start',
-    /^(beta|dev|nightly|release)$/i,
-    'release',
+  .addOption(
+    new Option('--channel <target_channel>', 'target channel to start').choices(
+      ['beta', 'dev', 'nightly', 'release'],
+    ),
   )
   .option('--official_build <official_build>', 'force official build settings')
   // See https://github.com/brave/brave-browser/wiki/Rewards#flags for more information
