@@ -58,7 +58,7 @@ class AssociatedContentManagerUnitTest : public testing::Test {
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &url_loader_factory_);
 
-    model_service_ = std::make_unique<ModelService>(&prefs_);
+    model_service_ = std::make_unique<ModelService>(&prefs_, os_crypt_.get());
 
     ai_chat_service_ = std::make_unique<AIChatService>(
         model_service_.get(), nullptr /* tab_tracker_service */,

@@ -46,9 +46,9 @@
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ai_chat/model_service_factory.h"
 #include "brave/browser/ai_chat/ollama/ollama_service_factory.h"
 #include "brave/browser/ai_chat/tab_tracker_service_factory.h"
-#include "brave/components/ai_chat/content/browser/model_service_factory.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #endif
 

@@ -10,6 +10,7 @@
 
 #include <cstdint>
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -19,10 +20,12 @@
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
+#include "base/values.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "components/os_crypt/async/common/encryptor.h"
 #include "components/prefs/pref_registry_simple.h"
 
 class PrefRegistrySimple;
@@ -32,10 +35,27 @@ namespace network {
 class SharedURLLoaderFactory;
 }
 
+namespace os_crypt_async {
+class OSCryptAsync;
+}  // namespace os_crypt_async
+
 namespace ai_chat {
 class EngineConsumer;
 class AIChatCredentialManager;
 
+// Owns the AI chat model catalog: built-in Leo models and user-defined
+// custom models.
+//
+// `ModelService` loads its model list synchronously in the constructor, so
+// `GetModels()` / `GetModel()` / `GetCustomModels()` are usable immediately.
+// However, the `Encryptor` for custom-model API keys arrives asynchronously
+// via `OSCryptAsync::GetInstance()`. Until `OnEncryptorReady()` fires,
+// custom-model API keys decrypt to empty strings; `OnModelListUpdated()` is
+// then dispatched so observers (e.g. `ConversationHandler`) can refresh
+// engines via `engine_->UpdateModelOptions()`. Requests issued against a
+// custom model in this pre-encryptor window goes out with an empty API key and
+// the server will reject it (typically HTTP 401 / 403). Once engine refreshes,
+// subsequent requests would have valid API keys.
 class ModelService : public KeyedService {
  public:
   class Observer : public base::CheckedObserver {
@@ -49,7 +69,8 @@ class ModelService : public KeyedService {
                                        const std::string& new_key) {}
   };
 
-  explicit ModelService(PrefService* profile_prefs);
+  ModelService(PrefService* profile_prefs,
+               os_crypt_async::OSCryptAsync* os_crypt_async);
   ~ModelService() override;
 
   ModelService(const ModelService&) = delete;
@@ -103,11 +124,23 @@ class ModelService : public KeyedService {
       const std::string& model_key);
 
  private:
+  void OnEncryptorReady(os_crypt_async::Encryptor encryptor);
   void InitModels();
+  // Walks the custom-model prefs and updates the `api_key` on each
+  // already-loaded entry in `models_`. Called from `OnEncryptorReady()` to
+  // populate keys that decrypted to empty strings during initial sync load.
+  void RefreshCustomModelApiKeys();
+
+  std::string EncryptAPIKey(const std::string& api_key) const;
+  std::string DecryptAPIKey(const std::string& encoded_api_key) const;
+  // Returns the dict-shaped representation of `model` used to persist a
+  // custom model in the `kCustomModelsList` pref.
+  base::DictValue CustomModelToPrefDict(mojom::ModelPtr model) const;
 
   base::ObserverList<Observer> observers_;
   std::vector<ai_chat::mojom::ModelPtr> models_;
   raw_ptr<PrefService> pref_service_;
+  std::optional<os_crypt_async::Encryptor> encryptor_;
   bool is_migrating_claude_instant_ = false;
 
   base::WeakPtrFactory<ModelService> weak_ptr_factory_{this};

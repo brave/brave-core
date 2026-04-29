@@ -268,7 +268,7 @@ class AIChatServiceUnitTest : public testing::Test,
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &url_loader_factory_);
 
-    model_service_ = std::make_unique<ModelService>(&prefs_);
+    model_service_ = std::make_unique<ModelService>(&prefs_, os_crypt_.get());
     tab_tracker_service_ = std::make_unique<TabTrackerService>();
 
     CreateService();

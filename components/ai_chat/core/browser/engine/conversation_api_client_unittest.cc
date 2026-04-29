@@ -39,6 +39,8 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/api_request_helper/mock_api_request_helper.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
+#include "components/os_crypt/async/browser/os_crypt_async.h"
+#include "components/os_crypt/async/browser/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "net/base/net_errors.h"
@@ -326,7 +328,8 @@ class ConversationAPIUnitTest : public testing::Test {
     ModelService::RegisterProfilePrefs(prefs_.registry());
     credential_manager_ = std::make_unique<MockAIChatCredentialManager>(
         base::NullCallback(), &prefs_);
-    model_service_ = std::make_unique<ModelService>(&prefs_);
+    model_service_ =
+        std::make_unique<ModelService>(&prefs_, os_crypt_async_.get());
     client_ = std::make_unique<TestConversationAPIClient>(
         credential_manager_.get(), model_service_.get());
     // Intercept credential fetch
@@ -359,6 +362,9 @@ class ConversationAPIUnitTest : public testing::Test {
 
  protected:
   base::test::TaskEnvironment task_environment_;
+  std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_async_ =
+      os_crypt_async::GetTestOSCryptAsyncForTesting(
+          /*is_sync_for_unittests=*/true);
   std::unique_ptr<MockAIChatCredentialManager> credential_manager_;
   std::unique_ptr<ModelService> model_service_;
   std::unique_ptr<TestConversationAPIClient> client_;
