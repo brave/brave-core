@@ -41,7 +41,8 @@ inline constexpr int kTabstripToolbarOverlap = 8;
 //   per-translation-unit `GetLayoutConstant` wrappers in chromium_src that
 //   redirect just the `kTabstripToolbarOverlap` cases to
 //   `tabs::GetHorizontalTabControlsDelta()` (see
-//   `chromium_src/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc`
+//   `chromium_src/chrome/browser/ui/views/
+// frame/horizontal_tab_strip_region_view.cc`
 //   and the analogous wrapper in `browser_frame_view_win.cc`).
 inline constexpr int kTabStripControlsHeightDelta = -5;
 

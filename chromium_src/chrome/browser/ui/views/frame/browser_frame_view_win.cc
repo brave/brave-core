@@ -44,7 +44,8 @@ namespace {
 // calls through the wrapper keeps the central override intact for every
 // other consumer (tab/toolbar geometry, frame view top-area math, etc.) and
 // avoids patching upstream. See the matching wrapper in
-// `chromium_src/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc`.
+// `chromium_src/chrome/browser/ui/views/
+// frame/horizontal_tab_strip_region_view.cc`.
 int GetLayoutConstantForBraveWindowControls(LayoutConstant constant) {
   if (constant == LayoutConstant::kTabstripToolbarOverlap) {
     return tabs::GetHorizontalTabControlsDelta();
