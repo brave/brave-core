@@ -355,8 +355,9 @@ void PolkadotTxManager::OnTransactionStatusResolved(
       // If we're using transfer_all, we had to manually adjust the tx amount.
       // Because the actual fee can differ, our new amount can differ as well.
       // Undo our previous operation and apply the new fee, storing the
-      // updated send amount. Return true or false if we received a malicious
-      // RPC response that would've caused overflow.
+      // updated send amount. Return true or false if we were able to adjust the
+      // amount without overflow/underflow, which is possible assuming a
+      // malicious peer response.
       const uint128_t old_fee = tx->fee();
       base::CheckedNumeric<uint128_t> amount = tx->amount();
       amount += old_fee;
@@ -373,6 +374,7 @@ void PolkadotTxManager::OnTransactionStatusResolved(
     case PolkadotTransactionStatus::kSuccess:
       CHECK(fee_paid.has_value());
       if (!adjust_transfer_all_amount(polkadot_tx->tx())) {
+        // Leave the tx untouched in a Submitted status.
         return;
       }
       polkadot_tx->set_status(mojom::TransactionStatus::Confirmed);
@@ -383,6 +385,7 @@ void PolkadotTxManager::OnTransactionStatusResolved(
     case PolkadotTransactionStatus::kFailed:
       CHECK(fee_paid.has_value());
       if (!adjust_transfer_all_amount(polkadot_tx->tx())) {
+        // Leave the tx untouched in a Submitted status.
         return;
       }
       polkadot_tx->set_status(mojom::TransactionStatus::Error);
@@ -401,8 +404,7 @@ void PolkadotTxManager::OnTransactionStatusResolved(
       // failed to parse the events blob or there was a failed integrity check
       // within it. Regardless, the user's extrinsic is still included inside of
       // a finalized block which means a fee was incurred.
-      polkadot_tx->set_status(mojom::TransactionStatus::Error);
-      break;
+      return;
 
     case PolkadotTransactionStatus::kNotFinalized:
       return;

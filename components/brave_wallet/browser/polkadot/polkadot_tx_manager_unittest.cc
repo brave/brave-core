@@ -75,7 +75,8 @@ class MockTxStateManagerObserver : public TxStateManager::Observer {
 };
 
 void SetUpMockRpcForFoundExtrinsic(PolkadotMockRpc* polkadot_mock_rpc,
-                                   bool was_successful) {
+                                   bool was_successful,
+                                   bool use_invalid_events) {
   const uint32_t block_num = 29385557u;
 
   {
@@ -124,16 +125,22 @@ void SetUpMockRpcForFoundExtrinsic(PolkadotMockRpc* polkadot_mock_rpc,
   }
 
   base::flat_map<std::string, std::string> events_map;
-  if (was_successful) {
+  if (was_successful && !use_invalid_events) {
     events_map.emplace(
         "24eb72acd6d597132debd29d2212abf4f635fcce5d4490fe72137b88ae6f42b1",
         R"(0b080000000e000000000001000000000007d41643ad0b997002000000020000000408d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516dc8df1b51300000000000000000000000000020000000402d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa95168eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48a866140000000000000000000000000000000200000004076d6f646c6461702f7361746c0000000000000000000000000000000000000000dc8df1b51300000000000000000000000000020000001a00d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516dc8df1b5130000000000000000000000000000000000000000000000000000000000020000000000823798916da8000000)"
         R"(02000000030000000408d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa95162a6502a40300000000000000000000000000030000000004d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa95160000030000000402d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa951652707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477ce8e50ea520040000000000000000000000000300000004076d6f646c6461702f7361746c00000000000000000000000000000000000000002a6502a40300000000000000000000000000030000001a00d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa95162a6502a403000000000000000000000000000000000000000000000000000000000003000000000022c15a916da8000000)");
 
-  } else {
+  } else if (!use_invalid_events) {
     events_map.emplace(
         "24eb72acd6d597132debd29d2212abf4f635fcce5d4490fe72137b88ae6f42b1",
         R"(0b080000000e000000000001000000000007d41643ad0b997002000000020000000408d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516dc8df1b51300000000000000000000000000020000000402d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa95168eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48a866140000000000000000000000000000000200000004076d6f646c6461702f7361746c0000000000000000000000000000000000000000dc8df1b51300000000000000000000000000020000001a00d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516dc8df1b5130000000000000000000000000000000000000000000000000000000000020000000001823798916da8000000)"  //
+        R"(02000000030000000408d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa95162a6502a40300000000000000000000000000030000000004d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa95160000030000000402d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa951652707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477ce8e50ea520040000000000000000000000000300000004076d6f646c6461702f7361746c00000000000000000000000000000000000000002a6502a40300000000000000000000000000030000001a00d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa95162a6502a403000000000000000000000000000000000000000000000000000000000003000000000022c15a916da8000000)");
+  } else {
+    // d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516
+    events_map.emplace(
+        "24eb72acd6d597132debd29d2212abf4f635fcce5d4490fe72137b88ae6f42b1",
+        R"(0b080000000e000000000001000000000007d41643ad0b997002000000020000000408d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516dc8df1b51300000000000000000000000000020000000402d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa95168eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48a866140000000000000000000000000000000200000004076d6f646c6461702f7361746c0000000000000000000000000000000000000000dc8df1b51300000000000000000000000000020000001a00d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa9516dc9df1b5130000000000000000000000000000000000000000000000000000000000020000000000823798916da8000000)"
         R"(02000000030000000408d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa95162a6502a40300000000000000000000000000030000000004d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa95160000030000000402d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa951652707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477ce8e50ea520040000000000000000000000000300000004076d6f646c6461702f7361746c00000000000000000000000000000000000000002a6502a40300000000000000000000000000030000001a00d6b2a5cc606ea86342001dd036b301c15a5cba63c413cad5ca0e8f47e6fa95162a6502a403000000000000000000000000000000000000000000000000000000000003000000000022c15a916da8000000)");
   }
   polkadot_mock_rpc->SetEventsMap(std::move(events_map));
@@ -506,7 +513,7 @@ TEST_F(PolkadotTxManagerUnitTest,
 TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_Confirmed) {
   // Prove that our ideal happy flow works for approving transactions.
 
-  SetUpMockRpcForFoundExtrinsic(polkadot_mock_rpc_.get(), true);
+  SetUpMockRpcForFoundExtrinsic(polkadot_mock_rpc_.get(), true, false);
 
   polkadot_mock_rpc_->AddReqResPairs();
   polkadot_mock_rpc_->FinalizeSetup();
@@ -562,7 +569,7 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_Failed) {
   // Test that we track when an extrinsic is included in a finalized block but
   // it was rejected by the chain.
 
-  SetUpMockRpcForFoundExtrinsic(polkadot_mock_rpc_.get(), false);
+  SetUpMockRpcForFoundExtrinsic(polkadot_mock_rpc_.get(), false, false);
   polkadot_mock_rpc_->AddReqResPairs();
   polkadot_mock_rpc_->FinalizeSetup();
 
@@ -607,6 +614,44 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_Failed) {
                   polkadot_tx->tx()->extrinsic_metadata()->extrinsic()),
               kExpectedExtrinsic);
   }
+}
+
+TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_InvalidResponse) {
+  // Test the case where we've found an extrinsic but the events was slightly
+  // corrupted, i.e. fees didn't match between withdrawal and what was cashed by
+  // the TransactionPayment pallet.
+
+  SetUpMockRpcForFoundExtrinsic(polkadot_mock_rpc_.get(), false, true);
+  polkadot_mock_rpc_->AddReqResPairs();
+  polkadot_mock_rpc_->FinalizeSetup();
+
+  std::string chain_id = mojom::kPolkadotTestnet;
+
+  auto tx_meta_id = SetUpUnapprovedTx(chain_id);
+
+  base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
+      approved_future;
+
+  GetPolkadotTxManager()->ApproveTransaction(tx_meta_id,
+                                             approved_future.GetCallback());
+
+  auto [success2, error, msg] = approved_future.Take();
+  EXPECT_TRUE(success2);
+
+  const auto& txs = tx_storage_ptr_->GetTxs();
+  const auto* tx = txs.FindDict(tx_meta_id);
+  ASSERT_TRUE(tx);
+
+  ExpectSubmittedTxState(tx_meta_id);
+
+  // We don't send any updates for this scenario.
+  MockTxStateManagerObserver observer(*GetPolkadotTxStateManager());
+  EXPECT_CALL(observer, OnTransactionStatusChanged(testing::_))
+      .Times(0)
+      .WillOnce(base::test::RunOnceClosure(task_environment_.QuitClosure()));
+
+  ExpectSubmittedTxState(tx_meta_id);
+  testing::Mock::VerifyAndClearExpectations(&observer);
 }
 
 TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_NotFound) {
@@ -740,7 +785,7 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_TransferAll) {
   // Prove that our ideal happy flow works for approving transactions, this time
   // for a transfer_all call.
 
-  SetUpMockRpcForFoundExtrinsic(polkadot_mock_rpc_.get(), true);
+  SetUpMockRpcForFoundExtrinsic(polkadot_mock_rpc_.get(), true, false);
   polkadot_mock_rpc_->AddReqResPairs();
   polkadot_mock_rpc_->FinalizeSetup();
 
@@ -1028,7 +1073,7 @@ TEST_F(PolkadotTxManagerUnitTest, UpdatePendingTransactions_BlockTracker) {
   // Test that calling UpdatePendingTransactions() doesn't remove any previously
   // registered block trackers.
 
-  SetUpMockRpcForFoundExtrinsic(polkadot_mock_rpc_.get(), true);
+  SetUpMockRpcForFoundExtrinsic(polkadot_mock_rpc_.get(), true, false);
   polkadot_mock_rpc_->AddReqResPairs();
   polkadot_mock_rpc_->FinalizeSetup();
 
