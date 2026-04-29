@@ -80,6 +80,9 @@ ViewShadow::~ViewShadow() {
 }
 
 void ViewShadow::SetCornerRadii(const gfx::RoundedCornersF& corner_radii) {
+  if (corner_radii_ == corner_radii) {
+    return;
+  }
   corner_radii_ = corner_radii;
   shadow_layer()->SchedulePaint(gfx::Rect(shadow_layer()->size()));
 }
