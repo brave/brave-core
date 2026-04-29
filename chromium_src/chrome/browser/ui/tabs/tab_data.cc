@@ -5,12 +5,10 @@
 
 #include "chrome/browser/ui/tabs/tab_data.h"
 
+#include <optional>
+
 #include "base/check.h"
-
-#define FromTabInterface FromTabInterface_ChromiumImpl
-#include <chrome/browser/ui/tabs/tab_data.cc>
-#undef FromTabInterface
-
+#include "base/feature_list.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -58,36 +56,39 @@ ui::ImageModel GetThemedNTPFavicon(content::WebContents* contents) {
       ui::ResourceBundle::GetSharedInstance().GetImageNamed(resource_id));
 }
 
-}  // namespace
-
-namespace tabs {
-
-TabData TabData::FromTabInterface(tabs::TabInterface* tab) {
+// Returns stored TabData if |tab| is a shared pinned dummy, nullopt otherwise.
+std::optional<tabs::TabData> MaybeGetSharedPinnedTabData(
+    tabs::TabInterface* tab) {
+  if (!base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs)) {
+    return std::nullopt;
+  }
+  // Note that in unit tests, bwi may be null.
   auto* const bwi = tab->GetBrowserWindowInterface();
-  if (base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs)) {
-    // Note that in unit tests, this may be null.
-    if (bwi) {
-      TabStripModel* model = bwi->GetTabStripModel();
-      const int index = model->GetIndexOfTab(tab);
-      if (index < model->IndexOfFirstNonPinnedTab()) {
-        auto* shared_pinned_tab_service =
-            SharedPinnedTabServiceFactory::GetForProfile(model->profile());
-        DCHECK(shared_pinned_tab_service);
-
-        auto* contents = model->GetWebContentsAt(index);
-        if (shared_pinned_tab_service->IsDummyContents(contents)) {
-          if (const auto* data =
-                  shared_pinned_tab_service->GetTabDataForDummyContents(
-                      index, contents)) {
-            return *data;
-          }
-        }
-      }
+  if (!bwi) {
+    return std::nullopt;
+  }
+  TabStripModel* model = bwi->GetTabStripModel();
+  const int index = model->GetIndexOfTab(tab);
+  if (index >= model->IndexOfFirstNonPinnedTab()) {
+    return std::nullopt;
+  }
+  auto* shared_pinned_tab_service =
+      SharedPinnedTabServiceFactory::GetForProfile(model->profile());
+  DCHECK(shared_pinned_tab_service);
+  auto* contents = model->GetWebContentsAt(index);
+  if (shared_pinned_tab_service->IsDummyContents(contents)) {
+    if (const auto* data =
+            shared_pinned_tab_service->GetTabDataForDummyContents(index,
+                                                                  contents)) {
+      return *data;
     }
   }
+  return std::nullopt;
+}
 
-  auto data = FromTabInterface_ChromiumImpl(tab);
-
+// Overrides favicon theming for Brave WebUIs and surfaces unloaded-tab status.
+void ApplyBraveTabDataOverrides(tabs::TabInterface* tab, tabs::TabData& data) {
+  auto* const bwi = tab->GetBrowserWindowInterface();
   content::WebContents* const contents = tab->GetContents();
   const GURL& url = contents->GetVisibleURL();
 
@@ -118,7 +119,21 @@ TabData TabData::FromTabInterface(tabs::TabInterface* tab) {
       data.should_show_discard_status = true;
     }
   }
-  return data;
 }
 
-}  // namespace tabs
+}  // namespace
+
+// Can't override TabData::FromTabInterface as it's defined and also called in
+// this same file.
+#define BRAVE_TAB_DATA_FROM_TAB_INTERFACE_SHARED_PINNED_EARLY_RETURN \
+  if (auto tab_data = MaybeGetSharedPinnedTabData(tab_interface)) {  \
+    return *tab_data;                                                \
+  }
+
+#define BRAVE_TAB_DATA_FROM_TAB_INTERFACE_APPLY_OVERRIDES \
+  ApplyBraveTabDataOverrides(tab_interface, tab_data);
+
+#include <chrome/browser/ui/tabs/tab_data.cc>
+
+#undef BRAVE_TAB_DATA_FROM_TAB_INTERFACE_APPLY_OVERRIDES
+#undef BRAVE_TAB_DATA_FROM_TAB_INTERFACE_SHARED_PINNED_EARLY_RETURN
