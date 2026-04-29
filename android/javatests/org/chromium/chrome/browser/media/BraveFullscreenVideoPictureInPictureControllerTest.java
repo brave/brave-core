@@ -108,7 +108,8 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
                         /* isStart= */ false,
                         /* isResume= */ false,
                         /* isLeftFullscreen= */ false,
-                        /* isWebContentsLeftFullscreen= */ true);
+                        /* isWebContentsLeftFullscreen= */ true,
+                        /* isNewTab= */ false);
 
         assertTrue(handled);
         assertFalse(mController.mDismissPending);
