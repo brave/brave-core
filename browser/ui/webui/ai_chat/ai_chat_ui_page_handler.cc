@@ -47,6 +47,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/common/url_constants.h"
+#include "printing/printing_utils.h"
 #include "services/data_decoder/public/cpp/decode_image.h"
 #include "services/data_decoder/public/mojom/image_decoder.mojom.h"
 #include "third_party/skia/include/core/SkBitmap.h"
@@ -294,6 +295,11 @@ void AIChatUIPageHandler::ProcessPdfFile(const std::vector<uint8_t>& file_data,
                                          const std::string& filename,
                                          ProcessPdfFileCallback callback) {
 #if BUILDFLAG(ENABLE_PDF)
+  if (!printing::LooksLikePdf(file_data)) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
   ExtractAndProcessFile(std::make_unique<PdfTextExtractor>(), file_data,
                         FILE_PATH_LITERAL("pdf"), filename,
                         mojom::UploadedFileType::kPdf, std::move(callback));

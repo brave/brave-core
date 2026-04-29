@@ -49,6 +49,7 @@ source_set("ai_chat") {
     "//components/user_prefs",
     "//content/public/browser",
     "//pdf:buildflags",
+    "//printing",
     "//services/data_decoder/public/cpp",
     "//ui/gfx/codec",
     "//ui/webui",

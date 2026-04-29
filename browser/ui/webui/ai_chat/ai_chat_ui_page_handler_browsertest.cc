@@ -44,6 +44,8 @@
 #include "net/dns/mock_host_resolver.h"
 #include "pdf/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/gfx/codec/png_codec.h"
+#include "ui/gfx/image/image_unittest_util.h"
 #include "url/url_constants.h"
 
 namespace ai_chat {
@@ -263,18 +265,23 @@ IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest, ProcessImageFile) {
   auto* page_handler = GetPageHandler(ai_chat_contents);
   ASSERT_TRUE(page_handler);
 
-  // Test with invalid image data - should result in null
-  std::vector<uint8_t> invalid_data = {1, 2, 3, 4};
-  base::test::TestFuture<ai_chat::mojom::UploadedFilePtr> future_invalid;
+  // Empty data - should result in null.
+  {
+    base::test::TestFuture<ai_chat::mojom::UploadedFilePtr> future;
+    page_handler->ProcessImageFile({}, "empty.png", future.GetCallback());
+    EXPECT_FALSE(future.Take());
+  }
 
-  page_handler->ProcessImageFile(invalid_data, "test.png",
-                                 future_invalid.GetCallback());
+  // Invalid (non-image) data - should result in null.
+  {
+    base::test::TestFuture<ai_chat::mojom::UploadedFilePtr> future;
+    page_handler->ProcessImageFile({1, 2, 3, 4}, "invalid.png",
+                                   future.GetCallback());
+    EXPECT_FALSE(future.Take());
+  }
 
-  auto invalid_result = future_invalid.Take();
-  EXPECT_FALSE(invalid_result);  // Should be null for invalid data
-
-  // Test with valid PNG image data - should succeed
-  constexpr uint8_t kValidPng[] = {
+  // Valid 1x1 PNG - should succeed and round-trip correctly.
+  constexpr uint8_t kSamplePng[] = {
       0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00,
       0x0d, 0x49, 0x48, 0x44, 0x52, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00,
       0x00, 0x01, 0x08, 0x02, 0x00, 0x00, 0x00, 0x90, 0x77, 0x53, 0xde,
@@ -282,19 +289,37 @@ IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest, ProcessImageFile) {
       0x5a, 0xc4, 0x5e, 0x08, 0x08, 0x00, 0x00, 0xff, 0xff, 0x02, 0x71,
       0x01, 0x1d, 0xcd, 0xd0, 0xd6, 0x62, 0x00, 0x00, 0x00, 0x00, 0x49,
       0x45, 0x4e, 0x44, 0xae, 0x42, 0x60, 0x82};
+  auto sample_bitmap = gfx::PNGCodec::Decode(kSamplePng);
+  {
+    std::vector<uint8_t> data(std::begin(kSamplePng), std::end(kSamplePng));
+    base::test::TestFuture<ai_chat::mojom::UploadedFilePtr> future;
+    page_handler->ProcessImageFile(data, "sample.png", future.GetCallback());
+    auto result = future.Take();
+    ASSERT_TRUE(result);
+    EXPECT_EQ(result->filename, "sample.png");
+    EXPECT_EQ(result->type, ai_chat::mojom::UploadedFileType::kImage);
+    EXPECT_GT(result->data.size(), 0u);
+    EXPECT_EQ(result->filesize, result->data.size());
+    auto decoded = gfx::PNGCodec::Decode(result->data);
+    EXPECT_EQ(decoded.width(), sample_bitmap.width());
+    EXPECT_EQ(decoded.height(), sample_bitmap.height());
+  }
 
-  std::vector<uint8_t> valid_data(std::begin(kValidPng), std::end(kValidPng));
-  base::test::TestFuture<ai_chat::mojom::UploadedFilePtr> future_valid;
-
-  page_handler->ProcessImageFile(valid_data, "valid.png",
-                                 future_valid.GetCallback());
-
-  auto valid_result = future_valid.Take();
-  ASSERT_TRUE(valid_result);  // Should succeed with valid PNG data
-  EXPECT_EQ(valid_result->filename, "valid.png");
-  EXPECT_EQ(valid_result->type, ai_chat::mojom::UploadedFileType::kImage);
-  EXPECT_GT(valid_result->data.size(), 0u);
-  EXPECT_EQ(valid_result->filesize, valid_result->data.size());
+  // Large PNG (2048x2048) - should be scaled down to fit within 1024x768.
+  {
+    auto large_png_bytes = gfx::test::CreatePNGBytes(2048);
+    std::vector<uint8_t> data(large_png_bytes->begin(), large_png_bytes->end());
+    base::test::TestFuture<ai_chat::mojom::UploadedFilePtr> future;
+    page_handler->ProcessImageFile(data, "large.png", future.GetCallback());
+    auto result = future.Take();
+    ASSERT_TRUE(result);
+    EXPECT_EQ(result->filename, "large.png");
+    EXPECT_EQ(result->type, ai_chat::mojom::UploadedFileType::kImage);
+    EXPECT_GT(result->data.size(), 0u);
+    auto decoded = gfx::PNGCodec::Decode(result->data);
+    EXPECT_EQ(decoded.width(), 1024);
+    EXPECT_EQ(decoded.height(), 768);
+  }
 }
 
 #if BUILDFLAG(ENABLE_PDF)
@@ -302,6 +327,26 @@ IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest, ProcessPdfFile) {
   auto* page_handler = GetPageHandler(web_contents());
   ASSERT_TRUE(page_handler);
 
+  // LooksLikePdf early exit: data shorter than 50 bytes, even with valid
+  // PDF header.
+  {
+    std::vector<uint8_t> too_small(std::begin("%PDF-1.4"),
+                                   std::end("%PDF-1.4") - 1);
+    base::test::TestFuture<ai_chat::mojom::UploadedFilePtr> future;
+    page_handler->ProcessPdfFile(too_small, "small.pdf", future.GetCallback());
+    EXPECT_FALSE(future.Take());
+  }
+
+  // LooksLikePdf early exit: sufficient size but wrong header.
+  {
+    std::vector<uint8_t> wrong_header(50, 'x');
+    base::test::TestFuture<ai_chat::mojom::UploadedFilePtr> future;
+    page_handler->ProcessPdfFile(wrong_header, "fake.pdf",
+                                 future.GetCallback());
+    EXPECT_FALSE(future.Take());
+  }
+
+  // Valid PDF - should extract text successfully.
   auto [pdf_path, pdf_bytes] = ReadTestPdf();
 
   base::test::TestFuture<ai_chat::mojom::UploadedFilePtr> future;

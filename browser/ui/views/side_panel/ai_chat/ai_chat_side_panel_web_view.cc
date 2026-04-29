@@ -147,6 +147,8 @@ void AIChatSidePanelWebView::RunFileChooser(
   if (browser_view) {
     static_cast<content::WebContentsDelegate*>(browser_view->browser())
         ->RunFileChooser(render_frame_host, std::move(listener), params);
+  } else {
+    listener->FileSelectionCanceled();
   }
 }
 
