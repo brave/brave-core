@@ -55,6 +55,7 @@ public class BraveYouTubePictureInPictureControllerTest {
 
     @Mock private BraveActivity mBraveActivity;
     @Mock private WebContents mWebContents;
+    @Mock private WebContents mOtherWebContents;
     @Mock private FullscreenManager mFullscreenManager;
     @Mock private FullscreenHandlerStub mBraveFullscreenHandler;
     @Mock private PowerManager mPowerManager;
@@ -221,6 +222,37 @@ public class BraveYouTubePictureInPictureControllerTest {
         verify(mWebContents).exitFullscreen();
         assertFalse(controller.isActive());
         assertFalse(controller.isInterruptedByScreenLockForTesting());
+    }
+
+    @Test
+    @SmallTest
+    public void onNewTabDuringPictureInPicture_restoredSession_usesRegisteredWebContents() {
+        when(mBraveActivity.getFullscreenManager()).thenReturn(mFullscreenManager);
+        when(mFullscreenManager.getPersistentFullscreenMode()).thenReturn(false);
+        BraveMediaSessionHelper.setYouTubePictureInPictureWebContents(mWebContents);
+
+        Bundle savedState = new Bundle();
+        savedState.putBoolean(BraveYouTubePictureInPictureController.KEY_ACTIVE, true);
+
+        BraveYouTubePictureInPictureController controller =
+                new BraveYouTubePictureInPictureController(mBraveActivity);
+        controller.onPostCreate(savedState);
+
+        try (MockedStatic<BraveYouTubeScriptInjectorNativeHelper> nativeHelper =
+                mockStatic(BraveYouTubeScriptInjectorNativeHelper.class)) {
+            controller.onNewTabDuringPictureInPicture();
+
+            nativeHelper.verify(
+                    () -> BraveYouTubeScriptInjectorNativeHelper.exitFullscreen(mWebContents));
+            nativeHelper.verify(
+                    () -> BraveYouTubeScriptInjectorNativeHelper.exitFullscreen(mOtherWebContents),
+                    never());
+        }
+
+        verify(mBraveActivity, never()).getCurrentWebContents();
+        verify(mWebContents).exitFullscreen();
+        verify(mOtherWebContents, never()).exitFullscreen();
+        assertFalse(controller.isActive());
     }
 
     @Test

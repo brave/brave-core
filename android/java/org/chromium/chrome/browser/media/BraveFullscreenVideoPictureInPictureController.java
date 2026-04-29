@@ -85,7 +85,8 @@ public class BraveFullscreenVideoPictureInPictureController {
         // the new intent. Also drop Brave's persistent fullscreen UI synchronously so the new
         // tab is not rendered on a residual fullscreen layout.
         if (!(activity instanceof final BraveActivity braveActivity)
-                || !braveActivity.isYouTubePictureInPictureActive()) {
+                || !braveActivity.isYouTubePictureInPictureActive()
+                || !activity.isInPictureInPictureMode()) {
             return false;
         }
 
