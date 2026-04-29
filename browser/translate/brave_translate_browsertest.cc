@@ -13,12 +13,14 @@
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/app/brave_command_ids.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/translate/chrome_translate_client.h"
 #include "chrome/browser/translate/translate_test_utils.h"
+#include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -404,6 +406,33 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserGoogleRedirectTest,
   // that are not held by js redirections).
   EXPECT_CALL(backend_request_, Call(_)).Times(0);
   EXPECT_EQ(false, EvalTranslateJs(load_image));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest, SelectionTranslation) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), embedded_test_server()->GetURL("/espanol_page.html")));
+  WaitUntilLanguageDetermined();
+
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  content::RenderFrameHost* main_frame = web_contents->GetPrimaryMainFrame();
+
+  content::ContextMenuParams params;
+  params.selection_text = u"Hola mundo";
+  params.page_url = web_contents->GetVisibleURL();
+
+  TestRenderViewContextMenu menu(*main_frame, params);
+  menu.Init();
+
+  ASSERT_TRUE(
+      menu.IsItemPresent(IDC_CONTENT_CONTEXT_BRAVE_TRANSLATE_SELECTION));
+  ASSERT_TRUE(
+      menu.IsCommandIdEnabled(IDC_CONTENT_CONTEXT_BRAVE_TRANSLATE_SELECTION));
+
+  menu.ExecuteCommand(IDC_CONTENT_CONTEXT_BRAVE_TRANSLATE_SELECTION, 0);
+  auto* controller = TranslateBubbleController::From(browser());
+  ASSERT_TRUE(controller);
+  EXPECT_TRUE(controller->GetTranslateBubble());
 }
 
 }  // namespace translate

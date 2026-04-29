@@ -100,6 +100,10 @@ class RenderViewContextMenu : public RenderViewContextMenu_Chromium
   void BuildEmailAliasesMenu();
 #endif
 
+  void BuildBraveTranslateSelectionItem();
+  void ExecBraveTranslateSelection();
+  bool IsBraveTranslateSelectionEnabled() const;
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
   bool IsAIChatEnabled() const;
   void ExecuteAIChatCommand(int command);
