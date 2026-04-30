@@ -125,24 +125,16 @@ private struct OriginToggleStyle: ToggleStyle {
   func makeBody(configuration: Configuration) -> some View {
     Toggle(isOn: configuration.$isOn) {
       configuration.label
-        .labelStyle(_LabelStyle(isOn: configuration.isOn))
+        .labelStyle(_LabelStyle())
     }
     .tint(Color(braveSystemName: .primary40))
   }
 
   struct _LabelStyle: LabelStyle {
-    var isOn: Bool
     func makeBody(configuration: Configuration) -> some View {
       Label {
-        VStack(alignment: .leading) {
-          configuration.title
-            .foregroundStyle(Color(braveSystemName: .textPrimary))
-          if isOn {
-            Text(Strings.Origin.enabledFeatureNote)
-              .foregroundStyle(Color(braveSystemName: .textSecondary))
-              .font(.footnote)
-          }
-        }
+        configuration.title
+          .foregroundStyle(Color(braveSystemName: .textPrimary))
       } icon: {
         configuration.icon
           .foregroundStyle(Color(braveSystemName: .iconDefault))
