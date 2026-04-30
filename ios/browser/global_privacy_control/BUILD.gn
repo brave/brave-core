@@ -7,11 +7,27 @@ import("//ios/web/public/js_messaging/optimize_ts.gni")
 
 source_set("global_privacy_control") {
   sources = [
+    "gpc_javascript_feature.h",
+    "gpc_javascript_feature.mm",
     "gpc_pref_names_bridge.h",
     "gpc_pref_names_bridge.mm",
   ]
   deps = [
-    "//base",
+    ":gpc_js",
     "//brave/components/global_privacy_control",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/web/public",
+    "//ios/web/web_state/ui:wk_web_view_configuration_provider",
   ]
+  public_deps = [
+    "//base",
+    "//components/prefs",
+    "//ios/web/public/js_messaging",
+  ]
+}
+
+optimize_ts("gpc_js") {
+  visibility = [ ":global_privacy_control" ]
+
+  sources = [ "resources/gpc.ts" ]
 }
