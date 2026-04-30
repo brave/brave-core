@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Upstream's variable `update_app` contains the path to the new browser
+# version's .app directory. As of this writing, it is computed as:
+#     update_app="${update_dmg_mount_point}/${APP_DIR}"
+# where
+#     APP_DIR="$(basename "${installed_app_path}")"
+# This fails when the browser's installation directory has a non-standard name.
+# For example: If the browser is installed in /Applications/Brave.app instead of
+# /Applications/Brave Browser.app, then `update_app` tries to read Brave.app
+# from the DMG, when it should read Brave Browser.app. The substitution below
+# fixes this.
+
+[[substitution]]
+description = 'Use PRODUCT_NAME instead of APP_DIR for update app path'
+pattern = '${update_dmg_mount_point}/${APP_DIR}'
+replace = '${update_dmg_mount_point}/${PRODUCT_NAME}.app'

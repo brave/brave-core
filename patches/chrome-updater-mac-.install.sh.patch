@@ -1,0 +1,13 @@
+diff --git a/chrome/updater/mac/.install.sh b/chrome/updater/mac/.install.sh
+index 3b1874d09fca0cf88e361927dfea7c4273790030..598b668ee141a0fe97fa65807755ee866a1fe6b6 100755
+--- a/chrome/updater/mac/.install.sh
++++ b/chrome/updater/mac/.install.sh
+@@ -337,7 +337,7 @@ main() {
+   # The update to install.
+ 
+   # update_app is the path to the new version of the .app.
+-  local update_app="${update_dmg_mount_point}/${APP_DIR}"
++  local update_app="${update_dmg_mount_point}/${PRODUCT_NAME}.app"
+   note "update_app = ${update_app}"
+ 
+   # Make sure that it's an absolute path.
