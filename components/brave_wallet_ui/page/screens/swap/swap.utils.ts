@@ -51,7 +51,19 @@ export function getGate3QuoteOptions({
   spotPrices: BraveWallet.AssetPrice[]
   defaultFiatCurrency: string
 }): QuoteOption[] {
-  return quote.routes.map((route) => {
+  const toTokenPrice = getTokenPriceAmountFromRegistry(spotPrices, toToken)
+  const networkAssetPrice = getTokenPriceAmountFromRegistry(
+    spotPrices,
+    makeNetworkAsset(fromNetwork),
+  )
+
+  const options: QuoteOption[] = []
+  const netValues: Amount[] = []
+  const durations: (number | undefined)[] = []
+  let bestNetValue: Amount | undefined
+  let bestDuration: number | undefined
+
+  for (const route of quote.routes) {
     const fromAmount = new Amount(route.sourceAmount).divideByDecimals(
       fromToken.decimals,
     )
@@ -68,9 +80,7 @@ export function getGate3QuoteOptions({
       getTokenPriceAmountFromRegistry(spotPrices, fromToken),
     )
 
-    const toAmountFiat = toAmount.times(
-      getTokenPriceAmountFromRegistry(spotPrices, toToken),
-    )
+    const toAmountFiat = toAmount.times(toTokenPrice)
 
     const fiatDiff = toAmountFiat.minus(fromAmountFiat)
     const fiatDiffRatio = fiatDiff.div(fromAmountFiat)
@@ -78,8 +88,7 @@ export function getGate3QuoteOptions({
       ? new Amount(route.priceImpact).toAbsoluteValue()
       : fiatDiffRatio.times(100).toAbsoluteValue()
 
-    // Use network fee from route if available, otherwise zero
-    // If gasless is true, network fees are sponsored/waived
+    // gasless routes have their network fee sponsored by the relayer.
     const networkFee =
       route.gasless || !route.networkFee
         ? Amount.zero()
@@ -87,7 +96,19 @@ export function getGate3QuoteOptions({
             route.networkFee.decimals,
           )
 
-    return {
+    const networkFeeFiat = networkFee.times(networkAssetPrice)
+    const netValueFiat = toAmountFiat.minus(networkFeeFiat)
+
+    const parsedDuration =
+      route.estimatedTime !== undefined
+        ? Number(route.estimatedTime)
+        : undefined
+    const duration =
+      parsedDuration !== undefined && Number.isFinite(parsedDuration)
+        ? parsedDuration
+        : undefined
+
+    options.push({
       fromAmount,
       toAmount,
       minimumToAmount,
@@ -101,20 +122,40 @@ export function getGate3QuoteOptions({
       networkFee,
       networkFeeFiat: networkFee.isUndefined()
         ? ''
-        : networkFee
-            .times(
-              getTokenPriceAmountFromRegistry(
-                spotPrices,
-                makeNetworkAsset(fromNetwork),
-              ),
-            )
-            .formatAsFiat(defaultFiatCurrency),
+        : networkFeeFiat.formatAsFiat(defaultFiatCurrency),
       provider: route.provider,
       executionDuration: route.estimatedTime ?? undefined,
-      tags: ['CHEAPEST', 'FASTEST'] as RouteTagsType[],
+      tags: [],
       id: route.id,
+    })
+    netValues.push(netValueFiat)
+    durations.push(duration)
+
+    if (bestNetValue === undefined || netValueFiat.gt(bestNetValue)) {
+      bestNetValue = netValueFiat
     }
-  })
+    if (
+      duration !== undefined
+      && (bestDuration === undefined || duration < bestDuration)
+    ) {
+      bestDuration = duration
+    }
+  }
+
+  // Every route matching the best score is tagged so genuine ties surface
+  // multiple badges instead of picking an arbitrary winner.
+  for (let i = 0; i < options.length; i++) {
+    const tags: RouteTagsType[] = []
+    if (bestNetValue !== undefined && netValues[i].eq(bestNetValue)) {
+      tags.push('CHEAPEST')
+    }
+    if (bestDuration !== undefined && durations[i] === bestDuration) {
+      tags.push('FASTEST')
+    }
+    options[i].tags = tags
+  }
+
+  return options
 }
 
 export const getLPIcon = (source: Pick<LiquiditySource, 'name' | 'logo'>) => {
