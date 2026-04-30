@@ -130,11 +130,24 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
       return
     }
 
-    // Copy the item but use the web-view's title and location instead, if available
-    // This is due to a iFrames security
-    item.pageSrc = tab.visibleURL?.absoluteString ?? item.pageSrc
+    // The script reports `window.top.location.href` for same-origin frames (which already equals `tab.visibleURL`)
+    // and falls back to the iframe's own URL when blocked by SOP. We only want to override in that cross-origin case so
+    // the stored `pageSrc` matches the page the user thinks they added the item from, instead of an opaque embedder URL.
+    if let visibleURL = tab.visibleURL,
+      let pageURL = URL(string: item.pageSrc),
+      pageURL.host != visibleURL.host
+    {
+      item.pageSrc = visibleURL.absoluteString
+    }
     item.pageTitle = tab.title ?? item.pageTitle
     item.lastPlayedOffset = 0.0
+
+    guard Self.canResolvePageSrcLater(item.pageSrc) else {
+      DispatchQueue.main.async {
+        handler.delegate?.updatePlaylistURLBar(tab: tab, state: .none, item: nil)
+      }
+      return
+    }
 
     Self.queue.async { [weak handler] in
       guard let handler = handler else { return }
@@ -165,6 +178,31 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
           }
         }
       }
+    }
+  }
+
+  /// Returns `true` when `pageSrc` is the kind of URL we can reasonably re-resolve later by re-loading it in a `LivePlaylistWebLoader`.
+  /// For known sites whose feed/home/search pages have no stable `<video>` element to extract from, returns `false` so we don't capture
+  /// items that are guaranteed to fail resolution. Unknown sites fall through and are trusted; we only special-case sites we have evidence for.
+  private static func canResolvePageSrcLater(_ pageSrc: String) -> Bool {
+    guard let url = URL(string: pageSrc), let baseDomain = url.baseDomain else {
+      return true
+    }
+    let path = url.path
+    switch baseDomain {
+    case "youtube.com":
+      // Only watch/shorts/embed pages have a stable video at a stable URL. Homepage,
+      // search results (`/results`), feed (`/feed/*`), channel (`/@handle`, `/c/*`,
+      // `/channel/*`, `/user/*`) and similar listings do not.
+      return path.hasPrefix("/watch")
+        || path.hasPrefix("/shorts/")
+        || path.hasPrefix("/embed/")
+        || path.hasPrefix("/v/")
+    case "youtu.be":
+      // Short links of the form `youtu.be/<videoId>`.
+      return url.pathComponents.count >= 2 && !url.pathComponents[1].isEmpty
+    default:
+      return true
     }
   }
 
