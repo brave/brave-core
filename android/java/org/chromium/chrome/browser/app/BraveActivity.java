@@ -1747,7 +1747,7 @@ public abstract class BraveActivity extends ChromeActivity
 
     public void focusSearchBox() {
         if (mNewTabPageManager != null) {
-            mNewTabPageManager.focusSearchBox(false, AutocompleteRequestType.SEARCH, null);
+            mNewTabPageManager.focusSearchBox(false, AutocompleteRequestType.SEARCH, false, null);
         }
     }
 
