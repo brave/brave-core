@@ -285,10 +285,21 @@ void CommanderService::ShowCommander() {
 }
 
 void CommanderService::HideCommander() {
+  // Snapshot whether we need to revert before Reset(): observers notified by
+  // Reset() can touch autocomplete state such that IsShowing() no longer
+  // reflects commander visibility reliably during shutdown steps.
+  bool had_commander_omnibox_prefix = false;
+  if (OmniboxView* omnibox = GetOmnibox()) {
+    had_commander_omnibox_prefix =
+        omnibox->GetText().starts_with(kCommandPrefix.data());
+  }
+
   Reset();
 
-  if (auto* omnibox = GetOmnibox(); omnibox && IsShowing()) {
-    omnibox->RevertAll();
+  if (had_commander_omnibox_prefix) {
+    if (OmniboxView* omnibox = GetOmnibox()) {
+      omnibox->RevertAll();
+    }
   }
 }
 
