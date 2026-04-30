@@ -12,7 +12,7 @@
 [package]
 edition = "2021"
 name = "adblock"
-version = "0.12.0"
+version = "0.12.3"
 authors = [
     "Anton Lazarev <alazarev@brave.com>",
     "Andrius Aucinas",
@@ -115,7 +115,7 @@ version = "0.7"
 version = "0.22"
 
 [dependencies.bitflags]
-version = "2.9.0"
+version = "2.10.0"
 features = ["serde"]
 
 [dependencies.cssparser]
@@ -123,7 +123,7 @@ version = "0.34"
 optional = true
 
 [dependencies.flatbuffers]
-version = "25.2.10"
+version = "25.9.23"
 
 [dependencies.idna]
 version = "1.0.3"
@@ -132,10 +132,7 @@ version = "1.0.3"
 version = "0.13"
 
 [dependencies.memchr]
-version = "2.4"
-
-[dependencies.once_cell]
-version = "1.8"
+version = "2.7"
 
 [dependencies.percent-encoding]
 version = "2.1"
@@ -144,10 +141,7 @@ version = "2.1"
 version = "0.1"
 
 [dependencies.regex]
-version = "1.5"
-
-[dependencies.rmp-serde]
-version = "0.15"
+version = "1.12.2"
 
 [dependencies.rustc-hash]
 version = "1.1.0"
@@ -161,14 +155,14 @@ version = "0.26"
 optional = true
 
 [dependencies.serde]
-version = "1.0.219"
+version = "1.0.228"
 features = [
     "derive",
     "rc",
 ]
 
 [dependencies.serde_json]
-version = "1.0.140"
+version = "1.0.145"
 
 [dependencies.thiserror]
 version = "1.0"
@@ -189,15 +183,13 @@ version = "=0.3.31"
 version = "=0.5.1"
 
 [dev-dependencies.reqwest]
-version = "=0.12.19"
-features = ["rustls-tls"]
-default-features = false
+version = "=0.13.3"
 
 [dev-dependencies.sha2]
 version = "=0.9.9"
 
 [dev-dependencies.tokio]
-version = "=1.45.1"
+version = "=1.47.4"
 features = ["rt-multi-thread"]
 
 [lints.clippy]

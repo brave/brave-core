@@ -227,8 +227,15 @@ where
                     // at the end of the hostname of the request. This allows to prevent false
                     // positive like ||foo.bar which would match https://foo.bar.baz where
                     // ||foo.bar^ would not.
-                    request.hostname.len() == hostname.len()        // if lengths are equal, hostname equality is implied by anchoring check
-                          || request.hostname.ends_with(hostname)
+                    // A trailing dot in either hostname (e.g. `example.com.`) is treated as
+                    // equivalent to no trailing dot for matching purposes.
+                    let request_hostname = request
+                        .hostname
+                        .strip_suffix('.')
+                        .unwrap_or(&request.hostname);
+                    let filter_hostname = hostname.strip_suffix('.').unwrap_or(hostname);
+                    request_hostname.len() == filter_hostname.len()        // if lengths are equal, hostname equality is implied by anchoring check
+                          || request_hostname.ends_with(filter_hostname)
                 } else {
                     check_pattern_right_anchor_filter(mask, filters, request)
                 }

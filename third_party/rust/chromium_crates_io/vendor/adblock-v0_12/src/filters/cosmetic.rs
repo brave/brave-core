@@ -621,10 +621,10 @@ mod css_validation {
         selector: &str,
         accept_abp_selectors: bool,
     ) -> Result<Vec<CosmeticFilterOperator>, CosmeticFilterError> {
-        use once_cell::sync::Lazy;
         use regex::Regex;
-        static RE_SIMPLE_SELECTOR: Lazy<Regex> =
-            Lazy::new(|| Regex::new(r"^[#.]?[A-Za-z_][\w-]*$").unwrap());
+        use std::sync::LazyLock;
+        static RE_SIMPLE_SELECTOR: LazyLock<Regex> =
+            LazyLock::new(|| Regex::new(r"^[#.]?[A-Za-z_][\w-]*$").unwrap());
 
         if RE_SIMPLE_SELECTOR.is_match(selector) {
             return Ok(vec![CosmeticFilterOperator::CssSelector(

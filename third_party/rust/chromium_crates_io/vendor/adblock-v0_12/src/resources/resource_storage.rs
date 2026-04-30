@@ -3,8 +3,8 @@
 use std::collections::HashMap;
 
 use base64::{engine::Engine as _, prelude::BASE64_STANDARD};
-use once_cell::sync::Lazy;
 use regex::Regex;
+use std::sync::LazyLock;
 use thiserror::Error;
 
 use super::{PermissionMask, Resource, ResourceType};
@@ -260,8 +260,8 @@ fn stringify_arg<const QUOTED: bool>(arg: &str) -> String {
 /// Gets the function name from a JS function definition
 fn extract_function_name(fn_def: &str) -> Option<&str> {
     // This is not bulletproof, but should be robust against most issues.
-    static FUNCTION_NAME_RE: Lazy<Regex> =
-        Lazy::new(|| Regex::new(r#"^function\s+([^\(\)\{\}\s]+)\s*\("#).unwrap());
+    static FUNCTION_NAME_RE: LazyLock<Regex> =
+        LazyLock::new(|| Regex::new(r#"^function\s+([^\(\)\{\}\s]+)\s*\("#).unwrap());
 
     FUNCTION_NAME_RE.captures(fn_def).map(|captures| {
         // capture 1 is always present in the above regex if any match was made
@@ -486,16 +486,16 @@ impl From<std::string::FromUtf8Error> for ScriptletResourceError {
     }
 }
 
-static TEMPLATE_ARGUMENT_RE: [Lazy<Regex>; 9] = [
-    Lazy::new(|| template_argument_regex(1)),
-    Lazy::new(|| template_argument_regex(2)),
-    Lazy::new(|| template_argument_regex(3)),
-    Lazy::new(|| template_argument_regex(4)),
-    Lazy::new(|| template_argument_regex(5)),
-    Lazy::new(|| template_argument_regex(6)),
-    Lazy::new(|| template_argument_regex(7)),
-    Lazy::new(|| template_argument_regex(8)),
-    Lazy::new(|| template_argument_regex(9)),
+static TEMPLATE_ARGUMENT_RE: [LazyLock<Regex>; 9] = [
+    LazyLock::new(|| template_argument_regex(1)),
+    LazyLock::new(|| template_argument_regex(2)),
+    LazyLock::new(|| template_argument_regex(3)),
+    LazyLock::new(|| template_argument_regex(4)),
+    LazyLock::new(|| template_argument_regex(5)),
+    LazyLock::new(|| template_argument_regex(6)),
+    LazyLock::new(|| template_argument_regex(7)),
+    LazyLock::new(|| template_argument_regex(8)),
+    LazyLock::new(|| template_argument_regex(9)),
 ];
 
 fn template_argument_regex(i: usize) -> Regex {
