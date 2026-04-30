@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/frame/brave_win_caption_layout.h"
 
 #include "base/check.h"
+#include "base/check_op.h"
 
 namespace brave {
 
