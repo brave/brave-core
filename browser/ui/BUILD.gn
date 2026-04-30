@@ -761,9 +761,9 @@ source_set("ui") {
         "views/frame/brave_browser_frame_view_win.cc",
         "views/frame/brave_browser_frame_view_win.h",
 
-  # "views/frame/brave_win_caption_layout.h",  # Removed per project policy: no new sources here (see gni_sources.md#circular-dependencies)
-  # Per project circular dependency policy, move this file's source inclusion to the appropriate .gni file as documented:
-  # https://github.com/brave/brave-core/blob/master/docs/gni_sources.md#circular-dependencies
+        # "views/frame/brave_win_caption_layout.h",  # Removed per project policy: no new sources here (see gni_sources.md#circular-dependencies)
+        # Per project circular dependency policy, move this file's source inclusion to the appropriate .gni file as documented:
+        # https://github.com/brave/brave-core/blob/master/docs/gni_sources.md#circular-dependencies
       ]
 
       deps += [ "//chrome/browser:titlebar_config" ]
