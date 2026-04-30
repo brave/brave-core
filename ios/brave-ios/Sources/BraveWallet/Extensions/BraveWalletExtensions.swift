@@ -34,7 +34,9 @@ extension BraveWallet.TransactionInfo {
       .solanaSplTokenTransferWithAssociatedTokenAccountCreation,
       .solanaDappSignAndSendTransaction,
       .solanaDappSignTransaction,
-      .ethFilForwarderTransfer:
+      .ethFilForwarderTransfer,
+      .cardanoSendLovelace,
+      .cardanoSendToken:
       return true
     case .other:
       // Filecoin or Bitcoin send
@@ -174,8 +176,8 @@ extension BraveWallet.AccountInfo {
       return Strings.Wallet.btcAccountDescription
     case .zec:
       return Strings.Wallet.zecAccountDescription
-    case .ada:
-      return ""
+    case .ada, .dot:
+      fallthrough
     @unknown default:
       return ""
     }
@@ -270,6 +272,8 @@ extension BraveWallet.CoinType {
       return [.zCashMainnet, .zCashTestnet]
     case .ada:
       return [.cardanoMainnet, .cardanoTestnet]
+    case .dot:
+      return [.polkadotMainnet, .polkadotTestnet]
     @unknown default:
       return [.default]
     }
@@ -308,7 +312,7 @@ extension BraveWallet.CoinType {
       return Strings.Wallet.coinTypeBitcoinDescription
     case .zec:
       return Strings.Wallet.coinTypeZCashDescription
-    case .ada:
+    case .ada, .dot:
       fallthrough
     @unknown default:
       return Strings.Wallet.coinTypeUnknown
@@ -328,6 +332,8 @@ extension BraveWallet.CoinType {
     case .zec:
       return "zcash-asset-icon"
     case .ada:
+      return "ada-asset-icon"
+    case .dot:
       fallthrough
     @unknown default:
       return ""
@@ -347,7 +353,7 @@ extension BraveWallet.CoinType {
       return 4
     case .zec:
       return 5
-    case .ada:
+    case .ada, .dot:
       fallthrough
     @unknown default:
       return 10
@@ -590,6 +596,8 @@ extension BraveWallet.KeyringId {
       return chainId == BraveWallet.ZCashMainnet ? .zCashMainnet : .zCashTestnet
     case .ada:
       return chainId == BraveWallet.CardanoMainnet ? .cardanoMainnet : .cardanoTestnet
+    case .dot:
+      return chainId == BraveWallet.PolkadotMainnet ? .polkadotMainnet : .polkadotTestnet
     @unknown default:
       return .default
     }
@@ -708,7 +716,7 @@ extension BraveWallet.NftMetadata {
   }
 }
 
-extension BraveWallet.NftAttribute: Identifiable {
+extension BraveWallet.NftAttribute: @retroactive Identifiable {
   public var id: String {
     traitType
   }
@@ -743,6 +751,8 @@ extension BraveWallet.TransactionType {
       return Strings.Wallet.txFunctionTypeOther
     case .solanaDappSignTransaction:
       return Strings.Wallet.txFunctionTypeSignDappTransaction
+    case .cardanoSendLovelace, .cardanoSendToken:  // not used in tx details
+      fallthrough
     @unknown default:
       return Strings.Wallet.txFunctionTypeOther
     }
@@ -764,6 +774,8 @@ extension BraveWallet.ZCashAddressError {
       return Strings.Wallet.sendErrorZecAddressOrchardPartMissing
     case .invalidAddressNetworkMismatch:
       return Strings.Wallet.sendErrorZecAddressNetworkMissmatch
+    case .notZCashAccount, .invalidSenderType:
+      fallthrough
     @unknown default:
       return Strings.Wallet.unknownError
     }
@@ -795,6 +807,10 @@ extension String {
       || self.caseInsensitiveCompare(BraveWallet.ZCashTestnet) == .orderedSame
     {
       return AssetImageName.zcash.rawValue
+    } else if self.caseInsensitiveCompare(BraveWallet.CardanoMainnet) == .orderedSame
+      || self.caseInsensitiveCompare(BraveWallet.CardanoTestnet) == .orderedSame
+    {
+      return AssetImageName.ada.rawValue
     } else if self.caseInsensitiveCompare(BraveWallet.PolygonMainnetChainId) == .orderedSame {
       return AssetImageName.polygon.rawValue
     } else if self.caseInsensitiveCompare(BraveWallet.BnbSmartChainMainnetChainId)
