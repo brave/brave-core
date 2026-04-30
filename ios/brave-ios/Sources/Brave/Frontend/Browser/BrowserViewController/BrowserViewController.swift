@@ -2330,6 +2330,10 @@ extension BrowserViewController: SettingsDelegate {
     self.tabManager.addTabsForURLs(urls, isPrivate: tabIsPrivate)
   }
 
+  func settingsDidCompleteOriginPurchase() {
+    handleOriginPurchaseCompleted()
+  }
+
   // QA Stuff
   func settingsCreateFakeTabs() {
     let urls = (0..<1000).map { URL(string: "https://search.brave.com/search?q=\($0)")! }
