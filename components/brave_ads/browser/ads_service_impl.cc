@@ -143,6 +143,7 @@ AdsServiceImpl::AdsServiceImpl(
           std::move(virtual_pref_provider_delegate))),
       http_client_(std::move(http_client)),
       channel_name_(channel_name),
+      resource_component_(resource_component),
       history_service_(history_service),
       host_content_settings_map_(host_content_settings_map),
       ads_tooltips_delegate_(std::move(ads_tooltips_delegate)),
@@ -152,70 +153,55 @@ AdsServiceImpl::AdsServiceImpl(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
       ads_service_path_(profile_path.AppendASCII("ads_service")),
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+      rewards_service_(rewards_service),
+#endif
       bat_ads_client_associated_receiver_(this) {
   CHECK(device_id_);
   CHECK(bat_ads_service_factory_);
 
-  if (!history_service_) {
+  if (!http_client_ || !history_service_ || !host_content_settings_map_ ||
+      !resource_component_) {
     CHECK_IS_TEST();
   }
 
-  if (host_content_settings_map) {
-    host_content_settings_map_observation_.Observe(host_content_settings_map);
-  } else {
-    CHECK_IS_TEST();
-  }
-
-#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-  if (rewards_service) {
-    rewards_service_observation_.Observe(rewards_service);
-  }
-#endif
-
-  if (CanStartBatAdsService()) {
-    bat_ads_client_notifier_pending_receiver_ =
-        bat_ads_client_notifier_remote_.BindNewPipeAndPassReceiver();
-  }
-
+  // Must run before the pref change registrars to keep prefs consistent across
+  // upgrades regardless of whether the service is eligible to start.
   Migrate();
 
-  InitializeNotificationsForCurrentProfile();
+  // Must be active regardless of whether the service starts so that
+  // pref-driven eligibility changes are always observed.
+  InitializeLocalStatePrefChangeRegistrar();
+  InitializePrefChangeRegistrar();
 
-  GetDeviceIdAndMaybeStartBatAdsService();
-
-  if (resource_component) {
-    resource_component_observation_.Observe(resource_component);
-  } else {
-    CHECK_IS_TEST();
-  }
+  MaybeStartBatAdsService();
 }
 
 AdsServiceImpl::~AdsServiceImpl() = default;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool AdsServiceImpl::IsBatAdsServiceBound() const {
-  return bat_ads_service_remote_.is_bound();
-}
 
 void AdsServiceImpl::RegisterResourceComponents() {
-  RegisterResourceComponentsForCurrentCountryCode();
+  RegisterCountryResourceComponent();
 
   if (UserHasOptedInToNotificationAds()) {
     // Only utilized for text classification, which requires the user to have
     // joined Brave Rewards and opted into notification ads.
-    RegisterResourceComponentsForDefaultLanguageCode();
+    RegisterLanguageResourceComponent();
   }
 }
 
 void AdsServiceImpl::Migrate() {
-  int64_t ads_per_hour =
+  // Added 08/2023.
+  const int64_t ads_per_hour =
       prefs_->GetInt64(prefs::kMaximumNotificationAdsPerHour);
   if (ads_per_hour == 0) {
     prefs_->ClearPref(prefs::kMaximumNotificationAdsPerHour);
     prefs_->SetBoolean(prefs::kOptedInToNotificationAds, false);
   }
 
+  // Added 10/2025.
   if (!local_state_->HasPrefPath(prefs::kFirstRunAt)) {
     base::Time first_run_at =
         local_state_->HasPrefPath(metrics::prefs::kInstallDate)
@@ -227,18 +213,16 @@ void AdsServiceImpl::Migrate() {
   }
 }
 
-void AdsServiceImpl::RegisterResourceComponentsForCurrentCountryCode() {
-  if (resource_component_observation_.IsObserving()) {
-    resource_component_observation_.GetSource()
-        ->RegisterComponentForCountryCode(
-            delegate_->GetVariationsCountryCode());
+void AdsServiceImpl::RegisterCountryResourceComponent() {
+  if (resource_component_) {
+    resource_component_->RegisterCountryComponent(
+        delegate_->GetVariationsCountryCode());
   }
 }
 
-void AdsServiceImpl::RegisterResourceComponentsForDefaultLanguageCode() {
-  if (resource_component_observation_.IsObserving()) {
-    resource_component_observation_.GetSource()
-        ->RegisterComponentForLanguageCode(CurrentLanguageCode());
+void AdsServiceImpl::RegisterLanguageResourceComponent() {
+  if (resource_component_) {
+    resource_component_->RegisterLanguageComponent(CurrentLanguageCode());
   }
 }
 
@@ -260,26 +244,6 @@ bool AdsServiceImpl::UserHasOptedInToNotificationAds() const {
 
 bool AdsServiceImpl::UserHasOptedInToSearchResultAds() const {
   return prefs_->GetBoolean(prefs::kOptedInToSearchResultAds);
-}
-
-void AdsServiceImpl::InitializeNotificationsForCurrentProfile() {
-  delegate_->MaybeInitNotificationHelper();
-}
-
-void AdsServiceImpl::GetDeviceIdAndMaybeStartBatAdsService() {
-  device_id_->GetDeviceId(base::BindOnce(
-      &AdsServiceImpl::GetDeviceIdAndMaybeStartBatAdsServiceCallback,
-      weak_ptr_factory_.GetWeakPtr()));
-}
-
-void AdsServiceImpl::GetDeviceIdAndMaybeStartBatAdsServiceCallback(
-    std::string device_id) {
-  sys_info_.device_id = std::move(device_id);
-
-  InitializeLocalStatePrefChangeRegistrar();
-  InitializePrefChangeRegistrar();
-
-  MaybeStartBatAdsService();
 }
 
 bool AdsServiceImpl::CanStartBatAdsService() const {
@@ -305,7 +269,7 @@ void AdsServiceImpl::MaybeStartBatAdsService() {
   // `is_shutting_down_` is set permanently when `KeyedService::Shutdown` is
   // called and the profile begins tearing down. There is no recovery from that
   // state, so any subsequent attempt to restart the service must be suppressed.
-  if (is_shutting_down_ || IsBatAdsServiceBound()) {
+  if (is_shutting_down_ || bat_ads_service_remote_.is_bound()) {
     return;
   }
 
@@ -314,17 +278,34 @@ void AdsServiceImpl::MaybeStartBatAdsService() {
     return;
   }
 
+  if (!cached_device_id_) {
+    // Fetch and cache the device ID; startup resumes in the callback.
+    device_id_->GetDeviceId(base::BindOnce(
+        &AdsServiceImpl::GetDeviceIdAndMaybeStartBatAdsServiceCallback,
+        weak_ptr_factory_.GetWeakPtr()));
+    return;
+  }
+
   StartBatAdsService();
 }
 
+void AdsServiceImpl::GetDeviceIdAndMaybeStartBatAdsServiceCallback(
+    std::string device_id) {
+  cached_device_id_ = std::move(device_id);
+  sys_info_.device_id = *cached_device_id_;
+
+  // Re-run all eligibility guards before proceeding; a pref change may have
+  // made the service ineligible while the device ID fetch was in flight.
+  MaybeStartBatAdsService();
+}
+
 void AdsServiceImpl::StartBatAdsService() {
-  CHECK(!IsBatAdsServiceBound());
+  CHECK(!bat_ads_service_remote_.is_bound());
 
   bat_ads_service_remote_ = bat_ads_service_factory_->Launch();
   bat_ads_service_remote_.set_disconnect_handler(base::BindOnce(
       &AdsServiceImpl::DisconnectHandler, weak_ptr_factory_.GetWeakPtr()));
-
-  CHECK(IsBatAdsServiceBound());
+  CHECK(bat_ads_service_remote_.is_bound());
 
   if (!bat_ads_client_notifier_remote_.is_bound()) {
     bat_ads_client_notifier_pending_receiver_ =
@@ -355,7 +336,7 @@ void AdsServiceImpl::BatAdsServiceCreatedCallback() {
   // Guaranteed by `bat_ads_service_weak_ptr_factory_`. This callback is only
   // reachable while the service is alive, and `ShutdownAdsService` resets
   // `bat_ads_service_remote_` before invalidating the factory.
-  CHECK(IsBatAdsServiceBound());
+  CHECK(bat_ads_service_remote_.is_bound());
 
   SetSysInfo();
 
@@ -384,8 +365,8 @@ void AdsServiceImpl::InitializeBasePathDirectoryCallback(bool success) {
 
 void AdsServiceImpl::InitializeRewardsWallet() {
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-  if (rewards_service_observation_.IsObserving()) {
-    rewards_service_observation_.GetSource()->GetRewardsWallet(
+  if (rewards_service_) {
+    rewards_service_->GetRewardsWallet(
         base::BindOnce(&AdsServiceImpl::InitializeRewardsWalletCallback,
                        bat_ads_service_weak_ptr_factory_.GetWeakPtr()));
   } else {
@@ -441,7 +422,24 @@ void AdsServiceImpl::InitializeBatAdsCallback(bool success) {
 
   is_bat_ads_initialized_ = true;
 
+  delegate_->MaybeInitNotificationHelper();
+
   RegisterResourceComponents();
+
+  if (resource_component_) {
+    resource_component_observation_.Observe(resource_component_.get());
+  }
+
+  if (host_content_settings_map_) {
+    host_content_settings_map_observation_.Observe(
+        host_content_settings_map_.get());
+  }
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  if (rewards_service_) {
+    rewards_service_observation_.Observe(rewards_service_.get());
+  }
+#endif
 
   application_state_monitor_observation_.Observe(
       ApplicationStateMonitor::GetInstance());
@@ -602,12 +600,7 @@ void AdsServiceImpl::SetCommandLineSwitches() {
 }
 
 void AdsServiceImpl::SetContentSettings() {
-  if (!bat_ads_associated_remote_.is_bound()) {
-    return;
-  }
-
-  if (!host_content_settings_map_) {
-    CHECK_IS_TEST();
+  if (!bat_ads_associated_remote_.is_bound() || !host_content_settings_map_) {
     return;
   }
 
@@ -737,17 +730,18 @@ void AdsServiceImpl::InitializeSearchResultAdsPrefChangeRegistrar() {
 
 void AdsServiceImpl::OnAdsPrefChanged(const std::string& path) {
   if (!CanStartBatAdsService()) {
+    // The pref change made the service ineligible to run, so tear it down.
     return ShutdownAdsService();
   }
 
-  if (IsBatAdsServiceBound() && UserHasOptedInToNotificationAds() &&
+  if (bat_ads_service_remote_.is_bound() && UserHasOptedInToNotificationAds() &&
       path == prefs::kOptedInToNotificationAds) {
     // Register language resource components if the user has joined Brave
     // Rewards, opted into notification ads, and the Bat Ads Service has
     // already started.
-    RegisterResourceComponentsForDefaultLanguageCode();
+    RegisterLanguageResourceComponent();
 
-    InitializeNotificationsForCurrentProfile();
+    delegate_->MaybeInitNotificationHelper();
   }
 
   MaybeStartBatAdsService();
@@ -756,10 +750,9 @@ void AdsServiceImpl::OnAdsPrefChanged(const std::string& path) {
 }
 
 void AdsServiceImpl::OnVariationsCountryPrefChanged() {
-  if (!IsBatAdsServiceBound()) {
-    return;
+  if (bat_ads_service_remote_.is_bound()) {
+    RegisterCountryResourceComponent();
   }
-  RegisterResourceComponentsForCurrentCountryCode();
 }
 
 void AdsServiceImpl::NotifyPrefChanged(const std::string& path) const {
@@ -770,13 +763,11 @@ void AdsServiceImpl::NotifyPrefChanged(const std::string& path) const {
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 void AdsServiceImpl::GetRewardsWallet() {
-  if (!rewards_service_observation_.IsObserving()) {
-    return;
+  if (rewards_service_) {
+    rewards_service_->GetRewardsWallet(
+        base::BindOnce(&AdsServiceImpl::NotifyRewardsWalletDidUpdate,
+                       weak_ptr_factory_.GetWeakPtr()));
   }
-
-  rewards_service_observation_.GetSource()->GetRewardsWallet(
-      base::BindOnce(&AdsServiceImpl::NotifyRewardsWalletDidUpdate,
-                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void AdsServiceImpl::NotifyRewardsWalletDidUpdate(
@@ -1026,6 +1017,14 @@ void AdsServiceImpl::ShutdownAdsService() {
   idle_state_timer_.Stop();
 
   notification_ad_timers_.clear();
+
+  resource_component_observation_.Reset();
+
+  host_content_settings_map_observation_.Reset();
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  rewards_service_observation_.Reset();
+#endif
 
   application_state_monitor_observation_.Reset();
 
@@ -1498,12 +1497,12 @@ void AdsServiceImpl::LoadResourceComponent(
     const std::string& id,
     int version,
     LoadResourceComponentCallback callback) {
-  if (!resource_component_observation_.IsObserving()) {
+  if (!resource_component_) {
     return std::move(callback).Run({});
   }
 
   std::optional<base::FilePath> file_path =
-      resource_component_observation_.GetSource()->MaybeGetPath(id, version);
+      resource_component_->MaybeGetPath(id, version);
   if (!file_path) {
     return std::move(callback).Run({});
   }
@@ -1612,9 +1611,8 @@ void AdsServiceImpl::Log(const std::string& file,
                          int32_t verbose_level,
                          const std::string& message) {
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-  if (rewards_service_observation_.IsObserving()) {
-    rewards_service_observation_.GetSource()->WriteDiagnosticLog(
-        file, line, verbose_level, message);
+  if (rewards_service_) {
+    rewards_service_->WriteDiagnosticLog(file, line, verbose_level, message);
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 

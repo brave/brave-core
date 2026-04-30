@@ -37,8 +37,8 @@ class ResourceComponent final : public ResourceComponentRegistrarDelegate {
   void AddObserver(ResourceComponentObserver* observer);
   void RemoveObserver(ResourceComponentObserver* observer);
 
-  void RegisterComponentForCountryCode(const std::string& country_code);
-  void RegisterComponentForLanguageCode(const std::string& language_code);
+  void RegisterCountryComponent(const std::string& country_code);
+  void RegisterLanguageComponent(const std::string& language_code);
 
   std::optional<base::FilePath> MaybeGetPath(const std::string& id,
                                              int version);
