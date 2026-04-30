@@ -83,7 +83,8 @@ public enum NavigationPath: Equatable {
     case .url(let url, let isPrivate):
       NavigationPath.handleURL(url: url, isPrivate: isPrivate, with: bvc)
     case .text(let text): NavigationPath.handleText(text: text, with: bvc)
-    case .widgetShortcutURL(let path): NavigationPath.handleWidgetShortcut(path, with: bvc)
+    case .widgetShortcutURL(let path):
+      NavigationPath.handleWidgetShortcut(path, with: bvc, fromShortcutsWidget: true)
     }
   }
 
@@ -126,7 +127,11 @@ public enum NavigationPath: Equatable {
     )
   }
 
-  static func handleWidgetShortcut(_ path: WidgetShortcut, with bvc: BrowserViewController) {
+  static func handleWidgetShortcut(
+    _ path: WidgetShortcut,
+    with bvc: BrowserViewController,
+    fromShortcutsWidget: Bool = false
+  ) {
     switch path {
     case .unknown, .search:
       // Search
@@ -137,6 +142,9 @@ public enum NavigationPath: Equatable {
           attemptLocationFieldFocus: true,
           isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing
         )
+      }
+      if fromShortcutsWidget {
+        bvc.markShortcutsWidgetBraveSearchAttributionPending()
       }
     case .newTab:
       bvc.openBlankNewTab(
