@@ -574,8 +574,7 @@
 # implements for the omnibox. The upstream test would probably need to be
 # patched to include that registration code.
 -OmniboxControllerTest.CheckDefaultAutocompleteProviders
--OmniboxEditModelPopupTest.AimPopupEnabledNavigationFallback
--OmniboxEditModelPopupTest.OnCurrentMatchChangedResetsSelectionBeforeAccessingMatches
+-OmniboxEditModelPopupTest.*
 -OmniboxEditModelTest.*
 -WebUIReadOnlyOmniboxTest.GetOmniboxTextLength
 -WebUIReadOnlyOmniboxTest.StateManagement

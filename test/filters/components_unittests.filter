@@ -115,6 +115,7 @@
 -All/PEPCInitiatedPermissionRequestTestWithAutolocate.PEPCRequestHeuristicallyGrantedGeolocation/0
 
 # These tests fail because we disable popular site suggestions functionality
+-MostVisitedSitesTest.CustomLinksCappedAtTenWhenRedesignDisabled
 -MostVisitedSitesTest.ShouldDeduplicatePopularSitesWithMostVisitedIffHostAndTitleMatches
 -MostVisitedSitesTest.ShouldHandleTopSitesCacheHit
 -MostVisitedSitesWithCustomLinksTest.DisableCustomLinksWhenInitialized
