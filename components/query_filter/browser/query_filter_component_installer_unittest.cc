@@ -24,7 +24,6 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace {
 // Sample query filter JSON which would be written to a file during setup
 // and then read by the query filter data to prepopulate the default rules.
 constexpr char kSampleQueryFilterJson[] = R"json(
@@ -45,8 +44,6 @@ constexpr char kSampleQueryFilterJson[] = R"json(
     }
   ]
   )json";
-
-}  // namespace
 
 class QueryFilterComponentInstallerTest : public testing::Test {
  public:
@@ -94,6 +91,29 @@ class QueryFilterComponentInstallerTest : public testing::Test {
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::MainThreadType::DEFAULT,
       base::test::TaskEnvironment::ThreadPoolExecutionMode::DEFAULT};
+};
+
+class ScopedFileLoadedCallbackForTesting {
+ public:
+  ScopedFileLoadedCallbackForTesting(
+      component_updater::QueryFilterComponentInstallerPolicy& policy,
+      base::OnceClosure callback)
+      : policy_(policy), callback_(std::move(callback)) {
+    policy_->SetOnFileLoadedCallbackForTesting(&callback_);
+  }
+
+  ~ScopedFileLoadedCallbackForTesting() {
+    policy_->SetOnFileLoadedCallbackForTesting(nullptr);
+  }
+
+  ScopedFileLoadedCallbackForTesting(
+      const ScopedFileLoadedCallbackForTesting&) = delete;
+  ScopedFileLoadedCallbackForTesting& operator=(
+      const ScopedFileLoadedCallbackForTesting&) = delete;
+
+ private:
+  raw_ref<component_updater::QueryFilterComponentInstallerPolicy> policy_;
+  base::OnceClosure callback_;
 };
 
 // Tests covering disabled feature flag state.
@@ -166,11 +186,11 @@ TEST_F(QueryFilterComponentInstallerTest, TestComponentReady) {
 
   // Initiate component ready which would load the json file and populate the
   // query filter data.
-  base::RunLoop run_loop;
+  base::test::TestFuture<void> future;
   component_updater::QueryFilterComponentInstallerPolicy policy;
-  policy.set_on_file_loaded_callback_for_testing(run_loop.QuitClosure());
+  ScopedFileLoadedCallbackForTesting scoped(policy, future.GetCallback());
   policy.ComponentReady(version, GetInstallDirectoryPath(), base::DictValue());
-  run_loop.Run();
+  ASSERT_TRUE(future.Wait());
 
   // Verify the version and the rules are updated after the component is ready.
   EXPECT_EQ("1.0.0", GetQueryFilterVersion());
@@ -193,11 +213,11 @@ TEST_F(QueryFilterComponentInstallerTest,
 
   // Initiate component ready which would load the json file and populate the
   // query filter data.
-  base::RunLoop run_loop;
+  base::test::TestFuture<void> future;
   component_updater::QueryFilterComponentInstallerPolicy policy;
-  policy.set_on_file_loaded_callback_for_testing(run_loop.QuitClosure());
+  ScopedFileLoadedCallbackForTesting scoped(policy, future.GetCallback());
   policy.ComponentReady(version, GetInstallDirectoryPath(), base::DictValue());
-  run_loop.Run();
+  ASSERT_TRUE(future.Wait());
 
   // Verify neither the version not the rules are updated.
   EXPECT_EQ("", GetQueryFilterVersion());

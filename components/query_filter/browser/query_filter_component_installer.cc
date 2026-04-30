@@ -10,6 +10,7 @@
 #include <array>
 #include <vector>
 
+#include "base/check_is_test.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -22,9 +23,11 @@
 #include "brave/components/query_filter/common/features.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
+#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 
 namespace {
 inline constexpr char kQueryFilterComponentName[] = "Query Filter";
+base::OnceClosure* g_on_file_loaded_callback_for_testing_ = nullptr;
 
 // This is the SHA-256 of the query-filter component's public key.
 inline constexpr std::array<uint8_t, 32> kQueryFilterComponentPublicKeySHA256 =
@@ -43,6 +46,14 @@ std::string ReadQueryFilterFile(const base::FilePath& path) {
 
 void OnQueryFilterFileRead(const base::Version& version,
                            const std::string& json_data) {
+  absl::Cleanup cleanup_for_test_only = []() {
+    if (g_on_file_loaded_callback_for_testing_) {
+      CHECK_IS_TEST();
+      CHECK(!g_on_file_loaded_callback_for_testing_->is_null());
+      std::move(*g_on_file_loaded_callback_for_testing_).Run();
+    }
+  };
+
   if (json_data.empty()) {
     return;
   }
@@ -98,11 +109,6 @@ void QueryFilterComponentInstallerPolicy::ComponentReady(
   VLOG(1) << "Component ready, version " << version.GetString() << " in "
           << install_dir.value();
 
-  base::OnceClosure on_file_loaded_callback =
-      on_file_loaded_callback_for_testing_.is_null()
-          ? base::DoNothing()
-          : std::move(on_file_loaded_callback_for_testing_);
-
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
       {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN,
@@ -110,8 +116,7 @@ void QueryFilterComponentInstallerPolicy::ComponentReady(
       base::BindOnce(
           &ReadQueryFilterFile,
           install_dir.AppendASCII(query_filter::kQueryFilterJsonFile)),
-      base::BindOnce(&OnQueryFilterFileRead, version)
-          .Then(std::move(on_file_loaded_callback)));
+      base::BindOnce(&OnQueryFilterFileRead, version));
 }
 
 base::FilePath QueryFilterComponentInstallerPolicy::GetRelativeInstallDir()
@@ -136,6 +141,11 @@ QueryFilterComponentInstallerPolicy::GetInstallerAttributes() const {
 
 bool QueryFilterComponentInstallerPolicy::IsBraveComponent() const {
   return true;
+}
+
+void QueryFilterComponentInstallerPolicy::SetOnFileLoadedCallbackForTesting(
+    base::OnceClosure* callback) {
+  g_on_file_loaded_callback_for_testing_ = callback;
 }
 
 void RegisterQueryFilterComponent(
