@@ -591,8 +591,14 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     const emptyTokensList =
       !isLoadingBalances && tokensBySearchValue.length === 0
 
+    const shouldShowSkeleton =
+      !shouldFetchModalData
+      || isLoadingCombinedTokenRegistry
+      || isLoadingBalances
+      || isLoadingSpotPrices
+
     const tokenList = React.useMemo(() => {
-      if (!shouldFetchModalData || isLoadingCombinedTokenRegistry) {
+      if (shouldShowSkeleton) {
         return (
           <TokenListItemSkeleton
             isNFT={selectedSendOption === SendPageTabHashes.nft}
@@ -627,7 +633,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         />
       )
     }, [
-      shouldFetchModalData,
+      shouldShowSkeleton,
       emptyTokensList,
       selectedSendOption,
       handleSelectAsset,
@@ -637,7 +643,6 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       tokensBySearchValue,
       spotPrices,
       isLoadingSpotPrices,
-      isLoadingCombinedTokenRegistry,
       firstNoBalanceTokenKey,
       modalType,
       getAllAccountsWithBalance,
@@ -762,7 +767,9 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
           </Column>
           <ScrollContainer
             fullWidth={true}
-            justifyContent={emptyTokensList ? 'center' : 'flex-start'}
+            justifyContent={
+              !shouldShowSkeleton && emptyTokensList ? 'center' : 'flex-start'
+            }
           >
             {tokenList}
           </ScrollContainer>

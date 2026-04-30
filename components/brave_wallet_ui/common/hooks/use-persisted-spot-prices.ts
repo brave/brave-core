@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { skipToken } from '@reduxjs/toolkit/query/react'
+
 import { useGetTokenSpotPricesQuery } from '../slices/api.slice'
 
 // Utils
@@ -23,6 +25,7 @@ export const usePersistedTokenSpotPricesQuery = (
   return useGetTokenSpotPricesQuery(arg, {
     ...options,
     selectFromResult: (res) => {
+      const queryActive = arg !== skipToken
       // Only read from localStorage when the query has no data yet
       // (skipped, loading, or uninitialized).
       const persisted = res.data ? undefined : getPersistedSpotPrices()
@@ -32,7 +35,10 @@ export const usePersistedTokenSpotPricesQuery = (
       const hasFallbackData = !!persisted?.length
       return {
         data,
-        isLoading: res.isLoading && !hasFallbackData,
+        isLoading: Boolean(
+          (res.isLoading && !hasFallbackData)
+            || (queryActive && res.isUninitialized),
+        ),
         isFetching: res.isFetching,
       }
     },

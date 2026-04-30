@@ -34,13 +34,16 @@ export const useBalancesFetcher = (arg: Arg | typeof skipToken) => {
     WalletSelectors.isAnkrBalancesFeatureEnabled,
   )
 
-  return useGetTokenBalancesRegistryQuery(
+  const queryEnabled =
     arg !== skipToken
-      && !isWalletLocked
-      && isWalletCreated
-      && hasInitialized
-      && arg.accounts.length
-      && arg.networks.length
+    && !isWalletLocked
+    && isWalletCreated
+    && hasInitialized
+    && arg.accounts.length
+    && arg.networks.length
+
+  return useGetTokenBalancesRegistryQuery(
+    queryEnabled
       ? {
           accountIds: arg.accounts.map((account) => account.accountId),
           networks: arg.networks.map(
@@ -66,7 +69,12 @@ export const useBalancesFetcher = (arg: Arg | typeof skipToken) => {
                 networks: arg.networks,
                 isSpamRegistry: arg.isSpamRegistry,
               })),
-        isLoading: res.isLoading,
+        // RTK can report `isLoading: false` for a frame after `skip` lifts; an
+        // active-but-uninitialized subscription still means "not ready yet"
+        // (see useAccountsQuery in api.slice.extra.ts).
+        isLoading: Boolean(
+          res.isLoading || (queryEnabled && res.isUninitialized),
+        ),
       }),
     },
   )
