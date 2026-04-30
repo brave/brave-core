@@ -22,6 +22,35 @@
 
 namespace brave_policy {
 
+namespace {
+
+// Thread-local stash consumed by BRAVE_PROFILE_POLICY_CONNECTOR_INIT.
+// See header for rationale. Stored as a raw pointer (a trivial type, so it
+// avoids -Wexit-time-destructors which forbids non-trivial destructors on
+// static / thread_local storage). The pointer is null between Set and
+// Take calls; Set deletes any prior stash, and Take takes ownership.
+thread_local base::FilePath* g_pending_profile_path = nullptr;
+
+}  // namespace
+
+// static
+void BraveProfilePolicyProvider::SetPendingProfilePath(
+    const base::FilePath& path) {
+  delete g_pending_profile_path;
+  g_pending_profile_path = new base::FilePath(path);
+}
+
+// static
+base::FilePath BraveProfilePolicyProvider::TakePendingProfilePath() {
+  base::FilePath path;
+  if (g_pending_profile_path) {
+    path = std::move(*g_pending_profile_path);
+    delete g_pending_profile_path;
+    g_pending_profile_path = nullptr;
+  }
+  return path;
+}
+
 BraveProfilePolicyProvider::BraveProfilePolicyProvider() = default;
 BraveProfilePolicyProvider::~BraveProfilePolicyProvider() = default;
 
@@ -153,6 +182,13 @@ void BraveProfilePolicyProvider::OnProfilePolicyChanged(
 }
 
 void BraveProfilePolicyProvider::SetProfileID(const std::string& profile_id) {
+  // If the same profile_id is set again (which happens when the
+  // path stash already set it during BRAVE_PROFILE_POLICY_CONNECTOR_INIT and
+  // a legacy SetBraveProfilePolicyProviderProfileID caller sets it later with
+  // the same value), don't re-fire RefreshPolicies.
+  if (profile_id_ == profile_id) {
+    return;
+  }
   profile_id_ = profile_id;
 
   // If policies are ready already and we now have a profile_Id, refresh the

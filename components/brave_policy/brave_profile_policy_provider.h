@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_POLICY_BRAVE_PROFILE_POLICY_PROVIDER_H_
 
 #include "base/containers/flat_set.h"
+#include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
@@ -41,6 +42,16 @@ class BraveProfilePolicyProvider : public policy::ConfigurationPolicyProvider,
   void OnProfilePolicyChanged(std::string_view policy_key,
                               std::string_view profile_id) override;
   void SetProfileID(const std::string& profile_id);
+
+  // Stash the profile path for the next BraveProfilePolicyProvider that the
+  // BRAVE_PROFILE_POLICY_CONNECTOR_INIT macro creates. Set immediately before
+  // the policy connector is built (in callers that have BrowserContext / path
+  // available); the macro consumes the stash and calls SetProfileID before
+  // Init, so OnBravePoliciesReady fires synchronously inside Observe and
+  // RefreshPolicies populates the bundle BEFORE PolicyServiceImpl's
+  // synchronous-merge constructor reads it.
+  static void SetPendingProfilePath(const base::FilePath& path);
+  static base::FilePath TakePendingProfilePath();
 
  private:
   policy::PolicyBundle LoadPolicies();
