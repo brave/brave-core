@@ -209,31 +209,6 @@ void AIChatUIPageHandler::ProcessTextFile(const std::vector<uint8_t>& file_data,
   std::move(callback).Run(std::move(uploaded_file));
 }
 
-void AIChatUIPageHandler::UploadFile(bool use_media_capture,
-                                     UploadFileCallback callback) {
-  id<AIChatUIHandlerBridge> bridge =
-      UIHandlerBridgeHolder::FromWebState(owner_web_state_)->bridge();
-  if (!bridge) {
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-
-  auto handler = base::CallbackToBlock(base::BindOnce(
-      [](UploadFileCallback callback, NSArray<AiChatUploadedFile*>* files) {
-        if (!files || [files count] == 0) {
-          std::move(callback).Run(std::nullopt);
-          return;
-        }
-        std::vector<ai_chat::mojom::UploadedFilePtr> uploaded_files;
-        for (AiChatUploadedFile* file in files) {
-          uploaded_files.emplace_back(file.cppObjPtr);
-        }
-        std::move(callback).Run(std::move(uploaded_files));
-      },
-      std::move(callback)));
-  [bridge handleFileUploadRequest:use_media_capture completionHandler:handler];
-}
-
 void AIChatUIPageHandler::GetPluralString(const std::string& key,
                                           int32_t count,
                                           GetPluralStringCallback callback) {
