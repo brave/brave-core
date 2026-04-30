@@ -51,6 +51,7 @@ void OnQueryFilterFileRead(const base::Version& version,
 
   if (!data->PopulateDataFromComponent(json_data)) {
     LOG(WARNING) << "Failed to populate data from component";
+    return;
   }
   data->UpdateVersion(version);
 }
@@ -97,6 +98,11 @@ void QueryFilterComponentInstallerPolicy::ComponentReady(
   VLOG(1) << "Component ready, version " << version.GetString() << " in "
           << install_dir.value();
 
+  base::OnceClosure on_file_loaded_callback =
+      on_file_loaded_callback_for_testing_.is_null()
+          ? base::DoNothing()
+          : std::move(on_file_loaded_callback_for_testing_);
+
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
       {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN,
@@ -104,7 +110,8 @@ void QueryFilterComponentInstallerPolicy::ComponentReady(
       base::BindOnce(
           &ReadQueryFilterFile,
           install_dir.AppendASCII(query_filter::kQueryFilterJsonFile)),
-      base::BindOnce(&OnQueryFilterFileRead, version));
+      base::BindOnce(&OnQueryFilterFileRead, version)
+          .Then(std::move(on_file_loaded_callback)));
 }
 
 base::FilePath QueryFilterComponentInstallerPolicy::GetRelativeInstallDir()

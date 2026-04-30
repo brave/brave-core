@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/functional/callback.h"
 #include "base/values.h"
 #include "components/component_updater/component_installer.h"
 #include "components/update_client/update_client.h"
@@ -49,6 +50,14 @@ class QueryFilterComponentInstallerPolicy
   std::string GetName() const override;
   update_client::InstallerAttributes GetInstallerAttributes() const override;
   bool IsBraveComponent() const override;
+
+  // Test only method
+  void set_on_file_loaded_callback_for_testing(base::OnceClosure callback) {
+    on_file_loaded_callback_for_testing_ = std::move(callback);
+  }
+
+ private:
+  base::OnceClosure on_file_loaded_callback_for_testing_;
 };
 
 // Registers the Query Filter component with the component updater.

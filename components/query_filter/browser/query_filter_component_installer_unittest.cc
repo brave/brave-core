@@ -166,18 +166,18 @@ TEST_F(QueryFilterComponentInstallerTest, TestComponentReady) {
 
   // Initiate component ready which would load the json file and populate the
   // query filter data.
+  base::RunLoop run_loop;
   component_updater::QueryFilterComponentInstallerPolicy policy;
+  policy.set_on_file_loaded_callback_for_testing(run_loop.QuitClosure());
   policy.ComponentReady(version, GetInstallDirectoryPath(), base::DictValue());
+  run_loop.Run();
 
-  // Verify the version and the rules are updated after the component is ready
-  EXPECT_TRUE(base::test::RunUntil(
-      [&]() { return GetQueryFilterVersion() == "1.0.0"; }));
+  // Verify the version and the rules are updated after the component is ready.
+  EXPECT_EQ("1.0.0", GetQueryFilterVersion());
   const auto& new_rules = GetQueryFilterRules();
   EXPECT_EQ(2U, new_rules.size());
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/10188): Update this test
-// to pass a callback and remove the RunUntil.
 TEST_F(QueryFilterComponentInstallerTest,
        TestComponentReady_WithBadJson_DoesNotUpdateVersion) {
   // Test setup
@@ -193,14 +193,14 @@ TEST_F(QueryFilterComponentInstallerTest,
 
   // Initiate component ready which would load the json file and populate the
   // query filter data.
+  base::RunLoop run_loop;
   component_updater::QueryFilterComponentInstallerPolicy policy;
+  policy.set_on_file_loaded_callback_for_testing(run_loop.QuitClosure());
   policy.ComponentReady(version, GetInstallDirectoryPath(), base::DictValue());
+  run_loop.Run();
 
-  // Verify the version and the rules are not updated after the component is
-  // ready as the parsing failed. This check is weak as the RunUntil may exit
-  // before the ComponentReady finished the async task inside.
-  EXPECT_TRUE(
-      base::test::RunUntil([&]() { return GetQueryFilterVersion() == ""; }));
+  // Verify neither the version not the rules are updated.
+  EXPECT_EQ("", GetQueryFilterVersion());
   const auto& new_rules = GetQueryFilterRules();
   EXPECT_TRUE(new_rules.empty());
 }
