@@ -193,7 +193,7 @@ const calculateProgress = (psstObj) => {
   const available = Number(getAvailableTasks(psstObj)) || 0;
   const total = processed + available;
 
-  return total === 0 ? 0 : (processed / total) * 100;
+  return total === 0 ? 0 : Math.round((processed / total) * 100);
 };
 
 const getResult = (psst, nextUrl) => {
@@ -496,95 +496,6 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     PlatformBrowserTest::TearDownOnMainThread();
   }
 
-  content::WebContents* WaitForAndGetDialogWebContents() {
-    auto start_time = base::TimeTicks::Now();
-    const auto timeout = base::Seconds(10);  // 10 second timeout
-
-    base::RunLoop run_loop;
-    base::RepeatingTimer timer;
-    content::WebContents* result = nullptr;
-    timer.Start(FROM_HERE, base::Milliseconds(100),
-                base::BindLambdaForTesting([&, start_time, timeout]() {
-                  if (base::TimeTicks::Now() - start_time >= timeout) {
-                    timer.Stop();
-                    run_loop.Quit();
-                    return;
-                  }
-
-                  std::vector<content::WebContents*> all_web_contents =
-                      content::GetAllWebContents();
-
-                  for (auto* wc : all_web_contents) {
-                    GURL url = wc->GetLastCommittedURL();
-                    // Look for chrome://psst URL
-                    if (url.SchemeIs("chrome") && url.host() == "psst") {
-                      timer.Stop();
-                      run_loop.Quit();
-                      result = wc;
-                      return;
-                    }
-                  }
-                }));
-
-    // Wait for the timer to find the dialog or timeout
-    run_loop.Run();
-    EXPECT_TRUE(result) << "Timeout waiting for dialog to appear";
-    return result;
-  }
-
-  bool AcceptModalDialog(content::WebContents* dialog_wc,
-                         const std::string& site_name,
-                         const std::vector<std::string>& perform_for_uids) {
-    auto* dialog_ui =
-        dialog_wc->GetWebUI()->GetController()->GetAs<BravePsstDialogUI>();
-    if (!dialog_ui) {
-      return false;
-    }
-
-    auto start_time = base::TimeTicks::Now();
-    const auto timeout = base::Seconds(10);  // 10 second timeout
-
-    base::RunLoop run_loop;
-    base::RepeatingTimer timer;
-
-    bool is_found = false;
-    timer.Start(FROM_HERE, base::Milliseconds(100),
-                base::BindLambdaForTesting([&, start_time, timeout]() {
-                  if (base::TimeTicks::Now() - start_time >= timeout) {
-                    timer.Stop();
-                    run_loop.Quit();
-                    return;
-                  }
-
-                  if (dialog_ui->psst_consent_handler_) {
-                    timer.Stop();
-                    run_loop.Quit();
-                    dialog_ui->psst_consent_handler_->PerformPrivacyTuning(
-                        perform_for_uids);
-                    is_found = true;
-                    return;
-                  }
-                }));
-
-    // Wait for the timer to find the dialog or timeout
-    run_loop.Run();
-    return is_found;
-  }
-
-  bool CloseModalDialog(content::WebContents* dialog_wc) {
-    auto* dialog_ui =
-        dialog_wc->GetWebUI()->GetController()->GetAs<BravePsstDialogUI>();
-    if (!dialog_ui) {
-      return false;
-    }
-    if (dialog_ui->psst_consent_handler_) {
-      dialog_ui->psst_consent_handler_->CloseDialog();
-      return true;
-    }
-
-    return false;
-  }
-
   PrefService* GetPrefs() {
     return chrome_test_utils::GetProfile(this)->GetPrefs();
   }
@@ -593,6 +504,10 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
 
   content::WebContents* web_contents() {
     return chrome_test_utils::GetActiveWebContents(this);
+  }
+
+  PsstSettingsService* GetPsstSettingsService() {
+    return psst_settings_service_;
   }
 
   content::WebContents* WaitForAndGetDialogWebContents(
@@ -765,6 +680,7 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
 
   infobars::ContentInfoBarManager* manager =
       infobars::ContentInfoBarManager::FromWebContents(web_contents());
+  content::CreateAndLoadWebContentsObserver new_web_contents_observer;
 
   std::vector<std::u16string> user_script_messages;
   std::vector<std::u16string> policy_script_messages;
@@ -797,12 +713,7 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
 
   confirm_delegate->Accept();
 
-  // Ensure browser window is visible and has proper bounds for dialog
-  // positioning
-  browser()->window()->Show();
-  browser()->window()->SetBounds(gfx::Rect(0, 0, 800, 600));
-
-  auto* dialog_wc = WaitForAndGetDialogWebContents();
+  auto* dialog_wc = WaitForAndGetDialogWebContents(new_web_contents_observer);
   ASSERT_TRUE(dialog_wc);
 
   DialogCloseObserver dialog_close_observer(dialog_wc);

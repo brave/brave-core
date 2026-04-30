@@ -628,18 +628,6 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   // Policy script result is a dictionary, but it is not deserializable
   auto policy_script_result = base::Value(
       base::DictValue()
-          .Set("initial_execution", true)
-          .Set("user_id", user_id)
-          .Set("site_name", "example")
-          .Set("tasks",
-               base::ListValue().Append(base::DictValue()
-                                            .Set("uid", "1")
-                                            .Set("url", "https://example1.com")
-                                            .Set("description", "settings"))));
-
-  // Policy script result is a dictionary, but it is not deserializable
-  auto policy_script_result = base::Value(
-      base::DictValue()
           .Set("next_url", "https://example2.com")
           .Set("psst", base::DictValue()
                            .Set("progress", 100)
