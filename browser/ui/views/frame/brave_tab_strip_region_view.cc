@@ -315,13 +315,19 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
     //  .ChildrenAreFlushWithTopOfTabStripRegionView` green — while still
     // letting compact mode nudge the button up to stay centred against the
     // shorter tab pills.
-    if (new_tab_button_ && tab_scroll_next_button_ &&
-        tab_scroll_next_button_->GetVisible()) {
-      const gfx::Size button_size = new_tab_button_->GetPreferredSize();
-      const int x = tab_scroll_next_button_->bounds().right() +
-                    GetLayoutConstant(LayoutConstant::kTabStripPadding) +
-                    GetLayoutConstant(LayoutConstant::kToolbarDividerSpacing);
-      new_tab_button_->SetBoundsRect(gfx::Rect(gfx::Point(x, 0), button_size));
+    if (new_tab_button_) {
+      if (tab_scroll_next_button_ && tab_scroll_next_button_->GetVisible()) {
+        const gfx::Size button_size = new_tab_button_->GetPreferredSize();
+        const int x = tab_scroll_next_button_->bounds().right() +
+                      GetLayoutConstant(LayoutConstant::kTabStripPadding) +
+                      GetLayoutConstant(LayoutConstant::kToolbarDividerSpacing);
+        new_tab_button_->SetBoundsRect(
+            gfx::Rect(gfx::Point(x, 0), button_size));
+      } else {
+        new_tab_button_->SetX(
+            tab_strip_->bounds().right() +
+            GetLayoutConstant(LayoutConstant::kTabStripPadding));
+      }
     }
     if (new_tab_button_ &&
         tabs::ShouldUseCompactHorizontalTabsForNonTouchUI()) {

@@ -21,6 +21,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_root_view.h"
@@ -356,6 +357,73 @@ IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
   ASSERT_TRUE(region);
   ASSERT_TRUE(region->tab_scroll_previous_for_testing());
   EXPECT_FALSE(region->tab_scroll_previous_for_testing()->GetVisible());
+}
+
+// Regression tests for brave/brave-browser#54971 and #54988: when horizontal
+// scroll controls exist but are hidden (no overflow), the new tab button must
+// still sit to the right of the tab strip with kTabStripPadding; when they are
+// visible, it must follow the trailing scroll button with padding + divider
+// spacing.
+IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
+                       NewTabButtonTrailingGapWhenScrollButtonsHidden) {
+  auto* tab_strip = views::AsViewClass<BraveTabStrip>(
+      browser_view()->horizontal_tab_strip_for_testing());
+  BraveTabContainer* container = views::AsViewClass<BraveTabContainer>(
+      tab_strip->GetTabContainerForTesting());
+  ASSERT_TRUE(container);
+
+  browser()->profile()->GetPrefs()->SetBoolean(
+      brave_tabs::kShowHorizontalTabScrollButtons, true);
+  StopAnimatingAndLayout();
+
+  ASSERT_EQ(0, container->GetMaxScrollOffsetForTesting())
+      << "Need few tabs so trailing scroll stays hidden";
+
+  BraveHorizontalTabStripRegionView* region = tab_strip_region();
+  ASSERT_TRUE(region);
+  ASSERT_TRUE(region->tab_scroll_next_for_testing());
+  ASSERT_FALSE(region->tab_scroll_next_for_testing()->GetVisible());
+
+  views::View* ntb = region->new_tab_button_for_testing();
+  ASSERT_TRUE(ntb);
+
+  const int pad = GetLayoutConstant(LayoutConstant::kTabStripPadding);
+  EXPECT_EQ(ntb->x(), tab_strip->bounds().right() + pad)
+      << "ntb->x()=" << ntb->x()
+      << " tab_strip->bounds().right()=" << tab_strip->bounds().right();
+}
+
+IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
+                       NewTabButtonTrailingGapWhenScrollButtonsVisible) {
+  browser()->profile()->GetPrefs()->SetBoolean(
+      brave_tabs::kShowHorizontalTabScrollButtons, true);
+
+  auto* tab_strip = views::AsViewClass<BraveTabStrip>(
+      browser_view()->horizontal_tab_strip_for_testing());
+  BraveTabContainer* container = views::AsViewClass<BraveTabContainer>(
+      tab_strip->GetTabContainerForTesting());
+  ASSERT_TRUE(container);
+
+  while (container->GetMaxScrollOffsetForTesting() == 0) {
+    AppendTab();
+    StopAnimatingAndLayout();
+  }
+
+  BraveHorizontalTabStripRegionView* region = tab_strip_region();
+  ASSERT_TRUE(region);
+  TabStripControlButton* next = region->tab_scroll_next_for_testing();
+  ASSERT_TRUE(next);
+  ASSERT_TRUE(next->GetVisible());
+
+  views::View* ntb = region->new_tab_button_for_testing();
+  ASSERT_TRUE(ntb);
+
+  const int pad = GetLayoutConstant(LayoutConstant::kTabStripPadding);
+  const int divider = GetLayoutConstant(LayoutConstant::kToolbarDividerSpacing);
+  EXPECT_EQ(ntb->x(), next->bounds().right() + pad + divider)
+      << "ntb->x()=" << ntb->x()
+      << " next->bounds().right()=" << next->bounds().right() << " pad=" << pad
+      << " divider=" << divider;
 }
 
 IN_PROC_BROWSER_TEST_F(HorizontalScrollableTabStripBrowserTest,
