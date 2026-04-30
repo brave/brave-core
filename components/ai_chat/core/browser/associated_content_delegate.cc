@@ -65,6 +65,11 @@ void AssociatedContentDelegate::GetScreenshots(
   std::move(callback).Run(std::nullopt);
 }
 
+void AssociatedContentDelegate::GetScriptTools(
+    GetScriptToolsCallback callback) {
+  std::move(callback).Run({});
+}
+
 void AssociatedContentDelegate::NotifyNewPage() {
   for (auto& observer : observers_) {
     observer.OnNewPage(this);

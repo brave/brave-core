@@ -25,6 +25,7 @@
 #include "brave/components/ai_chat/renderer/page_text_distilling.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
+#include "mojo/public/cpp/bindings/callback_helpers.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "third_party/blink/public/platform/web_string.h"
@@ -33,6 +34,7 @@
 #include "third_party/blink/public/web/web_frame.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
+#include "third_party/blink/public/web/web_script_tool_types.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 #include "url/url_constants.h"
@@ -338,6 +340,32 @@ void PageContentExtractor::OnJSTranscriptUrlResult(
   result->content = mojom::PageContentData::NewContentUrl(transcript_url);
   result->type = std::move(type);
   std::move(callback).Run(std::move(result));
+}
+
+void PageContentExtractor::ExecuteScriptTool(
+    const std::string& name,
+    const std::string& input_json,
+    mojom::PageContentExtractor::ExecuteScriptToolCallback callback) {
+  blink::WebDocument document = render_frame()->GetWebFrame()->GetDocument();
+  // If WebDocument drops the callback without calling it (no model context →
+  // nullopt return value), WrapCallbackWithDefaultInvokeIfNotRun ensures the
+  // mojo reply is still sent with nullopt.
+  auto wrapped = mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+      std::move(callback), std::optional<std::string>(std::nullopt));
+  document.ExecuteScriptTool(
+      blink::WebString::FromUTF8(name), blink::WebString::FromUTF8(input_json),
+      base::BindOnce(
+          [](mojom::PageContentExtractor::ExecuteScriptToolCallback cb,
+             std::unique_ptr<blink::WebScriptToolDeclaration> declaration,
+             base::expected<blink::WebString, blink::WebScriptToolError>
+                 result) {
+            if (result.has_value()) {
+              std::move(cb).Run(result->Utf8());
+            } else {
+              std::move(cb).Run(std::nullopt);
+            }
+          },
+          std::move(wrapped)));
 }
 
 void PageContentExtractor::GetSearchSummarizerKey(
