@@ -11,6 +11,7 @@ android_library("java") {
   sources = [
     "java/src/org/chromium/chrome/browser/omnibox/BraveAutocompleteEditText.java",
     "java/src/org/chromium/chrome/browser/omnibox/OmniboxPrefManager.java",
+    "java/src/org/chromium/chrome/browser/omnibox/status/BraveStatusView.java",
     "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteCoordinator.java",
     "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListBuilder.java",
     "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListManager.java",
@@ -42,6 +43,7 @@ android_library("java") {
     "//chrome/browser/tabmodel:java",
     "//chrome/browser/ui/android/omnibox:java",
     "//chrome/browser/ui/android/omnibox:java_resources",
+    "//components/browser_ui/widget/android:java",
     "//components/favicon/android:java",
     "//components/omnibox/browser:browser_java",
     "//components/omnibox/common:features_java",
