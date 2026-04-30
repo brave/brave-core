@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/autofill/BUILD.gn b/chrome/browser/ui/autofill/BUILD.gn
-index 9838e48e9aba297272abd0b6b1b9d8f820a55983..ab6c1308e6b155eb5c26651060bf35144c93b277 100644
+index 9838e48e9aba297272abd0b6b1b9d8f820a55983..9f773cdf668bc444899f36865e797bc875c58923 100644
 --- a/chrome/browser/ui/autofill/BUILD.gn
 +++ b/chrome/browser/ui/autofill/BUILD.gn
 @@ -228,6 +228,7 @@ source_set("impl") {
@@ -10,3 +10,11 @@ index 9838e48e9aba297272abd0b6b1b9d8f820a55983..ab6c1308e6b155eb5c26651060bf3514
  
    if (safe_browsing_mode != 0) {
      deps += [ "//components/safe_browsing/content/browser/password_protection" ]
+@@ -250,6 +251,7 @@ source_set("impl") {
+       "//components/password_manager/core/browser/features:password_features",
+       "//components/plus_addresses/core/browser/resources/strings",
+     ]
++    import("//brave/browser/ui/autofill/sources.gni") deps += brave_chrome_browser_ui_autofill_deps
+   } else {
+     sources += [
+       "address_bubbles_controller.cc",
