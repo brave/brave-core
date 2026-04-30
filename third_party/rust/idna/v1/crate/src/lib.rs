@@ -11,7 +11,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-use std::{error::Error as StdError, fmt};
+use std::{borrow::Cow, error::Error as StdError, fmt};
 
 #[derive(Default, Debug)]
 pub struct Errors {}
@@ -51,6 +51,15 @@ pub fn domain_to_ascii(domain: &str) -> Result<String, Errors> {
         false => Err(Errors::default()),
         true => Ok(res.domain)
     }
+}
+
+pub fn domain_to_ascii_cow(domain: &[u8], _ascii_deny_list: AsciiDenyList) -> Result<Cow<'_, str>, Errors> {
+    domain_to_ascii(str::from_utf8(domain).map_err(|_| Errors::default())?).map(|s| s.into())
+}
+
+pub enum AsciiDenyList {
+    EMPTY,
+    // ... others not implemented
 }
 
 // Tests from original idna crate
