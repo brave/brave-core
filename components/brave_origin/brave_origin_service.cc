@@ -16,6 +16,7 @@
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_origin/features.h"
 #include "brave/components/brave_origin/pref_names.h"
 #include "brave/components/skus/browser/pref_names.h"
@@ -244,10 +245,13 @@ void BraveOriginService::OnCredentialSummary(
     }
   }
 
+#if !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
   // Check if this is a first-time purchase (pref was false, now true).
-  // Must read the pref before SetPurchased() updates it.
+  // Must read the pref before SetPurchased() updates it. Only needed for
+  // the upgrade case below; branded builds drive post-purchase via dialog.
   const bool was_previously_purchased =
       local_state_ && local_state_->GetBoolean(kOriginPurchaseValidated);
+#endif
 
 #if BUILDFLAG(IS_LINUX)
   // On Linux, free tier acceptance overrides the SKU result so that
@@ -267,13 +271,16 @@ void BraveOriginService::OnCredentialSummary(
     local_state_->SetBoolean(kOriginPoliciesWereEnforced, true);
   }
 
-  // On first purchase detection, open the settings page so the user
-  // can configure Origin policies.
+#if !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  // On first purchase detection in the upgrade case, open the settings page
+  // so the user can configure Origin policies and restart. Branded builds
+  // handle the post-purchase flow via the startup dialog instead.
   if (purchased && !was_previously_purchased && delegate_ &&
       !did_open_origin_settings_) {
     delegate_->OpenOriginSettings();
     did_open_origin_settings_ = true;
   }
+#endif
 
   std::move(callback).Run(purchased);
 }

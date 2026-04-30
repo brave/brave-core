@@ -14,6 +14,7 @@
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_origin/features.h"
 #include "brave/components/brave_origin/pref_names.h"
 #include "brave/components/skus/browser/pref_names.h"
@@ -804,7 +805,13 @@ TEST_F(BraveOriginServiceWithSkusTest, FirstPurchaseDetection_CallsDelegate) {
   base::test::TestFuture<bool> result;
   service_->CheckPurchaseState(result.GetCallback());
   EXPECT_TRUE(result.Get());
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  // Branded builds handle the post-purchase flow via the startup dialog,
+  // not by opening the settings page.
+  EXPECT_FALSE(delegate_called);
+#else
   EXPECT_TRUE(delegate_called);
+#endif
 }
 
 TEST_F(BraveOriginServiceWithSkusTest, AlreadyPurchased_DoesNotCallDelegate) {
@@ -855,7 +862,11 @@ TEST_F(BraveOriginServiceWithSkusTest, DelegateIsOneShot_OnlyFiresOnce) {
   base::test::TestFuture<bool> result1;
   service_->CheckPurchaseState(result1.GetCallback());
   EXPECT_TRUE(result1.Get());
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  EXPECT_FALSE(delegate_called);
+#else
   EXPECT_TRUE(delegate_called);
+#endif
 
   // Reset the flag and verify the delegate is not called again.
   delegate_called = false;
@@ -898,7 +909,11 @@ TEST_F(BraveOriginServiceWithSkusTest,
                        base::DictValue().Set("trigger", true));
 
   ASSERT_TRUE(base::test::RunUntil([&] { return service_->IsPurchased(); }));
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  EXPECT_FALSE(delegate_called);
+#else
   EXPECT_TRUE(delegate_called);
+#endif
 }
 
 // Test class for when BraveOrigin feature is disabled
