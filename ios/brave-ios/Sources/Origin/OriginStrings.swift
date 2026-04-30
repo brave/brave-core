@@ -81,12 +81,6 @@ extension Strings {
       value: "Wallet",
       comment: "A toggle label for Brave Wallet feature"
     )
-    public static let enabledFeatureNote = NSLocalizedString(
-      "enabledFeatureNote",
-      bundle: .module,
-      value: "This feature is enabled because you opted into it",
-      comment: "A note that indicates a feature is enabled"
-    )
     public static let originFeatureDescription = NSLocalizedString(
       "featuresFooter",
       bundle: .module,
