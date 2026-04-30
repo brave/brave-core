@@ -12,6 +12,7 @@ import static org.mockito.Mockito.when;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.Robolectric;
+import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
 
 import org.chromium.base.test.BaseRobolectricTestRunner;
@@ -40,12 +42,21 @@ public class TwoLineItemBottomSheetFragmentTest {
     @Mock private WalletModel mWalletModel;
     @Mock private KeyringModel mKeyringModel;
 
+    private ActivityController<?> mActivityController;
+
+    @After
+    public void tearDown() {
+        if (mActivityController != null) {
+            mActivityController.pause().stop().destroy();
+        }
+    }
+
     @Test
     public void setItems_beforeViewCreated_bindsAdapter() {
         when(mWalletModel.getKeyringModel()).thenReturn(mKeyringModel);
 
-        TestWalletActivity activity =
-                Robolectric.buildActivity(TestWalletActivity.class).setup().get();
+        mActivityController = Robolectric.buildActivity(TestWalletActivity.class).setup();
+        TestWalletActivity activity = (TestWalletActivity) mActivityController.get();
         activity.setWalletModel(mWalletModel);
 
         TwoLineItemBottomSheetFragment fragment = new TwoLineItemBottomSheetFragment();
