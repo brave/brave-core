@@ -409,6 +409,8 @@ source_set("ui") {
       "//brave/components/brave_account",
       "//brave/components/brave_account:features",
       "//brave/components/brave_account/mojom",
+      "//brave/components/brave_education",
+      "//brave/components/brave_education:buildflags",
       "//brave/components/brave_wayback_machine/buildflags",
       "//brave/components/constants",
       "//brave/components/email_aliases/buildflags",
