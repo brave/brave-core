@@ -258,9 +258,9 @@ int AppendBrowserSessionCommands(
 }
 
 void DoRestoreWorkspace(
-    Profile* profile,
+    base::WeakPtr<Profile> profile,
     std::vector<std::unique_ptr<sessions::SessionCommand>> commands) {
-  if (commands.empty()) {
+  if (!profile || commands.empty()) {
     LOG(ERROR) << "Could not load workspace";
     return;
   }
@@ -290,11 +290,11 @@ void DoRestoreWorkspace(
       continue;
     }
 
-    if (Browser::GetCreationStatusForProfile(profile) !=
+    if (Browser::GetCreationStatusForProfile(profile.get()) !=
         Browser::CreationStatus::kOk) {
       continue;
     }
-    Browser::CreateParams params(Browser::TYPE_NORMAL, profile, false);
+    Browser::CreateParams params(Browser::TYPE_NORMAL, profile.get(), false);
     params.initial_bounds = window->bounds;
     params.initial_show_state = window->show_state;
     params.initial_workspace = window->workspace;
@@ -1417,15 +1417,15 @@ void SaveWorkspace(Profile* profile, const std::string& name) {
   auto on_success = base::BindPostTask(
       base::SequencedTaskRunner::GetCurrentDefault(),
       base::BindOnce(
-          [](BraveWorkspaceService* service, std::string name, int window_count,
-             int tab_count, base::Time modified_at,
+          [](base::WeakPtr<BraveWorkspaceService> service, std::string name,
+             int window_count, int tab_count, base::Time modified_at,
              scoped_refptr<base::RefCountedData<bool>> wrote_ok) {
-            if (wrote_ok->data) {
+            if (service && wrote_ok->data) {
               service->SaveWorkspaceMetadata(name, window_count, tab_count,
                                              modified_at);
             }
           },
-          base::Unretained(service), name, window_count, tab_count, save_time,
+          service->GetWeakPtr(), name, window_count, tab_count, save_time,
           wrote_ok));
 
   auto on_error = base::BindOnce(
@@ -1472,7 +1472,7 @@ void RestoreWorkspace(Profile* profile, const std::string& name) {
       FROM_HERE,
       base::BindOnce(&BraveWorkspaceService::ReadWorkspaceFromDisk,
                      std::move(path), std::move(backend)),
-      base::BindOnce(&DoRestoreWorkspace, base::Unretained(profile)));
+      base::BindOnce(&DoRestoreWorkspace, profile->GetWeakPtr()));
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)

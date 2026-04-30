@@ -14,6 +14,7 @@
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "brave/browser/workspace/brave_workspace.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -114,6 +115,8 @@ class BraveWorkspaceService : public KeyedService {
   ReadWorkspaceFromDisk(const base::FilePath& workspace_dir,
                         scoped_refptr<sessions::CommandStorageBackend> backend);
 
+  base::WeakPtr<BraveWorkspaceService> GetWeakPtr();
+
  private:
   static std::string SanitizeName(const std::string& name);
 
@@ -121,6 +124,8 @@ class BraveWorkspaceService : public KeyedService {
   base::FilePath WorkspaceDirForName(const std::string& name) const;
 
   raw_ptr<Profile> profile_;
+
+  base::WeakPtrFactory<BraveWorkspaceService> weak_ptr_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_WORKSPACE_BRAVE_WORKSPACE_SERVICE_H_

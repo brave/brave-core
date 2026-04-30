@@ -159,6 +159,10 @@ BraveWorkspaceService::ReadWorkspaceFromDisk(
   return std::move(result.commands);
 }
 
+base::WeakPtr<BraveWorkspaceService> BraveWorkspaceService::GetWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
+}
+
 // static
 std::string BraveWorkspaceService::SanitizeName(const std::string& name) {
   std::string sanitized;
