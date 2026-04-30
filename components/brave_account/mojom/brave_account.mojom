@@ -5,17 +5,40 @@
 
 module brave_account.mojom;
 
-struct LoggedOutState {};
+// These enum values are persisted to Preferences. Never reorder, repurpose,
+// or recycle a value — only append new ones with the next unused number.
+// When removing an enumerator, leave its number reserved as a comment.
+enum LoggedOutVerificationIntent {
+  kRegistration  = 0,
+  kResetPassword = 1,
+};
 
-struct VerificationState {};
+// These enum values are persisted to Preferences. Never reorder, repurpose,
+// or recycle a value — only append new ones with the next unused number.
+// When removing an enumerator, leave its number reserved as a comment.
+enum LoggedInVerificationIntent {
+  kChangePassword = 0,
+};
+
+struct LoggedOutVerification {
+  LoggedOutVerificationIntent intent;
+};
+
+struct LoggedInVerification {
+  LoggedInVerificationIntent intent;
+};
+
+struct LoggedOutState {
+  LoggedOutVerification? verification;
+};
 
 struct LoggedInState {
   string email;
+  LoggedInVerification? verification;
 };
 
 union AccountState {
   LoggedOutState logged_out;
-  VerificationState verification;
   LoggedInState logged_in;
 };
 
@@ -39,7 +62,7 @@ enum RegisterClientErrorCode {
   kOpaqueError,
   kVerificationTokenEncryptionFailed,
   kVerificationTokenDecryptionFailed,
-  kUserNotInTheVerificationState,
+  kNoRegistrationInProgress,
   kAuthenticationTokenEncryptionFailed,
 };
 
@@ -158,7 +181,7 @@ struct ResendConfirmationEmailResult {
 
 enum ResendConfirmationEmailClientErrorCode {
   kUnexpected,
-  kUserNotInTheVerificationState,
+  kNoRegistrationInProgress,
   kVerificationTokenDecryptionFailed,
 };
 

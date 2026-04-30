@@ -53,6 +53,7 @@ static_library("service") {
     "//base",
     "//brave/brave_domains",
     "//brave/components/brave_account",
+    "//brave/components/brave_account:internal",
     "//brave/components/brave_account/endpoint_client",
     "//brave/components/brave_account/mojom",
     "//brave/components/constants",

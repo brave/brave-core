@@ -28,7 +28,7 @@
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/os_crypt/async/common/encryptor.h"
-#include "components/prefs/pref_member.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
@@ -125,15 +125,13 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
   void OnResendConfirmationEmail(ResendConfirmationEmailCallback callback,
                                  endpoints::VerifyResend::Response response);
 
-  void OnVerificationTokenChanged();
-
   void OnLoginInitialize(LoginInitializeCallback callback,
                          endpoints::LoginInit::Response response);
 
   void OnLoginFinalize(LoginFinalizeCallback callback,
                        endpoints::LoginFinalize::Response response);
 
-  void OnAuthenticationTokenChanged();
+  void OnAccountStateChanged();
 
   void ScheduleAuthValidate(
       base::TimeDelta delay = base::Seconds(0),
@@ -144,19 +142,11 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
 
   void OnAuthValidate(endpoints::AuthValidate::Response response);
 
-  void OnEmailAddressChanged();
-
-  void NotifyObservers();
-
-  mojom::AccountStatePtr GetAccountState() const;
-
   void OnGetServiceToken(
       const std::string& expected_encrypted_authentication_token,
       const std::string& service_name,
       GetServiceTokenCallback callback,
       endpoints::ServiceToken::Response response);
-
-  std::string GetCachedServiceToken(const std::string& service_name) const;
 
   std::string Encrypt(const std::string& plain_text) const;
 
@@ -168,9 +158,7 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
   std::vector<mojo::PendingReceiver<mojom::Authentication>> pending_receivers_;
   mojo::ReceiverSet<mojom::Authentication> authentication_receivers_;
   mojo::RemoteSet<mojom::AuthenticationObserver> observers_;
-  StringPrefMember pref_verification_token_;
-  StringPrefMember pref_authentication_token_;
-  StringPrefMember pref_email_address_;
+  PrefChangeRegistrar pref_change_registrar_;
   base::OneShotTimer auth_validate_timer_;
   base::WeakPtrFactory<BraveAccountService> weak_factory_{this};
 };

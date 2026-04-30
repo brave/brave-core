@@ -8,56 +8,101 @@
 
 namespace brave_account::prefs {
 
-// This preference will store (`OSCrypt`-encrypted) the `verificationToken`
-// returned by the POST /v2/accounts/password/init endpoint.
-// It is then used for:
-// - calling POST /v2/accounts/password/finalize
-//   to complete the registration flow
-// - polling POST /v2/verify/result
-//   to exchange the `verificationToken` for the `authToken`
-//   after the user has verified their email
-inline constexpr char kBraveAccountVerificationToken[] =
-    "brave.account.verification_token";
-
-// This preference will store (`OSCrypt`-encrypted) the (JWT) `authToken`
-// returned by the POST /v2/verify/result endpoint.
-// It is then used for:
-// - authenticating subsequent Brave Account requests
-// - creating new service tokens
-inline constexpr char kBraveAccountAuthenticationToken[] =
-    "brave.account.authentication_token";
-
-// This preference will store the email address of the authenticated user
-// returned by the GET /v2/auth/validate endpoint.
-inline constexpr char kBraveAccountEmailAddress[] =
-    "brave.account.email_address";
-
-// This preference will store a dictionary of service tokens with their
-// fetch times. Each entry maps a service name to a dict containing:
-// - "service_token": the service token (`OSCrypt`-encrypted)
-// - "last_fetched": when the service token was retrieved (base::Time as
-// base::Value via base::TimeToValue())
+// This preference stores the entire account state as a single dictionary,
+// keyed by "kind" ("logged-out" or "logged-in"). All state transitions write
+// the whole dictionary in one shot, so observers see one consistent state per
+// notification.
 //
-// Example:
-// ...
-// "service_tokens": {
-//     "email-aliases": {
-//         "last_fetched": "...",
-//         "service_token": "..."
-//     },
-//     ...
+// First launch, no Brave Account ever used — equivalent to logged-out:
+// The "account" dict in Preferences doesn't exist.
+//
+// Registration in progress — logged-out, with verification:
+// "account": {
+//   "state": {
+//     "kind": "logged-out",
+//     "verification": {
+//       "intent": 0,
+//       "token": "..."
+//     }
+//   }
 // },
-// ...
-inline constexpr char kBraveAccountServiceTokens[] =
-    "brave.account.service_tokens";
+//
+// Email verified, or returning user logged in — logged-in,
+// optionally including service tokens:
+// "account": {
+//   "state": {
+//     "authentication_token": "...",
+//     "email": "...",
+//     "kind": "logged-in",
+//     "service_tokens": {
+//       "email-aliases": {
+//         "last_fetched": "13422130435353472",
+//         "service_token": "..."
+//       }
+//     }
+//   }
+// },
+//
+// Password change in progress — logged-in, with verification:
+// "account": {
+//   "state": {
+//     "authentication_token": "...",
+//     "email": "...",
+//     "kind": "logged-in"
+//     "verification": {
+//       "intent": 0,
+//       "token": "..."
+//     }
+//   }
+// },
+//
+// Logged out — logged-out:
+// "account": {
+//   "state": {
+//     "kind": "logged-out"
+//   }
+// },
+//
+// Password reset in progress — logged-out, with verification:
+// "account": {
+//   "state": {
+//     "kind": "logged-out",
+//     "verification": {
+//       "intent": 1,
+//       "token": "..."
+//     }
+//   }
+// },
+inline constexpr char kBraveAccountState[] = "brave.account.state";
 
 namespace keys {
 
-// Dictionary keys used within kBraveAccountServiceTokens.
-inline constexpr char kServiceToken[] = "service_token";
+// Top-level dictionary keys used within kBraveAccountState.
+inline constexpr char kAuthenticationToken[] = "authentication_token";
+inline constexpr char kEmail[] = "email";
+inline constexpr char kKind[] = "kind";
+inline constexpr char kServiceTokens[] = "service_tokens";
+inline constexpr char kVerification[] = "verification";
+
+// Dictionary keys used within the "verification" sub-dict of
+// kBraveAccountState.
+inline constexpr char kVerificationIntent[] = "intent";
+inline constexpr char kVerificationToken[] = "token";
+
+// Dictionary keys used within entries of the "service_tokens" sub-dict of
+// kBraveAccountState.
 inline constexpr char kLastFetched[] = "last_fetched";
+inline constexpr char kServiceToken[] = "service_token";
 
 }  // namespace keys
+
+namespace state_kinds {
+
+// Values for the kKind field within kBraveAccountState.
+inline constexpr char kLoggedIn[] = "logged-in";
+inline constexpr char kLoggedOut[] = "logged-out";
+
+}  // namespace state_kinds
 
 }  // namespace brave_account::prefs
 

@@ -447,7 +447,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
           ),
         ]
       )
-    case .verification:
+    case .loggedOut where braveAccountState.loggedOut!.verification != nil:
       return Static.Section(
         header: .title(L10nUtils.string(messageId: .BRAVE_ACCOUNT_TITLE)),
         rows: [

@@ -182,60 +182,62 @@ export class SettingsBraveAccountRowElement extends I18nMixinLit(CrLitElement) {
           </leo-button>
         `
       ),
-      [AccountStateFieldTags.VERIFICATION]: () => html`
-        ${this.createFirstRow(
-          this.i18n(
-              BraveAccountSettingsStrings
-                  .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_TITLE),
-          [
-            html`<localized-link
-                .localizedString=${`${
-                  this.i18n(BraveAccountSettingsStrings
-                    .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_1)} ${
-                  this.i18n(BraveAccountSettingsStrings
-                    .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2)} ${
-                  this.i18nAdvanced(BraveAccountSettingsStrings
-                    .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_3,
-                    {tags: ['a'], attrs: ['href']})}`}
-                @link-clicked=${this.onResendConfirmationEmailLinkClicked}>
-            </localized-link>`
-          ]
-        )}
-        <div class="second-row">
-          <leo-button kind="plain"
-                      size="small"
-                      @click=${this.openBraveAccountDialog}>
-            ${this.i18n(
+      [AccountStateFieldTags.LOGGED_OUT]: () =>
+        this.state!.loggedOut!.verification
+          ? html`
+              ${this.createFirstRow(
+                this.i18n(
+                    BraveAccountSettingsStrings
+                         .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_TITLE),
+                [
+                  html`<localized-link
+                      .localizedString=${`${
+                        this.i18n(BraveAccountSettingsStrings
+                          .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_1)} ${
+                        this.i18n(BraveAccountSettingsStrings
+                          .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2)} ${
+                        this.i18nAdvanced(BraveAccountSettingsStrings
+                          .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_3,
+                          {tags: ['a'], attrs: ['href']})}`}
+                      @link-clicked=${this.onResendConfirmationEmailLinkClicked}>
+                  </localized-link>`
+                ]
+              )}
+              <div class="second-row">
+                <leo-button kind="plain"
+                            size="small"
+                            @click=${this.openBraveAccountDialog}>
+                  ${this.i18n(
+                        BraveAccountSettingsStrings
+                             .SETTINGS_BRAVE_ACCOUNT_ENTER_REGISTRATION_CODE_BUTTON_LABEL)}
+                </leo-button>
+                <leo-button kind="plain"
+                            size="small"
+                            class="cancel-registration-button"
+                            @click=${this.onCancelRegistrationButtonClicked}>
+                  ${this.i18n(
+                        BraveAccountSettingsStrings
+                             .SETTINGS_BRAVE_ACCOUNT_CANCEL_REGISTRATION_BUTTON_LABEL)}
+                </leo-button>
+              </div>
+            `
+          : this.createFirstRow(
+              this.i18n(
                   BraveAccountSettingsStrings
-                       .SETTINGS_BRAVE_ACCOUNT_ENTER_REGISTRATION_CODE_BUTTON_LABEL)}
-          </leo-button>
-          <leo-button kind="plain"
-                      size="small"
-                      class="cancel-registration-button"
-                      @click=${this.onCancelRegistrationButtonClicked}>
-            ${this.i18n(
+                       .SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_TITLE),
+              [this.i18n(
                   BraveAccountSettingsStrings
-                       .SETTINGS_BRAVE_ACCOUNT_CANCEL_REGISTRATION_BUTTON_LABEL)}
-          </leo-button>
-        </div>
-      `,
-      [AccountStateFieldTags.LOGGED_OUT]: () => this.createFirstRow(
-        this.i18n(
-            BraveAccountSettingsStrings
-                 .SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_TITLE),
-        [this.i18n(
-            BraveAccountSettingsStrings
-                 .BRAVE_ACCOUNT_DESCRIPTION)],
-        html`
-          <leo-button kind="filled"
-                      size="small"
-                      @click=${this.openBraveAccountDialog}>
-            ${this.i18n(
-                  BraveAccountSettingsStrings
-                       .SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL)}
-          </leo-button>
-        `
-      ),
+                       .BRAVE_ACCOUNT_DESCRIPTION)],
+              html`
+                <leo-button kind="filled"
+                            size="small"
+                            @click=${this.openBraveAccountDialog}>
+                  ${this.i18n(
+                        BraveAccountSettingsStrings
+                             .SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL)}
+                </leo-button>
+              `
+            ),
     }
 
     return this.state === undefined

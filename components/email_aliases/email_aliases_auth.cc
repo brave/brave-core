@@ -28,17 +28,10 @@ EmailAliasesAuth::EmailAliasesAuth(
       base::Unretained(
           this)));  // Unretained is safe because we own the remote<>
 
+  // TODO(https://github.com/brave/brave-browser/issues/55179)
   pref_change_registrar_.Init(&prefs_service_.get());
   pref_change_registrar_.Add(
-      brave_account::prefs::kBraveAccountServiceTokens,
-      base::BindRepeating(&EmailAliasesAuth::OnPrefChanged,
-                          base::Unretained(this)));
-  pref_change_registrar_.Add(
-      brave_account::prefs::kBraveAccountAuthenticationToken,
-      base::BindRepeating(&EmailAliasesAuth::OnPrefChanged,
-                          base::Unretained(this)));
-  pref_change_registrar_.Add(
-      brave_account::prefs::kBraveAccountEmailAddress,
+      brave_account::prefs::kBraveAccountState,
       base::BindRepeating(&EmailAliasesAuth::OnPrefChanged,
                           base::Unretained(this)));
 }
@@ -54,8 +47,10 @@ std::string EmailAliasesAuth::GetAuthEmail() const {
     CHECK_IS_TEST();
     return auth_email_for_testing_.value();
   }
-  return prefs_service_->GetString(
-      brave_account::prefs::kBraveAccountEmailAddress);
+  const auto* email =
+      prefs_service_->GetDict(brave_account::prefs::kBraveAccountState)
+          .FindString(brave_account::prefs::keys::kEmail);
+  return email ? *email : "";
 }
 
 void EmailAliasesAuth::GetServiceToken(

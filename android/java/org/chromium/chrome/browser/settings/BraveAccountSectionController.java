@@ -192,7 +192,7 @@ public class BraveAccountSectionController
             setVisibility(resendConfirmationEmailPref, false);
             setVisibility(cancelRegistrationPref, false);
             setVisibility(getStartedPref, false);
-        } else if (state.which() == AccountState.Tag.Verification) {
+        } else if (state.getLoggedOut().verification != null) {
             setVisibility(userInfoPref, false);
             setVisibility(signOutPref, false);
             setVisibility(almostTherePref, true);
