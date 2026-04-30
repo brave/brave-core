@@ -226,6 +226,7 @@ void EphemeralStorageService::TLDEphemeralLifetimeDestroyed(
            << storage_partition_config;
   const GURL url(GetFirstPartyStorageURL(ephemeral_domain));
   const auto auto_shred_mode = delegate_->GetAutoShredMode(url);
+  const bool cleanup_browsing_history_for_tld = true; // TODO Here we should get value from website settings to understand what to do with history
 
   const TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
   const bool cleanup_tld_ephemeral_area =
@@ -259,11 +260,13 @@ void EphemeralStorageService::TLDEphemeralLifetimeDestroyed(
         base::BindOnce(&EphemeralStorageService::CleanupTLDEphemeralAreaByTimer,
                        weak_ptr_factory_.GetWeakPtr(), key,
                        cleanup_tld_ephemeral_area,
-                       cleanup_first_party_storage_area));
+                       cleanup_first_party_storage_area,
+                       cleanup_browsing_history_for_tld));
     tld_ephemeral_areas_to_cleanup_.emplace(key, std::move(cleanup_timer));
   } else {
     CleanupTLDEphemeralArea(key, cleanup_tld_ephemeral_area,
-                            cleanup_first_party_storage_area);
+                            cleanup_first_party_storage_area,
+                            cleanup_browsing_history_for_tld);
   }
 }
 
@@ -394,17 +397,20 @@ bool EphemeralStorageService::FirstPartyStorageAreaNotInUse(
 void EphemeralStorageService::CleanupTLDEphemeralAreaByTimer(
     const TLDEphemeralAreaKey& key,
     bool cleanup_tld_ephemeral_area,
-    bool cleanup_first_party_storage_area) {
+    bool cleanup_first_party_storage_area,
+    bool cleanup_browsing_history_for_tld) {
   DVLOG(1) << __func__ << " " << key.first << " " << key.second;
   tld_ephemeral_areas_to_cleanup_.erase(key);
   CleanupTLDEphemeralArea(key, cleanup_tld_ephemeral_area,
-                          cleanup_first_party_storage_area);
+                          cleanup_first_party_storage_area,
+                          cleanup_browsing_history_for_tld);
 }
 
 void EphemeralStorageService::CleanupTLDEphemeralArea(
     const TLDEphemeralAreaKey& key,
     bool cleanup_tld_ephemeral_area,
-    bool cleanup_first_party_storage_area) {
+    bool cleanup_first_party_storage_area,
+    bool cleanup_browsing_history_for_tld) {
   DVLOG(1) << __func__ << " " << key.first << " " << key.second;
   if (cleanup_tld_ephemeral_area) {
     delegate_->CleanupTLDEphemeralArea(key);
@@ -412,6 +418,9 @@ void EphemeralStorageService::CleanupTLDEphemeralArea(
   fpes_tokens_.erase(key.first);
   if (cleanup_first_party_storage_area) {
     CleanupFirstPartyStorageArea(key);
+  }
+  if (cleanup_browsing_history_for_tld) {
+    delegate_->CleanupTLDBrowsingHistory(key);
   }
   for (auto& observer : observer_list_) {
     observer.OnCleanupTLDEphemeralArea(key);

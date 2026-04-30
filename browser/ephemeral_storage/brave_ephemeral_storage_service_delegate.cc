@@ -184,7 +184,7 @@ void BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea(
 
   content::BrowsingDataRemover::DataType data_to_remove =
       (content::BrowsingDataRemover::DATA_TYPE_ON_STORAGE_PARTITION &
-       chrome_browsing_data_remover::FILTERABLE_DATA_TYPES);
+       chrome_browsing_data_remover::FILTERABLE_DATA_TYPES & chrome_browsing_data_remover::DATA_TYPE_HISTORY);
 
   content::BrowsingDataRemover::OriginType origin_type =
       content::BrowsingDataRemover::ORIGIN_TYPE_UNPROTECTED_WEB |
@@ -197,6 +197,24 @@ void BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea(
 
   content::BrowsingDataRemover* remover = context_->GetBrowsingDataRemover();
   remover->RemoveWithFilter(base::Time(), base::Time::Max(), data_to_remove,
+                            origin_type, std::move(filter_builder));
+}
+
+void BraveEphemeralStorageServiceDelegate::CleanupTLDBrowsingHistory(
+    const TLDEphemeralAreaKey& key) {
+  DVLOG(1) << __func__ << " " << key.first << " " << key.second;
+
+  content::BrowsingDataRemover::OriginType origin_type =
+      content::BrowsingDataRemover::ORIGIN_TYPE_UNPROTECTED_WEB |
+      content::BrowsingDataRemover::ORIGIN_TYPE_PROTECTED_WEB;
+
+  auto filter_builder = content::BrowsingDataFilterBuilder::Create(
+      content::BrowsingDataFilterBuilder::Mode::kDelete);
+  filter_builder->AddRegisterableDomain(key.first);
+  filter_builder->SetStoragePartitionConfig(key.second);
+
+  content::BrowsingDataRemover* remover = context_->GetBrowsingDataRemover();
+  remover->RemoveWithFilter(base::Time(), base::Time::Max(), chrome_browsing_data_remover::DATA_TYPE_HISTORY,
                             origin_type, std::move(filter_builder));
 }
 

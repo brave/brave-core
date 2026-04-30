@@ -46,6 +46,7 @@ class BraveEphemeralStorageServiceDelegate
   // EphemeralStorageServiceDelegate:
   void CleanupTLDEphemeralArea(const TLDEphemeralAreaKey& key) override;
   void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key) override;
+  void CleanupTLDBrowsingHistory(const TLDEphemeralAreaKey& key) override;
   void RegisterFirstWindowOpenedCallback(base::OnceClosure callback) override;
   void PrepareTabsForFirstPartyStorageCleanup(
       const std::vector<std::string>& ephemeral_domains,

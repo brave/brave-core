@@ -126,10 +126,12 @@ class EphemeralStorageService : public KeyedService {
 
   void CleanupTLDEphemeralAreaByTimer(const TLDEphemeralAreaKey& key,
                                       bool cleanup_tld_ephemeral_area,
-                                      bool cleanup_first_party_storage_area);
+                                      bool cleanup_first_party_storage_area,
+                                      bool cleanup_browsing_history_for_tld);
   void CleanupTLDEphemeralArea(const TLDEphemeralAreaKey& key,
                                bool cleanup_tld_ephemeral_area,
-                               bool cleanup_first_party_storage_area);
+                               bool cleanup_first_party_storage_area,
+                               bool cleanup_browsing_history_for_tld);
 
   // If a website was closed, but not yet cleaned-up because of storage lifetime
   // keepalive, we store the origin into a pref to perform a cleanup on browser
