@@ -477,6 +477,40 @@ void AssociatedContentManager::OnTitleChanged(
   conversation_->OnAssociatedContentUpdated();
 }
 
+void AssociatedContentManager::UpdateToolsForNewGenerationLoop(
+    base::OnceClosure on_updated) {
+  tools_.clear();
+  if (content_delegates_.empty()) {
+    std::move(on_updated).Run();
+    return;
+  }
+  auto barrier =
+      base::BarrierClosure(content_delegates_.size(), std::move(on_updated));
+  for (auto* content : content_delegates_) {
+    content->GetScriptTools(base::BindOnce(
+        [](base::WeakPtr<AssociatedContentManager> self,
+           base::RepeatingClosure done,
+           std::vector<std::unique_ptr<Tool>> tools) {
+          if (self) {
+            for (auto& tool : tools) {
+              self->tools_.push_back(std::move(tool));
+            }
+          }
+          done.Run();
+        },
+        weak_ptr_factory_.GetWeakPtr(), barrier));
+  }
+}
+
+std::vector<base::WeakPtr<Tool>> AssociatedContentManager::GetTools() {
+  std::vector<base::WeakPtr<Tool>> tool_ptrs;
+  tool_ptrs.reserve(tools_.size());
+  for (const auto& tool : tools_) {
+    tool_ptrs.push_back(tool->GetWeakPtr());
+  }
+  return tool_ptrs;
+}
+
 void AssociatedContentManager::DetachContent() {
   DVLOG(1) << __func__;
 

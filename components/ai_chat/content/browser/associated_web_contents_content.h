@@ -23,6 +23,7 @@
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/weak_document_ptr.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -125,6 +126,7 @@ class AssociatedWebContentsContent : public content::WebContentsObserver,
   void GetPageContent(FetchPageContentCallback callback,
                       std::string_view invalidation_token) override;
   void OnNewPage(int64_t navigation_id) override;
+  void GetScriptTools(GetScriptToolsCallback callback) override;
 
   // Called when an event of significance occurs that, if the page is a
   // same-document navigation, should result in that previous navigation
@@ -159,6 +161,10 @@ class AssociatedWebContentsContent : public content::WebContentsObserver,
       FetchPageContentCallback callback);
   void OnAIPageContentResult(FetchPageContentCallback callback,
                              blink::mojom::AIPageContentPtr result);
+
+  void OnScriptToolsFetched(GetScriptToolsCallback callback,
+                            content::WeakDocumentPtr rfh,
+                            blink::mojom::AIPageContentPtr result);
 
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
 

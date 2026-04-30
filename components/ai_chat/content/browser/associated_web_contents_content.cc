@@ -24,6 +24,7 @@
 #include "base/uuid.h"
 #include "brave/components/ai_chat/content/browser/ai_page_content_fetcher.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
+#include "brave/components/ai_chat/content/browser/script_tool.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -335,6 +336,42 @@ void AssociatedWebContentsContent::GetSearchSummarizerKey(
 void AssociatedWebContentsContent::GetOpenAIChatButtonNonce(
     mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback) {
   page_content_fetcher_delegate_->GetOpenAIChatButtonNonce(std::move(callback));
+}
+
+void AssociatedWebContentsContent::GetScriptTools(
+    GetScriptToolsCallback callback) {
+  content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
+  if (!rfh || !rfh->IsRenderFrameLive()) {
+    std::move(callback).Run({});
+    return;
+  }
+  ai_page_content_agent_.reset();
+  rfh->GetRemoteInterfaces()->GetInterface(
+      ai_page_content_agent_.BindNewPipeAndPassReceiver());
+  auto options = blink::mojom::AIPageContentOptions::New();
+  options->mode = blink::mojom::AIPageContentMode::kDefault;
+  options->on_critical_path = true;
+  ai_page_content_agent_->GetAIPageContent(
+      std::move(options),
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+          base::BindOnce(&AssociatedWebContentsContent::OnScriptToolsFetched,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                         rfh->GetWeakDocumentPtr()),
+          nullptr));
+}
+
+void AssociatedWebContentsContent::OnScriptToolsFetched(
+    GetScriptToolsCallback callback,
+    content::WeakDocumentPtr rfh,
+    blink::mojom::AIPageContentPtr result) {
+  ai_page_content_agent_.reset();
+  std::vector<std::unique_ptr<Tool>> tools;
+  if (result && result->frame_data) {
+    for (const auto& script_tool : result->frame_data->script_tools) {
+      tools.push_back(std::make_unique<ScriptTool>(*script_tool, rfh));
+    }
+  }
+  std::move(callback).Run(std::move(tools));
 }
 
 bool AssociatedWebContentsContent::HasOpenAIChatPermission() const {
