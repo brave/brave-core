@@ -27,6 +27,8 @@
 
 namespace {
 inline constexpr char kQueryFilterComponentName[] = "Query Filter";
+
+// IN-TEST
 base::OnceClosure* g_on_file_loaded_callback_for_testing_ = nullptr;
 
 // This is the SHA-256 of the query-filter component's public key.
@@ -143,8 +145,9 @@ bool QueryFilterComponentInstallerPolicy::IsBraveComponent() const {
   return true;
 }
 
-void QueryFilterComponentInstallerPolicy::SetOnFileLoadedCallbackForTesting(
-    base::OnceClosure* callback) {
+void QueryFilterComponentInstallerPolicy::
+    SetOnFileLoadedCallbackForTesting(  // IN-TEST
+        base::OnceClosure* callback) {
   g_on_file_loaded_callback_for_testing_ = callback;
 }
 
