@@ -36,6 +36,10 @@
 #include "url/gurl.h"
 #include "url/url_constants.h"
 
+#if BUILDFLAG(IS_LINUX)
+#include "brave/components/brave_origin/switches.h"
+#endif
+
 namespace {
 
 constexpr int kDialogWidth = 540;
@@ -85,6 +89,12 @@ bool BraveOriginStartupView::ShouldShowDialog(PrefService* local_state) {
   }
 
 #if BUILDFLAG(IS_LINUX)
+  if (base::CommandLine::ForCurrentProcess()->HasSwitch(
+          brave_origin::switches::kSkipOriginStartupDialog)) {
+    // Persist acceptance so future launches without the switch also skip
+    // the dialog.
+    local_state->SetBoolean(brave_origin::kOriginFreeTierAccepted, true);
+  }
   if (local_state->GetBoolean(brave_origin::kOriginFreeTierAccepted)) {
     return false;
   }

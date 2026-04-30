@@ -27,6 +27,10 @@ source_set("pref_names") {
   ]
 }
 
+source_set("switches") {
+  sources = [ "switches.h" ]
+}
+
 static_library("brave_origin") {
   sources = [
     "brave_origin_policy_info.cc",
