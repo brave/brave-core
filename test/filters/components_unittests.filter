@@ -170,6 +170,11 @@
 # This test fails because we disable Actor Safety Lists component.
 -ActorSafetyListsComponentInstallerPolicyTest.ComponentRegistered
 
+# These tests verify that source=chrome.ob/chrome.rb is appended to search
+# URLs, but Brave overrides UpdateMatchDestinationURLWithInvocationSource to
+# suppress this Chrome-specific attribution.
+-AutocompleteControllerTest.UpdateMatchDestinationURLWithInvocationSource*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
 -AccountReconcilorDiceTest.*
