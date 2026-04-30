@@ -22,4 +22,6 @@ export const SectionLabel = styled(Text)`
 export const SectionDetails = styled(Text)`
   font: ${leo.font.default.semibold};
   letter-spacing: ${leo.typography.letterSpacing.default};
+  word-break: break-all;
+  text-align: left;
 `
