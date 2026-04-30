@@ -1819,7 +1819,8 @@ public class BytecodeTest {
                         SnackbarManager.class,
                         View.class,
                         OmniboxChipManager.class,
-                        LocationBarFocusScrimHandler.class));
+                        LocationBarFocusScrimHandler.class,
+                        UserEducationHelper.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/LocationBarMediator",
