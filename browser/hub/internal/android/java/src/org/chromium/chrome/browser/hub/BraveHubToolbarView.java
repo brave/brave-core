@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
@@ -87,6 +88,21 @@ public class BraveHubToolbarView extends HubToolbarView {
 
         mActionButton.setVisibility(shouldHideButtons ? View.GONE : View.VISIBLE);
         mMenuButton.setVisibility(shouldHideButtons ? View.GONE : View.VISIBLE);
+
+        // When the menu button is GONE the shred button becomes the rightmost child of
+        // menu_button_container; give it an end margin matching the toolbar's start
+        // inset so the shred icon doesn't sit flush against the screen edge.
+        if (shouldHideButtons) {
+            ViewGroup.MarginLayoutParams shredLp =
+                    (ViewGroup.MarginLayoutParams) mShredButton.getLayoutParams();
+            int endMargin =
+                    getResources()
+                            .getDimensionPixelSize(R.dimen.hub_toolbar_action_button_start_margin);
+            if (shredLp.getMarginEnd() != endMargin) {
+                shredLp.setMarginEnd(endMargin);
+                mShredButton.setLayoutParams(shredLp);
+            }
+        }
 
         final boolean shouldShowShredButton =
                 ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED);
