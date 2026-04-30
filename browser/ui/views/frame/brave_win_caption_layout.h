@@ -18,6 +18,12 @@ class ScopedWinCaptionLayoutUsesGeometryTabstripOverlap {
   explicit ScopedWinCaptionLayoutUsesGeometryTabstripOverlap(bool enable);
   ~ScopedWinCaptionLayoutUsesGeometryTabstripOverlap();
 
+  // Nested-scope depth for choosing geometry tabstrip overlap during Win
+  // caption layout; implemented in brave_win_caption_layout.cc. Used by
+  // GetLayoutConstantForBraveWindowControls in chromium_src/.../
+  // browser_frame_view_win.cc.
+  static int GetCurrentWinCaptionGeometryTabstripOverlapDepth();
+
   ScopedWinCaptionLayoutUsesGeometryTabstripOverlap(
       const ScopedWinCaptionLayoutUsesGeometryTabstripOverlap&) = delete;
   ScopedWinCaptionLayoutUsesGeometryTabstripOverlap& operator=(
