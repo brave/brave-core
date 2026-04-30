@@ -25,10 +25,6 @@
 
 class Profile;
 
-namespace user_prefs {
-class PrefRegistrySyncable;
-}
-
 // Profile preference key — stores a dict keyed by sanitized workspace name.
 inline constexpr char kWorkspacesMetadataPref[] = "brave.workspaces";
 

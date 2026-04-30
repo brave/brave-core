@@ -362,26 +362,14 @@ void BraveBrowserCommandController::InitBraveCommandState() {
               browser_->profile()));
 #endif
 
-  UpdateCommandEnabled(
-      IDC_SAVE_WORKSPACE,
-      features::IsBraveWorkspaceEnabled() && browser_->is_type_normal() &&
-          BraveWorkspaceServiceFactory::GetForProfile(browser_->profile()) !=
-              nullptr);
-
-  bool workspace_enabled = false;
-  int workspace_count = 0;
   if (features::IsBraveWorkspaceEnabled() && browser_->is_type_normal()) {
-    auto* service =
-        BraveWorkspaceServiceFactory::GetForProfile(browser_->profile());
-    if (service != nullptr) {
-      workspace_enabled = true;
-      workspace_count = service->ListWorkspaces().size();
-    }
+    UpdateCommandForWorkspace();
+    pref_change_registrar_.Add(
+        kWorkspacesMetadataPref,
+        base::BindRepeating(
+            &BraveBrowserCommandController::UpdateCommandForWorkspace,
+            weak_ptr_factory_.GetWeakPtr()));
   }
-  // TODO(bsclifton): this needs to refresh once workspace is saved.
-  // currently only refreshes after you quit/relaunch.
-  UpdateCommandEnabled(IDC_OPEN_WORKSPACE,
-                       workspace_enabled && workspace_count > 0);
 
   if (browser_->is_type_normal()) {
     // Delete these when upstream enables by default.
@@ -558,6 +546,19 @@ void BraveBrowserCommandController::UpdateCommandForSplitView() {
        {IDC_BREAK_TILE, IDC_SWAP_SPLIT_VIEW}) {
     UpdateCommandEnabled(command_enabled_when_tab_is_split, is_split_tabs);
   }
+}
+
+void BraveBrowserCommandController::UpdateCommandForWorkspace() {
+  auto* service =
+      BraveWorkspaceServiceFactory::GetForProfile(browser_->profile());
+
+  if (!service) {
+    return;
+  }
+
+  UpdateCommandEnabled(IDC_SAVE_WORKSPACE, true);
+  UpdateCommandEnabled(IDC_OPEN_WORKSPACE,
+                       service->ListWorkspaces().size() > 0);
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveSync() {
