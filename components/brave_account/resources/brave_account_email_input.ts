@@ -7,6 +7,7 @@ import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 
 import { getCss } from './brave_account_common.css.js'
 import { getHtml } from './brave_account_email_input.html.js'
+import { maybeSuggestEmailCorrection } from './brave_account_email_typo.js'
 
 // Maximum email address length according to this RFC3696 errata:
 // https://www.rfc-editor.org/errata/eid1690.
@@ -37,6 +38,7 @@ export class BraveAccountEmailInputElement extends CrLitElement {
       blockBraveAlias: { type: Boolean },
       email: { type: String, state: true },
       isFormatValid: { type: Boolean, state: true },
+      suggestion: { type: String, state: true },
     }
   }
 
@@ -47,6 +49,9 @@ export class BraveAccountEmailInputElement extends CrLitElement {
     this.email = detail.value.trim()
     this.isFormatValid =
       this.email.length > 0 && detail.innerEvent.target.validity.valid
+    this.suggestion = this.isFormatValid
+      ? maybeSuggestEmailCorrection(this.email)
+      : null
     this.fire('email-input', {
       email: this.email,
       isValid: this.isValid,
@@ -56,6 +61,7 @@ export class BraveAccountEmailInputElement extends CrLitElement {
   protected accessor blockBraveAlias = false
   private accessor email = ''
   private accessor isFormatValid = false
+  protected accessor suggestion: string | null = null
 
   protected get isBraveAlias(): boolean {
     return this.isFormatValid && /@bravealias\.com$/i.test(this.email)
@@ -66,6 +72,10 @@ export class BraveAccountEmailInputElement extends CrLitElement {
       (this.email.length !== 0 && !this.isFormatValid)
       || (this.blockBraveAlias && this.isBraveAlias)
     )
+  }
+
+  protected get shouldShowSuggestion(): boolean {
+    return this.suggestion !== null
   }
 
   private get isValid(): boolean {

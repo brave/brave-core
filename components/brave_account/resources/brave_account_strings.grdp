@@ -186,6 +186,9 @@
   <message name="IDS_BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER" desc="Placeholder for the 'Email address' input field" formatter_data="webui=BraveAccount">
     Enter your email address
   </message>
+  <message name="IDS_BRAVE_ACCOUNT_EMAIL_INPUT_DID_YOU_MEAN" desc="Suggested correction for a likely email typo" formatter_data="webui=BraveAccount">
+    Did you mean <ph name="SUGGESTION">$1<ex>user@gmail.com</ex></ph>?
+  </message>
   <message name="IDS_BRAVE_ACCOUNT_PASSWORD_INPUT_PLACEHOLDER" desc="Placeholder for the 'Create a password'/'Password' input fields" formatter_data="webui=BraveAccount">
     Enter your password
   </message>

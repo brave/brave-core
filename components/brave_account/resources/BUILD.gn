@@ -24,6 +24,7 @@ build_webui("build") {
     "brave_account_dialogs.ts",
     "brave_account_email_input.html.ts",
     "brave_account_email_input.ts",
+    "brave_account_email_typo.ts",
     "brave_account_entry_dialog.html.ts",
     "brave_account_entry_dialog.ts",
     "brave_account_forgot_password_dialog.html.ts",

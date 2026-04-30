@@ -4,7 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { html } from '//resources/lit/v3_0/lit.rollup.js'
+import { loadTimeData } from '//resources/js/load_time_data.js'
 
+import { BraveAccountStrings } from './brave_components_webui_strings.js'
 import {
   BraveAccountEmailInputElement,
   MAX_EMAIL_LENGTH,
@@ -15,7 +17,7 @@ export function getHtml(this: BraveAccountEmailInputElement) {
     <leo-input
       maxlength=${MAX_EMAIL_LENGTH}
       placeholder="$i18n{BRAVE_ACCOUNT_EMAIL_INPUT_PLACEHOLDER}"
-      ?showErrors=${this.blockBraveAlias}
+      ?showErrors=${this.blockBraveAlias || this.shouldShowSuggestion}
       type="email"
       @input=${this.onInput}
     >
@@ -31,6 +33,20 @@ export function getHtml(this: BraveAccountEmailInputElement) {
         <div class="dropdown-content">
           <leo-icon name="warning-triangle-filled"></leo-icon>
           <div>$i18n{BRAVE_ACCOUNT_EMAIL_INPUT_ERROR_MESSAGE}</div>
+        </div>
+      </div>
+      <div
+        class="dropdown ${this.shouldShowSuggestion ? 'visible' : ''}"
+        slot="errors"
+      >
+        <div class="dropdown-content">
+          <leo-icon name="warning-triangle-filled"></leo-icon>
+          <div>
+            ${loadTimeData.getStringF(
+              BraveAccountStrings.BRAVE_ACCOUNT_EMAIL_INPUT_DID_YOU_MEAN,
+              this.suggestion ?? '',
+            )}
+          </div>
         </div>
       </div>
     </leo-input>
