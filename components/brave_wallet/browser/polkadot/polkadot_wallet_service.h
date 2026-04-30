@@ -75,6 +75,11 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
                          const std::string& chain_id,
                          GetAccountBalanceCallback callback) override;
 
+  void ValidateAddressForTransaction(
+      const std::string& chain_id,
+      const std::string& address,
+      ValidateAddressForTransactionCallback callback) override;
+
   // Get the chain metadata associated with the provided chain_id. Metadata is
   // required for encoding and decoding extrinsics as chains have their own
   // pallet/call indices.
@@ -144,6 +149,11 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
 
   void OnEstimatedFee(GetFeeEstimateCallback callback,
                       base::expected<uint128_t, std::string> partial_fee);
+
+  void OnGetChainMetadataForValidateAddress(
+      const std::string& address,
+      ValidateAddressForTransactionCallback callback,
+      base::expected<PolkadotChainMetadata, std::string> metadata);
 
   const raw_ref<KeyringService> keyring_service_;
   const raw_ref<NetworkManager> network_manager_;

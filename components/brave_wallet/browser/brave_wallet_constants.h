@@ -1228,6 +1228,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_POLKADOT_MAINNET_ACCOUNT_DESCRIPTION},
     {"braveWalletPolkadotTestnetAccountDescription",
      IDS_BRAVE_WALLET_POLKADOT_TESTNET_ACCOUNT_DESCRIPTION},
+    {"braveWalletPolkadotInvalidPrefix",
+     IDS_BRAVE_WALLET_POLKADOT_INVALID_PREFIX},
     {"braveWalletShowNetworkLogoOnNftsTitle",
      IDS_BRAVE_WALLET_SHOW_NETWORK_LOGO_ON_NFTS_TITLE},
     {"braveWalletShowNetworkLogoOnNftsDescription",

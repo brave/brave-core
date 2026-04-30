@@ -179,7 +179,7 @@ void PolkadotTxManager::OnGetChainMetadataForUnapproved(
 
   auto recipient =
       ParsePolkadotAccount(params->to, chain_metadata->GetSs58Prefix());
-  if (!recipient) {
+  if (!recipient.has_value()) {
     return std::move(callback).Run(false, "", WalletInternalErrorMessage());
   }
 
@@ -218,7 +218,7 @@ void PolkadotTxManager::OnGetFeeForUnapproved(
   auto recipient =
       ParsePolkadotAccount(params->to, chain_metadata.GetSs58Prefix());
   // We should have already verified this upon retrieving the chain metadata.
-  CHECK(recipient);
+  CHECK(recipient.has_value());
 
   auto amount = MojomToUint128(params->amount);
   if (params->sending_max_amount) {

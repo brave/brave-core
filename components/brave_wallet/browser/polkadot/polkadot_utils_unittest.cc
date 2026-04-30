@@ -37,57 +37,123 @@ TEST(PolkadotUtils, DestinationAddressParsing) {
   // https://assethub-westend.subscan.io/account/5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty
   // https://polkadot.subscan.io/account/14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3
 
-  EXPECT_EQ(ParsePolkadotAccount(
-                "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty", 42)
-                .value()
-                .ToString(),
-            "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty");
+  {
+    auto parsed = ParsePolkadotAccount(
+        "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty", 42);
+    ASSERT_TRUE(parsed.has_value());
+    EXPECT_EQ(parsed->ToString(),
+              "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty");
+  }
 
-  EXPECT_EQ(ParsePolkadotAccount(
-                "14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3", 0)
-                .value()
-                .ToString(),
-            "14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3");
+  {
+    auto parsed = ParsePolkadotAccount(
+        "14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3", 0);
+    ASSERT_TRUE(parsed.has_value());
+    EXPECT_EQ(parsed->ToString(),
+              "14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3");
+  }
 
-  EXPECT_EQ(
-      ParsePolkadotAccount(
-          R"(0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48)",
-          0)
-          .value()
-          .ToString(),
-      "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48");
+  {
+    auto parsed = ParsePolkadotAccount(
+        R"(0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48)",
+        0);
+    ASSERT_TRUE(parsed.has_value());
+    EXPECT_EQ(
+        parsed->ToString(),
+        "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48");
+  }
 
-  // Address isn't 0x-prefixed
-  EXPECT_FALSE(ParsePolkadotAccount(
-      "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48", 0));
+  // Address isn't 0x-prefixed.
+  {
+    auto parsed = ParsePolkadotAccount(
+        "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48", 0);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(),
+              mojom::PolkadotAddressError::kInvalidAddressFormat);
+  }
 
   // Invalid ss58 prefix.
-  EXPECT_FALSE(ParsePolkadotAccount(
-      "4FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty", 42));
-  EXPECT_FALSE(ParsePolkadotAccount(
-      "24E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3", 0));
+  {
+    auto parsed = ParsePolkadotAccount(
+        "FoQJpPyadYccjavVdTWxpxU7rUEaYhfLCPwXgkfD6Zat9QP", 42);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(), mojom::PolkadotAddressError::kInvalidPrefix);
+  }
+
+  {
+    auto parsed = ParsePolkadotAccount(
+        "FoQJpPyadYccjavVdTWxpxU7rUEaYhfLCPwXgkfD6Zat9QP", 0);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(), mojom::PolkadotAddressError::kInvalidPrefix);
+  }
 
   // Address is too long.
-  EXPECT_FALSE(ParsePolkadotAccount(
-      "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty694ty", 42));
-  EXPECT_FALSE(ParsePolkadotAccount(
-      "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a481234",
-      0));
-  EXPECT_FALSE(ParsePolkadotAccount(
-      R"(0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a481234)",
-      42));
+  {
+    auto parsed = ParsePolkadotAccount(
+        "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty694ty", 42);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(),
+              mojom::PolkadotAddressError::kInvalidAddressFormat);
+  }
+
+  {
+    auto parsed = ParsePolkadotAccount(
+        "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48123"
+        "4",
+        0);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(),
+              mojom::PolkadotAddressError::kInvalidAddressFormat);
+  }
+
+  {
+    auto parsed = ParsePolkadotAccount(
+        R"(0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a481234)",
+        42);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(),
+              mojom::PolkadotAddressError::kInvalidAddressFormat);
+  }
 
   // Address is too short.
-  EXPECT_FALSE(ParsePolkadotAccount(
-      "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694t", 42));
-  EXPECT_FALSE(ParsePolkadotAccount(
-      "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4", 0));
-  EXPECT_FALSE(ParsePolkadotAccount(
-      "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a", 0));
-  EXPECT_FALSE(ParsePolkadotAccount("", 0));
+  {
+    auto parsed = ParsePolkadotAccount(
+        "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694t", 42);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(),
+              mojom::PolkadotAddressError::kInvalidAddressFormat);
+  }
+
+  {
+    auto parsed = ParsePolkadotAccount(
+        "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4", 0);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(),
+              mojom::PolkadotAddressError::kInvalidAddressFormat);
+  }
+
+  {
+    auto parsed = ParsePolkadotAccount(
+        "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a", 0);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(),
+              mojom::PolkadotAddressError::kInvalidAddressFormat);
+  }
+
+  {
+    auto parsed = ParsePolkadotAccount("", 0);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(),
+              mojom::PolkadotAddressError::kInvalidAddressFormat);
+  }
 
   // Random nonsense.
-  EXPECT_FALSE(ParsePolkadotAccount("random string full of random words", 0));
+  {
+    auto parsed = ParsePolkadotAccount("random string full of random words", 0);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(),
+              mojom::PolkadotAddressError::kInvalidAddressFormat);
+  }
 }
 
 TEST(PolkadotUtils, Uint128MojomConversions) {

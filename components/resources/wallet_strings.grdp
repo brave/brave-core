@@ -730,6 +730,7 @@
   <message name="IDS_BRAVE_WALLET_CARDANO_TESTNET_ACCOUNT_DESCRIPTION" desc="Cardano testnet account description" translateable="false">Cardano Testnet</message>
   <message name="IDS_BRAVE_WALLET_POLKADOT_MAINNET_ACCOUNT_DESCRIPTION" desc="Polkadot account description" translateable="false">Polkadot mainnet</message>
   <message name="IDS_BRAVE_WALLET_POLKADOT_TESTNET_ACCOUNT_DESCRIPTION" desc="Polkadot testnet account description" translateable="false">Polkadot Westend</message>
+  <message name="IDS_BRAVE_WALLET_POLKADOT_INVALID_PREFIX" desc="Polkadot invalid prefix error">Invalid prefix</message>
   <message name="IDS_BRAVE_WALLET_SHOW_NETWORK_LOGO_ON_NFTS_TITLE" desc="Show network logo filter title">Network Logo</message>
   <message name="IDS_BRAVE_WALLET_SHOW_NETWORK_LOGO_ON_NFTS_DESCRIPTION" desc="Show network logo filter description">Show network logo on NFTs</message>
   <message name="IDS_BRAVE_WALLET_SHOW_SPAM_NFTS_TITLE" desc="Show spam NFTs filter title">Spam NFTs</message>

@@ -238,6 +238,7 @@ export const {
   useGetPendingTokenSuggestionRequestsQuery,
   useGetPolkadotAddressForNetworkQuery,
   useGetPolkadotCompatibleNetworksQuery,
+  useValidatePolkadotAddressQuery,
   useGetPriceHistoryQuery,
   useGetPricesHistoryQuery,
   useGetQrCodeImageQuery,

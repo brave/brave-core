@@ -941,6 +941,7 @@ export enum AddressMessageInfoIds {
   zcashInvalidUnifiedAddressMissingTransparentPartError = 12,
   zcashInvalidUnifiedAddressMissingOrchardPartError = 13,
   zcashInvalidAddressNetworkMismatchError = 14,
+  polkadotInvalidPrefixError = 15,
 }
 
 export type AddressMessageInfo = {

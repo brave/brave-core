@@ -178,6 +178,34 @@ export const accountEndpoints = ({
       },
     }),
 
+    validatePolkadotAddress: query<
+      BraveWallet.PolkadotAddressError,
+      {
+        chainId: string
+        address: string
+      }
+    >({
+      queryFn: async ({ chainId, address }, { endpoint }, _, baseQuery) => {
+        try {
+          const { polkadotWalletService } = baseQuery(undefined).data
+          const { error } =
+            await polkadotWalletService.validateAddressForTransaction(
+              chainId,
+              address,
+            )
+          return {
+            data: error,
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            `Unable to validate Polkadot address ${address} on chain ${chainId}`,
+            error,
+          )
+        }
+      },
+    }),
+
     addAccount: mutation<
       BraveWallet.AccountInfo,
       {
