@@ -178,10 +178,10 @@ std::vector<int> GetSelectedIndices(Browser* browser) {
 // updates |active_window_id| to this window if it is active (focused), or if
 // no active window has been recorded yet. Returns the tab count serialized.
 int AppendBrowserSessionCommands(
-    Browser* browser,
+    TabStripModel* tsm,
+    BrowserWindow* window,
     std::vector<std::unique_ptr<sessions::SessionCommand>>& commands,
     SessionID& active_window_id) {
-  auto* tsm = browser->tab_strip_model();
   if (tsm->count() == 0) {
     return 0;
   }
@@ -190,12 +190,10 @@ int AppendBrowserSessionCommands(
   commands.push_back(sessions::CreateSetWindowTypeCommand(
       window_id, sessions::SessionWindow::TYPE_NORMAL));
   commands.push_back(sessions::CreateSetWindowBoundsCommand(
-      window_id, browser->window()->GetRestoredBounds(),
-      browser->window()->GetRestoredState()));
+      window_id, window->GetRestoredBounds(), window->GetRestoredState()));
 
   // Prefer the focused window; fall back to the first window if none is active.
-  if (browser->window()->IsActive() ||
-      active_window_id == SessionID::InvalidValue()) {
+  if (window->IsActive() || active_window_id == SessionID::InvalidValue()) {
     active_window_id = window_id;
   }
 
@@ -1380,7 +1378,9 @@ void SaveWorkspace(Profile* profile, const std::string& name) {
         }
         window_count++;
         tab_count += AppendBrowserSessionCommands(
-            bwi->GetBrowserForMigrationOnly(), commands, active_window_id);
+            bwi->GetBrowserForMigrationOnly()->tab_strip_model(),
+            bwi->GetBrowserForMigrationOnly()->window(), commands,
+            active_window_id);
         return true;
       });
 
