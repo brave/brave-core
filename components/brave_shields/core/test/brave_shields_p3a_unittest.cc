@@ -9,11 +9,13 @@
 
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -23,22 +25,27 @@ namespace brave_shields {
 class BraveShieldsP3ATest : public testing::Test {
  public:
   void SetUp() override {
+    scoped_feature_list_.InitAndEnableFeature(
+        brave_shields::features::kBraveShredFeature);
     profile_ = std::make_unique<TestingProfile>();
     histogram_tester_ = std::make_unique<base::HistogramTester>();
+    RegisterShieldsP3ALocalPrefs(local_state_.registry());
+    auto* map = HostContentSettingsMapFactory::GetForProfile(profile_.get());
+    shields_settings_service_ = std::make_unique<BraveShieldsSettingsService>(
+        *map, &local_state_, profile_->GetPrefs());
   }
 
-  Profile* GetProfile() const { return profile_.get(); }
-
  protected:
-  std::unique_ptr<base::HistogramTester> histogram_tester_;
-
- private:
+  base::test::ScopedFeatureList scoped_feature_list_;
   content::BrowserTaskEnvironment task_environment_;
+  TestingPrefServiceSimple local_state_;
   std::unique_ptr<TestingProfile> profile_;
+  std::unique_ptr<BraveShieldsSettingsService> shields_settings_service_;
+  std::unique_ptr<base::HistogramTester> histogram_tester_;
 };
 
 TEST_F(BraveShieldsP3ATest, RecordGlobalAdBlockSetting) {
-  auto* map = HostContentSettingsMapFactory::GetForProfile(GetProfile());
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile_.get());
   SetCosmeticFilteringControlType(map, ControlType::BLOCK,
                                   GURL("https://brave.com"));
   // Should not report to histogram if not a global change
@@ -57,7 +64,7 @@ TEST_F(BraveShieldsP3ATest, RecordGlobalAdBlockSetting) {
 }
 
 TEST_F(BraveShieldsP3ATest, RecordGlobalFingerprintBlockSetting) {
-  auto* map = HostContentSettingsMapFactory::GetForProfile(GetProfile());
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile_.get());
   SetFingerprintingControlType(map, ControlType::BLOCK,
                                GURL("https://brave.com"));
   // Should not report to histogram if not a global change
@@ -76,8 +83,8 @@ TEST_F(BraveShieldsP3ATest, RecordGlobalFingerprintBlockSetting) {
 }
 
 TEST_F(BraveShieldsP3ATest, RecordDomainAdBlockCounts) {
-  auto* map = HostContentSettingsMapFactory::GetForProfile(GetProfile());
-  auto* prefs = GetProfile()->GetPrefs();
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile_.get());
+  auto* prefs = profile_->GetPrefs();
 
   SetCosmeticFilteringControlType(map, ControlType::BLOCK_THIRD_PARTY, GURL());
   SetCosmeticFilteringControlType(map, ControlType::BLOCK,
@@ -85,7 +92,7 @@ TEST_F(BraveShieldsP3ATest, RecordDomainAdBlockCounts) {
 
   // Test initial count
   MaybeRecordInitialShieldsSettings(
-      GetProfile()->GetPrefs(), map,
+      &local_state_, profile_->GetPrefs(), map,
       GetCosmeticFilteringControlType(map, GURL()),
       GetFingerprintingControlType(map, GURL()));
   histogram_tester_->ExpectBucketCount(kDomainAdsSettingsAboveHistogramName, 1,
@@ -144,8 +151,8 @@ TEST_F(BraveShieldsP3ATest, RecordDomainFingerprintBlockCounts) {
   scoped_feature_list.InitAndEnableFeature(
       brave_shields::features::kBraveShowStrictFingerprintingMode);
 
-  auto* map = HostContentSettingsMapFactory::GetForProfile(GetProfile());
-  auto* prefs = GetProfile()->GetPrefs();
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile_.get());
+  auto* prefs = profile_->GetPrefs();
 
   SetFingerprintingControlType(map, ControlType::DEFAULT, GURL());
   SetFingerprintingControlType(map, ControlType::BLOCK,
@@ -153,7 +160,7 @@ TEST_F(BraveShieldsP3ATest, RecordDomainFingerprintBlockCounts) {
 
   // Test initial count
   MaybeRecordInitialShieldsSettings(
-      GetProfile()->GetPrefs(), map,
+      &local_state_, profile_->GetPrefs(), map,
       GetCosmeticFilteringControlType(map, GURL()),
       GetFingerprintingControlType(map, GURL()));
   histogram_tester_->ExpectBucketCount(kDomainFPSettingsAboveHistogramName, 1,
@@ -207,7 +214,7 @@ TEST_F(BraveShieldsP3ATest, RecordDomainFingerprintBlockCounts) {
 }
 
 TEST_F(BraveShieldsP3ATest, RecordHTTPSUpgradeGlobalSetting) {
-  auto* map = HostContentSettingsMapFactory::GetForProfile(GetProfile());
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile_.get());
 
   // Default is ASK (Standard) - should report 1
   RecordHTTPSUpgradeSettingP3A(map);
@@ -228,7 +235,7 @@ TEST_F(BraveShieldsP3ATest, RecordHTTPSUpgradeGlobalSetting) {
 }
 
 TEST_F(BraveShieldsP3ATest, RecordHTTPSUpgradePerSiteNonDefault) {
-  auto* map = HostContentSettingsMapFactory::GetForProfile(GetProfile());
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile_.get());
 
   // No per-site settings - should suspend
   RecordHTTPSUpgradeSettingP3A(map);
@@ -255,7 +262,7 @@ TEST_F(BraveShieldsP3ATest, RecordHTTPSUpgradePerSiteNonDefault) {
 }
 
 TEST_F(BraveShieldsP3ATest, RecordHTTPSUpgradeDisabledGlobalNoPerSite) {
-  auto* map = HostContentSettingsMapFactory::GetForProfile(GetProfile());
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile_.get());
 
   // Set global to disabled - both metrics should suspend
   SetHttpsUpgradeControlType(map, ControlType::ALLOW, GURL());
@@ -263,6 +270,83 @@ TEST_F(BraveShieldsP3ATest, RecordHTTPSUpgradeDisabledGlobalNoPerSite) {
                                        INT_MAX - 1, 1);
   histogram_tester_->ExpectBucketCount(kUpgradeHTTPSPerSiteHistogramName,
                                        INT_MAX - 1, 1);
+}
+
+TEST_F(BraveShieldsP3ATest, AutoShredSettings_DisabledNoExceptions) {
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile_.get());
+
+  ReportAutoShredSettingsP3A(*map);
+  histogram_tester_->ExpectUniqueSample(kAutoShredSettingsHistogramName, 0, 1);
+}
+
+TEST_F(BraveShieldsP3ATest, AutoShredSettings_DisabledWithEnabledExceptions) {
+  shields_settings_service_->SetAutoShredMode(
+      mojom::AutoShredMode::LAST_TAB_CLOSED, GURL("https://brave.com"));
+  histogram_tester_->ExpectUniqueSample(kAutoShredSettingsHistogramName, 1, 1);
+}
+
+TEST_F(BraveShieldsP3ATest, AutoShredSettings_EnabledNoExceptions) {
+  shields_settings_service_->SetDefaultAutoShredMode(
+      mojom::AutoShredMode::APP_EXIT);
+  histogram_tester_->ExpectUniqueSample(kAutoShredSettingsHistogramName, 2, 1);
+
+  // A site with the same mode as global is not an exception.
+  shields_settings_service_->SetAutoShredMode(mojom::AutoShredMode::APP_EXIT,
+                                              GURL("https://brave.com"));
+  histogram_tester_->ExpectUniqueSample(kAutoShredSettingsHistogramName, 2, 2);
+  histogram_tester_->ExpectTotalCount(kAutoShredSettingsHistogramName, 2);
+}
+
+TEST_F(BraveShieldsP3ATest, AutoShredSettings_EnabledWithDisabledExceptions) {
+  shields_settings_service_->SetDefaultAutoShredMode(
+      mojom::AutoShredMode::APP_EXIT);
+  histogram_tester_->ExpectUniqueSample(kAutoShredSettingsHistogramName, 2, 1);
+
+  shields_settings_service_->SetAutoShredMode(mojom::AutoShredMode::NEVER,
+                                              GURL("https://brave.com"));
+  histogram_tester_->ExpectBucketCount(kAutoShredSettingsHistogramName, 3, 1);
+  histogram_tester_->ExpectTotalCount(kAutoShredSettingsHistogramName, 2);
+}
+
+TEST_F(BraveShieldsP3ATest,
+       AutoShredSettings_EnabledWithDifferentModeException) {
+  shields_settings_service_->SetDefaultAutoShredMode(
+      mojom::AutoShredMode::APP_EXIT);
+  histogram_tester_->ExpectUniqueSample(kAutoShredSettingsHistogramName, 2, 1);
+
+  // LAST_TAB_CLOSED differs from APP_EXIT global, so it is an exception.
+  shields_settings_service_->SetAutoShredMode(
+      mojom::AutoShredMode::LAST_TAB_CLOSED, GURL("https://brave.com"));
+  histogram_tester_->ExpectBucketCount(kAutoShredSettingsHistogramName, 3, 1);
+  histogram_tester_->ExpectTotalCount(kAutoShredSettingsHistogramName, 2);
+}
+
+TEST_F(BraveShieldsP3ATest, ManualShred_InitiallyFalse) {
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile_.get());
+  MaybeRecordInitialShieldsSettings(
+      &local_state_, profile_->GetPrefs(), map,
+      GetCosmeticFilteringControlType(map, GURL()),
+      GetFingerprintingControlType(map, GURL()));
+  histogram_tester_->ExpectUniqueSample(kManualShredHistogramName, 0, 1);
+}
+
+TEST_F(BraveShieldsP3ATest, ManualShred_RecordedAfterTrigger) {
+  RecordManualShredP3A(local_state_);
+  histogram_tester_->ExpectUniqueSample(kManualShredHistogramName, 1, 1);
+}
+
+TEST_F(BraveShieldsP3ATest, ShredMetrics_NotReportedWhenFeatureDisabled) {
+  scoped_feature_list_.Reset();
+  scoped_feature_list_.InitAndDisableFeature(
+      brave_shields::features::kBraveShredFeature);
+
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile_.get());
+
+  ReportAutoShredSettingsP3A(*map);
+  histogram_tester_->ExpectTotalCount(kAutoShredSettingsHistogramName, 0);
+
+  RecordManualShredP3A(local_state_);
+  histogram_tester_->ExpectTotalCount(kManualShredHistogramName, 0);
 }
 
 }  // namespace brave_shields
