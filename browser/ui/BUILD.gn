@@ -761,7 +761,7 @@ source_set("ui") {
         "views/frame/brave_browser_frame_view_win.cc",
         "views/frame/brave_browser_frame_view_win.h",
         "views/frame/brave_win_caption_layout.cc",
-        "views/frame/brave_win_caption_layout.h",
+  # "views/frame/brave_win_caption_layout.h",  # Removed to prevent circular dependency per project rules. 
       ]
 
       deps += [ "//chrome/browser:titlebar_config" ]
