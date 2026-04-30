@@ -62,7 +62,7 @@ class QuickViewController: UIViewController {
       with: .init(profile: parentTab.profile, initialConfiguration: initialConfiguration)
     )
     tab.createWebView()
-    tab.addObserver(self)
+    tab.addObserver(toolbarViewModel)
     tab.delegate = self
     let braveShieldsTabHelper: BraveShieldsTabHelper = .init(
       tab: tab,
@@ -138,36 +138,6 @@ class QuickViewController: UIViewController {
       $0.leading.trailing.equalTo(view)
       $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
     }
-  }
-}
-
-// MARK: - TabObserver
-
-extension QuickViewController: TabObserver {
-  func tabDidUpdateURL(_ tab: some TabState) {
-    if let url = tab.visibleURL {
-      toolbarViewModel.url = url
-    }
-  }
-
-  func tabDidStartLoading(_ tab: some TabState) {
-    toolbarViewModel.isLoading = true
-  }
-
-  func tabDidStopLoading(_ tab: some TabState) {
-    toolbarViewModel.isLoading = false
-  }
-
-  func tabDidChangeLoadProgress(_ tab: some TabState) {
-    toolbarViewModel.loadingProgress = tab.estimatedProgress
-  }
-
-  func tabDidChangeBackForwardState(_ tab: some TabState) {
-    toolbarViewModel.updateBackForwardActionStatus(for: tab)
-  }
-
-  func tabWillBeDestroyed(_ tab: some TabState) {
-    tab.removeObserver(self)
   }
 }
 

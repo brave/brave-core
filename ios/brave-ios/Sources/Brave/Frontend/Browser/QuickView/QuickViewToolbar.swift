@@ -43,8 +43,28 @@ class QuickViewToolbarModel {
     self.secondaryTopButton = secondaryTopButton
     self.onActionButton = onActionButton
   }
+}
 
-  func updateBackForwardActionStatus(for tab: some TabState) {
+extension QuickViewToolbarModel: TabObserver {
+  func tabDidUpdateURL(_ tab: some TabState) {
+    if let url = tab.visibleURL {
+      self.url = url
+    }
+  }
+
+  func tabDidStartLoading(_ tab: some TabState) {
+    isLoading = true
+  }
+
+  func tabDidStopLoading(_ tab: some TabState) {
+    isLoading = false
+  }
+
+  func tabDidChangeLoadProgress(_ tab: some TabState) {
+    loadingProgress = tab.estimatedProgress
+  }
+
+  func tabDidChangeBackForwardState(_ tab: some TabState) {
     if let forwardListItem = tab.backForwardList?.forwardList.first,
       forwardListItem.url.isInternalURL(for: .readermode)
     {
@@ -54,6 +74,10 @@ class QuickViewToolbarModel {
     }
 
     isBackDisabled = !tab.canGoBack
+  }
+
+  func tabWillBeDestroyed(_ tab: some TabState) {
+    tab.removeObserver(self)
   }
 }
 
