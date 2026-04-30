@@ -15,6 +15,7 @@ import org.jni_zero.NativeMethods;
 import org.chromium.base.Log;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.media.PictureInPicture;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.ui.base.WindowAndroid;
 
@@ -55,6 +56,12 @@ public class BraveYouTubeScriptInjectorNativeHelper {
             // Don't PiP if the activity is going to be restarted,
             // or if the activity is finishing.
             if (activity == null || activity.isChangingConfigurations() || activity.isFinishing()) {
+                return;
+            }
+            // Mirror the toolbar icon's gate: skip when Picture-in-Picture is unavailable on
+            // this device. Covers SDK < R (the framework crash documented as b/143784148), the
+            // FEATURE_PICTURE_IN_PICTURE package check, and the AppOps user toggle.
+            if (!PictureInPicture.isEnabled(activity)) {
                 return;
             }
             if (activity instanceof final BraveActivity braveActivity) {
