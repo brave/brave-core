@@ -29,6 +29,9 @@ namespace user_prefs {
 class PrefRegistrySyncable;
 }
 
+// Profile preference key — stores a dict keyed by sanitized workspace name.
+inline constexpr char kWorkspacesMetadataPref[] = "brave.workspaces";
+
 // Per-profile service that manages saving and restoring named workspaces.
 //
 // Each workspace is stored in its own subdirectory under
@@ -58,8 +61,6 @@ class BraveWorkspaceService : public KeyedService {
   static constexpr sessions::CommandStorageManager::SessionType
       kWorkspaceSessionType =
           sessions::CommandStorageManager::SessionType::kSessionRestore;
-
-  static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
   explicit BraveWorkspaceService(Profile* profile);
   ~BraveWorkspaceService() override;

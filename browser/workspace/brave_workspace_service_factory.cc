@@ -39,7 +39,7 @@ BraveWorkspaceServiceFactory::BuildServiceInstanceForBrowserContext(
 
 void BraveWorkspaceServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-  BraveWorkspaceService::RegisterProfilePrefs(registry);
+  registry->RegisterDictionaryPref(kWorkspacesMetadataPref);
 }
 
 bool BraveWorkspaceServiceFactory::ServiceIsCreatedWithBrowserContext() const {

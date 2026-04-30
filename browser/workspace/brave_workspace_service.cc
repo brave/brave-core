@@ -23,9 +23,6 @@
 
 namespace {
 
-// Profile preference key — stores a dict keyed by sanitized workspace name.
-const char kWorkspacesMetadataPref[] = "brave.workspaces";
-
 // Keys within each per-workspace dict entry.
 const char kWorkspaceName[] = "name";
 const char kWorkspaceWindowCount[] = "number-of-windows";
@@ -33,12 +30,6 @@ const char kWorkspaceTabCount[] = "number-of-tabs";
 const char kWorkspaceModifiedAt[] = "modifed-at";
 
 }  // namespace
-
-// static
-void BraveWorkspaceService::RegisterProfilePrefs(
-    user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterDictionaryPref(kWorkspacesMetadataPref);
-}
 
 BraveWorkspaceService::BraveWorkspaceService(Profile* profile)
     : profile_(profile) {}
