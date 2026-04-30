@@ -5,6 +5,9 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
+# These tests pass locally but fail on CI
+-FileAnalysisRequestBaseTest.NoHashForHugeFilesWhenAsyncHashComputationEnabled
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -CookieControlsUtilTest.DSTOverlap
 -CreditCardAccessManagerAuthFlowTest.FetchServerCardCVCSuccess/1

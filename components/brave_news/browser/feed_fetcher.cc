@@ -225,16 +225,16 @@ void FeedFetcher::OnFetchFeedFetchedFeed(
 void FeedFetcher::OnFetchFeedFetchedAll(FetchFeedCallback callback,
                                         std::vector<FeedSourceResult> results) {
   base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, base::BindOnce(&CombineFeedSourceResults, std::move(results)),
+      FROM_HERE, {},
+      base::BindOnce(&CombineFeedSourceResults, std::move(results)),
       base::BindOnce(
           [](base::WeakPtr<FeedFetcher> fetcher, FetchFeedCallback callback,
-             std::tuple<FeedItems, ETags> result) {
+             FeedItems items, ETags tags) {
             // If we've been destroyed, don't run the callback.
             if (!fetcher) {
               return;
             }
-            std::move(callback).Run(std::move(std::get<0>(result)),
-                                    std::move(std::get<1>(result)));
+            std::move(callback).Run(std::move(items), std::move(tags));
           },
           weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }

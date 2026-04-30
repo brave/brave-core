@@ -41,6 +41,7 @@ source_set("ai_chat") {
     "//chrome/browser/favicon",
     "//chrome/browser/history",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/select_file_policy",
     "//components/favicon/core",
     "//components/favicon_base",
     "//components/prefs",

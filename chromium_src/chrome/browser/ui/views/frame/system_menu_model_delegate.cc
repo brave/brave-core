@@ -9,6 +9,8 @@
 
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 
 #define IsCommandIdChecked IsCommandIdChecked_ChromiumImpl
 #define GetLabelForCommandId GetLabelForCommandId_ChromiumImpl

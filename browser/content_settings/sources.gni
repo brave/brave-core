@@ -7,3 +7,14 @@ brave_browser_content_settings_deps = [
   "//brave/components/brave_shields/content/browser",
   "//components/user_prefs",
 ]
+
+# In upstream Chromium, extensions/common/url_pattern_set.h
+# belongs to //extensions/common which is a real target.
+# But on Android where enable_extensions=false, that target
+# doesn't exist/isn't built. So effectively, on Android, the
+# header has no upstream owner - and Brave's source_set
+# //brave/extensions:common "claims" to make it available.
+#
+# So //chrome/browser/content_settings:unit_tests needs
+# //brave/extensions:common to satisfy gn_check
+brave_browser_content_settings_unit_tests_deps = [ "//brave/extensions:common" ]

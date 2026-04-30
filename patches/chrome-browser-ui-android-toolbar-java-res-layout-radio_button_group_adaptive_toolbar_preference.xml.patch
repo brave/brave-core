@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/res/layout/radio_button_group_adaptive_toolbar_preference.xml b/chrome/browser/ui/android/toolbar/java/res/layout/radio_button_group_adaptive_toolbar_preference.xml
-index ffaa6e6a77985d61dc0dbda7aa2ea4a95a301ceb..43a3176e7ce01a5a4a7559c355f2e2f61cd01f67 100644
+index f1e7be7ccefbdb820e88db2d757c0945e3a6dde7..b3e1ee9d94c76155d50ef3fd18323de30e7c9372 100644
 --- a/chrome/browser/ui/android/toolbar/java/res/layout/radio_button_group_adaptive_toolbar_preference.xml
 +++ b/chrome/browser/ui/android/toolbar/java/res/layout/radio_button_group_adaptive_toolbar_preference.xml
 @@ -36,6 +36,7 @@ found in the LICENSE file.

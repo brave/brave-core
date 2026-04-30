@@ -57,7 +57,8 @@ class RenderViewContextMenu : public RenderViewContextMenu_Chromium
   // NOLINTNEXTLINE(runtime/references)
   RenderViewContextMenu(content::RenderFrameHost& render_frame_host,
                         const content::ContextMenuParams& params,
-                        bool is_paste_enabled);
+                        bool is_paste_enabled,
+                        bool is_paste_and_match_style_enabled);
   ~RenderViewContextMenu() override;
   // RenderViewContextMenuBase:
   bool IsCommandIdEnabled(int command_id) const override;

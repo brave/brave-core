@@ -1179,7 +1179,7 @@ String PageGraph::ToGraphML() const {
   // SAFETY: unfortunately xmlDocDumpMemoryEnc is a C api that
   // manages the buffer internally, so we have to rely on it for the
   // pointer/size pair.
-  auto graphml_string = String::FromUTF8(base::as_bytes(UNSAFE_BUFFERS(
+  auto graphml_string = String::FromUtf8(base::as_bytes(UNSAFE_BUFFERS(
       base::span(xml_string, base::checked_cast<size_t>(size)))));
   DCHECK(!graphml_string.empty());
 

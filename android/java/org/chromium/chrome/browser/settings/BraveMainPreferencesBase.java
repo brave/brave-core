@@ -243,6 +243,8 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         removePreferenceIfPresent(PREF_ADVANCED_SECTION);
         removePreferenceIfPresent(PREF_PRIVACY);
         removePreferenceIfPresent(PREF_BRAVE_VPN_CALLOUT);
+        removePreferenceIfPresent(MainSettings.PREF_SETTINGS_PROMO_CARD);
+        removePreferenceIfPresent(MainSettings.PREF_MANAGE_SYNC);
 
         if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
             removePreferenceIfPresent(PREF_BRAVE_PLAYLIST);
@@ -264,6 +266,13 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private void prepareBravePreferences() {
         setCustomTabPreference();
         setAutofillPrivateWindowPreference();
+        // Register the final containment update listener. This runs after the current call stack
+        // completes (posted via PostTask), so it fires after any synchronous observer callbacks
+        // from MainSettings (e.g. onSignInAllowedChanged → updatePreferences →
+        // notifyPreferencesUpdated) that would otherwise replace our listener with one that sees
+        // preferences before Brave's rearrangement. Also handles the back-navigation timing race
+        // where GlobalLayout fires before onResume's organiseBravePreferences completes.
+        notifyPreferencesUpdated();
     }
 
     private void setAutofillPrivateWindowPreference() {
@@ -447,6 +456,20 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
         // We have our own Appearance settings so we don't need the upstream's one.
         removePreferenceIfPresent(MainSettings.PREF_APPEARANCE);
+
+        resortPreferenceScreenChildren();
+    }
+
+    // PreferenceGroup (with orderingFromXml=false) only re-sorts its children list when
+    // addPreference() is called, not when setOrder() is called on existing preferences.
+    // The addPreference(mVpnCalloutPreference) in rearrangePreferenceOrders() fires before the
+    // setPreferenceOrder() calls, so it sorts with stale XML orders. Removing and re-adding any
+    // always-present preference triggers a final sort with all the correct final order values.
+    private void resortPreferenceScreenChildren() {
+        Preference featuresSectionPref = findPreference(PREF_FEATURES_SECTION);
+        assumeNonNull(featuresSectionPref);
+        getPreferenceScreen().removePreference(featuresSectionPref);
+        getPreferenceScreen().addPreference(featuresSectionPref);
     }
 
     // A wrapper to suppress NullAway warning for the prefs which always present
@@ -686,13 +709,18 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                         Context context, SettingsIndexData indexData, Profile profile) {
                     MainSettings.SEARCH_INDEX_DATA_PROVIDER.updateDynamicPreferences(
                             context, indexData, profile);
-                    // Remove upstream preferences hidden from the main settings UI
-                    // ("languages" is intentionally excluded — removing it crashes
-                    // LanguageSettings).
+                    // Remove upstream preferences hidden from the main settings UI.
+                    // "languages" is safe to remove now that
+                    // LanguageSettings.SEARCH_INDEX_DATA_PROVIDER
+                    // is replaced by BraveLanguageSettings.SEARCH_INDEX_DATA_PROVIDER in the
+                    // registry.
+                    indexData.removeEntry(getUniqueId("languages"));
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_SIGN_IN));
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_SEARCH_ENGINE));
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_DOWNLOADS));
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_SAFETY_HUB));
+                    indexData.removeEntry(getUniqueId(MainSettings.PREF_SETTINGS_PROMO_CARD));
+                    indexData.removeEntry(getUniqueId(MainSettings.PREF_MANAGE_SYNC));
                     indexData.removeEntry(
                             getUniqueId(MainSettings.PREF_ACCOUNT_AND_GOOGLE_SERVICES_SECTION));
                     indexData.removeEntry(getUniqueId(MainSettings.PREF_GOOGLE_SERVICES));

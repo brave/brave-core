@@ -47,7 +47,6 @@
 #include "chrome/browser/ui/side_panel/side_panel_registry.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tabs/features.h"
-#include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
@@ -967,12 +966,7 @@ void SidebarContainerView::OnTabWillBeRemoved(tabs::TabInterface* tab,
                                               int index) {
   CHECK(!base::FeatureList::IsEnabled(sidebar::features::kSidebarV2));
 
-  // At this time, we can stop observing as TabFeatures is available.
-  if (!tab->GetTabFeatures()) {
-    return;
-  }
-
-  auto* registry = tab->GetTabFeatures()->side_panel_registry();
+  auto* registry = SidePanelRegistry::From(tab);
   if (!registry) {
     return;
   }
@@ -1035,11 +1029,8 @@ void SidebarContainerView::StartObservingContextualSidePanelEntry(
   CHECK(!base::FeatureList::IsEnabled(sidebar::features::kSidebarV2));
 
   auto* tab = tabs::TabInterface::GetFromContents(contents);
-  if (!tab->GetTabFeatures()) {
-    return;
-  }
 
-  auto* registry = tab->GetTabFeatures()->side_panel_registry();
+  auto* registry = SidePanelRegistry::From(tab);
   if (!registry) {
     return;
   }

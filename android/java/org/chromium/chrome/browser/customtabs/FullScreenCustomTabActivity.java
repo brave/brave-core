@@ -221,7 +221,6 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
                         getModalDialogManagerSupplier().asNonNull(),
                         /* appMenuBlocker= */ this,
                         this::supportsAppMenu,
-                        this::supportsFindInPage,
                         getTabCreatorManagerSupplier(),
                         getFullscreenManager(),
                         getCompositorViewHolderSupplier(),

@@ -28,18 +28,12 @@ class SharedPinnedTabDummyViewViews : public SharedPinnedTabDummyView,
  public:
   ~SharedPinnedTabDummyViewViews() override;
 
-  // SharedPinnedTabDummyView:
-  void Install() override;
-
  private:
   friend class SharedPinnedTabDummyView;
 
-  // Use SharedPinnedTabDummyView::Create() instead.
+  // Use SharedPinnedTabDummyView::CreateAndInstall() instead.
   SharedPinnedTabDummyViewViews(content::WebContents* shared_contents,
                                 content::WebContents* dummy_contents);
-
-  raw_ptr<content::WebContents> shared_contents_;
-  raw_ptr<content::WebContents> dummy_contents_;
 
   scoped_refptr<ThumbnailImage> thumbnail_;
   std::unique_ptr<ThumbnailImage::Subscription> subscription_;

@@ -40,6 +40,7 @@ if (!is_android) {
       "//brave/components/psst/common",
       "//chrome/browser/content_settings:content_settings_factory",
       "//chrome/browser/profiles",
+      "//chrome/browser/ui/side_panel:side_panel_views_dependent",
       "//chrome/browser/ui/tabs:impl",
     ]
 

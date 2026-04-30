@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/common/installer.py b/chrome/installer/linux/common/installer.py
-index cee92db6487c451de062be27b91cd86e3272c343..84a005c3440a3e92eed28e8695e7150f209de562 100644
+index 3c780c375fb9dddc93eeba12734f882abbf1aef0..62924e2c2c9a58ccf1dc35aaa8982f97c96f6313 100644
 --- a/chrome/installer/linux/common/installer.py
 +++ b/chrome/installer/linux/common/installer.py
 @@ -193,6 +193,8 @@ def gen_changelog(config: "InstallerConfig",
@@ -27,7 +27,7 @@ index cee92db6487c451de062be27b91cd86e3272c343..84a005c3440a3e92eed28e8695e7150f
  
          icon_sizes = [16, 24, 32, 48, 64, 128, 256]
          logo_resources_png = []
-@@ -1165,3 +1169,4 @@ class Installer:
+@@ -1149,3 +1153,4 @@ class Installer:
                          msg += f", but they were {oct(actual_perms)}"
                          print(msg, file=sys.stderr)
                          sys.exit(1)

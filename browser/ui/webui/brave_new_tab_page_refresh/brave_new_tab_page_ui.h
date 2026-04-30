@@ -13,6 +13,10 @@
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "components/omnibox/browser/searchbox.mojom.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #include "brave/components/brave_rewards/core/mojom/rewards_page.mojom.h"
@@ -29,7 +33,6 @@
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #endif
 #include "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.h"
-#include "components/omnibox/browser/searchbox.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "ui/webui/mojo_web_ui_controller.h"
 
@@ -62,7 +65,8 @@ class ContextualSearchSessionHandle;
 class RealboxHandler;
 
 // The Web UI controller for the Brave new tab page.
-class BraveNewTabPageUI : public ui::MojoWebUIController {
+class BraveNewTabPageUI : public ui::MojoWebUIController,
+                          public searchbox::mojom::PageHandlerFactory {
  public:
   explicit BraveNewTabPageUI(content::WebUI* web_ui);
   ~BraveNewTabPageUI() override;
@@ -76,8 +80,10 @@ class BraveNewTabPageUI : public ui::MojoWebUIController {
           ntp_background_images::mojom::SponsoredRichMediaAdEventHandler>
           receiver);
 
-  void BindInterface(
-      mojo::PendingReceiver<searchbox::mojom::PageHandler> receiver);
+  // Instantiates the implementor of the searchbox::mojom::PageHandlerFactory
+  // mojo interface passing the pending receiver that will be internally bound.
+  void BindInterface(mojo::PendingReceiver<searchbox::mojom::PageHandlerFactory>
+                         pending_receiver);
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   void BindInterface(
@@ -116,6 +122,12 @@ class BraveNewTabPageUI : public ui::MojoWebUIController {
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
  private:
+  // searchbox::mojom::PageHandlerFactory:
+  void CreatePageHandler(
+      mojo::PendingRemote<searchbox::mojom::Page> pending_page,
+      mojo::PendingReceiver<searchbox::mojom::PageHandler> pending_page_handler)
+      override;
+
   // Must outlive `realbox_handler_`.
   std::unique_ptr<contextual_search::ContextualSearchSessionHandle>
       session_handle_;
@@ -125,6 +137,8 @@ class BraveNewTabPageUI : public ui::MojoWebUIController {
   std::unique_ptr<ntp_background_images::NTPSponsoredRichMediaAdEventHandler>
       rich_media_ad_event_handler_;
   std::unique_ptr<RealboxHandler> realbox_handler_;
+  mojo::Receiver<searchbox::mojom::PageHandlerFactory>
+      searchbox_page_factory_receiver_{this};
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   std::unique_ptr<brave_rewards::RewardsPageHandler> rewards_page_handler_;
 #endif

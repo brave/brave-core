@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/extensions/BUILD.gn b/chrome/browser/extensions/BUILD.gn
-index c7c960abd7ec51fe64b59cf9b13c91cd499d91a1..45906e8db3a0b4578d910cd09d1996ac5f69be6e 100644
+index 43fd1559eee7603d65d75dd70fd68971c9c2fa15..4aca139b17b5f184581f4e8a10dc5725e2b9e236 100644
 --- a/chrome/browser/extensions/BUILD.gn
 +++ b/chrome/browser/extensions/BUILD.gn
-@@ -1570,6 +1570,7 @@ source_set("extensions") {
+@@ -1539,6 +1539,7 @@ source_set("extensions") {
        "api/tabs/app_window_helper.h",
      ]
    }
 +  deps += brave_extensions_resources
  }
  
- proto_library("cws_item_service_proto") {
+ static_library("test_support") {

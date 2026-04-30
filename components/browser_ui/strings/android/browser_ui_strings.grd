@@ -324,12 +324,6 @@
       <message name="IDS_ALWAYS" desc="Generic label for a user to select an always option">
         Always
       </message>
-      <message name="IDS_LATEST" desc="Generic label for a user to select a Latest option, eg. sort by latest">
-        Latest
-      </message>
-      <message name="IDS_SORT_BY" desc="Generic label for a prompt to sort something.">
-        Sort by:
-      </message>
       <message name="IDS_PROVIDED_BY_GOOGLE" desc="Generic label for something that comes from Brave servers.">
         Provided by Brave
       </message>
@@ -1151,30 +1145,12 @@
         Popup zoom window
       </message>
 
-      <!-- Search resumption module strings -->
-      <message name="IDS_SEARCH_RESUMPTION_MODULE_TITLE" desc="Title of the search resumption module on NTP or Start surface.">
-        Suggested searches based on your last tab
-      </message>
-      <message name="IDS_SEARCH_RESUMPTION_MODULE_TITLE_SHORT" desc="Title of the search resumption module on NTP or Start surface (short version).">
-        Suggested searches
-      </message>
-      <message name="IDS_SEARCH_RESUMPTION_MODULE_SUBTITLE" desc="Subtitle of the search resumption module on NTP or Start surface.">
-        Based on your last tab
-      </message>
-
       <!-- Tab resumption module strings -->
       <message name="IDS_SINGLE_TAB_MODULE_SEE_MORE" desc="Text of a link shown beside the title of the module. Clicking the link launches the &quot;Recent tabs&quot; page.">
         See more
       </message>
       <message name="IDS_ACCESSIBILITY_SINGLE_TAB_MODULE_SEE_MORE" is_accessibility_with_no_ui="true" desc="Accessibility label of the see more button of the module.">
         See more recent tabs
-      </message>
-
-      <message name="IDS_ACCESSIBILITY_EXPANDED" is_accessibility_with_no_ui="true" desc="Content description when the search resumption module is expanded.">
-        Expanded
-      </message>
-      <message name="IDS_ACCESSIBILITY_COLLAPSED" is_accessibility_with_no_ui="true" desc="Content description when the search resumption module is collapsed.">
-        Collapsed
       </message>
 
       <!-- Price change module strings -->
@@ -1425,7 +1401,7 @@
       </message>
 
       <!-- Setup List "See More" bottom sheet strings -->
-      <message name="IDS_EDUCATIONAL_TIP_SEE_MORE_BOTTOM_SHEET_TITLE" desc="Title for the setup list bottom sheet when set up tasks are still remaining.">
+      <message name="IDS_GET_THE_MOST_OUT_OF_CHROME" desc="a generic promotional title for Brave.">
         Get the most out of Brave
       </message>
       <message name="IDS_EDUCATIONAL_TIP_SEE_MORE_BOTTOM_SHEET_DESCRIPTION" desc="Description text for the setup list bottom sheet when set up tasks are still remaining.">

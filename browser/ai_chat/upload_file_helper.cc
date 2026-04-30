@@ -217,11 +217,8 @@ void UploadFileHelper::MultiFilesSelected(
            base::OnceCallback<void(
                std::tuple<std::optional<std::vector<uint8_t>>, base::FilePath,
                           std::optional<mojom::UploadedFileType>>)> callback,
-           std::tuple<std::optional<std::vector<uint8_t>>, base::FilePath>
-               result) {
-          auto file_data = std::get<0>(result);
-          auto filepath = std::get<1>(result);
-
+           std::optional<std::vector<uint8_t>> file_data,
+           base::FilePath filepath) {
           if (!file_data) {
             std::move(callback).Run(std::make_tuple(
                 std::nullopt, std::move(filepath), std::nullopt));
@@ -276,33 +273,30 @@ void UploadFileHelper::FileSelectionCanceled() {
   }
 }
 
-void UploadFileHelper::OnFileRead(
-    std::tuple<std::optional<std::vector<uint8_t>>, base::FilePath> result) {
+void UploadFileHelper::OnFileRead(std::optional<std::vector<uint8_t>> data,
+                                  base::FilePath path) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  auto file_data = std::get<0>(result);
-  if (!file_data) {
+  if (!data) {
     std::move(upload_file_callback_).Run(std::nullopt);
     return;
   }
 
   // Determine file type based on extension and validate PDF content
-  auto file_type_opt = DetermineFileType(std::get<1>(result), *file_data);
+  auto file_type_opt = DetermineFileType(path, *data);
 
   if (file_type_opt && *file_type_opt == mojom::UploadedFileType::kPdf) {
     // For PDFs, just return the raw data without processing
     std::vector<mojom::UploadedFilePtr> files;
-    files.push_back(mojom::UploadedFile::New(std::get<1>(result).AsUTF8Unsafe(),
-                                             file_data->size(), *file_data,
-                                             mojom::UploadedFileType::kPdf));
+    files.push_back(mojom::UploadedFile::New(path.AsUTF8Unsafe(), data->size(),
+                                             *data, *file_type_opt));
     std::move(upload_file_callback_).Run(std::make_optional(std::move(files)));
   } else if (file_type_opt &&
              *file_type_opt == mojom::UploadedFileType::kImage) {
     // For images, process them as before
     UploadFileHelper::ProcessImageData(
-        &data_decoder_, *file_data,
+        &data_decoder_, *data,
         base::BindOnce(&UploadFileHelper::OnImageEncoded,
-                       weak_ptr_factory_.GetWeakPtr(),
-                       std::get<1>(result).AsUTF8Unsafe()));
+                       weak_ptr_factory_.GetWeakPtr(), path.AsUTF8Unsafe()));
   } else {
     // Fail if we cannot handle this file type
     std::move(upload_file_callback_).Run(std::nullopt);

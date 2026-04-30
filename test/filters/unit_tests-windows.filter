@@ -29,7 +29,7 @@
 # Tests below this point have not been diagnosed or had issues created yet.
 -All/AppMenuIconControllerTest.UpgradeNotification/2
 -All/AppMenuIconControllerTest.UpgradeNotification/3
--EnterpriseReportingPrivateG\etContextInfoOSFirewallTest.*
+-EnterpriseReportingPrivateGetContextInfoOSFirewallTest.*
 -ExtensionServiceTest.*
 -LayoutProviderTest.*
 -PlatformStateStoreWinTest.*

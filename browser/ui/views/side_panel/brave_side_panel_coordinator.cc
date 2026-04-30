@@ -145,7 +145,7 @@ void BraveSidePanelCoordinator::PopulateSidePanel(
     std::optional<std::unique_ptr<views::View>> content_view) {
   CHECK(entry);
   actions::ActionItem* const action_item =
-      SidePanelUtil::GetActionItem(browser_view_->browser(), entry->key());
+      SidePanelHelper::GetActionItem(browser_view_->browser(), entry->key());
   if (!action_item) {
     const std::string entry_id = SidePanelEntryIdToString(entry->key().id());
     LOG(ERROR) << __func__ << " no side panel action item for " << entry_id;

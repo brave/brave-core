@@ -144,7 +144,7 @@ void TorControl::OpenControl(int portno, std::vector<uint8_t> cookie) {
   DCHECK(!running_);
 
   running_ = true;
-  VLOG(3) << __func__ << " " << base::HexEncode(cookie.data(), cookie.size());
+  VLOG(3) << __func__ << " " << base::HexEncode(cookie);
 
   net::AddressList addrlist = net::AddressList::CreateFromIPAddress(
       net::IPAddress::IPv4Localhost(), portno);
@@ -185,8 +185,7 @@ void TorControl::Connected(std::vector<uint8_t> cookie, int rv) {
     return;
   }
 
-  DoCmd("AUTHENTICATE " + base::HexEncode(cookie.data(), cookie.size()),
-        base::DoNothing(),
+  DoCmd("AUTHENTICATE " + base::HexEncode(cookie), base::DoNothing(),
         base::BindOnce(&TorControl::Authenticated,
                        weak_ptr_factory_.GetWeakPtr()));
 }

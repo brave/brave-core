@@ -281,6 +281,12 @@ inline constexpr char16_t kMemorySaverModeTabDiscardingHelpUrl[] =
 inline constexpr char16_t kIncognitoHelpCenterURL[] =
     u"https://support.brave.app";
 
+// TODO(crbug.com/498632327): Replace this URL with P-link.
+// "Learn more" URL for the web app installation flow, linked from installation
+// dialog and options view.
+inline constexpr char kInstallDialogFlowLearnMoreURL[] =
+    "https://support.google.com/chrome/answer/9658361";
+
 // The URL for the Help Center page about IP Protection.
 inline constexpr char kIpProtectionHelpCenterURL[] =
     "https://support.google.com/chrome?p=ip_protection";
@@ -532,6 +538,10 @@ inline constexpr char kWallpaperSearchLearnMorePageURL[] =
 // The URL for the passed in Google Wallet.
 inline constexpr char kWalletPassesPageURL[] = "https://support.brave.app/";
 
+// The help center article URL on using Wallet private passes across Google.
+inline constexpr char kWalletPrivatePassHelpCenterURL[] =
+    "https://support.brave.app/";
+
 // The URL for the "Learn more" page for Wallpaper Search for managed users.
 inline constexpr char kWallpaperSearchLearnMorePageManagedURL[] =
     "https://support.brave.app/";
@@ -629,6 +639,10 @@ inline constexpr char kWindowsXPVistaDeprecationURL[] =
 // The URL for the Windows 7/8.1 deprecation help center article.
 inline constexpr char kWindows78DeprecationURL[] =
     "https://support.brave.app/hc/en-us/articles/11197967945613";
+
+// The URL for the "Learn more" page for process isolation.
+inline constexpr char kProcessIsolationLearnMoreUrl[] =
+    "https://support.brave.app/";
 #endif  // BUILDFLAG(IS_WIN)
 
 // "Learn more" URL for the one click signin infobar.

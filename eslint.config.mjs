@@ -325,4 +325,10 @@ export default defineConfig([
       'import/enforce-node-protocol-usage': ['error', 'always'],
     },
   },
+  {
+    files: ['chromium_src/**/*.ts'],
+    rules: {
+      '@eslint-community/eslint-comments/no-unlimited-disable': 'off',
+    },
+  },
 ])

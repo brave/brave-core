@@ -2299,7 +2299,7 @@ are declared in tools/grit/grit_args.gni.
       </message>
 
       <message name="IDS_EMAIL_VERIFIED" desc="Toast message to notify the user when their email is automatically verified by the browser.">
-        Email automaticaly verified
+        Email automatically verified
       </message>
 
       <if expr="is_chromeos">
@@ -2415,7 +2415,7 @@ are declared in tools/grit/grit_args.gni.
         Actions
       </message>
       <message name="IDS_DOWNLOAD_BY_EXTENSION_URL" desc="Indicates which extension downloaded this file by name and URL.">
-        Downloaded by &lt;a href="<ph name="URL">$1<ex>adblock.com</ex></ph>"&gt;<ph name="EXTENSION">$2<ex>The Best Brave Extension Ever</ex></ph>&lt;/a&gt;
+        Downloaded by extension: &lt;a href="<ph name="URL">$1<ex>adblock.com</ex></ph>"&gt;<ph name="EXTENSION">$2<ex>The Best Brave Extension Ever</ex></ph>&lt;/a&gt;
       </message>
       <message name="IDS_DOWNLOADS_PAGE_INITIATOR_LINE" desc="Line that indicates the site that initiated a file download.">
         From <ph name="DISPLAY_INITIATOR_ORIGIN">$1<ex>https://example.com</ex></ph>
@@ -2674,7 +2674,7 @@ are declared in tools/grit/grit_args.gni.
         <message name="IDS_TOUCH_BAR_STOP_RELOAD_CUSTOMIZATION_LABEL" desc="Customization label for the stop or reload button in the touch bar.">
           Stop/Reload
         </message>
-        <message name="IDS_TOUCH_BAR_HOME_CUSTOMIZATION_LABEL" desc="Customization label for the home button in the touch bar.">
+        <message name="IDS_TOUCH_BAR_HOME_CUSTOMIZATION_LABEL" desc="Customization label for the home button in the touch bar." meaning="'home' as in an internet location, a 'home page'">
           Home
         </message>
         <message name="IDS_TOUCH_BAR_BOOKMARK_CUSTOMIZATION_LABEL" desc="Customization label for the bookmark button in the touch bar.">
@@ -3108,6 +3108,9 @@ are declared in tools/grit/grit_args.gni.
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_STATUS_ASYNC_SCANNING" desc="Status text for a download item that is being scanned.">
         Scanning...
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_STATUS_ASYNC_CHECKING_SAFETY" desc="Status text for a download item that is being scanned.">
+        Checking for safety...
       </message>
       <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_DEEP_SCANNING_PROMPT_UPDATED" desc="Subpage summary of warning for a file where we recommend sending the file for deep scanning.">
         This file might be a virus or malware.<ph name="LINE_BREAK">$1</ph>You can send it to Google Safe Browsing to check if it's unsafe. Scans usually take a few seconds.
@@ -4110,55 +4113,6 @@ are declared in tools/grit/grit_args.gni.
           postalCode
         </message>
 
-        <message name="IDS_CERT_OID_PKCS1_RSA_ENCRYPTION" desc="description of public key algorithm SEC_OID_PKCS1_RSA_ENCRYPTION">
-          PKCS #1 RSA Encryption
-        </message>
-        <message name="IDS_CERT_OID_PKCS1_MD2_WITH_RSA_ENCRYPTION" desc="description of public key algorithm SEC_OID_PKCS1_MD2_WITH_RSA_ENCRYPTION">
-          PKCS #1 MD2 With RSA Encryption
-        </message>
-        <message name="IDS_CERT_OID_PKCS1_MD4_WITH_RSA_ENCRYPTION" desc="description of public key algorithm SEC_OID_PKCS1_MD4_WITH_RSA_ENCRYPTION">
-          PKCS #1 MD4 With RSA Encryption
-        </message>
-        <message name="IDS_CERT_OID_PKCS1_MD5_WITH_RSA_ENCRYPTION" desc="description of public key algorithm SEC_OID_PKCS1_MD5_WITH_RSA_ENCRYPTION">
-          PKCS #1 MD5 With RSA Encryption
-        </message>
-        <message name="IDS_CERT_OID_PKCS1_SHA1_WITH_RSA_ENCRYPTION" desc="description of public key algorithm SEC_OID_PKCS1_SHA1_WITH_RSA_ENCRYPTION">
-          PKCS #1 SHA-1 With RSA Encryption
-        </message>
-        <message name="IDS_CERT_OID_PKCS1_SHA256_WITH_RSA_ENCRYPTION" desc="description of public key algorithm SEC_OID_PKCS1_SHA256_WITH_RSA_ENCRYPTION">
-          PKCS #1 SHA-256 With RSA Encryption
-        </message>
-        <message name="IDS_CERT_OID_PKCS1_SHA384_WITH_RSA_ENCRYPTION" desc="description of public key algorithm SEC_OID_PKCS1_SHA384_WITH_RSA_ENCRYPTION">
-          PKCS #1 SHA-384 With RSA Encryption
-        </message>
-        <message name="IDS_CERT_OID_PKCS1_SHA512_WITH_RSA_ENCRYPTION" desc="description of public key algorithm SEC_OID_PKCS1_SHA512_WITH_RSA_ENCRYPTION">
-          PKCS #1 SHA-512 With RSA Encryption
-        </message>
-        <message name="IDS_CERT_OID_ANSIX962_ECDSA_SHA1_SIGNATURE" desc="description of public key algorithm SEC_OID_ANSIX962_ECDSA_SHA1_SIGNATURE">
-          X9.62 ECDSA Signature with SHA-1
-        </message>
-        <message name="IDS_CERT_OID_ANSIX962_ECDSA_SHA256_SIGNATURE" desc="description of public key algorithm SEC_OID_ANSIX962_ECDSA_SHA256_SIGNATURE">
-          X9.62 ECDSA Signature with SHA-256
-        </message>
-        <message name="IDS_CERT_OID_ANSIX962_ECDSA_SHA384_SIGNATURE" desc="description of public key algorithm SEC_OID_ANSIX962_ECDSA_SHA384_SIGNATURE">
-          X9.62 ECDSA Signature with SHA-384
-        </message>
-        <message name="IDS_CERT_OID_ANSIX962_ECDSA_SHA512_SIGNATURE" desc="description of public key algorithm SEC_OID_ANSIX962_ECDSA_SHA512_SIGNATURE">
-          X9.62 ECDSA Signature with SHA-512
-        </message>
-        <message name="IDS_CERT_OID_ANSIX962_EC_PUBLIC_KEY" desc="description of public key algorithm SEC_OID_ANSIX962_EC_PUBLIC_KEY">
-          Elliptic Curve Public Key
-        </message>
-        <message name="IDS_CERT_OID_SECG_EC_SECP256R1" desc="description of public key algorithm SEC_OID_SECG_EC_SECP256R1">
-          SECG elliptic curve secp256r1 (aka ANSI X9.62 prime256v1, NIST P-256)
-        </message>
-        <message name="IDS_CERT_OID_SECG_EC_SECP384R1" desc="description of public key algorithm SEC_OID_SECG_EC_SECP384R1">
-          SECG elliptic curve secp384r1 (aka NIST P-384)
-        </message>
-        <message name="IDS_CERT_OID_SECG_EC_SECP521R1" desc="description of public key algorithm SEC_OID_SECG_EC_SECP521R1">
-          SECG elliptic curve secp521r1 (aka NIST P-521)
-        </message>
-
         <message name="IDS_CERT_EXT_NS_CERT_TYPE" desc="description of extension Netscape Certificate Type">
           Netscape Certificate Type
         </message>
@@ -4246,35 +4200,8 @@ are declared in tools/grit/grit_args.gni.
         <message name="IDS_CERT_X509_EXT_KEY_USAGE" desc="description of extension Extended Key Usage">
           Extended Key Usage
         </message>
-        <message name="IDS_CERT_X509_AUTH_INFO_ACCESS" desc="description of extension Authority Information Access">
-          Authority Information Access
-        </message>
         <message name="IDS_CERT_X509_KEY_USAGE_SIGNING" desc="description of certificate usage Signing">
           Signing
-        </message>
-        <message name="IDS_CERT_X509_KEY_USAGE_NONREP" desc="description of certificate usage Non-repudiation">
-          Non-repudiation
-        </message>
-        <message name="IDS_CERT_X509_KEY_USAGE_ENCIPHERMENT" desc="description of certificate usage Key Encipherment">
-          Key Encipherment
-        </message>
-        <message name="IDS_CERT_X509_KEY_USAGE_DATA_ENCIPHERMENT" desc="description of certificate usage Data Encipherment">
-          Data Encipherment
-        </message>
-        <message name="IDS_CERT_X509_KEY_USAGE_KEY_AGREEMENT" desc="description of certificate usage Key Agreement">
-          Key Agreement
-        </message>
-        <message name="IDS_CERT_X509_KEY_USAGE_CERT_SIGNER" desc="description of certificate usage Certificate Signer">
-          Certificate Signer
-        </message>
-        <message name="IDS_CERT_X509_KEY_USAGE_CRL_SIGNER" desc="description of certificate usage CRL Signer">
-          CRL Signer
-        </message>
-        <message name="IDS_CERT_X509_KEY_USAGE_ENCIPHER_ONLY" desc="description of certificate usage Encipher Only">
-          Encipher Only
-        </message>
-        <message name="IDS_CERT_X509_KEY_USAGE_DECIPHER_ONLY" desc="description of certificate usage Decipher Only">
-          Decipher Only
         </message>
         <message name="IDS_CERT_X509_BASIC_CONSTRAINT_IS_CA" desc="description of certificate constraint Is a Certification Authority">
           Is a Certification Authority
@@ -4287,12 +4214,6 @@ are declared in tools/grit/grit_args.gni.
         </message>
         <message name="IDS_CERT_X509_BASIC_CONSTRAINT_PATH_LEN_UNLIMITED" desc="value NUM_INTERMEDIATE_CA when there is no limit">
           unlimited
-        </message>
-        <message name="IDS_CERT_PKIX_CPS_POINTER_QUALIFIER" desc="description of pointer (URI) to Certification Practice Statement published by Certification Authority">
-          Certification Practice Statement Pointer
-        </message>
-        <message name="IDS_CERT_PKIX_USER_NOTICE_QUALIFIER" desc="description of User Notice certificate policy qualifier">
-          User Notice
         </message>
         <message name="IDS_CERT_REVOCATION_REASON_UNUSED" desc="description of certificate revocation for reason Unused">
           Unused
@@ -4372,23 +4293,11 @@ are declared in tools/grit/grit_args.gni.
         <message name="IDS_CERT_EXT_MS_NTDS_REPLICATION" desc="description of extension Microsoft Domain GUID">
           Microsoft Domain GUID
         </message>
-        <message name="IDS_CERT_EKU_ANY_EKU" desc="description of X.509 certificate extended key usage value `anyExtendedKeyUsage`. This indicates that the certificate may be used for any purpose.">
-          Any
-        </message>
         <message name="IDS_CERT_EKU_TLS_WEB_SERVER_AUTHENTICATION" desc="description of extended key usage TLS WWW Server Authentication">
           TLS WWW Server Authentication
         </message>
         <message name="IDS_CERT_EKU_TLS_WEB_CLIENT_AUTHENTICATION" desc="description of extended key usage TLS WWW Client Authentication">
           TLS WWW Client Authentication
-        </message>
-        <message name="IDS_CERT_EKU_CODE_SIGNING" desc="description of extended key usage Code Signing">
-          Code Signing
-        </message>
-        <message name="IDS_CERT_EKU_EMAIL_PROTECTION" desc="description of extended key usage E-mail Protection">
-          Email Protection
-        </message>
-        <message name="IDS_CERT_EKU_TIME_STAMPING" desc="description of extended key usage Time Stamping">
-          Time Stamping
         </message>
         <message name="IDS_CERT_EKU_OCSP_SIGNING" desc="description of extended key usage Signing OCSP Responses">
           Signing OCSP Responses
@@ -5797,12 +5706,6 @@ are declared in tools/grit/grit_args.gni.
         </if>
       </if>
       <if expr="enable_extensions">
-        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON" desc="The text of the request acces button that appears on the toolbar when an extension requests access to the site">
-          Allow <ph name="EXTENSIONS_REQUESTING_ACCESS_COUNT">$1<ex>3</ex></ph>?
-        </message>
-        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON_DISMISSED_TEXT" desc="The text of the button that appears on the toolbar after the user grants access to an extension that requested access to the current site.">
-          Allowed
-        </message>
         <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON_TOOLTIP_SINGLE_EXTENSION" desc="The tooltip text of the request access button that appears on the toolbar when an extension requests access to the site">
           Click to allow "<ph name="EXTENSIONS_REQUESTING_ACCESS">$1<ex>Extension A</ex></ph>" on <ph name="ORIGIN">$2<ex>google.com</ex></ph>
         </message>
@@ -6063,11 +5966,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Hide Details
       </message>
 
-      <!-- Error messages for Web Store UI -->
-      <message name="IDS_WEBSTORE_DOWNLOAD_ACCESS_DENIED" desc="Text displayed in the error prompt when a CRX cannot be downloaded due to an authentication error.">
-        Access denied.
-      </message>
-
       <!-- Global error messages for extensions -->
       <message name="IDS_EXTENSION_WARNINGS_WRENCH_MENU_ITEM" desc="The wrench menu item indicating that extensions caused problems.">
         Extension error
@@ -6278,6 +6176,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
 
       <!-- Extensions Menu bubble -->
       <if expr="enable_extensions_core">
+        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON" desc="The text of the request acces button that appears on the toolbar when an extension requests access to the site" formatter_data="android_java">
+          Allow <ph name="EXTENSIONS_REQUESTING_ACCESS_COUNT">$1<ex>3</ex></ph>?
+        </message>
+        <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON_DISMISSED_TEXT" desc="The text of the button that appears on the toolbar after the user grants access to an extension that requested access to the current site." formatter_data="android_java">
+          Allowed
+        </message>
         <message name="IDS_EXTENSIONS_REQUEST_ACCESS_BUTTON_TOOLTIP_MULTIPLE_EXTENSIONS" desc="The tooltip text of the request access button that appears on the toolbar when an extension requests access to the site">
           Click to allow on <ph name="ORIGIN">$1<ex>google.com</ex></ph>:
         </message>
@@ -6336,34 +6240,34 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_EXTENSIONS_MENU_MESSAGE_SECTION_ENTERPRISE_TOOLTIP_ICON_TEXT" desc="Text of the info tooltip icon in the message section when the user blocked access to this site to all extensions but extensions installed by admin still have access.">
         Extensions installed by your administrator can still read and change this site
       </message>
-      <message name="IDS_EXTENSIONS_MENU_MESSAGE_SECTION_RELOAD_CONTAINER_DESCRIPTION_TEXT" desc="Text of the message section when the user has to reload the page to apply the updated user site settings.">
+      <message name="IDS_EXTENSIONS_MENU_MESSAGE_SECTION_RELOAD_CONTAINER_DESCRIPTION_TEXT" desc="Text of the message section when the user has to reload the page to apply the updated user site settings." formatter_data="android_java">
         To apply your updated settings to this site, reload this page
       </message>
-      <message name="IDS_EXTENSIONS_MENU_MESSAGE_SECTION_RELOAD_CONTAINER_BUTTON_TEXT" desc="Text of the button in the message section to reload the page when the user has to reload the page to apply the updated user site settings.">
+      <message name="IDS_EXTENSIONS_MENU_MESSAGE_SECTION_RELOAD_CONTAINER_BUTTON_TEXT" desc="Text of the button in the message section to reload the page when the user has to reload the page to apply the updated user site settings." formatter_data="android_java">
         Reload
       </message>
-      <message name="IDS_EXTENSIONS_MENU_MESSAGE_SECTION_RELOAD_CONTAINER_BUTTON_TOOLTIP" desc="Tooltip text of the button in the message section to reload the page when the user has to reload the page to apply the updated user site settings.">
+      <message name="IDS_EXTENSIONS_MENU_MESSAGE_SECTION_RELOAD_CONTAINER_BUTTON_TOOLTIP" desc="Tooltip text of the button in the message section to reload the page when the user has to reload the page to apply the updated user site settings." formatter_data="android_java">
         Reload page
       </message>
-      <message name="IDS_EXTENSIONS_MENU_REQUESTS_ACCESS_SECTION_TITLE" desc="Title of the requests access section that lists the extensions requesting site access">
+      <message name="IDS_EXTENSIONS_MENU_REQUESTS_ACCESS_SECTION_TITLE" desc="Title of the requests access section that lists the extensions requesting site access" formatter_data="android_java">
         Requests access
       </message>
-      <message name="IDS_EXTENSIONS_MENU_REQUESTS_ACCESS_SECTION_ALLOW_BUTTON_TEXT" desc="Title on the allow button for each extension in the requests access section that grants site access to such extension.">
+      <message name="IDS_EXTENSIONS_MENU_REQUESTS_ACCESS_SECTION_ALLOW_BUTTON_TEXT" desc="Title on the allow button for each extension in the requests access section that grants site access to such extension." formatter_data="android_java">
         Allow
       </message>
-      <message name="IDS_EXTENSIONS_MENU_REQUESTS_ACCESS_SECTION_ALLOW_BUTTON_TOOLTIP" desc="Tooltip text on the allow button for each extension in the requests access section that grants site access to such extension.">
+      <message name="IDS_EXTENSIONS_MENU_REQUESTS_ACCESS_SECTION_ALLOW_BUTTON_TOOLTIP" desc="Tooltip text on the allow button for each extension in the requests access section that grants site access to such extension." formatter_data="android_java">
         Allow extension to read and change this site
       </message>
-      <message name="IDS_EXTENSIONS_MENU_REQUESTS_ACCESS_SECTION_ALLOW_BUTTON_ACCESSIBLE_NAME" desc="Accessible string on the allow button for each extension in the requests access section that grants site access to such extension.">
+      <message name="IDS_EXTENSIONS_MENU_REQUESTS_ACCESS_SECTION_ALLOW_BUTTON_ACCESSIBLE_NAME" desc="Accessible string on the allow button for each extension in the requests access section that grants site access to such extension." formatter_data="android_java">
         Allow <ph name="EXTENSION_NAME">$1<ex>AdBlock</ex></ph> to read and change this site
       </message>
-      <message name="IDS_EXTENSIONS_MENU_REQUESTS_ACCESS_SECTION_DISMISS_BUTTON_TEXT" desc="Title on the dismiss button for each extension in the requests access section that dismiss the extensions's access requests on this tab's current origin.">
+      <message name="IDS_EXTENSIONS_MENU_REQUESTS_ACCESS_SECTION_DISMISS_BUTTON_TEXT" desc="Title on the dismiss button for each extension in the requests access section that dismiss the extensions's access requests on this tab's current origin." formatter_data="android_java">
         Dismiss
       </message>
-      <message name="IDS_EXTENSIONS_MENU_REQUESTS_ACCESS_SECTION_DISMISS_BUTTON_TOOLTIP" desc="Tooltip text on the dismiss button for each extension in the requests access section that dismiss the extensions's access requests on this tab's current origin.">
+      <message name="IDS_EXTENSIONS_MENU_REQUESTS_ACCESS_SECTION_DISMISS_BUTTON_TOOLTIP" desc="Tooltip text on the dismiss button for each extension in the requests access section that dismiss the extensions's access requests on this tab's current origin." formatter_data="android_java">
         Dismiss request
       </message>
-      <message name="IDS_EXTENSIONS_MENU_REQUESTS_ACCESS_SECTION_DISMISS_BUTTON_ACCESSIBLE_NAME" desc="Accessibility string for the dismiss button for each extension in the requests access section that dismisses the extensions's access requests on this tab's current origin.">
+      <message name="IDS_EXTENSIONS_MENU_REQUESTS_ACCESS_SECTION_DISMISS_BUTTON_ACCESSIBLE_NAME" desc="Accessibility string for the dismiss button for each extension in the requests access section that dismisses the extensions's access requests on this tab's current origin." formatter_data="android_java">
         Dismiss request for <ph name="EXTENSION_NAME">$1<ex>AdBlock</ex></ph>
       </message>
       <message name="IDS_EXTENSIONS_MENU_EXTENSION_SITE_ACCESS_TOGGLE_ON_TOOLTIP" desc="Tooltip text for the site access toggle of an extensions menu item when is on.">
@@ -6566,8 +6470,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
         }
       </message>
 
-      <message name="IDS_SUB_APPS_INSTALL_DIALOG_MANAGE_PERMISSIONS_LINK" desc="">
-        Manage
+      <message name="IDS_SUB_APPS_INSTALL_DIALOG_MANAGE_PERMISSIONS_LINK" desc="Link text to manage permissions for the parent app in the sub-app install dialog.">
+        Manage permissions for parent app
       </message>
 
       <message name="IDS_SUB_APPS_INSTALL_DIALOG_PERMISSIONS_BUTTON" desc="Button label on a dialog that lets the user approve the install of one or more sub apps.">
@@ -7029,6 +6933,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
         You are using an unsupported feature flag: <ph name="BAD_FLAG">$1<ex>SignedHTTPExchange</ex></ph>. Stability and security will suffer.
       </message>
 
+      <message name="IDS_BAD_FLAGS_FROM_FILE_WARNING_MESSAGE" desc="Message shown when command-line flags are loaded from a file. [Keep it short so it fits in the infobar.]">
+        Brave is loading flags from a command-line file. Stability and security may be affected.
+      </message>
+
       <!-- Bad Environment Variables Infobar-->
       <message name="IDS_BAD_ENVIRONMENT_VARIABLES_WARNING_MESSAGE" desc="Message shown when an unsupported environment variable is used [Keep it short so it fits in the infobar.]">
         You are using an unsupported environment variable: <ph name="BAD_VAR">$1<ex>SSLKEYLOGFILE</ex></ph>. Stability and security will suffer.
@@ -7343,32 +7251,31 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_WEBUI_OMNIBOX_PLACEHOLDER_TEXT" desc="The text displayed in the WebUI Omnibox when it is empty and unfocused.">
         Ask <ph name="SEARCH_ENGINE_NAME">$1<ex>Brave</ex></ph> or type a URL
       </message>
-      <message name="IDS_WEBUI_OMNIBOX_COMPOSE_ASK_ABOUT_THIS_TAB" desc="Label for a button that allows the user to ask a question about the content of their current tab.">
-        Ask Brave about this tab
-      </message>
-      <message name="IDS_WEBUI_OMNIBOX_COMPOSE_ASK_ABOUT_THIS_TAB_ARIA_LABEL" desc="The aria-label for the button that allows the user to ask a question about the content of their current tab. The $1 is a placeholder for the tab title.">
-        Ask Brave about this tab: <ph name="TAB_TITLE">$1</ph>
-      </message>
       <message name="IDS_WEBUI_OMNIBOX_COMPOSE_ASK_ABOUT_THIS_PAGE" desc="Label for a button that allows the user to ask a question about the content of their current page.">
         Ask Brave about this page
       </message>
       <message name="IDS_WEBUI_OMNIBOX_COMPOSE_ASK_ABOUT_THIS_PAGE_ARIA_LABEL" desc="The aria-label for the button that allows the user to ask a question about the content of their current page. The $1 is a placeholder for the page title.">
         Ask Brave about this page: <ph name="PAGE_TITLE">$1</ph>
       </message>
-      <message name="IDS_WEBUI_OMNIBOX_COMPOSE_LENS_SEARCH_THIS_TAB" desc="Label for a button that allows the user to search the content of their current tab with Google Lens">
-        Search this tab with Google Lens
-      </message>
-      <message name="IDS_WEBUI_OMNIBOX_COMPOSE_LENS_SEARCH_THIS_TAB_ARIA_LABEL" desc="The aria-label for the button that allows the user to search the content of their current tab with Google Lens. The $1 is a placeholder for the page title.">
-        Search this tab with Google Lens: <ph name="PAGE_TITLE">$1</ph>
-      </message>
-      <message name="IDS_WEBUI_OMNIBOX_COMPOSE_LENS_SEARCH_THIS_PAGE" desc="Label for a button that allows the user to search the content of their current page with Google Lens">
-        Search this page with Google Lens
-      </message>
-      <message name="IDS_WEBUI_OMNIBOX_COMPOSE_LENS_SEARCH_THIS_PAGE_ARIA_LABEL" desc="The aria-label for the button that allows the user to search the content of their current page with Google Lens. The $1 is a placeholder for the page title.">
-        Search this page with Google Lens: <ph name="PAGE_TITLE">$1</ph>
+      <message name="IDS_WEBUI_OMNIBOX_COMPOSE_LENS_OVERLAY" desc="The name of the Lens overlay command in the content area context menu">
+        Search with Google Lens
       </message>
 
+
       <!-- NTP -->
+      <!-- Google Drive integration disclaimer for New Tab Page -->
+      <message name="IDS_NTP_DRIVE_CONNECT_TITLE" desc="Title of the dialog asking to connect Google Drive to AIM.">
+        Allow Search to Access Drive Content?
+      </message>
+      <message name="IDS_NTP_DRIVE_DISCLAIMER_BODY" desc="Body text explaining how Drive data is handled in AIM.">
+        Your Google Drive content is accessed only to provide this file search feature. It is not used to improve Brave Search. Brave will not access your Google Drive content unless you explicitly upload a file.
+      </message>
+      <message name="IDS_NTP_DRIVE_DISCLAIMER_CANCEL" desc="Label on the button to cancel the Google Drive connection to AIM.">
+        Cancel
+      </message>
+      <message name="IDS_NTP_DRIVE_DISCLAIMER_CONNECT" desc="Label on the button to proceed with connecting Google Drive.">
+        Connect
+      </message>
       <message name="IDS_GOOGLE_SEARCH_BOX_EMPTY_HINT_MD" desc="The text displayed in the fakebox (on the New Tab page) when it is empty, Brave is the default search engine, and the Material Design UI is enabled.">
         Search Brave or type a URL
       </message>
@@ -7555,7 +7462,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CUSTOM_BG_CUSTOMIZE_NTP_WALLPAPER_SEARCH_LABEL" desc="Accessibility label for the wallpaper search gear icon. (On the New Tab Page)">
         Customize this page with AI
       </message>
-       <message name="IDS_NTP_DISMISS" desc="Used for Dismiss buttons">
+      <message name="IDS_NTP_CLOSE" desc="General purpose text label for close buttons on banners, dialogs, panels, promos, etc.">
+        Close
+      </message>
+      <message name="IDS_NTP_DISMISS" desc="Used for Dismiss buttons">
         Dismiss
       </message>
       <message name="IDS_NTP_DISMISS_PROMO" desc="The tooltip title and accessibility label for the (X) button to dismiss promotional messages on the middle / bottom of the New Tab page.">
@@ -8430,6 +8340,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_COMPOSE_ADD_FILE" desc="Text for a button label that opens a menu so users can add a file to their search.">
         Add file
       </message>
+      <message name="IDS_NTP_COMPOSE_ADD_DRIVE" desc="Placeholder text for a button label that opens a menu so users can add a Google Drive file to their search." translateable="false">
+         Add from Drive
+      </message>
       <message name="IDS_NTP_COMPOSE_ADD_CONTEXT" desc="The text to display to ask user to add context to their search e.g. pdf or image.">
         Add a tab and more
       </message>
@@ -8437,7 +8350,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Add tabs and more
       </message>
       <message name="IDS_NTP_COMPOSE_ADD_CONTEXT_TITLE" desc="The a11y title for a button that allows users to add context to their search e.g. pdf or image.">
-        Add a tab or file to your search, and also use a tool
+        Enhance your search with tabs, files, or an AI tool
       </message>
       <message name="IDS_NTP_COMPOSE_SUGGESTIONS_INFO" desc="The text underneath the composebox that explains to users how suggestions are generated.">
         Suggestions based on your <ph name="BEGIN_LINK_GOOGLE_ACTIVITY">&lt;a target="_blank" href="$1"&gt;</ph>Brave activity<ph name="END_LINK_GOOGLE_ACTIVITY">&lt;/a&gt;</ph>
@@ -8460,7 +8373,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_COMPOSE_MODELS_LABEL" desc="The label for the models label in the context menu in the composebox.">
         Models
       </message>
-      <message name="IDS_NTP_COMPOSE_AUTO_MODEL" desc="The label for the Auto model button in the context menu in the composebox as well as the chip that indicates that the user is using the Auto model." formatter_data="android_java">
+      <message name="IDS_NTP_COMPOSE_AUTO_MODEL" desc="The label for the Auto model button in the context menu in the composebox as well as the chip that indicates that the user is using the Auto model.">
         Auto
       </message>
       <message name="IDS_NTP_COMPOSE_THINKING_3_PRO" desc="The label for the Thinking 3 Pro model button in the context menu in the composebox as well as the chip that indicates that the user is using the Thinking 3 Pro model.">
@@ -9131,6 +9044,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Customize toolbar
         </message>
       </if>
+      <if expr="use_titlecase">
+        <message name="IDS_SIDE_PANEL_TABS_FROM_OTHER_DEVICES_TITLE" desc="Title of the 'Tabs from other devices' side panel entry.">
+          Tabs From Other Devices
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_SIDE_PANEL_TABS_FROM_OTHER_DEVICES_TITLE" desc="Title of the 'Tabs from other devices' side panel entry.">
+          Tabs from other devices
+        </message>
+      </if>
       <message name="IDS_SIDE_PANEL_TOOLBAR_BUTTON_CXMENU_UNPIN" desc="The label of the context menu item for unpinning a side panel toolbar button.">
         Unpin
       </message>
@@ -9395,6 +9318,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Reading mode
         </message>
       </if>
+      <message name="IDS_IMMERSIVE_READING_MODE_OPENED_ANNOUNCEMENT" desc="Accessibility announcement read by screen readers when reading mode is opened." is_accessibility_with_no_ui="true">
+        Reading mode opened, full page view
+      </message>
       <message name="IDS_READING_MODE_NOT_SELECTABLE_HEADER" desc="Header for reading mode when the current webpage cannot be opened in reading mode, even when selecting text.">
         Reading mode isn’t available on this page
       </message>
@@ -9923,36 +9849,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Search tabs
       </message>
 
-      <!-- Strings for tab organization -->
-      <message name="IDS_TOOLTIP_TAB_ORGANIZE" desc="The tooltip for the Tab Organization button.">
-        Organize tabs?
-      </message>
-      <message name="IDS_TAB_ORGANIZE" desc="The text label of the Tab Organization button.">
-        Organize tabs?
-      </message>
-      <message name="IDS_TOOLTIP_TAB_ORGANIZE_CLOSE" desc="The tooltip for the close button within the Tab Organization button.">
-        Dismiss suggestion
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_FEEDBACK_PLACEHOLDER" desc="Placeholder text for the Tab Organization feedback dialog.">
-        Send feedback for Suggested Groups
-      </message>
-      <if expr="use_titlecase">
-        <message name="IDS_TAB_ORGANIZE_MENU" desc="In Title Case: The text label for the tab organization app menu item.">
-          Group Tabs With AI
-        </message>
-      </if>
-      <if expr="not use_titlecase">
-        <message name="IDS_TAB_ORGANIZE_MENU" desc="The text label for the tab organization app menu item.">
-          Group tabs with AI
-        </message>
-      </if>
-      <message name="IDS_TAB_ORGANIZATION_SUCCESS_IPH" desc="The body text of the IPH describing how to interact with a tab group resulting from tab organization.">
-        Right-click on the tab group name to edit this group or click to collapse
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_SUCCESS_IPH_SCREENREADER" desc="The screen reader text of the IPH describing how to interact with a tab group resulting from tab organization." is_accessibility_with_no_ui="true">
-        Select the tab group and activate the context menu to edit
-      </message>
-
       <!-- Strings for split view -->
       <message name="IDS_SPLIT_VIEW_NTP_EMPTY_TITLE" desc="The title of the split view new tab page in its empty state.">
         Complete your split view
@@ -10006,6 +9902,15 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SPLIT_VIEW_DRAG_ENTRYPOINT_LABEL" desc="A label for the drag entrypoint indicating it can create a split view.">
         Create split view
       </message>
+      <message name="IDS_SPLIT_VIEW_RESIZE_ACCESSIBLE_ALERT" is_accessibility_with_no_ui="true" desc="Accessible alert announced after resizing a split view.">
+        <ph name="VIEW_ONE_ORIENTATION">$1<ex>Left</ex></ph> View now <ph name="VIEW_ONE_PERCENT">$2<ex>50%</ex></ph> wide, <ph name="VIEW_TWO_ORIENTATION">$3<ex>Right</ex></ph> View now <ph name="VIEW_TWO_PERCENT">$4<ex>50%</ex></ph> wide.
+      </message>
+      <message name="IDS_SPLIT_VIEW_RESIZE_LEFT_SIDE_ACCESSIBLE_ALERT" is_accessibility_with_no_ui="true" desc="Accessible alert text used in IDS_SPLIT_VIEW_RESIZE_ACCESSIBLE_ALERT for which side the window/pane is seen on.">
+               Left
+      </message>
+      <message name="IDS_SPLIT_VIEW_RESIZE_RIGHT_SIDE_ACCESSIBLE_ALERT" is_accessibility_with_no_ui="true" desc="Accessible alert text used in IDS_SPLIT_VIEW_RESIZE_ACCESSIBLE_ALERT for which side the window/pane is seen on.">
+               Right
+      </message>
 
       <!-- Vertical Tab Strings -->
       <if expr="use_titlecase">
@@ -10034,6 +9939,15 @@ Keep your key file in a safe place. You will need it to create new versions of y
           <message name="IDS_VERTICAL_TABS_TUTORIAL_STEP_END" desc="The body for the celebratory end step of the vertical tabs IPH tutorial. The string in quotation marks should match the translation for IDS_SWITCH_TO_HORIZONTAL_TAB.">
             You can move your tabs back to the top by right-clicking any tab and selecting “Show Tabs Horizontally”
           </message>
+          <message name="IDS_VERTICAL_TABS_ENABLE_EXPAND_ON_HOVER" desc="In Title Case: The button in context menu that enables expand on hover behavior.">
+            Turn on Auto Expanding Tabs
+          </message>
+          <message name="IDS_VERTICAL_TABS_DISABLE_EXPAND_ON_HOVER" desc="In Title Case: The button in context menu that disables expand on hover behavior.">
+            Turn off Auto Expanding Tabs
+          </message>
+          <message name="IDS_VERTICAL_TABS_COLLAPSE_BUTTON_TOGGLE_EXPAND_ON_HOVER" desc="In Title Case: The right click context menu opened by the collapse button that toggles expand on hover behavior.">
+            Expand Collapsed Tabs by Hovering
+          </message>
         </then>
         <else>
           <message name="IDS_SWITCH_TO_VERTICAL_TAB" desc="The button in context menu that switches to vertical tab view.">
@@ -10060,6 +9974,15 @@ Keep your key file in a safe place. You will need it to create new versions of y
           <message name="IDS_VERTICAL_TABS_TUTORIAL_STEP_END" desc="The body for the celebratory end step of the vertical tabs IPH tutorial. The string in quotation marks should match the translation for IDS_SWITCH_TO_HORIZONTAL_TAB.">
             You can move your tabs back to the top by right-clicking any tab and selecting “Show tabs horizontally”
           </message>
+          <message name="IDS_VERTICAL_TABS_ENABLE_EXPAND_ON_HOVER" desc="The button in context menu that enables expand on hover behavior.">
+            Turn on auto expanding tabs
+          </message>
+          <message name="IDS_VERTICAL_TABS_DISABLE_EXPAND_ON_HOVER" desc="The button in context menu that disables expand on hover behavior.">
+            Turn off auto expanding tabs
+          </message>
+          <message name="IDS_VERTICAL_TABS_COLLAPSE_BUTTON_TOGGLE_EXPAND_ON_HOVER" desc="The right click context menu opened by the collapse button that toggles expand on hover behavior.">
+            Expand collapsed tabs by hovering
+          </message>
         </else>
       </if>
       <message name="IDS_VERTICAL_TABS_IPH_TITLE" desc="The title for the vertical tabs IPH tutorial.">
@@ -10067,6 +9990,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_VERTICAL_TABS_IPH_BODY" desc="The body for the vertical tabs IPH tutorial.">
         See entire tab titles, easily manage tab groups, and free up vertical space by moving your tabs to the side.
+      </message>
+      <message name="IDS_VERTICAL_TABS_EXPAND_ON_HOVER_DEFAULT_ENABLED_IPH_BODY" desc="The body for the vertical tabs expand on hover IPH, when expand on hover is default enabled.">
+        You can now expand your tabs by hovering over them. To turn this off, right-click here.
+      </message>
+      <message name="IDS_VERTICAL_TABS_EXPAND_ON_HOVER_DEFAULT_DISABLED_IPH_BODY" desc="The body for the vertical tabs expand on hover IPH, when expand on hover is default disabled.">
+        You can now expand your tabs by hovering over them. To turn this on, right-click here.
       </message>
       <message name="IDS_VERTICAL_RESIZE_AREA" is_accessibility_with_no_ui="true" desc="The accessibility label for the resize area in the vertical tab strip.">
             Vertical Tab Strip Resize Handle (Draggable)
@@ -10152,6 +10081,22 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_OPEN_AI_MODE_THREAD_ACCESSIBILITY_LABEL" desc="Screenreader label for a button that opens an AI Mode thread." is_accessibility_with_no_ui="true">
         Open "<ph name="THREAD_NAME">$1<ex>Compact SUV Comparison</ex></ph>" in AI Mode
       </message>
+      <if expr="use_titlecase">
+        <message name="IDS_TAB_STRIP_UNPIN_TAB_SEARCH" desc="In Title Case: Name of the tab strip system menu item for unpinning tab search.">
+          Unpin Tab Search
+        </message>
+        <message name="IDS_TAB_STRIP_PIN_TAB_SEARCH" desc="In Title Case: Name of the tab strip system menu item for pinning tab search.">
+          Pin Tab Search
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_TAB_STRIP_UNPIN_TAB_SEARCH" desc="Name of the tab strip system menu item for unpinning tab search.">
+          Unpin tab search
+        </message>
+        <message name="IDS_TAB_STRIP_PIN_TAB_SEARCH" desc="Name of the tab strip system menu item for pinning tab search.">
+          Pin tab search
+        </message>
+      </if>
       <message name="IDS_TAB_SEARCH_BUTTON_CXMENU_UNPIN" desc="Name of the tab search button context menu item for unpinning tab search.">
         Unpin
       </message>
@@ -10464,7 +10409,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_ACCNAME_FULLSCREEN_DISABLED" desc="The accessible name of the disabled fullscreen button in the new merged menu">
         Full screen disabled
       </message>
-      <message name="IDS_ACCNAME_HOME" desc="The accessible name for the home button">
+      <message name="IDS_ACCNAME_HOME" desc="The accessible name for the home button" meaning="'home' as in an internet location, a 'home page'">
         Home
       </message>
       <message name="IDS_ACCNAME_RELOAD" desc="The accessible name for the reload/stop button.">
@@ -10562,9 +10507,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_ACCNAME_TAB_SEARCH" desc="The accessible name for the Tab Search bubble.">
         Search tabs
-      </message>
-      <message name="IDS_ACCNAME_TAB_ORGANIZE" desc="The accessible name for the Tab Organization button." is_accessibility_with_no_ui="true">
-        Group related tabs
       </message>
       <message name="IDS_ACCNAME_TAB_SCROLL_LEADING" desc="The accessible name for the TabStrip leading scroll button.">
         Scroll towards the first tab
@@ -10750,7 +10692,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
             {NUM_TABS, plural, =1 {1 Tab} other {# Tabs}}
         </message>
         <message name="IDS_TAB_GROUPS_HOVER_CARD_FOOTER" desc="In Title Case: The number of tabs in the tab group that are not shown on the hover card, when hovering over the tab group header.">
-            +<ph name="NUM">$1<ex>2</ex></ph> More
+            + <ph name="NUM">$1<ex>2</ex></ph> More
         </message>
       </if>
       <if expr="not use_titlecase">
@@ -10764,7 +10706,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
             {NUM_TABS, plural, =1 {1 tab} other {# tabs}}
         </message>
         <message name="IDS_TAB_GROUPS_HOVER_CARD_FOOTER" desc="The number of tabs in the tab group that are not shown on the hover card, when hovering over the tab group header.">
-            +<ph name="NUM">$1<ex>2</ex></ph> more
+            + <ph name="NUM">$1<ex>2</ex></ph> more
         </message>
       </if>
       <message name="IDS_DISCARD_RING_PROMO_TITLE" desc="The title for the discard ring in-product promo bubble.">
@@ -11576,6 +11518,12 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       <message name="IDS_PICTURE_IN_PICTURE_UNMUTE_MICROPHONE_TEXT" desc="Text label of the unmute microphone control button. The button appears when the user hovers over the Picture-in-Picture window.">
         Unmute microphone
       </message>
+      <message name="IDS_PICTURE_IN_PICTURE_MUTE_TEXT" desc="Text label of the mute audio control button. The button appears when the user hovers over the Picture-in-Picture window.">
+        Mute
+      </message>
+      <message name="IDS_PICTURE_IN_PICTURE_UNMUTE_TEXT" desc="Text label of the unmute audio control button. The button appears when the user hovers over the Picture-in-Picture window.">
+        Unmute
+      </message>
       <message name="IDS_PICTURE_IN_PICTURE_TURN_ON_CAMERA_TEXT" desc="Text label of the turn on camera control button. The button appears when the user hovers over the Picture-in-Picture window.">
         Turn on camera
       </message>
@@ -11765,9 +11713,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_TAB_CXMENU_MOVETOANOTHERNEWWINDOW" desc="The label for the Tab context item to move items to a new window from the 'Move tabs to another window' submenu.">
           New window
         </message>
-        <message name="IDS_TAB_CXMENU_ORGANIZE_TABS" desc="The label of the 'Organize tabs' Tab context menu item.">
-          Organize similar tabs
-        </message>
         <message name="IDS_TAB_CXMENU_COMMERCE_PRODUCT_SPEC" desc="The text for the context menu item to compare selected tabs." translateable="false">
           Compare tabs
         </message>
@@ -11883,9 +11828,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_TAB_CXMENU_MOVETOANOTHERNEWWINDOW" desc="In Title Case: The label for the Tab context item to move items to a new window from the 'Move tabs to another window' submenu.">
           New Window
-        </message>
-        <message name="IDS_TAB_CXMENU_ORGANIZE_TABS" desc="In Title Case: The label of the 'Organize tabs' Tab context menu item.">
-          Organize Similar Tabs
         </message>
         <message name="IDS_TAB_CXMENU_COMMERCE_PRODUCT_SPEC" desc="In Title Case: The text for the context menu item to compare selected tabs." translateable="false">
           Compare Tabs
@@ -12109,141 +12051,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
           </message>
         </else>
       </if>
-      <message name="IDS_TAB_ORGANIZATION_TAB_NAME" desc="The tab title for tab organization in the tab search bubble">
-        Organize
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_CREATE_GROUP" desc="The label for the button that creates a tab group in the tab organization UI">
-        Create group
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_CREATE_GROUPS" desc="The label for the button that creates multiple tab groups in the tab organization UI">
-        Create groups
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_DISMISS" desc="The label for the button that dismisses the tab organization UI">
-        Dismiss
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_NEW_TABS" desc="The label for the new badge divider in the tab organization results state">
-        New Tabs
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_NOT_STARTED_TITLE" desc="The header text for the not started state in the tab organization UI">
-        Stay organized with tab groups
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_NOT_STARTED_TITLE_FRE" desc="The header text for the first run experience of the not started state in the tab organization UI">
-        Keep your tabs tidy with AI
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_NOT_STARTED_BODY" desc="The body text for the not started state in the tab organization UI">
-        You can check for tab group suggestions anytime
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_NOT_STARTED_BODY_FRE_HEADER" desc="Body header text in the tab organization UI first run experience not started state">
-        Things to consider
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_NOT_STARTED_BODY_FRE_BULLET_1" desc="Text of the first bullet point in the tab organization UI first run experience not started state">
-        This feature uses AI and won't always get it right
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_NOT_STARTED_BODY_FRE_BULLET_2" desc="Text of the second bullet point in the tab organization UI first run experience not started state">
-        Your tabs, page titles, and URLs are sent to Brave
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_NOT_STARTED_BODY_FRE_BULLET_3" desc="Text of the third bullet point in the tab organization UI first run experience not started state">
-        Data may be seen by trained reviewers to improve this feature
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_NOT_STARTED_BODY_SIGNED_OUT" desc="The body text for the not started state in the tab organization UI, when not signed in">
-        Sign in to let Brave suggest tab groups and keep your tabs organized
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_NOT_STARTED_BUTTON" desc="The label for the button in the not started state of the tab organization UI, when signed in">
-        Check now
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_NOT_STARTED_BUTTON_FRE" desc="The first run experience label for the button in the not started state of the tab organization UI, when signed in">
-        Let's go
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_NOT_STARTED_BUTTON_SIGNED_OUT" desc="The label for the button in the not started state of the tab organization UI, when not signed in">
-        Sign in
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_NOT_STARTED_BUTTON_ARIA_LABEL" desc="The a11y label for the button in the not started state of the tab organization UI, when signed in" is_accessibility_with_no_ui="true">
-        Check now if tabs can be organized
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_NOT_STARTED_BUTTON_FRE_ARIA_LABEL" desc="The first run experience a11y label for the button in the not started state of the tab organization UI, when signed in" is_accessibility_with_no_ui="true">
-        Let's go and organize your tabs
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_NOT_STARTED_BUTTON_SIGNED_OUT_ARIA_LABEL" desc="The a11y label for the button in the not started state of the tab organization UI, when not signed in" is_accessibility_with_no_ui="true">
-        Sign in to let Brave suggest tab groups
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_IN_PROGRESS_TITLE" desc="The header text for the in progress state in the tab organization UI">
-        Grouping your tabs…
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_SUCCESS_MISSING_ACTIVE_TAB_TITLE" desc="The header text for the success state in the tab organization UI, when there were no groups found for the selected tab">
-        There are no similar tabs to organize, but you might like these groups
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_SUCCESS_TITLE_SINGLE" desc="The singular form header text for the success state in the tab organization UI">
-        Tab group suggested
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_SUCCESS_TITLE_MULTI" desc="The plural form header text for the success state in the tab organization UI">
-        <ph name="NUM">$1<ex>2</ex></ph> Tab groups suggested
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_FAILURE_TITLE_GENERIC" desc="The header text for the generic failure state in the tab organization UI">
-        Something went wrong
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_FAILURE_TITLE_GROUPING" desc="The header text for the grouping failure state in the tab organization UI">
-        No groups found
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_FAILURE_BODY_GENERIC" desc="The body text for the generic failure state in the tab organization UI.">
-        Tab group suggestions are currently unavailable. You can <ph name="BEGIN_LINK">&lt;a href="#"&gt;</ph>refresh now<ph name="END_LINK">&lt;/a&gt;</ph> or try again later
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_FAILURE_BODY_GROUPING" desc="The body text for the grouping failure state in the tab organization UI.">
-        You can <ph name="BEGIN_LINK">&lt;a href="#"&gt;</ph>refresh now<ph name="END_LINK">&lt;/a&gt;</ph> or try again later after you open new similar tabs
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_TIP_TITLE" desc="The bolded text at the start of the tip in the tab organization UI">
-        Tip:
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_TIP_BODY" desc="The main text of the tip in the tab organization UI">
-        You can create your own tab group.
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_TIP_ACTION" desc="The actionable text of the tip in the tab organization UI">
-        Show me how
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_TIP_ARIA_DESCRIPTION" desc="The a11y label of the tip in the tab organization UI" is_accessibility_with_no_ui="true">
-        Launch tab group tutorial
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_DISCLAIMER_1" desc="The first block of disclaimer text in the tab organization UI results state for getting more information">
-        Your tab titles and URLs are sent to Brave and may be seen by human reviewers to improve this feature.
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_DISCLAIMER_2" desc="The second block of disclaimer text in the tab organization UI results state for getting more information">
-        This is an experimental AI feature and won't always get it right.
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_LEARN_MORE" desc="The actionable text in the tab organization UI results state for getting more information">
-        Learn how to automatically organize your tabs
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_LEARN_MORE_ARIA_LABEL" desc="The accessible label in the tab organization UI results state for getting more information" is_accessibility_with_no_ui="true">
-        Learn more about this AI feature
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_CLOSE_TAB_ARIA_LABEL" desc="The accessible label in the tab organization UI results state for removing a tab" is_accessibility_with_no_ui="true">
-        Remove <ph name="TAB_TITLE">$1<ex>New Tab</ex></ph> from tab group
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_CLOSE_TAB_TOOLTIP" desc="Tooltip on the button in the tab organization UI results state for removing a tab">
-        Exclude tab from suggested group
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_CLEAR_SUGGESTIONS" desc="The button text in the tab organization UI results state for clearing the suggestion list">
-        Clear
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_CLEAR_ARIA_LABEL" desc="The a11y label of the button in the tab organization UI results state for clearing the suggestion list" is_accessibility_with_no_ui="true">
-        Clear group suggestions
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_INPUT_ARIA_LABEL" desc="The a11y label of the tab group name input in the tab organization UI" is_accessibility_with_no_ui="true">
-        Tab group name: <ph name="NAME">$1<ex>My tab group</ex></ph>
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_EDIT_ARIA_LABEL" desc="The a11y label and tooltip of the tab group edit button in the tab organization UI">
-        Edit group name <ph name="NAME">$1<ex>My tab group</ex></ph>
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_REJECT_ARIA_LABEL" desc="The a11y label and tooltip of the tab group reject button in the tab organization UI">
-        Remove group <ph name="NAME">$1<ex>My tab group</ex></ph>
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_THUMBS_DOWN" desc="Accessibility label for the thumbs down icon that a user can click to provide negative feedback about a tab organization." is_accessibility_with_no_ui="true">
-        Thumbs down submits feedback that you dislike this tab group suggestion
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_THUMBS_UP" desc="Accessibility label for the thumbs up icon that a user can click to provide positive feedback about a tab organization." is_accessibility_with_no_ui="true">
-        Thumbs up submits feedback that you like this tab group suggestion
-      </message>
-      <message name="IDS_TAB_ORGANIZATION_A11Y_TAB_EXCLUDED" desc="A11y message after user clicks on the close tab button in the tab organization list item." is_accessibility_with_no_ui="true">
-        Tab excluded from suggested group
-      </message>
 
       <!-- Strings for Window Titles in Menus -->
       <if expr="not use_titlecase">
@@ -13337,28 +13144,28 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </message>
 
       <!-- NSS PKCS #11 password dialog -->
-      <message name="IDS_CRYPTO_MODULE_AUTH_DIALOG_TITLE" desc="The title in the dialog that prompts for security device password.">
-       Sign in to Security Device
+      <message name="IDS_CRYPTO_MODULE_AUTH_DIALOG_TITLE" desc="The title in the dialog that prompts for security device PIN.">
+       Unlock Security Device
       </message>
-      <message name="IDS_CRYPTO_MODULE_AUTH_DIALOG_TEXT_CERT_ENROLLMENT" desc="The text in the dialog that prompts for security device password for cert enrollment.">
-       Please sign in to <ph name="TOKEN_NAME">$1<ex>Software Security Device</ex></ph> to import client certificate from <ph name="HOST_NAME">$2<ex>www.google.com</ex></ph>.
+      <message name="IDS_CRYPTO_MODULE_AUTH_DIALOG_TEXT_CERT_ENROLLMENT" desc="The text in the dialog that prompts for security device PIN for cert enrollment.">
+       Please unlock <ph name="TOKEN_NAME">$1<ex>Software Security Device</ex></ph> to import client certificate from <ph name="HOST_NAME">$2<ex>www.google.com</ex></ph>.
       </message>
-      <message name="IDS_CRYPTO_MODULE_AUTH_DIALOG_TEXT_CLIENT_AUTH" desc="The text in the dialog that prompts for security device password when doing key generation.">
-       Please sign in to <ph name="TOKEN_NAME">$1<ex>Software Security Device</ex></ph> to authenticate to <ph name="HOST_NAME">$2<ex>www.google.com</ex></ph> with your certificate.
+      <message name="IDS_CRYPTO_MODULE_AUTH_DIALOG_TEXT_CLIENT_AUTH" desc="The text in the dialog that prompts for security device PIN when doing key generation.">
+       Please unlock <ph name="TOKEN_NAME">$1<ex>Software Security Device</ex></ph> to authenticate to <ph name="HOST_NAME">$2<ex>www.google.com</ex></ph> with your certificate.
       </message>
-      <message name="IDS_CRYPTO_MODULE_AUTH_DIALOG_TEXT_LIST_CERTS" desc="The text in the dialog that prompts for security device password when using the certificate manager without taking a specific action (eg, just loading the cert manager).">
-       Please sign in to <ph name="TOKEN_NAME">$1<ex>Software Security Device</ex></ph>.
+      <message name="IDS_CRYPTO_MODULE_AUTH_DIALOG_TEXT_LIST_CERTS" desc="The text in the dialog that prompts for security device PIN when using the certificate manager without taking a specific action (eg, just loading the cert manager).">
+       Please unlock <ph name="TOKEN_NAME">$1<ex>Software Security Device</ex></ph>.
       </message>
-      <message name="IDS_CRYPTO_MODULE_AUTH_DIALOG_TEXT_CERT_IMPORT" desc="The text in the dialog that prompts for security device password when using the certificate manager to import a client certificate.">
-       Please sign in to <ph name="TOKEN_NAME">$1<ex>Software Security Device</ex></ph> to import the client certificate.
+      <message name="IDS_CRYPTO_MODULE_AUTH_DIALOG_TEXT_CERT_IMPORT" desc="The text in the dialog that prompts for security device PIN when using the certificate manager to import a client certificate.">
+       Please unlock <ph name="TOKEN_NAME">$1<ex>Software Security Device</ex></ph> to import the client certificate.
       </message>
-      <message name="IDS_CRYPTO_MODULE_AUTH_DIALOG_TEXT_CERT_EXPORT" desc="The text in the dialog that prompts for security device password when using the certificate manager to export a client certificate.">
-       Please sign in to <ph name="TOKEN_NAME">$1<ex>Software Security Device</ex></ph> to export the client certificate.
+      <message name="IDS_CRYPTO_MODULE_AUTH_DIALOG_TEXT_CERT_EXPORT" desc="The text in the dialog that prompts for security device PIN when using the certificate manager to export a client certificate.">
+       Please unlock <ph name="TOKEN_NAME">$1<ex>Software Security Device</ex></ph> to export the client certificate.
       </message>
-      <message name="IDS_CRYPTO_MODULE_AUTH_DIALOG_PASSWORD_FIELD" desc="Label for password entry in the dialog that prompts for security device password.">
-       Password:
+      <message name="IDS_CRYPTO_MODULE_AUTH_DIALOG_PASSWORD_FIELD" desc="Label for PIN entry in the dialog that prompts for security device PIN.">
+       PIN:
       </message>
-      <message name="IDS_CRYPTO_MODULE_AUTH_DIALOG_OK_BUTTON_LABEL" desc="Label for OK button in the dialog that prompts for security device password.">
+      <message name="IDS_CRYPTO_MODULE_AUTH_DIALOG_OK_BUTTON_LABEL" desc="Label for OK button in the dialog that prompts for security device PIN.">
        Unlock
       </message>
 
@@ -13655,15 +13462,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </message>
       <message name="IDS_OMNIBOX_TOOLTIP_SEND_TAB_TO_SELF" desc="The label of item for share this tab to other devices in different context menus.">
         Send this page
-      </message>
-      <message name="IDS_OMNIBOX_BUBBLE_ITEM_SUBTITLE_TODAY_SEND_TAB_TO_SELF" desc="The label of valid device button inside omnibox bubble, which shows the last activated time of a valid device.">
-        Active today
-      </message>
-      <message name="IDS_OMNIBOX_BUBBLE_ITEM_SUBTITLE_DAY_SEND_TAB_TO_SELF" desc="The label of valid device button inside omnibox bubble, which shows the last activated time of a valid device.">
-        Active <ph name="DEVICE_LAST_ACTIVATED_TIME">$1<ex>- 1 day ago</ex></ph> day ago
-      </message>
-      <message name="IDS_OMNIBOX_BUBBLE_ITEM_SUBTITLE_DAYS_SEND_TAB_TO_SELF" desc="The label of valid device button inside omnibox bubble, which shows the last activated time of a valid device.">
-        Active <ph name="DEVICE_LAST_ACTIVATED_TIME">$1<ex>- 3 days ago</ex></ph> days ago
       </message>
       <message name="IDS_TOOLBAR_BUTTON_SEND_TAB_TO_SELF_FROM_DEVICE" desc="The label for the device a received tab was sent from. Shown in the toolbar bubble.">
         Shared from <ph name="DEVICE_NAME">$1<ex>Ted's Pixel2</ex></ph>
@@ -15698,7 +15496,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
           Task Manager
         </message>
         <!-- History menu -->
-        <message name="IDS_HISTORY_HOME_MAC" desc="The Mac menu item for home in the history menu.">
+        <message name="IDS_HISTORY_HOME_MAC" desc="The Mac menu item for home in the history menu." meaning="'home' as in an internet location, a 'home page'">
           Home
         </message>
         <message name="IDS_HISTORY_BACK_MAC" desc="The Mac menu item for back in the history menu.">
@@ -15843,7 +15641,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
 
         <!-- History menu -->
-        <message name="IDS_HISTORY_HOME_LINUX" desc="The Linux menu item for home in the history menu.">
+        <message name="IDS_HISTORY_HOME_LINUX" desc="The Linux menu item for home in the history menu." meaning="'home' as in an internet location, a 'home page'">
           Home
         </message>
         <message name="IDS_HISTORY_BACK_LINUX" desc="The Linux menu item for back in the history menu.">
@@ -16367,66 +16165,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
       <!-- App List. -->
       <if expr="is_chromeos">
-        <message name="IDS_APP_ACTION_SHORTCUT_ACCESSIBILITY_NAME" desc="Hint text for the search result that performs a specific action with an app.">
-          <ph name="ACTION_NAME">$1<ex>Compose</ex></ph> with <ph name="APP_NAME">$2<ex>GMail</ex></ph> App
-        </message>
-        <message name="IDS_APP_LIST_QUERY_SEARCH_DESCRIPTION" desc="Description text for the search result that will invoke a query search powered by the default search engine.">
-          <ph name="QUERY_NAME">$1<ex>Harry Potter</ex></ph> - <ph name="DEFAULT_SEARCH_ENGINE_NAME">$2<ex>Brave</ex></ph> Search
-        </message>
-        <message name="IDS_APP_LIST_QUERY_SEARCH_ACCESSIBILITY_NAME" desc="Hint text for the search result that will invoke a query search powered by the default search engine.">
-          <ph name="QUERY_NAME">$1<ex>Harry Potter</ex></ph>, <ph name="DEFAULT_SEARCH_ENGINE_NAME">$2<ex>Brave</ex></ph> Search
-        </message>
-        <message name="IDS_APP_LIST_REMOVE_SUGGESTION_ACCESSIBILITY_NAME" desc="The spoken feedback for removing suggestion button">
-          Remove the suggestion <ph name="SUGGESTION_NAME">$1<ex>Harry Potter</ex></ph>
-        </message>
-        <message name="IDS_APP_LIST_CONTEXT_MENU_NEW_TAB" desc="Title text for the 'open new' context menu item of an app list item configured to open in a tab">
-          New tab
-        </message>
-        <message name="IDS_APP_LIST_CONTEXT_MENU_NEW_WINDOW" desc="Title text for the 'open new' context menu item of an app list item configured to open windowed">
-          New window
-        </message>
-        <message name="IDS_APP_LIST_CONTEXT_MENU_NEW_TABBED_WINDOW" desc="Title text for the 'open new' context menu item of an app list item configured to open in a tabbed window">
-          New tabbed window
-        </message>
-        <message name="IDS_APP_LIST_CONTEXT_MENU_PIN" desc="Title text for the 'pin' context menu item of an app list item.">
-          Pin to shelf
-        </message>
-        <message name="IDS_APP_LIST_CONTEXT_MENU_UNPIN" desc="Title text for the 'unpin' context menu item of an app list item.">
-          Unpin from shelf
-        </message>
-        <message name="IDS_APP_LIST_CONTEXT_MENU_PIN_ENFORCED_BY_POLICY" desc="Short text for the pin/unpin context menu to tell user the setting is enforced by policy of an app list item">
-          Pinned by administrator
-        </message>
-        <message name="IDS_APP_LIST_CONTEXT_MENU_REORDER_TITLE" desc="Text for an option shown in a context menu for app items in the ChromeOS app list that allows users to reorder items in the app list. Clicking the option opens a submenu in which the user can choose how the items in the app list should be ordered (e.g. by name or the icon color).">
-          Sort by
-        </message>
-        <message name="IDS_APP_LIST_CONTEXT_MENU_REORDER_BY_NAME" desc="Text for an option shown in a context menu for app items in the ChromeOS app list that allows users to reorder items by their names in the app list. This option is under the 'Reorder by' submenu">
-          Name
-        </message>
-        <message name="IDS_APP_LIST_CONTEXT_MENU_REORDER_BY_COLOR" desc="Text for an option shown in a context menu for app items in the ChromeOS app list that allows users to reorder items by their icon colors in the app list. This option is under the 'Reorder by' submenu">
-          Color
-        </message>
-        <message name="IDS_APP_LIST_UNINSTALL_ITEM" desc="Title text for the 'uninstall' context menu item of an app list item.">
-          Uninstall
-        </message>
-        <message name="IDS_APP_LIST_REMOVE_SHORTCUT" desc="Title text for the 'remove' context menu item of an app list shortcut item.">
-          Remove
-        </message>
-        <message name="IDS_APP_LIST_NEW_WINDOW" desc="The text label of the New Window menu item">
-          New window
-        </message>
-        <message name="IDS_APP_LIST_NEW_INCOGNITO_WINDOW" desc="The text label of the New Private window menu item">
-          New Private window
-        </message>
-        <message name="IDS_APP_LIST_OEM_DEFAULT_FOLDER_NAME" desc="The default name for OEM folders in the App Launcher">
-          OEM folder
-        </message>
-        <message name="IDS_APP_LIST_CROSTINI_DEFAULT_FOLDER_NAME" desc="The default name for the Linux (Crostini) apps folder in the App Launcher">
-          Linux apps
-        </message>
-        <message name="IDS_APP_LIST_BRUSCHETTA_DEFAULT_FOLDER_NAME" desc="The default name for the Bruschetta apps folder in the App Launcher">
-          <ph name="VM_NAME">$1<ex>ManagedVM</ex></ph> apps
-        </message>
         <message name="IDS_APP_CONTEXT_MENU_LAUNCH_APP_SHORTCUT" desc="Text for an option shown in a context menu to launch a shortcut in its host app. Example: 'Open Fortnite - GeForce Now'">
             Open <ph name="SHORTCUT_NAME">$1<ex>Fortnite</ex></ph> - <ph name="APP_NAME">$2<ex>GeForce Now</ex></ph>
         </message>
@@ -16468,8 +16206,8 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_DESKTOP_MEDIA_PICKER_ALSO_SHARE_SYSTEM_AUDIO" desc="Text for the audio toggle in the window picker dialog which is displayed when attempting to share a screen.">
         Also share system audio
       </message>
-      <message name="IDS_DESKTOP_MEDIA_PICKER_ALSO_SHARE_APPLICATION_AUDIO" desc="Text for the audio toggle in the window picker dialog which is displayed when attempting to share a window. The last part in the text: (from all its windows) emphasizes that audio will be shared from all windows belonging to the same application.">
-        Also share application audio (from all its windows)
+      <message name="IDS_DESKTOP_MEDIA_PICKER_ALSO_SHARE_APPLICATION_AUDIO" desc="Text for the audio toggle in the window picker dialog which is displayed when attempting to share a window. The parenthetical text explains that sharing audio from a single window will also capture audio from all other windows belonging to that same application. For certain applications (like web browsers), this may also include audio from related versions (e.g., Beta or Canary) or Progressive Web Apps (PWAs) installed by the browser.">
+        Also share app audio (from all its windows and related apps)
       </message>
       <message name="IDS_DESKTOP_MEDIA_PICKER_ALSO_SHARE_ALL_AUDIO_OUTPUT" desc="Text for the audio toggle in the window picker dialog which is displayed when attempting to share a screen. This string is used when we share all output audio devices, rather than just the default device">
         Also share all audio outputs
@@ -18342,7 +18080,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       This file
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_SAVE_TO_CLOUD_STORAGE_MESSAGE" desc="Button text to allow the user to save a file to cloud storage">
-      <ph name="FILE_NAME">$1<ex>foo.txt</ex></ph> has sensitive or dangerous data. Your organization will let you save it to cloud storage or discard it
+      <ph name="FILE_NAME">$1<ex>foo.txt</ex></ph> has sensitive data. Your organization will let you save it to cloud storage or discard it
     </message>
 
     <!-- Data sharing UI strings -->
@@ -18760,6 +18498,15 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_FILTERED_ACCOUNT_MESSAGE" desc="Message shown to the user when the account they are trying to sign in with has been filtered out by one of the filters passed by the RP.">
       You can't sign in using this account
     </message>
+    <message name="IDS_FEDERATION_SIGN_IN_TITLE" desc="Title of the UI shown in the omnibox to remind users that they can sign in with an identity provider.">
+      Sign in with <ph name="IDP_NAME">$1<ex>google.com</ex></ph>
+    </message>
+    <message name="IDS_FEDERATION_SIGNING_IN_TITLE" desc="Title of the UI shown in the omnibox while they are signing-in to the website with an identity provider.">
+      Signing in ...
+    </message>
+    <message name="IDS_FEDERATION_SIGN_UP_TITLE" desc="Title of the UI shown in the omnibox to remind users that they can sign up with an identity provider.">
+      Sign up with <ph name="IDP_NAME">$1<ex>google.com</ex></ph>
+    </message>
 
     <!-- Input overlay strings -->
     <if expr="is_chromeos">
@@ -18995,6 +18742,18 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_TRANSLATE_TOAST_UNDO_BUTTON" desc="Button on a toast notification that allows users to undo the translation.">
         Undo
       </message>
+      <message name="IDS_MULTISTEP_FILTER_SUGGESTION_TITLE" desc="Title to show on the toast for Multistep Filter suggestions." translateable="false">
+        Apply <ph name="FILTER_COUNT">$1</ph> filters from <ph name="TIME_PERIOD">$2</ph> ago? <ph name="DETAILS">$3</ph>
+      </message>
+      <message name="IDS_MULTISTEP_FILTER_SUGGESTION_APPLY_BUTTON" desc="Text for the apply button on the Multistep Filter suggestion toast." translateable="false">
+        Apply
+      </message>
+      <message name="IDS_MULTISTEP_FILTER_SUGGESTION_RECENT_TITLE" desc="Title to show on the toast for Multistep Filter suggestions recent toast." translateable="false">
+        Recall <ph name="FILTER_COUNT">$1</ph> filters from <ph name="SOURCE_DOMAIN">$2</ph>? <ph name="DETAILS">$3</ph>
+      </message>
+      <message name="IDS_MULTISTEP_FILTER_SUGGESTION_RECENT_APPLY_BUTTON" desc="Text for the apply button on the Multistep Filter suggestion recent toast." translateable="false">
+        Apply
+      </message>
       <message name="IDS_LINK_COPIED_TOAST_BODY" desc="Text on a toast notification that is shown when a link is successfully copied.">
         Link copied
       </message>
@@ -19028,8 +18787,20 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_GLIC_SELECTION_OVERLAY_RENDERER_LABEL" desc="The label for the renderer process housing the Gemini's selection overlay.">
         Gemini Selection Overlay
       </message>
+      <message name="IDS_GLIC_SELECTION_OVERLAY_PRESELECTION_BUBBLE_TEXT" desc="Text that is shown in the Glic selection overlay preselection bubble. Informs the user to select text or image to ask Gemini.">
+        Select any text or image to ask Gemini
+      </message>
       <message name="IDS_COPIED_TO_CLIPBOARD_TOAST_BODY" desc="Text on a toast notification that is shown when an item has been copied to clipboard.">
         Copied to clipboard
+      </message>
+      <message name="IDS_SPLIT_VIEW_CREATED_TOAST_BODY" desc="Text on a toast notification that is shown when a split view is created.">
+        Split view created
+      </message>
+      <message name="IDS_SPLIT_VIEW_SEPARATE_VIEWS_ACTION_BUTTON" desc="Text for the action button on a split view toast notification to separate the views in the split view.">
+        Separate views
+      </message>
+      <message name="IDS_SPLIT_VIEW_UNDO_SPLIT_ACTION_BUTTON" desc="Text for the action button on a split view toast notification to undo creating the split view.">
+        Undo
       </message>
     </if>
 
@@ -19063,7 +18834,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_OVERFLOW_MENU_ITEM_TEXT_FORWARD" desc="Overflow menu item text of forward button">
       Forward
     </message>
-    <message name="IDS_OVERFLOW_MENU_ITEM_TEXT_HOME" desc="Text of overflow menu item of home button">
+    <message name="IDS_OVERFLOW_MENU_ITEM_TEXT_HOME" desc="Text of overflow menu item of home button" meaning="'home' as in an internet location, a 'home page'">
       Home
     </message>
     <message name="IDS_OVERFLOW_MENU_ITEM_TEXT_LABS" desc="Text of overflow menu item of labs button">
@@ -19163,11 +18934,14 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_IWA_INSTALLER_INSTALL_FAILED_SUBTITLE" desc="Subtitle of the error dialog that is shown when an Isolated Web App failed to install">
       The installation could not be completed. Please try again or close this window
     </message>
-    <message name="IDS_IWA_INSTALLER_INSTALL_FAILED_BUNDLE_NOT_ON_USER_INSTALL_ALLOWLIST_SUBTITLE" desc="Subtitle of the error dialog that is shown when an Isolated Web App failed to install because it's not on the user install allowlist">
-      This application can't be installed by the user. Please contact the developer
+    <message name="IDS_IWA_INSTALLER_INSTALL_FAILED_BUNDLE_BLOCKED_USER_INSTALL_ALLOWLIST_BLOCKLIST_TITLE" desc="Title of the error dialog that is shown when an Isolated Web App failed to install because it's not on the user install allowlist or because it's on the blocklist">
+      Can't install app
     </message>
-    <message name="IDS_IWA_INSTALLER_INSTALL_FAILED_BUNDLE_BLOCKLISTED" desc="Subtitle of the error dialog that is shown when an Isolated Web App failed to install because it's on the blocklist">
-      This application has been blocked. Please contact the developer
+    <message name="IDS_IWA_INSTALLER_INSTALL_FAILED_BUNDLE_NOT_ON_USER_INSTALL_ALLOWLIST_MESSAGE" desc="Message of the error dialog that is shown when an Isolated Web App failed to install because it's not on the user install allowlist">
+      To learn why, contact the app developer
+    </message>
+    <message name="IDS_IWA_INSTALLER_INSTALL_FAILED_BUNDLE_BLOCKLISTED_MESSAGE" desc="Message of the error dialog that is shown when an Isolated Web App failed to install because it's on the blocklist">
+      This app is potentially dangerous and was blocked by Brave
     </message>
     <message name="IDS_IWA_INSTALLER_INSTALL_FAILED_RETRY" desc="Label of the retry button in the error dialog that is shown when an Isolated Web App failed to install">
       Retry
@@ -19449,6 +19223,15 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
     <!-- New Tab Page browser feature promotions. -->
     <if expr="not is_android">
+      <message name="IDS_NTP_PROMO_DISMISS" desc="Text shown on the menu option to dismiss a New Tab Page promo.">
+        Don't show this promo
+      </message>
+      <message name="IDS_NTP_PROMO_MENU_TOOLTIP" desc="Tooltip for the button that opens the New Tab Page promo menu.">
+        More actions
+      </message>
+      <message name="IDS_NTP_PROMO_MENU_A11Y_LABEL" desc="Aria label for the button that opens the New Tab Page promo menu.">
+        More actions for promo
+      </message>
       <message name="IDS_NTP_EXTENSIONS_PROMO" desc="The text shown in the body of the New Tab Page extensions promotion">
         Add extensions to stay organized, simplify tasks, and enhance your browsing
       </message>
@@ -19685,6 +19468,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_UPDATER_EXPAND_ALL" desc="Label for a button that expands all collapsed items in a list.">
         Expand All
       </message>
+      <message name="IDS_UPDATER_EXPORT_HISTORY_FILE" desc="Label for the button that redirects users to Brave's support tool, allowing them to export Brave Updater's history files.">
+        Export History Files
+      </message>
       <message name="IDS_UPDATER_FILTER_CHIP_APP" desc="Text displayed in a filter chip showing the selected application's names or identifier strings.">
         App: <ph name="APPS">$1<ex>Brave, Brave Beta, Brave Canary, {6BBAE539-2232-434A-A4E5-9A33560C6284}</ex></ph>
       </message>
@@ -19720,6 +19506,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_UPDATER_LAST_STARTED_LABEL" desc="A label for a timestamp indicating the last time the Brave Updater performed its periodic tasks.">
         Last Periodic Task Run:
+      </message>
+      <message name="IDS_UPDATER_LOAD_HISTORY_FILE" desc="Label for the button that allows users to upload one or more external updater history files for display.">
+        Load History Files
+      </message>
+      <message name="IDS_UPDATER_LOAD_HISTORY_FILE_ERROR" desc="Error message displayed when one or more uploaded history files could not be parsed or processed.">
+        Failed to load history. Ensure files contain valid updater logs.
       </message>
       <message name="IDS_UPDATER_NO_APPS_FOUND" desc="A message indicating that Brave's updater is not managing any applications on the user's system.">
         No applications are installed.
@@ -19799,6 +19591,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_UPDATER_REMOVE_FILTER" desc="Accessibility label for the button that removes a specific filter chip.">
         Remove filter
       </message>
+      <message name="IDS_UPDATER_RETURN_TO_LOCAL" desc="Label for the button that returns the page to displaying data from the user's updater installation after viewing the data contained in one or more history files.">
+        View Local Data
+      </message>
       <message name="IDS_UPDATER_SCOPE" desc="Label for a filter category allowing the user to filter Brave Updater logs by the scope of the updater. Brave Updater may be scoped per-user or per-system.">
         Updater Scope
       </message>
@@ -19835,6 +19630,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_UPDATER_VERSION_LABEL" desc="A label for the version of the updater.">
         Version:
       </message>
+      <message name="IDS_UPDATER_VIEWING_HISTORY_FILES" desc="Banner text indicating that the page is currently displaying data from an uploaded history file rather than the local machine.">
+        {NUM_EVENTS, plural, =1 {Viewing history from 1 file} other {Viewing history from # files}}
+      </message>
       <message name="IDS_UPDATER_UPDATE_ERROR" desc="Summary of an update event that failed.">
         Update operation failed
       </message>
@@ -19863,6 +19661,36 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_REPORT_UNSAFE_SITE_DIALOG_URL_LABEL" desc="Label which denotes URL of the unsafe-site in report-unsafe-site dialog">
       URL
+    </message>
+
+    <!-- Indigo -->
+    <if expr="not is_android">
+      <message name="IDS_INDIGO_TOOLBAR_CAPTION" desc="Text indicating the content was generated by Brave. Displayed in the Indigo toolbar." translateable="false">
+        Generated by Brave
+      </message>
+      <message name="IDS_INDIGO_TOOLBAR_EXPAND" desc="Tooltip for expanding the Indigo toolbar." translateable="false">
+        Expand
+      </message>
+      <message name="IDS_INDIGO_TOOLBAR_COLLAPSE" desc="Tooltip for collapsing the Indigo toolbar." translateable="false">
+        Collapse
+      </message>
+      <message name="IDS_INDIGO_TOOLBAR_REGENERATE" desc="Button label to regenerate the Indigo content." translateable="false">
+        Regenerate
+      </message>
+      <message name="IDS_INDIGO_TOOLBAR_REPLACE_ORIGINAL_PHOTO" desc="Button label to replace the original photo." translateable="false">
+        Replace original photo
+      </message>
+      <message name="IDS_INDIGO_TOOLBAR_DELETE_ORIGINAL_PHOTO" desc="Button label to delete the original photo." translateable="false">
+        Delete original photo
+      </message>
+    </if>
+
+    <!-- Brave finds Notifications -->
+    <message name="IDS_CHROME_FINDS_NOTIFICATIONS_HELPFUL_BUTTON_TEXT" desc="Text for the helpful button found on Brave finds notifications.">
+      Open in Brave
+    </message>
+    <message name="IDS_CHROME_FINDS_NOTIFICATIONS_UNHELPFUL_BUTTON_TEXT" desc="Text for the unhelpful button found on Brave finds notifications.">
+      Not interested
     </message>
   </messages>
 </release>

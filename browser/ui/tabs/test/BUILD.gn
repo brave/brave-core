@@ -30,15 +30,21 @@ source_set("browser_tests") {
     sources += [
       "shared_pinned_tab_service_browsertest.cc",
       "shared_pinned_tab_service_browsertest.h",
+      "tab_data_browsertest.cc",
     ]
     deps += [
       "//brave/browser/ui/tabs:tab_strip",
+      "//brave/components/resources:scaled_resources",
       "//chrome/browser/ui:ui_features",
       "//chrome/browser/ui/browser_window",
+      "//chrome/browser/ui/tabs",
       "//chrome/browser/ui/toasts",
+      "//chrome/common",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
       "//components/tab_groups",
+      "//ui/base",
+      "//url",
     ]
   }
 

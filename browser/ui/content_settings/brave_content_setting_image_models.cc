@@ -18,8 +18,8 @@ void BraveGenerateContentSettingImageModels(
   // https://github.com/brave/brave-browser/issues/1197
   // https://github.com/brave/brave-browser/issues/199
   auto to_remove = std::ranges::remove_if(*result, [](const auto& m) {
-    return m->image_type() == ImageType::COOKIES ||
-           m->image_type() == ImageType::JAVASCRIPT;
+    return m->image_type() == ImageType::kCookies ||
+           m->image_type() == ImageType::kJavaScript;
   });
   result->erase(to_remove.begin(), to_remove.end());
 

@@ -128,6 +128,8 @@
   <if expr="not is_chromeos">
     </if>
   <if expr="not is_chromeos">
+    <if expr="is_win">
+      </if>
     </if>
   <if expr="not is_chromeos and _google_chrome">
     </if>

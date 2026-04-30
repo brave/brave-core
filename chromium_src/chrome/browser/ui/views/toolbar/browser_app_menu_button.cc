@@ -7,8 +7,6 @@
 
 #include "brave/browser/ui/toolbar/brave_app_menu_model.h"
 
-#define FromVectorIcon(icon, color) FromVectorIcon(icon, color, GetIconSize())
 #define AppMenuModel BraveAppMenuModel
 #include <chrome/browser/ui/views/toolbar/browser_app_menu_button.cc>
 #undef AppMenuModel
-#undef FromVectorIcon

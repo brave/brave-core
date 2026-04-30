@@ -35,6 +35,7 @@
 #include "components/metrics/metrics_features.h"
 #include "components/metrics/private_metrics/private_metrics_features.h"
 #include "components/metrics/structured/structured_metrics_features.h"
+#include "components/multistep_filter/core/features.h"
 #include "components/network_time/network_time_tracker.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/optimization_guide/core/optimization_guide_features.h"
@@ -98,9 +99,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &autofill::features::kAutofillEnableBuyNowPayLater,
       &autofill::features::kAutofillEnableCardBenefitsForAmericanExpress,
       &autofill::features::kAutofillEnableCardBenefitsForBmo,
-#if BUILDFLAG(IS_ANDROID)
-      &autofill::features::kAutofillEnableLoyaltyCardsFilling,
-#endif  // BUILDFLAG(IS_ANDROID)
       &autofill::features::debug::kAutofillServerCommunication,
       &blink::features::kAdInterestGroupAPI,
       &blink::features::kAIProofreadingAPI,
@@ -158,13 +156,11 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if BUILDFLAG(ENABLE_DEVTOOLS_FRONTEND)
       &features::kDevToolsNewPermissionDialog,
 #endif  // BUILDFLAG(ENABLE_DEVTOOLS_FRONTEND)
-      &features::kDevToolsPrivacyUI,
       &features::kDevToolsUseGcaApi,
       &features::kDigitalGoodsApi,
       &features::kFedCm,
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
       &features::kFewerUpdateConfirmations,
-      &features::kShortcutsNotApps,
 #endif
       &features::kHttpsFirstBalancedMode,
       &features::kIdleDetection,
@@ -174,9 +170,8 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kPrivacySandboxAdsAPIsM1Override,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kPwaNavigationCapturing,
-      &features::kReportPakFileIntegrity,
 #endif
-      &features::kSCTAuditing,
+      &features::kSCTAuditingHashdance,
       &features::kServiceWorkerAutoPreload,
       &features::kTabHoverCardImages,
 #if !BUILDFLAG(IS_ANDROID)
@@ -204,6 +199,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &metrics::features::kStructuredMetrics,
       &metrics::private_metrics::kPrivateMetricsFeature,
       &metrics::structured::kPhoneHubStructuredMetrics,
+      &multistep_filter::kMultistepFilter,
       &net::features::kEnableWebTransportDraft07,
       &net::features::kTpcdMetadataGrants,
       &net::features::kWaitForFirstPartySetsInit,
@@ -216,7 +212,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &ntp_features::kNtpAlphaBackgroundCollections,
       &ntp_features::kNtpBackgroundImageErrorDetection,
       &ntp_features::kNtpChromeCartModule,
-      &omnibox::kDocumentProviderNoSyncRequirement,
       &omnibox::kMlUrlScoring,
 #if BUILDFLAG(IS_ANDROID)
       &omnibox::kOmniboxMobileParityUpdateV2,
@@ -250,7 +245,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &segmentation_platform::features::kSegmentationPlatformTimeDelaySampling,
       &subresource_filter::kAdTagging,
       &switches::kSyncEnableBookmarksInTransportMode,
-      &syncer::kSyncAutofillLoyaltyCard,
       &syncer::kSyncDetermineAccountManagedStatus,
       &variations::kReportOmniboxAutofocusHeader,
       &webapps::features::kWebAppsEnableMLModelForPromotion,
@@ -279,7 +273,6 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
       &media::kEnableTabMuting,
       &net::features::kPartitionConnectionsByNetworkIsolationKey,
 #if !BUILDFLAG(IS_ANDROID)
-      &features::kSideBySide,
       &sharing_hub::kDesktopScreenshots,
 #endif
       &network::features::kLocalNetworkAccessChecksWebSockets,

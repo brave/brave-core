@@ -1,5 +1,5 @@
 diff --git a/components/search_engines/BUILD.gn b/components/search_engines/BUILD.gn
-index 9f35ad77ccca85a68d60b4d372c5ba846f462776..7a4709d7252420bbd7f220c37baf34a8193b58a7 100644
+index 806f8713c3e9992518c7e8b3ed8c702d63f84b64..f1700d5b59e00ac95b19e7f0d4563679d87cfef7 100644
 --- a/components/search_engines/BUILD.gn
 +++ b/components/search_engines/BUILD.gn
 @@ -151,6 +151,7 @@ static_library("search_engines") {

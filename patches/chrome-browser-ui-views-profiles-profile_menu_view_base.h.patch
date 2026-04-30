@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_menu_view_base.h b/chrome/browser/ui/views/profiles/profile_menu_view_base.h
-index 0621ead4149f85519ae9c359cedbabf33c240008..944929234a99bc93937c8bd59e529a6b03afe8b5 100644
+index 20dd2e96039f8b55beaf0e545c4f953011adbee1..6890e758839a32e82c4bee9af00e4d0f1a7f7d4b 100644
 --- a/chrome/browser/ui/views/profiles/profile_menu_view_base.h
 +++ b/chrome/browser/ui/views/profiles/profile_menu_view_base.h
-@@ -204,6 +204,7 @@ class ProfileMenuViewBase : public content::WebContentsDelegate,
+@@ -203,6 +203,7 @@ class ProfileMenuViewBase : public content::WebContentsDelegate,
      return identity_button_;
    }
  

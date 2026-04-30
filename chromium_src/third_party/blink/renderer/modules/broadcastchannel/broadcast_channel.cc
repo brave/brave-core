@@ -17,7 +17,7 @@ String GetEphemeralBroadcastChannelName(LocalDOMWindow* window, String name) {
   }
   const auto& nonce = SecurityOrigin::GetNonceForEphemeralStorageKeying(
       ephemeral_storage_origin);
-  return name + String::FromUTF8(nonce.ToString());
+  return name + String::FromUtf8(nonce.ToString());
 }
 
 }  // namespace

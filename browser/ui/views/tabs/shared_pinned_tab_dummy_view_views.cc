@@ -31,25 +31,35 @@
 #include "ui/views/view_class_properties.h"
 
 // static
-std::unique_ptr<SharedPinnedTabDummyView> SharedPinnedTabDummyView::Create(
+void SharedPinnedTabDummyView::CreateAndInstall(
     content::WebContents* shared_contents,
     content::WebContents* dummy_contents) {
-  auto view = base::WrapUnique(
+  auto dummy_view = base::WrapUnique(
       new SharedPinnedTabDummyViewViews(shared_contents, dummy_contents));
+  auto* dummy_view_ptr = dummy_view.get();
 
-  // Note that SharedPinnedTabDummyView is owned by the client, not by a view
-  // tree. This is invariant of WebView::SetCrashedOverlayView, which we're
-  // using to attach this view to web view.
-  view->set_owned_by_client(views::View::OwnedByClientPassKey());
+  auto* browser = chrome::FindBrowserWithTab(dummy_view->dummy_contents_);
+  CHECK(browser);
 
-  return view;
+  // Transfer ownership to WebView via TakeCrashedOverlayView(), which hides
+  // the native content holder and shows the overlay in its place.
+  // TODO(sko) We should take split view into account. This is the same problem
+  // as with SadTabView.
+  static_cast<BrowserView*>(browser->window())
+      ->contents_web_view()
+      ->TakeCrashedOverlayView(std::move(dummy_view));
+
+  // WebView hides the crash overlay when web contents is not crashed. The
+  // dummy contents intentionally has no renderer (kNoRendererProcess), so
+  // UpdateCrashedOverlayView() will not be called again after this point.
+  // Force the overlay visible here.
+  dummy_view_ptr->SetVisible(true);
 }
 
 SharedPinnedTabDummyViewViews::SharedPinnedTabDummyViewViews(
     content::WebContents* shared_contents,
     content::WebContents* dummy_contents)
-    : shared_contents_(shared_contents),
-      dummy_contents_(dummy_contents),
+    : SharedPinnedTabDummyView(shared_contents, dummy_contents),
       thumbnail_(
           ThumbnailTabHelper::FromWebContents(shared_contents)->thumbnail()),
       subscription_(thumbnail_->Subscribe()) {
@@ -117,23 +127,6 @@ SharedPinnedTabDummyViewViews::SharedPinnedTabDummyViewViews(
 }
 
 SharedPinnedTabDummyViewViews::~SharedPinnedTabDummyViewViews() = default;
-
-void SharedPinnedTabDummyViewViews::Install() {
-  auto* browser = chrome::FindBrowserWithTab(dummy_contents_);
-  CHECK(browser);
-
-  // Borrows WebView::SetCrashedOverlayView() which is used to attach SadTabView
-  // over views::WebView.
-  // TODO(sko) We should take split view into account. This is the same problem
-  // as with SadTabView.
-  static_cast<BrowserView*>(browser->window())
-      ->contents_web_view()
-      ->SetCrashedOverlayView(this);
-
-  // views::WebView hides the overlay unless web contents is crashed. We should
-  // forcibly show this view.
-  SetVisible(true);
-}
 
 BEGIN_METADATA(SharedPinnedTabDummyViewViews)
 END_METADATA

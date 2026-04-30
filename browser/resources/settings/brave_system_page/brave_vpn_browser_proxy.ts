@@ -14,15 +14,15 @@ export interface BraveVPNBrowserProxy {
 
 export class BraveVPNBrowserProxyImpl implements BraveVPNBrowserProxy {
   isWireguardServiceInstalled () {
-    return sendWithPromise('isWireguardServiceInstalled');
+    return sendWithPromise<boolean>('isWireguardServiceInstalled');
   }
 
   isBraveVpnConnected () {
-    return sendWithPromise('isBraveVpnConnected');
+    return sendWithPromise<boolean>('isBraveVpnConnected');
   }
 
   showInSystemTray () {
-    return sendWithPromise('showInSystemTray');
+    return sendWithPromise<boolean>('showInSystemTray');
   }
 
   setShowInSystemTray (value: boolean) {

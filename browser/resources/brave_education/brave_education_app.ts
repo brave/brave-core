@@ -121,7 +121,7 @@ export class BraveEducationAppElement extends CrLitElement {
       }),
     )
 
-    const commandId = commandNames.get(String(data.command || ''))
+    const commandId = commandNames.get(data.command || '')
     if (commandId === undefined) {
       throw new Error(`Unrecognized command "${data.command}"`)
     }

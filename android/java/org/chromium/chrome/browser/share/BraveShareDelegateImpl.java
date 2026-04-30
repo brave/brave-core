@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.share;
 import android.content.Context;
 
 import org.chromium.base.BravePreferenceKeys;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.data_sharing.DataSharingTabManager;
@@ -16,7 +17,11 @@ import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
+import org.chromium.chrome.browser.ui.signin.SigninAndHistorySyncActivityLauncher;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
+import org.chromium.ui.base.ActivityResultTracker;
+import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.function.Supplier;
 
@@ -31,7 +36,11 @@ public class BraveShareDelegateImpl extends ShareDelegateImpl {
             Supplier<@Nullable Profile> profileSupplier,
             ShareSheetDelegate delegate,
             boolean isCustomTab,
-            @Nullable DataSharingTabManager dataSharingTabManager) {
+            @Nullable DataSharingTabManager dataSharingTabManager,
+            SigninAndHistorySyncActivityLauncher signinAndHistorySyncActivityLauncher,
+            ActivityResultTracker activityResultTracker,
+            MonotonicObservableSupplier<ModalDialogManager> modalDialogManagerSupplier,
+            SnackbarManager snackbarManager) {
         super(
                 context,
                 controller,
@@ -41,7 +50,11 @@ public class BraveShareDelegateImpl extends ShareDelegateImpl {
                 profileSupplier,
                 delegate,
                 isCustomTab,
-                dataSharingTabManager);
+                dataSharingTabManager,
+                signinAndHistorySyncActivityLauncher,
+                activityResultTracker,
+                modalDialogManagerSupplier,
+                snackbarManager);
     }
 
     @Override

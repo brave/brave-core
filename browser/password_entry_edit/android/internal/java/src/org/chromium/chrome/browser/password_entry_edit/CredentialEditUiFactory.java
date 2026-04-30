@@ -13,6 +13,7 @@ import androidx.annotation.VisibleForTesting;
 
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.ui.modaldialog.ModalDialogManager;
 
 /** Use {@link #create()} to instantiate a {@link CredentialEditCoordinator}. */
 @NullMarked
@@ -23,22 +24,25 @@ public class CredentialEditUiFactory {
      */
     interface CreationStrategy {
         /** Creates a component that connects to the given fragment and manipulates its data. */
-        void create(CredentialEntryFragmentViewBase fragmentView, Profile profile);
+        void create(
+                CredentialEntryFragmentViewBase fragmentView,
+                Profile profile,
+                ModalDialogManager modalDialogManager);
     }
 
     private CredentialEditUiFactory() {}
 
     private static CreationStrategy sCreationStrategy =
-            (fragmentView, profile) -> {
+            (fragmentView, profile, modalDialogManager) -> {
                 CredentialEditBridge bridge = CredentialEditBridge.get();
                 if (bridge == null) {
                     // There is no backend to talk to, so the UI shouldn't be shown.
                     fragmentView.dismiss();
                     return;
                 }
-
                 bridge.initialize(
-                        new CredentialEditCoordinator(profile, fragmentView, bridge, bridge));
+                        new CredentialEditCoordinator(
+                                profile, modalDialogManager, fragmentView, bridge, bridge));
             };
 
     /**
@@ -46,8 +50,11 @@ public class CredentialEditUiFactory {
      *
      * @param fragmentView the view which will be managed by the coordinator.
      */
-    public static void create(CredentialEntryFragmentViewBase fragmentView, Profile profile) {
-        sCreationStrategy.create(fragmentView, profile);
+    public static void create(
+            CredentialEntryFragmentViewBase fragmentView,
+            Profile profile,
+            ModalDialogManager modalDialogManager) {
+        sCreationStrategy.create(fragmentView, profile, modalDialogManager);
     }
 
     @VisibleForTesting

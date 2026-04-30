@@ -10,4 +10,5 @@
     android:id="@+id/brave_homepage_mobile_bookmarks"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:primaryText="@string/brave_homepage_mobile_bookmarks_text" />
+    app:primaryText="@string/brave_homepage_mobile_bookmarks_text"
+    app:backgroundStyle="none" />

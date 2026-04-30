@@ -26,6 +26,10 @@
 #include "extensions/common/extension.h"
 #endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/analytics/p3a/brave_stats_helper.h"
+#endif
+
 namespace {
 
 // Records default values for some histograms because we want these stats to be
@@ -65,6 +69,17 @@ void BraveBrowserMainExtraParts::PreProfileInit() {
   extensions::Extension::
       set_silence_deprecated_manifest_version_warnings_for_testing(true);
 #endif  // BUILDFLAG(ENABLE_EXTENSIONS)
+
+  // Early initialize referrals
+  g_brave_browser_process->brave_referrals_service();
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  // Initialize ads stats helper
+  g_brave_browser_process->ads_brave_stats_helper();
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+
+  // Early initialize brave stats
+  g_brave_browser_process->brave_stats_updater();
 }
 
 void BraveBrowserMainExtraParts::PostBrowserStart() {

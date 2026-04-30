@@ -22,9 +22,8 @@ struct EnumTraits<password_manager::mojom::CSVSafariPassword_Status,
                   password_manager::CSVSafariPassword::Status> {
   static password_manager::mojom::CSVSafariPassword_Status ToMojom(
       password_manager::CSVSafariPassword::Status status);
-  static bool FromMojom(
-      password_manager::mojom::CSVSafariPassword_Status status,
-      password_manager::CSVSafariPassword::Status* output);
+  static std::optional<password_manager::CSVSafariPassword::Status> FromMojom(
+      password_manager::mojom::CSVSafariPassword_Status status);
 };
 
 template <>

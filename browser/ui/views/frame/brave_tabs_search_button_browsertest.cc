@@ -10,6 +10,7 @@
 #include "chrome/browser/ui/frame/window_frame_util.h"
 #include "chrome/browser/ui/tab_search_feature.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/interaction/browser_elements_views.h"
 #include "chrome/browser/ui/views/tab_search_bubble_host.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
@@ -18,6 +19,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
+#include "ui/views/view_utils.h"
 
 class BraveTabsSearchButtonTest : public InProcessBrowserTest,
                                   public ::testing::WithParamInterface<bool> {
@@ -48,15 +50,19 @@ IN_PROC_BROWSER_TEST_F(BraveTabsSearchButtonTest, HideShowSettingTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveTabsSearchButtonTest,
-                       HideTabSearchContainerInHorizontalTabStripRegionView) {
+                       HideTabSearchButtonInHorizontalTabStripRegionView) {
   // We always have tab search button on toolbar.
   ASSERT_TRUE(features::HasTabSearchToolbarButton());
 
-  if (auto* tab_search_container =
-          BrowserElementsViews::From(browser())->GetViewAs<TabSearchContainer>(
-              kTabSearchContainerElementId)) {
-    // In case upstream created tab search container in horizontal tab strip
-    // region view, we should hide it.
-    EXPECT_FALSE(tab_search_container->GetVisible());
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  auto* tab_strip_region_view =
+      views::AsViewClass<HorizontalTabStripRegionView>(
+          browser_view->tab_strip_view());
+  ASSERT_TRUE(tab_strip_region_view);
+
+  if (auto* tab_search_button = tab_strip_region_view->GetTabSearchButton()) {
+    // In case upstream created a tab search button in horizontal tab strip
+    // region view, we should hide it since Brave has it on the toolbar.
+    EXPECT_FALSE(tab_search_button->GetVisible());
   }
 }
