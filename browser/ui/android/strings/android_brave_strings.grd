@@ -3278,9 +3278,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_ORIGIN_RESET_TO_DEFAULTS" desc="Brave Origin reset to defaults preference title">
       Reset to defaults
     </message>
-    <message name="IDS_ORIGIN_TOGGLE_ENABLED_DESCRIPTION" desc="Description shown when a toggle is enabled in Brave Origin settings">
-      This feature is enabled because you opted into it
-    </message>
     <message name="IDS_ORIGIN_DESCRIPTION_TITLE" desc="Brave Origin description title">
       Customize your browser while still supporting Brave
     </message>

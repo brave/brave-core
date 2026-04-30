@@ -188,7 +188,6 @@ public class BraveOriginPreferences extends BravePreferenceFragment
         String key = preference.getKey();
         boolean isEnabled = (Boolean) newValue;
 
-        updateToggleDescription(preference, isEnabled);
         String policyKey = getPolicyKeyForPreference(key);
         if (policyKey == null || mBraveOriginSettingsHandler == null) {
             return false;
@@ -389,7 +388,6 @@ public class BraveOriginPreferences extends BravePreferenceFragment
             return;
         }
         preference.setOnPreferenceChangeListener(this);
-        updateToggleDescription(preference, preference.isChecked());
 
         // Initialize from policy service if available
         String policyKey = getPolicyKeyForPreference(key);
@@ -407,7 +405,6 @@ public class BraveOriginPreferences extends BravePreferenceFragment
                                         ? !value
                                         : value;
                         preference.setChecked(checkedValue);
-                        updateToggleDescription(preference, checkedValue);
                     }
                 });
     }
@@ -485,7 +482,6 @@ public class BraveOriginPreferences extends BravePreferenceFragment
                 continue;
             }
             pref.setChecked(false);
-            updateToggleDescription(pref, false);
             anyChanged = true;
 
             String policyKey = getPolicyKeyForPreference(key);
@@ -504,22 +500,6 @@ public class BraveOriginPreferences extends BravePreferenceFragment
 
         if (anyChanged) {
             showRestartSnackbar();
-        }
-    }
-
-    /**
-     * Updates the description of a toggle preference based on its enabled state. Shows "This
-     * feature is enabled because you opted into it" when enabled, removes the description when
-     * disabled.
-     *
-     * @param preference The preference to update
-     * @param isEnabled Whether the toggle is enabled
-     */
-    private void updateToggleDescription(Preference preference, boolean isEnabled) {
-        if (isEnabled) {
-            preference.setSummary(R.string.origin_toggle_enabled_description);
-        } else {
-            preference.setSummary(null);
         }
     }
 
