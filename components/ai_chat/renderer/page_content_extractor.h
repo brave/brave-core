@@ -57,6 +57,10 @@ class PageContentExtractor
   void GetOpenAIChatButtonNonce(
       mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback)
       override;
+  void ExecuteScriptTool(
+      const std::string& name,
+      const std::string& input_json,
+      mojom::PageContentExtractor::ExecuteScriptToolCallback callback) override;
 
   base::WeakPtr<PageContentExtractor> GetWeakPtr();
 
