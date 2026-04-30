@@ -64,8 +64,7 @@ TEST_F(HistoryEmbeddingsServiceTest,
   OnPassagesEmbeddingsComputed(
       UrlData(1, 1, base::Time::Now()),
       {"test passage with five words", "another test passage here now"},
-      {Embedding(std::vector<float>(768, 1.0f)),
-       Embedding(std::vector<float>(768, 1.0f))},
+      {Embedding({1.0f, 1.0f, 1.0f}), Embedding({1.0f, 1.0f, 1.0f})},
       ComputeEmbeddingsStatus::kSuccess);
 
   // Lower the score threshold so our test embeddings pass.
