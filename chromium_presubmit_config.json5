@@ -82,7 +82,16 @@
     // Permanent ignores.
     "CheckNewHeaderWithoutGnChangeOnUpload": ["chromium_src/.*\\.h"],
     "CheckForCcIncludes": ["chromium_src/"],
+    "CheckBuildConfigMacrosWithoutInclude": [
+      "chromium_src/chrome/browser/ui/tabs/brave_compact_horizontal_tabs_layout\\.h",
+    ],
+    "CheckForTooLargeFiles": [
+      "chromium_src/chrome/browser/ui/tabs/brave_compact_horizontal_tabs_layout\\.h",
+    ],
     "CheckForRelativeIncludes": ["chromium_src/"],
+    "CheckUselessForwardDeclarations": [
+      "chromium_src/chrome/browser/ui/tabs/brave_compact_horizontal_tabs_layout\\.h",
+    ],
     "CheckLongLines": [
       "components/p3a/metric_names\\.h",
       ".*/res/.*/.*\\.xml",

@@ -9,7 +9,7 @@
 #include <optional>
 
 #include "base/feature_list.h"
-#include "chrome/browser/ui/tabs/brave_compact_horizontal_tabs_layout.h"
+#include "brave/browser/ui/tabs/brave_compact_horizontal_tabs_layout.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "ui/base/pointer/touch_ui_controller.h"
 #include "ui/gfx/geometry/insets.h"

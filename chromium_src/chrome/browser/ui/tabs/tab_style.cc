@@ -5,8 +5,8 @@
 
 #include "chrome/browser/ui/tabs/tab_style.h"
 
+#include "brave/browser/ui/tabs/brave_compact_horizontal_tabs_layout.h"
 #include "chrome/browser/ui/layout_constants.h"
-#include "chrome/browser/ui/tabs/brave_compact_horizontal_tabs_layout.h"
 #include "chrome/browser/ui/tabs/features.h"
 
 namespace {

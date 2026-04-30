@@ -296,6 +296,7 @@ source_set("ui") {
       "side_panel/ai_chat/ai_chat_side_panel_utils.h",
       "startup/brave_startup_tab_provider_impl.cc",
       "startup/brave_startup_tab_provider_impl.h",
+      "tabs/brave_compact_horizontal_tabs_layout.h",
       "tabs/brave_tab_color_mixer.cc",
       "tabs/brave_tab_color_mixer.h",
       "tabs/brave_tab_menu_model.cc",

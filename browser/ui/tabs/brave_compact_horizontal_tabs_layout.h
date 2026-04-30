@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_BRAVE_COMPACT_HORIZONTAL_TABS_LAYOUT_H_
-#define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_BRAVE_COMPACT_HORIZONTAL_TABS_LAYOUT_H_
+#ifndef BRAVE_BROWSER_UI_TABS_BRAVE_COMPACT_HORIZONTAL_TABS_LAYOUT_H_
+#define BRAVE_BROWSER_UI_TABS_BRAVE_COMPACT_HORIZONTAL_TABS_LAYOUT_H_
 
 #include "chrome/browser/ui/layout_constants.h"
 
@@ -33,17 +33,15 @@ inline constexpr int kTabstripToolbarOverlap = 8;
 //   Upstream uses `LayoutConstant::kTabstripToolbarOverlap` for two roles in
 //   compact mode:
 //     1) Tab/toolbar geometry (kTabHeight, kTabStripHeight, tab rendering,
-//        tab group underline, frame view top-area math, etc.) — wants 8.
-//     2) Control button vertical placement inside the tab strip — wants the
+//        tab group underline, frame view top-area math, etc.) - wants 8.
+//     2) Control button vertical placement inside the tab strip - wants the
 //        smaller delta below so caption/new-tab controls stay centered.
 //   We satisfy (1) centrally via
 //   `GetBraveLayoutConstant(kTabstripToolbarOverlap)` and satisfy (2) via
 //   per-translation-unit `GetLayoutConstant` wrappers in chromium_src that
 //   redirect just the `kTabstripToolbarOverlap` cases to
-//   `tabs::GetHorizontalTabControlsDelta()` (see
-//   `chromium_src/chrome/browser/ui/views/
-// frame/horizontal_tab_strip_region_view.cc`
-//   and the analogous wrapper in `browser_frame_view_win.cc`).
+//   `tabs::GetHorizontalTabControlsDelta()` (see the wrappers in
+//   horizontal_tab_strip_region_view.cc and browser_frame_view_win.cc).
 inline constexpr int kTabStripControlsHeightDelta = -5;
 
 // `LayoutConstant::kTabStripHeight` (compact, non-touch). Keep in sync with
@@ -110,4 +108,4 @@ bool ShouldUseCompactHorizontalTabsForNonTouchUI();
 
 }  // namespace tabs
 
-#endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_BRAVE_COMPACT_HORIZONTAL_TABS_LAYOUT_H_
+#endif  // BRAVE_BROWSER_UI_TABS_BRAVE_COMPACT_HORIZONTAL_TABS_LAYOUT_H_
