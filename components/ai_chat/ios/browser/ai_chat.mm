@@ -241,7 +241,8 @@
 
 - (void)modifyConversation:(NSString*)turnId newText:(NSString*)newText {
   _currentConversation->ModifyConversation(base::SysNSStringToUTF8(turnId),
-                                           base::SysNSStringToUTF8(newText));
+                                           base::SysNSStringToUTF8(newText),
+                                           std::nullopt);
 }
 
 - (void)dismissPremiumPrompt {

@@ -204,8 +204,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   void SubmitHumanConversationEntryWithSkill(
       const std::string& input,
       const std::string& skill_id) override;
-  void ModifyConversation(const std::string& entry_uuid,
-                          const std::string& new_text) override;
+  void ModifyConversation(
+      const std::string& entry_uuid,
+      const std::string& new_text,
+      const std::optional<std::string>& skill_shortcut) override;
   void RegenerateAnswer(const std::string& turn_uuid,
                         const std::string& model_key) override;
   void SubmitSummarizationRequest();

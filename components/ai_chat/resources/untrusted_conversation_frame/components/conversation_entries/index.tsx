@@ -14,6 +14,10 @@ import {
   AttachmentPageItem,
   AttachmentUploadItems,
 } from '../../../page/components/attachment_item'
+import {
+  Content,
+  stringifyContent,
+} from '../../../page/components/input_box/editable_content'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import AssistantReasoning from '../assistant_reasoning'
 import ContextActionsAssistant from '../context_actions_assistant'
@@ -59,6 +63,23 @@ const maybeHighlightSkillText = (text: string, skill?: Mojom.SkillEntry) => {
       {text.substring(index + shortcutPattern.length)}
     </span>
   )
+}
+
+// Build editable Content, rendering the skill shortcut as a highlighted node
+const makeEditContent = (
+  text: string,
+  skill?: Mojom.SkillEntry | null,
+): Content => {
+  if (!skill) return [text]
+  const shortcutPattern = `/${skill.shortcut}`
+  const index = text.indexOf(shortcutPattern)
+  if (index === -1) return [text]
+  const parts: Content = []
+  if (index > 0) parts.push(text.substring(0, index))
+  parts.push({ type: 'skill', id: skill.shortcut, text: shortcutPattern })
+  const after = text.substring(index + shortcutPattern.length)
+  if (after) parts.push(after)
+  return parts
 }
 
 function usePairedConversationGroups() {
@@ -134,10 +155,19 @@ function ConversationEntries() {
     return event?.completionEvent?.completion ?? ''
   }
 
-  const handleEditSubmit = (index: number, text: string) => {
+  const handleEditSubmit = (index: number, content: Content) => {
     const entryUuid = conversationContext.conversationHistory[index]?.uuid
     if (!entryUuid) return
-    conversationContext.conversationHandler?.modifyConversation(entryUuid, text)
+    const text = stringifyContent(content)
+    const skillNode = content.find(
+      (c): c is Extract<Content[number], { type: string }> =>
+        typeof c !== 'string' && c.type === 'skill',
+    )
+    conversationContext.conversationHandler?.modifyConversation(
+      entryUuid,
+      text,
+      skillNode?.id ?? null,
+    )
     setEditInputId(undefined)
   }
 
@@ -336,8 +366,13 @@ function ConversationEntries() {
 
                     {showEditInput && (
                       <EditInput
-                        text={firstEntryEdit.text}
-                        onSubmit={(text) => handleEditSubmit(entryNumber, text)}
+                        content={makeEditContent(
+                          firstEntryEdit.text,
+                          firstEntryEdit.skill,
+                        )}
+                        onSubmit={(content) =>
+                          handleEditSubmit(entryNumber, content)
+                        }
                         onCancel={() => setEditInputId(undefined)}
                         isSubmitDisabled={
                           !conversationContext.canSubmitUserEntries

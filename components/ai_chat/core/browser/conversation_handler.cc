@@ -673,8 +673,10 @@ void ConversationHandler::SubmitHumanConversationEntryWithSkill(
   SubmitHumanConversationEntry(std::move(turn));
 }
 
-void ConversationHandler::ModifyConversation(const std::string& entry_uuid,
-                                             const std::string& new_text) {
+void ConversationHandler::ModifyConversation(
+    const std::string& entry_uuid,
+    const std::string& new_text,
+    const std::optional<std::string>& skill_shortcut) {
   CHECK(!entry_uuid.empty()) << "Entry UUID is empty";
   auto turn_it = std::ranges::find_if(
       chat_history_,
@@ -748,6 +750,13 @@ void ConversationHandler::ModifyConversation(const std::string& entry_uuid,
     return;
   }
 
+  // Preserve the skill if the shortcut matches the original turn's skill.
+  mojom::SkillEntryPtr skill_entry = nullptr;
+  if (skill_shortcut.has_value() && turn->skill &&
+      turn->skill->shortcut == *skill_shortcut) {
+    skill_entry = turn->skill->Clone();
+  }
+
   // turn->selected_text and turn->events are actually std::nullopt for
   // editable human turns in our current implementation, just use std::nullopt
   // here directly to be more explicit and avoid confusion.
@@ -756,7 +765,7 @@ void ConversationHandler::ModifyConversation(const std::string& entry_uuid,
       turn->action_type, sanitized_input, std::nullopt /* prompt */,
       std::nullopt /* selected_text */, std::nullopt /* events */,
       base::Time::Now(), std::nullopt /* edits */, std::nullopt,
-      nullptr /* skill */, false, turn->model_key,
+      std::move(skill_entry), false, turn->model_key,
       nullptr /* near_verification_status */);
   if (!turn->edits) {
     turn->edits.emplace();

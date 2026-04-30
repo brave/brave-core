@@ -68,7 +68,7 @@ interface UntrustedConversationHandler {
   // e.g. reduce rate limiting.
   SwitchToNonPremiumModel();
 
-  ModifyConversation(string entry_uuid, string new_text);
+  ModifyConversation(string entry_uuid, string new_text, string? skill_shortcut);
 
   // Allows a client to provide an answer to a tool use request
   // as a result of a user action.
