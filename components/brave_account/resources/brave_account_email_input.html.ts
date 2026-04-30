@@ -44,7 +44,7 @@ export function getHtml(this: BraveAccountEmailInputElement) {
           <div>
             ${loadTimeData.getStringF(
               BraveAccountStrings.BRAVE_ACCOUNT_EMAIL_INPUT_DID_YOU_MEAN,
-              this.suggestion ?? '',
+              this.suggestion,
             )}
           </div>
         </div>

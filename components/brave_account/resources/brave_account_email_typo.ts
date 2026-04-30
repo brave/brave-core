@@ -90,12 +90,12 @@ const DOMAIN_SUGGESTIONS: ReadonlyMap<string, string> = new Map(
   ),
 )
 
-export function maybeSuggestEmailCorrection(email: string): string | null {
+export function maybeSuggestEmailCorrection(email: string): string {
   const at = email.lastIndexOf('@')
-  if (at <= 0 || at === email.length - 1) return null
+  if (at <= 0 || at === email.length - 1) return ''
 
   const local = email.slice(0, at)
   const domain = email.slice(at + 1).toLowerCase()
   const corrected = DOMAIN_SUGGESTIONS.get(domain)
-  return corrected ? `${local}@${corrected}` : null
+  return corrected ? `${local}@${corrected}` : ''
 }
