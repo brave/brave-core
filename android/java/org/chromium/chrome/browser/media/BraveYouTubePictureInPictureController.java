@@ -27,6 +27,8 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.fullscreen.BraveFullscreenHtmlApiHandlerBase;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
+import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
+import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.youtube_script_injector.BraveYouTubeScriptInjectorNativeHelper;
 import org.chromium.components.browser_ui.media.BraveMediaSessionHelper;
 import org.chromium.content_public.browser.MediaSession;
@@ -246,17 +248,39 @@ public class BraveYouTubePictureInPictureController {
             webContents.exitFullscreen();
         }
 
-        final FullscreenManager fullscreenManager = mActivity.getFullscreenManager();
-        if (fullscreenManager.getPersistentFullscreenMode()
-                && fullscreenManager instanceof final BraveFullscreenHtmlApiHandlerBase brave) {
-            // Exit persistent fullscreen UI synchronously so the new tab is rendered in a normal
-            // layout. The picture-in-picture variant deliberately skips
-            // webContents.exitFullscreen() as we already called that ourselves above on the right
-            // WebContents.
-            brave.exitPersistentFullscreenModeForPictureInPicture();
-        }
-
-        clearSession(mSessionId, mWebContents);
+        // Defer the layout-side exit. We are called from upstream
+        // DismissActivityOnTabChangeObserver.onResult, which still runs registerTabEventObserver
+        // and updateAutoPictureInPictureStatusIfNeeded after we return. Posting to UI_DEFAULT
+        // lets the rest of the tab-change chain settle first.
+        final int sessionId = mSessionId;
+        final WebContents capturedWebContents = mWebContents;
+        PostTask.postTask(
+                TaskTraits.UI_DEFAULT,
+                () -> {
+                    if (!mActive
+                            || sessionId != mSessionId
+                            || capturedWebContents != mWebContents
+                            || mActivity.isActivityFinishingOrDestroyed()) {
+                        return;
+                    }
+                    final FullscreenManager fullscreenManager = mActivity.getFullscreenManager();
+                    final Tab activityTab = mActivity.getActivityTab();
+                    if (fullscreenManager.getPersistentFullscreenMode() && activityTab != null) {
+                        // Canonical exit path: clears persistent-fullscreen layout state and
+                        // fans out to FullscreenManager.Observer (InfoBarContainer,
+                        // ContextualSearchManager, navbar coloring, etc.).
+                        fullscreenManager.onExitFullscreen(activityTab);
+                    }
+                    final BrowserControlsManager bcm = mActivity.getBrowserControlsManager();
+                    if (bcm != null) {
+                        // Force the browser-controls offset back to 0. On tablets the toolbar can
+                        // stay translated off-screen after the canonical exit and
+                        // BrowserControlsManager.onConstraintsChanged doesn't always recover it.
+                        // Writing the offsets directly is the most reliable way to bring it back.
+                        bcm.showAndroidControls(false);
+                    }
+                    clearSession(sessionId, capturedWebContents);
+                });
     }
 
     /**

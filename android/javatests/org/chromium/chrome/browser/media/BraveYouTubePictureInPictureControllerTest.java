@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.media;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -22,15 +23,20 @@ import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.base.test.util.Batch;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.fullscreen.BraveFullscreenHtmlApiHandlerBase;
+import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
+import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.youtube_script_injector.BraveYouTubeScriptInjectorNativeHelper;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.components.browser_ui.media.BraveMediaSessionHelper;
@@ -45,9 +51,8 @@ import org.chromium.content_public.browser.WebContents;
 public class BraveYouTubePictureInPictureControllerTest {
     /**
      * The bytecode-injected upstream {@code FullscreenHtmlApiHandlerBase} extends Brave's abstract
-     * handler and implements {@code FullscreenManager}. This stub captures both relationships so a
-     * single Mockito mock can satisfy the controller's {@code fullscreenManager instanceof
-     * BraveFullscreenHtmlApiHandlerBase} check.
+     * handler and implements {@code FullscreenManager}. This stub mirrors that generated type in
+     * tests.
      */
     private abstract static class FullscreenHandlerStub extends BraveFullscreenHtmlApiHandlerBase
             implements FullscreenManager {}
@@ -59,6 +64,8 @@ public class BraveYouTubePictureInPictureControllerTest {
     @Mock private WebContents mOtherWebContents;
     @Mock private FullscreenManager mFullscreenManager;
     @Mock private FullscreenHandlerStub mBraveFullscreenHandler;
+    @Mock private BrowserControlsManager mBrowserControlsManager;
+    @Mock private Tab mTab;
     @Mock private PowerManager mPowerManager;
     @Mock private MediaSession mMediaSession;
 
@@ -67,6 +74,12 @@ public class BraveYouTubePictureInPictureControllerTest {
         // The controller writes the active session into a process-wide registry. Reset it so
         // tests don't bleed state into each other.
         BraveMediaSessionHelper.setYouTubePictureInPictureWebContents(null);
+    }
+
+    private Runnable capturePostedUiTask(MockedStatic<PostTask> postTask) {
+        ArgumentCaptor<Runnable> taskCaptor = ArgumentCaptor.forClass(Runnable.class);
+        postTask.verify(() -> PostTask.postTask(eq(TaskTraits.UI_DEFAULT), taskCaptor.capture()));
+        return taskCaptor.getValue();
     }
 
     @Test
@@ -212,6 +225,7 @@ public class BraveYouTubePictureInPictureControllerTest {
     @SmallTest
     public void onNewTabDuringPictureInPicture_active_suspendsExitsAndClearsSession() {
         when(mBraveActivity.getFullscreenManager()).thenReturn(mFullscreenManager);
+        when(mBraveActivity.getBrowserControlsManager()).thenReturn(mBrowserControlsManager);
         when(mFullscreenManager.getPersistentFullscreenMode()).thenReturn(false);
 
         BraveYouTubePictureInPictureController controller =
@@ -220,7 +234,8 @@ public class BraveYouTubePictureInPictureControllerTest {
 
         try (MockedStatic<BraveYouTubeScriptInjectorNativeHelper> nativeHelper =
                         mockStatic(BraveYouTubeScriptInjectorNativeHelper.class);
-                MockedStatic<MediaSession> mediaSessionStatic = mockStatic(MediaSession.class)) {
+                MockedStatic<MediaSession> mediaSessionStatic = mockStatic(MediaSession.class);
+                MockedStatic<PostTask> postTask = mockStatic(PostTask.class)) {
             mediaSessionStatic
                     .when(() -> MediaSession.fromWebContents(mWebContents))
                     .thenReturn(mMediaSession);
@@ -230,6 +245,8 @@ public class BraveYouTubePictureInPictureControllerTest {
             // YouTube-side player exit is requested via the JS helper.
             nativeHelper.verify(
                     () -> BraveYouTubeScriptInjectorNativeHelper.exitFullscreen(mWebContents));
+
+            capturePostedUiTask(postTask).run();
         }
 
         // YouTube playback is paused so audio doesn't continue while the user is on the new tab.
@@ -237,14 +254,47 @@ public class BraveYouTubePictureInPictureControllerTest {
         // WebContents-level exit is invoked directly on the tracked tab so the renderer drops
         // DOM fullscreen even when FullscreenManager.mWebContentsInFullscreen is stale.
         verify(mWebContents).exitFullscreen();
+        verify(mBrowserControlsManager).showAndroidControls(false);
         assertFalse(controller.isActive());
         assertFalse(controller.isInterruptedByScreenLockForTesting());
     }
 
     @Test
     @SmallTest
+    public void onNewTabDuringPictureInPicture_destroyedBeforePostedCleanup_isNoop() {
+        BraveYouTubePictureInPictureController controller =
+                new BraveYouTubePictureInPictureController(mBraveActivity);
+        controller.onSessionRequested(mWebContents);
+
+        try (MockedStatic<BraveYouTubeScriptInjectorNativeHelper> nativeHelper =
+                        mockStatic(BraveYouTubeScriptInjectorNativeHelper.class);
+                MockedStatic<MediaSession> mediaSessionStatic = mockStatic(MediaSession.class);
+                MockedStatic<PostTask> postTask = mockStatic(PostTask.class)) {
+            mediaSessionStatic
+                    .when(() -> MediaSession.fromWebContents(mWebContents))
+                    .thenReturn(mMediaSession);
+
+            controller.onNewTabDuringPictureInPicture();
+
+            nativeHelper.verify(
+                    () -> BraveYouTubeScriptInjectorNativeHelper.exitFullscreen(mWebContents));
+            Runnable postedCleanup = capturePostedUiTask(postTask);
+            controller.onDestroy();
+
+            postedCleanup.run();
+        }
+
+        verify(mBraveActivity, never()).getFullscreenManager();
+        verify(mBraveActivity, never()).getActivityTab();
+        verify(mBraveActivity, never()).getBrowserControlsManager();
+        assertFalse(controller.isActive());
+    }
+
+    @Test
+    @SmallTest
     public void onNewTabDuringPictureInPicture_restoredSession_usesRegisteredWebContents() {
         when(mBraveActivity.getFullscreenManager()).thenReturn(mFullscreenManager);
+        when(mBraveActivity.getBrowserControlsManager()).thenReturn(mBrowserControlsManager);
         when(mFullscreenManager.getPersistentFullscreenMode()).thenReturn(false);
         BraveMediaSessionHelper.setYouTubePictureInPictureWebContents(mWebContents);
 
@@ -256,35 +306,9 @@ public class BraveYouTubePictureInPictureControllerTest {
         controller.onPostCreate(savedState);
 
         try (MockedStatic<BraveYouTubeScriptInjectorNativeHelper> nativeHelper =
-                mockStatic(BraveYouTubeScriptInjectorNativeHelper.class)) {
-            controller.onNewTabDuringPictureInPicture();
-
-            nativeHelper.verify(
-                    () -> BraveYouTubeScriptInjectorNativeHelper.exitFullscreen(mWebContents));
-            nativeHelper.verify(
-                    () -> BraveYouTubeScriptInjectorNativeHelper.exitFullscreen(mOtherWebContents),
-                    never());
-        }
-
-        verify(mBraveActivity, never()).getCurrentWebContents();
-        verify(mWebContents).exitFullscreen();
-        verify(mOtherWebContents, never()).exitFullscreen();
-        assertFalse(controller.isActive());
-    }
-
-    @Test
-    @SmallTest
-    public void onNewTabDuringPictureInPicture_persistentFullscreen_exitsBraveUi() {
-        when(mBraveActivity.getFullscreenManager()).thenReturn(mBraveFullscreenHandler);
-        when(mBraveFullscreenHandler.getPersistentFullscreenMode()).thenReturn(true);
-
-        BraveYouTubePictureInPictureController controller =
-                new BraveYouTubePictureInPictureController(mBraveActivity);
-        controller.onSessionRequested(mWebContents);
-
-        try (MockedStatic<BraveYouTubeScriptInjectorNativeHelper> nativeHelper =
                         mockStatic(BraveYouTubeScriptInjectorNativeHelper.class);
-                MockedStatic<MediaSession> mediaSessionStatic = mockStatic(MediaSession.class)) {
+                MockedStatic<MediaSession> mediaSessionStatic = mockStatic(MediaSession.class);
+                MockedStatic<PostTask> postTask = mockStatic(PostTask.class)) {
             mediaSessionStatic
                     .when(() -> MediaSession.fromWebContents(mWebContents))
                     .thenReturn(mMediaSession);
@@ -293,11 +317,53 @@ public class BraveYouTubePictureInPictureControllerTest {
 
             nativeHelper.verify(
                     () -> BraveYouTubeScriptInjectorNativeHelper.exitFullscreen(mWebContents));
+            nativeHelper.verify(
+                    () -> BraveYouTubeScriptInjectorNativeHelper.exitFullscreen(mOtherWebContents),
+                    never());
+
+            capturePostedUiTask(postTask).run();
         }
 
-        // Brave's PiP-specific persistent-fullscreen exit is invoked synchronously so the new
-        // tab is rendered with browser chrome rather than under a residual fullscreen layout.
-        verify(mBraveFullscreenHandler).exitPersistentFullscreenModeForPictureInPicture();
+        verify(mBraveActivity, never()).getCurrentWebContents();
+        verify(mWebContents).exitFullscreen();
+        verify(mOtherWebContents, never()).exitFullscreen();
+        verify(mBrowserControlsManager).showAndroidControls(false);
+        assertFalse(controller.isActive());
+    }
+
+    @Test
+    @SmallTest
+    public void onNewTabDuringPictureInPicture_persistentFullscreen_exitsBraveUi() {
+        when(mBraveActivity.getFullscreenManager()).thenReturn(mBraveFullscreenHandler);
+        when(mBraveActivity.getActivityTab()).thenReturn(mTab);
+        when(mBraveActivity.getBrowserControlsManager()).thenReturn(mBrowserControlsManager);
+        when(mBraveFullscreenHandler.getPersistentFullscreenMode()).thenReturn(true);
+
+        BraveYouTubePictureInPictureController controller =
+                new BraveYouTubePictureInPictureController(mBraveActivity);
+        controller.onSessionRequested(mWebContents);
+
+        try (MockedStatic<BraveYouTubeScriptInjectorNativeHelper> nativeHelper =
+                        mockStatic(BraveYouTubeScriptInjectorNativeHelper.class);
+                MockedStatic<MediaSession> mediaSessionStatic = mockStatic(MediaSession.class);
+                MockedStatic<PostTask> postTask = mockStatic(PostTask.class)) {
+            mediaSessionStatic
+                    .when(() -> MediaSession.fromWebContents(mWebContents))
+                    .thenReturn(mMediaSession);
+
+            controller.onNewTabDuringPictureInPicture();
+
+            nativeHelper.verify(
+                    () -> BraveYouTubeScriptInjectorNativeHelper.exitFullscreen(mWebContents));
+
+            capturePostedUiTask(postTask).run();
+        }
+
+        // The posted cleanup uses the canonical fullscreen exit path after the tab-change observer
+        // settles, then forces browser controls visible for tablet toolbar positioning.
+        verify(mBraveFullscreenHandler).onExitFullscreen(mTab);
+        verify(mBraveFullscreenHandler, never()).exitPersistentFullscreenModeForPictureInPicture();
+        verify(mBrowserControlsManager).showAndroidControls(false);
         verify(mMediaSession).suspend();
         verify(mWebContents).exitFullscreen();
         assertFalse(controller.isActive());
