@@ -172,6 +172,7 @@ void RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kDismissed, false);
   registry->RegisterBooleanPref(prefs::kShowNTPSearchBox, true);
   registry->RegisterBooleanPref(prefs::kShowNTPChatInput, true);
+  registry->RegisterBooleanPref(prefs::kMigratedNTPChatInputFromSearch, false);
   registry->RegisterStringPref(prefs::kLastUsedNTPSearchEngine,
                                "search.brave.com");
   registry->RegisterBooleanPref(prefs::kPromptEnableSuggestions, true);
