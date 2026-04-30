@@ -226,6 +226,13 @@ public class BraveYouTubePictureInPictureController {
 
         final WebContents webContents = getOrFindWebContents();
         if (webContents != null && !webContents.isDestroyed()) {
+            // Pause YouTube playback so audio does not continue while the user is on the new
+            // tab. Mirrors maybeSuspendDismissed() but without the visibility check, since a
+            // new-tab event is an explicit "user moved on" signal.
+            final MediaSession mediaSession = MediaSession.fromWebContents(webContents);
+            if (mediaSession != null) {
+                mediaSession.suspend();
+            }
             // Nudge YouTube's player out of its own fullscreen state, since YouTube tracks
             // fullscreen independently of the DOM.
             BraveYouTubeScriptInjectorNativeHelper.exitFullscreen(webContents);

@@ -34,6 +34,7 @@ import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.youtube_script_injector.BraveYouTubeScriptInjectorNativeHelper;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.components.browser_ui.media.BraveMediaSessionHelper;
+import org.chromium.content_public.browser.MediaSession;
 import org.chromium.content_public.browser.WebContents;
 
 /**
@@ -59,6 +60,7 @@ public class BraveYouTubePictureInPictureControllerTest {
     @Mock private FullscreenManager mFullscreenManager;
     @Mock private FullscreenHandlerStub mBraveFullscreenHandler;
     @Mock private PowerManager mPowerManager;
+    @Mock private MediaSession mMediaSession;
 
     @After
     public void tearDown() {
@@ -189,18 +191,26 @@ public class BraveYouTubePictureInPictureControllerTest {
                 new BraveYouTubePictureInPictureController(mBraveActivity);
         controller.onSessionRequested(mWebContents);
 
-        controller.onNewTabDuringPictureInPicture();
+        try (MockedStatic<MediaSession> mediaSessionStatic = mockStatic(MediaSession.class)) {
+            mediaSessionStatic
+                    .when(() -> MediaSession.fromWebContents(mWebContents))
+                    .thenReturn(mMediaSession);
 
-        // Session preserved for resume on unlock; no teardown was performed.
+            controller.onNewTabDuringPictureInPicture();
+        }
+
+        // Session preserved for resume on unlock; no teardown was performed and playback is
+        // not paused (the screen-state receiver decides that on unlock).
         assertTrue(controller.isActive());
         assertTrue(controller.isInterruptedByScreenLockForTesting());
         verify(mBraveActivity, never()).getFullscreenManager();
         verify(mWebContents, never()).exitFullscreen();
+        verify(mMediaSession, never()).suspend();
     }
 
     @Test
     @SmallTest
-    public void onNewTabDuringPictureInPicture_active_exitsFullscreenAndClearsSession() {
+    public void onNewTabDuringPictureInPicture_active_suspendsExitsAndClearsSession() {
         when(mBraveActivity.getFullscreenManager()).thenReturn(mFullscreenManager);
         when(mFullscreenManager.getPersistentFullscreenMode()).thenReturn(false);
 
@@ -209,7 +219,12 @@ public class BraveYouTubePictureInPictureControllerTest {
         controller.onSessionRequested(mWebContents);
 
         try (MockedStatic<BraveYouTubeScriptInjectorNativeHelper> nativeHelper =
-                mockStatic(BraveYouTubeScriptInjectorNativeHelper.class)) {
+                        mockStatic(BraveYouTubeScriptInjectorNativeHelper.class);
+                MockedStatic<MediaSession> mediaSessionStatic = mockStatic(MediaSession.class)) {
+            mediaSessionStatic
+                    .when(() -> MediaSession.fromWebContents(mWebContents))
+                    .thenReturn(mMediaSession);
+
             controller.onNewTabDuringPictureInPicture();
 
             // YouTube-side player exit is requested via the JS helper.
@@ -217,6 +232,8 @@ public class BraveYouTubePictureInPictureControllerTest {
                     () -> BraveYouTubeScriptInjectorNativeHelper.exitFullscreen(mWebContents));
         }
 
+        // YouTube playback is paused so audio doesn't continue while the user is on the new tab.
+        verify(mMediaSession).suspend();
         // WebContents-level exit is invoked directly on the tracked tab so the renderer drops
         // DOM fullscreen even when FullscreenManager.mWebContentsInFullscreen is stale.
         verify(mWebContents).exitFullscreen();
@@ -266,7 +283,12 @@ public class BraveYouTubePictureInPictureControllerTest {
         controller.onSessionRequested(mWebContents);
 
         try (MockedStatic<BraveYouTubeScriptInjectorNativeHelper> nativeHelper =
-                mockStatic(BraveYouTubeScriptInjectorNativeHelper.class)) {
+                        mockStatic(BraveYouTubeScriptInjectorNativeHelper.class);
+                MockedStatic<MediaSession> mediaSessionStatic = mockStatic(MediaSession.class)) {
+            mediaSessionStatic
+                    .when(() -> MediaSession.fromWebContents(mWebContents))
+                    .thenReturn(mMediaSession);
+
             controller.onNewTabDuringPictureInPicture();
 
             nativeHelper.verify(
@@ -276,6 +298,7 @@ public class BraveYouTubePictureInPictureControllerTest {
         // Brave's PiP-specific persistent-fullscreen exit is invoked synchronously so the new
         // tab is rendered with browser chrome rather than under a residual fullscreen layout.
         verify(mBraveFullscreenHandler).exitPersistentFullscreenModeForPictureInPicture();
+        verify(mMediaSession).suspend();
         verify(mWebContents).exitFullscreen();
         assertFalse(controller.isActive());
     }
