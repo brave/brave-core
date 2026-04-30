@@ -61,6 +61,7 @@
 #include "brave/browser/ui/containers/container_model.h"
 #include "brave/browser/ui/containers/containers_icon_generator.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
+#include "brave/components/containers/core/browser/temporary_container.h"
 #include "brave/components/containers/core/common/features.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
@@ -452,8 +453,18 @@ ui::ImageModel BraveTabStrip::GetTabAccentIcon(const Tab* tab) const {
     return ui::ImageModel();
   }
 
-  auto& icon =
-      containers::GetVectorIconFromIconType(container_model->container()->icon);
+  const auto& container = container_model->container();
+  auto* widget = GetWidget();
+  const float scale_factor =
+      widget ? widget->GetCompositor()->device_scale_factor() : 1.0f;
+
+  if (containers::IsTemporaryContainerId(container->id)) {
+    return ui::ImageModel::FromImageSkia(
+        containers::GenerateTemporaryContainerForegroundIcon(
+            container->id, accent_colors->icon_color, 16, scale_factor));
+  }
+
+  const auto& icon = containers::GetVectorIconFromIconType(container->icon);
   return ui::ImageModel::FromVectorIcon(icon, accent_colors->icon_color, 16);
 #else
   return ui::ImageModel();

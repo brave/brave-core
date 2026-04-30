@@ -72,5 +72,7 @@ source_set("unit_tests") {
     "//components/sync_preferences:test_support",
     "//testing/gmock",
     "//testing/gtest",
+    "//ui/gfx",
+    "//ui/gfx:gfx_skia",
   ]
 }

@@ -11,6 +11,8 @@
 #include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/gfx/image/image_skia_rep.h"
+#include "ui/gfx/skia_util.h"
 
 namespace containers {
 
@@ -56,6 +58,39 @@ TEST_F(ContainersIconGeneratorUnitTest,
   EXPECT_EQ(&GetVectorIconFromIconType(static_cast<mojom::Icon>(
                 std::to_underlying(mojom::Icon::kMinValue) - 1)),
             &kLeoContainerPersonalIcon);
+}
+
+TEST_F(ContainersIconGeneratorUnitTest, TemporaryIdenticon_StablePerId) {
+  constexpr char kId[] = "t-11111111-1111-4111-8111-111111111111";
+  gfx::ImageSkia a = GenerateContainerIcon(kId, mojom::Icon::kDefault,
+                                           SK_ColorBLUE, 16, 12, 1.0f, nullptr);
+  gfx::ImageSkia b = GenerateContainerIcon(kId, mojom::Icon::kDefault,
+                                           SK_ColorBLUE, 16, 12, 1.0f, nullptr);
+  EXPECT_TRUE(gfx::BitmapsAreEqual(a.GetRepresentation(1.0f).GetBitmap(),
+                                   b.GetRepresentation(1.0f).GetBitmap()));
+}
+
+TEST_F(ContainersIconGeneratorUnitTest, TemporaryIdenticon_DiffersById) {
+  gfx::ImageSkia a = GenerateContainerIcon(
+      "t-aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", mojom::Icon::kDefault,
+      SK_ColorBLUE, 16, 12, 1.0f, nullptr);
+  gfx::ImageSkia b = GenerateContainerIcon(
+      "t-bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", mojom::Icon::kDefault,
+      SK_ColorBLUE, 16, 12, 1.0f, nullptr);
+  EXPECT_FALSE(gfx::BitmapsAreEqual(a.GetRepresentation(1.0f).GetBitmap(),
+                                    b.GetRepresentation(1.0f).GetBitmap()));
+}
+
+TEST_F(ContainersIconGeneratorUnitTest, NonTemporaryUsesVectorIconPath) {
+  gfx::ImageSkia temp = GenerateContainerIcon(
+      "t-cccccccc-cccc-4ccc-8ccc-cccccccccccc", mojom::Icon::kDefault,
+      SK_ColorBLUE, 16, 12, 1.0f, nullptr);
+  gfx::ImageSkia regular = GenerateContainerIcon(
+      "0053d88e-7b26-4bfa-9175-783e1bfcba97", mojom::Icon::kDefault,
+      SK_ColorBLUE, 16, 12, 1.0f, nullptr);
+  EXPECT_FALSE(
+      gfx::BitmapsAreEqual(temp.GetRepresentation(1.0f).GetBitmap(),
+                           regular.GetRepresentation(1.0f).GetBitmap()));
 }
 
 }  // namespace containers
