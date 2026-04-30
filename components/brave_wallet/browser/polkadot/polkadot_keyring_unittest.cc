@@ -417,9 +417,6 @@ TEST(PolkadotKeyring, AddNewHDAccount_RestrictedAddress) {
   ASSERT_TRUE(address);
   const std::string address_to_restrict = *address;
 
-  // Try to add account again - should fail because it generates the same
-  // address Note: PolkadotKeyring doesn't have RemoveHDAccount, so we test by
-  // trying to add at index 1, which should succeed, then try index 0 again.
   PolkadotKeyring keyring2(
       base::span(seed).first<kPolkadotSeedSize>(),
       mojom::KeyringId::kPolkadotMainnet,
@@ -431,6 +428,9 @@ TEST(PolkadotKeyring, AddNewHDAccount_RestrictedAddress) {
     BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_restricted(
         {base::ToLowerASCII(address_to_restrict)});
 
+    // Try to add account again - should fail because it generates the same
+    // address Note: PolkadotKeyring doesn't have RemoveHDAccount, so we test by
+    // trying to add at index 1, which should succeed, then try index 0 again.
     auto result1 = keyring.AddNewHDAccount(1);
     EXPECT_TRUE(result1) << "Non-restricted address should succeed";
 
