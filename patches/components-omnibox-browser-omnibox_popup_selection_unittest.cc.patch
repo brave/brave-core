@@ -1,0 +1,24 @@
+diff --git a/components/omnibox/browser/omnibox_popup_selection_unittest.cc b/components/omnibox/browser/omnibox_popup_selection_unittest.cc
+index 5e3d551798e75ce06ed1843b6a141e27d7e83e9f..38ef3c51ee9f75a3cb5b3b6116edf9a88b02522f 100644
+--- a/components/omnibox/browser/omnibox_popup_selection_unittest.cc
++++ b/components/omnibox/browser/omnibox_popup_selection_unittest.cc
+@@ -88,15 +88,15 @@ TEST_F(OmniboxPopupSelectionTest, SelectionWithKeywordMode) {
+   next = OmniboxPopupSelection(2u).GetNextSelection(
+       input, result, client.GetTemplateURLService(), aim_button_visible,
+       Direction::kForward, Step::kStateOrLine);
+-  EXPECT_EQ(next.line, 2u);
+-  EXPECT_EQ(next.state, LineState::FOCUSED_BUTTON_THUMBS_UP);
++  EXPECT_EQ(next.line, 0u);
++  EXPECT_EQ(next.state, LineState::NORMAL);
+ 
+   next = OmniboxPopupSelection(2u, LineState::FOCUSED_BUTTON_THUMBS_UP)
+              .GetNextSelection(input, result, client.GetTemplateURLService(),
+                                aim_button_visible, Direction::kForward,
+                                Step::kStateOrLine);
+-  EXPECT_EQ(next.line, 2u);
+-  EXPECT_EQ(next.state, LineState::FOCUSED_BUTTON_THUMBS_DOWN);
++  EXPECT_EQ(next.line, 0u);
++  EXPECT_EQ(next.state, LineState::NORMAL);
+ 
+   next = OmniboxPopupSelection(2u, LineState::FOCUSED_BUTTON_THUMBS_DOWN)
+              .GetNextSelection(input, result, client.GetTemplateURLService(),

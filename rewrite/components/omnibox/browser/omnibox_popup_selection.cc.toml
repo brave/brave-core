@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Brave's history semantic search runs entirely on-device and never sends
+# data anywhere. Suppress the omnibox thumbs up/down feedback buttons that
+# upstream attaches to HISTORY_EMBEDDINGS matches so no feedback UI is
+# reachable from the URL bar. With these selections never available,
+# OmniboxResultView::UpdateFeedbackButtonsVisibility keeps the buttons
+# hidden and keyboard/selection traversal skips over them.
+
+[[substitution]]
+description = '''Never expose thumbs up/down feedback buttons on omnibox
+HISTORY_EMBEDDINGS matches.
+
+Inject a short-circuit `return false;` immediately after the case
+labels so we don't depend on the exact form of the upstream return
+expression. This keeps the plaster resilient if Chromium tweaks the
+condition (e.g. swaps the match type check or refactors the body).
+'''
+re_pattern = '(case FOCUSED_BUTTON_THUMBS_DOWN:\n)(\s+)return'
+replace = '\1\2if ((true)) return false;\n\2return'
+count = 1

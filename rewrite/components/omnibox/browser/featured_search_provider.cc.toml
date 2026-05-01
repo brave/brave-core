@@ -16,6 +16,14 @@ re_pattern = '\bIDS_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH_LINK_TEXT\b'
 replace = 'IDS_BRAVE_EMPTY_STRING'
 
 [[substitution]]
-description = 'Swap IDS_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH to the Brave-owned string.'
-re_pattern = '\bIDS_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH\b'
-replace = 'IDS_BRAVE_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH'
+description = '''Swap IDS_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH to the
+Brave-owned string and drop the upstream " " separator that follows.
+
+Without dropping the separator, match.contents would have a trailing
+space (the link text was swapped to IDS_BRAVE_EMPTY_STRING above) that
+fails AutocompleteMatch::SanitizeString in
+AutocompleteResult::AppendMatches.
+'''
+re_pattern = 'IDS_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH(\))\s*\+\s*u" "'
+replace = 'IDS_BRAVE_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH\1'
+count = 1
