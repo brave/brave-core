@@ -2,13 +2,6 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-#
-# LINT.IfChange(brave_fullscreen_html_api_handler_base)
-# Keep this file in sync with the substitution targets it relies on:
-#   * BraveFullscreenHtmlApiHandlerBase.shouldPreservePersistentFullscreenForPictureInPicture
-#   * BraveFullscreenHtmlApiHandlerBase.exitPersistentFullscreenModeForPictureInPicture
-# in src/brave/android/java/org/chromium/chrome/browser/fullscreen/
-# BraveFullscreenHtmlApiHandlerBase.java.
 
 [[substitution]]
 description = 'Preserve fullscreen state while Brave-managed YouTube PiP is active when a tab is hidden'
@@ -67,4 +60,3 @@ replace = '''\1            if (BraveFullscreenHtmlApiHandlerBase.class.cast(Full
             }
 \2            mFullscreenManagerDelegate.onExitFullscreen(null);\3'''
 count = 1
-# LINT.ThenChange(/brave/android/java/org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerBase.java)

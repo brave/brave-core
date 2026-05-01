@@ -2,11 +2,6 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-#
-# LINT.IfChange(brave_fullscreen_video_pip_dismiss_hook)
-# Keep this file in sync with the semantic dismiss hook in
-# src/brave/android/java/org/chromium/chrome/browser/media/
-# BraveFullscreenVideoPictureInPictureController.java.
 
 [[substitution]]
 description = 'Import BraveActivity and the YouTube PiP helper'
@@ -84,4 +79,3 @@ replace = '''\1    private @Nullable BraveActivity getBraveActivityForYouTubePic
     }
 \2'''
 count = 1
-# LINT.ThenChange(/brave/android/java/org/chromium/chrome/browser/media/BraveFullscreenVideoPictureInPictureController.java)
