@@ -18,6 +18,11 @@
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+#if BUILDFLAG(IS_LINUX)
+#include "base/test/scoped_command_line.h"
+#include "brave/components/brave_origin/switches.h"
+#endif
+
 class BraveOriginStartupViewTest : public testing::Test {
  public:
   void SetUp() override {
@@ -138,6 +143,18 @@ TEST_F(BraveOriginStartupViewTest, ShouldShowDialogWhenItemsDictMissing) {
   SetSkuCredentials("production", R"({"credentials": {"not_items": "value"}})");
   EXPECT_TRUE(BraveOriginStartupView::ShouldShowDialog(&local_state_));
 }
+
+#if BUILDFLAG(IS_LINUX)
+TEST_F(BraveOriginStartupViewTest,
+       ShouldNotShowDialogWhenSkipSwitchPresentOnLinux) {
+  base::test::ScopedCommandLine scoped_cl;
+  scoped_cl.GetProcessCommandLine()->AppendSwitch(
+      brave_origin::switches::kSkipOriginStartupDialog);
+  EXPECT_FALSE(BraveOriginStartupView::ShouldShowDialog(&local_state_));
+  // Switch persists acceptance so future launches without it also skip.
+  EXPECT_TRUE(local_state_.GetBoolean(brave_origin::kOriginFreeTierAccepted));
+}
+#endif  // BUILDFLAG(IS_LINUX)
 
 // --- SetShouldShowDialogForTesting tests ---
 
