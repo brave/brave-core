@@ -290,8 +290,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
       "isSharedPinnedTabsEnabled",
       base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs));
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
-  html_source->AddBoolean("isEmailAliasesEnabled",
-                          email_aliases::features::IsEmailAliasesEnabled());
+  html_source->AddBoolean(
+      "isEmailAliasesEnabled",
+      email_aliases::EmailAliasesServiceFactory::IsServiceEnabled(profile));
 #endif
 #if BUILDFLAG(ENABLE_CONTAINERS)
   html_source->AddBoolean(
