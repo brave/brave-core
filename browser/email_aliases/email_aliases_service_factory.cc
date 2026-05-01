@@ -24,7 +24,7 @@ namespace email_aliases {
 // static
 EmailAliasesService* EmailAliasesServiceFactory::GetServiceForProfile(
     Profile* profile) {
-  if (IsServiceDisabled(profile)) {
+  if (!IsServiceEnabled(profile)) {
     return nullptr;
   }
   return static_cast<EmailAliasesService*>(
@@ -48,15 +48,13 @@ EmailAliasesServiceFactory* EmailAliasesServiceFactory::GetInstance() {
 }
 
 // static
-bool EmailAliasesServiceFactory::IsServiceDisabled(
+bool EmailAliasesServiceFactory::IsServiceEnabled(
     content::BrowserContext* context) {
   if (!features::IsEmailAliasesEnabled()) {
-    return true;
+    return false;
   }
   const auto* pref_service = user_prefs::UserPrefs::Get(context);
-  if (pref_service &&
-      pref_service->IsManagedPreference(prefs::kEmailAliasesDisabledByPolicy) &&
-      pref_service->GetBoolean(prefs::kEmailAliasesDisabledByPolicy)) {
+  if (pref_service && pref_service->GetBoolean(prefs::kEmailAliasesEnabled)) {
     return true;
   }
   return false;

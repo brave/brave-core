@@ -31,7 +31,7 @@ class EmailAliasesServiceFactory : public ProfileKeyedServiceFactory {
       mojo::PendingReceiver<mojom::EmailAliasesService> receiver);
   static EmailAliasesServiceFactory* GetInstance();
 
-  static bool IsServiceDisabled(content::BrowserContext* context);
+  static bool IsServiceEnabled(content::BrowserContext* context);
 
   EmailAliasesServiceFactory();
 

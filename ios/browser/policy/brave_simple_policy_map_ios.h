@@ -86,8 +86,8 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
     },
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
     {
-        policy::key::kEmailAliasesDisabled,
-        email_aliases::prefs::kEmailAliasesDisabledByPolicy,
+        policy::key::kEmailAliasesEnabled,
+        email_aliases::prefs::kEmailAliasesEnabled,
         base::Value::Type::BOOLEAN,
     },
 #endif

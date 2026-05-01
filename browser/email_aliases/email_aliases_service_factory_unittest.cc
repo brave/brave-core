@@ -90,16 +90,16 @@ TEST_F(EmailAliasesServiceFactoryTest, ServiceWithPolicy) {
       }));
 
   {
-    // Policy off
+    // Policy on
     profile->GetTestingPrefService()->SetManagedPref(
-        prefs::kEmailAliasesDisabledByPolicy, base::Value(false));
+        prefs::kEmailAliasesEnabled, base::Value(true));
     auto* service = EmailAliasesServiceFactory::GetServiceForProfile(profile);
     EXPECT_NE(service, nullptr);
   }
   {
-    // Policy on
+    // Policy off
     profile->GetTestingPrefService()->SetManagedPref(
-        prefs::kEmailAliasesDisabledByPolicy, base::Value(true));
+        prefs::kEmailAliasesEnable, base::Value(false));
     auto* service = EmailAliasesServiceFactory::GetServiceForProfile(profile);
     EXPECT_EQ(service, nullptr);
   }

@@ -134,8 +134,8 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      base::Value::Type::BOOLEAN},
 #endif  // BUILDFLAG(DEPRECATE_IPFS)
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
-    {policy::key::kEmailAliasesDisabled,
-     email_aliases::prefs::kEmailAliasesDisabledByPolicy,
+    {policy::key::kEmailAliasesEnabled,
+     email_aliases::prefs::kEmailAliasesEnabled,
      base::Value::Type::BOOLEAN},
 #endif
     {policy::key::kBraveReduceLanguageEnabled,

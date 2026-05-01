@@ -207,9 +207,9 @@ constexpr auto kBraveOriginProfileMetadata =
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
         // Email Aliases preferences
-        {email_aliases::prefs::kEmailAliasesDisabledByPolicy,
+        {email_aliases::prefs::kEmailAliasesEnabled,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
-             true,
+             false,
              /*user_settable=*/false)},
 #endif
     });
