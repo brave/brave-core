@@ -44,7 +44,7 @@ export const _ChartDisplay = {
 }
 
 export default {
-  title: 'Chat/ChartDisplay',
+  title: 'AI Chat/ChartDisplay',
   component: App,
   argTypes: {
     chartData: { control: 'object' },

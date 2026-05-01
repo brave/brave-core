@@ -12,7 +12,7 @@ import * as searchResults from '../search_widget/storybook-data/searchResults.js
 import { getEventTemplate } from '../../../common/test_data_utils'
 
 export default {
-  title: 'Chat/MarkdownRenderer',
+  title: 'AI Chat/MarkdownRenderer',
   component: MarkdownRenderer,
 }
 

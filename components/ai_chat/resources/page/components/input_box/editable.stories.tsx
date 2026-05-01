@@ -51,6 +51,6 @@ export const _Editable = {
 }
 
 export default {
-  title: 'Chat/Chat',
+  title: 'AI Chat/Editable',
   component: Editable,
 } as Meta<typeof Editable>

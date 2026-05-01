@@ -61,7 +61,7 @@ export const _ToolPermissionChallenge = {
 }
 
 export default {
-  title: 'Chat/Chat',
+  title: 'AI Chat/Permission Challenge',
   component: ToolPermissionChallenge,
   argTypes: InferControlsFromArgs(args),
   args,

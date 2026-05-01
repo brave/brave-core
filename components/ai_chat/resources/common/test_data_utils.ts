@@ -59,6 +59,13 @@ export function getWebSourcesEvent(
   }
 }
 
+export function getSearchStatusEvent(): Mojom.ConversationEntryEvent {
+  return {
+    ...eventTemplate,
+    searchStatusEvent: { isSearching: true },
+  }
+}
+
 export function getSearchQueriesEvent(
   queries: string[],
 ): Mojom.ConversationEntryEvent {

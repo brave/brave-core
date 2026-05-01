@@ -13,7 +13,6 @@ import { getKeysForMojomEnum } from '$web-common/mojomUtils'
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import { InferControlsFromArgs } from '../../../../../.storybook/utils'
 import * as Mojom from '../../common/mojom'
-import FeedbackForm from '../components/feedback_form'
 import FullPage from '../components/full_page'
 import Loading from '../components/loading'
 import Main from '../components/main'
@@ -21,70 +20,12 @@ import ACTIONS_LIST from './story_utils/actions'
 import styles from './style.module.scss'
 import StorybookConversationEntries from './story_utils/ConversationEntries'
 import UntrustedMockContext from '../../untrusted_conversation_frame/mock_untrusted_conversation_context'
-import ErrorConnection from '../../untrusted_conversation_frame/components/alerts/error_connection'
-import ErrorConversationEnd from '../../untrusted_conversation_frame/components/alerts/error_conversation_end'
-import ErrorInvalidAPIKey from '../../untrusted_conversation_frame/components/alerts/error_invalid_api_key'
-import ErrorInvalidEndpointURL from '../../untrusted_conversation_frame/components/alerts/error_invalid_endpoint_url'
-import ErrorRateLimit from '../../untrusted_conversation_frame/components/alerts/error_rate_limit'
-import ErrorServiceOverloaded from '../../untrusted_conversation_frame/components/alerts/error_service_overloaded'
-import LongConversationInfo from '../../untrusted_conversation_frame/components/alerts/long_conversation_info'
-import WarningPremiumDisconnected from '../../untrusted_conversation_frame/components/alerts/warning_premium_disconnected'
-import Attachments from '../components/attachments'
-import { createTextContentBlock } from '../../common/content_block'
-import ToolEvent from '../../untrusted_conversation_frame/components/assistant_response/tool_event'
-import { taskConversationEntries } from './story_utils/history'
-import { toolUseCompleteAssistantDetailStorage } from './story_utils/events'
 import { Content } from '../components/input_box/editable_content'
-import { getToolUseEvent } from '../../common/test_data_utils'
 import { MockContext } from '../state/mock_context'
 import {
   ActiveChatContext,
   SelectedChatDetails,
 } from '../state/active_chat_context'
-
-// TODO(https://github.com/brave/brave-browser/issues/47810): Attempt to split this file up
-
-const eventTemplate: Mojom.ConversationEntryEvent = {
-  completionEvent: undefined,
-  searchQueriesEvent: undefined,
-  searchStatusEvent: undefined,
-  conversationTitleEvent: undefined,
-  sourcesEvent: undefined,
-  contentReceiptEvent: undefined,
-  toolUseEvent: undefined,
-  inlineSearchEvent: undefined,
-  deepResearchEvent: undefined,
-}
-
-function getCompletionEvent(text: string): Mojom.ConversationEntryEvent {
-  return {
-    ...eventTemplate,
-    completionEvent: { completion: text },
-  }
-}
-
-function getSearchEvent(queries: string[]): Mojom.ConversationEntryEvent {
-  return {
-    ...eventTemplate,
-    searchQueriesEvent: { searchQueries: queries },
-  }
-}
-
-function getSearchStatusEvent(): Mojom.ConversationEntryEvent {
-  return {
-    ...eventTemplate,
-    searchStatusEvent: { isSearching: true },
-  }
-}
-
-function getWebSourcesEvent(
-  sources: Mojom.WebSource[],
-): Mojom.ConversationEntryEvent {
-  return {
-    ...eventTemplate,
-    sourcesEvent: { sources, richResults: [] },
-  }
-}
 
 const CONVERSATIONS: Mojom.Conversation[] = [
   {
@@ -120,736 +61,6 @@ const CONVERSATIONS: Mojom.Conversation[] = [
     totalTokens: BigInt(0),
     trimmedTokens: BigInt(0),
     temporary: false,
-  },
-]
-
-const toolEvents: Mojom.ConversationEntryEvent[] = [
-  getToolUseEvent({
-    id: 'abc123d',
-    toolName: 'user_choice_tool',
-    argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
-    output: [createTextContentBlock('7:00pm')],
-  }),
-  getToolUseEvent({
-    id: 'abc123e',
-    toolName: 'user_choice_tool',
-    argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
-    output: undefined,
-  }),
-  getToolUseEvent({
-    id: 'abc123f',
-    toolName: 'user_choice_tool',
-    argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
-    output: undefined,
-  }),
-  getToolUseEvent({
-    id: 'abc123g',
-    toolName: Mojom.NAVIGATE_TOOL_NAME,
-    argumentsJson: JSON.stringify({ website_url: 'https://www.example.com' }),
-    output: undefined,
-  }),
-  getToolUseEvent({
-    id: 'abc123h',
-    toolName: Mojom.CODE_EXECUTION_TOOL_NAME,
-    argumentsJson: JSON.stringify({
-      script: 'const result = 1 + 2;\nreturn `1 + 2 = ${result};`',
-    }),
-    output: undefined,
-  }),
-  getToolUseEvent({
-    id: 'abc123i',
-    toolName: Mojom.CODE_EXECUTION_TOOL_NAME,
-    argumentsJson: JSON.stringify({
-      script: 'const result = 1 + 2;\nreturn `1 + 2 = ${result}`;',
-    }),
-    output: [createTextContentBlock('1 + 2 = 3')],
-  }),
-]
-
-const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
-  {
-    uuid: 'user-1',
-    text: 'Remember that I work as a software engineer.',
-    characterType: Mojom.CharacterType.HUMAN,
-    actionType: Mojom.ActionType.QUERY,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: 'assistant-1',
-    text: '',
-    characterType: Mojom.CharacterType.ASSISTANT,
-    actionType: Mojom.ActionType.UNSPECIFIED,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001100000') },
-    events: [
-      getToolUseEvent({
-        id: 'memory-1',
-        toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
-        argumentsJson: '{"memory": "works as a software engineer"}',
-        output: [createTextContentBlock('')],
-      }),
-      getCompletionEvent("I'll remember that you work as a software engineer."),
-    ],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: 'user-2',
-    text: 'Remember I like cats.',
-    characterType: Mojom.CharacterType.HUMAN,
-    actionType: Mojom.ActionType.QUERY,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001200000') },
-    events: [],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: 'assistant-2',
-    text: '',
-    characterType: Mojom.CharacterType.ASSISTANT,
-    actionType: Mojom.ActionType.UNSPECIFIED,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001300000') },
-    events: [
-      getToolUseEvent({
-        id: 'memory-2',
-        toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
-        argumentsJson: '{"memory": "Likes cats"}',
-        output: [createTextContentBlock('')],
-      }),
-      getCompletionEvent("I've noted you like cats."),
-    ],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: 'user-3',
-    text: 'Remember my favorite hobby is hiking.',
-    characterType: Mojom.CharacterType.HUMAN,
-    actionType: Mojom.ActionType.QUERY,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001400000') },
-    events: [],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: 'assistant-3',
-    text: '',
-    characterType: Mojom.CharacterType.ASSISTANT,
-    actionType: Mojom.ActionType.UNSPECIFIED,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001500000') },
-    events: [
-      getToolUseEvent({
-        id: 'memory-3',
-        toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
-        argumentsJson: '{"memory": "favorite hobby is hiking"}',
-        output: [createTextContentBlock('Memory storage failed')],
-      }),
-      getCompletionEvent(
-        'I encountered an error while trying to store that information.',
-      ),
-    ],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-]
-
-const HISTORY: Mojom.ConversationTurn[] = [
-  {
-    uuid: 'skill-turn',
-    text: '/translate Hello world, how are you today?',
-    characterType: Mojom.CharacterType.HUMAN,
-    actionType: Mojom.ActionType.QUERY,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618000900000') },
-    events: [],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: {
-      shortcut: 'translate',
-      prompt: 'Translate the following text to English',
-    },
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: 'skill-response',
-    text: '',
-    characterType: Mojom.CharacterType.ASSISTANT,
-    actionType: Mojom.ActionType.UNSPECIFIED,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618000950000') },
-    events: [
-      getCompletionEvent(
-        'Here is the translation:\n\n"Hello world, how are you today?"'
-          + '\n\nThis text is already in English, so no translation is needed.',
-      ),
-    ],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: 'turn-uuid',
-    text: 'Summarize this page',
-    characterType: Mojom.CharacterType.HUMAN,
-    actionType: Mojom.ActionType.SUMMARIZE_PAGE,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: undefined,
-    text: '',
-    characterType: Mojom.CharacterType.ASSISTANT,
-    actionType: Mojom.ActionType.UNSPECIFIED,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [
-      getCompletionEvent(
-        'The ways that animals move are just about as myriad as the animal kingdom itself. They walk, run, swim, crawl, fly and slither — and within each of those categories lies a tremendous number of subtly different movement types. A seagull and a *hummingbird* both have wings, but otherwise their flight techniques and abilities are poles apart. Orcas and **piranhas** both have tails, but they accomplish very different types of swimming. Even a human walking or running is moving their body in fundamentally different ways.',
-      ),
-    ],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: undefined,
-    text: 'Question that results in a task',
-    characterType: Mojom.CharacterType.HUMAN,
-    actionType: Mojom.ActionType.QUERY,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  // Show how a Task is displayed within history. Use the AssistantTask story for
-  // viewing an active Task.
-  ...taskConversationEntries,
-  {
-    uuid: undefined,
-    text: 'What is pointer compression?\n...and how does it work?\n    - tell me something interesting',
-    characterType: Mojom.CharacterType.HUMAN,
-    actionType: Mojom.ActionType.QUERY,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: undefined,
-    text: '',
-    characterType: Mojom.CharacterType.ASSISTANT,
-    actionType: Mojom.ActionType.UNSPECIFIED,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [
-      getCompletionEvent(
-        `# Title 1\n ## Title 2\n ## **Title 2** using bold that doesn't look different\n### Title 3\n#### Title 4\n \nDuring the latter part of 2021, I reflected on the challenges we were facing at Modern Health. One recurring problem that stood out was our struggle to create new products with an unstructured color palette. This resulted in poor [communication](https://www.google.com) between designers and developers, an inconsistent product brand, and increasing accessibility problems.\n\n1. Inclusivity: our palette provides easy ways to ensure our product uses accessible contrasts.\n 2. Efficiency: our palette is diverse enough for our current and future product design, yet values are still predictable and constrained.\n 3. Reusability: our palette is on-brand but versatile. There are very few one-offs that fall outside the palette.\n\n This article shares the process I followed to apply these principles to develop a more adaptable color palette that prioritizes accessibility and is built to scale into all of our future product **design** needs.`,
-      ),
-    ],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: undefined,
-    text: 'What is taylor series?',
-    characterType: Mojom.CharacterType.HUMAN,
-    actionType: Mojom.ActionType.QUERY,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: undefined,
-    text: '',
-    characterType: Mojom.CharacterType.ASSISTANT,
-    actionType: Mojom.ActionType.UNSPECIFIED,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [
-      getCompletionEvent(
-        'The partial sum formed by the first n + 1 terms of a Taylor series is a polynomial of degree n that is called the nth Taylor polynomial of the function. Taylor polynomials are approximations of a function, which become generally better as n increases.',
-      ),
-    ],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: undefined,
-    text: 'Write a hello world program in c++',
-    characterType: Mojom.CharacterType.HUMAN,
-    actionType: Mojom.ActionType.QUERY,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: undefined,
-    text: '',
-    characterType: Mojom.CharacterType.ASSISTANT,
-    actionType: Mojom.ActionType.UNSPECIFIED,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [
-      getCompletionEvent(
-        "Sure! Here's a table with 5 Marvel characters:\n\n"
-          + '| First Name | Last Name   | Character Name       | '
-          + 'First Appearance |\n'
-          + '|------------|-------------|----------------------|'
-          + '------------------|\n'
-          + '| Tony       | Stark      | Iron Man            | '
-          + '1968              |\n'
-          + '| Steve      | Rogers     | Captain America      | '
-          + '1941              |\n'
-          + '| Thor       | Odinson    | Thor                 | '
-          + '1962              |\n'
-          + '| Natasha    | Romanoff   | Black Widow          | '
-          + '1964              |\n'
-          + '| Peter      | Parker     | Spider-Man           | '
-          + '1962              |\n'
-          + "\n\n Let me know if you'd like more details!",
-      ),
-    ],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: undefined,
-    text: 'Shorten this selected text',
-    characterType: Mojom.CharacterType.HUMAN,
-    actionType: Mojom.ActionType.SHORTEN,
-    prompt: undefined,
-    selectedText:
-      'Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.',
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: undefined,
-    text: '',
-    characterType: Mojom.CharacterType.ASSISTANT,
-    actionType: Mojom.ActionType.UNSPECIFIED,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [
-      getSearchStatusEvent(),
-      getSearchEvent(['pointer compression', 'c++ language specification']),
-      getCompletionEvent(
-        '[1]:https://www.example.com\n[2]:https://lttstore.com\n[3]:https://www.tesla.com/modely\n[Pointer compression](https://www.example.com) is a [memory](https://brave.com/wont-show-as-link) optimization technique.[1][3]',
-      ),
-      getWebSourcesEvent([
-        {
-          url: { url: 'https://www.example.com' },
-          title: 'Pointer Compression',
-          faviconUrl: { url: 'https://www.example.com/favicon.ico' },
-          pageContent: undefined,
-          extraSnippets: undefined,
-        },
-        {
-          title: 'LTT Store',
-          faviconUrl: { url: 'https://lttstore.com/favicon.ico' },
-          url: { url: 'https://lttstore.com' },
-          pageContent: undefined,
-          extraSnippets: undefined,
-        },
-        {
-          title: 'Tesla Model Y',
-          faviconUrl: { url: 'https://www.tesla.com/favicon.ico' },
-          url: { url: 'https://www.tesla.com/modely' },
-          pageContent: undefined,
-          extraSnippets: undefined,
-        },
-      ]),
-    ],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: undefined,
-    text: 'Will an LTT store backpack fit in a Tesla Model Y frunk?',
-    characterType: Mojom.CharacterType.HUMAN,
-    actionType: Mojom.ActionType.SHORTEN,
-    prompt: undefined,
-    selectedText: '',
-    edits: [
-      {
-        uuid: undefined,
-        text: 'Will it fit in a Tesla Model Y frunk?',
-        characterType: Mojom.CharacterType.HUMAN,
-        actionType: Mojom.ActionType.SHORTEN,
-        prompt: undefined,
-        selectedText: '',
-        createdTime: { internalValue: BigInt('13278618001000000') },
-        edits: [],
-        events: [],
-        uploadedFiles: [],
-        fromBraveSearchSERP: false,
-        skill: undefined,
-        modelKey: '1',
-        nearVerificationStatus: undefined,
-      },
-    ],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: undefined,
-    text: '',
-    characterType: Mojom.CharacterType.ASSISTANT,
-    actionType: Mojom.ActionType.UNSPECIFIED,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [
-      getSearchStatusEvent(),
-      getSearchEvent([
-        'LTT store backpack dimensions',
-        'Tesla Model Y frunk dimensions',
-      ]),
-    ],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: undefined,
-    text: 'What is this image?',
-    characterType: Mojom.CharacterType.HUMAN,
-    actionType: Mojom.ActionType.QUERY,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [],
-    uploadedFiles: [
-      {
-        filename: 'lion.png',
-        filesize: 128,
-        data: Array.from(new Uint8Array(128)),
-        type: Mojom.UploadedFileType.kImage,
-        extractedText: undefined,
-      },
-    ],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: undefined,
-    text: '',
-    characterType: Mojom.CharacterType.ASSISTANT,
-    actionType: Mojom.ActionType.UNSPECIFIED,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [getCompletionEvent('It is a lion!')],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: undefined,
-    text: 'Summarize this page',
-    characterType: Mojom.CharacterType.HUMAN,
-    actionType: Mojom.ActionType.QUERY,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [],
-    uploadedFiles: [
-      {
-        filename: 'full_screenshot_0.png',
-        filesize: 128,
-        data: Array.from(new Uint8Array(128)),
-        type: Mojom.UploadedFileType.kScreenshot,
-        extractedText: undefined,
-      },
-      {
-        filename: 'full_screenshot_1.png',
-        filesize: 128,
-        data: Array.from(new Uint8Array(128)),
-        type: Mojom.UploadedFileType.kScreenshot,
-        extractedText: undefined,
-      },
-    ],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: undefined,
-    text: '',
-    characterType: Mojom.CharacterType.ASSISTANT,
-    actionType: Mojom.ActionType.UNSPECIFIED,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [
-      getCompletionEvent(
-        'This website compares differences between Juniper Model Y and legacy one.',
-      ),
-      toolUseCompleteAssistantDetailStorage,
-    ],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: undefined,
-    text: 'Summarize these',
-    characterType: Mojom.CharacterType.HUMAN,
-    actionType: Mojom.ActionType.QUERY,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [],
-    uploadedFiles: [
-      {
-        filename: 'full_screenshot_0.png',
-        filesize: 128,
-        data: Array.from(new Uint8Array(128)),
-        type: Mojom.UploadedFileType.kScreenshot,
-        extractedText: undefined,
-      },
-      {
-        filename: 'full_screenshot_1.png',
-        filesize: 128,
-        data: Array.from(new Uint8Array(128)),
-        type: Mojom.UploadedFileType.kScreenshot,
-        extractedText: undefined,
-      },
-      {
-        filename: 'lion.png',
-        filesize: 128,
-        data: Array.from(new Uint8Array(128)),
-        type: Mojom.UploadedFileType.kImage,
-        extractedText: undefined,
-      },
-    ],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: undefined,
-    text: '',
-    characterType: Mojom.CharacterType.ASSISTANT,
-    actionType: Mojom.ActionType.UNSPECIFIED,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [
-      getCompletionEvent(
-        'According to screenshots, this website compares differences between Juniper Model Y and legacy one. And a lion image.',
-      ),
-    ],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  {
-    uuid: undefined,
-    text: '',
-    characterType: Mojom.CharacterType.ASSISTANT,
-    actionType: Mojom.ActionType.UNSPECIFIED,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [
-      getCompletionEvent(
-        "Sure! Here's a table with 5 Marvel characters:\n\n"
-          + '| First Name | Last Name   | Character Name       | '
-          + 'First Appearance |\n'
-          + '|------------|-------------|----------------------|'
-          + '------------------|\n'
-          + '| Tony       | Stark      | Iron Man            | '
-          + '1968              |\n'
-          + '| Steve      | Rogers     | Captain America      | '
-          + '1941              |\n'
-          + '| Thor       | Odinson    | Thor                 | '
-          + '1962              |\n'
-          + '| Natasha    | Romanoff   | Black Widow          | '
-          + '1964              |\n'
-          + '| Peter      | Parker     | Spider-Man           | '
-          + '1962              |\n'
-          + "\n\n Let me know if you'd like more details!",
-      ),
-    ],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  // Show that tool use events are NOT interactive if they are not the last entry in the
-  // group of assistant conversation entries.
-  {
-    uuid: undefined,
-    text: '',
-    characterType: Mojom.CharacterType.ASSISTANT,
-    actionType: Mojom.ActionType.UNSPECIFIED,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [...toolEvents.slice(2)],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
-  },
-  // Show that single or multipletool use events are interactive if they are the
-  // last entry in thegroup of assistant conversation entries.
-  {
-    uuid: undefined,
-    text: '',
-    characterType: Mojom.CharacterType.ASSISTANT,
-    actionType: Mojom.ActionType.UNSPECIFIED,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [
-      getCompletionEvent('Answer one of these questions:'),
-      ...toolEvents.slice(0, 3),
-    ],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
-    skill: undefined,
-    modelKey: '1',
-    nearVerificationStatus: undefined,
   },
 ]
 
@@ -1056,13 +267,25 @@ const SAMPLE_HISTORY_ENTRIES: Mojom.HistoryEntry[] = [
   },
 ]
 
+const CONVERSATION_TYPES = [
+  'ALL',
+  'MEMORY',
+  'SEARCH',
+  'SEARCHING',
+  'WEATHER',
+  'CODE_EXECUTION',
+  'MULTI_TOOL_MULTI_TURN',
+  'MULTI_TOOL_MULTI_TURN_IN_PROGRESS',
+  'NONE',
+] as const
+
 type CustomArgs = {
+  conversation_content: (typeof CONVERSATION_TYPES)[number]
   initialized: boolean
   currentErrorState: keyof typeof Mojom.APIError
   toolUseTaskState: keyof typeof Mojom.TaskState
   model: string
   inputText: Content
-  hasConversation: boolean
   editingConversationId: string | null
   deletingConversationId: string | null
   conversationListCount: number
@@ -1097,18 +320,17 @@ type CustomArgs = {
   isTemporaryChat: boolean
   isDragActive: boolean
   isDragOver: boolean
-  useMemoryHistory: boolean
   skillDialog: Mojom.Skill | null
   selectedActionType: Mojom.ActionType | undefined
   selectedSkill: Mojom.Skill | undefined
 }
 
 const args: CustomArgs = {
+  conversation_content: 'ALL',
   initialized: true,
   inputText: [
     `Write a Star Trek poem about Data's life on board the Enterprise`,
   ],
-  hasConversation: true,
   conversationListCount: CONVERSATIONS.length,
   hasSuggestedQuestions: true,
   hasAssociatedContent: true,
@@ -1147,19 +369,22 @@ const args: CustomArgs = {
   isTemporaryChat: false,
   isDragActive: false,
   isDragOver: false,
-  useMemoryHistory: false,
   skillDialog: null,
   selectedActionType: undefined,
   selectedSkill: undefined,
 }
 
 const meta: Meta<CustomArgs> = {
-  title: 'Chat/Chat',
+  title: 'AI Chat/Conversation',
   parameters: {
     layout: 'centered',
   },
   argTypes: {
     ...InferControlsFromArgs(args),
+    conversation_content: {
+      options: CONVERSATION_TYPES,
+      control: { type: 'select' },
+    },
     currentErrorState: {
       options: getKeysForMojomEnum(Mojom.APIError),
       control: { type: 'select' },
@@ -1208,6 +433,31 @@ const meta: Meta<CustomArgs> = {
   ],
 }
 
+async function getConversationContent(
+  conversationType: (typeof CONVERSATION_TYPES)[number],
+): Promise<Mojom.ConversationTurn[]> {
+  switch (conversationType) {
+    case 'ALL':
+      return (await import('./conversations/all')).default
+    case 'MEMORY':
+      return (await import('./conversations/memory')).default
+    case 'SEARCH':
+      return (await import('./conversations/search')).default
+    case 'SEARCHING':
+      return (await import('./conversations/searching')).default
+    case 'WEATHER':
+      return (await import('./conversations/weather')).default
+    case 'CODE_EXECUTION':
+      return (await import('./conversations/code_execution')).default
+    case 'MULTI_TOOL_MULTI_TURN':
+      return (await import('./conversations/multi_tool_multi_turn')).default
+    case 'MULTI_TOOL_MULTI_TURN_IN_PROGRESS':
+      return (await import('./conversations/multi_tool_multi_turn')).InProgress
+  }
+
+  return []
+}
+
 function StoryContext(
   props: React.PropsWithChildren<{
     args: CustomArgs
@@ -1239,11 +489,7 @@ function StoryContext(
     MODELS.find((m) => m.displayName === argsRef.current.model) ?? MODELS[0]
 
   const getConversationHistory = () =>
-    argsRef.current.hasConversation
-      ? argsRef.current.useMemoryHistory
-        ? MEMORY_HISTORY
-        : HISTORY
-      : []
+    getConversationContent(argsRef.current.conversation_content)
 
   return (
     <MockContext
@@ -1324,10 +570,9 @@ function StoryContext(
             },
           })
         },
-        getConversationHistory: () =>
-          Promise.resolve({
-            conversationHistory: getConversationHistory(),
-          }),
+        getConversationHistory: async () => ({
+          conversationHistory: await getConversationHistory(),
+        }),
       }}
       conversationProps={{
         selectedConversationId: activeChatContext.selectedConversationId,
@@ -1364,10 +609,9 @@ function StoryContext(
       <ActiveChatContext.Provider value={activeChatContext}>
         <UntrustedMockContext
           conversationHandler={{
-            getConversationHistory: () =>
-              Promise.resolve({
-                conversationHistory: getConversationHistory(),
-              }),
+            getConversationHistory: async () => ({
+              conversationHistory: await getConversationHistory(),
+            }),
           }}
           uiHandler={{
             hasMemory: (memory: string) => {
@@ -1416,46 +660,53 @@ export default meta
 
 type Story = StoryObj<CustomArgs>
 
-export const _Panel: Story = {
-  render: () => {
-    return (
-      <div className={styles.container}>
-        <Main />
-      </div>
-    )
-  },
-}
-
-export const _Alerts = {
-  render: () => {
-    return (
-      <UntrustedMockContext>
-        <div className={`${styles.container} ${styles.containerAlerts}`}>
-          <ErrorConnection />
-          <ErrorConversationEnd />
-          <ErrorInvalidAPIKey />
-          <ErrorInvalidEndpointURL />
-          <ErrorRateLimit />
-          <ErrorServiceOverloaded />
-          <LongConversationInfo />
-          <WarningPremiumDisconnected />
-        </div>
-      </UntrustedMockContext>
-    )
-  },
-}
-
-export const _FeedbackForm = {
-  render: () => {
-    return (
-      <UntrustedMockContext>
+function GetPanelStory(withArgs: Partial<CustomArgs> = args): Story {
+  return {
+    args: withArgs,
+    render: () => {
+      return (
         <div className={styles.container}>
-          <FeedbackForm />
+          <Main />
         </div>
-      </UntrustedMockContext>
-    )
-  },
+      )
+    },
+  }
 }
+
+export const _Panel = GetPanelStory({
+  conversation_content: 'ALL',
+})
+
+export const _WithSearch = GetPanelStory({
+  conversation_content: 'SEARCH',
+})
+
+export const _WithSearching = GetPanelStory({
+  conversation_content: 'SEARCHING',
+  isGenerating: true,
+})
+
+export const _WithMemory = GetPanelStory({
+  conversation_content: 'MEMORY',
+})
+
+export const _WithCodeExecution = GetPanelStory({
+  conversation_content: 'CODE_EXECUTION',
+})
+
+export const _WithMultipleToolsMultipleTurns = GetPanelStory({
+  conversation_content: 'MULTI_TOOL_MULTI_TURN',
+})
+
+export const _WithMultipleToolsMultipleTurnsInProgress = GetPanelStory({
+  conversation_content: 'MULTI_TOOL_MULTI_TURN_IN_PROGRESS',
+  isGenerating: true,
+  isToolExecuting: true,
+})
+
+export const _WithWeather = GetPanelStory({
+  conversation_content: 'WEATHER',
+})
 
 export const _FullPage = {
   args: {
@@ -1476,26 +727,13 @@ export const _NewFullpageConversation = {
     isNewConversation: true,
     isStandalone: true,
     conversationUuid: undefined,
-    hasConversation: false,
+    conversation_content: 'NONE',
     hasSiteInfo: false,
   },
   render: () => {
     return (
       <div className={styles.container}>
         <FullPage />
-      </div>
-    )
-  },
-}
-export const _AttachmentsPanel = {
-  args: {
-    isStandalone: true,
-    isDefaultConversation: false,
-  },
-  render: () => {
-    return (
-      <div className={styles.container}>
-        <Attachments />
       </div>
     )
   },
@@ -1511,42 +749,5 @@ export const _Loading = {
         <Loading />
       </div>
     )
-  },
-}
-
-export const _ToolUse = {
-  render: () => {
-    return (
-      <div className={styles.container}>
-        {toolEvents
-          .filter(
-            (event) =>
-              event.toolUseEvent!.toolName !== Mojom.MEMORY_STORAGE_TOOL_NAME,
-          )
-          .map((event) => (
-            <ToolEvent
-              key={event.toolUseEvent!.id}
-              toolUseEvent={event.toolUseEvent!}
-              isExecuting={args.isToolExecuting}
-              isEntryActive
-            ></ToolEvent>
-          ))}
-      </div>
-    )
-  },
-}
-
-export const _MemoryEvents: Story = {
-  render: (args) => {
-    return (
-      <div className={styles.container}>
-        <Main />
-      </div>
-    )
-  },
-  args: {
-    ...args,
-    hasConversation: true,
-    useMemoryHistory: true,
   },
 }
