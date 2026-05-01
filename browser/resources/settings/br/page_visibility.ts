@@ -34,7 +34,8 @@ declare module '../page_visibility.js' {
     speedreader?: boolean
     // </if>
     surveyPanelist?: boolean,
-    braveTor?: boolean
+    braveTor?: boolean,
+    emailAliases?: boolean
   }
 }
 
@@ -71,6 +72,7 @@ function getPageVisibility () {
       // </if>
       surveyPanelist: false,
       braveTor: false,
+      emailAliaes: false,
     }
   }
   // We need to specify values for every attribute in pageVisibility instead of
@@ -113,6 +115,9 @@ function getPageVisibility () {
     // <if expr="enable_tor">
     braveTor: !loadTimeData.getBoolean('braveTorDisabledByPolicy') ||
               loadTimeData.getBoolean('shouldExposeElementsForTesting'),
+    // </if>
+    // <if expr="enable_email_aliases">
+    emailAliases: loadTimeData.getBoolean('isEmailAliasesEnabled'),
     // </if>
     origin: loadTimeData.getBoolean('isBraveOriginPurchased') &&
             !loadTimeData.getBoolean('isBraveOriginBrandedBuild'),

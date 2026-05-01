@@ -6,6 +6,7 @@
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//brave/components/email_aliases/buildflags/buildflags.gni")
 
 source_set("prefs") {
   sources = [ "browser_prefs_impl.mm" ]
@@ -26,6 +27,7 @@ source_set("prefs") {
     "//brave/components/constants",
     "//brave/components/de_amp/common",
     "//brave/components/debounce/core/browser",
+    "//brave/components/email_aliases/buildflags",
     "//brave/components/global_privacy_control",
     "//brave/components/l10n/common",
     "//brave/components/ntp_background_images/browser",
@@ -52,5 +54,8 @@ source_set("prefs") {
   }
   if (enable_brave_talk) {
     deps += [ "//brave/components/brave_talk" ]
+  }
+  if (enable_email_aliases) {
+    deps += [ "//brave/components/email_aliases:service" ]
   }
 }

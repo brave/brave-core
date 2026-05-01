@@ -101,7 +101,7 @@
       icon="bar-chart">
   </origin-toggle-button>
 
-  <if expr="enable_ai_chat or enable_brave_news or enable_speedreader or enable_brave_talk or enable_tor or enable_brave_vpn or enable_brave_wallet or enable_brave_wayback_machine or enable_playlist">
+  <if expr="enable_ai_chat or enable_brave_news or enable_speedreader or enable_brave_talk or enable_tor or enable_brave_vpn or enable_brave_wallet or enable_brave_wayback_machine or enable_playlist or enable_email_aliases">
     <div class="cr-row title">$i18n{braveOriginSectionFeaturesTitle}</div>
   </if>
 
@@ -182,6 +182,14 @@
         label="$i18n{braveOriginWaybackMachineToggleTitle}"
         icon="window-404">
     </origin-toggle-button>
+  </if>
+
+  <if expr="enable_email_aliases">
+    <origin-toggle-button id="toggleEmailAliasesButton"
+        policy-key="EmailAliasesEnabled"
+        label="$i18n{braveEmailAliasesToggleTitle}"
+        icon="email-shield">
+    </origin-toggle-button> 
   </if>
 
   <!-- TODO: Web Discovery policy not yet registered in Brave Origin

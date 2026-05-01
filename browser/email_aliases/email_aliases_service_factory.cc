@@ -53,7 +53,7 @@ bool EmailAliasesServiceFactory::IsServiceEnabled(
   if (!features::IsEmailAliasesEnabled()) {
     return false;
   }
-  const auto* pref_service = user_prefs::UserPrefs::Get(context);
+  const PrefService* pref_service = user_prefs::UserPrefs::Get(context);
   if (pref_service && pref_service->GetBoolean(prefs::kEmailAliasesEnabled)) {
     return true;
   }

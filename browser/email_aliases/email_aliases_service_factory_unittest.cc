@@ -72,7 +72,7 @@ TEST_F(EmailAliasesServiceFactoryTest, NoServiceWhenFeatureDisabled) {
   EXPECT_EQ(service, nullptr);
 }
 
-TEST_F(EmailAliasesServiceFactoryTest, ServiceWithPolicy) {
+TEST_F(EmailAliasesServiceFactoryTest, ServiceEnableDisableByPref) {
   scoped_feature_list_.Reset();
   scoped_feature_list_.InitWithFeatures(
       {brave_account::features::BraveAccountFeatureForTesting(),
@@ -98,8 +98,8 @@ TEST_F(EmailAliasesServiceFactoryTest, ServiceWithPolicy) {
   }
   {
     // Policy off
-    profile->GetTestingPrefService()->SetManagedPref(
-        prefs::kEmailAliasesEnable, base::Value(false));
+    profile->GetTestingPrefService()->SetManagedPref(prefs::kEmailAliasesEnable,
+                                                     base::Value(false));
     auto* service = EmailAliasesServiceFactory::GetServiceForProfile(profile);
     EXPECT_EQ(service, nullptr);
   }
