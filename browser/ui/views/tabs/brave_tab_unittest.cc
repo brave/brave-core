@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 
+#include <algorithm>
+
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
@@ -605,6 +607,28 @@ TEST_F(BraveTabTest, GetTabSizeInfoFullMinWidthModeUsesStandardWidth) {
   const TabSizeInfo info = tab.GetTabSizeInfo();
   EXPECT_EQ(info.min_active_width, std_w);
   EXPECT_EQ(info.min_inactive_width, std_w);
+}
+
+// When TabSlotController::IsHorizontalScrollingEnabled() is true, inactive tab
+// minimum width is at least tab_style()->GetMinimumActiveWidth(false) (wider
+// inactive tabs in scrollable strip). When false, the boost is not applied.
+TEST_F(BraveTabTest,
+       GetTabSizeInfo_MinInactiveBoostedWhenHorizontalScrollingEnabled) {
+  FakeTabSlotController controller;
+  BraveTab tab(tabs::TabHandle(1), &controller);
+  tab.SetBoundsRect({0, 0, 240, 40});
+  views::test::RunScheduledLayout(&tab);
+
+  const int style_min_active = tab.tab_style()->GetMinimumActiveWidth(false);
+  ASSERT_GT(style_min_active, 0);
+
+  controller.set_horizontal_scrolling_enabled(false);
+  const int min_inactive_off = tab.GetTabSizeInfo().min_inactive_width;
+
+  controller.set_horizontal_scrolling_enabled(true);
+  const int min_inactive_on = tab.GetTabSizeInfo().min_inactive_width;
+
+  EXPECT_EQ(min_inactive_on, (std::max)(min_inactive_off, style_min_active));
 }
 
 // BraveTab::GetAnchorPosition() must return LEFT_TOP in vertical tab mode so

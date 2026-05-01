@@ -58,3 +58,7 @@ bool FakeTabSlotController::IsInCollapsedTreeTabNode(
 brave_tabs::TabMinWidthMode FakeTabSlotController::GetTabMinWidthMode() const {
   return tab_min_width_mode_;
 }
+
+bool FakeTabSlotController::IsHorizontalScrollingEnabled() const {
+  return horizontal_scrolling_enabled_;
+}

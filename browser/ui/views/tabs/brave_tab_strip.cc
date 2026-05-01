@@ -382,6 +382,11 @@ brave_tabs::TabMinWidthMode BraveTabStrip::GetTabMinWidthMode() const {
       tab_min_width_mode_.GetValue());
 }
 
+bool BraveTabStrip::IsHorizontalScrollingEnabled() const {
+  return brave_tabs::IsScrollableHorizontalTabStripEnabled(
+      controller_->GetBrowserWindowInterface()->GetProfile()->GetPrefs());
+}
+
 TabContainer* BraveTabStrip::GetTabContainerForTesting() {
   return tab_container_.get();  // IN-TEST
 }
