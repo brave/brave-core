@@ -78,7 +78,7 @@ class FilTxManagerUnitTest : public testing::Test {
         CreateTxStorageForTest(temp_dir_.GetPath()));
 
     GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
-    GetAccountUtils().EnsureFilTestAccount(0);
+    ASSERT_TRUE(GetAccountUtils().EnsureFilTestAccount(0));
   }
 
   AccountUtils GetAccountUtils() {
@@ -86,7 +86,9 @@ class FilTxManagerUnitTest : public testing::Test {
   }
 
   mojom::AccountIdPtr FilTestAcc(size_t index) {
-    return GetAccountUtils().EnsureFilTestAccount(index)->account_id->Clone();
+    auto account = GetAccountUtils().EnsureFilTestAccount(index);
+    CHECK(account);
+    return account->account_id->Clone();
   }
 
   void SetInterceptor(const GURL& expected_url,
@@ -613,8 +615,7 @@ TEST_F(FilTxManagerUnitTest, ProcessHardwareSignatureError) {
 
 TEST_F(FilTxManagerUnitTest, RestrictedFromAddress) {
   const auto from_account = FilTestAcc(0);
-  auto* registry = BlockchainRegistry::GetInstance();
-  registry->UpdateRestrictedAddressesList(
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_restricted(
       {base::ToLowerASCII(from_account->address)});
 
   auto fil_tx_data = mojom::FilTxData::New(
@@ -634,8 +635,6 @@ TEST_F(FilTxManagerUnitTest, RestrictedFromAddress) {
   EXPECT_FALSE(success);
   EXPECT_TRUE(tx_meta_id.empty());
   EXPECT_EQ(err_str, WalletInternalErrorMessage());
-
-  registry->UpdateRestrictedAddressesList({});
 }
 
 }  //  namespace brave_wallet

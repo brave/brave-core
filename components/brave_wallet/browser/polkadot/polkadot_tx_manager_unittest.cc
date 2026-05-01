@@ -653,8 +653,7 @@ TEST_F(PolkadotTxManagerUnitTest, RetryTransaction) {
 }
 
 TEST_F(PolkadotTxManagerUnitTest, RestrictedFromAddress) {
-  auto* registry = BlockchainRegistry::GetInstance();
-  registry->UpdateRestrictedAddressesList(
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_restricted(
       {base::ToLowerASCII(polkadot_mainnet_account_->address)});
 
   auto transaction_params = mojom::NewPolkadotTransactionParams::New(
@@ -672,7 +671,6 @@ TEST_F(PolkadotTxManagerUnitTest, RestrictedFromAddress) {
   EXPECT_FALSE(success);
   EXPECT_TRUE(tx_meta_id.empty());
   EXPECT_EQ(err_str, WalletInternalErrorMessage());
-  registry->UpdateRestrictedAddressesList({});
 }
 
 }  // namespace brave_wallet

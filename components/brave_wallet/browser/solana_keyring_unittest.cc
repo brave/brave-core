@@ -285,15 +285,13 @@ TEST(SolanaKeyringUnitTest, AddNewHDAccount_RestrictedAddress) {
   EXPECT_TRUE(keyring.RemoveHDAccount(0));
 
   // Add address to restricted list.
-  registry->UpdateRestrictedAddressesList(
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_restricted(
       {base::ToLowerASCII(address_to_restrict)});
 
   // Try to add account again - should fail because it generates the same
   // address.
   auto result = keyring.AddNewHDAccount(0);
   EXPECT_FALSE(result) << "Restricted Solana address should be rejected";
-
-  registry->UpdateRestrictedAddressesList({});
 }
 
 TEST(SolanaKeyringUnitTest, ImportAccount_RestrictedAddress) {
@@ -321,14 +319,12 @@ TEST(SolanaKeyringUnitTest, ImportAccount_RestrictedAddress) {
   EXPECT_TRUE(keyring.RemoveImportedAccount(*address));
 
   // Add address to restricted list.
-  registry->UpdateRestrictedAddressesList(
-      {base::ToLowerASCII(address_to_restrict)});
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting
+      scoped_import_restricted({base::ToLowerASCII(address_to_restrict)});
 
   // Try to import account again - should fail.
   auto result = keyring.ImportAccount(private_key);
   EXPECT_FALSE(result) << "Restricted Solana address should be rejected";
-
-  registry->UpdateRestrictedAddressesList({});
 }
 
 }  // namespace brave_wallet

@@ -925,7 +925,8 @@ TEST(BlockchainRegistryUnitTest, IsRestrictedAddress) {
   // After parsing the list, we should have some addresses;
   std::vector<std::string> input_list;
   input_list.push_back("0xb9ef770b6a5e12e45983c5d80545258aa38f3b78");
-  registry->UpdateRestrictedAddressesList(input_list);
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_restricted(
+      input_list);
   EXPECT_TRUE(registry->IsRestrictedAddress(
       "0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"));
   EXPECT_TRUE(registry->IsRestrictedAddress(

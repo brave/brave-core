@@ -990,8 +990,8 @@ TEST_F(SolanaTxManagerUnitTest, RestrictedToAddress) {
   const auto& from = sol_account();
   const std::string restricted_to =
       "FepMPR8vahkJ98Fr22VKbfHU4f4PTAyi18PDZN2NooPb";
-  auto* registry = BlockchainRegistry::GetInstance();
-  registry->UpdateRestrictedAddressesList({base::ToLowerASCII(restricted_to)});
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting scoped_restricted(
+      {base::ToLowerASCII(restricted_to)});
   TestMakeSystemProgramTransferTxData(
       from, restricted_to, 10000000, nullptr,
       mojom::SolanaProviderError::kInvalidParams, WalletInternalErrorMessage(),
@@ -1004,9 +1004,8 @@ TEST_F(SolanaTxManagerUnitTest, RestrictedFromAddress) {
 
   const auto from_account_info = GetAccountUtils().EnsureSolAccount(0);
 
-  auto* registry = BlockchainRegistry::GetInstance();
-  registry->UpdateRestrictedAddressesList(
-      {base::ToLowerASCII(from_account_info->address)});
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting
+      scoped_from_restricted({base::ToLowerASCII(from_account_info->address)});
 
   mojom::SolanaTxDataPtr solana_tx_data = nullptr;
   TestMakeSystemProgramTransferTxData(from, to, 10000000, nullptr,
@@ -1045,8 +1044,6 @@ TEST_F(SolanaTxManagerUnitTest, RestrictedFromAddress) {
     EXPECT_TRUE(tx_meta_id.empty());
     EXPECT_EQ(err_str, WalletInternalErrorMessage());
   }
-
-  registry->UpdateRestrictedAddressesList({});
 }
 
 TEST_F(SolanaTxManagerUnitTest, WalletOrigin) {
@@ -1330,8 +1327,8 @@ TEST_P(TokenProgramTest, MakeTokenProgramTransferTxData) {
   // Test sending to restricted address.
   const std::string restricted_to =
       "FepMPR8vahkJ98Fr22VKbfHU4f4PTAyi18PDZN2NooPb";
-  auto* registry = BlockchainRegistry::GetInstance();
-  registry->UpdateRestrictedAddressesList({base::ToLowerASCII(restricted_to)});
+  BlockchainRegistry::ScopedRestrictedAddressesForTesting
+      scoped_token_restricted({base::ToLowerASCII(restricted_to)});
   TestMakeTokenProgramTransferTxData(
       FROM_HERE, mojom::kSolanaMainnet, spl_token_mint_address,
       from_wallet_address, restricted_to, 10000000,
