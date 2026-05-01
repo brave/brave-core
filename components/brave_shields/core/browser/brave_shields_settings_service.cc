@@ -227,6 +227,8 @@ void BraveShieldsSettingsService::SetAutoShredMode(mojom::AutoShredMode mode,
   host_content_settings_map_->SetWebsiteSettingCustomScope(
       primary_pattern, ContentSettingsPattern::Wildcard(),
       AutoShredSetting::kContentSettingsType, AutoShredSetting::ToValue(mode));
+
+  ReportAutoShredSettingsP3A(*host_content_settings_map_);
 }
 
 mojom::AutoShredMode BraveShieldsSettingsService::GetAutoShredMode(
