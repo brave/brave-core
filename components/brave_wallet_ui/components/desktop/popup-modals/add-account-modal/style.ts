@@ -5,9 +5,15 @@
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
+import LeoInput from '@brave/leo/react/input'
 import AlertReact from '@brave/leo/react/alert'
 
+// Assets
 import InfoLogo from '../../../../assets/svg-icons/info-icon.svg'
+
+// Shared Styles
+import { Column, Text } from '../../../shared/style'
+import { layoutPanelWidth } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const Alert = styled(AlertReact)`
   margin-bottom: 15px;
@@ -108,6 +114,35 @@ export const ErrorText = styled.span`
   color: ${leo.color.systemfeedback.errorText};
 `
 
-export const SubmitButtonWrapper = styled.div`
-  display: flex;
+export const CreateAccountWrapper = styled(Column)`
+  gap: 32px;
+  padding: 12px 32px 32px 32px;
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    gap: 20px;
+    padding: 0px 20px 20px 20px;
+  }
+`
+
+export const CreateAccountContent = styled(Column)`
+  max-width: 440px;
+`
+
+export const Input = styled(LeoInput)`
+  width: 100%;
+  color: ${leo.color.text.primary};
+`
+
+export const NetworkIcon = styled.img`
+  width: 45px;
+  height: 45px;
+`
+
+export const NetworkName = styled(Text)`
+  font: ${leo.font.default.semibold};
+  letter-spacing: ${leo.typography.letterSpacing.default};
+`
+
+export const NetworkDescription = styled(Text)`
+  font: ${leo.font.default.regular};
+  letter-spacing: ${leo.typography.letterSpacing.default};
 `

@@ -6,7 +6,7 @@
 import { assert } from 'chrome://resources/js/assert.js'
 import * as React from 'react'
 import { useHistory, useLocation, useParams } from 'react-router'
-import Input, { InputEventDetail } from '@brave/leo/react/input'
+import { InputEventDetail } from '@brave/leo/react/input'
 import Button from '@brave/leo/react/button'
 
 // utils
@@ -24,12 +24,8 @@ import {
 } from '../../../../constants/types'
 
 // components
-import { DividerLine } from '../../../../components/extension/divider/index'
 import PopupModal from '..'
 import { SelectAccountType } from './select-account-type'
-
-// style
-import { SubmitButtonWrapper, CreateAccountStyledWrapper } from './style'
 
 // selectors
 import { WalletSelectors } from '../../../../common/selectors'
@@ -43,6 +39,17 @@ import {
   useAddAccountMutation,
   useGetVisibleNetworksQuery,
 } from '../../../../common/slices/api.slice'
+
+// Styles
+import {
+  CreateAccountContent,
+  CreateAccountWrapper,
+  Input,
+  NetworkIcon,
+  NetworkName,
+  NetworkDescription,
+} from './style'
+import { Row } from '../../../shared/style'
 
 interface Params {
   accountTypeName: string
@@ -149,6 +156,10 @@ export const CreateAccountModal = () => {
     history.push(WalletRoutes.Accounts)
   }, [history])
 
+  const onClickBack = React.useCallback(() => {
+    history.goBack()
+  }, [history])
+
   const handleAccountNameChanged = React.useCallback(
     (detail: InputEventDetail) => {
       setFullLengthAccountName(detail.value)
@@ -211,11 +222,21 @@ export const CreateAccountModal = () => {
     <PopupModal
       title={modalTitle}
       onClose={onClickClose}
+      onBack={selectedAccountType ? onClickBack : undefined}
     >
       {selectedAccountType && (
-        <>
-          <DividerLine />
-          <CreateAccountStyledWrapper>
+        <CreateAccountWrapper width='100%'>
+          <CreateAccountContent
+            width='100%'
+            gap='16px'
+          >
+            <NetworkIcon src={selectedAccountType.icon} />
+            <NetworkName textColor='primary'>
+              {selectedAccountType.name}
+            </NetworkName>
+            <NetworkDescription textColor='tertiary'>
+              {selectedAccountType.description}
+            </NetworkDescription>
             <Input
               value={accountName}
               placeholder={getLocale('braveWalletAddAccountPlaceholder')}
@@ -224,23 +245,26 @@ export const CreateAccountModal = () => {
               showErrors={isDisabled}
               maxlength={BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH}
             >
-              {
-                // Label
-                getLocale('braveWalletAddAccountPlaceholder')
-              }
+              {getLocale('braveWalletAddAccountPlaceholder')}
             </Input>
+          </CreateAccountContent>
 
-            <SubmitButtonWrapper>
-              <Button
-                onClick={onClickCreateAccount}
-                isDisabled={isDisabled}
-                kind='filled'
-              >
-                {getLocale('braveWalletCreateAccountButton')}
-              </Button>
-            </SubmitButtonWrapper>
-          </CreateAccountStyledWrapper>
-        </>
+          <Row gap='16px'>
+            <Button
+              onClick={onClickClose}
+              kind='outline'
+            >
+              {getLocale('braveWalletButtonCancel')}
+            </Button>
+            <Button
+              onClick={onClickCreateAccount}
+              isDisabled={isDisabled}
+              kind='filled'
+            >
+              {getLocale('braveWalletCreateAccountButton')}
+            </Button>
+          </Row>
+        </CreateAccountWrapper>
       )}
 
       {!selectedAccountType && (

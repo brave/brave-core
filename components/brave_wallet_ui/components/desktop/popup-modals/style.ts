@@ -100,13 +100,6 @@ export const CloseIcon = styled(Icon).attrs({
   color: ${leo.color.icon.default};
 `
 
-export const BackIcon = styled(Icon).attrs({
-  name: 'arrow-left',
-})`
-  --leo-icon-size: 24px;
-  color: ${leo.color.icon.default};
-`
-
 export const Divider = styled.div`
   display: flex;
   width: 100%;
