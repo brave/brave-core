@@ -46,7 +46,9 @@ struct FavoritesPreloadedData {
   /// Returns a list of websites that should be preloaded for specific region. Currently all users get the same websites.
   // swift-format-ignore
   static func getList() async -> [FavoriteSite] {
-    let region = Locale.current.region?.identifier ?? ""
+    // Due to https://github.com/brave/brave-browser/issues/54996
+    // we are going to only preset YouTube as the only favorite for new users in all regions
+    let region = "ALL_REGIONS"
     Logger.module.debug("Preloading favorites, current region: \(region)")
 
     guard let fileURL = Bundle.module.url(forResource: "top_sites_by_region", withExtension: "json") else {

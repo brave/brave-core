@@ -1,5 +1,14 @@
 [
   {
+    "region_id": "ALL_REGIONS",
+    "top_sites": [
+      {
+        "name": "YouTube",
+        "url": "https://www.youtube.com/"
+      },
+    ]
+  },
+  {
     "region_id": "AF",
     "top_sites": [
       {
