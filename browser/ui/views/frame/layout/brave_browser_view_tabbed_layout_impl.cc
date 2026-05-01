@@ -454,11 +454,10 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
   //   [sidebar] [panel] [contents] [vertical_tab]
   //
   // In V2, sidebar_container holds only the control view and the upstream
-  // side panels (toolbar/contents_height_side_panel) are direct children of
-  // browser_view positioned separately.  In V1, sidebar_container wraps both
-  // the control and the side panel, and those upstream panel pointers point
-  // back into the container (so they are NOT in the proposed layout as top-
-  // level entries — layout.GetLayoutFor returns null). The adjust_panel lambda
+  // toolbar_height_side_panel is a direct child of browser_view positioned
+  // separately.  In V1, sidebar_container wraps both the control and the side
+  // panel, and the toolbar_height_side_panel pointer is NOT inside the
+  // container (so layout.GetLayoutFor returns null). The adjust_panel lambda
   // in this function is a no-op in V1 and meaningful only in V2.
 
   // Vertical tab is outermost when on the same side as the sidebar.
@@ -505,7 +504,7 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
     panel_layout->bounds.set_y(contents_bounds.y());
     panel_layout->bounds.set_height(contents_bounds.height());
   };
-  adjust_panel(views().contents_height_side_panel.get());
+  adjust_panel(views().toolbar_height_side_panel.get());
 
   // Reduce contents bounds by the sidebar width on the sidebar side.
   if (on_left) {

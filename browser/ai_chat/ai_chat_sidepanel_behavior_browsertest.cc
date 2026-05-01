@@ -81,9 +81,8 @@ class AIChatGlobalSidePanelBrowserTest
       return false;
     }
 
-    return side_panel_coordinator->IsSidePanelShowing(
-               SidePanelType::kContent) &&
-           side_panel_coordinator->GetCurrentEntryId(SidePanelType::kContent) ==
+    return side_panel_coordinator->IsSidePanelShowing() &&
+           side_panel_coordinator->GetCurrentEntryId() ==
                SidePanelEntry::Id::kChatUI;
   }
 
@@ -167,7 +166,7 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   // actually attached to the browser window.
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   ASSERT_TRUE(browser_view);
-  auto* side_panel = browser_view->contents_height_side_panel();
+  auto* side_panel = browser_view->toolbar_height_side_panel();
   ASSERT_TRUE(side_panel);
   auto* view = side_panel->GetContentParentView()->GetViewByID(
       SidePanelWebUIView::kSidePanelWebViewId);
