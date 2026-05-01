@@ -115,8 +115,8 @@ constexpr char16_t kYoutubeFullscreen[] =
     const playerSelector = "#movie_player, .html5-video-player";
     const playerContainerSelector = "#player-container-id, ytm-player, #player";
     // Hard ceiling so the MutationObserver does not outlive a broken page.
-    // Healthy loads resolve in well under a second; 30 s is generous enough
-    // to absorb cold-cache loads on slow networks.
+    // Healthy loads resolve in well under a second 30 seconds is generous
+    // enough to absorb cold-cache loads on slow networks.
     const TIMEOUT_MS = 30000;
 
     let resolved = false;
@@ -144,7 +144,7 @@ constexpr char16_t kYoutubeFullscreen[] =
       const video = document.querySelector(videoSelector);
       if (btn && video) {
         if (video.readyState >= 3) {
-          // Video is decodable; tap it to give the player input focus before
+          // Video is decodable, tap it to give the player input focus before
           // the button click is dispatched.
           video.click();
         }
@@ -162,7 +162,7 @@ constexpr char16_t kYoutubeFullscreen[] =
         return false;
       }
       // Use YouTube's own toggle. Do not also call requestFullscreen on the
-      // same element - the two APIs race on Android.
+      // same element as the two APIs race on Android.
       try {
         player.toggleFullscreen();
         return true;
@@ -179,7 +179,9 @@ constexpr char16_t kYoutubeFullscreen[] =
       try {
         const result = target.requestFullscreen();
         if (result?.then) {
-          result.then(() => resolveOnce('fullscreen_triggered')).catch(() => {});
+          result
+              .then(() => resolveOnce('fullscreen_triggered'))
+              .catch(() => {});
         } else {
           resolveOnce('fullscreen_triggered');
         }
@@ -218,9 +220,6 @@ constexpr char16_t kYoutubeFullscreen[] =
           observer.disconnect();
         }
       });
-      // childList + subtree is sufficient: querySelector finds the button as
-      // soon as it is inserted into the tree regardless of visibility, so we
-      // do not need to observe attribute mutations.
       observer.observe(observerRoot, { childList: true, subtree: true });
 
       setTimeout(() => {
@@ -286,10 +285,11 @@ bool IsBackgroundVideoPlaybackEnabled(content::WebContents* contents) {
           prefs->GetBoolean(kBackgroundVideoPlaybackEnabled));
 }
 
-// Mirrors the SDK gate that Java's PictureInPicture.isEnabled() applies before any PiP entry
-// attempt (see chrome/android/java/src/.../media/PictureInPicture.java). PiP is
-// hard-disabled on Android < R to dodge a framework crash when entering PiP immediately after
-// exiting it.
+// Mirrors the SDK gate that Java's PictureInPicture.isEnabled() applies before
+// any PiP entry attempt (see
+// chrome/android/java/src/.../media/PictureInPicture.java). PiP is
+// hard-disabled on Android < R to dodge a framework crash when entering PiP
+// immediately after exiting it.
 bool IsAndroidPictureInPictureSupported() {
   return base::android::android_info::sdk_int() >=
          base::android::android_info::SDK_VERSION_R;
