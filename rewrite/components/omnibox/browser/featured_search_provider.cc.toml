@@ -16,6 +16,11 @@ re_pattern = '\bIDS_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH_LINK_TEXT\b'
 replace = 'IDS_BRAVE_EMPTY_STRING'
 
 [[substitution]]
+description = 'Drop the upstream " " separator appended after the disclaimer text. With the trailing link text swapped to IDS_BRAVE_EMPTY_STRING, the separator would leave match.contents with a trailing space that fails AutocompleteMatch::SanitizeString in AutocompleteResult::AppendMatches.'
+re_pattern = '(IDS_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH\))\s*\+\s*u" "'
+replace = '\1'
+
+[[substitution]]
 description = 'Swap IDS_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH to the Brave-owned string.'
 re_pattern = '\bIDS_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH\b'
 replace = 'IDS_BRAVE_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH'

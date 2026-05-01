@@ -413,6 +413,7 @@ def main():
         '🩹 A tool to generate patches into Chromium using plaster files.')
     parser.add_argument('--verbose',
                         action='store_true',
+                        default=True,
                         help='Enable verbose logging')
     parser.add_argument('--infra-mode',
                         action='store_true',

@@ -1,0 +1,13 @@
+diff --git a/components/omnibox/browser/omnibox_popup_selection.cc b/components/omnibox/browser/omnibox_popup_selection.cc
+index 85ecfaced51d2956aaa20d7e24eb5a7adf2ab97c..0bc63aa39f779e545aca225df611413926ca8cb2 100644
+--- a/components/omnibox/browser/omnibox_popup_selection.cc
++++ b/components/omnibox/browser/omnibox_popup_selection.cc
+@@ -68,7 +68,7 @@ bool OmniboxPopupSelection::IsControlPresentOnMatch(
+     }
+     case FOCUSED_BUTTON_THUMBS_UP:
+     case FOCUSED_BUTTON_THUMBS_DOWN:
+-      return match.type == AutocompleteMatchType::HISTORY_EMBEDDINGS;
++      return false;
+     case FOCUSED_BUTTON_REMOVE_SUGGESTION:
+       return match.SupportsDeletion();
+     case FOCUSED_IPH_LINK:
