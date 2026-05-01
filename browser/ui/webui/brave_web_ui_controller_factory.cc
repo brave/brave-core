@@ -19,7 +19,6 @@
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
@@ -68,22 +67,6 @@
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/ui/webui/ads_internals/ads_internals_ui.h"
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
-#if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#endif
-
-#if BUILDFLAG(IS_ANDROID)
-#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/browser/ui/webui/brave_wallet/android/android_wallet_page_ui.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
-#include "brave/components/brave_wallet/browser/keyring_service.h"
-#endif
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
@@ -186,10 +169,6 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   } else if (host == kTorInternalsHost) {
     return new TorInternalsUI(web_ui, url.host());
 #endif
-#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_BRAVE_WALLET)
-  } else if (url.is_valid() && url.host() == kWalletPageHost) {
-    return new AndroidWalletPageUI(web_ui, url);
-#endif
   }
   return nullptr;
 }
@@ -211,21 +190,19 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
   }
 
   if (
-#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_BRAVE_WALLET)
-      (url.is_valid() && url.host() == kWalletPageHost) ||
-#elif !BUILDFLAG(IS_ANDROID)
-#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#if BUILDFLAG(ENABLE_BRAVE_NEWS) && !BUILDFLAG(IS_ANDROID)
       (base::FeatureList::IsEnabled(
            brave_news::features::kBraveNewsFeedUpdate) &&
        url.host() == kBraveNewsInternalsHost) ||
-#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS) && !BUILDFLAG(IS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
       // On Android New Tab is a native page implemented in Java, so no need
       // in WebUI.
       url.host() == chrome::kChromeUINewTabHost ||
       url.host() == chrome::kChromeUISettingsHost ||
       ((url.host() == kWelcomeHost || url.host() == kWelcomeURL) &&
        !profile->IsGuestSession()) ||
-#endif  // BUILDFLAG(IS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_TOR)
       url.host() == kTorInternalsHost ||
 #endif
@@ -245,27 +222,6 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
   return nullptr;
 }
 
-#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_BRAVE_WALLET)
-bool ShouldBlockWalletWebUI(content::BrowserContext* browser_context,
-                            const GURL& url) {
-  if (!url.is_valid() || url.host() != kWalletPageHost) {
-    return false;
-  }
-  Profile* profile = Profile::FromBrowserContext(browser_context);
-  if (!profile) {
-    return false;
-  }
-  auto* brave_wallet_service =
-      brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile);
-  if (!brave_wallet_service) {
-    return true;
-  }
-  // Support to unlock Wallet has been extended also through WebUI,
-  // so we block only when Wallet hasn't been created yet, as onboarding
-  // is offered only via native Andrioid UI.
-  return !brave_wallet_service->keyring_service()->IsWalletCreatedSync();
-}
-#endif  // BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_BRAVE_WALLET)
 }  // namespace
 
 WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
@@ -276,18 +232,6 @@ WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
     return WebUI::kNoWebUI;
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#if BUILDFLAG(IS_ANDROID)
-  if (ShouldBlockWalletWebUI(browser_context, url)) {
-    return WebUI::kNoWebUI;
-  }
-#else
-  if ((url.host() == kWalletPageHost || url.host() == kWalletPanelHost) &&
-      !brave_wallet::IsAllowedForContext(browser_context)) {
-    return WebUI::kNoWebUI;
-  }
-#endif  // BUILDFLAG(IS_ANDROID)
-#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     if (playlist::PlaylistUI::ShouldBlockPlaylistWebUI(browser_context, url)) {

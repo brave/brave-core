@@ -3,30 +3,28 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/webui/brave_wallet/android/android_wallet_page_handler.h"
+#include "brave/browser/ui/webui/brave_wallet/wallet_page/wallet_page_handler.h"
 
 #include <utility>
 
-#include "base/check.h"
 #include "base/notreached.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_ui.h"
+#include "content/public/browser/web_ui_controller.h"
 
-AndroidWalletPageHandler::AndroidWalletPageHandler(
+namespace brave_wallet {
+
+WalletPageHandler::WalletPageHandler(
     mojo::PendingReceiver<brave_wallet::mojom::PageHandler> receiver,
     Profile* profile,
-    ui::MojoWebUIController* webui_controller)
-    : WalletPageHandler(std::move(receiver), profile),
-      webui_controller_(webui_controller) {
-  DCHECK(webui_controller_);
-}
-AndroidWalletPageHandler::~AndroidWalletPageHandler() = default;
+    content::WebUIController& webui_controller)
+    : profile_(profile),
+      receiver_(this, std::move(receiver)),
+      webui_controller_(webui_controller) {}
+WalletPageHandler::~WalletPageHandler() = default;
 
-void AndroidWalletPageHandler::ShowApprovePanelUI() {
-  if (!webui_controller_) {
-    return;
-  }
-
+void WalletPageHandler::ShowApprovePanelUI() {
   auto* wc = webui_controller_->web_ui()->GetWebContents();
   if (!wc) {
     return;
@@ -35,21 +33,23 @@ void AndroidWalletPageHandler::ShowApprovePanelUI() {
   ::brave_wallet::ShowPanel(wc);
 }
 
-void AndroidWalletPageHandler::ShowWalletBackupUI() {
+void WalletPageHandler::ShowWalletBackupUI() {
   ::brave_wallet::ShowWalletBackup();
 }
 
-void AndroidWalletPageHandler::UnlockWalletUI() {
+void WalletPageHandler::UnlockWalletUI() {
   ::brave_wallet::UnlockWallet();
 }
 
-void AndroidWalletPageHandler::ShowOnboarding(bool is_new_wallet) {
+void WalletPageHandler::ShowOnboarding(bool is_new_wallet) {
   // Android does not render wallet landing page.
   // Therefore, users won't be able to start onboarding from WebUI.
   NOTREACHED();
 }
 
-void AndroidWalletPageHandler::OpenWalletHome() {
+void WalletPageHandler::OpenWalletHome() {
   // This is only used by iOS behind the `isIOS` check.
   NOTREACHED();
 }
+
+}  // namespace brave_wallet

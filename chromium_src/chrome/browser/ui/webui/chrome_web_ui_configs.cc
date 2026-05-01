@@ -16,10 +16,6 @@
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "content/public/browser/webui_config_map.h"
 
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
-#endif
-
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -29,6 +25,13 @@
 
 #include <chrome/browser/ui/webui/chrome_web_ui_configs.cc>
 #undef RegisterChromeWebUIConfigs
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/ui/webui/brave_wallet/wallet_page/wallet_page_ui.h"
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
+#endif
+#endif
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/brave_account/brave_account_ui_desktop.h"
@@ -41,9 +44,6 @@
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_ui.h"
 
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
-#endif
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/ui/webui/speedreader/speedreader_toolbar_ui.h"
 #endif
@@ -110,6 +110,13 @@ void RegisterChromeWebUIConfigs() {
   // upstream configs must be removed before we can add our own configs.
   RemoveOverridenWebUIs(map);
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  map.AddWebUIConfig(std::make_unique<brave_wallet::WalletPageUIConfig>());
+#if !BUILDFLAG(IS_ANDROID)
+  map.AddWebUIConfig(std::make_unique<WalletPanelUIConfig>());
+#endif
+#endif
+
 #if !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   map.AddWebUIConfig(std::make_unique<brave_rewards::RewardsPageTopUIConfig>());
@@ -120,10 +127,6 @@ void RegisterChromeWebUIConfigs() {
   map.AddWebUIConfig(std::make_unique<ShieldsPanelUIConfig>());
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   map.AddWebUIConfig(std::make_unique<SpeedreaderToolbarUIConfig>());
-#endif
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  map.AddWebUIConfig(std::make_unique<WalletPageUIConfig>());
-  map.AddWebUIConfig(std::make_unique<WalletPanelUIConfig>());
 #endif
   map.AddWebUIConfig(
       std::make_unique<webcompat_reporter::WebcompatReporterUIConfig>());

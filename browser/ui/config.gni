@@ -7,6 +7,7 @@ import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_education/buildflags.gni")
 import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/email_aliases/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
@@ -85,4 +86,14 @@ if (enable_email_aliases) {
     "//brave/browser/ui/email_aliases",
     "//brave/browser/ui/webui/email_aliases",
   ]
+}
+
+if (enable_brave_wallet) {
+  # Need this for these headers:
+  # "chrome/browser/ui/webui/favicon_source.h"
+  # "chrome/browser/ui/webui/plural_string_handler.h"
+  # "chrome/browser/ui/webui/theme_source.h"
+  # "brave/browser/ui/webui/brave_rewards/rewards_page_handler.h"
+  brave_ui_allow_circular_includes_from +=
+      [ "//brave/browser/ui/webui/brave_wallet/wallet_page" ]
 }

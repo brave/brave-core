@@ -346,6 +346,7 @@ if (enable_brave_wallet) {
     "//brave/browser/brave_wallet",
     "//brave/browser/brave_wallet:brave_wallet_delegate",
     "//brave/browser/brave_wallet:tab_helper",
+    "//brave/browser/ui/webui/brave_wallet/wallet_page",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:pref_names",
     "//brave/components/brave_wallet/browser:utils",

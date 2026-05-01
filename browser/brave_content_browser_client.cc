@@ -291,18 +291,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#include "brave/browser/ui/webui/brave_wallet/android/android_wallet_page_ui.h"
-#endif  //  BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/ui/webui/new_tab_takeover/android/new_tab_takeover_ui.h"
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
-#include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
-#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
-
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
 #include "brave/browser/ui/webui/brave_news_internals/brave_news_internals_ui.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
@@ -349,6 +341,13 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/email_aliases/email_aliases_panel_ui.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/ui/webui/brave_wallet/wallet_page/wallet_page_ui.h"
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
+#endif
 #endif
 
 namespace {
@@ -709,14 +708,14 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
       .Add<brave_rewards::mojom::RewardsPageHandler>();
 #endif
 
-#if !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  registry.ForWebUI<WalletPageUI>()
+  registry.ForWebUI<brave_wallet::WalletPageUI>()
       .Add<brave_wallet::mojom::PageHandlerFactory>()
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       .Add<brave_rewards::mojom::RewardsPageHandler>()
 #endif
       ;
+#if !BUILDFLAG(IS_ANDROID)
   registry.ForWebUI<WalletPanelUI>()
       .Add<brave_wallet::mojom::PanelHandlerFactory>()
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
@@ -724,7 +723,9 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
 #endif
       ;
 #endif
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
+#if !BUILDFLAG(IS_ANDROID)
   auto ntp_refresh_registration =
       registry.ForWebUI<BraveNewTabPageUI>()
           .Add<brave_new_tab_page_refresh::mojom::NewTabPageHandler>()
@@ -965,11 +966,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   map->Add<brave_vpn::mojom::ServiceHandler>(
       base::BindRepeating(&MaybeBindBraveVpnImpl));
-#endif
-
-#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_BRAVE_WALLET)
-  content::RegisterWebUIControllerInterfaceBinder<
-      brave_wallet::mojom::PageHandlerFactory, AndroidWalletPageUI>(map);
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)

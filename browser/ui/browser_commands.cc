@@ -340,13 +340,6 @@ void ShowWalletBubble(Browser* browser) {
 #endif
 }
 
-void ShowApproveWalletBubble(Browser* browser) {
-#if defined(TOOLKIT_VIEWS)
-  static_cast<BraveBrowserView*>(browser->window())
-      ->CreateApproveWalletBubble();
-#endif
-}
-
 void CloseWalletBubble(Browser* browser) {
 #if defined(TOOLKIT_VIEWS)
   static_cast<BraveBrowserView*>(browser->window())->CloseWalletBubble();

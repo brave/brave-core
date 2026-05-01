@@ -46,7 +46,6 @@ void ToggleAIChat(Browser* browser);
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 void ShowWalletBubble(Browser* browser);
-void ShowApproveWalletBubble(Browser* browser);
 void CloseWalletBubble(Browser* browser);
 #endif
 

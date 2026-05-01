@@ -151,6 +151,8 @@ android_only_test_deps = [
 ]
 
 if (enable_brave_wallet) {
-  android_only_test_deps +=
-      [ "//brave/components/brave_wallet/browser:test_support" ]
+  android_only_test_deps += [
+    "//brave/browser/ui/webui/brave_wallet/wallet_page",
+    "//brave/components/brave_wallet/browser:test_support",
+  ]
 }

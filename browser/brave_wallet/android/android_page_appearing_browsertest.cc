@@ -17,7 +17,7 @@
 #include "base/test/bind.h"
 #include "base/test/scoped_run_loop_timeout.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/browser/ui/webui/brave_wallet/android/android_wallet_page_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/wallet_page/wallet_page_ui.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
@@ -161,7 +161,7 @@ class TestWebUIControllerFactory : public content::WebUIControllerFactory {
       content::WebUI* web_ui,
       const GURL& url) override {
     if (url.host() == kWalletPageHost) {
-      return std::make_unique<AndroidWalletPageUI>(web_ui, url);
+      return std::make_unique<WalletPageUI>(web_ui);
     }
 
     return nullptr;
