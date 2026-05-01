@@ -10,12 +10,18 @@
   OmniboxPromotionTest;            \
   friend class AutocompleteControllerTest
 
+#define UpdateMatchDestinationURLWithInvocationSource   \
+  UpdateMatchDestinationURLWithInvocationSource_Unused( \
+      AutocompleteMatch* match) const;                  \
+  void UpdateMatchDestinationURLWithInvocationSource
+
 #include <components/omnibox/browser/autocomplete_controller.h>  // IWYU pragma: export
 
 namespace ai_chat {
 void MaybeShowLeoMatch(AutocompleteResult* result);
 }
 
+#undef UpdateMatchDestinationURLWithInvocationSource
 #undef AutocompleteControllerTest
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_AUTOCOMPLETE_CONTROLLER_H_
