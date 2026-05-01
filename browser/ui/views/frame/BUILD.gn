@@ -57,10 +57,6 @@ source_set("browser_tests") {
   sources =
       [ "//brave/browser/ui/views/frame/brave_browser_view_browsertest.cc" ]
 
-  if (is_linux) {
-    sources += [ "//brave/browser/ui/views/frame/brave_browser_frame_view_linux_browsertest.cc" ]
-  }
-
   deps = [
     ":frame",
     "//base",
@@ -83,6 +79,8 @@ source_set("browser_tests") {
   ]
 
   if (is_linux) {
+    sources += [ "//brave/browser/ui/views/frame/brave_browser_frame_view_linux_browsertest.cc" ]
+
     deps += [
       "//brave/browser/ui:brave_tab_prefs",
       "//chrome/browser/themes",

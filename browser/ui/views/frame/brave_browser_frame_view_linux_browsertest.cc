@@ -3,7 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <optional>
+
 #include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_frame_view_linux_native.h"
@@ -59,11 +62,13 @@ class FakeWindowFrameProvider : public ui::WindowFrameProvider {
                         const gfx::Insets&) override {
     last_top_area_height_ = top_area_height;
   }
-  int last_top_area_height() const { return last_top_area_height_; }
-  void reset() { last_top_area_height_ = -1; }
+  std::optional<int> last_top_area_height() const {
+    return last_top_area_height_;
+  }
+  void reset() { last_top_area_height_.reset(); }
 
  private:
-  int last_top_area_height_ = -1;
+  std::optional<int> last_top_area_height_;
 };
 
 // LinuxUi that satisfies the factory's CreateNavButtonProvider() non-null
@@ -87,15 +92,30 @@ class FakeLinuxUiWithNavButtons : public ui::FakeLinuxUi {
   FakeWindowFrameProvider frame_provider_;
 };
 
+// RAII wrapper that installs a LinuxUiGetter for the duration of a scope and
+// restores the previous one on destruction, even if an assertion fires early.
+class ScopedLinuxUiGetter {
+ public:
+  explicit ScopedLinuxUiGetter(ui::LinuxUiGetter* new_getter)
+      : old_getter_(ui::LinuxUiGetter::instance()) {
+    ui::LinuxUiGetter::set_instance(new_getter);
+  }
+  ~ScopedLinuxUiGetter() { ui::LinuxUiGetter::set_instance(old_getter_); }
+
+ private:
+  // Maybe null if no getter was installed before this scope.
+  raw_ptr<ui::LinuxUiGetter> old_getter_ = nullptr;
+};
+
 // LinuxUiGetter that returns a fixed LinuxUiTheme for every window/profile.
 class FakeLinuxUiGetter : public ui::LinuxUiGetter {
  public:
-  explicit FakeLinuxUiGetter(ui::LinuxUiTheme* theme) : theme_(theme) {}
-  ui::LinuxUiTheme* GetForWindow(aura::Window*) override { return theme_; }
-  ui::LinuxUiTheme* GetForProfile(Profile*) override { return theme_; }
+  explicit FakeLinuxUiGetter(ui::LinuxUiTheme& theme) : theme_(theme) {}
+  ui::LinuxUiTheme* GetForWindow(aura::Window*) override { return &*theme_; }
+  ui::LinuxUiTheme* GetForProfile(Profile*) override { return &*theme_; }
 
  private:
-  raw_ptr<ui::LinuxUiTheme> theme_;
+  const raw_ref<ui::LinuxUiTheme> theme_;
 };
 
 }  // namespace
@@ -125,9 +145,8 @@ class BraveBrowserFrameViewTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(BraveBrowserFrameViewTest,
                        VerticalTabsGtkTopAreaHeightIsPositive) {
   FakeLinuxUiWithNavButtons fake_linux_ui;
-  FakeLinuxUiGetter fake_getter(&fake_linux_ui);
-  auto* old_getter = ui::LinuxUiGetter::instance();
-  ui::LinuxUiGetter::set_instance(&fake_getter);
+  FakeLinuxUiGetter fake_getter(fake_linux_ui);
+  ScopedLinuxUiGetter scoped_getter(&fake_getter);
 
   ThemeServiceFactory::GetForProfile(browser()->profile())->UseSystemTheme();
 
@@ -154,14 +173,14 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserFrameViewTest,
   // PaintWindowFrame; the fix adds the toolbar height.  Assert the captured
   // value is at least the toolbar height to confirm the addition happened.
   auto* toolbar = BrowserView::GetBrowserViewForBrowser(gtk_browser)->toolbar();
-  EXPECT_GE(fake_linux_ui.frame_provider().last_top_area_height(),
+  ASSERT_TRUE(
+      fake_linux_ui.frame_provider().last_top_area_height().has_value());
+  EXPECT_GE(*fake_linux_ui.frame_provider().last_top_area_height(),
             toolbar->GetPreferredSize().height());
 
   // Close before the fake objects go out of scope; the frame view holds a raw
   // pointer to fake_linux_ui via the frame-provider getter.
   CloseBrowserSynchronously(gtk_browser);
-
-  ui::LinuxUiGetter::set_instance(old_getter);
 }
 
 // Verifies that with vertical tabs enabled and no title bar, both the toolbar
