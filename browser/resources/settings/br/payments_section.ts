@@ -13,5 +13,13 @@ RegisterPolymerTemplateModifications({
     } else {
       manageLink.setAttribute('hidden', 'true')
     }
+    const cardBenefitsFlagEnabledTemplate = templateContent.querySelector(
+      'template[is=dom-if][if="[[cardBenefitsFlagEnabled_]]"]')
+    if (!cardBenefitsFlagEnabledTemplate) {
+      console.error(
+        `[Settings] Couldn't find cardBenefitsFlagEnabled_ template`)
+    } else {
+      cardBenefitsFlagEnabledTemplate.remove()
+    }
   }
 })
