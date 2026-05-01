@@ -80,7 +80,7 @@ public class BraveYouTubePictureInPictureController {
     private @Nullable BroadcastReceiver mScreenStateReceiver;
 
     /**
-     * True iff a PiP entry should resume the media session once the system reports the activity is
+     * True if a PiP entry should resume the media session once the system reports the activity is
      * in PiP mode. Set by {@link #onSessionRequested} and consumed by {@link
      * #onEnterPictureInPictureMode}.
      */
@@ -500,7 +500,7 @@ public class BraveYouTubePictureInPictureController {
     }
 
     /**
-     * Returns true iff the (sessionId, webContents) pair refers to the currently *exiting* YT-PiP
+     * Returns true if the (sessionId, webContents) pair refers to the currently *exiting* YT-PiP
      * session. The {@code mExiting} guard is intentional: callers of this helper are scheduled
      * during exit teardown and must no-op if the session was renewed in the meantime.
      *
