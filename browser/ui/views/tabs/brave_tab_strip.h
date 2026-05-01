@@ -72,6 +72,7 @@ class BraveTabStrip : public TabStrip {
       const Tab* tab) const override;
   ui::ImageModel GetTabAccentIcon(const Tab* tab) const override;
   brave_tabs::TabMinWidthMode GetTabMinWidthMode() const override;
+  bool IsHorizontalScrollingEnabled() const override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollBarMode);
