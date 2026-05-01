@@ -182,8 +182,11 @@ class Patchfile:
                                         patch=replace(
                                             self,
                                             source_from_git=conflicted_file))
-            if e.stderr.startswith('error:'):
-                [_, reason] = e.stderr.strip().split(': ', 1)
+            error_line = next(
+                (l for l in e.stderr.splitlines() if l.startswith('error:')),
+                None)
+            if error_line is not None:
+                [_, reason] = error_line.strip().split(': ', 1)
 
                 if 'does not exist in index' in reason:
                     # This type of detection could occur in certain cases when
@@ -221,6 +224,8 @@ class Patchfile:
                 return self.ApplyResult(status=self.ApplyStatus.BROKEN,
                                         patch=None)
 
+        # We snould not reach this point. Failures to apply that fail like this
+        # must be investigated with `--verbose`, and fixed.
         raise NotImplementedError()
 
     def fetch_source_from_git(self) -> "Patchfile":

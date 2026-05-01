@@ -93,7 +93,7 @@ class PatchfileTest(unittest.TestCase):
         # piling to this file
         self.fake_chromium_src._run_git_command(
             ["checkout", "."], self.fake_chromium_src.chromium)
-        self.assertFalse('FROM_BRAVE_STORE' in target_file.read_text())
+        self.assertNotIn('FROM_BRAVE_STORE', target_file.read_text())
 
         # Adding an upstream chromium change that should conflict with our
         # patch
@@ -106,7 +106,7 @@ class PatchfileTest(unittest.TestCase):
             'Added DELETED to developer_private.idl Location',
             self.fake_chromium_src.chromium)
 
-        self.assertFalse('FROM_BRAVE_STORE' in target_file.read_text())
+        self.assertNotIn('FROM_BRAVE_STORE', target_file.read_text())
         patchfile = Patchfile(
             path=self.fake_chromium_src.get_patchfile_path_for_source(
                 self.fake_chromium_src.chromium, test_idl))
@@ -162,7 +162,7 @@ class PatchfileTest(unittest.TestCase):
         # piling to this file
         self.fake_chromium_src._run_git_command(
             ["checkout", "."], self.fake_chromium_src.chromium)
-        self.assertFalse('FROM_BRAVE_STORE' in target_file.read_text())
+        self.assertNotIn('FROM_BRAVE_STORE', target_file.read_text())
 
         # Adding an upstream chromium change that should conflict with our
         # patch
@@ -175,7 +175,7 @@ class PatchfileTest(unittest.TestCase):
             'Added DELETED to developer_private.idl Location',
             self.fake_chromium_src.chromium)
 
-        self.assertFalse('FROM_BRAVE_STORE' in target_file.read_text())
+        self.assertNotIn('FROM_BRAVE_STORE', target_file.read_text())
         patchfile = Patchfile(
             path=self.fake_chromium_src.get_patchfile_path_for_source(
                 self.fake_chromium_src.chromium, test_idl))
@@ -258,14 +258,14 @@ class PatchfileTest(unittest.TestCase):
             'Added ErrorType to developer_private.idl',
             self.fake_chromium_src.chromium)
 
-        self.assertFalse('FROM_BRAVE_STORE' in target_file.read_text())
+        self.assertNotIn('FROM_BRAVE_STORE', target_file.read_text())
         patchfile = Patchfile(
             path=self.fake_chromium_src.get_patchfile_path_for_source(
                 self.fake_chromium_src.chromium, test_idl))
         applied = patchfile.apply()
         self.assertEqual(applied.status, Patchfile.ApplyStatus.CLEAN)
         self.assertFalse(applied.patch)
-        self.assertTrue('FROM_BRAVE_STORE' in target_file.read_text())
+        self.assertIn('FROM_BRAVE_STORE', target_file.read_text())
 
     def test_apply_broken(self):
         '''Tests the behavior when applying a broken patchfile.'''
@@ -283,7 +283,7 @@ class PatchfileTest(unittest.TestCase):
 
         self.fake_chromium_src._run_git_command(
             ['checkout', '.'], self.fake_chromium_src.chromium)
-        self.assertFalse('last line' in target_file.read_text())
+        self.assertNotIn('last line', target_file.read_text())
 
         patchfile = Patchfile(
             path=self.fake_chromium_src.get_patchfile_path_for_source(
@@ -291,11 +291,11 @@ class PatchfileTest(unittest.TestCase):
         applied = patchfile.apply()
         self.assertEqual(applied.status, Patchfile.ApplyStatus.CLEAN)
         self.assertFalse(applied.patch)
-        self.assertTrue('last line' in target_file.read_text())
+        self.assertIn('last line', target_file.read_text())
 
         self.fake_chromium_src._run_git_command(
             ['checkout', '--force', 'HEAD'], self.fake_chromium_src.chromium)
-        self.assertFalse('last line' in target_file.read_text())
+        self.assertNotIn('last line', target_file.read_text())
 
         # A simple strip over the contents of the patch should break it
         target_patch = (self.fake_chromium_src.brave /
@@ -326,7 +326,7 @@ class PatchfileTest(unittest.TestCase):
 
         self.fake_chromium_src._run_git_command(
             ['checkout', '.'], self.fake_chromium_src.chromium)
-        self.assertFalse('last line' in target_file.read_text())
+        self.assertNotIn('last line', target_file.read_text())
 
         patchfile = Patchfile(
             path=self.fake_chromium_src.get_patchfile_path_for_source(
@@ -334,11 +334,11 @@ class PatchfileTest(unittest.TestCase):
         applied = patchfile.apply()
         self.assertEqual(applied.status, Patchfile.ApplyStatus.CLEAN)
         self.assertFalse(applied.patch)
-        self.assertTrue('last line' in target_file.read_text())
+        self.assertIn('last line', target_file.read_text())
 
         self.fake_chromium_src._run_git_command(
             ['checkout', '--force', 'HEAD'], self.fake_chromium_src.chromium)
-        self.assertFalse('last line' in target_file.read_text())
+        self.assertNotIn('last line', target_file.read_text())
 
         # deleting file.
         self.fake_chromium_src.delete_file(test_idl,
@@ -358,6 +358,56 @@ class PatchfileTest(unittest.TestCase):
         self.assertTrue(applied.patch.source_from_git)
         self.assertEqual(applied.patch.source_from_git, test_idl.as_posix())
 
+    def test_apply_on_deleted_with_whitespace_error(self):
+        '''Tests DELETED status when stderr has whitespace warnings before the
+        error: line (the bug that was fixed).'''
+
+        test_idl = Path('chrome/common/extensions/api/developer_private.idl')
+        self.fake_chromium_src.write_and_stage_file(
+            test_idl, 'Just a test\nline1\nline2\nline3\n',
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add developer_private.idl',
+                                      self.fake_chromium_src.chromium)
+
+        target_file = self.fake_chromium_src.chromium / test_idl
+        # Trailing whitespace causes git to emit a warning line before the
+        # error: line when applying against a deleted file.
+        target_file.write_text(target_file.read_text() + 'last line   \n')
+        self.fake_chromium_src.run_update_patches()
+
+        self.fake_chromium_src._run_git_command(
+            ['checkout', '.'], self.fake_chromium_src.chromium)
+        self.assertNotIn('last line', target_file.read_text())
+
+        # Sanity-check: patch applies cleanly before we delete the file.
+        patchfile = Patchfile(
+            path=self.fake_chromium_src.get_patchfile_path_for_source(
+                self.fake_chromium_src.chromium, test_idl))
+        applied = patchfile.apply()
+        self.assertEqual(applied.status, Patchfile.ApplyStatus.CLEAN)
+        self.assertIn('last line', target_file.read_text())
+
+        self.fake_chromium_src._run_git_command(
+            ['checkout', '--force', 'HEAD'], self.fake_chromium_src.chromium)
+        self.assertNotIn('last line', target_file.read_text())
+
+        # Simulate upstream deletion of the file.
+        self.fake_chromium_src.delete_file(test_idl,
+                                           self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Delete developer_private.idl',
+                                      self.fake_chromium_src.chromium)
+
+        patchfile = Patchfile(
+            path=self.fake_chromium_src.get_patchfile_path_for_source(
+                self.fake_chromium_src.chromium, test_idl))
+        applied = patchfile.apply()
+        self.assertEqual(applied.status, Patchfile.ApplyStatus.DELETED)
+        self.assertTrue(applied.patch)
+        self.assertEqual(applied.patch.path, patchfile.path)
+        self.assertFalse(patchfile.source_from_git)
+        self.assertTrue(applied.patch.source_from_git)
+        self.assertEqual(applied.patch.source_from_git, test_idl.as_posix())
+
     def test_source_from_brave(self):
         """Tests the source_from_brave method of Patchfile."""
         self.assertEqual(
@@ -368,26 +418,24 @@ class PatchfileTest(unittest.TestCase):
             Patchfile(path=PurePath('patches/build-android-gyp-dex.py.patch')).
             source_from_brave().as_posix(), '../build/android/gyp/dex.py')
 
+        _devtools_patch = (
+            'patches/third_party/devtools-frontend/src/'
+            'front_end-panels-timeline-components-LiveMetricsView.ts.patch')
+        _devtools_source = (
+            '../third_party/devtools-frontend/src/'
+            'front_end/panels/timeline/components/LiveMetricsView.ts')
         self.assertEqual(
-            Patchfile(path=PurePath(
-                'patches/third_party/devtools-frontend/src/front_end-panels-timeline-components-LiveMetricsView.ts.patch'
-            )).source_from_brave().as_posix(),
-            '../third_party/devtools-frontend/src/front_end/panels/timeline/components/LiveMetricsView.ts'
-        )
+            Patchfile(
+                path=PurePath(_devtools_patch)).source_from_brave().as_posix(),
+            _devtools_source)
 
         # Checking that we can handle the source path provided by the report
         # produced by `npm run apply_patches`, which uses relative paths from
         # src/ when listing source files that failed to apply.
         self.assertEqual(
-            Patchfile(
-                path=PurePath(
-                    'patches/third_party/devtools-frontend/src/front_end-panels-timeline-components-LiveMetricsView.ts.patch'
-                ),
-                provided_source=
-                'third_party/devtools-frontend/src/front_end/panels/timeline/components/LiveMetricsView.ts'
-            ).source_from_brave().as_posix(),
-            '../third_party/devtools-frontend/src/front_end/panels/timeline/components/LiveMetricsView.ts'
-        )
+            Patchfile(path=PurePath(_devtools_patch),
+                      provided_source=_devtools_source[3:]).source_from_brave(
+                      ).as_posix(), _devtools_source)
 
 
     def test_path_from_repo(self):
