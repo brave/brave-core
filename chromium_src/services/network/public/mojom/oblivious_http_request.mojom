@@ -1,0 +1,15 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module network.mojom;
+
+import "services/network/public/mojom/http_request_headers.mojom";
+
+[BraveExtend]
+struct ObliviousHttpRequest {
+  // Optional additional HTTP headers to include in the outer request to the
+  // relay (not encapsulated in bhttp).
+  HttpRequestHeaders? relay_request_headers;
+};
