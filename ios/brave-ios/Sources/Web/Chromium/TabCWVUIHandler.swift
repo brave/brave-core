@@ -103,7 +103,7 @@ class TabCWVUIHandler: NSObject, BraveWebViewUIDelegate {
       completionHandler()
       return
     }
-    Task {
+    Task { @MainActor in
       await tab.delegate?.tab(tab, runJavaScriptAlertPanelWithMessage: message, pageURL: url)
       completionHandler()
     }
@@ -140,7 +140,7 @@ class TabCWVUIHandler: NSObject, BraveWebViewUIDelegate {
       completionHandler(nil)
       return
     }
-    Task {
+    Task { @MainActor in
       let result = await delegate.tab(
         tab,
         runJavaScriptConfirmPanelWithPrompt: prompt,
