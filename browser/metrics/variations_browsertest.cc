@@ -7,6 +7,7 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/test/base/platform_browser_test.h"
+#include "components/variations/seed_reader_writer.h"
 #include "components/variations/service/variations_field_trial_creator.h"
 #include "components/variations/variations_test_utils.h"
 #include "content/public/test/browser_test.h"
@@ -45,7 +46,12 @@ SignedSeedData GetBraveSignedSeedData() {
 
 class VariationsBrowserTest : public PlatformBrowserTest {
  public:
-  VariationsBrowserTest() { DisableTestingConfig(); }
+  VariationsBrowserTest() {
+    DisableTestingConfig();
+    // Force the SeedFileTrial to Default so seed loading reads from prefs
+    // (where WriteSeedData stores the test seed) rather than a seed file.
+    SetUpSeedFileTrial(kDefaultGroup);
+  }
   ~VariationsBrowserTest() override = default;
 
  protected:
