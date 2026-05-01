@@ -114,8 +114,6 @@ public class BrowserViewController: UIViewController {
   var searchController: SearchViewController?
   var favoritesController: FavoritesViewController?
 
-  private var tabIdPendingShortcutsWidgetBraveSearchAttribution: UUID?
-
   /// All content that appears above the footer should be added to this view. (Find In Page/SnackBars)
   let alertStackView: UIStackView = {
     let alertStackView = UIStackView()
@@ -1713,12 +1711,6 @@ public class BrowserViewController: UIViewController {
   ///   - isUserDefinedURLNavigation: Boolean for  determining if url navigation is done from user defined spot
   ///     user defined spot like Favourites or Bookmarks
   func finishEditingAndSubmit(_ url: URL, isUserDefinedURLNavigation: Bool = false) {
-    if let tab = tabManager.selectedTab,
-      tabIdPendingShortcutsWidgetBraveSearchAttribution == tab.id
-    {
-      tabIdPendingShortcutsWidgetBraveSearchAttribution = nil
-    }
-
     if url.isBookmarklet {
       topToolbar.leaveOverlayMode()
 
@@ -3111,15 +3103,10 @@ extension BrowserViewController {
     }
   }
 
-  func markShortcutsWidgetBraveSearchAttributionPending() {
-    tabIdPendingShortcutsWidgetBraveSearchAttribution = tabManager.selectedTab?.id
-  }
-
   public func submitSearchText(_ text: String, isBraveSearchPromotion: Bool = false) {
-    let engineType: DefaultEngineType =
-      privateBrowsingManager.isPrivateBrowsing ? .privateMode : .standard
-    let defaultEngine = profile.searchEngines.defaultEngine(forType: engineType)
-    var engine = defaultEngine
+    var engine = profile.searchEngines.defaultEngine(
+      forType: privateBrowsingManager.isPrivateBrowsing ? .privateMode : .standard
+    )
 
     if isBraveSearchPromotion {
       let braveSearchEngine = profile.searchEngines.orderedEngines.first {
@@ -3131,23 +3118,17 @@ extension BrowserViewController {
       }
     }
 
-    if let searchURL = engine?.searchURLForQuery(
+    if var searchURL = engine?.searchURLForQuery(
       text,
       isBraveSearchPromotion: isBraveSearchPromotion
     ) {
-      var url = searchURL
-      if tabManager.selectedTab?.id == tabIdPendingShortcutsWidgetBraveSearchAttribution {
-        if defaultEngine?.shortName == OpenSearchEngine.EngineNames.brave {
-          url = url.updatingSourceWithWidgetAttribution()
-        }
-        tabIdPendingShortcutsWidgetBraveSearchAttribution = nil
+      // We couldn't find a matching search keyword, so do a search query.
+      if let widgetSearch = tabManager.selectedTab?.widgetSearchTabHelper {
+        searchURL = widgetSearch.finalize(searchURL, forEngine: engine?.shortName)
       }
-      finishEditingAndSubmit(url)
+      finishEditingAndSubmit(searchURL)
     } else {
       // We still don't have a valid URL, so something is broken. Give up.
-      if tabManager.selectedTab?.id == tabIdPendingShortcutsWidgetBraveSearchAttribution {
-        tabIdPendingShortcutsWidgetBraveSearchAttribution = nil
-      }
       print("Error handling URL entry: \"\(text)\".")
       assertionFailure("Couldn't generate search URL: \(text)")
     }

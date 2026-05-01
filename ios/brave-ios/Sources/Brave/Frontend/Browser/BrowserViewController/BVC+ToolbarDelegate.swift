@@ -726,6 +726,7 @@ extension BrowserViewController: TopToolbarDelegate {
     guard let searchController = searchController else { return }
     searchController.setupSearchEngineList()
     searchController.searchDelegate = self
+    searchController.associatedTab = tabManager.selectedTab
 
     searchLoader = SearchLoader(
       historyAPI: profileController.historyAPI,

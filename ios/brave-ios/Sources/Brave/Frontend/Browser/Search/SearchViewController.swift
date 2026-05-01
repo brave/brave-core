@@ -12,6 +12,7 @@ import Shared
 import Storage
 import Then
 import UIKit
+import Web
 
 // MARK: - SearchViewControllerDelegate
 
@@ -209,6 +210,7 @@ public class SearchViewController: UIViewController, LoaderListener {
   )
 
   weak var searchDelegate: SearchViewControllerDelegate?
+  weak var associatedTab: (any TabState)?
 
   var isUsingBottomBar: Bool = false {
     didSet {
@@ -849,9 +851,13 @@ public class SearchViewController: UIViewController, LoaderListener {
     let offset = dataSource.isAIChatAvailable ? 1 : 0  // offset for the Leo button
     let engine = dataSource.quickSearchEngines[index - offset]
     let localSearchQuery = dataSource.searchQuery.lowercased()
-    guard let url = engine.searchURLForQuery(localSearchQuery) else {
+    guard var url = engine.searchURLForQuery(localSearchQuery) else {
       assertionFailure()
       return
+    }
+
+    if let widgetSearch = associatedTab?.widgetSearchTabHelper {
+      url = widgetSearch.finalize(url, forEngine: engine.shortName)
     }
 
     if !dataSource.isPrivate {
@@ -1139,6 +1145,9 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         var url = URIFixup.getURL(suggestion)
         if url == nil {
           url = engine?.searchURLForQuery(suggestion)
+          if let sugestedUrl = url, let widgetSearch = associatedTab?.widgetSearchTabHelper {
+            url = widgetSearch.finalize(sugestedUrl, forEngine: engine?.shortName)
+          }
         }
 
         if let url = url {

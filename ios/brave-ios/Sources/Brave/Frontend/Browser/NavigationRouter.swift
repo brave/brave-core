@@ -83,8 +83,7 @@ public enum NavigationPath: Equatable {
     case .url(let url, let isPrivate):
       NavigationPath.handleURL(url: url, isPrivate: isPrivate, with: bvc)
     case .text(let text): NavigationPath.handleText(text: text, with: bvc)
-    case .widgetShortcutURL(let path):
-      NavigationPath.handleWidgetShortcut(path, with: bvc, fromShortcutsWidget: true)
+    case .widgetShortcutURL(let path): NavigationPath.handleWidgetShortcut(path, with: bvc)
     }
   }
 
@@ -127,11 +126,7 @@ public enum NavigationPath: Equatable {
     )
   }
 
-  static func handleWidgetShortcut(
-    _ path: WidgetShortcut,
-    with bvc: BrowserViewController,
-    fromShortcutsWidget: Bool = false
-  ) {
+  static func handleWidgetShortcut(_ path: WidgetShortcut, with bvc: BrowserViewController) {
     switch path {
     case .unknown, .search:
       // Search
@@ -143,8 +138,10 @@ public enum NavigationPath: Equatable {
           isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing
         )
       }
-      if fromShortcutsWidget {
-        bvc.markShortcutsWidgetBraveSearchAttributionPending()
+      if let tab = bvc.tabManager.selectedTab {
+        // Attach a WidgetSearchTabHelper to just this tab for a single shot search.
+        // It will be removed after the search is peformed or if the user navigates away
+        tab.widgetSearchTabHelper = .init(tab: tab)
       }
     case .newTab:
       bvc.openBlankNewTab(

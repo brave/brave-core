@@ -93,32 +93,6 @@ extension URL {
     return components.url!
   }
 
-  /// Rewrites Brave Search URLs that use the app’s default `source=ios` (OpenSearch template) to `source=ios-widget`.
-  /// To be called after the browser has already determined the omnibox search came from the Shortcuts widget.
-  public func updatingSourceWithWidgetAttribution() -> URL {
-    enum BraveSearchSource {
-      static let host = "search.brave.com"
-      static let queryKey = "source"
-      static let appValue = "ios"
-      static let widgetValue = "ios-widget"
-    }
-
-    guard host?.lowercased() == BraveSearchSource.host,
-      var components = URLComponents(url: self, resolvingAgainstBaseURL: false),
-      let items = components.queryItems,
-      items.contains(where: {
-        $0.name == BraveSearchSource.queryKey && $0.value == BraveSearchSource.appValue
-      })
-    else { return self }
-
-    components.queryItems = items.map { item in
-      (item.name == BraveSearchSource.queryKey && item.value == BraveSearchSource.appValue)
-        ? URLQueryItem(name: BraveSearchSource.queryKey, value: BraveSearchSource.widgetValue)
-        : item
-    }
-    return components.url ?? self
-  }
-
   public func getQuery() -> [String: String] {
     var results = [String: String]()
     let keyValues = self.query?.components(separatedBy: "&")
