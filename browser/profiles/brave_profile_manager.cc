@@ -121,7 +121,7 @@ void RecordInitialP3AValues(Profile* profile) {
   if (profile->IsRegularProfile()) {
     auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
     MaybeRecordInitialShieldsSettings(
-        profile->GetPrefs(), map,
+        g_browser_process->local_state(), profile->GetPrefs(), map,
         brave_shields::GetCosmeticFilteringControlType(map, GURL()),
         brave_shields::GetFingerprintingControlType(map, GURL()));
   }

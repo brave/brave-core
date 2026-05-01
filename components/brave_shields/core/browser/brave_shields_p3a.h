@@ -52,6 +52,12 @@ inline constexpr char kUpgradeHTTPSGlobalHistogramName[] =
     "Brave.Shields.UpgradeHTTPSGlobal";
 inline constexpr char kUpgradeHTTPSPerSiteHistogramName[] =
     "Brave.Shields.UpgradeHTTPSPerSite.2";
+inline constexpr char kAutoShredSettingsHistogramName[] =
+    "Brave.Shields.AutoShredSettings";
+inline constexpr char kManualShredHistogramName[] = "Brave.Shields.ManualShred";
+
+inline constexpr char kManualShredTriggeredPrefName[] =
+    "brave_shields.p3a_manual_shred_triggered";
 // Note: append-only enumeration! Never remove any existing values, as this enum
 // is used to bucket a UMA histogram, and removing values breaks that.
 enum ShieldsIconUsage {
@@ -94,6 +100,12 @@ void RecordShieldsDomainSettingCountsWithChange(PrefService* profile_prefs,
 // and any per-site exceptions.
 void RecordForgetFirstPartySetting(HostContentSettingsMap* map);
 
+// Reports global Auto Shred setting and any per-site exceptions.
+void ReportAutoShredSettingsP3A(const HostContentSettingsMap& map);
+
+// Sets the manual shred pref and reports the value to UMA.
+void RecordManualShredP3A(PrefService& local_state);
+
 // Records global HTTPS upgrade setting and whether any per-site
 // strict (HTTPS-Only) exceptions exist.
 void RecordHTTPSUpgradeSettingP3A(HostContentSettingsMap* map);
@@ -107,6 +119,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs);
 // To be called at initialization. Will count all domain settings and
 // record to all histograms, if executed for the first time.
 void MaybeRecordInitialShieldsSettings(
+    PrefService* local_state,
     PrefService* profile_prefs,
     HostContentSettingsMap* map,
     ControlType cosmetic_filtering_control_type,
