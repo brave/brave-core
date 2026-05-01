@@ -161,7 +161,7 @@ void SidebarController::ActivatePanelItem(
                             : browser_->GetFeatures().side_panel_ui();
   CHECK(side_panel_ui);
   if (panel_item == SidebarItem::BuiltInItemType::kNone) {
-    side_panel_ui->Close(SidePanelType::kContent);
+    side_panel_ui->Close();
     return;
   }
 
