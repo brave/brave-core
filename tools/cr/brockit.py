@@ -199,7 +199,7 @@ from datetime import datetime
 import json
 import logging
 import os
-from pathlib import Path, PurePath
+from pathlib import Path
 import pickle
 import platform
 import re
@@ -320,9 +320,9 @@ def _is_gh_cli_logged_in():
     return False
 
 
-def _get_apply_patches_list():
+def _get_apply_patches_list() -> dict[Repository, list[Patchfile]] | None:
     """Retrieves the list of patches to be applied by running
-    `npm run apply_patches`
+    `npm run apply_patches`, grouped by repository.
     """
 
     try:
@@ -334,7 +334,19 @@ def _get_apply_patches_list():
         match = re.search(r'\[\s*{.*?}\s*\]', e.stdout, re.DOTALL)
         if match is None:
             return None
-        return json.loads(match.group(0))
+        entries = json.loads(match.group(0))
+        patch_paths = [Path(entry['patchPath']) for entry in entries]
+        patch_stats = repository.brave.get_patch_stats(*patch_paths)
+        patch_files: dict[Repository, list[Patchfile]] = {}
+        for patch_path in patch_paths:
+            sources = patch_stats[patch_path]
+            if len(sources) != 1:
+                raise ValueError(
+                    f'Expected exactly one source for {patch_path}, '
+                    f'got {sources}.') from e
+            patchfile = Patchfile(path=patch_path, source=sources[0])
+            patch_files.setdefault(patchfile.repository, []).append(patchfile)
+        return patch_files
 
     return None
 
@@ -354,7 +366,7 @@ class ApplyPatchesRecord:
     patches_to_deleted_files: list[Patchfile] = field(default_factory=list)
 
     # A list of files that require manual conflict resolution before continuing.
-    files_with_conflicts: list[str] = field(default_factory=list)
+    files_with_conflicts: list[Path] = field(default_factory=list)
 
     # A list of patches that fail entirely when running apply with `--3way`.
     broken_patches: list[Patchfile] = field(default_factory=list)
@@ -382,12 +394,12 @@ class ApplyPatchesRecord:
                 If set to True, deleted files will be ignored, and not staged.
         """
         for _, patches in self.patch_files.items():
-            for patch in patches:
-                if not Path(patch.path).exists():
+            for patchfile in patches:
+                if not patchfile.path.exists():
                     # Skip deleted files.
                     continue
 
-                repository.brave.run_git('add', patch.path)
+                repository.brave.run_git('add', patchfile.path)
 
 
 @dataclass(frozen=True)
@@ -960,67 +972,41 @@ class Upgrade(Versioned):
         When running brockit in a vscode terminal, this method will open any
         files that need attention in the editor session.
         """
-        # A dictionary that holds a list for all patch files affected, by
-        # repository.
-        patch_files = {}
-
-        # This is a flat of list of patches that cannot be applied due to their
+        # This is a flat list of patches that cannot be applied due to their
         # source file being deleted.
-        patches_to_deleted_files = []
+        patches_to_deleted_files: list[Patchfile] = []
 
         # A list of files that require manual conflict resolution before
         # continuing.
-        files_with_conflicts = []
+        files_with_conflicts: list[Path] = []
 
         # These are patches that fail entirely when running apply with `--3way`.
-        broken_patches = []
+        broken_patches: list[Patchfile] = []
 
-        if patch_files:
-            raise NotImplementedError(
-                'unreachable: 3way apply should happen only once.')
-
-        # the raw list of patches that failed to apply.
-        patch_failures = _get_apply_patches_list()
-        if patch_failures is None:
-            raise ValueError(
-                'Apply patches failed to provide a list of patches.')
-
-        for entry in patch_failures:
-            patch = Patchfile(path=PurePath(entry['patchPath']),
-                              provided_source=entry.get('path'))
-
-            if entry['reason'] == 'SRC_REMOVED':
-                # Skip patches that can't apply as the source is gone.
-                patches_to_deleted_files.append(patch)
-                continue
-
-            # Grouping patch files by their repositories, so to allow us to
-            # iterate through them, applying them in their repo paths.
-            patch_files.setdefault(patch.repository, []).append(patch)
+        # A list of all patchfiles that failed to apply, grouped by repository.
+        patch_files = _get_apply_patches_list()
+        if patch_files is None:
+            raise ValueError('Apply patches had no failed patches.')
 
         if patch_files:
             terminal.log_task(
                 '[bold]Reapplying patch files with --3way:\n[/]%s' %
                 '\n'.join(f'    * {file}' for file in [
-                    patch.path for patch_list in patch_files.values()
-                    for patch in patch_list
+                    patchfile.path for patch_list in patch_files.values()
+                    for patchfile in patch_list
                 ]))
 
-        vscode_files = []
+        vscode_files: list[Path] = []
         for repo, patches in patch_files.items():
-            for patch in patches:
-                apply_result = patch.apply()
-                if apply_result.patch:
-                    # Let's use the updated patchfile instance.
-                    patch = apply_result.patch
+            for patchfile in patches:
+                status: Patchfile.ApplyStatus = patchfile.apply()
 
-                if apply_result.status == Patchfile.ApplyStatus.CONFLICT:
-                    files_with_conflicts.append(
-                        patch.source_from_brave().as_posix())
-                elif apply_result.status == Patchfile.ApplyStatus.BROKEN:
-                    broken_patches.append(patch)
-                elif apply_result.status == Patchfile.ApplyStatus.DELETED:
-                    patches_to_deleted_files.append(patch)
+                if status == Patchfile.ApplyStatus.CONFLICT:
+                    files_with_conflicts.append(patchfile.source_from_brave())
+                elif status == Patchfile.ApplyStatus.BROKEN:
+                    broken_patches.append(patchfile)
+                elif status == Patchfile.ApplyStatus.DELETED:
+                    patches_to_deleted_files.append(patchfile)
 
         for repo, patches in patch_files.items():
             # Resetting any staged states from apply patches as that can cause
@@ -1039,33 +1025,34 @@ class Upgrade(Versioned):
             # This set will hold the information about the deleted patches
             # in a way that they can be grouped around the chang that caused
             # their removal.
-            deletion_report = {}
+            deletion_report: dict[str, dict[Patchfile,
+                                            Patchfile.SourceStatus]] = {}
 
-            for patch in patches_to_deleted_files:
-                # Make sure we have an correct file source for the patch.
-                patch = patch.fetch_source_from_git()
+            for patchfile in patches_to_deleted_files:
                 # Finding the culptrit commit hash.
-                commit = patch.get_last_commit_for_source()
+                commit = patchfile.get_last_commit_for_source()
                 deletion_report.setdefault(
                     commit,
-                    {})[patch] = patch.get_source_removal_status(commit)
+                    {})[patchfile] = patchfile.get_source_removal_status(
+                        commit)
 
             for commit, patches in deletion_report.items():
-                for patch, status in patches.items():
+                for patchfile, status in patches.items():
                     if status.status == 'D':
                         console.log(
-                            Padding(f'✘ {patch.source()} [red bold](deleted)',
-                                    (0, 4)))
-                        vscode_files.append(patch.path)
+                            Padding(
+                                f'✘ {patchfile.source} [red bold](deleted)',
+                                (0, 4)))
+                        vscode_files.append(patchfile.path)
                     elif status.status == 'R':
-                        renamed_to = patch.repository.from_brave(
-                        ) / status.renamed_to
+                        renamed_to = Path(patchfile.repository.from_brave() /
+                                          status.renamed_to)
                         console.log(
                             Padding(
-                                f'✘ {patch.source_from_brave()}\n    '
+                                f'✘ {patchfile.source_from_brave()}\n    '
                                 f'([yellow bold]renamed to[/] {renamed_to})',
                                 (0, 4)))
-                        vscode_files += [patch.path, renamed_to]
+                        vscode_files += [patchfile.path, renamed_to]
 
             # Printing the commmit message for the grouped changes.
             console.log(
@@ -1078,10 +1065,10 @@ class Upgrade(Versioned):
                 '[bold]Broken patches that fail to apply entirely '
                 f'{ACTION_NEEDED_DECORATOR}:[/]')
 
-            for patch in broken_patches:
-                source = patch.source_from_brave()
-                console.log(Padding(f'✘ {patch.path} ➜ {source}', (0, 4)))
-                vscode_files += [patch.path, source]
+            for patchfile in broken_patches:
+                source = patchfile.source_from_brave()
+                console.log(Padding(f'✘ {patchfile.path} ➜ {source}', (0, 4)))
+                vscode_files += [patchfile.path, source]
 
         if files_with_conflicts:
             vscode_files += files_with_conflicts
@@ -1180,7 +1167,7 @@ class Upgrade(Versioned):
         for patch in modified_patches:
             hunks_before = count_hunks(repository.brave.read_file(patch))
             hunks_after = count_hunks(
-                Path(repository.brave.path / patch).read_text())
+                (repository.brave.path / patch).read_text())
             if hunks_before != hunks_after:
                 patches_with_hunk_changes.append(
                     (patch, hunks_before, hunks_after))
@@ -1797,7 +1784,7 @@ class Rebase(Task):
         return "Rebasing current branch..."
 
     @staticmethod
-    def discard_regen_changes_from_rebase_plan(todo_file: PurePath):
+    def discard_regen_changes_from_rebase_plan(todo_file: Path):
         """Removes regen changes from the rebase plan.
 
     This function removes all lines that contain the string `Update patches`
@@ -1814,7 +1801,7 @@ class Rebase(Task):
                     file.write(line)
 
     @staticmethod
-    def recommit_in_rebase_plan(todo_file: PurePath):
+    def recommit_in_rebase_plan(todo_file: Path):
         """Recommits the first commit in the rebase plan.
 
     This function replaces the first `pick` in the rebase plan with `edit`,
@@ -1828,7 +1815,7 @@ class Rebase(Task):
             file.write(contents)
 
     @staticmethod
-    def squash_minor_bumps_from_rebase_plan(todo_file: PurePath):
+    def squash_minor_bumps_from_rebase_plan(todo_file: Path):
         """Squashes minor bumps from the rebase plan.
 
     This function groups all commmit lines that start with "Update from
@@ -1944,7 +1931,7 @@ class Rebase(Task):
 
 
     @staticmethod
-    def fix_squash_commit_messages(todo_file: PurePath):
+    def fix_squash_commit_messages(todo_file: Path):
         """Fixes the commit messages during rebase squash.
 
     This function handles rebase squashes to correct the commit messages. It
@@ -2460,14 +2447,13 @@ if __name__ == '__main__':
         # Special flags used to carry out some of the rebase tasks fed by git
         # during rebase --interactive mode.
         if '--internal-rebase-remove-regen-changes' in sys.argv:
-            Rebase.discard_regen_changes_from_rebase_plan(
-                PurePath(sys.argv[-1]))
+            Rebase.discard_regen_changes_from_rebase_plan(Path(sys.argv[-1]))
         if '--internal-rebase-recommit' in sys.argv:
-            Rebase.recommit_in_rebase_plan(PurePath(sys.argv[-1]))
+            Rebase.recommit_in_rebase_plan(Path(sys.argv[-1]))
         if '--internal-rebase-squash-minor-bumps' in sys.argv:
-            Rebase.squash_minor_bumps_from_rebase_plan(PurePath(sys.argv[-1]))
+            Rebase.squash_minor_bumps_from_rebase_plan(Path(sys.argv[-1]))
         if '--internal-rebase-squash-commit-message' in sys.argv:
-            Rebase.fix_squash_commit_messages(PurePath(sys.argv[-1]))
+            Rebase.fix_squash_commit_messages(Path(sys.argv[-1]))
         sys.exit(0)
 
     sys.exit(main())

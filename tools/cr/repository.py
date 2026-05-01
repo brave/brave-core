@@ -4,7 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 from dataclasses import dataclass
-from pathlib import Path, PurePath
+from pathlib import Path
 import subprocess
 from typing import Optional
 from rich.markup import escape
@@ -12,7 +12,7 @@ from rich.markup import escape
 from terminal import terminal
 
 # The path to the brave/ directory.
-BRAVE_CORE_PATH = next(brave for brave in PurePath(__file__).parents
+BRAVE_CORE_PATH = next(brave for brave in Path(__file__).parents
                        if brave.name == 'brave')
 
 # The path to chromium's src/ directory.
@@ -31,7 +31,7 @@ class Repository:
     # The repository path. This path is extracted from the subdirectory section
     # of a patch file, with chromium/src being ''.
     # e.g. "third_party/search_engines_data/resources"
-    path: PurePath
+    path: Path
 
     @property
     def is_chromium(self) -> bool:
@@ -46,30 +46,30 @@ class Repository:
         return self.path == BRAVE_CORE_PATH
 
     @property
-    def relative_to_chromium(self) -> PurePath:
+    def relative_to_chromium(self) -> Path:
         """ Returns the path relative to src/.
         """
         if self.is_chromium:
-            return PurePath('')
+            return Path('')
         return self.path.relative_to(CHROMIUM_SRC_PATH)
 
-    def to_brave(self) -> PurePath:
+    def to_brave(self) -> Path:
         """ Returns the path from the repository to brave/.
         """
         if self.is_chromium:
             return BRAVE_CORE_PATH.relative_to(CHROMIUM_SRC_PATH)
-        return PurePath(
+        return Path(
             len(self.path.relative_to(CHROMIUM_SRC_PATH).parts) *
             '../') / BRAVE_CORE_PATH.relative_to(CHROMIUM_SRC_PATH)
 
-    def from_brave(self, source: Optional[PurePath] = None) -> PurePath:
+    def from_brave(self, source: Optional[Path] = None) -> Path:
         """ Returns the path from brave/ to the repository.
         """
         if source:
-            return PurePath('..') / self.path.relative_to(
+            return Path('..') / self.path.relative_to(
                 CHROMIUM_SRC_PATH) / source
 
-        return PurePath('..') / self.path.relative_to(CHROMIUM_SRC_PATH)
+        return Path('..') / self.path.relative_to(CHROMIUM_SRC_PATH)
 
     def run_git(self, *cmd, no_trim=False) -> str:
         """Runs a git command on the repository.
@@ -202,6 +202,21 @@ class Repository:
             *[f'{commit}:{Path(file).as_posix()}' for file in files],
             no_trim=True)
 
+    def get_patch_stats(self, *patches: Path) -> dict[Path, list[Path]]:
+        """Returns the files affected by each patch, keyed by patch path.
+
+        Uses --numstat for unabbreviated paths. Each patch is queried
+        individually so that file lists map cleanly to their patch key.
+        """
+        return {
+            patch: [
+                Path(line.split('\t')[2]) for line in self.run_git(
+                    'apply', '--numstat', patch.as_posix()).splitlines()
+                if '\t' in line
+            ]
+            for patch in patches
+        }
+
     def current_branch(self) -> str:
         """Gets the current branch name, or HEAD if not in any branch.
         """
@@ -209,7 +224,7 @@ class Repository:
 
 
 # An instance to the chromium repository.
-chromium = Repository(PurePath(CHROMIUM_SRC_PATH))
+chromium = Repository(CHROMIUM_SRC_PATH)
 
 # An instance to the brave repository.
-brave = Repository(PurePath(BRAVE_CORE_PATH))
+brave = Repository(BRAVE_CORE_PATH)

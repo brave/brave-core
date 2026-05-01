@@ -11,6 +11,7 @@ import platform
 import socket
 import tempfile
 import unittest
+from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 from vscode import (VsCodeIpcConnection, _NamedPipeSocket,
@@ -78,7 +79,7 @@ class PosixVsCodeIpcConnectionTest(unittest.TestCase):
             mock_response.read.return_value = b''
             with patch.object(conn, 'request') as mock_request, \
                  patch.object(conn, 'getresponse', return_value=mock_response):
-                conn.open_file(['/path/to/file.cc'])
+                conn.open_file([Path('/path/to/file.cc')])
                 mock_request.assert_called_once()
                 method, path, body, headers = mock_request.call_args[0]
                 self.assertEqual(method, 'POST')
@@ -98,7 +99,7 @@ class PosixVsCodeIpcConnectionTest(unittest.TestCase):
                               'request',
                               side_effect=ConnectionRefusedError('refused')):
                 with self.assertLogs(level='WARNING') as captured:
-                    conn.open_file(['/path/to/file.cc'])
+                    conn.open_file([Path('/path/to/file.cc')])
                 self.assertTrue(
                     any('Could not open files in VS Code window' in line
                         for line in captured.output))
@@ -201,7 +202,7 @@ class WinVsCodeIpcConnectionTest(unittest.TestCase):
             mock_response.read.return_value = b''
             with patch.object(conn, 'request') as mock_request, \
                  patch.object(conn, 'getresponse', return_value=mock_response):
-                conn.open_file(['/path/to/file.cc'])
+                conn.open_file([Path('/path/to/file.cc')])
                 mock_request.assert_called_once()
                 method, path, body, headers = mock_request.call_args[0]
                 self.assertEqual(method, 'POST')
@@ -221,7 +222,7 @@ class WinVsCodeIpcConnectionTest(unittest.TestCase):
                               'request',
                               side_effect=ConnectionRefusedError('refused')):
                 with self.assertLogs(level='WARNING') as captured:
-                    conn.open_file(['/path/to/file.cc'])
+                    conn.open_file([Path('/path/to/file.cc')])
                 self.assertTrue(
                     any('Could not open files in VS Code window' in line
                         for line in captured.output))

@@ -4,7 +4,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-from pathlib import PurePath
+from pathlib import Path
 import unittest
 
 import repository
@@ -26,49 +26,47 @@ class RepositoryTest(unittest.TestCase):
 
     def test_chromium_repository(self):
         self.assertEqual(repository.chromium.path,
-                         PurePath(self.fake_chromium_src.chromium))
+                         self.fake_chromium_src.chromium)
         self.assertTrue(repository.chromium.is_chromium)
         self.assertFalse(repository.chromium.is_brave)
 
     def test_brave_repository(self):
-        self.assertEqual(repository.brave.path,
-                         PurePath(self.fake_chromium_src.brave))
+        self.assertEqual(repository.brave.path, self.fake_chromium_src.brave)
         self.assertTrue(repository.brave.is_brave)
         self.assertFalse(repository.brave.is_chromium)
 
     def test_to_brave(self):
         self.assertEqual(
             Repository(self.fake_chromium_src.chromium).to_brave(),
-            PurePath('brave'))
+            Path('brave'))
         self.assertEqual(
             Repository(self.fake_chromium_src.brave).to_brave(),
-            PurePath('../brave'))
+            Path('../brave'))
         self.assertEqual(
             Repository(self.fake_chromium_src.chromium / 'v8').to_brave(),
-            PurePath('../brave'))
+            Path('../brave'))
         self.assertEqual(
             Repository(self.fake_chromium_src.chromium /
-                       'third_party/test1').to_brave(),
-            PurePath('../../brave'))
+                       'third_party/test1').to_brave(), Path('../../brave'))
 
     def test_from_brave(self):
         self.assertEqual(
             Repository(self.fake_chromium_src.chromium).from_brave(),
-            PurePath('../'))
+            Path('../'))
         self.assertEqual(
             Repository(self.fake_chromium_src.brave).from_brave(),
-            PurePath('../brave'))
+            Path('../brave'))
         self.assertEqual(
             Repository(self.fake_chromium_src.chromium / 'v8').from_brave(),
-            PurePath('../v8'))
+            Path('../v8'))
         self.assertEqual(
             Repository(self.fake_chromium_src.chromium /
                        'third_party/test1').from_brave(),
-            PurePath('../third_party/test1'))
+            Path('../third_party/test1'))
         self.assertEqual(
             Repository(self.fake_chromium_src.chromium /
-                       'third_party/test1').from_brave('test_file.txt'),
-            PurePath('../third_party/test1/test_file.txt'))
+                       'third_party/test1').from_brave(Path('test_file.txt')),
+            Path('../third_party/test1/test_file.txt'))
 
     def test_run_git(self):
         """Test Repository.run_git by verifying the hash of the last commit."""
@@ -346,6 +344,82 @@ class RepositoryTest(unittest.TestCase):
         content_file3 = repository.chromium.read_file("file3.txt",
                                                       commit=commit3)
         self.assertEqual(content_file3, "Content with trailing newline\n\n")
+
+    def test_get_patch_stats_single(self):
+        """Test get_patch_stats with a single patch returns its affected
+        file."""
+        test_file = Path('chrome/browser/ui/page_actions/action_ids.h')
+        self.fake_chromium_src.write_and_stage_file(
+            test_file, 'line1\nline2\nline3\n',
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add action_ids.h',
+                                      self.fake_chromium_src.chromium)
+
+        (self.fake_chromium_src.chromium /
+         test_file).write_text('line1\nline2\nline3\nbrave_line\n')
+        self.fake_chromium_src.run_update_patches()
+
+        patch_path = Path('brave') / self.fake_chromium_src \
+            .get_patchfile_path_for_source(self.fake_chromium_src.chromium,
+                                           test_file)
+
+        stats = repository.chromium.get_patch_stats(patch_path)
+
+        self.assertEqual(list(stats.keys()), [patch_path])
+        self.assertEqual(stats[patch_path], [test_file])
+
+    def test_get_patch_stats_multiple(self):
+        """Test get_patch_stats with several patches returns each in order."""
+        file1 = Path('chrome/browser/ui/page_actions/action_ids.h')
+        file2 = Path(
+            'chrome/browser/ui/views/page_action/page_action_controller.h')
+
+        for test_file in [file1, file2]:
+            self.fake_chromium_src.write_and_stage_file(
+                test_file, 'line1\nline2\nline3\n',
+                self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add header files',
+                                      self.fake_chromium_src.chromium)
+
+        for test_file in [file1, file2]:
+            target = self.fake_chromium_src.chromium / test_file
+            target.write_text(target.read_text() + 'brave_line\n')
+        self.fake_chromium_src.run_update_patches()
+
+        patch_paths = [
+            Path('brave') /
+            self.fake_chromium_src.get_patchfile_path_for_source(
+                self.fake_chromium_src.chromium, f) for f in [file1, file2]
+        ]
+
+        stats = repository.chromium.get_patch_stats(*patch_paths)
+
+        self.assertEqual(list(stats.keys()), patch_paths)
+        self.assertEqual(stats[patch_paths[0]], [file1])
+        self.assertEqual(stats[patch_paths[1]], [file2])
+
+    def test_get_patch_stats_multiple_sources_in_patch(self):
+        """Test get_patch_stats with a patch covering several source files."""
+        file1 = Path('chrome/browser/ui/page_actions/action_ids.h')
+        file2 = Path('base/feature_list.cc')
+
+        for test_file, content in [(file1, 'line1\nline2\n'),
+                                   (file2, 'func() {}\n')]:
+            self.fake_chromium_src.write_and_stage_file(
+                test_file, content, self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add two source files',
+                                      self.fake_chromium_src.chromium)
+
+        patch_filename = self.fake_chromium_src._run_git_command(
+            ['format-patch', '-1', 'HEAD'], self.fake_chromium_src.chromium)
+        patch_path = self.fake_chromium_src.chromium / patch_filename
+
+        stats = repository.chromium.get_patch_stats(patch_path)
+
+        self.assertEqual(list(stats.keys()), [patch_path])
+        self.assertIn(file1, stats[patch_path])
+        self.assertIn(file2, stats[patch_path])
+        self.assertEqual(len(stats[patch_path]), 2)
 
     def test_current_branch(self):
         """Test current_branch using the chromium repository."""

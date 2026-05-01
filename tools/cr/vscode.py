@@ -20,7 +20,7 @@ class _VsCodeIpcConnectionBase(http.client.HTTPConnection):
         super().__init__('vscode')
         self._socket_path = os.environ.get(env_var, '')
 
-    def open_file(self, files: list) -> None:
+    def open_file(self, files: list[Path]) -> None:
         """Opens files in the VS Code window that owns this terminal.
 
         Communicates directly with the IPC socket rather than spawning
@@ -30,7 +30,7 @@ class _VsCodeIpcConnectionBase(http.client.HTTPConnection):
         """
         if not self._socket_path or not files:
             return
-        file_uris = [Path(str(f)).resolve().as_uri() for f in files]
+        file_uris = [f.resolve().as_uri() for f in files]
         body = json.dumps({
             'type': 'open',
             'fileURIs': file_uris,
