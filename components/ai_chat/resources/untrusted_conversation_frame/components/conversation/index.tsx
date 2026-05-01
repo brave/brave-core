@@ -160,18 +160,16 @@ function Conversation(props: ConversationProps) {
       return
     }
     const observer = new ResizeObserver(() => {
-      requestAnimationFrame(() => {
-        const { height } = el.getBoundingClientRect()
-        // Note: If there are no notices we shouldn't add the padding.
-        if (height > 0) {
-          document.body.style.setProperty(
-            '--notices-height',
-            `calc(${height}px + var(--leo-spacing-2xl) * 2)`,
-          )
-        } else {
-          document.body.style.setProperty('--notices-height', '0px')
-        }
-      })
+      const { height } = el.getBoundingClientRect()
+      // Note: If there are no notices we shouldn't add the padding.
+      if (height > 0) {
+        document.body.style.setProperty(
+          '--notices-height',
+          `calc(${height}px + var(--leo-spacing-2xl) * 2)`,
+        )
+      } else {
+        document.body.style.setProperty('--notices-height', '0px')
+      }
     })
     observer.observe(el)
     return () => {
