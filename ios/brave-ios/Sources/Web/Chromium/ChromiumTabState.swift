@@ -354,6 +354,9 @@ class ChromiumTabState: TabState, TabStateImpl {
       let coder = try NSKeyedUnarchiver(forReadingFrom: sessionData)
       coder.requiresSecureCoding = false
       webView.decodeRestorableState(with: coder)
+      // Set the UI delegate again after restoring as the act of restoring resets a lot of
+      // CWVWebView state including the JavaScript dialog presenter
+      webView.uiDelegate = uiHandler
     } catch {
       Logger.module.error("Failed to restore web view with session data: \(error)")
       isRestoring = false
