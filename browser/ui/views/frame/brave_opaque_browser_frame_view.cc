@@ -117,6 +117,17 @@ void BraveOpaqueBrowserFrameView::
       ->UpdateHorizontalPadding();
 }
 
+void BraveOpaqueBrowserFrameView::Layout(PassKey key) {
+  LayoutSuperclass<OpaqueBrowserFrameView>(this);
+
+  // Why frame view should ask toolbar's padding update?
+  // This kind of exclusion should be handled by BrowserViewLayout.
+  // BraveBrowserFrameViewLinuxNative::Layout() does same thing.
+  // TODO(): Investigate what's happening.
+  static_cast<BraveToolbarView*>(GetBrowserView()->toolbar())
+      ->UpdateHorizontalPadding();
+}
+
 void BraveOpaqueBrowserFrameView::PaintClientEdge(gfx::Canvas* canvas) const {
   // Don't draw client edge next to toolbar when it's in vertical tab strip mode
   if (ShouldShowVerticalTabs()) {

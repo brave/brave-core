@@ -5,11 +5,9 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_frame_view_linux_native.h"
 
-#include <numeric>
 #include <string>
 
 #include "base/check.h"
-#include "base/check_op.h"
 #include "base/notreached.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
@@ -17,11 +15,8 @@
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view_layout_linux_native.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/common/pref_names.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/controls/button/image_button.h"
-#include "ui/views/window/caption_button_layout_constants.h"
-#include "ui/views/window/window_button_order_provider.h"
 
 namespace {
 
@@ -91,7 +86,6 @@ void BraveBrowserFrameViewLinuxNative::MaybeUpdateCachedFrameButtonImages() {
   if (!tabs::utils::ShouldShowBraveVerticalTabs(browser) ||
       tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser)) {
     BrowserFrameViewLinuxNative::MaybeUpdateCachedFrameButtonImages();
-    UpdateLeadingTrailingCaptionButtonWidth();
     return;
   }
 
@@ -132,88 +126,11 @@ void BraveBrowserFrameViewLinuxNative::MaybeUpdateCachedFrameButtonImages() {
               type, ButtonStateToNavButtonProviderState(button_state))));
     }
   }
-
-  UpdateLeadingTrailingCaptionButtonWidth();
 }
 
 void BraveBrowserFrameViewLinuxNative::Layout(PassKey) {
   LayoutSuperclass<BrowserFrameViewLinuxNative>(this);
 
-  UpdateLeadingTrailingCaptionButtonWidth();
-}
-
-views::Button* BraveBrowserFrameViewLinuxNative::FrameButtonToButton(
-    views::FrameButton frame_button) {
-  switch (frame_button) {
-    case views::FrameButton::kMinimize:
-      return minimize_button();
-    case views::FrameButton::kMaximize:
-      return IsMaximized() ? restore_button() : maximize_button();
-    case views::FrameButton::kClose:
-      return close_button();
-  }
-  NOTREACHED();
-}
-
-void BraveBrowserFrameViewLinuxNative::
-    UpdateLeadingTrailingCaptionButtonWidth() {
-  auto* browser = GetBrowserView()->browser();
-  DCHECK(browser);
-  std::pair<int, int> new_leading_trailing_caption_button_width;
-  if (tabs::utils::ShouldShowBraveVerticalTabs(browser) &&
-      !tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser)) {
-    auto* window_order_provider =
-        views::WindowButtonOrderProvider::GetInstance();
-    const auto leading_buttons = window_order_provider->leading_buttons();
-    const auto trailing_buttons = window_order_provider->trailing_buttons();
-
-    const auto leading_button_width = std::accumulate(
-        leading_buttons.begin(), leading_buttons.end(), 0,
-        [this](int max_right, auto frame_button) {
-          auto* button = FrameButtonToButton(frame_button);
-          if (!button || !button->GetVisible() || button->bounds().IsEmpty()) {
-            return max_right;
-          }
-
-          if (auto current_right = button->bounds().right();
-              current_right > max_right) {
-            return current_right;
-          }
-
-          return max_right;
-        });
-
-    const auto trailing_button_width =
-        width() -
-        std::accumulate(trailing_buttons.begin(), trailing_buttons.end(),
-                        width(), [this](int min_left, auto frame_button) {
-                          auto* button = FrameButtonToButton(frame_button);
-                          if (!button || !button->GetVisible() ||
-                              button->bounds().IsEmpty()) {
-                            return min_left;
-                          }
-
-                          if (int current_left = button->bounds().x();
-                              current_left < min_left) {
-                            return current_left;
-                          }
-
-                          return min_left;
-                        });
-    new_leading_trailing_caption_button_width = {leading_button_width,
-                                                 trailing_button_width};
-  }
-
-  if (leading_trailing_caption_button_width_ ==
-      new_leading_trailing_caption_button_width) {
-    return;
-  }
-
-  leading_trailing_caption_button_width_ =
-      new_leading_trailing_caption_button_width;
-
-  // Notify toolbar view that caption button's width changed so that it can
-  // make space for caption buttons.
   static_cast<BraveToolbarView*>(GetBrowserView()->toolbar())
       ->UpdateHorizontalPadding();
 }
