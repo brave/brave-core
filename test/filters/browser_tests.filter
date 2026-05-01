@@ -2648,3 +2648,12 @@
 # startup, so it captures stray samples and ExpectUniqueSample fails.
 # https://github.com/brave/brave-browser/issues/54247
 -UpdateMetricsProviderBrowserTest.RunInBackground
+
+# Chromium test: upstream flake (1.1% flake rate over 30 days, 83k+ verdicts).
+# PartitionedCookiePresentV3 UKM is recorded on every cookie access event
+# without per-page deduplication, so the test's delta check gets 2 instead of 1
+# when a prior navigation's UKM entry arrives late. Fixed upstream in
+# chromium-review.googlesource.com/c/chromium/src/+/7746704 but not yet in
+# Chromium 148. No Brave chromium_src overrides for cookie_utils.cc.
+# https://github.com/brave/brave-browser/issues/55020
+-CookieUseCounterBrowserTest.PartitionedCookiePresentV3_CountOnce
