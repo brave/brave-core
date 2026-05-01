@@ -117,8 +117,8 @@ class PatchfileTest(unittest.TestCase):
             path=self.fake_chromium_src.get_patchfile_path_for_source(
                 self.fake_chromium_src.chromium, test_idl),
             source=test_idl)
-        status = patchfile.apply()
-        self.assertEqual(status, Patchfile.ApplyStatus.CONFLICT)
+        result = patchfile.apply()
+        self.assertEqual(result.apply_status, Patchfile.ApplyStatus.CONFLICT)
 
     def test_apply_conflict_with_whitespace_error(self):
         """Tests the behavior when applying a patch with whitespace errors."""
@@ -179,8 +179,8 @@ class PatchfileTest(unittest.TestCase):
             path=self.fake_chromium_src.get_patchfile_path_for_source(
                 self.fake_chromium_src.chromium, test_idl),
             source=test_idl)
-        status = patchfile.apply()
-        self.assertEqual(status, Patchfile.ApplyStatus.CONFLICT)
+        result = patchfile.apply()
+        self.assertEqual(result.apply_status, Patchfile.ApplyStatus.CONFLICT)
 
     def test_apply_clean(self):
         test_idl = Path('chrome/common/extensions/api/developer_private.idl')
@@ -255,8 +255,8 @@ class PatchfileTest(unittest.TestCase):
             path=self.fake_chromium_src.get_patchfile_path_for_source(
                 self.fake_chromium_src.chromium, test_idl),
             source=test_idl)
-        status = patchfile.apply()
-        self.assertEqual(status, Patchfile.ApplyStatus.CLEAN)
+        result = patchfile.apply()
+        self.assertEqual(result.apply_status, Patchfile.ApplyStatus.CLEAN)
         self.assertIn('FROM_BRAVE_STORE', target_file.read_text())
 
     def test_apply_broken(self):
@@ -281,8 +281,8 @@ class PatchfileTest(unittest.TestCase):
             path=self.fake_chromium_src.get_patchfile_path_for_source(
                 self.fake_chromium_src.chromium, test_idl),
             source=test_idl)
-        status = patchfile.apply()
-        self.assertEqual(status, Patchfile.ApplyStatus.CLEAN)
+        result = patchfile.apply()
+        self.assertEqual(result.apply_status, Patchfile.ApplyStatus.CLEAN)
         self.assertIn('last line', target_file.read_text())
 
         self.fake_chromium_src._run_git_command(
@@ -299,8 +299,8 @@ class PatchfileTest(unittest.TestCase):
             path=self.fake_chromium_src.get_patchfile_path_for_source(
                 self.fake_chromium_src.chromium, test_idl),
             source=test_idl)
-        status = patchfile.apply()
-        self.assertEqual(status, Patchfile.ApplyStatus.BROKEN)
+        result = patchfile.apply()
+        self.assertEqual(result.apply_status, Patchfile.ApplyStatus.BROKEN)
 
     def test_apply_on_deleted(self):
         '''Tests the behavior when applying a patch to a deleted file.'''
@@ -324,8 +324,8 @@ class PatchfileTest(unittest.TestCase):
             path=self.fake_chromium_src.get_patchfile_path_for_source(
                 self.fake_chromium_src.chromium, test_idl),
             source=test_idl)
-        status = patchfile.apply()
-        self.assertEqual(status, Patchfile.ApplyStatus.CLEAN)
+        result = patchfile.apply()
+        self.assertEqual(result.apply_status, Patchfile.ApplyStatus.CLEAN)
         self.assertIn('last line', target_file.read_text())
 
         self.fake_chromium_src._run_git_command(
@@ -342,8 +342,9 @@ class PatchfileTest(unittest.TestCase):
             path=self.fake_chromium_src.get_patchfile_path_for_source(
                 self.fake_chromium_src.chromium, test_idl),
             source=test_idl)
-        status = patchfile.apply()
-        self.assertEqual(status, Patchfile.ApplyStatus.DELETED)
+        result = patchfile.apply()
+        self.assertEqual(result.apply_status, Patchfile.ApplyStatus.DELETED)
+        self.assertIsNone(result.rename_apply_status)
 
     def test_apply_on_deleted_with_whitespace_error(self):
         '''Tests DELETED status when stderr has whitespace warnings before the
@@ -371,8 +372,8 @@ class PatchfileTest(unittest.TestCase):
             path=self.fake_chromium_src.get_patchfile_path_for_source(
                 self.fake_chromium_src.chromium, test_idl),
             source=test_idl)
-        status = patchfile.apply()
-        self.assertEqual(status, Patchfile.ApplyStatus.CLEAN)
+        result = patchfile.apply()
+        self.assertEqual(result.apply_status, Patchfile.ApplyStatus.CLEAN)
         self.assertIn('last line', target_file.read_text())
 
         self.fake_chromium_src._run_git_command(
@@ -389,8 +390,85 @@ class PatchfileTest(unittest.TestCase):
             path=self.fake_chromium_src.get_patchfile_path_for_source(
                 self.fake_chromium_src.chromium, test_idl),
             source=test_idl)
-        status = patchfile.apply()
-        self.assertEqual(status, Patchfile.ApplyStatus.DELETED)
+        result = patchfile.apply()
+        self.assertEqual(result.apply_status, Patchfile.ApplyStatus.DELETED)
+        self.assertIsNone(result.rename_apply_status)
+
+    def _setup_patch_for_rename_tests(self):
+        """Shared setup: creates a patched file ready for rename scenarios.
+
+        Returns (test_idl, renamed_idl, patchfile_path) after:
+          - committing the original file,
+          - making a brave patch that adds 'NEW_TYPE' after 'HOSTED_APP',
+          - resetting the working tree to a clean state.
+        """
+        test_idl = Path('chrome/common/extensions/api/developer_private.idl')
+        renamed_idl = Path('chrome/common/extensions/api/renamed_private.idl')
+        chromium = self.fake_chromium_src.chromium
+
+        self.fake_chromium_src.write_and_stage_file(
+            test_idl, 'HOSTED_APP\nPLATFORM_APP\nFROM_STORE\n', chromium)
+        self.fake_chromium_src.commit('Add developer_private.idl', chromium)
+
+        (chromium / test_idl).write_text(
+            (chromium / test_idl).read_text().replace('HOSTED_APP',
+                                                      'HOSTED_APP\nNEW_TYPE'))
+        self.fake_chromium_src.run_update_patches()
+
+        self.fake_chromium_src._run_git_command(['checkout', '.'], chromium)
+        self.assertNotIn('NEW_TYPE', (chromium / test_idl).read_text())
+
+        patchfile_path = self.fake_chromium_src.get_patchfile_path_for_source(
+            chromium, test_idl)
+        return test_idl, renamed_idl, patchfile_path
+
+    def test_apply_on_renamed_clean(self):
+        """Patch applies cleanly to the renamed location."""
+        test_idl, renamed_idl, patchfile_path = (
+            self._setup_patch_for_rename_tests())
+        chromium = self.fake_chromium_src.chromium
+
+        # Rename the file upstream without modifying its content.
+        (chromium / test_idl).rename(chromium / renamed_idl)
+        self.fake_chromium_src._run_git_command(['add', '-A'], chromium)
+        self.fake_chromium_src.commit(
+            'Rename developer_private.idl to renamed_private.idl', chromium)
+
+        result = Patchfile(path=patchfile_path, source=test_idl).apply()
+
+        self.assertEqual(result.apply_status, Patchfile.ApplyStatus.DELETED)
+        self.assertEqual(result.rename_apply_status,
+                         Patchfile.ApplyStatus.CLEAN)
+        self.assertEqual(result.source_status.status_code, 'R')
+        self.assertEqual(result.source_status.renamed_to,
+                         renamed_idl.as_posix())
+        self.assertIn('NEW_TYPE', (chromium / renamed_idl).read_text())
+
+    def test_apply_on_renamed_conflict(self):
+        """Patch conflicts at the renamed location due to an upstream change
+        to the same area."""
+        test_idl, renamed_idl, patchfile_path = (
+            self._setup_patch_for_rename_tests())
+        chromium = self.fake_chromium_src.chromium
+
+        # Rename the file and introduce a conflicting change to the same line
+        # that the brave patch modifies.
+        renamed_path = chromium / renamed_idl
+        renamed_path.parent.mkdir(parents=True, exist_ok=True)
+        renamed_path.write_text(
+            (chromium / test_idl).read_text().replace('HOSTED_APP',
+                                                      'HOSTED_APP\nUPSTREAM'))
+        (chromium / test_idl).unlink()
+        self.fake_chromium_src._run_git_command(['add', '-A'], chromium)
+        self.fake_chromium_src.commit(
+            'Rename and modify developer_private.idl', chromium)
+
+        result = Patchfile(path=patchfile_path, source=test_idl).apply()
+
+        self.assertEqual(result.apply_status, Patchfile.ApplyStatus.DELETED)
+        self.assertEqual(result.rename_apply_status,
+                         Patchfile.ApplyStatus.CONFLICT)
+        self.assertEqual(result.source_status.status_code, 'R')
 
     def test_source_from_brave(self):
         """Tests the source_from_brave method of Patchfile."""
@@ -538,7 +616,9 @@ class PatchfileTest(unittest.TestCase):
         # Verify the source removal status
         removal_status = patchfile.get_source_removal_status(
             delete_commit_hash)
-        self.assertEqual(removal_status.status, 'D')  # 'D' indicates deletion
+        self.assertEqual(removal_status.status_code,
+                         'D')  # 'D' indicates deletion
+        self.assertEqual(removal_status.commit_hash, delete_commit_hash)
         self.assertIn('Delete developer_private.idl',
                       removal_status.commit_details)
         self.assertIsNone(removal_status.renamed_to)
@@ -597,7 +677,9 @@ class PatchfileTest(unittest.TestCase):
 
         # Verify the source rename status
         rename_status = patchfile.get_source_removal_status(rename_commit_hash)
-        self.assertEqual(rename_status.status, 'R')  # 'R' indicates rename
+        self.assertEqual(rename_status.status_code,
+                         'R')  # 'R' indicates rename
+        self.assertEqual(rename_status.commit_hash, rename_commit_hash)
         self.assertIn('Rename developer_private.idl to renamed_private.idl',
                       rename_status.commit_details)
         self.assertEqual(rename_status.renamed_to, renamed_file.as_posix())

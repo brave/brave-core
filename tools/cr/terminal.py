@@ -119,7 +119,11 @@ class Terminal:
             status.stop()
             self.status = None
 
-    def run(self, cmd, env: Optional[Dict[str, str]] = None, cwd=None):
+    def run(self,
+            cmd,
+            env: Optional[Dict[str, str]] = None,
+            cwd=None,
+            stdin: Optional[str] = None):
         """Runs a command on the terminal.
         """
         # Convert all arguments to strings, to avoid issues with `PurePath`
@@ -162,7 +166,8 @@ class Terminal:
                                     check=True,
                                     encoding='utf-8',
                                     env=env,
-                                    cwd=cwd)
+                                    cwd=cwd,
+                                    input=stdin)
         except subprocess.CalledProcessError as e:
             logging.debug('❯ %s', e.stderr.strip())
             raise e
@@ -173,7 +178,7 @@ class Terminal:
 
         return result
 
-    def run_git(self, *cmd, no_trim=False) -> str:
+    def run_git(self, *cmd, no_trim=False, stdin: Optional[str] = None) -> str:
         """Runs a git command with the arguments provided.
 
     This function returns a proper utf8 string in success, otherwise it allows
@@ -188,8 +193,8 @@ class Terminal:
     """
         cmd = ['git'] + list(cmd)
         if no_trim:
-            return self.run(cmd).stdout
-        return self.run(cmd).stdout.strip()
+            return self.run(cmd, stdin=stdin).stdout
+        return self.run(cmd, stdin=stdin).stdout.strip()
 
     def log_task(self, message):
         """Logs a task to the console using common decorators

@@ -71,13 +71,17 @@ class Repository:
 
         return Path('..') / self.path.relative_to(CHROMIUM_SRC_PATH)
 
-    def run_git(self, *cmd, no_trim=False) -> str:
+    def run_git(self, *cmd, no_trim=False, stdin: Optional[str] = None) -> str:
         """Runs a git command on the repository.
         """
         if self.is_brave:
-            return terminal.run_git(*cmd, no_trim=no_trim)
+            return terminal.run_git(*cmd, no_trim=no_trim, stdin=stdin)
 
-        return terminal.run_git('-C', self.from_brave(), *cmd, no_trim=no_trim)
+        return terminal.run_git('-C',
+                                self.from_brave(),
+                                *cmd,
+                                no_trim=no_trim,
+                                stdin=stdin)
 
     def unstage_all_changes(self):
         """Unstages all changes in the repository.

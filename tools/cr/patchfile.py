@@ -76,13 +76,33 @@ class Patchfile:
         """
 
         # A code for the status of the source file. (e.g 'R', 'M', 'D')
-        status: str
+        status_code: str
+
+        # The commit hash where this source file status was recorded.
+        commit_hash: str
 
         # The commit details for this source file status.
         commit_details: str
 
         # The name the source may have been renamed to.
         renamed_to: Optional[str] = None
+
+    @dataclass(frozen=True)
+    class ApplyResult:
+        """The result of applying a patch file.
+        """
+
+        # The status of the patch application.
+        apply_status: 'Patchfile.ApplyStatus'
+
+        # The status of the source file, populated only when the patch cannot
+        # be applied because the source file is missing.
+        source_status: Optional['Patchfile.SourceStatus'] = None
+
+        # The result of re-applying the patch against a renamed source,
+        # populated only when the source was renamed. CLEAN means the patch
+        # applied successfully at the new location; BROKEN means it did not.
+        rename_apply_status: Optional['Patchfile.ApplyStatus'] = None
 
     def source_name_from_patch_naming(self) -> str:
         """Source file name according to the patch file name.
@@ -107,17 +127,17 @@ class Patchfile:
         """
         return self.repository.to_brave() / self.path
 
-    def apply(self) -> ApplyStatus:
+    def apply(self) -> ApplyResult:
         """Applies the patch file with `git apply --3way`.
         """
         try:
             self.repository.run_git('apply', '--3way', '--ignore-space-change',
                                     '--ignore-whitespace',
                                     self.path_from_repo().as_posix())
-            return self.ApplyStatus.CLEAN
+            return self.ApplyResult(apply_status=self.ApplyStatus.CLEAN)
         except subprocess.CalledProcessError as e:
             if 'with conflicts' in e.stderr:
-                return self.ApplyStatus.CONFLICT
+                return self.ApplyResult(apply_status=self.ApplyStatus.CONFLICT)
             error_line = next(
                 (l for l in e.stderr.splitlines() if l.startswith('error:')),
                 None)
@@ -125,17 +145,52 @@ class Patchfile:
                 [_, reason] = error_line.strip().split(': ', 1)
 
                 if 'does not exist in index' in reason:
-                    # This type of detection could occur in certain cases when
-                    # `npm run init` or `sync` were not run for the working
-                    # branch. It may be useful to warn.
+                    # This block handles patches that do not apply anymore
+                    # because the source file has been deleted.
                     #
                     # It is also of notice that this error can also occur when
                     # `apply` is run twice for the same patch with conflicts.
-                    logging.warning(
-                        'Patch with missing file detected during --3way apply,'
-                        ' which may indicate a bad sync state before starting '
-                        'to upgrade. %s', self.path)
-                    return self.ApplyStatus.DELETED
+                    source_status = self.get_source_removal_status(
+                        self.get_last_commit_for_source())
+
+                    rename_apply_status = None
+                    if source_status.status_code == 'R':
+                        # The source was renamed — try re-applying with the
+                        # new path substituted in to see if the patch still
+                        # applies cleanly at the renamed location.
+                        patch_content = Path(
+                            repository.BRAVE_CORE_PATH /
+                            self.path).read_text(encoding='utf-8')
+                        # The path substitution is a bit hacky, but we assume
+                        # that there are only 4 occurrences of the source name
+                        # in the patch file. Throwing if that's not the case.
+                        if patch_content.count(self.source.as_posix()) != 4:
+                            raise NotImplementedError(
+                                f'Unexpected patch format with more than 4 '
+                                f'occurrences of the source path: {self.path}'
+                            ) from None
+                        try:
+                            self.repository.run_git(
+                                'apply',
+                                '--3way',
+                                '--ignore-space-change',
+                                '--ignore-whitespace',
+                                stdin=patch_content.replace(
+                                    self.source.as_posix(),
+                                    source_status.renamed_to))
+                            rename_apply_status = self.ApplyStatus.CLEAN
+                        except subprocess.CalledProcessError as rename_e:
+                            rename_apply_status = (self.ApplyStatus.CONFLICT
+                                                   if 'with conflicts'
+                                                   in rename_e.stderr else
+                                                   self.ApplyStatus.BROKEN)
+                    # Although reapplying the patch may have been succesful,
+                    # this patch is still considered as DELETED as the user has
+                    # to commit the rename/deletion with a culprit.
+                    return self.ApplyResult(
+                        apply_status=self.ApplyStatus.DELETED,
+                        source_status=source_status,
+                        rename_apply_status=rename_apply_status)
                 if ('No such file or directory' in reason
                         and self.path.as_posix() in reason):
                     # This should never occur as it indicates that the patch
@@ -153,7 +208,7 @@ class Patchfile:
                         'Patch being flagged as broken, but with unexpected '
                         'reason: %s %s', self.path, reason)
 
-                return self.ApplyStatus.BROKEN
+                return self.ApplyResult(apply_status=self.ApplyStatus.BROKEN)
 
         # We should not reach this point. Failures to apply that fail like this
         # must be investigated with `--verbose`, and fixed.
@@ -215,12 +270,14 @@ class Patchfile:
         status_code = status_line[0]
 
         if status_code == 'D':
-            return self.SourceStatus(status=status_code,
+            return self.SourceStatus(status_code=status_code,
+                                     commit_hash=commit,
                                      commit_details=commit_details)
         if status_code == 'R':
             # For renames the output looks something like:
             # R100       base/some_file.cc       base/renamed_to_file.cc
-            return self.SourceStatus(status=status_code,
+            return self.SourceStatus(status_code=status_code,
+                                     commit_hash=commit,
                                      commit_details=commit_details,
                                      renamed_to=status_line.split()[-1])
 

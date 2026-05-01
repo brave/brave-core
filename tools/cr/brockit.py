@@ -972,10 +972,6 @@ class Upgrade(Versioned):
         When running brockit in a vscode terminal, this method will open any
         files that need attention in the editor session.
         """
-        # This is a flat list of patches that cannot be applied due to their
-        # source file being deleted.
-        patches_to_deleted_files: list[Patchfile] = []
-
         # A list of files that require manual conflict resolution before
         # continuing.
         files_with_conflicts: list[Path] = []
@@ -996,69 +992,79 @@ class Upgrade(Versioned):
                     for patchfile in patch_list
                 ]))
 
+        # Patches that cannot be applied because their source was removed,
+        # grouped by the commit hash that caused the removal, so we can print
+        # them together.
+        deletion_report: dict[str, dict[Patchfile, Patchfile.ApplyResult]] = {}
+
         vscode_files: list[Path] = []
         for repo, patches in patch_files.items():
             for patchfile in patches:
-                status: Patchfile.ApplyStatus = patchfile.apply()
+                result: Patchfile.ApplyResult = patchfile.apply()
 
-                if status == Patchfile.ApplyStatus.CONFLICT:
+                if result.apply_status == Patchfile.ApplyStatus.CONFLICT:
                     files_with_conflicts.append(patchfile.source_from_brave())
-                elif status == Patchfile.ApplyStatus.BROKEN:
+                elif result.apply_status == Patchfile.ApplyStatus.BROKEN:
                     broken_patches.append(patchfile)
-                elif status == Patchfile.ApplyStatus.DELETED:
-                    patches_to_deleted_files.append(patchfile)
+                elif result.apply_status == Patchfile.ApplyStatus.DELETED:
+                    if (result.rename_apply_status ==
+                            Patchfile.ApplyStatus.CONFLICT):
+                        files_with_conflicts.append(
+                            patchfile.repository.from_brave() /
+                            result.source_status.renamed_to)
+                    deletion_report.setdefault(
+                        result.source_status.commit_hash,
+                        {})[patchfile] = result
 
         for repo, patches in patch_files.items():
             # Resetting any staged states from apply patches as that can cause
             # issues when generating patches.
             repo.unstage_all_changes()
 
-        if patches_to_deleted_files:
+        if deletion_report:
             # The goal in this this section is print a report for listing every
             # patch that cannot apply anymore because the source file is gone,
             # fetching from git the commit and the reason why exactly the file
             # is not there anymore (e.g. renamed, deleted).
 
-            terminal.log_task('[bold]Files that cannot be patched anymore '
-                              f'{ACTION_NEEDED_DECORATOR}:[/]')
+            terminal.log_task('[bold]Deleted and renamed source '
+                              f'files {ACTION_NEEDED_DECORATOR}:[/]')
 
-            # This set will hold the information about the deleted patches
-            # in a way that they can be grouped around the chang that caused
-            # their removal.
-            deletion_report: dict[str, dict[Patchfile,
-                                            Patchfile.SourceStatus]] = {}
-
-            for patchfile in patches_to_deleted_files:
-                # Finding the culptrit commit hash.
-                commit = patchfile.get_last_commit_for_source()
-                deletion_report.setdefault(
-                    commit,
-                    {})[patchfile] = patchfile.get_source_removal_status(
-                        commit)
-
-            for commit, patches in deletion_report.items():
-                for patchfile, status in patches.items():
-                    if status.status == 'D':
+            for _commit_hash, patches in deletion_report.items():
+                for patchfile, result in patches.items():
+                    status = result.source_status
+                    if status.status_code == 'D':
                         console.log(
                             Padding(
                                 f'✘ {patchfile.source} [red bold](deleted)',
                                 (0, 4)))
                         vscode_files.append(patchfile.path)
-                    elif status.status == 'R':
+                    elif status.status_code == 'R':
                         renamed_to = Path(patchfile.repository.from_brave() /
                                           status.renamed_to)
+                        rename_apply_status = result.rename_apply_status
+                        if (rename_apply_status ==
+                                Patchfile.ApplyStatus.CONFLICT):
+                            apply_indicator = ' [yellow bold](has conflicts)[/]'
+                        elif (rename_apply_status ==
+                              Patchfile.ApplyStatus.BROKEN):
+                            apply_indicator = ' [red bold](failed to apply)[/]'
+                            vscode_files += [renamed_to, patchfile.path]
+                        else:
+                            apply_indicator = ' [green bold](applies cleanly)[/]'
                         console.log(
                             Padding(
                                 f'✘ {patchfile.source_from_brave()}\n    '
-                                f'([yellow bold]renamed to[/] {renamed_to})',
-                                (0, 4)))
-                        vscode_files += [patchfile.path, renamed_to]
+                                f'([yellow bold]renamed to[/] {renamed_to})'
+                                f'{apply_indicator}', (0, 4)))
 
-            # Printing the commmit message for the grouped changes.
-            console.log(
-                Padding(f'{next(iter(patches.items()))[1].commit_details}\n',
-                        (0, 8),
-                        style="dim"))
+                # Printing the commit message for the grouped changes. Nex here
+                # picks up on the first entry, as they all have the same
+                # culprit.
+                commit_details = (next(iter(
+                    patches.values())).source_status.commit_details)
+                console.log(Padding(f'{commit_details}\n', (0, 8),
+                                    style="dim"))
 
         if broken_patches:
             terminal.log_task(
@@ -1083,7 +1089,10 @@ class Upgrade(Versioned):
         # the process has to be continued later.
         apply_record = ApplyPatchesRecord(
             patch_files=patch_files,
-            patches_to_deleted_files=patches_to_deleted_files,
+            patches_to_deleted_files=[
+                patchfile for patches in deletion_report.values()
+                for patchfile in patches
+            ],
             files_with_conflicts=files_with_conflicts,
             broken_patches=broken_patches)
 

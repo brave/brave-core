@@ -100,12 +100,16 @@ class RepositoryTest(unittest.TestCase):
         with patch("terminal.terminal.run_git") as mock_run_git:
             # Call run_git with no_trim=True for brave repository
             repository.brave.run_git("log", no_trim=True)
-            mock_run_git.assert_called_once_with("log", no_trim=True)
+            mock_run_git.assert_called_once_with("log",
+                                                 no_trim=True,
+                                                 stdin=None)
 
             # Reset mock and call run_git with no_trim=False
             mock_run_git.reset_mock()
             repository.brave.run_git("log", no_trim=False)
-            mock_run_git.assert_called_once_with("log", no_trim=False)
+            mock_run_git.assert_called_once_with("log",
+                                                 no_trim=False,
+                                                 stdin=None)
 
     def test_unstage_all_changes(self):
         """Test unstage_all_changes and has_staged_changes."""
