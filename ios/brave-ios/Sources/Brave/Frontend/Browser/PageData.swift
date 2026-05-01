@@ -80,7 +80,8 @@ import WebKit
   @MainActor func makeUserScriptTypes(
     isDeAmpEnabled: Bool,
     isAdBlockEnabled: Bool,
-    isBlockFingerprintingEnabled: Bool
+    isBlockFingerprintingEnabled: Bool,
+    isGPCEnabled: Bool
   ) async -> Set<UserScriptType> {
     if !mainFrameURL.isWebPage(includeDataURIs: false) {
       // Local application urls do not need page-specific user scripts injected
@@ -88,7 +89,7 @@ import WebKit
     }
 
     var userScriptTypes: Set<UserScriptType> = [
-      .siteStateListener, .gpc(Preferences.Shields.enableGPC.value),
+      .siteStateListener, .gpc(isGPCEnabled),
     ]
 
     // Handle dynamic domain level scripts on the main document.

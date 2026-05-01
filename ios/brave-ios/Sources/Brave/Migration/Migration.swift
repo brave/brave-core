@@ -28,6 +28,7 @@ public class BraveProfileMigrations {
     migrateSyncPasswordsDefault()
     migrateShieldsToContentSettings()
     migrateYouTubeQualityPreference()
+    migrateGPCPreference()
   }
 
   private func migrateDefaultUserAgentPreferences() {
@@ -110,6 +111,12 @@ public class BraveProfileMigrations {
           forPath: kYouTubeAutoQualityMode
         )
       }
+    }
+  }
+
+  private func migrateGPCPreference() {
+    Preferences.DeprecatedPreferences.enableGPC.migrate { value in
+      profileController.profile.prefs.set(value, forPath: kGlobalPrivacyControlEnabled)
     }
   }
 }
@@ -344,6 +351,12 @@ extension Preferences {
     static let youtubeHighQuality = Option<String>(
       key: "general.youtube-high-quality",
       default: DeprecatedYoutubeHighQualityPreference.off.rawValue
+    )
+
+    /// A boolean value inidicating if GPC is enabled
+    public static var enableGPC = Preferences.Option<Bool>(
+      key: "shields.enable-gpc",
+      default: true
     )
   }
 

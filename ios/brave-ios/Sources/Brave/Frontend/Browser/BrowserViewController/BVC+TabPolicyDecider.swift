@@ -49,7 +49,10 @@ extension BrowserViewController: TabPolicyDecider {
             for: pageData.mainFrameURL,
             shield: .fpProtection,
             considerAllShieldsOption: true
-          ) ?? true
+          ) ?? true,
+          isGPCEnabled: profileController.profile.prefs.boolean(
+            forPath: kGlobalPrivacyControlEnabled
+          )
         ) ?? []
       tab.browserData?.setCustomUserScript(scripts: scriptTypes)
     }
@@ -321,7 +324,10 @@ extension BrowserViewController: TabPolicyDecider {
           await tab.currentPageData?.makeUserScriptTypes(
             isDeAmpEnabled: profileController.deAmpPrefs.isDeAmpEnabled,
             isAdBlockEnabled: isAdBlockEnabled,
-            isBlockFingerprintingEnabled: isBlockFingerprintingEnabled
+            isBlockFingerprintingEnabled: isBlockFingerprintingEnabled,
+            isGPCEnabled: profileController.profile.prefs.boolean(
+              forPath: kGlobalPrivacyControlEnabled
+            )
           ) ?? []
         tab.browserData?.setCustomUserScript(scripts: scriptTypes)
       }

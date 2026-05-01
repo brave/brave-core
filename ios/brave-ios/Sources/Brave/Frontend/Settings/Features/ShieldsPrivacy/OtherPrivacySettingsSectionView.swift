@@ -35,10 +35,10 @@ struct OtherPrivacySettingsSectionView: View {
 
   var body: some View {
     Section {
-      OptionToggleView(
+      ToggleView(
         title: Strings.Shields.enableGPCLabel,
         subtitle: Strings.Shields.enableGPCDescription,
-        option: Preferences.Shields.enableGPC
+        toggle: $settings.isGPCEnabled
       )
       if showBlockAllCookies || FeatureList.kBlockAllCookiesToggle.enabled
         || Preferences.Privacy.blockAllCookies.value

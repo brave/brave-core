@@ -53,6 +53,7 @@ group("browser") {
     "//brave/ios/browser/brave_origin",
     "//brave/ios/browser/brave_vpn",
     "//brave/ios/browser/brave_wallet",
+    "//brave/ios/browser/global_privacy_control",
     "//brave/ios/browser/playlist",
     "//brave/ios/browser/policy",
     "//brave/ios/browser/profile/model",

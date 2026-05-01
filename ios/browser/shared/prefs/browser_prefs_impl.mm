@@ -22,6 +22,7 @@
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
 #include "brave/components/decentralized_dns/core/utils.h"
+#include "brave/components/global_privacy_control/pref_names.h"
 #include "brave/components/l10n/common/prefs.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
@@ -86,6 +87,9 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #endif
 
   registry->RegisterIntegerPref(youtube::prefs::kAutoQualityMode, 0);
+
+  registry->RegisterBooleanPref(
+      global_privacy_control::kGlobalPrivacyControlEnabled, true);
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {

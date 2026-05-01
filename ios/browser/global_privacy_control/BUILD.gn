@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//ios/web/public/js_messaging/optimize_ts.gni")
+
+source_set("global_privacy_control") {
+  sources = [
+    "gpc_pref_names_bridge.h",
+    "gpc_pref_names_bridge.mm",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/global_privacy_control",
+  ]
+}

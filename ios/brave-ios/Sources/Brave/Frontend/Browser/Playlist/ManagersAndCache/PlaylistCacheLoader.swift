@@ -318,7 +318,8 @@ extension LivePlaylistWebLoader: TabPolicyDecider {
           await tab.currentPageData?.makeUserScriptTypes(
             isDeAmpEnabled: false,
             isAdBlockEnabled: true,  // enabled for playlist
-            isBlockFingerprintingEnabled: true
+            isBlockFingerprintingEnabled: true,
+            isGPCEnabled: true
           ) ?? []
         tab.browserData?.setCustomUserScript(scripts: scriptTypes)
       }

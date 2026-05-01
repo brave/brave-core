@@ -46,7 +46,8 @@ final class PageDataTests: XCTestCase {
       let mainFrameRequestTypes = await pageData.makeUserScriptTypes(
         isDeAmpEnabled: false,
         isAdBlockEnabled: true,
-        isBlockFingerprintingEnabled: true
+        isBlockFingerprintingEnabled: true,
+        isGPCEnabled: true
       )
 
       // Then
@@ -54,7 +55,7 @@ final class PageDataTests: XCTestCase {
       // NOTE: If we were to add some engines we might see additional types
       let expectedMainFrameTypes: Set<UserScriptType> = [
         .siteStateListener, .farblingProtection(etld: "example.com"),
-        .gpc(Preferences.Shields.enableGPC.value),
+        .gpc(true),
       ]
       XCTAssertEqual(mainFrameRequestTypes, expectedMainFrameTypes)
 
@@ -63,7 +64,8 @@ final class PageDataTests: XCTestCase {
       let unchangedScriptTypes = await pageData.makeUserScriptTypes(
         isDeAmpEnabled: false,
         isAdBlockEnabled: true,
-        isBlockFingerprintingEnabled: true
+        isBlockFingerprintingEnabled: true,
+        isGPCEnabled: true
       )
 
       // Then
@@ -81,11 +83,12 @@ final class PageDataTests: XCTestCase {
       let addedSubFrameFrameRequestTypes = await pageData.makeUserScriptTypes(
         isDeAmpEnabled: false,
         isAdBlockEnabled: true,
-        isBlockFingerprintingEnabled: true
+        isBlockFingerprintingEnabled: true,
+        isGPCEnabled: true
       )
       let expectedMainAndSubFrameTypes: Set<UserScriptType> = [
         .siteStateListener, .farblingProtection(etld: "example.com"),
-        .gpc(Preferences.Shields.enableGPC.value),
+        .gpc(true),
       ]
       XCTAssertEqual(expectedMainAndSubFrameTypes, addedSubFrameFrameRequestTypes)
 
@@ -102,7 +105,8 @@ final class PageDataTests: XCTestCase {
       let upgradedMainFrameRequestTypes = await pageData.makeUserScriptTypes(
         isDeAmpEnabled: false,
         isAdBlockEnabled: true,
-        isBlockFingerprintingEnabled: true
+        isBlockFingerprintingEnabled: true,
+        isGPCEnabled: true
       )
       XCTAssertEqual(upgradedMainFrameRequestTypes, unchangedScriptTypes)
 
@@ -119,7 +123,8 @@ final class PageDataTests: XCTestCase {
       let upgradedSubFrameFrameRequestTypes = await pageData.makeUserScriptTypes(
         isDeAmpEnabled: false,
         isAdBlockEnabled: true,
-        isBlockFingerprintingEnabled: true
+        isBlockFingerprintingEnabled: true,
+        isGPCEnabled: true
       )
       XCTAssertEqual(upgradedSubFrameFrameRequestTypes, unchangedScriptTypes)
 
@@ -153,7 +158,8 @@ final class PageDataTests: XCTestCase {
       let mainFrameRequestTypes = await pageData.makeUserScriptTypes(
         isDeAmpEnabled: false,
         isAdBlockEnabled: true,
-        isBlockFingerprintingEnabled: true
+        isBlockFingerprintingEnabled: true,
+        isGPCEnabled: true
       )
 
       XCTAssertTrue(
