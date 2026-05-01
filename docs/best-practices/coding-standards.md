@@ -161,44 +161,6 @@ std::string user_name;
 
 ---
 
-<a id="CS-070"></a>
-
-## ✅ Position Pointer/Reference Symbols with the Type
-
-**Always write `T*` and `T&`, not `T *` and `T &`.** The pointer/reference symbol attaches to the type, not the variable name. This is the Chromium style and is enforced by clang-format.
-
-```cpp
-// ❌ WRONG
-int *ptr;
-const std::string &name;
-
-// ✅ CORRECT
-int* ptr;
-const std::string& name;
-```
-
----
-
-<a id="CS-071"></a>
-
-## ❌ Don't Use Yoda Conditions
-
-**Write comparisons with the variable on the left and the constant on the right.** Yoda conditions (`0 == foo`) are disallowed in Chromium style. Modern compilers warn on accidental assignment in conditions, so there is no reason to invert operands.
-
-```cpp
-// ❌ WRONG - Yoda condition
-if (0 == value) { ... }
-if (nullptr == ptr) { ... }
-
-// ✅ CORRECT
-if (value == 0) { ... }
-if (ptr == nullptr) { ... }
-```
-
-See [Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
-
----
-
 <a id="CS-011"></a>
 
 ## ✅ Copyright Rules
