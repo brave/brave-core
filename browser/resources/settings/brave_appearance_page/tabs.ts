@@ -34,6 +34,13 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
 
   static get properties() {
     return {
+      tabMinWidthSelectionAliases_: {
+        readOnly: true,
+        type: Object,
+        value() {
+          return {'0': '1'}
+        },
+      },
       tabMinWidthModes_: {
         readOnly: true,
         type: Array,
@@ -41,7 +48,7 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
           return [
             {
               value: 0,
-              name: loadTimeData.getString('appearanceSettingsTabMinWidthDefault'),
+              hidden: true,
             },
             {
               value: 1,
@@ -90,9 +97,11 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
     }
   }
 
+  declare private tabMinWidthSelectionAliases_: Record<string, string>
   declare private tabMinWidthModes_: Array<{
     value: number,
     name: string,
+    hidden?: boolean,
   }>
   declare private tabTooltipModes_:
       Array<{value: number, name: string}>
@@ -122,6 +131,10 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
 
   private isHideVerticalTabCompletelyFlagEnabled() {
     return loadTimeData.getBoolean('isHideVerticalTabCompletelyFlagEnabled');
+  }
+
+  private isScrollableHorizontalTabStripFlagEnabled() {
+    return loadTimeData.getBoolean('isScrollableHorizontalTabStripEnabled');
   }
 }
 

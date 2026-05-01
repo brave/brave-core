@@ -36,6 +36,8 @@ class BraveTabStrip : public TabStrip {
 
   TabContainer* GetTabContainerForTesting();
 
+  void InvalidateTabContainerLayout();
+
   // TabStrip:
   void ShowHover(Tab* tab, TabStyle::ShowHoverStyle style) override;
   void HideHover(Tab* tab, TabStyle::HideHoverStyle style) override;
@@ -67,6 +69,7 @@ class BraveTabStrip : public TabStrip {
       const Tab* tab) const override;
   ui::ImageModel GetTabAccentIcon(const Tab* tab) const override;
   brave_tabs::TabMinWidthMode GetTabMinWidthMode() const override;
+  bool IsHorizontalScrollingEnabled() const override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollBarMode);
@@ -108,6 +111,7 @@ class BraveTabStrip : public TabStrip {
 
   void OnAlwaysHideCloseButtonPrefChanged();
   void OnTabMinWidthModePrefChanged();
+  void OnScrollableHorizontalTabStripPrefChanged();
 
   // Clears tree-tab-node UI state when a tab becomes pinned. There is no
   // dedicated notification when pinning from a group.
@@ -115,6 +119,7 @@ class BraveTabStrip : public TabStrip {
 
   BooleanPrefMember always_hide_close_button_;
   BooleanPrefMember middle_click_close_tab_enabled_;
+  BooleanPrefMember scrollable_horizontal_tab_strip_;
   IntegerPrefMember tab_min_width_mode_;
 
   base::WeakPtrFactory<BraveTabStrip> weak_factory_{this};

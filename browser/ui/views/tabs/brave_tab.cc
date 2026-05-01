@@ -408,9 +408,9 @@ TabSizeInfo BraveTab::GetTabSizeInfo() const {
   size_info.min_inactive_width = GetTabMinWidthForMode(
       mode, size_info.min_inactive_width, size_info.standard_width);
 
-  if (base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)) {
-    // In case horizontal scrollable tab strip is enabled, we can have wider
-    // inactive tabs.
+  if (controller()->IsHorizontalScrollingEnabled()) {
+    // When horizontal scrollable tab strip is active (feature + pref), we
+    // can have wider inactive tabs.
     const int min_active_width = tab_style()->GetMinimumActiveWidth(false);
     size_info.min_inactive_width =
         std::max(size_info.min_inactive_width, min_active_width);
