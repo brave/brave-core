@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java b/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
-index 83470d3a3b694ec2dab8ba79009828315726b444..29feee91eb2879341e5e719d3cb22f8aa1912436 100644
+index a66f826b7654eda1da5ac5f87a78a0752c33f79c..2864e5457c1dec8473caa703802e2481206458dc 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
-@@ -28,11 +28,13 @@ import org.chromium.base.task.TaskTraits;
+@@ -29,11 +29,13 @@ import org.chromium.base.task.TaskTraits;
  import org.chromium.build.annotations.NullMarked;
  import org.chromium.build.annotations.Nullable;
  import org.chromium.chrome.browser.ActivityTabProvider;
@@ -16,7 +16,7 @@ index 83470d3a3b694ec2dab8ba79009828315726b444..29feee91eb2879341e5e719d3cb22f8a
  import org.chromium.chrome.browser.util.AndroidTaskUtils;
  import org.chromium.content_public.browser.MediaSession;
  import org.chromium.content_public.browser.WebContents;
-@@ -218,6 +220,16 @@ public class FullscreenVideoPictureInPictureController {
+@@ -246,6 +248,16 @@ public class FullscreenVideoPictureInPictureController {
                  .isEmpty();
      }
  
@@ -33,7 +33,7 @@ index 83470d3a3b694ec2dab8ba79009828315726b444..29feee91eb2879341e5e719d3cb22f8a
      /**
       * Return whether Picture in Picture is okay or not. Considers that "already in PiP mode" is a
       * reason to say no.
-@@ -242,6 +254,11 @@ public class FullscreenVideoPictureInPictureController {
+@@ -270,6 +282,11 @@ public class FullscreenVideoPictureInPictureController {
  
          final WebContents webContents = getWebContents();
          assert webContents != null;
@@ -45,7 +45,7 @@ index 83470d3a3b694ec2dab8ba79009828315726b444..29feee91eb2879341e5e719d3cb22f8a
  
          Rect bounds = getVideoBounds(webContents, mActivity);
          PictureInPictureParams.Builder builder = new PictureInPictureParams.Builder();
-@@ -253,9 +270,17 @@ public class FullscreenVideoPictureInPictureController {
+@@ -281,9 +298,17 @@ public class FullscreenVideoPictureInPictureController {
          }
  
          try {
@@ -64,7 +64,7 @@ index 83470d3a3b694ec2dab8ba79009828315726b444..29feee91eb2879341e5e719d3cb22f8a
              return;
          }
      }
-@@ -563,6 +588,16 @@ public class FullscreenVideoPictureInPictureController {
+@@ -606,6 +631,16 @@ public class FullscreenVideoPictureInPictureController {
       * This will also update our auto-PiP preference with the framework, if it's changed.
       */
      private void dismissActivityIfNeeded(Activity activity, @MetricsEndReason int reason) {
