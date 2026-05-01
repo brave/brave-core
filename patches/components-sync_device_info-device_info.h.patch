@@ -1,12 +1,38 @@
 diff --git a/components/sync_device_info/device_info.h b/components/sync_device_info/device_info.h
-index 0de973ef3cfb970cfdbc773cc8be98ae6d384750..23f5d53a8e07152299850f6998abd9c08d164792 100644
+index 0de973ef3cfb970cfdbc773cc8be98ae6d384750..ee4159c9b15a0661067646a5169f93c1691052bc 100644
 --- a/components/sync_device_info/device_info.h
 +++ b/components/sync_device_info/device_info.h
-@@ -197,6 +197,7 @@ class DeviceInfo {
+@@ -192,12 +192,24 @@ class DeviceInfo {
+              std::optional<base::Time> auto_sign_out_last_signin_timestamp,
+              bool desktop_to_ios_promo_receiving_enabled,
+              const MobilePromoOnDesktopPromoTypeSet&
+-                 desktop_to_ios_promo_receiving_types = {});
++                 desktop_to_ios_promo_receiving_types = {},
++             bool is_self_delete_supported = false);
+ 
    DeviceInfo(const DeviceInfo&) = delete;
    DeviceInfo& operator=(const DeviceInfo&) = delete;
  
-+  virtual
    ~DeviceInfo();
++  bool is_self_delete_supported() const { return is_self_delete_supported_; }
++  void set_is_self_delete_supported(bool is_self_delete_supported) {
++    is_self_delete_supported_ = is_self_delete_supported;
++  }
++  // Gets the OS in string form.
++  std::string GetOSString() const;
++  // Gets the device type in string form.
++  std::string GetDeviceTypeString() const;
++  // Converts the DeviceInfo values to a JS friendly DictionaryValue,
++  // which extension APIs can expose to third party apps.
++  base::DictValue ToValue() const;
  
    // Sync specific unique identifier for the device. Note if a device
+   // is wiped and sync is set up again this id WILL be different.
+@@ -372,6 +384,7 @@ class DeviceInfo {
+   // NOTE: when adding a member, don't forget to update
+   // |StoredDeviceInfoStillAccurate| in device_info_sync_bridge.cc or else
+   // changes in that member might not trigger uploads of updated DeviceInfos.
++  bool is_self_delete_supported_;
+ };
+ 
+ }  // namespace syncer

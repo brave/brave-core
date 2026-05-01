@@ -6,7 +6,6 @@
 #include "components/sync_device_info/device_info_sync_bridge.h"
 
 #include "base/logging.h"
-#include "brave/components/sync_device_info/brave_device_info.h"
 #include "components/sync/base/deletion_origin.h"
 #include "components/sync_device_info/device_info_proto_enum_util.h"
 
@@ -45,7 +44,7 @@ namespace {
 
 constexpr int kFailedAttemtpsToAckDeviceDelete = 5;
 
-std::unique_ptr<BraveDeviceInfo> BraveSpecificsToModel(
+std::unique_ptr<DeviceInfo> BraveSpecificsToModel(
     const DeviceInfoSpecifics& specifics) {
   DataTypeSet data_types;
   for (const int field_number :
@@ -59,7 +58,7 @@ std::unique_ptr<BraveDeviceInfo> BraveSpecificsToModel(
   }
   // The code is duplicated from SpecificsToModel by intent to avoid use of
   // extra patch
-  return std::make_unique<BraveDeviceInfo>(
+  return std::make_unique<DeviceInfo>(
       specifics.cache_guid(), specifics.client_name(),
       specifics.chrome_version(), specifics.sync_user_agent(),
       ToDeviceInfoDeviceType(specifics.device_type()),
@@ -77,6 +76,7 @@ std::unique_ptr<BraveDeviceInfo> BraveSpecificsToModel(
       specifics.invalidation_fields().instance_id_token(), data_types,
       SpecificsToAutoSignOutLastSigninTimestamp(specifics),
       specifics.feature_fields().desktop_to_ios_promo_receiving_enabled(),
+      SpecificsToDesktopToIOSPromoReceivingTypes(specifics),
       specifics.has_brave_fields() &&
           specifics.brave_fields().has_is_self_delete_supported() &&
           specifics.brave_fields().is_self_delete_supported());
@@ -120,11 +120,11 @@ void DeviceInfoSyncBridge::OnDeviceInfoDeleted(const std::string& client_id,
   }
 }
 
-std::vector<std::unique_ptr<BraveDeviceInfo>>
+std::vector<std::unique_ptr<DeviceInfo>>
 DeviceInfoSyncBridge::GetAllBraveDeviceInfo() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   TRACE_EVENT0("sync", "DeviceInfoSyncBridge::GetAllBraveDeviceInfo");
-  std::vector<std::unique_ptr<BraveDeviceInfo>> list;
+  std::vector<std::unique_ptr<DeviceInfo>> list;
   for (const auto& data : all_data_) {
     list.push_back(BraveSpecificsToModel(data.second.specifics()));
   }
@@ -156,7 +156,7 @@ void DeviceInfoSyncBridge::RefreshLocalDeviceInfoIfNeeded() {
 // translation unit, and the clang plugin wont allow the definition in the
 // header. This function has to provide a dead definition, otherwise there are
 // certain types of breakages that require patching upstream code.
-std::vector<std::unique_ptr<BraveDeviceInfo>>
+std::vector<std::unique_ptr<DeviceInfo>>
 DeviceInfoTracker::GetAllBraveDeviceInfo() const {
   NOTREACHED() << "This function must be overriden";
 }
