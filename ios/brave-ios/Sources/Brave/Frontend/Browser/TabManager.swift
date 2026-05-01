@@ -999,6 +999,7 @@ class TabManager: NSObject {
 
     if Preferences.Shields.shredHistoryItems.value {
       RecentlyClosed.remove(baseDomains: baseDomains)
+      RecentSearch.remove(baseDomains: baseDomains)
     }
 
     for url in urls {
