@@ -10,8 +10,8 @@
 
 #include "base/memory/ptr_util.h"
 #include "brave/browser/ui/views/infobars/brave_sync_account_deleted_infobar.h"
+#include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/sync/service/brave_sync_service_impl.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "chrome/browser/profiles/profile.h"
@@ -22,30 +22,15 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/views/vector_icons.h"
 
-using syncer::BraveSyncServiceImpl;
-
-namespace {
-
-BraveSyncServiceImpl* GetSyncService(Profile* profile) {
-  return SyncServiceFactory::IsSyncAllowed(profile)
-             ? static_cast<BraveSyncServiceImpl*>(
-                   SyncServiceFactory::GetForProfile(profile))
-             : nullptr;
-}
-
-}  // namespace
-
 // static
 void BraveSyncAccountDeletedInfoBarDelegate::Create(
     content::WebContents* active_web_contents,
     Profile* profile,
     Browser* browser) {
-  BraveSyncServiceImpl* brave_sync_service = GetSyncService(profile);
-  if (!brave_sync_service || !brave_sync_service->has_prefs()) {
-    return;
-  }
-
-  if (!brave_sync_service->prefs().IsSyncAccountDeletedNoticePending()) {
+  brave_sync::PrefsPlain brave_sync_prefs(profile->GetPrefs());
+  const bool notification_pending =
+      brave_sync_prefs.IsSyncAccountDeletedNoticePending();
+  if (!notification_pending) {
     return;
   }
 
@@ -98,11 +83,8 @@ bool BraveSyncAccountDeletedInfoBarDelegate::ShouldExpire(
 }
 
 void BraveSyncAccountDeletedInfoBarDelegate::InfoBarDismissed() {
-  BraveSyncServiceImpl* brave_sync_service = GetSyncService(profile_);
-  if (!brave_sync_service) {
-    return;
-  }
-  brave_sync_service->prefs().SetSyncAccountDeletedNoticePending(false);
+  brave_sync::PrefsPlain brave_sync_prefs(profile_->GetPrefs());
+  brave_sync_prefs.SetSyncAccountDeletedNoticePending(false);
 }
 
 std::u16string BraveSyncAccountDeletedInfoBarDelegate::GetMessageText() const {
@@ -137,21 +119,15 @@ GURL BraveSyncAccountDeletedInfoBarDelegate::GetLinkURL() const {
 }
 
 bool BraveSyncAccountDeletedInfoBarDelegate::Accept() {
-  BraveSyncServiceImpl* brave_sync_service = GetSyncService(profile_);
-  if (!brave_sync_service) {
-    return true;
-  }
-  brave_sync_service->prefs().SetSyncAccountDeletedNoticePending(false);
+  brave_sync::PrefsPlain brave_sync_prefs(profile_->GetPrefs());
+  brave_sync_prefs.SetSyncAccountDeletedNoticePending(false);
   return true;
 }
 
 bool BraveSyncAccountDeletedInfoBarDelegate::LinkClicked(
     WindowOpenDisposition disposition) {
-  BraveSyncServiceImpl* brave_sync_service = GetSyncService(profile_);
-  if (!brave_sync_service) {
-    return true;
-  }
-  brave_sync_service->prefs().SetSyncAccountDeletedNoticePending(false);
+  brave_sync::PrefsPlain brave_sync_prefs(profile_->GetPrefs());
+  brave_sync_prefs.SetSyncAccountDeletedNoticePending(false);
   InfoBarDelegate::LinkClicked(disposition);
   return true;
 }
