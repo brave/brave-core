@@ -10,6 +10,14 @@
 #include "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 
+// Pre-include Brave chromium_src overrides that have their own
+// `FromBrowserState` macro dance so those dances complete before the
+// redirection macro below is defined. Otherwise, if the upstream
+// `crw_web_controller.mm` (re-)includes any of these transitively while our
+// macro is active, the `FromBrowserState` macros collide.
+#include "ios/web/js_messaging/java_script_feature_manager.h"
+#include "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
+
 // Replace the underlying CRWWKNavigationHandler with our subclass
 #define _navigationHandler                                         \
   _navigationHandler =                                             \
@@ -18,7 +26,11 @@
   auto* _
 // Support for tab sync
 #define webViewNavigationProxy webViewNavigationProxy_ChromiumImpl
+// Redirect to getting the configs from a web state instead.
+#define FromBrowserState(browser_state) \
+  FromWebState(((void)(browser_state), self.webStateImpl))
 #include <ios/web/web_state/ui/crw_web_controller.mm>
+#undef FromBrowserState
 #undef webViewNavigationProxy
 #undef _navigationHandler
 

@@ -21,7 +21,6 @@
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/brave_sync/qr_code_validator.h"
 #include "brave/components/brave_sync/time_limited_words.h"
-#include "brave/components/sync_device_info/brave_device_info.h"
 #include "brave/ios/browser/api/sync/brave_sync_worker.h"
 #include "components/sync/engine/sync_protocol_error.h"
 #include "components/sync/service/sync_service.h"
