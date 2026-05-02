@@ -26,23 +26,13 @@ namespace brave_sync {
 
 inline constexpr char kCustomSyncServiceUrl[] = "brave_sync.sync_service_url";
 
-class Prefs {
+// Provides access to the prefs stored unencrypted.
+class PrefsPlain {
  public:
-  explicit Prefs(PrefService* pref_service,
-                 os_crypt_async::Encryptor encryptor);
-  Prefs(const Prefs&) = delete;
-  Prefs& operator=(const Prefs&) = delete;
-  virtual ~Prefs();
-
-  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
-
-  static void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry);
-
-  static std::string GetSeedPath();
-
-  std::optional<std::string> GetSeed(
-      os_crypt_async::Encryptor::DecryptFlags* flags = nullptr) const;
-  bool SetSeed(const std::string& seed);
+  explicit PrefsPlain(PrefService* pref_service);
+  PrefsPlain(const PrefsPlain&) = delete;
+  PrefsPlain& operator=(const PrefsPlain&) = delete;
+  virtual ~PrefsPlain();
 
   bool IsSyncAccountDeletedNoticePending() const;
   void SetSyncAccountDeletedNoticePending(bool is_pending);
@@ -58,14 +48,35 @@ class Prefs {
   static std::string GetLeaveChainDetailsPathForTests();
   void SetAddLeaveChainDetailBehaviourForTests(
       AddLeaveChainDetailBehaviour add_leave_chain_detail_behaviour);
-  bool IsEncryptionAvailable() const;
-
   void Clear();
 
- private:
+ protected:
   const raw_ref<PrefService> pref_service_;
-  os_crypt_async::Encryptor encryptor_;
   AddLeaveChainDetailBehaviour add_leave_chain_detail_behaviour_;
+};
+
+class Prefs : public PrefsPlain {
+ public:
+  explicit Prefs(PrefService* pref_service,
+                 os_crypt_async::Encryptor encryptor);
+  Prefs(const Prefs&) = delete;
+  Prefs& operator=(const Prefs&) = delete;
+  ~Prefs() override;
+
+  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
+
+  static void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry);
+
+  static std::string GetSeedPath();
+
+  std::optional<std::string> GetSeed(
+      os_crypt_async::Encryptor::DecryptFlags* flags = nullptr) const;
+  bool SetSeed(const std::string& seed);
+
+  bool IsEncryptionAvailable() const;
+
+ private:
+  os_crypt_async::Encryptor encryptor_;
 };
 
 void MigrateBraveSyncPrefs(PrefService* prefs);
