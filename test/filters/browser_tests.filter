@@ -1944,10 +1944,12 @@
 # `kActionSendSharedTabGroupFeedback` ephemerally and triggers a CHECK.
 -VerticalTabViewDataSharingEnabledTest.LogsTabSwitchMetrics
 
-# Chromium test flaky - disabled on Windows upstream (crbug.com/413259587). Race
-# condition between JavaScript cookie set via document.cookie and backend
-# SiteDataCountingHelper query. Brave has no modifications to this code.
-# Upstream flake rate 0.5% (LUCI Analysis, 30-day lookback); amplified by MSAN.
+# Chromium test: BrowsingDataRemover BrowserContext destruction hangs in Brave.
+# BlockUntilCompletion() never returns after incognito profile is destroyed
+# during data removal (crbug.com/413259587).  Also hits a cookie IPC race
+# (GetSiteDataCount returns 0) that is fixed by the chromium_src override of
+# browsing_data_test_util.cc, but the hang remains.  Upstream flake rate 0.6%
+# (LUCI Analysis, 30-day lookback).
 -All/BrowsingDataRemoverBrowserTestP.BrowserContextDestructionVsCookieRemoval/*
 -All/BrowsingDataRemoverBrowserTestP.CookieIncognitoDeletion/*
 
