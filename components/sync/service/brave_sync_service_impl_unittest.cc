@@ -30,7 +30,6 @@
 #include "build/build_config.h"
 #include "components/network_time/network_time_tracker.h"
 #include "components/os_crypt/async/browser/test_utils.h"
-#include "components/os_crypt/sync/os_crypt_mocker.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/signin/public/identity_manager/accounts_in_cookie_jar_info.h"
 #include "components/sync/base/data_type.h"
