@@ -12,9 +12,6 @@ namespace autofill::features {
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kAutofillEnableAmountExtraction, base::FEATURE_DISABLED_BY_DEFAULT},
     {kAutofillEnableBuyNowPayLater, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kAutofillEnableCardBenefitsForAmericanExpress,
-     base::FEATURE_DISABLED_BY_DEFAULT},
-    {kAutofillEnableCardBenefitsForBmo, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace autofill::features
