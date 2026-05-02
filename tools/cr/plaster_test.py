@@ -26,10 +26,6 @@ class PlasterTest(unittest.TestCase):
         self.fake_chromium_src.setup()
         self.addCleanup(self.fake_chromium_src.cleanup)
 
-        # Override PLASTER_FILES_PATH to use the rewrite path in the fake Brave
-        # repo
-        plaster.PLASTER_FILES_PATH = self.fake_chromium_src.brave / 'rewrite'
-
     def test_original_expected_toml_rules(self):
         """Test applying all .toml files in the test/ folder."""
         test_folder = Path(__file__).parent / 'test/plasters'

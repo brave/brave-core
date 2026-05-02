@@ -3,29 +3,48 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""git_cr — git commit wrapper for brave-core.
+"""git_cr — brave-core git helper.
 
-Provides ergonomic flags for the brave-core commit-msg hook and manages hook
-installation.
+Subcommands
+-----------
+  git cr commit       Commit with brave-core hook flags
+  git cr mv           Move a file/directory and repair all artefacts
+  git cr follow-renames
+                      Repair artefacts after upstream Chromium renames
+  git cr install-hook Install commit-msg hook from tools/cr/commit-msg.py
+  git cr setup-alias  Register the git cr alias in .git/config
 
-Usage
------
+commit
+------
   git cr commit [--tagged TAG[,TAG…]] [--issue NUM[,NUM…]]
                 [--culprit HASH[,HASH…]] [<git-commit-args> …]
 
   git cr commit -m "Fix login button alignment"
   git cr commit --tagged WIP -m "Work in progress"
 
-  git cr install-hook   Install commit-msg hook from tools/cr/commit-msg.py
-  git cr setup-alias    Register the git cr alias in .git/config
+  Custom flags (forwarded to the commit-msg hook via environment variables):
+    --tagged    Comma-separated tags            → $tags
+    --issue     Comma-separated issue numbers   → $issue
+    --culprit   Comma-separated commit hashes   → $culprit
 
-Custom flags (forwarded to the commit-msg hook via environment variables)
--------------------------------------------------------------------------
-  --tagged    Comma-separated tags            → $tags
-  --issue     Comma-separated issue numbers   → $issue
-  --culprit   Comma-separated commit hashes   → $culprit
+  All other arguments are forwarded verbatim to git commit.
 
-All other arguments are forwarded verbatim to git commit.
+mv
+--
+  git cr mv [--mkdir] [--no-git] <source> <destination>
+
+  git cr mv foo/bar.h baz/bar.h
+  git cr mv --mkdir foo/bar.h new_dir/bar.h
+
+follow-renames
+--------------
+  git cr follow-renames [--no-git] <rev-range>
+
+  # All renames between two Chromium version tags (typical version bump):
+  git cr follow-renames 130.0.6723.58..131.0.6778.85
+
+  # Renames introduced by a single upstream commit:
+  git cr follow-renames abc123^..abc123
 
 Installing the alias
 --------------------
@@ -52,14 +71,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-
-class _UserError(Exception):
-    """Raised for user-facing validation failures.
-
-    The message is printed to stderr as-is by the top-level handler in main().
-    Raising this instead of printing-and-returning keeps command functions free
-    of error-reporting boilerplate.
-    """
+from user_validation_error import UserValidationError
 
 
 # Directory containing this script (brave-core/tools/cr/).
@@ -107,9 +119,10 @@ def _check_hooks_path() -> None:
                 _REPO_ROOT / configured).resolve()
     if resolved == _HOOK_DEST.parent.resolve():
         return  # Points at .git/hooks/ — our hook will still run.
-    raise _UserError(f'git_cr: core.hooksPath is set to "{configured}".\n'
-                     'git ignores .git/hooks/ while this is set.\n'
-                     'Unset core.hooksPath or point it to .git/hooks/.')
+    raise UserValidationError(
+        f'git_cr: core.hooksPath is set to "{configured}".\n'
+        'git ignores .git/hooks/ while this is set.\n'
+        'Unset core.hooksPath or point it to .git/hooks/.')
 
 
 def _check_hook_ready() -> None:
@@ -129,7 +142,7 @@ def _check_hook_ready() -> None:
         else:
             ready = bool(_HOOK_DEST.stat().st_mode & stat.S_IXUSR)
     if not ready:
-        raise _UserError(
+        raise UserValidationError(
             'git_cr: commit-msg hook is not installed or not executable.\n'
             'Run:    git cr install-hook')
 
@@ -222,9 +235,9 @@ def cmd_setup_alias() -> int:
         cwd=_REPO_ROOT,
     )
     if result.returncode != 0:
-        raise _UserError(f'git_cr: {result.stderr.strip()}')
+        raise UserValidationError(f'git_cr: {result.stderr.strip()}')
     print('Installed: git alias.cr')
-    print('Usage:     git cr -m "Your commit message"')
+    print('Run "git cr" for usage.')
     return 0
 
 
@@ -251,7 +264,13 @@ def main() -> int:
             return cmd_install_hook()
         if subcmd == 'setup-alias':
             return cmd_setup_alias()
-    except _UserError as e:
+        if subcmd == 'mv':
+            import git_cr_mv
+            return git_cr_mv.cmd_mv(rest)
+        if subcmd == 'follow-renames':
+            import git_cr_follow_renames
+            return git_cr_follow_renames.cmd_follow_renames(rest)
+    except UserValidationError as e:
         print(e, file=sys.stderr)
         return 1
 
