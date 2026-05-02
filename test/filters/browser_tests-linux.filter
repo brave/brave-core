@@ -142,6 +142,18 @@
 # the Glic WebUI initialization flow. Stable upstream (0.3% flake rate).
 -GuestUtilBrowserTest.OnGuestAdded_Glic
 
+# Chromium test: ApplyDefaultSearchChangeForTesting(FROM_EXTENSION) on Linux
+# leaves default_search_provider_ null (extension DSEs unsupported on Linux)
+# while default_search_provider_source_ stays FROM_EXTENSION. Brave's
+# DefaultSearchManager override causes MaybeShowDialog() to record the
+# histogram twice with differing conditions (kControlledByPolicy and
+# kExtensionControlled), failing the ExpectUniqueSample assertion.
+# Already disabled on Windows in upstream source; upstream TODO crbug.com/429600559
+# acknowledges the broken extension DSE test setup.
+# Stable upstream: 0.3% flake rate over 30 days per LUCI Analysis.
+# https://github.com/brave/brave-browser/issues/54542
+-SearchEngineChoiceDialogBrowserTest.DialogDoesNotShowWithExtensionEnabledThatOverridesDSE
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccessCodeCastHandlerBrowserTest.*
 -AdsPageLoadMetricsObserverBrowserTest.*
