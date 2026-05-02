@@ -29,7 +29,7 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
  public:
   explicit BraveSyncServiceImpl(
       InitParams init_params,
-      std::unique_ptr<SyncServiceImplDelegate> sync_service_impl_delegate, 
+      std::unique_ptr<SyncServiceImplDelegate> sync_service_impl_delegate,
       os_crypt_async::OSCryptAsync* os_crypt_async);
   ~BraveSyncServiceImpl() override;
 
@@ -48,8 +48,6 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
 
   std::string GetOrCreateSyncCode();
   bool SetSyncCode(const std::string& sync_code);
-
-  
 
   // This should only be called by helper function, brave_sync::ResetSync, or by
   // OnDeviceInfoChange internally

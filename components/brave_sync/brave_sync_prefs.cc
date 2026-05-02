@@ -68,9 +68,8 @@ constexpr size_t kLeaveChainDetailsMaxLen = 500;
 
 }  // namespace
 
-Prefs::Prefs(PrefService* pref_service, 
-  os_crypt_async::Encryptor encryptor) : 
-  pref_service_(*pref_service), encryptor_(std::move(encryptor)) {
+Prefs::Prefs(PrefService* pref_service, os_crypt_async::Encryptor encryptor)
+    : pref_service_(*pref_service), encryptor_(std::move(encryptor)) {
 #if BUILDFLAG(IS_IOS)
   add_leave_chain_detail_behaviour_ = AddLeaveChainDetailBehaviour::kAdd;
 #else

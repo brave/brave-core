@@ -28,7 +28,8 @@ inline constexpr char kCustomSyncServiceUrl[] = "brave_sync.sync_service_url";
 
 class Prefs {
  public:
-  explicit Prefs(PrefService* pref_service, os_crypt_async::Encryptor encryptor);
+  explicit Prefs(PrefService* pref_service,
+                 os_crypt_async::Encryptor encryptor);
   Prefs(const Prefs&) = delete;
   Prefs& operator=(const Prefs&) = delete;
   virtual ~Prefs();

@@ -20,10 +20,10 @@
 #include "brave/components/sync/service/brave_sync_auth_manager.h"
 #include "brave/components/sync/service/sync_service_impl_delegate.h"
 #include "build/build_config.h"
+#include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync/engine/sync_protocol_error.h"
 #include "components/sync/model/type_entities_count.h"
-#include "components/os_crypt/async/browser/os_crypt_async.h"
 
 namespace syncer {
 
@@ -42,9 +42,9 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(
       sync_service_impl_delegate_(std::move(sync_service_impl_delegate)),
       os_crypt_async_(os_crypt_async),
       weak_ptr_factory_(this) {
-  os_crypt_async_->GetInstance(base::BindOnce(
-      &BraveSyncServiceImpl::OnOsCryptAsyncReady,
-      weak_ptr_factory_.GetWeakPtr()));
+  os_crypt_async_->GetInstance(
+      base::BindOnce(&BraveSyncServiceImpl::OnOsCryptAsyncReady,
+                     weak_ptr_factory_.GetWeakPtr()));
   sync_service_impl_delegate_->set_profile_sync_service(this);
 }
 
@@ -52,7 +52,8 @@ BraveSyncServiceImpl::~BraveSyncServiceImpl() {
   brave_sync_prefs_change_registrar_.RemoveAll();
 }
 
-void BraveSyncServiceImpl::OnOsCryptAsyncReady(os_crypt_async::Encryptor encryptor) {
+void BraveSyncServiceImpl::OnOsCryptAsyncReady(
+    os_crypt_async::Encryptor encryptor) {
   brave_sync_prefs_ = std::make_unique<brave_sync::Prefs>(
       sync_client_->GetPrefService(), std::move(encryptor));
 
@@ -63,11 +64,11 @@ void BraveSyncServiceImpl::OnOsCryptAsyncReady(os_crypt_async::Encryptor encrypt
                           base::Unretained(this)));
 
   // DeriveSigningKeys → TryStart → GetInstance would re-enter OSCryptAsync
-  // while is_initializing_ is still true. Post to run after this callback returns.
+  // while is_initializing_ is still true. Post to run after this callback
+  // returns.
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE,
-      base::BindOnce(&BraveSyncServiceImpl::OnPrefsReady,
-                     weak_ptr_factory_.GetWeakPtr()));
+      FROM_HERE, base::BindOnce(&BraveSyncServiceImpl::OnPrefsReady,
+                                weak_ptr_factory_.GetWeakPtr()));
 }
 
 void BraveSyncServiceImpl::OnPrefsReady() {

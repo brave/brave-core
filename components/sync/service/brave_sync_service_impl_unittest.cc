@@ -10,10 +10,10 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/functional/callback_helpers.h"
-#include "base/test/bind.h"
 #include "base/memory/raw_ptr.h"
 #include "base/notreached.h"
 #include "base/run_loop.h"
+#include "base/test/bind.h"
 #include "base/test/gtest_util.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
@@ -152,18 +152,16 @@ class BraveSyncServiceImplTest : public testing::Test {
     auto sync_service_delegate(std::make_unique<SyncServiceImplDelegateMock>());
     sync_service_delegate_ = sync_service_delegate.get();
 
-     os_crypt_async_ = os_crypt_async::GetTestOSCryptAsyncForTesting(
+    os_crypt_async_ = os_crypt_async::GetTestOSCryptAsyncForTesting(
         /*is_sync_for_unittests=*/true);
 
     sync_service_impl_ = std::make_unique<BraveSyncServiceImpl>(
         sync_service_impl_bundle_.CreateBasicInitParams(std::move(sync_client)),
-        std::move(sync_service_delegate),
-         os_crypt_async_.get());
+        std::move(sync_service_delegate), os_crypt_async_.get());
     sync_service_impl_->Initialize(std::move(controllers));
   }
 
   brave_sync::Prefs* brave_sync_prefs() { return &sync_service_impl_->prefs(); }
-
 
   SyncPrefs* sync_prefs() { return &sync_prefs_; }
 
