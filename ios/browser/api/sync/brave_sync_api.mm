@@ -352,23 +352,23 @@ BraveSyncAPIWordsValidationStatus const
 }
 
 - (bool)isSyncAccountDeletedNoticePending {
-  brave_sync::Prefs brave_sync_prefs(_profile->GetPrefs());
+  brave_sync::PrefsPlain brave_sync_prefs(_profile->GetPrefs());
   return brave_sync_prefs.IsSyncAccountDeletedNoticePending();
 }
 
 - (void)setIsSyncAccountDeletedNoticePending:
     (bool)isSyncAccountDeletedNoticePending {
-  brave_sync::Prefs brave_sync_prefs(_profile->GetPrefs());
+  brave_sync::PrefsPlain brave_sync_prefs(_profile->GetPrefs());
   brave_sync_prefs.SetSyncAccountDeletedNoticePending(false);
 }
 
 - (bool)isFailedDecryptSeedNoticeDismissed {
-  brave_sync::Prefs brave_sync_prefs(_profile->GetPrefs());
+  brave_sync::PrefsPlain brave_sync_prefs(_profile->GetPrefs());
   return brave_sync_prefs.IsFailedDecryptSeedNoticeDismissed();
 }
 
 - (void)dismissFailedDecryptSeedNotice {
-  brave_sync::Prefs brave_sync_prefs(_profile->GetPrefs());
+  brave_sync::PrefsPlain brave_sync_prefs(_profile->GetPrefs());
   brave_sync_prefs.DismissFailedDecryptSeedNotice();
 }
 
