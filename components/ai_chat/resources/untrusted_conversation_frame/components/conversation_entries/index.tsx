@@ -127,11 +127,7 @@ function usePairedConversationGroups() {
   return pairedEntries
 }
 
-function scrollEntryPairToTop(el: HTMLDivElement | null) {
-  el?.scrollIntoView({ block: 'start', behavior: 'smooth' })
-}
-
-function ConversationEntries() {
+function ConversationEntries(props: { scrollToBottom: () => void }) {
   const conversationContext = useUntrustedConversationContext()
 
   const [hoverMenuButtonId, setHoverMenuButtonId] = React.useState<number>()
@@ -480,7 +476,7 @@ function ConversationEntries() {
           className={styles.entryPair}
           ref={
             pairIndex === entryPairs.length - 1 && hasGenerated.current
-              ? scrollEntryPairToTop
+              ? props.scrollToBottom
               : undefined
           }
         >

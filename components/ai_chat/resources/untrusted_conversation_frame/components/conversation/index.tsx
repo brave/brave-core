@@ -201,7 +201,9 @@ function Conversation(props: ConversationProps) {
           </div>
         )}
 
-        <ConversationEntries />
+        <ConversationEntries
+          scrollToBottom={() => scrollToBottomContinuously()}
+        />
 
         <div ref={noticesRef}>
           {showSuggestions && (

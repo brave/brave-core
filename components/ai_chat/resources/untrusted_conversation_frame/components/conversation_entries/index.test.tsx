@@ -826,15 +826,10 @@ describe('last entry pair scroll on mount', () => {
     text: 'Hello',
   })
 
-  let scrollIntoViewMock: jest.Mock
+  let scrollToBottomMock: jest.Mock
 
   beforeEach(() => {
-    scrollIntoViewMock = jest.fn()
-    HTMLElement.prototype.scrollIntoView = scrollIntoViewMock
-  })
-
-  afterEach(() => {
-    delete (HTMLElement.prototype as any).scrollIntoView
+    scrollToBottomMock = jest.fn()
   })
 
   it('scrolls the last entry pair into view when generation has started', () => {
@@ -843,25 +838,21 @@ describe('last entry pair scroll on mount', () => {
         overrides={{ isGenerating: true }}
         initialState={{ conversationHistory: [humanTurn] }}
       >
-        <ConversationEntries />
+        <ConversationEntries scrollToBottom={scrollToBottomMock} />
       </MockContext>,
     )
 
-    expect(scrollIntoViewMock).toHaveBeenCalledTimes(1)
-    expect(scrollIntoViewMock).toHaveBeenCalledWith({
-      block: 'start',
-      behavior: 'smooth',
-    })
+    expect(scrollToBottomMock).toHaveBeenCalledTimes(1)
   })
 
   it('does not scroll when generation has never started', () => {
     render(
       <MockContext initialState={{ conversationHistory: [humanTurn] }}>
-        <ConversationEntries />
+        <ConversationEntries scrollToBottom={scrollToBottomMock} />
       </MockContext>,
     )
 
-    expect(scrollIntoViewMock).not.toHaveBeenCalled()
+    expect(scrollToBottomMock).not.toHaveBeenCalled()
   })
 
   it('only scrolls once per element mount, not on subsequent re-renders', async () => {
@@ -875,17 +866,17 @@ describe('last entry pair scroll on mount', () => {
           conversationEntriesState: { isGenerating: true },
         }}
       >
-        <ConversationEntries />
+        <ConversationEntries scrollToBottom={scrollToBottomMock} />
       </MockContext>,
     )
 
-    expect(scrollIntoViewMock).toHaveBeenCalledTimes(1)
+    expect(scrollToBottomMock).toHaveBeenCalledTimes(1)
 
     // Re-render with isGenerating: false — entry pairs unchanged, ref value unchanged
     await act(async () => {
       mockRef.current!.api.state.update({ isGenerating: false })
     })
 
-    expect(scrollIntoViewMock).toHaveBeenCalledTimes(1)
+    expect(scrollToBottomMock).toHaveBeenCalledTimes(1)
   })
 })
