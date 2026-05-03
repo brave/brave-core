@@ -300,6 +300,18 @@ class PlasterTest(_Base):
         self.assertTrue(
             (self._brave / 'rewrite' / 'B' / 'foo.h.toml').exists())
 
+    def test_patchinfo_deleted_with_patch(self) -> None:
+        """Sibling .patchinfo is removed when the patch is deleted."""
+        self._commit('rewrite/A/foo.h.toml', '[substitution]\n')
+        self._commit('patches/A-foo.h.patch', 'diff --git a/foo\n')
+        patchinfo = self._brave / 'patches' / 'A-foo.h.patchinfo'
+        patchinfo.write_text('{}', encoding='utf-8')
+
+        cmd_mv(['--mkdir', 'rewrite/A/foo.h.toml', 'rewrite/B/foo.h.toml'])
+
+        self.assertFalse((self._brave / 'patches' / 'A-foo.h.patch').exists())
+        self.assertFalse(patchinfo.exists())
+
     def test_missing_patch_warns_no_error(self) -> None:
         """Moving a TOML whose patch is absent warns but does not raise."""
         self._commit('rewrite/A/foo.h.toml', '[substitution]\n')
@@ -452,6 +464,8 @@ class PlasterApplyTest(_Base):
         content = new_patch.read_text(encoding='utf-8')
         self.assertIn('-void old_func() {}', content)
         self.assertIn('+void new_func() {}', content)
+        staged = repository.brave.run_git('diff', '--cached', '--name-only')
+        self.assertIn('patches/B-foo.cc.patch', staged)
 
     def test_no_upstream_source_logs_warning(self) -> None:
         """Warning is logged when the chromium source for the new path is

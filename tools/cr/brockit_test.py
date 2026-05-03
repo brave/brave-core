@@ -188,23 +188,20 @@ class BrockitTest(unittest.TestCase):
                     brockit.Patchfile(path=self.fake_chromium_src.
                                       get_patchfile_path_for_source(
                                           self.fake_chromium_src.chromium,
-                                          test_file_chromium),
-                                      source=test_file_chromium)
+                                          test_file_chromium))
                 ],
                 self.fake_chromium_src.chromium / 'v8': [
                     brockit.Patchfile(path=self.fake_chromium_src.
                                       get_patchfile_path_for_source(
                                           self.fake_chromium_src.chromium /
-                                          'v8', test_file_v8),
-                                      source=test_file_v8)
+                                          'v8', test_file_v8))
                 ],
                 self.fake_chromium_src.chromium / 'third_party/test1': [
-                    brockit.Patchfile(path=self.fake_chromium_src.
-                                      get_patchfile_path_for_source(
-                                          self.fake_chromium_src.chromium /
-                                          'third_party/test1',
-                                          test_file_third_party),
-                                      source=test_file_third_party)
+                    brockit.Patchfile(
+                        path=self.fake_chromium_src.
+                        get_patchfile_path_for_source(
+                            self.fake_chromium_src.chromium /
+                            'third_party/test1', test_file_third_party))
                 ],
             })
 

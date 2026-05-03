@@ -192,9 +192,19 @@ def _step5_plaster(file_pairs: list[_FilePair], no_git: bool,
                 patch_file.unlink()
             else:
                 repository.brave.run_git('rm', str(patch_file))
+            patchinfo_file = patch_file.with_suffix('.patchinfo')
+            if patchinfo_file.exists():
+                patchinfo_file.unlink()
 
         if run_plaster:
             try:
                 PlasterFile(new_file).apply()
+                if not no_git:
+                    new_chromium_path = new_file.relative_to(
+                        rewrite_path).with_suffix('')
+                    new_patch = patches_path / patch_name_for(
+                        new_chromium_path)
+                    if new_patch.exists():
+                        repository.brave.run_git('add', str(new_patch))
             except (Exception, SystemExit) as e:
                 logging.warning('plaster failed to apply %s: %s', new_file, e)

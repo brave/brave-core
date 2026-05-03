@@ -32,6 +32,7 @@ from __future__ import annotations
 import argparse
 import logging
 from pathlib import Path
+import subprocess
 
 from incendiary_error_handler import IncendiaryErrorHandler
 import plaster
@@ -89,6 +90,7 @@ def cmd_follow_renames(args: list[str]) -> int:
         _repair_plaster_files(old_chromium, new_chromium, parsed.no_git,
                               not parsed.no_run_plaster)
         update_references(old_chromium, new_chromium)
+        _repair_patch_files(old_chromium, new_chromium, parsed.no_git)
 
     console.log(f'[bold green]✔[/] {len(renames)} rename(s) processed')
     return 0
@@ -205,9 +207,67 @@ def _repair_plaster_files(old_chromium: Path,
             patch_file.unlink()
         else:
             repository.brave.run_git('rm', str(patch_file))
+        patchinfo_file = patch_file.with_suffix('.patchinfo')
+        if patchinfo_file.exists():
+            patchinfo_file.unlink()
 
     if run_plaster:
         try:
             PlasterFile(new_toml).apply()
+            if not no_git:
+                new_patch = (repository.BRAVE_CORE_PATH / 'patches' /
+                             patch_name_for(new_chromium))
+                if new_patch.exists():
+                    repository.brave.run_git('add', str(new_patch))
         except (Exception, SystemExit) as e:
             logging.warning('plaster failed to apply %s: %s', new_toml, e)
+
+
+def _repair_patch_files(old_chromium: Path, new_chromium: Path,
+                        no_git: bool) -> None:
+    """Renames and re-applies the .patch file for one upstream rename.
+
+    If no patch file exists at patches/patch_name_for(old_chromium), this is
+    a no-op. Patches already handled by _repair_plaster_files will have been
+    deleted before this runs, so they are naturally skipped.
+
+    The patch --- and +++ headers are updated to reference the new chromium
+    path, the file is renamed, then git apply --3way is attempted. A warning
+    is logged if the apply fails.
+    """
+    patches_path = repository.BRAVE_CORE_PATH / 'patches'
+    old_patch = patches_path / patch_name_for(old_chromium)
+    if not old_patch.exists():
+        return
+
+    new_patch = patches_path / patch_name_for(new_chromium)
+    new_patch.parent.mkdir(parents=True, exist_ok=True)
+
+    old_path_str = old_chromium.as_posix()
+    new_path_str = new_chromium.as_posix()
+    updated_lines = []
+    for line in old_patch.read_text(encoding='utf-8').splitlines(
+            keepends=True):
+        if (line.startswith('diff --git ') or line.startswith('--- ')
+                or line.startswith('+++ ')):
+            line = line.replace(old_path_str, new_path_str)
+        updated_lines.append(line)
+    updated_content = ''.join(updated_lines)
+
+    if no_git:
+        old_patch.rename(new_patch)
+    else:
+        repository.brave.run_git('mv', str(old_patch), str(new_patch))
+    new_patch.write_text(updated_content, encoding='utf-8')
+    if not no_git:
+        repository.brave.run_git('add', str(new_patch))
+
+    try:
+        repository.chromium.run_git('apply', '--3way', '--ignore-space-change',
+                                    '--ignore-whitespace', str(new_patch))
+    except subprocess.CalledProcessError as e:
+        logging.warning('Failed to apply %s after rename: %s', new_patch,
+                        e.stderr.strip() if e.stderr else str(e))
+    finally:
+        repository.chromium.run_git('reset', 'HEAD', '--',
+                                    new_chromium.as_posix())

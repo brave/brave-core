@@ -11,6 +11,7 @@ import re
 import subprocess
 from typing import Optional
 
+from plaster import PlasterFile
 from repository import Repository
 import repository
 
@@ -30,14 +31,32 @@ class Patchfile:
 
     # The source file this patch targets, relative to the patch's repository.
     # e.g. "build/android/gyp/dex.py"
-    source: Path
+    source: Path = field(init=False)
 
     # The repository the patch file is targeting to patch.
     repository: Repository = field(init=False)
 
+    # Path to the plaster (.toml) file for this patch, relative to the
+    # brave-core root.
+    plaster: Optional[Path] = field(init=False)
+
     def __post_init__(self):
         object.__setattr__(self, 'repository',
                            self.get_repository_from_patch_name())
+
+        sources = self.repository.get_patch_stats(self.path_from_repo())
+        if len(sources) != 1:
+            raise ValueError(
+                f'Expected exactly one source for {self.path}, got {sources}.')
+        object.__setattr__(self, 'source', sources[0])
+
+        plaster = None
+        if self.repository.is_chromium:
+            candidate = (Path('rewrite') / self.source.parent /
+                         (self.source.name + '.toml'))
+            if (repository.BRAVE_CORE_PATH / candidate).exists():
+                plaster = candidate
+        object.__setattr__(self, 'plaster', plaster)
 
     def get_repository_from_patch_name(self) -> Repository:
         """Gets the repository for the patch file.
@@ -70,6 +89,12 @@ class Patchfile:
         # The patch failed as broken.
         BROKEN = auto()
 
+        # The patch failed but plaster successfully resolved it.
+        PLASTER_FIXED = auto()
+
+        # The patch failed and plaster was unable to resolve it.
+        PLASTER_BROKEN = auto()
+
     @dataclass
     class SourceStatus:
         """The status of the source file in a given commit.
@@ -83,6 +108,11 @@ class Patchfile:
 
         # The name the source may have been renamed to.
         renamed_to: Optional[str] = None
+
+    @property
+    def has_plaster(self) -> bool:
+        """Whether this patch has an associated plaster file."""
+        return self.plaster is not None
 
     def source_name_from_patch_naming(self) -> str:
         """Source file name according to the patch file name.
@@ -117,6 +147,8 @@ class Patchfile:
             return self.ApplyStatus.CLEAN
         except subprocess.CalledProcessError as e:
             if 'with conflicts' in e.stderr:
+                if self.has_plaster:
+                    return self.plaster_apply()
                 return self.ApplyStatus.CONFLICT
             error_line = next(
                 (l for l in e.stderr.splitlines() if l.startswith('error:')),
@@ -131,10 +163,6 @@ class Patchfile:
                     #
                     # It is also of notice that this error can also occur when
                     # `apply` is run twice for the same patch with conflicts.
-                    logging.warning(
-                        'Patch with missing file detected during --3way apply,'
-                        ' which may indicate a bad sync state before starting '
-                        'to upgrade. %s', self.path)
                     return self.ApplyStatus.DELETED
                 if ('No such file or directory' in reason
                         and self.path.as_posix() in reason):
@@ -153,11 +181,33 @@ class Patchfile:
                         'Patch being flagged as broken, but with unexpected '
                         'reason: %s %s', self.path, reason)
 
+                if self.has_plaster:
+                    return self.plaster_apply()
                 return self.ApplyStatus.BROKEN
 
         # We should not reach this point. Failures to apply that fail like this
         # must be investigated with `--verbose`, and fixed.
         raise NotImplementedError()
+
+    def plaster_apply(self) -> ApplyStatus:
+        """Attempts to apply the associated plaster file.
+
+        Returns PLASTER_FIXED on success, PLASTER_BROKEN on any failure.
+        """
+        if not self.has_plaster:
+            raise NotImplementedError(f'No plaster file for {self.path}.')
+
+        try:
+            # A failed --3way apply leaves the file in unmerged conflict state
+            # in the index, which causes `git diff` inside PlasterFile.apply()
+            # to produce a combined diff --cc instead of a normal unified diff.
+            # Checking out HEAD resolves the index conflict first.
+            self.repository.run_git('checkout', 'HEAD', '--',
+                                    self.source.as_posix())
+            PlasterFile(repository.BRAVE_CORE_PATH / self.plaster).apply()
+            return self.ApplyStatus.PLASTER_FIXED
+        except Exception:
+            return self.ApplyStatus.PLASTER_BROKEN
 
     def get_last_commit_for_source(self) -> str:
         """Gets the last commit where the source file was mentioned.

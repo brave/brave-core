@@ -22,46 +22,65 @@ class PatchfileTest(unittest.TestCase):
         self.fake_chromium_src.setup()
         self.fake_chromium_src.add_dep('v8')
         self.fake_chromium_src.add_dep('third_party/test1')
+        self.fake_chromium_src.add_dep('third_party/devtools-frontend/src')
         self.addCleanup(self.fake_chromium_src.cleanup)
 
     def test_get_repository_from_patch_name(self):
         """Test the result of get_repository_from_patch_name"""
+        dex_py = Path('build/android/gyp/dex.py')
+        for repo in [
+                self.fake_chromium_src.chromium,
+                self.fake_chromium_src.chromium / 'v8',
+                self.fake_chromium_src.chromium / 'third_party/test1'
+        ]:
+            self.fake_chromium_src.write_and_stage_file(
+                dex_py, 'original\n', repo)
+            self.fake_chromium_src.commit('Add dex.py', repo)
+            (repo / dex_py).write_text('original\nbrave_change\n')
+        self.fake_chromium_src.run_update_patches()
+
         patchfile = Patchfile(
-            path=Path("patches/build-android-gyp-dex.py.patch"),
-            source=Path("build/android/gyp/dex.py"))
+            path=Path("patches/build-android-gyp-dex.py.patch"))
         self.assertEqual(patchfile.get_repository_from_patch_name(),
                          repository.chromium)
 
         patchfile = Patchfile(
-            path=Path("patches/v8/build-android-gyp-dex.py.patch"),
-            source=Path("build/android/gyp/dex.py"))
+            path=Path("patches/v8/build-android-gyp-dex.py.patch"))
         self.assertEqual(patchfile.get_repository_from_patch_name(),
                          Repository(self.fake_chromium_src.chromium / 'v8'))
 
         patchfile = Patchfile(path=Path(
-            "patches/third_party/test1/build-android-gyp-dex.py.patch"),
-                              source=Path("build/android/gyp/dex.py"))
+            "patches/third_party/test1/build-android-gyp-dex.py.patch"))
         self.assertEqual(
             patchfile.get_repository_from_patch_name(),
             Repository(self.fake_chromium_src.chromium / 'third_party/test1'))
 
     def test_source_name_from_patch_naming(self):
         """Test patched file name name heuristics."""
+        dex_py = Path('build/android/gyp/dex.py')
+        for repo in [
+                self.fake_chromium_src.chromium,
+                self.fake_chromium_src.chromium / 'v8',
+                self.fake_chromium_src.chromium / 'third_party/test1'
+        ]:
+            self.fake_chromium_src.write_and_stage_file(
+                dex_py, 'original\n', repo)
+            self.fake_chromium_src.commit('Add dex.py', repo)
+            (repo / dex_py).write_text('original\nbrave_change\n')
+        self.fake_chromium_src.run_update_patches()
+
         patchfile = Patchfile(
-            path=Path("patches/build-android-gyp-dex.py.patch"),
-            source=Path("build/android/gyp/dex.py"))
+            path=Path("patches/build-android-gyp-dex.py.patch"))
         self.assertEqual(patchfile.source_name_from_patch_naming(),
                          "build/android/gyp/dex.py")
 
         patchfile = Patchfile(
-            path=Path("patches/v8/build-android-gyp-dex.py.patch"),
-            source=Path("build/android/gyp/dex.py"))
+            path=Path("patches/v8/build-android-gyp-dex.py.patch"))
         self.assertEqual(patchfile.source_name_from_patch_naming(),
                          "build/android/gyp/dex.py")
 
         patchfile = Patchfile(path=Path(
-            "patches/third_party/test1/build-android-gyp-dex.py.patch"),
-                              source=Path("build/android/gyp/dex.py"))
+            "patches/third_party/test1/build-android-gyp-dex.py.patch"))
         self.assertEqual(patchfile.source_name_from_patch_naming(),
                          "build/android/gyp/dex.py")
 
@@ -115,8 +134,7 @@ class PatchfileTest(unittest.TestCase):
         self.assertNotIn('FROM_BRAVE_STORE', target_file.read_text())
         patchfile = Patchfile(
             path=self.fake_chromium_src.get_patchfile_path_for_source(
-                self.fake_chromium_src.chromium, test_idl),
-            source=test_idl)
+                self.fake_chromium_src.chromium, test_idl))
         status = patchfile.apply()
         self.assertEqual(status, Patchfile.ApplyStatus.CONFLICT)
 
@@ -177,8 +195,7 @@ class PatchfileTest(unittest.TestCase):
         self.assertNotIn('FROM_BRAVE_STORE', target_file.read_text())
         patchfile = Patchfile(
             path=self.fake_chromium_src.get_patchfile_path_for_source(
-                self.fake_chromium_src.chromium, test_idl),
-            source=test_idl)
+                self.fake_chromium_src.chromium, test_idl))
         status = patchfile.apply()
         self.assertEqual(status, Patchfile.ApplyStatus.CONFLICT)
 
@@ -253,8 +270,7 @@ class PatchfileTest(unittest.TestCase):
         self.assertNotIn('FROM_BRAVE_STORE', target_file.read_text())
         patchfile = Patchfile(
             path=self.fake_chromium_src.get_patchfile_path_for_source(
-                self.fake_chromium_src.chromium, test_idl),
-            source=test_idl)
+                self.fake_chromium_src.chromium, test_idl))
         status = patchfile.apply()
         self.assertEqual(status, Patchfile.ApplyStatus.CLEAN)
         self.assertIn('FROM_BRAVE_STORE', target_file.read_text())
@@ -279,8 +295,7 @@ class PatchfileTest(unittest.TestCase):
 
         patchfile = Patchfile(
             path=self.fake_chromium_src.get_patchfile_path_for_source(
-                self.fake_chromium_src.chromium, test_idl),
-            source=test_idl)
+                self.fake_chromium_src.chromium, test_idl))
         status = patchfile.apply()
         self.assertEqual(status, Patchfile.ApplyStatus.CLEAN)
         self.assertIn('last line', target_file.read_text())
@@ -295,10 +310,8 @@ class PatchfileTest(unittest.TestCase):
                             self.fake_chromium_src.chromium, test_idl))
         target_patch.write_text(target_patch.read_text().strip())
 
-        patchfile = Patchfile(
-            path=self.fake_chromium_src.get_patchfile_path_for_source(
-                self.fake_chromium_src.chromium, test_idl),
-            source=test_idl)
+        # apply() reads the patch from disk at call time, so the same
+        # Patchfile instance applies the now-broken patch.
         status = patchfile.apply()
         self.assertEqual(status, Patchfile.ApplyStatus.BROKEN)
 
@@ -322,8 +335,7 @@ class PatchfileTest(unittest.TestCase):
 
         patchfile = Patchfile(
             path=self.fake_chromium_src.get_patchfile_path_for_source(
-                self.fake_chromium_src.chromium, test_idl),
-            source=test_idl)
+                self.fake_chromium_src.chromium, test_idl))
         status = patchfile.apply()
         self.assertEqual(status, Patchfile.ApplyStatus.CLEAN)
         self.assertIn('last line', target_file.read_text())
@@ -340,8 +352,7 @@ class PatchfileTest(unittest.TestCase):
 
         patchfile = Patchfile(
             path=self.fake_chromium_src.get_patchfile_path_for_source(
-                self.fake_chromium_src.chromium, test_idl),
-            source=test_idl)
+                self.fake_chromium_src.chromium, test_idl))
         status = patchfile.apply()
         self.assertEqual(status, Patchfile.ApplyStatus.DELETED)
 
@@ -369,8 +380,7 @@ class PatchfileTest(unittest.TestCase):
         # Sanity-check: patch applies cleanly before we delete the file.
         patchfile = Patchfile(
             path=self.fake_chromium_src.get_patchfile_path_for_source(
-                self.fake_chromium_src.chromium, test_idl),
-            source=test_idl)
+                self.fake_chromium_src.chromium, test_idl))
         status = patchfile.apply()
         self.assertEqual(status, Patchfile.ApplyStatus.CLEAN)
         self.assertIn('last line', target_file.read_text())
@@ -387,46 +397,65 @@ class PatchfileTest(unittest.TestCase):
 
         patchfile = Patchfile(
             path=self.fake_chromium_src.get_patchfile_path_for_source(
-                self.fake_chromium_src.chromium, test_idl),
-            source=test_idl)
+                self.fake_chromium_src.chromium, test_idl))
         status = patchfile.apply()
         self.assertEqual(status, Patchfile.ApplyStatus.DELETED)
 
     def test_source_from_brave(self):
         """Tests the source_from_brave method of Patchfile."""
+        dex_py = Path('build/android/gyp/dex.py')
+        devtools_ts = Path(
+            'front_end/panels/timeline/components/LiveMetricsView.ts')
+        devtools_repo = (self.fake_chromium_src.chromium /
+                         'third_party/devtools-frontend/src')
+        for repo, source in [
+            (self.fake_chromium_src.chromium, dex_py),
+            (self.fake_chromium_src.chromium / 'v8', dex_py),
+            (devtools_repo, devtools_ts),
+        ]:
+            self.fake_chromium_src.write_and_stage_file(
+                source, 'original\n', repo)
+            self.fake_chromium_src.commit(f'Add {source.name}', repo)
+            (repo / source).write_text('original\nbrave_change\n')
+        self.fake_chromium_src.run_update_patches()
+
         self.assertEqual(
-            Patchfile(path=Path('patches/v8/build-android-gyp-dex.py.patch'),
-                      source=Path('build/android/gyp/dex.py')).
+            Patchfile(path=Path('patches/v8/build-android-gyp-dex.py.patch')).
             source_from_brave().as_posix(), '../v8/build/android/gyp/dex.py')
         self.assertEqual(
-            Patchfile(path=Path('patches/build-android-gyp-dex.py.patch'),
-                      source=Path('build/android/gyp/dex.py')).
+            Patchfile(path=Path('patches/build-android-gyp-dex.py.patch')).
             source_from_brave().as_posix(), '../build/android/gyp/dex.py')
 
-        _devtools_patch = (
-            'patches/third_party/devtools-frontend/src/'
-            'front_end-panels-timeline-components-LiveMetricsView.ts.patch')
+        _devtools_patch = ('patches/third_party/devtools-frontend/src/'
+                           'front_end-panels-timeline-components-'
+                           'LiveMetricsView.ts.patch')
         _devtools_source = (
             'front_end/panels/timeline/components/LiveMetricsView.ts')
         self.assertEqual(
             Patchfile(
-                path=Path(_devtools_patch),
-                source=Path(_devtools_source)).source_from_brave().as_posix(),
+                path=Path(_devtools_patch)).source_from_brave().as_posix(),
             '../third_party/devtools-frontend/src/' + _devtools_source)
 
     def test_path_from_repo(self):
         """Tests the path_from_repo method of Patchfile."""
+        dex_py = Path('build/android/gyp/dex.py')
+        for repo in [
+                self.fake_chromium_src.chromium,
+                self.fake_chromium_src.chromium / 'v8'
+        ]:
+            self.fake_chromium_src.write_and_stage_file(
+                dex_py, 'original\n', repo)
+            self.fake_chromium_src.commit('Add dex.py', repo)
+            (repo / dex_py).write_text('original\nbrave_change\n')
+        self.fake_chromium_src.run_update_patches()
+
         self.assertEqual(
-            Patchfile(
-                path=Path('patches/v8/build-android-gyp-dex.py.patch'),
-                source=Path(
-                    'build/android/gyp/dex.py')).path_from_repo().as_posix(),
+            Patchfile(path=Path('patches/v8/build-android-gyp-dex.py.patch')
+                      ).path_from_repo().as_posix(),
             '../brave/patches/v8/build-android-gyp-dex.py.patch')
         self.assertEqual(
-            Patchfile(
-                path=Path('patches/build-android-gyp-dex.py.patch'),
-                source=Path(
-                    'build/android/gyp/dex.py')).path_from_repo().as_posix(),
+            Patchfile(path=Path('patches/build-android-gyp-dex.py.patch')
+                      ).path_from_repo().as_posix(),
             'brave/patches/build-android-gyp-dex.py.patch')
 
     def test_get_last_commit_for_source(self):
@@ -463,7 +492,7 @@ class PatchfileTest(unittest.TestCase):
         # Verify the last commit for the source matches the initial commit hash
         patchfile_path = self.fake_chromium_src.get_patchfile_path_for_source(
             self.fake_chromium_src.chromium, test_file)
-        patchfile = Patchfile(path=patchfile_path, source=test_file)
+        patchfile = Patchfile(path=patchfile_path)
         self.assertEqual(patchfile.get_last_commit_for_source(),
                          initial_commit_hash)
 
@@ -481,7 +510,7 @@ class PatchfileTest(unittest.TestCase):
                                             self.fake_chromium_src.chromium)
 
         # Get the patch file path
-        patchfile = Patchfile(path=patchfile_path, source=test_file)
+        patchfile = Patchfile(path=patchfile_path)
 
         # Verify the last commit for the source matches the delete commit hash
         self.assertEqual(patchfile.get_last_commit_for_source(),
@@ -527,7 +556,7 @@ class PatchfileTest(unittest.TestCase):
         # Get the patch file path
         patchfile_path = self.fake_chromium_src.get_patchfile_path_for_source(
             self.fake_chromium_src.chromium, test_file)
-        patchfile = Patchfile(path=patchfile_path, source=test_file)
+        patchfile = Patchfile(path=patchfile_path)
 
         # Add a few more empty commits
         self.fake_chromium_src.commit_empty('Empty commit 3',
@@ -587,7 +616,7 @@ class PatchfileTest(unittest.TestCase):
         # Get the patch file path
         patchfile_path = self.fake_chromium_src.get_patchfile_path_for_source(
             self.fake_chromium_src.chromium, test_file)
-        patchfile = Patchfile(path=patchfile_path, source=test_file)
+        patchfile = Patchfile(path=patchfile_path)
 
         # Add a few more empty commits
         self.fake_chromium_src.commit_empty('Empty commit 3',
@@ -601,6 +630,174 @@ class PatchfileTest(unittest.TestCase):
         self.assertIn('Rename developer_private.idl to renamed_private.idl',
                       rename_status.commit_details)
         self.assertEqual(rename_status.renamed_to, renamed_file.as_posix())
+
+    def test_plaster_set_when_file_exists(self):
+        """Plaster path is set for a Chromium patch when the toml exists."""
+        test_file = Path('chrome/browser/foo.cc')
+        self.fake_chromium_src.write_and_stage_file(
+            test_file, 'original\n', self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add foo.cc',
+                                      self.fake_chromium_src.chromium)
+        (self.fake_chromium_src.chromium /
+         test_file).write_text('original\nbrave_change\n')
+        self.fake_chromium_src.run_update_patches()
+
+        plaster_path = (self.fake_chromium_src.brave /
+                        'rewrite/chrome/browser/foo.cc.toml')
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        plaster_path.write_text('')
+
+        patchfile = Patchfile(
+            path=self.fake_chromium_src.get_patchfile_path_for_source(
+                self.fake_chromium_src.chromium, test_file))
+        self.assertEqual(patchfile.plaster,
+                         Path('rewrite/chrome/browser/foo.cc.toml'))
+
+    def test_plaster_none_when_file_missing(self):
+        """Plaster is None for a Chromium patch when no toml file exists."""
+        test_file = Path('chrome/browser/foo.cc')
+        self.fake_chromium_src.write_and_stage_file(
+            test_file, 'original\n', self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add foo.cc',
+                                      self.fake_chromium_src.chromium)
+        (self.fake_chromium_src.chromium /
+         test_file).write_text('original\nbrave_change\n')
+        self.fake_chromium_src.run_update_patches()
+
+        patchfile = Patchfile(
+            path=self.fake_chromium_src.get_patchfile_path_for_source(
+                self.fake_chromium_src.chromium, test_file))
+        self.assertIsNone(patchfile.plaster)
+
+    def test_plaster_none_for_non_chromium_repo(self):
+        """Plaster is None for patches targeting a sub-repository."""
+        test_file = Path('src/foo.cc')
+        v8 = self.fake_chromium_src.chromium / 'v8'
+        self.fake_chromium_src.write_and_stage_file(test_file, 'original\n',
+                                                    v8)
+        self.fake_chromium_src.commit('Add foo.cc', v8)
+        (v8 / test_file).write_text('original\nbrave_change\n')
+        self.fake_chromium_src.run_update_patches()
+
+        # Create a toml file that would match if the repo check were absent.
+        plaster_path = self.fake_chromium_src.brave / 'rewrite/src/foo.cc.toml'
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        plaster_path.write_text('')
+
+        patchfile = Patchfile(
+            path=self.fake_chromium_src.get_patchfile_path_for_source(
+                v8, test_file))
+        self.assertIsNone(patchfile.plaster)
+
+
+class PatchfilePlasterApplyTest(unittest.TestCase):
+    """Tests for Patchfile.apply() when a plaster file is associated."""
+
+    _SOURCE_FILE = Path('chrome/browser/foo.cc')
+    _BASE_CONTENT = 'void old_func() {}\nstatic int x = 0;\n'
+    _BRAVE_CONTENT = 'void old_func() {}\nstatic int x = 1;\n'
+    _UPSTREAM_CONTENT = 'void old_func() {}\nstatic int x = 2;\n'
+
+    # count = 0 means "replace all matches, bypass count validation".
+    _WORKING_TOML = ('[[substitution]]\n'
+                     'description = "Replace old_func"\n'
+                     'pattern = "old_func"\n'
+                     'replace = "new_func"\n'
+                     'count = 0\n')
+
+    # No substitution key → TypeError iterating None → PLASTER_BROKEN.
+    _BROKEN_TOML = '# no substitution\n'
+
+    def setUp(self):
+        self.fake_chromium_src = FakeChromiumSrc()
+        self.fake_chromium_src.setup()
+        self.addCleanup(self.fake_chromium_src.cleanup)
+
+    def _write_plaster_toml(self, content: str) -> None:
+        toml_path = (self.fake_chromium_src.brave / 'rewrite' /
+                     self._SOURCE_FILE.parent /
+                     (self._SOURCE_FILE.name + '.toml'))
+        toml_path.parent.mkdir(parents=True, exist_ok=True)
+        toml_path.write_text(content)
+
+    def _setup_conflict_and_patchfile(self) -> Patchfile:
+        """Commits BASE_CONTENT, generates a brave patch (x=0→1), then commits
+        UPSTREAM_CONTENT (x=0→2) so that applying the patch hits the conflict
+        path in apply().
+
+        Must be called after _write_plaster_toml so the Patchfile constructor
+        finds the TOML and sets the plaster field.
+        """
+        chromium = self.fake_chromium_src.chromium
+        self.fake_chromium_src.write_and_stage_file(self._SOURCE_FILE,
+                                                    self._BASE_CONTENT,
+                                                    chromium)
+        self.fake_chromium_src.commit('Add foo.cc', chromium)
+
+        (chromium / self._SOURCE_FILE).write_text(self._BRAVE_CONTENT)
+        self.fake_chromium_src.run_update_patches()
+        self.fake_chromium_src._run_git_command(['checkout', '.'], chromium)
+
+        self.fake_chromium_src.write_and_stage_file(self._SOURCE_FILE,
+                                                    self._UPSTREAM_CONTENT,
+                                                    chromium)
+        self.fake_chromium_src.commit('Upstream change', chromium)
+
+        return Patchfile(
+            path=self.fake_chromium_src.get_patchfile_path_for_source(
+                chromium, self._SOURCE_FILE))
+
+    def _setup_broken_and_patchfile(self) -> tuple[Patchfile, Path]:
+        """Commits BASE_CONTENT and generates a valid brave patch.  Returns the
+        Patchfile and the absolute path to the patch file on disk.
+
+        Strip the patch file after this call to trigger the broken-patch path
+        in apply().  Must be called after _write_plaster_toml.
+        """
+        chromium = self.fake_chromium_src.chromium
+        self.fake_chromium_src.write_and_stage_file(self._SOURCE_FILE,
+                                                    self._BASE_CONTENT,
+                                                    chromium)
+        self.fake_chromium_src.commit('Add foo.cc', chromium)
+
+        (chromium / self._SOURCE_FILE).write_text(self._BRAVE_CONTENT)
+        self.fake_chromium_src.run_update_patches()
+        self.fake_chromium_src._run_git_command(['checkout', '.'], chromium)
+
+        patch_rel = self.fake_chromium_src.get_patchfile_path_for_source(
+            chromium, self._SOURCE_FILE)
+        return (Patchfile(path=patch_rel),
+                self.fake_chromium_src.brave / patch_rel)
+
+    def test_apply_conflict_plaster_fixed(self):
+        """Conflict path + working plaster → PLASTER_FIXED."""
+        self._write_plaster_toml(self._WORKING_TOML)
+        patchfile = self._setup_conflict_and_patchfile()
+        self.assertEqual(patchfile.apply(),
+                         Patchfile.ApplyStatus.PLASTER_FIXED)
+
+    def test_apply_conflict_plaster_broken(self):
+        """Conflict path + broken plaster → PLASTER_BROKEN."""
+        self._write_plaster_toml(self._BROKEN_TOML)
+        patchfile = self._setup_conflict_and_patchfile()
+        self.assertEqual(patchfile.apply(),
+                         Patchfile.ApplyStatus.PLASTER_BROKEN)
+
+    def test_apply_broken_patch_plaster_fixed(self):
+        """Broken patch path + working plaster → PLASTER_FIXED."""
+        self._write_plaster_toml(self._WORKING_TOML)
+        patchfile, patch_path = self._setup_broken_and_patchfile()
+        patch_path.write_text(patch_path.read_text().strip())
+        self.assertEqual(patchfile.apply(),
+                         Patchfile.ApplyStatus.PLASTER_FIXED)
+
+    def test_apply_broken_patch_plaster_broken(self):
+        """Broken patch path + broken plaster → PLASTER_BROKEN."""
+        self._write_plaster_toml(self._BROKEN_TOML)
+        patchfile, patch_path = self._setup_broken_and_patchfile()
+        patch_path.write_text(patch_path.read_text().strip())
+        self.assertEqual(patchfile.apply(),
+                         Patchfile.ApplyStatus.PLASTER_BROKEN)
 
 
 if __name__ == "__main__":

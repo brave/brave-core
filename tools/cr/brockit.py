@@ -213,6 +213,8 @@ from typing import Optional, List, Dict
 from incendiary_error_handler import IncendiaryErrorHandler
 from git_status import GitStatus
 from patchfile import Patchfile
+import plaster
+from plaster import PlasterFile, PlasterFileNeedsRegen
 import repository
 from repository import Repository, CHROMIUM_SRC_PATH
 from terminal import console, terminal
@@ -225,6 +227,15 @@ PINSLIST_TIMESTAMP_FILE = (
     'chromium_src/net/tools/transport_security_state_generator/'
     'input_file_parsers.cc')
 VERSION_UPGRADE_FILE = Path('.version_upgrade')
+
+# Commit subject prefixes that identify brockit-managed upgrade commits.
+# Patches whose most recent branch commit carries one of these subjects are
+# NOT dev-cycle changes and therefore must NOT be turned into fixups.
+_UPGRADE_COMMIT_WITH_PATCHES_PREFIXES = (
+    'Conflict-resolved patches from Chromium ',
+    'Regen-fixed 🩹 patches from Chromium ',
+    'Update patches from Chromium ',
+)
 
 # The link to a specific commit in the Chromium source code.
 GOOGLESOURCE_COMMIT_LINK = f'{versioning.GOOGLESOURCE_LINK}' '/+/{commit}'
@@ -336,15 +347,9 @@ def _get_apply_patches_list() -> dict[Repository, list[Patchfile]] | None:
             return None
         entries = json.loads(match.group(0))
         patch_paths = [Path(entry['patchPath']) for entry in entries]
-        patch_stats = repository.brave.get_patch_stats(*patch_paths)
         patch_files: dict[Repository, list[Patchfile]] = {}
         for patch_path in patch_paths:
-            sources = patch_stats[patch_path]
-            if len(sources) != 1:
-                raise ValueError(
-                    f'Expected exactly one source for {patch_path}, '
-                    f'got {sources}.') from e
-            patchfile = Patchfile(path=patch_path, source=sources[0])
+            patchfile = Patchfile(path=patch_path)
             patch_files.setdefault(patchfile.repository, []).append(patchfile)
         return patch_files
 
@@ -371,6 +376,13 @@ class ApplyPatchesRecord:
     # A list of patches that fail entirely when running apply with `--3way`.
     broken_patches: list[Patchfile] = field(default_factory=list)
 
+    # A list of patches where the apply failure was resolved by plaster.
+    plaster_fixed_patches: list[Path] = field(default_factory=list)
+
+    # A list of patches where the apply failure could not be resolved by
+    # plaster.
+    plaster_broken_patches: list[Patchfile] = field(default_factory=list)
+
     def all_conflict_resolved_patches(self) -> list[Patchfile]:
         """Returns a flattened list of all conflict-resolved candidates."""
         return [p for patches in self.patch_files.values() for p in patches]
@@ -383,7 +395,33 @@ class ApplyPatchesRecord:
         to address any potential patch changes.
         """
         return (self.files_with_conflicts or self.patches_to_deleted_files
-                or self.broken_patches)
+                or self.broken_patches or self.plaster_broken_patches)
+
+    def check_broken_plasters_fixed(self) -> None:
+        """Verifies all previously-broken plasters are now resolved.
+
+        For each entry in plaster_broken_patches:
+        - If the plaster .toml still exists, runs a dry-run check to confirm
+          the plaster output is up to date.
+        - If the plaster .toml is gone, verifies the corresponding .patch
+          file has also been removed.
+
+        Raises InvalidInputException if any broken plaster is not yet resolved.
+        """
+        for patchfile in self.plaster_broken_patches:
+            plaster_path = repository.BRAVE_CORE_PATH / patchfile.plaster
+            if plaster_path.exists():
+                try:
+                    PlasterFile(plaster_path).apply(dry_run=True)
+                except PlasterFileNeedsRegen as e:
+                    raise InvalidInputException(
+                        'Plaster file has not been fixed and re-applied: '
+                        f'{patchfile.plaster}') from e
+            else:
+                if (repository.BRAVE_CORE_PATH / patchfile.path).exists():
+                    raise InvalidInputException(
+                        'Plaster file was deleted but patch still exists: '
+                        f'{patchfile.path}')
 
     def stage_all_patches(self):
         """Stages all patches that were applied, so they can be committed as
@@ -983,6 +1021,12 @@ class Upgrade(Versioned):
         # These are patches that fail entirely when running apply with `--3way`.
         broken_patches: list[Patchfile] = []
 
+        # Patches where the apply failure was resolved by plaster.
+        plaster_fixed_patches: list[Path] = []
+
+        # Patches where the apply failure could not be resolved by plaster.
+        plaster_broken_patches: list[Patchfile] = []
+
         # A list of all patchfiles that failed to apply, grouped by repository.
         patch_files = _get_apply_patches_list()
         if patch_files is None:
@@ -991,10 +1035,10 @@ class Upgrade(Versioned):
         if patch_files:
             terminal.log_task(
                 '[bold]Reapplying patch files with --3way:\n[/]%s' %
-                '\n'.join(f'    * {file}' for file in [
-                    patchfile.path for patch_list in patch_files.values()
-                    for patchfile in patch_list
-                ]))
+                '\n'.join(f'    * {patchfile.path}'
+                          f'{" 🩹" if patchfile.has_plaster else ""}'
+                          for patch_list in patch_files.values()
+                          for patchfile in patch_list))
 
         vscode_files: list[Path] = []
         for repo, patches in patch_files.items():
@@ -1007,6 +1051,10 @@ class Upgrade(Versioned):
                     broken_patches.append(patchfile)
                 elif status == Patchfile.ApplyStatus.DELETED:
                     patches_to_deleted_files.append(patchfile)
+                elif status == Patchfile.ApplyStatus.PLASTER_FIXED:
+                    plaster_fixed_patches.append(patchfile.path)
+                elif status == Patchfile.ApplyStatus.PLASTER_BROKEN:
+                    plaster_broken_patches.append(patchfile)
 
         for repo, patches in patch_files.items():
             # Resetting any staged states from apply patches as that can cause
@@ -1054,9 +1102,10 @@ class Upgrade(Versioned):
                                 (0, 4)))
                         vscode_files += [patchfile.path, renamed_to]
 
-            # Printing the commmit message for the grouped changes.
-            console.log(
-                Padding(f'{next(iter(patches.items()))[1].commit_details}\n',
+                # Printing the commmit message for the grouped changes.
+                console.log(
+                    Padding(
+                        f'{next(iter(patches.items()))[1].commit_details}\n',
                         (0, 8),
                         style="dim"))
 
@@ -1069,6 +1118,16 @@ class Upgrade(Versioned):
                 source = patchfile.source_from_brave()
                 console.log(Padding(f'✘ {patchfile.path} ➜ {source}', (0, 4)))
                 vscode_files += [patchfile.path, source]
+
+        if plaster_broken_patches:
+            terminal.log_task('[bold]Plaster failed to fix patches '
+                              f'{ACTION_NEEDED_DECORATOR}:[/]')
+
+            for patchfile in plaster_broken_patches:
+                source = patchfile.source_from_brave()
+                console.log(
+                    Padding(f'✘ {patchfile.plaster} ➜ {source}', (0, 4)))
+                vscode_files += [patchfile.plaster, source]
 
         if files_with_conflicts:
             vscode_files += files_with_conflicts
@@ -1085,7 +1144,9 @@ class Upgrade(Versioned):
             patch_files=patch_files,
             patches_to_deleted_files=patches_to_deleted_files,
             files_with_conflicts=files_with_conflicts,
-            broken_patches=broken_patches)
+            broken_patches=broken_patches,
+            plaster_fixed_patches=plaster_fixed_patches,
+            plaster_broken_patches=plaster_broken_patches)
 
         replace(ContinuationFile.load(target_version=self.target_version),
                 apply_record=apply_record).save()
@@ -1114,6 +1175,64 @@ class Upgrade(Versioned):
         repository.brave.git_commit(
             f'Update from Chromium {self.base_version} '
             f'to Chromium {self.target_version}.')
+
+    def _commit_pinned_patches_and_fixups(self,
+                                          patch_paths: set[str],
+                                          commit_message: str,
+                                          no_verify: bool = False) -> None:
+        """Commits patch paths, routing dev-cycle patches as fixups.
+
+        For major version upgrades, inspects each patch's branch history. If
+        the most-recent branch commit touching a patch is not a brockit upgrade
+        commit, the patch is committed as a fixup! for that dev-cycle commit
+        instead. The remaining patches are committed together under
+        commit_message.
+        """
+        if self.is_major():
+            up_to_git_ref = _solve_brave_ref('@previous-major')
+
+            fixup_groups: dict[str, list[str]] = {}
+            for patch_path in patch_paths:
+                commits = repository.brave.run_git('log', '--pretty=%H %s',
+                                                   f'{up_to_git_ref}..HEAD',
+                                                   '--', patch_path)
+
+                for line in commits.splitlines():
+                    commit_hash, subject = line.split(' ', 1)
+                    if not any(
+                            subject.startswith(p)
+                            for p in _UPGRADE_COMMIT_WITH_PATCHES_PREFIXES):
+                        fixup_groups.setdefault(commit_hash,
+                                                []).append(patch_path)
+                        break
+
+            fixup_patches: set[str] = set()
+            for fixup_target, fixup_patch_paths in fixup_groups.items():
+                for patch_path in fixup_patch_paths:
+                    repository.brave.run_git('add', patch_path)
+                    fixup_patches.add(patch_path)
+                repository.brave.git_commit_fixup(fixup_target)
+
+            patch_paths -= fixup_patches
+
+        if patch_paths:
+            repository.brave.run_git('add', *patch_paths)
+            repository.brave.git_commit(commit_message, no_verify=no_verify)
+
+    def _commit_plaster_fixed_patches(self, apply_record: ApplyPatchesRecord):
+        """Commits patches that were fixed by plaster."""
+        patch_paths = {
+            path.as_posix()
+            for path in apply_record.plaster_fixed_patches
+        }
+        # Adding no_verify to avoid issues if someone is using an old version
+        # of the commit-msg hook that has not included this name as an
+        # exception for the branch tag.
+        self._commit_pinned_patches_and_fixups(
+            patch_paths,
+            f'Regen-fixed 🩹 patches from Chromium {self.base_version} '
+            f'to Chromium {self.target_version}.',
+            no_verify=True)
 
     def _run_update_patches(self) -> GitStatus:
         """Runs update_patches and returns the resulting GitStatus.
@@ -1458,6 +1577,9 @@ class Upgrade(Versioned):
             apply_record = (ContinuationFile.load(
                 self.target_version).apply_record)
 
+        if apply_record:
+            apply_record.check_broken_plasters_fixed()
+
         update_status = self._run_update_patches()
 
         # `apply_records` is not guaranteed to exist for every continuation. In
@@ -1474,52 +1596,17 @@ class Upgrade(Versioned):
                 if patch.path.as_posix() in update_status.unstaged.modified
             }
 
-            if (self.is_major()):
-                # When doing incremental lifts in branch, there can be cases
-                # where a patch has been added/changed by a particular fix in
-                # the branch, and therefore at this stage, it is more
-                # appropriate to commit that patch as a fixup to the last
-                # change in the branch that touched it, otherwise it will cause
-                # conflicts when doing `rebase --squash-minor-bumps`, with the
-                # conflict-resolved commit being moved above the last change
-                # for that patch.
-                up_to_git_ref = _solve_brave_ref('@previous-major')
-
-                fixup_groups: dict[str, list[str]] = {}
-                for patch_path in conflict_resolved_patches:
-                    commits = repository.brave.run_git(
-                        'log', '--pretty=%H %s', f'{up_to_git_ref}..HEAD',
-                        '--', patch_path)
-
-                    for line in commits.splitlines():
-                        commit_hash, subject = line.split(' ', 1)
-                        if (not subject.startswith(
-                                'Conflict-resolved patches from Chromium ')
-                                and not subject.startswith(
-                                    'Update patches from Chromium ')):
-                            fixup_groups.setdefault(commit_hash,
-                                                    []).append(patch_path)
-                            break
-
-                # Commit patches grouped by the target commit to avoid multiple
-                # fixups for the same change.
-                fixup_patches: set[str] = set()
-                for fixup_target, patch_paths in fixup_groups.items():
-                    for patch_path in patch_paths:
-                        repository.brave.run_git('add', patch_path)
-                        fixup_patches.add(patch_path)
-                    repository.brave.git_commit_fixup(fixup_target)
-
-                conflict_resolved_patches -= fixup_patches
-
         if not conflict_resolved_patches and not no_conflict_continuation:
             raise InvalidInputException(
                 'Nothing has been staged to commit conflict-resolved patches. '
                 '(Did you mean to pass [bold cyan]--no-conflict-change[/]?)')
 
         if conflict_resolved_patches:
-            repository.brave.run_git('add', *conflict_resolved_patches)
-            repository.brave.git_commit(
+            # For major upgrades, patches last touched by dev-cycle commits
+            # are routed as fixup! commits to avoid rebase conflicts when
+            # running rebase --squash-minor-bumps.
+            self._commit_pinned_patches_and_fixups(
+                conflict_resolved_patches,
                 f'Conflict-resolved patches from Chromium {self.base_version} '
                 f'to Chromium {self.target_version}.')
 
@@ -1606,6 +1693,8 @@ class Upgrade(Versioned):
                     and 'Exiting as not all patches were successful!'
                     in e.stderr.splitlines()[-1]):
                 apply_record = self.apply_patches_3way()
+                if apply_record.plaster_fixed_patches:
+                    self._commit_plaster_fixed_patches(apply_record)
                 if apply_record.requires_conflict_resolution():
                     # Manual resolution required.
                     raise ActionNeededException(
@@ -1697,7 +1786,16 @@ class Upgrade(Versioned):
                         target_version=self.target_version
                         ).create_or_update_version_issue(with_pr=False)
 
-        self._save_gnrt_rerun()
+        try:
+            terminal.run([sys.executable, plaster.__file__, 'check'])
+        except subprocess.CalledProcessError:
+            terminal.log_task(
+                '[bold]❌[/] Plaster check. Please investigate it.')
+
+        try:
+            self._save_gnrt_rerun()
+        except subprocess.CalledProcessError:
+            terminal.log_task('[bold]❌[/] GNRT rerun. Please investigate it.')
 
 
 def _solve_brave_ref(from_ref: Optional[str]) -> str:
@@ -1830,6 +1928,7 @@ class Rebase(Task):
         gnrt = []
         iwyu = []
         others = []
+        plaster_reruns = []
         reassign = []
         for line in lines:
             # Empty lines and comment lines are not interesting when doing the
@@ -1858,6 +1957,9 @@ class Rebase(Task):
             if comment.startswith('Update from Chromium '):
                 version.append(
                     line if not version else line.replace('pick', 'squash'))
+            elif comment.startswith('Regen-fixed 🩹 patches from Chromium '):
+                plaster_reruns.append(line if not plaster_reruns else line.
+                                      replace('pick', 'squash'))
             elif comment.startswith(
                     'Conflict-resolved patches from Chromium '):
                 conflict.append(
@@ -1874,7 +1976,8 @@ class Rebase(Task):
                 others.append(line)
 
         # Merging all categories in the desired order.
-        new_todo_file = version + conflict + gnrt + iwyu + others
+        new_todo_file = (version + plaster_reruns + conflict + gnrt + iwyu +
+                         others)
 
         # Looking for every occurrence of lines starting with `reassign! `,
         # taking the commit message after it, and looking for the the first

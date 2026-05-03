@@ -387,6 +387,7 @@ def apply(args):
         for plaster_file in plaster_files:
             console.log(f'Applying plaster file: {plaster_file.path}')
             plaster_file.apply()
+    return 0
 
 
 def check(args):
@@ -403,8 +404,7 @@ def check(args):
             print(e, file=sys.stderr)
             has_failure = True
 
-    if has_failure:
-        sys.exit(1)
+    return 1 if has_failure else 0
 
 
 def main():
@@ -445,8 +445,7 @@ def main():
         format='%(message)s',
         handlers=[IncendiaryErrorHandler(markup=True, rich_tracebacks=True)])
 
-    args.func(args)
-    return 0
+    return args.func(args)
 
 
 if __name__ == '__main__':

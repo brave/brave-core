@@ -191,10 +191,7 @@ class PlasterTest(unittest.TestCase):
                 self.verbose = False
 
         args = DummyArgs()
-        # Should not call sys.exit at all
-        with patch('sys.exit') as mock_exit:
-            plaster.check(args)
-            mock_exit.assert_not_called()
+        self.assertEqual(plaster.check(args), 0)
 
     def test_check_fails_when_toml_changed(self):
         """Test plaster check fails when there's a mismatch."""
@@ -233,9 +230,7 @@ class PlasterTest(unittest.TestCase):
                 self.verbose = False
 
         args = DummyArgs()
-        with patch('sys.exit') as mock_exit:
-            plaster.check(args)
-            mock_exit.assert_not_called()
+        self.assertEqual(plaster.check(args), 0)
         # Now change one toml file to cause a failure
         changed_path = rewrite_paths[1]
         changed_path.write_text('''
@@ -246,9 +241,9 @@ class PlasterTest(unittest.TestCase):
         ''')
         # Now check should fail and print the file on stderr
         stderr = io.StringIO()
-        with patch('sys.stderr', stderr), patch('sys.exit') as mock_exit:
-            plaster.check(args)
-            mock_exit.assert_called_once_with(1)
+        with patch('sys.stderr', stderr):
+            result = plaster.check(args)
+            self.assertEqual(result, 1)
             output = stderr.getvalue()
             self.assertIn(str(changed_path), output)
 

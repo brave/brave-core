@@ -365,8 +365,7 @@ class RepositoryTest(unittest.TestCase):
 
         stats = repository.chromium.get_patch_stats(patch_path)
 
-        self.assertEqual(list(stats.keys()), [patch_path])
-        self.assertEqual(stats[patch_path], [test_file])
+        self.assertEqual(stats, [test_file])
 
     def test_get_patch_stats_multiple(self):
         """Test get_patch_stats with several patches returns each in order."""
@@ -392,11 +391,10 @@ class RepositoryTest(unittest.TestCase):
                 self.fake_chromium_src.chromium, f) for f in [file1, file2]
         ]
 
-        stats = repository.chromium.get_patch_stats(*patch_paths)
-
-        self.assertEqual(list(stats.keys()), patch_paths)
-        self.assertEqual(stats[patch_paths[0]], [file1])
-        self.assertEqual(stats[patch_paths[1]], [file2])
+        self.assertEqual(repository.chromium.get_patch_stats(patch_paths[0]),
+                         [file1])
+        self.assertEqual(repository.chromium.get_patch_stats(patch_paths[1]),
+                         [file2])
 
     def test_get_patch_stats_multiple_sources_in_patch(self):
         """Test get_patch_stats with a patch covering several source files."""
@@ -416,10 +414,9 @@ class RepositoryTest(unittest.TestCase):
 
         stats = repository.chromium.get_patch_stats(patch_path)
 
-        self.assertEqual(list(stats.keys()), [patch_path])
-        self.assertIn(file1, stats[patch_path])
-        self.assertIn(file2, stats[patch_path])
-        self.assertEqual(len(stats[patch_path]), 2)
+        self.assertIn(file1, stats)
+        self.assertIn(file2, stats)
+        self.assertEqual(len(stats), 2)
 
     def test_current_branch(self):
         """Test current_branch using the chromium repository."""

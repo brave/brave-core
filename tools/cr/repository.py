@@ -202,20 +202,16 @@ class Repository:
             *[f'{commit}:{Path(file).as_posix()}' for file in files],
             no_trim=True)
 
-    def get_patch_stats(self, *patches: Path) -> dict[Path, list[Path]]:
-        """Returns the files affected by each patch, keyed by patch path.
+    def get_patch_stats(self, patch: Path) -> list[Path]:
+        """Returns the files affected by the given patch.
 
-        Uses --numstat for unabbreviated paths. Each patch is queried
-        individually so that file lists map cleanly to their patch key.
+        Uses --numstat for unabbreviated paths.
         """
-        return {
-            patch: [
-                Path(line.split('\t')[2]) for line in self.run_git(
-                    'apply', '--numstat', patch.as_posix()).splitlines()
-                if '\t' in line
-            ]
-            for patch in patches
-        }
+        return [
+            Path(line.split('\t')[2]) for line in self.run_git(
+                'apply', '--numstat', patch.as_posix()).splitlines()
+            if '\t' in line
+        ]
 
     def current_branch(self) -> str:
         """Gets the current branch name, or HEAD if not in any branch.

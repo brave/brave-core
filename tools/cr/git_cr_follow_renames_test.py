@@ -15,6 +15,7 @@ import repository
 from git_cr_follow_renames import (
     _collapse_renames,
     _get_chromium_renames,
+    _repair_patch_files,
     _repair_plaster_files,
     cmd_follow_renames,
 )
@@ -272,6 +273,21 @@ class TomlTest(_Base):
             (self._brave / 'rewrite' / 'A' / 'foo.h.toml').exists())
         self.assertFalse((self._brave / 'patches' / 'A-foo.h.patch').exists())
 
+    def test_patchinfo_deleted_with_patch(self) -> None:
+        """Sibling .patchinfo is removed when the patch is deleted."""
+        before = self._chromium_head()
+        self._chromium_commit('A/foo.h', '// src\n')
+        self._brave_commit('rewrite/A/foo.h.toml', '[substitution]\n')
+        self._brave_commit('patches/A-foo.h.patch', 'diff\n')
+        patchinfo = self._brave / 'patches' / 'A-foo.h.patchinfo'
+        patchinfo.write_text('{}', encoding='utf-8')
+        self._chromium_rename('A/foo.h', 'B/foo.h')
+
+        cmd_follow_renames([f'{before}..HEAD'])
+
+        self.assertFalse((self._brave / 'patches' / 'A-foo.h.patch').exists())
+        self.assertFalse(patchinfo.exists())
+
     def test_missing_patch_warns_no_error(self) -> None:
         """TOML exists but patch is absent: warning logged, TOML still moves."""
         before = self._chromium_head()
@@ -471,6 +487,8 @@ class PlasterApplyTest(_Base):
         content = new_patch.read_text(encoding='utf-8')
         self.assertIn('-void old_func() {}', content)
         self.assertIn('+void new_func() {}', content)
+        staged = repository.brave.run_git('diff', '--cached', '--name-only')
+        self.assertIn('patches/B-foo.cc.patch', staged)
 
     def test_no_run_plaster_skips_patch_creation(self) -> None:
         """--no-run-plaster: no new patch file is created after TOML move."""
@@ -483,6 +501,141 @@ class PlasterApplyTest(_Base):
         cmd_follow_renames(['--no-run-plaster', f'{before}..HEAD'])
 
         self.assertFalse((self._brave / 'patches' / 'B-foo.cc.patch').exists())
+
+
+# ---------------------------------------------------------------------------
+# .patch file repair tests
+# ---------------------------------------------------------------------------
+
+
+class PatchFileRepairTest(_Base):
+    """_repair_patch_files renames .patch files and attempts re-apply."""
+
+    _OLD_REL = 'A/foo.cc'
+    _NEW_REL = 'B/foo.cc'
+    _FILE_CONTENT = 'int x = 1;\n'
+    # Real brave patch format with diff --git header and index line.
+    _PATCH_TEMPLATE = ('diff --git a/{path} b/{path}\n'
+                       'index abc1234..def5678 100644\n'
+                       '--- a/{path}\n'
+                       '+++ b/{path}\n'
+                       '@@ -1 +1 @@\n'
+                       '-int x = 1;\n'
+                       '+int x = 2;\n')
+
+    def _setup_rename(self) -> str:
+        """Commits file + patch in their repos, renames in chromium."""
+        before = self._chromium_head()
+        self._chromium_commit(self._OLD_REL, self._FILE_CONTENT)
+        patch_content = self._PATCH_TEMPLATE.format(path=self._OLD_REL)
+        self._brave_commit('patches/A-foo.cc.patch', patch_content)
+        self._chromium_rename(self._OLD_REL, self._NEW_REL)
+        return before
+
+    def test_patch_renamed_to_new_path(self) -> None:
+        """Patch file is renamed from the old chromium name to the new one."""
+        before = self._setup_rename()
+
+        cmd_follow_renames([f'{before}..HEAD'])
+
+        self.assertFalse((self._brave / 'patches' / 'A-foo.cc.patch').exists())
+        self.assertTrue((self._brave / 'patches' / 'B-foo.cc.patch').exists())
+
+    def test_patch_headers_updated(self) -> None:
+        """diff --git, --- and +++ headers are rewritten to the new path."""
+        before = self._setup_rename()
+
+        cmd_follow_renames([f'{before}..HEAD'])
+
+        content = (self._brave / 'patches' /
+                   'B-foo.cc.patch').read_text(encoding='utf-8')
+        self.assertIn('diff --git a/B/foo.cc b/B/foo.cc', content)
+        self.assertIn('--- a/B/foo.cc', content)
+        self.assertIn('+++ b/B/foo.cc', content)
+        self.assertNotIn('A/foo.cc', content)
+
+    def test_patch_applied_and_unstaged(self) -> None:
+        """Patch is applied to the working tree but not left staged."""
+        before = self._setup_rename()
+
+        cmd_follow_renames([f'{before}..HEAD'])
+
+        # Working tree has the patched content.
+        content = (self._chromium / 'B' / 'foo.cc').read_text(encoding='utf-8')
+        self.assertIn('int x = 2;', content)
+        # The change must not be staged in chromium.
+        staged = repository.chromium.run_git('diff', '--cached', '--name-only')
+        self.assertEqual(staged, '')
+
+    def test_no_patch_is_noop(self) -> None:
+        """No patch for the renamed file → step is a no-op, no error."""
+        before = self._chromium_head()
+        self._chromium_commit(self._OLD_REL, self._FILE_CONTENT)
+        self._chromium_rename(self._OLD_REL, self._NEW_REL)
+
+        cmd_follow_renames([f'{before}..HEAD'])  # Must not raise.
+
+        self.assertFalse((self._brave / 'patches' / 'B-foo.cc.patch').exists())
+
+    def test_failed_apply_warns(self) -> None:
+        """A patch whose context doesn't match the file logs a warning."""
+        before = self._chromium_head()
+        self._chromium_commit(self._OLD_REL, 'completely_different\n')
+        patch_content = self._PATCH_TEMPLATE.format(path=self._OLD_REL)
+        self._brave_commit('patches/A-foo.cc.patch', patch_content)
+        self._chromium_rename(self._OLD_REL, self._NEW_REL)
+
+        with self.assertLogs(level=logging.WARNING):
+            cmd_follow_renames([f'{before}..HEAD'])
+
+        # Patch is still renamed even though apply failed.
+        self.assertTrue((self._brave / 'patches' / 'B-foo.cc.patch').exists())
+
+    def test_no_git_renames_without_staging(self) -> None:
+        """--no-git moves the patch via Path.rename; nothing is staged."""
+        before = self._setup_rename()
+
+        cmd_follow_renames(['--no-git', f'{before}..HEAD'])
+
+        self.assertFalse((self._brave / 'patches' / 'A-foo.cc.patch').exists())
+        self.assertTrue((self._brave / 'patches' / 'B-foo.cc.patch').exists())
+        staged = repository.brave.run_git('diff', '--cached', '--name-only')
+        self.assertNotIn('B-foo.cc.patch', staged)
+
+    def test_plaster_patch_not_double_processed(self) -> None:
+        """Patch deleted by _repair_plaster_files is not re-renamed here."""
+        _SUBST_TOML = ('[[substitution]]\n'
+                       'description = "test"\n'
+                       'pattern = "old_func"\n'
+                       'replace = "new_func"\n')
+        before = self._chromium_head()
+        self._chromium_commit(self._OLD_REL, 'void old_func() {}\n')
+        self._brave_commit('rewrite/A/foo.cc.toml', _SUBST_TOML)
+        self._brave_commit('patches/A-foo.cc.patch', 'stale patch\n')
+        self._chromium_rename(self._OLD_REL, self._NEW_REL)
+
+        cmd_follow_renames([f'{before}..HEAD'])
+
+        # Plaster created a proper patch; _repair_patch_files must not
+        # overwrite it with the stale content.
+        new_patch = self._brave / 'patches' / 'B-foo.cc.patch'
+        self.assertTrue(new_patch.exists())
+        content = new_patch.read_text(encoding='utf-8')
+        self.assertNotEqual(content, 'stale patch\n')
+
+    def test_repair_patch_files_direct_call(self) -> None:
+        """_repair_patch_files can be called directly."""
+        self._chromium_commit(self._OLD_REL, self._FILE_CONTENT)
+        patch_content = self._PATCH_TEMPLATE.format(path=self._OLD_REL)
+        self._brave_commit('patches/A-foo.cc.patch', patch_content)
+        self._chromium_rename(self._OLD_REL, self._NEW_REL)
+
+        _repair_patch_files(Path(self._OLD_REL),
+                            Path(self._NEW_REL),
+                            no_git=False)
+
+        self.assertFalse((self._brave / 'patches' / 'A-foo.cc.patch').exists())
+        self.assertTrue((self._brave / 'patches' / 'B-foo.cc.patch').exists())
 
 
 if __name__ == '__main__':
