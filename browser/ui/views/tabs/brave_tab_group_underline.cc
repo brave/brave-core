@@ -7,6 +7,8 @@
 
 #include <algorithm>
 
+#include "base/check.h"
+
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "cc/paint/paint_flags.h"
@@ -15,8 +17,10 @@
 #include "chrome/browser/ui/views/tabs/tab_group_style.h"
 #include "chrome/browser/ui/views/tabs/tab_group_views.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/compositor/layer.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/geometry/skia_conversions.h"
+#include "ui/views/view.h"
 #include "ui/views/view_utils.h"
 
 BraveTabGroupUnderline::BraveTabGroupUnderline(
@@ -26,6 +30,15 @@ BraveTabGroupUnderline::BraveTabGroupUnderline(
     : TabGroupUnderline(tab_group_views, group, style) {}
 
 BraveTabGroupUnderline::~BraveTabGroupUnderline() = default;
+
+void BraveTabGroupUnderline::ReparentLayerForUnpinnedScroll(
+    ui::Layer* scroll_layer) {
+  DCHECK(layer());
+  MoveLayerToParent(
+      scroll_layer, views::View::LayerOffsetData(layer()->device_scale_factor()));
+  MoveLayerToParent(layer(),
+                    views::View::LayerOffsetData(layer()->device_scale_factor()));
+}
 
 void BraveTabGroupUnderline::UpdateBounds(const views::View* leading_view,
                                           const views::View* trailing_view) {

@@ -20,14 +20,24 @@
 #include "chrome/browser/ui/views/tabs/tab_group_underline.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/compositor/layer.h"
 #include "ui/gfx/color_utils.h"
 #include "ui/views/background.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/controls/label.h"
+#include "ui/views/view.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_delegate.h"
 
 BraveTabGroupHeader::~BraveTabGroupHeader() = default;
+
+void BraveTabGroupHeader::ReparentLayerForUnpinnedScroll(ui::Layer* scroll_layer) {
+  DCHECK(layer());
+  MoveLayerToParent(
+      scroll_layer, views::View::LayerOffsetData(layer()->device_scale_factor()));
+  MoveLayerToParent(layer(),
+                    views::View::LayerOffsetData(layer()->device_scale_factor()));
+}
 
 void BraveTabGroupHeader::AddedToWidget() {
   TabGroupHeader::AddedToWidget();

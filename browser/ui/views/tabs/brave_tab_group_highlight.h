@@ -9,11 +9,17 @@
 #include "chrome/browser/ui/views/tabs/tab_group_highlight.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
+namespace ui {
+class Layer;
+}  // namespace ui
+
 class BraveTabGroupHighlight : public TabGroupHighlight {
   METADATA_HEADER(BraveTabGroupHighlight, TabGroupHighlight)
  public:
   using TabGroupHighlight::TabGroupHighlight;
   ~BraveTabGroupHighlight() override;
+
+  void ReparentLayerForUnpinnedScroll(ui::Layer* scroll_layer);
 
  private:
   // TabGroupHighlight:

@@ -22,6 +22,10 @@
 #include "brave/components/containers/core/browser/containers_service_observer.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
+namespace ui {
+class Layer;
+}  // namespace ui
+
 namespace views {
 class ImageButton;
 }  // namespace views
@@ -62,9 +66,16 @@ class BraveTab : public Tab
   // Resets tab_style_views_ so that it can have correct style for orientation.
   void UpdateTabStyle();
 
+  // Parents this tab's layer under |scroll_layer| (BraveTabContainer unpinned
+  // scroll pane). Uses protected views::View::MoveLayerToParent.
+  void ReparentLayerForUnpinnedScroll(ui::Layer* scroll_layer);
+
   // Updates the icon of the tree toggle button based on the collapsed state of
   // the tree tab node.
   void UpdateTreeToggleButtonIcon();
+
+  // ui::LayerDelegate via views::View:
+  void OnPaintLayer(const ui::PaintContext& context) override;
 
   // Tab:
   views::BubbleBorder::Arrow GetAnchorPosition() const override;

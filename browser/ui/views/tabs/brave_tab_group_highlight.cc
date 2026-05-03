@@ -5,14 +5,26 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab_group_highlight.h"
 
+#include "base/check.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/tabs/tab_group_views.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/compositor/layer.h"
 #include "ui/gfx/geometry/skia_conversions.h"
+#include "ui/views/view.h"
 
 BraveTabGroupHighlight::~BraveTabGroupHighlight() = default;
+
+void BraveTabGroupHighlight::ReparentLayerForUnpinnedScroll(
+    ui::Layer* scroll_layer) {
+  DCHECK(layer());
+  MoveLayerToParent(
+      scroll_layer, views::View::LayerOffsetData(layer()->device_scale_factor()));
+  MoveLayerToParent(layer(),
+                    views::View::LayerOffsetData(layer()->device_scale_factor()));
+}
 
 SkPath BraveTabGroupHighlight::GetPath() const {
   if (!tabs::utils::ShouldShowBraveVerticalTabs(

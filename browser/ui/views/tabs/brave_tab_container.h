@@ -22,6 +22,10 @@
 #include "ui/views/controls/scrollbar/scroll_bar.h"
 #include "ui/views/layout/layout_types.h"
 
+namespace ui {
+class Layer;
+}  // namespace ui
+
 namespace views {
 class ScrollView;
 }  // namespace views
@@ -70,6 +74,7 @@ class BraveTabContainer : public TabContainerImpl,
   int GetScrollOffsetForTesting() const;       // IN-TEST
   int GetMaxScrollOffsetForTesting() const;    // IN-TEST
   void SetScrollOffsetForTesting(int offset);  // IN-TEST
+  const ui::Layer* GetUnpinnedViewportLayerForTesting() const;  // IN-TEST
 
   // Notifies when horizontal unpinned scroll offset changes (wheel, scrollbar,
   // button scroll, etc.). Used by BraveHorizontalTabStripRegionView to refresh
@@ -105,6 +110,7 @@ class BraveTabContainer : public TabContainerImpl,
   bool OnMouseWheel(const ui::MouseWheelEvent& event) override;
   void OnScrollEvent(ui::ScrollEvent* event) override;
   views::View* TargetForRect(views::View* root, const gfx::Rect& rect) override;
+  views::View* GetTooltipHandlerForPoint(const gfx::Point& point) override;
   bool IsPointInTab(Tab* tab,
                     const gfx::Point& point_in_tabstrip_coords) override;
   void AnimateToIdealBounds() override;
@@ -116,6 +122,9 @@ class BraveTabContainer : public TabContainerImpl,
   void MoveTab(int from_model_index, int to_model_index) override;
   void OnGroupContentsChanged(const tab_groups::TabGroupId& group) override;
   void UpdateTabGroupVisuals(tab_groups::TabGroupId group_id) override;
+
+  // views::View:
+  void ReorderChildLayers(ui::Layer* parent_layer) override;
 
   // BrowserRootView::DropTarget
   std::optional<BrowserRootView::DropIndex> GetDropIndex(
@@ -213,8 +222,9 @@ class BraveTabContainer : public TabContainerImpl,
   // (x-coordinate). This represents where unpinned tabs begin.
   int GetPinnedTabsAreaBoundary() const;
 
-  // Sets the scroll offset for unpinned tabs. If the offset changes, triggers
-  // a layout.
+  // Sets the scroll offset for unpinned tabs. When layer-based scroll is
+  // active, only updates the scroll layer transform (no relayout). Otherwise
+  // triggers a layout.
   void SetScrollOffset(int offset);
 
   // Returns the maximum scroll offset for unpinned tabs.
@@ -247,15 +257,26 @@ class BraveTabContainer : public TabContainerImpl,
   // Clamp the current scroll_offset_ within valid range.
   void ClampScrollOffset();
 
-  // Used to sets the clip path for child views (tabs, group views and etc).
-  // For vertical tabs, pinned_tabs_area_boundary is the bottom y-coordinate.
-  // For horizontal tabs, pinned_tabs_area_boundary is the right x-coordinate.
-  void UpdateClipPathForChildren(views::View* view,
-                                 int pinned_tabs_area_boundary);
-
-  // Updates clip path for all slot views (tabs and group views) based on
-  // scroll_offset.
+  // Clears per-view clip paths on every tab and group-related view. Clipping is
+  // handled by |unpinned_viewport_layer_| (masks to bounds) when using layer-based
+  // scroll, not by View::SetClipPath on children.
   void UpdateClipPathForSlotViews();
+
+  // Maps a point in container coordinates to the coordinate space used by
+  // unpinned slot view bounds (adds scroll offset when the point is in the
+  // unpinned region).
+  gfx::Point AdjustPointForSlotViewHitTest(
+      const gfx::Point& point_in_container) const;
+
+  void EnsureScrollLayerStack();
+  void TearDownScrollLayerStack();
+  void UpdateScrollLayerBoundsAndClip();
+  void ApplyScrollLayerTransform();
+  void ReparentUnpinnedSlotLayers();
+  // Moves unpinned slot layers from |unpinned_scroll_layer_| to |target_parent|
+  // (used before View::ReorderChildLayers when layer-based scroll is active).
+  void ReparentUnpinnedSlotLayersToParentLayer(ui::Layer* target_parent);
+  bool UsesLayerBasedScroll() const;
 
   // Update scroll offset to make the given tab visible.
   void ScrollTabToBeVisible(Tab* tab);
@@ -326,6 +347,12 @@ class BraveTabContainer : public TabContainerImpl,
 
   // Separator view between pinned and unpinned tabs
   raw_ptr<views::View> separator_ = nullptr;
+
+  // Layer-based scroll: viewport clips unpinned region; scroll child applies
+  // scroll_offset_ via transform. Owned only while UsesLayerBasedScroll().
+  std::unique_ptr<ui::Layer> unpinned_viewport_layer_;
+  std::unique_ptr<ui::Layer> unpinned_scroll_layer_;
+  bool container_layer_added_for_scroll_ = false;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_CONTAINER_H_

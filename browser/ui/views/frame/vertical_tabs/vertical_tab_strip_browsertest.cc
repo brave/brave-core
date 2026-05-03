@@ -22,6 +22,7 @@
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
+#include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/browser/ui/views/tabs/switches.h"
@@ -48,6 +49,7 @@
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "chrome/browser/ui/views/tabs/tab/tab_context_menu_controller.h"
+#include "ui/compositor/layer.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/common/pref_names.h"
@@ -1744,75 +1746,56 @@ IN_PROC_BROWSER_TEST_P(VerticalTabStripBrowserTest, ClipPathOnScrollOffset) {
   brave_tab_container->SetScrollOffset(0);
   browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
 
-  // Verify that UpdateClipPathForSlotViews() was called by checking clip paths
-  // All unpinned tabs should have clip path set when pinned tabs exist
-  // The clip path should match the visible area bounds
+  const ui::Layer* viewport_layer =
+      brave_tab_container->GetUnpinnedViewportLayerForTesting();
+
   gfx::Rect expected_clip_bounds_in_container(
       0, pinned_tabs_area_bottom, brave_tab_container->width(),
       container_height - pinned_tabs_area_bottom);
 
-  for (int i = 0; i < model->count(); ++i) {
-    Tab* tab = GetTabAt(browser(), i);
-    if (tab->data().pinned) {
-      // Pinned tabs should not have clip path
-      EXPECT_TRUE(tab->clip_path().isEmpty())
-          << "Pinned tab at index " << i << " should not have clip path";
-      continue;
-    }
-
-    // Unpinned tabs should have clip path set (when pinned tabs exist)
-    // The clip path should match the visible area bounds in tab's coordinate
-    // system
-    EXPECT_FALSE(tab->clip_path().isEmpty())
-        << "Unpinned tab at index " << i << " should have clip path";
-
-    // Verify the clip path bounds match the expected visible area
-    SkRect clip_bounds_sk = tab->clip_path().computeTightBounds();
-    gfx::RectF clip_bounds_in_tab_f = gfx::SkRectToRectF(clip_bounds_sk);
-    gfx::Rect clip_bounds_in_tab = gfx::ToEnclosingRect(clip_bounds_in_tab_f);
-
-    // Convert expected clip bounds from container to tab coordinate system
-    gfx::Rect expected_clip_bounds_in_tab = views::View::ConvertRectToTarget(
-        brave_tab_container, tab, expected_clip_bounds_in_container);
-
-    // The clip path bounds should match the expected bounds
-    EXPECT_EQ(clip_bounds_in_tab, expected_clip_bounds_in_tab)
-        << "Unpinned tab at index " << i << " should have clip path";
+  if (viewport_layer) {
+    EXPECT_TRUE(viewport_layer->GetMasksToBounds());
   }
+
+  auto verify_clipping = [&]() {
+    for (int i = 0; i < model->count(); ++i) {
+      Tab* tab = GetTabAt(browser(), i);
+      if (tab->data().pinned) {
+        EXPECT_TRUE(tab->clip_path().isEmpty())
+            << "Pinned tab at index " << i << " should not have clip path";
+        continue;
+      }
+
+      if (viewport_layer) {
+        EXPECT_TRUE(tab->clip_path().isEmpty())
+            << "Unpinned tab at index " << i
+            << " should not use clip path when viewport layer clips";
+        continue;
+      }
+
+      EXPECT_FALSE(tab->clip_path().isEmpty())
+          << "Unpinned tab at index " << i << " should have clip path";
+
+      SkRect clip_bounds_sk = tab->clip_path().computeTightBounds();
+      gfx::RectF clip_bounds_in_tab_f = gfx::SkRectToRectF(clip_bounds_sk);
+      gfx::Rect clip_bounds_in_tab = gfx::ToEnclosingRect(clip_bounds_in_tab_f);
+
+      gfx::Rect expected_clip_bounds_in_tab = views::View::ConvertRectToTarget(
+          brave_tab_container, tab, expected_clip_bounds_in_container);
+
+      EXPECT_EQ(clip_bounds_in_tab, expected_clip_bounds_in_tab)
+          << "Unpinned tab at index " << i << " should have clip path";
+    }
+  };
+
+  verify_clipping();
 
   // Set scroll offset to maximum (bottom)
   const int max_offset = brave_tab_container->GetMaxScrollOffset();
   brave_tab_container->SetScrollOffset(max_offset);
   browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
 
-  // Verify clip paths are updated after scrolling to bottom
-  // The clip path should still match the visible area bounds
-  for (int i = 0; i < model->count(); ++i) {
-    Tab* tab = GetTabAt(browser(), i);
-    if (tab->data().pinned) {
-      // Pinned tabs should not have clip path
-      EXPECT_TRUE(tab->clip_path().isEmpty())
-          << "Pinned tab at index " << i << " should not have clip path";
-      continue;
-    }
-
-    // Unpinned tabs should have clip path set (when pinned tabs exist)
-    EXPECT_FALSE(tab->clip_path().isEmpty())
-        << "Unpinned tab at index " << i << " should have clip path";
-
-    // Verify the clip path bounds match the expected visible area
-    SkRect clip_bounds_sk = tab->clip_path().computeTightBounds();
-    gfx::RectF clip_bounds_in_tab_f = gfx::SkRectToRectF(clip_bounds_sk);
-    gfx::Rect clip_bounds_in_tab = gfx::ToEnclosingRect(clip_bounds_in_tab_f);
-
-    // Convert expected clip bounds from container to tab coordinate system
-    gfx::Rect expected_clip_bounds_in_tab = views::View::ConvertRectToTarget(
-        brave_tab_container, tab, expected_clip_bounds_in_container);
-
-    // The clip path bounds should match the expected bounds
-    EXPECT_EQ(clip_bounds_in_tab, expected_clip_bounds_in_tab)
-        << "Unpinned tab at index " << i << " should have clip path";
-  }
+  verify_clipping();
 }
 
 IN_PROC_BROWSER_TEST_P(VerticalTabStripBrowserTest,

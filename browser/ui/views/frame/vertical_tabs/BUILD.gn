@@ -54,6 +54,7 @@ source_set("browser_tests") {
   ]
 
   deps = [
+    "//ui/compositor",
     ":vertical_tabs",
     "//brave/browser/ui/tabs:tab_menu",
     "//brave/browser/ui/views/frame",

@@ -11,6 +11,10 @@
 #include "chrome/browser/ui/views/tabs/tab_group_header.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_layout_types.h"
 
+namespace ui {
+class Layer;
+}  // namespace ui
+
 namespace tab_groups {
 class TabGroupId;
 }  // namespace tab_groups
@@ -23,6 +27,8 @@ class BraveTabGroupHeader : public TabGroupHeader {
 
   using TabGroupHeader::TabGroupHeader;
   ~BraveTabGroupHeader() override;
+
+  void ReparentLayerForUnpinnedScroll(ui::Layer* scroll_layer);
 
   // TabGroupHeader:
   void AddedToWidget() override;

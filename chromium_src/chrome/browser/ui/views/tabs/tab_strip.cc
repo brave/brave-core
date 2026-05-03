@@ -54,8 +54,17 @@
     return tabs::CalculateBoundsForVerticalDraggedViews(views, tab_strip_); \
   }
 
+// Layer-backed dragged tabs: View::Paint with the drag context's PaintInfo
+// breaks DCHECK (PaintContext::RootVisited). Skip them — the compositor will
+// record them via Layer::PaintContentsToDisplayList.
+#define BRAVE_TAB_DRAG_CONTEXT_IMPL_PAINT_CHILDREN \
+  if (child.view()->layer()) {                    \
+    continue;                                     \
+  }
+
 #include <chrome/browser/ui/views/tabs/tab_strip.cc>
 
+#undef BRAVE_TAB_DRAG_CONTEXT_IMPL_PAINT_CHILDREN
 #undef BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS
 #undef BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_INSERTION_INDEX
 #undef TabHoverCardController

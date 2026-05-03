@@ -11,6 +11,7 @@
 
 #include "base/check.h"
 #include "base/feature_list.h"
+#include "base/logging.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
@@ -28,6 +29,7 @@
 #include "components/vector_icons/vector_icons.h"
 #include "ui/base/models/image_model.h"
 #include "ui/compositor/layer.h"
+#include "ui/compositor/paint_recorder.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/favicon_size.h"
 #include "ui/gfx/geometry/skia_conversions.h"
@@ -35,6 +37,7 @@
 #include "ui/views/bubble/bubble_border.h"
 #include "ui/views/controls/button/image_button.h"
 #include "ui/views/controls/label.h"
+#include "ui/views/view.h"
 #include "ui/views/view_class_properties.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -108,6 +111,31 @@ BraveTab::BraveTab(tabs::TabHandle handle, TabSlotController* controller)
 }
 
 BraveTab::~BraveTab() = default;
+
+void BraveTab::OnPaintLayer(const ui::PaintContext& context) {
+  LOG(ERROR) << "[brave-tabs] BraveTab::OnPaintLayer this=" << this
+             << " layer=" << layer()
+             << " bounds=" << bounds().ToString() << " layer_bounds="
+             << (layer() ? layer()->bounds().ToString() : std::string("(null)"))
+             << " visible=" << GetVisible();
+  Tab::OnPaintLayer(context);
+
+  // DEBUG: Paint a solid red rect on top of whatever was painted, to verify the
+  // compositor is actually compositing this tab's layer.
+  ui::PaintRecorder recorder(context, layer() ? layer()->size() : size());
+  cc::PaintFlags flags;
+  flags.setColor(SkColorSetARGB(255, 255, 0, 0));
+  recorder.canvas()->DrawRect(gfx::Rect(layer() ? layer()->size() : size()),
+                              flags);
+}
+
+void BraveTab::ReparentLayerForUnpinnedScroll(ui::Layer* scroll_layer) {
+  DCHECK(layer());
+  MoveLayerToParent(
+      scroll_layer, views::View::LayerOffsetData(layer()->device_scale_factor()));
+  MoveLayerToParent(layer(),
+                    views::View::LayerOffsetData(layer()->device_scale_factor()));
+}
 
 void BraveTab::UpdateTabStyle() {
   ResetTabStyle(TabStyleViews::CreateForTab(this));

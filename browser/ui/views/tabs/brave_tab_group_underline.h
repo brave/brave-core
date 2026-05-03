@@ -9,6 +9,10 @@
 #include "chrome/browser/ui/views/tabs/tab_group_underline.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
+namespace ui {
+class Layer;
+}  // namespace ui
+
 // In vertical tabs, TabGroupUnderline is not actually "underline'. It's an
 // enclosing rounded rect for views in the group.
 class BraveTabGroupUnderline : public TabGroupUnderline {
@@ -18,6 +22,8 @@ class BraveTabGroupUnderline : public TabGroupUnderline {
                          const tab_groups::TabGroupId& group,
                          const TabGroupStyle& style);
   ~BraveTabGroupUnderline() override;
+
+  void ReparentLayerForUnpinnedScroll(ui::Layer* scroll_layer);
 
   static int GetStrokeInset();
 

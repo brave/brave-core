@@ -691,6 +691,7 @@ source_set("ui") {
     }
 
     deps += [
+      "//ui/compositor",
       "//brave/browser/ui/darker_theme",
       "//brave/browser/ui/focus_mode",
       "//brave/browser/ui/side_panel",
