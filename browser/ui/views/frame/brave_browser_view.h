@@ -64,6 +64,7 @@ class Widget;
 }  // namespace views
 
 class BraveBrowser;
+class BraveShieldsToolbarButton;
 class BraveHelpBubbleHostView;
 class BraveMultiContentsView;
 class ContentsLayoutManager;
@@ -167,6 +168,12 @@ class BraveBrowserView : public BrowserView,
     return sidebar_container_view_;
   }
 
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  // Returns the PWA Shields toolbar button, if it exists. Note that this
+  // returns valid pointer only when it's web app browser.
+  BraveShieldsToolbarButton* GetPwaShieldsToolbarButton();
+#endif
+
  private:
   class TabCyclingEventHandler;
   class BrowserWindowMouseEventHandler;
@@ -238,7 +245,6 @@ class BraveBrowserView : public BrowserView,
   void OnWindowClosingConfirmResponse(bool allowed_to_close);
   BraveBrowser* GetBraveBrowser() const;
   void UpdateWebViewRoundedCorners();
-  void MaybeAddPwaShieldsButton();
 
   // FindBarHost is anchored to |find_bar_host_view_|; it must remain the last
   // child of BrowserView for correct z-order. Call when a child is added after

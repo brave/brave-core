@@ -20,6 +20,7 @@
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/views/animation/ink_drop_impl.h"
 #include "ui/views/controls/button/label_button_border.h"
+#include "ui/views/controls/button/menu_button_controller.h"
 #include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/layout/layout_provider.h"
 #include "ui/views/view.h"
@@ -64,7 +65,6 @@ BraveShieldsActionView::BraveShieldsActionView(
       base::BindRepeating(&BraveShieldsActionView::ButtonPressed,
                           weak_ptr_factory_.GetWeakPtr()),
       std::make_unique<views::Button::DefaultButtonControllerDelegate>(this));
-  menu_button_controller_ = menu_button_controller.get();
   SetButtonController(std::move(menu_button_controller));
 }
 

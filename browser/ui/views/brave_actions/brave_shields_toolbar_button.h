@@ -8,8 +8,6 @@
 
 #include <memory>
 
-#include "base/functional/callback.h"
-#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_controller.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
@@ -30,12 +28,7 @@ class Widget;
 // title bar (e.g. WebAppToolbarButtonContainer), not the tabbed window's
 // ToolbarView / omnibox row.
 class BraveShieldsToolbarButton : public ToolbarButton {
-  // Use the same element identifier as BraveShieldsActionView so that we can
-  // find either of them in the BrowserElementsViews.
-  DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kShieldsActionIcon);
-
   METADATA_HEADER(BraveShieldsToolbarButton, ToolbarButton)
-
  public:
   using CreateWebUIBubbleManagerCallback =
       BraveShieldsActionController::CreateWebUIBubbleManagerCallback;
@@ -55,7 +48,7 @@ class BraveShieldsToolbarButton : public ToolbarButton {
 
  private:
   void OnControllerStateChanged();
-  void OnButtonPressed();
+  void ButtonPressed();
 
   std::unique_ptr<BraveShieldsActionController> controller_;
   base::WeakPtrFactory<BraveShieldsToolbarButton> weak_ptr_factory_{this};

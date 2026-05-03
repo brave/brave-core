@@ -31,8 +31,6 @@
 #include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
-#include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
-#include "brave/browser/ui/views/brave_actions/brave_shields_toolbar_button.h"
 #include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_host_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
@@ -47,7 +45,6 @@
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/window_closing_confirm_dialog_view.h"
-#include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
@@ -64,7 +61,6 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_element_identifiers.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
@@ -86,9 +82,6 @@
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
-#include "chrome/browser/ui/views/web_apps/frame_toolbar/web_app_frame_toolbar_utils.h"
-#include "chrome/browser/ui/views/web_apps/frame_toolbar/web_app_frame_toolbar_view.h"
-#include "chrome/browser/ui/views/web_apps/frame_toolbar/web_app_toolbar_button_container.h"
 #include "chrome/browser/ui/web_applications/app_browser_controller.h"
 #include "chrome/common/pref_names.h"
 #include "components/javascript_dialogs/tab_modal_dialog_manager.h"
@@ -113,10 +106,13 @@
 #include "ui/views/controls/native/native_view_host.h"
 #include "ui/views/event_monitor.h"
 #include "ui/views/layout/fill_layout.h"
-#include "ui/views/layout/flex_layout.h"
 #include "ui/views/view_class_properties.h"
 #include "ui/views/view_utils.h"
-#include "ui/views/window/hit_test_utils.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
+#include "brave/browser/ui/views/brave_actions/brave_shields_toolbar_button.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
@@ -173,31 +169,6 @@ class ContentsBackground : public views::View {
 };
 BEGIN_METADATA(ContentsBackground)
 END_METADATA
-
-// PWA and omnibox Shields share kShieldsActionIcon; the PWA build uses
-// BraveShieldsToolbarButton with that id.
-BraveShieldsToolbarButton* GetPwaShieldsToolbarButton(BraveBrowserView* view) {
-  if (!view) {
-    return nullptr;
-  }
-  BrowserElementsViews* elements = BrowserElementsViews::From(view->browser());
-  if (!elements) {
-    return nullptr;
-  }
-
-  auto* shield = elements->GetView(BraveShieldsActionView::kShieldsActionIcon,
-                                   /*require_visible=*/true);
-  if (!shield) {
-    return nullptr;
-  }
-
-  if (!views::IsViewClass<BraveShieldsToolbarButton>(shield)) {
-    // This case, BraveShieldsActionView is visible.
-    return nullptr;
-  }
-
-  return views::AsViewClass<BraveShieldsToolbarButton>(shield);
-}
 
 }  // namespace
 
@@ -542,14 +513,21 @@ views::View* BraveBrowserView::GetAnchorViewForBraveVPNPanel() {
 gfx::Rect BraveBrowserView::GetShieldsBubbleRect() {
   if (web_app::AppBrowserController::IsWebApp(browser())) {
     if (page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
-      // No PWA title-bar Shields anchor; the Page Info surface owns Shields.
+      // No PWA title-bar Shields anchor; the Page Info surface owns Shields, so
+      // we do not add a second Shields toolbar button or bubble anchor here.
       return gfx::Rect();
     }
-    if (BraveShieldsToolbarButton* pwa = GetPwaShieldsToolbarButton(this)) {
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+    if (BraveShieldsToolbarButton* pwa = GetPwaShieldsToolbarButton()) {
       if (views::Widget* bubble = pwa->GetBubbleWidget()) {
         return bubble->GetClientAreaBoundsInScreen();
       }
     }
+#endif
+
+    // PWA window without a visible title-bar Shields control (e.g. bubble not
+    // created yet, or install path did not add the button).
     return gfx::Rect();
   }
 
@@ -572,65 +550,6 @@ gfx::Rect BraveBrowserView::GetShieldsBubbleRect() {
   }
 
   return bubble_widget->GetClientAreaBoundsInScreen();
-}
-
-void BraveBrowserView::MaybeAddPwaShieldsButton() {
-  if (!web_app::AppBrowserController::IsWebApp(browser())) {
-    return;
-  }
-  if (page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
-    // No title-bar Shields control; the Page Info surface covers Shields.
-    return;
-  }
-  if (GetPwaShieldsToolbarButton(this)) {
-    return;
-  }
-  WebAppFrameToolbarView* frame_toolbar = web_app_frame_toolbar();
-  if (!frame_toolbar) {
-    return;
-  }
-  WebAppToolbarButtonContainer* right = nullptr;
-  for (const auto& child : frame_toolbar->children()) {
-    if (auto* r =
-            views::AsViewClass<WebAppToolbarButtonContainer>(child.get())) {
-      right = r;
-      break;
-    }
-  }
-  if (!right) {
-    return;
-  }
-  size_t insert_index = 0;
-  if (right->extensions_container()) {
-    const void* ext = right->extensions_container();
-    for (size_t i = 0; i < right->children().size(); ++i) {
-      if (static_cast<const void*>(right->children()[i].get()) == ext) {
-        insert_index = i;
-        break;
-      }
-    }
-  } else if (right->pinned_toolbar_actions_container()) {
-    const void* pinned = right->pinned_toolbar_actions_container();
-    for (size_t i = 0; i < right->children().size(); ++i) {
-      if (static_cast<const void*>(right->children()[i].get()) == pinned) {
-        insert_index = i;
-        break;
-      }
-    }
-  }
-  auto button = std::make_unique<BraveShieldsToolbarButton>(
-      static_cast<BrowserWindowInterface*>(browser()),
-      base::BindRepeating(&WebUIBubbleManager::Create<ShieldsPanelUI>));
-  ConfigureWebAppToolbarButton(button.get(), frame_toolbar);
-
-  raw_ptr<BraveShieldsToolbarButton> ptr = button.get();
-  right->AddChildViewAt(std::move(button), insert_index);
-  views::SetHitTestComponent(ptr, static_cast<int>(HTCLIENT));
-  ptr->SetProperty(
-      views::kFlexBehaviorKey,
-      views::FlexSpecification(views::LayoutOrientation::kHorizontal,
-                               views::MinimumFlexSizeRule::kPreferredSnapToZero)
-          .WithWeight(0));
 }
 
 bool BraveBrowserView::GetTabStripVisible() const {
@@ -844,9 +763,6 @@ void BraveBrowserView::AddedToWidget() {
   GetBrowserViewLayout()->set_sidebar_container(sidebar_container_view_);
 
   UpdateWebViewRoundedCorners();
-  // PWA Shields attaches to the web app title bar (WebAppFrameToolbarView), not
-  // the tabbed window's ToolbarView; the frame is ready at this point.
-  MaybeAddPwaShieldsButton();
 
   if (vertical_tab_strip_host_view_) {
     if (base::FeatureList::IsEnabled(tabs::kBraveVerticalTabStripEmbedded)) {
@@ -882,7 +798,9 @@ bool BraveBrowserView::ShowBraveHelpBubbleView(const std::string& text) {
 
   views::View* shield_icon = nullptr;
   if (web_app::AppBrowserController::IsWebApp(browser())) {
-    shield_icon = GetPwaShieldsToolbarButton(this);
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+    shield_icon = GetPwaShieldsToolbarButton();
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
   } else {
     auto* brave_location_bar_view =
         static_cast<BraveLocationBarView*>(GetLocationBarView());
@@ -1196,6 +1114,28 @@ void BraveBrowserView::UpdateSidebarBorder() {
   if (sidebar_container_view_) {
     sidebar_container_view_->UpdateBorder();
   }
+}
+
+// PWA and omnibox Shields share kShieldsActionIcon; the PWA build uses
+// BraveShieldsToolbarButton with that id.
+BraveShieldsToolbarButton* BraveBrowserView::GetPwaShieldsToolbarButton() {
+  BrowserElementsViews* elements = BrowserElementsViews::From(browser());
+  if (!elements) {
+    return nullptr;
+  }
+
+  auto* shield = elements->GetView(BraveShieldsActionView::kShieldsActionIcon,
+                                   /*require_visible=*/true);
+  if (!shield) {
+    return nullptr;
+  }
+
+  if (!views::IsViewClass<BraveShieldsToolbarButton>(shield)) {
+    // This case, BraveShieldsActionView is visible.
+    return nullptr;
+  }
+
+  return views::AsViewClass<BraveShieldsToolbarButton>(shield);
 }
 
 void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,

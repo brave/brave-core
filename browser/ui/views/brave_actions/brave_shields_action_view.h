@@ -15,7 +15,6 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/controls/button/label_button.h"
-#include "ui/views/controls/button/menu_button_controller.h"
 #include "ui/views/widget/widget.h"
 
 class BraveShieldsActionView : public views::LabelButton {
@@ -53,7 +52,6 @@ class BraveShieldsActionView : public views::LabelButton {
   const raw_ptr<BrowserWindowInterface> browser_window_interface_ = nullptr;
   std::unique_ptr<BraveShieldsActionController> controller_;
   raw_ref<views::LayoutProvider> layout_provider_;
-  raw_ptr<views::MenuButtonController> menu_button_controller_ = nullptr;
   base::WeakPtrFactory<BraveShieldsActionView> weak_ptr_factory_{this};
 };
 

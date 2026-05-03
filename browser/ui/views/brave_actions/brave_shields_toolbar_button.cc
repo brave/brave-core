@@ -15,6 +15,7 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/skia_conversions.h"
+#include "ui/views/controls/button/menu_button_controller.h"
 #include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/view_class_properties.h"
 
@@ -36,13 +37,22 @@ BraveShieldsToolbarButton::BraveShieldsToolbarButton(
       controller_(std::make_unique<BraveShieldsActionController>(
           browser_window_interface,
           std::move(create_bubble_manager_callback))) {
-  SetCallback(base::BindRepeating(&BraveShieldsToolbarButton::OnButtonPressed,
-                                  weak_ptr_factory_.GetWeakPtr()));
   SetText(std::u16string());
   SetAccessibleName(l10n_util::GetStringUTF16(IDS_BRAVE_SHIELDS));
+  // Use the same element identifier as BraveShieldsActionView so that we can
+  // find either of them in the BrowserElementsViews.
   SetProperty(views::kElementIdentifierKey,
               BraveShieldsActionView::kShieldsActionIcon);
   SetBorder(nullptr);
+
+  // Match BraveShieldsActionView: MenuButtonController handles press so the
+  // bubble closes when the button is clicked while already open.
+  auto menu_button_controller = std::make_unique<views::MenuButtonController>(
+      this,
+      base::BindRepeating(&BraveShieldsToolbarButton::ButtonPressed,
+                          weak_ptr_factory_.GetWeakPtr()),
+      std::make_unique<views::Button::DefaultButtonControllerDelegate>(this));
+  SetButtonController(std::move(menu_button_controller));
 
   controller_->SetOnStateChanged(
       base::BindRepeating(&BraveShieldsToolbarButton::OnControllerStateChanged,
@@ -59,7 +69,7 @@ BraveShieldsToolbarButton::BraveShieldsToolbarButton(
 
 BraveShieldsToolbarButton::~BraveShieldsToolbarButton() = default;
 
-void BraveShieldsToolbarButton::OnButtonPressed() {
+void BraveShieldsToolbarButton::ButtonPressed() {
   controller_->OnButtonPressed();
 }
 
