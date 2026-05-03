@@ -22,3 +22,36 @@ std::unique_ptr<views::View> owned = parent->RemoveChildViewT(some_child);
 
 ---
 
+<a id="UV-002"></a>
+
+## ✅ Do not manually call `RemoveObserver` when inheriting `TabStripModelObserver`
+
+**Do not call `TabStripModel::RemoveObserver(this)` from your subclass destructor, `Shutdown()`, or `OnTabStripModelDestroyed`.** `~TabStripModelObserver` copies every `TabStripModel*` in `observed_models_` and calls `RemoveObserver(this)` on each. Registration via `AddObserver` / `StartedObserving` is undone by that base destructor, so derived code must not duplicate it.
+
+When a `TabStripModel` is destroyed, it also notifies observers through `ModelDestroyed`, which removes the observer before `OnTabStripModelDestroyed`; explicit `RemoveObserver` there is redundant as well.
+
+```cpp
+// ❌ WRONG - ~TabStripModelObserver already unregisters from every observed model
+MyView::~MyView() {
+  if (tab_strip_model_) {
+    tab_strip_model_->RemoveObserver(this);
+  }
+}
+
+void MyView::OnTabStripModelDestroyed(TabStripModel* model) {
+  model->RemoveObserver(this);  // also redundant
+}
+
+// ✅ CORRECT - clear your own pointers or state only; leave observer list to the base class
+MyView::~MyView() {
+  tab_strip_model_ = nullptr;
+}
+
+void MyView::OnTabStripModelDestroyed(TabStripModel* model) {
+  tab_strip_model_ = nullptr;
+  // ...
+}
+```
+
+---
+
