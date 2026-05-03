@@ -56,23 +56,19 @@ BraveShieldsActionView::BraveShieldsActionView(
   SetAccessibleName(l10n_util::GetStringUTF16(IDS_BRAVE_SHIELDS));
   SetHorizontalAlignment(gfx::ALIGN_CENTER);
   SetProperty(views::kElementIdentifierKey, kShieldsActionIcon);
-  SetCallback(base::BindRepeating(&BraveShieldsActionView::ButtonPressedForMenu,
-                                  weak_ptr_factory_.GetWeakPtr(),
-                                  browser_window_interface));
+
   // The MenuButtonController makes sure the panel closes when clicked if the
   // panel is already open.
   auto menu_button_controller = std::make_unique<views::MenuButtonController>(
       this,
-      base::BindRepeating(&BraveShieldsActionView::ButtonPressedForMenu,
-                          weak_ptr_factory_.GetWeakPtr(),
-                          browser_window_interface),
+      base::BindRepeating(&BraveShieldsActionView::ButtonPressed,
+                          weak_ptr_factory_.GetWeakPtr()),
       std::make_unique<views::Button::DefaultButtonControllerDelegate>(this));
   menu_button_controller_ = menu_button_controller.get();
   SetButtonController(std::move(menu_button_controller));
 }
 
-void BraveShieldsActionView::ButtonPressedForMenu(
-    BrowserWindowInterface* browser_window_interface) {
+void BraveShieldsActionView::ButtonPressed() {
   controller_->OnButtonPressed();
 }
 

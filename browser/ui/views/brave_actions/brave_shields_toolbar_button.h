@@ -47,7 +47,6 @@ class BraveShieldsToolbarButton : public ToolbarButton {
 
   void Update();
 
-  BraveShieldsActionController* controller() { return controller_.get(); }
   views::Widget* GetBubbleWidget();
 
   // ToolbarButton

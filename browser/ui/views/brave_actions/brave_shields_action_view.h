@@ -36,7 +36,6 @@ class BraveShieldsActionView : public views::LabelButton {
 
   void Init();
   void Update();
-  BraveShieldsActionController* controller() { return controller_.get(); }
 
   // views::LabelButton:
   std::unique_ptr<views::LabelButtonBorder> CreateDefaultBorder()
@@ -49,7 +48,7 @@ class BraveShieldsActionView : public views::LabelButton {
 
  private:
   void OnControllerStateChanged();
-  void ButtonPressedForMenu(BrowserWindowInterface* bwi);
+  void ButtonPressed();
 
   const raw_ptr<BrowserWindowInterface> browser_window_interface_ = nullptr;
   std::unique_ptr<BraveShieldsActionController> controller_;

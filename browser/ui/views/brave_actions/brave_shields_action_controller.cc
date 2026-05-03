@@ -61,7 +61,6 @@ BraveShieldsActionController::BraveShieldsActionController(
 }
 
 BraveShieldsActionController::~BraveShieldsActionController() {
-  tab_strip_model_->RemoveObserver(this);
   RemoveObserverFromWebContents(tab_strip_model_->GetActiveWebContents());
 }
 
