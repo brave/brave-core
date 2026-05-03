@@ -34,6 +34,7 @@
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/engine/ohttp_config_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api_v2.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_oai.h"
@@ -554,6 +555,31 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       models.push_back(std::move(model));
     }
 
+    // GLM 5.1 (NEAR, private inference / OHTTP)
+    if (features::IsNEARModelsEnabled()) {
+      auto options = mojom::LeoModelOptions::New();
+      options->display_maker = "Z.ai";
+      options->name = "near-glm-5-1";
+      options->category = mojom::ModelCategory::CHAT;
+      options->access = kFreemiumAccess;
+      options->max_associated_content_length = 128000;
+      options->long_conversation_warning_character_limit = 128000;
+
+      auto model = mojom::Model::New();
+      model->key = "chat-near-glm-5-1";
+      model->display_name = "GLM 5.1";
+      model->vision_support = false;
+      model->supports_tools = false;
+      model->supported_capabilities = {mojom::ConversationCapability::CHAT};
+      model->is_suggested_model = true;
+      model->is_near_model = true;
+      model->supports_private_inference = true;
+      model->options =
+          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
+
+      models.push_back(std::move(model));
+    }
+
     return models;
   }());
 
@@ -638,9 +664,13 @@ base::DictValue ModelService::CustomModelToPrefDict(
   return model_dict;
 }
 
-ModelService::ModelService(PrefService* prefs_service,
-                           os_crypt_async::OSCryptAsync* os_crypt_async)
-    : pref_service_(prefs_service) {
+ModelService::ModelService(
+    PrefService* prefs_service,
+    os_crypt_async::OSCryptAsync* os_crypt_async,
+    network::NetworkContextGetter network_context_getter)
+    : pref_service_(prefs_service),
+      network_context_getter_(std::move(network_context_getter)) {
+  OHTTPConfigManager::DeleteExpiredKeyConfigs(pref_service_);
   // Load the model list synchronously so callers can resolve a default
   // model immediately after construction. Custom-model API keys decrypt
   // to empty strings until `OnEncryptorReady()` delivers the `Encryptor`;
@@ -893,7 +923,8 @@ ModelService::GetModelsWithSubtitles() {
       } else if (model->key == "chat-qwen") {
         model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_QWEN_SUBTITLE);
-      } else if (model->key == "chat-near-glm-5") {
+      } else if (model->key == "chat-near-glm-5" ||
+                 model->key == "chat-near-glm-5-1") {
         model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_NEAR_GLM_5_SUBTITLE);
       } else if (model->key == "chat-automatic") {
@@ -1234,24 +1265,26 @@ std::unique_ptr<EngineConsumer> ModelService::GetEngineForModel(
     AIChatCredentialManager* credential_manager) {
   const mojom::Model* model = GetModel(model_key);
   std::unique_ptr<EngineConsumer> engine;
-  if (model->options->is_leo_model_options()) {
-    auto& leo_model_opts = model->options->get_leo_model_options();
+  if (model->supports_private_inference ||
+      model->options->is_custom_model_options()) {
+    DVLOG(1) << "Started AI engine: oai";
+    engine = std::make_unique<EngineConsumerOAIRemote>(
+        *model->options, url_loader_factory, network_context_getter_,
+        credential_manager, this, pref_service_);
+  } else if (model->options->is_leo_model_options()) {
     if (features::IsAIChatConversationAPIV2Enabled()) {
       DVLOG(1) << "Started AI engine: conversation api v2";
+      auto& leo_model_opts = model->options->get_leo_model_options();
       engine = std::make_unique<EngineConsumerConversationAPIV2>(
           *leo_model_opts, url_loader_factory, credential_manager, this,
           pref_service_);
     } else {
       DVLOG(1) << "Started AI engine: conversation api";
+      auto& leo_model_opts = model->options->get_leo_model_options();
       engine = std::make_unique<EngineConsumerConversationAPI>(
           *leo_model_opts, url_loader_factory, credential_manager, this,
           pref_service_);
     }
-  } else if (model->options->is_custom_model_options()) {
-    auto& custom_model_opts = model->options->get_custom_model_options();
-    DVLOG(1) << "Started AI engine: custom";
-    engine = std::make_unique<EngineConsumerOAIRemote>(
-        *custom_model_opts, url_loader_factory, this, pref_service_);
   }
 
   return engine;

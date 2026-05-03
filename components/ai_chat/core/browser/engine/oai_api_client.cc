@@ -66,10 +66,13 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
-std::string CreateJSONRequestBody(
+}  // namespace
+
+// static
+std::string OAIAPIClient::CreateJSONRequestBody(
     base::ListValue messages,
-    const bool is_sse_enabled,
-    const mojom::CustomModelOptions& model_options,
+    bool is_sse_enabled,
+    const std::string& model_request_name,
     std::optional<base::ListValue> oai_tool_definitions,
     const std::optional<std::vector<std::string>>& stop_sequences) {
   base::DictValue dict;
@@ -77,7 +80,7 @@ std::string CreateJSONRequestBody(
   dict.Set("messages", std::move(messages));
   dict.Set("stream", is_sse_enabled);
   dict.Set("temperature", 0.7);
-  dict.Set("model", model_options.model_request_name);
+  dict.Set("model", model_request_name);
 
   if (oai_tool_definitions.has_value() && !oai_tool_definitions->empty()) {
     dict.Set("tools", std::move(oai_tool_definitions.value()));
@@ -96,7 +99,21 @@ std::string CreateJSONRequestBody(
   return json;
 }
 
-}  // namespace
+// static
+mojom::APIError OAIAPIClient::MapResponseCodeToError(int response_code) {
+  // https://platform.openai.com/docs/guides/error-codes
+  // https://docs.anthropic.com/en/api/errors
+  switch (response_code) {
+    case 401:  // Incorrect API key provided
+      return mojom::APIError::InvalidAPIKey;
+    case 429:  // Rate limit reached or out of credits
+      return mojom::APIError::RateLimitReached;
+    case 529:  // Temporary server overload
+      return mojom::APIError::ServiceOverloaded;
+    default:
+      return mojom::APIError::ConnectionIssue;
+  }
+}
 
 // static
 base::ListValue OAIAPIClient::SerializeOAIMessages(
@@ -305,13 +322,16 @@ void OAIAPIClient::ClearAllQueries() {
 }
 
 void OAIAPIClient::PerformRequest(
-    const mojom::CustomModelOptions& model_options,
+    const mojom::ModelOptions& model_options,
     std::vector<OAIMessage> messages,
     std::optional<base::ListValue> oai_tool_definitions,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback,
     const std::optional<std::vector<std::string>>& stop_sequences) {
-  if (!model_options.endpoint.is_valid()) {
+  CHECK(model_options.is_custom_model_options());
+  const auto& opts = *model_options.get_custom_model_options();
+
+  if (!opts.endpoint.is_valid()) {
     std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
     return;
   }
@@ -319,12 +339,11 @@ void OAIAPIClient::PerformRequest(
   const bool is_sse_enabled =
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
   const std::string request_body = CreateJSONRequestBody(
-      SerializeOAIMessages(std::move(messages)), is_sse_enabled, model_options,
-      std::move(oai_tool_definitions), stop_sequences);
+      SerializeOAIMessages(std::move(messages)), is_sse_enabled,
+      opts.model_request_name, std::move(oai_tool_definitions), stop_sequences);
   base::flat_map<std::string, std::string> headers;
-  if (!model_options.api_key.empty()) {
-    headers.emplace("Authorization",
-                    base::StrCat({"Bearer ", model_options.api_key}));
+  if (!opts.api_key.empty()) {
+    headers.emplace("Authorization", base::StrCat({"Bearer ", opts.api_key}));
   }
 
   if (is_sse_enabled) {
@@ -336,16 +355,16 @@ void OAIAPIClient::PerformRequest(
                                       std::move(completed_callback));
 
     api_request_helper_->RequestSSE(net::HttpRequestHeaders::kPostMethod,
-                                    model_options.endpoint, request_body,
+                                    opts.endpoint, request_body,
                                     "application/json", std::move(on_received),
                                     std::move(on_complete), headers, {});
   } else {
     auto on_complete = base::BindOnce(&OAIAPIClient::OnQueryCompleted,
                                       weak_ptr_factory_.GetWeakPtr(),
                                       std::move(completed_callback));
-    api_request_helper_->Request(
-        net::HttpRequestHeaders::kPostMethod, model_options.endpoint,
-        request_body, "application/json", std::move(on_complete), headers, {});
+    api_request_helper_->Request(net::HttpRequestHeaders::kPostMethod,
+                                 opts.endpoint, request_body, "application/json",
+                                 std::move(on_complete), headers, {});
   }
 }
 
@@ -379,28 +398,8 @@ void OAIAPIClient::OnQueryCompleted(
     return;
   }
 
-  // Determine which type of error occurred.
-  // https://platform.openai.com/docs/guides/error-codes
-  // https://docs.anthropic.com/en/api/errors
-  mojom::APIError error;
-
-  switch (result.response_code()) {
-    case 401:  // Incorrect API key provided
-      error = mojom::APIError::InvalidAPIKey;
-      break;
-    case 429:  // Rate limit reached or out of credits
-      error = mojom::APIError::RateLimitReached;
-      break;
-    case 529:  // Temporary server overload
-      error = mojom::APIError::ServiceOverloaded;
-      break;
-    default:
-      error = mojom::APIError::ConnectionIssue;
-      break;
-  }
-
-  // Handle error
-  std::move(callback).Run(base::unexpected(error));
+  std::move(callback).Run(
+      base::unexpected(MapResponseCodeToError(result.response_code())));
 }
 
 void OAIAPIClient::OnQueryDataReceived(

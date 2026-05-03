@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/barrier_callback.h"
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
@@ -29,6 +30,7 @@
 #include "brave/components/ai_chat/core/browser/engine/oai_api_client.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
+#include "brave/components/ai_chat/core/browser/engine/ohttp_api_client.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "components/grit/brave_components_strings.h"
@@ -39,24 +41,37 @@ namespace ai_chat {
 
 namespace {
 
-bool HasCustomSystemPrompt(const mojom::CustomModelOptions& model_options) {
-  return model_options.model_system_prompt &&
-         !model_options.model_system_prompt->empty();
+bool HasCustomSystemPrompt(const mojom::ModelOptions& model_options) {
+  if (!model_options.is_custom_model_options()) {
+    return false;
+  }
+  const auto& opts = *model_options.get_custom_model_options();
+  return opts.model_system_prompt && !opts.model_system_prompt->empty();
 }
 
 }  // namespace
 
 EngineConsumerOAIRemote::EngineConsumerOAIRemote(
-    const mojom::CustomModelOptions& model_options,
+    const mojom::ModelOptions& model_options,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    network::NetworkContextGetter network_context_getter,
+    AIChatCredentialManager* credential_manager,
     ModelService* model_service,
     PrefService* prefs)
     : EngineConsumer(model_service, prefs) {
-  model_options_ = model_options;
-  max_associated_content_length_ = model_options.max_associated_content_length;
-
-  // Initialize the API client
-  api_ = std::make_unique<OAIAPIClient>(url_loader_factory);
+  model_options_ = model_options.Clone();
+  if (model_options_->is_custom_model_options()) {
+    max_associated_content_length_ =
+        model_options_->get_custom_model_options()->max_associated_content_length;
+    api_ = std::make_unique<OAIAPIClient>(url_loader_factory);
+  } else {
+    CHECK(model_options_->is_leo_model_options());
+    max_associated_content_length_ =
+        model_options_->get_leo_model_options()->max_associated_content_length;
+    api_ = std::make_unique<OHTTPAPIClient>(
+        url_loader_factory, std::move(network_context_getter),
+        credential_manager, prefs);
+  }
 }
 
 EngineConsumerOAIRemote::~EngineConsumerOAIRemote() = default;
@@ -66,7 +81,8 @@ void EngineConsumerOAIRemote::ClearAllQueries() {
 }
 
 bool EngineConsumerOAIRemote::SupportsDeltaTextResponses() const {
-  return true;
+  // TODO(djandries): Support SSE deltas for the OHTTP path.
+  return model_options_->is_custom_model_options();
 }
 
 bool EngineConsumerOAIRemote::RequiresClientSideTitleGeneration() const {
@@ -75,11 +91,13 @@ bool EngineConsumerOAIRemote::RequiresClientSideTitleGeneration() const {
 
 void EngineConsumerOAIRemote::UpdateModelOptions(
     const mojom::ModelOptions& options) {
-  if (options.is_custom_model_options()) {
-    model_options_ = *options.get_custom_model_options();
-    max_associated_content_length_ =
-        model_options_.max_associated_content_length;
+  if (!options.is_custom_model_options() ||
+      !model_options_->is_custom_model_options()) {
+    return;
   }
+  model_options_ = options.Clone();
+  max_associated_content_length_ =
+      model_options_->get_custom_model_options()->max_associated_content_length;
 }
 
 void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
@@ -97,7 +115,7 @@ void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
   messages->push_back(BuildOAISeedMessage(
       "Here is the requested rewritten version of the excerpt "
       "in <response> tags:\n<response>"));
-  api_->PerformRequest(model_options_, std::move(*messages), std::nullopt,
+  api_->PerformRequest(*model_options_, std::move(*messages), std::nullopt,
                        std::move(received_callback),
                        std::move(completed_callback),
                        std::vector<std::string>{"</response>"});
@@ -115,7 +133,7 @@ void EngineConsumerOAIRemote::GenerateQuestionSuggestions(
       "in <question> tags:\n"));
 
   api_->PerformRequest(
-      model_options_, std::move(messages), std::nullopt, base::NullCallback(),
+      *model_options_, std::move(messages), std::nullopt, base::NullCallback(),
       base::BindOnce(
           &EngineConsumerOAIRemote::OnGenerateQuestionSuggestionsResponse,
           weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
@@ -179,7 +197,7 @@ void EngineConsumerOAIRemote::GenerateConversationTitle(
       "<title>"));
 
   api_->PerformRequest(
-      model_options_, std::move(*messages), std::nullopt, base::NullCallback(),
+      *model_options_, std::move(*messages), std::nullopt, base::NullCallback(),
       base::BindOnce(&EngineConsumerOAIRemote::OnConversationTitleGenerated,
                      weak_ptr_factory_.GetWeakPtr(),
                      std::move(completed_callback)),
@@ -201,7 +219,7 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
   }
 
   bool exclude_memory =
-      is_temporary_chat || HasCustomSystemPrompt(model_options_);
+      is_temporary_chat || HasCustomSystemPrompt(*model_options_);
   auto conversation_messages =
       BuildOAIMessages(std::move(page_contents), conversation_history, prefs_,
                        exclude_memory, max_associated_content_length_,
@@ -213,7 +231,7 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
   std::ranges::move(conversation_messages, std::back_inserter(messages));
 
   api_->PerformRequest(
-      model_options_, std::move(messages), ToolApiDefinitionsFromTools(tools),
+      *model_options_, std::move(messages), ToolApiDefinitionsFromTools(tools),
       std::move(data_received_callback), std::move(completed_callback));
 }
 
@@ -226,8 +244,9 @@ OAIMessage EngineConsumerOAIRemote::BuildSystemMessage(
   std::string date_and_time_string =
       base::UTF16ToUTF8(TimeFormatFriendlyDateAndTime(base::Time::Now()));
 
-  if (HasCustomSystemPrompt(model_options_)) {
-    system_text = model_options_.model_system_prompt.value();
+  if (HasCustomSystemPrompt(*model_options_)) {
+    system_text = model_options_->get_custom_model_options()
+                      ->model_system_prompt.value();
     base::ReplaceSubstringsAfterOffset(&system_text, 0, "%datetime%",
                                        date_and_time_string);
   } else {
@@ -268,7 +287,7 @@ void EngineConsumerOAIRemote::DedupeTopics(
   auto messages = BuildOAIDedupeTopicsMessages(*topics_result);
 
   api_->PerformRequest(
-      model_options_, std::move(messages), std::nullopt, base::NullCallback(),
+      *model_options_, std::move(messages), std::nullopt, base::NullCallback(),
       base::BindOnce(
           [](GetSuggestedTopicsCallback callback, GenerationResult result) {
             // Return deduped topics from the response.
@@ -295,7 +314,7 @@ void EngineConsumerOAIRemote::GetSuggestedTopics(
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 
   for (auto& messages : chunked_messages) {
-    api_->PerformRequest(model_options_, std::move(messages), std::nullopt,
+    api_->PerformRequest(*model_options_, std::move(messages), std::nullopt,
                          base::NullCallback(), barrier_callback);
   }
 }
@@ -321,7 +340,7 @@ void EngineConsumerOAIRemote::GetFocusTabs(const std::vector<Tab>& tabs,
           std::move(callback)));
 
   for (auto& messages : chunked_messages) {
-    api_->PerformRequest(model_options_, std::move(messages), std::nullopt,
+    api_->PerformRequest(*model_options_, std::move(messages), std::nullopt,
                          base::NullCallback(), barrier_callback);
   }
 }

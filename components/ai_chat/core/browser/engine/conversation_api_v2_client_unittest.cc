@@ -39,6 +39,7 @@
 #include "net/http/http_request_headers.h"
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
+#include "services/network/public/cpp/network_context_getter.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -267,8 +268,8 @@ class ConversationAPIV2ClientUnitTest : public testing::Test {
     ModelService::RegisterProfilePrefs(prefs_.registry());
     credential_manager_ = std::make_unique<MockAIChatCredentialManager>(
         base::NullCallback(), &prefs_);
-    model_service_ =
-        std::make_unique<ModelService>(&prefs_, os_crypt_async_.get());
+    model_service_ = std::make_unique<ModelService>(
+        &prefs_, os_crypt_async_.get(), network::NetworkContextGetter());
 
     client_ = std::make_unique<TestConversationAPIV2Client>(
         credential_manager_.get(), model_service_.get());

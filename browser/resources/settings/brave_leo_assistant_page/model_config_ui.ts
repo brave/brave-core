@@ -168,6 +168,7 @@ export class ModelConfigUI extends ModelConfigUIBase {
       supportedCapabilities: [mojom.ConversationCapability.CHAT],
       isSuggestedModel: false,
       isNearModel: false,
+      supportsPrivateInference: false,
     };
 
     this.fire('save', {modelConfig})

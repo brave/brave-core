@@ -309,6 +309,32 @@ void ConversationAPIV2Client::ClearAllQueries() {
   api_request_helper_->CancelAll();
 }
 
+// static
+base::flat_map<std::string, std::string> ConversationAPIV2Client::GetBraveHeaders(
+    std::optional<std::string> request_body,
+    std::optional<GURL> api_url,
+    std::optional<CredentialCacheEntry> credential) {
+  base::flat_map<std::string, std::string> headers;
+
+  if (request_body && api_url) {
+    const auto digest_header =
+        brave_service_keys::GetDigestHeader(*request_body);
+    headers.emplace(digest_header.first, digest_header.second);
+    auto result = brave_service_keys::GetAuthorizationHeader(
+        BUILDFLAG(SERVICE_KEY_AICHAT), headers, *api_url,
+        net::HttpRequestHeaders::kPostMethod, {"digest"});
+    headers.emplace(result.first, result.second);
+  }
+
+  if (credential) {
+    headers.emplace("Cookie", base::StrCat({"__Secure-sku#brave-leo-premium=",
+                                            credential->credential}));
+  }
+  headers.emplace("x-brave-key", BUILDFLAG(BRAVE_SERVICES_KEY));
+
+  return headers;
+}
+
 void ConversationAPIV2Client::PerformRequest(
     std::vector<OAIMessage> messages,
     std::optional<base::ListValue> oai_tool_definitions,
@@ -389,21 +415,7 @@ void ConversationAPIV2Client::PerformRequestWithCredentials(
       std::move(messages), std::move(oai_tool_definitions), preferred_tool_name,
       conversation_capabilities, model_name, is_sse_enabled);
 
-  base::flat_map<std::string, std::string> headers;
-  const auto digest_header = brave_service_keys::GetDigestHeader(request_body);
-  headers.emplace(digest_header.first, digest_header.second);
-  auto result = brave_service_keys::GetAuthorizationHeader(
-      BUILDFLAG(SERVICE_KEY_AICHAT), headers, api_url,
-      net::HttpRequestHeaders::kPostMethod, {"digest"});
-  headers.emplace(result.first, result.second);
-
-  if (premium_enabled) {
-    // Add Leo premium SKU credential as a Cookie header.
-    std::string cookie_header_value =
-        "__Secure-sku#brave-leo-premium=" + credential->credential;
-    headers.emplace("Cookie", cookie_header_value);
-  }
-  headers.emplace("x-brave-key", BUILDFLAG(BRAVE_SERVICES_KEY));
+  auto headers = GetBraveHeaders(request_body, api_url, credential);
   headers.emplace("Accept", "text/event-stream");
 
   if (is_sse_enabled) {
