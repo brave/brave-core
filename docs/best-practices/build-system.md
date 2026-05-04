@@ -126,20 +126,6 @@ See `brave/components/brave_rewards/resources/brave_rewards_static_resources.grd
 
 ---
 
-<a id="BS-012"></a>
-
-## ✅ Always Double-Check Dependencies
-
-**Always verify you have deps for all includes and used symbols.** Missing deps can work by accident through transitive dependencies but will break when those transitive deps change.
-
-```gn
-# Check for deps matching your includes:
-# #include "url/gurl.h" -> needs dep "//url"
-# #include "extensions/browser/..." -> needs dep "//extensions/browser/..."
-```
-
----
-
 <a id="BS-013"></a>
 
 ## ✅ Use `//brave/` Deps Instead of Modifying Visibility Lists
