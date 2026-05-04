@@ -505,9 +505,19 @@ void YouTubeScriptInjectorTabHelper::OnFullscreenScriptComplete(
 }
 
 bool YouTubeScriptInjectorTabHelper::IsPictureInPictureAvailable() const {
+  if (!web_contents()) {
+    return false;
+  }
+  // Reject inner WebContents (guest views, fenced frames, portals). PiP must be
+  // driven from the outermost tab WebContents; offering it on an embedded view
+  // would target the wrong frame tree and bypass the tab level lifecycle the
+  // controller depends on.
+  if (web_contents()->GetOuterWebContents() != nullptr) {
+    return false;
+  }
   return base::FeatureList::IsEnabled(
              preferences::features::kBravePictureInPictureForYouTubeVideos) &&
-         IsYouTubeVideo(true) && web_contents() &&
+         IsYouTubeVideo(true) &&
          web_contents()->IsDocumentOnLoadCompletedInPrimaryMainFrame();
 }
 
