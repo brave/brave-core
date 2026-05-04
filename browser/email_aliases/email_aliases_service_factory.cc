@@ -54,10 +54,7 @@ bool EmailAliasesServiceFactory::IsServiceEnabled(
     return false;
   }
   const PrefService* pref_service = user_prefs::UserPrefs::Get(context);
-  if (pref_service && pref_service->GetBoolean(prefs::kEmailAliasesEnabled)) {
-    return true;
-  }
-  return false;
+  return pref_service && pref_service->GetBoolean(prefs::kEmailAliasesEnabled);
 }
 
 EmailAliasesServiceFactory::EmailAliasesServiceFactory()

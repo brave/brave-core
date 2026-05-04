@@ -72,7 +72,7 @@ function getPageVisibility () {
       // </if>
       surveyPanelist: false,
       braveTor: false,
-      emailAliaes: false,
+      emailAliases: false,
     }
   }
   // We need to specify values for every attribute in pageVisibility instead of
