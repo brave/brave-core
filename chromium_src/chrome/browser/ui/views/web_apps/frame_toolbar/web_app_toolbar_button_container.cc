@@ -47,23 +47,23 @@ void MaybeAddPwaShieldsToolbarButton(WebAppToolbarButtonContainer* container) {
   }
 
   Browser* browser = base_browser_view->browser();
-  if (!browser || !web_app::AppBrowserController::IsWebApp(browser)) {
+  if (!browser) {
     return;
   }
+
+  CHECK(web_app::AppBrowserController::IsWebApp(browser));
+
   if (page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
     // Page Info owns Shields; do not add a duplicate title-bar control.
     return;
   }
-  if (static_cast<BraveBrowserView*>(base_browser_view)
-          ->GetPwaShieldsToolbarButton()) {
+  if (BraveBrowserView::From(base_browser_view)->GetPwaShieldsToolbarButton()) {
     return;
   }
 
   auto* frame_toolbar =
       views::AsViewClass<WebAppFrameToolbarView>(container->parent());
-  if (!frame_toolbar) {
-    return;
-  }
+  CHECK(frame_toolbar);
 
   size_t insert_index = 0;
   if (ExtensionsToolbarDesktop* ext = container->extensions_container()) {
