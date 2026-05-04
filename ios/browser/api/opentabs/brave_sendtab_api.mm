@@ -140,7 +140,7 @@ TargetDeviceType DeviceTypeFromSyncDeviceType(
   std::string title = base::SysNSStringToUTF8(tabTitle);
   std::string target_device = base::SysNSStringToUTF8(deviceID);
 
-  send_tab_to_self_model_->AddEntry(
+  send_tab_to_self_model_->SendEntry(
       url, title, target_device, send_tab_to_self::PageContext(),
       send_tab_to_self::NavigationHistory(), base::DoNothing());
 }
