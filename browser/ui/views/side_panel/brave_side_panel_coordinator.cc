@@ -102,8 +102,7 @@ void BraveSidePanelCoordinator::OnActiveTabChanged(
 }
 
 void BraveSidePanelCoordinator::Toggle() {
-  if (IsSidePanelShowing() &&
-      !browser_view_->toolbar_height_side_panel()->IsClosing()) {
+  if (IsSidePanelShowing() && !browser_view_->side_panel()->IsClosing()) {
     SidePanelCoordinator::Close();
   } else if (const auto key = GetLastActiveEntryKey()) {
     SidePanelUIBase::Show(*key, SidePanelOpenTrigger::kToolbarButton);
