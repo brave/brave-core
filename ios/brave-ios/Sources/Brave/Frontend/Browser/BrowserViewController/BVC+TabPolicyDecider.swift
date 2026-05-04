@@ -495,8 +495,12 @@ extension BrowserViewController {
       )
 
       if let url = modifiedRequest.url {
-        Logger.module.debug(
-          "Cancelled and recreating request to `\(url.absoluteString, privacy: .private)`"
+        Logger(
+          subsystem: "\(Bundle.main.bundleIdentifier ?? "com.brave.ios")",
+          category: "UserAgent"
+        )
+        .info(
+          "getInternalRedirect() - Detected incorrect UA in header. Cancelled and recreating request to `\(url.baseDomain ?? "nil", privacy: .public)` for user agent change from `\(headerUserAgent, privacy: .public)` to `\(userAgentForType, privacy: .public)`."
         )
       }
       return modifiedRequest
