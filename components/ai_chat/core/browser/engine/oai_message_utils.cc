@@ -14,6 +14,7 @@
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
+#include "brave/components/ai_chat/core/common/utils.h"
 #include "components/prefs/pref_service.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
@@ -211,8 +212,10 @@ std::vector<OAIMessage> BuildOAIMessages(
     }
 
     // If we have page contents for this turn, generate a content block for
-    // each.
-    auto page_content_it = page_contents.find(message->uuid.value());
+    // each. Content is associated with the most recent edit's UUID if the turn
+    // has been edited, so look that up first.
+    auto page_content_it =
+        page_contents.find(GetLatestTurn(message)->uuid.value());
     if (page_content_it != page_contents.end() && remaining_length != 0) {
       page_contents_blocks[message->uuid.value()] = BuildOAIPageContentBlocks(
           page_content_it->second, remaining_length, sanitize_input);
@@ -599,8 +602,10 @@ BuildOAIGenerateConversationTitleMessages(
   OAIMessage msg;
   msg.role = "user";
 
-  // Add page contents from the first turn if available
-  auto page_content_it = page_contents.find(first_turn->uuid.value());
+  // Add page contents from the first turn if available. Content is associated
+  // with the most recent edit's UUID if the turn has been edited.
+  auto page_content_it =
+      page_contents.find(GetLatestTurn(first_turn)->uuid.value());
   if (page_content_it != page_contents.end()) {
     auto blocks = BuildOAIPageContentBlocks(page_content_it->second,
                                             remaining_length, sanitize_input,

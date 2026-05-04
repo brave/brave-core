@@ -469,4 +469,203 @@ TEST_F(AssociatedContentManagerUnitTest,
             mojom::ContentType::VideoTranscript);
 }
 
+TEST_F(AssociatedContentManagerUnitTest,
+       AssociateUnsentContentWithTurn_WithEditsUsesEditUUID) {
+  NiceMock<MockAssociatedContent> content;
+  content.SetTextContent("Page content");
+  conversation_handler_->associated_content_manager()->AddContent(&content);
+
+  std::vector<mojom::ConversationTurnPtr> edits;
+  edits.push_back(mojom::ConversationTurn::New(
+      "edit-uuid", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Edited message", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, nullptr, false,
+      std::nullopt, nullptr));
+
+  auto turn = mojom::ConversationTurn::New(
+      "original-uuid", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Original message", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::move(edits), std::nullopt, nullptr, false,
+      std::nullopt, nullptr);
+
+  conversation_handler_->associated_content_manager()
+      ->AssociateUnsentContentWithTurn(turn);
+
+  // Content should be associated with the edit UUID, not the outer turn UUID.
+  auto associated = conversation_handler_->associated_content_manager()
+                        ->GetAssociatedContent();
+  ASSERT_EQ(1u, associated.size());
+  EXPECT_EQ("edit-uuid", associated[0]->conversation_turn_uuid);
+
+  auto contents_map = conversation_handler_->associated_content_manager()
+                          ->GetCachedContentsMap();
+  EXPECT_FALSE(contents_map.contains("original-uuid"));
+  ASSERT_TRUE(contents_map.contains("edit-uuid"));
+  EXPECT_EQ(1u, contents_map.at("edit-uuid").size());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       CloneContentForTurnEdit_ClonesContentPreservingSource) {
+  NiceMock<MockAssociatedContent> content;
+  content.SetTextContent("Original page content");
+  conversation_handler_->associated_content_manager()->AddContent(&content);
+
+  auto turn = mojom::ConversationTurn::New(
+      "original-uuid", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Message", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
+      std::nullopt, std::nullopt, nullptr, false, std::nullopt, nullptr);
+  conversation_handler_->associated_content_manager()
+      ->AssociateUnsentContentWithTurn(turn);
+
+  conversation_handler_->associated_content_manager()->CloneContentForTurnEdit(
+      "original-uuid", "edit-uuid");
+
+  auto contents_map = conversation_handler_->associated_content_manager()
+                          ->GetCachedContentsMap();
+
+  // Source UUID still has its content.
+  ASSERT_TRUE(contents_map.contains("original-uuid"));
+  EXPECT_EQ(1u, contents_map.at("original-uuid").size());
+  EXPECT_EQ("Original page content",
+            contents_map.at("original-uuid")[0].get().content);
+
+  // Clone is accessible under the target UUID.
+  ASSERT_TRUE(contents_map.contains("edit-uuid"));
+  EXPECT_EQ(1u, contents_map.at("edit-uuid").size());
+  EXPECT_EQ("Original page content",
+            contents_map.at("edit-uuid")[0].get().content);
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       CloneContentForTurnEdit_ClonesHaveDifferentUUIDs) {
+  NiceMock<MockAssociatedContent> content;
+  content.SetTextContent("Page content");
+  conversation_handler_->associated_content_manager()->AddContent(&content);
+
+  auto turn = mojom::ConversationTurn::New(
+      "original-uuid", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Message", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
+      std::nullopt, std::nullopt, nullptr, false, std::nullopt, nullptr);
+  conversation_handler_->associated_content_manager()
+      ->AssociateUnsentContentWithTurn(turn);
+
+  conversation_handler_->associated_content_manager()->CloneContentForTurnEdit(
+      "original-uuid", "edit-uuid");
+
+  auto associated = conversation_handler_->associated_content_manager()
+                        ->GetAssociatedContent();
+  // One original + one clone.
+  ASSERT_EQ(2u, associated.size());
+  EXPECT_NE(associated[0]->uuid, associated[1]->uuid);
+  EXPECT_EQ("original-uuid", associated[0]->conversation_turn_uuid);
+  EXPECT_EQ("edit-uuid", associated[1]->conversation_turn_uuid);
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       CloneContentForTurnEdit_MultipleContentClonedTogether) {
+  NiceMock<MockAssociatedContent> content1;
+  content1.SetTextContent("Page 1");
+  NiceMock<MockAssociatedContent> content2;
+  content2.SetTextContent("Page 2");
+  conversation_handler_->associated_content_manager()->AddContent(&content1);
+  conversation_handler_->associated_content_manager()->AddContent(&content2);
+
+  auto turn = mojom::ConversationTurn::New(
+      "original-uuid", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Message", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
+      std::nullopt, std::nullopt, nullptr, false, std::nullopt, nullptr);
+  conversation_handler_->associated_content_manager()
+      ->AssociateUnsentContentWithTurn(turn);
+
+  conversation_handler_->associated_content_manager()->CloneContentForTurnEdit(
+      "original-uuid", "edit-uuid");
+
+  auto contents_map = conversation_handler_->associated_content_manager()
+                          ->GetCachedContentsMap();
+
+  ASSERT_TRUE(contents_map.contains("original-uuid"));
+  EXPECT_EQ(2u, contents_map.at("original-uuid").size());
+
+  ASSERT_TRUE(contents_map.contains("edit-uuid"));
+  ASSERT_EQ(2u, contents_map.at("edit-uuid").size());
+  EXPECT_EQ("Page 1", contents_map.at("edit-uuid")[0].get().content);
+  EXPECT_EQ("Page 2", contents_map.at("edit-uuid")[1].get().content);
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       CloneContentForTurnEdit_NoOpWhenSourceHasNoContent) {
+  NiceMock<MockAssociatedContent> content;
+  content.SetTextContent("Page content");
+  conversation_handler_->associated_content_manager()->AddContent(&content);
+
+  auto turn = mojom::ConversationTurn::New(
+      "original-uuid", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Message", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
+      std::nullopt, std::nullopt, nullptr, false, std::nullopt, nullptr);
+  conversation_handler_->associated_content_manager()
+      ->AssociateUnsentContentWithTurn(turn);
+
+  // Clone from a UUID that has no content.
+  conversation_handler_->associated_content_manager()->CloneContentForTurnEdit(
+      "nonexistent-uuid", "edit-uuid");
+
+  auto contents_map = conversation_handler_->associated_content_manager()
+                          ->GetCachedContentsMap();
+  ASSERT_TRUE(contents_map.contains("original-uuid"));
+  EXPECT_FALSE(contents_map.contains("edit-uuid"));
+
+  // Content count unchanged.
+  EXPECT_EQ(1u, conversation_handler_->associated_content_manager()
+                    ->GetAssociatedContent()
+                    .size());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       CloneContentForTurnEdit_UnsentContentGoesToEditAfterClone) {
+  NiceMock<MockAssociatedContent> content;
+  content.SetTextContent("Original page");
+  conversation_handler_->associated_content_manager()->AddContent(&content);
+
+  auto turn = mojom::ConversationTurn::New(
+      "original-uuid", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Message", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
+      std::nullopt, std::nullopt, nullptr, false, std::nullopt, nullptr);
+  conversation_handler_->associated_content_manager()
+      ->AssociateUnsentContentWithTurn(turn);
+
+  // Add new content that is not yet associated with any turn.
+  NiceMock<MockAssociatedContent> new_content;
+  new_content.SetTextContent("New page");
+  conversation_handler_->associated_content_manager()->AddContent(&new_content);
+
+  conversation_handler_->associated_content_manager()->CloneContentForTurnEdit(
+      "original-uuid", "edit-uuid");
+
+  // Build a turn with the edit already in place, as ModifyConversation does.
+  std::vector<mojom::ConversationTurnPtr> edits;
+  edits.push_back(mojom::ConversationTurn::New(
+      "edit-uuid", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Edited message", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, nullptr, false,
+      std::nullopt, nullptr));
+  auto edited_outer_turn = mojom::ConversationTurn::New(
+      "original-uuid", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Message", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
+      std::move(edits), std::nullopt, nullptr, false, std::nullopt, nullptr);
+
+  conversation_handler_->associated_content_manager()
+      ->AssociateUnsentContentWithTurn(edited_outer_turn);
+
+  auto contents_map = conversation_handler_->associated_content_manager()
+                          ->GetCachedContentsMap();
+
+  // Original still has its content.
+  ASSERT_TRUE(contents_map.contains("original-uuid"));
+  EXPECT_EQ(1u, contents_map.at("original-uuid").size());
+
+  // Edit has the clone plus the newly added content.
+  ASSERT_TRUE(contents_map.contains("edit-uuid"));
+  EXPECT_EQ(2u, contents_map.at("edit-uuid").size());
+}
+
 }  // namespace ai_chat

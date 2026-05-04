@@ -21,10 +21,12 @@
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/uuid.h"
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/common/utils.h"
 
 namespace ai_chat {
 
@@ -215,11 +217,40 @@ void AssociatedContentManager::AssociateUnsentContentWithTurn(
     const mojom::ConversationTurnPtr& turn) {
   CHECK(turn->uuid.has_value());
 
+  // If the turn has edits, associate with the most recent edit's UUID so that
+  // content is tied to the specific edit rather than the original turn.
+  const std::string& target_uuid = GetLatestTurn(turn)->uuid.value();
+
   for (const auto& content : content_delegates_) {
     if (content_uuid_to_conversation_turns_.contains(content->uuid())) {
       continue;
     }
-    content_uuid_to_conversation_turns_[content->uuid()] = turn->uuid.value();
+    content_uuid_to_conversation_turns_[content->uuid()] = target_uuid;
+  }
+}
+
+void AssociatedContentManager::CloneContentForTurnEdit(
+    const std::string& source_turn_uuid,
+    const std::string& target_turn_uuid) {
+  std::vector<AssociatedContentDelegate*> source_delegates;
+  for (auto* delegate : content_delegates_) {
+    auto it = content_uuid_to_conversation_turns_.find(delegate->uuid());
+    if (it != content_uuid_to_conversation_turns_.end() &&
+        it->second == source_turn_uuid) {
+      source_delegates.push_back(delegate);
+    }
+  }
+
+  for (auto* delegate : source_delegates) {
+    auto cached = delegate->cached_page_content();
+    auto new_uuid = base::Uuid::GenerateRandomV4().AsLowercaseString();
+    // Pre-map the clone to the target turn before AddOwnedContent so that
+    // AssociateUnsentContentWithTurn won't re-associate it.
+    content_uuid_to_conversation_turns_[new_uuid] = target_turn_uuid;
+    AddOwnedContent(std::make_unique<AssociatedArchiveContent>(
+                        delegate->url(), std::move(cached.content),
+                        delegate->title(), cached.is_video, new_uuid),
+                    /*notify_updated=*/false);
   }
 }
 
