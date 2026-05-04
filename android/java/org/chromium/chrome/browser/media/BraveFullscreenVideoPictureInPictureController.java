@@ -57,7 +57,7 @@ public class BraveFullscreenVideoPictureInPictureController {
             return false;
         }
 
-        if (BraveYouTubePictureInPictureController.isScreenOffOrLocked(activity)) {
+        if (BraveYouTubePictureInPictureController.isScreenOffOrLocked()) {
             braveActivity.onYouTubePictureInPictureFullscreenInterrupted();
             return true;
         }
