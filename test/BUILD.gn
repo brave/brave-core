@@ -37,6 +37,7 @@ import("//extensions/buildflags/buildflags.gni")
 import("//testing/test.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 import("//tools/v8_context_snapshot/v8_context_snapshot.gni")
+import("//ui/webui/webui_features.gni")
 
 if (is_android) {
   import("//build/config/android/rules.gni")
@@ -989,8 +990,11 @@ test("brave_browser_tests") {
     "//brave/components/brave_referrals/browser",
     "//brave/components/brave_rewards/core",
     "//brave/components/email_aliases/buildflags",
-    "//chrome/browser/new_tab_page",
   ]
+
+  if (enable_webui_ntp) {
+    deps += [ "//chrome/browser/new_tab_page" ]
+  }
 
   if (enable_brave_rewards) {
     deps += [
