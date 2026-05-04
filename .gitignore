@@ -55,10 +55,12 @@ npm-debug.log
 .npmrc*
 .env*
 !tools/crates/vendor/**/.envrc
+!third_party/boringtun/vendor/**/.envrc
 !third_party/wasm/vendor/**/.envrc
 engflow.crt
 *.key
 !tools/crates/vendor/**/*.key
+!third_party/boringtun/vendor/**/*.key
 !third_party/wasm/vendor/**/*.key
 privkey.pem
 *~

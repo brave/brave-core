@@ -1,0 +1,63 @@
+[package]
+name = "x25519-dalek"
+edition = "2021"
+# Before changing this:
+# - update version in README.md
+# - update html_root_url
+# - update CHANGELOG
+# - if any changes were made to README.md, mirror them in src/lib.rs docs
+version = "2.0.1"
+authors = [
+    "Isis Lovecruft <isis@patternsinthevoid.net>",
+    "DebugSteven <debugsteven@gmail.com>",
+    "Henry de Valence <hdevalence@hdevalence.ca>",
+]
+readme = "README.md"
+license = "BSD-3-Clause"
+repository = "https://github.com/dalek-cryptography/curve25519-dalek/tree/main/x25519-dalek"
+homepage = "https://github.com/dalek-cryptography/curve25519-dalek"
+documentation = "https://docs.rs/x25519-dalek"
+categories = ["cryptography", "no-std"]
+keywords = ["cryptography", "curve25519", "key-exchange", "x25519", "diffie-hellman"]
+description = "X25519 elliptic curve Diffie-Hellman key exchange in pure-Rust, using curve25519-dalek."
+exclude = [
+    ".gitignore",
+    ".travis.yml",
+    "CONTRIBUTING.md",
+]
+rust-version = "1.60"
+
+[badges]
+travis-ci = { repository = "dalek-cryptography/x25519-dalek", branch = "master"}
+
+[package.metadata.docs.rs]
+rustdoc-args = [
+    "--html-in-header", "docs/assets/rustdoc-include-katex-header.html",
+    "--cfg", "docsrs",
+]
+features = ["getrandom", "reusable_secrets", "serde", "static_secrets"]
+
+[dependencies]
+curve25519-dalek = { version = "4", path = "../curve25519-dalek", default-features = false }
+rand_core = { version = "0.6", default-features = false }
+serde = { version = "1", default-features = false, optional = true, features = ["derive"] }
+zeroize = { version = "1", default-features = false, optional = true, features = ["zeroize_derive"] }
+
+[dev-dependencies]
+bincode = "1"
+criterion = "0.5"
+rand_core = { version = "0.6", default-features = false, features = ["getrandom"] }
+
+[[bench]]
+name = "x25519"
+harness = false
+
+[features]
+default = ["alloc", "precomputed-tables", "zeroize"]
+getrandom = ["rand_core/getrandom"]
+zeroize = ["dep:zeroize", "curve25519-dalek/zeroize"]
+serde = ["dep:serde", "curve25519-dalek/serde"]
+alloc = ["curve25519-dalek/alloc", "serde?/alloc", "zeroize?/alloc"]
+precomputed-tables = ["curve25519-dalek/precomputed-tables"]
+reusable_secrets = []
+static_secrets = []

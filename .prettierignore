@@ -20,6 +20,7 @@
 # Ignore external dependencies:
 /tools/crates/vendor/
 /third_party/
+/third_party/boringtun/vendor/
 /third_party/wasm/vendor/
 
 # Ignore github .yml files:
