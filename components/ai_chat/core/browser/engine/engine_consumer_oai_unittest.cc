@@ -464,8 +464,8 @@ TEST_F(EngineConsumerOAIUnitTest,
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
           [&expected_system_message, &human_input, &assistant_response](
-              const mojom::ModelOptions&,
-              std::vector<OAIMessage> messages, std::optional<base::ListValue>,
+              const mojom::ModelOptions&, std::vector<OAIMessage> messages,
+              std::optional<base::ListValue>,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
@@ -540,8 +540,8 @@ TEST_F(EngineConsumerOAIUnitTest,
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
           [&expected_system_message, &assistant_input, &human_input](
-              const mojom::ModelOptions&,
-              std::vector<OAIMessage> messages, std::optional<base::ListValue>,
+              const mojom::ModelOptions&, std::vector<OAIMessage> messages,
+              std::optional<base::ListValue>,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
@@ -608,8 +608,8 @@ TEST_F(EngineConsumerOAIUnitTest,
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
           [&expected_system_message](
-              const mojom::ModelOptions&,
-              std::vector<OAIMessage> messages, std::optional<base::ListValue>,
+              const mojom::ModelOptions&, std::vector<OAIMessage> messages,
+              std::optional<base::ListValue>,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
@@ -804,8 +804,8 @@ TEST_F(EngineConsumerOAIUnitTest,
   base::RunLoop run_loop;
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
-          [&](const mojom::ModelOptions&,
-              std::vector<OAIMessage> messages, std::optional<base::ListValue>,
+          [&](const mojom::ModelOptions&, std::vector<OAIMessage> messages,
+              std::optional<base::ListValue>,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
@@ -888,8 +888,8 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
-          [&](const mojom::ModelOptions&,
-              std::vector<OAIMessage> messages, std::optional<base::ListValue>,
+          [&](const mojom::ModelOptions&, std::vector<OAIMessage> messages,
+              std::optional<base::ListValue>,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
@@ -1124,8 +1124,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_WithSelectedText) {
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
-      .WillOnce([](const mojom::ModelOptions&,
-                   std::vector<OAIMessage> messages,
+      .WillOnce([](const mojom::ModelOptions&, std::vector<OAIMessage> messages,
                    std::optional<base::ListValue>,
                    EngineConsumer::GenerationDataCallback,
                    EngineConsumer::GenerationCompletedCallback
@@ -1815,8 +1814,8 @@ TEST_F(EngineConsumerOAIUnitTest, GetSuggestedTopics) {
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .Times(3)
       .WillOnce(
-          [&](const mojom::ModelOptions&,
-              std::vector<OAIMessage> messages, std::optional<base::ListValue>,
+          [&](const mojom::ModelOptions&, std::vector<OAIMessage> messages,
+              std::optional<base::ListValue>,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
@@ -1832,8 +1831,8 @@ TEST_F(EngineConsumerOAIUnitTest, GetSuggestedTopics) {
                     std::move(completion_event), std::nullopt)));
           })
       .WillOnce(
-          [&](const mojom::ModelOptions&,
-              std::vector<OAIMessage> messages, std::optional<base::ListValue>,
+          [&](const mojom::ModelOptions&, std::vector<OAIMessage> messages,
+              std::optional<base::ListValue>,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
@@ -1849,8 +1848,8 @@ TEST_F(EngineConsumerOAIUnitTest, GetSuggestedTopics) {
                     std::move(completion_event), std::nullopt)));
           })
       .WillOnce(
-          [&](const mojom::ModelOptions&,
-              std::vector<OAIMessage> messages, std::optional<base::ListValue>,
+          [&](const mojom::ModelOptions&, std::vector<OAIMessage> messages,
+              std::optional<base::ListValue>,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
@@ -1898,8 +1897,8 @@ TEST_F(EngineConsumerOAIUnitTest, GetSuggestedTopics_SingleTabChunk) {
 
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .WillOnce(
-          [&](const mojom::ModelOptions&,
-              std::vector<OAIMessage> messages, std::optional<base::ListValue>,
+          [&](const mojom::ModelOptions&, std::vector<OAIMessage> messages,
+              std::optional<base::ListValue>,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
@@ -1955,8 +1954,8 @@ TEST_F(EngineConsumerOAIUnitTest, GetFocusTabs) {
   EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
       .Times(2)
       .WillOnce(
-          [&](const mojom::ModelOptions&,
-              std::vector<OAIMessage> messages, std::optional<base::ListValue>,
+          [&](const mojom::ModelOptions&, std::vector<OAIMessage> messages,
+              std::optional<base::ListValue>,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
@@ -1971,8 +1970,8 @@ TEST_F(EngineConsumerOAIUnitTest, GetFocusTabs) {
                     std::move(completion_event), std::nullopt)));
           })
       .WillOnce(
-          [&](const mojom::ModelOptions&,
-              std::vector<OAIMessage> messages, std::optional<base::ListValue>,
+          [&](const mojom::ModelOptions&, std::vector<OAIMessage> messages,
+              std::optional<base::ListValue>,
               EngineConsumer::GenerationDataCallback,
               EngineConsumer::GenerationCompletedCallback completed_callback,
               const std::optional<std::vector<std::string>>&) {
@@ -2040,8 +2039,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponse_WithTools) {
       PerformRequest(_, _,
                      testing::Optional(base::test::IsJson(expected_tools_json)),
                      _, _, _))
-      .WillOnce([&run_loop](const mojom::ModelOptions&,
-                            std::vector<OAIMessage>,
+      .WillOnce([&run_loop](const mojom::ModelOptions&, std::vector<OAIMessage>,
                             std::optional<base::ListValue>,
                             EngineConsumer::GenerationDataCallback,
                             EngineConsumer::GenerationCompletedCallback,

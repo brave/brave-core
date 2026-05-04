@@ -42,34 +42,28 @@ bool IsExpired(const base::DictValue& entry) {
 }
 
 GURL GetOhttpKeyConfigUrl(const std::string& model_name) {
-  return GetEndpointUrl(/*premium=*/true,
-                        kKeyConfigPathPrefix + model_name + kKeyConfigPathSuffix);
+  return GetEndpointUrl(/*premium=*/true, kKeyConfigPathPrefix + model_name +
+                                              kKeyConfigPathSuffix);
 }
 
 net::NetworkTrafficAnnotationTag GetKeyConfigTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("ai_chat_ohttp_key_config", R"cpp(
-      semantics {
-        sender: "AI Chat (OHTTP Key Config)"
-        description:
+    semantics{
+      sender : "AI Chat (OHTTP Key Config)" description :
           "Fetches the HPKE public key configuration and inner endpoint URL "
           "for a specific model from the Brave AI Chat server at "
           "/v1/models/{model_name}/ohttp_config. The response contains a "
           "base64-encoded key config blob and the endpoint URL used for the "
           "OHTTP inner request."
-        trigger:
+      trigger :
           "Fetched on demand when a private inference request is about to be "
-          "sent for a model with no valid cached key config."
-        data:
-          "No user data is sent. This is a plain GET request for a public "
-          "key configuration document."
-        destination: WEBSITE
-      }
-      policy {
-        cookies_allowed: NO
-        policy_exception_justification:
-          "Not implemented."
-      }
-    )cpp");
+          "sent for a model with no valid cached key config." data :
+              "No user data is sent. This is a plain GET request for a public "
+              "key configuration document." destination : WEBSITE
+    } policy{
+      cookies_allowed : NO policy_exception_justification : "Not implemented."
+    }
+  )cpp");
 }
 
 }  // namespace
@@ -110,9 +104,9 @@ OHTTPConfigManager::GetCachedKeyConfig(const std::string& model_name) const {
   if (!profile_prefs_) {
     return std::nullopt;
   }
-  const base::DictValue* entry = profile_prefs_
-      ->GetDict(prefs::kAIChatObliviousHttpKeyConfigs)
-      .FindDict(model_name);
+  const base::DictValue* entry =
+      profile_prefs_->GetDict(prefs::kAIChatObliviousHttpKeyConfigs)
+          .FindDict(model_name);
   if (!entry || IsExpired(*entry)) {
     return std::nullopt;
   }

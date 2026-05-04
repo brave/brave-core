@@ -64,7 +64,8 @@ class OHTTPConfigManager {
  private:
   std::optional<KeyConfigResult> GetCachedKeyConfig(
       const std::string& model_name) const;
-  void FetchKeyConfig(const std::string& model_name, KeyConfigCallback callback);
+  void FetchKeyConfig(const std::string& model_name,
+                      KeyConfigCallback callback);
   void OnKeyConfigFetched(std::string model_name,
                           KeyConfigCallback callback,
                           api_request_helper::APIRequestResult result);

@@ -310,7 +310,8 @@ void ConversationAPIV2Client::ClearAllQueries() {
 }
 
 // static
-base::flat_map<std::string, std::string> ConversationAPIV2Client::GetBraveHeaders(
+base::flat_map<std::string, std::string>
+ConversationAPIV2Client::GetBraveHeaders(
     std::optional<std::string> request_body,
     std::optional<GURL> api_url,
     std::optional<CredentialCacheEntry> credential) {

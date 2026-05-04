@@ -14,10 +14,9 @@ namespace {
 // Applies relay_request_headers to |headers| if present. If brave_services_key
 // is set, also computes a Digest (SHA-256 of |encrypted_body|) and an
 // Authorization header signed with that key, and adds both to |headers|.
-void ApplyBraveRelayHeaders(
-    const network::mojom::ObliviousHttpRequest& request,
-    const std::string& encrypted_body,
-    net::HttpRequestHeaders& headers) {
+void ApplyBraveRelayHeaders(const network::mojom::ObliviousHttpRequest& request,
+                            const std::string& encrypted_body,
+                            net::HttpRequestHeaders& headers) {
   if (request.relay_request_headers) {
     headers.MergeFrom(*request.relay_request_headers);
   }
@@ -35,7 +34,7 @@ void ApplyBraveRelayHeaders(
 
 }  // namespace
 
-#define BRAVE_OBLIVIOUS_HTTP_CONTINUE_HANDLING_REQUEST        \
+#define BRAVE_OBLIVIOUS_HTTP_CONTINUE_HANDLING_REQUEST           \
   ApplyBraveRelayHeaders(*state->request, *maybe_encrypted_blob, \
                          resource_request->headers);
 

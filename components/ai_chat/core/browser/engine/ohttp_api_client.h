@@ -53,14 +53,13 @@ class OHTTPAPIClient : public OAIAPIClient {
 
   // OAIAPIClient:
   // |model_options| must hold a LeoModelOptions variant.
-  void PerformRequest(
-      const mojom::ModelOptions& model_options,
-      std::vector<OAIMessage> messages,
-      std::optional<base::ListValue> oai_tool_definitions,
-      GenerationDataCallback data_received_callback,
-      GenerationCompletedCallback completed_callback,
-      const std::optional<std::vector<std::string>>& stop_sequences =
-          std::nullopt) override;
+  void PerformRequest(const mojom::ModelOptions& model_options,
+                      std::vector<OAIMessage> messages,
+                      std::optional<base::ListValue> oai_tool_definitions,
+                      GenerationDataCallback data_received_callback,
+                      GenerationCompletedCallback completed_callback,
+                      const std::optional<std::vector<std::string>>&
+                          stop_sequences = std::nullopt) override;
 
   void ClearAllQueries() override;
 

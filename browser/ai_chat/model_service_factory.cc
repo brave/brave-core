@@ -47,8 +47,7 @@ std::unique_ptr<KeyedService>
 ModelServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
   return std::make_unique<ModelService>(
-      user_prefs::UserPrefs::Get(context),
-      g_browser_process->os_crypt_async(),
+      user_prefs::UserPrefs::Get(context), g_browser_process->os_crypt_async(),
       base::BindRepeating(
           [](content::BrowserContext* context) {
             return context->GetDefaultStoragePartition()->GetNetworkContext();

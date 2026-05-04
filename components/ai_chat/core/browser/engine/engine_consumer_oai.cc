@@ -61,16 +61,16 @@ EngineConsumerOAIRemote::EngineConsumerOAIRemote(
     : EngineConsumer(model_service, prefs) {
   model_options_ = model_options.Clone();
   if (model_options_->is_custom_model_options()) {
-    max_associated_content_length_ =
-        model_options_->get_custom_model_options()->max_associated_content_length;
+    max_associated_content_length_ = model_options_->get_custom_model_options()
+                                         ->max_associated_content_length;
     api_ = std::make_unique<OAIAPIClient>(url_loader_factory);
   } else {
     CHECK(model_options_->is_leo_model_options());
     max_associated_content_length_ =
         model_options_->get_leo_model_options()->max_associated_content_length;
-    api_ = std::make_unique<OHTTPAPIClient>(
-        url_loader_factory, std::move(network_context_getter),
-        credential_manager, prefs);
+    api_ = std::make_unique<OHTTPAPIClient>(url_loader_factory,
+                                            std::move(network_context_getter),
+                                            credential_manager, prefs);
   }
 }
 
@@ -245,8 +245,8 @@ OAIMessage EngineConsumerOAIRemote::BuildSystemMessage(
       base::UTF16ToUTF8(TimeFormatFriendlyDateAndTime(base::Time::Now()));
 
   if (HasCustomSystemPrompt(*model_options_)) {
-    system_text = model_options_->get_custom_model_options()
-                      ->model_system_prompt.value();
+    system_text =
+        model_options_->get_custom_model_options()->model_system_prompt.value();
     base::ReplaceSubstringsAfterOffset(&system_text, 0, "%datetime%",
                                        date_and_time_string);
   } else {

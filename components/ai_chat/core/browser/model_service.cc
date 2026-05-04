@@ -34,10 +34,10 @@
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
-#include "brave/components/ai_chat/core/browser/engine/ohttp_config_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api_v2.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_oai.h"
+#include "brave/components/ai_chat/core/browser/engine/ohttp_config_manager.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/constants.h"
@@ -664,10 +664,9 @@ base::DictValue ModelService::CustomModelToPrefDict(
   return model_dict;
 }
 
-ModelService::ModelService(
-    PrefService* prefs_service,
-    os_crypt_async::OSCryptAsync* os_crypt_async,
-    network::NetworkContextGetter network_context_getter)
+ModelService::ModelService(PrefService* prefs_service,
+                           os_crypt_async::OSCryptAsync* os_crypt_async,
+                           network::NetworkContextGetter network_context_getter)
     : pref_service_(prefs_service),
       network_context_getter_(std::move(network_context_getter)) {
   OHTTPConfigManager::DeleteExpiredKeyConfigs(pref_service_);

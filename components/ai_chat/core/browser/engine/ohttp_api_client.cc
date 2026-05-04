@@ -40,36 +40,30 @@ constexpr base::TimeDelta kRequestTimeout = base::Seconds(60);
 
 net::NetworkTrafficAnnotationTag GetOhttpTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("ai_chat_ohttp", R"cpp(
-      semantics {
-        sender: "AI Chat (OHTTP)"
-        description:
+    semantics{
+      sender : "AI Chat (OHTTP)" description :
           "Used to communicate with Brave AI Chat private inference models "
           "via Oblivious HTTP. The inner request body contains an "
           "OpenAI-compatible chat completion request and is encrypted to the "
           "OHTTP gateway. The relay (AI Chat server) only sees outer headers "
-          "such as a Leo premium SKU credential and the model name."
-        trigger:
-          "Triggered by user interactions such as submitting an AI Chat "
-          "conversation message when the selected model supports private "
-          "inference."
-        data:
+          "such as a Leo premium SKU credential and the model name." trigger :
+              "Triggered by user interactions such as submitting an AI Chat "
+              "conversation message when the selected model supports private "
+              "inference."
+      data :
           "Conversational messages input by the user as well as associated "
           "content. Encrypted via OHTTP between this client and the "
           "gateway. Outer headers include a Leo premium SKU credential "
-          "and the Brave services key."
-        destination: WEBSITE
-      }
-      policy {
-        cookies_allowed: NO
-        policy_exception_justification:
-          "Not implemented."
-      }
-    )cpp");
+          "and the Brave services key." destination : WEBSITE
+    } policy{
+      cookies_allowed : NO policy_exception_justification : "Not implemented."
+    }
+  )cpp");
 }
 
 GURL GetOhttpRelayUrl(const std::string& model_name) {
-  return GetEndpointUrl(/*premium=*/true,
-                        kOhttpRelayPathPrefix + model_name + kOhttpRelayPathSuffix);
+  return GetEndpointUrl(/*premium=*/true, kOhttpRelayPathPrefix + model_name +
+                                              kOhttpRelayPathSuffix);
 }
 
 }  // namespace
@@ -124,9 +118,9 @@ OHTTPAPIClient::OHTTPAPIClient(
       url_loader_factory_(url_loader_factory),
       network_context_getter_(std::move(network_context_getter)),
       credential_manager_(credential_manager),
-      config_manager_(std::make_unique<OHTTPConfigManager>(
-          std::move(url_loader_factory),
-          profile_prefs)) {}
+      config_manager_(
+          std::make_unique<OHTTPConfigManager>(std::move(url_loader_factory),
+                                               profile_prefs)) {}
 
 OHTTPAPIClient::~OHTTPAPIClient() = default;
 
@@ -150,11 +144,10 @@ void OHTTPAPIClient::PerformRequest(
                                  mojom::APIError::ConnectionIssue);
   }
 
-  credential_manager_->FetchPremiumCredential(
-      base::BindOnce(&OHTTPAPIClient::OnCredentialFetched,
-                     weak_factory_.GetWeakPtr(),
-                     Request{leo_opts.name, std::move(request_body),
-                             std::move(completed_callback)}));
+  credential_manager_->FetchPremiumCredential(base::BindOnce(
+      &OHTTPAPIClient::OnCredentialFetched, weak_factory_.GetWeakPtr(),
+      Request{leo_opts.name, std::move(request_body),
+              std::move(completed_callback)}));
 }
 
 void OHTTPAPIClient::ClearAllQueries() {
@@ -204,8 +197,8 @@ void OHTTPAPIClient::DispatchOhttpRequest(
 
   auto ohttp_request = network::mojom::ObliviousHttpRequest::New();
   ohttp_request->relay_url = GetOhttpRelayUrl(request.model_name);
-  ohttp_request->traffic_annotation = net::MutableNetworkTrafficAnnotationTag(
-      GetOhttpTrafficAnnotationTag());
+  ohttp_request->traffic_annotation =
+      net::MutableNetworkTrafficAnnotationTag(GetOhttpTrafficAnnotationTag());
   ohttp_request->timeout_duration = kRequestTimeout;
   ohttp_request->key_config = key_config_result.key_config;
   ohttp_request->resource_url = key_config_result.endpoint_url;
@@ -216,9 +209,8 @@ void OHTTPAPIClient::DispatchOhttpRequest(
   // Build outer (relay) request headers. These are sent to the relay in the
   // clear and are NOT encapsulated in the encrypted bhttp inner request.
   net::HttpRequestHeaders relay_headers;
-  for (const auto& [name, value] :
-       ConversationAPIV2Client::GetBraveHeaders(std::nullopt, std::nullopt,
-                                               credential)) {
+  for (const auto& [name, value] : ConversationAPIV2Client::GetBraveHeaders(
+           std::nullopt, std::nullopt, credential)) {
     relay_headers.SetHeader(name, value);
   }
   ohttp_request->relay_request_headers = std::move(relay_headers);
@@ -248,8 +240,9 @@ void OHTTPAPIClient::OnInnerResponse(
 
     auto value = base::JSONReader::Read(response_body, base::JSON_PARSE_RFC);
     if (value && value->is_dict()) {
-      if (auto result = ParseOAICompletionResponse(value->GetDict(),
-                                                   /*model_key=*/std::nullopt)) {
+      if (auto result =
+              ParseOAICompletionResponse(value->GetDict(),
+                                         /*model_key=*/std::nullopt)) {
         std::move(request.completed_callback).Run(base::ok(std::move(*result)));
         return;
       }
