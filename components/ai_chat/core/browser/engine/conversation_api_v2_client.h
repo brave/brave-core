@@ -67,6 +67,15 @@ class ConversationAPIV2Client {
 
   void ClearAllQueries();
 
+  // Builds the standard Brave AI Chat request headers. Always includes
+  // |x-brave-key|. When |request_body| and |api_url| are provided, also adds
+  // the Digest and Authorization headers required by the conversation API.
+  // When |credential| is provided, adds the Leo premium SKU Cookie header.
+  static base::flat_map<std::string, std::string> GetBraveHeaders(
+      std::optional<std::string> request_body,
+      std::optional<GURL> api_url,
+      std::optional<CredentialCacheEntry> credential);
+
  protected:
   void SetAPIRequestHelperForTesting(
       std::unique_ptr<api_request_helper::APIRequestHelper> api_helper) {
@@ -85,15 +94,6 @@ class ConversationAPIV2Client {
       const bool is_sse_enabled);
 
   static base::ListValue SerializeOAIMessages(std::vector<OAIMessage> messages);
-
-  // Builds the standard Brave AI Chat request headers. Always includes
-  // |x-brave-key|. When |request_body| and |api_url| are provided, also adds
-  // the Digest and Authorization headers required by the conversation API.
-  // When |credential| is provided, adds the Leo premium SKU Cookie header.
-  static base::flat_map<std::string, std::string> GetBraveHeaders(
-      std::optional<std::string> request_body,
-      std::optional<GURL> api_url,
-      std::optional<CredentialCacheEntry> credential);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(ConversationAPIV2ClientUnitTest_ContentBlocks,

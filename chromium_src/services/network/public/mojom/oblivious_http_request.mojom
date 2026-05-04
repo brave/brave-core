@@ -12,4 +12,8 @@ struct ObliviousHttpRequest {
   // Optional additional HTTP headers to include in the outer request to the
   // relay (not encapsulated in bhttp).
   HttpRequestHeaders? relay_request_headers;
+  // If set, the network service computes a Digest header (SHA-256 of the
+  // encrypted outer body) and an Authorization header signed with this key,
+  // and adds them to the outer relay request headers.
+  string? brave_services_key;
 };

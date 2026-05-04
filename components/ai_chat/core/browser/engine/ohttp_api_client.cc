@@ -15,6 +15,7 @@
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_v2_client.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -221,6 +222,7 @@ void OHTTPAPIClient::DispatchOhttpRequest(
     relay_headers.SetHeader(name, value);
   }
   ohttp_request->relay_request_headers = std::move(relay_headers);
+  ohttp_request->brave_services_key = BUILDFLAG(SERVICE_KEY_AICHAT);
 
   mojo::PendingRemote<network::mojom::ObliviousHttpClient> client_remote;
   mojo::MakeSelfOwnedReceiver(
