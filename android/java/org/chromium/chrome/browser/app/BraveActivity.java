@@ -2685,7 +2685,7 @@ public abstract class BraveActivity extends ChromeActivity
                         orientation == Configuration.ORIENTATION_LANDSCAPE
                                 ? 0
                                 : getResources()
-                                        .getDimensionPixelSize(R.dimen.bottom_controls_height);
+                                        .getDimensionPixelSize(R.dimen.brave_bottom_toolbar_height);
                 sheetContainer.setLayoutParams(params);
             }
         }
