@@ -11,9 +11,8 @@
 #include "components/saved_tab_groups/delegate/tab_group_sync_delegate.h"
 #include "components/saved_tab_groups/public/tab_group_sync_service.h"
 
-#define ConnectLocalTabGroup                        \
-  ConnectLocalTabGroup_ChromiumImpl(                \
-      const SavedTabGroup& group);                  \
+#define ConnectLocalTabGroup                                     \
+  ConnectLocalTabGroup_ChromiumImpl(const SavedTabGroup& group); \
   void ConnectLocalTabGroup
 
 #include <chrome/browser/ui/tabs/saved_tab_groups/tab_group_sync_delegate_desktop.h>  // IWYU pragma: export
