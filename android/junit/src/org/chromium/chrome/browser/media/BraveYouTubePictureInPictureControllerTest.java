@@ -8,10 +8,13 @@ package org.chromium.chrome.browser.media;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.withSettings;
 
 import android.app.KeyguardManager;
 import android.content.Context;
@@ -44,6 +47,7 @@ import org.chromium.chrome.browser.youtube_script_injector.BraveYouTubeScriptInj
 import org.chromium.components.browser_ui.media.BraveMediaSessionHelper;
 import org.chromium.content_public.browser.MediaSession;
 import org.chromium.content_public.browser.WebContents;
+import org.chromium.content_public.browser.WebContentsObserver;
 
 /**
  * Unit tests for {@link BraveYouTubePictureInPictureController}'s pure state-transition surface.
@@ -435,5 +439,59 @@ public class BraveYouTubePictureInPictureControllerTest {
         verify(mMediaSession).suspend();
         verify(mWebContents).exitFullscreen();
         assertFalse(controller.isActive());
+    }
+
+    @Test
+    public void onExitPictureInPictureMode_rendererFullscreenExit_runsCleanupOnce() {
+        // The chrome restore is event driven: as soon as the renderer reports DOM fullscreen has
+        // exited, the controller must trigger maybeRestoreFullscreenUi without waiting for the
+        // safety timer. The timer must then no op so the cleanup runs exactly once.
+        WebContents observableWebContents =
+                mock(
+                        WebContents.class,
+                        withSettings().extraInterfaces(WebContentsObserver.Observable.class));
+        when(mBraveActivity.getFullscreenManager()).thenReturn(mBraveFullscreenHandler);
+        when(mBraveFullscreenHandler.getPersistentFullscreenMode()).thenReturn(true);
+
+        BraveYouTubePictureInPictureController controller =
+                new BraveYouTubePictureInPictureController(mBraveActivity);
+        controller.onSessionRequested(observableWebContents);
+
+        try (MockedStatic<BraveYouTubeScriptInjectorNativeHelper> nativeHelper =
+                        mockStatic(BraveYouTubeScriptInjectorNativeHelper.class);
+                MockedStatic<PostTask> postTask = mockStatic(PostTask.class)) {
+            controller.onExitPictureInPictureMode();
+
+            // Capture the observer the controller installed, then simulate the renderer
+            // reporting DOM fullscreen exit.
+            ArgumentCaptor<WebContentsObserver> observerCaptor =
+                    ArgumentCaptor.forClass(WebContentsObserver.class);
+            verify((WebContentsObserver.Observable) observableWebContents)
+                    .addObserver(observerCaptor.capture());
+            WebContentsObserver exitObserver = observerCaptor.getValue();
+            exitObserver.didToggleFullscreenModeForTab(
+                    /* enteredFullscreen= */ false, /* willCauseResize= */ false);
+
+            // Fast path fired: cleanup ran and the observer was detached.
+            verify(mBraveFullscreenHandler).exitPersistentFullscreenModeForPictureInPicture();
+            verify((WebContentsObserver.Observable) observableWebContents)
+                    .removeObserver(exitObserver);
+
+            // Now run the safety timer task: it must short circuit because the fast path already
+            // owned the cleanup.
+            ArgumentCaptor<Runnable> timerCaptor = ArgumentCaptor.forClass(Runnable.class);
+            postTask.verify(
+                    () ->
+                            PostTask.postDelayedTask(
+                                    eq(TaskTraits.UI_DEFAULT),
+                                    timerCaptor.capture(),
+                                    eq(
+                                            BraveYouTubePictureInPictureController
+                                                    .FULLSCREEN_EXIT_FALLBACK_MS)));
+            timerCaptor.getValue().run();
+
+            verify(mBraveFullscreenHandler, times(1))
+                    .exitPersistentFullscreenModeForPictureInPicture();
+        }
     }
 }

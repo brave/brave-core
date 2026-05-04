@@ -35,6 +35,7 @@ import org.chromium.chrome.browser.youtube_script_injector.BraveYouTubeScriptInj
 import org.chromium.components.browser_ui.media.BraveMediaSessionHelper;
 import org.chromium.content_public.browser.MediaSession;
 import org.chromium.content_public.browser.WebContents;
+import org.chromium.content_public.browser.WebContentsObserver;
 
 /**
  * Owns the lifecycle of a Brave-managed YouTube Picture-in-Picture session.
@@ -62,11 +63,13 @@ public class BraveYouTubePictureInPictureController {
     static final String KEY_TAB_ID = "org.chromium.chrome.browser.media.YT_PIP_TAB_ID";
 
     /**
-     * Time given to YouTube's DOM to drop out of fullscreen after we ask it to. Picked empirically:
-     * shorter values cause the browser-chrome restore to race with the JS exit; longer values are
-     * visible to the user as a delay before chrome reappears.
+     * Hard ceiling on how long we wait for YouTube's DOM to drop out of fullscreen after we ask
+     * it to. The fast path is event driven: a one shot WebContentsObserver fires the cleanup as
+     * soon as the renderer reports the fullscreen exit, which is typically much sooner than this
+     * timeout. The ceiling exists only as a safety net for the case where the renderer never
+     * reports the exit (broken page, JS failure, etc.).
      */
-    @VisibleForTesting static final long FULLSCREEN_EXIT_DELAY_MS = 300L;
+    @VisibleForTesting static final long FULLSCREEN_EXIT_FALLBACK_MS = 300L;
 
     /**
      * Time given to the user/system to confirm dismissal of the PiP window before we suspend the
@@ -83,6 +86,14 @@ public class BraveYouTubePictureInPictureController {
     private boolean mInterruptedByScreenLock;
     private int mSessionId;
     private @Nullable BroadcastReceiver mScreenStateReceiver;
+
+    /**
+     * One shot observer wired up by {@link #handleSessionExited} to fire {@code
+     * maybeRestoreFullscreenUi} as soon as the renderer reports DOM fullscreen has exited. Held
+     * here only so we can detach it eagerly when the session ends or the activity is destroyed,
+     * so the observer never outlives the controller.
+     */
+    private @Nullable WebContentsObserver mPendingFullscreenExitObserver;
 
     /**
      * Identifier of the tab whose WebContents owns the active session, or {@link Tab#INVALID_TAB_ID}
@@ -363,10 +374,37 @@ public class BraveYouTubePictureInPictureController {
         mExiting = true;
         BraveYouTubeScriptInjectorNativeHelper.exitFullscreen(webContents);
 
+        // Drive the restore from the actual renderer signal. didToggleFullscreenModeForTab
+        // fires shortly after YouTube's JS exits DOM fullscreen, which is much sooner than the
+        // hard timeout below. mPendingFullscreenExitObserver doubles as the single shot sentinel:
+        // both paths claim ownership by clearing the field, so whichever wins runs the cleanup
+        // and the loser short circuits. resetSessionState clearing the field makes the loser
+        // path a no op too if the session ends in between.
+        final WebContentsObserver exitObserver =
+                new WebContentsObserver(webContents) {
+                    @Override
+                    public void didToggleFullscreenModeForTab(
+                            boolean enteredFullscreen, boolean willCauseResize) {
+                        if (enteredFullscreen || mPendingFullscreenExitObserver != this) {
+                            return;
+                        }
+                        mPendingFullscreenExitObserver = null;
+                        observe(null);
+                        maybeRestoreFullscreenUi(sessionId, webContents);
+                    }
+                };
+        mPendingFullscreenExitObserver = exitObserver;
         PostTask.postDelayedTask(
                 TaskTraits.UI_DEFAULT,
-                () -> maybeRestoreFullscreenUi(sessionId, webContents),
-                FULLSCREEN_EXIT_DELAY_MS);
+                () -> {
+                    if (mPendingFullscreenExitObserver != exitObserver) {
+                        return;
+                    }
+                    mPendingFullscreenExitObserver = null;
+                    exitObserver.observe(null);
+                    maybeRestoreFullscreenUi(sessionId, webContents);
+                },
+                FULLSCREEN_EXIT_FALLBACK_MS);
         PostTask.postDelayedTask(
                 TaskTraits.UI_DEFAULT,
                 () -> maybeSuspendDismissed(sessionId, webContents),
@@ -588,6 +626,10 @@ public class BraveYouTubePictureInPictureController {
         mResumeMediaSessionOnPipEntry = false;
         mWebContents = null;
         mTabId = Tab.INVALID_TAB_ID;
+        if (mPendingFullscreenExitObserver != null) {
+            mPendingFullscreenExitObserver.observe(null);
+            mPendingFullscreenExitObserver = null;
+        }
     }
 
     @VisibleForTesting
