@@ -67,17 +67,17 @@ class OHTTPAPIClient : public OAIAPIClient {
   // Self-owned mojo client receiver for the network service ObliviousHttp
   // pipe. Lives until the network service either delivers OnCompleted or
   // closes the pipe.
-  class InnerOhttpClient : public network::mojom::ObliviousHttpClient {
+  class InnerClient : public network::mojom::ObliviousHttpClient {
    public:
     using DispatchCallback =
         base::OnceCallback<void(int response_code, std::string response_body)>;
 
-    explicit InnerOhttpClient(DispatchCallback callback);
+    explicit InnerClient(DispatchCallback callback);
 
-    InnerOhttpClient(const InnerOhttpClient&) = delete;
-    InnerOhttpClient& operator=(const InnerOhttpClient&) = delete;
+    InnerClient(const InnerClient&) = delete;
+    InnerClient& operator=(const InnerClient&) = delete;
 
-    ~InnerOhttpClient() override;
+    ~InnerClient() override;
 
     // network::mojom::ObliviousHttpClient:
     void OnCompleted(
@@ -108,7 +108,7 @@ class OHTTPAPIClient : public OAIAPIClient {
       Request request,
       std::optional<CredentialCacheEntry> credential,
       std::optional<OHTTPConfigManager::KeyConfigResult> key_config_result);
-  void DispatchOhttpRequest(
+  void DispatchOHTTPRequest(
       OHTTPConfigManager::KeyConfigResult key_config_result,
       Request request,
       std::optional<CredentialCacheEntry> credential);

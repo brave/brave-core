@@ -12,7 +12,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
@@ -22,7 +21,6 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "url/gurl.h"
 
 namespace api_request_helper {
 class APIRequestResult;
@@ -66,15 +64,6 @@ class ConversationAPIV2Client {
       const std::optional<std::string>& model_name = std::nullopt);
 
   void ClearAllQueries();
-
-  // Builds the standard Brave AI Chat request headers. Always includes
-  // |x-brave-key|. When |request_body| and |api_url| are provided, also adds
-  // the Digest and Authorization headers required by the conversation API.
-  // When |credential| is provided, adds the Leo premium SKU Cookie header.
-  static base::flat_map<std::string, std::string> GetBraveHeaders(
-      std::optional<std::string> request_body,
-      std::optional<GURL> api_url,
-      std::optional<CredentialCacheEntry> credential);
 
  protected:
   void SetAPIRequestHelperForTesting(

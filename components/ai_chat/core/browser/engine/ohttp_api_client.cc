@@ -12,7 +12,6 @@
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/types/expected.h"
-#include "brave/components/ai_chat/core/browser/engine/conversation_api_v2_client.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_parsing.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -33,12 +32,12 @@ namespace ai_chat {
 
 namespace {
 
-constexpr char kOhttpRelayPathPrefix[] = "v1/models/";
-constexpr char kOhttpRelayPathSuffix[] = "/relay";
+constexpr char kOHTTPRelayPathPrefix[] = "v1/models/";
+constexpr char kOHTTPRelayPathSuffix[] = "/relay";
 
 constexpr base::TimeDelta kRequestTimeout = base::Seconds(60);
 
-net::NetworkTrafficAnnotationTag GetOhttpTrafficAnnotationTag() {
+net::NetworkTrafficAnnotationTag GetOHTTPTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("ai_chat_ohttp", R"cpp(
     semantics{
       sender : "AI Chat (OHTTP)" description :
@@ -61,11 +60,6 @@ net::NetworkTrafficAnnotationTag GetOhttpTrafficAnnotationTag() {
   )cpp");
 }
 
-GURL GetOhttpRelayUrl(const std::string& model_name) {
-  return GetEndpointUrl(/*premium=*/true, kOhttpRelayPathPrefix + model_name +
-                                              kOhttpRelayPathSuffix);
-}
-
 }  // namespace
 
 OHTTPAPIClient::Request::Request(std::string model_name,
@@ -79,12 +73,12 @@ OHTTPAPIClient::Request::Request(Request&&) = default;
 
 OHTTPAPIClient::Request::~Request() = default;
 
-OHTTPAPIClient::InnerOhttpClient::InnerOhttpClient(DispatchCallback callback)
+OHTTPAPIClient::InnerClient::InnerClient(DispatchCallback callback)
     : callback_(std::move(callback)) {}
 
-OHTTPAPIClient::InnerOhttpClient::~InnerOhttpClient() = default;
+OHTTPAPIClient::InnerClient::~InnerClient() = default;
 
-void OHTTPAPIClient::InnerOhttpClient::OnCompleted(
+void OHTTPAPIClient::InnerClient::OnCompleted(
     network::mojom::ObliviousHttpCompletionResultPtr response) {
   if (callback_.is_null()) {
     return;
@@ -176,11 +170,11 @@ void OHTTPAPIClient::OnKeyConfigReady(
     return RunCompletedWithError(std::move(request.completed_callback),
                                  mojom::APIError::ConnectionIssue);
   }
-  DispatchOhttpRequest(std::move(*key_config_result), std::move(request),
+  DispatchOHTTPRequest(std::move(*key_config_result), std::move(request),
                        std::move(credential));
 }
 
-void OHTTPAPIClient::DispatchOhttpRequest(
+void OHTTPAPIClient::DispatchOHTTPRequest(
     OHTTPConfigManager::KeyConfigResult key_config_result,
     Request request,
     std::optional<CredentialCacheEntry> credential) {
@@ -196,9 +190,11 @@ void OHTTPAPIClient::DispatchOhttpRequest(
   }
 
   auto ohttp_request = network::mojom::ObliviousHttpRequest::New();
-  ohttp_request->relay_url = GetOhttpRelayUrl(request.model_name);
+  ohttp_request->relay_url = GetEndpointUrl(
+      /*premium=*/credential.has_value(),
+      kOHTTPRelayPathPrefix + request.model_name + kOHTTPRelayPathSuffix);
   ohttp_request->traffic_annotation =
-      net::MutableNetworkTrafficAnnotationTag(GetOhttpTrafficAnnotationTag());
+      net::MutableNetworkTrafficAnnotationTag(GetOHTTPTrafficAnnotationTag());
   ohttp_request->timeout_duration = kRequestTimeout;
   ohttp_request->key_config = key_config_result.key_config;
   ohttp_request->resource_url = key_config_result.endpoint_url;
@@ -209,8 +205,7 @@ void OHTTPAPIClient::DispatchOhttpRequest(
   // Build outer (relay) request headers. These are sent to the relay in the
   // clear and are NOT encapsulated in the encrypted bhttp inner request.
   net::HttpRequestHeaders relay_headers;
-  for (const auto& [name, value] : ConversationAPIV2Client::GetBraveHeaders(
-           std::nullopt, std::nullopt, credential)) {
+  for (const auto& [name, value] : GetBraveHeaders(credential)) {
     relay_headers.SetHeader(name, value);
   }
   ohttp_request->relay_request_headers = std::move(relay_headers);
@@ -218,7 +213,7 @@ void OHTTPAPIClient::DispatchOhttpRequest(
 
   mojo::PendingRemote<network::mojom::ObliviousHttpClient> client_remote;
   mojo::MakeSelfOwnedReceiver(
-      std::make_unique<InnerOhttpClient>(base::BindOnce(
+      std::make_unique<InnerClient>(base::BindOnce(
           &OHTTPAPIClient::OnInnerResponse, weak_factory_.GetWeakPtr(),
           std::move(request), std::move(credential))),
       client_remote.InitWithNewPipeAndPassReceiver());

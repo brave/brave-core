@@ -41,11 +41,6 @@ bool IsExpired(const base::DictValue& entry) {
   return !expires_at || base::Time::Now() >= *expires_at;
 }
 
-GURL GetOhttpKeyConfigUrl(const std::string& model_name) {
-  return GetEndpointUrl(/*premium=*/true, kKeyConfigPathPrefix + model_name +
-                                              kKeyConfigPathSuffix);
-}
-
 net::NetworkTrafficAnnotationTag GetKeyConfigTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("ai_chat_ohttp_key_config", R"cpp(
     semantics{
@@ -155,11 +150,14 @@ void OHTTPConfigManager::FetchKeyConfig(const std::string& model_name,
             GetKeyConfigTrafficAnnotationTag(), url_loader_factory_);
   }
   api_request_helper_->Request(
-      net::HttpRequestHeaders::kGetMethod, GetOhttpKeyConfigUrl(model_name),
+      net::HttpRequestHeaders::kGetMethod,
+      GetEndpointUrl(/*premium=*/false,
+                     kKeyConfigPathPrefix + model_name + kKeyConfigPathSuffix),
       /*payload=*/"", /*payload_content_type=*/"",
       base::BindOnce(&OHTTPConfigManager::OnKeyConfigFetched,
                      weak_factory_.GetWeakPtr(), model_name,
-                     std::move(callback)));
+                     std::move(callback)),
+      GetBraveHeaders(/*credential=*/std::nullopt));
 }
 
 void OHTTPConfigManager::OnKeyConfigFetched(
