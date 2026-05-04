@@ -563,6 +563,9 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
                 displayPasswordNoResultScreenMessage();
             }
         }
+        // Notify SettingsActivity so it recalculates the containment decoration range to include
+        // all dynamically-added password items.
+        notifyPreferencesUpdated();
     }
 
     /**
@@ -619,6 +622,7 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
             args.putInt(PASSWORD_LIST_ID, i);
             profileCategory.addPreference(preference);
         }
+        notifyPreferencesUpdated();
     }
 
     @Override
