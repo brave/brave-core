@@ -21,7 +21,7 @@ BraveWorkspaceServiceFactory* BraveWorkspaceServiceFactory::GetInstance() {
 // static
 BraveWorkspaceService* BraveWorkspaceServiceFactory::GetForProfile(
     Profile* profile) {
-  if (base::FeatureList::IsEnabled(features::kBraveWorkspace)) {
+  if (!base::FeatureList::IsEnabled(features::kBraveWorkspace)) {
     return nullptr;
   }
   return static_cast<BraveWorkspaceService*>(

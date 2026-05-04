@@ -23,8 +23,9 @@ static_library("workspace") {
   ]
 
   deps = [
+    "//chrome/browser/ui",
+    "//chrome/browser/ui/browser_window",
     "//chrome/browser/profiles:profile",
     "//components/pref_registry",
-    "//third_party/abseil-cpp:absl",
   ]
 }

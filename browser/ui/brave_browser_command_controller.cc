@@ -830,10 +830,16 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       brave::ToggleFocusMode(base::to_address(browser_));
       break;
     case IDC_SAVE_WORKSPACE:
-      brave::ShowSaveWorkspaceDialog(browser_->profile());
+      if (auto* svc = BraveWorkspaceServiceFactory::GetForProfile(
+              browser_->profile())) {
+        svc->ShowSaveWorkspaceDialog();
+      }
       break;
     case IDC_OPEN_WORKSPACE:
-      brave::ShowOpenWorkspaceDialog(browser_->profile());
+      if (auto* svc = BraveWorkspaceServiceFactory::GetForProfile(
+              browser_->profile())) {
+        svc->ShowOpenWorkspaceDialog();
+      }
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;
