@@ -8,16 +8,14 @@ package org.chromium.chrome.browser.media;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.os.PowerManager;
-
-import androidx.test.filters.SmallTest;
 
 import org.junit.After;
 import org.junit.Rule;
@@ -29,16 +27,17 @@ import org.mockito.MockedStatic;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
-import org.chromium.base.test.util.Batch;
+import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.fullscreen.BraveFullscreenHtmlApiHandlerBase;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.youtube_script_injector.BraveYouTubeScriptInjectorNativeHelper;
-import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.components.browser_ui.media.BraveMediaSessionHelper;
 import org.chromium.content_public.browser.MediaSession;
 import org.chromium.content_public.browser.WebContents;
@@ -46,8 +45,7 @@ import org.chromium.content_public.browser.WebContents;
 /**
  * Unit tests for {@link BraveYouTubePictureInPictureController}'s pure state-transition surface.
  */
-@Batch(Batch.PER_CLASS)
-@RunWith(ChromeJUnit4ClassRunner.class)
+@RunWith(BaseRobolectricTestRunner.class)
 public class BraveYouTubePictureInPictureControllerTest {
     /**
      * The bytecode-injected upstream {@code FullscreenHtmlApiHandlerBase} extends Brave's abstract
@@ -65,8 +63,9 @@ public class BraveYouTubePictureInPictureControllerTest {
     @Mock private FullscreenManager mFullscreenManager;
     @Mock private FullscreenHandlerStub mBraveFullscreenHandler;
     @Mock private BrowserControlsManager mBrowserControlsManager;
+    @Mock private MonotonicObservableSupplier<BrowserControlsManager> mBcmSupplier;
+    @Mock private TabModelSelector mTabModelSelector;
     @Mock private Tab mTab;
-    @Mock private PowerManager mPowerManager;
     @Mock private MediaSession mMediaSession;
 
     @After
@@ -83,7 +82,6 @@ public class BraveYouTubePictureInPictureControllerTest {
     }
 
     @Test
-    @SmallTest
     public void initiallyInactive() {
         BraveYouTubePictureInPictureController controller =
                 new BraveYouTubePictureInPictureController(mBraveActivity);
@@ -94,7 +92,6 @@ public class BraveYouTubePictureInPictureControllerTest {
     }
 
     @Test
-    @SmallTest
     public void onSessionRequested_marksActive() {
         BraveYouTubePictureInPictureController controller =
                 new BraveYouTubePictureInPictureController(mBraveActivity);
@@ -107,7 +104,6 @@ public class BraveYouTubePictureInPictureControllerTest {
     }
 
     @Test
-    @SmallTest
     public void onSessionEnterFailed_clearsActive() {
         BraveYouTubePictureInPictureController controller =
                 new BraveYouTubePictureInPictureController(mBraveActivity);
@@ -121,7 +117,6 @@ public class BraveYouTubePictureInPictureControllerTest {
     }
 
     @Test
-    @SmallTest
     public void onFullscreenInterrupted_whenInactive_isNoop() {
         BraveYouTubePictureInPictureController controller =
                 new BraveYouTubePictureInPictureController(mBraveActivity);
@@ -133,7 +128,6 @@ public class BraveYouTubePictureInPictureControllerTest {
     }
 
     @Test
-    @SmallTest
     public void saveAndRestore_preservesActive() {
         BraveYouTubePictureInPictureController source =
                 new BraveYouTubePictureInPictureController(mBraveActivity);
@@ -153,7 +147,6 @@ public class BraveYouTubePictureInPictureControllerTest {
     }
 
     @Test
-    @SmallTest
     public void onPostCreate_withInterruptedActiveSession_registersScreenStateReceiver() {
         Bundle savedState = new Bundle();
         savedState.putBoolean(BraveYouTubePictureInPictureController.KEY_ACTIVE, true);
@@ -170,7 +163,6 @@ public class BraveYouTubePictureInPictureControllerTest {
     }
 
     @Test
-    @SmallTest
     public void onPostCreate_withNullBundle_initializesInactive() {
         BraveYouTubePictureInPictureController controller =
                 new BraveYouTubePictureInPictureController(mBraveActivity);
@@ -181,7 +173,6 @@ public class BraveYouTubePictureInPictureControllerTest {
     }
 
     @Test
-    @SmallTest
     public void onNewTabDuringPictureInPicture_inactive_isNoop() {
         BraveYouTubePictureInPictureController controller =
                 new BraveYouTubePictureInPictureController(mBraveActivity);
@@ -195,13 +186,10 @@ public class BraveYouTubePictureInPictureControllerTest {
     }
 
     @Test
-    @SmallTest
     public void onNewTabDuringPictureInPicture_screenLocked_marksInterruptedAndPreservesSession() {
-        when(mBraveActivity.getSystemService(Context.POWER_SERVICE)).thenReturn(mPowerManager);
-        when(mPowerManager.isInteractive()).thenReturn(false);
-
         BraveYouTubePictureInPictureController controller =
-                new BraveYouTubePictureInPictureController(mBraveActivity);
+                spy(new BraveYouTubePictureInPictureController(mBraveActivity));
+        doReturn(true).when(controller).isScreenOffOrLockedInternal();
         controller.onSessionRequested(mWebContents);
 
         try (MockedStatic<MediaSession> mediaSessionStatic = mockStatic(MediaSession.class)) {
@@ -222,10 +210,10 @@ public class BraveYouTubePictureInPictureControllerTest {
     }
 
     @Test
-    @SmallTest
     public void onNewTabDuringPictureInPicture_active_suspendsExitsAndClearsSession() {
         when(mBraveActivity.getFullscreenManager()).thenReturn(mFullscreenManager);
-        when(mBraveActivity.getBrowserControlsManager()).thenReturn(mBrowserControlsManager);
+        when(mBraveActivity.getBrowserControlsManagerSupplier()).thenReturn(mBcmSupplier);
+        when(mBcmSupplier.get()).thenReturn(mBrowserControlsManager);
         when(mFullscreenManager.getPersistentFullscreenMode()).thenReturn(false);
 
         BraveYouTubePictureInPictureController controller =
@@ -260,7 +248,6 @@ public class BraveYouTubePictureInPictureControllerTest {
     }
 
     @Test
-    @SmallTest
     public void onNewTabDuringPictureInPicture_destroyedBeforePostedCleanup_isNoop() {
         BraveYouTubePictureInPictureController controller =
                 new BraveYouTubePictureInPictureController(mBraveActivity);
@@ -285,16 +272,16 @@ public class BraveYouTubePictureInPictureControllerTest {
         }
 
         verify(mBraveActivity, never()).getFullscreenManager();
-        verify(mBraveActivity, never()).getActivityTab();
-        verify(mBraveActivity, never()).getBrowserControlsManager();
+        verify(mBraveActivity, never()).getTabModelSelector();
+        verify(mBraveActivity, never()).getBrowserControlsManagerSupplier();
         assertFalse(controller.isActive());
     }
 
     @Test
-    @SmallTest
     public void onNewTabDuringPictureInPicture_restoredSession_usesRegisteredWebContents() {
         when(mBraveActivity.getFullscreenManager()).thenReturn(mFullscreenManager);
-        when(mBraveActivity.getBrowserControlsManager()).thenReturn(mBrowserControlsManager);
+        when(mBraveActivity.getBrowserControlsManagerSupplier()).thenReturn(mBcmSupplier);
+        when(mBcmSupplier.get()).thenReturn(mBrowserControlsManager);
         when(mFullscreenManager.getPersistentFullscreenMode()).thenReturn(false);
         BraveMediaSessionHelper.setYouTubePictureInPictureWebContents(mWebContents);
 
@@ -332,11 +319,12 @@ public class BraveYouTubePictureInPictureControllerTest {
     }
 
     @Test
-    @SmallTest
     public void onNewTabDuringPictureInPicture_persistentFullscreen_exitsBraveUi() {
         when(mBraveActivity.getFullscreenManager()).thenReturn(mBraveFullscreenHandler);
-        when(mBraveActivity.getActivityTab()).thenReturn(mTab);
-        when(mBraveActivity.getBrowserControlsManager()).thenReturn(mBrowserControlsManager);
+        when(mBraveActivity.getTabModelSelector()).thenReturn(mTabModelSelector);
+        when(mTabModelSelector.getCurrentTab()).thenReturn(mTab);
+        when(mBraveActivity.getBrowserControlsManagerSupplier()).thenReturn(mBcmSupplier);
+        when(mBcmSupplier.get()).thenReturn(mBrowserControlsManager);
         when(mBraveFullscreenHandler.getPersistentFullscreenMode()).thenReturn(true);
 
         BraveYouTubePictureInPictureController controller =

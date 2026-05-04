@@ -21,6 +21,7 @@ import org.chromium.base.ActivityState;
 import org.chromium.base.ApplicationStatus;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.build.annotations.NullMarked;
@@ -168,7 +169,7 @@ public class BraveYouTubePictureInPictureController {
         if (!mActive) {
             return;
         }
-        if (isScreenOffOrLocked(mActivity)) {
+        if (isScreenOffOrLockedInternal()) {
             markInterruptedByScreenLock();
             return;
         }
@@ -221,7 +222,7 @@ public class BraveYouTubePictureInPictureController {
 
         // Mirror onExitPictureInPictureMode: defer teardown while the device is locked and let
         // the screen-state receiver pick the session back up on unlock.
-        if (isScreenOffOrLocked(mActivity)) {
+        if (isScreenOffOrLockedInternal()) {
             markInterruptedByScreenLock();
             return;
         }
@@ -264,14 +265,17 @@ public class BraveYouTubePictureInPictureController {
                         return;
                     }
                     final FullscreenManager fullscreenManager = mActivity.getFullscreenManager();
-                    final Tab activityTab = mActivity.getActivityTab();
+                    final Tab activityTab = mActivity.getTabModelSelector().getCurrentTab();
                     if (fullscreenManager.getPersistentFullscreenMode() && activityTab != null) {
                         // Canonical exit path: clears persistent-fullscreen layout state and
                         // fans out to FullscreenManager.Observer (InfoBarContainer,
                         // ContextualSearchManager, navbar coloring, etc.).
                         fullscreenManager.onExitFullscreen(activityTab);
                     }
-                    final BrowserControlsManager bcm = mActivity.getBrowserControlsManager();
+                    final MonotonicObservableSupplier<BrowserControlsManager> bcmSupplier =
+                            mActivity.getBrowserControlsManagerSupplier();
+                    final BrowserControlsManager bcm =
+                            bcmSupplier != null ? bcmSupplier.get() : null;
                     if (bcm != null) {
                         // Force the browser-controls offset back to 0. On tablets the toolbar can
                         // stay translated off-screen after the canonical exit and
@@ -378,7 +382,7 @@ public class BraveYouTubePictureInPictureController {
             return;
         }
 
-        if (isScreenOffOrLocked(mActivity)) {
+        if (isScreenOffOrLockedInternal()) {
             markInterruptedByScreenLock();
             return;
         }
@@ -395,7 +399,7 @@ public class BraveYouTubePictureInPictureController {
             return;
         }
 
-        if (isScreenOffOrLocked(mActivity)) {
+        if (isScreenOffOrLockedInternal()) {
             markInterruptedByScreenLock();
             return;
         }
@@ -415,7 +419,7 @@ public class BraveYouTubePictureInPictureController {
     }
 
     private void maybeResumeAfterScreenLock() {
-        if (!mActive || !mInterruptedByScreenLock || isScreenOffOrLocked(mActivity)) {
+        if (!mActive || !mInterruptedByScreenLock || isScreenOffOrLockedInternal()) {
             return;
         }
 
@@ -535,6 +539,11 @@ public class BraveYouTubePictureInPictureController {
         mInterruptedByScreenLock = false;
         mResumeMediaSessionOnPipEntry = false;
         mWebContents = null;
+    }
+
+    @VisibleForTesting
+    boolean isScreenOffOrLockedInternal() {
+        return isScreenOffOrLocked(mActivity);
     }
 
     @VisibleForTesting
