@@ -431,6 +431,7 @@ source_set("ui") {
       "//chrome/browser/first_run",
       "//chrome/browser/importer",
       "//chrome/browser/metrics",
+      "//chrome/browser/new_tab_page",
       "//chrome/browser/profiles",
       "//chrome/browser/search",
       "//chrome/browser/send_tab_to_self",
