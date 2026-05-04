@@ -5,6 +5,8 @@
 
 #include <optional>
 
+#include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
 #include "brave/browser/ui/browser_commands.h"
@@ -73,6 +75,8 @@ class FakeWindowFrameProvider : public ui::WindowFrameProvider {
 
 // LinuxUi that satisfies the factory's CreateNavButtonProvider() non-null
 // requirement and routes GetWindowFrameProvider() to a fake we can inspect.
+// GetNativeTheme() returns the real native UI theme so that frame recreation
+// triggered by UseSystemTheme() can build a valid ColorProviderKey.
 class FakeLinuxUiWithNavButtons : public ui::FakeLinuxUi {
  public:
   std::unique_ptr<ui::NavButtonProvider> CreateNavButtonProvider() override {
@@ -81,8 +85,6 @@ class FakeLinuxUiWithNavButtons : public ui::FakeLinuxUi {
   ui::WindowFrameProvider* GetWindowFrameProvider(bool, bool, bool) override {
     return &frame_provider_;
   }
-  // FakeLinuxUi returns nullptr; override to prevent null-dereference when
-  // UseSystemTheme() triggers frame recreation on existing browser windows.
   ui::NativeTheme* GetNativeTheme() const override {
     return ui::NativeTheme::GetInstanceForNativeUi();
   }
@@ -146,8 +148,24 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserFrameViewTest,
                        VerticalTabsGtkTopAreaHeightIsPositive) {
   FakeLinuxUiWithNavButtons fake_linux_ui;
   FakeLinuxUiGetter fake_getter(fake_linux_ui);
-  ScopedLinuxUiGetter scoped_getter(&fake_getter);
 
+  // restore_default_theme is declared first so it destructs LAST (after
+  // scoped_getter).  UseDefaultTheme() therefore fires with the original null
+  // getter already restored, so frame recreation uses no linux-ui pointer —
+  // preventing UAF when fake_linux_ui destructs.
+  base::ScopedClosureRunner restore_default_theme(base::BindOnce(
+      [](Profile* p) {
+        ThemeServiceFactory::GetForProfile(p)->UseDefaultTheme();
+      },
+      browser()->profile()));
+
+  // Install the fake getter before UseSystemTheme().  UseSystemTheme()
+  // synchronously recreates the initial browser's frame (UpdateFrame()), which
+  // calls BraveBrowserWidget::GetColorProviderKey() → GetNativeTheme().  The
+  // FakeLinuxUiWithNavButtons::GetNativeTheme() override returns a real
+  // NativeTheme so this path does not crash.  UsingSystemTheme() == true is
+  // also required by the factory to create BraveBrowserFrameViewLinuxNative.
+  ScopedLinuxUiGetter scoped_getter(&fake_getter);
   ThemeServiceFactory::GetForProfile(browser()->profile())->UseSystemTheme();
 
   Browser* gtk_browser = CreateBrowser(browser()->profile());
@@ -178,9 +196,13 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserFrameViewTest,
   EXPECT_GE(*fake_linux_ui.frame_provider().last_top_area_height(),
             toolbar->GetPreferredSize().height());
 
-  // Close before the fake objects go out of scope; the frame view holds a raw
+  // Close before fake objects go out of scope; the frame view holds a raw
   // pointer to fake_linux_ui via the frame-provider getter.
   CloseBrowserSynchronously(gtk_browser);
+  // scoped_getter destructs: fake getter uninstalled, original getter restored.
+  // restore_default_theme fires: UseDefaultTheme() with null getter rebuilds
+  // all browser frames as BraveOpaqueBrowserFrameView — no capture of
+  // &fake_linux_ui — so fake_linux_ui destructs safely.
 }
 
 // Verifies that with vertical tabs enabled and no title bar, both the toolbar
