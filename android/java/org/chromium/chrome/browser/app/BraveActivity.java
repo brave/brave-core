@@ -1091,7 +1091,6 @@ public abstract class BraveActivity extends ChromeActivity
         }
 
         super.onStartWithNative();
-        getYouTubePictureInPictureController().onResume();
     }
 
     /**
