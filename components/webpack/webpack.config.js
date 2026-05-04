@@ -215,7 +215,7 @@ module.exports = async function (env, argv) {
           options: buildFlags
         },
         {
-          test: /\.(ttf|eot|ico|svg|png|jpg|jpeg|gif|webp)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+          test: /\.(ttf|eot|ico|svg|png|jpg|jpeg|gif|webp|mp4|webm)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
           loader: 'file-loader'
         },
         // web-discovery-project is built as CommonJS but may be classified
