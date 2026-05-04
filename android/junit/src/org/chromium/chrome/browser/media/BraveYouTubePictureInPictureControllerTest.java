@@ -328,6 +328,77 @@ public class BraveYouTubePictureInPictureControllerTest {
     }
 
     @Test
+    public void onNewTabDuringPictureInPicture_registryGcedRecoversByTabId() {
+        // After activity recreation the registry's WeakReference can be cleared by GC. The
+        // saved-instance bundle carries the owning tab id, so the controller must recover the
+        // WebContents via TabModelSelector instead of falling back to the foreground tab which
+        // could be a different tab if the user switched during recreation.
+        final int tabId = 42;
+        when(mBraveActivity.getFullscreenManager()).thenReturn(mFullscreenManager);
+        when(mBraveActivity.getBrowserControlsManagerSupplier()).thenReturn(mBcmSupplier);
+        when(mBcmSupplier.get()).thenReturn(mBrowserControlsManager);
+        when(mFullscreenManager.getPersistentFullscreenMode()).thenReturn(false);
+        when(mBraveActivity.getTabModelSelector()).thenReturn(mTabModelSelector);
+        when(mTabModelSelector.getTabById(tabId)).thenReturn(mTab);
+        when(mTab.getWebContents()).thenReturn(mWebContents);
+
+        Bundle savedState = new Bundle();
+        savedState.putBoolean(BraveYouTubePictureInPictureController.KEY_ACTIVE, true);
+        savedState.putInt(BraveYouTubePictureInPictureController.KEY_TAB_ID, tabId);
+
+        BraveYouTubePictureInPictureController controller =
+                new BraveYouTubePictureInPictureController(mBraveActivity);
+        controller.onPostCreate(savedState);
+
+        try (MockedStatic<BraveYouTubeScriptInjectorNativeHelper> nativeHelper =
+                        mockStatic(BraveYouTubeScriptInjectorNativeHelper.class);
+                MockedStatic<MediaSession> mediaSessionStatic = mockStatic(MediaSession.class);
+                MockedStatic<PostTask> postTask = mockStatic(PostTask.class)) {
+            mediaSessionStatic
+                    .when(() -> MediaSession.fromWebContents(mWebContents))
+                    .thenReturn(mMediaSession);
+
+            controller.onNewTabDuringPictureInPicture();
+
+            nativeHelper.verify(
+                    () -> BraveYouTubeScriptInjectorNativeHelper.exitFullscreen(mWebContents));
+            capturePostedUiTask(postTask).run();
+        }
+
+        // Recovered the right WebContents and never queried the foreground tab.
+        verify(mTabModelSelector).getTabById(tabId);
+        verify(mBraveActivity, never()).getCurrentWebContents();
+        verify(mWebContents).exitFullscreen();
+        assertFalse(controller.isActive());
+    }
+
+    @Test
+    public void onNewTabDuringPictureInPicture_registryGcedAndTabGone_doesNotRetarget() {
+        // Recovery fails cleanly when the tab id no longer resolves to a tab (for example after
+        // the YouTube tab was closed during the activity-recreation window). The controller must
+        // not fall back to the foreground tab which would silently retarget the session; the
+        // operation simply no-ops on the renderer side.
+        final int tabId = 42;
+        when(mBraveActivity.getTabModelSelector()).thenReturn(mTabModelSelector);
+        when(mTabModelSelector.getTabById(tabId)).thenReturn(null);
+
+        Bundle savedState = new Bundle();
+        savedState.putBoolean(BraveYouTubePictureInPictureController.KEY_ACTIVE, true);
+        savedState.putInt(BraveYouTubePictureInPictureController.KEY_TAB_ID, tabId);
+
+        BraveYouTubePictureInPictureController controller =
+                new BraveYouTubePictureInPictureController(mBraveActivity);
+        controller.onPostCreate(savedState);
+
+        try (MockedStatic<PostTask> postTask = mockStatic(PostTask.class)) {
+            controller.onNewTabDuringPictureInPicture();
+        }
+
+        verify(mBraveActivity, never()).getCurrentWebContents();
+        verify(mWebContents, never()).exitFullscreen();
+    }
+
+    @Test
     public void onNewTabDuringPictureInPicture_persistentFullscreen_exitsBraveUi() {
         when(mBraveActivity.getFullscreenManager()).thenReturn(mBraveFullscreenHandler);
         when(mBraveActivity.getTabModelSelector()).thenReturn(mTabModelSelector);

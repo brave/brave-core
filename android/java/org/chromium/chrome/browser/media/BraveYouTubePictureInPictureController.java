@@ -30,6 +30,7 @@ import org.chromium.chrome.browser.fullscreen.BraveFullscreenHtmlApiHandlerBase;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.youtube_script_injector.BraveYouTubeScriptInjectorNativeHelper;
 import org.chromium.components.browser_ui.media.BraveMediaSessionHelper;
 import org.chromium.content_public.browser.MediaSession;
@@ -57,6 +58,9 @@ public class BraveYouTubePictureInPictureController {
     static final String KEY_RESUME_MEDIA_SESSION_ON_PIP_ENTRY =
             "org.chromium.chrome.browser.media.YT_PIP_RESUME_MEDIA_ON_ENTRY";
 
+    @VisibleForTesting
+    static final String KEY_TAB_ID = "org.chromium.chrome.browser.media.YT_PIP_TAB_ID";
+
     /**
      * Time given to YouTube's DOM to drop out of fullscreen after we ask it to. Picked empirically:
      * shorter values cause the browser-chrome restore to race with the JS exit; longer values are
@@ -81,6 +85,14 @@ public class BraveYouTubePictureInPictureController {
     private @Nullable BroadcastReceiver mScreenStateReceiver;
 
     /**
+     * Identifier of the tab whose WebContents owns the active session, or {@link Tab#INVALID_TAB_ID}
+     * when no session is bound. Tab IDs are stable across activity recreation (the TabModel outlives
+     * the Activity), so persisting this lets us recover the session's WebContents after a config
+     * change without depending on the registry's WeakReference, which can be cleared by GC.
+     */
+    private int mTabId = Tab.INVALID_TAB_ID;
+
+    /**
      * True if a PiP entry should resume the media session once the system reports the activity is
      * in PiP mode. Set by {@link #onSessionRequested} and consumed by {@link
      * #onEnterPictureInPictureMode}.
@@ -101,6 +113,7 @@ public class BraveYouTubePictureInPictureController {
                 savedInstanceState.getBoolean(KEY_INTERRUPTED_BY_SCREEN_LOCK, false);
         mResumeMediaSessionOnPipEntry =
                 savedInstanceState.getBoolean(KEY_RESUME_MEDIA_SESSION_ON_PIP_ENTRY, false);
+        mTabId = savedInstanceState.getInt(KEY_TAB_ID, Tab.INVALID_TAB_ID);
         if (mActive && mInterruptedByScreenLock) {
             registerScreenStateReceiver();
         }
@@ -111,6 +124,7 @@ public class BraveYouTubePictureInPictureController {
         outState.putBoolean(KEY_ACTIVE, mActive);
         outState.putBoolean(KEY_INTERRUPTED_BY_SCREEN_LOCK, mInterruptedByScreenLock);
         outState.putBoolean(KEY_RESUME_MEDIA_SESSION_ON_PIP_ENTRY, mResumeMediaSessionOnPipEntry);
+        outState.putInt(KEY_TAB_ID, mTabId);
     }
 
     /** Hook from {@code Activity#onResume}. */
@@ -183,6 +197,19 @@ public class BraveYouTubePictureInPictureController {
     public void onSessionRequested(final WebContents webContents) {
         mResumeMediaSessionOnPipEntry = true;
         mWebContents = webContents;
+        // Capture the owning tab id so we can recover the WebContents after activity recreation
+        // even if the registry's WeakReference has been cleared. Both callers (the YouTube PiP
+        // entry path and maybeAdoptSession) pass the current activity tab's WebContents, so
+        // resolving via the current tab is correct; the equality guard is defensive in case that
+        // ever changes; without it, a mismatched binding would silently retarget recovery at
+        // the wrong tab.
+        final TabModelSelector tabModelSelector = mActivity.getTabModelSelector();
+        final Tab currentTab =
+                tabModelSelector != null ? tabModelSelector.getCurrentTab() : null;
+        mTabId =
+                currentTab != null && currentTab.getWebContents() == webContents
+                        ? currentTab.getId()
+                        : Tab.INVALID_TAB_ID;
         BraveMediaSessionHelper.setYouTubePictureInPictureWebContents(webContents);
         mActive = true;
         mExiting = false;
@@ -357,8 +384,9 @@ public class BraveYouTubePictureInPictureController {
 
         // mWebContents was never set on this controller instance (typically after activity
         // recreation, when mActive is restored from the saved-instance bundle but the WebContents
-        // reference cannot be persisted). Prefer the process-wide registry retained across the
-        // configuration change, since the foreground tab may already be the newly opened tab.
+        // reference cannot be persisted). Ask BraveMediaSessionHelper for the WebContents it
+        // tracks for the active session: that reference is process wide and survives the
+        // configuration change, whereas the foreground tab may already be a newly opened one.
         final WebContents pictureInPictureWebContents =
                 BraveMediaSessionHelper.getYouTubePictureInPictureWebContents();
         if (pictureInPictureWebContents != null) {
@@ -366,18 +394,30 @@ public class BraveYouTubePictureInPictureController {
             return pictureInPictureWebContents;
         }
 
-        // If the registry is empty, fall back to the foreground tab for restore paths where the
-        // current tab is still the YouTube PiP tab.
-        final WebContents currentWebContents = mActivity.getCurrentWebContents();
-        if (currentWebContents != null
-                && !currentWebContents.isDestroyed()
-                && BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(
-                        currentWebContents)) {
-            mWebContents = currentWebContents;
-            BraveMediaSessionHelper.setYouTubePictureInPictureWebContents(currentWebContents);
-            return currentWebContents;
+        // BraveMediaSessionHelper holds the active WebContents through a WeakReference that GC
+        // may have collected between save and restore. Recover via the persisted tab id instead:
+        // the TabModel outlives the Activity, so the id resolves back to the original tab and
+        // through it to its WebContents. We deliberately do not fall back to whatever tab is now
+        // foreground; if the user switched tabs during recreation, that would silently retarget
+        // the session at the wrong WebContents.
+        if (mTabId == Tab.INVALID_TAB_ID) {
+            return null;
         }
-        return null;
+        final TabModelSelector tabModelSelector = mActivity.getTabModelSelector();
+        if (tabModelSelector == null) {
+            return null;
+        }
+        final Tab tab = tabModelSelector.getTabById(mTabId);
+        if (tab == null) {
+            return null;
+        }
+        final WebContents tabWebContents = tab.getWebContents();
+        if (tabWebContents == null || tabWebContents.isDestroyed()) {
+            return null;
+        }
+        mWebContents = tabWebContents;
+        BraveMediaSessionHelper.setYouTubePictureInPictureWebContents(tabWebContents);
+        return tabWebContents;
     }
 
     private void maybeRestoreFullscreenUi(final int sessionId, final WebContents webContents) {
@@ -442,6 +482,11 @@ public class BraveYouTubePictureInPictureController {
             return;
         }
 
+        // Clear the interrupt flag *before* requesting PiP entry. The screen-state broadcast
+        // receiver and the activity-resume hook can both call into here for a single wake-up
+        // (e.g. broadcast races the activity lifecycle), and any later re-entry must short-circuit
+        // on the !mInterruptedByScreenLock guard above instead of racing a second
+        // enterPictureInPictureMode call against the in-flight one.
         mInterruptedByScreenLock = false;
         unregisterScreenStateReceiver();
 
@@ -542,6 +587,7 @@ public class BraveYouTubePictureInPictureController {
         mInterruptedByScreenLock = false;
         mResumeMediaSessionOnPipEntry = false;
         mWebContents = null;
+        mTabId = Tab.INVALID_TAB_ID;
     }
 
     @VisibleForTesting
