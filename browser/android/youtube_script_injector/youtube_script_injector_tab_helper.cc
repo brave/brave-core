@@ -155,6 +155,14 @@ constexpr char16_t kYoutubeFullscreen[] =
     }
 
     function tryYoutubeApi() {
+      // Bail if the player or document already reports fullscreen. toggleFullscreen()
+      // is YouTube's undocumented API; calling it from a fullscreen state would flip
+      // us back out, which on the entry path would silently land us in PiP with no
+      // fullscreen content. The classList check alone is not enough: the player can
+      // be in document-level fullscreen without the ytp-fullscreen class set.
+      if (isFullscreen()) {
+        return false;
+      }
       const player = document.querySelector(playerSelector);
       if (!player?.toggleFullscreen
           || player.classList.contains('ytp-fullscreen')) {
