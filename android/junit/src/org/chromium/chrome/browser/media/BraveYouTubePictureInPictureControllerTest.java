@@ -8,13 +8,13 @@ package org.chromium.chrome.browser.media;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import android.app.KeyguardManager;
+import android.content.Context;
 import android.os.Bundle;
 
 import org.junit.After;
@@ -26,7 +26,10 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import org.robolectric.Shadows;
+import org.robolectric.shadows.ShadowKeyguardManager;
 
+import org.chromium.base.ContextUtils;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
@@ -187,9 +190,15 @@ public class BraveYouTubePictureInPictureControllerTest {
 
     @Test
     public void onNewTabDuringPictureInPicture_screenLocked_marksInterruptedAndPreservesSession() {
+        ShadowKeyguardManager shadowKeyguardManager =
+                Shadows.shadowOf(
+                        (KeyguardManager)
+                                ContextUtils.getApplicationContext()
+                                        .getSystemService(Context.KEYGUARD_SERVICE));
+        shadowKeyguardManager.setKeyguardLocked(true);
+
         BraveYouTubePictureInPictureController controller =
-                spy(new BraveYouTubePictureInPictureController(mBraveActivity));
-        doReturn(true).when(controller).isScreenOffOrLockedInternal();
+                new BraveYouTubePictureInPictureController(mBraveActivity);
         controller.onSessionRequested(mWebContents);
 
         try (MockedStatic<MediaSession> mediaSessionStatic = mockStatic(MediaSession.class)) {

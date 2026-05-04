@@ -169,7 +169,7 @@ public class BraveYouTubePictureInPictureController {
         if (!mActive) {
             return;
         }
-        if (isScreenOffOrLockedInternal()) {
+        if (isScreenOffOrLocked()) {
             markInterruptedByScreenLock();
             return;
         }
@@ -222,7 +222,7 @@ public class BraveYouTubePictureInPictureController {
 
         // Mirror onExitPictureInPictureMode: defer teardown while the device is locked and let
         // the screen-state receiver pick the session back up on unlock.
-        if (isScreenOffOrLockedInternal()) {
+        if (isScreenOffOrLocked()) {
             markInterruptedByScreenLock();
             return;
         }
@@ -289,9 +289,12 @@ public class BraveYouTubePictureInPictureController {
 
     /**
      * Returns true if the device screen is off or the keyguard is locked. Shared by the controller
-     * and {@link BraveFullscreenVideoPictureInPictureController}.
+     * and {@link BraveFullscreenVideoPictureInPictureController}. Uses the application context
+     * because the underlying signals (PowerManager interactivity, keyguard state) are
+     * device-global, which also lets Robolectric tests drive them via shadows without an Activity.
      */
-    public static boolean isScreenOffOrLocked(Context context) {
+    public static boolean isScreenOffOrLocked() {
+        Context context = ContextUtils.getApplicationContext();
         PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         if (powerManager != null && !powerManager.isInteractive()) {
             return true;
@@ -382,7 +385,7 @@ public class BraveYouTubePictureInPictureController {
             return;
         }
 
-        if (isScreenOffOrLockedInternal()) {
+        if (isScreenOffOrLocked()) {
             markInterruptedByScreenLock();
             return;
         }
@@ -399,7 +402,7 @@ public class BraveYouTubePictureInPictureController {
             return;
         }
 
-        if (isScreenOffOrLockedInternal()) {
+        if (isScreenOffOrLocked()) {
             markInterruptedByScreenLock();
             return;
         }
@@ -419,7 +422,7 @@ public class BraveYouTubePictureInPictureController {
     }
 
     private void maybeResumeAfterScreenLock() {
-        if (!mActive || !mInterruptedByScreenLock || isScreenOffOrLockedInternal()) {
+        if (!mActive || !mInterruptedByScreenLock || isScreenOffOrLocked()) {
             return;
         }
 
@@ -539,11 +542,6 @@ public class BraveYouTubePictureInPictureController {
         mInterruptedByScreenLock = false;
         mResumeMediaSessionOnPipEntry = false;
         mWebContents = null;
-    }
-
-    @VisibleForTesting
-    boolean isScreenOffOrLockedInternal() {
-        return isScreenOffOrLocked(mActivity);
     }
 
     @VisibleForTesting
