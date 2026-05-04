@@ -15,8 +15,7 @@ public class BraveFullscreenVideoPictureInPictureController {
      * variable, that will be deleted in bytecode.
      */
     protected boolean mDismissPending;
-
-    // LINT.IfChange(brave_fullscreen_video_pip_dismiss_hook)
+    
     boolean maybeHandleDismissActivityForYouTubePictureInPicture(
             Activity activity,
             boolean isStart,
@@ -33,8 +32,6 @@ public class BraveFullscreenVideoPictureInPictureController {
         }
         return false;
     }
-
-    // LINT.ThenChange(/brave/rewrite/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java.toml)
 
     private boolean shouldDeferDismissForYouTubePictureInPicture(
             Activity activity, boolean isStart, boolean isResume) {
