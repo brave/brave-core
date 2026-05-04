@@ -99,4 +99,15 @@ extension SiteShredLevel: Identifiable {
       return Strings.Shields.shredOnAppClose
     }
   }
+
+  var localizedDescription: String {
+    switch self {
+    case .never:
+      return Strings.Shields.shredNeverDescription
+    case .whenSiteClosed:
+      return Strings.Shields.shredOnSiteTabsClosedDescription
+    case .appExit:
+      return Strings.Shields.shredOnAppCloseDescription
+    }
+  }
 }

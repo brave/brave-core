@@ -14,25 +14,31 @@ struct ShredSettingsView: View {
 
   var body: some View {
     Form {
-      FormPicker(selection: $settings.shredLevel) {
-        ForEach(SiteShredLevel.allCases) { level in
-          Text(level.localizedTitle)
-            .foregroundColor(Color(.secondaryBraveLabel))
+      Section {
+        Picker(selection: $settings.shredLevel) {
+          ForEach(SiteShredLevel.allCases) { level in
+            LabelView(
+              title: level.localizedTitle,
+              subtitle: level.localizedDescription
+            )
             .tag(level)
+          }
+        } label: {
+          EmptyView()
         }
-      } label: {
-        LabelView(
-          title: Strings.Shields.autoShred,
-          subtitle: nil
-        )
+        .pickerStyle(.inline)
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      } header: {
+        Text(Strings.Shields.autoShredSectionTitle)
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
-      ToggleView(
-        title: Strings.Shields.shredHistoryRowTitle,
-        subtitle: Strings.Shields.shredHistoryRowDescription,
-        toggle: $settings.shredHistoryItems
-      )
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      Section {
+        ToggleView(
+          title: Strings.Shields.shredHistoryRowTitle,
+          subtitle: Strings.Shields.shredHistoryRowDescription,
+          toggle: $settings.shredHistoryItems
+        )
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      }
     }
     .scrollContentBackground(.hidden)
     .background(Color(UIColor.braveGroupedBackground))
